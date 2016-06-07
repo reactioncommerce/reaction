@@ -18,4 +18,4 @@ fetchTranslationResources = () => {
     return x;
   }, {});
   return resources;
-}
+};

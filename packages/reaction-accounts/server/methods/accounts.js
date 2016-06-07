@@ -170,7 +170,7 @@ Meteor.methods({
     return false;
   },
 
-  "accounts/getUserProfile": function(accountUserId) {
+  "accounts/getUserProfile": function (accountUserId) {
     check(accountUserId, Match.Optional(String));
     const userId = accountUserId || Meteor.userId();
     const account = ReactionCore.Collections.Accounts.findOne({
@@ -471,7 +471,7 @@ Meteor.methods({
     check(email, String);
     check(name, String);
     this.unblock();
-    let result = ReactionCore.Hooks.Events.run(
+    ReactionCore.Hooks.Events.run(
       "accounts/inviteShopMember",
       { shopId: shopId,
         email: email,

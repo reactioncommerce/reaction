@@ -21,11 +21,11 @@ ReactionEmailFromTemplate = function (template, lng, data, fallbackLng) {
   }
 
   if (!Template[template]) {
-      ReactionCore.Log.fatal(`Template '${ template }' does not exist. ` +
-        `Did you register it in the approriate workflow step (register.js)?`);
+    ReactionCore.Log.fatal(`Template '${ template }' does not exist. ` +
+      `Did you register it in the approriate workflow step (register.js)?`);
   }
   Template[template].helpers({
-    '_': function(key){
+    "_": function (key){
       // Don't know where the last argument comes from...
       let slice = Array.prototype.slice.call(arguments, 1, -1);
       if (slice.length === 2 && typeof(slice[1]) === "object") {
@@ -33,30 +33,30 @@ ReactionEmailFromTemplate = function (template, lng, data, fallbackLng) {
         slice = slice[1];
       }
       const options = {
-        postProcess: 'sprintf',
+        postProcess: "sprintf",
         sprintf: slice,
         lng: lng,
         fallbackLng: fallbackLng
       };
       return Spacebars.SafeString(i18next.t(key, options));
-     }
+    }
   });
 
   return SSR.render(template, data);
 };
 
-checkPackageIsEnabled = function() {
-    const enabled = ReactionCore.Collections.Packages.findOne({
-       shopId: ReactionCore.getShopId(),
-       name: PKG_NAME,
-       enabled: true});
-    if (!enabled){
-      ReactionCore.Log.info("No email templates available. " +
-        "Unable to send notification emails. " +
-        "Enable email notifications in admin dashboard.");
-      throw new Meteor.Error(403, "Unable to send invitation email.");
-    }
-}
+checkPackageIsEnabled = function () {
+  const enabled = ReactionCore.Collections.Packages.findOne({
+    shopId: ReactionCore.getShopId(),
+    name: PKG_NAME,
+    enabled: true});
+  if (!enabled){
+    ReactionCore.Log.info("No email templates available. " +
+      "Unable to send notification emails. " +
+      "Enable email notifications in admin dashboard.");
+    throw new Meteor.Error(403, "Unable to send invitation email.");
+  }
+};
 
 if (ReactionCore && ReactionCore.Hooks) {
   /**
@@ -219,7 +219,7 @@ if (ReactionCore && ReactionCore.Hooks) {
              currentUserName: currentUserName,
              invitedUserName: name,
              url: Meteor.absoluteUrl()
-           }
+          }
         );
         try {
           return Email.send({
@@ -251,7 +251,7 @@ if (ReactionCore && ReactionCore.Hooks) {
     check(userId, String);
     checkPackageIsEnabled();
 
-    //this.unblock();
+    // this.unblock();
 
     const user = ReactionCore.Collections.Accounts.findOne(userId);
     const shop = ReactionCore.Collections.Shops.findOne(shopId);

@@ -83,7 +83,7 @@ ReactionCore.Schemas.Layout = new SimpleSchema({
   emailTemplates: {
     type: [String],
     optional: true
-  } ,
+  },
   workflow: {
     type: String,
     optional: true
