@@ -1,4 +1,4 @@
-import i18next from "i18next";
+import { i18next } from "/client/modules/i18n";
 import { Reaction } from "/client/modules/core";
 import { Media, Packages, Shops } from "/lib/collections";
 

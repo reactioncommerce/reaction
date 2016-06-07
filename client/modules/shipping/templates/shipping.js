@@ -1,6 +1,6 @@
 import { Reaction } from "/client/modules/core";
 import { Packages, Shipping } from "/lib/collections";
-import i18next from "i18next";
+import { i18next } from "/client/modules/i18n";
 
 /*
  * Template shipping Helpers

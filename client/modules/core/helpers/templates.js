@@ -1,4 +1,4 @@
-import i18next from "i18next";
+import { i18next } from "/client/modules/i18n";
 import { Reaction } from "../";
 import * as Collections from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";

@@ -1,4 +1,4 @@
-import i18next from "i18next";
+import { i18next } from "/client/modules/i18n";
 import Drop from "tether-drop";
 import { Reaction } from "/client/modules/core";
 import { ReactionRouter } from "/client/modules/router";

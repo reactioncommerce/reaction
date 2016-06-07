@@ -1,7 +1,7 @@
 import { FlowRouter as ReactionRouter } from "meteor/kadira:flow-router-ssr";
 import { AnalyticsEvents, Packages } from "/lib/collections";
 import { Reaction } from "/client/modules/core";
-import i18next from "i18next";
+import { i18next } from "/client/modules/i18n";
 
 // Create a queue, but don't obliterate an existing one!
 analytics = window.analytics = window.analytics || [];
