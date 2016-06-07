@@ -7,7 +7,7 @@ meteor add reactioncommerce:reaction-email-templates
 
 Provides functionality to load local default email templates, or optionally load from the `Templates` collection.
 
-Typical use of the exported `ReactionEmailTemplate`:
+Typical use of ReactionEmailFromTemplate :
 
 ```js
 const html = ReactionEmailFromTemplate(
@@ -29,7 +29,7 @@ try {
     subject: `You have been invited to join ${shop.name}`,
     html: html
   });
-} catch (_error) {
+} catch (error) {
   throw new Meteor.Error(403, "Unable to send invitation email.");
 }
 ```

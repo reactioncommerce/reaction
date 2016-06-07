@@ -59,6 +59,12 @@ checkPackageIsEnabled = function() {
 }
 
 if (ReactionCore && ReactionCore.Hooks) {
+  /**
+   * orders/sendNotification
+   * send cusstomers an confirmation when an order arrives
+   * @param {String} order - order
+   * @returns {Boolean} True, if email was sent successfully
+   */
   ReactionCore.Hooks.Events.add("orders/sendNotification", (order) => {
     check(order, Object);
     checkPackageIsEnabled();
