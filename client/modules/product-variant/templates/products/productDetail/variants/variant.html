@@ -7,12 +7,6 @@
 
       <div class="actions">
         <span class="variant-price">{{formatPrice displayPrice}}</span>
-
-        {{#if hasPermission "createProduct"}}
-          <div class="variant-edit hidden-xs" title="{{i18n 'productDetailEdit.editOption' 'Edit Option'}}">
-              <i class="fa fa-pencil fa-lg" data-id="{{_id}}"></i>
-          </div>
-        {{/if}}
       </div>
 
       <div class="alerts">
@@ -24,6 +18,13 @@
             <span class="variant-qty-sold-out badge badge-info">Backorder</span>
             {{/if}}
           {{/if}}
+        {{/if}}
+
+
+        {{#if hasPermission "createProduct"}}
+          <button class="variant-edit hidden-xs" title="{{i18n 'productDetailEdit.editOption' 'Edit Option'}}">
+            <i class="fa fa-pencil fa-lg" data-id="{{_id}}"></i>
+          </button>
         {{/if}}
       </div>
     </div>

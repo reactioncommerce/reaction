@@ -43,7 +43,29 @@
 }
 
 .variant-detail .alerts {
+  display: flex;
   position: absolute;
   .right(-10px);
   top: -10px;
+}
+
+.variant-detail .badge {
+  display: flex;
+  align-items: center;
+  border-radius: 50px;
+  margin-left: 5px;
+}
+
+.variant-detail .alerts button {
+  border: none;
+  font-size: 10px;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50px;
+  width: 24px;
+  height: 24px;
+  background-color: @black20;
+  margin-left: 5px;
 }
