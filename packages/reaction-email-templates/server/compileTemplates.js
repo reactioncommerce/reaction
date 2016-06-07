@@ -26,19 +26,19 @@ function getSource(templateId) {
 
 if (ReactionCore && ReactionCore.Hooks) {
   ReactionCore.Hooks.Events.add("afterCoreInit", () => {
-    _.each(ReactionRegistry.Packages, (config, pkgName) => {
+    _.each(ReactionRegistry.Packages, (config) => {
       if (config.registry) {
         for (let item of config.registry) {
           // Check container element (section `registry`) with emailTemplate
           // Must not have a route field. Must have a template and container field.
           if (!item.route && item.template &&
-               item.container && item.emailTemplates &&
-               item.emailTemplates.length > 0) {
-             for (const templateId of item.emailTemplates) {
-               ReactionCore.Log.debug("compile template: " + templateId);
-               const source = getSource(templateId);
-               SSR.compileTemplate(templateId, source);
-             }
+              item.container && item.emailTemplates &&
+              item.emailTemplates.length > 0) {
+            for (const templateId of item.emailTemplates) {
+              ReactionCore.Log.debug("compile template: " + templateId);
+              const source = getSource(templateId);
+              SSR.compileTemplate(templateId, source);
+            }
           }
         }
       }

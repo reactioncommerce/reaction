@@ -13,11 +13,12 @@ ReactionEmailFromTemplate = function (template, lng, data, fallbackLng) {
   check(data, Match.Optional(Object));
   check(fallbackLng, Match.Optional(String));
 
+  let fallbackLngs;
   if (typeof(fallbackLng) === "undefined") {
-    fallbackLng = "en";
+    fallbackLngs = "en";
   } else if (fallbackLng !== "en") {
     // also add english as second fallback..
-    fallbackLng = [fallbackLng, "en"];
+    fallbackLngs = [fallbackLng, "en"];
   }
 
   if (!Template[template]) {
@@ -25,7 +26,7 @@ ReactionEmailFromTemplate = function (template, lng, data, fallbackLng) {
       `Did you register it in the approriate workflow step (register.js)?`);
   }
   Template[template].helpers({
-    "_": function (key){
+    _: function (key) {
       // Don't know where the last argument comes from...
       let slice = Array.prototype.slice.call(arguments, 1, -1);
       if (slice.length === 2 && typeof(slice[1]) === "object") {
@@ -36,7 +37,7 @@ ReactionEmailFromTemplate = function (template, lng, data, fallbackLng) {
         postProcess: "sprintf",
         sprintf: slice,
         lng: lng,
-        fallbackLng: fallbackLng
+        fallbackLng: fallbackLngs
       };
       return Spacebars.SafeString(i18next.t(key, options));
     }
@@ -50,7 +51,7 @@ checkPackageIsEnabled = function () {
     shopId: ReactionCore.getShopId(),
     name: PKG_NAME,
     enabled: true});
-  if (!enabled){
+  if (!enabled) {
     ReactionCore.Log.info("No email templates available. " +
       "Unable to send notification emails. " +
       "Enable email notifications in admin dashboard.");
@@ -214,11 +215,11 @@ if (ReactionCore && ReactionCore.Hooks) {
           "accounts/inviteShopMember",
           profile.language,
           {
-             homepage: Meteor.absoluteUrl(),
-             shop: shop,
-             currentUserName: currentUserName,
-             invitedUserName: name,
-             url: Meteor.absoluteUrl()
+            homepage: Meteor.absoluteUrl(),
+            shop: shop,
+            currentUserName: currentUserName,
+            invitedUserName: name,
+            url: Meteor.absoluteUrl()
           }
         );
         try {

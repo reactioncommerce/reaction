@@ -46,9 +46,9 @@ if (ReactionCore && ReactionCore.Hooks) {
         debug: false,
         defaultNS: "core",
         resources: fetchTranslationResources()
-       }, (err, t) => {
-         if (err) throw new Meteor.Error("No translations resources found.", err);
-         ReactionCore.Log.info("Finishing loading of server side translations.");
-       });
+      }, (err) => {
+        if (err) throw new Meteor.Error("No translations resources found.", err);
+        ReactionCore.Log.info("Finishing loading of server side translations.");
+      });
   });
 }
