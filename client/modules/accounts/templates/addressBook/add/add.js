@@ -1,4 +1,4 @@
-import i18next from "i18next";
+import { i18next } from "/client/modules/i18n";
 import * as Collections from "/lib/collections";
 
 Template.addressBookAdd.helpers({
