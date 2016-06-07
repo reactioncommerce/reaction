@@ -9,12 +9,21 @@
         </h3>
       </div>
       <div class="nav-dashboard-controls">
-        {{#if isVisible}}
-          <a href="#" class="toggle-product-isVisible-link" data-i18n="productDetail.makeInvisible">Make invisible</a>
-        {{/if}}
-        {{#if hasAdminAccess}}
-          <a href="#" class="delete-product-link" data-i18n="app.delete">Delete</a>
-        {{/if}}
+        <ul class="nav nav-pills">
+          {{#if isVisible}}
+            <li>
+              <a href="#" class="toggle-product-isVisible-link" data-i18n="productDetail.makeInvisible">
+                Make invisible
+              </a>
+            </li>
+          {{/if}}
+
+          {{#if hasAdminAccess}}
+            <li>
+              <a href="#" class="delete-product-link" data-i18n="app.delete">Delete</a>
+            </li>
+          {{/if}}
+        </ul>
       </div>
     </div>
   {{/if}}
