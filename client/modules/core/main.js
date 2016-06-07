@@ -29,7 +29,9 @@ export default {
           this.shopId = shop._id;
           this.shopName = shop.name;
           // initialize local client Countries collection
-          createCountryCollection(shop.locales.countries);
+          if (!Countries.findOne()) {
+            createCountryCollection(shop.locales.countries);
+          }
 
           const locale = Session.get("locale") || {};
 
