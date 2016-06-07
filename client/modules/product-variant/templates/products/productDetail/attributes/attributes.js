@@ -29,6 +29,7 @@ Template.metaComponent.helpers({
 
 Template.metaComponent.events({
   "change input": function (event) {
+    const productId = ReactionProduct.selectedProductId();
     const updateMeta = {
       key: $(event.currentTarget).parent().children(
         ".metafield-key-input").val(),
@@ -36,7 +37,6 @@ Template.metaComponent.events({
         ".metafield-value-input").val()
     };
     if (this.key) {
-      const productId = ReactionProduct.selectedProductId();
       Meteor.call("products/updateMetaFields", productId, updateMeta,
         this);
       $(event.currentTarget).animate({
@@ -52,7 +52,7 @@ Template.metaComponent.events({
         "").focus();
     }
     if (updateMeta.key && updateMeta.value) {
-      Meteor.call("products/updateMetaFields", this._id, updateMeta);
+      Meteor.call("products/updateMetaFields", productId, updateMeta);
       Tracker.flush();
       $(event.currentTarget).parent().children(".metafield-key-input").val(
         "").focus();
