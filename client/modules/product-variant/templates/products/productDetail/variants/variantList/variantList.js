@@ -1,9 +1,21 @@
 import { ReactionProduct } from "/lib/api";
+import { Media } from "/lib/collections";
 
 /**
  * variantList helpers
  */
 Template.variantList.helpers({
+  media: function () {
+    const media = Media.findOne({
+      "metadata.variantId": this._id
+    }, {
+      sort: {
+        "metadata.priority": 1
+      }
+    });
+
+    return media instanceof FS.File ? media : false;
+  },
   variants: function () {
     let inventoryTotal = 0;
     const variants = ReactionProduct.getTopVariants();
@@ -48,7 +60,7 @@ Template.variantList.helpers({
     if (variants.length > 0) {
       const current = ReactionProduct.selectedVariant();
 
-      if (! current) {
+      if (!current) {
         return [];
       }
 
@@ -75,6 +87,13 @@ Template.variantList.helpers({
       }
 
       return childVariants;
+    }
+  },
+  selectedVariant() {
+    const _id = this._id;
+    const current = ReactionProduct.selectedVariant();
+    if (typeof current === "object" && (_id === current._id || ~current.ancestors.indexOf(this._id))) {
+      return "variant-detail-selected";
     }
   }
 });

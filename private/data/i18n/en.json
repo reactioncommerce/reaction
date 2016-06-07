@@ -92,15 +92,10 @@
           "stripeSettingsLabel": "Stripe Settings",
           "inventorySettingsLabel": "Inventory Settings",
           "analyticsSettingsLabel": "Analytics Settings",
-          "segmentNotConfigured": "Segment Write Key not configured.",
-          "googleAnalyticsNotConfigured": "Google Analytics Property not configured.",
-          "mixpanelNotConfigured": "Mixpanel not configured.",
           "paypalSettingsLabel": "PayPal Settings",
           "genericPaymentSettingsLabel": "Generic Payment Settings",
           "reactionConnectLabel": "Reaction Connect",
-          "examplePaymentSettingsLabel": "Example Payment",
-          "analyticsSettingsSaved": "Analytics settings saved.",
-          "analyticsSettingsFailed": "Analytics settings update failed:"
+          "examplePaymentSettingsLabel": "Example Payment"
         },
         "userAccountDropdown": {
           "profileLabel": "Profile"
@@ -243,6 +238,9 @@
         "twitterMsg": "Twitter Message",
         "pinterestMsg": "Pinterest Message",
         "googleplusMsg": "Google+ Message",
+        "editVariant": "Edit Variant",
+        "variantOptions": "Variant Options",
+        "variantDetails": "Variant Details",
         "duplicateVariant": "Duplicate",
         "addVariantOption": "Add Option",
         "removeVariant": "Remove",

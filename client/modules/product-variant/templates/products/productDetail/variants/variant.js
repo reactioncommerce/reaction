@@ -1,6 +1,8 @@
 import { $ } from "meteor/jquery";
 import { Reaction } from "/client/modules/core";
 import { ReactionProduct } from "/lib/api";
+import i18next from "i18next";
+
 
 // load modules
 require("jquery-ui/sortable");
@@ -41,16 +43,25 @@ Template.variant.helpers({
  * variant events
  */
 
+function showVariant(variant) {
+  ReactionProduct.setCurrentVariant(variant._id);
+  Session.set("variant-form-" + variant._id, true);
+
+  if (Reaction.hasPermission("createProduct")) {
+    Reaction.showActionView({
+      label: i18next.t("productDetailEdit.editVariant"),
+      template: "variantForm",
+      data: variant
+    });
+  }
+}
+
 Template.variant.events({
   "click .variant-edit": function () {
-    ReactionProduct.setCurrentVariant(this._id);
-    return Reaction.toggleSession("variant-form-" + this._id);
+    showVariant(this);
   },
   "dblclick .variant-detail": function () {
-    if (Reaction.hasPermission("createProduct")) {
-      ReactionProduct.setCurrentVariant(this._id);
-      return Reaction.toggleSession("variant-form-" + this._id);
-    }
+    showVariant(this);
   },
   "click .variant-detail > *": function (event) {
     event.preventDefault();

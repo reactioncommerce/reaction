@@ -1,20 +1,31 @@
 import { ReactionProduct } from "/lib/api";
 
 /**
- * productMetaFieldForm events
+ * metaComponent helpers
  */
 
-Template.productMetaFieldForm.events({
-  "click .metafield-remove": function () {
-    let productId;
-    productId = ReactionProduct.selectedProductId();
-    Meteor.call("products/removeMetaFields", productId, this);
+Template.metaComponent.helpers({
+  buttonProps() {
+    const currentData = Template.currentData();
+
+    return {
+      icon() {
+        if (currentData.createNew) {
+          return "plus";
+        }
+
+        return "times-circle";
+      },
+      onClick() {
+        if (!currentData.createNew) {
+          const productId = ReactionProduct.selectedProductId();
+          Meteor.call("products/removeMetaFields", productId, currentData);
+        }
+      }
+    };
   }
 });
 
-/**
- * metaComponent helpers
- */
 
 Template.metaComponent.events({
   "change input": function (event) {
