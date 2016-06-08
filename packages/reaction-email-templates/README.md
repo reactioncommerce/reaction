@@ -6,6 +6,7 @@ meteor add reactioncommerce:reaction-email-templates
 ```
 
 Provides functionality to load local default email templates, or optionally load from the `Templates` collection.
+Handles email notifications, e.g. renders emails and send them via SMTP.
 
 Typical use of ReactionEmailFromTemplate :
 
