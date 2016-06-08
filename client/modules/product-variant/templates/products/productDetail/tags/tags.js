@@ -1,4 +1,3 @@
-import { slugify } from "transliteration";
 import { $ } from "meteor/jquery";
 import { ReactionProduct } from "/lib/api";
 import { ReactionRouter } from "/client/modules/router";

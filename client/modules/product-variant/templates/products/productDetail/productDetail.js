@@ -1,5 +1,4 @@
 import { i18next } from "/client/modules/i18n";
-import { slugify } from "transliteration";
 import { ReactiveDict } from "meteor/reactive-dict";
 import { _ } from "meteor/underscore";
 import { $ } from "meteor/jquery";

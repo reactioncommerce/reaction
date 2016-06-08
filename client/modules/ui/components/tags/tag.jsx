@@ -1,6 +1,5 @@
 // import { i18next } from "/client/modules/i18n";
 // import React from "react";
-// import { slugify } from "transliteration";
 // import { PropTypes } from "/lib/api";
 // import { Tags } from "/lib/collections";
 //

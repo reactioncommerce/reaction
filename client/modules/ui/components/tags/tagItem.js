@@ -1,4 +1,3 @@
-import { slugify } from "transliteration";
 import $ from "jquery";
 import { Tags } from "/lib/collections";
 import classnames from "classnames";
