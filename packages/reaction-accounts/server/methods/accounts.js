@@ -471,6 +471,11 @@ Meteor.methods({
     check(email, String);
     check(name, String);
     this.unblock();
+
+    if (!ReactionCore.hasPermission("reaction-accounts", Meteor.userId(), shopId)) {
+      throw new Meteor.Error(403, "Access denied");
+    }
+
     ReactionCore.Hooks.Events.run(
       "accounts/inviteShopMember",
       { shopId: shopId,

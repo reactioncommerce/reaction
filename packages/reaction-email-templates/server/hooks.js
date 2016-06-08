@@ -135,13 +135,8 @@ if (ReactionCore && ReactionCore.Hooks) {
     let token;
     let user;
     let userId;
-    // this.unblock();
 
     shop = ReactionCore.Collections.Shops.findOne(shopId);
-
-    if (!ReactionCore.hasPermission("reaction-accounts", Meteor.userId(), shopId)) {
-      throw new Meteor.Error(403, "Access denied");
-    }
 
     ReactionCore.configureMailUrl();
     // don't send account emails unless email server configured
