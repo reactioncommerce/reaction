@@ -1,5 +1,7 @@
 import faker from "faker";
+import { Factory } from "meteor/dburles:factory";
 import ReactionFaker from "./reaction-faker";
+import { Cart } from "/lib/collections";
 
 /**
 * Cart Factory

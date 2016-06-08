@@ -1,4 +1,5 @@
-import { Shops } from "/lib/collections";
+import { Factory } from "meteor/dburles:factory";
+import { Products, Shops } from "/lib/collections";
 
 /**
  * ReactionFaker

@@ -1,5 +1,6 @@
 import faker from "faker";
 import ReactionFaker from "./reaction-faker";
+import { Orders, Products } from "/lib/collections";
 
 /**
  * order factory

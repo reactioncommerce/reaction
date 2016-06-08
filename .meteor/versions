@@ -54,6 +54,7 @@ cfs:worker@0.1.4
 check@1.2.1
 chuangbo:cookie@1.1.0
 coffeescript@1.0.17
+dburles:factory@1.0.0
 ddp@1.2.5
 ddp-client@1.2.7
 ddp-common@1.2.5

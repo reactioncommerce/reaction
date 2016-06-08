@@ -1,3 +1,5 @@
+import ReactionFaker from "./reaction-faker";
+
 /**
  * User Factory
  * @summary define user Factory
