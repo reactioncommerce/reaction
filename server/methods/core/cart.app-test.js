@@ -1,4 +1,13 @@
 import * as Collections from "/lib/collections";
+import { createJ$ } from "@sanjo/jasmine-expect";
+import { createEnv as createExpectEnv }  from "@sanjo/jasmine-expect";
+import { createEnv as createSpyEnv } from "@sanjo/jasmine-spy";
+
+const j$ = createJ$();
+const expectEnv = createExpectEnv(j$);
+const spyEnv = createSpyEnv(j$);
+const spyOn = spyEnv.spyOn;
+const expect = expectEnv.expect;
 
 /* eslint dot-notation: 0 */
 describe("cart methods", function () {
@@ -29,12 +38,12 @@ describe("cart methods", function () {
     );
   }
 
-  afterAll(() => {
+  after(() => {
     Meteor.users.remove({});
   });
 
   describe("cart/mergeCart", () => {
-    beforeAll(() => {
+    before(() => {
       // We are mocking inventory hooks, because we don't need them here, but
       // if you want to do a real stress test, you could try to comment out
       // this two lines and uncomment the following spyOn line. This is needed
@@ -126,14 +135,6 @@ describe("cart methods", function () {
         return done();
       }
     );
-
-    // it(
-    //   "should",
-    //   done => {
-    //
-    //     return done();
-    //   }
-    // );
   });
 
   describe("cart/createCart", function () {
@@ -239,14 +240,6 @@ describe("cart methods", function () {
         return done();
       }
     );
-
-    // it(
-    //   "should ",
-    //   done => {
-    //
-    //     return done();
-    //   }
-    // );
   });
 
   describe("cart/removeFromCart", function () {
@@ -507,13 +500,5 @@ describe("cart methods", function () {
         return done();
       }
     );
-
-    // it(
-    //  "",
-    //  done => {
-    //    let account = Factory.create("account");
-    //    return done();
-    //  }
-    // );
   });
 });
