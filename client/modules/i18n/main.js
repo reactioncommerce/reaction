@@ -44,14 +44,15 @@ function getLabelsFor(schema, name) {
   let labels = {};
   // loop through all the rendered form fields and generate i18n keys
   for (let fieldName of schema._schemaKeys) {
-    let i18nKey = name.charAt(0).toLowerCase() + name.slice(1) + "." +
+    const i18nKey = name.charAt(0).toLowerCase() + name.slice(1) + "." +
       fieldName
       .split(".$").join("");
     // translate autoform label
-    let translation = i18next.t(i18nKey);
-    if (new RegExp("string").test(translation) !== true && translation !==
-      i18nKey) {
-      if (translation) labels[fieldName] = translation;
+    const t = i18next.t(i18nKey);
+    if (new RegExp("string").test(t) !== true && t !== i18nKey) {
+      if (t) {
+        labels[fieldName] = t;
+      }
     }
   }
   return labels;
@@ -71,11 +72,10 @@ function getMessagesFor() {
   let messages = {};
   for (let message in SimpleSchema._globalMessages) {
     if ({}.hasOwnProperty.call(SimpleSchema._globalMessages, message)) {
-      let i18nKey = `globalMessages.${message}`;
-      let translation = i18next.t(i18nKey);
-      if (new RegExp("string").test(translation) !== true && translation !==
-        i18nKey) {
-        messages[message] = translation;
+      const i18nKey = `globalMessages.${message}`;
+      const t = i18next.t(i18nKey);
+      if (new RegExp("string").test(t) !== true && t !== i18nKey) {
+        messages[message] = t;
       }
     }
   }
@@ -132,12 +132,12 @@ Meteor.startup(() => {
 Tracker.autorun(function () {
   return Meteor.subscribe("Translations", Session.get("language"), () => {
     // fetch reaction translations
-    const translations = Translations
-      .find({}, {
-        fields: {
-          _id: 0
-        }
-      }).fetch();
+    const translations = Translations.find({}, {
+      fields: {
+        _id: 0
+      }
+    }).fetch();
+
     // map reduce translations into i18next formatting
     const resources = translations.reduce(function (x, y) {
       const ns = Object.keys(y.translation)[0];
@@ -197,6 +197,18 @@ Tracker.autorun(function () {
   });
 });
 
+//
+// init i18nextJquery
+//
+i18nextJquery.init(i18next, $, {
+  tName: "t", // --> appends $.t = i18next.t
+  i18nName: "i18n", // --> appends $.i18n = i18next
+  handleName: "localize", // --> appends $(selector).localize(opts);
+  selectorAttr: "data-i18n", // selector for translating elements
+  targetAttr: "data-i18n-target", // element attribute to grab target element to translate (if diffrent then itself)
+  parseDefaultValueFromContent: true // parses default values from content ele.val or ele.text
+});
+
 // global onRendered event finds and replaces
 // data-i18n attributes in html/template source.
 // uses methods from i18nextJquery
@@ -209,14 +221,4 @@ Template.onRendered(function () {
   })(this));
 });
 
-//
-// init i18nextJquery
-//
-i18nextJquery.init(i18next, $, {
-  tName: "t", // --> appends $.t = i18next.t
-  i18nName: "i18n", // --> appends $.i18n = i18next
-  handleName: "localize", // --> appends $(selector).localize(opts);
-  selectorAttr: "data-i18n", // selector for translating elements
-  targetAttr: "data-i18n-target", // element attribute to grab target element to translate (if diffrent then itself)
-  parseDefaultValueFromContent: true // parses default values from content ele.val or ele.text
-});
+export default i18next;

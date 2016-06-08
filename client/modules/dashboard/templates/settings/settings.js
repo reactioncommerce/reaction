@@ -11,7 +11,7 @@ Template.settingsHeader.helpers({
    * Data pased to action view
    * @return {Object} Registry entry for item
    */
-  registry: function () {
+  registry() {
     return Reaction.getActionView() || {};
   },
 

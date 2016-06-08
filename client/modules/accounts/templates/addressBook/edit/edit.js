@@ -1,4 +1,4 @@
-import i18next from "i18next";
+import { i18next } from "/client/modules/i18n";
 
 /*
  * update address book (cart) form handling
