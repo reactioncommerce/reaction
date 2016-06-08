@@ -1,17 +1,38 @@
 import faker from "faker";
-import ReactionFaker from "./reaction-faker";
 import { Shops } from "/lib/collections";
 
-export default function () {
-  /**
-   * Shop Factory
-   * @summary define shop Factory
-   */
+export function getShop() {
+  createShopFactory();
+  const existingShop = Shops.findOne();
+  return existingShop || Factory.create("shop");
+}
+
+fakerAddress = function (options = {}) {
+  const defaults = {
+    fullName: faker.name.findName(),
+    address1: faker.address.streetAddress(),
+    address2: faker.address.secondaryAddress(),
+    city: faker.address.city(),
+    company: faker.company.companyName(),
+    phone: faker.phone.phoneNumber(),
+    region: faker.address.stateAbbr(),
+    postal: faker.address.zipCode(),
+    country: faker.address.countryCode(),
+    isCommercial: faker.random.boolean(),
+    isShippingDefault: faker.random.boolean(),
+    isBillingDefault: faker.random.boolean(),
+    metafields: []
+  };
+  return _.defaults(options, defaults);
+};
+
+
+createShopFactory = function () {
   Factory.define("shop", Shops, {
     name: faker.internet.domainName(),
     description: faker.company.catchPhrase(),
     keywords: faker.company.bsAdjective(),
-    addressBook: [ReactionFaker.address() ],
+    addressBook: [ fakerAddress() ],
     domains: ["localhost"],
     emails: [
       {
@@ -95,4 +116,14 @@ export default function () {
     createdAt: new Date,
     updatedAt: new Date()
   });
+
+};
+
+
+export default function () {
+  /**
+   * Shop Factory
+   * @summary define shop Factory
+   */
+  createShopFactory();
 }

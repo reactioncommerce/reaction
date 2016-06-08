@@ -58,7 +58,6 @@ cfs:gridfs
 cfs:standard-packages
 cfs:storage-adapter
 cfs:ui
-dburles:factory
 jparker:gravatar
 juliancwirko:s-alert
 juliancwirko:s-alert-stackslide
@@ -76,9 +75,9 @@ tmeasday:publish-counts
 vsivsi:job-collection
 
 # Testing packages
-dispatch:mocha-browser
-practicalmeteor:chai
+dburles:factory
 dispatch:mocha
+practicalmeteor:chai
 
 # Reaction Commerce Packages
 reactioncommerce:core-theme

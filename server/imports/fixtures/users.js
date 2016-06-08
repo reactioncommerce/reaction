@@ -1,4 +1,6 @@
-import ReactionFaker from "./reaction-faker";
+import faker from "faker";
+import "./shops";
+import { getShop } from "./shops";
 
 /**
  * User Factory
@@ -49,7 +51,7 @@ const user = {
 
 const registered = {
   roles: {
-    [ReactionFaker.shops.getShop()._id]: [
+    [getShop()._id]: [
       "account/profile",
       "guest",
       "product",
@@ -76,7 +78,7 @@ const registered = {
 
 const anonymous = {
   roles: {
-    [ReactionFaker.shops.getShop()._id]: [
+    [getShop()._id]: [
       "guest",
       "anonymous",
       "product",
@@ -90,7 +92,7 @@ const anonymous = {
 
 export default function () {
   Factory.define("user", Meteor.users, user);
-
+  console.log("executing user factory definifion");
   Factory.define("registeredUser", Meteor.users,
     Object.assign({}, user, registered));
 
