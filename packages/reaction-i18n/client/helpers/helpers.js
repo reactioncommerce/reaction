@@ -128,7 +128,21 @@ function _formatPrice(price, originalPrice, actualPrice, currentPrice, currency,
   if (typeof currency !== "object") {
     return false;
   }
+
+  let adjustedPrice = actualPrice;
   let formattedPrice;
+
+  // Precision is mis-used in accounting js. Scale is the propery term for number
+  // of decimal places. Let's adjust it here so accounting.js does not break.
+  if (currency.scale !== undefined) {
+    currency.precision = currency.scale;
+  }
+
+  // If there are no decimal places, in the case of the Japanese Yen, we adjust it here.
+  if (currency.scale === 0) {
+    adjustedPrice = actualPrice * 100;
+  }
+
   // @param {string} currency.where: If it presents - in situation then two
   // prices in string, currency sign will be placed just outside the right price.
   // For now it should be manually added to fixtures shop data.
@@ -137,10 +151,10 @@ function _formatPrice(price, originalPrice, actualPrice, currentPrice, currency,
     let modifiedCurrency = Object.assign({}, currency, {
       symbol: ""
     });
-    formattedPrice = accounting.formatMoney(actualPrice, modifiedCurrency);
+    formattedPrice = accounting.formatMoney(adjustedPrice, modifiedCurrency);
   } else {
     // accounting api: http://openexchangerates.github.io/accounting.js/
-    formattedPrice = accounting.formatMoney(actualPrice, currency);
+    formattedPrice = accounting.formatMoney(adjustedPrice, currency);
   }
 
   return price === 0 ? currentPrice.replace(originalPrice, formattedPrice) : price.replace(originalPrice, formattedPrice);

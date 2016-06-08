@@ -6,9 +6,8 @@ Package.describe({
 });
 
 Npm.depends({
-  "bunyan": "1.8.0",
-  "bunyan-format": "0.2.1",
-  "bunyan-loggly": "0.0.5"
+  "bunyan": "1.8.1",
+  "bunyan-format": "0.2.1"
 });
 
 Package.onUse(function (api) {

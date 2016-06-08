@@ -2,13 +2,14 @@
 
 DIRNAME=$(cd `dirname $0` && pwd)
 
-read -r -p "Resetting Database: also delete build files? [y/N]" response
+read -r -p "Resetting Database!! Also delete modules? [y/N]" response
 if [[ $response =~ ^([yY][eE][sS]|[yY])$ ]]
 then
+  rm .meteor/versions 2>/dev/null
+  find . -name bower -exec rm -rf {} \;  2>/dev/null
+  find . -name node_modules -exec rm -rf {} \;  2>/dev/null
+  meteor npm install
   meteor reset "$@"
-  rm .meteor/versions 2> /dev/null
-  find . -name bower -exec rm -rf {} \;
-  find . -name node_modules -exec rm -rf {} \;
 else
   meteor reset "$@"
 fi

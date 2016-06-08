@@ -369,6 +369,7 @@ Meteor.methods({
           productId: productId,
           quantity: quantity,
           variants: variant,
+          title: product.title,
           type: product.type
         }
       }

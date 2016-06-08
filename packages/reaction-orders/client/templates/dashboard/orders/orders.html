@@ -2,7 +2,7 @@
   {{#if hasPermission 'orders'}}
     <div class="container-fluid-sm">
       {{#each order in orders}}
-        {{> ordersListItem order}}
+        {{> ordersListItem (itemProps order)}}
       {{else}}
 
         <div class="empty-view-message">
@@ -27,7 +27,10 @@
           data-event-action="toggleFilter"
           data-filter="{{name}}">
             <span class="count">{{count}}</span>
-            <span class="label" data-i18n="{{i18nKeyLabel}}">{{label}}</span>
+            <span class="label" data-i18n="{{i18nKeyLabel}}">
+              {{!-- wrapping label below in a span prevents a console error --}}
+              <span>{{label}}</span>
+            </span>
         </a>
       </li>
     {{/each}}
@@ -35,27 +38,27 @@
 </template>
 
 <template name="ordersListItem">
-  <div class="rui card order {{activeClassname _id}}" data-event-action="selectOrder">
+  <div class="rui card order {{activeClassname order._id}}" data-event-action="selectOrder">
     <div class="content">
       <div class="order-details">
         <div class="order-detail-item address">
-          {{> orderDetail}}
+          {{> orderDetail order}}
         </div>
         <div class="order-detail-item status">
-          {{> orderStatusDetail}}
+          {{> orderStatusDetail order}}
         </div>
         <div class="order-detail-item summary">
-          {{> ordersListSummary}}
+          {{> ordersListSummary order=order currencyFormat=currencyFormat}}
         </div>
       </div>
-    <div class="order-panel-items">
-      {{> ordersListItems}}
-    </div>
 
+      <div class="order-panel-items">
+        {{> ordersListItems order=order currencyFormat=currencyFormat}}
+      </div>
     </div>
 
     <div class="controls">
-      {{#if orderIsNew .}}
+      {{#if orderIsNew order}}
         <button class="btn btn-success" data-event-action="startProcessingOrder">Start</button>
       {{else}}
         <button><i class="fa fa-angle-right fa-2x"></i></button>
