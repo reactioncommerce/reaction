@@ -1,4 +1,5 @@
 import faker from "faker";
+import { Factory } from "meteor/dburles:factory";
 import ReactionFaker from "./reaction-faker";
 
 /**

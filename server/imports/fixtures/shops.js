@@ -1,5 +1,6 @@
 import faker from "faker";
 import ReactionFaker from "./reaction-faker";
+import { Shops } from "/lib/collections";
 
 export default function () {
   /**
