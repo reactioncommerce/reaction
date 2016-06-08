@@ -17,14 +17,19 @@
           <span data-i18n="productDetailEdit.variantDetails">Variant Details</span>
         </div>
         <div class="panel-controls">
+          {{> button
+            icon="files-o"
+            className="btn btn-default btn-clone-variant"
+            tooltip="Duplicate"
+            i18nTooltip="productDetailEdit.duplicateVariant"
+          }}
 
-          <button class="btn btn-default btn-clone-variant" data-toggle="tooltip" title="{{i18n 'productDetailEdit.duplicateVariant' 'Duplicate'}}">
-            <i class="fa fa-files-o"></i> {{i18n 'productDetailEdit.duplicateVariant' 'Duplicate'}}
-          </button>
-
-          <button class="btn btn-default btn-remove-variant" data-toggle="tooltip" title="{{i18n 'productDetailEdit.removeVariant' 'Remove'}}">
-            <i class="fa fa-trash-o"></i> {{i18n 'productDetailEdit.removeVariant' 'Remove'}}
-          </button>
+          {{> button
+            icon="trash-o"
+            className="btn btn-default btn-remove-variant"
+            tooltip="Remove"
+            i18nTooltip="productDetailEdit.removeVariant"
+          }}
         </div>
       </div>
       <div class="panel-body">
@@ -122,12 +127,15 @@
           <span data-i18n="productDetailEdit.variantOptions">Variant Options</span>
         </div>
         <div class="panel-controls">
-          <button class="btn btn-default btn-child-variant-form" data-toggle="tooltip" title="{{i18n 'productDetailEdit.addVariantOption' 'Add Option'}}">
-            <i class="fa fa-plus"></i> {{i18n 'productDetailEdit.addVariantOption' 'Add Option'}}
-          </button>
+          {{> button
+            icon="plus"
+            className="btn btn-default btn-child-variant-form"
+            tooltip="Add Option"
+            i18nTooltip="productDetailEdit.addVariantOption"
+          }}
         </div>
       </div>
-      <div class="panel-group">
+      <div class="panel-group panel-group-accordian" role="tablist" aria-multiselectable="true">
         {{#each childVariants}}
           {{>childVariantForm}}
         {{/each}}

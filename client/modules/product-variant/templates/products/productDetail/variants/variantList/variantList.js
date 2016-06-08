@@ -1,4 +1,5 @@
 import { ReactionProduct } from "/lib/api";
+import { ReactionRouter } from "/client/modules/router";
 import { Media } from "/lib/collections";
 
 /**
@@ -110,6 +111,10 @@ Template.variantList.events({
     template.$(".variant-select-option").removeClass("active");
     $(event.target).addClass("active");
     Alerts.removeSeen();
+
+    const selectedProduct = ReactionProduct.selectedProduct();
+    ReactionRouter.go("product", {handle: selectedProduct.handle, variantId: this._id});
+
     return ReactionProduct.setCurrentVariant(this._id);
   }
 });

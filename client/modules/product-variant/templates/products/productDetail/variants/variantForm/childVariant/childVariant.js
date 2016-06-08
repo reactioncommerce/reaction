@@ -1,7 +1,9 @@
 import { Reaction } from "/client/modules/core";
 import { i18next } from "/client/modules/i18n";
 import { ReactionProduct } from "/lib/api";
+import { ReactionRouter } from "/client/modules/router";
 import { Media } from "/lib/collections";
+import { Icon } from "/client/modules/ui/components";
 
 
 /**
@@ -9,6 +11,9 @@ import { Media } from "/lib/collections";
  */
 
 Template.childVariantForm.helpers({
+  Icon() {
+    return Icon;
+  },
   childVariantFormId: function () {
     return "child-variant-form-" + this._id;
   },
@@ -22,6 +27,21 @@ Template.childVariantForm.helpers({
     });
 
     return media;
+  },
+  featuredMedia: function () {
+    const media = Media.findOne({
+      "metadata.variantId": this._id
+    }, {
+      sort: {
+        "metadata.priority": 1
+      }
+    });
+
+    if (media) {
+      return [media];
+    }
+
+    return false;
   },
   handleFileUpload() {
     const ownerId = Meteor.userId();
@@ -42,6 +62,17 @@ Template.childVariantForm.helpers({
         Media.insert(file);
       }
     };
+  },
+  isOpen(variant) {
+    const _id = variant._id;
+    const selectedVariant = ReactionProduct.selectedVariant();
+    const selectedVariantId = ReactionRouter.getParam("variantId") || selectedVariant._id;
+
+    if (_id === selectedVariantId || ~selectedVariant.ancestors.indexOf(_id)) {
+      return "in";
+    }
+
+    return false;
   }
 });
 
@@ -51,6 +82,14 @@ Template.childVariantForm.helpers({
 
 Template.childVariantForm.events({
   "click .child-variant-form :input, click li": function (event, template) {
+    const selectedProduct = ReactionProduct.selectedProduct();
+    const variantId = template.data._id;
+
+    ReactionRouter.go("product", {
+      handle: selectedProduct.handle,
+      variantId: variantId
+    });
+
     return ReactionProduct.setCurrentVariant(template.data._id);
   },
   "change .child-variant-form :input": function (event, template) {

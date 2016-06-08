@@ -1,6 +1,7 @@
 import { $ } from "meteor/jquery";
 import { Reaction } from "/client/modules/core";
 import { ReactionProduct } from "/lib/api";
+import { ReactionRouter } from "/client/modules/router";
 import i18next from "i18next";
 
 
@@ -44,8 +45,10 @@ Template.variant.helpers({
  */
 
 function showVariant(variant) {
+  const selectedProduct = ReactionProduct.selectedProduct()
   ReactionProduct.setCurrentVariant(variant._id);
   Session.set("variant-form-" + variant._id, true);
+  ReactionRouter.go("product", {handle: selectedProduct.handle, variantId: variant._id});
 
   if (Reaction.hasPermission("createProduct")) {
     Reaction.showActionView({
@@ -67,7 +70,12 @@ Template.variant.events({
     event.preventDefault();
     event.stopPropagation();
     Alerts.removeSeen();
-    return ReactionProduct.setCurrentVariant(this._id);
+
+    ReactionProduct.setCurrentVariant(this._id);
+
+    if (Reaction.getActionView()) {
+      showVariant(this);
+    }
   }
 });
 

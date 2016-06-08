@@ -1,8 +1,3 @@
 // export ButtonGroup from "./buttonGroup/buttonGroup";
-import Icon from "./icon/icon";
-import Seperator from "./separator/separator";
-
-export {
-  Icon,
-  Seperator
-};
+export { default as Icon } from "./icon/icon";
+export { default as Seperator } from "./separator/separator";
