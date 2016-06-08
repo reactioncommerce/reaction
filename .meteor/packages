@@ -51,6 +51,7 @@ reactioncommerce:reaction-checkout
 reactioncommerce:reaction-ui
 reactioncommerce:reaction-ui-navbar
 reactioncommerce:reaction-ui-tagnav
+reactioncommerce:reaction-email-templates
 
 reactioncommerce:reaction-logger
 

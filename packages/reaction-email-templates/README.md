@@ -6,23 +6,33 @@ meteor add reactioncommerce:reaction-email-templates
 ```
 
 Provides functionality to load local default email templates, or optionally load from the `Templates` collection.
+Handles email notifications, e.g. renders emails and send them via SMTP.
 
-Typical use of the exported `ReactionEmailTemplate`:
+Typical use of ReactionEmailFromTemplate :
 
 ```js
-SSR.compileTemplate("<template>", ReactionEmailTemplate("<template>"));
+const html = ReactionEmailFromTemplate(
+  "accounts/inviteShopMember",
+  user.profile.language,
+  {
+    homepage: Meteor.absoluteUrl(),
+    shop: shop,
+    currentUserName: currentUserName,
+    invitedUserName: name,
+    url: Accounts.urls.enrollAccount(token)
+  }
+);
+
 try {
   return Email.send({
     to: email,
     from: `${shop.name} <${shop.emails[0].address}>`,
-    subject: `${shop.name} Update`,
-    html: SSR.render("<template>", {
-      homepage: Meteor.absoluteUrl(),
-      shop: shop,
-      order: order,
-      shipment: shipment
-    })
+    subject: `You have been invited to join ${shop.name}`,
+    html: html
   });
+} catch (error) {
+  throw new Meteor.Error(403, "Unable to send invitation email.");
+}
 ```
 
 ## SSR

@@ -31,7 +31,10 @@ Template.coreOrderShippingTracking.events({
 
   "click [data-event-action=resendNotification]": function () {
     let template = Template.instance();
-    Meteor.call("orders/sendNotification", template.order);
+    ReactionCore.Hooks.Events.run(
+      "orders/sendNotification",
+      template.order
+    );
   },
 
   "click [data-event-action=shipmentPacked]": () => {

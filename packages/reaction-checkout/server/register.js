@@ -41,7 +41,8 @@ ReactionCore.registerPackage({
     container: "checkout-steps-main",
     audience: ["guest", "anonymous"],
     priority: 1,
-    position: "1"
+    position: "1",
+    emailTemplates: ["checkout/checkoutLogin"]
   }, {
     template: "checkoutAddressBook",
     label: "Shipping Billing",

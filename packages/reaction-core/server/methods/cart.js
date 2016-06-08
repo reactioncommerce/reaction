@@ -627,8 +627,8 @@ Meteor.methods({
       }
       ReactionCore.Log.info("Transitioned cart " + cartId + " to order " +
         orderId);
-      Meteor.call("orders/sendNotification",
-        ReactionCore.Collections.Orders.findOne(orderId));
+
+      ReactionCore.Hooks.Events.run("orders/sendNotification", order);
 
       return orderId;
     }

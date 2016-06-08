@@ -1,18 +1,20 @@
-ReactionCore.registerPackage({
-  label: "Email Templates",
+const pkg = ReactionCore.registerPackage({
+  label: "Email",
   name: "reaction-email-templates",
   icon: "fa fa-envelope-square",
   autoEnable: true,
   settings: {
-    name: "Email"
+    name: "Send email notifications to customers"
   },
   registry: [{
     provides: "dashboard",
-    template: "emailTemplateDashboard",
     label: "Email",
-    description: "Email templates",
+    description: "Send email notifications to customers",
     icon: "fa fa-envelope-square",
     priority: 4,
-    container: "appearance"
+    container: "core"
   }]
 });
+
+// Make package name global accessible
+PKG_NAME = pkg.name;

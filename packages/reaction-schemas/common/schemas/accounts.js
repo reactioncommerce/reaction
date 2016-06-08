@@ -14,6 +14,11 @@ ReactionCore.Schemas.Profile = new SimpleSchema({
   picture: {
     type: String,
     optional: true
+  },
+  language: {
+    type: String,
+    optional: true,
+    defaultValue: "en"
   }
 });
 
