@@ -27,6 +27,11 @@
 
           <span class="title">{{optionTitle}}</span>
         </button>
+        {{#if hasPermission "createProduct"}}
+          <button class="variant-edit hidden-xs" title="{{i18n 'productDetailEdit.editOption' 'Edit Option'}}">
+            <i class="fa fa-pencil fa-lg" data-id="{{_id}}"></i>
+          </button>
+        {{/if}}
       </div>
       {{/each}}
     </div>

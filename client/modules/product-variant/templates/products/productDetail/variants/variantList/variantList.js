@@ -1,6 +1,8 @@
+import { Reaction } from "/client/modules/core";
 import { ReactionProduct } from "/lib/api";
 import { ReactionRouter } from "/client/modules/router";
-import { Media } from "/lib/collections";
+import { Products, Media } from "/lib/collections";
+import { i18next } from "/client/modules/i18n";
 
 /**
  * variantList helpers
@@ -116,5 +118,20 @@ Template.variantList.events({
     ReactionRouter.go("product", {handle: selectedProduct.handle, variantId: this._id});
 
     return ReactionProduct.setCurrentVariant(this._id);
+  },
+  "click .variant-select-option .variant-edit": function () {
+    const variant = this;
+    const parentVariant = Products.findOne(variant.ancestors[1]);
+
+    ReactionProduct.setCurrentVariant(variant._id);
+    Session.set("variant-form-" + parentVariant._id, true);
+
+    if (Reaction.hasPermission("createProduct")) {
+      Reaction.showActionView({
+        label: i18next.t("productDetailEdit.editVariant"),
+        template: "variantForm",
+        data: parentVariant
+      });
+    }
   }
 });
