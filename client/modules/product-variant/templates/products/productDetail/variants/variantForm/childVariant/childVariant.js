@@ -5,6 +5,17 @@ import { ReactionRouter } from "/client/modules/router";
 import { Media } from "/lib/collections";
 import { Icon } from "/client/modules/ui/components";
 
+/**
+ * childVariantForm onRendered
+ */
+Template.onRendered(function () {
+  this.autorun(() => {
+    const selectedVariantId = ReactionRouter.getParam("variantId");
+
+    $(`div.child-variant-collapse:not(#child-variant-form-${selectedVariantId})`).collapse("hide");
+    $(`#child-variant-form-${selectedVariantId}`).collapse("show");
+  });
+});
 
 /**
  * childVariantForm helpers
@@ -62,17 +73,6 @@ Template.childVariantForm.helpers({
         Media.insert(file);
       }
     };
-  },
-  isOpen(variant) {
-    const _id = variant._id;
-    const selectedVariant = ReactionProduct.selectedVariant();
-    const selectedVariantId = ReactionRouter.getParam("variantId") || selectedVariant._id;
-
-    if (_id === selectedVariantId || ~selectedVariant.ancestors.indexOf(_id)) {
-      return "in";
-    }
-
-    return false;
   }
 });
 
