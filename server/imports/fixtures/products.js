@@ -27,9 +27,9 @@ export default function () {
   };
 
   const priceRange = {
-      range: "1.00 - 12.99",
-      min: 1.00,
-      max: 12.99
+    range: "1.00 - 12.99",
+    min: 1.00,
+    max: 12.99
   };
 
   let product = {
@@ -62,5 +62,7 @@ export default function () {
 
   Factory.define("product", Products, Object.assign({}, base, product));
 
-  Factory.define("variant", Products, { type: "variant" });
+  Factory.define("variant", Products, {
+    type: "variant"
+  });
 }

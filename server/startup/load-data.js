@@ -11,6 +11,7 @@ export default function () {
     // ensure Shops are loaded first.
     Reaction.Import.flush(Shops);
     // these will flush/import with the rest of the imports from core init.
+    Reaction.Import.process(Assets.getText("data/Shipping.json"), ["name"], Reaction.Import.shipping);
     Reaction.Import.fixture().process(Assets.getText("data/Products.json"), ["title"], Reaction.Import.load);
     Reaction.Import.fixture().process(Assets.getText("data/Tags.json"), ["name"], Reaction.Import.load);
     Reaction.Import.flush();
