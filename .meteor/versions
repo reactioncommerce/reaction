@@ -94,7 +94,7 @@ localstorage@1.0.9
 logging@1.0.12
 matb33:collection-hooks@0.8.1
 mdg:validated-method@1.1.0
-mdg:validation-error@0.5.1
+mdg:validation-error@0.2.0
 meteor@1.1.14
 meteor-base@1.0.4
 meteorhacks:fast-render@2.14.0

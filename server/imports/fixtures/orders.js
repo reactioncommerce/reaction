@@ -7,7 +7,6 @@ import ReactionFaker from "./reaction-faker";
  */
 
 export default function () {
-
   Factory.define("order", Orders, {
     // Schemas.OrderItems
     additionalField: faker.lorem.sentence(),
