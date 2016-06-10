@@ -91,6 +91,8 @@ Template.variantList.helpers({
 
       return childVariants;
     }
+
+    return null;
   },
   selectedVariant() {
     const _id = this._id;
@@ -98,6 +100,8 @@ Template.variantList.helpers({
     if (typeof current === "object" && (_id === current._id || ~current.ancestors.indexOf(this._id))) {
       return "variant-detail-selected";
     }
+
+    return null;
   }
 });
 
