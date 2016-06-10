@@ -1,7 +1,7 @@
 <template name="productDetailEdit">
 {{#if condition type "eq" "textarea"}}
 <p class="product-detail-edit {{field}}-edit">
-  <textarea class="{{field}}-edit-input" placeholder="{{i18nPlaceholder}}">{{value}}</textarea>
+  <textarea class="form-control {{field}}-edit-input" name="{{field}}" placeholder="{{i18nPlaceholder}}">{{value}}</textarea>
 </p>
 {{else}}
 <div class="product-detail-edit {{field}}-edit">

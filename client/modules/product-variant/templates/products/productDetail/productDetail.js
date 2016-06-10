@@ -7,8 +7,7 @@ import { Reaction } from "/client/modules/core";
 import Logger from "/client/modules/logger";
 import { ReactionProduct } from "/lib/api";
 import { ReactionRouter } from "/client/modules/router";
-import { Tags } from "/lib/collections";
-import { Tracker } from "meteor/tracker";
+import { Products, Tags } from "/lib/collections";
 
 // load modules
 require("jquery-ui");
@@ -32,19 +31,18 @@ Template.productDetail.onCreated(function () {
 
   this.autorun(() => {
     if (this.subscriptionsReady()) {
-
       // Get the product
       const product = ReactionProduct.setProduct(this.productId(), this.variantId());
       this.state.set("product", product);
 
-        if (Reaction.hasPermission("createProduct")) {
-          if (!Reaction.getActionView() && Reaction.isActionViewOpen() === true) {
-            Reaction.setActionView({
-              template: "productDetailForm",
-              data: product
-            });
-          }
+      if (Reaction.hasPermission("createProduct")) {
+        if (!Reaction.getActionView() && Reaction.isActionViewOpen() === true) {
+          Reaction.setActionView({
+            template: "productDetailForm",
+            data: product
+          });
         }
+      }
 
       // Get the product tags
       if (product) {
@@ -97,6 +95,7 @@ Template.productDetail.helpers({
                     handle: result
                   });
                 }
+                return null;
               });
           }
         }
@@ -165,6 +164,8 @@ Template.productDetail.helpers({
       return ReactionProduct.setProduct(instance.productId(),
         instance.variantId());
     }
+
+    return null;
   },
   tags: function () {
     let product = ReactionProduct.selectedProduct();
@@ -175,6 +176,8 @@ Template.productDetail.helpers({
         });
       }
     }
+
+    return null;
   },
   tagsComponent: function () {
     if (Reaction.hasPermission("createProduct")) {
@@ -193,6 +196,8 @@ Template.productDetail.helpers({
       // otherwise we want to show child variants price range
       return ReactionProduct.getVariantPriceRange();
     }
+
+    return null;
   },
   fieldComponent: function () {
     if (Reaction.hasPermission("createProduct")) {
@@ -307,6 +312,8 @@ Template.productDetail.events({
                 Logger.error("Failed to add to cart.", error);
                 return error;
               }
+
+              return true;
             }
           );
         }
@@ -336,6 +343,8 @@ Template.productDetail.events({
         autoHide: 8000
       });
     }
+
+    return null;
   },
   "click .toggle-product-isVisible-link": function (event, template) {
     let errorMsg = "";
@@ -373,45 +382,21 @@ Template.productDetail.events({
             i18nKey: "productDetail.errorMsg"
           });
         }
+
+        return true;
       });
     }
   },
   "click .delete-product-link": function () {
     ReactionProduct.maybeDeleteProduct(this);
   },
-  "click .fa-facebook": function () {
+  "click .js-edit-social"() {
     if (Reaction.hasPermission("createProduct")) {
-      $(".social-media-inputs").show();
-      $(".social-input.facebook").show();
-      return $(".facebookMsg-edit-input").focus();
+      Reaction.showActionView({
+        label: i18next.t("social.socialTitle", "Social"),
+        template: "productDetailSocialForm"
+      });
     }
-  },
-  "click .fa-twitter": function () {
-    if (Reaction.hasPermission("createProduct")) {
-      $(".social-media-inputs").show();
-      $(".social-input.twitter").show();
-      return $(".twitterMsg-edit-input").focus();
-    }
-  },
-  "click .fa-pinterest": function () {
-    if (Reaction.hasPermission("createProduct")) {
-      $(".social-media-inputs").show();
-      $(".social-input.pinterest").show();
-      return $(".pinterestMsg-edit-input").focus();
-    }
-  },
-  "click .fa-google-plus": function () {
-    if (Reaction.hasPermission("createProduct")) {
-      $(".social-media-inputs").show();
-      $(".social-input.googleplus").show();
-      return $(".googleplusMsg-edit-input").focus();
-    }
-  },
-
-  "click .js-social-done-btn": function () {
-    Session.set("editing-" + this.field, false);
-    $(".social-media-inputs").hide();
-    return $(".social-media-inputs > .social-input").hide();
   }
 });
 
@@ -468,6 +453,8 @@ Template.productDetailForm.events({
             i18nKey: "productDetail.errorMsg"
           });
         }
+
+        return true;
       });
     }
   },
@@ -475,5 +462,32 @@ Template.productDetailForm.events({
     const product = instance.state.get("product");
 
     ReactionProduct.maybeDeleteProduct(product);
+  }
+});
+
+Template.productDetailSocialForm.onCreated(function () {
+  this.state = new ReactiveDict();
+
+  this.autorun(() => {
+    this.state.set({
+      product: ReactionProduct.selectedProduct()
+    });
+  });
+});
+
+Template.productDetailSocialForm.helpers({
+  product() {
+    return Template.instance().state.get("product");
+  }
+});
+
+Template.productDetailSocialForm.events({
+  "blur [name=twitterMsg]"(event) {
+    const rawMessage = event.currentTarget.value || "";
+    const message = rawMessage.trim();
+
+    if (message.length > 140) {
+      Alerts.toast("Message is over 140 characters", "warning");
+    }
   }
 });

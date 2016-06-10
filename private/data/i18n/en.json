@@ -572,6 +572,7 @@
         "text": "Create"
       },
       "social": {
+        "socialTitle": "Social",
         "facebook": "Facebook",
         "google": "Google",
         "github": "GitHub",

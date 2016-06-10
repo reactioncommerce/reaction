@@ -54,42 +54,13 @@
                   <span id="price" itemprop="price">{{formatPrice actualPrice}}</span>
                 </span>
               </div>
-
               <div class="right">
                 {{!-- Social Commentary --}}
+                {{> productSocial }}
                 {{#if hasPermission "createProduct"}}
-                <div class="social-media">
-                  <a href="#"><i class="fa fa-facebook fa-lg"></i></a>
-                  <a href="#"><i class="fa fa-twitter fa-lg"></i></a>
-                  <a href="#"><i class="fa fa-pinterest fa-lg"> </i></a>
-                  <a href="#"><i class="fa fa-google-plus fa-lg"></i></a>
-                  <div class="social-media-inputs">
-
-                    <div class="social-input facebook">
-                      <label>Facebook Message</label>
-                      {{>fieldComponent field="facebookMsg" value=facebookMsg type="textarea"}}
-                    </div>
-
-                    <div class="social-input twitter">
-                      <div class="twitter"></div>
-                      {{>fieldComponent field="twitterMsg" value=twitterMsg type="textarea"}}
-                    </div>
-
-                    <div class="social-input pinterest">
-                      {{>fieldComponent field="pinterestMsg" value=pinterestMsg type="textarea"}}
-                    </div>
-
-                    <div class="social-input googleplus">
-                      {{>fieldComponent field="googleplusMsg" value=googleplusMsg type="textarea"}}
-                    </div>
-
-                    <div class="controls">
-                      {{> button title="Done" primary=true className="js-social-done-btn btn-block"}}
-                    </div>
-                  </div>
-                </div>
-                {{else}}
-                  {{> productSocial }}
+                  <button class="rui button edit js-edit-social hidden-xs" title="{{i18n 'productDetailEdit.editOption' 'Edit Option'}}">
+                    <i class="fa fa-pencil fa-lg" data-id="{{_id}}"></i>
+                  </button>
                 {{/if}}
               </div>
             </div>
@@ -169,4 +140,57 @@
       </div>
     </div>
   </div>
+</template>
+
+<template name="productDetailSocialForm">
+  <div id="product-edit-form-{{product._id}}" class="panel-group variant-edit-form">
+    <div class="panel panel-default variant-form">
+      <div class="panel-heading panel-heading-flex">
+        <label class="panel-title">
+          <i class="fa fa-facebook"></i>
+          {{i18n "productDetailEdit.facebookMsg" "Facebook Message"}}
+        </label>
+      </div>
+      <div class="panel-body">
+        {{> productDetailEdit field="facebookMsg" value=product.facebookMsg type="textarea"}}
+      </div>
+    </div>
+
+    <div class="panel panel-default variant-form">
+      <div class="panel-heading panel-heading-flex">
+        <label class="panel-title">
+          <i class="fa fa-twitter"></i>
+          {{i18n "productDetailEdit.twitterMsg" "Twitter Message"}}
+        </label>
+      </div>
+      <div class="panel-body">
+        {{> productDetailEdit field="twitterMsg" value=product.twitterMsg type="textarea"}}
+      </div>
+    </div>
+
+    <div class="panel panel-default variant-form">
+      <div class="panel-heading panel-heading-flex">
+        <label class="panel-title">
+          <i class="fa fa-pinterest"></i>
+          {{i18n "productDetailEdit.pinterestMsg" "Pinterest Message"}}
+        </label>
+      </div>
+      <div class="panel-body">
+        {{> productDetailEdit field="pinterestMsg" value=product.pinterestMsg type="textarea"}}
+      </div>
+    </div>
+
+    <div class="panel panel-default variant-form">
+      <div class="panel-heading panel-heading-flex">
+        <label class="panel-title">
+          <i class="fa fa-google-plus"></i>
+          {{i18n "productDetailEdit.googleplusMsg" "Google Plus Message"}}
+        </label>
+      </div>
+      <div class="panel-body">
+        {{> productDetailEdit field="googleplusMsg" value=product.googleplusMsg type="textarea"}}
+      </div>
+    </div>
+  </div>
+
 </template>
