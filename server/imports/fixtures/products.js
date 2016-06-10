@@ -1,18 +1,88 @@
 import faker from "faker";
-import ReactionFaker from "./reaction-faker";
 import { Products, Tags } from "/lib/collections";
+import { getShop } from "./shops";
 
+
+/**
+ * ReactionFaker.metaField()
+ *
+ * @param   {Object} [options] - options object to override generated default values
+ * @param   {string} [options.key] - metaField key
+ * @param   {string} [options.value] - metaField value
+ * @param   {string} [options.scope] - metaField scope
+ * @returns {Object} - randomly generated metaField
+ */
+export function metaField(options = {}) {
+  const defaults = {
+    key: faker.commerce.productAdjective(),
+    value: faker.commerce.productMaterial(),
+    scope: "detail"
+  };
+  return _.defaults(options, defaults);
+}
+
+/**
+ * ReactionFaker.productVariant()
+ *
+ * @param {Object} [options] - Options object
+ * @param {string} [options._id] - id
+ * @param {string} [options.parentId] - variant's parent's ID. Sets variant as child.
+ * @param {string} [options.compareAtPrice] - MSRP Price / Compare At Price
+ * @param {string} [options.weight] - productVariant weight
+ * @param {string} [options.inventoryManagement] - Track inventory for this product?
+ * @param {string} [options.inventoryPolicy] - Allow overselling of this product?
+ * @param {string} [options.lowInventoryWarningThreshold] - Qty left of inventory that sets off warning
+ * @param {string} [options.inventoryQuantity] - Inventory Quantity
+ * @param {string} [options.price] - productVariant price
+ * @param {string} [options.title] - productVariant title
+ * @param {string} [options.optionTitle] - productVariant option title
+ * @param {string} [options.sku] - productVariant sku
+ * @param {string} [options.taxable] - is this productVariant taxable?
+ * @param {Object[]} [options.metafields] - productVariant metaFields
+ *
+ * @returns {Object} - randomly generated productVariant
+ */
+export function productVariant(options = {}) {
+  const defaults = {
+    ancestors: [],
+    compareAtPrice: _.random(0, 1000),
+    weight: _.random(0, 10),
+    inventoryManagement: faker.random.boolean(),
+    inventoryPolicy: faker.random.boolean(),
+    lowInventoryWarningThreshold: _.random(1, 5),
+    inventoryQuantity: _.random(0, 100),
+    price: _.random(10, 1000),
+    title: faker.commerce.productName(),
+    optionTitle: faker.commerce.productName(),
+    shopId: getShop()._id,
+    sku: _.random(0, 6),
+    taxable: faker.random.boolean(),
+    type: "variant",
+    metafields: [
+      metaField(),
+      metaField({
+        key: "facebook",
+        scope: "socialMessages"
+      }),
+      metaField({
+        key: "twitter",
+        scope: "socialMessages"
+      })
+    ]
+  };
+  return _.defaults(options, defaults);
+}
 
 export function addProduct() {
   const product = Factory.create("product");
   // top level variant
   const variant = Factory.create("variant", Object.assign({},
-    ReactionFaker.productVariant(), {ancestors: [product._id]}));
+    productVariant(), {ancestors: [product._id]}));
   // option one
-  Factory.create("variant", Object.assign({}, ReactionFaker.productVariant(),
+  Factory.create("variant", Object.assign({}, productVariant(),
     {ancestors: [product._id, variant._id]}));
   // options two
-  Factory.create("variant", Object.assign({}, ReactionFaker.productVariant(),
+  Factory.create("variant", Object.assign({}, productVariant(),
     {ancestors: [product._id, variant._id]}));
 
   return product;
@@ -46,7 +116,7 @@ export default function () {
     position: _.random(0, 100000),
     //  relatedTagIds: [],
     isTopLevel: true,
-    shopId: ReactionFaker.shops.getShop()._id,
+    shopId: getShop()._id,
     createdAt: faker.date.past(),
     updatedAt: new Date()
   });
@@ -57,7 +127,7 @@ export default function () {
    */
   const base = {
     ancestors: [],
-    shopId: ReactionFaker.shops.getShop()._id
+    shopId: getShop()._id
   };
 
   const priceRange = {
@@ -80,16 +150,8 @@ export default function () {
     requiresShipping: true,
     // parcel: ?,
     hashtags: [],
-    // twitterMsg: ?,
-    // facebookMsg: ?,
-    // googleplusMsg: ?,
-    // pinterestMsg: ?,
-    // metaDescription: ?,
-    // handle: ?,
     isVisible: faker.random.boolean(),
     publishedAt: new Date(),
-    // publishedScope: ?,
-    // templateSuffix: ?,
     createdAt: new Date(),
     updatedAt: new Date()
   };

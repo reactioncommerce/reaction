@@ -7,7 +7,7 @@ export function getShop() {
   return existingShop || Factory.create("shop");
 }
 
-fakerAddress = function (options = {}) {
+export function getAddress(options = {}) {
   const defaults = {
     fullName: faker.name.findName(),
     address1: faker.address.streetAddress(),
@@ -24,15 +24,15 @@ fakerAddress = function (options = {}) {
     metafields: []
   };
   return _.defaults(options, defaults);
-};
+}
 
 
-createShopFactory = function () {
+export function createShopFactory() {
   Factory.define("shop", Shops, {
     name: faker.internet.domainName(),
     description: faker.company.catchPhrase(),
     keywords: faker.company.bsAdjective(),
-    addressBook: [ fakerAddress() ],
+    addressBook: [ getAddress() ],
     domains: ["localhost"],
     emails: [
       {
@@ -116,8 +116,7 @@ createShopFactory = function () {
     createdAt: new Date,
     updatedAt: new Date()
   });
-
-};
+}
 
 
 export default function () {

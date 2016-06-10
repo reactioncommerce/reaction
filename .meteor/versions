@@ -62,7 +62,7 @@ ddp-rate-limiter@1.0.4
 ddp-server@1.2.6
 deps@1.0.12
 diff-sequence@1.0.5
-dispatch:mocha@0.0.5
+dispatch:mocha@0.0.8
 dispatch:mocha-core@0.0.2
 ecmascript@0.4.3
 ecmascript-runtime@0.2.10
@@ -118,7 +118,7 @@ mongo@1.1.7
 mongo-id@1.0.4
 mongo-livedata@1.0.12
 mrt:later@1.6.1
-npm-bcrypt@0.8.5
+npm-bcrypt@0.8.6_1
 npm-mongo@1.4.43
 npm-node-aes-gcm@0.1.3_6
 oauth@1.1.10

@@ -2,6 +2,23 @@ import faker from "faker";
 import "./shops";
 import { getShop } from "./shops";
 
+
+export function getUser() {
+  const existingUser = Meteor.users.findOne();
+  return existingUser || Factory.create("user");
+}
+
+export function getUsers(limit = 2) {
+  const users = [];
+  const existingUsers = Meteor.users.find({}, {limit: limit}).fetch();
+  for (let i = 0; i < limit; i = i + 1) {
+    let user = existingUsers[i] || Factory.create("user");
+    users.push(user);
+  }
+  return users;
+}
+
+
 /**
  * User Factory
  * @summary define user Factory
@@ -92,7 +109,6 @@ const anonymous = {
 
 export default function () {
   Factory.define("user", Meteor.users, user);
-  console.log("executing user factory definifion");
   Factory.define("registeredUser", Meteor.users,
     Object.assign({}, user, registered));
 

@@ -29,7 +29,7 @@ export function getAddress(options = {}) {
   return _.defaults(options, defaults);
 }
 
-createAccountFactory = function () {
+export function createAccountFactory() {
   Factory.define("account", Accounts, {
     shopId: Factory.get("shop"),
     userId: getUser(),
@@ -49,7 +49,7 @@ createAccountFactory = function () {
     createdAt: new Date,
     updatedAt: new Date()
   });
-};
+}
 
 export default function () {
   createAccountFactory();
