@@ -57,7 +57,7 @@ Template.variantForm.helpers({
     return () => {
       return () => {
         const title = variant.title || i18next.t("productDetailEdit.thisVariant");
-        console.log(variant);
+
         Alerts.alert({
           title: i18next.t("productDetailEdit.removeVariantConfirm", { title }),
           showCancelButton: true,
@@ -65,7 +65,6 @@ Template.variantForm.helpers({
         }, (isConfirm) => {
           if (isConfirm) {
             const id = variant._id;
-            console.log("REALLY???", id);
             Meteor.call("products/deleteVariant", id, function (error, result) {
               if (result && ReactionProduct.selectedVariantId() === id) {
                 return ReactionProduct.setCurrentVariant(null);
