@@ -73,6 +73,15 @@ Template.childVariantForm.helpers({
         Media.insert(file);
       }
     };
+  },
+  active() {
+    const variantId = ReactionProduct.selectedVariantId();
+
+    if (variantId === this._id) {
+      return "panel-active";
+    }
+
+    return "panel-default";
   }
 });
 
@@ -105,6 +114,16 @@ Template.childVariantForm.events({
       });
     return ReactionProduct.setCurrentVariant(variant._id);
   },
+  "click .js-child-varaint-heading": function(event, instance) {
+    const selectedProduct = ReactionProduct.selectedProduct();
+    const variantId = instance.data._id;
+
+    ReactionRouter.go("product", {
+      handle: selectedProduct.handle,
+      variantId: variantId
+    });
+  },
+
   "click .js-remove-child-variant": function (event, instance) {
     event.stopPropagation();
     event.preventDefault();

@@ -1,6 +1,17 @@
 import { i18next } from "/client/modules/i18n";
 import { Reaction } from "/client/modules/core";
 import { ReactionProduct } from "/lib/api";
+import { ReactionRouter } from "/client/modules/router";
+
+Template.variantForm.onCreated(function () {
+  this.autorun(() => {
+    const productHandle = ReactionRouter.getParam("handle");
+
+    if (!productHandle) {
+      Reaction.clearActionView();
+    }
+  });
+});
 
 /**
  * variantForm helpers

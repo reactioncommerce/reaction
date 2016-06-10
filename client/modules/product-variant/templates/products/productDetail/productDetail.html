@@ -1,33 +1,5 @@
 <template name="productDetail">
   {{#with product}}
-  {{!-- Product Visibility Admin Block --}}
-  {{#if hasPermission "createProduct"}}
-    <div class="nav nav-dashboard">
-      <div class="nav-dashboard-heading">
-        <h3 class="nav-dashboard-title">
-           <span data-i18n="productDetail.productManagement">Product management</span>
-        </h3>
-      </div>
-      <div class="nav-dashboard-controls">
-        <ul class="nav nav-pills">
-          {{#if isVisible}}
-            <li>
-              <a href="#" class="toggle-product-isVisible-link" data-i18n="productDetail.makeInvisible">
-                Make invisible
-              </a>
-            </li>
-          {{/if}}
-
-          {{#if hasAdminAccess}}
-            <li>
-              <a href="#" class="delete-product-link" data-i18n="app.delete">Delete</a>
-            </li>
-          {{/if}}
-        </ul>
-      </div>
-    </div>
-  {{/if}}
-  {{!-- END Product Visibility Admin Block --}}
 
   <div class="container-main">
     <div class="container-fluid pdp-container">
@@ -173,4 +145,28 @@
     </div>
   </div>
   {{/with}}
+</template>
+
+<template name="productDetailForm">
+  <div id="product-edit-form-{{product._id}}" class="panel-group variant-edit-form">
+    <div class="panel panel-default variant-form">
+      <div class="panel-heading panel-heading-flex">
+        <span class="panel-title">{{product.title}}</span>
+      </div>
+      <div class="panel-body">
+        {{#if isVisible}}
+          <a href="#" class="btn btn-default toggle-product-isVisible-link" data-i18n="productDetail.makeInvisible">
+            Make invisible
+          </a>
+        {{else}}
+          <a href="#" class="btn btn-default toggle-product-isVisible-link" data-i18n="productDetail.visible">
+            Make visible
+          </a>
+        {{/if}}
+        {{#if hasAdminAccess}}
+          <a href="#" class="btn btn-default delete-product-link" data-i18n="app.delete">Delete</a>
+        {{/if}}
+      </div>
+    </div>
+  </div>
 </template>

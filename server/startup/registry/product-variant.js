@@ -12,6 +12,12 @@ export default function () {
       template: "productDetail",
       workflow: "coreProductWorkflow"
     }, {
+      label: "productSettings",
+      provides: "settings",
+      route: "/product/:handle/:variantId?",
+      container: "product",
+      template: "productDetailForm"
+    }, {
       route: "/tag/:slug?",
       name: "tag",
       template: "products",

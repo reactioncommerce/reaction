@@ -33,6 +33,10 @@
   border: @border-thin;
 }
 
+.panel-active > .panel-heading {
+  background-color: @brand-accent-color;
+}
+
 .action-view-body .panel-group {
   margin-bottom: 0;
 }
@@ -60,6 +64,10 @@
   background: @black02;
 }
 
+.panel-group-accordian .panel-active a.panel-heading {
+  background-color: @brand-accent-color;
+}
+
 .panel-heading-flex {
   .display(flex);
   .align-items(center);
@@ -68,6 +76,10 @@
 .panel-heading-flex > .panel-title {
   .flex(1 1 auto);
   .align-items(center);
+}
+
+.panel-heading-flex > .media {
+  margin-right: 10px;
 }
 
 .panel-heading-flex > .panel-controls {
