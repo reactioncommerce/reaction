@@ -1,5 +1,6 @@
 import { $ } from "meteor/jquery";
 import { ReactionProduct } from "/lib/api";
+import { Reaction } from "/client/modules/core";
 import { ReactionRouter } from "/client/modules/router";
 import { Tags } from "/lib/collections";
 
@@ -16,7 +17,7 @@ Template.productDetailTags.helpers({
     let product = ReactionProduct.selectedProduct();
     if (product) {
       if (product.handle) {
-        if (this.handle === product.handle.toLowerCase() || slugify(product.handle) === this.slug) {
+        if (this.handle === product.handle.toLowerCase() || Reaction.getSlug(product.handle) === this.slug) {
           return true;
         }
       }
@@ -29,7 +30,7 @@ Template.productTagInputForm.helpers({
     const product = ReactionProduct.selectedProduct();
     if (product) {
       if (product.handle) {
-        if (this.handle === product.handle.toLowerCase() || slugify(product.handle) === this.slug) {
+        if (this.handle === product.handle.toLowerCase() || Reaction.getSlug(product.handle) === this.slug) {
           return "fa-bookmark";
         }
       }
@@ -59,7 +60,7 @@ Template.productTagInputForm.events({
       autoFocus: true,
       source: function (request, response) {
         let datums = [];
-        let slug = slugify(request.term);
+        let slug = Reaction.getSlug(request.term);
         Tags.find({
           slug: new RegExp(slug, "i")
         }).forEach(function (tag) {

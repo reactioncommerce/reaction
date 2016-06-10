@@ -71,7 +71,7 @@ Template.productDetail.helpers({
           toggle: true,
           toggleOn(tag) {
             const handle = product.handle;
-            if (slugify(handle) === tag.slug) {
+            if (Reaction.getSlug(handle) === tag.slug) {
               return true;
             }
             return false;

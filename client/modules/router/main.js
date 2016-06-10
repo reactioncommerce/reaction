@@ -148,7 +148,7 @@ ReactionRouter.notFound = {
  */
 ReactionRouter.initPackageRoutes = () => {
   const pkgs = Packages.find().fetch();
-  const prefix = slugify(Reaction.getShopName()); // todo add shopId
+  const prefix = Reaction.getSlug(Reaction.getShopName()); // todo add shopId
 
   // prefixing isnt necessary if we only have one shop
   // but we need to bypass the current
