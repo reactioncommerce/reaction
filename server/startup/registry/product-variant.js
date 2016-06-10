@@ -12,7 +12,7 @@ export default function () {
       template: "productDetail",
       workflow: "coreProductWorkflow"
     }, {
-      label: "productSettings",
+      label: "Product Settings",
       provides: "settings",
       route: "/product/:handle/:variantId?",
       container: "product",
