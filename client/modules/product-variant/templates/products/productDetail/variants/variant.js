@@ -45,14 +45,16 @@ Template.variant.helpers({
  */
 
 function showVariant(variant) {
-  const selectedProduct = ReactionProduct.selectedProduct()
+  const selectedProduct = ReactionProduct.selectedProduct();
+
   ReactionProduct.setCurrentVariant(variant._id);
   Session.set("variant-form-" + variant._id, true);
   ReactionRouter.go("product", {handle: selectedProduct.handle, variantId: variant._id});
 
   if (Reaction.hasPermission("createProduct")) {
     Reaction.showActionView({
-      label: i18next.t("productDetailEdit.editVariant"),
+      label: "Edit Variant",
+      i18nKeyLabel: "productDetailEdit.editVariant",
       template: "variantForm",
       data: variant
     });

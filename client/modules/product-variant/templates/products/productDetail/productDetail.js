@@ -393,7 +393,8 @@ Template.productDetail.events({
   "click .js-edit-social"() {
     if (Reaction.hasPermission("createProduct")) {
       Reaction.showActionView({
-        label: i18next.t("social.socialTitle", "Social"),
+        label: "Social",
+        i18nKeyLabel: "social.socialTitle",
         template: "productDetailSocialForm"
       });
     }
@@ -407,12 +408,22 @@ Template.productDetailForm.onCreated(function () {
     this.state.set({
       product: ReactionProduct.selectedProduct()
     });
+
+    const handle = ReactionRouter.getParam("handle");
+
+    if (!handle) {
+      Reaction.clearActionView();
+    }
   });
 });
 
 Template.productDetailForm.helpers({
   product() {
     return Template.instance().state.get("product");
+  },
+  productTitle() {
+    const product = Template.instance().state.get("product") || {};
+    return product.title || i18next.t("productDetailEdit.untitledProduct", "Untitled Product");
   }
 });
 
@@ -422,7 +433,7 @@ Template.productDetailForm.events({
     const self = instance.state.get("product");
     if (!self.title) {
       errorMsg += `${i18next.t("error.isRequired", { field: i18next.t("productDetailEdit.title") })} `;
-      template.$(".title-edit-input").focus();
+      instance.$(".title-edit-input").focus();
     }
     const variants = ReactionProduct.getVariants(self._id);
     variants.forEach((variant, index) => {
@@ -458,9 +469,8 @@ Template.productDetailForm.events({
       });
     }
   },
-  "click .delete-product-link": function () {
+  "click .delete-product-link": function (event, instance) {
     const product = instance.state.get("product");
-
     ReactionProduct.maybeDeleteProduct(product);
   }
 });

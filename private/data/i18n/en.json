@@ -95,7 +95,8 @@
           "paypalSettingsLabel": "PayPal Settings",
           "genericPaymentSettingsLabel": "Generic Payment Settings",
           "reactionConnectLabel": "Reaction Connect",
-          "examplePaymentSettingsLabel": "Example Payment"
+          "examplePaymentSettingsLabel": "Example Payment",
+          "productSettingsLabel": "Product Settings"
         },
         "userAccountDropdown": {
           "profileLabel": "Profile"

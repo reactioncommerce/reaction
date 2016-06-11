@@ -208,7 +208,10 @@ export default {
   },
 
   clearActionView() {
-    Session.set("admin/actionView", undefined);
+    Session.set("admin/actionView", {
+      label: "",
+      i18nKeyLabel: ""
+    });
   },
 
   getCurrentTag() {
