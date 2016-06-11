@@ -233,6 +233,7 @@
         "product": "Product",
         "size": "Size",
         "title": "Product title",
+        "untitledProduct": "Untitled Product",
         "pageTitle": "Product page title",
         "vendor": "Product vendor",
         "description": "Add a product description",
