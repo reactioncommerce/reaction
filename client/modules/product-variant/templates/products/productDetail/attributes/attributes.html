@@ -3,10 +3,12 @@
     <ul class="list-group metafield-list hidden-xs">
       {{#each ./metafields}}
         <li class="list-group-item metafield-list-item">
-          <div class="row">
-          {{#if key}}<div class="col-sm-4">{{key}}</div>{{/if}}
-          {{#if value}}<div class="col-sm-8">{{value}}</div>{{/if}}
-          </div>
+          {{#if key}}
+            <strong>{{key}}:</strong>
+          {{/if}}
+          {{#if value}}
+            <span>{{value}}</span>
+          {{/if}}
         </li>
       {{/each}}
     </ul>
