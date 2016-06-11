@@ -81,8 +81,7 @@ Template.productDetail.helpers({
           onIcon: "bookmark",
           toggle: true,
           toggleOn(tag) {
-            const handle = product.handle;
-            if (slugify(handle) === tag.slug) {
+            if (product.handle === tag.slug) {
               return true;
             }
             return false;
