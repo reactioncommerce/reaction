@@ -1,4 +1,3 @@
-import { FlowRouter as ReactionRouter } from "meteor/kadira:flow-router-ssr";
 import { AnalyticsEvents, Packages } from "/lib/collections";
 import { Reaction } from "/client/modules/core";
 import { i18next } from "/client/modules/i18n";
@@ -118,7 +117,7 @@ function notifyMixpanel(context) {
   }
 }
 
-ReactionRouter.triggers.enter([notifySegment, notifyGoogleAnalytics, notifyMixpanel]);
+Reaction.Router.triggers.enter([notifySegment, notifyGoogleAnalytics, notifyMixpanel]);
 
 //
 // Initialize analytics event tracking

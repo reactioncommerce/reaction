@@ -1,4 +1,4 @@
-import { ReactionRouter } from "/client/modules/router";
+import { Reaction } from "/client/modules/core";
 import { Orders } from "/lib/collections";
 
 /**
@@ -33,7 +33,7 @@ Template.coreOrderWorkflow.helpers({
    * @return {Object|Boolean} An order or false
    */
   order() {
-    let id = ReactionRouter.getQueryParam("_id");
+    let id = Reaction.Router.getQueryParam("_id");
     if (id) {
       return Orders.findOne(id);
     }

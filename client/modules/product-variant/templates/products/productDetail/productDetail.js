@@ -5,7 +5,6 @@ import { $ } from "meteor/jquery";
 import { Reaction } from "/client/modules/core";
 import Logger from "/client/modules/logger";
 import { ReactionProduct } from "/lib/api";
-import { ReactionRouter } from "/client/modules/router";
 import { Tags } from "/lib/collections";
 
 // load modules
@@ -19,8 +18,8 @@ Template.productDetail.onCreated(function () {
     tags: []
   });
   this.subscribe("Tags");
-  this.productId = () => ReactionRouter.getParam("handle");
-  this.variantId = () => ReactionRouter.getParam("variantId");
+  this.productId = () => Reaction.Router.getParam("handle");
+  this.variantId = () => Reaction.Router.getParam("variantId");
   this.autorun(() => {
     if (this.productId()) {
       this.subscribe("Product", this.productId());
@@ -80,7 +79,7 @@ Template.productDetail.helpers({
             Meteor.call("products/setHandleTag", productId, tag._id,
               function (error, result) {
                 if (result) {
-                  return ReactionRouter.go("product", {
+                  return Reaction.Router.go("product", {
                     handle: result
                   });
                 }

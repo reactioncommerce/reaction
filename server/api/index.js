@@ -1,5 +1,5 @@
 import Reaction from "./core";
-import ReactionRouter from "./router";
+import Router from "./router";
 import { GeoCoder } from "./geocoder";
 import Hooks from "./hooks";
 import Logger from "./logger";
@@ -8,7 +8,7 @@ import { MethodHooks } from "./method-hooks";
 
 export {
   Reaction,
-  ReactionRouter,
+  Router,
   GeoCoder,
   Hooks,
   Logger,

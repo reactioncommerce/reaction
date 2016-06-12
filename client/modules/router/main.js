@@ -1,6 +1,7 @@
-import { FlowRouter as ReactionRouter } from "meteor/kadira:flow-router-ssr";
+import { FlowRouter as Router } from "meteor/kadira:flow-router-ssr";
 import { BlazeLayout } from "meteor/kadira:blaze-layout";
 import { Reaction } from "/client/modules/core";
+import { Logger } from "/client/modules/logger";
 import { Packages, Shops } from "/lib/collections";
 import { MetaData } from "/lib/api/router/metadata";
 
@@ -10,7 +11,7 @@ import { MetaData } from "/lib/api/router/metadata";
 /* eslint no-loop-func: 0 */
 
 // client should wait on subs
-ReactionRouter.wait();
+Router.wait();
 
 /**
  * checkRouterPermissions
@@ -29,7 +30,7 @@ function checkRouterPermissions(context) {
     return context;
   }
   // determine if this is a valid route or a 404
-  const routeExists = _.find(ReactionRouter._routes, function (route) {
+  const routeExists = _.find(Router._routes, function (route) {
     return route.path === context.path;
   });
 
@@ -42,7 +43,7 @@ function checkRouterPermissions(context) {
 }
 
 // initialize title and meta data and check permissions
-ReactionRouter.triggers.enter([checkRouterPermissions, MetaData.init]);
+Router.triggers.enter([checkRouterPermissions, MetaData.init]);
 
 /**
  * getRouteName
@@ -106,7 +107,7 @@ export function ReactionLayout(options = {}) {
   // check if router has denied permissions
   // see: checkRouterPermissions
   let unauthorized = {};
-  if (ReactionRouter.current().unauthorized) {
+  if (Router.current().unauthorized) {
     unauthorized.template = "unauthorized";
   }
 
@@ -130,7 +131,7 @@ export function ReactionLayout(options = {}) {
 }
 
 // default not found route
-ReactionRouter.notFound = {
+Router.notFound = {
   action() {
     ReactionLayout({
       template: "notFound"
@@ -146,7 +147,7 @@ ReactionRouter.notFound = {
  * @param {String} userId - userId
  * @returns {undefined} returns undefined
  */
-ReactionRouter.initPackageRoutes = () => {
+Router.initPackageRoutes = () => {
   const pkgs = Packages.find().fetch();
   const prefix = Reaction.getSlug(Reaction.getShopName()); // todo add shopId
 
@@ -160,7 +161,7 @@ ReactionRouter.initPackageRoutes = () => {
 
     // initialize index
     // define default routing groups
-    let shop = ReactionRouter.group({
+    const shop = Router.group({
       name: "shop"
     });
 
@@ -171,7 +172,7 @@ ReactionRouter.initPackageRoutes = () => {
     //
     shop.route("/", {
       name: "index",
-      action: function () {
+      action() {
         ReactionLayout({});
       }
     });
@@ -185,7 +186,7 @@ ReactionRouter.initPackageRoutes = () => {
         for (let registryItem of registry) {
           // registryItems
           if (registryItem.route) {
-            let {
+            const {
               route,
               template,
               layout,
@@ -205,7 +206,7 @@ ReactionRouter.initPackageRoutes = () => {
 
             // define new route
             // we could allow the options to be passed in the registry if we need to be more flexible
-            let newRouteConfig = {
+            const newRouteConfig = {
               route: route,
               options: {
                 name: routeName,
@@ -226,21 +227,21 @@ ReactionRouter.initPackageRoutes = () => {
         //
         // add group and routes to routing table
         //
-        let uniqRoutes = new Set(newRoutes);
+        const uniqRoutes = new Set(newRoutes);
         for (let route of uniqRoutes) {
           // allow overriding of prefix in route definitions
           // define an "absolute" url by excluding "/"
           if (route.route.substring(0, 1) !== "/") {
             route.route = "/" + route.route;
-            shop.newGroup = ReactionRouter.group({
+            shop.newGroup = Router.group({
               prefix: ""
             });
           } else if (shopCount <= 1) {
-            shop.newGroup = ReactionRouter.group({
+            shop.newGroup = Router.group({
               prefix: ""
             });
           } else {
-            shop.newGroup = ReactionRouter.group({
+            shop.newGroup = Router.group({
               prefix: "/" + prefix
             });
           }
@@ -255,10 +256,10 @@ ReactionRouter.initPackageRoutes = () => {
     // initialize the router
     //
     try {
-      ReactionRouter.initialize();
+      Router.initialize();
     } catch (e) {
-      console.log(e);
-      ReactionRouter.reload();
+      Logger.error(e);
+      Router.reload();
     }
   }
 };
@@ -271,16 +272,16 @@ ReactionRouter.initPackageRoutes = () => {
  * @param {Object} options - url params
  * @return {String} returns current router path
  */
-ReactionRouter.pathFor = (path, options = {}) => {
+Router.pathFor = (path, options = {}) => {
   let params = options.hash || {};
-  let query = params.query ? ReactionRouter._qs.parse(params.query) : {};
+  let query = params.query ? Router._qs.parse(params.query) : {};
   // prevent undefined param error
   for (let i in params) {
     if (params[i] === null || params[i] === undefined) {
       params[i] = "/";
     }
   }
-  return ReactionRouter.path(path, params, query);
+  return Router.path(path, params, query);
 };
 
 /**
@@ -290,18 +291,18 @@ ReactionRouter.pathFor = (path, options = {}) => {
  * @param {String} routeName - route name as defined in registry
  * @return {String} return "active" or null
  */
-ReactionRouter.isActiveClassName = (routeName) => {
-  ReactionRouter.watchPathChange();
-  const group = ReactionRouter.current().route.group;
+Router.isActiveClassName = (routeName) => {
+  Router.watchPathChange();
+  const group = Router.current().route.group;
   let prefix;
   if (group && group.prefix) {
-    prefix = ReactionRouter.current().route.group.prefix;
+    prefix = Router.current().route.group.prefix;
   } else {
     prefix = "";
   }
-  const path = ReactionRouter.current().route.path;
+  const path = Router.current().route.path;
   const routeDef = path.replace(prefix + "/", "");
   return routeDef === routeName ? "active" : "";
 };
 
-export default ReactionRouter;
+export default Router;

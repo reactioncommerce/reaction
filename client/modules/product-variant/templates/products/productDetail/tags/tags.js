@@ -1,7 +1,6 @@
 import { $ } from "meteor/jquery";
 import { ReactionProduct } from "/lib/api";
 import { Reaction } from "/client/modules/core";
-import { ReactionRouter } from "/client/modules/router";
 import { Tags } from "/lib/collections";
 
 // load modules
@@ -44,7 +43,7 @@ Template.productTagInputForm.events({
     return Meteor.call("products/setHandleTag", ReactionProduct.selectedProductId(), this._id,
       function (error, result) {
         if (result) {
-          return ReactionRouter.go("product", {
+          return Reaction.Router.go("product", {
             handle: result
           });
         }

@@ -1,5 +1,4 @@
 import { Reaction } from "/client/modules/core";
-import { ReactionRouter } from "/client/modules/router";
 
 /* eslint no-loop-func: 0 */
 
@@ -12,10 +11,10 @@ function showPackageDashboard(reactionPackage) {
   const routeName = reactionPackage.name || reactionPackage.route;
 
   if (routeName && reactionPackage.route) {
-    const route = ReactionRouter.path(routeName);
+    const route = Reaction.Router.path(routeName);
 
     if (route && Reaction.hasPermission(route, Meteor.userId())) {
-      ReactionRouter.go(route);
+      Reaction.Router.go(route);
       return true;
     }
   }

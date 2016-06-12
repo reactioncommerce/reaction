@@ -3,7 +3,6 @@ import { i18next } from "/client/modules/i18n";
 import { Reaction } from "/client/modules/core";
 import Logger from "/client/modules/logger";
 import { ReactionProduct } from "/lib/api";
-import { ReactionRouter } from "/client/modules/router";
 
 /**
  * productDetailEdit helpers
@@ -51,7 +50,7 @@ Template.productDetailEdit.events({
                   });
                 }
                 if (res) {
-                  ReactionRouter.go("product", {
+                  Reaction.Router.go("product", {
                     handle: res
                   });
                 }

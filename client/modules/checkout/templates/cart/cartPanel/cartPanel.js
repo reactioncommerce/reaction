@@ -1,4 +1,4 @@
-import { ReactionRouter } from "/client/modules/router";
+import { Reaction } from "/client/modules/core";
 /**
  * cartPanel events
  *
@@ -9,6 +9,6 @@ Template.cartPanel.events({
   "click #btn-checkout": function () {
     $("#cart-drawer-container").fadeOut();
     Session.set("displayCart", false);
-    return ReactionRouter.go("cart/checkout");
+    return Reaction.Router.go("cart/checkout");
   }
 });

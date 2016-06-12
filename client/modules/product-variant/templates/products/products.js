@@ -1,5 +1,4 @@
 import { Reaction } from "/client/modules/core";
-import { ReactionRouter } from "/client/modules/router";
 import { ReactionProduct } from "/lib/api";
 import { Products, Tags } from "/lib/collections";
 
@@ -47,7 +46,7 @@ Template.products.onCreated(function () {
 
   // Update product subscription
   this.autorun(() => {
-    const slug = ReactionRouter.getParam("slug");
+    const slug = Reaction.Router.getParam("slug");
     const tag = Tags.findOne({ slug: slug }) || Tags.findOne(slug);
     const scrollLimit = Session.get("productScrollLimit");
     let tags = {}; // this could be shop default implementation needed
@@ -67,7 +66,7 @@ Template.products.onCreated(function () {
 
     this.state.set("slug", slug);
 
-    const queryParams = Object.assign({}, tags, ReactionRouter.current().queryParams);
+    const queryParams = Object.assign({}, tags, Reaction.Router.current().queryParams);
     this.subscribe("Products", scrollLimit, queryParams);
 
     // we are caching `currentTag` or if we are not inside tag route, we will
@@ -105,7 +104,7 @@ Template.products.onRendered(() => {
 
 Template.products.helpers({
   tag: function () {
-    const id = ReactionRouter.getParam("_tag");
+    const id = Reaction.Router.getParam("_tag");
     return {
       tag: Tags.findOne({ slug: id }) || Tags.findOne(id)
     };
@@ -156,7 +155,7 @@ Template.products.events({
   },
   "click .product-list-item": function () {
     // go to new product
-    ReactionRouter.go("product", {
+    Reaction.Router.go("product", {
       handle: this._id
     });
   },

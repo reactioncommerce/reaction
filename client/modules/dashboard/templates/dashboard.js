@@ -1,14 +1,13 @@
 import { Reaction } from "/client/modules/core";
-import { ReactionRouter } from "/client/modules/router";
 
 //
 // registry helper for the dashboard, assembles i18n labels
 //
 Template.dashboardHeader.helpers({
-  registry: function () {
+  registry() {
     // just some handle little helpers for default package i18nKey/i18nLabel
-    let route = ReactionRouter.getRouteName();
-    let registry = Reaction.getRegistryForCurrentRoute() || {};
+    const route = Reaction.Router.getRouteName();
+    const registry = Reaction.getRegistryForCurrentRoute() || {};
     if (registry && route) {
       return Reaction.translateRegistry(registry);
     }
@@ -19,7 +18,7 @@ Template.dashboardHeader.helpers({
 // dashboard events
 //
 Template.dashboardHeader.events({
-  "click [data-event-action=showPackageSettings]": function () {
+  "click [data-event-action=showPackageSettings]"() {
     Reaction.showActionView();
   }
 });

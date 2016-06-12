@@ -1,7 +1,6 @@
 import { i18next } from "/client/modules/i18n";
 import Drop from "tether-drop";
 import { Reaction } from "/client/modules/core";
-import { ReactionRouter } from "/client/modules/router";
 import { Packages } from "/lib/collections";
 
 Template.coreAdminLayout.onRendered(function () {
@@ -28,8 +27,8 @@ Template.coreAdminLayout.helpers({
       for (let shortcut of shortcuts) {
         items.push({
           type: "link",
-          href: ReactionRouter.pathFor(shortcut.name),
-          className: ReactionRouter.isActiveClassName(shortcut.name),
+          href: Reaction.Router.pathFor(shortcut.name),
+          className: Reaction.Router.isActiveClassName(shortcut.name),
           icon: shortcut.icon,
           tooltip: shortcut.label || "",
           i18nKeyTooltip: shortcut.i18nKeyLabel,
@@ -90,7 +89,7 @@ Template.coreAdminLayout.helpers({
   },
 
   packageButtons() {
-    const routeName = ReactionRouter.getRouteName();
+    const routeName = Reaction.Router.getRouteName();
 
     if (routeName !== "dashboard") {
       const registryItems = Reaction.Apps({provides: "settings", container: routeName});
@@ -136,9 +135,9 @@ Template.coreAdminLayout.helpers({
    * @return {Object} Registry entry for item
    */
   thisApp() {
-    let reactionApp = Packages.findOne({
+    const reactionApp = Packages.findOne({
       "registry.provides": "settings",
-      "registry.route": ReactionRouter.getRouteName()
+      "registry.route": Reaction.Router.getRouteName()
     }, {
       enabled: 1,
       registry: 1,
@@ -147,8 +146,8 @@ Template.coreAdminLayout.helpers({
     });
 
     if (reactionApp) {
-      let settingsData = _.find(reactionApp.registry, function (item) {
-        return item.route === ReactionRouter.getRouteName() && item.provides === "settings";
+      const settingsData = _.find(reactionApp.registry, function (item) {
+        return item.route === Reaction.Router.getRouteName() && item.provides === "settings";
       });
 
       return settingsData;
@@ -186,7 +185,7 @@ Template.coreAdminLayout.helpers({
 //       event.preventDefault();
 //       event.stopPropagation();
 //
-//       ReactionRouter.go(this.name);
+//       Reaction.Router.go(this.name);
 //     }
 //   }
 // });
