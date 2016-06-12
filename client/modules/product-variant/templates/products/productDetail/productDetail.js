@@ -2,7 +2,7 @@ import { i18next } from "/client/modules/i18n";
 import { ReactiveDict } from "meteor/reactive-dict";
 import { _ } from "meteor/underscore";
 import { $ } from "meteor/jquery";
-import { Reaction } from "/client/modules/core";
+import { Reaction } from "/client/api";
 import Logger from "/client/modules/logger";
 import { ReactionProduct } from "/lib/api";
 import { Tags } from "/lib/collections";

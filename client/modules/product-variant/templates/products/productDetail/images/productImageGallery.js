@@ -1,5 +1,5 @@
 import { $ } from "meteor/jquery";
-import { Reaction } from "/client/modules/core";
+import { Reaction } from "/client/api";
 import { ReactionProduct } from "/lib/api";
 import { Media } from "/lib/collections";
 

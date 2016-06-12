@@ -8,7 +8,7 @@ import { Tracker } from "meteor/tracker";
 import { Session } from "meteor/session";
 import { _ } from "meteor/underscore";
 import { SimpleSchema } from "meteor/aldeed:simple-schema";
-import { Reaction } from "/client/modules/core";
+import { Reaction } from "/client/api";
 import { Packages, Shops, Translations } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 

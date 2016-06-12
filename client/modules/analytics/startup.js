@@ -1,5 +1,5 @@
 import { AnalyticsEvents, Packages } from "/lib/collections";
-import { Reaction } from "/client/modules/core";
+import { Reaction } from "/client/api";
 import { i18next } from "/client/modules/i18n";
 
 // Create a queue, but don't obliterate an existing one!

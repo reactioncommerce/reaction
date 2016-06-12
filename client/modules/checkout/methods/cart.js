@@ -1,6 +1,6 @@
 import { i18next } from "/client/modules/i18n";
 import Logger from "/client/modules/logger";
-import { Reaction } from "/client/modules/core";
+import { Reaction } from "/client/api";
 import { Cart } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 

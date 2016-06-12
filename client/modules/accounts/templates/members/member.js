@@ -1,4 +1,4 @@
-import { Reaction } from "/client/modules/core";
+import { Reaction } from "/client/api";
 import { Packages, Shops } from "/lib/collections";
 
 const getPermissionMap = (permissions) => {

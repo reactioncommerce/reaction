@@ -1,4 +1,4 @@
-import { Reaction } from "/client/modules/core";
+import { Reaction } from "/client/api";
 
 //
 // registry helper for the dashboard, assembles i18n labels

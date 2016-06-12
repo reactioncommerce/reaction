@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor";
 import { Tracker } from "meteor/tracker";
-import { Reaction } from "/client/modules/core";
+import { Reaction } from "/client/api";
 import Router from "./main";
 
 Meteor.startup(function () {

@@ -2,7 +2,7 @@ require("money");
 require("autonumeric");
 import $ from "jquery";
 import accounting from "accounting-js";
-import { Reaction } from "/client/modules/core";
+import { Reaction } from "/client/api";
 import { NumericInput } from "/client/modules/ui/components/numericInput/numericInput";
 import { Media, Orders, Shops } from "/lib/collections";
 

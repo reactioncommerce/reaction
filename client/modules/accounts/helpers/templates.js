@@ -1,5 +1,5 @@
 import { i18next } from "/client/modules/i18n";
-import { Reaction } from "/client/modules/core";
+import { Reaction } from "/client/api";
 import * as Collections from "/lib/collections";
 
 Template.registerHelper("getGravatar", function (currentUser, size) {

@@ -1,4 +1,4 @@
-import { Reaction } from "/client/modules/core";
+import { Reaction } from "/client/api";
 import { ReactionProduct } from "/lib/api";
 import { Products, Tags } from "/lib/collections";
 

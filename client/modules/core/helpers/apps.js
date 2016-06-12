@@ -1,4 +1,4 @@
-import { Reaction } from "/client/modules/core";
+import { Reaction } from "/client/api";
 import Logger from "/client/modules/logger";
 import { Packages } from "/lib/collections";
 
