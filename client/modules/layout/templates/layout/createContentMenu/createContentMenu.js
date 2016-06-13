@@ -1,5 +1,4 @@
-import { Reaction } from "/client/modules/core";
-import { ReactionRouter } from "/client/modules/router";
+import { Reaction } from "/client/api";
 import { Tags } from "/lib/collections";
 
 Template.createContentMenu.helpers({
@@ -25,7 +24,7 @@ Template.createContentMenu.helpers({
                   Meteor.call("products/updateProductTags", productId, currentTag.name, currentTagId);
                 }
                 // go to new product
-                ReactionRouter.go("product", {
+                Reaction.Router.go("product", {
                   handle: productId
                 });
               }

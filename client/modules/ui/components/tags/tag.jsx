@@ -1,6 +1,6 @@
 // import { i18next } from "/client/modules/i18n";
 // import React from "react";
-// import { Reaction } from "/client/modules/core";
+// import { Reaction } from "/client/api";
 // import { PropTypes } from "/lib/api";
 // import { Tags } from "/lib/collections";
 //

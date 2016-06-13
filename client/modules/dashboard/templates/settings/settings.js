@@ -1,5 +1,4 @@
-import { Reaction } from "/client/modules/core";
-import { ReactionRouter } from "/client/modules/router";
+import { Reaction } from "/client/api";
 import { Packages } from "/lib/collections";
 
 /**
@@ -20,9 +19,9 @@ Template.settingsHeader.helpers({
    * @return {Object} Registry entry for item
    */
   thisApp() {
-    let reactionApp = Packages.findOne({
+    const reactionApp = Packages.findOne({
       "registry.provides": "settings",
-      "registry.route": ReactionRouter.getRouteName()
+      "registry.route": Reaction.Router.getRouteName()
     }, {
       enabled: 1,
       registry: 1,
@@ -31,8 +30,8 @@ Template.settingsHeader.helpers({
     });
 
     if (reactionApp) {
-      let settingsData = _.find(reactionApp.registry, function (item) {
-        return item.route === ReactionRouter.getRouteName() && item.provides === "settings";
+      const settingsData = _.find(reactionApp.registry, function (item) {
+        return item.route === Reaction.Router.getRouteName() && item.provides === "settings";
       });
 
       return settingsData;
