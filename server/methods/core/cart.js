@@ -1,4 +1,5 @@
 import { Meteor } from "meteor/meteor";
+import { check } from "meteor/check";
 import * as Collections from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 import { Logger, Reaction } from "/server/api";
@@ -289,7 +290,6 @@ Meteor.methods({
     check(variantId, String);
     check(itemQty, Match.Optional(Number));
 
-    const { Log } = Reaction;
     const cart = Collections.Cart.findOne({ userId: this.userId });
     if (!cart) {
       Logger.error(`Cart not found for user: ${ this.userId }`);
@@ -453,8 +453,7 @@ Meteor.methods({
         }
       }, (error, result) => {
         if (error) {
-          Logger.warn("error removing from cart", Reaction
-            .Collections.Cart.simpleSchema().namedContext().invalidKeys());
+          Logger.warn("error removing from cart", Collections.Cart.simpleSchema().namedContext().invalidKeys());
           return error;
         }
         if (result) {
@@ -476,8 +475,7 @@ Meteor.methods({
       }
     }, (error, result) => {
       if (error) {
-        Logger.warn("error removing from cart", Reaction
-          .Collections.Cart.simpleSchema().namedContext().invalidKeys());
+        Logger.warn("error removing from cart", Collections.Cart.simpleSchema().namedContext().invalidKeys());
         return error;
       }
       if (result) {

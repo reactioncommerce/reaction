@@ -9,6 +9,7 @@ import i18n from "./i18n";
 import Inventory from "./inventory";
 import Layout from "./layout";
 import Orders from "./orders";
+import PayPal from "./paypal";
 import ProductVariant from "./product-variant";
 import Router from "./router";
 import Shipping from "./shipping";
@@ -29,6 +30,7 @@ export default function () {
   Inventory();
   Layout();
   Orders();
+  PayPal();
   ProductVariant();
   Router();
   Shipping();

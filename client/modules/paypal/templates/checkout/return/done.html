@@ -1,0 +1,13 @@
+<template name="paypalDone">
+    <div class="spinner-container">
+      <div class="spinner"></div>
+    </div>
+  <div class="container-fluid-sm">
+    <div class="paypal-done-error">
+      <i class="fa fa-barcode"></i>
+      <p data-i18n="checkoutPayment.processingError">There was a problem processing your payment.</p>
+      <p id="paypal-error-message"></p>
+      <p><a href="{{checkoutUrl}}">Return to Checkout</a></p>
+    </div>
+  </div>
+</template>
