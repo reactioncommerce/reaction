@@ -111,6 +111,9 @@ Meteor.methods({
 
     // we don't process current cart, but merge into it.
     const currentCart = Collections.Cart.findOne(cartId);
+    if (!currentCart) {
+      throw new Meteor.Error("access-denied", "Access Denied");
+    }
     // just used to filter out the current cart
     // we do additional check of cart exists here and if it not exist, next
     // check supposed to throw 403 error
