@@ -1,6 +1,6 @@
 import { Shops, Tags } from "/lib/collections";
 
-describe("core methods", function () {
+describe.skip("core methods", function () {
   describe("shop/removeHeaderTag", function () {
     beforeEach(function () {
       return Tags.remove({});

@@ -78,6 +78,7 @@ vsivsi:job-collection
 dburles:factory
 dispatch:mocha
 practicalmeteor:chai
+practicalmeteor:sinon
 
 # Reaction Commerce Packages
 reactioncommerce:core-theme

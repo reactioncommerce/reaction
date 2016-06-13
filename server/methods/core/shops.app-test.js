@@ -1,8 +1,30 @@
+/* eslint dot-notation: 0 */
+import * as Collections from "/lib/collections";
+import { createJ$ } from "@sanjo/jasmine-expect";
+import { createEnv as createExpectEnv }  from "@sanjo/jasmine-expect";
+import { createEnv as createSpyEnv } from "@sanjo/jasmine-spy";
+import { Factory } from "meteor/dburles:factory";
+import Fixtures from "/server/imports/fixtures";
+import { getShop } from "/server/imports/fixtures/shops";
+import { Reaction } from "/server/api";
 import { Shops } from "/lib/collections";
+
+Fixtures();
+
+const j$ = createJ$();
+const expectEnv = createExpectEnv(j$);
+const spyEnv = createSpyEnv(j$);
+const spyOn = spyEnv.spyOn;
+const expect = expectEnv.expect;
+
 
 describe("core shop schema", function () {
   beforeEach(function () {
     return Shops.remove({});
+  });
+
+  afterEach(function () {
+    spyEnv.clearSpies();
   });
 
   it("should create a new factory shop", function (done) {
@@ -18,6 +40,10 @@ describe("core shop methods", function () {
   let shop;
   beforeEach(function () {
     shop = Factory.create("shop");
+  });
+
+  afterEach(function () {
+    spyEnv.clearSpies();
   });
 
   describe("shop/createShop", function () {
