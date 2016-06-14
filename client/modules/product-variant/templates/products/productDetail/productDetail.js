@@ -169,7 +169,7 @@ Template.productDetail.helpers({
     if (product) {
       if (product.hashtags) {
         return _.map(product.hashtags, function (id) {
-          return Reaction.Collections.Tags.findOne(id);
+          return Tags.findOne(id);
         });
       }
     }
