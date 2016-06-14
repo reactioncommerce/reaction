@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
-import { Paypal } from "/server/api/paypal";
+import { Paypal } from "../api/paypal";
 import { Reaction, Logger } from "/server/api";
 import { PayFlow } from "paypal-rest-sdk";
 import { Shops } from "/lib/collections";

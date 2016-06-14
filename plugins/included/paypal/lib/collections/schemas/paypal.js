@@ -1,5 +1,5 @@
 import { SimpleSchema } from "meteor/aldeed:simple-schema";
-import { PackageConfig } from "./registry";
+import { PackageConfig } from "/lib/collections/schemas/registry";
 
 export const PaypalPackageConfig = new SimpleSchema([
   PackageConfig, {
