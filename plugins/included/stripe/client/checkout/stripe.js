@@ -5,8 +5,16 @@ import {
 } from "/lib/collections";
 
 import {
+  Reaction
+} from "/client/api";
+
+import {
   StripePayment
 } from "../../lib/collections/schemas";
+
+import {
+  Stripe
+} from "../../lib/api";
 
 //
 // local helpers
@@ -57,10 +65,10 @@ AutoForm.addHooks("stripe-payment-form", {
       expire_month: doc.expireMonth,
       expire_year: doc.expireYear,
       cvv2: doc.cvv,
-      type: getCardType(doc.cardNumber)
+      type: Reaction.getCardType(doc.cardNumber)
     };
     let storedCard = form.type.charAt(0).toUpperCase() + form.type.slice(1) + " " + doc.cardNumber.slice(-4);
-    Meteor.Stripe.authorize(form, {
+    Stripe.authorize(form, {
       total: Cart.findOne().cartTotal(),
       currency: Shops.findOne().currency
     }, function (error, transaction) {

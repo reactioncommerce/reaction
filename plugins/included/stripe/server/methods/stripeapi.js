@@ -66,9 +66,9 @@ StripeApi.methods.createCharge = new ValidatedMethod({
     let stripe;
     if (!apiKey) {
       const dynamicApiKey = StripeApi.methods.getApiKey.call();
-      stripe = Npm.require("stripe")(dynamicApiKey);
+      stripe = require("stripe")(dynamicApiKey);
     } else {
-      stripe = Npm.require("stripe")(apiKey);
+      stripe = require("stripe")(apiKey);
     }
     try {
       let chargePromise = stripe.charges.create(chargeObj, function (error, result) {
@@ -100,9 +100,9 @@ StripeApi.methods.captureCharge = new ValidatedMethod({
     let stripe;
     if (!apiKey) {
       const dynamicApiKey = StripeApi.methods.getApiKey.call();
-      stripe = Npm.require("stripe")(dynamicApiKey);
+      stripe = require("stripe")(dynamicApiKey);
     } else {
-      stripe = Npm.require("stripe")(apiKey);
+      stripe = require("stripe")(apiKey);
     }
     let capturePromise = stripe.charges.capture(transactionId, captureDetails, function (error, result) {
       return {error: error, result: result};
@@ -122,9 +122,9 @@ StripeApi.methods.createRefund = new ValidatedMethod({
     let stripe;
     if (!apiKey) {
       const dynamicApiKey = StripeApi.methods.getApiKey.call();
-      stripe = Npm.require("stripe")(dynamicApiKey);
+      stripe = require("stripe")(dynamicApiKey);
     } else {
-      stripe = Npm.require("stripe")(apiKey);
+      stripe = require("stripe")(apiKey);
     }
     let refundPromise = stripe.refunds.create({
       charge: refundDetails.charge,
@@ -148,9 +148,9 @@ StripeApi.methods.listRefunds = new ValidatedMethod({
     let stripe;
     if (!apiKey) {
       const dynamicApiKey = StripeApi.methods.getApiKey.call();
-      stripe = Npm.require("stripe")(dynamicApiKey);
+      stripe = require("stripe")(dynamicApiKey);
     } else {
-      stripe = Npm.require("stripe")(apiKey);
+      stripe = require("stripe")(apiKey);
     }
     let refundListPromise = stripe.refunds.list({ charge: transactionId }, function (error, result) {
       return {error: error, result: result};

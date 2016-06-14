@@ -49,6 +49,7 @@
     "react-dom": "^15.x.x",
     "react-textarea-autosize": "^4.0.2",
     "sortablejs": "^1.4.2",
+    "stripe": "^4.7.0",
     "sweetalert2": "^3.3.4",
     "swiper": "^3.3.1",
     "tether-drop": "^1.4.2",

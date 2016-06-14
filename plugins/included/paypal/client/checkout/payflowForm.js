@@ -3,6 +3,7 @@ import { Meteor } from "meteor/meteor";
 import Logger from "/client/modules/logger";
 import { Cart, Shops } from "/lib/collections";
 import { PaypalPayment } from "../../lib/collections/schemas";
+import { Reaction } from "/client/api";
 
 function uiEnd(template, buttonText) {
   template.$(".cart-checkout-step *").removeAttr("disabled");
@@ -72,7 +73,7 @@ AutoForm.addHooks("paypal-payment-form", {
       expire_month: doc.expireMonth,
       expire_year: doc.expireYear,
       cvv2: doc.cvv,
-      type: getCardType(doc.cardNumber)
+      type: Reaction.getCardType(doc.cardNumber)
     };
     let storedCard = form.type.charAt(0).toUpperCase() + form.type.slice(1) + " " + doc.cardNumber.slice(-4);
     Paypal.authorize(form, {
