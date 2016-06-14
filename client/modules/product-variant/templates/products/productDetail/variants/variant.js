@@ -1,6 +1,7 @@
 import { $ } from "meteor/jquery";
 import { Reaction } from "/client/api";
 import { ReactionProduct } from "/lib/api";
+import { i18next } from "/client/modules/i18n";
 
 // load modules
 require("jquery-ui/sortable");
@@ -41,22 +42,40 @@ Template.variant.helpers({
  * variant events
  */
 
+function showVariant(variant) {
+  const selectedProduct = ReactionProduct.selectedProduct();
+
+  ReactionProduct.setCurrentVariant(variant._id);
+  Session.set("variant-form-" + variant._id, true);
+  Reaction.Router.go("product", {handle: selectedProduct.handle, variantId: variant._id});
+
+  if (Reaction.hasPermission("createProduct")) {
+    Reaction.showActionView({
+      label: "Edit Variant",
+      i18nKeyLabel: "productDetailEdit.editVariant",
+      template: "variantForm",
+      data: variant
+    });
+  }
+}
+
 Template.variant.events({
   "click .variant-edit": function () {
-    ReactionProduct.setCurrentVariant(this._id);
-    return Reaction.toggleSession("variant-form-" + this._id);
+    showVariant(this);
   },
   "dblclick .variant-detail": function () {
-    if (Reaction.hasPermission("createProduct")) {
-      ReactionProduct.setCurrentVariant(this._id);
-      return Reaction.toggleSession("variant-form-" + this._id);
-    }
+    showVariant(this);
   },
   "click .variant-detail > *": function (event) {
     event.preventDefault();
     event.stopPropagation();
     Alerts.removeSeen();
-    return ReactionProduct.setCurrentVariant(this._id);
+
+    ReactionProduct.setCurrentVariant(this._id);
+
+    if (Reaction.getActionView()) {
+      showVariant(this);
+    }
   }
 });
 

@@ -3,6 +3,7 @@ import { Reaction } from "/client/api";
 import Logger from "/client/modules/logger";
 import { ReactionProduct } from "/lib/api";
 import { Media } from "/lib/collections";
+import { _ } from "underscore";
 
 // load modules
 require("jquery-ui/sortable");

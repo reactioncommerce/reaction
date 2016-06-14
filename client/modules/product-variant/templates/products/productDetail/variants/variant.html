@@ -1,34 +1,32 @@
 <template name="variant">
-<li class="variant-list-item" id="variant-list-item-{{_id}}" data-id="{{_id}}">
-  <div class="variant-detail {{selectedVariant}}">
-    <div class="progress">
-      <span class="progress-bar {{progressBar}}" role="progressbar" aria-valuenow="{{displayQuantity}}" aria-valuemin="0" aria-valuemax="{{inventoryTotal}}" style="width: {{inventoryPercentage}}%">
-      </span>
-      <div class="variant-progress-item">
-        {{#if inventoryManagement}}
-          {{#unless isSoldOut }}
-            <span class="variant-qty badge">{{displayQuantity}}</span>
-          {{else}}
-            {{#if inventoryPolicy }}
-            <span class="variant-qty-sold-out badge">Sold Out!</span>
-            {{ else }}
-            <span class="variant-qty-sold-out badge">Backorder</span>
-            {{/if}}
-          {{/unless}}
-        {{/if}}
+  <li class="variant-list-item" id="variant-list-item-{{_id}}" data-id="{{_id}}">
+    <div class="variant-detail {{selectedVariant}}">
+      <div class="title">
         <span class="variant-title">{{title}}</span>
+      </div>
+
+      <div class="actions">
         <span class="variant-price">{{formatPrice displayPrice}}</span>
       </div>
 
-      {{#if hasPermission "createProduct"}}
-      <div class="variant-edit hidden-xs" title="{{i18n 'productDetailEdit.editOption' 'Edit Option'}}">
-          <i class="fa fa-pencil fa-lg" data-id="{{_id}}"></i>
+      <div class="alerts">
+        {{#if inventoryManagement}}
+          {{#if isSoldOut}}
+            {{#if inventoryPolicy }}
+            <span class="variant-qty-sold-out badge badge-warning">Sold Out!</span>
+            {{ else }}
+            <span class="variant-qty-sold-out badge badge-info">Backorder</span>
+            {{/if}}
+          {{/if}}
+        {{/if}}
+
+
+        {{#if hasPermission "createProduct"}}
+          <button class="variant-edit hidden-xs" title="{{i18n 'productDetailEdit.editOption' 'Edit Option'}}">
+            <i class="fa fa-pencil fa-lg" data-id="{{_id}}"></i>
+          </button>
+        {{/if}}
       </div>
-      {{/if}}
     </div>
-  </div>
-  {{#if hasPermission "createProduct"}}
-    {{>variantForm}}
-  {{/if}}
-</li>
+  </li>
 </template>

@@ -6,7 +6,7 @@ import i18nextJquery from "jquery-i18next";
 import { Meteor } from "meteor/meteor";
 import { Tracker } from "meteor/tracker";
 import { Session } from "meteor/session";
-import { _ } from "meteor/underscore";
+import { _ } from "underscore";
 import { SimpleSchema } from "meteor/aldeed:simple-schema";
 import { Reaction } from "/client/api";
 import { Packages, Shops, Translations } from "/lib/collections";

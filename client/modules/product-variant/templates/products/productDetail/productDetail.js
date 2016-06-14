@@ -1,6 +1,6 @@
 import { i18next } from "/client/modules/i18n";
 import { ReactiveDict } from "meteor/reactive-dict";
-import { _ } from "meteor/underscore";
+import { _ } from  "underscore";
 import { $ } from "meteor/jquery";
 import { Reaction } from "/client/api";
 import Logger from "/client/modules/logger";
@@ -31,6 +31,15 @@ Template.productDetail.onCreated(function () {
       // Get the product
       const product = ReactionProduct.setProduct(this.productId(), this.variantId());
       this.state.set("product", product);
+
+      if (Reaction.hasPermission("createProduct")) {
+        if (!Reaction.getActionView() && Reaction.isActionViewOpen() === true) {
+          Reaction.setActionView({
+            template: "productDetailForm",
+            data: product
+          });
+        }
+      }
 
       // Get the product tags
       if (product) {
@@ -83,6 +92,7 @@ Template.productDetail.helpers({
                     handle: result
                   });
                 }
+                return null;
               });
           }
         }
@@ -151,6 +161,8 @@ Template.productDetail.helpers({
       return ReactionProduct.setProduct(instance.productId(),
         instance.variantId());
     }
+
+    return null;
   },
   tags: function () {
     let product = ReactionProduct.selectedProduct();
@@ -161,6 +173,8 @@ Template.productDetail.helpers({
         });
       }
     }
+
+    return null;
   },
   tagsComponent: function () {
     if (Reaction.hasPermission("createProduct")) {
@@ -179,6 +193,8 @@ Template.productDetail.helpers({
       // otherwise we want to show child variants price range
       return ReactionProduct.getVariantPriceRange();
     }
+
+    return null;
   },
   fieldComponent: function () {
     if (Reaction.hasPermission("createProduct")) {
@@ -240,7 +256,7 @@ Template.productDetail.events({
       }
     }
   },
-  "click #add-to-cart": function (event, template) {
+  "click .js-add-to-cart": function (event, template) {
     let productId;
     let qtyField;
     let quantity;
@@ -293,6 +309,8 @@ Template.productDetail.events({
                 Logger.error("Failed to add to cart.", error);
                 return error;
               }
+
+              return true;
             }
           );
         }
@@ -322,6 +340,8 @@ Template.productDetail.events({
         autoHide: 8000
       });
     }
+
+    return null;
   },
   "click .toggle-product-isVisible-link": function (event, template) {
     let errorMsg = "";
@@ -359,38 +379,122 @@ Template.productDetail.events({
             i18nKey: "productDetail.errorMsg"
           });
         }
+
+        return true;
       });
     }
   },
   "click .delete-product-link": function () {
     ReactionProduct.maybeDeleteProduct(this);
   },
-  "click .fa-facebook": function () {
+  "click .js-edit-social"() {
     if (Reaction.hasPermission("createProduct")) {
-      $(".facebookMsg-edit").fadeIn();
-      return $(".facebookMsg-edit-input").focus();
+      Reaction.showActionView({
+        label: "Social",
+        i18nKeyLabel: "social.socialTitle",
+        template: "productDetailSocialForm"
+      });
+    }
+  }
+});
+
+Template.productDetailForm.onCreated(function () {
+  this.state = new ReactiveDict();
+
+  this.autorun(() => {
+    this.state.set({
+      product: ReactionProduct.selectedProduct()
+    });
+
+    const handle = ReactionRouter.getParam("handle");
+
+    if (!handle) {
+      Reaction.clearActionView();
+    }
+  });
+});
+
+Template.productDetailForm.helpers({
+  product() {
+    return Template.instance().state.get("product");
+  },
+  productTitle() {
+    const product = Template.instance().state.get("product") || {};
+    return product.title || i18next.t("productDetailEdit.untitledProduct", "Untitled Product");
+  }
+});
+
+Template.productDetailForm.events({
+  "click .toggle-product-isVisible-link": function (event, instance) {
+    let errorMsg = "";
+    const self = instance.state.get("product");
+    if (!self.title) {
+      errorMsg += `${i18next.t("error.isRequired", { field: i18next.t("productDetailEdit.title") })} `;
+      instance.$(".title-edit-input").focus();
+    }
+    const variants = ReactionProduct.getVariants(self._id);
+    variants.forEach((variant, index) => {
+      if (!variant.title) {
+        errorMsg +=
+          `${i18next.t("error.variantFieldIsRequired", { field: i18next.t("productVariant.title"), number: index + 1 })} `;
+      }
+      // if top variant has children, it is not necessary to check its price
+      if (variant.ancestors.length === 1 && !ReactionProduct.checkChildVariants(variant._id) ||
+        variant.ancestors.length !== 1) {
+        if (!variant.price) {
+          errorMsg +=
+            `${i18next.t("error.variantFieldIsRequired", { field: i18next.t("productVariant.price"), number: index + 1 })} `;
+        }
+      }
+    });
+    if (errorMsg.length > 0) {
+      Alerts.inline(errorMsg, "warning", {
+        placement: "productManagement",
+        i18nKey: "productDetail.errorMsg"
+      });
+    } else {
+      Meteor.call("products/publishProduct", self._id, function (error) {
+        if (error) {
+          return Alerts.inline(error.reason, "error", {
+            placement: "productManagement",
+            id: self._id,
+            i18nKey: "productDetail.errorMsg"
+          });
+        }
+
+        return true;
+      });
     }
   },
-  "click .fa-twitter": function () {
-    if (Reaction.hasPermission("createProduct")) {
-      $(".twitterMsg-edit").fadeIn();
-      return $(".twitterMsg-edit-input").focus();
+  "click .delete-product-link": function (event, instance) {
+    const product = instance.state.get("product");
+    ReactionProduct.maybeDeleteProduct(product);
+  }
+});
+
+Template.productDetailSocialForm.onCreated(function () {
+  this.state = new ReactiveDict();
+
+  this.autorun(() => {
+    this.state.set({
+      product: ReactionProduct.selectedProduct()
+    });
+  });
+});
+
+Template.productDetailSocialForm.helpers({
+  product() {
+    return Template.instance().state.get("product");
+  }
+});
+
+Template.productDetailSocialForm.events({
+  "blur [name=twitterMsg]"(event) {
+    const rawMessage = event.currentTarget.value || "";
+    const message = rawMessage.trim();
+
+    if (message.length > 140) {
+      Alerts.toast("Message is over 140 characters", "warning");
     }
-  },
-  "click .fa-pinterest": function () {
-    if (Reaction.hasPermission("createProduct")) {
-      $(".pinterestMsg-edit").fadeIn();
-      return $(".pinterestMsg-edit-input").focus();
-    }
-  },
-  "click .fa-google-plus": function () {
-    if (Reaction.hasPermission("createProduct")) {
-      $(".googleplusMsg-edit").fadeIn();
-      return $(".googleplusMsg-edit-input").focus();
-    }
-  },
-  "focusout .facebookMsg-edit-input,.twitterMsg-edit-input,.pinterestMsg-edit-input,.googleplusMsg-edit": function () {
-    Session.set("editing-" + this.field, false);
-    return $(".social-media-inputs > *").hide();
   }
 });

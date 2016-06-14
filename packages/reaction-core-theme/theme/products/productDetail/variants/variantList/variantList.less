@@ -1,14 +1,30 @@
+.variant-list {
+  padding: 0;
+}
+
 .variant-list-item {
-  margin: 5px 0 5px 0;
+  margin: 10px 0;
   line-height: 28px;
   cursor: pointer;
-  .progress {
-    height: 28px;
-  }
-  .progress-bar-success {
-    opacity: 0.8;
-  }
-  .well{
-    margin-bottom: 5px;
-  }
+}
+
+.variant-select-option {
+  position: relative;
+}
+
+.variant-select-option .variant-edit {
+  position: absolute;
+  top: 0;
+  right: 0;
+  border: none;
+  font-size: 10px;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50px;
+  width: 24px;
+  height: 24px;
+  background-color: @black20;
+  margin-left: 5px;
 }
