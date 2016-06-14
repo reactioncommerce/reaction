@@ -108,6 +108,8 @@ Meteor.methods({
   "cart/mergeCart": function (cartId, currentSessionId) {
     check(cartId, String);
     check(currentSessionId, Match.Optional(String));
+    console.log("this");
+    console.log(this);
 
     // we don't process current cart, but merge into it.
     const currentCart = Collections.Cart.findOne(cartId);
@@ -119,6 +121,8 @@ Meteor.methods({
     // check supposed to throw 403 error
     const userId = currentCart && currentCart.userId;
     // user should have an access to operate with only one - his - cart
+    console.log("this.userId: " + this.userId);
+    console.log("userId: " + userId);
     if (this.userId !== null && userId !== this.userId) {
       throw new Meteor.Error(403, "Access Denied");
     }

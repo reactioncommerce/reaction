@@ -1,6 +1,10 @@
 import { Shops, Tags } from "/lib/collections";
+import { Meteor } from "meteor/meteor";
+import { expect } from "meteor/practicalmeteor:chai";
+import { stubs, spies } from "meteor/practicalmeteor:sinon";
+import { Reaction } from "/server/api";
 
-describe.skip("core methods", function () {
+describe("Server/Core", function () {
   describe("shop/removeHeaderTag", function () {
     beforeEach(function () {
       return Tags.remove({});
@@ -9,27 +13,33 @@ describe.skip("core methods", function () {
     it("should throw 403 error by non admin", function (done) {
       let currentTag;
       let tag;
-      spyOn(Roles, "userIsInRole").and.returnValue(false);
-      spyOn(Tags, "update");
-      spyOn(Tags, "remove");
+      stubs.create("hasPermissionStub", Reaction, "hasPermission");
+      stubs.hasPermissionStub.returns(false);
+      spies.create("tagUpdateSpy", Tags, "update");
+      // spyOn(Tags, "update");
+      spies.create("tagRemoveSpy", Tags, "remove");
+      // spyOn(Tags, "remove");
       tag = Factory.create("tag");
       currentTag = Factory.create("tag");
-      expect(function () {
+      let removeTagFunc = function () {
         return Meteor.call("shop/removeHeaderTag", tag._id, currentTag._id);
-      }).toThrow(new Meteor.Error(403, "Access Denied"));
-      expect(Tags.update).not.toHaveBeenCalled();
-      expect(Tags.remove).not.toHaveBeenCalled();
+      };
+      expect(removeTagFunc).to.throw(Meteor.Error, /Access Denied/);
+      expect(spies.tagUpdateSpy).to.not.have.been.called;
+      expect(spies.tagRemoveSpy).to.not.have.been.called;
       return done();
     });
+
     it("should remove header tag by admin", function (done) {
       let currentTag;
       let tag;
-      spyOn(Roles, "userIsInRole").and.returnValue(true);
+      stubs.create("hasPermissionStub", Reaction, "hasPermission");
+      stubs.hasPermissionStub.returns(true);
       tag = Factory.create("tag");
       currentTag = Factory.create("tag");
-      expect(Tags.find().count()).toEqual(2);
+      expect(Tags.find().count()).to.equal(2);
       Meteor.call("shop/removeHeaderTag", tag._id, currentTag._id);
-      expect(Tags.find().count()).toEqual(1);
+      expect(Tags.find().count()).to.equal(1);
       return done();
     });
   });
@@ -42,63 +52,70 @@ describe.skip("core methods", function () {
 
     it("should throw 403 error by non admin", function (done) {
       let tag;
-      spyOn(Roles, "userIsInRole").and.returnValue(false);
-      spyOn(Tags, "update");
+      stubs.create("hasPermissionStub", Reaction, "hasPermission");
+      stubs.hasPermissionStub.returns(false);
+      // spyOn(Roles, "userIsInRole").and.returnValue(false);
+      spies.create("tagUpdateSpy", Tags, "update");
+      // spyOn(Tags, "update");
       tag = Factory.create("tag");
-      expect(function () {
+      let updateTagFunc = function () {
         return Meteor.call("shop/updateHeaderTags", tag._id);
-      }).toThrow(new Meteor.Error(403, "Access Denied"));
-      expect(Tags.update).not.toHaveBeenCalled();
+      };
+      expect(updateTagFunc).to.throw(Meteor.Error, /Access Denied/);
+      expect(Tags.update).not.to.have.been.called;
       return done();
     });
 
     it("should insert new header tag with 1 argument by admin", function (done) {
-      spyOn(Roles, "userIsInRole").and.returnValue(true);
-      spyOn(ReactionCore, "hasPermission").and.returnValue(true);
+      stubs.create("hasPermissionStub", Reaction, "hasPermission");
+      stubs.hasPermissionStub.returns(true);
       // spyOn(ReactionCore.hasPermission, "createProduct").and.returnValue(true);
       let tag;
-
       let tagCount = Tags.find().count();
-
       Factory.create("shop"); // Create shop so that ReactionCore.getShopId() doesn't fail
       Meteor.call("shop/updateHeaderTags", "new tag");
-      expect(Tags.find().count()).toEqual(tagCount + 1);
+      expect(Tags.find().count()).to.equal(tagCount + 1);
       tag = Tags.find().fetch()[0];
-      expect(tag.name).toEqual("new tag");
-      expect(tag.slug).toEqual("new-tag");
+      expect(tag.name).to.equal("new tag");
+      expect(tag.slug).to.equal("new-tag");
       return done();
     });
 
     it("should update existing header tag with 2 arguments by admin", function (done) {
       let tag;
-      spyOn(Roles, "userIsInRole").and.returnValue(true);
+      stubs.create("hasPermissionStub", Reaction, "hasPermission");
+      stubs.hasPermissionStub.returns(true);
+
+      // spyOn(Roles, "userIsInRole").and.returnValue(true);
       tag = Factory.create("tag");
       Meteor.call("shop/updateHeaderTags", "updated tag", tag._id);
-      expect(Tags.find().count()).toEqual(1);
+      expect(Tags.find().count()).to.equal(1);
       tag = Tags.find().fetch()[0];
-      expect(tag.name).toEqual("updated tag");
-      expect(tag.slug).toEqual("updated-tag");
+      expect(tag.name).to.equal("updated tag");
+      expect(tag.slug).to.equal("updated-tag");
       return done();
     });
   });
 
   describe("shop/locateAddress", function () {
     it("should locate an address based on known US coordinates", function (done) {
+      this.timeout(5000);
       let address = Meteor.call("shop/locateAddress", 34.043125, -118.267118);
-      expect(address.zipcode).toEqual("90015");
+      expect(address.zipcode).to.equal("90015");
       return done();
     });
 
     it("should locate an address with known international coordinates", function (done) {
+      this.timeout(5000);
       let address = Meteor.call("shop/locateAddress", 53.414619, -2.947065);
-      expect(address.formattedAddress).toContain("Molyneux Rd, Kensington, Liverpool, Merseyside L6 6AW, UK");
+      expect(address.formattedAddress).to.contain("Molyneux Rd, Kensington, Liverpool, Merseyside L6 6AW, UK");
       return done();
     });
 
     it("should provide default empty address", function (done) {
+      this.timeout(5000);
       let address = Meteor.call("shop/locateAddress", 26.352498, -89.25293);
-
-      expect(address).toEqual({
+      expect(address).to.equal({
         latitude: null,
         longitude: null,
         country: "United States",
@@ -110,7 +127,6 @@ describe.skip("core methods", function () {
         streetNumber: null,
         countryCode: "US"
       });
-
       return done();
     });
   });

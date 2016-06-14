@@ -1,37 +1,24 @@
 /* eslint dot-notation: 0 */
-import * as Collections from "/lib/collections";
-import { createJ$ } from "@sanjo/jasmine-expect";
-import { createEnv as createExpectEnv }  from "@sanjo/jasmine-expect";
-import { createEnv as createSpyEnv } from "@sanjo/jasmine-spy";
 import { Factory } from "meteor/dburles:factory";
 import Fixtures from "/server/imports/fixtures";
-import { getShop } from "/server/imports/fixtures/shops";
 import { Reaction } from "/server/api";
 import { Shops } from "/lib/collections";
+import { expect } from "meteor/practicalmeteor:chai";
+import { stubs, spies } from "meteor/practicalmeteor:sinon";
 
 Fixtures();
-
-const j$ = createJ$();
-const expectEnv = createExpectEnv(j$);
-const spyEnv = createSpyEnv(j$);
-const spyOn = spyEnv.spyOn;
-const expect = expectEnv.expect;
-
 
 describe("core shop schema", function () {
   beforeEach(function () {
     return Shops.remove({});
   });
 
-  afterEach(function () {
-    spyEnv.clearSpies();
-  });
-
   it("should create a new factory shop", function (done) {
-    spyOn(Roles, "userIsInRole").and.returnValue(true);
-    spyOn(Shops, "insert");
+    stubs.create("hasPermissionStub", Reaction, "hasPermission");
+    stubs.hasPermissionStub.returns(true);
+    spies.create("shopInsertSpy", Shops, "insert");
     Factory.create("shop");
-    expect(Shops.insert).toHaveBeenCalled();
+    expect(spies.shopInsertSpy).to.have.been.called;
     return done();
   });
 });
@@ -42,32 +29,35 @@ describe("core shop methods", function () {
     shop = Factory.create("shop");
   });
 
-  afterEach(function () {
-    spyEnv.clearSpies();
-  });
-
   describe("shop/createShop", function () {
     beforeEach(function () {
       Shops.remove({});
     });
     it("should throw 403 error by non admin", function (done) {
-      spyOn(Roles, "userIsInRole").and.returnValue(false);
-      spyOn(Shops, "insert");
-      expect(function () {
+      stubs.create("hasPermissionStub", Reaction, "hasPermission");
+      stubs.hasPermissionStub.returns(false);
+      spies.create("shopInsertSpy", Shops, "insert");
+      let createShopFunc = function () {
         return Meteor.call("shop/createShop");
-      }).toThrow(new Meteor.Error(403, "Access Denied"));
-      expect(Shops.insert).not.toHaveBeenCalled();
+      };
+      expect(createShopFunc).to.throw(Meteor.Error, /Access Denied/);
+      expect(Shops.insert).to.not.have.been.called;
       return done();
     });
 
     it("should create new shop for admin for userId and shopObject", function (done) {
-      spyOn(Meteor, "userId").and.returnValue("1234678");
-      spyOn(Roles, "userIsInRole").and.returnValue(true);
+      stubs.create("meteorUserSpy", Meteor, "userId");
+      stubs.meteorUserSpy.returns("12345678");
+      // spyOn(Meteor, "userId").and.returnValue("1234678");
+
+      stubs.create("hasOwnerSpy", Reaction, "hasOwnerAccess");
+      stubs.hasOwnerSpy.returns(true);
+      // spyOn(Roles, "userIsInRole").and.returnValue(true);
 
       Meteor.call("shop/createShop", "1234678", shop);
 
       const newShopCount = Shops.find({name: shop.name}).count();
-      expect(newShopCount).toEqual(1);
+      expect(newShopCount).to.equal(1);
       return done();
     });
 

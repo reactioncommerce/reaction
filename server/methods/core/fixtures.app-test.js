@@ -9,7 +9,7 @@ import { getUser } from "/server/imports/fixtures/accounts";
 import { metaField, productVariant, addProduct } from "/server/imports/fixtures/products";
 import { getCartItem } from "/server/imports/fixtures/cart";
 
-describe("Fixtures functions", function () {
+describe.skip("Fixtures functions", function () {
   describe("Shops Fixture", function () {
     it("getShop should return a new shop", function () {
       let shop = getShop();
