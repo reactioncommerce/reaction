@@ -1,5 +1,6 @@
 import { Reaction } from "/client/api";
 import { Packages } from "/lib/collections";
+import { merge } from "lodash";
 
 Template.reactionSocial.onCreated(function () {
   let self = this;
@@ -24,15 +25,17 @@ Template.reactionSocial.helpers({
   socialTemplates: function () {
     const templates = [];
     const template = Template.instance();
+
     if (template && template.socialSettings) {
       let socialSettings = template.socialSettings;
-      socialSettings = Object.assign({}, socialSettings,
-        Template.currentData());
+      socialSettings = merge({}, socialSettings, Template.currentData());
 
       if (socialSettings.appsOrder) {
         const appsOrder = socialSettings.appsOrder;
+
         for (let i = 0; i < appsOrder.length; i++) {
           let app = appsOrder[i];
+
           if (typeof socialSettings.apps[app] === "object" &&
             socialSettings.apps[app].enabled) {
             templates.push(app);
@@ -40,7 +43,6 @@ Template.reactionSocial.helpers({
         }
       }
     }
-
     return templates;
   }
 });

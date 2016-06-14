@@ -1,5 +1,5 @@
 import accounting from "accounting-js";
-import i18next from "i18next";
+import { i18next } from "/client/modules/i18n";
 import { localeDep, i18nextDep } from  "./main";
 import { Reaction } from "/client/api";
 import Logger from "/client/modules/logger";

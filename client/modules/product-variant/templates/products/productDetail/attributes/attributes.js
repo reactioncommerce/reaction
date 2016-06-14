@@ -1,23 +1,35 @@
 import { ReactionProduct } from "/lib/api";
 
 /**
- * productMetaFieldForm events
- */
-
-Template.productMetaFieldForm.events({
-  "click .metafield-remove": function () {
-    let productId;
-    productId = ReactionProduct.selectedProductId();
-    Meteor.call("products/removeMetaFields", productId, this);
-  }
-});
-
-/**
  * metaComponent helpers
  */
 
+Template.metaComponent.helpers({
+  buttonProps() {
+    const currentData = Template.currentData();
+
+    return {
+      icon() {
+        if (currentData.createNew) {
+          return "plus";
+        }
+
+        return "times-circle";
+      },
+      onClick() {
+        if (!currentData.createNew) {
+          const productId = ReactionProduct.selectedProductId();
+          Meteor.call("products/removeMetaFields", productId, currentData);
+        }
+      }
+    };
+  }
+});
+
+
 Template.metaComponent.events({
   "change input": function (event) {
+    const productId = ReactionProduct.selectedProductId();
     const updateMeta = {
       key: $(event.currentTarget).parent().children(
         ".metafield-key-input").val(),
@@ -25,7 +37,6 @@ Template.metaComponent.events({
         ".metafield-value-input").val()
     };
     if (this.key) {
-      const productId = ReactionProduct.selectedProductId();
       Meteor.call("products/updateMetaFields", productId, updateMeta,
         this);
       $(event.currentTarget).animate({
@@ -41,7 +52,7 @@ Template.metaComponent.events({
         "").focus();
     }
     if (updateMeta.key && updateMeta.value) {
-      Meteor.call("products/updateMetaFields", this._id, updateMeta);
+      Meteor.call("products/updateMetaFields", productId, updateMeta);
       Tracker.flush();
       $(event.currentTarget).parent().children(".metafield-key-input").val(
         "").focus();

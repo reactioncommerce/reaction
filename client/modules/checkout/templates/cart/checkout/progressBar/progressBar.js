@@ -1,4 +1,5 @@
 import { Cart } from "/lib/collections";
+import { _ } from "underscore";
 
 /**
  * checkoutProgressBar helpers

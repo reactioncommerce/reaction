@@ -33,12 +33,21 @@
   border: @border-thin;
 }
 
-.action-view-body > .panel-group {
+label.panel-title {
+  font-weight: normal;
+}
+
+.panel-active > .panel-heading {
+  background-color: @brand-accent-color;
+}
+
+.action-view-body .panel-group {
   margin-bottom: 0;
 }
 
 .action-view-body > .panel,
 .action-view-body > .panel-group > .panel,
+.action-view-body > .panel-group > .panel > .panel-group > .panel,
 .action-view-body > form > .panel,
 .action-view-body > form > .panel-group > .panel {
   border-left: none;
@@ -59,6 +68,10 @@
   background: @black02;
 }
 
+.panel-group-accordian .panel-active a.panel-heading {
+  background-color: @brand-accent-color;
+}
+
 .panel-heading-flex {
   .display(flex);
   .align-items(center);
@@ -67,6 +80,10 @@
 .panel-heading-flex > .panel-title {
   .flex(1 1 auto);
   .align-items(center);
+}
+
+.panel-heading-flex > .media {
+  margin-right: 10px;
 }
 
 .panel-heading-flex > .panel-controls {
@@ -100,7 +117,8 @@
 }
 
 
-.panel-control-bar {
+.panel-control-bar,
+.panel-toolbar {
   .display(flex);
   .justify-content(space-between);
 
@@ -110,7 +128,8 @@
 }
 
 .panel-control-bar .panel-title {}
-.panel-control-bar .panel-controls {
+.panel-control-bar .panel-controls,
+.panel-toolbar .panel-controls {
   .display(flex);
   .justify-content(center);
 }

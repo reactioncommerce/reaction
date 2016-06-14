@@ -92,15 +92,11 @@
           "stripeSettingsLabel": "Stripe Settings",
           "inventorySettingsLabel": "Inventory Settings",
           "analyticsSettingsLabel": "Analytics Settings",
-          "segmentNotConfigured": "Segment Write Key not configured.",
-          "googleAnalyticsNotConfigured": "Google Analytics Property not configured.",
-          "mixpanelNotConfigured": "Mixpanel not configured.",
           "paypalSettingsLabel": "PayPal Settings",
           "genericPaymentSettingsLabel": "Generic Payment Settings",
           "reactionConnectLabel": "Reaction Connect",
           "examplePaymentSettingsLabel": "Example Payment",
-          "analyticsSettingsSaved": "Analytics settings saved.",
-          "analyticsSettingsFailed": "Analytics settings update failed:"
+          "productSettingsLabel": "Product Settings"
         },
         "userAccountDropdown": {
           "profileLabel": "Profile"
@@ -176,6 +172,7 @@
       "productDetail": {
         "productManagement": "Product management",
         "makeInvisible": "Make invisible",
+        "makeVisible": "Make visible",
         "isNotVisible": "This product is not visible to customers.",
         "makeItVisible": "You can make it visible",
         "whenYouAreDone": "when you're done editing.",
@@ -236,6 +233,7 @@
         "product": "Product",
         "size": "Size",
         "title": "Product title",
+        "untitledProduct": "Untitled Product",
         "pageTitle": "Product page title",
         "vendor": "Product vendor",
         "description": "Add a product description",
@@ -243,6 +241,9 @@
         "twitterMsg": "Twitter Message",
         "pinterestMsg": "Pinterest Message",
         "googleplusMsg": "Google+ Message",
+        "editVariant": "Edit Variant",
+        "variantOptions": "Variant Options",
+        "variantDetails": "Variant Details",
         "duplicateVariant": "Duplicate",
         "addVariantOption": "Add Option",
         "removeVariant": "Remove",
@@ -573,6 +574,7 @@
         "text": "Create"
       },
       "social": {
+        "socialTitle": "Social",
         "facebook": "Facebook",
         "google": "Google",
         "github": "GitHub",
