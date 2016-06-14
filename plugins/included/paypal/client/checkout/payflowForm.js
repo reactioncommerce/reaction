@@ -2,6 +2,7 @@
 import { Meteor } from "meteor/meteor";
 import Logger from "/client/modules/logger";
 import { Cart, Shops } from "/lib/collections";
+import { PaypalPayment } from "../../lib/collections/schemas";
 
 function uiEnd(template, buttonText) {
   template.$(".cart-checkout-step *").removeAttr("disabled");
@@ -47,6 +48,18 @@ function handlePaypalSubmitError(error) {
   return paymentAlert("Oops! An unknown error has occurred");
 }
 
+//
+// paypal flow form helpers
+//
+Template.paypalPayflowForm.helpers({
+  PaypalPayment: function () {
+    return PaypalPayment;
+  }
+});
+
+//
+// autoform handling
+//
 AutoForm.addHooks("paypal-payment-form", {
   onSubmit: function (doc) {
     hidePaymentAlert();

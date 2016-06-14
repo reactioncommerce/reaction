@@ -1,7 +1,11 @@
-import { Reaction } from "/client/modules/core";
+import { Reaction } from "/client/api";
 import { Packages } from "/lib/collections";
+import { PaypalPackageConfig } from "../../lib/collections/schemas";
 
 Template.paypalDashboard.helpers({
+  PaypalPackageConfig: function () {
+    return PaypalPackageConfig;
+  },
   packageData: function () {
     return Packages.findOne({
       name: "reaction-paypal"

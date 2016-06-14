@@ -1,7 +1,11 @@
 /* eslint camelcase: 0 */
 import { Packages } from "/lib/collections";
+import { PaypalPackageConfig } from "../../lib/collections/schemas";
 
 Template.paypalSettings.helpers({
+  PaypalPackageConfig: function () {
+    return PaypalPackageConfig;
+  },
   packageData: function () {
     return Packages.findOne({
       name: "reaction-paypal"
