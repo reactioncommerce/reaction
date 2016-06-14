@@ -1,13 +1,11 @@
 import { i18next } from "/client/modules/i18n";
-import { slugify } from "transliteration";
 import { ReactiveDict } from "meteor/reactive-dict";
-import { _ } from "meteor/underscore";
+import { _ } from  "underscore";
 import { $ } from "meteor/jquery";
-import { Reaction } from "/client/modules/core";
+import { Reaction } from "/client/api";
 import Logger from "/client/modules/logger";
 import { ReactionProduct } from "/lib/api";
-import { ReactionRouter } from "/client/modules/router";
-import { Products, Tags } from "/lib/collections";
+import { Tags } from "/lib/collections";
 
 // load modules
 require("jquery-ui");
@@ -20,9 +18,8 @@ Template.productDetail.onCreated(function () {
     tags: []
   });
   this.subscribe("Tags");
-  this.productId = () => ReactionRouter.getParam("handle");
-  this.variantId = () => ReactionRouter.getParam("variantId");
-
+  this.productId = () => Reaction.Router.getParam("handle");
+  this.variantId = () => Reaction.Router.getParam("variantId");
   this.autorun(() => {
     if (this.productId()) {
       this.subscribe("Product", this.productId());
@@ -81,7 +78,8 @@ Template.productDetail.helpers({
           onIcon: "bookmark",
           toggle: true,
           toggleOn(tag) {
-            if (product.handle === tag.slug) {
+            const handle = product.handle;
+            if (Reaction.getSlug(handle) === tag.slug) {
               return true;
             }
             return false;
@@ -90,7 +88,7 @@ Template.productDetail.helpers({
             Meteor.call("products/setHandleTag", productId, tag._id,
               function (error, result) {
                 if (result) {
-                  return ReactionRouter.go("product", {
+                  return Reaction.Router.go("product", {
                     handle: result
                   });
                 }

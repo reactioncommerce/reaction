@@ -3,7 +3,6 @@ import { Tracker } from "meteor/tracker";
 import Logger from "/client/modules/logger";
 import { Countries } from "/client/collections";
 import { localeDep } from  "/client/modules/i18n";
-import { ReactionRouter } from "/client/modules/router";
 import { Packages, Shops } from "/lib/collections";
 
 /**
@@ -215,15 +214,15 @@ export default {
   },
 
   getCurrentTag() {
-    if (ReactionRouter.getRouteName() === "tag") {
-      return ReactionRouter.current().params.slug;
+    if (this.Router.getRouteName() === "tag") {
+      return this.Router.current().params.slug;
     }
   },
 
   getRegistryForCurrentRoute(provides = "dashboard") {
-    ReactionRouter.watchPathChange();
-    const currentRouteName = ReactionRouter.getRouteName();
-    const currentRoute = ReactionRouter.current();
+    this.Router.watchPathChange();
+    const currentRouteName = this.Router.getRouteName();
+    const currentRoute = this.Router.current();
     const template = currentRoute.route.options.template;
     // find registry entries for routeName
     let reactionApp = Packages.findOne({

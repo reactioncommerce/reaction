@@ -1,9 +1,7 @@
 import { $ } from "meteor/jquery";
-import { Reaction } from "/client/modules/core";
+import { Reaction } from "/client/api";
 import { ReactionProduct } from "/lib/api";
-import { ReactionRouter } from "/client/modules/router";
-import i18next from "i18next";
-
+import { i18next } from "/client/modules/i18n";
 
 // load modules
 require("jquery-ui/sortable");
@@ -49,7 +47,7 @@ function showVariant(variant) {
 
   ReactionProduct.setCurrentVariant(variant._id);
   Session.set("variant-form-" + variant._id, true);
-  ReactionRouter.go("product", {handle: selectedProduct.handle, variantId: variant._id});
+  Reaction.Router.go("product", {handle: selectedProduct.handle, variantId: variant._id});
 
   if (Reaction.hasPermission("createProduct")) {
     Reaction.showActionView({

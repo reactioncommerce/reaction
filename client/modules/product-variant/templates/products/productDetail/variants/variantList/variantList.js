@@ -1,6 +1,5 @@
-import { Reaction } from "/client/modules/core";
+import { Reaction } from "/client/api";
 import { ReactionProduct } from "/lib/api";
-import { ReactionRouter } from "/client/modules/router";
 import { Products, Media } from "/lib/collections";
 import { i18next } from "/client/modules/i18n";
 
@@ -119,7 +118,7 @@ Template.variantList.events({
     Alerts.removeSeen();
 
     const selectedProduct = ReactionProduct.selectedProduct();
-    ReactionRouter.go("product", {handle: selectedProduct.handle, variantId: this._id});
+    Reaction.Router.go("product", {handle: selectedProduct.handle, variantId: this._id});
 
     return ReactionProduct.setCurrentVariant(this._id);
   },

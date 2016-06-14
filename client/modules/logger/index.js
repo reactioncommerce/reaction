@@ -1,6 +1,6 @@
 import bunyan from "bunyan";
 import { Meteor } from "meteor/meteor";
-import { _ } from "meteor/underscore";
+import { _ } from "underscore";
 
 /*
  * configure bunyan logging module for reaction client

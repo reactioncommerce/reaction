@@ -1,5 +1,5 @@
 import { ReactiveDict } from "meteor/reactive-dict";
-import { _ } from "meteor/underscore";
+import { _ } from "underscore";
 import Logger from "/client/modules/logger";
 import { ReactionProduct } from "/lib/api";
 import { Media, Products } from "/lib/collections";

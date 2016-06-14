@@ -1,6 +1,5 @@
-import { Reaction } from "/client/modules/core";
+import { Reaction } from "/client/api";
 import Logger from "/client/modules/logger";
-import { ReactionRouter } from "/client/modules/router";
 import { Tags } from "/lib/collections";
 
 Template.loginDropdown.events({
@@ -31,8 +30,8 @@ Template.loginDropdown.events({
       }
       // go home on logout
       Reaction.Subscriptions.Manager.reset();
-      ReactionRouter.reload();
-      ReactionRouter.go("/");
+      Reaction.Router.reload();
+      Reaction.Router.go("/");
     });
   },
 
@@ -59,7 +58,7 @@ Template.loginDropdown.events({
           if (currentTag) {
             Meteor.call("products/updateProductTags", productId, currentTag.name, currentTagId);
           }
-          ReactionRouter.go("product", {
+          Reaction.Router.go("product", {
             handle: productId
           });
         }
@@ -68,7 +67,7 @@ Template.loginDropdown.events({
       event.preventDefault();
       template.$(".dropdown-toggle").dropdown("toggle");
       const route = this.name || this.route;
-      ReactionRouter.go(route);
+      Reaction.Router.go(route);
     }
   }
 });

@@ -1,5 +1,5 @@
-import { slugify } from "transliteration";
 import $ from "jquery";
+import { Reaction } from "/client/api";
 import { Tags } from "/lib/collections";
 import classnames from "classnames";
 
@@ -62,7 +62,7 @@ Template.tagEditable.onRendered(function () {
     delay: 0,
     source: function (request, response) {
       let datums = [];
-      let slug = slugify(request.term);
+      let slug = Reaction.getSlug(request.term);
       Tags.find({
         slug: new RegExp(slug, "i")
       }).forEach(function (tag) {
@@ -142,7 +142,7 @@ Template.tagBlank.onRendered(function () {
     delay: 0,
     source: function (request, response) {
       let datums = [];
-      let slug = slugify(request.term);
+      let slug = Reaction.getSlug(request.term);
       Tags.find({
         slug: new RegExp(slug, "i")
       }).forEach(function (tag) {

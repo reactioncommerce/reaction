@@ -1,4 +1,4 @@
-import { slugify } from "transliteration";
+import { Reaction } from "/server/api";
 import { Products, Tags } from "/lib/collections";
 
 /* eslint dot-notation: 0 */
@@ -596,7 +596,7 @@ describe("core product methods", function () {
         const tag = Tags.findOne({
           name: tagName
         });
-        expect(tag.slug).toEqual(slugify(tagName));
+        expect(tag.slug).toEqual(Reaction.getSlug(tagName));
 
         product = Products.findOne(product._id);
         expect(product.hashtags).toContain(tag._id);

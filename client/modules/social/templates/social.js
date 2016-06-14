@@ -1,4 +1,4 @@
-import { Reaction } from "/client/modules/core";
+import { Reaction } from "/client/api";
 import { Packages } from "/lib/collections";
 import { merge } from "lodash";
 

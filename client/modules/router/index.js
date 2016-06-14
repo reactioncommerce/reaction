@@ -1,5 +1,1 @@
-import ReactionRouter from "./main";
-
-export {
-  ReactionRouter
-};
+export { default as Router } from "./main";

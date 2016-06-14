@@ -1,7 +1,6 @@
-import { Reaction } from "/client/modules/core";
+import { Reaction } from "/client/api";
 import { i18next } from "/client/modules/i18n";
 import { ReactionProduct } from "/lib/api";
-import { ReactionRouter } from "/client/modules/router";
 import { Media } from "/lib/collections";
 import { Icon } from "/client/modules/ui/components";
 
@@ -10,7 +9,7 @@ import { Icon } from "/client/modules/ui/components";
  */
 Template.onRendered(function () {
   this.autorun(() => {
-    const selectedVariantId = ReactionRouter.getParam("variantId");
+    const selectedVariantId = Reaction.Router.getParam("variantId");
 
     $(`div.child-variant-collapse:not(#child-variant-form-${selectedVariantId})`).collapse("hide");
     $(`#child-variant-form-${selectedVariantId}`).collapse("show");
@@ -94,7 +93,7 @@ Template.childVariantForm.events({
     const selectedProduct = ReactionProduct.selectedProduct();
     const variantId = template.data._id;
 
-    ReactionRouter.go("product", {
+    Reaction.Router.go("product", {
       handle: selectedProduct.handle,
       variantId: variantId
     });
@@ -118,7 +117,7 @@ Template.childVariantForm.events({
     const selectedProduct = ReactionProduct.selectedProduct();
     const variantId = instance.data._id;
 
-    ReactionRouter.go("product", {
+    Reaction.Router.go("product", {
       handle: selectedProduct.handle,
       variantId: variantId
     });

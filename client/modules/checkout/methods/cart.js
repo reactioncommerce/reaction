@@ -1,6 +1,6 @@
 import { i18next } from "/client/modules/i18n";
 import Logger from "/client/modules/logger";
-import { ReactionRouter } from "/client/modules/router";
+import { Reaction } from "/client/api";
 import { Cart } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 
@@ -65,7 +65,7 @@ Meteor.methods({
           "paymentSubmitted");
         // Client Stub Actions
         if (result === 1) {
-          ReactionRouter.go("cart/completed", {}, {
+          Reaction.Router.go("cart/completed", {}, {
             _id: cartId
           });
         } else {

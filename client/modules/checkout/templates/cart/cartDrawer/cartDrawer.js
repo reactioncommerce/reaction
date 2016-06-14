@@ -1,5 +1,4 @@
-import { Reaction } from "/client/modules/core";
-import { ReactionRouter } from "/client/modules/router";
+import { Reaction } from "/client/api";
 import { Cart } from "/lib/collections";
 
 /**
@@ -53,7 +52,7 @@ Template.openCartDrawer.events({
   "click #btn-checkout": function () {
     $("#cart-drawer-container").fadeOut();
     Session.set("displayCart", false);
-    return ReactionRouter.go("cart/checkout");
+    return Reaction.Router.go("cart/checkout");
   },
   "click .remove-cart-item": function (event) {
     event.stopPropagation();
