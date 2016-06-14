@@ -1,5 +1,6 @@
 import Swiper from "swiper";
 import { Media, Products } from "/lib/collections";
+import { _ } from "underscore";
 
 /**
  * Add swiper to cartDrawerItems
