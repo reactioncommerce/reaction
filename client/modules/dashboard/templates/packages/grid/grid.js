@@ -1,5 +1,7 @@
+import { Meteor } from "meteor/meteor";
 import { i18next } from "/client/modules/i18n";
 import { Reaction } from "/client/api";
+import { _ } from "underscore";
 
 function pkgPermissions(pkg) {
   // if (Reaction.hasPermission("dashboard")) {

@@ -1,8 +1,11 @@
+import { Meteor } from "meteor/meteor";
+import { check } from "meteor/check";
 import { i18next } from "/client/modules/i18n";
 import Logger from "/client/modules/logger";
 import { Reaction } from "/client/api";
 import { Cart } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
+import { _ } from "underscore";
 
 // Client Cart Methods
 // Stubs with matching server methods.
@@ -57,12 +60,10 @@ Meteor.methods({
       error, result) {
       if (error) {
         Logger.warn(error);
-        throw new Meteor.Error("An error occurred saving the order",
-          error);
+        throw new Meteor.Error("An error occurred saving the order", error);
       } else {
         // it's ok for this to be called multiple times
-        Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow",
-          "paymentSubmitted");
+        Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow", "paymentSubmitted");
         // Client Stub Actions
         if (result === 1) {
           Reaction.Router.go("cart/completed", {}, {

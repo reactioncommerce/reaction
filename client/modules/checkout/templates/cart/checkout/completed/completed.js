@@ -1,3 +1,4 @@
+import { Meteor } from "meteor/meteor";
 import { i18next } from "/client/modules/i18n";
 import { Reaction } from "/client/api";
 import { Orders } from "/lib/collections";
@@ -19,6 +20,7 @@ Template.cartCompleted.helpers({
         });
       }
     }
+    return {};
   },
   orderStatus: function () {
     if (this.workflow.status === "new") {
@@ -33,6 +35,7 @@ Template.cartCompleted.helpers({
         cartId: this._id
       });
     }
+    return {};
   }
 });
 

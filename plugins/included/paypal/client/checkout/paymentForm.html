@@ -1,0 +1,10 @@
+<template name="paypalPaymentForm">
+  <div class="text-center paypal-express">
+  {{#if expressCheckoutEnabled}}
+    {{> paypalCheckoutButton}}
+  {{/if}}
+  </div>
+  {{#if payflowEnabled}}
+    {{> paypalPayflowForm}}
+  {{/if}}
+</template>
