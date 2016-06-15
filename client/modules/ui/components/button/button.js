@@ -1,6 +1,6 @@
 import { i18next } from "/client/modules/i18n";
 import { Template }  from "meteor/templating";
-import { _ } from "underscore";
+import { _ } from "lodash";
 import { Reaction } from "/client/api";
 import { i18nextDep } from  "/client/modules/i18n";
 import { Icon } from "/client/modules/ui/components";

@@ -1,6 +1,6 @@
 import { i18next } from "/client/modules/i18n";
 import { Reaction } from "/client/api";
-import { _ } from "underscore";
+import { _ } from "lodash";
 
 /**
  * productGrid helpers
@@ -32,7 +32,7 @@ Template.productGrid.events({
       const products = productCursor.fetch();
 
       let filteredProducts = _.filter(products, (product) => {
-        return _.contains(selectedProducts, product._id);
+        return _.includes(selectedProducts, product._id);
       });
 
       Reaction.showActionView({

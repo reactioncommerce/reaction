@@ -78,7 +78,7 @@ StripeApi.methods.createCharge = new ValidatedMethod({
       return promiseResult;
     } catch (e) {
       // Handle "expected" errors differently
-      if (e.rawType === "card_error" && _.contains(expectedErrors, e.code)) {
+      if (e.rawType === "card_error" && _.includes(expectedErrors, e.code)) {
         Logger.info("Error from Stripe is expected, not throwing");
         return {error: e, result: null};
       }

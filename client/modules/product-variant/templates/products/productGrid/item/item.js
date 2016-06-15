@@ -3,7 +3,7 @@ import { Reaction } from "/client/api";
 import Logger from "/client/modules/logger";
 import { ReactionProduct } from "/lib/api";
 import { Media } from "/lib/collections";
-import { _ } from "underscore";
+import { _ } from "lodash";
 
 // load modules
 require("jquery-ui/sortable");
@@ -51,7 +51,7 @@ Template.productGridItems.helpers({
     }
   },
   isSelected: function () {
-    return _.contains(Session.get("productGrid/selectedProducts"), this._id) ? "active" : "";
+    return _.includes(Session.get("productGrid/selectedProducts"), this._id) ? "active" : "";
   },
   isMediumWeight: function () {
     const tag = ReactionProduct.getTag();

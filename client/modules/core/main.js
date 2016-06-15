@@ -4,7 +4,7 @@ import Logger from "/client/modules/logger";
 import { Countries } from "/client/collections";
 import { localeDep } from  "/client/modules/i18n";
 import { Packages, Shops } from "/lib/collections";
-import { _ } from "underscore";
+import { _ } from "lodash";
 
 /**
  * Reaction core namespace

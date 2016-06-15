@@ -1,7 +1,7 @@
 import { i18next } from "/client/modules/i18n";
 import { Reaction } from "/client/api";
 import { Media, Packages, Shops } from "/lib/collections";
-import { _ } from "underscore";
+import { _ } from "lodash";
 
 Template.shopBrandImageOption.helpers({
   cardProps(data) {

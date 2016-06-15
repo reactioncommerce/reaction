@@ -1,5 +1,6 @@
 import bunyan from "bunyan";
 import bunyanFormat from "bunyan-format";
+import { _ } from "lodash";
 
 // configure bunyan logging module for reaction server
 // See: https://github.com/trentm/node-bunyan#levels
@@ -11,7 +12,7 @@ if (isDebug === true || mode === "development" && isDebug !== false) {
   if (typeof isDebug !== "boolean" && typeof isDebug !== undefined) {
     isDebug = isDebug.toUpperCase();
   }
-  if (!_.contains(levels, isDebug)) {
+  if (!_.includes(levels, isDebug)) {
     isDebug = "WARN";
   }
 }

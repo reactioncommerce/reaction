@@ -76,7 +76,7 @@ Template.coreOrderShippingTracking.helpers({
         }
       });
 
-      return _.contains(fullItem.workflow.workflow, "coreOrderItemWorkflow/shipped");
+      return _.includes(fullItem.workflow.workflow, "coreOrderItemWorkflow/shipped");
     });
 
     return shippedItems;
@@ -93,7 +93,7 @@ Template.coreOrderShippingTracking.helpers({
         }
       });
 
-      return _.contains(fullItem.workflow.workflow, "coreOrderItemWorkflow/completed");
+      return _.includes(fullItem.workflow.workflow, "coreOrderItemWorkflow/completed");
     });
 
     return completedItems;
