@@ -1,11 +1,20 @@
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
-import { Paypal } from "../api/paypal";
 import { Reaction, Logger } from "/server/api";
-import { PayFlow } from "paypal-rest-sdk";
 import { Shops } from "/lib/collections";
+import { Paypal } from "../../lib/api";
+// PayFlow is PayPal lib
+import PayFlow from "paypal-rest-sdk";
 
 Meteor.methods({
+  /**
+   * payflowProSubmit
+   * Create and Submit a PayPal PayFlow transaction
+   * @param  {Object} transactionType transactionType
+   * @param  {Object} cardData cardData object
+   * @param  {Object} paymentData paymentData object
+   * @return {Object} results from PayPal payment create
+   */
   "payflowProSubmit": function (transactionType, cardData, paymentData) {
     check(transactionType, String);
     check(cardData, Object);
@@ -35,6 +44,7 @@ Meteor.methods({
 
 
   /**
+   * payflowpro/payment/capture
    * Capture an authorized PayPal transaction
    * @param  {Object} paymentMethod A PaymentMethod object
    * @return {Object} results from PayPal normalized

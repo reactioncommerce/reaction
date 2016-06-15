@@ -1,3 +1,6 @@
+import { Meteor } from "meteor/meteor";
+import { Cart } from "/lib/collections";
+
 /**
  * PayPal Checkout Button
  *
@@ -27,7 +30,7 @@ function doSetup(element, expressCheckoutSettings) {
  */
 function checkout() {
   paypal.checkout.initXO();
-  let cart = ReactionCore.Collections.Cart.findOne();
+  let cart = Cart.findOne();
   if (!cart) {
     return undefined;
   }

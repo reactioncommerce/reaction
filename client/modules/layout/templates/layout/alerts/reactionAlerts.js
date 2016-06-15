@@ -1,5 +1,7 @@
+import { Meteor } from "meteor/meteor";
 import swal from "sweetalert2";
 import "sweetalert2/dist/sweetalert2.css";
+import { _ } from "underscore";
 
 // Extends Bootstaps alerts and add more alert types
 Meteor.startup(function () {

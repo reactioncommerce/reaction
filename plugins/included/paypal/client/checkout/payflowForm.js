@@ -4,6 +4,7 @@ import Logger from "/client/modules/logger";
 import { Cart, Shops } from "/lib/collections";
 import { PaypalPayment } from "../../lib/collections/schemas";
 import { Reaction } from "/client/api";
+import { Paypal } from "../../lib/api";
 
 function uiEnd(template, buttonText) {
   template.$(".cart-checkout-step *").removeAttr("disabled");
@@ -50,7 +51,7 @@ function handlePaypalSubmitError(error) {
 }
 
 //
-// paypal flow form helpers
+// paypal payflow form helpers
 //
 Template.paypalPayflowForm.helpers({
   PaypalPayment: function () {

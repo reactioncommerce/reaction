@@ -83,10 +83,11 @@ Template.paypalDone.onCreated(function () {
               status = result.PAYMENTSTATUS;
             }
             const paymentMethod = buildPaymentMethod(result, status, mode);
-            Meteor.call("cart/submitPayment", paymentMethod, function (err, res) {
-              if (!res && err) {
-                Logger.warn(err, "Error received during submitting Payment via Paypal");
-                showError(err);
+
+            Meteor.call("cart/submitPayment", paymentMethod, function (error, result) {
+              if (!result && error) {
+                Logger.warn(error, "Error received during submitting Payment via Paypal");
+                showError(error);
                 Session.set("guestCheckoutFlow", true);
               }
             });

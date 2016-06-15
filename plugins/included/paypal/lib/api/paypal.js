@@ -2,13 +2,16 @@
 import { Meteor } from "meteor/meteor";
 import { getSlug } from "/lib/api";
 import { Packages } from "/lib/collections";
-import { Reaction } from "/server/api";
+
+// using global instance of ReactionCore
+// Paypal is a shared client/server stub
+// to provide normalized PayPal tooling
 
 export const Paypal = {
   payflowAccountOptions: function () {
     let settings = Packages.findOne({
       name: "reaction-paypal",
-      shopId: Reaction.getShopId(),
+      shopId: ReactionCore.getShopId(),
       enabled: true
     }).settings;
     let mode;
@@ -30,8 +33,8 @@ export const Paypal = {
     return options;
   },
   expressCheckoutAccountOptions: function () {
-    const prefix = getSlug(Reaction.getShopName().toLowerCase());
-    const shopId = Reaction.getShopId();
+    const prefix = getSlug(ReactionCore.getShopName().toLowerCase());
+    const shopId = ReactionCore.getShopId();
     let settings = Packages.findOne({
       name: "reaction-paypal",
       shopId: shopId,
