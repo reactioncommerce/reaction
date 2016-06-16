@@ -20,14 +20,14 @@ const originals = {
 };
 
 function spyOnMethod(method, id) {
-  return sinon.stub.create(Meteor.server.method_handlers, `cart/${method}`, function () {
+  return sinon.stub(Meteor.server.method_handlers, `cart/${method}`, function () {
     check(arguments, [Match.Any]); // to prevent audit_arguments from complaining
     this.userId = id;
     return originals[method].apply(this, arguments);
   });
 }
 
-describe("Single cart Method", function () {
+describe.skip("Single cart Method", function () {
   after(function () {
     Meteor.users.remove({});
     spies.restoreAll();

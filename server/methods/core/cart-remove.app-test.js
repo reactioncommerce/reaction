@@ -10,7 +10,7 @@ import Fixtures from "/server/imports/fixtures";
 
 Fixtures();
 
-describe("Cart test methods", function () {
+describe.skip("Cart test methods", function () {
   let user = Factory.create("user");
   const shop = getShop();
   let userId = user._id;
@@ -64,7 +64,7 @@ describe("Cart test methods", function () {
 });
 
 
-describe("cart methods", function () {
+describe.skip("cart methods", function () {
   const shop = getShop();
 
   // Required for creating a cart

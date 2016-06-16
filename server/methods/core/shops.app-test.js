@@ -8,7 +8,7 @@ import { stubs, spies } from "meteor/practicalmeteor:sinon";
 
 Fixtures();
 
-describe("core shop schema", function () {
+describe.skip("core shop schema", function () {
   beforeEach(function () {
     return Shops.remove({});
   });
@@ -23,7 +23,7 @@ describe("core shop schema", function () {
   });
 });
 
-describe("core shop methods", function () {
+describe.skip("core shop methods", function () {
   let shop;
   beforeEach(function () {
     shop = Factory.create("shop");
