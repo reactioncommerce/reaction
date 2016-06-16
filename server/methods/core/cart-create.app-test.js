@@ -13,6 +13,15 @@ import Fixtures from "/server/imports/fixtures";
 
 Fixtures();
 
+originals = {
+  mergeCart: Meteor.server.method_handlers["cart/mergeCart"],
+  createCart: Meteor.server.method_handlers["cart/createCart"],
+  copyCartToOrder: Meteor.server.method_handlers["cart/copyCartToOrder"],
+  addToCart: Meteor.server.method_handlers["cart/addToCart"],
+  setShipmentAddress: Meteor.server.method_handlers["cart/setShipmentAddress"],
+  setPaymentAddress: Meteor.server.method_handlers["cart/setPaymentAddress"]
+};
+
 
 function monkeyPatchMethod(method, id) {
   Meteor.server.method_handlers[`cart/${method}`] = function () {
