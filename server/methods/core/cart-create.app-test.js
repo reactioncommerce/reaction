@@ -3,20 +3,41 @@
 import { Meteor } from "meteor/meteor";
 import { Factory } from "meteor/dburles:factory";
 import { Reaction } from "/server/api";
-import { Shops, Cart, Products, Accounts } from "/lib/collections";
+import { Cart, Products, Accounts } from "/lib/collections";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon, stubs, spies } from "meteor/practicalmeteor:sinon";
 import { getShop } from "/server/imports/fixtures/shops";
 import { addProduct } from "/server/imports/fixtures/products";
 import { shopIdAutoValue } from "/lib/collections/schemas/helpers";
 import Fixtures from "/server/imports/fixtures";
-import { monkeyPatchMethod, resetMonkeyPatch, spyOnMethod, resetAllMonkeyPatch } from "./testutils";
 
 Fixtures();
 
 
+function monkeyPatchMethod(method, id) {
+  Meteor.server.method_handlers[`cart/${method}`] = function () {
+    check(arguments, [Match.Any]); // to prevent audit_arguments from complaining
+    this.userId = id;
+    console.log("calling monkey patched function " + method);
+    return originals[method].apply(this, arguments);
+  };
+}
+
+function resetAllMonkeyPatch() {
+  for (let key of Object.keys(originals)) {
+    let methodName = `cart/${key}`;
+    console.log(`resetting ${methodName} back to: ${originals[methodName]}`);
+    Meteor.server.method_handlers[methodName] = originals[methodName];
+  }
+}
+
+function resetMonkeyPatch(method) {
+  console.log("resetMonkeyPatch originals: " + originals);
+  Meteor.server.method_handlers[`cart/${method}`] = originals[method];
+}
+
+
 describe("cart methods", function () {
-  resetAllMonkeyPatch();
   let user = Factory.create("user");
   const shop = getShop();
   let userId = user._id;
@@ -55,7 +76,7 @@ describe("cart methods", function () {
   //   });
   // });
 
-  describe("cart/createCart", function () {
+  describe.skip("cart/createCart", function () {
     it("should create a test cart", function (done) {
       stubs.create("shopIdAutoValue");
       stubs.shopIdAutoValue.returns(shop._id);
@@ -112,9 +133,8 @@ describe("cart methods", function () {
     it("should add item to cart", function (done) {
       let cart = Factory.create("cart");
       let items = cart.items.length;
-      monkeyPatchMethod("addToCart", cart.userId);
+      monkeyPatchMethod("addToCart", cart._id);
       Meteor.call("cart/addToCart", productId, variantId, quantity);
-      Meteor._sleepForMs(500);
       cart = Cart.findOne(cart._id);
       expect(cart.items.length).to.equal(items + 1);
       expect(cart.items[cart.items.length - 1].productId).to.equal(productId);
@@ -160,7 +180,7 @@ describe("cart methods", function () {
       let addToCartFunc = function () {
         return Meteor.call("cart/addToCart", "fakeProductId", variantId, quantity);
       };
-      expect(addToCartFunc).to.throw(Meteor.Error, /Product Not Found/);
+      expect(addToCartFunc).to.throw(Meteor.Error, /Product not found [404]/);
       resetMonkeyPatch("addToCart");
       return done();
     });
