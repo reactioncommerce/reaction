@@ -1,8 +1,6 @@
 import { i18next } from "/client/modules/i18n";
-import { Reaction } from "/client/modules/core";
-import { ReactionProduct } from "/lib/api";
-import { ReactionRouter } from "/client/modules/router";
-import { Products, Tags } from "/lib/collections";
+import { Reaction } from "/client/api";
+import { _ } from "underscore";
 
 /**
  * productGrid helpers

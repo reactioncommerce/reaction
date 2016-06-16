@@ -1,3 +1,8 @@
+import { Meteor } from "meteor/meteor";
+import swal from "sweetalert2";
+import "sweetalert2/dist/sweetalert2.css";
+import { _ } from "underscore";
+
 // Extends Bootstaps alerts and add more alert types
 Meteor.startup(function () {
   sAlert.config({
@@ -61,7 +66,7 @@ Object.assign(Alerts, {
       return swal({
         type: "info",
         ...titleOrOptions
-      }, messageOrCallback);
+      }).then(messageOrCallback);
     }
 
     let title = titleOrOptions;
@@ -72,7 +77,7 @@ Object.assign(Alerts, {
       message,
       type: "info",
       ...options
-    }, callback);
+    }).then(callback);
   },
 
   toast(message, type, options) {

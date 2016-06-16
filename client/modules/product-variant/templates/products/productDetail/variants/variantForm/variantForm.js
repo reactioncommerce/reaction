@@ -1,6 +1,16 @@
 import { i18next } from "/client/modules/i18n";
-import { Reaction } from "/client/modules/core";
+import { Reaction } from "/client/api";
 import { ReactionProduct } from "/lib/api";
+
+Template.variantForm.onCreated(function () {
+  this.autorun(() => {
+    const productHandle = Reaction.Router.getParam("handle");
+
+    if (!productHandle) {
+      Reaction.clearActionView();
+    }
+  });
+});
 
 /**
  * variantForm helpers
@@ -52,6 +62,28 @@ Template.variantForm.helpers({
     if (this.inventoryManagement !== true) {
       return "display:none;";
     }
+  },
+  removeVariant(variant) {
+    return () => {
+      return () => {
+        const title = variant.title || i18next.t("productDetailEdit.thisVariant");
+
+        Alerts.alert({
+          title: i18next.t("productDetailEdit.removeVariantConfirm", { title }),
+          showCancelButton: true,
+          confirmButtonText: "Remove"
+        }, (isConfirm) => {
+          if (isConfirm) {
+            const id = variant._id;
+            Meteor.call("products/deleteVariant", id, function (error, result) {
+              if (result && ReactionProduct.selectedVariantId() === id) {
+                return ReactionProduct.setCurrentVariant(null);
+              }
+            });
+          }
+        });
+      };
+    };
   }
 });
 
@@ -76,17 +108,6 @@ Template.variantForm.events({
     }
     Meteor.call("products/createVariant", template.data._id);
   },
-  "click .btn-remove-variant": function () {
-    const title = this.title || i18next.t("productDetailEdit.thisVariant");
-    if (confirm(i18next.t("productDetailEdit.removeVariantConfirm", { title }))) {
-      const id = this._id;
-      Meteor.call("products/deleteVariant", id, function (error, result) {
-        if (result && ReactionProduct.selectedVariantId() === id) {
-          return ReactionProduct.setCurrentVariant(null);
-        }
-      });
-    }
-  },
   "click .btn-clone-variant": function (event, template) {
     let productId;
     event.stopPropagation();
@@ -97,7 +118,12 @@ Template.variantForm.events({
     }
     Meteor.call("products/cloneVariant", productId, template.data._id,
       function (error, result) {
-        return Reaction.toggleSession("variant-form-" + result);
+        if (result) {
+          const variantId = result[0];
+
+          ReactionProduct.setCurrentVariant(variantId);
+          Session.set("variant-form-" + variantId, true);
+        }
       });
   }
 });

@@ -60,7 +60,6 @@ export function shopId() {
  */
 
 export default function () {
-
   Factory.define("order", Orders, {
     // Schemas.OrderItems
     additionalField: faker.lorem.sentence(),

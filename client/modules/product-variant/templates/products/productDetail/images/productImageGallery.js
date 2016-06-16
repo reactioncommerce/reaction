@@ -1,5 +1,5 @@
 import { $ } from "meteor/jquery";
-import { Reaction } from "/client/modules/core";
+import { Reaction } from "/client/api";
 import { ReactionProduct } from "/lib/api";
 import { Media } from "/lib/collections";
 
@@ -64,7 +64,17 @@ function updateImagePriorities() {
       mediaId: index
     };
   });
-  return ReactionProductAPI.methods.updateMediaPriorities.call({ sortedMedias });
+
+  const results = [];
+  sortedMedias.forEach((image, index) => {
+    results.push(Media.update(image.mediaId, {
+      $set: {
+        "metadata.priority": index
+      }
+    }));
+  });
+
+  return results;
 }
 
 /**
@@ -152,15 +162,32 @@ Template.productImageGallery.events({
     return undefined;
   },
   "click .remove-image": function () {
-    const mediaId = this._id;
-    ReactionProductAPI.methods.removeMedia.call({ mediaId }, error => {
-      // Media doesn't return success result
-      if (error) {
-        Alerts.inline(error.reason, "warning", {
-          autoHide: 10000
+    const imageUrl =
+      $(event.target)
+      .closest(".gallery-image")
+      .find("img")
+      .attr("src");
+
+    Alerts.alert({
+      title: "Remove Media?",
+      type: "warning",
+      showCancelButton: true,
+      imageUrl,
+      imageHeight: 150
+    }, (isConfirm) => {
+      if (isConfirm) {
+        const mediaId = this._id;
+
+        Media.remove({ _id: mediaId }, (error) => {
+          if (error) {
+            Alerts.toast(error.reason, "warning", {
+              autoHide: 10000
+            });
+          }
+
+          updateImagePriorities();
         });
       }
-      return updateImagePriorities();
     });
   },
   "dropped #galleryDropPane": uploadHandler

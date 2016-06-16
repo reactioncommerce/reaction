@@ -1,6 +1,8 @@
 .accounts-inline {
+  display: flex;
+  flex-wrap: wrap;
+
   min-width: 280px;
-  display: inline-block;
   padding-top: 10px;
   width: 100%;
   margin-top: 0;
@@ -27,32 +29,33 @@
 
 
 .checkout-guest {
-  border-right: 1px solid @gray-light;
-  font-size: @font-size-base;
-  position:absolute;
-  top:50%;
-  width: 45%;
-  margin-top:-5em;
-  padding: 20px;
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  justify-content: center;
 
+  width: 50%;
+  border-right: 1px solid @border-color;
+  font-size: @font-size-base;
+  padding: 20px;
 }
 .checkout-login {
-  padding: 10px;
+  flex: 1 1 auto;
+  width: 50%;
+  padding: 20px;
 }
 
-@media screen and (max-width: @screen-xs-max) {
+.checkout-login > .loginForm {
+  padding: 0;
+}
+
+@media screen and (max-width: @screen-sm-max) {
   .checkout-guest {
-    border-bottom: 1px solid @gray-light;
-    margin-bottom: 40px;
-    padding: 10px 50px 30px;
+    border-bottom: 1px solid @border-color;
     position: initial;
     top: initial;
     width: initial;
     margin-top: initial;
     border-right: initial;
-  }
-  .checkout-login {
-    border-left: none;
-    padding-left: none;
   }
 }

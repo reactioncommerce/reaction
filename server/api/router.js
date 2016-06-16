@@ -1,6 +1,6 @@
-import { FlowRouter as ReactionRouter } from "meteor/kadira:flow-router-ssr";
+import { FlowRouter as Router } from "meteor/kadira:flow-router-ssr";
 
 // server can defer loading
-ReactionRouter.setDeferScriptLoading(true);
+Router.setDeferScriptLoading(true);
 
-export default ReactionRouter;
+export default Router;

@@ -1,6 +1,5 @@
 import { i18next } from "/client/modules/i18n";
-import { Reaction } from "/client/modules/core";
-import { ReactionRouter } from "/client/modules/router";
+import { Reaction } from "/client/api";
 import { Orders, Shops } from "/lib/collections";
 
 const orderFilters = [{
@@ -88,7 +87,7 @@ Template.orders.onCreated(function () {
   // fetch available orders
   this.autorun(() => {
     this.subscribe("Orders");
-    const filter = ReactionRouter.getQueryParam("filter");
+    const filter = Reaction.Router.getQueryParam("filter");
     const query = OrderHelper.makeQuery(filter);
     const orders = Orders.find(query).fetch();
 
@@ -107,10 +106,10 @@ Template.orders.onCreated(function () {
   // Open the action view when necessary
   this.autorun(() => {
     const isActionViewOpen = Reaction.isActionViewOpen();
-    const queryParams = ReactionRouter.current().queryParams;
+    const queryParams = Reaction.Router.current().queryParams;
 
     if (isActionViewOpen === false) {
-      ReactionRouter.go("orders", {}, queryParams);
+      Reaction.Router.go("orders", {}, queryParams);
     }
   });
 });
@@ -132,7 +131,7 @@ Template.orders.helpers({
 
   currentFilterLabel() {
     let foundFilter = _.find(orderFilters, (filter) => {
-      return filter.name === ReactionRouter.getQueryParam("filter");
+      return filter.name === Reaction.Router.getQueryParam("filter");
     });
 
     if (foundFilter) {
@@ -142,7 +141,7 @@ Template.orders.helpers({
     return "";
   },
   activeClassname(orderId) {
-    if (ReactionRouter.getQueryParam("_id") === orderId) {
+    if (Reaction.Router.getQueryParam("_id") === orderId) {
       return "panel-info";
     }
     return "panel-default";
@@ -154,7 +153,7 @@ Template.ordersListItem.helpers({
     return Template.currentData().order;
   },
   activeClassname(orderId) {
-    if (ReactionRouter.getQueryParam("_id") === orderId) {
+    if (Reaction.Router.getQueryParam("_id") === orderId) {
       return "active";
     }
   },
@@ -180,7 +179,7 @@ Template.ordersListItem.events({
         template: "coreOrderWorkflow"
       });
     }
-    ReactionRouter.setQueryParams({
+    Reaction.Router.setQueryParams({
       _id: instance.data.order._id
     });
   },
@@ -204,7 +203,7 @@ Template.ordersListItem.events({
         template: "coreOrderWorkflow"
       });
     }
-    ReactionRouter.setQueryParams({
+    Reaction.Router.setQueryParams({
       filter: "processing",
       _id: order._id
     });
@@ -215,7 +214,7 @@ Template.orderListFilters.onCreated(function () {
   this.state = new ReactiveDict();
 
   this.autorun(() => {
-    const queryFilter = ReactionRouter.getQueryParam("filter");
+    const queryFilter = Reaction.Router.getQueryParam("filter");
     this.subscribe("Orders");
 
     const filters = orderFilters.map((filter) => {
@@ -242,7 +241,7 @@ Template.orderListFilters.events({
     if (isActionViewOpen === true) {
       Reaction.hideActionView();
     }
-    ReactionRouter.setQueryParams({
+    Reaction.Router.setQueryParams({
       filter: filter,
       _id: null
     });

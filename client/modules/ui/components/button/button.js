@@ -1,7 +1,7 @@
 import { i18next } from "/client/modules/i18n";
 import { Template }  from "meteor/templating";
-import { _ } from "meteor/underscore";
-import { Reaction } from "/client/modules/core";
+import { _ } from "underscore";
+import { Reaction } from "/client/api";
 import { i18nextDep } from  "/client/modules/i18n";
 import { Icon } from "/client/modules/ui/components";
 import Tooltip from "tether-tooltip";

@@ -1,3 +1,5 @@
+import { _ } from "underscore";
+
 export const LoginFormSharedHelpers = {
 
   messages: function () {

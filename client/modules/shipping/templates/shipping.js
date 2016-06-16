@@ -1,4 +1,4 @@
-import { Reaction } from "/client/modules/core";
+import { Reaction } from "/client/api";
 import { Packages, Shipping } from "/lib/collections";
 import { i18next } from "/client/modules/i18n";
 

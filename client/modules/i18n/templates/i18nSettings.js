@@ -1,6 +1,6 @@
 import i18next from "i18next";
 import { Countries } from "/client/collections";
-import { Reaction } from "/client/modules/core";
+import { Reaction } from "/client/api";
 import { Shops } from "/lib/collections";
 
 Template.i18nSettings.helpers({

@@ -1,7 +1,9 @@
 import { Meteor } from "meteor/meteor";
+import { check } from "meteor/check";
 import * as Collections from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 import { Logger, Reaction } from "/server/api";
+import { _ } from "underscore";
 
 /**
  * quantityProcessing
@@ -119,8 +121,6 @@ Meteor.methods({
     // check supposed to throw 403 error
     const userId = currentCart && currentCart.userId;
     // user should have an access to operate with only one - his - cart
-    console.log("this.userId: " + this.userId);
-    console.log("userId: " + userId);
     if (this.userId !== null && userId !== this.userId) {
       throw new Meteor.Error(403, "Access Denied");
     }
@@ -293,6 +293,7 @@ Meteor.methods({
     check(productId, String);
     check(variantId, String);
     check(itemQty, Match.Optional(Number));
+
     const cart = Collections.Cart.findOne({ userId: this.userId });
     if (!cart) {
       Logger.error(`Cart not found for user: ${ this.userId }`);
@@ -456,8 +457,7 @@ Meteor.methods({
         }
       }, (error, result) => {
         if (error) {
-          Logger.warn("error removing from cart", Reaction
-            .Collections.Cart.simpleSchema().namedContext().invalidKeys());
+          Logger.warn("error removing from cart", Collections.Cart.simpleSchema().namedContext().invalidKeys());
           return error;
         }
         if (result) {
@@ -479,8 +479,7 @@ Meteor.methods({
       }
     }, (error, result) => {
       if (error) {
-        Logger.warn("error removing from cart", Reaction
-          .Collections.Cart.simpleSchema().namedContext().invalidKeys());
+        Logger.warn("error removing from cart", Collections.Cart.simpleSchema().namedContext().invalidKeys());
         return error;
       }
       if (result) {

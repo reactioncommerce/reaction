@@ -1,7 +1,7 @@
-import { FlowRouter as ReactionRouter } from "meteor/kadira:flow-router-ssr";
 import { AnalyticsEvents, Packages } from "/lib/collections";
-import { Reaction } from "/client/modules/core";
+import { Reaction } from "/client/api";
 import { i18next } from "/client/modules/i18n";
+import { _ } from "underscore";
 
 // Create a queue, but don't obliterate an existing one!
 analytics = window.analytics = window.analytics || [];
@@ -118,7 +118,7 @@ function notifyMixpanel(context) {
   }
 }
 
-ReactionRouter.triggers.enter([notifySegment, notifyGoogleAnalytics, notifyMixpanel]);
+Reaction.Router.triggers.enter([notifySegment, notifyGoogleAnalytics, notifyMixpanel]);
 
 //
 // Initialize analytics event tracking

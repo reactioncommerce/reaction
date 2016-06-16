@@ -1,4 +1,4 @@
-import { Reaction } from "/client/modules/core";
+import { Reaction } from "/client/api";
 import { Shops } from "/lib/collections";
 
 Meteor.startup(() => {

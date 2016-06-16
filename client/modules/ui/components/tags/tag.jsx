@@ -1,6 +1,6 @@
 // import { i18next } from "/client/modules/i18n";
 // import React from "react";
-// import { slugify } from "transliteration";
+// import { Reaction } from "/client/api";
 // import { PropTypes } from "/lib/api";
 // import { Tags } from "/lib/collections";
 //
@@ -91,7 +91,7 @@
 //       delay: 0,
 //       source: function (request, response) {
 //         let datums = [];
-//         let slug = slugify(request.term);
+//         let slug = Reaction.getSlug(request.term);
 //         Tags.find({
 //           slug: new RegExp(slug, "i")
 //         }).forEach(function (tag) {

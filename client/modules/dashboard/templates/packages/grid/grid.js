@@ -1,6 +1,7 @@
+import { Meteor } from "meteor/meteor";
 import { i18next } from "/client/modules/i18n";
-import { Reaction } from "/client/modules/core";
-import { ReactionRouter } from "/client/modules/router";
+import { Reaction } from "/client/api";
+import { _ } from "underscore";
 
 function pkgPermissions(pkg) {
   // if (Reaction.hasPermission("dashboard")) {
@@ -33,7 +34,7 @@ function enableReactionPackage(reactionPackage) {
         );
         if (self.name || self.route) {
           const route = self.name || self.route;
-          return ReactionRouter.go(route);
+          return Reaction.Router.go(route);
         }
       } else if (error) {
         return Alerts.toast(

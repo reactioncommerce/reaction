@@ -1,6 +1,7 @@
 import Logger from "/client/modules/logger";
 import { Reaction } from "../";
 import * as Collections from "/lib/collections";
+import _ from  "underscore";
 
 /**
  * reactionTemplate helper

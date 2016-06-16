@@ -1,6 +1,6 @@
+import { Meteor } from "meteor/meteor";
 import { i18next } from "/client/modules/i18n";
-import { Reaction } from "/client/modules/core";
-import { ReactionRouter } from "/client/modules/router";
+import { Reaction } from "/client/api";
 import { Orders } from "/lib/collections";
 
 /**
@@ -10,16 +10,17 @@ import { Orders } from "/lib/collections";
  */
 Template.cartCompleted.helpers({
   order: function () {
-    const id =  ReactionRouter.getQueryParam("_id");
+    const id =  Reaction.Router.getQueryParam("_id");
     if (id) {
       const ccoSub = Meteor.subscribe("CompletedCartOrder", Meteor.userId(), id);
       if (ccoSub.ready()) {
         return Orders.findOne({
           userId: Meteor.userId(),
-          cartId: ReactionRouter.getQueryParam("_id")
+          cartId: Reaction.Router.getQueryParam("_id")
         });
       }
     }
+    return {};
   },
   orderStatus: function () {
     if (this.workflow.status === "new") {
@@ -34,6 +35,7 @@ Template.cartCompleted.helpers({
         cartId: this._id
       });
     }
+    return {};
   }
 });
 
@@ -46,7 +48,7 @@ Template.cartCompleted.events({
   "click #update-order": function (event, template) {
     const email = template.find("input[name=email]").value;
     check(email, String);
-    const cartId = ReactionRouter.getQueryParam("_id");
+    const cartId = Reaction.Router.getQueryParam("_id");
     return Meteor.call("orders/addOrderEmail", cartId, email);
   }
 });

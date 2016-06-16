@@ -158,5 +158,7 @@ export default function () {
 
   Factory.define("product", Products, Object.assign({}, base, product));
 
-  Factory.define("variant", Products, { type: "variant" });
+  Factory.define("variant", Products, {
+    type: "variant"
+  });
 }

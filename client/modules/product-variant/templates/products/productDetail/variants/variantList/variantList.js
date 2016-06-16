@@ -1,9 +1,23 @@
+import { Reaction } from "/client/api";
 import { ReactionProduct } from "/lib/api";
+import { Products, Media } from "/lib/collections";
+import { i18next } from "/client/modules/i18n";
 
 /**
  * variantList helpers
  */
 Template.variantList.helpers({
+  media: function () {
+    const media = Media.findOne({
+      "metadata.variantId": this._id
+    }, {
+      sort: {
+        "metadata.priority": 1
+      }
+    });
+
+    return media instanceof FS.File ? media : false;
+  },
   variants: function () {
     let inventoryTotal = 0;
     const variants = ReactionProduct.getTopVariants();
@@ -48,7 +62,7 @@ Template.variantList.helpers({
     if (variants.length > 0) {
       const current = ReactionProduct.selectedVariant();
 
-      if (! current) {
+      if (!current) {
         return [];
       }
 
@@ -76,6 +90,17 @@ Template.variantList.helpers({
 
       return childVariants;
     }
+
+    return null;
+  },
+  selectedVariant() {
+    const _id = this._id;
+    const current = ReactionProduct.selectedVariant();
+    if (typeof current === "object" && (_id === current._id || ~current.ancestors.indexOf(this._id))) {
+      return "variant-detail-selected";
+    }
+
+    return null;
   }
 });
 
@@ -91,6 +116,25 @@ Template.variantList.events({
     template.$(".variant-select-option").removeClass("active");
     $(event.target).addClass("active");
     Alerts.removeSeen();
+
+    const selectedProduct = ReactionProduct.selectedProduct();
+    Reaction.Router.go("product", {handle: selectedProduct.handle, variantId: this._id});
+
     return ReactionProduct.setCurrentVariant(this._id);
+  },
+  "click .variant-select-option .variant-edit": function () {
+    const variant = this;
+    const parentVariant = Products.findOne(variant.ancestors[1]);
+
+    ReactionProduct.setCurrentVariant(variant._id);
+    Session.set("variant-form-" + parentVariant._id, true);
+
+    if (Reaction.hasPermission("createProduct")) {
+      Reaction.showActionView({
+        label: i18next.t("productDetailEdit.editVariant"),
+        template: "variantForm",
+        data: parentVariant
+      });
+    }
   }
 });
