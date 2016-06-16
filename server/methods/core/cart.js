@@ -108,8 +108,6 @@ Meteor.methods({
   "cart/mergeCart": function (cartId, currentSessionId) {
     check(cartId, String);
     check(currentSessionId, Match.Optional(String));
-    console.log("this");
-    console.log(this);
 
     // we don't process current cart, but merge into it.
     const currentCart = Collections.Cart.findOne(cartId);
@@ -295,8 +293,6 @@ Meteor.methods({
     check(productId, String);
     check(variantId, String);
     check(itemQty, Match.Optional(Number));
-
-    const { Log } = Reaction;
     const cart = Collections.Cart.findOne({ userId: this.userId });
     if (!cart) {
       Logger.error(`Cart not found for user: ${ this.userId }`);
