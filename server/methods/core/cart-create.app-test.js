@@ -1,7 +1,6 @@
 /* eslint dot-notation: 0 */
 
 import { Meteor } from "meteor/meteor";
-import { check } from "meteor/check";
 import { Factory } from "meteor/dburles:factory";
 import { Reaction } from "/server/api";
 import { Cart, Products, Accounts } from "/lib/collections";
@@ -14,8 +13,17 @@ import Fixtures from "/server/imports/fixtures";
 
 Fixtures();
 
+originals = {
+  mergeCart: Meteor.server.method_handlers["cart/mergeCart"],
+  createCart: Meteor.server.method_handlers["cart/createCart"],
+  copyCartToOrder: Meteor.server.method_handlers["cart/copyCartToOrder"],
+  addToCart: Meteor.server.method_handlers["cart/addToCart"],
+  setShipmentAddress: Meteor.server.method_handlers["cart/setShipmentAddress"],
+  setPaymentAddress: Meteor.server.method_handlers["cart/setPaymentAddress"]
+};
+
+
 function monkeyPatchMethod(method, id) {
-  // overriding existing method handler
   Meteor.server.method_handlers[`cart/${method}`] = function () {
     check(arguments, [Match.Any]); // to prevent audit_arguments from complaining
     this.userId = id;
@@ -33,26 +41,16 @@ function resetAllMonkeyPatch() {
 }
 
 function resetMonkeyPatch(method) {
-  console.log("resetMonkeyPatch originals: " + method);
+  console.log("resetMonkeyPatch originals: " + originals);
   Meteor.server.method_handlers[`cart/${method}`] = originals[method];
 }
 
-describe("cart methods", function () {
-  const user = Factory.create("user");
-  const shop = getShop();
-  const userId = user._id;
-  const sessionId = Reaction.sessionId = Random.id();
 
-  before(() => {
-    originals =  {
-      mergeCart: Meteor.server.method_handlers["cart/mergeCart"],
-      createCart: Meteor.server.method_handlers["cart/createCart"],
-      copyCartToOrder: Meteor.server.method_handlers["cart/copyCartToOrder"],
-      addToCart: Meteor.server.method_handlers["cart/addToCart"],
-      setShipmentAddress: Meteor.server.method_handlers["cart/setShipmentAddress"],
-      setPaymentAddress: Meteor.server.method_handlers["cart/setPaymentAddress"]
-    };
-  });
+describe("cart methods", function () {
+  let user = Factory.create("user");
+  const shop = getShop();
+  let userId = user._id;
+  const sessionId = Reaction.sessionId = Random.id();
 
   after(() => {
     Meteor.users.remove({});
@@ -87,7 +85,7 @@ describe("cart methods", function () {
   //   });
   // });
 
-  describe("cart/createCart", function () {
+  describe.skip("cart/createCart", function () {
     it("should create a test cart", function (done) {
       stubs.create("shopIdAutoValue");
       stubs.shopIdAutoValue.returns(shop._id);
