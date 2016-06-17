@@ -307,35 +307,36 @@ describe("cart methods", function () {
       return done();
     });
 
-    // it("should update cart via `type` argument", function (done) {
-    //   let cart = Factory.create("cart");
-    //   spyOnMethod("setShipmentAddress", cart.userId);
-    //   spyOnMethod("setPaymentAddress", cart.userId);
-    //
-    //   const cartId = cart._id;
-    //   const address = Object.assign({}, faker.reaction.address(), {
-    //     _id: Random.id(),
-    //     isShippingDefault: true,
-    //     isBillingDefault: true
-    //   });
-    //   Meteor.call("cart/setPaymentAddress", cartId, address);
-    //   Meteor.call("cart/setShipmentAddress", cartId, address);
-    //   cart = Cart.findOne(cartId);
-    //
-    //   expect(cart.shipping[0].address._id).toEqual(address._id);
-    //   expect(cart.billing[0].address._id).toEqual(address._id);
-    //
-    //   Meteor.call("cart/unsetAddresses", address._id, cart.userId,
-    //     "billing");
-    //   Meteor.call("cart/unsetAddresses", address._id, cart.userId,
-    //     "shipping");
-    //
-    //   cart = Cart.findOne(cartId);
-    //
-    //   expect(cart.shipping[0].address).toBeUndefined();
-    //   expect(cart.billing[0].address).toBeUndefined();
-    //
-    //   return done();
-    // });
+    it("should update cart via `type` argument", function (done) {
+      let cart = Factory.create("cart");
+      let setShipmentAddressStub = spyOnMethod("setShipmentAddress", cart.userId);
+      let setPaymentAddressStub = spyOnMethod("setPaymentAddress", cart.userId);
+
+      const cartId = cart._id;
+      const address = Object.assign({}, getAddress(), {
+        _id: Random.id(),
+        isShippingDefault: true,
+        isBillingDefault: true
+      });
+      Meteor.call("cart/setPaymentAddress", cartId, address);
+      Meteor.call("cart/setShipmentAddress", cartId, address);
+      cart = Cart.findOne(cartId);
+
+      expect(cart.shipping[0].address._id).to.equal(address._id);
+      expect(cart.billing[0].address._id).to.equal(address._id);
+
+      Meteor.call("cart/unsetAddresses", address._id, cart.userId,
+        "billing");
+      Meteor.call("cart/unsetAddresses", address._id, cart.userId,
+        "shipping");
+
+      cart = Cart.findOne(cartId);
+
+      expect(cart.shipping[0].address).to.be.undefined;
+      expect(cart.billing[0].address).to.be.undefined;
+      setShipmentAddressStub.restore();
+      setPaymentAddressStub.restore();
+      return done();
+    });
   });
 });
