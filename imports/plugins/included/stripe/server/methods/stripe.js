@@ -1,10 +1,11 @@
 /* eslint camelcase: 0 */
 // meteor modules
 import { Meteor } from "meteor/meteor";
-import { check } from "meteor/check";
+import { check, Match } from "meteor/check";
 // reaction modules
-import { Logger } from "/server/api";
+import { Reaction, Logger } from "/server/api";
 
+import { StripeApi } from "./stripeapi";
 
 const ValidCardNumber = Match.Where(function (x) {
   return /^[0-9]{14,16}$/.test(x);
@@ -22,21 +23,20 @@ const ValidCVV = Match.Where(function (x) {
   return /^[0-9]{3,4}$/.test(x);
 });
 
-parseCardData = function (data) {
-  let parsedCardData = {
+function parseCardData(data) {
+  return {
     number: data.number,
     name: data.name,
     cvc: data.cvv2,
     exp_month: data.expire_month,
     exp_year: data.expire_year
   };
-  return parsedCardData;
-};
+}
 
 // Stripe uses a "Decimal-less" format so 10.00 becomes 1000
-formatForStripe = function (amount) {
+function formatForStripe(amount) {
   return Math.round(amount * 100);
-};
+}
 
 
 Meteor.methods({
@@ -72,7 +72,7 @@ Meteor.methods({
     let chargeResult;
 
     try {
-      chargeResult = StripeApi.methods.createCharge.call({chargeObj: chargeObj});
+      chargeResult = StripeApi.methods.createCharge.call({ chargeObj });
       if (chargeResult && chargeResult.status === "succeeded") {
         result = {
           saved: true,
@@ -87,7 +87,7 @@ Meteor.methods({
       }
       return result;
     } catch (e) {
-      Logger.warn(e);
+      Logger.error(e);
       throw new Meteor.Error("error", e.message);
     }
   },
@@ -99,15 +99,14 @@ Meteor.methods({
    * @return {Object} results from Stripe normalized
    */
   "stripe/payment/capture": function (paymentMethod) {
-    check(paymentMethod, ReactionCore.Schemas.PaymentMethod);
+    check(paymentMethod, Reaction.Schemas.PaymentMethod);
     let result;
-    let captureResult;
     const captureDetails = {
       amount: formatForStripe(paymentMethod.amount)
     };
 
     try {
-      captureResult = StripeApi.methods.captureCharge.call({
+      const captureResult = StripeApi.methods.captureCharge.call({
         transactionId: paymentMethod.transactionId,
         captureDetails: captureDetails
       });
@@ -123,12 +122,12 @@ Meteor.methods({
         };
       }
     } catch (error) {
-      Logger.warn(error);
+      Logger.error(error);
       result = {
         saved: false,
         error: error
       };
-      return {error: error, result: result};
+      return { error, result };
     }
     return result;
   },
@@ -142,17 +141,19 @@ Meteor.methods({
    * @return {Object} result
    */
   "stripe/refund/create": function (paymentMethod, amount, reason = "requested_by_customer") {
-    check(paymentMethod, ReactionCore.Schemas.PaymentMethod);
+    check(paymentMethod, Reaction.Schemas.PaymentMethod);
     check(amount, Number);
     check(reason, String);
-    let refundDetails = {
+
+    const refundDetails = {
       charge: paymentMethod.transactionId,
       amount: formatForStripe(amount),
-      reason: reason
+      reason
     };
+
     let result;
     try {
-      let refundResult = StripeApi.methods.createRefund.call({refundDetails: refundDetails});
+      let refundResult = StripeApi.methods.createRefund.call({ refundDetails });
       if (refundResult.object === "refund") {
         result = {
           saved: true,
@@ -166,12 +167,12 @@ Meteor.methods({
         Logger.warn("Stripe call succeeded but refund not issued");
       }
     } catch (error) {
-      Logger.warn(error);
+      Logger.error(error);
       result = {
         saved: false,
         error: error.message
       };
-      return {error: error, result: result};
+      return { error, result };
     }
 
     return result;
@@ -183,10 +184,10 @@ Meteor.methods({
    * @return {Object} result
    */
   "stripe/refund/list": function (paymentMethod) {
-    check(paymentMethod, ReactionCore.Schemas.PaymentMethod);
+    check(paymentMethod, Reaction.Schemas.PaymentMethod);
     let result;
     try {
-      let refunds = StripeApi.methods.listRefunds.call({transactionId: paymentMethod.transactionId});
+      const refunds = StripeApi.methods.listRefunds.call({transactionId: paymentMethod.transactionId});
       result = [];
       for (let refund of refunds.data) {
         result.push({
@@ -198,10 +199,8 @@ Meteor.methods({
         });
       }
     } catch (error) {
-      Logger.warn(error);
-      result = {
-        error: error
-      };
+      Logger.error(error);
+      result = { error };
     }
     return result;
   }

@@ -2,11 +2,13 @@ import { Reaction } from "/client/api";
 import { Packages } from "/lib/collections";
 import { StripePackageConfig } from "../../lib/collections/schemas";
 
+import "./stripe.html";
+
 Template.stripeSettings.helpers({
-  StripePackageConfig: function () {
+  StripePackageConfig() {
     return StripePackageConfig;
   },
-  packageData: function () {
+  packageData() {
     return Packages.findOne({
       name: "reaction-stripe",
       shopId: Reaction.getShopId()
@@ -15,7 +17,7 @@ Template.stripeSettings.helpers({
 });
 
 Template.stripe.helpers({
-  packageData: function () {
+  packageData() {
     return Packages.findOne({
       name: "reaction-stripe",
       shopId: Reaction.getShopId()
@@ -24,7 +26,7 @@ Template.stripe.helpers({
 });
 
 Template.stripe.events({
-  "click [data-event-action=showStripeSettings]": function () {
+  "click [data-event-action=showStripeSettings]"() {
     Reaction.showActionView();
   }
 });
@@ -32,11 +34,11 @@ Template.stripe.events({
 AutoForm.hooks({
   "stripe-update-form": {
     /* eslint-disable no-unused-vars*/
-    onSuccess: function (operation, result, template) {
+    onSuccess(operation, result, template) {
       Alerts.removeSeen();
       return Alerts.add("Stripe settings saved.", "success");
     },
-    onError: function (operation, error, template) {
+    onError(operation, error, template) {
       Alerts.removeSeen();
       return Alerts.add("Stripe settings update failed. " + error, "danger");
     }

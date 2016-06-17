@@ -20,7 +20,7 @@ export const StripePackageConfig = new SimpleSchema([
   }
 ]);
 
-export let StripePayment = new SimpleSchema({
+export const StripePayment = new SimpleSchema({
   payerName: {
     type: String,
     label: "Cardholder name"

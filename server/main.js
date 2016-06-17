@@ -18,3 +18,4 @@ Meteor.startup(() => Startup());
  */
 // TODO: add conditionals to optionally enable/disable plugins
 import "/imports/plugins/included/paypal/server";
+import "/imports/plugins/included/stripe/server";

@@ -1,53 +1,43 @@
 /* eslint camelcase: 0 */
-import {
-  Cart,
-  Shops
-} from "/lib/collections";
+import { Reaction } from "/client/api";
+import { Cart, Shops } from "/lib/collections";
+import { Stripe } from "../../lib/api";
+import { StripePayment } from "../../lib/collections/schemas";
 
-import {
-  Reaction
-} from "/client/api";
-
-import {
-  StripePayment
-} from "../../lib/collections/schemas";
-
-import {
-  Stripe
-} from "../../lib/api";
+import "./stripe.html";
 
 //
 // local helpers
 //
-uiEnd = function (template, buttonText) {
+function uiEnd(template, buttonText) {
   template.$(":input").removeAttr("disabled");
   template.$("#btn-complete-order").text(buttonText);
   return template.$("#btn-processing").addClass("hidden");
-};
+}
 
-paymentAlert = function (errorMessage) {
+function paymentAlert(errorMessage) {
   return $(".alert").removeClass("hidden").text(errorMessage);
-};
+}
 
-hidePaymentAlert = function () {
+function hidePaymentAlert() {
   return $(".alert").addClass("hidden").text("");
-};
+}
 
-handleStripeSubmitError = function (error) {
-  let singleError = error;
-  let serverError = error !== null ? error.message : void 0;
+function handleStripeSubmitError(error) {
+  const singleError = error;
+  const serverError = error ? error.message : null;
   if (serverError) {
     return paymentAlert("Oops! " + serverError);
   } else if (singleError) {
     return paymentAlert("Oops! " + singleError);
   }
-};
+}
 
 //
 // Template helpers
 //
 Template.stripePaymentForm.helpers({
-  StripePayment: function () {
+  StripePayment() {
     return StripePayment;
   }
 });
@@ -56,10 +46,10 @@ Template.stripePaymentForm.helpers({
 // autoform handling
 //
 AutoForm.addHooks("stripe-payment-form", {
-  onSubmit: function (doc) {
-    let template = this.template;
+  onSubmit(doc) {
+    const template = this.template;
     hidePaymentAlert();
-    let form = {
+    const form = {
       name: doc.payerName,
       number: doc.cardNumber,
       expire_month: doc.expireMonth,
@@ -67,7 +57,7 @@ AutoForm.addHooks("stripe-payment-form", {
       cvv2: doc.cvv,
       type: Reaction.getCardType(doc.cardNumber)
     };
-    let storedCard = form.type.charAt(0).toUpperCase() + form.type.slice(1) + " " + doc.cardNumber.slice(-4);
+    const storedCard = form.type.charAt(0).toUpperCase() + form.type.slice(1) + " " + doc.cardNumber.slice(-4);
     Stripe.authorize(form, {
       total: Cart.findOne().cartTotal(),
       currency: Shops.findOne().currency
@@ -90,7 +80,7 @@ AutoForm.addHooks("stripe-payment-form", {
               return "failed";
             }
           })();
-          let normalizedMode = (function () {
+          const normalizedMode = (function () {
             switch (false) {
             case !(!transaction.response.captured && !transaction.response.failure_code):
               return "authorize";
@@ -121,12 +111,12 @@ AutoForm.addHooks("stripe-payment-form", {
     });
     return false;
   },
-  beginSubmit: function () {
+  beginSubmit() {
     this.template.$(":input").attr("disabled", true);
     this.template.$("#btn-complete-order").text("Submitting ");
     return this.template.$("#btn-processing").removeClass("hidden");
   },
-  endSubmit: function () {
+  endSubmit() {
     if (!submitting) {
       return uiEnd(this.template, "Complete your order");
     }
