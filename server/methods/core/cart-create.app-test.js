@@ -215,25 +215,27 @@ describe("cart methods", function () {
       return done();
     });
 
-    // it("should create an order", function (done) {
-    //   let cart = Factory.create("cartToOrder");
-    //   spyOn(Reaction, "shopIdAutoValue").and.returnValue(cart.shopId);
-    //   spyOn(Reaction, "getShopId").and.returnValue(cart.shopId);
-    //   spyOnMethod("copyCartToOrder", cart.userId);
-    //   // let's keep it simple. We don't want to see a long email about
-    //   // success. But I leave it here in case if anyone want to check whole
-    //   // method flow.
-    //   spyOn(Reaction.Collections.Orders, "insert");// .and.callThrough();
-    //   // const orderId = Meteor.call("cart/copyCartToOrder", cart._id);
-    //   expect(() => Meteor.call("cart/copyCartToOrder", cart._id)).
-    //   to.throw(new Meteor.Error(400,
-    //     "cart/copyCartToOrder: Invalid request"));
-    //   // we are satisfied with the following check
-    //   expect(Reaction.Collections.Orders.insert).toHaveBeenCalled();
-    //   // expect(typeof orderId).toEqual("string");
-    //
-    //   return done();
-    // });
+    it("should create an order", function (done) {
+      let cart = Factory.create("cartToOrder");
+      let getShopIdStub = sinon.stub(Reaction, "getShopId", function () {
+        return cart.shopId;
+      });
+      let copyCartStub = spyOnMethod("copyCartToOrder", cart.userId);
+      // let's keep it simple. We don't want to see a long email about
+      // success. But I leave it here in case if anyone want to check whole
+      // method flow.
+      let insertStub = sinon.stub(Reaction.Collections.Orders, "insert");
+      let copyCartFunc = function () {
+        return Meteor.call("cart/copyCartToOrder", cart._id);
+      };
+
+      expect(copyCartFunc).to.throw(Meteor.Error, /Invalid request/);
+      expect(insertStub).to.have.been.called;
+      getShopIdStub.restore();
+      insertStub.restore();
+      copyCartStub.restore();
+      return done();
+    });
   });
 
   describe.skip("cart/unsetAddresses", function () {
