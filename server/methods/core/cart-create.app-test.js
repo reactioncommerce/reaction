@@ -270,41 +270,42 @@ describe("cart methods", function () {
       return done();
     });
 
-    // it("should throw error if wrong arguments were passed", function (done) {
-    //   stubs.create("accountUpdateStub", Accounts, "update");
-    //
-    //   expect(function () {
-    //     return Meteor.call("cart/unsetAddresses", 123456);
-    //   }).to.throw;
-    //
-    //   expect(function () {
-    //     return Meteor.call("cart/unsetAddresses", {});
-    //   }).to.throw;
-    //
-    //   expect(function () {
-    //     return Meteor.call("cart/unsetAddresses", null);
-    //   }).to.throw;
-    //
-    //   expect(function () {
-    //     return Meteor.call("cart/unsetAddresses");
-    //   }).to.throw;
-    //
-    //   expect(function () {
-    //     return Meteor.call("cart/unsetAddresses", "asdad", 123);
-    //   }).to.throw;
-    //
-    //   // https://github.com/aldeed/meteor-simple-schema/issues/522
-    //   expect(function () {
-    //     return Meteor.call(
-    //       "accounts/addressBookRemove", () => {
-    //         console.log("test");
-    //       }
-    //     );
-    //   }).not.to.throw;
-    //
-    //   expect(stubs.accountUpdateStub).to.not.have.been.called;
-    //   return done();
-    // });
+    it("should throw error if wrong arguments were passed", function (done) {
+      let accountUpdateStub = sinon.stub(Accounts, "update");
+
+      expect(function () {
+        return Meteor.call("cart/unsetAddresses", 123456);
+      }).to.throw;
+
+      expect(function () {
+        return Meteor.call("cart/unsetAddresses", {});
+      }).to.throw;
+
+      expect(function () {
+        return Meteor.call("cart/unsetAddresses", null);
+      }).to.throw;
+
+      expect(function () {
+        return Meteor.call("cart/unsetAddresses");
+      }).to.throw;
+
+      expect(function () {
+        return Meteor.call("cart/unsetAddresses", "asdad", 123);
+      }).to.throw;
+
+      // https://github.com/aldeed/meteor-simple-schema/issues/522
+      expect(function () {
+        return Meteor.call(
+          "accounts/addressBookRemove", () => {
+            console.log("test");
+          }
+        );
+      }).to.not.throw;
+
+      expect(accountUpdateStub).to.not.have.been.called;
+      accountUpdateStub.restore();
+      return done();
+    });
 
     // it("should update cart via `type` argument", function (done) {
     //   let cart = Factory.create("cart");
