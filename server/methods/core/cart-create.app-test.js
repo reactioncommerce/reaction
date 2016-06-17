@@ -6,7 +6,7 @@ import { Reaction } from "/server/api";
 import { Cart, Products, Accounts } from "/lib/collections";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon, stubs, spies } from "meteor/practicalmeteor:sinon";
-import { getShop } from "/server/imports/fixtures/shops";
+import { getShop, getAddress } from "/server/imports/fixtures/shops";
 import { addProduct } from "/server/imports/fixtures/products";
 import Fixtures from "/server/imports/fixtures";
 
@@ -238,14 +238,14 @@ describe("cart methods", function () {
     });
   });
 
-  describe.skip("cart/unsetAddresses", function () {
+  describe("cart/unsetAddresses", function () {
     it("should correctly remove addresses from cart", function (done) {
       let cart = Factory.create("cart");
-      spyOnMethod("setShipmentAddress", cart.userId);
-      spyOnMethod("setPaymentAddress", cart.userId);
+      let setShipmentAddressStub = spyOnMethod("setShipmentAddress", cart.userId);
+      let setPaymentAddressStub = spyOnMethod("setPaymentAddress", cart.userId);
 
       const cartId = cart._id;
-      const address = Object.assign({}, faker.reaction.address(), {
+      const address = Object.assign({}, getAddress(), {
         _id: Random.id(),
         isShippingDefault: true,
         isBillingDefault: true
@@ -255,8 +255,8 @@ describe("cart methods", function () {
       Meteor.call("cart/setShipmentAddress", cartId, address);
       cart = Cart.findOne(cartId);
 
-      expect(cart.shipping[0].address._id).toEqual(address._id);
-      expect(cart.billing[0].address._id).toEqual(address._id);
+      expect(cart.shipping[0].address._id).to.equal(address._id);
+      expect(cart.billing[0].address._id).to.equal(address._id);
 
       // our Method checking
       Meteor.call("cart/unsetAddresses", address._id, cart.userId);
@@ -265,75 +265,76 @@ describe("cart methods", function () {
 
       expect(cart.shipping[0].address).to.be.undefined;
       expect(cart.billing[0].address).to.be.undefined;
-
+      setShipmentAddressStub.restore();
+      setPaymentAddressStub.restore();
       return done();
     });
 
-    it("should throw error if wrong arguments were passed", function (done) {
-      stubs.create("accountUpdateStub", Accounts, "update");
+    // it("should throw error if wrong arguments were passed", function (done) {
+    //   stubs.create("accountUpdateStub", Accounts, "update");
+    //
+    //   expect(function () {
+    //     return Meteor.call("cart/unsetAddresses", 123456);
+    //   }).to.throw;
+    //
+    //   expect(function () {
+    //     return Meteor.call("cart/unsetAddresses", {});
+    //   }).to.throw;
+    //
+    //   expect(function () {
+    //     return Meteor.call("cart/unsetAddresses", null);
+    //   }).to.throw;
+    //
+    //   expect(function () {
+    //     return Meteor.call("cart/unsetAddresses");
+    //   }).to.throw;
+    //
+    //   expect(function () {
+    //     return Meteor.call("cart/unsetAddresses", "asdad", 123);
+    //   }).to.throw;
+    //
+    //   // https://github.com/aldeed/meteor-simple-schema/issues/522
+    //   expect(function () {
+    //     return Meteor.call(
+    //       "accounts/addressBookRemove", () => {
+    //         console.log("test");
+    //       }
+    //     );
+    //   }).not.to.throw;
+    //
+    //   expect(stubs.accountUpdateStub).to.not.have.been.called;
+    //   return done();
+    // });
 
-      expect(function () {
-        return Meteor.call("cart/unsetAddresses", 123456);
-      }).to.throw;
-
-      expect(function () {
-        return Meteor.call("cart/unsetAddresses", {});
-      }).to.throw;
-
-      expect(function () {
-        return Meteor.call("cart/unsetAddresses", null);
-      }).to.throw;
-
-      expect(function () {
-        return Meteor.call("cart/unsetAddresses");
-      }).to.throw;
-
-      expect(function () {
-        return Meteor.call("cart/unsetAddresses", "asdad", 123);
-      }).to.throw;
-
-      // https://github.com/aldeed/meteor-simple-schema/issues/522
-      expect(function () {
-        return Meteor.call(
-          "accounts/addressBookRemove", () => {
-            console.log("test");
-          }
-        );
-      }).not.to.throw;
-
-      expect(stubs.accountUpdateStub).to.not.have.been.called;
-      return done();
-    });
-
-    it("should update cart via `type` argument", function (done) {
-      let cart = Factory.create("cart");
-      spyOnMethod("setShipmentAddress", cart.userId);
-      spyOnMethod("setPaymentAddress", cart.userId);
-
-      const cartId = cart._id;
-      const address = Object.assign({}, faker.reaction.address(), {
-        _id: Random.id(),
-        isShippingDefault: true,
-        isBillingDefault: true
-      });
-      Meteor.call("cart/setPaymentAddress", cartId, address);
-      Meteor.call("cart/setShipmentAddress", cartId, address);
-      cart = Cart.findOne(cartId);
-
-      expect(cart.shipping[0].address._id).toEqual(address._id);
-      expect(cart.billing[0].address._id).toEqual(address._id);
-
-      Meteor.call("cart/unsetAddresses", address._id, cart.userId,
-        "billing");
-      Meteor.call("cart/unsetAddresses", address._id, cart.userId,
-        "shipping");
-
-      cart = Cart.findOne(cartId);
-
-      expect(cart.shipping[0].address).toBeUndefined();
-      expect(cart.billing[0].address).toBeUndefined();
-
-      return done();
-    });
+    // it("should update cart via `type` argument", function (done) {
+    //   let cart = Factory.create("cart");
+    //   spyOnMethod("setShipmentAddress", cart.userId);
+    //   spyOnMethod("setPaymentAddress", cart.userId);
+    //
+    //   const cartId = cart._id;
+    //   const address = Object.assign({}, faker.reaction.address(), {
+    //     _id: Random.id(),
+    //     isShippingDefault: true,
+    //     isBillingDefault: true
+    //   });
+    //   Meteor.call("cart/setPaymentAddress", cartId, address);
+    //   Meteor.call("cart/setShipmentAddress", cartId, address);
+    //   cart = Cart.findOne(cartId);
+    //
+    //   expect(cart.shipping[0].address._id).toEqual(address._id);
+    //   expect(cart.billing[0].address._id).toEqual(address._id);
+    //
+    //   Meteor.call("cart/unsetAddresses", address._id, cart.userId,
+    //     "billing");
+    //   Meteor.call("cart/unsetAddresses", address._id, cart.userId,
+    //     "shipping");
+    //
+    //   cart = Cart.findOne(cartId);
+    //
+    //   expect(cart.shipping[0].address).toBeUndefined();
+    //   expect(cart.billing[0].address).toBeUndefined();
+    //
+    //   return done();
+    // });
   });
 });
