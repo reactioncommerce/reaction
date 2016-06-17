@@ -62,7 +62,7 @@ export default function () {
   };
   const addressForOrder = getAddress();
   const cartToOrder = {
-    shopId: getShop(),
+    shopId: getShop()._id,
     shipping: [
       {
         _id: Random.id(),

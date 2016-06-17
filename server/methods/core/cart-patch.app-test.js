@@ -11,16 +11,18 @@ import Fixtures from "/server/imports/fixtures";
 
 Fixtures();
 
-describe("Monkey-patching methods", function () {
+describe.skip("Monkey-patching methods", function () {
   let user = Factory.create("user");
-  let originals = {};
+  let originals;
 
   before(function () {
-    originals["mergeCart"] = Meteor.server.method_handlers["cart/mergeCart"];
-    originals["copyCartToOrder"] = Meteor.server.method_handlers["cart/copyCartToOrder"];
-    originals["addToCart"] = Meteor.server.method_handlers["cart/addToCart"];
-    originals["setShipmentAddress"] = Meteor.server.method_handlers["cart/setShipmentAddress"];
-    originals["setPaymentAddress"] = Meteor.server.method_handlers["cart/setPaymentAddress"];
+    originals = {
+      mergeCart: Meteor.server.method_handlers["cart/mergeCart"],
+      copyCartToOrder: Meteor.server.method_handlers["cart/copyCartToOrder"],
+      addToCart: Meteor.server.method_handlers["cart/addToCart"],
+      setShipmentAddress: Meteor.server.method_handlers["cart/setShipmentAddress"],
+      setPaymentAddress: Meteor.server.method_handlers["cart/setPaymentAddress"]
+    };
   });
 
 
