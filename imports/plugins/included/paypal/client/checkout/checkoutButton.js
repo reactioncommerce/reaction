@@ -1,6 +1,8 @@
 import { Meteor } from "meteor/meteor";
 import { Cart } from "/lib/collections";
 
+import "./checkoutButton.html";
+
 /**
  * PayPal Checkout Button
  *

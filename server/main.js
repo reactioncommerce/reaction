@@ -11,3 +11,10 @@ import Startup from "./startup";
 // Publications();
 Security();
 Meteor.startup(() => Startup());
+
+
+/**
+ * Plugins
+ */
+// TODO: add conditionals to optionally enable/disable plugins
+import "/imports/plugins/included/paypal/server";

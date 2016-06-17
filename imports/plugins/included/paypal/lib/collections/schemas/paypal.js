@@ -59,7 +59,7 @@ export const PaypalPackageConfig = new SimpleSchema([
   }
 ]);
 
-export let PaypalPayment = new SimpleSchema({
+export const PaypalPayment = new SimpleSchema({
   payerName: {
     type: String,
     label: "Cardholder name",

@@ -2,6 +2,8 @@
 import { Packages } from "/lib/collections";
 import { PaypalPackageConfig } from "../../lib/collections/schemas";
 
+import "./settings.html";
+
 Template.paypalSettings.helpers({
   PaypalPackageConfig: function () {
     return PaypalPackageConfig;
