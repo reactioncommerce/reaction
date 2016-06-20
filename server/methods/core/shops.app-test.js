@@ -8,9 +8,14 @@ import { stubs, spies } from "meteor/practicalmeteor:sinon";
 
 Fixtures();
 
-describe.skip("core shop schema", function () {
+describe("core shop schema", function () {
   beforeEach(function () {
     return Shops.remove({});
+  });
+
+  after(function () {
+    spies.restoreAll();
+    stubs.restoreAll();
   });
 
   it("should create a new factory shop", function (done) {
@@ -23,10 +28,15 @@ describe.skip("core shop schema", function () {
   });
 });
 
-describe.skip("core shop methods", function () {
+describe("core shop methods", function () {
   let shop;
   beforeEach(function () {
     shop = Factory.create("shop");
+  });
+
+  after(function () {
+    spies.restoreAll();
+    stubs.restoreAll();
   });
 
   describe("shop/createShop", function () {
@@ -37,9 +47,9 @@ describe.skip("core shop methods", function () {
       stubs.create("hasPermissionStub", Reaction, "hasPermission");
       stubs.hasPermissionStub.returns(false);
       spies.create("shopInsertSpy", Shops, "insert");
-      let createShopFunc = function () {
+      function createShopFunc() {
         return Meteor.call("shop/createShop");
-      };
+      }
       expect(createShopFunc).to.throw(Meteor.Error, /Access Denied/);
       expect(Shops.insert).to.not.have.been.called;
       return done();
