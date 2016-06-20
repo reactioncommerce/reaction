@@ -13,7 +13,7 @@ import Fixtures from "/server/imports/fixtures";
 Fixtures();
 
 
-describe("cart methods", function () {
+describe("Add/Create cart methods", function () {
   let user = Factory.create("user");
   const shop = getShop();
   let userId = user._id;
@@ -63,20 +63,22 @@ describe("cart methods", function () {
       stubs.getShopIdStub.returns(shop._id);
       // spyOn(Reaction, "getShopId").and.returnValue(shop._id);
       let createSpy = spyOnMethod("createCart", userId);
-      spies.create("cartInsertSpy", Cart, "insert");
+      let cartInsertSpy = sinon.spy(Cart, "insert");
+
       // spyOn(Reaction.Collections.Cart, "insert").and.callThrough();
       let cartId = Meteor.call("cart/createCart", userId, sessionId);
       let cart = Cart.findOne({
         userId: userId
       });
-      expect(spies.cartInsertSpy).to.have.been.called;
+      expect(cartInsertSpy).to.have.been.called;
       expect(cartId).to.equal(cart._id);
       createSpy.restore();
+      cartInsertSpy.restore();
       done();
     });
   });
 
-  describe("cart/addToCart", function () {
+  describe.skip("cart/addToCart", function () {
     const quantity = 1;
     let product;
     let productId;
@@ -97,45 +99,19 @@ describe("cart methods", function () {
       })._id;
     });
 
-    // it("should add item to cart", function (done) {
-    //   let cart = Factory.create("cart");
-    //   let items = cart.items.length;
-    //   let addCartSpy = spyOnMethod("addToCart", cart.userId);
-    //   Meteor.call("cart/addToCart", productId, variantId, quantity);
-    //   Meteor._sleepForMs(500);
-    //   cart = Cart.findOne(cart._id);
-    //   expect(cart.items.length).to.equal(items + 1);
-    //   expect(cart.items[cart.items.length - 1].productId).to.equal(productId);
-    //   addCartSpy.restore();
-    //   done();
-    // });
-    //
-    // it("should merge all items of same variant in cart", function (done) {
-    //   let cart = Factory.create("cart");
-    //   stubs.create("shopIdAutoValueStub", shopIdAutoValue, "call");
-    //   stubs.shopIdAutoValueStub.returns(shop._id);
-    //   stubs.create("getShopIdStub", Reaction, "getShopId");
-    //   stubs.getShopIdStub.returns(shop._id);
-    //   // spyOn(Reaction, "getShopId").and.returnValue(shop._id);
-    //   let addCartSpy = spyOnMethod("addToCart", cart.userId);
-    //   // const cartId = Meteor.call("cart/createCart", userId, sessionId);
-    //   let cartItem = cart.items[0];
-    //   let cartProduct = cartItem.productId;
-    //   let cartVariant = cartItem.variants._id;
-    //   console.log(cartProduct);
-    //   console.log(cartVariant);
-    //   Meteor.call("cart/addToCart", cartProduct, cartVariant, quantity);
-    //   Meteor._sleepForMs(500);
-    //   // add a second item of same variant
-    //   Meteor.call("cart/addToCart", cartProduct, cartVariant, quantity);
-    //   Meteor._sleepForMs(500);
-    //   let cartFromDb = Cart.findOne(cart._id);
-    //   console.log(cartFromDb);
-    //   assert(cartFromDb.items.length === 1);
-    //   assert(cartFromDb.items[0].quantity === 2, "There should be two of this item");
-    //   addCartSpy.restore();
-    //   return done();
-    // });
+    it("should add item to cart", function (done) {
+      let cart = Factory.create("cart");
+      let items = cart.items.length;
+      let addCartSpy = spyOnMethod("addToCart", cart.userId);
+      Meteor.call("cart/addToCart", productId, variantId, quantity);
+      Meteor._sleepForMs(500);
+      cart = Cart.findOne(cart._id);
+      expect(cart.items.length).to.equal(items + 1);
+      expect(cart.items[cart.items.length - 1].productId).to.equal(productId);
+      addCartSpy.restore();
+      done();
+    });
+
 
     it("should throw error an exception if user doesn't have a cart", function (done) {
       const userWithoutCart = Factory.create("user");
