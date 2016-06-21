@@ -79,6 +79,7 @@ dburles:factory
 dispatch:mocha
 practicalmeteor:chai
 practicalmeteor:sinon
+xolvio:cleaner
 
 # Reaction Commerce Packages
 reactioncommerce:core-theme

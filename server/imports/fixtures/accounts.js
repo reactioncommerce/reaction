@@ -1,5 +1,7 @@
 import faker from "faker";
 import { Factory } from "meteor/dburles:factory";
+import { Accounts }  from "/lib/collections";
+import { getShop } from "./shops";
 
 /**
  * Factory account
@@ -31,8 +33,8 @@ export function getAddress(options = {}) {
 
 export function createAccountFactory() {
   Factory.define("account", Accounts, {
-    shopId: Factory.get("shop"),
-    userId: getUser(),
+    shopId: getShop()._id,
+    userId: getUser()._id,
     emails: [{
       address: faker.internet.email(),
       verified: faker.random.boolean()

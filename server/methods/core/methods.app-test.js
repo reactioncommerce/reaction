@@ -1,10 +1,20 @@
-import { Shops, Tags } from "/lib/collections";
 import { Meteor } from "meteor/meteor";
+import { Shops, Tags } from "/lib/collections";
 import { expect } from "meteor/practicalmeteor:chai";
-import { stubs, spies } from "meteor/practicalmeteor:sinon";
+import { sinon } from "meteor/practicalmeteor:sinon";
 import { Reaction } from "/server/api";
 
 describe("Server/Core", function () {
+  let sandbox;
+
+  beforeEach(function () {
+    sandbox = sinon.sandbox.create();
+  });
+
+  afterEach(function () {
+    sandbox.restore();
+  });
+
   describe("shop/removeHeaderTag", function () {
     beforeEach(function () {
       return Tags.remove({});
@@ -13,28 +23,26 @@ describe("Server/Core", function () {
     it("should throw 403 error by non admin", function (done) {
       let currentTag;
       let tag;
-      stubs.create("hasPermissionStub", Reaction, "hasPermission");
-      stubs.hasPermissionStub.returns(false);
-      spies.create("tagUpdateSpy", Tags, "update");
-      // spyOn(Tags, "update");
-      spies.create("tagRemoveSpy", Tags, "remove");
-      // spyOn(Tags, "remove");
+      let tagUpdateSpy = sandbox.spy(Tags, "update");
+      let tagRemoveSpy = sandbox.spy(Tags, "remove");
       tag = Factory.create("tag");
       currentTag = Factory.create("tag");
-      let removeTagFunc = function () {
+      function removeTagFunc() {
         return Meteor.call("shop/removeHeaderTag", tag._id, currentTag._id);
-      };
+      }
       expect(removeTagFunc).to.throw(Meteor.Error, /Access Denied/);
-      expect(spies.tagUpdateSpy).to.not.have.been.called;
-      expect(spies.tagRemoveSpy).to.not.have.been.called;
+      expect(tagUpdateSpy).to.not.have.been.called;
+      expect(tagRemoveSpy).to.not.have.been.called;
       return done();
     });
 
     it("should remove header tag by admin", function (done) {
+      sandbox.stub(Reaction, "hasPermission", function () {
+        return true;
+      });
+
       let currentTag;
       let tag;
-      stubs.create("hasPermissionStub", Reaction, "hasPermission");
-      stubs.hasPermissionStub.returns(true);
       tag = Factory.create("tag");
       currentTag = Factory.create("tag");
       expect(Tags.find().count()).to.equal(2);
@@ -52,24 +60,20 @@ describe("Server/Core", function () {
 
     it("should throw 403 error by non admin", function (done) {
       let tag;
-      stubs.create("hasPermissionStub", Reaction, "hasPermission");
-      stubs.hasPermissionStub.returns(false);
-      // spyOn(Roles, "userIsInRole").and.returnValue(false);
-      spies.create("tagUpdateSpy", Tags, "update");
-      // spyOn(Tags, "update");
+      sandbox.spy(Tags, "update");
       tag = Factory.create("tag");
-      let updateTagFunc = function () {
+      function updateTagFunc() {
         return Meteor.call("shop/updateHeaderTags", tag._id);
-      };
+      }
       expect(updateTagFunc).to.throw(Meteor.Error, /Access Denied/);
       expect(Tags.update).not.to.have.been.called;
       return done();
     });
 
     it("should insert new header tag with 1 argument by admin", function (done) {
-      stubs.create("hasPermissionStub", Reaction, "hasPermission");
-      stubs.hasPermissionStub.returns(true);
-      // spyOn(ReactionCore.hasPermission, "createProduct").and.returnValue(true);
+      sandbox.stub(Reaction, "hasPermission", function () {
+        return true;
+      });
       let tag;
       let tagCount = Tags.find().count();
       Factory.create("shop"); // Create shop so that ReactionCore.getShopId() doesn't fail
@@ -83,10 +87,9 @@ describe("Server/Core", function () {
 
     it("should update existing header tag with 2 arguments by admin", function (done) {
       let tag;
-      stubs.create("hasPermissionStub", Reaction, "hasPermission");
-      stubs.hasPermissionStub.returns(true);
-
-      // spyOn(Roles, "userIsInRole").and.returnValue(true);
+      sandbox.stub(Reaction, "hasPermission", function () {
+        return true;
+      });
       tag = Factory.create("tag");
       Meteor.call("shop/updateHeaderTags", "updated tag", tag._id);
       expect(Tags.find().count()).to.equal(1);
