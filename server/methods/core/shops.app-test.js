@@ -60,17 +60,17 @@ describe("core shop methods", function () {
       return done();
     });
 
-    it("should create new shop for admin for userId and shopObject", function (done) {
+    it("should create new shop for admin for userId and shopObject", function () {
       sandbox.stub(Meteor, "userId", function () {
         return "12345678";
       });
       sandbox.stub(Reaction, "hasOwnerAccess", function () {
         return true;
       });
-      Meteor.call("shop/createShop", "1234678", shop);
+      Meteor.call("shop/createShop", "12345678", shop);
       const newShopCount = Shops.find({name: shop.name}).count();
       expect(newShopCount).to.equal(1);
-      return done();
+      // return done();
     });
   });
 });
