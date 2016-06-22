@@ -74,21 +74,6 @@ risul:moment-timezone
 tmeasday:publish-counts
 vsivsi:job-collection
 
-# Reaction Commerce Packages
-#reactioncommerce:core-theme
-#reactioncommerce:default-theme
-
-# Reaction Payment Packages
-
-# reactioncommerce:reaction-paymentmethod
-# reactioncommerce:reaction-paypal
-# reactioncommerce:reaction-stripe
-# reactioncommerce:reaction-auth-net
-# reactioncommerce:reaction-braintree
-
-# Reaction Commerce Data
-# reactioncommerce:reaction-sample-data   # default Reaction data
-
 # Performance & Debugging Tools
 # meteorhacks:fast-render                   # improve initial page loads
 # meteortoys:allthings                      # developer tools
