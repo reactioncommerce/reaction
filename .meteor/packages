@@ -75,8 +75,8 @@ tmeasday:publish-counts
 vsivsi:job-collection
 
 # Reaction Commerce Packages
-reactioncommerce:core-theme
-reactioncommerce:default-theme
+#reactioncommerce:core-theme
+#reactioncommerce:default-theme
 
 # Reaction Payment Packages
 

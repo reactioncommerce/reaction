@@ -68,7 +68,6 @@ email@1.0.13
 es5-shim@4.5.11
 facebook@1.2.7
 fastclick@1.0.12
-fortawesome:fontawesome@4.5.0
 geojson-utils@1.0.9
 google@1.1.12
 hot-code-push@1.0.4
@@ -130,8 +129,6 @@ raix:eventemitter@0.1.3
 raix:ui-dropped-event@0.0.7
 random@1.0.9
 rate-limit@1.0.5
-reactioncommerce:core-theme@2.0.2
-reactioncommerce:default-theme@1.0.5
 reactive-dict@1.1.8
 reactive-var@1.0.10
 reload@1.1.9
