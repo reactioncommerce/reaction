@@ -2,6 +2,20 @@
 // Import Bootstrap 3 Styles
 //
 
+
+// Add Font Awesome
+// Fonts are installed in package.json postinstall script
+@import "{}/node_modules/font-awesome/less/font-awesome.less";
+
+// overwrite path from node_modules
+@font-face {
+  font-family: 'FontAwesome';
+  src: url('/fonts/fontawesome-webfont.eot?v=4.6.3');
+  src: url('/fonts/fontawesome-webfont.eot?#iefix&v=4.6.3') format('embedded-opentype'), url('/fonts/fontawesome-webfont.woff2?v=4.6.3') format('woff2'), url('/fonts/fontawesome-webfont.woff?v=4.6.3') format('woff'), url('/fonts/fontawesome-webfont.ttf?v=4.6.3') format('truetype'), url('/fonts/fontawesome-webfont.svg?v=4.6.3#fontawesomeregular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
 // Core variables and mixins
 @import "{}/node_modules/bootstrap/less/variables.less";
 @import "{}/node_modules/bootstrap/less/mixins.less";
@@ -53,9 +67,6 @@
 @import "{}/node_modules/bootstrap/less/utilities.less";
 @import "{}/node_modules/bootstrap/less/responsive-utilities.less";
 
-// Add Font Awesome
-// Fonts are installed in package.json postinstall script
-@import "{}/node_modules/font-awesome/less/font-awesome.less";
 
 // -----------------------------------------------------------------------------
 // Reaction Core theme files
