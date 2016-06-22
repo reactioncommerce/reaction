@@ -1,0 +1,357 @@
+
+.rui.tagnav .rui.tags {
+  .display(flex);
+  .flex-wrap(wrap)
+  // min-height: 100px;
+}
+
+.rui.tagnav .rui.tag {
+  display: flex;
+  width: 100%;
+  background-color: transparent;
+  margin: 0;
+  padding: 0;
+  border-radius: @border-radius-base;
+}
+
+.rui.tagnav .rui.tag.edit {
+  padding: (@padding-base-vertical / 2) 0;
+}
+
+.rui.tagnav .rui.tag.edit button:last-child {
+  min-width: 36px;
+}
+
+
+.rui.tagnav .rui.tag.edit form {
+  display: flex;
+}
+
+.rui.tagnav .rui.tag.edit input {
+  padding: 0 5px;
+  width: 100%;
+}
+
+.rui.tagnav .rui.tag.edit button {
+  padding: 2px 5px;
+}
+
+.rui.tagnav .rui.tag.edit button:first-child {
+  border-radius: @border-radius-base 0 0 @border-radius-base;
+}
+
+.rui.tagnav .rui.tag.edit button:last-child {
+  border-radius: 0 @border-radius-base @border-radius-base 0;
+}
+
+.rui.tagnav .rui.tag.edit.create {
+  @color: lighten(@btn-success-bg, 10%);
+  @color: @brand-secondary-color;
+  // @color: #238CC3;
+  // @color: @white;
+
+  input {
+    // background-color: @color;
+    // border-color: @color;
+    background-color: @white;
+    color: @text-color;
+    .placeholder(@color);
+  }
+
+  button {
+    // background-color: @color;
+    // border-color: @color;
+    background-color: @white;
+    color: @color;
+  }
+}
+
+.rui.tagnav .rui.tag.edit.create input {
+  .placeholder(@brand-secondary-color);
+}
+
+// Base Tag Navigation
+// -- Horizontal Layout
+.rui.tagnav {
+  .display(flex);
+  .flex(1 1 auto);
+  .align-items(center);
+
+  background-color: @navbar-inverse-bg;
+  position: relative;
+  text-transform: uppercase;
+  height: @navbar-height;
+}
+
+// -- Vertical Layout
+.rui.tagnav.vertical {
+  .display(flex);
+  .flex-direction(column);
+}
+
+.rui.tagnav.fixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 270px;
+  height: 100vh;
+  -webkit-overflow-scrolling: touch;
+  z-index: @zindex-navbar;
+  box-shadow: 0 0 20px rgba(0,0,0,0.2);
+}
+
+.rui.tagnav.fixed.open {
+  .display(flex);
+}
+
+.rui.tagnav.fixed.closed {
+  display: none;
+}
+
+// Tag navigation tag list
+// -- Horizontal Layout
+.rui.tagnav > .rui.tags {
+  .display(flex);
+  .flex-wrap(nowrap);
+  .align-items(center);
+  width: 100%;
+  height: 100%;
+  padding: 0 5px;
+  overflow-x: auto;
+}
+
+// -- Vertical Layout
+.rui.tagnav.vertical > .rui.tags {
+  display: block;
+}
+
+// Tag navigation, edit tags button
+// -- Horizontal Layout
+.rui.tagnav .edit-tag-button {
+  .flex(0 0 auto);
+  height: 100%;
+  border: 0;
+  border-left: 1px solid @border-color;
+  border-radius: 0;
+  background-color: @white;
+}
+
+// -- Vertical Layout
+.rui.tagnav.vertical .edit-tag-button {
+  height: auto;
+}
+
+.rui.tagnav .navbar-header {
+  display: none;
+
+  @media screen and (max-width: @screen-sm-max) {
+    .display(flex);
+  }
+}
+
+.rui.tagnav.vertical .navbar-header {
+  .flex(0 0 auto);
+  width: 100%;
+  height: @navbar-height;
+  border-bottom: 1px solid @border-color;
+}
+
+.rui.tagnav.vertical .navbar-header .close-button {
+  border: none;
+  border-radius: 0;
+  width: 44px;
+}
+
+// Groupd navbar items (includes a link and dropdown)
+// -- Horizontal
+.rui.tagnav .navbar-items {
+  .display(flex);
+  .flex(1 1 auto);
+  height: 100%;
+  overflow-y: auto;
+}
+
+// -- Vertical
+.rui.tagnav.vertical .navbar-items {
+  display: block;
+  width: 100%;
+  padding: 20px 0;
+}
+
+// Single navbar item
+// -- Horizontal Layout
+.rui.tagnav .navbar-items > .navbar-item {
+  .display(flex);
+  .align-items(center);
+  .flex(0 0 auto);
+}
+
+// -- Vertical Layout
+.rui.tagnav.vertical .navbar-items > .navbar-item {
+  display: block;
+}
+
+.rui.tagnav .navbar-footer {
+  height: 100%;
+}
+
+.rui.tagnav.vertical .navbar-footer {
+  .display(flex);
+  .flex(0 0 auto);
+  width: 100%;
+  height: @navbar-height;
+  border-top: 1px solid @border-color;
+}
+
+
+.rui.tagnav .edit-tag-button.btn-success {
+  .flex(0 0 auto);
+  height: 100%;
+  border: 0;
+  border-left: 1px solid @btn-success-border;
+  border-radius: 0;
+  color: @btn-success-color;
+  background-color: @btn-success-bg;
+}
+
+.rui.tagnav.vertical .navbar-item.has-dropdown {}
+
+.rui.tagnav.vertical .navbar-item.has-dropdown > .rui.tag.link {
+  position: relative;
+}
+
+.rui.tagnav.vertical .navbar-item.has-dropdown > .rui.tag.link:after {
+  content: "\f107";
+  font-family: "fontawesome";
+  position: absolute;
+  top: 0;
+  right: 10px;
+  height: 100%;
+  .display(flex);
+  .align-items(center);
+  font-size: 16px;
+}
+
+
+.rui.tagnav .navbar-item > .rui.tag.link {
+  .display(flex);
+  .align-items(center);
+  .flex(0 0 auto);
+  width: auto;
+  height: 100%;
+  padding: 0 20px;
+  text-transform: uppercase;
+  border-radius: 0;
+}
+
+.rui.tagnav .navbar-item:hover > .rui.tag.link {
+  background-color: @black10;
+  color: @text-color;
+}
+
+.rui.tagnav.vertical .navbar-item > .rui.tag.link {
+  display: block;
+  height: auto;
+  padding: 10px 20px;
+}
+
+.rui.tagnav .navbar-item > .rui.item.edit {
+  .display(flex);
+  .align-items(center);
+  .flex(0 0 auto);
+  width: auto;
+  min-width: 150px;
+  max-width: 150px;
+  height: 100%;
+  padding: 0 5px;
+}
+
+.rui.tagnav .navbar-item > .rui.tag.edit form {
+  height: 26px;
+}
+
+.rui.tagnav.vertical .navbar-item > .rui.item.edit {
+  padding: 10px 20px;
+  width: 100%;
+  max-width: 100%;
+}
+
+
+.rui.tagnav .rui.tag.edit.selected button,
+.rui.tagnav .rui.tag.edit.selected input {
+  border-color: @black60;
+  background-color: @black60;
+  color: @white;
+}
+
+.rui.tagnav .rui.tag.edit.selected button:last-child {
+  color: @btn-success-color;
+}
+
+.rui.tagnav .navbar-item {
+  height: 100%;
+}
+
+.rui.tagnav.vertical .navbar-item {
+  height: auto;
+}
+
+.rui.tagnav .navbar-item .dropdown-container {
+  display: none;
+  color: @text-color;
+  box-shadow: 0 0 20px rgba(0,0,0,.1);
+}
+
+.rui.tagnav .navbar-item .dropdown-container a {
+  color: @link-color;
+}
+
+.rui.tagnav .navbar-item .dropdown-container .rui.tag,
+.rui.tagnav .rui.tag.edit input {
+  color: @text-color;
+}
+
+.rui.tagnav .navbar-item.selected > .rui.tag {
+  background-color: @black10;
+  border-radius: 0;
+}
+
+// .rui.tagnav .navbar .navbar-item:hover .dropdown-container,
+// .rui.tagnav .navbar .navbar-item:focus .dropdown-container,
+.rui.tagnav .navbar-item.selected .dropdown-container {
+  display: block;
+  position: absolute;
+  top: @navbar-height;
+  left: 0;
+  z-index: @zindex-navbar;
+  width: 100%;
+  margin: 0;
+
+  background-color: @white;
+  border-bottom: 1px solid @border-color;
+}
+
+.rui.tagnav.vertical .navbar-item.selected .dropdown-container,
+.rui.tagnav.vertical .navbar-item .dropdown-container {
+  // display: block !important;
+  position: static;
+}
+
+.nav-dropbar-content {
+  .flex(1 1 auto);
+  padding: 10px;
+  min-height: 200px;
+}
+
+.nav-dropbar-footer {
+  .flex(0 0 auto);
+  padding: 10px;
+  min-height: 44px;
+  border-top: 1px solid @border-color;
+}
+
+.nav-dropbar ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}

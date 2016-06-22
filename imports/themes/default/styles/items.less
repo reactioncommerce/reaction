@@ -1,0 +1,101 @@
+
+.rui.items {
+  width: 100%;
+}
+
+.rui.items.flex {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.rui.items.flex.horizontal {
+  flex-direction: row;
+}
+
+.rui.items.flex.horizontal.reverse {
+  flex-direction: row-reverse;
+}
+
+.rui.items.flex.vertical {
+  flex-direction: column;
+}
+
+.rui.items.flex.vertical.reverse {
+  flex-direction: column-reverse;
+}
+
+.rui.items .item {
+  padding: @padding-base-vertical @padding-base-horizontal;
+}
+
+.rui.items.flex .item {
+  display: flex;
+  flex: 1 1 50%;
+  max-width: 50%;
+}
+
+.rui.items.flex.quarter .item {
+  flex: 1 1 25%;
+  max-width: 25%;
+}
+
+.rui.items.flex.third .item {
+  flex: 1 1 33%;
+  max-width: 33%;
+}
+
+.rui.items.flex.half .item {
+  flex: 1 1 50%;
+  max-width: 50%;
+}
+
+.rui.items.flex.three-quarters .item {
+  flex: 1 1 75%;
+  max-width: 75%;
+}
+
+
+
+
+
+
+
+.rui.items.flex .item.quarter {
+  flex: 1 1 25%;
+}
+
+.rui.items.flex .item.third {
+  flex: 1 1 33%;
+}
+
+.rui.items.flex .item.half {
+  flex: 1 1 50%;
+}
+
+.rui.items.flex .item.three-quarters {
+  flex: 1 1 75%;
+}
+
+.rui.items.flex .item.full {
+  flex: 1 1 100%;
+  min-width: 100%;
+}
+
+
+
+
+
+.rui.item {
+  .display(flex);
+}
+
+.rui.item.flex.vertical,
+.rui.item.axis.vertical {
+  flex-direction: column;
+}
+
+
+.rui.item.flex.horizontal,
+.rui.item.axis.horizontal {
+  flex-direction: row;
+}

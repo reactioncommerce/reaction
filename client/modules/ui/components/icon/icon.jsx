@@ -3,15 +3,16 @@ import classnames from "classnames";
 
 class Icon extends React.Component {
   render() {
+    const { icon } = this.props;
     let classes;
 
-    if (this.props.icon) {
-      if (this.props.icon.indexOf("icon-") === 0) {
-        classes = this.props.icon;
+    if (icon) {
+      if (icon.indexOf("icon-") === 0 || icon.indexOf("fa") >= 0) {
+        classes = icon;
       } else {
         classes = classnames({
           fa: true,
-          [`fa-${this.props.icon}`]: true
+          [`fa-${icon}`]: true
         });
       }
     }
