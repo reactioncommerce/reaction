@@ -1,3 +1,5 @@
+import { Packages } from "/lib/collections";
+
 /**
  * Packages integration specs
  *
@@ -5,7 +7,7 @@
 describe("Packages", function () {
   beforeAll(function () {
     VelocityHelpers.exportGlobals();
-    Packages = ReactionCore.Collections.Packages.find().fetch();
+    Packages = Packages.find().fetch();
   });
 
   it("should have enabled core", function () {

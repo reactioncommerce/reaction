@@ -1,0 +1,29 @@
+
+.rui.card-group {
+  width: 100%;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+}
+
+.rui.card-group .header {
+  .display(flex);
+  .flex(1 1 auto);
+  .align-items(center);
+
+  min-height: 66px;
+  padding: 10px;
+  border-bottom: 1px solid @border-color;
+  text-transform: capitalize;
+  font-size: 2rem;
+}
+
+.rui.card-group > .content {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.rui.card-group .content > .rui.item {
+  .display(flex);
+  .flex(1 1 auto);
+  .flex-wrap(wrap);
+}

@@ -1,0 +1,105 @@
+
+
+<template name="paypalDashboard">
+
+  <div class="container-fluid-sm">
+
+    <div class="flex flex-2x">
+
+      <div class="flex-item">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4>Pay with PayPal button</h4>
+          </div>
+          <div class="list-group">
+            {{#autoForm
+              collection="ReactionCore.Collections.Packages"
+              schema=PaypalPackageConfig
+              doc=packageData
+              type="update"
+              id="paypal-update-form-quick-express"
+              autosave=true
+              }}
+              <div class="list-group-item">
+                {{>afQuickField name='settings.express_enabled' type="boolean-select" trueLabel="Enabled" falseLabel="Disabled" style="width: auto"}}
+              </div>
+              <div class="list-group-item">
+                {{>afQuickField name='settings.express_mode' type="boolean-select" trueLabel="Live - Production Mode" falseLabel="Testing - Sandbox Mode" style="width: auto"}}
+              </div>
+            {{/autoForm}}
+          </div>
+          <div class="panel-footer">
+            <div class="left"></div>
+            <div class="right">
+              <div class="panel-footer-item">
+
+                {{#if packageData.settings.express_enabled}}
+                  <i class="fa fa-check-circle fa-2x text-success"></i>
+                {{else}}
+                  <i class="fa fa-minus-circle fa-2x text-muted"></i>
+                {{/if}}
+              </div>
+
+              <div class="panel-footer-item">
+                <button class="btn btn-default" data-event-action="showPaypalSettings">
+                  <i class="fa fa-gear"></i>
+                </button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+
+      <div class="flex-item">
+        <div class="panel panel-default pkg-card ">
+          <div class="panel-heading">
+            <h4>Payflow Pro</h4>
+          </div>
+          <div class="list-group">
+            {{#autoForm
+              collection="ReactionCore.Collections.Packages"
+              schema=PaypalPackageConfig
+              doc=packageData
+              type="update"
+              id="paypal-update-form-quick-payflow"
+              autosave=true
+              }}
+            <div class="list-group-item">
+              {{>afQuickField name='settings.payflow_enabled' type="boolean-select" trueLabel="Enabled" falseLabel="Disabled" style="width: auto"}}
+            </div>
+            <div class="list-group-item">
+              {{>afQuickField name='settings.payflow_mode' type="boolean-select" trueLabel="Live - Production Mode" falseLabel="Testing - Sandbox Mode" style="width: auto"}}
+            </div>
+
+          {{/autoForm}}
+
+          </div>
+          <div class="panel-footer">
+            <div class="left"></div>
+            <div class="right">
+
+              <div class="panel-footer-item">
+                {{#if packageData.settings.payflow_enabled}}
+                  <i class="fa fa-check-circle fa-2x text-success"></i>
+                {{else}}
+                  <i class="fa fa-minus-circle fa-2x text-muted"></i>
+                {{/if}}
+              </div>
+
+              <div class="panel-footer-item">
+                <button class="btn btn-default" data-event-action="showPaypalSettings">
+                  <i class="fa fa-gear"></i>
+                </button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</template>

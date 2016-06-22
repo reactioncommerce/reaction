@@ -1,0 +1,75 @@
+<template name="socialSettings">
+  {{#autoForm collection=Collections.Packages schema=Schemas.SocialPackageConfig doc=packageData type="update" id="social-update-form" autosave=true}}
+
+    <div class="panel panel-default">
+      <div class="panel-heading panel-heading-flex">
+        <h3 class="panel-title">
+          <i class="fa fa-facebook-official"></i> Facebook
+        </h3>
+        <div class="panel-controls">
+          {{>afQuickField name='settings.public.apps.facebook.enabled' input-col-class="checkbox-switch"}}
+        </div>
+      </div>
+      <div class="panel-body">
+        {{>afQuickField name='settings.public.apps.facebook.appId'}}
+        {{>afQuickField name='settings.public.apps.facebook.appSecret'}}
+        {{>afQuickField name='settings.public.apps.facebook.profilePage'}}
+      </div>
+    </div>
+
+
+
+    <div class="panel panel-default">
+
+      <div class="panel-heading panel-heading-flex">
+        <h3 class="panel-title">
+          <i class="fa fa-twitter"></i> Twitter
+        </h3>
+        <div class="panel-controls">
+          {{> afQuickField name="settings.public.apps.twitter.enabled"}}
+        </div>
+      </div>
+
+      <div class="panel-body">
+        {{>afQuickField name='settings.public.apps.twitter.username'}}
+        {{>afQuickField name='settings.public.apps.twitter.profilePage'}}
+      </div>
+    </div>
+
+
+    <div class="panel panel-default">
+      <div class="panel-heading panel-heading-flex">
+        <h3 class="panel-title">
+          <i class="fa fa-pinterest"></i> Pinterest
+        </h3>
+        <div class="panel-controls">
+          {{>afQuickField name='settings.public.apps.pinterest.enabled'}}
+        </div>
+      </div>
+      <div class="panel-body">
+        {{>afQuickField name='settings.public.apps.pinterest.profilePage'}}
+      </div>
+    </div>
+
+
+    <div class="panel panel-default">
+      <div class="panel-heading panel-heading-flex">
+        <h3 class="panel-title">
+          <i class="fa fa-google-plus"></i> Google+
+        </h3>
+        <div class="panel-controls">
+          {{>afQuickField name='settings.public.apps.googleplus.enabled'}}
+        </div>
+      </div>
+      <div class="panel-body">
+        {{>afQuickField name='settings.public.apps.googleplus.profilePage'}}
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary pull-right" data-i18n="app.saveChanges">Save Changes</button>
+  {{/autoForm}}
+</template>
+
+<template name="socialDashboard">
+
+</template>

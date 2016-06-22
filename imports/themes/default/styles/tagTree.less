@@ -1,0 +1,54 @@
+
+.rui.tagtree {}
+
+.rui.tagnav.vertical .rui.tagtree  {
+  position: static;
+  border-bottom: 1px solid @border-color;
+  background-color: @black02;
+}
+
+.rui.tagtree > .content {
+  .display(flex);
+  .flex-wrap(wrap);
+  padding: 20px;
+}
+
+.rui.tagnav.vertical .rui.tagtree > .content {
+  display: block;
+  padding: 0;
+}
+
+.rui.tagtree > .header {
+  .display(flex);
+  .align-items(center);
+  padding: 20px;
+  background-color: @black02;
+}
+
+.rui.tagnav.vertical .rui.tagtree > .header {
+  display: block;
+}
+
+.rui.tagtree > .header .title {
+  text-transform: none;
+  font-size: 2rem;
+  .padding-right(20px);
+}
+
+.rui.tagtree > .footer {
+  .display(flex);
+  .justify-content(flex-end);
+  padding: 10px;
+}
+
+.rui.tagnav.vertical .rui.tagtree > .footer {
+  display: block;
+}
+
+.rui.tagtree .group {
+  .flex(1 1 auto);
+  min-width: 200px;
+  width: 15%;
+  max-width: 15%;
+  padding: 10px;
+}

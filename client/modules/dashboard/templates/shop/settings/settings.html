@@ -1,0 +1,187 @@
+<template name="shopBrandImageOption">
+  <img src="{{url}}" width="100%">
+  {{#card (cardProps this)}}
+    {{#with option}}
+      <div class="rui brand">
+        <img src="{{url}}" width="100%">
+      </div>
+    {{/with}}
+  {{/card}}
+</template>
+
+<template name="shopSettings">
+
+  <div class="panel-group" id="shopSettingsAccordian" role="tablist" aria-multiselectable="true">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <div class="panel-title">
+          <a
+            href="#general"
+            aria-controls="general"
+            aria-expanded="true"
+            role="button"
+            data-toggle="collapse"
+            data-parent="#shopSettingsAccordian"
+            data-i18n="shopSettings.general">General</a>
+        </div>
+      </div>
+      <div id="general" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="General">
+        <div class="panel-body">
+          {{#autoForm collection=Collections.Packages schema=Schemas.CorePackageConfig
+          doc=packageData id="shopEditOptionsForm" type="update" autosave=true}}
+            {{> afFieldInput name='settings.public.allowGuestCheckout'}}
+          {{/autoForm}}
+        </div>
+        <div class="panel-body">
+          {{> select brandImageSelectProps}}
+          {{> upload onUpload=handleFileUpload}}
+        </div>
+        <div class="panel-body">
+          {{#autoForm collection=Collections.Shops doc=shop id="shopEditForm" type="update"}}
+            {{> afQuickField name='name' placeholder="Shop Name"}}
+            {{> afQuickField name='emails.0.address' label="Email" placeholder="Primary Contact Email"}}
+            {{> afQuickField name='description' placeholder="Description"}}
+            {{> afQuickField name='keywords' placeholder="Keywords"}}
+            {{> shopSettingsSubmitButton}}
+          {{/autoForm}}
+        </div>
+      </div>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <div class="panel-title">
+          <a
+            href="#address"
+            aria-controls="address"
+            aria-expanded="true"
+            role="button"
+            data-toggle="collapse"
+            data-parent="#shopSettingsAccordian"
+            data-i18n="shopSettings.address">Address</a>
+        </div>
+      </div>
+      <div id="address" class="panel-collapse collapse" role="tabpanel" aria-labelledby="address">
+        <div class="panel-body">
+          {{#autoForm collection=Collections.Shops doc=shop id="shopEditAddressForm" type="update"}}
+            {{> afQuickField name='addressBook.0.company'}}
+            {{> afQuickField name='addressBook.0.fullName'}}
+            {{> afQuickField name='addressBook.0.address1'}}
+            {{> afQuickField name='addressBook.0.address2'}}
+            {{> afQuickField name='addressBook.0.city'}}
+            {{> afQuickField name='addressBook.0.region'}}
+            {{> afQuickField name='addressBook.0.postal'}}
+            {{> afQuickField name='addressBook.0.country' options=countryOptions}}
+            {{> afQuickField name='addressBook.0.phone'}}
+            {{> afQuickField name='addressBook.0.isCommercial'}}
+            {{> afQuickField name='addressBook.0.isShippingDefault' value=true}}
+            {{> afQuickField name='addressBook.0.isBillingDefault' value=true}}
+            {{> shopSettingsSubmitButton}}
+          {{/autoForm}}
+        </div>
+      </div>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <div class="panel-title">
+          <a
+            href="#mail"
+            aria-controls="mail"
+            role="button"
+            data-toggle="collapse"
+            data-parent="#shopSettingsAccordian"
+            data-i18n="shopSettings.mail">Mail</a>
+        </div>
+      </div>
+      <div id="mail" class="panel-collapse collapse" role="tabpanel" aria-labelledby="mail">
+        <div class="panel-body">
+          {{#autoForm collection=Collections.Packages schema=Schemas.CorePackageConfig
+          doc=packageData id="shopEditEmailForm" type="update"}}
+            {{> afQuickField name='settings.mail.user'}}
+            {{> afQuickField name='settings.mail.password'}}
+            {{> afQuickField name='settings.mail.host'}}
+            {{> afQuickField name='settings.mail.port'}}
+            {{> shopSettingsSubmitButton}}
+          {{/autoForm}}
+        </div>
+      </div>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <div class="panel-title">
+          <a
+            href="#payment-methods"
+            aria-controls="paymentMethods"
+            role="button"
+            data-toggle="collapse"
+            data-parent="#shopSettingsAccordian"
+            data-i18n="shopSettings.paymentMethods">Payment Methods</a>
+        </div>
+      </div>
+      <div id="payment-methods" class="panel-collapse collapse" role="tabpanel" aria-labelledby="paymentMethods">
+        <div class="panel-body">
+          {{#autoForm collection=Collections.Shops doc=shop id="shopEditPaymentMethodsForm" type="update"
+          autosave=true}}
+            {{> afQuickField name='defaultPaymentMethod' options=paymentMethodOptions}}
+          {{/autoForm}}
+        </div>
+      </div>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <div class="panel-title">
+          <a
+            href="#options"
+            aria-controls="options"
+            role="button"
+            data-toggle="collapse"
+            data-parent="#shopSettingsAccordian"
+            data-i18n="shopSettings.options">Options</a>
+        </div>
+      </div>
+      <div id="options" class="panel-collapse collapse" role="tabpanel" aria-labelledby="options">
+        <div class="panel-body">
+          {{#autoForm collection=Collections.Packages schema=Schemas.CorePackageConfig
+          doc=packageData id="shopEditExternalServicesForm" type="method-update" meteormethod="shop/updateShopExternalServices"}}
+            {{> afQuickField name='settings.openexchangerates.appId'}}
+            {{> afQuickField name='settings.openexchangerates.refreshPeriod' placeholder="every 1 hour"}}
+            {{> afQuickField name='settings.google.clientId'}}
+            {{> afQuickField name='settings.google.apiKey'}}
+            {{> shopSettingsSubmitButton}}
+          {{/autoForm}}
+        </div>
+      </div>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <div class="panel-title">
+          <a
+            href="#import"
+            aria-controls="import"
+            role="button"
+            data-toggle="collapse"
+            data-parent="#shopSettingsAccordian"
+            data-i18n="shopSettings.import">Import</a>
+        </div>
+      </div>
+      <div id="import" class="panel-collapse collapse" role="tabpanel" aria-labelledby="import">
+        <div class="panel-body">
+          {{> import}}
+        </div>
+      </div>
+
+    </div>
+  </div>
+</template>
+
+<template name="shopSettingsSubmitButton">
+  <div class="clearfix">
+    <button type="submit" class="btn btn-primary pull-right" data-i18n="app.saveChanges">Save Changes</button>
+  </div>
+</template>
+
+<template name="shopDashboard"></template>

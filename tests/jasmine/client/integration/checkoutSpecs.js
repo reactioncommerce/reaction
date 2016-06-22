@@ -1,17 +1,20 @@
+import { Cart } from "/lib/collections";
+import { Logger } from "/server/api";
+
 function checkoutState(callback) {
   if (callback) {
-    let cartId = ReactionCore.Collections.Cart.findOne()._id;
-    cartWorkflow = ReactionCore.Collections.Cart.findOne(cartId).workflow;
+    let cartId = Cart.findOne()._id;
+    cartWorkflow = Cart.findOne(cartId).workflow;
     Tracker.afterFlush(callback);
   }
 }
 
 describe("Checkout", function () {
   beforeEach(function (done) {
-    spyOn(ReactionCore.Collections.Cart, "update");
+    spyOn(Cart, "update");
 
     Meteor.autorun(function (c) {
-      let status = ReactionCore.Collections.Cart.findOne().workflow.status;
+      let status = Cart.findOne().workflow.status;
       if (status) {
         c.stop();
         checkoutState(done);
@@ -32,7 +35,7 @@ describe("Checkout", function () {
     it("should display i18n empty checkout msg if no products", function (done) {
       expect(ReactionRouter.current().path).toEqual("/cart/checkout");
 
-      let cartItems = ReactionCore.Collections.Cart.findOne().items;
+      let cartItems = Cart.findOne().items;
 
       if (!cartItems) {
         expect($("*[data-i18n='cartCheckout.emptyCheckoutCart']")).toHaveText(
@@ -71,7 +74,7 @@ describe("Checkout", function () {
         $(".continue-guest").trigger("click");
 
         expect(guestGo).toHandle("click");
-        expect(ReactionCore.Collections.Cart.update).toHaveBeenCalled();
+        expect(Cart.update).toHaveBeenCalled();
       } else {
         expect(cartWorkflow.workflow).toContain("checkoutLogin");
       }
@@ -106,7 +109,7 @@ describe("Checkout", function () {
         $("*[data-event-action='saveAddress']").trigger("click");
         // expect(spyOnSaveButton).toHaveBeenTriggered();
         // expect($("*[data-event-action="saveAddress"]")).toHandle("click");
-        // expect(ReactionCore.Collections.Cart.update).toHaveBeenCalled();
+        // expect(Cart.update).toHaveBeenCalled();
       } else {
         expect(cartWorkflow.workflow).not.toContain("checkoutAddressBook");
       }
@@ -118,7 +121,7 @@ describe("Checkout", function () {
       let thisWorkflow = _.contains(cartWorkflow.workflow, "checkoutAddressBook");
       // if addressbook has succeeded at least once
       if (thisWorkflow && cartWorkflow.workflow.indexOf("checkoutAddressBook") > 1) {
-        ReactionCore.Log.info("add secondary addressBook: ", cartWorkflow.status);
+        Logger.info("add secondary addressBook: ", cartWorkflow.status);
         let fakeAddress = ReactionFaker.address();
 
         $("*[data-event-action='addNewAddress']").trigger("click");
@@ -137,7 +140,7 @@ describe("Checkout", function () {
         $("#addressBookAddForm").submit();
         expect($("#addressBookAddForm")).toHandle("submit");
 
-        expect(ReactionCore.Collections.Cart.update).toHaveBeenCalled();
+        expect(Cart.update).toHaveBeenCalled();
       } else {
         expect(cartWorkflow.workflow.indexOf("checkoutAddressBook")).toBeTruthy();
       }
@@ -156,7 +159,7 @@ describe("Checkout", function () {
 
         expect($(primaryAddress)).toHaveBeenTriggeredOn("click");
         expect($(".address-ship-to .list-group-item .active")).toExist();
-        expect(ReactionCore.Collections.Cart.update).toHaveBeenCalled();
+        expect(Cart.update).toHaveBeenCalled();
       } else {
         expect(cartWorkflow.workflow).not.toContain("checkoutAddressBook");
       }
@@ -174,7 +177,7 @@ describe("Checkout", function () {
         $(".checkout-shipping .list-group-item:nth-child(2)").trigger("click");
 
         expect(standardShipping).toHandle("click");
-        expect(ReactionCore.Collections.Cart.update).toHaveBeenCalled();
+        expect(Cart.update).toHaveBeenCalled();
       } else {
         expect(cartWorkflow.workflow).not.toContain("coreCheckoutShipping");
       }

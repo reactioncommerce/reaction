@@ -1,0 +1,128 @@
+<head>
+  <!-- Google Analytics -->
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  </script>
+  <!-- End Google Analytics -->
+</head>
+
+<template name="reactionAnalyticsSettings">
+  {{#autoForm collection=Collections.Packages schema=Schemas.ReactionAnalyticsPackageConfig doc=packageData type="update" id="analytics-update-form"}}
+    {{#if segmentioEnabled}}
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">Segment</h4>
+        </div>
+        <div class="panel-body">
+          {{>afQuickField name="settings.public.segmentio.enabled"}}
+          {{>afQuickField name="settings.public.segmentio.api_key" placeholder="WRITE Key"}}
+          <button type="submit" class="btn btn-primary pull-right" data-i18n="app.saveChanges">Save Changes</button>
+        </div>
+      </div>
+    {{/if}}
+
+    {{#if googleAnalyticsEnabled}}
+        <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">Google Analytics</h4>
+        </div>
+        <div class="panel-body">
+          {{>afQuickField name="settings.public.googleAnalytics.enabled"}}
+          {{>afQuickField name="settings.public.googleAnalytics.api_key" placeholder="UA-XXXXX-X"}}
+          <button type="submit" class="btn btn-primary pull-right" data-i18n="app.saveChanges">Save Changes</button>
+        </div>
+      </div>
+    {{/if}}
+
+    {{#if mixpanelEnabled}}
+        <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">Mixpanel</h4>
+        </div>
+        <div class="panel-body">
+          {{>afQuickField name="settings.public.mixpanel.enabled"}}
+          {{>afQuickField name="settings.public.mixpanel.api_key" placeholder="TOKEN"}}
+          <button type="submit" class="btn btn-primary pull-right" data-i18n="app.saveChanges">Save Changes</button>
+        </div>
+      </div>
+    {{/if}}
+  {{/autoForm}}
+
+</template>
+
+
+
+<template name="reactionAnalytics">
+{{#autoForm collection=Collections.Packages schema=Schemas.ReactionAnalyticsPackageConfig doc=packageData type="update" id="analytics-update-form-quick" autosave=true}}
+  <div class="container-fluid-sm flex">
+    <div class="flex-item">
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Segment</h3>
+        </div>
+        <div class="list-group">
+          <div class="list-group-item">
+            {{>afQuickField name="settings.public.segmentio.enabled"}}
+          </div>
+        </div>
+        <div class="panel-footer">
+          <div class="left"></div>
+          <div class="right">
+            <button class="btn btn-default" data-event-action="showAnalyticsSettings">
+              <i class="fa fa-gear"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex-item">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Google Analytics</h3>
+        </div>
+        <div class="list-group">
+          <div class="list-group-item">
+            {{>afQuickField name="settings.public.googleAnalytics.enabled"}}
+          </div>
+        </div>
+        <div class="panel-footer">
+          <div class="left"></div>
+          <div class="right">
+            <button class="btn btn-default" data-event-action="showAnalyticsSettings">
+              <i class="fa fa-gear"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex-item">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Mixpanel</h3>
+        </div>
+        <div class="list-group">
+          <div class="list-group-item">
+            {{>afQuickField name="settings.public.mixpanel.enabled"}}
+          </div>
+        </div>
+        <div class="panel-footer">
+          <div class="left"></div>
+          <div class="right">
+            <button class="btn btn-default" data-event-action="showAnalyticsSettings">
+              <i class="fa fa-gear"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+{{/autoForm}}
+
+</template>

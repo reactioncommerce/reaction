@@ -1,0 +1,121 @@
+<template name="childVariantImageMedia">
+  {{#each media}}
+    <div class="media-item">
+      <img src="{{url store='large'}}">
+    </div>
+  {{else}}
+    <div class="media-item">
+      <img src="/resources/placeholder.gif">
+    </div>
+  {{/each}}
+</template>
+
+<template name="childVariantForm">
+  <div class="panel child-variant-form {{active}}">
+    <a
+      class="panel-heading panel-heading-flex js-child-varaint-heading"
+      role="tab"
+      id="{{name}}"
+      data-toggle="collapse"
+      data-parent="#payment-methods-accordian"
+      aria-expanded="false"
+      aria-controls="{{childVariantFormId}}"
+      href="#{{childVariantFormId}}"
+    >
+      <div class="media">
+        {{> childVariantImageMedia media=featuredMedia}}
+      </div>
+      <div class="panel-title">
+        {{optionTitle}} - {{formatPrice price}}
+      </div>
+      <div class="panel-controls">
+        {{> React component=Icon icon="angle-down"}}
+      </div>
+    </a>
+    <div id="{{childVariantFormId}}" class="panel-collapse collapse collapsed child-variant-collapse" role="tabpanel" aria-labelledby="{{name}}">
+      <div class="panel-toolbar">
+        <div class="panel-controls">
+          {{> button
+            icon="trash"
+            className="btn btn-default js-remove-child-variant"
+            tooltip="Remove Variant"
+          }}
+        </div>
+      </div>
+      <div class="panel-body">
+        <div class="child-variant-form" id="{{childVariantFormId}}">
+          <div class="rui items flex">
+            <div class="rui item full">
+              <div class="form-group">
+                  <div class="upload-form">
+                    {{> upload
+                      mediaTemplate="childVariantImageMedia"
+                      media=media
+                      onUpload=handleFileUpload
+                    }}
+                  </div>
+                </div>
+              </div>
+
+            <div class="rui item half">
+              <div class="form-group">
+                <label for="option-{{childVariantFormId}}" data-i18n="productVariant.optionTitle">Option Title</label>
+                <input
+                  id="option-{{childVariantFormId}}"
+                  type="text"
+                  class="form-control input-sm child-variant-input"
+                  value="{{optionTitle}}"
+                  name="optionTitle"
+                  placeholder="Add option title"
+                  />
+              </div>
+            </div>
+
+            <div class="rui item half">
+              <div class="form-group">
+                <label for="label-{{childVariantFormId}}" data-i18n="productVariant.title">Cart / Checkout Label</label>
+                <input
+                  id="label-{{childVariantFormId}}"
+                  type="text"
+                  class="form-control input-sm child-variant-input"
+                  value="{{title}}"
+                  name="title"
+                  placeholder="Add cart label"
+                  />
+              </div>
+            </div>
+
+            <div class="rui item half">
+              <div class="form-group">
+                <label for="quantity-{{childVariantFormId}}" data-i18n="productVariant.inventoryQuantity">Quantity</label>
+                <input
+                  id="quantity-{{childVariantFormId}}"
+                  type="number"
+                  class="form-control input-sm child-variant-input"
+                  value="{{inventoryQuantity}}"
+                  name="inventoryQuantity"
+                  placeholder="QTY"
+                  />
+              </div>
+            </div>
+
+            <div class="rui item half">
+              <div class="form-group">
+                <label for="price-{{childVariantFormId}}" data-i18n="productVariant.price" class="column-price">Price</label>
+                <input
+                  id="price-{{childVariantFormId}}"
+                  type="number"
+                  class="form-control
+                  input-sm child-variant-input"
+                  value="{{price}}"
+                  name="price"
+                  placeholder="Add price"
+                  />
+              </div>
+            </div>
+          </div>
+        </div> {{!-- /.child-variant-form --}}
+      </div> {{!-- /.panel-body --}}
+    </div> {{!-- /.panel-collapse --}}
+  </div> {{!-- /.panel --}}
+</template>
