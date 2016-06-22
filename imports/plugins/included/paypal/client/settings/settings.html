@@ -1,0 +1,62 @@
+<template name="paypalSettings">
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Pay with PayPal button</h3>
+    </div>
+    <div class="panel-body">
+      {{#autoForm
+        collection="ReactionCore.Collections.Packages"
+        schema=PaypalPackageConfig
+        doc=packageData
+        type="update"
+        id="paypal-update-form-express"
+        }}
+
+        <div class="form-group">
+          Don't have a PayPal username, password and signature? <a href="https://developer.paypal.com/webapps/developer/applications/accounts" target="_blank">Get one here.</a>
+        </div>
+
+        {{>afQuickField name='settings.express_enabled' type="boolean-select" trueLabel="Enabled" falseLabel="Disabled" style="width: auto"}}
+        {{>afQuickField name="settings.express_auth_and_capture"}}
+        {{>afQuickField name='settings.merchantId'}}
+        {{>afQuickField name='settings.username'}}
+        {{>afQuickField name='settings.password' type="password"}}
+        {{>afQuickField name='settings.signature'}}
+        {{>afQuickField name='settings.express_mode' type="boolean-select" trueLabel="Live - Production Mode" falseLabel="Testing - Sandbox Mode" style="width: auto"}}
+
+        <button type="submit" class="btn btn-primary pull-right">Save Changes</button>
+      {{/autoForm}}
+    </div>
+  </div>
+
+
+
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Payflow Pro</h3>
+    </div>
+    <div class="panel-body">
+      {{#autoForm
+        collection="ReactionCore.Collections.Packages"
+        schema=PaypalPackageConfig
+        doc=packageData
+        type="update"
+        id="paypal-update-form-payflow"
+        }}
+
+        <div class="form-group">
+          Don't have a PayPal client ID and secret? <a href="https://developer.paypal.com/webapps/developer/applications" target="_blank">Get them here.</a>
+        </div>
+        {{>afQuickField name='settings.payflow_enabled' type="boolean-select" trueLabel="Enabled" falseLabel="Disabled" style="width: auto"}}
+        {{>afQuickField name='settings.client_id'}}
+        {{>afQuickField name='settings.client_secret' type="password"}}
+        {{>afQuickField name='settings.payflow_mode' type="boolean-select" trueLabel="Live - Production Mode" falseLabel="Testing - Sandbox Mode" style="width: auto"}}
+        <button type="submit" class="btn btn-primary pull-right">Save Changes</button>
+      {{/autoForm}}
+    </div>
+  </div>
+
+
+</template>

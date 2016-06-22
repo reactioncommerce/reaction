@@ -1,0 +1,58 @@
+
+.metadata {
+
+}
+
+.rui.meta-item {
+  flex: 0 0 auto;
+  width: 100%;
+  border-bottom: 1px solid @border-color;
+}
+
+.rui.meta-item:first-child {
+  border-top: 1px solid @border-color;
+}
+
+.rui.meta-item:first-child button {
+  border-radius: 0 @btn-border-radius-base 0 0;
+}
+
+.rui.meta-item button {
+  border-radius: 0;
+  flex: 0 0 auto;
+}
+
+.rui.meta-item:last-child button {
+  border-radius: 0 0 @btn-border-radius-base 0;
+
+}
+
+.rui.metadata.edit {
+  // border: 1px solid @border-color;
+}
+
+.rui.metadata.edit form {
+  display: flex;
+  width: 100%;
+}
+
+
+
+.rui.metadata.edit input {
+  flex: 1 1 auto;
+  border: none;
+  border-right: 1px solid @border-color;
+  border-radius: 0;
+
+  &:first-child {
+    border-left: 1px solid @border-color;
+  }
+}
+
+.rui.metadata.edit {
+
+  button {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+}

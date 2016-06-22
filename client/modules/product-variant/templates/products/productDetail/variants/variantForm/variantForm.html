@@ -1,0 +1,146 @@
+<template name="variantForm">
+  <div id="variant-edit-form-{{_id}}" class="panel-group variant-edit-form {{variantFormVisible}}">
+    <div class="panel panel-default variant-form">
+      <div class="panel-heading panel-heading-flex">
+        <div class="panel-title">
+          {{#if inventoryManagement}}
+            {{#unless isSoldOut }}
+              <span class="variant-qty badge">{{displayQuantity}}</span>
+            {{else}}
+              {{#if inventoryPolicy }}
+              <span class="variant-qty-sold-out badge">Sold Out!</span>
+              {{ else }}
+              <span class="variant-qty-sold-out badge">Backorder</span>
+              {{/if}}
+            {{/unless}}
+          {{/if}}
+          <span data-i18n="productDetailEdit.variantDetails">Variant Details</span>
+        </div>
+        <div class="panel-controls">
+          {{> button
+            icon="files-o"
+            className="btn btn-default btn-clone-variant"
+            tooltip="Duplicate"
+            i18nTooltip="productDetailEdit.duplicateVariant"
+          }}
+
+          {{> button
+            icon="trash-o"
+            className="btn btn-default btn-remove-variant"
+            tooltip="Remove"
+            i18nTooltip="productDetailEdit.removeVariant"
+            onClick=(removeVariant this)
+          }}
+        </div>
+      </div>
+      <div class="panel-body">
+        {{#autoForm schema=Schemas.ProductVariant doc=. type="method" meteormethod="products/updateVariant" id=variantFormId validation="keyup" resetOnSuccess=false}}
+        <fieldset>
+          <div class="row">
+            <div class="">
+              <div class="form-group{{#if afFieldIsInvalid name='title'}} has-error{{/if}}">
+                  <label class="control-label">{{afFieldLabelText name='title'}}</label>
+                  {{>afFieldInput name='title'}}
+                  {{#if afFieldIsInvalid name='title'}}
+                  <span class="help-block">{{afFieldMessage name='title'}}</span>
+                  {{/if}}
+              </div>
+
+              <div class="col-xs-3 col-sm-3 form-group{{#if afFieldIsInvalid name='weight'}} has-error{{/if}}">
+                <label class="control-label">{{afFieldLabelText name='weight'}}</label>
+                {{>afFieldInput name='weight'}}
+                {{#if afFieldIsInvalid name='weight'}}
+                <span class="help-block">{{afFieldMessage name='weight'}}</span>
+                {{/if}}
+              </div>
+
+              <div class="col-xs-3 col-sm-3 form-group {{#unless hasChildVariants}}{{#if afFieldIsInvalid name='inventoryQuantity'}} has-error{{/if}}{{/unless}}">
+                <label class="control-label">{{afFieldLabelText name='inventoryQuantity'}}</label>
+                {{>afFieldInput name='inventoryQuantity' disabled=hasChildVariants}}
+                {{#if afFieldIsInvalid name='inventoryQuantity'}}
+                <span class="help-block">{{afFieldMessage name='inventoryQuantity'}}</span>
+                {{/if}}
+              </div>
+
+              <div class="col-xs-3 col-sm-3 form-group{{#if afFieldIsInvalid name='compareAtPrice'}} has-error{{/if}}">
+                <label class="control-label">{{afFieldLabelText name='compareAtPrice'}}</label>
+                {{>afFieldInput name='compareAtPrice'}}
+                {{#if afFieldIsInvalid name='compareAtPrice'}}
+                <span class="help-block">{{afFieldMessage name='compareAtPrice'}}</span>
+                {{/if}}
+              </div>
+
+              <div class="col-xs-3 col-sm-3 form-group {{#if afFieldIsInvalid name='price'}} has-error{{/if}}">
+                <label class="control-label">{{afFieldLabelText name='price'}}</label>
+                {{#if hasChildVariants}}
+                  {{>afFieldInput name='price' value="N/A" disabled=hasChildVariants}}
+                {{else}}
+                  {{>afFieldInput name='price'}}
+                  {{#if afFieldIsInvalid name='price'}}
+                  <span class="help-block">{{afFieldMessage name='price'}}</span>
+                  {{/if}}
+                {{/if}}
+              </div>
+
+            </div>
+          </div>
+          <div class="row">
+            <div class="variant-options col-xs-12 col-sm-3 col-md-3">
+              <div class="form-group {{#if afFieldIsInvalid name='taxable'}} has-error{{/if}}">
+                  {{>afFieldInput name='taxable' value=true}}
+                  {{#if afFieldIsInvalid name='taxable'}}
+                  <span class="help-block">{{afFieldMessage name='taxable'}}</span>
+                  {{/if}}
+              </div>
+              <div class="form-group{{#if afFieldIsInvalid name='inventoryManagement'}} has-error{{/if}}">
+                  {{>afFieldInput name='inventoryManagement'}}
+                  {{#if afFieldIsInvalid name='inventoryManagement'}}
+                  <span class="help-block">{{afFieldMessage name='inventoryManagement'}}</span>
+                  {{/if}}
+              </div>
+              <div class="form-group{{#if afFieldIsInvalid name='inventoryPolicy'}} has-error{{/if}} inventoryPolicy" style="{{displayInventoryManagement}}">
+                  {{>afFieldInput name='inventoryPolicy'}}
+                  {{#if afFieldIsInvalid name='inventoryPolicy'}}
+                  <span class="help-block">{{afFieldMessage name='inventoryPolicy'}}</span>
+                  {{/if}}
+              </div>
+              <div class="lowInventoryWarningThreshold form-group{{#if afFieldIsInvalid name='lowInventoryWarningThreshold'}} has-error{{/if}}" style="{{displayLowInventoryWarning doc}}">
+                  <span class="col-xs-5 col-sm-8 col-md-8">
+                  <label class="control-label">{{afFieldLabelText name='lowInventoryWarningThreshold'}}</label>
+                  {{>afFieldInput name='lowInventoryWarningThreshold' placeholder="0"}}
+                  </span>
+                  {{#if afFieldIsInvalid name='lowInventoryWarningThreshold'}}
+                  <span class="help-block">{{afFieldMessage name='lowInventoryWarningThreshold'}}</span>
+                  {{/if}}
+              </div>
+
+           </div>
+          </div>
+        </fieldset>
+        {{>afFieldInput name="_id" type="hidden"}}
+        {{/autoForm}}
+      </div> {{!-- END panel-body --}}
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading panel-heading-flex">
+        <div class="panel-title">
+          <span data-i18n="productDetailEdit.variantOptions">Variant Options</span>
+        </div>
+        <div class="panel-controls">
+          {{> button
+            icon="plus"
+            className="btn btn-default btn-child-variant-form"
+            tooltip="Add Option"
+            i18nTooltip="productDetailEdit.addVariantOption"
+          }}
+        </div>
+      </div>
+      <div class="panel-group panel-group-accordian" role="tablist" aria-multiselectable="true">
+        {{#each childVariants}}
+          {{>childVariantForm}}
+        {{/each}}
+      </div>
+    </div>
+  </div>
+</template>

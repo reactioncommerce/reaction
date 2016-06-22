@@ -1,3 +1,0 @@
-
-ReactionUI = ReactionUI || {};
-ReactionUI.Components = {};

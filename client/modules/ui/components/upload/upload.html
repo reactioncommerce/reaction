@@ -1,0 +1,11 @@
+<template name="upload">
+  <div class="js-dropzone">
+    {{#if mediaTemplate}}
+      <div class="media">
+        {{> Template.dynamic template=mediaTemplate }}
+      </div>
+    {{/if}}
+    <input name="files" class="hidden" type="file" multiple />
+    {{> button uploadButtonProps}}
+  </div>
+</template>
