@@ -1,9 +1,9 @@
 /* eslint dot-notation: 0 */
 
 import { Meteor } from "meteor/meteor";
+import { Accounts as MeteorAccount } from "meteor/accounts-base";
 import { Accounts, Packages, Orders, Products, Shops, Cart }  from "/lib/collections";
 import { Reaction } from "/server/api";
-import { resetDatabase } from 'meteor/xolvio:cleaner';
 import { expect, assert } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
 import _ from  "underscore";
@@ -31,7 +31,6 @@ describe("Account Meteor method ", function () {
     Orders.remove({});
     Products.remove({});
     Shops.remove({});
-    // resetDatabase();
   });
 
   beforeEach(function () {
@@ -604,44 +603,45 @@ describe("Account Meteor method ", function () {
     });
   });
 
-  describe.skip("accounts/inviteShopMember", function () {
-    it.skip(
-      "should not let non-Owners invite a user to the shop", function (
-        done) {
-        // spyOn(ReactionCore, "hasOwnerAccess").and.returnValue(false);
-        spyOn(ReactionCore, "hasPermission").and.returnValue(false);
-        spyOn(Accounts, "createUser");
-        // create user
-        expect(function () {
-          return Meteor.call("accounts/inviteShopMember", shopId,
-            fakeUser.emails[0].address,
-            fakeUser.profile.addressBook[0].fullName);
-        }).toThrow(new Meteor.Error(403, "Access denied"));
-        // expect that createUser shouldnt have run
-        expect(Accounts.createUser).not.toHaveBeenCalledWith({
-          username: fakeUser.profile.addressBook[0].fullName
-        });
-        return done();
-      }
-    );
+  describe("accounts/inviteShopMember", function () {
+    it("should not let non-Owners invite a user to the shop", function (done) {
+      // spyOn(ReactionCore, "hasOwnerAccess").and.returnValue(false);
+      sandbox.stub(Reaction, "hasPermission", function () {
+        return false;
+      });
+      // spyOn(ReactionCore, "hasPermission").and.returnValue(false);
+      let createUserSpy = sandbox.spy(MeteorAccount, "createUser");
+      // create user
+      expect(function () {
+        return Meteor.call("accounts/inviteShopMember", shopId,
+          fakeUser.emails[0].address,
+          fakeUser.profile.addressBook[0].fullName);
+      }).to.throw(Meteor.Error, /Access denied/);
+      // expect that createUser shouldnt have run
+      expect(createUserSpy).to.not.have.been.called;
+      // expect(createUserSpy).to.not.have.been.called.with({
+      //   username: fakeUser.profile.addressBook[0].fullName
+      // });
+      return done();
+    });
 
-    it.skip(
-      "should let a Owner invite a user to the shop",
-      function (done) {
-        // spyOn(Roles, "userIsInRole").and.returnValue(true);
-        spyOn(ReactionCore, "hasPermission").and.returnValue(true);
-        // TODO checking this is failing, even though we can see it happening in the log.
-        // spyOn(Email, "send");
-        expect(function () {
-          return Meteor.call("accounts/inviteShopMember",
-            shopId,
-            fakeUser.emails[0].address,
-            fakeUser.profile.addressBook[0].fullName);
-        }).not.toThrow(new Meteor.Error(403, "Access denied"));
-        // expect(Email.send).toHaveBeenCalled();
-        return done();
-      }
-    );
+    it("should let a Owner invite a user to the shop", function (done) {
+      // spyOn(Roles, "userIsInRole").and.returnValue(true);
+      sandbox.stub(Reaction, "hasPermission", function () {
+        return true;
+      });
+      // spyOn(ReactionCore, "hasPermission").and.returnValue(true);
+      // TODO checking this is failing, even though we can see it happening in the log.
+      // spyOn(Email, "send");
+      expect(function () {
+        return Meteor.call("accounts/inviteShopMember",
+          shopId,
+          fakeUser.emails[0].address,
+          fakeUser.profile.addressBook[0].fullName);
+      }).to.not.throw(Meteor.Error, /Access denied/);
+      // expect(Email.send).toHaveBeenCalled();
+      return done();
+    });
   });
 });
 
