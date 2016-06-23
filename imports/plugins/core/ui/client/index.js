@@ -7,8 +7,6 @@ import "./templates/themeDetails/themeDetails.html";
 import "./templates/themeDetails/themeDetails.js";
 import "./templates/themeEditor/themeEditor.html";
 import "./templates/themeEditor/themeEditor.js";
-import "./templates/themeEditor/themeEditor.less";
-
 
 // Import blaze components
 import "./components/button/button.html";
