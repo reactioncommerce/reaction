@@ -130,7 +130,8 @@ Template.variantList.events({
 
     if (Reaction.hasPermission("createProduct")) {
       Reaction.showActionView({
-        label: i18next.t("productDetailEdit.editVariant"),
+        label: "Edit Variant",
+        i18nKeyLabel: "productDetailEdit.editVariant",
         template: "variantForm",
         data: parentVariant
       });
