@@ -13,3 +13,5 @@ import "/imports/plugins/core/ui/client";
 import "/imports/plugins/core/checkout/client";
 import "/imports/plugins/core/dashboard/client";
 import "/imports/plugins/core/layout/client";
+
+import "/imports/themes/default";
