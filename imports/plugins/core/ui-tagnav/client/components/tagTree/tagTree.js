@@ -1,5 +1,5 @@
 import Sortable from "sortablejs";
-import { TagHelpers } from "/client/modules/ui-tagnav/helpers";
+import { TagHelpers } from "/imports/plugins/core/ui-tagnav/client/helpers";
 
 Template.tagTree.onRendered(() => {
   const instance = Template.instance();
