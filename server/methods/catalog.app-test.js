@@ -218,13 +218,13 @@ describe("core product methods", function () {
     });
 
     it("should update individual variant by admin passing in partial object", function (done) {
-      let updatedVariant;
-      const product = addProduct();
-      let variant = Products.find({ ancestors: [product._id] }).fetch()[0];
       sandbox.stub(Reaction, "hasPermission", function () {
         check(arguments, [Match.Any]);
         return true;
       });
+      let updatedVariant;
+      const product = addProduct();
+      let variant = Products.find({ ancestors: [product._id] }).fetch()[0];
       // spyOn(Roles, "userIsInRole").and.returnValue(true);
 
       Meteor.call("products/updateVariant", {
@@ -289,17 +289,21 @@ describe("core product methods", function () {
     });
   });
 
-  describe.skip("products/cloneProduct", function () {
+  describe("products/cloneProduct", function () {
     // At the moment we do not have any mechanisms that track the product
     // cloning hierarchy, so the only way to track that will be cleaning
     // collection on before each test.
     beforeEach(function () {
-      return Products.remove({});
+      return Products.direct.remove({});
     });
-    it("should throw 403 error by non admin", function () {
+
+    it("should throw 403 error by non admin", function (done) {
       sandbox.stub(Reaction, "hasPermission", function () {
         check(arguments, [Match.Any]);
         return false;
+      });
+      sandbox.stub(Meteor.server.method_handlers, "inventory/remove", function () {
+        check(arguments, [Match.Any]);
       });
       // spyOn(Roles, "userIsInRole").and.returnValue(false);
       let insertProductSpy = sandbox.spy(Products, "insert");
@@ -307,62 +311,64 @@ describe("core product methods", function () {
         return Meteor.call("products/cloneProduct", {});
       }).to.throw(Meteor.Error, /Access Denied/);
       expect(insertProductSpy).to.not.have.been.called;
+      return done();
     });
 
-    it.skip(
-      "should clone product",
+    it("should clone product", function (done) {
+      sandbox.stub(Reaction, "hasPermission", function () {
+        check(arguments, [Match.Any]);
+        return true;
+      });
+      sandbox.stub(Meteor.server.method_handlers, "inventory/register", function () {
+        check(arguments, [Match.Any]);
+      });
+      const product = addProduct();
+      let productCloned;
+      expect(Products.find({ type: "simple" }).count()).to.equal(1);
+      Meteor.call("products/cloneProduct", product);
+      expect(Products.find({ type: "simple" }).count()).to.equal(2);
+      productCloned = Products.find({
+        _id: {
+          $ne: product._id
+        },
+        type: "simple"
+      }).fetch()[0];
+      expect(productCloned.title).to.equal(product.title + "-copy");
+      expect(productCloned.handle).to.equal(product.handle + "-copy");
+      expect(productCloned.pageTitle).to.equal(product.pageTitle);
+      expect(productCloned.description).to.equal(product.description);
+
+      return done();
+    });
+
+    it.skip("product should be cloned with all variants and child variants with equal data, but not the same `_id`s",
       function (done) {
-        const product = faker.reaction.products.add();
-        let productCloned;
-        spyOn(Roles, "userIsInRole").and.returnValue(true);
-        expect(ReactionCore.Collections.Products.find({
-          type: "simple"
-        }).count()).toEqual(1);
+        const product = addProduct();
+        sandbox.stub(Reaction, "hasPermission", function () {
+          check(arguments, [Match.Any]);
+          return true;
+        });
+        sandbox.stub(Meteor.server.method_handlers, "inventory/register", function () {
+          check(arguments, [Match.Any]);
+        });
 
+        let variants = Products.find({ ancestors: { $in: [product._id] } }).fetch();
+        expect(variants.length).to.equal(3);
         Meteor.call("products/cloneProduct", product);
-        expect(ReactionCore.Collections.Products.find({
-          type: "simple"
-        }).count()).toEqual(2);
-        productCloned = ReactionCore.Collections.Products.find({
+        const clone = Products.find({
           _id: {
             $ne: product._id
           },
           type: "simple"
         }).fetch()[0];
-        expect(productCloned.title).toEqual(product.title + "-copy");
-        expect(productCloned.handle).toEqual(product.handle + "-copy");
-        expect(productCloned.pageTitle).toEqual(product.pageTitle);
-        expect(productCloned.description).toEqual(product.description);
-
-        return done();
-      }
-    );
-
-    it.skip(
-      "product should be cloned with all variants and child variants with" +
-      " equal data, but not the same `_id`s",
-      done => {
-        const product = faker.reaction.products.add();
-        spyOn(Roles, "userIsInRole").and.returnValue(true);
-        let variants = ReactionCore.Collections.Products.find({
-          ancestors: { $in: [product._id] }
-        }).fetch();
-        expect(variants.length).toBe(3);
-        Meteor.call("products/cloneProduct", product);
-        const clone = ReactionCore.Collections.Products.find({
-          _id: {
-            $ne: product._id
-          },
-          type: "simple"
-        }).fetch()[0];
-        let cloneVariants = ReactionCore.Collections.Products.find({
+        let cloneVariants = Products.find({
           ancestors: { $in: [clone._id] }
         }).fetch();
-        expect(cloneVariants.length).toBe(3);
+        expect(cloneVariants.length).to.equal(3);
         for (let i = 0; i < variants.length; i++) {
           expect(cloneVariants.some(clonedVariant => {
             return clonedVariant.title === variants[i].title;
-          })).toBeTruthy();
+          })).to.be.ok;
         }
 
         return done();
