@@ -12,7 +12,7 @@ import Fixtures from "/server/imports/fixtures";
 
 Fixtures();
 
-describe.skip("Account Meteor method ", function () {
+describe("Account Meteor method ", function () {
   const shopId = getShop()._id;
   const fakeUser = Factory.create("account");
   let originals = {};
@@ -56,13 +56,12 @@ describe.skip("Account Meteor method ", function () {
     });
 
     it("should allow user to add new addresses", function (done) {
-      let account = Factory.create("account");
       sandbox.stub(Meteor, "userId", function () {
         return account.userId;
       });
+      let account = Factory.create("account");
       // spyOn(Meteor, "userId").and.returnValue(account.userId);
       const address = getAddress();
-
       // we already have one address by default
       expect(account.profile.addressBook.length).to.equal(1);
       Meteor.call("accounts/addressBookAdd", address);
@@ -72,11 +71,10 @@ describe.skip("Account Meteor method ", function () {
     });
 
     it("should allow Admin to add new addresses to other users", function (done) {
-      let account = Factory.create("account");
       sandbox.stub(Reaction, "hasPermission", function () {
         return true;
       });
-
+      let account = Factory.create("account");
       const address = getAddress();
       expect(account.profile.addressBook.length).to.equal(1);
       Meteor.call("accounts/addressBookAdd", address, account.userId);
@@ -86,7 +84,7 @@ describe.skip("Account Meteor method ", function () {
       return done();
     });
 
-    it("should insert exactly the same address as expected", function (done) {
+    it.skip("should insert exactly the same address as expected", function (done) {
       let account = Factory.create("account");
       sandbox.stub(Meteor, "userId", function () {
         return account.userId;
@@ -102,7 +100,7 @@ describe.skip("Account Meteor method ", function () {
       return done();
     });
 
-    it("should throw error if wrong arguments were passed", function (done) {
+    it.skip("should throw error if wrong arguments were passed", function (done) {
       let accountSpy = sandbox.spy(Accounts, "update");
 
       expect(function () {
@@ -138,7 +136,7 @@ describe.skip("Account Meteor method ", function () {
       return done();
     });
 
-    it("should not let non-Admin add address to another user", function (done) {
+    it.skip("should not let non-Admin add address to another user", function (done) {
       const account2 = Factory.create("account");
       sandbox.stub(Meteor, "userId", function () {
         return fakeUser._id;
@@ -159,7 +157,7 @@ describe.skip("Account Meteor method ", function () {
       return done();
     });
 
-    it("should disabled isShipping/BillingDefault properties inside sibling" +
+    it.skip("should disabled isShipping/BillingDefault properties inside sibling" +
       " address if we enable their while adding",
       function (done) {
         let account = Factory.create("account");
@@ -210,12 +208,17 @@ describe.skip("Account Meteor method ", function () {
   describe("addressBookUpdate", function () {
     // Required for creating a cart
     const sessionId = Random.id();
+    let removeInventoryStub;
 
     before(function () {
-      sandbox.stub(Meteor.server.method_handlers, "inventory/remove", function () {
+      removeInventoryStub = sinon.stub(Meteor.server.method_handlers, "inventory/remove", function () {
         check(arguments, [Match.Any]);
         return true;
       });
+    });
+
+    after(function () {
+      removeInventoryStub.restore();
     });
 
     beforeEach(() => {
@@ -223,7 +226,7 @@ describe.skip("Account Meteor method ", function () {
       Accounts.remove({});
     });
 
-    it("should allow user to edit addresses", function (done) {
+    it.skip("should allow user to edit addresses", function (done) {
       let account = Factory.create("account");
       spyOnMethod("setShipmentAddress", account.userId);
       spyOnMethod("setPaymentAddress", account.userId);
@@ -249,7 +252,7 @@ describe.skip("Account Meteor method ", function () {
       return done();
     });
 
-    it("should allow Admin to edit other user address", function (done) {
+    it.skip("should allow Admin to edit other user address", function (done) {
       let account = Factory.create("account");
       spyOnMethod("setShipmentAddress", account.userId);
       spyOnMethod("setPaymentAddress", account.userId);
@@ -278,7 +281,7 @@ describe.skip("Account Meteor method ", function () {
       return done();
     });
 
-    it("should update fields to exactly the same what we need", function (done) {
+    it.skip("should update fields to exactly the same what we need", function (done) {
       let account = Factory.create("account");
       spyOnMethod("setShipmentAddress", account.userId);
       spyOnMethod("setPaymentAddress", account.userId);
@@ -307,7 +310,7 @@ describe.skip("Account Meteor method ", function () {
       return done();
     });
 
-    it("should throw error if wrong arguments were passed", function (done) {
+    it.skip("should throw error if wrong arguments were passed", function (done) {
       let updateAccountSpy = sandbox.spy(Accounts, "update");
 
       expect(function () {
@@ -342,7 +345,7 @@ describe.skip("Account Meteor method ", function () {
       return done();
     });
 
-    it("should not let non-Admin to edit address of another user", function (done) {
+    it.skip("should not let non-Admin to edit address of another user", function (done) {
       let account = Factory.create("account");
       const account2 = Factory.create("account");
       sandbox.stub(Meteor, "userId", function () {
@@ -360,7 +363,7 @@ describe.skip("Account Meteor method ", function () {
       return done();
     });
 
-    it("enabling isShipping/BillingDefault properties should add this address to cart", function (done) {
+    it.skip("enabling isShipping/BillingDefault properties should add this address to cart", function (done) {
       let account = Factory.create("account");
       spyOnMethod("setShipmentAddress", account.userId);
       spyOnMethod("setPaymentAddress", account.userId);
@@ -400,7 +403,7 @@ describe.skip("Account Meteor method ", function () {
       return done();
     });
 
-    it("should disable isShipping/BillingDefault properties inside sibling" +
+    it.skip("should disable isShipping/BillingDefault properties inside sibling" +
       " address if we enable them while editing",
       function (done) {
         let account = Factory.create("account");
@@ -444,7 +447,7 @@ describe.skip("Account Meteor method ", function () {
       }
     );
 
-    it("should update cart default addresses via `type` argument", function (done) {
+    it.skip("should update cart default addresses via `type` argument", function (done) {
       let account = Factory.create("account");
       const userId = account.userId;
       spyOnMethod("setShipmentAddress", account.userId);
@@ -485,7 +488,7 @@ describe.skip("Account Meteor method ", function () {
   });
 
   describe("addressBookRemove", function () {
-    it("should allow user to remove address", function (done) {
+    it.skip("should allow user to remove address", function (done) {
       let account = Factory.create("account");
       const address = account.profile.addressBook[0];
       // user
@@ -502,7 +505,7 @@ describe.skip("Account Meteor method ", function () {
       return done();
     });
 
-    it("should allow Admin to remove other user address", function (done) {
+    it.skip("should allow Admin to remove other user address", function (done) {
       let account = Factory.create("account");
       const address = account.profile.addressBook[0];
       sandbox.stub(Reaction, "hasPermission", function () {
@@ -518,7 +521,7 @@ describe.skip("Account Meteor method ", function () {
       return done();
     });
 
-    it("should throw error if wrong arguments were passed", function (done) {
+    it.skip("should throw error if wrong arguments were passed", function (done) {
       let updateAccountSpy = sandbox.spy(Accounts, "update");
       // spyOn(ReactionCore.Collections.Accounts, "update");
 
@@ -553,7 +556,7 @@ describe.skip("Account Meteor method ", function () {
       return done();
     });
 
-    it("should not let non-Admin to remove address of another user", function (done) {
+    it.skip("should not let non-Admin to remove address of another user", function (done) {
       const account = Factory.create("account");
       const account2 = Factory.create("account");
       const address2 = account2.profile.addressBook[0];
@@ -573,7 +576,7 @@ describe.skip("Account Meteor method ", function () {
       return done();
     });
 
-    it("should call `cart/unsetAddresses` Method", function (done) {
+    it.skip("should call `cart/unsetAddresses` Method", function (done) {
       const account = Factory.create("account");
       const address = account.profile.addressBook[0];
       sandbox.stub(Meteor, "userId", function () {
@@ -591,7 +594,7 @@ describe.skip("Account Meteor method ", function () {
       return done();
     });
 
-    it("should return zero(0) if address not exists", function (done) {
+    it.skip("should return zero(0) if address not exists", function (done) {
       sandbox.stub(Meteor, "userId", function () {
         return fakeUser.userId;
       });
@@ -603,7 +606,7 @@ describe.skip("Account Meteor method ", function () {
   });
 
   describe("accounts/inviteShopMember", function () {
-    it("should not let non-Owners invite a user to the shop", function (done) {
+    it.skip("should not let non-Owners invite a user to the shop", function (done) {
       // spyOn(ReactionCore, "hasOwnerAccess").and.returnValue(false);
       sandbox.stub(Reaction, "hasPermission", function () {
         return false;
@@ -624,7 +627,7 @@ describe.skip("Account Meteor method ", function () {
       return done();
     });
 
-    it("should let a Owner invite a user to the shop", function (done) {
+    it.skip("should let a Owner invite a user to the shop", function (done) {
       // spyOn(Roles, "userIsInRole").and.returnValue(true);
       sandbox.stub(Reaction, "hasPermission", function () {
         return true;
