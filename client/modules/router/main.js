@@ -78,8 +78,8 @@ function getRegistryRouteName(packageName, registryItem) {
  * @returns {Object} layout - return object of template definitions for Blaze Layout
  */
 function selectLayout(layout, setLayout, setWorkflow) {
-  const currentLayout = setLayout || "coreLayout";
-  const currentWorkflow = setWorkflow || "coreWorkflow";
+  const currentLayout = setLayout || Session.get("DEFAULT_LAYOUT") || "coreLayout";
+  const currentWorkflow = setWorkflow || Session.get("DEFAULT_WORKFLOW") || "coreWorkflow";
   if (layout.layout === currentLayout && layout.workflow === currentWorkflow && layout.enabled === true) {
     return layout;
   }
@@ -95,8 +95,8 @@ function selectLayout(layout, setLayout, setWorkflow) {
  * @returns {Object} layout - return object of template definitions for Blaze Layout
  */
 export function ReactionLayout(options = {}) {
-  const layout = options.layout || "coreLayout";
-  const workflow = options.workflow || "coreWorkflow";
+  const layout = options.layout || Session.get("DEFAULT_LAYOUT") || "coreLayout";
+  const workflow = options.workflow || Session.get("DEFAULT_WORKFLOW") || "coreWorkflow";
   if (!options.layout) {
     options.layout = "coreLayout";
   }
@@ -173,7 +173,7 @@ Router.initPackageRoutes = () => {
     shop.route("/", {
       name: "index",
       action() {
-        ReactionLayout({});
+        ReactionLayout(Session.get("INDEX_OPTIONS") || {});
       }
     });
 

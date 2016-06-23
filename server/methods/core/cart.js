@@ -3,7 +3,7 @@ import { check } from "meteor/check";
 import * as Collections from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 import { Logger, Reaction } from "/server/api";
-import { _ } from "underscore";
+import { _ } from "lodash";
 
 /**
  * quantityProcessing
@@ -139,7 +139,7 @@ Meteor.methods({
     Logger.debug("current userId:", userId);
     Logger.debug("sessionId:", sessionId);
     // get session carts without current user cart cursor
-    let sessionCarts = getSessionCarts(userId, sessionId, shopId);
+    const sessionCarts = getSessionCarts(userId, sessionId, shopId);
 
     Logger.debug(
       `merge cart: begin merge processing of session ${
@@ -236,7 +236,7 @@ Meteor.methods({
     const shopId = Reaction.getShopId();
     // check if user has `anonymous` role.( this is a visitor)
     const anonymousUser = Roles.userIsInRole(userId, "anonymous", shopId);
-    let sessionCartCount = getSessionCarts(userId, sessionId, shopId).length;
+    const sessionCartCount = getSessionCarts(userId, sessionId, shopId).length;
 
     Logger.info("create cart: shopId", shopId);
     Logger.debug("create cart: userId", userId);
@@ -382,8 +382,9 @@ Meteor.methods({
       }
     }, function (error, result) {
       if (error) {
-        Logger.warn("error adding to cart", Collections.Cart
-          .simpleSchema().namedContext().invalidKeys());
+        Logger.error(error);
+        Logger.error(Collections.Cart.simpleSchema().namedContext().invalidKeys(),
+          "Invalid keys. Error adding to cart.");
         return error;
       }
 
@@ -457,7 +458,9 @@ Meteor.methods({
         }
       }, (error, result) => {
         if (error) {
-          Logger.warn("error removing from cart", Collections.Cart.simpleSchema().namedContext().invalidKeys());
+          Logger.error(error);
+          Logger.error(Collections.Cart.simpleSchema().namedContext().invalidKeys(),
+            "error removing from cart");
           return error;
         }
         if (result) {
@@ -469,7 +472,7 @@ Meteor.methods({
     }
 
     // if quantity lets convert to negative and increment
-    let removeQuantity = Math.abs(quantity) * -1;
+    const removeQuantity = Math.abs(quantity) * -1;
     return Collections.Cart.update({
       _id: cart._id,
       items: cartItem
@@ -479,7 +482,9 @@ Meteor.methods({
       }
     }, (error, result) => {
       if (error) {
-        Logger.warn("error removing from cart", Collections.Cart.simpleSchema().namedContext().invalidKeys());
+        Logger.error(error);
+        Logger.error(Collections.Cart.simpleSchema().namedContext().invalidKeys(),
+          "error removing from cart");
         return error;
       }
       if (result) {
@@ -604,7 +609,7 @@ Meteor.methods({
     order.workflow.workflow = ["coreOrderWorkflow/created"];
 
     // insert new reaction order
-    let orderId = Collections.Orders.insert(order);
+    const orderId = Collections.Orders.insert(order);
     Logger.info("Created orderId", orderId);
 
     if (orderId) {
@@ -616,7 +621,7 @@ Meteor.methods({
       // create a new cart for the user
       // even though this should be caught by
       // subscription handler, it's not always working
-      let newCartExists = Collections.Cart.find({ userId: order.userId });
+      const newCartExists = Collections.Cart.find({ userId: order.userId });
       if (newCartExists.count() === 0) {
         Meteor.call("cart/createCart", this.userId, sessionId);
         // after recreate new cart we need to make it looks like previous by
@@ -652,7 +657,7 @@ Meteor.methods({
     check(cartId, String);
     check(method, Object);
     // get current cart
-    let cart = Collections.Cart.findOne({
+    const cart = Collections.Cart.findOne({
       _id: cartId,
       userId: Meteor.userId()
     });
@@ -689,18 +694,18 @@ Meteor.methods({
         }
       };
     }
+
     // update or insert method
-    return Collections.Cart.update(selector, update, function (
-      error) {
-      if (error) {
-        Logger.warn(`Error adding rates to cart ${cartId}`,
-          error);
-        return error;
-      }
-      // this will transition to review
-      Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow",
-        "coreCheckoutShipping");
-    });
+    try {
+      Collections.Cart.update(selector, update);
+    } catch (e) {
+      Logger.error(e, `Error adding rates to cart ${cartId}`);
+      throw new Meteor.Error("An error occurred saving the order", e);
+    }
+
+    // this will transition to review
+    return Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow",
+      "coreCheckoutShipping");
   },
 
   /**
@@ -738,7 +743,7 @@ Meteor.methods({
     check(cartId, String);
     check(address, Schemas.Address);
 
-    let cart = Collections.Cart.findOne({
+    const cart = Collections.Cart.findOne({
       _id: cartId,
       userId: this.userId
     });
@@ -776,36 +781,40 @@ Meteor.methods({
     }
 
     // add / or set the shipping address
-    return Collections.Cart.update(selector, update, function (
-      error) {
-      if (error) {
-        Logger.warn(error);
-        return error;
-      }
-      // refresh shipping quotes
-      Meteor.call("shipping/updateShipmentQuotes", cartId);
+    try {
+      Collections.Cart.update(selector, update);
+    } catch (e) {
+      Logger.error(e);
+      throw new Meteor.Error("An error occurred adding the address");
+    }
 
-      if (typeof cart.workflow !== "object") {
-        throw new Meteor.Error(500, "Internal Server Error",
-          "Cart workflow object not detected.");
-      }
-      // ~~it's ok for this to be called multiple times~~
-      // call it only once when we at the `checkoutAddressBook` step
-      if (typeof cart.workflow.workflow === "object" &&
-        cart.workflow.workflow.length < 2) {
-        Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow",
-          "coreCheckoutShipping");
-      }
+    // refresh shipping quotes
+    Meteor.call("shipping/updateShipmentQuotes", cartId);
 
-      // if we change default address during further steps, we need to revert
-      // workflow back to `coreCheckoutShipping` step
-      if (typeof cart.workflow.workflow === "object" &&
-        cart.workflow.workflow.length > 2) { // "2" index of
-        // `coreCheckoutShipping`
-        Meteor.call("workflow/revertCartWorkflow", "coreCheckoutShipping");
-      }
-    });
+    if (typeof cart.workflow !== "object") {
+      throw new Meteor.Error(500, "Internal Server Error",
+        "Cart workflow object not detected.");
+    }
+
+    // ~~it's ok for this to be called multiple times~~
+    // call it only once when we at the `checkoutAddressBook` step
+    if (typeof cart.workflow.workflow === "object" &&
+      cart.workflow.workflow.length < 2) {
+      Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow",
+        "coreCheckoutShipping");
+    }
+
+    // if we change default address during further steps, we need to revert
+    // workflow back to `coreCheckoutShipping` step
+    if (typeof cart.workflow.workflow === "object" &&
+      cart.workflow.workflow.length > 2) { // "2" index of
+      // `coreCheckoutShipping`
+      Meteor.call("workflow/revertCartWorkflow", "coreCheckoutShipping");
+    }
+
+    return true;
   },
+
   /**
    * cart/setPaymentAddress
    * @summary adds addressbook to cart payments
@@ -818,10 +827,11 @@ Meteor.methods({
     check(cartId, String);
     check(address, Schemas.Address);
 
-    let cart = Collections.Cart.findOne({
+    const cart = Collections.Cart.findOne({
       _id: cartId,
       userId: this.userId
     });
+
     if (!cart) {
       Logger.error(`Cart not found for user: ${ this.userId }`);
       throw new Meteor.Error(404, "Cart not found",
@@ -857,6 +867,7 @@ Meteor.methods({
 
     return Collections.Cart.update(selector, update);
   },
+
   /**
    * cart/unsetAddresses
    * @description removes address from cart.
@@ -910,17 +921,23 @@ Meteor.methods({
       }
     }
 
-    // todo maybe we need synchronous variant here?
-    return needToUpdate && Collections.Cart.update(selector,
-      update, (error, result) => {
-        if (result && isShippingDeleting) {
-          // if we remove shipping address from cart, we need to revert
-          // `cartWorkflow` to the `checkoutAddressBook` step.
-          Meteor.call("workflow/revertCartWorkflow", "checkoutAddressBook");
-        }
+    if (needToUpdate) {
+      try {
+        Collections.Cart.update(selector, update);
+      } catch (e) {
+        Logger.error(e);
+        throw new Meteor.Error("Error updating cart");
       }
-    );
+
+      if (isShippingDeleting) {
+        // if we remove shipping address from cart, we need to revert
+        // `cartWorkflow` to the `checkoutAddressBook` step.
+        Meteor.call("workflow/revertCartWorkflow", "checkoutAddressBook");
+      }
+    }
+    return true;
   },
+
   /**
    * cart/submitPayment
    * @summary saves a submitted payment to cart, triggers workflow
@@ -932,13 +949,14 @@ Meteor.methods({
    */
   "cart/submitPayment": function (paymentMethod) {
     check(paymentMethod, Schemas.PaymentMethod);
-    let checkoutCart = Collections.Cart.findOne({
+
+    const checkoutCart = Collections.Cart.findOne({
       userId: Meteor.userId()
     });
 
-    let cart = _.clone(checkoutCart);
-    let cartId = cart._id;
-    let invoice = {
+    const cart = _.clone(checkoutCart);
+    const cartId = cart._id;
+    const invoice = {
       shipping: cart.cartShipping(),
       subtotal: cart.cartSubTotal(),
       taxes: cart.cartTaxes(),
@@ -977,14 +995,13 @@ Meteor.methods({
       };
     }
 
-    return Collections.Cart.update(selector, update,
-      function (error, result) {
-        if (error) {
-          Logger.warn(error);
-          throw new Meteor.Error("An error occurred saving the order",
-            error);
-        }
-        return result;
-      });
+    try {
+      Collections.Cart.update(selector, update);
+    } catch (e) {
+      Logger.error(e);
+      throw new Meteor.Error("An error occurred saving the order");
+    }
+
+    return Collections.Cart.findOne(selector);
   }
 });

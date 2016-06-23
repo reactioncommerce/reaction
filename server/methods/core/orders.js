@@ -270,7 +270,7 @@ Meteor.methods({
       Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/completed", order._id, itemIds);
 
       const isCompleted = _.every(order.items, (item) => {
-        return _.contains(item.workflow.workflow, "coreOrderItemWorkflow/completed");
+        return _.includes(item.workflow.workflow, "coreOrderItemWorkflow/completed");
       });
 
       if (isCompleted === true) {

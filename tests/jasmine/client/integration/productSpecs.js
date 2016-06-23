@@ -1,8 +1,9 @@
+import { Router } from "/client/api";
 import { Cart, Products } from "/lib/collections";
 
 describe("Product", function () {
   beforeEach(function (done) {
-    ReactionRouter.go("product", {
+    Router.go("product", {
       handle: "example-product"
     });
     Tracker.afterFlush(done);
@@ -39,7 +40,7 @@ describe("Product", function () {
   // test various product meta data
   describe("meta data", function () {
     it("url should be product/example-product", function () {
-      let route = ReactionRouter.current().path;
+      let route = Router.current().path;
       expect(route).toContain("product/example-product");
     });
     // waitForElement doesn't play nice with these next two cases
@@ -219,7 +220,7 @@ describe("Product", function () {
 
       $("#btn-checkout").trigger("click");
       expect(spyOnCheckoutButton).toHaveBeenTriggered();
-      expect(ReactionRouter.current().path).toEqual("/cart/checkout");
+      expect(Router.current().path).toEqual("/cart/checkout");
       done();
     });
   });

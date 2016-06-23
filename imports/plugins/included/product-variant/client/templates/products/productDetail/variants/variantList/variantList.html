@@ -1,0 +1,41 @@
+<template name="variantList">
+  <div class="product-variants">
+    <ul class="variant-list list-unstyled" id="variant-list">
+    {{#each variants}}
+      {{> variant}}
+    {{else}}
+      <a href="#" id="create-variant">+ <span data-i18n="variantList.createVariant">Create Variant</span></a>
+    {{/each}}
+    </ul>
+  </div>
+  {{#if childVariants}}
+    <hr>
+    <small data-i18n="variantList.moreOptions">There are more options available for this selection.</small>
+    <div class="row variant-product-options">
+      {{#each childVariants}}
+        <div class="variant-select-option">
+        <button type="button" class="btn btn-default {{selectedVariant}}">
+          {{#with media}}
+            <div class="media">
+              <img src="{{url store='large'}}">
+            </div>
+          {{else}}
+            <div class="media">
+              <img src="/resources/placeholder.gif">
+            </div>
+          {{/with}}
+
+          <span class="title">{{optionTitle}}</span>
+        </button>
+        {{#if hasPermission "createProduct"}}
+          <button class="rui button edit variant-edit hidden-xs" title="{{i18n 'productDetailEdit.editOption' 'Edit Option'}}">
+            <span class="icon">
+              <i class="fa fa-pencil fa-lg" data-id="{{_id}}"></i>
+            </span>
+          </button>
+        {{/if}}
+      </div>
+      {{/each}}
+    </div>
+  {{/if}}
+</template>

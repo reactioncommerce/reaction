@@ -1,6 +1,6 @@
 import bunyan from "bunyan";
 import { Meteor } from "meteor/meteor";
-import { _ } from "underscore";
+import { _ } from "lodash";
 
 /*
  * configure bunyan logging module for reaction client
@@ -20,7 +20,7 @@ if (typeof isDebug !== "boolean" && typeof isDebug !== "undefined") {
   isDebug = isDebug.toUpperCase();
 }
 
-if (!_.contains(levels, isDebug)) {
+if (!_.includes(levels, isDebug)) {
   isDebug = "INFO";
 }
 
