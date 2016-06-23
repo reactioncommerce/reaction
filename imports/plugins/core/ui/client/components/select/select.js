@@ -1,4 +1,4 @@
-import { templateClassName } from "/client/modules/ui/helpers/helpers";
+import { templateClassName } from "/imports/plugins/core/ui/client/helpers/helpers";
 
 /**
  * Select - onCreated
