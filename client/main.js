@@ -1,6 +1,5 @@
 // import "/client/modules/core";
 
-
 /**
  * Plugins
  */
@@ -14,4 +13,7 @@ import "/imports/plugins/core/checkout/client";
 import "/imports/plugins/core/dashboard/client";
 import "/imports/plugins/core/layout/client";
 
+/**
+ * Themes
+ */
 import "/imports/themes/default";
