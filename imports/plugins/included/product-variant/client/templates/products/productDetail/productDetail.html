@@ -59,7 +59,9 @@
                 {{> productSocial }}
                 {{#if hasPermission "createProduct"}}
                   <button class="rui button edit js-edit-social hidden-xs" title="{{i18n 'productDetailEdit.editOption' 'Edit Option'}}">
-                    <i class="fa fa-pencil fa-lg" data-id="{{_id}}"></i>
+                    <span class="icon">
+                      <i class="fa fa-pencil fa-lg" data-id="{{_id}}"></i>
+                    </span>
                   </button>
                 {{/if}}
               </div>
