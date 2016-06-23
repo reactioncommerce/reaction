@@ -2,11 +2,10 @@
 import { Meteor } from "meteor/meteor";
 import Logger from "/client/modules/logger";
 import { Cart, Shops } from "/lib/collections";
-import { PaypalPayment } from "../../lib/collections/schemas";
+import { PaypalPayment } from "../../../lib/collections/schemas";
 import { Reaction } from "/client/api";
-import { Paypal } from "../../lib/api";
+import { Paypal } from "../../../lib/api";
 
-import "./payflowForm.html";
 
 function uiEnd(template, buttonText) {
   template.$(".cart-checkout-step *").removeAttr("disabled");

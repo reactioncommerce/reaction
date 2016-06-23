@@ -2,7 +2,6 @@ import { Reaction } from "/client/api";
 import { Cart } from "/lib/collections";
 import Logger from "/client/modules/logger";
 
-import "./done.html";
 
 // This template handles receiving the token from Paypal, recording it and moving on the checkout
 

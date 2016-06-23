@@ -1,4 +1,3 @@
-import "./paymentForm.html";
 
 Template.paypalPaymentForm.onCreated(function () {
   Meteor.call("getExpressCheckoutSettings", function (error, expressCheckoutSettings) {

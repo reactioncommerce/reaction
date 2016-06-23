@@ -1,8 +1,7 @@
 import { Reaction } from "/client/api";
 import { Packages } from "/lib/collections";
-import { PaypalPackageConfig } from "../../lib/collections/schemas";
+import { PaypalPackageConfig } from "../../../lib/collections/schemas";
 
-import "./dashboard.html";
 
 Template.paypalDashboard.helpers({
   PaypalPackageConfig: function () {
