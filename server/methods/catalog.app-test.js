@@ -341,9 +341,8 @@ describe("core product methods", function () {
       return done();
     });
 
-    it.skip("product should be cloned with all variants and child variants with equal data, but not the same `_id`s",
+    it("product should be cloned with all variants and child variants with equal data, but not the same `_id`s",
       function (done) {
-        const product = addProduct();
         sandbox.stub(Reaction, "hasPermission", function () {
           check(arguments, [Match.Any]);
           return true;
@@ -351,7 +350,7 @@ describe("core product methods", function () {
         sandbox.stub(Meteor.server.method_handlers, "inventory/register", function () {
           check(arguments, [Match.Any]);
         });
-
+        const product = addProduct();
         let variants = Products.find({ ancestors: { $in: [product._id] } }).fetch();
         expect(variants.length).to.equal(3);
         Meteor.call("products/cloneProduct", product);
@@ -375,24 +374,28 @@ describe("core product methods", function () {
       }
     );
 
-    it.skip(
-      "product group cloning should create the same number of new products",
-      done => {
-        const product = faker.reaction.products.add();
-        const product2 = faker.reaction.products.add();
-        spyOn(Roles, "userIsInRole").and.returnValue(true);
-        Meteor.call("products/cloneProduct", [product, product2]);
-        const clones = ReactionCore.Collections.Products.find({
-          _id: {
-            $nin: [product._id, product2._id]
-          },
-          type: "simple"
-        }).fetch();
-        expect(clones.length).toBe(2);
+    it("product group cloning should create the same number of new products", function (done) {
+      sandbox.stub(Reaction, "hasPermission", function () {
+        check(arguments, [Match.Any]);
+        return true;
+      });
+      sandbox.stub(Meteor.server.method_handlers, "inventory/register", function () {
+        check(arguments, [Match.Any]);
+      });
+      const product = addProduct();
+      const product2 = addProduct();
+      // spyOn(Roles, "userIsInRole").and.returnValue(true);
+      Meteor.call("products/cloneProduct", [product, product2]);
+      const clones = Products.find({
+        _id: {
+          $nin: [product._id, product2._id]
+        },
+        type: "simple"
+      }).fetch();
+      expect(clones.length).to.equal(2);
 
-        return done();
-      }
-    );
+      return done();
+    });
 
     it.skip(
       "product group cloning should create the same number of cloned variants",
