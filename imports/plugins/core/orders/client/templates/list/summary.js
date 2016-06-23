@@ -1,4 +1,4 @@
-import { NumericInput } from "/client/modules/ui/components/numericInput/numericInput";
+import { NumericInput } from "/imports/plugins/core/ui/client/components";
 
 /**
  * ordersListSummary helpers
