@@ -3,7 +3,7 @@ require("autonumeric");
 import $ from "jquery";
 import accounting from "accounting-js";
 import { Reaction } from "/client/api";
-import { NumericInput } from "/client/modules/ui/components/numericInput/numericInput";
+import { NumericInput } from "/imports/plugins/core/ui/client/components";
 import { Media, Orders, Shops } from "/lib/collections";
 
 //
