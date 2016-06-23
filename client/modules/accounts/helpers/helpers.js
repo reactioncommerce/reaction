@@ -33,7 +33,7 @@ export const LoginFormSharedHelpers = {
   shouldShowSeperator() {
     const serviceHelper = new ServiceConfigHelper();
     const services = serviceHelper.services();
-    const enabledServices = _.where(services, {
+    const enabledServices = _.filter(services, {
       enabled: true
     });
 

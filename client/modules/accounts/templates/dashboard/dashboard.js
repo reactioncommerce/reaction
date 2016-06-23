@@ -2,6 +2,7 @@ import { i18next } from "/client/modules/i18n";
 import { Reaction } from "/client/api";
 import { _ } from "lodash";
 import { ServiceConfigHelper } from "../../helpers/util";
+import { _ } from "lodash";
 
 /**
  * Accounts helpers
@@ -18,7 +19,13 @@ Template.accountsDashboard.helpers({
    * @return {Boolean} True if the memnber is an administrator
    */
   isShopMember() {
-    return _.contains(["dashboard", "admin", "owner"], this.role);
+    let roles = ["dashboard", "admin", "owner"];
+
+    if (_.includes(roles, this.role)) {
+      return true;
+    }
+
+    return false;
   },
 
   /**
@@ -26,7 +33,13 @@ Template.accountsDashboard.helpers({
    * @return {Boolean} True if the member is a guest
    */
   isShopGuest() {
-    return !_.contains(["dashboard", "admin", "owner"], this.role);
+    let roles = ["dashboard", "admin", "owner"];
+
+    if (_.includes(roles, this.role) === false) {
+      return true;
+    }
+
+    return false;
   },
 
   /**
@@ -99,8 +112,8 @@ Template.accountsSettings.helpers({
     const serviceHelper = new ServiceConfigHelper();
     const configurations = ServiceConfiguration.configurations.find().fetch();
 
-    const services = serviceHelper.services((item) => {
-      const matchingConfigurations = _.where(configurations, {
+    let services = serviceHelper.services((item) => {
+      let matchingConfigurations = _.filter(configurations, {
         service: item.name
       });
       if (matchingConfigurations.length) {

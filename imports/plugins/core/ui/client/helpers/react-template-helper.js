@@ -2,10 +2,13 @@
 
 import React from "react";
 import ReactDOM from "react-dom";
-import _ from "lodash";
+import { _ } from "lodash";
 
 // Empty template; logic in `onRendered` below
-Template.React = new Template("Template.React", function () { return []; });
+Template.React = new Template("Template.React", function () {
+  return [];
+});
+
 
 Template.React.onRendered(function () {
   const parentTemplate = parentTemplateName();
@@ -16,7 +19,7 @@ Template.React.onRendered(function () {
     const data = Blaze.getData();
 
     const comp = data && data.component;
-    if (! comp) {
+    if (!comp) {
       throw new Error(
         "In template " + parentTemplate + ", call to `{{> React ... }}` missing " +
           "`component` argument.");
