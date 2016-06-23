@@ -4,7 +4,7 @@ import { Meteor } from "meteor/meteor";
 import { Accounts as MeteorAccount } from "meteor/accounts-base";
 import { Accounts, Packages, Orders, Products, Shops, Cart }  from "/lib/collections";
 import { Reaction } from "/server/api";
-import { expect, assert } from "meteor/practicalmeteor:chai";
+import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
 import _ from  "underscore";
 import { getShop, getAddress } from "/server/imports/fixtures/shops";
@@ -12,7 +12,7 @@ import Fixtures from "/server/imports/fixtures";
 
 Fixtures();
 
-describe("Account Meteor method ", function () {
+describe.skip("Account Meteor method ", function () {
   const shopId = getShop()._id;
   const fakeUser = Factory.create("account");
   let originals = {};
@@ -71,7 +71,7 @@ describe("Account Meteor method ", function () {
       return done();
     });
 
-    it("should allow Admin to add new addresses to other users", function(done) {
+    it("should allow Admin to add new addresses to other users", function (done) {
       let account = Factory.create("account");
       sandbox.stub(Reaction, "hasPermission", function () {
         return true;
@@ -254,7 +254,6 @@ describe("Account Meteor method ", function () {
       spyOnMethod("setShipmentAddress", account.userId);
       spyOnMethod("setPaymentAddress", account.userId);
       sandbox.stub(Reaction, "hasPermission", function () {
-        console.log("stub called, returned true");
         return true;
       });
       // spyOn(ReactionCore, "hasPermission").and.returnValue(true);

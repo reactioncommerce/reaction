@@ -13,7 +13,7 @@ import Fixtures from "/server/imports/fixtures";
 Fixtures();
 
 
-describe("Add/Create cart methods", function () {
+describe.skip("Add/Create cart methods", function () {
   let user = Factory.create("user");
   const shop = getShop();
   let userId = user._id;
@@ -57,7 +57,7 @@ describe("Add/Create cart methods", function () {
     });
   }
 
-  describe("cart/createCart", function () {
+  describe.skip("cart/createCart", function () {
     it("should create a test cart", function (done) {
       sandbox.stub(Reaction, "getShopId", function () {
         return shop._id;
@@ -86,7 +86,6 @@ describe("Add/Create cart methods", function () {
     let variantId;
 
     before(function () {
-
       sandbox.stub(Reaction, "hasPermission", function () {
         return true;
       });
@@ -140,7 +139,7 @@ describe("Add/Create cart methods", function () {
     });
   });
 
-  describe("cart/copyCartToOrder", function () {
+  describe.skip("cart/copyCartToOrder", function () {
     it("should throw error if cart user not current user", function (done) {
       const cart = Factory.create("cart");
       spyOnMethod("copyCartToOrder", "wrongUserId");
@@ -208,7 +207,7 @@ describe("Add/Create cart methods", function () {
     });
   });
 
-  describe("cart/unsetAddresses", function () {
+  describe.skip("cart/unsetAddresses", function () {
     it("should correctly remove addresses from cart", function (done) {
       let cart = Factory.create("cart");
       spyOnMethod("setShipmentAddress", cart.userId);

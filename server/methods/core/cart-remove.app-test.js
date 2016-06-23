@@ -1,7 +1,7 @@
 /* eslint dot-notation: 0 */
 import { Meteor } from "meteor/meteor";
 import { assert, expect } from "meteor/practicalmeteor:chai";
-import { sinon, stubs, spies } from "meteor/practicalmeteor:sinon";
+import { sinon } from "meteor/practicalmeteor:sinon";
 import { getShop } from "/server/imports/fixtures/shops";
 import { Reaction } from "/server/api";
 import * as Collections from "/lib/collections";
@@ -9,7 +9,7 @@ import Fixtures from "/server/imports/fixtures";
 
 Fixtures();
 
-describe("cart methods", function () {
+describe.skip("cart methods", function () {
   const shop = getShop();
   let sandbox;
 
@@ -26,7 +26,7 @@ describe("cart methods", function () {
     Meteor.users.remove({});
   });
 
-  describe("cart/removeFromCart", function () {
+  describe.skip("cart/removeFromCart", function () {
     beforeEach(function () {
       Collections.Cart.remove({});
     });

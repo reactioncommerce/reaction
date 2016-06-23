@@ -2,8 +2,7 @@
 
 import { Meteor } from "meteor/meteor";
 import { Factory } from "meteor/dburles:factory";
-import { Reaction } from "/server/api";
-import { Cart, Products, Accounts } from "/lib/collections";
+import { Cart, Products } from "/lib/collections";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon, stubs, spies } from "meteor/practicalmeteor:sinon";
 import { addProduct } from "/server/imports/fixtures/products";
@@ -34,12 +33,12 @@ describe.skip("Monkey-patching methods", function () {
     });
   }
 
-  after(function() {
+  after(function () {
     spies.restoreAll();
     stubs.restoreAll();
   });
 
-  describe("cart/addToCart", function () {
+  describe.skip("cart/addToCart", function () {
     const quantity = 1;
     let product;
     let productId;
@@ -66,7 +65,6 @@ describe.skip("Monkey-patching methods", function () {
     it("should add item to cart", function (done) {
       let cart = Factory.create("cart");
       let items = cart.items.length;
-      console.log("created Cart with ID: " + cart.userId);
       spyOnMethod("addToCart", cart.userId);
       Meteor.call("cart/addToCart", productId, variantId, quantity);
       Meteor._sleepForMs(500);

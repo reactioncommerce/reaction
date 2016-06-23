@@ -8,8 +8,7 @@ import { sinon, stubs, spies } from "meteor/practicalmeteor:sinon";
 
 Fixtures();
 
-describe("Shop Methods", function () {
-
+describe.skip("Shop Methods", function () {
   beforeEach(function () {
     return Shops.remove({});
   });
@@ -29,7 +28,7 @@ describe("Shop Methods", function () {
   });
 });
 
-describe("core shop methods", function () {
+describe.skip("core shop methods", function () {
   let shop;
   let sandbox;
 
@@ -42,7 +41,7 @@ describe("core shop methods", function () {
     sandbox.restore();
   });
 
-  describe("shop/createShop", function () {
+  describe.skip("shop/createShop", function () {
     beforeEach(function () {
       Shops.remove({});
     });
@@ -60,7 +59,7 @@ describe("core shop methods", function () {
       return done();
     });
 
-    it("should create new shop for admin for userId and shopObject", function () {
+    it.skip("should create new shop for admin for userId and shopObject", function () {
       sandbox.stub(Meteor, "userId", function () {
         return "12345678";
       });

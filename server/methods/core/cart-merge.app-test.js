@@ -9,7 +9,7 @@ import Fixtures from "/server/imports/fixtures";
 
 Fixtures();
 
-describe("Merge Cart function ", function () {
+describe.skip("Merge Cart function ", function () {
   const shop = getShop();
   const sessionId = Reaction.sessionId = Random.id();
   let originals;
