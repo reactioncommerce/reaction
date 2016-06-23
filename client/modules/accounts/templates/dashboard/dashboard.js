@@ -1,6 +1,7 @@
 import { i18next } from "/client/modules/i18n";
 import { Reaction } from "/client/api";
 import { _ } from "lodash";
+import { ServiceConfigHelper } from "../../helpers/util";
 
 /**
  * Accounts helpers
@@ -17,13 +18,7 @@ Template.accountsDashboard.helpers({
    * @return {Boolean} True if the memnber is an administrator
    */
   isShopMember() {
-    let roles = ["dashboard", "admin", "owner"];
-
-    if (_.includes(roles, this.role)) {
-      return true;
-    }
-
-    return false;
+    return _.contains(["dashboard", "admin", "owner"], this.role);
   },
 
   /**
@@ -31,20 +26,14 @@ Template.accountsDashboard.helpers({
    * @return {Boolean} True if the member is a guest
    */
   isShopGuest() {
-    let roles = ["dashboard", "admin", "owner"];
-
-    if (_.includes(roles, this.role) === false) {
-      return true;
-    }
-
-    return false;
+    return !_.contains(["dashboard", "admin", "owner"], this.role);
   },
 
   /**
    * members
    * @return {Boolean} True array of adminsitrative members
    */
-  members: function () {
+  members() {
     if (Reaction.hasPermission("reaction-accounts")) {
       const shopId = Reaction.getShopId();
       const instance = Template.instance();
@@ -94,7 +83,7 @@ Template.accountsDashboard.helpers({
  * Account Settings Helpers
  */
 Template.accountsSettings.onCreated(() => {
-  Meteor.subscribe("ServiceConfiguration", Meteor.userId());
+  this.subscribe("ServiceConfiguration", Meteor.userId());
 });
 
 /**
@@ -107,11 +96,11 @@ Template.accountsSettings.helpers({
    * @return {Array} available services
    */
   services() {
-    let serviceHelper = new ReactionServiceHelper();
-    let configurations = ServiceConfiguration.configurations.find().fetch();
+    const serviceHelper = new ServiceConfigHelper();
+    const configurations = ServiceConfiguration.configurations.find().fetch();
 
-    let services = serviceHelper.services((item) => {
-      let matchingConfigurations = _.filter(configurations, {
+    const services = serviceHelper.services((item) => {
+      const matchingConfigurations = _.where(configurations, {
         service: item.name
       });
       if (matchingConfigurations.length) {
@@ -161,9 +150,9 @@ Template.accountsSettings.events({
   "submit form": (event) => {
     event.preventDefault();
 
-    let service = event.target.service.value;
-    let serviceHelper = new ReactionServiceHelper();
-    let fields = serviceHelper.configFieldsForService(service);
+    const service = event.target.service.value;
+    const serviceHelper = new ServiceConfigHelper();
+    const fields = serviceHelper.configFieldsForService(service);
     // todo remove this after i18next 2 will be installed
     // let niceName = serviceHelper.capitalizedServiceName(service);
 
@@ -187,8 +176,8 @@ Template.accountsSettings.events({
    * @return {void}
    */
   "change input[name=enabled]": (event) => {
-    let service = event.target.value;
-    let fields = [{
+    const service = event.target.value;
+    const fields = [{
       property: "enabled",
       value: event.target.checked
     }];
@@ -202,8 +191,8 @@ Template.accountsSettings.events({
    * @return {void}
    */
   "click [data-event-action=showSecret]": (event) => {
-    let button = $(event.currentTarget);
-    let input = button.closest(".form-group").find("input[name=secret]");
+    const button = $(event.currentTarget);
+    const input = button.closest(".form-group").find("input[name=secret]");
 
     if (input.attr("type") === "password") {
       input.attr("type", "text");
