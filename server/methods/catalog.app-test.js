@@ -397,64 +397,71 @@ describe("core product methods", function () {
       return done();
     });
 
-    it.skip(
-      "product group cloning should create the same number of cloned variants",
-      done => {
-        const product = faker.reaction.products.add();
-        const product2 = faker.reaction.products.add();
-        const variants = ReactionCore.Collections.Products.find({
-          ancestors: { $in: [product._id, product2._id] }
-        }).count();
-        spyOn(Roles, "userIsInRole").and.returnValue(true);
-        Meteor.call("products/cloneProduct", [product, product2]);
-        const clones = ReactionCore.Collections.Products.find({
-          _id: {
-            $nin: [product._id, product2._id]
-          },
-          type: "simple"
-        }).fetch();
-        expect(clones.length).toBe(2);
-        const clonedVariants = ReactionCore.Collections.Products.find({
-          ancestors: { $in: [clones[0]._id, clones[1]._id] }
-        }).count();
-        expect(clonedVariants).toEqual(variants);
+    it("product group cloning should create the same number of cloned variants", function (done) {
+      sandbox.stub(Reaction, "hasPermission", function () {
+        check(arguments, [Match.Any]);
+        return true;
+      });
+      sandbox.stub(Meteor.server.method_handlers, "inventory/register", function () {
+        check(arguments, [Match.Any]);
+      });
 
-        return done();
-      }
-    );
+      const product = addProduct();
+      const product2 = addProduct();
+      const variants = Products.find({
+        ancestors: { $in: [product._id, product2._id] }
+      }).count();
+      // spyOn(Roles, "userIsInRole").and.returnValue(true);
+      Meteor.call("products/cloneProduct", [product, product2]);
+      const clones = Products.find({
+        _id: {
+          $nin: [product._id, product2._id]
+        },
+        type: "simple"
+      }).fetch();
+      expect(clones.length).to.equal(2);
+      const clonedVariants = Products.find({
+        ancestors: { $in: [clones[0]._id, clones[1]._id] }
+      }).count();
+      expect(clonedVariants).to.equal(variants);
 
-    // it.skip(
-    //  "all hierarchy media should be cloned",
-    //  done => {
-    //    return done();
-    //  }
-    // );
+      return done();
+    });
   });
 
   describe("createProduct", function () {
-    it.skip(
-      "should throw 403 error by non admin",
-      function () {
-        spyOn(Roles, "userIsInRole").and.returnValue(false);
-        spyOn(ReactionCore.Collections.Products, "insert");
-        expect(function () {
-          return Meteor.call("products/createProduct");
-        }).toThrow(new Meteor.Error(403, "Access Denied"));
-        expect(ReactionCore.Collections.Products.insert).not.toHaveBeenCalled();
-      }
-    );
+    it("should throw 403 error by non admin", function () {
+      sandbox.stub(Reaction, "hasPermission", function () {
+        check(arguments, [Match.Any]);
+        return false;
+      });
+      // spyOn(Roles, "userIsInRole").and.returnValue(false);
+      let insertProductSpy = sandbox.spy(Products, "insert");
+      // spyOn(ReactionCore.Collections.Products, "insert");
+      expect(function () {
+        return Meteor.call("products/createProduct");
+      }).to.throw(Meteor.Error, /Access Denied/);
+      expect(insertProductSpy).to.not.have.been.called;
+    });
 
-    it.skip(
-      "should create new product",
-      function (done) {
-        spyOn(Roles, "userIsInRole").and.returnValue(true);
-        spyOn(ReactionCore.Collections.Products, "insert").and.returnValue(1);
-        expect(Meteor.call("products/createProduct")).toEqual(1);
-        expect(ReactionCore.Collections.Products.insert).toHaveBeenCalled();
+    it("should create new product", function (done) {
+      sandbox.stub(Reaction, "hasPermission", function () {
+        check(arguments, [Match.Any]);
+        return true;
+      });
+      sandbox.stub(Meteor.server.method_handlers, "inventory/register", function () {
+        check(arguments, [Match.Any]);
+      });
+      // spyOn(Roles, "userIsInRole").and.returnValue(true);
+      let insertProductSpy = sandbox.stub(Products, "insert", function () {
+        return 1;
+      });
+      // spyOn(ReactionCore.Collections.Products, "insert").and.returnValue(1);
+      expect(Meteor.call("products/createProduct")).to.equal(1);
+      expect(insertProductSpy).to.have.been.called;
 
-        return done();
-      }
-    );
+      return done();
+    });
 
     it.skip(
       "should create variant with new product",
