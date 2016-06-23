@@ -1,0 +1,32 @@
+
+.rui.buttons {
+  display: flex;
+}
+
+.rui.buttons.vertical {
+  flex-direction: column;
+}
+
+.rui.buttons button {
+  border-radius: 0;
+  border: none;
+
+  // background-color: darken(@brand-muted-color, 10%);
+  color: #fff;
+}
+
+.rui.buttons button:first-child {
+  border-radius: @border-radius-base 0 0 @border-radius-base;
+}
+
+.rui.buttons button:last-child {
+  border-radius: 0 @border-radius-base @border-radius-base 0;
+}
+
+.rui.buttons.vertical.right .item:first-child > button {
+  border-radius: 0 @border-radius-base 0 0;
+}
+
+.rui.buttons.vertical.right .item:first-child > button {
+  border-radius: 0 0 @border-radius-base 0;
+}

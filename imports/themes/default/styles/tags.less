@@ -1,0 +1,67 @@
+
+.rui.tags {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.rui.tag {
+  display: flex;
+  background-color: @black10;
+  padding: @padding-base-vertical @padding-base-horizontal;
+  border-radius: @border-radius-base;
+  margin: 5px;
+}
+
+.rui.tag.edit {
+  padding: 0;
+}
+
+.rui.tag.edit form {
+  display: flex;
+  width: 100%;
+}
+
+.rui.tag.edit input {
+  padding: @padding-base-vertical @padding-base-horizontal;
+  border-radius: 0;
+
+  background-color: @white;
+  border-color: @border-color;
+  border-left: none;
+}
+
+.rui.tag.edit button {
+  border-radius: 0;
+  border: 1px solid @border-color;
+  border-left: none;
+  background-color: @white;
+  color: @text-color;
+}
+
+.rui.tag.edit button:first-child {
+  border-left: 1px solid @border-color;
+  border-radius: @border-radius-base 0 0 @border-radius-base;
+}
+
+html.rtl .rui.tag.edit button:first-child {
+  border-left: none;
+  border-right: 1px solid @border-color;
+  border-radius: 0 @border-radius-base @border-radius-base 0;
+}
+
+.rui.tag.edit button:last-child {
+  border-right: 1px solid @border-color;
+  border-radius: 0 @border-radius-base @border-radius-base 0;
+}
+
+html.rtl .rui.tag.edit button:last-child {
+  border-left: 1px solid @border-color;
+  border-radius: @border-radius-base 0 0 @border-radius-base;
+}
+
+
+.rui.tag.edit.create {
+  button {
+    color: @btn-success-bg;
+  }
+}
