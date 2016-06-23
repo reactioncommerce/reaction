@@ -25,12 +25,12 @@ describe("Account Meteor method ", function () {
   });
 
   after(() => {
-    Packages.remove({});
-    Cart.remove({});
-    Accounts.remove({});
-    Orders.remove({});
-    Products.remove({});
-    Shops.remove({});
+    Packages.direct.remove({});
+    Cart.direct.remove({});
+    Accounts.direct.remove({});
+    Orders.direct.remove({});
+    Products.direct.remove({});
+    Shops.direct.remove({});
   });
 
   beforeEach(function () {
@@ -157,7 +157,7 @@ describe("Account Meteor method ", function () {
       return done();
     });
 
-    it.skip("should disabled isShipping/BillingDefault properties inside sibling" +
+    it("should disabled isShipping/BillingDefault properties inside sibling" +
       " address if we enable their while adding",
       function (done) {
         let account = Factory.create("account");
@@ -244,7 +244,7 @@ describe("Account Meteor method ", function () {
       return done();
     });
 
-    it.skip("should allow Admin to edit other user address", function (done) {
+    it("should allow Admin to edit other user address", function (done) {
       sandbox.stub(Reaction, "hasPermission", function () {
         return true;
       });
