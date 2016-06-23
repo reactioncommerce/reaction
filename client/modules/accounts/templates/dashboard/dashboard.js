@@ -18,13 +18,7 @@ Template.accountsDashboard.helpers({
    * @return {Boolean} True if the memnber is an administrator
    */
   isShopMember() {
-    let roles = ["dashboard", "admin", "owner"];
-
-    if (_.includes(roles, this.role)) {
-      return true;
-    }
-
-    return false;
+    return _.includes(["dashboard", "admin", "owner"], this.role);
   },
 
   /**
@@ -32,13 +26,7 @@ Template.accountsDashboard.helpers({
    * @return {Boolean} True if the member is a guest
    */
   isShopGuest() {
-    let roles = ["dashboard", "admin", "owner"];
-
-    if (_.includes(roles, this.role) === false) {
-      return true;
-    }
-
-    return false;
+    return !_.includes(["dashboard", "admin", "owner"], this.role);
   },
 
   /**
@@ -111,8 +99,8 @@ Template.accountsSettings.helpers({
     const serviceHelper = new ServiceConfigHelper();
     const configurations = ServiceConfiguration.configurations.find().fetch();
 
-    let services = serviceHelper.services((item) => {
-      let matchingConfigurations = _.filter(configurations, {
+    const services = serviceHelper.services((item) => {
+      const matchingConfigurations = _.filter(configurations, {
         service: item.name
       });
       if (matchingConfigurations.length) {
