@@ -62,8 +62,7 @@ ddp-rate-limiter@1.0.5
 ddp-server@1.2.8
 deps@1.0.12
 diff-sequence@1.0.6
-dispatch:mocha@0.0.8
-dispatch:mocha-core@0.0.2
+dispatch:mocha@0.0.9
 ecmascript@0.4.6
 ecmascript-runtime@0.2.11
 ejson@1.0.12
@@ -127,7 +126,7 @@ observe-sequence@1.0.12
 ongoworks:security@2.0.1
 ordered-dict@1.0.8
 practicalmeteor:chai@2.1.0_1
-practicalmeteor:mocha-core@0.1.4
+practicalmeteor:mocha-core@1.0.0
 practicalmeteor:sinon@1.14.1_2
 promise@0.7.2
 raix:eventemitter@0.1.3
