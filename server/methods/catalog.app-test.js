@@ -83,10 +83,10 @@ describe("core product methods", function () {
     });
 
     it("number of `child variants` between source and cloned `variants` should be equal", function (done) {
-      const product = addProduct();
       sandbox.stub(Reaction, "hasPermission", function () {
         return true;
       });
+      const product = addProduct();
       // spyOn(ReactionCore, "hasPermission").and.returnValue(true);
       const variant = Products.find({ancestors: [product._id]}).fetch();
       let optionCount = Products.find({ ancestors: {
@@ -123,11 +123,11 @@ describe("core product methods", function () {
     });
 
     it("should create top level variant", function (done) {
-      const product = addProduct();
       sandbox.stub(Reaction, "hasPermission", function () {
         check(arguments, [Match.Any]);
         return true;
       });
+      const product = addProduct();
       // spyOn(Roles, "userIsInRole").and.returnValue(true);
       let variants = Products.find({ancestors: [product._id]}).fetch();
       expect(variants.length).to.equal(1);
@@ -139,12 +139,12 @@ describe("core product methods", function () {
     });
 
     it("should create option variant", function (done) {
-      let options;
-      const product = addProduct();
       sandbox.stub(Reaction, "hasPermission", function () {
         check(arguments, [Match.Any]);
         return true;
       });
+      let options;
+      const product = addProduct();
       // spyOn(Roles, "userIsInRole").and.returnValue(true);
       const variant = Products.find({ ancestors: [product._id] }).fetch()[0];
       options = Products.find({
@@ -162,14 +162,14 @@ describe("core product methods", function () {
     });
 
     it("should create variant with predefined object", function (done) {
-      const product = addProduct();
-      const newVariant = {
-        title: "newVariant"
-      };
       sandbox.stub(Reaction, "hasPermission", function () {
         check(arguments, [Match.Any]);
         return true;
       });
+      const product = addProduct();
+      const newVariant = {
+        title: "newVariant"
+      };
       // spyOn(Roles, "userIsInRole").and.returnValue(true);
       let variants = Products.find({ ancestors: [product._id] }).fetch();
       const firstVariantId = variants[0]._id;
@@ -186,7 +186,6 @@ describe("core product methods", function () {
 
   describe("products/updateVariant", function () {
     it("should throw 403 error by non admin", function () {
-      // spyOn(Roles, "userIsInRole").and.returnValue(false);
       sandbox.stub(Reaction, "hasPermission", function () {
         check(arguments, [Match.Any]);
         return false;
@@ -199,14 +198,12 @@ describe("core product methods", function () {
     });
 
     it("should update individual variant by admin passing in full object", function (done) {
-      const product = addProduct();
-      let variant = Products.find({ ancestors: [product._id] }).fetch()[0];
       sandbox.stub(Reaction, "hasPermission", function () {
         check(arguments, [Match.Any]);
         return true;
       });
-      // spyOn(Roles, "userIsInRole").and.returnValue(true);
-
+      const product = addProduct();
+      let variant = Products.find({ ancestors: [product._id] }).fetch()[0];
       variant["title"] = "Updated Title";
       variant["price"] = 7;
       Meteor.call("products/updateVariant", variant);
@@ -628,376 +625,367 @@ describe("core product methods", function () {
 
   describe("removeProductTag", function () {
     beforeEach(function () {
-      return ReactionCore.Collections.Tags.remove({});
+      return Tags.remove({});
     });
 
-    it.skip(
-      "should throw 403 error by non admin",
-      function () {
-        spyOn(Roles, "userIsInRole").and.returnValue(false);
-        spyOn(ReactionCore.Collections.Products, "update");
-        spyOn(ReactionCore.Collections.Tags, "remove");
-        expect(function () {
-          return Meteor.call("products/removeProductTag", "fakeId", "tagId");
-        }).toThrow(new Meteor.Error(403, "Access Denied"));
-        expect(ReactionCore.Collections.Products.update).not.toHaveBeenCalled();
-        expect(ReactionCore.Collections.Tags.remove).not.toHaveBeenCalled();
-      }
-    );
+    it("should throw 403 error by non admin", function () {
+      sandbox.stub(Reaction, "hasPermission", function () {
+        check(arguments, [Match.Any]);
+        return false;
+      });
+      let updateProductSpy = sandbox.spy(Products, "update");
+      // spyOn(ReactionCore.Collections.Products, "update");
+      let removeTagsSpy = sandbox.spy(Tags, "remove");
+      // spyOn(ReactionCore.Collections.Tags, "remove");
+      expect(function () {
+        return Meteor.call("products/removeProductTag", "fakeId", "tagId");
+      }).to.throw(Meteor.Error, /Access Denied/);
+      expect(updateProductSpy).to.not.have.been.called;
+      expect(removeTagsSpy).to.not.have.been.called;
+    });
 
-    it.skip(
-      "should remove product tag by admin",
-      function (done) {
-        let product = faker.reaction.products.add();
-        let tag = Factory.create("tag");
-        spyOn(Roles, "userIsInRole").and.returnValue(true);
-        Meteor.call("products/updateProductTags", product._id, tag.name,
-          tag._id);
-        product = ReactionCore.Collections.Products.findOne(product._id);
-        expect(product.hashtags).toContain(tag._id);
-        expect(ReactionCore.Collections.Tags.find().count()).toEqual(
-          1);
-        Meteor.call("products/removeProductTag", product._id, tag._id);
-        product = ReactionCore.Collections.Products.findOne(product._id);
-        expect(product.hashtags).not.toContain(tag._id);
-        expect(ReactionCore.Collections.Tags.find().count()).toEqual(
-          0);
+    it("should remove product tag by admin", function (done) {
+      sandbox.stub(Reaction, "hasPermission", function () {
+        check(arguments, [Match.Any]);
+        return true;
+      });
+      let product = addProduct();
+      let tag = Factory.create("tag");
+      Meteor.call("products/updateProductTags", product._id, tag.name, tag._id);
+      product = Products.findOne(product._id);
+      expect(product.hashtags).to.contain(tag._id);
+      expect(Tags.find().count()).to.equal(1);
+      Meteor.call("products/removeProductTag", product._id, tag._id);
+      product = Products.findOne(product._id);
+      expect(product.hashtags).to.not.contain(tag._id);
+      expect(Tags.find().count()).to.equal(0);
 
-        return done();
-      }
-    );
+      return done();
+    });
   });
 
   describe("setHandle", () => {
     beforeEach(() => {
-      return ReactionCore.Collections.Tags.remove({});
+      return Tags.remove({});
     });
 
-    it.skip(
-      "should throw 403 error by non admin",
-      () => {
-        spyOn(Roles, "userIsInRole").and.returnValue(false);
-        spyOn(ReactionCore.Collections.Products, "update");
-        expect(() => Meteor.call("products/setHandle", "fakeId"))
-          .toThrow(new Meteor.Error(403, "Access Denied"));
-        expect(ReactionCore.Collections.Products.update).not.toHaveBeenCalled();
-      }
-    );
+    it("should throw 403 error by non admin", function () {
+      sandbox.stub(Reaction, "hasPermission", function () {
+        check(arguments, [Match.Any]);
+        return false;
+      });
+      let productUpdateSpy = sandbox.spy(Products, "update");
+      // spyOn(ReactionCore.Collections.Products, "update");
+      expect(() => Meteor.call("products/setHandle", "fakeId"))
+        .to.throw(Meteor.Error, /Access Denied/);
+      expect(productUpdateSpy).to.not.have.been.called;
+    });
 
-    it.skip(
-      "should set handle for product by admin",
-      done => {
-        let product = faker.reaction.products.add();
-        spyOn(Roles, "userIsInRole").and.returnValue(true);
-        const productHandle = product.handle;
-        Meteor.call("products/updateProductField", product._id,
-          "title", "new product name");
-        Meteor.call("products/setHandle", product._id);
-        product = ReactionCore.Collections.Products.findOne(product._id);
-        expect(product.handle).not.toEqual(productHandle);
+    it("should set handle for product by admin", function (done) {
+      sandbox.stub(Reaction, "hasPermission", function () {
+        check(arguments, [Match.Any]);
+        return true;
+      });
+      let product = addProduct();
+      const productHandle = product.handle;
+      Meteor.call("products/updateProductField", product._id, "title", "new product name");
+      Meteor.call("products/setHandle", product._id);
+      product = Products.findOne(product._id);
+      expect(product.handle).to.not.equal(productHandle);
 
-        return done();
-      }
-    );
+      return done();
+    });
 
-    it.skip(
-      "should set handle correctly",
-      done => {
-        let product = faker.reaction.products.add();
-        spyOn(Roles, "userIsInRole").and.returnValue(true);
-        Meteor.call("products/updateProductField", product._id,
-          "title", "new second product name");
-        Meteor.call("products/setHandle", product._id);
-        product = ReactionCore.Collections.Products.findOne(product._id);
-        expect(product.handle).toEqual("new-second-product-name");
+    it("should set handle correctly", function (done) {
+      sandbox.stub(Reaction, "hasPermission", function () {
+        check(arguments, [Match.Any]);
+        return true;
+      });
+      let product = addProduct();
+      Meteor.call("products/updateProductField", product._id, "title", "new second product name");
+      Meteor.call("products/setHandle", product._id);
+      product = Products.findOne(product._id);
+      expect(product.handle).to.equal("new-second-product-name");
 
-        return done();
-      }
-    );
+      return done();
+    });
 
-    it.skip(
-      "products with the same title should receive correct handle",
-      done => {
-        // we use product from previous test here like an original
-        let product = faker.reaction.products.add();
-        spyOn(Roles, "userIsInRole").and.returnValue(true);
-        Meteor.call("products/updateProductField", product._id,
-          "title", "new second product name");
-        Meteor.call("products/setHandle", product._id);
-        product = ReactionCore.Collections.Products.findOne(product._id);
-        expect(product.handle).toEqual("new-second-product-name-copy");
+    it("products with the same title should receive correct handle", function (done) {
+      // we use product from previous test here like an original
+      sandbox.stub(Reaction, "hasPermission", function () {
+        check(arguments, [Match.Any]);
+        return true;
+      });
+      let product = addProduct();
+      Meteor.call("products/updateProductField", product._id, "title", "new second product name");
+      Meteor.call("products/setHandle", product._id);
+      product = Products.findOne(product._id);
+      expect(product.handle).to.equal("new-second-product-name-copy");
 
-        return done();
-      }
-    );
+      return done();
+    });
   });
 
   describe("setHandleTag", function () {
     beforeEach(function () {
-      return ReactionCore.Collections.Tags.remove({});
+      return Tags.remove({});
     });
 
-    it.skip(
-      "should throw 403 error by non admin",
-      function () {
-        spyOn(Roles, "userIsInRole").and.returnValue(false);
-        spyOn(ReactionCore.Collections.Products, "update");
-        expect(function () {
-          return Meteor.call("products/setHandleTag", "fakeId", "tagId");
-        }).toThrow(new Meteor.Error(403, "Access Denied"));
-        expect(ReactionCore.Collections.Products.update).not.toHaveBeenCalled();
-      }
-    );
+    it("should throw 403 error by non admin", function () {
+      sandbox.stub(Reaction, "hasPermission", function () {
+        check(arguments, [Match.Any]);
+        return false;
+      });
+      let updateProductSpy = sandbox.spy(Products, "update");
+      // spyOn(ReactionCore.Collections.Products, "update");
+      expect(function () {
+        return Meteor.call("products/setHandleTag", "fakeId", "tagId");
+      }).to.throw(Meteor.Error, /Access Denied/);
+      expect(updateProductSpy).to.not.have.been.called;
+    });
 
-    it.skip(
-      "should set handle tag for product by admin",
-      function (done) {
-        spyOn(Roles, "userIsInRole").and.returnValue(true);
-        spyOn(ReactionCore, "hasPermission").and.returnValue(true);
-        let product = faker.reaction.products.add();
-        let tag = Factory.create("tag");
+    it("should set handle tag for product by admin", function (done) {
+      sandbox.stub(Reaction, "hasPermission", function () {
+        check(arguments, [Match.Any]);
+        return true;
+      });
+      let product = addProduct();
+      let tag = Factory.create("tag");
 
-        Meteor.call("products/setHandleTag", product._id, tag._id);
-        product = ReactionCore.Collections.Products.findOne(product._id);
-        expect(product.handle).toEqual(tag.slug);
+      Meteor.call("products/setHandleTag", product._id, tag._id);
+      product = Products.findOne(product._id);
+      expect(product.handle).to.equal(tag.slug);
 
-        return done();
-      }
-    );
+      return done();
+    });
   });
 
   describe("updateProductPosition", function () {
     beforeEach(function () {
-      return ReactionCore.Collections.Tags.remove({});
+      return Tags.remove({});
     });
 
-    it.skip(
-      "should throw 403 error by non admin",
-      function () {
-        spyOn(Roles, "userIsInRole").and.returnValue(false);
-        spyOn(ReactionCore.Collections.Products, "update");
-        expect(function () {
-          return Meteor.call("products/updateProductPosition", "fakeId", {}, "tag");
-        }).toThrow(new Meteor.Error(403, "Access Denied"));
-        expect(ReactionCore.Collections.Products.update).not.toHaveBeenCalled();
-      }
-    );
+    it("should throw 403 error by non admin", function () {
+      sandbox.stub(Reaction, "hasPermission", function () {
+        check(arguments, [Match.Any]);
+        return false;
+      });
+      // spyOn(Roles, "userIsInRole").and.returnValue(false);
+      let updateProductSpy = sandbox.spy(Products, "update");
+      // spyOn(ReactionCore.Collections.Products, "update");
+      expect(function () {
+        return Meteor.call("products/updateProductPosition", "fakeId", {}, "tag");
+      }).to.throw(Meteor.Error, /Access Denied/);
+      expect(updateProductSpy).to.not.have.been.called;
+    });
 
-    it.skip(
-      "should update product position by admin",
-      function (done) {
-        let product = faker.reaction.products.add();
-        spyOn(Roles, "userIsInRole").and.returnValue(true);
-        const tag = Factory.create("tag");
-        const position = {
-          position: 0,
-          weight: 0,
-          updatedAt: new Date()
-        };
-        expect(function () {
-          return Meteor.call("products/updateProductPosition",
-            product._id, position, tag.slug);
-        }).not.toThrow(new Meteor.Error(403, "Access Denied"));
-        const updatedProduct = ReactionCore.Collections.Products.findOne(
-          product._id
-        );
-        expect(updatedProduct.positions[tag.slug].position).toEqual(0);
+    it("should update product position by admin", function (done) {
+      sandbox.stub(Reaction, "hasPermission", function () {
+        check(arguments, [Match.Any]);
+        return true;
+      });
+      let product = addProduct();
+      // spyOn(Roles, "userIsInRole").and.returnValue(true);
+      const tag = Factory.create("tag");
+      const position = {
+        position: 0,
+        weight: 0,
+        updatedAt: new Date()
+      };
+      expect(function () {
+        return Meteor.call("products/updateProductPosition",
+          product._id, position, tag.slug);
+      }).to.not.throw(Meteor.Error, /Access Denied/);
+      const updatedProduct = Products.findOne(product._id);
+      expect(updatedProduct.positions[tag.slug].position).to.equal(0);
 
-        return done();
-      }
-    );
+      return done();
+    });
   });
 
-  describe("updateMetaFields", () => {
-    it.skip(
-      "should throw 403 error by non admin",
-      function () {
-        spyOn(Roles, "userIsInRole").and.returnValue(false);
-        spyOn(ReactionCore.Collections.Products, "update");
-        expect(function () {
-          return Meteor.call("products/updateVariantsPosition", ["fakeId"]);
-        }).toThrow(new Meteor.Error(403, "Access Denied"));
-        expect(ReactionCore.Collections.Products.update).not.toHaveBeenCalled();
-      }
-    );
+  describe("updateMetaFields position", () => {
+    it("should throw 403 error by non admin", function () {
+      sandbox.stub(Reaction, "hasPermission", function () {
+        check(arguments, [Match.Any]);
+        return false;
+      });
+      let updateProductSpy = sandbox.spy(Products, "update");
+      // spyOn(ReactionCore.Collections.Products, "update");
+      expect(function () {
+        return Meteor.call("products/updateVariantsPosition", ["fakeId"]);
+      }).to.throw(Meteor.Error, /Access Denied/);
+      expect(updateProductSpy).to.not.have.been.called;
+    });
 
-    it.skip(
-      "should update variants position",
-      (done) => {
-        const product = faker.reaction.products.add();
-        const product2 = faker.reaction.products.add();
-        const product3 = faker.reaction.products.add();
-        spyOn(Roles, "userIsInRole").and.returnValue(true);
-        expect(product.index).toBeUndefined();
-        expect(product2.index).toBeUndefined();
-        expect(product3.index).toBeUndefined();
+    it("should update variants position", function (done) {
+      sandbox.stub(Reaction, "hasPermission", function () {
+        check(arguments, [Match.Any]);
+        return true;
+      });
+      const product = addProduct();
+      const product2 = addProduct();
+      const product3 = addProduct();
 
-        Meteor.call("products/updateVariantsPosition", [
-          product2._id, product3._id, product._id
-        ]);
-        const modifiedProduct = ReactionCore.Collections.Products.findOne(
-          product._id
-        );
-        const modifiedProduct2 = ReactionCore.Collections.Products.findOne(
-          product2._id
-        );
-        const modifiedProduct3 = ReactionCore.Collections.Products.findOne(
-          product3._id
-        );
-        expect(modifiedProduct.index).toBe(2);
-        expect(modifiedProduct2.index).toBe(0);
-        expect(modifiedProduct3.index).toBe(1);
+      expect(product.index).to.be.undefined;
+      expect(product2.index).to.be.undefined;
+      expect(product3.index).to.be.undefined;
 
-        return done();
-      }
-    );
+      Meteor.call("products/updateVariantsPosition", [
+        product2._id, product3._id, product._id
+      ]);
+      const modifiedProduct = Products.findOne(product._id);
+      const modifiedProduct2 = Products.findOne(product2._id);
+      const modifiedProduct3 = Products.findOne(product3._id);
+      expect(modifiedProduct.index).to.equal(2);
+      expect(modifiedProduct2.index).to.equal(0);
+      expect(modifiedProduct3.index).to.equal(1);
+      return done();
+    });
   });
 
   describe("updateMetaFields", function () {
-    it.skip(
-      "should throw 403 error by non admin",
-      function () {
-        spyOn(Roles, "userIsInRole").and.returnValue(false);
-        spyOn(ReactionCore.Collections.Products, "update");
-        expect(function () {
-          return Meteor.call("products/updateMetaFields", "fakeId", {
-            key: "Material",
-            value: "Spandex"
-          });
-        }).toThrow(new Meteor.Error(403, "Access Denied"));
-        expect(ReactionCore.Collections.Products.update).not.toHaveBeenCalled();
-      }
-    );
-
-    it.skip(
-      "should add meta fields by admin",
-      function (done) {
-        let product = faker.reaction.products.add();
-        spyOn(Roles, "userIsInRole").and.returnValue(true);
-        Meteor.call("products/updateMetaFields", product._id, {
+    it("should throw 403 error by non admin", function () {
+      sandbox.stub(Reaction, "hasPermission", function () {
+        check(arguments, [Match.Any]);
+        return false;
+      });
+      let updateProductSpy = sandbox.spy(Products, "update");
+      // spyOn(ReactionCore.Collections.Products, "update");
+      expect(function () {
+        return Meteor.call("products/updateMetaFields", "fakeId", {
           key: "Material",
           value: "Spandex"
         });
-        product = ReactionCore.Collections.Products.findOne(product._id);
-        expect(product.metafields[0].key).toEqual("Material");
-        expect(product.metafields[0].value).toEqual("Spandex");
+      }).to.throw(Meteor.Error, /Access Denied/);
+      expect(updateProductSpy).to.not.have.been.called;
+    });
 
-        return done();
-      }
-    );
+    it("should add meta fields by admin", function (done) {
+      sandbox.stub(Reaction, "hasPermission", function () {
+        check(arguments, [Match.Any]);
+        return true;
+      });
+      let product = addProduct();
+      Meteor.call("products/updateMetaFields", product._id, {
+        key: "Material",
+        value: "Spandex"
+      });
+      product = Products.findOne(product._id);
+      expect(product.metafields[0].key).to.equal("Material");
+      expect(product.metafields[0].value).to.equal("Spandex");
+
+      return done();
+    });
   });
 
   describe("publishProduct", function () {
-    it.skip(
-      "should throw 403 error by non admin",
-      function () {
-        spyOn(Roles, "userIsInRole").and.returnValue(false);
-        spyOn(ReactionCore.Collections.Products, "update");
-        expect(function () {
-          return Meteor.call("products/publishProduct", "fakeId");
-        }).toThrow(new Meteor.Error(403, "Access Denied"));
-        expect(ReactionCore.Collections.Products.update).not.toHaveBeenCalled();
-      }
-    );
+    it("should throw 403 error by non admin", function () {
+      sandbox.stub(Reaction, "hasPermission", function () {
+        check(arguments, [Match.Any]);
+        return false;
+      });
+      let updateProductSpy = sandbox.spy(Products, "update");
+      // spyOn(ReactionCore.Collections.Products, "update");
+      expect(function () {
+        return Meteor.call("products/publishProduct", "fakeId");
+      }).to.throw(Meteor.Error, /Access Denied/);
+      expect(updateProductSpy).to.not.have.been.called;
+    });
 
-    it.skip(
-      "should let admin publish product",
-      function (done) {
-        let product = faker.reaction.products.add();
-        let isVisible = product.isVisible;
-        spyOn(Roles, "userIsInRole").and.returnValue(true);
-        expect(function () {
-          return Meteor.call("products/publishProduct", product._id);
-        }).not.toThrow(new Meteor.Error(403, "Access Denied"));
-        product = ReactionCore.Collections.Products.findOne(product._id);
-        expect(product.isVisible).toEqual(!isVisible);
+    it("should let admin publish product", function (done) {
+      sandbox.stub(Reaction, "hasPermission", function () {
+        check(arguments, [Match.Any]);
+        return true;
+      });
+      let product = addProduct();
+      let isVisible = product.isVisible;
+      expect(function () {
+        return Meteor.call("products/publishProduct", product._id);
+      }).to.not.throw(Meteor.Error, /Access Denied/);
+      product = Products.findOne(product._id);
+      expect(product.isVisible).to.equal(!isVisible);
 
-        return done();
-      }
-    );
+      return done();
+    });
 
-    it.skip(
-      "should let admin toggle product visibility",
-      function (done) {
-        let product = faker.reaction.products.add();
-        let isVisible = product.isVisible;
-        spyOn(Roles, "userIsInRole").and.returnValue(true);
-        expect(function () {
-          return Meteor.call("products/publishProduct", product._id);
-        }).not.toThrow(new Meteor.Error(403, "Access Denied"));
-        product = ReactionCore.Collections.Products.findOne(product._id);
-        expect(product.isVisible).toEqual(!isVisible);
-        expect(function () {
-          return Meteor.call("products/publishProduct", product._id);
-        }).not.toThrow(new Meteor.Error(400, "Bad Request"));
-        product = ReactionCore.Collections.Products.findOne(product._id);
-        expect(product.isVisible).toEqual(isVisible);
+    it("should let admin toggle product visibility", function (done) {
+      sandbox.stub(Reaction, "hasPermission", function () {
+        check(arguments, [Match.Any]);
+        return true;
+      });
+      let product = addProduct();
+      let isVisible = product.isVisible;
+      expect(function () {
+        return Meteor.call("products/publishProduct", product._id);
+      }).to.not.throw(Meteor.Error, /Access Denied/);
+      product = Products.findOne(product._id);
+      expect(product.isVisible).to.equal(!isVisible);
+      expect(function () {
+        return Meteor.call("products/publishProduct", product._id);
+      }).to.not.throw(Meteor.Error, /Bad Request/);
+      product = Products.findOne(product._id);
+      expect(product.isVisible).to.equal(isVisible);
 
-        return done();
-      }
-    );
+      return done();
+    });
 
-    it.skip(
-      "should not publish product when missing title",
-      function (done) {
-        let product = faker.reaction.products.add();
-        let isVisible = product.isVisible;
-        spyOn(Roles, "userIsInRole").and.returnValue(true);
-        ReactionCore.Collections.Products.update(product._id, {
-          $set: {
-            title: ""
-          }
-        }, {
-          selector: { type: "simple" },
-          validate: false
-        });
-        expect(function () {
-          return Meteor.call("products/publishProduct", product._id);
-        }).not.toThrow(new Meteor.Error(403, "Access Denied"));
-        product = ReactionCore.Collections.Products.findOne(product._id);
-        expect(product.isVisible).toEqual(isVisible);
+    it("should not publish product when missing title", function (done) {
+      sandbox.stub(Reaction, "hasPermission", function () {
+        check(arguments, [Match.Any]);
+        return true;
+      });
+      let product = addProduct();
+      let isVisible = product.isVisible;
+      Products.update(product._id, {
+        $set: {
+          title: ""
+        }
+      }, {
+        selector: { type: "simple" },
+        validate: false
+      });
+      expect(function () {
+        return Meteor.call("products/publishProduct", product._id);
+      }).to.not.throw(Meteor.Error, /Access Denied/);
+      product = Products.findOne(product._id);
+      expect(product.isVisible).to.equal(isVisible);
 
-        return done();
-      }
-    );
+      return done();
+    });
 
-    it.skip(
-      "should not publish product when missing even one of child variant price",
-      function (done) {
-        let product = faker.reaction.products.add();
-        const isVisible = product.isVisible;
-        let variant = ReactionCore.Collections.Products.findOne({
-          ancestors: [product._id]
-        });
-        expect(variant.ancestors).toEqual([product._id]);
-        let options = ReactionCore.Collections.Products.find({
-          ancestors: [product._id, variant._id]
-        }).fetch();
-        expect(options.length).toBe(2);
-        spyOn(Roles, "userIsInRole").and.returnValue(true);
-        ReactionCore.Collections.Products.update(options[0]._id, {
-          $set: {
-            price: 0
-          }
-        }, {
-          selector: { type: "variant" },
-          validate: false
-        });
-        expect(function () {
-          return Meteor.call("products/publishProduct", product._id);
-        }).toThrow(new Meteor.Error(403, "Forbidden",
-          "Some properties are missing."));
-        product = ReactionCore.Collections.Products.findOne(product._id);
-        expect(product.isVisible).toEqual(isVisible);
+    it("should not publish product when missing even one of child variant price", function (done) {
+      sandbox.stub(Reaction, "hasPermission", function () {
+        check(arguments, [Match.Any]);
+        return true;
+      });
+      let product = addProduct();
+      const isVisible = product.isVisible;
+      let variant = Products.findOne({ancestors: [product._id]});
+      expect(variant.ancestors[0]).to.equal(product._id);
+      let options = Products.find({
+        ancestors: [product._id, variant._id]
+      }).fetch();
+      expect(options.length).to.equal(2);
+      Products.update(options[0]._id, {
+        $set: {
+          price: 0
+        }
+      }, {
+        selector: { type: "variant" },
+        validate: false
+      });
+      expect(function () {
+        return Meteor.call("products/publishProduct", product._id);
+      }).to.throw(Meteor.Error, /Forbidden/);
+      product = Products.findOne(product._id);
+      expect(product.isVisible).to.equal(isVisible);
 
-        return done();
-      }
-    );
+      return done();
+    });
 
-    it.skip(
-      "should not publish product when top variant has no children and no price",
-      function (done) { return done(); }
-    );
+    it.skip("should not publish product when top variant has no children and no price", function (done) {
+      return done();
+    });
 
     it.skip(
       "should not publish product when missing variant",
