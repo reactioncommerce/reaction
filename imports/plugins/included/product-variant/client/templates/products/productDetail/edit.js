@@ -1,7 +1,5 @@
 import autosize from "autosize";
-import { i18next } from "/client/modules/i18n";
-import { Reaction } from "/client/api";
-import Logger from "/client/modules/logger";
+import { Reaction, i18next, Logger } from "/client/api";
 import { ReactionProduct } from "/lib/api";
 
 /**

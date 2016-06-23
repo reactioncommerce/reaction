@@ -1,5 +1,5 @@
 import { Packages } from "/lib/collections";
-import { i18next } from "/client/modules/i18n";
+import { i18next } from "/client/api";
 
 Template.reactionAnalyticsSettings.helpers({
   packageData() {

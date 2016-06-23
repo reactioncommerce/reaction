@@ -1,5 +1,4 @@
-import { i18next } from "/client/modules/i18n";
-import { ReactionRouter } from "/client/modules/router";
+import { i18next, Router } from "/client/api";
 import { Themes } from "/lib/collections";
 
 Template.uiDashboard.onCreated(function () {
@@ -19,7 +18,7 @@ Template.uiDashboard.helpers({
   themeCardProps(theme) {
     return {
       onContentClick() {
-        ReactionRouter.go("dashboard/uiThemeDetails", {
+        Router.go("dashboard/uiThemeDetails", {
           id: theme.name
         });
       },

@@ -1,9 +1,10 @@
+import { Router } from "/client/api";
 import { Cart } from "/lib/collections";
 
 /* Product Detail Page Specs*/
 describe("Cart", function () {
   beforeEach(function (done) {
-    ReactionRouter.go("product", {handle: "example-product"});
+    Router.go("product", {handle: "example-product"});
     Tracker.afterFlush(done);
   });
 
@@ -123,7 +124,7 @@ describe("Cart", function () {
 
       $("#btn-checkout").trigger("click");
       expect(spyOnCheckoutButton).toHaveBeenTriggered();
-      expect(ReactionRouter.current().route.path).toEqual("cart/checkout");
+      expect(Router.current().route.path).toEqual("cart/checkout");
       done();
     });
   });

@@ -1,3 +1,4 @@
+import { Router } from "/client/api";
 import { Shops } from "/lib/collections";
 
 /*
@@ -8,13 +9,13 @@ import { Shops } from "/lib/collections";
 describe("Router", function () {
   describe("Index", function () {
     beforeEach(function (done) {
-      ReactionRouter.go("/");
+      Router.go("/");
       Tracker.afterFlush(done);
     });
 
     describe("meta data", function () {
       it("path should be root url", function () {
-        const route = ReactionRouter.current().path;
+        const route = Router.current().path;
         expect(route).toEqual("/");
       });
 

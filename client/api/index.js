@@ -1,12 +1,15 @@
 import { Reaction } from "/client/modules/core";
-import Logger from "/client/modules/logger";
+import { Router } from "/client/modules/router";
 
 // Legacy globals
 // TODO: add deprecation warnings
 ReactionCore = Reaction;
-ReactionRouter = Reaction.Router;
+ReactionRouter = Router;
 
 export {
   Reaction,
-  Logger
+  Router
 };
+
+export * from "/client/modules/i18n";
+export { default as Logger } from "/client/modules/logger";

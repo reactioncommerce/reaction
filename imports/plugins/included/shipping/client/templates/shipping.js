@@ -1,6 +1,5 @@
-import { Reaction } from "/client/api";
+import { Reaction, i18next } from "/client/api";
 import { Packages, Shipping } from "/lib/collections";
-import { i18next } from "/client/modules/i18n";
 
 /*
  * Template shipping Helpers
