@@ -3,7 +3,7 @@
 import { Meteor } from "meteor/meteor";
 import { Factory } from "meteor/dburles:factory";
 import { Reaction } from "/server/api";
-import { Products } from "/lib/collections";
+import { Products, Tags } from "/lib/collections";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
 import { Roles } from "meteor/alanning:roles";
@@ -449,9 +449,6 @@ describe("core product methods", function () {
         check(arguments, [Match.Any]);
         return true;
       });
-      sandbox.stub(Meteor.server.method_handlers, "inventory/register", function () {
-        check(arguments, [Match.Any]);
-      });
       // spyOn(Roles, "userIsInRole").and.returnValue(true);
       let insertProductSpy = sandbox.stub(Products, "insert", function () {
         return 1;
@@ -463,176 +460,170 @@ describe("core product methods", function () {
       return done();
     });
 
-    it.skip(
-      "should create variant with new product",
-      function (done) {
-        spyOn(Roles, "userIsInRole").and.returnValue(true);
-        Meteor.call("products/createProduct", (error, result) => {
-          if (result) {
-            // this test successfully finds product variant only by such way
-            Meteor.setTimeout(() => {
-              expect(ReactionCore.Collections.Products.find({
-                ancestors: [result]
-              }).count()).toEqual(1);
-
-              return done();
-            }, 50);
-          }
-        });
-      }
-    );
+    it("should create variant with new product", function (done) {
+      sandbox.stub(Reaction, "hasPermission", function () {
+        check(arguments, [Match.Any]);
+        return true;
+      });
+      // spyOn(Roles, "userIsInRole").and.returnValue(true);
+      Meteor.call("products/createProduct", (error, result) => {
+        if (result) {
+          // this test successfully finds product variant only by such way
+          Meteor.setTimeout(() => {
+            expect(Products.find({ancestors: [result]}).count()).to.equal(1);
+            return done();
+          }, 50);
+        }
+      });
+    });
   });
 
   describe("deleteProduct", function () {
-    it.skip(
-      "should throw 403 error by non admin",
-      function () {
-        spyOn(Roles, "userIsInRole").and.returnValue(false);
-        spyOn(ReactionCore.Collections.Products, "remove");
-        expect(function () {
-          return Meteor.call("products/deleteProduct", "fakeId");
-        }).toThrow(new Meteor.Error(403, "Access Denied"));
-        expect(ReactionCore.Collections.Products.remove).not.toHaveBeenCalled();
-      }
-    );
+    it("should throw 403 error by non admin", function () {
+      sandbox.stub(Reaction, "hasPermission", function () {
+        check(arguments, [Match.Any]);
+        return false;
+      });
+      let removeProductSpy = sandbox.spy(Products, "remove");
+      // spyOn(ReactionCore.Collections.Products, "remove");
+      expect(function () {
+        return Meteor.call("products/deleteProduct", "fakeId");
+      }).to.throw(Meteor.Error, /Access Denied/);
+      expect(removeProductSpy).to.not.have.been.called;
+    });
 
-    it.skip(
-      "should delete product by admin",
-      function () {
-        const product = faker.reaction.products.add();
-        spyOn(Roles, "userIsInRole").and.returnValue(true);
-        // we expect "4" because we have 1 product and 3 variants
-        expect(Meteor.call("products/deleteProduct", product._id)).toBe(4);
-        expect(ReactionCore.Collections.Products.find(product._id).
-        count()).toEqual(0);
-      }
-    );
+    it("should delete product by admin", function () {
+      sandbox.stub(Reaction, "hasPermission", function () {
+        check(arguments, [Match.Any]);
+        return true;
+      });
+      const product = addProduct();
+      // spyOn(Roles, "userIsInRole").and.returnValue(true);
+      // we expect "4" because we have 1 product and 3 variants
+      expect(Meteor.call("products/deleteProduct", product._id)).to.equal(4);
+      expect(Products.find(product._id).count()).to.equal(0);
+    });
 
-    it.skip(
-      "should throw error if removal fails",
-      function () {
-        const product = faker.reaction.products.add();
-        spyOn(Roles, "userIsInRole").and.returnValue(true);
-        spyOn(ReactionCore.Collections.Products, "remove");
-        expect(function () {
-          return Meteor.call("products/deleteProduct", product._id);
-        }).toThrow(new Meteor.Error(304,
-          "Something goes wrong, nothing was deleted"));
-        expect(ReactionCore.Collections.Products.find(product._id).
-        count()).toEqual(1);
-      }
-    );
+    it("should throw error if removal fails", function () {
+      sandbox.stub(Reaction, "hasPermission", function () {
+        check(arguments, [Match.Any]);
+        return true;
+      });
+      const product = addProduct();
+      // spyOn(Roles, "userIsInRole").and.returnValue(true);
+      sandbox.stub(Products, "remove");
+      // spyOn(ReactionCore.Collections.Products, "remove");
+      expect(function () {
+        return Meteor.call("products/deleteProduct", product._id);
+      }).to.throw(Meteor.Error, /Something goes wrong, nothing was deleted/);
+      expect(Products.find(product._id).count()).to.equal(1);
+    });
   });
 
   describe("updateProductField", function () {
-    it.skip(
-      "should throw 403 error by non admin",
-      function () {
-        spyOn(Roles, "userIsInRole").and.returnValue(false);
-        spyOn(ReactionCore.Collections.Products, "update");
-        expect(function () {
-          return Meteor.call("products/updateProductField",
-            "fakeId", "title", "Updated Title");
-        }).toThrow(new Meteor.Error(403, "Access Denied"));
-        expect(ReactionCore.Collections.Products.update).not.toHaveBeenCalled();
-      }
-    );
+    it("should throw 403 error by non admin", function () {
+      sandbox.stub(Reaction, "hasPermission", function () {
+        check(arguments, [Match.Any]);
+        return false;
+      });
+      // spyOn(Roles, "userIsInRole").and.returnValue(false);
+      let updateProductSpy = sandbox.spy(Products, "update");
+      // spyOn(ReactionCore.Collections.Products, "update");
+      expect(function () {
+        return Meteor.call("products/updateProductField",
+          "fakeId", "title", "Updated Title");
+      }).to.throw(Meteor.Error, /Access Denied/);
+      expect(updateProductSpy).to.not.have.been.called;
+    });
 
-    it.skip(
-      "should update product field by admin",
-      function (done) {
-        let product = faker.reaction.products.add();
-        spyOn(Roles, "userIsInRole").and.returnValue(true);
-        Meteor.call("products/updateProductField", product._id,
-          "title", "Updated Title");
-        product = ReactionCore.Collections.Products.findOne(product._id);
-        expect(product.title).toEqual("Updated Title");
+    it("should update product field by admin", function (done) {
+      sandbox.stub(Reaction, "hasPermission", function () {
+        check(arguments, [Match.Any]);
+        return true;
+      });
+      let product = addProduct();
+      // spyOn(Roles, "userIsInRole").and.returnValue(true);
+      Meteor.call("products/updateProductField", product._id, "title", "Updated Title");
+      product = Products.findOne(product._id);
+      expect(product.title).to.equal("Updated Title");
 
-        return done();
-      }
-    );
+      return done();
+    });
 
-    it.skip(
-      "should update variant fields",
-      function (done) {
-        const product = faker.reaction.products.add();
-        let variant = ReactionCore.Collections.Products.findOne({
-          ancestors: [product._id]
-        });
-        spyOn(Roles, "userIsInRole").and.returnValue(true);
-        Meteor.call("products/updateProductField", variant._id,
-          "title", "Updated Title");
-        variant = ReactionCore.Collections.Products.findOne(variant._id);
-        expect(variant.title).toEqual("Updated Title");
+    it("should update variant fields", function (done) {
+      sandbox.stub(Reaction, "hasPermission", function () {
+        check(arguments, [Match.Any]);
+        return true;
+      });
+      const product = addProduct();
+      let variant = Products.findOne({ ancestors: [product._id] });
+      Meteor.call("products/updateProductField", variant._id, "title", "Updated Title");
+      variant = Products.findOne(variant._id);
+      expect(variant.title).to.equal("Updated Title");
 
-        return done();
-      }
-    );
+      return done();
+    });
   });
 
   describe("updateProductTags", function () {
     beforeEach(function () {
-      return ReactionCore.Collections.Tags.remove({});
+      return Tags.remove({});
     });
 
-    it.skip(
-      "should throw 403 error by non admin",
-      function () {
-        spyOn(Roles, "userIsInRole").and.returnValue(false);
-        spyOn(ReactionCore.Collections.Products, "update");
-        spyOn(ReactionCore.Collections.Tags, "insert");
-        expect(function () {
-          return Meteor.call("products/updateProductTags",
-            "fakeId", "productTag", null);
-        }).toThrow(new Meteor.Error(403, "Access Denied"));
-        expect(ReactionCore.Collections.Products.update).not.toHaveBeenCalled();
-        expect(ReactionCore.Collections.Tags.insert).not.toHaveBeenCalled();
-      }
-    );
+    it("should throw 403 error by non admin", function () {
+      sandbox.stub(Reaction, "hasPermission", function () {
+        check(arguments, [Match.Any]);
+        return false;
+      });
+      let updateProductSpy = sandbox.spy(Products, "update");
+      // spyOn(ReactionCore.Collections.Products, "update");
+      let insertTagsSpy = sandbox.spy(Tags, "insert");
+      // spyOn(ReactionCore.Collections.Tags, "insert");
+      expect(function () {
+        return Meteor.call("products/updateProductTags",
+          "fakeId", "productTag", null);
+      }).to.throw(Meteor.Error, /Access Denied/);
+      expect(updateProductSpy).to.not.have.been.called;
+      expect(insertTagsSpy).to.not.have.been.called;
+    });
 
-    it.skip(
-      "should add new tag when passed tag name and null ID by admin",
-      function (done) {
-        let product = faker.reaction.products.add();
-        spyOn(Roles, "userIsInRole").and.returnValue(true);
-        let tagName = "Product Tag";
-        expect(ReactionCore.Collections.Tags.findOne({
-          name: tagName
-        })).toBeUndefined();
+    it("should add new tag when passed tag name and null ID by admin", function (done) {
+      sandbox.stub(Reaction, "hasPermission", function () {
+        check(arguments, [Match.Any]);
+        return true;
+      });
 
-        Meteor.call("products/updateProductTags", product._id,
-          tagName, null);
-        const tag = ReactionCore.Collections.Tags.findOne({
-          name: tagName
-        });
-        expect(tag.slug).toEqual(getSlug(tagName));
+      let product = addProduct();
+      let tagName = "Product Tag";
+      expect(Tags.findOne({ name: tagName})).to.be.undefined;
 
-        product = ReactionCore.Collections.Products.findOne(product._id);
-        expect(product.hashtags).toContain(tag._id);
+      Meteor.call("products/updateProductTags", product._id, tagName, null);
+      const tag = Tags.findOne({ name: tagName });
+      expect(tag.slug).to.equal(Reaction.getSlug(tagName));
 
-        return done();
-      }
-    );
+      product = Products.findOne(product._id);
+      expect(product.hashtags).to.contain(tag._id);
 
-    it.skip(
-      "should add existing tag when passed existing tag and tag._id by admin",
-      function (done) {
-        let product = faker.reaction.products.add();
-        let tag = Factory.create("tag");
-        spyOn(Roles, "userIsInRole").and.returnValue(true);
-        expect(ReactionCore.Collections.Tags.find().count()).toEqual(
-          1);
-        expect(product.hashtags).not.toContain(tag._id);
-        Meteor.call("products/updateProductTags", product._id, tag.name,
-          tag._id);
-        expect(ReactionCore.Collections.Tags.find().count()).toEqual(
-          1);
-        product = ReactionCore.Collections.Products.findOne(product._id);
-        expect(product.hashtags).toContain(tag._id);
+      return done();
+    });
 
-        return done();
-      }
-    );
+    it("should add existing tag when passed existing tag and tag._id by admin", function (done) {
+      sandbox.stub(Reaction, "hasPermission", function () {
+        check(arguments, [Match.Any]);
+        return true;
+      });
+
+      let product = addProduct();
+      let tag = Factory.create("tag");
+      expect(Tags.find().count()).to.equal(1);
+      expect(product.hashtags).to.not.contain(tag._id);
+      Meteor.call("products/updateProductTags", product._id, tag.name, tag._id);
+      expect(Tags.find().count()).to.equal(1);
+      product = Products.findOne(product._id);
+      expect(product.hashtags).to.contain(tag._id);
+
+      return done();
+    });
   });
 
   describe("removeProductTag", function () {
