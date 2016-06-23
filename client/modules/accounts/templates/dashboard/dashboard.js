@@ -81,7 +81,7 @@ Template.accountsDashboard.helpers({
 /**
  * Account Settings Helpers
  */
-Template.accountsSettings.onCreated(() => {
+Template.accountsSettings.onCreated(function () {
   this.subscribe("ServiceConfiguration", Meteor.userId());
 });
 
