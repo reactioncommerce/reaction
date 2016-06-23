@@ -1,7 +1,6 @@
 import { Meteor } from "meteor/meteor";
 import { Cart } from "/lib/collections";
-
-import "./checkoutButton.html";
+import { PaypalClientAPI } from "../../lib/paypalRestApi";
 
 /**
  * PayPal Checkout Button
@@ -65,6 +64,7 @@ function expressCheckoutSettingsValid(settings) {
  * @return {undefined} no return value
  */
 Template.paypalCheckoutButton.onCreated(function () {
+  PaypalClientAPI.load();
   this.state = new ReactiveDict();
   this.state.setDefault({
     isConfigured: false
@@ -80,13 +80,15 @@ Template.paypalCheckoutButton.onRendered(function () {
   const element = this.$(".js-paypal-express-checkout")[0];
 
   this.autorun(() => {
-    const expressCheckoutSettings = Session.get("expressCheckoutSettings");
+    if (PaypalClientAPI.loaded()) {
+      const expressCheckoutSettings = Session.get("expressCheckoutSettings");
 
-    if (expressCheckoutSettingsValid(expressCheckoutSettings)) {
-      this.state.set("isConfigured", true);
-      doSetup(element, expressCheckoutSettings);
-    } else {
-      this.state.set("isConfigured", false);
+      if (expressCheckoutSettingsValid(expressCheckoutSettings)) {
+        this.state.set("isConfigured", true);
+        doSetup(element, expressCheckoutSettings);
+      } else {
+        this.state.set("isConfigured", false);
+      }
     }
   });
 });
