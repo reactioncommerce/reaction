@@ -1,16 +1,14 @@
-import { _ } from  "underscore";
+import _ from "underscore";
 
 function capitalize(str) {
-  let finalString = str === null ? "" : String(str);
+  const finalString = str === null ? "" : String(str);
   return finalString.charAt(0).toUpperCase() + str.slice(1);
 }
 
-ReactionServiceHelper = class ReactionServiceHelper {
-
-  construct() {}
+export class ServiceConfigHelper {
 
   availableServices() {
-    let services = Package["accounts-oauth"] ? Accounts.oauth.serviceNames() : [];
+    const services = Package["accounts-oauth"] ? Accounts.oauth.serviceNames() : [];
     services.sort();
 
     return services;
@@ -25,11 +23,11 @@ ReactionServiceHelper = class ReactionServiceHelper {
   }
 
   configFieldsForService(name) {
-    let capitalizedName = this.capitalizedServiceName(name);
-    let template = Template[`configureLoginServiceDialogFor${capitalizedName}`];
+    const capitalizedName = this.capitalizedServiceName(name);
+    const template = Template[`configureLoginServiceDialogFor${capitalizedName}`];
 
     if (template) {
-      let fields = template.fields();
+      const fields = template.fields();
 
       return _.map(fields, (field) => {
         if (!field.type) {
@@ -46,13 +44,13 @@ ReactionServiceHelper = class ReactionServiceHelper {
   }
 
   services(extendEach) {
-    let availableServices = this.availableServices();
-    let configurations = ServiceConfiguration.configurations.find().fetch();
+    const availableServices = this.availableServices();
+    const configurations = ServiceConfiguration.configurations.find().fetch();
 
     return _.map(availableServices, (name) => {
-      let matchingConfigurations = _.where(configurations, {service: name});
+      const matchingConfigurations = _.where(configurations, { service: name });
       let service = {
-        name: name,
+        name,
         label: this.capitalizedServiceName(name),
         fields: this.configFieldsForService(name)
       };
@@ -68,4 +66,4 @@ ReactionServiceHelper = class ReactionServiceHelper {
       return service;
     });
   }
-};
+}
