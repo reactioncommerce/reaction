@@ -1,6 +1,6 @@
 import { i18next } from "/client/modules/i18n";
 import { ReactiveDict } from "meteor/reactive-dict";
-import { _ } from  "underscore";
+import { _ } from "lodash";
 import { $ } from "meteor/jquery";
 import { Reaction } from "/client/api";
 import Logger from "/client/modules/logger";

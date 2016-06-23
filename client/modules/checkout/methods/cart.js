@@ -5,7 +5,7 @@ import Logger from "/client/modules/logger";
 import { Reaction } from "/client/api";
 import { Cart } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
-import { _ } from "underscore";
+import _ from "lodash";
 
 // Client Cart Methods
 // Stubs with matching server methods.

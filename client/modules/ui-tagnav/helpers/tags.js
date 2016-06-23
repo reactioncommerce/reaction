@@ -49,7 +49,7 @@ export const TagHelpers = {
     /*
     if (this.tagIds) {
       for (let relatedTagId of this.tagIds) {
-        if (!_.findWhere(tags, {
+        if (!_.find(tags, {
           _id: relatedTagId
         })) {
           tags.push(Tags.findOne(relatedTagId));

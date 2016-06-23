@@ -1,4 +1,4 @@
-import { _ } from "underscore";
+import { _ } from "lodash";
 
 export const LoginFormSharedHelpers = {
 
@@ -32,7 +32,7 @@ export const LoginFormSharedHelpers = {
   shouldShowSeperator() {
     let serviceHelper = new ReactionServiceHelper();
     let services = serviceHelper.services();
-    let enabledServices = _.where(services, {
+    let enabledServices = _.filter(services, {
       enabled: true
     });
 

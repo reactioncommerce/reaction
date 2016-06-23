@@ -1,5 +1,5 @@
 import { Cart, Shipping } from "/lib/collections";
-import { _ } from "underscore";
+import { _ } from "lodash";
 
 //
 // These helpers can be used in general shipping packages

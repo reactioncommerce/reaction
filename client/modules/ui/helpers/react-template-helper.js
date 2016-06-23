@@ -1,13 +1,15 @@
 // http://react-in-meteor.readthedocs.org/en/latest/react-template-helper/
 
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { _ } from 'meteor/underscore';
+import React from "react";
+import ReactDOM from "react-dom";
+import { _ } from "lodash";
 
 // Empty template; logic in `onRendered` below
-Template.React = new Template('Template.React', function() { return []; });
+Template.React = new Template("Template.React", function () {
+  return [];
+});
 
-Template.React.onRendered(function() {
+Template.React.onRendered(function () {
   const parentTemplate = parentTemplateName();
   const container = this.firstNode.parentNode;
   this.container = container;
@@ -16,10 +18,10 @@ Template.React.onRendered(function() {
     const data = Blaze.getData();
 
     const comp = data && data.component;
-    if (! comp) {
+    if (!comp) {
       throw new Error(
         'In template "' + parentTemplate + '", call to `{{> React ... }}` missing ' +
-          '`component` argument.');
+        '`component` argument.');
     }
 
     const props = _.omit(data, 'component');
@@ -27,7 +29,7 @@ Template.React.onRendered(function() {
   });
 });
 
-Template.React.onDestroyed(function() {
+Template.React.onDestroyed(function () {
   if (this.container) {
     ReactDOM.unmountComponentAtNode(this.container);
   }
@@ -37,8 +39,8 @@ Template.React.onDestroyed(function() {
 // is being used. Used to print more explicit error messages
 function parentTemplateName() {
   let view = Blaze.getView();
-  if (!view || view.name !== 'Template.React') {
-    throw new Error('Unexpected: called outside of Template.React');
+  if (!view || view.name !== "Template.React") {
+    throw new Error("Unexpected: called outside of Template.React");
   }
   // find the first parent view which is a template or body
   view = view.parentView;
@@ -49,13 +51,13 @@ function parentTemplateName() {
     // `template` property set
     if (view.template && view.name && (m = view.name.match(/^Template\.(.*)/))) {
       return m[1];
-    } else if (view.name === 'body') {
-      return '<body>';
+    } else if (view.name === "body") {
+      return "<body>";
     }
 
     view = view.parentView;
   }
 
   // not sure when this could happen
-  return '<unknown>';
+  return "<unknown>";
 }

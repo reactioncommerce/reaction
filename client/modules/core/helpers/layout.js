@@ -1,7 +1,7 @@
 import Logger from "/client/modules/logger";
 import { Reaction } from "../";
 import * as Collections from "/lib/collections";
-import _ from  "underscore";
+import { _ } from "lodash";
 
 /**
  * reactionTemplate helper
@@ -19,7 +19,7 @@ Template.registerHelper("reactionTemplate", function (options) {
   const Shop = Collections.Shops.findOne(shopId);
   const reactionTemplates = [];
   // fetch collection from shop.layout configuration
-  let layout = _.findWhere(Shop.layout, {
+  let layout = _.find(Shop.layout, {
     workflow: options.hash.workflow || "coreWorkflow"
   });
 
@@ -65,7 +65,7 @@ Template.registerHelper("reactionTemplate", function (options) {
 
   //  we can have multiple packages contributing to the layout / workflow
   packages.forEach(function (reactionPackage) {
-    const layoutWorkflows = _.where(reactionPackage.layout, options.hash);
+    const layoutWorkflows = _.filter(reactionPackage.layout, options.hash);
     // check the packages for layout workflow templates
     for (layout of layoutWorkflows) {
       // audience is layout permissions
@@ -82,7 +82,7 @@ Template.registerHelper("reactionTemplate", function (options) {
           // true = we've completed this workflow
           // false = pending (future) step
           // <template> = in process (current) step.
-          layout.status = _.contains(currentCollectionWorkflow, layout.template);
+          layout.status = _.includes(currentCollectionWorkflow, layout.template);
           // if the current template is already the current status
           if (layout.template === currentStatus) {
             layout.status = currentStatus;

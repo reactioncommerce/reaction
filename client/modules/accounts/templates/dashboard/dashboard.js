@@ -1,6 +1,6 @@
 import { i18next } from "/client/modules/i18n";
 import { Reaction } from "/client/api";
-import { _ } from  "underscore";
+import { _ } from "lodash";
 
 /**
  * Accounts helpers
@@ -19,7 +19,7 @@ Template.accountsDashboard.helpers({
   isShopMember() {
     let roles = ["dashboard", "admin", "owner"];
 
-    if (_.contains(roles, this.role)) {
+    if (_.includes(roles, this.role)) {
       return true;
     }
 
@@ -33,7 +33,7 @@ Template.accountsDashboard.helpers({
   isShopGuest() {
     let roles = ["dashboard", "admin", "owner"];
 
-    if (_.contains(roles, this.role) === false) {
+    if (_.includes(roles, this.role) === false) {
       return true;
     }
 
@@ -111,7 +111,7 @@ Template.accountsSettings.helpers({
     let configurations = ServiceConfiguration.configurations.find().fetch();
 
     let services = serviceHelper.services((item) => {
-      let matchingConfigurations = _.where(configurations, {
+      let matchingConfigurations = _.filter(configurations, {
         service: item.name
       });
       if (matchingConfigurations.length) {
