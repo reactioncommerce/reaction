@@ -1,8 +1,7 @@
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
-import { i18next } from "/client/modules/i18n";
 import Logger from "/client/modules/logger";
-import { Reaction } from "/client/api";
+import { Reaction, i18next } from "/client/api";
 import { Cart } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 import _ from "lodash";

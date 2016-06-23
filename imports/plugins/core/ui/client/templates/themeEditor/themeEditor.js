@@ -1,4 +1,4 @@
-import { ReactionRouter } from "/client/modules/router";
+import { Router } from "/client/api";
 import { Themes } from "/lib/collections";
 
 Template.uiThemeEditor.onCreated(function () {
@@ -27,7 +27,7 @@ Template.uiThemeEditor.onCreated(function () {
   };
 
   this.autorun(() => {
-    const componentName = ReactionRouter.getQueryParam("component");
+    const componentName = Router.getQueryParam("component");
     const component = this.findComponentByName(componentName);
 
     this.state.set("selectedComponent", component);

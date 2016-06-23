@@ -1,9 +1,7 @@
-import { i18next } from "/client/modules/i18n";
 import { ReactiveDict } from "meteor/reactive-dict";
 import { _ } from "lodash";
 import { $ } from "meteor/jquery";
-import { Reaction } from "/client/api";
-import Logger from "/client/modules/logger";
+import { Reaction, i18next, Logger } from "/client/api";
 import { ReactionProduct } from "/lib/api";
 import { Tags } from "/lib/collections";
 
@@ -406,7 +404,7 @@ Template.productDetailForm.onCreated(function () {
       product: ReactionProduct.selectedProduct()
     });
 
-    const handle = ReactionRouter.getParam("handle");
+    const handle = Reaction.Router.getParam("handle");
 
     if (!handle) {
       Reaction.clearActionView();

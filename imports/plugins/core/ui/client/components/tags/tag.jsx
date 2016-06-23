@@ -1,4 +1,4 @@
-// import { i18next } from "/client/modules/i18n";
+// import { i18next } from "/client/api";
 // import React from "react";
 // import { Reaction } from "/client/api";
 // import { PropTypes } from "/lib/api";

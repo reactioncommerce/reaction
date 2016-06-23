@@ -1,6 +1,4 @@
-import { i18next } from "/client/modules/i18n";
-import { Reaction } from "/client/api";
-import { ReactionRouter } from "/client/modules/router";
+import { Reaction, Router, i18next } from "/client/api";
 import { Themes } from "/lib/collections";
 
 Template.uiThemeDetails.onCreated(function () {
@@ -13,7 +11,7 @@ Template.uiThemeDetails.onCreated(function () {
   this.subscribe("Themes");
 
   this.autorun(() => {
-    const selectedComponent = ReactionRouter.getQueryParam("component");
+    const selectedComponent = Router.getQueryParam("component");
     this.state.set("selectedComponent", selectedComponent);
 
     if (selectedComponent) {
@@ -83,7 +81,7 @@ Template.uiThemeDetails.helpers({
 
 Template.uiThemeDetails.events({
   "click [data-event-action=editComponentTheme]"(event) {
-    ReactionRouter.setQueryParams({
+    Router.setQueryParams({
       component: event.currentTarget.dataset.component
     });
   }

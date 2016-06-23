@@ -1,5 +1,4 @@
-import { i18next } from "/client/modules/i18n";
-import { Reaction } from "/client/api";
+import { Reaction, i18next } from "/client/api";
 import { Orders, Shops } from "/lib/collections";
 
 const orderFilters = [{

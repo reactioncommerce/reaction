@@ -1,7 +1,6 @@
 import { $ } from "meteor/jquery";
 import { Reaction } from "/client/api";
 import { ReactionProduct } from "/lib/api";
-import { i18next } from "/client/modules/i18n";
 
 // load modules
 require("jquery-ui/sortable");

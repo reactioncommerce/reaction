@@ -4,7 +4,7 @@ import { Logger } from "/server/api";
 /**
  * getRouteName
  * assemble route name to be standard
- * this is duplicate that exists in ReactionRouter
+ * this is duplicate that exists in Reaction.Router
  * however this is to avoid a dependency in core
  * on the router
  * prefix/package name + registry name or route

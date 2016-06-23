@@ -1,6 +1,5 @@
-import { i18next } from "/client/modules/i18n";
 import Drop from "tether-drop";
-import { Reaction } from "/client/api";
+import { Reaction, i18next } from "/client/api";
 import { Packages } from "/lib/collections";
 
 Template.coreAdminLayout.onRendered(function () {
