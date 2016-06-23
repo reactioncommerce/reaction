@@ -56,10 +56,10 @@ describe("Account Meteor method ", function () {
     });
 
     it("should allow user to add new addresses", function (done) {
+      let account = Factory.create("account");
       sandbox.stub(Meteor, "userId", function () {
         return account.userId;
       });
-      let account = Factory.create("account");
       // spyOn(Meteor, "userId").and.returnValue(account.userId);
       const address = getAddress();
       // we already have one address by default
@@ -84,7 +84,7 @@ describe("Account Meteor method ", function () {
       return done();
     });
 
-    it.skip("should insert exactly the same address as expected", function (done) {
+    it("should insert exactly the same address as expected", function (done) {
       let account = Factory.create("account");
       sandbox.stub(Meteor, "userId", function () {
         return account.userId;
@@ -100,7 +100,7 @@ describe("Account Meteor method ", function () {
       return done();
     });
 
-    it.skip("should throw error if wrong arguments were passed", function (done) {
+    it("should throw error if wrong arguments were passed", function (done) {
       let accountSpy = sandbox.spy(Accounts, "update");
 
       expect(function () {
@@ -136,11 +136,11 @@ describe("Account Meteor method ", function () {
       return done();
     });
 
-    it.skip("should not let non-Admin add address to another user", function (done) {
-      const account2 = Factory.create("account");
+    it("should not let non-Admin add address to another user", function (done) {
       sandbox.stub(Meteor, "userId", function () {
         return fakeUser._id;
       });
+      const account2 = Factory.create("account");
       // spyOn(Meteor, "userId").and.returnValue(fakeUser._id);
       let updateAccountSpy = sandbox.spy(Accounts, "update");
       // spyOn(ReactionCore.Collections.Accounts, "update");
@@ -161,9 +161,6 @@ describe("Account Meteor method ", function () {
       " address if we enable their while adding",
       function (done) {
         let account = Factory.create("account");
-        const sessionId = Random.id(); // Required for creating a cart
-        spyOnMethod("setShipmentAddress", account.userId);
-        spyOnMethod("setPaymentAddress", account.userId);
         sandbox.stub(Meteor, "userId", function () {
           return account.userId;
         });
@@ -171,6 +168,9 @@ describe("Account Meteor method ", function () {
           return shopId;
         });
         // spyOn(ReactionCore, "getShopId").and.returnValue(shopId);
+        const sessionId = Random.id(); // Required for creating a cart
+        spyOnMethod("setShipmentAddress", account.userId);
+        spyOnMethod("setPaymentAddress", account.userId);
 
         Meteor.call("cart/createCart", account.userId, sessionId);
         // cart was created without any default addresses, we need to add one
@@ -195,14 +195,6 @@ describe("Account Meteor method ", function () {
 
         return done();
       });
-
-    /* it.skip(
-     "",
-     done => {
-     let account = Factory.create("account");
-     return done();
-     }
-     ); */
   });
 
   describe("addressBookUpdate", function () {
@@ -226,20 +218,20 @@ describe("Account Meteor method ", function () {
       Accounts.remove({});
     });
 
-    it.skip("should allow user to edit addresses", function (done) {
+    it("should allow user to edit addresses", function (done) {
       let account = Factory.create("account");
-      spyOnMethod("setShipmentAddress", account.userId);
-      spyOnMethod("setPaymentAddress", account.userId);
       sandbox.stub(Meteor, "userId", function () {
         return account.userId;
       });
-      // spyOn(Meteor, "userId").and.returnValue(account.userId);
-      let updateAccountSpy = sandbox.spy(Accounts, "update");
-      // spyOn(ReactionCore, "shopIdAutoValue").and.returnValue(shopId);
       sandbox.stub(Reaction, "getShopId", function () {
         return shopId;
       });
-      // spyOn(ReactionCore, "getShopId").and.returnValue(shopId);
+      sandbox.stub(Reaction, "hasAdminAccess", function () {
+        return true;
+      });
+      spyOnMethod("setShipmentAddress", account.userId);
+      spyOnMethod("setPaymentAddress", account.userId);
+      let updateAccountSpy = sandbox.spy(Accounts, "update");
 
       Meteor.call("cart/createCart", account.userId, sessionId);
 
@@ -253,13 +245,16 @@ describe("Account Meteor method ", function () {
     });
 
     it.skip("should allow Admin to edit other user address", function (done) {
-      let account = Factory.create("account");
-      spyOnMethod("setShipmentAddress", account.userId);
-      spyOnMethod("setPaymentAddress", account.userId);
       sandbox.stub(Reaction, "hasPermission", function () {
         return true;
       });
-      // spyOn(ReactionCore, "hasPermission").and.returnValue(true);
+      sandbox.stub(Reaction, "hasAdminAccess", function () {
+        return true;
+      });
+      let account = Factory.create("account");
+      spyOnMethod("setShipmentAddress", account.userId);
+      spyOnMethod("setPaymentAddress", account.userId);
+
       // spyOn(ReactionCore, "shopIdAutoValue").and.returnValue(shopId);
       sandbox.stub(Reaction, "getShopId", function () {
         return shopId;
@@ -283,8 +278,6 @@ describe("Account Meteor method ", function () {
 
     it.skip("should update fields to exactly the same what we need", function (done) {
       let account = Factory.create("account");
-      spyOnMethod("setShipmentAddress", account.userId);
-      spyOnMethod("setPaymentAddress", account.userId);
       sandbox.stub(Meteor, "userId", function () {
         return account.userId;
       });
@@ -292,6 +285,8 @@ describe("Account Meteor method ", function () {
       sandbox.stub(Reaction, "getShopId", function () {
         return shopId;
       });
+      spyOnMethod("setShipmentAddress", account.userId);
+      spyOnMethod("setPaymentAddress", account.userId);
       // spyOn(ReactionCore, "shopIdAutoValue").and.returnValue(shopId);
       // spyOn(ReactionCore, "getShopId").and.returnValue(shopId);
 
