@@ -1,5 +1,6 @@
-import _ from "underscore";
 import { ServiceConfigHelper } from "./util";
+import { _ } from "lodash";
+
 
 export const LoginFormSharedHelpers = {
 
@@ -33,7 +34,7 @@ export const LoginFormSharedHelpers = {
   shouldShowSeperator() {
     const serviceHelper = new ServiceConfigHelper();
     const services = serviceHelper.services();
-    const enabledServices = _.where(services, {
+    const enabledServices = _.filter(services, {
       enabled: true
     });
 

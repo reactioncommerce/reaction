@@ -1,5 +1,5 @@
 import { Meteor } from "meteor/meteor";
-import _ from "underscore";
+import { _ } from "lodash";
 
 /*
  *  Blatant reuse of Meteor method hooks from

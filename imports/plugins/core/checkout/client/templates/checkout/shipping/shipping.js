@@ -1,6 +1,6 @@
 import { Cart, Shipping } from "/lib/collections";
-
 import "./shipping.html";
+import { _ } from "lodash";
 
 //
 // These helpers can be used in general shipping packages

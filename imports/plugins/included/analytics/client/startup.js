@@ -1,7 +1,7 @@
 import { AnalyticsEvents, Packages } from "/lib/collections";
 import { Reaction } from "/client/api";
 import { i18next } from "/client/modules/i18n";
-import { _ } from "underscore";
+import { _ } from "lodash";
 
 // Create a queue, but don't obliterate an existing one!
 analytics = window.analytics = window.analytics || [];

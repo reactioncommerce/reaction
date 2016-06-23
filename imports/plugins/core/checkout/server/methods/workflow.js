@@ -1,6 +1,7 @@
 import { Meteor } from "meteor/meteor";
 import { Cart, Orders, Packages, Shops } from "/lib/collections";
 import { Logger, Reaction } from "/server/api";
+import { _ } from "lodash";
 
 /* eslint no-shadow: 0 */
 
@@ -55,7 +56,7 @@ Meteor.methods({
     packages.forEach(function (reactionPackage) {
       // todo fix this hack for not filtering nicely
       if (!reactionPackage.layout.layout) {
-        let layouts = _.where(reactionPackage.layout, {
+        let layouts = _.filter(reactionPackage.layout, {
           workflow: workflow
         });
         // for every layout, process the associated workflows
@@ -88,7 +89,7 @@ Meteor.methods({
     });
 
     // statusExistsInWorkflow boolean
-    const statusExistsInWorkflow = _.contains(currentCart.workflow.workflow, newWorkflowStatus);
+    const statusExistsInWorkflow = _.includes(currentCart.workflow.workflow, newWorkflowStatus);
     const maxSteps = defaultPackageWorkflows.length;
     let nextWorkflowStepIndex;
     let templateProcessedinWorkflow = false;
@@ -124,7 +125,7 @@ Meteor.methods({
     // check to see if the next step has already been processed.
     // templateProcessedinWorkflow boolean
     gotoNextWorkflowStep = nextWorkflowStep.template;
-    templateProcessedinWorkflow = _.contains(currentCart.workflow.workflow,
+    templateProcessedinWorkflow = _.includes(currentCart.workflow.workflow,
       nextWorkflowStep.template);
 
     // debug info

@@ -1,4 +1,4 @@
-import _ from "underscore";
+import { _ } from "lodash";
 
 function capitalize(str) {
   const finalString = str === null ? "" : String(str);
@@ -48,7 +48,7 @@ export class ServiceConfigHelper {
     const configurations = ServiceConfiguration.configurations.find().fetch();
 
     return _.map(availableServices, (name) => {
-      const matchingConfigurations = _.where(configurations, { service: name });
+      let matchingConfigurations = _.filter(configurations, {service: name});
       let service = {
         name,
         label: this.capitalizedServiceName(name),

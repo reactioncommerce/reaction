@@ -326,7 +326,7 @@ Template.coreOrderShippingInvoice.helpers({
     const instance = Template.instance();
     const order = instance.state.get("order");
 
-    let shipment = _.where(order.shipping, {_id: currentData.fulfillment._id})[0];
+    let shipment = _.filter(order.shipping, {_id: currentData.fulfillment._id})[0];
 
     return shipment;
   },
@@ -338,7 +338,7 @@ Template.coreOrderShippingInvoice.helpers({
     const shipment = currentData.fulfillment;
 
     let items = _.map(shipment.items, (item) => {
-      let originalItem = _.findWhere(order.items, {
+      let originalItem = _.find(order.items, {
         _id: item._id
       });
       return _.extend(originalItem, item);
