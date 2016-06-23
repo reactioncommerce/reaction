@@ -1,6 +1,2 @@
-import { LoginFormSharedHelpers } from './helpers';
-
-
-export {
-  LoginFormSharedHelpers
-};
+export { LoginFormSharedHelpers } from "./helpers";
+export { ServiceConfigHelper } from "./util";

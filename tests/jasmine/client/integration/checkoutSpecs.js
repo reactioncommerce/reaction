@@ -1,5 +1,5 @@
+import { Router, Logger } from "/client/api";
 import { Cart } from "/lib/collections";
-import { Logger } from "/server/api";
 
 function checkoutState(callback) {
   if (callback) {
@@ -21,19 +21,19 @@ describe("Checkout", function () {
       }
     });
 
-    ReactionRouter.go("cart/checkout");
+    Router.go("cart/checkout");
     Tracker.afterFlush(done);
   });
 
 
   describe("checkoutLogin", function () {
     it("should go to checkout route", function (done) {
-      expect(ReactionRouter.current().path).toEqual("/cart/checkout");
+      expect(Router.current().path).toEqual("/cart/checkout");
       done();
     });
 
     it("should display i18n empty checkout msg if no products", function (done) {
-      expect(ReactionRouter.current().path).toEqual("/cart/checkout");
+      expect(Router.current().path).toEqual("/cart/checkout");
 
       let cartItems = Cart.findOne().items;
 
@@ -48,7 +48,7 @@ describe("Checkout", function () {
     });
 
     it("should display guest user login", function (done) {
-      expect(ReactionRouter.current().path).toEqual("/cart/checkout");
+      expect(Router.current().path).toEqual("/cart/checkout");
 
       let thisStep = cartWorkflow.status === "checkoutLogin" || cartWorkflow.status === "new";
       let thisWorkflow = _.contains(cartWorkflow.workflow, "checkoutLogin");
@@ -63,7 +63,7 @@ describe("Checkout", function () {
     });
 
     it("should continue as a guest user", function (done) {
-      expect(ReactionRouter.current().path).toEqual("/cart/checkout");
+      expect(Router.current().path).toEqual("/cart/checkout");
 
       let thisStep = cartWorkflow.status === "checkoutLogin" || cartWorkflow.status === "new";
       let thisWorkflow = _.contains(cartWorkflow.workflow, "checkoutLogin");
@@ -84,7 +84,7 @@ describe("Checkout", function () {
 
   describe("checkoutAddressBook", function () {
     it("should add primary address to addressBook", function () {
-      expect(ReactionRouter.current().path).toEqual("/cart/checkout");
+      expect(Router.current().path).toEqual("/cart/checkout");
 
       let thisStep = cartWorkflow.status === "checkoutAddressBook";
       let thisWorkflow = _.contains(cartWorkflow.workflow, "checkoutAddressBook");
@@ -116,7 +116,7 @@ describe("Checkout", function () {
     });
 
     it("should add secondary address to addressBook", function () {
-      expect(ReactionRouter.current().path).toEqual("/cart/checkout");
+      expect(Router.current().path).toEqual("/cart/checkout");
 
       let thisWorkflow = _.contains(cartWorkflow.workflow, "checkoutAddressBook");
       // if addressbook has succeeded at least once
@@ -147,7 +147,7 @@ describe("Checkout", function () {
     });
 
     it("should select address for shipping", function () {
-      expect(ReactionRouter.current().path).toEqual("/cart/checkout");
+      expect(Router.current().path).toEqual("/cart/checkout");
 
       let thisStep = cartWorkflow.status === "checkoutAddressBook";
       let thisWorkflow = _.contains(cartWorkflow.workflow, "checkoutAddressBook");

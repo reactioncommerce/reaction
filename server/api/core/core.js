@@ -1,3 +1,4 @@
+import url from "url";
 import { merge, uniqWith } from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Jobs, Packages, Shops } from "/lib/collections";
@@ -99,18 +100,15 @@ export default {
   },
 
   hasOwnerAccess() {
-    let ownerPermissions = ["owner"];
-    return this.hasPermission(ownerPermissions);
+    return this.hasPermission(["owner"]);
   },
 
   hasAdminAccess() {
-    let adminPermissions = ["owner", "admin"];
-    return this.hasPermission(adminPermissions);
+    return this.hasPermission(["owner", "admin"]);
   },
 
   hasDashboardAccess() {
-    let dashboardPermissions = ["owner", "admin", "dashboard"];
-    return this.hasPermission(dashboardPermissions);
+    return this.hasPermission(["owner", "admin", "dashboard"]);
   },
 
   getSellerShopId() {
@@ -153,15 +151,14 @@ export default {
     }
     // return reasonable warning that we're not configured correctly
     if (!process.env.MAIL_URL) {
-      Logger.warn(
-        "Mail server not configured. Unable to send email.");
+      Logger.warn("Mail server not configured. Unable to send email.");
       return false;
     }
   },
 
   getCurrentShopCursor() {
-    let domain = this.getDomain();
-    let cursor = Shops.find({
+    const domain = this.getDomain();
+    const cursor = Shops.find({
       domains: domain
     }, {
       limit: 1
@@ -191,11 +188,7 @@ export default {
   },
 
   getDomain() {
-    let absoluteUrl = Meteor.absoluteUrl();
-    if (typeof absoluteUrl === "string") {
-      return absoluteUrl.split("/")[2].split(":")[0];
-    }
-    return "localhost";
+    return url.parse(Meteor.absoluteUrl()).hostname;
   },
 
   getShopName() {
@@ -321,7 +314,7 @@ export default {
     // initialize package permissions
     // we don't need to do any further permission configuration
     // it is taken care of in the assignOwnerRoles
-    let packages = Packages.find().fetch();
+    const packages = Packages.find().fetch();
     for (let pkg of packages) {
       this.assignOwnerRoles(shopId, pkg.name, pkg.registry);
     }
@@ -354,13 +347,13 @@ export default {
    *  @return {String} returns insert result
    */
   loadPackages() {
-    let settingsJSONAsset;
+    const packages = Packages.find().fetch();
+
     let settingsFromJSON;
-    const packages = Packages.find({}).fetch();
 
     // Attempt to load reaction.json fixture data
     try {
-      settingsJSONAsset = Assets.getText("settings/reaction.json");
+      const settingsJSONAsset = Assets.getText("settings/reaction.json");
       const validatedJson = EJSON.parse(settingsJSONAsset);
 
       if (!_.isArray(validatedJson[0])) {
@@ -373,7 +366,7 @@ export default {
       Logger.debug(error, "loadSettings reaction.json not loaded.");
     }
     let layouts = [];
-    // for each shop, we're loading packages a unique registry
+    // for each shop, we're loading packages in a unique registry
     _.each(this.Packages, (config, pkgName) => {
       return Shops.find().forEach((shop) => {
         const shopId = shop._id;
@@ -402,9 +395,7 @@ export default {
 
         // Setting already imported into the packages collection
         const settingsFromDB = _.find(packages, (ps) => {
-          if (config.name === ps.name && shopId === ps.shopId) {
-            return true;
-          }
+          return (config.name === ps.name && shopId === ps.shopId);
         });
 
         const combinedSettings = merge({},

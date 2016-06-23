@@ -1,4 +1,5 @@
 import { _ } from "lodash";
+import { ServiceConfigHelper } from "./util";
 
 export const LoginFormSharedHelpers = {
 
@@ -25,14 +26,14 @@ export const LoginFormSharedHelpers = {
   },
 
   services() {
-    let serviceHelper = new ReactionServiceHelper();
+    const serviceHelper = new ServiceConfigHelper();
     return serviceHelper.services();
   },
 
   shouldShowSeperator() {
-    let serviceHelper = new ReactionServiceHelper();
-    let services = serviceHelper.services();
-    let enabledServices = _.filter(services, {
+    const serviceHelper = new ServiceConfigHelper();
+    const services = serviceHelper.services();
+    const enabledServices = _.filter(services, {
       enabled: true
     });
 
