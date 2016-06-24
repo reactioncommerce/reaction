@@ -13,7 +13,7 @@ import Fixtures from "/server/imports/fixtures";
 Fixtures();
 
 
-describe.skip("Add/Create cart methods", function () {
+describe("Add/Create cart methods", function () {
   let user = Factory.create("user");
   const shop = getShop();
   let userId = user._id;
@@ -57,14 +57,14 @@ describe.skip("Add/Create cart methods", function () {
     });
   }
 
-  describe.skip("cart/createCart", function () {
-    it("should create a test cart", function (done) {
+  describe("cart/createCart", function () {
+    it.skip("should create a test cart", function (done) {
       sandbox.stub(Reaction, "getShopId", function () {
         return shop._id;
       });
 
-      let createSpy = spyOnMethod("createCart", userId);
-      let cartInsertSpy = sinon.spy(Cart, "insert");
+      // spyOnMethod("createCart", userId);
+      let cartInsertSpy = sandbox.spy(Cart, "insert");
 
       // spyOn(Reaction.Collections.Cart, "insert").and.callThrough();
       let cartId = Meteor.call("cart/createCart", userId, sessionId);
@@ -73,36 +73,44 @@ describe.skip("Add/Create cart methods", function () {
       });
       expect(cartInsertSpy).to.have.been.called;
       expect(cartId).to.equal(cart._id);
-      createSpy.restore();
-      cartInsertSpy.restore();
       done();
     });
   });
 
-  describe.skip("cart/addToCart", function () {
+  describe("cart/addToCart", function () {
     const quantity = 1;
     let product;
     let productId;
     let variantId;
+    let permissionStub;
+    let resetShipmentStub;
+    let updateShipmentQuoteStub;
 
     before(function () {
-      sandbox.stub(Reaction, "hasPermission", function () {
+      permissionStub = sinon.stub(Reaction, "hasPermission", function () {
         return true;
       });
 
-      sandbox.stub(Meteor.server.method_handlers, "cart/resetShipmentMethod", function () {
+      resetShipmentStub = sinon.stub(Meteor.server.method_handlers, "cart/resetShipmentMethod", function () {
+        check(arguments, [Match.Any]);
         return true;
       });
-      sandbox.stub(Meteor.server.method_handlers, "shipping/updateShipmentQuotes", function () {
+      updateShipmentQuoteStub = sinon.stub(Meteor.server.method_handlers, "shipping/updateShipmentQuotes", function () {
+        check(arguments, [Match.Any]);
         return true;
       });
 
-      sandbox.stub(Meteor.server.method_handlers, "shipping/updateShipmentQuotes");
       product = addProduct();
       productId = product._id;
       variantId = Products.findOne({
         ancestors: [productId]
       })._id;
+    });
+
+    after(function () {
+      permissionStub.restore();
+      resetShipmentStub.restore();
+      updateShipmentQuoteStub.restore();
     });
 
     it("should add item to cart", function (done) {
@@ -139,7 +147,7 @@ describe.skip("Add/Create cart methods", function () {
     });
   });
 
-  describe.skip("cart/copyCartToOrder", function () {
+  describe("cart/copyCartToOrder", function () {
     it("should throw error if cart user not current user", function (done) {
       const cart = Factory.create("cart");
       spyOnMethod("copyCartToOrder", "wrongUserId");
@@ -207,7 +215,7 @@ describe.skip("Add/Create cart methods", function () {
     });
   });
 
-  describe.skip("cart/unsetAddresses", function () {
+  describe("cart/unsetAddresses", function () {
     it("should correctly remove addresses from cart", function (done) {
       let cart = Factory.create("cart");
       spyOnMethod("setShipmentAddress", cart.userId);
@@ -264,7 +272,7 @@ describe.skip("Add/Create cart methods", function () {
       expect(function () {
         return Meteor.call(
           "accounts/addressBookRemove", () => {
-            console.log("test");
+            expect(true).to.be.true;
           }
         );
       }).to.not.throw;
