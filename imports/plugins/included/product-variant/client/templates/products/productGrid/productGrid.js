@@ -35,7 +35,8 @@ Template.productGrid.events({
       });
 
       Reaction.showActionView({
-        label: i18next.t("productDetailEdit.productSettings"),
+        label: "Product Settings",
+        i18nKeyLabel: "productDetailEdit.productSettings",
         template: "productSettings",
         type: "product",
         data: {
