@@ -7,7 +7,7 @@ Reaction is built with JavaScript (ES6), Meteor, Node.js and works nicely with D
 ## Status
 
 - 0.13.x Master ( [stable](https://github.com/reactioncommerce/reaction/tree/master) )
-- 0.13.x - 0.14.x Development ( [latest](https://github.com/reactioncommerce/reaction/tree/development) )
+- 0.14.x Development ( [latest](https://github.com/reactioncommerce/reaction/tree/development) )
 
 Reaction is expected to have a stable codebase ready for some production configurations within the next couple of major releases. Be aware though, that we're updating frequently. Even existing structures that are functionally done are getting frequent updates to ensure we're current with the most current libraries available to us.
 
