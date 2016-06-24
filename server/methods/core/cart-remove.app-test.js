@@ -9,7 +9,7 @@ import Fixtures from "/server/imports/fixtures";
 
 Fixtures();
 
-describe.skip("cart methods", function () {
+describe("cart methods", function () {
   const shop = getShop();
   let sandbox;
 
@@ -26,12 +26,12 @@ describe.skip("cart methods", function () {
     Meteor.users.remove({});
   });
 
-  describe.skip("cart/removeFromCart", function () {
+  describe("cart/removeFromCart", function () {
     beforeEach(function () {
       Collections.Cart.remove({});
     });
 
-    it("should remove item from cart", function (done) {
+    it.skip("should remove item from cart", function (done) {
       let cart = Factory.create("cart");
       const cartUserId = cart.userId;
       sandbox.stub(Reaction, "getShopId", function () {
