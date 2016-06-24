@@ -2,6 +2,7 @@
 import { Meteor } from "meteor/meteor";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
+import { Roles } from "meteor/alanning:roles";
 import { getShop } from "/server/imports/fixtures/shops";
 import { Reaction } from "/server/api";
 import * as Collections from "/lib/collections";
@@ -9,19 +10,21 @@ import Fixtures from "/server/imports/fixtures";
 
 Fixtures();
 
-describe.skip("Merge Cart function ", function () {
+describe("Merge Cart function ", function () {
   const shop = getShop();
   const sessionId = Reaction.sessionId = Random.id();
   let originals;
   let sandbox;
   let pushCartWorkflowStub;
+  let cartHookStub;
+  let productHookStub;
 
   before(function () {
     // We are mocking inventory hooks, because we don't need them here, but
     if (Array.isArray(Collections.Products._hookAspects.remove.after) &&
       Collections.Products._hookAspects.remove.after.length) {
-      sandbox.stub(Collections.Cart._hookAspects.update.after[0], "aspect");
-      sandbox.stub(Collections.Products._hookAspects.remove.after[0], "aspect");
+      cartHookStub = sinon.stub(Collections.Cart._hookAspects.update.after[0], "aspect");
+      productHookStub = sinon.stub(Collections.Products._hookAspects.remove.after[0], "aspect");
     }
     originals = {
       mergeCart: Meteor.server.method_handlers["cart/mergeCart"],
@@ -42,6 +45,8 @@ describe.skip("Merge Cart function ", function () {
 
   after(function () {
     pushCartWorkflowStub.restore();
+    cartHookStub.restore();
+    productHookStub.restore();
   });
 
   beforeEach(function () {
@@ -62,39 +67,41 @@ describe.skip("Merge Cart function ", function () {
     });
   }
 
-  it.skip("should merge all `anonymous` carts into existent `normal` user cart per session, when logged in",
-    function (done) {
-      let anonymousCart = Factory.create("anonymousCart");
-      let cart = Factory.create("cart");
-      let mergeSpy = spyOnMethod("mergeCart", cart.userId);
-      mergeSpy.withArgs(cart.userId, sessionId);
-      sandbox.stub(Reaction, "getShopId", function () {
-        return shop._id;
-      });
-
-      let cartRemoveSpy = sandbox.spy(Collections.Cart, "remove");
-      Collections.Cart.update({}, {
-        $set: {
-          sessionId: sessionId
-        }
-      });
-
-      Meteor.call("cart/mergeCart", cart._id, sessionId);
-      anonymousCart = Collections.Cart.findOne(anonymousCart._id);
-      cart = Collections.Cart.findOne(cart._id);
-      expect(cartRemoveSpy).to.have.been.called;
-      expect(anonymousCart).to.be.undefined;
-      expect(cart.items.length).to.equal(2);
-      done();
+  it.skip("should merge all anonymous carts into existent `normal` user cart per session, when logged in", function () {
+    sandbox.stub(Roles, "userIsInRole", function () {
+      return false;
     });
-
-  it("should merge only into registered user cart", function (done) {
-    const cart = Factory.create("anonymousCart");
+    let anonymousCart = Factory.create("anonymousCart");
+    let cart = Factory.create("cart");
     spyOnMethod("mergeCart", cart.userId);
     sandbox.stub(Reaction, "getShopId", function () {
       return shop._id;
     });
+    // spyOn(ReactionCore, "getShopId").and.returnValue(shop._id);
+    let cartRemoveSpy = sandbox.spy(Collections.Cart, "remove");
+    // spyOn(ReactionCore.Collections.Cart, "remove").and.callThrough();
+    Collections.Cart.update({}, {
+      $set: {
+        sessionId: sessionId
+      }
+    });
 
+    let mergeResult = Meteor.call("cart/mergeCart", cart._id, sessionId);
+    expect(mergeResult).to.be.ok;
+    anonymousCart = Collections.Cart.findOne(anonymousCart._id);
+    cart = Collections.Cart.findOne(cart._id);
+
+    expect(cartRemoveSpy).to.have.been.called;
+    expect(anonymousCart).to.be.undefined;
+    expect(cart.items.length).to.equal(2);
+  });
+
+  it("should merge only into registered user cart", function (done) {
+    sandbox.stub(Reaction, "getShopId", function () {
+      return shop._id;
+    });
+    const cart = Factory.create("anonymousCart");
+    spyOnMethod("mergeCart", cart.userId);
     const cartId = cart._id;
     // now we try to merge two anonymous carts. We expect to see `false`
     // result

@@ -8,7 +8,7 @@ import { sinon, stubs, spies } from "meteor/practicalmeteor:sinon";
 
 Fixtures();
 
-describe.skip("Shop Methods", function () {
+describe("Shop Methods", function () {
   beforeEach(function () {
     return Shops.remove({});
   });
@@ -28,7 +28,7 @@ describe.skip("Shop Methods", function () {
   });
 });
 
-describe.skip("core shop methods", function () {
+describe("core shop methods", function () {
   let shop;
   let sandbox;
 
@@ -41,7 +41,7 @@ describe.skip("core shop methods", function () {
     sandbox.restore();
   });
 
-  describe.skip("shop/createShop", function () {
+  describe("shop/createShop", function () {
     beforeEach(function () {
       Shops.remove({});
     });
