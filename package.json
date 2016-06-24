@@ -1,13 +1,7 @@
 {
-  "scripts": {
-    "reaction": "./reaction",
-    "reaction reset": "./reaction reset",
-    "reaction pull": "./reaction pull",
-    "reaction install": "./reaction install"
-  },
   "name": "reaction",
   "description": "Reaction is a modern reactive, real-time event driven ecommerce platform.",
-  "version": "0.13.0",
+  "version": "0.14.0",
   "main": "main.js",
   "directories": {
     "test": "tests"
@@ -24,11 +18,69 @@
   "bugs": {
     "url": "https://github.com/reactioncommerce/reaction/issues"
   },
+  "scripts": {
+    "postinstall": "cp -R node_modules/font-awesome/fonts ./public/"
+  },
   "dependencies": {
-    "bunyan": "^1.8.0",
-    "bunyan-format": "0.2.1",
-    "meteor-node-stubs": "^0.2.1",
-    "react": "15.1.0",
-    "react-dom": "15.1.0"
+    "accounting-js": "^1.1.1",
+    "autonumeric": "^1.9.45",
+    "autoprefixer": "^6.3.6",
+    "autosize": "^3.0.15",
+    "babel-eslint": "^6.1.0",
+    "bootstrap": "^3.3.6",
+    "bunyan": "^1.8.1",
+    "bunyan-format": "^0.2.1",
+    "bunyan-loggly": "^1.0.0",
+    "classnames": "^2.2.4",
+    "css-annotation": "^0.6.2",
+    "eslint": "^2.13.1",
+    "eslint-plugin-react": "^5.2.2",
+    "faker": "^3.1.0",
+    "fibers": "^1.0.13",
+    "font-awesome": "^4.6.3",
+    "i18next": "^2.5.1",
+    "i18next-browser-languagedetector": "^0.3.0",
+    "i18next-localstorage-cache": "^0.3.0",
+    "i18next-sprintf-postprocessor": "^0.2.2",
+    "jquery": "^2.2.4",
+    "jquery-i18next": "^0.2.0",
+    "jquery-ui": "^1.10.5",
+    "lodash": "^4.13.1",
+    "meteor-node-stubs": "^0.2.3",
+    "money": "^0.2.0",
+    "node-geocoder": "^3.12.0",
+    "paypal-rest-sdk": "^1.6.9",
+    "postcss": "^5.0.19",
+    "postcss-js": "^0.1.3",
+    "react": "^15.x.x",
+    "react-color": "^2.0.0",
+    "react-dom": "^15.x.x",
+    "react-textarea-autosize": "^4.0.3",
+    "sortablejs": "^1.4.2",
+    "stripe": "^4.7.0",
+    "sweetalert2": "^3.3.8",
+    "swiper": "^3.3.1",
+    "tether-drop": "^1.4.2",
+    "tether-tooltip": "^1.2.0",
+    "transliteration": "^1.1.5",
+    "underscore": "^1.8.3",
+    "url": "^0.11.0"
+  },
+  "devDependencies": {
+    "babel-eslint": "^6.0.4",
+    "eslint": "^2.11.1",
+    "eslint-plugin-react": "^5.1.1",
+    "@sanjo/jasmine-expect": "^1.0.0",
+    "@sanjo/jasmine-spy": "^1.0.1"
+
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {
+        "browsers": [
+          "last 2 versions"
+        ]
+      }
+    }
   }
 }

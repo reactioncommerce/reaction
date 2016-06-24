@@ -1,0 +1,57 @@
+
+.rui.objectmap {
+  padding: 10px;
+  border-bottom: 1px solid @border-color;
+}
+
+.rui.objectmap:last-child {
+
+}
+
+.rui.objectmap .panel-heading {
+  padding: 5px 10px;
+}
+
+.rui.objectmap .panel-title {
+  font-size: 14px;
+}
+
+.rui.objectmap .panel-title .label {
+  color: @text-color;
+  display: block;
+  font-size: 14px;
+  text-align: left;
+  padding: 0;
+  font-weight: 500;
+}
+
+.rui.objectmap .panel-title .label-selector {
+  color: @black40;
+}
+
+.rui.objectmap .rui.list-item {
+  .display(flex);
+  .flex(0 0 auto);
+  .align-items(center);
+  .flex-wrap(wrap);
+  width: 100%;
+  padding: 0;
+  .padding-left(30px);
+  border: none;
+}
+
+.rui.objectmap .rui.list-item label {
+  .flex(0 0 auto);
+  margin: 0 10px 0 0;
+  color: @brand-secondary-color;
+  font-weight: normal;
+}
+
+.rui.objectmap .rui.list-item input {
+  // border: none;
+  padding: 2px;
+}
+
+.rui.objectmap .rui.list-item input:hover {
+  border: 1px solid border-color;
+}

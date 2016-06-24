@@ -20,7 +20,7 @@ if [[ "${MONGO_URL}" == *"127.0.0.1"* ]]; then
   fi
   # start mongodb
   printf "\n[-] Starting local MongoDB...\n\n"
-  mongod --smallfiles --fork --logpath /var/log/mongodb.log
+  mongod --storageEngine=wiredTiger --fork --logpath /var/log/mongodb.log
 fi
 
 # Run meteor

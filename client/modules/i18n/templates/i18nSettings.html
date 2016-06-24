@@ -1,0 +1,27 @@
+<template name="i18nSettings">
+  <div class="panel panel-default">
+    <div class="panel-body">
+      {{#autoForm collection=Collections.Shops doc=shop id="shopEditLocalizationSettingsForm" type="update" autosave=true}}
+        {{> afQuickField name='timezone' options=timezoneOptions}}
+        {{> afQuickField name='currency' options=currencyOptions}}
+        {{> afQuickField name='baseUOM' options=uomOptions}}
+        {{> afQuickField name='language' options=enabledLanguages}}
+      {{/autoForm}}
+    </div>
+    <div class="panel-body">
+      <label class="control-label" data-i18n="i18nSettings.enabledLanguages">Languages</label>
+      {{#each language in languages}}
+        <div class="panel-heading panel-heading-flex">
+          <div class="panel-title">
+            <i class="fa icon-{{language.label}}"></i>
+            <span data-i18n="{{language.i18nKey}}">{{language.label}}</span>
+          </div>
+          <div class="panel-controls">
+            <input class="checkbox-switch" id="input-{{language.value}}" type="checkbox" name="enabled" data-language="{{language}}" value="{{language.value}}" {{checked language.enabled}}>
+          </div>
+        </div>
+      {{/each}}
+    </div>
+  </div>
+
+</template>

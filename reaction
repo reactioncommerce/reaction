@@ -9,7 +9,7 @@ set -e
 if [[ "$@" == "reset" ]]; then
   bin/reset
 elif [[ "$@" == "pull" ]]; then
-  git pull && meteor npm install && bin/clone-packages.sh 
+  git pull && meteor npm install && bin/clone-packages.sh
 elif [[ "$@" == "install" ]]; then
   # copy clone-packages.sh so that any directory
   # can be specified for use in PACKAGE_DIRS config.
@@ -18,7 +18,10 @@ elif [[ "$@" == "install" ]]; then
   cp reaction /usr/local/bin/reaction && chmod + /usr/local/bin/reaction
   bin/install
 elif [[ "$@" == "test" ]]; then
-  VELOCITY_TEST_PACKAGES=1 meteor test-packages --port 3006 --driver-package velocity:html-reporter --velocity
+  #SERVER_TEST_REPORTER="dot" meteor test --once --full-app --driver-package dispatch:mocha
+  meteor test --once --full-app --driver-package dispatch:mocha
+elif [[ "$@" == "unit-test" ]]; then
+  SERVER_TEST_REPORTER="dot" meteor test --once --driver-package dispatch:mocha
 else
   bin/run "$@"
 fi

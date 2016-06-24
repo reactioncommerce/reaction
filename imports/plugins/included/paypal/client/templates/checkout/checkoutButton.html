@@ -1,0 +1,16 @@
+
+<template name="paypalCheckoutButton">
+
+  <div class="paypal-checkout-button-container {{#unless isConfigured}}hidden{{/unless}}">
+    <button class="btn btn-warning btn-block js-paypal-express-checkout"><i class="fa fa-lock"></i> Checkout with PayPal Express</button>
+  </div>
+
+  <div class="paypal-checkout-alert-message {{#if isConfigured}}hidden{{/if}}">
+    {{#if hasAdminAccess}}
+      <i class="fa fa-paypal"></i> Paypal Express Not Properly Configured.
+    {{else}}
+      <i class="fa fa-paypal"></i> Paypal Express Not Available
+    {{/if}}
+  </div>
+
+</template>

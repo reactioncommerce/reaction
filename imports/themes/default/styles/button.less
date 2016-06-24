@@ -1,0 +1,44 @@
+
+.rui.button > .contents {
+  display: flex;
+  flex: 1 1 auto;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.rui.button.active {
+  box-shadow: none;
+  background-color: @brand-accent-color;
+}
+
+.rui.button.edit, .btn-edit {
+  border: none;
+  font-size: 10px;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50px;
+  width: 24px;
+  height: 24px;
+  background-color: @black20;
+  margin-left: 5px;
+}
+
+.rui.button.edit > .icon,
+.btn-edit > .icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.rui.button.edit.tl,
+.btn-edit.tl {
+  position: absolute;
+  top: 0;
+  .right(0);
+}

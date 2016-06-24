@@ -1,0 +1,34 @@
+<template name="variant">
+  <li class="variant-list-item" id="variant-list-item-{{_id}}" data-id="{{_id}}">
+    <div class="variant-detail {{selectedVariant}}">
+      <div class="title">
+        <span class="variant-title">{{title}}</span>
+      </div>
+
+      <div class="actions">
+        <span class="variant-price">{{formatPrice displayPrice}}</span>
+      </div>
+
+      <div class="alerts">
+        {{#if inventoryManagement}}
+          {{#if isSoldOut}}
+            {{#if inventoryPolicy }}
+            <span class="variant-qty-sold-out badge badge-warning">Sold Out!</span>
+            {{ else }}
+            <span class="variant-qty-sold-out badge badge-info">Backorder</span>
+            {{/if}}
+          {{/if}}
+        {{/if}}
+
+
+        {{#if hasPermission "createProduct"}}
+          <button class="rui button edit variant-edit hidden-xs" title="{{i18n 'productDetailEdit.editOption' 'Edit Option'}}">
+            <span class="icon">
+              <i class="fa fa-pencil fa-lg" data-id="{{_id}}"></i>
+            </span>
+          </button>
+        {{/if}}
+      </div>
+    </div>
+  </li>
+</template>

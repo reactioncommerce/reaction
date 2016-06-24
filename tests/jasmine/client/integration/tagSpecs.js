@@ -1,3 +1,5 @@
+import { Router } from "/client/api";
+
 /**
  * Tag client tests.
  *
@@ -5,7 +7,7 @@
 
 describe("Tags", function () {
   beforeAll(function (done) {
-    ReactionRouter.go("tag", {
+    Router.go("tag", {
       slug: "products"
     });
     Tracker.afterFlush(done);
@@ -27,7 +29,7 @@ describe("Tags", function () {
     $(tagLink).trigger("click");
     expect("click").toHaveBeenTriggeredOn(tagLink);
 
-    let route = ReactionRouter.current().path;
+    let route = Router.current().path;
     expect(route).toEqual(tag);
     done();
   });

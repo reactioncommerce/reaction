@@ -1,6 +1,9 @@
+import { Router } from "/client/api";
+import { Cart, Products } from "/lib/collections";
+
 describe("Product", function () {
   beforeEach(function (done) {
-    ReactionRouter.go("product", {
+    Router.go("product", {
       handle: "example-product"
     });
     Tracker.afterFlush(done);
@@ -11,19 +14,19 @@ describe("Product", function () {
   describe("create", function () {
     it("should throw 403 error by non admin", function (done) {
       spyOn(Roles, "userIsInRole").and.returnValue(false);
-      spyOn(ReactionCore.Collections.Products, "insert");
+      spyOn(Products, "insert");
 
       Meteor.call("products/createProduct", function (error) {
         expect(error.error).toEqual(403);
       });
 
-      expect(ReactionCore.Collections.Products.insert).not.toHaveBeenCalled();
+      expect(Products.insert).not.toHaveBeenCalled();
       return done();
     });
 
     it("should create new product by admin", function (done) {
       spyOn(Roles, "userIsInRole").and.returnValue(true);
-      productSpy = spyOn(ReactionCore.Collections.Products, "insert").and.returnValue(1);
+      productSpy = spyOn(Products, "insert").and.returnValue(1);
 
       expect(function () {
         return Meteor.call("i18n/flushTranslations");
@@ -37,7 +40,7 @@ describe("Product", function () {
   // test various product meta data
   describe("meta data", function () {
     it("url should be product/example-product", function () {
-      let route = ReactionRouter.current().path;
+      let route = Router.current().path;
       expect(route).toContain("product/example-product");
     });
     // waitForElement doesn't play nice with these next two cases
@@ -64,7 +67,7 @@ describe("Product", function () {
     });
 
     it("should have a title set to Example Product", function () {
-      const product = ReactionCore.Collections.Products.findOne();
+      const product = Products.findOne();
       expect($(".title .title").text().trim()).toEqual(product.title);
     });
 
@@ -85,8 +88,8 @@ describe("Product", function () {
   describe("Add to cart", function () {
     // empty cart items before each test
     afterEach(function (done) {
-      let cartId = ReactionCore.Collections.Cart.findOne()._id;
-      ReactionCore.Collections.Cart.update({
+      let cartId = Cart.findOne()._id;
+      Cart.update({
         _id: cartId
       }, {
         $set: {
@@ -107,11 +110,11 @@ describe("Product", function () {
       let option1 = $(".variant-product-options .variant-select-option")[0];
       let addToCartButton = $("#add-to-cart");
       // needs client stubs
-      // let spyOnCart = spyOn(ReactionCore.Collections.Cart, "update").and.returnValue();
+      // let spyOnCart = spyOn(Cart, "update").and.returnValue();
       let spyOnOptionEvent = spyOnEvent(option1, "click");
       let spyOnAddToCartEvent = spyOnEvent(addToCartButton, "click");
       // let cartCount = $(".cart-icon .badge").text();
-      // let cartId = ReactionCore.Collections.Cart.findOne()._id;
+      // let cartId = Cart.findOne()._id;
 
       $(option1).trigger("click");
       expect("click").toHaveBeenTriggeredOn(option1);
@@ -217,7 +220,7 @@ describe("Product", function () {
 
       $("#btn-checkout").trigger("click");
       expect(spyOnCheckoutButton).toHaveBeenTriggered();
-      expect(ReactionRouter.current().path).toEqual("/cart/checkout");
+      expect(Router.current().path).toEqual("/cart/checkout");
       done();
     });
   });

@@ -1,3 +1,5 @@
+// import { Products } from "/lib/collections";
+
 /**
  * Product grid integration specs
  *
@@ -6,7 +8,7 @@
 //   beforeAll(function (done) {
 //     VelocityHelpers.exportGlobals();
 //     Meteor.subscribe("products", function () {
-//       Products = ReactionCore.Collections.Products.find().fetch();
+//       Products = Products.find().fetch();
 //       done();
 //     });
 //   });
