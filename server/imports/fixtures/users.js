@@ -1,3 +1,24 @@
+import faker from "faker";
+import "./shops";
+import { getShop } from "./shops";
+
+
+export function getUser() {
+  const existingUser = Meteor.users.findOne();
+  return existingUser || Factory.create("user");
+}
+
+export function getUsers(limit = 2) {
+  const users = [];
+  const existingUsers = Meteor.users.find({}, {limit: limit}).fetch();
+  for (let i = 0; i < limit; i = i + 1) {
+    let user = existingUsers[i] || Factory.create("user");
+    users.push(user);
+  }
+  return users;
+}
+
+
 /**
  * User Factory
  * @summary define user Factory
@@ -47,7 +68,7 @@ const user = {
 
 const registered = {
   roles: {
-    [ReactionFaker.shops.getShop()._id]: [
+    [getShop()._id]: [
       "account/profile",
       "guest",
       "product",
@@ -74,7 +95,7 @@ const registered = {
 
 const anonymous = {
   roles: {
-    [ReactionFaker.shops.getShop()._id]: [
+    [getShop()._id]: [
       "guest",
       "anonymous",
       "product",
@@ -88,7 +109,6 @@ const anonymous = {
 
 export default function () {
   Factory.define("user", Meteor.users, user);
-
   Factory.define("registeredUser", Meteor.users,
     Object.assign({}, user, registered));
 

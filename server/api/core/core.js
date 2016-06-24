@@ -135,7 +135,7 @@ export default {
       const mailUrl = processUrl = settingsUrl = mailString;
       process.env.MAIL_URL = mailUrl;
       return mailUrl;
-    } else if (shopMail.user && shopMail.password && shopMail.host &&
+    } else if (shopMail && shopMail.user && shopMail.password && shopMail.host &&
       shopMail.port) {
       let mailString =
         `smtp://${shopMail.user}:${shopMail.password}@${shopMail.host}:${shopMail.port}/`;

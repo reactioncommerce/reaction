@@ -74,6 +74,13 @@ risul:moment-timezone
 tmeasday:publish-counts
 vsivsi:job-collection
 
+# Testing packages
+dburles:factory
+dispatch:mocha
+practicalmeteor:chai
+practicalmeteor:sinon
+xolvio:cleaner
+
 # Performance & Debugging Tools
 # meteorhacks:fast-render                   # improve initial page loads
 # meteortoys:allthings                      # developer tools
