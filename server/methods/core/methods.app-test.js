@@ -4,7 +4,7 @@ import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
 import { Reaction } from "/server/api";
 
-describe.skip("Server/Core", function () {
+describe("Server/Core", function () {
   let sandbox;
 
   beforeEach(function () {
@@ -15,7 +15,7 @@ describe.skip("Server/Core", function () {
     sandbox.restore();
   });
 
-  describe.skip("shop/removeHeaderTag", function () {
+  describe("shop/removeHeaderTag", function () {
     beforeEach(function () {
       return Tags.remove({});
     });
@@ -52,7 +52,7 @@ describe.skip("Server/Core", function () {
     });
   });
 
-  describe.skip("shop/updateHeaderTags", function () {
+  describe("shop/updateHeaderTags", function () {
     beforeEach(function () {
       Shops.remove({});
       return Tags.remove({});
