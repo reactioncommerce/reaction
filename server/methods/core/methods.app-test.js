@@ -100,7 +100,7 @@ describe("Server/Core", function () {
     });
   });
 
-  describe.skip("shop/locateAddress", function () {
+  describe("shop/locateAddress", function () {
     // This test is failing for some reason unrelated to the test. Addresss comes
     // up with correct zipcode, etc.
     it("should locate an address based on known US coordinates", function (done) {
@@ -120,7 +120,7 @@ describe("Server/Core", function () {
     it("should provide default empty address", function (done) {
       this.timeout(5000);
       let address = Meteor.call("shop/locateAddress", 26.352498, -89.25293);
-      expect(address).to.equal({
+      let defaultAddress = {
         latitude: null,
         longitude: null,
         country: "United States",
@@ -131,7 +131,8 @@ describe("Server/Core", function () {
         streetName: null,
         streetNumber: null,
         countryCode: "US"
-      });
+      };
+      expect(_.isEqual(address, defaultAddress)).to.be.true;
       return done();
     });
   });
