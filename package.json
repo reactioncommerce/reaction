@@ -67,12 +67,12 @@
     "url": "^0.11.0"
   },
   "devDependencies": {
+    "@sanjo/jasmine-expect": "^1.0.0",
+    "@sanjo/jasmine-spy": "^1.0.1",
     "babel-eslint": "^6.0.4",
     "eslint": "^2.11.1",
-    "eslint-plugin-react": "^5.1.1",
-    "@sanjo/jasmine-expect": "^1.0.0",
-    "@sanjo/jasmine-spy": "^1.0.1"
-
+    "eslint-plugin-meteor": "^3.6.0",
+    "eslint-plugin-react": "^5.1.1"
   },
   "postcss": {
     "plugins": {
