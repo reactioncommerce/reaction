@@ -87,13 +87,21 @@
   .display(flex);
   .align-items(center);
   .flex(0 0 auto);
-  padding: 0 (@navbar-padding-horizontal * 2);
   height: @navbar-height;
 }
 
 .rui.navbar .languages:hover {
   background-color: @navbar-default-toggle-icon-bar-bg;
   border-color: @navbar-default-toggle-border-color;
+}
+
+.rui.navbar .languages .dropdown-menu {
+  margin-top: 0;
+}
+
+.rui.navbar .languages li,
+.rui.navbar .languages .menu-item {
+  .text-align(left);
 }
 
 .rui.navbar .accounts {
@@ -185,11 +193,12 @@
 }
 
 .rui.navbar .accounts .dropdown .dropdown-apps-icon a {
+  display: flex;
+  align-items: center;
   color: @gray;
   text-decoration: none;
-  display: block;
   padding: 5px 0;
-
+  min-height: 44px;
 }
 
 .rui.navbar .accounts .dropdown .dropdown-apps-icon a:hover,
@@ -202,4 +211,6 @@
 .rui.navbar .accounts .dropdown-menu {
   border: 1px solid @dropdown-border;
   margin-top: 0;
+  .right(0);
+  .left(auto);
 }
