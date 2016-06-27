@@ -26,15 +26,12 @@
     "autonumeric": "^1.9.45",
     "autoprefixer": "^6.3.6",
     "autosize": "^3.0.15",
-    "babel-eslint": "^6.1.0",
     "bootstrap": "^3.3.6",
     "bunyan": "^1.8.1",
     "bunyan-format": "^0.2.1",
     "bunyan-loggly": "^1.0.0",
     "classnames": "^2.2.4",
     "css-annotation": "^0.6.2",
-    "eslint": "^2.13.1",
-    "eslint-plugin-react": "^5.2.2",
     "faker": "^3.1.0",
     "fibers": "^1.0.13",
     "font-awesome": "^4.6.3",
@@ -69,10 +66,10 @@
   "devDependencies": {
     "@sanjo/jasmine-expect": "^1.0.0",
     "@sanjo/jasmine-spy": "^1.0.1",
-    "babel-eslint": "^6.0.4",
-    "eslint": "^2.11.1",
+    "babel-eslint": "^6.1.0",
+    "eslint": "^2.13.1",
     "eslint-plugin-meteor": "^3.6.0",
-    "eslint-plugin-react": "^5.1.1"
+    "eslint-plugin-react": "^5.2.2"
   },
   "postcss": {
     "plugins": {
