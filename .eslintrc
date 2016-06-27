@@ -213,7 +213,7 @@
       "before": false,
       "after": true
     }],
-    "space-after-keywords": 2, // http://eslint.org/docs/rules/space-after-keywords
+    "keyword-spacing": 2, // http://eslint.org/docs/rules/keyword-spacing
     "space-before-blocks": 2, // http://eslint.org/docs/rules/space-before-blocks
     "space-before-function-paren": [2, {
       "anonymous": "always",
