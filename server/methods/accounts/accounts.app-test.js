@@ -13,8 +13,8 @@ import Fixtures from "/server/imports/fixtures";
 Fixtures();
 
 before(function () {
-  this.timeout(6000);
-  Meteor._sleepForMs(5000);
+  this.timeout(10000);
+  Meteor._sleepForMs(7000);
 });
 
 describe("Account Meteor method ", function () {
