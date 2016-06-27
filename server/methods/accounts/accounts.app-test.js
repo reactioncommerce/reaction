@@ -14,7 +14,6 @@ Fixtures();
 
 before(function () {
   this.timeout(6000);
-  console.log("pause for laughs");
   Meteor._sleepForMs(5000);
 });
 
@@ -632,10 +631,11 @@ describe("Account Meteor method ", function () {
     });
 
     it("should let a Owner invite a user to the shop", function (done) {
+      this.timeout(20000);
+      this.retries(3);
       sandbox.stub(Reaction, "hasPermission", function () {
         return true;
       });
-      // spyOn(ReactionCore, "hasPermission").and.returnValue(true);
       // TODO checking this is failing, even though we can see it happening in the log.
       // spyOn(Email, "send");
       expect(function () {
