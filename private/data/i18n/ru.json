@@ -17,7 +17,7 @@
         "dashboard": {
           "accountsLabel": "Учётные записи",
           "accountsTitle": "Учётные записи",
-          "accountsDescription": "Управление сервисами авторизации",
+          "accountsDescription": "Управление правами пользователей",
           "analyticsLabel": "Аналитика",
           "analyticsTitle": "Аналитика",
           "analyticsDescription": "Внедрение аналитики и отслеживания событий",
@@ -32,12 +32,12 @@
           "braintreeDescription": "Платежи через Braintree",
           "catalogLabel": "Каталог",
           "catalogTitle": "Каталог",
-          "catalogDescription": "Позволяет создавать простые продукты",
+          "catalogDescription": "Каталог товаров",
           "coreLabel": "Ядро",
           "coreTitle": "Панель управления",
           "coreDescription": "Базовые настройки Reaction",
           "examplePaymentProviderLabel": "Образец платёжной системы",
-          "examplePaymentProviderDescription": "Тестирование платежей. Образец для портирования любых Платёжных систем",
+          "examplePaymentProviderDescription": "Образец для портирования любых платёжных систем",
           "i18NLabel": "i18n",
           "i18NTitle": "i18n",
           "i18NDescription": "Интернационализация",
@@ -93,7 +93,10 @@
           "inventorySettingsLabel": "Настройки управления товарами",
           "analyticsSettingsLabel": "Настройки аналитики",
           "paypalSettingsLabel": "Настройки PayPal",
-          "genericPaymentSettingsLabel": "Настройки Generic Payment"
+          "genericPaymentSettingsLabel": "Настройки Generic Payment",
+          "reactionConnectLabel": "Reaction Connect",
+          "examplePaymentSettingsLabel": "Образец платёжной системы",
+          "productSettingsLabel": "Настройки продукта"
         },
         "userAccountDropdown": {
           "profileLabel": "Профиль"
@@ -168,6 +171,7 @@
       "productDetail": {
         "productManagement": "Управление товаром",
         "makeInvisible": "Сделать невидимым",
+        "makeVisible": "Сделать видимым",
         "isNotVisible": "Этот товар невидим для покупателей.",
         "makeItVisible": "Вы можете сделать его видимым",
         "whenYouAreDone": "когда закончите редактирование.",
@@ -228,6 +232,7 @@
         "product": "Товар",
         "size": "Размер",
         "title": "Название товара",
+        "untitledProduct": "Неназванный товар",
         "pageTitle": "Название страницы товара",
         "vendor": "Изготовитель",
         "description": "Добавьте описание товара",
@@ -235,6 +240,9 @@
         "twitterMsg": "Сообщение Twitter",
         "pinterestMsg": "Сообщение Pinterest",
         "googleplusMsg": "Сообщение Google+",
+        "editVariant": "Редактирование варианта",
+        "variantOptions": "Опции варианта",
+        "variantDetails": "Детали варианта",
         "duplicateVariant": "Скопировать",
         "addVariantOption": "Добавить опцию",
         "removeVariant": "Удалить",
@@ -565,6 +573,7 @@
         "text": "Добавить"
       },
       "social": {
+        "socialTitle": "Социальные сети",
         "facebook": "Facebook",
         "google": "Google",
         "github": "GitHub",
