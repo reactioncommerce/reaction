@@ -57,16 +57,12 @@ Template.accountsDashboard.helpers({
           member.roles = user.roles;
           member.services = user.services;
 
-          if (Roles.userIsInRole(member.userId, "dashboard", shopId)) {
-            member.role = "dashboard";
-          }
-
-          if (Roles.userIsInRole(member.userId, "admin", shopId)) {
-            member.role = "admin";
-          }
-
           if (Roles.userIsInRole(member.userId, "owner", shopId)) {
             member.role = "owner";
+          } else if (Roles.userIsInRole(member.userId, "admin", shopId)) {
+            member.role = "admin";
+          } else if (Roles.userIsInRole(member.userId, "dashboard", shopId)) {
+            member.role = "dashboard";
           } else if (Roles.userIsInRole(member.userId, "guest", shopId)) {
             member.role = "guest";
           }
