@@ -125,6 +125,25 @@ describe("Add/Create cart methods", function () {
       done();
     });
 
+    it.skip("should merge all items of same variant in cart", function (done) {
+      sandbox.stub(Reaction, "getShopId", function () {
+        return shop._id;
+      });
+      // spyOn(ReactionCore, "getShopId").and.returnValue(shop._id);
+      spyOnMethod("addToCart", userId);
+      const cartId = Meteor.call("cart/createCart", userId, sessionId);
+
+      Meteor.call("cart/addToCart", productId, variantId, quantity);
+      // add a second item of same variant
+      Meteor.call("cart/addToCart", productId, variantId, quantity);
+      let cart = Cart.findOne(cartId);
+
+      expect(cart.items.length).to.equal(1);
+      expect(cart.items[0].quantity).to.equal(2);
+
+      return done();
+    });
+
 
     it("should throw error an exception if user doesn't have a cart", function (done) {
       const userWithoutCart = Factory.create("user");
