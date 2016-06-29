@@ -36,16 +36,14 @@ Meteor.startup(function () {
     const userId = Meteor.userId();
     // TODO: maybe `visibilityState` will be better here
     let isHidden;
-    let guestAreAllowed;
     let loggingIn;
     let sessionId;
     Tracker.nonreactive(function () {
-      guestAreAllowed = Reaction.allowGuestCheckout();
       isHidden = document[hidden];
       loggingIn = Accounts.loggingIn();
       sessionId = amplify.store("Reaction.session");
     });
-    if (guestAreAllowed && !userId) {
+    if (!userId) {
       if (!isHidden && !loggingIn || typeof sessionId !== "string") {
         Accounts.loginWithAnonymous();
       }

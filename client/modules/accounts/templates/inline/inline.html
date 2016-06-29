@@ -11,15 +11,11 @@
               <a class="btn btn-primary btn-block" data-i18n="checkoutLogin.continueAsGuest" href>Continue as Guest</a>
             </div>
           </div>
-      </div>
+        </div>
       {{/if}}
-      <div class="checkout-login">
-        {{> loginForm startView="loginFormSignUpView"}}
-      </div>
-    {{else}}
-      <div class="checkout-login">
-        {{> loginForm startView="loginFormSignUpView"}}
-      </div>
     {{/unless}}
+    <div class="checkout-login">
+      {{> loginForm startView="loginFormSignUpView"}}
+    </div>
   </div>
 </template>
