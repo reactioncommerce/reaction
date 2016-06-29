@@ -7,12 +7,13 @@ import { getShop } from "/server/imports/fixtures/shops";
 import { Reaction } from "/server/api";
 import Fixtures from "/server/imports/fixtures";
 
+import "./members";
+
 Fixtures();
 
 const shopId = getShop()._id;
-const publication = Meteor.server.publish_handlers["ShopMembers"];
 
-describe.skip("Account Publications", function () {
+describe("Account Publications", function () {
   let sandbox;
   beforeEach(function () {
     // reset
@@ -26,20 +27,17 @@ describe.skip("Account Publications", function () {
 
   describe("ShopMembers", function () {
     it("should let an admin fetch userIds", function () {
+      sandbox.stub(Reaction, "getShopId", function () {
+        return shopId;
+      });
+      sandbox.stub(Roles, "userIsInRole", function () {
+        return true;
+      });
+      const publication = Meteor.server.publish_handlers["ShopMembers"];
       const user = Factory.create("user");
       const thisContext = {
         userId: user._id
       };
-      // setup
-      sandbox.stub(Reaction, "getShopId", function () {
-        return shopId;
-      });
-      // spyOn(Reaction, "getShopId").and.returnValue(shopId);
-      sandbox.stub(Roles, "userIsInRole", function () {
-        return true;
-      });
-      // spyOn(Roles, "userIsInRole").and.returnValue(true);
-      // execute
       const cursor = publication.apply(thisContext);
       // verify
       data = cursor.fetch()[0];
@@ -51,7 +49,7 @@ describe.skip("Account Publications", function () {
         return shopId;
       });
       sandbox.stub(Roles, "userIsInRole", function () {
-        return true;
+        return false;
       });
       const thisContext = {
         userId: "notAdminUser",
@@ -59,6 +57,7 @@ describe.skip("Account Publications", function () {
       };
       // spyOn(ReactionCore, "getShopId").and.returnValue(shopId);
       // spyOn(Roles, "userIsInRole").and.returnValue(false);
+      const publication = Meteor.server.publish_handlers["ShopMembers"];
       const cursor = publication.apply(thisContext);
       expect(cursor).to.equal("ready");
     });
@@ -76,10 +75,7 @@ describe.skip("Account Publications", function () {
         userId: user._id,
         ready: function () { return "ready"; }
       };
-      // setup
-      // spyOn(ReactionCore, "getShopId").and.returnValue(shopId);
-      // spyOn(Roles, "userIsInRole").and.returnValue(true);
-      // execute
+      const publication = Meteor.server.publish_handlers["ShopMembers"];
       const cursor = publication.apply(thisContext);
       // verify
       data = cursor.fetch();
