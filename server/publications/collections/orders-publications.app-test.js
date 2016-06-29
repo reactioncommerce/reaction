@@ -10,7 +10,7 @@ import Fixtures from "/server/imports/fixtures";
 
 Fixtures();
 
-describe.skip("Publication", function () {
+describe.skip("Order Publication", function () {
   const shop = getShop();
   let sandbox;
   let productRemoveStub;
@@ -46,8 +46,7 @@ describe.skip("Publication", function () {
     productInsertStub.restore();
   });
 
-  describe.skip("Orders", () => {
-    const publication = Meteor.server.publish_handlers["Orders"];
+  describe("Orders", () => {
     const thisContext = {
       userId: "userId",
       ready: function () { return "ready"; }
@@ -63,69 +62,27 @@ describe.skip("Publication", function () {
     });
 
     beforeEach(() => {
-      spyOn(Reaction, "getShopId").and.returnValue(shop._id);
+      sandbox.stub(Reaction, "getShopId", () => shop._id);
+      // spyOn(Reaction, "getShopId").and.returnValue(shop._id);
     });
 
-    it.skip(
-      "should return shop orders for an admin",
-      function () {
-        // setup
-        spyOn(Roles, "userIsInRole").and.returnValue(true);
-        // execute
-        const cursor = publication.apply(thisContext);
-        // verify
-        const data = cursor.fetch()[0];
-        expect(data.shopId).toBe(order.shopId);
-      }
-    );
-
-    it.skip(
-      "should not return shop orders for non admin",
-      function () {
-        // setup
-        spyOn(Roles, "userIsInRole").and.returnValue(false);
-        const cursor = publication.apply(thisContext);
-        expect(cursor.fetch()).toEqual([]);
-      }
-    );
-  });
-
-  describe("Cart", () => {
-    // for this: "should return only one cart in cursor" test we need to avoid
-    // user carts merging. We need registered users for here.
-    const user = Factory.create("registeredUser");
-    const userId = user._id;
-    const sessionId = ReactionCore.sessionId = Random.id();
-    const cartPub = Meteor.server.publish_handlers["Cart"];
-    const thisContext = {
-      userId: userId
-    };
-
-    beforeEach(() => {
-      Collections.Cart.remove({});
-      spyOn(Reaction, "getShopId").and.returnValue(shop._id);
-      Meteor.call("cart/createCart", userId, sessionId);
+    it("should return shop orders for an admin", function () {
+      sandbox.stub(Roles, "userIsInRole", () => true);
+      // spyOn(Roles, "userIsInRole").and.returnValue(true);
+      const publication = Meteor.server.publish_handlers["Orders"];
+      const cursor = publication.apply(thisContext);
+      const data = cursor.fetch()[0];
+      expect(data.shopId).to.equal(order.shopId);
     });
 
-    it.skip(
-      "should return a cart cursor",
-      () => {
-        const cursor = cartPub.apply(thisContext, [sessionId]);
-        const data = cursor.fetch()[0];
-        expect(data.userId).toEqual(userId);
-      }
-    );
-
-    it.skip(
-      "should return only one cart in cursor",
-      () => {
-        const user2 = Factory.create("registeredUser");
-        Meteor.call("cart/createCart", user2._id, sessionId);
-        const cursor = cartPub.apply(thisContext, [sessionId]);
-        const data = cursor.fetch();
-        expect(data.length).toEqual(1);
-      }
-    );
+    it("should not return shop orders for non admin", function () {
+      sandbox.stub(Roles, "userIsInRole", () => false);
+      // spyOn(Roles, "userIsInRole").and.returnValue(false);
+      const publication = Meteor.server.publish_handlers["Orders"];
+      const cursor = publication.apply(thisContext);
+      expect(cursor.fetch()).to.equal([]);
+    });
   });
 });
+
 
