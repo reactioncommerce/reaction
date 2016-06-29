@@ -846,14 +846,16 @@ Meteor.methods({
       });
     }
 
-    newTag.isTopLevel = false;
-    newTag.shopId = Reaction.getShopId();
-    newTag.updatedAt = new Date();
-    newTag.createdAt = new Date();
-    newTag._id = Tags.insert(newTag);
+    const newTagId = Meteor.call("shop/createTag", tagName, false);
+
+    // if result is an Error object, we return it immediately
+    if (typeof newTagId !== "string") {
+      return newTagId;
+    }
+
     return Products.update(productId, {
       $push: {
-        hashtags: newTag._id
+        hashtags: newTagId
       }
     }, {
       selector: {
