@@ -1,30 +1,19 @@
 
-html {
-  // height: 100%;
-}
 body.admin {
-  .display(flex);
+  display: flex;
   overflow: hidden;
   height: 100vh;
-  // background-color: darken(@brand-primary-color, 40%);
+
+  @media screen and (max-width: @screen-xs-max) {
+    flex-direction: column;
+  }
 }
 
 .page {
   .display(flex);
   .flex-direction(column);
   .flex(1 1 auto);
-  // min-width: 100vw;
   height: 100vh;
-  // overflow-x: hidden;
-  // overflow-y: auto;
-  // -webkit-overflow-scrolling: touch;
-
-  // transform: scale(.9);
-  // .lh-transition(all 200ms);
-  // box-shadow: 0 0 40px rgba(0,0,0,.15);
-  //
-  // .transition(width 5000ms);
-  //
 }
 
 .page #main {
@@ -37,9 +26,6 @@ body.admin {
 
 .page.show-settings {
   min-width: 0;
-  // width: 65vw;
-  // .lh-transform(scale(.9));
-  //
   @media screen and (max-width: @screen-sm-max) {
     // width: 100vw;
   }
