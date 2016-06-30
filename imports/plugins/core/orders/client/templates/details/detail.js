@@ -1,6 +1,6 @@
 import { Accounts } from "/lib/collections";
 import { Template } from "meteor/templating";
-import { moment } from "moment";
+import moment from "moment";
 
 /**
  * orderDetail helpers
