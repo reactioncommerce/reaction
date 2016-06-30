@@ -1,4 +1,4 @@
-import _ from "lodash";
+import { _ } from "lodash";
 import { Meteor } from "meteor/meteor";
 import { ReactiveVar } from "meteor/reactive-var";
 import { Logger } from "/client/api";

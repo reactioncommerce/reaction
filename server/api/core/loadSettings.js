@@ -1,5 +1,6 @@
 import { Packages } from "/lib/collections";
 import { Logger } from "/server/api";
+import { EJSON } from "meteor/ejson";
 
 /**
  * ReactionRegistry.loadSettings
@@ -79,4 +80,4 @@ export function loadSettings(json) {
       Logger.info(`loaded local package data: ${item.name}`);
     }
   }
-};
+}

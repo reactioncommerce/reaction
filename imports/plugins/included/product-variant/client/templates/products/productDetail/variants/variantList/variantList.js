@@ -1,6 +1,9 @@
 import { Reaction, i18next } from "/client/api";
 import { ReactionProduct } from "/lib/api";
 import { Products, Media } from "/lib/collections";
+import { Meteor } from "meteor/meteor";
+import { Session } from "meteor/session";
+import { Template } from "meteor/templating";
 
 /**
  * variantList helpers

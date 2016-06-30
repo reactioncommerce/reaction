@@ -1,3 +1,6 @@
+import { EJSON } from "meteor/ejson";
+import { check } from "meteor/check";
+import { Meteor } from "meteor/meteor";
 import { Catalog } from "/lib/api";
 import { Media, Products, Tags } from "/lib/collections";
 import { Logger, Reaction } from "/server/api";

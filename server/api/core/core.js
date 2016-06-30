@@ -1,6 +1,7 @@
 import url from "url";
 import { merge, uniqWith } from "lodash";
 import { Meteor } from "meteor/meteor";
+import { EJSON } from "meteor/ejson";
 import { Jobs, Packages, Shops } from "/lib/collections";
 import { Hooks, Logger } from "/server/api";
 import { getRegistryDomain } from "./setDomain";

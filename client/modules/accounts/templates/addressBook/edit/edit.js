@@ -1,4 +1,5 @@
 import { i18next } from "/client/api";
+import { Meteor } from "meteor/meteor";
 
 /*
  * update address book (cart) form handling

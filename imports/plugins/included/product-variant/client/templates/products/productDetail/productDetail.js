@@ -4,6 +4,9 @@ import { $ } from "meteor/jquery";
 import { Reaction, i18next, Logger } from "/client/api";
 import { ReactionProduct } from "/lib/api";
 import { Tags } from "/lib/collections";
+import { Meteor } from "meteor/meteor";
+import { Session } from "meteor/session";
+import { Template } from "meteor/templating";
 
 // load modules
 require("jquery-ui");

@@ -1,4 +1,6 @@
 import { Shops } from "/lib/collections";
+import { Session } from "meteor/session";
+import { Template } from "meteor/templating";
 
 /**
  * i18nChooser helpers

@@ -2,6 +2,8 @@ import i18next from "i18next";
 import { Countries } from "/client/collections";
 import { Reaction } from "/client/api";
 import { Shops } from "/lib/collections";
+import { Meteor } from "meteor/meteor";
+import { Template } from "meteor/templating";
 
 Template.i18nSettings.helpers({
   shop() {

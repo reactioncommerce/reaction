@@ -1,6 +1,8 @@
+import { Meteor } from "meteor/meteor";
 import _ from "lodash";
 import { Reaction, i18next } from "/client/api";
 import { ServiceConfigHelper } from "../../helpers/util";
+import { Template } from "meteor/templating";
 
 /**
  * Accounts helpers

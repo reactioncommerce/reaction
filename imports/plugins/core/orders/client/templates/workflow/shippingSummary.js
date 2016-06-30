@@ -1,5 +1,8 @@
 import { i18next } from "/client/api";
 import { Orders } from "/lib/collections";
+import { Meteor } from "meteor/meteor";
+import { Tracker } from "meteor/tracker";
+import { Template } from "meteor/templating";
 
 Template.coreOrderShippingSummary.onCreated(() => {
   let template = Template.instance();

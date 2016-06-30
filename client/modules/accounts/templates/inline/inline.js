@@ -1,3 +1,6 @@
+import { Meteor } from "meteor/meteor";
+import { Template } from "meteor/templating";
+
 /**
  * Inline login form for instance where guest login is needed.
  */

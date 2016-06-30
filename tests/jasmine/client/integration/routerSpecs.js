@@ -1,5 +1,7 @@
 import { Router } from "/client/api";
 import { Shops } from "/lib/collections";
+import { Meteor } from "meteor/meteor";
+import { Tracker } from "meteor/tracker";
 
 /*
  * client integration tests for layouts

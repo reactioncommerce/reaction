@@ -1,5 +1,6 @@
 import { Reaction, Logger } from "/client/api";
 import { Packages } from "/lib/collections";
+import { Template } from "meteor/templating";
 
 /**
  *

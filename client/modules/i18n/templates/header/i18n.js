@@ -1,5 +1,6 @@
 import { Reaction } from "/client/api";
 import { Shops } from "/lib/collections";
+import { Session } from "meteor/session";
 
 /**
  * i18nChooser helpers

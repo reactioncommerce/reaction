@@ -1,5 +1,8 @@
+import { Meteor } from "meteor/meteor";
+import { Session } from "meteor/session";
 import { Reaction, i18next } from "/client/api";
 import { Orders } from "/lib/collections";
+import { Template } from "meteor/templating";
 
 /**
  * cartCompleted helpers
@@ -18,6 +21,7 @@ Template.cartCompleted.helpers({
         });
       }
     }
+    return {};
   },
   orderStatus: function () {
     if (this.workflow.status === "new") {
@@ -32,6 +36,7 @@ Template.cartCompleted.helpers({
         cartId: this._id
       });
     }
+    return {};
   }
 });
 
@@ -41,8 +46,9 @@ Template.cartCompleted.helpers({
  * adds email to order
  */
 Template.cartCompleted.events({
-  "click #update-order": function (event, template) {
-    const email = template.find("input[name=email]").value;
+  "click #update-order": function () {
+    let templateInstance = Template.instance();
+    const email = templateInstance.find("input[name=email]").value;
     check(email, String);
     const cartId = Reaction.Router.getQueryParam("_id");
     return Meteor.call("orders/addOrderEmail", cartId, email);

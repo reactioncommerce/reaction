@@ -1,5 +1,6 @@
 import { Logger, Reaction } from "/server/api";
-
+import { EJSON } from "meteor/ejson";
+import { Meteor } from "meteor/meteor";
 /* eslint quote-props: 0 */
 /**
  * ShopMembers

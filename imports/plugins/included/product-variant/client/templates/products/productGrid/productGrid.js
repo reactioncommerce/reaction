@@ -1,5 +1,7 @@
 import { Reaction, i18next } from "/client/api";
 import { _ } from "lodash";
+import { Session } from "meteor/session";
+import { Template } from "meteor/templating";
 
 /**
  * productGrid helpers
