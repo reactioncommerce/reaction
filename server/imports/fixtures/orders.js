@@ -45,11 +45,11 @@ export function paymentMethod(doc) {
   };
 }
 
-export function userId() {
+export function getUserId() {
   return getUser()._id;
 }
 
-export function shopId() {
+export function getShopId() {
   return getShop()._id;
 }
 
@@ -72,8 +72,8 @@ export default function () {
     notes: [],
 
     // Schemas.Cart
-    shopId: shopId(),
-    userId: userId(),
+    shopId: getShopId(),
+    userId: getUserId(),
     sessionId: "Session",
     email: faker.internet.email(),
     items: function () {
@@ -91,12 +91,14 @@ export default function () {
       const selectedOption2 = Random.choice(childVariants2);
       return [{
         _id: Random.id(),
+        title: "firstItem",
         shopId: product.shopId,
         productId: product._id,
         quantity: 1,
         variants: selectedOption
       }, {
         _id: Random.id(),
+        title: "secondItem",
         shopId: product2.shopId,
         productId: product2._id,
         quantity: 1,

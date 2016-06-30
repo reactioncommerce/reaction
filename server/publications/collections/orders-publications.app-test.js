@@ -10,18 +10,21 @@ import Fixtures from "/server/imports/fixtures";
 
 Fixtures();
 
-describe.skip("Order Publication", function () {
+describe("Order Publication", function () {
   const shop = getShop();
   let sandbox;
   let productRemoveStub;
   let productInsertStub;
+  let productUpdateBeforeStub;
 
   beforeEach(function () {
     sandbox = sinon.sandbox.create();
+    Collections.Orders.direct.remove();
   });
 
   afterEach(function () {
     sandbox.restore();
+    Collections.Orders.direct.remove();
   });
 
   before(function () {
@@ -29,21 +32,24 @@ describe.skip("Order Publication", function () {
     // if you want to do a real stress test, you could try to comment out
     // this spyOn lines. This is needed only for ./reaction test. In one
     // package test this is ignoring.
+    console.log(Collections.Products._hookAspects);
     if (Array.isArray(Collections.Products._hookAspects.remove.after) && Collections.Products._hookAspects.remove.after.length) {
       productRemoveStub = sinon.stub(Collections.Products._hookAspects.remove.after[0], "aspect");
       productInsertStub = sinon.stub(Collections.Products._hookAspects.insert.after[0], "aspect");
+      productUpdateBeforeStub = sinon.stub(Collections.Products._hookAspects.update.after[0], "aspect");
     }
-    Collections.Products.remove({});
-    // really strange to see this, but without this `remove` finishes in
-    // async way (somewhere in a middle of testing process)
-    Meteor.setTimeout(function () {
-      Collections.Orders.remove({});
-    }, 500);
+    // Collections.Products.remove({});
+    // // really strange to see this, but without this `remove` finishes in
+    // // async way (somewhere in a middle of testing process)
+    // Meteor.setTimeout(function () {
+    //   Collections.Orders.remove({});
+    // }, 500);
   });
 
   after(function () {
     productRemoveStub.restore();
     productInsertStub.restore();
+    productUpdateBeforeStub.restore();
   });
 
   describe("Orders", () => {
@@ -53,34 +59,37 @@ describe.skip("Order Publication", function () {
     };
     let order;
 
-    before(() => {
-      // this is another hack. We put this factory inside hook because, first
-      // we need to mock collectionHooks to Inventory. This way we do all things
-      // in a right order. This is make sense only for --velocity (all package)
-      // tests.
-      order = Factory.create("order", { status: "created" });
-    });
+    // beforeEach(() => {
+    //   sandbox.stub(Reaction, "getShopId", () => shop._id);
+    //   // spyOn(Reaction, "getShopId").and.returnValue(shop._id);
+    // });
 
-    beforeEach(() => {
+    it("Should create an order", function () {
       sandbox.stub(Reaction, "getShopId", () => shop._id);
-      // spyOn(Reaction, "getShopId").and.returnValue(shop._id);
+      sandbox.stub(Roles, "userIsInRole", () => true);
+      product = Factory.create("product");
+      user = Factory.create("user");
+      // order = Factory.create("order");
     });
 
-    it("should return shop orders for an admin", function () {
+    it.skip("should return shop orders for an admin", function () {
+      sandbox.stub(Reaction, "getShopId", () => shop._id);
       sandbox.stub(Roles, "userIsInRole", () => true);
-      // spyOn(Roles, "userIsInRole").and.returnValue(true);
+      order = Factory.create("order", { status: "created" });
       const publication = Meteor.server.publish_handlers["Orders"];
       const cursor = publication.apply(thisContext);
       const data = cursor.fetch()[0];
       expect(data.shopId).to.equal(order.shopId);
     });
 
-    it("should not return shop orders for non admin", function () {
+    it.skip("should not return shop orders for non admin", function () {
+      sandbox.stub(Reaction, "getShopId", () => shop._id);
       sandbox.stub(Roles, "userIsInRole", () => false);
+      order = Factory.create("order", { status: "created" });
       // spyOn(Roles, "userIsInRole").and.returnValue(false);
       const publication = Meteor.server.publish_handlers["Orders"];
       const cursor = publication.apply(thisContext);
-      expect(cursor.fetch()).to.equal([]);
+      expect(cursor.fetch().count()).to.equal(0);
     });
   });
 });
