@@ -2,9 +2,12 @@ require("money");
 require("autonumeric");
 import $ from "jquery";
 import accounting from "accounting-js";
-import { Reaction } from "/client/api";
+import { Reaction, i18next } from "/client/api";
 import { NumericInput } from "/imports/plugins/core/ui/client/components";
 import { Media, Orders, Shops } from "/lib/collections";
+import { Meteor } from "meteor/meteor";
+import { Template } from "meteor/templating";
+import { Session } from "meteor/session";
 
 //
 // core order shipping invoice templates
@@ -45,7 +48,8 @@ Template.coreOrderShippingInvoice.onRendered(function () {
   const order = this.state.get("order");
   const paymentMethod = order.billing[0].paymentMethod;
   const refunds = this.refunds.get();
-  const currency = Reaction.Locale.currency;
+  const locale = Session.get("locale");
+  const currency = locale.currency;
 
   const lessAmount = _.reduce(refunds, (memo, refund) => {
     return memo - Math.abs(refund.amount);
