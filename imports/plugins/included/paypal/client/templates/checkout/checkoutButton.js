@@ -1,6 +1,8 @@
 import { Meteor } from "meteor/meteor";
 import { Cart } from "/lib/collections";
 import { PaypalClientAPI } from "../../lib/paypalRestApi";
+import { Session } from "meteor/session";
+import { Template } from "meteor/templating";
 
 /**
  * PayPal Checkout Button

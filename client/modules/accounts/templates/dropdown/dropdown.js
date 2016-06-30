@@ -1,5 +1,7 @@
 import { Reaction, Logger } from "/client/api";
 import { Tags } from "/lib/collections";
+import { Session } from "meteor/session";
+import { Meteor } from "meteor/meteor";
 
 Template.loginDropdown.events({
 

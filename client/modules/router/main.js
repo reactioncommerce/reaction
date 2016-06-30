@@ -4,6 +4,9 @@ import { Reaction } from "/client/api";
 import { Logger } from "/client/modules/logger";
 import { Packages, Shops } from "/lib/collections";
 import { MetaData } from "/lib/api/router/metadata";
+import { Session } from "meteor/session";
+import { Meteor } from "meteor/meteor";
+import { Tracker } from "meteor/tracker";
 
 
 // init flow-router

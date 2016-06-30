@@ -1,5 +1,7 @@
 import { Router } from "/client/api";
 import { Cart } from "/lib/collections";
+import { Meteor } from "meteor/meteor";
+import { Tracker } from "meteor/tracker";
 
 /* Product Detail Page Specs*/
 describe("Cart", function () {

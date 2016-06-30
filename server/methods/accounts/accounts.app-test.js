@@ -14,7 +14,6 @@ Fixtures();
 
 before(function () {
   this.timeout(6000);
-  console.log("pause for laughs");
   Meteor._sleepForMs(5000);
 });
 
@@ -649,4 +648,3 @@ describe("Account Meteor method ", function () {
     });
   });
 });
-

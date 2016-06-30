@@ -1,5 +1,9 @@
 import { Reaction, i18next } from "/client/api";
 import { Packages, Shipping } from "/lib/collections";
+import { Meteor } from "meteor/meteor";
+import { Session } from "meteor/session";
+import { Template } from "meteor/templating";
+import { Blaze } from "meteor/blaze";
 
 /*
  * Template shipping Helpers

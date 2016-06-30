@@ -1,3 +1,5 @@
+import { Meteor } from "meteor/meteor";
+import { ReactiveVar } from "meteor/reactive-var";
 import { i18next } from "/client/api";
 import * as Collections from "/lib/collections";
 

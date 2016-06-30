@@ -2,6 +2,8 @@ import accounting from "accounting-js";
 import { i18next } from "/client/modules/i18n";
 import { localeDep, i18nextDep } from  "./main";
 import { Reaction, Logger } from "/client/api";
+import { Session } from "meteor/session";
+import { Meteor } from "meteor/meteor";
 
 /**
  * i18n

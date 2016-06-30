@@ -1,3 +1,6 @@
+import { Meteor } from "meteor/meteor";
+import { Session } from "meteor/session";
+import { Template } from "meteor/templating";
 
 Template.paypalPaymentForm.onCreated(function () {
   Meteor.call("getExpressCheckoutSettings", function (error, expressCheckoutSettings) {

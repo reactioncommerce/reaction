@@ -1,6 +1,7 @@
 import { Tracker } from "meteor/tracker";
 import Logger from "/client/modules/logger";
 import Reaction from "./main";
+import { Meteor } from "meteor/meteor";
 
 // @see https://developer.mozilla.org/en-US/docs/Web/API/Page_Visibility_API
 let hidden;

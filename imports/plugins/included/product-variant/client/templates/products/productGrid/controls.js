@@ -1,3 +1,6 @@
+import { Session } from "meteor/session";
+import { Template } from "meteor/templating";
+
 Template.gridControls.onRendered(function () {
   return this.$("[data-toggle='tooltip']").tooltip({
     position: "top"

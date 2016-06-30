@@ -1,4 +1,6 @@
 import { Meteor } from "meteor/meteor";
+import { Session } from "meteor/session";
+import { check } from "meteor/check";
 import { Tracker } from "meteor/tracker";
 import Logger from "/client/modules/logger";
 import { Countries } from "/client/collections";

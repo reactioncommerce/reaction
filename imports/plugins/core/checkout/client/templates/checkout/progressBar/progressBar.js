@@ -1,5 +1,6 @@
 import _ from "lodash";
 import { Cart } from "/lib/collections";
+import { Template } from "meteor/templating";
 
 /**
  * checkoutProgressBar helpers

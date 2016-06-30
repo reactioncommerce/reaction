@@ -1,6 +1,10 @@
 import Drop from "tether-drop";
+import { Meteor } from "meteor/meteor";
+import { Session } from "meteor/session";
+import { Template } from "meteor/templating";
 import { Reaction, i18next } from "/client/api";
 import { Packages } from "/lib/collections";
+import { Blaze } from "meteor/blaze";
 
 Template.coreAdminLayout.onRendered(function () {
   $("body").addClass("admin");
