@@ -1,4 +1,6 @@
 import * as Collections from "/lib/collections";
+import { Meteor } from "meteor/meteor";
+import { Template } from "meteor/templating";
 
 /*
  * handles display of addressBook grid
