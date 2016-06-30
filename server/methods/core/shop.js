@@ -1,5 +1,5 @@
-import { slugify } from "transliteration";
 import { Meteor } from "meteor/meteor";
+import { check, Match } from "meteor/check";
 import { Job } from "meteor/vsivsi:job-collection";
 import * as Collections from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
@@ -326,7 +326,7 @@ Meteor.methods({
       })
       .repeat({
         // wait: refreshPeriod * 60 * 1000
-        schedule: Jobs.later.parse.text(refreshPeriod)
+        schedule: Collections.Jobs.later.parse.text(refreshPeriod)
       })
       .save({
         // Cancel any jobs of the same type,
@@ -369,6 +369,36 @@ Meteor.methods({
   },
 
   /**
+   * shop/createTag
+   * @summary creates new tag
+   * @param {String} tagName - new tag name
+   * @param {Boolean} isTopLevel - if true -- new tag will be created on top of
+   * tags tree
+   * @since 0.14.0
+   * @hooks after method
+   * @return {String} with created tag _id
+   */
+  "shop/createTag": function (tagName, isTopLevel) {
+    check(tagName, String);
+    check(isTopLevel, Boolean);
+
+    // must have 'core' permissions
+    if (!Reaction.hasPermission("core")) {
+      throw new Meteor.Error(403, "Access Denied");
+    }
+
+    const tag = {
+      name: tagName,
+      slug: Reaction.getSlug(tagName),
+      isTopLevel: isTopLevel,
+      updatedAt: new Date(),
+      createdAt: new Date()
+    };
+
+    return Collections.Tags.insert(tag);
+  },
+
+  /**
    * shop/updateHeaderTags
    * @summary method to insert or update tag with hierarchy
    * @param {String} tagName will insert, tagName + tagId will update existing
@@ -389,7 +419,7 @@ Meteor.methods({
     this.unblock();
 
     let newTag = {
-      slug: slugify(tagName),
+      slug: Reaction.getSlug(tagName),
       name: tagName
     };
 
@@ -430,11 +460,13 @@ Meteor.methods({
       });
     }
     // create newTags
-    newTag.isTopLevel = !currentTagId;
-    newTag.shopId = Reaction.getShopId();
-    newTag.updatedAt = new Date();
-    newTag.createdAt = new Date();
-    newTagId = Collections.Tags.insert(newTag);
+    newTagId = Meteor.call("shop/createTag", tagName, !currentTagId);
+
+    // if result is an Error object, we return it immediately
+    if (typeof newTagId !== "string") {
+      return newTagId;
+    }
+
     if (currentTagId) {
       return Collections.Tags.update(currentTagId, {
         $addToSet: {
@@ -444,8 +476,8 @@ Meteor.methods({
         Logger.info(`Added tag${newTag.name} to the related tags list for tag ${currentTagId}`);
         return true;
       });
-    } else if (newTagId && !currentTagId) {
-      Logger.info(`Created tag ${newTag.name}`);
+      // TODO: refactor this. unnecessary check
+    } else if (typeof newTagId === "string" && !currentTagId) {
       return true;
     }
     throw new Meteor.Error(403, "Failed to update header tags.");

@@ -1,6 +1,8 @@
 import { Meteor } from "meteor/meteor";
 import { Cart } from "/lib/collections";
 import { Logger, MethodHooks } from "/server/api";
+// this needed to keep correct loading order. Methods should be loaded before hooks
+import "../cart";
 
 // // Meteor.after to call after
 MethodHooks.after("cart/submitPayment", function (options) {
