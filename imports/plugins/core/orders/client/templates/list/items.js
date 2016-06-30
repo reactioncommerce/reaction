@@ -1,4 +1,6 @@
 import { Media } from "/lib/collections";
+import { Template } from "meteor/templating";
+import { NumericInput } from "/imports/plugins/core/ui/client/components";
 
 /**
  * ordersListItems helpers

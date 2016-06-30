@@ -3,6 +3,8 @@ import { check } from "meteor/check";
 import { Paypal } from "../../lib/api";
 import { Shops, Cart, Packages } from "/lib/collections";
 import { Reaction } from "/server/api";
+import { moment } from "moment";
+import { HTTP } from "meteor/http";
 
 let parseResponse;
 let parseRefundReponse;
@@ -109,7 +111,6 @@ Meteor.methods({
           PAYERID: payerId
         }
       });
-      console.log("response", response);
     } catch (error) {
       throw new Meteor.Error(error.message);
     }

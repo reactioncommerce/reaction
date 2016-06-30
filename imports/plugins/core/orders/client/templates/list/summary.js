@@ -1,5 +1,5 @@
 import { NumericInput } from "/imports/plugins/core/ui/client/components";
-
+import { Template } from "meteor/templating";
 /**
  * ordersListSummary helpers
  *

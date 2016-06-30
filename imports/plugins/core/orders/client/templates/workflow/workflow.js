@@ -1,5 +1,6 @@
 import { Reaction } from "/client/api";
 import { Orders } from "/lib/collections";
+import { Template } from "meteor/templating";
 
 /**
  * coreOrderWorkflowHelpers
