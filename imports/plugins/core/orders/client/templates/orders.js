@@ -1,7 +1,7 @@
-import { Reaction, i18next } from "/client/api";
-import { Orders, Shops } from "/lib/collections";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
+import { Reaction, i18next } from "/client/api";
+import { Orders, Shops } from "/lib/collections";
 
 const orderFilters = [{
   name: "new",

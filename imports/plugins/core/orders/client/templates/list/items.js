@@ -1,5 +1,5 @@
-import { Media } from "/lib/collections";
 import { Template } from "meteor/templating";
+import { Media } from "/lib/collections";
 import { NumericInput } from "/imports/plugins/core/ui/client/components";
 
 /**

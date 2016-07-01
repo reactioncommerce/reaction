@@ -1,6 +1,6 @@
+import moment from "moment";
 import { Template } from "meteor/templating";
 import { Accounts } from "/lib/collections";
-import moment from "moment";
 
 /**
 * pageOrderDetail helpers
