@@ -1,7 +1,7 @@
-import { Orders } from "/lib/collections";
 import { Meteor } from "meteor/meteor";
 import { Tracker } from "meteor/tracker";
 import { Template } from "meteor/templating";
+import { Orders } from "/lib/collections";
 
 Template.coreOrderShippingTracking.onCreated(() => {
   let template = Template.instance();

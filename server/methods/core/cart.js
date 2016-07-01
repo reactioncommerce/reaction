@@ -1,9 +1,9 @@
+import { _ } from "lodash";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import * as Collections from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 import { Logger, Reaction } from "/server/api";
-import { _ } from "lodash";
 
 /**
  * quantityProcessing
@@ -614,7 +614,7 @@ Meteor.methods({
 
     if (orderId) {
       // TODO: check for successful orders/inventoryAdjust
-//      Meteor.call("orders/inventoryAdjust", orderId);
+      // Meteor.call("orders/inventoryAdjust", orderId);
       Collections.Cart.remove({
         _id: order.cartId
       });
@@ -635,11 +635,16 @@ Meteor.methods({
         Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow",
           "coreCheckoutShipping");
       }
-      Logger.info("Transitioned cart " + cartId + " to order " +
-        orderId);
-      Meteor.call("orders/sendNotification",
-        Collections.Orders.findOne(orderId));
 
+      Logger.info("Transitioned cart " + cartId + " to order " + orderId);
+      // catch send notification, we don't want
+      // to block because of notification errors
+      try {
+        Meteor.call("orders/sendNotification", Collections.Orders.findOne(orderId));
+      } catch (error) {
+        Logger.warn(error, `Error in orders/sendNotification for ${orderId}`);
+      }
+      // order success
       return orderId;
     }
     // we should not have made it here, throw error

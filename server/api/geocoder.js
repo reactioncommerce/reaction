@@ -1,5 +1,7 @@
 import { Packages } from "/lib/collections";
 import { Logger, Reaction } from "/server/api";
+import { HTTP } from "meteor/http";
+import { Meteor } from "meteor/meteor";
 
 /**
  * meteor-geocoder

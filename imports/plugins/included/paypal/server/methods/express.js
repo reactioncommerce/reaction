@@ -1,3 +1,5 @@
+import moment from "moment";
+import { HTTP } from "meteor/http";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { Paypal } from "../../lib/api";
@@ -109,7 +111,6 @@ Meteor.methods({
           PAYERID: payerId
         }
       });
-      console.log("response", response);
     } catch (error) {
       throw new Meteor.Error(error.message);
     }

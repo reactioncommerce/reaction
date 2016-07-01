@@ -215,10 +215,10 @@ export default {
     const defaultAdminRoles = ["owner", "admin", "guest", "account/profile"];
     let accountId;
 
-    // while (!this.getShopId()) {
-    //   Logger.info("No shopId, waiting one second...");
-    //   Meteor._sleepForMs(1000);
-    // }
+    while (!this.getShopId()) {
+      Logger.info("No shopId, waiting one second...");
+      Meteor._sleepForMs(1000);
+    }
     const shopId = this.getShopId();
 
     // if an admin user has already been created, we'll exit

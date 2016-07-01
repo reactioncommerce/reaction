@@ -10,18 +10,21 @@ import { Template } from "meteor/templating";
  * if order status = new translate submitted message
  */
 Template.cartCompleted.helpers({
-  order: function () {
+  orderCompleted: function () {
     const id =  Reaction.Router.getQueryParam("_id");
     if (id) {
       const ccoSub = Meteor.subscribe("CompletedCartOrder", Meteor.userId(), id);
       if (ccoSub.ready()) {
-        return Orders.findOne({
-          userId: Meteor.userId(),
-          cartId: Reaction.Router.getQueryParam("_id")
-        });
+        return true;
       }
     }
-    return {};
+    return false;
+  },
+  order: function () {
+    return Orders.findOne({
+      userId: Meteor.userId(),
+      cartId: Reaction.Router.getQueryParam("_id")
+    });
   },
   orderStatus: function () {
     if (this.workflow.status === "new") {

@@ -44,6 +44,8 @@
     "jquery-ui": "^1.10.5",
     "lodash": "^4.13.1",
     "meteor-node-stubs": "^0.2.3",
+    "moment": "^2.13.0",
+    "moment-timezone": "^0.5.4",
     "money": "^0.2.0",
     "node-geocoder": "^3.12.0",
     "paypal-rest-sdk": "^1.6.9",
