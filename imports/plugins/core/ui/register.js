@@ -19,7 +19,7 @@ Reaction.registerPackage({
     template: "uiDashboard"
   }, {
     route: "/dashboard/ui/:id",
-    workflow: "coreUIWorkflow",
+    workflow: "coreUIEditWorkflow",
     name: "dashboard/uiThemeDetails",
     template: "uiThemeDetails"
   }],
@@ -37,6 +37,22 @@ Reaction.registerPackage({
       dashboardHeader: "dashboardHeader",
       dashboardControls: "",
       dashboardHeaderControls: "",
+      adminControlsFooter: "adminControlsFooter"
+    }
+  }, {
+    layout: "coreLayout",
+    workflow: "coreUIEditWorkflow",
+    collection: "Themes",
+    theme: "default",
+    enabled: true,
+    structure: {
+      template: "uiDashboard",
+      layoutHeader: "layoutHeader",
+      layoutFooter: "",
+      notFound: "notFound",
+      dashboardHeader: "uiThemeDetailsDashboardHeader",
+      dashboardControls: "",
+      dashboardHeaderControls: "uiThemeDetailsHeaderControls",
       adminControlsFooter: "adminControlsFooter"
     }
   }]

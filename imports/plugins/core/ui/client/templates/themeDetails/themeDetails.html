@@ -1,7 +1,5 @@
 <template name="uiThemeDetails">
   <div class="container-fluid-sm">
-    <h3>Components</h3>
-    {{> button title="Publish Theme" onClick=publishTheme}}
     <div class="rui items">
       {{#each component in components}}
         <div class="rui item axis vertical">
@@ -18,7 +16,7 @@
             </div>
 
             <div class="controls">
-              {{> button icon="gear fa-fw"}}
+              {{> button icon="fa fa-gear fa-fw"}}
             </div>
 
           </div>
@@ -31,4 +29,26 @@
       {{/each}}
     </div>
   </div>
+</template>
+
+<template name="uiThemeDetailsDashboardHeader">
+    <div class="nav nav-dashboard">
+      <div class="nav-dashboard-heading">
+        <h3 class="nav-dashboard-title">
+          <span>Theme:</span> <span>{{theme.name}}</span>
+        </h3>
+      </div>
+      <div class="nav-dashboard-controls">
+        <!-- dashboardHeaderControls -->
+        {{> Template.dynamic template=dashboardHeaderControls}}
+      </div>
+    </div>
+</template>
+
+<template name="uiThemeDetailsHeaderControls">
+  {{> button
+    title="Publish Theme"
+    primary=true
+    onClick=publishTheme
+  }}
 </template>

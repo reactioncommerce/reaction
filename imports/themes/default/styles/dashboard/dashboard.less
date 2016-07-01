@@ -181,11 +181,13 @@ Dashboard Swiper Pagination Styles
 
 
 .nav-dashboard {
-  .display(flex);
-  .align-items(center);
+  display: flex;
+  align-items: center;
   .padding-left(20px);
   .padding-right(20px);
+
   min-height: @navbar-dashboard-height;
+  height: @navbar-dashboard-height;
   background-color: @navbar-dashboard-bg;
   border-bottom: 1px solid @navbar-dashboard-border-color;
 
@@ -201,6 +203,7 @@ Dashboard Swiper Pagination Styles
     .flex-direction(column);
     .align-items(flex-start);
     min-height: @navbar-dashboard-height-sm;
+    height: auto;
   }
 }
 
@@ -225,17 +228,18 @@ Dashboard Swiper Pagination Styles
 }
 
 .nav-dashboard-controls {
-  .display(flex);
-  .flex(1 1 auto);
-  .align-items(center);
-  .flex-wrap(wrap);
+  display: flex;
+  flex: 1 1 auto;
+  justify-content: flex-end;
+  align-items: center;
+  flex-wrap: wrap;
   height: 100%;
 
   > button, > .btn {
     .margin-left(10px);
 
-    width: 70px;
-    height: 100%;
+    // width: 70px;
+    // height: 100%;
     border: none;
     border-left: 1px solid @border-color;
     border-radius: 0;
@@ -251,7 +255,7 @@ Dashboard Swiper Pagination Styles
 }
 
 .nav-dashboard-controls .nav-pills {
-
+  flex: 1 1 auto;
   .flex-wrap(wrap);
 
   > li > a {

@@ -1,3 +1,4 @@
+import { ReactiveDict } from "meteor/reactive-dict";
 import { Reaction, Router, i18next } from "/client/api";
 import { Themes } from "/lib/collections";
 
@@ -86,4 +87,19 @@ Template.uiThemeDetails.events({
     });
   }
 
+});
+
+Template.uiThemeDetailsDashboardHeader.onCreated(function () {
+  this.state = new ReactiveDict();
+
+  this.autorun(() => {
+    const theme = Themes.findOne({name: "base"});
+    this.state.set("theme", theme);
+  });
+});
+
+Template.uiThemeDetailsDashboardHeader.helpers({
+  theme() {
+    return Template.instance().state.get("theme");
+  }
 });
