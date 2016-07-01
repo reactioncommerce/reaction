@@ -2,12 +2,12 @@ require("money");
 require("autonumeric");
 import $ from "jquery";
 import accounting from "accounting-js";
-import { Reaction, i18next } from "/client/api";
-import { NumericInput } from "/imports/plugins/core/ui/client/components";
-import { Media, Orders, Shops } from "/lib/collections";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { Session } from "meteor/session";
+import { Reaction, i18next, Logger } from "/client/api";
+import { NumericInput } from "/imports/plugins/core/ui/client/components";
+import { Media, Orders, Shops } from "/lib/collections";
 
 //
 // core order shipping invoice templates
@@ -85,6 +85,7 @@ Template.coreOrderShippingInvoice.events({
     Meteor.call("orders/approvePayment", order, discount, (error) => {
       if (error) {
         // Show error
+        Logger.warn(error);
       }
     });
   },
@@ -220,7 +221,9 @@ Template.coreOrderShippingInvoice.helpers({
   },
 
   currencySymbol() {
-    return Reaction.Locale.currency.symbol;
+    // return Reaction.Locale.currency.symbol;
+    const locale = Session.get("locale");
+    return locale.currency.symbol;
   },
 
   disabled() {
