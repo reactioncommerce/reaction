@@ -1,10 +1,9 @@
+import PayFlow from "paypal-rest-sdk"; // PayFlow is PayPal PayFlow lib
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { Reaction, Logger } from "/server/api";
 import { Shops } from "/lib/collections";
-import { Paypal } from "../../lib/api";
-// PayFlow is PayPal lib
-import PayFlow from "paypal-rest-sdk";
+import { Paypal } from "../../lib/api"; // Paypal is the reaction api
 
 Meteor.methods({
   /**
@@ -19,7 +18,7 @@ Meteor.methods({
     check(transactionType, String);
     check(cardData, Object);
     check(paymentData, Object);
-    this.unblock();
+    // this.unblock();
     PayFlow.configure(Paypal.payflowAccountOptions());
     let paymentObj = Paypal.paymentObj();
     paymentObj.intent = transactionType;
@@ -51,7 +50,6 @@ Meteor.methods({
    */
   "payflowpro/payment/capture": function (paymentMethod) {
     check(paymentMethod, Reaction.Schemas.PaymentMethod);
-    this.unblock();
     PayFlow.configure(Paypal.payflowAccountOptions());
     let result;
     // TODO: This should be changed to some ReactionCore method
@@ -81,7 +79,7 @@ Meteor.methods({
       Logger.warn(error);
       result = {
         saved: false,
-        error: e
+        error: error
       };
     }
     return result;
@@ -151,7 +149,7 @@ Meteor.methods({
         }
       }
     } catch (error) {
-      Logger.warn("Couln't get paypal payment info", e);
+      Logger.warn("Couln't get paypal payment info", error);
       result = {
         error: error
       };
