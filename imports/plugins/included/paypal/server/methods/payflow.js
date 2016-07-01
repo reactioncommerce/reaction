@@ -91,11 +91,11 @@ Meteor.methods({
     this.unblock();
 
     PayFlow.configure(Paypal.payflowAccountOptions());
-
     let createRefund = Meteor.wrapAsync(PayFlow.capture.refund, PayFlow.capture);
     let result;
 
     try {
+      Logger.debug("payflowpro/refund/create: paymentMethod.metadata.captureId", paymentMethod.metadata.captureId)
       let response = createRefund(paymentMethod.metadata.captureId, {
         amount: {
           total: amount,
@@ -127,32 +127,35 @@ Meteor.methods({
     PayFlow.configure(Paypal.payflowAccountOptions());
 
     let listPayments = Meteor.wrapAsync(PayFlow.payment.get, PayFlow.payment);
-    let result;
+    let result = [];
+    let authId = paymentMethod.metadata.parentPaymentId || paymentMethod.metadata.authorizationId;
 
-    try {
-      let response = listPayments(paymentMethod.metadata.parentPaymentId);
-      result = [];
+    if (authId) {
+      Logger.debug("payflowpro/refund/list: paymentMethod.metadata.parentPaymentId", authId);
+      try {
+        let response = listPayments(authId);
 
-      for (let transaction of response.transactions) {
-        for (let resource of transaction.related_resources) {
-          if (_.isObject(resource.refund)) {
-            if (resource.refund.state === "completed") {
-              result.push({
-                type: "refund",
-                created: resource.refund.create_time,
-                amount: Math.abs(resource.refund.amount.total),
-                currency: resource.refund.amount.currency,
-                rawTransaction: resource.refund
-              });
+        for (let transaction of response.transactions) {
+          for (let resource of transaction.related_resources) {
+            if (_.isObject(resource.refund)) {
+              if (resource.refund.state === "completed") {
+                result.push({
+                  type: "refund",
+                  created: resource.refund.create_time,
+                  amount: Math.abs(resource.refund.amount.total),
+                  currency: resource.refund.amount.currency,
+                  rawTransaction: resource.refund
+                });
+              }
             }
           }
         }
+      } catch (error) {
+        Logger.warn("Failed payflowpro/refund/list", error);
+        result = {
+          error: error
+        };
       }
-    } catch (error) {
-      Logger.warn("Couln't get paypal payment info", error);
-      result = {
-        error: error
-      };
     }
 
     return result;
