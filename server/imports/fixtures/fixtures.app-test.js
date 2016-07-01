@@ -1,7 +1,8 @@
 import { Meteor } from "meteor/meteor";
+
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
-import { Roles } from "meteor/alanning:roles";
+
 import { Reaction } from "/server/api";
 import * as Collections from "/lib/collections";
 import Fixtures from "/server/imports/fixtures";
@@ -35,7 +36,10 @@ describe("Fixtures:", function () {
     expect(cartCount).to.be.above(0);
   });
 
-  it.skip("Order fixture should create an order", function () {
+  it("Order fixture should create an order", function () {
+    // Order has analytics hooks on it that need to be turned off
+    sandbox.stub(Collections.Orders._hookAspects.insert.before[0], "aspect");
+    sandbox.stub(Collections.Orders._hookAspects.update.before[0], "aspect");
     sandbox.stub(Reaction, "hasPermission", () => true);
     sandbox.stub(Meteor.server.method_handlers, "inventory/register", function () {
       check(arguments, [Match.Any]);
@@ -44,6 +48,13 @@ describe("Fixtures:", function () {
     expect(order).to.not.be.undefined;
     const orderCount = Collections.Orders.find().count();
     expect(orderCount).to.be.above(0);
+  });
+
+  it("Shop fixture should create a Shop", function () {
+    const shop = Factory.create("shop");
+    expect(shop).to.not.be.undefined;
+    const shopCount = Collections.Shops.find().count();
+    expect(shopCount).to.be.above(1);
   });
 
   it("Product fixture should create a product", function () {
