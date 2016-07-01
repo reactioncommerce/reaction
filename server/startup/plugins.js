@@ -27,11 +27,39 @@ function isEmptyOrMissing(searchPath) {
 
 
 /**
+ * Dynamically create a plugin imports file on client or server
+ * @param  {String} file - absolute path to file to write
+ * @param  {Array} imports - array of import path strings
+ * @return {Boolean} returns true if no error
+ */
+function generateImportsFile(file, imports) {
+  // create/reset imports file
+  try {
+    Logger.info(`Resetting plugins file at ${file}`);
+    fs.writeFileSync(file, "");
+  } catch (e) {
+    Logger.error(e, `Failed to reset plugins file at ${file}`);
+    throw new Meteor.Error(e);
+  }
+
+  // populate plugins file with imports
+  imports.forEach((importPath) => {
+    try {
+      fs.appendFileSync(file, `import "${importPath}";\n`);
+    } catch (e) {
+      Logger.error(e, `Failed to write to plugins file at ${importPath}`);
+      throw new Meteor.Error(e);
+    }
+  });
+}
+
+
+/**
  * Import (require) Reaction plugins
  * @param {String} baseDirPath - path to a plugins sub-directory (core/included/custom)
- * @return {Boolean} - returns true if there are no errors
+ * @return {Object} - returns object with client and server keys that contain arrays
  */
-export function requirePlugins(baseDirPath) {
+function getImportPaths(baseDirPath) {
   // get an array of directories at a path
   const getDirectories = (dir) => {
     return fs.readdirSync(dir).filter((file) => {
@@ -53,6 +81,9 @@ export function requirePlugins(baseDirPath) {
   // get all plugin directories at provided base path
   const pluginDirs = getDirectories(baseDirPath);
 
+  let clientImportPaths = [];
+  let serverImportPaths = [];
+
   // read registry.json and require server/index.js if they exist
   pluginDirs.forEach((plugin) => {
     const registryImport = baseDirPath + plugin + "/register.json";
@@ -73,13 +104,22 @@ export function requirePlugins(baseDirPath) {
       pkg = _.find(packages, p => p.name === registry.name);
     }
 
+    // import the client files if they exist and plugin is enabled
+    if (!isEmptyOrMissing(clientImport)) {
+      Logger.info(`Client import found for ${plugin}`);
+
+      if (pkg && pkg.enabled || !pkg && registry && registry.autoEnable) {
+        clientImportPaths.push(getImportPath(clientImport));
+      }
+    }
+
     // import the server files if they exist and plugin is enabled
     if (!isEmptyOrMissing(serverImport)) {
       Logger.info(`Server import found for ${plugin}`);
 
       if (pkg && pkg.enabled || !pkg && registry && registry.autoEnable) {
         Logger.info(`${_.upperFirst(plugin)} plugin is enabled.`);
-        require(getImportPath(serverImport));
+        serverImportPaths.push(getImportPath(serverImport));
       }
     }
 
@@ -106,7 +146,10 @@ export function requirePlugins(baseDirPath) {
     Logger.info("");
   });
 
-  return true;
+  return {
+    client: clientImportPaths,
+    server: serverImportPaths
+  };
 }
 
 
@@ -120,7 +163,18 @@ const includedPlugins = pluginsPath + "included/";
 
 
 export default function () {
-  requirePlugins(corePlugins);
-  requirePlugins(customPlugins);
-  requirePlugins(includedPlugins);
+  // get imports from each plugin directory
+  const core = getImportPaths(corePlugins);
+  const custom = getImportPaths(customPlugins);
+  const included = getImportPaths(includedPlugins);
+
+  // concat all imports
+  const client = [].concat(core.client, custom.client, included.client);
+  const server = [].concat(core.server, custom.server, included.server);
+
+  const appRoot = path.resolve(".").split(".meteor")[0];
+
+  // create import files on client and server and write import statements
+  generateImportsFile(appRoot + "client/plugins.js", client);
+  generateImportsFile(appRoot + "server/plugins.js", server);
 }
