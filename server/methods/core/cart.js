@@ -635,11 +635,16 @@ Meteor.methods({
         Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow",
           "coreCheckoutShipping");
       }
-      Logger.info("Transitioned cart " + cartId + " to order " +
-        orderId);
-      Meteor.call("orders/sendNotification",
-        Collections.Orders.findOne(orderId));
 
+      Logger.info("Transitioned cart " + cartId + " to order " + orderId);
+      // catch send notification, we don't want
+      // to block because of notification errors
+      try {
+        Meteor.call("orders/sendNotification", Collections.Orders.findOne(orderId));
+      } catch (error) {
+        Logger.warn(error, `Error in orders/sendNotification for ${orderId}`);
+      }
+      // order success
       return orderId;
     }
     // we should not have made it here, throw error
