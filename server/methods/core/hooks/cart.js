@@ -16,10 +16,11 @@ MethodHooks.after("cart/submitPayment", function (options) {
     let cart = Cart.findOne({
       userId: Meteor.userId()
     });
-    // update workflow
-    Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow",
-      "paymentSubmitted");
 
+    // update workflow
+    Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow", "paymentSubmitted");
+
+    // create order
     if (cart) {
       if (cart.items && cart.billing[0].paymentMethod) {
         const orderId = Meteor.call("cart/copyCartToOrder", cart._id);

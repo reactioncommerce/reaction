@@ -1,10 +1,10 @@
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
+import { HTTP } from "meteor/http";
 import { Job } from "meteor/vsivsi:job-collection";
 import * as Collections from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 import { GeoCoder, Logger, Reaction } from "/server/api";
-import { HTTP } from "meteor/http";
 
 /**
  * Reaction Shop Methods

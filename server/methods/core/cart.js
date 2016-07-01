@@ -1,9 +1,9 @@
+import { _ } from "lodash";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import * as Collections from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 import { Logger, Reaction } from "/server/api";
-import { _ } from "lodash";
 
 /**
  * quantityProcessing
