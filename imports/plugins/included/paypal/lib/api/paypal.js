@@ -66,17 +66,17 @@ export const Paypal = {
     return options;
   },
   authorize: function (cardInfo, paymentInfo, callback) {
-    Meteor.call("payflowProSubmit", "authorize", cardInfo, paymentInfo, callback);
+    Meteor.call("payflowpro/payment/submit", "authorize", cardInfo, paymentInfo, callback);
   },
   capture: function (transactionId, amount, callback) {
     let captureDetails = {
       amount: {
-        currency: "USD",
+        currency: "USD", // todo should this be locale.currency
         total: parseFloat(amount, 10)
       },
       is_final_capture: true
     };
-    Meteor.call("paypalCapture", transactionId, captureDetails, callback);
+    Meteor.call("payflowpro/payment/capture", transactionId, captureDetails, callback);
   },
   config: function (options) {
     this.accountOptions = options;

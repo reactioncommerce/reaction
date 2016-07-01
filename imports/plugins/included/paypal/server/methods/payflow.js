@@ -7,14 +7,14 @@ import { Paypal } from "../../lib/api"; // Paypal is the reaction api
 
 Meteor.methods({
   /**
-   * payflowProSubmit
+   * payflowpro/payment/submit
    * Create and Submit a PayPal PayFlow transaction
    * @param  {Object} transactionType transactionType
    * @param  {Object} cardData cardData object
    * @param  {Object} paymentData paymentData object
    * @return {Object} results from PayPal payment create
    */
-  "payflowProSubmit": function (transactionType, cardData, paymentData) {
+  "payflowpro/payment/submit": function (transactionType, cardData, paymentData) {
     check(transactionType, String);
     check(cardData, Object);
     check(paymentData, Object);
@@ -158,7 +158,7 @@ Meteor.methods({
     return result;
   },
 
-  "getPayflowSettings": function () {
+  "payflowpro/settings": function () {
     let settings = Paypal.payflowAccountOptions();
     let payflowSettings = {
       mode: settings.mode,
