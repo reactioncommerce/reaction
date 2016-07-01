@@ -122,28 +122,6 @@ function getImportPaths(baseDirPath) {
         serverImportPaths.push(getImportPath(serverImport));
       }
     }
-
-    if (registry && registry.name) {
-      Logger.info(`Updating the imports for ${plugin}`);
-
-      // update import paths in the database
-      Packages.update({ name: registry.name }, {
-        $set: {
-          imports: [{
-            type: "registry",
-            path: isEmptyOrMissing(registryImport) ? "" : getImportPath(registryImport)
-          }, {
-            type: "client",
-            path: isEmptyOrMissing(clientImport) ? "" : getImportPath(clientImport)
-          }, {
-            type: "server",
-            path: isEmptyOrMissing(serverImport) ? "" : getImportPath(serverImport)
-          }]
-        }
-      });
-    }
-    // temporary separator in the logs for easier reading
-    Logger.info("");
   });
 
   return {
