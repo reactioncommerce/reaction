@@ -147,12 +147,12 @@ export default function () {
   const included = getImportPaths(includedPlugins);
 
   // concat all imports
-  const client = [].concat(core.client, custom.client, included.client);
-  const server = [].concat(core.server, custom.server, included.server);
+  const clientImports = [].concat(core.client, custom.client, included.client);
+  const serverImports = [].concat(core.server, custom.server, included.server);
 
   const appRoot = path.resolve(".").split(".meteor")[0];
 
   // create import files on client and server and write import statements
-  generateImportsFile(appRoot + "client/plugins.js", client);
-  generateImportsFile(appRoot + "server/plugins.js", server);
+  generateImportsFile(appRoot + "client/plugins.js", clientImports);
+  generateImportsFile(appRoot + "server/plugins.js", serverImports);
 }
