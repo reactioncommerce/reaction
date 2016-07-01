@@ -294,7 +294,9 @@ Meteor.methods({
   "orders/sendNotification": function (order) {
     check(order, Object);
 
-    if (!Reaction.hasPermission("orders")) {
+    // just make sure this a real userId
+    // todo: ddp limit
+    if (!Meteor.userId()) {
       throw new Meteor.Error(403, "Access Denied");
     }
 
