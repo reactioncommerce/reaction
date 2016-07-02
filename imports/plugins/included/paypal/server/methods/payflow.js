@@ -18,8 +18,10 @@ Meteor.methods({
     check(transactionType, String);
     check(cardData, Object);
     check(paymentData, Object);
-    // this.unblock();
+    this.unblock();
+
     PayFlow.configure(Paypal.payflowAccountOptions());
+
     let paymentObj = Paypal.paymentObj();
     paymentObj.intent = transactionType;
     paymentObj.payer.funding_instruments.push(Paypal.parseCardData(cardData));
@@ -50,7 +52,10 @@ Meteor.methods({
    */
   "payflowpro/payment/capture": function (paymentMethod) {
     check(paymentMethod, Reaction.Schemas.PaymentMethod);
+    this.unblock();
+
     PayFlow.configure(Paypal.payflowAccountOptions());
+
     let result;
     // TODO: This should be changed to some ReactionCore method
     const shop = Shops.findOne(Reaction.getShopId());
@@ -91,11 +96,12 @@ Meteor.methods({
     this.unblock();
 
     PayFlow.configure(Paypal.payflowAccountOptions());
+
     let createRefund = Meteor.wrapAsync(PayFlow.capture.refund, PayFlow.capture);
     let result;
 
     try {
-      Logger.debug("payflowpro/refund/create: paymentMethod.metadata.captureId", paymentMethod.metadata.captureId)
+      Logger.debug("payflowpro/refund/create: paymentMethod.metadata.captureId", paymentMethod.metadata.captureId);
       let response = createRefund(paymentMethod.metadata.captureId, {
         amount: {
           total: amount,
@@ -128,6 +134,8 @@ Meteor.methods({
 
     let listPayments = Meteor.wrapAsync(PayFlow.payment.get, PayFlow.payment);
     let result = [];
+    // todo: review parentPaymentId vs authorizationId, are they both correct?
+    // added authorizationId without fully understanding the intent of parentPaymentId
     let authId = paymentMethod.metadata.parentPaymentId || paymentMethod.metadata.authorizationId;
 
     if (authId) {
