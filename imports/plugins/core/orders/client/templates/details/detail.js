@@ -1,4 +1,6 @@
-import * as Collections from "/lib/collections";
+import moment from "moment";
+import { Accounts } from "/lib/collections";
+import { Template } from "meteor/templating";
 
 /**
  * orderDetail helpers
@@ -16,7 +18,7 @@ Template.orderDetail.helpers({
     const instance = Template.instance();
     if (instance.subscriptionsReady()) {
       if (typeof this.userId === "string") {
-        const userProfile = Collections.Accounts.findOne(this.userId);
+        const userProfile = Accounts.findOne(this.userId);
         if (!userProfile) {
           return {};
         }

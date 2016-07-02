@@ -1,3 +1,6 @@
+import { EJSON } from "meteor/ejson";
+import { check } from "meteor/check";
+import { Meteor } from "meteor/meteor";
 import { Catalog } from "/lib/api";
 import { Media, Products, Tags } from "/lib/collections";
 import { Logger, Reaction } from "/server/api";
@@ -846,14 +849,16 @@ Meteor.methods({
       });
     }
 
-    newTag.isTopLevel = false;
-    newTag.shopId = Reaction.getShopId();
-    newTag.updatedAt = new Date();
-    newTag.createdAt = new Date();
-    newTag._id = Tags.insert(newTag);
+    const newTagId = Meteor.call("shop/createTag", tagName, false);
+
+    // if result is an Error object, we return it immediately
+    if (typeof newTagId !== "string") {
+      return newTagId;
+    }
+
     return Products.update(productId, {
       $push: {
-        hashtags: newTag._id
+        hashtags: newTagId
       }
     }, {
       selector: {

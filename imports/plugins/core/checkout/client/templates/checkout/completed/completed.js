@@ -1,5 +1,8 @@
+import { Meteor } from "meteor/meteor";
+import { Session } from "meteor/session";
 import { Reaction, i18next } from "/client/api";
 import { Orders } from "/lib/collections";
+import { Template } from "meteor/templating";
 
 /**
  * cartCompleted helpers
@@ -7,17 +10,21 @@ import { Orders } from "/lib/collections";
  * if order status = new translate submitted message
  */
 Template.cartCompleted.helpers({
-  order: function () {
+  orderCompleted: function () {
     const id =  Reaction.Router.getQueryParam("_id");
     if (id) {
       const ccoSub = Meteor.subscribe("CompletedCartOrder", Meteor.userId(), id);
       if (ccoSub.ready()) {
-        return Orders.findOne({
-          userId: Meteor.userId(),
-          cartId: Reaction.Router.getQueryParam("_id")
-        });
+        return true;
       }
     }
+    return false;
+  },
+  order: function () {
+    return Orders.findOne({
+      userId: Meteor.userId(),
+      cartId: Reaction.Router.getQueryParam("_id")
+    });
   },
   orderStatus: function () {
     if (this.workflow.status === "new") {
@@ -32,6 +39,7 @@ Template.cartCompleted.helpers({
         cartId: this._id
       });
     }
+    return {};
   }
 });
 
@@ -41,8 +49,9 @@ Template.cartCompleted.helpers({
  * adds email to order
  */
 Template.cartCompleted.events({
-  "click #update-order": function (event, template) {
-    const email = template.find("input[name=email]").value;
+  "click #update-order": function () {
+    let templateInstance = Template.instance();
+    const email = templateInstance.find("input[name=email]").value;
     check(email, String);
     const cartId = Reaction.Router.getQueryParam("_id");
     return Meteor.call("orders/addOrderEmail", cartId, email);

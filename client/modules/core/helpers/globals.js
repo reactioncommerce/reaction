@@ -1,3 +1,7 @@
+import { Session } from "meteor/session";
+import { Meteor } from "meteor/meteor";
+// import { Roles } from "meteor/roles";
+
 // Reaction Globals
 //
 // These should all be removed. PR's happily accepted.

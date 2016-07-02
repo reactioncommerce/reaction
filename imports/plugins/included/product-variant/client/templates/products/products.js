@@ -1,6 +1,8 @@
 import { Reaction } from "/client/api";
 import { ReactionProduct } from "/lib/api";
 import { Products, Tags } from "/lib/collections";
+import { Session } from "meteor/session";
+import { Template } from "meteor/templating";
 
 /**
  * loadMoreProducts

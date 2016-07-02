@@ -1,4 +1,5 @@
 import { Accounts } from "meteor/accounts-base";
+import { Session } from "meteor/session";
 // import { amplify } from "meteor/amplify";
 
 /*

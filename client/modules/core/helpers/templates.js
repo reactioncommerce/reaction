@@ -1,7 +1,10 @@
-import { i18next } from "/client/modules/i18n";
+import { i18next } from "/client/api";
 import { Reaction } from "../";
 import * as Collections from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
+import { Meteor } from "meteor/meteor";
+import { Template } from "meteor/templating";
+import moment from "moment";
 
 /*
  *

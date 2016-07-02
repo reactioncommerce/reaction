@@ -649,4 +649,3 @@ describe("Account Meteor method ", function () {
     });
   });
 });
-

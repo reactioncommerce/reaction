@@ -1,6 +1,7 @@
 import { Tracker } from "meteor/tracker";
 import Logger from "/client/modules/logger";
 import Reaction from "./main";
+import { Meteor } from "meteor/meteor";
 
 // @see https://developer.mozilla.org/en-US/docs/Web/API/Page_Visibility_API
 let hidden;
@@ -36,16 +37,14 @@ Meteor.startup(function () {
     const userId = Meteor.userId();
     // TODO: maybe `visibilityState` will be better here
     let isHidden;
-    let guestAreAllowed;
     let loggingIn;
     let sessionId;
     Tracker.nonreactive(function () {
-      guestAreAllowed = Reaction.allowGuestCheckout();
       isHidden = document[hidden];
       loggingIn = Accounts.loggingIn();
       sessionId = amplify.store("Reaction.session");
     });
-    if (guestAreAllowed && !userId) {
+    if (!userId) {
       if (!isHidden && !loggingIn || typeof sessionId !== "string") {
         Accounts.loginWithAnonymous();
       }

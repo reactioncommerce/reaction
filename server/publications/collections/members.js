@@ -1,6 +1,9 @@
 import { Meteor } from "meteor/meteor";
-import { Logger, Reaction } from "/server/api";
+import { EJSON } from "meteor/ejson";
+
 import { Roles } from "meteor/alanning:roles";
+
+import { Logger, Reaction } from "/server/api";
 
 /* eslint quote-props: 0 */
 /**

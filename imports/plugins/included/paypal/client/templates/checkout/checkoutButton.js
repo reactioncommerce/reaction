@@ -1,4 +1,6 @@
 import { Meteor } from "meteor/meteor";
+import { Session } from "meteor/session";
+import { Template } from "meteor/templating";
 import { Cart } from "/lib/collections";
 import { PaypalClientAPI } from "../../lib/paypalRestApi";
 

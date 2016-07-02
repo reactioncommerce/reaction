@@ -1,4 +1,6 @@
-import * as Collections from "/lib/collections";
+import moment from "moment";
+import { Template } from "meteor/templating";
+import { Accounts } from "/lib/collections";
 
 /**
 * pageOrderDetail helpers
@@ -7,7 +9,7 @@ import * as Collections from "/lib/collections";
 Template.pageOrderDetail.helpers({
   userProfile: function () {
     if (typeof this.userId === "string") {
-      const userProfile = Collections.Accounts.findOne(this.userId);
+      const userProfile = Accounts.findOne(this.userId);
       return userProfile.profile;
     }
   },

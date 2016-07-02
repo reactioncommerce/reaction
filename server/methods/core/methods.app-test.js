@@ -52,6 +52,29 @@ describe("Server/Core", function () {
     });
   });
 
+  describe("shop/createTag", () => {
+    beforeEach(() => {
+      Tags.remove({});
+    });
+
+    it("should throw 403 error by non admin", () => {
+      sandbox.stub(Roles, "userIsInRole", () => false);
+      sandbox.spy(Tags, "insert");
+      expect(function () {
+        return Meteor.call("shop/createTag", "testTag", true);
+      }).to.throw(Meteor.Error, /Access Denied/);
+      expect(Tags.insert).not.to.have.been.called;
+    });
+
+    it("should create new tag", done => {
+      sandbox.stub(Roles, "userIsInRole", () => true);
+      sandbox.spy(Tags, "insert");
+      expect(Meteor.call("shop/createTag", "testTag", true)).to.be.a("string");
+      expect(Tags.insert).to.have.been.called;
+      return done();
+    });
+  });
+
   describe("shop/updateHeaderTags", function () {
     beforeEach(function () {
       Shops.remove({});

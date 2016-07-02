@@ -1,5 +1,7 @@
-import { Reaction, i18next } from "/client/api";
+import { Reaction, i18next, i18nextDep } from "/client/api";
 import * as Collections from "/lib/collections";
+import { Meteor } from "meteor/meteor";
+import { Template } from "meteor/templating";
 
 Template.registerHelper("getGravatar", function (currentUser, size) {
   const options = {
@@ -24,6 +26,8 @@ Template.registerHelper("getGravatar", function (currentUser, size) {
  * registerHelper displayName
  */
 Template.registerHelper("displayName", function (displayUser) {
+  i18nextDep.depend();
+
   const user = displayUser || Accounts.user();
   if (user) {
     if (user.profile && user.profile.name) {

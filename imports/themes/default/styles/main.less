@@ -2,20 +2,6 @@
 // Import Bootstrap 3 Styles
 //
 
-
-// Add Font Awesome
-// Fonts are installed in package.json postinstall script
-@import "{}/node_modules/font-awesome/less/font-awesome.less";
-
-// overwrite path from node_modules
-@font-face {
-  font-family: 'FontAwesome';
-  src: url('/fonts/fontawesome-webfont.eot?v=4.6.3');
-  src: url('/fonts/fontawesome-webfont.eot?#iefix&v=4.6.3') format('embedded-opentype'), url('/fonts/fontawesome-webfont.woff2?v=4.6.3') format('woff2'), url('/fonts/fontawesome-webfont.woff?v=4.6.3') format('woff'), url('/fonts/fontawesome-webfont.ttf?v=4.6.3') format('truetype'), url('/fonts/fontawesome-webfont.svg?v=4.6.3#fontawesomeregular') format('svg');
-  font-weight: normal;
-  font-style: normal;
-}
-
 // Core variables and mixins
 @import "{}/node_modules/bootstrap/less/variables.less";
 @import "{}/node_modules/bootstrap/less/mixins.less";
@@ -72,8 +58,8 @@
 // Reaction Core theme files
 //
 
-// Import Reaction Core Theme Styles
-@import "default/alerts.less";
+// Base Styles
+@import "alerts.less";
 @import "brand.less";
 @import "button.less";
 @import "buttonGroup.less";
@@ -95,48 +81,53 @@
 @import "themeEditor.less";
 @import "tooltip.less";
 @import "tooltip.less";
+@import "base.less";
+@import "dropdowns.less";
+@import "forms.less";
+@import "grid.less";
+@import "mixins.less";
+@import "navs.less";
+@import "panels.less";
+@import "popovers.less";
+@import "variables.less";
+@import "spinner.less";
 
-// Disabled: Reaction-UI can handle RTL
-// @import "{}/imports/themes/default/default/bootstrap.rtl.less";
-@import "default/dropdowns.less";
-@import "default/forms.less";
-@import "default/grid.less";
-@import "default/mixins.less";
-@import "default/navs.less";
-@import "default/panels.less";
-@import "default/popovers.less";
-@import "default/variables.less";
-@import "default/base.less";
-@import "default/spinner.less";
-@import "theme/accounts/accounts.less";
-@import "theme/accounts/inline/inline.less";
-@import "theme/cart/cartDrawer/cartDrawer.less";
-@import "theme/cart/cartDrawer/cartItems/cartItems.less";
-@import "theme/cart/cartDrawer/cartSubTotals/cartSubTotals.less";
-@import "theme/cart/cartIcon/cartIcon.less";
-@import "theme/cart/checkout/addressBook/addressBook.less";
-@import "theme/cart/checkout/checkout.less";
-@import "theme/cart/checkout/progressBar/progressBar.less";
-@import "theme/dashboard/console/console.less";
-@import "theme/dashboard/dashboard.less";
-@import "theme/dashboard/console/console.less";
-@import "theme/dashboard/orders/orders.less";
-@import "theme/dashboard/packages/grid/package/package.less";
-@import "theme/dashboard/shop/accounts.less";
-@import "theme/dashboard/shop/settings.less";
-@import "theme/dashboard/widget/widget.less";
-@import "theme/layout/footer/footer.less";
-@import "theme/layout/header/header.less";
-@import "theme/layout/header/tags/tags.less";
-@import "theme/layout/layout.less";
-@import "theme/products/productDetail/attributes/attributes.less";
-@import "theme/products/productDetail/images/productImageGallery.less";
-@import "theme/products/productDetail/productDetail.less";
-@import "theme/products/productDetail/tags/tags.less";
-@import "theme/products/productDetail/variants/variant.less";
-@import "theme/products/productDetail/variants/variantForm/childVariant/childVariant.less";
-@import "theme/products/productDetail/variants/variantForm/variantForm.less";
-@import "theme/products/productDetail/variants/variantList/variantList.less";
-@import "theme/products/productGrid/productGrid.less";
-@import "theme/products/productList/productList.less";
-@import "theme/products/products.less";
+// Accounts
+@import "accounts/accounts.less";
+@import "accounts/inline.less";
+
+// Cart
+@import "cart/cartDrawer.less";
+@import "cart/cartItems.less";
+@import "cart/cartSubTotals.less";
+@import "cart/cartIcon.less";
+@import "cart/addressBook.less";
+@import "cart/checkout.less";
+@import "cart/progressBar.less";
+
+// Dashboard
+@import "dashboard/dashboard.less";
+@import "dashboard/console.less";
+@import "dashboard/orders.less";
+@import "dashboard/package.less";
+@import "dashboard/accounts.less";
+@import "dashboard/settings.less";
+@import "dashboard/widget.less";
+
+// Layout
+@import "layout/layout.less";
+@import "layout/footer.less";
+@import "layout/header.less";
+@import "layout/tags.less";
+
+@import "products/products.less";
+@import "products/attributes.less";
+@import "products/productImageGallery.less";
+@import "products/productDetail.less";
+@import "products/tags.less";
+@import "products/variant.less";
+@import "products/childVariant.less";
+@import "products/variantForm.less";
+@import "products/variantList.less";
+@import "products/productGrid.less";
+@import "products/productList.less";

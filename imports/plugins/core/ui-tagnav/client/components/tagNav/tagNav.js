@@ -1,5 +1,7 @@
 import Sortable from "sortablejs";
 import { TagHelpers } from "/imports/plugins/core/ui-tagnav/client/helpers";
+import { Session } from "meteor/session";
+import { Template } from "meteor/templating";
 
 const NavbarStates = {
   Orientation: "stateNavbarOrientation",

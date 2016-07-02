@@ -1,7 +1,10 @@
 import { Reaction } from "/client/api";
 import { Cart } from "/lib/collections";
 import Logger from "/client/modules/logger";
-
+import { Meteor } from "meteor/meteor";
+import { Session } from "meteor/session";
+import { Template } from "meteor/templating";
+import { Tracker } from "meteor/tracker";
 
 // This template handles receiving the token from Paypal, recording it and moving on the checkout
 
@@ -73,7 +76,7 @@ Template.paypalDone.onCreated(function () {
 
           if (result) {
             let status;
-            // let mode = "authorize";
+            let mode = "authorize";
             // Normalize status depending on results
             if (result.PAYMENTSTATUS === "Pending") {
               status = "created";

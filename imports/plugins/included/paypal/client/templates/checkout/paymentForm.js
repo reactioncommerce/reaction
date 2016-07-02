@@ -1,3 +1,6 @@
+import { Meteor } from "meteor/meteor";
+import { Session } from "meteor/session";
+import { Template } from "meteor/templating";
 
 Template.paypalPaymentForm.onCreated(function () {
   Meteor.call("getExpressCheckoutSettings", function (error, expressCheckoutSettings) {
@@ -5,7 +8,7 @@ Template.paypalPaymentForm.onCreated(function () {
       return Session.set("expressCheckoutSettings", expressCheckoutSettings);
     }
   });
-  return Meteor.call("getPayflowSettings", function (error, payflowSettings) {
+  return Meteor.call("payflowpro/settings", function (error, payflowSettings) {
     if (!error) {
       return Session.set("payflowSettings", payflowSettings);
     }

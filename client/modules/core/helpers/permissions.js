@@ -1,4 +1,6 @@
 import { Reaction } from "../";
+import { Meteor } from "meteor/meteor";
+import { Template } from "meteor/templating";
 
 /*
  * Methods for the reaction permissions

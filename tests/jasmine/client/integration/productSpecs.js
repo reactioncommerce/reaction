@@ -1,5 +1,7 @@
 import { Router } from "/client/api";
 import { Cart, Products } from "/lib/collections";
+import { Meteor } from "meteor/meteor";
+import { Tracker } from "meteor/tracker";
 
 describe("Product", function () {
   beforeEach(function (done) {

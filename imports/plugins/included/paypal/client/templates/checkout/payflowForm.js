@@ -1,5 +1,6 @@
 /* eslint camelcase: 0 */
 import { Meteor } from "meteor/meteor";
+import { Template } from "meteor/templating";
 import Logger from "/client/modules/logger";
 import { Cart, Shops } from "/lib/collections";
 import { PaypalPayment } from "../../../lib/collections/schemas";
@@ -82,7 +83,7 @@ AutoForm.addHooks("paypal-payment-form", {
       total: Cart.findOne().cartTotal(),
       currency: Shops.findOne().currency
     }, function (error, transaction) {
-      submitting = false;
+      submitting = false; // todo: check scope
       if (error) {
         handlePaypalSubmitError(error);
         uiEnd(template, "Resubmit payment");
@@ -106,6 +107,7 @@ AutoForm.addHooks("paypal-payment-form", {
               return "failed";
             }
           })();
+
           let normalizedMode = (function () {
             switch (transaction.response.intent) {
             case "sale":
@@ -118,13 +120,21 @@ AutoForm.addHooks("paypal-payment-form", {
               return "capture";
             }
           })();
+
+          // just auth, not transaction
+          let authId = transaction.response.id;
+          // when auth and transaction
+          if (typeof transaction.response.transactions[0].related_resources[0] === "object") {
+            authId = transaction.response.transactions[0].related_resources[0].authorization.id;
+          }
+
           let paymentMethod = {
             processor: "PayflowPro",
             storedCard: storedCard,
             method: transaction.response.payer.payment_method,
-            transactionId: transaction.response.transactions[0].related_resources[0].authorization.id,
+            transactionId: authId,
             metadata: {
-              authorizationId: transaction.response.transactions[0].related_resources[0].authorization.id
+              authorizationId: authId
             },
             amount: Number(transaction.response.transactions[0].amount.total),
             status: normalizedStatus,

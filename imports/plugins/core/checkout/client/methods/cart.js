@@ -1,17 +1,14 @@
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
-import Logger from "/client/modules/logger";
-import { Reaction, i18next } from "/client/api";
+import { Logger, Reaction, i18next } from "/client/api";
 import { Cart } from "/lib/collections";
-import * as Schemas from "/lib/collections/schemas";
-
 
 // Client Cart Methods
 // Stubs with matching server methods.
 Meteor.methods({
   "cart/submitPayment": function (paymentMethod) {
-    check(paymentMethod, Schemas.PaymentMethod);
+    check(paymentMethod, Reaction.Schemas.PaymentMethod);
     let checkoutCart = Cart.findOne({
       userId: Meteor.userId()
     });
@@ -56,13 +53,12 @@ Meteor.methods({
       };
     }
 
-    Cart.update(selector, update, function (
-      error, result) {
+    Cart.update(selector, update, function (error, result) {
       if (error) {
-        Logger.warn(error);
+        Logger.debug(error, "An error occurred saving the order");
         throw new Meteor.Error("An error occurred saving the order", error);
       } else {
-        // it's ok for this to be called multiple times
+        // it's ok and a safety check for this to be called multiple times
         Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow", "paymentSubmitted");
         // Client Stub Actions
         if (result === 1) {
@@ -74,9 +70,8 @@ Meteor.methods({
             autoHide: true,
             placement: "paymentMethod"
           });
-          throw new Meteor.Error(
-            "An error occurred saving the order", cartId,
-            error);
+          Logger.debug(error, "An error occurred saving the order", cartId, error);
+          throw new Meteor.Error("An error occurred saving the order", cartId, error);
         }
       }
     });

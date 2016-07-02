@@ -1,5 +1,8 @@
 import { Reaction } from "/client/api";
 import { Tags } from "/lib/collections";
+import { Meteor } from "meteor/meteor";
+import { Session } from "meteor/session";
+import { Template } from "meteor/templating";
 
 Template.createContentMenu.helpers({
   buttonProps(item) {
