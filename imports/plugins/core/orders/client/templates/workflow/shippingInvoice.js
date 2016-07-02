@@ -4,6 +4,7 @@ import $ from "jquery";
 import accounting from "accounting-js";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
+import { ReactiveVar } from "meteor/reactive-var";
 import { Session } from "meteor/session";
 import { Reaction, i18next, Logger } from "/client/api";
 import { NumericInput } from "/imports/plugins/core/ui/client/components";
@@ -34,7 +35,7 @@ Template.coreOrderShippingInvoice.onCreated(function () {
 
     // template.order = getOrder(currentData.orderId);
     if (order) {
-      let paymentMethod = order.billing[0].paymentMethod;
+      const paymentMethod = order.billing[0].paymentMethod;
       Meteor.call("orders/refunds/list", paymentMethod, (error, result) => {
         if (!error) {
           this.refunds.set(result);
