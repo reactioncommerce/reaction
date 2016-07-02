@@ -1,10 +1,11 @@
 import moment from "moment";
+import { _ } from "lodash";
 import { HTTP } from "meteor/http";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { Paypal } from "../../lib/api";
 import { Shops, Cart, Packages } from "/lib/collections";
-import { Reaction } from "/server/api";
+import { Reaction, Logger } from "/server/api";
 
 let parseResponse;
 let parseRefundReponse;
@@ -207,10 +208,12 @@ Meteor.methods({
     check(paymentMethod, Reaction.Schemas.PaymentMethod);
     check(amount, Number);
     this.unblock();
-    let options = Paypal.expressCheckoutAccountOptions();
-    let previousTransaction = paymentMethod.transactions[1];
-    let transactionId = previousTransaction.transactionId;
-    let currencycode = previousTransaction.currencycode;
+
+    const options = Paypal.expressCheckoutAccountOptions();
+    const previousTransaction = _.last(paymentMethod.transactions);
+    const transactionId = previousTransaction.TRANSACTIONID;
+    const currencycode = previousTransaction.CURRENCYCODE;
+
     let response;
     try {
       response = HTTP.post(options.url, {
@@ -227,10 +230,12 @@ Meteor.methods({
         }
       });
     }  catch (error) {
+      Logger.debug(error, "Failed paypalexpress/refund/create");
       throw new Meteor.Error(error.message);
     }
 
     if (!response || response.statusCode !== 200) {
+      Logger.debug(error, "Bad Response from Paypal during Refund Creation");
       throw new Meteor.Error("Bad Response from Paypal during Refund Creation");
     }
 
@@ -269,9 +274,11 @@ Meteor.methods({
   "paypalexpress/refund/list": function (paymentMethod) {
     check(paymentMethod, Reaction.Schemas.PaymentMethod);
     this.unblock();
+
     let options = Paypal.expressCheckoutAccountOptions();
     let transactionId = paymentMethod.transactionId;
     let response;
+
     try {
       response = HTTP.post(options.url, {
         params: {
