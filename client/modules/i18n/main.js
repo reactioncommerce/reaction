@@ -112,12 +112,12 @@ Meteor.startup(() => {
       }
 
       // use i18n detected language to getLocale info
-      Meteor.call("shop/getLocale", function (error, result) {
+      Meteor.call("shop/getLocale", (error, result) => {
         if (result) {
           const locale = result;
-          locale.language = Session.get("language");
+          locale.language = getBrowserLanguage();
           moment.locale(locale.language);
-          Session.set("locale", locale);
+          Reaction.Locale.set(locale);
           localeDep.changed();
 
           // Stop the tracker
