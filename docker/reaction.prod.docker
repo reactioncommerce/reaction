@@ -1,14 +1,13 @@
 FROM debian:jessie
 MAINTAINER Reaction Commerce <hello@reactioncommerce.com>
 
-ENV NODE_VERSION "0.10.43"
+ENV NODE_VERSION "0.10.45"
 
 # Install PhantomJS
 ENV INSTALL_PHANTOMJS "true"
-ENV PHANTOMJS_VERSION "2.1.7"
 
 # Install MongoDB
-ENV INSTALL_MONGO "true"
+ENV INSTALL_MONGO "false"
 ENV MONGO_MAJOR "3.2"
 ENV MONGO_VERSION "3.2.4"
 
