@@ -1,21 +1,16 @@
 FROM debian:jessie
 MAINTAINER Reaction Commerce <hello@reactioncommerce.com>
 
+ENV DEV_BUILD "true"
+
 ENV NODE_VERSION "0.10.45"
 
 # Install PhantomJS
 ENV INSTALL_PHANTOMJS "true"
 
-# Install MongoDB
-ENV INSTALL_MONGO "false"
-ENV MONGO_MAJOR "3.2"
-ENV MONGO_VERSION "3.2.4"
-
 # Meteor environment variables
 ENV PORT "80"
 ENV ROOT_URL "http://localhost"
-ENV MONGO_URL "mongodb://127.0.0.1:27017/meteor"
-ENV PACKAGE_DIRS "packages"
 
 # build script directories
 ENV APP_SOURCE_DIR "/var/src"
@@ -27,16 +22,17 @@ COPY docker/scripts $BUILD_SCRIPTS_DIR
 
 RUN chmod -R +x $BUILD_SCRIPTS_DIR
 
-# copy the app to the container
-COPY . $APP_SOURCE_DIR
-
-# install base dependencies, build app, cleanup
+# install base dependencies, cleanup
 RUN bash $BUILD_SCRIPTS_DIR/install-deps.sh && \
-		bash $BUILD_SCRIPTS_DIR/install-mongodb.sh && \
 		bash $BUILD_SCRIPTS_DIR/install-node.sh && \
 		bash $BUILD_SCRIPTS_DIR/install-phantom.sh && \
+		bash $BUILD_SCRIPTS_DIR/post-install-cleanup.sh
+
+# copy the app to the container, build it, cleanup
+COPY . $APP_SOURCE_DIR
+
+RUN cd $APP_SOURCE_DIR && \
 		bash $BUILD_SCRIPTS_DIR/install-meteor.sh && \
- 		cd $APP_SOURCE_DIR && \
 		bash $BUILD_SCRIPTS_DIR/build-meteor.sh && \
 		bash $BUILD_SCRIPTS_DIR/post-build-cleanup.sh
 
