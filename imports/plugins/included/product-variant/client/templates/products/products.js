@@ -1,6 +1,7 @@
 import { Reaction } from "/client/api";
 import { ReactionProduct } from "/lib/api";
 import { Products, Tags } from "/lib/collections";
+import { ITEMS_INCREMENT } from "/client/config/defaults";
 
 /**
  * loadMoreProducts
