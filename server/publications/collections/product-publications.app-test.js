@@ -130,14 +130,11 @@ describe("Publication", function () {
         some(title => title === data.title)).to.be.ok;
       });
 
-      it.skip("should return only products matching query", function () {
+      it("should return only products matching query", function () {
         const productScrollLimit = 24;
         const filters = {query: "Shopkins"};
         sandbox.stub(Reaction, "getCurrentShop", () => shop);
         sandbox.stub(Roles, "userIsInRole", () => false);
-        // spyOn(Reaction, "getCurrentShop").and.returnValue(shop);
-        // spyOn(Roles, "userIsInRole").and.returnValue(false);
-        // execute
         const productsPub = Meteor.server.publish_handlers["Products"];
         const cursor = productsPub(productScrollLimit, filters);
         const data = cursor.fetch()[0];

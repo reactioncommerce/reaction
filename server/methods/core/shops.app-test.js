@@ -49,9 +49,7 @@ describe("core shop methods", function () {
     });
 
     it("should throw 403 error by non admin", function (done) {
-      sandbox.stub(Reaction, "hasPermission", function () {
-        return false;
-      });
+      sandbox.stub(Reaction, "hasPermission", () => false);
       let insertShopSpy = sandbox.spy(Shops, "insert");
       function createShopFunc() {
         return Meteor.call("shop/createShop");
@@ -61,17 +59,12 @@ describe("core shop methods", function () {
       return done();
     });
 
-    it.skip("should create new shop for admin for userId and shopObject", function () {
-      sandbox.stub(Meteor, "userId", function () {
-        return "12345678";
-      });
-      sandbox.stub(Reaction, "hasOwnerAccess", function () {
-        return true;
-      });
+    it("should create new shop for admin for userId and shopObject", function () {
+      sandbox.stub(Meteor, "userId", () => "12345678");
+      sandbox.stub(Reaction, "hasOwnerAccess", () => true);
       Meteor.call("shop/createShop", "12345678", shop);
       const newShopCount = Shops.find({name: shop.name}).count();
       expect(newShopCount).to.equal(1);
-      // return done();
     });
   });
 });
