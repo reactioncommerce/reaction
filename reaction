@@ -21,6 +21,9 @@ elif [[ "$@" == "test" ]]; then
   SERVER_TEST_REPORTER="dot" meteor test --once --full-app --driver-package dispatch:mocha
   #meteor test --once --full-app --driver-package dispatch:mocha
 elif [[ "$@" == "test-with-coverage" ]]; then
+  export COVERAGE=1
+  export COVERAGE_VERBOSE=1
+  export COVERAGE_APP_FOLDER=$(pwd)/
   SERVER_TEST_REPORTER="HTMLCov" meteor test --once --full-app --driver-package dispatch:mocha
 elif [[ "$@" == "unit-test" ]]; then
   SERVER_TEST_REPORTER="dot" meteor test --once --driver-package dispatch:mocha
