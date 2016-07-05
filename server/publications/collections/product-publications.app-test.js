@@ -118,9 +118,7 @@ describe("Publication", function () {
 
       it("should return only visible products to visitors", function () {
         sandbox.stub(Reaction, "getCurrentShop", () => shop);
-        // spyOn(ReactionCore, "getCurrentShop").and.returnValue(shop);
         sandbox.stub(Roles, "userIsInRole", () => false);
-        // spyOn(Roles, "userIsInRole").and.returnValue(false);
         const productsPub = Meteor.server.publish_handlers["Products"];
         const cursor = productsPub();
         const data = cursor.fetch()[0];
@@ -145,9 +143,7 @@ describe("Publication", function () {
         const productScrollLimit = 24;
         const filters = {query: "random search"};
         sandbox.stub(Reaction, "getCurrentShop", () => shop);
-        // spyOn(Reaction, "getCurrentShop").and.returnValue(shop);
         sandbox.stub(Roles, "userIsInRole", () => false);
-        // spyOn(Roles, "userIsInRole").and.returnValue(false);
         const productsPub = Meteor.server.publish_handlers["Products"];
         const cursor = productsPub(productScrollLimit, filters);
         // verify
@@ -159,8 +155,6 @@ describe("Publication", function () {
         const filters = {"price.min": "2.00"};
         sandbox.stub(Reaction, "getCurrentShop", () => shop);
         sandbox.stub(Roles, "userIsInRole", () => false);
-        // spyOn(Reaction, "getCurrentShop").and.returnValue(shop);
-        // spyOn(Roles, "userIsInRole").and.returnValue(false);
         const productsPub = Meteor.server.publish_handlers["Products"];
         const cursor = productsPub(productScrollLimit, filters);
         // verify
@@ -172,8 +166,6 @@ describe("Publication", function () {
         const filters = {"price.max": "24.00"};
         sandbox.stub(Reaction, "getCurrentShop", () => shop);
         sandbox.stub(Roles, "userIsInRole", () => false);
-        // spyOn(Reaction, "getCurrentShop").and.returnValue(shop);
-        // spyOn(Roles, "userIsInRole").and.returnValue(false);
         const productsPub = Meteor.server.publish_handlers["Products"];
         const cursor = productsPub(productScrollLimit, filters);
         // verify
@@ -185,8 +177,6 @@ describe("Publication", function () {
         const filters = {"price.min": "12.00", "price.max": "19.98"};
         sandbox.stub(Reaction, "getCurrentShop", () => shop);
         sandbox.stub(Roles, "userIsInRole", () => false);
-        // spyOn(Reaction, "getCurrentShop").and.returnValue(shop);
-        // spyOn(Roles, "userIsInRole").and.returnValue(false);
         const productsPub = Meteor.server.publish_handlers["Products"];
         const cursor = productsPub(productScrollLimit, filters);
         // verify
@@ -198,8 +188,6 @@ describe("Publication", function () {
         const filters = {"price.min": "13.00", "price.max": "24.00"};
         sandbox.stub(Reaction, "getCurrentShop", () => shop);
         sandbox.stub(Roles, "userIsInRole", () => false);
-        // spyOn(Reaction, "getCurrentShop").and.returnValue(shop);
-        // spyOn(Roles, "userIsInRole").and.returnValue(false);
         const productsPub = Meteor.server.publish_handlers["Products"];
         const cursor = productsPub(productScrollLimit, filters);
         expect(cursor.fetch().length).to.equal(1);
@@ -209,9 +197,7 @@ describe("Publication", function () {
         const filters = {shops: [shop._id]};
         const productScrollLimit = 24;
         sandbox.stub(Reaction, "getCurrentShop", function () {return {_id: "123"};});
-        // spyOn(Reaction, "getCurrentShop").and.returnValue({_id: "123"});
         sandbox.stub(Roles, "userIsInRole", () => true);
-        // spyOn(Roles, "userIsInRole").and.returnValue(true);
         const cursor = Meteor.server.publish_handlers.Products(productScrollLimit, filters);
         expect(cursor.fetch().length).to.equal(3);
         const data = cursor.fetch()[1];
@@ -225,8 +211,6 @@ describe("Publication", function () {
           isVisible: true
         });
         sandbox.stub(Reaction, "getCurrentShop", () => shop);
-        // spyOn(Reaction, "getCurrentShop").and.returnValue(shop);
-        // execute
         const cursor = Meteor.server.publish_handlers.Product(
           product._id);
         const data = cursor.fetch()[0];
@@ -235,7 +219,6 @@ describe("Publication", function () {
 
       it("should return a product based on a regex", function () {
         sandbox.stub(Reaction, "getCurrentShop", () => shop);
-        // spyOn(Reaction, "getCurrentShop").and.returnValue(shop);
         const cursor = Meteor.server.publish_handlers.Product("shopkins");
         const data = cursor.fetch()[0];
         expect(data.title).to.equal("Shopkins - Peachy");
@@ -244,8 +227,6 @@ describe("Publication", function () {
       it("should not return a product based on a regex if it isn't visible", function () {
         sandbox.stub(Reaction, "getCurrentShop", () => shop);
         sandbox.stub(Roles, "userIsInRole", () => false);
-        // spyOn(Reaction, "getCurrentShop").and.returnValue(shop);
-        // spyOn(Roles, "userIsInRole").and.returnValue(false);
         const productPub = Meteor.server.publish_handlers["Product"];
         const cursor = productPub.apply(thisContext, ["my"]);
         expect(cursor).to.equal("ready");
@@ -254,8 +235,6 @@ describe("Publication", function () {
       it("should return a product based on a regex to admin if it isn't visible", function () {
         sandbox.stub(Reaction, "getCurrentShop", () => shop);
         sandbox.stub(Roles, "userIsInRole", () => true);
-        // spyOn(Reaction, "getCurrentShop").and.returnValue(shop);
-        // spyOn(Roles, "userIsInRole").and.returnValue(true);
         const cursor = Meteor.server.publish_handlers.Product("my");
         const data = cursor.fetch()[0];
         expect(data.title).to.equal("My Little Pony");
