@@ -68,7 +68,6 @@ describe("Account Meteor method ", function () {
       sandbox.stub(Meteor, "userId", function () {
         return account.userId;
       });
-      // spyOn(Meteor, "userId").and.returnValue(account.userId);
       const address = getAddress();
       // we already have one address by default
       expect(account.profile.addressBook.length).to.equal(1);
@@ -79,9 +78,7 @@ describe("Account Meteor method ", function () {
     });
 
     it("should allow Admin to add new addresses to other users", function (done) {
-      sandbox.stub(Reaction, "hasPermission", function () {
-        return true;
-      });
+      sandbox.stub(Reaction, "hasPermission", () => true);
       let account = Factory.create("account");
       const address = getAddress();
       expect(account.profile.addressBook.length).to.equal(1);
@@ -149,12 +146,8 @@ describe("Account Meteor method ", function () {
         return fakeUser._id;
       });
       const account2 = Factory.create("account");
-      // spyOn(Meteor, "userId").and.returnValue(fakeUser._id);
       let updateAccountSpy = sandbox.spy(Accounts, "update");
-      // spyOn(ReactionCore.Collections.Accounts, "update");
       let upsertAccountSpy = sandbox.spy(Accounts, "upsert");
-      // spyOn(ReactionCore.Collections.Accounts, "upsert");
-
       expect(function () {
         return Meteor.call("accounts/addressBookAdd", getAddress(),
           account2._id);
@@ -175,7 +168,6 @@ describe("Account Meteor method ", function () {
         sandbox.stub(Reaction, "getShopId", function () {
           return shopId;
         });
-        // spyOn(ReactionCore, "getShopId").and.returnValue(shopId);
         const sessionId = Random.id(); // Required for creating a cart
         spyOnMethod("setShipmentAddress", account.userId);
         spyOnMethod("setPaymentAddress", account.userId);
@@ -253,22 +245,13 @@ describe("Account Meteor method ", function () {
     });
 
     it("should allow Admin to edit other user address", function (done) {
-      sandbox.stub(Reaction, "hasPermission", function () {
-        return true;
-      });
-      sandbox.stub(Reaction, "hasAdminAccess", function () {
-        return true;
-      });
+      sandbox.stub(Reaction, "hasPermission", () => true);
+      sandbox.stub(Reaction, "hasAdminAccess", () => true);
       let account = Factory.create("account");
       spyOnMethod("setShipmentAddress", account.userId);
       spyOnMethod("setPaymentAddress", account.userId);
 
-      // spyOn(ReactionCore, "shopIdAutoValue").and.returnValue(shopId);
-      sandbox.stub(Reaction, "getShopId", function () {
-        return shopId;
-      });
-      // spyOn(ReactionCore, "getShopId").and.returnValue(shopId);
-
+      sandbox.stub(Reaction, "getShopId", () => shopId);
       Meteor.call("cart/createCart", account.userId, sessionId);
 
       // we put new faker address over current address to test all fields
@@ -284,20 +267,12 @@ describe("Account Meteor method ", function () {
       return done();
     });
 
-    it("should update fields to exactly the same what we need", function (done) {
+    it("should update fields to exactly the same what we need", function () {
       let account = Factory.create("account");
-      sandbox.stub(Meteor, "userId", function () {
-        return account.userId;
-      });
-      // spyOn(Meteor, "userId").and.returnValue(account.userId);
-      sandbox.stub(Reaction, "getShopId", function () {
-        return shopId;
-      });
+      sandbox.stub(Meteor, "userId", () => account.userId);
+      sandbox.stub(Reaction, "getShopId", () => shopId);
       spyOnMethod("setShipmentAddress", account.userId);
       spyOnMethod("setPaymentAddress", account.userId);
-      // spyOn(ReactionCore, "shopIdAutoValue").and.returnValue(shopId);
-      // spyOn(ReactionCore, "getShopId").and.returnValue(shopId);
-
       Meteor.call("cart/createCart", account.userId, sessionId);
 
       // we put new faker address over current address to test all fields
@@ -309,32 +284,15 @@ describe("Account Meteor method ", function () {
       account = Accounts.findOne(account._id);
       const newAddress = account.profile.addressBook[0];
       expect(_.isEqual(address, newAddress)).to.be.true;
-
-      return done();
     });
 
-    it("should throw error if wrong arguments were passed", function (done) {
+    it("should throw error if wrong arguments were passed", function () {
       let updateAccountSpy = sandbox.spy(Accounts, "update");
-
-      expect(function () {
-        return Meteor.call("accounts/addressBookUpdate", 123456);
-      }).to.throw;
-
-      expect(function () {
-        return Meteor.call("accounts/addressBookUpdate", {});
-      }).to.throw;
-
-      expect(function () {
-        return Meteor.call("accounts/addressBookUpdate", null);
-      }).to.throw;
-
-      expect(function () {
-        return Meteor.call("accounts/addressBookUpdate");
-      }).to.throw;
-
-      expect(function () {
-        return Meteor.call("accounts/addressBookUpdate", "asdad", 123);
-      }).to.throw;
+      expect(() => Meteor.call("accounts/addressBookUpdate", 123456)).to.throw;
+      expect(() => Meteor.call("accounts/addressBookUpdate", {})).to.throw;
+      expect(() => Meteor.call("accounts/addressBookUpdate", null)).to.throw;
+      expect(() => Meteor.call("accounts/addressBookUpdate")).to.throw;
+      expect(() => Meteor.call("accounts/addressBookUpdate", "asdad", 123)).to.throw;
 
       // https://github.com/aldeed/meteor-simple-schema/issues/522
       expect(function () {
@@ -343,43 +301,26 @@ describe("Account Meteor method ", function () {
           () => { expect(true).to.be.true; }
         );
       }).to.not.throw;
-
       expect(updateAccountSpy).to.not.have.been.called;
-      return done();
     });
 
-    it("should not let non-Admin to edit address of another user", function (done) {
+    it("should not let non-Admin to edit address of another user", function () {
       let account = Factory.create("account");
       const account2 = Factory.create("account");
-      sandbox.stub(Meteor, "userId", function () {
-        return account.userId;
-      });
-      // spyOn(Meteor, "userId").and.returnValue(account.userId);
+      sandbox.stub(Meteor, "userId", () => account.userId);
       let accountUpdateSpy = sandbox.spy(Accounts, "update");
-      // spyOn(ReactionCore.Collections.Accounts, "update");
-
-      expect(function () {
-        return Meteor.call("accounts/addressBookUpdate", getAddress(), account2._id);
-      }).to.throw;
-
+      expect(() => Meteor.call("accounts/addressBookUpdate", getAddress(), account2._id)).to.throw;
       expect(accountUpdateSpy).to.not.have.been.called;
-      return done();
     });
 
-    it("enabling isShipping/BillingDefault properties should add this address to cart", function (done) {
+    it("enabling isShipping/BillingDefault properties should add this address to cart", function () {
       let account = Factory.create("account");
       spyOnMethod("setShipmentAddress", account.userId);
       spyOnMethod("setPaymentAddress", account.userId);
       sandbox.stub(Meteor, "userId", function () {
         return account.userId;
       });
-      // spyOn(Meteor, "userId").and.returnValue(account.userId);
-      // spyOn(ReactionCore, "shopIdAutoValue").and.returnValue(shopId);
-      sandbox.stub(Reaction, "getShopId", function () {
-        return shopId;
-      });
-      // spyOn(ReactionCore, "getShopId").and.returnValue(shopId);
-
+      sandbox.stub(Reaction, "getShopId", () => shopId);
       Meteor.call("cart/createCart", account.userId, sessionId);
       // first we need to disable defaults, because we already have some
       // random defaults in account, but cart is clean. This is test only
@@ -403,7 +344,6 @@ describe("Account Meteor method ", function () {
 
       expect(cart.billing[0].address._id).to.equal(address._id);
       expect(cart.shipping[0].address._id).to.equal(address._id);
-      return done();
     });
 
     it("should disable isShipping/BillingDefault properties inside sibling" +
@@ -415,12 +355,7 @@ describe("Account Meteor method ", function () {
         sandbox.stub(Meteor, "userId", function () {
           return account.userId;
         });
-        // spyOn(Meteor, "userId").and.returnValue(account.userId);
-        sandbox.stub(Reaction, "getShopId", function () {
-          return shopId;
-        });
-        // spyOn(ReactionCore, "getShopId").and.returnValue(shopId);
-
+        sandbox.stub(Reaction, "getShopId", () => shopId);
         Meteor.call("cart/createCart", account.userId, sessionId);
         // cart was created without any default addresses, we need to add one
         let address = Object.assign({}, account.profile.addressBook[0], {
@@ -450,20 +385,13 @@ describe("Account Meteor method ", function () {
       }
     );
 
-    it("should update cart default addresses via `type` argument", function (done) {
+    it("should update cart default addresses via `type` argument", function () {
       let account = Factory.create("account");
       const userId = account.userId;
       spyOnMethod("setShipmentAddress", account.userId);
       spyOnMethod("setPaymentAddress", account.userId);
-      sandbox.stub(Reaction, "getShopId", function () {
-        return shopId;
-      });
-      // spyOn(ReactionCore, "getShopId").and.returnValue(shopId);
-      sandbox.stub(Meteor, "userId", function () {
-        return userId;
-      });
-      // spyOn(Meteor, "userId").and.returnValue(userId);
-
+      sandbox.stub(Reaction, "getShopId", () => shopId);
+      sandbox.stub(Meteor, "userId", () => userId);
       Meteor.call("cart/createCart", userId, sessionId);
       // clean account
       Meteor.call("accounts/addressBookRemove",
@@ -485,68 +413,37 @@ describe("Account Meteor method ", function () {
       let cart = Cart.findOne({userId: userId});
       expect(cart.billing[0].address._id).to.equal(address._id);
       expect(cart.shipping[0].address._id).to.equal(address._id);
-
-      return done();
     });
   });
 
   describe("addressBookRemove", function () {
-    it("should allow user to remove address", function (done) {
+    it("should allow user to remove address", function () {
       let account = Factory.create("account");
       const address = account.profile.addressBook[0];
-      // user
-      sandbox.stub(Meteor, "userId", function () {
-        return account.userId;
-      });
-      // spyOn(Meteor, "userId").and.returnValue(account.userId);
-
+      sandbox.stub(Meteor, "userId", () => account.userId);
       expect(account.profile.addressBook.length).to.equal(1);
       Meteor.call("accounts/addressBookRemove", address._id);
       account = Accounts.findOne(account._id);
       expect(account.profile.addressBook.length).to.equal(0);
-
-      return done();
     });
 
-    it("should allow Admin to remove other user address", function (done) {
+    it("should allow Admin to remove other user address", function () {
       let account = Factory.create("account");
       const address = account.profile.addressBook[0];
-      sandbox.stub(Reaction, "hasPermission", function () {
-        return true;
-      });
-      // spyOn(ReactionCore, "hasPermission").and.returnValue(true);
-
+      sandbox.stub(Reaction, "hasPermission", () => true);
       expect(account.profile.addressBook.length).to.equal(1);
       Meteor.call("accounts/addressBookRemove", address._id, account.userId);
       account = Accounts.findOne(account._id);
       expect(account.profile.addressBook.length).to.equal(0);
-
-      return done();
     });
 
-    it("should throw error if wrong arguments were passed", function (done) {
+    it("should throw error if wrong arguments were passed", function () {
       let updateAccountSpy = sandbox.spy(Accounts, "update");
-      // spyOn(ReactionCore.Collections.Accounts, "update");
-
-      expect(function () {
-        return Meteor.call("accounts/addressBookRemove", 123456);
-      }).to.throw;
-
-      expect(function () {
-        return Meteor.call("accounts/addressBookRemove", {});
-      }).to.throw;
-
-      expect(function () {
-        return Meteor.call("accounts/addressBookRemove", null);
-      }).to.throw;
-
-      expect(function () {
-        return Meteor.call("accounts/addressBookRemove");
-      }).to.throw;
-
-      expect(function () {
-        return Meteor.call("accounts/addressBookRemove", "asdad", 123);
-      }).to.throw;
+      expect(() => Meteor.call("accounts/addressBookRemove", 123456)).to.throw;
+      expect(() => Meteor.call("accounts/addressBookRemove", {})).to.throw;
+      expect(() => Meteor.call("accounts/addressBookRemove", null)).to.throw;
+      expect(() => Meteor.call("accounts/addressBookRemove")).to.throw;
+      expect(() => Meteor.call("accounts/addressBookRemove", "asdad", 123)).to.throw;
 
       // https://github.com/aldeed/meteor-simple-schema/issues/522
       expect(function () {
@@ -556,86 +453,59 @@ describe("Account Meteor method ", function () {
         );
       }).to.not.throw;
       expect(updateAccountSpy).to.not.have.been.called;
-      return done();
     });
 
-    it("should not let non-Admin to remove address of another user", function (done) {
+    it("should not let non-Admin to remove address of another user", function () {
       const account = Factory.create("account");
       const account2 = Factory.create("account");
       const address2 = account2.profile.addressBook[0];
       sandbox.stub(Meteor, "userId", function () {
         return account.userId;
       });
-      // spyOn(Meteor, "userId").and.returnValue(account.userId);
       let accountUpdateSpy = sandbox.spy(Accounts, "update");
-      // spyOn(ReactionCore.Collections.Accounts, "update");
-
-      expect(function () {
-        return Meteor.call("accounts/addressBookRemove",
-          address2._id, account2.userId);
-      }).to.throw;
-
+      expect(() => Meteor.call("accounts/addressBookRemove",
+          address2._id, account2.userId)).to.throw;
       expect(accountUpdateSpy).to.not.have.been.called;
-      return done();
     });
 
-    it("should call `cart/unsetAddresses` Method", function (done) {
+    it("should call `cart/unsetAddresses` Method", function () {
       const account = Factory.create("account");
       const address = account.profile.addressBook[0];
-      sandbox.stub(Meteor, "userId", function () {
-        return account.userId;
-      });
-      // spyOn(Meteor, "userId").and.returnValue(account.userId);
+      sandbox.stub(Meteor, "userId", () => account.userId);
       let cartUnsetSpy = sandbox.spy(Meteor.server.method_handlers, "cart/unsetAddresses");
-      // spyOn(Meteor, "call").and.callThrough();
 
       Meteor.call("accounts/addressBookRemove", address._id);
       expect(cartUnsetSpy).to.have.been.called;
       expect(cartUnsetSpy.args[0][0]).to.equal(address._id);
       expect(cartUnsetSpy.args[0][1]).to.equal(account.userId);
-
-      return done();
     });
 
-    it("should return zero(0) if address not exists", function (done) {
-      sandbox.stub(Meteor, "userId", function () {
-        return fakeUser.userId;
-      });
-      // spyOn(Meteor, "userId").and.returnValue(fakeUser.userId);
+    it("should return zero(0) if address not exists", function () {
+      sandbox.stub(Meteor, "userId", () => fakeUser.userId);
       const result = Meteor.call("accounts/addressBookRemove", "asdasdasd");
       expect(result).to.equal(0);
-      return done();
     });
   });
 
   describe("accounts/inviteShopMember", function () {
-    it("should not let non-Owners invite a user to the shop", function (done) {
-      // spyOn(ReactionCore, "hasOwnerAccess").and.returnValue(false);
-      sandbox.stub(Reaction, "hasPermission", function () {
-        return false;
-      });
-      // spyOn(ReactionCore, "hasPermission").and.returnValue(false);
+    it("should not let non-Owners invite a user to the shop", function () {
+      sandbox.stub(Reaction, "hasPermission", () => false);
       let createUserSpy = sandbox.spy(MeteorAccount, "createUser");
       // create user
-      expect(function () {
-        return Meteor.call("accounts/inviteShopMember", shopId,
+      expect(() => Meteor.call("accounts/inviteShopMember", shopId,
           fakeUser.emails[0].address,
-          fakeUser.profile.addressBook[0].fullName);
-      }).to.throw(Meteor.Error, /Access denied/);
+          fakeUser.profile.addressBook[0].fullName)).to.throw(Meteor.Error, /Access denied/);
       // expect that createUser shouldnt have run
       expect(createUserSpy).to.not.have.been.called;
       // expect(createUserSpy).to.not.have.been.called.with({
       //   username: fakeUser.profile.addressBook[0].fullName
       // });
-      return done();
     });
 
     it("should let a Owner invite a user to the shop", function (done) {
       this.timeout(20000);
       this.retries(3);
-      sandbox.stub(Reaction, "hasPermission", function () {
-        return true;
-      });
+      sandbox.stub(Reaction, "hasPermission", () => true);
       // TODO checking this is failing, even though we can see it happening in the log.
       // spyOn(Email, "send");
       expect(function () {
