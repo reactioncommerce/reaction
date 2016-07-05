@@ -76,7 +76,6 @@ describe("Order Publication", function () {
       sandbox.stub(Reaction, "getShopId", () => shop._id);
       sandbox.stub(Roles, "userIsInRole", () => false);
       order = Factory.create("order", { status: "created" });
-      // spyOn(Roles, "userIsInRole").and.returnValue(false);
       const publication = Meteor.server.publish_handlers["Orders"];
       const cursor = publication.apply(thisContext);
       expect(cursor.fetch().length).to.equal(0);

@@ -27,12 +27,8 @@ describe("Account Publications", function () {
 
   describe("ShopMembers", function () {
     it("should let an admin fetch userIds", function () {
-      sandbox.stub(Reaction, "getShopId", function () {
-        return shopId;
-      });
-      sandbox.stub(Roles, "userIsInRole", function () {
-        return true;
-      });
+      sandbox.stub(Reaction, "getShopId", () => shopId);
+      sandbox.stub(Roles, "userIsInRole", () => true);
       const publication = Meteor.server.publish_handlers["ShopMembers"];
       const user = Factory.create("user");
       const thisContext = {
@@ -45,30 +41,20 @@ describe("Account Publications", function () {
     });
 
     it("should not let a regular user fetch userIds", function () {
-      sandbox.stub(Reaction, "getShopId", function () {
-        return shopId;
-      });
-      sandbox.stub(Roles, "userIsInRole", function () {
-        return false;
-      });
+      sandbox.stub(Reaction, "getShopId", () => shopId);
+      sandbox.stub(Roles, "userIsInRole", () => false);
       const thisContext = {
         userId: "notAdminUser",
         ready: function () { return "ready"; }
       };
-      // spyOn(ReactionCore, "getShopId").and.returnValue(shopId);
-      // spyOn(Roles, "userIsInRole").and.returnValue(false);
       const publication = Meteor.server.publish_handlers["ShopMembers"];
       const cursor = publication.apply(thisContext);
       expect(cursor).to.equal("ready");
     });
 
     it("should not overpublish user data to admins", function () {
-      sandbox.stub(Reaction, "getShopId", function () {
-        return shopId;
-      });
-      sandbox.stub(Roles, "userIsInRole", function () {
-        return true;
-      });
+      sandbox.stub(Reaction, "getShopId", () => shopId);
+      sandbox.stub(Roles, "userIsInRole", () => true);
       const user = Factory.create("user");
       Factory.create("registeredUser");
       const thisContext = {
