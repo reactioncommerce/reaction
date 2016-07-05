@@ -79,8 +79,6 @@ dburles:factory
 dispatch:mocha
 practicalmeteor:chai
 practicalmeteor:sinon
-xolvio:cleaner
-#lmieulet:meteor-coverage
 
 # Performance & Debugging Tools
 # meteorhacks:fast-render                   # improve initial page loads
