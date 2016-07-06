@@ -1,3 +1,56 @@
+/* eslint camelcase: 0 */
+// meteor modules
+import { Meteor } from "meteor/meteor";
+import { check, Match } from "meteor/check";
+// reaction modules
+import { Reaction, Logger } from "/server/api";
+import { ExampleApi } from "./exampleapi";
+
+function luhnValid(x) {
+  return [...x].reverse().reduce((sum, c, i) => {
+    let d = parseInt(c, 10);
+    if (i % 2 !== 0) { d *= 2; }
+    if (d > 9) { d -= 9; }
+    return sum + d;
+  }, 0) % 10 === 0;
+}
+
+const ValidCardNumber = Match.Where(function (x) {
+  return /^[0-9]{13,16}$/.test(x) && luhnValid(x);
+});
+
+const ValidExpireMonth = Match.Where(function (x) {
+  return /^[0-9]{1,2}$/.test(x);
+});
+
+const ValidExpireYear = Match.Where(function (x) {
+  return /^[0-9]{4}$/.test(x);
+});
+
+const ValidCVV = Match.Where(function (x) {
+  return /^[0-9]{3,4}$/.test(x);
+});
+
+// function chargeObj() {
+//   return {
+//     amount: "",
+//     currency: "",
+//     card: {},
+//     capture: true
+//   };
+// }
+
+// function parseCardData(data) {
+//   return {
+//     number: data.number,
+//     name: data.name,
+//     cvc: data.cvv2,
+//     expireMonth: data.expire_month,
+//     expireYear: data.expire_year
+//   };
+// }
+
+
 Meteor.methods({
   /**
    * Submit a card for Authorization
@@ -6,7 +59,7 @@ Meteor.methods({
    * @param  {Object} paymentData The details of the Payment Needed
    * @return {Object} results normalized
    */
-  "genericSubmit": function (transactionType, cardData, paymentData) {
+  "exampleSubmit": function (transactionType, cardData, paymentData) {
     check(transactionType, String);
     check(cardData, {
       name: String,
@@ -24,7 +77,7 @@ Meteor.methods({
     let total = parseFloat(paymentData.total);
     let result;
     try {
-      let transaction = GenericAPI.methods.authorize.call({
+      let transaction = ExampleApi.methods.authorize.call({
         transactionType: transactionType,
         cardData: cardData,
         paymentData: paymentData
@@ -43,7 +96,7 @@ Meteor.methods({
         }
       };
     } catch (error) {
-      ReactionCore.Log.warn(error);
+      Logger.warn(error);
       result = {
         saved: false,
         error: error
@@ -57,11 +110,11 @@ Meteor.methods({
    * @param {Object} paymentData Object containing data about the transaction to capture
    * @return {Object} results normalized
    */
-  "generic/payment/capture": function (paymentData) {
-    check(paymentData, ReactionCore.Schemas.PaymentMethod);
+  "example/payment/capture": function (paymentData) {
+    check(paymentData, Reaction.Schemas.PaymentMethod);
     let authorizationId = paymentData.transactionId;
     let amount = paymentData.amount;
-    let response = GenericAPI.methods.capture.call({
+    let response = ExampleApi.methods.capture.call({
       authorizationId: authorizationId,
       amount: amount
     });
@@ -78,11 +131,11 @@ Meteor.methods({
    * @param  {Number} amount The amount to be refunded
    * @return {Object} result
    */
-  "generic/refund/create": function (paymentMethod, amount) {
-    check(paymentMethod, ReactionCore.Schemas.PaymentMethod);
+  "example/refund/create": function (paymentMethod, amount) {
+    check(paymentMethod, Reaction.Schemas.PaymentMethod);
     check(amount, Number);
     let { transactionId } = paymentMethod;
-    let response = GenericAPI.methods.refund.call({
+    let response = ExampleApi.methods.refund.call({
       transactionId: transactionId,
       amount: amount
     });
@@ -98,10 +151,10 @@ Meteor.methods({
    * @param  {Object} paymentMethod Object containing the pertinant data
    * @return {Object} result
    */
-  "generic/refund/list": function (paymentMethod) {
-    check(paymentMethod, ReactionCore.Schemas.PaymentMethod);
-    let { transactionId } = paymentMethod;
-    let response = GenericAPI.methods.refunds.call({
+  "example/refund/list": function (paymentMethod) {
+    check(paymentMethod, Reaction.Schemas.PaymentMethod);
+    const { transactionId } = paymentMethod;
+    const response = ExampleApi.methods.refunds.call({
       transactionId: transactionId
     });
     let result = [];
@@ -118,43 +171,7 @@ Meteor.methods({
     //   currency: String,
     //   raw: Object
     // }
-    let emptyResult = [];
+    const emptyResult = [];
     return emptyResult;
   }
 });
-
-ValidCardNumber = Match.Where(function (x) {
-  return /^[0-9]{14,16}$/.test(x);
-});
-
-ValidExpireMonth = Match.Where(function (x) {
-  return /^[0-9]{1,2}$/.test(x);
-});
-
-ValidExpireYear = Match.Where(function (x) {
-  return /^[0-9]{4}$/.test(x);
-});
-
-ValidCVV = Match.Where(function (x) {
-  return /^[0-9]{3,4}$/.test(x);
-});
-
-chargeObj = function () {
-  return {
-    amount: "",
-    currency: "",
-    card: {},
-    capture: true
-  };
-};
-
-parseCardData = function (data) {
-  return {
-    number: data.number,
-    name: data.name,
-    cvc: data.cvv2,
-    expireMonth: data.expire_month,
-    expireYear: data.expire_year
-  };
-};
-

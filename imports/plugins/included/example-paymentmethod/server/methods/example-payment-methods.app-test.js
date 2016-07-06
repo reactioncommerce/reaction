@@ -2,6 +2,8 @@ import { Meteor } from "meteor/meteor";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
 
+import { ExampleApi } from "./exampleapi";
+
 let paymentMethod = {
   processor: "Generic",
   storedCard: "Visa 4242",
@@ -11,9 +13,18 @@ let paymentMethod = {
 };
 
 
-describe.skip("GenericAPI", function () {
+describe("ExampleApi", function () {
+  let sandbox;
 
-  it("should return data from ThirdPartyAPI authorize", function (done) {
+  beforeEach(function () {
+    sandbox = sinon.sandbox.create();
+  });
+
+  afterEach(function () {
+    sandbox.restore();
+  });
+
+  it("should return data from ThirdPartyAPI authorize", function () {
     let cardData = {
       name: "Test User",
       number: "4242424242424242",
@@ -28,35 +39,39 @@ describe.skip("GenericAPI", function () {
     };
 
     let transactionType = "authorize";
-    let transaction = GenericAPI.methods.authorize.call({
+    let transaction = ExampleApi.methods.authorize.call({
       transactionType: transactionType,
       cardData: cardData,
       paymentData: paymentData
     });
-
-    expect(transaction).not.toBe(undefined);
-    done();
+    expect(transaction).to.not.be.undefined;
   });
 
   it("should return data from ThirdPartAPI capture", function (done) {
     let authorizationId = "abc123";
     let amount = 19.99;
-    let results = GenericAPI.methods.capture.call({
+    let results = ExampleApi.methods.capture.call({
       authorizationId: authorizationId,
       amount: amount
     });
-    expect(results).not.toBe(undefined);
+    expect(results).to.not.be.undefined;
     done();
   });
 });
 
 
-describe.skip("Submit payment", function () {
-  afterEach(function () {
-    spyEnv.clearSpies();
+describe("Submit payment", function () {
+  let sandbox;
+
+  beforeEach(function () {
+    sandbox = sinon.sandbox.create();
   });
 
-  it("should call Generic API with card and payment data", function (done) {
+  afterEach(function () {
+    sandbox.restore();
+  });
+
+  it("should call Example API with card and payment data", function () {
     let cardData = {
       name: "Test User",
       number: "4242424242424242",
@@ -75,19 +90,18 @@ describe.skip("Submit payment", function () {
       currency: "USD"
     };
 
-    spyOn(GenericAPI.methods.authorize, "call").and.returnValue(authorizeResult);
-    let results = Meteor.call("genericSubmit", "authorize", cardData, paymentData);
-    expect(GenericAPI.methods.authorize.call).toHaveBeenCalledWith({
+    let authorizeStub = sandbox.stub(ExampleApi.methods.authorize, "call", () => authorizeResult);
+    let results = Meteor.call("exampleSubmit", "authorize", cardData, paymentData);
+    expect(authorizeStub).to.have.been.calledWith({
       transactionType: "authorize",
       cardData: cardData,
       paymentData: paymentData
     });
 
-    expect(results.saved).toBe(true);
-    done();
+    expect(results.saved).to.be.true;
   });
 
-  it("should throw an error if card data is not correct", function (done) {
+  it("should throw an error if card data is not correct", function () {
     let badCardData = {
       name: "Test User",
       cvv2: "123",
@@ -101,106 +115,110 @@ describe.skip("Submit payment", function () {
 
     // Notice how you need to wrap this call in another function
     expect(function () {
-      Meteor.call("genericSubmit", "authorize", badCardData, paymentData);
+      Meteor.call("exampleSubmit", "authorize", badCardData, paymentData);
     }
-    ).toThrow();
-    done();
+    ).to.throw;
   });
 });
 
-describe.skip("Capture payment", function () {
-  afterEach(function () {
-    spyEnv.clearSpies();
+describe("Capture payment", function () {
+  let sandbox;
+
+  beforeEach(function () {
+    sandbox = sinon.sandbox.create();
   });
 
-  it("should call GenericAPI with transaction ID", function (done) {
+  afterEach(function () {
+    sandbox.restore();
+  });
+
+  it("should call ExampleApi with transaction ID", function () {
     let captureResults = { success: true };
     let authorizationId = "abc1234";
     paymentMethod.transactionId = authorizationId;
     paymentMethod.amount = 19.99;
 
-    spyOn(GenericAPI.methods.capture, "call").and.returnValue(captureResults);
-    let results = Meteor.call("generic/payment/capture", paymentMethod);
-    expect(GenericAPI.methods.capture.call).toHaveBeenCalledWith({
+    let captureStub = sandbox.stub(ExampleApi.methods.capture, "call", () => captureResults);
+    let results = Meteor.call("example/payment/capture", paymentMethod);
+    expect(captureStub).to.have.been.calledWith({
       authorizationId: authorizationId,
       amount: 19.99
     });
-    expect(results.saved).toBe(true);
-
-    done();
+    expect(results.saved).to.be.true;
   });
 
-  it("should throw an error if transaction ID is not found", function (done) {
-    spyOn(GenericAPI.methods, "capture").and.callFake(function () {
+  it("should throw an error if transaction ID is not found", function () {
+    sandbox.stub(ExampleApi.methods, "capture", function () {
       throw new Meteor.Error("Not Found");
     });
-
     expect(function () {
-      Meteor.call("generic/payment/capture", "abc123");
-    }).toThrow();
-    done();
+      Meteor.call("example/payment/capture", "abc123");
+    }).to.throw;
   });
 });
 
-describe.skip("Refund", function () {
-  afterEach(function () {
-    spyEnv.clearSpies();
+describe("Refund", function () {
+  let sandbox;
+
+  beforeEach(function () {
+    sandbox = sinon.sandbox.create();
   });
 
-  it("should call GenericAPI with transaction ID", function (done) {
+  afterEach(function () {
+    sandbox.restore();
+  });
+
+  it("should call ExampleApi with transaction ID", function () {
     let refundResults = { success: true };
     let transactionId = "abc1234";
     let amount = 19.99;
     paymentMethod.transactionId = transactionId;
-    spyOn(GenericAPI.methods.refund, "call").and.returnValue(refundResults);
-    Meteor.call("generic/refund/create", paymentMethod, amount);
-    expect(GenericAPI.methods.refund.call).toHaveBeenCalledWith({
+    let refundStub = sandbox.stub(ExampleApi.methods.refund, "call", () => refundResults);
+    Meteor.call("example/refund/create", paymentMethod, amount);
+    expect(refundStub).to.have.been.calledWith({
       transactionId: transactionId,
       amount: amount
     });
-    done();
   });
 
-  it("should throw an error if transaction ID is not found", function (done) {
-    spyOn(GenericAPI.methods.refund, "call").and.callFake(function () {
+  it("should throw an error if transaction ID is not found", function () {
+    sandbox.stub(ExampleApi.methods.refund, "call", function () {
       throw new Meteor.Error("404", "Not Found");
     });
-
     let transactionId = "abc1234";
     paymentMethod.transactionId =  transactionId;
     expect(function () {
-      Meteor.call("generic/refund/create", paymentMethod, 19.99);
-    }).toThrow(new Meteor.Error("404", "Not Found"));
-    done();
+      Meteor.call("example/refund/create", paymentMethod, 19.99);
+    }).to.throw(Meteor.Error, /Not Found/);
   });
 });
 
-describe.skip("List Refunds", function () {
+describe("List Refunds", function () {
+  let sandbox;
+
+  beforeEach(function () {
+    sandbox = sinon.sandbox.create();
+  });
+
   afterEach(function () {
-    spyEnv.clearSpies();
+    sandbox.restore();
   });
 
-  it("should call GenericAPI with transaction ID", function (done) {
-    let refundResults = { success: true };
-    let refundArgs = {
-      transactionId: "abc1234",
-      amount: 19.99
+  it("should call ExampleApi with transaction ID", function () {
+    let refundResults = { refunds: [] };
+    const refundArgs = {
+      transactionId: "abc1234"
     };
-    spyOn(GenericAPI.methods.refund, "call").and.returnValue(refundResults);
-    Meteor.call("generic/refund/list", transactionId);
-    expect(GenericAPI.methods.refund.call).toHaveBeenCalledWith(refundArgs);
-    done();
+    let refundStub = sandbox.stub(ExampleApi.methods.refunds, "call", () => refundResults);
+    Meteor.call("example/refund/list", paymentMethod);
+    expect(refundStub).to.have.been.calledWith(refundArgs);
   });
 
-  it("should throw an error if transaction ID is not found", function (done) {
-    spyOn(GenericAPI.methods, "refunds").and.callFake(function () {
+  it("should throw an error if transaction ID is not found", function () {
+    sandbox.stub(ExampleApi.methods, "refunds", function () {
       throw new Meteor.Error("404", "Not Found");
     });
-
-    expect(function () {
-      Meteor.call("generic/refund/list", "abc123", 19.99);
-    }).toThrow(new Meteor.Error("404", "Not Found"));
-    done();
+    expect(() => Meteor.call("example/refund/list", paymentMethod)).to.throw(Meteor.Error, /Not Found/);
   });
 });
 

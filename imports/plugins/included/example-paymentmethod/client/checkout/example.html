@@ -1,6 +1,5 @@
 <template name="examplePaymentForm">
-  <h1>Example Payment Form</h1>
-  {{#autoForm schema="ExamplePayment" id="example-payment-form"}}
+  {{#autoForm schema=ExamplePayment id="example-payment-form"}}
   <div class="row">
     <div class="col-sm-12 col-lg-6 form-group{{#if afFieldIsInvalid name='payerName'}} has-error{{/if}}">
         <label class="control-label">{{afFieldLabelText name='payerName'}}</label>

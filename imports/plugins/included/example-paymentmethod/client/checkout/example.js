@@ -27,7 +27,7 @@ function handleExampleSubmitError(error) {
   if (serverError) {
     return paymentAlert("Oops! " + serverError);
   } else if (error) {
-    return paymentAlert("Oops! " + error);
+    return paymentAlert("Oops! " + error, null, 4);
   }
 }
 
@@ -57,6 +57,7 @@ AutoForm.addHooks("example-payment-form", {
       total: Cart.findOne().cartTotal(),
       currency: Shops.findOne().currency
     }, function (error, transaction) {
+      submitting = false;
       let paymentMethod;
       if (error) {
         handleExampleSubmitError(error);

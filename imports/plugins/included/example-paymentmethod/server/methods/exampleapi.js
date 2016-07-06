@@ -52,8 +52,8 @@ ThirdPartyAPI = {
 // This is the "wrapper" functions you should write in order to make your code more
 // testable. You can either mirror the API calls or normalize them to the authorize/capture/refund/refunds
 // that Reaction is expecting
-GenericAPI = {};
-GenericAPI.methods = {};
+export const ExampleApi = {};
+ExampleApi.methods = {};
 
 export const cardSchema = new SimpleSchema({
   number: { type: String },
@@ -70,8 +70,8 @@ paymentDataSchema = new SimpleSchema({
 });
 
 
-GenericAPI.methods.authorize = new ValidatedMethod({
-  name: "GenericAPI.methods.authorize",
+ExampleApi.methods.authorize = new ValidatedMethod({
+  name: "ExampleApi.methods.authorize",
   validate: new SimpleSchema({
     transactionType: { type: String },
     cardData: { type: cardSchema },
@@ -84,8 +84,8 @@ GenericAPI.methods.authorize = new ValidatedMethod({
 });
 
 
-GenericAPI.methods.capture = new ValidatedMethod({
-  name: "GenericAPI.methods.capture",
+ExampleApi.methods.capture = new ValidatedMethod({
+  name: "ExampleApi.methods.capture",
   validate: new SimpleSchema({
     authorizationId: { type: String },
     amount: { type: Number, decimal: true }
@@ -99,8 +99,8 @@ GenericAPI.methods.capture = new ValidatedMethod({
 });
 
 
-GenericAPI.methods.refund = new ValidatedMethod({
-  name: "GenericAPI.methods.refund",
+ExampleApi.methods.refund = new ValidatedMethod({
+  name: "ExampleApi.methods.refund",
   validate: new SimpleSchema({
     transactionId: { type: String },
     amount: { type: Number, decimal: true  }
@@ -114,8 +114,8 @@ GenericAPI.methods.refund = new ValidatedMethod({
 });
 
 
-GenericAPI.methods.refunds = new ValidatedMethod({
-  name: "GenericAPI.methods.refunds",
+ExampleApi.methods.refunds = new ValidatedMethod({
+  name: "ExampleApi.methods.refunds",
   validate: new SimpleSchema({
     transactionId: { type: String }
   }).validator(),
