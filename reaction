@@ -18,8 +18,10 @@ elif [[ "$@" == "install" ]]; then
   cp reaction /usr/local/bin/reaction && chmod + /usr/local/bin/reaction
   bin/install
 elif [[ "$@" == "test" ]]; then
+  meteor npm install
   SERVER_TEST_REPORTER="dot" meteor test --once --full-app --driver-package dispatch:mocha
 elif [[ "$@" == "unit-test" ]]; then
+  meteor npm install
   SERVER_TEST_REPORTER="dot" meteor test --once --driver-package dispatch:mocha
 else
   bin/run "$@"
