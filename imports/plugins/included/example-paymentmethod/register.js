@@ -23,11 +23,11 @@ Reaction.registerPackage({
 
     // Settings panel
     {
-      label: "Example Payment Settings",
+      label: "Example Payment Settings", // this key (minus spaces) is used for translations
       route: "/dashboard/example",
       provides: "settings",
       container: "dashboard",
-      template: "exampleSettingsSidebar"
+      template: "exampleSettings"
     },
 
     // Payment form for checkout
