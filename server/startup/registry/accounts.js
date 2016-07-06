@@ -24,7 +24,11 @@ export default function () {
       provides: "settings",
       container: "accounts",
       template: "memberForm",
-      priority: 2
+      priority: 2,
+      emailTemplates: [
+        "accounts/inviteShopMember",
+        "accounts/sendWelcomeEmail"
+      ]
     }, {
       label: "Account Settings",
       provides: "settings",

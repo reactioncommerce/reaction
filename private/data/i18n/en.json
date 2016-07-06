@@ -710,6 +710,26 @@
         "isRequired": "{{field}} is required.",
         "mustBeNumber": "{{field}} must be a number.",
         "variantFieldIsRequired": "Variant {{number}} {{field}} is required."
+      },
+      "emailTemplate": {
+        "greeting": "Hi, %s",
+        "thankYouForYourOrderAt": "Thank you for your new <strong>%s</strong> order.",
+        "weHaveReceivedYourOrder": "We've received your order!",
+        "orderStayTuned": "We'll update you on the progress of your order as we prepare it for shipping.",
+        "sentBySignature": "Sent by <a href=\"%s\">%s</a>",
+        "somebodyInvitedYou": "<strong>%s</strong> invited you to join <strong>%s</strong>.",
+        "youAreInvited": "<p>You're invited!</p><p>If you don't want to accept this invitation or think you were mistaken for someone else please let us know!</p>",
+        "acceptInvitation": "Accept invitation",
+        "welcomeTo": "Welcome to <strong>%s</strong>.",
+        "thankYouForRegistering": "<p>We're excited to have you at %s!</p><p>Thank you for taking the time to register at %s.</p><p> We'll keep this introduction simple. Welcome aboard!</p>",
+        "visitShop": "Visit %s",
+        "yourOrderHasBeenCompleted": "Your <strong>%s</strong> order has been completed.",
+        "trackingInformation": "Your tracking information is <strong>%s</strong>",
+        "thankYou": "Thank you! - %s",
+        "weHaveBegunProcessingYourOrder": "We've begun processing your order!",
+        "yourOrderHasBegunPacking": "Your <strong>%s</strong> order has begun packing.",
+        "yourOrderIsBeingPacked": "Your order is being packed for shipping now.",
+        "yourOrderHasBeenShipped": "Your <strong>%s</strong> order has shipped."
       }
     }
   }
