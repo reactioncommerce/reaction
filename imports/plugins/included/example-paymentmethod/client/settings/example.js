@@ -5,17 +5,12 @@ import { ExamplePackageConfig } from "../../lib/collections/schemas";
 
 import "./example.html";
 
-Template.exampleSettings.onCreated(() => {
-  console.log("exampleSettings created");
-});
 
 Template.exampleSettings.helpers({
   ExamplePackageConfig() {
-    console.log("ExamplePackageConfig helper");
     return ExamplePackageConfig;
   },
   packageData() {
-    console.log("finding example package data");
     return Packages.findOne({
       name: "example-paymentmethod",
       shopId: Reaction.getShopId()
