@@ -256,7 +256,7 @@ Meteor.methods({
     Reaction.configureMailUrl();
     // don't send account emails unless email server configured
     if (!process.env.MAIL_URL) {
-      Logger.info(`Mail not configured: suppressing invite email output`);
+      Logger.info("Mail not configured: suppressing invite email output");
       return true;
     }
     // everything cool? invite user
@@ -371,7 +371,7 @@ Meteor.methods({
     Reaction.configureMailUrl();
     // don't send account emails unless email server configured
     if (!process.env.MAIL_URL) {
-      Logger.info(`Mail not configured: suppressing welcome email output`);
+      Logger.info("Mail not configured: suppressing welcome email output");
       return true;
     }
     // fetch and send templates

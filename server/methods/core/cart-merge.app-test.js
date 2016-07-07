@@ -2,7 +2,6 @@
 import { Meteor } from "meteor/meteor";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
-import { Roles } from "meteor/alanning:roles";
 import { getShop } from "/server/imports/fixtures/shops";
 import { Reaction } from "/server/api";
 import * as Collections from "/lib/collections";
@@ -67,30 +66,25 @@ describe("Merge Cart function ", function () {
     });
   }
 
-  it.skip("should merge all anonymous carts into existent `normal` user cart per session, when logged in", function () {
-    sandbox.stub(Roles, "userIsInRole", function () {
-      return false;
-    });
+  it("should merge all anonymous carts into existent `normal` user cart per session, when logged in", function () {
+    sandbox.stub(Reaction, "getShopId", () => shop._id);
     let anonymousCart = Factory.create("anonymousCart");
     let cart = Factory.create("cart");
+    let cartCount = Collections.Cart.find().count();
+    expect(cartCount).to.equal(2);
     spyOnMethod("mergeCart", cart.userId);
-    sandbox.stub(Reaction, "getShopId", function () {
-      return shop._id;
-    });
-    // spyOn(ReactionCore, "getShopId").and.returnValue(shop._id);
     let cartRemoveSpy = sandbox.spy(Collections.Cart, "remove");
-    // spyOn(ReactionCore.Collections.Cart, "remove").and.callThrough();
     Collections.Cart.update({}, {
       $set: {
         sessionId: sessionId
       }
     });
-
     let mergeResult = Meteor.call("cart/mergeCart", cart._id, sessionId);
     expect(mergeResult).to.be.ok;
     anonymousCart = Collections.Cart.findOne(anonymousCart._id);
     cart = Collections.Cart.findOne(cart._id);
-
+    cartCount = Collections.Cart.find().count();
+    expect(cartCount).to.equal(1);
     expect(cartRemoveSpy).to.have.been.called;
     expect(anonymousCart).to.be.undefined;
     expect(cart.items.length).to.equal(2);

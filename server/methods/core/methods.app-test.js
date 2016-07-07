@@ -124,8 +124,6 @@ describe("Server/Core", function () {
   });
 
   describe("shop/locateAddress", function () {
-    // This test is failing for some reason unrelated to the test. Addresss comes
-    // up with correct zipcode, etc.
     it("should locate an address based on known US coordinates", function (done) {
       this.timeout(5000);
       let address = Meteor.call("shop/locateAddress", 34.043125, -118.267118);
