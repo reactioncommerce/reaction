@@ -4,11 +4,9 @@ set -e
 
 if [ "${INSTALL_PHANTOMJS}" = "true" ]; then
 
-  : ${PHANTOMJS_VERSION:=2.1.1}
+  printf "\n[-] Installing Phantom.js...\n\n"
 
-  printf "\n[-] Installing Phantom.js $PHANTOMJS_VERSION...\n\n"
-
-  npm install --silent -g phantomjs-prebuilt@$PHANTOMJS_VERSION
+  npm install --silent -g phantomjs-prebuilt
 
   npm cache clear
 

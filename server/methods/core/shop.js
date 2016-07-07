@@ -137,6 +137,10 @@ Meteor.methods({
         }
       }
     });
+
+    // set server side locale
+    Reaction.Locale = result;
+
     // should contain rates, locale, currency
     return result;
   },

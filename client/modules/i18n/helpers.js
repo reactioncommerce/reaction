@@ -37,7 +37,7 @@ Template.registerHelper("i18n", function (i18nKey, i18nMessage) {
  * @returns {String} return current locale currency symbol
  */
 Template.registerHelper("currencySymbol", function () {
-  const locale = Session.get("locale");
+  const locale = Reaction.Locale.get();
   return locale.currency.symbol;
 });
 
@@ -51,7 +51,7 @@ Template.registerHelper("currencySymbol", function () {
 Template.registerHelper("formatPrice", function (formatPrice) {
   localeDep.depend();
 
-  const locale = Session.get("locale");
+  const locale = Reaction.Locale.get();
 
   if (typeof locale !== "object" || typeof locale.currency !== "object") {
     // locale not yet loaded, so we don"t need to return anything.
@@ -95,7 +95,7 @@ Template.registerHelper("formatPrice", function (formatPrice) {
 Reaction.Currency = {};
 
 Reaction.Currency.formatNumber = function (currentPrice) {
-  const locale = Session.get("locale");
+  const locale = Reaction.Locale.get();
   let price = currentPrice;
   let format = Object.assign({}, locale.currency, {
     format: "%v"
