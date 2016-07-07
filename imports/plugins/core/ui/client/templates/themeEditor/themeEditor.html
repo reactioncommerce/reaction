@@ -20,27 +20,45 @@
               <span class="label-selector hidden">{{style.selector}}</span>
           </div>
         </div>
-          {{> uiStyleDeclarations declarations=style.declarations}}
+          {{> uiStyleDeclarations (styleDeclarationProps style)}}
       </div>
     {{/each}}
   </div>
 </template>
 
 <template name="uiStyleDeclarations">
-
-
   <div class="rui list">
-    {{#each declaration in declarations}}
-      <div class="rui list-item form-group" data-selector={{selector}}>
-        <label>
-          {{declaration.property}}:
-        </label>
-        {{#if declaration.declarations}}
-          {{> uiStyleDeclarations declarations=declaration.declarations}}
-        {{else}}
-          {{> textfield name=declaration.property value=declaration.value}}
-        {{/if}}
-      </div>
+    {{#each declaration in style.declarations}}
+      {{#if isColor declaration.property}}
+        {{> uiColorPickerField
+          style=style
+          declaration=declaration
+          onChange=handleChange
+        }}
+      {{else}}
+        <div class="rui list-item form-group">
+          <label data-i18n="themeEditor.property.{{declaration.property}}">
+            <span>{{declaration.property}}</span>
+          </label>
+          {{#if declaration.declarations}}
+            {{> uiStyleDeclarations style=style declarations=declaration.declarations}}
+          {{else}}
+            {{> textfield name=declaration.property value=declaration.value}}
+          {{/if}}
+        </div>
+      {{/if}}
+
     {{/each}}
+  </div>
+</template>
+
+<template name="uiColorPickerField">
+  <div class="rui list-item form-group">
+    <label data-i18n="themeEditor.property.{{declaration.property}}">
+      <span>{{declaration.property}}</span>
+    </label>
+    <div class="rui textfield input-group colorpicker-component">
+      {{> React ColorPicker}}
+    </div>
   </div>
 </template>

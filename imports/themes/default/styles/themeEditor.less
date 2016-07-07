@@ -41,17 +41,23 @@
 }
 
 .rui.objectmap .rui.list-item label {
-  .flex(0 0 auto);
+  flex: 0 0 auto;
+  width: 150px;
   margin: 0 10px 0 0;
   color: @brand-secondary-color;
   font-weight: normal;
 }
 
 .rui.objectmap .rui.list-item input {
-  // border: none;
-  padding: 2px;
+  // padding: 2px;
 }
 
 .rui.objectmap .rui.list-item input:hover {
   border: 1px solid border-color;
+}
+
+.rui.objectmap .colorpicker-component {
+  display: flex;
+  flex: 1 1 auto;
+  justify-content: flex-end;
 }
