@@ -1,11 +1,9 @@
 require("money");
 require("autonumeric");
-import $ from "jquery";
 import accounting from "accounting-js";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { ReactiveVar } from "meteor/reactive-var";
-import { Session } from "meteor/session";
 import { Reaction, i18next, Logger } from "/client/api";
 import { NumericInput } from "/imports/plugins/core/ui/client/components";
 import { Media, Orders, Shops } from "/lib/collections";
@@ -43,27 +41,6 @@ Template.coreOrderShippingInvoice.onCreated(function () {
       });
     }
   });
-});
-
-Template.coreOrderShippingInvoice.onRendered(function () {
-  const order = this.state.get("order");
-  const paymentMethod = order.billing[0].paymentMethod;
-  const refunds = this.refunds.get();
-  const locale = Session.get("locale");
-  const currency = locale.currency;
-
-  const lessAmount = _.reduce(refunds, (memo, refund) => {
-    return memo - Math.abs(refund.amount);
-  }, paymentMethod.amount);
-
-  if (currency) {
-    $("input[name=refund_amount]").autoNumeric("init", {
-      aSep: currency.thousand,
-      dGroup: currency.grouping,
-      aDec: currency.decimal,
-      vMax: lessAmount
-    });
-  }
 });
 
 /**
@@ -219,12 +196,6 @@ Template.coreOrderShippingInvoice.helpers({
 
   money(amount) {
     return Reaction.Currency.formatNumber(amount);
-  },
-
-  currencySymbol() {
-    // return Reaction.Locale.currency.symbol;
-    const locale = Session.get("locale");
-    return locale.currency.symbol;
   },
 
   disabled() {
