@@ -1,5 +1,5 @@
 <template name="authnetPaymentForm">
-  {{#autoForm schema="ReactionCore.Schemas.AuthNetPayment" id="authnet-payment-form"}}
+  {{#autoForm schema=AuthNetPayment id="authnet-payment-form"}}
   <div class="row">
     <div class="col-sm-12 col-lg-6 form-group{{#if afFieldIsInvalid name='payerName'}} has-error{{/if}}">
         <label class="control-label">{{afFieldLabelText name='payerName'}}</label>

@@ -1,3 +1,5 @@
+import { SimpleSchema } from "meteor/aldeed:simple-schema";
+import { PackageConfig } from "/lib/collections/schemas/registry";
 /**
  * Meteor.settings.authnet =
  *   mode: false (sandbox)
@@ -7,8 +9,8 @@
  *   see: https://github.com/authnet/rest-api-sdk-nodejs
  */
 
-ReactionCore.Schemas.AuthNetPackageConfig = new SimpleSchema([
-  ReactionCore.Schemas.PackageConfig, {
+export const AuthNetPackageConfig = new SimpleSchema([
+  PackageConfig, {
     "settings.mode": {
       type: Boolean,
       defaultValue: false
@@ -26,7 +28,7 @@ ReactionCore.Schemas.AuthNetPackageConfig = new SimpleSchema([
   }
 ]);
 
-ReactionCore.Schemas.AuthNetPayment = new SimpleSchema({
+export const AuthNetPayment = new SimpleSchema({
   payerName: {
     type: String,
     label: "Cardholder name",
@@ -54,6 +56,6 @@ ReactionCore.Schemas.AuthNetPayment = new SimpleSchema({
   }
 });
 
-ReactionCore.Schemas.AuthNetPayment.messages({
+AuthNetPayment.messages({
   "regEx payerName": "[label] must include both first and last name"
 });

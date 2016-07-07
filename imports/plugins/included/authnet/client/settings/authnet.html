@@ -5,9 +5,8 @@
       Don't have a AuthNet API Login ID and Transaction Key? <a href="https://sandbox.authorize.net/" target="_blank">Get them here.</a>
     </div>
     <div class="panel-body">
-      {{#autoForm
-        collection="ReactionCore.Collections.Packages"
-        schema="ReactionCore.Schemas.AuthNetPackageConfig"
+      {{#autoForm collection="Reaction.Collections.Packages"
+        schema=AuthNetPackageConfig
         doc=packageData
         type="update"
         id="authnet-update-form"

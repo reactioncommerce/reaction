@@ -1,7 +1,23 @@
 /* eslint camelcase: 0 */
+import {Meteor} from "meteor/meteor";
+import {Logger} from "/client/api";
+import {getCardType} from "/client/modules/core/helpers/globals";
+import {Cart, Shops} from "/lib/collections";
+import {AutoForm} from "meteor/aldeed:autoform";
+import {AuthNetPayment} from "../../lib/collections/schemas";
+import {AuthNet} from "../api";
+
+
+import "./authnet.html";
 
 // used to track asynchronous submitting for UI changes
 let submitting = false;
+
+Template.authnetPaymentForm.helpers({
+  AuthNetPayment() {
+    return AuthNetPayment;
+  }
+});
 
 AutoForm.addHooks("authnet-payment-form", {
   onSubmit(doc) {
@@ -31,40 +47,39 @@ AutoForm.addHooks("authnet-payment-form", {
       cvv2: doc.cvv
     };
     const paymentInfo = {
-      total: ReactionCore.Collections.Cart.findOne().cartTotal(),
-      currency: ReactionCore.Collections.Shops.findOne().currency
+      total: Cart.findOne().cartTotal(),
+      currency: Shops.findOne().currency
     };
 
     // Submit for processing
-    Meteor.AuthNet.authorize(cardInfo, paymentInfo, function (error, transaction) {
-      if (error || !transaction) {
-        ReactionCore.Log.warn(error);
-        uiEnd(tpl, "Resubmit payment");
-      } else {
-        let normalizedMode = "authorize";
-        let normalizedStatus = "failed";
+    AuthNet.authorize(cardInfo, paymentInfo, function (error, transaction) {
+        if (error || !transaction) {
+          Logger.warn(error);
+          uiEnd(tpl, "Resubmit payment");
+        } else {
+          let normalizedMode = "authorize";
+          let normalizedStatus = "failed";
 
-        const transId = transaction.transactionId[0].toString();
+          const transId = transaction.transactionId[0].toString();
 
-        if (transaction._original.responseCode[0] === "1") {
-          normalizedStatus = "created";
-        }
+          if (transaction._original.responseCode[0] === "1") {
+            normalizedStatus = "created";
+          }
 
-        let paymentMethod = {
-          processor: "AuthNet",
-          storedCard: storedCard,
-          method: "credit_card",
-          transactionId: transId,
-          amount: +paymentInfo.total,
-          status: normalizedStatus,
-          mode: normalizedMode,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-          transactions: [
-            transaction._original
-          ]
-        };
-
+          let paymentMethod = {
+            processor: "AuthNet",
+            storedCard: storedCard,
+            method: "credit_card",
+            transactionId: transId,
+            amount: +paymentInfo.total,
+            status: normalizedStatus,
+            mode: normalizedMode,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            transactions: [
+              transaction._original
+            ]
+          };
           Meteor.call("cart/submitPayment", paymentMethod);
           uiEnd(tpl, "Resubmit payment");
         }
@@ -75,6 +90,7 @@ AutoForm.addHooks("authnet-payment-form", {
   },
 
   beginSubmit() {
+    //TODO Add this "Submitting" state which seems to have been lost
     let tpl$ = this.template.$;
     // Show processing
     // tpl$(":input").attr("disabled", true);
@@ -106,5 +122,5 @@ function hidePaymentAlert() {
 
 function handleAuthNetSubmitError(error) {
   // TODO - this error handling needs to be reworked for the Authorize.net API
-  console.log(error);
+  Logger.fatal(error);
 }

@@ -5,10 +5,37 @@ import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Promise } from "meteor/promise";
 
-import AuthNet from "authorize-net";
-
+import AuthNetAPI from "authorize-net";
 import { Reaction, Logger } from "/server/api";
+import { Packages } from "/lib/collections";
 
+function accountOptions() {
+  let settings = Packages.findOne({
+    name: "reaction-auth-net",
+    shopId: Reaction.getShopId(),
+    enabled: true
+  }).settings;
+  let ref = Meteor.settings.authnet;
+  let options;
+
+  options = {
+    login: getSettings(settings, ref, "api_id"),
+    tran_key: getSettings(settings, ref, "transaction_key")
+  };
+
+  if (!options.login) {
+    throw new Meteor.Error("invalid-credentials", "Invalid Authnet Credentials");
+  }
+  return options;
+}
+
+function getSettings(settings, ref, valueName) {
+  if (settings !== null) {
+    return settings[valueName];
+  } else if (ref !== null) {
+    return ref[valueName];
+  }
+}
 
 Meteor.methods({
   authnetSubmit: function (transactionType = "authorizeTransaction", cardInfo, paymentInfo) {
@@ -33,7 +60,7 @@ Meteor.methods({
       expirationYear: cardInfo.expirationYear,
       expirationMonth: cardInfo.expirationMonth
     };
-    const authnetService = getAuthnetService(Meteor.AuthNet.accountOptions());
+    const authnetService = getAuthnetService(accountOptions());
     const authnetTransactionFunc = authnetService[transactionType];
     let authResult;
     if (authnetTransactionFunc) {
@@ -105,7 +132,7 @@ function getAuthnetService(accountOptions) {
     mode
     } = accountOptions;
 
-  return new AuthNet({
+  return new AuthNetAPI({
     API_LOGIN_ID: login,
     TRANSACTION_KEY: tran_key,
     testMode: !mode

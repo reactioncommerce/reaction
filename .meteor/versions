@@ -90,7 +90,6 @@ kadira:flow-router-ssr@3.13.0
 launch-screen@1.0.12
 less@2.6.3_1
 livedata@1.0.18
-lmieulet:meteor-coverage@0.8.0
 localstorage@1.0.11
 logging@1.0.13_1
 matb33:collection-hooks@0.8.1
@@ -158,4 +157,3 @@ url@1.0.10
 vsivsi:job-collection@1.4.0
 webapp@1.2.9_1
 webapp-hashing@1.0.9
-xolvio:cleaner@0.3.1
