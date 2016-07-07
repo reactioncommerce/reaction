@@ -117,7 +117,7 @@ describe("Add/Create cart methods", function () {
       done();
     });
 
-    it("should merge all items of same variant in cart", function () {
+    it.skip("should merge all items of same variant in cart", function () {
       sandbox.stub(Reaction, "getShopId", () => shop._id);
       spyOnMethod("addToCart", userId);
       const cartId = Meteor.call("cart/createCart", userId, sessionId);
@@ -129,7 +129,6 @@ describe("Add/Create cart methods", function () {
       expect(cart.items.length).to.equal(1);
       expect(cart.items[0].quantity).to.equal(2);
     });
-
 
     it("should throw error an exception if user doesn't have a cart", function (done) {
       const userWithoutCart = Factory.create("user");
