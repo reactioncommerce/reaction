@@ -1,3 +1,5 @@
+import { Meteor } from "meteor/meteor";
+import { check } from "meteor/check";
 import { Cart } from "/lib/collections";
 
 Meteor.methods({

@@ -90,6 +90,7 @@ kadira:flow-router-ssr@3.13.0
 launch-screen@1.0.12
 less@2.6.3_1
 livedata@1.0.18
+lmieulet:meteor-coverage@0.8.0
 localstorage@1.0.11
 logging@1.0.13_1
 matb33:collection-hooks@0.8.1
@@ -110,12 +111,12 @@ mobile-experience@1.0.4
 mobile-status-bar@1.0.12
 modules@0.6.4
 modules-runtime@0.6.4_1
-momentjs:moment@2.13.1
+momentjs:moment@2.14.1
 mongo@1.1.9_1
 mongo-id@1.0.5
 mongo-livedata@1.0.12
 mrt:later@1.6.1
-npm-bcrypt@0.8.6_1
+npm-bcrypt@0.8.7
 npm-mongo@1.4.44_1
 npm-node-aes-gcm@0.1.5_1
 oauth@1.1.11
@@ -126,7 +127,7 @@ observe-sequence@1.0.12
 ongoworks:security@2.0.1
 ordered-dict@1.0.8
 practicalmeteor:chai@2.1.0_1
-practicalmeteor:mocha-core@1.0.0
+practicalmeteor:mocha-core@1.0.1
 practicalmeteor:sinon@1.14.1_2
 promise@0.7.2_1
 raix:eventemitter@0.1.3

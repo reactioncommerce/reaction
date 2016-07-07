@@ -1,4 +1,6 @@
 /* eslint camelcase: 0 */
+import { Meteor } from "meteor/meteor";
+import { Template } from "meteor/templating";
 import { Reaction } from "/client/api";
 import { Cart, Shops } from "/lib/collections";
 import { Stripe } from "../../lib/api";

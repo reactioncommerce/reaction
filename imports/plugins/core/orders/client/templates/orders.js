@@ -1,3 +1,5 @@
+import { Meteor } from "meteor/meteor";
+import { Template } from "meteor/templating";
 import { Reaction, i18next } from "/client/api";
 import { Orders, Shops } from "/lib/collections";
 
@@ -155,6 +157,7 @@ Template.ordersListItem.helpers({
     if (Reaction.Router.getQueryParam("_id") === orderId) {
       return "active";
     }
+    return "";
   },
 
   orderIsNew(order) {
@@ -163,8 +166,9 @@ Template.ordersListItem.helpers({
 });
 
 Template.ordersListItem.events({
-  "click [data-event-action=selectOrder]": function (event, instance) {
+  "click [data-event-action=selectOrder]": function (event) {
     event.preventDefault();
+    const instance = Template.instance();
     const isActionViewOpen = Reaction.isActionViewOpen();
     // toggle detail views
     if (isActionViewOpen === false) {
@@ -182,8 +186,9 @@ Template.ordersListItem.events({
       _id: instance.data.order._id
     });
   },
-  "click [data-event-action=startProcessingOrder]": function (event, instance) {
+  "click [data-event-action=startProcessingOrder]": function (event) {
     event.preventDefault();
+    const instance = Template.instance();
     const isActionViewOpen = Reaction.isActionViewOpen();
     const { order } = instance.data;
 
@@ -256,5 +261,6 @@ Template.orderListFilters.helpers({
     if (item.active === true) {
       return "active";
     }
+    return "";
   }
 });

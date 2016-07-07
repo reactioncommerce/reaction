@@ -1,7 +1,7 @@
 /* eslint camelcase: 0 */
+import { Template } from "meteor/templating";
 import { Packages } from "/lib/collections";
 import { PaypalPackageConfig } from "../../../lib/collections/schemas";
-
 
 Template.paypalSettings.helpers({
   PaypalPackageConfig: function () {

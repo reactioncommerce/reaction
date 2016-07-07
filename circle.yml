@@ -15,7 +15,7 @@ dependencies:
     - chmod +x bin/clone-packages.sh
     - ./bin/clone-packages.sh
     - if [[ -e ~/docker/image.tar ]]; then docker load -i ~/docker/image.tar; fi
-    - docker build -f docker/reaction.ci.docker -t reactioncommerce/prequel .
+    - docker build -f docker/reaction.ci.dockerfile -t reactioncommerce/prequel .
     - mkdir -p ~/docker; docker save reactioncommerce/prequel > ~/docker/image.tar
 
 test:
@@ -30,7 +30,7 @@ deployment:
   prequel:
     branch: development
     commands:
-      - docker build -f docker/reaction.prod.docker -t reactioncommerce/prequel:latest .
+      - docker build -f docker/reaction.prod.dockerfile -t reactioncommerce/prequel:latest .
       - docker tag reactioncommerce/prequel:latest reactioncommerce/prequel:$CIRCLE_BUILD_NUM
       - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
       - docker push reactioncommerce/prequel:$CIRCLE_BUILD_NUM
@@ -38,7 +38,7 @@ deployment:
   release:
     branch: master
     commands:
-      - docker build -f docker/reaction.prod.docker -t reactioncommerce/reaction:latest .
+      - docker build -f docker/reaction.prod.dockerfile -t reactioncommerce/reaction:latest .
       - docker tag reactioncommerce/reaction:latest reactioncommerce/reaction:$CIRCLE_BUILD_NUM
       - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
       - docker push reactioncommerce/reaction:$CIRCLE_BUILD_NUM

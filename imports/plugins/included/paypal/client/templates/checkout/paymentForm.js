@@ -8,7 +8,7 @@ Template.paypalPaymentForm.onCreated(function () {
       return Session.set("expressCheckoutSettings", expressCheckoutSettings);
     }
   });
-  return Meteor.call("getPayflowSettings", function (error, payflowSettings) {
+  return Meteor.call("payflowpro/settings", function (error, payflowSettings) {
     if (!error) {
       return Session.set("payflowSettings", payflowSettings);
     }

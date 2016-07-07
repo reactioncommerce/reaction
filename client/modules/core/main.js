@@ -2,6 +2,7 @@ import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
 import { check } from "meteor/check";
 import { Tracker } from "meteor/tracker";
+import { ReactiveVar } from "meteor/reactive-var";
 import Logger from "/client/modules/logger";
 import { Countries } from "/client/collections";
 import { localeDep } from  "/client/modules/i18n";
@@ -9,11 +10,13 @@ import { Packages, Shops } from "/lib/collections";
 import { _ } from "lodash";
 
 /**
- * Reaction core namespace
+ * Reaction namespace
  * Global reaction shop permissions methods and shop initialization
  */
 export default {
   shopId: null,
+
+  Locale: new ReactiveVar({}),
 
   init() {
     // keep an eye out for shop change
@@ -35,7 +38,7 @@ export default {
             createCountryCollection(shop.locales.countries);
           }
 
-          const locale = Session.get("locale") || {};
+          const locale = this.Locale.get() || {};
 
           // fix for https://github.com/reactioncommerce/reaction/issues/248
           // we need to keep an eye for rates changes

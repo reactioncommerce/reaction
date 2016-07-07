@@ -2,7 +2,11 @@ require("money");
 require("autonumeric");
 import $ from "jquery";
 import accounting from "accounting-js";
-import { Reaction } from "/client/api";
+import { Meteor } from "meteor/meteor";
+import { Template } from "meteor/templating";
+import { ReactiveVar } from "meteor/reactive-var";
+import { Session } from "meteor/session";
+import { Reaction, i18next, Logger } from "/client/api";
 import { NumericInput } from "/imports/plugins/core/ui/client/components";
 import { Media, Orders, Shops } from "/lib/collections";
 
@@ -31,7 +35,7 @@ Template.coreOrderShippingInvoice.onCreated(function () {
 
     // template.order = getOrder(currentData.orderId);
     if (order) {
-      let paymentMethod = order.billing[0].paymentMethod;
+      const paymentMethod = order.billing[0].paymentMethod;
       Meteor.call("orders/refunds/list", paymentMethod, (error, result) => {
         if (!error) {
           this.refunds.set(result);
@@ -45,7 +49,8 @@ Template.coreOrderShippingInvoice.onRendered(function () {
   const order = this.state.get("order");
   const paymentMethod = order.billing[0].paymentMethod;
   const refunds = this.refunds.get();
-  const currency = Reaction.Locale.currency;
+  const locale = Session.get("locale");
+  const currency = locale.currency;
 
   const lessAmount = _.reduce(refunds, (memo, refund) => {
     return memo - Math.abs(refund.amount);
@@ -81,6 +86,7 @@ Template.coreOrderShippingInvoice.events({
     Meteor.call("orders/approvePayment", order, discount, (error) => {
       if (error) {
         // Show error
+        Logger.warn(error);
       }
     });
   },
@@ -216,7 +222,9 @@ Template.coreOrderShippingInvoice.helpers({
   },
 
   currencySymbol() {
-    return Reaction.Locale.currency.symbol;
+    // return Reaction.Locale.currency.symbol;
+    const locale = Session.get("locale");
+    return locale.currency.symbol;
   },
 
   disabled() {
