@@ -26,6 +26,7 @@ import "/imports/plugins/included/shipping/server";
 import "/imports/plugins/included/social/server";
 import "/imports/plugins/included/stripe/server";
 import "/imports/plugins/included/example-paymentmethod/server";
+import "/imports/plugins/included/authnet/server";
 
 /**
  * Plugin Registry
@@ -44,3 +45,4 @@ import "/imports/plugins/included/shipping/register";
 import "/imports/plugins/included/social/register";
 import "/imports/plugins/included/stripe/register";
 import "/imports/plugins/included/example-paymentmethod/register";
+import "/imports/plugins/included/authnet/register";

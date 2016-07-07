@@ -18,6 +18,7 @@ import "/imports/plugins/included/shipping/client";
 import "/imports/plugins/included/social/client";
 import "/imports/plugins/included/stripe/client";
 import "/imports/plugins/included/example-paymentmethod/client";
+import "/imports/plugins/included/authnet/client";
 
 /**
  * Themes
