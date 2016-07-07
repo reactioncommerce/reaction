@@ -1,5 +1,7 @@
 import { Reaction } from "/client/api";
 import { Packages, Shops } from "/lib/collections";
+import { Meteor } from "meteor/meteor";
+import { Template } from "meteor/templating";
 
 const getPermissionMap = (permissions) => {
   const permissionMap = {};

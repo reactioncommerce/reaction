@@ -58,22 +58,14 @@ describe("Add/Create cart methods", function () {
   }
 
   describe("cart/createCart", function () {
-    it.skip("should create a test cart", function (done) {
-      sandbox.stub(Reaction, "getShopId", function () {
-        return shop._id;
-      });
-
-      // spyOnMethod("createCart", userId);
+    it.skip("should create a test cart", function () {
+      // This test needs to be skipped until we can properly stub out the shopIdAutoValue function
+      sandbox.stub(Reaction, "getShopId", () => shop._id);
       let cartInsertSpy = sandbox.spy(Cart, "insert");
-
-      // spyOn(Reaction.Collections.Cart, "insert").and.callThrough();
       let cartId = Meteor.call("cart/createCart", userId, sessionId);
-      let cart = Cart.findOne({
-        userId: userId
-      });
+      let cart = Cart.findOne({userId: userId});
       expect(cartInsertSpy).to.have.been.called;
       expect(cartId).to.equal(cart._id);
-      done();
     });
   });
 
@@ -125,6 +117,18 @@ describe("Add/Create cart methods", function () {
       done();
     });
 
+    it.skip("should merge all items of same variant in cart", function () {
+      sandbox.stub(Reaction, "getShopId", () => shop._id);
+      spyOnMethod("addToCart", userId);
+      const cartId = Meteor.call("cart/createCart", userId, sessionId);
+
+      Meteor.call("cart/addToCart", productId, variantId, quantity);
+      // add a second item of same variant
+      Meteor.call("cart/addToCart", productId, variantId, quantity);
+      let cart = Cart.findOne(cartId);
+      expect(cart.items.length).to.equal(1);
+      expect(cart.items[0].quantity).to.equal(2);
+    });
 
     it("should throw error an exception if user doesn't have a cart", function (done) {
       const userWithoutCart = Factory.create("user");

@@ -1,5 +1,6 @@
 import { i18next } from "/client/api";
 import { LoginFormSharedHelpers } from "/client/modules/accounts/helpers";
+import { Template } from "meteor/templating";
 
 ModalHelper = {
   closeModal: function (template) {

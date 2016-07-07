@@ -1,5 +1,7 @@
 import { Router, Logger } from "/client/api";
 import { Cart } from "/lib/collections";
+import { Meteor } from "meteor/meteor";
+import { Tracker } from "meteor/tracker";
 
 function checkoutState(callback) {
   if (callback) {

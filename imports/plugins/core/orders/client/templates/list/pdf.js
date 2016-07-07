@@ -1,3 +1,5 @@
+import { Template } from "meteor/templating";
+
 /**
 * completedPDFLayout
 * inheritsHelpersFrom dashboardOrdersList

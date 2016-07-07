@@ -1,4 +1,5 @@
 import { Mongo } from "meteor/mongo";
+import { EJSON } from "meteor/ejson";
 import * as Collections from "/lib/collections";
 import Hooks from "../hooks";
 import Logger from "../logger";

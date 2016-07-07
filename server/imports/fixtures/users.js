@@ -1,7 +1,7 @@
 import faker from "faker";
 import "./shops";
 import { getShop } from "./shops";
-
+import moment from "moment";
 
 export function getUser() {
   const existingUser = Meteor.users.findOne();

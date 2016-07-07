@@ -1,5 +1,5 @@
 import { Packages, Shops } from "/lib/collections";
-
+import { Template } from "meteor/templating";
 
 const openClassName = "in";
 

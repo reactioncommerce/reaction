@@ -1,4 +1,5 @@
 /* eslint camelcase: 0 */
+import { Meteor } from "meteor/meteor";
 
 export const Stripe = {
   authorize: function (cardInfo, paymentInfo, callback) {

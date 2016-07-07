@@ -31,22 +31,18 @@ describe("cart methods", function () {
       Collections.Cart.remove({});
     });
 
-    it.skip("should remove item from cart", function (done) {
+    it("should remove item from cart", function (done) {
       let cart = Factory.create("cart");
       const cartUserId = cart.userId;
-      sandbox.stub(Reaction, "getShopId", function () {
-        shop._id;
-      });
-      sandbox.stub(Meteor, "userId", function () {
-        return cartUserId;
-      });
-
+      sandbox.stub(Reaction, "getShopId", () => shop._id);
+      sandbox.stub(Meteor, "userId", () => cartUserId);
       sandbox.stub(Meteor.server.method_handlers, "cart/resetShipmentMethod", function () {
         check(arguments, [Match.Any]);
       });
-
+      sandbox.stub(Meteor.server.method_handlers, "shipping/updateShipmentQuotes", function () {
+        check(arguments, [Match.Any]);
+      });
       let updateSpy = sandbox.spy(Collections.Cart, "update");
-
       let cartFromCollection = Collections.Cart.findOne(cart._id);
       const cartItemId = cartFromCollection.items[0]._id;
       assert.equal(cartFromCollection.items.length, 2);

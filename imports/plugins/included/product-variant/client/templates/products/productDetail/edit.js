@@ -1,6 +1,9 @@
 import autosize from "autosize";
 import { Reaction, i18next, Logger } from "/client/api";
 import { ReactionProduct } from "/lib/api";
+import { Meteor } from "meteor/meteor";
+import { Session } from "meteor/session";
+import { Template } from "meteor/templating";
 
 /**
  * productDetailEdit helpers

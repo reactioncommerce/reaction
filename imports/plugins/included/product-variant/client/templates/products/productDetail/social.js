@@ -1,4 +1,6 @@
 import { ReactionProduct } from "/lib/api";
+import { Session } from "meteor/session";
+import { Template } from "meteor/templating";
 
 /**
 * productSocial helpers

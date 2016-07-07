@@ -1,3 +1,6 @@
+import { Meteor } from "meteor/meteor";
+import { Tracker } from "meteor/tracker";
+import { Template } from "meteor/templating";
 import { i18next } from "/client/api";
 import { Orders } from "/lib/collections";
 

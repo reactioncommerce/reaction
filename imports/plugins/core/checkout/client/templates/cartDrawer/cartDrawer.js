@@ -1,5 +1,8 @@
 import { Reaction } from "/client/api";
 import { Cart } from "/lib/collections";
+import { Session } from "meteor/session";
+import { Meteor } from "meteor/meteor";
+import { Template } from "meteor/templating";
 
 /**
  * cartDrawer helpers

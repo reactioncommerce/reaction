@@ -1,4 +1,7 @@
 import { Tags } from "/lib/collections";
+import { Meteor } from "meteor/meteor";
+import { Session } from "meteor/session";
+import { Template } from "meteor/templating";
 
 /**
  * Reaction TagNav shared helpers

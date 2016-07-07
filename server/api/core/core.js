@@ -1,6 +1,7 @@
 import url from "url";
 import { merge, uniqWith } from "lodash";
 import { Meteor } from "meteor/meteor";
+import { EJSON } from "meteor/ejson";
 import { Jobs, Packages, Shops } from "/lib/collections";
 import { Hooks, Logger } from "/server/api";
 import { getRegistryDomain } from "./setDomain";
@@ -214,10 +215,10 @@ export default {
     const defaultAdminRoles = ["owner", "admin", "guest", "account/profile"];
     let accountId;
 
-    // while (!this.getShopId()) {
-    //   Logger.info("No shopId, waiting one second...");
-    //   Meteor._sleepForMs(1000);
-    // }
+    while (!this.getShopId()) {
+      Logger.info("No shopId, waiting one second...");
+      Meteor._sleepForMs(1000);
+    }
     const shopId = this.getShopId();
 
     // if an admin user has already been created, we'll exit

@@ -1,5 +1,6 @@
 import { Translations } from "/lib/collections";
 import { Reaction } from "/server/api";
+import { loadCoreTranslations } from "/server/startup/i18n";
 
 /**
  * Reaction Shop Methods

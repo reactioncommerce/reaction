@@ -1,6 +1,7 @@
 import { Reaction } from "/client/api";
 import { Cart } from "/lib/collections";
-
+import { Meteor } from "meteor/meteor";
+import { Template } from "meteor/templating";
 import "./checkout.html";
 
 //
@@ -13,6 +14,7 @@ Template.cartCheckout.helpers({
     if (Reaction.Subscriptions.Cart.ready()) {
       return Cart.findOne();
     }
+    return {};
   }
 });
 

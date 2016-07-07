@@ -10,7 +10,7 @@ function directoryExists(dirPath) {
   }
 }
 
-function loadCoreTranslations() {
+export function loadCoreTranslations() {
   const meteorPath = fs.realpathSync(process.cwd() + "/../");
   const i18nFolder = `${meteorPath}/server/assets/app/data/i18n/`;
 

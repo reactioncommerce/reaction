@@ -124,8 +124,6 @@ describe("Server/Core", function () {
   });
 
   describe("shop/locateAddress", function () {
-    // This test is failing for some reason unrelated to the test. Addresss comes
-    // up with correct zipcode, etc.
     it("should locate an address based on known US coordinates", function (done) {
       this.timeout(5000);
       let address = Meteor.call("shop/locateAddress", 34.043125, -118.267118);
@@ -133,11 +131,14 @@ describe("Server/Core", function () {
       return done();
     });
 
-    it("should locate an address with known international coordinates", function (done) {
+    it("should locate an address with known international coordinates", function () {
       this.timeout(5000);
       let address = Meteor.call("shop/locateAddress", 53.414619, -2.947065);
-      expect(address.formattedAddress).to.contain("Molyneux Rd, Kensington, Liverpool, Merseyside L6 6AW, UK");
-      return done();
+      expect(address.formattedAddress).to.not.be.undefined;
+      expect(address.formattedAddress).to.contain("248 Molyneux Rd, Kensington");
+      expect(address.formattedAddress).to.contain("Liverpool");
+      expect(address.formattedAddress).to.contain("L6 6AW");
+      expect(address.formattedAddress).to.contain("UK");
     });
 
     it("should provide default empty address", function (done) {

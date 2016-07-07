@@ -1,4 +1,5 @@
 import { Router } from "/client/api";
+import { Tracker } from "meteor/tracker";
 
 /**
  * Tag client tests.

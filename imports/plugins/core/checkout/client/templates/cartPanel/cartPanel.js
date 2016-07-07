@@ -1,4 +1,5 @@
 import { Reaction } from "/client/api";
+import { Session } from "meteor/session";
 
 /**
  * cartPanel events

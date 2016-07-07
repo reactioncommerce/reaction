@@ -1,5 +1,7 @@
 import _ from "lodash";
 import { Cart, Shipping } from "/lib/collections";
+import { Meteor } from "meteor/meteor";
+import { Template } from "meteor/templating";
 
 //
 // These helpers can be used in general shipping packages
