@@ -2,7 +2,7 @@
 import { Meteor } from "meteor/meteor";
 
 export const Stripe = {
-  authorize: function (cardInfo, paymentInfo, callback) {
-    Meteor.call("stripeSubmit", "authorize", cardInfo, paymentInfo, callback);
+  authorize: function (cardData, paymentInfo, callback) {
+    Meteor.call("stripeSubmit", "authorize", cardData, paymentInfo, callback);
   }
 };
