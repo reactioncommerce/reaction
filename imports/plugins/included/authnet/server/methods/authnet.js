@@ -9,7 +9,7 @@ import AuthNetAPI from "authorize-net";
 import { Reaction, Logger } from "/server/api";
 import { Packages } from "/lib/collections";
 
-function accountOptions() {
+function getAccountOptions() {
   let settings = Packages.findOne({
     name: "reaction-auth-net",
     shopId: Reaction.getShopId(),
@@ -35,6 +35,7 @@ function getSettings(settings, ref, valueName) {
   } else if (ref !== null) {
     return ref[valueName];
   }
+  return undefined;
 }
 
 Meteor.methods({
@@ -60,7 +61,7 @@ Meteor.methods({
       expirationYear: cardInfo.expirationYear,
       expirationMonth: cardInfo.expirationMonth
     };
-    const authnetService = getAuthnetService(accountOptions());
+    const authnetService = getAuthnetService(getAccountOptions());
     const authnetTransactionFunc = authnetService[transactionType];
     let authResult;
     if (authnetTransactionFunc) {
@@ -87,7 +88,7 @@ Meteor.methods({
       amount
       } = paymentMethod;
 
-    const authnetService = getAuthnetService(Meteor.AuthNet.accountOptions());
+    const authnetService = getAuthnetService(getAccountOptions());
     const roundedAmount = parseFloat(amount.toFixed(2));
     let result;
     try {
