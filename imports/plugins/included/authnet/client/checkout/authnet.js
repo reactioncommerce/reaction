@@ -10,6 +10,25 @@ import {AuthNet} from "../api";
 
 import "./authnet.html";
 
+function uiEnd(tpl, buttonText) {
+  tpl.$(":input").removeAttr("disabled");
+  tpl.$("#btn-complete-order").text(buttonText);
+  tpl.$("#btn-processing").addClass("hidden");
+}
+
+function paymentAlert(errorMessage) {
+  return $(".alert").removeClass("hidden").text(errorMessage);
+}
+
+function hidePaymentAlert() {
+  $(".alert").addClass("hidden").text("");
+}
+
+function handleAuthNetSubmitError(error) {
+  // TODO - this error handling needs to be reworked for the Authorize.net API
+  Logger.fatal(error);
+}
+
 // used to track asynchronous submitting for UI changes
 let submitting = false;
 
@@ -90,12 +109,9 @@ AutoForm.addHooks("authnet-payment-form", {
   },
 
   beginSubmit() {
-    //TODO Add this "Submitting" state which seems to have been lost
-    let tpl$ = this.template.$;
-    // Show processing
-    // tpl$(":input").attr("disabled", true);
-    // tpl$("#btn-complete-order").text("Submitting ");
-    // tpl$("#btn-processing").removeClass("hidden");
+    this.template.$(":input").attr("disabled", true);
+    this.template.$("#btn-complete-order").text("Submitting ");
+    return this.template.$("#btn-processing").removeClass("hidden");
   },
 
   endSubmit() {
@@ -106,21 +122,3 @@ AutoForm.addHooks("authnet-payment-form", {
   }
 });
 
-function uiEnd(tpl, buttonText) {
-  tpl.$(":input").removeAttr("disabled");
-  tpl.$("#btn-complete-order").text(buttonText);
-  tpl.$("#btn-processing").addClass("hidden");
-}
-
-// function paymentAlert(errorMessage) {
-//   $(".alert").removeClass("hidden").text(errorMessage);
-// }
-
-function hidePaymentAlert() {
-  $(".alert").addClass("hidden").text("");
-}
-
-function handleAuthNetSubmitError(error) {
-  // TODO - this error handling needs to be reworked for the Authorize.net API
-  Logger.fatal(error);
-}
