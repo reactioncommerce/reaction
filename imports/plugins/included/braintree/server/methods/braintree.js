@@ -3,6 +3,7 @@ import Future from "fibers/future";
 import Braintree from "braintree";
 import { Reaction, Logger } from "/server/api";
 import { Packages } from "/lib/collections";
+import { PaymentMethod } from "/lib/collections/schemas";
 
 function getSettings(settings, ref, valueName) {
   if (settings !== null) {
@@ -41,7 +42,7 @@ function getAccountOptions() {
 }
 
 
-getGateway = function () {
+function getGateway() {
   let accountOptions = getAccountOptions();
   if (accountOptions.environment === "production") {
     accountOptions.environment = Braintree.Environment.Production;
@@ -133,7 +134,7 @@ Meteor.methods({
    * @return {Object} results - Object containing the results of the transaction
    */
   "braintree/payment/capture": function (paymentMethod) {
-    check(paymentMethod, Object);
+    check(paymentMethod, PaymentMethod);
     let transactionId = paymentMethod.transactions[0].transaction.id;
     let amount = paymentMethod.transactions[0].transaction.amount;
     let gateway = getGateway();
@@ -165,7 +166,7 @@ Meteor.methods({
    * @return {Object} results - Object containing the results of the transaction
    */
   "braintree/refund/create": function (paymentMethod, amount) {
-    check(paymentMethod, Object);
+    check(paymentMethod, PaymentMethod);
     check(amount, Number);
     let transactionId = paymentMethod.transactions[0].transaction.id;
     let gateway = getGateway();
@@ -195,7 +196,7 @@ Meteor.methods({
         });
       }
     }, function (e) {
-      Logger.warn(e);
+      Logger.fatal(e);
     }));
     return fut.wait();
   },
