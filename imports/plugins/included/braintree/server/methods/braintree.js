@@ -1,5 +1,5 @@
 import { Meteor } from "meteor/meteor";
-
+import Future from "fibers/future";
 import Braintree from "braintree";
 import { Reaction, Logger } from "/server/api";
 import { Packages } from "/lib/collections";
@@ -10,6 +10,7 @@ function getSettings(settings, ref, valueName) {
   } else if (ref !== null) {
     return ref[valueName];
   }
+  return undefined;
 }
 
 

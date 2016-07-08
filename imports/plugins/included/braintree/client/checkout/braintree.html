@@ -1,5 +1,5 @@
 <template name="braintreePaymentForm">
-  {{#autoForm schema="ReactionCore.Schemas.BraintreePayment" id="braintree-payment-form"}}
+  {{#autoForm schema=BraintreePayment id="braintree-payment-form"}}
   <div class="row">
     <div class="col-sm-12 col-lg-6 form-group{{#if afFieldIsInvalid name='payerName'}} has-error{{/if}}">
       <label class="control-label">{{afFieldLabelText name='payerName'}}</label>

@@ -8,6 +8,7 @@ getSettings = function (settings, ref, valueName) {
   } else if (ref !== null) {
     return ref[valueName];
   }
+  return undefined;
 };
 
 export const Braintree =
@@ -24,7 +25,7 @@ export const Braintree =
       } else {
         environment = "sandbox";
       }
-  
+
       let ref = Meteor.settings.braintree;
       let options = {
         environment: environment,
@@ -42,4 +43,4 @@ export const Braintree =
     authorize(cardData, paymentData, callback) {
       Meteor.call("braintreeSubmit", "authorize", cardData, paymentData, callback);
     }
-};
+  };

@@ -1,4 +1,19 @@
 /* eslint camelcase: 0 */
+import { Meteor } from "meteor/meteor";
+import { Template } from "meteor/templating";
+import { getCardType } from "/client/modules/core/helpers/globals";
+import { Cart, Shops } from "/lib/collections";
+import { Braintree } from "../api/braintree";
+import { BraintreePayment } from "../../lib/collections/schemas";
+
+import "./braintree.html";
+
+Template.braintreePaymentForm.helpers({
+  BraintreePayment() {
+    return BraintreePayment;
+  }
+});
+
 
 uiEnd = function (template, buttonText) {
   template.$(":input").removeAttr("disabled");
@@ -28,7 +43,7 @@ let submitting = false;
 submitToBrainTree = function (doc, template) {
   submitting = true;
   hidePaymentAlert();
-  let form = {
+  let cardData = {
     name: doc.payerName,
     number: doc.cardNumber,
     expirationMonth: doc.expireMonth,
@@ -36,10 +51,10 @@ submitToBrainTree = function (doc, template) {
     cvv2: doc.cvv,
     type: getCardType(doc.cardNumber)
   };
-  let cartTotal = ReactionCore.Collections.Cart.findOne().cartTotal();
-  let currencyCode = ReactionCore.Collections.Shops.findOne().currency;
+  let cartTotal = Cart.findOne().cartTotal();
+  let currencyCode = Shops.findOne().currency;
 
-  Meteor.Braintree.authorize(form, {
+  Braintree.authorize(cardData, {
     total: cartTotal,
     currency: currencyCode
   }, function (error, results) {
