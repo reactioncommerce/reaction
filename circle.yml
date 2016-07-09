@@ -1,6 +1,6 @@
 machine:
   node:
-    version: 0.10.41
+    version: 0.10.46
   services:
     - docker
   pre:
