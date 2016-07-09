@@ -90,37 +90,24 @@ function getImportPaths(baseDirPath) {
     const clientImport = baseDirPath + plugin + "/client/index.js";
     const serverImport = baseDirPath + plugin + "/server/index.js";
 
-    let registry;
-    let pkg;
-
     if (!isEmptyOrMissing(registryImport)) {
       Logger.info(`Registry file found for ${plugin}`);
 
       // register the package
       registry = JSON.parse(fs.readFileSync(registryImport, "utf8"));
       Reaction.registerPackage(registry);
-
-      // get the database document for this plugin (if it exists)
-      pkg = _.find(packages, p => p.name === registry.name);
     }
 
-    // import the client files if they exist and plugin is enabled
+    // import the client files if they exist
     if (!isEmptyOrMissing(clientImport)) {
       Logger.info(`Client import found for ${plugin}`);
-
-      if (pkg && pkg.enabled || !pkg && registry && registry.autoEnable) {
-        clientImportPaths.push(getImportPath(clientImport));
-      }
+      clientImportPaths.push(getImportPath(clientImport));
     }
 
-    // import the server files if they exist and plugin is enabled
+    // import the server files if they exist
     if (!isEmptyOrMissing(serverImport)) {
       Logger.info(`Server import found for ${plugin}`);
-
-      if (pkg && pkg.enabled || !pkg && registry && registry.autoEnable) {
-        Logger.info(`${_.upperFirst(plugin)} plugin is enabled.`);
-        serverImportPaths.push(getImportPath(serverImport));
-      }
+      serverImportPaths.push(getImportPath(serverImport));
     }
   });
 
