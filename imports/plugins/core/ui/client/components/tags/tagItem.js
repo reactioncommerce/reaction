@@ -3,7 +3,7 @@ import { Reaction } from "/client/api";
 import { Tags } from "/lib/collections";
 import classnames from "classnames";
 
-require("jquery-ui/autocomplete");
+require("jquery-ui");
 
 Template.tagItem.helpers({
   tagBlankProps() {
