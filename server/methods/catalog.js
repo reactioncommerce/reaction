@@ -1,3 +1,4 @@
+import _ from  "lodash";
 import { EJSON } from "meteor/ejson";
 import { check } from "meteor/check";
 import { Meteor } from "meteor/meteor";
@@ -337,7 +338,7 @@ Meteor.methods({
     // descendants later.
     // we could use this way in future: http://stackoverflow.com/questions/
     // 9040161/mongo-order-by-length-of-array, by now following are allowed
-    // @link http://underscorejs.org/#sortBy
+    // @link https://lodash.com/docs#sortBy
     const sortedVariants = _.sortBy(variants, doc => doc.ancestors.length);
 
     return sortedVariants.map(variant => {

@@ -1,6 +1,6 @@
+import _ from "lodash";
 import bunyan from "bunyan";
 import { Meteor } from "meteor/meteor";
-import { _ } from "lodash";
 
 /*
  * configure bunyan logging module for reaction client

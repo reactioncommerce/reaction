@@ -2,7 +2,7 @@
 
 import React from "react";
 import ReactDOM from "react-dom";
-import { _ } from "lodash";
+import _ from "lodash";
 
 // Empty template; logic in `onRendered` below
 Template.React = new Template("Template.React", function () {

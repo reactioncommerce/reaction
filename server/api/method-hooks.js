@@ -1,5 +1,5 @@
+import _ from "lodash";
 import { Meteor } from "meteor/meteor";
-import { _ } from "lodash";
 
 /*
  *  Blatant reuse of Meteor method hooks from

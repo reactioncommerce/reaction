@@ -62,7 +62,6 @@
     "tether-drop": "^1.4.2",
     "tether-tooltip": "^1.2.0",
     "transliteration": "^1.1.5",
-    "underscore": "^1.8.3",
     "url": "^0.11.0"
   },
   "devDependencies": {
