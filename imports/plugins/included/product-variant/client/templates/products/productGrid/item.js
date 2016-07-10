@@ -10,7 +10,7 @@ import { Template } from "meteor/templating";
 import { Tracker } from "meteor/tracker";
 
 // load modules
-require("jquery-ui/sortable");
+require("jquery-ui");
 
 /**
  * productGridItems helpers
