@@ -1,4 +1,4 @@
-import { _ } from "lodash";
+import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import * as Collections from "/lib/collections";

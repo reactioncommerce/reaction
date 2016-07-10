@@ -1,7 +1,7 @@
+import _ from "lodash";
 import Logger from "/client/modules/logger";
 import { Reaction } from "../";
 import * as Collections from "/lib/collections";
-import { _ } from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 

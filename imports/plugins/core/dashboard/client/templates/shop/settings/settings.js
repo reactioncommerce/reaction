@@ -1,6 +1,6 @@
+import _ from "lodash";
 import { Reaction, i18next } from "/client/api";
 import { Media, Packages, Shops } from "/lib/collections";
-import { _ } from "lodash";
 
 Template.shopBrandImageOption.helpers({
   cardProps(data) {
