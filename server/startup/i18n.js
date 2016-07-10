@@ -1,4 +1,5 @@
 import fs from "fs";
+import { Meteor } from "meteor/meteor";
 import { Hooks, Logger, Reaction } from "/server/api";
 
 // taken from here: http://stackoverflow.com/a/32749571
