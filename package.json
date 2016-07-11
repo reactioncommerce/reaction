@@ -41,7 +41,7 @@
     "i18next-sprintf-postprocessor": "^0.2.2",
     "jquery": "^2.2.4",
     "jquery-i18next": "^0.2.0",
-    "jquery-ui": "^1.12.0",
+    "jquery-ui": "1.10.5",
     "lodash": "^4.13.1",
     "meteor-node-stubs": "^0.2.3",
     "moment": "^2.13.0",
