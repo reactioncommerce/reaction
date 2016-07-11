@@ -1,3 +1,5 @@
+import { Meteor } from "meteor/meteor";
+import { Logger } from "/server/api";
 /**
  * Callback hooks to alter the behavior of common operations or trigger other things.
  * @namespace Hooks.Events
@@ -76,6 +78,19 @@ Hooks.Events.runAsync = (name, item, constant) => {
     });
   }
   return item;
+};
+
+Hooks.Events.list = (name) => {
+  const callbacks = Hooks.Events[name];
+  if (typeof callbacks !== "undefined" && !!callbacks.length) {
+    Logger.info(`Callbacks for ${name}`);
+    callbacks.forEach((callback) => {
+      Logger.info(callback.name);
+      Logger.info(callback.toString());
+    });
+  } else {
+    Logger.info("No callbacks defined");
+  }
 };
 
 export default Hooks;
