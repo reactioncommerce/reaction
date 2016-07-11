@@ -181,11 +181,12 @@ export default {
   },
 
   getShopId() {
-    const currentShop = this.getCurrentShop();
-    if (typeof currentShop === "object") {
-      return currentShop._id;
-    }
-    return null;
+    const domain = this.getDomain();
+    const shop = Shops.find({ domains: domain }, {
+      limit: 1,
+      fields: { _id: 1 }
+    }).fetch()[0];
+    return shop && shop._id;
   },
 
   getDomain() {
@@ -193,11 +194,12 @@ export default {
   },
 
   getShopName() {
-    const currentShop = this.getCurrentShop();
-    if (typeof currentShop === "object") {
-      return currentShop.name;
-    }
-    return null;
+    const domain = this.getDomain();
+    const shop = Shops.find({ domains: domain }, {
+      limit: 1,
+      fields: { name: 1 }
+    }).fetch()[0];
+    return shop && shop.name;
   },
 
   /**
