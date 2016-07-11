@@ -39,7 +39,11 @@ export function loadCoreTranslations() {
 
       Assets.find({ type: "i18n" }).forEach((t) => {
         Logger.info(`Importing ${t.name} translations...`);
-        Reaction.Import.process(t.content, ["i18n"], Reaction.Import.translation);
+        if (t.content) {
+          Reaction.Import.process(t.content, ["i18n"], Reaction.Import.translation);
+        } else {
+          Logger.warn(`No translation content found for ${t.name} asset`);
+        }
       });
     }));
   }
