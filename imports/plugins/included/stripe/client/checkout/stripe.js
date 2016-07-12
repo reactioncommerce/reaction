@@ -1,7 +1,8 @@
 /* eslint camelcase: 0 */
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
-import { Reaction } from "/client/api";
+import {AutoForm} from "meteor/aldeed:autoform";
+import { getCardType } from "/client/modules/core/helpers/globals";
 import { Cart, Shops } from "/lib/collections";
 import { Stripe } from "../../lib/api";
 import { StripePayment } from "../../lib/collections/schemas";
@@ -51,16 +52,16 @@ AutoForm.addHooks("stripe-payment-form", {
   onSubmit(doc) {
     const template = this.template;
     hidePaymentAlert();
-    const form = {
+    const cardData = {
       name: doc.payerName,
       number: doc.cardNumber,
       expire_month: doc.expireMonth,
       expire_year: doc.expireYear,
       cvv2: doc.cvv,
-      type: Reaction.getCardType(doc.cardNumber)
+      type: getCardType(doc.cardNumber)
     };
-    const storedCard = form.type.charAt(0).toUpperCase() + form.type.slice(1) + " " + doc.cardNumber.slice(-4);
-    Stripe.authorize(form, {
+    const storedCard = cardData.type.charAt(0).toUpperCase() + cardData.type.slice(1) + " " + doc.cardNumber.slice(-4);
+    Stripe.authorize(cardData, {
       total: Cart.findOne().cartTotal(),
       currency: Shops.findOne().currency
     }, function (error, transaction) {

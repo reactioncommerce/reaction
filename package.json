@@ -23,10 +23,12 @@
   },
   "dependencies": {
     "accounting-js": "^1.1.1",
+    "authorize-net": "^1.0.6",
     "autonumeric": "^1.9.45",
     "autoprefixer": "^6.3.6",
     "autosize": "^3.0.15",
     "bootstrap": "^3.3.6",
+    "braintree": "^1.40.0",
     "bunyan": "^1.8.1",
     "bunyan-format": "^0.2.1",
     "bunyan-loggly": "^1.0.0",
