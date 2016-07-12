@@ -1,11 +1,11 @@
 /* eslint camelcase: 0 */
-import {Meteor} from "meteor/meteor";
-import {Logger} from "/client/api";
-import {getCardType} from "/client/modules/core/helpers/globals";
-import {Cart, Shops} from "/lib/collections";
-import {AutoForm} from "meteor/aldeed:autoform";
-import {AuthNetPayment} from "../../lib/collections/schemas";
-import {AuthNet} from "../api";
+import { Meteor } from "meteor/meteor";
+import { Logger } from "/client/api";
+import { getCardType } from "/client/modules/core/helpers/globals";
+import { Cart, Shops } from "/lib/collections";
+import { AutoForm } from "meteor/aldeed:autoform";
+import { AuthNetPayment } from "../../lib/collections/schemas";
+import { AuthNet } from "../api";
 
 
 import "./authnet.html";
@@ -26,6 +26,7 @@ function hidePaymentAlert() {
 
 function handleAuthNetSubmitError(error) {
   // TODO - this error handling needs to be reworked for the Authorize.net API
+  paymentAlert(error);
   Logger.fatal(error);
 }
 
@@ -72,38 +73,37 @@ AutoForm.addHooks("authnet-payment-form", {
 
     // Submit for processing
     AuthNet.authorize(cardInfo, paymentInfo, function (error, transaction) {
-        if (error || !transaction) {
-          Logger.warn(error);
-          uiEnd(tpl, "Resubmit payment");
-        } else {
-          let normalizedMode = "authorize";
-          let normalizedStatus = "failed";
+      if (error || !transaction) {
+        handleAuthNetSubmitError(error);
+        uiEnd(tpl, "Resubmit payment");
+      } else {
+        let normalizedMode = "authorize";
+        let normalizedStatus = "failed";
 
-          const transId = transaction.transactionId[0].toString();
+        const transId = transaction.transactionId[0].toString();
 
-          if (transaction._original.responseCode[0] === "1") {
-            normalizedStatus = "created";
-          }
-
-          let paymentMethod = {
-            processor: "AuthNet",
-            storedCard: storedCard,
-            method: "credit_card",
-            transactionId: transId,
-            amount: +paymentInfo.total,
-            status: normalizedStatus,
-            mode: normalizedMode,
-            createdAt: new Date(),
-            updatedAt: new Date(),
-            transactions: [
-              transaction._original
-            ]
-          };
-          Meteor.call("cart/submitPayment", paymentMethod);
-          uiEnd(tpl, "Resubmit payment");
+        if (transaction._original.responseCode[0] === "1") {
+          normalizedStatus = "created";
         }
+
+        let paymentMethod = {
+          processor: "AuthNet",
+          storedCard: storedCard,
+          method: "credit_card",
+          transactionId: transId,
+          amount: +paymentInfo.total,
+          status: normalizedStatus,
+          mode: normalizedMode,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+          transactions: [
+            transaction._original
+          ]
+        };
+        Meteor.call("cart/submitPayment", paymentMethod);
+        uiEnd(tpl, "Resubmit payment");
       }
-    );
+    });
 
     return false;
   },
