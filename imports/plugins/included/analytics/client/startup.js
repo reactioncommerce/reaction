@@ -1,8 +1,8 @@
-import { AnalyticsEvents, Packages } from "/lib/collections";
-import { Reaction, i18next } from "/client/api";
-import { _ } from "lodash";
+import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Tracker } from "meteor/tracker";
+import { AnalyticsEvents, Packages } from "/lib/collections";
+import { Reaction, i18next } from "/client/api";
 
 // Create a queue, but don't obliterate an existing one!
 analytics = window.analytics = window.analytics || [];

@@ -1,3 +1,4 @@
+import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
 import { check } from "meteor/check";
@@ -7,7 +8,6 @@ import Logger from "/client/modules/logger";
 import { Countries } from "/client/collections";
 import { localeDep } from  "/client/modules/i18n";
 import { Packages, Shops } from "/lib/collections";
-import { _ } from "lodash";
 
 /**
  * Reaction namespace

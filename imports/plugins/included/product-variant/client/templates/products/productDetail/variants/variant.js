@@ -6,7 +6,7 @@ import { Session } from "meteor/session";
 import { Template } from "meteor/templating";
 
 // load modules
-require("jquery-ui/sortable");
+require("jquery-ui");
 
 /**
  * variant helpers

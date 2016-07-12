@@ -1,4 +1,4 @@
-import { _ } from "lodash";
+import _ from "lodash";
 import { ServiceConfigHelper } from "./util";
 import { Template } from "meteor/templating";
 

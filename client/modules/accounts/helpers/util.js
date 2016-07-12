@@ -1,4 +1,4 @@
-import { _ } from "lodash";
+import _ from "lodash";
 import { Template } from "meteor/templating";
 
 function capitalize(str) {

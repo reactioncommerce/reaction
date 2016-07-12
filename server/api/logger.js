@@ -1,6 +1,6 @@
 import bunyan from "bunyan";
 import bunyanFormat from "bunyan-format";
-import { _ } from "lodash";
+import _ from "lodash";
 
 // configure bunyan logging module for reaction server
 // See: https://github.com/trentm/node-bunyan#levels

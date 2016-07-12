@@ -1,5 +1,5 @@
 import moment from "moment";
-import { _ } from "lodash";
+import _ from "lodash";
 import { HTTP } from "meteor/http";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";

@@ -1,6 +1,6 @@
+import _ from "lodash";
 import { Reaction } from "/client/api";
 import { Packages } from "/lib/collections";
-import { _ } from "lodash";
 
 /**
  * Helpers for Settings Header (actionView)

@@ -1,3 +1,4 @@
+import _ from "lodash";
 import i18next from "i18next";
 import i18nextBrowserLanguageDetector from "i18next-browser-languagedetector";
 import i18nextLocalStorageCache from "i18next-localstorage-cache";
@@ -6,7 +7,6 @@ import i18nextJquery from "jquery-i18next";
 import { Meteor } from "meteor/meteor";
 import { Tracker } from "meteor/tracker";
 import { Session } from "meteor/session";
-import { _ } from "lodash";
 import { SimpleSchema } from "meteor/aldeed:simple-schema";
 import { Reaction } from "/client/api";
 import { Packages, Shops, Translations } from "/lib/collections";

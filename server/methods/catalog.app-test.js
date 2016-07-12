@@ -1,5 +1,6 @@
 /* eslint dot-notation: 0 */
 /* eslint no-loop-func: 0 */
+import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Factory } from "meteor/dburles:factory";
 import { Reaction } from "/server/api";
@@ -7,7 +8,6 @@ import { Products, Tags } from "/lib/collections";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
 import { Roles } from "meteor/alanning:roles";
-import { _ } from "underscore";
 import { addProduct } from "/server/imports/fixtures/products";
 import Fixtures from "/server/imports/fixtures";
 
@@ -732,4 +732,3 @@ describe("core product methods", function () {
     });
   });
 });
-

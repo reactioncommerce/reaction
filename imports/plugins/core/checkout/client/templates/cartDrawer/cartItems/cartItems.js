@@ -1,6 +1,6 @@
+import _ from "lodash";
 import Swiper from "swiper";
 import { Media, Products } from "/lib/collections";
-import { _ } from "lodash";
 import { Template } from "meteor/templating";
 
 /**

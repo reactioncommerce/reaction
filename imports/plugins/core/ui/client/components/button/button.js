@@ -1,5 +1,5 @@
+import _ from "lodash";
 import { Template }  from "meteor/templating";
-import { _ } from "lodash";
 import { i18next, i18nextDep } from "/client/api";
 import { Icon } from "/imports/plugins/core/ui/client/components";
 import Tooltip from "tether-tooltip";

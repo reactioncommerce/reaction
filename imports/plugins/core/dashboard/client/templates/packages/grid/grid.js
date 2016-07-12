@@ -1,6 +1,6 @@
+import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Reaction, i18next } from "/client/api";
-import { _ } from "lodash";
 
 function pkgPermissions(pkg) {
   // if (Reaction.hasPermission("dashboard")) {
