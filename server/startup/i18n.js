@@ -53,7 +53,7 @@ export default function () {
   /**
    * Hook to setup core i18n imports during Reaction init
    */
-  Hooks.Events.add("afterCoreInit", () => {
+  Hooks.Events.add("onCoreInit", () => {
     loadCoreTranslations();
   });
 }
