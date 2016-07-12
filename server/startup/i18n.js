@@ -38,7 +38,7 @@ export function loadCoreTranslations() {
       }
 
       Assets.find({ type: "i18n" }).forEach((t) => {
-        Logger.info(`Importing ${t.name} translation...`);
+        Logger.info(`Importing ${t.name} translation`);
         if (t.content) {
           Reaction.Import.process(t.content, ["i18n"], Reaction.Import.translation);
         } else {
