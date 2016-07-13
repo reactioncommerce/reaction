@@ -1,12 +1,11 @@
 /* eslint dot-notation: 0 */
-
+import _ from  "lodash";
 import { Meteor } from "meteor/meteor";
 import { Accounts as MeteorAccount } from "meteor/accounts-base";
 import { Accounts, Packages, Orders, Products, Shops, Cart }  from "/lib/collections";
 import { Reaction } from "/server/api";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
-import _ from  "underscore";
 import { getShop, getAddress } from "/server/imports/fixtures/shops";
 import Fixtures from "/server/imports/fixtures";
 

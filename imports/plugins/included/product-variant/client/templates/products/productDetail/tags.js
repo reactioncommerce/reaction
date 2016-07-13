@@ -4,8 +4,7 @@ import { Reaction } from "/client/api";
 import { Tags } from "/lib/collections";
 
 // load modules
-require("jquery-ui/sortable");
-require("jquery-ui/autocomplete");
+require("jquery-ui");
 
 Template.productDetailTags.helpers({
   tags: function () {

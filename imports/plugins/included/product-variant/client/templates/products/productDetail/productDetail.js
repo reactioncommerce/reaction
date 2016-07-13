@@ -1,5 +1,5 @@
+import _ from "lodash";
 import { ReactiveDict } from "meteor/reactive-dict";
-import { _ } from "lodash";
 import { $ } from "meteor/jquery";
 import { Reaction, i18next, Logger } from "/client/api";
 import { ReactionProduct } from "/lib/api";

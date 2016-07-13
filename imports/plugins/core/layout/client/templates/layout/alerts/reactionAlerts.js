@@ -1,7 +1,7 @@
+import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import swal from "sweetalert2";
 import "sweetalert2/dist/sweetalert2.css";
-import { _ } from "lodash";
 
 // Extends Bootstaps alerts and add more alert types
 Meteor.startup(function () {

@@ -1,0 +1,60 @@
+<template name="authnetDashboard">
+  <div class="container-fluid-sm flex">
+    <div class="flex-item">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <div class="panel-title">Authorize.net Checkout</div>
+        </div>
+
+        <div class="list-group">
+          <div class="list-group-item">
+            {{> authnetSettingsString
+              value=packageData.settings.api_id
+              description="API Login ID"
+              dataEventAction="showAuthnetSettings"
+            }}
+          </div>
+
+          <div class="list-group-item">
+            {{> authnetSettingsString
+              value=packageData.settings.transaction_key
+              description="Transaction Key"
+              dataEventAction="showAuthnetSettings"
+            }}
+          </div>
+
+          <div class="list-group-item">
+            <span>Mode: {{#if packageData.settings.mode}}Live{{else}}Test{{/if}}</span>
+          </div>
+        </div>
+
+        <div class="panel-footer">
+          <div class="left"></div>
+          <div class="right">
+            <div class="panel-footer-item">
+              {{#if settingsExist}}
+                <i class="fa fa-check-circle fa-2x text-success"></i>
+              {{else}}
+                <i class="fa fa-minus-circle fa-2x text-muted"></i>
+              {{/if}}
+            </div>
+
+            <div class="panel-footer-item">
+              <button class="btn btn-default" data-event-action="showAuthnetSettings">
+                <i class="fa fa-gear"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<template name="authnetSettingsString">
+  {{#if value}}
+    <span>{{description}}: <button type="button" class="btn btn-link" data-event-action="{{dataEventAction}}">**********</button></span>
+  {{else}}
+    <span>{{description}}: <button type="button" class="btn btn-link" data-event-action="{{dataEventAction}}">Configure Now</button></span>
+  {{/if}}
+</template>

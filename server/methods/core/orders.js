@@ -636,7 +636,7 @@ Meteor.methods({
         const processor = paymentMethod.processor.toLowerCase();
 
         Meteor.call(`${processor}/payment/capture`, paymentMethod, (error, result) => {
-          if (result.saved === true) {
+          if (result && result.saved === true) {
             const metadata = Object.assign(billing.paymentMethod.metadata || {}, result.metadata || {});
 
             Orders.update({
@@ -653,7 +653,11 @@ Meteor.methods({
               }
             });
           } else {
-            Logger.error("Failed to capture transaction.", order, paymentMethod.transactionId, result.error);
+            if (result && result.error) {
+              Logger.fatal("Failed to capture transaction.", order, paymentMethod.transactionId, result.error);
+            } else {
+              Logger.fatal("Failed to capture transaction.", order, paymentMethod.transactionId, error);
+            }
 
             Orders.update({
               "_id": orderId,
@@ -741,10 +745,10 @@ Meteor.methods({
       });
 
       if (result.saved === false) {
-        Logger.warn("Failed to capture transaction.", order, paymentMethod.transactionId);
+        Logger.fatal("Attempt for refund transaction failed", order, paymentMethod.transactionId, result.error);
 
         throw new Meteor.Error(
-          "Failed to capture transaction");
+          "Attempt to refund transaction failed");
       }
     });
   }

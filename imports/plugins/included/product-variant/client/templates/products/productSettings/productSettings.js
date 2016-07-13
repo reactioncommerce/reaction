@@ -1,5 +1,5 @@
+import _ from "lodash";
 import { ReactiveDict } from "meteor/reactive-dict";
-import { _ } from "lodash";
 import Logger from "/client/modules/logger";
 import { ReactionProduct } from "/lib/api";
 import { Media, Products } from "/lib/collections";
