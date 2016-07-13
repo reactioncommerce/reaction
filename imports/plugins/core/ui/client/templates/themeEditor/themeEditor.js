@@ -3,7 +3,6 @@ import { Themes } from "/lib/collections";
 import { ColorPicker } from "/imports/plugins/core/ui/client/components";
 import $ from "jquery";
 import _ from "lodash";
-require("bootstrap-colorpicker");
 
 Template.uiThemeEditor.onCreated(function () {
   this.state = new ReactiveDict();
@@ -70,10 +69,6 @@ Template.uiThemeEditor.onCreated(function () {
       this.previewTheme(theme);
     }
   });
-});
-
-Template.uiThemeEditor.onRendered(function () {
-  $(".colorpicker-component").colorpicker();
 });
 
 Template.uiThemeEditor.helpers({
