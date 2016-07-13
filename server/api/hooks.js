@@ -1,5 +1,4 @@
 import { Meteor } from "meteor/meteor";
-import { Logger } from "/server/api";
 /**
  * Callback hooks to alter the behavior of common operations or trigger other things.
  * @namespace Hooks.Events
