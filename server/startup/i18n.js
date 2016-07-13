@@ -1,5 +1,6 @@
 import fs from "fs";
 import { Meteor } from "meteor/meteor";
+import { Assets } from "/lib/collections";
 import { Hooks, Logger, Reaction } from "/server/api";
 
 // taken from here: http://stackoverflow.com/a/32749571
@@ -22,9 +23,29 @@ export function loadCoreTranslations() {
         if (~file.indexOf("json")) {
           Logger.debug(`Importing Translations from ${file}`);
           const json = fs.readFileSync(i18nFolder + file, "utf8");
-          Reaction.Import.process(json, ["i18n"], Reaction.Import.translation);
+          const content = JSON.parse(json);
+
+          Assets.update({
+            type: "i18n",
+            name: content[0].i18n
+          }, {
+            $set: {
+              content: json
+            }
+          }, {
+            upsert: true
+          });
         }
       }
+
+      Assets.find({ type: "i18n" }).forEach((t) => {
+        Logger.info(`Importing ${t.name} translation`);
+        if (t.content) {
+          Reaction.Import.process(t.content, ["i18n"], Reaction.Import.translation);
+        } else {
+          Logger.warn(`No translation content found for ${t.name} asset`);
+        }
+      });
     }));
   }
 }

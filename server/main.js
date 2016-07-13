@@ -1,16 +1,11 @@
-// import Fixtures from "./fixtures";  // TODO: get this working!
 import "./methods"; // TODO: refactor all of the methods to use import/export
-// import Publications from "./publications";  // TODO: wrap each file in a closure
-
-import Security from "./security";
 import Startup from "./startup";
-// import "/imports/server";
+import Security from "./security";
 
-// Fixtures();
-// Methods();
-// Publications();
-Security();
-Meteor.startup(() => Startup());
+Meteor.startup(() => {
+  Startup();
+  Security();
+});
 
 
 /**
@@ -24,8 +19,11 @@ import "/imports/plugins/included/inventory/server";
 import "/imports/plugins/included/paypal/server";
 import "/imports/plugins/included/shipping/server";
 import "/imports/plugins/included/social/server";
+// Payment Methods
 import "/imports/plugins/included/stripe/server";
 import "/imports/plugins/included/example-paymentmethod/server";
+import "/imports/plugins/included/authnet/server";
+import "/imports/plugins/included/braintree/server";
 
 /**
  * Plugin Registry
@@ -42,5 +40,8 @@ import "/imports/plugins/included/paypal/register";
 import "/imports/plugins/included/product-variant/register";
 import "/imports/plugins/included/shipping/register";
 import "/imports/plugins/included/social/register";
+// Payment Methods
 import "/imports/plugins/included/stripe/register";
 import "/imports/plugins/included/example-paymentmethod/register";
+import "/imports/plugins/included/authnet/register";
+import "/imports/plugins/included/braintree/register";

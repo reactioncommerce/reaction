@@ -16,8 +16,11 @@ import "/imports/plugins/included/paypal/client";
 import "/imports/plugins/included/product-variant/client";
 import "/imports/plugins/included/shipping/client";
 import "/imports/plugins/included/social/client";
+// Payment Methods
 import "/imports/plugins/included/stripe/client";
 import "/imports/plugins/included/example-paymentmethod/client";
+import "/imports/plugins/included/authnet/client";
+import "/imports/plugins/included/braintree/client";
 
 /**
  * Themes
