@@ -56,6 +56,66 @@ StripeApi.methods.getApiKey = new ValidatedMethod({
   }
 });
 
+StripeApi.methods.getPaymentCaptureSetting = new ValidatedMethod({
+  name: "StripeApi.methods.getPaymentCaptureSetting",
+  validate: null,
+  run() {
+    const settings = Packages.findOne({ name: "reaction-stripe" }).settings;
+    if (!settings.capture) {
+      return false;
+    }
+    return settings.capture;
+  }
+});
+
+StripeApi.methods.getCreateCustomerSetting = new ValidatedMethod({
+  name: "StripeApi.methods.getCreateCustomerSetting",
+  validate: null,
+  run() {
+    const settings = Packages.findOne({ name: "reaction-stripe" }).settings;
+    if (!settings.customer) {
+      return false;
+    }
+    return settings.customer;
+  }
+});
+
+StripeApi.methods.createCustomer = new ValidatedMethod({
+  name: "StripeApi.methods.createCustomer",
+  validate: new SimpleSchema({
+    chargeObj: { type: chargeObjectSchema },
+    customerEmail: { type: String, optional: true },
+    apiKey: { type: String, optional: true}
+  }).validator(),
+  run({ chargeObj, customerEmail, apiKey }) {
+    let stripe;
+    if (!apiKey) {
+      const dynamicApiKey = StripeApi.methods.getApiKey.call();
+      stripe = require("stripe")(dynamicApiKey);
+    } else {
+      stripe = require("stripe")(apiKey);
+    }
+    try {
+      const customerPromise = stripe.customers.create({
+        email: customerEmail,
+        source: Object.assign(chargeObj.card, {object: "card"})
+      }, (error, customer) => {
+        return {error, customer};
+      });
+      const promiseResult = Promise.await(customerPromise);
+      return promiseResult;
+    } catch (e) {
+      // Handle "expected" errors differently
+      if (e.rawType === "card_error" && _.includes(expectedErrors, e.code)) {
+        Logger.info("Error from Stripe is expected, not throwing");
+        return {error: e, result: null};
+      }
+      Logger.error("Received unexpected error code: " + e.code);
+      Logger.error(e);
+      return { error: e, result: null };
+    }
+  }
+});
 
 StripeApi.methods.createCharge = new ValidatedMethod({
   name: "StripeApi.methods.createCharge",

@@ -98,6 +98,7 @@ AutoForm.addHooks("stripe-payment-form", {
             storedCard: storedCard,
             method: transaction.response.source.funding,
             transactionId: transaction.response.id,
+            customerId: transaction.response.customerId,
             amount: transaction.response.amount * 0.01,
             status: normalizedStatus,
             mode: normalizedMode,
