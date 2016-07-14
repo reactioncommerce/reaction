@@ -98,7 +98,7 @@
       {{#if paymentApproved}}
           <a
             class="btn btn-link"
-            href="/dashboard/pdf/orders/{{orderId}}?shipment={{fulfillment._id}}"
+            href="{{pathFor "dashboard/pdf/orders" id=orderId }}?shipment={{fulfillment._id}}"
             target="_blank"
             data-i18n="app.print">
             Print
