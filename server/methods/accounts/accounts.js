@@ -28,8 +28,8 @@ Meteor.methods({
     const userId = accountUserId || Meteor.userId();
     const account = Collections.Accounts.findOne({
       userId: userId
-  });
-  return account.profile;
+    });
+    return account.profile;
   },
 
   /*

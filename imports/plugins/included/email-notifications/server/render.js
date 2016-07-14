@@ -1,7 +1,5 @@
 import i18next from "i18next";
-import { Shops } from "/lib/collections";
 import { Logger } from "/server/api";
-
 
 /**
  * renderReactionEmail - Returns a rendered and translated
@@ -12,7 +10,7 @@ import { Logger } from "/server/api";
  * @param {String} fallbackLng language that is used if lng has no translations
  * @returns {Object} returns rendered HTML mail
  */
-export function renderReactionEmail (template, lng, data, fallbackLng) {
+export function renderReactionEmail (template, lng, data, fallbackLng){
   check(template, String);
   check(lng, String);
   check(data, Match.Optional(Object));
@@ -48,4 +46,4 @@ export function renderReactionEmail (template, lng, data, fallbackLng) {
   });
 
   return SSR.render(template, data);
-};
+}

@@ -10,7 +10,7 @@ import { Session } from "meteor/session";
 import { SimpleSchema } from "meteor/aldeed:simple-schema";
 import { Reaction } from "/client/api";
 import { fetchTranslationResources } from "/lib/api/i18n";
-import { Accounts, Packages, Shops, Translations } from "/lib/collections";
+import { Accounts, Packages, Shops } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 
 //

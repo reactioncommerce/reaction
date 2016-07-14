@@ -17,7 +17,7 @@ Hooks.Events.add("orders/sendNotification", (order) => {
   let shipment = order.shipping[0];
 
   Reaction.configureMailUrl();
-  Logger.info({"orderstatus": order.workflow.status}, "orders/sendNotification");
+  Logger.info({orderstatus: order.workflow.status}, "orders/sendNotification");
 
   // anonymous users without emails.
   if (!order.email) {
@@ -241,7 +241,7 @@ Hooks.Events.add("accounts/sendWelcomeEmail", (data) => {
 });
 
 
-function checkPackageIsEnabled () {
+function checkPackageIsEnabled (){
   const enabled = Packages.findOne({
     shopId: getShopId(),
     name: "reaction-email-notifications",
@@ -251,4 +251,4 @@ function checkPackageIsEnabled () {
       "Unable to send notification emails. " +
       "Enable email notifications in admin dashboard.");
   }
-};
+}
