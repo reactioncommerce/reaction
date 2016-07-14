@@ -82,7 +82,8 @@ Meteor.methods({
 
     if (createCustomer) {
       try {
-        customer = StripeApi.methods.createCustomer.call({chargeObj: chargeObj, customerEmail: "test@example.com"});
+        // createCustomer params: chargeObj, customerEmail (optional), apiKey (optional)
+        customer = StripeApi.methods.createCustomer.call({chargeObj: chargeObj});
       } catch (e) {
         Logger.error(e);
         throw new Meteor.Error("error", e.message);
