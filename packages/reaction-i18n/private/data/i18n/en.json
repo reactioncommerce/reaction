@@ -703,6 +703,7 @@
         "nameRequired": "Name is required. ",
         "isRequired": "{{field}} is required.",
         "mustBeNumber": "{{field}} must be a number.",
+        "mustBeLatter": "{{field}} must be a latter.",
         "variantFieldIsRequired": "Variant {{number}} {{field}} is required."
       }
     }
