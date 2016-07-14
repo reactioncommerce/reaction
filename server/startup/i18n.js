@@ -1,4 +1,5 @@
 import fs from "fs";
+import { Meteor } from "meteor/meteor";
 import { Assets } from "/lib/collections";
 import { Hooks, Logger, Reaction } from "/server/api";
 

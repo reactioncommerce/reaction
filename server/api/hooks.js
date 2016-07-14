@@ -1,3 +1,4 @@
+import { Meteor } from "meteor/meteor";
 /**
  * Callback hooks to alter the behavior of common operations or trigger other things.
  * @namespace Hooks.Events
@@ -77,5 +78,6 @@ Hooks.Events.runAsync = (name, item, constant) => {
   }
   return item;
 };
+
 
 export default Hooks;
