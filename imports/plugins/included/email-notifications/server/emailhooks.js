@@ -1,69 +1,7 @@
-import i18next from "i18next";
-import { Accounts, Packages, Templates, Shops } from "/lib/collections";
 import { getShopId } from "/lib/api";
+import { Accounts, Packages, Shops } from "/lib/collections";
 import { Logger, Hooks, Reaction } from "/server/api";
-
-
-/**
- * ReactionEmailFromTemplate - Returns a rendered and translated
- * email template.
- * @param {String} template name of the template
- * @param {String} lng language of the email text
- * @param {String} data data context for rendering
- * @param {String} fallbackLng language that is used if lng has no translations
- * @returns {Object} returns rendered HTML mail
- */
-ReactionEmailFromTemplate = function (template, lng, data, fallbackLng) {
-  check(template, String);
-  check(lng, String);
-  check(data, Match.Optional(Object));
-  check(fallbackLng, Match.Optional(String));
-
-  let fallbackLngs;
-  if (typeof(fallbackLng) === "undefined") {
-    fallbackLngs = "en";
-  } else if (fallbackLng !== "en") {
-    // also add english as second fallback..
-    fallbackLngs = [fallbackLng, "en"];
-  }
-
-  if (!Template[template]) {
-    Logger.error(`Template '${ template }' does not exist. ` +
-      `Did you register it in the approriate workflow step (register.js)?`);
-  }
-  Template[template].helpers({
-    _: function (key) {
-      // Don't know where the last argument comes from...
-      let slice = Array.prototype.slice.call(arguments, 1, -1);
-      if (slice.length === 2 && typeof(slice[1]) === "object") {
-        // e.g. {name: 'Dolly', age: 13}
-        slice = slice[1];
-      }
-      const options = {
-        postProcess: "sprintf",
-        sprintf: slice,
-        lng: lng,
-        fallbackLng: fallbackLngs
-      };
-      return Spacebars.SafeString(i18next.t(key, options));
-    }
-  });
-
-  return SSR.render(template, data);
-};
-
-checkPackageIsEnabled = function () {
-  const enabled = Packages.findOne({
-    shopId: getShopId(),
-    name: "reaction-email-notifications",
-    enabled: true});
-  if (!enabled) {
-    Logger.info("No email templates available. " +
-      "Unable to send notification emails. " +
-      "Enable email notifications in admin dashboard.");
-    throw new Meteor.Error(403, "Unable to send invitation email.");
-  }
-};
+import { renderReactionEmail } from "./render";
 
 /**
  * orders/sendNotification
@@ -79,7 +17,7 @@ Hooks.Events.add("orders/sendNotification", (order) => {
   let shipment = order.shipping[0];
 
   Reaction.configureMailUrl();
-  Logger.info("orders/sendNotification", order.workflow.status);
+  Logger.info({"orderstatus": order.workflow.status}, "orders/sendNotification");
 
   // anonymous users without emails.
   if (!order.email) {
@@ -95,7 +33,7 @@ Hooks.Events.add("orders/sendNotification", (order) => {
   let tpl = `orders/${order.workflow.status}`;
   const profile = Meteor.call("accounts/getUserProfile", order.userId);
 
-  const html = ReactionEmailFromTemplate(
+  const html = renderReactionEmail(
     tpl,
     profile.language,
     { homepage: Meteor.absoluteUrl(),
@@ -113,8 +51,7 @@ Hooks.Events.add("orders/sendNotification", (order) => {
       html: html
     });
   } catch (error) {
-    Logger.error("Unable to send notification email: " + error);
-    throw new Meteor.Error("error-sending-email", "Unable to send order notification email.", error);
+    Logger.warn(error, "Unable to send email");
   }
 });
 
@@ -129,10 +66,11 @@ Hooks.Events.add("orders/sendNotification", (order) => {
  * @returns {Boolean} returns falsy value on success
  */
 Hooks.Events.add("accounts/inviteShopMember", (data) => {
-  let {shopId, email, name} = data;
+  let {shopId, email, name, currentUserId} = data;
   check(shopId, String);
   check(email, String);
   check(name, String);
+  check(currentUserId, String);
   checkPackageIsEnabled();
 
   let currentUserName;
@@ -146,12 +84,12 @@ Hooks.Events.add("accounts/inviteShopMember", (data) => {
   Reaction.configureMailUrl();
   // don't send account emails unless email server configured
   if (!process.env.MAIL_URL) {
-    Logger.info(`Mail not configured: suppressing invite email output`);
+    Logger.info(`Mail not configured: suppressing invite email output.`);
     return true;
   }
   // everything cool? invite user
   if (shop && email && name) {
-    let currentUser = Meteor.user();
+    let currentUser = Meteor.users.findOne(currentUserId);
     if (currentUser) {
       if (currentUser.profile) {
         currentUserName = currentUser.profile.name;
@@ -187,7 +125,7 @@ Hooks.Events.add("accounts/inviteShopMember", (data) => {
       });
 
       const profile = Accounts.findOne({userId: userId}).profile;
-      const html = ReactionEmailFromTemplate(
+      const html = renderReactionEmail(
         "accounts/inviteShopMember",
         profile.language,
         {
@@ -211,7 +149,7 @@ Hooks.Events.add("accounts/inviteShopMember", (data) => {
       }
     } else {
       const profile = Accounts.findOne({userId: user._id}).profile;
-      const html = ReactionEmailFromTemplate(
+      const html = renderReactionEmail(
         "accounts/inviteShopMember",
         profile.language,
         {
@@ -281,12 +219,12 @@ Hooks.Events.add("accounts/sendWelcomeEmail", (data) => {
     return true;
   }
 
-  const html = ReactionEmailFromTemplate(
+  const html = renderReactionEmail(
     "accounts/sendWelcomeEmail",
     user.profile.language, {
       homepage: Meteor.absoluteUrl(),
       shop: shop,
-      user: Meteor.user()
+      user: user
     },
     shop.language
   );
@@ -298,6 +236,19 @@ Hooks.Events.add("accounts/sendWelcomeEmail", (data) => {
       html: html
     });
   } catch (e) {
-    Logger.warn("Unable to send email, check configuration and port.", e);
+    Logger.warn(e, "Unable to send email, check configuration and port.");
   }
 });
+
+
+function checkPackageIsEnabled () {
+  const enabled = Packages.findOne({
+    shopId: getShopId(),
+    name: "reaction-email-notifications",
+    enabled: true});
+  if (!enabled) {
+    Logger.info("No email templates available. " +
+      "Unable to send notification emails. " +
+      "Enable email notifications in admin dashboard.");
+  }
+};

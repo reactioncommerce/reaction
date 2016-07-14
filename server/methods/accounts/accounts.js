@@ -264,7 +264,9 @@ Meteor.methods({
       "accounts/inviteShopMember",
       { shopId: shopId,
         email: email,
-        name: name }
+        name: name,
+        userId: Meteor.userId()
+      }
     );
     return true;
   },

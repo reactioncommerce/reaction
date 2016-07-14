@@ -1,3 +1,3 @@
-import "./email";
-import "./i18n";
-
+import "./render";
+import "./init";
+import "./emailhooks";

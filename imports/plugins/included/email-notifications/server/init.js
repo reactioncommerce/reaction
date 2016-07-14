@@ -1,28 +1,15 @@
+import path from "path";
 import i18next from "i18next";
 import i18nextSprintfPostProcessor from "i18next-sprintf-postprocessor";
 import { Hooks, Logger } from "/server/api";
 import { fetchTranslationResources } from "/lib/api/i18n";
-import { Packages } from "/lib/collections";
+import { Packages, Templates } from "/lib/collections";
+
 
 /**
- * Hooks to setup core i18n imports during Reaction init
+ * Hook to compile email templates at reaction startup time
  */
-Hooks.Events.add("onCoreInit", () => {
-
-  // init i18next for SSR translations
-  i18next.
-    use(i18nextSprintfPostProcessor).
-    init({
-      debug: false,
-      defaultNS: "core",
-      resources: fetchTranslationResources()
-    }, (err) => {
-      if (err) throw new Meteor.Error("No translations resources found.", err);
-      Logger.debug("Finishing loading of server side translations.");
-    });
-});
-
-Hooks.Events.add("afterCoreInit", () => {
+Hooks.Events.add("afterLoadPackages", () => {
   function getSource(templateId) {
     // using layout where in the future a more comprehensive rule based
     // filter of the email templates can be implemented.
@@ -45,9 +32,20 @@ Hooks.Events.add("afterCoreInit", () => {
       }
     }
 
-    const path = Npm.require("path");
     return Assets.getText(path.join("email/templates", templateId + ".html"));
   }
+
+  // init i18next for SSR translations
+  i18next.
+    use(i18nextSprintfPostProcessor).
+    init({
+      debug: false,
+      defaultNS: "core",
+      resources: fetchTranslationResources()
+    }, (err) => {
+      if (err) throw new Meteor.Error("No translations resources found.", err);
+      Logger.debug("Finishing loading of server side translations.");
+    });
 
   const packages = Packages.find().fetch();
   _.each(packages, (config) => {

@@ -43,10 +43,7 @@ import "/imports/plugins/included/shipping/register";
 import "/imports/plugins/included/social/register";
 // Payment Methods
 import "/imports/plugins/included/stripe/register";
-<<<<<<< HEAD
 import "/imports/plugins/included/example-paymentmethod/register";
 import "/imports/plugins/included/authnet/register";
 import "/imports/plugins/included/braintree/register";
-=======
 import "/imports/plugins/included/email-notifications/register";
->>>>>>> 4849fc6... ES6 modules: Make email notification multilingual
