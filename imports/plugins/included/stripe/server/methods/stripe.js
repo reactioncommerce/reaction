@@ -103,7 +103,6 @@ Meteor.methods({
           error: chargeResult.error.message
         };
       }
-      console.log(result);
       return result;
     } catch (e) {
       Logger.error(e);
