@@ -45,7 +45,7 @@ let stripeChargeResult = {
 };
 
 
-describe.skip("Stripe.authorize", function () {
+describe.skip("Stripe.charge", function () {
   let sandbox;
 
   beforeEach(function () {
@@ -83,7 +83,7 @@ describe.skip("Stripe.authorize", function () {
   });
 });
 
-describe.skip("Meteor.Stripe.authorize", function () {
+describe.skip("Meteor.Stripe.charge", function () {
   let sandbox;
 
   beforeEach(function () {
@@ -111,7 +111,7 @@ describe.skip("Meteor.Stripe.authorize", function () {
     });
     // spyOn(StripeApi.methods.createCharge, "call").and.returnValue(stripeChargeResult);
     let chargeResult = null;
-    Stripe.authorize(form, {total: total, currency: currency}, function (error, result) {
+    Stripe.charge(form, {total: total, currency: currency}, function (error, result) {
       chargeResult = result;
     });
 
@@ -133,7 +133,7 @@ describe.skip("Meteor.Stripe.authorize", function () {
   });
 });
 
-describe.skip("Meteor.Stripe.authorize", function () {
+describe.skip("Meteor.Stripe.charge", function () {
   let sandbox;
 
   beforeEach(function () {
@@ -184,7 +184,7 @@ describe.skip("Meteor.Stripe.authorize", function () {
     // spyOn(StripeApi.methods.createCharge, "call").and.returnValue(stripeDeclineResult);
 
     let chargeResult = null;
-    Meteor.Stripe.authorize(form, {total: total, currency: currency}, function (error, result) {
+    Meteor.Stripe.charge(form, {total: total, currency: currency}, function (error, result) {
       chargeResult = result;
     });
 
@@ -207,7 +207,7 @@ describe.skip("Meteor.Stripe.authorize", function () {
   });
 });
 
-describe.skip("Meteor.Stripe.authorize", function () {
+describe.skip("Meteor.Stripe.charge", function () {
   let sandbox;
 
   beforeEach(function () {
@@ -260,7 +260,7 @@ describe.skip("Meteor.Stripe.authorize", function () {
     // spyOn(StripeApi.methods.createCharge, "call").and.returnValue(stripeExpiredCardResult);
 
     let chargeResult = null;
-    Meteor.Stripe.authorize(form, {total: total, currency: currency}, function (error, result) {
+    Meteor.Stripe.charge(form, {total: total, currency: currency}, function (error, result) {
       chargeResult = result;
     });
 

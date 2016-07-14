@@ -61,7 +61,7 @@ AutoForm.addHooks("stripe-payment-form", {
       type: getCardType(doc.cardNumber)
     };
     const storedCard = cardData.type.charAt(0).toUpperCase() + cardData.type.slice(1) + " " + doc.cardNumber.slice(-4);
-    Stripe.authorize(cardData, {
+    Stripe.charge(cardData, {
       total: Cart.findOne().cartTotal(),
       currency: Shops.findOne().currency
     }, function (error, transaction) {
