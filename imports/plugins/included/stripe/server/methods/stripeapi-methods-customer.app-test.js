@@ -77,8 +77,6 @@ let stripeChargeResult = {
   statement_descriptor: null,
   status: "succeeded"
 };
-// TODO: Create testing for customer creation in stripe (1/2)
-// TODO: Create testing for auto capture in stripe
 
 describe("Stripe.charge createCustomer", function () {
   let sandbox;
