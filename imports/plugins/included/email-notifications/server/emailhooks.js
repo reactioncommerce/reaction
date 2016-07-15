@@ -241,7 +241,7 @@ Hooks.Events.add("accounts/sendWelcomeEmail", (data) => {
 });
 
 
-function checkPackageIsEnabled (){
+function checkPackageIsEnabled() {
   const enabled = Packages.findOne({
     shopId: getShopId(),
     name: "reaction-email-notifications",
