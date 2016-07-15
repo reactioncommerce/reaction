@@ -46,9 +46,9 @@
       </div>
       <div class="row">
         <div style="font-family:monospace; text-align: left;" class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
-          <h3>DATE:{{dateFormat createdAt format="MM/D/YY"}}</h3>
+          <h3>DATE:{{dateFormat order.createdAt format="MM/D/YY"}}</h3>
         </div>
-        <div style="font-family:monospace;" class="col-xs-6 col-xs-offset-3 col-sm-4 col-md-3 col-lg-3 col-md-offset-5">ORDER:{{_id}}</div>
+        <div style="font-family:monospace;" class="col-xs-6 col-xs-offset-3 col-sm-4 col-md-3 col-lg-3 col-md-offset-5">ORDER:{{order._id}}</div>
       </div>
     </div>
   </header>
@@ -57,7 +57,7 @@
       <div class="row">
         <div class="col-md-6 col-xs-6">
           <h2 style='margin-top:1em'>Ship To</h2>
-          {{#each shipment in shipping}}
+          {{#each shipment in order.shipping}}
             {{#with shipment.address}}
               <strong><div>{{fullName}}</div></strong>
               <div>{{address1}}</div>
@@ -70,7 +70,7 @@
         <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
 
           <h2 style='margin-top:1em'>Bill To</h2>
-          {{#each payment in billing}}
+          {{#each payment in order.billing}}
             {{#with payment.address}}
               <strong><div>{{fullName}}</div></strong>
               <div>{{address1}}</div>
@@ -82,57 +82,57 @@
         </div>
       </div>
 
+    <br>
+    <h3>Payment</h3>
+    {{#with billing.paymentMethod }}
+      <div style="margin-top:1em"><h4>{{processor}}</h4></div>
+      <div>{{storedCard}}</div>
+      <div>Ref: {{transactionId}}</div>
+    {{/with}}
 
-  </div>
-  <br>
-  <h3>Payment</h3>
-  {{#each payment.paymentMethod}}
-    <div style="style='margin-top:1em'"><h4>{{processor}}</h4></div>
-    <div>{{storedCard}}</div>
-    <div>Ref: {{transactionId}}</div>
-  {{/each}}
-
-  <h2 style='margin-top:2em'>ITEMS</h2>
-  <table class="table table-bordered">
-    <tr>
-      <th>Quantity</th>
-      <th>Title</th>
-      <th>Price</th>
-    </tr>
-    {{#each items}}
+    <h2 style='margin-top:2em'>ITEMS</h2>
+    <table class="table table-bordered">
       <tr>
-        <td>{{quantity}}</td>
-        <td>{{variants.title}}</td>
-        <td>{{variants.price}}</td>
+        <th>Quantity</th>
+        <th>Title</th>
+        <th>Price</th>
       </tr>
-    {{/each}}
-  </table>
+      {{#each order.items}}
+        <tr>
+          <td>{{quantity}}</td>
+          <td>{{variants.title}}</td>
+          <td>{{variants.price}}</td>
+        </tr>
+      {{/each}}
+    </table>
 
-  <h2 style='margin-top:1em'>SUMMARY</h2>
-  {{#with invoice}}
-    <div class="container">
-      <div class="row">
-        <div class="col-md-3"><span data-i18n='cartSubTotals.subtotal'>Sub total</span>:</div>
-        <div class="col-md-2 col-md-offset-1">{{subtotal}}</div>
+    <h2 style='margin-top:1em'>SUMMARY</h2>
+    {{#with billing.invoice}}
+      <div class="container">
+        <div class="row">
+          <div class="col-md-3"><span data-i18n='cartSubTotals.subtotal'>Sub total</span>:</div>
+          <div class="col-md-2 col-md-offset-1">{{subtotal}}</div>
+        </div>
+        <div class="row">
+          <div class="col-md-3 col-xs-3"><span data-i18n='cartSubTotals.shipping'>Shipping</span>:</div>
+          <div class="col-md-2 col-xs-2 col-md-offset-1 col-xs-offset-1">{{shipping}}</div>
+        </div>
+        <div class="row">
+          <div class="col-md-3 col-xs-3"><span data-i18n='cartSubTotals.tax'>Tax</span>:</div>
+          <div class="col-md-2 col-xs-2 col-md-offset-1 col-xs-offset-1">{{taxes}}</div>
+        </div>
+        <div class="row">
+          <div class="col-md-3 col-xs-3"><span data-i18n='cartSubTotals.discount'>Discount</span>:</div>
+          <div class="col-md-2 col-xs-2 col-md-offset-1 col-xs-offset-1">{{discounts}}</div>
+        </div>
+        <div class="row">
+          <div class="col-md-3 col-xs-3"><span data-i18n='cartSubTotals.total'>Total</span>:</div>
+          <div class="col-md-2 col-xs-2 col-md-offset-1 col-xs-offset-1"><strong>{{total}}</strong></div>
+        </div>
       </div>
-      <div class="row">
-        <div class="col-md-3 col-xs-3"><span data-i18n='cartSubTotals.shipping'>Shipping</span>:</div>
-        <div class="col-md-2 col-xs-2 col-md-offset-1 col-xs-offset-1">{{shipping}}</div>
-      </div>
-      <div class="row">
-        <div class="col-md-3 col-xs-3"><span data-i18n='cartSubTotals.tax'>Tax</span>:</div>
-        <div class="col-md-2 col-xs-2 col-md-offset-1 col-xs-offset-1">{{taxes}}</div>
-      </div>
-      <div class="row">
-        <div class="col-md-3 col-xs-3"><span data-i18n='cartSubTotals.discount'>Discount</span>:</div>
-        <div class="col-md-2 col-xs-2 col-md-offset-1 col-xs-offset-1">{{discounts}}</div>
-      </div>
-      <div class="row">
-        <div class="col-md-3 col-xs-3"><span data-i18n='cartSubTotals.total'>Total</span>:</div>
-        <div class="col-md-2 col-xs-2 col-md-offset-1 col-xs-offset-1"><strong>{{total}}</strong></div>
-      </div>
-    </div>
-  {{/with}}
-  <div style='margin-top: 1em' data-i18n="cartCompleted.summaryMessage">Thank you for your order.</div>
+    {{/with}}
+    <div style='margin-top: 1em' data-i18n="cartCompleted.summaryMessage">Thank you for your order.</div>
+  </div>
+
 </body>
 </template>
