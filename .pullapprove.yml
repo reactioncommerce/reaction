@@ -3,9 +3,13 @@ approve_regex: '^(Approved|:\+1:)' # this only matches at the start of a line, j
 reject_regex: '^(Rejected|:-1:)'
 reset_on_push: false
 reviewers:
-  required: 2
   members:
-    - aaronjudd
-    - jshimko
-    - mikemurray
-    - zenweasel
+  - aaronjudd
+  - jshimko
+  - mikemurray
+  - zenweasel
+  - kieckhafer
+  - Capt-Slow
+  - rymorgan
+  name: pullapprove
+  required: 2
