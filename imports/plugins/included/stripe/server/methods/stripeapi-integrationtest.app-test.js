@@ -41,6 +41,47 @@ describe("StripeAPI createCharge function", function () {
   }
 });
 
+describe("StripeAPI createCustomer function", function () {
+  // Rigged like this because `this.skip()` doesn't seem to be implmented in meteor mocha
+  // and best practice says skipped tests should be "pending" rather than success;
+  if (!process.env.STRIPE_TEST_API_KEY) {
+    it.skip("should return a result with status = success", function (done) {
+      done();
+    });
+  } else {
+    it("should return a result with status = success", function (done) {
+      let apiKey = process.env.STRIPE_TEST_API_KEY;
+      let cardObject = {
+        number: "4242424242424242",
+        name: "Test User",
+        cvc: "345",
+        exp_month: "02",
+        exp_year: "2019"
+      };
+      let chargeObject = {
+        amount: 1999,
+        currency: "USD",
+        card: cardObject,
+        capture: false
+      };
+      StripeApi.methods.createCustomer.validate({
+        chargeObj: chargeObject,
+        customerEmail: "example@example.com",
+        apiKey: apiKey
+      });
+
+      let result = StripeApi.methods.createCustomer.run({
+        chargeObj: chargeObject,
+        customerEmail: "example@example.com",
+        apiKey: apiKey
+      });
+      expect(result.object).to.equal("customer");
+      done();
+    }).timeout(5000);
+  }
+});
+
+
 describe("StripeAPI captureCharge function", function () {
   if (!process.env.STRIPE_TEST_API_KEY) {
     it.skip("should return a result with status = success", function (done) {
