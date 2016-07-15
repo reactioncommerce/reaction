@@ -1,9 +1,8 @@
 /* eslint camelcase: 0 */
-import { Meteor } from "meteor/meteor";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
 import { StripeApi } from "./stripeapi";
-// import { Stripe } from "../../lib/api";
+import { Stripe } from "../../lib/api";
 
 let stripeChargeResult = {
   id: "ch_17hA8DBXXkbZQs3xENUmN9bZ",
@@ -45,7 +44,7 @@ let stripeChargeResult = {
 };
 
 
-describe.skip("Stripe.authorize", function () {
+describe("Stripe.authorize", function () {
   let sandbox;
 
   beforeEach(function () {
@@ -56,8 +55,11 @@ describe.skip("Stripe.authorize", function () {
     sandbox.restore();
   });
 
-  it("should call StripeApi.methods.createCharge with the proper parameters and return saved = true", function (done) {
-    let form = {
+  it("should call StripeApi.methods.createCharge with the proper parameters and return saved = true", function () {
+    sandbox.stub(StripeApi.methods.createCharge, "call", function () {
+      return stripeChargeResult;
+    });
+    let cardData = {
       cvv2: "345",
       expire_month: "4",
       expire_year: "2019",
@@ -67,23 +69,16 @@ describe.skip("Stripe.authorize", function () {
     };
     let total = "22.98";
     let currency = "USD";
-    sandbox.stub(StripeApi.methods.createCharge, "call", function () {
-      return stripeChargeResult;
-    });
-    // spyOn(StripeApi.methods.createCharge, "call").and.returnValue(stripeChargeResult);
-
     let chargeResult = null;
-    Meteor.call("stripeSubmit", form, total, currency, function (error, result) {
+    Stripe.authorize(cardData, {total: total, currency: currency}, function (error, result) {
       chargeResult = result;
     });
-
     expect(chargeResult).to.not.be.undefined;
     expect(chargeResult.saved).to.be.true;
-    done();
   });
 });
 
-describe.skip("Meteor.Stripe.authorize", function () {
+describe("Stripe.authorize", function () {
   let sandbox;
 
   beforeEach(function () {
@@ -133,7 +128,7 @@ describe.skip("Meteor.Stripe.authorize", function () {
   });
 });
 
-describe.skip("Meteor.Stripe.authorize", function () {
+describe("Stripe.authorize", function () {
   let sandbox;
 
   beforeEach(function () {
@@ -184,7 +179,7 @@ describe.skip("Meteor.Stripe.authorize", function () {
     // spyOn(StripeApi.methods.createCharge, "call").and.returnValue(stripeDeclineResult);
 
     let chargeResult = null;
-    Meteor.Stripe.authorize(form, {total: total, currency: currency}, function (error, result) {
+    Stripe.authorize(form, {total: total, currency: currency}, function (error, result) {
       chargeResult = result;
     });
 
@@ -207,7 +202,7 @@ describe.skip("Meteor.Stripe.authorize", function () {
   });
 });
 
-describe.skip("Meteor.Stripe.authorize", function () {
+describe("Stripe.authorize", function () {
   let sandbox;
 
   beforeEach(function () {
@@ -260,7 +255,7 @@ describe.skip("Meteor.Stripe.authorize", function () {
     // spyOn(StripeApi.methods.createCharge, "call").and.returnValue(stripeExpiredCardResult);
 
     let chargeResult = null;
-    Meteor.Stripe.authorize(form, {total: total, currency: currency}, function (error, result) {
+    Stripe.authorize(form, {total: total, currency: currency}, function (error, result) {
       chargeResult = result;
     });
 
