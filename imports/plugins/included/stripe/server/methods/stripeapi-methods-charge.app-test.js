@@ -45,7 +45,7 @@ let stripeChargeResult = {
 };
 
 
-describe.skip("Stripe.charge", function () {
+describe("Stripe.charge", function () {
   let sandbox;
 
   beforeEach(function () {
@@ -56,8 +56,8 @@ describe.skip("Stripe.charge", function () {
     sandbox.restore();
   });
 
-  it("should call StripeApi.methods.createCharge with the proper parameters and return saved = true", function (done) {
-    let form = {
+  it("should call StripeApi.methods.createCharge with paymentCaptureSetting as false and authorize a charge", function (done) {
+    let card = {
       cvv2: "345",
       expire_month: "4",
       expire_year: "2019",
@@ -67,18 +67,50 @@ describe.skip("Stripe.charge", function () {
     };
     let total = "22.98";
     let currency = "USD";
+    sandbox.stub(StripeApi.methods.getPaymentCaptureSetting, "call", function () {
+      return false;
+    });
     sandbox.stub(StripeApi.methods.createCharge, "call", function () {
       return stripeChargeResult;
     });
-    // spyOn(StripeApi.methods.createCharge, "call").and.returnValue(stripeChargeResult);
 
     let chargeResult = null;
-    Meteor.call("stripeSubmit", form, total, currency, function (error, result) {
+    Meteor.call("stripeSubmit", "charge", card, {total: total, currency: currency}, function (error, result) {
       chargeResult = result;
     });
 
     expect(chargeResult).to.not.be.undefined;
     expect(chargeResult.saved).to.be.true;
+    expect(chargeResult.response.captured).to.be.false;
+    done();
+  });
+
+  it("should call StripeApi.methods.createCharge with paymentCaptureSetting as true and capture a charge", function (done) {
+    let card = {
+      cvv2: "345",
+      expire_month: "4",
+      expire_year: "2019",
+      name: "Test User",
+      number: "4242424242424242",
+      type: "visa"
+    };
+    let total = "22.98";
+    let currency = "USD";
+    sandbox.stub(StripeApi.methods.getPaymentCaptureSetting, "call", function () {
+      return true;
+    });
+    sandbox.stub(StripeApi.methods.createCharge, "call", function () {
+      return Object.assign(stripeChargeResult, {captured: true});
+    });
+
+    let chargeResult = null;
+    Meteor.call("stripeSubmit", "charge", card, {total: total, currency: currency}, function (error, result) {
+      chargeResult = result;
+    });
+
+    expect(chargeResult).to.not.be.undefined;
+    expect(chargeResult.saved).to.be.true;
+    expect(chargeResult.response.captured).to.be.true;
     done();
   });
 });
