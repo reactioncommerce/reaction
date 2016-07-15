@@ -151,7 +151,7 @@ Meteor.methods({
               if (resource.refund.state === "completed") {
                 result.push({
                   type: "refund",
-                  created: moment(resource.refund.create_time).unix(),
+                  created: moment(resource.refund.create_time).unix() * 1000,
                   amount: Math.abs(resource.refund.amount.total),
                   currency: resource.refund.amount.currency,
                   raw: response
