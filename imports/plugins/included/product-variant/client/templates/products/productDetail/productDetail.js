@@ -344,7 +344,7 @@ Template.productDetail.events({
 
     return null;
   },
-  "click .toggle-product-isVisible-link": function (event, template) {
+  "click [data-event-action=publishProduct]": function (event, template) {
     let errorMsg = "";
     const self = this;
     if (!self.title) {
@@ -384,6 +384,9 @@ Template.productDetail.events({
         return true;
       });
     }
+  },
+  "click [data-event-action=cloneProduct]": function () {
+    ReactionProduct.cloneProduct(this);
   },
   "click [data-event-action=deleteProduct]": function () {
     ReactionProduct.maybeDeleteProduct(this);
@@ -470,6 +473,10 @@ Template.productDetailForm.events({
   "click [data-event-action=deleteProduct]": function (event, instance) {
     const product = instance.state.get("product");
     ReactionProduct.maybeDeleteProduct(product);
+  },
+  "click [data-event-action=cloneProduct]": function (event, instance) {
+    const product = instance.state.get("product");
+    ReactionProduct.cloneProduct(product);
   }
 });
 
