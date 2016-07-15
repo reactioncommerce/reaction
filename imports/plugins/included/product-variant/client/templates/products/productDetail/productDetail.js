@@ -385,7 +385,7 @@ Template.productDetail.events({
       });
     }
   },
-  "click .delete-product-link": function () {
+  "click [data-event-action=deleteProduct]": function () {
     ReactionProduct.maybeDeleteProduct(this);
   },
   "click .js-edit-social"() {
@@ -426,7 +426,7 @@ Template.productDetailForm.helpers({
 });
 
 Template.productDetailForm.events({
-  "click .toggle-product-isVisible-link": function (event, instance) {
+  "click [data-event-action=publishProduct]": function (event, instance) {
     let errorMsg = "";
     const self = instance.state.get("product");
     if (!self.title) {
@@ -467,7 +467,7 @@ Template.productDetailForm.events({
       });
     }
   },
-  "click .delete-product-link": function (event, instance) {
+  "click [data-event-action=deleteProduct]": function (event, instance) {
     const product = instance.state.get("product");
     ReactionProduct.maybeDeleteProduct(product);
   }
