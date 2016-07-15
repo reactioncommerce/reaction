@@ -141,6 +141,16 @@
             <span class="fa fa-eye-slash fa-lg"></span>
           {{/if}}
         </button>
+        <button
+          type="button"
+          class="btn btn-default"
+          data-toggle="tooltip"
+          title="{{i18n 'productDetailEdit.duplicateProduct' 'Duplicate Product'}}"
+          data-original-title="{{i18n 'productDetailEdit.duplicateProduct' 'Duplicate Product'}}"
+          data-event-action="cloneProduct"
+          >
+          <span class="fa fa-files-o fa-lg"></span>
+        </button>
         {{#if hasAdminAccess}}
           <button
             type="button"
