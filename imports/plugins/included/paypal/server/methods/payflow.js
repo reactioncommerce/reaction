@@ -167,7 +167,6 @@ Meteor.methods({
         };
       }
     }
-    Logger.info(JSON.stringify(result, null, 4));
     return result;
   },
 
