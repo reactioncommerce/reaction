@@ -127,17 +127,31 @@
         <span class="panel-title">{{productTitle}}</span>
       </div>
       <div class="panel-body">
-        {{#if isVisible}}
-          <a href="#" class="btn btn-default toggle-product-isVisible-link" data-i18n="productDetail.makeInvisible">
-            Make invisible
-          </a>
-        {{else}}
-          <a href="#" class="btn btn-default toggle-product-isVisible-link" data-i18n="productDetail.visible">
-            Make visible
-          </a>
-        {{/if}}
+        <button
+          type="button"
+          class="btn btn-default"
+          data-toggle="tooltip"
+          title="{{i18n 'productDetailEdit.publish' 'Publish'}}"
+          data-original-title="{{i18n 'productDetailEdit.publish' 'Publish'}}"
+          data-event-action="publishProduct"
+          >
+          {{#if isVisible}}
+            <span class="fa fa-eye fa-lg"></span>
+          {{else}}
+            <span class="fa fa-eye-slash fa-lg"></span>
+          {{/if}}
+        </button>
         {{#if hasAdminAccess}}
-          <a href="#" class="btn btn-default delete-product-link" data-i18n="app.delete">Delete</a>
+          <button
+            type="button"
+            class="delete-product2 btn btn-danger"
+            data-toggle="tooltip"
+            title="{{i18n 'productDetailEdit.deleteProduct' 'Delete Product'}}"
+            data-original-title="{{i18n 'productDetailEdit.deleteProduct' 'Delete Product'}}"
+            data-event-action="deleteProduct"
+            >
+            <span class="fa fa-trash-o fa-lg"></span>
+          </button>
         {{/if}}
       </div>
     </div>
