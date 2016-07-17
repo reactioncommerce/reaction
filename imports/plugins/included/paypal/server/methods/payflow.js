@@ -128,7 +128,7 @@ Meteor.methods({
   },
 
   "payflowpro/refund/list": function (paymentMethod) {
-    check(paymentMethod, Object);
+    check(paymentMethod, Reaction.Schemas.PaymentMethod);
     this.unblock();
 
     PayFlow.configure(Paypal.payflowAccountOptions());
