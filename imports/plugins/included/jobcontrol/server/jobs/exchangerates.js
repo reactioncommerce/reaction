@@ -11,9 +11,10 @@ function getJobConfig() {
 
 if (Hooks) {
   Hooks.Events.add("afterCoreInit", () => {
-    Logger.info("Adding shop/fetchCurrencyRates to JobControl");
-    const config = getJobConfig();
-    if (config.appId) {
+    const config = getJobConfig().settings.openexchangerates;
+    if (config && config.appId) {
+      const refreshPeriod = config.refreshPeriod || "Every 4 hours";
+      Logger.info(`Adding shop/fetchCurrencyRates to JobControl. Refresh ${refreshPeriod}`);
       new Job(Jobs, "shop/fetchCurrencyRates", {})
         .priority("normal")
         .retry({
@@ -22,13 +23,15 @@ if (Hooks) {
           backoff: "exponential" // delay by twice as long for each subsequent retry
         })
         .repeat({
-          schedule: Jobs.later.parse.text(config.refreshPeriod)
+          schedule: Jobs.later.parse.text(refreshPeriod)
         })
         .save({
           // Cancel any jobs of the same type,
           // but only if this job repeats forever.
           cancelRepeats: true
         });
+    } else {
+      Logger.info("OpenExchangeRates API not configured. Not adding fetchRates job");
     }
   });
 }
