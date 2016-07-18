@@ -1,8 +1,6 @@
 import fs from "fs";
 import path from "path";
-import _ from "lodash";
-import { Packages } from "/lib/collections";
-import { Reaction, Logger } from "/server/api";
+import { Logger } from "/server/api";
 
 
 /**
@@ -65,7 +63,7 @@ function generateImportsFile(file, imports) {
 
 
 /**
- * Import (require) Reaction plugins
+ * Import Reaction plugins
  * @param {String} baseDirPath - path to a plugins sub-directory (core/included/custom)
  * @return {Object} - returns object with client and server keys that contain arrays
  */
@@ -80,50 +78,47 @@ function getImportPaths(baseDirPath) {
   // get app root path
   const appRoot = path.resolve(".").split(".meteor")[0];
 
-  // create the import path for require
+  // create the import path
   const getImportPath = (pluginFile) => {
     return "/" + path.relative(appRoot, pluginFile);
   };
-
-  // get the packages currently in the database
-  const packages = Packages.find().fetch();
 
   // get all plugin directories at provided base path
   const pluginDirs = getDirectories(baseDirPath);
 
   let clientImportPaths = [];
   let serverImportPaths = [];
+  let registryImportPaths = [];
 
   // read registry.json and require server/index.js if they exist
   pluginDirs.forEach((plugin) => {
-    const registryImport = baseDirPath + plugin + "/register.json";
     const clientImport = baseDirPath + plugin + "/client/index.js";
     const serverImport = baseDirPath + plugin + "/server/index.js";
-
-    if (!isEmptyOrMissing(registryImport)) {
-      Logger.info(`Registry file found for ${plugin}`);
-
-      // register the package
-      registry = JSON.parse(fs.readFileSync(registryImport, "utf8"));
-      Reaction.registerPackage(registry);
-    }
+    const registryImport = baseDirPath + plugin + "/register.js";
 
     // import the client files if they exist
     if (!isEmptyOrMissing(clientImport)) {
       Logger.info(`Client import found for ${plugin}`);
-      clientImportPaths.push(getImportPath(clientImport));
+      clientImportPaths.push(getImportPath(clientImport.replace("/index.js", "")));
     }
 
     // import the server files if they exist
     if (!isEmptyOrMissing(serverImport)) {
       Logger.info(`Server import found for ${plugin}`);
-      serverImportPaths.push(getImportPath(serverImport));
+      serverImportPaths.push(getImportPath(serverImport.replace("/index.js", "")));
+    }
+
+    // import plugin registry files
+    if (!isEmptyOrMissing(registryImport)) {
+      Logger.info(`Registry file found for ${plugin}`);
+      registryImportPaths.push(getImportPath(registryImport));
     }
   });
 
   return {
     client: clientImportPaths,
-    server: serverImportPaths
+    server: serverImportPaths,
+    registry: registryImportPaths
   };
 }
 
@@ -145,7 +140,14 @@ export default function () {
 
   // concat all imports
   const clientImports = [].concat(core.client, custom.client, included.client);
-  const serverImports = [].concat(core.server, custom.server, included.server);
+  const serverImports = [].concat(
+    core.server,
+    custom.server,
+    included.server,
+    core.registry,
+    custom.registry,
+    included.registry
+  );
 
   const appRoot = path.resolve(".").split(".meteor")[0];
 
