@@ -133,25 +133,27 @@ const includedPlugins = pluginsPath + "included/";
 
 
 export default function () {
-  // get imports from each plugin directory
-  const core = getImportPaths(corePlugins);
-  const custom = getImportPaths(customPlugins);
-  const included = getImportPaths(includedPlugins);
+  if (process.env.NODE_ENV === "development") {
+    // get imports from each plugin directory
+    const core = getImportPaths(corePlugins);
+    const custom = getImportPaths(customPlugins);
+    const included = getImportPaths(includedPlugins);
 
-  // concat all imports
-  const clientImports = [].concat(core.client, custom.client, included.client);
-  const serverImports = [].concat(
-    core.server,
-    custom.server,
-    included.server,
-    core.registry,
-    custom.registry,
-    included.registry
-  );
+    // concat all imports
+    const clientImports = [].concat(core.client, custom.client, included.client);
+    const serverImports = [].concat(
+      core.server,
+      custom.server,
+      included.server,
+      core.registry,
+      custom.registry,
+      included.registry
+    );
 
-  const appRoot = path.resolve(".").split(".meteor")[0];
+    const appRoot = path.resolve(".").split(".meteor")[0];
 
-  // create import files on client and server and write import statements
-  generateImportsFile(appRoot + "client/plugins.js", clientImports);
-  generateImportsFile(appRoot + "server/plugins.js", serverImports);
+    // create import files on client and server and write import statements
+    generateImportsFile(appRoot + "client/plugins.js", clientImports);
+    generateImportsFile(appRoot + "server/plugins.js", serverImports);
+  }
 }
