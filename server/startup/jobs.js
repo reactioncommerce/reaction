@@ -57,7 +57,7 @@ export default function () {
         } else {
           // https://github.com/vsivsi/meteor-job-collection#set-how-many-times-this
           // -job-will-be-automatically-re-run-by-the-job-collection
-          const success = "Old exchange rates were flushed.";
+          const success = "Stale exchange rates were flushed.";
           Logger.info(success);
           job.done(success, { repeatId: true });
         }
