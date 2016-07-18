@@ -24,6 +24,11 @@
           {{> tagItem blankTagProps}}
         </div>
       {{/if}}
+      {{#if canEdit}}
+      <div>
+        {{> React EditButton }}
+      </div>
+      {{/if}}
     </div>
   </div>
 </template>
