@@ -34,4 +34,27 @@ if (Hooks) {
       Logger.info("OpenExchangeRates API not configured. Not adding fetchRates job");
     }
   });
+
+  Hooks.Events.add("afterCoreInit", () => {
+    const config = getJobConfig().settings.openexchangerates;
+    if (config && config.appId) {
+      Logger.info("Adding shop/flushCurrencyRates to JobControl");
+      const refreshPeriod = "Every 24 hours";
+      new Job(Jobs, "shop/flushCurrencyRates", {})
+        .priority("normal")
+        .retry({
+          retries: 5,
+          wait: 60000,
+          backoff: "exponential"
+        })
+        .repeat({
+          schedule: Jobs.later.parse.text(refreshPeriod)
+        })
+        .save({
+          cancelRepeats: true
+        });
+    } else {
+      Logger.info("OpenExchangeRates API not configured. Not adding flushRates job");
+    }
+  });
 }
