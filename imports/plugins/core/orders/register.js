@@ -27,6 +27,12 @@ Reaction.registerPackage({
     description: "Fulfill your orders",
     icon: "fa fa-sun-o",
     priority: 1
+  }, {
+    route: "/dashboard/pdf/orders/:id",
+    workflow: "coreOrderPrintWorkflow",
+    layout: "printLayout",
+    name: "dashboard/pdf/orders",
+    template: "completedPDFLayout"
   }],
   layout: [{
     layout: "coreLayout",
@@ -46,8 +52,11 @@ Reaction.registerPackage({
     }
   }, {
     layout: "printLayout",
-    workflow: "coreOrderWorkflow",
+    workflow: "coreOrderPrintWorkflow",
+    collection: "Orders",
+    enabled: true,
     structure: {
+      template: "completedPDFLayout",
       layoutHeader: "layoutHeader",
       layoutFooter: "layoutFooter"
     }

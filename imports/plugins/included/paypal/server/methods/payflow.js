@@ -1,4 +1,5 @@
 import PayFlow from "paypal-rest-sdk"; // PayFlow is PayPal PayFlow lib
+import moment from "moment";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { Reaction, Logger } from "/server/api";
@@ -136,7 +137,8 @@ Meteor.methods({
     let result = [];
     // todo: review parentPaymentId vs authorizationId, are they both correct?
     // added authorizationId without fully understanding the intent of parentPaymentId
-    let authId = paymentMethod.metadata.parentPaymentId || paymentMethod.metadata.authorizationId;
+    // let authId = paymentMethod.metadata.parentPaymentId || paymentMethod.metadata.authorizationId;
+    let authId = paymentMethod.metadata.transactionId;
 
     if (authId) {
       Logger.debug("payflowpro/refund/list: paymentMethod.metadata.parentPaymentId", authId);
@@ -149,10 +151,10 @@ Meteor.methods({
               if (resource.refund.state === "completed") {
                 result.push({
                   type: "refund",
-                  created: resource.refund.create_time,
+                  created: moment(resource.refund.create_time).unix() * 1000,
                   amount: Math.abs(resource.refund.amount.total),
                   currency: resource.refund.amount.currency,
-                  rawTransaction: resource.refund
+                  raw: response
                 });
               }
             }
@@ -165,7 +167,6 @@ Meteor.methods({
         };
       }
     }
-
     return result;
   },
 
