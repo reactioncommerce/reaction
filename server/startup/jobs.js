@@ -28,7 +28,7 @@ export default function () {
           // you can read more about job.repeat() here:
           // https://github.com/vsivsi/meteor-job-collection#set-how-many-times-this
           // -job-will-be-automatically-re-run-by-the-job-collection
-          const success = "Latest exchange rates was fetched successfully.";
+          const success = "Latest exchange rates were fetched successfully.";
           Logger.info(success);
           job.done(success, { repeatId: true });
         }
