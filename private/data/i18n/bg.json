@@ -33,9 +33,6 @@
 			},
 			"productDetail": {
 				"productManagement": "Управление на продукти",
-				"makeInvisible": "Направи невидим",
-				"isNotVisible": "Този продукт не си вижда от потребителите.",
-				"makeItVisible": "Направи го видим",
 				"whenYouAreDone": "Когато редакцията свърши.",
 				"tags": "Ключови думи",
 				"tagsAdd": "Добави ключова дума",

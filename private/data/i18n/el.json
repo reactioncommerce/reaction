@@ -27,9 +27,6 @@
                 },
                 "productDetail": {
                     "productManagement": "Διαχείριση προϊόντος",
-                    "makeInvisible": "Κάνε αόρατο",
-                    "isNotVisible": "Αυτό το προϊόν είναι αόρατο στους πελάτες.",
-                    "makeItVisible": "Μπορείς να το κάνεις αόρατο",
                     "whenYouAreDone": "όταν τελειώσεις την επεξεργασία.",
                     "tags": "Ετικέτες",
                     "tagsAdd": "Προσθήκη ετικέτας",

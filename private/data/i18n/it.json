@@ -31,9 +31,6 @@
                 },
                 "productDetail": {
                     "productManagement": "Gestione prodotti",
-                    "makeInvisible": "Rendi invisibile",
-                    "isNotVisible": "Questo prodotto non è visibile ai clienti.",
-                    "makeItVisible": "Puoi renderlo visibile",
                     "whenYouAreDone": "quando hai completato le modifiche.",
                     "tags": "Tags",
                     "tagsAdd": "Aggiungi tag",

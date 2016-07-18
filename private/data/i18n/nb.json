@@ -33,9 +33,6 @@
       },
       "productDetail": {
         "productManagement": "Produkt håndtering",
-        "makeInvisible": "Skjul",
-        "isNotVisible": "Dette produktet er ikke synlig for kunder.",
-        "makeItVisible": "Du kan gjøre produktet synlig",
         "whenYouAreDone": "når du er ferdig med å redigere det.",
         "tags": "Tags",
         "tagsAdd": "Legg til tag",

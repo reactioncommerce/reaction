@@ -25,9 +25,6 @@
                 },
                 "productDetail": {
                     "productManagement": "Upravljanje proizvodima",
-                    "makeInvisible": "Sakrij",
-                    "isNotVisible": "Ovaj proizvod nije vidljiv kupcima",
-                    "makeItVisible": "Postavi proizvod kao vidljiv",
                     "whenYouAreDone": "kad je uređivanje gotovo",
                     "tags": "Oznake",
                     "tagsAdd": "Dodaj oznaku",
