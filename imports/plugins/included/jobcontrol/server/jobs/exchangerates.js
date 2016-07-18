@@ -10,9 +10,13 @@ function getJobConfig() {
 }
 
 if (Hooks) {
+  const config = getJobConfig();
+  let exchangeConfig;
+  if (config) {
+    exchangeConfig = config.settings.openexchangerates;
+  }
   Hooks.Events.add("afterCoreInit", () => {
-    const config = getJobConfig().settings.openexchangerates;
-    if (config && config.appId) {
+    if (exchangeConfig && exchangeConfig.appId) {
       const refreshPeriod = config.refreshPeriod || "Every 4 hours";
       Logger.info(`Adding shop/fetchCurrencyRates to JobControl. Refresh ${refreshPeriod}`);
       new Job(Jobs, "shop/fetchCurrencyRates", {})
@@ -36,8 +40,7 @@ if (Hooks) {
   });
 
   Hooks.Events.add("afterCoreInit", () => {
-    const config = getJobConfig().settings.openexchangerates;
-    if (config && config.appId) {
+    if (exchangeConfig && exchangeConfig.appId) {
       Logger.info("Adding shop/flushCurrencyRates to JobControl");
       const refreshPeriod = "Every 24 hours";
       new Job(Jobs, "shop/flushCurrencyRates", {})

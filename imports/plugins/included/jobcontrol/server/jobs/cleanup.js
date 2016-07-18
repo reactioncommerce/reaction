@@ -39,7 +39,9 @@ export default function () {
     if (ids.length > 0) {
       Jobs.removeJobs(ids);
     }
-    job.done("Removed " + ids.length + " old jobs");
+    const success = `Removed ${ds.length} stale jobs`;
+    Logger.info(success);
+    job.done(success, { repeatId: true });
     return cb();
   });
 }
