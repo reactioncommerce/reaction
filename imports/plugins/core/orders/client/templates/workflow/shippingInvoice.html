@@ -98,7 +98,7 @@
       {{#if paymentApproved}}
           <a
             class="btn btn-link"
-            href="/dashboard/pdf/orders/{{orderId}}?shipment={{fulfillment._id}}"
+            href="{{pathFor "dashboard/pdf/orders" id=orderId }}?shipment={{fulfillment._id}}"
             target="_blank"
             data-i18n="app.print">
             Print
@@ -141,11 +141,20 @@
         </div>
       </div>
       <hr>
-      <button
-        class="btn btn-success flex-item-fill"
-        type="submit"
-        data-event-action="appluRefund"
-        data-i18n="order.applyRefund" {{refundSubmitDisabled}}>Apply Refund</button>
+      <div class="flex">
+        <a
+          class="btn btn-link"
+          href="{{pathFor "dashboard/pdf/orders" id=orderId }}?shipment={{fulfillment._id}}"
+          target="_blank"
+          data-i18n="app.printInvoice">
+          Print Invoice
+        </a>
+        <button
+          class="btn btn-success flex-item-fill"
+          type="submit"
+          data-event-action="appluRefund"
+          data-i18n="order.applyRefund" {{refundSubmitDisabled}}>Apply Refund</button>
+      </div>
     </form>
   {{else}}
 

@@ -5,7 +5,7 @@
       Don't have a Stripe API key? <a href="https://dashboard.stripe.com/account/apikeys" target="_blank">Get it here.</a> (Need to sign in)
     </div>
     <div class="panel-body">
-      {{#autoForm collection="Reaction.Collections.Packages" schema=StripePackageConfig doc=packageData type="update" id="stripe-update-form"}}
+      {{#autoForm collection=Collections.Packages schema=StripePackageConfig doc=packageData type="update" id="stripe-update-form"}}
         {{>afQuickField name='settings.api_key'}}
         <button type="submit" class="btn btn-primary pull-right">Update</button>
       {{/autoForm}}
