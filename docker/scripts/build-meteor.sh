@@ -15,6 +15,8 @@ cd $APP_SOURCE_DIR
 # Customize packages
 bash $BUILD_SCRIPTS_DIR/build-packages.sh
 
+# Generate plugin import files
+bash $BUILD_SCRIPTS_DIR/plugin-loader.sh
 
 # Install app deps
 meteor npm install --production

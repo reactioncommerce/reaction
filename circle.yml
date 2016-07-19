@@ -13,7 +13,8 @@ dependencies:
   override:
     - cd $HOME/reaction
     - chmod +x bin/clone-packages.sh
-    - ./bin/clone-packages.sh
+    - bin/clone-packages.sh
+    - docker/scripts/plugin-loader.sh
     - if [[ -e ~/docker/image.tar ]]; then docker load -i ~/docker/image.tar; fi
     - docker build -f docker/reaction.ci.dockerfile -t reactioncommerce/prequel .
     - mkdir -p ~/docker; docker save reactioncommerce/prequel > ~/docker/image.tar

@@ -15,11 +15,11 @@ Reaction.registerPackage({
       autoInit: true,
       apps: {
         facebook: _.extend({
-          appId: void 0,
+          appId: "",
           version: "v2.1"
         }, DefaultSocialApp),
         twitter: _.extend({
-          username: void 0
+          username: ""
         }, DefaultSocialApp),
         googleplus: _.extend({}, DefaultSocialApp),
         pinterest: _.extend({}, DefaultSocialApp)
