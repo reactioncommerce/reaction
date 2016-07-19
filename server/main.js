@@ -1,4 +1,4 @@
-import "./methods"; // TODO: refactor all of the methods to use import/export
+import "./methods";
 import Startup from "./startup";
 import Security from "./security";
 
