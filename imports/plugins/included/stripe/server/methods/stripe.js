@@ -67,24 +67,35 @@ Meteor.methods({
       amount: "",
       currency: "",
       card: {},
-      capture: true
+      capture: false
     };
 
-    if (transactionType === "authorize") {
-      chargeObj.capture = false;
-    }
+    let createCustomer = StripeApi.methods.getCreateCustomerSetting.call() || false;
+    let customer = {};
+
+    chargeObj.capture = StripeApi.methods.getPaymentCaptureSetting.call() || false;
     chargeObj.card = parseCardData(cardData);
     chargeObj.amount = formatForStripe(paymentData.total);
     chargeObj.currency = paymentData.currency;
     let result;
     let chargeResult;
 
+    if (createCustomer) {
+      try {
+        // createCustomer params: chargeObj, customerEmail (optional), apiKey (optional)
+        customer = StripeApi.methods.createCustomer.call({chargeObj: chargeObj});
+      } catch (e) {
+        Logger.error(e);
+        throw new Meteor.Error("error", e.message);
+      }
+    }
+
     try {
       chargeResult = StripeApi.methods.createCharge.call({ chargeObj });
       if (chargeResult && chargeResult.status === "succeeded") {
         result = {
           saved: true,
-          response: chargeResult
+          response: Object.assign(chargeResult, {customerId: customer.id})
         };
       } else {
         Logger.info("Stripe Call succeeded but charge failed");

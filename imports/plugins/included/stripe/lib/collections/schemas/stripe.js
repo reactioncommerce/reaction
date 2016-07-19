@@ -16,6 +16,16 @@ export const StripePackageConfig = new SimpleSchema([
     "settings.api_key": {
       type: String,
       label: "API Client ID"
+    },
+    "settings.capture": {
+      type: Boolean,
+      defaultValue: false,
+      label: "Capture Payments By Default"
+    },
+    "settings.customer": {
+      type: Boolean,
+      defaultValue: false,
+      label: "Create Stripe Customer"
     }
   }
 ]);

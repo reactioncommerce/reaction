@@ -3,7 +3,7 @@ import { Meteor } from "meteor/meteor";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
 import { StripeApi } from "./stripeapi";
-// import { Stripe } from "../../lib/api";
+import { Stripe } from "../../lib/api";
 
 let stripeChargeResult = {
   id: "ch_17hA8DBXXkbZQs3xENUmN9bZ",
@@ -44,8 +44,42 @@ let stripeChargeResult = {
   status: "succeeded"
 };
 
+let stripeCustomerResult = {
+  id: "cus_8oZQ1MXGlu2yvN",
+  object: "customer",
+  account_balance: 0,
+  created: 1468450621,
+  currency: "usd",
+  default_source: null,
+  delinquent: false,
+  description: null,
+  discount: null,
+  email: null,
+  livemode: false,
+  metadata: {
+  },
+  shipping: null,
+  sources: {
+    object: "list",
+    data: [
 
-describe.skip("Stripe.authorize", function () {
+    ],
+    has_more: false,
+    total_count: 0,
+    url: "/v1/customers/cus_8oZQ1MXGlu2yvN/sources"
+  },
+  subscriptions: {
+    object: "list",
+    data: [
+
+    ],
+    has_more: false,
+    total_count: 0,
+    url: "/v1/customers/cus_8oZQ1MXGlu2yvN/subscriptions"
+  }
+};
+
+describe("Stripe.charge", function () {
   let sandbox;
 
   beforeEach(function () {
@@ -56,8 +90,8 @@ describe.skip("Stripe.authorize", function () {
     sandbox.restore();
   });
 
-  it("should call StripeApi.methods.createCharge with the proper parameters and return saved = true", function (done) {
-    let form = {
+  it("should call StripeApi.methods.createCharge with paymentCaptureSetting as false and authorize a charge", function (done) {
+    let card = {
       cvv2: "345",
       expire_month: "4",
       expire_year: "2019",
@@ -67,23 +101,133 @@ describe.skip("Stripe.authorize", function () {
     };
     let total = "22.98";
     let currency = "USD";
+    sandbox.stub(StripeApi.methods.getPaymentCaptureSetting, "call", function () {
+      return false;
+    });
     sandbox.stub(StripeApi.methods.createCharge, "call", function () {
       return stripeChargeResult;
     });
-    // spyOn(StripeApi.methods.createCharge, "call").and.returnValue(stripeChargeResult);
 
     let chargeResult = null;
-    Meteor.call("stripeSubmit", form, total, currency, function (error, result) {
+    Meteor.call("stripeSubmit", "charge", card, {total: total, currency: currency}, function (error, result) {
       chargeResult = result;
     });
 
     expect(chargeResult).to.not.be.undefined;
     expect(chargeResult.saved).to.be.true;
+    expect(chargeResult.response.captured).to.be.false;
+    done();
+  });
+
+  it("should call StripeApi.methods.createCharge with paymentCaptureSetting as true and capture a charge", function (done) {
+    let card = {
+      cvv2: "345",
+      expire_month: "4",
+      expire_year: "2019",
+      name: "Test User",
+      number: "4242424242424242",
+      type: "visa"
+    };
+    let total = "22.98";
+    let currency = "USD";
+    sandbox.stub(StripeApi.methods.getPaymentCaptureSetting, "call", function () {
+      return true;
+    });
+    sandbox.stub(StripeApi.methods.createCharge, "call", function () {
+      return Object.assign(stripeChargeResult, {captured: true});
+    });
+
+    let chargeResult = null;
+    Meteor.call("stripeSubmit", "charge", card, {total: total, currency: currency}, function (error, result) {
+      chargeResult = result;
+    });
+
+    expect(chargeResult).to.not.be.undefined;
+    expect(chargeResult.saved).to.be.true;
+    expect(chargeResult.response.captured).to.be.true;
     done();
   });
 });
 
-describe.skip("Meteor.Stripe.authorize", function () {
+describe("Stripe.charge createCustomer", function () {
+  let sandbox;
+
+  beforeEach(function () {
+    sandbox = sinon.sandbox.create();
+  });
+
+  afterEach(function () {
+    sandbox.restore();
+  });
+
+  it("should call StripeApi.methods.createCustomer if customer bool is set, return customerId", function (done) {
+    let card = {
+      cvv2: "345",
+      expire_month: "4",
+      expire_year: "2019",
+      name: "Test User",
+      number: "4242424242424242",
+      type: "visa"
+    };
+    let total = "22.98";
+    let currency = "USD";
+    sandbox.stub(StripeApi.methods.getCreateCustomerSetting, "call", function () {
+      return true;
+    });
+    sandbox.stub(StripeApi.methods.createCustomer, "call", function () {
+      return stripeCustomerResult;
+    });
+    sandbox.stub(StripeApi.methods.createCharge, "call", function () {
+      return stripeChargeResult;
+    });
+
+    let chargeResult = null;
+    Meteor.call("stripeSubmit", "charge", card, {total: total, currency: currency}, function (error, result) {
+      expect(error).to.be.undefined;
+      chargeResult = result;
+    });
+
+    expect(chargeResult).to.not.be.undefined;
+    expect(chargeResult.saved).to.be.true;
+    expect(chargeResult.response.customerId).to.equal(stripeCustomerResult.id);
+    done();
+  });
+
+  it("should not call StripeApi.methods.createCustomer if customer bool is set false", function (done) {
+    let card = {
+      cvv2: "345",
+      expire_month: "4",
+      expire_year: "2019",
+      name: "Test User",
+      number: "4242424242424242",
+      type: "visa"
+    };
+    let total = "22.98";
+    let currency = "USD";
+    sandbox.stub(StripeApi.methods.getCreateCustomerSetting, "call", function () {
+      return false;
+    });
+    sandbox.stub(StripeApi.methods.createCustomer, "call", function () {
+      return stripeCustomerResult;
+    });
+    sandbox.stub(StripeApi.methods.createCharge, "call", function () {
+      return stripeChargeResult;
+    });
+
+    let chargeResult = null;
+    Meteor.call("stripeSubmit", "charge", card, {total: total, currency: currency}, function (error, result) {
+      expect(error).to.be.undefined;
+      chargeResult = result;
+    });
+
+    expect(chargeResult).to.not.be.undefined;
+    expect(chargeResult.saved).to.be.true;
+    expect(chargeResult.response.customerId).to.be.undefined;
+    done();
+  });
+});
+
+describe("Meteor.Stripe.charge", function () {
   let sandbox;
 
   beforeEach(function () {
@@ -95,7 +239,7 @@ describe.skip("Meteor.Stripe.authorize", function () {
   });
 
   it("should properly charge a card when using a currency besides USD", function () {
-    let form = {
+    let card = {
       cvv2: "345",
       expire_month: "4",
       expire_year: "2019",
@@ -109,9 +253,9 @@ describe.skip("Meteor.Stripe.authorize", function () {
     sandbox.stub(StripeApi.methods.createCharge, "call", function () {
       return stripeChargeResult;
     });
-    // spyOn(StripeApi.methods.createCharge, "call").and.returnValue(stripeChargeResult);
+
     let chargeResult = null;
-    Stripe.authorize(form, {total: total, currency: currency}, function (error, result) {
+    Stripe.charge(card, {total: total, currency: currency}, function (error, result) {
       chargeResult = result;
     });
 
@@ -133,7 +277,7 @@ describe.skip("Meteor.Stripe.authorize", function () {
   });
 });
 
-describe.skip("Meteor.Stripe.authorize", function () {
+describe("Meteor.Stripe.charge", function () {
   let sandbox;
 
   beforeEach(function () {
@@ -145,7 +289,7 @@ describe.skip("Meteor.Stripe.authorize", function () {
   });
 
   it("should return saved = false when card is declined", function () {
-    let form = {
+    let card = {
       cvv2: "345",
       expire_month: "4",
       expire_year: "2019",
@@ -181,10 +325,9 @@ describe.skip("Meteor.Stripe.authorize", function () {
     sandbox.stub(StripeApi.methods.createCharge, "call", function () {
       return stripeDeclineResult;
     });
-    // spyOn(StripeApi.methods.createCharge, "call").and.returnValue(stripeDeclineResult);
 
     let chargeResult = null;
-    Meteor.Stripe.authorize(form, {total: total, currency: currency}, function (error, result) {
+    Stripe.charge(card, {total: total, currency: currency}, function (error, result) {
       chargeResult = result;
     });
 
@@ -207,7 +350,7 @@ describe.skip("Meteor.Stripe.authorize", function () {
   });
 });
 
-describe.skip("Meteor.Stripe.authorize", function () {
+describe("Meteor.Stripe.charge", function () {
   let sandbox;
 
   beforeEach(function () {
@@ -221,7 +364,7 @@ describe.skip("Meteor.Stripe.authorize", function () {
   it("should return saved = false when an expired card is returned", function () {
     // Note that this test number makes the Stripe API return this error, it is
     // not looking at the actual expiration date.
-    let form = {
+    let card = {
       cvv2: "345",
       expire_month: "4",
       expire_year: "2019",
@@ -257,10 +400,9 @@ describe.skip("Meteor.Stripe.authorize", function () {
     sandbox.stub(StripeApi.methods.createCharge, "call", function () {
       return stripeExpiredCardResult;
     });
-    // spyOn(StripeApi.methods.createCharge, "call").and.returnValue(stripeExpiredCardResult);
 
     let chargeResult = null;
-    Meteor.Stripe.authorize(form, {total: total, currency: currency}, function (error, result) {
+    Stripe.charge(card, {total: total, currency: currency}, function (error, result) {
       chargeResult = result;
     });
 

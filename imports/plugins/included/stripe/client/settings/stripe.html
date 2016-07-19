@@ -7,6 +7,8 @@
     <div class="panel-body">
       {{#autoForm collection=Collections.Packages schema=StripePackageConfig doc=packageData type="update" id="stripe-update-form"}}
         {{>afQuickField name='settings.api_key'}}
+        {{>afQuickField name="settings.capture"}}
+        {{>afQuickField name="settings.customer"}}
         <button type="submit" class="btn btn-primary pull-right">Update</button>
       {{/autoForm}}
     </div>
