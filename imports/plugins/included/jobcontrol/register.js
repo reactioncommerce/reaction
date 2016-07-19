@@ -1,7 +1,8 @@
 import { Reaction } from "/server/api";
 
 Reaction.registerPackage({
-  label: "UI Navbar",
-  name: "reaction-ui-navbar",
+  label: "Job Control",
+  name: "reaction-jobcontrol",
+  icon: "fa fa-vine",
   autoEnable: true
 });
