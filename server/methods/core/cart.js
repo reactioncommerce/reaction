@@ -3,7 +3,7 @@ import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import * as Collections from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
-import { Logger, Reaction } from "/server/api";
+import { Hooks, Logger, Reaction } from "/server/api";
 
 /**
  * quantityProcessing
@@ -640,7 +640,7 @@ Meteor.methods({
       // catch send notification, we don't want
       // to block because of notification errors
       try {
-        Meteor.call("orders/sendNotification", Collections.Orders.findOne(orderId));
+        Hooks.Events.run("orders/sendNotification", order);
       } catch (error) {
         Logger.warn(error, `Error in orders/sendNotification for ${orderId}`);
       }

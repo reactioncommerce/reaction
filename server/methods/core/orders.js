@@ -1,9 +1,9 @@
 import Future from "fibers/future";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
-import { Cart, Orders, Products, Shops } from "/lib/collections";
+import { Cart, Orders, Products } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
-import { Logger, Reaction } from "/server/api";
+import { Hooks, Logger, Reaction } from "/server/api";
 
 /**
  * Reaction Order Methods
@@ -215,7 +215,10 @@ Meteor.methods({
     let completedOrderResult;
 
     // Attempt to sent email notification
-    const notifyResult = Meteor.call("orders/sendNotification", order);
+    const notifyResult = !Hooks.Events.run(
+      "orders/sendNotification",
+      order
+    );
 
     const itemIds = shipment.items.map((item) => {
       return item._id;
@@ -262,7 +265,10 @@ Meteor.methods({
       let shipment = order.shipping[0];
 
       // Attempt to sent email notification
-      Meteor.call("orders/sendNotification", order);
+      Hooks.Events.run(
+        "orders/sendNotification",
+        order
+      );
 
       const itemIds = shipment.items.map((item) => {
         return item._id;
@@ -283,62 +289,6 @@ Meteor.methods({
       Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "processing", order._id);
 
       return false;
-    }
-  },
-
-  /**
-   * orders/sendNotification
-   *
-   * @summary send order notification email
-   * @param {Object} order - order object
-   * @return {Boolean} email sent or not
-   */
-  "orders/sendNotification": function (order) {
-    check(order, Object);
-
-    // just make sure this a real userId
-    // todo: ddp limit
-    if (!Meteor.userId()) {
-      throw new Meteor.Error(403, "Access Denied");
-    }
-
-    this.unblock();
-    if (order) {
-      let shop = Shops.findOne(order.shopId);
-      let shipment = order.shipping[0];
-
-      Reaction.configureMailUrl();
-      Logger.info("orders/sendNotification", order.workflow.status);
-      // handle missing root shop email
-      if (!shop.emails[0].address) {
-        shop.emails[0].address = "no-reply@reactioncommerce.com";
-        Logger.warn("No shop email configured. Using no-reply to send mail");
-      }
-      // anonymous users without emails.
-      if (!order.email) {
-        Logger.warn("No shop email configured. Using anonymous order.");
-        return true;
-      }
-      // email templates can be customized in Templates collection
-      // loads defaults from reaction-email-templates/templates
-      let tpl = `orders/${order.workflow.status}`;
-      SSR.compileTemplate(tpl, ReactionEmailTemplate(tpl));
-      try {
-        return Email.send({
-          to: order.email,
-          from: `${shop.name} <${shop.emails[0].address}>`,
-          subject: `Order update from ${shop.name}`,
-          html: SSR.render(tpl, {
-            homepage: Meteor.absoluteUrl(),
-            shop: shop,
-            order: order,
-            shipment: shipment
-          })
-        });
-      } catch (error) {
-        Logger.fatal("Unable to send notification email: " + error);
-        throw new Meteor.Error("error-sending-email", "Unable to send order notification email.", error);
-      }
     }
   },
 

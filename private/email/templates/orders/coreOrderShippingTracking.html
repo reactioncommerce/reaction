@@ -814,7 +814,7 @@ body.outlook p {
                       <table class="twelve columns">
                         <tr>
                           <td>
-                            <h1>Hi, {{user.username}}</h1>
+                            <h1>{{_ "emailTemplate.greeting" user.username }}</h1>
                           </td>
                           <td class="expander"></td>
                         </tr>
@@ -823,7 +823,7 @@ body.outlook p {
                       <table class="twelve columns">
                         <tr>
                           <td>
-                            <p class="lead">Your <strong>{{shop.name}}</strong> order has shipped.</p>
+                            <p class="lead">{{ _ "emailTemplate.yourOrderHasBeenShipped" shop.nameYour }}</p>
                           </td>
                           <td class="expander"></td>
                         </tr>
@@ -840,7 +840,7 @@ body.outlook p {
                       <table class="twelve columns">
                         <tr>
                           <td class="panel">
-                            <p>Your tracking information is <strong>{{shipment.tracking}}</strong></p>
+                            <p>{{_ "emailTemplate.trackingInformation" shipment.tracking}}</p>
                           </td>
                           <td class="expander"></td>
                         </tr>
@@ -857,7 +857,7 @@ body.outlook p {
                             <table class="button">
                               <tr>
                                 <td>
-                                  <a href="{{homepage}}">Thank you! - {{shop.name}}</a>
+                                  <a href="{{homepage}}">{{_ "emailTemplate.thankYou" shop.name }}</a>
                                 </td>
                               </tr>
                             </table>
@@ -878,7 +878,7 @@ body.outlook p {
                         <tr>
                           <td align="center">
                             <center>
-                              <p style="text-align:center;">Sent by <a href="{{homepage}}">{{shop.name}}</a></p>
+                              <p style="text-align:center;">{{_ "emailTemplate.sentBySignature" homepage shop.name }}</p>
                             </center>
                           </td>
                           <td class="expander"></td>

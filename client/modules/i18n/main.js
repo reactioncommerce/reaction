@@ -9,7 +9,8 @@ import { Tracker } from "meteor/tracker";
 import { Session } from "meteor/session";
 import { SimpleSchema } from "meteor/aldeed:simple-schema";
 import { Reaction } from "/client/api";
-import { Packages, Shops, Translations } from "/lib/collections";
+import { fetchTranslationResources } from "/lib/api/i18n";
+import { Accounts, Packages, Shops } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 
 //
@@ -130,26 +131,13 @@ Meteor.startup(() => {
 
 // use tracker autorun to detect language changes
 Tracker.autorun(function () {
-  return Meteor.subscribe("Translations", Session.get("language"), () => {
-    // fetch reaction translations
-    const translations = Translations.find({}, {
-      fields: {
-        _id: 0
-      }
-    }).fetch();
+  // Selected language should be available on server as well..
+  Accounts.update(
+    Meteor.userId(),
+    {$set: {"profile.language": Session.get("language")}}
+  );
 
-    // map reduce translations into i18next formatting
-    const resources = translations.reduce(function (x, y) {
-      const ns = Object.keys(y.translation)[0];
-      // first creating the structure, when add additional namespaces
-      if (x[y.i18n]) {
-        x[y.i18n][ns] = y.translation[ns];
-      } else {
-        x[y.i18n] = y.translation;
-      }
-      return x;
-    }, {});
-
+  Meteor.subscribe("Translations", Session.get("language"), () => {
     const shop = Shops.findOne(Reaction.getShopId());
 
     //
@@ -166,7 +154,7 @@ Tracker.autorun(function () {
         defaultNS: "core", // reaction "core" is the default namespace
         lng: Session.get("language"), // user session language
         fallbackLng: shop ? shop.language : null, // Shop language
-        resources: resources
+        resources: fetchTranslationResources()
           // saveMissing: true,
           // missingKeyHandler: function (lng, ns, key, fallbackValue) {
           //   Meteor.call("i18n/addTranslation", lng, ns, key, fallbackValue);

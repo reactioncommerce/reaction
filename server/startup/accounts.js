@@ -128,7 +128,11 @@ export default function () {
       // but skip the first default admin user
       // (default admins already get a verification email)
       if (!(Meteor.users.find().count() === 0)) {
-        Meteor.call("accounts/sendWelcomeEmail", shopId, user._id);
+        Hooks.Events.run(
+          "accounts/sendWelcomeEmail",
+          { shopId: shopId,
+            userId: user._id }
+        );
       }
 
       // assign default user roles
