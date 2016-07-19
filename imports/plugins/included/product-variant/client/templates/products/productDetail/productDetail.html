@@ -122,41 +122,35 @@
         <span class="panel-title">{{productTitle}}</span>
       </div>
       <div class="panel-body">
-        <button
-          type="button"
-          class="btn btn-default"
-          data-toggle="tooltip"
-          title="{{i18n 'productDetailEdit.publish' 'Publish'}}"
-          data-original-title="{{i18n 'productDetailEdit.publish' 'Publish'}}"
+        {{> button
+          className="btn btn-default"
+          tooltip="Publish"
+          i18nKeyTooltip="productDetailEdit.publish"
+          toggle=true
+          toggleOn=product.isVisible
+          icon="eye-slash"
+          onIcon="eye"
           data-event-action="publishProduct"
-          >
-          {{#if isVisible}}
-            <span class="fa fa-eye fa-lg"></span>
-          {{else}}
-            <span class="fa fa-eye-slash fa-lg"></span>
-          {{/if}}
-        </button>
-        <button
-          type="button"
-          class="btn btn-default"
-          data-toggle="tooltip"
-          title="{{i18n 'productDetailEdit.duplicateProduct' 'Duplicate Product'}}"
-          data-original-title="{{i18n 'productDetailEdit.duplicateProduct' 'Duplicate Product'}}"
+        }}
+
+        {{> button
+          icon="files-o"
+          className="btn btn-default"
+          tooltip="Duplicate Product"
+          i18nKeyTooltip="productDetailEdit.duplicateProduct"
+          data-original-title=(i18n "productDetailEdit.duplicateProduct" "Duplicate Product")
           data-event-action="cloneProduct"
-          >
-          <span class="fa fa-files-o fa-lg"></span>
-        </button>
+        }}
+
         {{#if hasAdminAccess}}
-          <button
-            type="button"
-            class="delete-product2 btn btn-danger"
-            data-toggle="tooltip"
-            title="{{i18n 'productDetailEdit.deleteProduct' 'Delete Product'}}"
-            data-original-title="{{i18n 'productDetailEdit.deleteProduct' 'Delete Product'}}"
+          {{> button
+            icon="trash-o"
+            className="btn btn-danger"
+            tooltip="Delete Product"
+            i18nKeyTooltip="productDetailEdit.deleteProduct"
+            data-original-title=(i18n "productDetailEdit.deleteProduct" "Delete Product")
             data-event-action="deleteProduct"
-            >
-            <span class="fa fa-trash-o fa-lg"></span>
-          </button>
+          }}
         {{/if}}
       </div>
     </div>
