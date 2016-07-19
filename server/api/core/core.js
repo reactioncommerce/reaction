@@ -14,7 +14,7 @@ export default {
     // start job server
     Jobs.startJobServer(() => {
       Logger.info("JobServer started");
-      Hooks.Events.run("onJobServerStart", this);
+      Hooks.Events.run("onJobServerStart");
     });
     if (process.env.VERBOSE_JOBS) {
       Jobs.setLogStream(process.stdout);
