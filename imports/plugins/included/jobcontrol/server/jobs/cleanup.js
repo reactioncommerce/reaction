@@ -1,18 +1,25 @@
 import { Jobs } from "/lib/collections";
 import { Hooks, Logger } from "/server/api";
 
-if (Hooks) {
-  Hooks.Events.add("afterCoreInit", () => {
-    Logger.info("Adding Jobs cleanup job to JobControl");
-    new Job(Jobs, "cleanup", {}).repeat({
-      schedule: Jobs.later.parse.text("every 1 minutes")
-    }).save({
+Hooks.Events.add("onJobServerStart", () => {
+  Logger.info("Adding Job jobControl/removeStaleJobs to JobControl");
+  new Job(Jobs, "jobControl/removeStaleJobs", {})
+    .priority("normal")
+    .retry({
+      retries: 5,
+      wait: 60000,
+      backoff: "exponential"
+    })
+    .repeat({
+      schedule: Jobs.later.parse.text("every 15 minutes")
+    })
+    .save({
       cancelRepeats: true
     });
-  });
-}
+});
 
-function getJobIds() {
+
+function getJobIds(current) {
   const ids = Jobs.find({
     status: {
       $in: Job.jobStatusRemovable
@@ -31,17 +38,26 @@ function getJobIds() {
 }
 
 export default function () {
-  Jobs.processJobs("cleanup", {pollInterval: false, workTimeout: 60 * 1000}, function (job, cb) {
-    Logger.info("=======> Running cleanup Job");
-    let current = new Date();
-    current.setMinutes(current.getMinutes() - 60);
-    const ids = getJobIds();
-    if (ids.length > 0) {
-      Jobs.removeJobs(ids);
-    }
-    const success = `Removed ${ds.length} stale jobs`;
-    Logger.info(success);
-    job.done(success, { repeatId: true });
-    return cb();
-  });
+  Jobs.processJobs("jobControl/removeStaleJobs",
+    {
+      pollInterval: 30 * 1000,
+      workTimeout: 60 * 1000
+    },
+    (job, callback) => {
+      let current = new Date();
+      // todo: set this interval in the admin UI
+      current.setMinutes(current.getMinutes() - 5);
+      const ids = getJobIds(current);
+      let success;
+      if (ids.length > 0) {
+        Jobs.removeJobs(ids);
+        success = `Removed ${ids.length} stale jobs`;
+        Logger.info(success);
+      } else {
+        success = "No eligible jobs to cleanup";
+        Logger.info(success);
+      }
+      job.done(success, { repeatId: true });
+      return callback();
+    });
 }
