@@ -122,8 +122,9 @@ AutoForm.addHooks("paypal-payment-form", {
           })();
 
           // just auth, not transaction
-          let authId = transaction.response.id;
+          let transactionId = transaction.response.id;
           // when auth and transaction
+          let authId;
           if (typeof transaction.response.transactions[0].related_resources[0] === "object") {
             authId = transaction.response.transactions[0].related_resources[0].authorization.id;
           }
@@ -132,8 +133,10 @@ AutoForm.addHooks("paypal-payment-form", {
             processor: "PayflowPro",
             storedCard: storedCard,
             method: transaction.response.payer.payment_method,
-            transactionId: authId,
+            authorization: authId,
+            transactionId: transactionId,
             metadata: {
+              transactionId: transactionId,
               authorizationId: authId
             },
             amount: Number(transaction.response.transactions[0].amount.total),
