@@ -133,7 +133,7 @@ const includedPlugins = pluginsPath + "included/";
 
 
 export default function () {
-  if (process.env.NODE_ENV === "development") {
+  if (process.env.NODE_ENV !== "production") {
     // get imports from each plugin directory
     const core = getImportPaths(corePlugins);
     const custom = getImportPaths(customPlugins);
