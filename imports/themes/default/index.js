@@ -1,5 +1,6 @@
 
 // Styles
+import "react-colorpickr/dist/colorpickr.css";
 import "./styles/main.less";
 
 // Scripts

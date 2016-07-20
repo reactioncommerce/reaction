@@ -31,3 +31,10 @@ import "./components/textfield/textfield.html";
 
 import "./components/upload/upload.html";
 import "./components/upload/upload.js";
+
+Meteor.startup(() => {
+  let tag = document.createElement("style");
+  tag.type = "text/css";
+  tag.id = "reactionLayoutStyles";
+  document.head.appendChild(tag);
+});

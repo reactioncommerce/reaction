@@ -106,6 +106,15 @@
         "shopMembers": "Shop Members",
         "guests": "Guests"
       },
+      "themeEditor": {
+        "property": {
+          "backgroundColor": "Background Color",
+          "border": "Border",
+          "color": "Text Color",
+          "font": "Font",
+          "padding": "Padding",
+        }
+      },
       "app": {
         "add": "Add",
         "editMode": "Edit mode",

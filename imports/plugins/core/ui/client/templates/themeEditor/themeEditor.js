@@ -1,5 +1,8 @@
 import { Router } from "/client/api";
 import { Themes } from "/lib/collections";
+import { ColorPicker } from "/imports/plugins/core/ui/client/components";
+import $ from "jquery";
+import _ from "lodash";
 
 Template.uiThemeEditor.onCreated(function () {
   this.state = new ReactiveDict();
@@ -20,6 +23,7 @@ Template.uiThemeEditor.onCreated(function () {
         return component.name === name;
       });
     }
+    return null;
   };
 
   this.selectThemeComponent = (name) => {
@@ -67,8 +71,10 @@ Template.uiThemeEditor.onCreated(function () {
   });
 });
 
-
 Template.uiThemeEditor.helpers({
+  theme() {
+    return Template.instance().state.get("theme");
+  },
   component() {
     const instance = Template.instance();
     const theme = instance.state.get("theme");
@@ -76,6 +82,7 @@ Template.uiThemeEditor.helpers({
     if (theme) {
       return selectedComponent;
     }
+    return null;
   },
 
   styles() {
@@ -125,6 +132,33 @@ Template.uiThemeEditor.helpers({
         instance.selectThemeComponent(value);
       }
     };
+  },
+  styleDeclarationProps(style) {
+    const instance = Template.instance();
+
+    return {
+      style,
+      updateStyle(styleDeclaration) {
+        const theme = instance.state.get("theme");
+        const component = instance.state.get("selectedComponent");
+        const styles = instance.state.get("styles");
+
+        // Merge style update with entire styles object
+        _.merge(styles, styleDeclaration);
+
+        const data = {
+          theme,
+          component,
+          styles
+        };
+
+        Meteor.call("ui/updateStyles", data, (error) => {
+          if (error) {
+            Alerts.toast(`Couldn't update theme ${theme.name}`);
+          }
+        });
+      }
+    };
   }
 });
 
@@ -145,13 +179,13 @@ Template.uiThemeEditor.events({
   },
 
 
-  "input input"(event, instance) {
+  "input input"(event, templateInstance) {
     const selector = $(event.target).closest("[data-selector]").attr("data-selector");
     const property = event.target.name;
     const value = event.target.value;
-    const theme = instance.state.get("theme");
-    const component = instance.state.get("selectedComponent");
-    const styles = instance.state.get("styles");
+    const theme = templateInstance.state.get("theme");
+    const component = templateInstance.state.get("selectedComponent");
+    const styles = templateInstance.state.get("styles");
 
     styles[selector][property] = value;
 
@@ -167,5 +201,38 @@ Template.uiThemeEditor.events({
         Alerts.toast(`Couldn't update theme ${theme.name}`);
       }
     });
+  }
+});
+
+Template.uiStyleDeclarations.helpers({
+  isColor(propertyName) {
+    return propertyName === "color" || propertyName === "backgroundColor";
+  },
+  handleChange() {
+    const instance = Template.instance();
+
+    return (props) => {
+      instance.data.updateStyle(props);
+    };
+  }
+});
+
+Template.uiColorPickerField.helpers({
+  ColorPicker() {
+    const data = Template.currentData();
+
+    return {
+      component: ColorPicker,
+      color: data.declaration.value,
+      onChange: (color) => {
+        if (data.onChange) {
+          data.onChange({
+            [data.style.selector]: {
+              [data.declaration.property]: color
+            }
+          });
+        }
+      }
+    };
   }
 });

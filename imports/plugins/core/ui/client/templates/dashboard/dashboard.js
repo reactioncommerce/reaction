@@ -24,10 +24,10 @@ Template.uiDashboard.helpers({
       },
       controls: [
         {
-          icon: "check-square fa-fw"
+          icon: "fa fa-check-square fa-fw"
         },
         {
-          icon: "files-o fa-fw",
+          icon: "fa fa-files-o fa-fw",
           onClick() {
             Alerts.alert({
               title: i18n.t("reactionUI.duplicateTheme", "Duplicate Theme"),

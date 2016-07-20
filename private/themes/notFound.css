@@ -19,11 +19,12 @@
   /**
    * @label Icon
    */
+  color: --;
 }
 
 .rui.not-found .title {
   /**
-   * @label
+   * @label Title
    */
   color: --;
   font: --;
@@ -31,7 +32,7 @@
 
 .rui.not-found .message {
   /**
-   * @label
+   * @label Message
    */
   color: --;
   font: --;

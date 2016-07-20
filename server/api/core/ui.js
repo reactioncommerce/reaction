@@ -4,6 +4,7 @@ import autoprefixer from "autoprefixer";
 import cssAnnotation from "css-annotation";
 import { Shops, Themes } from "/lib/collections";
 import { Reaction } from "./core";
+import Logger from "/server/api";
 
 const prefixer = postcssJS.sync([autoprefixer]);
 
@@ -15,10 +16,14 @@ function annotateCSS(stylesheet) {
 function cssToObject(styles) {
   check(styles, Match.OneOf(String, null, undefined, void 0));
 
-  const parsedStyle = postcss.parse(styles || baseStyles);
-  const styleObject = postcssJS.objectify(parsedStyle);
+  try {
+    const parsedStyle = postcss.parse(styles || baseStyles);
+    const styleObject = postcssJS.objectify(parsedStyle);
 
-  return styleObject;
+    return styleObject;
+  } catch (e) {
+    return null;
+  }
 }
 
 function objectToCSS(styles) {
@@ -43,15 +48,27 @@ function updateStyles(data) {
 
   objectToCSS(data.styles).then((result) => {
     if (result.css) {
-      return Themes.update({
-        "name": data.theme.name,
-        "components.name": data.component.name
-      }, {
-        $set: {
-          [`components.$.styles`]: result.css
+      try {
+        // Attempt to process styles to validate that, when the client get the
+        // style object, it will be valid
+        const parsedStyle = postcss.parse(result.css);
+
+        if (parsedStyle) {
+          return Themes.update({
+            "name": data.theme.name,
+            "components.name": data.component.name
+          }, {
+            $set: {
+              ["components.$.styles"]: result.css
+            }
+          });
         }
-      });
+      } catch (e) {
+        Logger.error("Failed to update theme", e);
+      }
     }
+
+    return null;
   });
 }
 
