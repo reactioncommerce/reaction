@@ -6,12 +6,12 @@ Reaction is built with JavaScript (ES6), Meteor, Node.js and works nicely with D
 
 ## Status
 
-- 0.13.x Master ( [stable](https://github.com/reactioncommerce/reaction/tree/master) )
-- 0.14.x Development ( [latest](https://github.com/reactioncommerce/reaction/tree/development) )
-
 Reaction is expected to have a stable codebase ready for some production configurations within the next couple of major releases. Be aware though, that we're updating frequently. Even existing structures that are functionally done are getting frequent updates to ensure we're current with the most current libraries available to us.
 
 Currently good for contributing, observing progress, and testing. We'd encourage due diligence in production usage, be very comfortable with the code, and risk tolerant. There are still many parts in development!
+
+- Master ( [stable](https://github.com/reactioncommerce/reaction/tree/master) )
+- Development ( [latest](https://github.com/reactioncommerce/reaction/tree/development) )
 
 ## Docs
 
@@ -21,16 +21,24 @@ The Reaction documentation source is located in the [reaction-docs](https://gith
 
 ## Installation
 
-> Reaction requires [Meteor](https://www.meteor.com/install), [Node](http://nodejs.org/), [npm](https://www.npmjs.com/) and [ImageMagick](http://www.imagemagick.org/script/binary-releases.php)
+> Reaction requires a recent version of [npm](https://www.npmjs.com/) installed.
 
-Developers using **Windows** should review the [Windows specific installation requirements for Meteor and Reaction](https://docs.reactioncommerce.com/reaction-docs/development/requirements).
+```
+npm i -g n
+n stable
+```
+
+[ImageMagick](http://www.imagemagick.org/script/binary-releases.php) is optional, but required for transforming images for responsive sizing.
+
+**Windows** users should review the [Windows specific installation requirements for Meteor and Reaction](https://docs.reactioncommerce.com/reaction-docs/development/requirements).
+
+_**reaction-cli installation:**_
 
 ```bash
-curl https://install.meteor.com | /bin/sh # installs Meteor
-git clone https://github.com/reactioncommerce/reaction.git
+npm install -g reaction-cli
+reaction init
 cd reaction
-meteor npm install
-./reaction
+reaction
 ```
 
 Additional setup options, such as how to set the default credentials, can be found in the [installation](https://docs.reactioncommerce.com/reaction-docs/development/installation) and [configuration documentation](https://docs.reactioncommerce.com/reaction-docs/development/configuration).
