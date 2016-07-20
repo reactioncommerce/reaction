@@ -3,5 +3,5 @@ import { Reaction } from "/server/api";
 
 Reaction.registerPackage({
   label: "Reaction Default Theme",
-  name: "reaction-default-theme",
+  name: "reaction-default-theme"
 });
