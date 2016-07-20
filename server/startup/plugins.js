@@ -133,7 +133,7 @@ const includedPlugins = pluginsPath + "included/";
 
 
 export default function () {
-  if (process.env.NODE_ENV !== "production") {
+  if (process.env.NODE_ENV !== "production" && !Meteor.isAppTest) {
     // get imports from each plugin directory
     const core = getImportPaths(corePlugins);
     const custom = getImportPaths(customPlugins);
