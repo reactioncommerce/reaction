@@ -59,10 +59,10 @@ And finally for the kanban-esque, hardcore real time progress overview of Reacti
 
 **Create a GitHub Issue** on the [Reaction project](https://github.com/reactioncommerce/reaction) to report an issue.
 
-Visit the **[Reaction discourse forum](http://discourse.reactioncommerce.com/)** to engage with the core team and community on new feature requests, or get community support with customization of Reaction.
+Visit the **[Reaction forum](http://discourse.reactioncommerce.com/)** to engage with the core team and community on new feature requests, or get community support with customization of Reaction.
 
 Join us on our **[Gitter chat room](https://gitter.im/reactioncommerce/reaction)** to engage with other Meteor and Reaction users.
 
 ## Docker
 
-Docker images are available on the [Docker Hub](https://hub.docker.com/u/reactioncommerce/). There are two images available: [reactioncommerce:prequel](https://hub.docker.com/r/reactioncommerce/prequel/) - the latest `development` image, and [reactioncommerce:reaction](https://hub.docker.com/r/reactioncommerce/reaction/), the `master` image.
+Docker images are available on the [Docker Hub](https://hub.docker.com/u/reactioncommerce/). There are two images available: [reactioncommerce:prequel](https://hub.docker.com/r/reactioncommerce/prequel/) - the latest `development` image and [reactioncommerce:reaction](https://hub.docker.com/r/reactioncommerce/reaction/), the `master` image.
