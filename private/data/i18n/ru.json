@@ -170,10 +170,6 @@
       },
       "productDetail": {
         "productManagement": "Управление товаром",
-        "makeInvisible": "Сделать невидимым",
-        "makeVisible": "Сделать видимым",
-        "isNotVisible": "Этот товар невидим для покупателей.",
-        "makeItVisible": "Вы можете сделать его видимым",
         "whenYouAreDone": "когда закончите редактирование.",
         "tags": "Метки",
         "tagsAdd": "Новая метка",

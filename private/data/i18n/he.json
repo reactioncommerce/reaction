@@ -26,9 +26,6 @@
                 },
                 "productDetail": {
                     "productManagement": "ניהול מוצר",
-                    "makeInvisible": "הפוך ללא נראה",
-                    "isNotVisible": "מוצר זה אינו נראה ללקוחות.",
-                    "makeItVisible": "באפשרותך להפוך לנראה",
                     "whenYouAreDone": "כאשר תסיים/י לערוך אותו.",
                     "tags": "תגיות",
                     "tagsAdd": "הוספת תגית",
