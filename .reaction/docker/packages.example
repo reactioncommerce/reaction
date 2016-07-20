@@ -10,64 +10,74 @@
 meteor-base             # Packages every Meteor app needs to have
 mobile-experience       # Packages for a great mobile UX
 blaze-html-templates    # Compile .html files into Meteor Blaze views
-standard-minifiers      # JS/CSS minifiers run for production mode
 es5-shim                # ECMAScript 5 compatibility for older browsers.
 ecmascript              # Enable ECMAScript2015+ syntax in app code
 audit-argument-checks   # ensure meteor method argument validation
-
-# Performance & Debugging Tools
-#meteorhacks:fast-render                   # improve initial page loads
-#meteortoys:allthings                      # developer tools
-#meteortoys:notifications                  # logging notification
-#meteorhacks:kadira                        # performance monitoring
-#meteorhacks:kadira-profiler               # cpu profiling
-#spiderable                                # adds phantomjs, use ongoworks:spiderable with Docker
-#meteorhacks:sikka                         # additional ddp, login security
+browser-policy          # security-related policies enforced by newer browsers
+juliancwirko:postcss    # CSS post-processing plugin (replaces standard-minifier-css)
+standard-minifier-js    # a minifier plugin used for Meteor apps by default
+session                 # ReactiveDict whose contents are preserved across Hot Code Push
+tracker                 # Meteor transparent reactive programming library
+mongo
+random
+reactive-var
+reactive-dict
+check
+http
+ddp-rate-limiter
+underscore
+logging
+reload
+ejson
+less
+email
+service-configuration
+amplify
+mdg:validated-method
 
 # Meteor Auth Packages
-
+accounts-base
+accounts-password
 accounts-facebook
 accounts-google
 accounts-twitter
-accounts-github
-accounts-weibo
-accounts-oauth
+oauth-encryption
+# accounts-github
+# accounts-weibo
+# accounts-oauth
 
-# Reaction Commerce Packages
+# Community Packages
+alanning:roles
+aldeed:autoform
+aldeed:collection2
+aldeed:schema-index
+aldeed:template-extension
+cfs:filesystem
+cfs:graphicsmagick
+cfs:gridfs
+cfs:standard-packages
+cfs:storage-adapter
+cfs:ui
+jparker:gravatar
+juliancwirko:s-alert
+juliancwirko:s-alert-stackslide
+kadira:blaze-layout
+kadira:dochead
+kadira:flow-router-ssr
+matb33:collection-hooks
+meteorhacks:ssr
+meteorhacks:subs-manager
+momentjs:moment
+ongoworks:security
+raix:ui-dropped-event
+risul:moment-timezone
+tmeasday:publish-counts
+vsivsi:job-collection
 
-reactioncommerce:core
-reactioncommerce:core-theme
-reactioncommerce:reaction-catalog
-reactioncommerce:reaction-layout
-reactioncommerce:launchdock-connect
-reactioncommerce:reaction-accounts
-reactioncommerce:reaction-router
-reactioncommerce:reaction-i18n
-reactioncommerce:reaction-product-variant
-reactioncommerce:reaction-dashboard
-reactioncommerce:reaction-orders
-reactioncommerce:reaction-analytics-libs
-reactioncommerce:reaction-analytics
-reactioncommerce:reaction-inventory
-reactioncommerce:reaction-shipping
-reactioncommerce:reaction-social
-reactioncommerce:reaction-checkout
-reactioncommerce:reaction-ui
-reactioncommerce:reaction-ui-navbar
-reactioncommerce:reaction-ui-tagnav
+# Testing packages
+dburles:factory
+dispatch:mocha
+practicalmeteor:chai
+practicalmeteor:sinon
 
-# Reaction Payment Packages
-
-reactioncommerce:reaction-paymentmethod
-reactioncommerce:reaction-paypal
-reactioncommerce:reaction-stripe
-reactioncommerce:reaction-auth-net
-reactioncommerce:reaction-braintree
-
-# Reaction Commerce Data
-
-reactioncommerce:reaction-sample-data   # default Reaction data
-
-# Themes
-reactioncommerce:default-theme          # default Reaction theme
-#my:custom-theme
+# Custom Packages
