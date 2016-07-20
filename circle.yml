@@ -23,7 +23,7 @@ test:
     - cd $HOME/reaction
     - meteor npm install
     - SERVER_TEST_REPORTER="dot" meteor test --once --full-app --headless --driver-package dispatch:mocha
-    - docker-compose -f docker/docker-compose.test.yml up -d; sleep 10
+    - docker-compose -f .reaction/docker/docker-compose.test.yml up -d; sleep 10
     - curl --retry 10 --retry-delay 5 -v http://localhost
 
 deployment:
