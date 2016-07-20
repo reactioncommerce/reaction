@@ -19,7 +19,7 @@
     "url": "https://github.com/reactioncommerce/reaction/issues"
   },
   "scripts": {
-    "postinstall": "cp -R node_modules/font-awesome/fonts ./public/"
+    "postinstall": ".reaction/scripts/postinstall.sh"
   },
   "dependencies": {
     "accounting-js": "^1.1.1",
