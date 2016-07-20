@@ -1,28 +1,6 @@
 import _ from "lodash";
-import Swiper from "swiper";
 import { Media, Products } from "/lib/collections";
 import { Template } from "meteor/templating";
-
-/**
- * Add swiper to cartDrawerItems
- *
- */
-Template.cartDrawerItems.onRendered(function () {
-  const swiper = new Swiper(".cart-drawer-swiper-container", {
-    direction: "horizontal",
-    setWrapperSize: true,
-    loop: false,
-    grabCursor: true,
-    slidesPerView: "auto",
-    wrapperClass: "cart-drawer-swiper-wrapper",
-    slideClass: "cart-drawer-swiper-slide",
-    slideActiveClass: "cart-drawer-swiper-slide-active",
-    pagination: ".cart-drawer-pagination",
-    paginationClickable: true
-  });
-
-  return swiper;
-});
 
 /**
  * cartDrawerItems helpers
