@@ -18,15 +18,15 @@ for plugins in "${PLUGIN_SUB_DIRS[@]}"; do
   for dir in $(find ./imports/plugins/$plugins -mindepth 1 -maxdepth 1 -type d); do
     if [[ -f "$dir/client/index.js" ]]; then
       IMPORT_PATH=$(echo "$dir/client/index.js" | cut -c2-)
-      echo "import \"$IMPORT_PATH\"" >> $CLIENT_PLUGINS_FILE
+      echo "import \"$IMPORT_PATH\";" >> $CLIENT_PLUGINS_FILE
     fi
     if [[ -f "$dir/server/index.js" ]]; then
       IMPORT_PATH=$(echo "$dir/server/index.js" | cut -c2-)
-      echo "import \"$IMPORT_PATH\"" >> $SERVER_PLUGINS_FILE
+      echo "import \"$IMPORT_PATH\";" >> $SERVER_PLUGINS_FILE
     fi
     if [[ -f "$dir/register.js" ]]; then
       IMPORT_PATH=$(echo "$dir/register.js" | cut -c2-)
-      echo "import \"$IMPORT_PATH\"" >> $SERVER_PLUGINS_FILE
+      echo "import \"$IMPORT_PATH\";" >> $SERVER_PLUGINS_FILE
     fi
   done
 done
