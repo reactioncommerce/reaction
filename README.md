@@ -4,14 +4,29 @@ Reaction is a modern reactive, real-time event driven ecommerce platform.
 
 Reaction is built with JavaScript (ES6), Meteor, Node.js and works nicely with Docker.
 
-## Status
+## Installation
 
-- 0.13.x Master ( [stable](https://github.com/reactioncommerce/reaction/tree/master) )
-- 0.14.x Development ( [latest](https://github.com/reactioncommerce/reaction/tree/development) )
+**_reaction-cli installation_**
 
-Reaction is expected to have a stable codebase ready for some production configurations within the next couple of major releases. Be aware though, that we're updating frequently. Even existing structures that are functionally done are getting frequent updates to ensure we're current with the most current libraries available to us.
+```bash
+npm install -g reaction-cli
+reaction init
+```
 
-Currently good for contributing, observing progress, and testing. We'd encourage due diligence in production usage, be very comfortable with the code, and risk tolerant. There are still many parts in development!
+> **reaction-cli** requires a recent version of [npm](https://www.npmjs.com/).
+
+```
+npm i -g n
+n stable
+```
+
+[ImageMagick](http://www.imagemagick.org/script/binary-releases.php) is optional, but required for transforming images for responsive sizing.
+
+**Windows** users should review the [Windows specific installation requirements for Meteor and Reaction](https://docs.reactioncommerce.com/reaction-docs/development/requirements).
+
+Additional setup options, such as how to set the default credentials, installation without `reaction-cli`, and [Meteor](https://www.meteor.com/install) installation can be found in the [installation](https://docs.reactioncommerce.com/reaction-docs/development/installation) and [configuration documentation](https://docs.reactioncommerce.com/reaction-docs/development/configuration).
+
+_Note: When using a standalone MongoDB server, make sure you are using version 2.6 or later._
 
 ## Docs
 
@@ -19,23 +34,14 @@ Installation, configuration and development documentation is available on [docs.
 
 The Reaction documentation source is located in the [reaction-docs](https://github.com/reactioncommerce/reaction-docs) repository, while the documentation site is the [reactioncommerce/redoc](https://github.com/reactioncommerce/redoc) application.
 
-## Installation
+## Status
 
-> Reaction requires [Meteor](https://www.meteor.com/install), [Node](http://nodejs.org/), [npm](https://www.npmjs.com/) and [ImageMagick](http://www.imagemagick.org/script/binary-releases.php)
+Reaction is expected to have a stable codebase ready for some production configurations within the next couple of major releases. Be aware though, that we're updating frequently. Even existing structures that are functionally done are getting frequent updates to ensure we're current with the most current libraries available to us.
 
-Developers using **Windows** should review the [Windows specific installation requirements for Meteor and Reaction](https://docs.reactioncommerce.com/reaction-docs/development/requirements).
+Currently good for contributing, observing progress, and testing. We'd encourage due diligence in production usage, be very comfortable with the code, and risk tolerant. There are still many parts in development!
 
-```bash
-curl https://install.meteor.com | /bin/sh # installs Meteor
-git clone https://github.com/reactioncommerce/reaction.git
-cd reaction
-meteor npm install
-./reaction
-```
-
-Additional setup options, such as how to set the default credentials, can be found in the [installation](https://docs.reactioncommerce.com/reaction-docs/development/installation) and [configuration documentation](https://docs.reactioncommerce.com/reaction-docs/development/configuration).
-
-_Note: When using a standalone MongoDB server, make sure you are using version 2.6 or later._
+- Master ( [stable](https://github.com/reactioncommerce/reaction/tree/master) )
+- Development ( [latest](https://github.com/reactioncommerce/reaction/tree/development) )
 
 ## Roadmap
 
@@ -55,8 +61,6 @@ Visit the **[Reaction discourse forum](http://discourse.reactioncommerce.com/)**
 
 Join us on our **[Gitter chat room](https://gitter.im/reactioncommerce/reaction)** to engage with other Meteor and Reaction users.
 
-## Packages
+## Docker
 
-Meteor [Atmosphere packages for Reaction](https://atmospherejs.com/?q=reaction)
-
-Docker images are available on the [Docker Hub](https://hub.docker.com/u/reactioncommerce/).
+Docker images are available on the [Docker Hub](https://hub.docker.com/u/reactioncommerce/). There are two images available: [reactioncommerce:prequel](https://hub.docker.com/r/reactioncommerce/prequel/) - the latest `development` image, and [reactioncommerce:reaction](https://hub.docker.com/r/reactioncommerce/reaction/), the `master` image.
