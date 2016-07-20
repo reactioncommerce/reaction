@@ -16,7 +16,7 @@ ENV APP_BUNDLE_DIR "/var/www"
 ENV BUILD_SCRIPTS_DIR "/opt/reaction"
 
 # Install entrypoint and build scripts
-COPY docker/scripts $BUILD_SCRIPTS_DIR
+COPY .reaction/docker/scripts $BUILD_SCRIPTS_DIR
 
 RUN chmod -R +x $BUILD_SCRIPTS_DIR
 
