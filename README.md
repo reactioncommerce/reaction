@@ -34,6 +34,8 @@ Installation, configuration and development documentation is available on [docs.
 
 The Reaction documentation source is located in the [reaction-docs](https://github.com/reactioncommerce/reaction-docs) repository, while the documentation site is the [reactioncommerce/redoc](https://github.com/reactioncommerce/redoc) application.
 
+![dashboard_and_new_tab](https://cloud.githubusercontent.com/assets/439959/17002746/a9fd1694-4e81-11e6-9963-28d6352787a3.png)
+
 ## Status
 
 Reaction is expected to have a stable codebase ready for some production configurations within the next couple of major releases. Be aware though, that we're updating frequently. Even existing structures that are functionally done are getting frequent updates to ensure we're current with the most current libraries available to us.
