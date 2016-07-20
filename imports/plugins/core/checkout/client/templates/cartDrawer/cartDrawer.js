@@ -3,6 +3,7 @@ import { Cart } from "/lib/collections";
 import { Session } from "meteor/session";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
+import Swiper from "swiper";
 
 /**
  * cartDrawer helpers
@@ -38,7 +39,29 @@ Template.cartDrawer.helpers({
  *
  */
 Template.openCartDrawer.onRendered(function () {
-  return $("#cart-drawer-container").fadeIn();
+  /**
+   * Add swiper to openCartDrawer
+   *
+   */
+
+  let swiper;
+
+  $("#cart-drawer-container").fadeIn(() => {
+    if (!swiper) {
+      swiper = new Swiper(".cart-drawer-swiper-container", {
+        direction: "horizontal",
+        setWrapperSize: true,
+        loop: false,
+        grabCursor: true,
+        slidesPerView: "auto",
+        wrapperClass: "cart-drawer-swiper-wrapper",
+        slideClass: "cart-drawer-swiper-slide",
+        slideActiveClass: "cart-drawer-swiper-slide-active",
+        pagination: ".cart-drawer-pagination",
+        paginationClickable: true
+      });
+    }
+  });
 });
 
 Template.openCartDrawer.helpers({
