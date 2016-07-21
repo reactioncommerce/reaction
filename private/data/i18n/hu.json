@@ -27,9 +27,6 @@
                 },
                 "productDetail": {
                     "productManagement": "Termékek kezelése",
-                    "makeInvisible": "Ne mutasd",
-                    "isNotVisible": "Ez a termék nem látható vásárlóknak.",
-                    "makeItVisible": "Láthatóvá teheted",
                     "whenYouAreDone": "amikor kész a szerkesztés.",
                     "tags": "Címkék",
                     "tagsAdd": "Címke hozzáadása",

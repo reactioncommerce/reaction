@@ -41,5 +41,3 @@ Reaction.registerPackage({
     }
   }]
 });
-
-Reaction.registerTheme(Assets.getText("themes/button.css"));

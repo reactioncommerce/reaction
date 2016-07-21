@@ -18,9 +18,6 @@
                 },
                 "productDetail": {
                     "productManagement": "Gestión de productos",
-                    "makeInvisible": "Hacer invisible",
-                    "isNotVisible": "Esto no es visible para los clientes.",
-                    "makeItVisible": "Usted puede hacer que sea visible",
                     "whenYouAreDone": "cuando haya terminado de editar.",
                     "tags": "Tags",
                     "details": "Detalles",

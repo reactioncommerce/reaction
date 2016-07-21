@@ -32,9 +32,6 @@
                 },
                 "productDetail": {
                     "productManagement": "Ürün yönetimi",
-                    "makeInvisible": "Görünmez yap",
-                    "isNotVisible": "Bu ürün müşterilerce görüntülenemez.",
-                    "makeItVisible": "Görünür yapabilirsiniz.",
                     "whenYouAreDone": "düzenlemenizi bitirdikten sonra.",
                     "tags": "Etiketler",
                     "tagsAdd": "Etiket ekle",

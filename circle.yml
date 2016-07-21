@@ -12,34 +12,33 @@ dependencies:
     - "~/docker"
   override:
     - cd $HOME/reaction
-    - chmod +x bin/clone-packages.sh
-    - ./bin/clone-packages.sh
+    - .reaction/scripts/clone-packages.sh
+    - .reaction/docker/scripts/plugin-loader.sh
     - if [[ -e ~/docker/image.tar ]]; then docker load -i ~/docker/image.tar; fi
-    - docker build -f docker/reaction.ci.dockerfile -t reactioncommerce/prequel .
-    - mkdir -p ~/docker; docker save reactioncommerce/prequel > ~/docker/image.tar
+    - docker build -t reactioncommerce/reaction:latest .
+    - mkdir -p ~/docker; docker save reactioncommerce/reaction:latest > ~/docker/image.tar
 
 test:
   override:
     - cd $HOME/reaction
     - meteor npm install
     - SERVER_TEST_REPORTER="dot" meteor test --once --full-app --headless --driver-package dispatch:mocha
-    - docker-compose -f docker/docker-compose.test.yml up -d; sleep 10
+    - docker-compose -f .reaction/docker/docker-compose.test.yml up -d; sleep 10
     - curl --retry 10 --retry-delay 5 -v http://localhost
 
 deployment:
   prequel:
     branch: development
     commands:
-      - docker build -f docker/reaction.prod.dockerfile -t reactioncommerce/prequel:latest .
-      - docker tag reactioncommerce/prequel:latest reactioncommerce/prequel:$CIRCLE_BUILD_NUM
+      - docker tag reactioncommerce/reaction:latest reactioncommerce/prequel:latest
+      - docker tag reactioncommerce/reaction:latest reactioncommerce/prequel:$CIRCLE_BUILD_NUM
       - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
       - docker push reactioncommerce/prequel:$CIRCLE_BUILD_NUM
       - docker push reactioncommerce/prequel:latest
   release:
     branch: master
     commands:
-      - docker build -f docker/reaction.prod.dockerfile -t reactioncommerce/reaction:latest .
-      - docker tag reactioncommerce/reaction:latest reactioncommerce/reaction:$CIRCLE_BUILD_NUM
+      - docker tag reactioncommerce/reaction:latest  reactioncommerce/reaction:$CIRCLE_BUILD_NUM
       - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
       - docker push reactioncommerce/reaction:$CIRCLE_BUILD_NUM
       - docker push reactioncommerce/reaction:latest

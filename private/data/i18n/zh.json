@@ -96,9 +96,6 @@
       },
       "productDetail": {
         "productManagement": "产品管理",
-        "makeInvisible": "对用户可见",
-        "isNotVisible": "当前产品用户不可见",
-        "makeItVisible": "你能把它设为可见",
         "whenYouAreDone": "（完成编辑时点击）",
         "tags": "标签",
         "tagsAdd": "添加标签",
