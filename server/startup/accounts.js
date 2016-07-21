@@ -49,7 +49,7 @@ export default function () {
    */
   Accounts.registerLoginHandler(function (options) {
     if (!options.anonymous) {
-      return {};
+      return undefined;
     }
     let loginHandler;
     let stampedToken = Accounts._generateStampedLoginToken();
