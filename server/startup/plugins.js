@@ -80,7 +80,8 @@ function getImportPaths(baseDirPath) {
 
   // create the import path
   const getImportPath = (pluginFile) => {
-    return "/" + path.relative(appRoot, pluginFile);
+    const importPath = "/" + path.relative(appRoot, pluginFile);
+    return importPath.replace(/\\/g, "/");
   };
 
   // get all plugin directories at provided base path
