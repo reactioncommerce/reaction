@@ -223,7 +223,7 @@ Meteor.methods({
         result.push({
           type: "refund",
           amount: parseFloat(refundDetails.amount),
-          created: moment(refundDetails.createdAt).unix(),
+          created: moment(refundDetails.createdAt).unix() * 1000,
           currency: refundDetails.currencyIsoCode,
           raw: refundDetails
         });
