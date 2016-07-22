@@ -17,7 +17,7 @@ tee $CLIENT_PLUGINS_FILE $SERVER_PLUGINS_FILE > /dev/null <<EOF
 EOF
 
 # define plugin subdirectories
-PLUGIN_SUB_DIRS=("core" "custom" "included")
+PLUGIN_SUB_DIRS=("core" "included" "custom")
 
 # generate plugin import files on client and server
 for plugins in "${PLUGIN_SUB_DIRS[@]}"; do
