@@ -209,3 +209,17 @@
   </div>
 
 </template>
+
+<template name="productDetailDashboardControls">
+  {{> button
+    className="btn btn-default"
+    tooltip="Publish"
+    tooltipPosition="left middle"
+    i18nKeyTooltip="productDetailEdit.publish"
+    toggle=true
+    toggleOn=product.isVisible
+    icon="eye-slash"
+    onIcon="eye"
+    data-event-action="publishProduct"
+  }}
+</template>
