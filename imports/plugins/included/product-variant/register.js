@@ -47,7 +47,7 @@ Reaction.registerPackage({
       layoutFooter: "",
       notFound: "productNotFound",
       dashboardHeader: "",
-      dashboardControls: "dashboardControls",
+      dashboardControls: "productDetailDashboardControls",
       dashboardHeaderControls: "",
       adminControlsFooter: "adminControlsFooter"
     }
