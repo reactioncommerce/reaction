@@ -162,6 +162,7 @@ Meteor.methods({
     let result;
     try {
       let refundResult = StripeApi.methods.createRefund.call({ refundDetails });
+      Logger.info(refundResult);
       if (refundResult.object === "refund") {
         result = {
           saved: true,
@@ -178,11 +179,10 @@ Meteor.methods({
       Logger.error(error);
       result = {
         saved: false,
-        error: error.message
+        error: `Cannot issue refund: ${error.message}`
       };
-      return { error, result };
+      Logger.fatal("Stripe call failed, refund was not issued");
     }
-
     return result;
   },
 
