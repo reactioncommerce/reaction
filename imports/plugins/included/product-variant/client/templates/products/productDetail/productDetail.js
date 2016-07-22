@@ -533,7 +533,6 @@ Template.productDetailDashboardControls.helpers({
 Template.productDetailDashboardControls.events({
   "click [data-event-action=publishProduct]": function (event, template) {
     let errorMsg = "";
-    // const self = this;
     const instance = Template.instance();
     const self = instance.state.get("product") || {};
     if (!self.title) {
