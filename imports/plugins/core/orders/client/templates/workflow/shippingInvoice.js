@@ -90,9 +90,8 @@ Template.coreOrderShippingInvoice.events({
       if (isConfirm) {
         Meteor.call("orders/refunds/create", order._id, paymentMethod, refund, (error) => {
           if (error) {
-            // Show error
+            Alerts.alert(error.reason);
           }
-
           state.set("field-refund", 0);
         });
       }
@@ -101,15 +100,12 @@ Template.coreOrderShippingInvoice.events({
 
   "click [data-event-action=makeAdjustments]": (event, instance) => {
     event.preventDefault();
-
     Meteor.call("orders/makeAdjustmentsToInvoice", instance.state.get("order"));
   },
 
   "click [data-event-action=capturePayment]": (event, instance) => {
     event.preventDefault();
-
     const order = instance.state.get("order");
-
     Meteor.call("orders/capturePayments", order._id);
   },
 
@@ -160,9 +156,8 @@ Template.coreOrderShippingInvoice.helpers({
 
     let refundTotal = 0;
     _.each(refunds, function (item) {
-      refundTotal += item.amount;
+      refundTotal += parseFloat(item.amount);
     });
-
     const adjustedTotal = paymentMethod.amount - refundTotal;
 
     return {
@@ -274,7 +269,7 @@ Template.coreOrderShippingInvoice.helpers({
     const refunds = Template.instance().refunds.get();
     let refundTotal = 0;
     _.each(refunds, function (item) {
-      refundTotal += item.amount;
+      refundTotal += parseFloat(item.amount);
     });
     return paymentMethod.amount - refundTotal;
   },
