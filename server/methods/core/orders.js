@@ -721,35 +721,31 @@ Meteor.methods({
    */
   "orders/refunds/create": function (orderId, paymentMethod, amount) {
     check(orderId, String);
-    check(paymentMethod, Object);
+    check(paymentMethod, Reaction.Schemas.PaymentMethod);
     check(amount, Number);
 
     if (!Reaction.hasPermission("orders")) {
       throw new Meteor.Error(403, "Access Denied");
     }
-
-    this.unblock();
-
     const processor = paymentMethod.processor.toLowerCase();
     let order = Orders.findOne(orderId);
     let transactionId = paymentMethod.transactionId;
 
-    Meteor.call(`${processor}/refund/create`, paymentMethod, amount, (error, result) => {
-      Orders.update({
-        "_id": orderId,
-        "billing.paymentMethod.transactionId": transactionId
-      }, {
-        $push: {
-          "billing.$.paymentMethod.transactions": result
-        }
-      });
-
-      if (result.saved === false) {
-        Logger.fatal("Attempt for refund transaction failed", order, paymentMethod.transactionId, result.error);
-
-        throw new Meteor.Error(
-          "Attempt to refund transaction failed");
+    const result = Meteor.call(`${processor}/refund/create`, paymentMethod, amount);
+    Orders.update({
+      "_id": orderId,
+      "billing.paymentMethod.transactionId": transactionId
+    }, {
+      $push: {
+        "billing.$.paymentMethod.transactions": result
       }
     });
+
+    if (result.saved === false) {
+      Logger.fatal("Attempt for refund transaction failed", order, paymentMethod.transactionId, result.error);
+
+      throw new Meteor.Error(
+        "Attempt to refund transaction failed", result.error);
+    }
   }
 });

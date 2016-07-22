@@ -1,3 +1,4 @@
+import moment from "moment";
 import { Meteor } from "meteor/meteor";
 import Future from "fibers/future";
 import Braintree from "braintree";
@@ -51,7 +52,7 @@ function getGateway() {
   }
   let gateway = Braintree.connect(accountOptions);
   return gateway;
-};
+}
 
 function getPaymentObj() {
   return {
@@ -221,8 +222,8 @@ Meteor.methods({
         let refundDetails = getRefundDetails(refund);
         result.push({
           type: "refund",
-          amount: refundDetails.amount,
-          created: refundDetails.createdAt,
+          amount: parseFloat(refundDetails.amount),
+          created: moment(refundDetails.createdAt).unix(),
           currency: refundDetails.currencyIsoCode,
           raw: refundDetails
         });
