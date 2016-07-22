@@ -125,14 +125,14 @@ describe("Server/Core", function () {
 
   describe("shop/locateAddress", function () {
     it("should locate an address based on known US coordinates", function (done) {
-      this.timeout(5000);
+      this.timeout(10000);
       let address = Meteor.call("shop/locateAddress", 34.043125, -118.267118);
       expect(address.zipcode).to.equal("90015");
       return done();
     });
 
     it("should locate an address with known international coordinates", function () {
-      this.timeout(5000);
+      this.timeout(10000);
       let address = Meteor.call("shop/locateAddress", 53.414619, -2.947065);
       expect(address.formattedAddress).to.not.be.undefined;
       expect(address.formattedAddress).to.contain("248 Molyneux Rd, Kensington");
@@ -142,7 +142,7 @@ describe("Server/Core", function () {
     });
 
     it("should provide default empty address", function (done) {
-      this.timeout(5000);
+      this.timeout(10000);
       let address = Meteor.call("shop/locateAddress", 26.352498, -89.25293);
       let defaultAddress = {
         latitude: null,
