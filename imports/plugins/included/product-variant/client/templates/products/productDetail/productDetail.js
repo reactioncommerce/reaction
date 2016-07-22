@@ -515,7 +515,6 @@ Template.productDetailDashboardControls.onCreated(function () {
       product: ReactionProduct.selectedProduct()
     });
   });
-
 });
 
 /**
