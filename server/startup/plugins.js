@@ -80,7 +80,8 @@ function getImportPaths(baseDirPath) {
 
   // create the import path
   const getImportPath = (pluginFile) => {
-    return "/" + path.relative(appRoot, pluginFile);
+    const importPath = "/" + path.relative(appRoot, pluginFile);
+    return importPath.replace(/\\/g, "/");
   };
 
   // get all plugin directories at provided base path
@@ -128,26 +129,26 @@ function getImportPaths(baseDirPath) {
  */
 const pluginsPath = path.resolve(".").split(".meteor")[0] + "imports/plugins/";
 const corePlugins = pluginsPath + "core/";
-const customPlugins = pluginsPath + "custom/";
 const includedPlugins = pluginsPath + "included/";
+const customPlugins = pluginsPath + "custom/";
 
 
 export default function () {
   if (process.env.NODE_ENV !== "production" && !Meteor.isAppTest) {
     // get imports from each plugin directory
     const core = getImportPaths(corePlugins);
-    const custom = getImportPaths(customPlugins);
     const included = getImportPaths(includedPlugins);
+    const custom = getImportPaths(customPlugins);
 
     // concat all imports
-    const clientImports = [].concat(core.client, custom.client, included.client);
+    const clientImports = [].concat(core.client, included.client, custom.client);
     const serverImports = [].concat(
       core.server,
-      custom.server,
       included.server,
+      custom.server,
       core.registry,
-      custom.registry,
-      included.registry
+      included.registry,
+      custom.registry
     );
 
     const appRoot = path.resolve(".").split(".meteor")[0];
