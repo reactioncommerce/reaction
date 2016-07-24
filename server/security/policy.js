@@ -12,18 +12,18 @@ if (process.env.NODE_ENV === "development") {
   BrowserPolicy.framing.allowAll();
 }
 
-BrowserPolicy.content.allowFontDataUrl();
+BrowserPolicy.content.allowOriginForAll("*.facebook.com");
+BrowserPolicy.content.allowOriginForAll("*.fbcdn.net");
+BrowserPolicy.content.allowOriginForAll("connect.facebook.net");
+BrowserPolicy.content.allowOriginForAll("*.googleusercontent.com");
 
-BrowserPolicy.content.allowOriginForAll("fonts.googleapis.com");
-
-BrowserPolicy.content.allowOriginForAll("fonts.gstatic.com");
-
-BrowserPolicy.content.allowOriginForAll("fonts.gstatic.com");
-
-BrowserPolicy.content.allowImageOrigin("graph.facebook.com");
-
+BrowserPolicy.content.allowOriginForAll("enginex.kadira.io");
 BrowserPolicy.content.allowImageOrigin("fbcdn-profile-a.akamaihd.net");
-
 BrowserPolicy.content.allowImageOrigin("secure.gravatar.com");
-
 BrowserPolicy.content.allowImageOrigin("i0.wp.com");
+
+BrowserPolicy.content.allowFontDataUrl();
+BrowserPolicy.content.allowOriginForAll("fonts.googleapis.com");
+BrowserPolicy.content.allowOriginForAll("fonts.gstatic.com");
+BrowserPolicy.content.allowOriginForAll("fonts.gstatic.com");
+BrowserPolicy.content.allowOriginForAll("cdnjs.cloudflare.com");
