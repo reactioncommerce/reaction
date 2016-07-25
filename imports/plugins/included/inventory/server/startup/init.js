@@ -1,5 +1,4 @@
-import { Meteor } from "meteor/meteor";
-import { Hooks, Logger, Reaction } from "/server/api";
+import { Hooks, Logger } from "/server/api";
 import { Products, Inventory } from "/lib/collections";
 import { registerInventory } from "../methods/inventory2";
 
