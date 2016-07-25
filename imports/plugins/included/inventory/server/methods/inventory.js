@@ -1,3 +1,4 @@
+import { Meteor } from "meteor/meteor";
 import { Inventory } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 import { Logger, Reaction } from "/server/api";
