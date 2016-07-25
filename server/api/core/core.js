@@ -14,9 +14,12 @@ export default {
     // start job server
     Jobs.startJobServer(() => {
       Logger.info("JobServer started");
+      Hooks.Events.run("onJobServerStart");
     });
-    // uncomment for JobCollection debug
-    // Jobs.setLogStream(process.stdout);
+    if (process.env.VERBOSE_JOBS) {
+      Jobs.setLogStream(process.stdout);
+    }
+
     this.loadPackages();
     // process imports from packages and any hooked imports
     // timing is important, packages are rqd

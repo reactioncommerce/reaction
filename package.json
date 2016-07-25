@@ -1,7 +1,7 @@
 {
   "name": "reaction",
   "description": "Reaction is a modern reactive, real-time event driven ecommerce platform.",
-  "version": "0.14.0",
+  "version": "0.14.1",
   "main": "main.js",
   "directories": {
     "test": "tests"
@@ -19,7 +19,7 @@
     "url": "https://github.com/reactioncommerce/reaction/issues"
   },
   "scripts": {
-    "postinstall": "cp -R node_modules/font-awesome/fonts ./public/"
+    "postinstall": ".reaction/scripts/postinstall.sh"
   },
   "dependencies": {
     "accounting-js": "^1.1.1",

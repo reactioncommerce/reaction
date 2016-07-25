@@ -27,7 +27,8 @@ export function loadCoreTranslations() {
 
           Assets.update({
             type: "i18n",
-            name: content[0].i18n
+            name: content[0].i18n,
+            ns: content[0].ns
           }, {
             $set: {
               content: json
@@ -39,11 +40,11 @@ export function loadCoreTranslations() {
       }
 
       Assets.find({ type: "i18n" }).forEach((t) => {
-        Logger.info(`Importing ${t.name} translation`);
+        Logger.info(`Importing ${t.name} translation for \"${t.ns}\"`);
         if (t.content) {
           Reaction.Import.process(t.content, ["i18n"], Reaction.Import.translation);
         } else {
-          Logger.warn(`No translation content found for ${t.name} asset`);
+          Logger.warn(`No translation content found for ${t.name} - ${t.ns} asset`);
         }
       });
     }));

@@ -4,7 +4,7 @@
       <div class="panel-title">Panel Title</div>
     </div>
     <div class="panel-body">
-      {{#autoForm collection="Reaction.Collections.Packages" schema=ExamplePackageConfig doc=packageData type="update" id="example-update-form"}}
+      {{#autoForm collection=Collections.Packages schema=ExamplePackageConfig doc=packageData type="update" id="example-update-form"}}
         {{>afQuickField name='settings.apiKey'}}
         <button type="submit" class="btn btn-primary pull-right">Update</button>
       {{/autoForm}}

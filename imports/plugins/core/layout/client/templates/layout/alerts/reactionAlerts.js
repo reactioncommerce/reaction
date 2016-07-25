@@ -66,7 +66,11 @@ Object.assign(Alerts, {
       return swal({
         type: "info",
         ...titleOrOptions
-      }).then(messageOrCallback);
+      }).then((isConfirm) => {
+        if (isConfirm === true) {
+          messageOrCallback();
+        }
+      });
     }
 
     let title = titleOrOptions;
@@ -77,7 +81,11 @@ Object.assign(Alerts, {
       message,
       type: "info",
       ...options
-    }).then(callback);
+    }).then((isConfirm) => {
+      if (isConfirm === true) {
+        callback();
+      }
+    });
   },
 
   toast(message, type, options) {

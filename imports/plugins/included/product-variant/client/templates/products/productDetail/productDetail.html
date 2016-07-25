@@ -7,11 +7,6 @@
       {{#if hasPermission "createProduct"}}
         {{#unless isVisible}}
         <div class="row">
-          <div class="alert alert-warning">
-            <span data-i18n="productDetail.isNotVisible">This product is not visible to customers.</span>
-            <a href="#" class="toggle-product-isVisible-link" data-i18n="productDetail.makeItVisible">You can make it visible</a>
-            <span data-i18n="productDetail.whenYouAreDone">when you're done editing.</span>
-          </div>
           <span id="product-management-alerts">{{> inlineAlerts placement="productManagement"}}</span>
         </div>
         {{/unless}}
@@ -127,17 +122,35 @@
         <span class="panel-title">{{productTitle}}</span>
       </div>
       <div class="panel-body">
-        {{#if isVisible}}
-          <a href="#" class="btn btn-default toggle-product-isVisible-link" data-i18n="productDetail.makeInvisible">
-            Make invisible
-          </a>
-        {{else}}
-          <a href="#" class="btn btn-default toggle-product-isVisible-link" data-i18n="productDetail.visible">
-            Make visible
-          </a>
-        {{/if}}
+        {{> button
+          className="btn btn-default"
+          tooltip="Publish"
+          i18nKeyTooltip="productDetailEdit.publish"
+          toggle=true
+          toggleOn=product.isVisible
+          icon="eye-slash"
+          onIcon="eye"
+          data-event-action="publishProduct"
+        }}
+
+        {{> button
+          icon="files-o"
+          className="btn btn-default"
+          tooltip="Duplicate Product"
+          i18nKeyTooltip="productDetailEdit.duplicateProduct"
+          data-original-title=(i18n "productDetailEdit.duplicateProduct" "Duplicate Product")
+          data-event-action="cloneProduct"
+        }}
+
         {{#if hasAdminAccess}}
-          <a href="#" class="btn btn-default delete-product-link" data-i18n="app.delete">Delete</a>
+          {{> button
+            icon="trash-o"
+            className="btn btn-danger"
+            tooltip="Delete Product"
+            i18nKeyTooltip="productDetailEdit.deleteProduct"
+            data-original-title=(i18n "productDetailEdit.deleteProduct" "Delete Product")
+            data-event-action="deleteProduct"
+          }}
         {{/if}}
       </div>
     </div>
@@ -195,4 +208,18 @@
     </div>
   </div>
 
+</template>
+
+<template name="productDetailDashboardControls">
+  {{> button
+    className="btn btn-default"
+    tooltip="Publish"
+    tooltipPosition="left middle"
+    i18nKeyTooltip="productDetailEdit.publish"
+    toggle=true
+    toggleOn=product.isVisible
+    icon="eye-slash"
+    onIcon="eye"
+    data-event-action="publishProduct"
+  }}
 </template>
