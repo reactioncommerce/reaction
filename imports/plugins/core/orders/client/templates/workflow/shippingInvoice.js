@@ -58,14 +58,26 @@ Template.coreOrderShippingInvoice.events({
 
     const state = instance.state;
     const order = state.get("order");
+    const orderTotal =
+      order.billing[0].invoice.subtotal
+      + order.billing[0].invoice.shipping
+      + order.billing[0].invoice.taxes;
     const discount = state.get("field-discount") || 0;
 
-    Meteor.call("orders/approvePayment", order, discount, (error) => {
-      if (error) {
-        // Show error
-        Logger.warn(error);
-      }
-    });
+    if(discount > orderTotal){
+      Alerts.inline("Discount cannot be greater than total price", "error", {
+        placement: "coreOrderShippingInvoice",
+        i18nKey: "error.invalidDiscount",
+        autoHide: 10000
+      });
+    } else {
+      Meteor.call("orders/approvePayment", order, discount, (error) => {
+        if (error) {
+          // Show error
+          Logger.warn(error);
+        }
+      });
+    }
   },
 
   /**

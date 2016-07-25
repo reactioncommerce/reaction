@@ -698,7 +698,8 @@
           "verifyEmailLinkExpired": "Verify email link expired",
           "verifyEmailLinkIsForUnknownAddress": "Verify email link is for unknown address",
           "matchFailed": "Match failed",
-          "unknownError": "Unknown error"
+          "unknownError": "Unknown error",
+          "invalidDiscount": "Discount cannot be greater than total price"
         }
       },
       "error": {
