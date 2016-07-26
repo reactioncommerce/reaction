@@ -318,6 +318,7 @@
         "applyRefundToThisOrder": "Apply refund of {{refund}} to this order?",
         "applyRefund": "Apply Refund",
         "adjustedTotal": "Adjusted Total",
+        "invalidDiscount": "Discount cannot be greater than original total price",
         "processor": "Processor",
         "placed": "Placed",
         "on": "on",
@@ -698,8 +699,7 @@
           "verifyEmailLinkExpired": "Verify email link expired",
           "verifyEmailLinkIsForUnknownAddress": "Verify email link is for unknown address",
           "matchFailed": "Match failed",
-          "unknownError": "Unknown error",
-          "invalidDiscount": "Discount cannot be greater than total price"
+          "unknownError": "Unknown error"
         }
       },
       "error": {
