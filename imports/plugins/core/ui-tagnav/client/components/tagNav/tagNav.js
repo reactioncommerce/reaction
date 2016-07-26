@@ -279,7 +279,11 @@ Template.tagNav.helpers({
       isSelected,
       className: "js-tagNav-item",
       onTagSelect(selectedTag) {
-        instance.state.set("selectedTag", selectedTag);
+        if (JSON.stringify(selectedTag) === JSON.stringify(instance.state.get("selectedTag"))) {
+          instance.state.set("selectedTag", null);
+        } else {
+          instance.state.set("selectedTag", selectedTag);
+        }
       },
       ...TagNavHelpers
     };

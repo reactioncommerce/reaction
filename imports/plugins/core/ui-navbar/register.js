@@ -1,3 +1,7 @@
 import { Reaction } from "/server/api";
 
-Reaction.registerTheme(Assets.getText("themes/navbar.css"));
+Reaction.registerPackage({
+  label: "UI Navbar",
+  name: "reaction-ui-navbar",
+  autoEnable: true
+});

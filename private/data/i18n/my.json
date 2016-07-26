@@ -16,9 +16,6 @@
                 },
                 "productDetail": {
                     "productManagement": "ပစ္စည်းစီမံခန့်ခွဲမှု",
-                    "makeInvisible": "ကွယ်ဝှက်ရန်",
-                    "isNotVisible": "ဤပစ္စည်းကိုစျေးဝယ်သူများ မမြင်နိုင်ပါ",
-                    "makeItVisible": "ဤပစ္စည်းကို ပြသနိုင်ပါသည်",
                     "whenYouAreDone": "ပြင်ဆင်ပြီးပါက",
                     "tags": "အမျိုးအစား",
                     "details": "အသေးစိတ် အကြောင်းအရာ",
