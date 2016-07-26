@@ -1,7 +1,6 @@
 import { FlowRouter as Router } from "meteor/kadira:flow-router-ssr";
 import { BlazeLayout } from "meteor/kadira:blaze-layout";
-import { Reaction } from "/client/api";
-import { Logger } from "/client/modules/logger";
+import { Reaction, Logger } from "/client/api";
 import { Packages, Shops } from "/lib/collections";
 import { MetaData } from "/lib/api/router/metadata";
 import { Session } from "meteor/session";

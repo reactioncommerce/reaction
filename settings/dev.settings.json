@@ -1,6 +1,5 @@
 {
   "ROOT_URL": "",
-  "MONGO_URL": "",
   "MAIL_URL": "",
   "reaction": {
     "REACTION_USER": "",
