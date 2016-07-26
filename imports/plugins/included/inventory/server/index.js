@@ -3,4 +3,4 @@ import "./methods/inventory2";
 
 import "./publications/inventory";
 
-import "./startup/inventory";
+import "./startup/hooks";

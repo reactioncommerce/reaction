@@ -1,4 +1,4 @@
-import { Cart, Products } from "/lib/collections";
+import { Cart, Products, Orders } from "/lib/collections";
 import { Logger } from "/server/api";
 
 /**
@@ -88,4 +88,23 @@ Products.after.insert((userId, doc) => {
     return false;
   }
   Meteor.call("inventory/register", doc);
+});
+
+Orders.after.update((userId, doc, fieldnames, modifier) => {
+  Logger.info("order after update called");
+  if (modifier.$addToSet) {
+    if (modifier.$addToSet["workflow.workflow"] === "coreOrderWorkflow/completed") {
+      const order = Orders.findOne(doc._id);
+      const orderItems = order.items;
+      let cartItems = [];
+      for (let orderItem of orderItems) {
+        let cartItem = {
+
+        };
+        cartItems.push(cartItem);
+      }
+
+      Meteor.call("inventory/shipped", cartItems);
+    }
+  }
 });
