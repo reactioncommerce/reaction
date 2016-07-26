@@ -1,5 +1,7 @@
 import { Session } from "meteor/session";
 import { Template } from "meteor/templating";
+import { EditButton } from "/imports/plugins/core/ui/client/components";
+
 
 Template.gridControls.onRendered(function () {
   return this.$("[data-toggle='tooltip']").tooltip({
@@ -8,6 +10,15 @@ Template.gridControls.onRendered(function () {
 });
 
 Template.gridControls.helpers({
+  EditButton() {
+    return {
+      component: EditButton,
+      onClick() {
+
+      }
+    };
+  },
+
   checked: function () {
     const selectedProducts = Session.get("productGrid/selectedProducts");
     return _.isArray(selectedProducts) ? selectedProducts.indexOf(this._id) >= 0 : false;

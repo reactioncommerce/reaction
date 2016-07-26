@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import classnames from "classnames";
+import Button from "./button.jsx";
 
 class EditButton extends Component {
   render() {
@@ -24,14 +25,11 @@ class EditButton extends Component {
     });
 
     return (
-      <button
+      <Button
+        icon={iconClassName}
         className={buttonClassName}
         {...otherProps}
-      >
-        <span className="icon">
-          <i className={iconClassName}></i>
-        </span>
-      </button>
+      />
     );
   }
 }

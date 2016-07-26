@@ -5,6 +5,11 @@
         <input type="checkbox" name="selectProduct" value="{{_id}}" id="select-product-{{_id}}" checked={{checked}}>
       </label>
 
+      <div>
+        {{> React EditButton}}
+      </div>
+
+      {{!--
       {{> button
         className="publish-product"
         tooltip="Publish"
@@ -23,6 +28,7 @@
         icon="gear"
         data-event-action="selectSingleProduct"
       }}
+      --}}
     </div>
   {{/if}}
 </template>
