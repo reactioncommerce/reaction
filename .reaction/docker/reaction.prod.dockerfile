@@ -1,7 +1,7 @@
 FROM debian:jessie
 MAINTAINER Reaction Commerce <hello@reactioncommerce.com>
 
-ENV NODE_VERSION "0.10.46"
+ENV NODE_VERSION "4.4.7"
 
 # Install PhantomJS
 ENV INSTALL_PHANTOMJS "true"
