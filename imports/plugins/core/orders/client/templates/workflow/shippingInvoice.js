@@ -64,17 +64,24 @@ Template.coreOrderShippingInvoice.events({
       + order.billing[0].invoice.taxes;
     const discount = state.get("field-discount") || 0;
 
-    if(discount > orderTotal){
-      Alerts.inline("Discount cannot be greater than total price", "error", {
+    if (discount > orderTotal) {
+      Alerts.inline("Discount cannot be greater than original total price", "error", {
         placement: "coreOrderShippingInvoice",
-        i18nKey: "error.invalidDiscount",
+        i18nKey: "order.invalidDiscount",
         autoHide: 10000
       });
     } else {
       Meteor.call("orders/approvePayment", order, discount, (error) => {
         if (error) {
-          // Show error
+          // Log & show error if client-side fails
           Logger.warn(error);
+          if (error.error === "orders/approvePayment.discount-amount") {
+            Alerts.inline("Discount cannot be greater than original total price", "error", {
+              placement: "coreOrderShippingInvoice",
+              i18nKey: "order.invalidDiscount",
+              autoHide: 10000
+            });
+          }
         }
       });
     }
