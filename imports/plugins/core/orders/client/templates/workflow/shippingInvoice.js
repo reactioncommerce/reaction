@@ -7,6 +7,7 @@ import { ReactiveVar } from "meteor/reactive-var";
 import { Reaction, i18next, Logger } from "/client/api";
 import { NumericInput } from "/imports/plugins/core/ui/client/components";
 import { Media, Orders, Shops } from "/lib/collections";
+import _ from "lodash";
 
 //
 // core order shipping invoice templates
