@@ -139,6 +139,18 @@ Meteor.methods({
       throw new Meteor.Error(403, "Access Denied");
     }
 
+    // Server-side check to make sure discount is not greater than orderTotal.
+    let orderTotal =
+      order.billing[0].invoice.subtotal
+      + order.billing[0].invoice.shipping
+      + order.billing[0].invoice.taxes;
+
+    if (discount > orderTotal) {
+      const error = "Discount is greater than the order total";
+      Logger.error(error);
+      throw new Meteor.Error("orders/approvePayment.discount-amount", error);
+    }
+
     this.unblock();
 
     let total =
