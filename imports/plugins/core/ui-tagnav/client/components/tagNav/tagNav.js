@@ -2,7 +2,7 @@ import Sortable from "sortablejs";
 import { TagHelpers } from "/imports/plugins/core/ui-tagnav/client/helpers";
 import { Session } from "meteor/session";
 import { Template } from "meteor/templating";
-import { EditButton } from "/imports/plugins/core/ui/client/components";
+import { IconButton } from "/imports/plugins/core/ui/client/components";
 
 const NavbarStates = {
   Orientation: "stateNavbarOrientation",
@@ -192,8 +192,11 @@ Template.tagNav.helpers({
     const isEditing = state.equals("isEditing", true);
 
     return {
-      component: EditButton,
-      isEditing: isEditing,
+      component: IconButton,
+      icon: "fa fa-pencil",
+      onIcon: "fa fa-check",
+      toggle: true,
+      toggleOn: isEditing,
       onClick() {
         state.set("isEditing", !isEditing);
       }

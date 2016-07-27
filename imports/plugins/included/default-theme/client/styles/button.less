@@ -8,10 +8,6 @@
   align-items: center;
 }
 
-.rui.button.active {
-  box-shadow: none;
-  background-color: @brand-accent-color;
-}
 
 .rui.button.edit, .btn-edit {
   border: none;
@@ -41,4 +37,11 @@
   position: absolute;
   top: 0;
   .right(0);
+}
+
+.rui.button.active,
+.btn-active {
+  box-shadow: none;
+  color: @btn-active-color;
+  background-color: @btn-active-bg;
 }

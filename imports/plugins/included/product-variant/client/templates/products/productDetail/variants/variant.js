@@ -1,12 +1,35 @@
 import { $ } from "meteor/jquery";
 import { Reaction } from "/client/api";
 import { ReactionProduct } from "/lib/api";
+import { EditButton } from "/imports/plugins/core/ui/client/components";
 import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
 import { Template } from "meteor/templating";
 
 // load modules
 require("jquery-ui");
+
+// Duplicated in variantList/variantList.js
+function variantIsSelected(variantId) {
+  const current = ReactionProduct.selectedVariant();
+  if (typeof current === "object" && (variantId === current._id || ~current.ancestors.indexOf(variantId))) {
+    return true;
+  }
+
+  return false;
+}
+
+function variantIsInActionView(variantId) {
+  const actionViewVariant = Reaction.getActionView().data;
+
+  if (actionViewVariant) {
+    // Check if the variant is selected, and also visible & selected in the action view
+    return variantIsSelected(variantId) && variantIsSelected(actionViewVariant._id) && Reaction.isActionViewOpen();
+  }
+
+  return false;
+}
+
 
 /**
  * variant helpers
@@ -22,12 +45,11 @@ Template.variant.helpers({
     return "progress-bar-success";
   },
   selectedVariant: function () {
-    const _id = this._id;
-    const current = ReactionProduct.selectedVariant();
-    if (typeof current === "object" &&
-      (_id === current._id || ~current.ancestors.indexOf(this._id))) {
+    if (variantIsSelected(this._id)) {
       return "variant-detail-selected";
     }
+
+    return null;
   },
   displayQuantity: function () {
     return ReactionProduct.getVariantQuantity(this);
@@ -37,6 +59,17 @@ Template.variant.helpers({
   },
   isSoldOut: function () {
     return ReactionProduct.getVariantQuantity(this) < 1;
+  },
+  EditButton() {
+    const data = Template.currentData();
+
+    return {
+      component: EditButton,
+      toggleOn: variantIsInActionView(data._id),
+      onClick() {
+        showVariant(data);
+      }
+    };
   }
 });
 
