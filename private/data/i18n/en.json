@@ -318,6 +318,7 @@
         "applyRefundToThisOrder": "Apply refund of {{refund}} to this order?",
         "applyRefund": "Apply Refund",
         "adjustedTotal": "Adjusted Total",
+        "invalidDiscount": "Discount cannot be greater than original total price",
         "processor": "Processor",
         "placed": "Placed",
         "on": "on",
