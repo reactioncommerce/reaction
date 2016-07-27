@@ -74,7 +74,6 @@ Template.coreOrderShippingInvoice.events({
     } else {
       Meteor.call("orders/approvePayment", order, discount, (error) => {
         if (error) {
-          // Log & show error if client-side fails
           Logger.warn(error);
           if (error.error === "orders/approvePayment.discount-amount") {
             Alerts.inline("Discount cannot be greater than original total price", "error", {
