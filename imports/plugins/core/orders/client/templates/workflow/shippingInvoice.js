@@ -7,6 +7,7 @@ import { ReactiveVar } from "meteor/reactive-var";
 import { Reaction, i18next, Logger } from "/client/api";
 import { NumericInput } from "/imports/plugins/core/ui/client/components";
 import { Media, Orders, Shops } from "/lib/collections";
+import _ from "lodash";
 
 //
 // core order shipping invoice templates
@@ -58,14 +59,32 @@ Template.coreOrderShippingInvoice.events({
 
     const state = instance.state;
     const order = state.get("order");
+    const orderTotal =
+      order.billing[0].invoice.subtotal
+      + order.billing[0].invoice.shipping
+      + order.billing[0].invoice.taxes;
     const discount = state.get("field-discount") || 0;
 
-    Meteor.call("orders/approvePayment", order, discount, (error) => {
-      if (error) {
-        // Show error
-        Logger.warn(error);
-      }
-    });
+    if (discount > orderTotal) {
+      Alerts.inline("Discount cannot be greater than original total price", "error", {
+        placement: "coreOrderShippingInvoice",
+        i18nKey: "order.invalidDiscount",
+        autoHide: 10000
+      });
+    } else {
+      Meteor.call("orders/approvePayment", order, discount, (error) => {
+        if (error) {
+          Logger.warn(error);
+          if (error.error === "orders/approvePayment.discount-amount") {
+            Alerts.inline("Discount cannot be greater than original total price", "error", {
+              placement: "coreOrderShippingInvoice",
+              i18nKey: "order.invalidDiscount",
+              autoHide: 10000
+            });
+          }
+        }
+      });
+    }
   },
 
   /**
