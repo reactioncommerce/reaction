@@ -205,7 +205,7 @@ export default {
   },
 
   getActionView() {
-    return Session.get("admin/actionView");
+    return Session.get("admin/actionView") || {};
   },
 
   hideActionView() {

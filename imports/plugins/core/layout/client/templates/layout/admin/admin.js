@@ -17,7 +17,6 @@ Template.coreAdminLayout.onDestroyed(() => {
 Template.coreAdminLayout.helpers({
   shortcutButtons() {
     const instance = Template.instance();
-    const editModeIsEnabled = Session.equals("reaction/editModeEnabled", true);
     const shortcuts = Reaction.Apps({
       provides: "shortcut",
       enabled: true,
@@ -63,21 +62,6 @@ Template.coreAdminLayout.helpers({
         }
 
         instance.dropInstance.open();
-      }
-    });
-
-    items.push({
-      icon: "edit",
-      tooltip: "Toggle Edit Mode",
-      i18nKeyTooltip: "app.toggleEditMode",
-      tooltipPosition: "left middle",
-      className: editModeIsEnabled ? "active" : "",
-      onClick() {
-        if (Session.equals("reaction/editModeEnabled", true)) {
-          Session.set("reaction/editModeEnabled", false);
-        } else {
-          Session.set("reaction/editModeEnabled", true);
-        }
       }
     });
 
