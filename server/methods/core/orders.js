@@ -146,9 +146,9 @@ Meteor.methods({
       + order.billing[0].invoice.taxes;
 
     if (discount > orderTotal) {
-      const err = "Discount is greater than the cart total";
-      Logger.error(err);
-      throw new Meteor.Error("orders/approvePayment.discount-amount", err);
+      const error = "Discount is greater than the cart total";
+      Logger.error(error);
+      throw new Meteor.Error("orders/approvePayment.discount-amount", error);
     }
 
     this.unblock();
