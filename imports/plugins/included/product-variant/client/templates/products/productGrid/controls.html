@@ -1,28 +1,24 @@
 <template name="gridControls">
   {{#if hasPermission "createProduct"}}
     <div class="product-grid-controls">
-      <label class="like-button hidden" for="select-product-{{_id}}">
-        <input type="checkbox" name="selectProduct" value="{{_id}}" id="select-product-{{_id}}" checked={{checked}}>
+      <label class="like-button hidden" for="select-product-{{product._id}}">
+        <input
+          type="checkbox"
+          name="selectProduct"
+          value="{{product._id}}"
+          id="select-product-{{product._id}}"
+          checked={{checked}}
+        >
       </label>
 
-      {{> button
-        className="publish-product"
-        tooltip="Publish"
-        i18nKeyTooltip="productDetailEdit.publish"
-        toggle=true
-        toggleOn=isVisible
-        icon="eye-slash"
-        onIcon="eye"
-        data-event-action="toggleProductVisibility"
-      }}
+      <div>
+        {{> React VisibilityButton}}
+      </div>
 
-      {{> button
-        className="admin-controls-open"
-        tooltip="More Options"
-        i18nKeyTooltip="productDetailEdit.moreOptions"
-        icon="gear"
-        data-event-action="selectSingleProduct"
-      }}
+      <div>
+        {{> React EditButton}}
+      </div>
+
     </div>
   {{/if}}
 </template>

@@ -2,6 +2,7 @@ import Sortable from "sortablejs";
 import { TagHelpers } from "/imports/plugins/core/ui-tagnav/client/helpers";
 import { Session } from "meteor/session";
 import { Template } from "meteor/templating";
+import { IconButton } from "/imports/plugins/core/ui/client/components";
 
 const NavbarStates = {
   Orientation: "stateNavbarOrientation",
@@ -74,13 +75,6 @@ Template.tagNav.onCreated(function () {
     isEditing: false,
     selectedTag: null,
     [NavbarStates.Visible]: false
-  });
-
-  this.autorun(() => {
-    const isEditing = Session.equals("reaction/editModeEnabled", true);
-
-    // Update local state from global session state
-    this.state.set("isEditing", isEditing);
   });
 
   this.moveItem = (array, fromIndex, toIndex) => {
@@ -192,6 +186,22 @@ Template.tagNav.onDestroyed(function () {
 
 
 Template.tagNav.helpers({
+  EditButton() {
+    const instance = Template.instance();
+    const state = instance.state;
+    const isEditing = state.equals("isEditing", true);
+
+    return {
+      component: IconButton,
+      icon: "fa fa-pencil",
+      onIcon: "fa fa-check",
+      toggle: true,
+      toggleOn: isEditing,
+      onClick() {
+        state.set("isEditing", !isEditing);
+      }
+    };
+  },
 
   navbarOrientation() {
     return Template.instance().state.get(NavbarStates.Orientation);
@@ -229,6 +239,7 @@ Template.tagNav.helpers({
     if (_.isArray(tag.relatedTagIds)) {
       return "has-dropdown";
     }
+    return null;
   },
 
   isEditing() {
@@ -236,7 +247,7 @@ Template.tagNav.helpers({
   },
 
   canEdit() {
-    return Template.instance().data.canEdit;
+    return Template.instance().data.editable;
   },
 
   handleMenuClose() {
