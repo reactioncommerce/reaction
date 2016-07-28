@@ -529,7 +529,7 @@ Meteor.methods({
     *provided for tracking order progress.
     */
 
-    if (!Meteor.userId() {
+    if (!Meteor.userId()) {
        throw new Meteor.Error(403, "Access Denied. You are not connected.");
      }
 
