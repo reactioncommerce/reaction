@@ -115,31 +115,17 @@ export function ReactionLayout(options = {}) {
 
   // autorun router rendering
   Tracker.autorun(function () {
-    const defaultLayout = "coreLayout";
     if (Reaction.Subscriptions.Shops.ready()) {
       const shop = Shops.findOne(Reaction.getShopId());
       if (shop) {
-        const newLayout = shop.layout.reverse().find((x) => selectLayout(x, layout, workflow));
-        let fallbackLayout = {};
+        const newLayout = shop.layout.find((x) => selectLayout(x, layout, workflow));
+        // oops this layout wasn't found. render notFound
         if (!newLayout) {
-          // Look for a layout using the coreLayout and fall back to that
-          Logger.debug("Could not find custom layout, falling back to core");
-          fallbackLayout = shop.layout.reverse().find((x) => selectLayout(x, defaultLayout, workflow));
-          if (!fallbackLayout) {
-            Logger.warn(`Missing layout for ${layout}/${workflow}`);
-            BlazeLayout.render("notFound");
-          }
+          BlazeLayout.render("notFound");
+        } else {
+          const layoutToRender = Object.assign({}, newLayout.structure, options, unauthorized);
+          BlazeLayout.render(layout, layoutToRender);
         }
-        let newLayoutStructure;
-        let fallbackLayoutStructure;
-        if (newLayout) {
-          newLayoutStructure = newLayout.structure;
-        }
-        if (fallbackLayout) {
-          fallbackLayoutStructure = fallbackLayout.structure;
-        }
-        const layoutToRender = Object.assign({}, newLayoutStructure, fallbackLayoutStructure, options, unauthorized);
-        BlazeLayout.render(layout, layoutToRender);
       }
     }
   });
