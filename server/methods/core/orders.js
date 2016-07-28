@@ -523,10 +523,15 @@ Meteor.methods({
   "orders/addOrderEmail": function (cartId, email) {
     check(cartId, String);
     check(email, String);
+    /**
+    *Instead of checking the Orders permission, we should check if user is
+    *connected.This is only needed for guest where email is
+    *provided for tracking order progress.
+    */
 
-    if (!Reaction.hasPermission("orders")) {
-      throw new Meteor.Error(403, "Access Denied");
-    }
+    if (!Meteor.userId()) {
+       throw new Meteor.Error(403, "Access Denied. You are not connected.");
+     }
 
     return Orders.update({cartId: cartId}, {
       $set: {
