@@ -1,9 +1,21 @@
 import { BrowserPolicy } from "meteor/browser-policy-common";
+import { WebApp } from "meteor/webapp";
 
-/*
- * set browser policies
+
+/**
+ * Set headers for Reaction CDN
  */
+WebApp.rawConnectHandlers.use((req, res, next) => {
+  if (req._parsedUrl.pathname.match(/\.(ttf|ttc|otf|eot|woff|svg|font\.css|css)$/)) {
+    res.setHeader("Access-Control-Allow-Origin", "assets.reactioncommerce.com");
+  }
+  next();
+});
 
+
+/**
+ * Set browser policies
+ */
 if (process.env.NODE_ENV === "development") {
   BrowserPolicy.content.allowOriginForAll("localhost:*");
   BrowserPolicy.content.allowConnectOrigin("ws://localhost:*");
