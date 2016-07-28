@@ -22,11 +22,7 @@
 
 
         {{#if hasPermission "createProduct"}}
-          <button class="rui button edit variant-edit hidden-xs" title="{{i18n 'productDetailEdit.editOption' 'Edit Option'}}">
-            <span class="icon">
-              <i class="fa fa-pencil fa-lg" data-id="{{_id}}"></i>
-            </span>
-          </button>
+          <div>{{> React EditButton}}</div>
         {{/if}}
       </div>
     </div>

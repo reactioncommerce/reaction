@@ -1,3 +1,4 @@
+import _ from "lodash";
 import { Reaction } from "/client/api";
 import { Cart } from "/lib/collections";
 import Logger from "/client/modules/logger";

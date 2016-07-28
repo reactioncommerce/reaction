@@ -17,6 +17,24 @@ require("jquery-ui");
  */
 
 Template.productGridItems.helpers({
+  controlProps() {
+    const instance = Template.instance();
+
+    return {
+      product: instance.data,
+      onEditButtonClick() {
+        const data = instance.data;
+
+        const $checkbox = instance.$(`input[type=checkbox][value=${data._id}]`);
+
+        Session.set("productGrid/selectedProducts", []);
+        $checkbox.prop("checked", true).trigger("change");
+      },
+      onPublishButtonClick() {
+        ReactionProduct.publishProduct(instance.data);
+      }
+    };
+  },
   media: function () {
     const media = Media.findOne({
       "metadata.productId": this._id,
