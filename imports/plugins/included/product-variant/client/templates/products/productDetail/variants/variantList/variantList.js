@@ -1,9 +1,30 @@
 import { Reaction, i18next } from "/client/api";
 import { ReactionProduct } from "/lib/api";
 import { Products, Media } from "/lib/collections";
+import { EditButton } from "/imports/plugins/core/ui/client/components";
 import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
 import { Template } from "meteor/templating";
+
+function variantIsSelected(variantId) {
+  const current = ReactionProduct.selectedVariant();
+  if (typeof current === "object" && (variantId === current._id || ~current.ancestors.indexOf(variantId))) {
+    return true;
+  }
+
+  return false;
+}
+
+function variantIsInActionView(variantId) {
+  const actionViewVariant = Reaction.getActionView().data;
+
+  if (actionViewVariant) {
+    // Check if the variant is selected, and also visible & selected in the action view
+    return variantIsSelected(variantId) && variantIsSelected(actionViewVariant._id) && Reaction.isActionViewOpen();
+  }
+
+  return false;
+}
 
 /**
  * variantList helpers
@@ -96,13 +117,33 @@ Template.variantList.helpers({
     return null;
   },
   selectedVariant() {
-    const _id = this._id;
-    const current = ReactionProduct.selectedVariant();
-    if (typeof current === "object" && (_id === current._id || ~current.ancestors.indexOf(this._id))) {
+    if (variantIsSelected(this._id)) {
       return "variant-detail-selected";
     }
 
     return null;
+  },
+  ChildVariantEditButton() {
+    const variant = Template.currentData();
+    const parentVariant = Products.findOne(variant.ancestors[1]);
+
+    return {
+      component: EditButton,
+      toggleOn: variantIsInActionView(variant._id),
+      onClick() {
+        ReactionProduct.setCurrentVariant(variant._id);
+        Session.set("variant-form-" + parentVariant._id, true);
+
+        if (Reaction.hasPermission("createProduct")) {
+          Reaction.showActionView({
+            label: "Edit Variant",
+            i18nKeyLabel: "productDetailEdit.editVariant",
+            template: "variantForm",
+            data: parentVariant
+          });
+        }
+      }
+    };
   }
 });
 
@@ -114,8 +155,8 @@ Template.variantList.events({
   "click #create-variant": function () {
     return Meteor.call("products/createVariant", this._id);
   },
-  "click .variant-select-option": function (event, template) {
-    template.$(".variant-select-option").removeClass("active");
+  "click .variant-select-option": function (event, templateInstance) {
+    templateInstance.$(".variant-select-option").removeClass("active");
     $(event.target).addClass("active");
     Alerts.removeSeen();
 
@@ -123,21 +164,5 @@ Template.variantList.events({
     Reaction.Router.go("product", {handle: selectedProduct.handle, variantId: this._id});
 
     return ReactionProduct.setCurrentVariant(this._id);
-  },
-  "click .variant-select-option .variant-edit": function () {
-    const variant = this;
-    const parentVariant = Products.findOne(variant.ancestors[1]);
-
-    ReactionProduct.setCurrentVariant(variant._id);
-    Session.set("variant-form-" + parentVariant._id, true);
-
-    if (Reaction.hasPermission("createProduct")) {
-      Reaction.showActionView({
-        label: "Edit Variant",
-        i18nKeyLabel: "productDetailEdit.editVariant",
-        template: "variantForm",
-        data: parentVariant
-      });
-    }
   }
 });
