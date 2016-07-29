@@ -98,23 +98,38 @@ Template.coreOrderShippingInvoice.events({
 
     const { state } = Template.instance();
     const order = instance.state.get("order");
-    const refund = state.get("field-refund") || 0;
+    const orderTotal = order.billing[0].paymentMethod.amount;
     const paymentMethod = order.billing[0].paymentMethod;
-
-    Alerts.alert({
-      title: i18next.t("order.applyRefundToThisOrder", { refund: refund }),
-      showCancelButton: true,
-      confirmButtonText: i18next.t("order.applyRefund")
-    }, (isConfirm) => {
-      if (isConfirm) {
-        Meteor.call("orders/refunds/create", order._id, paymentMethod, refund, (error) => {
-          if (error) {
-            Alerts.alert(error.reason);
-          }
-          state.set("field-refund", 0);
-        });
-      }
+    const refund = state.get("field-refund") || 0;
+    const refunds = Template.instance().refunds.get();
+    let refundTotal = 0;
+    _.each(refunds, function (item) {
+      refundTotal += parseFloat(item.amount);
     });
+    const adjustedTotal = orderTotal - refundTotal;
+
+    if (refund > adjustedTotal) {
+      Alerts.inline("Refund(s) total cannot be greater than captured total", "error", {
+        placement: "coreOrderRefund",
+        i18nKey: "order.invalidRefund",
+        autoHide: 10000
+      });
+    } else {
+      Alerts.alert({
+        title: i18next.t("order.applyRefundToThisOrder", { refund: refund }),
+        showCancelButton: true,
+        confirmButtonText: i18next.t("order.applyRefund")
+      }, (isConfirm) => {
+        if (isConfirm) {
+          Meteor.call("orders/refunds/create", order._id, paymentMethod, refund, (error) => {
+            if (error) {
+              Alerts.alert(error.reason);
+            }
+            state.set("field-refund", 0);
+          });
+        }
+      });
+    }
   },
 
   "click [data-event-action=makeAdjustments]": (event, instance) => {
