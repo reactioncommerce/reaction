@@ -1,3 +1,4 @@
+import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { Reaction, i18next } from "/client/api";
@@ -262,5 +263,73 @@ Template.orderListFilters.helpers({
       return "active";
     }
     return "";
+  }
+});
+
+/**
+ * orderStatusDetail
+ *
+ * order state tracking
+ *
+ * @returns orderStatusDetails
+ */
+Template.orderStatusDetail.onCreated(function () {
+  this.state = new ReactiveDict();
+  this.state.setDefault({
+    orders: []
+  });
+
+  // Watch for updates to the subscription and query params
+  // fetch available orders
+  this.autorun(() => {
+    this.subscribe("Orders");
+    const filter = Reaction.Router.getQueryParam("filter");
+    const query = OrderHelper.makeQuery(filter);
+    const orders = Orders.find(query).fetch();
+
+    this.state.set("orders", orders);
+  });
+});
+
+Template.orderStatusDetail.helpers({
+  orderAge: function () {
+    return moment(this.createdAt).fromNow();
+  },
+
+  shipmentTracking: function () {
+    if (this.shipping[0].tracking) {
+      return this.shipping[0].tracking;
+    }
+    return i18next.t("orderShipping.noTracking");
+  },
+
+  shipmentStatus() {
+    const self = this;
+    const shipment = this.shipping[0];
+    const shipped = _.every(shipment.items, (shipmentItem) => {
+      for (let fullItem of self.items) {
+        if (fullItem._id === shipmentItem._id) {
+          if (fullItem.workflow) {
+            if (_.isArray(fullItem.workflow.workflow)) {
+              return _.includes(fullItem.workflow.workflow, "coreOrderItemWorkflow/completed");
+            }
+          }
+        }
+      }
+    });
+
+    if (shipped) {
+      return {
+        shipped: true,
+        status: "success",
+        label: i18next.t("orderShipping.shipped")
+      };
+    }
+
+    return {
+      shipped: false,
+      status: "info",
+      label: i18next.t("orderShipping.notShipped")
+    };
   }
 });
