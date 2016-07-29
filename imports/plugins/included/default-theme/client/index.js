@@ -1,3 +1,5 @@
+// Favicons
+import "./favicons";
 
 // Styles
 import "./styles/main.less";
