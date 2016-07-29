@@ -80,7 +80,7 @@
 
     &:after {
       content: "\f058";
-      font-family: "FontAwesome";
+      font-family: "FontAwesome", "FontAwesomeFallback";
       font-size: 3rem;
       color: @brand-success;
       display: block;
@@ -112,7 +112,7 @@
   &:first-child {
     border-radius: 0 @btn-border-radius-base 0 0;
   }
-  
+
   &:last-child {
     border-radius: 0 0 @btn-border-radius-base 0;
     border-width: 0 1px 1px 0;
