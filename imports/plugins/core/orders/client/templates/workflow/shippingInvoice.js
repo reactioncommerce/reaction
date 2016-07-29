@@ -106,7 +106,7 @@ Template.coreOrderShippingInvoice.events({
     _.each(refunds, function (item) {
       refundTotal += parseFloat(item.amount);
     });
-    const adjustedTotal = orderTotal - refundTotal;
+    const adjustedTotal = _.round(orderTotal - refundTotal, 2);
 
     if (refund > adjustedTotal) {
       Alerts.inline("Refund(s) total cannot be greater than captured total", "error", {
