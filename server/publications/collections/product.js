@@ -1,4 +1,4 @@
-import { Products } from "/lib/collections";
+import { Products, Revisions } from "/lib/collections";
 import { Logger, Reaction } from "/server/api";
 
 /**
@@ -46,6 +46,19 @@ Meteor.publish("Product", function (productId) {
     }
   }
   selector = { $or: [{ _id: _id }, { ancestors: { $in: [_id] }}] };
+
+  if (Roles.userIsInRole(this.userId, ["owner", "admin", "createProduct"], shop._id)) {
+    Products.find(selector).forEach((product) => {
+      const revisions = Revisions.find({
+        documentId: product._id
+      }).fetch();
+      product.__revisions = revisions;
+
+      this.added("Products", product._id, product);
+    });
+
+    return this.ready();
+  }
 
   return Products.find(selector);
 });

@@ -7,7 +7,7 @@ import { Tags } from "/lib/collections";
 import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
 import { Template } from "meteor/templating";
-import { EditButton } from "/imports/plugins/core/ui/client/components";
+import { Button, EditButton } from "/imports/plugins/core/ui/client/components";
 
 // load modules
 require("jquery-ui");
@@ -427,6 +427,22 @@ Template.productDetailForm.onCreated(function () {
 });
 
 Template.productDetailForm.helpers({
+  PublishButton() {
+    const instance = Template.instance();
+    const product = instance.state.get("product");
+
+    return {
+      component: Button,
+      label: "Publish Changes",
+      i18nKeyLabel: "revisions.publishChanges",
+      onClick() {
+        if (product) {
+          console.log("YAY publish", product._id);
+          Meteor.call("revisions/publish", product._id);
+        }
+      }
+    };
+  },
   product() {
     return Template.instance().state.get("product");
   },

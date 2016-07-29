@@ -47,6 +47,7 @@ Template.variantList.helpers({
     if (variants.length) {
       // calculate inventory total for all variants
       for (let variant of variants) {
+        console.log(variant.__revisions);
         if (variant.inventoryManagement) {
           let qty = ReactionProduct.getVariantQuantity(variant);
           if (typeof qty === "number") {
