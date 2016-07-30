@@ -59,10 +59,11 @@ Template.coreOrderShippingInvoice.events({
 
     const state = instance.state;
     const order = state.get("order");
-    const orderTotal =
+    const orderTotal = accounting.toFixed(
       order.billing[0].invoice.subtotal
       + order.billing[0].invoice.shipping
-      + order.billing[0].invoice.taxes;
+      + order.billing[0].invoice.taxes
+      , 2);
     const discount = state.get("field-discount") || 0;
 
     if (discount > orderTotal) {
