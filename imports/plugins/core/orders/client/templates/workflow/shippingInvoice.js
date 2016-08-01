@@ -98,6 +98,7 @@ Template.coreOrderShippingInvoice.events({
     event.preventDefault();
 
     const { state } = Template.instance();
+    const currencySymbol = state.get("currency").symbol;
     const order = instance.state.get("order");
     const orderTotal = order.billing[0].paymentMethod.amount;
     const paymentMethod = order.billing[0].paymentMethod;
@@ -117,7 +118,7 @@ Template.coreOrderShippingInvoice.events({
       });
     } else {
       Alerts.alert({
-        title: i18next.t("order.applyRefundToThisOrder", { refund: refund }),
+        title: i18next.t("order.applyRefundToThisOrder", { refund: refund, currencySymbol: currencySymbol }),
         showCancelButton: true,
         confirmButtonText: i18next.t("order.applyRefund")
       }, (isConfirm) => {
