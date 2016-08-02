@@ -319,7 +319,7 @@
         "applyRefund": "Apply Refund",
         "adjustedTotal": "Adjusted Total",
         "invalidDiscount": "Discount cannot be greater than original total price",
-        "invalidRefund": "Refund(s) total cannot be greater than captured total",
+        "invalidRefund": "Refund(s) total cannot be greater than adjusted total",
         "processor": "Processor",
         "placed": "Placed",
         "on": "on",

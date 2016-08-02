@@ -111,7 +111,7 @@ Template.coreOrderShippingInvoice.events({
     const adjustedTotal = accounting.toFixed(orderTotal - refundTotal, 2);
 
     if (refund > adjustedTotal) {
-      Alerts.inline("Refund(s) total cannot be greater than captured total", "error", {
+      Alerts.inline("Refund(s) total cannot be greater than adjusted total", "error", {
         placement: "coreOrderRefund",
         i18nKey: "order.invalidRefund",
         autoHide: 10000
