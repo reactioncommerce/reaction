@@ -212,8 +212,8 @@ Meteor.methods({
 
     const options = Paypal.expressCheckoutAccountOptions();
     const previousTransaction = _.last(paymentMethod.transactions);
-    const transactionId = previousTransaction.TRANSACTIONID;
-    const currencycode = previousTransaction.CURRENCYCODE;
+    const transactionId = previousTransaction.transactionId;
+    const currencycode = previousTransaction.currencycode;
 
     let response;
     try {
