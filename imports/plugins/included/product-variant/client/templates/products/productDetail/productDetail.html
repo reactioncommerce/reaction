@@ -53,11 +53,7 @@
                 {{!-- Social Commentary --}}
                 {{> productSocial }}
                 {{#if hasPermission "createProduct"}}
-                  <button class="rui button edit js-edit-social hidden-xs" title="{{i18n 'productDetailEdit.editOption' 'Edit Option'}}">
-                    <span class="icon">
-                      <i class="fa fa-pencil fa-lg" data-id="{{_id}}"></i>
-                    </span>
-                  </button>
+                  <div>{{> React SocialEditButton}}</div>
                 {{/if}}
               </div>
             </div>
@@ -94,15 +90,6 @@
                     Add to cart
                   </button>
                 </div>
-
-                {{!--
-                <div class="btn btn-success add-to-cart-block" id="add-to-cart">
-                  <div class="add-to-cart-quantity pull-left">
-                    <input type="number" class="form-control input-md" name="addToCartQty" id="add-to-cart-quantity" value="1" min="1"/>
-                  </div>
-                  <div class="add-to-cart-text" data-i18n="productDetail.addToCart">Add to cart</div>
-                </div>
-                --}}
               </div>
 
             </div>
