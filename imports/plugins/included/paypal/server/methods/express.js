@@ -1,5 +1,6 @@
 import moment from "moment";
 import _ from "lodash";
+import accounting from "accounting-js";
 import { HTTP } from "meteor/http";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
@@ -153,7 +154,7 @@ Meteor.methods({
     check(paymentMethod, Reaction.Schemas.PaymentMethod);
     this.unblock();
     let options = Paypal.expressCheckoutAccountOptions();
-    let amount = paymentMethod.transactions[0].AMT;
+    let amount = accounting.toFixed(paymentMethod.amount, 2);
     let authorizationId = paymentMethod.transactions[0].TRANSACTIONID;
     let currencycode = paymentMethod.transactions[0].CURRENCYCODE;
     let response;
