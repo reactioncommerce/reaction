@@ -69,8 +69,7 @@ describe("core shop methods", function () {
   });
 });
 
-describe.only("modify layout records", function () {
-
+describe("shop/changeLayouts", function () {
   it("should replace every layout with the new layout", function () {
     const shop = Factory.create("shop");
     Meteor.call("shop/changeLayouts", shop._id, "myNewLayout");
@@ -78,5 +77,5 @@ describe.only("modify layout records", function () {
     for (let layout of myShop.layout) {
       expect(layout.layout).to.equal("myNewLayout");
     }
-  })
+  });
 });
