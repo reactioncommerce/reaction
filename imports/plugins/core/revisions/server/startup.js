@@ -51,9 +51,35 @@ import { Logger } from "/server/api";
 // });
 //
 
+function findRelevantDraft() {
+
+}
+
 Products.before.insert((userId, product) => {
   console.log("before insert", product);
-  return false
+
+  let productRevision = Revisions.findOne({
+    documentId: product._id
+  });
+  console.log(productRevision);
+  if (!productRevision) {
+    Logger.info(`No revision found for product ${product._id}. Creating new revision`);
+
+    Revisions.insert({
+      documentId: product._id,
+      documentData: product
+    });
+  }
+
+  if (options.publish === true) {
+    // Maybe mark the revision as published
+
+    Logger.info(`Publishing revison for product ${product._id}.`);
+
+    // return true;
+  }
+
+  // return false;
 });
 
 
@@ -68,6 +94,9 @@ Products.before.update((userId, product, fieldNames, modifier, options) => {
     Revisions.insert({
       documentId: product._id,
       documentData: product
+    });
+    Revisions.findOne({
+      documentId: product._id
     });
   }
 
@@ -84,7 +113,14 @@ Products.before.update((userId, product, fieldNames, modifier, options) => {
   // console.log(modifier.$set);
   for (let key in modifier.$set) {
     if (Object.hasOwnProperty.call(modifier.$set, key)) {
-      revisionModifier.$set[`documentData.${key}`] = modifier.$set[key];
+      switch (key) {
+      case "isVisible":
+        const isVisible = !productRevision.documentData.isVisible;
+        revisionModifier.$set[`documentData.${key}`] = isVisible;
+        break;
+      default:
+        revisionModifier.$set[`documentData.${key}`] = modifier.$set[key];
+      }
     }
   }
   // console.log("------------------------------------------");

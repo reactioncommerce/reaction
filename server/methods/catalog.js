@@ -1232,5 +1232,35 @@ Meteor.methods({
     }
     Logger.debug("invalid product visibility ", productId);
     throw new Meteor.Error(400, "Bad Request");
+  },
+  /**
+   * products/publishProduct
+   * @summary publish (visibility) of product
+   * @todo hook into publishing flow
+   * @param {String} productId - productId
+   * @return {Boolean} product.isVisible
+   */
+  "products/toggleVisibility": function (productId) {
+    check(productId, String);
+    if (!Reaction.hasPermission("createProduct")) {
+      throw new Meteor.Error(403, "Access Denied");
+    }
+
+    const product = Products.findOne(productId);
+    const res = Products.update(productId, {
+      $set: {
+        isVisible: !product.isVisible
+      }
+    }, {
+      selector: {
+        type: product.type
+      }
+    });
+
+    // if collection updated we return new `isVisible` state
+    return res === 1 && !product.isVisible;
+
+    Logger.debug("invalid product visibility ", productId);
+    throw new Meteor.Error(400, "Bad Request");
   }
 });

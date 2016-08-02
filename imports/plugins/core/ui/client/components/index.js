@@ -7,3 +7,4 @@ export { default as NumericInput } from "./numericInput/numericInput";
 export { default as Button } from "./button/button.jsx";
 export { default as IconButton } from "./button/iconButton";
 export { default as EditButton } from "./button/editButton";
+export { default as VisibilityButton } from "./button/visibilityButton";

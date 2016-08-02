@@ -45,20 +45,82 @@ Meteor.publish("Product", function (productId) {
       return this.ready();
     }
   }
-  selector = { $or: [{ _id: _id }, { ancestors: { $in: [_id] }}] };
 
+  // Selector for hih?
+  selector = {
+    isVisible: true,
+    $or: [
+      { _id: _id },
+      {
+        ancestors: {
+          $in: [_id]
+        }
+      }
+    ]
+  };
+
+  // Authorized content curators fo the shop get special publication of the product
+  // all all relevant revisions all is one package
   if (Roles.userIsInRole(this.userId, ["owner", "admin", "createProduct"], shop._id)) {
-    Products.find(selector).forEach((product) => {
-      const revisions = Revisions.find({
-        documentId: product._id
-      }).fetch();
-      product.__revisions = revisions;
+    selector.isVisible = {
+      $in: [true, false, undefined]
+    };
 
-      this.added("Products", product._id, product);
+    const handle = Products.find(selector).observeChanges({
+      added: (id, fields) => {
+        const revisions = Revisions.find({
+          documentId: id
+        }).fetch();
+        // console.log("found revisions", revisions);
+        fields.__revisions = revisions;
+        console.log(fields);
+        this.added("Products", id, fields);
+      },
+      changed: (id, fields) => {
+        const revisions = Revisions.find({
+          documentId: id
+        }).fetch();
+
+        fields.__revisions = revisions;
+        this.changed("Products", id, fields);
+      },
+      removed: (id) => {
+        this.removed("Products", id);
+      }
+    });
+
+    const handle2 = Revisions.find({}).observeChanges({
+      added: (id, fields) => {
+        this.added("Revisions", id, fields);
+      },
+      changed: (id, fields) => {
+
+        // Products.findOne({})
+        console.log("changedFields", fields, id);
+
+        const revision = Revisions.findOne(id)
+        const product = Products.findOne(revision.documentId)
+        console.log(revision);
+        product.__revisions = [revision]
+
+
+        this.changed("Products", product._id, product);
+
+        this.changed("Revisions", id, fields);
+      },
+      removed: (id) => {
+        this.removed("Revisions", id);
+      }
+    });
+
+    this.onStop(() => {
+      handle.stop();
+      handle2.stop();
     });
 
     return this.ready();
   }
 
+  // Everyone else gets the standard, visibile products and variants
   return Products.find(selector);
 });

@@ -28,7 +28,10 @@
           <span class="title">{{optionTitle}}</span>
         </button>
         {{#if hasPermission "createProduct"}}
-          <div>{{> React ChildVariantEditButton}}</div>
+          <div class="variant-controls">
+            <div>{{> React ChildVariantRevisionButton}}</div>
+            <div>{{> React ChildVariantEditButton}}</div>
+          </div>
         {{/if}}
       </div>
       {{/each}}
