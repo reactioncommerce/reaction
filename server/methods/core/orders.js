@@ -144,8 +144,8 @@ Meteor.methods({
     let orderTotal = accounting.toFixed(
       order.billing[0].invoice.subtotal
       + order.billing[0].invoice.shipping
-      + order.billing[0].invoice.taxes,
-      2);
+      + order.billing[0].invoice.taxes
+      , 2);
 
 
     if (discount > orderTotal) {
