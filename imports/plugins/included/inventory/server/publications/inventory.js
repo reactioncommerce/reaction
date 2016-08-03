@@ -1,3 +1,4 @@
+import { Meteor } from "meteor/meteor";
 import { Inventory } from "/lib/collections";
 import { Reaction } from "/server/api";
 

@@ -1,3 +1,4 @@
+import { Meteor } from "meteor/meteor";
 import { Catalog } from "/lib/api";
 import { Inventory } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
@@ -7,6 +8,76 @@ import { Logger, Reaction } from "/server/api";
 // Inventory methods
 //
 
+export function registerInventory(product) {
+  let type;
+  switch (product.type) {
+    case "variant":
+      check(product, Schemas.ProductVariant);
+      type = "variant";
+      break;
+    default:
+      check(product, Schemas.Product);
+      type = "simple";
+  }
+  let totalNewInventory = 0;
+  const productId = type === "variant" ? product.ancestors[0] : product._id;
+  const variants = Catalog.getVariants(productId);
+
+  // we'll check each variant to see if it has been fully registered
+  for (let variant of variants) {
+    let inventory = Inventory.find({
+      productId: productId,
+      variantId: variant._id,
+      shopId: product.shopId
+    });
+    // we'll return this as well
+    let inventoryVariantCount = inventory.count();
+    // if the variant exists already we're remove from the inventoryVariants
+    // so that we don't process it as an insert
+    if (inventoryVariantCount < variant.inventoryQuantity) {
+      let newQty = variant.inventoryQuantity || 0;
+      let i = inventoryVariantCount + 1;
+
+      Logger.info(
+        `inserting ${newQty - inventoryVariantCount
+          } new inventory items for ${variant._id}`
+      );
+
+      const batch = Inventory.
+      _collection.rawCollection().initializeUnorderedBulkOp();
+      while (i <= newQty) {
+        let id = Inventory._makeNewID();
+        batch.insert({
+          _id: id,
+          productId: productId,
+          variantId: variant._id,
+          shopId: product.shopId,
+          createdAt: new Date,
+          updatedAt: new Date,
+          workflow: { // we add this line because `batchInsert` doesn't know
+            status: "new" // about SimpleSchema, so `defaultValue` will not
+          }
+        });
+        i++;
+      }
+
+      // took from: http://guide.meteor.com/collections.html#bulk-data-changes
+      let execute = Meteor.wrapAsync(batch.execute, batch);
+      let inventoryItem = execute();
+      let inserted = inventoryItem.nInserted;
+
+      if (!inserted) { // or maybe `inventory.length === 0`?
+        // throw new Meteor.Error("Inventory Anomaly Detected. Abort! Abort!");
+        return totalNewInventory;
+      }
+      Logger.debug(`registered ${inserted}`);
+      totalNewInventory += inserted;
+    }
+  }
+  // returns the total amount of new inventory created
+  return totalNewInventory;
+}
+
 Meteor.methods({
   /**
    * inventory/register
@@ -15,79 +86,10 @@ Meteor.methods({
    * @return {Number} - returns the total amount of new inventory created
    */
   "inventory/register": function (product) {
-    let type;
-    switch (product.type) {
-    case "variant":
-      check(product, Schemas.ProductVariant);
-      type = "variant";
-      break;
-    default:
-      check(product, Schemas.Product);
-      type = "simple";
-    }
-    // user needs createProduct permission to register new inventory
     if (!Reaction.hasPermission("createProduct")) {
       throw new Meteor.Error(403, "Access Denied");
     }
-    // this.unblock();
-
-    let totalNewInventory = 0;
-    const productId = type === "variant" ? product.ancestors[0] : product._id;
-    const variants = Catalog.getVariants(productId);
-
-    // we'll check each variant to see if it has been fully registered
-    for (let variant of variants) {
-      let inventory = Inventory.find({
-        productId: productId,
-        variantId: variant._id,
-        shopId: product.shopId
-      });
-      // we'll return this as well
-      let inventoryVariantCount = inventory.count();
-      // if the variant exists already we're remove from the inventoryVariants
-      // so that we don't process it as an insert
-      if (inventoryVariantCount < variant.inventoryQuantity) {
-        let newQty = variant.inventoryQuantity || 0;
-        let i = inventoryVariantCount + 1;
-
-        Logger.info(
-          `inserting ${newQty - inventoryVariantCount
-            } new inventory items for ${variant._id}`
-        );
-
-        const batch = Inventory.
-        _collection.rawCollection().initializeUnorderedBulkOp();
-        while (i <= newQty) {
-          let id = Inventory._makeNewID();
-          batch.insert({
-            _id: id,
-            productId: productId,
-            variantId: variant._id,
-            shopId: product.shopId,
-            createdAt: new Date,
-            updatedAt: new Date,
-            workflow: { // we add this line because `batchInsert` doesn't know
-              status: "new" // about SimpleSchema, so `defaultValue` will not
-            }
-          });
-          i++;
-        }
-
-        // took from: http://guide.meteor.com/collections.html#bulk-data-changes
-        let execute = Meteor.wrapAsync(batch.execute, batch);
-        let inventoryItem = execute();
-        let inserted = inventoryItem.nInserted;
-
-        if (!inserted) { // or maybe `inventory.length === 0`?
-          // throw new Meteor.Error("Inventory Anomaly Detected. Abort! Abort!");
-          return totalNewInventory;
-        }
-        Logger.debug(`registered ${inserted}`);
-        totalNewInventory += inserted;
-      }
-    }
-    // returns the total amount of new inventory created
-    return totalNewInventory;
+    registerInventory(product);
   },
   /**
    * inventory/adjust

@@ -7,6 +7,7 @@ import { Tags } from "/lib/collections";
 import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
 import { Template } from "meteor/templating";
+import { EditButton } from "/imports/plugins/core/ui/client/components";
 
 // load modules
 require("jquery-ui");
@@ -127,6 +128,22 @@ Template.productDetail.helpers({
       }
     };
   },
+  SocialEditButton() {
+    return {
+      component: EditButton,
+      toggleOn: Reaction.getActionView().template === "productDetailSocialForm" && Reaction.isActionViewOpen(),
+      onClick() {
+        if (Reaction.hasPermission("createProduct")) {
+          Reaction.showActionView({
+            label: "Social",
+            i18nKeyLabel: "social.socialTitle",
+            template: "productDetailSocialForm"
+          });
+        }
+      }
+    };
+  },
+
   showTagTitle() {
     const instance = Template.instance();
     const product = instance.state.get("product") || {};
@@ -390,15 +407,6 @@ Template.productDetail.events({
   },
   "click [data-event-action=deleteProduct]": function () {
     ReactionProduct.maybeDeleteProduct(this);
-  },
-  "click .js-edit-social"() {
-    if (Reaction.hasPermission("createProduct")) {
-      Reaction.showActionView({
-        label: "Social",
-        i18nKeyLabel: "social.socialTitle",
-        template: "productDetailSocialForm"
-      });
-    }
   }
 });
 

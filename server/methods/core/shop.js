@@ -667,5 +667,23 @@ Meteor.methods({
         enabled: !enabled
       }
     });
+  },
+  /*
+  * shop/changeLayout
+  * @summary Change the layout for all workflows so you can use a custom one
+  * @param {String} shopId - the shop's ID
+  * @param {String} layout - new layout to use
+  * @return {Number} mongo update result
+   */
+  "shop/changeLayouts": function (shopId, newLayout) {
+    check(shopId, String);
+    check(newLayout, String);
+    let shop = Collections.Shops.findOne(shopId);
+    for (let i = 0; i < shop.layout.length; i++) {
+      shop.layout[i].layout = newLayout;
+    }
+    return Collections.Shops.update(shopId, {
+      $set: {layout: shop.layout}
+    });
   }
 });

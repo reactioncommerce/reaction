@@ -1,3 +1,4 @@
+import accounting from "accounting-js";
 import Future from "fibers/future";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
@@ -139,6 +140,20 @@ Meteor.methods({
       throw new Meteor.Error(403, "Access Denied");
     }
 
+    // Server-side check to make sure discount is not greater than orderTotal.
+    let orderTotal = accounting.toFixed(
+      order.billing[0].invoice.subtotal
+      + order.billing[0].invoice.shipping
+      + order.billing[0].invoice.taxes
+      , 2);
+
+
+    if (discount > orderTotal) {
+      const error = "Discount is greater than the order total";
+      Logger.error(error);
+      throw new Meteor.Error("orders/approvePayment.discount-amount", error);
+    }
+
     this.unblock();
 
     let total =
@@ -174,9 +189,7 @@ Meteor.methods({
 
     this.unblock();
 
-    return Meteor.call("orders/processPayments", order._id, function (
-      error,
-      result) {
+    return Meteor.call("orders/processPayments", order._id, function (error, result) {
       if (result) {
         Meteor.call("workflow/pushOrderWorkflow",
           "coreOrderWorkflow", "coreProcessPayment", order._id);
@@ -511,10 +524,15 @@ Meteor.methods({
   "orders/addOrderEmail": function (cartId, email) {
     check(cartId, String);
     check(email, String);
+    /**
+    *Instead of checking the Orders permission, we should check if user is
+    *connected.This is only needed for guest where email is
+    *provided for tracking order progress.
+    */
 
-    if (!Reaction.hasPermission("orders")) {
-      throw new Meteor.Error(403, "Access Denied");
-    }
+    if (!Meteor.userId()) {
+       throw new Meteor.Error(403, "Access Denied. You are not connected.");
+     }
 
     return Orders.update({cartId: cartId}, {
       $set: {
