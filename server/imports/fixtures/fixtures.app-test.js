@@ -44,6 +44,9 @@ describe("Fixtures:", function () {
     sandbox.stub(Meteor.server.method_handlers, "inventory/register", function () {
       check(arguments, [Match.Any]);
     });
+    sandbox.stub(Meteor.server.method_handlers, "inventory/sold", function () {
+      check(arguments, [Match.Any]);
+    });
     const order = Factory.create("order");
     expect(order).to.not.be.undefined;
     const orderCount = Collections.Orders.find().count();
