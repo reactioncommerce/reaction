@@ -158,22 +158,41 @@ Meteor.methods({
     let authorizationId = paymentMethod.transactions[0].TRANSACTIONID;
     let currencycode = paymentMethod.transactions[0].CURRENCYCODE;
     let response;
-    try {
-      response = HTTP.post(options.url, {
-        params: {
-          USER: options.username,
-          PWD: options.password,
-          SIGNATURE: options.signature,
-          VERSION: nvpVersion,
-          METHOD: "DoCapture",
-          AUTHORIZATIONID: authorizationId,
-          CURRENCYCODE: currencycode,
-          AMT: amount,
-          COMPLETETYPE: "Complete" // TODO: Allow for partial captures
-        }
-      });
-    } catch (error) {
-      throw new Meteor.Error(error.message);
+
+    if (amount === accounting.toFixed(0, 2)) {
+      try {
+        response = HTTP.post(options.url, {
+          params: {
+            USER: options.username,
+            PWD: options.password,
+            SIGNATURE: options.signature,
+            VERSION: nvpVersion,
+            METHOD: "DoVoid",
+            AUTHORIZATIONID: authorizationId,
+            NOTE: "Your order has been discounted 100%, and will appear as voided or canceled inside your payment account."
+          }
+        });
+      } catch (error) {
+        throw new Meteor.Error(error.message);
+      }
+    } else {
+      try {
+        response = HTTP.post(options.url, {
+          params: {
+            USER: options.username,
+            PWD: options.password,
+            SIGNATURE: options.signature,
+            VERSION: nvpVersion,
+            METHOD: "DoCapture",
+            AUTHORIZATIONID: authorizationId,
+            CURRENCYCODE: currencycode,
+            AMT: amount,
+            COMPLETETYPE: "Complete" // TODO: Allow for partial captures
+          }
+        });
+      } catch (error) {
+        throw new Meteor.Error(error.message);
+      }
     }
 
     if (!response || response.statusCode !== 200) {

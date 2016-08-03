@@ -72,6 +72,20 @@ Template.coreOrderShippingInvoice.events({
         i18nKey: "order.invalidDiscount",
         autoHide: 10000
       });
+    } else if (orderTotal === accounting.toFixed(discount, 2)) {
+      Alerts.alert({
+        title: i18next.t("order.fullDiscountWarning"),
+        showCancelButton: true,
+        confirmButtonText: i18next.t("order.applyDiscount")
+      }, (isConfirm) => {
+        if (isConfirm) {
+          Meteor.call("orders/approvePayment", order, discount, (error) => {
+            if (error) {
+              Logger.warn(error);
+            }
+          });
+        }
+      });
     } else {
       Meteor.call("orders/approvePayment", order, discount, (error) => {
         if (error) {
