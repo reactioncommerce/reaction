@@ -1,7 +1,7 @@
 import Future from "fibers/future";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
-import { Email } from 'meteor/email'
+import { Email } from "meteor/email";
 import { Cart, Orders, Products, Shops } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 import { Logger, Reaction } from "/server/api";
