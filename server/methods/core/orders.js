@@ -189,9 +189,7 @@ Meteor.methods({
 
     this.unblock();
 
-    return Meteor.call("orders/processPayments", order._id, function (
-      error,
-      result) {
+    return Meteor.call("orders/processPayments", order._id, function ( error, result) {
       if (result) {
         Meteor.call("workflow/pushOrderWorkflow",
           "coreOrderWorkflow", "coreProcessPayment", order._id);
