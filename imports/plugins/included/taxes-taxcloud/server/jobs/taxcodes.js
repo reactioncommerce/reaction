@@ -6,7 +6,7 @@ import { Hooks, Logger, Reaction } from "/server/api";
 //
 function getJobConfig() {
   const config = Packages.findOne({
-    name: "reaction-taxes",
+    name: "taxes-taxcloud",
     shopId: Reaction.getShopId()
   });
   return config.settings.taxcloud;

@@ -1,10 +1,10 @@
 import { Template } from "meteor/templating";
 import { AutoForm } from "meteor/aldeed:autoform";
-import { i18next } from "/client/api";
 import { Packages } from "/lib/collections";
-import { TaxPackageConfig } from "../../lib/collections/schemas";
+import { i18next } from "/client/api";
+import { TaxPackageConfig } from "/imports/plugins/core/tax-base/lib/collections/schemas";
 
-Template.avalaraSettings.helpers({
+Template.taxJarSettings.helpers({
   packageConfigSchema() {
     return TaxPackageConfig;
   },
@@ -17,7 +17,7 @@ Template.avalaraSettings.helpers({
 
 
 AutoForm.hooks({
-  "avalara-update-form": {
+  "taxjar-update-form": {
     onSuccess: function () {
       return Alerts.toast(i18next.t("shopSettings.shopTaxMethodsSaved"),
         "success");
