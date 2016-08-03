@@ -267,6 +267,26 @@
                         "matchFailed": "Abgleich fehlgeschlagen",
                         "unknownError": "Unbekannter Fehler"
                     }
+                },
+                "emailTemplate": {
+                  "greeting": "Guten Tag %s,",
+                  "thankYouForYourOrderAt": "Vielen Dank für Ihre Bestellung bei <strong>%s</strong>.",
+                  "weHaveReceivedYourOrder": "Ihre Bestellung ist bei uns eingegangen!",
+                  "orderStayTuned": "Wir werden Sie über den Fortschritt Ihrer Bestellung auf dem Laufenden halten.",
+                  "sentBySignature": "Eine automatische Nachricht von: <a href=\"%s\">%s</a>",
+                  "somebodyInvitedYou": "<strong>%s</strong> möchte Sie einladen, <strong>%s</strong> kennen zu lernen.",
+                  "youAreInvited": "<p>Herzlich willkommen!</p><p>Falls Sie glauben, diese Nachricht fälschlicherweise erhalten zu haben, geben Sie uns bitte eine kurze Rückmeldung. Danke!</p>",
+                  "acceptInvitation": "Einladung annehmen.",
+                  "welcomeTo": "Willkommen bei %s!",
+                  "thankYouForRegistering": "<p>Danke für Ihr Interesse an %s!</p><p>Es dauert nur einen Moment, Dich bei %s zu registrieren.</p><p>Versprochen. Los geht's!</p>",
+                  "visitShop": "Du findest uns hier: %s",
+                  "yourOrderHasBeenCompleted": "Die Bestellung bei <strong>{{shop.name}}</strong> wurde abgeschlossen.",
+                  "trackingInformation": "Aktueller Status der Bestellung: <strong>%s</strong>.",
+                  "thankYou": "Thank you! - %s",
+                  "weHaveBegunProcessingYourOrder": "Ihre Bestellung ist in Bearbeitung.",
+                  "yourOrderHasBegunPacking": "Ihre Bestellung bei <strong>%s</strong> wird für den Versand vorbereitet.",
+                  "yourOrderIsBeingPacked": "Ihre Bestellung wurde an den Versand übergeben.",
+                  "yourOrderHasBeenShipped": "Ihre <strong>%s</strong> Bestellung hat unser Haus verlassen und ist auf dem Weg zu Ihnen."
                 }
             }
         }

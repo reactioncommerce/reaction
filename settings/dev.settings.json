@@ -2,9 +2,9 @@
   "ROOT_URL": "",
   "MAIL_URL": "",
   "reaction": {
-    "REACTION_USER": "",
-    "REACTION_AUTH": "",
-    "REACTION_EMAIL": ""
+    "REACTION_USER": "prinzdezibel@gmail.com",
+    "REACTION_AUTH": "secret",
+    "REACTION_EMAIL": "prinzdezibel@gmail.com"
   },
   "isDebug": "info",
   "public": {}

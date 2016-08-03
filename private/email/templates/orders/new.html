@@ -814,7 +814,7 @@ body.outlook p {
                       <table class="twelve columns">
                         <tr>
                           <td>
-                            <h1>Hi, {{user.username}}</h1>
+                            <h1>{{_ "emailTemplate.greeting" order.billing.[0].address.fullName }}</h1>
                           </td>
                           <td class="expander"></td>
                         </tr>
@@ -823,7 +823,7 @@ body.outlook p {
                       <table class="twelve columns">
                         <tr>
                           <td>
-                            <p class="lead">Thank you for your new <strong>{{shop.name}}</strong> order.</p>
+                            <p class="lead">{{_ "emailTemplate.thankYouForYourOrderAt" shop.name}}</p>
                           </td>
                           <td class="expander"></td>
                         </tr>
@@ -840,8 +840,8 @@ body.outlook p {
                       <table class="twelve columns">
                         <tr>
                           <td class="panel">
-                            <p class="lead">We've received your order!</p>
-                            <p>We'll update you on the progress of your order as we prepare it for shipping.</p>
+                            <p class="lead">{{_ "emailTemplate.weHaveReceivedYourOrder" }}</p>
+                            <p>{{_ "emailTemplate.orderStayTuned" }}</p>
                           </td>
                           <td class="expander"></td>
                         </tr>
@@ -879,7 +879,7 @@ body.outlook p {
                         <tr>
                           <td align="center">
                             <center>
-                              <p style="text-align:center;">Sent by <a href="{{homepage}}">{{shop.name}}</a></p>
+                              <p style="text-align:center;">{{_ "emailTemplate.sentBySignature" homepage shop.name }}</p>
                             </center>
                           </td>
                           <td class="expander"></td>

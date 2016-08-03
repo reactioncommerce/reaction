@@ -1,5 +1,6 @@
 require("money");
 require("autonumeric");
+import _ from "lodash";
 import accounting from "accounting-js";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";

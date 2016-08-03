@@ -70,34 +70,40 @@ Reaction.registerPackage({
     label: "Order Processing",
     status: "created",
     workflow: "coreOrderWorkflow",
-    audience: ["dashboard/orders"]
+    audience: ["dashboard/orders"],
+    emailTemplates: ["orders/new"]
   }, {
     template: "coreOrderProcessing",
     label: "Order Processing",
     status: "processing",
     workflow: "coreOrderWorkflow",
-    audience: ["dashboard/orders"]
+    audience: ["dashboard/orders"],
+    emailTemplates: ["orders/coreOrderCreated"]
   }, {
     template: "coreOrderCompleted",
     label: "Order Completed",
     status: "completed",
     workflow: "coreOrderWorkflow",
-    audience: ["dashboard/orders"]
+    audience: ["dashboard/orders"],
+    emailTemplates: ["orders/coreOrderCompleted"]
   }, { // Standard Order Fulfillment with shipping
     template: "coreOrderShippingSummary",
     label: "Summary",
     workflow: "coreOrderShipmentWorkflow",
-    audience: ["dashboard/orders"]
+    audience: ["dashboard/orders"],
+    emailTemplates: ["orders/coreOrderShippingSummary"]
   }, {
     template: "coreOrderShippingInvoice",
     label: "Invoice",
     workflow: "coreOrderShipmentWorkflow",
-    audience: ["dashboard/orders"]
+    audience: ["dashboard/orders"],
+    emailTemplates: ["orders/coreOrderShippingInvoice"]
   }, {
     template: "coreOrderShippingTracking",
     label: "Shipment Tracking",
     workflow: "coreOrderShipmentWorkflow",
-    audience: ["dashboard/orders"]
+    audience: ["dashboard/orders"],
+    emailTemplates: ["orders/coreOrderShippingTracking"]
   }, { // Standard Order Item workflow
     label: "Inventory Adjust",
     workflow: "coreOrderItemWorkflow",

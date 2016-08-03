@@ -22,7 +22,6 @@ export default {
 
     this.loadPackages();
     // process imports from packages and any hooked imports
-    this.Import.flush();
     // timing is important, packages are rqd
     // for initilial permissions configuration.
     this.createDefaultAdminUser();
@@ -448,5 +447,10 @@ export default {
         }
       });
     });
+
+
+    this.Import.flush();
+
+    Hooks.Events.run("afterLoadPackages", this);
   }
 };
