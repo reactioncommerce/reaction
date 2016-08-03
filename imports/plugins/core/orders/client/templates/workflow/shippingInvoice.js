@@ -59,10 +59,11 @@ Template.coreOrderShippingInvoice.events({
 
     const state = instance.state;
     const order = state.get("order");
-    const orderTotal =
+    const orderTotal = accounting.toFixed(
       order.billing[0].invoice.subtotal
       + order.billing[0].invoice.shipping
-      + order.billing[0].invoice.taxes;
+      + order.billing[0].invoice.taxes
+      , 2);
     const discount = state.get("field-discount") || 0;
 
     if (discount > orderTotal) {
@@ -70,6 +71,20 @@ Template.coreOrderShippingInvoice.events({
         placement: "coreOrderShippingInvoice",
         i18nKey: "order.invalidDiscount",
         autoHide: 10000
+      });
+    } else if (orderTotal === accounting.toFixed(discount, 2)) {
+      Alerts.alert({
+        title: i18next.t("order.fullDiscountWarning"),
+        showCancelButton: true,
+        confirmButtonText: i18next.t("order.applyDiscount")
+      }, (isConfirm) => {
+        if (isConfirm) {
+          Meteor.call("orders/approvePayment", order, discount, (error) => {
+            if (error) {
+              Logger.warn(error);
+            }
+          });
+        }
       });
     } else {
       Meteor.call("orders/approvePayment", order, discount, (error) => {
@@ -97,24 +112,40 @@ Template.coreOrderShippingInvoice.events({
     event.preventDefault();
 
     const { state } = Template.instance();
+    const currencySymbol = state.get("currency").symbol;
     const order = instance.state.get("order");
-    const refund = state.get("field-refund") || 0;
+    const orderTotal = order.billing[0].paymentMethod.amount;
     const paymentMethod = order.billing[0].paymentMethod;
-
-    Alerts.alert({
-      title: i18next.t("order.applyRefundToThisOrder", { refund: refund }),
-      showCancelButton: true,
-      confirmButtonText: i18next.t("order.applyRefund")
-    }, (isConfirm) => {
-      if (isConfirm) {
-        Meteor.call("orders/refunds/create", order._id, paymentMethod, refund, (error) => {
-          if (error) {
-            Alerts.alert(error.reason);
-          }
-          state.set("field-refund", 0);
-        });
-      }
+    const refund = state.get("field-refund") || 0;
+    const refunds = Template.instance().refunds.get();
+    let refundTotal = 0;
+    _.each(refunds, function (item) {
+      refundTotal += parseFloat(item.amount);
     });
+    const adjustedTotal = accounting.toFixed(orderTotal - refundTotal, 2);
+
+    if (refund > adjustedTotal) {
+      Alerts.inline("Refund(s) total cannot be greater than adjusted total", "error", {
+        placement: "coreOrderRefund",
+        i18nKey: "order.invalidRefund",
+        autoHide: 10000
+      });
+    } else {
+      Alerts.alert({
+        title: i18next.t("order.applyRefundToThisOrder", { refund: refund, currencySymbol: currencySymbol }),
+        showCancelButton: true,
+        confirmButtonText: i18next.t("order.applyRefund")
+      }, (isConfirm) => {
+        if (isConfirm) {
+          Meteor.call("orders/refunds/create", order._id, paymentMethod, refund, (error) => {
+            if (error) {
+              Alerts.alert(error.reason);
+            }
+            state.set("field-refund", 0);
+          });
+        }
+      });
+    }
   },
 
   "click [data-event-action=makeAdjustments]": (event, instance) => {
