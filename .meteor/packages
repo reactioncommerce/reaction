@@ -73,6 +73,7 @@ raix:ui-dropped-event
 risul:moment-timezone
 tmeasday:publish-counts
 vsivsi:job-collection
+react-meteor-data
 
 # Testing packages
 dburles:factory

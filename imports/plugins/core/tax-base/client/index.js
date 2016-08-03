@@ -1,0 +1,13 @@
+import "./checkout/taxes.html";
+import "./checkout/taxes.js";
+import "./settings/griddle.jsx";
+import "./settings/avalara.html";
+import "./settings/avalara.js";
+import "./settings/custom.html";
+import "./settings/custom.js";
+import "./settings/settings.html";
+import "./settings/settings.js";
+import "./settings/taxcloud.html";
+import "./settings/taxcloud.js";
+import "./settings/taxjar.html";
+import "./settings/taxjar.js";
