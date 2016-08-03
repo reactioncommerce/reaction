@@ -37,8 +37,10 @@ Meteor.methods({
    * @summary sets status from one status to a new status. Defaults to "new" to "reserved"
    * @param  {Array} cartItems array of objects of type Schemas.CartItems
    * @param  {String} status optional - sets the inventory workflow status, defaults to "reserved"
+   * @param  {String} currentStatus
+   * @param  {String} notFoundStatus
    * @todo move this to bulkOp
-   * @return {undefined} returns undefined
+   * @return {Number} returns reservationCount
    */
   "inventory/setStatus": function (cartItems, status, currentStatus, notFoundStatus) {
     check(cartItems, [Schemas.CartItem]);
@@ -56,7 +58,8 @@ Meteor.methods({
     const reservationStatus = status || "reserved"; // change status to options object
     const defaultStatus = currentStatus || "new"; // default to the "new" status
     const backorderStatus = notFoundStatus || "backorder"; // change status to options object
-    let reservationCount = 0;
+    let reservationCount;
+    Logger.info(`Moving Inventory items from ${defaultStatus} to ${reservationStatus}`);
 
     // update inventory status for cartItems
     for (let item of cartItems) {
@@ -105,9 +108,15 @@ Meteor.methods({
       // if we have inventory available, only create additional required reservations
       Logger.debug("existingReservationQty", existingReservationQty);
       reservationCount = existingReservationQty;
-      let newReservedQty = totalRequiredQty - existingReservationQty + 1;
-      let i = 1;
+      let newReservedQty;
+      if (reservationStatus === "reserved" && defaultStatus === "new") {
+        newReservedQty = totalRequiredQty - existingReservationQty + 1;
+      } else {
+        // when moving from one "reserved" type status, we don't need to deal with existingReservationQty
+        newReservedQty = totalRequiredQty + 1;
+      }
 
+      let i = 1;
       while (i < newReservedQty) {
         // updated existing new inventory to be reserved
         Logger.info(
@@ -119,7 +128,7 @@ Meteor.methods({
           "productId": item.productId,
           "variantId": item.variants._id,
           "shopId": item.shopId,
-          "workflow.status": "new"
+          "workflow.status": defaultStatus
         }, {
           $set: {
             "orderItemId": item._id,
