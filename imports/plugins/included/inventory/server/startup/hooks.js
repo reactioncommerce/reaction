@@ -96,7 +96,7 @@ function markInventoryShipped(doc) {
   let cartItems = [];
   for (let orderItem of orderItems) {
     let cartItem = {
-      _id: order.cartId,
+      _id: orderItem.cartItemId,
       shopId: orderItem.shopId,
       quantity: orderItem.quantity,
       productId: orderItem.productId,
@@ -126,11 +126,12 @@ function markInventorySold(doc) {
 }
 
 Orders.after.insert((userId, doc) => {
+  Logger.debug("Inventory module handling Order insert");
   markInventorySold(doc);
 });
 
 Orders.after.update((userId, doc, fieldnames, modifier) => {
-  Logger.info("order after update called");
+  Logger.debug("Inventory module handling Order update");
   if (modifier.$addToSet) {
     if (modifier.$addToSet["workflow.workflow"] === "coreOrderWorkflow/completed") {
       markInventoryShipped(doc);
