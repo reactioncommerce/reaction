@@ -191,7 +191,7 @@ Meteor.methods({
    */
   "inventory/shipped": function (cartItems) {
     check(cartItems, [Schemas.CartItem]);
-    return Meteor.call("inventory/setStatus", cartItems, "shipped");
+    return Meteor.call("inventory/setStatus", cartItems, "shipped", "sold");
   },
   /**
    * inventory/sold
@@ -214,14 +214,13 @@ Meteor.methods({
     return Meteor.call("inventory/setStatus", cartItems, "return");
   },
   /**
-   * inventory/shipped
+   * inventory/returnToStock
    * mark inventory as return and available for sale
    * @param  {Array} cartItems array of objects Schemas.CartItem
    * @return {undefined}
    */
-  "inventory/returnToStock": function (productId, variantId) {
-    check(productId, String);
-    check(variantId, String);
+  "inventory/returnToStock": function (cartItems) {
+    check(cartItems, [Schemas.CartItem]);
     return Meteor.call("inventory/clearStatus", cartItems, "new", "return");
   }
 });
