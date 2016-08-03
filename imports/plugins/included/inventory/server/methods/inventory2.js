@@ -194,7 +194,17 @@ Meteor.methods({
     return Meteor.call("inventory/setStatus", cartItems, "shipped");
   },
   /**
-   * inventory/shipped
+   * inventory/sold
+   * mark inventory as sold
+   * @param  {Array} cartItems array of objects Schemas.CartItem
+   * @return {undefined}
+   */
+  "inventory/sold": function (cartItems) {
+    check(cartItems, [Schemas.CartItem]);
+    return Meteor.call("inventory/setStatus", cartItems, "sold");
+  },
+  /**
+   * inventory/return
    * mark inventory as returned
    * @param  {Array} cartItems array of objects Schemas.CartItem
    * @return {undefined}
