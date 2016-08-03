@@ -90,21 +90,50 @@ Products.after.insert((userId, doc) => {
   Meteor.call("inventory/register", doc);
 });
 
+function markInventoryShipped(doc) {
+  const order = Orders.findOne(doc._id);
+  const orderItems = order.items;
+  let cartItems = [];
+  for (let orderItem of orderItems) {
+    let cartItem = {
+      _id: order.cartId,
+      shopId: orderItem.shopId,
+      quantity: orderItem.quantity,
+      productId: orderItem.productId,
+      variants: orderItem.variants,
+      title: orderItem.title
+    };
+    cartItems.push(cartItem);
+  }
+  Meteor.call("inventory/shipped", cartItems);
+}
+
+function markInventorySold(doc) {
+  const orderItems = doc.items;
+  let cartItems = [];
+  for (let orderItem of orderItems) {
+    let cartItem = {
+      _id: orderItem.cartItemId,
+      shopId: orderItem.shopId,
+      quantity: orderItem.quantity,
+      productId: orderItem.productId,
+      variants: orderItem.variants,
+      title: orderItem.title
+    };
+    cartItems.push(cartItem);
+  }
+  Meteor.call("inventory/sold", cartItems);
+}
+
+Orders.after.insert((userId, doc) => {
+  markInventorySold(doc);
+});
+
 Orders.after.update((userId, doc, fieldnames, modifier) => {
   Logger.info("order after update called");
   if (modifier.$addToSet) {
     if (modifier.$addToSet["workflow.workflow"] === "coreOrderWorkflow/completed") {
-      const order = Orders.findOne(doc._id);
-      const orderItems = order.items;
-      let cartItems = [];
-      for (let orderItem of orderItems) {
-        let cartItem = {
-
-        };
-        cartItems.push(cartItem);
-      }
-
-      Meteor.call("inventory/shipped", cartItems);
+      markInventoryShipped(doc);
     }
   }
 });
