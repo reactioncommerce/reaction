@@ -201,7 +201,7 @@ Meteor.methods({
    */
   "inventory/sold": function (cartItems) {
     check(cartItems, [Schemas.CartItem]);
-    return Meteor.call("inventory/setStatus", cartItems, "sold");
+    return Meteor.call("inventory/setStatus", cartItems, "sold", "reserved");
   },
   /**
    * inventory/return
