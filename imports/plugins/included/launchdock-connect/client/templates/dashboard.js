@@ -199,7 +199,7 @@ Template.launchdockDashboard.events({
 
         const launchdock = Launchdock.connect();
 
-        launchdock.call("stripe/createCustomerAndSubscribe", options, (err, res) => {
+        launchdock.call("stripe/createCustomerAndSubscribe", options, (err) => {
           if (err) {
             Alerts.add("Unable to process a payment. Please contact support.", "danger");
           } else {
@@ -207,7 +207,7 @@ Template.launchdockDashboard.events({
               autoHide: true
             });
           }
-        })
+        });
       }
     });
 
