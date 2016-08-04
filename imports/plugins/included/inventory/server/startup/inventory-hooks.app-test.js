@@ -1,6 +1,6 @@
 /* eslint dot-notation: 0 */
 import { Meteor } from "meteor/meteor";
-import { Inventory, Cart }  from "/lib/collections";
+import { Inventory, Orders }  from "/lib/collections";
 import { Reaction } from "/server/api";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
@@ -43,8 +43,6 @@ describe("Inventory Hooks", function () {
   it("should move allocated inventory to 'sold' when an order is created", function () {
     this.timeout(50000);
     Inventory.direct.remove({});
-    Inventory.remove({});
-    Cart.remove();
     const cart = Factory.create("cartToOrder");
     sandbox.stub(Reaction, "getShopId", function () {
       return cart.shopId;
@@ -80,5 +78,44 @@ describe("Inventory Hooks", function () {
       orderItemId: product._id
     });
     expect(updatedInventoryItem.workflow.status).to.equal("sold");
+  });
+
+  it("should move allocated inventory to 'shipped' when an order is shipped", function () {
+    this.timeout(50000);
+    Inventory.direct.remove({});
+    const cart = Factory.create("cartToOrder");
+    sandbox.stub(Reaction, "getShopId", function () {
+      return cart.shopId;
+    });
+    sandbox.stub(Reaction, "hasPermission", () => true);
+    sandbox.stub(Meteor.server.method_handlers, "orders/sendNotification", function () {
+      check(arguments, [Match.Any]);
+    });
+    let shop = getShop();
+    let product = cart.items[0];
+    const inventoryItem = Inventory.insert({
+      productId: product.productId,
+      variantId: product.variants._id,
+      shopId: shop._id,
+      workflow: {
+        status: "reserved"
+      },
+      orderItemId: product._id
+    });
+    expect(inventoryItem).to.not.be.undefined;
+    Inventory.update(inventoryItem._id,
+      {
+        $set: {
+          "workflow.status": "reserved",
+          "orderItemId": product._id
+        }
+      });
+    spyOnMethod("copyCartToOrder", cart.userId);
+    const orderId = Meteor.call("cart/copyCartToOrder", cart._id);
+    const order = Orders.findOne(orderId);
+    const shipping = { items: [] };
+    Meteor.call("orders/shipmentShipped", order, shipping);
+    const shippedInventoryItem = Inventory.findOne(inventoryItem._id);
+    expect(shippedInventoryItem.workflow.status).to.equal("shipped");
   });
 });
