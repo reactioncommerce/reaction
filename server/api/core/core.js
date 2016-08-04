@@ -205,6 +205,14 @@ export default {
     return shop && shop.name;
   },
 
+  getShopEmail() {
+    const shop = Shops.find({ _id: this.getShopId() }, {
+      limit: 1,
+      fields: { emails: 1 }
+    }).fetch()[0];
+    return shop && shop.emails && shop.emails[0].address;
+  },
+
   /**
    * createDefaultAdminUser
    * @summary Method that creates default admin user
@@ -300,12 +308,11 @@ export default {
       });
     } else { // send verification email to admin
       try {
-        // if server is not confgured. Error in configuration
+        // if server is not configured. Error in configuration
         // are caught, but admin isn't verified.
         Accounts.sendVerificationEmail(accountId);
       } catch (error) {
-        Logger.warn(
-          "Unable to send admin account verification email.", error);
+        Logger.warn(error, "Unable to send admin account verification email.");
       }
     }
 
