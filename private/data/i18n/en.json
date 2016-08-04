@@ -17,7 +17,7 @@
         "dashboard": {
           "accountsLabel": "Accounts",
           "accountsTitle": "Accounts",
-          "accountsDescription": "Manage member permissions",
+          "accountsDescription": "Manage account permissions",
           "analyticsLabel": "Analytics",
           "analyticsTitle": "Analytics",
           "analyticsDescription": "Analytics and tracking integrations",
