@@ -578,6 +578,7 @@ Meteor.methods({
         itemClone.quantity = 1;
 
         itemClone._id = Random.id();
+        itemClone.cartItemId = item._id; // used for transitioning inventry
         itemClone.workflow = {
           status: "new"
         };
