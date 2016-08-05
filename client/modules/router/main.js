@@ -193,9 +193,7 @@ Router.initPackageRoutes = () => {
               route,
               template,
               layout,
-              workflow,
-              triggersEnter,
-              triggersExit
+              workflow
             } = registryItem;
 
             // console.log(registryItem);
