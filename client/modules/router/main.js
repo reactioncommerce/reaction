@@ -6,6 +6,7 @@ import { MetaData } from "/lib/api/router/metadata";
 import { Session } from "meteor/session";
 import { Meteor } from "meteor/meteor";
 import { Tracker } from "meteor/tracker";
+import Hooks from "./hooks";
 
 
 // init flow-router
@@ -14,6 +15,8 @@ import { Tracker } from "meteor/tracker";
 
 // client should wait on subs
 Router.wait();
+
+Router.Hooks = Hooks;
 
 /**
  * checkRouterPermissions
@@ -44,8 +47,6 @@ function checkRouterPermissions(context) {
   return context;
 }
 
-// initialize title and meta data and check permissions
-Router.triggers.enter([checkRouterPermissions, MetaData.init]);
 
 /**
  * getRouteName
@@ -214,10 +215,10 @@ Router.initPackageRoutes = () => {
                 name: routeName,
                 template: options.template,
                 layout: options.layout,
-                triggersEnter: triggersEnter,
-                triggersExit: triggersExit,
                 action: () => {
                   ReactionLayout(options);
+                triggersEnter: Router.Hooks.get("onEnter", name),
+                triggersExit: Router.Hooks.get("onExit", name),
                 }
               }
             };
@@ -306,5 +307,15 @@ Router.isActiveClassName = (routeName) => {
   const routeDef = path.replace(prefix + "/", "");
   return routeDef === routeName ? "active" : "";
 };
+
+// Register Global Route Hooks
+Meteor.startup(() => {
+  Router.Hooks.onEnter(checkRouterPermissions);
+  Router.Hooks.onEnter(MetaData.init);
+
+  Router.triggers.enter(Router.Hooks.get("onEnter", "GLOBAL"));
+  Router.triggers.exit(Router.Hooks.get("onExit", "GLOBAL"));
+});
+
 
 export default Router;
