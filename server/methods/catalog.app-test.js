@@ -614,6 +614,7 @@ describe("core product methods", function () {
       Meteor.call("products/updateVariantsPosition", [
         product2._id, product3._id, product._id
       ]);
+      Meteor._sleepForMs(500);
       const modifiedProduct = Products.findOne(product._id);
       const modifiedProduct2 = Products.findOne(product2._id);
       const modifiedProduct3 = Products.findOne(product3._id);
