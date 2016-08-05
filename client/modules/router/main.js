@@ -197,28 +197,24 @@ Router.initPackageRoutes = () => {
               triggersEnter,
               triggersExit
             } = registryItem;
-            // get registry route name
-            const routeName = getRegistryRouteName(pkg.name, registryItem);
 
-            // layout option structure
-            const options = {
-              template: template,
-              workflow: workflow,
-              layout: layout
-            };
+            // console.log(registryItem);
+
+            // get registry route name
+            const name = getRegistryRouteName(pkg.name, registryItem);
 
             // define new route
             // we could allow the options to be passed in the registry if we need to be more flexible
             const newRouteConfig = {
-              route: route,
+              route,
               options: {
-                name: routeName,
-                template: options.template,
-                layout: options.layout,
-                action: () => {
-                  ReactionLayout(options);
+                name,
+                template,
+                layout,
                 triggersEnter: Router.Hooks.get("onEnter", name),
                 triggersExit: Router.Hooks.get("onExit", name),
+                action() {
+                  ReactionLayout({ template, workflow, layout });
                 }
               }
             };
