@@ -1,0 +1,112 @@
+
+<template name="launchdockDashboard">
+  {{#with packageData}}
+    <div class="container-fluid-sm connect-account">
+      <div class="row">
+        {{#if launchdockDataReady}}
+          <div class="col-md-6">
+            <div class="panel panel-default account-status">
+              <div class="panel-heading">
+                <h3>Account Status</h3>
+              </div>
+              <div class="panel-content">
+                {{#if isSubscribed}}
+                  <div class="row">
+                    <h4>Current Plan: </h4>
+                    <p class="text-capitalize">{{plan}} Subscription</p>
+                  </div>
+                  <div class="row">
+                    <h4>Next Payment Due: </h4>
+                    <p>{{nextPayment}}</p>
+                  </div>
+                {{else}}
+                  <h4 class="trial-info">
+                    Free trial ends: <span class="trial-ends-date">{{trial.ends}} ({{trial.daysRemaining}})</span>
+                  </h4>
+                  <p>
+                    Select a payment period to activate your shop:
+                  </p>
+                  <div class="plan-choice">
+                    <input type="radio" name="plan-choice" id="yearly-plan" value="Yearly" checked>
+                    <label for="yearly-plan">
+                      Annually <span class="price-breakdown">($45 x 12 months)</span>
+                      MOST POPULAR <span class="most-popular">SAVE $60</span>
+                    </label>
+                  </div>
+                  <div class="plan-choice">
+                    <input type="radio" name="plan-choice" id="monthly-plan" value="Monthly">
+                    <label for="monthly-plan">
+                      Monthly <span class="price-breakdown">($50 each month)</span>
+                    </label>
+                  </div>
+                  <div class="due-today">
+                    <h4>Due: <span class="price">$540 for 12 months</span></h4>
+                  </div>
+                  <div class="terms">
+                    <p>
+                      By clicking Sign Up Now, you agree that to ensure uninterrupted service, your shop will be set to continuous auto-renewal payments of <span class="term">$540 for 12 months</span> with your next payment due on <span class="next-due">{{yearlyPaymentDate}}</span>. You can cancel your service or disable auto-renewal at any time by <a href="https://reactioncommerce.com/about#contact" target="_blank">contacting us</a>. You agree to our <a href="https://reactioncommerce.com/legal/terms" target="_blank">Terms of Service</a> and <a href="https://reactioncommerce.com/legal/privacy" target="_blank">Privacy Policy</a>.
+                    </p>
+                  </div>
+                  <button class="checkout btn">
+                    Sign Up Now!
+                  </button>
+                {{/if}}
+                <hr>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3>SSL Settings</h3>
+              </div>
+              <div class="panel-content">
+                {{#if launchdockStack.defaultDomain}}
+                  <h4>Default Domain Name</h4>
+                  <p>
+                    <a href="https://{{launchdockStack.defaultDomain}}">
+                      https://{{launchdockStack.defaultDomain}}
+                    </a>
+                  </p>
+                  <hr>
+                {{/if}}
+                <h4>Custom Domain Name</h4>
+                {{#if settings.ssl.domain}}
+                <p>
+                  <a href="https://{{settings.ssl.domain}}">
+                    https://{{settings.ssl.domain}}
+                  </a>
+                </p>
+                <br>
+                {{else}}
+                  <p>Custom SSL not configured yet.</p>
+                  <br>
+                {{/if}}
+                {{#if launchdockStack.endpoint}}
+                  <p><small>Create a CNAME record for your domain that points to:</small></p>
+                  <br>
+                  <p>{{launchdockStack.endpoint}}</p>
+                {{/if}}
+              </div>
+              <div class="panel-footer">
+                <div class="left"></div>
+                <div class="right">
+                  <div class="panel-footer-item">
+                    <button class="btn btn-default" data-event-action="showLaunchdockSettings">
+                      <i class="fa fa-gear"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        {{else}}
+          <div class="connect-account loading">
+            <i class="fa fa-spinner fa-spin" id="btn-processing"></i>
+          </div>
+        {{/if}}
+      </div>
+    </div>
+  {{/with}}
+</template>
