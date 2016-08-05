@@ -1,13 +1,31 @@
 /* eslint dot-notation: 0 */
 import { Meteor } from "meteor/meteor";
-import { Inventory, Orders }  from "/lib/collections";
-import { Reaction } from "/server/api";
+import { Inventory, Orders, Cart }  from "/lib/collections";
+import { Reaction, Logger } from "/server/api";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
 import Fixtures from "/server/imports/fixtures";
 import { getShop } from "/server/imports/fixtures/shops";
 
 Fixtures();
+
+function reduceCart(cart) {
+  Cart.update(cart._id, {
+    $set: {
+      "items.0.quantity": 1
+    }
+  });
+  Cart.update(cart._id, {
+    $set: {
+      "items.1.quantity": 1
+    }
+  });
+  Cart.update(cart._id, {
+    $pull: {
+      "items.$.quantity": {$gt: 1}
+    }
+  });
+}
 
 describe("Inventory Hooks", function () {
   let originals;
@@ -41,14 +59,16 @@ describe("Inventory Hooks", function () {
   }
 
   it("should move allocated inventory to 'sold' when an order is created", function () {
-    this.timeout(50000);
-    Inventory.direct.remove({});
-    const cart = Factory.create("cartToOrder");
-    sandbox.stub(Reaction, "getShopId", function () {
-      return cart.shopId;
-    });
     sandbox.stub(Meteor.server.method_handlers, "orders/sendNotification", function () {
       check(arguments, [Match.Any]);
+      Logger.warn("running stub notification");
+      return true;
+    });
+    Inventory.direct.remove({});
+    const cart = Factory.create("cartToOrder");
+    reduceCart(cart);
+    sandbox.stub(Reaction, "getShopId", function () {
+      return cart.shopId;
     });
     let shop = getShop();
     let product = cart.items[0];
@@ -81,15 +101,17 @@ describe("Inventory Hooks", function () {
   });
 
   it("should move allocated inventory to 'shipped' when an order is shipped", function () {
-    this.timeout(50000);
-    Inventory.direct.remove({});
-    const cart = Factory.create("cartToOrder");
-    sandbox.stub(Reaction, "getShopId", function () {
-      return cart.shopId;
-    });
-    sandbox.stub(Reaction, "hasPermission", () => true);
     sandbox.stub(Meteor.server.method_handlers, "orders/sendNotification", function () {
       check(arguments, [Match.Any]);
+      Logger.warn("running stub notification");
+      return true;
+    });
+    sandbox.stub(Reaction, "hasPermission", () => true);
+    Inventory.direct.remove({});
+    const cart = Factory.create("cartToOrder");
+    reduceCart(cart);
+    sandbox.stub(Reaction, "getShopId", function () {
+      return cart.shopId;
     });
     let shop = getShop();
     let product = cart.items[0];
