@@ -168,7 +168,7 @@
     /**
      * Style
      */
-    "indent": [2, 2], // http://eslint.org/docs/rules/indent
+    "indent": [2, 2, {"SwitchCase": 1}], // http://eslint.org/docs/rules/indent
     "brace-style": [2, // http://eslint.org/docs/rules/brace-style
       "1tbs", {
         "allowSingleLine": true
@@ -194,7 +194,7 @@
     }],
     "new-cap": [0, { // http://eslint.org/docs/rules/new-cap  (turned off for now, as it complains on all Match)
       "newIsCap": true,
-      "capIsNewExceptions": ["Match", "OneOf", "Optional"],
+      "capIsNewExceptions": ["Match", "OneOf", "Optional"]
     }],
     "no-multiple-empty-lines": [2, { // http://eslint.org/docs/rules/no-multiple-empty-lines
       "max": 2
@@ -221,6 +221,6 @@
     }], // http://eslint.org/docs/rules/space-before-function-paren
     "space-infix-ops": 2, // http://eslint.org/docs/rules/space-infix-ops
     "space-in-parens": [2, "never"], // http://eslint.org/docs/rules/space-in-parens
-    "spaced-comment": [2, "always"], // http://eslint.org/docs/rules/spaced-comment
+    "spaced-comment": [2, "always"] // http://eslint.org/docs/rules/spaced-comment
   }
 }
