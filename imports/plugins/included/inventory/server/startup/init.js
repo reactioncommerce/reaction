@@ -1,6 +1,6 @@
 import { Hooks, Logger } from "/server/api";
 import { Products, Inventory } from "/lib/collections";
-import { registerInventory } from "../methods/inventory2";
+import { registerInventory } from "../methods/inventory";
 
 // On first-time startup init the Inventory collection with entries for each product
 Hooks.Events.add("afterCoreInit", () => {
