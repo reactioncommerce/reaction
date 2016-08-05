@@ -21,6 +21,7 @@ Meteor.publish("Product", function (productId) {
 
   let selector = {};
   selector.isVisible = true;
+  selector.isDeleted = false;
 
   if (Roles.userIsInRole(this.userId, ["owner", "admin", "createProduct"],
       shop._id)) {
@@ -49,6 +50,7 @@ Meteor.publish("Product", function (productId) {
   // Selector for hih?
   selector = {
     isVisible: true,
+    isDeleted: false,
     $or: [
       { _id: _id },
       {
@@ -71,9 +73,8 @@ Meteor.publish("Product", function (productId) {
         const revisions = Revisions.find({
           documentId: id
         }).fetch();
-        // console.log("found revisions", revisions);
         fields.__revisions = revisions;
-        console.log(fields);
+
         this.added("Products", id, fields);
       },
       changed: (id, fields) => {
@@ -94,18 +95,12 @@ Meteor.publish("Product", function (productId) {
         this.added("Revisions", id, fields);
       },
       changed: (id, fields) => {
+        const revision = Revisions.findOne(id);
+        const product = Products.findOne(revision.documentId);
 
-        // Products.findOne({})
-        console.log("changedFields", fields, id);
-
-        const revision = Revisions.findOne(id)
-        const product = Products.findOne(revision.documentId)
-        console.log(revision);
-        product.__revisions = [revision]
-
+        product.__revisions = [revision];
 
         this.changed("Products", product._id, product);
-
         this.changed("Revisions", id, fields);
       },
       removed: (id) => {

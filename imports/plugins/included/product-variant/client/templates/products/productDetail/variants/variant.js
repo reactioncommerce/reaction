@@ -79,9 +79,7 @@ Template.variant.helpers({
       toggleOn: variant.isVisible,
       onClick(event) {
         event.stopPropagation();
-        console.log("shouldMake vis", variant);
         ReactionProduct.toggleVisibility(variant);
-        console.log("would attempt to publish product", variant._id);
       }
     };
   }
@@ -115,16 +113,10 @@ Template.variant.events({
   "dblclick .variant-detail": function () {
     showVariant(this);
   },
-  "click .variant-detail > *": function (event) {
-    event.preventDefault();
-    event.stopPropagation();
+  "click .variant-detail": function () {
     Alerts.removeSeen();
 
     ReactionProduct.setCurrentVariant(this._id);
-    //
-    // if (Reaction.getActionView()) {
-    //   showVariant(this);
-    // }
   }
 });
 

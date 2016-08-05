@@ -1,67 +1,12 @@
 import { Products, Revisions } from "/lib/collections";
 import { Logger } from "/server/api";
 
-// Products.before.insert((userId, order) => {
-//   const analyticsEvent = {
-//     eventType: "buy",
-//     value: order._id,
-//     label: "bought products"
-//   };
-//   AnalyticsEvents.insert(analyticsEvent);
-// });
-//
-
-
-// Products.before.findOne((userId, selector, options) => {
-//   let productRevision = Revisions.findOne({
-//     documentId: product._id
-//   });
-//
-//   if (productRevision)
-// })
-
-// Products.after.find((userId, selector, options, cursor) => {
-//   // console.log("poop!", cursor);
-//
-//   cursor.forEach((product) => {
-//     console.log("loaded product", product._id);
-//     product.__revisions = ["POOOOOP"]
-//   })
-//   // console.log("after HOOK!!!!!!!", product);
-//   // let productRevision = Revisions.findOne({
-//   //   documentId: product._id
-//   // });
-//   //
-//   // product.__revisions = [
-//   //   productRevision
-//   // ];
-//   //
-//   return cursor
-// });
-//
-// Products.after.findOne((userId, selector, options, product) => {
-//   console.log("after HOOK!!!!!!!", product);
-//   let productRevision = Revisions.findOne({
-//     documentId: product._id
-//   });
-//
-//   product.__revisions = [
-//     productRevision
-//   ];
-// });
-//
-
-function findRelevantDraft() {
-
-}
 
 Products.before.insert((userId, product) => {
-  console.log("before insert", product);
-
   let productRevision = Revisions.findOne({
     documentId: product._id
   });
-  console.log(productRevision);
+
   if (!productRevision) {
     Logger.info(`No revision found for product ${product._id}. Creating new revision`);
 
@@ -73,41 +18,46 @@ Products.before.insert((userId, product) => {
 
   if (options.publish === true) {
     // Maybe mark the revision as published
-
     Logger.info(`Publishing revison for product ${product._id}.`);
-
-    // return true;
   }
-
-  // return false;
 });
 
 
-Products.before.update((userId, product, fieldNames, modifier, options) => {
+Products.before.update(function (userId, product, fieldNames, modifier, options) {
   let productRevision = Revisions.findOne({
     documentId: product._id
   });
 
+  const originalSelector = this.args[0];
+
   if (!productRevision) {
     Logger.info(`No revision found for product ${product._id}. Creating new revision`);
 
+    // Create a new revision
     Revisions.insert({
       documentId: product._id,
       documentData: product
     });
-    Revisions.findOne({
+
+    // Fetch newly created revision
+    productRevision = Revisions.findOne({
       documentId: product._id
     });
   }
 
+  // Create a new selector for the revision
+  //
+  // This is especially important since we may need to update some fields
+  // like metadata, and the selector is very important to that.
+  let revisionSelector = {
+    documentId: product._id
+  };
 
-  // Revisions.update({
-  //   documentId: product._id
-  // }, modifier);
-
-
+  // Create a new modifier for the revision
   let revisionModifier = {
-    $set: {}
+    $set: {
+      "workflow.status": "revision/update"
+    }
   };
 
   // console.log(modifier.$set);
@@ -118,22 +68,17 @@ Products.before.update((userId, product, fieldNames, modifier, options) => {
         const isVisible = !productRevision.documentData.isVisible;
         revisionModifier.$set[`documentData.${key}`] = isVisible;
         break;
+      case "metafields.$":
+        revisionSelector["documentData.metafields"] = originalSelector.metafields;
+        revisionModifier.$set[`documentData.${key}`] = modifier.$set[key];
+        break;
       default:
         revisionModifier.$set[`documentData.${key}`] = modifier.$set[key];
       }
     }
   }
-  // console.log("------------------------------------------");
-  // console.log("-- New Modifier");
-  // console.log(revisionModifier);
-  // console.log("------------------------------------------");
-  //
-  // console.log("------------------------------------------");
-  // console.log(userId, product, fieldNames, modifier, options);
-  // console.log("------------------------------------------");
-  //
 
-  if (options.publish === true) {
+  if (options.publish === true || (product.workflow && product.workflow.status === "product/publish")) {
     // Maybe mark the revision as published
 
     Logger.info(`Publishing revison for product ${product._id}.`);
@@ -141,12 +86,56 @@ Products.before.update((userId, product, fieldNames, modifier, options) => {
     return true;
   }
 
-  Revisions.update({
-    documentId: product._id
-  }, revisionModifier);
+  Revisions.update(revisionSelector, revisionModifier);
 
   Logger.info(`Revison updated for product ${product._id}.`);
 
   // prevent the underlying document from being modified as it is in draft mode
+  return false;
+});
+
+Products.before.remove(function (userId, product) {
+  let productRevision = Revisions.findOne({
+    documentId: product._id
+  });
+
+  if (!productRevision) {
+    Logger.info(`No revision found for product ${product._id}. Creating new revision`);
+
+    Revisions.insert({
+      documentId: product._id,
+      documentData: product
+    });
+    productRevision =  Revisions.findOne({
+      documentId: product._id
+    });
+  }
+
+  // Set the revision as deleted "isDeleted: true"
+  Revisions.update({
+    documentId: product._id
+  }, {
+    $set: {
+      "documentData.isDeleted": true,
+      "workflow.status": "revision/remove"
+    }
+  });
+
+  Logger.info(`Revison updated for product ${product._id}.`);
+  Logger.info(`Product ${product._id} is now marked as deleted.`);
+
+  // If the original product is deleted, and the user is trying to delete it again,
+  // then actually remove it completly.
+  //
+  // This acts like a trash. Where the product is sent to trash before it can actually
+  // be deleted perminately.
+  if (product.isDeleted === true) {
+    Logger.info(`Allowing write to product ${product._id} for Collection.remove().`);
+
+    return true;
+  }
+
+  Logger.info(`Preventing write to product ${product._id} for Collection.remove().`);
+
   return false;
 });
