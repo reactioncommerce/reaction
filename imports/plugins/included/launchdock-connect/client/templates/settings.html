@@ -1,0 +1,45 @@
+
+<template name="launchdockSettings">
+  {{#with packageData}}
+  <div class="panel-group" id="launchdockSettingsAccordian" role="tablist" aria-multiselectable="true">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <div class="panel-title">
+          <a href="#ssl-settings" aria-controls="general" aria-expanded="true" role="button" data-toggle="collapse" data-parent="#launchdockSettingsAccordian" >
+            SSL Settings
+          </a>
+        </div>
+      </div>
+      <div id="ssl-settings" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="Launchdock">
+        <div class="panel-body">
+          <form id="launchdock-ssl-update-form">
+            <div class="form-group">
+              <label for="ssl-domain" class="control-label">
+                Custom Domain
+              </label>
+              <input type="text" name="ssl-domain" class="form-control"
+                     value="{{settings.ssl.domain}}">
+              <span class="help-block ssl-domain"></span>
+            </div>
+            <div class="form-group">
+              <label for="ssl-private-key" class="control-label">
+                SSL Private Key
+              </label>
+              <textarea rows="6" name="ssl-private-key" class="form-control">{{settings.ssl.privateKey}}</textarea>
+              <span class="help-block ssl-private-key"></span>
+            </div>
+            <div class="form-group">
+              <label for="ssl-certificate" class="control-label">
+                SSL Certificate
+              </label>
+              <textarea rows="6" name="ssl-certificate" class="form-control">{{settings.ssl.certificate}}</textarea>
+              <span class="help-block ssl-certificate"></span>
+            </div>
+            <button type="submit" class="btn btn-default">Save settings</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  {{/with}}
+</template>

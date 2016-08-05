@@ -1,7 +1,7 @@
 {
   "name": "reaction",
   "description": "Reaction is a modern reactive, real-time event driven ecommerce platform.",
-  "version": "0.14.1",
+  "version": "0.14.2",
   "main": "main.js",
   "directories": {
     "test": "tests"
@@ -34,6 +34,7 @@
     "bunyan-loggly": "^1.0.0",
     "classnames": "^2.2.5",
     "css-annotation": "^0.6.2",
+    "eslint-plugin-meteor": "^4.0.0",
     "faker": "^3.1.0",
     "fibers": "^1.0.13",
     "font-awesome": "^4.6.3",
@@ -69,7 +70,6 @@
   "devDependencies": {
     "babel-eslint": "^6.1.2",
     "eslint": "^2.13.1",
-    "eslint-plugin-meteor": "^3.6.0",
     "eslint-plugin-react": "^5.2.2"
   },
   "postcss": {

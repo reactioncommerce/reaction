@@ -1,6 +1,8 @@
+import accounting from "accounting-js";
 import Future from "fibers/future";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
+import { Email } from "meteor/email";
 import { Cart, Orders, Products, Shops } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 import { Logger, Reaction } from "/server/api";
@@ -140,10 +142,12 @@ Meteor.methods({
     }
 
     // Server-side check to make sure discount is not greater than orderTotal.
-    let orderTotal =
+    let orderTotal = accounting.toFixed(
       order.billing[0].invoice.subtotal
       + order.billing[0].invoice.shipping
-      + order.billing[0].invoice.taxes;
+      + order.billing[0].invoice.taxes
+      , 2);
+
 
     if (discount > orderTotal) {
       const error = "Discount is greater than the order total";
@@ -186,9 +190,7 @@ Meteor.methods({
 
     this.unblock();
 
-    return Meteor.call("orders/processPayments", order._id, function (
-      error,
-      result) {
+    return Meteor.call("orders/processPayments", order._id, function (error, result) {
       if (result) {
         Meteor.call("workflow/pushOrderWorkflow",
           "coreOrderWorkflow", "coreProcessPayment", order._id);
