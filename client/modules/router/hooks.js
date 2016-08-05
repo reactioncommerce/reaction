@@ -4,8 +4,8 @@
  */
 const Hooks = {
   _hooks: {
-    onEnter: [],
-    onExit: []
+    onEnter: {},
+    onExit: {}
   },
 
   _addHook(type, routeName, callback) {
@@ -18,7 +18,8 @@ const Hooks = {
   onEnter(routeName, callback) {
     // global onEnter callback
     if (arguments.length === 1 && typeof arguments[0] === "function") {
-      return this._addHook("onEnter", "GLOBAL", callback);
+      const cb = routeName;
+      return this._addHook("onEnter", "GLOBAL", cb);
     }
     // route-specific onEnter callback
     return this._addHook("onEnter", routeName, callback);
@@ -27,16 +28,21 @@ const Hooks = {
   onExit(routeName, callback) {
     // global onExit callback
     if (arguments.length === 1 && typeof arguments[0] === "function") {
-      return this._addHook("onExit", "GLOBAL", callback);
+      const cb = routeName;
+      return this._addHook("onExit", "GLOBAL", cb);
     }
     // route-specific onExit callback
     return this._addHook("onExit", routeName, callback);
   },
 
-  run(type, name, constant) {
-    const group = this._hooks[type];
+  get(type, name) {
+    const group = this._hooks[type] || {};
     const callbacks = group[name];
-    // if the hook exists and contains callbacks to run
+    return (typeof callbacks !== "undefined" && !!callbacks.length) ? callbacks : [];
+  },
+
+  run(type, name, constant) {
+    const callbacks = this.get(type, name);
     if (typeof callbacks !== "undefined" && !!callbacks.length) {
       return callbacks.forEach((callback) => {
         return callback(constant);
