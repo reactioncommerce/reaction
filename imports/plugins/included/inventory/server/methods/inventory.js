@@ -1,4 +1,5 @@
 import { Meteor } from "meteor/meteor";
+import { check, Match } from "meteor/check";
 import { Catalog } from "/lib/api";
 import { Inventory } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
@@ -6,7 +7,7 @@ import { Logger, Reaction } from "/server/api";
 
 
 export function registerInventory(product) {
-  check(product, OneOf(Schemas.ProductVariant, Schemas.Product));
+  check(product, Match.OneOf(Schemas.ProductVariant, Schemas.Product));
   let type;
   switch (product.type) {
     case "variant":
@@ -101,7 +102,7 @@ Meteor.methods({
    * @return {[undefined]} returns undefined
    */
   "inventory/adjust": function (product) { // TODO: this should be variant
-    check(product, OneOf(Schemas.Product, Schemas.ProductVariant));
+    check(product, Match.OneOf(Schemas.Product, Schemas.ProductVariant));
     let type;
     let results;
     // adds or updates inventory collection with this product
