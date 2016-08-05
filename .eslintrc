@@ -9,8 +9,7 @@
      "ecmaVersion": 6,
      "sourceType": "module"
   },
-  "plugins": ["react", "meteor"],
-  "extends": ["plugin:meteor/recommended"],
+  "plugins": ["react"],
   "ecmaFeatures": {
     "arrowFunctions": true,
     "blockBindings": true,
