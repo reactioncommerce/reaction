@@ -1,20 +1,18 @@
-import React from 'react';
-import { checkNpmVersions } from 'meteor/tmeasday:check-npm-versions';
-import { _ } from 'meteor/underscore';
-import Griddle from 'griddle-react';
+import React from "react";
+import _ from "lodash";
+import Griddle from "griddle-react";
 
-// checkNpmVersions({
-//   'griddle-react': '0.6.x',
-//   'react-addons-pure-render-mixin': '15.x',
-// }, 'utilities:meteor-griddle');
+/*
+Forked from https://github.com/meteor-utilities/Meteor-Griddle
+ */
+const MeteorGriddle = React.createClass({
 
-export const MeteorGriddle = React.createClass({
   propTypes: {
-    collection: React.PropTypes.shape, // the collection to display
-    filteredFields: React.PropTypes.arrayOf, // an array of fields to search through when filtering
-    matchingResultsCount: React.PropTypes.string, // the name of the matching results counter
     publication: React.PropTypes.string, // the publication that will provide the data
-    subsManager: React.PropTypes.shape
+    collection: React.PropTypes.object, // the collection to display
+    matchingResultsCount: React.PropTypes.string, // the name of the matching results counter
+    filteredFields: React.PropTypes.array, // an array of fields to search through when filtering
+    subsManager: React.PropTypes.object,
     // plus regular Griddle props
   },
 
@@ -24,19 +22,21 @@ export const MeteorGriddle = React.createClass({
     return {
       useExternal: false,
       externalFilterDebounceWait: 300,
-      externalResultsPerPage: 10
+      externalResultsPerPage: 10,
     };
   },
 
   getInitialState() {
+
     return {
       currentPage: 0,
       maxPages: 0,
       externalResultsPerPage: this.props.externalResultsPerPage,
       externalSortColumn: this.props.externalSortColumn,
       externalSortAscending: this.props.externalSortAscending,
-      query: {}
+      query: {},
     };
+
   },
 
   componentWillMount() {
@@ -46,6 +46,7 @@ export const MeteorGriddle = React.createClass({
   },
 
   getMeteorData() {
+
     // Get a count of the number of items matching the current filter.
     // If no filter is set it will return the total number of items in the
     // collection.
@@ -99,12 +100,12 @@ export const MeteorGriddle = React.createClass({
     });
   },
 
-  // what page is currently viewed
+  //what page is currently viewed
   setPage(index) {
     this.setState({currentPage: index});
   },
 
-  // this changes whether data is sorted in ascending or descending order
+  //this changes whether data is sorted in ascending or descending order
   changeSort(sort, sortAscending) {
     this.setState({externalSortColumn: sort, externalSortAscending: sortAscending});
   },
@@ -158,7 +159,10 @@ export const MeteorGriddle = React.createClass({
         externalSortAscending={this.state.externalSortAscending}
         externalIsLoading={this.data.loading}
       />
-    );
+    )
+
   }
 
 });
+
+export default MeteorGriddle;

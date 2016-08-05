@@ -1,11 +1,11 @@
 // import { checkNpmVersions } from "meteor/tmeasday:check-npm-versions";
 import { Template } from "meteor/templating";
-import { MeteorGriddle } from "./griddle";
 import { ReactiveDict } from "meteor/reactive-dict";
 import { Shops, Countries } from "/lib/collections";
 import { Taxes, TaxCodes } from "../../lib/collections";
 import { i18next } from "/client/api";
 import { TaxPackageConfig } from "../../lib/collections/schemas";
+import MeteorGriddle from "/imports/plugins/core/ui-grid/client/griddle";
 
 Template.customTaxRates.onCreated(function () {
   this.autorun(() => {
@@ -19,6 +19,9 @@ Template.customTaxRates.onCreated(function () {
 });
 
 Template.customTaxRates.helpers({
+  griddleTable() {
+    return MeteorGriddle;
+  },
   packageConfigSchema() {
     return TaxPackageConfig;
   },
@@ -84,32 +87,29 @@ Template.customTaxRates.helpers({
     }
     return [];
   },
-  griddleTable() {
-    return MeteorGriddle;
-  },
   editRow(options) {
     return (options ) => {
       const instance = Template.instance();
-      console.log(instance.state.get("editing"));
+      // console.log(instance.state.get("editing"));
       instance.state.set("editing", options.props.data);
       Session.set("editingTaxCode", options.props.data);
-      console.log("here in edit row", options.props.data);
+      // console.log("here in edit row", options.props.data);
     };
   },
   noDataMessage() {
-    return i18next.t("shopSettings.noCustomTaxRatesFound");
+    return i18next.t("taxSettings.noCustomTaxRatesFound");
   }
 });
 
 AutoForm.hooks({
   "customTaxRates-update-form": {
     onSuccess: function () {
-      return Alerts.toast(i18next.t("shopSettings.shopCustomTaxRatesSaved"),
+      return Alerts.toast(i18next.t("taxSettings.shopCustomTaxRatesSaved"),
         "success");
     },
     onError: function (operation, error) {
       return Alerts.toast(
-        `${i18next.t("shopSettings.shopCustomTaxRatesFailed")} ${error}`, "error"
+        `${i18next.t("taxSettings.shopCustomTaxRatesFailed")} ${error}`, "error"
       );
     }
   }
