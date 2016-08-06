@@ -95,7 +95,8 @@
           "paypalSettingsLabel": "PayPal Settings",
           "reactionConnectLabel": "Reaction Connect",
           "examplePaymentSettingsLabel": "Example Payment Settings",
-          "productSettingsLabel": "Product Settings"
+          "productSettingsLabel": "Product Settings",
+          "taxSettingsLabel": "Tax Settings"
         },
         "userAccountDropdown": {
           "profileLabel": "Profile"
@@ -167,7 +168,11 @@
       "taxSettings": {
         "noCustomTaxRatesFound": "No custom tax rates found.",
         "shopCustomTaxRatesSaved": "Custom tax rate saved.",
-        "shopCustomTaxRatesFailed": "Error saving tax rate."
+        "shopCustomTaxRatesFailed": "Error saving tax rate.",
+        "customRatesDescription": "Custom Rates",
+        "taxCode": "Tax Code",
+        "taxShipping": "Include Shipping",
+        "discountsIncluded": "Include Discounts"
       },
       "header": {
         "tagsAdd": "Add tag",
