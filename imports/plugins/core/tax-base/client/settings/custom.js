@@ -1,11 +1,15 @@
 // import { checkNpmVersions } from "meteor/tmeasday:check-npm-versions";
 import { Template } from "meteor/templating";
 import { ReactiveDict } from "meteor/reactive-dict";
-import { Shops, Countries } from "/lib/collections";
+import { Shops } from "/lib/collections";
+import { Countries } from "/client/collections";
 import { Taxes, TaxCodes } from "../../lib/collections";
 import { i18next } from "/client/api";
-import { TaxPackageConfig } from "../../lib/collections/schemas";
+import { TaxPackageConfig, Taxes as TaxSchema } from "../../lib/collections/schemas";
 import MeteorGriddle from "/imports/plugins/core/ui-grid/client/griddle";
+import { IconButton } from "/imports/plugins/core/ui/client/components";
+
+/* eslint no-shadow: ["error", { "allow": ["options"] }] */
 
 Template.customTaxRates.onCreated(function () {
   this.autorun(() => {
@@ -14,16 +18,44 @@ Template.customTaxRates.onCreated(function () {
 
   this.state = new ReactiveDict();
   this.state.setDefault({
-    editing: false
+    isEditing: false
   });
 });
 
 Template.customTaxRates.helpers({
+  EditButton() {
+    const instance = Template.instance();
+    const state = instance.state;
+    const isEditing = state.equals("isEditing", true);
+    const editingId = state.get("editingId");
+
+    return {
+      component: IconButton,
+      icon: "fa fa-pencil",
+      onIcon: "fa fa-check",
+      toggle: true,
+      toggleOn: isEditing,
+      onClick() {
+        state.set("isEditing", !isEditing);
+        state.set("editingId", !editingId);
+      }
+    };
+  },
+  instance() {
+    const instance = Template.instance();
+    return instance;
+  },
   griddleTable() {
     return MeteorGriddle;
   },
   packageConfigSchema() {
     return TaxPackageConfig;
+  },
+  taxSchema() {
+    return TaxSchema;
+  },
+  taxCollection() {
+    return Taxes;
   },
   countryOptions: function () {
     return Countries.find().fetch();
@@ -65,6 +97,11 @@ Template.customTaxRates.helpers({
   Taxes() {
     return Taxes;
   },
+  taxRate() {
+    const instance = Template.instance();
+    const id = instance.state.get("editingId");
+    return Taxes.findOne(id);
+  },
   packageData() {
     return Taxes.find();
   },
@@ -88,12 +125,16 @@ Template.customTaxRates.helpers({
     return [];
   },
   editRow(options) {
-    return (options ) => {
-      const instance = Template.instance();
-      // console.log(instance.state.get("editing"));
-      instance.state.set("editing", options.props.data);
-      Session.set("editingTaxCode", options.props.data);
-      // console.log("here in edit row", options.props.data);
+    const instance = Template.instance();
+    const currentId = instance.state.get("editingId");
+    return (options) => {
+      instance.state.set("isEditing", options.props.data);
+      // toggle edit mode clicking on same row
+      if (currentId === options.props.data._id) {
+        instance.state.set("isEditing", false);
+        instance.state.set("editingId", null);
+      }
+      return instance.state.set("editingId", options.props.data._id);
     };
   },
   noDataMessage() {
