@@ -160,24 +160,23 @@ Meteor.methods({
         Logger.warn(e);
       });
       return fut.wait();
-    } else {
-      gateway.transaction.submitForSettlement(transactionId, amount, Meteor.bindEnvironment(function (error, result) {
-        if (error) {
-          fut.return({
-            saved: false,
-            error: error
-          });
-        } else {
-          fut.return({
-            saved: true,
-            response: result
-          });
-        }
-      }, function (e) {
-        Logger.warn(e);
-      }));
-      return fut.wait();
     }
+    gateway.transaction.submitForSettlement(transactionId, amount, Meteor.bindEnvironment(function (error, result) {
+      if (error) {
+        fut.return({
+          saved: false,
+          error: error
+        });
+      } else {
+        fut.return({
+          saved: true,
+          response: result
+        });
+      }
+    }, function (e) {
+      Logger.warn(e);
+    }));
+    return fut.wait();
   },
   /**
    * braintree/refund/create
