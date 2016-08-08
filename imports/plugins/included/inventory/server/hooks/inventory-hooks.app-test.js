@@ -100,7 +100,7 @@ describe("Inventory Hooks", function () {
     expect(updatedInventoryItem.workflow.status).to.equal("sold");
   });
 
-  it("should move allocated inventory to 'shipped' when an order is shipped", function () {
+  it("should move allocated inventory to 'shipped' when an order is shipped", function (done) {
     sandbox.stub(Meteor.server.method_handlers, "orders/sendNotification", function () {
       check(arguments, [Match.Any]);
       Logger.warn("running stub notification");
@@ -136,8 +136,11 @@ describe("Inventory Hooks", function () {
     const orderId = Meteor.call("cart/copyCartToOrder", cart._id);
     const order = Orders.findOne(orderId);
     const shipping = { items: [] };
-    Meteor.call("orders/shipmentShipped", order, shipping);
-    const shippedInventoryItem = Inventory.findOne(inventoryItem._id);
-    expect(shippedInventoryItem.workflow.status).to.equal("shipped");
+    Meteor.call("orders/shipmentShipped", order, shipping, () => {
+      Meteor._sleepForMs(500);
+      const shippedInventoryItem = Inventory.findOne(inventoryItem._id);
+      expect(shippedInventoryItem.workflow.status).to.equal("shipped");
+      return done();
+    });
   });
 });
