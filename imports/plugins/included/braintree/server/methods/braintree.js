@@ -1,3 +1,4 @@
+import accounting from "accounting-js";
 import moment from "moment";
 import { Meteor } from "meteor/meteor";
 import Future from "fibers/future";
@@ -137,26 +138,46 @@ Meteor.methods({
   "braintree/payment/capture": function (paymentMethod) {
     check(paymentMethod, PaymentMethod);
     let transactionId = paymentMethod.transactions[0].transaction.id;
-    let amount = paymentMethod.transactions[0].transaction.amount;
+    let amount = accounting.toFixed(paymentMethod.amount, 2);
     let gateway = getGateway();
     const fut = new Future();
     this.unblock();
-    gateway.transaction.submitForSettlement(transactionId, amount, Meteor.bindEnvironment(function (error, result) {
-      if (error) {
-        fut.return({
-          saved: false,
-          error: error
-        });
-      } else {
-        fut.return({
-          saved: true,
-          response: result
-        });
-      }
-    }, function (e) {
-      Logger.warn(e);
-    }));
-    return fut.wait();
+
+    if (amount === accounting.toFixed(0, 2)) {
+      gateway.transaction.void(transactionId, function (error, result) {
+        if (error) {
+          fut.return({
+            saved: false,
+            error: error
+          });
+        } else {
+          fut.return({
+            saved: true,
+            response: result
+          });
+        }
+      }, function (e) {
+        Logger.warn(e);
+      });
+      return fut.wait();
+    } else {
+      gateway.transaction.submitForSettlement(transactionId, amount, Meteor.bindEnvironment(function (error, result) {
+        if (error) {
+          fut.return({
+            saved: false,
+            error: error
+          });
+        } else {
+          fut.return({
+            saved: true,
+            response: result
+          });
+        }
+      }, function (e) {
+        Logger.warn(e);
+      }));
+      return fut.wait();
+    }
   },
   /**
    * braintree/refund/create
@@ -182,7 +203,7 @@ Meteor.methods({
         if (result.errors.errorCollections.transaction.validationErrors.base[0].code === "91506") {
           fut.return({
             saved: false,
-            error: "Cannot refund transaction until it\'s settled. Please try again later"
+            error: "Braintree does not allow refunds until transactions are settled. This can take up to 24 hours. Please try again later."
           });
         } else {
           fut.return({
@@ -240,4 +261,3 @@ getRefundDetails = function (refundId) {
   let findResults = braintreeFind(refundId);
   return findResults;
 };
-
