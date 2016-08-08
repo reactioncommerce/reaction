@@ -1,1 +1,1 @@
-import "./griddle.jsx";
+import "./griddle.js";

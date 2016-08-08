@@ -2,7 +2,7 @@ import { Template } from "meteor/templating";
 import { AutoForm } from "meteor/aldeed:autoform";
 import { Packages } from "/lib/collections";
 import { i18next } from "/client/api";
-import { TaxPackageConfig } from "/imports/plugins/core/tax-base/lib/collections/schemas";
+import { TaxPackageConfig } from "/imports/plugins/core/taxes/lib/collections/schemas";
 
 Template.taxCloudSettings.helpers({
   packageConfigSchema() {

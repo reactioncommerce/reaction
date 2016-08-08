@@ -2,9 +2,9 @@ import { Meteor } from "meteor/meteor";
 import { Match, check } from "meteor/check";
 import { HTTP } from "meteor/http";
 import { EJSON } from "meteor/ejson";
-import { Taxes } from "../../core/tax-base/lib/collections";
+import { Taxes } from "../../core/taxes/lib/collections";
 import { Logger } from "/server/api";
-import Reaction from "../../core/tax-base/server/api";
+import Reaction from "../../core/taxes/server/api";
 
 Meteor.methods({
   /**

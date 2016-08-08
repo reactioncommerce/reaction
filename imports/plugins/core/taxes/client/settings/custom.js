@@ -58,6 +58,7 @@ Template.customTaxRates.helpers({
   packageConfigSchema() {
     return TaxPackageConfig;
   },
+  // for forms
   taxSchema() {
     return TaxSchema;
   },
@@ -146,6 +147,14 @@ Template.customTaxRates.helpers({
   },
   noDataMessage() {
     return i18next.t("taxSettings.noCustomTaxRatesFound");
+  }
+});
+
+Template.customTaxRates.events({
+  "submit #customTaxRates-update-form ": function(event, template){
+    const instance = Template.instance();
+    const id = instance.state.get("editingId");
+    console.log("yo, instance!", id);
   }
 });
 
