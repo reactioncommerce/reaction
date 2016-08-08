@@ -10,6 +10,7 @@ import MeteorGriddle from "/imports/plugins/core/ui-grid/client/griddle";
 import { IconButton } from "/imports/plugins/core/ui/client/components";
 
 /* eslint no-shadow: ["error", { "allow": ["options"] }] */
+/* eslint no-unused-vars: ["error", { "argsIgnorePattern": "[oO]ptions" }] */
 
 Template.customTaxRates.onCreated(function () {
   this.autorun(() => {
@@ -18,26 +19,32 @@ Template.customTaxRates.onCreated(function () {
 
   this.state = new ReactiveDict();
   this.state.setDefault({
-    isEditing: false
+    isEditing: false,
+    editingId: null
   });
 });
 
 Template.customTaxRates.helpers({
-  EditButton() {
+  editButton() {
     const instance = Template.instance();
     const state = instance.state;
     const isEditing = state.equals("isEditing", true);
-    const editingId = state.get("editingId");
+    let editingId = state.get("editingId");
+    if (!isEditing) {
+      editingId = null;
+    }
 
     return {
       component: IconButton,
-      icon: "fa fa-pencil",
-      onIcon: "fa fa-check",
+      icon: "fa fa-plus",
+      onIcon: "fa fa-close",
       toggle: true,
       toggleOn: isEditing,
       onClick() {
-        state.set("isEditing", !isEditing);
-        state.set("editingId", !editingId);
+        return state.set({
+          isEditing: !isEditing,
+          editingId: editingId
+        });
       }
     };
   },
@@ -147,6 +154,16 @@ AutoForm.hooks({
     onSuccess: function () {
       return Alerts.toast(i18next.t("taxSettings.shopCustomTaxRatesSaved"),
         "success");
+    },
+    onError: function (operation, error) {
+      return Alerts.toast(
+        `${i18next.t("taxSettings.shopCustomTaxRatesFailed")} ${error}`, "error"
+      );
+    }
+  },
+  "customTaxRates-insert-form": {
+    onSuccess: function () {
+      return Alerts.toast(i18next.t("taxSettings.shopCustomTaxRatesSaved"), "success");
     },
     onError: function (operation, error) {
       return Alerts.toast(
