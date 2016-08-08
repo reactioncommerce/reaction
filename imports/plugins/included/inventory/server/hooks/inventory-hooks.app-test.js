@@ -101,6 +101,7 @@ describe("Inventory Hooks", function () {
   });
 
   it("should move allocated inventory to 'shipped' when an order is shipped", function (done) {
+    this.timeout(5000);
     sandbox.stub(Meteor.server.method_handlers, "orders/sendNotification", function () {
       check(arguments, [Match.Any]);
       Logger.warn("running stub notification");
