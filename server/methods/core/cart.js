@@ -338,7 +338,7 @@ Meteor.methods({
 
     if (cartVariantExists) {
       return Collections.Cart.update({
-        "_id": cart._id,
+        _id: cart._id,
         "items.variants._id": variantId
       }, {
         $inc: {
@@ -672,7 +672,7 @@ Meteor.methods({
     // if we have an existing item update it, otherwise add to set.
     if (cart.shipping) {
       selector = {
-        "_id": cartId,
+        _id: cartId,
         "shipping._id": cart.shipping[0]._id
       };
       update = {
@@ -757,7 +757,7 @@ Meteor.methods({
     // if we have an existing item update it, otherwise add to set.
     if (Array.isArray(cart.shipping) && cart.shipping.length > 0) {
       selector = {
-        "_id": cartId,
+        _id: cartId,
         "shipping._id": cart.shipping[0]._id
       };
       update = {
@@ -842,7 +842,7 @@ Meteor.methods({
     // if we have an existing item update it, otherwise add to set.
     if (Array.isArray(cart.billing) && cart.billing.length > 0) {
       selector = {
-        "_id": cartId,
+        _id: cartId,
         "billing._id": cart.billing[0]._id
       };
       update = {
