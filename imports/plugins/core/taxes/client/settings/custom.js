@@ -1,11 +1,10 @@
-// import { checkNpmVersions } from "meteor/tmeasday:check-npm-versions";
 import { Template } from "meteor/templating";
 import { ReactiveDict } from "meteor/reactive-dict";
 import { Shops } from "/lib/collections";
 import { Countries } from "/client/collections";
 import { Taxes, TaxCodes } from "../../lib/collections";
 import { i18next } from "/client/api";
-import { TaxPackageConfig, Taxes as TaxSchema } from "../../lib/collections/schemas";
+import { Taxes as TaxSchema } from "../../lib/collections/schemas";
 import MeteorGriddle from "/imports/plugins/core/ui-grid/client/griddle";
 import { IconButton } from "/imports/plugins/core/ui/client/components";
 
@@ -30,17 +29,20 @@ Template.customTaxRates.helpers({
     const state = instance.state;
     const isEditing = state.equals("isEditing", true);
     let editingId = state.get("editingId");
+    // toggle edit state
     if (!isEditing) {
       editingId = null;
     }
-
+    // return icon
     return {
       component: IconButton,
       icon: "fa fa-plus",
-      onIcon: "fa fa-close",
+      onIcon: "fa fa-check",
       toggle: true,
       toggleOn: isEditing,
       onClick() {
+        // remove active rows from grid
+        $(".tax-grid-row").removeClass("active");
         return state.set({
           isEditing: !isEditing,
           editingId: editingId
@@ -48,23 +50,62 @@ Template.customTaxRates.helpers({
       }
     };
   },
+  taxGrid() {
+    const filteredFields = ["taxCode", "rate", "country", "region", "postal"];
+    const noDataMessage = i18next.t("taxSettings.noCustomTaxRatesFound");
+    const instance = Template.instance();
+
+    //
+    // helper to get and select row from griddle
+    // into blaze for to select tax row for editing
+    //
+    function editRow(options) {
+      const currentId = instance.state.get("editingId");
+      // isEditing is tax rate object
+      instance.state.set("isEditing", options.props.data);
+      instance.state.set("editingId", options.props.data._id);
+      // toggle edit mode clicking on same row
+      if (currentId === options.props.data._id) {
+        instance.state.set("isEditing", null);
+        instance.state.set("editingId", null);
+      }
+    }
+
+    //
+    // helper adds a class to every grid row
+    //
+    const customRowMetaData = {
+      bodyCssClassName: () =>  {
+        return "tax-grid-row";
+      }
+    };
+
+    // return tax Grid
+    return {
+      component: MeteorGriddle,
+      publication: "Taxes",
+      collection: Taxes,
+      matchingResultsCount: "taxes-count",
+      showFilter: true,
+      resultsPerPage: 5,
+      useGriddleStyles: false,
+      rowMetadata: customRowMetaData,
+      filteredFields: filteredFields,
+      columns: filteredFields,
+      noDataMessage: noDataMessage,
+      onRowClick: editRow
+    };
+  },
+
   instance() {
     const instance = Template.instance();
     return instance;
   },
-  griddleTable() {
-    return MeteorGriddle;
-  },
-  packageConfigSchema() {
-    return TaxPackageConfig;
-  },
-  // for forms
+  // schema for forms
   taxSchema() {
     return TaxSchema;
   },
-  taxCollection() {
-    return Taxes;
-  },
+  // list of countries for tax input
   countryOptions: function () {
     return Countries.find().fetch();
   },
@@ -99,19 +140,10 @@ Template.customTaxRates.helpers({
     }
     return options;
   },
-  filteredFields() {
-    return ["taxCode", "rate", "country", "region", "postal"];
-  },
-  Taxes() {
-    return Taxes;
-  },
   taxRate() {
     const instance = Template.instance();
     const id = instance.state.get("editingId");
     return Taxes.findOne(id);
-  },
-  packageData() {
-    return Taxes.find();
   },
   taxCodes() {
     const instance = Template.instance();
@@ -131,33 +163,34 @@ Template.customTaxRates.helpers({
       return options;
     }
     return [];
-  },
-  editRow(options) {
-    const instance = Template.instance();
-    const currentId = instance.state.get("editingId");
-    return (options) => {
-      instance.state.set("isEditing", options.props.data);
-      // toggle edit mode clicking on same row
-      if (currentId === options.props.data._id) {
-        instance.state.set("isEditing", false);
-        instance.state.set("editingId", null);
-      }
-      return instance.state.set("editingId", options.props.data._id);
-    };
-  },
-  noDataMessage() {
-    return i18next.t("taxSettings.noCustomTaxRatesFound");
   }
 });
 
+//
+// on submit lets clear the form state
+//
 Template.customTaxRates.events({
-  "submit #customTaxRates-update-form ": function(event, template){
+  "submit #customTaxRates-update-form": function () {
     const instance = Template.instance();
-    const id = instance.state.get("editingId");
-    console.log("yo, instance!", id);
+    instance.state.set("isEditing", null);
+    instance.state = new ReactiveDict();
+  },
+  "submit #customTaxRates-insert-form": function () {
+    const instance = Template.instance();
+    // uncomment if we want to close on insert
+    // instance.state.set("isEditing", null);
+    instance.state = new ReactiveDict();
+  },
+  "click .tax-grid-row": function (event) {
+    // toggle all rows off, then add our active row
+    $(".tax-grid-row").removeClass("active");
+    $(event.currentTarget).addClass("active");
   }
 });
 
+//
+// Hooks for update and insert forms
+//
 AutoForm.hooks({
   "customTaxRates-update-form": {
     onSuccess: function () {

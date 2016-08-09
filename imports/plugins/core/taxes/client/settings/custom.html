@@ -1,16 +1,6 @@
 <template name="customTaxRates">
   <div>
-    {{> React component=griddleTable
-      publication="Taxes"
-      collection=Taxes
-      matchingResultsCount="taxes-count"
-      showFilter=true
-      filteredFields=filteredFields
-      columns=filteredFields
-      noDataMessage=noDataMessage
-      onRowClick=editRow
-      useExternal=true
-    }}
+    {{> React taxGrid }}
   </div>
 
   <div class="add-new-tax-rate-button pull-right">
