@@ -103,7 +103,7 @@ describe("cart methods", function () {
       function removeFromCartFunc() {
         return Meteor.call("cart/removeFromCart", cartItemId);
       }
-      expect(removeFromCartFunc).to.throw(Meteor.Error, /item not found/);
+      expect(removeFromCartFunc).to.throw(Meteor.Error, /cart-item-not-found/);
       return done();
     });
 
@@ -117,7 +117,7 @@ describe("cart methods", function () {
       function removeFromCartFunc() {
         return Meteor.call("cart/removeFromCart", cartItemId);
       }
-      expect(removeFromCartFunc).to.throw(Meteor.Error, /item not found/);
+      expect(removeFromCartFunc).to.throw(Meteor.Error, /cart-item-not-found/);
       return done();
     });
   });
