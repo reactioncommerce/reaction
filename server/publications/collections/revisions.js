@@ -9,7 +9,7 @@ Meteor.publish("Revisions", function (documentId) {
   check(documentId, String);
 
   const product = Collections.Products.findOne({
-    handle: documentId
+    _id: documentId
   });
 
   // check(userId, Match.OneOf(String, null));

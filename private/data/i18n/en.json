@@ -138,7 +138,10 @@
         "notFoundError": "Page not found.",
         "productNotFound": "This product was not found.",
         "loadMoreProducts": "Load more products",
-        "noProductsFound": "No Products found"
+        "noProductsFound": "No Products found",
+        "publishChanges": "Publish Changes",
+        "showChanges": "Show Changes",
+        "hideChanges": "Hide Changes"
       },
       "shopSettings": {
         "general": "General",

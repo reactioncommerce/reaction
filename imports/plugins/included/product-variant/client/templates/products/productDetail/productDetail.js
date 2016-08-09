@@ -8,6 +8,7 @@ import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
 import { Template } from "meteor/templating";
 import { Button, EditButton } from "/imports/plugins/core/ui/client/components";
+import { PublishContainer } from "/imports/plugins/core/revisions";
 
 // load modules
 require("jquery-ui");
@@ -412,6 +413,9 @@ Template.productDetail.events({
 
 Template.productDetailForm.onCreated(function () {
   this.state = new ReactiveDict();
+  this.state.setDefault({
+    product: {}
+  });
 
   this.autorun(() => {
     this.state.set({
@@ -427,20 +431,13 @@ Template.productDetailForm.onCreated(function () {
 });
 
 Template.productDetailForm.helpers({
-  PublishButton() {
+  PublishContainerComponent() {
     const instance = Template.instance();
-    const product = instance.state.get("product");
-
+    const product = instance.state.get("product") || {};
+    console.log("product=====", product);
     return {
-      component: Button,
-      label: "Publish Changes",
-      i18nKeyLabel: "revisions.publishChanges",
-      onClick() {
-        if (product) {
-          console.log("YAY publish", product._id);
-          Meteor.call("revisions/publish", product._id);
-        }
-      }
+      component: PublishContainer,
+      documentId: product._id
     };
   },
   product() {

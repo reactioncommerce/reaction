@@ -1,5 +1,6 @@
 import { Products, Revisions } from "/lib/collections";
 import { Logger } from "/server/api";
+import { diff } from "deep-diff";
 
 
 Products.before.insert((userId, product) => {
@@ -64,19 +65,21 @@ Products.before.update(function (userId, product, fieldNames, modifier, options)
   for (let key in modifier.$set) {
     if (Object.hasOwnProperty.call(modifier.$set, key)) {
       switch (key) {
-      case "isVisible":
-        const isVisible = !productRevision.documentData.isVisible;
-        revisionModifier.$set[`documentData.${key}`] = isVisible;
-        break;
-      case "metafields.$":
-        revisionSelector["documentData.metafields"] = originalSelector.metafields;
-        revisionModifier.$set[`documentData.${key}`] = modifier.$set[key];
-        break;
-      default:
-        revisionModifier.$set[`documentData.${key}`] = modifier.$set[key];
+        case "isVisible":
+          const isVisible = !productRevision.documentData.isVisible;
+          revisionModifier.$set[`documentData.${key}`] = isVisible;
+          break;
+        case "metafields.$":
+          revisionSelector["documentData.metafields"] = originalSelector.metafields;
+          revisionModifier.$set[`documentData.${key}`] = modifier.$set[key];
+          break;
+        default:
+          revisionModifier.$set[`documentData.${key}`] = modifier.$set[key];
       }
     }
   }
+
+  Revisions.update(revisionSelector, revisionModifier);
 
   if (options.publish === true || (product.workflow && product.workflow.status === "product/publish")) {
     // Maybe mark the revision as published
@@ -85,8 +88,6 @@ Products.before.update(function (userId, product, fieldNames, modifier, options)
 
     return true;
   }
-
-  Revisions.update(revisionSelector, revisionModifier);
 
   Logger.info(`Revison updated for product ${product._id}.`);
 
@@ -138,4 +139,23 @@ Products.before.remove(function (userId, product) {
   Logger.info(`Preventing write to product ${product._id} for Collection.remove().`);
 
   return false;
+});
+
+Revisions.after.update(function (userId, revision) {
+  // Make diff
+  const product = Products.findOne({
+    _id: revision.documentId
+  });
+
+  const differences = diff(product, revision.documentData);
+  console.log(typeof differences);
+  Revisions.direct.update({
+    _id: revision._id
+  }, {
+    $set: {
+      diff: differences && differences.map((d) => Object.assign({}, d))
+    }
+  });
+}, {
+  fetchPrevious: false
 });
