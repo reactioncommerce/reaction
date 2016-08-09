@@ -417,27 +417,20 @@ Meteor.methods({
       userId: userId
     });
     if (!cart) {
-      Logger.error(`Cart not found for user: ${ this.userId }`);
-      throw new Meteor.Error(404, "Cart not found",
-        "Cart not found for user with such id");
+      Logger.error(`Cart not found for user: ${this.userId}`);
+      throw new Meteor.Error("cart-not-found", "Cart not found for user with such id");
     }
 
     let cartItem;
 
     if (cart.items) {
-      cart.items.forEach(item => {
-        if (item._id === itemId) {
-          cartItem = item;
-        }
-      });
+      cartItem = _.find(cart.items, (item) => item._id === itemId);
     }
 
     // extra check of item exists
     if (typeof cartItem !== "object") {
-      Logger.error(`Unable to find an item: ${itemId
-        } within the cart: ${cart._id}`);
-      throw new Meteor.Error(404, "Cart item not found.",
-        "Unable to find an item with such id within you cart.");
+      Logger.error(`Unable to find an item: ${itemId} within the cart: ${cart._id}`);
+      throw new Meteor.Error("cart-item-not-found", "Unable to find an item with such id in cart.");
     }
 
     // refresh shipping quotes
@@ -463,11 +456,8 @@ Meteor.methods({
             "error removing from cart");
           return error;
         }
-        if (result) {
-          Logger.info(`cart: deleted cart item variant id ${
-            cartItem.variants._id}`);
-          return result;
-        }
+        Logger.info(`cart: deleted cart item variant id ${cartItem.variants._id}`);
+        return result;
       });
     }
 
@@ -477,10 +467,10 @@ Meteor.methods({
       Meteor.call("cart/removeFromCart", cartItem._id);
     } else {
       return Collections.Cart.update({
-        "_id": cart._id,
+        _id: cart._id,
         "items._id": cartItem._id
       }, {
-        "$inc": {
+        $inc: {
           "items.$.quantity": removeQuantity
         }
       }, (error, result) => {
@@ -490,13 +480,11 @@ Meteor.methods({
             "error removing from cart");
           return error;
         }
-        if (result) {
-          Logger.info(`cart: removed variant ${
-            cartItem._id} quantity of ${quantity}`);
-          return result;
-        }
+        Logger.info(`cart: removed variant ${cartItem._id} quantity of ${quantity}`);
+        return result;
       });
     }
+    return true;
   },
 
   /**
@@ -984,7 +972,7 @@ Meteor.methods({
     // if we have an existing item update it, otherwise add to set.
     if (cart.billing) {
       selector = {
-        "_id": cartId,
+        _id: cartId,
         "billing._id": cart.billing[0]._id
       };
       update = {
