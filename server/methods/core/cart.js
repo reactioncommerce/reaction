@@ -473,26 +473,31 @@ Meteor.methods({
 
     // if quantity lets convert to negative and increment
     const removeQuantity = Math.abs(quantity) * -1;
-    return Collections.Cart.update({
-      "_id": cart._id,
-      "items._id": cartItem._id
-    }, {
-      "$inc": {
-        "items.$.quantity": removeQuantity
-      }
-    }, (error, result) => {
-      if (error) {
-        Logger.error(error);
-        Logger.error(Collections.Cart.simpleSchema().namedContext().invalidKeys(),
-          "error removing from cart");
-        return error;
-      }
-      if (result) {
-        Logger.info(`cart: removed variant ${
-          cartItem._id} quantity of ${quantity}`);
-        return result;
-      }
-    });
+    if (quantity >= cartItem.quantity) {
+      Meteor.call("cart/removeFromCart", cartItem._id);
+    } else {
+      return Collections.Cart.update({
+        "_id": cart._id,
+        "items._id": cartItem._id
+      }, {
+        "$inc": {
+          "items.$.quantity": removeQuantity
+        }
+      }, (error, result) => {
+        if (error) {
+          Logger.error(error);
+          Logger.error(Collections.Cart.simpleSchema().namedContext().invalidKeys(),
+            "error removing from cart");
+          return error;
+        }
+        if (result) {
+          Logger.info(`cart: removed variant ${
+            cartItem._id} quantity of ${quantity}`);
+          return result;
+        }
+      });
+    }
+
   },
 
   /**
