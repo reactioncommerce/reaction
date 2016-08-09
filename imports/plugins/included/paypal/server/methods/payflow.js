@@ -1,5 +1,6 @@
 import PayFlow from "paypal-rest-sdk"; // PayFlow is PayPal PayFlow lib
 import moment from "moment";
+import accounting from "accounting-js";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { Reaction, Logger } from "/server/api";
@@ -61,6 +62,7 @@ Meteor.methods({
     // TODO: This should be changed to some ReactionCore method
     const shop = Shops.findOne(Reaction.getShopId());
     const wrappedFunc = Meteor.wrapAsync(PayFlow.authorization.capture, PayFlow.authorization);
+    const wrappedFuncVoid = Meteor.wrapAsync(PayFlow.authorization.void, PayFlow.authorization);
     let captureTotal = Math.round(parseFloat(paymentMethod.amount) * 100) / 100;
     const captureDetails = {
       amount: {
@@ -69,7 +71,29 @@ Meteor.methods({
       },
       is_final_capture: true // eslint-disable-line camelcase
     };
+    const capturedAmount = accounting.toFixed(captureDetails.amount.total, 2);
 
+    if (capturedAmount === accounting.toFixed(0, 2)) {
+      try {
+        const response = wrappedFuncVoid(paymentMethod.metadata.authorizationId, captureDetails);
+
+        result = {
+          saved: true,
+          metadata: {
+            parentPaymentId: response.parent_payment,
+            captureId: response.id
+          },
+          rawTransaction: response
+        };
+      } catch (error) {
+        Logger.warn(error);
+        result = {
+          saved: false,
+          error: error
+        };
+      }
+      return result;
+    }
     try {
       const response = wrappedFunc(paymentMethod.metadata.authorizationId, captureDetails);
 
