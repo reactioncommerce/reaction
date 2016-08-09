@@ -40,6 +40,11 @@ Template.customTaxRates.helpers({
       onIcon: "fa fa-check",
       toggle: true,
       toggleOn: isEditing,
+      style: {
+        position: "relative",
+        left: "315px",
+        top: "-48px"
+      },
       onClick() {
         // remove active rows from grid
         $(".tax-grid-row").removeClass("active");
@@ -87,7 +92,6 @@ Template.customTaxRates.helpers({
       collection: Taxes,
       matchingResultsCount: "taxes-count",
       showFilter: true,
-      resultsPerPage: 5,
       useGriddleStyles: false,
       rowMetadata: customRowMetaData,
       filteredFields: filteredFields,
@@ -179,6 +183,22 @@ Template.customTaxRates.events({
     const instance = Template.instance();
     // uncomment if we want to close on insert
     // instance.state.set("isEditing", null);
+    instance.state = new ReactiveDict();
+  },
+  "submit #customTaxRates-update-form": function () {
+    const instance = Template.instance();
+    instance.state.set("isEditing", null);
+    instance.state = new ReactiveDict();
+  },
+  "submit #customTaxRates-insert-form": function () {
+    const instance = Template.instance();
+    // uncomment if we want to close on insert
+    // instance.state.set("isEditing", null);
+    instance.state = new ReactiveDict();
+  },
+  "click .cancel": function () {
+    const instance = Template.instance();
+    instance.state.set("isEditing", null);
     instance.state = new ReactiveDict();
   },
   "click .tax-grid-row": function (event) {

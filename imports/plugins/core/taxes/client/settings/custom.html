@@ -3,7 +3,7 @@
     {{> React taxGrid }}
   </div>
 
-  <div class="add-new-tax-rate-button pull-right">
+  <div>
     {{> React editButton }}
   </div>
 
@@ -39,7 +39,7 @@
         </div>
         {{> afQuickField name='postal' class='form-control'}}
         {{> afQuickField name='rate' class='form-control'}}
-        {{> shopSettingsSubmitButton}}
+        {{> taxSettingsSubmitButton}}
       {{/autoForm}}
 
     {{else}}
@@ -71,9 +71,19 @@
         </div>
         {{> afQuickField name='postal' class='form-control'}}
         {{> afQuickField name='rate' class='form-control'}}
-        {{> shopSettingsSubmitButton}}
+        {{> taxSettingsSubmitButton}}
       {{/autoForm}}
     {{/if}}
     </div>
   {{/if}}
+</template>
+
+
+<template name="taxSettingsSubmitButton">
+  <div class="clearfix">
+    <div class="pull-right">
+      <button type="button" class="btn btn-primary cancel" data-i18n="app.cancel">Cancel</button>
+      <button type="submit" class="btn btn-primary" data-i18n="app.saveChanges">Save Changes</button>
+    </div>
+  </div>
 </template>
