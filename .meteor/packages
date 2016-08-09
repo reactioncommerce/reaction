@@ -58,6 +58,7 @@ cfs:gridfs
 cfs:standard-packages
 cfs:storage-adapter
 cfs:ui
+jeremy:stripe
 jparker:gravatar
 juliancwirko:s-alert
 juliancwirko:s-alert-stackslide
