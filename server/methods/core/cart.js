@@ -476,11 +476,11 @@ Meteor.methods({
     if (quantity >= cartItem.quantity) {
       Meteor.call("cart/removeFromCart", cartItem._id);
     } else {
-      return Collections.Cart.update({
+      return Collections.Cart.update({ // eslint-disable-line quote-props
         "_id": cart._id,
         "items._id": cartItem._id
       }, {
-        "$inc": {
+        $inc: {
           "items.$.quantity": removeQuantity
         }
       }, (error, result) => {
