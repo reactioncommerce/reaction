@@ -54,7 +54,7 @@ describe("cart methods", function () {
       return done();
     });
 
-    it.only("when called with a quantity, should decrease the quantity", function (done) {
+    it("when called with a quantity, should decrease the quantity", function () {
       sandbox.stub(Meteor.server.method_handlers, "cart/resetShipmentMethod", function () {
         check(arguments, [Match.Any]);
       });
@@ -65,17 +65,12 @@ describe("cart methods", function () {
       const cartUserId = cart.userId;
       sandbox.stub(Reaction, "getShopId", () => shop._id);
       sandbox.stub(Meteor, "userId", () => cartUserId);
-      let updateSpy = sandbox.spy(Collections.Cart, "update");
       let cartFromCollection = Collections.Cart.findOne(cart._id);
       const cartItemId = cartFromCollection.items[0]._id;
       const originalQty = cartFromCollection.items[0].quantity;
-      assert.equal(cartFromCollection.items.length, 2);
       Meteor.call("cart/removeFromCart", cartItemId, 1);
-      assert.equal(updateSpy.callCount, 1, "update should be called one time");
-      Meteor._sleepForMs(1000);
       let updatedCart = Collections.Cart.findOne(cart._id);
       expect(updatedCart.items[0].quantity).to.equal(originalQty - 1);
-      return done();
     });
 
     it("should throw an exception when attempting to remove item from cart of another user", function (done) {

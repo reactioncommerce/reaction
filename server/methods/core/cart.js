@@ -29,14 +29,14 @@ function quantityProcessing(product, variant, itemQty = 1) {
 
   // TODO: think about #152 implementation here
   switch (product.type) {
-  case "not-in-stock":
-    break;
-  default: // type: `simple` // todo: maybe it should be "variant"
-    if (quantity < MIN) {
-      quantity = MIN;
-    } else if (quantity > MAX) {
-      quantity = MAX;
-    }
+    case "not-in-stock":
+      break;
+    default: // type: `simple` // todo: maybe it should be "variant"
+      if (quantity < MIN) {
+        quantity = MIN;
+      } else if (quantity > MAX) {
+        quantity = MAX;
+      }
   }
 
   return quantity;
@@ -474,11 +474,11 @@ Meteor.methods({
     // if quantity lets convert to negative and increment
     const removeQuantity = Math.abs(quantity) * -1;
     return Collections.Cart.update({
-      _id: cart._id,
-      items: cartItem
+      "_id": cart._id,
+      "items._id": cartItem._id
     }, {
-      $inc: {
-        "items.quantity": removeQuantity
+      "$inc": {
+        "items.$.quantity": removeQuantity
       }
     }, (error, result) => {
       if (error) {
