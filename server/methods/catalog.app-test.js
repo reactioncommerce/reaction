@@ -4,7 +4,7 @@ import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Factory } from "meteor/dburles:factory";
 import { Reaction } from "/server/api";
-import { Products, Tags } from "/lib/collections";
+import { Products, Revisions, Tags } from "/lib/collections";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
 import { Roles } from "meteor/alanning:roles";
@@ -519,13 +519,32 @@ describe("core product methods", function () {
       expect(product.handle).to.not.equal(productHandle);
     });
 
-    it("should set handle correctly", function () {
+    it("should set handle correctly on product revision", function () {
+      sandbox.stub(Reaction, "hasPermission", () => true);
+      let product = addProduct();
+      Meteor.call("products/updateProductField", product._id, "title", "new second product name");
+      Meteor.call("products/setHandle", product._id);
+      const revision = Revisions.findOne({ documentId: product._id });
+      expect(revision.documentData.handle).to.equal("new-second-product-name");
+    });
+
+    it("should not set handle on published product", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       let product = addProduct();
       Meteor.call("products/updateProductField", product._id, "title", "new second product name");
       Meteor.call("products/setHandle", product._id);
       product = Products.findOne(product._id);
-      expect(product.handle).to.equal("new-second-product-name");
+      expect(product.handle).to.not.equal("new-second-product-name");
+    });
+
+    it("should publish handle correctly", function () {
+      sandbox.stub(Reaction, "hasPermission", () => true);
+      let product = addProduct();
+      Meteor.call("products/updateProductField", product._id, "title", "new second product name");
+      Meteor.call("products/setHandle", product._id);
+      Meteor.call("revisions/publish", [product.id]);
+      product = Products.findOne(product._id);
+      expect(product.handle).to.not.equal("new-second-product-name");
     });
 
     it("products with the same title should receive correct handle", function () {

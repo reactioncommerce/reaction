@@ -16,11 +16,6 @@ Products.before.insert((userId, product) => {
       documentData: product
     });
   }
-
-  if (options.publish === true) {
-    // Maybe mark the revision as published
-    Logger.info(`Publishing revison for product ${product._id}.`);
-  }
 });
 
 
