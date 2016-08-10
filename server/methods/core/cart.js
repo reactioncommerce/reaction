@@ -440,7 +440,7 @@ Meteor.methods({
     // reset selected shipment method
     Meteor.call("cart/resetShipmentMethod", cart._id);
 
-    if (!quantity) {
+    if (!quantity || quantity >= cartItem.quantity) {
       return Collections.Cart.update({
         _id: cart._id
       }, {
@@ -463,28 +463,23 @@ Meteor.methods({
 
     // if quantity lets convert to negative and increment
     const removeQuantity = Math.abs(quantity) * -1;
-    if (quantity >= cartItem.quantity) {
-      Meteor.call("cart/removeFromCart", cartItem._id);
-    } else {
-      return Collections.Cart.update({
-        "_id": cart._id,
-        "items._id": cartItem._id
-      }, {
-        $inc: {
-          "items.$.quantity": removeQuantity
-        }
-      }, (error, result) => {
-        if (error) {
-          Logger.error(error);
-          Logger.error(Collections.Cart.simpleSchema().namedContext().invalidKeys(),
-            "error removing from cart");
-          return error;
-        }
-        Logger.info(`cart: removed variant ${cartItem._id} quantity of ${quantity}`);
-        return result;
-      });
-    }
-    return true;
+    return Collections.Cart.update({
+      "_id": cart._id,
+      "items._id": cartItem._id
+    }, {
+      $inc: {
+        "items.$.quantity": removeQuantity
+      }
+    }, (error, result) => {
+      if (error) {
+        Logger.error(error);
+        Logger.error(Collections.Cart.simpleSchema().namedContext().invalidKeys(),
+          "error removing from cart");
+        return error;
+      }
+      Logger.info(`cart: removed variant ${cartItem._id} quantity of ${quantity}`);
+      return result;
+    });
   },
 
   /**
