@@ -73,26 +73,36 @@ Products.before.update(function (userId, product, fieldNames, modifier, options)
 
     return true;
   }
+  for (let operation in modifier) {
+    if (Object.hasOwnProperty.call(modifier, operation)) {
+      if (!revisionModifier[operation]) {
+        revisionModifier[operation] = {};
+      }
 
-  for (let key in modifier.$set) {
-    if (Object.hasOwnProperty.call(modifier.$set, key)) {
-      switch (key) {
-        case "isVisible":
-          const isVisible = !productRevision.documentData.isVisible;
-          revisionModifier.$set[`documentData.${key}`] = isVisible;
-          break;
-        case "metafields.$":
-          revisionSelector["documentData.metafields"] = originalSelector.metafields;
-          revisionModifier.$set[`documentData.${key}`] = modifier.$set[key];
-          break;
-        default:
-          revisionModifier.$set[`documentData.${key}`] = modifier.$set[key];
+      for (let property in modifier[operation]) {
+        if (modifier[operation].hasOwnProperty.call(modifier[operation][property], property)) {
+          if (operation === "$set" && property === "isVisible") {
+            // Special handling for isVisible
+            // Look in the product revision to decided if the revision should be toggled visible or not.
+            //
+            // Since the product is only updated on publish, you can't use it as the source of truth for
+            // toggles
+            const isVisible = !productRevision.documentData.isVisible;
+            revisionModifier.$set[`documentData.${property}`] = isVisible;
+          } else if (operation === "$set" && property === "metafields.$") {
+            // Special handling for meta fields
+            revisionSelector["documentData.metafields"] = originalSelector.metafields;
+            revisionModifier.$set[`documentData.${property}`] = modifier.$set[property];
+          } else {
+            // Let everything else through
+            revisionModifier[operation][`documentData.${property}`] = modifier[operation][property];
+          }
+        }
       }
     }
   }
 
   Revisions.update(revisionSelector, revisionModifier);
-
 
   Logger.info(`Revison updated for product ${product._id}.`);
 
