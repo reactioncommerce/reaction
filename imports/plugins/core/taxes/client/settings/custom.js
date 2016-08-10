@@ -154,8 +154,11 @@ Template.customTaxRates.helpers({
     if (instance.subscriptionsReady()) {
       const taxCodes = TaxCodes.find().fetch();
       const options = [{
-        label: i18next.t("app.auto"),
-        value: "none"
+        label: i18next.t("taxSettings.taxable"),
+        value: "RC_TAX"
+      }, {
+        label: i18next.t("taxSettings.nottaxable"),
+        value: "RC_NOTAX"
       }];
 
       for (let taxCode of taxCodes) {
@@ -174,17 +177,6 @@ Template.customTaxRates.helpers({
 // on submit lets clear the form state
 //
 Template.customTaxRates.events({
-  "submit #customTaxRates-update-form": function () {
-    const instance = Template.instance();
-    instance.state.set("isEditing", null);
-    instance.state = new ReactiveDict();
-  },
-  "submit #customTaxRates-insert-form": function () {
-    const instance = Template.instance();
-    // uncomment if we want to close on insert
-    // instance.state.set("isEditing", null);
-    instance.state = new ReactiveDict();
-  },
   "submit #customTaxRates-update-form": function () {
     const instance = Template.instance();
     instance.state.set("isEditing", null);

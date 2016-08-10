@@ -62,6 +62,9 @@
           "socialLabel": "Social",
           "socialTitle": "Social",
           "socialDescription": "Social Channel configuration",
+          "taxesLabel": "Taxes",
+          "taxesTitle": "Taxes",
+          "taxesDescription": "Tax configuration",
           "themesLabel": "Themes",
           "themesTitle": "Themes",
           "themesDescription": "Themes and UI Components",
@@ -172,7 +175,10 @@
         "customRatesDescription": "Custom Rates",
         "taxCode": "Tax Code",
         "taxShipping": "Include Shipping",
-        "discountsIncluded": "Include Discounts"
+        "taxRate": "Rate",
+        "discountsIncluded": "Include Discounts",
+        "taxable": "Taxable",
+        "nottaxable": "Not Taxable"
       },
       "header": {
         "tagsAdd": "Add tag",

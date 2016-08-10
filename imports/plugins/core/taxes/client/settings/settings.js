@@ -30,7 +30,6 @@ Template.taxSettings.helpers({
         enabled = pkgData.settings[setting].enabled;
       }
     }
-
     return enabled === true ? "checked" : "";
   },
   //
@@ -62,6 +61,7 @@ Template.taxSettings.helpers({
       }
       return options;
     }
+    return undefined;
   },
   //
   // Template helper to add a hidden class if the condition is false
