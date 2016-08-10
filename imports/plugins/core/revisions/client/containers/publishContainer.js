@@ -28,7 +28,6 @@ PublishContainer.propTypes = {
 };
 
 export function handlePublishClick(revisions) {
-  console.log("revisions", revisions);
   if (isArray(revisions)) {
     const documentIds = revisions.map((revision) => {
       return revision.documentId;

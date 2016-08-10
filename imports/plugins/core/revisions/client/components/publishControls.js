@@ -2,8 +2,6 @@ import React, { Component, PropTypes } from "react";
 import { Button } from "/imports/plugins/core/ui/client/components";
 import SimpleDiff from "./simpleDiff";
 import { Translatable } from "/imports/plugins/core/ui/client/providers";
-import { Translation } from "/imports/plugins/core/ui/client/components";
-
 
 class PublishControls extends Component {
   constructor(props) {
@@ -19,7 +17,7 @@ class PublishControls extends Component {
 
   handleToggleShowChanges() {
     this.setState({
-      showDiff: !this.state.showDiffs
+      showDiffs: !this.state.showDiffs
     });
   }
 
@@ -50,13 +48,13 @@ class PublishControls extends Component {
   }
 
   get showDiffs() {
-    return this.diff && this.state.showDiffs;
+    return this.diffs && this.state.showDiffs;
   }
 
   renderChanges() {
     if (this.showDiffs) {
       const diffs = this.props.revisions.map((revision) => {
-        return <SimpleDiff diff={revision.diff} />;
+        return <SimpleDiff diff={revision.diff} key={revision._id} />;
       });
 
       return (
