@@ -54,6 +54,44 @@ describe("cart methods", function () {
       return done();
     });
 
+    it("when called with a quantity, should decrease the quantity", function () {
+      sandbox.stub(Meteor.server.method_handlers, "cart/resetShipmentMethod", function () {
+        check(arguments, [Match.Any]);
+      });
+      sandbox.stub(Meteor.server.method_handlers, "shipping/updateShipmentQuotes", function () {
+        check(arguments, [Match.Any]);
+      });
+      let cart = Factory.create("cart");
+      const cartUserId = cart.userId;
+      sandbox.stub(Reaction, "getShopId", () => shop._id);
+      sandbox.stub(Meteor, "userId", () => cartUserId);
+      let cartFromCollection = Collections.Cart.findOne(cart._id);
+      const cartItemId = cartFromCollection.items[0]._id;
+      const originalQty = cartFromCollection.items[0].quantity;
+      Meteor.call("cart/removeFromCart", cartItemId, 1);
+      let updatedCart = Collections.Cart.findOne(cart._id);
+      expect(updatedCart.items[0].quantity).to.equal(originalQty - 1);
+    });
+
+    it("when quantity is decresed to zero, remove cart item", function () {
+      sandbox.stub(Meteor.server.method_handlers, "cart/resetShipmentMethod", function () {
+        check(arguments, [Match.Any]);
+      });
+      sandbox.stub(Meteor.server.method_handlers, "shipping/updateShipmentQuotes", function () {
+        check(arguments, [Match.Any]);
+      });
+      let cart = Factory.create("cart");
+      const cartUserId = cart.userId;
+      sandbox.stub(Reaction, "getShopId", () => shop._id);
+      sandbox.stub(Meteor, "userId", () => cartUserId);
+      let cartFromCollection = Collections.Cart.findOne(cart._id);
+      const cartItemId = cartFromCollection.items[0]._id;
+      const originalQty = cartFromCollection.items[0].quantity;
+      Meteor.call("cart/removeFromCart", cartItemId, originalQty);
+      let updatedCart = Collections.Cart.findOne(cart._id);
+      expect(updatedCart.items.length).to.equal(1);
+    });
+
     it("should throw an exception when attempting to remove item from cart of another user", function (done) {
       const cart = Factory.create("cart");
       const cartItemId = "testId123";
@@ -65,7 +103,7 @@ describe("cart methods", function () {
       function removeFromCartFunc() {
         return Meteor.call("cart/removeFromCart", cartItemId);
       }
-      expect(removeFromCartFunc).to.throw(Meteor.Error, /item not found/);
+      expect(removeFromCartFunc).to.throw(Meteor.Error, /cart-item-not-found/);
       return done();
     });
 
@@ -79,7 +117,7 @@ describe("cart methods", function () {
       function removeFromCartFunc() {
         return Meteor.call("cart/removeFromCart", cartItemId);
       }
-      expect(removeFromCartFunc).to.throw(Meteor.Error, /item not found/);
+      expect(removeFromCartFunc).to.throw(Meteor.Error, /cart-item-not-found/);
       return done();
     });
   });
