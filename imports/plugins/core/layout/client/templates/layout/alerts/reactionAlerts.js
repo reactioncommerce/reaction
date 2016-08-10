@@ -90,13 +90,13 @@ Object.assign(Alerts, {
 
   toast(message, type, options) {
     switch (type) {
-    case "error":
-    case "warning":
-    case "success":
-    case "info":
-      return sAlert[type](message, options);
-    default:
-      return sAlert.success(message, options);
+      case "error":
+      case "warning":
+      case "success":
+      case "info":
+        return sAlert[type](message, options);
+      default:
+        return sAlert.success(message, options);
     }
   }
 });

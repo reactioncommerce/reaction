@@ -1,0 +1,83 @@
+@account-status-brand-color: #238cc3;
+
+.account-status {
+
+  a {
+    color: darken(@account-status-brand-color, 10%);
+    font-weight: bold;
+    transition: color .7s;
+
+    &:hover {
+      color: darken(@account-status-brand-color, 30%);
+      text-decoration: none;
+    }
+  }
+
+  .trial-info {
+    color: darken(@account-status-brand-color, 30%);
+    margin-bottom: 2rem;
+  }
+
+  .trial-ends-date {
+    font-size: 1.4rem;
+  }
+
+  .plan-choice:nth-of-type(1) {
+    margin: 2rem 0 .8rem 0;
+  }
+
+  .most-popular {
+    background-color: #afe4fe;
+    padding: 2px 4px;
+    border-radius: 3px;
+  }
+
+  .price-breakdown {
+    font-weight: normal;
+  }
+
+
+  .due-today {
+    margin: 2rem 0;
+
+    h4 {
+      font-weight: bold;
+      color: darken(@account-status-brand-color, 30%);
+
+      .price {
+        font-size: 1.5rem;
+        font-weight: normal;
+      }
+    }
+  }
+
+  .terms {
+    font-size: 1.2rem;
+    margin-bottom: 3rem;
+  }
+
+  button.checkout {
+    background-color: @account-status-brand-color;
+    color: #fff;
+    padding-left: 70px;
+    padding-right: 70px;
+    border-radius: 2px;
+    display: block;
+    margin: 0 auto;
+    transition: all .5s;
+
+    &:hover {
+      background-color: darken(@account-status-brand-color, 15%);
+      box-shadow: 0 2px 2px 1px rgba(0, 0, 0, .25);
+    }
+  }
+}
+
+.connect-account.loading {
+  width: 50px;
+  margin: 40px auto;
+
+  .fa-spin {
+    font-size: 55px;
+  }
+}
