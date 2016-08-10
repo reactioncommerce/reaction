@@ -434,10 +434,10 @@ Template.productDetailForm.helpers({
   PublishContainerComponent() {
     const instance = Template.instance();
     const product = instance.state.get("product") || {};
-    console.log("product=====", product);
+
     return {
       component: PublishContainer,
-      documentId: product._id
+      documentIds: [product._id]
     };
   },
   product() {

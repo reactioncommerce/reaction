@@ -1,21 +1,42 @@
 import { Products, Revisions } from "/lib/collections";
 import { Meteor } from "meteor/meteor";
+import isArray from "lodash/isarray";
+import { check, Match } from "meteor/check";
 
 Meteor.methods({
-  "revisions/publish"(documentId) {
-    check(documentId, String);
+  "revisions/publish"(documentIds) {
+    check(documentIds, Match.OneOf(String, Array));
 
     // Also publish variants if they have a draft
-    const revisions = Revisions.find({
-      $or: [
-        { documentId },
-        {
-          "documentData.ancestors": {
-            $in: [documentId]
+    let revisions;
+
+    if (isArray(documentIds)) {
+      revisions = Revisions.find({
+        $or: [
+          {
+            documentId: {
+              $in: documentIds
+            }
+          },
+          {
+            "documentData.ancestors": {
+              $in: documentIds
+            }
           }
-        }
-      ]
-    }).fetch();
+        ]
+      }).fetch();
+    } else {
+      revisions = Revisions.find({
+        $or: [
+          { documentId: documentIds },
+          {
+            "documentData.ancestors": {
+              $in: [documentIds]
+            }
+          }
+        ]
+      }).fetch();
+    }
 
     if (revisions) {
       for (let revision of revisions) {

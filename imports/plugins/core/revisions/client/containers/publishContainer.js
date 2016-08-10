@@ -4,7 +4,7 @@ import PublishControls from "../components/publishControls";
 import { Revisions } from "/lib/collections";
 import { Meteor } from "meteor/meteor";
 import TranslationProvider from "/imports/plugins/core/ui/client/providers/translationProvider"
-
+import isArray from "lodash/isArray";
 /**
  * Publish container is a stateless container component connected to Meteor data source.
  * @param  {Object} props Component props
@@ -16,24 +16,36 @@ const PublishContainer = (props) => {
       <TranslationProvider>
         <PublishControls
           onPublishClick={handlePublishClick}
-          revision={props.revisions[0]}
+          revisions={props.revisions}
         />
       </TranslationProvider>
     </div>
   );
 };
 
-export function handlePublishClick(documentId) {
-  Meteor.call("revisions/publish", documentId);
+PublishContainer.propTypes = {
+  revisions: PropTypes.arrayOf(PropTypes.object)
+};
+
+export function handlePublishClick(revisions) {
+  console.log("revisions", revisions);
+  if (isArray(revisions)) {
+    const documentIds = revisions.map((revision) => {
+      return revision.documentId;
+    });
+    Meteor.call("revisions/publish", documentIds);
+  }
 }
 
 function composer(props, onData) {
-  if (props.documentId) {
-    const subscription = Meteor.subscribe("Revisions", props.documentId);
+  if (props.documentIds) {
+    const subscription = Meteor.subscribe("Revisions", props.documentIds);
 
     if (subscription.ready()) {
       const revisions = Revisions.find({
-        documentId: props.documentId
+        documentId: {
+          $in: props.documentIds
+        }
       }).fetch();
 
       onData(null, {

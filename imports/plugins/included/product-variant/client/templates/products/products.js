@@ -75,7 +75,7 @@ Template.products.onCreated(function () {
     // we are caching `currentTag` or if we are not inside tag route, we will
     // use shop name as `base` name for `positions` object
     const currentTag = ReactionProduct.getTag();
-    const products = Products.find({
+    const productCursor = Products.find({
       ancestors: []
       // keep this, as an example
       // type: { $in: ["simple"] }
@@ -87,7 +87,14 @@ Template.products.onCreated(function () {
       }
     });
 
-    this.state.set("canLoadMoreProducts", products.count() >= Session.get("productScrollLimit"));
+    const products = productCursor.map((product) => {
+      if (product.__revisions && product.__revisions.length) {
+        return product.__revisions[0].documentData;
+      }
+      return product;
+    });
+
+    this.state.set("canLoadMoreProducts", productCursor.count() >= Session.get("productScrollLimit"));
     this.products.set(products);
   });
 

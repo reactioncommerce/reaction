@@ -10,7 +10,7 @@ class PublishControls extends Component {
     super(props);
 
     this.state = {
-      showDiff: false
+      showDiffs: false
     };
 
     this.handleToggleShowChanges = this.handleToggleShowChanges.bind(this);
@@ -19,18 +19,18 @@ class PublishControls extends Component {
 
   handleToggleShowChanges() {
     this.setState({
-      showDiff: !this.state.showDiff
+      showDiff: !this.state.showDiffs
     });
   }
 
   handlePublishClick() {
     if (this.props.onPublishClick) {
-      this.props.onPublishClick(this.props.revision.documentId);
+      this.props.onPublishClick(this.props.revisions);
     }
   }
 
   get showChangesButtonLabel() {
-    if (!this.showDiff) {
+    if (!this.showDiffs) {
       return "Show Changes";
     }
 
@@ -38,25 +38,31 @@ class PublishControls extends Component {
   }
 
   get showChangesButtoni18nKeyLabel() {
-    if (!this.showDiff) {
+    if (!this.showDiffs) {
       return "app.showChanges";
     }
 
     return "app.hideChanges";
   }
 
-  get diff() {
-    return this.props.revision && this.props.revision.diff;
+  get diffs() {
+    return this.props.revisions;
   }
 
-  get showDiff() {
-    return this.diff && this.state.showDiff;
+  get showDiffs() {
+    return this.diff && this.state.showDiffs;
   }
 
   renderChanges() {
-    if (this.showDiff) {
+    if (this.showDiffs) {
+      const diffs = this.props.revisions.map((revision) => {
+        return <SimpleDiff diff={revision.diff} />;
+      });
+
       return (
-        <SimpleDiff diff={this.diff} />
+        <div>
+          {diffs}
+        </div>
       );
     }
     return null;
@@ -76,7 +82,7 @@ class PublishControls extends Component {
           onClick={this.handlePublishClick}
           primary={true}
         />
-        {this.showDiff && <hr />}
+        {this.showDiffs && <hr />}
         {this.renderChanges()}
       </div>
     );
@@ -85,10 +91,10 @@ class PublishControls extends Component {
 
 PublishControls.propTypes = {
   onPublishClick: PropTypes.func,
+  revisions: PropTypes.arrayOf(PropTypes.object),
   translation: PropTypes.shape({
     lang: PropTypes.string
-  }),
-  revision: PropTypes.object
+  })
 };
 
 export default Translatable()(PublishControls);

@@ -61,7 +61,19 @@ Products.before.update(function (userId, product, fieldNames, modifier, options)
     }
   };
 
-  // console.log(modifier.$set);
+  if (options.publish === true || (product.workflow && product.workflow.status === "product/publish")) {
+    // Maybe mark the revision as published
+
+    Logger.info(`Publishing revison for product ${product._id}.`);
+    Revisions.update(revisionSelector, {
+      $set: {
+        "workflow.status": "revision/published"
+      }
+    });
+
+    return true;
+  }
+
   for (let key in modifier.$set) {
     if (Object.hasOwnProperty.call(modifier.$set, key)) {
       switch (key) {
@@ -81,13 +93,6 @@ Products.before.update(function (userId, product, fieldNames, modifier, options)
 
   Revisions.update(revisionSelector, revisionModifier);
 
-  if (options.publish === true || (product.workflow && product.workflow.status === "product/publish")) {
-    // Maybe mark the revision as published
-
-    Logger.info(`Publishing revison for product ${product._id}.`);
-
-    return true;
-  }
 
   Logger.info(`Revison updated for product ${product._id}.`);
 
@@ -148,7 +153,7 @@ Revisions.after.update(function (userId, revision) {
   });
 
   const differences = diff(product, revision.documentData);
-  console.log(typeof differences);
+
   Revisions.direct.update({
     _id: revision._id
   }, {
