@@ -2,11 +2,11 @@ import { Template } from "meteor/templating";
 import { AutoForm } from "meteor/aldeed:autoform";
 import { Packages } from "/lib/collections";
 import { i18next } from "/client/api";
-import { TaxPackageConfig } from "/imports/plugins/core/taxes/lib/collections/schemas";
+import { TaxJarPackageConfig } from "../../lib/collections/schemas";
 
 Template.taxJarSettings.helpers({
   packageConfigSchema() {
-    return TaxPackageConfig;
+    return TaxJarPackageConfig;
   },
   packageData() {
     return Packages.findOne({
@@ -19,12 +19,12 @@ Template.taxJarSettings.helpers({
 AutoForm.hooks({
   "taxjar-update-form": {
     onSuccess: function () {
-      return Alerts.toast(i18next.t("shopSettings.shopTaxMethodsSaved"),
+      return Alerts.toast(i18next.t("taxSettings.shopTaxMethodsSaved"),
         "success");
     },
     onError: function (operation, error) {
       return Alerts.toast(
-        `${i18next.t("shopSettings.shopTaxMethodsFailed")} ${error}`, "error"
+        `${i18next.t("taxSettings.shopTaxMethodsFailed")} ${error}`, "error"
       );
     }
   }

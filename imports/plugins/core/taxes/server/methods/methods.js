@@ -62,7 +62,7 @@ Meteor.methods({
     // by qty and an originating shop and inventory
     // for location of each item in the cart.
 
-    if (cartToCalc) {
+    if (cartToCalc && pkg) {
       Logger.info("taxes/calculate");
 
       // for each enabled tax provider

@@ -172,6 +172,8 @@
         "noCustomTaxRatesFound": "No custom tax rates found.",
         "shopCustomTaxRatesSaved": "Custom tax rate saved.",
         "shopCustomTaxRatesFailed": "Error saving tax rate.",
+        "shopTaxMethodsSaved": "Saved tax method.",
+        "shopTaxMethodsFailed": "Failed saving tax method.",
         "customRatesDescription": "Custom Rates",
         "taxCode": "Tax Code",
         "taxShipping": "Include Shipping",

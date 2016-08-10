@@ -2,11 +2,11 @@ import { Template } from "meteor/templating";
 import { AutoForm } from "meteor/aldeed:autoform";
 import { i18next } from "/client/api";
 import { Packages } from "/lib/collections";
-import { TaxPackageConfig } from "/imports/plugins/core/taxes/lib/collections/schemas";
+import { AvalaraPackageConfig } from "../../lib/collections/schemas";
 
 Template.avalaraSettings.helpers({
   packageConfigSchema() {
-    return TaxPackageConfig;
+    return AvalaraPackageConfig;
   },
   packageData() {
     return Packages.findOne({
@@ -19,12 +19,12 @@ Template.avalaraSettings.helpers({
 AutoForm.hooks({
   "avalara-update-form": {
     onSuccess: function () {
-      return Alerts.toast(i18next.t("shopSettings.shopTaxMethodsSaved"),
+      return Alerts.toast(i18next.t("taxSettings.shopTaxMethodsSaved"),
         "success");
     },
     onError: function (operation, error) {
       return Alerts.toast(
-        `${i18next.t("shopSettings.shopTaxMethodsFailed")} ${error}`, "error"
+        `${i18next.t("taxSettings.shopTaxMethodsFailed")} ${error}`, "error"
       );
     }
   }
