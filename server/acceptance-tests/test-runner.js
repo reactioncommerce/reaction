@@ -1,4 +1,4 @@
-let webdriverio = require("webdriverio");
+// let webdriverio = require("webdriverio");
 
 const options = {
   desiredCapabilities: {

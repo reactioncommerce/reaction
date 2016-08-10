@@ -72,7 +72,6 @@
     "eslint": "^2.13.1",
     "eslint-plugin-react": "^5.2.2",
     "wdio-mocha-framework": "^0.4.0",
-    "wdio-selenium-standalone-service": "0.0.5",
     "webdriverio": "^4.2.3"
   },
   "postcss": {
