@@ -29,14 +29,14 @@ function quantityProcessing(product, variant, itemQty = 1) {
 
   // TODO: think about #152 implementation here
   switch (product.type) {
-  case "not-in-stock":
-    break;
-  default: // type: `simple` // todo: maybe it should be "variant"
-    if (quantity < MIN) {
-      quantity = MIN;
-    } else if (quantity > MAX) {
-      quantity = MAX;
-    }
+    case "not-in-stock":
+      break;
+    default: // type: `simple` // todo: maybe it should be "variant"
+      if (quantity < MIN) {
+        quantity = MIN;
+      } else if (quantity > MAX) {
+        quantity = MAX;
+      }
   }
 
   return quantity;
@@ -417,27 +417,20 @@ Meteor.methods({
       userId: userId
     });
     if (!cart) {
-      Logger.error(`Cart not found for user: ${ this.userId }`);
-      throw new Meteor.Error(404, "Cart not found",
-        "Cart not found for user with such id");
+      Logger.error(`Cart not found for user: ${this.userId}`);
+      throw new Meteor.Error("cart-not-found", "Cart not found for user with such id");
     }
 
     let cartItem;
 
     if (cart.items) {
-      cart.items.forEach(item => {
-        if (item._id === itemId) {
-          cartItem = item;
-        }
-      });
+      cartItem = _.find(cart.items, (item) => item._id === itemId);
     }
 
     // extra check of item exists
     if (typeof cartItem !== "object") {
-      Logger.error(`Unable to find an item: ${itemId
-        } within the cart: ${cart._id}`);
-      throw new Meteor.Error(404, "Cart item not found.",
-        "Unable to find an item with such id within you cart.");
+      Logger.error(`Unable to find an item: ${itemId} within the cart: ${cart._id}`);
+      throw new Meteor.Error("cart-item-not-found", "Unable to find an item with such id in cart.");
     }
 
     // refresh shipping quotes
@@ -447,7 +440,7 @@ Meteor.methods({
     // reset selected shipment method
     Meteor.call("cart/resetShipmentMethod", cart._id);
 
-    if (!quantity) {
+    if (!quantity || quantity >= cartItem.quantity) {
       return Collections.Cart.update({
         _id: cart._id
       }, {
@@ -463,22 +456,19 @@ Meteor.methods({
             "error removing from cart");
           return error;
         }
-        if (result) {
-          Logger.info(`cart: deleted cart item variant id ${
-            cartItem.variants._id}`);
-          return result;
-        }
+        Logger.info(`cart: deleted cart item variant id ${cartItem.variants._id}`);
+        return result;
       });
     }
 
     // if quantity lets convert to negative and increment
     const removeQuantity = Math.abs(quantity) * -1;
     return Collections.Cart.update({
-      _id: cart._id,
-      items: cartItem
+      "_id": cart._id,
+      "items._id": cartItem._id
     }, {
       $inc: {
-        "items.quantity": removeQuantity
+        "items.$.quantity": removeQuantity
       }
     }, (error, result) => {
       if (error) {
@@ -487,11 +477,8 @@ Meteor.methods({
           "error removing from cart");
         return error;
       }
-      if (result) {
-        Logger.info(`cart: removed variant ${
-          cartItem._id} quantity of ${quantity}`);
-        return result;
-      }
+      Logger.info(`cart: removed variant ${cartItem._id} quantity of ${quantity}`);
+      return result;
     });
   },
 
