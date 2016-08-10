@@ -3,6 +3,7 @@ import moment from "moment";
 import { Meteor } from "meteor/meteor";
 import Future from "fibers/future";
 import Braintree from "braintree";
+import { BraintreeApi } from "./braintreeapi";
 import { Reaction, Logger } from "/server/api";
 import { Packages } from "/lib/collections";
 import { PaymentMethod } from "/lib/collections/schemas";
@@ -172,6 +173,13 @@ Meteor.methods({
           saved: true,
           response: result
         });
+        gateway.testing.settle(transactionId, function (err, settleResult) {
+          settleResult.success;
+          // true
+
+          settleResult.transaction.status;
+          // Transaction.Status.Settled
+        });
       }
     }, function (e) {
       Logger.warn(e);
@@ -186,10 +194,10 @@ Meteor.methods({
    * @param {Number} amount - Amount to be refunded if not the entire amount
    * @return {Object} results - Object containing the results of the transaction
    */
-  "braintree/refund/create": function (paymentMethod, amount) {
+  "braintree/refund/create-old": function (paymentMethod, amount) {
     check(paymentMethod, PaymentMethod);
     check(amount, Number);
-    let transactionId = paymentMethod.transactions[0].transaction.id;
+    let transactionId = paymentMethod.transactionId;
     let gateway = getGateway();
     const fut = new Future();
     gateway.transaction.refund(transactionId, amount, Meteor.bindEnvironment(function (error, result) {
@@ -220,6 +228,60 @@ Meteor.methods({
       Logger.fatal(e);
     }));
     return fut.wait();
+  },
+
+
+
+
+
+
+
+
+  /**
+   * braintree/refund/create2
+   * Refund BrainTree payment
+   * https://developers.braintreepayments.com/reference/request/transaction/refund/node
+   * @param {Object} paymentMethod - Object containing everything about the transaction to be settled
+   * @param {Number} amount - Amount to be refunded if not the entire amount
+   * @return {Object} results - Object containing the results of the transaction
+   */
+  "braintree/refund/create": function (paymentMethod, amount) {
+    check(paymentMethod, PaymentMethod);
+    check(amount, Number);
+
+    const refundDetails = {
+      transactionId: paymentMethod.transactionId,
+      amount: amount
+    };
+
+    let result;
+
+    try {
+      let refundResult = BraintreeApi.methods.createRefund.call({ refundDetails });
+      Logger.info(refundResult);
+      // if (refundResult.object === "refund") {
+      // if (refundResult.response.transaction.type === "credit") {
+      if (refundResult.response.transaction.type === "credit") {
+        result = {
+          saved: true,
+          response: refundResult
+        };
+      } else {
+        result = {
+          saved: false,
+          response: refundResult
+        };
+        Logger.warn("Braintree call succeeded but refund not issued");
+      }
+    } catch (error) {
+      Logger.error(error);
+      result = {
+        saved: false,
+        error: `Cannot issue refund: ${error.message}`
+      };
+      Logger.fatal("Braintree call failed, refund was not issued");
+    }
+    return result;
   },
 
   /**
