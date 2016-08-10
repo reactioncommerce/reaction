@@ -80,7 +80,7 @@ Products.before.update(function (userId, product, fieldNames, modifier, options)
       }
 
       for (let property in modifier[operation]) {
-        if (modifier[operation].hasOwnProperty.call(modifier[operation][property], property)) {
+        if (modifier[operation].hasOwnProperty(property)) {
           if (operation === "$set" && property === "isVisible") {
             // Special handling for isVisible
             // Look in the product revision to decided if the revision should be toggled visible or not.
@@ -90,7 +90,11 @@ Products.before.update(function (userId, product, fieldNames, modifier, options)
             const isVisible = !productRevision.documentData.isVisible;
             revisionModifier.$set[`documentData.${property}`] = isVisible;
           } else if (operation === "$set" && property === "metafields.$") {
-            // Special handling for meta fields
+            // Special handling for meta fields with $ operator
+            // We need to update the selector otherwise the operation would completly fail.
+            //
+            // This does NOT apply to metafield.0, metafield.1, metafield.n operations
+            // where 0, 1, n represent an array index.
             revisionSelector["documentData.metafields"] = originalSelector.metafields;
             revisionModifier.$set[`documentData.${property}`] = modifier.$set[property];
           } else {

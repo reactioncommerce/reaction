@@ -1092,21 +1092,21 @@ Meteor.methods({
    * @summary update product metafield
    * @param {String} productId - productId
    * @param {Object} updatedMeta - update object with metadata
-   * @param {Object} meta - current meta object
+   * @param {Object|Number|undefined|null} meta - current meta object, or a number index
    * @todo should this method works for variants also?
    * @return {Number} collection update result
    */
   "products/updateMetaFields": function (productId, updatedMeta, meta) {
     check(productId, String);
     check(updatedMeta, Object);
-    check(meta, Match.OptionalOrNull(Object));
+    check(meta, Match.OneOf(Object, Number, undefined, null));
     // must have createProduct permission
     if (!Reaction.hasPermission("createProduct")) {
       throw new Meteor.Error(403, "Access Denied");
     }
 
     // update existing metadata
-    if (meta) {
+    if (typeof meta === "object") {
       return Products.update({
         _id: productId,
         metafields: meta
@@ -1119,7 +1119,20 @@ Meteor.methods({
           type: "simple"
         }
       });
+    } else if (typeof meta === "number") {
+      return Products.update({
+        _id: productId
+      }, {
+        $set: {
+          [`metafields.${meta}`]: updatedMeta
+        }
+      }, {
+        selector: {
+          type: "simple"
+        }
+      });
     }
+
     // adds metadata
     return Products.update({
       _id: productId
