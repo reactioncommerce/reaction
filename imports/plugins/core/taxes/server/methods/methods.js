@@ -1,5 +1,6 @@
 import { Meteor } from "meteor/meteor";
 import { Match, check } from "meteor/check";
+import { Cart } from "/lib/collections";
 import { Taxes } from "../../lib/collections";
 import Reaction from "../api";
 // import { Logger } from "/server/api";
@@ -35,11 +36,26 @@ Meteor.methods({
 
   "taxes/calculate": function (cartId) {
     check(cartId, String);
-    // const cart = Cart.findOne(cartId);
+    const cartToCalc = Cart.findOne(cartId);
+
     // we're going to want to break down the products
     // by qty and an originating shop and inventory
     // for location of each item in the cart.
 
+    console.log("taxes/calculate");
+
+    // for each enabled tax provider
+    // pass cartId, get taxes
+    // tax method submits cart normalized for service
+    // tax method returns normalized response this method
+    // update cart with summary tax
+    // summary return taxes
+
     // TODO Calculate Taxes!!
   }
+
+  // TODO method for order tax updates
+  // additional logic will be needed for refunds
+  // or tax adjustments
+
 });
