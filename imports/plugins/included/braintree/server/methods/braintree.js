@@ -76,7 +76,7 @@ function parseCardData(data) {
 Meteor.methods({
   /**
    * braintreeSubmit
-   * Authorize, or authorize and capture payments from Brinatree
+   * Authorize, or authorize and capture payments from Braintree
    * https://developers.braintreepayments.com/reference/request/transaction/sale/node
    * @param {String} transactionType - either authorize or capture
    * @param {Object} cardData - Object containing everything about the Credit card to be submitted
@@ -222,7 +222,7 @@ Meteor.methods({
    * @param {Object} paymentMethod - Object containing everything about the transaction to be settled
    * @return {Array} results - An array of refund objects for display in admin
    */
-  "braintree/refund/list": function (paymentMethod) {
+  "braintree/refund/list-old": function (paymentMethod) {
     check(paymentMethod, Object);
     let transactionId = paymentMethod.transactionId;
     let gateway = getGateway();
@@ -243,13 +243,41 @@ Meteor.methods({
       }
     }
     return result;
+  },
+
+
+
+
+
+  /**
+   * braintree/refund/list
+   * List all refunds for a transaction
+   * https://developers.braintreepayments.com/reference/request/transaction/find/node
+   * @param {Object} paymentMethod - Object containing everything about the transaction to be settled
+   * @return {Array} results - An array of refund objects for display in admin
+   */
+  "braintree/refund/list": function (paymentMethod) {
+    check(paymentMethod, Object);
+
+    const refundListDetails = {
+      transactionId: paymentMethod.transactionId
+    };
+
+    let result;
+
+    try {
+      let refundListResult = BraintreeApi.methods.listRefunds.call({ refundListDetails });
+      Logger.info(refundListResult);
+      result = refundListResult;
+    } catch (error) {
+      Logger.error(error);
+      result = {
+        saved: false,
+        error: `Cannot issue refund: ${error.message}`
+      };
+      Logger.fatal("Braintree call failed, refund was not issued");
+    }
+
+    return result;
   }
 });
-
-getRefundDetails = function (refundId) {
-  check(refundId, String);
-  let gateway = getGateway();
-  let braintreeFind = Meteor.wrapAsync(gateway.transaction.find, gateway.transaction);
-  let findResults = braintreeFind(refundId);
-  return findResults;
-};

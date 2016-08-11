@@ -16,6 +16,10 @@ export const refundDetailsSchema = new SimpleSchema({
   amount: { type: Number, decimal: true }
 });
 
+export const refundListSchema = new SimpleSchema({
+  transactionId: { type: String }
+});
+
 
 function getSettings(settings, ref, valueName) {
   if (settings !== null) {
@@ -63,6 +67,34 @@ function getGateway() {
   return gateway;
 }
 
+getRefundDetails = function (refundId) {
+  check(refundId, String);
+  let gateway = getGateway();
+  let braintreeFind = Meteor.wrapAsync(gateway.transaction.find, gateway.transaction);
+  let findResults = braintreeFind(refundId);
+  return findResults;
+};
+
+
+// BraintreeApi.methods.createCharge = new ValidatedMethod({
+//   name: "BraintreeApi.methods.createCharge",
+//   validate: new SimpleSchema({
+//     refundDetails: { type: refundDetailsSchema } //UPDATE
+//   }).validator(),
+//   run({ refundDetails }) { //UPDATE
+//   }
+// });
+
+
+// BraintreeApi.methods.captureCharge = new ValidatedMethod({
+//   name: "BraintreeApi.methods.captureCharge",
+//   validate: new SimpleSchema({
+//     refundDetails: { type: refundDetailsSchema } //UPDATE
+//   }).validator(),
+//   run({ refundDetails }) { //UPDATE
+//   }
+// });
+
 
 BraintreeApi.methods.createRefund = new ValidatedMethod({
   name: "BraintreeApi.methods.createRefund",
@@ -102,5 +134,35 @@ BraintreeApi.methods.createRefund = new ValidatedMethod({
       Logger.fatal(e);
     }));
     return fut.wait();
+  }
+});
+
+
+BraintreeApi.methods.listRefunds = new ValidatedMethod({
+  name: "BraintreeApi.methods.listRefunds",
+  validate: new SimpleSchema({
+    refundListDetails: { type: refundListSchema }
+  }).validator(),
+  run({ refundListDetails }) {
+    let transactionId = refundListDetails.transactionId;
+    let gateway = getGateway();
+    this.unblock();
+    let braintreeFind = Meteor.wrapAsync(gateway.transaction.find, gateway.transaction);
+    let findResults = braintreeFind(transactionId);
+    let result = [];
+    if (findResults.refundIds.length > 0) {
+      for (let refund of findResults.refundIds) {
+        let refundDetails = getRefundDetails(refund);
+        result.push({
+          type: "refund",
+          amount: parseFloat(refundDetails.amount),
+          created: moment(refundDetails.createdAt).unix() * 1000,
+          currency: refundDetails.currencyIsoCode,
+          raw: refundDetails
+        });
+      }
+    }
+
+    return result;
   }
 });
