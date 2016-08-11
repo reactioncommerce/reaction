@@ -62,45 +62,47 @@ export const methods = {
     //   name: "reaction-taxes",
     //   shopId: shopId
     // });
-    const shippingAddress = cartToCalc.shipping[0].address;
-    //
-    // custom rates that match shipping info
-    // high chance this needs more review as
-    // it's unlikely this matches all potential
-    //
-    if (shippingAddress) {
-      let addressTaxData = Taxes.find(
-        {
-          $and: [{
-            $or: [{
-              postal: shippingAddress.postal
+    if (cartToCalc.shipping) {
+      const shippingAddress = cartToCalc.shipping[0].address;
+      //
+      // custom rates that match shipping info
+      // high chance this needs more review as
+      // it's unlikely this matches all potential
+      //
+      if (shippingAddress) {
+        let addressTaxData = Taxes.find(
+          {
+            $and: [{
+              $or: [{
+                postal: shippingAddress.postal
+              }, {
+                postal: shippingAddress.postal,
+                city: shippingAddress.city,
+                region: shippingAddress.region
+              }]
             }, {
-              postal: shippingAddress.postal,
-              city: shippingAddress.city,
-              region: shippingAddress.region
+              shopId: shopId
+            }, {
+              country: shippingAddress.country
             }]
-          }, {
-            shopId: shopId
-          }, {
-            country: shippingAddress.country
-          }]
-        }
-      ).fetch();
-      // return custom rates
-      if (addressTaxData.length > 0) {
-        // we're going to want to break down the products
-        // by qty and an originating shop and inventory
-        // for location of each item in the cart.
-        const tax = parseFloat(addressTaxData[0].rate) / 100.0;
-        // this is temporary handling
-        return Cart.update(cartToCalc._id, {
-          $set: {
-            taxes: addressTaxData,
-            tax: tax
           }
-        });
-      }
-    } // end shippingAddress calculation
+        ).fetch();
+        // return custom rates
+        if (addressTaxData.length > 0) {
+          // we're going to want to break down the products
+          // by qty and an originating shop and inventory
+          // for location of each item in the cart.
+          const tax = parseFloat(addressTaxData[0].rate) / 100.0;
+          // this is temporary handling
+          return Cart.update(cartToCalc._id, {
+            $set: {
+              taxes: addressTaxData,
+              tax: tax
+            }
+          });
+        }
+      } // end shippingAddress calculation
+    }
 
     // if (cartToCalc && pkg) {
     //   Logger.info("taxes/calculate");
