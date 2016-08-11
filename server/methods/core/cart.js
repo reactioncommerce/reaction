@@ -588,8 +588,9 @@ Meteor.methods({
     order.items = expandedItems;
 
     if (!order.items || order.items.length === 0) {
-      throw new Meteor.Error(
-        "An error occurred saving the order. Missing cart items.");
+      const msg = "An error occurred saving the order. Missing cart items.";
+      Logger.error(msg);
+      throw new Meteor.Error("no-cart-items", msg);
     }
 
     // set new workflow status
@@ -616,22 +617,23 @@ Meteor.methods({
         // updating `cart/workflow/status` to "coreCheckoutShipping"
         // by calling `workflow/pushCartWorkflow` three times. This is the only
         // way to do that without refactoring of `workflow/pushCartWorkflow`
-        Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow",
-          "checkoutLogin");
-        Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow",
-          "checkoutAddressBook");
-        Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow",
-          "coreCheckoutShipping");
+        Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow", "checkoutLogin");
+        Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow", "checkoutAddressBook");
+        Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow", "coreCheckoutShipping");
       }
 
       Logger.info("Transitioned cart " + cartId + " to order " + orderId);
       // catch send notification, we don't want
       // to block because of notification errors
-      try {
-        Meteor.call("orders/sendNotification", Collections.Orders.findOne(orderId));
-      } catch (error) {
-        Logger.warn(error, `Error in orders/sendNotification for ${orderId}`);
+
+      if (order.email) {
+        Meteor.call("orders/sendNotification", Collections.Orders.findOne(orderId), (err) => {
+          if (err) {
+            Logger.error(err, `Error in orders/sendNotification for order ${orderId}`);
+          }
+        });
       }
+
       // order success
       return orderId;
     }

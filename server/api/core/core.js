@@ -4,6 +4,7 @@ import { Meteor } from "meteor/meteor";
 import { EJSON } from "meteor/ejson";
 import { Jobs, Packages, Shops } from "/lib/collections";
 import { Hooks, Logger } from "/server/api";
+import ProcessJobs from "/server/jobs";
 import { getRegistryDomain } from "./setDomain";
 
 export default {
@@ -14,6 +15,7 @@ export default {
     // start job server
     Jobs.startJobServer(() => {
       Logger.info("JobServer started");
+      ProcessJobs();
       Hooks.Events.run("onJobServerStart");
     });
     if (process.env.VERBOSE_JOBS) {
@@ -47,7 +49,7 @@ export default {
    * server permissions checks
    * hasPermission exists on both the server and the client.
    * @param {String | Array} checkPermissions -String or Array of permissions if empty, defaults to "admin, owner"
-   * @param {String} checkUserId - userId, defaults to Meteor.userId()
+   * @param {String} userId - userId, defaults to Meteor.userId()
    * @param {String} checkGroup group - default to shopId
    * @return {Boolean} Boolean - true if has permission
    */
@@ -154,10 +156,8 @@ export default {
       return mailUrl;
     }
     // return reasonable warning that we're not configured correctly
-    if (!process.env.MAIL_URL) {
-      Logger.warn("Mail server not configured. Unable to send email.");
-      return false;
-    }
+    Logger.warn("Mail server not configured. Unable to send email.");
+    return false;
   },
 
   getCurrentShopCursor() {
@@ -429,7 +429,7 @@ export default {
         }
         // Import package data
         this.Import.package(combinedSettings, shopId);
-        Logger.info(`Initializing ${shop.name} ${pkgName}`);
+        return Logger.info(`Initializing ${shop.name} ${pkgName}`);
       }); // end shops
     });
 
@@ -453,6 +453,7 @@ export default {
             name: pkg.name
           });
         }
+        return false;
       });
     });
   }
