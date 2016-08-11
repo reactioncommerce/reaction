@@ -17,7 +17,6 @@ export default function () {
   }, (jobs, callback) => {
     jobs.forEach((job) => {
       const { from, to, subject, html } = job.data;
-      // Logger.warn(job.data, "email options");
 
       if (!from || !to || !subject || !html) {
         const msg = "Email job requires an options object with to/from/subject/html.";
