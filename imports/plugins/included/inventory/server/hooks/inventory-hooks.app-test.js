@@ -100,7 +100,7 @@ describe("Inventory Hooks", function () {
     expect(updatedInventoryItem.workflow.status).to.equal("sold");
   });
 
-  it("should move allocated inventory to 'shipped' when an order is shipped", function (done) {
+  it.skip("should move allocated inventory to 'shipped' when an order is shipped", function (done) {
     this.timeout(5000);
     sandbox.stub(Meteor.server.method_handlers, "orders/sendNotification", function () {
       check(arguments, [Match.Any]);
