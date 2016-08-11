@@ -4,7 +4,7 @@ import * as Collections from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
-import moment from "moment";
+import moment from "moment-timezone";
 
 /*
  *
