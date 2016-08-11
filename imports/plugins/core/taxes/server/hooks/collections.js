@@ -5,13 +5,13 @@ import { Logger } from "/server/api";
 */
 
 /**
- * Before cart update.
+ * After cart update apply taxes.
  * if items are changed, recalculating taxes
  * we could have done this in the core/cart transform
  * but this way this file controls the events from
  * the core/taxes plugin.
  */
-Cart.before.update((userId, cart, fieldNames, modifier) => {
+Cart.after.update((userId, cart, fieldNames, modifier) => {
   // adding quantity
   if (modifier.$inc) {
     Logger.info("incrementing cart - recalculating taxes");

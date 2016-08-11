@@ -2,26 +2,8 @@ import { SimpleSchema } from "meteor/aldeed:simple-schema";
 import { shopIdAutoValue } from "/lib/collections/schemas/helpers";
 
 /**
-* TaxRates Schema
+* Taxes Schema
 */
-
-export const TaxRates = new SimpleSchema({
-  country: {
-    type: String
-  },
-  county: {
-    type: String,
-    optional: true
-  },
-  postal: {
-    type: String,
-    optional: true
-  },
-  rate: {
-    type: Number,
-    decimal: true
-  }
-});
 
 export const Taxes = new SimpleSchema({
   "shopId": {
