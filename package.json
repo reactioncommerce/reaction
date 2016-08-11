@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "accounting-js": "^1.1.1",
-    "authorize-net": "^1.0.6",
+    "authorize-net": "ongoworks/node-authorize-net",
     "autonumeric": "^1.9.45",
     "autoprefixer": "^6.3.7",
     "autosize": "^3.0.17",
