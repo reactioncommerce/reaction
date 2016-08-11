@@ -33,6 +33,7 @@ describe("braintree/refund/create", function () {
     };
 
     let braintreeRefundResult = {
+      saved: true,
       response: {
         transaction: {
           id: "4yby45n6",
