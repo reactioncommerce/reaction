@@ -28,8 +28,8 @@ export function send(options) {
  */
 export function getTemplate(template) {
   check(template, String);
-  let source;
-  let language = "en";
+
+  const language = "en";
 
   const shopLocale = Meteor.call("shop/getLocale");
 
