@@ -173,72 +173,16 @@ Meteor.methods({
           saved: true,
           response: result
         });
-        gateway.testing.settle(transactionId, function (err, settleResult) {
-          settleResult.success;
-          // true
-
-          settleResult.transaction.status;
-          // Transaction.Status.Settled
-        });
       }
     }, function (e) {
       Logger.warn(e);
     }));
     return fut.wait();
   },
+
+
   /**
    * braintree/refund/create
-   * Refund BrainTree payment
-   * https://developers.braintreepayments.com/reference/request/transaction/refund/node
-   * @param {Object} paymentMethod - Object containing everything about the transaction to be settled
-   * @param {Number} amount - Amount to be refunded if not the entire amount
-   * @return {Object} results - Object containing the results of the transaction
-   */
-  "braintree/refund/create-old": function (paymentMethod, amount) {
-    check(paymentMethod, PaymentMethod);
-    check(amount, Number);
-    let transactionId = paymentMethod.transactionId;
-    let gateway = getGateway();
-    const fut = new Future();
-    gateway.transaction.refund(transactionId, amount, Meteor.bindEnvironment(function (error, result) {
-      if (error) {
-        fut.return({
-          saved: false,
-          error: error
-        });
-      } else if (!result.success) {
-        if (result.errors.errorCollections.transaction.validationErrors.base[0].code === "91506") {
-          fut.return({
-            saved: false,
-            error: "Braintree does not allow refunds until transactions are settled. This can take up to 24 hours. Please try again later."
-          });
-        } else {
-          fut.return({
-            saved: false,
-            error: result.message
-          });
-        }
-      } else {
-        fut.return({
-          saved: true,
-          response: result
-        });
-      }
-    }, function (e) {
-      Logger.fatal(e);
-    }));
-    return fut.wait();
-  },
-
-
-
-
-
-
-
-
-  /**
-   * braintree/refund/create2
    * Refund BrainTree payment
    * https://developers.braintreepayments.com/reference/request/transaction/refund/node
    * @param {Object} paymentMethod - Object containing everything about the transaction to be settled
@@ -259,20 +203,7 @@ Meteor.methods({
     try {
       let refundResult = BraintreeApi.methods.createRefund.call({ refundDetails });
       Logger.info(refundResult);
-      // if (refundResult.object === "refund") {
-      // if (refundResult.response.transaction.type === "credit") {
-      if (refundResult.response.transaction.type === "credit") {
-        result = {
-          saved: true,
-          response: refundResult
-        };
-      } else {
-        result = {
-          saved: false,
-          response: refundResult
-        };
-        Logger.warn("Braintree call succeeded but refund not issued");
-      }
+      result = refundResult;
     } catch (error) {
       Logger.error(error);
       result = {
