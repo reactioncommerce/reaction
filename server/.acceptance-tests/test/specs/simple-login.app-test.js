@@ -1,8 +1,15 @@
 "use strict";
-let sleep = require("./sleep");
+// let sleep = require("../../lib/sleep");
 let assert = require("assert");
 // let expect = require("chai").expect;
 
+  function sleep(time, callback) {
+    let stop = new Date().getTime();
+    while (new Date().getTime() < stop + time) {
+      ;
+    }
+    callback();
+  }
 
 describe("simple login test", function () {
   it("verify user is able to login", function () {

@@ -10,7 +10,7 @@ exports.config = {
     // directory is where your package.json resides, so `wdio` will be called from there.
     //
     specs: [
-        './server/acceptance-tests/test/specs/**/*.js'
+        './server/.acceptance-tests/test/specs/**/*.js'
     ],
     // Patterns to exclude.
     exclude: [
@@ -64,7 +64,7 @@ exports.config = {
     coloredLogs: true,
     //
     // Saves a screenshot to a given path if a command fails.
-    screenshotPath: './server/acceptance-tests/errorShots/',
+    screenshotPath: './server/.acceptance-tests/errorShots/',
     //
     // Set a base URL in order to shorten url command calls. If your url parameter starts
     // with "/", then the base url gets prepended.
