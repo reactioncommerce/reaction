@@ -58,13 +58,12 @@ describe("Inventory Hooks", function () {
     });
   }
 
-  it("should move allocated inventory to 'sold' when an order is created", function () {
+  it.only("should move allocated inventory to 'sold' when an order is created", function () {
     sandbox.stub(Meteor.server.method_handlers, "orders/sendNotification", function () {
       check(arguments, [Match.Any]);
       Logger.warn("running stub notification");
       return true;
     });
-    Inventory.direct.remove({});
     const cart = Factory.create("cartToOrder");
     reduceCart(cart);
     sandbox.stub(Reaction, "getShopId", function () {
@@ -82,7 +81,7 @@ describe("Inventory Hooks", function () {
       orderItemId: product._id
     });
     expect(inventoryItem).to.not.be.undefined;
-    Inventory.update(inventoryItem._id,
+    Inventory.update(inventoryItem,
       {
         $set: {
           "workflow.status": "reserved",
@@ -100,15 +99,13 @@ describe("Inventory Hooks", function () {
     expect(updatedInventoryItem.workflow.status).to.equal("sold");
   });
 
-  it.skip("should move allocated inventory to 'shipped' when an order is shipped", function (done) {
+  it.only("should move allocated inventory to 'shipped' when an order is shipped", function (done) {
     this.timeout(5000);
     sandbox.stub(Meteor.server.method_handlers, "orders/sendNotification", function () {
       check(arguments, [Match.Any]);
-      Logger.warn("running stub notification");
       return true;
     });
     sandbox.stub(Reaction, "hasPermission", () => true);
-    Inventory.direct.remove({});
     const cart = Factory.create("cartToOrder");
     reduceCart(cart);
     sandbox.stub(Reaction, "getShopId", function () {
@@ -126,7 +123,7 @@ describe("Inventory Hooks", function () {
       orderItemId: product._id
     });
     expect(inventoryItem).to.not.be.undefined;
-    Inventory.update(inventoryItem._id,
+    Inventory.update(inventoryItem,
       {
         $set: {
           "workflow.status": "reserved",
@@ -139,7 +136,7 @@ describe("Inventory Hooks", function () {
     const shipping = { items: [] };
     Meteor.call("orders/shipmentShipped", order, shipping, () => {
       Meteor._sleepForMs(500);
-      const shippedInventoryItem = Inventory.findOne(inventoryItem._id);
+      const shippedInventoryItem = Inventory.findOne(inventoryItem);
       expect(shippedInventoryItem.workflow.status).to.equal("shipped");
       return done();
     });
