@@ -55,6 +55,7 @@ export function getTemplate(template) {
   try {
     return Assets.getText(file);
   } catch (e) {
+    Logger.warn(`Template not found: ${file}. Falling back to coreDefault.html`);
     return Assets.getText("email/templates/coreDefault.html");
   }
 }
