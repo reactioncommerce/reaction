@@ -10,13 +10,11 @@ import { Jobs, Packages, Templates } from "/lib/collections";
  * @return {Boolean} returns true if job is submitted
  */
 export function send(options) {
-  new Job(Jobs, "sendEmail", options)
+  return new Job(Jobs, "sendEmail", options)
     .retry({
       retries: 5,
       wait: 3 * 60000
     }).save();
-
-  return true;
 }
 
 
