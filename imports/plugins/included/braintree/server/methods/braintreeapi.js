@@ -5,58 +5,17 @@ import { SimpleSchema } from "meteor/aldeed:simple-schema";
 // reaction modules
 import { Packages } from "/lib/collections";
 import { Reaction, Logger } from "/server/api";
-
-
 import Future from "fibers/future";
 import Braintree from "braintree";
 
 export const BraintreeApi = {};
 BraintreeApi.methods = {};
 
-
-// export const cardSchema = new SimpleSchema({
-//   number: { type: String },
-//   name: { type: String },
-//   cvc: { type: String },
-//   exp_month: { type: String },
-//   exp_year: { type: String }
-// });
-//
-// export const chargeObjectSchema = new SimpleSchema({
-//   amount: { type: Number },
-//   currency: {type: String},
-//   card: { type: cardSchema },
-//   capture: { type: Boolean }
-// });
-//
-// export const captureDetailsSchema = new SimpleSchema({
-//   amount: { type: Number }
-// });
-
 export const refundDetailsSchema = new SimpleSchema({
   transactionId: { type: String },
   amount: { type: Number, decimal: true }
 });
 
-// // These are errors on the user side that we just want to pass back up to the user
-// const expectedErrors = [
-//   "card_declined",
-//   "incorrect_cvc",
-//   "expired_card",
-//   "incorrect_number"
-// ];
-
-// BraintreeApi.methods.getApiKey = new ValidatedMethod({
-//   name: "BraintreeApi.methods.getApiKey",
-//   validate: null,
-//   run() {
-//     const settings = Packages.findOne({ name: "reaction-braintree" }).settings;
-//     if (!settings.api_key) {
-//       throw new Meteor.Error("403", "Invalid Braintree Credentials");
-//     }
-//     return settings.api_key;
-//   }
-// });
 
 function getSettings(settings, ref, valueName) {
   if (settings !== null) {
