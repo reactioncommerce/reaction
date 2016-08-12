@@ -15,17 +15,20 @@ export const Taxes = new SimpleSchema({
   "taxCode": {
     type: String,
     label: "Tax Identifier",
+    defaultValue: "RC_TAX",
     index: 1
   },
   "cartMethod": {
     label: "Calculation Method",
     type: String,
-    allowedValues: ["unit", "row", "total"]
+    allowedValues: ["unit", "row", "total"],
+    defaultValue: "total"
   },
   "taxLocale": {
     label: "Taxation Location",
     type: String,
-    allowedValues: ["shipping", "billing", "origination", "destination"]
+    allowedValues: ["shipping", "billing", "origination", "destination"],
+    defaultValue: "destination"
   },
   "taxShipping": {
     label: "Tax Shipping",
@@ -35,12 +38,14 @@ export const Taxes = new SimpleSchema({
   "taxIncluded": {
     label: "Taxes included in product prices",
     type: Boolean,
-    defaultValue: false
+    defaultValue: false,
+    optional: true
   },
   "discountsIncluded": {
     label: "Tax before discounts",
     type: Boolean,
-    defaultValue: false
+    defaultValue: false,
+    optional: true
   },
   "region": {
     label: "State/Province/Region",
