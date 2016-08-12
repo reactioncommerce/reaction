@@ -1,7 +1,6 @@
 "use strict";
 let yaml = require("js-yaml");
 let fs   = require("fs");
-let assert = require("assert");
 let expect = require("chai").expect;
 
 beforeEach(function () {
@@ -15,10 +14,10 @@ describe("simple login test", function () {
     let eleMap = yaml.safeLoad(fs.readFileSync("./tests/acceptance-tests/elements/element-map.yml", "utf8"));
     let usrData = yaml.safeLoad(fs.readFileSync("./tests/acceptance-tests/config/user-data.yml", "utf8"));
     browser.pause("5000");
-    browser.click(eleMap["login_dropdown_btn"]);
-    browser.setValue(eleMap["login_email_fld"], usrData["admin_email"]);
-    browser.setValue(eleMap["login_pw_fld"], usrData["admin_pw"]);
-    browser.click(eleMap["login_btn"]);
+    browser.click(eleMap.login_dropdown_btn);
+    browser.setValue(eleMap.login_email_fld, usrData.admin_email);
+    browser.setValue(eleMap.login_pw_fld, usrData.admin_pw);
+    browser.click(eleMap.login_btn);
     browser.pause("5000");
     browser.getText("#logged-in-display-name").then(function (text) {
       expect(text).to.equal("Admin");
