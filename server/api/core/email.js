@@ -2,6 +2,7 @@ import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { Job } from "meteor/vsivsi:job-collection";
 import { Jobs, Packages, Templates } from "/lib/collections";
+import { Logger } from "/server/api";
 
 
 /**
