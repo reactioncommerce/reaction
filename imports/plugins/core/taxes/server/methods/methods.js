@@ -52,7 +52,6 @@ export const methods = {
    * @param  {String} docId    tax docId
    * @return {String} returns update/insert result
    */
-
   "taxes/addRate": function (modifier, docId) {
     check(modifier, Object);
     check(docId, Match.OneOf(String, null, undefined));
@@ -137,7 +136,7 @@ export const methods = {
           ).fetch();
 
           // return custom rates
-          // we're going to want to break down the products
+          // TODO  break down the product origination, taxability
           // by qty and an originating shop and inventory
           // for location of each item in the cart.
           if (addressTaxData.length > 0) {

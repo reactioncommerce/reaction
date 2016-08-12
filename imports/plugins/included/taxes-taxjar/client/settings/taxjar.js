@@ -1,7 +1,7 @@
 import { Template } from "meteor/templating";
 import { AutoForm } from "meteor/aldeed:autoform";
 import { Packages } from "/lib/collections";
-import { i18next } from "/client/api";
+import { Reaction, i18next } from "/client/api";
 import { TaxJarPackageConfig } from "../../lib/collections/schemas";
 
 Template.taxJarSettings.helpers({
@@ -10,7 +10,8 @@ Template.taxJarSettings.helpers({
   },
   packageData() {
     return Packages.findOne({
-      name: "taxes-taxjar"
+      name: "taxes-taxjar",
+      shopId: Reaction.getShopId()
     });
   }
 });

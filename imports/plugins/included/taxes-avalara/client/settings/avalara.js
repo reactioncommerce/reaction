@@ -1,8 +1,9 @@
 import { Template } from "meteor/templating";
 import { AutoForm } from "meteor/aldeed:autoform";
-import { i18next } from "/client/api";
+import { Reaction, i18next } from "/client/api";
 import { Packages } from "/lib/collections";
 import { AvalaraPackageConfig } from "../../lib/collections/schemas";
+
 
 Template.avalaraSettings.helpers({
   packageConfigSchema() {
@@ -10,7 +11,8 @@ Template.avalaraSettings.helpers({
   },
   packageData() {
     return Packages.findOne({
-      name: "taxes-avalara"
+      name: "taxes-avalara",
+      shopId: Reaction.getShopId()
     });
   }
 });

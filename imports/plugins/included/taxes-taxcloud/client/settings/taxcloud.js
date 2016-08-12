@@ -1,7 +1,7 @@
 import { Template } from "meteor/templating";
 import { AutoForm } from "meteor/aldeed:autoform";
 import { Packages } from "/lib/collections";
-import { i18next } from "/client/api";
+import { Reaction, i18next } from "/client/api";
 import { TaxCloudPackageConfig } from "../../lib/collections/schemas";
 
 Template.taxCloudSettings.helpers({
@@ -10,7 +10,8 @@ Template.taxCloudSettings.helpers({
   },
   packageData() {
     return Packages.findOne({
-      name: "taxes-taxcloud"
+      name: "taxes-taxcloud",
+      shopId: Reaction.getShopId()
     });
   }
 });

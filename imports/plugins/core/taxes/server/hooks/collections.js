@@ -14,14 +14,14 @@ import { Logger } from "/server/api";
 Cart.after.update((userId, cart, fieldNames, modifier) => {
   // adding quantity
   if (modifier.$inc) {
-    Logger.info("incrementing cart - recalculating taxes");
+    Logger.debug("incrementing cart - recalculating taxes");
     Meteor.call("taxes/calculate", cart._id);
   }
 
   // adding new items
   if (modifier.$addToSet) {
     if (modifier.$addToSet.items) {
-      Logger.info("adding to cart - recalculating taxes");
+      Logger.debug("adding to cart - recalculating taxes");
       Meteor.call("taxes/calculate", cart._id);
     }
   }
@@ -31,7 +31,7 @@ Cart.after.update((userId, cart, fieldNames, modifier) => {
   // ie: shipping/getShippingRates
   if (modifier.$set) {
     if (modifier.$set["shipping.$.shipmentMethod"] || modifier.$set["shipping.$.address"]) {
-      Logger.info("updated shipping info - recalculating taxes");
+      Logger.debug("updated shipping info - recalculating taxes");
       Meteor.call("taxes/calculate", cart._id);
     }
   }
@@ -39,7 +39,7 @@ Cart.after.update((userId, cart, fieldNames, modifier) => {
   // removing items
   if (modifier.$pull) {
     if (modifier.$pull.items) {
-      Logger.info("removing from cart - recalculating taxes");
+      Logger.debug("removing from cart - recalculating taxes");
       Meteor.call("taxes/calculate", cart._id);
     }
   }
