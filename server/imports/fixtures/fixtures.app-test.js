@@ -36,6 +36,24 @@ describe("Fixtures:", function () {
     expect(cartCount).to.be.above(0);
   });
 
+  it("CartOne fixture should create a cart with one item with a quantity of one", function () {
+    const cartOne = Factory.create("cartOne");
+    expect(cartOne).to.not.be.undefined;
+    const createdCart = Collections.Cart.findOne(cartOne._id);
+    expect(createdCart).to.not.be.undefined;
+    expect(createdCart.items.length).to.equal(1);
+    expect(createdCart.items[0].quantity).to.equal(1);
+  });
+
+  it("CartTwo fixture should create a cart with one item with a quantity of two", function () {
+    const cartOne = Factory.create("cartTwo");
+    expect(cartOne).to.not.be.undefined;
+    const createdCart = Collections.Cart.findOne(cartOne._id);
+    expect(createdCart).to.not.be.undefined;
+    expect(createdCart.items.length).to.equal(1);
+    expect(createdCart.items[0].quantity).to.equal(2);
+  });
+
   it("Order fixture should create an order", function () {
     // Order has analytics hooks on it that need to be turned off
     sandbox.stub(Collections.Orders._hookAspects.insert.before[0], "aspect");

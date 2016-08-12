@@ -1,31 +1,13 @@
 /* eslint dot-notation: 0 */
 import { Meteor } from "meteor/meteor";
-import { Inventory, Orders, Cart }  from "/lib/collections";
-import { Reaction, Logger } from "/server/api";
+import { Inventory, Orders }  from "/lib/collections";
+import { Reaction } from "/server/api";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
 import Fixtures from "/server/imports/fixtures";
 import { getShop } from "/server/imports/fixtures/shops";
 
 Fixtures();
-
-function reduceCart(cart) {
-  Cart.update(cart._id, {
-    $set: {
-      "items.0.quantity": 1
-    }
-  });
-  Cart.update(cart._id, {
-    $set: {
-      "items.1.quantity": 1
-    }
-  });
-  Cart.update(cart._id, {
-    $pull: {
-      "items.$.quantity": {$gt: 1}
-    }
-  });
-}
 
 describe("Inventory Hooks", function () {
   let originals;
@@ -58,30 +40,26 @@ describe("Inventory Hooks", function () {
     });
   }
 
-  it.only("should move allocated inventory to 'sold' when an order is created", function () {
+  it("should move allocated inventory to 'sold' when an order is created", function () {
     sandbox.stub(Meteor.server.method_handlers, "orders/sendNotification", function () {
       check(arguments, [Match.Any]);
-      Logger.warn("running stub notification");
       return true;
     });
-    const cart = Factory.create("cartToOrder");
-    reduceCart(cart);
+    sandbox.stub(Reaction, "hasPermission", () => true);
+    const cart = Factory.create("cartOne");
     sandbox.stub(Reaction, "getShopId", function () {
       return cart.shopId;
     });
     let shop = getShop();
     let product = cart.items[0];
-    const inventoryItem = Inventory.insert({
+    const inventoryItem = Inventory.findOne({
       productId: product.productId,
       variantId: product.variants._id,
-      shopId: shop._id,
-      workflow: {
-        status: "reserved"
-      },
-      orderItemId: product._id
+      shopId: shop._id
     });
     expect(inventoryItem).to.not.be.undefined;
-    Inventory.update(inventoryItem,
+    // because the cart fixture does not trigger hooks we need to allocate inventory manuall
+    Inventory.update(inventoryItem._id,
       {
         $set: {
           "workflow.status": "reserved",
@@ -99,31 +77,26 @@ describe("Inventory Hooks", function () {
     expect(updatedInventoryItem.workflow.status).to.equal("sold");
   });
 
-  it.only("should move allocated inventory to 'shipped' when an order is shipped", function (done) {
-    this.timeout(5000);
+  it("should move allocated inventory to 'shipped' when an order is shipped", function (done) {
     sandbox.stub(Meteor.server.method_handlers, "orders/sendNotification", function () {
       check(arguments, [Match.Any]);
       return true;
     });
     sandbox.stub(Reaction, "hasPermission", () => true);
-    const cart = Factory.create("cartToOrder");
-    reduceCart(cart);
+    const cart = Factory.create("cartOne");
     sandbox.stub(Reaction, "getShopId", function () {
       return cart.shopId;
     });
     let shop = getShop();
     let product = cart.items[0];
-    const inventoryItem = Inventory.insert({
+    const inventoryItem = Inventory.findOne({
       productId: product.productId,
       variantId: product.variants._id,
-      shopId: shop._id,
-      workflow: {
-        status: "reserved"
-      },
-      orderItemId: product._id
+      shopId: shop._id
     });
     expect(inventoryItem).to.not.be.undefined;
-    Inventory.update(inventoryItem,
+    // because the cart fixture does not trigger hooks we need to allocate inventory manuall
+    Inventory.update(inventoryItem._id,
       {
         $set: {
           "workflow.status": "reserved",
@@ -136,7 +109,7 @@ describe("Inventory Hooks", function () {
     const shipping = { items: [] };
     Meteor.call("orders/shipmentShipped", order, shipping, () => {
       Meteor._sleepForMs(500);
-      const shippedInventoryItem = Inventory.findOne(inventoryItem);
+      const shippedInventoryItem = Inventory.findOne(inventoryItem._id);
       expect(shippedInventoryItem.workflow.status).to.equal("shipped");
       return done();
     });
