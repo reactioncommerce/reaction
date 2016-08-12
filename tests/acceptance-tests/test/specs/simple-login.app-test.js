@@ -17,8 +17,8 @@ describe("simple login test", function () {
       // var elem = browser.element('span.product-image');
     sleep(5000, function () {
       browser.click("[data-event-action='accounts-dropdown-click']");
-      browser.setValue("[class='form-control login-input-email']", "dwqmwgne@localhost");
-      browser.setValue("[class='form-control login-input-password']", "of5fij0B");
+      browser.setValue("[class='form-control login-input-email']", "s8phdqrw@localhost");
+      browser.setValue("[class='form-control login-input-password']", "uxeupLBo");
       browser.click("[data-event-action='submitSignInForm']");
       browser.pause("5000");
       assert("//li/div/button");
