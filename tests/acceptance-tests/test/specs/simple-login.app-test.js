@@ -21,7 +21,7 @@ describe("simple login test", function () {
     browser.click(eleMap["login_btn"]);
     browser.pause("5000");
     browser.getText("#logged-in-display-name").then(function (text) {
-      expect(assert(text === "Admin")).to.be.true;
+      expect(text).to.equal("Admin");
     });
   });
 });
