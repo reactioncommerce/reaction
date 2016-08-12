@@ -25,6 +25,27 @@ export const methods = {
 
     return Taxes.delete(docId);
   },
+
+  /**
+   * taxes/setRate
+   * @param  {String} cartId cartId
+   * @param  {Number} taxRate taxRate
+   * @param  {Object} taxes taxes
+   * @return {Number} returns update result
+   */
+  "taxes/setRate": function (cartId, taxRate, taxes) {
+    check(cartId, String);
+    check(taxRate, Number);
+    check(taxes, Match.Optional(Array));
+
+    return Cart.update(cartId, {
+      $set: {
+        taxes: taxes,
+        tax: taxRate
+      }
+    });
+  },
+
   /**
    * taxes/addRate
    * @param  {String} modifier update statement
@@ -124,13 +145,8 @@ export const methods = {
           }
           // taxes are stored as percentage, convert
           const tax = parseFloat(taxRate) / 100.0;
-          // this is temporary handling
-          Cart.update(cartToCalc._id, {
-            $set: {
-              taxes: addressTaxData,
-              tax: tax
-            }
-          });
+          // store tax on cart
+          Meteor.call("taxes/setRate", cartToCalc._id, tax, addressTaxData);
         }
         // end custom rates
         // end shippingAddress calculation
