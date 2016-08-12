@@ -2,6 +2,54 @@ import * as BraintreeApi from "./braintreeApi";
 import { Logger } from "/server/api";
 import { PaymentMethod } from "/lib/collections/schemas";
 
+/**
+ * braintreeSubmit
+ * Authorize, or authorize and capture payments from Braintree
+ * https://developers.braintreepayments.com/reference/request/transaction/sale/node
+ * @param {String} transactionType - either authorize or capture
+ * @param {Object} cardData - Object containing everything about the Credit card to be submitted
+ * @param {Object} paymentData - Object containing everything about the transaction to be settled
+ * @return {Object} results - Object containing the results of the transaction
+ */
+export function paymentSubmit(transactionType, cardData, paymentData) {
+  check(transactionType, String);
+  check(cardData, {
+    name: String,
+    number: String,
+    expirationMonth: String,
+    expirationYear: String,
+    cvv2: String,
+    type: String
+  });
+  check(paymentData, {
+    total: String,
+    currency: String
+  });
+
+  const paymentSubmitDetails = {
+    transactionType: transactionType,
+    cardData: cardData,
+    paymentData: paymentData
+  };
+
+  let result;
+
+  try {
+    let refundResult = BraintreeApi.paymentSubmit(paymentSubmitDetails);
+    Logger.info(refundResult);
+    result = refundResult;
+  } catch (error) {
+    Logger.error(error);
+    result = {
+      saved: false,
+      error: `Cannot Capture Payment: ${error.message}`
+    };
+    Logger.fatal("Braintree call failed, refund was not issued");
+  }
+
+  return result;
+}
+
 
 /**
  * paymentCapture

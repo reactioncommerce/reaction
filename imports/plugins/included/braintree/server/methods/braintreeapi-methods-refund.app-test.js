@@ -2,7 +2,8 @@
 import { Meteor } from "meteor/meteor";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
-import { BraintreeApi } from "./braintreeapi";
+import * as BraintreeApi from "./braintreeApi";
+import * as BraintreeMethods from "./braintreeMethods";
 
 describe("braintree/refund/create", function () {
   let sandbox;
@@ -15,7 +16,7 @@ describe("braintree/refund/create", function () {
     sandbox.restore();
   });
 
-  it("Should call BraintreeApi.methods.createRefund with the proper parameters and return saved = true", function (done) {
+  it("Should call braintree/refund/create with the proper parameters and return saved = true", function (done) {
     let paymentMethod = {
       processor: "Braintree",
       storedCard: "VISA 4242",
@@ -52,13 +53,21 @@ describe("braintree/refund/create", function () {
     };
 
 
-    sandbox.stub(BraintreeApi.methods.createRefund, "call", function () {
+    //THIS IS NOT BEING STUBBED CORRECTLY, BECAUSE THE ERROR IS OCCURING IN BRAINTREEAPI, WHICH SHOULDN'T BE HIT
+    //THIS IS NOT BEING STUBBED CORRECTLY, BECAUSE THE ERROR IS OCCURING IN BRAINTREEAPI, WHICH SHOULDN'T BE HIT
+    //THIS IS NOT BEING STUBBED CORRECTLY, BECAUSE THE ERROR IS OCCURING IN BRAINTREEAPI, WHICH SHOULDN'T BE HIT
+    //THIS IS NOT BEING STUBBED CORRECTLY, BECAUSE THE ERROR IS OCCURING IN BRAINTREEAPI, WHICH SHOULDN'T BE HIT
+    //THIS IS NOT BEING STUBBED CORRECTLY, BECAUSE THE ERROR IS OCCURING IN BRAINTREEAPI, WHICH SHOULDN'T BE HIT
+    sandbox.stub(BraintreeApi.createRefund(), "call", function () {
+    // sandbox.stub(BraintreeApi.createRefund(), "return", function () {
       return braintreeRefundResult;
     });
 
 
     let refundResult = null;
     let refundError = null;
+
+
     Meteor.call("braintree/refund/create", paymentMethod, paymentMethod.amount, function (error, result) {
       refundResult = result;
       refundError = error;
@@ -68,7 +77,8 @@ describe("braintree/refund/create", function () {
     expect(refundError).to.be.undefined;
     expect(refundResult).to.not.be.undefined;
     expect(refundResult.saved).to.be.true;
-    expect(BraintreeApi.methods.createRefund.call).to.have.been.calledWith({
+    //THIS MIGHT NEED TO BE CHANGES SINCE WE MAY NOT CALL ANYMORE
+    expect(BraintreeMethods.createRefund.call).to.have.been.calledWith({
       refundDetails: {
         amount: 99.95,
         transactionId: paymentMethod.transactionId
