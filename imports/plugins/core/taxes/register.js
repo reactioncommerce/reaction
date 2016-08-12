@@ -5,9 +5,13 @@ Reaction.registerPackage({
   name: "reaction-taxes",
   icon: "fa fa-university",
   autoEnable: true,
+  provides: "taxes",
   settings: {
-    taxrates: {
+    custom: {
       enabled: true
+    },
+    rates: {
+      enabled: false
     }
   },
   registry: [

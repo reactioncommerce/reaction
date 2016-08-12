@@ -10,7 +10,7 @@ Template.avalaraSettings.helpers({
   },
   packageData() {
     return Packages.findOne({
-      name: "reaction-taxes"
+      name: "taxes-avalara"
     });
   }
 });

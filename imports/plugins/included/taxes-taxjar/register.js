@@ -4,7 +4,8 @@ Reaction.registerPackage({
   label: "Taxes",
   name: "taxes-taxjar",
   icon: "fa fa-university",
-  autoEnable: true,
+  provides: "taxes",
+  autoEnable: false,
   registry: [
     {
       label: "TaxJar",

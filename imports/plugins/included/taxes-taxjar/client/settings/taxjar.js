@@ -10,7 +10,7 @@ Template.taxJarSettings.helpers({
   },
   packageData() {
     return Packages.findOne({
-      name: "reaction-taxes"
+      name: "taxes-taxjar"
     });
   }
 });

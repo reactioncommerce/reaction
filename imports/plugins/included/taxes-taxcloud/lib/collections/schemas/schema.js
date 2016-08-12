@@ -20,6 +20,18 @@ export const TaxCloudPackageConfig = new SimpleSchema([
       type: String,
       label: "TaxCloud API Login ID",
       optional: true
+    },
+    "settings.taxcloud.refreshPeriod": {
+      type: String,
+      label: "TaxCode Refresh Period",
+      defaultValue: "every 7 days",
+      optional: true
+    },
+    "settings.taxcloud.taxCodeUrl": {
+      type: String,
+      label: "TaxCode API Url",
+      defaultValue: "https://taxcloud.net/tic/?format=json",
+      optional: true
     }
   }
 ]);

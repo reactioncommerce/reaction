@@ -4,12 +4,13 @@ Reaction.registerPackage({
   label: "Taxes",
   name: "taxes-taxcloud",
   icon: "fa fa-university",
-  autoEnable: true,
+  autoEnable: false,
+  provides: "taxes",
   settings: {
     taxcloud: {
       enabled: false,
       apiLoginId: "",
-      refreshPeriod: "every 4 hours",
+      refreshPeriod: "every 7 days",
       taxCodeUrl: "https://taxcloud.net/tic/?format=json"
     }
   },
