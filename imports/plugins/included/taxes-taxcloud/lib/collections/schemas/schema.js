@@ -18,8 +18,11 @@ export const TaxCloudPackageConfig = new SimpleSchema([
     },
     "settings.taxcloud.apiLoginId": {
       type: String,
-      label: "TaxCloud API Login ID",
-      optional: true
+      label: "TaxCloud API Login ID"
+    },
+    "settings.taxcloud.apiKey": {
+      type: String,
+      label: "TaxCloud API Key"
     },
     "settings.taxcloud.refreshPeriod": {
       type: String,
