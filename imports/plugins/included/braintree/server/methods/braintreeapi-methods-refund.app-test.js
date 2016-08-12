@@ -53,15 +53,9 @@ describe("braintree/refund/create", function () {
     };
 
 
-    //THIS IS NOT BEING STUBBED CORRECTLY, BECAUSE THE ERROR IS OCCURING IN BRAINTREEAPI, WHICH SHOULDN'T BE HIT
-    //THIS IS NOT BEING STUBBED CORRECTLY, BECAUSE THE ERROR IS OCCURING IN BRAINTREEAPI, WHICH SHOULDN'T BE HIT
-    //THIS IS NOT BEING STUBBED CORRECTLY, BECAUSE THE ERROR IS OCCURING IN BRAINTREEAPI, WHICH SHOULDN'T BE HIT
-    //THIS IS NOT BEING STUBBED CORRECTLY, BECAUSE THE ERROR IS OCCURING IN BRAINTREEAPI, WHICH SHOULDN'T BE HIT
-    //THIS IS NOT BEING STUBBED CORRECTLY, BECAUSE THE ERROR IS OCCURING IN BRAINTREEAPI, WHICH SHOULDN'T BE HIT
-    sandbox.stub(BraintreeApi.createRefund(), "call", function () {
-    // sandbox.stub(BraintreeApi.createRefund(), "return", function () {
-      return braintreeRefundResult;
-    });
+    sandbox.stub(BraintreeApi.createRefund, "return", function () {
+      return braintreeRefundResult;
+    });
 
 
     let refundResult = null;
