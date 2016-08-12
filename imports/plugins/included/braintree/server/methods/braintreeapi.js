@@ -82,7 +82,7 @@ getRefundDetails = function (refundId) {
 };
 
 
-export function paymentSubmit(paymentSubmitDetails){
+export function paymentSubmit(paymentSubmitDetails) {
   let gateway = getGateway();
   let paymentObj = getPaymentObj();
   if (paymentSubmitDetails.transactionType === "authorize") {
@@ -151,10 +151,6 @@ export function captureCharge(paymentCaptureDetails) {
         saved: true,
         response: result
       });
-      //This is here for ease while testing, and will be removed before it's live
-      //This is here for ease while testing, and will be removed before it's live
-      //This is here for ease while testing, and will be removed before it's live
-      //This is here for ease while testing, and will be removed before it's live
       gateway.testing.settle(transactionId, function (err, settleResult) {
         settleResult.success
         // true
@@ -162,10 +158,6 @@ export function captureCharge(paymentCaptureDetails) {
         settleResult.transaction.status
         // Transaction.Status.Settled
       });
-      //This is here for ease while testing, and will be removed before it's live
-      //This is here for ease while testing, and will be removed before it's live
-      //This is here for ease while testing, and will be removed before it's live
-      //This is here for ease while testing, and will be removed before it's live
     }
   }, function (e) {
     Logger.warn(e);
