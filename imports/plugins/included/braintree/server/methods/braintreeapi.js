@@ -151,13 +151,6 @@ export function captureCharge(paymentCaptureDetails) {
         saved: true,
         response: result
       });
-      gateway.testing.settle(transactionId, function (err, settleResult) {
-        settleResult.success
-        // true
-
-        settleResult.transaction.status
-        // Transaction.Status.Settled
-      });
     }
   }, function (e) {
     Logger.warn(e);
