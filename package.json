@@ -71,6 +71,7 @@
     "babel-eslint": "^6.1.2",
     "eslint": "^2.13.1",
     "eslint-plugin-react": "^5.2.2",
+    "js-yaml": "^3.6.1",
     "wdio-mocha-framework": "^0.4.0",
     "webdriverio": "^4.2.3"
   },
