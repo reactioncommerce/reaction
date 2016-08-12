@@ -13,11 +13,6 @@ import Fixtures from "/server/imports/fixtures";
 
 Fixtures();
 
-before(function () {
-  this.timeout(6000);
-  Meteor._sleepForMs(500);
-});
-
 describe("core product methods", function () {
   // we can't clean Products collection after each test from now, because we
   // have functions which called from async db operations callbacks. So, if we
@@ -172,15 +167,15 @@ describe("core product methods", function () {
       let variant = Products.find({ ancestors: [product._id] }).fetch()[0];
       variant["title"] = "Updated Title";
       variant["price"] = 7;
-      Meteor.call("products/updateVariant", variant);
-      variant = Products.find({ ancestors: [product._id] }).fetch()[0];
-      expect(variant.price).to.equal(7);
-      expect(variant.title).to.equal("Updated Title");
-
-      return done();
+      Meteor.call("products/updateVariant", variant, () => {
+        variant = Products.find({ ancestors: [product._id] }).fetch()[0];
+        expect(variant.price).to.equal(7);
+        expect(variant.title).to.equal("Updated Title");
+        return done();
+      });
     });
 
-    it("should update individual variant by admin passing in partial object", function () {
+    it("should update individual variant by admin passing in partial object", function (done) {
       sandbox.stub(Reaction, "hasPermission", () => true);
       let updatedVariant;
       const product = addProduct();
@@ -189,11 +184,13 @@ describe("core product methods", function () {
         _id: variant._id,
         title: "Updated Title",
         price: 7
+      }, () => {
+        updatedVariant = Products.findOne(variant._id);
+        expect(updatedVariant.price).to.equal(7);
+        expect(updatedVariant.title).to.equal("Updated Title");
+        expect(updatedVariant.optionTitle).to.equal(variant.optionTitle);
+        return done();
       });
-      updatedVariant = Products.findOne(variant._id);
-      expect(updatedVariant.price).to.equal(7);
-      expect(updatedVariant.title).to.equal("Updated Title");
-      expect(updatedVariant.optionTitle).to.equal(variant.optionTitle);
     });
   });
 
