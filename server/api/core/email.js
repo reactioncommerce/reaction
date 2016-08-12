@@ -7,8 +7,9 @@ import { Logger } from "/server/api";
 
 /**
  * Reaction.Email.send()
+ * (Job API doc) https://github.com/vsivsi/meteor-job-collection/#user-content-job-api
  * @param  {Object} options - object containing to/from/subject/html String keys
- * @return {Boolean} returns true if job is submitted
+ * @return {Boolean} returns job object
  */
 export function send(options) {
   return new Job(Jobs, "sendEmail", options)
