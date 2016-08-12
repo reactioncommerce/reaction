@@ -351,8 +351,6 @@ Meteor.methods({
     const tpl = `orders/${order.workflow.status}`;
     SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl));
 
-    Logger.warn("trying to use: " + tpl);
-
     Reaction.Email.send({
       to: order.email,
       from: `${shop.name} <${shop.emails[0].address}>`,
