@@ -15,10 +15,11 @@ describe("taxes methods", function () {
   });
 
   describe("taxes/deleteRate", function () {
-    it("should throw 403 error with taxes permission", function () {
+    it("should throw 403 error with taxes permission", function (done) {
       sandbox.stub(Roles, "userIsInRole", () => false);
       // this should actually trigger a whole lot of things
       expect(() => Meteor.call("taxes/deleteRate", "dummystring")).to.throw(Meteor.Error, /Access Denied/);
+      return done();
     });
   });
 });
