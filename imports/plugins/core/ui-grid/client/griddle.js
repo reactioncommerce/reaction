@@ -7,14 +7,14 @@ import Griddle from "griddle-react";
 import { Counts } from "meteor/tmeasday:publish-counts";
 import { ReactMeteorData } from "meteor/react-meteor-data";
 
-/* eslint react/prop-types:0, react/jsx-sort-props:0, react/forbid-prop-types: 0  */
+/* eslint react/prop-types:0, react/jsx-sort-props:0, react/forbid-prop-types: 0, "react/prefer-es6-class": [1, "never"] */
 
 const MeteorGriddle = React.createClass({
   propTypes: {
-    publication: React.PropTypes.string, // the publication that will provide the data
     collection: React.PropTypes.object, // the collection to display
-    matchingResultsCount: React.PropTypes.string, // the name of the matching results counter
     filteredFields: React.PropTypes.array, // an array of fields to search through when filtering
+    matchingResultsCount: React.PropTypes.string, // the name of the matching results counter
+    publication: React.PropTypes.string, // the publication that will provide the data
     subsManager: React.PropTypes.object
   },
   mixins: [ReactMeteorData],
@@ -79,7 +79,7 @@ const MeteorGriddle = React.createClass({
       loading: !pubHandle.ready(),
       results: results,
       matchingResults: matchingResults
-    }
+    };
   },
 
   resetQuery() {
@@ -91,7 +91,7 @@ const MeteorGriddle = React.createClass({
     this.setState({currentPage: index});
   },
 
-  //this changes whether data is sorted in ascending or descending order
+  // this changes whether data is sorted in ascending or descending order
   changeSort(sort, sortAscending) {
     this.setState({externalSortColumn: sort, externalSortAscending: sortAscending});
   },
@@ -141,7 +141,8 @@ const MeteorGriddle = React.createClass({
       resultsPerPage={this.state.externalResultsPerPage}
       externalSortColumn={this.state.externalSortColumn}
       externalSortAscending={this.state.externalSortAscending}
-      externalIsLoading={this.data.loading}/>)
+      externalIsLoading={this.data.loading}
+            />);
   }
 });
 
