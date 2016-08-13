@@ -47,16 +47,15 @@ MethodHooks.after("taxes/calculate", function (options) {
       if (typeof cartToCalc.shipping !== "undefined") {
         const shippingAddress = cartToCalc.shipping[0].address;
 
-        // TODO evaluate country-data
-        // either replace our current countries data source
-        // or integrate the alpha-3 codes into our dataset.
-        // const countries = require("country-data").countries;
-        const lookup = require("country-data").lookup;
-        // converting iso alpha 2 country to ISO 3166-1 alpha-3
-        const country = lookup.countries({alpha2: shippingAddress.country})[0];
-
         if (shippingAddress) {
-          Logger.info("Avalara triggered on taxes/calculate for cartId:", cartId);
+          // TODO evaluate country-data
+          // either replace our current countries data source
+          // or integrate the alpha-3 codes into our dataset.
+          // const countries = require("country-data").countries;
+          const lookup = require("country-data").lookup;
+          // converting iso alpha 2 country to ISO 3166-1 alpha-3
+          const country = lookup.countries({alpha2: shippingAddress.country})[0];
+
           // get tax rate by street address
           Avalara.taxByAddress(apiKey,
             shippingAddress.address1,
@@ -64,7 +63,10 @@ MethodHooks.after("taxes/calculate", function (options) {
             shippingAddress.region,
             country.alpha3,
             shippingAddress.postal,
-            processTaxes);
+            processTaxes
+          );
+          // tax call made
+          Logger.info("Avalara triggered on taxes/calculate for cartId:", cartId);
         }
       }
     }
