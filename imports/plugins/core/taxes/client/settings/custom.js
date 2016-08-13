@@ -37,13 +37,13 @@ Template.customTaxRates.helpers({
     return {
       component: IconButton,
       icon: "fa fa-plus",
-      onIcon: "fa fa-check",
+      onIcon: "fa fa-pencil",
       toggle: true,
       toggleOn: isEditing,
       style: {
         position: "relative",
-        left: "315px",
-        top: "-48px"
+        top: "-25px",
+        right: "8px"
       },
       onClick() {
         // remove active rows from grid
@@ -113,14 +113,6 @@ Template.customTaxRates.helpers({
   countryOptions: function () {
     return Countries.find().fetch();
   },
-  country: function () {
-    const shop = Shops.findOne();
-    if (shop && typeof shop.addressBook === "Array") {
-      const country = shop.addressBook[0].country;
-      return country;
-    }
-    return [];
-  },
   statesForCountry: function () {
     const shop = Shops.findOne();
     const selectedCountry = AutoForm.getFieldValue("country");
@@ -145,9 +137,17 @@ Template.customTaxRates.helpers({
     return options;
   },
   taxRate() {
+    const shop = Shops.findOne();
     const instance = Template.instance();
     const id = instance.state.get("editingId");
-    return Taxes.findOne(id);
+    let tax = Taxes.findOne(id) || {};
+    // enforce a default country that makes sense.
+    if (!tax.country) {
+      if (shop && typeof shop.addressBook === "object") {
+        tax.country = shop.addressBook[0].country;
+      }
+    }
+    return tax;
   },
   taxCodes() {
     const instance = Template.instance();
@@ -188,10 +188,15 @@ Template.customTaxRates.events({
     // instance.state.set("isEditing", null);
     instance.state = new ReactiveDict();
   },
-  "click .cancel": function () {
-    const instance = Template.instance();
-    instance.state.set("isEditing", null);
-    instance.state = new ReactiveDict();
+  "click .cancel, .tax-grid-row .active": function () {
+    instance = Template.instance();
+    // remove active rows from grid
+    instance.state.set({
+      isEditing: false,
+      editingId: null
+    });
+    // ugly hack
+    $(".tax-grid-row").removeClass("active");
   },
   "click .tax-grid-row": function (event) {
     // toggle all rows off, then add our active row

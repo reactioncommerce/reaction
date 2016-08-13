@@ -3,7 +3,13 @@ import { HTTP } from "meteor/http";
 import { Logger, MethodHooks } from "/server/api";
 import { Shops, Cart, Packages } from "/lib/collections";
 
-// Meteor.after to call after
+//
+// this entire method will run after the core/taxes
+// plugin runs the taxes/calculate method
+// it overrwites any previous tax calculation
+// tax methods precendence is determined by
+// load order of plugins
+//
 MethodHooks.after("taxes/calculate", function (options) {
   let result = options.result || {};
   let origin = {};

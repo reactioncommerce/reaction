@@ -3,7 +3,18 @@ import { Logger, MethodHooks } from "/server/api";
 import { Cart, Packages } from "/lib/collections";
 import Avalara from "avalara-taxrates";
 
-// Meteor.after to call after
+//
+// this entire method will run after the core/taxes
+// plugin runs the taxes/calculate method
+// it overrwites any previous tax calculation
+// tax methods precendence is determined by
+// load order of plugins
+//
+// also note that we should address the issue
+// of the alpha-3 requirement for avalara,
+// and also weither we need the npm package or
+// should we just use HTTP.
+//
 MethodHooks.after("taxes/calculate", function (options) {
   let result = options.result || {};
   const cartId = options.arguments[0];
