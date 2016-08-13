@@ -179,14 +179,17 @@ Template.customTaxRates.helpers({
 Template.customTaxRates.events({
   "submit #customTaxRates-update-form": function () {
     const instance = Template.instance();
-    instance.state.set("isEditing", null);
-    instance.state = new ReactiveDict();
+    instance.state.set({
+      isEditing: false,
+      editingId: null
+    });
   },
   "submit #customTaxRates-insert-form": function () {
     const instance = Template.instance();
-    // uncomment if we want to close on insert
-    // instance.state.set("isEditing", null);
-    instance.state = new ReactiveDict();
+    instance.state.set({
+      isEditing: true,
+      editingId: null
+    });
   },
   "click .cancel, .tax-grid-row .active": function () {
     instance = Template.instance();
@@ -197,6 +200,29 @@ Template.customTaxRates.events({
     });
     // ugly hack
     $(".tax-grid-row").removeClass("active");
+  },
+  "click .delete": function () {
+    const confirmTitle = i18next.t("taxSettings.confirmRateDelete");
+    const confirmButtonText = i18next.t("app.delete");
+    const instance = Template.instance();
+    const id = instance.state.get("editingId");
+    // confirm delete
+    Alerts.alert({
+      title: confirmTitle,
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonText: confirmButtonText
+    }, (isConfirm) => {
+      if (isConfirm) {
+        if (id) {
+          Meteor.call("taxes/deleteRate", id);
+          instance.state.set({
+            isEditing: false,
+            editingId: null
+          });
+        }
+      }
+    });
   },
   "click .tax-grid-row": function (event) {
     // toggle all rows off, then add our active row

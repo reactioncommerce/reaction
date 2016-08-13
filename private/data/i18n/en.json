@@ -180,7 +180,8 @@
         "taxRate": "Rate",
         "discountsIncluded": "Include Discounts",
         "taxable": "Taxable",
-        "nottaxable": "Not Taxable"
+        "nottaxable": "Not Taxable",
+        "confirmRateDelete": "Confirm tax rate deletion"
       },
       "header": {
         "tagsAdd": "Add tag",

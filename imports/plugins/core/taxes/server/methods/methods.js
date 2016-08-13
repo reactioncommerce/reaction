@@ -11,19 +11,18 @@ import { Hooks, Logger } from "/server/api";
 export const methods = {
   /**
    * taxes/deleteRate
-   * @param  {String} docId    tax docId
+   * @param  {String} taxId tax taxId to delete
    * @return {String} returns update/insert result
    */
-
-  "taxes/deleteRate": function (docId) {
-    check(docId, String);
+  "taxes/deleteRate": function (taxId) {
+    check(taxId, String);
 
     // check permissions to delete
     if (!Reaction.hasPermission("taxes")) {
       throw new Meteor.Error(403, "Access Denied");
     }
 
-    return Taxes.delete(docId);
+    return Taxes.remove(taxId);
   },
 
   /**
@@ -87,7 +86,7 @@ export const methods = {
       name: "reaction-taxes"
     });
 
-    // Hook for plugins
+    // Extra Hook for plugins
     Hooks.Events.run("onTaxesCalculate", this);
 
     // TODO method for order tax updates
