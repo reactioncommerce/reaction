@@ -26,48 +26,49 @@ MethodHooks.after("taxes/calculate", function (options) {
     shopId: shopId
   });
 
-  // TODO validate package settings exist
-  const apiKey = pkg.settings.avalara.apiLoginId;
+  // check if package is configured
+  if (pkg && pkg.settings.avalara) {
+    const apiKey = pkg.settings.avalara.apiLoginId;
 
-  // process rate callback object
-  const processTaxes = Meteor.bindEnvironment(function processTaxes(res) {
-    if (!res.error) {
-      Meteor.call("taxes/setRate", cartId, (res.totalRate / 100), res.rates);
-    } else {
-      Logger.warn("Error fetching tax rate from Avalara", res.code, res.message);
-    }
-  });
+    // process rate callback object
+    const processTaxes = Meteor.bindEnvironment(function processTaxes(res) {
+      if (!res.error) {
+        Meteor.call("taxes/setRate", cartId, (res.totalRate / 100), res.rates);
+      } else {
+        Logger.warn("Error fetching tax rate from Avalara", res.code, res.message);
+      }
+    });
 
-  // check if plugin is enabled and this calculation method is enabled
-  if (pkg && pkg.enabled === true && pkg.settings.avalara.enabled === true) {
-    if (!apiKey) {
-      Logger.warn("Avalara API Key is required.");
-    }
-    if (typeof cartToCalc.shipping !== "undefined") {
-      const shippingAddress = cartToCalc.shipping[0].address;
+    // check if plugin is enabled and this calculation method is enabled
+    if (pkg && pkg.enabled === true && pkg.settings.avalara.enabled === true) {
+      if (!apiKey) {
+        Logger.warn("Avalara API Key is required.");
+      }
+      if (typeof cartToCalc.shipping !== "undefined") {
+        const shippingAddress = cartToCalc.shipping[0].address;
 
-      // TODO evaluate country-data
-      // either replace our current countries data source
-      // or integrate the alpha-3 codes into our dataset.
-      // const countries = require("country-data").countries;
-      const lookup = require("country-data").lookup;
-      // converting iso alpha 2 country to ISO 3166-1 alpha-3
-      const country = lookup.countries({alpha2: shippingAddress.country})[0];
+        // TODO evaluate country-data
+        // either replace our current countries data source
+        // or integrate the alpha-3 codes into our dataset.
+        // const countries = require("country-data").countries;
+        const lookup = require("country-data").lookup;
+        // converting iso alpha 2 country to ISO 3166-1 alpha-3
+        const country = lookup.countries({alpha2: shippingAddress.country})[0];
 
-      if (shippingAddress) {
-        Logger.info("Avalara triggered on taxes/calculate for cartId:", cartId);
-        // get tax rate by street address
-        Avalara.taxByAddress(apiKey,
-          shippingAddress.address1,
-          shippingAddress.city,
-          shippingAddress.region,
-          country.alpha3,
-          shippingAddress.postal,
-          processTaxes);
+        if (shippingAddress) {
+          Logger.info("Avalara triggered on taxes/calculate for cartId:", cartId);
+          // get tax rate by street address
+          Avalara.taxByAddress(apiKey,
+            shippingAddress.address1,
+            shippingAddress.city,
+            shippingAddress.region,
+            country.alpha3,
+            shippingAddress.postal,
+            processTaxes);
+        }
       }
     }
   }
-
   // Default return value is the return value of previous call in method chain
   // or an empty object if there's no result yet.
   return result;
