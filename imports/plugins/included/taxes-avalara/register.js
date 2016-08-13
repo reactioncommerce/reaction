@@ -17,10 +17,6 @@ Reaction.registerPackage({
       name: "taxes/settings/avalara",
       provides: "taxSettings",
       template: "avalaraSettings"
-    },
-    {
-      template: "avalaraCheckoutTaxes",
-      provides: "taxMethod"
     }
   ]
 });

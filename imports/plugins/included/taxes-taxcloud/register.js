@@ -9,6 +9,7 @@ Reaction.registerPackage({
     taxcloud: {
       enabled: false,
       apiLoginId: "",
+      apiKey: "",
       refreshPeriod: "every 7 days",
       taxCodeUrl: "https://taxcloud.net/tic/?format=json"
     }
@@ -19,10 +20,6 @@ Reaction.registerPackage({
       name: "taxes/settings/taxcloud",
       provides: "taxSettings",
       template: "taxCloudSettings"
-    },
-    {
-      template: "taxJarCheckoutTaxes",
-      provides: "taxMethod"
     }
   ]
 });

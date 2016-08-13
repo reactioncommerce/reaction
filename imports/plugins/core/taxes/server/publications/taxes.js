@@ -67,15 +67,16 @@ Meteor.publish("TaxCodes", function (query, params) {
   // taxCodes are reasonable shared??
   //  select.shopId = shopId;
 
-  const options = params || {
-    fields: {
-      id: 1,
-      label: 1
-    },
-    sort: {
-      label: 1
-    }
-  };
+  const options = params || {};
+  // const options = params || {
+  //   fields: {
+  //     id: 1,
+  //     label: 1
+  //   },
+  //   sort: {
+  //     label: 1
+  //   }
+  // };
 
   // appends a count to the collection
   // we're doing this for use with griddleTable

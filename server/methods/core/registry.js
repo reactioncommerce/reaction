@@ -21,7 +21,7 @@ Meteor.methods({
       dataToSave[setting][field.property] = field.value;
     });
 
-    if (currentPackage.settings) {
+    if (currentPackage && currentPackage.settings) {
       dataToSave = Object.assign({}, currentPackage.settings, dataToSave);
     }
     // user must have permission to package

@@ -96,18 +96,23 @@ MethodHooks.after("taxes/calculate", function (options) {
           };
 
           HTTP.post(url, request, function (error, response) {
+            let taxRate = 0;
+            // ResponseType 3 is a successful call.
             if (!error && response.data.ResponseType === 3) {
               let totalTax = 0;
               for (item of response.data.CartItemsResponse) {
                 totalTax += item.TaxAmount;
               }
+              // don't run this calculation if there isn't tax.
+              if (totalTax > 0) {
+                taxRate = (totalTax / cartToCalc.cartSubTotal());
+              }
               // we should consider if we want percentage and dollar
               // as this is assuming that subTotal actually contains everything
               // taxable
-              const taxRate = (totalTax / cartToCalc.cartSubTotal());
               Meteor.call("taxes/setRate", cartId, taxRate, response.CartItemsResponse);
             } else {
-              Logger.warn("Error fetching tax rate from TaxCloud", response);
+              Logger.warn("Error fetching tax rate from TaxCloud:", response.data.Messages[0].Message);
             }
           });
         }
