@@ -34,7 +34,7 @@ MethodHooks.after("taxes/calculate", function (options) {
   }
 
   // check if plugin is enabled and this calculation method is enabled
-  if (pkg.enabled === true && pkg.settings.taxcloud.enabled === true) {
+  if (pkg && pkg.enabled === true && pkg.settings.taxcloud.enabled === true) {
     if (!apiKey || !apiLoginId) {
       Logger.warn("TaxCloud API Key is required.");
     }

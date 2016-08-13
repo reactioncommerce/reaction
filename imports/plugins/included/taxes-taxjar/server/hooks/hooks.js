@@ -10,7 +10,7 @@ MethodHooks.after("taxes/calculate", function (options) {
   });
 
   // check if plugin is enabled and this calculation method is enabled
-  if (pkg.enabled === true  && pkg.settings.taxjar.enabled === true) {
+  if (pkg && pkg && pkg.enabled === true && pkg.settings.taxjar.enabled === true) {
     Logger.info("TaxCloud triggered on taxes/calculate for cartId:", options.arguments[0]);
   }
 

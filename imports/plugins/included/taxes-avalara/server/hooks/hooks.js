@@ -28,7 +28,7 @@ MethodHooks.after("taxes/calculate", function (options) {
   });
 
   // check if plugin is enabled and this calculation method is enabled
-  if (pkg.enabled === true && pkg.settings.avalara.enabled === true) {
+  if (pkg && pkg.enabled === true && pkg.settings.avalara.enabled === true) {
     if (!apiKey) {
       Logger.warn("Avalara API Key is required.");
     }
