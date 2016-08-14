@@ -27,6 +27,7 @@ Router.Hooks = Hooks;
  */
 function checkRouterPermissions(context) {
   const routeName = context.route.name;
+
   if (Reaction.hasPermission(routeName, Meteor.userId())) {
     if (context.unauthorized === true) {
       delete context.unauthorized;
@@ -171,7 +172,7 @@ Router.initPackageRoutes = () => {
     //
     // index / home route
     // to overide layout, ie: home page templates
-    // set DEFAULT_LAYOUT, in config.js
+    // set INDEX_OPTIONS, in config.js
     //
     shop.route("/", {
       name: "index",
@@ -256,7 +257,6 @@ Router.initPackageRoutes = () => {
       Router.initialize();
     } catch (e) {
       Logger.error(e);
-      Router.reload();
     }
   }
 };

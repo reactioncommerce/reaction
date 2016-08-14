@@ -12,4 +12,15 @@ Meteor.startup(function () {
       }
     }
   });
+
+  //
+  // we need to sometimes force
+  // router reload on login to get
+  // the entire layout to rerender
+  //
+  Accounts.onLogin(() => {
+    if (Meteor.loggingIn() === false) {
+      Router.reload();
+    }
+  });
 });

@@ -8,6 +8,7 @@ import Logger from "/client/modules/logger";
 import { Countries } from "/client/collections";
 import { localeDep } from  "/client/modules/i18n";
 import { Packages, Shops } from "/lib/collections";
+import { Router } from "/client/modules/router";
 
 /**
  * Reaction namespace
@@ -77,56 +78,95 @@ export default {
   hasPermission(checkPermissions, checkUserId, checkGroup) {
     let group = this.getShopId();
     let permissions = ["owner"];
-
-    // default group to the shop or global if shop
-    // isn't defined for some reason.
-    if (checkGroup !== undefined && typeof checkGroup === "string") {
-      group = checkGroup;
-    }
-    if (!group) {
-      group = Roles.GLOBAL_GROUP;
-    }
-
-    // use current user if userId if not provided
-    // becauase you gotta have a user to check permissions
+    let id = "";
     const userId = checkUserId || this.userId || Meteor.userId();
-    if (!userId) {
-      return false;
-    }
-    // permissions can be either a string or an array
-    // we'll force it into an array and use that
-    if (checkPermissions === undefined) {
-      permissions = ["owner"];
-    } else if (typeof checkPermissions === "string") {
-      permissions = [checkPermissions];
-    } else {
-      permissions = checkPermissions;
-    }
-    // if the user has admin, owner permissions we'll always check if those roles are enough
-    permissions.push("owner");
-    permissions = _.uniq(permissions);
+    //
+    // local roleCheck function
+    // is the bulk of the logic
+    // called out a userId is validated.
+    //
+    function roleCheck() {
+      // permissions can be either a string or an array
+      // we'll force it into an array and use that
+      if (checkPermissions === undefined) {
+        permissions = ["owner"];
+      } else if (typeof checkPermissions === "string") {
+        permissions = [checkPermissions];
+      } else {
+        permissions = checkPermissions;
+      }
+      // if the user has admin, owner permissions we'll always check if those roles are enough
+      permissions.push("owner");
+      permissions = _.uniq(permissions);
 
-    //
-    // return if user has permissions in the group
-    //
-    if (Roles.userIsInRole(userId, permissions, group)) {
-      return true;
-    }
-    // global roles check
-    let sellerShopPermissions = Roles.getGroupsForUser(userId, "admin");
-    // we're looking for seller permissions.
-    if (sellerShopPermissions) {
-      // loop through shops roles and check permissions
-      for (let key in sellerShopPermissions) {
-        if (key) {
-          let shop = sellerShopPermissions[key];
-          if (Roles.userIsInRole(userId, permissions, shop)) {
-            return true;
+      //
+      // return if user has permissions in the group
+      //
+      if (Roles.userIsInRole(userId, permissions, group)) {
+        return true;
+      }
+      // global roles check
+      let sellerShopPermissions = Roles.getGroupsForUser(userId, "admin");
+      // we're looking for seller permissions.
+      if (sellerShopPermissions) {
+        // loop through shops roles and check permissions
+        for (let key in sellerShopPermissions) {
+          if (key) {
+            let shop = sellerShopPermissions[key];
+            if (Roles.userIsInRole(userId, permissions, shop)) {
+              return true;
+            }
           }
         }
       }
+      // no specific permissions found returning false
+      return false;
     }
-    // no specific permissions found returning false
+
+    //
+    // check if a user id has been found
+    // in line 156 setTimeout
+    //
+    function validateUserId() {
+      if (Meteor.userId()) {
+        Meteor.clearTimeout(id);
+        Router.reload();
+        return roleCheck();
+      }
+      return false;
+    }
+
+    //
+    // actual logic block to check permissions
+    // we'll bypass unecessary checks during
+    // a user logging, as we'll check again
+    // when everything is ready
+    //
+    if (Meteor.loggingIn() === false) {
+      //
+      // this userId check is happens because when logout
+      // occurs it takes a few cycles for a new anonymous user
+      // to get created and during this time the user has no
+      // permission, not even guest permissions so we
+      // need to wait and reload the routes. This
+      // mainly affects the logout from dashboard pages
+      //
+      if (!userId) {
+        id = Meteor.setTimeout(validateUserId, 5000);
+      } else {
+        return roleCheck();
+      }
+
+      // default group to the shop or global if shop
+      // isn't defined for some reason.
+      if (checkGroup !== undefined && typeof checkGroup === "string") {
+        group = checkGroup;
+      }
+      if (!group) {
+        group = Roles.GLOBAL_GROUP;
+      }
+    }
+    // return false to be safe
     return false;
   },
 
