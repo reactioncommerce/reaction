@@ -37,7 +37,7 @@
     "fibers": "^1.0.13",
     "font-awesome": "^4.6.3",
     "i18next": "^3.4.1",
-    "i18next-browser-languagedetector": "^0.3.0",
+    "i18next-browser-languagedetector": "^1.0.0",
     "i18next-localstorage-cache": "^0.3.0",
     "i18next-sprintf-postprocessor": "^0.2.2",
     "jquery": "^2.2.4",
