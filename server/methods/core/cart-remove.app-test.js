@@ -69,6 +69,7 @@ describe("cart methods", function () {
       const cartItemId = cartFromCollection.items[0]._id;
       const originalQty = cartFromCollection.items[0].quantity;
       Meteor.call("cart/removeFromCart", cartItemId, 1);
+      Meteor._sleepForMs(500);
       let updatedCart = Collections.Cart.findOne(cart._id);
       expect(updatedCart.items[0].quantity).to.equal(originalQty - 1);
     });
@@ -88,6 +89,7 @@ describe("cart methods", function () {
       const cartItemId = cartFromCollection.items[0]._id;
       const originalQty = cartFromCollection.items[0].quantity;
       Meteor.call("cart/removeFromCart", cartItemId, originalQty);
+      Meteor._sleepForMs(500);
       let updatedCart = Collections.Cart.findOne(cart._id);
       expect(updatedCart.items.length).to.equal(1);
     });
