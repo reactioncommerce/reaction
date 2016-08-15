@@ -2,10 +2,9 @@
 import { Meteor } from "meteor/meteor";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
-import * as BraintreeApi from "./braintreeApi";
-import * as BraintreeMethods from "./braintreeMethods";
+import { BraintreeApi } from "./braintreeApi";
 
-describe.only("braintree/refund/create", function () {
+describe("braintree/refund/create", function () {
   let sandbox;
 
   beforeEach(function () {
@@ -17,11 +16,6 @@ describe.only("braintree/refund/create", function () {
   });
 
   it("Should call braintree/refund/create with the proper parameters and return saved = true", function (done) {
-    sandbox.stub(BraintreeApi, "createRefund", function () {
-      return braintreeRefundResult;
-    });
-
-
     let paymentMethod = {
       processor: "Braintree",
       storedCard: "VISA 4242",
@@ -57,8 +51,9 @@ describe.only("braintree/refund/create", function () {
       }
     };
 
-
-
+    sandbox.stub(BraintreeApi.apiCall, "createRefund", function () {
+      return braintreeRefundResult;
+    });
 
 
     let refundResult = null;
@@ -74,9 +69,8 @@ describe.only("braintree/refund/create", function () {
     expect(refundError).to.be.undefined;
     expect(refundResult).to.not.be.undefined;
     expect(refundResult.saved).to.be.true;
-    //THIS MIGHT NEED TO BE CHANGES SINCE WE MAY NOT CALL ANYMORE
-    // expect(BraintreeMethods.createRefund.call).to.have.been.calledWith({
-    //   refundDetails: {
+    // expect(BraintreeApi.apiCall.createRefund).to.have.been.calledWith({
+    //   createRefund: {
     //     amount: 99.95,
     //     transactionId: paymentMethod.transactionId
     //   }
