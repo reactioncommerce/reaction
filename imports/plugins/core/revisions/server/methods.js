@@ -40,13 +40,17 @@ Meteor.methods({
 
     if (revisions) {
       for (let revision of revisions) {
-        Products.update({
-          _id: revision.documentId
-        }, {
-          $set: revision.documentData
-        }, {
-          publish: true
-        });
+        try {
+          Products.update({
+            _id: revision.documentId
+          }, {
+            $set: revision.documentData
+          }, {
+            publish: true
+          });
+        } catch (e) {
+          throw new Meteor.Error(403, "Forbidden", "Could not publish product revision");
+        }
       }
     }
   }

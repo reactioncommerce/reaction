@@ -3,7 +3,7 @@ import { EJSON } from "meteor/ejson";
 import { check } from "meteor/check";
 import { Meteor } from "meteor/meteor";
 import { Catalog } from "/lib/api";
-import { Media, Products, Tags } from "/lib/collections";
+import { Media, Products, Revisions, Tags } from "/lib/collections";
 import { Logger, Reaction } from "/server/api";
 
 /**
@@ -732,25 +732,36 @@ Meteor.methods({
       ids.push(doc._id);
     });
 
-    const numRemoved = Products.remove({
+    Products.remove({
       _id: {
         $in: ids
       }
     });
 
+    const numRemoved = Revisions.find({
+      "documentId": {
+        $in: ids
+      },
+      "documentData.isDeleted": true
+    }).count();
+
     if (numRemoved > 0) {
       // we can get removes results only in async way
-      Media.remove({
+      Media.update({
         "metadata.productId": {
           $in: ids
         },
         "metadata.variantId": {
           $in: ids
         }
+      }, {
+        $set: {
+          "metadata.isDeleted": true
+        }
       });
       return numRemoved;
     }
-    throw new Meteor.Error(304, "Something goes wrong, nothing was deleted");
+    throw new Meteor.Error(304, "Something went wrong, nothing was deleted");
   },
 
   /**

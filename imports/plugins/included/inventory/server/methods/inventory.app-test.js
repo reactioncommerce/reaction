@@ -66,9 +66,12 @@ describe("inventory method", function () {
     let qty;
     let newQty;
 
+    before(function () {
+      qty = options[1].inventoryQuantity;
+    });
+
     beforeEach(function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
-      qty = options[1].inventoryQuantity;
     });
 
     it("should have option quantity greater then 0", function () {
@@ -82,14 +85,10 @@ describe("inventory method", function () {
       expect(midQty).to.equal(qty);
     });
 
-    it("should have new quantity non equal to old quantity", function () {
+    it("should have new quantity equal to 0", function () {
       // then we are removing option and docs should be automatically removed
       Meteor.call("products/deleteVariant", options[1]._id);
       newQty = Inventory.find({ variantId: options[1]._id }).count();
-      expect(newQty).to.not.equal(qty);
-    });
-
-    it("should have new quantity equal to 0", function () {
       expect(newQty).to.equal(0);
     });
   });
