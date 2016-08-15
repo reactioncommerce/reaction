@@ -30,10 +30,6 @@ Template.loginDropdown.events({
       if (error) {
         Logger.warn("Failed to logout.", error);
       }
-      // go home on logout
-      Reaction.Subscriptions.Manager.reset();
-      Reaction.Router.reload();
-      Reaction.Router.go("/");
     });
   },
 
