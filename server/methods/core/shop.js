@@ -429,6 +429,7 @@ Meteor.methods({
     };
 
     let existingTag = Collections.Tags.findOne({
+      slug: Reaction.getSlug(tagName),
       name: tagName
     });
 
