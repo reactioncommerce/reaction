@@ -98,3 +98,9 @@ To execute acceptance tests run:
 ```
 
 By default, acceptance tests use the Firefox browser. You should see an instance of Firefox appear and run through the tests.
+
+Dealing with failing tests... If a test fails, a screenshot of the failed test step will be generated in:
+
+```
+/reaction/tests/acceptance-tests/errorShots/*.png
+```
