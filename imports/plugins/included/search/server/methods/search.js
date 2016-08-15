@@ -1,8 +1,5 @@
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
-import Fixtures from "/server/imports/fixtures";
-
-Fixtures();
 
 
 Meteor.methods({
