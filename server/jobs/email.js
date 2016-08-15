@@ -30,7 +30,7 @@ export default function () {
 
       try {
         Email.send({ from, to, subject, html });
-        Logger.info(`Successfully sent email to ${to}`);
+        Logger.info(`Successfully sent email to ${to.substring(to.indexOf("@") + 1)}`);
       } catch (error) {
         Logger.error(error, "Email job failed");
         return job.fail(error.toString());
