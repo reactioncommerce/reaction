@@ -35,9 +35,9 @@ export function paymentSubmit(transactionType, cardData, paymentData) {
   let result;
 
   try {
-    let refundResult = BraintreeApi.apiCall.paymentSubmit(paymentSubmitDetails);
-    Logger.info(refundResult);
-    result = refundResult;
+    let paymentSubmitResult = BraintreeApi.apiCall.paymentSubmit(paymentSubmitDetails);
+    Logger.debug(paymentSubmitResult);
+    result = paymentSubmitResult;
   } catch (error) {
     Logger.error(error);
     result = {
@@ -69,9 +69,9 @@ export function paymentCapture(paymentMethod) {
   let result;
 
   try {
-    let refundResult = BraintreeApi.apiCall.captureCharge(paymentCaptureDetails);
-    Logger.info(refundResult);
-    result = refundResult;
+    let paymentCaptureResult = BraintreeApi.apiCall.captureCharge(paymentCaptureDetails);
+    Logger.debug(paymentCaptureResult);
+    result = paymentCaptureResult;
   } catch (error) {
     Logger.error(error);
     result = {
@@ -106,7 +106,7 @@ export function createRefund(paymentMethod, amount) {
 
   try {
     let refundResult = BraintreeApi.apiCall.createRefund(refundDetails);
-    Logger.info(refundResult);
+    Logger.debug(refundResult);
     result = refundResult;
   } catch (error) {
     Logger.error(error);
@@ -139,7 +139,7 @@ export function listRefunds(paymentMethod) {
 
   try {
     let refundListResult = BraintreeApi.apiCall.listRefunds(refundListDetails);
-    Logger.info(refundListResult);
+    Logger.debug(refundListResult);
     result = refundListResult;
   } catch (error) {
     Logger.error(error);
