@@ -68,3 +68,33 @@ Join us on our **[Gitter chat room](https://gitter.im/reactioncommerce/reaction)
 ## Docker
 
 Docker images are available on the [Docker Hub](https://hub.docker.com/u/reactioncommerce/). There are two images available: [reactioncommerce:prequel](https://hub.docker.com/r/reactioncommerce/prequel/) - the latest `development` image and [reactioncommerce:reaction](https://hub.docker.com/r/reactioncommerce/reaction/), the `master` image.
+
+## Acceptance Testing
+
+To get started with Acceptance Testing first you must download Selenium Standalone Server .jar which can be found <http://www.seleniumhq.org/download/>.
+
+Run Selenium Server:
+
+```
+java -jar selenium-server-standalone-2.53.1.jar
+```
+
+Currently the test runner for acceptance testing is located in:
+
+```
+/reaction/wdio.conf.js
+```
+
+Be sure to add your application user information in:
+
+```
+/reaction/tests/acceptance-tests/config/user-data.yml
+```
+
+To execute acceptance tests run:
+
+```
+./node_modules/.bin/wdio wdio.conf.js
+```
+
+By default, acceptance tests use the Firefox browser. You should see an instance of Firefox appear and run through the tests.
