@@ -28,17 +28,17 @@ Subscriptions.Account = Subscriptions.Manager.subscribe("Accounts", Meteor.userI
 /**
  * General Subscriptions
  */
-Subscriptions.Shops = Meteor.subscribe("Shops");
+Subscriptions.Shops = Subscriptions.Manager.subscribe("Shops");
 
-Subscriptions.Packages = Meteor.subscribe("Packages");
+Subscriptions.Packages = Subscriptions.Manager.subscribe("Packages");
 
-Subscriptions.Tags = Meteor.subscribe("Tags");
+Subscriptions.Tags = Subscriptions.Manager.subscribe("Tags");
 
-Subscriptions.Media = Meteor.subscribe("Media");
+Subscriptions.Media = Subscriptions.Manager.subscribe("Media");
 
 // admin only
 // todo should we put this inside autorun and detect user changes
-Subscriptions.Inventory = Meteor.subscribe("Inventory");
+Subscriptions.Inventory = Subscriptions.Manager.subscribe("Inventory");
 
 /**
  * Subscriptions that need to reload on new sessions
@@ -70,4 +70,5 @@ Tracker.autorun(() => {
     sessionId = Session.get("sessionId");
   });
   Subscriptions.Cart = Meteor.subscribe("Cart", sessionId, Meteor.userId());
+  Subscriptions.UserProfile = Meteor.subscribe("UserProfile", Meteor.userId());
 });
