@@ -2,3 +2,24 @@ login_dropdown_btn: "[data-event-action='accounts-dropdown-click']"
 login_email_fld: "[class='form-control login-input-email']"
 login_pw_fld: "[class='form-control login-input-password']"
 login_btn: "[data-event-action='submitSignInForm']"
+
+# dashoard locators
+dashboard_btn: "span.icon > i.icon-reaction-logo"
+dashboard_hdr_txt: "h3.nav-dashboard-title > span"
+db_accounts: "span.icon > i.fa.fa-users"
+core_settings_btn_txt: "h3.title > span"
+orders_settings_btn_txt: "//div[2]/div/div/div/h3/span"
+shipping_settings_btn_txt: "//div[3]/div/div/div/h3/span"
+account_settings_btn_txt: "//div[4]/div/div/div/h3/span"
+catalog_settings_btn_txt: "//div[5]/div/div/div/h3/span"
+
+
+# account page locators
+# xpath required here, sadly since data-event-action tags are shared between 'Manage' buttons
+account_manage_btn: "//main[@id='main']/div[2]/div[2]/ul/li/div[3]/button"
+account_manage_btn_in_group: "//li[2]/div[3]/button"
+
+# account permissions
+# xpath required here, sadly since data-event-action tags are shared between checkboxes
+perm_dashboard_chkb: "//div[2]/ul/li/div[2]/input"
+perm_shop_settings_chkb: "//div[2]/ul/li[2]/div[2]/input"
