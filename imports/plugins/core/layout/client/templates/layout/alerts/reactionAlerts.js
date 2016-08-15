@@ -86,7 +86,6 @@ Object.assign(Alerts, {
         if (callback) {
           callback(isConfirm);
         }
-        // callback();
       }
     });
   },
