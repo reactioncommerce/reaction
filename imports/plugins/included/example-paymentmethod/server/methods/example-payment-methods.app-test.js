@@ -72,6 +72,7 @@ describe("Submit payment", function () {
   });
 
   it("should call Example API with card and payment data", function () {
+    this.timeout(3000);
     let cardData = {
       name: "Test User",
       number: "4242424242424242",
@@ -97,7 +98,6 @@ describe("Submit payment", function () {
       cardData: cardData,
       paymentData: paymentData
     });
-
     expect(results.saved).to.be.true;
   });
 
