@@ -71,7 +71,6 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
   check(productFilters, Match.OneOf(undefined, filters));
   check(sort, Match.OneOf(undefined, Object));
 
-  let shopAdmin;
   const shop = Reaction.getCurrentShop();
 
   if (typeof shop !== "object") {

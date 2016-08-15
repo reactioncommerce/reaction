@@ -1,0 +1,7 @@
+{
+  "git": {
+    "url": "https://github.com/reactioncommerce/reaction.git",
+    "branch": "master"
+  },
+  "plugins": []
+}

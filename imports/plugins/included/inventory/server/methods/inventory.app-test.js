@@ -62,21 +62,34 @@ describe("inventory method", function () {
   });
 
   describe("inventory/remove", function () {
-    it("should remove deleted variants from inventory", function () {
-      // register inventory (that we'll should delete on variant removal)
+    // register inventory (that we'll should delete on variant removal)
+    let qty;
+    let newQty;
+
+    beforeEach(function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
+      qty = options[1].inventoryQuantity;
+    });
+
+    it("should have option quantity greater then 0", function () {
       // checking our option quantity. It should be greater than zero.
-      let qty =  options[1].inventoryQuantity;
       expect(qty).to.be.above(0);
-      // before spec we're cleared collection, so we need to insert all docs
-      // again and make sure quantity will be equal with `qty`
+    });
+
+    it("should have equal quantities", function () {
       Meteor.call("inventory/register", options[1]);
       let midQty = Inventory.find({ variantId: options[1]._id }).count();
       expect(midQty).to.equal(qty);
+    });
+
+    it("should have new quantity non equal to old quantity", function () {
       // then we are removing option and docs should be automatically removed
       Meteor.call("products/deleteVariant", options[1]._id);
-      let newQty = Inventory.find({ variantId: options[1]._id }).count();
+      newQty = Inventory.find({ variantId: options[1]._id }).count();
       expect(newQty).to.not.equal(qty);
+    });
+
+    it("should have new quantity equal to 0", function () {
       expect(newQty).to.equal(0);
     });
   });
@@ -175,4 +188,3 @@ describe("inventory method", function () {
     // });
   });
 });
-
