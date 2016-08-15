@@ -144,7 +144,7 @@ export default {
     //
     if (Meteor.loggingIn() === false) {
       //
-      // this userId check is happens because when logout
+      // this userId check happens because when logout
       // occurs it takes a few cycles for a new anonymous user
       // to get created and during this time the user has no
       // permission, not even guest permissions so we
