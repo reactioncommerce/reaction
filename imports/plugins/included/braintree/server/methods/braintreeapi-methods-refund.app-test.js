@@ -69,12 +69,6 @@ describe("braintree/refund/create", function () {
     expect(refundError).to.be.undefined;
     expect(refundResult).to.not.be.undefined;
     expect(refundResult.saved).to.be.true;
-    // expect(BraintreeApi.apiCall.createRefund).to.have.been.calledWith({
-    //   createRefund: {
-    //     amount: 99.95,
-    //     transactionId: paymentMethod.transactionId
-    //   }
-    // });
     done();
   });
 });
