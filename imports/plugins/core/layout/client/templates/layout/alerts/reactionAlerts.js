@@ -83,7 +83,7 @@ Object.assign(Alerts, {
       ...options
     }).then((isConfirm) => {
       if (isConfirm === true) {
-        if(callback){
+        if (callback) {
           callback(isConfirm);
         }
         // callback();
