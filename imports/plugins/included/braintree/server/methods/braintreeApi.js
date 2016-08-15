@@ -8,6 +8,9 @@ import Future from "fibers/future";
 import Braintree from "braintree";
 import accounting from "accounting-js";
 
+export const BraintreeApi = {};
+BraintreeApi.apiCall = {};
+
 
 function getPaymentObj() {
   return {
@@ -82,7 +85,7 @@ getRefundDetails = function (refundId) {
 };
 
 
-export function paymentSubmit(paymentSubmitDetails) {
+BraintreeApi.apiCall.paymentSubmit = function (paymentSubmitDetails) {
   let gateway = getGateway();
   let paymentObj = getPaymentObj();
   if (paymentSubmitDetails.transactionType === "authorize") {
@@ -113,10 +116,10 @@ export function paymentSubmit(paymentSubmitDetails) {
   }));
 
   return fut.wait();
-}
+};
 
 
-export function captureCharge(paymentCaptureDetails) {
+BraintreeApi.apiCall.captureCharge = function (paymentCaptureDetails) {
   let transactionId = paymentCaptureDetails.transactionId;
   let amount = accounting.toFixed(paymentCaptureDetails.amount, 2);
   let gateway = getGateway();
@@ -157,10 +160,10 @@ export function captureCharge(paymentCaptureDetails) {
   }));
 
   return fut.wait();
-}
+};
 
 
-export function createRefund(refundDetails) {
+BraintreeApi.apiCall.createRefund = function (refundDetails) {
   let transactionId = refundDetails.transactionId;
   let amount = refundDetails.amount;
   let gateway = getGateway();
@@ -193,10 +196,10 @@ export function createRefund(refundDetails) {
     Logger.fatal(e);
   }));
   return fut.wait();
-}
+};
 
 
-export function listRefunds(refundListDetails) {
+BraintreeApi.apiCall.listRefunds = function (refundListDetails) {
   let transactionId = refundListDetails.transactionId;
   let gateway = getGateway();
   let braintreeFind = Meteor.wrapAsync(gateway.transaction.find, gateway.transaction);
@@ -216,4 +219,4 @@ export function listRefunds(refundListDetails) {
   }
 
   return result;
-}
+};

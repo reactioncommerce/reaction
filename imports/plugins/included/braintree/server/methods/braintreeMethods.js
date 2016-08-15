@@ -1,4 +1,4 @@
-import * as BraintreeApi from "./braintreeApi";
+import { BraintreeApi } from "./braintreeApi";
 import { Logger } from "/server/api";
 import { PaymentMethod } from "/lib/collections/schemas";
 
@@ -35,16 +35,16 @@ export function paymentSubmit(transactionType, cardData, paymentData) {
   let result;
 
   try {
-    let refundResult = BraintreeApi.paymentSubmit(paymentSubmitDetails);
+    let refundResult = BraintreeApi.apiCall.paymentSubmit(paymentSubmitDetails);
     Logger.info(refundResult);
     result = refundResult;
   } catch (error) {
     Logger.error(error);
     result = {
       saved: false,
-      error: `Cannot Capture Payment: ${error.message}`
+      error: `Cannot Submit Payment: ${error.message}`
     };
-    Logger.fatal("Braintree call failed, refund was not issued");
+    Logger.fatal("Braintree call failed, payment was not submitted");
   }
 
   return result;
@@ -69,7 +69,7 @@ export function paymentCapture(paymentMethod) {
   let result;
 
   try {
-    let refundResult = BraintreeApi.captureCharge(paymentCaptureDetails);
+    let refundResult = BraintreeApi.apiCall.captureCharge(paymentCaptureDetails);
     Logger.info(refundResult);
     result = refundResult;
   } catch (error) {
@@ -78,7 +78,7 @@ export function paymentCapture(paymentMethod) {
       saved: false,
       error: `Cannot Capture Payment: ${error.message}`
     };
-    Logger.fatal("Braintree call failed, refund was not issued");
+    Logger.fatal("Braintree call failed, payment was not captured");
   }
 
   return result;
@@ -105,7 +105,7 @@ export function createRefund(paymentMethod, amount) {
   let result;
 
   try {
-    let refundResult = BraintreeApi.createRefund(refundDetails);
+    let refundResult = BraintreeApi.apiCall.createRefund(refundDetails);
     Logger.info(refundResult);
     result = refundResult;
   } catch (error) {
@@ -138,16 +138,16 @@ export function listRefunds(paymentMethod) {
   let result;
 
   try {
-    let refundListResult = BraintreeApi.listRefunds(refundListDetails);
+    let refundListResult = BraintreeApi.apiCall.listRefunds(refundListDetails);
     Logger.info(refundListResult);
     result = refundListResult;
   } catch (error) {
     Logger.error(error);
     result = {
       saved: false,
-      error: `Cannot issue refund: ${error.message}`
+      error: `Cannot list refunds: ${error.message}`
     };
-    Logger.fatal("Braintree call failed, refund was not issued");
+    Logger.fatal("Braintree call failed, refunds not listed");
   }
 
   return result;
