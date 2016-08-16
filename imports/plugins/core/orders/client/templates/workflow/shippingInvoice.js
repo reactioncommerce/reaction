@@ -344,9 +344,9 @@ Template.coreOrderShippingInvoice.helpers({
       // let stripeDiscountExplanation = _.once(stripeDiscountAlert);
       //
       // stripeDiscountExplanation();
-      return paymentMethod.amount + discounts - refundTotal;
+      return Math.abs(paymentMethod.amount + discounts - refundTotal);
     }
-    return paymentMethod.amount - refundTotal;
+    return Math.abs(paymentMethod.amount - refundTotal);
   },
 
   refundSubmitDisabled() {
