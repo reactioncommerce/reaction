@@ -902,28 +902,6 @@ Meteor.methods({
         type: "simple"
       }
     });
-
-    // let productCount = Products.find({
-    //   hashtags: {
-    //     $in: [tagId]
-    //   }
-    // }).count();
-    //
-    // let relatedTagsCount = Tags.find({
-    //   relatedTagIds: {
-    //     $in: [tagId]
-    //   }
-    // }).count();
-    //
-    // if (productCount === 0 && relatedTagsCount === 0) {
-    //   return Tags.update({
-    //     _id: tagId
-    //   }, {
-    //     $set: {
-    //       isDeleted: true
-    //     }
-    //   });
-    // }
   },
 
   /**

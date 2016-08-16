@@ -38,20 +38,26 @@ Meteor.methods({
       }).fetch();
     }
 
+    let updatedDocuments = 0;
+
     if (revisions) {
       for (let revision of revisions) {
-        try {
-          Products.update({
-            _id: revision.documentId
-          }, {
-            $set: revision.documentData
-          }, {
-            publish: true
-          });
-        } catch (e) {
-          throw new Meteor.Error(403, "Forbidden", "Could not publish product revision");
-        }
+        const res = Products.update({
+          _id: revision.documentId
+        }, {
+          $set: revision.documentData
+        }, {
+          publish: true
+        });
+
+        updatedDocuments += res;
       }
     }
+
+    if (updatedDocuments > 0) {
+      return true;
+    }
+
+    throw new Meteor.Error(403, "Forbidden", "Could not publish product revision");
   }
 });

@@ -93,10 +93,7 @@ Products.before.update(function (userId, product, fieldNames, modifier, options)
             // where 0, 1, n represent an array index.
             revisionSelector["documentData.metafields"] = originalSelector.metafields;
             revisionModifier.$set[`documentData.${property}`] = modifier.$set[property];
-          } /*else if (operation === "$pull" && property === "hashtags.$") {
-            revisionSelector["documentData.hashtags"] = originalSelector.hashtags;
-            revisionModifier.$set[`documentData.${property}`] = modifier.$set[property];
-          }*/ else {
+          } else {
             // Let everything else through
             revisionModifier[operation][`documentData.${property}`] = modifier[operation][property];
           }
@@ -104,7 +101,7 @@ Products.before.update(function (userId, product, fieldNames, modifier, options)
       }
     }
   }
-  console.log("RM", revisionModifier);
+
   Revisions.update(revisionSelector, revisionModifier);
 
   Logger.info(`Revison updated for product ${product._id}.`);
