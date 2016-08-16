@@ -12,4 +12,17 @@ Meteor.startup(function () {
       }
     }
   });
+
+  //
+  // we need to sometimes force
+  // router reload on login to get
+  // the entire layout to rerender
+  // we only do this when the routes table
+  // has already been generated (existing user)
+  //
+  Accounts.onLogin(() => {
+    if (Meteor.loggingIn() === false && Router._routes.length > 0) {
+      Router.reload();
+    }
+  });
 });
