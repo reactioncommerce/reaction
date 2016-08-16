@@ -321,7 +321,8 @@ Template.coreOrderShippingInvoice.helpers({
     _.each(refunds, function (item) {
       refundTotal += parseFloat(item.amount);
     });
-    return paymentMethod.amount - refundTotal;
+
+    return Math.abs(paymentMethod.amount - refundTotal);
   },
 
   refundSubmitDisabled() {

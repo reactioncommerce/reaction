@@ -764,7 +764,7 @@ Meteor.methods({
     });
 
     if (result.saved === false) {
-      Logger.fatal("Attempt for refund transaction failed", order, paymentMethod.transactionId, result.error);
+      Logger.fatal("Attempt for refund transaction failed", order._id, paymentMethod.transactionId, result.error);
 
       throw new Meteor.Error(
         "Attempt to refund transaction failed", result.error);
