@@ -149,6 +149,7 @@ describe("core product methods", function () {
       expect(variants.length).to.equal(1);
 
       Meteor.call("products/createVariant", product._id, newVariant);
+      Meteor._sleepForMs(500);
       variants = Products.find({ ancestors: [product._id] }).fetch();
       const createdVariant = variants.filter(v => v._id !== firstVariantId);
       expect(variants.length).to.equal(2);
@@ -613,6 +614,7 @@ describe("core product methods", function () {
       Meteor.call("products/updateVariantsPosition", [
         product2._id, product3._id, product._id
       ]);
+      Meteor._sleepForMs(500);
       const modifiedProduct = Products.findOne(product._id);
       const modifiedProduct2 = Products.findOne(product2._id);
       const modifiedProduct3 = Products.findOne(product3._id);

@@ -83,20 +83,22 @@ Object.assign(Alerts, {
       ...options
     }).then((isConfirm) => {
       if (isConfirm === true) {
-        callback(isConfirm);
+        if (callback) {
+          callback(isConfirm);
+        }
       }
     });
   },
 
   toast(message, type, options) {
     switch (type) {
-    case "error":
-    case "warning":
-    case "success":
-    case "info":
-      return sAlert[type](message, options);
-    default:
-      return sAlert.success(message, options);
+      case "error":
+      case "warning":
+      case "success":
+      case "info":
+        return sAlert[type](message, options);
+      default:
+        return sAlert.success(message, options);
     }
   }
 });

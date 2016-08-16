@@ -11,8 +11,7 @@ Meteor.methods({
    * check if current user has password
    */
   "accounts/currentUserHasPassword": function () {
-    let user;
-    user = Meteor.users.findOne(Meteor.userId());
+    const user = Meteor.users.findOne(Meteor.userId());
     if (user.services.password) {
       return true;
     }
@@ -238,101 +237,91 @@ Meteor.methods({
    * @returns {Boolean} returns true
    */
   "accounts/inviteShopMember": function (shopId, email, name) {
-    let currentUserName;
-    let shop;
-    let token;
-    let user;
-    let userId;
     check(shopId, String);
     check(email, String);
     check(name, String);
+
     this.unblock();
-    shop = Collections.Shops.findOne(shopId);
 
-    if (!Reaction.hasPermission("reaction-accounts", Meteor.userId(), shopId)) {
-      throw new Meteor.Error(403, "Access denied");
+    const shop = Collections.Shops.findOne(shopId);
+
+    if (!shop) {
+      const msg = `accounts/inviteShopMember - Shop ${shopId} not found`;
+      Logger.error(msg);
+      throw new Meteor.Error("shop-not-found", msg);
     }
 
-    Reaction.configureMailUrl();
-    // don't send account emails unless email server configured
-    if (!process.env.MAIL_URL) {
-      Logger.info("Mail not configured: suppressing invite email output");
-      return true;
+    if (!Reaction.hasPermission("reaction-accounts", this.userId, shopId)) {
+      Logger.error(`User ${this.userId} does not have reaction-accounts permissions`);
+      throw new Meteor.Error("access-denied", "Access denied");
     }
-    // everything cool? invite user
-    if (shop && email && name) {
-      let currentUser = Meteor.user();
-      if (currentUser) {
-        if (currentUser.profile) {
-          currentUserName = currentUser.profile.name;
-        } else {
-          currentUserName = currentUser.username;
-        }
-      } else {
-        currentUserName = "Admin";
-      }
 
-      user = Meteor.users.findOne({
-        "emails.address": email
-      });
+    const currentUser = Meteor.users.findOne(this.userId);
 
-      if (!user) {
-        userId = Accounts.createUser({
-          email: email,
-          username: name
-        });
-        user = Meteor.users.findOne(userId);
-        if (!user) {
-          throw new Error("Can't find user");
-        }
-        token = Random.id();
-        Meteor.users.update(userId, {
-          $set: {
-            "services.password.reset": {
-              token: token,
-              email: email,
-              when: new Date()
-            }
-          }
-        });
-        SSR.compileTemplate("accounts/inviteShopMember", ReactionEmailTemplate("accounts/inviteShopMember"));
-        try {
-          return Email.send({
-            to: email,
-            from: `${shop.name} <${shop.emails[0].address}>`,
-            subject: `You have been invited to join ${shop.name}`,
-            html: SSR.render("accounts/inviteShopMember", {
-              homepage: Meteor.absoluteUrl(),
-              shop: shop,
-              currentUserName: currentUserName,
-              invitedUserName: name,
-              url: Accounts.urls.enrollAccount(token)
-            })
-          });
-        } catch (_error) {
-          throw new Meteor.Error(403, "Unable to send invitation email.");
-        }
+    let currentUserName;
+
+    if (currentUser) {
+      if (currentUser.profile) {
+        currentUserName = currentUser.profile.name || currentUser.username;
       } else {
-        SSR.compileTemplate("accounts/inviteShopMember", ReactionEmailTemplate("accounts/inviteShopMember"));
-        try {
-          return Email.send({
-            to: email,
-            from: `${shop.name} <${shop.emails[0].address}>`,
-            subject: `You have been invited to join the ${shop.name}`,
-            html: SSR.render("accounts/inviteShopMember", {
-              homepage: Meteor.absoluteUrl(),
-              shop: shop,
-              currentUserName: currentUserName,
-              invitedUserName: name,
-              url: Meteor.absoluteUrl()
-            })
-          });
-        } catch (_error) {
-          throw new Meteor.Error(403, "Unable to send invitation email.");
-        }
+        currentUserName = currentUser.username;
       }
     } else {
-      throw new Meteor.Error(403, "Access denied");
+      currentUserName = "Admin";
+    }
+
+    const user = Meteor.users.findOne({
+      "emails.address": email
+    });
+
+    const tmpl = "accounts/inviteShopMember";
+    SSR.compileTemplate("accounts/inviteShopMember", Reaction.Email.getTemplate(tmpl));
+
+    if (!user) {
+      const userId = Accounts.createUser({
+        email: email,
+        username: name
+      });
+
+      const newUser = Meteor.users.findOne(userId);
+
+      if (!newUser) {
+        throw new Error("Can't find user");
+      }
+
+      const token = Random.id();
+
+      Meteor.users.update(userId, {
+        $set: {
+          "services.password.reset": { token, email, when: new Date() }
+        }
+      });
+
+      Reaction.Email.send({
+        to: email,
+        from: `${shop.name} <${shop.emails[0].address}>`,
+        subject: `You have been invited to join ${shop.name}`,
+        html: SSR.render("accounts/inviteShopMember", {
+          homepage: Meteor.absoluteUrl(),
+          shop,
+          currentUserName,
+          invitedUserName: name,
+          url: Accounts.urls.enrollAccount(token)
+        })
+      });
+    } else {
+      Reaction.Email.send({
+        to: email,
+        from: `${shop.name} <${shop.emails[0].address}>`,
+        subject: `You have been invited to join ${shop.name}`,
+        html: SSR.render("accounts/inviteShopMember", {
+          homepage: Meteor.absoluteUrl(),
+          shop,
+          currentUserName,
+          invitedUserName: name,
+          url: Meteor.absoluteUrl()
+        })
+      });
     }
     return true;
   },
@@ -347,18 +336,20 @@ Meteor.methods({
   "accounts/sendWelcomeEmail": function (shopId, userId) {
     check(shopId, String);
     check(userId, String);
+
     this.unblock();
+
     const user = Collections.Accounts.findOne(userId);
     const shop = Collections.Shops.findOne(shopId);
-    let shopEmail;
 
     // anonymous users arent welcome here
     if (!user.emails || !user.emails.length > 0) {
       return true;
     }
 
-    let userEmail = user.emails[0].address;
+    const userEmail = user.emails[0].address;
 
+    let shopEmail;
     // provide some defaults for missing shop email.
     if (!shop.emails) {
       shopEmail = `${shop.name}@localhost`;
@@ -367,30 +358,23 @@ Meteor.methods({
       shopEmail = shop.emails[0].address;
     }
 
-    // configure email
-    Reaction.configureMailUrl();
-    // don't send account emails unless email server configured
-    if (!process.env.MAIL_URL) {
-      Logger.info("Mail not configured: suppressing welcome email output");
-      return true;
-    }
-    // fetch and send templates
-    SSR.compileTemplate("accounts/sendWelcomeEmail", ReactionEmailTemplate("accounts/sendWelcomeEmail"));
-    try {
-      return Email.send({
-        to: userEmail,
-        from: `${shop.name} <${shopEmail}>`,
-        subject: `Welcome to ${shop.name}!`,
-        html: SSR.render("accounts/sendWelcomeEmail", {
-          homepage: Meteor.absoluteUrl(),
-          shop: shop,
-          user: Meteor.user()
-        })
-      });
-    } catch (e) {
-      Logger.warn("Unable to send email, check configuration and port.", e);
-    }
+    const tmpl = "accounts/sendWelcomeEmail";
+    SSR.compileTemplate("accounts/sendWelcomeEmail", Reaction.Email.getTemplate(tmpl));
+
+    Reaction.Email.send({
+      to: userEmail,
+      from: `${shop.name} <${shopEmail}>`,
+      subject: `Welcome to ${shop.name}!`,
+      html: SSR.render("accounts/sendWelcomeEmail", {
+        homepage: Meteor.absoluteUrl(),
+        shop: shop,
+        user: Meteor.user()
+      })
+    });
+
+    return true;
   },
+
   /**
    * accounts/addUserPermissions
    * @param {String} userId - userId
@@ -413,7 +397,7 @@ Meteor.methods({
     try {
       return Roles.addUsersToRoles(userId, permissions, group);
     } catch (error) {
-      return Logger.info(error);
+      return Logger.error(error);
     }
   },
 
@@ -432,7 +416,7 @@ Meteor.methods({
     try {
       return Roles.removeUsersFromRoles(userId, permissions, group);
     } catch (error) {
-      Logger.info(error);
+      Logger.error(error);
       throw new Meteor.Error(403, "Access Denied");
     }
   },
@@ -455,7 +439,7 @@ Meteor.methods({
     try {
       return Roles.setUserRoles(userId, permissions, group);
     } catch (error) {
-      Logger.info(error);
+      Logger.error(error);
       return error;
     }
   }

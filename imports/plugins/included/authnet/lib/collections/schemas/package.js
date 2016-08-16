@@ -37,7 +37,8 @@ export const AuthNetPayment = new SimpleSchema({
   cardNumber: {
     type: String,
     label: "Card number",
-    min: 16
+    min: 12,
+    max: 19
   },
   expireMonth: {
     type: String,

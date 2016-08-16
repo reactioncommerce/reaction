@@ -1,8 +1,7 @@
+import "./methods/statusChanges";
 import "./methods/inventory";
-import "./methods/inventory2";
 
 import "./publications/inventory";
 
-import "./startup/hooks";
+import "./hooks/hooks";
 import "./startup/init";
-

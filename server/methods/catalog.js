@@ -700,7 +700,7 @@ Meteor.methods({
   "products/deleteProduct": function (productId) {
     check(productId, Match.OneOf(Array, String));
     // must have admin permission to delete
-    if (!Reaction.hasAdminAccess()) {
+    if (!Reaction.hasPermission("createProduct") && !Reaction.hasAdminAccess()) {
       throw new Meteor.Error(403, "Access Denied");
     }
 
@@ -822,7 +822,7 @@ Meteor.methods({
     };
 
     let existingTag = Tags.findOne({
-      name: tagName
+      slug: Reaction.getSlug(tagName)
     });
 
     if (existingTag) {
