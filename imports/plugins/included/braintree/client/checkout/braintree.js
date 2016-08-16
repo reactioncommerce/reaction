@@ -34,7 +34,7 @@ handleBraintreeSubmitError = function (error) {
   if (serverError) {
     return paymentAlert("Server Error " + serverError);
   } else if (error) {
-    return paymentAlert("Oops " + error);
+    return paymentAlert("Oops! Credit card is invalid. Please check your information and try again.");
   }
 };
 
