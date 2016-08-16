@@ -67,11 +67,10 @@ describe("cart methods", function () {
       sandbox.stub(Meteor, "userId", () => cartUserId);
       let cartFromCollection = Collections.Cart.findOne(cart._id);
       const cartItemId = cartFromCollection.items[0]._id;
-      const originalQty = cartFromCollection.items[0].quantity;
       Meteor.call("cart/removeFromCart", cartItemId, 1);
       Meteor._sleepForMs(500);
       let updatedCart = Collections.Cart.findOne(cart._id);
-      expect(updatedCart.items[0].quantity).to.equal(originalQty - 1);
+      expect(updatedCart.items[0].quantity).to.equal(1);
     });
 
     it("should remove cart item when quantity is decresed to zero", function () {
