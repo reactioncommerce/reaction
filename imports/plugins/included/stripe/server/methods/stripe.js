@@ -1,3 +1,4 @@
+import accounting from "accounting-js";
 /* eslint camelcase: 0 */
 // meteor modules
 import { Meteor } from "meteor/meteor";
@@ -44,6 +45,42 @@ function parseCardData(data) {
 // Stripe uses a "Decimal-less" format so 10.00 becomes 1000
 function formatForStripe(amount) {
   return Math.round(amount * 100);
+}
+function unformatFromStripe(amount) {
+  return (amount / 100);
+}
+
+function stripeCaptureCharge(paymentMethod) {
+  let result;
+  const captureDetails = {
+    amount: formatForStripe(paymentMethod.amount)
+  };
+
+  try {
+    const captureResult = StripeApi.methods.captureCharge.call({
+      transactionId: paymentMethod.transactionId,
+      captureDetails: captureDetails
+    });
+    if (captureResult.status === "succeeded") {
+      result = {
+        saved: true,
+        response: captureResult
+      };
+    } else {
+      result = {
+        saved: false,
+        response: captureResult
+      };
+    }
+  } catch (error) {
+    Logger.error(error);
+    result = {
+      saved: false,
+      error: error
+    };
+    return { error, result };
+  }
+  return result;
 }
 
 
@@ -108,36 +145,20 @@ Meteor.methods({
    */
   "stripe/payment/capture": function (paymentMethod) {
     check(paymentMethod, Reaction.Schemas.PaymentMethod);
-    let result;
+    // let result;
     const captureDetails = {
       amount: formatForStripe(paymentMethod.amount)
     };
 
-    try {
-      const captureResult = StripeApi.methods.captureCharge.call({
-        transactionId: paymentMethod.transactionId,
-        captureDetails: captureDetails
-      });
-      if (captureResult.status === "succeeded") {
-        result = {
-          saved: true,
-          response: captureResult
-        };
-      } else {
-        result = {
-          saved: false,
-          response: captureResult
-        };
-      }
-    } catch (error) {
-      Logger.error(error);
-      result = {
-        saved: false,
-        error: error
-      };
-      return { error, result };
+    // 100% discounts are not valid when using Stripe
+    // If discount is 100%, capture 100% and then refund 100% of transaction
+    if (captureDetails.amount === accounting.unformat(0)) {
+      const voidedAmount = unformatFromStripe(paymentMethod.transactions[0].amount);
+      const result = stripeCaptureCharge(paymentMethod);
+
+      return Meteor.call("stripe/refund/create", paymentMethod, voidedAmount);
     }
-    return result;
+    return stripeCaptureCharge(paymentMethod);
   },
 
   /**

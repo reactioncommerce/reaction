@@ -123,12 +123,13 @@ Template.coreOrderShippingInvoice.events({
     _.each(refunds, function (item) {
       refundTotal += parseFloat(item.amount);
     });
+    let adjustedTotal;
 
     // Stripe counts discounts as refunds, so we need to re-add the discount to not "double discount" in the adjustedTotal
     if (paymentMethod.processor === "Stripe") {
-      let adjustedTotal = accounting.toFixed(orderTotal + discounts - refundTotal, 2);
+      adjustedTotal = accounting.toFixed(orderTotal + discounts - refundTotal, 2);
     } else {
-      let adjustedTotal = accounting.toFixed(orderTotal - refundTotal, 2);
+      adjustedTotal = accounting.toFixed(orderTotal - refundTotal, 2);
     }
 
     if (refund > adjustedTotal) {
