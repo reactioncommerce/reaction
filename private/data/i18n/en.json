@@ -359,6 +359,11 @@
           "completed": "Completed",
           "canceled": "Canceled",
           "refunded": "Refunded"
+        },
+        "paymentProvider": {
+          "braintree": {
+            "braintreeSettlementDelay": "Braintree does not allow refunds until transactions are settled. This can take up to 24 hours. Please try again later."
+          }
         }
       },
       "orderShipping": {

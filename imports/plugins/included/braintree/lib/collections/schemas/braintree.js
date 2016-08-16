@@ -43,7 +43,8 @@ export const BraintreePayment = new SimpleSchema({
   },
   cardNumber: {
     type: String,
-    min: 16,
+    min: 12,
+    max: 19,
     label: "Card number"
   },
   expireMonth: {
