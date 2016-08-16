@@ -1,7 +1,7 @@
 {
   "name": "reaction",
   "description": "Reaction is a modern reactive, real-time event driven ecommerce platform.",
-  "version": "0.14.2",
+  "version": "0.15.0",
   "main": "main.js",
   "directories": {
     "test": "tests"
@@ -17,9 +17,6 @@
   "license": "GPL-3.0",
   "bugs": {
     "url": "https://github.com/reactioncommerce/reaction/issues"
-  },
-  "scripts": {
-    "postinstall": ".reaction/scripts/postinstall.sh"
   },
   "dependencies": {
     "accounting-js": "^1.1.1",
