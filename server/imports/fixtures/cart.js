@@ -1,7 +1,6 @@
 import faker from "faker";
 import { Factory } from "meteor/dburles:factory";
 import { Cart, Products } from "/lib/collections";
-import { Logger } from "/server/api";
 import "./shops";
 import { getShop } from "./shops";
 import { getAddress } from "./accounts";
@@ -87,7 +86,8 @@ export function createCart(productId, variantId) {
     createdAt: faker.date.past(),
     updatedAt: new Date()
   };
-  const insertedCart = Cart.insert(cart);
+  const newCartId = Cart.insert(cart);
+  const insertedCart = Cart.findOne(newCartId);
   return insertedCart;
 }
 

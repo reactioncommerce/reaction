@@ -56,7 +56,7 @@ describe("Fixtures:", function () {
     expect(createdCart.items[0].quantity).to.equal(2);
   });
 
-  it.only("createCart function should create a cart with a specific product", function () {
+  it("createCart function should create a cart with a specific product", function () {
     const { product, variant } = addProductSingleVariant();
     const cart = createCart(product._id, variant._id);
     expect(cart).to.not.be.undefined;

@@ -5,30 +5,27 @@ import { Reaction, Logger } from "/server/api";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
 import Fixtures from "/server/imports/fixtures";
-import { getShop } from "/server/imports/fixtures/shops";
-import { addProduct } from "/server/imports/fixtures/products";
 import { createCart } from "/server/imports/fixtures/cart";
+import { addProductSingleVariant } from "/server/imports/fixtures/products";
 import { registerInventory } from "../methods/inventory";
 
 Fixtures();
 
+
 function resetInventory() {
   Inventory.remove({});
-  const inventoryCount = Inventory.find().count();
-  Logger.warn(`Found ${inventoryCount} inventory records`);
   const products = Products.find().fetch();
   Logger.warn(`There are ${products.length} products now`);
   for (let product of products) {
-    Logger.warn(`Registering inventory for ${product.title}`);
     registerInventory(product);
   }
-  const updatedInventoryCount = Inventory.find().count();
-  Logger.warn(`Found ${updatedInventoryCount} inventory records after register`);
 }
 
 describe("Inventory Hooks", function () {
+  this.timeout(50000);
   let originals;
   let sandbox;
+  let cart;
 
   before(function () {
     originals = {
@@ -38,6 +35,9 @@ describe("Inventory Hooks", function () {
 
   beforeEach(function () {
     sandbox = sinon.sandbox.create();
+    Products.direct.remove({});
+    const { product, variant } = addProductSingleVariant();
+    cart = createCart(product._id, variant._id);
     resetInventory();
   });
 
@@ -54,22 +54,19 @@ describe("Inventory Hooks", function () {
   }
 
   it("should move allocated inventory to 'sold' when an order is created", function () {
-    this.timeout(50000);
     sandbox.stub(Meteor.server.method_handlers, "orders/sendNotification", function () {
       check(arguments, [Match.Any]);
       return true;
     });
     sandbox.stub(Reaction, "hasPermission", () => true);
-    const cart = Factory.create("cartOne");
     sandbox.stub(Reaction, "getShopId", function () {
       return cart.shopId;
     });
-    let shop = getShop();
     let product = cart.items[0];
     const inventoryItem = Inventory.findOne({
       productId: product.productId,
       variantId: product.variants._id,
-      shopId: shop._id
+      shopId: cart.shopId
     });
     expect(inventoryItem).to.not.be.undefined;
     // because the cart fixture does not trigger hooks we need to allocate inventory manually
@@ -85,30 +82,26 @@ describe("Inventory Hooks", function () {
     let updatedInventoryItem = Inventory.findOne({
       productId: product.productId,
       variantId: product.variants._id,
-      shopId: shop._id,
+      shopId: cart.shopId,
       orderItemId: product._id
     });
     expect(updatedInventoryItem.workflow.status).to.equal("sold");
   });
 
   it("should move allocated inventory to 'shipped' when an order is shipped", function (done) {
-    this.timeout(50000);
     sandbox.stub(Meteor.server.method_handlers, "orders/sendNotification", function () {
       check(arguments, [Match.Any]);
       return true;
     });
     sandbox.stub(Reaction, "hasPermission", () => true);
-    const product = Products.findOne();
-    const cart = createCart(product);
     sandbox.stub(Reaction, "getShopId", function () {
       return cart.shopId;
     });
-    let shop = getShop();
     let cartProduct = cart.items[0];
     const inventoryItem = Inventory.findOne({
       productId: cartProduct.productId,
       variantId: cartProduct.variants._id,
-      shopId: shop._id
+      shopId: cart.shopId
     });
     expect(inventoryItem).to.not.be.undefined;
     // because the cart fixture does not trigger hooks we need to allocate inventory manuall
