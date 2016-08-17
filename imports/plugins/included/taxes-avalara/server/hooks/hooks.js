@@ -33,7 +33,24 @@ MethodHooks.after("taxes/calculate", function (options) {
     // process rate callback object
     const processTaxes = Meteor.bindEnvironment(function processTaxes(res) {
       if (!res.error) {
-        Meteor.call("taxes/setRate", cartId, (res.totalRate / 100), res.rates);
+        // calculate line item taxes
+        // maybe refactor to a core calculation
+        let totalTax = 0;
+        let taxRate = 0;
+        for (let items of cartToCalc.items) {
+          // only processs taxable products
+          if (items.variants.taxable === true) {
+            const subTotal = items.variants.price * items.quantity;
+            const tax = subTotal * (res.totalRate / 100);
+            totalTax += tax;
+          }
+        }
+        // calc overall cart tax rate
+        if (totalTax > 0) {
+          taxRate = (totalTax / cartToCalc.cartSubTotal());
+        }
+        // save taxRate
+        Meteor.call("taxes/setRate", cartId, taxRate, res.rates);
       } else {
         Logger.warn("Error fetching tax rate from Avalara", res.code, res.message);
       }

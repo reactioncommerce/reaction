@@ -3,7 +3,7 @@ import { Match, check } from "meteor/check";
 import { Cart, Packages } from "/lib/collections";
 import { Taxes } from "../../lib/collections";
 import Reaction from "../api";
-import { Hooks, Logger } from "/server/api";
+import { Logger } from "/server/api";
 
 //
 // make all tax methods available
@@ -74,9 +74,9 @@ export const methods = {
    */
   "taxes/calculate": function (cartId) {
     check(cartId, String);
-    let taxRate = 0; // placeholder
     const cartToCalc = Cart.findOne(cartId);
     const shopId = cartToCalc.shopId;
+    let taxRate = 0;
     // get all tax packages
     //
     // TODO FIND IN LAYOUT/REGISTRY
@@ -85,21 +85,15 @@ export const methods = {
       shopId: shopId,
       name: "reaction-taxes"
     });
-
-    // Extra Hook for plugins
-    Hooks.Events.run("onTaxesCalculate", this);
-
-    // TODO method for order tax updates
-    // additional logic will be needed for refunds
-    // or tax adjustments
-
     //
     // custom rates
     // TODO Determine calculation method (row, total, shipping)
+    // TODO method for order tax updates
+    // additional logic will be needed for refunds
+    // or tax adjustments
     //
-
     // check if plugin is enabled and this calculation method is enabled
-    if (pkg && pkg.enabled === true  && pkg.settings.rates.enabled === true) {
+    if (pkg && pkg.enabled === true && pkg.settings.rates.enabled === true) {
       Logger.info("Calculating custom tax rates");
 
       if (typeof cartToCalc.shipping !== "undefined") {
@@ -114,6 +108,9 @@ export const methods = {
         // back to a regional tax.
 
         if (shippingAddress) {
+          let customTaxRate = 0;
+          let totalTax = 0;
+          // lookup custom tax rate
           let addressTaxData = Taxes.find(
             {
               $and: [{
@@ -139,16 +136,32 @@ export const methods = {
           // by qty and an originating shop and inventory
           // for location of each item in the cart.
           if (addressTaxData.length > 0) {
-            taxRate = addressTaxData[0].rate;
+            customTaxRate = addressTaxData[0].rate;
           }
-          // taxes are stored as percentage, convert
-          const tax = parseFloat(taxRate) / 100.0;
+
+          // calculate line item taxes
+          for (let items of cartToCalc.items) {
+            // only processs taxable products
+            if (items.variants.taxable === true) {
+              const subTotal = items.variants.price * items.quantity;
+              const tax = subTotal * (customTaxRate / 100);
+              totalTax += tax;
+            }
+          }
+          // calculate overall cart rate
+          if (totalTax > 0) {
+            taxRate = (totalTax / cartToCalc.cartSubTotal());
+          }
           // store tax on cart
-          Meteor.call("taxes/setRate", cartToCalc._id, tax, addressTaxData);
-        }
-        // end custom rates
-        // end shippingAddress calculation
-      }
+          Meteor.call("taxes/setRate", cartToCalc._id, taxRate, addressTaxData);
+        } // end custom rates
+      } // end shippingAddress calculation
+    } else {
+      // we are here because the custom rate package is disabled.
+      // we're going to set an inital rate of 0
+      // all methods that trigger when taxes/calculate will
+      // recalculate this rate as needed.
+      Meteor.call("taxes/setRate", cartToCalc._id, taxRate);
     }
   } // end taxes/calculate
 };

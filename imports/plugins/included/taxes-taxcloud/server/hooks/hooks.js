@@ -100,7 +100,7 @@ MethodHooks.after("taxes/calculate", function (options) {
             // ResponseType 3 is a successful call.
             if (!error && response.data.ResponseType === 3) {
               let totalTax = 0;
-              for (item of response.data.CartItemsResponse) {
+              for (let item of response.data.CartItemsResponse) {
                 totalTax += item.TaxAmount;
               }
               // don't run this calculation if there isn't tax.
