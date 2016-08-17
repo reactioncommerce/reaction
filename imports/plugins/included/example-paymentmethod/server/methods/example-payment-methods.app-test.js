@@ -72,6 +72,9 @@ describe("Submit payment", function () {
   });
 
   it("should call Example API with card and payment data", function () {
+    // this is a ridiculous timeout for a test that should run in subseconds
+    // but a bug in the Meteor test runner (or something) seems to make this test stall
+    // it actually stalls after the entire test is completed
     this.timeout(30000);
     let cardData = {
       name: "Test User",
