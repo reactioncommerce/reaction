@@ -777,11 +777,17 @@ Meteor.methods({
 
     const doc = Products.findOne(_id);
     const type = doc.type;
-    let stringValue = EJSON.stringify(value);
-    let update = EJSON.parse("{\"" + field + "\":" + stringValue + "}");
+    let update;
+    // handle booleans with correct typing
+    if (value === "false" || value === "true") {
+      update = EJSON.parse(`{${field}:${value}}`);
+    } else {
+      let stringValue = EJSON.stringify(value);
+      update = EJSON.parse("{\"" + field + "\":" + stringValue + "}");
+    }
 
     // we need to use sync mode here, to return correct error and result to UI
-    const result = Products.update(_id, {
+    let result = Products.update(_id, {
       $set: update
     }, {
       selector: {
@@ -794,7 +800,6 @@ Meteor.methods({
         denormalize(doc.ancestors[0], field);
       }
     }
-
     return result;
   },
 

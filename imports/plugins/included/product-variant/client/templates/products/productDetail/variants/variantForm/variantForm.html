@@ -34,7 +34,16 @@
         </div>
       </div>
       <div class="panel-body">
-        {{#autoForm schema=Schemas.ProductVariant doc=. type="method" meteormethod="products/updateVariant" id=variantFormId validation="keyup" resetOnSuccess=false}}
+        {{#autoForm
+          schema=Schemas.ProductVariant
+          doc=.
+          type="method"
+          meteormethod="products/updateVariant"
+          id=variantFormId
+          validation="keyup"
+          resetOnSuccess=false
+          autosave=true
+        }}
         <fieldset>
           <div class="row">
             <div class="">
@@ -87,7 +96,7 @@
           <div class="row">
             <div class="variant-options col-xs-12 col-sm-3 col-md-3">
               <div class="form-group {{#if afFieldIsInvalid name='taxable'}} has-error{{/if}}">
-                  {{>afFieldInput name='taxable' value=true}}
+                  {{>afFieldInput name='taxable'}}
                   {{#if afFieldIsInvalid name='taxable'}}
                   <span class="help-block">{{afFieldMessage name='taxable'}}</span>
                   {{/if}}
