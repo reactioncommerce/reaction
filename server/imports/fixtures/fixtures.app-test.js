@@ -57,13 +57,12 @@ describe("Fixtures:", function () {
   });
 
   it.only("createCart function should create a cart with a specific product", function () {
-    const { variant } = addProductSingleVariant();
-    const cart = createCart(variant._id);
+    const { product, variant } = addProductSingleVariant();
+    const cart = createCart(product._id, variant._id);
     expect(cart).to.not.be.undefined;
     const createdCart = Collections.Cart.findOne(cart._id);
     expect(createdCart).to.not.be.undefined;
     expect(createdCart.items.length).to.equal(1);
-    Logger.info(cart);
   });
 
   it("Order fixture should create an order", function () {
