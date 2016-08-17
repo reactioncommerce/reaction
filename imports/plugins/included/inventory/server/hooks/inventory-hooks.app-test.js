@@ -1,7 +1,7 @@
 /* eslint dot-notation: 0 */
 import { Meteor } from "meteor/meteor";
 import { Inventory, Orders, Products }  from "/lib/collections";
-import { Reaction, Logger } from "/server/api";
+import { Reaction } from "/server/api";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
 import Fixtures from "/server/imports/fixtures";
@@ -15,7 +15,6 @@ Fixtures();
 function resetInventory() {
   Inventory.remove({});
   const products = Products.find().fetch();
-  Logger.warn(`There are ${products.length} products now`);
   for (let product of products) {
     registerInventory(product);
   }
