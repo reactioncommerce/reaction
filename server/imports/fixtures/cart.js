@@ -43,19 +43,22 @@ function getSingleCartItem(options = {}) {
   return cartItem;
 }
 
-export function createCart(productId) {
+export function createCart(productId, variantId) {
   const product = Products.findOne(productId);
+  const variant = Products.findOne(variantId);
+  const user = Factory.create("user");
   const cartItem = {
     _id: Random.id(),
     productId: product._id,
     shopId: getShop()._id,
     quantity: 1,
+    variants: variant,
     title: product.title
   };
 
   let cart = {
     shopId: getShop()._id,
-    userId: Factory.get("user"),
+    userId: user._id,
     sessionId: Random.id(),
     email: faker.internet.email(),
     items: [cartItem],
@@ -84,10 +87,8 @@ export function createCart(productId) {
     createdAt: faker.date.past(),
     updatedAt: new Date()
   };
-  // const insertedCart = Cart.insert(cart);
-  // return insertedCart;
-  Logger.info(cart);
-  return cart;
+  const insertedCart = Cart.insert(cart);
+  return insertedCart;
 }
 
 
