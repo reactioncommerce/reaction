@@ -154,7 +154,7 @@ Meteor.methods({
     // If discount is 100%, capture 100% and then refund 100% of transaction
     if (captureDetails.amount === accounting.unformat(0)) {
       const voidedAmount = unformatFromStripe(paymentMethod.transactions[0].amount);
-      const result = stripeCaptureCharge(paymentMethod);
+      stripeCaptureCharge(paymentMethod);
 
       return Meteor.call("stripe/refund/create", paymentMethod, voidedAmount);
     }
