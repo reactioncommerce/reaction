@@ -32,7 +32,7 @@ function handleStripeSubmitError(error) {
   if (serverError) {
     return paymentAlert("Oops! Credit card is invalid. Please check your information and try again.");
   } else if (singleError) {
-    return paymentAlert("Oops!aaa " + singleError);
+    return paymentAlert("Oops! " + singleError);
   }
 }
 
