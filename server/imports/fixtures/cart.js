@@ -1,6 +1,7 @@
 import faker from "faker";
 import { Factory } from "meteor/dburles:factory";
 import { Cart, Products } from "/lib/collections";
+import { Logger } from "/server/api";
 import "./shops";
 import { getShop } from "./shops";
 import { getAddress } from "./accounts";
@@ -42,12 +43,75 @@ function getSingleCartItem(options = {}) {
   return cartItem;
 }
 
+export function createCart(productId) {
+  const product = Products.findOne(productId);
+  const cartItem = {
+    _id: Random.id(),
+    productId: product._id,
+    shopId: getShop()._id,
+    quantity: 1,
+    title: product.title
+  };
+
+  let cart = {
+    shopId: getShop()._id,
+    userId: Factory.get("user"),
+    sessionId: Random.id(),
+    email: faker.internet.email(),
+    items: [cartItem],
+    shipping: [
+      {
+        _id: Random.id(),
+        address: getAddress()
+      }
+    ],
+    billing: [
+      {
+        _id: Random.id(),
+        address: getAddress()
+      }
+    ],
+    workflow: {
+      status: "checkoutPayment",
+      workflow: [
+        "checkoutLogin",
+        "checkoutAddressBook",
+        "coreCheckoutShipping",
+        "checkoutReview",
+        "checkoutPayment"
+      ]
+    },
+    createdAt: faker.date.past(),
+    updatedAt: new Date()
+  };
+  // const insertedCart = Cart.insert(cart);
+  // return insertedCart;
+  Logger.info(cart);
+  return cart;
+}
+
 
 export default function () {
   /**
    * Cart Factory
    * @summary define cart Factory
    */
+
+  const cartNoItems = {
+    shopId: getShop()._id,
+    userId: Factory.get("user"),
+    sessionId: Random.id(),
+    email: faker.internet.email(),
+    items: [],
+    shipping: [],
+    billing: [],
+    workflow: {
+      status: "new",
+      workflow: []
+    },
+    createdAt: faker.date.past(),
+    updatedAt: new Date()
+  };
 
   const cart = {
     shopId: getShop()._id,
@@ -116,4 +180,5 @@ export default function () {
   Factory.define("anonymousCart", Cart, Object.assign({}, cart, anonymousCart));
   Factory.define("cartOne", Cart, Object.assign({}, cart, cartToOrder, cartOne));
   Factory.define("cartTwo", Cart, Object.assign({}, cart, cartToOrder, cartTwo));
+  Factory.define("cartNoItems", Cart, Object.assign({}, cart, cartToOrder, cartNoItems));
 }
