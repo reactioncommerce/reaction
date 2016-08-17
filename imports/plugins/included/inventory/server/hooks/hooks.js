@@ -1,5 +1,6 @@
 import { Cart, Products, Orders } from "/lib/collections";
 import { Logger } from "/server/api";
+import { registerInventory } from "../methods/inventory";
 
 /**
  * Collection Hooks
@@ -87,7 +88,7 @@ Products.after.insert((userId, doc) => {
   if (doc.type !== "variant") {
     return false;
   }
-  Meteor.call("inventory/register", doc);
+  registerInventory(doc);
 });
 
 function markInventoryShipped(doc) {
