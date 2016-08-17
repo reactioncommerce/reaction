@@ -191,25 +191,25 @@ function denormalize(id, field) {
   let update = {};
 
   switch (field) {
-  case "inventoryPolicy":
-  case "inventoryQuantity":
-  case "inventoryManagement":
-    Object.assign(update, {
-      isSoldOut: isSoldOut(variants),
-      isLowQuantity: isLowQuantity(variants),
-      isBackorder: isBackorder(variants)
-    });
-    break;
-  case "lowInventoryWarningThreshold":
-    Object.assign(update, {
-      isLowQuantity: isLowQuantity(variants)
-    });
-    break;
-  default: // "price" is object with range, min, max
-    const priceObject = Catalog.getProductPriceRange(id);
-    Object.assign(update, {
-      price: priceObject
-    });
+    case "inventoryPolicy":
+    case "inventoryQuantity":
+    case "inventoryManagement":
+      Object.assign(update, {
+        isSoldOut: isSoldOut(variants),
+        isLowQuantity: isLowQuantity(variants),
+        isBackorder: isBackorder(variants)
+      });
+      break;
+    case "lowInventoryWarningThreshold":
+      Object.assign(update, {
+        isLowQuantity: isLowQuantity(variants)
+      });
+      break;
+    default: // "price" is object with range, min, max
+      const priceObject = Catalog.getProductPriceRange(id);
+      Object.assign(update, {
+        price: priceObject
+      });
   }
   Products.update(id, {
     $set: update
