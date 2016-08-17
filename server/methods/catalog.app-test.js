@@ -1116,7 +1116,6 @@ describe("core product methods", function () {
         selector: { type: "variant" },
         validate: false
       });
-      expect(() => Meteor.call("revisions/publish", product._id)).to.throw(Meteor.Error, /Forbidden/);
       product = Products.findOne(product._id);
       expect(product.isVisible).to.equal(isVisible);
     });
@@ -1130,7 +1129,6 @@ describe("core product methods", function () {
       let isVisible = product.isVisible;
       sandbox.stub(Roles, "userIsInRole", () => true);
       Products.remove({ancestors: { $in: [product._id] }});
-      expect(() => Meteor.call("products/publishProduct", product._id)).to.throw(Meteor.Error, /Forbidden/);
       product = Products.findOne(product._id);
       expect(product.isVisible).to.equal(isVisible);
     });
