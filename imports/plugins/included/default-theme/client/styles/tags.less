@@ -101,12 +101,14 @@ html.rtl .rui.tag.edit button:last-child {
   top: 100%;
   left: 0;
   width: 100%;
+  min-width: 150px;
   border: 1px solid @border-color;
   background-color: #fff;
+  color: @text-color;
   font-size: 14px;
   border-bottom-left-radius: 4px;
   border-bottom-right-radius: 4px;
-  z-index: 2;
+  z-index: @zindex-navbar;
 }
 
 .react-autosuggest__suggestions-list {
