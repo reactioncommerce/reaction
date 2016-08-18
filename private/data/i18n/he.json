@@ -1,0 +1,260 @@
+[
+    {
+        "language": "Hebrew",
+        "i18n": "he",
+        "ns": "core",
+        "translation": {
+            "core": {
+                "languageDirection": "rtl",
+                "languages": {
+                    "select": "בחר שפה"
+                },
+                "app": {
+                    "saveAndContinue": "שמור והמשך",
+                    "cancel": "בטל",
+                    "submit": "שלח",
+                    "delete": "מחק",
+                    "create": "יצירה",
+                    "close": "סגירה",
+                    "settings": "הגדרות",
+                    "loading": "טוען",
+                    "toggle": "החלף"
+                },
+                "header": {
+                  "tagsAdd": "הוספת תגית",
+                  "search": "חיפוש מוצרים..."
+                },
+                "productDetail": {
+                    "productManagement": "ניהול מוצר",
+                    "whenYouAreDone": "כאשר תסיים/י לערוך אותו.",
+                    "tags": "תגיות",
+                    "tagsAdd": "הוספת תגית",
+                    "details": "פרטים",
+                    "detailsName": "שם",
+                    "detailsInfo": "תוכן",
+                    "options": "אפשרויות",
+                    "addToCart": "הוסף לסל",
+                    "chooseOptions": "נא לבחור אפשרויות לפני ההוספה לסל",
+                    "outOfStock": "מצטערים, אך פריט זה אינו במלאי!",
+                    "productDeleteError": "אירעה שגיאה בנסיון למחוק את ",
+                    "publishFirst": "יש לפרסם את המוצר לפני ההוספה לסל.",
+                    "selectOption": "יש לבחור אפשרות לפני ההוספה לסל",
+                    "addedToCart": "התווסף"
+                },
+                "productDetailEdit": {
+                  "title": "כותרת המוצר",
+                  "pageTitle": "כותרת לעמוד המוצר",
+                  "vendor": "ספר המוצר",
+                  "description": "הוספת תיאור מוצר"
+                },
+                "variantList": {
+                    "moreOptions": "יש עוד אפשרויות זמינות עבור בחירה זו.",
+                    "createVariant": "צור גרסא"
+                },
+                "gridPackage": {
+                    "pkgEnabled": " עכשיו הינו מאופשר.",
+                    "pkgDisabled": " עכשיו הינו מנוטרל."
+                },
+                "cartDrawer": {
+                    "empty": "כמה חבל... הסל שלך ריק.",
+                    "keepShopping": "המשך בקניות",
+                    "checkout": "לך לקופה עכשיו"
+                },
+                "cartSubTotals": {
+                    "head": "הסך שלך",
+                    "items": "פריטים בסל",
+                    "subtotal": "סיכום ביניים",
+                    "shipping": "משלוח",
+                    "tax": "מע\"מ",
+                    "total": "סך הכל"
+                },
+                "cartDrawerItems": {
+                    "left": "נשארו"
+                },
+                "cartCompleted": {
+                  "thankYou": "תודה רבה.",
+                  "yourOrderHasBeen": "הזמנתך",
+                  "summaryMessage": "תודה על הזמנתך."
+                },
+                "checkoutLogin": {
+                    "loginCompleted": "תהליך ההתחברות הושלם",
+                    "createOrLogin": "צור חשבון או התחבר על מנת להמשיך"
+                },
+                "addressBookGrid": {
+                    "chooseAddress": "בחר כתובת למשלוח ולחשבונית",
+                    "createDefault": "צור את כתובת ברירת המחדל שלך",
+                    "selectShippingAddress": "בחר כתובת למשלוח",
+                    "selectBillingAddress": "בחר כתובת לחשבונית"
+                },
+                "addressBookAdd": {
+                    "addAddress": "הוסף כתובת נוספת",
+                    "createAddress": "צור את כתובת ברירת המחדל שלך"
+                },
+                "addressBookEdit": {
+                    "editAddress": "עריכת כתובת זו"
+                },
+                "shop": {
+                    "addressBook": {
+                        "country": "ארץ",
+                        "fullName": "שם פרטי ומשפחה",
+                        "address1": "כתובת 1",
+                        "address2": "כתובת 2",
+                        "postal": "מיקוד",
+                        "city": "יישוב",
+                        "region": "אזור",
+                        "phone": "טלפון",
+                        "isShippingDefault": "האם לבחור בכתובת זו כברירת המחדל עבור משלוח?",
+                        "isBillingDefault": "האם לבחור בכתובת זו כברירת המחדל עבור חשבונית?",
+                        "isCommercial": "האם זו כתובת מסחרית?"
+                    }
+                },
+                "address": {
+                    "country": "ארץ",
+                    "fullName": "שם פרטי ומשפחה",
+                    "address1": "כתובת",
+                    "address2": "כתובת",
+                    "postal": "מיקוד",
+                    "city": "יישוב",
+                    "region": "אזור",
+                    "phone": "טלפון",
+                    "isShippingDefault": "האם לבחור בכתובת זו כברירת המחדל עבור משלוח?",
+                    "isBillingDefault": "האם לבחור בכתובת זו כברירת המחדל עבור חשבונית?",
+                    "isCommercial": "האם זו כתובת מסחרית?"
+                },
+                "checkoutProgressBar": {
+                    "login": "התחבר",
+                    "shippingBilling": "משלוח וחשבונית",
+                    "shippingOptions": "אפשרויות משלוח",
+                    "reviewPayment": "סקירה ותשלום",
+                    "complete": "הושלם"
+                },
+                "checkoutPayment": {
+                    "addPaymentToCompleteOrder": "הוסף תשלום על מנת להשלים את ההזמנה"
+                },
+                "checkoutReview": {
+                    "review": "סקירה"
+                },
+                "checkoutShipping": {
+                    "selectShippingOption": "בחר אפשרות משלוח",
+                    "noShippingMethods": "לא מוגדרות אפשרויות משלוח.",
+                    "configureNow": "הגדר עכשיו.",
+                    "shipping": "משלוח"
+                },
+                "shopEditForm": {
+                    "name": "שם",
+                    "email": "דוא\"ל"
+                },
+                "shopEditAdressForm": {
+                    "company": "חברה",
+                    "fullname": "שם פרטי ומשפחה",
+                    "address1": "כתובת 1"
+                },
+                "consoleIcon": {
+                  "iconTitle": "צפייה במסוף",
+                  "text": "מסוף"
+                },
+                "createProductIcon": {
+                  "iconTitle": "יצירת מוצר",
+                  "text": "יצירה"
+                },
+                "social": {
+                  "facebook": "Facebook",
+                  "google": "Google",
+                  "github": "GitHub",
+                  "meetup": "Meetup",
+                  "twitter": "Twitter",
+                  "weibo": "Weibo"
+                },
+                "accountsUI": {
+                    "add": "הוסף",
+                    "and": "ו",
+                    "back": "חזרה",
+                    "changePassword": "שינוי סיסמא",
+                    "choosePassword": "בחירת סיסמא",
+                    "clickAgree": "על ידי לחיצה על הירשם, הינך מסכים",
+                    "configure": "הגדרות",
+                    "createAccount": "הוספת חשבון",
+                    "currentPassword": "סיסמא נוכחית",
+                    "dontHaveAnAccount": "אין לך חשבון?",
+                    "email": "דוא\"ל",
+                    "emailAddress": "דוא\"ל",
+                    "emailResetLink": "שלח קישור לאיפוס סיסמא",
+                    "forgotPassword": "שכחת סיסמא?",
+                    "ifYouAlreadyHaveAnAccount": "אם יש לך חשבון",
+                    "newPassword": "סיסמא חדשה",
+                    "newPasswordAgain": "סיסמא חדשה (שוב)",
+                    "optional": "רשות",
+                    "or": "או",
+                    "password": "סיסמא",
+                    "passwordAgain": "סיסמא (שוב)",
+                    "privacyPolicy": "למדיניות הפרטיות",
+                    "remove": "הסרה",
+                    "resetYourPassword": "איפוס סיסמא",
+                    "setPassword": "עדכון סיסמא",
+                    "sign": "כניסה",
+                    "signIn": "כניסה",
+                    "signin": "כניסה",
+                    "signInWith": "כניסה עם",
+                    "signOut": "יציאה",
+                    "signUp": "הרשמה לחשבון",
+                    "signupCode": "קוד הרשמה",
+                    "signedIn": "הינך מחובר/ת.",
+                    "signUpWithYourEmailAddress": "הירשם באמצעות הדוא\"ל",
+                    "terms": "לתנאי השימוש",
+                    "updateYourPassword": "עדכון סיסמא",
+                    "username": "שם משתמש",
+                    "usernameOrEmail": "שם משמש או דוא\"ל",
+                    "with": "עם",
+                    "checkoutAsGuest": "השלם את ההזמנה ללא חשבון משתמש",
+                    "info": {
+                        "emailSent": "נשלחה הודעה לדוא\"ל",
+                        "emailVerified": "כתובת הדוא\"ל וודאה בהצלחה",
+                        "passwordChanged": "סיסמתך שונתה בהצלחה",
+                        "passwordReset": "סיסמתך אופסה בהצלחה"
+                    },
+                    "error": {
+                        "emailRequired": "חובה להזין כתובת דוא\"ל",
+                        "passwordMustBeAtLeast6CharactersLong": "הסיסמא חייבת להיות באורך של לפחות 6 סימנים.",
+                        "minChar": "חובה להזין סיסמא בעלת 6 תווים לפחות.",
+                        "pwdsDontMatch": "הסיסמאות אינן זהות.",
+                        "pwOneDigit": "הסיסמא חייבת לכלול ספרה אחת לפחות.",
+                        "pwOneLetter": "הסיסמא חייבת לכלול אות אחת לפחות.",
+                        "signInRequired": "חובה להיכנס למערכת כדי לבצע פעולה זו.",
+                        "signupCodeIncorrect": "קוד ההרשמה שגוי.",
+                        "signupCodeRequired": "חובה להזין את קוד ההרשמה.",
+                        "usernameIsEmail": "של המשתמש לא יכול להיות כתובת דוא\"ל.",
+                        "usernameRequired": "חובה להזין שם משתמש.",
+                        "emailAlreadyExists": "הדוא\"ל כבר רשום לחשבון.",
+                        "emailDoesntMatchTheCriteria": "הדוא\"ל לא מקיים את הקריטריונים.",
+                        "invalidLoginToken": "Token כניסה שגוי",
+                        "loginForbidden": "הכניסה נאסרה",
+                        "serviceUnknown": "Service לא ידוע",
+                        "unrecognizedOptionsForLoginRequest": "נסיון הכניסה כלל אופציות לא מזוהות",
+                        "userValidationFailed": "אימות המשתמש נכשל",
+                        "usernameAlreadyExists": "שם המשתמש כבר קיים.",
+                        "youAreNotLoggedIn": "לא נכנסת לחשבון.",
+                        "youveBeenLoggedOutByTheServer": "השרת הוציא אותך מהמערכת. נא להיכנס לחשבונך שוב.",
+                        "yourSessionHasExpired": "ה-session שלך פג תוקף. נא להיכנס לחשבונך שוב.",
+                        "noMatchingLoginAttemptFound": "לא נמצא נסיון כניסה מתאים",
+                        "passwordIsOld": "סיסמתך ישנה. נא להחליך אותה.",
+                        "incorrectPassword": "סיסמא שגויה",
+                        "invalidEmail": "דוא\"ל שגוי",
+                        "mustBeLoggedIn": "חובה להיכנס למערכת כדי לבצע פעולה זו.",
+                        "needToSetUsernameOrEmail": "חובה להגדיר שם משתמש או דוא\"ל",
+                        "oldPasswordFormat": "פורמט סיסמא ישן",
+                        "passwordMayNotBeEmpty": "הסיסמא לא יכולה להיות ריקה",
+                        "signupsForbidden": "אסור להירשם",
+                        "tokenExpired": "ה-token פג תוקף",
+                        "tokenHasInvalidEmailAddress": "ה-token מכיל כתובת דוא\"ל שגוייה",
+                        "userHasNoPasswordSet": "למשתמש אין סיסמא",
+                        "userNotFound": "המשתמש לא נמצא",
+                        "verifyEmailLinkExpired": "קישור וידוי הדוא\"ל פג תוקף",
+                        "verifyEmailLinkIsForUnknownAddress": "קישור וידוי הדוא\"ל הוא לכתובת לא ידועה",
+                        "matchFailed": "ההתאמה נכשלה",
+                        "unknownError": "שגיאה לא ידועה"
+                    }
+                }
+            }
+        }
+    }
+]

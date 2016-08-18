@@ -1,1 +1,1 @@
-docker/reaction.prod.docker
+.reaction/docker/reaction.prod.dockerfile

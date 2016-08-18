@@ -1,0 +1,307 @@
+[
+    {
+        "i18n": "nl",
+        "language": "Nederlands",
+        "ns": "core",
+        "translation": {
+            "core": {
+                "accountsUI": {
+                    "add": "toevoegen",
+                    "addMember": "Gebruiker toevoegen",
+                    "and": "en",
+                    "back": "terug",
+                    "changePassword": "Wachtwoord wijzigen",
+                    "checkoutAsGuest": "Betalen zonder klantaccount",
+                    "choosePassword": "Kies een wachtwoord",
+                    "clickAgree": "Door op registreren te klikken, gaat u akkoord met onze",
+                    "configure": "Configureren",
+                    "createAccount": "Account aanmaken",
+                    "currentPassword": "Huidig wachtwoord",
+                    "dontHaveAnAccount": "Heeft u geen account?",
+                    "email": "E-mail",
+                    "emailAddress": "E-mailadres",
+                    "emailResetLink": "Wachtwoordherstel-mail toesturen",
+                    "error": {
+                        "addressMustBeAValidEMailAddress": "Ongeldig e-mailadres",
+                        "emailAlreadyExists": "E-mailadres is al in gebruik.",
+                        "emailDoesntMatchTheCriteria": "E-mailadres komt niet overeen met de criteria.",
+                        "emailRequired": "E-mail is vereist.",
+                        "incorrectPassword": "Wachtwoord onjuist",
+                        "invalidEmail": "E-mail onjuist",
+                        "invalidLoginToken": "Ongeldig inlog-token",
+                        "loginForbidden": "Login verboden",
+                        "matchFailed": "Geen match gevonden",
+                        "minChar": "6 karakters minimum wachtwoordlengte.",
+                        "mustBeLoggedIn": "U moet ingelogd zijn",
+                        "needToSetUsernameOrEmail": "Gebruikersnaam of e-mail is vereist",
+                        "noMatchingLoginAttemptFound": "Inloggegevens komen niet overeen",
+                        "oldPasswordFormat": "oud wachtwoordformaat",
+                        "passwordIsOld": "Wachtwoord is oud. Verander alstublieft uw wachtwoord.",
+                        "passwordMayNotBeEmpty": "Wachtwoord mag niet leeg zijn",
+                        "passwordMustBeAtLeast6CharactersLong": "Wachtwoord moet minsters 6 karakters lang zijn.",
+                        "pwOneDigit": "Wachtwoord moet op zijn minst 1 cijfer bevatten.",
+                        "pwOneLetter": "Wachtwoord moet op zijn minst 1 letter bevatten.",
+                        "pwdsDontMatch": "Wachtwoorden komen niet overeen",
+                        "serviceUnknown": "Service onbekend",
+                        "signInRequired": "U moet ingelogd zijn om dat te doen.",
+                        "signupCodeIncorrect": "Registratiecode is onjuist.",
+                        "signupCodeRequired": "Registratiecode is vereist.",
+                        "signupsForbidden": "Inloggen verboden",
+                        "tokenExpired": "Token verlopen",
+                        "tokenHasInvalidEmailAddress": "Token heeft ongeldig e-mailadres",
+                        "unknownError": "Onbekende fout",
+                        "unrecognizedOptionsForLoginRequest": "Opties niet herkend voor inlogverzoek",
+                        "userHasNoPasswordSet": "Gebruiker heeft geen wachtwoord ingesteld",
+                        "userNotFound": "Gebruiker niet gevonden",
+                        "userValidationFailed": "Gebruikersverificatie niet gelukt",
+                        "usernameAlreadyExists": "Gebruikersnaam is al in gebruik.",
+                        "usernameIsEmail": "Gebruikersnaam kan geen e-mailadres zijn.",
+                        "usernameRequired": "Gebruikersnaam is vereist.",
+                        "verifyEmailLinkExpired": "Link in verificatie e-mail is verlopen",
+                        "verifyEmailLinkIsForUnknownAddress": "Link in verificatie e-mail is voor een onbekend adres",
+                        "youAreNotLoggedIn": "U bent niet ingelogd.",
+                        "yourSessionHasExpired": "Uw sessie is verlopen. Log opnieuw in.",
+                        "youveBeenLoggedOutByTheServer": "U bent uitgelogd door de server. Log opnieuw in."
+                    },
+                    "forgotPassword": "Wachtwoord herstellen",
+                    "ifYouAlreadyHaveAnAccount": "Als u al een account heeft",
+                    "info": {
+                        "emailSent": "E-mail verzonden",
+                        "emailVerified": "E-mailadres geverifieerd",
+                        "invitationSent": "Uitnodiging verzonden",
+                        "passwordChanged": "Wachtwoord veranders",
+                        "passwordReset": "Wachtwoordherstel",
+                        "sendInvitation": "Verstuur uitnodiging"
+                    },
+                    "members": "Gebruikers",
+                    "newPassword": "Nieuw wachtwoord",
+                    "newPasswordAgain": "Nieuw wachtwoord (opnieuw)",
+                    "optional": "Optioneel",
+                    "or": "of",
+                    "password": "Wachtwoord",
+                    "passwordAgain": "Wachtwoord (opnieuw)",
+                    "privacyPolicy": "Privacy Policy",
+                    "remove": "verwijderen",
+                    "resetYourPassword": "Uw wachtwoord resetten",
+                    "role": "rol",
+                    "setPassword": "Wachtwoord instellen",
+                    "sign": "Login",
+                    "signIn": "Inloggen",
+                    "signInWith": "Inloggen met",
+                    "signOut": "Uitloggen",
+                    "signUp": "Registreren",
+                    "signUpWithYourEmailAddress": "Registreer met uw e-mailadres",
+                    "signedIn": "U bent ingelogd.",
+                    "signin": "inloggen",
+                    "signupCode": "Registratiecode",
+                    "terms": "Algemene gebruiksvoorwaarden",
+                    "updateYourPassword": "Uw wachtwoord bijwerken",
+                    "username": "Gebruikersnaam",
+                    "usernameOrEmail": "Gebruikersnaam of e-mail",
+                    "with": "met"
+                },
+                "address": {
+                    "address1": "Addresregel 1",
+                    "address2": "Addresregel 2",
+                    "city": "Stad",
+                    "country": "Land",
+                    "fullName": "Volledige naam",
+                    "isBillingDefault": "Wilt u hiervan uw standaardfactuuradres maken?",
+                    "isCommercial": "Dit is een zakelijk adres.",
+                    "isShippingDefault": "Wilt u hiervan uw standaardverzendadres maken?",
+                    "phone": "Telefoon",
+                    "postal": "Postcode",
+                    "region": "Provincie"
+                },
+                "addressBookAdd": {
+                    "addAddress": "Nieuw adres toevoegen",
+                    "createAddress": "Maak een standaardadres aan"
+                },
+                "addressBookEdit": {
+                    "editAddress": "Dit adres bewerken"
+                },
+                "addressBookGrid": {
+                    "chooseAddress": "Kies verzend- en factuuradres",
+                    "createDefault": "Maak een standaardadres aan",
+                    "selectBillingAddress": "Kies een factuuradres",
+                    "selectShippingAddress": "Kies een verzendadres"
+                },
+                "app": {
+                    "cancel": "Annuleren",
+                    "close": "Sluiten",
+                    "create": "Aanmaken",
+                    "delete": "Verwijderen",
+                    "loading": "Laden",
+                    "saveAndContinue": "Opslaan en doorgaan",
+                    "settings": "Instellingen",
+                    "submit": "Verzenden",
+                    "toggle": "Omwisselen",
+                    "unauthorizedMessage": "U hebt geen toestemming om de inhoud te bekijken",
+                    "warning": "Oeps!"
+                },
+                "cartCompleted": {
+                    "adminMessage": "U bekijkt de bestellingen als administrator",
+                    "itemsFrom": "artikel(en) van",
+                    "noOrdersFound": "Geen bestellingen gevonden.",
+                    "registerGuest": "Hallo! Voeg een e-mailadres toe en ontvang updates over de bestelling",
+                    "submitted": "verzonden",
+                    "summaryMessage": "Bedankt voor uw bestelling.",
+                    "thankYou": "Bedankt.",
+                    "trackYourDelivery": "De updates worden verzonden naar",
+                    "yourOrderIsNow": "Uw bestelling is nu"
+                },
+                "cartDrawer": {
+                    "checkout": "Nu betalen",
+                    "empty": "Uw winkelwagen is leeg.",
+                    "keepShopping": "Verder winkelen"
+                },
+                "cartDrawerItems": {
+                    "left": "links"
+                },
+                "cartSubTotals": {
+                    "head": "Uw winkelwagen",
+                    "items": "Items in winkelwagen",
+                    "shipping": "Verzending",
+                    "subtotal": "Subtotaal",
+                    "tax": "Btw",
+                    "total": "Totaal"
+                },
+                "checkoutLogin": {
+                    "continueAsGuest": "Verder als gast",
+                    "createOrLogin": "Maak een account aan of log in om verder te gaan",
+                    "guestMessage": "U kunt afrekenen zonder een account aan te maken. U krijgt later de kans om nieuw account te maken.",
+                    "guestOrLogin": "Login of reken af als gast",
+                    "loginCompleted": "Account voltooid"
+                },
+                "checkoutPayment": {
+                    "addPaymentToCompleteOrder": "Voeg een betaling toe om de bestelling af te ronden",
+                    "processingError": "Er was een probleem met uw betaling."
+                },
+                "checkoutProgressBar": {
+                    "complete": "Voltooid",
+                    "login": "Login",
+                    "reviewPayment": "Controleren",
+                    "shippingBilling": "Adresdetails",
+                    "shippingOptions": "Verzendopties"
+                },
+                "checkoutReview": {
+                    "review": "Controleren"
+                },
+                "checkoutShipping": {
+                    "configureNow": "Nu configureren.",
+                    "noShippingMethods": "Er zijn geen verzendmethodes ingesteld.",
+                    "selectShippingOption": "Kies verzendmethode",
+                    "shipping": "Verzending"
+                },
+                "consoleIcon": {
+                    "iconTitle": "Administratiepaneel bekijken",
+                    "text": "Administratiepaneel"
+                },
+                "createProductIcon": {
+                    "iconTitle": "Product aanmaken",
+                    "text": "Aanmaken"
+                },
+                "gridPackage": {
+                    "pkgDisabled": " is nu uitgeschakeld.",
+                    "pkgEnabled": " is nu ingeschakeld."
+                },
+                "header": {
+                    "search": "Producten zoeken...",
+                    "tagsAdd": "Tag toevoegen"
+                },
+                "languages": {
+                    "select": "Taalselectie"
+                },
+                "productDetail": {
+                    "addBarcode": "Streepjescode toevoegen",
+                    "addInventory": "Voorraad ophogen",
+                    "addToCart": "Aan winkelwagen toevoegen",
+                    "addedToCart": "toegevoegd",
+                    "backOrder": "Backorder",
+                    "barcode": "Streepjescode",
+                    "chooseOptions": "Kies één van de opties voordat u het aan de winkelwagen toevoegt",
+                    "confirmDeleteBarcode": "Weet u zeker dat u de streepjescode wilt verwijderen?",
+                    "details": "Details",
+                    "detailsInfo": "Detail informatie",
+                    "detailsName": "Detail naam",
+                    "generate": "Genereren",
+                    "generateBarcodes": "Streepjescodes genereren",
+                    "hideBarcodes": "Streepjescodes verbergen",
+                    "limitedSupply": "Beperkte voorraad",
+                    "options": "Opties",
+                    "outOfStock": "Sorry, dit product is niet op voorraad!",
+                    "productDeleteError": "Er was een probleem met het verwijderen van ",
+                    "productManagement": "Producten behern",
+                    "publishFirst": "Product publiceren voor het toevoegen aan de winkelwagen.",
+                    "publishProductHidden": "is nu verborgen",
+                    "publishProductVisible": "is nu zichtbaar",
+                    "quantity": "Aantal",
+                    "quantityAbbreviation": "aant.",
+                    "quantityGreaterThanZero": "Fout: aantal moet hoger zijn dan nul",
+                    "selectOption": "Kies een optie voordat u het aan de winkelwagen toevoegt",
+                    "showBarcodes": "Toon streepjescodes",
+                    "soldOut": "Uitverkocht!",
+                    "startTracking": "Start Tracking",
+                    "tags": "Tags",
+                    "tagsAdd": "Tag toevoegen",
+                    "whenYouAreDone": "zodra u klaar bent met bewerken."
+                },
+                "productDetailEdit": {
+                    "addVariantOption": "Optie toevoegen",
+                    "deleteProduct": "Product verwijderen",
+                    "description": "Voeg een productomschrijving toe",
+                    "duplicateProduct": "Product dupliceren",
+                    "duplicateVariant": "Dupliceren",
+                    "facebookMsg": "Facebookbericht",
+                    "googleplusMsg": "Google+ bericht",
+                    "moreOptions": "Meer opties",
+                    "pageTitle": "Titel productpagina",
+                    "pinProduct": "Product vastzetten",
+                    "pinterestMsg": "Pinterest-bericht",
+                    "publish": "publiceren",
+                    "removeVariant": "Verwijderen",
+                    "title": "Producttitel",
+                    "toggleSize": "Grootte wisselen",
+                    "twitterMsg": "Twitterbericht",
+                    "vendor": "Merk"
+                },
+                "shop": {
+                    "addressBook": {
+                        "address1": "Addresregel 1",
+                        "address2": "Addresregel 2",
+                        "city": "Stad",
+                        "country": "Land",
+                        "fullName": "Volledige naam",
+                        "isBillingDefault": "Wilt u hiervan uw standaardfactuuradres maken?",
+                        "isCommercial": "Dit is een zakelijk adres.",
+                        "isShippingDefault": "Wilt u hiervan uw standaardverzendadres maken?",
+                        "phone": "Telefoon",
+                        "postal": "Postcode",
+                        "region": "Province"
+                    }
+                },
+                "shopEditAdressForm": {
+                    "address1": "Adresregel 1",
+                    "company": "Bedrijf",
+                    "fullname": "Naam"
+                },
+                "shopEditForm": {
+                    "email": "E-mail",
+                    "name": "Naam"
+                },
+                "social": {
+                    "facebook": "Facebook",
+                    "github": "GitHub",
+                    "google": "Google",
+                    "meetup": "Meetup",
+                    "twitter": "Twitter",
+                    "weibo": "Weibo"
+                },
+                "variantList": {
+                    "createVariant": "Variant aanmaken",
+                    "moreOptions": "Er zijn meerdere opties beschikbaar voor deze selectie."
+                }
+            }
+        }
+    }
+]

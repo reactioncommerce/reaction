@@ -1,0 +1,275 @@
+[
+    {
+        "language": "Ελληνικά",
+        "i18n": "el",
+        "ns": "core",
+        "translation": {
+            "core": {
+                "languages": {
+                    "select": "Διάλεξε γλώσσα"
+                },
+                "app": {
+                    "saveAndContinue": "Αποθήκευση και συνέχεια",
+                    "cancel": "Ακύρωση",
+                    "submit": "Υποβολή",
+                    "delete": "Διαγραφή",
+                    "create": "Δημιουργία",
+                    "close": "Κλείσιμο",
+                    "settings": "Ρυθμίσεις",
+                    "loading": "φόρτωση..",
+                    "toggle": "Εναλλαγή",
+                    "warning": "Ουπς!",
+                    "unauthorizedMessage": "Δεν έχεις πρόσβαση σε αυτό το περιεχόμενο."
+                },
+                "header": {
+                    "tagsAdd": "Προσθήκη ετικέτας",
+                    "search": "Αναζήτηση προϊόντων..."
+                },
+                "productDetail": {
+                    "productManagement": "Διαχείριση προϊόντος",
+                    "whenYouAreDone": "όταν τελειώσεις την επεξεργασία.",
+                    "tags": "Ετικέτες",
+                    "tagsAdd": "Προσθήκη ετικέτας",
+                    "details": "Λεπτομέριες",
+                    "detailsName": "Ονομα",
+                    "detailsInfo": "Πληροφορίες",
+                    "options": "Επιλογές",
+                    "addToCart": "Προσθήκη στο καλάθι",
+                    "chooseOptions": "Παρακαλώ διάλεξε μια επιλογή πριν το προσθέσεις στο καλάθι",
+                    "outOfStock": "Συγγνώμη αυτο το προϊόν δεν είναι στην αποθήκη!",
+                    "productDeleteError": "Σφαλμα διαγράφοντας το προϊόν ",
+                    "publishFirst": "Πρέπει να δημοσιεύσεις το προϊόν πριν το προσθέσεις στο καλάθι.",
+                    "selectOption": "Παρακαλώ διάλεξε μια επιλογή πριν το προσθέσεις στο καλάθι",
+                    "addedToCart": "προσθέθηκε"
+                },
+                "productDetailEdit": {
+                    "title": "Τίτλος προϊόντος",
+                    "pageTitle": "Τίτλος σελίδα προϊόντος",
+                    "vendor": "Πωλητής",
+                    "description": "Πρόσθεσε περιγραφή προϊόντος",
+                    "facebookMsg": "Μήνυμα Facebook",
+                    "twitterMsg": "Μήνυμα Twitter",
+                    "pinterestMsg": "Μήνυμα Pinterest",
+                    "googleplusMsg": "Μήνυμα Google+"
+                },
+                "variantList": {
+                    "moreOptions": "Υπάρχουν πολλαπλές επιλογές για αυτήν την παραλλαγή.",
+                    "createVariant": "Δημιουργία παραλλαγής"
+                },
+                "gridPackage": {
+                    "pkgEnabled": " τώρα ενεργοποιήθηκε.",
+                    "pkgDisabled": " τώρα απενεργοποιήθηκε."
+                },
+                "cartDrawer": {
+                    "empty": "Λυπούμαστε. Το καλάθι σου είναι άδειο.",
+                    "keepShopping": "Συνεχίσε να ψωνίζεις",
+                    "checkout": "Πήγαινε στο ταμείο"
+                },
+                "cartSubTotals": {
+                    "head": "Το καλάθι σου",
+                    "items": "Προϊόντα στο καλάθι",
+                    "subtotal": "Υποσύνολο",
+                    "shipping": "Αποστολή",
+                    "tax": "Φόρος",
+                    "total": "Σύνολο"
+                },
+                "cartDrawerItems": {
+                    "left": "ακόμη"
+                },
+                "cartCompleted": {
+                    "thankYou": "Ευχαριστούμε!",
+                    "itemsFrom": "προϊόν(α) από",
+                    "yourOrderIsNow": "Η παραγγελία σου είναι τώρα",
+                    "summaryMessage": "Σε ευχαριστούμε για την παραγγελία σου.",
+                    "submitted": "υποβλήθηκε",
+                    "registerGuest": "Γειά! Πρόσθεσε ένα email για να λαμβάνεις ενημερώσεις.",
+                    "trackYourDelivery": "Ενημερώσεις για την παραγγελία θα στέλνονται στο ",
+                    "noOrdersFound": "Δεν βρέθηκαν παραγγελίες."
+                },
+                "checkoutLogin": {
+                    "loginCompleted": "Έχεις εισέλθει",
+                    "createOrLogin": "Δημιούργησε λογαριασμό ή συνδέσου",
+                    "guestOrLogin": "Κάνε σύνδεση ή συνέχισε ώς επισκέπτης",
+                    "continueAsGuest": "Συνέχισε ώς επισκέπτης",
+                    "guestMessage": "Μπορείς να πληρώσεις χωρίς να έχεις λογαριασμό. Θα έχεις την δυνατότητα να δημιουργήσεις λογαριασμό μετά."
+                },
+                "addressBookGrid": {
+                    "chooseAddress": "Διάλεξε διεύθυνση αποστολής & πληρωμής",
+                    "createDefault": "Δημιούργία προεπιλεγμένης διεύθυνσης",
+                    "selectShippingAddress": "Διάλεξε διεύθυνση αποστολής",
+                    "selectBillingAddress": "Διάλεξε διεύθυνση πληρωμής"
+                },
+                "addressBookAdd": {
+                    "addAddress": "Προσθήκη νέας διεύθυνσης",
+                    "createAddress": "Δημιούργία προεπιλεγμένης διεύθυνσης"
+                },
+                "addressBookEdit": {
+                    "editAddress": "Επεξεργασία διεύθυνσης"
+                },
+                "shop": {
+                    "addressBook": {
+                        "country": "Χώρα",
+                        "fullName": "Ονοματεπώνυμο",
+                        "address1": "Διεύθυνση 1",
+                        "address2": "Διεύθυνση 2",
+                        "postal": "Τ.Κ.",
+                        "city": "Πόλη",
+                        "region": "Περιοχή",
+                        "phone": "Τηλέφωνο",
+                        "isShippingDefault": "Είναι η προεπιλεγμένη διεύθυνση αποστολής;",
+                        "isBillingDefault": "Είναι η προεπιλεγμένη διεύθυνση πληρωμής;",
+                        "isCommercial": "Είναι εμπορική διεύθυνση;"
+                    }
+                },
+                "address": {
+                    "country": "Χώρα",
+                    "fullName": "Ονοματεπώνυμο",
+                    "address1": "Διεύθυνση 1",
+                    "address2": "Διεύθυνση 2",
+                    "postal": "Τ.Κ.",
+                    "city": "Πόλη",
+                    "region": "Περιοχή",
+                    "phone": "Τηλέφωνο",
+                    "isShippingDefault": "Είναι η προεπιλεγμένη διεύθυνση αποστολής;",
+                    "isBillingDefault": "Είναι η προεπιλεγμένη διεύθυνση πληρωμής;",
+                    "isCommercial": "Είναι εμπορική διεύθυνση;"
+                },
+                "checkoutProgressBar": {
+                    "login": "Λογαριασμός",
+                    "shippingBilling": "Πληρωμή",
+                    "shippingOptions": "Αποστολή",
+                    "reviewPayment": "Επανέλεγχος",
+                    "complete": "Ολοκληρώθηκε"
+                },
+                "checkoutPayment": {
+                    "addPaymentToCompleteOrder": "Πρόσθεσε μια μέθοδο πληρωμής"
+                },
+                "checkoutReview": {
+                    "review": "Επανέλεγχος"
+                },
+                "checkoutShipping": {
+                    "selectShippingOption": "Διάλεξε τρόπο αποστολής",
+                    "noShippingMethods": "Δεν υπάρχουν τρόποι αποστολής.",
+                    "configureNow": "Ρύθμιση τώρα.",
+                    "shipping": "Αποστολή"
+                },
+                "shopEditForm": {
+                    "name": "Ονομα",
+                    "email": "Email"
+                },
+                "shopEditAdressForm": {
+                    "company": "Εταιρία",
+                    "fullname": "Ονοματεπώνυμο",
+                    "address1": "Διεύθυνση 1"
+                },
+                "consoleIcon": {
+                    "iconTitle": "Προβολή κονσόλας",
+                    "text": "Κονσόλα"
+                },
+                "createProductIcon": {
+                    "iconTitle": "Δημιουργία προϊόντος",
+                    "text": "Δημουργία"
+                },
+                "social": {
+                    "facebook": "Facebook",
+                    "google": "Google",
+                    "github": "GitHub",
+                    "meetup": "Meetup",
+                    "twitter": "Twitter",
+                    "weibo": "Weibo"
+                },
+                "accountsUI": {
+                    "add": "πρόσθεσε",
+                    "and": "και",
+                    "back": "πίσω",
+                    "changePassword": "Αλλαγή κωδικού",
+                    "choosePassword": "Διάλεξε κωδικό",
+                    "clickAgree": "Κάνοντας εγγραφή, συμφωνείς με ",
+                    "configure": "Ρύθμισε",
+                    "createAccount": "Δημιουργία λογαριασμού",
+                    "currentPassword": "Τρέχον κωδικός",
+                    "dontHaveAnAccount": "Δεν έχεις λογαριασμό;",
+                    "email": "Email",
+                    "emailAddress": "Διεύθυνση Email",
+                    "emailResetLink": "Επαναφορά λογαριασμού",
+                    "forgotPassword": "Επαναφορά κωδικού",
+                    "ifYouAlreadyHaveAnAccount": "Αν έχεις ήδη λογαριασμό",
+                    "newPassword": "Νέος κωδικός",
+                    "newPasswordAgain": "Νέος κωδικός (ξανά)",
+                    "optional": "Προαιρετικό",
+                    "or": "ή",
+                    "password": "Κωδικός",
+                    "passwordAgain": "Κωδικός (ξανά)",
+                    "privacyPolicy": "Πολιτική Απορρήτου ",
+                    "remove": "αφαίρεση",
+                    "resetYourPassword": "Επαναφορά κωδικού",
+                    "setPassword": "Διάλεξε κωδικό",
+                    "sign": "Σύνδεση",
+                    "signIn": "Σύνδεση",
+                    "signin": "Σύνδεση",
+                    "signInWith": "Σύνδεση με",
+                    "signedIn": "Είσαι συνδεμένος(η).",
+                    "signOut": "Αποσύνδεση",
+                    "signUp": "Εγγραφή",
+                    "signupCode": "Κωδικός εγγραφής",
+                    "signedIn": "Είσαι συνδεμένος(η).",
+                    "signUpWithYourEmailAddress": "Εγγραφή με το email σου",
+                    "terms": "Οροι χρήσης",
+                    "updateYourPassword": "Ενημέρωση κωδικού",
+                    "username": "Ονομα χρήστη",
+                    "usernameOrEmail": "Ονομα χρήστη ή email",
+                    "with": "με",
+                    "checkoutAsGuest": "Πήγαινε στο ταμείο χωρίς σύνδεση",
+                    "info": {
+                        "emailSent": "Το Email στάλθηκε",
+                        "emailVerified": "Το Email επαλήθευτηκε",
+                        "passwordChanged": "Ο κωδικός άλλαξε επιτυχώς",
+                        "passwordReset": "Επαναφορά κωδικού"
+                    },
+                    "error": {
+                        "emailRequired": "Το Email είναι υποχρεωτικό.",
+                        "passwordMustBeAtLeast6CharactersLong": "Ο κωδικός πρέπει να είναι τουλάχιστον 6 χαρακτήρες.",
+                        "minChar": "6 χαρακτήρες ελάχιστος κωδικός.",
+                        "pwdsDontMatch": "Οι κωδικοί δεν είναι ίδιοι",
+                        "pwOneDigit": "Ο κωδικός πρέπει να εχει τουλάχιστον 1 αριθμό.",
+                        "pwOneLetter": "Ο κωδικός πρέπει να εχει τουλάχιστον 1 γράμμα.",
+                        "signInRequired": "Πρέπει να είσαι συνδεμένος για να το κάνεις αυτό.",
+                        "signupCodeIncorrect": "Ο κωδικός εγγραφής είναι λάθος.",
+                        "signupCodeRequired": "Ο κωδικός εγγραφής είναι υποχρεωτικός.",
+                        "usernameIsEmail": "Το όνομα χρήστη δεν μπορεί να είναι email.",
+                        "usernameRequired": "Το όνομα χρήστη είναι υποχρεωτικό.",
+                        "emailAlreadyExists": "To Email υπάρχει ήδη.",
+                        "emailDoesntMatchTheCriteria": "Το email δεν είναι συμβατό.",
+                        "invalidLoginToken": "Λάθος token σύνδεσης",
+                        "loginForbidden": "Η σύνδεση απαγορεύεται",
+                        "serviceUnknown": "Αγνωστη υπηρεσία",
+                        "unrecognizedOptionsForLoginRequest": "Αγνωστες παράμετροι κατά τη σύνδεση",
+                        "userValidationFailed": "Ο χρήστης δεν επαληθεύθηκε",
+                        "usernameAlreadyExists": "Το όνομα χρήστη υπάρχει ήδη.",
+                        "youAreNotLoggedIn": "Δεν είσαι συνδεμένος.",
+                        "youveBeenLoggedOutByTheServer": "Εχεις αποσυνδεθεί, παρακαλώ συνδέσου ξανά.",
+                        "yourSessionHasExpired": "Η συνεδρία έληξε, παρακαλώ συνδέσου ξανά.",
+                        "noMatchingLoginAttemptFound": "Δεν βρέθηκε απόπειρα σύνδεσης",
+                        "passwordIsOld": "Ο κωδικός είναι παλιός. Παρακαλώ επανέφερε τον κωδικό σου",
+                        "incorrectPassword": "Λάθος κωδικός",
+                        "invalidEmail": "Aκυρο email",
+                        "addressMustBeAValidEMailAddress": "Aκυρο email",
+                        "mustBeLoggedIn": "Πρέπει να είσαι συνδεμένος",
+                        "needToSetUsernameOrEmail": "Πρέπει να θέσεις όνομα χρήστη ή email",
+                        "oldPasswordFormat": "παλιός τύπος κωδικού",
+                        "passwordMayNotBeEmpty": "Ο κωδικός δεν πρέπει να είναι άδειος",
+                        "signupsForbidden": "Απαγορεύονται οι εγγραφές",
+                        "tokenExpired": "Εληξε",
+                        "tokenHasInvalidEmailAddress": "Άκυρο email",
+                        "userHasNoPasswordSet": "Ο χρήστης δεν έχει καθορίσει κωδικό",
+                        "userNotFound": "Ο χρήστης δεν βρέθηκε",
+                        "verifyEmailLinkExpired": "Η Επαλήθευση email έληξε",
+                        "verifyEmailLinkIsForUnknownAddress": "Η Επαλήθευση email είναι για άγνωστη διεύθυνση",
+                        "matchFailed": "Δεν ταιριάζει",
+                        "unknownError": "Αγνωστο σφάλμα"
+                    }
+                }
+            }
+        }
+    }
+]

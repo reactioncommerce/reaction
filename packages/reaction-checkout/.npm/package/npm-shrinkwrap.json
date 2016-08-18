@@ -1,9 +1,0 @@
-{
-  "dependencies": {
-    "swiper": {
-      "version": "3.3.1",
-      "resolved": "https://registry.npmjs.org/swiper/-/swiper-3.3.1.tgz",
-      "from": "https://registry.npmjs.org/swiper/-/swiper-3.3.1.tgz"
-    }
-  }
-}

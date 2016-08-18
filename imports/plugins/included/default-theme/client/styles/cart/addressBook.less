@@ -1,0 +1,124 @@
+.panel-address-book {
+
+  > .address-book {
+    .panel-heading {
+      .panel-default > .panel-heading;
+    }
+  }
+
+  .list-group-item {
+    cursor: pointer;
+    font-size: @font-size-small;
+    a {
+      text-decoration: none;
+      color: @text-color;
+    }
+    a .active {color: @body-bg;}
+  }
+
+  .address-icons {
+    opacity:0.6;
+  }
+  .address-icons:hover {
+    opacity:0.9;
+    cursor: pointer;
+  }
+
+  .address-options {
+    .padding-left(10px);
+    margin-top: -25px;
+    padding-bottom: 15px;
+    .form-group {
+      height: 15px;
+      font-size: @font-size-small;
+    }
+  }
+}
+
+
+.address-list .address-list-item {
+  margin-bottom: 20px;
+}
+
+.address-list-header {
+  .display(flex);
+}
+
+.address-list-heading {
+  .flex(1 1 auto);
+}
+
+.address-list-heading-blank {
+  width: 44px;
+}
+
+.address-list-item {
+  .display(flex);
+}
+
+.address-list-item .address {
+  .flex(1 1 auto);
+
+  padding: 20px;
+  border: @border-thin;
+  border-left: none;
+  position: relative;
+
+  &:first-child {
+    border-left: @border-thin;
+  }
+
+  &:hover {
+    color: contrast(@brand-light-highlight, @white, @black);
+    background-color: @brand-light-highlight;
+    cursor: pointer;
+  }
+
+  &.active {
+    color: contrast(@brand-light-highlight, @white, @black);
+    background-color: @brand-light-highlight;
+
+    &:after {
+      content: "\f058";
+      font-family: "FontAwesome", "FontAwesomeFallback";
+      font-size: 3rem;
+      color: @brand-success;
+      display: block;
+      position: absolute;
+      right: 1rem;
+      bottom: 1rem;
+    }
+  }
+}
+
+.address-list-item .controls {
+  .display(flex);
+  .flex-direction(column);
+  .flex(0 0 auto);
+  width: 44px;
+
+}
+
+.address-list-item .controls > .btn {
+  .flex(1 1 auto);
+  display: block;
+  width: 100%;
+  border-left: none;
+
+  border-radius: 0;
+  border: @border-thin;
+  border-width: 1px 1px 1px 0;
+
+  &:first-child {
+    border-radius: 0 @btn-border-radius-base 0 0;
+  }
+
+  &:last-child {
+    border-radius: 0 0 @btn-border-radius-base 0;
+    border-width: 0 1px 1px 0;
+  }
+
+  &.danger-action {
+    max-height: 44px;
+  }
+}

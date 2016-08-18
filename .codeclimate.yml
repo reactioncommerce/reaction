@@ -1,21 +1,21 @@
 exclude_paths:
 - ".meteor/*"
-- "packages/reaction-core-theme/lib/*"
-- "packages/reaction-core/lib/*"
-- "packages/reaction-ui/private/*"
-- "packages/reaction-ui-navbar/private/*"
+- "node_modules/*"
+- "packages/*"
+- "client/lib/transliteration.min.js"
+- ".codeclimate.yml"
 engines:
+  eslint:
+    enabled: true
+    channel: "eslint-2"
+  csslint:
+    enabled: false
   duplication:
     enabled: true
     config:
       languages:
         javascript:
           mass_threshold: 150
-
-  eslint:
-    enabled: true
-  csslint:
-    enabled: false
   fixme:
     enabled: true
     config:
@@ -25,5 +25,4 @@ engines:
 ratings:
    paths:
    - "**.js"
-   - "**.jsx"
    - "**.css"

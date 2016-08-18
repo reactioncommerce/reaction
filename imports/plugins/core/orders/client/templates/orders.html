@@ -1,0 +1,84 @@
+<template name="orders">
+  {{#if hasPermission 'orders'}}
+    <div class="container-fluid-sm">
+      {{#each order in orders}}
+        {{> ordersListItem (itemProps order)}}
+      {{else}}
+
+        <div class="empty-view-message">
+            <i class="fa fa-sun-o"></i>
+            <p data-i18n="order.ordersNotFound">No Orders Found</p>
+        </div>
+      {{/each}}
+    </div>
+  {{/if}}
+</template>
+
+<template name="orderListFilters">
+  <ul class="nav nav-pills" role="tablist">
+    {{#each filters}}
+      <li role="presentation" class="{{activeClassname .}}">
+        <a
+          class="flex"
+          href="#{{name}}"
+          aria-controls="{{name}}"
+          role="tab"
+          data-toggle="tab"
+          data-event-action="toggleFilter"
+          data-filter="{{name}}">
+            <span class="count">{{count}}</span>
+            <span class="label" data-i18n="{{i18nKeyLabel}}">
+              {{!-- wrapping label below in a span prevents a console error --}}
+              <span>{{label}}</span>
+            </span>
+        </a>
+      </li>
+    {{/each}}
+  </ul>
+</template>
+
+<template name="ordersListItem">
+  <div class="rui card order {{activeClassname order._id}}" data-event-action="selectOrder">
+    <div class="content">
+      <div class="order-details">
+        <div class="order-detail-item address">
+          {{> orderDetail order}}
+        </div>
+        <div class="order-detail-item status">
+          {{> orderStatusDetail order}}
+        </div>
+        <div class="order-detail-item summary">
+          {{> ordersListSummary order=order currencyFormat=currencyFormat}}
+        </div>
+      </div>
+
+      <div class="order-panel-items">
+        {{> ordersListItems order=order currencyFormat=currencyFormat}}
+      </div>
+    </div>
+
+    <div class="controls">
+      {{#if orderIsNew order}}
+        <button class="btn btn-success" data-event-action="startProcessingOrder">Start</button>
+      {{else}}
+        <button><i class="fa fa-angle-right fa-2x"></i></button>
+      {{/if}}
+    </div>
+  </div>
+</template>
+
+
+<template name="orderStatusDetail">
+  <div class="col-xs-8">
+    <div data-i18n="orderDetail.created">Created {{orderAge}} {{dateFormat createdAt format="MMM D, YYYY hh:mm:ss A"}}</div>
+    <p>
+      Tracking: <a href="#">{{shipmentTracking}}</a> - 
+      <span class="badge badge-{{shipmentStatus.status}}">{{shipmentStatus.label}}</span>
+    </p>
+  </div>
+</template>
+
+
+<template name="orderViewButton">
+  <button class="btn btn-success" type="button"><i class="fa fa-edit"></i></button>
+</template>

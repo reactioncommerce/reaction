@@ -1,0 +1,320 @@
+[
+    {
+        "language": "Türkçe",
+        "i18n": "tr",
+        "ns": "core",
+        "translation": {
+            "core": {
+                "languages": {
+                    "select": "Dil Seçimi"
+                },
+                "app": {
+                    "saveAndContinue": "Kaydet ve devam et",
+                    "cancel": "Vazgeç",
+                    "submit": "Gönder",
+                    "delete": "Sil",
+                    "create": "Ekle",
+                    "close": "Kapat",
+                    "settings": "Ayarlar",
+                    "loading": "Yükleniyor",
+                    "toggle": "Değiştir",
+                    "warning": "Hata!",
+                    "unauthorizedMessage": "Bu içeriği görüntüleme yetkiniz yok.",
+                    "monthOptions": "Ay seçin",
+                    "yearOptions": "Yıl seçin",
+                    "timezoneOptions": "Saat Dilimi seçin",
+                    "shopSettings": "Mağaza ayarları",
+                    "dashboard": "Yönetim"
+                },
+                "header": {
+                    "tagsAdd": "Etiket ekle",
+                    "search": "Ürün ara..."
+                },
+                "productDetail": {
+                    "productManagement": "Ürün yönetimi",
+                    "whenYouAreDone": "düzenlemenizi bitirdikten sonra.",
+                    "tags": "Etiketler",
+                    "tagsAdd": "Etiket ekle",
+                    "addInventory": "Stok ekle",
+                    "barcode": "Barkod",
+                    "confirmDeleteBarcode": "Barkodu silmek istediğinizden emin misiniz?",
+                    "details": "Ayrıntılar",
+                    "detailsName": "Ayrıntı adı",
+                    "detailsInfo": "Ayrıntı içeriği",
+                    "generate": "Oluştur",
+                    "generateBarcodes": "Barkod oluştur",
+                    "hideBarcodes": "Barkodları gizle",
+                    "options": "Seçenekler",
+                    "addToCart": "Sepete ekle",
+                    "chooseOptions": "Sepete eklemeden önce lütfen seçenekleri işaretleyiniz",
+                    "outOfStock": "Üzgünüm, bu ürün stoklarda kalmadı!",
+                    "productDeleteError": "Silmeye çalışılırken bir hata oluştu ",
+                    "publishFirst": "Ürünü sepete eklemeden önce görünür yapın.",
+                    "quantityAbbreviation": "Adet",
+                    "selectOption": "Sepete eklemeden önce bir seçenek işaretleyiniz.",
+                    "addedToCart": "eklendi",
+                    "showBarcodes": "Barkodları Göster",
+                    "soldOut": "Tükendi!",
+                    "backOrder": "Geçici olarak stok dışı",
+                    "limitedSupply": "Sınırlı stok",
+                    "publishProductVisible": " artık görünür",
+                    "publishProductHidden": " artık gizli",
+                    "startTracking": "Takip Et",
+                    "addBarcode": "Barkod Ekle",
+                    "quantity": "Miktar",
+                    "quantityGreaterThanZero": "Hata: Miktar sıfırdan büyük olmalıdır"
+                },
+                "productDetailEdit": {
+                    "title": "Ürün ismi",
+                    "pageTitle": "Ürün sayfa başlığı",
+                    "vendor": "Üretici",
+                    "description": "Ürün açıklması ekle",
+                    "facebookMsg": "Facebook Mesaj",
+                    "twitterMsg": "Twitter Mesaj",
+                    "pinterestMsg": "Pinterest Mesaj",
+                    "googleplusMsg": "Google+ Mesaj",
+                    "duplicateVariant": "Kopyala",
+                    "addVariantOption": "Seçenek ekle",
+                    "removeVariant": "Sil",
+                    "duplicateProduct": "Ürünü Kopyala",
+                    "pinProduct": "Ürünü Sabitle",
+                    "toggleSize": "Boyut Değiştir",
+                    "deleteProduct": "Ürünü Sil",
+                    "publish": "Görünür Yap",
+                    "moreOptions": "Daha çok seçenek"
+                },
+                "variantList": {
+                    "moreOptions": "Bu seçim için daha çok seçenek mevcut.",
+                    "createVariant": "Benzerini Oluştur"
+                },
+                "gridPackage": {
+                    "pkgEnabled": " şu anda etkin.",
+                    "pkgDisabled": " şu anda etkin değil."
+                },
+                "cartDrawer": {
+                    "empty": "Üzgünüz. Sepetiniz boş.",
+                    "keepShopping": "Alışverişe devam et",
+                    "checkout": "Ödemeye geç"
+                },
+                "cartSubTotals": {
+                    "head": "Sepetiniz",
+                    "items": "Ürün sepetinizde",
+                    "subtotal": "Alt Toplam",
+                    "shipping": "Kargo",
+                    "tax": "Vergi",
+                    "total": "Toplam"
+                },
+                "cartDrawerItems": {
+                    "left": "sol"
+                },
+                "cartCompleted": {
+                    "thankYou": "Teşekkürler!",
+                    "itemsFrom": " ürünler",
+                    "yourOrderIsNow": "Siparişiniz şu anda",
+                    "summaryMessage": "Siparişiniz için teşekkürler.",
+                    "submitted": "gönderildi",
+                    "registerGuest": "Merhaba! Bir e-posta ekleyin ve sipariş güncellemelerini alın.",
+                    "trackYourDelivery": "Sipariş güncellemeleri şu adrese gönderilecek",
+                    "noOrdersFound": "Hiçbir sipariş bulunamadı.",
+                    "adminMessage": "Siparişleri yönetici olarak görüntülüyorsunuz"
+                },
+                "checkoutLogin": {
+                    "welcome": "Merhaba, sizi görmek çok güzel.",
+                    "loginCompleted": "Hesap oluşturuldu",
+                    "createOrLogin": "Hesap oluştur ya da giriş yap",
+                    "guestOrLogin": "Giriş yap ya da misafir olarak öde",
+                    "continueAsGuest": "Misafir olarak devam et",
+                    "guestMessage": "Bir hesap oluşturmadan ödeme yapabilirsiniz. Daha sonra hesap oluşturabilirsiniz."
+                },
+                "addressBookGrid": {
+                    "addAddress": "Adres Ekle",
+                    "chooseAddress": "Teslimat ve Fatura adresi seçin",
+                    "createDefault": "Varsayılan adresinizi oluşturun",
+                    "selectShippingAddress": "Bir teslimat adresi seçin",
+                    "selectBillingAddress": "Bir fatura adresi seçin"
+                },
+                "addressBookAdd": {
+                    "addAddress": "Yeni bir adres ekleyin",
+                    "createAddress": "Adresinizi oluşturun"
+                },
+                "addressBookEdit": {
+                    "editAddress": "Bu adresi düzenleyin"
+                },
+                "shop": {
+                    "addressBook": {
+                        "country": "Ülke",
+                        "fullName": "Ad Soyad",
+                        "address1": "Adres",
+                        "address2": "Adres 2",
+                        "postal": "Posta Kodu",
+                        "city": "Şehir",
+                        "region": "Bölge",
+                        "phone": "Telefon",
+                        "isShippingDefault": "Bu varsayılan teslimat adresiniz mi?",
+                        "isBillingDefault": "Bu varsayılan fatura adresiniz mi?",
+                        "isCommercial": "Bu ticari bir adres."
+                    }
+                },
+                "address": {
+                    "country": "Ülke",
+                    "fullName": "Ad Saoyad",
+                    "address1": "Adres",
+                    "address2": "Adres 2",
+                    "postal": "Posta Kodu",
+                    "city": "Şehir",
+                    "region": "Bölge",
+                    "phone": "Telefon",
+                    "isShippingDefault": "Bu varsayılan teslimat adresiniz mi?",
+                    "isBillingDefault": "Bu varsayılan fatura adresiniz mi?",
+                    "isCommercial": "Bu ticari bir adres."
+                },
+                "checkoutProgressBar": {
+                    "login": "Hesap",
+                    "shippingBilling": "Adres Bilgileri",
+                    "shippingOptions": "Teslimat Seçenekleri",
+                    "reviewPayment": "Yorum",
+                    "complete": "Tamamlandı"
+                },
+                "checkoutPayment": {
+                    "addPaymentToCompleteOrder": "Siparişi tamamlamak için bir ödeme yöntemi seçiniz",
+                    "processingError": "Ödemeniz işlenirken bir hata oluştu.",
+                    "completeYourOrder": "Siparişi tamamla"
+                },
+                "checkoutReview": {
+                    "review": "Yorum"
+                },
+                "checkoutShipping": {
+                    "selectShippingOption": "Teslimat yöntemi seçiniz",
+                    "noShippingMethods": "Hiçbir teslimat yöntemi bulunamadı.",
+                    "configureNow": "Bir tane belirle.",
+                    "shipping": "Teslimat"
+                },
+                "shopEditForm": {
+                    "name": "İsim",
+                    "email": "E-posta"
+                },
+                "shopEditAdressForm": {
+                    "company": "Şirket",
+                    "fullname": "İsim",
+                    "address1": "Adres"
+                },
+                "consoleIcon": {
+                    "iconTitle": "Konsolu Göster",
+                    "text": "Konsol"
+                },
+                "createProductIcon": {
+                    "iconTitle": "Ürün oluştur",
+                    "text": "Oluştur"
+                },
+                "social": {
+                    "facebook": "Facebook",
+                    "google": "Google",
+                    "github": "GitHub",
+                    "meetup": "Meetup",
+                    "twitter": "Twitter",
+                    "weibo": "Weibo"
+                },
+                "accountsUI": {
+                    "members": "ÜyelerMembers",
+                    "guest": "Misafir",
+                    "addMember": "Üye ekle",
+                    "add": "ekle",
+                    "and": "ve",
+                    "back": "geri",
+                    "changePassword": "Şifre Değiştir",
+                    "choosePassword": "Şifre Belirle",
+                    "clickAgree": "Kayıt olarak kabul etmektesiniz",
+                    "configure": "Düzenle",
+                    "createAccount": "Hesap Oluştur",
+                    "currentPassword": "Geçerli Şifre",
+                    "dontHaveAnAccount": "Bir hesabınız yok mu?",
+                    "email": "E-posta",
+                    "emailAddress": "E-posta Adresi",
+                    "emailResetLink": "E-posta sıfırlama bağlantısı",
+                    "forgotPassword": "Şifremi Unuttum",
+                    "ifYouAlreadyHaveAnAccount": "Eğer bir hesabınız varsa",
+                    "newPassword": "Yeni Şifre",
+                    "newPasswordAgain": "Yeni Şifre(tekrar)",
+                    "optional": "İsteğe bağlı",
+                    "or": "veya",
+                    "password": "Şifre",
+                    "passwordAgain": "Şifre (tekrar)",
+                    "privacyPolicy": "Gizlilik Politikası",
+                    "remove": "sil",
+                    "resetYourPassword": "Şifrenizi sıfırlayın",
+                    "setPassword": "Şifreyi Ayarla",
+                    "sign": "Kayıt",
+                    "signIn": "Giriş Yap",
+                    "signin": "giriş yap",
+                    "signInWith": "Bağlan",
+                    "signUpWith": "Giriş yap",
+                    "signedIn": "Giriş yaptınız.",
+                    "signOut": "Çıkış Yap",
+                    "signUp": "Kaydol",
+                    "signupCode": "Kayıt Kodu",
+                    "signUpWithYourEmailAddress": "E-posta adresinizle kayıt olun",
+                    "terms": "Kullanım Koşulları",
+                    "updateYourPassword": "Şifrenizi güncelleyin",
+                    "updatePasswordAndContinue": "Güncelle ve devam et",
+                    "username": "Kullanıcı Adı",
+                    "usernameOrEmail": "Kullanıcı Adı veya E-posta",
+                    "with": "ile",
+                    "checkoutAsGuest": "Kaydolmadan ödeme yap",
+                    "role": "Rol",
+                    "info": {
+                        "emailSent": "E-posta gönderildi",
+                        "emailVerified": "E-posta doğrulandı",
+                        "passwordChanged": "Şifre değiştirildi",
+                        "passwordReset": "Şifre sıfırlandı",
+                        "invitationSent": "Davet Yollandı",
+                        "sendInvitation": "Davet yolla"
+                    },
+                    "error": {
+                        "emailRequired": "E-posta gerekli.",
+                        "passwordRequired": "Şifre gerekli.",
+                        "passwordMustBeAtLeast6CharactersLong": "Şifre en az 6 karakterden oluşmalıdır.",
+                        "passwordMustContainRequirements": "Şifre en az bir sayı yada sembol içermelidir",
+                        "minChar": "En az 6 karakter.",
+                        "pwdsDontMatch": "Şifreler uyuşmuyor",
+                        "pwOneDigit": "Şifre en az bir sayı içermelidir.",
+                        "pwOneLetter": "Şifre en az bir karakter içermelidir.",
+                        "signInRequired": "Bu işlemi gerçekleştirmek için giriş yapmalısınız.",
+                        "signupCodeIncorrect": "Kayır kodu doğru değil.",
+                        "signupCodeRequired": "Kayıt kodu gerekli.",
+                        "usernameIsEmail": "Kullanıcı adı bir e-posta adresi olamaz.",
+                        "usernameRequired": "Kullanıcı Adı gerekli.",
+                        "emailAlreadyExists": "E-pos önceden kullanılmış.",
+                        "emailDoesntMatchTheCriteria": "E-posta kriterlere uygun değil.",
+                        "invalidLoginToken": "Geçersiz giriş anahtarı",
+                        "loginForbidden": "Giriş engellenmiş",
+                        "serviceUnknown": "Bilinmeyen Servis",
+                        "unrecognizedOptionsForLoginRequest": "Giriş isteği için tanınmayan seçenekler mevcut",
+                        "userValidationFailed": "Kullanıcı onaylaması başarısız",
+                        "usernameAlreadyExists": "Kullanıcı adı zaten kayıtlı.",
+                        "youAreNotLoggedIn": "Giriş yapmadınız.",
+                        "youveBeenLoggedOutByTheServer": "Sunucu tarafından bağlantınız kesildi. Lütfen tekrar giriş yapınız.",
+                        "yourSessionHasExpired": "Oturumunuzun süresi doldu. Lütfen tekrar giriş yapınız.",
+                        "noMatchingLoginAttemptFound": "Eşleşen giriş isteği bulunamadı",
+                        "passwordIsOld": "Şifreniz eskimiş. Lütfen şifrenizi sıfırlayın.",
+                        "incorrectPassword": "Geçersiz şifre",
+                        "invalidEmail": "Geçersiz e-posta",
+                        "addressMustBeAValidEMailAddress": "Geçersiz E-posta",
+                        "mustBeLoggedIn": "Giriş yapmalısınız",
+                        "needToSetUsernameOrEmail": "Kullanıcı Adı veya E-posta adresi girmelisiniz",
+                        "oldPasswordFormat": "eski şifre biçimi",
+                        "passwordMayNotBeEmpty": "Şifre boş bırakılamaz",
+                        "signupsForbidden": "Kayıt olma yasaklanmış",
+                        "tokenExpired": "Anahtarın süresi doldu",
+                        "tokenHasInvalidEmailAddress": "Anahtar geçersiz bir e-posta adresi içeriyor",
+                        "userHasNoPasswordSet": "Kullanıcı bir şifre belirlememiş",
+                        "userNotFound": "Kullanıcı bulunamadı",
+                        "verifyEmailLinkExpired": "E-posta doğrulama bağlantısının süresi geçmiş",
+                        "verifyEmailLinkIsForUnknownAddress": "E-posta doğrulama bağlantısı bilinmeyen bir adres içermekte",
+                        "matchFailed": "Eşleştirme başarısız",
+                        "unknownError": "Bilinmeyen Hata"
+                    }
+                }
+            }
+        }
+    }
+]

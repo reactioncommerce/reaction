@@ -1,0 +1,56 @@
+
+
+.product-settings-mock-grid > .product-grid-item {
+  width: 100%;
+  max-width: 100%;
+}
+
+
+.product-settings-size-controls {
+  .display(flex);
+}
+
+.product-settings-size-control {
+  .display(flex);
+  .flex(1 1 auto);
+  width: 50px;
+  max-width: 50px;
+  height: 50px;
+  margin: 10px;
+
+  .main {
+    .flex(1 1 auto);
+    height: 100%;
+    background-color: @black20;
+    border: 1px solid @white;
+  }
+
+  .side {
+    .display(flex);
+    .flex-direction(column);
+    .flex(0 0 auto);
+
+    width: 33%;
+    height: 100%;
+  }
+
+  .side span {
+    .flex(1 1 auto);
+    display: block;
+    height: 25%;
+    background-color: @black20;
+    border: 1px solid @white;
+  }
+}
+
+.product-settings-size-control.main-wide {
+  max-width: 100px;
+}
+
+.product-settings-size-control.main-full {
+  max-width: 150px;
+}
+
+.product-load-more {
+  padding: 0 60px;  
+}

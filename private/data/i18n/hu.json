@@ -1,0 +1,275 @@
+[
+    {
+        "language": "Hungarian",
+        "i18n": "hu",
+        "ns": "core",
+        "translation": {
+            "core": {
+                "languages": {
+                    "select": "Másik nyelv"
+                },
+                "app": {
+                    "saveAndContinue": "Mentés és folytatás",
+                    "cancel": "Mégse",
+                    "submit": "Küld",
+                    "delete": "Töröl",
+                    "create": "Létrehoz",
+                    "close": "Bezár",
+                    "settings": "Beállítások",
+                    "loading": "Betöltés",
+                    "toggle": "Bekapcsol",
+                    "warning": "Baj van!",
+                    "unauthorizedMessage": "Nincs jogosultságod a tartalom megtekintéséhez."
+                },
+                "header": {
+                    "tagsAdd": "Címke hozzáadása",
+                    "search": "Termék keresés..."
+                },
+                "productDetail": {
+                    "productManagement": "Termékek kezelése",
+                    "whenYouAreDone": "amikor kész a szerkesztés.",
+                    "tags": "Címkék",
+                    "tagsAdd": "Címke hozzáadása",
+                    "details": "Részletek",
+                    "detailsName": "Részlet neve",
+                    "detailsInfo": "Részletek",
+                    "options": "Opciók",
+                    "addToCart": "Kosárba",
+                    "chooseOptions": "Válassz az opciók közül kosárba tétel előtt",
+                    "outOfStock": "Elnézést, ez a termék nincs raktáron!",
+                    "productDeleteError": "Törlési probléma ",
+                    "publishFirst": "Publikáld a terméket kosárba tétel előtt.",
+                    "selectOption": "Válassz az opciók közül kosárba tétel előtt",
+                    "addedToCart": "kosárban"
+                },
+                "productDetailEdit": {
+                    "title": "Termék neve",
+                    "pageTitle": "Termék oldal címe",
+                    "vendor": "Gyártó",
+                    "description": "Adj hozzá termékleírást",
+                    "facebookMsg": "Facebook Üzenet",
+                    "twitterMsg": "Twitter Üzenet",
+                    "pinterestMsg": "Pinterest Üzenet",
+                    "googleplusMsg": "Google+ Üzenet"
+                },
+                "variantList": {
+                    "moreOptions": "További lehetőségek a kiválasztott termékhez.",
+                    "createVariant": "Variáció létrehozás"
+                },
+                "gridPackage": {
+                    "pkgEnabled": " most engedélyezett.",
+                    "pkgDisabled": " most nem engedélyezett."
+                },
+                "cartDrawer": {
+                    "empty": "Szomorúan vesszük tudomásul, hogy üres a kosarad.",
+                    "keepShopping": "Folytasd a vásárlást",
+                    "checkout": "Fizetés most"
+                },
+                "cartSubTotals": {
+                    "head": "Kosarad",
+                    "items": "Cikkek a kosárban",
+                    "subtotal": "Részösszeg",
+                    "shipping": "Szállítás",
+                    "tax": "Adó",
+                    "total": "Összesen"
+                },
+                "cartDrawerItems": {
+                    "left": "bal"
+                },
+                "cartCompleted": {
+                    "thankYou": "Köszönjük!",
+                    "itemsFrom": "cikk(ek) a",
+                    "yourOrderIsNow": "Megrendelésed most",
+                    "summaryMessage": "Köszönjük a megrendelést.",
+                    "submitted": "elküldve",
+                    "registerGuest": "Email cím megadásával kaphatsz értesítést rendelésed állapotáról.",
+                    "trackYourDelivery": "Megrendelésedről az értesítéseket ide küldjük",
+                    "noOrdersFound": "Nincs megrendelés."
+                },
+                "checkoutLogin": {
+                    "loginCompleted": "Fiókod elkészült",
+                    "createOrLogin": "Hozz létre fiókot vagy lépj be",
+                    "guestOrLogin": "Lépj be vagy add fel rendelésed, mint vendég",
+                    "continueAsGuest": "Folytasd mint Vendég",
+                    "guestMessage": "Rendelésed feladhatod fiók létrehozása nélkül is. Erre lesz lehetőséged később."
+                },
+                "addressBookGrid": {
+                    "chooseAddress": "Válaszd ki számlázási és szállítási címed",
+                    "createDefault": "Hozd létre elsődleges címed",
+                    "selectShippingAddress": "Válassz szállítási címet",
+                    "selectBillingAddress": "Válassz számlázási címet"
+                },
+                "addressBookAdd": {
+                    "addAddress": "Adj meg új címet",
+                    "createAddress": "Hozd létre elsődleges címed"
+                },
+                "addressBookEdit": {
+                    "editAddress": "Cím szerkesztése"
+                },
+                "shop": {
+                    "addressBook": {
+                        "country": "Ország",
+                        "fullName": "Teljes név",
+                        "address1": "Cím 1",
+                        "address2": "Cím 2",
+                        "postal": "Postai",
+                        "city": "Város",
+                        "region": "Megye",
+                        "phone": "Telefon",
+                        "isShippingDefault": "Ez legyen az elsődleges szállítási címed?",
+                        "isBillingDefault": "Ez legyen az elsődleges számlázási címed?",
+                        "isCommercial": "Céges cím."
+                    }
+                },
+                "address": {
+                    "country": "Ország",
+                    "fullName": "Teljes név",
+                    "address1": "Cím",
+                    "address2": "Cím",
+                    "postal": "Postai",
+                    "city": "Város",
+                    "region": "Megye",
+                    "phone": "Telefon",
+                    "isShippingDefault": "Ez legyen az elsődleges szállítási címed?",
+                    "isBillingDefault": "Ez legyen az elsődleges számlázási címed?",
+                    "isCommercial": "Céges cím."
+                },
+                "checkoutProgressBar": {
+                    "login": "Fiók",
+                    "shippingBilling": "Cím Adatok",
+                    "shippingOptions": "Szállítási Opciók",
+                    "reviewPayment": "Ellenőrzés",
+                    "complete": "Kész"
+                },
+                "checkoutPayment": {
+                    "addPaymentToCompleteOrder": "Rendeléshez válassz fizetési módot"
+                },
+                "checkoutReview": {
+                    "review": "Ellenőrzés"
+                },
+                "checkoutShipping": {
+                    "selectShippingOption": "Válassz szállítási módot",
+                    "noShippingMethods": "Szállítási mód nincs beállítva.",
+                    "configureNow": "Beállítás most.",
+                    "shipping": "Szállítás"
+                },
+                "shopEditForm": {
+                    "name": "Név",
+                    "email": "Email"
+                },
+                "shopEditAdressForm": {
+                    "company": "Cég",
+                    "fullname": "Teljes név",
+                    "address1": "Cím 1"
+                },
+                "consoleIcon": {
+                    "iconTitle": "Konzol megtekintés",
+                    "text": "Konzol"
+                },
+                "createProductIcon": {
+                    "iconTitle": "Termék létrehozás",
+                    "text": "Létrehozás"
+                },
+                "social": {
+                    "facebook": "Facebook",
+                    "google": "Google",
+                    "github": "GitHub",
+                    "meetup": "Meetup",
+                    "twitter": "Twitter",
+                    "weibo": "Weibo"
+                },
+                "accountsUI": {
+                    "add": "hozzáadás",
+                    "and": "és",
+                    "back": "vissza",
+                    "changePassword": "Jelszó változtatás",
+                    "choosePassword": "Jelszó beállítás",
+                    "clickAgree": "Regisztrációval elfogadod a",
+                    "configure": "Beállítás",
+                    "createAccount": "Fiók létrehozás",
+                    "currentPassword": "Aktuális jelszó",
+                    "dontHaveAnAccount": "Nincs fiókod?",
+                    "email": "Email",
+                    "emailAddress": "Email Cím",
+                    "emailResetLink": "Email Csere Link",
+                    "forgotPassword": "Jelszó Csere",
+                    "ifYouAlreadyHaveAnAccount": "Ha már van fiókod",
+                    "newPassword": "Új Jelszó",
+                    "newPasswordAgain": "Új Jelszó (ismét)",
+                    "optional": "Nem kötelező",
+                    "or": "vagy",
+                    "password": "Jelszó",
+                    "passwordAgain": "Jelszó (ismét)",
+                    "privacyPolicy": "Adatvédelmi Nyilatkozat",
+                    "remove": "törlés",
+                    "resetYourPassword": "Jelszó csere",
+                    "setPassword": "Jelszó megadás",
+                    "sign": "Bejelentkezés",
+                    "signIn": "Bejelentkezés",
+                    "signin": "jelentkezz be",
+                    "signInWith": "Jelentkezz be a",
+                    "signedIn": "Bejelentkeztél.",
+                    "signOut": "Kilépés",
+                    "signUp": "Regisztráció",
+                    "signupCode": "Regisztrációs kód",
+                    "signedIn": "Bejelentkeztél.",
+                    "signUpWithYourEmailAddress": "Regisztrálj az email címeddel",
+                    "terms": "Általános Szerződési Feltételek",
+                    "updateYourPassword": "Jelszó frissítése",
+                    "username": "felhasználó",
+                    "usernameOrEmail": "Felhasználó vagy email",
+                    "with": "",
+                    "checkoutAsGuest": "Rendelés fiók nélkül",
+                    "info": {
+                        "emailSent": "Email elküldve",
+                        "emailVerified": "Email ellenőrizve",
+                        "passwordChanged": "Jelszó megváltozott",
+                        "passwordReset": "Jelszó csere"
+                    },
+                    "error": {
+                        "emailRequired": "Email megadása kötelező.",
+                        "passwordMustBeAtLeast6CharactersLong": "A jelszónak legalább 6 karakterből kell állnia.",
+                        "minChar": "6 karakterből alló minimum jelszó.",
+                        "pwdsDontMatch": "A jelszavak nem egyeznek meg",
+                        "pwOneDigit": "A jelszónak legalább 1 számot kell tartalmaznia.",
+                        "pwOneLetter": "A jelszónak 1 betűt kell tartalmaznia.",
+                        "signInRequired": "Bejelentkezve kell lenned.",
+                        "signupCodeIncorrect": "A regisztrációs kód nem megfelelő.",
+                        "signupCodeRequired": "Regisztrációs kód kötelező.",
+                        "usernameIsEmail": "Felhasználó nem lehet email cím.",
+                        "usernameRequired": "Felhasználó kötelező.",
+                        "emailAlreadyExists": "Email már létezik.",
+                        "emailDoesntMatchTheCriteria": "Email nem felel meg a szabálynak.",
+                        "invalidLoginToken": "Érvénytelen login token",
+                        "loginForbidden": "Belépés megtagadva",
+                        "serviceUnknown": "Ismeretlen szolgáltatás",
+                        "unrecognizedOptionsForLoginRequest": "Ismeretlen belépési paraméterek",
+                        "userValidationFailed": "Felhasználó ellenőrzés sikertelen",
+                        "usernameAlreadyExists": "Felhasználó már létezik.",
+                        "youAreNotLoggedIn": "Nem vagy bejelentkezve.",
+                        "youveBeenLoggedOutByTheServer": "A szerver kiléptetett. Jelentkezz be újra.",
+                        "yourSessionHasExpired": "Your session has expired. Please log in again.",
+                        "noMatchingLoginAttemptFound": "Ismeretlen belépési kísérlet",
+                        "passwordIsOld": "Régi jelszó. Kérlek cserélj jelszót.",
+                        "incorrectPassword": "Téves jelszó",
+                        "invalidEmail": "Téves email",
+                        "addressMustBeAValidEMailAddress": "Nem email cím",
+                        "mustBeLoggedIn": "Bejelentkezve kell lenni",
+                        "needToSetUsernameOrEmail": "Felhasználó vagy email szükséges",
+                        "oldPasswordFormat": "régi jelszó formátum",
+                        "passwordMayNotBeEmpty": "Jelszó nem lehet üres",
+                        "signupsForbidden": "Jelentkezés letiltva",
+                        "tokenExpired": "Lejárt token",
+                        "tokenHasInvalidEmailAddress": "Érvénytelen email cím a tokenben",
+                        "userHasNoPasswordSet": "Nincs email cím megadva a felhasználónál",
+                        "userNotFound": "Ismeretlen felhasználó",
+                        "verifyEmailLinkExpired": "Az email cím ellenőzésére szolgáló link lejárt",
+                        "verifyEmailLinkIsForUnknownAddress": "Az email cím ellenőzésére szolgáló link ismeretlen címre szól",
+                        "matchFailed": "Nincs találat",
+                        "unknownError": "Ismeretlen hiba"
+                    }
+                }
+            }
+        }
+    }
+]

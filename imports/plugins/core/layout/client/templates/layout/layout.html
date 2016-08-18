@@ -1,0 +1,31 @@
+<template name="printLayout">
+  {{> Template.dynamic template=template}}
+</template>
+
+<template name="coreLayout">
+  {{#if hasDashboardAccess}}
+    {{> coreAdminLayout}}
+  {{else}}
+    <nav class="reaction-navigation-header">
+      <!-- begin layoutHeader -->
+      {{> Template.dynamic template=layoutHeader}}
+      <!-- end layoutHeader -->
+    </nav>
+
+    <nav class="reaction-cart-drawer">
+      {{>cartDrawer}}
+    </nav>
+
+    <main role="main" id="main">
+      <span id="layout-alerts">{{> inlineAlerts}}</span>
+      {{#if hasPermission 'guest'}}
+        <!-- begin template region -->
+        {{> Template.dynamic template=template}}
+        <!-- end template region -->
+      {{/if}}
+
+      <footer class="reaction-navigation-footer footer-default">{{> Template.dynamic template=layoutFooter}}</footer>
+    </main>
+
+  {{/if}}
+</template>

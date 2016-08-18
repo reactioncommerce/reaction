@@ -1,0 +1,22 @@
+<template name="authnetSettings">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <div class="panel-title"></div>
+      Don't have a AuthNet API Login ID and Transaction Key? <a href="https://sandbox.authorize.net/" target="_blank">Get them here.</a>
+    </div>
+    <div class="panel-body">
+      {{#autoForm collection=Collections.Packages
+        schema=AuthNetPackageConfig
+        doc=packageData
+        type="update"
+        id="authnet-update-form"
+      }}
+      {{>afQuickField name='settings.mode' type="boolean-select" trueLabel="Live" falseLabel="Test" style="width: auto"}}
+      {{>afQuickField name="settings.api_id"}}
+      {{>afQuickField name="settings.transaction_key"}}
+
+      <button type="submit" class="btn btn-primary pull-right">Update</button>
+      {{/autoForm}}
+    </div>
+  </div>
+</template>

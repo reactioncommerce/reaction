@@ -1,0 +1,19 @@
+<template name="productGrid">
+  <div class="container-main">
+    <div class="product-grid">
+      <ul class="product-grid-list list-unstyled" id="product-grid-list">
+        {{#each products}}
+          {{> productGridItems}}
+        {{else}}
+          <div class="row">
+            <div class="text-center">
+              <h3>
+                <span data-i18n="app.noProductsFound">No Products Found</span>
+              </h3>
+            </div>
+          </div>
+        {{/each}}
+      </ul>
+    </div>
+  </div>
+</template>

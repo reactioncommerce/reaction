@@ -1,0 +1,68 @@
+<template name="loginDropdown">
+  <div class="dropdown" role="menu">
+    {{#if currentUser}}
+    <div class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000">
+      {{!--> avatar user=currentUser class="circular-icon" size="small" shape="circle"--}}
+      <img class="circular-icon" src="{{getGravatar currentUser 40}}" alt="avatar" />
+      <span id="logged-in-display-name"> {{displayName}}<b class="caret"></b></span>
+    </div>
+    <div class="dropdown-menu" role="menu">
+      {{> userDropdown}}
+    </div>
+    {{else}}
+    <div class="accounts-dropdown" data-event-category="accounts" data-event-action="accounts-dropdown-click">
+      <div class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000">
+        <span data-i18n="accountsUI.signIn">Sign In</span><b class="caret"></b></div>
+      <div class="accounts-dialog accounts-layout dropdown-menu pull-right">
+        {{> loginForm}}
+      </div>
+    </div>
+    {{/if}}
+  </div>
+</template>
+
+<template name="userDropdown">
+  <div class="user-accounts-dropdown">
+    <div class="user-accounts-dropdown-content">
+      {{> accountsDropdownApps}}
+    </div>
+    <div class="btn btn-primary btn-block" id="logout" data-i18n="accountsUI.signOut">Sign Out</div>
+  </div>
+
+</template>
+
+<template name="accountsDropdownApps">
+  <ul class="user-accounts-dropdown-apps">
+    {{> userAccountsDropdown}}
+    <!--administrative shortcut icons -->
+    {{#each reactionApps provides="shortcut" enabled=true}}
+      <li class="dropdown-apps-icon">
+        <a href={{pathFor name}} id="dropdown-apps-{{name}}" title="{{label}}">
+          <i class="{{icon}}"></i>
+          <span class="icon-text">
+            {{i18n i18nKeyLabel label}}
+          </span>
+        </a>
+      </li>
+    {{/each}}
+  </ul>
+</template>
+
+<template name="userAccountsDropdown">
+  <!--user account shortcut icons -->
+  {{#each reactionApps provides="userAccountDropdown" enabled=true}}
+    <li class="dropdown-apps-icon">
+      <a id="user-dropdown-apps-{{name}}" title="{{label}}">
+        <i class="{{icon}}"></i>
+        <span class="icon-text">
+          {{i18n i18nKeyLabel label}}
+        </span>
+      </a>
+    </li>
+  {{else}}
+  <li class="dropdown-apps-icon">
+    <i class="fa fa-user-secret"></i>
+    <span class="icon-text" data-i18n="accountsUI.signedIn">You are signed in.</span>
+  </li>
+  {{/each}}
+</template>

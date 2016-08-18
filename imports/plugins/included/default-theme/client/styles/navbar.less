@@ -1,0 +1,216 @@
+
+.rui.navbar {
+  .display(flex);
+  .align-items(center);
+  background-color: @navbar-default-bg;
+  color: @navbar-default-link-color;
+  border-radius: 0;
+  border: 0;
+}
+
+.rui.navbar a,
+.rui.navbar a:hover,
+.rui.navbar a:focus,
+.rui.navbar .dropdown-toggle {
+  color: @navbar-default-link-color;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.rui.navbar .showmenu {
+  display: none;
+  .flex(0 0 auto);
+  .padding-left(10px);
+
+  @media screen and (max-width: @screen-sm-max) {
+    display: block;
+  }
+}
+
+.rui.navbar .showmenu button {
+  background-color: transparent;
+  border-color: transparent;
+  color: @white;
+}
+
+.rui.navbar .menu {
+  .flex(1 1 auto);
+  margin: 0 10px;
+}
+
+.rui.navbar .rui.tagnav {
+  background: transparent;
+}
+
+.rui.navbar .rui.tagnav .edit-tag-button {
+  border: none;
+  background-color: transparent;
+  color: @navbar-default-link-color;
+}
+
+.rui.navbar .rui.tagnav.vertical {
+  background: @white;
+}
+
+.rui.navbar .rui.tagnav.vertical .rui.tag.link {
+  color: @link-color;
+}
+
+.rui.navbar .cart {
+  .flex(0 0 auto);
+  position: relative;
+  cursor: pointer;
+}
+
+.rui.navbar .dropdown a {
+  color: @link-color;
+}
+
+.rui.navbar .dropdown .dropdown-menu > .active > a{
+  color: @white;
+}
+
+.rui.navbar .dropdown {
+  height: 100%;
+}
+
+.rui.navbar .dropdown-toggle {
+  .display(flex);
+  .align-items(center);
+  height: 100%;
+
+  padding: 0 @navbar-padding-vertical;
+  .padding-left(@navbar-padding-vertical);
+}
+
+.rui.navbar .languages {
+  .display(flex);
+  .align-items(center);
+  .flex(0 0 auto);
+  height: @navbar-height;
+}
+
+.rui.navbar .languages:hover {
+  background-color: @navbar-default-toggle-icon-bar-bg;
+  border-color: @navbar-default-toggle-border-color;
+}
+
+.rui.navbar .languages .dropdown-menu {
+  margin-top: 0;
+}
+
+.rui.navbar .languages li,
+.rui.navbar .languages .menu-item {
+  .text-align(left);
+}
+
+.rui.navbar .accounts {
+  .flex(0 0 auto);
+  height: @navbar-height;
+}
+
+.rui.navbar .accounts:hover {
+  background-color: @navbar-default-toggle-icon-bar-bg;
+  border-color: @navbar-default-toggle-border-color;
+}
+
+.rui.navbar .accounts:active {
+  background-color: @navbar-default-toggle-icon-bar-bg;
+  border-color: @navbar-default-toggle-border-color;
+}
+
+.rui.navbar .accounts .dropdown-toggle {
+  .display(flex);
+  .align-items(center);
+  height: 100%;
+
+  padding: 0 @navbar-padding-vertical;
+  .padding-left(@navbar-padding-vertical);
+}
+
+.rui.navbar .accounts .dropdown {
+  height: 100%;
+}
+
+.rui.navbar .accounts .additional-link-container a {
+  color: @link-color;
+}
+
+.rui.navbar .accounts .additional-link-container a:hover {
+  color: @link-hover-color;
+  background-color: transparent;
+}
+
+.rui.navbar .accounts .dropdown .circular-icon {
+  width: 40px;
+  height: 40px;
+  margin: -15px 5px;
+  border: 2px solid rgba(129, 122, 122, 0.62);
+  border-radius: 50%;
+  // padding: 10px;
+  display: inline-block;
+}
+
+.rui.navbar .accounts .dropdown .circular-icon .avatar-initials {
+  line-height: 35px;
+}
+
+.rui.navbar .accounts .dropdown .user-accounts-dropdown {
+  padding: 10px;
+}
+
+.rui.navbar .accounts .dropdown .user-accounts-dropdown-content {
+  min-width: 220px;
+  min-height: 50px;
+  // margin-bottom: 30px;
+  color: @gray-darker;
+}
+
+.rui.navbar .accounts .dropdown ul {
+    padding: 0;
+}
+
+.rui.navbar .accounts .dropdown .user-accounts-dropdown-apps {
+  margin: 0;
+}
+
+.rui.navbar .accounts .dropdown .user-accounts-dropdown-apps i {
+  margin: 10px 10px 10px 6px;
+  width: 20px;
+  font-size: inherit;
+  text-align: center;
+ }
+
+.rui.navbar .accounts .dropdown .dropdown-apps-icon {
+  cursor: pointer;
+  white-space: nowrap;
+  display: block;
+  border-bottom: 1px solid @black10;
+}
+
+.rui.navbar .accounts .dropdown .dropdown-apps-icon:last-child {
+  border-bottom: none;
+}
+
+.rui.navbar .accounts .dropdown .dropdown-apps-icon a {
+  display: flex;
+  align-items: center;
+  color: @gray;
+  text-decoration: none;
+  padding: 5px 0;
+  min-height: 44px;
+}
+
+.rui.navbar .accounts .dropdown .dropdown-apps-icon a:hover,
+.rui.navbar .accounts .dropdown .dropdown-apps-icon a:focus {
+  color: @brand-vivid-color;
+  text-decoration: none;
+  background-color: transparent;
+}
+
+.rui.navbar .accounts .dropdown-menu {
+  border: 1px solid @dropdown-border;
+  margin-top: 0;
+  .right(0);
+  .left(auto);
+}

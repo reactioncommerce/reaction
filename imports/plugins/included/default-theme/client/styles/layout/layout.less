@@ -1,0 +1,101 @@
+
+body.admin {
+  display: flex;
+  overflow: hidden;
+  height: 100vh;
+
+  @media screen and (max-width: @screen-xs-max) {
+    flex-direction: column;
+  }
+}
+
+.page {
+  .display(flex);
+  .flex-direction(column);
+  .flex(1 1 auto);
+  height: 100vh;
+}
+
+.page #main {
+  .flex(1 1 auto);
+  height: 100%;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+
+.page.show-settings {
+  min-width: 0;
+  @media screen and (max-width: @screen-sm-max) {
+    // width: 100vw;
+  }
+}
+
+body.admin-horizontal-reverse {
+  .flex-direction(row-reverse);
+}
+
+body.admin-vertical {
+  .flex-direction(column);
+}
+
+body.admin-vertical-reverse {
+  .flex-direction(column);
+}
+
+body.admin-vertical .page {
+  height: 80vh;
+}
+
+
+
+.tools {
+
+  .flex(1 1 auto);
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  // FOR NOW
+  padding: 20px;
+
+  // position: fixed;
+  top: 0;
+  right: 0;
+  min-width: 400px;
+  max-width: 400px;
+  height: 100vh;
+  // background-color: @white;
+  z-index: 1000;
+  // box-shadow: 0 0 20px rgba(0,0,0,.2);
+}
+
+.container-fluid-sm {
+  padding: 20px;
+}
+
+.container-fluid-md {
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+.container-lg {
+  padding-top: 60px;
+  padding-bottom: 60px;
+
+  @media screen and (max-width: @screen-xs-max) {
+    width: 100%;
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+}
+
+.container-sm {
+  padding-top: 30px;
+  padding-bottom: 30px;
+
+  @media screen and (max-width: @screen-xs-max) {
+    width: 100%;
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+}

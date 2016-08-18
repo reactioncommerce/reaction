@@ -1,0 +1,124 @@
+
+.rui.card-grid {
+  .display(flex);
+  .flex-wrap(wrap);
+}
+
+.rui.card-grid > .rui.card {
+  .display(flex);
+  .flex(1 1 auto);
+  .flex-direction(column);
+  padding: 10px;
+
+  width: 25%;
+  max-width: 25%;
+  min-width: 300px;
+
+  @media screen and (max-width: @screen-lg-min) {
+    width: 33%;
+    max-width: 33%;
+  }
+
+  @media screen and (max-width: @screen-md-max) {
+    width: 33%;
+    max-width: 33%;
+    min-width: 250px;
+  }
+
+  @media screen and (max-width: @screen-sm-max) {
+    width: 33%;
+    max-width: 33%;
+    min-width: 0;
+  }
+
+  @media screen and (max-width: @screen-xs-max) {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+}
+
+.page.show-settings .rui.card-grid > .rui.card {
+  width: 33%;
+  max-width: 33%;
+
+  @media screen and (max-width: @screen-lg-min) {
+    width: 50%;
+    max-width: 50%;
+  }
+
+  @media screen and (max-width: @screen-md-max) {
+    width: 100%;
+    max-width: 100%;
+    min-width: 250px;
+  }
+
+  @media screen and (max-width: @screen-sm-max) {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  @media screen and (max-width: @screen-xs-max) {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+}
+
+.rui.card {
+  .display(flex);
+  .flex(1 1 auto);
+
+  background-color: @white;
+  border: 1px solid @border-color;
+}
+
+.rui.card.active {
+  box-shadow: 0 0 0 3px @brand-vivid-color;
+  border: 1px solid @brand-vivid-color;
+
+}
+
+.rui.card .content {
+  .flex(1 1 auto);
+  padding: 10px;
+  cursor: pointer;
+}
+
+.rui.card .content .title {
+  margin-top: 0;
+}
+
+.rui.card .controls {
+  .display(flex);
+  .flex-direction(column);
+  .flex(0 0 auto);
+  min-width: 44px;
+  width: 44px;
+  max-width: 44px;
+  border-left: 1px solid @border-color;
+}
+
+.rui.card .controls button {
+  .display(flex);
+  .flex(1 1 auto);
+  .justify-content(center);
+  .align-items(center);
+  background-color: transparent;
+
+  border: none;
+  border-bottom: 1px solid @border-color;
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:hover {
+    text-decoration: none;
+    background-color: @black05;
+  }
+
+  i {
+    font-size: 16px;
+  }
+}

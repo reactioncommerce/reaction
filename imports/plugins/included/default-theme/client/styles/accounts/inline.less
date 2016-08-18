@@ -1,0 +1,61 @@
+.accounts-inline {
+  display: flex;
+  flex-wrap: wrap;
+
+  min-width: 280px;
+  padding-top: 10px;
+  width: 100%;
+  margin-top: 0;
+  border: 0;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  .accounts-layout;
+}
+
+.accounts-layout {
+  .or { text-align: center; padding-top: 5px;}
+  .hline { text-decoration: line-through; color: @gray-lighter; }
+  .or-text { font-weight: bold; }
+  .additional-link {
+    .float(right);
+    .margin-left(15px);
+  }
+  #forgot-password-link {
+    .margin-left(0);
+    .float(left);
+  }
+}
+
+
+.checkout-guest {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  justify-content: center;
+
+  width: 50%;
+  border-right: 1px solid @border-color;
+  font-size: @font-size-base;
+  padding: 20px;
+}
+.checkout-login {
+  flex: 1 1 auto;
+  width: 50%;
+  padding: 20px;
+}
+
+.checkout-login > .loginForm {
+  padding: 0;
+}
+
+@media screen and (max-width: @screen-sm-max) {
+  .checkout-guest {
+    border-bottom: 1px solid @border-color;
+    position: initial;
+    top: initial;
+    width: initial;
+    margin-top: initial;
+    border-right: initial;
+  }
+}

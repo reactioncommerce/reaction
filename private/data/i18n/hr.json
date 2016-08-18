@@ -1,0 +1,260 @@
+[
+    {
+        "language": "Croatian",
+        "i18n": "hr",
+        "ns": "core",
+        "translation": {
+            "core": {
+                "languages": {
+                    "select": "Odaberite jezik"
+                },
+                "app": {
+                    "saveAndContinue": "Spremi i nastavi",
+                    "cancel": "Prekini",
+                    "submit": "Pohrani",
+                    "delete": "Obriši",
+                    "create": "Kreiraj",
+                    "close": "Zatvori",
+                    "settings": "Postavke",
+                    "loading": "Učitavanje",
+                    "toggle": "Prebaci"
+                },
+                "header": {
+                    "tagsAdd": "Dodaj oznaku",
+                    "search": "Pretraži proizvode..."
+                },
+                "productDetail": {
+                    "productManagement": "Upravljanje proizvodima",
+                    "whenYouAreDone": "kad je uređivanje gotovo",
+                    "tags": "Oznake",
+                    "tagsAdd": "Dodaj oznaku",
+                    "details": "Detalji",
+                    "detailsName": "Naziv detalja",
+                    "detailsInfo": "Informacije o detalju",
+                    "options": "Opcije",
+                    "addToCart": "Dodaj u košaricu",
+                    "chooseOptions": "Odaberite opcije prije dodavanja u košaricu ",
+                    "outOfStock": "Nažalost, ovaj artikl nije raspoloživ!",
+                    "productDeleteError": "Došlo je do pogreške prilikom brisanja ",
+                    "publishFirst": "Objavi proizvod prije dodavanja u košaricu.",
+                    "selectOption": "Odaberi opciju prije dodavanja u košaricu",
+                    "addedToCart": "dodano"
+                },
+                "productDetailEdit": {
+                    "title": "Naslov proizvoda",
+                    "pageTitle": "Naslov stranice proizvoda",
+                    "vendor": "Naziv prodavača",
+                    "description": "Dodaj opis proizvoda"
+                },
+                "variantList": {
+                    "moreOptions": "Postoji još opcija za ovaj odabir.",
+                    "createVariant": "Kreiraj Varijantu"
+                },
+                "gridPackage": {
+                    "pkgEnabled": " je sada dostupan.",
+                    "pkgDisabled": " je sada onemogućen."
+                },
+                "cartDrawer": {
+                    "empty": "Nažalost, vaša košarica je prazna.",
+                    "keepShopping": "Nastavi s kupovinom",
+                    "checkout": "Završi"
+                },
+                "cartSubTotals": {
+                    "head": "Vaša košarica",
+                    "items": "Artikli u košarici",
+                    "subtotal": "Suma",
+                    "shipping": "Dostava",
+                    "tax": "Porez",
+                    "total": "Ukupno"
+                },
+                "cartDrawerItems": {
+                    "left": "lijevo"
+                },
+                "cartCompleted": {
+                    "thankYou": "Hvala Vam.",
+                    "yourOrderHasBeen": "Vaša naradžba je",
+                    "summaryMessage": "Hvala Vam za narudžbu."
+                },
+                "checkoutLogin": {
+                    "loginCompleted": "Prijava završena",
+                    "createOrLogin": "Kreiraj račun ili se prijavi za nastavak"
+                },
+                "addressBookGrid": {
+                    "chooseAddress": "Odaberi adrese za dostavu i naplatu",
+                    "createDefault": "Odaberi zadanu adresu",
+                    "selectShippingAddress": "Odaberi adresu dostave",
+                    "selectBillingAddress": "Odaberi adresu naplate"
+                },
+                "addressBookAdd": {
+                    "addAddress": "Dodaj novu adresu",
+                    "createAddress": "Odaberi zadanu adresu"
+                },
+                "addressBookEdit": {
+                    "editAddress": "Uređivanje adrese"
+                },
+                "shop": {
+                    "addressBook": {
+                        "country": "Država",
+                        "fullName": "Puno ime",
+                        "address1": "Adresa 1",
+                        "address2": "Adresa 2",
+                        "postal": "Poštanski broj",
+                        "city": "Grad",
+                        "region": "Regija",
+                        "phone": "Telefon",
+                        "isShippingDefault": "Postavi kao zadanu adresu dostave?",
+                        "isBillingDefault": "Postavi kao zadanu adresu naplate?",
+                        "isCommercial": "Ovo je adresa tvrtke."
+                    }
+                },
+                "address": {
+                    "country": "Država",
+                    "fullName": "Puno ime",
+                    "address1": "Adresa",
+                    "address2": "Adresa",
+                    "postal": "Poštanski broj",
+                    "city": "Grad",
+                    "region": "Regija",
+                    "phone": "Telefon",
+                    "isShippingDefault": "Postavi kao zadanu adresu dostave?",
+                    "isBillingDefault": "Postavi kao zadanu adresu naplate?",
+                    "isCommercial": "Ovo je adresa tvrtke."
+                },
+                "checkoutProgressBar": {
+                    "login": "Prijava",
+                    "shippingBilling": "Podaci o adresi",
+                    "shippingOptions": "Opcije za dostavu",
+                    "reviewPayment": "Pregled",
+                    "complete": "Završi"
+                },
+                "checkoutPayment": {
+                    "addPaymentToCompleteOrder": "Dodaj način naplate za završetak narudžbe"
+                },
+                "checkoutReview": {
+                    "review": "Pregled"
+                },
+                "checkoutShipping": {
+                    "selectShippingOption": "Odaberi opcije dostave",
+                    "noShippingMethods": "Opcija dostave nije postavljena",
+                    "configureNow": "Postavi sad.",
+                    "shipping": "Dostava"
+                },
+                "shopEditForm": {
+                    "name": "Ime",
+                    "email": "Email"
+                },
+                "shopEditAdressForm": {
+                    "company": "Tvrtka",
+                    "fullname": "Puno ime",
+                    "address1": "Adresa 1"
+                },
+                "consoleIcon": {
+                    "iconTitle": "Pogledaj konzolu",
+                    "text": "Konzola"
+                },
+                "createProductIcon": {
+                    "iconTitle": "Kreiraj proizvod",
+                    "text": "Kreiraj"
+                },
+                "social": {
+                    "facebook": "Facebook",
+                    "google": "Google",
+                    "github": "GitHub",
+                    "meetup": "Meetup",
+                    "twitter": "Twitter",
+                    "weibo": "Weibo"
+                },
+                "accountsUI": {
+                    "add": "dodaj",
+                    "and": "i",
+                    "back": "natrag",
+                    "changePassword": "Promijeni lozinku",
+                    "choosePassword": "odaberi lozinku",
+                    "clickAgree": "Klikom na Registriraj prihvaćaš",
+                    "configure": "Postavi",
+                    "createAccount": "Kreiraj račun",
+                    "currentPassword": "Trenutna lozinka",
+                    "dontHaveAnAccount": "Nisi registriran(a)?",
+                    "email": "Email",
+                    "emailAddress": "Email Adresa",
+                    "emailResetLink": "Link za resetiranje lozinke",
+                    "forgotPassword": "Resetiraj lozinku",
+                    "ifYouAlreadyHaveAnAccount": "Ukoliko već imaš račun",
+                    "newPassword": "Nova lozinka",
+                    "newPasswordAgain": "Nova lozinka (ponovo)",
+                    "optional": "Opcionalno",
+                    "or": "ili",
+                    "password": "Lozinka",
+                    "passwordAgain": "Lozinka (ponovo)",
+                    "privacyPolicy": "Politika privatnosti",
+                    "remove": "ukloni",
+                    "resetYourPassword": "Resetiraj lozinku",
+                    "setPassword": "Postavi lozinku",
+                    "sign": "Prijavi",
+                    "signIn": "Prijavi se",
+                    "signin": "prijavi se",
+                    "signInWith": "Prijavi se s",
+                    "signedIn": "Prijavljen(a) si",
+                    "signOut": "Odjavi se",
+                    "signUp": "Registriraj se",
+                    "signupCode": "Kod za registraciju",
+                    "signedIn": "Prijavljen(a) si.",
+                    "signUpWithYourEmailAddress": "Registriraj se s Email adresom",
+                    "terms": "Uvjeti korištenja",
+                    "updateYourPassword": "Ažuriraj lozinku",
+                    "username": "Korisničko ime",
+                    "usernameOrEmail": "Korisničko ime ili Email",
+                    "with": "s",
+                    "checkoutAsGuest": "Završi narudžbu s korisničkim računom",
+                    "info": {
+                        "emailSent": "Poruka poslana",
+                        "emailVerified": "Email potvrđen",
+                        "passwordChanged": "Lozinka promijenjena",
+                        "passwordReset": "Lozinka resetirana"
+                    },
+                    "error": {
+                        "emailRequired": "Email adresa je obavezna.",
+                        "passwordMustBeAtLeast6CharactersLong": "Lozinka mora imati minimalno 6 znakova.",
+                        "minChar": "7 znakova minimalno.",
+                        "pwdsDontMatch": "Lozinke nisu jednake",
+                        "pwOneDigit": "Lozinka mora imati najmanje jedan broj.",
+                        "pwOneLetter": "Lozinka mora imati najmanje jedno slovo.",
+                        "signInRequired": "Morate biti prijavljeni.",
+                        "signupCodeIncorrect": "Registracijski kod nije valjan.",
+                        "signupCodeRequired": "registracijski kod je obavezan.",
+                        "usernameIsEmail": "Korisničko ime ne može biti Email adresa.",
+                        "usernameRequired": "Korisničko ime je obavezno.",
+                        "emailAlreadyExists": "Email već postoji",
+                        "emailDoesntMatchTheCriteria": "Netočna Email adresa.",
+                        "invalidLoginToken": "Nevaljan token za prijavu",
+                        "loginForbidden": "Prijava zabranjena",
+                        "serviceUnknown": "Nepoznati servis",
+                        "unrecognizedOptionsForLoginRequest": "Zahtjev za prijavu nije prepoznat",
+                        "userValidationFailed": "Neuspješna potvrda korisnika",
+                        "usernameAlreadyExists": "Korisničko ime već postoji.",
+                        "youAreNotLoggedIn": "Nisi prijavljen.",
+                        "youveBeenLoggedOutByTheServer": "Server vas je odjavio. Prijavite se ponovo.",
+                        "yourSessionHasExpired": "Vaša sesija je istekla. Prijavite se ponovo.",
+                        "noMatchingLoginAttemptFound": "Odgovarajući pokušaj prijave nije pronađen",
+                        "passwordIsOld": "Lozinka je stara. Molim promijenite svoju lozinku.",
+                        "incorrectPassword": "Netočna lozinka.",
+                        "invalidEmail": "Nevaljan Email",
+                        "mustBeLoggedIn": "Morate biti prijavljeni",
+                        "needToSetUsernameOrEmail": "Morate postaviti korisničko ime ili Email",
+                        "oldPasswordFormat": "stara lozinka",
+                        "Password may not be empty": "Lozinka ne smije biti prazna",
+                        "signupsForbidden": "Prijave zabranjene",
+                        "tokenExpired": "Token je istekao",
+                        "tokenHasInvalidEmailAddress": "Token ima nevaljanu email adresu",
+                        "userHasNoPasswordSet": "Korisnik nije postavio lozinku",
+                        "userNotFound": "Korisnik nije pronađen",
+                        "verifyEmailLinkExpired": "Link za provjeru Emaila je istekao",
+                        "verifyEmailLinkIsForUnknownAddress": "Nepoznata adresa linka za provjeru",
+                        "matchFailed": "Neuspjela provjera",
+                        "unknownError": "Nepoznata greška"
+                    }
+                }
+            }
+        }
+    }
+]

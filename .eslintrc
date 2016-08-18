@@ -1,13 +1,15 @@
 {
-  "parser": "babel-eslint",
+  "parser": "babel-eslint", // for support of spread operator
   "env": {
     "browser": true,
     "node": true,
-    "meteor": true
+    "es6": true
   },
-  "plugins": [
-    "react"
-  ],
+  "parserOptions": {
+     "ecmaVersion": 6,
+     "sourceType": "module"
+  },
+  "plugins": ["react"],
   "ecmaFeatures": {
     "arrowFunctions": true,
     "blockBindings": true,
@@ -16,7 +18,7 @@
     "destructuring": true,
     "forOf": true,
     "generators": false,
-    "modules": false,
+    "modules": true,
     "objectLiteralComputedProperties": true,
     "objectLiteralDuplicateProperties": false,
     "objectLiteralShorthandMethods": true,
@@ -26,12 +28,13 @@
     "templateStrings": true,
     "jsx": true
   },
+  // NOTE: This is ESLINT v1 syntax because Code Climate v2 seg faults.
   "rules": {
     /**
      * Strict mode
+     * babel inserts "use strict"; for us
+     * http://eslint.org/docs/rules/strict
      */
-    // babel inserts "use strict"; for us
-    // http://eslint.org/docs/rules/strict
     "strict": [2, "never"],
 
     /**
@@ -56,7 +59,7 @@
      */
     "comma-dangle": [2, "never"], // http://eslint.org/docs/rules/comma-dangle
     "no-cond-assign": [2, "always"], // http://eslint.org/docs/rules/no-cond-assign
-    "no-console": 1, // http://eslint.org/docs/rules/no-console
+    "no-console": 2, // http://eslint.org/docs/rules/no-console
     "no-debugger": 1, // http://eslint.org/docs/rules/no-debugger
     "no-alert": 1, // http://eslint.org/docs/rules/no-alert
     "no-constant-condition": 1, // http://eslint.org/docs/rules/no-constant-condition
@@ -164,7 +167,7 @@
     /**
      * Style
      */
-    "indent": [2, 2], // http://eslint.org/docs/rules/indent
+    "indent": [2, 2, {"SwitchCase": 1}], // http://eslint.org/docs/rules/indent
     "brace-style": [2, // http://eslint.org/docs/rules/brace-style
       "1tbs", {
         "allowSingleLine": true
@@ -190,7 +193,7 @@
     }],
     "new-cap": [0, { // http://eslint.org/docs/rules/new-cap  (turned off for now, as it complains on all Match)
       "newIsCap": true,
-      "capIsNewExceptions": ["Match", "OneOf", "Optional"],
+      "capIsNewExceptions": ["Match", "OneOf", "Optional"]
     }],
     "no-multiple-empty-lines": [2, { // http://eslint.org/docs/rules/no-multiple-empty-lines
       "max": 2
@@ -209,15 +212,14 @@
       "before": false,
       "after": true
     }],
-    "space-after-keywords": 2, // http://eslint.org/docs/rules/space-after-keywords
+    "keyword-spacing": 2, // http://eslint.org/docs/rules/keyword-spacing
     "space-before-blocks": 2, // http://eslint.org/docs/rules/space-before-blocks
     "space-before-function-paren": [2, {
       "anonymous": "always",
       "named": "never"
     }], // http://eslint.org/docs/rules/space-before-function-paren
-    "space-return-throw-case": 2, // http://eslint.org/docs/rules/space-return-throw-case
     "space-infix-ops": 2, // http://eslint.org/docs/rules/space-infix-ops
     "space-in-parens": [2, "never"], // http://eslint.org/docs/rules/space-in-parens
-    "spaced-comment": [2, "always"], // http://eslint.org/docs/rules/spaced-comment
+    "spaced-comment": [2, "always"] // http://eslint.org/docs/rules/spaced-comment
   }
 }

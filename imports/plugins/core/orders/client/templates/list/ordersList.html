@@ -1,0 +1,109 @@
+<template name="dashboardOrdersList">
+
+{{#each orders data=data}}
+  <div class="panel panel-default order-list-detail">
+    <div class="panel-heading">
+      <h3 class="panel-title">
+        <span data-i18n="order.placed">Placed</span>
+        <span>{{orderAge}}</span>
+        <span data-i18n="order.on">on</span>
+        <span>{{dateFormat createdAt format="MMM D h:mm"}}</span>
+      </h3>
+    </div>
+    <div class="panel-body">
+
+      <div class="row">
+        <div class="col-xs-6 col-sm-2">
+          <strong>
+            <span data-i18n="order.status">Status</span>
+          </strong>
+        </div>
+        <div class="col-xs-6 col-sm-10">
+          {{#if orderStatus}}
+              <span data-i18n="order.completed">Completed</span>
+          {{else}}
+              <span data-i18n="order.processing">Processing</span>
+          {{/if}}
+        </div>
+      </div>
+
+      <div class="row order-address-info">
+        <div class="col-xs-6 col-sm-2">
+          <strong>
+            <span data-i18n="order.destination">Destination</span>
+          </strong>
+        </div>
+        <div class="col-xs-10">
+          {{#each shipping}}
+            {{#with address}}
+              <span>
+                <address>
+                  {{address1}}
+                  {{address2}}
+                  {{city}}, {{region}} {{postal}} {{country}}
+                  {{phone}}
+                </address>
+              </span>
+            {{/with}}
+          {{/each}}
+        </div>
+      </div>
+
+      <div class="row order-shipment-info">
+        <div class="col-xs-6 col-sm-2">
+          <strong>
+            <span data-i18n="order.shipment">Shipment</span>
+          </strong>
+        </div>
+        {{#each shipping}}
+        <div class="col-xs-10">
+          {{shipmentMethod.label}}
+        </div>
+        {{/each}}
+      </div>
+
+      <div class="row order-payment-info">
+        <div class="col-xs-6 col-sm-2">
+          <strong>
+            <span data-i18n="order.payment">Payment</span>
+          </strong>
+        </div>
+        <div class="col-xs-10">
+          {{#each billing}}
+          <span id="order-payment-method">{{paymentMethod.storedCard}}</span>
+          <span data-id="order.reference">Ref:</span>
+          <span id="order-payment-transaction">{{paymentMethod.transactionId}}</span>
+          &nbsp;
+          {{/each}}
+        </div>
+      </div>
+
+      <div class="row order-group-title">
+        <div class="col-xs-12">
+          <strong>
+            <span id="order-item-count">{{itemCount}}</span>
+            <span data-i18n="order.itemsFrom">item(s) from</span>
+            <span id="order-group-name">{{shopName}}</span>
+          </strong>
+        </div>
+      </div>
+
+      <div class="row order-list-items">
+        <div class="col-xs-12">
+          {{> ordersListItems order=.}}
+        </div>
+      </div>
+
+    </div>
+
+    <div class="panel-footer">
+      {{> ordersListSummary}}
+    </div>
+  </div>
+
+{{else}}
+  <div class="alert alert-info">
+    <span data-i18n="cartCompleted.noOrdersFound">No orders found.</span>
+  </div>
+{{/each}}
+</template>

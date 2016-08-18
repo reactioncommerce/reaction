@@ -1,0 +1,53 @@
+<template name="connectDashboard">
+  {{> Template.dynamic template="dashboardHeader"}}
+  {{#if Template.subscriptionsReady}}
+    {{#if ldConnection}}
+      {{> launchdockDashboard}}
+    {{else}}
+      {{> reactionConnectDashboard}}
+    {{/if}}
+  {{/if}}
+</template>
+
+<template name="connectSettings">
+  {{#if Template.subscriptionsReady}}
+    {{#if ldConnection}}
+      {{> launchdockSettings}}
+    {{else}}
+      {{> reactionConnectSettings}}
+    {{/if}}
+  {{/if}}
+</template>
+
+
+<template name="reactionConnectDashboard">
+  <div class="container-fluid-sm">
+    <div class="row">
+
+      <div class="col-md-12">
+        <p>Reaction, Meteor, and MongoDB bundled for production and deployed as a stack of Docker containers in a scalable private cluster!</p>
+        <p><a href="https://github.com/reactioncommerce/launchdock" target="_blank">Launchdock</a> is a utility from the Reaction Core team, that manages this deployment.</p>
+        <ul class="reaction-connect-preview">
+          <li>Support for your custom SSL certificates</li>
+          <li>Support for your custom domains</li>
+          <li>Private scaling Application and DB cluster</li>
+        </ul>
+        <p><a href="https://reactioncommerce.com/" target="_blank">Go ahead, get connected with Reaction</a></p>
+      </div>
+
+    </div>
+  </div>
+
+</template>
+
+
+<template name="reactionConnectSettings">
+  <div class="container-fluid-sm">
+    <div class="row">
+      <div class="col-md-12">
+        <p>Looks like you are not connected yet.</p>
+        <p><a href="https://reactioncommerce.com/" target="_blank">Get a free trial of Reaction deployed as a service.</a></p>
+      </div>
+    </div>
+  </div>
+</template>

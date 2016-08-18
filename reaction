@@ -1,25 +1,12 @@
 #!/bin/bash
-#
-# Reaction Commerce CLI helpers
-#
-set -u
-set -e
-# by default runs settings/dev.settings.json
-# customize by creating settings/settings.json
-if [[ "$@" == "reset" ]]; then
-  bin/reset
-elif [[ "$@" == "pull" ]]; then
-  git pull && meteor npm install && bin/clone-packages.sh 
-elif [[ "$@" == "install" ]]; then
-  # copy clone-packages.sh so that any directory
-  # can be specified for use in PACKAGE_DIRS config.
-  cp bin/clone-packages.sh /usr/local/bin/
-  # copy reaction so that you don't need ./
-  cp reaction /usr/local/bin/reaction && chmod + /usr/local/bin/reaction
-  bin/install
-elif [[ "$@" == "test" ]]; then
-  VELOCITY_TEST_PACKAGES=1 meteor test-packages --port 3006 --driver-package velocity:html-reporter --velocity
-else
-  bin/run "$@"
-fi
-exit
+
+echo ""
+echo "This CLI tool has been deprecated in favor of the reaction-cli Node module."
+echo "More info at https://www.npmjs.com/package/reaction-cli"
+echo ""
+echo "You can install it by running:"
+echo ""
+echo "  npm install -g reaction-cli"
+echo ""
+echo "Then you can see the usage info by running 'reaction --help'"
+echo ""

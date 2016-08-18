@@ -1,0 +1,218 @@
+.dashboard-state-active {
+  color: @brand-success;
+}
+
+.admin-controls {
+  .display(flex);
+  .flex(0 0 auto);
+  height: 100%;
+  background-color: @white;
+  border-left: 1px solid @black10;
+  width: 0;
+  overflow: hidden;
+  .transition(width 300ms cubic-bezier(0.455, 0.03, 0.515, 0.955));
+  box-shadow: 0 0 40px rgba(0,0,0,.1);
+  z-index: 1;
+
+  @media screen and (max-width: @screen-xs-max) {
+    transition: top 400ms cubic-bezier(0.645, 0.045, 0.355, 1);
+
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    top: 100vh;
+    left: 0;
+    z-index: @zindex-modal;
+    box-shadow: none;
+  }
+}
+
+.admin-controls .nav-dashboard {
+  .padding-left(0);
+  .padding-right(0);
+}
+
+.admin-controls.show-settings {
+  border-right: 1px solid @border-color;
+  width: 400px;
+
+  @media screen and (max-width: @screen-lg-min) {}
+
+  @media screen and (max-width: @screen-sm-max) {
+    box-shadow: 0 0 40px rgba(0,0,0,.1);
+    border: none;
+  }
+
+  @media screen and (max-width: @screen-xs-max) {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+  }
+}
+
+.admin-controls-menu {
+  .display(flex);
+  .flex-direction(column);
+  .flex(0 0 auto);
+  .justify-content(space-between);
+
+  min-width: @admin-controls-menu-width;
+  width: @admin-controls-menu-width;
+
+  background-color: @white;
+  position: relative;
+  z-index: @zindex-navbar-fixed;
+
+  @media screen and (max-width: @screen-xs-max) {
+    order: 2;
+    min-width: 100%;
+    border-top: 1px solid @border-color;
+  }
+}
+
+.admin-controls-menu nav {
+  display: flex;
+  flex-direction: column;
+
+  @media screen and (max-width: @screen-xs-max) {
+    flex-direction: row;
+    flex: 1 1 auto;
+  }
+}
+
+.admin-controls-menu nav .icon-reaction-logo {
+    font-size: 4rem;
+}
+
+.admin-controls-menu nav a,
+.admin-controls-menu nav button {
+  .display(flex);
+  .flex-direction(column);
+  .align-items(center);
+  .justify-content(center);
+  .flex(0 0 auto);
+  min-height: @admin-controls-menu-button-height;
+  height: @admin-controls-menu-button-height;
+
+  border: none;
+  border-color: @black10;
+  border-radius: 0;
+  font-size: 1rem;
+  background-color: transparent;
+  .contents {
+    .display(flex);
+    .flex-direction(column);
+    .justify-content(center);
+    .align-items(center);
+    .flex(1 1 auto);
+    height: 100%;
+  }
+
+  .icon {
+    .flex(0 0 auto);
+  }
+  .icon-text {
+    .flex(0 0 auto);
+  }
+
+  &:last-child {
+    border: none;
+  }
+
+  &:hover {
+    background-color: @black10;
+    text-decoration: none;
+  }
+
+  i {
+    font-size: 2rem;
+  }
+
+  @media screen and (max-width: @screen-xs-max) {
+    min-width: @admin-controls-menu-button-height;
+    width: @admin-controls-menu-button-height;
+  }
+}
+
+@media screen and (max-width: @screen-xs-max) {
+
+  .admin-controls-quicklinks {
+    order: 2;
+  }
+
+  .admin-controls-actions {
+    justify-content: center;
+    order: 1;
+    border-bottom: 1px solid @border-color;
+  }
+
+  .admin-controls-menu .admin-controls-actions a,
+  .admin-controls-menu .admin-controls-actions button {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
+  }
+}
+
+.admin-controls-menu hr {
+  width: 100%;
+  border-top: 1px solid @border-color;
+}
+
+.admin-controls-detail {
+  .display(flex);
+  .flex-direction(column);
+  .flex(1 1 auto);
+  min-width: 400px;
+  width: 400px;
+  max-width: 100vw;
+  border-right: 1px solid @black10;
+}
+
+.admin-controls.show-settings .admin-controls-detail {
+  border-right: 1px solid @black10;
+}
+
+.admin-controls-heading {
+  .flex(0 0 auto);
+  border-bottom: @border-thin;
+}
+
+.admin-controls-content {
+  .flex(1 1 auto);
+  min-width: 400px;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.admin-controls-content .panel-default > .panel-heading {
+  background-color: darken(@white, 2%);
+}
+
+.admin-controls-content .admin-controls-container {
+  padding: 20px;
+}
+
+body.admin-vertical .admin-controls {
+  height: 20vh;
+  min-width: 100%;
+  max-width: 100%;
+}
+
+.admin-control-open {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border: none;
+  background-color: rgb(239, 102, 198);
+  color: white;
+  padding: 10px 15px;
+}
+
+.admin-controls-toolbar {
+  padding-left: 20px;
+}

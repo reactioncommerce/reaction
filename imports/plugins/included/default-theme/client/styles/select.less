@@ -1,0 +1,27 @@
+
+.rui.select {
+  border: 1px solid @border-color;
+  position: relative;
+}
+
+.rui.select > select {
+  border: none;
+  padding: 7px 10px;
+  width: 100%;
+  background-color: @white;
+  .lh-appearance(none);
+}
+
+.rui.select:after {
+  content: "\f078";
+  font-family: "FontAwesome", "FontAwesomeFallback";
+  position: absolute;
+  right: 0;
+  top: 0;
+  .display(flex);
+  .align-items(center);
+  .justify-content(center);
+  height: 100%;
+  width: 44px;
+  pointer-events: none;
+}

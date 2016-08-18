@@ -1,0 +1,31 @@
+<template name="ordersListItems">
+{{#each items}}
+  <div class="order-items">
+      <div class="order-item">
+        <div class="order-item-media">
+          {{#with media}}
+            <img src="{{url store='thumbnail'}}">
+          {{else}}
+            <img src= "/resources/placeholder.gif">
+          {{/with}}
+        </div>
+
+      <div class="order-item-details">
+
+        <div class="order-detail-title">
+          {{title}} <small>{{variants.title}}</small>
+        </div>
+
+        <div class="order-detail-quantity">
+        </div>
+
+        <span class="order-detail-price">
+          <span class="badge badge-info">{{quantity}}</span>
+          -
+          <span>{{> React (numericInputProps variants.price)}}</span>
+        </span>
+      </div>
+    </div>
+  </div>
+{{/each}}
+</template>

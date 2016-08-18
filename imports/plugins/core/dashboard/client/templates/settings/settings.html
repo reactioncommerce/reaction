@@ -1,0 +1,59 @@
+
+<template name="settingsButton">
+  <button class="btn btn-default" data-event-action="showPackageSettings">
+    <i class="fa fa-gear"></i>
+    <span>Settings</span>
+  </button>
+</template>
+
+
+<template name="settingsHeader">
+  <div class="nav nav-settings">
+    <div class="nav-settings-heading">
+      <h3 class="nav-settings-title">
+        {{#with registry}}
+         <span data-i18n="{{i18nKeyLabel}}">
+           <span>{{label}}</span>
+         </span>
+        {{/with}}
+        {{> Template.dynamic template=settingsHeaderControls}}
+      </h3>
+    </div>
+
+    <div class="nav-settings-controls">
+      <button class="btn btn-default" data-event-action="closeSettings">
+        <i class="fa fa-times"></i>
+      </button>
+    </div>
+
+  </div>
+</template>
+
+
+<template name="settingsSidebar">
+  <div class="dashboard-nav">
+    <ul class="nav nav-pills nav-stacked nav-default">
+    {{#each reactionApps provides='dashboard'}}
+      {{#if pkgPermissions}}
+          {{> settingsSidebarItem}}
+      {{/if}}
+    {{/each}}
+    </ul>
+  </div>
+</template>
+
+
+<template name="settingsSidebarItem">
+
+  {{#if enabled}}
+  {{packageName}}
+    {{#each reactionApps provides="settings" name=packageName container=container}}
+      <li class="{{active name}}">
+        <a class="pkg-settings" title="{{i18n 'app.settings' 'Settings'}}" href="{{name}}">
+          <i class="{{../icon}}"></i> {{label}}
+        </a>
+      </li>
+    {{/each}}
+  {{/if}}
+
+</template>

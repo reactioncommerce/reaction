@@ -1,0 +1,57 @@
+<template name="braintreeSettings">
+  <div class="panel panel-default">
+    <div class="panel-body">
+      {{#autoForm
+        collection=Collections.Packages
+        schema=BraintreePackageConfig
+        doc=packageData
+        type="update"
+        id="braintree-update-form"
+      }}
+        {{>afQuickField name='settings.merchant_id'}}
+        {{>afQuickField name='settings.public_key'}}
+        {{>afQuickField name='settings.private_key'}}
+        {{>afQuickField name='settings.mode' type="boolean-select" trueLabel="Live - Production Mode" falseLabel="Testing - Sandbox Mode" style="width: auto"}}
+        <button type="submit" class="btn btn-primary pull-right">Update</button>
+      {{/autoForm}}
+    </div>
+  </div>
+</template>
+
+
+<template name="braintree">
+  <div class="container-fluid-sm flex">
+    <div class="flex-item">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <div class="panel-title">BrainTree Checkout</div>
+        </div>
+        <div class="list-group">
+          <div class="list-group-item">
+              <span>API Client ID: <button type="button" class="btn btn-link" data-event-action="showBraintreeSettings">**********</button></span>
+          </div>
+        </div>
+        <div class="panel-footer">
+          <div class="left"></div>
+          <div class="right">
+
+            <div class="panel-footer-item">
+              {{#if packageData.settings.merchant_id}}
+                <i class="fa fa-check-circle fa-2x text-success"></i>
+              {{else}}
+                <i class="fa fa-minus-circle fa-2x text-muted"></i>
+              {{/if}}
+            </div>
+
+            <div class="panel-footer-item">
+              <button class="btn btn-default" data-event-action="showBraintreeSettings">
+                <i class="fa fa-gear"></i>
+              </button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>

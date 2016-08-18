@@ -1,0 +1,57 @@
+<template name="stripeSettings">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <div class="panel-title"></div>
+      Don't have a Stripe API key? <a href="https://dashboard.stripe.com/account/apikeys" target="_blank">Get it here.</a> (Need to sign in)
+    </div>
+    <div class="panel-body">
+      {{#autoForm collection=Collections.Packages schema=StripePackageConfig doc=packageData type="update" id="stripe-update-form"}}
+        {{>afQuickField name='settings.api_key'}}
+        <button type="submit" class="btn btn-primary pull-right">Update</button>
+      {{/autoForm}}
+    </div>
+  </div>
+
+</template>
+
+
+<template name="stripe">
+  <div class="container-fluid-sm flex">
+    <div class="flex-item">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <div class="panel-title">Stripe Checkout</div>
+        </div>
+        <div class="list-group">
+          <div class="list-group-item">
+            {{#if packageData.settings.api_key}}
+              <span>API Client ID: <button type="button" class="btn btn-link" data-event-action="showStripeSettings">**********</button></span>
+            {{else}}
+              <span>API Client ID: <button type="button" class="btn btn-link" data-event-action="showStripeSettings">Configure Now</button></span>
+            {{/if}}
+          </div>
+        </div>
+        <div class="panel-footer">
+          <div class="left"></div>
+          <div class="right">
+
+            <div class="panel-footer-item">
+              {{#if packageData.settings.api_key}}
+                <i class="fa fa-check-circle fa-2x text-success"></i>
+              {{else}}
+                <i class="fa fa-minus-circle fa-2x text-muted"></i>
+              {{/if}}
+            </div>
+
+            <div class="panel-footer-item">
+              <button class="btn btn-default" data-event-action="showStripeSettings">
+                <i class="fa fa-gear"></i>
+              </button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>

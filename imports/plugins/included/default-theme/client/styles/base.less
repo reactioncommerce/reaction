@@ -1,0 +1,110 @@
+/* GLOBAL STYLES
+-------------------------------------------------- */
+html, body {
+  letter-spacing: @letter-spacing;
+}
+
+main {
+  min-height: 80vh;
+  // padding: 20px 60px 135px 60px;
+  // padding: 20px 0 135px
+  background-color: @body-bg;
+}
+
+.container-main {
+  padding: 20px 60px 20px 60px;
+
+  @media only screen and (max-width: @screen-sm-max) {
+    padding: 20px;
+  }
+}
+
+/* Fix for hidden modals */
+.modal-dialog {
+  z-index: 9999;
+}
+
+/* RESPONSIVE CSS
+-------------------------------------------------- */
+@media only screen and (max-width: @screen-sm-max) {
+  body {
+    font-size: @font-size-small;
+  }
+  h1 {
+    font-size: floor((@font-size-base * 2.15));
+  }
+  h2 {
+    font-size: floor((@font-size-base * 1.7));
+  }
+}
+
+
+/* Special fix for bootstrap modal see: https://github.com/twbs/bootstrap/issues/9855 */
+body.modal-open {
+  margin-right: 0px !important;
+}
+
+.editable-error-block {
+    max-width: 100% !important;
+    font-size: @font-size-base;
+    float: left;
+
+}
+/* Inline error block */
+.error-block {
+  margin: 5px 0;
+  padding-left: 30px;
+  color: #b94a48;
+}
+
+h1 {
+  font-family : @headings-font-family-h1;
+  color: @headings-color-h1;
+  font-weight: @headings-font-weight-h1;
+}
+
+h2 {
+  font-family : @headings-font-family-h2;
+  color: @headings-color-h2;
+  font-weight: @headings-font-weight-h2;
+}
+
+h3 {
+  font-family : @headings-font-family-h3;
+  color: @headings-color-h3;
+  font-weight: @headings-font-weight-h3;
+}
+
+
+
+/* Badge Colors
+// Contextual variations of badges
+// Bootstrap 3.0 removed contexts for badges, we re-introduce them, based on what is done for labels
+*/
+.badge-default {
+  .label-variant(@label-default-bg);
+}
+
+.badge-primary {
+  .label-variant(@label-primary-bg);
+}
+
+.badge-success {
+  .label-variant(@label-success-bg);
+}
+
+.badge-info {
+  .label-variant(@label-info-bg);
+}
+
+.badge-warning {
+  .label-variant(@label-warning-bg);
+}
+
+.badge-danger {
+  .label-variant(@label-danger-bg);
+}
+
+.badge-low-inv-warning {
+  .label-variant(@label-warning-bg);
+}

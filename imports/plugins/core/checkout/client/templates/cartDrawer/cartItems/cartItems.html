@@ -1,0 +1,26 @@
+<template name="cartDrawerItems">
+<div class="cart-items" id="{{productId}}{{variants._id}}">
+<div class="remove-cart-item fa fa-times fa-lg" data-target="{{productId}}{{variants._id}}"></div>
+
+  <a href="{{pathFor 'product' handle=product.handle variantId=variants._id}}" data-event-category="cart" data-event-action="product-click" data-event-label="Cart product click" data-event-value="{{productId}}">
+
+      {{#with media}}
+      <div class="center-cropped" style="background-image: url('{{url store='small'}}');">
+        <img src="{{url store='small'}}" class="product-grid-item-images img-responsive">
+      </div>
+      {{else}}
+      <div class="center-cropped" style="background-image: url('/resources/placeholder.gif');">
+        <img src= "/resources/placeholder.gif" class="product-grid-item-images img-responsive">
+      </div>
+      {{/with}}
+
+  </a>
+  <div class="cart-labels">
+    {{#if cart.showItemLowInventoryWarning variants}}
+    <div class="badge badge-low-inv-warning" title="{{variants.inventoryQuantity}}" data-i18n="cartDrawerItems.left">!</div>
+    {{/if}}
+    <span class="badge">{{quantity}}</span>
+    <span class="cart-item-title">{{title}} <small>{{variants.title}}</small></span>
+  </div>
+</div>
+</template>

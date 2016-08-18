@@ -1,0 +1,48 @@
+<template name="cartCompleted">
+{{#if orderCompleted}}
+  {{#with order}}
+    <div class="container">
+      <div class="cart-completed-orders">
+        <div class="row">
+          <div class="completed-order-confirmation">
+            <h3><span data-i18n="cartCompleted.thankYou">Thank you!</span></h3>
+            <div id="order-status">
+              <p><span data-i18n="cartCompleted.yourOrderIsNow">Your order is now</span> {{orderStatus}}.</p>
+            </div>
+            <div>
+              {{#unless email}}
+              <p>
+                <div class="alert alert-success">
+                  <span data-i18n="cartCompleted.registerGuest">Hello! Add an email and receive order updates.</span>
+                  <div class="input-group col-sm-4">
+                    <input type="email" name="email" class="form-control" placeholder="email" id="update-order-email" aria-describedby="update-order-email">
+                    <span class="input-group-addon" id="update-order" data-i18n="app.submit">Submit</span>
+                  </div>
+                </div>
+              </p>
+              {{else}}
+                <span data-i18n="cartCompleted.trackYourDelivery">Order updates will be sent to</span>
+                <span>{{email}}</span>
+              {{/unless}}
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          {{> dashboardOrdersList}}
+        </div>
+      </div>
+    </div>
+  {{else}}
+    <div class="container">
+      <div class="row text-center">
+        <h1>Order Processing</h1>
+        <p>Please do not click back button.</p>
+        <br />
+        <br />
+        <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+      </div>
+    </div>
+  {{/with}}
+{{/if}}
+</template>

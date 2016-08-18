@@ -1,0 +1,61 @@
+
+.loginForm-title {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+
+// ----------------------------------------------------------------------------
+// Login Dropdown
+//
+.accounts-dropdown {
+  height: 100%;
+}
+
+.accounts-dialog {
+
+  width: @accounts-dialog-width;
+
+
+  .loginForm {
+    padding: 10px 20px;
+    color: @text-color;
+    a {
+      color: @accounts-dialog-link-color;
+
+      &:hover {
+        color: @accounts-dialog-link-color;
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .form-group {
+    .text-align(left);
+  }
+
+  .form-group:last-child {
+    margin-bottom: 0;
+  }
+
+  .loginForm-title {
+    display: none;
+  }
+}
+
+.sign-in-text-facebook:before  {
+  content: "\f09a";
+  font-family: "FontAwesome", "FontAwesomeFallback";
+  .padding-right(10px);
+  font-size: 17px;
+}
+
+.profile-image {
+  text-align: center;
+}
+
+.profile-image-display-name {
+  display: block;
+  margin-top: 10px;
+  font-size: 1.8rem;
+}

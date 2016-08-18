@@ -1,0 +1,357 @@
+[{
+	"language": "Български",
+	"i18n": "bg",
+	"ns": "core",
+	"translation": {
+		"core": {
+			"languages": {
+				"select": "Избери език"
+			},
+			"app": {
+				"save": "Запиши",
+				"saveAndContinue": "Запиши и продължи",
+				"cancel": "Отмени",
+				"submit": "Предай",
+				"delete": "Изтрий",
+				"create": "Създай",
+				"close": "Затвори",
+				"settings": "Опции",
+				"loading": "Зареждане...",
+				"toggle": "Превключване",
+				"warning": "Опа..!",
+				"unauthorizedMessage": "Нямате разрешение да видите това съдържание.",
+				"monthOptions": "Изберете месец",
+				"yearOptions": "Изберете година",
+				"timezoneOptions": "Изберете времева зона",
+				"shopSettings": "Настройки на магазина",
+				"dashboard": "Табло",
+				"print": "Принтирай"
+			},
+			"header": {
+				"tagsAdd": "Добави етикет",
+				"search": "Търси продукт..."
+			},
+			"productDetail": {
+				"productManagement": "Управление на продукти",
+				"whenYouAreDone": "Когато редакцията свърши.",
+				"tags": "Ключови думи",
+				"tagsAdd": "Добави ключова дума",
+				"addInventory": "Добави инвентар",
+				"barcode": "Баркод",
+				"confirmDeleteBarcode": "Are you sure you want to delete barcode",
+				"details": "Подробности",
+				"detailsName": "Име",
+				"detailsInfo": "Подробна информация",
+				"generate": "Генерирай",
+				"generateBarcodes": "Генерирай баркодове",
+				"hideBarcodes": "Скрий баркодове",
+				"options": "Опции",
+				"addToCart": "Добави в количката",
+				"chooseOptions": "Моля изберете опции преди да добавите в количката",
+				"outOfStock": "Съжеляваме! Този продукт не е в наличност.",
+				"productDeleteError": "Има проблем с изтриването ",
+				"publishFirst": "Публикувайте продуктът, преди да го добавите в количката!",
+				"quantityAbbreviation": "Кол.",
+				"selectOption": "Изберете опция преди добавяне в количката.",
+				"addedToCart": "Добавено.",
+				"showBarcodes": "Покажи баркодовете",
+				"soldOut": "Продуктът е разпродаден!",
+				"backOrder": "Неизпълнена поръчка",
+				"limitedSupply": "Ограничени количества",
+				"publishProductVisible": "Продуктът e видим",
+				"publishProductHidden": "Продуктът е видим",
+				"startTracking": "Проследяване",
+				"addBarcode": "Добави баркод",
+				"quantity": "Количество",
+				"quantityGreaterThanZero": "Грешка: Количеството трябва да е повече от 0"
+			},
+			"productDetailEdit": {
+				"title": "Заглавие на продукта",
+				"pageTitle": "Заглавие на страницата на продукта",
+				"vendor": "Доставчик на продукта",
+				"description": "Добавете описание на продукта",
+				"facebookMsg": "Facebook съобщение",
+				"twitterMsg": "Twitter съобщение ",
+				"pinterestMsg": "Pinterest съобщение ",
+				"googleplusMsg": "Google+ съобщение",
+				"duplicateVariant": "Дубликат",
+				"addVariantOption": "Добавяне на опция",
+				"removeVariant": "Премахни",
+				"duplicateProduct": "Дублиране на продукта",
+				"pinProduct": "Запомнете продукта",
+				"toggleSize": "Изберете размер",
+				"deleteProduct": "Премахнете продукта",
+				"publish": "Публикуване",
+				"moreOptions": "Още настройки"
+			},
+			"variantList": {
+				"moreOptions": "Има още настройки в този раздел.",
+				"createVariant": "Създаване на вариант"
+			},
+			"gridPackage": {
+				"pkgEnabled": "е включен.",
+				"pkgDisabled": "е изключен."
+			},
+			"cartDrawer": {
+				"empty": "За съжаление кошницата Ви е празна.",
+				"keepShopping": "Продължете с пазаруването.",
+				"checkout": "Към кошницата"
+			},
+			"cartSubTotals": {
+				"head": "Вашата кошница",
+				"items": "Продукти в кошницата",
+				"subtotal": "Обща сума без ДДС",
+				"shipping": "Доставка",
+				"tax": "Такса",
+				"total": "Обща сума"
+			},
+			"cartDrawerItems": {
+				"left": "ляво"
+			},
+			"order": {
+				"created": "Създадено",
+				"reference": "Справка",
+				"invoice": "Фактура",
+				"ordersNotFound": "Няма заявки",
+				"approveInvoice": "Одобрено плащане",
+				"makeAdjustments": "Направи промени",
+				"capturePayment": "Одобри плащане",
+				"paymentCaptured": "Плащането е одобрено",
+				"capturedTotal": "Одобрена сума",
+				"refundAmount": "Възстановена сума",
+				"applyRefund": "Издай възстановяване",
+				"adjustedTotal": "Корегирана сума",
+				"processor": "Начин за плащане"
+			},
+			"filter": {
+				"new": "Нов",
+				"captured": "Заплащането е завършено",
+				"shipped": "Изпратено",
+				"completed": "Завършено",
+				"canceled": "Прекратено",
+				"refunded": "Възобновено"
+			},
+			"orderShipping": {
+				"shipTo": "Изпрати до",
+				"shipped": "Изпратено",
+				"notShipped": "Още не е изпратено",
+				"noTracking": "Без проследяване",
+				"tracking": "Проследяване",
+				"addtracking": "Добави проследяване",
+				"shipmentEmpty": "В поръчката няма продукти",
+				"shipmentPacked": "Всички продукти са опаковани",
+				"shipped": "Изпратено",
+				"shippingNotifyCustomer": "Съобщи на потребителя, че поръчката ще им бъде изпратена.",
+				"resendNotification": "Изпрати съобщението за поръчката отново"
+			},
+			"cartCompleted": {
+				"thankYou": "Благодарим Ви!",
+				"itemsFrom": "Продукт(и) от",
+				"yourOrderIsNow": "Поръчката Ви се обработва",
+				"summaryMessage": "Благодарим Ви за поръчката.",
+				"submitted": "Изпратена",
+				"registerGuest": "Добавете и-мейл, за да получавате известия за поръчката.",
+				"trackYourDelivery": "Информация за пратката",
+				"noOrdersFound": "Не е намерена поръчка.",
+				"adminMessage": "Гледате поръчките като администратор"
+			},
+			"checkoutLogin": {
+				"welcome": "Добре дошли.",
+				"loginCompleted": "Успешно влизане",
+				"createOrLogin": "Направете акаунт или се впишете",
+				"guestOrLogin": "Впишете се като гост",
+				"continueAsGuest": "Продължете като гост",
+				"guestMessage": "Можете да завършите поръчката без акаунт."
+			},
+			"addressBookGrid": {
+				"addAddress": "Добавете адрес",
+				"chooseAddress": "Изберете адрес за доставки и плащане.",
+				"createDefault": "Изберете подразбиращия се адрес",
+				"selectShippingAddress": "Изберете адрес за доставки.",
+				"selectBillingAddress": "Изберете адрес за плащане."
+			},
+			"addressBookAdd": {
+				"addAddress": "Добавете адрес",
+				"createAddress": "Създайте адрес по подразбиране"
+			},
+			"addressBookEdit": {
+				"editAddress": "Редактирайте адреса"
+			},
+			"shop": {
+				"addressBook": {
+					"country": "Държава",
+					"fullName": "Пълно име",
+					"address1": "Адрес 1",
+					"address2": "Адрес 2",
+					"postal": "Поща",
+					"city": "Град",
+					"region": "Регион",
+					"phone": "Телефон",
+					"isShippingDefault": "Сигурни ли сте, че искате да направите този адрес за доставка подразбиращ се?",
+					"isBillingDefault": "Сигурни ли сте, че искате да направите този адрес за плащане подразбиращ се?",
+					"isCommercial": "Това е търговски адрес."
+				}
+			},
+			"address": {
+				"country": "Държава",
+				"fullName": "Пълно име",
+				"address1": "Адрес 1",
+				"address2": "Адрес 2",
+				"postal": "Поща",
+				"city": "Град",
+				"region": "Регион",
+				"phone": "Телефон",
+				"isShippingDefault": "Сигурни ли сте, че искате да направите този адрес за доставка подразбиращ се?",
+				"isBillingDefault": "Сигурни ли сте, че искате да направите този адрес за плащане подразбиращ се?",
+				"isCommercial": "Това е търговски адрес."
+			},
+			"checkoutProgressBar": {
+				"login": "Акаунт",
+				"shippingBilling": "Допълнителни адресни данни",
+				"shippingOptions": "Опции за доставка",
+				"reviewPayment": "Преглед",
+				"complete": "Завършено"
+			},
+			"checkoutPayment": {
+				"addPaymentToCompleteOrder": "Направете плащане, за да завършите поръчката",
+				"processingError": "Има проблем с плащането.",
+				"completeYourOrder": "Завършете поръчката"
+			},
+			"checkoutReview": {
+				"review": "Преглед"
+			},
+			"checkoutShipping": {
+				"selectShippingOption": "Изберете начин за доставка",
+				"noShippingMethods": "Не е избран начин за доставка.",
+				"configureNow": "Конфигурирайте сега.",
+				"shipping": "доставка"
+			},
+			"shopEditForm": {
+				"name": "Име",
+				"email": "Електронна поща"
+			},
+			"shopEditAdressForm": {
+				"company": "Компания",
+				"fullname": "Пълно име",
+				"address1": "Адрес 1"
+			},
+			"consoleIcon": {
+				"iconTitle": "Преглед на конзолата",
+				"text": "Конзола"
+			},
+			"createProductIcon": {
+				"iconTitle": "Създайте продукт",
+				"text": "Създай"
+			},
+			"social": {
+				"facebook": "Facebook",
+				"google": "Google",
+				"github": "GitHub",
+				"meetup": "Meetup",
+				"twitter": "Twitter",
+				"weibo": "Weibo"
+			},
+			"accountsUI": {
+				"members": "Участници",
+				"guest": "Гост",
+				"addMember": "Добави участник",
+				"add": "добави",
+				"and": "е",
+				"back": "върни се",
+				"changePassword": "Смени парола",
+				"choosePassword": "Избери парола",
+				"clickAgree": "Като се регистрирате, Вие се съгласявате",
+				"configure": "Конфигурация",
+				"createAccount": "Създай акаунт",
+				"currentPassword": "Сегашна парола",
+				"dontHaveAnAccount": "Нямате акаунт?",
+				"email": "Електронна поща",
+				"emailAddress": "имейл адрес",
+				"emailResetLink": "линк за нулиране на акаунта",
+				"forgotPassword": "забравих си паролата",
+				"ifYouAlreadyHaveAnAccount": "Ако имате акаунт",
+				"newPassword": "Нова парола",
+				"newPasswordAgain": "Нова парола (още веднъж)",
+				"optional": "Незадължително",
+				"or": "или",
+				"password": "Парола",
+				"passwordAgain": "Парола (още веднъж)",
+				"privacyPolicy": "Декларация за поверителност",
+				"remove": "премахни",
+				"resetYourPassword": "Променете паролата си",
+				"setPassword": "избери парола",
+				"sign": "подпис",
+				"signIn": "Впиши се",
+				"signin": "Впиши се",
+				"signInWith": "Впиши се със",
+				"signUpWith": "Регистрирай се с",
+				"signedIn": "Вписани сте.",
+				"signOut": "Отписване ",
+				"signUp": "Регистрация",
+				"signupCode": "Регистрационен код",
+				"signUpWithYourEmailAddress": "Регистрирайте се с вашия имейл адрес",
+				"terms": "Условия за ползване",
+				"updateYourPassword": "Обновете паролата си",
+				"updatePasswordAndContinue": "Обновете и продължете",
+				"username": "Потребителско име",
+				"usernameOrEmail": "Потребителско име имейл",
+				"with": "с",
+				"checkoutAsGuest": "Завършете поръчката без профил",
+				"role": "Роля",
+				"info": {
+					"emailSent": "Имейлът е изпратен.",
+					"emailVerified": "Имейлът е потвърден",
+					"passwordChanged": "Паролата е променена",
+					"passwordReset": "Паролата е нулирана",
+					"passwordResetSend": "Имейл с линк за нулиране на паролата е изпратен.",
+					"invitationSent": "Поканата е изпратена",
+					"sendInvitation": "Изпрати покана"
+				},
+				"error": {
+					"emailRequired": " Изисква си имейл.",
+					"passwordRequired": "Изисква се парола.",
+					"passwordMustBeAtLeast6CharactersLong": "Паролата трябва за е дълга поне 6 знака.",
+					"passwordMustContainRequirements": "Паролата трябва да съдържа поне една цифра или един символ.",
+					"minChar": "6 знака са необходими в паролата.",
+					"pwdsDontMatch": "Паролите не са еднакви",
+					"pwOneDigit": "Паролата трябва да съдържа поне една цифра.",
+					"pwOneLetter": "Паролата изисква поне една буква.",
+					"signInRequired": "Трябва да сте вписани, за да направите това.",
+					"signupCodeIncorrect": "Регистрационният код е грешен.",
+					"signupCodeRequired": "Необходим е регистрационен код.",
+					"usernameIsEmail": "Потребителското име ни може да бъде имейл адрес.",
+					"usernameRequired": "Необходимо е потребителско име.",
+					"emailAlreadyExists": "Имейлът е зает.",
+					"emailDoesntMatchTheCriteria": "Имейл адресът не покрива критериите.",
+					"invalidLoginToken": "Невалиден вход",
+					"loginForbidden": "Входът е забранен",
+					"serviceUnknown": "Неизвестна услуга ",
+					"unrecognizedOptionsForLoginRequest": "Неразпознати опции за вход",
+					"userValidationFailed": "Потребителското валидиране е неуспешно",
+					"usernameAlreadyExists": "Потребителското име е заето.",
+					"youAreNotLoggedIn": "Не сте влезли в акаунта си..",
+					"youveBeenLoggedOutByTheServer": "Моля влезте в профила си отново.",
+					"yourSessionHasExpired": "Вашата сесия е изтекла. Моля влезте в профила си отново.",
+					"noMatchingLoginAttemptFound": "Няма съвпадащ опит за влизане.",
+					"passwordIsOld": "Паролата е стара. Моля сменете я.",
+					"incorrectPassword": "Неправилна парола",
+					"invalidEmail": "Невалиден имейл адрес",
+					"addressMustBeAValidEMailAddress": "Невалиден имейл адрес ",
+					"mustBeLoggedIn": "Трябва за сте се вписали в профила си",
+					"needToSetUsernameOrEmail": "Трябва да зададете потребителско име и електронна поща.",
+					"oldPasswordFormat": "Стара парола",
+					"passwordMayNotBeEmpty": "Паролата не може да бъде празна",
+					"signupsForbidden": "Регистрацията е забранена",
+					"tokenExpired": "Сесията е изтекла.",
+					"tokenHasInvalidEmailAddress": "Имейлът е невалиден.",
+					"userHasNoPasswordSet": "Няма зададена парола",
+					"userNotFound": "Няма намерен потребител.",
+					"verifyEmailLinkExpired": "Линкът в имейла за потвърждение е с изтекъл срок.",
+					"verifyEmailLinkIsForUnknownAddress": "Не сте задали имейл адрес.",
+					"matchFailed": "Не съвпада",
+					"unknownError": "Неизвестна грешка"
+				}
+			}
+		}
+	}
+}]

@@ -1,0 +1,36 @@
+<template name="products">
+
+  {{#if ready}}
+    {{>productGrid products=products}}
+
+    {{#if loadMoreProducts}}
+      <div class="product-load-more" id="productScrollLimitLoader">
+          <button
+            class="btn btn-inverse btn-block btn-lg"
+            data-i18n="app.loadMoreProducts"
+            data-event-action="loadMoreProducts">Load more products</button>
+      </div>
+    {{/if}}
+
+    {{#unless Template.subscriptionsReady}}
+      <div class="spinner-container">
+        <div class="spinner"></div>
+      </div>
+    {{/unless}}
+  {{else}}
+    <div class="spinner-container spinner-container-lg">
+      <div class="spinner"></div>
+    </div>
+  {{/if}}
+
+
+</template>
+
+<template name="productListGrid">
+  <div class="row">
+    {{>productGrid products=products}}
+    {{#if hasPermission "createProduct"}}
+      {{>productList}}
+    {{/if}}
+  </div>
+</template>

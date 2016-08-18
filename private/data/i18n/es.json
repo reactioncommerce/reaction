@@ -1,0 +1,173 @@
+[
+    {
+        "language": "Spanish",
+        "i18n": "es",
+        "ns": "core",
+        "entryText": "Español",
+        "translation": {
+            "core": {
+                "languages": {
+                    "select": "Elegir idioma",
+                    "spanish": "Español"
+                },
+                "app": {
+                    "saveAndContinue": "Guardar y continuar",
+                    "cancel": "Cancelar",
+                    "submit": "Enviar",
+                    "delete": "Eliminar"
+                },
+                "productDetail": {
+                    "productManagement": "Gestión de productos",
+                    "whenYouAreDone": "cuando haya terminado de editar.",
+                    "tags": "Tags",
+                    "details": "Detalles",
+                    "options": "Opciones",
+                    "addToCart": "Añadir al carro",
+                    "chooseOptions": "Por favor, elija opciones antes de añadir al carro",
+                    "outOfStock": "Lo sentimos, este producto está fuera de stock!",
+                    "productDeleteError": "Se ha producido un error de borrado",
+                    "publishFirst": "Publicar producto antes de añadir al carro.",
+                    "selectOption": "Seleccione una opción antes de añadir al carro.",
+                    "addedToCart": "añadido"
+                },
+                "variantList": {
+                    "moreOptions": "Hay más opciones disponibles para esta selección.",
+                    "createVariant": "Crear Variant"
+                },
+                "gridPackage": {
+                    "pkgEnabled": " ahora está habilitado.",
+                    "pkgDisabled": " ahora está deshabilitado."
+                },
+                "cartDrawer": {
+                    "empty": "Estamos tristes Su cesta está vacía.",
+                    "keepShopping": "Mantener a las compras",
+                    "checkout": "Comprar ahora"
+                },
+                "cartSubTotals": {
+                    "head": "Su carrito",
+                    "items": "Articulos de compra",
+                    "subtotal": "Subtotal",
+                    "shipping": "Envío",
+                    "tax": "Impuestos",
+                    "total": "Total"
+                },
+                "cartDrawerItems": {
+                    "left": "dejado/s"
+                },
+                "checkoutLogin": {
+                    "loginCompleted": "Entrar completó",
+                    "createOrLogin": "Crear una cuenta o inicia sesión para continuar"
+                },
+                "checkoutPayment": {
+                    "addPaymentToCompleteOrder": "Añadir el pago a la orden completa"
+                },
+                "checkoutReview": {
+                    "review": "Revisión"
+                },
+                "checkoutShipping": {
+                    "selectShippingOption": "Seleccione la opción de envío"
+                },
+                "addressBookGrid": {
+                    "chooseAddress": "Elegir el envío y la dirección de facturación",
+                    "createDefault": "Cree su dirección por defecto",
+                    "selectShippingAddress": "Selecciona una dirección de envío",
+                    "selectBillingAddress": "Selecciona una dirección de facturación"
+                },
+                "shop": {
+                    "addressBook": {
+                        "country": "País",
+                        "fullName": "Nombre completo",
+                        "address1": "dirección 1",
+                        "address2": "dirección 2",
+                        "postal": "Postal",
+                        "city": "Ciudad",
+                        "region": "Región",
+                        "phone": "Teléfono",
+                        "isDefault": "Esta es mi dirección predeterminada",
+                        "isCommercial": "Esta es una dirección comercial"
+                    }
+                },
+                "address": {
+                    "country": "País",
+                    "fullName": "Nombre completo",
+                    "address1": "dirección 1",
+                    "address2": "dirección 2",
+                    "postal": "Postal",
+                    "city": "Ciudad",
+                    "region": "Región",
+                    "phone": "Teléfono",
+                    "isDefault": "Esta es mi dirección predeterminada",
+                    "isCommercial": "Esta es una dirección comercial"
+                },
+                "addressBookAdd": {
+                    "addAddress": "Añadir una nueva entrada de dirección",
+                    "createAddress": "Cree su dirección por defecto"
+                },
+                "checkoutProgressBar": {
+                    "login": "Entrada",
+                    "shippingBilling": "Gastos de envío y facturación",
+                    "shippingOptions": "Opciones de Envío",
+                    "reviewPayment": "Opina y Pago",
+                    "complete": "Completo"
+                },
+                "accountsUI": {
+                    "and": "y",
+                    "clickAgree": "Si haces clic en Sucribir estas de acuerdo con la",
+                    "configure": "Disposición",
+                    "createAccount": "Crear cuenta",
+                    "dontHaveAnAccount": "No tenés una cuenta?",
+                    "email": "Email",
+                    "emailAddress": "Dirección de Email",
+                    "emailResetLink": "Reiniciar Email",
+                    "forgotPassword": "Contraseña olvidada?",
+                    "ifYouAlreadyHaveAnAccount": "Si ya tenés una cuenta",
+                    "optional": "Opcional",
+                    "or": "o",
+                    "password": "Contraseña",
+                    "privacyPolicy": "Póliza de Privacidad",
+                    "resetYourPassword": "Resetear tu contraseña",
+                    "sign": "Ingresar",
+                    "signIn": "Entrar",
+                    "signin": "entrar",
+                    "signOut": "Salir",
+                    "signUp": "Suscribir",
+                    "signInWith": "Entra con",
+                    "signupCode": "Codigo para suscribir",
+                    "signUpWithYourEmailAddress": "Suscribir con tu email",
+                    "terms": "Terminos de Uso",
+                    "updateYourPassword": "Actualizar tu contraseña",
+                    "username": "Usuario",
+                    "usernameOrEmail": "Usuario o email",
+                    "with": "con",
+                    "error": {
+                        "emailRequired": "Email es necesario.",
+                        "minChar": "6 carácteres mínimo.",
+                        "pwOneDigit": "mínimo un dígito.",
+                        "pwOneLetter": "mínimo una letra.",
+                        "signInRequired": "Debes iniciar sesión para hacer eso.",
+                        "signupCodeIncorrect": "Código para suscribir no coincide.",
+                        "signupCodeRequired": "Código para suscribir es necesario.",
+                        "usernameIsEmail": "Usuario no puede ser Email.",
+                        "usernameRequired": "Usuario es necesario.",
+                        "emailAlreadyExists": "Email ya existe.",
+                        "emailDoesntMatchTheCriteria": "Email no coincide con los criterios.",
+                        "userValidationFailed": "No se ha podido validar el usuario",
+                        "usernameAlreadyExists": "Usuario ya existe.",
+                        "youveBeenLoggedOutByTheServer": "Has sido desconectado por el servidor. Por favor ingresa otra vez.",
+                        "yourSessionHasExpired": "Tu session ha expirado. Por favor ingresa otra vez.",
+                        "incorrectPassword": "Contraseña no válida",
+                        "mustBeLoggedIn": "Hay que ingresar",
+                        "needToSetUsernameOrEmail": "Tienes que especificar un usuario o un email",
+                        "signupsForbidden": "Registro prohibido",
+                        "tokenExpired": "Token expirado",
+                        "tokenHasInvalidEmailAddress": "Token contiene un Email inválido",
+                        "userHasNoPasswordSet": "Usuario no tiene contraseña",
+                        "userNotFound": "Usuario no encontrado",
+                        "verifyEmailLinkExpired": "Enlace para verificar el Email ha expirado",
+                        "verifyEmailLinkIsForUnknownAddress": "Enlace para verificar el Email contiene una dirección desconocida"
+                }
+                }
+            }
+    }
+    }
+]

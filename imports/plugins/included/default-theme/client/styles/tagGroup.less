@@ -1,0 +1,98 @@
+
+.rui.grouptag {
+  flex: 1 1 auto;
+  max-width: 20%;
+  padding: 10px;
+}
+
+.rui.tagnav.vertical .rui.grouptag {
+  margin-bottom: 40px;
+  max-width: 100%;
+  padding: 0;
+}
+
+.rui.grouptag > .item {
+  .flex(1 1 auto);
+  min-width: 200px;
+  width: 15%;
+  max-width: 15%;
+  padding: 10px;
+}
+
+.rui.grouptag > .header {
+  border-bottom: 1px solid @border-color;
+}
+
+.rui.tagnav.vertical .rui.grouptag > .header {
+  padding: 0 20px;
+}
+
+.rui.grouptag > .header .rui.tag {
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.rui.tagnav.vertical .rui.grouptag > .header .rui.tag {
+  // padding: 0 20px;
+}
+
+
+.rui.grouptag > .content {}
+
+.rui.tagnav.vertical .rui.grouptag > .content {
+  padding: 0 20px;
+}
+
+.rui.grouptag > .footer {}
+
+.rui.grouptag > .header .rui.tag.edit,
+.rui.grouptag > .header .rui.tag.edit.create {
+  text-transform: none;
+
+  @color: lighten(@btn-success-bg, 10%);
+  @color: @brand-secondary-color;
+  // @color: #238CC3;
+
+  input {
+    background-color: @color;
+    border-color: @color;
+    color: @white;
+  }
+
+  button {
+    background-color: @color;
+    border-color: @color;
+    color: @white;
+  }
+}
+
+.rui.grouptag > .header .rui.tag.edit input,
+.rui.grouptag > .header .rui.tag.edit.create input {
+  .placeholder(@white);
+}
+
+.rui.grouptag > .content .rui.tag.link {
+  text-transform: none;
+}
+
+.rui.tagnav.vertical .rui.grouptag > .content .rui.tag.link {
+  .display(flex);
+  .align-items(center);
+  font-size: 1.3rem;
+  padding: 3px 0;
+}
+
+
+.empty-tag-group {
+  .display(flex);
+  .flex-direction(column);
+  .justify-content(center);
+  .align-items(center);
+  background-color: @black10;
+  height: 120px;
+  max-width: 300px;
+}
+
+.rui.tagnav.vertical .empty-tag-group {
+  display: block;
+}

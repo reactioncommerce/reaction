@@ -1,0 +1,419 @@
+[{
+  "language": "中文(简体)",
+  "i18n": "zh",
+  "ns": "core",
+  "translation": {
+    "core": {
+      "languages": {
+        "select": "选择语言",
+        "english": "English",
+        "chinese": "中文(简体)"
+      },
+      "admin": {
+        "shortcut": {
+          "dashboardLabel": "控制台",
+          "ordersLabel": "订单",
+          "addProductLabel": "增加产品",
+          "accountsLabel": "账户"
+        },
+        "dashboard": {
+          "coreLabel": "核心",
+          "coreDescription": "Reaction Commerce 核心功能",
+          "coreTitle": "控制台",
+          "ordersLabel": "订单",
+          "ordersDescription": "执行订单",
+          "importLabel": "导入",
+          "importDescription": "支持导入和迁移",
+          "accountsLabel": "账户",
+          "accountsDescription": "管理会员如何登录",
+          "socialLabel": "社交媒体",
+          "socialDescription": "分享给社交媒体",
+          "basicShippingLabel": "基本运输",
+          "basicShippingDescription": "使用固定费率计算运费",
+          "inventoryLabel": "库存",
+          "inventoryDescription": "基本库存管理",
+          "analyticsLabel": "分析",
+          "analyticsDescription": "事件跟踪与分析",
+          "paypalLabel": "PayPal",
+          "paypalDescription": "用PayPal付款",
+          "examplePaymentProviderLabel": "普通付款",
+          "examplePaymentProviderDescription": "普通付款方式"
+        },
+        "settings": {
+          "accountSettingsLabel": "账户设置",
+          "shopSettingsLabel": "商店设置",
+          "socialSettingsLabel": "社交媒体设置",
+          "shippingSettingsLabel": "运输方式设置",
+          "inventorySettingsLabel": "库存管理设置",
+          "analyticsSettingsLabel": "分析设置",
+          "paypalSettingsLabel": "PayPal设置",
+          "genericPaymentSettingsLabel": "普通付款方式设置"
+        }
+      },
+      "accounts": {
+        "addMember": "增加会员",
+        "shopMembers": "商店会员",
+        "guests": "顾客"
+      },
+      "app": {
+        "save": "保存",
+        "saveAndContinue": "保存并继续",
+        "saveChanges": "保存修改",
+        "cancel": "取消",
+        "submit": "提交",
+        "delete": "删除",
+        "create": "创建",
+        "close": "关闭",
+        "settings": "设置",
+        "loading": "加载中",
+        "toggle": "切换",
+        "warning": "糟糕!",
+        "unauthorizedMessage": "您没有权限看这些内容。",
+        "monthOptions": "选择月份",
+        "yearOptions": "选择年份",
+        "timezoneOptions": "选择时区",
+        "shopSettings": "商店设置",
+        "dashboard": "控制台",
+        "print": "打印",
+        "notFound": "这个网页找不到。",
+        "pageNotFound": "这个网页找不到。",
+        "notFoundTitle": "糟糕！",
+        "notFoundError": "网页找不到",
+        "productNotFound": "找不到这个产品",
+        "loadMoreProducts": "载入更多产品"
+      },
+      "shopSettings": {
+        "general": "通用",
+        "address": "地址",
+        "mail": "邮件",
+        "localization": "本地化",
+        "options": "选项",
+        "paymentMethods": "支付方式"
+      },
+      "header": {
+        "tagsAdd": "添加标签",
+        "search": "搜索产品"
+      },
+      "productDetail": {
+        "productManagement": "产品管理",
+        "whenYouAreDone": "（完成编辑时点击）",
+        "tags": "标签",
+        "tagsAdd": "添加标签",
+        "addInventory": "增加库存",
+        "barcode": "条形码",
+        "confirmDeleteBarcode": "您确定要删除条形码？",
+        "details": "详情",
+        "detailsName": "细节名称",
+        "detailsInfo": "细节信息",
+        "generate": "生成",
+        "generateBarcodes": "生成条形码",
+        "hideBarcodes": "隐藏条形码",
+        "options": "选项",
+        "addToCart": "添加到购物车",
+        "chooseOptions": "在添加到购物车之前请选择选项。",
+        "outOfStock": "抱歉，这个产品没有库存了！",
+        "productDeleteError": "在删除产品时发生了错误。 ",
+        "publishFirst": "在添加到购物车之前请先发布产品。",
+        "quantityAbbreviation": "数量",
+        "selectOption": "在添加到购物车之前请选择选项。",
+        "addedToCart": "已添加",
+        "showBarcodes": "显示条形码",
+        "soldOut": "已经售罄！",
+        "backOrder": "Backorder",
+        "limitedSupply": "供应有限",
+        "publishProductVisible": "产品可见",
+        "publishProductHidden": "产品隐藏",
+        "startTracking": "开始跟踪",
+        "addBarcode": "添加条形码",
+        "quantity": "数量",
+        "quantityGreaterThanZero": "错误: 数量必须大于0。",
+        "clonedAlert": "克隆了",
+        "deletedAlert": "删除了",
+        "notFoundTitle": "糟糕！",
+        "notFoundError": "这不是您要找的产品。"
+      },
+      "tags": {
+        "addTag": "增加标签",
+        "addGroupTag": "增加群标签",
+        "addSubTag": "增加子标签",
+        "removeTag": "删除标签",
+        "createTag": "创建标签"
+      },
+      "productDetailEdit": {
+        "title": "产品标题",
+        "pageTitle": "产品页标题",
+        "vendor": "厂家",
+        "description": "产品描述",
+        "facebookMsg": "Facebook 信息",
+        "twitterMsg": "Twitter 信息",
+        "pinterestMsg": "Pinterest 信息",
+        "googleplusMsg": "Google+ 信息",
+        "duplicateVariant": "复制款式",
+        "addVariantOption": "添加款式",
+        "removeVariant": "删除款式",
+        "duplicateProduct": "复制产品",
+        "pinProduct": "固定产品",
+        "toggleSize": "切换大小",
+        "deleteProduct": "删除产品",
+        "publish": "发布",
+        "moreOptions": "更多选项"
+      },
+      "variantList": {
+        "moreOptions": "还有更多选项",
+        "createVariant": "新建款式"
+      },
+      "gridPackage": {
+        "pkgEnabled": "现在可用",
+        "pkgDisabled": "现在不可用"
+      },
+      "cartDrawer": {
+        "empty": "我们非常抱歉，您的购物车是空的。",
+        "keepShopping": "继续购物",
+        "checkout": "立刻结算"
+      },
+      "cartSubTotals": {
+        "head": "您的购物车",
+        "items": "购买的商品",
+        "subtotal": "小计",
+        "shipping": "运费",
+        "tax": "税",
+        "total": "合计"
+      },
+      "cartDrawerItems": {
+        "left": "剩余"
+      },
+      "order": {
+        "created": "已生成",
+        "reference": "参考",
+        "invoice": "出货单",
+        "ordersNotFound": "没有查询到订单信息",
+        "approveInvoice": "审批",
+        "makeAdjustments": "修改",
+        "capturePayment": "收款",
+        "paymentCaptured": "已收款",
+        "capturedTotal": "已收款总额",
+        "refundAmount": "退款金额",
+        "applyRefund": "退款",
+        "adjustedTotal": "调整后的总金额",
+        "processor": "经手人",
+        "filter": {
+          "new": "新订单",
+          "captured": "已收款",
+          "processing": "正在处理",
+          "shipped": "已出货",
+          "completed": "已完成",
+          "canceled": "已取消",
+          "refunded": "已退款"
+        }
+      },
+      "orderShipping": {
+        "shipTo": "发到",
+        "shipped": "已出货",
+        "notShipped": "未发货",
+        "noTracking": "不追踪",
+        "tracking": "追踪",
+        "addtracking": "添加追踪",
+        "shipmentEmpty": "出货单中没有货品",
+        "shipmentPacked": "所有货品已经打包",
+        "shipped": "已出货",
+        "shippingNotifyCustomer": "通知客户他们的货品即将被发出。",
+        "resendNotification": "重新发送出货通知"
+      },
+      "cartCompleted": {
+        "thankYou": "谢谢!",
+        "itemsFrom": "物品清单",
+        "yourOrderIsNow": "您的订单现在",
+        "summaryMessage": "感谢您的订单",
+        "submitted": "已提交",
+        "registerGuest": "您好! 请添加您的邮箱以便跟踪订单状况。",
+        "trackYourDelivery": "您的订单信息将会发到",
+        "noOrdersFound": "没有找到订单。",
+        "adminMessage": "您在以管理员的身份查看订单"
+      },
+      "checkoutLogin": {
+        "welcome": "欢迎，很高兴为您服务！",
+        "loginCompleted": "完成登录",
+        "createOrLogin": "登录或注册",
+        "guestOrLogin": "登录或随便逛逛",
+        "continueAsGuest": "继续逛逛",
+        "guestMessage": "您现在可以直接结账，您稍后可以注册账号。"
+      },
+      "addressBookGrid": {
+        "addAddress": "添加地址",
+        "chooseAddress": "选择收货地址和账单地址",
+        "createDefault": "创建一个默认地址",
+        "selectShippingAddress": "收货地址",
+        "selectBillingAddress": "账单地址"
+      },
+      "addressBookAdd": {
+        "addAddress": "添加新的地址",
+        "createAddress": "创建您的默认地址"
+      },
+      "addressBookEdit": {
+        "editAddress": "编辑地址"
+      },
+      "address": {
+        "country": "国家",
+        "fullName": "姓名",
+        "address1": "地址1",
+        "address2": "地址2",
+        "postal": "邮编",
+        "city": "市",
+        "region": "省",
+        "phone": "电话",
+        "isShippingDefault": "设为您的收货地址",
+        "isBillingDefault": "设为您的账单地址",
+        "isCommercial": "公司地址"
+      },
+      "checkoutProgressBar": {
+        "login": "登录",
+        "shippingBilling": "输入收货和账单地址",
+        "shippingOptions": "选择运输方式",
+        "reviewPayment": "核对订单",
+        "complete": "完成订单"
+      },
+      "checkoutPayment": {
+        "addPaymentToCompleteOrder": "通过付款来完成订单",
+        "processingError": "您的支付遇到了问题",
+        "completeYourOrder": "完成您的订单",
+        "noPaymentMethods": "未设置支付方式。",
+        "configureNow": "现在设置。"
+      },
+      "checkoutReview": {
+        "review": "核对订单"
+      },
+      "checkoutShipping": {
+        "selectShippingOption": "选择运输方式",
+        "noShippingMethods": "没有设置运输方式。",
+        "configureNow": "现在设置。",
+        "shipping": "运输"
+      },
+      "shopEditForm": {
+        "name": "姓名",
+        "email": "电子邮箱"
+      },
+      "shopEditAdressForm": {
+        "company": "公司",
+        "fullname": "姓名",
+        "address1": "地址1"
+      },
+      "consoleIcon": {
+        "iconTitle": "显示控制台",
+        "text": "控制台"
+      },
+      "createProductIcon": {
+        "iconTitle": "增加产品",
+        "text": "增加"
+      },
+      "social": {
+        "facebook": "Facebook",
+        "google": "Google",
+        "github": "GitHub",
+        "meetup": "Meetup",
+        "twitter": "Twitter",
+        "weibo": "微博"
+      },
+      "accountsUI": {
+        "members": "会员",
+        "guest": "访客",
+        "addMember": "添加会员",
+        "add": "添加",
+        "and": "并且",
+        "back": "返回",
+        "changePassword": "修改密码",
+        "choosePassword": "输入密码",
+        "clickAgree": "点击注册代表您同意我们的",
+        "configure": "设置",
+        "createAccount": "创建账户",
+        "currentPassword": "当前密码",
+        "dontHaveAnAccount": "没有账户？",
+        "email": "电子邮件",
+        "emailAddress": "电子邮件地址",
+        "emailResetLink": "电子邮件重置链接",
+        "forgotPassword": "重置密码",
+        "ifYouAlreadyHaveAnAccount": "如果您已经有一个账户",
+        "newPassword": "新密码",
+        "newPasswordAgain": "再输入一次新密码",
+        "optional": "可选项",
+        "or": "或者",
+        "password": "密码",
+        "passwordAgain": "再输入一次密码",
+        "privacyPolicy": "隐私条款",
+        "remove": "删除",
+        "resetYourPassword": "重置您的密码",
+        "setPassword": "设置密码",
+        "sign": "注册",
+        "signIn": "登录",
+        "signin": "登录",
+        "signInWith": "登录",
+        "signUpWith": "注册",
+        "signedIn": "您已经登录",
+        "signOut": "退出",
+        "signUp": "注册",
+        "signupCode": "注册码",
+        "signUpWithYourEmailAddress": "以您的电子邮件注册",
+        "terms": "使用条款",
+        "updateYourPassword": "更新您的密码",
+        "updatePasswordAndContinue": "更新并继续",
+        "username": "用户名",
+        "usernameOrEmail": "用户名或电子邮箱",
+        "with": "以",
+        "checkoutAsGuest": "不注册账号，直接结账",
+        "role": "角色",
+        "info": {
+          "emailSent": "邮件已发出",
+          "emailVerified": "邮箱已验证",
+          "passwordChanged": "密码已修改",
+          "passwordReset": "重置密码",
+          "passwordResetSend": "重置密码的邮件已经发送。",
+          "invitationSent": "邀请已发出",
+          "sendInvitation": "发送邀请"
+        },
+        "error": {
+          "emailRequired": "需要邮箱地址。",
+          "passwordRequired": "需要输入密码。",
+          "passwordMustBeAtLeast6CharactersLong": "密码最少包含6个字符。",
+          "passwordMustContainRequirements": "密码至少要含有一个数字或符号。",
+          "minChar": "密码最少包含6个字符。",
+          "pwdsDontMatch": "密码有误。",
+          "pwOneDigit": "密码至少包含一位数字。",
+          "pwOneLetter": "密码需要一个字母。",
+          "signInRequired": "您必须先登录。",
+          "signupCodeIncorrect": "注册码有误。",
+          "signupCodeRequired": "需要注册码。",
+          "usernameIsEmail": "用户名不能是邮箱地址。",
+          "usernameRequired": "需要输入用户名。",
+          "emailAlreadyExists": "邮箱已被注册。",
+          "emailDoesntMatchTheCriteria": "邮箱不合格。",
+          "invalidLoginToken": "登录令牌无效。",
+          "loginForbidden": "登录被禁止。",
+          "serviceUnknown": "未知服务。",
+          "unrecognizedOptionsForLoginRequest": "登录请求中有不能识别的选项",
+          "userValidationFailed": "用户验证失败",
+          "usernameAlreadyExists": "用户名已存在。",
+          "youAreNotLoggedIn": "您还没有登录。",
+          "youveBeenLoggedOutByTheServer": "您的帐号已经被服务器登出，请重新登录。",
+          "yourSessionHasExpired": "您的会话已经过期，请重新登录。",
+          "noMatchingLoginAttemptFound": "没有对应的帐号登录记录。",
+          "passwordIsOld": "这是您用过的密码，请重新设置密码。",
+          "incorrectPassword": "密码错误。",
+          "invalidEmail": "电子邮箱无效。",
+          "addressMustBeAValidEMailAddress": "电子邮箱无效。",
+          "mustBeLoggedIn": "必须登录。",
+          "needToSetUsernameOrEmail": "需要设置一个用户名或者邮箱地址。",
+          "oldPasswordFormat": "旧密码的格式。",
+          "passwordMayNotBeEmpty": "密码不能为空。",
+          "signupsForbidden": "禁止注册",
+          "tokenExpired": "令牌已过期",
+          "tokenHasInvalidEmailAddress": "令牌含有无效邮箱地址。",
+          "userHasNoPasswordSet": "用户没有设置密码。",
+          "userNotFound": "没有此用户。",
+          "verifyEmailLinkExpired": "用于验证邮箱的链接已经失效。",
+          "verifyEmailLinkIsForUnknownAddress": "用于验证邮箱的链接指向了未知地址。",
+          "matchFailed": "匹配失败。",
+          "unknownError": "未知错误。"
+        }
+      }
+    }
+  }
+}]

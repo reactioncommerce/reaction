@@ -1,0 +1,38 @@
+<template name="productImageGallery">
+<div id="galleryDropPane" class="galleryDropPane">
+  <ul class="gallery">
+    {{#each media}}
+      {{> imageDetail}}
+    {{else}}
+     <li>
+        <img src= "/resources/placeholder.gif" class="img-responsive" id="img-upload">
+     </li>
+    {{/each}}
+  </ul>
+  {{>imageUploader}}
+</div>
+
+</template>
+
+<template name="imageDetail">
+  <li class="gallery-image gallery-sortable" data-index="{{_id}}">
+    <img src="{{url uploading='/resources/placeholder.gif' storing='/resources/placeholder.gif' store='large'}}" class="img-responsive" alt="{{title}}">
+    {{#unless this.isUploaded}}
+      {{> FS.UploadProgressBar bootstrap=true}}
+    {{/unless}}
+    {{#if hasPermission "createProduct"}}
+      <div class="gallery-tools">
+        <a class="image-remove-link" data-index="{{_id}}"><i class="remove-image fa fa-times-circle fa-2x"></i></a>
+      </div>
+    {{/if}}
+  </li>
+</template>
+
+<template name="imageUploader">
+{{#if hasPermission "createProduct"}}
+  <div id="dropzone" class="dropzone">
+   <input name="files" id="files" class="hidden" type="file" multiple/>
+    <div class="btn btn-default btn-block" id="btn-upload" data-i18n="productDetail.dropFiles">Drop file to upload</div>
+  </div>
+{{/if}}
+</template>
