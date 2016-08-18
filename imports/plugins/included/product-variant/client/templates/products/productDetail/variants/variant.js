@@ -1,8 +1,6 @@
-import { $ } from "meteor/jquery";
 import { Reaction } from "/client/api";
 import { ReactionProduct } from "/lib/api";
 import { EditButton } from "/imports/plugins/core/ui/client/components";
-import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
 import { Template } from "meteor/templating";
 

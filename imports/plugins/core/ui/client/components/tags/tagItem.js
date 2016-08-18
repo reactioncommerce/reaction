@@ -1,10 +1,10 @@
-import $ from "jquery";
 import { Reaction } from "/client/api";
 import { Tags } from "/lib/collections";
+import { i18next } from "/client/api";
 import classnames from "classnames";
 import Autosuggest from "react-autosuggest";
 import { ReactiveDict } from "meteor/reactive-dict";
-import React from "react"
+import React from "react";
 
 function getSuggestions(term) {
   let datums = [];
@@ -113,7 +113,7 @@ Template.tagEditable.helpers({
         instance.state.set("suggestions", getSuggestions(value));
       },
       inputProps: {
-        placeholder: "Update Tag",
+        placeholder: i18next.t("tags.updateTag", { defaultValue: "Update Tag"}),
         value: instance.state.get("inputValue"),
         onKeyDown(event) {
           // 9 == Tab key
@@ -192,7 +192,7 @@ Template.tagBlank.helpers({
         instance.state.set("suggestions", getSuggestions(value));
       },
       inputProps: {
-        placeholder: "Add Tag", //(i18n "tags.addTag" "Add Tag")
+        placeholder: i18next.t("tags.addTag", { defaultValue: "Add Tag"}),
         value: instance.state.get("inputValue"),
         onKeyDown(event) {
           // 9 == Tab key
