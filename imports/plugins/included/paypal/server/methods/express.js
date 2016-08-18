@@ -159,6 +159,8 @@ Meteor.methods({
     let currencycode = paymentMethod.transactions[0].CURRENCYCODE;
     let response;
 
+    // 100% discounts are not valid when using PayPal Express
+    // If discount is 100%, void authorization instead of applying discount
     if (amount === accounting.toFixed(0, 2)) {
       try {
         response = HTTP.post(options.url, {
