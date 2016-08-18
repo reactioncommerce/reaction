@@ -1,6 +1,7 @@
 import React, { Component, PropTypes} from "react";
 import classnames from "classnames";
 import Icon from "../icon/icon.jsx";
+import { Translation } from "../";
 
 class Button extends Component {
 
@@ -40,13 +41,14 @@ class Button extends Component {
       "btn-success": this.props.status === "success",
       "btn-danger": this.props.status === "danger",
       "btn-info": this.props.status === "info",
-      "btn-warning": this.props.status === "warning"
+      "btn-warning": this.props.status === "warning",
+      "btn-primary": this.props.primary === true || this.props.status === "primary"
     }, this.props.className);
 
     const {
       // Destructure these vars as they aren't valid as attributes on the HTML element button
       label, active, className, status, i18nKeyTitle, i18nKeyLabel, i18nKeyTooltip, // eslint-disable-line no-unused-vars
-      tooltip, icon, toggle, onIcon, toggleOn, eventAction, // eslint-disable-line no-unused-vars
+      tooltip, icon, toggle, onIcon, primary, toggleOn, eventAction, // eslint-disable-line no-unused-vars
 
       // Get the rest of the properties and put them in attrs
       // these will most likely be HTML attributes
@@ -61,7 +63,10 @@ class Button extends Component {
         {...attrs}
       >
         {this.renderIcon()}
-        {label}
+        <Translation
+          defaultValue={label}
+          i18nKey={i18nKeyLabel}
+        />
         {this.props.children}
       </button>
     );
@@ -79,6 +84,7 @@ Button.propTypes = {
   icon: PropTypes.string,
   label: PropTypes.string,
   onIcon: PropTypes.string,
+  primary: PropTypes.bool,
   status: PropTypes.string,
   title: PropTypes.string,
   toggle: PropTypes.bool,

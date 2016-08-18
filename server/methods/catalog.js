@@ -3,7 +3,7 @@ import { EJSON } from "meteor/ejson";
 import { check } from "meteor/check";
 import { Meteor } from "meteor/meteor";
 import { Catalog } from "/lib/api";
-import { Media, Products, Tags } from "/lib/collections";
+import { Media, Products, Revisions, Tags } from "/lib/collections";
 import { Logger, Reaction } from "/server/api";
 
 /**
@@ -732,25 +732,36 @@ Meteor.methods({
       ids.push(doc._id);
     });
 
-    const numRemoved = Products.remove({
+    Products.remove({
       _id: {
         $in: ids
       }
     });
 
+    const numRemoved = Revisions.find({
+      "documentId": {
+        $in: ids
+      },
+      "documentData.isDeleted": true
+    }).count();
+
     if (numRemoved > 0) {
       // we can get removes results only in async way
-      Media.remove({
+      Media.update({
         "metadata.productId": {
           $in: ids
         },
         "metadata.variantId": {
           $in: ids
         }
+      }, {
+        $set: {
+          "metadata.isDeleted": true
+        }
       });
       return numRemoved;
     }
-    throw new Meteor.Error(304, "Something goes wrong, nothing was deleted");
+    throw new Meteor.Error(304, "Something went wrong, nothing was deleted");
   },
 
   /**
@@ -896,22 +907,6 @@ Meteor.methods({
         type: "simple"
       }
     });
-
-    let productCount = Products.find({
-      hashtags: {
-        $in: [tagId]
-      }
-    }).count();
-
-    let relatedTagsCount = Tags.find({
-      relatedTagIds: {
-        $in: [tagId]
-      }
-    }).count();
-
-    if (productCount === 0 && relatedTagsCount === 0) {
-      return Tags.remove(tagId);
-    }
   },
 
   /**
@@ -1097,21 +1092,21 @@ Meteor.methods({
    * @summary update product metafield
    * @param {String} productId - productId
    * @param {Object} updatedMeta - update object with metadata
-   * @param {Object} meta - current meta object
+   * @param {Object|Number|undefined|null} meta - current meta object, or a number index
    * @todo should this method works for variants also?
    * @return {Number} collection update result
    */
   "products/updateMetaFields": function (productId, updatedMeta, meta) {
     check(productId, String);
     check(updatedMeta, Object);
-    check(meta, Match.OptionalOrNull(Object));
+    check(meta, Match.OneOf(Object, Number, undefined, null));
     // must have createProduct permission
     if (!Reaction.hasPermission("createProduct")) {
       throw new Meteor.Error(403, "Access Denied");
     }
 
     // update existing metadata
-    if (meta) {
+    if (typeof meta === "object") {
       return Products.update({
         _id: productId,
         metafields: meta
@@ -1124,7 +1119,20 @@ Meteor.methods({
           type: "simple"
         }
       });
+    } else if (typeof meta === "number") {
+      return Products.update({
+        _id: productId
+      }, {
+        $set: {
+          [`metafields.${meta}`]: updatedMeta
+        }
+      }, {
+        selector: {
+          type: "simple"
+        }
+      });
     }
+
     // adds metadata
     return Products.update({
       _id: productId
@@ -1235,6 +1243,36 @@ Meteor.methods({
       // if collection updated we return new `isVisible` state
       return res === 1 && !product.isVisible;
     }
+    Logger.debug("invalid product visibility ", productId);
+    throw new Meteor.Error(400, "Bad Request");
+  },
+  /**
+   * products/publishProduct
+   * @summary publish (visibility) of product
+   * @todo hook into publishing flow
+   * @param {String} productId - productId
+   * @return {Boolean} product.isVisible
+   */
+  "products/toggleVisibility": function (productId) {
+    check(productId, String);
+    if (!Reaction.hasPermission("createProduct")) {
+      throw new Meteor.Error(403, "Access Denied");
+    }
+
+    const product = Products.findOne(productId);
+    const res = Products.update(productId, {
+      $set: {
+        isVisible: !product.isVisible
+      }
+    }, {
+      selector: {
+        type: product.type
+      }
+    });
+
+    // if collection updated we return new `isVisible` state
+    return res === 1 && !product.isVisible;
+
     Logger.debug("invalid product visibility ", productId);
     throw new Meteor.Error(400, "Bad Request");
   }

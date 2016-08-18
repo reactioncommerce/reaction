@@ -1,7 +1,7 @@
 import { $ } from "meteor/jquery";
 import { Reaction } from "/client/api";
 import { ReactionProduct } from "/lib/api";
-import { EditButton } from "/imports/plugins/core/ui/client/components";
+import { EditButton, VisibilityButton } from "/imports/plugins/core/ui/client/components";
 import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
 import { Template } from "meteor/templating";
@@ -70,6 +70,18 @@ Template.variant.helpers({
         showVariant(data);
       }
     };
+  },
+  VariantRevisionButton() {
+    const variant = Template.currentData();
+
+    return {
+      component: VisibilityButton,
+      toggleOn: variant.isVisible,
+      onClick(event) {
+        event.stopPropagation();
+        ReactionProduct.toggleVisibility(variant);
+      }
+    };
   }
 });
 
@@ -101,16 +113,10 @@ Template.variant.events({
   "dblclick .variant-detail": function () {
     showVariant(this);
   },
-  "click .variant-detail > *": function (event) {
-    event.preventDefault();
-    event.stopPropagation();
+  "click .variant-detail": function () {
     Alerts.removeSeen();
 
     ReactionProduct.setCurrentVariant(this._id);
-
-    if (Reaction.getActionView()) {
-      showVariant(this);
-    }
   }
 });
 

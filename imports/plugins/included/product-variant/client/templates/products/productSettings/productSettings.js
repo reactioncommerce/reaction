@@ -3,11 +3,13 @@ import { ReactiveDict } from "meteor/reactive-dict";
 import Logger from "/client/modules/logger";
 import { ReactionProduct } from "/lib/api";
 import { Media, Products } from "/lib/collections";
+import { PublishContainer } from "/imports/plugins/core/revisions";
 
 Template.productSettings.onCreated(function () {
   this.state = new ReactiveDict();
   this.state.setDefault({
-    products: []
+    products: [],
+    productIds: []
   });
 
   this.autorun(() => {
@@ -17,12 +19,18 @@ Template.productSettings.onCreated(function () {
       const productIds = currentData.products.map((product) => {
         return product._id;
       });
-
+      this.state.set("productIds", productIds);
       const products = Products.find({
         _id: {
           $in: productIds
         }
-      }).fetch();
+      }).map((product) => {
+        console.log(product);
+        if (product.__revisions && product.__revisions.length) {
+          return product.__revisions[0].documentData;
+        }
+        return product._id;
+      });
 
       this.state.set("products", products);
     }
@@ -30,6 +38,15 @@ Template.productSettings.onCreated(function () {
 });
 
 Template.productSettings.helpers({
+  PublishContainerComponent() {
+    const instance = Template.instance();
+    const productIds = instance.state.get("productIds") || [];
+
+    return {
+      component: PublishContainer,
+      documentIds: productIds
+    };
+  },
   hasSelectedProducts() {
     return this.products.length > 0;
   },
