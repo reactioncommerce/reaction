@@ -9,10 +9,6 @@ import { Session } from "meteor/session";
 import { Template } from "meteor/templating";
 import { EditButton } from "/imports/plugins/core/ui/client/components";
 
-// load modules
-require("jquery-ui");
-
-
 Template.productDetail.onCreated(function () {
   this.state = new ReactiveDict();
   this.state.setDefault({
