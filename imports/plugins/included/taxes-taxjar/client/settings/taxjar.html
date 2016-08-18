@@ -1,0 +1,8 @@
+<template name="taxJarSettings">
+  {{#autoForm collection=Collections.Packages schema=packageConfigSchema doc=packageData type="update" id="taxjar-update-form"}}
+      <div class="panel-body">
+        {{> afQuickField name='settings.taxjar.apiLoginId' class='form-control'}}
+      </div>
+      {{> shopSettingsSubmitButton}}
+  {{/autoForm}}
+</template>

@@ -13,7 +13,6 @@ const {
   Shipping,
   Shops,
   Tags,
-  Taxes,
   Templates,
   Translations
 } = Collections;
@@ -98,7 +97,6 @@ export default function () {
     Tags,
     Translations,
     Discounts,
-    Taxes,
     Shipping,
     Orders,
     Packages,

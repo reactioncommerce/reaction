@@ -1,0 +1,8 @@
+<template name="avalaraSettings">
+  {{#autoForm collection=Collections.Packages schema=packageConfigSchema doc=packageData type="update" id="avalara-update-form"}}
+      <div class="panel-body">
+        {{>afQuickField name='settings.avalara.apiLoginId' class='form-control'}}
+      </div>
+      {{> shopSettingsSubmitButton}}
+  {{/autoForm}}
+</template>
