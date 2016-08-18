@@ -333,17 +333,6 @@ Template.coreOrderShippingInvoice.helpers({
     });
 
     if (paymentMethod.processor === "Stripe") {
-      // let stripeDiscountAlert = function() {
-      //   if (discounts > 0) {
-      //     Alerts.inline("Stripe processes discounts as refunds, which is why you're seeing your discount under both Discounts & Refunds. This is for display only, the Adjusted Total is the correct representation of the sale.", "warning", {
-      //     placement: "stripeDiscountAlerts"
-      //     // i18nKey: "order.invalidRefund"
-      //     });
-      //   }
-      // };
-      // let stripeDiscountExplanation = _.once(stripeDiscountAlert);
-      //
-      // stripeDiscountExplanation();
       return Math.abs(paymentMethod.amount + discounts - refundTotal);
     }
     return Math.abs(paymentMethod.amount - refundTotal);
