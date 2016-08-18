@@ -137,7 +137,7 @@ Template.tagEditable.helpers({
 
     return createAutosuggestInput(instance, {
       i18nPlaceholderKey: "tags.updateTag",
-      defaultValue: "Update Tag",
+      i18nPlaceholderValue: "Update Tag",
       onUpdateCallback: instance.updateTag
     });
   },
@@ -194,7 +194,7 @@ Template.tagBlank.helpers({
 
     return createAutosuggestInput(instance, {
       i18nPlaceholderKey: "tags.addTag",
-      defaultValue: "Add Tag",
+      i18nPlaceholderValue: "Add Tag",
       onUpdateCallback: instance.submitInput
     });
   }
