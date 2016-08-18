@@ -6,6 +6,36 @@ import Autosuggest from "react-autosuggest";
 import { ReactiveDict } from "meteor/reactive-dict";
 import React from "react";
 
+function createAutosuggestInput(templateInstance, options) {
+  return {
+    component: Autosuggest,
+    suggestions: templateInstance.state.get("suggestions"),
+    getSuggestionValue: getSuggestionValue,
+    renderSuggestion: renderSuggestion,
+    onSuggestionsUpdateRequested({ value }) {
+      templateInstance.state.set("suggestions", getSuggestions(value));
+    },
+    inputProps: {
+      placeholder: i18next.t(options.i18nPlaceholderKey, { defaultValue: options.i18nPlaceholderValue}),
+      value: templateInstance.state.get("inputValue"),
+      onKeyDown(event) {
+        // 9 == Tab key
+        // 13 == Enter Key
+        if (event.keyCode === 9 || event.keyCode === 13) {
+          options.onUpdateCallback && options.onUpdateCallback();
+        }
+      },
+      onBlur: () => {
+        options.onUpdateCallback && options.onUpdateCallback();
+      },
+      onChange(event, { newValue }) {
+        templateInstance.state.set("suggestion", getSuggestions(newValue));
+        templateInstance.state.set("inputValue", newValue);
+      }
+    }
+  };
+}
+
 function getSuggestions(term) {
   let datums = [];
   let slug = Reaction.getSlug(term);
@@ -52,6 +82,7 @@ Template.tagItem.helpers({
 
               return control.toggleOn;
             }
+            return undefined;
           },
           onClick(event) {
             // Call the original onClick and add the current tag
@@ -104,33 +135,11 @@ Template.tagEditable.helpers({
   AutosuggestInput() {
     const instance = Template.instance();
 
-    return {
-      component: Autosuggest,
-      suggestions: instance.state.get("suggestions"),
-      getSuggestionValue: getSuggestionValue,
-      renderSuggestion: renderSuggestion,
-      onSuggestionsUpdateRequested({ value }) {
-        instance.state.set("suggestions", getSuggestions(value));
-      },
-      inputProps: {
-        placeholder: i18next.t("tags.updateTag", { defaultValue: "Update Tag"}),
-        value: instance.state.get("inputValue"),
-        onKeyDown(event) {
-          // 9 == Tab key
-          // 13 == Enter Key
-          if (event.keyCode === 9 || event.keyCode === 13) {
-            instance.updateTag();
-          }
-        },
-        onBlur: () => {
-          instance.updateTag();
-        },
-        onChange(event, { newValue }) {
-          instance.state.set("suggestion", getSuggestions(newValue));
-          instance.state.set("inputValue", newValue);
-        }
-      }
-    };
+    return createAutosuggestInput(instance, {
+      i18nPlaceholderKey: "tags.updateTag",
+      defaultValue: "Update Tag",
+      onUpdateCallback: instance.updateTag
+    });
   },
 
   className() {
@@ -183,32 +192,10 @@ Template.tagBlank.helpers({
   AutosuggestInput() {
     const instance = Template.instance();
 
-    return {
-      component: Autosuggest,
-      suggestions: instance.state.get("suggestions"),
-      getSuggestionValue: getSuggestionValue,
-      renderSuggestion: renderSuggestion,
-      onSuggestionsUpdateRequested({ value }) {
-        instance.state.set("suggestions", getSuggestions(value));
-      },
-      inputProps: {
-        placeholder: i18next.t("tags.addTag", { defaultValue: "Add Tag"}),
-        value: instance.state.get("inputValue"),
-        onKeyDown(event) {
-          // 9 == Tab key
-          // 13 == Enter Key
-          if (event.keyCode === 9 || event.keyCode === 13) {
-            instance.submitInput();
-          }
-        },
-        onBlur: () => {
-          instance.submitInput();
-        },
-        onChange(event, { newValue }) {
-          instance.state.set("suggestion", getSuggestions(newValue));
-          instance.state.set("inputValue", newValue);
-        }
-      }
-    };
+    return createAutosuggestInput(instance, {
+      i18nPlaceholderKey: "tags.addTag",
+      defaultValue: "Add Tag",
+      onUpdateCallback: instance.submitInput
+    });
   }
 });
