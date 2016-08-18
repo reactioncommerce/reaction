@@ -46,7 +46,7 @@ function handlePaypalSubmitError(error) {
     }
     return results;
   } else if (serverError) {
-    return paymentAlert("Oops! " + serverError);
+    return paymentAlert("Oops! Credit Card number is invalid.");
   }
   Logger.fatal("An unknown error has occurred while processing a Paypal payment");
   return paymentAlert("Oops! An unknown error has occurred");

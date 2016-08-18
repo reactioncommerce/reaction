@@ -219,16 +219,14 @@ Meteor.methods({
     check(shipment, Object);
 
     if (!Reaction.hasPermission("orders")) {
-      throw new Meteor.Error(403, "Access Denied");
+      Logger.error("User does not have 'orders' permissions");
+      throw new Meteor.Error("access-denied", "Access Denied");
     }
 
     this.unblock();
 
     let completedItemsResult;
     let completedOrderResult;
-
-    // Attempt to sent email notification
-    const notifyResult = Meteor.call("orders/sendNotification", order);
 
     const itemIds = shipment.items.map((item) => {
       return item._id;
@@ -247,8 +245,17 @@ Meteor.methods({
       }
     }
 
+    if (order.email) {
+      Meteor.call("orders/sendNotification", order, (err) => {
+        if (err) {
+          Logger.error(err, "orders/shipmentShipped: Failed to send notification");
+        }
+      });
+    } else {
+      Logger.warn("No order email found. No notification sent.");
+    }
+
     return {
-      notifyResult: notifyResult,
       workflowResult: workflowResult,
       completedItems: completedItemsResult,
       completedOrder: completedOrderResult
@@ -271,32 +278,37 @@ Meteor.methods({
 
     this.unblock();
 
-    if (order) {
-      let shipment = order.shipping[0];
+    const shipment = order.shipping[0];
 
-      // Attempt to sent email notification
-      Meteor.call("orders/sendNotification", order);
-
-      const itemIds = shipment.items.map((item) => {
-        return item._id;
+    if (order.email) {
+      Meteor.call("orders/sendNotification", order, (err) => {
+        if (err) {
+          Logger.error(err, "orders/shipmentShipped: Failed to send notification");
+        }
       });
-
-      Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/delivered", order._id, itemIds);
-      Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/completed", order._id, itemIds);
-
-      const isCompleted = _.every(order.items, (item) => {
-        return _.includes(item.workflow.workflow, "coreOrderItemWorkflow/completed");
-      });
-
-      if (isCompleted === true) {
-        Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "completed", order._id);
-        return true;
-      }
-
-      Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "processing", order._id);
-
-      return false;
+    } else {
+      Logger.warn("No order email found. No notification sent.");
     }
+
+    const itemIds = shipment.items.map((item) => {
+      return item._id;
+    });
+
+    Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/delivered", order._id, itemIds);
+    Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/completed", order._id, itemIds);
+
+    const isCompleted = _.every(order.items, (item) => {
+      return _.includes(item.workflow.workflow, "coreOrderItemWorkflow/completed");
+    });
+
+    if (isCompleted === true) {
+      Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "completed", order._id);
+      return true;
+    }
+
+    Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "processing", order._id);
+
+    return false;
   },
 
   /**
@@ -309,50 +321,44 @@ Meteor.methods({
   "orders/sendNotification": function (order) {
     check(order, Object);
 
-    // just make sure this a real userId
-    // todo: ddp limit
-    if (!Meteor.userId()) {
-      throw new Meteor.Error(403, "Access Denied");
+    if (!this.userId) {
+      Logger.error("orders/sendNotification: Access denied");
+      throw new Meteor.Error("access-denied", "Access Denied");
     }
 
     this.unblock();
-    if (order) {
-      let shop = Shops.findOne(order.shopId);
-      let shipment = order.shipping[0];
 
-      Reaction.configureMailUrl();
-      Logger.info("orders/sendNotification", order.workflow.status);
-      // handle missing root shop email
-      if (!shop.emails[0].address) {
-        shop.emails[0].address = "no-reply@reactioncommerce.com";
-        Logger.warn("No shop email configured. Using no-reply to send mail");
-      }
-      // anonymous users without emails.
-      if (!order.email) {
-        Logger.warn("No shop email configured. Using anonymous order.");
-        return true;
-      }
-      // email templates can be customized in Templates collection
-      // loads defaults from reaction-email-templates/templates
-      let tpl = `orders/${order.workflow.status}`;
-      SSR.compileTemplate(tpl, ReactionEmailTemplate(tpl));
-      try {
-        return Email.send({
-          to: order.email,
-          from: `${shop.name} <${shop.emails[0].address}>`,
-          subject: `Order update from ${shop.name}`,
-          html: SSR.render(tpl, {
-            homepage: Meteor.absoluteUrl(),
-            shop: shop,
-            order: order,
-            shipment: shipment
-          })
-        });
-      } catch (error) {
-        Logger.fatal("Unable to send notification email: " + error);
-        throw new Meteor.Error("error-sending-email", "Unable to send order notification email.", error);
-      }
+    const shop = Shops.findOne(order.shopId);
+    const shipment = order.shipping[0];
+
+    Logger.info(`orders/sendNotification status: ${order.workflow.status}`);
+
+    // handle missing root shop email
+    if (!shop.emails[0].address) {
+      shop.emails[0].address = "no-reply@reactioncommerce.com";
+      Logger.warn("No shop email configured. Using no-reply to send mail");
     }
+
+    // anonymous users without emails.
+    if (!order.email) {
+      const msg = "No order email found. No notification sent.";
+      Logger.warn(msg);
+      throw new Meteor.Error("email-error", msg);
+    }
+
+    // email templates can be customized in Templates collection
+    // loads defaults from /private/email/templates
+    const tpl = `orders/${order.workflow.status}`;
+    SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl));
+
+    Reaction.Email.send({
+      to: order.email,
+      from: `${shop.name} <${shop.emails[0].address}>`,
+      subject: `Order update from ${shop.name}`,
+      html: SSR.render(tpl, { homepage: Meteor.absoluteUrl(), shop, order, shipment })
+    });
+
+    return true;
   },
 
   /**
@@ -371,11 +377,9 @@ Meteor.methods({
 
     this.unblock();
 
-    if (order) {
-      Meteor.call("workflow/pushOrderWorkflow",
-        "coreOrderWorkflow", "coreOrderCompleted", order._id);
-      return this.orderCompleted(order);
-    }
+    Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreOrderCompleted", order._id);
+
+    return this.orderCompleted(order);
   },
 
   /**
@@ -760,7 +764,7 @@ Meteor.methods({
     });
 
     if (result.saved === false) {
-      Logger.fatal("Attempt for refund transaction failed", order, paymentMethod.transactionId, result.error);
+      Logger.fatal("Attempt for refund transaction failed", order._id, paymentMethod.transactionId, result.error);
 
       throw new Meteor.Error(
         "Attempt to refund transaction failed", result.error);

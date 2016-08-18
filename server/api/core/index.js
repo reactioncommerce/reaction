@@ -1,5 +1,6 @@
 import Core from "./core";
 import * as AssignRoles from "./assignRoles";
+import * as Email from "./email";
 import Import from "./import";
 import * as LoadSettings from "./loadSettings";
 import Log from "../logger";
@@ -19,6 +20,7 @@ const Reaction = Object.assign(
   Core,
   AssignRoles,
   { Collections },
+  { Email },
   { Import },
   LoadSettings,
   { Log },

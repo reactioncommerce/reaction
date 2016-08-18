@@ -1,11 +1,13 @@
+import _ from "lodash";
+import { Session } from "meteor/session";
+import { Meteor } from "meteor/meteor";
+import { Tracker } from "meteor/tracker";
 import { FlowRouter as Router } from "meteor/kadira:flow-router-ssr";
 import { BlazeLayout } from "meteor/kadira:blaze-layout";
 import { Reaction, Logger } from "/client/api";
 import { Packages, Shops } from "/lib/collections";
 import { MetaData } from "/lib/api/router/metadata";
-import { Session } from "meteor/session";
-import { Meteor } from "meteor/meteor";
-import { Tracker } from "meteor/tracker";
+import Hooks from "./hooks";
 
 
 // init flow-router
@@ -14,6 +16,8 @@ import { Tracker } from "meteor/tracker";
 
 // client should wait on subs
 Router.wait();
+
+Router.Hooks = Hooks;
 
 /**
  * checkRouterPermissions
@@ -24,6 +28,7 @@ Router.wait();
  */
 function checkRouterPermissions(context) {
   const routeName = context.route.name;
+
   if (Reaction.hasPermission(routeName, Meteor.userId())) {
     if (context.unauthorized === true) {
       delete context.unauthorized;
@@ -44,8 +49,6 @@ function checkRouterPermissions(context) {
   return context;
 }
 
-// initialize title and meta data and check permissions
-Router.triggers.enter([checkRouterPermissions, MetaData.init]);
 
 /**
  * getRouteName
@@ -170,7 +173,7 @@ Router.initPackageRoutes = () => {
     //
     // index / home route
     // to overide layout, ie: home page templates
-    // set DEFAULT_LAYOUT, in config.js
+    // set INDEX_OPTIONS, in config.js
     //
     shop.route("/", {
       name: "index",
@@ -192,32 +195,26 @@ Router.initPackageRoutes = () => {
               route,
               template,
               layout,
-              workflow,
-              triggersEnter,
-              triggersExit
+              workflow
             } = registryItem;
-            // get registry route name
-            const routeName = getRegistryRouteName(pkg.name, registryItem);
 
-            // layout option structure
-            const options = {
-              template: template,
-              workflow: workflow,
-              layout: layout
-            };
+            // console.log(registryItem);
+
+            // get registry route name
+            const name = getRegistryRouteName(pkg.name, registryItem);
 
             // define new route
             // we could allow the options to be passed in the registry if we need to be more flexible
             const newRouteConfig = {
-              route: route,
+              route,
               options: {
-                name: routeName,
-                template: options.template,
-                layout: options.layout,
-                triggersEnter: triggersEnter,
-                triggersExit: triggersExit,
-                action: () => {
-                  ReactionLayout(options);
+                name,
+                template,
+                layout,
+                triggersEnter: Router.Hooks.get("onEnter", name),
+                triggersExit: Router.Hooks.get("onExit", name),
+                action() {
+                  ReactionLayout({ template, workflow, layout });
                 }
               }
             };
@@ -261,7 +258,6 @@ Router.initPackageRoutes = () => {
       Router.initialize();
     } catch (e) {
       Logger.error(e);
-      Router.reload();
     }
   }
 };
@@ -306,5 +302,15 @@ Router.isActiveClassName = (routeName) => {
   const routeDef = path.replace(prefix + "/", "");
   return routeDef === routeName ? "active" : "";
 };
+
+// Register Global Route Hooks
+Meteor.startup(() => {
+  Router.Hooks.onEnter(checkRouterPermissions);
+  Router.Hooks.onEnter(MetaData.init);
+
+  Router.triggers.enter(Router.Hooks.get("onEnter", "GLOBAL"));
+  Router.triggers.exit(Router.Hooks.get("onExit", "GLOBAL"));
+});
+
 
 export default Router;

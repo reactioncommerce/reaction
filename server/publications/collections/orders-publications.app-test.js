@@ -57,6 +57,9 @@ describe("Order Publication", function () {
       sandbox.stub(Meteor.server.method_handlers, "inventory/register", function () {
         check(arguments, [Match.Any]);
       });
+      sandbox.stub(Meteor.server.method_handlers, "inventory/sold", function () {
+        check(arguments, [Match.Any]);
+      });
       sandbox.stub(Reaction, "getShopId", () => shop._id);
       sandbox.stub(Roles, "userIsInRole", () => true);
       order = Factory.create("order", { status: "created" });
@@ -71,6 +74,9 @@ describe("Order Publication", function () {
       sandbox.stub(Collections.Orders._hookAspects.update.before[0], "aspect");
       sandbox.stub(Reaction, "hasPermission", () => true);
       sandbox.stub(Meteor.server.method_handlers, "inventory/register", function () {
+        check(arguments, [Match.Any]);
+      });
+      sandbox.stub(Meteor.server.method_handlers, "inventory/sold", function () {
         check(arguments, [Match.Any]);
       });
       sandbox.stub(Reaction, "getShopId", () => shop._id);
