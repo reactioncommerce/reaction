@@ -1,0 +1,21 @@
+<template name="searchSettings">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <div class="panel-title">Product Search Settings</div>
+    </div>
+    <div class="panel-body">
+      {{#autoForm
+        collection=Collections.Packages
+        schema=SearchPackageConfig
+        doc=packageData
+        type="update"
+        id="search-update-form"
+      }}
+        {{>afQuickField name='settings.includeVariants'}}
+        {{>afQuickField name='settings.variantWeight'}}
+        <button type="submit" class="btn btn-primary pull-right">Update</button>
+      {{/autoForm}}
+    </div>
+  </div>
+</template>
+

@@ -1,4 +1,3 @@
-/* eslint camelcase: 0 */
 import { Reaction } from "/server/api";
 
 Reaction.registerPackage({
@@ -7,6 +6,8 @@ Reaction.registerPackage({
   icon: "fa fa-search",
   autoEnable: true,
   settings: {
+    includeVariants: false,
+    variantWeight: 1
   },
   registry: [
     // Dashboard card
@@ -17,6 +18,14 @@ Reaction.registerPackage({
       icon: "fa fa-search",
       priority: 2,
       container: "core"
+    },
+    // Settings Panel
+    {
+      label: "Search Settings",
+      route: "/dashboard/search",
+      provides: "settings",
+      container: "dashboard",
+      template: "searchSettings"
     }
   ]
 });

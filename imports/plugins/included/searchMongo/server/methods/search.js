@@ -1,6 +1,6 @@
 import _ from "lodash";
 import { Reaction, Logger } from "/server/api";
-import { Products, Orders, Accounts } from "/lib/collections";
+import { Products, Orders, Accounts, Packages } from "/lib/collections";
 
 
 function flattenToIds(products) {
@@ -18,17 +18,8 @@ buildSearchResults.product = function (products, existingSearchResults, weight) 
   const existingIds = flattenToIds(existingSearchResults);
   for (let product of products) { // prevent adding a duplicate product when found in both exact and partial search
     if (!_.includes(existingIds, product._id)) {
-      let searchProduct = {
-        _id: product._id,
-        title: product.title,
-        pageTitle: product.pageTitle,
-        priceRange: product.price.range,
-        vendor: product.vendor,
-        description: product.description,
-        isLowQuantity: product.isLowQuantity,
-        metafields: product.metafields,
-        weight: weight
-      };
+      let searchProduct = Object.assign({}, product);
+      searchProduct.weight = weight;
       searchResults.push(searchProduct);
     }
   }
@@ -38,16 +29,30 @@ buildSearchResults.product = function (products, existingSearchResults, weight) 
 buildSearchResults.order = function (orders, existingSearchResults) {
   let searchResults = existingSearchResults || [];
   for (let order of orders) {
-    const user = Accounts.findOne(order.userId);
-    let searchOrder = {
-      _id: order._id,
-      username: user.username,
-      items: order.items,
-      shipping: order.shipping,
-      billing: order.billing
-    };
+    let user = Meteor.users.findOne(order.userId);
+    let searchOrder = Object.assign({}, order);
+    searchOrder.itemCount = searchOrder.itemCount();
+    if (user) {
+      searchOrder.user = user;
+    }
     searchResults.push(searchOrder);
   }
+  return searchResults;
+};
+
+buildSearchResults.account = function(accounts, existingSearchResults) {
+  let searchResults = existingSearchResults || [];
+  for (let account of accounts) {
+    let searchAccount = {
+      _id: account._id,
+      userId: account.userId,
+      acceptsMarketing: account.acceptsMarketing,
+      emails: account.emails,
+      state: account.state
+    };
+    searchResults.push(searchAccount);
+  }
+  return searchResults;
 };
 
 
@@ -61,7 +66,10 @@ searchMethods.product = function (searchString, stopOnExactMatch) {
     shopId: shopId,
     type: "simple",
     isVisible: true,
-    title: searchString
+    title: {
+      $regex: "/^" + searchString + "$/", // we us regex here because we want a case-insentive search
+      $options: "i"
+    }
   }).fetch();
   if (exactProducts) {
     Logger.info(`Got ${exactProducts.length} products in exact search`);
@@ -96,11 +104,22 @@ searchMethods.order = function (searchString) {
   const orders = Orders.find({
     shopId: Reaction.getShopId(),
     _id: {
-      $regex: ".*" + searchString + ".*",
-      options: "i"
+      $regex: ".*" + searchString + ".*"
     }
   }).fetch();
+  Logger.info(`Got ${orders.length} order in partial search`);
   const results = buildSearchResults.order(orders);
+  Logger.info(results);
+  return results;
+};
+
+searchMethods.account = function (searchString) {
+  // is there any reason for a partial search on account?
+  const accounts = Accounts.find({
+    shopId: Reaction.getShopId(),
+    emails: { $elemMatch: { address: searchString } }
+  }).fetch();
+  const results = buildSearchResults.account(accounts);
   Logger.info(results);
   return results;
 };
