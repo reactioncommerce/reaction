@@ -17,15 +17,6 @@ Reaction.registerPackage({
       icon: "fa fa-search",
       priority: 2,
       container: "core"
-    },
-
-    // Settings panel
-    {
-      label: "Search Settings",
-      route: "/dashboard/search",
-      provides: "settings",
-      container: "dashboard",
-      template: "searchsettings"
     }
   ]
 });
