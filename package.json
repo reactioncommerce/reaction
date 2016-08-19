@@ -25,6 +25,7 @@
     "autoprefixer": "^6.3.7",
     "autosize": "^3.0.17",
     "avalara-taxrates": "^1.0.1",
+    "bcrypt": "^0.8.7",
     "bootstrap": "^3.3.7",
     "braintree": "^1.41.0",
     "bunyan": "^1.8.1",
