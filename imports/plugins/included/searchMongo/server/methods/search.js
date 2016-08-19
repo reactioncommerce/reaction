@@ -58,7 +58,37 @@ buildSearchResults.account = function(accounts, existingSearchResults) {
 
 export const searchMethods = {};
 
+function findVariants(searchString, exactMatch = true) {
+  const shopId = Reaction.getShopId();
+  let titleSelector;
+  if (exactMatch) {
+    titleSelector = {
+      $regex: "/^" + searchString + "$/",
+      $options: "i"
+    };
+  } else {
+    titleSelector = {
+      $regex: ".*" + searchString + ".*",
+      $options: "i"
+    };
+  }
+  const variants = Products.find({
+    shopId: shopId,
+    type: "variant",
+    isVisible: true,
+    title: titleSelector
+  }).fetch();
+  if (exactMatch) {
+    Logger.info(`Got ${variants.length} variants in exact search`);
+  } else {
+    Logger.info(`Got ${variants.length} variants in partial search`);
+  }
+  return variants;
+}
+
+
 searchMethods.product = function (searchString, stopOnExactMatch) {
+  const settings = Packages.findOne({ name: "reaction-search" }).settings;
   // first find exact matches and weight them 10's
   let results;
   const shopId = Reaction.getShopId();
@@ -67,7 +97,7 @@ searchMethods.product = function (searchString, stopOnExactMatch) {
     type: "simple",
     isVisible: true,
     title: {
-      $regex: "/^" + searchString + "$/", // we us regex here because we want a case-insentive search
+      $regex: "/^" + searchString + "$/", // we use regex here because we want a case-insentive search
       $options: "i"
     }
   }).fetch();
@@ -88,6 +118,12 @@ searchMethods.product = function (searchString, stopOnExactMatch) {
     }).fetch();
     Logger.info(`Got ${products.length} products in partial search`);
     results = buildSearchResults.product(products, results, 5);
+  }
+  if (settings.includeVariants) {
+    const variantResults = findVariants(searchString, true);
+    const partialVariantResults = findVariants(searchString, false);
+    results = buildSearchResults.product(variantResults, results, settings.variantWeight);
+    results = buildSearchResults.product(partialVariantResults, results, settings.variantWeight - 1);
   }
   Logger.info(results);
   return results;
