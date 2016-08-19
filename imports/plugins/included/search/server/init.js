@@ -11,7 +11,8 @@ Hooks.Events.add("afterCoreInit", () => {
     let productJson = Assets.getText("custom/SearchProducts.json");
     const productData = EJSON.parse(productJson);
     for (let product of productData) {
-      product.description = faker.commerce.productAdjective();
+      // product.title = faker.commerce.productName();
+      // product.description = faker.commerce.productAdjective();
       Products.insert(product);
     }
   }
