@@ -2,6 +2,7 @@
 <div class="social-media">
   {{!-- Social Commentary --}}
   {{#each reactionApps provides="social" name="reaction-social"}}
+  {{template}}
     {{> Template.dynamic template=template data=customSocialSettings }}
   {{/each}}
 </div>

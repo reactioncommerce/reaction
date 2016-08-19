@@ -9,6 +9,7 @@ import { Session } from "meteor/session";
 import { Template } from "meteor/templating";
 import { Button, EditButton } from "/imports/plugins/core/ui/client/components";
 import { PublishContainer } from "/imports/plugins/core/revisions";
+import { ProductDetailContainer } from "/imports/plugins/included/product-detail-simple/client/containers";
 
 // load modules
 require("jquery-ui");
@@ -64,6 +65,11 @@ Template.productDetail.onCreated(function () {
  * product data source
  */
 Template.productDetail.helpers({
+  PDC() {
+    return {
+      component: ProductDetailContainer
+    }
+  },
   tagListProps() {
     const instance = Template.instance();
     const product = instance.state.get("product") || {};
