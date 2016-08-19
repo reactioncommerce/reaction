@@ -822,7 +822,7 @@ Meteor.methods({
     };
 
     let existingTag = Tags.findOne({
-      name: tagName
+      slug: Reaction.getSlug(tagName)
     });
 
     if (existingTag) {
