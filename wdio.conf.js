@@ -11,16 +11,16 @@ exports.config = {
     //
     specs: [
         //'./tests/acceptance-tests/test/specs/**/*.js'
+        // failing test - leaving commented out for now
         //'./tests/acceptance-tests/test/specs/dashboard-permissions.app-test.js'
-        //'./tests/acceptance-tests/test/specs/test.app-test.js'
-        //'./tests/acceptance-tests/test/specs/guest-authorizenet-checkout.app-test.js'
-        //'./tests/acceptance-tests/test/specs/guest-example-payment-checkout.app-test.js'
-        //'./tests/acceptance-tests/test/specs/guest-paypal-checkout.app-test.js'
-        //'./tests/acceptance-tests/test/specs/guest-stripe-checkout.app-test.js'
-        //'./tests/acceptance-tests/test/specs/logged-in-authorizenet-checkout.app-test.js'
-        //'./tests/acceptance-tests/test/specs/logged-in-braintree-checkout.app-test.js'
-        //'./tests/acceptance-tests/test/specs/logged-in-example-payment-checkout.app-test.js'
-        //'./tests/acceptance-tests/test/specs/logged-in-paypal-checkout.app-test.js'
+        './tests/acceptance-tests/test/specs/guest-authorizenet-checkout.app-test.js',
+        './tests/acceptance-tests/test/specs/guest-example-payment-checkout.app-test.js',
+        './tests/acceptance-tests/test/specs/guest-paypal-checkout.app-test.js',
+        './tests/acceptance-tests/test/specs/guest-stripe-checkout.app-test.js',
+        './tests/acceptance-tests/test/specs/logged-in-authorizenet-checkout.app-test.js',
+        './tests/acceptance-tests/test/specs/logged-in-braintree-checkout.app-test.js',
+        './tests/acceptance-tests/test/specs/logged-in-example-payment-checkout.app-test.js',
+        './tests/acceptance-tests/test/specs/logged-in-paypal-checkout.app-test.js',
         './tests/acceptance-tests/test/specs/logged-in-stripe-checkout.app-test.js'
 
     ],
