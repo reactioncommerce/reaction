@@ -236,6 +236,7 @@
       },
       "tags": {
         "addTag": "Add Tag",
+        "updateTag": "Update Tag",
         "addGroupTag": "Add Group Tag",
         "addSubTag": "Add Sub Tag",
         "removeTag": "Remove Tag",
