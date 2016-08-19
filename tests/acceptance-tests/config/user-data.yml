@@ -1,5 +1,21 @@
-admin_email: "sfktt3zy@localhost"
-admin_pw: "u8WJx4FV"
+admin_email: "xjlwiee5@localhost"
+admin_pw: "YQ2WyUsU"
 
 guest_email: josh@reactioncommerce.com
 guest_pw: password123
+
+# shop address
+country: US
+name: Josh Ewing
+address1: 123 Test Ave.
+postal: 12345
+city: Los Angeles
+region: CA
+phone: 555-555-5555
+
+# payment info
+card_holder: Josh Ewing
+visa: 4111111111111111
+exp_month: 1
+exp_year: 2020
+cvv: 123

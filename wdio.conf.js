@@ -10,7 +10,19 @@ exports.config = {
     // directory is where your package.json resides, so `wdio` will be called from there.
     //
     specs: [
-        './tests/acceptance-tests/test/specs/**/*.js'
+        //'./tests/acceptance-tests/test/specs/**/*.js'
+        //'./tests/acceptance-tests/test/specs/dashboard-permissions.app-test.js'
+        //'./tests/acceptance-tests/test/specs/test.app-test.js'
+        //'./tests/acceptance-tests/test/specs/guest-authorizenet-checkout.app-test.js'
+        //'./tests/acceptance-tests/test/specs/guest-example-payment-checkout.app-test.js'
+        //'./tests/acceptance-tests/test/specs/guest-paypal-checkout.app-test.js'
+        //'./tests/acceptance-tests/test/specs/guest-stripe-checkout.app-test.js'
+        //'./tests/acceptance-tests/test/specs/logged-in-authorizenet-checkout.app-test.js'
+        //'./tests/acceptance-tests/test/specs/logged-in-braintree-checkout.app-test.js'
+        //'./tests/acceptance-tests/test/specs/logged-in-example-payment-checkout.app-test.js'
+        //'./tests/acceptance-tests/test/specs/logged-in-paypal-checkout.app-test.js'
+        './tests/acceptance-tests/test/specs/logged-in-stripe-checkout.app-test.js'
+
     ],
     // Patterns to exclude.
     exclude: [
@@ -32,7 +44,7 @@ exports.config = {
     // and 30 processes will get spawned. The property handles how many capabilities
     // from the same test should run tests.
     //
-    maxInstances: 10,
+    maxInstances: 1,
     //
     // If you have trouble getting all important capabilities together, check out the
     // Sauce Labs platform configurator - a great tool to configure your capabilities:
@@ -42,7 +54,7 @@ exports.config = {
         // maxInstances can get overwritten per capability. So if you have an in-house Selenium
         // grid with only 5 firefox instance available you can make sure that not more than
         // 5 instance gets started at a time.
-        maxInstances: 5,
+        maxInstances: 1,
         //
         browserName: 'firefox'
     }],
@@ -64,7 +76,7 @@ exports.config = {
     coloredLogs: true,
     //
     // Saves a screenshot to a given path if a command fails.
-    screenshotPath: './tests/acceptance-tests/errorShots/',
+    //screenshotPath: './tests/acceptance-tests/errorShots/',
     //
     // Set a base URL in order to shorten url command calls. If your url parameter starts
     // with "/", then the base url gets prepended.
