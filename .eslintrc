@@ -28,7 +28,7 @@
     "templateStrings": true,
     "jsx": true
   },
-  // NOTE: This is ESLINT v1 syntax because Code Climate v2 seg faults.
+  // NOTE: We're now using eslint-2
   "rules": {
     /**
      * Strict mode
