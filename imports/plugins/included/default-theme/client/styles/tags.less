@@ -13,7 +13,14 @@
 }
 
 .rui.tag.edit {
+  height: 33px;
   padding: 0;
+}
+
+.rui.tag.edit .autosuggest-wrapper,
+.rui.tag.edit .react-autosuggest__container {
+  width: 100%;
+  height: 100%;
 }
 
 .rui.tag.edit form {
@@ -22,11 +29,12 @@
 }
 
 .rui.tag.edit input {
+  height: 100%;
   padding: @padding-base-vertical @padding-base-horizontal;
   border-radius: 0;
 
   background-color: @white;
-  border-color: @border-color;
+  border: 1px solid @border-color;
   border-left: none;
 }
 
@@ -64,4 +72,61 @@ html.rtl .rui.tag.edit button:last-child {
   button {
     color: @btn-success-bg;
   }
+}
+
+// Autosuggest
+
+.react-autosuggest__container {
+  position: relative;
+}
+
+.react-autosuggest__input {}
+
+.react-autosuggest__input:focus {
+  outline: none;
+}
+
+.react-autosuggest__container--open .react-autosuggest__input {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.react-autosuggest__suggestions-container {
+  display: none;
+}
+
+.react-autosuggest__container--open .react-autosuggest__suggestions-container {
+  display: block;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  min-width: 150px;
+  border: 1px solid @border-color;
+  background-color: #fff;
+  color: @text-color;
+  font-size: 14px;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  z-index: @zindex-navbar;
+}
+
+.react-autosuggest__suggestions-list {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+.react-autosuggest__suggestions-list li {
+  padding: 2px 5px;
+  list-style-type: none;
+}
+
+.react-autosuggest__suggestion {
+  cursor: pointer;
+  padding: 10px 20px;
+}
+
+.react-autosuggest__suggestion--focused {
+  background-color: #ddd;
 }

@@ -1,9 +1,62 @@
-import $ from "jquery";
 import { Reaction } from "/client/api";
 import { Tags } from "/lib/collections";
+import { i18next } from "/client/api";
 import classnames from "classnames";
+import Autosuggest from "react-autosuggest";
+import { ReactiveDict } from "meteor/reactive-dict";
+import React from "react";
 
-require("jquery-ui");
+function createAutosuggestInput(templateInstance, options) {
+  return {
+    component: Autosuggest,
+    suggestions: templateInstance.state.get("suggestions"),
+    getSuggestionValue: getSuggestionValue,
+    renderSuggestion: renderSuggestion,
+    onSuggestionsUpdateRequested({ value }) {
+      templateInstance.state.set("suggestions", getSuggestions(value));
+    },
+    inputProps: {
+      placeholder: i18next.t(options.i18nPlaceholderKey, { defaultValue: options.i18nPlaceholderValue}),
+      value: templateInstance.state.get("inputValue"),
+      onKeyDown(event) {
+        // 9 == Tab key
+        // 13 == Enter Key
+        if (event.keyCode === 9 || event.keyCode === 13) {
+          options.onUpdateCallback && options.onUpdateCallback();
+        }
+      },
+      onBlur: () => {
+        options.onUpdateCallback && options.onUpdateCallback();
+      },
+      onChange(event, { newValue }) {
+        templateInstance.state.set("suggestion", getSuggestions(newValue));
+        templateInstance.state.set("inputValue", newValue);
+      }
+    }
+  };
+}
+
+function getSuggestions(term) {
+  let datums = [];
+  let slug = Reaction.getSlug(term);
+  Tags.find({
+    slug: new RegExp(slug, "i")
+  }).forEach(function (tag) {
+    return datums.push({
+      label: tag.name
+    });
+  });
+
+  return datums;
+}
+
+function getSuggestionValue(suggestion) {
+  return suggestion.label;
+}
+
+function renderSuggestion(suggestion) {
+  return React.createElement("span", null, suggestion.label);
+}
 
 Template.tagItem.helpers({
   tagBlankProps() {
@@ -29,6 +82,7 @@ Template.tagItem.helpers({
 
               return control.toggleOn;
             }
+            return undefined;
           },
           onClick(event) {
             // Call the original onClick and add the current tag
@@ -47,51 +101,47 @@ Template.tagItem.helpers({
 });
 
 Template.tagEditable.onCreated(function () {
-  // this.autorun(() => {
-  //   new SimpleSchema({
-  //     tag: {type: }
-  //   })
-  // })
-});
-
-Template.tagEditable.onRendered(function () {
-  const instance = Template.instance();
-  const textInput = instance.$("input")[0];
-
-  $(textInput).autocomplete({
-    delay: 0,
-    source: function (request, response) {
-      let datums = [];
-      let slug = Reaction.getSlug(request.term);
-      Tags.find({
-        slug: new RegExp(slug, "i")
-      }).forEach(function (tag) {
-        return datums.push({
-          label: tag.name
-        });
-      });
-      return response(datums);
-    },
-    select: (selectEvent, ui) => {
-      if (ui.item.value) {
-        if (instance.data.onTagUpdate) {
-          instance.data.onTagUpdate(instance.data.tag._id, ui.item.value);
-        }
-      }
-    }
+  this.state = new ReactiveDict();
+  this.state.setDefault({
+    oldValue: this.data.tag.name,
+    inputValue: this.data.tag.name,
+    suggestions: []
   });
 
-  this.updateTag = () => {
-    const input = instance.$("input");
-    const value = input.val().trim();
+  this.submitInput = () => {
+    const value = this.state.get("inputValue").trim();
 
-    if (this.data.onTagUpdate && _.isEmpty(value) === false) {
-      this.data.onTagUpdate(this.data.tag._id, value);
+    if (this.data.onTagCreate && _.isEmpty(value) === false) {
+      this.data.onTagCreate(value);
+    }
+
+    this.state.set("inputValue", "");
+  };
+
+  this.updateTag = () => {
+    const inputValue = this.state.get("inputValue");
+    if (this.state.equals("oldValue", inputValue) === false) {
+      const value = inputValue.trim();
+
+      if (this.data.onTagUpdate && _.isEmpty(value) === false) {
+        this.data.onTagUpdate(this.data.tag._id, value);
+        this.state.set("oldValue", inputValue);
+      }
     }
   };
 });
 
 Template.tagEditable.helpers({
+  AutosuggestInput() {
+    const instance = Template.instance();
+
+    return createAutosuggestInput(instance, {
+      i18nPlaceholderKey: "tags.updateTag",
+      i18nPlaceholderValue: "Update Tag",
+      onUpdateCallback: instance.updateTag
+    });
+  },
+
   className() {
     const instance = Template.instance();
 
@@ -120,71 +170,32 @@ Template.tagEditable.helpers({
   }
 });
 
-Template.tagEditable.events({
-  "blur input"(event, instance) {
-    instance.updateTag();
-  },
-
-  "keydown input"(event, instance) {
-    // 9 == Tab key
-    // 13 == Enter Key
-    if (event.keyCode === 9 || event.keyCode === 13) {
-      instance.updateTag();
-    }
-  }
-});
-
-Template.tagBlank.onRendered(function () {
-  const instance = Template.instance();
-  const textInput = instance.$("input")[0];
-
-  $(textInput).autocomplete({
-    delay: 0,
-    source: function (request, response) {
-      let datums = [];
-      let slug = Reaction.getSlug(request.term);
-      Tags.find({
-        slug: new RegExp(slug, "i")
-      }).forEach(function (tag) {
-        return datums.push({
-          label: tag.name
-        });
-      });
-      return response(datums);
-    },
-    select: (selectEvent, ui) => {
-      if (ui.item.value) {
-        if (instance.data.onTagUpdate) {
-          instance.data.onTagUpdate(instance.data.tag._id, ui.item.value);
-        }
-      }
-    }
+Template.tagBlank.onCreated(function () {
+  this.state = new ReactiveDict();
+  this.state.setDefault({
+    inputValue: "",
+    suggestions: []
   });
 
   this.submitInput = () => {
-    const input = instance.$("input");
-    const value = input.val().trim();
+    const value = this.state.get("inputValue").trim();
 
     if (this.data.onTagCreate && _.isEmpty(value) === false) {
       this.data.onTagCreate(value);
     }
 
-    input.val("");
+    this.state.set("inputValue", "");
   };
 });
 
-Template.tagBlank.helpers({});
+Template.tagBlank.helpers({
+  AutosuggestInput() {
+    const instance = Template.instance();
 
-Template.tagBlank.events({
-  "blur input"(event, instance) {
-    instance.submitInput();
-  },
-
-  "keydown input"(event, instance) {
-    // 9 == Tab key
-    // 13 == Enter Key
-    if (event.keyCode === 9 || event.keyCode === 13) {
-      instance.submitInput();
-    }
+    return createAutosuggestInput(instance, {
+      i18nPlaceholderKey: "tags.addTag",
+      i18nPlaceholderValue: "Add Tag",
+      onUpdateCallback: instance.submitInput
+    });
   }
 });
