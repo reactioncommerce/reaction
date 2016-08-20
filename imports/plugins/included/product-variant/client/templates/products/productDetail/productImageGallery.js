@@ -5,9 +5,8 @@ import { Media } from "/lib/collections";
 import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
 import { Template } from "meteor/templating";
+import Sortable from "sortablejs";
 
-// load modules
-require("jquery-ui");
 /**
  * productImageGallery helpers
  */
@@ -60,24 +59,17 @@ function uploadHandler(event) {
  * updateImagePriorities method
  */
 function updateImagePriorities() {
-  const sortedMedias = _.map($(".gallery").sortable("toArray", {
-    attribute: "data-index"
-  }), function (index) {
-    return {
-      mediaId: index
-    };
-  });
+  $(".gallery > .gallery-image")
+    .toArray()
+    .map((element, index) => {
+      const mediaId = element.getAttribute("data-index");
 
-  const results = [];
-  sortedMedias.forEach((image, index) => {
-    results.push(Media.update(image.mediaId, {
-      $set: {
-        "metadata.priority": index
-      }
-    }));
-  });
-
-  return results;
+      Media.update(mediaId, {
+        $set: {
+          "metadata.priority": index
+        }
+      });
+    });
 }
 
 /**
@@ -110,28 +102,16 @@ Template.productImageGallery.helpers({
  */
 
 Template.productImageGallery.onRendered(function () {
-  return this.autorun(function () {
+  this.autorun(function () {
     let $gallery;
     if (Reaction.hasAdminAccess()) {
-      $gallery = $(".gallery");
-      return $gallery.sortable({
-        cursor: "move",
-        opacity: 0.3,
-        placeholder: "sortable",
-        forcePlaceholderSize: true,
-        update: function () {
-          let variant;
-          if (typeof variant !== "object") {
-            variant = ReactionProduct.selectedVariant();
-          }
-          variant.medias = [];
-          return updateImagePriorities();
-        },
-        start: function (event, ui) {
-          ui.placeholder.html("Drop image to reorder");
-          ui.placeholder.css("padding-top", "30px");
-          ui.placeholder.css("border", "1px dashed #ccc");
-          return ui.placeholder.css("border-radius", "6px");
+      $gallery = $(".gallery")[0];
+
+      this.sortable = Sortable.create($gallery, {
+        group: "gallery",
+        handle: ".gallery-image",
+        onUpdate() {
+          updateImagePriorities();
         }
       });
     }

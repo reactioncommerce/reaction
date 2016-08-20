@@ -30,7 +30,7 @@ function handleStripeSubmitError(error) {
   const singleError = error;
   const serverError = error ? error.message : null;
   if (serverError) {
-    return paymentAlert("Oops! " + serverError);
+    return paymentAlert("Oops! Credit card is invalid. Please check your information and try again.");
   } else if (singleError) {
     return paymentAlert("Oops! " + singleError);
   }

@@ -88,7 +88,7 @@ MethodHooks._initializeHook = function (mapping, methodName, hookFunction) {
     let beforeResult;
     // Call the before hooks
     let beforeHooks = MethodHooks._beforeHooks[methodName];
-    _.each(beforeHooks, function (beforeHook, hooksProcessed) {
+    _.each(beforeHooks, (beforeHook, hooksProcessed) => {
       beforeResult = beforeHook.call(this, {
         result: undefined,
         error: undefined,
@@ -117,7 +117,7 @@ MethodHooks._initializeHook = function (mapping, methodName, hookFunction) {
 
     // Call after hooks, providing the result and the original arguments
     let afterHooks = MethodHooks._afterHooks[methodName];
-    _.each(afterHooks, function (afterHook, hooksProcessed) {
+    _.each(afterHooks, (afterHook, hooksProcessed) => {
       let hookResult = afterHook.call(this, {
         result: methodResult,
         error: methodError,
