@@ -49,7 +49,14 @@
     "**/spec/**",
     "**/specs/**"
   ],
+  "critics": {
+    "wc": {"limit": 5000},
+    "lint": {"engine": "eslint"}
+  },
   "dependencies": {
+    "mute": [
+      "wdio-mocha-framework"
+    ],
     "unused-ignores": [
       "sweetalert2",
       "font-awesome",
