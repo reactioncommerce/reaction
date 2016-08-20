@@ -58,6 +58,7 @@
       "wdio-mocha-framework"
     ],
     "unused-ignores": [
+      "jquery",
       "sweetalert2",
       "font-awesome",
       "bcrypt",
