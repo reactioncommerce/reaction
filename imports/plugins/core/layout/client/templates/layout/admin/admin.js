@@ -23,10 +23,10 @@ Template.coreAdminLayout.helpers({
       container: undefined
     });
 
-    let items = [];
+    const items = [];
 
     if (_.isArray(shortcuts)) {
-      for (let shortcut of shortcuts) {
+      for (const shortcut of shortcuts) {
         items.push({
           type: "link",
           href: Reaction.Router.pathFor(shortcut.name),
@@ -80,9 +80,9 @@ Template.coreAdminLayout.helpers({
 
     if (routeName !== "dashboard") {
       const registryItems = Reaction.Apps({provides: "settings", container: routeName});
-      let buttons = [];
+      const buttons = [];
 
-      for (let item of registryItems) {
+      for (const item of registryItems) {
         if (Reaction.hasPermission(item.route, Meteor.userId())) {
           let icon = item.icon;
 

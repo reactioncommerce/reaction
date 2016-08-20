@@ -132,7 +132,7 @@ export const TagHelpers = {
     if (_.isArray(tagIds)) {
       if (_.isEmpty(parentTag)) {
         // Top level tags
-        for (let tagId of tagIds) {
+        for (const tagId of tagIds) {
           Tags.update(tagId, {
             $set: {
               position: tagIds.indexOf(tagId)

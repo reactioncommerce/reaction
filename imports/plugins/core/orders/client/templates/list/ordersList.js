@@ -30,7 +30,7 @@ Template.dashboardOrdersList.helpers({
     return this.shipping[0].shipmentMethod.tracking;
   },
   shopName() {
-    let shop = Shops.findOne(this.shopId);
+    const shop = Shops.findOne(this.shopId);
     return shop !== null ? shop.name : void 0;
   }
 });

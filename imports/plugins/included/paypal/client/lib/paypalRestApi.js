@@ -6,7 +6,7 @@ import { Logger } from "/client/api";
 export const PaypalClientAPI = {
 
   load: _.once(function () {
-    let script = document.createElement("script");
+    const script = document.createElement("script");
     script.type = "text/javascript";
     script.async = true;
     script.src = "//www.paypalobjects.com/api/checkout.js";

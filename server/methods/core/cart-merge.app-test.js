@@ -73,13 +73,13 @@ describe("Merge Cart function ", function () {
     let cartCount = Collections.Cart.find().count();
     expect(cartCount).to.equal(2);
     spyOnMethod("mergeCart", cart.userId);
-    let cartRemoveSpy = sandbox.spy(Collections.Cart, "remove");
+    const cartRemoveSpy = sandbox.spy(Collections.Cart, "remove");
     Collections.Cart.update({}, {
       $set: {
         sessionId: sessionId
       }
     });
-    let mergeResult = Meteor.call("cart/mergeCart", cart._id, sessionId);
+    const mergeResult = Meteor.call("cart/mergeCart", cart._id, sessionId);
     expect(mergeResult).to.be.ok;
     anonymousCart = Collections.Cart.findOne(anonymousCart._id);
     cart = Collections.Cart.findOne(cart._id);
@@ -113,7 +113,7 @@ describe("Merge Cart function ", function () {
   });
 
   it("should throw an error if cart user is not current user", function (done) {
-    let cart = Factory.create("cart");
+    const cart = Factory.create("cart");
     spyOnMethod("mergeCart", "someIdHere");
     function mergeCartFunction() {
       return Meteor.call("cart/mergeCart", cart._id, "someSessionId");

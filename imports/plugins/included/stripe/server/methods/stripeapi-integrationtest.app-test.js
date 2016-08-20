@@ -7,15 +7,15 @@ import { StripeApi } from "./stripeapi";
 
 describe.skip("StripeAPI createCharge function", function () {
   it("should return a result with status = success", function (done) {
-    let apiKey = "";
-    let cardObject = {
+    const apiKey = "";
+    const cardObject = {
       number: "4242424242424242",
       name: "Test User",
       cvc: "345",
       exp_month: "02",
       exp_year: "2019"
     };
-    let chargeObject = {
+    const chargeObject = {
       amount: 1999,
       currency: "USD",
       card: cardObject,
@@ -27,7 +27,7 @@ describe.skip("StripeAPI createCharge function", function () {
       apiKey: apiKey
     });
 
-    let result = StripeApi.methods.createCharge.run({ chargeObj: chargeObject, apiKey: apiKey });
+    const result = StripeApi.methods.createCharge.run({ chargeObj: chargeObject, apiKey: apiKey });
     expect(result.status).to.equal("succeeded");
     done();
   });
@@ -35,15 +35,15 @@ describe.skip("StripeAPI createCharge function", function () {
 
 describe.skip("StripeAPI captureCharge function", function () {
   it("should return a result with status = success", function (done) {
-    let apiKey = "";
-    let cardObject = {
+    const apiKey = "";
+    const cardObject = {
       number: "4242424242424242",
       name: "Test User",
       cvc: "345",
       exp_month: "02",
       exp_year: "2019"
     };
-    let chargeObject = {
+    const chargeObject = {
       amount: 1999,
       currency: "USD",
       card: cardObject,
@@ -54,7 +54,7 @@ describe.skip("StripeAPI captureCharge function", function () {
     const captureDetails = {
       amount: 1999
     };
-    let result = StripeApi.methods.captureCharge.call({
+    const result = StripeApi.methods.captureCharge.call({
       transactionId: transactionId,
       captureDetails: captureDetails,
       apiKey: apiKey
@@ -66,15 +66,15 @@ describe.skip("StripeAPI captureCharge function", function () {
 
 describe.skip("StripeAPI createRefund function", function () {
   it("should return a result with object = refund", function (done) {
-    let apiKey = "";
-    let cardObject = {
+    const apiKey = "";
+    const cardObject = {
       number: "4242424242424242",
       name: "Test User",
       cvc: "345",
       exp_month: "02",
       exp_year: "2019"
     };
-    let chargeObject = {
+    const chargeObject = {
       amount: 1999,
       currency: "USD",
       card: cardObject,
@@ -82,7 +82,7 @@ describe.skip("StripeAPI createRefund function", function () {
     };
 
     const chargeResult = StripeApi.methods.createCharge.call({ chargeObj: chargeObject, apiKey: apiKey });
-    let refundDetails = {
+    const refundDetails = {
       charge: chargeResult.id,
       amount: 1999,
       reason: "requested_by_customer"
@@ -99,15 +99,15 @@ describe.skip("StripeAPI createRefund function", function () {
 
 describe.skip("StripeAPI listRefund function", function () {
   it("should return a list of refunds", function (done) {
-    let apiKey = "";
-    let cardObject = {
+    const apiKey = "";
+    const cardObject = {
       number: "4242424242424242",
       name: "Test User",
       cvc: "345",
       exp_month: "02",
       exp_year: "2019"
     };
-    let chargeObject = {
+    const chargeObject = {
       amount: 1999,
       currency: "USD",
       card: cardObject,
@@ -115,7 +115,7 @@ describe.skip("StripeAPI listRefund function", function () {
     };
 
     const chargeResult = StripeApi.methods.createCharge.call({ chargeObj: chargeObject, apiKey: apiKey });
-    let refundDetails = {
+    const refundDetails = {
       charge: chargeResult.id,
       amount: 1999,
       reason: "requested_by_customer"

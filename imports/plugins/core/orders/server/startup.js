@@ -31,8 +31,8 @@ Orders.before.update((userId, order, fieldNames, modifier) => {
   if (modifier.$set) {
     // Updating status of order e.g. "coreOrderWorkflow/processing"
     if (modifier.$set["workflow.status"]) {
-      let status = modifier.$set["workflow.status"];
-      let workflowMethod = `workflow/${status}`;
+      const status = modifier.$set["workflow.status"];
+      const workflowMethod = `workflow/${status}`;
 
       if (Meteor.server.method_handlers[workflowMethod]) {
         const result = Meteor.call(workflowMethod, {

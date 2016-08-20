@@ -71,7 +71,7 @@ AutoForm.addHooks("stripe-payment-form", {
         uiEnd(template, "Resubmit payment");
       } else {
         if (transaction.saved === true) {
-          let normalizedStatus = (function () {
+          const normalizedStatus = (function () {
             switch (false) {
               case !(!transaction.response.captured && !transaction.response.failure_code):
                 return "created";

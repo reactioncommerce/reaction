@@ -60,7 +60,7 @@ Template.childVariantForm.helpers({
     const variantId = currentData._id;
 
     return (files) => {
-      for (let file of files) {
+      for (const file of files) {
         file.metadata = {
           variantId,
           productId,

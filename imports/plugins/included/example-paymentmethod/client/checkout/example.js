@@ -23,7 +23,7 @@ function hidePaymentAlert() {
 }
 
 function handleExampleSubmitError(error) {
-  let serverError = error !== null ? error.message : void 0;
+  const serverError = error !== null ? error.message : void 0;
   if (serverError) {
     return paymentAlert("Oops! " + serverError);
   } else if (error) {
@@ -41,9 +41,9 @@ Template.examplePaymentForm.helpers({
 AutoForm.addHooks("example-payment-form", {
   onSubmit: function (doc) {
     submitting = true;
-    let template = this.template;
+    const template = this.template;
     hidePaymentAlert();
-    let form = {
+    const form = {
       name: doc.payerName,
       number: doc.cardNumber,
       expireMonth: doc.expireMonth,

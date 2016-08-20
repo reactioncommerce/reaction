@@ -42,7 +42,7 @@ Accounts.onEmailVerificationLink(function (token, done) {
  * onCreated: Login Form Update Password Overlay
  */
 Template.loginFormUpdatePasswordOverlay.onCreated(() => {
-  let template = Template.instance();
+  const template = Template.instance();
 
   template.uniqueId = Random.id();
   template.formMessages = new ReactiveVar({});
@@ -78,12 +78,12 @@ Template.loginFormUpdatePasswordOverlay.events({
     event.preventDefault();
     event.stopPropagation();
 
-    let passwordInput = template.$(".login-input--password");
-    let password = passwordInput.val().trim();
-    let validatedPassword = LoginFormValidation.password(password);
+    const passwordInput = template.$(".login-input--password");
+    const password = passwordInput.val().trim();
+    const validatedPassword = LoginFormValidation.password(password);
 
-    let templateInstance = Template.instance();
-    let errors = {};
+    const templateInstance = Template.instance();
+    const errors = {};
 
     templateInstance.formMessages.set({});
 
@@ -121,7 +121,7 @@ Template.loginFormUpdatePasswordOverlay.events({
  * onCreated: Login Form Change Password
  */
 Template.loginFormChangePassword.onCreated(() => {
-  let template = Template.instance();
+  const template = Template.instance();
 
   template.uniqueId = Random.id();
   template.formMessages = new ReactiveVar({});
@@ -147,19 +147,19 @@ Template.loginFormChangePassword.events({
     event.preventDefault();
     event.stopPropagation();
 
-    let oldPasswordInput = template.$(".login-input--oldPassword");
-    let passwordInput = template.$(".login-input--password");
+    const oldPasswordInput = template.$(".login-input--oldPassword");
+    const passwordInput = template.$(".login-input--password");
 
-    let oldPassword = oldPasswordInput.val().trim();
-    let password = passwordInput.val().trim();
+    const oldPassword = oldPasswordInput.val().trim();
+    const password = passwordInput.val().trim();
 
     // We only check if it exists, just incase we"ve change the password strength and want the
     // user to have an oppurtinity to update to a stronger password
-    let validatedOldPassword = LoginFormValidation.password(password, {validationLevel: "exists"});
-    let validatedPassword = LoginFormValidation.password(password);
+    const validatedOldPassword = LoginFormValidation.password(password, {validationLevel: "exists"});
+    const validatedPassword = LoginFormValidation.password(password);
 
-    let templateInstance = Template.instance();
-    let errors = {};
+    const templateInstance = Template.instance();
+    const errors = {};
 
     templateInstance.formMessages.set({});
 

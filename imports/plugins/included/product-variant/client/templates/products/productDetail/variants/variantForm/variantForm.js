@@ -92,10 +92,10 @@ Template.variantForm.events({
     // this should really move into a method
     //
     if (field === "taxable" || field === "inventoryManagement" || field === "inventoryPolicy") {
-      let value = $(event.currentTarget).prop("checked");
+      const value = $(event.currentTarget).prop("checked");
       if (ReactionProduct.checkChildVariants(template.data._id) > 0) {
         const childVariants = ReactionProduct.getVariants(template.data._id);
-        for (let child of childVariants) {
+        for (const child of childVariants) {
           Meteor.call("products/updateProductField", child._id, field, value,
             error => {
               if (error) {

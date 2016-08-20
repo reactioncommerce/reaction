@@ -5,7 +5,7 @@ import { Template } from "meteor/templating";
  * onCreated: Login form sign up view
  */
 Template.loginFormSignUpView.onCreated(() => {
-  let template = Template.instance();
+  const template = Template.instance();
 
   template.uniqueId = Random.id();
   template.formMessages = new ReactiveVar({});
@@ -31,17 +31,17 @@ Template.loginFormSignUpView.events({
     event.preventDefault();
 
     // var usernameInput = template.$(".login-input--username");
-    let emailInput = template.$(".login-input-email");
-    let passwordInput = template.$(".login-input-password");
+    const emailInput = template.$(".login-input-email");
+    const passwordInput = template.$(".login-input-password");
 
-    let email = emailInput.val().trim();
-    let password = passwordInput.val().trim();
+    const email = emailInput.val().trim();
+    const password = passwordInput.val().trim();
 
-    let validatedEmail = LoginFormValidation.email(email);
-    let validatedPassword = LoginFormValidation.password(password);
+    const validatedEmail = LoginFormValidation.email(email);
+    const validatedPassword = LoginFormValidation.password(password);
 
-    let templateInstance = Template.instance();
-    let errors = {};
+    const templateInstance = Template.instance();
+    const errors = {};
 
     templateInstance.formMessages.set({});
 
@@ -61,7 +61,7 @@ Template.loginFormSignUpView.events({
       return;
     }
 
-    let newUserData = {
+    const newUserData = {
       // username: username,
       email: email,
       password: password

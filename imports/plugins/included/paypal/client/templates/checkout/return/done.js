@@ -22,7 +22,7 @@ function showError(error) {
 }
 
 function buildPaymentMethod(result, status, mode) {
-  let paymentMethod = {
+  const paymentMethod = {
     processor: "PaypalExpress",
     method: "Paypal Express Checkout",
     transactionId: result.TRANSACTIONID,
@@ -56,7 +56,7 @@ Template.paypalDone.onCreated(function () {
   // wait for cart to be ready
   Tracker.autorun(function (c) {
     if (Reaction.Subscriptions.Cart.ready()) {
-      let cart = Cart.findOne();
+      const cart = Cart.findOne();
       if (!cart) {
         Logger.warn("Could not find valid cart");
         return;

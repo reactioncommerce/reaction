@@ -38,9 +38,9 @@ Template.productSettings.helpers({
     const products = instance.state.get("products");
     const tag = ReactionProduct.getTag();
 
-    for (let product of products) {
-      let positions = product.positions && product.positions[tag] || {};
-      let currentWeight = positions.weight || 0;
+    for (const product of products) {
+      const positions = product.positions && product.positions[tag] || {};
+      const currentWeight = positions.weight || 0;
       if (currentWeight === weight) {
         return "active";
       }
@@ -132,9 +132,9 @@ Template.productSettings.events({
   "click [data-event-action=changeProductWeight]": function (event) {
     event.preventDefault();
     const tag = ReactionProduct.getTag();
-    for (let product of this.products) {
-      let weight = $(event.currentTarget).data("event-data") || 0;
-      let positions = {
+    for (const product of this.products) {
+      const weight = $(event.currentTarget).data("event-data") || 0;
+      const positions = {
         weight: weight,
         updatedAt: new Date()
       };

@@ -13,10 +13,10 @@ Template.loginFormResetPasswordView.events({
   "submit form": (event, template) => {
     event.preventDefault();
 
-    let emailAddress = template.$(".login-input-email").val().trim();
-    let validatedEmail = LoginFormValidation.email(emailAddress);
-    let templateInstance = Template.instance();
-    let errors = {};
+    const emailAddress = template.$(".login-input-email").val().trim();
+    const validatedEmail = LoginFormValidation.email(emailAddress);
+    const templateInstance = Template.instance();
+    const errors = {};
 
     templateInstance.formMessages.set({});
 
@@ -55,7 +55,7 @@ Template.loginFormResetPasswordView.events({
  *
  */
 Template.loginFormResetPasswordView.onCreated(() => {
-  let template = Template.instance();
+  const template = Template.instance();
 
   template.uniqueId = Random.id();
   template.formMessages = new ReactiveVar({});

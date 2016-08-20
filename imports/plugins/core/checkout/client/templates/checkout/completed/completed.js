@@ -50,7 +50,7 @@ Template.cartCompleted.helpers({
  */
 Template.cartCompleted.events({
   "click #update-order": function () {
-    let templateInstance = Template.instance();
+    const templateInstance = Template.instance();
     const email = templateInstance.find("input[name=email]").value;
     check(email, String);
     const cartId = Reaction.Router.getQueryParam("_id");
@@ -65,9 +65,9 @@ Template.cartCompleted.events({
  * the subscription to get the new cart
  */
 Template.cartCompleted.onCreated(function () {
-  let sessionId = Session.get("sessionId");
-  let userId = Meteor.userId();
-  let cartSub = Reaction.Subscriptions.Cart = Meteor.subscribe("Cart", sessionId, userId);
+  const sessionId = Session.get("sessionId");
+  const userId = Meteor.userId();
+  const cartSub = Reaction.Subscriptions.Cart = Meteor.subscribe("Cart", sessionId, userId);
   cartSub.stop();
   Reaction.Subscriptions.Cart = Meteor.subscribe("Cart", sessionId, userId);
 });

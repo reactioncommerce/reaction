@@ -32,16 +32,16 @@ function getError(error, detailSubpart) {
 }
 
 function handlePaypalSubmitError(error) {
-  let results = [];
-  let singleError = getError(error, "error_description");
-  let serverError = getError(error, "message");
-  let errors = getError(error, "response") || [];
+  const results = [];
+  const singleError = getError(error, "error_description");
+  const serverError = getError(error, "message");
+  const errors = getError(error, "response") || [];
   if (singleError) {
     return paymentAlert("Oops! " + singleError);
   } else if (errors.length) {
     for (let i = 0, len = errors.length; i < len; i++) {
-      let thisError = errors[i];
-      let formattedError = "Oops! " + thisError.issue + ": " + thisError.field.split(/[. ]+/).pop().replace(/_/g, " ");
+      const thisError = errors[i];
+      const formattedError = "Oops! " + thisError.issue + ": " + thisError.field.split(/[. ]+/).pop().replace(/_/g, " ");
       results.push(paymentAlert(formattedError));
     }
     return results;
@@ -67,9 +67,9 @@ Template.paypalPayflowForm.helpers({
 AutoForm.addHooks("paypal-payment-form", {
   onSubmit: function (doc) {
     hidePaymentAlert();
-    let template = this.template;
-    let payerNamePieces = doc.payerName.split(" ");
-    let form = {
+    const template = this.template;
+    const payerNamePieces = doc.payerName.split(" ");
+    const form = {
       first_name: payerNamePieces[0],
       last_name: payerNamePieces[1],
       number: doc.cardNumber,
@@ -78,7 +78,7 @@ AutoForm.addHooks("paypal-payment-form", {
       cvv2: doc.cvv,
       type: Reaction.getCardType(doc.cardNumber)
     };
-    let storedCard = form.type.charAt(0).toUpperCase() + form.type.slice(1) + " " + doc.cardNumber.slice(-4);
+    const storedCard = form.type.charAt(0).toUpperCase() + form.type.slice(1) + " " + doc.cardNumber.slice(-4);
     Paypal.authorize(form, {
       total: Cart.findOne().cartTotal(),
       currency: Shops.findOne().currency
@@ -89,7 +89,7 @@ AutoForm.addHooks("paypal-payment-form", {
         uiEnd(template, "Resubmit payment");
       } else {
         if (transaction.saved === true) {
-          let normalizedStatus = (function () {
+          const normalizedStatus = (function () {
             switch (transaction.response.state) {
               case "created":
                 return "created";
@@ -108,7 +108,7 @@ AutoForm.addHooks("paypal-payment-form", {
             }
           })();
 
-          let normalizedMode = (function () {
+          const normalizedMode = (function () {
             switch (transaction.response.intent) {
               case "sale":
                 return "capture";
@@ -122,14 +122,14 @@ AutoForm.addHooks("paypal-payment-form", {
           })();
 
           // just auth, not transaction
-          let transactionId = transaction.response.id;
+          const transactionId = transaction.response.id;
           // when auth and transaction
           let authId;
           if (typeof transaction.response.transactions[0].related_resources[0] === "object") {
             authId = transaction.response.transactions[0].related_resources[0].authorization.id;
           }
 
-          let paymentMethod = {
+          const paymentMethod = {
             processor: "PayflowPro",
             storedCard: storedCard,
             method: transaction.response.payer.payment_method,

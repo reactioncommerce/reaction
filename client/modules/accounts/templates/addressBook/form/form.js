@@ -24,7 +24,7 @@ Template.addressBookForm.helpers({
     }
     options = [];
     const ref = shop !== null ? shop.locales.countries[selectedCountry].states : void 0;
-    for (let state in ref) {
+    for (const state in ref) {
       locale = ref[state];
       options.push({
         label: locale.name,
@@ -44,7 +44,7 @@ Template.addressBookForm.helpers({
     return typeof this.address === "object" ? this.address.isShippingDefault : true;
   },
   hasAddressBookEntries: function () {
-    let account = Collections.Accounts.findOne({
+    const account = Collections.Accounts.findOne({
       userId: Meteor.userId()
     });
     if (account) {

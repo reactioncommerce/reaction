@@ -73,8 +73,8 @@ Object.assign(Alerts, {
       });
     }
 
-    let title = titleOrOptions;
-    let message = messageOrCallback;
+    const title = titleOrOptions;
+    const message = messageOrCallback;
 
     return swal({
       title,

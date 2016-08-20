@@ -26,7 +26,7 @@ Meteor.methods({
     }
 
     this.unblock();
-    let orderId = order._id;
+    const orderId = order._id;
 
     Meteor.call("orders/addTracking", orderId, tracking);
     Meteor.call("orders/updateHistory", orderId, "Tracking Added",
@@ -141,7 +141,7 @@ Meteor.methods({
     }
 
     // Server-side check to make sure discount is not greater than orderTotal.
-    let orderTotal = accounting.toFixed(
+    const orderTotal = accounting.toFixed(
       order.billing[0].invoice.subtotal
       + order.billing[0].invoice.shipping
       + order.billing[0].invoice.taxes
@@ -156,7 +156,7 @@ Meteor.methods({
 
     this.unblock();
 
-    let total =
+    const total =
       order.billing[0].invoice.subtotal
       + order.billing[0].invoice.shipping
       + order.billing[0].invoice.taxes
@@ -399,7 +399,7 @@ Meteor.methods({
     }
 
     // temp hack until we build out multiple payment handlers
-    let cart = Cart.findOne(cartId);
+    const cart = Cart.findOne(cartId);
     let shippingId = "";
     if (cart.shipping) {
       shippingId = cart.shipping[0]._id;
@@ -641,7 +641,7 @@ Meteor.methods({
       throw new Meteor.Error(403, "Access Denied");
     }
 
-    let order = Orders.findOne(orderId);
+    const order = Orders.findOne(orderId);
     const itemIds = order.shipping[0].items.map((item) => {
       return item._id;
     });
@@ -717,7 +717,7 @@ Meteor.methods({
 
     this.unblock();
 
-    let future = new Future();
+    const future = new Future();
     const processor = paymentMethod.processor.toLowerCase();
 
     Meteor.call(`${processor}/refund/list`, paymentMethod, (error, result) => {
@@ -750,8 +750,8 @@ Meteor.methods({
       throw new Meteor.Error(403, "Access Denied");
     }
     const processor = paymentMethod.processor.toLowerCase();
-    let order = Orders.findOne(orderId);
-    let transactionId = paymentMethod.transactionId;
+    const order = Orders.findOne(orderId);
+    const transactionId = paymentMethod.transactionId;
 
     const result = Meteor.call(`${processor}/refund/create`, paymentMethod, amount);
     Orders.update({

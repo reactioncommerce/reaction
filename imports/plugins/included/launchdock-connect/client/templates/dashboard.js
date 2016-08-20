@@ -76,7 +76,7 @@ Template.launchdockDashboard.helpers({
     let daySuffix;
 
     if (stack) {
-      let startDate = stack.createdAt;
+      const startDate = stack.createdAt;
       ends = new Date();
       ends.setDate(startDate.getDate() + 30);
       const now = new Date();
@@ -118,7 +118,7 @@ Template.launchdockDashboard.helpers({
 
   yearlyPaymentDate() {
     const today = new Date();
-    let nextDue = new Date();
+    const nextDue = new Date();
     nextDue.setDate(today.getDate() + 365);
 
     return moment(nextDue).format("LL");
@@ -154,7 +154,7 @@ Template.launchdockDashboard.events({
     }
 
     const today = new Date();
-    let nextDue = new Date();
+    const nextDue = new Date();
     nextDue.setDate(today.getDate() + daysFromNow);
 
     t.$(".price").text(dueToday);

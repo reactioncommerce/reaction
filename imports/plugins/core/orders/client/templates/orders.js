@@ -132,7 +132,7 @@ Template.orders.helpers({
   },
 
   currentFilterLabel() {
-    let foundFilter = _.find(orderFilters, (filter) => {
+    const foundFilter = _.find(orderFilters, (filter) => {
       return filter.name === Reaction.Router.getQueryParam("filter");
     });
 
@@ -307,7 +307,7 @@ Template.orderStatusDetail.helpers({
     const self = this;
     const shipment = this.shipping[0];
     const shipped = _.every(shipment.items, (shipmentItem) => {
-      for (let fullItem of self.items) {
+      for (const fullItem of self.items) {
         if (fullItem._id === shipmentItem._id) {
           if (fullItem.workflow) {
             if (_.isArray(fullItem.workflow.workflow)) {

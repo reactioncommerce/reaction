@@ -48,15 +48,15 @@ if (Package.blaze) {
  * @return {Array} returns array of months [value:, label:]
  */
 Template.registerHelper("monthOptions", function () {
-  let label = i18next.t("app.monthOptions", "Choose month");
-  let monthOptions = [{
+  const label = i18next.t("app.monthOptions", "Choose month");
+  const monthOptions = [{
     value: "",
     label: label
   }];
-  let months = moment.months();
-  for (let index in months) {
+  const months = moment.months();
+  for (const index in months) {
     if ({}.hasOwnProperty.call(months, index)) {
-      let month = months[index];
+      const month = months[index];
       monthOptions.push({
         value: parseInt(index, 10) + 1,
         label: month
@@ -72,8 +72,8 @@ Template.registerHelper("monthOptions", function () {
  * @return {Array} returns array of years [value:, label:]
  */
 Template.registerHelper("yearOptions", function () {
-  let label = i18next.t("app.yearOptions", "Choose year");
-  let yearOptions = [{
+  const label = i18next.t("app.yearOptions", "Choose year");
+  const yearOptions = [{
     value: "",
     label: label
   }];
@@ -94,13 +94,13 @@ Template.registerHelper("yearOptions", function () {
  * @return {Array} returns array of timezones [value:, label:]
  */
 Template.registerHelper("timezoneOptions", function () {
-  let label = i18next.t("app.timezoneOptions", "Choose timezone");
-  let timezoneOptions = [{
+  const label = i18next.t("app.timezoneOptions", "Choose timezone");
+  const timezoneOptions = [{
     value: "",
     label: label
   }];
-  let timezones = moment.tz.names();
-  for (let timezone of timezones) {
+  const timezones = moment.tz.names();
+  for (const timezone of timezones) {
     timezoneOptions.push({
       value: timezone,
       label: timezone
@@ -117,7 +117,7 @@ Template.registerHelper("timezoneOptions", function () {
  * @return {String} returns space formatted string
  */
 Template.registerHelper("camelToSpace", function (str) {
-  let downCamel = str.replace(/\W+/g, "-").replace(/([a-z\d])([A-Z])/g, "$1 $2");
+  const downCamel = str.replace(/\W+/g, "-").replace(/([a-z\d])([A-Z])/g, "$1 $2");
   return downCamel.toLowerCase();
 });
 

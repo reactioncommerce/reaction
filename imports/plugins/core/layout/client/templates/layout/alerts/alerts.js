@@ -8,8 +8,8 @@ Template.inlineAlert.onCreated(function () {
 });
 
 Template.inlineAlert.onRendered(function () {
-  let alert = this.data;
-  let $node = $(this.firstNode);
+  const alert = this.data;
+  const $node = $(this.firstNode);
 
   Meteor.defer(function () {
     Alerts.collection_.update(alert._id, {

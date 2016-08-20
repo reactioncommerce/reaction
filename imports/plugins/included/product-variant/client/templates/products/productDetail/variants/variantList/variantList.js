@@ -80,17 +80,17 @@ Template.variantList.helpers({
     const variants = ReactionProduct.getTopVariants();
     if (variants.length) {
       // calculate inventory total for all variants
-      for (let variant of variants) {
+      for (const variant of variants) {
         if (variant.inventoryManagement) {
-          let qty = ReactionProduct.getVariantQuantity(variant);
+          const qty = ReactionProduct.getVariantQuantity(variant);
           if (typeof qty === "number") {
             inventoryTotal += qty;
           }
         }
       }
       // calculate percentage of total inventory of this product
-      for (let variant of variants) {
-        let qty = ReactionProduct.getVariantQuantity(variant);
+      for (const variant of variants) {
+        const qty = ReactionProduct.getVariantQuantity(variant);
         variant.inventoryTotal = inventoryTotal;
         if (variant.inventoryManagement && inventoryTotal) {
           variant.inventoryPercentage = parseInt(qty / inventoryTotal * 100, 10);

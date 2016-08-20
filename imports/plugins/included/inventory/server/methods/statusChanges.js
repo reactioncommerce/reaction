@@ -63,9 +63,9 @@ Meteor.methods({
     Logger.info(`Moving Inventory items from ${defaultStatus} to ${reservationStatus}`);
 
     // update inventory status for cartItems
-    for (let item of cartItems) {
+    for (const item of cartItems) {
       // check of existing reserved inventory for this cart
-      let existingReservations = Inventory.find({
+      const existingReservations = Inventory.find({
         productId: item.productId,
         variantId: item.variants._id,
         shopId: item.shopId,
@@ -73,7 +73,7 @@ Meteor.methods({
       });
 
       // define a new reservation
-      let availableInventory = Inventory.find({
+      const availableInventory = Inventory.find({
         "productId": item.productId,
         "variantId": item.variants._id,
         "shopId": item.shopId,
@@ -90,7 +90,7 @@ Meteor.methods({
       // if we don't have existing inventory we create backorders
       if (totalRequiredQty > availableInventoryQty) {
         // TODO put in a dashboard setting to allow backorder or altenate handler to be used
-        let backOrderQty = Number(totalRequiredQty - availableInventoryQty - existingReservationQty);
+        const backOrderQty = Number(totalRequiredQty - availableInventoryQty - existingReservationQty);
         Logger.info(`no inventory found, create ${backOrderQty} ${backorderStatus}`);
         // define a new reservation
         const reservation = {
@@ -164,13 +164,13 @@ Meteor.methods({
     // }
 
     // optional workflow status or default to "new"
-    let newStatus = status || "new";
-    let oldStatus = currentStatus || "reserved";
+    const newStatus = status || "new";
+    const oldStatus = currentStatus || "reserved";
 
     // remove each cart item in inventory
-    for (let item of cartItems) {
+    for (const item of cartItems) {
       // check of existing reserved inventory for this cart
-      let existingReservations = Inventory.find({
+      const existingReservations = Inventory.find({
         "productId": item.productId,
         "variantId": item.variants._id,
         "shopId": item.shopId,
@@ -251,7 +251,7 @@ Meteor.methods({
     // }
 
     // set defaults
-    let newReservation = reservation;
+    const newReservation = reservation;
     if (!newReservation.workflow) {
       newReservation.workflow = {
         status: "backorder"
@@ -263,7 +263,7 @@ Meteor.methods({
     const batch = Inventory.
       _collection.rawCollection().initializeUnorderedBulkOp();
     while (i < backOrderQty) {
-      let id = Inventory._makeNewID();
+      const id = Inventory._makeNewID();
       batch.insert(Object.assign({ _id: id }, newReservation));
       i++;
     }

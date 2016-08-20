@@ -20,7 +20,7 @@ function uploadHandler(event) {
   // and it `Blob`s which is our event.target.files.
   // There is a way to do this: http://stackoverflow.com/a/24003932. but it's too
   // tricky
-  let productId = ReactionProduct.selectedProductId();
+  const productId = ReactionProduct.selectedProductId();
   const variant = ReactionProduct.selectedVariant();
   if (typeof variant !== "object") {
     return Alerts.add("Please, create new Variant first.", "danger", {
@@ -28,8 +28,8 @@ function uploadHandler(event) {
     });
   }
   const variantId = variant._id;
-  let shopId = ReactionProduct.selectedProduct().shopId || Reaction.getShopId();
-  let userId = Meteor.userId();
+  const shopId = ReactionProduct.selectedProduct().shopId || Reaction.getShopId();
+  const userId = Meteor.userId();
   let count = Media.find({
     "metadata.variantId": variantId
   }).count();
@@ -79,7 +79,7 @@ function updateImagePriorities() {
 Template.productImageGallery.helpers({
   media: function () {
     let mediaArray = [];
-    let variant = ReactionProduct.selectedVariant();
+    const variant = ReactionProduct.selectedVariant();
 
     if (variant) {
       mediaArray = Media.find({
@@ -130,8 +130,8 @@ Template.productImageGallery.events({
       return undefined;
     }
     if (!Reaction.hasPermission("createProduct")) {
-      let first = $(".gallery li:nth-child(1)");
-      let target = $(event.currentTarget);
+      const first = $(".gallery li:nth-child(1)");
+      const target = $(event.currentTarget);
       if ($(target).data("index") !== first.data("index")) {
         return $(".gallery li:nth-child(1)").fadeOut(400, function () {
           $(this).replaceWith(target);

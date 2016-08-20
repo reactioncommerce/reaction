@@ -100,7 +100,7 @@ Meteor.methods({
       currency: String
     });
 
-    let chargeObj = {
+    const chargeObj = {
       amount: "",
       currency: "",
       card: {},
@@ -182,7 +182,7 @@ Meteor.methods({
 
     let result;
     try {
-      let refundResult = StripeApi.methods.createRefund.call({ refundDetails });
+      const refundResult = StripeApi.methods.createRefund.call({ refundDetails });
       Logger.info(refundResult);
       if (refundResult.object === "refund") {
         result = {
@@ -218,7 +218,7 @@ Meteor.methods({
     try {
       const refunds = StripeApi.methods.listRefunds.call({transactionId: paymentMethod.transactionId});
       result = [];
-      for (let refund of refunds.data) {
+      for (const refund of refunds.data) {
         result.push({
           type: refund.object,
           amount: refund.amount / 100,

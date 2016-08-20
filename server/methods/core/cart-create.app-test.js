@@ -14,9 +14,9 @@ Fixtures();
 
 
 describe("Add/Create cart methods", function () {
-  let user = Factory.create("user");
+  const user = Factory.create("user");
   const shop = getShop();
-  let userId = user._id;
+  const userId = user._id;
   const sessionId = Reaction.sessionId = Random.id();
   let sandbox;
   let originals;
@@ -61,9 +61,9 @@ describe("Add/Create cart methods", function () {
     it.skip("should create a test cart", function () {
       // This test needs to be skipped until we can properly stub out the shopIdAutoValue function
       sandbox.stub(Reaction, "getShopId", () => shop._id);
-      let cartInsertSpy = sandbox.spy(Cart, "insert");
-      let cartId = Meteor.call("cart/createCart", userId, sessionId);
-      let cart = Cart.findOne({userId: userId});
+      const cartInsertSpy = sandbox.spy(Cart, "insert");
+      const cartId = Meteor.call("cart/createCart", userId, sessionId);
+      const cart = Cart.findOne({userId: userId});
       expect(cartInsertSpy).to.have.been.called;
       expect(cartId).to.equal(cart._id);
     });
@@ -107,7 +107,7 @@ describe("Add/Create cart methods", function () {
 
     it("should add item to cart", function (done) {
       let cart = Factory.create("cart");
-      let items = cart.items.length;
+      const items = cart.items.length;
       spyOnMethod("addToCart", cart.userId);
       Meteor.call("cart/addToCart", productId, variantId, quantity);
       Meteor._sleepForMs(500);
@@ -125,7 +125,7 @@ describe("Add/Create cart methods", function () {
       Meteor.call("cart/addToCart", productId, variantId, quantity);
       // add a second item of same variant
       Meteor.call("cart/addToCart", productId, variantId, quantity);
-      let cart = Cart.findOne(cartId);
+      const cart = Cart.findOne(cartId);
       expect(cart.items.length).to.equal(1);
       expect(cart.items[0].quantity).to.equal(2);
     });
@@ -190,7 +190,7 @@ describe("Add/Create cart methods", function () {
       spyOnMethod("copyCartToOrder", cart.userId);
       // The main moment of test. We are spy on `insert` operation but do not
       // let it through this call
-      let insertStub = sandbox.stub(Reaction.Collections.Orders, "insert");
+      const insertStub = sandbox.stub(Reaction.Collections.Orders, "insert");
       function copyCartFunc() {
         return Meteor.call("cart/copyCartToOrder", cart._id);
       }
@@ -200,7 +200,7 @@ describe("Add/Create cart methods", function () {
     });
 
     it("should create an order", function (done) {
-      let cart = Factory.create("cartToOrder");
+      const cart = Factory.create("cartToOrder");
       sandbox.stub(Reaction, "getShopId", function () {
         return cart.shopId;
       });
@@ -208,7 +208,7 @@ describe("Add/Create cart methods", function () {
       // let's keep it simple. We don't want to see a long email about
       // success. But I leave it here in case if anyone want to check whole
       // method flow.
-      let insertStub = sandbox.stub(Reaction.Collections.Orders, "insert");
+      const insertStub = sandbox.stub(Reaction.Collections.Orders, "insert");
       function copyCartFunc() {
         return Meteor.call("cart/copyCartToOrder", cart._id);
       }
@@ -250,7 +250,7 @@ describe("Add/Create cart methods", function () {
     });
 
     it("should throw error if wrong arguments were passed", function (done) {
-      let accountUpdateStub = sandbox.stub(Accounts, "update");
+      const accountUpdateStub = sandbox.stub(Accounts, "update");
 
       expect(function () {
         return Meteor.call("cart/unsetAddresses", 123456);

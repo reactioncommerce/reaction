@@ -27,7 +27,7 @@ Template.orderPage.events({
   "click .btn-add-note": function (event, template) {
     const date = new Date();
     const content = template.find("textarea[name=note]").value;
-    let note = {
+    const note = {
       content: content,
       userId: Meteor.userId(),
       updatedAt: date

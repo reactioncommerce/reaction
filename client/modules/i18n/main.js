@@ -41,9 +41,9 @@ export function getBrowserLanguage() {
  * @return {Object} return schema label object
  */
 function getLabelsFor(schema, name) {
-  let labels = {};
+  const labels = {};
   // loop through all the rendered form fields and generate i18n keys
-  for (let fieldName of schema._schemaKeys) {
+  for (const fieldName of schema._schemaKeys) {
     const i18nKey = name.charAt(0).toLowerCase() + name.slice(1) + "." +
       fieldName
       .split(".$").join("");
@@ -69,8 +69,8 @@ function getLabelsFor(schema, name) {
  * @return {Object} returns i18n translated message for schema labels
  */
 function getMessagesFor() {
-  let messages = {};
-  for (let message in SimpleSchema._globalMessages) {
+  const messages = {};
+  for (const message in SimpleSchema._globalMessages) {
     if ({}.hasOwnProperty.call(SimpleSchema._globalMessages, message)) {
       const i18nKey = `globalMessages.${message}`;
       const t = i18next.t(i18nKey);
@@ -174,9 +174,9 @@ Tracker.autorun(function () {
       }, (err, t) => {
         // someday this should work
         // see: https://github.com/aldeed/meteor-simple-schema/issues/494
-        for (let schema in _.omit(Schemas, "__esModule")) {
+        for (const schema in _.omit(Schemas, "__esModule")) {
           if ({}.hasOwnProperty.call(Schemas, schema)) {
-            let ss = Schemas[schema];
+            const ss = Schemas[schema];
             ss.labels(getLabelsFor(ss, schema));
             ss.messages(getMessagesFor(ss, schema));
           }

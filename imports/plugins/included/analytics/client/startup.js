@@ -47,7 +47,7 @@ analytics.methods = [
 // stored as the first argument, so we can replay the data.
 analytics.factory = function (method) {
   return function () {
-    let args = Array.prototype.slice.call(arguments);
+    const args = Array.prototype.slice.call(arguments);
     args.unshift(method);
     analytics.push(args);
     return analytics;
@@ -64,7 +64,7 @@ for (let i = 0; i < analytics.methods.length; i++) {
 // and that will be sure to only ever load it once.
 analytics.load = function (key) {
   // Create an async script element based on your key.
-  let script = document.createElement("script");
+  const script = document.createElement("script");
   script.type = "text/javascript";
   script.async = true;
   script.src = (document.location.protocol === "https:" ? "https://" : "http://") +
@@ -207,7 +207,7 @@ Meteor.startup(function () {
     let $targets = $(e.target).closest("*[data-event-action]");
     $targets = $targets.parents("*[data-event-action]").add($targets);
     return $targets.each(function (index, element) {
-      let $element = $(element);
+      const $element = $(element);
       const analyticsEvent = {
         eventType: "event",
         category: $element.data("event-category"),

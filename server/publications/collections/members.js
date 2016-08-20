@@ -18,8 +18,8 @@ Meteor.publish("ShopMembers", function () {
   if (typeof this.userId !== "string") {
     return this.ready();
   }
-  let readPermissions = ["reaction-orders", "owner", "admin", "reaction-accounts"];
-  let shopId = Reaction.getShopId();
+  const readPermissions = ["reaction-orders", "owner", "admin", "reaction-accounts"];
+  const shopId = Reaction.getShopId();
   if (!shopId) {
     return this.ready();
   }

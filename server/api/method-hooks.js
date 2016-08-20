@@ -73,7 +73,7 @@ MethodHooks._initializeHook = function (mapping, methodName, hookFunction) {
   mapping[methodName].push(hookFunction);
 
   // Initialize a wrapper for the given method name. Idempotent, it will not erase existing handlers.
-  let method = MethodHooks._handlers[methodName];
+  const method = MethodHooks._handlers[methodName];
   // If no method is found, or a wrapper already exists, return
   if (!method || MethodHooks._wrappers[methodName]) {
     return;
@@ -84,10 +84,10 @@ MethodHooks._initializeHook = function (mapping, methodName, hookFunction) {
 
   MethodHooks._wrappers[methodName] = function () {
     // Get arguments you can mutate
-    let args = _.toArray(arguments);
+    const args = _.toArray(arguments);
     let beforeResult;
     // Call the before hooks
-    let beforeHooks = MethodHooks._beforeHooks[methodName];
+    const beforeHooks = MethodHooks._beforeHooks[methodName];
     _.each(beforeHooks, function (beforeHook, hooksProcessed) {
       beforeResult = beforeHook.call(this, {
         result: undefined,
@@ -116,9 +116,9 @@ MethodHooks._initializeHook = function (mapping, methodName, hookFunction) {
     }
 
     // Call after hooks, providing the result and the original arguments
-    let afterHooks = MethodHooks._afterHooks[methodName];
+    const afterHooks = MethodHooks._afterHooks[methodName];
     _.each(afterHooks, function (afterHook, hooksProcessed) {
-      let hookResult = afterHook.call(this, {
+      const hookResult = afterHook.call(this, {
         result: methodResult,
         error: methodError,
         arguments: args,
