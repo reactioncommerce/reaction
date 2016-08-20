@@ -15,7 +15,7 @@ class IconButton extends Component {
       "rui": true,
       "button": true,
       "edit": true,
-      "variant-edit": true,
+      "variant-edit": true
       // "btn-success": isEditing
     });
 

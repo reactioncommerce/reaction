@@ -91,33 +91,33 @@ AutoForm.addHooks("paypal-payment-form", {
         if (transaction.saved === true) {
           let normalizedStatus = (function () {
             switch (transaction.response.state) {
-            case "created":
-              return "created";
-            case "approved":
-              return "created";
-            case "failed":
-              return "failed";
-            case "canceled":
-              return "canceled";
-            case "expired":
-              return "expired";
-            case "pending":
-              return "pending";
-            default:
-              return "failed";
+              case "created":
+                return "created";
+              case "approved":
+                return "created";
+              case "failed":
+                return "failed";
+              case "canceled":
+                return "canceled";
+              case "expired":
+                return "expired";
+              case "pending":
+                return "pending";
+              default:
+                return "failed";
             }
           })();
 
           let normalizedMode = (function () {
             switch (transaction.response.intent) {
-            case "sale":
-              return "capture";
-            case "authorize":
-              return "authorize";
-            case "order":
-              return "capture";
-            default:
-              return "capture";
+              case "sale":
+                return "capture";
+              case "authorize":
+                return "authorize";
+              case "order":
+                return "capture";
+              default:
+                return "capture";
             }
           })();
 

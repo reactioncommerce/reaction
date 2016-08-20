@@ -73,24 +73,24 @@ AutoForm.addHooks("stripe-payment-form", {
         if (transaction.saved === true) {
           let normalizedStatus = (function () {
             switch (false) {
-            case !(!transaction.response.captured && !transaction.response.failure_code):
-              return "created";
-            case !(transaction.response.captured === true && !transaction.response.failure_code):
-              return "settled";
-            case !transaction.response.failure_code:
-              return "failed";
-            default:
-              return "failed";
+              case !(!transaction.response.captured && !transaction.response.failure_code):
+                return "created";
+              case !(transaction.response.captured === true && !transaction.response.failure_code):
+                return "settled";
+              case !transaction.response.failure_code:
+                return "failed";
+              default:
+                return "failed";
             }
           })();
           const normalizedMode = (function () {
             switch (false) {
-            case !(!transaction.response.captured && !transaction.response.failure_code):
-              return "authorize";
-            case !transaction.response.captured:
-              return "capture";
-            default:
-              return "capture";
+              case !(!transaction.response.captured && !transaction.response.failure_code):
+                return "authorize";
+              case !transaction.response.captured:
+                return "capture";
+              default:
+                return "capture";
             }
           })();
           paymentMethod = {

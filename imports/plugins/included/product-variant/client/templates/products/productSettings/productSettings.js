@@ -84,12 +84,12 @@ Template.productSettingsGridItem.helpers({
     const positions = this.positions && this.positions[tag] || {};
     const weight = positions.weight || 0;
     switch (weight) {
-    case 1:
-      return "product-medium";
-    case 2:
-      return "product-large";
-    default:
-      return "product-small";
+      case 1:
+        return "product-medium";
+      case 2:
+        return "product-large";
+      default:
+        return "product-small";
     }
   },
 

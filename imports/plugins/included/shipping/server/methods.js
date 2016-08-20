@@ -58,11 +58,11 @@ Meteor.methods({
     }
 
     return Shipping.update({
-      '_id': providerId,
-      'methods': removeDoc
+      "_id": providerId,
+      "methods": removeDoc
     }, {
       $pull: {
-        'methods': removeDoc
+        "methods": removeDoc
       }
     });
   },
@@ -88,7 +88,7 @@ Meteor.methods({
       throw new Meteor.Error(403, "Access Denied");
     }
     return Shipping.update({
-      '_id': currentDoc
+      "_id": currentDoc
     }, updateDoc);
   }
 });

@@ -535,8 +535,8 @@ Meteor.methods({
     */
 
     if (!Meteor.userId()) {
-       throw new Meteor.Error(403, "Access Denied. You are not connected.");
-     }
+      throw new Meteor.Error(403, "Access Denied. You are not connected.");
+    }
 
     return Orders.update({cartId: cartId}, {
       $set: {

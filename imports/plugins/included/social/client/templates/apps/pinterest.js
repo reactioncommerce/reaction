@@ -1,17 +1,16 @@
-Template.pinterest.onRendered(function() {
-  var ref;
-  if (this.data.placement === 'footer' && (((ref = this.data.apps.pinterest) != null ? ref.profilePage : void 0) != null)) {
-    return this.$('.pinterest-share').attr('href', this.data.apps.pinterest.profilePage);
+Template.pinterest.onRendered(function () {
+  let ref;
+  if (this.data.placement === "footer" && (((ref = this.data.apps.pinterest) != null ? ref.profilePage : void 0) != null)) {
+    return this.$(".pinterest-share").attr("href", this.data.apps.pinterest.profilePage);
   } else {
-
     /*
       Pinterest requires three parameters:
         url: desired url
         media: image being shared
         description: image description
      */
-    return this.autorun(function() {
-      var data, description, href, media, preferred_url, ref1, template, url;
+    return this.autorun(function () {
+      let data, description, href, media, preferred_url, ref1, template, url;
       template = Template.instance();
       data = Template.currentData();
       preferred_url = data.url || location.origin + location.pathname;
@@ -21,16 +20,16 @@ Template.pinterest.onRendered(function() {
           media = location.origin + data.media;
         }
       }
-      description = encodeURIComponent(((ref1 = data.apps.pinterest) != null ? ref1.description : void 0) || $('.product-detail-field.description').text());
+      description = encodeURIComponent(((ref1 = data.apps.pinterest) != null ? ref1.description : void 0) || $(".product-detail-field.description").text());
       href = "http://www.pinterest.com/pin/create/button/?url=" + url + "&media=" + media + "&description=" + description;
-      return template.$('.pinterest-share').attr('href', href);
+      return template.$(".pinterest-share").attr("href", href);
     });
   }
 });
 
 Template.pinterest.events({
-  'click a': function(event, template) {
+  "click a": function (event, template) {
     event.preventDefault();
-    return window.open(Template.instance().$('.pinterest-share').attr('href'), 'pinterest_window', 'width=750, height=650');
+    return window.open(Template.instance().$(".pinterest-share").attr("href"), "pinterest_window", "width=750, height=650");
   }
 });
