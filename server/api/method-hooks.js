@@ -83,15 +83,13 @@ MethodHooks._initializeHook = function (mapping, methodName, hookFunction) {
   MethodHooks._originalMethodHandlers[methodName] = method;
 
   MethodHooks._wrappers[methodName] = function () {
-    // Save `this` context
-    const self = this;
     // Get arguments you can mutate
     let args = _.toArray(arguments);
     let beforeResult;
     // Call the before hooks
     let beforeHooks = MethodHooks._beforeHooks[methodName];
-    _.each(beforeHooks, function (beforeHook, hooksProcessed) {
-      beforeResult = beforeHook.call(self, {
+    _.each(beforeHooks, (beforeHook, hooksProcessed) => {
+      beforeResult = beforeHook.call(this, {
         result: undefined,
         error: undefined,
         arguments: args,
@@ -112,15 +110,15 @@ MethodHooks._initializeHook = function (mapping, methodName, hookFunction) {
     // Call the main method body
     // check(args, Match.Any);
     try {
-      methodResult = MethodHooks._originalMethodHandlers[methodName].apply(self, args);
+      methodResult = MethodHooks._originalMethodHandlers[methodName].apply(this, args);
     } catch (error) {
       methodError = error;
     }
 
     // Call after hooks, providing the result and the original arguments
     let afterHooks = MethodHooks._afterHooks[methodName];
-    _.each(afterHooks, function (afterHook, hooksProcessed) {
-      let hookResult = afterHook.call(self, {
+    _.each(afterHooks, (afterHook, hooksProcessed) => {
+      let hookResult = afterHook.call(this, {
         result: methodResult,
         error: methodError,
         arguments: args,
