@@ -28,7 +28,7 @@
     "templateStrings": true,
     "jsx": true
   },
-  // NOTE: We're now using eslint-2
+  // NOTE: We're now using eslint-3
   "rules": {
     /**
      * Strict mode
@@ -83,7 +83,7 @@
      * JSX / React
      */
     "jsx-quotes": [2, "prefer-double"], // http://eslint.org/docs/rules/jsx-quotes
-    /*"react/no-deprecated": 1,*/
+    "react/no-deprecated": 1,
     "react/display-name": 1,
     "react/forbid-prop-types": 1,
     "react/jsx-boolean-value": [1, "always"],
@@ -93,11 +93,11 @@
     "react/jsx-max-props-per-line": [1, {
       "maximum": 4
     }],
-    /*"react/jsx-no-bind": 1,*/
+    "react/jsx-no-bind": 1,
     "react/jsx-no-duplicate-props": 1,
     "react/jsx-no-literals": 1,
     "react/jsx-no-undef": 1,
-    "react/jsx-sort-prop-types": 1,
+    "react/sort-prop-types": 1,
     "react/jsx-sort-props": 1,
     "react/jsx-uses-react": 1,
     "react/jsx-uses-vars": 1,
@@ -111,10 +111,10 @@
     "react/prefer-es6-class": 1,
     "react/prop-types": 1,
     "react/react-in-jsx-scope": 0,
-    "react/require-extension": 1,
+    "react/require-extension": "off",
     "react/self-closing-comp": 1,
     "react/sort-comp": 1,
-    "react/wrap-multilines": 1,
+    "react/jsx-wrap-multilines": 1,
 
     /**
      * Best practices

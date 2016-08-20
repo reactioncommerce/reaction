@@ -41,9 +41,8 @@
     "i18next-browser-languagedetector": "^1.0.0",
     "i18next-localstorage-cache": "^0.3.0",
     "i18next-sprintf-postprocessor": "^0.2.2",
-    "jquery": "^2.2.4",
+    "jquery": "^3.1.0",
     "jquery-i18next": "^1.0.1",
-    "jquery-ui": "1.10.5",
     "lodash": "^4.14.2",
     "meteor-node-stubs": "^0.2.3",
     "moment": "^2.14.1",
@@ -60,7 +59,7 @@
     "react-textarea-autosize": "^4.0.4",
     "sortablejs": "^1.4.2",
     "stripe": "^4.9.0",
-    "sweetalert2": "^3.3.8",
+    "sweetalert2": "^4.1.7",
     "swiper": "^3.3.1",
     "tether-drop": "^1.4.2",
     "tether-tooltip": "^1.2.0",
@@ -69,7 +68,7 @@
   },
   "devDependencies": {
     "babel-eslint": "^6.1.2",
-    "eslint": "^2.13.1",
+    "eslint": "^3.3.1",
     "eslint-plugin-react": "^5.2.2"
   },
   "postcss": {
