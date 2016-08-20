@@ -4,8 +4,8 @@ import { composeWithTracker } from "react-komposer";
 import { ReactionProduct } from "/lib/api";
 import { Reaction, i18next, Logger } from "/client/api";
 import { Tags, Media } from "/lib/collections";
-import { ProductDetail, VariantList } from "../components";
-import SocialContainer from "./socialContainer";
+import { ProductDetail } from "../components";
+import { SocialContainer, VariantListContainer } from "./";
 
 class ProductDetailContainer extends Component {
   render() {
@@ -14,7 +14,7 @@ class ProductDetailContainer extends Component {
       <ProductDetail
         socialComponent={<SocialContainer />}
         topVariantComponent={
-          <VariantList varaints={this.props.topVariants} />
+          <VariantListContainer />
         }
         {...this.props}
       />
@@ -22,58 +22,11 @@ class ProductDetailContainer extends Component {
   }
 }
 
-
-function getTopVariants() {
-  let inventoryTotal = 0;
-  const variants = ReactionProduct.getTopVariants();
-  if (variants.length) {
-    // calculate inventory total for all variants
-    for (let variant of variants) {
-      if (variant.inventoryManagement) {
-        let qty = ReactionProduct.getVariantQuantity(variant);
-        if (typeof qty === "number") {
-          inventoryTotal += qty;
-        }
-      }
-    }
-    // calculate percentage of total inventory of this product
-    for (let variant of variants) {
-      let qty = ReactionProduct.getVariantQuantity(variant);
-      variant.inventoryTotal = inventoryTotal;
-      if (variant.inventoryManagement && inventoryTotal) {
-        variant.inventoryPercentage = parseInt(qty / inventoryTotal * 100, 10);
-      } else {
-        // for cases when sellers doesn't use inventory we should always show
-        // "green" progress bar
-        variant.inventoryPercentage = 100;
-      }
-      if (variant.title) {
-        variant.inventoryWidth = parseInt(variant.inventoryPercentage -
-          variant.title.length, 10);
-      } else {
-        variant.inventoryWidth = 0;
-      }
-    }
-    // sort variants in correct order
-    variants.sort((a, b) => a.index - b.index);
-
-    return variants;
-  }
-  return [];
-}
-
 function composer(props, onData) {
   const tagSub = Meteor.subscribe("Tags");
   let productSub;
   const productId = Reaction.Router.getParam("handle");
   const variantId = Reaction.Router.getParam("variantId");
-  const topVariants = getTopVariants()
-
-
-
-
-  // console.log(productId);
-  // console.log(variantId);
 
   if (productId) {
     productSub = Meteor.subscribe("Product", variantId);
@@ -131,14 +84,10 @@ function composer(props, onData) {
         product,
         priceRange,
         tags,
-        media: mediaArray.fetch(),
-        topVariants,
-        childVariants: []
+        media: mediaArray.fetch()
       });
     }
   }
-
-
 }
 
 export default composeWithTracker(composer)(ProductDetailContainer);

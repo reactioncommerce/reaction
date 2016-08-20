@@ -1,33 +1,39 @@
-import React, { Component, PropTypes} from "react"
+import React, { Component, PropTypes} from "react";
+import Variant from "./variant";
+import { EditContainer } from "/imports/plugins/core/ui/client/containers";
+import { Translation } from "/imports/plugins/core/ui/client/components";
 
 class VariantList extends Component {
 
   renderVariants() {
-    return this.props.variants && this.props.variants.map((variant, index) => {
-      return (
-        <li className="variant-list-item" id="variant-list-item-{variant._id}" key={variant._id}>
-          <div className="variant-detail {{selectedVariant}}">
-            <div className="title">
-              <span className="variant-title">{variant.title}</span>
-            </div>
+    if (this.props.variants) {
+      return this.props.variants.map((variant, index) => {
+        return (
+          <EditContainer
+            data={variant}
+            editTypes={["edit", "visibility"]}
+            editView="variantForm"
+            i18nKeyLabel="productDetailEdit.editVariant"
+            key={index}
+            label="Edit Variant"
+            permissions={["createProduct"]}
+          >
+            <Variant
+              isSelected={this.props.variantIsSelected(variant._id)}
+              variant={variant}
+            />
+          </EditContainer>
+        );
+      });
+    }
 
-            <div className="actions">
-              <span className="variant-price">price</span>
-            </div>
-          </div>
-        </li>
-
-      )
-    });
-    /*
-    {{#each variants}}
-      {{> variant}}
-    {{else}}
-      <a href="#" id="create-variant">+ <span data-i18n="variantList.createVariant">Create Variant</span></a>
-    {{/each}}
-    </ul>
-  </div>
-     */
+    return (
+      <li>
+        <a href="#" id="create-variant">
+          {"+"} <Translation defaultValue="Create Variant" i18nKey="variantList.createVariant" />
+        </a>
+      </li>
+    );
   }
 
   render() {
@@ -40,5 +46,10 @@ class VariantList extends Component {
     );
   }
 }
+
+VariantList.propTypes = {
+  variantIsSelected: PropTypes.func,
+  variants: PropTypes.arrayOf(PropTypes.object)
+};
 
 export default VariantList;
