@@ -5,6 +5,7 @@ import { EditButton } from "/imports/plugins/core/ui/client/components";
 import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
 import { Template } from "meteor/templating";
+import Sortable from "sortablejs";
 
 function variantIsSelected(variantId) {
   const current = ReactionProduct.selectedVariant();
@@ -25,6 +26,39 @@ function variantIsInActionView(variantId) {
 
   return false;
 }
+
+/**
+ * variant onRendered
+ */
+
+Template.variantList.onRendered(function () {
+  const instance = this;
+
+  return this.autorun(function () {
+    if (Reaction.hasPermission("createProduct")) {
+      const variantSort = $(".variant-list")[0];
+
+      this.sortable = Sortable.create(variantSort, {
+        group: "variant-list",
+        handle: ".variant-list-item",
+        onUpdate() {
+          const positions = instance.$(".variant-list-item")
+            .toArray()
+            .map((element) => {
+              return element.getAttribute("data-id");
+            });
+
+          Meteor.defer(function () {
+            Meteor.call("products/updateVariantsPosition", positions);
+          });
+
+          Tracker.flush();
+        }
+      });
+    }
+  });
+});
+
 
 /**
  * variantList helpers

@@ -230,7 +230,7 @@ function denormalize(id, field) {
 function isSoldOut(variants) {
   return variants.every(variant => {
     if (variant.inventoryManagement && variant.inventoryPolicy) {
-      return Catalog.getVariantQuantity(variant) === 0;
+      return Catalog.getVariantQuantity(variant) <= 0;
     }
     return false;
   });
