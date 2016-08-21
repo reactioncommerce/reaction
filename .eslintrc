@@ -1,5 +1,5 @@
 {
-  "parser": "babel-eslint", // for support of spread operator
+  "parser": "babel-eslint", // now for the support of allowImportExportEverywhere
   "env": {
     "browser": true,
     "node": true,
@@ -7,7 +7,8 @@
   },
   "parserOptions": {
      "ecmaVersion": 6,
-     "sourceType": "module"
+     "sourceType": "module",
+     "allowImportExportEverywhere": true
   },
   "plugins": ["react"],
   "ecmaFeatures": {
@@ -128,7 +129,7 @@
     }],
     "eqeqeq": 2, // http://eslint.org/docs/rules/eqeqeq
     "guard-for-in": 2, // http://eslint.org/docs/rules/guard-for-in
-    "prefer-const": ["error", {
+    "prefer-const": [1, {
         "destructuring": "any",
         "ignoreReadBeforeAssign": false
     }],
@@ -163,7 +164,7 @@
     "vars-on-top": 2, // http://eslint.org/docs/rules/vars-on-top
     "wrap-iife": [2, "any"], // http://eslint.org/docs/rules/wrap-iife
     "yoda": 2, // http://eslint.org/docs/rules/yoda
-    "max-len": [2, 160, 2, {
+    "max-len": [1, 160, 2, {
       "ignoreComments": true,
       "ignoreUrls": true
     }], // http://eslint.org/docs/rules/max-len
