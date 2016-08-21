@@ -51,15 +51,12 @@ import { Template } from "meteor/templating";
  */
 
 export function Apps(optionHash) {
-  let fields;
-  let filter;
+  const filter = {};
+  const registryFilter = {};
   let key;
   let match;
   let packages;
-
   let reactionApps = [];
-  let reactionPackages;
-  let registryFilter;
   let options = {};
 
   // allow for object or option.hash
@@ -75,10 +72,6 @@ export function Apps(optionHash) {
   if (!options.shopId) {
     options.shopId = Reaction.getShopId();
   }
-
-  reactionApps = [];
-  filter = {};
-  registryFilter = {};
 
   //
   // build filter to only get matching registry elements
@@ -96,7 +89,7 @@ export function Apps(optionHash) {
   }
 
   // return these fields
-  fields = {
+  const fields = {
     enabled: 1,
     registry: 1,
     name: 1,
@@ -104,7 +97,7 @@ export function Apps(optionHash) {
   };
 
   // fetch the packages
-  reactionPackages = Packages.find(filter, fields).fetch();
+  const reactionPackages = Packages.find(filter, fields).fetch();
 
   // apply filters to registry items
   if (reactionPackages.length) {
