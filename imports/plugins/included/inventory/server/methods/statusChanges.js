@@ -4,7 +4,7 @@ import { Inventory } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 import { Logger, Reaction } from "/server/api";
 
-// Disabled for now, needs more testing.
+// TODO statusChanges DDP limiting Disabled for now, needs more testing.
 
 // // Define a rate limiting rule that matches update attempts by non-admin users
 // const addReserveRule = {
@@ -242,7 +242,7 @@ Meteor.methods({
       return 0;
     }
 
-    // TODO: need to look carefully and understand is it possible ho have a
+    // TODO inventory/backorder need to look carefully and understand is it possible ho have a
     // negative `backOrderQty` value here?
 
     // check basic user permissions
@@ -260,29 +260,41 @@ Meteor.methods({
 
     // insert backorder
     let i = 0;
-    const batch = Inventory.
-      _collection.rawCollection().initializeUnorderedBulkOp();
-    while (i < backOrderQty) {
-      const id = Inventory._makeNewID();
-      batch.insert(Object.assign({ _id: id }, newReservation));
-      i++;
+
+    // check if we support bulk operations
+    const currentBatch = Inventory._collection.rawCollection().currentBatch;
+
+    if (currentBatch && currentBatch.operations && currentBatch.operations.length > 0) {
+      const batch = Inventory._collection.rawCollection().initializeUnorderedBulkOp();
+      if (batch) {
+        while (i < backOrderQty) {
+          const id = Inventory._makeNewID();
+          batch.insert(Object.assign({ _id: id }, newReservation));
+          i++;
+        }
+
+        const execute = Meteor.wrapAsync(batch.execute, batch);
+        const inventoryBackorder = execute();
+        const inserted = inventoryBackorder.nInserted;
+        Logger.info(`created ${inserted} backorder records for product ${newReservation.productId}, variant ${newReservation.variantId}`);
+        return inserted;
+      }
     }
-
-    const execute = Meteor.wrapAsync(batch.execute, batch);
-    const inventoryBackorder = execute();
-    const inserted = inventoryBackorder.nInserted;
-    Logger.info(
-      `created ${inserted} backorder records for product ${
-        newReservation.productId}, variant ${newReservation.variantId}`);
-
-    return inserted;
+    //
+    // TODO implement a backup inventory/backorder method if bulk operations fail.
+    //
+    Logger.error("skipped bulk operations backorder updates.");
+    return null;
   },
   //
   // send low stock warnings
   //
   "inventory/lowStock": function (product) {
     check(product, Schemas.Product);
-    // WIP placeholder
+    //
+    // TODO implement inventory/lowstock calculations
+    // placeholder is here to give plugins a place to hook into
+    //
     Logger.info("inventory/lowStock");
   },
   /**

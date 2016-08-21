@@ -24,7 +24,7 @@ MethodHooks.after("taxes/calculate", function (options) {
   });
 
   // check if package is configured
-  if (pkg && pkg.settings.taxcloud) {
+  if (shop && pkg && pkg.settings.taxcloud) {
     const apiKey = pkg.settings.taxcloud.apiKey;
     const apiLoginId = pkg.settings.taxcloud.apiLoginId;
 
@@ -46,7 +46,7 @@ MethodHooks.after("taxes/calculate", function (options) {
       if (!apiKey || !apiLoginId) {
         Logger.warn("TaxCloud API Key is required.");
       }
-      if (typeof cartToCalc.shipping !== "undefined") {
+      if (typeof cartToCalc.shipping !== "undefined" && cartToCalc.items) {
         const shippingAddress = cartToCalc.shipping[0].address;
 
         if (shippingAddress) {
