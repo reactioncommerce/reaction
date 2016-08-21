@@ -39,6 +39,7 @@ if (Package.blaze) {
 
       return isGuest && !isAnonymous ? user : null;
     }
+    return null;
   });
 }
 
@@ -240,8 +241,7 @@ Template.registerHelper("orElse", function (v1, v2) {
  * @return {Array} returns array[key:,value:]
  */
 Template.registerHelper("key_value", function (context) {
-  let result;
-  result = [];
+  const result = [];
   _.each(context, function (value, key) {
     return result.push({
       key: key,
@@ -259,8 +259,7 @@ Template.registerHelper("key_value", function (context) {
  * @returns {String} returns formatted Spacebars.SafeString
  */
 Template.registerHelper("nl2br", function (text) {
-  let nl2br;
-  nl2br = (text + "").replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, "$1" +
+  const nl2br = (text + "").replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, "$1" +
     "<br>" + "$2");
   return new Spacebars.SafeString(nl2br);
 });
@@ -277,9 +276,8 @@ Template.registerHelper("nl2br", function (text) {
  * @return {Date} return formatted date
  */
 Template.registerHelper("dateFormat", function (context, block) {
-  let f;
   if (window.moment) {
-    f = block.hash.format || "MMM DD, YYYY hh:mm:ss A";
+    const f = block.hash.format || "MMM DD, YYYY hh:mm:ss A";
     return moment(context).format(f);
   }
   return context;
