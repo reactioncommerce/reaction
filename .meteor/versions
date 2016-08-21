@@ -98,7 +98,7 @@ mdg:validated-method@1.1.0
 mdg:validation-error@0.5.1
 meteor@1.2.17
 meteor-base@1.0.4
-meteorhacks:fast-render@2.14.0
+meteorhacks:fast-render@2.16.0
 meteorhacks:inject-data@2.0.0
 meteorhacks:meteorx@1.4.1
 meteorhacks:picker@1.0.3
