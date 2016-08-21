@@ -25,11 +25,13 @@ Template.addressBookForm.helpers({
     options = [];
     const ref = shop !== null ? shop.locales.countries[selectedCountry].states : void 0;
     for (const state in ref) {
-      locale = ref[state];
-      options.push({
-        label: locale.name,
-        value: state
-      });
+      if ({}.hasOwnProperty.call(ref, state)) {
+        locale = ref[state];
+        options.push({
+          label: locale.name,
+          value: state
+        });
+      }
     }
     return options;
   },
