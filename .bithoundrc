@@ -47,7 +47,8 @@
     "**/test/**",
     "**/tests/**",
     "**/spec/**",
-    "**/specs/**"
+    "**/specs/**",
+    "**/**.app-test.**"
   ],
   "critics": {
     "wc": {"limit": 5000},
