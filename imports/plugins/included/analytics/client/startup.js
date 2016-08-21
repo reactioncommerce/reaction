@@ -2,7 +2,7 @@ import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Tracker } from "meteor/tracker";
 import { AnalyticsEvents, Packages } from "/lib/collections";
-import { Reaction, i18next } from "/client/api";
+import { Reaction, i18next, Logger } from "/client/api";
 
 // Create a queue, but don't obliterate an existing one!
 analytics = window.analytics = window.analytics || [];
@@ -12,9 +12,7 @@ if (analytics.initialize) return;
 
 // If the snippet was invoked already show an error.
 if (analytics.invoked) {
-  if (window.console && console.error) {
-    console.error("Segment snippet included twice.");
-  }
+  Logger.warn("Segment snippet included twice.");
   return;
 }
 
@@ -198,6 +196,7 @@ Meteor.startup(function () {
     if (!Reaction.hasAdminAccess()) {
       return Alerts.removeType("analytics-not-configured");
     }
+    return null;
   });
 
   //

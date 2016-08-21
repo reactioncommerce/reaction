@@ -1,4 +1,4 @@
-import { Reaction, i18next } from "/client/api";
+import { Reaction } from "/client/api";
 import { ReactionProduct } from "/lib/api";
 import { Products, Media } from "/lib/collections";
 import { EditButton } from "/imports/plugins/core/ui/client/components";

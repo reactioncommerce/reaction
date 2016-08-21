@@ -1,11 +1,10 @@
-import _ from "lodash";
-import { Reaction } from "/client/api";
-import { Cart } from "/lib/collections";
-import Logger from "/client/modules/logger";
 import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
 import { Template } from "meteor/templating";
 import { Tracker } from "meteor/tracker";
+import { Reaction } from "/client/api";
+import { Cart } from "/lib/collections";
+import Logger from "/client/modules/logger";
 
 // This template handles receiving the token from Paypal, recording it and moving on the checkout
 
@@ -46,7 +45,6 @@ Template.paypalDone.helpers({
     return template.checkoutUrl;
   }
 });
-
 
 Template.paypalDone.onCreated(function () {
   const payerId = Reaction.Router.getQueryParam("PayerID");
@@ -89,10 +87,10 @@ Template.paypalDone.onCreated(function () {
             }
             const paymentMethod = buildPaymentMethod(result, status, mode);
 
-            Meteor.call("cart/submitPayment", paymentMethod, function (error, result) {
-              if (!result && error) {
-                Logger.warn(error, "Error received during submitting Payment via Paypal");
-                showError(error);
+            Meteor.call("cart/submitPayment", paymentMethod, function (payError, payResult) {
+              if (!payResult && payError) {
+                Logger.warn(payError, "Error received during submitting Payment via Paypal");
+                showError(payError);
                 Session.set("guestCheckoutFlow", true);
               }
             });

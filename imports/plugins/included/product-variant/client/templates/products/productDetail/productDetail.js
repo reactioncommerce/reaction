@@ -253,12 +253,11 @@ Template.productDetail.events({
     return event.stopPropagation();
   },
   "change #add-to-cart-quantity": function (event, template) {
-    let currentVariant;
-    let qtyField;
-    let quantity;
     event.preventDefault();
     event.stopPropagation();
-    currentVariant = ReactionProduct.selectedVariant();
+    let qtyField;
+    let quantity;
+    const currentVariant = ReactionProduct.selectedVariant();
     if (currentVariant) {
       qtyField = template.$('input[name="addToCartQty"]');
       quantity = qtyField.val();

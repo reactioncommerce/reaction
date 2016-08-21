@@ -1,7 +1,7 @@
 import Sortable from "sortablejs";
-import { TagHelpers } from "/imports/plugins/core/ui-tagnav/client/helpers";
-import { Session } from "meteor/session";
 import { Template } from "meteor/templating";
+import { ReactiveDict } from "meteor/reactive-dict";
+import { TagHelpers } from "/imports/plugins/core/ui-tagnav/client/helpers";
 import { IconButton } from "/imports/plugins/core/ui/client/components";
 
 const NavbarStates = {
@@ -146,6 +146,7 @@ Template.tagNav.onRendered(() => {
         if (item) {
           return item._id;
         }
+        return null;
       });
 
       const newTagsOrder = instance.moveItem(tagIds, event.oldIndex, event.newIndex);
@@ -163,6 +164,7 @@ Template.tagNav.onRendered(() => {
         if (item) {
           return item._id;
         }
+        return null;
       });
 
       TagNavHelpers.onTagDragAdd(movedTagId, toListId, event.newIndex, tagIds);

@@ -416,7 +416,7 @@ Meteor.methods({
     check(tagId, Match.OneOf(String, null, void 0));
     check(currentTagId, Match.OneOf(String, null, void 0));
 
-    let newTagId;
+    let newTagId = {};
     // must have 'core' permissions
     if (!Reaction.hasPermission("core")) {
       throw new Meteor.Error(403, "Access Denied");

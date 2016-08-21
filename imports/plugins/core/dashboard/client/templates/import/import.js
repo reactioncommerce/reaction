@@ -21,8 +21,7 @@ function uploadHandler(event) {
       });
     }
     if (product) {
-      let fileObj;
-      fileObj = new FS.File(files[i]);
+      const fileObj = new FS.File(files[i]);
       fileObj.metadata = {
         ownerId: userId,
         productId: product._id,

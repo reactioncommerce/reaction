@@ -102,6 +102,10 @@ export const TagHelpers = {
       });
   },
 
+  /* eslint no-unused-vars: 0 */
+  //
+  //   TODO review toIndex, ofList variable implementation in tags.js moveTagToNewParent
+  //
   moveTagToNewParent(movedTagId, toListId, toIndex, ofList) {
     if (movedTagId) {
       if (toListId) {
@@ -126,6 +130,7 @@ export const TagHelpers = {
 
       return result;
     }
+    return 0;
   },
 
   sortTags(tagIds, parentTag) {

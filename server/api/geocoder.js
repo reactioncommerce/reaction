@@ -16,7 +16,10 @@ import { Meteor } from "meteor/meteor";
 if (typeof Meteor.wrapAsync === "undefined") {
   Meteor.wrapAsync = Meteor._wrapAsync;
 }
-
+/* eslint func-style: 1 */
+//
+// TODO review GeoCoder export construction
+//
 // init geocoder
 export const GeoCoder = function geoCoderConstructor(options) {
   let extra;

@@ -338,7 +338,7 @@ function doRightJoinNoIntersection(leftSet, rightSet) {
   } else {
     rightJoin = {};
   }
-  const findRightOnlyProperties = function () {
+  const findRightOnlyProperties = () => {
     return Object.keys(rightSet).filter(function (key) {
       if (typeof(rightSet[key]) === "object" &&
         !Array.isArray(rightSet[key])) {

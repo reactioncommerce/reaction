@@ -105,28 +105,22 @@ Template.variantForm.events({
         }
       }
     }
-
     // template.$(formId).submit();
     // ReactionProduct.setCurrentVariant(template.data._id);
-    //
-    //
-    //
   },
   "click .btn-child-variant-form": function (event, template) {
-    let productId;
     event.stopPropagation();
     event.preventDefault();
-    productId = ReactionProduct.selectedProductId();
+    const productId = ReactionProduct.selectedProductId();
     if (!productId) {
       return;
     }
     Meteor.call("products/createVariant", template.data._id);
   },
   "click .btn-clone-variant": function (event, template) {
-    let productId;
     event.stopPropagation();
     event.preventDefault();
-    productId = ReactionProduct.selectedProductId();
+    const productId = ReactionProduct.selectedProductId();
     if (!productId) {
       return;
     }

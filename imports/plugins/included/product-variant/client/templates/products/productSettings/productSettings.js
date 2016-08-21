@@ -54,6 +54,7 @@ Template.productSettingsGridItem.helpers({
     if (this._id) {
       return ReactionProduct.getProductPriceRange(this._id).range;
     }
+    return null;
   },
 
   media: function () {
@@ -138,6 +139,10 @@ Template.productSettings.events({
         weight: weight,
         updatedAt: new Date()
       };
+      /* eslint no-loop-func: 1 */
+      //
+      // TODO review Template.productSettings events for no-loop-func
+      //
       Meteor.call("products/updateProductPosition", product._id, positions, tag,
         (error) => {
           if (error) {
