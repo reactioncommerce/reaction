@@ -1,9 +1,8 @@
 import accounting from "accounting-js";
-import { localeDep, i18nextDep } from  "./main";
-import { Reaction, Logger, i18next } from "/client/api";
-import { Session } from "meteor/session";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
+import { localeDep, i18nextDep } from  "./main";
+import { Reaction, Logger, i18next } from "/client/api";
 
 /**
  * i18n
@@ -25,7 +24,7 @@ Template.registerHelper("i18n", function (i18nKey, i18nMessage) {
 
   i18nextDep.depend();
 
-  const message = new Handlebars.SafeString(i18nMessage);
+  const message = new Spacebars.SafeString(i18nMessage);
 
   // returning translated key
   return i18next.t(i18nKey, {defaultValue: message});
