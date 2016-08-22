@@ -1,4 +1,3 @@
-/* eslint camelcase: 0 */
 import { Reaction } from "/server/api";
 
 Reaction.registerPackage({
@@ -6,8 +5,7 @@ Reaction.registerPackage({
   name: "reaction-mongo-search",
   icon: "fa fa-search",
   autoEnable: true,
-  settings: {
-  },
+  importPath: "/import/plugins/included/searchMongo/server",
   registry: [
     {
       provides: "searchEngine",
@@ -16,5 +14,3 @@ Reaction.registerPackage({
     }
   ]
 });
-
-

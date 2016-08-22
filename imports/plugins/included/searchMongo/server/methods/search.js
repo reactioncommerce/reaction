@@ -13,13 +13,14 @@ function flattenToIds(products) {
 
 const buildSearchResults = {};
 
-buildSearchResults.product = function (products, existingSearchResults, weight) {
+buildSearchResults.product = function (products, existingSearchResults, weight, matchType) {
   let searchResults = existingSearchResults || [];
   const existingIds = flattenToIds(existingSearchResults);
   for (let product of products) { // prevent adding a duplicate product when found in both exact and partial search
     if (!_.includes(existingIds, product._id)) {
       let searchProduct = Object.assign({}, product);
       searchProduct.weight = weight;
+      searchProduct.matchType = matchType;
       searchResults.push(searchProduct);
     }
   }
@@ -40,7 +41,7 @@ buildSearchResults.order = function (orders, existingSearchResults) {
   return searchResults;
 };
 
-buildSearchResults.account = function(accounts, existingSearchResults) {
+buildSearchResults.account = function (accounts, existingSearchResults) {
   let searchResults = existingSearchResults || [];
   for (let account of accounts) {
     let searchAccount = {
@@ -103,7 +104,7 @@ searchMethods.product = function (searchString, stopOnExactMatch) {
   }).fetch();
   if (exactProducts) {
     Logger.info(`Got ${exactProducts.length} products in exact search`);
-    results = buildSearchResults.product(exactProducts, [], 10);
+    results = buildSearchResults.product(exactProducts, [], settings.titleWeightExact, "title:exact");
   }
   // partial matches are then weighted 5
   if (!stopOnExactMatch) {
@@ -117,13 +118,13 @@ searchMethods.product = function (searchString, stopOnExactMatch) {
       }
     }).fetch();
     Logger.info(`Got ${products.length} products in partial search`);
-    results = buildSearchResults.product(products, results, 5);
+    results = buildSearchResults.product(products, results, settings.titleWeightPartial, "title:partial");
   }
   if (settings.includeVariants) {
     const variantResults = findVariants(searchString, true);
     const partialVariantResults = findVariants(searchString, false);
-    results = buildSearchResults.product(variantResults, results, settings.variantWeight);
-    results = buildSearchResults.product(partialVariantResults, results, settings.variantWeight - 1);
+    results = buildSearchResults.product(variantResults, results, settings.variantWeightExact, "variant:exact");
+    results = buildSearchResults.product(partialVariantResults, results, settings.variantWeightPartial, "variant:partial");
   }
   Logger.info(results);
   return results;

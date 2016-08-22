@@ -1,11 +1,16 @@
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
+import { Packages } from "/lib/collections";
 import { Logger } from "/server/api";
 import { searchMethods } from "/imports/plugins/included/searchMongo/server";
 
+const searchPackage = Packages.findOne({ provides: "searchEngine"});
+Logger.warn(searchPackage);
+// const searchMethods = require(searchPackage.importPath);
+
 const searchAbleCollections = _.keys(searchMethods);
-Logger.info(searchAbleCollections);
+Logger.warn(searchAbleCollections);
 
 Meteor.methods({
   search: function (collection = "product", searchString, maxResults, stopOnExactMatch = false) {
