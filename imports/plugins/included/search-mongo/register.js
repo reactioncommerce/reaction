@@ -5,7 +5,7 @@ Reaction.registerPackage({
   name: "reaction-mongo-search",
   icon: "fa fa-search",
   autoEnable: true,
-  importPath: "/import/plugins/included/searchMongo/server",
+  importPath: "/import/plugins/included/search-mongo/server",
   registry: [
     {
       provides: "searchEngine",

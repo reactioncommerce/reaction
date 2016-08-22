@@ -3,7 +3,7 @@ import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Packages } from "/lib/collections";
 import { Logger } from "/server/api";
-import { searchMethods } from "/imports/plugins/included/searchMongo/server";
+import { searchMethods } from "/imports/plugins/included/search-mongo/server";
 
 const searchPackage = Packages.findOne({ provides: "searchEngine"});
 Logger.warn(searchPackage);
