@@ -34,6 +34,7 @@ email@1.1.17
 service-configuration@1.0.10
 amplify
 mdg:validated-method
+shell-server
 
 # Meteor Auth Packages
 accounts-base@1.2.11
@@ -93,4 +94,3 @@ practicalmeteor:sinon
 
 
 # Custom Packages
-shell-server
