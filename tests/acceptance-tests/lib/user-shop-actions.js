@@ -24,11 +24,9 @@ module.exports = {
     browser.waitForEnabled(eleMap.authorizenet_cc, "6000");
     try {
       browser.setValue(eleMap.authorizenet_cc, userData.visa);
-    }
-    catch (e) {
-      console.error("damn!", e.message);
-    }
-    finally {
+    } catch (e) {
+      browser.pause("1");
+    } finally {
       browser.pause("1000");
     }
     browser.pause("5000");
@@ -37,11 +35,9 @@ module.exports = {
     browser.waitForEnabled(eleMap.authorizenet_cvv, "8000");
     try {
       browser.setValue(eleMap.authorizenet_cvv, userData.cvv);
-    }
-    catch (e) {
-      console.error("damn!", e.message);
-    }
-    finally {
+    } catch (e) {
+      browser.pause("1");
+    } finally {
       browser.pause("1000");
     }
   },
@@ -55,11 +51,9 @@ module.exports = {
     browser.waitForEnabled(eleMap.braintree_cvv, "8000");
     try {
       browser.setValue(eleMap.braintree_cvv, userData.cvv);
-    }
-    catch (e) {
-      console.error("damn!", e.message);
-    }
-    finally {
+    } catch (e) {
+      browser.pause("1");
+    } finally {
       browser.pause("1000");
     }
   },
@@ -73,11 +67,9 @@ module.exports = {
     browser.waitForEnabled(eleMap.example_payment_cvv, "8000");
     try {
       browser.setValue(eleMap.example_payment_cvv, userData.cvv);
-    }
-    catch (e) {
-      console.error("damn!", e.message);
-    }
-    finally {
+    } catch (e) {
+      browser.pause("1");
+    } finally {
       browser.pause("1000");
     }
   },
@@ -91,11 +83,9 @@ module.exports = {
     browser.waitForEnabled(eleMap.paypal_cvv, "8000");
     try {
       browser.setValue(eleMap.paypal_cvv, userData.cvv);
-    }
-    catch (e) {
-      console.error("damn!", e.message);
-    }
-    finally {
+    } catch (e) {
+      browser.pause("1");
+    } finally {
       browser.pause("1000");
     }
   },
@@ -109,11 +99,9 @@ module.exports = {
     browser.waitForEnabled(eleMap.stripe_cvv, "8000");
     try {
       browser.setValue(eleMap.stripe_cvv, userData.cvv);
-    }
-    catch (e) {
-      console.error("damn!", e.message);
-    }
-    finally {
+    } catch (e) {
+      browser.pause("1");
+    } finally {
       browser.pause("1000");
     }
   },
@@ -121,8 +109,7 @@ module.exports = {
     browser.pause("2000");
     if (browser.isExisting("address")) {
       browser.pause("1000");
-    }
-    else {
+    } else {
       this.userAddress();
     }
   }
