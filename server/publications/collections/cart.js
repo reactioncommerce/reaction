@@ -34,10 +34,18 @@ Meteor.publish("Cart", function (sessionId, userId) {
     return this.ready();
   }
 
+  // exclude these fields
+  // from the client cart
+  const fields = {
+    taxes: 0
+  };
+
   // select user cart
   const cart = Cart.find({
     userId: this.userId,
     shopId: shopId
+  }, {
+    fields: fields
   });
 
   if (cart.count()) {

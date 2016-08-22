@@ -116,13 +116,21 @@ Template.coreOrderShippingInvoice.events({
     const order = instance.state.get("order");
     const orderTotal = order.billing[0].paymentMethod.amount;
     const paymentMethod = order.billing[0].paymentMethod;
+    const discounts = order.billing[0].invoice.discounts;
     const refund = state.get("field-refund") || 0;
     const refunds = Template.instance().refunds.get();
     let refundTotal = 0;
     _.each(refunds, function (item) {
       refundTotal += parseFloat(item.amount);
     });
-    const adjustedTotal = accounting.toFixed(orderTotal - refundTotal, 2);
+    let adjustedTotal;
+
+    // Stripe counts discounts as refunds, so we need to re-add the discount to not "double discount" in the adjustedTotal
+    if (paymentMethod.processor === "Stripe") {
+      adjustedTotal = accounting.toFixed(orderTotal + discounts - refundTotal, 2);
+    } else {
+      adjustedTotal = accounting.toFixed(orderTotal - refundTotal, 2);
+    }
 
     if (refund > adjustedTotal) {
       Alerts.inline("Refund(s) total cannot be greater than adjusted total", "error", {
@@ -316,12 +324,18 @@ Template.coreOrderShippingInvoice.helpers({
     const instance = Template.instance();
     const order = instance.state.get("order");
     const paymentMethod = order.billing[0].paymentMethod;
+    const discounts = order.billing[0].invoice.discounts;
     const refunds = Template.instance().refunds.get();
     let refundTotal = 0;
+
     _.each(refunds, function (item) {
       refundTotal += parseFloat(item.amount);
     });
-    return paymentMethod.amount - refundTotal;
+
+    if (paymentMethod.processor === "Stripe") {
+      return Math.abs(paymentMethod.amount + discounts - refundTotal);
+    }
+    return Math.abs(paymentMethod.amount - refundTotal);
   },
 
   refundSubmitDisabled() {

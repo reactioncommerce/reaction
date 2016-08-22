@@ -292,8 +292,8 @@ Import.layout = function (layout, shopId) {
     _id: shopId
   };
   return this.object(Collections.Shops, key, {
-    "_id": shopId,
-    "layout": layout
+    _id: shopId,
+    layout: layout
   });
 };
 
@@ -329,33 +329,32 @@ Import.tag = function (key, tag) {
  *                   from the rightSet. But only those, that were not present
  *                   in the leftSet.
  */
-function doRightJoinNoIntersection (leftSet, rightSet) {
+function doRightJoinNoIntersection(leftSet, rightSet) {
   if (rightSet === null) return null;
 
   let rightJoin;
   if (Array.isArray(rightSet)) {
-     rightJoin = [];
+    rightJoin = [];
   } else {
-     rightJoin = {};
+    rightJoin = {};
   }
   let findRightOnlyProperties = function () {
-    return Object.keys(rightSet).filter(function(key) {
+    return Object.keys(rightSet).filter(function (key) {
       if (typeof(rightSet[key]) === "object" &&
-          !Array.isArray(rightSet[key])) {
-            // Nested objects are always considered
-            return true;
-      } else {
-        // Array or primitive value
-        return !leftSet.hasOwnProperty(key);
+        !Array.isArray(rightSet[key])) {
+        // Nested objects are always considered
+        return true;
       }
-    })
+      // Array or primitive value
+      return !leftSet.hasOwnProperty(key);
+    });
   };
 
-  for (let key of findRightOnlyProperties()){
+  for (let key of findRightOnlyProperties()) {
     if (typeof(rightSet[key]) === "object") {
       // subobject or array
       if (leftSet.hasOwnProperty(key) && (typeof(leftSet[key]) !== "object" ||
-           Array.isArray(leftSet[key])!== Array.isArray(rightSet[key]))) {
+           Array.isArray(leftSet[key]) !== Array.isArray(rightSet[ key ]))) {
         // This is not expected!
         throw new Error(
           "Left object and right object's internal structure must be " +
@@ -368,7 +367,7 @@ function doRightJoinNoIntersection (leftSet, rightSet) {
       );
 
       let obj = {};
-      if (rightSubJoin === null){
+      if (rightSubJoin === null) {
         obj[key] = null;
       } else if (Object.keys(rightSubJoin).length !== 0 ||
                  Array.isArray(rightSubJoin)) {
@@ -423,7 +422,7 @@ Import.object = function (collection, key, object) {
 
   // Upsert the object.
   let find = this.buffer(collection).find(key);
-  if (Object.keys(defaultValuesObject).length === 0){
+  if (Object.keys(defaultValuesObject).length === 0) {
     find.upsert().update({
       $set: importObject
     });
