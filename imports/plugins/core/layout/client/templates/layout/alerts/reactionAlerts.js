@@ -78,7 +78,7 @@ Object.assign(Alerts, {
 
     return swal({
       title,
-      message,
+      text: message,
       type: "info",
       ...options
     }).then((isConfirm) => {
