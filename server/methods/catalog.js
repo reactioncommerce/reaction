@@ -191,25 +191,25 @@ function denormalize(id, field) {
   let update = {};
 
   switch (field) {
-  case "inventoryPolicy":
-  case "inventoryQuantity":
-  case "inventoryManagement":
-    Object.assign(update, {
-      isSoldOut: isSoldOut(variants),
-      isLowQuantity: isLowQuantity(variants),
-      isBackorder: isBackorder(variants)
-    });
-    break;
-  case "lowInventoryWarningThreshold":
-    Object.assign(update, {
-      isLowQuantity: isLowQuantity(variants)
-    });
-    break;
-  default: // "price" is object with range, min, max
-    const priceObject = Catalog.getProductPriceRange(id);
-    Object.assign(update, {
-      price: priceObject
-    });
+    case "inventoryPolicy":
+    case "inventoryQuantity":
+    case "inventoryManagement":
+      Object.assign(update, {
+        isSoldOut: isSoldOut(variants),
+        isLowQuantity: isLowQuantity(variants),
+        isBackorder: isBackorder(variants)
+      });
+      break;
+    case "lowInventoryWarningThreshold":
+      Object.assign(update, {
+        isLowQuantity: isLowQuantity(variants)
+      });
+      break;
+    default: // "price" is object with range, min, max
+      const priceObject = Catalog.getProductPriceRange(id);
+      Object.assign(update, {
+        price: priceObject
+      });
   }
   Products.update(id, {
     $set: update
@@ -788,11 +788,17 @@ Meteor.methods({
 
     const doc = Products.findOne(_id);
     const type = doc.type;
-    let stringValue = EJSON.stringify(value);
-    let update = EJSON.parse("{\"" + field + "\":" + stringValue + "}");
+    let update;
+    // handle booleans with correct typing
+    if (value === "false" || value === "true") {
+      update = EJSON.parse(`{${field}:${value}}`);
+    } else {
+      let stringValue = EJSON.stringify(value);
+      update = EJSON.parse("{\"" + field + "\":" + stringValue + "}");
+    }
 
     // we need to use sync mode here, to return correct error and result to UI
-    const result = Products.update(_id, {
+    let result = Products.update(_id, {
       $set: update
     }, {
       selector: {
@@ -805,7 +811,6 @@ Meteor.methods({
         denormalize(doc.ancestors[0], field);
       }
     }
-
     return result;
   },
 

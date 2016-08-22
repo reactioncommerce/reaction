@@ -1,0 +1,11 @@
+<template name="taxCloudSettings">
+  {{#autoForm collection=Collections.Packages schema=packageConfigSchema doc=packageData type="update" id="taxcloud-update-form"}}
+      <div class="panel-body">
+        {{> afQuickField name='settings.taxcloud.apiLoginId' class='form-control'}}
+        {{> afQuickField name='settings.taxcloud.apiKey' class='form-control'}}
+        <!-- {{> afQuickField name='settings.taxcloud.refreshPeriod' class='form-control'}}
+        {{> afQuickField name='settings.taxcloud.taxCodeUrl' class='form-control'}} -->
+      </div>
+      {{> shopSettingsSubmitButton}}
+  {{/autoForm}}
+</template>

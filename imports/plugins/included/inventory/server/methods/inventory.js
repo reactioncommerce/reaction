@@ -100,8 +100,9 @@ Meteor.methods({
    *
    * @param  {Object} product - Schemas.Product object
    * @return {[undefined]} returns undefined
+   * @todo  should be variant
    */
-  "inventory/adjust": function (product) { // TODO: this should be variant
+  "inventory/adjust": function (product) {
     check(product, Match.OneOf(Schemas.Product, Schemas.ProductVariant));
     let type;
     let results;
@@ -158,10 +159,8 @@ Meteor.methods({
             results -= Meteor.call("inventory/remove", inventoryItem);
             // we could add handling for the case when aren't enough "new" items
           }
+          Logger.info(`adjust variant ${variant._id} from ${itemCount} to ${results}`);
         }
-        Logger.info(
-          `adjust variant ${variant._id} from ${itemCount} to ${results}`
-        );
       }
     }
   }

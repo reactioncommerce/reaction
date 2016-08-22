@@ -62,6 +62,9 @@
           "socialLabel": "Social",
           "socialTitle": "Social",
           "socialDescription": "Social Channel configuration",
+          "taxesLabel": "Taxes",
+          "taxesTitle": "Taxes",
+          "taxesDescription": "Tax configuration",
           "themesLabel": "Themes",
           "themesTitle": "Themes",
           "themesDescription": "Themes and UI Components",
@@ -95,7 +98,8 @@
           "paypalSettingsLabel": "PayPal Settings",
           "reactionConnectLabel": "Reaction Connect",
           "examplePaymentSettingsLabel": "Example Payment Settings",
-          "productSettingsLabel": "Product Settings"
+          "productSettingsLabel": "Product Settings",
+          "taxSettingsLabel": "Tax Settings"
         },
         "userAccountDropdown": {
           "profileLabel": "Profile"
@@ -153,19 +157,34 @@
         "paymentMethods": "Payment Methods",
         "externalServices": "External Services",
         "shopGeneralSettingsSaved": "Shop general settings saved.",
-        "shopGeneralSettingsFailed": "Shop general settings update failed. ",
+        "shopGeneralSettingsFailed": "Shop general settings update failed.",
         "shopAddressSettingsSaved": "Shop address settings saved.",
-        "shopAddressSettingsFailed": "Shop address settings update failed. ",
+        "shopAddressSettingsFailed": "Shop address settings update failed.",
         "shopMailSettingsSaved": "Shop mail settings saved.",
-        "shopMailSettingsFailed": "Shop mail settings update failed. ",
+        "shopMailSettingsFailed": "Shop mail settings update failed.",
         "shopExternalServicesSettingsSaved": "Shop external services settings saved.",
-        "shopExternalServicesSettingsFailed": "Shop external services settings update failed. ",
+        "shopExternalServicesSettingsFailed": "Shop external services settings update failed.",
         "shopLocalizationSettingsSaved": "Shop localization settings saved.",
-        "shopLocalizationSettingsFailed": "Shop localization settings update failed. ",
+        "shopLocalizationSettingsFailed": "Shop localization settings update failed.",
         "shopOptionsSettingsSaved": "Shop options saved.",
-        "shopOptionsSettingsFailed": "Shop options update failed. ",
+        "shopOptionsSettingsFailed": "Shop options update failed.",
         "shopPaymentMethodsSaved": "Shop Payment Methods settings saved.",
-        "shopPaymentMethodsFailed": "Shop Payment Methods settings update failed. "
+        "shopPaymentMethodsFailed": "Shop Payment Methods settings update failed."
+      },
+      "taxSettings": {
+        "noCustomTaxRatesFound": "No custom tax rates found.",
+        "shopCustomTaxRatesSaved": "Custom tax rate saved.",
+        "shopCustomTaxRatesFailed": "Error saving tax rate.",
+        "shopTaxMethodsSaved": "Saved tax method.",
+        "shopTaxMethodsFailed": "Failed saving tax method.",
+        "customRatesDescription": "Custom Rates",
+        "taxCode": "Tax Code",
+        "taxShipping": "Include Shipping",
+        "taxRate": "Rate",
+        "discountsIncluded": "Include Discounts",
+        "taxable": "Taxable",
+        "nottaxable": "Not Taxable",
+        "confirmRateDelete": "Confirm tax rate deletion"
       },
       "header": {
         "tagsAdd": "Add tag",

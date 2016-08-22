@@ -126,8 +126,7 @@ Meteor.methods({
       }
       return _results;
     });
-    Logger.info("getShippingrates returning rates");
-    Logger.debug("rates", rates);
+    Logger.debug("getShippingrates returning rates", rates);
     return rates;
   }
 });
