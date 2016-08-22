@@ -1,6 +1,6 @@
 import _ from "lodash";
 import { Reaction, Logger } from "/server/api";
-import { Products, Orders, Accounts, Packages } from "/lib/collections";
+import { Products, Orders, Accounts, Packages, Tags } from "/lib/collections";
 
 
 function flattenToIds(products) {
@@ -10,6 +10,16 @@ function flattenToIds(products) {
   }
   return ids;
 }
+
+function addTags(hashtags) {
+  let tags = [];
+  for (let hashtag of hashtags) {
+    tag = Tags.findOne(hashtag);
+    tags.push(tag);
+  }
+  return tags;
+}
+
 
 const buildSearchResults = {};
 
@@ -21,6 +31,7 @@ buildSearchResults.product = function (products, existingSearchResults, weight, 
       let searchProduct = Object.assign({}, product);
       searchProduct.weight = weight;
       searchProduct.matchType = matchType;
+      searchProduct.tags = addTags(product.hashtags);
       searchResults.push(searchProduct);
     }
   }
@@ -90,7 +101,7 @@ function findVariants(searchString, exactMatch = true) {
 
 searchMethods.product = function (searchString, stopOnExactMatch) {
   const settings = Packages.findOne({ name: "reaction-search" }).settings;
-  // first find exact matches and weight them 10's
+  // first find exact matches and weight them
   let results;
   const shopId = Reaction.getShopId();
   const exactProducts = Products.find({
@@ -98,7 +109,7 @@ searchMethods.product = function (searchString, stopOnExactMatch) {
     type: "simple",
     isVisible: true,
     title: {
-      $regex: "/^" + searchString + "$/", // we use regex here because we want a case-insentive search
+      $regex: "^" + searchString + "$", // we use regex here because we want a case-insentive search
       $options: "i"
     }
   }).fetch();
@@ -119,12 +130,25 @@ searchMethods.product = function (searchString, stopOnExactMatch) {
     }).fetch();
     Logger.info(`Got ${products.length} products in partial search`);
     results = buildSearchResults.product(products, results, settings.titleWeightPartial, "title:partial");
-  }
-  if (settings.includeVariants) {
-    const variantResults = findVariants(searchString, true);
-    const partialVariantResults = findVariants(searchString, false);
-    results = buildSearchResults.product(variantResults, results, settings.variantWeightExact, "variant:exact");
-    results = buildSearchResults.product(partialVariantResults, results, settings.variantWeightPartial, "variant:partial");
+    if (settings.includeVariants) {
+      const variantResults = findVariants(searchString, true);
+      const partialVariantResults = findVariants(searchString, false);
+      results = buildSearchResults.product(variantResults, results, settings.variantWeightExact, "variant:exact");
+      results = buildSearchResults.product(partialVariantResults, results, settings.variantWeightPartial, "variant:partial");
+    }
+    const descriptionResults = Products.find({
+      shopId: shopId,
+      type: "simple",
+      isVisible: true,
+      description: {
+        $regex: ".*" + searchString + ".*",
+        $options: "i"
+      }
+    }).fetch();
+    if (descriptionResults) {
+      Logger.info(`Got ${descriptionResults.length} products in description search`);
+      results = buildSearchResults.product(descriptionResults, results, 1, "description:partial");
+    }
   }
   Logger.info(results);
   return results;
