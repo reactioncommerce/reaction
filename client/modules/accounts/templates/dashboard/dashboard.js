@@ -42,7 +42,7 @@ Template.accountsDashboard.helpers({
         const shopUsers = Meteor.users.find();
 
         return shopUsers.map(user => {
-          let member = {};
+          const member = {};
 
           member.userId = user._id;
 
@@ -153,7 +153,7 @@ Template.accountsSettings.events({
     // todo remove this after i18next 2 will be installed
     // let niceName = serviceHelper.capitalizedServiceName(service);
 
-    for (let field of fields) {
+    for (const field of fields) {
       field.value = event.target[field.property].value;
     }
 

@@ -8,10 +8,10 @@ import { Template } from "meteor/templating";
 
 Template.CoreNavigationLanguage.helpers({
   languages: function () {
-    let languages = [];
-    let shop = Shops.findOne();
+    const languages = [];
+    const shop = Shops.findOne();
     if (typeof shop === "object" && shop.languages) {
-      for (let language of shop.languages) {
+      for (const language of shop.languages) {
         if (language.enabled === true) {
           language.translation = "languages." + language.label.toLowerCase();
           languages.push(language);

@@ -28,10 +28,10 @@ Template.corePaymentMethods.helpers({
   },
   appDetails: function () {
     // Provides a fallback to the package icon / label if one is not found for this reaction app
-    let self = this;
+    const self = this;
     if (!(this.icon && this.label)) {
-      let app = Packages.findOne(this.packageId);
-      for (let registry of app.registry) {
+      const app = Packages.findOne(this.packageId);
+      for (const registry of app.registry) {
         if (!(registry.provides === "dashboard")) {
           continue;
         }

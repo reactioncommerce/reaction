@@ -21,9 +21,9 @@ Template.i18nSettings.helpers({
   currencyOptions() {
     const currencies = Shops.findOne().currencies;
     const currencyOptions = [];
-    for (let currency in currencies) {
+    for (const currency in currencies) {
       if ({}.hasOwnProperty.call(currencies, currency)) {
-        let structure = currencies[currency];
+        const structure = currencies[currency];
         currencyOptions.push({
           label: currency + "  |  " + structure.symbol + "  |  " +
             structure.format,
@@ -36,7 +36,7 @@ Template.i18nSettings.helpers({
   uomOptions() {
     const unitsOfMeasure = Shops.findOne().unitsOfMeasure;
     const uomOptions = [];
-    for (let measure of unitsOfMeasure) {
+    for (const measure of unitsOfMeasure) {
       uomOptions.push({
         label: i18next.t(`uom.${measure.uom}`, {defaultValue: measure.uom}),
         value: measure.uom
@@ -45,10 +45,10 @@ Template.i18nSettings.helpers({
     return uomOptions;
   },
   enabledLanguages() {
-    let languages = [];
+    const languages = [];
     const shop = Shops.findOne();
     if (typeof shop === "object" && shop.languages) {
-      for (let language of shop.languages) {
+      for (const language of shop.languages) {
         if (language.enabled === true) {
           languages.push({
             label: language.label,
@@ -60,10 +60,10 @@ Template.i18nSettings.helpers({
     }
   },
   languages() {
-    let languages = [];
+    const languages = [];
     const shop = Shops.findOne();
     if (typeof shop === "object" && shop.languages) {
-      for (let language of shop.languages) {
+      for (const language of shop.languages) {
         const i18nKey = "languages." + language.label.toLowerCase();
         languages.push({
           label: language.label,

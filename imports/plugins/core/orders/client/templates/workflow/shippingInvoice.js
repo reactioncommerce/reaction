@@ -307,7 +307,7 @@ Template.coreOrderShippingInvoice.helpers({
   },
 
   refunds() {
-    let refunds = Template.instance().refunds.get();
+    const refunds = Template.instance().refunds.get();
 
     if (_.isArray(refunds)) {
       return refunds.reverse();
@@ -364,7 +364,7 @@ Template.coreOrderShippingInvoice.helpers({
     const instance = Template.instance();
     const order = instance.state.get("order");
 
-    let shipment = _.filter(order.shipping, {_id: currentData.fulfillment._id})[0];
+    const shipment = _.filter(order.shipping, {_id: currentData.fulfillment._id})[0];
 
     return shipment;
   },
@@ -375,8 +375,8 @@ Template.coreOrderShippingInvoice.helpers({
     const currentData = Template.currentData();
     const shipment = currentData.fulfillment;
 
-    let items = _.map(shipment.items, (item) => {
-      let originalItem = _.find(order.items, {
+    const items = _.map(shipment.items, (item) => {
+      const originalItem = _.find(order.items, {
         _id: item._id
       });
       return _.extend(originalItem, item);
@@ -397,7 +397,7 @@ Template.coreOrderShippingInvoice.helpers({
       variantId = variantObjectOrId._id;
     }
 
-    let defaultImage = Media.findOne({
+    const defaultImage = Media.findOne({
       "metadata.variantId": variantId,
       "metadata.priority": 0
     });

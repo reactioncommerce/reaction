@@ -4,7 +4,7 @@ import { sinon } from "meteor/practicalmeteor:sinon";
 import { StripeApi } from "./stripeapi";
 import { Stripe } from "../../lib/api";
 
-let stripeChargeResult = {
+const stripeChargeResult = {
   id: "ch_17hA8DBXXkbZQs3xENUmN9bZ",
   object: "charge",
   amount: 2298,
@@ -59,7 +59,7 @@ describe("Stripe.authorize", function () {
     sandbox.stub(StripeApi.methods.createCharge, "call", function () {
       return stripeChargeResult;
     });
-    let cardData = {
+    const cardData = {
       cvv2: "345",
       expire_month: "4",
       expire_year: "2019",
@@ -67,8 +67,8 @@ describe("Stripe.authorize", function () {
       number: "4242424242424242",
       type: "visa"
     };
-    let total = "22.98";
-    let currency = "USD";
+    const total = "22.98";
+    const currency = "USD";
     let chargeResult = null;
     Stripe.authorize(cardData, {total: total, currency: currency}, function (error, result) {
       chargeResult = result;
@@ -90,7 +90,7 @@ describe("Stripe.authorize", function () {
   });
 
   it("should properly charge a card when using a currency besides USD", function () {
-    let form = {
+    const form = {
       cvv2: "345",
       expire_month: "4",
       expire_year: "2019",
@@ -98,8 +98,8 @@ describe("Stripe.authorize", function () {
       number: "4242424242424242",
       type: "visa"
     };
-    let total = "22.98";
-    let currency = "EUR";
+    const total = "22.98";
+    const currency = "EUR";
 
     sandbox.stub(StripeApi.methods.createCharge, "call", function () {
       return stripeChargeResult;
@@ -140,7 +140,7 @@ describe("Stripe.authorize", function () {
   });
 
   it("should return saved = false when card is declined", function () {
-    let form = {
+    const form = {
       cvv2: "345",
       expire_month: "4",
       expire_year: "2019",
@@ -148,10 +148,10 @@ describe("Stripe.authorize", function () {
       number: "4000000000000002",
       type: "visa"
     };
-    let total = "22.98";
-    let currency = "EUR";
+    const total = "22.98";
+    const currency = "EUR";
 
-    let stripeDeclineResult =
+    const stripeDeclineResult =
       {
         result: null,
         error: {
@@ -216,7 +216,7 @@ describe("Stripe.authorize", function () {
   it("should return saved = false when an expired card is returned", function () {
     // Note that this test number makes the Stripe API return this error, it is
     // not looking at the actual expiration date.
-    let form = {
+    const form = {
       cvv2: "345",
       expire_month: "4",
       expire_year: "2019",
@@ -224,10 +224,10 @@ describe("Stripe.authorize", function () {
       number: "4000000000000069",
       type: "visa"
     };
-    let total = "22.98";
-    let currency = "USD";
+    const total = "22.98";
+    const currency = "USD";
 
-    let stripeExpiredCardResult =
+    const stripeExpiredCardResult =
       {
         result: null,
         error: {

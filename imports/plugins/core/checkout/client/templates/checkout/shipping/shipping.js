@@ -8,7 +8,7 @@ import { Template } from "meteor/templating";
 // cartShippingMethods to get current shipment methods
 // until we handle multiple methods, we just use the first
 function cartShippingMethods(currentCart) {
-  let cart = currentCart || Cart.findOne();
+  const cart = currentCart || Cart.findOne();
   if (cart) {
     if (cart.shipping) {
       if (cart.shipping[0].shipmentQuotes) {
@@ -21,7 +21,7 @@ function cartShippingMethods(currentCart) {
 // getShipmentMethod to get current shipment method
 // until we handle multiple methods, we just use the first
 function getShipmentMethod(currentCart) {
-  let cart = currentCart || Cart.findOne();
+  const cart = currentCart || Cart.findOne();
   if (cart) {
     if (cart.shipping) {
       if (cart.shipping[0].shipmentMethod) {
@@ -58,8 +58,8 @@ Template.coreCheckoutShipping.helpers({
 
   // helper to display currently selected shipmentMethod
   isSelected: function () {
-    let self = this;
-    let shipmentMethod = getShipmentMethod();
+    const self = this;
+    const shipmentMethod = getShipmentMethod();
     // if there is already a selected method, set active
     if (_.isEqual(self.method, shipmentMethod)) {
       return "active";
@@ -77,8 +77,8 @@ Template.coreCheckoutShipping.events({
   "click .list-group-item": function (event) {
     event.preventDefault();
     event.stopPropagation();
-    let self = this;
-    let cart = Cart.findOne();
+    const self = this;
+    const cart = Cart.findOne();
 
     try {
       Meteor.call("cart/setShipmentMethod", cart._id, self.method);

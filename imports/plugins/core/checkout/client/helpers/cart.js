@@ -18,7 +18,7 @@ import { Template } from "meteor/templating";
  * @return {Object} returns inventory helpers
  */
 Template.registerHelper("cart", function () {
-  let cartHelpers = {
+  const cartHelpers = {
     /**
      * showCartIconWarning
      * @return {Boolean} return true if low inventory on any item in cart
@@ -35,7 +35,7 @@ Template.registerHelper("cart", function () {
      */
     showLowInventoryWarning() {
       let item;
-      let storedCart = Cart.findOne();
+      const storedCart = Cart.findOne();
       // we're not being picky here - first thing in cart
       // that is low will trigger a inventory warning
       if (storedCart && storedCart.items) {
@@ -73,7 +73,7 @@ Template.registerHelper("cart", function () {
  */
 
 Template.registerHelper("cartPayerName", function () {
-  let cart = Cart.findOne();
+  const cart = Cart.findOne();
   if (cart) {
     if (cart.billing) {
       if (cart.billing[0].address) {

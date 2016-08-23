@@ -11,7 +11,7 @@ import { Shops, Cart, Packages } from "/lib/collections";
 // load order of plugins
 //
 MethodHooks.after("taxes/calculate", function (options) {
-  let result = options.result || {};
+  const result = options.result || {};
   let origin = {};
 
   const cartId = options.arguments[0];
@@ -24,7 +24,7 @@ MethodHooks.after("taxes/calculate", function (options) {
   });
 
   // check if package is configured
-  if (pkg && pkg.settings.taxcloud) {
+  if (shop && pkg && pkg.settings.taxcloud) {
     const apiKey = pkg.settings.taxcloud.apiKey;
     const apiLoginId = pkg.settings.taxcloud.apiLoginId;
 
@@ -46,7 +46,7 @@ MethodHooks.after("taxes/calculate", function (options) {
       if (!apiKey || !apiLoginId) {
         Logger.warn("TaxCloud API Key is required.");
       }
-      if (typeof cartToCalc.shipping !== "undefined") {
+      if (typeof cartToCalc.shipping !== "undefined" && cartToCalc.items) {
         const shippingAddress = cartToCalc.shipping[0].address;
 
         if (shippingAddress) {
@@ -62,7 +62,7 @@ MethodHooks.after("taxes/calculate", function (options) {
 
           // format cart items to TaxCloud structure
           let index = 0;
-          for (let items of cartToCalc.items) {
+          for (const items of cartToCalc.items) {
             // only processs taxable products
             if (items.variants.taxable === true) {
               const item = {
@@ -100,7 +100,7 @@ MethodHooks.after("taxes/calculate", function (options) {
             // ResponseType 3 is a successful call.
             if (!error && response.data.ResponseType === 3) {
               let totalTax = 0;
-              for (let item of response.data.CartItemsResponse) {
+              for (const item of response.data.CartItemsResponse) {
                 totalTax += item.TaxAmount;
               }
               // don't run this calculation if there isn't tax.

@@ -33,20 +33,20 @@ function doSetup(element, expressCheckoutSettings) {
  */
 function checkout() {
   paypal.checkout.initXO();
-  let cart = Cart.findOne();
+  const cart = Cart.findOne();
   if (!cart) {
     return undefined;
   }
 
   return Meteor.call("getExpressCheckoutToken", cart._id, function (error, token) {
     if (error) {
-      let msg = (error !== null ? error.error : void 0) || i18next.t("checkoutPayment.processingError", "There was a problem with your payment.");
+      const msg = (error !== null ? error.error : void 0) || i18next.t("checkoutPayment.processingError", "There was a problem with your payment.");
       Alerts.add(msg, "danger", {
         placement: "paymentMethod"
       });
       return paypal.checkout.closeFlow();
     }
-    let url = paypal.checkout.urlPrefix + token;
+    const url = paypal.checkout.urlPrefix + token;
     return paypal.checkout.startFlow(url);
   });
 }

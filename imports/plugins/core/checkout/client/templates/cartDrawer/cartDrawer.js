@@ -18,11 +18,11 @@ Template.cartDrawer.helpers({
       return null;
     }
 
-    let storedCart = Cart.findOne();
+    const storedCart = Cart.findOne();
     let count = 0;
 
     if (typeof storedCart === "object" && storedCart.items) {
-      for (let items of storedCart.items) {
+      for (const items of storedCart.items) {
         count += items.quantity;
       }
     }

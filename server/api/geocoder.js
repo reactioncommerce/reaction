@@ -16,13 +16,16 @@ import { Meteor } from "meteor/meteor";
 if (typeof Meteor.wrapAsync === "undefined") {
   Meteor.wrapAsync = Meteor._wrapAsync;
 }
-
+/* eslint func-style: 1 */
+//
+// TODO review GeoCoder export construction
+//
 // init geocoder
 export const GeoCoder = function geoCoderConstructor(options) {
   let extra;
-  let self = this;
+  const self = this;
   // fetch shop settings for api auth credentials
-  let shopSettings = Packages.findOne({
+  const shopSettings = Packages.findOne({
     shopId: Reaction.getShopId(),
     name: "core"
   }, {
@@ -48,7 +51,7 @@ export const GeoCoder = function geoCoderConstructor(options) {
 };
 
 function gc(address, options, callback) {
-  let g = require("node-geocoder")(options.geocoderProvider, options.httpAdapter,
+  const g = require("node-geocoder")(options.geocoderProvider, options.httpAdapter,
     options.extra);
   g.geocode(address, callback);
 }
@@ -68,7 +71,7 @@ GeoCoder.prototype.geocode = function geoCoderGeocode(address, callback) {
 };
 
 function rv(lat, lng, options, callback) {
-  let g = require("node-geocoder")(options.geocoderProvider, options.httpAdapter,
+  const g = require("node-geocoder")(options.geocoderProvider, options.httpAdapter,
     options.extra);
   g.reverse({
     lat: lat,

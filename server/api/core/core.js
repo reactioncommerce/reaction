@@ -39,7 +39,7 @@ export default {
   Packages: {},
 
   registerPackage(packageInfo) {
-    let registeredPackage = this.Packages[packageInfo.name] =
+    const registeredPackage = this.Packages[packageInfo.name] =
       packageInfo;
     return registeredPackage;
   },
@@ -87,14 +87,14 @@ export default {
     }
 
     // global roles check
-    let sellerShopPermissions = Roles.getGroupsForUser(userId, "admin");
+    const sellerShopPermissions = Roles.getGroupsForUser(userId, "admin");
 
     // we're looking for seller permissions.
     if (sellerShopPermissions) {
       // loop through shops roles and check permissions
-      for (let key in sellerShopPermissions) {
+      for (const key in sellerShopPermissions) {
         if (key) {
-          let shop = sellerShopPermissions[key];
+          const shop = sellerShopPermissions[key];
           if (Roles.userIsInRole(userId, permissions, shop)) {
             return true;
           }
@@ -137,13 +137,13 @@ export default {
     let settingsUrl = Meteor.settings.MAIL_URL;
 
     if (user && password && host && port) {
-      let mailString = `smtp://${user}:${password}@${host}:${port}/`;
+      const mailString = `smtp://${user}:${password}@${host}:${port}/`;
       const mailUrl = processUrl = settingsUrl = mailString;
       process.env.MAIL_URL = mailUrl;
       return mailUrl;
     } else if (shopMail && shopMail.user && shopMail.password && shopMail.host &&
       shopMail.port) {
-      let mailString =
+      const mailString =
         `smtp://${shopMail.user}:${shopMail.password}@${shopMail.host}:${shopMail.port}/`;
       const mailUrl = processUrl = settingsUrl = mailString;
       process.env.MAIL_URL = mailUrl;
@@ -328,7 +328,7 @@ export default {
     // we don't need to do any further permission configuration
     // it is taken care of in the assignOwnerRoles
     const packages = Packages.find().fetch();
-    for (let pkg of packages) {
+    for (const pkg of packages) {
       this.assignOwnerRoles(shopId, pkg.name, pkg.registry);
     }
 
@@ -378,7 +378,7 @@ export default {
       Logger.warn("Skipped loading settings from reaction.json.");
       Logger.debug(error, "loadSettings reaction.json not loaded.");
     }
-    let layouts = [];
+    const layouts = [];
     // for each shop, we're loading packages in a unique registry
     _.each(this.Packages, (config, pkgName) => {
       return Shops.find().forEach((shop) => {
@@ -421,7 +421,7 @@ export default {
         // don't already exist in Shops
         if (combinedSettings.layout) {
           // filter out layout Templates
-          for (let pkg of combinedSettings.layout) {
+          for (const pkg of combinedSettings.layout) {
             if (pkg.layout) {
               layouts.push(pkg);
             }

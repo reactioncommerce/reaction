@@ -26,7 +26,7 @@ AutoForm.hooks({
       return Alerts.toast(i18next.t("admin.settings.analyticsSettingsSaved"), "success");
     },
     onError(operation, error) {
-      let msg = error.message || error.reason || "Unknown error";
+      const msg = error.message || error.reason || "Unknown error";
       return Alerts.toast(`${i18next.t("admin.settings.analyticsSettingsFailed")} ${msg}`, "error");
     }
   }

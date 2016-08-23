@@ -12,12 +12,12 @@ import { Packages } from "/lib/collections";
 import { PaymentMethod } from "/lib/collections/schemas";
 
 function getAccountOptions() {
-  let settings = Packages.findOne({
+  const settings = Packages.findOne({
     name: "reaction-auth-net",
     shopId: Reaction.getShopId(),
     enabled: true
   }).settings;
-  let ref = Meteor.settings.authnet;
+  const ref = Meteor.settings.authnet;
   let options;
 
   options = {
@@ -148,7 +148,7 @@ Meteor.methods({
   "authnet/refund/create": function (paymentMethod, amount) {
     check(paymentMethod, PaymentMethod);
     check(amount, Number);
-    let result = {
+    const result = {
       saved: false,
       error: "Reaction does not yet support direct refund processing from Authorize.net. " +
       "<a href=\"https://account.authorize.net/\">Please visit their web portal to perform this action.</a>"
@@ -176,25 +176,25 @@ function getAuthnetService(accountOptions) {
 }
 
 function priorAuthCaptureTransaction(transId, amount, service) {
-  let body = {
+  const body = {
     transactionType: "priorAuthCaptureTransaction",
     amount: amount,
     refTransId: transId
   };
   // This call returns a Promise to the cb so we need to use Promise.await
-  let transactionRequest = service.sendTransactionRequest.call(service, body, function (trans) {
+  const transactionRequest = service.sendTransactionRequest.call(service, body, function (trans) {
     return trans;
   });
   return Promise.await(transactionRequest);
 }
 
 function voidTransaction(transId, service) {
-  let body = {
+  const body = {
     transactionType: "voidTransaction",
     refTransId: transId
   };
   // This call returns a Promise to the cb so we need to use Promise.await
-  let transactionRequest = service.sendTransactionRequest.call(service, body, function (trans) {
+  const transactionRequest = service.sendTransactionRequest.call(service, body, function (trans) {
     return trans;
   });
   return Promise.await(transactionRequest);
