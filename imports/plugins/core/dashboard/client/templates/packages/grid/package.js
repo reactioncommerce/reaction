@@ -39,7 +39,7 @@ Template.gridPackage.helpers({
       name: data.package.packageName
     });
 
-    let controls = [];
+    const controls = [];
 
     if (data.package.priority > 1) {
       controls.push({
@@ -55,7 +55,7 @@ Template.gridPackage.helpers({
       });
     }
 
-    for (let app of apps) {
+    for (const app of apps) {
       controls.push({
         icon: app.icon || "fa fa-cog fa-fw",
         onClick() {

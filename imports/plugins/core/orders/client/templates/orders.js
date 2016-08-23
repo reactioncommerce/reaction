@@ -21,58 +21,58 @@ const OrderHelper =  {
 
     switch (filter) {
       // New orders
-    case "new":
-      query = {
-        "workflow.status": "new"
-      };
-      break;
+      case "new":
+        query = {
+          "workflow.status": "new"
+        };
+        break;
 
       // Orders that have yet to be captured & shipped
-    case "processing":
-      query = {
-        "workflow.status": "coreOrderWorkflow/processing"
-      };
-      break;
+      case "processing":
+        query = {
+          "workflow.status": "coreOrderWorkflow/processing"
+        };
+        break;
 
       // Orders that have been shipped, based on if the items have been shipped
-    case "shipped":
-      query = {
-        "items.workflow.status": "coreOrderItemWorkflow/shipped"
-      };
-      break;
+      case "shipped":
+        query = {
+          "items.workflow.status": "coreOrderItemWorkflow/shipped"
+        };
+        break;
 
       // Orders that are complete, including all items with complete status
-    case "completed":
-      query = {
-        "workflow.status": "coreOrderWorkflow/completed",
-        "items.workflow.workflow": {
-          $in: ["coreOrderItemWorkflow/completed"]
-        }
-      };
-      break;
+      case "completed":
+        query = {
+          "workflow.status": "coreOrderWorkflow/completed",
+          "items.workflow.workflow": {
+            $in: ["coreOrderItemWorkflow/completed"]
+          }
+        };
+        break;
 
       // Orders that have been captured, but not yet shipped
-    case "captured":
-      query = {
-        "billing.paymentMethod.status": "completed",
-        "shipping.shipped": false
-      };
-      break;
+      case "captured":
+        query = {
+          "billing.paymentMethod.status": "completed",
+          "shipping.shipped": false
+        };
+        break;
 
-    case "canceled":
-      query = {
-        "workflow.status": "canceled"
-      };
-      break;
+      case "canceled":
+        query = {
+          "workflow.status": "canceled"
+        };
+        break;
 
       // Orders that have been refunded partially or fully
-    case "refunded":
-      query = {
-        "billing.paymentMethod.status": "captured",
-        "shipping.shipped": true
-      };
-      break;
-    default:
+      case "refunded":
+        query = {
+          "billing.paymentMethod.status": "captured",
+          "shipping.shipped": true
+        };
+        break;
+      default:
     }
 
     return query;
@@ -132,7 +132,7 @@ Template.orders.helpers({
   },
 
   currentFilterLabel() {
-    let foundFilter = _.find(orderFilters, (filter) => {
+    const foundFilter = _.find(orderFilters, (filter) => {
       return filter.name === Reaction.Router.getQueryParam("filter");
     });
 
@@ -307,7 +307,7 @@ Template.orderStatusDetail.helpers({
     const self = this;
     const shipment = this.shipping[0];
     const shipped = _.every(shipment.items, (shipmentItem) => {
-      for (let fullItem of self.items) {
+      for (const fullItem of self.items) {
         if (fullItem._id === shipmentItem._id) {
           if (fullItem.workflow) {
             if (_.isArray(fullItem.workflow.workflow)) {

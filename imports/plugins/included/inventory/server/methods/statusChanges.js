@@ -4,7 +4,7 @@ import { Inventory } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 import { Logger, Reaction } from "/server/api";
 
-// Disabled for now, needs more testing.
+// TODO statusChanges DDP limiting Disabled for now, needs more testing.
 
 // // Define a rate limiting rule that matches update attempts by non-admin users
 // const addReserveRule = {
@@ -63,9 +63,9 @@ Meteor.methods({
     Logger.info(`Moving Inventory items from ${defaultStatus} to ${reservationStatus}`);
 
     // update inventory status for cartItems
-    for (let item of cartItems) {
+    for (const item of cartItems) {
       // check of existing reserved inventory for this cart
-      let existingReservations = Inventory.find({
+      const existingReservations = Inventory.find({
         productId: item.productId,
         variantId: item.variants._id,
         shopId: item.shopId,
@@ -73,7 +73,7 @@ Meteor.methods({
       });
 
       // define a new reservation
-      let availableInventory = Inventory.find({
+      const availableInventory = Inventory.find({
         "productId": item.productId,
         "variantId": item.variants._id,
         "shopId": item.shopId,
@@ -90,7 +90,7 @@ Meteor.methods({
       // if we don't have existing inventory we create backorders
       if (totalRequiredQty > availableInventoryQty) {
         // TODO put in a dashboard setting to allow backorder or altenate handler to be used
-        let backOrderQty = Number(totalRequiredQty - availableInventoryQty - existingReservationQty);
+        const backOrderQty = Number(totalRequiredQty - availableInventoryQty - existingReservationQty);
         Logger.info(`no inventory found, create ${backOrderQty} ${backorderStatus}`);
         // define a new reservation
         const reservation = {
@@ -164,13 +164,13 @@ Meteor.methods({
     // }
 
     // optional workflow status or default to "new"
-    let newStatus = status || "new";
-    let oldStatus = currentStatus || "reserved";
+    const newStatus = status || "new";
+    const oldStatus = currentStatus || "reserved";
 
     // remove each cart item in inventory
-    for (let item of cartItems) {
+    for (const item of cartItems) {
       // check of existing reserved inventory for this cart
-      let existingReservations = Inventory.find({
+      const existingReservations = Inventory.find({
         "productId": item.productId,
         "variantId": item.variants._id,
         "shopId": item.shopId,
@@ -242,7 +242,7 @@ Meteor.methods({
       return 0;
     }
 
-    // TODO: need to look carefully and understand is it possible ho have a
+    // TODO inventory/backorder need to look carefully and understand is it possible ho have a
     // negative `backOrderQty` value here?
 
     // check basic user permissions
@@ -251,7 +251,7 @@ Meteor.methods({
     // }
 
     // set defaults
-    let newReservation = reservation;
+    const newReservation = reservation;
     if (!newReservation.workflow) {
       newReservation.workflow = {
         status: "backorder"
@@ -260,29 +260,41 @@ Meteor.methods({
 
     // insert backorder
     let i = 0;
-    const batch = Inventory.
-      _collection.rawCollection().initializeUnorderedBulkOp();
-    while (i < backOrderQty) {
-      let id = Inventory._makeNewID();
-      batch.insert(Object.assign({ _id: id }, newReservation));
-      i++;
+
+    // check if we support bulk operations
+    const currentBatch = Inventory._collection.rawCollection().currentBatch;
+
+    if (currentBatch && currentBatch.operations && currentBatch.operations.length > 0) {
+      const batch = Inventory._collection.rawCollection().initializeUnorderedBulkOp();
+      if (batch) {
+        while (i < backOrderQty) {
+          const id = Inventory._makeNewID();
+          batch.insert(Object.assign({ _id: id }, newReservation));
+          i++;
+        }
+
+        const execute = Meteor.wrapAsync(batch.execute, batch);
+        const inventoryBackorder = execute();
+        const inserted = inventoryBackorder.nInserted;
+        Logger.info(`created ${inserted} backorder records for product ${newReservation.productId}, variant ${newReservation.variantId}`);
+        return inserted;
+      }
     }
-
-    const execute = Meteor.wrapAsync(batch.execute, batch);
-    const inventoryBackorder = execute();
-    const inserted = inventoryBackorder.nInserted;
-    Logger.info(
-      `created ${inserted} backorder records for product ${
-        newReservation.productId}, variant ${newReservation.variantId}`);
-
-    return inserted;
+    //
+    // TODO implement a backup inventory/backorder method if bulk operations fail.
+    //
+    Logger.error("skipped bulk operations backorder updates.");
+    return null;
   },
   //
   // send low stock warnings
   //
   "inventory/lowStock": function (product) {
     check(product, Schemas.Product);
-    // WIP placeholder
+    //
+    // TODO implement inventory/lowstock calculations
+    // placeholder is here to give plugins a place to hook into
+    //
     Logger.info("inventory/lowStock");
   },
   /**

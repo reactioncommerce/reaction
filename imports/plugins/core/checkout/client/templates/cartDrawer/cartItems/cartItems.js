@@ -13,7 +13,7 @@ Template.cartDrawerItems.helpers({
     return Products.findOne(this.productId);
   },
   media: function () {
-    let product = Products.findOne(this.productId);
+    const product = Products.findOne(this.productId);
     let defaultImage = Media.findOne({
       "metadata.variantId": this.variants._id
     });

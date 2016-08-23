@@ -50,7 +50,7 @@ export function assignOwnerRoles(shopId, pkgName, registry) {
 
   if (registry) {
       // for each registry item define and push roles
-    for (let registryItem of registry) {
+    for (const registryItem of registry) {
       // packages don't need to define specific permission routes.,
       // the routeName will be used as default roleName for each route.
       // todo: check dependency on this.
@@ -62,7 +62,7 @@ export function assignOwnerRoles(shopId, pkgName, registry) {
       // Get all defined permissions, add them to an array
       // define permissions if you need to check custom permission
       if (registryItem.permissions) {
-        for (let permission of registryItem.permissions) {
+        for (const permission of registryItem.permissions) {
           defaultRoles.push(permission.permission);
         }
       }
@@ -81,7 +81,7 @@ export function assignOwnerRoles(shopId, pkgName, registry) {
     return;
   }
   // assign this package permission to each existing owner.
-  for (let account of shopOwners) {
+  for (const account of shopOwners) {
     owners.push(account._id);
   }
   // we don't use accounts/addUserPermissions here because we may not yet have permissions

@@ -95,9 +95,9 @@ Products.after.insert((userId, doc) => {
 function markInventoryShipped(doc) {
   const order = Orders.findOne(doc._id);
   const orderItems = order.items;
-  let cartItems = [];
-  for (let orderItem of orderItems) {
-    let cartItem = {
+  const cartItems = [];
+  for (const orderItem of orderItems) {
+    const cartItem = {
       _id: orderItem.cartItemId,
       shopId: orderItem.shopId,
       quantity: orderItem.quantity,
@@ -112,9 +112,9 @@ function markInventoryShipped(doc) {
 
 function markInventorySold(doc) {
   const orderItems = doc.items;
-  let cartItems = [];
-  for (let orderItem of orderItems) {
-    let cartItem = {
+  const cartItems = [];
+  for (const orderItem of orderItems) {
+    const cartItem = {
       _id: orderItem.cartItemId,
       shopId: orderItem.shopId,
       quantity: orderItem.quantity,

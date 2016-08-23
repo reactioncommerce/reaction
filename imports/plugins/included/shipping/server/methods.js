@@ -24,10 +24,10 @@ Meteor.methods({
   /**
    * updateShippingMethods
    * @summary update Shipping methods for a provider
-   * @param {String} providerId
-   * @param {String} methodId
+   * @param {String} providerId providerId
+   * @param {String} methodId methodId
    * @param {Object} updateMethod - updated method itself
-   * @return update result
+   * @return {Number} update result
    */
   updateShippingMethods: function (providerId, methodId, updateMethod) {
     check(providerId, String);
@@ -58,11 +58,11 @@ Meteor.methods({
     }
 
     return Shipping.update({
-      '_id': providerId,
-      'methods': removeDoc
+      _id: providerId,
+      methods: removeDoc
     }, {
       $pull: {
-        'methods': removeDoc
+        methods: removeDoc
       }
     });
   },
@@ -88,7 +88,7 @@ Meteor.methods({
       throw new Meteor.Error(403, "Access Denied");
     }
     return Shipping.update({
-      '_id': currentDoc
+      _id: currentDoc
     }, updateDoc);
   }
 });

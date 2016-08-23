@@ -8,11 +8,11 @@ import { Session } from "meteor/session";
 
 Template.i18nChooser.helpers({
   languages() {
-    let languages = [];
+    const languages = [];
     if (Reaction.Subscriptions.Shops.ready()) {
-      let shop = Shops.findOne();
+      const shop = Shops.findOne();
       if (typeof shop === "object" && shop.languages) {
-        for (let language of shop.languages) {
+        for (const language of shop.languages) {
           if (language.enabled === true) {
             language.translation = "languages." + language.label.toLowerCase();
             languages.push(language);

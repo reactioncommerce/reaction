@@ -24,12 +24,12 @@ export default function () {
       return attempt.allowed;
     }
 
-    let loginEmail = attempt.methodArguments[0].user.email;
-    let adminEmail = process.env.REACTION_EMAIL;
+    const loginEmail = attempt.methodArguments[0].user.email;
+    const adminEmail = process.env.REACTION_EMAIL;
 
     if (loginEmail && loginEmail === adminEmail) {
       // filter out the matching login email from any existing emails
-      let userEmail = _.filter(attempt.user.emails, function (email) {
+      const userEmail = _.filter(attempt.user.emails, function (email) {
         return email.address === loginEmail;
       });
 
@@ -52,8 +52,8 @@ export default function () {
       return {};
     }
     let loginHandler;
-    let stampedToken = Accounts._generateStampedLoginToken();
-    let userId = Accounts.insertUserDoc({
+    const stampedToken = Accounts._generateStampedLoginToken();
+    const userId = Accounts.insertUserDoc({
       services: {
         anonymous: true
       },
@@ -80,8 +80,8 @@ export default function () {
     const shopId = shop._id;
     const defaultVisitorRole =  ["anonymous", "guest", "product", "tag", "index", "cart/checkout", "cart/completed"];
     const defaultRoles =  ["guest", "account/profile", "product", "tag", "index", "cart/checkout", "cart/completed"];
-    let roles = {};
-    let additionals = {
+    const roles = {};
+    const additionals = {
       profile: {}
     };
     if (!user.emails) user.emails = [];
@@ -94,9 +94,9 @@ export default function () {
       } else {
         roles[shopId] = shop.defaultRoles || defaultRoles;
         // also add services with email defined to user.emails[]
-        for (let service in user.services) {
+        for (const service in user.services) {
           if (user.services[service].email) {
-            let email = {
+            const email = {
               provides: "default",
               address: user.services[service].email,
               verified: true
@@ -120,7 +120,7 @@ export default function () {
         }
       }
       // clone before adding roles
-      let account = Object.assign({}, user, additionals);
+      const account = Object.assign({}, user, additionals);
       account.userId = user._id;
       Collections.Accounts.insert(account);
 
@@ -157,7 +157,7 @@ export default function () {
     // all users are guest, but anonymous user don't have profile access
     // or ability to order history, etc. so ensure its removed upon login.
     if (options.type !== "anonymous" && options.type !== "resume") {
-      let update = {
+      const update = {
         $pullAll: {}
       };
 

@@ -38,9 +38,9 @@ Template.productSettings.helpers({
     const products = instance.state.get("products");
     const tag = ReactionProduct.getTag();
 
-    for (let product of products) {
-      let positions = product.positions && product.positions[tag] || {};
-      let currentWeight = positions.weight || 0;
+    for (const product of products) {
+      const positions = product.positions && product.positions[tag] || {};
+      const currentWeight = positions.weight || 0;
       if (currentWeight === weight) {
         return "active";
       }
@@ -54,6 +54,7 @@ Template.productSettingsGridItem.helpers({
     if (this._id) {
       return ReactionProduct.getProductPriceRange(this._id).range;
     }
+    return null;
   },
 
   media: function () {
@@ -84,12 +85,12 @@ Template.productSettingsGridItem.helpers({
     const positions = this.positions && this.positions[tag] || {};
     const weight = positions.weight || 0;
     switch (weight) {
-    case 1:
-      return "product-medium";
-    case 2:
-      return "product-large";
-    default:
-      return "product-small";
+      case 1:
+        return "product-medium";
+      case 2:
+        return "product-large";
+      default:
+        return "product-small";
     }
   },
 
@@ -132,12 +133,16 @@ Template.productSettings.events({
   "click [data-event-action=changeProductWeight]": function (event) {
     event.preventDefault();
     const tag = ReactionProduct.getTag();
-    for (let product of this.products) {
-      let weight = $(event.currentTarget).data("event-data") || 0;
-      let positions = {
+    for (const product of this.products) {
+      const weight = $(event.currentTarget).data("event-data") || 0;
+      const positions = {
         weight: weight,
         updatedAt: new Date()
       };
+      /* eslint no-loop-func: 1 */
+      //
+      // TODO review Template.productSettings events for no-loop-func
+      //
       Meteor.call("products/updateProductPosition", product._id, positions, tag,
         (error) => {
           if (error) {

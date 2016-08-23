@@ -12,7 +12,7 @@ export function getUsers(limit = 2) {
   const users = [];
   const existingUsers = Meteor.users.find({}, {limit: limit}).fetch();
   for (let i = 0; i < limit; i = i + 1) {
-    let user = existingUsers[i] || Factory.create("user");
+    const user = existingUsers[i] || Factory.create("user");
     users.push(user);
   }
   return users;
@@ -33,7 +33,7 @@ const user = {
   },
 
   emails: function () {
-    let email = faker.internet.email();
+    const email = faker.internet.email();
     return [{
       address: email,
       verified: true

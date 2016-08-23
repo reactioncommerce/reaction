@@ -1,0 +1,76 @@
+{
+  "ignore": [
+    "**/deps/**",
+    "**/node_modules/**",
+    "**/thirdparty/**",
+    "**/third_party/**",
+    "**/vendor/**",
+    "**/**-min-**",
+    "**/**-min.**",
+    "**/**.min.**",
+    "**/**jquery.?(ui|effects)-*.*.?(*).?(cs|j)s",
+    "**/**jquery-*.*.?(*).?(cs|j)s",
+    "**/prototype?(*).js",
+    "**/mootools*.*.*.js",
+    "**/dojo.js",
+    "**/MochiKit.js",
+    "**/yahoo-*.js",
+    "**/yui*.js",
+    "**/ckeditor*.js",
+    "**/tiny_mce*.js",
+    "**/tiny_mce/?(langs|plugins|themes|utils)/**",
+    "**/MathJax/**",
+    "**/shBrush*.js",
+    "**/shCore.js",
+    "**/shLegacy.js",
+    "**/modernizr.custom.?(*).js",
+    "**/knockout-*.*.*.debug.js",
+    "**/extjs/*.js",
+    "**/extjs/*.xml",
+    "**/extjs/*.txt",
+    "**/extjs/*.html",
+    "**/extjs/*.properties",
+    "**/extjs/.sencha",
+    "**/extjs/docs/**",
+    "**/extjs/builds/**",
+    "**/extjs/cmd/**",
+    "**/extjs/examples/**",
+    "**/extjs/locale/**",
+    "**/extjs/packages/**",
+    "**/extjs/plugins/**",
+    "**/extjs/resources/**",
+    "**/extjs/src/**",
+    "**/extjs/welcome/**",
+    "bower_components/**"
+  ],
+  "test": [
+    "**/test/**",
+    "**/tests/**",
+    "**/spec/**",
+    "**/specs/**",
+    "**/**.app-test.**"
+  ],
+  "critics": {
+    "wc": {"limit": 5000},
+    "lint": {"engine": "eslint"}
+  },
+  "dependencies": {
+    "mute": [
+      "wdio-mocha-framework"
+    ],
+    "unused-ignores": [
+      "jquery",
+      "sweetalert2",
+      "font-awesome",
+      "bcrypt",
+      "react-addons-pure-render-mixin",
+      "url",
+      "griddle-react",
+      "tether-tooltip",
+      "react-textarea-autosize",
+      "react-color",
+      "react-autosuggest",
+      "meteor-node-stubs"
+    ]
+  }
+}

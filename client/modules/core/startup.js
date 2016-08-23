@@ -27,7 +27,7 @@ if (typeof document.hidden !== "undefined") {
 Meteor.startup(function () {
   // warn on insecure exporting of PackageRegistry settings
   if (typeof PackageRegistry !== "undefined" && PackageRegistry !== null) {
-    let msg = "PackageRegistry: Insecure export to client.";
+    const msg = "PackageRegistry: Insecure export to client.";
     Logger.warn(msg, PackageRegistry);
   }
   // init the core

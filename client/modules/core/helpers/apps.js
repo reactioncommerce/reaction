@@ -51,15 +51,12 @@ import { Template } from "meteor/templating";
  */
 
 export function Apps(optionHash) {
-  let fields;
-  let filter;
+  const filter = {};
+  const registryFilter = {};
   let key;
   let match;
   let packages;
-
   let reactionApps = [];
-  let reactionPackages;
-  let registryFilter;
   let options = {};
 
   // allow for object or option.hash
@@ -76,16 +73,12 @@ export function Apps(optionHash) {
     options.shopId = Reaction.getShopId();
   }
 
-  reactionApps = [];
-  filter = {};
-  registryFilter = {};
-
   //
   // build filter to only get matching registry elements
   //
   for (key in options) {
     if ({}.hasOwnProperty.call(options, key)) {
-      let value = options[key];
+      const value = options[key];
       if (!(key === "enabled" || key === "name" || key === "shopId")) {
         filter["registry." + key] = value;
         registryFilter[key] = value;
@@ -96,7 +89,7 @@ export function Apps(optionHash) {
   }
 
   // return these fields
-  fields = {
+  const fields = {
     enabled: 1,
     registry: 1,
     name: 1,
@@ -104,7 +97,7 @@ export function Apps(optionHash) {
   };
 
   // fetch the packages
-  reactionPackages = Packages.find(filter, fields).fetch();
+  const reactionPackages = Packages.find(filter, fields).fetch();
 
   // apply filters to registry items
   if (reactionPackages.length) {
@@ -112,7 +105,7 @@ export function Apps(optionHash) {
     if (filter.name && filter.enabled) {
       packages = (function () {
         const results = [];
-        for (let pkg of reactionPackages) {
+        for (const pkg of reactionPackages) {
           if (pkg.name === filter.name && pkg.enabled === filter.enabled) {
             results.push(pkg);
           }
@@ -123,7 +116,7 @@ export function Apps(optionHash) {
     } else if (filter.name) {
       packages = (function () {
         const results = [];
-        for (let pkg of reactionPackages) {
+        for (const pkg of reactionPackages) {
           if (pkg.name === filter.name) {
             results.push(pkg);
           }
@@ -134,7 +127,7 @@ export function Apps(optionHash) {
     } else if (filter.enabled) {
       packages = (function () {
         const results = [];
-        for (let pkg of reactionPackages) {
+        for (const pkg of reactionPackages) {
           if (pkg.enabled === filter.enabled) {
             results.push(pkg);
           }
@@ -145,7 +138,7 @@ export function Apps(optionHash) {
     } else {
       packages = (function () {
         const results = [];
-        for (let pkg of reactionPackages) {
+        for (const pkg of reactionPackages) {
           results.push(pkg);
         }
         return results;
@@ -153,7 +146,7 @@ export function Apps(optionHash) {
     }
 
     // we have all the package app registry entries
-    for (let app of packages) {
+    for (const app of packages) {
       // go through the registry entries and push enabled entries
       if (app.registry) {
         for (let registry of app.registry) {
@@ -161,7 +154,7 @@ export function Apps(optionHash) {
           for (key in registryFilter) {
             // make sure we're dealing with valid keys
             if ({}.hasOwnProperty.call(registryFilter, key)) {
-              let value = registryFilter[key];
+              const value = registryFilter[key];
               if (registry[key] === value) {
                 match += 1;
               }

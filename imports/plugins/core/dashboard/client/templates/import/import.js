@@ -2,12 +2,12 @@ import { Reaction } from "/client/api";
 import { Media, Products } from "/lib/collections";
 
 function uploadHandler(event) {
-  let shopId = Reaction.getShopId();
-  let userId = Meteor.userId();
-  let files = event.target.files.files;
+  const shopId = Reaction.getShopId();
+  const userId = Meteor.userId();
+  const files = event.target.files.files;
 
   for (let i = 0; i < files.length; i++) {
-    let parts = files[i].name.split(".");
+    const parts = files[i].name.split(".");
     let product;
     if (parts[0]) {
       product = Products.findOne({
@@ -21,8 +21,7 @@ function uploadHandler(event) {
       });
     }
     if (product) {
-      let fileObj;
-      fileObj = new FS.File(files[i]);
+      const fileObj = new FS.File(files[i]);
       fileObj.metadata = {
         ownerId: userId,
         productId: product._id,

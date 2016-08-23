@@ -16,7 +16,7 @@ describe("stripe/refund/create", function () {
   });
 
   it("should call StripeApi.methods.createRefund with the proper parameters and return saved = true", function (done) {
-    let paymentMethod = {
+    const paymentMethod = {
       processor: "Stripe",
       storedCard: "Visa 4242",
       method: "credit",
@@ -29,7 +29,7 @@ describe("stripe/refund/create", function () {
       metadata: {}
     };
 
-    let stripeRefundResult = {
+    const stripeRefundResult = {
       id: "re_17hZzSBXXkbZQs3xgmmEeOci",
       object: "refund",
       amount: 1999,

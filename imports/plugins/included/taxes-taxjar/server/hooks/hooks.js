@@ -3,7 +3,7 @@ import { Packages } from "/lib/collections";
 
 // // Meteor.after to call after
 MethodHooks.after("taxes/calculate", function (options) {
-  let result = options.result || {};
+  const result = options.result || {};
   const pkg = Packages.findOne({
     name: "taxes-taxjar",
     shopId: Reaction.getShopId()

@@ -74,10 +74,10 @@ Meteor.methods({
       total: String,
       currency: String
     });
-    let total = parseFloat(paymentData.total);
+    const total = parseFloat(paymentData.total);
     let result;
     try {
-      let transaction = ExampleApi.methods.authorize.call({
+      const transaction = ExampleApi.methods.authorize.call({
         transactionType: transactionType,
         cardData: cardData,
         paymentData: paymentData
@@ -112,13 +112,13 @@ Meteor.methods({
    */
   "example/payment/capture": function (paymentData) {
     check(paymentData, Reaction.Schemas.PaymentMethod);
-    let authorizationId = paymentData.transactionId;
-    let amount = paymentData.amount;
-    let response = ExampleApi.methods.capture.call({
+    const authorizationId = paymentData.transactionId;
+    const amount = paymentData.amount;
+    const response = ExampleApi.methods.capture.call({
       authorizationId: authorizationId,
       amount: amount
     });
-    let result = {
+    const result = {
       saved: true,
       response: response
     };
@@ -134,12 +134,12 @@ Meteor.methods({
   "example/refund/create": function (paymentMethod, amount) {
     check(paymentMethod, Reaction.Schemas.PaymentMethod);
     check(amount, Number);
-    let { transactionId } = paymentMethod;
-    let response = ExampleApi.methods.refund.call({
+    const { transactionId } = paymentMethod;
+    const response = ExampleApi.methods.refund.call({
       transactionId: transactionId,
       amount: amount
     });
-    let results = {
+    const results = {
       saved: true,
       response: response
     };
@@ -157,8 +157,8 @@ Meteor.methods({
     const response = ExampleApi.methods.refunds.call({
       transactionId: transactionId
     });
-    let result = [];
-    for (let refund of response.refunds) {
+    const result = [];
+    for (const refund of response.refunds) {
       result.push(refund);
     }
 
