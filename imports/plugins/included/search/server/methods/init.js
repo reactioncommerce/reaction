@@ -1,7 +1,6 @@
 /* global Asset */
-import faker from "faker";
 import { EJSON } from "meteor/ejson";
-import { Products } from "/lib/collections";
+import { Products, Tags } from "/lib/collections";
 import { Hooks, Logger } from "/server/api";
 
 Hooks.Events.add("afterCoreInit", () => {
@@ -9,11 +8,15 @@ Hooks.Events.add("afterCoreInit", () => {
   if (existingDoc === 4) {
     Logger.warn("======> Adding Search Products");
     // noinspection JSUnresolvedVariable
-    let productJson = Assets.getText("custom/LargeSearchProducts.json");
+    const tagsJson = Assets.getText("custom/SearchTags.json");
+    const tagsData = EJSON.parse(tagsJson);
+    for (const tag of tagsData) {
+      Tags.insert(tag);
+    }
+    // noinspection JSUnresolvedVariable
+    const productJson = Assets.getText("custom/SearchProducts.json");
     const productData = EJSON.parse(productJson);
-    for (let product of productData) {
-      // product.title = faker.commerce.productName();
-      // product.description = faker.commerce.productAdjective();
+    for (const product of productData) {
       Products.insert(product);
     }
   } else {
