@@ -66,16 +66,16 @@ describe("inventory method", function () {
       // register inventory (that we'll should delete on variant removal)
       sandbox.stub(Reaction, "hasPermission", () => true);
       // checking our option quantity. It should be greater than zero.
-      let qty =  options[1].inventoryQuantity;
+      const qty =  options[1].inventoryQuantity;
       expect(qty).to.be.above(0);
       // before spec we're cleared collection, so we need to insert all docs
       // again and make sure quantity will be equal with `qty`
       Meteor.call("inventory/register", options[1]);
-      let midQty = Inventory.find({ variantId: options[1]._id }).count();
+      const midQty = Inventory.find({ variantId: options[1]._id }).count();
       expect(midQty).to.equal(qty);
       // then we are removing option and docs should be automatically removed
       Meteor.call("products/deleteVariant", options[1]._id);
-      let newQty = Inventory.find({ variantId: options[1]._id }).count();
+      const newQty = Inventory.find({ variantId: options[1]._id }).count();
       expect(newQty).to.not.equal(qty);
       expect(newQty).to.equal(0);
     });

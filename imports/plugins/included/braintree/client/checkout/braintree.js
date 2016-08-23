@@ -30,7 +30,7 @@ hidePaymentAlert = function () {
 };
 
 handleBraintreeSubmitError = function (error) {
-  let serverError = error !== null ? error.message : void 0;
+  const serverError = error !== null ? error.message : void 0;
   if (serverError) {
     return paymentAlert("Server Error " + serverError);
   } else if (error) {
@@ -43,7 +43,7 @@ let submitting = false;
 submitToBrainTree = function (doc, template) {
   submitting = true;
   hidePaymentAlert();
-  let cardData = {
+  const cardData = {
     name: doc.payerName,
     number: doc.cardNumber,
     expirationMonth: doc.expireMonth,
@@ -51,8 +51,8 @@ submitToBrainTree = function (doc, template) {
     cvv2: doc.cvv,
     type: getCardType(doc.cardNumber)
   };
-  let cartTotal = Cart.findOne().cartTotal();
-  let currencyCode = Shops.findOne().currency;
+  const cartTotal = Cart.findOne().cartTotal();
+  const currencyCode = Shops.findOne().currency;
 
   Braintree.authorize(cardData, {
     total: cartTotal,
@@ -65,9 +65,9 @@ submitToBrainTree = function (doc, template) {
       uiEnd(template, "Resubmit payment");
     } else {
       if (results.saved === true) {
-        let normalizedStatus = normalizeState(results.response.transaction.status);
-        let normalizedMode = normalizeMode(results.response.transaction.status);
-        let storedCard = results.response.transaction.creditCard.cardType.toUpperCase() + " " + results.response.transaction.creditCard.last4;
+        const normalizedStatus = normalizeState(results.response.transaction.status);
+        const normalizedMode = normalizeMode(results.response.transaction.status);
+        const storedCard = results.response.transaction.creditCard.cardType.toUpperCase() + " " + results.response.transaction.creditCard.last4;
         paymentMethod = {
           processor: "Braintree",
           storedCard: storedCard,

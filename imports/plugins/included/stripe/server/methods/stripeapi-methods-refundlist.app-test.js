@@ -17,7 +17,7 @@ describe("stripe/refunds/list", function () {
 
   it("should call StripeApi.methods.listRefunds with the proper parameters and return a properly" +
     "formatted list of refunds", function (done) {
-    let paymentMethod = {
+    const paymentMethod = {
       processor: "Stripe",
       storedCard: "Visa 4242",
       method: "credit",
@@ -32,7 +32,7 @@ describe("stripe/refunds/list", function () {
       metadata: {}
     };
 
-    let stripeRefundListResult = {
+    const stripeRefundListResult = {
       object: "list",
       data: [
         {

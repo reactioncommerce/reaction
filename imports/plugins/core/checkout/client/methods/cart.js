@@ -9,13 +9,13 @@ import { Cart } from "/lib/collections";
 Meteor.methods({
   "cart/submitPayment": function (paymentMethod) {
     check(paymentMethod, Reaction.Schemas.PaymentMethod);
-    let checkoutCart = Cart.findOne({
+    const checkoutCart = Cart.findOne({
       userId: Meteor.userId()
     });
 
-    let cart = _.clone(checkoutCart);
-    let cartId = cart._id;
-    let invoice = {
+    const cart = _.clone(checkoutCart);
+    const cartId = cart._id;
+    const invoice = {
       shipping: cart.cartShipping(),
       subtotal: cart.cartSubTotal(),
       taxes: cart.cartTaxes(),

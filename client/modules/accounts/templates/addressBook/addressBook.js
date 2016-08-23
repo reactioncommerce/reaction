@@ -18,7 +18,7 @@ Template.addressBook.onCreated(function () {
   this.autorun(() => {
     this.subscribe("Accounts", Meteor.userId());
 
-    let account = Collections.Accounts.findOne({
+    const account = Collections.Accounts.findOne({
       userId: Meteor.userId()
     });
 
@@ -42,7 +42,7 @@ Template.addressBook.onCreated(function () {
 
 Template.addressBook.helpers({
   account: function () {
-    let account = Collections.Accounts.findOne({
+    const account = Collections.Accounts.findOne({
       userId: Meteor.userId()
     });
     return account;
@@ -99,7 +99,7 @@ Template.addressBook.events({
         Alerts.toast(i18next.t("addressBookGrid.cantRemoveThisAddress", { err: error.message }), "error");
       }
       if (result) {
-        let account = Collections.Accounts.findOne({
+        const account = Collections.Accounts.findOne({
           userId: Meteor.userId()
         });
         if (account) {

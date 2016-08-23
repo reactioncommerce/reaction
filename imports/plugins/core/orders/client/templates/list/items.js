@@ -28,12 +28,12 @@ Template.ordersListItems.helpers({
 
   items() {
     const { order } = Template.instance().data;
-    let combinedItems = [];
+    const combinedItems = [];
 
 
     if (order) {
       // Lopp through all items in the order. The items are split into indivital items
-      for (let orderItem of order.items) {
+      for (const orderItem of order.items) {
         // Find an exising item in the combinedItems array
         const foundItem = combinedItems.find((combinedItem) => {
           // If and item variant exists, then we return true

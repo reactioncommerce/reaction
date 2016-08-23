@@ -6,18 +6,18 @@ exclude_paths:
 - ".codeclimate.yml"
 engines:
   eslint:
-    enabled: true
+    enabled: false
     channel: "eslint-2"
   csslint:
     enabled: false
   duplication:
-    enabled: true
+    enabled: false
     config:
       languages:
         javascript:
           mass_threshold: 150
   fixme:
-    enabled: true
+    enabled: false
     config:
       strings:
       - FIXME

@@ -59,18 +59,18 @@ Template.registerHelper("fName", function (displayUser) {
   if (user && user.services) {
     const username = (function () {
       switch (false) {
-      case !user.services.twitter:
-        return user.services.twitter.first_name;
-      case !user.services.google:
-        return user.services.google.given_name;
-      case !user.services.facebook:
-        return user.services.facebook.first_name;
-      case !user.services.instagram:
-        return user.services.instagram.first_name;
-      case !user.services.pinterest:
-        return user.services.pinterest.first_name;
-      default:
-        return i18next.t("accountsUI.guest", {defaultValue: "Guest"});
+        case !user.services.twitter:
+          return user.services.twitter.first_name;
+        case !user.services.google:
+          return user.services.google.given_name;
+        case !user.services.facebook:
+          return user.services.facebook.first_name;
+        case !user.services.instagram:
+          return user.services.instagram.first_name;
+        case !user.services.pinterest:
+          return user.services.pinterest.first_name;
+        default:
+          return i18next.t("accountsUI.guest", {defaultValue: "Guest"});
       }
     })();
     return username;

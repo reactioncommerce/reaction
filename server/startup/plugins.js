@@ -87,9 +87,9 @@ function getImportPaths(baseDirPath) {
   // get all plugin directories at provided base path
   const pluginDirs = getDirectories(baseDirPath);
 
-  let clientImportPaths = [];
-  let serverImportPaths = [];
-  let registryImportPaths = [];
+  const clientImportPaths = [];
+  const serverImportPaths = [];
+  const registryImportPaths = [];
 
   // read registry.json and require server/index.js if they exist
   pluginDirs.forEach((plugin) => {
