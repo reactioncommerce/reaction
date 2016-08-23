@@ -13,7 +13,7 @@ exports.config = {
     // "./tests/acceptance-tests/test/specs/**/*.js"
     //  failing test - leaving commented out for now
     // "./tests/acceptance-tests/test/specs/dashboard-permissions.app-test.js"
-    "./tests/acceptance-tests/test/specs/guest-authorizenet-checkout.app-test.js",
+    // "./tests/acceptance-tests/test/specs/guest-authorizenet-checkout.app-test.js",
     "./tests/acceptance-tests/test/specs/guest-example-payment-checkout.app-test.js",
     "./tests/acceptance-tests/test/specs/guest-paypal-checkout.app-test.js",
     "./tests/acceptance-tests/test/specs/guest-stripe-checkout.app-test.js",
@@ -56,7 +56,7 @@ exports.config = {
     //  5 instance gets started at a time.
     maxInstances: 1,
     //
-    browserName: "firefox"
+    browserName: "chrome"
   }],
   //
   //  ===================
