@@ -13,9 +13,7 @@ class ProductDetailContainer extends Component {
     return (
       <ProductDetail
         socialComponent={<SocialContainer />}
-        topVariantComponent={
-          <VariantListContainer />
-        }
+        topVariantComponent={<VariantListContainer />}
         {...this.props}
       />
     );
@@ -23,6 +21,13 @@ class ProductDetailContainer extends Component {
 }
 
 function composer(props, onData) {
+  // onData(null, {
+  //   product: {},
+  //   priceRange: "",
+  //   tags: [],
+  //   media: []
+  // })
+  // return
   const tagSub = Meteor.subscribe("Tags");
   let productSub;
   const productId = Reaction.Router.getParam("handle");
@@ -56,11 +61,11 @@ function composer(props, onData) {
       }
 
       let mediaArray = [];
-      let variant = ReactionProduct.selectedVariant();
+      let selectedVariant = ReactionProduct.selectedVariant();
 
-      if (variant) {
+      if (selectedVariant) {
         mediaArray = Media.find({
-          "metadata.variantId": variant._id
+          "metadata.variantId": selectedVariant._id
         }, {
           sort: {
             "metadata.priority": 1
@@ -68,13 +73,12 @@ function composer(props, onData) {
         });
       }
 
-      const current = variant
       let priceRange;
-      if (typeof current === "object") {
-        const childVariants = ReactionProduct.getVariants(current._id);
+      if (typeof selectedVariant === "object") {
+        const childVariants = ReactionProduct.getVariants(selectedVariant._id);
         // when top variant has no child variants we display only its price
         if (childVariants.length === 0) {
-          return current.price;
+          priceRange = selectedVariant.price;
         }
         // otherwise we want to show child variants price range
         priceRange = ReactionProduct.getVariantPriceRange();

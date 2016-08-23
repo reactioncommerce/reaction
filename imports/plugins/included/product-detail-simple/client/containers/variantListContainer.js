@@ -7,6 +7,8 @@ import { Tags, Media } from "/lib/collections";
 import { ProductDetail, VariantList } from "../components";
 import SocialContainer from "./socialContainer";
 
+import { getChildVariants } from "../selectors/variants"
+
 function variantIsSelected(variantId) {
   const current = ReactionProduct.selectedVariant();
   if (typeof current === "object" && (variantId === current._id || ~current.ancestors.indexOf(variantId))) {
@@ -66,6 +68,8 @@ function getTopVariants() {
   return [];
 }
 
+
+
 class VariantListContainer extends Component {
   render() {
     return (
@@ -78,7 +82,8 @@ function composer(props, onData) {
   onData(null, {
     variants: getTopVariants(),
     variantIsSelected,
-    variantIsInActionView
+    variantIsInActionView,
+    childVariants: getChildVariants()
   });
 }
 

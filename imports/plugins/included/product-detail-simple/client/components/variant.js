@@ -2,7 +2,7 @@ import React, { Component, PropTypes} from "react";
 import classnames from "classnames";
 import { EditControl } from "/imports/plugins/core/ui/client/components";
 
-class VariantList extends Component {
+class Variant extends Component {
 
   render() {
     const variant = this.props.variant;
@@ -10,9 +10,7 @@ class VariantList extends Component {
       "variant-detail": true,
       "variant-detail-selected": this.props.isSelected
     });
-    console.log("!!!!!");
-    console.log(this.props);
-    console.log("!!!!!");
+
     return (
       <li className="variant-list-item" id="variant-list-item-{variant._id}" key={variant._id}>
         <div className={classes}>
@@ -33,4 +31,4 @@ class VariantList extends Component {
   }
 }
 
-export default VariantList;
+export default Variant;

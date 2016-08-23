@@ -9,3 +9,4 @@ export { default as IconButton } from "./button/iconButton";
 export { default as EditButton } from "./button/editButton";
 export { default as VisibilityButton } from "./button/visibilityButton";
 export { default as Translation } from "./translation/translation";
+export { default as Media } from "./media/media";
