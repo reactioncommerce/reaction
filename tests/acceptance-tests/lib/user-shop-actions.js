@@ -7,8 +7,8 @@ let eleMap = yaml.safeLoad(fs.readFileSync("./tests/acceptance-tests/elements/el
 
 module.exports = {
   userAddress: function () {
+    browser.pause("5000");
     browser.selectByValue(eleMap.country_dd, userData.country);
-    browser.pause("1000");
     browser.setValue("input[name='fullName']", userData.name);
     browser.setValue("input[name='address1']", userData.address1);
     browser.setValue("input[name='postal']", userData.postal);

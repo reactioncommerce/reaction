@@ -13,6 +13,18 @@ shipping_settings_btn_txt: "//div[3]/div/div/div/h3/span"
 account_settings_btn_txt: "//div[4]/div/div/div/h3/span"
 catalog_settings_btn_txt: "//div[5]/div/div/div/h3/span"
 
+# orders page
+orders_page_btn: "span.icon > i.fa.fa-sun-o"
+first_order_new_btn: "button.btn.btn-success"
+
+# orders details
+approve_btn: "//button[@type='submit']"
+capture_payment_btn: "//div[8]/button[2]"
+captured_total: "//div[7]/div/span"
+refund_amnt_txt_box: "input.form-control.amount"
+apply_refund_btn: "//button[@type='submit']"
+apply_refund_pop_up_btn: "button.swal2-confirm.styled"
+
 
 # account page locators
 # xpath required here, sadly since data-event-action tags are shared between 'Manage' buttons
@@ -29,14 +41,17 @@ shop_btn: "//div[2]/div/a"
 product: "span.product-image"
 red_option: "div.variant-select-option > button.btn.btn-default"
 add_to_cart: "//div[3]/div/button"
+add_to_cart_logged_in: "//div[3]/div[3]/div/button"
 checkout_btn: "#btn-checkout"
 continue_as_guest: "//a[contains(text(),'Continue as Guest')]"
-country_dd: "//fieldset/div/div/select"
+country_dd: "select[name='country']"
 save_and_continue_btn: "button.btn.btn-primary"
 free_shipping: "li.list-group-item"
 authorizenet: "h4.panel-title > span"
 authorizenet_cc: "//form/div/div[2]/input"
 authorizenet_cvv: "//div[3]/input"
+authorizenet_exp_month: "select[name='expireMonth']"
+authorizenet_exp_year: "select[name='expireYear']"
 authorizenet_complete_order_btn: "//button[@type='submit']"
 braintree: "//div[2]/a/h4/span"
 braintree_cc: "//div[2]/div/div/form/div/div[2]/input"
