@@ -28,16 +28,17 @@ Meteor.publish("SearchResults", function (collection, searchTerm, facets) {
     const hashtags = [];
     for (const product of productResults.fetch()) {
       for (const hashtag of product.hashtags) {
-        Logger.info(`product ${product.title} has hashtags ${hashtag}`);
         if (!_.includes(hashtags, hashtag)) {
           hashtags.push(hashtag);
         }
       }
     }
-    Logger.info(`Looking for hastags ${hashtags}`);
     const hashtagResults = Tags.find({
-      _id: { $in: hashtags }
-    });
+      _id: { $in: hashtags },
+      isTopLevel: false
+    },
+    { name: 1 }
+    );
     results = [productResults, hashtagResults];
   }
 
