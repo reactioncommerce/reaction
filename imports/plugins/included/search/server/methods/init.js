@@ -19,6 +19,13 @@ Hooks.Events.add("afterCoreInit", () => {
     for (const product of productData) {
       Products.insert(product);
     }
+    // Hide the default product
+    Products.update({_id: "BCTMZ6HTxFSppJESk"}, {
+      $set: {
+        isVisible: false
+      }
+    });
+
   } else {
     Logger.warn(`Not adding search products, there are ${existingDoc} products`);
   }
