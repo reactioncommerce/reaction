@@ -25,8 +25,25 @@ Hooks.Events.add("afterCoreInit", () => {
         isVisible: false
       }
     });
-
   } else {
     Logger.warn(`Not adding search products, there are ${existingDoc} products`);
   }
+});
+
+Hooks.Events.add("afterCoreInit", () => {
+  Logger.info("Building ProductSearch Collection");
+  const fieldSet = ["_id", "title", "description", "type", "vendor"];
+  const ProductSearch = new Mongo.Collection("ProductSearch");
+  ProductSearch.remove({});
+  const products = Products.find().fetch();
+  for (const product of products) {
+    const productRecord = {};
+    for (const field of fieldSet) {
+      productRecord[field] = product[field];
+    }
+    ProductSearch.insert(productRecord);
+  }
+  const rawProductSearchCollection = ProductSearch.rawCollection();
+  rawProductSearchCollection.dropIndexes("*");
+  rawProductSearchCollection.createIndex({"$**": "text"}, {weights: { title: 3, description: 1 }});
 });
