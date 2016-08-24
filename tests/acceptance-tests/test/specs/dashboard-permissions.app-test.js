@@ -3,7 +3,7 @@ let yaml = require("js-yaml");
 let fs   = require("fs");
 let expect = require("chai").expect;
 let adminUser = require("../../lib/basic-user-actions.js");
-let resetUser = require("../../lib/user-permissions-reset.js")
+let resetUser = require("../../lib/user-permissions-reset.js");
 
 beforeEach(function () {
   let browserConfig = yaml.safeLoad(fs.readFileSync("./tests/acceptance-tests/config/settings.yml", "utf8"));

@@ -38,7 +38,7 @@ perm_shop_settings_chkb: "//div[2]/ul/li[2]/div[2]/input"
 
 # shop
 shop_btn: "//div[2]/div/a"
-product: "span.product-image"
+product: "//a/div/span"
 red_option: "div.variant-select-option > button.btn.btn-default"
 add_to_cart: "//div[3]/div/button"
 add_to_cart_logged_in: "//div[3]/div[3]/div/button"
