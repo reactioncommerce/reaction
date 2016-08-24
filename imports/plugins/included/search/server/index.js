@@ -1,5 +1,5 @@
 import "./methods/search";
-import "./publications/collections/products";
+import "./publications/searchresults";
 import "./methods/init";
 
 export * from "./methods/search";

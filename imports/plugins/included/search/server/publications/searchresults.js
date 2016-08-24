@@ -15,13 +15,27 @@ Meteor.publish("SearchResults", function (collection, searchTerm, facets) {
     if (!searchTerm) {
       return this.ready();
     }
-    const productResults = Products.find({
+    const searchTags = facets || [];
+    Logger.info(`Filter by: ${searchTags}`);
+    let findTerm = {
       shopId: shopId,
       title: {
         $regex: ".*" + searchTerm + ".*",
         $options: "i"
       }
-    }, {
+    };
+    if (searchTags.length) {
+      findTerm = {
+        shopId: shopId,
+        title: {
+          $regex: ".*" + searchTerm + ".*",
+          $options: "i"
+        },
+        hashtags: { $all: searchTags }
+      };
+    }
+    // Logger.info(`Using findTerm ${JSON.stringify(findTerm, null, 4)}`);
+    const productResults = Products.find(findTerm, {
       title: 1,
       hashtags: 1
     });
