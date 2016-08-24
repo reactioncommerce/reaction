@@ -6,11 +6,7 @@ Reaction.registerPackage({
   icon: "fa fa-search",
   autoEnable: true,
   settings: {
-    titleWeightExact: 10,
-    titleWeightPartial: 8,
-    includeVariants: true,
-    variantWeightExact: 5,
-    variantWeightPartial: 4
+
   },
   registry: [
     // Dashboard card

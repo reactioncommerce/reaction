@@ -32,7 +32,7 @@ Hooks.Events.add("afterCoreInit", () => {
 
 Hooks.Events.add("afterCoreInit", () => {
   Logger.info("Building ProductSearch Collection");
-  const fieldSet = ["_id", "title", "description", "type", "vendor"];
+  const fieldSet = ["_id", "title", "description", "type", "vendor", "shopId"];
   const ProductSearch = new Mongo.Collection("ProductSearch");
   ProductSearch.remove({});
   const products = Products.find().fetch();

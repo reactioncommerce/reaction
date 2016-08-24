@@ -4,12 +4,34 @@ import { check, Match } from "meteor/check";
 import { Products, Tags } from "/lib/collections";
 import { Reaction, Logger } from "/server/api";
 
+
+function getProductFindTerm(searchTerm, searchTags) {
+  const shopId = Reaction.getShopId();
+  let findTerm = {
+    shopId: shopId,
+    title: {
+      $regex: ".*" + searchTerm + ".*",
+      $options: "i"
+    }
+  };
+  if (searchTags.length) {
+    findTerm = {
+      shopId: shopId,
+      title: {
+        $regex: ".*" + searchTerm + ".*",
+        $options: "i"
+      },
+      hashtags: { $all: searchTags }
+    };
+  }
+  return findTerm;
+}
+
 Meteor.publish("SearchResults", function (collection, searchTerm, facets) {
   check(collection, String);
   check(searchTerm, Match.Optional(String));
   check(facets, Match.OneOf([String], undefined));
   Logger.info(`Returning search results on ${collection}. SearchTerm: ${searchTerm}`);
-  const shopId = Reaction.getShopId();
   let results;
   if (collection === "products") {
     if (!searchTerm) {
@@ -17,27 +39,12 @@ Meteor.publish("SearchResults", function (collection, searchTerm, facets) {
     }
     const searchTags = facets || [];
     Logger.info(`Filter by: ${searchTags}`);
-    let findTerm = {
-      shopId: shopId,
-      title: {
-        $regex: ".*" + searchTerm + ".*",
-        $options: "i"
-      }
-    };
-    if (searchTags.length) {
-      findTerm = {
-        shopId: shopId,
-        title: {
-          $regex: ".*" + searchTerm + ".*",
-          $options: "i"
-        },
-        hashtags: { $all: searchTags }
-      };
-    }
+    const findTerm = getProductFindTerm(searchTerm, searchTags);
     // Logger.info(`Using findTerm ${JSON.stringify(findTerm, null, 4)}`);
     const productResults = Products.find(findTerm, {
       title: 1,
-      hashtags: 1
+      hashtags: 1,
+      score: 1
     });
     const hashtags = [];
     for (const product of productResults.fetch()) {
