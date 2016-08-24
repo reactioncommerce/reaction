@@ -34,30 +34,28 @@ Meteor.publish("SearchResults", function (collection, searchTerm, facets) {
       {
         fields: {
           score: { $meta: "textScore" },
-          hashtags: 1,
-          title: 1
+          title: 1,
+          hashtags: 1
         },
         sort: {score: { $meta: "textScore" } }
       }
     );
     const hashtags = [];
     for (const product of productResults.fetch()) {
-      for (const hashtag of product.hashtags) {
-        if (!_.includes(hashtags, hashtag)) {
-          hashtags.push(hashtag);
+      if (product.hashtags) {
+        for (const hashtag of product.hashtags) {
+          if (!_.includes(hashtags, hashtag)) {
+            hashtags.push(hashtag);
+          }
         }
       }
     }
-    const hashtagResults = Tags.find({
-      _id: { $in: hashtags },
-      isTopLevel: false
-    },
-    { name: 1 }
-    );
+    const hashtagResults = Tags.find({_id: { $in: hashtags }, isTopLevel: false}, {fields: { name: 1 }});
     results = [productResults, hashtagResults];
   }
   Logger.info(`Found ${results[0].count()} products`);
   Logger.info(`Product records: ${JSON.stringify(results[0].fetch(), null, 4)}`);
   Logger.info(`Found ${results[1].count()} product/tags`);
+  Logger.info(`Tag records: ${JSON.stringify(results[1].fetch(), null, 4)}`);
   return results;
 });

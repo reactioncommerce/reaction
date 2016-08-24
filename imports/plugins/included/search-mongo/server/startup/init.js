@@ -33,7 +33,7 @@ Hooks.Events.add("afterCoreInit", () => {
 
 Hooks.Events.add("afterCoreInit", () => {
   Logger.info("(re)Building ProductSearch Collection");
-  const fieldSet = ["_id", "title", "description", "type", "vendor", "shopId", "hashtags"];
+  const fieldSet = ["_id", "title", "description", "type", "vendor", "shopId", "hashtags"];// this will be configureable
   ProductSearch.remove({});
   const products = Products.find().fetch();
   for (const product of products) {
