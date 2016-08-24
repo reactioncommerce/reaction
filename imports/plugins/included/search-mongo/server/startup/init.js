@@ -2,6 +2,7 @@
 import { EJSON } from "meteor/ejson";
 import { Products, Tags } from "/lib/collections";
 import { Hooks, Logger } from "/server/api";
+import { ProductSearch } from "../collections/searchcollections";
 
 Hooks.Events.add("afterCoreInit", () => {
   const existingDoc = Products.find().count();
@@ -31,9 +32,8 @@ Hooks.Events.add("afterCoreInit", () => {
 });
 
 Hooks.Events.add("afterCoreInit", () => {
-  Logger.info("Building ProductSearch Collection");
-  const fieldSet = ["_id", "title", "description", "type", "vendor", "shopId"];
-  const ProductSearch = new Mongo.Collection("ProductSearch");
+  Logger.info("(re)Building ProductSearch Collection");
+  const fieldSet = ["_id", "title", "description", "type", "vendor", "shopId", "hashtags"];
   ProductSearch.remove({});
   const products = Products.find().fetch();
   for (const product of products) {

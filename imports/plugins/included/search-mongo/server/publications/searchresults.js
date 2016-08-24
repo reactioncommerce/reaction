@@ -1,28 +1,18 @@
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
-import { Products, Tags } from "/lib/collections";
+import { Tags } from "/lib/collections";
 import { Reaction, Logger } from "/server/api";
-
+import { ProductSearch } from "../collections/searchcollections";
 
 function getProductFindTerm(searchTerm, searchTags) {
   const shopId = Reaction.getShopId();
-  let findTerm = {
+  const findTerm = {
     shopId: shopId,
-    title: {
-      $regex: ".*" + searchTerm + ".*",
-      $options: "i"
-    }
+    $text: {$search: searchTerm }
   };
   if (searchTags.length) {
-    findTerm = {
-      shopId: shopId,
-      title: {
-        $regex: ".*" + searchTerm + ".*",
-        $options: "i"
-      },
-      hashtags: { $all: searchTags }
-    };
+    findTerm.hastags = { $all: searchTags };
   }
   return findTerm;
 }
@@ -38,14 +28,18 @@ Meteor.publish("SearchResults", function (collection, searchTerm, facets) {
       return this.ready();
     }
     const searchTags = facets || [];
-    Logger.info(`Filter by: ${searchTags}`);
     const findTerm = getProductFindTerm(searchTerm, searchTags);
     // Logger.info(`Using findTerm ${JSON.stringify(findTerm, null, 4)}`);
-    const productResults = Products.find(findTerm, {
-      title: 1,
-      hashtags: 1,
-      score: 1
-    });
+    const productResults = ProductSearch.find(findTerm,
+      {
+        fields: {
+          score: { $meta: "textScore" },
+          hashtags: 1,
+          title: 1
+        },
+        sort: {score: { $meta: "textScore" } }
+      }
+    );
     const hashtags = [];
     for (const product of productResults.fetch()) {
       for (const hashtag of product.hashtags) {
@@ -62,8 +56,8 @@ Meteor.publish("SearchResults", function (collection, searchTerm, facets) {
     );
     results = [productResults, hashtagResults];
   }
-
   Logger.info(`Found ${results[0].count()} products`);
-  Logger.info(`Found ${results[1].count()} tags`);
+  Logger.info(`Product records: ${JSON.stringify(results[0].fetch(), null, 4)}`);
+  Logger.info(`Found ${results[1].count()} product/tags`);
   return results;
 });
