@@ -2,6 +2,7 @@
 import { EJSON } from "meteor/ejson";
 import { Products, Tags } from "/lib/collections";
 import { Hooks, Logger } from "/server/api";
+import { ProductSearch } from "../collections/searchcollections";
 
 Hooks.Events.add("afterCoreInit", () => {
   const existingDoc = Products.find().count();
@@ -25,8 +26,24 @@ Hooks.Events.add("afterCoreInit", () => {
         isVisible: false
       }
     });
-
   } else {
     Logger.warn(`Not adding search products, there are ${existingDoc} products`);
   }
+});
+
+Hooks.Events.add("afterCoreInit", () => {
+  Logger.info("(re)Building ProductSearch Collection");
+  const fieldSet = ["_id", "title", "description", "type", "vendor", "shopId", "hashtags"];// this will be configureable
+  ProductSearch.remove({});
+  const products = Products.find().fetch();
+  for (const product of products) {
+    const productRecord = {};
+    for (const field of fieldSet) {
+      productRecord[field] = product[field];
+    }
+    ProductSearch.insert(productRecord);
+  }
+  const rawProductSearchCollection = ProductSearch.rawCollection();
+  rawProductSearchCollection.dropIndexes("*");
+  rawProductSearchCollection.createIndex({"$**": "text"}, {weights: { title: 3, description: 1 }});
 });

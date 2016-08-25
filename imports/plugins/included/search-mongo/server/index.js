@@ -1,3 +1,4 @@
-import "./methods/search";
+import "./publications/searchresults";
+import "./startup/init";
 
-export * from "./methods/search";
+export * from "./publications/searchresults";

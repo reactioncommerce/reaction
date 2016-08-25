@@ -1,16 +1,31 @@
 import { Reaction } from "/server/api";
 
 Reaction.registerPackage({
-  label: "Mongo Search Engine",
-  name: "reaction-mongo-search",
+  label: "Search",
+  name: "reaction-search",
   icon: "fa fa-search",
   autoEnable: true,
-  importPath: "/import/plugins/included/search-mongo/server",
+  settings: {
+
+  },
   registry: [
+    // Dashboard card
     {
-      provides: "searchEngine",
-      label: "Mongo Search Engine",
-      description: "Mongo-backed Search Engine"
+      provides: "dashboard",
+      label: "Search",
+      description: "Search",
+      icon: "fa fa-search",
+      priority: 2,
+      container: "core"
+    },
+    // Settings Panel
+    {
+      label: "Search Settings",
+      route: "/dashboard/search",
+      provides: "settings",
+      container: "dashboard",
+      template: "searchSettings"
     }
   ]
 });
+
