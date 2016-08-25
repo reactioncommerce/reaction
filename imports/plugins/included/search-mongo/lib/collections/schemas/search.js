@@ -3,36 +3,63 @@ import { PackageConfig } from "/lib/collections/schemas/registry";
 
 export const SearchPackageConfig = new SimpleSchema([
   PackageConfig, {
-    "settings.titleWeightExact": {
+    "settings.includes.title": {
+      type: Boolean,
+      label: "Include product title in search",
+      defaultValue: true
+    },
+    "settings.weights.title": {
       type: Number,
-      label: "Weight for Product Title Exact Matches",
+      label: "Weight for product title matches",
       defaultValue: 10,
       max: 10,
       min: 1
     },
-    "settings.titleWeightPartial": {
+    "settings.includes.description": {
+      type: Boolean,
+      label: "Include product description in search",
+      defaultValue: true
+    },
+    "settings.weights.description": {
       type: Number,
-      label: "Weight for Product Title Partial Matches",
-      defaultValue: 5,
+      label: "Weight for product description matches",
+      defaultValue: 6,
       max: 10,
       min: 1
     },
-    "settings.includeVariants": {
+    "settings.includes.pageTitle": {
       type: Boolean,
-      label: "Include Variants in Matches",
-      defaultValue: true
+      label: "Include page title in search",
+      defaultValue: false
     },
-    "settings.variantWeightExact": {
+    "settings.weights.pageTitle": {
       type: Number,
-      label: "Weight for Variant Title Exact Matches",
+      label: "Weight for page title matches",
       defaultValue: 2,
       max: 10,
       min: 1
     },
-    "settings.variantWeightPartial": {
+    "settings.includes.metafields": {
+      type: Boolean,
+      label: "Include metafields in search",
+      defaultValue: true
+    },
+    "settings.weights.metafields": {
       type: Number,
-      label: "Weight for Variant Title Partial Matches",
-      defaultValue: 1,
+      label: "Weight for metafields matches",
+      defaultValue: 6,
+      max: 10,
+      min: 1
+    },
+    "settings.includes.vendor": {
+      type: Boolean,
+      label: "Include vendor in search",
+      defaultValue: true
+    },
+    "settings.weights.vendor": {
+      type: Number,
+      label: "Weight for vendor matches",
+      defaultValue: 6,
       max: 10,
       min: 1
     }

@@ -11,40 +11,81 @@
         type="update"
         id="search-update-form"
       }}
-        <div class="form-group{{#if afFieldIsInvalid name='settings.titleWeightExact'}} has-error{{/if}}">
-          <label class="control-label">{{afFieldLabelText name="settings.titleWeightExact"}}</label>
-          {{>afFieldInput name="settings.titleWeightExact" type="number"}}
-          {{#if afFieldIsInvalid name="settings.titleWeightExact"}}
-            <span class="help-block">{{afFieldMessage name="settings.titleWeightExact"}}</span>
+        <div class="form-group">
+          <label class="control-label">{{afFieldLabelText name="settings.includes.title"}}</label>
+          {{>afFieldInput name="settings.includes.title"}}
+          {{#if afFieldIsInvalid name="settings.includes.title"}}
+            <span class="help-block">{{afFieldMessage name="settings.includes.title"}}</span>
           {{/if}}
         </div>
-        <div class="form-group{{#if afFieldIsInvalid name="settings.titleWeightPartial"}} has-error{{/if}}">
-          <label class="control-label">{{afFieldLabelText name="settings.titleWeightPartial"}}</label>
-          {{>afFieldInput name="settings.titleWeightPartial" type="number"}}
-          {{#if afFieldIsInvalid name="settings.titleWeightPartial"}}
-            <span class="help-block">{{afFieldMessage name="settings.titleWeightPartial"}}</span>
+        <div class="form-group{{#if afFieldIsInvalid name="settings.weights.title"}} has-error{{/if}}">
+          <label class="control-label">{{afFieldLabelText name="settings.weights.title"}}</label>
+          {{>afFieldInput name="settings.weights.title" type="number"}}
+          {{#if afFieldIsInvalid name="settings.weights.title"}}
+            <span class="help-block">{{afFieldMessage name="settings.weights.title"}}</span>
           {{/if}}
         </div>
-        <div class="form-group{{#if afFieldIsInvalid name="settings.includeVariants"}} has-error{{/if}}">
-          {{>afFieldInput name="settings.includeVariants" type="boolean-checkbox"}}
-          {{#if afFieldIsInvalid name="settings.includeVariants"}}
-            <span class="help-block">{{afFieldMessage name="settings.includeVariants"}}</span>
+
+        <div class="form-group">
+          <label class="control-label">{{afFieldLabelText name="settings.includes.description"}}</label>
+          {{>afFieldInput name="settings.includes.description"}}
+          {{#if afFieldIsInvalid name="settings.includes.description"}}
+            <span class="help-block">{{afFieldMessage name="settings.includes.description"}}</span>
           {{/if}}
         </div>
-      <div class="form-group{{#if afFieldIsInvalid name="settings.variantWeightExact"}} has-error{{/if}}">
-        <label class="control-label">{{afFieldLabelText name="settings.variantWeightExact"}}</label>
-        {{>afFieldInput name="settings.variantWeightExact" type="number"}}
-        {{#if afFieldIsInvalid name="settings.variantWeightExact"}}
-          <span class="help-block">{{afFieldMessage name="settings.variantWeightExact"}}</span>
-        {{/if}}
-      </div>
-      <div class="form-group{{#if afFieldIsInvalid name="settings.variantWeightPartial"}} has-error{{/if}}">
-        <label class="control-label">{{afFieldLabelText name="settings.variantWeightPartial"}}</label>
-        {{>afFieldInput name="settings.variantWeightPartial" type="number"}}
-        {{#if afFieldIsInvalid name="settings.variantWeightPartial"}}
-          <span class="help-block">{{afFieldMessage name="settings.variantWeightPartial"}}</span>
-        {{/if}}
-      </div>
+        <div class="form-group{{#if afFieldIsInvalid name="settings.weights.description"}} has-error{{/if}}">
+          <label class="control-label">{{afFieldLabelText name="settings.weights.description"}}</label>
+          {{>afFieldInput name="settings.weights.description" type="number"}}
+          {{#if afFieldIsInvalid name="settings.weights.description"}}
+            <span class="help-block">{{afFieldMessage name="settings.weights.description"}}</span>
+          {{/if}}
+        </div>
+
+        <div class="form-group">
+          <label class="control-label">{{afFieldLabelText name="settings.includes.pageTitle"}}</label>
+          {{>afFieldInput name="settings.includes.pageTitle"}}
+          {{#if afFieldIsInvalid name="settings.includes.pageTitle"}}
+            <span class="help-block">{{afFieldMessage name="settings.includes.pageTitle"}}</span>
+          {{/if}}
+        </div>
+        <div class="form-group{{#if afFieldIsInvalid name="settings.weights.pageTitle"}} has-error{{/if}}">
+          <label class="control-label">{{afFieldLabelText name="settings.weights.pageTitle"}}</label>
+          {{>afFieldInput name="settings.weights.pageTitle" type="number"}}
+          {{#if afFieldIsInvalid name="settings.weights.pageTitle"}}
+            <span class="help-block">{{afFieldMessage name="settings.weights.pageTitle"}}</span>
+          {{/if}}
+        </div>
+
+        <div class="form-group">
+          <label class="control-label">{{afFieldLabelText name="settings.includes.metafields"}}</label>
+          {{>afFieldInput name="settings.includes.metafields"}}
+          {{#if afFieldIsInvalid name="settings.includes.metafields"}}
+            <span class="help-block">{{afFieldMessage name="settings.includes.metafields"}}</span>
+          {{/if}}
+        </div>
+        <div class="form-group{{#if afFieldIsInvalid name="settings.weights.metafields"}} has-error{{/if}}">
+          <label class="control-label">{{afFieldLabelText name="settings.weights.metafields"}}</label>
+          {{>afFieldInput name="settings.weights.metafields" type="number"}}
+          {{#if afFieldIsInvalid name="settings.weights.metafields"}}
+            <span class="help-block">{{afFieldMessage name="settings.weights.metafields"}}</span>
+          {{/if}}
+        </div>
+
+        <div class="form-group">
+          <label class="control-label">{{afFieldLabelText name="settings.includes.vendor"}}</label>
+          {{>afFieldInput name="settings.includes.vendor"}}
+          {{#if afFieldIsInvalid name="settings.includes.vendor"}}
+            <span class="help-block">{{afFieldMessage name="settings.includes.vendor"}}</span>
+          {{/if}}
+        </div>
+        <div class="form-group{{#if afFieldIsInvalid name="settings.weights.vendor"}} has-error{{/if}}">
+          <label class="control-label">{{afFieldLabelText name="settings.weights.vendor"}}</label>
+          {{>afFieldInput name="settings.weights.vendor" type="number"}}
+          {{#if afFieldIsInvalid name="settings.weights.vendor"}}
+            <span class="help-block">{{afFieldMessage name="settings.weights.vendor"}}</span>
+          {{/if}}
+        </div>
+
         <button type="submit" class="btn btn-primary pull-right">Update</button>
       {{/autoForm}}
     </div>
