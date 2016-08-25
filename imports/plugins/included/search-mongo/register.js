@@ -10,13 +10,15 @@ Reaction.registerPackage({
       title: true,
       description: true,
       pageTitle: false,
-      metafields: true
+      metafields: true,
+      vendor: true
     },
     weights: {
       title: 10,
       description: 5,
       pageTitle: 3,
-      metafields: 1
+      metafields: 1,
+      vendor: 4
     }
   },
   registry: [

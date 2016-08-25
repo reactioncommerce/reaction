@@ -50,6 +50,18 @@ export const SearchPackageConfig = new SimpleSchema([
       defaultValue: 6,
       max: 10,
       min: 1
+    },
+    "settings.includes.vendor": {
+      type: Boolean,
+      label: "Include vendor in search",
+      defaultValue: true
+    },
+    "settings.weights.vendor": {
+      type: Number,
+      label: "Weight for vendor matches",
+      defaultValue: 6,
+      max: 10,
+      min: 1
     }
   }
 ]);

@@ -71,6 +71,21 @@
           {{/if}}
         </div>
 
+        <div class="form-group">
+          <label class="control-label">{{afFieldLabelText name="settings.includes.vendor"}}</label>
+          {{>afFieldInput name="settings.includes.vendor"}}
+          {{#if afFieldIsInvalid name="settings.includes.vendor"}}
+            <span class="help-block">{{afFieldMessage name="settings.includes.vendor"}}</span>
+          {{/if}}
+        </div>
+        <div class="form-group{{#if afFieldIsInvalid name="settings.weights.vendor"}} has-error{{/if}}">
+          <label class="control-label">{{afFieldLabelText name="settings.weights.vendor"}}</label>
+          {{>afFieldInput name="settings.weights.vendor" type="number"}}
+          {{#if afFieldIsInvalid name="settings.weights.vendor"}}
+            <span class="help-block">{{afFieldMessage name="settings.weights.vendor"}}</span>
+          {{/if}}
+        </div>
+
         <button type="submit" class="btn btn-primary pull-right">Update</button>
       {{/autoForm}}
     </div>
