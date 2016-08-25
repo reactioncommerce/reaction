@@ -6,7 +6,18 @@ Reaction.registerPackage({
   icon: "fa fa-search",
   autoEnable: true,
   settings: {
-
+    includes: {
+      title: true,
+      description: true,
+      pageTitle: false,
+      metafields: true
+    },
+    weights: {
+      title: 10,
+      description: 5,
+      pageTitle: 3,
+      metafields: 1
+    }
   },
   registry: [
     // Dashboard card
