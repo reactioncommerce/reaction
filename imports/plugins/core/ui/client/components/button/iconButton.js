@@ -15,6 +15,9 @@ class IconButton extends Component {
     } = this.props;
 
 
+// this.props.buttonKind === 'flat'
+// default should be default, flat is new css that makes the bakcground tarnsparent
+
     let buttonClassName = classnames({
       "rui": true,
       "button": true,

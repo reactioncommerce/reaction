@@ -1,3 +1,4 @@
+import { IconButton } from "/imports/plugins/core/ui/client/components";
 import { Reaction } from "/client/api";
 import { Tags } from "/lib/collections";
 
@@ -20,6 +21,18 @@ Template.CoreNavigationBar.events({
 });
 
 Template.CoreNavigationBar.helpers({
+  IconButtonComponent() {
+    return {
+      component: IconButton,
+      icon: "fa fa-search",
+      onClick() {
+        Blaze.renderWithData(Template.searchModal, {
+        }, $("body").get(0));
+        $("body").css("overflow-y", "hidden");
+        $("#search-input").focus();
+      }
+    };
+  },
   onMenuButtonClick() {
     const instance = Template.instance();
     return () => {
