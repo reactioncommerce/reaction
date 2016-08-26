@@ -71,7 +71,7 @@ describe("Account Registration Validation ", function () {
       const password = "abc12";
       Meteor.call("accounts/validation/password", password, undefined, function (error, result) {
         expect(result).to.be.an("array");
-        let errMessage = result[0];
+        const errMessage = result[0];
         expect(errMessage).to.be.an("object");
         expect(errMessage.reason).to.contain("at least 6 characters");
         return done();

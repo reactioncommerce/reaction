@@ -17,13 +17,13 @@ Template.tagList.onRendered(() => {
     draggable: ".rui.item.draggable",
     // filter: ".rui.tag.edit.create",
     onSort(event) {
-      let tagIds = instance.data.tags.map(item => {
+      const tagIds = instance.data.tags.map(item => {
         if (item) {
           return item._id;
         }
       });
 
-      let newTagsOrder = instance.moveItem(tagIds, event.oldIndex, event.newIndex);
+      const newTagsOrder = instance.moveItem(tagIds, event.oldIndex, event.newIndex);
 
       if (newTagsOrder) {
         if (instance.data.onTagSort) {
@@ -36,7 +36,7 @@ Template.tagList.onRendered(() => {
     onAdd(event) {
       const toListId = event.to.dataset.id;
       const movedTagId = event.item.dataset.id;
-      let tagIds = instance.data.tags.map(item => {
+      const tagIds = instance.data.tags.map(item => {
         if (item) {
           return item._id;
         }
@@ -52,7 +52,7 @@ Template.tagList.onRendered(() => {
       const movedTagId = event.item.dataset.id;
 
       if (instance.data.onTagRemove) {
-        let foundTag = _.find(instance.data.tags, (tag) => {
+        const foundTag = _.find(instance.data.tags, (tag) => {
           return tag._id === movedTagId;
         });
 

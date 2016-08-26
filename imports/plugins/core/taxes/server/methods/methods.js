@@ -111,7 +111,7 @@ export const methods = {
           let customTaxRate = 0;
           let totalTax = 0;
           // lookup custom tax rate
-          let addressTaxData = Taxes.find(
+          const addressTaxData = Taxes.find(
             {
               $and: [{
                 $or: [{
@@ -140,7 +140,7 @@ export const methods = {
           }
 
           // calculate line item taxes
-          for (let items of cartToCalc.items) {
+          for (const items of cartToCalc.items) {
             // only processs taxable products
             if (items.variants.taxable === true) {
               const subTotal = items.variants.price * items.quantity;

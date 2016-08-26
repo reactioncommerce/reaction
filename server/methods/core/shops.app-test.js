@@ -50,7 +50,7 @@ describe("core shop methods", function () {
 
     it("should throw 403 error by non admin", function (done) {
       sandbox.stub(Reaction, "hasPermission", () => false);
-      let insertShopSpy = sandbox.spy(Shops, "insert");
+      const insertShopSpy = sandbox.spy(Shops, "insert");
       function createShopFunc() {
         return Meteor.call("shop/createShop");
       }
@@ -74,7 +74,7 @@ describe("shop/changeLayouts", function () {
     const shop = Factory.create("shop");
     Meteor.call("shop/changeLayouts", shop._id, "myNewLayout");
     const myShop = Shops.findOne(shop._id);
-    for (let layout of myShop.layout) {
+    for (const layout of myShop.layout) {
       expect(layout.layout).to.equal("myNewLayout");
     }
   });

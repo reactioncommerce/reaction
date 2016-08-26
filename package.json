@@ -1,7 +1,7 @@
 {
   "name": "reaction",
   "description": "Reaction is a modern reactive, real-time event driven ecommerce platform.",
-  "version": "0.15.0",
+  "version": "0.15.1",
   "main": "main.js",
   "directories": {
     "test": "tests"
@@ -25,6 +25,7 @@
     "autoprefixer": "^6.3.7",
     "autosize": "^3.0.17",
     "avalara-taxrates": "^1.0.1",
+    "bcrypt": "^0.8.7",
     "bootstrap": "^3.3.7",
     "braintree": "^1.41.0",
     "bunyan": "^1.8.1",
@@ -40,7 +41,7 @@
     "i18next-browser-languagedetector": "^1.0.0",
     "i18next-localstorage-cache": "^0.3.0",
     "i18next-sprintf-postprocessor": "^0.2.2",
-    "jquery": "^2.2.4",
+    "jquery": "^3.1.0",
     "jquery-i18next": "^1.0.1",
     "lodash": "^4.14.2",
     "meteor-node-stubs": "^0.2.3",
@@ -59,7 +60,7 @@
     "react-textarea-autosize": "^4.0.4",
     "sortablejs": "^1.4.2",
     "stripe": "^4.9.0",
-    "sweetalert2": "^3.3.8",
+    "sweetalert2": "^4.1.7",
     "swiper": "^3.3.1",
     "tether-drop": "^1.4.2",
     "tether-tooltip": "^1.2.0",
@@ -74,6 +75,9 @@
     "js-yaml": "^3.6.1",
     "wdio-mocha-framework": "^0.4.0",
     "webdriverio": "^4.2.3"
+    "babel-preset-stage-2": "^6.13.0",
+    "eslint": "^3.3.1",
+    "eslint-plugin-react": "^6.1.2"
   },
   "postcss": {
     "plugins": {

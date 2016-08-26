@@ -6,7 +6,7 @@ import { Template } from "meteor/templating";
  * onCreated: Account Profile View
  */
 Template.accountProfile.onCreated(() => {
-  let template = Template.instance();
+  const template = Template.instance();
 
   template.userHasPassword = ReactiveVar(false);
 
@@ -59,7 +59,7 @@ Template.accountProfile.helpers({
    * @return {String} "addressBookGrid" || "addressBookAdd"
    */
   addressBookView: function () {
-    let account = Collections.Accounts.findOne();
+    const account = Collections.Accounts.findOne();
     if (account.profile) {
       return "addressBookGrid";
     }

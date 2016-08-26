@@ -64,7 +64,7 @@ const metaTags = [
  */
 function addTag(type, details) {
   let props = "";
-  for (let key in details) {
+  for (const key in details) {
     if ({}.hasOwnProperty.call(details, key)) {
       props += `${key}="${details[key]}" `;
     }

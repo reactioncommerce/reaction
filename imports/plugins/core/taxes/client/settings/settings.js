@@ -53,7 +53,7 @@ Template.taxSettings.helpers({
         value: "none"
       }];
 
-      for (let taxCode of taxCodes) {
+      for (const taxCode of taxCodes) {
         options.push({
           label: i18next.t(taxCode.label),
           value: taxCode.id
@@ -104,8 +104,8 @@ Template.taxSettings.events({
    * @return {void}
    */
   "click [data-event-action=showSecret]": (event) => {
-    let button = $(event.currentTarget);
-    let input = button.closest(".form-group").find("input[name=secret]");
+    const button = $(event.currentTarget);
+    const input = button.closest(".form-group").find("input[name=secret]");
 
     if (input.attr("type") === "password") {
       input.attr("type", "text");

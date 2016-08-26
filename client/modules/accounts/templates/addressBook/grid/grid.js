@@ -7,7 +7,7 @@ import { Template } from "meteor/templating";
  */
 Template.addressBookGrid.helpers({
   selectedBilling: function () {
-    let cart = Collections.Cart.findOne({
+    const cart = Collections.Cart.findOne({
       userId: Meteor.userId()
     });
 
@@ -29,7 +29,7 @@ Template.addressBookGrid.helpers({
   },
 
   selectedShipping: function () {
-    let cart = Collections.Cart.findOne({
+    const cart = Collections.Cart.findOne({
       userId: Meteor.userId()
     });
 

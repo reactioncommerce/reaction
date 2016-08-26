@@ -37,8 +37,8 @@ function createAutosuggestInput(templateInstance, options) {
 }
 
 function getSuggestions(term) {
-  let datums = [];
-  let slug = Reaction.getSlug(term);
+  const datums = [];
+  const slug = Reaction.getSlug(term);
   Tags.find({
     slug: new RegExp(slug, "i")
   }).forEach(function (tag) {

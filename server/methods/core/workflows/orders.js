@@ -34,7 +34,7 @@ Meteor.methods({
   "workflow/coreOrderWorkflow/coreOrderCompleted": function (options) {
     check(options, Match.OrderHookOptions());
 
-    let order = options.order;
+    const order = options.order;
 
     const result = _.every(order.items, (item) => {
       return _.includes(item.workflow.workflow, "coreOrderItemWorkflow/completed");

@@ -1,10 +1,10 @@
 import Drop from "tether-drop";
 import { Meteor } from "meteor/meteor";
-import { Session } from "meteor/session";
+import { Blaze } from "meteor/blaze";
 import { Template } from "meteor/templating";
 import { Reaction, i18next } from "/client/api";
 import { Packages } from "/lib/collections";
-import { Blaze } from "meteor/blaze";
+
 
 Template.coreAdminLayout.onRendered(function () {
   $("body").addClass("admin");
@@ -23,10 +23,10 @@ Template.coreAdminLayout.helpers({
       container: undefined
     });
 
-    let items = [];
+    const items = [];
 
     if (_.isArray(shortcuts)) {
-      for (let shortcut of shortcuts) {
+      for (const shortcut of shortcuts) {
         items.push({
           type: "link",
           href: Reaction.Router.pathFor(shortcut.name),
@@ -80,9 +80,9 @@ Template.coreAdminLayout.helpers({
 
     if (routeName !== "dashboard") {
       const registryItems = Reaction.Apps({provides: "settings", container: routeName});
-      let buttons = [];
+      const buttons = [];
 
-      for (let item of registryItems) {
+      for (const item of registryItems) {
         if (Reaction.hasPermission(item.route, Meteor.userId())) {
           let icon = item.icon;
 
@@ -104,6 +104,7 @@ Template.coreAdminLayout.helpers({
 
       return buttons;
     }
+    return [];
   },
 
   control: function () {

@@ -515,7 +515,7 @@ Meteor.methods({
       // we could throw an error, but it's not pretty clever, so let it go w/o
       // email
       if (typeof user === "object" && user.emails) {
-        for (let email of user.emails) {
+        for (const email of user.emails) {
           // alternate order email address
           if (email.provides === "orders") {
             order.email = email.address;
@@ -551,14 +551,14 @@ Meteor.methods({
       order.shipping = [];
     }
 
-    let expandedItems = [];
+    const expandedItems = [];
 
     // init item level workflow
     _.each(order.items, function (item) {
       // Split items based on their quantity
       for (let i = 0; i < item.quantity; i++) {
         // Clone Item
-        let itemClone = _.clone(item);
+        const itemClone = _.clone(item);
 
         // Remove the quantity since we'll be expanding each item as
         // it's own record
@@ -890,7 +890,7 @@ Meteor.methods({
     const selector = {
       _id: cart._id
     };
-    let update = { $unset: {}};
+    const update = { $unset: {}};
     // user could turn off the checkbox in address to not to be default, then we
     // receive `type` arg
     if (typeof type === "string") {

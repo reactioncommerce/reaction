@@ -2,7 +2,7 @@ import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Tracker } from "meteor/tracker";
 import { AnalyticsEvents, Packages } from "/lib/collections";
-import { Reaction, i18next } from "/client/api";
+import { Reaction, i18next, Logger } from "/client/api";
 
 // Create a queue, but don't obliterate an existing one!
 analytics = window.analytics = window.analytics || [];
@@ -12,9 +12,7 @@ if (analytics.initialize) return;
 
 // If the snippet was invoked already show an error.
 if (analytics.invoked) {
-  if (window.console && console.error) {
-    console.error("Segment snippet included twice.");
-  }
+  Logger.warn("Segment snippet included twice.");
   return;
 }
 
@@ -47,7 +45,7 @@ analytics.methods = [
 // stored as the first argument, so we can replay the data.
 analytics.factory = function (method) {
   return function () {
-    let args = Array.prototype.slice.call(arguments);
+    const args = Array.prototype.slice.call(arguments);
     args.unshift(method);
     analytics.push(args);
     return analytics;
@@ -64,7 +62,7 @@ for (let i = 0; i < analytics.methods.length; i++) {
 // and that will be sure to only ever load it once.
 analytics.load = function (key) {
   // Create an async script element based on your key.
-  let script = document.createElement("script");
+  const script = document.createElement("script");
   script.type = "text/javascript";
   script.async = true;
   script.src = (document.location.protocol === "https:" ? "https://" : "http://") +
@@ -198,6 +196,7 @@ Meteor.startup(function () {
     if (!Reaction.hasAdminAccess()) {
       return Alerts.removeType("analytics-not-configured");
     }
+    return null;
   });
 
   //
@@ -207,7 +206,7 @@ Meteor.startup(function () {
     let $targets = $(e.target).closest("*[data-event-action]");
     $targets = $targets.parents("*[data-event-action]").add($targets);
     return $targets.each(function (index, element) {
-      let $element = $(element);
+      const $element = $(element);
       const analyticsEvent = {
         eventType: "event",
         category: $element.data("event-category"),

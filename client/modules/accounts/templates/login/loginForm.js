@@ -8,7 +8,7 @@ import { Template } from "meteor/templating";
 
 // XXX from http://epeli.github.com/underscore.string/lib/underscore.string.js
 function capitalize(str) {
-  let finalString = str === null ? "" : String(str);
+  const finalString = str === null ? "" : String(str);
   return finalString.charAt(0).toUpperCase() + finalString.slice(1);
 }
 
@@ -51,8 +51,8 @@ Template.loginForm.helpers({
  * Login form onCreated
  */
 Template.loginForm.onCreated(function () {
-  let template = Template.instance();
-  let currentData = Template.currentData();
+  const template = Template.instance();
+  const currentData = Template.currentData();
   let startView = "loginFormSignInView";
 
   if (currentData) {
@@ -148,8 +148,8 @@ Template.loginFormServiceButton.events({
       serviceName = capitalize(serviceName);
     }
 
-    let loginWithService = Meteor["loginWith" + serviceName];
-    let options = {}; // use default scope unless specified
+    const loginWithService = Meteor["loginWith" + serviceName];
+    const options = {}; // use default scope unless specified
 
     loginWithService(options, () => {
       // TODO: add error message for failed login attempt

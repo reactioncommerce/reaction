@@ -8,7 +8,7 @@ import { Reaction } from "/server/api";
 Meteor.publish("Media", function (shops) {
   check(shops, Match.Optional(Array));
   let selector;
-  let shopId = Reaction.getShopId();
+  const shopId = Reaction.getShopId();
   if (!shopId) {
     return this.ready();
   }

@@ -11,9 +11,9 @@ MethodHooks.after("cart/submitPayment", function (options) {
   Logger.debug("MethodHooks after cart/submitPayment", options);
   // Default return value is the return value of previous call in method chain
   // or an empty object if there's no result yet.
-  let result = options.result || {};
+  const result = options.result || {};
   if (typeof options.error === "undefined") {
-    let cart = Cart.findOne({
+    const cart = Cart.findOne({
       userId: Meteor.userId()
     });
 

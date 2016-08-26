@@ -10,8 +10,8 @@ Template.memberForm.events({
   "submit form": function (event, template) {
     event.preventDefault();
 
-    let newMemberEmail = template.$('input[name="email"]').val();
-    let newMemberName = template.$('input[name="name"]').val();
+    const newMemberEmail = template.$('input[name="email"]').val();
+    const newMemberName = template.$('input[name="name"]').val();
 
     return Meteor.call("accounts/inviteShopMember", Reaction.getShopId(),
       newMemberEmail, newMemberName, function (error, result) {

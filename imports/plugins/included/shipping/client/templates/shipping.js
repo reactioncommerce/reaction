@@ -154,19 +154,19 @@ Template.shippingProviderTable.helpers({
     return Shipping.find();
   },
   selectedShippingMethod() {
-    let session = Session.get("selectedShippingMethod");
+    const session = Session.get("selectedShippingMethod");
     if (_.isEqual(this, session)) {
       return this;
     }
   },
   selectedAddShippingMethod() {
-    let session = Session.get("selectedAddShippingMethod");
+    const session = Session.get("selectedAddShippingMethod");
     if (_.isEqual(this, session)) {
       return this;
     }
   },
   selectedShippingProvider() {
-    let session = Session.get("selectedShippingProvider");
+    const session = Session.get("selectedShippingProvider");
     if (_.isEqual(this, session)) {
       return this;
     }
@@ -267,7 +267,7 @@ AutoForm.hooks({
   "shipping-method-edit-form": {
     onSubmit(insertDoc, updateDoc, currentDoc) {
       let error;
-      let providerId = Template.instance().parentTemplate(4).$(".delete-shipping-method").data("provider-id");
+      const providerId = Template.instance().parentTemplate(4).$(".delete-shipping-method").data("provider-id");
       try {
         _.extend(insertDoc, { _id: currentDoc._id });
         Meteor.call("updateShippingMethods", providerId, currentDoc._id, insertDoc);

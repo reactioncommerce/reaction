@@ -6,7 +6,7 @@
 ThirdPartyAPI = {
   authorize: function (transactionType, cardData, paymentData) {
     if (transactionType === "authorize") {
-      let results = {
+      const results = {
         success: true,
         id: Random.id(),
         cardNumber: cardData.number.slice(-4),
@@ -78,7 +78,7 @@ ExampleApi.methods.authorize = new ValidatedMethod({
     paymentData: { type: paymentDataSchema }
   }).validator(),
   run({ transactionType, cardData, paymentData }) {
-    let results = ThirdPartyAPI.authorize(transactionType, cardData, paymentData);
+    const results = ThirdPartyAPI.authorize(transactionType, cardData, paymentData);
     return results;
   }
 });
@@ -91,9 +91,9 @@ ExampleApi.methods.capture = new ValidatedMethod({
     amount: { type: Number, decimal: true }
   }).validator(),
   run(args) {
-    let transactionId = args.authorizationId;
-    let amount = args.amount;
-    let results = ThirdPartyAPI.capture(transactionId, amount);
+    const transactionId = args.authorizationId;
+    const amount = args.amount;
+    const results = ThirdPartyAPI.capture(transactionId, amount);
     return results;
   }
 });
@@ -106,9 +106,9 @@ ExampleApi.methods.refund = new ValidatedMethod({
     amount: { type: Number, decimal: true  }
   }).validator(),
   run(args) {
-    let transactionId = args.transactionId;
-    let amount = args.amount;
-    let results = ThirdPartyAPI.refund(transactionId, amount);
+    const transactionId = args.transactionId;
+    const amount = args.amount;
+    const results = ThirdPartyAPI.refund(transactionId, amount);
     return results;
   }
 });
@@ -120,8 +120,8 @@ ExampleApi.methods.refunds = new ValidatedMethod({
     transactionId: { type: String }
   }).validator(),
   run(args) {
-    let { transactionId } = args;
-    let results = ThirdPartyAPI.listRefunds(transactionId);
+    const { transactionId } = args;
+    const results = ThirdPartyAPI.listRefunds(transactionId);
     return results;
   }
 });
