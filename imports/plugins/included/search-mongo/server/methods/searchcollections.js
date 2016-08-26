@@ -1,7 +1,7 @@
 import _ from "lodash";
 import { Packages, Products } from "/lib/collections";
 import { Reaction, Logger } from "/server/api";
-import { ProductSearch } from "../../lib/collections";
+import { ProductSearch } from "/lib/collections";
 
 
 const requiredFields = ["_id", "hashtags", "shopId"];

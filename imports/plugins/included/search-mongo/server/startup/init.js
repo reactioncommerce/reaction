@@ -2,7 +2,7 @@
 import { EJSON } from "meteor/ejson";
 import { Products, Tags } from "/lib/collections";
 import { Hooks, Logger } from "/server/api";
-import { ProductSearch } from "../../lib/collections";
+import { ProductSearch } from "/lib/collections";
 import { buildProductSearchCollection } from "../methods/searchcollections";
 
 Hooks.Events.add("afterCoreInit", () => {

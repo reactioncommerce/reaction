@@ -3,7 +3,7 @@ import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Tags } from "/lib/collections";
 import { Reaction, Logger } from "/server/api";
-import { ProductSearch } from "../../lib/collections";
+import { ProductSearch } from "/lib/collections";
 
 function getProductFindTerm(searchTerm, searchTags) {
   const shopId = Reaction.getShopId();
