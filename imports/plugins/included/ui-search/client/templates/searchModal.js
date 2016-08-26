@@ -1,7 +1,8 @@
+import _ from "lodash";
 import { IconButton } from "/imports/plugins/core/ui/client/components";
 import { Template } from "meteor/templating";
 import { Reaction } from "/client/api";
-import { Products, ProductSearch } from "/lib/collections"
+import { Products, ProductSearch, Tags } from "/lib/collections"
 
 
 Template.searchModal.onCreated(function () {
@@ -25,8 +26,6 @@ Template.searchModal.onCreated(function () {
       const results = ProductSearch.find().fetch();
       console.log(`result length is: ${results.length}`);
       this.state.set("searchResults", results);
-      console.log("results", results[0]);
-      console.log("tag results", results[1]);
       const searchIds = [];
       for (const result of results) {
         searchIds.push(result._id);
@@ -35,6 +34,20 @@ Template.searchModal.onCreated(function () {
         _id: { $in: searchIds }
       }).fetch();
       console.log(resultProducts);
+      const hashtags = [];
+      for (const product of resultProducts) {
+        if (product.hashtags) {
+          for (const hashtag of product.hashtags) {
+            if (!_.includes(hashtags, hashtag)) {
+              hashtags.push(hashtag);
+            }
+          }
+        }
+      }
+      const tagResults = Tags.find({
+        _id: { $in: hashtags }
+      }).fetch();
+      console.log("tagResults", tagResults);
     }
   });
 });
