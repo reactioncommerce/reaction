@@ -4,7 +4,7 @@ import { Reaction, Logger } from "/server/api";
 import { ProductSearch } from "../../lib/collections";
 
 
-const requiredFields = ["_id", "hashtags"];
+const requiredFields = ["_id", "hashtags", "shopId"];
 
 function getPackageSettings() {
   const searchPackage = Packages.findOne({
