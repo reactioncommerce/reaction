@@ -3,7 +3,7 @@ import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Tags } from "/lib/collections";
 import { Reaction, Logger } from "/server/api";
-import { ProductSearch } from "../collections/searchcollections";
+import { ProductSearch } from "../../lib/collections";
 
 function getProductFindTerm(searchTerm, searchTags) {
   const shopId = Reaction.getShopId();
@@ -21,7 +21,7 @@ Meteor.publish("SearchResults", function (collection, searchTerm, facets) {
   check(collection, String);
   check(searchTerm, Match.Optional(String));
   check(facets, Match.OneOf([String], undefined));
-  Logger.info(`Returning search results on ${collection}. SearchTerm: ${searchTerm}`);
+  Logger.info(`Returning search results on ${collection}. SearchTerm: |${searchTerm}|`);
   let results;
   if (collection === "products") {
     if (!searchTerm) {

@@ -1,6 +1,8 @@
 import _ from "lodash";
 import { Products } from "/lib/collections";
-import { ProductSearch, getProductSearchParameters, buildProuctSearchCollectionRecord } from "../collections/searchcollections";
+import { ProductSearch,
+  getProductSearchParameters,
+  buildProuctSearchCollectionRecord } from "../methods/searchcollections";
 import { Logger } from "/server/api";
 
 

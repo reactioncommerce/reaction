@@ -1,13 +1,10 @@
 import _ from "lodash";
-import { Mongo } from "meteor/mongo";
 import { Packages, Products } from "/lib/collections";
 import { Reaction, Logger } from "/server/api";
+import { ProductSearch } from "../../lib/collections";
 
-export const ProductSearch = new Mongo.Collection("ProductSearch");
-export const OrderSearch = new Mongo.Collection("OrderSearch");
-export const AccountSearch = new Mongo.Collection("AccountSearch");
 
-let requiredFields = ["_id", "hashtags"];
+const requiredFields = ["_id", "hashtags"];
 
 function getPackageSettings() {
   const searchPackage = Packages.findOne({
