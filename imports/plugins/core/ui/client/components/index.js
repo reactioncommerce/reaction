@@ -10,3 +10,4 @@ export { default as EditButton } from "./button/editButton";
 export { default as VisibilityButton } from "./button/visibilityButton";
 export { default as Translation } from "./translation/translation";
 export { default as Media } from "./media/media";
+export { default as Tooltip } from "./tooltip/tooltip";

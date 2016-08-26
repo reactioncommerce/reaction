@@ -2,7 +2,7 @@ import React, { Children, Component, PropTypes } from "react";
 import { Reaction } from "/client/api";
 import { EditButton } from "/imports/plugins/core/ui/client/components";
 import { composeWithTracker } from "react-komposer";
-
+// import isEqual
 
 class EditContainer extends Component {
 
@@ -14,7 +14,7 @@ class EditContainer extends Component {
 
   handleEditButtonClick() {
     const props = this.props;
-
+console.log("OPEN EDIT VIEW????", props);
     Reaction.showActionView({
       label: props.label,
       i18nKeyLabel: props.i18nKeyLabel,
@@ -24,9 +24,18 @@ class EditContainer extends Component {
   }
 
   renderEditButton() {
+    let styles = {}
+    if (this.props.data.__draft) {
+      console.log("WE HAS A DRAFT!!!", this.props.data);
+      styles = {
+        backgroundColor: "yellow"
+      }
+    }
     return (
       <EditButton
         onClick={this.handleEditButtonClick}
+        style={styles}
+        tooltip="Unpublised changes"
       />
     );
   }

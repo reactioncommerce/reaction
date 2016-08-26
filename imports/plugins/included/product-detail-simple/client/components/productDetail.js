@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from "react";
-import MediaGallery from "./mediaGallery";
 import NumericInput from "/imports/plugins/core/ui/client/components/";
+import { AddToCartButton, MediaGallery } from "./"
 
 class ProductDetail extends Component {
   get product() {
@@ -57,8 +57,10 @@ class ProductDetail extends Component {
                 <h3 data-i18n="productDetail.options">Options</h3>
                 {this.props.topVariantComponent}
               </div>
-
-
+              <hr />
+              <div>
+                <AddToCartButton />
+              </div>
             </div>
           </div>
         </div>

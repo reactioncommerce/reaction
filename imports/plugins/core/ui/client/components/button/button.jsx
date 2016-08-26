@@ -1,9 +1,37 @@
 import React, { Component, PropTypes} from "react";
 import classnames from "classnames";
 import Icon from "../icon/icon.jsx";
-import { Translation } from "../";
+import { Tooltip, Translation } from "../";
 
 class Button extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      tooltipOpen: false
+    };
+
+    this.handleButtonMouseOver = this.handleButtonMouseOver.bind(this);
+    this.handleButtonMouseOut = this.handleButtonMouseOut.bind(this);
+  }
+
+  get isTooltipOpen() {
+    return this.state.tooltipOpen
+  }
+
+  handleButtonMouseOver(event) {
+    console.log("hovered");
+    this.setState({
+      tooltipOpen: this.props.tooltip ? true : false
+    });
+  }
+
+  handleButtonMouseOut(event) {
+    console.log("hovered not!");
+    this.setState({
+      tooltipOpen: false
+    });
+  }
 
   renderOnStateIcon() {
     if (this.props.onIcon) {
@@ -33,6 +61,17 @@ class Button extends Component {
     return this.renderNormalStateIcon();
   }
 
+  renderTooltipContent() {
+    if (this.isTooltipOpen) {
+      return (
+        <div>
+          {this.props.tooltip}
+        </div>
+      );
+    }
+    return null
+  }
+
   render() {
     const classes = classnames({
       "btn": true,
@@ -55,10 +94,12 @@ class Button extends Component {
       ...attrs
     } = this.props;
 
-    return (
+    const button = (
       <button
         className={classes}
         data-event-action={eventAction}
+        onMouseOut={this.handleButtonMouseOut}
+        onMouseOver={this.handleButtonMouseOver}
         type="button"
         {...attrs}
       >
@@ -70,6 +111,17 @@ class Button extends Component {
         {this.props.children}
       </button>
     );
+
+
+    if (tooltip) {
+      return (
+        <Tooltip tooltipContent={this.renderTooltipContent()}>
+          {button}
+        </Tooltip>
+      );
+    }
+
+    return button;
   }
 }
 
