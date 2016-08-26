@@ -28,7 +28,17 @@ Template.searchModal.onCreated(function () {
       const resultProducts = Products.find({
         _id: { $in: searchIds }
       }).fetch();
-      this.state.set("productSearchResults", resultProducts);
+      const mergedResults = []; // TODO: there is probably a better way to do this?
+      for (const resultProduct of resultProducts) {
+        for (const result of results) {
+          if (result._id === resultProduct._id) {
+            mergedResults.push(Object.assign({}, resultProduct, result));
+          }
+        }
+      }
+      const sortedResults = _.sortBy(mergedResults, (o) => { return Math.abs(o.score) * -1; });
+      console.log(sortedResults);
+      this.state.set("productSearchResults", sortedResults);
       const hashtags = [];
       for (const product of resultProducts) {
         if (product.hashtags) {
