@@ -11,7 +11,7 @@ import { Template } from "meteor/templating";
 
 Template.productDetailEdit.helpers({
   i18nPlaceholder: function () {
-    let i18nKey = `productDetailEdit.${this.field}`;
+    const i18nKey = `productDetailEdit.${this.field}`;
     if (i18next.t(i18nKey) === i18nKey) {
       Logger.info(`returning empty placeholder productDetailEdit: ${i18nKey} no i18n key found.`);
     } else {
@@ -83,7 +83,7 @@ Template.productDetailEdit.events({
 Template.productDetailField.events({
   "click .product-detail-field": function () {
     if (Reaction.hasPermission("createProduct")) {
-      let fieldClass = "editing-" + this.field;
+      const fieldClass = "editing-" + this.field;
       Session.set(fieldClass, true);
       // Tracker.flush();
       return $(`.${this.field}-edit-input`).focus();

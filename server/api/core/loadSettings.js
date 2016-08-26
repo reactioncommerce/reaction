@@ -24,7 +24,7 @@ export function loadSettings(json) {
   let service;
   let services;
   let settings;
-  let validatedJson = EJSON.parse(json);
+  const validatedJson = EJSON.parse(json);
 
   // validate json and error out if not an array
   if (!_.isArray(validatedJson[0])) {
@@ -34,8 +34,8 @@ export function loadSettings(json) {
   }
 
   // loop settings and upsert packages.
-  for (let pkg of validatedJson) {
-    for (let item of pkg) {
+  for (const pkg of validatedJson) {
+    for (const item of pkg) {
       exists = Packages.findOne({
         name: item.name
       });

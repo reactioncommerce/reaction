@@ -1,7 +1,7 @@
 import Sortable from "sortablejs";
-import { TagHelpers } from "/imports/plugins/core/ui-tagnav/client/helpers";
-import { Session } from "meteor/session";
 import { Template } from "meteor/templating";
+import { ReactiveDict } from "meteor/reactive-dict";
+import { TagHelpers } from "/imports/plugins/core/ui-tagnav/client/helpers";
 import { IconButton } from "/imports/plugins/core/ui/client/components";
 
 const NavbarStates = {
@@ -142,13 +142,14 @@ Template.tagNav.onRendered(() => {
     group: "tags",
     handle: ".js-tagNav-item",
     onSort(event) {
-      let tagIds = instance.data.tags.map(item => {
+      const tagIds = instance.data.tags.map(item => {
         if (item) {
           return item._id;
         }
+        return null;
       });
 
-      let newTagsOrder = instance.moveItem(tagIds, event.oldIndex, event.newIndex);
+      const newTagsOrder = instance.moveItem(tagIds, event.oldIndex, event.newIndex);
 
       if (newTagsOrder) {
         TagNavHelpers.onTagSort(newTagsOrder, instance.data.parentTag);
@@ -159,10 +160,11 @@ Template.tagNav.onRendered(() => {
     onAdd(event) {
       const toListId = event.to.dataset.id;
       const movedTagId = event.item.dataset.id;
-      let tagIds = instance.data.tags.map(item => {
+      const tagIds = instance.data.tags.map(item => {
         if (item) {
           return item._id;
         }
+        return null;
       });
 
       TagNavHelpers.onTagDragAdd(movedTagId, toListId, event.newIndex, tagIds);
@@ -171,7 +173,7 @@ Template.tagNav.onRendered(() => {
     // Tag removed from list becuase it was dragged to a different list
     onRemove(event) {
       const movedTagId = event.item.dataset.id;
-      let foundTag = _.find(instance.data.tags, (tag) => {
+      const foundTag = _.find(instance.data.tags, (tag) => {
         return tag._id === movedTagId;
       });
 

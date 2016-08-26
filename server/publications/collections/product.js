@@ -13,7 +13,7 @@ Meteor.publish("Product", function (productId) {
     return this.ready();
   }
   let _id;
-  let shop = Reaction.getCurrentShop();
+  const shop = Reaction.getCurrentShop();
   // verify that shop is ready
   if (typeof shop !== "object") {
     return this.ready();

@@ -16,7 +16,7 @@ import Avalara from "avalara-taxrates";
 // should we just use HTTP.
 //
 MethodHooks.after("taxes/calculate", function (options) {
-  let result = options.result || {};
+  const result = options.result || {};
   const cartId = options.arguments[0];
   const cartToCalc = Cart.findOne(cartId);
   const shopId = cartToCalc.shopId;
@@ -37,7 +37,7 @@ MethodHooks.after("taxes/calculate", function (options) {
         // maybe refactor to a core calculation
         let totalTax = 0;
         let taxRate = 0;
-        for (let items of cartToCalc.items) {
+        for (const items of cartToCalc.items) {
           // only processs taxable products
           if (items.variants.taxable === true) {
             const subTotal = items.variants.price * items.quantity;

@@ -3,7 +3,7 @@
  */
 
 function uploadHandler(event, instance) {
-  let files = [];
+  const files = [];
 
   FS.Utility.eachFile(event, (file) => {
     files.push(new FS.File(file));

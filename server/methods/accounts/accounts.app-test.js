@@ -19,7 +19,7 @@ before(function () {
 describe("Account Meteor method ", function () {
   const shopId = getShop()._id;
   const fakeUser = Factory.create("account");
-  let originals = {};
+  const originals = {};
   let sandbox;
 
   before(function () {
@@ -105,7 +105,7 @@ describe("Account Meteor method ", function () {
     });
 
     it("should throw error if wrong arguments were passed", function (done) {
-      let accountSpy = sandbox.spy(Accounts, "update");
+      const accountSpy = sandbox.spy(Accounts, "update");
 
       expect(function () {
         return Meteor.call("accounts/addressBookAdd", 123456);
@@ -145,8 +145,8 @@ describe("Account Meteor method ", function () {
         return fakeUser._id;
       });
       const account2 = Factory.create("account");
-      let updateAccountSpy = sandbox.spy(Accounts, "update");
-      let upsertAccountSpy = sandbox.spy(Accounts, "upsert");
+      const updateAccountSpy = sandbox.spy(Accounts, "update");
+      const upsertAccountSpy = sandbox.spy(Accounts, "upsert");
       expect(function () {
         return Meteor.call("accounts/addressBookAdd", getAddress(),
           account2._id);
@@ -160,7 +160,7 @@ describe("Account Meteor method ", function () {
     it("should disabled isShipping/BillingDefault properties inside sibling" +
       " address if we enable their while adding",
       function (done) {
-        let account = Factory.create("account");
+        const account = Factory.create("account");
         sandbox.stub(Meteor, "userId", function () {
           return account.userId;
         });
@@ -218,7 +218,7 @@ describe("Account Meteor method ", function () {
     });
 
     it("should allow user to edit addresses", function (done) {
-      let account = Factory.create("account");
+      const account = Factory.create("account");
       sandbox.stub(Meteor, "userId", function () {
         return account.userId;
       });
@@ -230,7 +230,7 @@ describe("Account Meteor method ", function () {
       });
       spyOnMethod("setShipmentAddress", account.userId);
       spyOnMethod("setPaymentAddress", account.userId);
-      let updateAccountSpy = sandbox.spy(Accounts, "update");
+      const updateAccountSpy = sandbox.spy(Accounts, "update");
 
       Meteor.call("cart/createCart", account.userId, sessionId);
 
@@ -286,7 +286,7 @@ describe("Account Meteor method ", function () {
     });
 
     it("should throw error if wrong arguments were passed", function () {
-      let updateAccountSpy = sandbox.spy(Accounts, "update");
+      const updateAccountSpy = sandbox.spy(Accounts, "update");
       expect(() => Meteor.call("accounts/addressBookUpdate", 123456)).to.throw;
       expect(() => Meteor.call("accounts/addressBookUpdate", {})).to.throw;
       expect(() => Meteor.call("accounts/addressBookUpdate", null)).to.throw;
@@ -304,16 +304,16 @@ describe("Account Meteor method ", function () {
     });
 
     it("should not let non-Admin to edit address of another user", function () {
-      let account = Factory.create("account");
+      const account = Factory.create("account");
       const account2 = Factory.create("account");
       sandbox.stub(Meteor, "userId", () => account.userId);
-      let accountUpdateSpy = sandbox.spy(Accounts, "update");
+      const accountUpdateSpy = sandbox.spy(Accounts, "update");
       expect(() => Meteor.call("accounts/addressBookUpdate", getAddress(), account2._id)).to.throw;
       expect(accountUpdateSpy).to.not.have.been.called;
     });
 
     it("enabling isShipping/BillingDefault properties should add this address to cart", function () {
-      let account = Factory.create("account");
+      const account = Factory.create("account");
       spyOnMethod("setShipmentAddress", account.userId);
       spyOnMethod("setPaymentAddress", account.userId);
       sandbox.stub(Meteor, "userId", function () {
@@ -385,7 +385,7 @@ describe("Account Meteor method ", function () {
     );
 
     it("should update cart default addresses via `type` argument", function () {
-      let account = Factory.create("account");
+      const account = Factory.create("account");
       const userId = account.userId;
       spyOnMethod("setShipmentAddress", account.userId);
       spyOnMethod("setPaymentAddress", account.userId);
@@ -409,7 +409,7 @@ describe("Account Meteor method ", function () {
 
       Meteor.call("accounts/addressBookUpdate", address, null, "isBillingDefault");
       Meteor.call("accounts/addressBookUpdate", address, null, "isShippingDefault");
-      let cart = Cart.findOne({userId: userId});
+      const cart = Cart.findOne({userId: userId});
       expect(cart.billing[0].address._id).to.equal(address._id);
       expect(cart.shipping[0].address._id).to.equal(address._id);
     });
@@ -437,7 +437,7 @@ describe("Account Meteor method ", function () {
     });
 
     it("should throw error if wrong arguments were passed", function () {
-      let updateAccountSpy = sandbox.spy(Accounts, "update");
+      const updateAccountSpy = sandbox.spy(Accounts, "update");
       expect(() => Meteor.call("accounts/addressBookRemove", 123456)).to.throw;
       expect(() => Meteor.call("accounts/addressBookRemove", {})).to.throw;
       expect(() => Meteor.call("accounts/addressBookRemove", null)).to.throw;
@@ -461,7 +461,7 @@ describe("Account Meteor method ", function () {
       sandbox.stub(Meteor, "userId", function () {
         return account.userId;
       });
-      let accountUpdateSpy = sandbox.spy(Accounts, "update");
+      const accountUpdateSpy = sandbox.spy(Accounts, "update");
       expect(() => Meteor.call("accounts/addressBookRemove",
           address2._id, account2.userId)).to.throw;
       expect(accountUpdateSpy).to.not.have.been.called;
@@ -471,7 +471,7 @@ describe("Account Meteor method ", function () {
       const account = Factory.create("account");
       const address = account.profile.addressBook[0];
       sandbox.stub(Meteor, "userId", () => account.userId);
-      let cartUnsetSpy = sandbox.spy(Meteor.server.method_handlers, "cart/unsetAddresses");
+      const cartUnsetSpy = sandbox.spy(Meteor.server.method_handlers, "cart/unsetAddresses");
 
       Meteor.call("accounts/addressBookRemove", address._id);
       expect(cartUnsetSpy).to.have.been.called;
@@ -489,7 +489,7 @@ describe("Account Meteor method ", function () {
   describe("accounts/inviteShopMember", function () {
     it("should not let non-Owners invite a user to the shop", function () {
       sandbox.stub(Reaction, "hasPermission", () => false);
-      let createUserSpy = sandbox.spy(MeteorAccount, "createUser");
+      const createUserSpy = sandbox.spy(MeteorAccount, "createUser");
       // create user
       expect(() => Meteor.call("accounts/inviteShopMember", shopId,
           fakeUser.emails[0].address,

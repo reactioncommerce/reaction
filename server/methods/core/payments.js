@@ -15,7 +15,7 @@ Meteor.methods({
     check(paymentMethod, Object);
 
     // temp hack until we build out multiple payment handlers
-    let cart = Cart.findOne(cartId);
+    const cart = Cart.findOne(cartId);
     let paymentId = "";
     if (cart.billing) {
       paymentId = cart.billing[0]._id;

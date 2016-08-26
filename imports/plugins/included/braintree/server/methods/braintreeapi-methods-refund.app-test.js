@@ -16,7 +16,7 @@ describe("braintree/refund/create", function () {
   });
 
   it("Should call braintree/refund/create with the proper parameters and return saved = true", function (done) {
-    let paymentMethod = {
+    const paymentMethod = {
       processor: "Braintree",
       storedCard: "VISA 4242",
       method: "Visa",
@@ -32,7 +32,7 @@ describe("braintree/refund/create", function () {
       metadata: {}
     };
 
-    let braintreeRefundResult = {
+    const braintreeRefundResult = {
       saved: true,
       response: {
         transaction: {

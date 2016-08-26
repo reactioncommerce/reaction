@@ -11,10 +11,6 @@ import { Button, EditButton } from "/imports/plugins/core/ui/client/components";
 import { PublishContainer } from "/imports/plugins/core/revisions";
 import { ProductDetailContainer } from "/imports/plugins/included/product-detail-simple/client/containers";
 
-// load modules
-require("jquery-ui");
-
-
 Template.productDetail.onCreated(function () {
   this.state = new ReactiveDict();
   this.state.setDefault({
@@ -190,7 +186,7 @@ Template.productDetail.helpers({
     return null;
   },
   tags: function () {
-    let product = ReactionProduct.selectedProduct();
+    const product = ReactionProduct.selectedProduct();
     if (product) {
       if (product.hashtags) {
         return _.map(product.hashtags, function (id) {
@@ -243,7 +239,7 @@ Template.productDetail.events({
   "click #price": function () {
     let formName;
     if (Reaction.hasPermission("createProduct")) {
-      let variant = ReactionProduct.selectedVariant();
+      const variant = ReactionProduct.selectedVariant();
       if (!variant) {
         return;
       }
@@ -264,12 +260,11 @@ Template.productDetail.events({
     return event.stopPropagation();
   },
   "change #add-to-cart-quantity": function (event, template) {
-    let currentVariant;
-    let qtyField;
-    let quantity;
     event.preventDefault();
     event.stopPropagation();
-    currentVariant = ReactionProduct.selectedVariant();
+    let qtyField;
+    let quantity;
+    const currentVariant = ReactionProduct.selectedVariant();
     if (currentVariant) {
       qtyField = template.$('input[name="addToCartQty"]');
       quantity = qtyField.val();
@@ -285,8 +280,8 @@ Template.productDetail.events({
     let productId;
     let qtyField;
     let quantity;
-    let currentVariant = ReactionProduct.selectedVariant();
-    let currentProduct = ReactionProduct.selectedProduct();
+    const currentVariant = ReactionProduct.selectedVariant();
+    const currentProduct = ReactionProduct.selectedProduct();
 
     if (currentVariant) {
       if (currentVariant.ancestors.length === 1) {
@@ -348,15 +343,36 @@ Template.productDetail.events({
           scrollTop: 0
         }, 0);
         // slide out label
-        let addToCartText = i18next.t("productDetail.addedToCart");
-        let addToCartTitle = currentVariant.title || "";
+        const addToCartText = i18next.t("productDetail.addedToCart");
+        const addToCartTitle = currentVariant.title || "";
         $(".cart-alert-text").text(`${quantity} ${addToCartTitle} ${addToCartText}`);
-        return $(".cart-alert").toggle("slide", {
-          direction: i18next.t("languageDirection") === "rtl" ? "left" : "right",
-          width: currentVariant.title.length + 50 + "px"
-        }, 600).delay(4000).toggle("slide", {
-          direction: i18next.t("languageDirection") === "rtl" ? "left" : "right"
-        });
+
+        // Grab and cache the width of the alert to be used in animation
+        const alertWidth = $(".cart-alert").width();
+        const direction = i18next.t("languageDirection") === "rtl" ? "left" : "right";
+        const oppositeDirection = i18next.t("languageDirection") === "rtl" ? "right" : "left";
+
+        // Animate
+        return $(".cart-alert")
+          .show()
+          .css({
+            [oppositeDirection]: "auto",
+            [direction]: -alertWidth
+          })
+          .animate({
+            [oppositeDirection]: "auto",
+            [direction]: 0
+          }, 600)
+          .delay(4000)
+          .animate({
+            [oppositeDirection]: "auto",
+            [direction]: -alertWidth
+          }, {
+            duration: 600,
+            complete() {
+              $(".cart-alert").hide();
+            }
+          });
       }
     } else {
       Alerts.inline("Select an option before adding to cart", "warning", {

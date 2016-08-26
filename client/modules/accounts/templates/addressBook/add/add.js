@@ -6,9 +6,9 @@ import { Template } from "meteor/templating";
 
 Template.addressBookAdd.helpers({
   thisAddress: function () {
-    let thisAddress = {};
+    const thisAddress = {};
     // admin should receive his account
-    let account = Collections.Accounts.findOne({
+    const account = Collections.Accounts.findOne({
       userId: Meteor.userId()
     });
     if (account) {
@@ -38,7 +38,7 @@ Template.addressBookAdd.helpers({
   },
 
   hasAddressBookEntries: function () {
-    let account = Collections.Accounts.findOne({
+    const account = Collections.Accounts.findOne({
       userId: Meteor.userId()
     });
     if (account) {
@@ -72,7 +72,7 @@ AutoForm.hooks({
   addressBookAddForm: {
     onSubmit: function (insertDoc) {
       this.event.preventDefault();
-      let addressBook = $(this.template.firstNode).closest(".address-book");
+      const addressBook = $(this.template.firstNode).closest(".address-book");
 
       Meteor.call("accounts/addressBookAdd", insertDoc, (error, result) => {
         if (error) {

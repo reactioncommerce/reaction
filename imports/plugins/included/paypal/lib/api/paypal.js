@@ -9,7 +9,7 @@ import { Packages } from "/lib/collections";
 
 export const Paypal = {
   payflowAccountOptions: function () {
-    let settings = Packages.findOne({
+    const settings = Packages.findOne({
       name: "reaction-paypal",
       shopId: ReactionCore.getShopId(),
       enabled: true
@@ -20,8 +20,8 @@ export const Paypal = {
     } else {
       mode = "sandbox";
     }
-    let ref = Meteor.settings.paypal;
-    let options = {
+    const ref = Meteor.settings.paypal;
+    const options = {
       mode: mode,
       enabled: getSettings(settings, ref, "payflow_enabled"),
       client_id: getSettings(settings, ref, "client_id"),
@@ -35,7 +35,7 @@ export const Paypal = {
   expressCheckoutAccountOptions: function () {
     const prefix = getSlug(ReactionCore.getShopName().toLowerCase());
     const shopId = ReactionCore.getShopId();
-    let settings = Packages.findOne({
+    const settings = Packages.findOne({
       name: "reaction-paypal",
       shopId: shopId,
       enabled: true
@@ -46,9 +46,9 @@ export const Paypal = {
     } else {
       mode = "sandbox";
     }
-    let ref = Meteor.settings.paypal;
+    const ref = Meteor.settings.paypal;
 
-    let options = {
+    const options = {
       enabled: settings !== null ? settings.express_enabled : void 0,
       mode: mode,
       username: getSettings(settings, ref, "username"),
@@ -69,7 +69,7 @@ export const Paypal = {
     Meteor.call("payflowpro/payment/submit", "authorize", cardInfo, paymentInfo, callback);
   },
   capture: function (transactionId, amount, callback) {
-    let captureDetails = {
+    const captureDetails = {
       amount: {
         currency: "USD", // todo should this be locale.currency
         total: parseFloat(amount, 10)

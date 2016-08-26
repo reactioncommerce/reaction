@@ -71,11 +71,11 @@ Import.indication = function (field, collection, probability) {
 Import.identify = function (document) {
   check(document, Object);
 
-  let probabilities = {};
+  const probabilities = {};
 
   for (key of Object.keys(document)) {
     if (this._indications[key]) {
-      let collection = this._name(this._indications[key].collection);
+      const collection = this._name(this._indications[key].collection);
       probabilities[collection] = probabilities[collection] || 1.0 * this._indications[
         key].probability;
     }
@@ -89,7 +89,7 @@ Import.identify = function (document) {
   let max = 0.0;
   let name;
   for (key of Object.keys(probabilities)) {
-    let probability = total / probabilities[key];
+    const probability = total / probabilities[key];
     if (probability > max) {
       max = probability;
       name = key;
@@ -113,16 +113,16 @@ Import.identify = function (document) {
 Import.commit = function (collection) {
   check(collection, Mongo.Collection);
   // Construct a collection identifier.
-  let name = this._name(collection);
+  const name = this._name(collection);
 
   // Only commit if the buffer isn't empty (otherwise it'll throw).
   if (this._count[name]) {
     this.buffer(collection).execute(function (error, result) {
       // Inserted document counts don't affect the modified document count, so we
       // throw everythin together.
-      let nImported = result.nModified + result.nInserted + result.nUpserted;
-      let nTouched = result.nMatched + result.nInserted + result.nUpserted;
-      let nRemoved = result.nRemoved;
+      const nImported = result.nModified + result.nInserted + result.nUpserted;
+      const nTouched = result.nMatched + result.nInserted + result.nUpserted;
+      const nRemoved = result.nRemoved;
       // Log some information about the import.
       if (nTouched) {
         let message = "";
@@ -141,11 +141,11 @@ Import.commit = function (collection) {
       // Log any errors returned.
       let message = "";
       message += "Error while importing to " + name;
-      let writeErrors = result.getWriteErrors();
+      const writeErrors = result.getWriteErrors();
       for (let i = 0; i < writeErrors.length; i++) {
         Logger.warn(message + ": " + writeErrors[i].errmsg);
       }
-      let writeConcernError = result.getWriteConcernError();
+      const writeConcernError = result.getWriteConcernError();
       if (writeConcernError) {
         Logger.warn(message + ": " + writeConcernError.errmsg);
       }
@@ -163,7 +163,7 @@ Import.commit = function (collection) {
  */
 Import.flush = function (collection) {
   if (!collection) {
-    for (let name of Object.keys(this._buffers)) {
+    for (const name of Object.keys(this._buffers)) {
       this.commit(Collections[name]);
     }
     return;
@@ -211,7 +211,7 @@ Import.buffer = function (collection) {
   }
 
   // Construct a buffer identifier.
-  let name = this._name(collection);
+  const name = this._name(collection);
 
   // Construct a new buffer if necessary.
   if (this._buffers[name]) {
@@ -338,7 +338,7 @@ function doRightJoinNoIntersection(leftSet, rightSet) {
   } else {
     rightJoin = {};
   }
-  let findRightOnlyProperties = function () {
+  const findRightOnlyProperties = () => {
     return Object.keys(rightSet).filter(function (key) {
       if (typeof(rightSet[key]) === "object" &&
         !Array.isArray(rightSet[key])) {
@@ -350,7 +350,7 @@ function doRightJoinNoIntersection(leftSet, rightSet) {
     });
   };
 
-  for (let key of findRightOnlyProperties()) {
+  for (const key of findRightOnlyProperties()) {
     if (typeof(rightSet[key]) === "object") {
       // subobject or array
       if (leftSet.hasOwnProperty(key) && (typeof(leftSet[key]) !== "object" ||
@@ -361,12 +361,12 @@ function doRightJoinNoIntersection(leftSet, rightSet) {
           "congruent! Offending key: " + key
         );
       }
-      let rightSubJoin = doRightJoinNoIntersection(
+      const rightSubJoin = doRightJoinNoIntersection(
         leftSet.hasOwnProperty(key) ? leftSet[key] : {},
         rightSet[key]
       );
 
-      let obj = {};
+      const obj = {};
       if (rightSubJoin === null) {
         obj[key] = null;
       } else if (Object.keys(rightSubJoin).length !== 0 ||
@@ -380,7 +380,7 @@ function doRightJoinNoIntersection(leftSet, rightSet) {
       if (Array.isArray(rightSet)) {
         rightJoin.push(rightSet[key]);
       } else {
-        let obj = {};
+        const obj = {};
         obj[key] = rightSet[key];
         rightJoin = Object.assign(rightJoin, obj);
       }
@@ -401,7 +401,7 @@ Import.object = function (collection, key, object) {
   check(key, Object);
   check(object, Object);
 
-  let selector = object;
+  const selector = object;
 
   // enforce strings instead of Mongo.ObjectId
   if (!collection.findOne(key) && !object._id) key._id = Random.id();
@@ -409,7 +409,7 @@ Import.object = function (collection, key, object) {
   const importObject = Hooks.Events.run(`onImport${this._name(collection)}`, object);
 
   // Clone object for cleaning
-  let cleanedObject = Object.assign({}, importObject);
+  const cleanedObject = Object.assign({}, importObject);
 
   // Cleaning the object adds default values from schema, if value doesn't exist
   collection.simpleSchema(importObject).clean(cleanedObject);
@@ -418,10 +418,10 @@ Import.object = function (collection, key, object) {
 
   // Disjoint importObject and cleanedObject again
   // to prevent `Cannot update '<field>' and '<field>' at the same time` errors
-  let defaultValuesObject = doRightJoinNoIntersection(importObject, cleanedObject);
+  const defaultValuesObject = doRightJoinNoIntersection(importObject, cleanedObject);
 
   // Upsert the object.
-  let find = this.buffer(collection).find(key);
+  const find = this.buffer(collection).find(key);
   if (Object.keys(defaultValuesObject).length === 0) {
     find.upsert().update({
       $set: importObject
@@ -452,10 +452,10 @@ Import.process = function (json, keys, callback) {
   check(keys, Array);
   check(callback, Function);
 
-  let array = EJSON.parse(json);
+  const array = EJSON.parse(json);
 
   for (let i = 0; i < array.length; i++) {
-    let key = {};
+    const key = {};
     for (let j = 0; j < keys.length; j++) {
       key[keys[j]] = array[i][keys[j]];
     }

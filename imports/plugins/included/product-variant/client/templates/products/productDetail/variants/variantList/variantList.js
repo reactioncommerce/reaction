@@ -1,10 +1,11 @@
-import { Reaction, i18next } from "/client/api";
+import { Reaction } from "/client/api";
 import { ReactionProduct } from "/lib/api";
 import { Products, Media } from "/lib/collections";
 import { EditButton, VisibilityButton } from "/imports/plugins/core/ui/client/components";
 import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
 import { Template } from "meteor/templating";
+import Sortable from "sortablejs";
 
 function variantIsSelected(variantId) {
   const current = ReactionProduct.selectedVariant();
@@ -27,6 +28,39 @@ function variantIsInActionView(variantId) {
 }
 
 /**
+ * variant onRendered
+ */
+
+Template.variantList.onRendered(function () {
+  const instance = this;
+
+  return this.autorun(function () {
+    if (Reaction.hasPermission("createProduct")) {
+      const variantSort = $(".variant-list")[0];
+
+      this.sortable = Sortable.create(variantSort, {
+        group: "variant-list",
+        handle: ".variant-list-item",
+        onUpdate() {
+          const positions = instance.$(".variant-list-item")
+            .toArray()
+            .map((element) => {
+              return element.getAttribute("data-id");
+            });
+
+          Meteor.defer(function () {
+            Meteor.call("products/updateVariantsPosition", positions);
+          });
+
+          Tracker.flush();
+        }
+      });
+    }
+  });
+});
+
+
+/**
  * variantList helpers
  */
 Template.variantList.helpers({
@@ -46,17 +80,17 @@ Template.variantList.helpers({
     const variants = ReactionProduct.getTopVariants();
     if (variants.length) {
       // calculate inventory total for all variants
-      for (let variant of variants) {
+      for (const variant of variants) {
         if (variant.inventoryManagement) {
-          let qty = ReactionProduct.getVariantQuantity(variant);
+          const qty = ReactionProduct.getVariantQuantity(variant);
           if (typeof qty === "number") {
             inventoryTotal += qty;
           }
         }
       }
       // calculate percentage of total inventory of this product
-      for (let variant of variants) {
-        let qty = ReactionProduct.getVariantQuantity(variant);
+      for (const variant of variants) {
+        const qty = ReactionProduct.getVariantQuantity(variant);
         variant.inventoryTotal = inventoryTotal;
         if (variant.inventoryManagement && inventoryTotal) {
           variant.inventoryPercentage = parseInt(qty / inventoryTotal * 100, 10);

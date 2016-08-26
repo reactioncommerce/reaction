@@ -38,8 +38,8 @@ Meteor.methods({
     }
 
     // identify a shop admin
-    let userId = shopAdminUserId || Meteor.userId();
-    let adminRoles = Roles.getRolesForUser(currentUser, Reaction.getShopId());
+    const userId = shopAdminUserId || Meteor.userId();
+    const adminRoles = Roles.getRolesForUser(currentUser, Reaction.getShopId());
     // ensure unique id and shop name
     shop._id = Random.id();
     shop.name = shop.name + count;
@@ -65,8 +65,8 @@ Meteor.methods({
   "shop/getLocale": function () {
     this.unblock();
     let clientAddress;
-    let geo = new GeoCoder();
-    let result = {};
+    const geo = new GeoCoder();
+    const result = {};
     let defaultCountryCode = "US";
     let localeCurrency = "USD";
     // if called from server, ip won't be defined.
@@ -77,7 +77,7 @@ Meteor.methods({
     }
 
     // get shop locale/currency related data
-    let shop = Collections.Shops.findOne(Reaction.getShopId(), {
+    const shop = Collections.Shops.findOne(Reaction.getShopId(), {
       fields: {
         addressBook: 1,
         locales: 1,
@@ -100,10 +100,10 @@ Meteor.methods({
       }
     }
     // geocode reverse ip lookup
-    let geoCountryCode = geo.geoip(clientAddress).country_code;
+    const geoCountryCode = geo.geoip(clientAddress).country_code;
 
     // countryCode either from geo or defaults
-    let countryCode = (geoCountryCode || defaultCountryCode).toUpperCase();
+    const countryCode = (geoCountryCode || defaultCountryCode).toUpperCase();
 
     // get currency rates
     result.currency = {};
@@ -239,11 +239,11 @@ Meteor.methods({
 
         _.each(shopCurrencies, function (currencyConfig, currencyKey) {
           if (exchangeRates[currencyKey] !== undefined) {
-            let rateUpdate = {
+            const rateUpdate = {
               // this needed for shop/flushCurrencyRates Method
               "currencies.updatedAt": new Date(rateResults.data.timestamp * 1000)
             };
-            let collectionKey = `currencies.${currencyKey}.rate`;
+            const collectionKey = `currencies.${currencyKey}.rate`;
             rateUpdate[collectionKey] = exchangeRates[currencyKey];
             Collections.Shops.update(shopId, {
               $set: rateUpdate
@@ -271,7 +271,7 @@ Meteor.methods({
         currencies: 1
       }
     });
-    let updatedAt = shop.currencies.updatedAt;
+    const updatedAt = shop.currencies.updatedAt;
 
     // if updatedAt is not a Date(), then there is no rates yet
     if (typeof updatedAt !== "object") {
@@ -284,7 +284,7 @@ Meteor.methods({
 
     if (now < updatedAt) { // todo remove this line. its for tests
       _.each(shop.currencies, function (currencyConfig, currencyKey) {
-        let rate = `currencies.${currencyKey}.rate`;
+        const rate = `currencies.${currencyKey}.rate`;
 
         if (typeof currencyConfig.rate === "number") {
           Collections.Shops.update(shopId, {
@@ -365,11 +365,11 @@ Meteor.methods({
 
     // begin actual address lookups
     if (latitude !== null && longitude !== null) {
-      let geo = new GeoCoder();
+      const geo = new GeoCoder();
       return geo.reverse(latitude, longitude);
     }
     // geocode reverse ip lookup
-    let geo = new GeoCoder();
+    const geo = new GeoCoder();
     return geo.geoip(clientAddress);
   },
 
@@ -416,19 +416,19 @@ Meteor.methods({
     check(tagId, Match.OneOf(String, null, void 0));
     check(currentTagId, Match.OneOf(String, null, void 0));
 
-    let newTagId;
+    let newTagId = {};
     // must have 'core' permissions
     if (!Reaction.hasPermission("core")) {
       throw new Meteor.Error(403, "Access Denied");
     }
     this.unblock();
 
-    let newTag = {
+    const newTag = {
       slug: Reaction.getSlug(tagName),
       name: tagName
     };
 
-    let existingTag = Collections.Tags.findOne({
+    const existingTag = Collections.Tags.findOne({
       slug: Reaction.getSlug(tagName),
       name: tagName
     });
@@ -510,13 +510,13 @@ Meteor.methods({
       }
     });
     // check to see if tag is in use.
-    let productCount = Collections.Products.find({
+    const productCount = Collections.Products.find({
       hashtags: {
         $in: [tagId]
       }
     }).count();
     // check to see if in use as a related tag
-    let relatedTagsCount = Collections.Tags.find({
+    const relatedTagsCount = Collections.Tags.find({
       relatedTagIds: {
         $in: [tagId]
       }
@@ -679,7 +679,7 @@ Meteor.methods({
   "shop/changeLayouts": function (shopId, newLayout) {
     check(shopId, String);
     check(newLayout, String);
-    let shop = Collections.Shops.findOne(shopId);
+    const shop = Collections.Shops.findOne(shopId);
     for (let i = 0; i < shop.layout.length; i++) {
       shop.layout[i].layout = newLayout;
     }

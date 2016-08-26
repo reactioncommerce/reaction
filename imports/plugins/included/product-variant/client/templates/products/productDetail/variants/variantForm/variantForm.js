@@ -92,10 +92,10 @@ Template.variantForm.events({
     // this should really move into a method
     //
     if (field === "taxable" || field === "inventoryManagement" || field === "inventoryPolicy") {
-      let value = $(event.currentTarget).prop("checked");
+      const value = $(event.currentTarget).prop("checked");
       if (ReactionProduct.checkChildVariants(template.data._id) > 0) {
         const childVariants = ReactionProduct.getVariants(template.data._id);
-        for (let child of childVariants) {
+        for (const child of childVariants) {
           Meteor.call("products/updateProductField", child._id, field, value,
             error => {
               if (error) {
@@ -105,28 +105,22 @@ Template.variantForm.events({
         }
       }
     }
-
     // template.$(formId).submit();
     // ReactionProduct.setCurrentVariant(template.data._id);
-    //
-    //
-    //
   },
   "click .btn-child-variant-form": function (event, template) {
-    let productId;
     event.stopPropagation();
     event.preventDefault();
-    productId = ReactionProduct.selectedProductId();
+    const productId = ReactionProduct.selectedProductId();
     if (!productId) {
       return;
     }
     Meteor.call("products/createVariant", template.data._id);
   },
   "click .btn-clone-variant": function (event, template) {
-    let productId;
     event.stopPropagation();
     event.preventDefault();
-    productId = ReactionProduct.selectedProductId();
+    const productId = ReactionProduct.selectedProductId();
     if (!productId) {
       return;
     }

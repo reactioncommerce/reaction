@@ -102,6 +102,10 @@ export const TagHelpers = {
       });
   },
 
+  /* eslint no-unused-vars: 0 */
+  //
+  //   TODO review toIndex, ofList variable implementation in tags.js moveTagToNewParent
+  //
   moveTagToNewParent(movedTagId, toListId, toIndex, ofList) {
     if (movedTagId) {
       if (toListId) {
@@ -126,13 +130,14 @@ export const TagHelpers = {
 
       return result;
     }
+    return 0;
   },
 
   sortTags(tagIds, parentTag) {
     if (_.isArray(tagIds)) {
       if (_.isEmpty(parentTag)) {
         // Top level tags
-        for (let tagId of tagIds) {
+        for (const tagId of tagIds) {
           Tags.update(tagId, {
             $set: {
               position: tagIds.indexOf(tagId)

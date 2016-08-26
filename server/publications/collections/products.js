@@ -78,7 +78,7 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
   }
 
   if (shop) {
-    let selector = {
+    const selector = {
       isDeleted: false,
       ancestors: {
         $exists: true,
@@ -97,7 +97,7 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
         });
 
         // check if this user is a shopAdmin
-        for (let thisShopId of productFilters.shops) {
+        for (const thisShopId of productFilters.shops) {
           if (Roles.userIsInRole(this.userId, ["admin", "createProduct"], thisShopId)) {
             shopAdmin = true;
           }
@@ -115,7 +115,7 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
 
       // filter by query
       if (productFilters.query) {
-        let cond = {
+        const cond = {
           $regex: productFilters.query,
           $options: "i"
         };

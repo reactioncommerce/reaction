@@ -27,7 +27,7 @@ Meteor.methods({
     this.unblock();
 
     let currentCart;
-    let defaultPackageWorkflows = [];
+    const defaultPackageWorkflows = [];
     let nextWorkflowStep = {
       template: ""
     };
@@ -46,8 +46,8 @@ Meteor.methods({
     // exit if a cart doesn't exist.
     if (!currentCart) return [];
     // TODO doc this
-    let currentWorkflowStatus = currentCart.workflow.status;
-    let packages = Packages.find({
+    const currentWorkflowStatus = currentCart.workflow.status;
+    const packages = Packages.find({
       "shopId": Reaction.getShopId(),
       "layout.workflow": workflow
     });
@@ -56,14 +56,14 @@ Meteor.methods({
     packages.forEach(function (reactionPackage) {
       // todo fix this hack for not filtering nicely
       if (!reactionPackage.layout.layout) {
-        let layouts = _.filter(reactionPackage.layout, {
+        const layouts = _.filter(reactionPackage.layout, {
           workflow: workflow
         });
         // for every layout, process the associated workflows
         _.each(layouts, function (layout) {
           // audience is the layout permissions
           if (typeof layout.audience !== "object") {
-            let defaultRoles = Shops.findOne(
+            const defaultRoles = Shops.findOne(
               Reaction.getShopId(), {
                 sort: {
                   priority: 1
@@ -148,7 +148,7 @@ Meteor.methods({
       Logger.debug(
         `######## Condition One #########: initialise the ${currentCart._id} ${workflow}: ${defaultPackageWorkflows[0].template}`
       );
-      let result = Cart.update(currentCart._id, {
+      const result = Cart.update(currentCart._id, {
         $set: {
           "workflow.status": defaultPackageWorkflows[0].template
         }
@@ -322,7 +322,7 @@ Meteor.methods({
     const items = order.items.map((item) => {
       // Add the current status to completed workflows
       if (item.workflow.status !== "new") {
-        let workflows = item.workflow.workflow || [];
+        const workflows = item.workflow.workflow || [];
 
         workflows.push(status);
         item.workflow.workflow = _.uniq(workflows);

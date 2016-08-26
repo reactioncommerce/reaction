@@ -10,13 +10,13 @@ Template.tagTree.onRendered(() => {
     handle: ".js-drag-handle",
     draggable: ".rui.grouptag",
     onSort(event) {
-      let tagIds = instance.data.subTagGroups.map(item => {
+      const tagIds = instance.data.subTagGroups.map(item => {
         if (item) {
           return item._id;
         }
       });
 
-      let newTagsOrder = TagHelpers.moveItem(tagIds, event.oldIndex, event.newIndex);
+      const newTagsOrder = TagHelpers.moveItem(tagIds, event.oldIndex, event.newIndex);
 
       if (newTagsOrder) {
         if (instance.data.onTagSort) {
@@ -29,7 +29,7 @@ Template.tagTree.onRendered(() => {
     onAdd(event) {
       const toListId = event.to.dataset.id;
       const movedTagId = event.item.dataset.id;
-      let tagIds = instance.data.subTagGroups.map(item => {
+      const tagIds = instance.data.subTagGroups.map(item => {
         if (item) {
           return item._id;
         }
@@ -45,7 +45,7 @@ Template.tagTree.onRendered(() => {
       const movedTagId = event.item.dataset.id;
 
       if (instance.data.onTagRemove) {
-        let foundTag = _.find(instance.data.subTagGroups, (tag) => {
+        const foundTag = _.find(instance.data.subTagGroups, (tag) => {
           return tag._id === movedTagId;
         });
 

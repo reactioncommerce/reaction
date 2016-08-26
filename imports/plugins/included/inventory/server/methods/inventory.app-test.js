@@ -81,7 +81,7 @@ describe("inventory method", function () {
 
     it("should have equal quantities", function () {
       Meteor.call("inventory/register", options[1]);
-      let midQty = Inventory.find({ variantId: options[1]._id }).count();
+      const midQty = Inventory.find({ variantId: options[1]._id }).count();
       expect(midQty).to.equal(qty);
     });
 
