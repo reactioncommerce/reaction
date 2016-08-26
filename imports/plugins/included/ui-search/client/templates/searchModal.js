@@ -1,27 +1,8 @@
 import { IconButton } from "/imports/plugins/core/ui/client/components";
 import { Template } from "meteor/templating";
 import { Reaction } from "/client/api";
-import { Products } from "/lib/collections"
-// import { Packages } from "/lib/collections";
-// import { SearchPackageConfig } from "../../lib/collections/schemas";
+import { Products, ProductSearch } from "/lib/collections"
 
-// Meteor.publish("searchStuff", function () {
-//
-//
-//   Products.find().observe({
-//     added: (id, fields) => {
-//       this.added("SearchQuery", id, fields)
-//     },
-//     changed: (id, fields) => {
-//       this.changed("SearchQuery", id, fields)
-//     },
-//     removed: (id) => {
-//       this.removed("SearchQuery", id)
-//     }
-//   });
-//
-//   return this.ready();
-// });
 
 Template.searchModal.onCreated(function () {
   this.products = ReactiveVar();
@@ -41,20 +22,19 @@ Template.searchModal.onCreated(function () {
     console.log("query", searchQuery);
 
     if (sub.ready()) {
-      const results = Products.find().fetch();
-    //   const results = Products.find({
-    //   shopId: Reaction.getShopId(),
-    //   title: {
-    //     $regex: ".*" + searchQuery + ".*",
-    //     $options: "i"
-    //   }
-    // }, {
-    //   title: 1,
-    //   hashtags: 1
-    // }).fetch();
+      const results = ProductSearch.find().fetch();
+      console.log(`result length is: ${results.length}`);
       this.state.set("searchResults", results);
-      
-      console.log("results", results);
+      console.log("results", results[0]);
+      console.log("tag results", results[1]);
+      const searchIds = [];
+      for (const result of results) {
+        searchIds.push(result._id);
+      }
+      const resultProducts = Products.find({
+        _id: { $in: searchIds }
+      }).fetch();
+      console.log(resultProducts);
     }
   });
 });
@@ -87,10 +67,9 @@ Template.searchModal.events({
   "keyup input": (event, templateInstance) => {
     event.preventDefault();
 
-    const searchQuery = templateInstance.find('#search-input').value;
+    const searchQuery = templateInstance.find("#search-input").value;
 
-    templateInstance.state.set("searchQuery", searchQuery)
-
+    templateInstance.state.set("searchQuery", searchQuery);
   }
 });
 
