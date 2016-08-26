@@ -1,31 +1,26 @@
 import _ from "lodash";
 import { IconButton } from "/imports/plugins/core/ui/client/components";
 import { Template } from "meteor/templating";
-import { Reaction } from "/client/api";
-import { Products, ProductSearch, Tags } from "/lib/collections"
+import { Products, ProductSearch, Tags } from "/lib/collections";
 
 
 Template.searchModal.onCreated(function () {
-  this.products = ReactiveVar();
   this.state = new ReactiveDict();
   this.state.setDefault({
     initialLoad: true,
     slug: "",
     canLoadMoreProducts: false,
     searchQuery: "",
-    searchResults: []
+    productSearchResults: [],
+    tagSearchResults: []
   });
 
   this.autorun(() => {
     const searchQuery = this.state.get("searchQuery");
     const sub = this.subscribe("SearchResults", "products", searchQuery); // collection, searchTerm, facets
 
-    console.log("query", searchQuery);
-
     if (sub.ready()) {
       const results = ProductSearch.find().fetch();
-      console.log(`result length is: ${results.length}`);
-      this.state.set("searchResults", results);
       const searchIds = [];
       for (const result of results) {
         searchIds.push(result._id);
@@ -33,7 +28,7 @@ Template.searchModal.onCreated(function () {
       const resultProducts = Products.find({
         _id: { $in: searchIds }
       }).fetch();
-      console.log(resultProducts);
+      this.state.set("productSearchResults", resultProducts);
       const hashtags = [];
       for (const product of resultProducts) {
         if (product.hashtags) {
@@ -47,7 +42,7 @@ Template.searchModal.onCreated(function () {
       const tagResults = Tags.find({
         _id: { $in: hashtags }
       }).fetch();
-      console.log("tagResults", tagResults);
+      this.state.set("tagSearchResults", tagResults);
     }
   });
 });
@@ -68,10 +63,19 @@ Template.searchModal.helpers({
         });
       }
     };
+  },
+  productSearchResults() {
+    const instance = Template.instance();
+    const results = instance.state.get("productSearchResults");
+    // console.log("productSearchResults", results);
+    return results;
+  },
+  tagSearchResults() {
+    const instance = Template.instance();
+    const results = instance.state.get("tagSearchResults");
+    // console.log("tagSearchResults", results);
+    return results;
   }
-
-
-  // send data to template.....
 });
 
 
@@ -79,9 +83,7 @@ Template.searchModal.events({
   // on type, recload Reaction.SaerchResults
   "keyup input": (event, templateInstance) => {
     event.preventDefault();
-
     const searchQuery = templateInstance.find("#search-input").value;
-
     templateInstance.state.set("searchQuery", searchQuery);
   }
 });

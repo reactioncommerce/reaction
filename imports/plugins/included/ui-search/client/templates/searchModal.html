@@ -14,45 +14,17 @@
       </div>
 
       <div class="rui search-modal-results">
-
-        <h4>This is where the resutls go</h4>
-        <h4>This is where the resutls go</h4>
-        <h4>This is where the resutls go</h4>
-        <h4>This is where the resutls go</h4>
-        <h4>This is where the resutls go</h4>
-        <h4>This is where the resutls go</h4>
-        <h4>This is where the resutls go</h4>
-        <h4>This is where the resutls go</h4>
-        <h4>This is where the resutls go</h4>
-        <h4>This is where the resutls go</h4>
-        <h4>This is where the resutls go</h4>
-        <h4>This is where the resutls go</h4>
-        <h4>This is where the resutls go</h4>
-        <h4>This is where the resutls go</h4>
-        <h4>This is where the resutls go</h4>
-        <h4>This is where the resutls go</h4>
-        <h4>This is where the resutls go</h4>
-        <h4>This is where the resutls go</h4>
-        <h4>This is where the resutls go</h4>
-        <h4>This is where the resutls go</h4>
-        <h4>This is where the resutls go</h4>
-        <h4>This is where the resutls go</h4>
-        <h4>This is where the resutls go</h4>
-        <h4>This is where the resutls go</h4>
-        <h4>This is where the resutls go</h4>
-        <h4>This is where the resutls go</h4>
-        <h4>This is where the resutls go</h4>
-        <h4>This is where the resutls go</h4>
-        <h4>This is where the resutls go</h4>
-        <h4>This is where the resutls go</h4>
-        <h4>This is where the resutls go</h4>
-        <h4>This is where the resutls go</h4>
-        <h4>This is where the resutls go</h4>
-        <h4>This is where the resutls go</h4>
-        <h4>This is where the resutls go</h4>
-        <h4>This is where the resutls go</h4>
-
-
+        Tags:
+        {{#each tag in tagSearchResults}}
+          {{tag.name}}
+        {{/each}}
+      </div>
+      <div class="rui search-modal-results">
+        {{#each product in productSearchResults}}
+          {{product.title}}<br>
+          {{product.description}}<br>
+          <br><br>
+        {{/each}}
       </div>
 
     </div>

@@ -1,7 +1,5 @@
-import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
-import { Tags } from "/lib/collections";
 import { Reaction, Logger } from "/server/api";
 import { ProductSearch } from "/lib/collections";
 
@@ -40,22 +38,9 @@ Meteor.publish("SearchResults", function (collection, searchTerm, facets) {
         sort: {score: { $meta: "textScore" } }
       }
     );
-    const hashtags = [];
-    for (const product of productResults.fetch()) {
-      if (product.hashtags) {
-        for (const hashtag of product.hashtags) {
-          if (!_.includes(hashtags, hashtag)) {
-            hashtags.push(hashtag);
-          }
-        }
-      }
-    }
-    const hashtagResults = Tags.find({_id: { $in: hashtags }, isTopLevel: false}, {fields: { name: 1 }});
-    results = [productResults, hashtagResults];
+    results = productResults;
   }
-  Logger.info(`Found ${results[0].count()} products`);
-  Logger.info(`Product records: ${JSON.stringify(results[0].fetch(), null, 4)}`);
-  Logger.info(`Found ${results[1].count()} product/tags`);
-  Logger.info(`Tag records: ${JSON.stringify(results[1].fetch(), null, 4)}`);
+  Logger.info(`Found ${results.count()} products`);
+  // Logger.info(`Product records: ${JSON.stringify(results.fetch(), null, 4)}`);
   return results;
 });
