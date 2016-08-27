@@ -1,10 +1,27 @@
 import React, { Component, PropTypes } from "react";
-import NumericInput from "/imports/plugins/core/ui/client/components/";
+import {
+  Metadata,
+  NumericInput,
+  Translation
+} from "/imports/plugins/core/ui/client/components/";
 import { AddToCartButton, MediaGallery } from "./"
 
 class ProductDetail extends Component {
   get product() {
     return this.props.product || {};
+  }
+
+  renderMetadata() {
+    if (Array.isArray(this.product.metafields) && this.product.metafields.length > 0) {
+      return (
+        <div>
+          <h3>
+            <Translation defaultValue="Details" i18nKey="productDetail.details" />
+          </h3>
+          <Metadata metafields={this.product.metafields} editable={false} />
+        </div>
+      )
+    }
   }
 
   render() {
@@ -22,10 +39,11 @@ class ProductDetail extends Component {
           </header>
 
 
-
           <div className="pdp-content">
             <div className="pdp column left pdp-left-column">
               <MediaGallery media={this.props.media} />
+
+              {this.renderMetadata()}
             </div>
 
             <div className="pdp column right pdp-right-column">
