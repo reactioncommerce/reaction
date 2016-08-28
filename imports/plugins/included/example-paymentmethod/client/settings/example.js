@@ -36,11 +36,11 @@ Template.example.events({
 
 AutoForm.hooks({
   "example-update-form": {
-    onSuccess: function (operation, result, template) {
+    onSuccess: function () {
       Alerts.removeSeen();
       return Alerts.add("Example Payment Method settings saved.", "success");
     },
-    onError: function (operation, error, template) {
+    onError: function (operation, error) {
       Alerts.removeSeen();
       return Alerts.add("Example Payment Method settings update failed. " + error, "danger");
     }

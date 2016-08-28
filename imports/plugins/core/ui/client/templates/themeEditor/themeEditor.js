@@ -39,7 +39,7 @@ Template.uiThemeEditor.onCreated(function () {
 
       const annotations = {};
 
-      for (let annotation of component.annotations) {
+      for (const annotation of component.annotations) {
         if (annotation.rule) {
           annotations[annotation.rule] = annotation;
         }
@@ -51,7 +51,7 @@ Template.uiThemeEditor.onCreated(function () {
 
   this.previewTheme = (theme) => {
     let output = "";
-    for (let component of theme.components) {
+    for (const component of theme.components) {
       output += component.styles;
     }
     $("#reactionLayoutStyles").text(output);

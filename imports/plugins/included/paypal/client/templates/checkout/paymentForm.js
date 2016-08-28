@@ -17,11 +17,11 @@ Template.paypalPaymentForm.onCreated(function () {
 
 Template.paypalPaymentForm.helpers({
   expressCheckoutEnabled: function () {
-    let expressCheckoutSettings = Session.get("expressCheckoutSettings");
+    const expressCheckoutSettings = Session.get("expressCheckoutSettings");
     return expressCheckoutSettings !== undefined ? expressCheckoutSettings.enabled : void 0;
   },
   payflowEnabled: function () {
-    let payflowSettings = Session.get("payflowSettings");
+    const payflowSettings = Session.get("payflowSettings");
     return payflowSettings !== undefined ? payflowSettings.enabled : void 0;
   }
 });

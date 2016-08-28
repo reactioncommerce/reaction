@@ -1,9 +1,8 @@
 import accounting from "accounting-js";
-import { localeDep, i18nextDep } from  "./main";
-import { Reaction, Logger, i18next } from "/client/api";
-import { Session } from "meteor/session";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
+import { localeDep, i18nextDep } from  "./main";
+import { Reaction, Logger, i18next } from "/client/api";
 
 /**
  * i18n
@@ -25,7 +24,7 @@ Template.registerHelper("i18n", function (i18nKey, i18nMessage) {
 
   i18nextDep.depend();
 
-  const message = new Handlebars.SafeString(i18nMessage);
+  const message = new Spacebars.SafeString(i18nMessage);
 
   // returning translated key
   return i18next.t(i18nKey, {defaultValue: message});
@@ -63,7 +62,7 @@ Template.registerHelper("formatPrice", function (formatPrice) {
   }
 
   // for the cases then we have only one price. It is a number.
-  let currentPrice = formatPrice.toString();
+  const currentPrice = formatPrice.toString();
   let price = 0;
   const prices = ~currentPrice.indexOf(" - ") ?
     currentPrice.split(" - ") : [currentPrice];
@@ -71,7 +70,7 @@ Template.registerHelper("formatPrice", function (formatPrice) {
   // basic "for" is faster then "for ...of" for arrays. We need more speed here
   const len = prices.length;
   for (let i = 0; i < len; i++) {
-    let originalPrice = prices[i];
+    const originalPrice = prices[i];
     try {
       // we know the locale, but we don"t know exchange rate. In that case we
       // should return to default shop currency
@@ -97,10 +96,10 @@ Reaction.Currency = {};
 Reaction.Currency.formatNumber = function (currentPrice) {
   const locale = Reaction.Locale.get();
   let price = currentPrice;
-  let format = Object.assign({}, locale.currency, {
+  const format = Object.assign({}, locale.currency, {
     format: "%v"
   });
-  let shopFormat = Object.assign({}, locale.shopCurrency, {
+  const shopFormat = Object.assign({}, locale.shopCurrency, {
     format: "%v"
   });
 
@@ -152,7 +151,7 @@ function _formatPrice(price, originalPrice, actualPrice, currentPrice, currency,
   // For now it should be manually added to fixtures shop data.
   if (typeof currency.where === "string" && currency.where === "right" &&
     len > 1 && pos === 0) {
-    let modifiedCurrency = Object.assign({}, currency, {
+    const modifiedCurrency = Object.assign({}, currency, {
       symbol: ""
     });
     formattedPrice = accounting.formatMoney(adjustedPrice, modifiedCurrency);

@@ -41,7 +41,7 @@ function getSettings(settings, ref, valueName) {
 
 function getAccountOptions() {
   let environment;
-  let settings = Packages.findOne({
+  const settings = Packages.findOne({
     name: "reaction-braintree",
     shopId: Reaction.getShopId(),
     enabled: true
@@ -52,8 +52,8 @@ function getAccountOptions() {
     environment = "sandbox";
   }
 
-  let ref = Meteor.settings.braintree;
-  let options = {
+  const ref = Meteor.settings.braintree;
+  const options = {
     environment: environment,
     merchantId: getSettings(settings, ref, "merchant_id"),
     publicKey: getSettings(settings, ref, "public_key"),
@@ -66,34 +66,34 @@ function getAccountOptions() {
 }
 
 function getGateway() {
-  let accountOptions = getAccountOptions();
+  const accountOptions = getAccountOptions();
   if (accountOptions.environment === "production") {
     accountOptions.environment = Braintree.Environment.Production;
   } else {
     accountOptions.environment = Braintree.Environment.Sandbox;
   }
-  let gateway = Braintree.connect(accountOptions);
+  const gateway = Braintree.connect(accountOptions);
   return gateway;
 }
 
 getRefundDetails = function (refundId) {
   check(refundId, String);
-  let gateway = getGateway();
-  let braintreeFind = Meteor.wrapAsync(gateway.transaction.find, gateway.transaction);
-  let findResults = braintreeFind(refundId);
+  const gateway = getGateway();
+  const braintreeFind = Meteor.wrapAsync(gateway.transaction.find, gateway.transaction);
+  const findResults = braintreeFind(refundId);
   return findResults;
 };
 
 
 BraintreeApi.apiCall.paymentSubmit = function (paymentSubmitDetails) {
-  let gateway = getGateway();
-  let paymentObj = getPaymentObj();
+  const gateway = getGateway();
+  const paymentObj = getPaymentObj();
   if (paymentSubmitDetails.transactionType === "authorize") {
     paymentObj.options.submitForSettlement = false;
   }
   paymentObj.creditCard = parseCardData(paymentSubmitDetails.cardData);
   paymentObj.amount = paymentSubmitDetails.paymentData.total;
-  let fut = new Future();
+  const fut = new Future();
   gateway.transaction.sale(paymentObj, Meteor.bindEnvironment(function (error, result) {
     if (error) {
       fut.return({
@@ -120,9 +120,9 @@ BraintreeApi.apiCall.paymentSubmit = function (paymentSubmitDetails) {
 
 
 BraintreeApi.apiCall.captureCharge = function (paymentCaptureDetails) {
-  let transactionId = paymentCaptureDetails.transactionId;
-  let amount = accounting.toFixed(paymentCaptureDetails.amount, 2);
-  let gateway = getGateway();
+  const transactionId = paymentCaptureDetails.transactionId;
+  const amount = accounting.toFixed(paymentCaptureDetails.amount, 2);
+  const gateway = getGateway();
   const fut = new Future();
 
   if (amount === accounting.toFixed(0, 2)) {
@@ -164,9 +164,9 @@ BraintreeApi.apiCall.captureCharge = function (paymentCaptureDetails) {
 
 
 BraintreeApi.apiCall.createRefund = function (refundDetails) {
-  let transactionId = refundDetails.transactionId;
-  let amount = refundDetails.amount;
-  let gateway = getGateway();
+  const transactionId = refundDetails.transactionId;
+  const amount = refundDetails.amount;
+  const gateway = getGateway();
   const fut = new Future();
   gateway.transaction.refund(transactionId, amount, Meteor.bindEnvironment(function (error, result) {
     if (error) {
@@ -200,14 +200,14 @@ BraintreeApi.apiCall.createRefund = function (refundDetails) {
 
 
 BraintreeApi.apiCall.listRefunds = function (refundListDetails) {
-  let transactionId = refundListDetails.transactionId;
-  let gateway = getGateway();
-  let braintreeFind = Meteor.wrapAsync(gateway.transaction.find, gateway.transaction);
-  let findResults = braintreeFind(transactionId);
-  let result = [];
+  const transactionId = refundListDetails.transactionId;
+  const gateway = getGateway();
+  const braintreeFind = Meteor.wrapAsync(gateway.transaction.find, gateway.transaction);
+  const findResults = braintreeFind(transactionId);
+  const result = [];
   if (findResults.refundIds.length > 0) {
-    for (let refund of findResults.refundIds) {
-      let refundDetails = getRefundDetails(refund);
+    for (const refund of findResults.refundIds) {
+      const refundDetails = getRefundDetails(refund);
       result.push({
         type: "refund",
         amount: parseFloat(refundDetails.amount),

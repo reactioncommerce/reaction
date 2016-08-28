@@ -8,8 +8,8 @@ import { Logger } from "/server/api";
  * @return {String} domain name stripped from requestUrl
  */
 export function getRegistryDomain(requestUrl) {
-  let url = requestUrl || process.env.ROOT_URL;
-  let domain = url.match(/^https?\:\/\/([^\/:?#]+)(?:[\/:?#]|$)/i)[1];
+  const url = requestUrl || process.env.ROOT_URL;
+  const domain = url.match(/^https?\:\/\/([^\/:?#]+)(?:[\/:?#]|$)/i)[1];
   return domain;
 }
 
@@ -28,7 +28,7 @@ export function setDomain() {
     Logger.error("Failed to determine default shop.", _error);
   }
   // if the server domain changes, update shop
-  let domain = getRegistryDomain();
+  const domain = getRegistryDomain();
   if (currentDomain && currentDomain !== domain) {
     Logger.info("Updating domain to " + domain);
     Shops.update({

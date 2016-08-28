@@ -27,7 +27,7 @@ export function paymentSubmit(transactionType, cardData, paymentData) {
   let result;
 
   try {
-    let refundResult = PayflowproApi.apiCall.paymentSubmit(paymentSubmitDetails);
+    const refundResult = PayflowproApi.apiCall.paymentSubmit(paymentSubmitDetails);
     Logger.info(refundResult);
     result = refundResult;
   } catch (error) {
@@ -60,7 +60,7 @@ export function paymentCapture(paymentMethod) {
   let result;
 
   try {
-    let refundResult = PayflowproApi.apiCall.captureCharge(paymentCaptureDetails);
+    const refundResult = PayflowproApi.apiCall.captureCharge(paymentCaptureDetails);
     Logger.info(refundResult);
     result = refundResult;
   } catch (error) {
@@ -95,7 +95,7 @@ export function createRefund(paymentMethod, amount) {
   let result;
 
   try {
-    let refundResult = PayflowproApi.apiCall.createRefund(refundDetails);
+    const refundResult = PayflowproApi.apiCall.createRefund(refundDetails);
     Logger.info(refundResult);
     result = refundResult;
   } catch (error) {
@@ -128,7 +128,7 @@ export function listRefunds(paymentMethod) {
   let result;
 
   try {
-    let refundResult = PayflowproApi.apiCall.listRefunds(refundListDetails);
+    const refundResult = PayflowproApi.apiCall.listRefunds(refundListDetails);
     Logger.info(refundResult);
     result = refundResult;
   } catch (error) {
@@ -145,8 +145,8 @@ export function listRefunds(paymentMethod) {
 
 
 export function getSettings() {
-  let settings = Paypal.payflowAccountOptions();
-  let payflowSettings = {
+  const settings = Paypal.payflowAccountOptions();
+  const payflowSettings = {
     mode: settings.mode,
     enabled: settings.enabled
   };

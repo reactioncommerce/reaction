@@ -3,7 +3,7 @@ import { Packages } from "/lib/collections";
 import { merge } from "lodash";
 
 Template.reactionSocial.onCreated(function () {
-  let self = this;
+  const self = this;
   return this.autorun(function () {
     const subscription = Reaction.Subscriptions.Packages;
     if (subscription.ready()) {
@@ -34,7 +34,7 @@ Template.reactionSocial.helpers({
         const appsOrder = socialSettings.appsOrder;
 
         for (let i = 0; i < appsOrder.length; i++) {
-          let app = appsOrder[i];
+          const app = appsOrder[i];
 
           if (typeof socialSettings.apps[app] === "object" &&
             socialSettings.apps[app].enabled) {

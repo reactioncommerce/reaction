@@ -60,7 +60,7 @@ Template.childVariantForm.helpers({
     const variantId = currentData._id;
 
     return (files) => {
-      for (let file of files) {
+      for (const file of files) {
         file.metadata = {
           variantId,
           productId,
@@ -112,7 +112,7 @@ Template.childVariantForm.events({
       });
     return ReactionProduct.setCurrentVariant(variant._id);
   },
-  "click .js-child-varaint-heading": function(event, instance) {
+  "click .js-child-varaint-heading": function (event, instance) {
     const selectedProduct = ReactionProduct.selectedProduct();
     const variantId = instance.data._id;
 

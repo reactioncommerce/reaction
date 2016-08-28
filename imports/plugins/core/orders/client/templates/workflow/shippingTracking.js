@@ -5,8 +5,8 @@ import { Template } from "meteor/templating";
 import { Orders } from "/lib/collections";
 
 Template.coreOrderShippingTracking.onCreated(() => {
-  let template = Template.instance();
-  let currentData = Template.currentData();
+  const template = Template.instance();
+  const currentData = Template.currentData();
 
   template.orderDep = new Tracker.Dependency;
   template.showTrackingEditForm = ReactiveVar(false);
@@ -30,13 +30,13 @@ Template.coreOrderShippingTracking.onCreated(() => {
  */
 Template.coreOrderShippingTracking.events({
   "click [data-event-action=shipmentShipped]": function () {
-    let template = Template.instance();
+    const template = Template.instance();
     Meteor.call("orders/shipmentShipped", template.order, template.order.shipping[0]);
     // Meteor.call("workflow/pushOrderShipmentWorkflow", "coreOrderShipmentWorkflow", "orderShipped", this._id);
   },
 
   "click [data-event-action=resendNotification]": function () {
-    let template = Template.instance();
+    const template = Template.instance();
     Meteor.call("orders/sendNotification", template.order, (err) => {
       if (err) {
         Alerts.toast("Server Error: Can't send email notification.", "error");
@@ -110,7 +110,7 @@ Template.coreOrderShippingTracking.helpers({
   },
 
   editTracking() {
-    let template = Template.instance();
+    const template = Template.instance();
     if (!template.order.shipping[0].tracking || template.showTrackingEditForm.get()) {
       return true;
     }
@@ -123,8 +123,8 @@ Template.coreOrderShippingTracking.helpers({
     return Template.instance().order.shipping[0];
   },
   shipmentReady() {
-    let order = Template.instance().order;
-    let shipment = order.shipping[0];
+    const order = Template.instance().order;
+    const shipment = order.shipping[0];
 
     return shipment.packed && shipment.tracking;
   }

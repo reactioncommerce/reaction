@@ -40,7 +40,7 @@ describe("Cart Publication", function () {
     });
 
     it("should return a cart cursor", function () {
-      let account = Factory.create("account");
+      const account = Factory.create("account");
       sandbox.stub(Meteor, "userId", function () {
         return account.userId;
       });

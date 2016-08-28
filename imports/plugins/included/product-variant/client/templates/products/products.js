@@ -14,7 +14,7 @@ import { ITEMS_INCREMENT } from "/client/config/defaults";
  */
 function loadMoreProducts() {
   let threshold;
-  let target = $("#productScrollLimitLoader");
+  const target = $("#productScrollLimitLoader");
   let scrollContainer = $("#reactionAppContainer");
 
   if (scrollContainer.length === 0) {

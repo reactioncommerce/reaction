@@ -30,7 +30,7 @@ function themeToCSS(theme) {
   check(theme, Object);
   let output = "";
 
-  for (let component of theme.components) {
+  for (const component of theme.components) {
     output += component.styles;
   }
 
@@ -48,7 +48,7 @@ function updateStyles(data) {
         "components.name": data.component.name
       }, {
         $set: {
-          [`components.$.styles`]: result.css
+          ["components.$.styles"]: result.css
         }
       });
     }

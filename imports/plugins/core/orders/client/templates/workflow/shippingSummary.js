@@ -6,8 +6,8 @@ import { i18next } from "/client/api";
 import { Orders } from "/lib/collections";
 
 Template.coreOrderShippingSummary.onCreated(() => {
-  let template = Template.instance();
-  let currentData = Template.currentData();
+  const template = Template.instance();
+  const currentData = Template.currentData();
 
   template.orderDep = new Tracker.Dependency;
 
@@ -29,8 +29,8 @@ Template.coreOrderShippingSummary.onCreated(() => {
  */
 
 Template.coreOrderShippingSummary.onRendered(function () {
-  let template = Template.instance();
-  let order = template.order;
+  const template = Template.instance();
+  const order = template.order;
 
   if (order.workflow) {
     if (order.workflow.status === "coreOrderCreated") {
@@ -53,7 +53,7 @@ Template.coreOrderShippingSummary.events({
 
 Template.coreOrderShippingSummary.helpers({
   order() {
-    let template = Template.instance();
+    const template = Template.instance();
     return template.order;
   },
   shipment() {
@@ -69,7 +69,7 @@ Template.coreOrderShippingSummary.helpers({
   },
 
   tracking() {
-    let shipment = Template.instance().order.shipping[0];
+    const shipment = Template.instance().order.shipping[0];
     if (shipment.tracking) {
       return shipment.tracking;
     }
@@ -80,7 +80,7 @@ Template.coreOrderShippingSummary.helpers({
     const order = Template.instance().order;
     const shipment = Template.instance().order.shipping[0];
     const shipped = _.every(shipment.items, (shipmentItem) => {
-      for (let fullItem of order.items) {
+      for (const fullItem of order.items) {
         if (fullItem._id === shipmentItem._id) {
           if (fullItem.workflow) {
             if (_.isArray(fullItem.workflow.workflow)) {

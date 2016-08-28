@@ -1,13 +1,8 @@
-import { $ } from "meteor/jquery";
 import { Reaction } from "/client/api";
 import { ReactionProduct } from "/lib/api";
 import { EditButton } from "/imports/plugins/core/ui/client/components";
-import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
 import { Template } from "meteor/templating";
-
-// load modules
-require("jquery-ui");
 
 // Duplicated in variantList/variantList.js
 function variantIsSelected(variantId) {
@@ -112,42 +107,4 @@ Template.variant.events({
       showVariant(this);
     }
   }
-});
-
-/**
- * variant onRendered
- */
-
-Template.variant.onRendered(function () {
-  return this.autorun(function () {
-    let variantSort;
-    if (Reaction.hasPermission("createProduct")) {
-      variantSort = $(".variant-list");
-      return variantSort.sortable({
-        items: "> li.variant-list-item",
-        cursor: "move",
-        opacity: 0.3,
-        helper: "clone",
-        placeholder: "variant-sortable",
-        forcePlaceholderSize: true,
-        axis: "y",
-        update: function () {
-          const uiPositions = $(this).sortable("toArray", {
-            attribute: "data-id"
-          });
-          Meteor.defer(function () {
-            Meteor.call("products/updateVariantsPosition", uiPositions);
-          });
-        },
-        start: function (event, ui) {
-          ui.placeholder.height(ui.helper.height());
-          ui.placeholder.html("Drop variant to reorder");
-          ui.placeholder.css("padding-top", ui.helper.height() /
-            3);
-          ui.placeholder.css("border", "1px dashed #ccc");
-          return ui.placeholder.css("border-radius", "6px");
-        }
-      });
-    }
-  });
 });

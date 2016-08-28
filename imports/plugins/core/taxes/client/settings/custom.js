@@ -140,7 +140,7 @@ Template.customTaxRates.helpers({
     const shop = Shops.findOne();
     const instance = Template.instance();
     const id = instance.state.get("editingId");
-    let tax = Taxes.findOne(id) || {};
+    const tax = Taxes.findOne(id) || {};
     // enforce a default country that makes sense.
     if (!tax.country) {
       if (shop && typeof shop.addressBook === "object") {
@@ -161,7 +161,7 @@ Template.customTaxRates.helpers({
         value: "RC_NOTAX"
       }];
 
-      for (let taxCode of taxCodes) {
+      for (const taxCode of taxCodes) {
         options.push({
           label: i18next.t(taxCode.label),
           value: taxCode.id

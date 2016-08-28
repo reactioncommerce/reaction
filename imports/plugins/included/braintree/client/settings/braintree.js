@@ -20,7 +20,7 @@ Template.braintreeSettings.helpers({
 
 Template.braintree.helpers({
   packageData: function () {
-    let packageData = Packages.findOne({
+    const packageData = Packages.findOne({
       name: "reaction-braintree"
     });
     return packageData;
