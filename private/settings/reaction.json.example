@@ -1,0 +1,146 @@
+[
+    [{
+        "name": "core",
+        "enabled": true,
+        "settings": {
+            "public": {
+                "allowGuestCheckout": true
+            },
+            "openexchangerates": {
+                "appId": "",
+                "refreshPeriod": "every 1 hour"
+            },
+            "google": {
+                "clientId": "",
+                "apiKey": ""
+            },
+            "mail": {
+                "user": "",
+                "password": "",
+                "host": "",
+                "port": ""
+            },
+            "services": [{
+                "facebook": {
+                    "appId": "",
+                    "secret": ""
+                },
+                "launchdock": {
+                    "url": "",
+                    "username": "",
+                    "auth": ""
+                }
+            }]
+        }
+    }, {
+        "name": "reaction-paypal",
+        "enabled": true,
+        "settings": {
+            "express_enabled": true,
+            "express_mode": false,
+            "merchantId": "",
+            "username": "",
+            "password": "",
+            "signature": "",
+            "payflow_enabled": true,
+            "payflow_mode": false,
+            "client_id": "",
+            "client_secret": ""
+        }
+    }, {
+        "name": "reaction-analytics",
+        "enabled": true,
+        "settings": {
+            "public": {
+                "segmentio": {
+                    "enabled": false,
+                    "api_key": ""
+                },
+                "googleAnalytics": {
+                    "enabled": false,
+                    "api_key": ""
+                },
+                "mixpanel": {
+                    "enabled": false,
+                    "api_key": ""
+                }
+            }
+        }
+    }, {
+        "name": "reaction-stripe",
+        "enabled": true,
+        "settings": {
+            "api_key": ""
+        }
+    }, {
+        "name": "reaction-auth-net",
+        "enabled": true,
+        "settings": {
+            "api_id": "",
+            "transaction_key": ""
+        }
+    }, {
+        "name": "reaction-braintree",
+        "enabled": true,
+        "settings": {
+            "merchant_id": "",
+            "public_key": "",
+            "private_key": ""
+        }
+    }, {
+        "name": "taxes-avalara",
+        "enabled": true,
+        "settings": {
+            "avalara": {
+                "enabled": false,
+                "apiLoginId": ""
+            }
+        }
+    }, {
+        "name": "taxes-taxcloud",
+        "enabled": true,
+        "settings": {
+            "taxcloud": {
+                "enabled": true,
+                "apiKey": "",
+                "apiLoginId": ""
+            }
+        }
+    }, {
+        "name": "reaction-social",
+        "enabled": true,
+        "settings": {
+            "public": {
+                "autoInit": true,
+                "appsOrder": [
+                    "facebook",
+                    "twitter",
+                    "pinterest",
+                    "googleplus"
+                ],
+                "iconOnly": true,
+                "faSize": "fa-2x",
+                "faClass": "square",
+                "targetWindow": "_self",
+                "apps": {
+                    "facebook": {
+                        "appId": "",
+                        "version": "v2.1",
+                        "profilePage": "",
+                        "enabled": true,
+                        "appSecret": ""
+                    },
+                    "twitter": {
+                        "enabled": true
+                    },
+                    "googleplus": {
+                        "enabled": true
+                    },
+                    "pinterest": {
+                        "enabled": true
+                    }
+                }
+            }
+        }
+    }]
+]
