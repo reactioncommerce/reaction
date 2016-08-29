@@ -6,32 +6,28 @@ import { Reaction, i18next, Logger } from "/client/api";
 import { Tags, Media } from "/lib/collections";
 import { ProductDetail } from "../components";
 import { SocialContainer, VariantListContainer } from "./";
+import { Translatable } from "/imports/plugins/core/ui/client/providers";
+import TranslationProvider from "/imports/plugins/core/ui/client/providers/translationProvider"
 
 class ProductDetailContainer extends Component {
   render() {
-    console.log(this.props);
     return (
-      <ProductDetail
-        socialComponent={<SocialContainer />}
-        topVariantComponent={<VariantListContainer />}
-        {...this.props}
-      />
+      <TranslationProvider>
+        <ProductDetail
+          socialComponent={<SocialContainer />}
+          topVariantComponent={<VariantListContainer />}
+          {...this.props}
+        />
+      </TranslationProvider>
     );
   }
 }
 
 function composer(props, onData) {
-  // onData(null, {
-  //   product: {},
-  //   priceRange: "",
-  //   tags: [],
-  //   media: []
-  // })
-  // return
   const tagSub = Meteor.subscribe("Tags");
-  let productSub;
   const productId = Reaction.Router.getParam("handle");
   const variantId = Reaction.Router.getParam("variantId");
+  let productSub;
 
   if (productId) {
     productSub = Meteor.subscribe("Product", variantId);
@@ -94,4 +90,8 @@ function composer(props, onData) {
   }
 }
 
-export default composeWithTracker(composer)(ProductDetailContainer);
+// Decorate component and export
+let decoratedComponent;
+decoratedComponent = composeWithTracker(composer)(ProductDetailContainer);
+
+export default decoratedComponent;
