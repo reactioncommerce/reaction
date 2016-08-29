@@ -1,6 +1,6 @@
 import { Jobs, ProductSearch } from "/lib/collections";
 import { Hooks, Logger } from "/server/api";
-import { buildProductSearchCollection } from "../methods/";
+import { buildProductSearchCollection, rebuildProductSearchCollectionIndex } from "../methods/";
 
 
 Hooks.Events.add("afterCoreInit", () => {
@@ -37,6 +37,27 @@ export default function () {
           callback();
         } else {
           const success = "ProductSearch collection (re)built successfully.";
+          Logger.info(success);
+          job.done(success, { repeatId: true });
+          callback();
+        }
+      });
+    }
+  );
+
+  Jobs.processJobs("product/buildSearchIndex",
+    {
+      pollInterval: 30 * 1000,
+      workTimeout: 180 * 1000
+    },
+    (job, callback) => {
+      Logger.info("(re)build ProductSearch index running");
+      rebuildProductSearchCollectionIndex(function (error) {
+        if (error) {
+          job.done(error.toString(), {repeatId: true});
+          callback();
+        } else {
+          const success = "ProductSearch Index (re)built successfully.";
           Logger.info(success);
           job.done(success, { repeatId: true });
           callback();

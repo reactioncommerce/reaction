@@ -80,7 +80,8 @@ export function buildProductSearchCollection(cb) {
   }
 }
 
-export function rebuildProductSearchCollectionIndex() {
+export function rebuildProductSearchCollectionIndex(cb) {
+  check(cb, Function);
   const { customFields, weightObject } = getProductSearchParameters();
   const indexObject = {};
   for (const field of customFields) {
@@ -89,4 +90,7 @@ export function rebuildProductSearchCollectionIndex() {
   const rawProductSearchCollection = ProductSearch.rawCollection();
   rawProductSearchCollection.dropIndexes("*");
   rawProductSearchCollection.createIndex(indexObject, weightObject);
+  if (cb) {
+    cb();
+  }
 }
