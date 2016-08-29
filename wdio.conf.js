@@ -26,7 +26,9 @@ exports.config = {
     "./tests/acceptance-tests/test/specs/authorizenet-refund.app-test.js",
     "./tests/acceptance-tests/test/specs/braintree-refund.app-test.js",
     "./tests/acceptance-tests/test/specs/example-payment-refund.app-test.js",
-    "./tests/acceptance-tests/test/specs/stripe-refund.app-test.js"
+    "./tests/acceptance-tests/test/specs/stripe-refund.app-test.js",
+    "./tests/acceptance-tests/test/specs/authorizenet-void.app-test.js",
+    "./tests/acceptance-tests/test/specs/braintree-void.app-test.js"
   ],
   //  Patterns to exclude.
   exclude: [
@@ -84,7 +86,7 @@ exports.config = {
   //
   //  Set a base URL in order to shorten url command calls. If your url parameter starts
   //  with "/", then the base url gets prepended.
-  baseUrl: "http:// localhost",
+  baseUrl: "http://localhost",
   //
   //  Default timeout for all waitFor* commands.
   waitforTimeout: 10000,

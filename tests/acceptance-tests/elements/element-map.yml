@@ -16,6 +16,8 @@ catalog_settings_btn_txt: "//div[5]/div/div/div/h3/span"
 # orders page
 orders_page_btn: "span.icon > i.fa.fa-sun-o"
 first_order_new_btn: "button.btn.btn-success"
+order_total: "//div[2]/div[2]/span"
+order_total_post_discount: "//div[3]/div[2]/span"
 
 # orders details
 approve_btn: "//button[@type='submit']"
@@ -24,6 +26,8 @@ captured_total: "//div[7]/div/span"
 refund_amnt_txt_box: "input.form-control.amount"
 apply_refund_btn: "//button[@type='submit']"
 apply_refund_pop_up_btn: "button.swal2-confirm.styled"
+discount_txt_box: "//div[5]/div/div/input"
+apply_discount_btn: "button.swal2-confirm.styled"
 
 
 # account page locators

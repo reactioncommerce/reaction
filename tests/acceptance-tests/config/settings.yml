@@ -1,6 +1,3 @@
-#This configuration describes which browser type to use
-browser_type: firefox
-
 #This setting describes the url to test against
 #Sould also be a command line setting for this
 base_url: http://localhost:3000
