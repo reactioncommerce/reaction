@@ -3,7 +3,8 @@ import {
   Metadata,
   NumericInput,
   Translation,
-  TagList
+  TagList,
+  Currency
 } from "/imports/plugins/core/ui/client/components/";
 import { AddToCartButton, MediaGallery } from "./"
 
@@ -70,7 +71,9 @@ class ProductDetail extends Component {
               <div className="pricing">
                 <div className="left">
                   <span className="price">
-                    <span id="price" itemProp="price">{this.props.priceRange}</span>
+                    <span id="price">
+                      <Currency amount={this.props.priceRange} />
+                    </span>
                   </span>
                 </div>
                 <div className="right">
@@ -90,7 +93,6 @@ class ProductDetail extends Component {
               </div>
 
               <div class="options-add-to-cart">
-                <h3 data-i18n="productDetail.options">Options</h3>
                 {this.props.topVariantComponent}
               </div>
               <hr />

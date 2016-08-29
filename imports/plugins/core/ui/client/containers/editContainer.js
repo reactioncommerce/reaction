@@ -1,6 +1,10 @@
 import React, { Children, Component, PropTypes } from "react";
 import { Reaction } from "/client/api";
-import { EditButton } from "/imports/plugins/core/ui/client/components";
+import {
+  EditButton,
+  VisibilityButton,
+  Translation
+} from "/imports/plugins/core/ui/client/components";
 import { composeWithTracker } from "react-komposer";
 // import isEqual
 
@@ -23,19 +27,44 @@ console.log("OPEN EDIT VIEW????", props);
     });
   }
 
-  renderEditButton() {
+  renderVisibilityButton() {
     let styles = {}
+    let tooltip
     if (this.props.data.__draft) {
-      console.log("WE HAS A DRAFT!!!", this.props.data);
+      // styles = {
+      //   backgroundColor: "yellow"
+      // }
+    }
+    return (
+      <VisibilityButton
+        onClick={this.handleVisibilityButtonClick}
+        toggleOn={this.props.data.isVisible}
+        style={styles}
+        tooltip="Unpublised changes"
+      />
+    );
+  }
+
+  renderEditButton() {
+    let styles;
+    let tooltip;
+    if (this.props.data.__draft) {
       styles = {
         backgroundColor: "yellow"
-      }
+      };
+
+      tooltip = (
+        <span>
+          <Translation defaultValue="Unpublised changes" i18nKey="revisions.unpublishedChanges" />
+        </span>
+      );
     }
+
     return (
       <EditButton
         onClick={this.handleEditButtonClick}
         style={styles}
-        tooltip="Unpublised changes"
+        tooltip={tooltip}
       />
     );
   }
@@ -43,6 +72,7 @@ console.log("OPEN EDIT VIEW????", props);
   render() {
     if (this.props.hasPermission) {
       return React.cloneElement(this.props.children, {
+        visibilityButton: this.renderVisibilityButton(),
         editButton: this.renderEditButton()
       });
     }

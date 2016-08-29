@@ -1,14 +1,24 @@
 import React, { Component, PropTypes} from "react";
 import Variant from "./variant";
 import { EditContainer } from "/imports/plugins/core/ui/client/containers";
-import { Translation } from "/imports/plugins/core/ui/client/components";
+import { Divider, Translation } from "/imports/plugins/core/ui/client/components";
 import { ChildVariant } from "./";
 
 class VariantList extends Component {
 
+  isSoldOut(variant) {
+    if (this.props.isSoldOut) {
+      return this.props.isSoldOut(variant)
+    }
+
+    return false
+  }
+
   renderVariants() {
     if (this.props.variants) {
       return this.props.variants.map((variant, index) => {
+        const displayPrice = this.props.displayPrice && this.props.displayPrice(variant._id);
+
         return (
           <EditContainer
             data={variant}
@@ -21,6 +31,8 @@ class VariantList extends Component {
           >
             <Variant
               isSelected={this.props.variantIsSelected(variant._id)}
+              displayPrice={displayPrice}
+              soldOut={this.isSoldOut(variant)}
               variant={variant}
             />
           </EditContainer>
@@ -66,9 +78,17 @@ class VariantList extends Component {
     console.log(this.props);
     return (
       <div className="product-variants">
+        <Divider
+          i18nKeyLabel="productDetail.options"
+          label="Options"
+        />
         <ul className="variant-list list-unstyled" id="variant-list">
           {this.renderVariants()}
         </ul>
+        <Divider
+          i18nKeyLabel="productDetail.availableOptions"
+          label="Available Options"
+        />
         <div className="row variant-product-options">
           {this.renderChildVariants()}
         </div>

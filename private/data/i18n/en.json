@@ -142,10 +142,7 @@
         "notFoundError": "Page not found.",
         "productNotFound": "This product was not found.",
         "loadMoreProducts": "Load more products",
-        "noProductsFound": "No Products found",
-        "publishChanges": "Publish Changes",
-        "showChanges": "Show Changes",
-        "hideChanges": "Hide Changes"
+        "noProductsFound": "No Products found"
       },
       "shopSettings": {
         "general": "General",
@@ -154,6 +151,7 @@
         "mail": "Mail",
         "localization": "Localization",
         "options": "Options",
+        "availableOptions": "Available Options",
         "paymentMethods": "Payment Methods",
         "externalServices": "External Services",
         "shopGeneralSettingsSaved": "Shop general settings saved.",
@@ -491,6 +489,12 @@
           "isBillingDefault": "Make this your default billing address?",
           "isCommercial": "This is a commercial address."
         }
+      },
+      "revisions": {
+        "unpublishedChanges": "Unpublished Changes",
+        "publishChanges": "Publish Changes",
+        "showChanges": "Show Changes",
+        "hideChanges": "Hide Changes"
       },
       "address": {
         "country": "Country",

@@ -16,18 +16,16 @@ class Button extends Component {
   }
 
   get isTooltipOpen() {
-    return this.state.tooltipOpen
+    return this.state.tooltipOpen;
   }
 
-  handleButtonMouseOver(event) {
-    console.log("hovered");
+  handleButtonMouseOver() {
     this.setState({
       tooltipOpen: this.props.tooltip ? true : false
     });
   }
 
-  handleButtonMouseOut(event) {
-    console.log("hovered not!");
+  handleButtonMouseOut() {
     this.setState({
       tooltipOpen: false
     });
@@ -69,7 +67,8 @@ class Button extends Component {
         </div>
       );
     }
-    return null
+
+    return null;
   }
 
   render() {

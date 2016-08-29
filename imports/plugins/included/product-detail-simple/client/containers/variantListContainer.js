@@ -68,7 +68,13 @@ function getTopVariants() {
   return [];
 }
 
+function displayQuantity(variant) {
+  return ReactionProduct.getVariantQuantity(variant);
+}
 
+function isSoldOut(variant) {
+  return ReactionProduct.getVariantQuantity(variant) < 1;
+}
 
 class VariantListContainer extends Component {
   render() {
@@ -83,7 +89,9 @@ function composer(props, onData) {
     variants: getTopVariants(),
     variantIsSelected,
     variantIsInActionView,
-    childVariants: getChildVariants()
+    childVariants: getChildVariants(),
+    displayPrice: ReactionProduct.getVariantPriceRange,
+    isSoldOut: isSoldOut
   });
 }
 

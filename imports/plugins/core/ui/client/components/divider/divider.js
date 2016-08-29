@@ -1,21 +1,29 @@
-import React from "react";
+import React, { Component, PropTypes } from "react";
 import classnames from "classnames";
+import { Translation } from "../";
 
-class Separator extends React.Component {
+class Divider extends Component {
+  renderLabel() {
+    return (
+      <Translation defaultValue={this.props.label} />
+    );
+  }
 
   render() {
+    const { label, i18nKeyLabel } = this.props;
     const classes = classnames({
       rui: true,
       separator: true,
-      labeled: this.props.label
+      labeled: label || i18nKeyLabel
     });
 
-
-    if (this.props.label) {
+    if (label) {
       return (
         <div className={classes}>
           <hr />
-          <span className="label">{this.props.label}</span>
+          <span className="label">
+            <Translation defaultValue={label} i18nKey={i18nKeyLabel}/>
+          </span>
           <hr />
         </div>
       );
@@ -27,4 +35,9 @@ class Separator extends React.Component {
   }
 }
 
-export default Separator;
+Divider.propTypes = {
+  i18nKeyLabel: PropTypes.string,
+  label: PropTypes.string
+};
+
+export default Divider;
