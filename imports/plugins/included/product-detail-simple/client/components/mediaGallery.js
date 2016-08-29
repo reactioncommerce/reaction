@@ -7,28 +7,34 @@ class MediaGallery extends Component {
         const mediaUrl = media.url();
 
         return (
-          <img
-            alt=""
-            className="img-responsive"
-            key={index}
-            src={mediaUrl}
-          />
+          <li className="gallery-image">
+            <img
+              alt=""
+              className="img-responsive"
+              key={index}
+              src={mediaUrl}
+            />
+          </li>
         );
       });
     }
     return (
-      <img
-        alt=""
-        className="img-responsive"
-        src="/resources/placeholder.gif"
-      />
+      <li className="gallery-image">
+        <img
+          alt=""
+          className="img-responsive"
+          src="/resources/placeholder.gif"
+        />
+      </li>
     );
   }
 
   render() {
     return (
-      <div className="pdp media-gallery">
-        {this.renderMedia()}
+      <div className="pdp media-gallery galleryDropPane">
+        <ul className="gallery">
+          {this.renderMedia()}
+        </ul>
       </div>
     );
   }
