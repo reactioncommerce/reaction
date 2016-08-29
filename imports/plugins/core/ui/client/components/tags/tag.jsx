@@ -4,11 +4,11 @@ import { Reaction } from "/client/api";
 import { PropTypes } from "/lib/api";
 import { Tags } from "/lib/collections";
 import Autosuggest from "react-autosuggest";
-
+import { Button } from "/imports/plugins/core/ui/client/components"
 /* eslint no-extra-parens: 0 */
 
-const TextField = ReactionUI.Components.TextField;
-const Button = ReactionUI.Components.Button;
+// const TextField = ReactionUI.Components.TextField;
+// const Button = ReactionUI.Components.Button;
 
 class Tag extends React.Component {
   displayName: "Tag";
@@ -157,7 +157,9 @@ class Tag extends React.Component {
         data-id={this.props.tag._id}
       >
         <Button icon="bars" />
-        <TextField
+          {this.renderAutosuggestInput()}
+
+        <Autosuggest
           onFocus={this.handleFocus}
           onKeyDown={this.handleTagUpdate}
           value={this.props.tag.name}
@@ -176,7 +178,8 @@ class Tag extends React.Component {
       <div className="rui tag edit create">
         <form onSubmit={this.handleTagCreate}>
           <Button icon="tag" />
-          <TextField i18nPlaceholder={i18next.t(this.props.placeholder) || i18next.t("tags.addTag")} name="tag" />
+          {this.renderAutosuggestInput()}
+          {/*}<Autosuggest i18nPlaceholder={i18next.t(this.props.placeholder) || i18next.t("tags.addTag")} name="tag" />*/}
           <Button icon="plus" />
         </form>
       </div>
@@ -189,10 +192,10 @@ class Tag extends React.Component {
         suggestions={this.state.suggestions}
         getSuggestionValue={getSuggestionValue}
         renderSuggestion={renderSuggestion}
-        onSuggestionsUpdateRequested=({ value }) {
+        onSuggestionsUpdateRequested={({ value }) => {
           templateInstance.state.set("suggestions", getSuggestions(value));
-        }
-        inputProps: {
+        }}
+        inputProps={{
           placeholder: i18next.t(options.i18nPlaceholderKey, { defaultValue: options.i18nPlaceholderValue}),
           value: templateInstance.state.get("inputValue"),
           onKeyDown(event) {
@@ -209,14 +212,9 @@ class Tag extends React.Component {
             templateInstance.state.set("suggestion", getSuggestions(newValue));
             templateInstance.state.set("inputValue", newValue);
           }
-        }
+        }}
       />
-    )
-    return {
-      component: Autosuggest,
-
-
-    };
+    );
   }
 
   /**
@@ -252,4 +250,4 @@ Tag.propTypes = {
   tag: PropTypes.Tag
 };
 
-ReactionUI.Components.Tag = Tag;
+export default Tag;

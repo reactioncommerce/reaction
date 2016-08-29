@@ -2,13 +2,31 @@ import React, { Component, PropTypes } from "react";
 import {
   Metadata,
   NumericInput,
-  Translation
+  Translation,
+  TagList
 } from "/imports/plugins/core/ui/client/components/";
 import { AddToCartButton, MediaGallery } from "./"
 
 class ProductDetail extends Component {
+  get tags() {
+    return this.props.tags || [];
+  }
+
   get product() {
     return this.props.product || {};
+  }
+
+  renderTags() {
+    if (Array.isArray(this.tags) && this.tags.length > 0) {
+      return (
+        <div>
+          <h3>
+            <Translation defaultValue="Tags" i18nKey="productDetail.tags" />
+          </h3>
+          <TagList editable={false} tags={this.tags} />
+        </div>
+      )
+    }
   }
 
   renderMetadata() {
@@ -42,7 +60,7 @@ class ProductDetail extends Component {
           <div className="pdp-content">
             <div className="pdp column left pdp-left-column">
               <MediaGallery media={this.props.media} />
-
+              {this.renderTags()}
               {this.renderMetadata()}
             </div>
 

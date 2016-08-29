@@ -14,3 +14,4 @@ export { default as Translation } from "./translation/translation";
 export { default as Media } from "./media/media";
 export { default as Tooltip } from "./tooltip/tooltip";
 export { default as Metadata } from "./metadata/metadata";
+export { TagList, TagItem } from "./tags";

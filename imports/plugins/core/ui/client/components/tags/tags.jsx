@@ -1,10 +1,10 @@
-import React from "react";
-import { PropTypes } from "/lib/api";
+import React, { Component, PropTypes } from "react";
+import { PropTypes as ReactionPropTypes } from "/lib/api";
 import { TagItem } from "./";
 import classnames from "classnames";
-import Sortable from "sortable";
+import Sortable from "sortablejs";
 
-class Tags extends React.Component {
+class Tags extends Component {
   displayName = "Tag List (Tags)";
 
   constructor(props) {
@@ -235,25 +235,25 @@ Tags.defaultProps = {
 
 // Prop Types
 Tags.propTypes = {
-  editable: React.PropTypes.bool,
-  enableNewTagForm: React.PropTypes.bool,
+  editable: PropTypes.bool,
+  enableNewTagForm: PropTypes.bool,
 
   // Event handelers
-  onTagBookmark: React.PropTypes.func,
-  onTagCreate: React.PropTypes.func,
-  onTagDragAdd: React.PropTypes.func,
-  onTagMouseOut: React.PropTypes.func,
-  onTagMouseOver: React.PropTypes.func,
-  onTagRemove: React.PropTypes.func,
-  onTagSort: React.PropTypes.func,
-  onTagUpdate: React.PropTypes.func,
+  onTagBookmark: PropTypes.func,
+  onTagCreate: PropTypes.func,
+  onTagDragAdd: PropTypes.func,
+  onTagMouseOut: PropTypes.func,
+  onTagMouseOver: PropTypes.func,
+  onTagRemove: PropTypes.func,
+  onTagSort: PropTypes.func,
+  onTagUpdate: PropTypes.func,
 
-  parentTag: PropTypes.Tag,
-  placeholder: React.PropTypes.string,
-  showBookmark: React.PropTypes.bool,
+  parentTag: ReactionPropTypes.Tag,
+  placeholder: PropTypes.string,
+  showBookmark: PropTypes.bool,
   // tag: PropTypes.Tag
-  tags: PropTypes.arrayOfTags
+  tags: ReactionPropTypes.arrayOfTags
 };
 
 // Export
-ReactionUI.Components.Tags = Tags;
+export default Tags;
