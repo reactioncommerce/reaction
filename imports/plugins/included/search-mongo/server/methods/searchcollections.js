@@ -55,7 +55,8 @@ export function buildProuctSearchCollectionRecord(productId) {
   return productSearchRecord;
 }
 
-export function buildProductSearchCollection() {
+export function buildProductSearchCollection(cb) {
+  check(cb, Match.OneOf(Function, undefined));
   Logger.info("(re)Building ProductSearch Collection");
   ProductSearch.remove({});
   const { fieldSet, weightObject } = getProductSearchParameters();
@@ -70,4 +71,7 @@ export function buildProductSearchCollection() {
   const rawProductSearchCollection = ProductSearch.rawCollection();
   rawProductSearchCollection.dropIndexes("*");
   rawProductSearchCollection.createIndex({"$**": "text"}, weightObject);
+  if (cb) {
+    cb();
+  }
 }
