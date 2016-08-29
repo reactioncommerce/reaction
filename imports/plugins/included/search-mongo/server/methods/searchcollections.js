@@ -41,10 +41,10 @@ export function getProductSearchParameters() {
   const customFields = filterFields(settings.includes);
   const fieldSet = requiredFields.concat(customFields);
   const weightObject = getScores(customFields, settings);
-  return { fieldSet: fieldSet, weightObject: weightObject };
+  return { fieldSet: fieldSet, weightObject: weightObject, customFields: customFields };
 }
 
-export function buildProuctSearchCollectionRecord(productId) {
+export function buildProductSearchCollectionRecord(productId) {
   const product = Products.findOne(productId);
   const { fieldSet } = getProductSearchParameters();
   const productRecord = {};
@@ -59,7 +59,7 @@ export function buildProductSearchCollection(cb) {
   check(cb, Match.OneOf(Function, undefined));
   Logger.info("(re)Building ProductSearch Collection");
   ProductSearch.remove({});
-  const { fieldSet, weightObject } = getProductSearchParameters();
+  const { fieldSet, weightObject, customFields } = getProductSearchParameters();
   const products = Products.find().fetch();
   for (const product of products) {
     const productRecord = {};
@@ -68,10 +68,25 @@ export function buildProductSearchCollection(cb) {
     }
     ProductSearch.insert(productRecord);
   }
+  const indexObject = {};
+  for (const field of customFields) {
+    indexObject[field] = "text";
+  }
   const rawProductSearchCollection = ProductSearch.rawCollection();
   rawProductSearchCollection.dropIndexes("*");
-  rawProductSearchCollection.createIndex({"$**": "text"}, weightObject);
+  rawProductSearchCollection.createIndex(indexObject, weightObject);
   if (cb) {
     cb();
   }
+}
+
+export function rebuildProductSearchCollectionIndex() {
+  const { customFields, weightObject } = getProductSearchParameters();
+  const indexObject = {};
+  for (const field of customFields) {
+    indexObject[field] = "text";
+  }
+  const rawProductSearchCollection = ProductSearch.rawCollection();
+  rawProductSearchCollection.dropIndexes("*");
+  rawProductSearchCollection.createIndex(indexObject, weightObject);
 }

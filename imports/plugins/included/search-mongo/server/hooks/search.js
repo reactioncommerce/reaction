@@ -2,7 +2,7 @@ import _ from "lodash";
 import { Products } from "/lib/collections";
 import { ProductSearch,
   getProductSearchParameters,
-  buildProuctSearchCollectionRecord } from "../methods/searchcollections";
+  buildProductSearchCollectionRecord } from "../methods/searchcollections";
 import { Logger } from "/server/api";
 
 
@@ -12,6 +12,7 @@ import { Logger } from "/server/api";
 Products.after.remove((userId, doc) => {
   const productId = doc._id;
   ProductSearch.remove(productId);
+  Logger.info(`Removed product ${productId} from ProductSearch collection`);
 });
 
 //
@@ -22,9 +23,9 @@ Products.after.update((userId, doc, fieldNames) => {
   const { fieldSet } = getProductSearchParameters();
   const modifiedFields = _.intersection(fieldSet, fieldNames);
   if (modifiedFields.length) {
-    Logger.info(`Rewriting search record for ${productId}`);
+    Logger.info(`Rewriting search record for ${doc.title}`);
     ProductSearch.remove(productId);
-    buildProuctSearchCollectionRecord(productId);
+    buildProductSearchCollectionRecord(productId);
   } else {
     Logger.info("No watched fields modified, skipping");
   }
@@ -36,5 +37,5 @@ Products.after.update((userId, doc, fieldNames) => {
  */
 Products.after.insert((userId, doc) => {
   const productId = doc._id;
-  buildProuctSearchCollectionRecord(productId);
+  buildProductSearchCollectionRecord(productId);
 });

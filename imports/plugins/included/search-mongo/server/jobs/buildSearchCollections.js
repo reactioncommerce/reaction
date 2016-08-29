@@ -24,7 +24,6 @@ Hooks.Events.add("afterCoreInit", () => {
 
 
 export default function () {
-  Logger.info("Build search collections job processors");
   Jobs.processJobs("product/buildSearchCollection",
     {
       pollInterval: 30 * 1000,
