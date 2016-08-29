@@ -10,7 +10,6 @@
 *.seed
 *.sublime-project
 *.sublime-workspace
-*.png
 
 jsdoc.json
 lib-cov
