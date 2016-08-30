@@ -1,4 +1,4 @@
-import { Jobs, ProductSearch, OrderSearch } from "/lib/collections";
+import { Jobs, ProductSearch, Orders, OrderSearch } from "/lib/collections";
 import { Hooks, Logger } from "/server/api";
 import { buildProductSearchCollection,
   rebuildProductSearchCollectionIndex,
@@ -26,7 +26,8 @@ function addBuildProductSearchCollection() {
 
 function addBuildOrderSearchCollection() {
   const orderSearchCount = OrderSearch.find({}).count();
-  if (!orderSearchCount) {
+  const orderCount = Orders.find({}).count();
+  if (!orderSearchCount && orderCount) {
     Logger.info("No OrderSearch records found. Adding build OrderSearch Collection to jobs");
     new Job(Jobs, "order/buildSearchCollection", {})
       .priority("normal")

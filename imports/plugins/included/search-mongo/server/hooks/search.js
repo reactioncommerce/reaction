@@ -1,7 +1,7 @@
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Products, ProductSearch, Orders, OrderSearch } from "/lib/collections";
-import { getProductSearchParameters,
+import { getSearchParameters,
   buildProductSearchCollectionRecord, buildOrderSearchRecord } from "../methods/searchcollections";
 import { Logger } from "/server/api";
 
@@ -44,7 +44,7 @@ Products.after.remove((userId, doc) => {
 Products.after.update((userId, doc, fieldNames) => {
   if (ProductSearch && !Meteor.isAppTest) {
     const productId = doc._id;
-    const { fieldSet } = getProductSearchParameters();
+    const { fieldSet } = getSearchParameters();
     const modifiedFields = _.intersection(fieldSet, fieldNames);
     if (modifiedFields.length) {
       Logger.info(`Rewriting search record for ${doc.title}`);

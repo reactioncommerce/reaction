@@ -1,3 +1,4 @@
+import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Reaction, Logger } from "/server/api";
@@ -19,7 +20,7 @@ function getProductFindTerm(searchTerm, searchTags) {
 
 const getResults = {};
 
-getResults.products = function (searchTerm) {
+getResults.products = function (searchTerm, facets) {
   const searchTags = facets || [];
   const findTerm = getProductFindTerm(searchTerm, searchTags);
   // Logger.info(`Using findTerm ${JSON.stringify(findTerm, null, 4)}`);
@@ -56,7 +57,7 @@ getResults.orders = function (searchTerm) {
 Meteor.publish("SearchResults", function (collection, searchTerm, facets) {
   check(collection, String);
   check(collection, Match.Where((coll) => {
-    return !!supportedCollections._.contains(coll);
+    return _.includes(supportedCollections, coll);
   }));
   check(searchTerm, Match.Optional(String));
   check(facets, Match.OneOf([String], undefined));
@@ -64,5 +65,5 @@ Meteor.publish("SearchResults", function (collection, searchTerm, facets) {
   if (!searchTerm) {
     return this.ready();
   }
-  return getResults[collection];
+  return getResults[collection](searchTerm, facets);
 });

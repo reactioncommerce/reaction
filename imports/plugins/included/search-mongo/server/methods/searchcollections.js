@@ -4,7 +4,6 @@ import { ProductSearch, OrderSearch, Orders, Packages, Products } from "/lib/col
 
 
 const productRequiredFields = ["_id", "hashtags", "shopId"];
-const orderRequiredFields = ["_id", "shopId"];
 
 function getPackageSettings() {
   const searchPackage = Packages.findOne({
@@ -26,19 +25,19 @@ function filterFields(customFields) {
 }
 
 // get the weights for all enabled fields
-function getScores(customFields, settings) {
+function getScores(customFields, settings, collection = "products") {
   const weightObject = {};
-  for (const weight of _.keys(settings.weights)) {
+  for (const weight of _.keys(settings[collection].weights)) {
     if (_.includes(customFields, weight)) {
-      weightObject[weight] = settings.weights[weight];
+      weightObject[weight] = settings[collection].weights[weight];
     }
   }
   return weightObject;
 }
 
-export function getProductSearchParameters() {
+export function getSearchParameters(collection = "products") {
   const settings = getPackageSettings();
-  const customFields = filterFields(settings.includes);
+  const customFields = filterFields(settings[collection].includes);
   const fieldSet = productRequiredFields.concat(customFields);
   const weightObject = getScores(customFields, settings);
   return { fieldSet: fieldSet, weightObject: weightObject, customFields: customFields };
@@ -46,7 +45,7 @@ export function getProductSearchParameters() {
 
 export function buildProductSearchCollectionRecord(productId) {
   const product = Products.findOne(productId);
-  const { fieldSet } = getProductSearchParameters();
+  const { fieldSet } = getSearchParameters();
   const productRecord = {};
   for (const field of fieldSet) {
     productRecord[field] = product[field];
@@ -59,7 +58,7 @@ export function buildProductSearchCollection(cb) {
   check(cb, Match.OneOf(Function, undefined));
   Logger.info("(re)Building ProductSearch Collection");
   ProductSearch.remove({});
-  const { fieldSet, weightObject, customFields } = getProductSearchParameters();
+  const { fieldSet, weightObject, customFields } = getSearchParameters();
   const products = Products.find().fetch();
   for (const product of products) {
     const productRecord = {};
@@ -82,7 +81,7 @@ export function buildProductSearchCollection(cb) {
 
 export function rebuildProductSearchCollectionIndex(cb) {
   check(cb, Function);
-  const { customFields, weightObject } = getProductSearchParameters();
+  const { customFields, weightObject } = getSearchParameters();
   const indexObject = {};
   for (const field of customFields) {
     indexObject[field] = "text";
