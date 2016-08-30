@@ -1,21 +1,20 @@
 "use strict";
-let yaml = require("js-yaml");
-let fs   = require("fs");
-let expect = require("chai").expect;
-let shopUser = require("../../lib/user-shop-actions.js");
-let userDo = require("../../lib/basic-user-actions.js");
-let adminUser = require("../../lib/admin-order-actions.js");
+const yaml = require("js-yaml");
+const fs   = require("fs");
+const shopUser = require("../../lib/user-shop-actions.js");
+const userDo = require("../../lib/basic-user-actions.js");
+const adminUser = require("../../lib/admin-order-actions.js");
 
 
 beforeEach(function () {
-  let browserConfig = yaml.safeLoad(fs.readFileSync("./tests/acceptance-tests/config/settings.yml", "utf8"));
+  const browserConfig = yaml.safeLoad(fs.readFileSync("./tests/acceptance-tests/config/settings.yml", "utf8"));
   const baseUrl = browserConfig.base_url.toString();
   browser.url(baseUrl);
 });
 
 
 describe("stripe refund test", function () {
-  let eleMap = yaml.safeLoad(fs.readFileSync("./tests/acceptance-tests/elements/element-map.yml", "utf8"));
+  const eleMap = yaml.safeLoad(fs.readFileSync("./tests/acceptance-tests/elements/element-map.yml", "utf8"));
   it("verify user can refund with stripe", function () {
     userDo.UserActions.userLogin("admin");
     browser.pause("5000");

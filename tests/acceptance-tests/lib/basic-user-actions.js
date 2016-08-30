@@ -1,13 +1,13 @@
 "use strict";
-let yaml = require("js-yaml");
-let fs   = require("fs");
+const yaml = require("js-yaml");
+const fs   = require("fs");
 
 
 module.exports = {
   UserActions: {
     userLogin: function (user) {
-      let eleMap = yaml.safeLoad(fs.readFileSync("./tests/acceptance-tests/elements/element-map.yml", "utf8"));
-      let usrData = yaml.safeLoad(fs.readFileSync("./tests/acceptance-tests/config/user-data.yml", "utf8"));
+      const eleMap = yaml.safeLoad(fs.readFileSync("./tests/acceptance-tests/elements/element-map.yml", "utf8"));
+      const usrData = yaml.safeLoad(fs.readFileSync("./tests/acceptance-tests/config/user-data.yml", "utf8"));
       browser.pause("5000");
       browser.click(eleMap.login_dropdown_btn);
       if (user === "admin") {

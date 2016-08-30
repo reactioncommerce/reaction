@@ -1,20 +1,20 @@
 "use strict";
-let yaml = require("js-yaml");
-let fs   = require("fs");
-let expect = require("chai").expect;
-let shopUser = require("../../lib/user-shop-actions.js");
-let userDo = require("../../lib/basic-user-actions.js");
+const yaml = require("js-yaml");
+const fs   = require("fs");
+const expect = require("chai").expect;
+const shopUser = require("../../lib/user-shop-actions.js");
+const userDo = require("../../lib/basic-user-actions.js");
 
 
 beforeEach(function () {
-  let browserConfig = yaml.safeLoad(fs.readFileSync("./tests/acceptance-tests/config/settings.yml", "utf8"));
+  const browserConfig = yaml.safeLoad(fs.readFileSync("./tests/acceptance-tests/config/settings.yml", "utf8"));
   const baseUrl = browserConfig.base_url.toString();
   browser.url(baseUrl);
 });
 
 
 describe("paypal logged in checkout test", function () {
-  let eleMap = yaml.safeLoad(fs.readFileSync("./tests/acceptance-tests/elements/element-map.yml", "utf8"));
+  const eleMap = yaml.safeLoad(fs.readFileSync("./tests/acceptance-tests/elements/element-map.yml", "utf8"));
   it("verify logged in user can checkout with paypal", function () {
     userDo.UserActions.userLogin("guest");
     browser.pause("5000");

@@ -1,11 +1,11 @@
 "use strict";
-let yaml = require("js-yaml");
-let fs   = require("fs");
-let expect = require("chai").expect;
-let adminUser = require("../../lib/basic-user-actions.js");
+const yaml = require("js-yaml");
+const fs   = require("fs");
+const expect = require("chai").expect;
+const adminUser = require("../../lib/basic-user-actions.js");
 
 beforeEach(function () {
-  let browserConfig = yaml.safeLoad(fs.readFileSync("./tests/acceptance-tests/config/settings.yml", "utf8"));
+  const browserConfig = yaml.safeLoad(fs.readFileSync("./tests/acceptance-tests/config/settings.yml", "utf8"));
   const baseUrl = browserConfig.base_url.toString();
   browser.url(baseUrl);
 });
@@ -15,7 +15,7 @@ afterEach(function () {
 });
 
 describe("core permissions test", function () {
-  let eleMap = yaml.safeLoad(fs.readFileSync("./tests/acceptance-tests/elements/element-map.yml", "utf8"));
+  const eleMap = yaml.safeLoad(fs.readFileSync("./tests/acceptance-tests/elements/element-map.yml", "utf8"));
   it("verify admin adding dashboard permissions to guest", function () {
     adminUser.UserActions.userLogin("admin");
     // navigate to dashboard

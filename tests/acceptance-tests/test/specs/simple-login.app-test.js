@@ -1,18 +1,18 @@
 "use strict";
-let yaml = require("js-yaml");
-let fs   = require("fs");
-let expect = require("chai").expect;
+const yaml = require("js-yaml");
+const fs   = require("fs");
+const expect = require("chai").expect;
 
 beforeEach(function () {
-  let browserConfig = yaml.safeLoad(fs.readFileSync("./tests/acceptance-tests/config/settings.yml", "utf8"));
+  const browserConfig = yaml.safeLoad(fs.readFileSync("./tests/acceptance-tests/config/settings.yml", "utf8"));
   const baseUrl = browserConfig.base_url.toString();
   browser.url(baseUrl);
 });
 
 describe("simple login test", function () {
   it("verify user is able to login - and verifies user name in dropdown", function () {
-    let eleMap = yaml.safeLoad(fs.readFileSync("./tests/acceptance-tests/elements/element-map.yml", "utf8"));
-    let usrData = yaml.safeLoad(fs.readFileSync("./tests/acceptance-tests/config/user-data.yml", "utf8"));
+    const eleMap = yaml.safeLoad(fs.readFileSync("./tests/acceptance-tests/elements/element-map.yml", "utf8"));
+    const usrData = yaml.safeLoad(fs.readFileSync("./tests/acceptance-tests/config/user-data.yml", "utf8"));
     browser.pause("5000");
     browser.click(eleMap.login_dropdown_btn);
     browser.setValue(eleMap.login_email_fld, usrData.admin_email);

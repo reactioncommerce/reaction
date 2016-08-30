@@ -1,18 +1,18 @@
 "use strict";
-let yaml = require("js-yaml");
-let fs   = require("fs");
-let expect = require("chai").expect;
-let shopUser = require("../../lib/user-shop-actions.js");
+const yaml = require("js-yaml");
+const fs   = require("fs");
+const expect = require("chai").expect;
+const shopUser = require("../../lib/user-shop-actions.js");
 
 beforeEach(function () {
-  let browserConfig = yaml.safeLoad(fs.readFileSync("./tests/acceptance-tests/config/settings.yml", "utf8"));
+  const browserConfig = yaml.safeLoad(fs.readFileSync("./tests/acceptance-tests/config/settings.yml", "utf8"));
   const baseUrl = browserConfig.base_url.toString();
   browser.url(baseUrl);
 });
 
 
 describe("authorize net guest checkout test", function () {
-  let eleMap = yaml.safeLoad(fs.readFileSync("./tests/acceptance-tests/elements/element-map.yml", "utf8"));
+  const eleMap = yaml.safeLoad(fs.readFileSync("./tests/acceptance-tests/elements/element-map.yml", "utf8"));
   it("verify guest can checkout with authorize net", function () {
     browser.pause("5000");
     browser.click(eleMap.shop_btn);
