@@ -2,11 +2,11 @@
 const yaml = require("js-yaml");
 const fs   = require("fs");
 
+const eleMap = yaml.safeLoad(fs.readFileSync("./tests/acceptance-tests/elements/element-map.yml", "utf8"));
 
 module.exports = {
   UserActions: {
     userLogin: function (user) {
-      const eleMap = yaml.safeLoad(fs.readFileSync("./tests/acceptance-tests/elements/element-map.yml", "utf8"));
       const usrData = yaml.safeLoad(fs.readFileSync("./tests/acceptance-tests/config/user-data.yml", "utf8"));
       browser.pause("5000");
       browser.click(eleMap.login_dropdown_btn);
@@ -25,6 +25,16 @@ module.exports = {
       browser.click("#logged-in-display-name");
       browser.pause("5000");
       browser.click("#logout");
+    },
+    refreshShop: function () {
+      browser.click(eleMap.shop_btn);
+      browser.pause("10000");
+      while (browser.isVisible("span.product-image") === false) {
+        browser.refresh();
+        browser.pause("2000");
+        browser.click(eleMap.shop_btn);
+        browser.pause("3000");
+      }
     }
   }
 };

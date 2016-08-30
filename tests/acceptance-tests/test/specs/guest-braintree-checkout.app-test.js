@@ -3,6 +3,7 @@ const yaml = require("js-yaml");
 const fs   = require("fs");
 const expect = require("chai").expect;
 const shopUser = require("../../lib/user-shop-actions.js");
+const userDo = require("../../lib/basic-user-actions.js");
 
 beforeEach(function () {
   const browserConfig = yaml.safeLoad(fs.readFileSync("./tests/acceptance-tests/config/settings.yml", "utf8"));
@@ -15,8 +16,7 @@ describe("braintree guest checkout test", function () {
   const eleMap = yaml.safeLoad(fs.readFileSync("./tests/acceptance-tests/elements/element-map.yml", "utf8"));
   it("verify guest can checkout with braintree", function () {
     browser.pause("5000");
-    browser.click(eleMap.shop_btn);
-    browser.pause("5000");
+    userDo.UserActions.refreshShop();
     browser.click(eleMap.product);
     browser.pause("5000");
     browser.click(eleMap.red_option);

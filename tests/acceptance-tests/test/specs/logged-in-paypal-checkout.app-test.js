@@ -18,8 +18,7 @@ describe("paypal logged in checkout test", function () {
   it("verify logged in user can checkout with paypal", function () {
     userDo.UserActions.userLogin("guest");
     browser.pause("5000");
-    browser.click(eleMap.shop_btn);
-    browser.pause("5000");
+    userDo.UserActions.refreshShop();
     browser.click(eleMap.product);
     browser.pause("5000");
     browser.click(eleMap.red_option);

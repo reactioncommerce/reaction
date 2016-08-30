@@ -19,8 +19,7 @@ describe("braintree refund test", function () {
   it("verify user can refund with braintree", function () {
     userDo.UserActions.userLogin("admin");
     browser.pause("5000");
-    browser.click(eleMap.shop_btn);
-    browser.pause("15000");
+    userDo.UserActions.refreshShop();
     browser.click(eleMap.product);
     browser.pause("5000");
     browser.click(eleMap.red_option);
