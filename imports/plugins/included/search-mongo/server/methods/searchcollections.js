@@ -116,8 +116,10 @@ export function buildOrderSearchCollection(cb) {
 
 export function buildOrderSearchRecord(orderId, cb) {
   const order = Orders.findOne(orderId);
+  const shopId = Reaction.getShopId();
   const orderSearch = {
     _id: order._id,
+    shopId: shopId,
     shippingName: order.shipping[0].address.fullName,
     billingName: order.billing[0].address.fullName
   };
