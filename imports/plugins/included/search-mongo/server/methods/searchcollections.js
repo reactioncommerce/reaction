@@ -1,10 +1,10 @@
 import _ from "lodash";
-import { Packages, Products } from "/lib/collections";
 import { Reaction, Logger } from "/server/api";
-import { ProductSearch } from "/lib/collections";
+import { ProductSearch, OrderSearch, Orders, Packages, Products } from "/lib/collections";
 
 
-const requiredFields = ["_id", "hashtags", "shopId"];
+const productRequiredFields = ["_id", "hashtags", "shopId"];
+const orderRequiredFields = ["_id", "shopId"];
 
 function getPackageSettings() {
   const searchPackage = Packages.findOne({
@@ -39,7 +39,7 @@ function getScores(customFields, settings) {
 export function getProductSearchParameters() {
   const settings = getPackageSettings();
   const customFields = filterFields(settings.includes);
-  const fieldSet = requiredFields.concat(customFields);
+  const fieldSet = productRequiredFields.concat(customFields);
   const weightObject = getScores(customFields, settings);
   return { fieldSet: fieldSet, weightObject: weightObject, customFields: customFields };
 }
@@ -90,6 +90,41 @@ export function rebuildProductSearchCollectionIndex(cb) {
   const rawProductSearchCollection = ProductSearch.rawCollection();
   rawProductSearchCollection.dropIndexes("*");
   rawProductSearchCollection.createIndex(indexObject, weightObject);
+  if (cb) {
+    cb();
+  }
+}
+
+export function buildOrderSearchCollection(cb) {
+  check(cb, Match.Optional(Function));
+  const orders = Orders.find({}).fetch();
+  for (const order of orders) {
+    const orderSearch = {
+      _id: order._id,
+      shippingName: order.shipping[0].address.fullName,
+      billingName: order.billing[0].address.fullName
+    };
+    OrderSearch.insert(orderSearch);
+  }
+  const rawOrderSearchCollection = OrderSearch.rawCollection();
+  rawOrderSearchCollection.dropIndexes("*");
+  rawOrderSearchCollection.createIndex({"$**": "text"}, {shippingName: 5, billingName: 5});
+  if (cb) {
+    cb();
+  }
+}
+
+export function buildOrderSearchRecord(orderId, cb) {
+  const order = Orders.findOne(orderId);
+  const orderSearch = {
+    _id: order._id,
+    shippingName: order.shipping[0].address.fullName,
+    billingName: order.billing[0].address.fullName
+  };
+  OrderSearch.insert(orderSearch);
+  const rawOrderSearchCollection = OrderSearch.rawCollection();
+  rawOrderSearchCollection.dropIndexes("*");
+  rawOrderSearchCollection.createIndex({"$**": "text"}, {shippingName: 5, billingName: 5});
   if (cb) {
     cb();
   }

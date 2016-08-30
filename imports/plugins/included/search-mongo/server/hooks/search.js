@@ -1,10 +1,30 @@
 import _ from "lodash";
-import { Products } from "/lib/collections";
-import { ProductSearch,
-  getProductSearchParameters,
-  buildProductSearchCollectionRecord } from "../methods/searchcollections";
+import { Products, ProductSearch, Orders, OrderSearch } from "/lib/collections";
+import { getProductSearchParameters,
+  buildProductSearchCollectionRecord, buildOrderSearchRecord } from "../methods/searchcollections";
 import { Logger } from "/server/api";
 
+
+Orders.after.remove((userId, doc) => {
+  if (OrderSearch) {
+    OrderSearch.remove(doc._id);
+  }
+});
+
+Orders.after.insert((userId, doc) => {
+  if (OrderSearch) {
+    const orderId = doc._id;
+    buildOrderSearchRecord(orderId);
+  }
+});
+
+Orders.after.update((userId, doc) => {
+  if (OrderSearch) {
+    const orderId = doc._id;
+    OrderSearch.remove(orderId);
+    buildOrderSearchRecord(orderId);
+  }
+});
 
 /**
  * if product is removed, remove product search record
