@@ -2,21 +2,19 @@
 
   <div class="rui search-modal js-search-modal">
 
-    <div class="rui search-close">{{> React IconButtonComponent}}</div>
+    <div class="rui search-modal-close">{{> React IconButtonComponent}}</div>
 
     <div class="rui search-modal-container">
 
       <div class="rui search-modal-input">
-        <i class="fa fa-search" style="font-size: 65px;
-    position: absolute;
-    left: 10px;"></i>
-        <input type="text" id="search-input" style="padding-left: 100px;"/>
+        <i class="fa fa-search search-modal-icon"></i>
+        <input type="text" id="search-input" />
       </div>
 
-      <div class="rui search-modal-results">
-        Tags:
+      <div class="rui search-modal-tags">
+        Suggested tags:<br />
         {{#each tag in tagSearchResults}}
-          {{tag.name}}
+          <span class="rui search-tag">{{tag.name}}</span>
         {{/each}}
       </div>
       <div class="rui search-modal-results">
