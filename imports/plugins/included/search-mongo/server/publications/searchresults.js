@@ -30,7 +30,9 @@ getResults.products = function (searchTerm, facets) {
       fields: {
         score: {$meta: "textScore"},
         title: 1,
-        hashtags: 1
+        hashtags: 1,
+        description: 1,
+        handle: 1
       },
       sort: {score: {$meta: "textScore"}}
     }

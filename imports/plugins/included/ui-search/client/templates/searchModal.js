@@ -1,7 +1,7 @@
 import _ from "lodash";
 import { IconButton } from "/imports/plugins/core/ui/client/components";
 import { Template } from "meteor/templating";
-import { Products, ProductSearch, Tags } from "/lib/collections";
+import { ProductSearch, Tags } from "/lib/collections";
 
 
 Template.searchModal.onCreated(function () {
@@ -21,26 +21,26 @@ Template.searchModal.onCreated(function () {
 
     if (sub.ready()) {
       const results = ProductSearch.find().fetch();
-      const searchIds = [];
-      for (const result of results) {
-        searchIds.push(result._id);
-      }
-      const resultProducts = Products.find({
-        _id: { $in: searchIds }
-      }).fetch();
-      const mergedResults = []; // TODO: there is probably a better way to do this?
-      for (const resultProduct of resultProducts) {
-        for (const result of results) {
-          if (result._id === resultProduct._id) {
-            mergedResults.push(Object.assign({}, resultProduct, result));
-          }
-        }
-      }
-      const sortedResults = _.sortBy(mergedResults, (o) => { return Math.abs(o.score) * -1; });
-      console.log(sortedResults);
-      this.state.set("productSearchResults", sortedResults);
+      // const searchIds = [];
+      // for (const result of results) {
+      //   searchIds.push(result._id);
+      // }
+      // const resultProducts = Products.find({
+      //   _id: { $in: searchIds }
+      // }).fetch();
+      // const mergedResults = []; // TODO: there is probably a better way to do this?
+      // for (const resultProduct of resultProducts) {
+      //   for (const result of results) {
+      //     if (result._id === resultProduct._id) {
+      //       mergedResults.push(Object.assign({}, resultProduct, result));
+      //     }
+      //   }
+      // }
+      // const sortedResults = _.sortBy(mergedResults, (o) => { return Math.abs(o.score) * -1; });
+      // console.log(sortedResults);
+      this.state.set("productSearchResults", results);
       const hashtags = [];
-      for (const product of resultProducts) {
+      for (const product of results) {
         if (product.hashtags) {
           for (const hashtag of product.hashtags) {
             if (!_.includes(hashtags, hashtag)) {
