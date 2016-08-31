@@ -4,7 +4,7 @@ import { Reaction, Logger } from "/server/api";
 import { ProductSearch, OrderSearch, Orders, Packages, Products } from "/lib/collections";
 
 
-const productRequiredFields = ["_id", "hashtags", "shopId"];
+const productRequiredFields = ["_id", "hashtags", "shopId", "handle"];
 
 function getPackageSettings() {
   const searchPackage = Packages.findOne({
