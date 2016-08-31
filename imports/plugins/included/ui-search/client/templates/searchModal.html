@@ -11,12 +11,14 @@
         <input type="text" id="search-input" />
       </div>
 
+      {{#if tagSearchResults}}
       <div class="rui search-modal-tags">
-        Suggested tags:<br />
+        <p>Suggested tags:</p>
         {{#each tag in tagSearchResults}}
           <span class="rui search-tag">{{tag.name}}</span>
         {{/each}}
       </div>
+      {{/if}}
       <div class="rui search-modal-results">
         {{#each product in productSearchResults}}
           {{product.title}}<br>

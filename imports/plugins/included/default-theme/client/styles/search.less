@@ -67,6 +67,12 @@
   position: fixed;
   border-bottom: solid 1px @black80;
 
+  .search-modal-icon {
+    font-size: 65px;
+    position: absolute;
+    left: 10px;
+  }
+
   @media @mobile {
     width: 100%;
   }
@@ -76,9 +82,11 @@
 .rui.search-modal-input input {
   width: 100%;
   height: 100%;
+  padding-left: 100px;
   border: none;
   outline: none;
-  font-size: 75px;
+  font-size: 4em;
+  background: transparent;
 }
 
 
@@ -87,15 +95,17 @@
 
 /* --------------- Tags */
 .rui.search-modal-tags {
-  padding-top: calc(@input-height + 25px);
-  background-color: @black60;
+  padding: 20px;
+  margin-top: @input-height;
+  background-color: @black05;
 }
 .rui.search-tag {
   width: auto;
   height: auto;
   padding: 5px;
-  border-radius: 5px;
+  margin-right: 5px;
   background-color: @brand-primary-color;
+  color: @brand-light-color;
 }
 
 /* --------------- Products */
