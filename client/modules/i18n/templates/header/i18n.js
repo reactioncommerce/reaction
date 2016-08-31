@@ -1,7 +1,5 @@
 import { Reaction } from "/client/api";
 import { Shops } from "/lib/collections";
-import { Session } from "meteor/session";
-import { i18nextDep } from "../../main";
 /**
  * i18nChooser helpers
  */
@@ -15,6 +13,18 @@ Template.i18nChooser.helpers({
         for (const language of shop.languages) {
           if (language.enabled === true) {
             language.translation = "languages." + language.label.toLowerCase();
+            // appending a helper to let us know this
+            // language is currently selected
+            const profile = Meteor.user().profile;
+            if (profile && profile.lang) {
+              if (profile.lang === language.i18n) {
+                language.class = "active";
+              }
+            } else if (shop.language === language.i18n) {
+              // we don't have a profile language
+              // use the shop default
+              language.class = "active";
+            }
             languages.push(language);
           }
         }
@@ -24,12 +34,6 @@ Template.i18nChooser.helpers({
       }
     }
     return languages;
-  },
-  active() {
-    if (Session.equals("language", this.i18n)) {
-      return "active";
-    }
-    return "";
   }
 });
 
@@ -42,10 +46,9 @@ Template.i18nChooser.events({
     event.preventDefault();
     //
     // this is a sanctioned use of Meteor.user.update
+    // and only possible because we allow it in the
+    // UserProfile and ShopMembers publications.
     //
-    // console.log("this.i18n", this.i18n)
     Meteor.users.update(Meteor.userId(), {$set: {"profile.lang": this.i18n}});
-
-    return Session.set("language", this.i18n);
   }
 });

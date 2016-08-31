@@ -29,7 +29,7 @@ Meteor.publish("Translations", function (languages) {
       shopId: shopId
     });
   }
-  console.log(langTranQuery)
+
   return Translations.find({
     $or: langTranQuery
   });

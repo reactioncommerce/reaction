@@ -5,8 +5,6 @@ import i18nextSprintfPostProcessor from "i18next-sprintf-postprocessor";
 import i18nextJquery from "jquery-i18next";
 import { Meteor } from "meteor/meteor";
 import { Tracker } from "meteor/tracker";
-import { Session } from "meteor/session";
-
 import { Reaction } from "/client/api";
 import { Shops, Translations } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
@@ -35,6 +33,8 @@ const options = {
 
 Meteor.startup(() => {
   // use tracker autorun to detect language changes
+  // this only runs on initial page loaded
+  // and when user.profile.lang updates
   Tracker.autorun(function () {
     if (Reaction.Subscriptions.Shops.ready() && Meteor.user()) {
       const shop = Shops.findOne(Reaction.getShopId());
@@ -46,7 +46,6 @@ Meteor.startup(() => {
       // subscribe to user + shop Translations
       //
       return Meteor.subscribe("Translations", language, () => {
-        console.log("sub trans", language)
         // fetch reaction translations
         const translations = Translations.find({}, {
           fields: {
