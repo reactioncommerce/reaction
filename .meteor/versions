@@ -39,7 +39,7 @@ cfs:data-man@0.0.6
 cfs:file@0.1.17
 cfs:filesystem@0.1.2
 cfs:graphicsmagick@0.0.18
-cfs:gridfs@0.0.33
+cfs:gridfs@0.0.34
 cfs:http-methods@0.0.32
 cfs:http-publish@0.0.13
 cfs:power-queue@0.9.11
