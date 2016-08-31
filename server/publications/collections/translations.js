@@ -3,24 +3,34 @@ import { Reaction } from "/server/api";
 
 /**
  * Translations publication
- * @param {String} sessionLanguage - current sessionLanguage default to 'en'
+ * @param {String, Array} sessionLanguages - current sessionLanguage default to 'en'
+ * @returns { Object } returns Translations
+ * @todo like to see the langages validated more with a schema
  */
-Meteor.publish("Translations", function (sessionLanguage) {
-  check(sessionLanguage, Match.OneOf(null, String));
-  // the language is prone to initialize empty at first, but
-  // we're reactive and will re-subscribe once we have the langauge
-  // on the client
-  if (sessionLanguage) {
-    const shopId = Reaction.getShopId();
-    const shopLanguage = Shops.findOne(Reaction.getShopId()).language || "en";
-    return Translations.find({
-      $or: [{
-        i18n: shopLanguage,
-        shopId: shopId
-      }, {
-        i18n: sessionLanguage,
-        shopId: shopId
-      }]
+Meteor.publish("Translations", function (languages) {
+  check(languages, Match.OneOf(String, Array));
+  const shopId = Reaction.getShopId();
+  const shopLanguage = Shops.findOne(shopId).language;
+  const sessionLanguages = [];
+  const langTranQuery = [];
+
+  // set shop default
+  sessionLanguages.push(shopLanguage);
+  // lets get all these langauges
+  if (typeof languages === "array") {
+    sessionLanguages.concat(languages);
+  } else {
+    sessionLanguages.push(languages);
+  }
+  // add in the shop filter
+  for (const sessionLanguage of sessionLanguages) {
+    langTranQuery.push({
+      i18n: sessionLanguage,
+      shopId: shopId
     });
   }
+  console.log(langTranQuery)
+  return Translations.find({
+    $or: langTranQuery
+  });
 });
