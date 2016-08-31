@@ -10,6 +10,13 @@ import { Shops, Translations } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 import i18next, { packageNamespaces, getLabelsFor, getMessagesFor, i18nextDep } from "./main";
 
+//
+// setup options for i18nextBrowserLanguageDetector
+// note: this isn't fully operational yet
+// language is set by user currently
+// progress toward detecting language
+// should focus around i18nextBrowserLanguageDetector
+//
 const options = {
   // order and from where user language should be detected
   order: ["querystring", "cookie", "localStorage", "navigator", "htmlTag"],
@@ -21,11 +28,6 @@ const options = {
 
   // cache user language on
   caches: ["localStorage", "cookie"],
-
-  // optional expire and domain for set cookie
-  // cookieMinutes: 10,
-  // cookieDomain: "myDomain",
-
   // optional htmlTag with lang attribute, the default is:
   htmlTag: document.documentElement
 };

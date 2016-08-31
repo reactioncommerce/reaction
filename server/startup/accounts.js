@@ -51,7 +51,6 @@ export default function () {
     if (!options.anonymous) {
       return {};
     }
-    let loginHandler;
     const stampedToken = Accounts._generateStampedLoginToken();
     const userId = Accounts.insertUserDoc({
       services: {
@@ -59,7 +58,7 @@ export default function () {
       },
       token: stampedToken.token
     });
-    loginHandler = {
+    const loginHandler = {
       type: "anonymous",
       userId: userId
     };
@@ -72,6 +71,9 @@ export default function () {
    * adds Accounts record for reaction user profiles
    * we clone the user into accounts, as the user collection is
    * only to be used for authentication.
+   * - defaultVisitorRole
+   * - defaultRoles
+   * can be overriden from Shops
    *
    * @see: http://docs.meteor.com/#/full/accounts_oncreateuser
    */
@@ -85,6 +87,17 @@ export default function () {
       profile: Object.assign({}, options && options.profile)
     };
     if (!user.emails) user.emails = [];
+    if (!user.profile) user.profile = {};
+
+    // retain language when user has defined a language
+    // perhaps should be treated as additionals
+    // or in onLogin below, or in the anonymous method options
+    // so many choices...
+    const currentUser = Meteor.user();
+    if (currentUser && currentUser.profile && currentUser.profile.lang && !user.profile.lang) {
+      user.profile.lang = currentUser.profile.lang;
+    }
+
     // init default user roles
     // we won't create users unless we have a shop.
     if (shop) {

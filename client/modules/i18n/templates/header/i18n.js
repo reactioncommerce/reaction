@@ -7,7 +7,7 @@ import { Shops } from "/lib/collections";
 Template.i18nChooser.helpers({
   languages() {
     const languages = [];
-    if (Reaction.Subscriptions.Shops.ready()) {
+    if (Reaction.Subscriptions.Shops.ready() && Meteor.user()) {
       const shop = Shops.findOne();
       if (typeof shop === "object" && shop.languages) {
         for (const language of shop.languages) {
