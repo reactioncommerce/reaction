@@ -87,15 +87,17 @@ export default function () {
       profile: Object.assign({}, options && options.profile)
     };
     if (!user.emails) user.emails = [];
-    if (!user.profile) user.profile = {};
 
     // retain language when user has defined a language
     // perhaps should be treated as additionals
     // or in onLogin below, or in the anonymous method options
     // so many choices...
-    const currentUser = Meteor.user();
-    if (currentUser && currentUser.profile && currentUser.profile.lang && !user.profile.lang) {
-      user.profile.lang = currentUser.profile.lang;
+    if (!(Meteor.users.find().count() === 0)) { // dont set on inital admin
+      if (!user.profile) user.profile = {};
+      const currentUser = Meteor.user();
+      if (currentUser && currentUser.profile && currentUser.profile.lang && !user.profile.lang) {
+        user.profile.lang = currentUser.profile.lang;
+      }
     }
 
     // init default user roles
