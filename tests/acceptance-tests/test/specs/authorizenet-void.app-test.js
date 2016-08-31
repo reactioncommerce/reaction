@@ -41,7 +41,7 @@ describe("authorize net void test", function () {
     browser.click(eleMap.orders_page_btn);
     browser.pause("5000");
     browser.click(eleMap.first_order_new_btn);
-    browser.pause("2000");
+    browser.pause("20000");
     adminUser.voidAmount();
     browser.click(eleMap.approve_btn);
     browser.pause("2000");

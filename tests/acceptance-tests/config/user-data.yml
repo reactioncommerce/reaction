@@ -1,5 +1,5 @@
-admin_email: "zxmtpw5k@localhost"
-admin_pw: "6zm7OEXC"
+admin_email: "rbgd5ngh@localhost"
+admin_pw: "GCFTnUxz"
 
 guest_email: josh@reactioncommerce.com
 guest_pw: password123
@@ -15,7 +15,9 @@ phone: 555-555-5555
 
 # payment info
 card_holder: Josh Ewing
-visa: 4111111111111111
+visa: 4242424242424242
+paypal_visa: 4111111111111111
+stripe_visa: 4000000000000077
 exp_month: 1
 exp_year: 2020
 cvv: 123

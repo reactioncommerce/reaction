@@ -76,7 +76,7 @@ module.exports = {
   paypalPaymentInfo: function () {
     browser.pause("2000");
     browser.waitForEnabled(eleMap.paypal_cc, "6000");
-    browser.setValue(eleMap.paypal_cc, userData.visa);
+    browser.setValue(eleMap.paypal_cc, userData.paypal_visa);
     browser.pause("5000");
     browser.selectByValue(eleMap.paypal_exp_month, userData.exp_month);
     browser.selectByValue(eleMap.paypal_exp_year, userData.exp_year);
@@ -92,7 +92,7 @@ module.exports = {
   stripePaymentInfo: function () {
     browser.pause("2000");
     browser.waitForEnabled(eleMap.stripe_cc, "6000");
-    browser.setValue(eleMap.stripe_cc, userData.visa);
+    browser.setValue(eleMap.stripe_cc, userData.stripe_visa);
     browser.pause("5000");
     browser.selectByValue(eleMap.stripe_exp_month, userData.exp_month);
     browser.selectByValue(eleMap.stripe_exp_year, userData.exp_year);
