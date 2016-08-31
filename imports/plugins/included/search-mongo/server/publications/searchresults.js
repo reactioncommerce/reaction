@@ -37,6 +37,8 @@ getResults.products = function (searchTerm, facets) {
   );
   Logger.info(`Found ${productResults.count()} products`);
   console.timeEnd("productSearch");
+  const verboseProducts = productResults.fetch();
+  Logger.info(JSON.stringify(verboseProducts, null, 4));
   return productResults;
 };
 

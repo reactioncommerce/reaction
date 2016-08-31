@@ -1,15 +1,16 @@
 /* global Asset */
 import faker from "faker";
-import {EJSON} from "meteor/ejson";
-import {Products, Tags} from "/lib/collections";
-import {Hooks, Logger} from "/server/api";
+import { EJSON } from "meteor/ejson";
+import { Products, Tags } from "/lib/collections";
+import { Reaction, Hooks, Logger } from "/server/api";
+import { getSlug } from "/lib/api";
 
 Hooks.Events.add("afterCoreInit", () => {
-  for (let i = 1; i < 1000; i++) {
+  for (let i = 1; i < 200; i++) {
     Logger.info("Inserting product: ", i);
     createProduct();
   }
-  // const existingDoc = Products.find().count();
+  const existingDoc = Products.find().count();
   // if (existingDoc === 4) {
   //   Logger.warn("======> Adding Search Products");
   //   // noinspection JSUnresolvedVariable
@@ -29,42 +30,44 @@ Hooks.Events.add("afterCoreInit", () => {
   // }
 });
 
+// This function is for testing a lot of products
 export function createProduct() {
+  const productTitle = faker.commerce.productName();
+  const productSlug = getSlug(productTitle);
   const product = {
-    "ancestors": [],
-    "shopId": "J8Bhq3uTtdgwZx3rz",
-    "title": "Vans Men's Suede Sk-8 Hi Shoe",
-    "pageTitle": "Nesciunt itaque modi soluta sint sint.",
-    "description": "This shoe is so rad that it was brought back to life from the past so that you can wear it yourself.",
-    "type": "simple",
-    "vendor": "Vans",
-    "price": {
-      "range": "24.99",
-      "min": 24.99,
-      "max": 24.99
+    ancestors: [],
+    shopId: Reaction.getShopId(),
+    title: productTitle,
+    pageTitle: faker.lorem.sentence(),
+    description: faker.lorem.paragraph(),
+    type: "simple",
+    vendor: faker.company.companyName(),
+    price: {
+      range: "24.99",
+      min: 24.99,
+      max: 24.99
     },
-    "isLowQuantity": false,
-    "isSoldOut": false,
-    "isBackorder": false,
-    "metafields": [
+    isLowQuantity: false,
+    isSoldOut: false,
+    isBackorder: false,
+    metafields: [
       {
-        "key": "Material",
-        "value": "Canvas"
+        key: "Material",
+        value: "Canvas"
       },
       {
-        "key": "Sole",
-        "value": "Rubber"
+        key: "Sole",
+        value: "Rubber"
       }
     ],
-    "requiresShipping": true,
-    "hashtags": [],
-    "isVisible": true,
-    "handle": "vans-men-s-suede-sk-8-hi-shoe",
-    "workflow": {
-      "status": "new"
+    requiresShipping: true,
+    hashtags: [],
+    isVisible: true,
+    handle: productSlug,
+    workflow: {
+      status: "new"
     }
   };
   const insertedProduct = Products.insert(product);
   return insertedProduct;
 }
-

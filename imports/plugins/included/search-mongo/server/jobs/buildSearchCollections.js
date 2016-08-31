@@ -1,8 +1,8 @@
 import { Jobs, ProductSearch, Orders, OrderSearch } from "/lib/collections";
 import { Hooks, Logger } from "/server/api";
-import { buildProductSearchCollection,
-  rebuildProductSearchCollectionIndex,
-  buildOrderSearchCollection } from "../methods/";
+import { buildProductSearch,
+  rebuildProductSearchIndex,
+  buildOrderSearch } from "../methods/";
 
 
 function addBuildProductSearchCollection() {
@@ -58,7 +58,7 @@ export default function () {
     },
     (job, callback) => {
       Logger.info("(re)build ProductSearch collection running");
-      buildProductSearchCollection(function (error) {
+      buildProductSearch(function (error) {
         if (error) {
           job.done(error.toString(), {repeatId: true});
           callback();
@@ -79,7 +79,7 @@ export default function () {
     },
     (job, callback) => {
       Logger.info("(re)build ProductSearch index running");
-      rebuildProductSearchCollectionIndex(function (error) {
+      rebuildProductSearchIndex(function (error) {
         if (error) {
           job.done(error.toString(), {repeatId: true});
           callback();
@@ -100,7 +100,7 @@ export default function () {
     },
     (job, callback) => {
       Logger.info("(re)build OrderSearch index running");
-      buildOrderSearchCollection(function (error) {
+      buildOrderSearch(function (error) {
         if (error) {
           job.done(error.toString(), {repeatId: true});
           callback();

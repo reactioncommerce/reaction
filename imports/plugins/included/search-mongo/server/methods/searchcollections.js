@@ -44,24 +44,27 @@ export function getSearchParameters(collection = "products") {
   return { fieldSet: fieldSet, weightObject: weightObject, customFields: customFields };
 }
 
-export function buildProductSearchCollectionRecord(productId) {
+export function buildProductSearchRecord(productId) {
   const product = Products.findOne(productId);
-  const { fieldSet } = getSearchParameters();
-  const productRecord = {};
-  for (const field of fieldSet) {
-    productRecord[field] = product[field];
+  if (product.type === "simple") {
+    const { fieldSet } = getSearchParameters();
+    const productRecord = {};
+    for (const field of fieldSet) {
+      productRecord[field] = product[field];
+    }
+    const productSearchRecord = ProductSearch.insert(productRecord);
+    ensureProductSearchIndex();
+    return productSearchRecord;
   }
-  const productSearchRecord = ProductSearch.insert(productRecord);
-  ensureProductSearchCollectionIndex();
-  return productSearchRecord;
+  return undefined;
 }
 
-export function buildProductSearchCollection(cb) {
-  check(cb, Match.OneOf(Function, undefined));
-  Logger.info("(re)Building ProductSearch Collection");
+export function buildProductSearch(cb) {
+  check(cb, Match.Optional(Function));
+  Logger.info("Start (re)Building ProductSearch Collection");
   ProductSearch.remove({});
   const { fieldSet, weightObject, customFields } = getSearchParameters();
-  const products = Products.find().fetch();
+  const products = Products.find({type: "simple"}).fetch();
   for (const product of products) {
     const productRecord = {};
     for (const field of fieldSet) {
@@ -81,7 +84,7 @@ export function buildProductSearchCollection(cb) {
   }
 }
 
-export function rebuildProductSearchCollectionIndex(cb) {
+export function rebuildProductSearchIndex(cb) {
   check(cb, Match.Optional(Function));
   const { customFields, weightObject } = getSearchParameters();
   const indexObject = {};
@@ -97,7 +100,7 @@ export function rebuildProductSearchCollectionIndex(cb) {
 }
 
 // this only creates the index if it doesn't already exist, `ensureIndex` is deprecated
-export function ensureProductSearchCollectionIndex() {
+export function ensureProductSearchIndex() {
   const { customFields, weightObject } = getSearchParameters();
   const indexObject = {};
   for (const field of customFields) {
@@ -108,7 +111,7 @@ export function ensureProductSearchCollectionIndex() {
 }
 
 
-export function buildOrderSearchCollection(cb) {
+export function buildOrderSearch(cb) {
   check(cb, Match.Optional(Function));
   const orders = Orders.find({}).fetch();
   for (const order of orders) {

@@ -2,7 +2,7 @@ import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Products, ProductSearch, Orders, OrderSearch } from "/lib/collections";
 import { getSearchParameters,
-  buildProductSearchCollectionRecord, buildOrderSearchRecord } from "../methods/searchcollections";
+  buildProductSearchRecord, buildOrderSearchRecord } from "../methods/searchcollections";
 import { Logger } from "/server/api";
 
 
@@ -31,7 +31,7 @@ Orders.after.update((userId, doc) => {
  * if product is removed, remove product search record
  */
 Products.after.remove((userId, doc) => {
-  if (ProductSearch && !Meteor.isAppTest) {
+  if (ProductSearch && !Meteor.isAppTest && doc.type === "simple") {
     const productId = doc._id;
     ProductSearch.remove(productId);
     Logger.info(`Removed product ${productId} from ProductSearch collection`);
@@ -42,14 +42,14 @@ Products.after.remove((userId, doc) => {
 // after product update rebuild product search record
 //
 Products.after.update((userId, doc, fieldNames) => {
-  if (ProductSearch && !Meteor.isAppTest) {
+  if (ProductSearch && !Meteor.isAppTest && doc.type === "simple") {
     const productId = doc._id;
     const { fieldSet } = getSearchParameters();
     const modifiedFields = _.intersection(fieldSet, fieldNames);
     if (modifiedFields.length) {
       Logger.info(`Rewriting search record for ${doc.title}`);
       ProductSearch.remove(productId);
-      buildProductSearchCollectionRecord(productId);
+      buildProductSearchRecord(productId);
     } else {
       Logger.info("No watched fields modified, skipping");
     }
@@ -61,8 +61,8 @@ Products.after.update((userId, doc, fieldNames) => {
  * @summary should fires on create new variants, on clones products/variants
  */
 Products.after.insert((userId, doc) => {
-  if (ProductSearch && !Meteor.isAppTest) {
+  if (ProductSearch && !Meteor.isAppTest && doc.type === "simple") {
     const productId = doc._id;
-    buildProductSearchCollectionRecord(productId);
+    buildProductSearchRecord(productId);
   }
 });
