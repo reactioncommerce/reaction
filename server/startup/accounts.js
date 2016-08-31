@@ -87,22 +87,20 @@ export default function () {
       profile: Object.assign({}, options && options.profile)
     };
     if (!user.emails) user.emails = [];
-
-    // retain language when user has defined a language
-    // perhaps should be treated as additionals
-    // or in onLogin below, or in the anonymous method options
-    // so many choices...
-    if (!(Meteor.users.find().count() === 0)) { // dont set on inital admin
-      if (!user.profile) user.profile = {};
-      const currentUser = Meteor.user();
-      if (currentUser && currentUser.profile && currentUser.profile.lang && !user.profile.lang) {
-        user.profile.lang = currentUser.profile.lang;
-      }
-    }
-
     // init default user roles
     // we won't create users unless we have a shop.
     if (shop) {
+      // retain language when user has defined a language
+      // perhaps should be treated as additionals
+      // or in onLogin below, or in the anonymous method options
+      if (!(Meteor.users.find().count() === 0)) { // dont set on inital admin
+        if (!user.profile) user.profile = {};
+        const currentUser = Meteor.user(user);
+        if (currentUser && currentUser.profile && currentUser.profile.lang && !user.profile.lang) {
+          user.profile.lang = currentUser.profile.lang;
+        }
+      }
+
       // if we don't have user.services we're an anonymous user
       if (!user.services) {
         roles[shopId] = shop.defaultVisitorRole || defaultVisitorRole;
@@ -152,7 +150,6 @@ export default function () {
       // run onCreateUser hooks
       // (the user object must be returned by all callbacks)
       const userDoc = Hooks.Events.run("onCreateUser", user, options);
-
       return userDoc;
     }
   });
@@ -195,6 +192,7 @@ export default function () {
       const cart = Collections.Cart.findOne({
         userId: options.user._id
       });
+
       // for a rare use cases
       if (typeof cart !== "object") return false;
       // in current version currentSessionId will be available for anonymous
