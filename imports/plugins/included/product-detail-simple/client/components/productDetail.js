@@ -86,13 +86,13 @@ class ProductDetail extends Component {
                 {this.product.vendor}
               </div>
 
-              <div class="pdp product-info">
-                <div class="description">
+              <div className="pdp product-info">
+                <div className="description">
                   {this.product.description}
                 </div>
               </div>
 
-              <div class="options-add-to-cart">
+              <div className="options-add-to-cart">
                 {this.props.topVariantComponent}
               </div>
               <hr />

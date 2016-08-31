@@ -40,7 +40,7 @@ VariantList.propTypes = {
   childVariantMedia: PropTypes.object,
   editButton: PropTypes.node,
   isSelected: PropTypes.bool,
-  variant: PropTypes.varaint,
+  variant: PropTypes.object,
   visibilityButton: PropTypes.node
 };
 

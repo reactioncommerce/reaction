@@ -140,7 +140,7 @@ Button.propTypes = {
   title: PropTypes.string,
   toggle: PropTypes.bool,
   toggleOn: PropTypes.bool,
-  tooltip: PropTypes.string
+  tooltip: PropTypes.oneOf(PropTypes.string, PropTypes.object)
 };
 
 Button.defaultProps = {
