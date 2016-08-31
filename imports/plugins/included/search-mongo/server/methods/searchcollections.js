@@ -1,4 +1,5 @@
 import _ from "lodash";
+import { check, Match } from "meteor/check";
 import { Reaction, Logger } from "/server/api";
 import { ProductSearch, OrderSearch, Orders, Packages, Products } from "/lib/collections";
 
@@ -51,6 +52,7 @@ export function buildProductSearchCollectionRecord(productId) {
     productRecord[field] = product[field];
   }
   const productSearchRecord = ProductSearch.insert(productRecord);
+  ensureProductSearchCollectionIndex();
   return productSearchRecord;
 }
 
@@ -80,7 +82,7 @@ export function buildProductSearchCollection(cb) {
 }
 
 export function rebuildProductSearchCollectionIndex(cb) {
-  check(cb, Function);
+  check(cb, Match.Optional(Function));
   const { customFields, weightObject } = getSearchParameters();
   const indexObject = {};
   for (const field of customFields) {
@@ -93,6 +95,18 @@ export function rebuildProductSearchCollectionIndex(cb) {
     cb();
   }
 }
+
+// this only creates the index if it doesn't already exist, `ensureIndex` is deprecated
+export function ensureProductSearchCollectionIndex() {
+  const { customFields, weightObject } = getSearchParameters();
+  const indexObject = {};
+  for (const field of customFields) {
+    indexObject[field] = "text";
+  }
+  const rawProductSearchCollection = ProductSearch.rawCollection();
+  rawProductSearchCollection.createIndex(indexObject, weightObject);
+}
+
 
 export function buildOrderSearchCollection(cb) {
   check(cb, Match.Optional(Function));
