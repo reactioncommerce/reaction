@@ -6,28 +6,28 @@ import { Reaction, Hooks, Logger } from "/server/api";
 import { getSlug } from "/lib/api";
 
 Hooks.Events.add("afterCoreInit", () => {
-  for (let i = 1; i < 200; i++) {
-    Logger.info("Inserting product: ", i);
-    createProduct();
-  }
-  const existingDoc = Products.find().count();
-  // if (existingDoc === 4) {
-  //   Logger.warn("======> Adding Search Products");
-  //   // noinspection JSUnresolvedVariable
-  //   const tagsJson = Assets.getText("custom/SearchTags.json");
-  //   const tagsData = EJSON.parse(tagsJson);
-  //   for (const tag of tagsData) {
-  //     Tags.insert(tag);
-  //   }
-  //   // noinspection JSUnresolvedVariable
-  //   const productJson = Assets.getText("custom/SearchProducts.json");
-  //   const productData = EJSON.parse(productJson);
-  //   for (const product of productData) {
-  //     Products.insert(product);
-  //   }
-  // } else {
-  //   Logger.warn(`Not adding search products, there are ${existingDoc} products`);
+  // for (let i = 1; i < 200; i++) {
+  //   Logger.info("Inserting product: ", i);
+  //   createProduct();
   // }
+  const existingDoc = Products.find().count();
+  if (existingDoc === 4) {
+    Logger.warn("======> Adding Search Products");
+    // noinspection JSUnresolvedVariable
+    const tagsJson = Assets.getText("custom/SearchTags.json");
+    const tagsData = EJSON.parse(tagsJson);
+    for (const tag of tagsData) {
+      Tags.insert(tag);
+    }
+    // noinspection JSUnresolvedVariable
+    const productJson = Assets.getText("custom/SearchProducts.json");
+    const productData = EJSON.parse(productJson);
+    for (const product of productData) {
+      Products.insert(product);
+    }
+  } else {
+    Logger.warn(`Not adding search products, there are ${existingDoc} products`);
+  }
 });
 
 // This function is for testing a lot of products
