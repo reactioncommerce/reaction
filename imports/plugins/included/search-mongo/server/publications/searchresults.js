@@ -21,6 +21,7 @@ function getProductFindTerm(searchTerm, searchTags) {
 const getResults = {};
 
 getResults.products = function (searchTerm, facets) {
+  console.time("productSearch");
   const searchTags = facets || [];
   const findTerm = getProductFindTerm(searchTerm, searchTags);
   // Logger.info(`Using findTerm ${JSON.stringify(findTerm, null, 4)}`);
@@ -35,6 +36,7 @@ getResults.products = function (searchTerm, facets) {
     }
   );
   Logger.info(`Found ${productResults.count()} products`);
+  console.timeEnd("productSearch");
   return productResults;
 };
 
