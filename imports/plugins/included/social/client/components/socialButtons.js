@@ -1,9 +1,7 @@
 import React, { Component, PropTypes } from "react";
-import ReactDOM from "react-dom";
-import { Facebook, Twitter, GooglePlus } from "./";
+import { Facebook, Twitter, GooglePlus, Pinterest } from "./";
 
 export function getProviderComponentByName(providerName) {
-  console.log("providername", providerName);
   switch (providerName) {
     case "facebook":
       return Facebook;
@@ -11,8 +9,10 @@ export function getProviderComponentByName(providerName) {
       return Twitter;
     case "googleplus":
       return GooglePlus;
+    case "pinterest":
+      return Pinterest;
     default:
-      return null
+      return null;
   }
 }
 
@@ -20,14 +20,12 @@ export function getProviderComponentByName(providerName) {
 class SocialButtons extends Component {
 
   buttonSettngs(provider) {
-    return this.props.settings.apps[provider]
+    return this.props.settings.apps[provider];
   }
 
   renderButtons() {
     if (this.props.providers) {
-      return this.props.providers.map((provider, index) => {
-        console.log("--button", this.buttonSettngs(provider));
-
+      return this.props.providers.map((provider) => {
         const buttonComponent = getProviderComponentByName(provider);
 
         if (buttonComponent) {
@@ -38,19 +36,19 @@ class SocialButtons extends Component {
               title: this.props.title,
               description: this.props.description,
               url: this.props.url,
-              meta: this.props.meta,
               settings: this.buttonSettngs(provider)
             }
           );
 
           return component;
         }
+        return null;
       });
     }
+    return null;
   }
 
   render() {
-    console.log(this.props);
     return (
       <div>
         {this.renderButtons()}
@@ -59,4 +57,14 @@ class SocialButtons extends Component {
   }
 }
 
-export default SocialButtons
+SocialButtons.propTypes = {
+  description: PropTypes.string,
+  providers: PropTypes.arrayOf(PropTypes.string),
+  settings: PropTypes.shape({
+    apps: PropTypes.object
+  }),
+  title: PropTypes.string,
+  url: PropTypes.string
+};
+
+export default SocialButtons;

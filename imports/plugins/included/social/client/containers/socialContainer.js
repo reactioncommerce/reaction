@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 import { composeWithTracker } from "react-komposer";
 import { Reaction } from "/client/api";
 import { SocialButtons } from "../components";
