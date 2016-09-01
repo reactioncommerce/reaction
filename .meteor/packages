@@ -18,7 +18,7 @@ juliancwirko:postcss          # CSS post-processing plugin (replaces standard-mi
 standard-minifier-js@1.2.0    # a minifier plugin used for Meteor apps by default
 session@1.1.6                 # ReactiveDict whose contents are preserved across Hot Code Push
 tracker@1.1.0                 # Meteor transparent reactive programming library
-mongo@1.1.11
+mongo@1.1.12
 random@1.0.10
 reactive-var@1.0.10
 reactive-dict@1.1.8
@@ -34,7 +34,7 @@ email@1.1.17
 service-configuration@1.0.10
 amplify
 mdg:validated-method
-shell-server
+shell-server@0.2.1
 
 # Meteor Auth Packages
 accounts-base@1.2.11

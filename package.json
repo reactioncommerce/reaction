@@ -1,7 +1,7 @@
 {
   "name": "reaction",
   "description": "Reaction is a modern reactive, real-time event driven ecommerce platform.",
-  "version": "0.15.1",
+  "version": "0.15.2",
   "main": "main.js",
   "directories": {
     "test": "tests"
@@ -69,6 +69,7 @@
   },
   "devDependencies": {
     "babel-eslint": "^6.1.2",
+    "babel-preset-stage-2": "^6.13.0",
     "eslint": "^3.3.1",
     "eslint-plugin-react": "^6.1.2"
   },
