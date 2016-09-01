@@ -1,18 +1,11 @@
 import _ from "lodash";
 import { check, Match } from "meteor/check";
 import { Reaction, Logger } from "/server/api";
-import { ProductSearch, OrderSearch, Orders, Packages, Products } from "/lib/collections";
+import { ProductSearch, OrderSearch, Orders, Products } from "/lib/collections";
+import utils from "./common";
 
 
 const productRequiredFields = ["_id", "hashtags", "shopId", "handle"];
-
-function getPackageSettings() {
-  const searchPackage = Packages.findOne({
-    shopId: Reaction.getShopId(),
-    name: "reaction-search"
-  });
-  return searchPackage.settings;
-}
 
 function filterFields(customFields) {
   const fieldNames = [];
@@ -37,7 +30,7 @@ function getScores(customFields, settings, collection = "products") {
 }
 
 export function getSearchParameters(collection = "products") {
-  const settings = getPackageSettings();
+  const settings = utils.getPackageSettings();
   const customFields = filterFields(settings[collection].includes);
   const fieldSet = productRequiredFields.concat(customFields);
   const weightObject = getScores(customFields, settings);
@@ -141,9 +134,9 @@ export function buildOrderSearchRecord(orderId, cb) {
   };
   OrderSearch.insert(orderSearch);
   const rawOrderSearchCollection = OrderSearch.rawCollection();
-  rawOrderSearchCollection.dropIndexes("*");
   rawOrderSearchCollection.createIndex({"$**": "text"}, {shippingName: 5, billingName: 5});
   if (cb) {
     cb();
   }
 }
+
