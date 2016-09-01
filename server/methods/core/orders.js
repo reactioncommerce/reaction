@@ -168,7 +168,7 @@ Meteor.methods({
         "billing.0.paymentMethod.status": "approved",
         "billing.0.paymentMethod.mode": "capture",
         "billing.0.invoice.discounts": discount,
-        "billing.0.invoice.total": total
+        "billing.0.invoice.total": accounting.toFixed(total, 2)
       }
     });
   },
