@@ -7,7 +7,6 @@ exclude_paths:
 engines:
   eslint:
     enabled: false
-    channel: "eslint-2"
   csslint:
     enabled: false
   duplication:
