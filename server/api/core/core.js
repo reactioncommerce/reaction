@@ -6,6 +6,7 @@ import { Jobs, Packages, Shops } from "/lib/collections";
 import { Hooks, Logger } from "/server/api";
 import ProcessJobs from "/server/jobs";
 import { getRegistryDomain } from "./setDomain";
+import { processTemplateInfo } from "./templates"
 
 export default {
 
@@ -23,6 +24,7 @@ export default {
     }
 
     this.loadPackages();
+    this.loadTemplates();
     // process imports from packages and any hooked imports
     this.Import.flush();
     // timing is important, packages are rqd
@@ -37,11 +39,25 @@ export default {
   },
 
   Packages: {},
+  Templates: {},
 
   registerPackage(packageInfo) {
     const registeredPackage = this.Packages[packageInfo.name] =
       packageInfo;
     return registeredPackage;
+  },
+
+  registerTemplate(templateInfo) {
+    return this.Templates[templateInfo.name] = processTemplateInfo(templateInfo);
+  },
+
+  loadTemplates() {
+    _.each(this.Templates, (templateInfo) => {
+      return Shops.find().forEach((shop) => {
+        this.Import.template(templateInfo, shop._id);
+      });
+      // console.log(renderTemplateToStaticMarkup(templateInfo.template));
+    });
   },
 
   /**

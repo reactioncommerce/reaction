@@ -3,6 +3,7 @@ import { EJSON } from "meteor/ejson";
 import * as Collections from "/lib/collections";
 import Hooks from "../hooks";
 import Logger from "../logger";
+import { processTemplateInfo } from "./templates";
 
 /**
  * @file Exposes the Import object implementing methods for bulk imports.
@@ -254,6 +255,25 @@ Import.package = function (pkg, shopId) {
     shopId: shopId
   };
   return this.object(Collections.Packages, key, pkg);
+};
+
+/**
+ * @summary Store a template in the import buffer.
+ * @param {Object} tempalteData The template data to be updated
+ * @param {String} shopId The package data to be updated
+ * @returns {undefined}
+ */
+Import.template = function (template, shopId) {
+  check(template, Object);
+  check(shopId, String);
+  const key = {
+    name: template.name,
+    shopId: shopId
+  };
+
+  const templateData = processTemplateInfo(template);
+
+  return this.object(Collections.Templates, key, templateData);
 };
 
 /**
