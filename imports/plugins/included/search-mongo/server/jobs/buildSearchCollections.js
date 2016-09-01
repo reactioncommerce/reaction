@@ -1,3 +1,4 @@
+import { Meteor } from "meteor/meteor";
 import { Jobs, ProductSearch, Orders, OrderSearch } from "/lib/collections";
 import { Hooks, Logger } from "/server/api";
 import { buildProductSearch,
@@ -45,8 +46,10 @@ function addBuildOrderSearchCollection() {
 }
 
 Hooks.Events.add("afterCoreInit", () => {
-  addBuildProductSearchCollection();
-  addBuildOrderSearchCollection();
+  if (!Meteor.isAppTest) {
+    addBuildProductSearchCollection();
+    addBuildOrderSearchCollection();
+  }
 });
 
 
