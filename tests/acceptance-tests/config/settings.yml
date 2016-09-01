@@ -1,0 +1,3 @@
+#This setting describes the url to test against
+#Sould also be a command line setting for this
+base_url: http://localhost:3000
