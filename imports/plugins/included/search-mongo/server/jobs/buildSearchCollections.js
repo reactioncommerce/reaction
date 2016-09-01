@@ -40,7 +40,7 @@ function addBuildOrderSearchCollection() {
         cancelRepeats: true
       });
   } else {
-    Logger.info("OrderSearch collection already exists, not building");
+    Logger.info("OrderSearch collection already exists (or no orders), not building");
   }
 }
 
