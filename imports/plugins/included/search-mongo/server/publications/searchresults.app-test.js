@@ -2,7 +2,7 @@ import faker from "faker";
 import { expect } from "meteor/practicalmeteor:chai";
 import { Reaction } from "/server/api";
 import { getSlug } from "/lib/api";
-import { Products } from "/lib/collections";
+import { Products, ProductSearch } from "/lib/collections";
 import Fixtures from "/server/imports/fixtures";
 import { getResults } from "./searchresults";
 import { buildProductSearch } from "../methods/searchcollections";
@@ -51,39 +51,37 @@ export function createProduct(isVisible = true, title) {
   return insertedProduct;
 }
 
-describe.only("Search results", function () {
-  const shopId = Reaction.getShopId();
+describe("Search results", function () {
+  let product;
 
   before(function () {
     buildProductSearch();
   });
 
+  beforeEach(function () {
+    const productId = createProduct(true, "Product Search Test");
+    buildProductSearchRecord(productId);
+    product = Products.findOne(productId);
+  });
+
   describe("product search", function () {
     it("should produce at least one result for title match", function () {
-      const product = Products.findOne({
-        shopId: shopId
-      });
-      const searchTerm = product.title;
+
+      const searchTerm = "Product Search Test";
       const results = getResults.products(searchTerm);
       const numResults = results.count();
       expect(numResults).to.be.above(0);
     });
 
-    it("should produce results which are case insensitive to lowercase", function () {
-      const product = Products.findOne({
-        shopId: shopId
-      });
-      const searchTerm = product.title.toLowerCase();
+    it("should produce results which are case insensitive", function () {
+      const searchTerm = "pRoDuCt SeArCh tEsT";
       const results = getResults.products(searchTerm);
       const numResults = results.count();
       expect(numResults).to.be.above(0);
     });
 
-    it("should produce results which are case insensitive to uppercase", function () {
-      const product = Products.findOne({
-        shopId: shopId
-      });
-      const searchTerm = product.title.toUpperCase();
+    it("should produce results on partial matches", function () {
+      const searchTerm = "Product";
       const results = getResults.products(searchTerm);
       const numResults = results.count();
       expect(numResults).to.be.above(0);
@@ -97,9 +95,9 @@ describe.only("Search results", function () {
     });
 
     it("should not show hidden product when you are not an admin", function () {
-      const productId = createProduct(false, "Visible Product Test");
+      const productId = createProduct(false, "isINVisible");
       buildProductSearchRecord(productId);
-      const product = Products.findOne(productId);
+      product = Products.findOne(productId);
       const searchTerm = product.title;
       const results = getResults.products(searchTerm);
       const numResults = results.count();
