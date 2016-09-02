@@ -20,22 +20,20 @@ describe("authorize net logged in checkout test", function () {
     browser.pause("5000");
     userDo.UserActions.refreshShop();
     browser.click(eleMap.product);
-    browser.pause("5000");
+    browser.waitForEnabled(eleMap.red_option, 5000);
     browser.click(eleMap.red_option);
-    browser.pause("2000");
+    browser.waitForEnabled(eleMap.add_to_cart, 5000);
     browser.click(eleMap.add_to_cart);
-    browser.pause("2000");
+    browser.waitForEnabled(eleMap.checkout_btn, 3000);
     browser.click(eleMap.checkout_btn);
-    browser.pause("5000");
     shopUser.checkForAddress();
     // free shipping option
     browser.click(eleMap.free_shipping);
-    browser.pause("3000");
+    browser.waitForEnabled(eleMap.authorizenet, 5000);
     browser.click(eleMap.authorizenet);
-    browser.pause("6000");
     shopUser.authorizeNetPaymentInfo();
     browser.click(eleMap.authorizenet_complete_order_btn);
-    browser.pause("6000");
+    browser.waitForVisible("#order-status", 20000);
     expect(browser.getText("#order-status")).to.equal("Your order is now submitted.");
   });
 });
