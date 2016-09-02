@@ -6,7 +6,7 @@ import { ProductSearch, OrderSearch } from "/lib/collections";
 
 const supportedCollections = ["products", "orders"];
 
-function getProductFindTerm(searchTerm, searchTags) {
+function getProductFindTerm(searchTerm, searchTags, userId) {
   const shopId = Reaction.getShopId();
   const findTerm = {
     shopId: shopId,
@@ -15,14 +15,17 @@ function getProductFindTerm(searchTerm, searchTags) {
   if (searchTags.length) {
     findTerm.hastags = {$all: searchTags};
   }
+  if (!Roles.userIsInRole(userId, ["admin", "owner"], shopId)) {
+    findTerm.isVisible = true;
+  }
   return findTerm;
 }
 
 export const getResults = {};
 
-getResults.products = function (searchTerm, facets, maxResults) {
+getResults.products = function (searchTerm, facets, maxResults, userId) {
   const searchTags = facets || [];
-  const findTerm = getProductFindTerm(searchTerm, searchTags);
+  const findTerm = getProductFindTerm(searchTerm, searchTags, userId);
   // Logger.info(`Using findTerm ${JSON.stringify(findTerm, null, 4)}`);
   const productResults = ProductSearch.find(findTerm,
     {
@@ -31,32 +34,35 @@ getResults.products = function (searchTerm, facets, maxResults) {
         title: 1,
         hashtags: 1,
         description: 1,
-        handle: 1
+        handle: 1,
+        price: 1
       },
       sort: {score: {$meta: "textScore"}},
       limit: maxResults
     }
   );
-  // Logger.info(`Found ${productResults.count()} products`);
+  Logger.info(`Found ${productResults.count()} products`);
   // const verboseProducts = productResults.fetch();
   // Logger.info(JSON.stringify(verboseProducts, null, 4));
   return productResults;
 };
 
-getResults.orders = function (searchTerm, facets, maxResults) {
+getResults.orders = function (searchTerm, facets, maxResults, userId) {
+  let orderResults;
   const shopId = Reaction.getShopId();
-  const orderResults = OrderSearch.find({
-    shopId: shopId, $text: { $search: searchTerm }
-  },
-    {
+  if (Roles.userIsInRole(userId, ["admin", "owner"], shopId)) {
+    orderResults = OrderSearch.find({
+      shopId: shopId, $text: {$search: searchTerm}
+    }, {
       fields: {
         score: {$meta: "textScore"}
       },
       sort: {score: {$meta: "textScore"}},
       limit: maxResults
     }
-  );
-  Logger.info(`Found ${orderResults.count()} orders`);
+    );
+    Logger.info(`Found ${orderResults.count()} orders`);
+  }
   return orderResults;
 };
 
@@ -67,10 +73,10 @@ Meteor.publish("SearchResults", function (collection, searchTerm, facets, maxRes
   }));
   check(searchTerm, Match.Optional(String));
   check(facets, Match.OneOf([String], undefined));
-  Logger.debug(`Returning search results on ${collection}. SearchTerm: |${searchTerm}|`);
+  Logger.info(`Returning search results on ${collection}. SearchTerm: |${searchTerm}|`);
   if (!searchTerm) {
     return this.ready();
   }
-  return getResults[collection](searchTerm, facets, maxResults);
+  return getResults[collection](searchTerm, facets, maxResults, this.userId);
 });
 

@@ -5,7 +5,7 @@ import { ProductSearch, OrderSearch, Orders, Products } from "/lib/collections";
 import utils from "./common";
 
 
-const productRequiredFields = ["_id", "hashtags", "shopId", "handle"];
+const productRequiredFields = ["_id", "hashtags", "shopId", "handle", "price", "isVisible"];
 
 function filterFields(customFields) {
   const fieldNames = [];
@@ -39,7 +39,7 @@ export function getSearchParameters(collection = "products") {
 
 export function buildProductSearchRecord(productId) {
   const product = Products.findOne(productId);
-  if (product.type === "simple") {
+  if (product.type === "simple" && product.isVisible) {
     const { fieldSet } = getSearchParameters();
     const productRecord = {};
     for (const field of fieldSet) {
