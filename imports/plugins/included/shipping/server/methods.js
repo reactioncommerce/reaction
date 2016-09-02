@@ -2,8 +2,12 @@ import { Shipping } from "/lib/collections";
 import { Reaction } from "/server/api";
 
 Meteor.methods({
-  /*
+  /**
    * add new shipping methods
+   * @summary insert Shipping methods for a provider
+   * @param {String} insertDoc shipping method
+   * @param {String} currentDoc current providerId
+   * @return {Number} insert result
    */
   addShippingMethod: function (insertDoc, currentDoc) {
     check(insertDoc, Object);

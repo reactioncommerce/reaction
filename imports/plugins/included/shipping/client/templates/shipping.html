@@ -110,9 +110,9 @@
 <template name="addShippingMethod">
   {{#autoForm
     schema=Schemas.ShippingMethod
-    doc=.
     id="shipping-method-add-form"
-    resetOnSuccess=false
+    resetOnSuccess=true
+    type="normal"
     }}
 
     <div class="panel panel-default">

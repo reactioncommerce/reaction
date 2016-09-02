@@ -1,9 +1,10 @@
-import { Reaction, i18next } from "/client/api";
-import { Packages, Shipping } from "/lib/collections";
 import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
 import { Template } from "meteor/templating";
 import { Blaze } from "meteor/blaze";
+import { AutoForm } from "meteor/aldeed:autoform";
+import { Reaction, i18next } from "/client/api";
+import { Packages, Shipping } from "/lib/collections";
 
 /*
  * Template shipping Helpers
@@ -143,6 +144,7 @@ Template.addShippingMethod.events({
   "click .cancel"(event) {
     event.preventDefault();
     Reaction.toggleSession("selectedAddShippingMethod");
+    Reaction.hideActionView();
   }
 });
 
@@ -243,12 +245,14 @@ AutoForm.hooks({
 AutoForm.hooks({
   "shipping-method-add-form": {
     onSubmit(insertDoc, updateDoc, currentDoc) {
+      const providerId = Template.instance().parentTemplate(4).$(".delete-shipping-method").data("provider-id");
       let error;
       try {
-        Meteor.call("addShippingMethod", insertDoc, currentDoc._id || currentDoc.id);
+        Meteor.call("addShippingMethod", insertDoc, providerId);
         this.done();
       } catch (_error) {
         error = _error;
+        this.event.preventDefault();
         this.done(new Error("Submission failed"));
       }
       return error || false;
