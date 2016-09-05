@@ -6,7 +6,7 @@ import { Jobs, Packages, Shops } from "/lib/collections";
 import { Hooks, Logger } from "/server/api";
 import ProcessJobs from "/server/jobs";
 import { getRegistryDomain } from "./setDomain";
-import { processTemplateInfo } from "./templates"
+import { registerTemplate } from "./templates";
 
 export default {
 
@@ -24,7 +24,6 @@ export default {
     }
 
     this.loadPackages();
-    this.loadTemplates();
     // process imports from packages and any hooked imports
     this.Import.flush();
     // timing is important, packages are rqd
@@ -39,7 +38,6 @@ export default {
   },
 
   Packages: {},
-  Templates: {},
 
   registerPackage(packageInfo) {
     const registeredPackage = this.Packages[packageInfo.name] =
@@ -47,16 +45,20 @@ export default {
     return registeredPackage;
   },
 
-  registerTemplate(templateInfo) {
-    return this.Templates[templateInfo.name] = processTemplateInfo(templateInfo);
-  },
+  registerTemplate(templateInfo, shopIds) {
+    if (typeof shopIds === "string") {
+      // Register template with supplied, single shopId
+      registerTemplate(templateInfo, shopIds);
+    } else if (Array.isArray(shopIds)) {
+      // Register template for all supplied shopIds
+      for (const shopId of shopIds) {
+        registerTemplate(templateInfo, shopId);
+      }
+    }
 
-  loadTemplates() {
-    _.each(this.Templates, (templateInfo) => {
-      return Shops.find().forEach((shop) => {
-        this.Import.template(templateInfo, shop._id);
-      });
-      // console.log(renderTemplateToStaticMarkup(templateInfo.template));
+    // Otherwise template for all available shops
+    return Shops.find().forEach((shop) => {
+      registerTemplate(templateInfo, shop._id);
     });
   },
 

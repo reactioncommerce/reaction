@@ -259,21 +259,20 @@ Import.package = function (pkg, shopId) {
 
 /**
  * @summary Store a template in the import buffer.
- * @param {Object} tempalteData The template data to be updated
+ * @param {Object} tempalteInfo The template data to be updated
  * @param {String} shopId The package data to be updated
  * @returns {undefined}
  */
-Import.template = function (template, shopId) {
-  check(template, Object);
+Import.template = function (templateInfo, shopId) {
+  check(templateInfo, Object);
   check(shopId, String);
+
   const key = {
-    name: template.name,
+    name: templateInfo.name,
     shopId: shopId
   };
 
-  const templateData = processTemplateInfo(template);
-
-  return this.object(Collections.Templates, key, templateData);
+  return this.object(Collections.Templates, key, templateInfo);
 };
 
 /**
