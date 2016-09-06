@@ -22,12 +22,12 @@ class VariantList extends Component {
         return (
           <EditContainer
             data={variant}
-            editTypes={["edit", "visibility"]}
             editView="variantForm"
             i18nKeyLabel="productDetailEdit.editVariant"
             key={index}
             label="Edit Variant"
             permissions={["createProduct"]}
+            showsVisibilityButton={true}
           >
             <Variant
               isSelected={this.props.variantIsSelected(variant._id)}
@@ -55,12 +55,12 @@ class VariantList extends Component {
         return (
           <EditContainer
             data={childVariant}
-            editTypes={["edit", "visibility"]}
             editView="variantForm"
             i18nKeyLabel="productDetailEdit.editVariant"
             key={index}
             label="Edit Variant"
             permissions={["createProduct"]}
+            showsVisibilityButton={true}
           >
             <ChildVariant
               isSelected={this.props.variantIsSelected(childVariant._id)}

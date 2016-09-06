@@ -1,12 +1,18 @@
 import React, { Component, PropTypes } from "react";
 import {
-  Metadata,
   NumericInput,
   Translation,
   TagList,
   Currency
 } from "/imports/plugins/core/ui/client/components/";
-import { AddToCartButton, MediaGallery } from "./"
+import {
+  AddToCartButton,
+  MediaGallery,
+  ProductMetadata,
+  ProductTags,
+  ProductField
+} from "./"
+import { EditContainer } from "/imports/plugins/core/ui/client/containers";
 
 class ProductDetail extends Component {
   get tags() {
@@ -17,52 +23,42 @@ class ProductDetail extends Component {
     return this.props.product || {};
   }
 
-  renderTags() {
-    if (Array.isArray(this.tags) && this.tags.length > 0) {
-      return (
-        <div>
-          <h3>
-            <Translation defaultValue="Tags" i18nKey="productDetail.tags" />
-          </h3>
-          <TagList editable={false} tags={this.tags} />
-        </div>
-      )
-    }
-  }
-
-  renderMetadata() {
-    if (Array.isArray(this.product.metafields) && this.product.metafields.length > 0) {
-      return (
-        <div>
-          <h3>
-            <Translation defaultValue="Details" i18nKey="productDetail.details" />
-          </h3>
-          <Metadata metafields={this.product.metafields} editable={false} />
-        </div>
-      )
-    }
+  get editable() {
+    return true
   }
 
   render() {
-    console.log("product tiotl", this.product.title);
+    console.log("product tiotl", this.product);
     return (
       <div className="container-main">
         <div className="container-fluid pdp-container" itemScope itemType="http://schema.org/Product">
           <header className="pdp header">
-              <div className="title">
-                <h1 id="title" itemProp="name">{this.product.title}</h1>
-              </div>
-              <div className="pageTitle">
-                <h2 id="pageTitle">{this.product.pageTitle}</h2>
-              </div>
+
+            <ProductField
+              editable={this.editable}
+              fieldName="title"
+              fieldTitle="Title"
+              element={<h1 />}
+              onProductFieldChange={this.props.handleProductFieldChange}
+              product={this.product}
+            />
+
+            <ProductField
+              editable={this.editable}
+              fieldName="pageTitle"
+              fieldTitle="Sub Title"
+              element={<h2 />}
+              onProductFieldChange={this.props.handleProductFieldChange}
+              product={this.product}
+            />
           </header>
 
 
           <div className="pdp-content">
             <div className="pdp column left pdp-left-column">
               <MediaGallery media={this.props.media} />
-              {this.renderTags()}
-              {this.renderMetadata()}
+              <ProductTags editable={true} product={this.product} tags={this.tags} />
+              <ProductMetadata editable={true} product={this.product} />
             </div>
 
             <div className="pdp column right pdp-right-column">
@@ -83,13 +79,24 @@ class ProductDetail extends Component {
 
 
               <div className="vendor">
-                {this.product.vendor}
+                <ProductField
+                  editable={this.editable}
+                  fieldName="vendor"
+                  fieldTitle="Vendor"
+                  onProductFieldChange={this.props.handleProductFieldChange}
+                  product={this.product}
+                />
               </div>
 
               <div className="pdp product-info">
-                <div className="description">
-                  {this.product.description}
-                </div>
+                <ProductField
+                  editable={this.editable}
+                  fieldName="description"
+                  fieldTitle="Description"
+                  multiline={true}
+                  onProductFieldChange={this.props.handleProductFieldChange}
+                  product={this.product}
+                />
               </div>
 
               <div className="options-add-to-cart">

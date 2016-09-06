@@ -22,28 +22,20 @@ class TextField extends Component {
    * @return {void}
    */
   onChange = (event) => {
-    this.setState({
-      value: event.target.value
-    });
-
     if (this.props.onChange) {
-      this.props.onChange(event);
+      this.props.onChange(event, event.target.value);
     }
   }
 
   /**
-   * onValueChange
+   * onBlur
    * @summary set the state when the value of the input is changed
    * @param  {Event} event Event object
    * @return {void}
    */
-  onValueChange = (event) => {
-    this.setState({
-      value: event.target.value
-    });
-
-    if (this.props.onValueChange) {
-      this.props.onValueChange(event);
+  onBlur = (event) => {
+    if (this.props.onBlur) {
+      this.props.onBlur(event, event.target.value);
     }
   }
 
@@ -87,15 +79,14 @@ class TextField extends Component {
 
     return (
       <input
-        type="text"
         className="{this.props.name}-edit-input"
+        type="text"
         {...this.props}
-        value={this.state.value}
+        onBlur={this.onBlur}
         onChange={this.onChange}
-        onBlur={this.onValueChange}
         placeholder={this.props.placeholder}
-
-        />
+        value={this.state.value}
+      />
     );
   }
 
@@ -137,7 +128,7 @@ class TextField extends Component {
 }
 
 TextField.defaultProps = {
-  align: "left"
+
 };
 
 TextField.propTypes = {

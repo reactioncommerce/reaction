@@ -74,7 +74,7 @@ class Button extends Component {
   render() {
     const classes = classnames({
       "btn": true,
-      "btn-default": this.props.status === null || this.props.status === "default",
+      "btn-default": this.props.status === null || this.props.status === undefined || this.props.status === "default",
       "active": this.props.active || this.props.toggleOn,
       "btn-success": this.props.status === "success",
       "btn-danger": this.props.status === "danger",

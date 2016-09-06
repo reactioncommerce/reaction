@@ -35,23 +35,43 @@ console.log("OPEN EDIT VIEW????", props);
       //   backgroundColor: "yellow"
       // }
     }
-    return (
-      <VisibilityButton
-        onClick={this.handleVisibilityButtonClick}
-        toggleOn={this.props.data.isVisible}
-        style={styles}
-        tooltip="Unpublised changes"
-      />
-    );
+
+    if (this.props.showsVisibilityButton) {
+      return (
+        <VisibilityButton
+          onClick={this.handleVisibilityButtonClick}
+          toggleOn={this.props.data.isVisible}
+          style={styles}
+          tooltip="Unpublised changes"
+        />
+      );
+    }
+
+    return null;
   }
 
   renderEditButton() {
-    let styles;
+    let status;
     let tooltip;
-    if (this.props.data.__draft) {
-      styles = {
-        backgroundColor: "yellow"
-      };
+
+    if (this.props.data.__draft && this.props.field) {
+      const draft = this.props.data.__draft;
+
+      if (Array.isArray(draft.diff)) {
+        for (const diff of draft.diff) {
+          if (diff.path[0] === this.props.field) {
+            status = "warning";
+
+            tooltip = (
+              <span>
+                <Translation defaultValue="Unpublised changes" i18nKey="revisions.unpublishedChanges" />
+              </span>
+            );
+          }
+        }
+      }
+    } else if (this.props.data.__draft) {
+      status = "warning";
 
       tooltip = (
         <span>
@@ -63,22 +83,31 @@ console.log("OPEN EDIT VIEW????", props);
     return (
       <EditButton
         onClick={this.handleEditButtonClick}
-        style={styles}
+        status={status}
         tooltip={tooltip}
       />
     );
   }
 
   render() {
-    if (this.props.hasPermission) {
-      return React.cloneElement(this.props.children, {
-        visibilityButton: this.renderVisibilityButton(),
-        editButton: this.renderEditButton()
-      });
+    if (this.props.children) {
+      if (this.props.hasPermission) {
+        return React.cloneElement(this.props.children, {
+          visibilityButton: this.renderVisibilityButton(),
+          editButton: this.renderEditButton()
+        });
+      }
+
+      return (
+        Children.only(this.props.children)
+      );
     }
 
     return (
-      Children.only(this.props.children)
+      <div className="rui edit-container">
+        {this.renderVisibilityButton()}
+        {this.renderEditButton()}
+      </div>
     );
   }
 }

@@ -1,3 +1,4 @@
+import { Meteor } from "meteor/meteor";
 import React, { Component, PropTypes } from "react";
 import { composeWithTracker } from "react-komposer";
 
@@ -84,7 +85,10 @@ function composer(props, onData) {
         product,
         priceRange,
         tags,
-        media: mediaArray.fetch()
+        media: mediaArray.fetch(),
+        handleProductFieldChange(productId, fieldName, value) {
+          Meteor.call("products/updateProductField", productId, fieldName, value);
+        }
       });
     }
   }
