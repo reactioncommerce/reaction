@@ -57,7 +57,7 @@ module.exports = {
     }
   },
   examplePaymentInfo: function () {
-    browser.waitForEnabled(eleMap.example_payment_cc, 6000);
+    browser.pause(6000);
     browser.setValue(eleMap.example_payment_cc, userData.visa);
     browser.pause("5000");
     browser.selectByValue(eleMap.example_payment_exp_month, userData.exp_month);
@@ -72,7 +72,7 @@ module.exports = {
     }
   },
   paypalPaymentInfo: function () {
-    browser.waitForEnabled(eleMap.paypal_cc, 6000);
+    browser.pause(6000);
     browser.setValue(eleMap.paypal_cc, userData.paypal_visa);
     browser.pause("5000");
     browser.selectByValue(eleMap.paypal_exp_month, userData.exp_month);
@@ -87,7 +87,7 @@ module.exports = {
     }
   },
   stripePaymentInfo: function () {
-    browser.waitForEnabled(eleMap.stripe_cc, 6000);
+    browser.pause(6000);
     browser.setValue(eleMap.stripe_cc, userData.stripe_visa);
     browser.pause("5000");
     browser.selectByValue(eleMap.stripe_exp_month, userData.exp_month);
