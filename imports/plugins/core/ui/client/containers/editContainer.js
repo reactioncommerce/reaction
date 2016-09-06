@@ -18,7 +18,7 @@ class EditContainer extends Component {
 
   handleEditButtonClick() {
     const props = this.props;
-console.log("OPEN EDIT VIEW????", props);
+
     Reaction.showActionView({
       label: props.label,
       i18nKeyLabel: props.i18nKeyLabel,
@@ -30,11 +30,6 @@ console.log("OPEN EDIT VIEW????", props);
   renderVisibilityButton() {
     let styles = {}
     let tooltip
-    if (this.props.data.__draft) {
-      // styles = {
-      //   backgroundColor: "yellow"
-      // }
-    }
 
     if (this.props.showsVisibilityButton) {
       return (
@@ -53,6 +48,7 @@ console.log("OPEN EDIT VIEW????", props);
   renderEditButton() {
     let status;
     let tooltip;
+    let hasChange = false;
 
     if (this.props.data.__draft && this.props.field) {
       const draft = this.props.data.__draft;
@@ -67,6 +63,8 @@ console.log("OPEN EDIT VIEW????", props);
                 <Translation defaultValue="Unpublised changes" i18nKey="revisions.unpublishedChanges" />
               </span>
             );
+
+            hasChange = true;
           }
         }
       }
@@ -78,6 +76,10 @@ console.log("OPEN EDIT VIEW????", props);
           <Translation defaultValue="Unpublised changes" i18nKey="revisions.unpublishedChanges" />
         </span>
       );
+    }
+
+    if (this.props.autoHideEditButton && hasChange === false) {
+      return null;
     }
 
     return (
@@ -113,7 +115,9 @@ console.log("OPEN EDIT VIEW????", props);
 }
 
 EditContainer.propTypes = {
+  autoHideEditButton: PropTypes.bool,
   children: PropTypes.node,
+  field: PropTypes.string,
   hasPermission: PropTypes.bool
 };
 

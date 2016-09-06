@@ -60,9 +60,10 @@ class TextField extends Component {
     return (
       <TextareaAutosize
         className="{this.props.name}-edit-input"
+        onChange={this.onChange}
+        onBlur={this.onBlur}
         placeholder={this.props.placeholder}
         value={this.state.value}
-        onChange={this.onValueChange}
       />
     );
   }
@@ -133,7 +134,8 @@ TextField.defaultProps = {
 
 TextField.propTypes = {
   align: PropTypes.oneOf(["left", "center", "right", "justify"]),
-  name: PropTypes.string
+  name: PropTypes.string,
+  placeholder: PropTypes.string
 };
 
 export default TextField;

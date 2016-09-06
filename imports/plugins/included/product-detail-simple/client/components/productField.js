@@ -51,6 +51,7 @@ class ProductField extends Component {
       return (
         <span className="edit-controls">
           <EditContainer
+            autoHideEditButton={true}
             data={this.props.product}
             editView="productEditForm"
             field={this.fieldName}
