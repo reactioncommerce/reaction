@@ -42,7 +42,7 @@ function composer(props, onData) {
     if (Reaction.hasPermission("createProduct")) {
       if (!Reaction.getActionView() && Reaction.isActionViewOpen() === true) {
         Reaction.setActionView({
-          template: "productDetailForm",
+          template: "productAdmin",
           data: product
         });
       }

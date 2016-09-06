@@ -3,15 +3,23 @@ import { composeWithTracker } from "react-komposer";
 
 import { ReactionProduct } from "/lib/api";
 import { Reaction, i18next, Logger } from "/client/api";
-import { Tags, Media } from "/lib/collections";
 import { Social } from "../components";
 import SocialContainer from "/imports/plugins/included/social/client/containers/socialContainer"
-
+import { EditContainer } from "/imports/plugins/core/ui/client/containers";
+//["facebookMsg", "twitterMsg", "googleplusMsg", "pinterestMsg"]
 class ProductSocialContainer extends Component {
   render() {
-    console.log(this.props);
     return (
-      <SocialContainer {...this.props} />
+      <EditContainer
+        data={this.props.data}
+        editView="variantForm"
+
+        i18nKeyLabel="productDetailEdit.editSocial"
+        label="Edit Social Messaging"
+        permissions={["createProduct"]}
+      >
+        <SocialContainer {...this.props} />
+      </EditContainer>
     );
   }
 }
@@ -28,8 +36,6 @@ function composer(props, onData) {
     title = ReactionProduct.selectedVariant().title;
   }
 
-  console.log(socialApps);
-
   let description
 
   if (typeof product.description === "string") {
@@ -37,6 +43,7 @@ function composer(props, onData) {
   }
 
   onData(null, {
+    data: product,
     title: product.title,
     description,
     placement: "productDetail",

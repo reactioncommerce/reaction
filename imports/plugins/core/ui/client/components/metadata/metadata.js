@@ -10,6 +10,8 @@ import {
   Items
 } from "../";
 
+import Metafield from "./metafield";
+
 class Metadata extends Component {
 
   /**
@@ -21,6 +23,35 @@ class Metadata extends Component {
     event.preventDefault();
   }
 
+  handleChange = (event) => {
+    const productId = ReactionProduct.selectedProductId();
+    const updateMeta = {
+      key: $(event.currentTarget).parent().children(".metafield-key-input").val(),
+      value: $(event.currentTarget).parent().children(".metafield-value-input").val()
+    };
+
+    if (this.key) {
+      const index = $(event.currentTarget).closest(".metafield-list-item").index();
+      Meteor.call("products/updateMetaFields", productId, updateMeta, index);
+      $(event.currentTarget).animate({
+        backgroundColor: "#e2f2e2"
+      }).animate({
+        backgroundColor: "#fff"
+      });
+      return Tracker.flush();
+    }
+
+    if (updateMeta.value && !updateMeta.key) {
+      $(event.currentTarget).parent().children(".metafield-key-input").val("").focus();
+    }
+    if (updateMeta.key && updateMeta.value) {
+      Meteor.call("products/updateMetaFields", productId, updateMeta);
+      Tracker.flush();
+      $(event.currentTarget).parent().children(".metafield-key-input").val("").focus();
+      return $(event.currentTarget).parent().children(".metafield-value-input").val("");
+    }
+  }
+
   handleRemove = (event) => {
     console.log("Remove!!");
   }
@@ -29,19 +60,36 @@ class Metadata extends Component {
     console.log("sort!!!!");
   }
 
+  handleMetaChange = (event, metafield, index) => {
+    if (this.props.onMetaChange) {
+      this.props.onMetaChange(event, metafield, index);
+    }
+  }
+
+  handleMetaSave = (event, metafield, index) => {
+    if (this.props.onMetaSave) {
+      console.log("wuld save that meta", index, metafield);
+      this.props.onMetaSave(event, metafield, index);
+    }
+  }
+
   /**
    * Render user readable metadata
    * @return {JSX} metadata
    */
   renderMetadata() {
-    return this.props.metafields.map((metadata, index) => {
-      return (
-        <div className="rui meta-item" key={index}>
-          <div className="rui meta-key">{metadata.key}</div>
-          <div className="rui meta-key">{metadata.value}</div>
-        </div>
-      );
-    });
+    if (this.props.metafields) {
+      return this.props.metafields.map((metadata, index) => {
+        return (
+          <div className="rui meta-item" key={index}>
+            <div className="rui meta-key">{metadata.key}</div>
+            <div className="rui meta-key">{metadata.value}</div>
+          </div>
+        );
+      });
+    }
+
+    return null;
   }
 
   /**
@@ -49,24 +97,22 @@ class Metadata extends Component {
    * @return {JSX} metadata forms for each row of metadata
    */
   renderMetadataForm() {
-    const fields = this.props.metafields.map((metadata, index) => {
-      return (
-        <div className="rui list-group-item metafield-list-item" key={index} >
-          <form className="form form-inline" onSubmit={this.handleSubmit}>
-            <TextField className="metafield-key-input" name="key" value={metadata.key} />
-            <TextField className="metafield-value-input" name="value" value={metadata.value} />
-            <Button icon="times-circle" onClick={this.handleRemove} type="button" />
-          </form>
-        </div>
-      );
-    });
+    if (this.props.metafields) {
+      return this.props.metafields.map((metadata, index) => {
+        console.log();
+        return (
+          <Metafield
+            key={index}
+            index={index}
+            onBlur={this.handleMetaSave}
+            onChange={this.handleMetaChange}
+            metafield={metadata}
+          />
+        );
+      });
+    }
 
-    // Blank fields for creating new metadata
-    // fields.push(
-    //
-    // );
-
-    return fields;
+    return null;
   }
 
   renderMetadataCreateForm() {

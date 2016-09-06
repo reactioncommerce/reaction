@@ -23,6 +23,18 @@ class SocialButtons extends Component {
     return this.props.settings.apps[provider];
   }
 
+  renderEditButton() {
+    if (this.props.editButton) {
+      return (
+        <span className="social-buttons-controls">
+          {this.props.editButton}
+        </span>
+      );
+    }
+
+    return null;
+  }
+
   renderButtons() {
     if (this.props.providers) {
       return this.props.providers.map((provider) => {
@@ -50,8 +62,9 @@ class SocialButtons extends Component {
 
   render() {
     return (
-      <div>
+      <div className="rui social-buttons">
         {this.renderButtons()}
+        {this.renderEditButton()}
       </div>
     );
   }
@@ -59,6 +72,7 @@ class SocialButtons extends Component {
 
 SocialButtons.propTypes = {
   description: PropTypes.string,
+  editButton: PropTypes.node,
   providers: PropTypes.arrayOf(PropTypes.string),
   settings: PropTypes.shape({
     apps: PropTypes.object

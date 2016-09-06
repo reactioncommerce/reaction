@@ -1,6 +1,7 @@
 import React, { Component, PropTypes} from "react";
 import classnames from "classnames";
 import TextareaAutosize from "react-textarea-autosize";
+import { Translation } from "../translation";
 
 class TextField extends Component {
   constructor(props) {
@@ -23,7 +24,7 @@ class TextField extends Component {
    */
   onChange = (event) => {
     if (this.props.onChange) {
-      this.props.onChange(event, event.target.value);
+      this.props.onChange(event, event.target.value, this.props.name);
     }
   }
 
@@ -35,7 +36,7 @@ class TextField extends Component {
    */
   onBlur = (event) => {
     if (this.props.onBlur) {
-      this.props.onBlur(event, event.target.value);
+      this.props.onBlur(event, event.target.value, this.props.name);
     }
   }
 
@@ -63,6 +64,7 @@ class TextField extends Component {
         onChange={this.onChange}
         onBlur={this.onBlur}
         placeholder={this.props.placeholder}
+        ref="input"
         value={this.state.value}
       />
     );
@@ -86,6 +88,7 @@ class TextField extends Component {
         onBlur={this.onBlur}
         onChange={this.onChange}
         placeholder={this.props.placeholder}
+        ref="input"
         value={this.state.value}
       />
     );
@@ -103,6 +106,16 @@ class TextField extends Component {
     return this.renderSingleLineInput();
   }
 
+  renderLabel() {
+    if (this.props.label) {
+      return (
+        <label>
+          <Translation defaultValue={this.props.label} i18nKey={this.props.i18nKey} />
+        </label>
+      );
+    }
+  }
+
   /**
    * Render Component
    * @return {JSX} component
@@ -112,6 +125,7 @@ class TextField extends Component {
       // Base
       rui: true,
       textfield: true,
+      "form-group": true,
 
       // Alignment
       center: this.props.align === "center",
@@ -121,6 +135,7 @@ class TextField extends Component {
 
     return (
       <div className={classes}>
+        {this.renderLabel()}
         {this.renderField()}
         <span className="product-detail-message" id="{{field}}-message"></span>
       </div>

@@ -53,7 +53,7 @@ class ProductField extends Component {
           <EditContainer
             autoHideEditButton={true}
             data={this.props.product}
-            editView="productEditForm"
+            editView="ProductAdmin"
             field={this.fieldName}
             i18nKeyLabel={`productDetailEdit.${this.field}`}
             label="Edit Field"

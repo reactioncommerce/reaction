@@ -16,9 +16,9 @@ class EditContainer extends Component {
     this.handleEditButtonClick = this.handleEditButtonClick.bind(this);
   }
 
-  handleEditButtonClick() {
+  handleEditButtonClick = () => {
     const props = this.props;
-
+    console.log("!!!!!!", props.editView);
     Reaction.showActionView({
       label: props.label,
       i18nKeyLabel: props.i18nKeyLabel,
@@ -106,10 +106,10 @@ class EditContainer extends Component {
     }
 
     return (
-      <div className="rui edit-container">
+      <span className="rui edit-container">
         {this.renderVisibilityButton()}
         {this.renderEditButton()}
-      </div>
+      </span>
     );
   }
 }
