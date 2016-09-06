@@ -2,9 +2,9 @@ import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Reaction, Logger } from "/server/api";
-import { ProductSearch, OrderSearch } from "/lib/collections";
+import { ProductSearch, OrderSearch, AccountSearch } from "/lib/collections";
 
-const supportedCollections = ["products", "orders"];
+const supportedCollections = ["products", "orders", "accounts"];
 
 function getProductFindTerm(searchTerm, searchTags, userId) {
   const shopId = Reaction.getShopId();
@@ -64,6 +64,24 @@ getResults.orders = function (searchTerm, facets, maxResults, userId) {
     Logger.info(`Found ${orderResults.count()} orders`);
   }
   return orderResults;
+};
+
+getResults.accounts = function (searchTerm, facets, maxResults, userId) {
+  let accountResults;
+  const shopId = Reaction.getShopId();
+  if (Roles.userIsInRole(userId, ["admin", "owner"], shopId)) {
+    accountResults = AccountSearch.find({
+      shopId: shopId, $text: {$search: searchTerm}
+      }, {
+        fields: {
+          score: {$meta: "textScore"}
+        },
+        limit: maxResults
+      }
+    );
+    Logger.info(`Found ${accountResults.count()} account`);
+  }
+  return accountResults;
 };
 
 Meteor.publish("SearchResults", function (collection, searchTerm, facets, maxResults = 99) {

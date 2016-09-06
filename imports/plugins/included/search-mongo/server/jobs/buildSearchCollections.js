@@ -1,9 +1,7 @@
 import { Meteor } from "meteor/meteor";
-import { Jobs, ProductSearch, Orders, OrderSearch } from "/lib/collections";
+import { Jobs, ProductSearch, Orders, OrderSearch, AccountSearch } from "/lib/collections";
 import { Hooks, Logger } from "/server/api";
-import { buildProductSearch,
-  rebuildProductSearchIndex,
-  buildOrderSearch } from "../methods/";
+import { buildProductSearch, buildOrderSearch, buildAccountSearch, rebuildProductSearchIndex } from "../methods/";
 
 
 function addBuildProductSearchCollection() {
@@ -21,7 +19,7 @@ function addBuildProductSearchCollection() {
         cancelRepeats: true
       });
   } else {
-    Logger.info("ProductSearch collection already exists, not building");
+    Logger.debug("ProductSearch collection already exists, not building");
   }
 }
 
@@ -41,7 +39,26 @@ function addBuildOrderSearchCollection() {
         cancelRepeats: true
       });
   } else {
-    Logger.info("OrderSearch collection already exists (or no orders), not building");
+    Logger.debug("OrderSearch collection already exists (or no orders), not building");
+  }
+}
+
+function addBuildAccountSearchCollection() {
+  const accountSearchCount = AccountSearch.find({}).count();
+  if (!accountSearchCount) {
+    Logger.info("No AccountSearch records found. Adding build AccountSearch Collection to jobs");
+    new Job(Jobs, "account/buildSearchCollection", {})
+      .priority("normal")
+      .retry({
+        retries: 5,
+        wait: 60000,
+        backoff: "exponential"
+      })
+      .save({
+        cancelRepeats: true
+      });
+  } else {
+    Logger.debug("AccountSearch collection already exists, not building");
   }
 }
 
@@ -49,6 +66,7 @@ Hooks.Events.add("afterCoreInit", () => {
   if (!Meteor.isAppTest) {
     addBuildProductSearchCollection();
     addBuildOrderSearchCollection();
+    addBuildAccountSearchCollection();
   }
 });
 
@@ -109,6 +127,27 @@ export default function () {
           callback();
         } else {
           const success = "OrderSearch collection (re)built successfully.";
+          Logger.info(success);
+          job.done(success, { repeatId: true });
+          callback();
+        }
+      });
+    }
+  );
+
+  Jobs.processJobs("account/buildSearchCollection",
+    {
+      pollInterval: 30 * 1000,
+      workTimeout: 180 * 1000
+    },
+    (job, callback) => {
+      Logger.info("(re)build AccountSearch index running");
+      buildAccountSearch(function (error) {
+        if (error) {
+          job.done(error.toString(), {repeatId: true});
+          callback();
+        } else {
+          const success = "AccountSearch collection (re)built successfully.";
           Logger.info(success);
           job.done(success, { repeatId: true });
           callback();

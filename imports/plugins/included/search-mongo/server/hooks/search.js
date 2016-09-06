@@ -1,9 +1,29 @@
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
-import { Products, ProductSearch, Orders, OrderSearch } from "/lib/collections";
+import { Products, ProductSearch, Orders, OrderSearch, Accounts, AccountSearch } from "/lib/collections";
 import { getSearchParameters,
-  buildProductSearchRecord, buildOrderSearchRecord } from "../methods/searchcollections";
+  buildProductSearchRecord, buildOrderSearchRecord, buildAccountSearchRecord } from "../methods/searchcollections";
 import { Logger } from "/server/api";
+
+Accounts.after.insert((userId, doc) => {
+  if (AccountSearch && !Meteor.isAppTest) {
+    buildAccountSearchRecord(doc._id);
+  }
+});
+
+Accounts.after.remove((userId, doc) => {
+  if (AccountSearch && !Meteor.isAppTest) {
+    AccountSearch.remove(doc._id);
+  }
+});
+
+Accounts.after.update((userId, doc) => {
+  if (AccountSearch && !Meteor.isAppTest) {
+    const accountId = doc._id;
+    AccountSearch.remove(accountId);
+    buildAccountSearchRecord(accountId);
+  }
+});
 
 
 Orders.after.remove((userId, doc) => {

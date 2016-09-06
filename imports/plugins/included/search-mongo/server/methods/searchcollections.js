@@ -1,7 +1,7 @@
 import _ from "lodash";
 import { check, Match } from "meteor/check";
 import { Reaction, Logger } from "/server/api";
-import { ProductSearch, OrderSearch, Orders, Products } from "/lib/collections";
+import { ProductSearch, OrderSearch, AccountSearch, Orders, Products, Accounts } from "/lib/collections";
 import utils from "./common";
 
 
@@ -135,6 +135,42 @@ export function buildOrderSearchRecord(orderId, cb) {
   OrderSearch.insert(orderSearch);
   const rawOrderSearchCollection = OrderSearch.rawCollection();
   rawOrderSearchCollection.createIndex({"$**": "text"}, {shippingName: 5, billingName: 5});
+  if (cb) {
+    cb();
+  }
+}
+
+export function buildAccountSearch(cb) {
+  check(cb, Match.Optional(Function));
+  const accounts = Accounts.find({}).fetch();
+  for (const account of accounts) {
+    const accountSearch = {
+      _id: account._id,
+      emails: account.emails,
+      profile: account.profile
+    };
+    AccountSearch.insert(accountSearch);
+  }
+  const rawAccountSearchCollection = AccountSearch.rawCollection();
+  rawAccountSearchCollection.dropIndexes("*");
+  rawAccountSearchCollection.createIndex({"$**": "text"});
+  if (cb) {
+    cb();
+  }
+}
+
+export function buildAccountSearchRecord(accountId, cb) {
+  check(accountId, String);
+  check(cb, Match.Optional(Function));
+  const account = Accounts.findOne(accountId);
+  const accountSearch = {
+    _id: account._id,
+    emails: account.emails,
+    profile: account.profile
+  };
+  AccountSearch.insert(accountSearch);
+  const rawAccountSearchCollection = AccountSearch.rawCollection();
+  rawAccountSearchCollection.createIndex({"$**": "text"});
   if (cb) {
     cb();
   }
