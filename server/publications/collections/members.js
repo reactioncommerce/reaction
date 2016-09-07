@@ -34,6 +34,7 @@ Meteor.publish("ShopMembers", function () {
         emails: 1,
         username: 1,
         roles: 1,
+        "profile.lang": 1,
         "services.google.name": 1,
         "services.google.email": 1,
         "services.google.picture": 1,
