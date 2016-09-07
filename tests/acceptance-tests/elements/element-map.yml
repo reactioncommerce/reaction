@@ -19,6 +19,7 @@ first_order_new_btn: "button.btn.btn-success"
 order_total: "//div[2]/div[2]/span"
 order_total_w_tax: "//div[3]/div[2]/span"
 order_total_post_discount: "//div[4]/div[2]/span"
+new_orders_header: "span.label"
 
 # orders details
 approve_btn: "//button[@type='submit']"
