@@ -15,6 +15,11 @@ class Tag extends React.Component {
 
   constructor(props) {
     super(props)
+
+    this.state = {
+      inputValue: props.tag.name,
+      suggestion: ""
+    };
   }
 
   handleSuggestionUpdateRequest = ({ value }) => {
@@ -96,28 +101,28 @@ class Tag extends React.Component {
    * @return {void} no return value
    */
   handleFocus = (event) => {
-    $(event.currentTarget).autocomplete({
-      delay: 0,
-      source: function (request, response) {
-        let datums = [];
-        let slug = Reaction.getSlug(request.term);
-        Tags.find({
-          slug: new RegExp(slug, "i")
-        }).forEach(function (tag) {
-          return datums.push({
-            label: tag.name
-          });
-        });
-        return response(datums);
-      },
-      select: (selectEvent, ui) => {
-        if (ui.item.value) {
-          if (this.props.onTagUpdate) {
-            this.props.onTagUpdate(this.props.tag._id, ui.item.value);
-          }
-        }
-      }
-    });
+    // $(event.currentTarget).autocomplete({
+    //   delay: 0,
+    //   source: function (request, response) {
+    //     let datums = [];
+    //     let slug = Reaction.getSlug(request.term);
+    //     Tags.find({
+    //       slug: new RegExp(slug, "i")
+    //     }).forEach(function (tag) {
+    //       return datums.push({
+    //         label: tag.name
+    //       });
+    //     });
+    //     return response(datums);
+    //   },
+    //   select: (selectEvent, ui) => {
+    //     if (ui.item.value) {
+    //       if (this.props.onTagUpdate) {
+    //         this.props.onTagUpdate(this.props.tag._id, ui.item.value);
+    //       }
+    //     }
+    //   }
+    // });
   };
 
   /**
@@ -159,11 +164,7 @@ class Tag extends React.Component {
         <Button icon="bars" />
           {this.renderAutosuggestInput()}
 
-        <Autosuggest
-          onFocus={this.handleFocus}
-          onKeyDown={this.handleTagUpdate}
-          value={this.props.tag.name}
-        />
+
         <Button icon="times-circle" onClick={this.handleTagRemove} status="danger" />
       </div>
     );
@@ -186,32 +187,53 @@ class Tag extends React.Component {
     );
   }
 
-  renderAutosuggestInput(templateInstance, options) {
+  renderSuggestion(suggestion) {
+    return (
+      <span>{suggestion.label}</span>
+    )
+  }
+
+  getSuggestionValue(suggestion) {
+    return suggestion.label;
+  }
+
+  handleInputChange = (event, { newValue }) => {
+
+    if (this.props.onGetSuggestions) {
+      console.log({ newValue });
+      this.props.onGetSuggestions(newValue);
+    }
+
+    this.setState({
+      suggestion: this.getSuggestionValue(newValue),
+      inputValue: newValue
+    });
+  }
+
+  renderAutosuggestInput() {
     return (
       <Autosuggest
-        suggestions={this.state.suggestions}
-        getSuggestionValue={getSuggestionValue}
-        renderSuggestion={renderSuggestion}
-        onSuggestionsUpdateRequested={({ value }) => {
-          templateInstance.state.set("suggestions", getSuggestions(value));
+        suggestions={this.props.suggestions}
+        getSuggestionValue={this.getSuggestionValue}
+        renderSuggestion={this.renderSuggestion}
+        onSuggestionsUpdateRequested={(suggestion) => {
+          if (this.props.onSuggestionsUpdateRequested) {
+            this.props.onSuggestionsUpdateRequested(suggestion)
+          }
         }}
         inputProps={{
-          placeholder: i18next.t(options.i18nPlaceholderKey, { defaultValue: options.i18nPlaceholderValue}),
-          value: templateInstance.state.get("inputValue"),
+          placeholder: i18next.t(this.props.i18nPlaceholderKey, { defaultValue: this.props.i18nPlaceholderValue}),
+          value: this.state.inputValue,
           onKeyDown(event) {
             // 9 == Tab key
             // 13 == Enter Key
             if (event.keyCode === 9 || event.keyCode === 13) {
-              options.onUpdateCallback && options.onUpdateCallback();
+              // this.handleUpdate
+              // options.onUpdateCallback && options.onUpdateCallback();
             }
           },
-          onBlur: () => {
-            options.onUpdateCallback && options.onUpdateCallback();
-          },
-          onChange(event, { newValue }) {
-            templateInstance.state.set("suggestion", getSuggestions(newValue));
-            templateInstance.state.set("inputValue", newValue);
-          }
+          onBlur: this.handleTagMouseOut,
+          onChange: this.handleInputChange
         }}
       />
     );

@@ -3,12 +3,18 @@ import { Reaction } from "/client/api";
 import { EditButton } from "/imports/plugins/core/ui/client/components";
 import { composeWithTracker } from "react-komposer";
 import { TagList } from "../components/tags"
+import { Tags } from "/lib/collections";
+
+import { ReactiveDict } from "meteor/reactive-dict";
+
 // import isEqual
 
 
+const externalState = new ReactiveDict();
+externalState.set("suggestions", []);
 
-
-function getSuggestions(term) {
+function updateSuggestions(term) {
+  console.log("GET SUGGESTIONS FOR", term);
   const datums = [];
   const slug = Reaction.getSlug(term);
   Tags.find({
@@ -19,67 +25,27 @@ function getSuggestions(term) {
     });
   });
 
-  return datums;
+
+  externalState.set("suggestions", datums);
 }
 
-function getSuggestionValue(suggestion) {
-  return suggestion.label;
-}
-
-function renderSuggestion(suggestion) {
-  return React.createElement("span", null, suggestion.label);
-}
-
+// function getSuggestionValue(suggestion) {
+//   return suggestion.label;
+// }
+//
+// function renderSuggestion(suggestion) {
+//   return React.createElement("span", null, suggestion.label);
+// }
 
 
 class TagListContainer extends Component {
-
-  constructor(props) {
-    super(props);
-
-    this.handleEditButtonClick = this.handleEditButtonClick.bind(this);
-  }
-
-  handleGetT
-
-  handleEditButtonClick() {
-    const props = this.props;
-console.log("OPEN EDIT VIEW????", props);
-    Reaction.showActionView({
-      label: props.label,
-      i18nKeyLabel: props.i18nKeyLabel,
-      template: props.editView,
-      data: props.data
-    });
-  }
-
-  renderEditButton() {
-    let styles = {}
-    if (this.props.data.__draft) {
-      styles = {
-        backgroundColor: "yellow"
-      }
-    }
-
+  render() {
     return (
       <TagList
-        getSuggestions={getSuggestions}
         onClick={this.handleEditButtonClick}
-        style={styles}
         tooltip="Unpublised changes"
+        {...this.props}
       />
-    );
-  }
-
-  render() {
-    if (this.props.hasPermission) {
-      return React.cloneElement(this.props.children, {
-        editButton: this.renderEditButton()
-      });
-    }
-
-    return (
-      Children.only(this.props.children)
     );
   }
 }
@@ -90,10 +56,24 @@ TagListContainer.propTypes = {
 };
 
 function composer(props, onData) {
+  let tags = props.tags;
+
+  if (props.product) {
+    if (_.isArray(props.product.hashtags)) {
+      tags = _.map(props.product.hashtags, function (id) {
+        return Tags.findOne(id);
+      });
+    }
+  }
 
 
   onData(null, {
-    hasPermission: Reaction.hasPermission(props.premissions)
+    handleGetSuggestions(term) {
+      updateSuggestions(term);
+    },
+    suggestions: externalState.get("suggestions"),
+    tags,
+    editable: Reaction.hasPermission(props.premissions)
   });
 }
 

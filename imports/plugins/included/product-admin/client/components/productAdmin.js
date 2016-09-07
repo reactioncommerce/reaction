@@ -5,8 +5,11 @@ import {
   CardHeader,
   CardBody,
   Metadata,
-  TextField
+  TextField,
+  TagList,
 } from "/imports/plugins/core/ui/client/components";
+
+import { TagListContainer } from "/imports/plugins/core/ui/client/containers";
 
 class ProductAdmin extends Component {
   constructor(props) {
@@ -150,6 +153,18 @@ class ProductAdmin extends Component {
               onBlur={this.handleFieldBlur}
               onChange={this.handleFieldChange}
               value={this.state.googleplusMsg}
+            />
+          </CardBody>
+        </Card>
+
+        <Card>
+          <CardHeader
+            i18nKeyTitle="productDetailEdit.tags"
+            title="Tags"
+          />
+          <CardBody>
+            <TagListContainer
+              product={this.props.product}
             />
           </CardBody>
         </Card>

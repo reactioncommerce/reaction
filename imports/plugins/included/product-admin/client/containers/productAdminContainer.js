@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import { composeWithTracker } from "react-komposer";
 import { ReactionProduct } from "/lib/api";
+import { Tags, Media } from "/lib/collections";
 import { ProductAdmin } from "../components";
 
 class ProductAdminContainer extends Component {
@@ -53,9 +54,36 @@ function handleProductMetafieldRemove(productId, metafield) {
 
 function composer(props, onData) {
   const product = ReactionProduct.selectedProduct();
+  let tags;
+  let media;
+
+  if (product) {
+    if (_.isArray(product.hashtags)) {
+      tags = _.map(product.hashtags, function (id) {
+        return Tags.findOne(id);
+      });
+    }
+
+    let mediaArray = [];
+    let selectedVariant = ReactionProduct.selectedVariant();
+
+    if (selectedVariant) {
+      mediaArray = Media.find({
+        "metadata.variantId": selectedVariant._id
+      }, {
+        sort: {
+          "metadata.priority": 1
+        }
+      });
+    }
+  }
+
+
 
   onData(null, {
     product: product,
+    media,
+    tags,
     handleProductFieldChange,
     handleProductMetafieldChange,
     handleProductMetafieldRemove

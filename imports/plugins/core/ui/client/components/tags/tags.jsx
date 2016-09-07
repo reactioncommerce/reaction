@@ -9,10 +9,17 @@ class Tags extends Component {
 
   constructor(props) {
     super(props);
+
+    let tags = [];
+
+    if (Array.isArray(props.tags)) {
+      tags = props.tags;
+    }
+
     this.state = {
       isEditing: true,
-      tags: props.tags,
-      tagIds: props.tags.map((tag) => tag._id)
+      tags: tags,
+      tagIds: tags.map((tag) => tag._id)
     };
   }
 
@@ -28,21 +35,23 @@ class Tags extends Component {
   }
 
   componentWillReceiveProps(props) {
-    this.setState({
-      tags: this.props.tags,
-      tagIds: this.props.tags.map((tag) => tag._id)
-    });
+    if (Array.isArray(props.tags)) {
+      this.setState({
+        tags: props.tags,
+        tagIds: props.tags.map((tag) => tag._id)
+      });
 
-    if (props.editable && this.state.isEditing) {
-      if (this._sortable) {
-        // this._sortable.option("disabled", false);
-      } else {
-        this._sortable = Sortable.create(this.refs.tags, {
-          group: "tags",
-          onSort: this.handleDragSort,
-          onAdd: this.handleDragAdd,
-          onRemove: this.handleDragRemove
-        });
+      if (props.editable && this.state.isEditing) {
+        if (this._sortable) {
+          // this._sortable.option("disabled", false);
+        } else {
+          this._sortable = Sortable.create(this.refs.tags, {
+            group: "tags",
+            onSort: this.handleDragSort,
+            onAdd: this.handleDragAdd,
+            onRemove: this.handleDragRemove
+          });
+        }
       }
     }
   }
@@ -179,6 +188,9 @@ class Tags extends Component {
               data-id={tag._id}
               editable={this.props.editable}
               key={tag._id || index}
+              suggestions={this.props.suggestions}
+              onSuggestionUpdateRequested={this.props.onSuggestionUpdateRequested}
+              onGetSuggestions={this.props.handleGetSuggestions}
               onTagBookmark={this.handleTagBookmark}
               onTagMouseOut={this.handleTagMouseOut}
               onTagMouseOver={this.handleTagMouseOver}
