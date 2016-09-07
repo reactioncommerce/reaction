@@ -60,7 +60,7 @@
             {{#if selectedAddShippingMethod}}
               <tr class="active">
               <td colspan="8">
-              {{> addShippingMethod id=this._id }}
+              {{> addShippingMethod provider=this._id }}
               </td>
               </tr>
             {{/if}}
@@ -95,7 +95,7 @@
             </tbody>
           </table>
         {{else}}
-           {{> addShippingMethod}}
+          {{> addShippingMethod provider=this }}
         {{/if}}
         </div>
       </div>
@@ -112,6 +112,8 @@
     schema=Schemas.ShippingMethod
     id="shipping-method-add-form"
     resetOnSuccess=true
+    doc=provider
+    meteormethod="shipping/methods/add"
     type="normal"
     }}
 
@@ -195,14 +197,14 @@
         id="shipping-provider-add-form"
         template="bootstrap3-inline"
         type="method"
-        meteormethod="addShippingProvider"
+        meteormethod="shipping/provider/add"
         resetOnSuccess=false
         }}
       <fieldset>
       <!-- <legend>Add Provider</legend> -->
-      <div class="col-md-12">
-        {{>afQuickField name='provider.name' autofocus='' placeholder="STDPOSTAL"}}
-        {{>afQuickField name='provider.label' placeholder="FLAT RATE"}}
+      <div class="col-md-6">
+        {{>afQuickField name='provider.name' autofocus='' placeholder="STDPOSTAL" class='form-control'}}
+        {{>afQuickField name='provider.label' placeholder="FLAT RATE" class='form-control'}}
         {{>afQuickField name='provider.enabled'}}
       </div>
       </fieldset>
@@ -222,7 +224,7 @@
         {{provider.name}}
       </h3>
       <div class="panel-controls">
-        <button type="button" class="btn btn-link"><i class="fa fa-trash-o"></i></button>
+        <button type="button" class="btn btn-link" data-event-action="deleteShippingProvider"><i class="fa fa-trash-o"></i></button>
       </div>
     </div>
     <div class="panel-body">
@@ -232,7 +234,7 @@
         template="bootstrap3-inline"
         id="shipping-provider-update-form"
         type="method-update"
-        meteormethod="updateShippingProvider"
+        meteormethod="shipping/provider/update"
         resetOnSuccess=false
         }}
 
