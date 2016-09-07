@@ -1,7 +1,7 @@
 import { Shipping } from "/lib/collections";
 import { Reaction } from "/server/api";
 
-Meteor.methods({
+export const methods = {
   /**
    * add new shipping methods
    * @summary insert Shipping methods for a provider
@@ -9,15 +9,18 @@ Meteor.methods({
    * @param {String} currentDoc current providerId
    * @return {Number} insert result
    */
-  addShippingMethod: function (insertDoc, currentDoc) {
+  "shipping/methods/add": function (insertDoc, currentDoc) {
     check(insertDoc, Object);
-    check(currentDoc, String);
+    check(currentDoc, Match.Optional(String));
+    // if no currentDoc we need to insert a default provider.
+    const id = currentDoc || Random.id();
+
     if (!Reaction.hasPermission("shipping")) {
       throw new Meteor.Error(403, "Access Denied");
     }
 
     return Shipping.update({
-      _id: currentDoc
+      _id: id
     }, {
       $addToSet: {
         methods: insertDoc
@@ -33,7 +36,7 @@ Meteor.methods({
    * @param {Object} updateMethod - updated method itself
    * @return {Number} update result
    */
-  updateShippingMethods: function (providerId, methodId, updateMethod) {
+  "shipping/methods/update": function (providerId, methodId, updateMethod) {
     check(providerId, String);
     check(methodId, String);
     check(updateMethod, Object);
@@ -54,7 +57,7 @@ Meteor.methods({
   /*
    * remove shipping method
    */
-  removeShippingMethod: function (providerId, removeDoc) {
+  "shipping/methods/remove": function (providerId, removeDoc) {
     check(providerId, String);
     check(removeDoc, Object);
     if (!Reaction.hasPermission("shipping")) {
@@ -74,7 +77,7 @@ Meteor.methods({
   /*
    * add / insert shipping provider
    */
-  addShippingProvider: function (doc) {
+  "shipping/provider/add": function (doc) {
     check(doc, Object);
     if (!Reaction.hasPermission("shipping")) {
       throw new Meteor.Error(403, "Access Denied");
@@ -85,7 +88,7 @@ Meteor.methods({
   /*
    * update shipping provider
    */
-  updateShippingProvider: function (updateDoc, currentDoc) {
+  "shipping/provider/update": function (updateDoc, currentDoc) {
     check(updateDoc, Object);
     check(currentDoc, String);
     if (!Reaction.hasPermission("shipping")) {
@@ -94,5 +97,17 @@ Meteor.methods({
     return Shipping.update({
       _id: currentDoc
     }, updateDoc);
+  },
+  /*
+   * remove shipping provider
+   */
+  "shipping/provider/remove": function (providerId) {
+    check(providerId, String);
+    if (!Reaction.hasPermission("shipping")) {
+      throw new Meteor.Error(403, "Access Denied");
+    }
+    return Shipping.remove(providerId);
   }
-});
+}
+
+Meteor.methods(methods);
