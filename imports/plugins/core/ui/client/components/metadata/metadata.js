@@ -13,6 +13,12 @@ import {
 import Metafield from "./metafield";
 
 class Metadata extends Component {
+  state = {
+    newMetadata: {
+      key: "",
+      value: ""
+    }
+  }
 
   /**
    * Handle form submit
@@ -61,15 +67,31 @@ class Metadata extends Component {
   }
 
   handleMetaChange = (event, metafield, index) => {
-    if (this.props.onMetaChange) {
+    if (this.props.onMetaChange && index) {
       this.props.onMetaChange(event, metafield, index);
+    } else {
+      this.setState({
+        newMetadata: metafield
+      });
     }
   }
 
   handleMetaSave = (event, metafield, index) => {
     if (this.props.onMetaSave) {
-      console.log("wuld save that meta", index, metafield);
       this.props.onMetaSave(event, metafield, index);
+      this.setState({
+        newMetadata: {
+          key: "",
+          value: ""
+        }
+      });
+    }
+  }
+
+  handleMetaRemove = (event, metafield, index) => {
+    if (this.props.onMetaRemove) {
+      console.log("handle meta remove");
+      this.props.onMetaRemove(event, metafield, index);
     }
   }
 
@@ -99,14 +121,14 @@ class Metadata extends Component {
   renderMetadataForm() {
     if (this.props.metafields) {
       return this.props.metafields.map((metadata, index) => {
-        console.log();
         return (
           <Metafield
-            key={index}
             index={index}
+            key={index}
+            metafield={metadata}
             onBlur={this.handleMetaSave}
             onChange={this.handleMetaChange}
-            metafield={metadata}
+            onRemove={this.handleMetaRemove}
           />
         );
       });
@@ -117,16 +139,28 @@ class Metadata extends Component {
 
   renderMetadataCreateForm() {
     return (
-      <div className="rui list-group-item metafield-list-item metafield-new-item">
-        <form className="form form-inline" onSubmit={this.handleSubmit}>
-          <TextField className="metafield-key-input" name="key" placeholder="Detail Name"/>
-          <TextField className="metafield-value-input" name="value"  placeholder="Detail Information" />
-          <Button icon="fa fa-plus" onClick={this.handleRemove} />
-        </form>
-      </div>
+      <Metafield
+        metafield={this.state.newMetadata}
+        onBlur={this.handleMetaSave}
+        onChange={this.handleMetaChange}
+        detailNamePlaceholder="Detail Name"
+        i18nKeyDetailName="productDetailEdit.detailName"
+        i18nKeyDetailInformation="productDetailEdit.detailName"
+        valuePlaceholder="Detail Name"
+        ref="newMetadataFields"
+      />
     );
   }
+/*
 
+  <div className="rui list-group-item metafield-list-item metafield-new-item">
+    <form className="form form-inline" onSubmit={this.handleSubmit}>
+      <TextField className="metafield-key-input" name="key" placeholder="Detail Name"/>
+      <TextField className="metafield-value-input" name="value"  placeholder="Detail Information" />
+      <Button icon="fa fa-plus" onClick={this.handleRemove} />
+    </form>
+  </div>
+ */
   /**
    * render
    * @return {JSX} component
@@ -158,7 +192,8 @@ Metadata.defaultProps = {
 // Prop Types
 Metadata.propTypes = {
   editable: PropTypes.bool,
-  metafields: PropTypes.arrayOf(PropTypes.object)
+  metafields: PropTypes.arrayOf(PropTypes.object),
+  onMetaSave: PropTypes.func
 };
 
 export default Metadata;

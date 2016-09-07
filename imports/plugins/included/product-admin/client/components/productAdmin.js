@@ -54,6 +54,12 @@ class ProductAdmin extends Component {
     }
   }
 
+  handleMetaRemove = (event, metafield, index) => {
+    if (this.props.handleProductMetafieldRemove) {
+      this.props.handleProductMetafieldRemove(this.product._id, metafield, index);
+    }
+  }
+
   get product() {
     return this.props.product || {};
   }
@@ -157,6 +163,7 @@ class ProductAdmin extends Component {
             <Metadata
               metafields={this.state.metafields}
               onMetaChange={this.handleMetaChange}
+              onMetaRemove={this.handleMetaRemove}
               onMetaSave={this.handleMetaSave}
             />
           </CardBody>

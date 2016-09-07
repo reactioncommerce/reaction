@@ -47,13 +47,18 @@ function handleProductMetafieldChange(productId, metafield, index) {
   }
 }
 
+function handleProductMetafieldRemove(productId, metafield) {
+  Meteor.call("products/removeMetaFields", productId, metafield);
+}
+
 function composer(props, onData) {
   const product = ReactionProduct.selectedProduct();
-  console.log("product", product);
+
   onData(null, {
     product: product,
     handleProductFieldChange,
-    handleProductMetafieldChange
+    handleProductMetafieldChange,
+    handleProductMetafieldRemove
   });
 }
 

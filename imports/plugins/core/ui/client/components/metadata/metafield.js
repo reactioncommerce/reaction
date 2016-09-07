@@ -39,16 +39,16 @@ class Metafield extends Component {
         value: this.refs.valueInput.refs.input.value
       };
 
-      this.props.onBlur(event, newMetadata, this.props.index);
+      if (newMetadata.key && newMetadata.value) {
+        this.props.onBlur(event, newMetadata, this.props.index);
+      }
     }
   }
 
   handleRemove = (event) => {
-    console.log("Remove!!");
-  }
-
-  handleSort = (event) => {
-    console.log("sort!!!!");
+    if (this.props.onRemove) {
+      this.props.onRemove(event, this.props.metafield, this.props.index);
+    }
   }
 
   /**
@@ -91,9 +91,11 @@ Metafield.defaultProps = {
 
 // Prop Types
 Metafield.propTypes = {
+  index: PropTypes.number,
+  metafields: PropTypes.arrayOf(PropTypes.object),
   onBlur: PropTypes.func,
   onChange: PropTypes.func,
-  metafields: PropTypes.arrayOf(PropTypes.object)
+  onRemove: PropTypes.func
 };
 
 export default Metafield;
