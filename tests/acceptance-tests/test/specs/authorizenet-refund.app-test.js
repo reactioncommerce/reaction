@@ -21,19 +21,17 @@ describe("authorize net refund test", function () {
     browser.pause("5000");
     userDo.UserActions.refreshShop();
     browser.click(eleMap.product);
-    browser.pause("5000");
+    browser.waitForEnabled(eleMap.red_option, 5000);
     browser.click(eleMap.red_option);
-    browser.pause("2000");
+    browser.waitForEnabled(eleMap.add_to_cart_logged_in, 3000);
     browser.click(eleMap.add_to_cart_logged_in);
-    browser.pause("2000");
+    browser.waitForEnabled(eleMap.checkout_btn);
     browser.click(eleMap.checkout_btn);
-    browser.pause("5000");
     shopUser.checkForAddress();
     // free shipping option
     browser.click(eleMap.free_shipping);
-    browser.pause("3000");
+    browser.waitForEnabled(eleMap.authorizenet, 5000);
     browser.click(eleMap.authorizenet);
-    browser.pause("6000");
     shopUser.authorizeNetPaymentInfo();
     browser.click(eleMap.authorizenet_complete_order_btn);
     browser.pause("6000");
@@ -41,15 +39,15 @@ describe("authorize net refund test", function () {
     browser.click(eleMap.orders_page_btn);
     browser.pause("5000");
     browser.click(eleMap.first_order_new_btn);
-    browser.pause("2000");
+    browser.waitForEnabled(eleMap.approve_btn, 5000);
     browser.click(eleMap.approve_btn);
-    browser.pause("2000");
+    browser.waitForEnabled(eleMap.capture_payment_btn, 2000);
     browser.click(eleMap.capture_payment_btn);
     adminUser.refundAmount();
     browser.click(eleMap.apply_refund_btn);
-    browser.pause("5000");
+    browser.waitForEnabled(eleMap.apply_refund_pop_up_btn, 5000);
     browser.click(eleMap.apply_refund_pop_up_btn);
-    browser.pause("2000");
+    browser.waitForVisible("h2", 5000);
     expect(browser.getText("h2"))
     .to.equal("Reaction does not yet support direct refund processing from Authorize.net. Please visit their web portal to perform this action.");
     // error pop up ok btn
