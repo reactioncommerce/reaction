@@ -1,13 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import classnames from "classnames";
-import {
-  Metadata,
-  NumericInput,
-  Translation,
-  TagList,
-  Currency
-} from "/imports/plugins/core/ui/client/components/";
-import { AddToCartButton, MediaGallery } from "./"
+import { Metadata, Translation } from "/imports/plugins/core/ui/client/components/";
 import { EditContainer } from "/imports/plugins/core/ui/client/containers";
 
 class ProductMetadata extends Component {
@@ -26,10 +19,10 @@ class ProductMetadata extends Component {
           <EditContainer
             data={this.props.product}
             editTypes={["edit"]}
-            editView="variantForm"
+            editView="ProductAdmin"
             field="metafields"
-            i18nKeyLabel="productDetailEdit.editMetadata"
-            label="Edit Metadata"
+            i18nKeyLabel="productDetailEdit.productSettings"
+            label="Product Settings"
             permissions={["createProduct"]}
             {...this.props.editContainerProps}
           />
@@ -63,7 +56,10 @@ class ProductMetadata extends Component {
 }
 
 ProductMetadata.propTypes = {
-  metafields: PropTypes.arrayOf(PropTypes.object)
+  editContainerProps: PropTypes.object,
+  editable: PropTypes.bool,
+  metafields: PropTypes.arrayOf(PropTypes.object),
+  product: PropTypes.object
 };
 
 export default ProductMetadata;

@@ -18,10 +18,10 @@ class ProductTags extends Component {
         <span className="edit-button">
           <EditContainer
             data={this.props.product}
-            editView="variantForm"
+            editView="ProductAdmin"
             field="hashtags"
-            i18nKeyLabel="productDetailEdit.editTags"
-            label="Edit Tags"
+            i18nKeyLabel="productDetailEdit.productSettings"
+            label="Product Settings"
             permissions={["createProduct"]}
           />
         </span>
@@ -54,6 +54,8 @@ class ProductTags extends Component {
 
 ProductTags.propTypes = {
   editButton: PropTypes.node,
+  editable: PropTypes.bool,
+  product: PropTypes.object,
   tags: PropTypes.arrayOf(PropTypes.object)
 };
 

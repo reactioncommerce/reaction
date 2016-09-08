@@ -192,7 +192,7 @@ ProductAdmin.propTypes = {
   handleFieldBlur: PropTypes.func,
   handleFieldChange: PropTypes.func,
   handleProductFieldChange: PropTypes.func,
-  product: PropTypes.product
+  product: PropTypes.object
 };
 
 export default ProductAdmin;
