@@ -1,5 +1,5 @@
 <template name="searchGridItems">
-  <li class="product-grid-item {{#if positions.pinned}}pinned{{/if}} {{weightClass}} {{isSelected}}" data-id="{{_id}}" id="{{_id}}">
+  <li class="product-grid-item {{#if positions.pinned}}pinned{{/if}} {{weightClass}} {{isSelected}}" data-id="{{product._id}}" id="{{product._id}}">
     {{> gridNotice}}
     <span class="product-grid-item-alerts">
       {{> inlineAlerts placement="productGridItem" id=_id}}
