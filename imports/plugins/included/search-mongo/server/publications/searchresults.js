@@ -13,7 +13,7 @@ function getProductFindTerm(searchTerm, searchTags, userId) {
     $text: {$search: searchTerm}
   };
   if (searchTags.length) {
-    findTerm.hastags = {$all: searchTags};
+    findTerm.hashtags = {$all: searchTags};
   }
   if (!Roles.userIsInRole(userId, ["admin", "owner"], shopId)) {
     findTerm.isVisible = true;
@@ -26,7 +26,7 @@ export const getResults = {};
 getResults.products = function (searchTerm, facets, maxResults, userId) {
   const searchTags = facets || [];
   const findTerm = getProductFindTerm(searchTerm, searchTags, userId);
-  // Logger.info(`Using findTerm ${JSON.stringify(findTerm, null, 4)}`);
+  Logger.info(`Using findTerm ${JSON.stringify(findTerm, null, 4)}`);
   const productResults = ProductSearch.find(findTerm,
     {
       fields: {

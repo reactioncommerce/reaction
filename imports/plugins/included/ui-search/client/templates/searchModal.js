@@ -22,7 +22,7 @@ Template.searchModal.onCreated(function () {
     console.log('--------facets------', facets);
 
 
-    const sub = this.subscribe("SearchResults", "products", searchQuery); // collection, searchTerm, facets
+    const sub = this.subscribe("SearchResults", "products", searchQuery, facets); // collection, searchTerm, facets
 
     if (sub.ready()) {
       const results = ProductSearch.find().fetch();
