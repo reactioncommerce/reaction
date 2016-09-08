@@ -61,8 +61,8 @@ class TextField extends Component {
     return (
       <TextareaAutosize
         className="{this.props.name}-edit-input"
-        onChange={this.onChange}
         onBlur={this.onBlur}
+        onChange={this.onChange}
         placeholder={this.props.placeholder}
         ref="input"
         value={this.state.value}
@@ -75,14 +75,13 @@ class TextField extends Component {
    * @return {JSX} jsx
    */
   renderSingleLineInput() {
-    const classes = classnames({
-      "form-control": true,
+    const inputClassName = classnames({
       [`${this.props.name || "text"}-edit-input`]: true
     }, this.props.className);
 
     return (
       <input
-        className="{this.props.name}-edit-input"
+        className={inputClassName}
         name={this.props.name}
         onBlur={this.onBlur}
         onChange={this.onChange}
@@ -114,6 +113,8 @@ class TextField extends Component {
         </label>
       );
     }
+
+    return null;
   }
 
   /**
@@ -152,7 +153,10 @@ TextField.propTypes = {
   className: PropTypes.string,
   i18nKeyLabel: PropTypes.string,
   label: PropTypes.string,
+  multiline: PropTypes.bool,
   name: PropTypes.string,
+  onChange: PropTypes.func,
+  onBlur: PropTypes.func,
   placeholder: PropTypes.string
 };
 
