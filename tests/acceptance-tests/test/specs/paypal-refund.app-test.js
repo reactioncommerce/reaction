@@ -20,21 +20,18 @@ describe("paypal refund test", function () {
     browser.pause("5000");
     userDo.UserActions.refreshShop();
     browser.click(eleMap.product);
-    browser.pause("5000");
+    browser.waitForEnabled(eleMap.red_option, 5000);
     browser.click(eleMap.red_option);
-    browser.pause("2000");
+    browser.waitForEnabled(eleMap.add_to_cart_logged_in, 5000);
     browser.click(eleMap.add_to_cart_logged_in);
-    browser.pause("2000");
+    browser.waitForEnabled(eleMap.checkout_btn, 5000);
     browser.click(eleMap.checkout_btn);
-    browser.pause("5000");
     shopUser.checkForAddress();
     // free shipping option
     browser.click(eleMap.free_shipping);
-    browser.pause("3000");
+    browser.waitForEnabled(eleMap.paypal, 5000);
     browser.click(eleMap.paypal);
-    browser.pause("6000");
     shopUser.paypalPaymentInfo();
-    browser.pause("5000");
     browser.click(eleMap.paypal_complete_order_btn);
     // paypal takes forever 45sec wait
     browser.pause("45000");
@@ -43,7 +40,7 @@ describe("paypal refund test", function () {
     browser.click(eleMap.first_order_new_btn);
     browser.pause("2000");
     browser.click(eleMap.approve_btn);
-    browser.pause("2000");
+    browser.waitForEnabled(eleMap.capture_payment_btn, 5000);
     browser.click(eleMap.capture_payment_btn);
     adminUser.refundAmount();
     browser.click(eleMap.apply_refund_btn);

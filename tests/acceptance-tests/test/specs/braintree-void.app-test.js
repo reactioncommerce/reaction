@@ -21,17 +21,16 @@ describe("braintree net void test", function () {
     browser.pause("5000");
     userDo.UserActions.refreshShop();
     browser.click(eleMap.product);
-    browser.pause("5000");
+    browser.waitForEnabled(eleMap.red_option, 5000);
     browser.click(eleMap.red_option);
-    browser.pause("2000");
+    browser.waitForEnabled(eleMap.add_to_cart_logged_in, 3000);
     browser.click(eleMap.add_to_cart_logged_in);
-    browser.pause("2000");
+    browser.waitForEnabled(eleMap.checkout_btn);
     browser.click(eleMap.checkout_btn);
-    browser.pause("5000");
     shopUser.checkForAddress();
     // free shipping option
     browser.click(eleMap.free_shipping);
-    browser.pause("3000");
+    browser.waitForEnabled(eleMap.braintree, 5000);
     browser.click(eleMap.braintree);
     browser.pause("6000");
     shopUser.braintreePaymentInfo();
@@ -41,10 +40,9 @@ describe("braintree net void test", function () {
     browser.click(eleMap.orders_page_btn);
     browser.pause("5000");
     browser.click(eleMap.first_order_new_btn);
-    browser.pause("2000");
     adminUser.voidAmount();
     browser.click(eleMap.approve_btn);
-    browser.pause("2000");
+    browser.waitForVisible("h2", 5000);
     expect(browser.getText("h2")).to.equal("Applying a 100% discount will void / cancel this order with your payment provider");
     browser.click(eleMap.apply_discount_btn);
     browser.pause("5000");
