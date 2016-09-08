@@ -1,19 +1,17 @@
 import React, { Component, PropTypes } from "react";
 import { composeWithTracker } from "react-komposer";
-
 import { ReactionProduct } from "/lib/api";
-import { Reaction, i18next, Logger } from "/client/api";
-import { Social } from "../components";
+import { Reaction } from "/client/api";
 import SocialContainer from "/imports/plugins/included/social/client/containers/socialContainer"
 import { EditContainer } from "/imports/plugins/core/ui/client/containers";
-//["facebookMsg", "twitterMsg", "googleplusMsg", "pinterestMsg"]
+
 class ProductSocialContainer extends Component {
   render() {
     return (
       <EditContainer
         data={this.props.data}
         editView="variantForm"
-
+        field={["facebookMsg", "twitterMsg", "googleplusMsg", "pinterestMsg"]}
         i18nKeyLabel="productDetailEdit.editSocial"
         label="Edit Social Messaging"
         permissions={["createProduct"]}
@@ -66,5 +64,9 @@ function composer(props, onData) {
     }
   });
 }
+
+ProductSocialContainer.propTypes = {
+  data: PropTypes.object
+};
 
 export default composeWithTracker(composer)(ProductSocialContainer);

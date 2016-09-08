@@ -1,24 +1,13 @@
 import React, { Children, Component, PropTypes } from "react";
 import { Reaction } from "/client/api";
-import {
-  EditButton,
-  VisibilityButton,
-  Translation
-} from "/imports/plugins/core/ui/client/components";
+import { EditButton, VisibilityButton, Translation } from "/imports/plugins/core/ui/client/components";
 import { composeWithTracker } from "react-komposer";
-// import isEqual
 
 class EditContainer extends Component {
 
-  constructor(props) {
-    super(props);
-
-    this.handleEditButtonClick = this.handleEditButtonClick.bind(this);
-  }
-
   handleEditButtonClick = () => {
     const props = this.props;
-    console.log("!!!!!!", props.editView);
+
     Reaction.showActionView({
       label: props.label,
       i18nKeyLabel: props.i18nKeyLabel,
@@ -28,15 +17,11 @@ class EditContainer extends Component {
   }
 
   renderVisibilityButton() {
-    let styles = {}
-    let tooltip
-
     if (this.props.showsVisibilityButton) {
       return (
         <VisibilityButton
           onClick={this.handleVisibilityButtonClick}
           toggleOn={this.props.data.isVisible}
-          style={styles}
           tooltip="Unpublised changes"
         />
       );
@@ -55,7 +40,17 @@ class EditContainer extends Component {
 
       if (Array.isArray(draft.diff)) {
         for (const diff of draft.diff) {
-          if (diff.path[0] === this.props.field) {
+          let hasChangedField = false;
+
+          if (Array.isArray(this.props.field)) {
+            if (this.props.field.indexOf(diff.path[0]) >= 0) {
+              hasChangedField = true;
+            }
+          } else if (typeof this.props.field === "string" && this.props.field === diff.path[0]) {
+            hasChangedField = true;
+          }
+
+          if (hasChangedField) {
             status = "warning";
 
             tooltip = (
@@ -117,8 +112,10 @@ class EditContainer extends Component {
 EditContainer.propTypes = {
   autoHideEditButton: PropTypes.bool,
   children: PropTypes.node,
-  field: PropTypes.string,
-  hasPermission: PropTypes.bool
+  data: PropTypes.object,
+  field: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
+  hasPermission: PropTypes.bool,
+  showsVisibilityButton: PropTypes.bool
 };
 
 function composer(props, onData) {
