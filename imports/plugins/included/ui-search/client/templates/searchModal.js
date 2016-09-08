@@ -17,7 +17,12 @@ Template.searchModal.onCreated(function () {
 
   this.autorun(() => {
     const searchQuery = this.state.get("searchQuery");
-    const sub = this.subscribe("SearchResults", "products", searchQuery); // collection, searchTerm, facets
+    const facets = this.state.get("facets") || [];
+
+    console.log('--------facets------', facets);
+
+
+    const sub = this.subscribe("SearchResults", "products", searchQuery, facets); // collection, searchTerm, facets
 
     if (sub.ready()) {
       const results = ProductSearch.find().fetch();
@@ -49,6 +54,7 @@ Template.searchModal.helpers({
     return {
       component: IconButton,
       icon: "fa fa-times",
+      kind: "flat",
       onClick() {
         $(".js-search-modal").fadeOut(400, () => {
           $("body").css("overflow-y", "inherit");
@@ -76,22 +82,46 @@ Template.searchModal.events({
   // on type, recload Reaction.SaerchResults
   "keyup input": (event, templateInstance) => {
     event.preventDefault();
+    if (event.keyCode === 27) {
+      const instance = Template.instance();
+      const view = instance.view;
+      $(".js-search-modal").fadeOut(400, () => {
+        $("body").css("overflow-y", "inherit");
+        Blaze.remove(view);
+      });
+    }
     const searchQuery = templateInstance.find("#search-input").value;
     templateInstance.state.set("searchQuery", searchQuery);
+    $(".search-modal-header:not(.active-search)").addClass(".active-search");
+    if (!$(".search-modal-header").hasClass("active-search")) {
+      $(".search-modal-header").addClass("active-search");
+    }
+  },
+  "click [data-event-action=filter]": function (event, templateInstance) {
+    event.preventDefault();
+    const instance = Template.instance();
+    const facets = instance.state.get("facets") || [];
+    const newFacet = $(event.target).data("event-value");
+
+    tagToggle(facets, newFacet);
+
+    $(event.target).toggleClass("active-tag");
+
+    templateInstance.state.set("facets", facets);
+  },
+  "click [data-event-action=productClick]": function () {
+    const instance = Template.instance();
+    const view = instance.view;
+    $(".js-search-modal").fadeOut(400, () => {
+      $("body").css("overflow-y", "inherit");
+      Blaze.remove(view);
+    });
   }
 });
 
-AutoForm.hooks({
-  // "search-update-form": {
-  //   /* eslint-disable no-unused-vars*/
-  //   onSuccess(operation, result, template) {
-  //     Alerts.removeSeen();
-  //     return Alerts.add("Search settings saved.", "success");
-  //   },
-  //   onError(operation, error, template) {
-  //     Alerts.removeSeen();
-  //     return Alerts.add("Search settings update failed. " + error, "danger");
-  //   }
-  //   /* eslint-enable no-unused-vars*/
-  // }
-});
+function tagToggle(arr, val) {
+  if (arr.length === _.pull(arr, val).length) {
+    arr.push(val);
+  }
+  return arr;
+}

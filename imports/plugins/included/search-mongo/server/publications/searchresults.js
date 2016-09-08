@@ -71,12 +71,23 @@ getResults.accounts = function (searchTerm, facets, maxResults, userId) {
   const shopId = Reaction.getShopId();
   if (Roles.userIsInRole(userId, ["admin", "owner"], shopId)) {
     accountResults = AccountSearch.find({
+<<<<<<< Updated upstream
       shopId: shopId,
       emails: searchTerm
     });
     Logger.info(`Found ${accountResults.count()} accounts searching for ${searchTerm}`);
     // const verboseResults = accountResults.fetch();
     // Logger.info(JSON.stringify(verboseResults, null, 4));
+=======
+      shopId: shopId, $text: {$search: searchTerm}
+    }, {
+      fields: {
+        score: {$meta: "textScore"}
+      },
+      limit: maxResults
+    });
+    Logger.info(`Found ${accountResults.count()} account`);
+>>>>>>> Stashed changes
   }
   return accountResults;
 };
@@ -87,11 +98,10 @@ Meteor.publish("SearchResults", function (collection, searchTerm, facets, maxRes
     return _.includes(supportedCollections, coll);
   }));
   check(searchTerm, Match.Optional(String));
-  check(facets, Match.OneOf([String], undefined));
-  Logger.info(`Returning search results on ${collection}. SearchTerm: |${searchTerm}|`);
+  check(facets, Match.OneOf(Array, undefined));
+  Logger.info(`Returning search results on ${collection}. SearchTerm: |${searchTerm}|. Facets: |${facets}|.`);
   if (!searchTerm) {
     return this.ready();
   }
   return getResults[collection](searchTerm, facets, maxResults, this.userId);
 });
-

@@ -17,6 +17,12 @@ Template.CoreNavigationBar.events({
   },
   "click .header-tag, click .navbar-brand": function () {
     return $(".dashboard-navbar-packages ul li").removeClass("active");
+  },
+  "click .search": function () {
+    Blaze.renderWithData(Template.searchModal, {
+    }, $("body").get(0));
+    $("body").css("overflow-y", "hidden");
+    $("#search-input").focus();
   }
 });
 
@@ -25,12 +31,13 @@ Template.CoreNavigationBar.helpers({
     return {
       component: IconButton,
       icon: "fa fa-search",
-      onClick() {
-        Blaze.renderWithData(Template.searchModal, {
-        }, $("body").get(0));
-        $("body").css("overflow-y", "hidden");
-        $("#search-input").focus();
-      }
+      kind: "flat"
+      // onClick() {
+      //   Blaze.renderWithData(Template.searchModal, {
+      //   }, $("body").get(0));
+      //   $("body").css("overflow-y", "hidden");
+      //   $("#search-input").focus();
+      // }
     };
   },
   onMenuButtonClick() {
