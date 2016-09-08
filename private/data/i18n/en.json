@@ -144,6 +144,9 @@
         "loadMoreProducts": "Load more products",
         "noProductsFound": "No Products found"
       },
+      "search": {
+        "noProductsFound": "No Products Found..."
+      },
       "shopSettings": {
         "general": "General",
         "address": "Address",
