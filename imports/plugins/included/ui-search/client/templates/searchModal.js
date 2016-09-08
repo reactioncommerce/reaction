@@ -22,7 +22,7 @@ Template.searchModal.onCreated(function () {
     console.log('--------facets------', facets);
 
 
-    const sub = this.subscribe("SearchResults", "products", searchQuery, facets); // collection, searchTerm, facets
+    const sub = this.subscribe("SearchResults", "products", searchQuery); // collection, searchTerm, facets
 
     if (sub.ready()) {
       const results = ProductSearch.find().fetch();
@@ -74,12 +74,21 @@ Template.searchModal.helpers({
     const results = instance.state.get("tagSearchResults");
     // console.log("tagSearchResults", results);
     return results;
+  },
+  media: function () {
+    const media = Media.findOne({
+      "metadata.productId": product._id,
+      "metadata.priority": 0,
+      "metadata.toGrid": 1
+    }, { sort: { uploadedAt: 1 } });
+
+    return media instanceof FS.File ? media : false;
   }
 });
 
 
 Template.searchModal.events({
-  // on type, recload Reaction.SaerchResults
+  // on type, reload Reaction.SaerchResults
   "keyup input": (event, templateInstance) => {
     event.preventDefault();
     if (event.keyCode === 27) {
@@ -112,7 +121,7 @@ Template.searchModal.events({
   "click [data-event-action=productClick]": function () {
     const instance = Template.instance();
     const view = instance.view;
-    $(".js-search-modal").fadeOut(400, () => {
+    $(".js-search-modal").delay(400).fadeOut(400, () => {
       $("body").css("overflow-y", "inherit");
       Blaze.remove(view);
     });
