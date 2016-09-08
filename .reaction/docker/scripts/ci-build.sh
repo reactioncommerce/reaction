@@ -12,14 +12,14 @@ if [[ -e ~/docker/image.tar ]]; then
 fi
 
 # build new image
-docker build reactioncommerce/reaction:latest .
+docker build -t reactioncommerce/reaction:latest .
 
 # if successful, save in cache
 mkdir -p ~/docker
 docker save reactioncommerce/reaction:latest > ~/docker/image.tar
 
 # run the container and wait for it to boot
-docker-compose -f docker/docker-compose.ci.yml up -d
+docker-compose -f .reaction/docker/docker-compose.test.yml up -d
 sleep 30
 
 # use curl to ensure the app returns 200's
