@@ -3,7 +3,7 @@ import { Translation } from "/imports/plugins/core/ui/client/components";
 
 
 class AddToCartButton extends Component {
-  hanleCartQuantityChange(event) {
+  hanleCartQuantityChange = (event) => {
     if (this.props.onCartQuantityChange) {
       this.props.onCartQuantityChange(event, event.target.value);
     }
@@ -24,6 +24,7 @@ class AddToCartButton extends Component {
         <button
           className="input-group-addon add-to-cart-text js-add-to-cart"
           data-i18n="productDetail.addToCart"
+          onClick={this.props.onClick}
         >
           <Translation defaultValue="Add to cart" i18nKey="productDetail.addToCart" />
         </button>
@@ -34,7 +35,8 @@ class AddToCartButton extends Component {
 
 AddToCartButton.propTypes = {
   cartQuantity: PropTypes.number,
-  onCartQuantityChange: PropTypes.func
+  onCartQuantityChange: PropTypes.func,
+  onClick: PropTypes.func
 };
 
 export default AddToCartButton;

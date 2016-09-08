@@ -3,6 +3,12 @@ import classnames from "classnames";
 import { Media } from "/imports/plugins/core/ui/client/components";
 
 class VariantList extends Component {
+  handleClick = (event) => {
+    if (this.props.onClick) {
+      this.props.onClick(event, this.props.variant);
+    }
+  }
+
   renderMedia() {
     if (this.props.childVariantMedia) {
       return (
@@ -12,6 +18,7 @@ class VariantList extends Component {
 
     return null;
   }
+
   render() {
     const variant = this.props.variant;
     const classes = classnames({
@@ -22,16 +29,20 @@ class VariantList extends Component {
 
     return (
       <div className="variant-select-option">
-      <button className={classes} type="button">
-        {this.renderMedia()}
-        <span className="title">{variant.optionTitle}</span>
-      </button>
+        <button
+          className={classes}
+          onClick={this.handleClick}
+          type="button"
+        >
+          {this.renderMedia()}
+          <span className="title">{variant.optionTitle}</span>
+        </button>
 
-      <div className="variant-controls">
-        {this.props.visibilityButton}
-        {this.props.editButton}
+        <div className="variant-controls">
+          {this.props.visibilityButton}
+          {this.props.editButton}
+        </div>
       </div>
-    </div>
     );
   }
 }
@@ -40,6 +51,7 @@ VariantList.propTypes = {
   childVariantMedia: PropTypes.object,
   editButton: PropTypes.node,
   isSelected: PropTypes.bool,
+  onClick: PropTypes.func,
   variant: PropTypes.object,
   visibilityButton: PropTypes.node
 };

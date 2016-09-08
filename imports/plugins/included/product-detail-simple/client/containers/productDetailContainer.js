@@ -9,10 +9,136 @@ import { SocialContainer, VariantListContainer } from "./";
 import TranslationProvider from "/imports/plugins/core/ui/client/providers/translationProvider";
 
 class ProductDetailContainer extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      cartQuantity: 1
+    };
+  }
+
+  handleCartQuantityChange = (event, quantity) => {
+    this.setState({
+      cartQuantity: Math.max(quantity, 1)
+    });
+  }
+
+  handleAddToCart = () => {
+    let productId;
+    let qtyField;
+    let quantity;
+    const currentVariant = ReactionProduct.selectedVariant();
+    const currentProduct = ReactionProduct.selectedProduct();
+
+    if (currentVariant) {
+      if (currentVariant.ancestors.length === 1) {
+        const options = ReactionProduct.getVariants(currentVariant._id);
+
+        if (options.length > 0) {
+          Alerts.inline("Please choose options before adding to cart", "warning", {
+            placement: "productDetail",
+            i18nKey: "productDetail.chooseOptions",
+            autoHide: 10000
+          });
+          return [];
+        }
+      }
+
+      if (currentVariant.inventoryPolicy && currentVariant.inventoryQuantity < 1) {
+        Alerts.inline("Sorry, this item is out of stock!", "warning", {
+          placement: "productDetail",
+          i18nKey: "productDetail.outOfStock",
+          autoHide: 10000
+        });
+        return [];
+      }
+
+      qtyField = this.state.cartQuantity //, template.$('input[name="addToCartQty"]'); //****
+      quantity = parseInt(qtyField.val(), 10);
+
+      if (quantity < 1) {
+        quantity = 1;
+      }
+
+      if (!this.isVisible) {
+        Alerts.inline("Publish product before adding to cart.", "error", {
+          placement: "productDetail",
+          i18nKey: "productDetail.publishFirst",
+          autoHide: 10000
+        });
+      } else {
+        productId = currentProduct._id;
+
+        if (productId) {
+          Meteor.call("cart/addToCart", productId, currentVariant._id, quantity,
+            function (error) {
+              if (error) {
+                Logger.error("Failed to add to cart.", error);
+                return error;
+              }
+
+              return true;
+            }
+          );
+        }
+
+        // template.$(".variant-select-option").removeClass("active");
+        ReactionProduct.setCurrentVariant(null);
+        qtyField.val(1);
+        // scroll to top on cart add
+        $("html,body").animate({
+          scrollTop: 0
+        }, 0);
+        // slide out label
+        const addToCartText = i18next.t("productDetail.addedToCart");
+        const addToCartTitle = currentVariant.title || "";
+        $(".cart-alert-text").text(`${quantity} ${addToCartTitle} ${addToCartText}`);
+
+        // Grab and cache the width of the alert to be used in animation
+        const alertWidth = $(".cart-alert").width();
+        const direction = i18next.t("languageDirection") === "rtl" ? "left" : "right";
+        const oppositeDirection = i18next.t("languageDirection") === "rtl" ? "right" : "left";
+
+        // Animate
+        return $(".cart-alert")
+          .show()
+          .css({
+            [oppositeDirection]: "auto",
+            [direction]: -alertWidth
+          })
+          .animate({
+            [oppositeDirection]: "auto",
+            [direction]: 0
+          }, 600)
+          .delay(4000)
+          .animate({
+            [oppositeDirection]: "auto",
+            [direction]: -alertWidth
+          }, {
+            duration: 600,
+            complete() {
+              $(".cart-alert").hide();
+            }
+          });
+      }
+    } else {
+      Alerts.inline("Select an option before adding to cart", "warning", {
+        placement: "productDetail",
+        i18nKey: "productDetail.selectOption",
+        autoHide: 8000
+      });
+    }
+
+    return null;
+  }
+
   render() {
     return (
       <TranslationProvider>
         <ProductDetail
+          cartQuantity={this.state.cartQuantity}
+          onAddtoCart={this.handleAddToCart}
+          onCartQuantityChange={this.handleCartQuantityChange}
           socialComponent={<SocialContainer />}
           topVariantComponent={<VariantListContainer />}
           {...this.props}

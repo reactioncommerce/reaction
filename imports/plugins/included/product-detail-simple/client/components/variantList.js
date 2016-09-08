@@ -6,6 +6,20 @@ import { ChildVariant } from "./";
 
 class VariantList extends Component {
 
+  handleVariantEditClick = (event, editButtonProps) => {
+    if (this.props.onEditVariant) {
+      this.props.onEditVariant(event, editButtonProps.data);
+    }
+  }
+
+  handleChildVariantEditClick = (event, editButtonProps) => {
+    if (this.props.onEditVariant) {
+      this.props.onEditVariant(event, editButtonProps.data, 1);
+    }
+
+    return false;
+  }
+
   isSoldOut(variant) {
     if (this.props.isSoldOut) {
       return this.props.isSoldOut(variant);
@@ -26,12 +40,14 @@ class VariantList extends Component {
             i18nKeyLabel="productDetailEdit.editVariant"
             key={index}
             label="Edit Variant"
+            onEditButtonClick={this.onVariantEditClick}
             permissions={["createProduct"]}
             showsVisibilityButton={true}
           >
             <Variant
               displayPrice={displayPrice}
               isSelected={this.props.variantIsSelected(variant._id)}
+              onClick={this.props.onVariantClick}
               soldOut={this.isSoldOut(variant)}
               variant={variant}
             />
@@ -59,11 +75,13 @@ class VariantList extends Component {
             i18nKeyLabel="productDetailEdit.editVariant"
             key={index}
             label="Edit Variant"
+            onEditButtonClick={this.handleChildVariantEditClick}
             permissions={["createProduct"]}
             showsVisibilityButton={true}
           >
             <ChildVariant
               isSelected={this.props.variantIsSelected(childVariant._id)}
+              onClick={this.props.onVariantClick}
               variant={childVariant}
             />
           </EditContainer>
@@ -100,6 +118,8 @@ VariantList.propTypes = {
   childVariants: PropTypes.arrayOf(PropTypes.object),
   displayPrice: PropTypes.func,
   isSoldOut: PropTypes.func,
+  onEditVariant: PropTypes.func,
+  onVariantClick: PropTypes.func,
   variantIsSelected: PropTypes.func,
   variants: PropTypes.arrayOf(PropTypes.object)
 };

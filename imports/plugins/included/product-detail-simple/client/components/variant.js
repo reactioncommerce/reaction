@@ -1,12 +1,18 @@
 import React, { Component, PropTypes} from "react";
 import classnames from "classnames";
 import {
-  EditControl,
   Currency,
   Translation
 } from "/imports/plugins/core/ui/client/components";
 
 class Variant extends Component {
+
+  handleClick = (event) => {
+    if (this.props.onClick) {
+      this.props.onClick(event, this.props.variant);
+    }
+  }
+
   get quantity() {
     return this.props.quantity; //ReactionProduct.getVariantQuantity(this);
   }
@@ -50,7 +56,12 @@ class Variant extends Component {
     });
 
     return (
-      <li className="variant-list-item" id="variant-list-item-{variant._id}" key={variant._id}>
+      <li
+        className="variant-list-item"
+        id="variant-list-item-{variant._id}"
+        key={variant._id}
+        onClick={this.handleClick}
+      >
         <div className={classes}>
           <div className="title">
             <span className="variant-title">{variant.title}</span>
@@ -72,5 +83,9 @@ class Variant extends Component {
     );
   }
 }
+
+Variant.propTypes = {
+  onClick: PropTypes.func
+};
 
 export default Variant;

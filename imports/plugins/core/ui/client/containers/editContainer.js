@@ -5,8 +5,16 @@ import { composeWithTracker } from "react-komposer";
 
 class EditContainer extends Component {
 
-  handleEditButtonClick = () => {
+  handleEditButtonClick = (event) => {
     const props = this.props;
+
+    if (this.props.onEditButtonClick) {
+      const returnValue = this.props.onEditButtonClick(event, props);
+
+      if (returnValue === false) {
+        return returnValue;
+      }
+    }
 
     Reaction.showActionView({
       label: props.label,
@@ -115,6 +123,7 @@ EditContainer.propTypes = {
   data: PropTypes.object,
   field: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
   hasPermission: PropTypes.bool,
+  onEditButtonClick: PropTypes.func,
   showsVisibilityButton: PropTypes.bool
 };
 

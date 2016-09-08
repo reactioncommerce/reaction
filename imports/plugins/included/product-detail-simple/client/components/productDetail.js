@@ -103,7 +103,11 @@ class ProductDetail extends Component {
               </div>
               <hr />
               <div>
-                <AddToCartButton />
+                <AddToCartButton
+                  cartQuantity={this.props.cartQuantity}
+                  onCartQuantityChange={this.props.onCartQuantityChange}
+                  onClick={this.props.onAddToCart}
+                />
               </div>
             </div>
           </div>
@@ -114,7 +118,10 @@ class ProductDetail extends Component {
 }
 
 ProductDetail.propTypes = {
+  cartQuantity: PropTypes.number,
   editable: PropTypes.bool,
+  onAddToCart: PropTypes.func,
+  onCartQuantityChange: PropTypes.func,
   product: PropTypes.object
 };
 

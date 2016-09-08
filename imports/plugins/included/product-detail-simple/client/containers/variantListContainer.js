@@ -1,13 +1,10 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 import { composeWithTracker } from "react-komposer";
-
 import { ReactionProduct } from "/lib/api";
-import { Reaction, i18next, Logger } from "/client/api";
-import { Tags, Media } from "/lib/collections";
-import { ProductDetail, VariantList } from "../components";
-import SocialContainer from "./socialContainer";
-
-import { getChildVariants } from "../selectors/variants"
+import { Reaction } from "/client/api";
+import { VariantList } from "../components";
+import { getChildVariants } from "../selectors/variants";
+import { Products } from "/lib/collections";
 
 function variantIsSelected(variantId) {
   const current = ReactionProduct.selectedVariant();
@@ -77,9 +74,43 @@ function isSoldOut(variant) {
 }
 
 class VariantListContainer extends Component {
+
+  handleVariantClick = (event, variant) => {
+    const selectedProduct = ReactionProduct.selectedProduct();
+
+    ReactionProduct.setCurrentVariant(variant._id);
+    Session.set("variant-form-" + variant._id, true);
+    Reaction.Router.go("product", {handle: selectedProduct.handle, variantId: variant._id});
+  }
+
+  handleEditVariant = (event, variant, ancestors = -1) => {
+    const selectedProduct = ReactionProduct.selectedProduct();
+    let editVariant = variant;
+    if (ancestors >= 0) {
+      editVariant = Products.findOne(variant.ancestors[ancestors]);
+    }
+
+    ReactionProduct.setCurrentVariant(variant._id);
+    Session.set("variant-form-" + editVariant._id, true);
+    Reaction.Router.go("product", {handle: selectedProduct.handle, variantId: editVariant._id});
+
+    if (Reaction.hasPermission("createProduct")) {
+      Reaction.showActionView({
+        label: "Edit Variant",
+        i18nKeyLabel: "productDetailEdit.editVariant",
+        template: "variantForm",
+        data: editVariant
+      });
+    }
+  }
+
   render() {
     return (
-      <VariantList {...this.props} />
+      <VariantList
+        onEditVariant={this.handleEditVariant}
+        onVariantClick={this.handleVariantClick}
+        {...this.props}
+      />
     );
   }
 }
