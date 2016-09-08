@@ -83,12 +83,12 @@ class TextField extends Component {
     return (
       <input
         className="{this.props.name}-edit-input"
-        type="text"
-        {...this.props}
+        name={this.props.name}
         onBlur={this.onBlur}
         onChange={this.onChange}
         placeholder={this.props.placeholder}
         ref="input"
+        type="text"
         value={this.state.value}
       />
     );
@@ -110,7 +110,7 @@ class TextField extends Component {
     if (this.props.label) {
       return (
         <label>
-          <Translation defaultValue={this.props.label} i18nKey={this.props.i18nKey} />
+          <Translation defaultValue={this.props.label} i18nKey={this.props.i18nKeyLabel} />
         </label>
       );
     }
@@ -123,21 +123,21 @@ class TextField extends Component {
   render() {
     const classes = classnames({
       // Base
-      rui: true,
-      textfield: true,
+      "rui": true,
+      "textfield": true,
       "form-group": true,
 
       // Alignment
-      center: this.props.align === "center",
-      left: this.props.align === "left",
-      right: this.props.align === "right"
+      "center": this.props.align === "center",
+      "left": this.props.align === "left",
+      "right": this.props.align === "right"
     });
 
     return (
       <div className={classes}>
         {this.renderLabel()}
         {this.renderField()}
-        <span className="product-detail-message" id="{{field}}-message"></span>
+        <span className="product-detail-message" id="{{field}}-message" />
       </div>
     );
   }
@@ -149,6 +149,9 @@ TextField.defaultProps = {
 
 TextField.propTypes = {
   align: PropTypes.oneOf(["left", "center", "right", "justify"]),
+  className: PropTypes.string,
+  i18nKeyLabel: PropTypes.string,
+  label: PropTypes.string,
   name: PropTypes.string,
   placeholder: PropTypes.string
 };

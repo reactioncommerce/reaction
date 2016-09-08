@@ -1,14 +1,12 @@
 import { Meteor } from "meteor/meteor";
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 import { composeWithTracker } from "react-komposer";
-
 import { ReactionProduct } from "/lib/api";
-import { Reaction, i18next, Logger } from "/client/api";
+import { Reaction } from "/client/api";
 import { Tags, Media } from "/lib/collections";
 import { ProductDetail } from "../components";
 import { SocialContainer, VariantListContainer } from "./";
-import { Translatable } from "/imports/plugins/core/ui/client/providers";
-import TranslationProvider from "/imports/plugins/core/ui/client/providers/translationProvider"
+import TranslationProvider from "/imports/plugins/core/ui/client/providers/translationProvider";
 
 class ProductDetailContainer extends Component {
   render() {
@@ -24,6 +22,10 @@ class ProductDetailContainer extends Component {
   }
 }
 
+function changeProductField(productId, fieldName, value) {
+  Meteor.call("products/updateProductField", productId, fieldName, value);
+}
+
 function composer(props, onData) {
   const tagSub = Meteor.subscribe("Tags");
   const productId = Reaction.Router.getParam("handle");
@@ -31,13 +33,12 @@ function composer(props, onData) {
   let productSub;
 
   if (productId) {
-    productSub = Meteor.subscribe("Product", variantId);
+    productSub = Meteor.subscribe("Product", productId);
   }
 
   if (productSub && productSub.ready() && tagSub.ready()) {
     // Get the product
     const product = ReactionProduct.setProduct(productId, variantId);
-    // this.state.set("product", product);
 
     if (Reaction.hasPermission("createProduct")) {
       if (!Reaction.getActionView() && Reaction.isActionViewOpen() === true) {
@@ -58,7 +59,7 @@ function composer(props, onData) {
       }
 
       let mediaArray = [];
-      let selectedVariant = ReactionProduct.selectedVariant();
+      const selectedVariant = ReactionProduct.selectedVariant();
 
       if (selectedVariant) {
         mediaArray = Media.find({
@@ -86,16 +87,14 @@ function composer(props, onData) {
         priceRange,
         tags,
         media: mediaArray.fetch(),
-        handleProductFieldChange(productId, fieldName, value) {
-          Meteor.call("products/updateProductField", productId, fieldName, value);
-        }
+        editable: Reaction.hasPermission(["createProduct"]),
+        handleProductFieldChange: changeProductField
       });
     }
   }
 }
 
 // Decorate component and export
-let decoratedComponent;
-decoratedComponent = composeWithTracker(composer)(ProductDetailContainer);
+const decoratedComponent = composeWithTracker(composer)(ProductDetailContainer);
 
 export default decoratedComponent;

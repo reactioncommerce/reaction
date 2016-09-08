@@ -32,14 +32,15 @@ function composer(props, onData) {
 
   const product = ReactionProduct.selectedProduct();
   let title = product.title;
+
   if (ReactionProduct.selectedVariant()) {
     title = ReactionProduct.selectedVariant().title;
   }
 
-  let description
+  let description;
 
   if (typeof product.description === "string") {
-    description = product.description.substring(0, 254)
+    description = product.description.substring(0, 254);
   }
 
   onData(null, {
@@ -53,7 +54,7 @@ function composer(props, onData) {
         description: product.facebookMsg || description
       },
       twitter: {
-        description: product.twitterMsg || product.title.substring(0, 100)
+        description: product.twitterMsg || title
       },
       googleplus: {
         itemtype: "Product",
@@ -64,32 +65,6 @@ function composer(props, onData) {
       }
     }
   });
-
-  // onData(null, {
-  //   socialApps: socialApps,
-  //   placement: "productDetail",
-  //   faClass: "",
-  //   faSize: "fa-lg",
-  //   media: Session.get("variantImgSrc"),
-  //   url: window.location.href,
-  //   title: title || "",
-  //   description: typeof product.description === "string" ? product.description.substring(0, 254) : void 0,
-  //   apps: {
-  //     facebook: {
-  //       description: product.facebookMsg
-  //     },
-  //     twitter: {
-  //       title: product.twitterMsg
-  //     },
-  //     googleplus: {
-  //       itemtype: "Product",
-  //       description: product.googleplusMsg
-  //     },
-  //     pinterest: {
-  //       description: product.pinterestMsg
-  //     }
-  //   }
-  // });
 }
 
 export default composeWithTracker(composer)(ProductSocialContainer);

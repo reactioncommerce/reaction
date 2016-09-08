@@ -8,10 +8,10 @@ class VariantList extends Component {
 
   isSoldOut(variant) {
     if (this.props.isSoldOut) {
-      return this.props.isSoldOut(variant)
+      return this.props.isSoldOut(variant);
     }
 
-    return false
+    return false;
   }
 
   renderVariants() {
@@ -30,8 +30,8 @@ class VariantList extends Component {
             showsVisibilityButton={true}
           >
             <Variant
-              isSelected={this.props.variantIsSelected(variant._id)}
               displayPrice={displayPrice}
+              isSelected={this.props.variantIsSelected(variant._id)}
               soldOut={this.isSoldOut(variant)}
               variant={variant}
             />
@@ -75,7 +75,6 @@ class VariantList extends Component {
   }
 
   render() {
-    console.log(this.props);
     return (
       <div className="product-variants">
         <Divider
@@ -99,6 +98,8 @@ class VariantList extends Component {
 
 VariantList.propTypes = {
   childVariants: PropTypes.arrayOf(PropTypes.object),
+  displayPrice: PropTypes.func,
+  isSoldOut: PropTypes.func,
   variantIsSelected: PropTypes.func,
   variants: PropTypes.arrayOf(PropTypes.object)
 };

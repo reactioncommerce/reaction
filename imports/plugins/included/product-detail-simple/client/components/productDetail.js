@@ -24,11 +24,10 @@ class ProductDetail extends Component {
   }
 
   get editable() {
-    return true
+    return this.props.editable;
   }
 
   render() {
-    console.log("product tiotl", this.product);
     return (
       <div className="container-main">
         <div className="container-fluid pdp-container" itemScope itemType="http://schema.org/Product">
@@ -113,5 +112,10 @@ class ProductDetail extends Component {
     );
   }
 }
+
+ProductDetail.propTypes = {
+  editable: PropTypes.bool,
+  product: PropTypes.object
+};
 
 export default ProductDetail;

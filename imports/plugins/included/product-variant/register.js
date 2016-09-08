@@ -8,7 +8,7 @@ Reaction.registerPackage({
   registry: [{
     route: "/product/:handle/:variantId?",
     name: "product",
-    template: "productDetail",
+    template: "productDetailSimple",
     workflow: "coreProductWorkflow"
   }, {
     label: "Product Settings",
@@ -42,7 +42,7 @@ Reaction.registerPackage({
     theme: "default",
     enabled: true,
     structure: {
-      template: "productDetail",
+      template: "productDetailSimple",
       layoutHeader: "layoutHeader",
       layoutFooter: "",
       notFound: "productNotFound",
