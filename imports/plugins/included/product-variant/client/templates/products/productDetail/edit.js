@@ -50,11 +50,11 @@ function processChange({ name, value }) {
   return Session.set("editing-" + name, false);
 }
 
-function setupEditor({ field, value, templateInstance, component, ...additionalProps }) {
+function setupEditor({ component, field, value, ...additionalProps }) {
   return {
     className: `form-control ${field}-edit-input`,
     name: field,
-    onChange: processChange.bind(templateInstance),
+    onChange: processChange,
     placeholder: i18nPlaceholder(field),
     value,
     component,
@@ -70,6 +70,9 @@ Template.productDetailEdit.onCreated(() => {
     return;
   }
 
+  // If not given explicit type to use in the editor
+  // look into Product schema to figure out the most
+  // appropriate editor to use
   const fieldDefinition = Product.getDefinition(t.data.field);
 
   if (fieldDefinition && fieldDefinition.allowedValues) {
@@ -85,28 +88,25 @@ Template.productDetailEdit.onCreated(() => {
 Template.productDetailEdit.helpers({
   TextArea() {
     return setupEditor({
+      component: TextArea,
       field: this.field,
-      value: this.value,
-      templateInstance: Template.instance(),
-      component: TextArea
+      value: this.value
     });
   },
 
   TextBox() {
     return setupEditor({
+      component: TextBox,
       field: this.field,
-      value: this.value,
-      templateInstance: Template.instance(),
-      component: TextBox
+      value: this.value
     });
   },
 
   Select() {
     return setupEditor({
+      component: Select,
       field: this.field,
       value: this.value,
-      templateInstance: Template.instance(),
-      component: Select,
       options: Template.instance().allowedValues
     });
   },
