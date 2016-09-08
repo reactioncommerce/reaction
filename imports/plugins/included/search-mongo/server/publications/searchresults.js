@@ -71,15 +71,12 @@ getResults.accounts = function (searchTerm, facets, maxResults, userId) {
   const shopId = Reaction.getShopId();
   if (Roles.userIsInRole(userId, ["admin", "owner"], shopId)) {
     accountResults = AccountSearch.find({
-      shopId: shopId, $text: {$search: searchTerm}
-      }, {
-        fields: {
-          score: {$meta: "textScore"}
-        },
-        limit: maxResults
-      }
-    );
-    Logger.info(`Found ${accountResults.count()} account`);
+      shopId: shopId,
+      emails: searchTerm
+    });
+    Logger.info(`Found ${accountResults.count()} accounts searching for ${searchTerm}`);
+    // const verboseResults = accountResults.fetch();
+    // Logger.info(JSON.stringify(verboseResults, null, 4));
   }
   return accountResults;
 };

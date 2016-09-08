@@ -144,16 +144,20 @@ export function buildAccountSearch(cb) {
   check(cb, Match.Optional(Function));
   const accounts = Accounts.find({}).fetch();
   for (const account of accounts) {
+    const accountEmails = [];
+    for (const email of account.emails) {
+      accountEmails.push(email.address);
+    }
     const accountSearch = {
       _id: account._id,
-      emails: account.emails,
-      profile: account.profile
+      shopId: account.shopId,
+      emails: accountEmails
     };
     AccountSearch.insert(accountSearch);
   }
   const rawAccountSearchCollection = AccountSearch.rawCollection();
   rawAccountSearchCollection.dropIndexes("*");
-  rawAccountSearchCollection.createIndex({"$**": "text"});
+  rawAccountSearchCollection.createIndex({shopId: 1, emails: 1});
   if (cb) {
     cb();
   }
@@ -163,14 +167,18 @@ export function buildAccountSearchRecord(accountId, cb) {
   check(accountId, String);
   check(cb, Match.Optional(Function));
   const account = Accounts.findOne(accountId);
+  const accountEmails = [];
+  for (const email of account.emails) {
+    accountEmails.push(email.address);
+  }
   const accountSearch = {
     _id: account._id,
-    emails: account.emails,
-    profile: account.profile
+    shopId: account.shopId,
+    emails: accountEmails
   };
   AccountSearch.insert(accountSearch);
   const rawAccountSearchCollection = AccountSearch.rawCollection();
-  rawAccountSearchCollection.createIndex({"$**": "text"});
+  rawAccountSearchCollection.createIndex({shopId: 1, emails: 1});
   if (cb) {
     cb();
   }

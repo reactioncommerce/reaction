@@ -1,12 +1,15 @@
 import faker from "faker";
 import { expect } from "meteor/practicalmeteor:chai";
+import { sinon } from "meteor/practicalmeteor:sinon";
+import { Roles } from "meteor/alanning:roles";
 import { Reaction } from "/server/api";
 import { getSlug } from "/lib/api";
-import { Products, ProductSearch } from "/lib/collections";
+import { Products } from "/lib/collections";
 import Fixtures from "/server/imports/fixtures";
 import { getResults } from "./searchresults";
-import { buildProductSearch } from "../methods/searchcollections";
-import { buildProductSearchRecord } from "../methods/searchcollections";
+import { buildProductSearch,
+  buildProductSearchRecord,
+  buildAccountSearchRecord, buildAccountSearch } from "../methods/searchcollections";
 
 Fixtures();
 
@@ -51,6 +54,12 @@ export function createProduct(isVisible = true, title) {
   return insertedProduct;
 }
 
+function createAccount() {
+  const account = Factory.create("account");
+  return account;
+}
+
+
 describe("Search results", function () {
   let product;
 
@@ -66,7 +75,6 @@ describe("Search results", function () {
 
   describe("product search", function () {
     it("should produce at least one result for title match", function () {
-
       const searchTerm = "Product Search Test";
       const results = getResults.products(searchTerm);
       const numResults = results.count();
@@ -106,3 +114,33 @@ describe("Search results", function () {
   });
 });
 
+describe("Account Search results", function () {
+  let account;
+
+  before(function () {
+    buildAccountSearch();
+  });
+
+  beforeEach(function () {
+    account = createAccount();
+    buildAccountSearchRecord(account._id);
+  });
+
+  describe("account search", function () {
+    it("should match accounts when searching by email", function () {
+      const roleStub = sinon.stub(Roles, "userIsInRole", () => true);
+      const email = account.emails[0].address;
+      const results = getResults.accounts(email);
+      expect(results.count()).to.equal(1);
+      roleStub.restore();
+    });
+
+    it("should not return results if not an admin", function () {
+      const roleStub = sinon.stub(Roles, "userIsInRole", () => false);
+      const email = account.emails[0].address;
+      const results = getResults.accounts(email);
+      expect(results).to.be.undefined;
+      roleStub.restore();
+    });
+  });
+});
