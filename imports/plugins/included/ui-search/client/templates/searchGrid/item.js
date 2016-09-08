@@ -34,7 +34,7 @@ Template.searchGridItems.helpers({
   },
   media: function () {
     const media = Media.findOne({
-      "metadata.productId": this._id,
+      "metadata.productId": this.product._id,
       "metadata.priority": 0,
       "metadata.toGrid": 1
     }, { sort: { uploadedAt: 1 } });
