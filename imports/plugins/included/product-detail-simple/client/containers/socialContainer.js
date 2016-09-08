@@ -10,7 +10,7 @@ class ProductSocialContainer extends Component {
     return (
       <EditContainer
         data={this.props.data}
-        editView="variantForm"
+        editView="ProductAdmin"
         field={["facebookMsg", "twitterMsg", "googleplusMsg", "pinterestMsg"]}
         i18nKeyLabel="productDetailEdit.editSocial"
         label="Edit Social Messaging"
@@ -23,11 +23,6 @@ class ProductSocialContainer extends Component {
 }
 
 function composer(props, onData) {
-  const socialApps = Reaction.Apps({
-    provides: "social",
-    name: "reaction-social"
-  });
-
   const product = ReactionProduct.selectedProduct();
   let title = product.title;
 
