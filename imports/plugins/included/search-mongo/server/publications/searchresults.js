@@ -13,7 +13,7 @@ function getProductFindTerm(searchTerm, searchTags, userId) {
     $text: {$search: searchTerm}
   };
   if (searchTags.length) {
-    findTerm.hastags = {$all: searchTags};
+    findTerm.hashtags = {$all: searchTags};
   }
   if (!Roles.userIsInRole(userId, ["admin", "owner"], shopId)) {
     findTerm.isVisible = true;
