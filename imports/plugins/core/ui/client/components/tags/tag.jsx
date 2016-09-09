@@ -1,22 +1,42 @@
 import { i18next } from "/client/api";
-import React from "react";
-import { Reaction } from "/client/api";
-import { PropTypes } from "/lib/api";
-import { Tags } from "/lib/collections";
+import React, { Component, PropTypes } from "react";
+// import { PropTypes } from "/lib/api";
 import Autosuggest from "react-autosuggest";
-import { Button } from "/imports/plugins/core/ui/client/components"
+import { Button } from "/imports/plugins/core/ui/client/components";
 import { SortableItem } from "/imports/plugins/core/ui/client/containers";
 
-class Tag extends React.Component {
+class Tag extends Component {
   displayName: "Tag";
 
   constructor(props) {
     super(props);
 
     this.state = {
+      oldInputValue: props.tag.name,
       inputValue: props.tag.name,
       suggestion: ""
     };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.state.oldInputValue !== nextProps.tag.name) {
+      this.setState({
+        oldInputValue: nextProps.tag.name,
+        inputValue: nextProps.tag.name
+      });
+    }
+  }
+
+  saveTag(event) {
+    const tag = Object.assign(this.props.tag, {
+      name: this.state.inputValue
+    });
+
+    if (this.state.oldInputValue !== this.state.inputValue) {
+      if (this.props.onTagSave) {
+        this.props.onTagSave(event, tag);
+      }
+    }
   }
 
   handleSuggestionUpdateRequest = ({ value }) => {
@@ -68,6 +88,12 @@ class Tag extends React.Component {
     }
   };
 
+  handleTagKeyDown = (event) => {
+    if (event.keyCode === 13) {
+      this.saveTag(event);
+    }
+  }
+
   /**
    * Handle tag mouse out events and pass them up the component chain
    * @param  {Event} event Event object
@@ -89,6 +115,23 @@ class Tag extends React.Component {
     if (this.props.onTagMouseOver) {
       this.props.onTagMouseOver(event, this.props.tag);
     }
+  };
+
+  /**
+   * Handle tag inout blur events and pass them up the component chain
+   * @param  {Event} event Event object
+   * @return {void} no return value
+   */
+  handleTagInputBlur = (event) => {
+    const tag = Object.assign(this.props.tag, {
+      name: this.state.inputValue
+    });
+
+    if (this.props.onTagInputBlur) {
+      this.props.onTagInputBlur(event, tag);
+    }
+
+    this.saveTag(event);
   };
 
   /**
@@ -174,19 +217,23 @@ class Tag extends React.Component {
     });
   }
 
+  handleSuggestionsUpdateRequested = (suggestion) => {
+    if (this.props.onSuggestionsUpdateRequested) {
+      this.props.onSuggestionsUpdateRequested(suggestion);
+    }
+  }
+
   renderAutosuggestInput() {
+    const inputPlaceholder = i18next.t(this.props.i18nPlaceholderKey, {
+      defaultValue: this.props.i18nPlaceholderValue
+    });
+
     return (
       <Autosuggest
-        suggestions={this.props.suggestions}
         getSuggestionValue={this.getSuggestionValue}
-        renderSuggestion={this.renderSuggestion}
-        onSuggestionsUpdateRequested={(suggestion) => {
-          if (this.props.onSuggestionsUpdateRequested) {
-            this.props.onSuggestionsUpdateRequested(suggestion);
-          }
-        }}
+
         inputProps={{
-          placeholder: i18next.t(this.props.i18nPlaceholderKey, { defaultValue: this.props.i18nPlaceholderValue}),
+          placeholder: inputPlaceholder,
           value: this.state.inputValue,
           onKeyDown(event) {
             // 9 == Tab key
@@ -196,9 +243,12 @@ class Tag extends React.Component {
               // options.onUpdateCallback && options.onUpdateCallback();
             }
           },
-          onBlur: this.handleTagMouseOut,
+          onBlur: this.handleTagInputBlur,
           onChange: this.handleInputChange
         }}
+        onSuggestionsUpdateRequested={this.handleSuggestionsUpdateRequested}
+        renderSuggestion={this.renderSuggestion}
+        suggestions={this.props.suggestions}
       />
     );
   }
@@ -220,22 +270,27 @@ class Tag extends React.Component {
 }
 
 Tag.propTypes = {
-  blank: React.PropTypes.bool,
-  editable: React.PropTypes.bool,
-  index: React.PropTypes.number,
+  blank: PropTypes.bool,
+  editable: PropTypes.bool,
+  i18nPlaceholderKey: PropTypes.string,
+  i18nPlaceholderValue: PropTypes.string,
+  index: PropTypes.number,
 
   // Event handelers
-  onTagBookmark: React.PropTypes.func,
-  onTagCreate: React.PropTypes.func,
-  onTagMouseOut: React.PropTypes.func,
-  onTagMouseOver: React.PropTypes.func,
-  onTagRemove: React.PropTypes.func,
-  onTagUpdate: React.PropTypes.func,
+  onTagBookmark: PropTypes.func,
+  onTagCreate: PropTypes.func,
+  onTagInputBlur: PropTypes.func,
+  onTagMouseOut: PropTypes.func,
+  onTagMouseOver: PropTypes.func,
+  onTagRemove: PropTypes.func,
+  onTagSave: PropTypes.func,
+  onTagUpdate: PropTypes.func,
 
-  parentTag: PropTypes.Tag,
-  placeholder: React.PropTypes.string,
-  showBookmark: React.PropTypes.bool,
-  tag: PropTypes.Tag
+  parentTag: PropTypes.object,
+  placeholder: PropTypes.string,
+  showBookmark: PropTypes.bool,
+  suggestions: PropTypes.arrayOf(PropTypes.object),
+  tag: PropTypes.object
 };
 
 export default SortableItem("tag", Tag);

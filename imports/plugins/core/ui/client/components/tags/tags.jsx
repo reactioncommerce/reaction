@@ -51,13 +51,9 @@ class Tags extends Component {
   };
 
 
-  handleTagUpdate = (tagId, tagName) => {
+  handleTagUpdate = (event, tag) => {
     if (this.props.onTagUpdate) {
-      let parentTagId;
-      if (this.props.parentTag) {
-        parentTagId = this.props.parentTag._id;
-      }
-      this.props.onTagUpdate(tagId, tagName, parentTagId);
+      this.props.onTagUpdate(tag, this.props.parentTag);
     }
   };
 
@@ -75,7 +71,7 @@ class Tags extends Component {
               data-id={tag._id}
               editable={this.props.editable}
               index={index}
-              key={tag._id || index}
+              key={index}
               onGetSuggestions={this.props.handleGetSuggestions}
               onMove={this.props.onMoveTag}
               onSuggestionUpdateRequested={this.props.onSuggestionUpdateRequested}
@@ -83,7 +79,7 @@ class Tags extends Component {
               onTagMouseOut={this.handleTagMouseOut}
               onTagMouseOver={this.handleTagMouseOver}
               onTagRemove={this.handleTagRemove}
-              onTagUpdate={this.handleTagUpdate}
+              onTagSave={this.handleTagUpdate}
               suggestions={this.props.suggestions}
               tag={tag}
             />
@@ -97,7 +93,13 @@ class Tags extends Component {
           <TagItem
             blank={true}
             key="newTagForm"
+            onGetSuggestions={this.props.handleGetSuggestions}
             onTagCreate={this.handleTagCreate}
+            onTagSave={this.props.onNewTagInputBlur}
+            suggestions={this.props.suggestions}
+            tag={{
+              name: ""
+            }}
           />
         );
       }

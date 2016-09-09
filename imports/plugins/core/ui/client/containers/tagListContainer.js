@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import update from "react/lib/update";
+import { Meteor } from "meteor/meteor";
 import { Reaction } from "/client/api";
 import { composeWithTracker } from "react-komposer";
 import { TagList } from "../components/tags";
@@ -28,6 +29,44 @@ function updateSuggestions(term) {
 }
 
 class TagListContainer extends Component {
+
+  get productId() {
+    if (this.props.product) {
+      return this.props.product._id;
+    }
+    return null;
+  }
+
+  handleTagCreate = (tag) => {
+    if (this.productId) {
+      Meteor.call("products/updateProductTags", this.productId, tag.name, null, (error) => {
+        if (error) {
+          Alerts.toast("Tag already exists, duplicate add failed.", "error");
+        }
+      });
+    }
+  }
+
+  handleTagRemove = (tag) =>{
+    if (this.productId) {
+      Meteor.call("products/removeProductTag", this.productId, tag._id, (error) => {
+        if (error) {
+          Alerts.toast("Tag already exists, duplicate add failed.", "error");
+        }
+      });
+    }
+  }
+
+  handleTagUpdate = (tag) => {
+    if (this.productId) {
+      Meteor.call("products/updateProductTags", this.productId, tag.name, tag._id, (error) => {
+        if (error) {
+          Alerts.toast("Tag already exists, duplicate add failed.", "error");
+        }
+      });
+    }
+  }
+
   handleMoveTag = (dragIndex, hoverIndex) => {
     const variant = this.props.tags[dragIndex];
 
@@ -60,6 +99,9 @@ class TagListContainer extends Component {
         <TagList
           onClick={this.handleEditButtonClick}
           onMoveTag={this.handleMoveTag}
+          onNewTagInputBlur={this.handleTagCreate}
+          onTagRemove={this.handleTagRemove}
+          onTagUpdate={this.handleTagUpdate}
           tooltip="Unpublised changes"
           {...this.props}
         />

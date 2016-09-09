@@ -164,6 +164,7 @@ class ProductAdmin extends Component {
           />
           <CardBody>
             <TagListContainer
+              enableNewTagForm={true}
               product={this.props.product}
             />
           </CardBody>
