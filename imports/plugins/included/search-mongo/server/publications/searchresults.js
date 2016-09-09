@@ -26,7 +26,7 @@ export const getResults = {};
 getResults.products = function (searchTerm, facets, maxResults, userId) {
   const searchTags = facets || [];
   const findTerm = getProductFindTerm(searchTerm, searchTags, userId);
-  Logger.info(`Using findTerm ${JSON.stringify(findTerm, null, 4)}`);
+  // Logger.info(`Using findTerm ${JSON.stringify(findTerm, null, 4)}`);
   const productResults = ProductSearch.find(findTerm,
     {
       fields: {
@@ -50,17 +50,17 @@ getResults.products = function (searchTerm, facets, maxResults, userId) {
 getResults.orders = function (searchTerm, facets, maxResults, userId) {
   let orderResults;
   const shopId = Reaction.getShopId();
+  const findTerm = {
+    $and: [
+      {shopId: shopId},
+      {$or: [
+        { userEmails: searchTerm },
+        { shippingName: searchTerm },
+        { billingName: searchTerm }
+      ] }
+    ]};
   if (Roles.userIsInRole(userId, ["admin", "owner"], shopId)) {
-    orderResults = OrderSearch.find({
-      shopId: shopId, $text: {$search: searchTerm}
-    }, {
-      fields: {
-        score: {$meta: "textScore"}
-      },
-      sort: {score: {$meta: "textScore"}},
-      limit: maxResults
-    }
-    );
+    orderResults = OrderSearch.find(findTerm);
     Logger.info(`Found ${orderResults.count()} orders`);
   }
   return orderResults;
@@ -71,23 +71,10 @@ getResults.accounts = function (searchTerm, facets, maxResults, userId) {
   const shopId = Reaction.getShopId();
   if (Roles.userIsInRole(userId, ["admin", "owner"], shopId)) {
     accountResults = AccountSearch.find({
-// <<<<<<< Updated upstream
       shopId: shopId,
       emails: searchTerm
     });
     Logger.info(`Found ${accountResults.count()} accounts searching for ${searchTerm}`);
-    // const verboseResults = accountResults.fetch();
-    // Logger.info(JSON.stringify(verboseResults, null, 4));
-// =======
-//       shopId: shopId, $text: {$search: searchTerm}
-//     }, {
-//       fields: {
-//         score: {$meta: "textScore"}
-//       },
-//       limit: maxResults
-//     });
-//     Logger.info(`Found ${accountResults.count()} account`);
-// >>>>>>> Stashed changes
   }
   return accountResults;
 };
