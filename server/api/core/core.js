@@ -183,6 +183,18 @@ export default {
     return shop && shop.emails && shop.emails[0].address;
   },
 
+  getShopSettings() {
+    const settings = Packages.findOne({
+      name: "core",
+      shopId: this.getShopId()
+    }) || {};
+    return settings.settings || {};
+  },
+
+  getPackageSettings(name) {
+    return Packages.findOne({ name, shopId: this.getShopId() }) || null;
+  },
+
   /**
    * createDefaultAdminUser
    * @summary Method that creates default admin user

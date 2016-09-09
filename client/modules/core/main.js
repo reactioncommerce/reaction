@@ -193,17 +193,24 @@ export default {
     return this.shopName;
   },
 
-  allowGuestCheckout() {
-    let allowGuest = false;
-    const packageRegistry = Packages.findOne({
+  getShopSettings() {
+    const settings = Packages.findOne({
       name: "core",
       shopId: this.shopId
-    });
+    }) || {};
+    return settings.settings || {};
+  },
+
+  getPackageSettings(name) {
+    return Packages.findOne({ name, shopId: this.getShopId() });
+  },
+
+  allowGuestCheckout() {
+    let allowGuest = false;
+    const settings = this.getShopSettings();
     // we can disable in admin, let's check.
-    if (typeof packageRegistry === "object" &&
-      typeof packageRegistry.settings === "object" &&
-      packageRegistry.settings.public.allowGuestCheckout) {
-      allowGuest = packageRegistry.settings.public.allowGuestCheckout;
+    if (settings.public && settings.public.allowGuestCheckout) {
+      allowGuest = settings.public.allowGuestCheckout;
     }
     return allowGuest;
   },
