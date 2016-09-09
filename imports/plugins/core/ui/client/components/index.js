@@ -1,5 +1,6 @@
 // export ButtonGroup from "./buttonGroup/buttonGroup";
 
+export { Alerts, Alert } from "./alerts";
 export { default as Icon } from "./icon/icon";
 export { default as Divider } from "./divider/divider";
 export { default as Items } from "./items/items";

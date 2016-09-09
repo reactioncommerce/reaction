@@ -2,11 +2,11 @@ import { Meteor } from "meteor/meteor";
 import React, { Component } from "react";
 import { composeWithTracker } from "react-komposer";
 import { ReactionProduct } from "/lib/api";
-import { Reaction } from "/client/api";
+import { Reaction, i18next, Logger } from "/client/api";
 import { Tags, Media } from "/lib/collections";
 import { ProductDetail } from "../components";
 import { SocialContainer, VariantListContainer } from "./";
-import TranslationProvider from "/imports/plugins/core/ui/client/providers/translationProvider";
+import { TranslationProvider } from "/imports/plugins/core/ui/client/providers";
 
 class ProductDetailContainer extends Component {
   constructor(props) {
@@ -53,14 +53,15 @@ class ProductDetailContainer extends Component {
         return [];
       }
 
-      qtyField = this.state.cartQuantity //, template.$('input[name="addToCartQty"]'); //****
-      quantity = parseInt(qtyField.val(), 10);
+      // qtyField =  //, template.$('input[name="addToCartQty"]'); //****
+      quantity = parseInt(this.state.cartQuantity, 10);
 
       if (quantity < 1) {
         quantity = 1;
       }
 
-      if (!this.isVisible) {
+      if (!currentProduct.isVisible) {
+        console.log("cant add to cart");
         Alerts.inline("Publish product before adding to cart.", "error", {
           placement: "productDetail",
           i18nKey: "productDetail.publishFirst",
@@ -70,12 +71,13 @@ class ProductDetailContainer extends Component {
         productId = currentProduct._id;
 
         if (productId) {
-          Meteor.call("cart/addToCart", productId, currentVariant._id, quantity,
-            function (error) {
+          Meteor.call("cart/addToCart", productId, currentVariant._id, quantity, (error) => {
               if (error) {
                 Logger.error("Failed to add to cart.", error);
                 return error;
               }
+              // Reset cart quantity on success
+              this.handleCartQuantityChange(null, 1);
 
               return true;
             }
@@ -84,7 +86,7 @@ class ProductDetailContainer extends Component {
 
         // template.$(".variant-select-option").removeClass("active");
         ReactionProduct.setCurrentVariant(null);
-        qtyField.val(1);
+        // qtyField.val(1);
         // scroll to top on cart add
         $("html,body").animate({
           scrollTop: 0
@@ -137,7 +139,7 @@ class ProductDetailContainer extends Component {
       <TranslationProvider>
         <ProductDetail
           cartQuantity={this.state.cartQuantity}
-          onAddtoCart={this.handleAddToCart}
+          onAddToCart={this.handleAddToCart}
           onCartQuantityChange={this.handleCartQuantityChange}
           socialComponent={<SocialContainer />}
           topVariantComponent={<VariantListContainer />}

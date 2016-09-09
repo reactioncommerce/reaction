@@ -12,7 +12,7 @@ import {
   ProductTags,
   ProductField
 } from "./"
-import { EditContainer } from "/imports/plugins/core/ui/client/containers";
+import { AlertContainer, EditContainer } from "/imports/plugins/core/ui/client/containers";
 
 class ProductDetail extends Component {
   get tags() {
@@ -31,8 +31,9 @@ class ProductDetail extends Component {
     return (
       <div className="container-main">
         <div className="container-fluid pdp-container" itemScope itemType="http://schema.org/Product">
-          <header className="pdp header">
+          <AlertContainer placement="productManagement" />
 
+          <header className="pdp header">
             <ProductField
               editable={this.editable}
               fieldName="title"
@@ -103,6 +104,7 @@ class ProductDetail extends Component {
               </div>
               <hr />
               <div>
+                <AlertContainer placement="productDetail" />
                 <AddToCartButton
                   cartQuantity={this.props.cartQuantity}
                   onCartQuantityChange={this.props.onCartQuantityChange}
