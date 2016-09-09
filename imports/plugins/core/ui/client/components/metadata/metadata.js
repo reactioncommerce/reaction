@@ -105,7 +105,7 @@ class Metadata extends Component {
         return (
           <div className="rui meta-item" key={index}>
             <div className="rui meta-key">{metadata.key}</div>
-            <div className="rui meta-key">{metadata.value}</div>
+            <div className="rui meta-value">{metadata.value}</div>
           </div>
         );
       });

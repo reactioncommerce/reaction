@@ -1,14 +1,5 @@
 import React, { Component, PropTypes } from "react";
-
-// import TextField from "reaction-ui/textfield"
-// TODO: For now lets pretend we have to do imports
-import {
-  Divider,
-  TextField,
-  Button,
-  Item,
-  Items
-} from "../";
+import { TextField, Button } from "../";
 
 class Metafield extends Component {
 
@@ -92,7 +83,7 @@ Metafield.defaultProps = {
 // Prop Types
 Metafield.propTypes = {
   index: PropTypes.number,
-  metafields: PropTypes.arrayOf(PropTypes.object),
+  metafield: PropTypes.object,
   onBlur: PropTypes.func,
   onChange: PropTypes.func,
   onRemove: PropTypes.func
