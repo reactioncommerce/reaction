@@ -30,7 +30,6 @@ logging@1.1.15
 reload@1.1.10
 ejson@1.0.12
 less@2.7.5
-email@1.1.17
 service-configuration@1.0.10
 amplify
 mdg:validated-method

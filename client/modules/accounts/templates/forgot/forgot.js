@@ -1,6 +1,7 @@
+import { Meteor } from "meteor/meteor";
+import { Template } from "meteor/templating";
 import { i18next } from "/client/api";
 import { LoginFormSharedHelpers } from "/client/modules/accounts/helpers";
-import { Template } from "meteor/templating";
 
 Template.loginFormResetPasswordView.events({
 
@@ -32,7 +33,7 @@ Template.loginFormResetPasswordView.events({
       // return;
     }
 
-    Accounts.forgotPassword({ email: emailAddress}, (error) => {
+    Meteor.call("accounts/sendResetPasswordEmail", { email: emailAddress }, (error) => {
       // Show some message confirming result
       if (error) {
         templateInstance.formMessages.set({

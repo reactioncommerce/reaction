@@ -6,6 +6,7 @@ import { Jobs, Packages, Shops } from "/lib/collections";
 import { Hooks, Logger } from "/server/api";
 import ProcessJobs from "/server/jobs";
 import { getRegistryDomain } from "./setDomain";
+import { sendVerificationEmail } from "./accounts";
 import { getMailUrl } from "./email/config";
 
 export default {
@@ -30,7 +31,7 @@ export default {
     // for initilial permissions configuration.
     this.createDefaultAdminUser();
     // hook after init finished
-    Hooks.Events.run("afterCoreInit", this);
+    Hooks.Events.run("afterCoreInit");
 
     Logger.info("Reaction.init() has run");
 
@@ -292,7 +293,7 @@ export default {
       try {
         // if server is not configured. Error in configuration
         // are caught, but admin isn't verified.
-        Accounts.sendVerificationEmail(accountId);
+        sendVerificationEmail(accountId);
       } catch (error) {
         Logger.warn(error, "Unable to send admin account verification email.");
       }

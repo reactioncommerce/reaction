@@ -1,12 +1,7 @@
+import { Accounts } from "meteor/accounts-base";
+import { Template } from "meteor/templating";
 import { i18next } from "/client/api";
 import { LoginFormSharedHelpers } from "/client/modules/accounts/helpers";
-import { Template } from "meteor/templating";
-
-ModalHelper = {
-  closeModal: function (template) {
-    Blaze.remove(template.view);
-  }
-};
 
 /**
  * Accounts Event: onResetPasswordLink When a user uses a password reset link
