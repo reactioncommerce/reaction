@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import classnames from "classnames";
 import { Translation, TagList } from "/imports/plugins/core/ui/client/components/";
-import { EditContainer } from "/imports/plugins/core/ui/client/containers";
+import { TagListContainer, EditContainer } from "/imports/plugins/core/ui/client/containers";
 
 class ProductTags extends Component {
   get tags() {
@@ -44,7 +44,11 @@ class ProductTags extends Component {
             <Translation defaultValue="Tags" i18nKey="productDetail.tags" />
             {this.renderEditButton()}
           </h3>
-          <TagList editable={false} tags={this.tags} />
+          <TagListContainer
+            editable={false}
+            product={this.props.product}
+            tags={this.tags}
+          />
         </div>
       );
     }

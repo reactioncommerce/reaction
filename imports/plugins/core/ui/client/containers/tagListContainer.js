@@ -1,22 +1,20 @@
-import React, { Children, Component, PropTypes } from "react";
+import React, { Component, PropTypes } from "react";
+import update from "react/lib/update";
 import { Reaction } from "/client/api";
-import { EditButton } from "/imports/plugins/core/ui/client/components";
 import { composeWithTracker } from "react-komposer";
-import { TagList } from "../components/tags"
+import { TagList } from "../components/tags";
 import { Tags } from "/lib/collections";
-
 import { ReactiveDict } from "meteor/reactive-dict";
-
-// import isEqual
-
+import { getTagIds } from "/lib/selectors/tags";
+import { DragDropProvider } from "/imports/plugins/core/ui/client/providers";
 
 const externalState = new ReactiveDict();
 externalState.set("suggestions", []);
 
 function updateSuggestions(term) {
-  console.log("GET SUGGESTIONS FOR", term);
   const datums = [];
   const slug = Reaction.getSlug(term);
+
   Tags.find({
     slug: new RegExp(slug, "i")
   }).forEach(function (tag) {
@@ -29,30 +27,52 @@ function updateSuggestions(term) {
   externalState.set("suggestions", datums);
 }
 
-// function getSuggestionValue(suggestion) {
-//   return suggestion.label;
-// }
-//
-// function renderSuggestion(suggestion) {
-//   return React.createElement("span", null, suggestion.label);
-// }
-
-
 class TagListContainer extends Component {
+  handleMoveTag = (dragIndex, hoverIndex) => {
+    const variant = this.props.tags[dragIndex];
+
+    // Apply new sort order to variant list
+    const newTagOrder = update(this.props.tags, {
+      $splice: [
+        [dragIndex, 1],
+        [hoverIndex, 0, variant]
+      ]
+    });
+
+    // Set local state so the component does't have to wait for a round-trip
+    // to the server to get the updated list of variants
+    this.setState({
+      tags: newTagOrder
+    });
+
+    // Save the updated positions
+    Meteor.defer(() => {
+      if (this.props.product) {
+        const tagIds = getTagIds({ tags: newTagOrder });
+        Meteor.call("products/updateProductField", this.props.product._id, "hashtags", tagIds);
+      }
+    });
+  }
+
   render() {
     return (
-      <TagList
-        onClick={this.handleEditButtonClick}
-        tooltip="Unpublised changes"
-        {...this.props}
-      />
+      <DragDropProvider>
+        <TagList
+          onClick={this.handleEditButtonClick}
+          onMoveTag={this.handleMoveTag}
+          tooltip="Unpublised changes"
+          {...this.props}
+        />
+      </DragDropProvider>
     );
   }
 }
 
 TagListContainer.propTypes = {
   children: PropTypes.node,
-  hasPermission: PropTypes.bool
+  hasPermission: PropTypes.bool,
+  product: PropTypes.object,
+  tags: PropTypes.arrayOf(PropTypes.object)
 };
 
 function composer(props, onData) {
@@ -67,14 +87,24 @@ function composer(props, onData) {
   }
 
 
+  let isEditable = props.editable;
+
+  if (typeof isEditable !== "boolean") {
+    isEditable = Reaction.hasPermission(props.premissions);
+  }
+
   onData(null, {
     handleGetSuggestions(term) {
       updateSuggestions(term);
     },
+    isProductTags: props.product !== undefined,
     suggestions: externalState.get("suggestions"),
     tags,
-    editable: Reaction.hasPermission(props.premissions)
+    editable: isEditable
   });
 }
 
-export default composeWithTracker(composer)(TagListContainer);
+let decoratedComponent = TagListContainer;
+decoratedComponent = composeWithTracker(composer)(decoratedComponent);
+
+export default decoratedComponent;

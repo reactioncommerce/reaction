@@ -5,16 +5,13 @@ import { PropTypes } from "/lib/api";
 import { Tags } from "/lib/collections";
 import Autosuggest from "react-autosuggest";
 import { Button } from "/imports/plugins/core/ui/client/components"
-/* eslint no-extra-parens: 0 */
-
-// const TextField = ReactionUI.Components.TextField;
-// const Button = ReactionUI.Components.Button;
+import { SortableItem } from "/imports/plugins/core/ui/client/containers";
 
 class Tag extends React.Component {
   displayName: "Tag";
 
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
       inputValue: props.tag.name,
@@ -23,7 +20,7 @@ class Tag extends React.Component {
   }
 
   handleSuggestionUpdateRequest = ({ value }) => {
-    this.setState("suggestions", getSuggestions(value))
+    this.setState("suggestions", getSuggestions(value));
   }
 
   /**
@@ -77,7 +74,7 @@ class Tag extends React.Component {
    * @return {void} no return value
    */
   handleTagMouseOut = (event) => {
-    event.preventDefault();
+    // event.preventDefault();
     if (this.props.onTagMouseOut) {
       this.props.onTagMouseOut(event, this.props.tag);
     }
@@ -92,37 +89,6 @@ class Tag extends React.Component {
     if (this.props.onTagMouseOver) {
       this.props.onTagMouseOver(event, this.props.tag);
     }
-  };
-
-  /**
-   * Handle tag focus, show autocomplete options
-   * TODO: Make this better by not using a jQuery plugin
-   * @param  {Event} event Event Object
-   * @return {void} no return value
-   */
-  handleFocus = (event) => {
-    // $(event.currentTarget).autocomplete({
-    //   delay: 0,
-    //   source: function (request, response) {
-    //     let datums = [];
-    //     let slug = Reaction.getSlug(request.term);
-    //     Tags.find({
-    //       slug: new RegExp(slug, "i")
-    //     }).forEach(function (tag) {
-    //       return datums.push({
-    //         label: tag.name
-    //       });
-    //     });
-    //     return response(datums);
-    //   },
-    //   select: (selectEvent, ui) => {
-    //     if (ui.item.value) {
-    //       if (this.props.onTagUpdate) {
-    //         this.props.onTagUpdate(this.props.tag._id, ui.item.value);
-    //       }
-    //     }
-    //   }
-    // });
   };
 
   /**
@@ -149,6 +115,7 @@ class Tag extends React.Component {
         <Button icon="bookmark" onClick={this.handleTagBookmark} />
       );
     }
+    return null;
   }
 
   /**
@@ -180,7 +147,6 @@ class Tag extends React.Component {
         <form onSubmit={this.handleTagCreate}>
           <Button icon="tag" />
           {this.renderAutosuggestInput()}
-          {/*}<Autosuggest i18nPlaceholder={i18next.t(this.props.placeholder) || i18next.t("tags.addTag")} name="tag" />*/}
           <Button icon="plus" />
         </form>
       </div>
@@ -190,7 +156,7 @@ class Tag extends React.Component {
   renderSuggestion(suggestion) {
     return (
       <span>{suggestion.label}</span>
-    )
+    );
   }
 
   getSuggestionValue(suggestion) {
@@ -198,9 +164,7 @@ class Tag extends React.Component {
   }
 
   handleInputChange = (event, { newValue }) => {
-
     if (this.props.onGetSuggestions) {
-      console.log({ newValue });
       this.props.onGetSuggestions(newValue);
     }
 
@@ -218,7 +182,7 @@ class Tag extends React.Component {
         renderSuggestion={this.renderSuggestion}
         onSuggestionsUpdateRequested={(suggestion) => {
           if (this.props.onSuggestionsUpdateRequested) {
-            this.props.onSuggestionsUpdateRequested(suggestion)
+            this.props.onSuggestionsUpdateRequested(suggestion);
           }
         }}
         inputProps={{
@@ -245,6 +209,7 @@ class Tag extends React.Component {
    */
   render() {
     if (this.props.editable) {
+      // console.log(SortableItem(this.props.dragItemType || "tag", this.renderEditableTag()));
       return this.renderEditableTag();
     } else if (this.props.blank) {
       return this.renderBlankEditableTag();
@@ -257,6 +222,7 @@ class Tag extends React.Component {
 Tag.propTypes = {
   blank: React.PropTypes.bool,
   editable: React.PropTypes.bool,
+  index: React.PropTypes.number,
 
   // Event handelers
   onTagBookmark: React.PropTypes.func,
@@ -272,4 +238,4 @@ Tag.propTypes = {
   tag: PropTypes.Tag
 };
 
-export default Tag;
+export default SortableItem("tag", Tag);

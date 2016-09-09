@@ -7,119 +7,6 @@ import Sortable from "sortablejs";
 class Tags extends Component {
   displayName = "Tag List (Tags)";
 
-  constructor(props) {
-    super(props);
-
-    let tags = [];
-
-    if (Array.isArray(props.tags)) {
-      tags = props.tags;
-    }
-
-    this.state = {
-      isEditing: true,
-      tags: tags,
-      tagIds: tags.map((tag) => tag._id)
-    };
-  }
-
-  componentDidMount() {
-    if (this.props.editable) {
-      this._sortable = Sortable.create(this.refs.tags, {
-        group: "tags",
-        onSort: this.handleDragSort,
-        onAdd: this.handleDragAdd,
-        onRemove: this.handleDragRemove
-      });
-    }
-  }
-
-  componentWillReceiveProps(props) {
-    if (Array.isArray(props.tags)) {
-      this.setState({
-        tags: props.tags,
-        tagIds: props.tags.map((tag) => tag._id)
-      });
-
-      if (props.editable && this.state.isEditing) {
-        if (this._sortable) {
-          // this._sortable.option("disabled", false);
-        } else {
-          this._sortable = Sortable.create(this.refs.tags, {
-            group: "tags",
-            onSort: this.handleDragSort,
-            onAdd: this.handleDragAdd,
-            onRemove: this.handleDragRemove
-          });
-        }
-      }
-    }
-  }
-
-  handleDragAdd = (event) => {
-    const toListId = event.to.dataset.id;
-    const movedTagId = event.item.dataset.id;
-
-    this.setState({
-      tagIds: [
-        ...this.state.tagsIds,
-        movedTagId
-      ]
-    });
-
-    if (this.props.onTagDragAdd) {
-      this.props.onTagDragAdd(movedTagId, toListId, event.newIndex, this.props.tags);
-    }
-  };
-
-  handleDragRemove = (event) => {
-    const movedTagId = event.item.dataset.id;
-
-    if (this.props.onTagRemove) {
-      let foundTag = _.find(this.props.tags, (tag) => {
-        return tag._id === movedTagId;
-      });
-
-      this.props.onTagRemove(foundTag, this.props.parentTag);
-    }
-  };
-
-  handleDragSort = (event) => {
-    let newTagsOrder = this.move(this.state.tagIds, event.oldIndex, event.newIndex);
-
-    if (newTagsOrder) {
-      if (this.props.onTagSort) {
-        this.props.onTagSort(newTagsOrder, this.props.parentTag);
-      }
-    }
-  };
-
-  move(array, from, to) {
-    let fromIndex = from;
-    let toIndex = to;
-
-    if (!_.isArray(array)) {
-      return null;
-    }
-
-    while (fromIndex < 0) {
-      fromIndex += array.length;
-    }
-    while (toIndex < 0) {
-      toIndex += array.length;
-    }
-    if (toIndex >= this.length) {
-      let k = toIndex - array.length;
-      while ((k--) + 1) {
-        array.push(undefined);
-      }
-    }
-
-    array.splice(toIndex, 0, array.splice(fromIndex, 1)[0]);
-
-    return array;
-  }
-
   handleNewTagSubmit = (event) => {
     event.preventDefault();
     if (this.props.onTagCreate) {
@@ -180,22 +67,24 @@ class Tags extends Component {
   };
 
   renderTags() {
-    if (_.isArray(this.state.tags)) {
-      const tags = this.state.tags.map((tag, index) => {
+    if (_.isArray(this.props.tags)) {
+      const tags = this.props.tags.map((tag, index) => {
         if (tag) {
           return (
             <TagItem
               data-id={tag._id}
               editable={this.props.editable}
+              index={index}
               key={tag._id || index}
-              suggestions={this.props.suggestions}
-              onSuggestionUpdateRequested={this.props.onSuggestionUpdateRequested}
               onGetSuggestions={this.props.handleGetSuggestions}
+              onMove={this.props.onMoveTag}
+              onSuggestionUpdateRequested={this.props.onSuggestionUpdateRequested}
               onTagBookmark={this.handleTagBookmark}
               onTagMouseOut={this.handleTagMouseOut}
               onTagMouseOver={this.handleTagMouseOver}
               onTagRemove={this.handleTagRemove}
               onTagUpdate={this.handleTagUpdate}
+              suggestions={this.props.suggestions}
               tag={tag}
             />
           );
@@ -218,10 +107,6 @@ class Tags extends Component {
   }
 
   render() {
-    if (this.state.isEditing === false && this._sortable) {
-      this._sortable.option("disabled", true);
-    }
-
     const classes = classnames({
       rui: true,
       tags: true,

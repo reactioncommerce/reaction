@@ -4,6 +4,7 @@ import {
   Currency,
   Translation
 } from "/imports/plugins/core/ui/client/components";
+import { SortableItem } from "/imports/plugins/core/ui/client/containers";
 
 class Variant extends Component {
 
@@ -88,4 +89,4 @@ Variant.propTypes = {
   onClick: PropTypes.func
 };
 
-export default Variant;
+export default SortableItem("product-variant", Variant);

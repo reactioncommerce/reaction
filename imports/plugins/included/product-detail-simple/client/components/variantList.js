@@ -46,8 +46,10 @@ class VariantList extends Component {
           >
             <Variant
               displayPrice={displayPrice}
+              index={index}
               isSelected={this.props.variantIsSelected(variant._id)}
               onClick={this.props.onVariantClick}
+              onMove={this.props.onMoveVariant}
               soldOut={this.isSoldOut(variant)}
               variant={variant}
             />

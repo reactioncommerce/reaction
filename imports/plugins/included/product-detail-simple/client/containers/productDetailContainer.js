@@ -1,12 +1,14 @@
 import { Meteor } from "meteor/meteor";
 import React, { Component } from "react";
 import { composeWithTracker } from "react-komposer";
+// import { DragDropContext } from "react-dnd";
+// import HTML5Backend from "react-dnd-html5-backend";
 import { ReactionProduct } from "/lib/api";
 import { Reaction, i18next, Logger } from "/client/api";
 import { Tags, Media } from "/lib/collections";
 import { ProductDetail } from "../components";
 import { SocialContainer, VariantListContainer } from "./";
-import { TranslationProvider } from "/imports/plugins/core/ui/client/providers";
+import { DragDropable, DragDropProvider, TranslationProvider } from "/imports/plugins/core/ui/client/providers";
 
 class ProductDetailContainer extends Component {
   constructor(props) {
@@ -137,14 +139,16 @@ class ProductDetailContainer extends Component {
   render() {
     return (
       <TranslationProvider>
-        <ProductDetail
-          cartQuantity={this.state.cartQuantity}
-          onAddToCart={this.handleAddToCart}
-          onCartQuantityChange={this.handleCartQuantityChange}
-          socialComponent={<SocialContainer />}
-          topVariantComponent={<VariantListContainer />}
-          {...this.props}
-        />
+        <DragDropProvider>
+          <ProductDetail
+            cartQuantity={this.state.cartQuantity}
+            onAddToCart={this.handleAddToCart}
+            onCartQuantityChange={this.handleCartQuantityChange}
+            socialComponent={<SocialContainer />}
+            topVariantComponent={<VariantListContainer />}
+            {...this.props}
+          />
+        </DragDropProvider>
       </TranslationProvider>
     );
   }
@@ -223,6 +227,9 @@ function composer(props, onData) {
 }
 
 // Decorate component and export
-const decoratedComponent = composeWithTracker(composer)(ProductDetailContainer);
+let decoratedComponent = ProductDetailContainer;
+// decoratedComponent = DragDropContext(HTML5Backend)(decoratedComponent);
+// decoratedComponent = DragDropable(decoratedComponent);
+decoratedComponent = composeWithTracker(composer)(decoratedComponent);
 
 export default decoratedComponent;

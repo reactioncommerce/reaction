@@ -5,6 +5,11 @@ import { Reaction } from "/client/api";
 import { VariantList } from "../components";
 import { getChildVariants } from "../selectors/variants";
 import { Products } from "/lib/collections";
+import { DragDropContext } from "react-dnd";
+import HTML5Backend from "react-dnd-html5-backend";
+import update from "react/lib/update";
+import { getVariantIds } from "/lib/selectors/variants";
+import { DragDropProvider } from "/imports/plugins/core/ui/client/providers";
 
 function variantIsSelected(variantId) {
   const current = ReactionProduct.selectedVariant();
@@ -75,6 +80,14 @@ function isSoldOut(variant) {
 
 class VariantListContainer extends Component {
 
+  get variants() {
+    return (this.state && this.state.variants) || this.props.variants
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({});
+  }
+
   handleVariantClick = (event, variant) => {
     const selectedProduct = ReactionProduct.selectedProduct();
 
@@ -104,13 +117,40 @@ class VariantListContainer extends Component {
     }
   }
 
+  handleMoveVariant = (dragIndex, hoverIndex) => {
+    const variant = this.props.variants[dragIndex];
+
+    // Apply new sort order to variant list
+    const newVariantOrder = update(this.props.variants, {
+      $splice: [
+        [dragIndex, 1],
+        [hoverIndex, 0, variant]
+      ]
+    });
+
+    // Set local state so the component does't have to wait for a round-trip
+    // to the server to get the updated list of variants
+    this.setState({
+      variants: newVariantOrder
+    });
+
+    // Save the updated positions
+    Meteor.defer(() => {
+      Meteor.call("products/updateVariantsPosition", getVariantIds(newVariantOrder));
+    });
+  }
+
   render() {
     return (
-      <VariantList
-        onEditVariant={this.handleEditVariant}
-        onVariantClick={this.handleVariantClick}
-        {...this.props}
-      />
+      <DragDropProvider>
+        <VariantList
+          onEditVariant={this.handleEditVariant}
+          onMoveVariant={this.handleMoveVariant}
+          onVariantClick={this.handleVariantClick}
+          {...this.props}
+          variants={this.variants}
+        />
+      </DragDropProvider>
     );
   }
 }
@@ -126,4 +166,9 @@ function composer(props, onData) {
   });
 }
 
-export default composeWithTracker(composer)(VariantListContainer);
+let decoratedComponent = VariantListContainer;
+// decoratedComponent = DragDropContext(HTML5Backend)(decoratedComponent);
+decoratedComponent = composeWithTracker(composer)(decoratedComponent);
+// decoratedComponent = SortableList(decoratedComponent);
+
+export default decoratedComponent;
