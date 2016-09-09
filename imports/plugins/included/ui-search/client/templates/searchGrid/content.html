@@ -3,8 +3,8 @@
     <a href="{{pathFor 'product' handle=product.handle}}" data-event-category="grid" data-event-action="productClick" data-event-label="grid product click" data-event-value="{{product._id}}">
       <div class="overlay">
         <div class="overlay-title">{{product.title}}</div>
-        <div class="overlay-description">{{product.description}}</div>
         <div class="currency-symbol">{{formatPrice product.price.range}}</div>
+        <div class="overlay-description" style="background: #e6e6e6;">{{product.description}}</div>
       </div>
     </a>
   </div>
