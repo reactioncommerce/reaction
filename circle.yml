@@ -1,6 +1,6 @@
 machine:
   node:
-    version: 4.4.7
+    version: 4.5.0
   services:
     - docker
   pre:
@@ -14,17 +14,13 @@ dependencies:
     - cd $HOME/reaction
     - .reaction/scripts/clone-packages.sh
     - .reaction/docker/scripts/plugin-loader.sh
-    - if [[ -e ~/docker/image.tar ]]; then docker load -i ~/docker/image.tar; fi
-    - docker build -t reactioncommerce/reaction:latest .
-    - mkdir -p ~/docker; docker save reactioncommerce/reaction:latest > ~/docker/image.tar
 
 test:
   override:
     - cd $HOME/reaction
     - meteor npm install
     - SERVER_TEST_REPORTER="dot" meteor test --once --full-app --headless --driver-package dispatch:mocha
-    - docker-compose -f .reaction/docker/docker-compose.test.yml up -d; sleep 10
-    - curl --retry 10 --retry-delay 5 -v http://localhost
+    - .reaction/docker/scripts/ci-build.sh
 
 deployment:
   prequel:
