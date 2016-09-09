@@ -1,4 +1,5 @@
 import _ from "lodash";
+import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Reaction, Logger } from "/server/api";
 import { ProductSearch, OrderSearch, AccountSearch, Orders, Products, Accounts } from "/lib/collections";
@@ -106,18 +107,26 @@ export function ensureProductSearchIndex() {
 
 export function buildOrderSearch(cb) {
   check(cb, Match.Optional(Function));
+  const shopId = Reaction.getShopId();
   const orders = Orders.find({}).fetch();
   for (const order of orders) {
+    const user = Meteor.users.findOne(order.userId);
+    const userEmails = [];
+    for (const email of user.emails) {
+      userEmails.push(email.address);
+    }
     const orderSearch = {
       _id: order._id,
+      shopId: shopId,
       shippingName: order.shipping[0].address.fullName,
-      billingName: order.billing[0].address.fullName
+      billingName: order.billing[0].address.fullName,
+      userEmails: userEmails
     };
     OrderSearch.insert(orderSearch);
   }
   const rawOrderSearchCollection = OrderSearch.rawCollection();
   rawOrderSearchCollection.dropIndexes("*");
-  rawOrderSearchCollection.createIndex({"$**": "text"}, {shippingName: 5, billingName: 5});
+  rawOrderSearchCollection.createIndex({shopId: 1, shippingName: 1, billingName: 1, userEmails: 1});
   if (cb) {
     cb();
   }
@@ -126,15 +135,21 @@ export function buildOrderSearch(cb) {
 export function buildOrderSearchRecord(orderId, cb) {
   const order = Orders.findOne(orderId);
   const shopId = Reaction.getShopId();
+  const user = Meteor.users.findOne(order.userId);
+  const userEmails = [];
+  for (const email of user.emails) {
+    userEmails.push(email.address);
+  }
   const orderSearch = {
     _id: order._id,
     shopId: shopId,
     shippingName: order.shipping[0].address.fullName,
-    billingName: order.billing[0].address.fullName
+    billingName: order.billing[0].address.fullName,
+    userEmails: userEmails
   };
   OrderSearch.insert(orderSearch);
   const rawOrderSearchCollection = OrderSearch.rawCollection();
-  rawOrderSearchCollection.createIndex({"$**": "text"}, {shippingName: 5, billingName: 5});
+  rawOrderSearchCollection.createIndex({shopId: 1, shippingName: 1, billingName: 1, userEmails: 1});
   if (cb) {
     cb();
   }

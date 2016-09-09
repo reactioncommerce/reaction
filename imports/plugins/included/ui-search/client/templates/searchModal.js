@@ -18,7 +18,6 @@ Template.searchModal.onCreated(function () {
   this.autorun(() => {
     const searchQuery = this.state.get("searchQuery");
     const facets = this.state.get("facets") || [];
-
     const sub = this.subscribe("SearchResults", "products", searchQuery, facets); // collection, searchTerm, facets
 
     if (sub.ready()) {

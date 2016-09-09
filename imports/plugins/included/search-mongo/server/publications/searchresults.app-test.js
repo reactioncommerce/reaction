@@ -4,12 +4,11 @@ import { sinon } from "meteor/practicalmeteor:sinon";
 import { Roles } from "meteor/alanning:roles";
 import { Reaction } from "/server/api";
 import { getSlug } from "/lib/api";
-import { Products } from "/lib/collections";
+import { Products, OrderSearch } from "/lib/collections";
 import Fixtures from "/server/imports/fixtures";
 import { getResults } from "./searchresults";
-import { buildProductSearch,
-  buildProductSearchRecord,
-  buildAccountSearchRecord, buildAccountSearch } from "../methods/searchcollections";
+import { buildProductSearch, buildProductSearchRecord, buildAccountSearchRecord,
+  buildAccountSearch } from "../methods/searchcollections";
 
 Fixtures();
 
@@ -140,6 +139,47 @@ describe("Account Search results", function () {
       const email = account.emails[0].address;
       const results = getResults.accounts(email);
       expect(results).to.be.undefined;
+      roleStub.restore();
+    });
+  });
+});
+
+describe("Order Search results", function () {
+  before(function () {
+    OrderSearch.insert({
+      shopId: Reaction.getShopId(),
+      shippingName: "Ship Name",
+      billingName: "Bill Name",
+      userEmails: ["test@example.com"]
+    });
+  });
+
+  describe("order search", function () {
+    it("should match orders when searching by email", function () {
+      const roleStub = sinon.stub(Roles, "userIsInRole", () => true);
+      const results = getResults.orders("test@example.com");
+      expect(results.count()).to.equal(1);
+      roleStub.restore();
+    });
+
+    it("should not return results if not an admin", function () {
+      const roleStub = sinon.stub(Roles, "userIsInRole", () => false);
+      const results = getResults.orders("test@example.com");
+      expect(results).to.be.undefined;
+      roleStub.restore();
+    });
+
+    it("should return results when searching by shipping name", function () {
+      const roleStub = sinon.stub(Roles, "userIsInRole", () => true);
+      const results = getResults.orders("Ship Name");
+      expect(results.count()).to.equal(1);
+      roleStub.restore();
+    });
+
+    it("should return results when searching by billing name", function () {
+      const roleStub = sinon.stub(Roles, "userIsInRole", () => true);
+      const results = getResults.orders("Bill Name");
+      expect(results.count()).to.equal(1);
       roleStub.restore();
     });
   });
