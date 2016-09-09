@@ -1,12 +1,14 @@
+/* eslint camelcase: 0 */
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Reaction, Logger } from "/server/api";
-import { ProductSearch, OrderSearch, AccountSearch, Orders, Products, Accounts } from "/lib/collections";
+import { ProductSearch, OrderSearch, AccountSearch, Orders, Products, Accounts, Shops } from "/lib/collections";
 import utils from "./common";
 
 
 const productRequiredFields = ["_id", "hashtags", "shopId", "handle", "price", "isVisible"];
+const supportedLanguages = ["da", "nl", "en", "fi", "fr", "de", "hu", "it", "nb", "pt", "ro", "ru", "es", "sv", "tr"];
 
 function filterFields(customFields) {
   const fieldNames = [];
@@ -30,6 +32,15 @@ function getScores(customFields, settings, collection = "products") {
   return weightObject;
 }
 
+function getSearchLanguage() {
+  const shopId = Reaction.getShopId();
+  const shopLanguage = Shops.findOne(shopId).language;
+  if (_.includes(supportedLanguages, shopLanguage)) {
+    return { default_language: shopLanguage };
+  }
+  return { default_language: "en" };
+}
+
 export function getSearchParameters(collection = "products") {
   const settings = utils.getPackageSettings();
   const customFields = filterFields(settings[collection].includes);
@@ -37,6 +48,7 @@ export function getSearchParameters(collection = "products") {
   const weightObject = getScores(customFields, settings);
   return { fieldSet: fieldSet, weightObject: weightObject, customFields: customFields };
 }
+
 
 export function buildProductSearchRecord(productId) {
   const product = Products.findOne(productId);
@@ -70,9 +82,10 @@ export function buildProductSearch(cb) {
   for (const field of customFields) {
     indexObject[field] = "text";
   }
+
   const rawProductSearchCollection = ProductSearch.rawCollection();
   rawProductSearchCollection.dropIndexes("*");
-  rawProductSearchCollection.createIndex(indexObject, weightObject);
+  rawProductSearchCollection.createIndex(indexObject, weightObject, getSearchLanguage());
   if (cb) {
     cb();
   }
@@ -87,7 +100,7 @@ export function rebuildProductSearchIndex(cb) {
   }
   const rawProductSearchCollection = ProductSearch.rawCollection();
   rawProductSearchCollection.dropIndexes("*");
-  rawProductSearchCollection.createIndex(indexObject, weightObject);
+  rawProductSearchCollection.createIndex(indexObject, weightObject, getSearchLanguage());
   if (cb) {
     cb();
   }
@@ -101,7 +114,7 @@ export function ensureProductSearchIndex() {
     indexObject[field] = "text";
   }
   const rawProductSearchCollection = ProductSearch.rawCollection();
-  rawProductSearchCollection.createIndex(indexObject, weightObject);
+  rawProductSearchCollection.createIndex(indexObject, weightObject, getSearchLanguage());
 }
 
 
