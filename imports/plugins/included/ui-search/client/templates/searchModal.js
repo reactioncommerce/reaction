@@ -19,10 +19,7 @@ Template.searchModal.onCreated(function () {
     const searchQuery = this.state.get("searchQuery");
     const facets = this.state.get("facets") || [];
 
-    console.log('--------facets------', facets);
-
-
-    const sub = this.subscribe("SearchResults", "products", searchQuery); // collection, searchTerm, facets
+    const sub = this.subscribe("SearchResults", "products", searchQuery, facets); // collection, searchTerm, facets
 
     if (sub.ready()) {
       const results = ProductSearch.find().fetch();
@@ -74,15 +71,6 @@ Template.searchModal.helpers({
     const results = instance.state.get("tagSearchResults");
     // console.log("tagSearchResults", results);
     return results;
-  },
-  media: function () {
-    const media = Media.findOne({
-      "metadata.productId": product._id,
-      "metadata.priority": 0,
-      "metadata.toGrid": 1
-    }, { sort: { uploadedAt: 1 } });
-
-    return media instanceof FS.File ? media : false;
   }
 });
 
