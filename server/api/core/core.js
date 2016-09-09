@@ -6,6 +6,7 @@ import { Jobs, Packages, Shops } from "/lib/collections";
 import { Hooks, Logger } from "/server/api";
 import ProcessJobs from "/server/jobs";
 import { getRegistryDomain } from "./setDomain";
+import { getMailUrl } from "./email/config";
 
 export default {
 
@@ -121,43 +122,12 @@ export default {
     return Roles.getGroupsForUser(this.userId, "admin");
   },
 
-  configureMailUrl(user, password, host, port) {
-    const shopSettings = Packages.findOne({
-      shopId: this.getShopId(),
-      name: "core"
-    });
-
-    let shopMail;
-
-    if (shopSettings) {
-      shopMail = shopSettings.settings.mail || {};
-    }
-
-    let processUrl = process.env.MAIL_URL;
-    let settingsUrl = Meteor.settings.MAIL_URL;
-
-    if (user && password && host && port) {
-      const mailString = `smtp://${user}:${password}@${host}:${port}/`;
-      const mailUrl = processUrl = settingsUrl = mailString;
-      process.env.MAIL_URL = mailUrl;
-      return mailUrl;
-    } else if (shopMail && shopMail.user && shopMail.password && shopMail.host &&
-      shopMail.port) {
-      const mailString =
-        `smtp://${shopMail.user}:${shopMail.password}@${shopMail.host}:${shopMail.port}/`;
-      const mailUrl = processUrl = settingsUrl = mailString;
-      process.env.MAIL_URL = mailUrl;
-
-      Logger.info(`setting default mail url to: ${shopMail.host}`);
-      return mailUrl;
-    } else if (settingsUrl && !processUrl) {
-      const mailUrl = processUrl = settingsUrl;
-      process.env.MAIL_URL = mailUrl;
-      return mailUrl;
-    }
-    // return reasonable warning that we're not configured correctly
-    Logger.warn("Mail server not configured. Unable to send email.");
-    return false;
+  configureMailUrl() {
+    // maintained for legacy support
+    Logger.warn(
+      "Reaction.configureMailUrl() is deprecated. Please use Reaction.Email.getMailUrl() instead"
+    );
+    return getMailUrl();
   },
 
   getCurrentShopCursor() {
