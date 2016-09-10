@@ -17,3 +17,4 @@ export { default as Tooltip } from "./tooltip/tooltip";
 export { Metadata, Metafield } from "./metadata";
 export { TagList, TagItem } from "./tags";
 export { Card, CardHeader, CardBody} from "./cards";
+export { MediaGallery } from "./media";

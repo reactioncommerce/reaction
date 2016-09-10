@@ -1,6 +1,4 @@
 import React, { Component, PropTypes } from "react";
-import MediaGallery from "./mediaGallery";
-import NumericInput from "/imports/plugins/core/ui/client/components/"
 
 class Social extends Component {
 

@@ -1,17 +1,14 @@
 import React, { Component, PropTypes } from "react";
 import {
-  NumericInput,
-  Translation,
-  TagList,
+  MediaGallery,
   Currency
 } from "/imports/plugins/core/ui/client/components/";
 import {
   AddToCartButton,
-  MediaGallery,
   ProductMetadata,
   ProductTags,
   ProductField
-} from "./"
+} from "./";
 import { AlertContainer, EditContainer } from "/imports/plugins/core/ui/client/containers";
 
 class ProductDetail extends Component {
