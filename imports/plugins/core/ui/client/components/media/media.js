@@ -1,50 +1,58 @@
 import React, { Component, PropTypes } from "react";
+import { IconButton } from "../";
 
-class Media extends React.Component {
-  constructor(props) {
-    super(props);
+class MediaGallery extends Component {
+  handleRemoveMedia = (event) => {
+    event.stopPropagation();
 
-    this.handleDrop = this.handleDrop.bind(this);
+    if (this.props.onRemoveMedia) {
+      this.props.onRemoveMedia(this.props.source);
+    }
   }
 
-  /**
-   * handleDrop
-   * @summary On drop of a file onto this component, upload it
-   * @param  {Event} event - Event object
-   * @return {void} no return value
-   */
-  handleDrop(event) {
-    this.props.onDrop &&
-    this.props.onDrop(event);
+  renderControls() {
+    if (this.props.editable) {
+      return (
+        <div className="rui badge-container">
+          <IconButton
+            icon="fa fa-times"
+            onClick={this.handleRemoveMedia}
+          />
+        </div>
+      );
+    }
   }
 
-  /**
-   * renderImage
-   * @summary Render an image tag for media type "image"
-   * @return {node} image
-   */
-  renderImage() {
-    // TODO: Maybe not hard code this image, unless its part of this package
-    const imageUrl = this.props.media || "/resources/placeholder.gif";
-    return <img src={imageUrl} />;
+  get defaultSource() {
+    return this.props.defaultSource || "/resources/placeholder.gif";
   }
 
-  /**
-   * render
-   * @return {node} media component
-   */
+  get source() {
+    if (typeof this.props.source === "object") {
+      return this.props.source.url() || this.defaultSource;
+    }
+
+    return this.props.source || this.defaultSource;
+  }
+
   render() {
     return (
-      <div className="rui media" onDrop={this.handleDrop}>
-        {this.renderImage()}
-      </div>
+      <li className="gallery-image">
+        <img
+          alt=""
+          className="img-responsive"
+          src={this.source}
+        />
+        {this.renderControls()}
+      </li>
     );
   }
 }
 
-Media.propTypes = {
-  media: PropTypes.object,
-  onDrop: PropTypes.func
+MediaGallery.propTypes = {
+  editable: PropTypes.bool,
+  onRemoveMedia: PropTypes.func,
+  source: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
 };
 
-export default Media;
+export default MediaGallery;

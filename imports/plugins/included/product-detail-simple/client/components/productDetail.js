@@ -1,8 +1,5 @@
 import React, { Component, PropTypes } from "react";
-import {
-  MediaGallery,
-  Currency
-} from "/imports/plugins/core/ui/client/components/";
+import { Currency } from "/imports/plugins/core/ui/client/components/";
 import {
   AddToCartButton,
   ProductMetadata,
@@ -53,7 +50,7 @@ class ProductDetail extends Component {
 
           <div className="pdp-content">
             <div className="pdp column left pdp-left-column">
-              <MediaGallery media={this.props.media} />
+              {this.props.mediaGalleryComponent}
               <ProductTags editable={true} product={this.product} tags={this.tags} />
               <ProductMetadata editable={true} product={this.product} />
             </div>

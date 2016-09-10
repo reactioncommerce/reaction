@@ -7,8 +7,12 @@ import { ReactionProduct } from "/lib/api";
 import { Reaction, i18next, Logger } from "/client/api";
 import { Tags, Media } from "/lib/collections";
 import { ProductDetail } from "../components";
-import { SocialContainer, VariantListContainer } from "./";
-import { DragDropable, DragDropProvider, TranslationProvider } from "/imports/plugins/core/ui/client/providers";
+import {
+  SocialContainer,
+  VariantListContainer
+} from "./";
+import { MediaGalleryContainer } from "/imports/plugins/core/ui/client/containers";
+import { DragDropProvider, TranslationProvider } from "/imports/plugins/core/ui/client/providers";
 
 class ProductDetailContainer extends Component {
   constructor(props) {
@@ -142,6 +146,7 @@ class ProductDetailContainer extends Component {
         <DragDropProvider>
           <ProductDetail
             cartQuantity={this.state.cartQuantity}
+            mediaGalleryComponent={<MediaGalleryContainer media={this.props.media} />}
             onAddToCart={this.handleAddToCart}
             onCartQuantityChange={this.handleCartQuantityChange}
             socialComponent={<SocialContainer />}
