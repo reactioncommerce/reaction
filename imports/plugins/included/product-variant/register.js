@@ -5,10 +5,10 @@ Reaction.registerPackage({
   name: "reaction-product-variant",
   icon: "fa fa-cubes",
   autoEnable: true,
-  registry: [{
+  registry: [/*{
     route: "/product/:handle/:variantId?",
     name: "product",
-    template: "productDetailSimple",
+    template: "productDetail",
     workflow: "coreProductWorkflow"
   }, {
     label: "Product Settings",
@@ -16,7 +16,7 @@ Reaction.registerPackage({
     route: "/product/:handle/:variantId?",
     container: "product",
     template: "productDetailForm"
-  }, {
+  }, */{
     route: "/tag/:slug?",
     name: "tag",
     template: "products",
@@ -42,7 +42,7 @@ Reaction.registerPackage({
     theme: "default",
     enabled: true,
     structure: {
-      template: "productDetailSimple",
+      template: "productDetail",
       layoutHeader: "layoutHeader",
       layoutFooter: "",
       notFound: "productNotFound",

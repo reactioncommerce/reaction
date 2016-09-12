@@ -5,7 +5,8 @@ import MediaItem from "./media";
 class MediaGallery extends Component {
 
   renderMedia() {
-    if (this.props.media && this.props.media.length) {
+    if (Array.isArray(this.props.media) && this.props.media.length) {
+      console.log("ok??", this.props.media);
       return this.props.media.map((media, index) => {
         return (
           <MediaItem
@@ -22,9 +23,7 @@ class MediaGallery extends Component {
     }
 
     return (
-      <MediaItem
-        key={index}
-      />
+      <MediaItem />
     );
   }
 
@@ -43,9 +42,9 @@ class MediaGallery extends Component {
   renderMediaGallery() {
     return (
       <div className="rui media-gallery">
-        <ul className="gallery">
+        <div className="gallery">
           {this.renderMedia()}
-        </ul>
+        </div>
       </div>
     );
   }
@@ -64,6 +63,7 @@ MediaGallery.propTypes = {
   media: PropTypes.arrayOf(PropTypes.object),
   onDrop: PropTypes.func,
   onMove: PropTypes.func,
+  onMoveMedia: PropTypes.func,
   onRemoveMedia: PropTypes.func
 };
 
