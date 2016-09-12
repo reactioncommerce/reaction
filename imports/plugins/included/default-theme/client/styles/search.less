@@ -41,11 +41,7 @@
   align-items: center;
   flex-direction: column;
   justify-content: center;
-  -webkit-transition: background-color 400ms linear;
-  -moz-transition: background-color 400ms linear;
-  -o-transition: background-color 400ms linear;
-  -ms-transition: background-color 400ms linear;
-  transition: background-color 400ms linear;
+  transition: background-color 200ms linear;
 }
 .rui.search-modal-header.active-search {
   background-color: @white;
@@ -58,12 +54,32 @@
   position: relative;
   border-bottom: 1px solid @black40;
 
-  .search-modal-icon {
+  .search-icon {
     font-size: 25px;
     position: absolute;
     left: 10px;
     top: 40px;
     color: @black40;
+  }
+
+  .search-clear {
+    font-size: 12px;
+    position: absolute;
+    right: 10px;
+    top: 42px;
+    color: @black60;
+    cursor: pointer;
+    background: @black10;
+    padding-right: 15px;
+    padding-left: 15px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    border-radius: 20px;
+    transition: background-color 200ms linear;
+
+    &:hover {
+      background: @black25;
+    }
   }
 
   @media @mobile {
@@ -120,17 +136,37 @@ p.suggested-tags {
   padding-left: 12px;
   margin-right: 5px;
   border-radius: 4px;
-  background-color: @brand-primary-color;
-  color: @brand-light-color;
+  background-color: fade(@brand-light-color, 70%);
+  color: @text-color;
   cursor: pointer;
-  -webkit-transition: background-color 200ms linear;
-  -moz-transition: background-color 200ms linear;
-  -o-transition: background-color 200ms linear;
-  -ms-transition: background-color 200ms linear;
-  transition: background-color 200ms linear;
+  transition: background-color 200ms linear, padding-right 200ms ease-out;
+
+  &:hover {
+    background-color: @brand-light-color;
+  }
 }
 .rui.search-tag.active-tag {
-  background-color: @brand-secondary-color;
+  background-color: @brand-primary-color;
+  color: @brand-light-color;
+
+  padding-right: 35px;
+  position: relative;
+
+  &:hover {
+    background-color: fade(@brand-primary-color, 80%);
+  }
+}
+.rui.search-tag.active-tag:after {
+  content: "\f00d";
+  font-family: "FontAwesome", "FontAwesomeFallback";
+  font-style: normal;
+  font-weight: normal;
+  text-decoration: inherit;
+  position: absolute;
+  right: 12px;
+  z-index: 1;
+
+
 }
 
 
@@ -267,7 +303,7 @@ p.suggested-tags {
 
 
 
-
+.search-modal {
 
 
 
@@ -641,4 +677,36 @@ p.suggested-tags {
 
   // border-radius: 5px;
   // box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+}
+
+
+
+
+
+
+.product-grid-item .overlay-description {
+  display: none;
+}
+.product-grid-item:hover {
+
+  border-top: solid 1px @black30;
+  border-right: solid 1px @black30;
+  border-left: solid 1px @black30;
+  border-radius: 5px;
+  -webkit-box-shadow: 0px 0px 10px 2px rgba(204,204,204,0.5);
+  -moz-box-shadow: 0px 0px 10px 2px rgba(204,204,204,0.5);
+  box-shadow: 0px 0px 10px 2px rgba(204,204,204,0.5);
+  background: #fff;
+
+  .overlay-description {
+    position:absolute;
+    display: inline-block;
+    z-index: 1;
+    background: #fff;
+  }
+
+}
+
+
+
 }
