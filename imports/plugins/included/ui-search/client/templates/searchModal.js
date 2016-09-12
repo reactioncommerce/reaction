@@ -50,7 +50,7 @@ Template.searchModal.helpers({
     return {
       component: IconButton,
       icon: "fa fa-times",
-      kind: "flat",
+      kind: "close",
       onClick() {
         $(".js-search-modal").fadeOut(400, () => {
           $("body").css("overflow-y", "inherit");
@@ -72,7 +72,6 @@ Template.searchModal.helpers({
     return results;
   }
 });
-
 
 Template.searchModal.events({
   // on type, reload Reaction.SaerchResults
@@ -112,6 +111,16 @@ Template.searchModal.events({
       $("body").css("overflow-y", "inherit");
       Blaze.remove(view);
     });
+  },
+  "click [data-event-action=clearSearch]": function (event, templateInstance) {
+    $("#search-input").val("");
+    $("#search-input").focus();
+
+    const searchQuery = templateInstance.find("#search-input").value;
+    templateInstance.state.set("searchQuery", searchQuery);
+
+    // $(".js-clear-search").delay(400).fadeOut(400, () => {
+    // });
   }
 });
 
