@@ -50,8 +50,12 @@ function composer(props, onData) {
       onData(null, {
         revisions
       });
+
+      return;
     }
   }
+
+  onData(null, {});
 }
 
 export default composeWithTracker(composer)(PublishContainer);

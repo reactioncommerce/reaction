@@ -8,7 +8,7 @@ import {
   TextField,
   TagList,
 } from "/imports/plugins/core/ui/client/components";
-
+import { PublishContainer } from "/imports/plugins/core/revisions";
 import { TagListContainer } from "/imports/plugins/core/ui/client/containers";
 
 class ProductAdmin extends Component {
@@ -70,6 +70,17 @@ class ProductAdmin extends Component {
   render() {
     return (
       <div>
+        <Card>
+          <CardHeader
+            i18nKeyTitle="productDetailEdit.publish"
+            title="Publish"
+          />
+          <CardBody>
+            <PublishContainer
+              documentIds={this.props.revisonDocumentIds}
+            />
+          </CardBody>
+        </Card>
         <Card>
           <CardHeader
             i18nKeyTitle="productDetailEdit.productSettings"
@@ -193,7 +204,8 @@ ProductAdmin.propTypes = {
   handleFieldBlur: PropTypes.func,
   handleFieldChange: PropTypes.func,
   handleProductFieldChange: PropTypes.func,
-  product: PropTypes.object
+  product: PropTypes.object,
+  revisonDocumentIds: PropTypes.arrayOf(PropTypes.string)
 };
 
 export default ProductAdmin;

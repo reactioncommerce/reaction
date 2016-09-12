@@ -17,34 +17,14 @@ function handleProductFieldChange(productId, fieldName, value) {
 }
 
 function handleProductMetafieldChange(productId, metafield, index) {
-  // const productId = ReactionProduct.selectedProductId();
-  // const updateMeta = {
-  //   key: $(event.currentTarget).parent().children(".metafield-key-input").val(),
-  //   value: $(event.currentTarget).parent().children(".metafield-value-input").val()
-  // };
-  //
-
   // update existing metafield
   if (index >= 0) {
     Meteor.call("products/updateMetaFields", productId, metafield, index);
-    // $(event.currentTarget).animate({
-    //   backgroundColor: "#e2f2e2"
-    // }).animate({
-    //   backgroundColor: "#fff"
-    // });
-    // return Tracker.flush();
   }
-
-  // if (metafield.value && !metafield.key) {
-  //   $(event.currentTarget).parent().children(".metafield-key-input").val("").focus();
-  // }
 
   // Create new meta field
   if (metafield.key && metafield.value) {
     Meteor.call("products/updateMetaFields", productId, metafield);
-    // Tracker.flush();
-    // $(event.currentTarget).parent().children(".metafield-key-input").val("").focus();
-    // return $(event.currentTarget).parent().children(".metafield-value-input").val("");
   }
 }
 
@@ -56,6 +36,7 @@ function composer(props, onData) {
   const product = ReactionProduct.selectedProduct();
   let tags;
   let media;
+  let revisonDocumentIds;
 
   if (product) {
     if (_.isArray(product.hashtags)) {
@@ -64,11 +45,10 @@ function composer(props, onData) {
       });
     }
 
-    let mediaArray = [];
-    let selectedVariant = ReactionProduct.selectedVariant();
+    const selectedVariant = ReactionProduct.selectedVariant();
 
     if (selectedVariant) {
-      mediaArray = Media.find({
+      media = Media.find({
         "metadata.variantId": selectedVariant._id
       }, {
         sort: {
@@ -76,14 +56,15 @@ function composer(props, onData) {
         }
       });
     }
+
+    revisonDocumentIds = [product._id];
   }
-
-
 
   onData(null, {
     product: product,
     media,
     tags,
+    revisonDocumentIds,
     handleProductFieldChange,
     handleProductMetafieldChange,
     handleProductMetafieldRemove
