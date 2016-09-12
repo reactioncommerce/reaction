@@ -95,24 +95,36 @@ class EditContainer extends Component {
   }
 
   render() {
-    if (this.props.children) {
-      if (this.props.hasPermission) {
+    // Display edit button if the permissions allow it.
+    if (this.props.hasPermission) {
+      // If children were passed as props to this component,
+      // copy the children and inject the edit buttons
+      if (this.props.children) {
         return React.cloneElement(this.props.children, {
           visibilityButton: this.renderVisibilityButton(),
           editButton: this.renderEditButton()
         });
       }
 
+      // Otherwise, render a container for the edit buttons
       return (
-        Children.only(this.props.children)
+        <span className="rui edit-container">
+          {this.renderVisibilityButton()}
+          {this.renderEditButton()}
+        </span>
       );
     }
 
+    // If permissions don't allow the edit buttons to be shown and there are
+    // no child elements, then cancel rendering.
+    if (!this.props.children) {
+      return null;
+    }
+
+    // If permissions don't allow the edit buttons to be shown and there are
+    // child elements, render them normally
     return (
-      <span className="rui edit-container">
-        {this.renderVisibilityButton()}
-        {this.renderEditButton()}
-      </span>
+      Children.only(this.props.children)
     );
   }
 }
