@@ -20,11 +20,18 @@ class IconButton extends Component {
 
     let buttonClassName;
 
-    if(this.props.kind === "flat"){
+    if (this.props.kind === "flat") {
       buttonClassName = classnames({
         "rui": true,
         "button": true,
         "flat": true
+      });
+    }
+    else if (this.props.kind === "close") {
+      buttonClassName = classnames({
+        "rui": true,
+        "button": true,
+        "close": true
       });
     }
     else {
