@@ -10,8 +10,10 @@ class MediaGallery extends Component {
         return (
           <MediaItem
             editable={this.props.editable}
+            index={index}
             key={index}
             metadata={media.metadata}
+            onMove={this.props.onMoveMedia}
             onRemoveMedia={this.props.onRemoveMedia}
             source={media}
           />
@@ -29,7 +31,7 @@ class MediaGallery extends Component {
   renderMediaGalleryUploader() {
     return (
       <div className="rui media-gallery">
-        <Dropzone className="rui gallery-drop-pane" onDrop={this.props.onDrop}>
+        <Dropzone className="rui gallery-drop-pane" disableClick={true} onDrop={this.props.onDrop}>
           <ul className="gallery">
             {this.renderMedia()}
           </ul>
@@ -61,6 +63,7 @@ MediaGallery.propTypes = {
   editable: PropTypes.bool,
   media: PropTypes.arrayOf(PropTypes.object),
   onDrop: PropTypes.func,
+  onMove: PropTypes.func,
   onRemoveMedia: PropTypes.func
 };
 

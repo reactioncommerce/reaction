@@ -3,7 +3,7 @@ import React, { Component, PropTypes } from "react";
 // import { PropTypes } from "/lib/api";
 import Autosuggest from "react-autosuggest";
 import { Button } from "/imports/plugins/core/ui/client/components";
-import { SortableItem } from "/imports/plugins/core/ui/client/containers";
+import { SortableItem } from "../../containers";
 
 class Tag extends Component {
   displayName: "Tag";

@@ -42,11 +42,17 @@ const cardTarget = {
     // Determine rectangle on screen
     const hoverBoundingRect = findDOMNode(component).getBoundingClientRect();
 
+    // Get horizontal middle
+    const hoverMiddleX = (hoverBoundingRect.right - hoverBoundingRect.left) / 2;
+
     // Get vertical middle
     const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
 
     // Determine mouse position
     const clientOffset = monitor.getClientOffset();
+
+    // Get pixels from left
+    const hoverClientX = clientOffset.x - hoverBoundingRect.left;
 
     // Get pixels to the top
     const hoverClientY = clientOffset.y - hoverBoundingRect.top;
@@ -55,15 +61,49 @@ const cardTarget = {
     // When dragging downwards, only move when the cursor is below 50%
     // When dragging upwards, only move when the cursor is above 50%
 
-    // Dragging downwards
-    if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
-      return;
-    }
+    console.log(dragIndex, hoverIndex, hoverClientX, hoverMiddleX);
+    // // Dragging to left
+    // // Don't update position if we are dragging an item to the [left],
+    // // but have not crossed the middle of the item we are dragging over
+    // if (dragIndex > hoverIndex && hoverClientX > hoverMiddleX) {
+    //   return;
+    // }
+    //
+    // // Dragging to right
+    // // Don't update position if we are dragging an item to the [right],
+    // // but have not crossed the middle of the item we are dragging over
+    // if (dragIndex < hoverIndex && hoverClientX < hoverMiddleX) {
+    //   return;
+    // }
+    //
+    //
+    // // Dragging downwards
+    // if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+    //   return;
+    // }
+    //
+    // // Dragging upwards
+    // if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+    //   return;
+    // }
+    //
+    // Move up the list
+    // if (dragIndex > hoverIndex && (hoverClientX > hoverMiddleX && hoverClientY < hoverMiddleY)) {
+    //   return;
+    // }
+    //
+    // // Move down the list
+    // if (dragIndex < hoverIndex && (hoverClientX < hoverMiddleX && hoverClientY > hoverMiddleY)) {
+    //   return;
+    // }
 
-    // Dragging upwards
-    if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
-      return;
-    }
+
+
+
+    //
+    //
+    // console.log("should update");
+    // return
 
     // Time to actually perform the action
     props.onMove(dragIndex, hoverIndex);
@@ -82,7 +122,7 @@ export default function ComposeSortableItem(itemType, SortableItemComponent) {
     return (
       connectDragSource(
         connectDropTarget(
-          <div>
+          <div className={`rui draggable-${itemType}`}>
             <SortableItemComponent isDragging={isDragging} {...props} />
           </div>
         )

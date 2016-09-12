@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from "react";
+import update from "react/lib/update";
 import { composeWithTracker } from "react-komposer";
 import { MediaGallery } from "../components";
 import { Reaction } from "/client/api";
@@ -94,12 +95,47 @@ class MediaGalleryContainer extends Component {
     });
   }
 
+  get media() {
+    return (this.state && this.state.media) || this.props.media;
+  }
+
+  handleMoveMedia = (dragIndex, hoverIndex) => {
+    const media = this.props.media[dragIndex];
+
+    // Apply new sort order to variant list
+    const newMediaOrder = update(this.props.media, {
+      $splice: [
+        [dragIndex, 1],
+        [hoverIndex, 0, media]
+      ]
+    });
+
+    // Set local state so the component does't have to wait for a round-trip
+    // to the server to get the updated list of variants
+    this.setState({
+      media: newMediaOrder
+    });
+
+    // Save the updated positions
+    Meteor.defer(() => {
+      newMediaOrder.forEach((media, index) => {
+        Media.update(media._id, {
+          $set: {
+            "metadata.priority": index
+          }
+        });
+      });
+    });
+  }
+
   render() {
     return (
       <MediaGallery
         onDrop={this.handleDrop}
+        onMoveMedia={this.handleMoveMedia}
         onRemoveMedia={this.handleRemoveMedia}
         {...this.props}
+        media={this.media}
       />
     );
   }

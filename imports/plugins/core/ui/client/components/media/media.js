@@ -1,7 +1,9 @@
 import React, { Component, PropTypes } from "react";
 import { IconButton } from "../";
+import { SortableItem } from "../../containers";
 
-class MediaGallery extends Component {
+
+class MediaItem extends Component {
   handleRemoveMedia = (event) => {
     event.stopPropagation();
 
@@ -37,22 +39,22 @@ class MediaGallery extends Component {
 
   render() {
     return (
-      <li className="gallery-image">
+      <div className="gallery-image">
         <img
           alt=""
           className="img-responsive"
           src={this.source}
         />
         {this.renderControls()}
-      </li>
+      </div>
     );
   }
 }
 
-MediaGallery.propTypes = {
+MediaItem.propTypes = {
   editable: PropTypes.bool,
   onRemoveMedia: PropTypes.func,
   source: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
 };
 
-export default MediaGallery;
+export default SortableItem("media", MediaItem);
