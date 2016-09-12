@@ -12,7 +12,12 @@ Meteor.methods({
 
     if (isArray(documentIds)) {
       revisions = Revisions.find({
-        $or: [
+        "workflow.status": {
+          $nin: [
+            "revision/published"
+          ]
+        },
+        "$or": [
           {
             documentId: {
               $in: documentIds
@@ -27,7 +32,12 @@ Meteor.methods({
       }).fetch();
     } else {
       revisions = Revisions.find({
-        $or: [
+        "workflow.status": {
+          $nin: [
+            "revision/published"
+          ]
+        },
+        "$or": [
           { documentId: documentIds },
           {
             "documentData.ancestors": {

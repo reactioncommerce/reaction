@@ -5,7 +5,12 @@ import { diff } from "deep-diff";
 
 Products.before.insert((userId, product) => {
   let productRevision = Revisions.findOne({
-    documentId: product._id
+    "documentId": product._id,
+    "workflow.status": {
+      $nin: [
+        "revision/published"
+      ]
+    }
   });
 
   if (!productRevision) {
@@ -21,7 +26,12 @@ Products.before.insert((userId, product) => {
 
 Products.before.update(function (userId, product, fieldNames, modifier, options) {
   let productRevision = Revisions.findOne({
-    documentId: product._id
+    "documentId": product._id,
+    "workflow.status": {
+      $nin: [
+        "revision/published"
+      ]
+    }
   });
 
   const originalSelector = this.args[0];
@@ -46,7 +56,12 @@ Products.before.update(function (userId, product, fieldNames, modifier, options)
   // This is especially important since we may need to update some fields
   // like metadata, and the selector is very important to that.
   let revisionSelector = {
-    documentId: product._id
+    "documentId": product._id,
+    "workflow.status": {
+      $nin: [
+        "revision/published"
+      ]
+    }
   };
 
   // Create a new modifier for the revision
