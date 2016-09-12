@@ -31,9 +31,9 @@ class MediaGallery extends Component {
     return (
       <div className="rui media-gallery">
         <Dropzone className="rui gallery-drop-pane" disableClick={true} onDrop={this.props.onDrop}>
-          <ul className="gallery">
+          <div className="gallery">
             {this.renderMedia()}
-          </ul>
+          </div>
         </Dropzone>
       </div>
     );
