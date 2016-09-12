@@ -6,6 +6,7 @@ const {
   Cart,
   Packages,
   Discounts,
+  Emails,
   Jobs,
   Media,
   Orders,
@@ -174,5 +175,14 @@ export default function () {
         return true;
       }
     });
+  });
+
+  /**
+   * Emails - Deny all client side ops
+   */
+  Emails.deny({
+    insert: () => true,
+    update: () => true,
+    remove: () => true
   });
 }
