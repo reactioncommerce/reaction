@@ -75,7 +75,13 @@ h3 {
   font-weight: @headings-font-weight-h3;
 }
 
+a {
+  cursor: pointer;
 
+  &:focus, &:hover {
+    text-decoration: none;
+  }
+}
 
 /* Badge Colors
 // Contextual variations of badges
