@@ -19,17 +19,6 @@
           <span class="product-image" style="background-image: url(/resources/placeholder.gif)"></span>
         {{/with}}
       </div>
-
-      {{#if additionalMedia}}
-        {{#if isMediumWeight}}
-          <div class="product-additional-images">
-            {{#each additionalMedia}}
-                <span class="product-image" style="background-image: url('{{url store='medium'}}')"></span>
-
-            {{/each}}
-          </div>
-        {{/if}}
-      {{/if}}
     </a>
 
     {{> gridControls controlProps}}
