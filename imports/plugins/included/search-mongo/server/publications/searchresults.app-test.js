@@ -182,5 +182,12 @@ describe("Order Search results", function () {
       expect(results.count()).to.equal(1);
       roleStub.restore();
     });
+
+    it("should return results when searching by billing name and be case insensitive", function () {
+      const roleStub = sinon.stub(Roles, "userIsInRole", () => true);
+      const results = getResults.orders("biLl nAme");
+      expect(results.count()).to.equal(1);
+      roleStub.restore();
+    });
   });
 });

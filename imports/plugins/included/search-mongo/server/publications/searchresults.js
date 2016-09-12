@@ -54,12 +54,22 @@ getResults.orders = function (searchTerm, facets, maxResults, userId) {
     $and: [
       {shopId: shopId},
       {$or: [
-        { userEmails: searchTerm },
-        { shippingName: searchTerm },
-        { billingName: searchTerm }
+        { userEmails: {
+          $regex: "^" + searchTerm + "$",
+          $options: "i"
+        } },
+        { shippingName: {
+          $regex: "^" + searchTerm + "$",
+          $options: "i"
+        } },
+        { billingName: {
+          $regex: "^" + searchTerm + "$",
+          $options: "i"
+        } }
       ] }
     ]};
   if (Roles.userIsInRole(userId, ["admin", "owner"], shopId)) {
+    // console.log(`Searching for orders using findTerm: ${JSON.stringify(findTerm, null, 4)}`);
     orderResults = OrderSearch.find(findTerm);
     Logger.info(`Found ${orderResults.count()} orders`);
   }
