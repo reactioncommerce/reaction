@@ -170,6 +170,7 @@ export function buildOrderSearchRecord(orderId, cb) {
 
 export function buildAccountSearch(cb) {
   check(cb, Match.Optional(Function));
+  AccountSearch.remove({});
   const accounts = Accounts.find({}).fetch();
   for (const account of accounts) {
     const accountEmails = [];
