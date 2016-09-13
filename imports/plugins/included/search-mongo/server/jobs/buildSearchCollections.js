@@ -78,7 +78,7 @@ export default function () {
       workTimeout: 180 * 1000
     },
     (job, callback) => {
-      Logger.info("(re)build ProductSearch collection running");
+      Logger.debug("(re)build ProductSearch collection running");
       buildProductSearch(function (error) {
         if (error) {
           job.done(error.toString(), {repeatId: true});
@@ -99,7 +99,7 @@ export default function () {
       workTimeout: 180 * 1000
     },
     (job, callback) => {
-      Logger.info("(re)build ProductSearch index running");
+      Logger.debug("(re)build ProductSearch index running");
       rebuildProductSearchIndex(function (error) {
         if (error) {
           job.done(error.toString(), {repeatId: true});
@@ -120,7 +120,7 @@ export default function () {
       workTimeout: 180 * 1000
     },
     (job, callback) => {
-      Logger.info("(re)build OrderSearch index running");
+      Logger.debug("(re)build OrderSearch index running");
       buildOrderSearch(function (error) {
         if (error) {
           job.done(error.toString(), {repeatId: true});
@@ -141,7 +141,7 @@ export default function () {
       workTimeout: 180 * 1000
     },
     (job, callback) => {
-      Logger.info("(re)build AccountSearch index running");
+      Logger.debug("(re)build AccountSearch index running");
       buildAccountSearch(function (error) {
         if (error) {
           job.done(error.toString(), {repeatId: true});

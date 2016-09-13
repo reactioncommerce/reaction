@@ -26,7 +26,6 @@ export const getResults = {};
 getResults.products = function (searchTerm, facets, maxResults, userId) {
   const searchTags = facets || [];
   const findTerm = getProductFindTerm(searchTerm, searchTags, userId);
-  // Logger.info(`Using findTerm ${JSON.stringify(findTerm, null, 4)}`);
   const productResults = ProductSearch.find(findTerm,
     {
       fields: {
@@ -41,9 +40,6 @@ getResults.products = function (searchTerm, facets, maxResults, userId) {
       limit: maxResults
     }
   );
-  Logger.info(`Found ${productResults.count()} products`);
-  // const verboseProducts = productResults.fetch();
-  // Logger.info(JSON.stringify(verboseProducts, null, 4));
   return productResults;
 };
 
@@ -69,9 +65,8 @@ getResults.orders = function (searchTerm, facets, maxResults, userId) {
       ] }
     ]};
   if (Roles.userIsInRole(userId, ["admin", "owner"], shopId)) {
-    // console.log(`Searching for orders using findTerm: ${JSON.stringify(findTerm, null, 4)}`);
     orderResults = OrderSearch.find(findTerm);
-    Logger.info(`Found ${orderResults.count()} orders`);
+    Logger.debug(`Found ${orderResults.count()} orders`);
   }
   return orderResults;
 };
@@ -84,7 +79,7 @@ getResults.accounts = function (searchTerm, facets, maxResults, userId) {
       shopId: shopId,
       emails: searchTerm
     });
-    Logger.info(`Found ${accountResults.count()} accounts searching for ${searchTerm}`);
+    Logger.debug(`Found ${accountResults.count()} accounts searching for ${searchTerm}`);
   }
   return accountResults;
 };
@@ -96,7 +91,7 @@ Meteor.publish("SearchResults", function (collection, searchTerm, facets, maxRes
   }));
   check(searchTerm, Match.Optional(String));
   check(facets, Match.OneOf(Array, undefined));
-  Logger.info(`Returning search results on ${collection}. SearchTerm: |${searchTerm}|. Facets: |${facets}|.`);
+  Logger.debug(`Returning search results on ${collection}. SearchTerm: |${searchTerm}|. Facets: |${facets}|.`);
   if (!searchTerm) {
     return this.ready();
   }

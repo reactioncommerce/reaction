@@ -67,7 +67,7 @@ export function buildProductSearchRecord(productId) {
 
 export function buildProductSearch(cb) {
   check(cb, Match.Optional(Function));
-  Logger.info("Start (re)Building ProductSearch Collection");
+  Logger.debug("Start (re)Building ProductSearch Collection");
   ProductSearch.remove({});
   const { fieldSet, weightObject, customFields } = getSearchParameters();
   const products = Products.find({type: "simple"}).fetch();
