@@ -5,10 +5,14 @@ import { check, Match } from "meteor/check";
 import { Reaction, Logger } from "/server/api";
 import { ProductSearch, OrderSearch, AccountSearch, Orders, Products, Accounts, Shops } from "/lib/collections";
 import utils from "./common";
+import { transformations } from "./transformations";
 
 
-const productRequiredFields = ["_id", "hashtags", "shopId", "handle", "price", "isVisible"];
+const requiredFields = {};
+requiredFields.products = ["_id", "hashtags", "shopId", "handle", "price", "isVisible"];
+
 const supportedLanguages = ["da", "nl", "en", "fi", "fr", "de", "hu", "it", "nb", "pt", "ro", "ru", "es", "sv", "tr"];
+
 
 function filterFields(customFields) {
   const fieldNames = [];
@@ -44,19 +48,22 @@ function getSearchLanguage() {
 export function getSearchParameters(collection = "products") {
   const settings = utils.getPackageSettings();
   const customFields = filterFields(settings[collection].includes);
-  const fieldSet = productRequiredFields.concat(customFields);
+  const fieldSet = requiredFields[collection].concat(customFields);
   const weightObject = getScores(customFields, settings);
   return { fieldSet: fieldSet, weightObject: weightObject, customFields: customFields };
 }
 
-
 export function buildProductSearchRecord(productId) {
   const product = Products.findOne(productId);
-  if (product.type === "simple" && product.isVisible) {
+  if (product.type === "simple") {
     const { fieldSet } = getSearchParameters();
     const productRecord = {};
     for (const field of fieldSet) {
-      productRecord[field] = product[field];
+      if (transformations.products[field]) {
+        productRecord[field] = transformations.products[field](product[field]);
+      } else {
+        productRecord[field] = product[field];
+      }
     }
     const productSearchRecord = ProductSearch.insert(productRecord);
     ensureProductSearchIndex();
@@ -74,7 +81,11 @@ export function buildProductSearch(cb) {
   for (const product of products) {
     const productRecord = {};
     for (const field of fieldSet) {
-      productRecord[field] = product[field];
+      if (transformations.products[field]) {
+        productRecord[field] = transformations.products[field](product[field]);
+      } else {
+        productRecord[field] = product[field];
+      }
     }
     ProductSearch.insert(productRecord);
   }

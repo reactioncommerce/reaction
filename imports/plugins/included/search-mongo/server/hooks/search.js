@@ -54,7 +54,7 @@ Products.after.remove((userId, doc) => {
   if (ProductSearch && !Meteor.isAppTest && doc.type === "simple") {
     const productId = doc._id;
     ProductSearch.remove(productId);
-    Logger.debug(`Removed product ${productId} from ProductSearch collection`);
+    Logger.info(`Removed product ${productId} from ProductSearch collection`);
   }
 });
 
@@ -67,11 +67,11 @@ Products.after.update((userId, doc, fieldNames) => {
     const { fieldSet } = getSearchParameters();
     const modifiedFields = _.intersection(fieldSet, fieldNames);
     if (modifiedFields.length) {
-      Logger.debug(`Rewriting search record for ${doc.title}`);
+      Logger.info(`Rewriting search record for ${doc.title}`);
       ProductSearch.remove(productId);
       buildProductSearchRecord(productId);
     } else {
-      Logger.debug("No watched fields modified, skipping");
+      Logger.info("No watched fields modified, skipping");
     }
   }
 });
@@ -84,5 +84,6 @@ Products.after.insert((userId, doc) => {
   if (ProductSearch && !Meteor.isAppTest && doc.type === "simple") {
     const productId = doc._id;
     buildProductSearchRecord(productId);
+    Logger.info(`Added product ${productId} to ProductSearch`);
   }
 });
