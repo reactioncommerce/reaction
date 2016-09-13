@@ -8,13 +8,6 @@
   z-index: @zindex-modal;
   padding: 0;
   margin: 0;
-  // display: -webkit-box;
-  // display: -moz-box;
-  // display: -ms-flexbox;
-  // display: -webkit-flex;
-  // display: flex;
-  // align-items: center;
-  // justify-content: center;
   padding-top: 250px;
 }
 
@@ -52,8 +45,7 @@
 
 /* ---------------- Input ---------------- */
 .rui.search-modal-input {
-  width: 80%;
-  max-width: 1100px;
+  width: 96%;
   position: relative;
   border-bottom: 1px solid @black40;
 
@@ -84,10 +76,6 @@
       background: @black25;
     }
   }
-
-  @media @mobile {
-    width: 96%;
-  }
 }
 
 .rui.search-modal-input label {
@@ -108,19 +96,13 @@
 
 /* ---------------- Tags ---------------- */
 .rui.search-modal-tags-container {
-  width: 80%;
-  max-width: 1100px;
+  width: 96%;
   padding-top: 10px;
   padding-right: 20px;
   padding-bottom: 20px;
   padding-left: 20px;
   background-color: @black05;
   overflow-y: scroll;
-
-  @media @mobile {
-    width: 96%;
-  }
-
 }
 .rui.suggested-tags {
   font-size: 12px;
@@ -144,13 +126,13 @@
   padding-left: 12px;
   margin-right: 5px;
   border-radius: 4px;
-  background-color: fade(@brand-light-color, 70%);
-  color: @text-color;
+  background-color: @black50;
+  color: @brand-light-color;
   cursor: pointer;
   transition: background-color 200ms linear, padding-right 200ms ease-out;
 
   &:hover {
-    background-color: @brand-light-color;
+    background-color: darken(@brand-light-color, 20%);
   }
 }
 .rui.search-tag.active-tag {
@@ -209,8 +191,24 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* -------------------------- Modal Container -------------------------- */
-.rui.search-modal-container {
+.rui.search-modal-results-container {
   width: 100%;
   height: 100%;
   overflow: scroll;
@@ -237,7 +235,8 @@
 
 
 
-/* --------------- Results section */
+
+
 
 
 
@@ -277,29 +276,10 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/* Prouct Grid
+** Styles taken from productGrid.less
+** wrapped in .search-modal here for easy disconnection
+*/
 .search-modal {
 
 
@@ -329,17 +309,17 @@
   // }
   //
   //
-  // .product-grid-item .overlay {
-  //   color: @product-overlay-text;
-  //   opacity: 1.0;
-  //   width: 100%;
-  //   padding-top: 10px;
-  //   .currency-symbol {
-  //     white-space: nowrap;
-  //     text-decoration: none;
-  //     text-align: center;
-  //   }
-  // }
+  .product-grid-item .overlay {
+    // color: @product-overlay-text;
+    opacity: 1.0;
+    // width: 100%;
+    // padding-top: 10px;
+    // .currency-symbol {
+    //   white-space: nowrap;
+    //   text-decoration: none;
+    //   text-align: center;
+    // }
+  }
   //
   // .product-grid-item .overlay-title {
   //   overflow: hidden;
@@ -681,14 +661,21 @@
   //
   //
 
-
+  .item-content {
+    background-color: none;
+    // box-shadow: 0 2px 5px rgba(0,0,0,.2);
+    transition: box-shadow 200ms linear;
+  }
 
   .product-grid-item .overlay-description {
     height: 0;
     opacity: 0.0;
-    transition: opacity 200ms linear;
-        margin-left: -10px;
-      padding-left: 10px;
+    transition: opacity 100ms linear;
+        // margin-left: -10px;
+
+      padding-left: 20px;
+    padding-right: 10px;
+    padding-bottom: 10px;
 
   }
   .product-grid-item:hover {
@@ -702,14 +689,24 @@
     // box-shadow: 0px 0px 10px 2px rgba(204,204,204,0.5);
     background: #fff;
     z-index: 1;
+    height: 0;
+
+    .item-content {
+      box-shadow: 0 0 0 10px white, 0 2px 8px 9px rgba(0, 0, 0, 0.2);
+      background-color: @white;
+
+
+    }
 
     .overlay-description {
-      position:absolute;
+      // position:absolute;
       // display: inline-block;
       height: auto;
       opacity: 1.0;
 
       background: #fff;
+    transition: box-shadow 400ms linear;
+
     }
 
   }
