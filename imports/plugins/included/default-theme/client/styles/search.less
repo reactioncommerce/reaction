@@ -32,7 +32,7 @@
   height: auto;
   padding-top: 40px;
   padding-bottom: 40px;
-  background: #fff;
+  background: @white;
   position:fixed;
   top: 0;
   display: -webkit-box;
@@ -44,12 +44,13 @@
   flex-direction: column;
   justify-content: center;
   transition: background-color 200ms linear;
-}
-.rui.search-modal-header.active-search {
-  background-color: @white;
+
+  .active-search {
+    background-color: @white;
+  }
 }
 
-/* ---------------- Modal Header ---------------- */
+/* ---------------- Input ---------------- */
 .rui.search-modal-input {
   width: 80%;
   max-width: 1100px;
@@ -87,7 +88,6 @@
   @media @mobile {
     width: 96%;
   }
-
 }
 
 .rui.search-modal-input label {
@@ -103,12 +103,10 @@
   outline: none;
   font-size: 25px;
   background: transparent;
-  // color: @black40;
-
 }
 
 
-/* --------------- Tags */
+/* ---------------- Tags ---------------- */
 .rui.search-modal-tags-container {
   width: 80%;
   max-width: 1100px;
@@ -116,17 +114,15 @@
   padding-right: 20px;
   padding-bottom: 20px;
   padding-left: 20px;
-  // margin-top: @input-height;
   background-color: @black05;
   overflow-y: scroll;
 
   @media @mobile {
     width: 96%;
-    overflow-x: scroll;
   }
 
 }
-p.suggested-tags {
+.rui.suggested-tags {
   font-size: 12px;
   color: @black40;
 }
@@ -177,10 +173,15 @@ p.suggested-tags {
   text-decoration: inherit;
   position: absolute;
   right: 12px;
-  z-index: 1;
-
-
 }
+
+
+
+
+
+
+
+
 
 
 
