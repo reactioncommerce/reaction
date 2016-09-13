@@ -53,7 +53,7 @@ Template.searchModal.helpers({
       kind: "close",
       onClick() {
         $(".js-search-modal").fadeOut(400, () => {
-          $("body").css("overflow-y", "inherit");
+          $(".container-main").css("overflow-y", "inherit");
           Blaze.remove(view);
         });
       }
@@ -81,7 +81,7 @@ Template.searchModal.events({
       const instance = Template.instance();
       const view = instance.view;
       $(".js-search-modal").fadeOut(400, () => {
-        $("body").css("overflow-y", "inherit");
+        $(".container-main").css("overflow-y", "inherit");
         Blaze.remove(view);
       });
     }
@@ -103,12 +103,19 @@ Template.searchModal.events({
     $(event.target).toggleClass("active-tag");
 
     templateInstance.state.set("facets", facets);
+    
+    // Callback test
+    // templateInstance.state.set("facets", facets,  function(facets) {
+    //
+    //   alert('hey', facets);
+    //
+    // });
   },
   "click [data-event-action=productClick]": function () {
     const instance = Template.instance();
     const view = instance.view;
     $(".js-search-modal").delay(400).fadeOut(400, () => {
-      $("body").css("overflow-y", "inherit");
+      $(".container-main").css("overflow-y", "inherit");
       Blaze.remove(view);
     });
   },

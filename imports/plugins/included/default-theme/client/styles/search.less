@@ -15,6 +15,7 @@
   // display: flex;
   // align-items: center;
   // justify-content: center;
+  padding-top: 230px;
 }
 
 /* -------------------------- Close Modal Button -------------------------- */
@@ -32,7 +33,8 @@
   padding-top: 40px;
   padding-bottom: 40px;
   background: #fff;
-  // align-self: flex-start;
+  position:fixed;
+  top: 0;
   display: -webkit-box;
   display: -moz-box;
   display: -ms-flexbox;
@@ -107,7 +109,7 @@
 
 
 /* --------------- Tags */
-.rui.search-modal-tags {
+.rui.search-modal-tags-container {
   width: 80%;
   max-width: 1100px;
   padding-top: 10px;
@@ -126,6 +128,15 @@
 p.suggested-tags {
   font-size: 12px;
   color: @black40;
+}
+.rui.search-tags {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
 }
 .rui.search-tag {
   width: auto;
@@ -151,6 +162,7 @@ p.suggested-tags {
 
   padding-right: 35px;
   position: relative;
+  order: -1;
 
   &:hover {
     background-color: fade(@brand-primary-color, 80%);
@@ -306,7 +318,9 @@ p.suggested-tags {
 .search-modal {
 
 
-
+.container-main {
+  overflow-y: auto !important;
+}
 
 
 
@@ -332,7 +346,7 @@ p.suggested-tags {
 
 .product-grid-item .overlay {
   color: @product-overlay-text;
-  opacity: 0.7;
+  opacity: 1.0;
   width: 100%;
   padding-top: 10px;
   .currency-symbol {
@@ -685,23 +699,29 @@ p.suggested-tags {
 
 
 .product-grid-item .overlay-description {
-  display: none;
+  height: 0;
+  opacity: 0.0;
+  transition: opacity 200ms linear;
+
 }
 .product-grid-item:hover {
 
-  border-top: solid 1px @black30;
-  border-right: solid 1px @black30;
-  border-left: solid 1px @black30;
-  border-radius: 5px;
-  -webkit-box-shadow: 0px 0px 10px 2px rgba(204,204,204,0.5);
-  -moz-box-shadow: 0px 0px 10px 2px rgba(204,204,204,0.5);
-  box-shadow: 0px 0px 10px 2px rgba(204,204,204,0.5);
+  // border-top: solid 1px @black30;
+  // border-right: solid 1px @black30;
+  // border-left: solid 1px @black30;
+  // border-radius: 5px;
+  // -webkit-box-shadow: 0px 0px 10px 2px rgba(204,204,204,0.5);
+  // -moz-box-shadow: 0px 0px 10px 2px rgba(204,204,204,0.5);
+  // box-shadow: 0px 0px 10px 2px rgba(204,204,204,0.5);
   background: #fff;
+  z-index: 1;
 
   .overlay-description {
     position:absolute;
-    display: inline-block;
-    z-index: 1;
+    // display: inline-block;
+    height: auto;
+    opacity: 1.0;
+
     background: #fff;
   }
 
