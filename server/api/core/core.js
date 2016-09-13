@@ -223,9 +223,11 @@ export default {
    */
   createDefaultAdminUser() {
     Logger.info("Starting createDefaultAdminUser");
-    let options = {};
     const domain = getRegistryDomain();
+    const env = process.env;
     const defaultAdminRoles = ["owner", "admin", "guest", "account/profile"];
+    let options = {};
+    let configureEnv = false;
     let accountId;
 
     while (!this.getShopId()) {
@@ -246,15 +248,22 @@ export default {
 
     //
     // process Meteor settings and env variables for initial user config
+    // if ENV variables are set, these always override "settings.json"
+    // this is to allow for testing environments. where we don't want to use
+    // users configured in a settings file.
     //
+    if (env.REACTION_EMAIL && env.REACTION_USER && env.REACTION_AUTH) {
+      configureEnv = true;
+    }
 
     // defaults use either env or generated
-    options.email = process.env.REACTION_EMAIL || Random.id(8).toLowerCase() +
+    options.email = env.REACTION_EMAIL || Random.id(8).toLowerCase() +
       "@" + domain;
-    options.username = process.env.REACTION_USER || "Admin"; // username
-    options.password = process.env.REACTION_AUTH || Random.secret(8);
+    options.username = env.REACTION_USER || "Admin"; // username
+    options.password = env.REACTION_AUTH || Random.secret(8);
+
     // but we can override with provided `meteor --settings`
-    if (Meteor.settings) {
+    if (Meteor.settings && !configureEnv) {
       if (Meteor.settings.reaction) {
         options.username = Meteor.settings.reaction.REACTION_USER || "Admin";
         options.password = Meteor.settings.reaction.REACTION_AUTH || Random.secret(
