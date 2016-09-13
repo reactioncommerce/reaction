@@ -18,7 +18,7 @@ Template.searchModal.onCreated(function () {
   this.autorun(() => {
     const searchQuery = this.state.get("searchQuery");
     const facets = this.state.get("facets") || [];
-    const sub = this.subscribe("SearchResults", "products", searchQuery, facets); // collection, searchTerm, facets
+    const sub = this.subscribe("SearchResults", "products", searchQuery, facets);
 
     if (sub.ready()) {
       const results = ProductSearch.find().fetch();
@@ -103,13 +103,6 @@ Template.searchModal.events({
     $(event.target).toggleClass("active-tag");
 
     templateInstance.state.set("facets", facets);
-    
-    // Callback test
-    // templateInstance.state.set("facets", facets,  function(facets) {
-    //
-    //   alert('hey', facets);
-    //
-    // });
   },
   "click [data-event-action=productClick]": function () {
     const instance = Template.instance();
@@ -122,12 +115,8 @@ Template.searchModal.events({
   "click [data-event-action=clearSearch]": function (event, templateInstance) {
     $("#search-input").val("");
     $("#search-input").focus();
-
     const searchQuery = templateInstance.find("#search-input").value;
     templateInstance.state.set("searchQuery", searchQuery);
-
-    // $(".js-clear-search").delay(400).fadeOut(400, () => {
-    // });
   }
 });
 
