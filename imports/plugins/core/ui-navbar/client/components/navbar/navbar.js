@@ -21,7 +21,7 @@ Template.CoreNavigationBar.events({
   "click .search": function () {
     Blaze.renderWithData(Template.searchModal, {
     }, $("body").get(0));
-    $("body").css("overflow-y", "hidden");
+    $(".container-main").css("overflow-y", "hidden");
     $("#search-input").focus();
   }
 });
