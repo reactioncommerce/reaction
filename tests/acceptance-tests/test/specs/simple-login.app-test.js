@@ -19,6 +19,6 @@ describe("simple login test", function () {
     browser.setValue(eleMap.login_pw_fld, usrData.admin_pw);
     browser.click(eleMap.login_btn);
     browser.pause("5000");
-    expect(browser.getText("#logged-in-display-name")).to.equal("Admin");
+    expect(browser.getText("#logged-in-display-name")).to.equal("admin");
   });
 });

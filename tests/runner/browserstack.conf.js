@@ -1,12 +1,8 @@
 const browserstack = require("browserstack-local");
 const yaml = require("js-yaml");
 const fs   = require("fs");
-const path = require("path");
 
-// console.log(__filename, __dirname);
-
-// let dirResolve = path.resolve(__dirname, "tests/acceptance-tests/config/settings.yml");
-// const testSettings = yaml.safeLoad(fs.readFileSync(dirResolve , "utf8"));
+const testSettings = yaml.safeLoad(fs.readFileSync("./tests/acceptance-tests/config/settings.yml", "utf8"));
 
 exports.config = {
   user: process.env.BROWSERSTACK_USERNAME || "BROWSERSTACK_USERNAME",
@@ -41,9 +37,12 @@ exports.config = {
   exclude: [],
 
   capabilities: [{
-    browser: "chrome",
-    // name: "local_test",
-    // build: "webdriver-browserstack",
+    "browserName": testSettings.browser,
+    "browser_version": testSettings.browser_version,
+    "os": testSettings.os,
+    "os_version": testSettings.os_version,
+    // "os_version": toString(testSettings.os_version),
+    "resolution": testSettings.resolution,
     "browserstack.local": true,
     "browserstack.debug": true
   }],
@@ -79,5 +78,4 @@ exports.config = {
   onComplete: function (capabilties, specs) {
     exports.bs_local.stop(function () {});
   }
-
 };

@@ -1,12 +1,11 @@
-admin_email: "rbgd5ngh@localhost"
-admin_pw: "GCFTnUxz"
+admin_email: admin@reactioncommerce.com
+admin_pw: password123
 
-guest_email: josh@reactioncommerce.com
 guest_pw: password123
 
 # shop address
 country: US
-name: Josh Ewing
+name: Lewis Hamilton
 address1: 2110 Main Street.
 postal: 90405
 city: Santa Monica
@@ -14,7 +13,7 @@ region: CA
 phone: 555-555-5555
 
 # payment info
-card_holder: Josh Ewing
+card_holder: Nico Roseberg
 visa: 4242424242424242
 paypal_visa: 4111111111111111
 stripe_visa: 4000000000000077

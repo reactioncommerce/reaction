@@ -3,11 +3,13 @@ const yaml = require("js-yaml");
 const fs   = require("fs");
 
 const eleMap = yaml.safeLoad(fs.readFileSync("./tests/acceptance-tests/elements/element-map.yml", "utf8"));
+const usrData = yaml.safeLoad(fs.readFileSync("./tests/acceptance-tests/config/user-data.yml", "utf8"));
+const browserConfig = yaml.safeLoad(fs.readFileSync("./tests/acceptance-tests/config/settings.yml", "utf8"));
+
 
 module.exports = {
   UserActions: {
     userLogin: function (user) {
-      const usrData = yaml.safeLoad(fs.readFileSync("./tests/acceptance-tests/config/user-data.yml", "utf8"));
       browser.pause("5000");
       browser.click(eleMap.login_dropdown_btn);
       if (user === "admin") {
@@ -35,6 +37,20 @@ module.exports = {
         browser.click(eleMap.shop_btn);
         browser.pause("3000");
       }
+    },
+    registerUser: function () {
+      const baseUrl = browserConfig.base_url.toString();
+      const regUrl = baseUrl + "/reaction/account/profile";
+      browser.url(regUrl);
+      browser.pause(5000);
+      const ep = (new Date).getTime();
+      const email = ep + "email@reactioncommerce.com";
+      browser.setValue(eleMap.pl_email_address_fld, email);
+      browser.setValue(eleMap.pl_password_fld, usrData.guest_pw);
+      browser.click(eleMap.pl_register_lnk);
+      browser.pause(2000);
+      browser.click(eleMap.pl_register_btn);
+      browser.pause(2000);
     }
   }
 };
