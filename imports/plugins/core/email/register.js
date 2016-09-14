@@ -12,7 +12,7 @@ Reaction.registerPackage({
     route: "/dashboard/email/status",
     provides: "dashboard",
     workflow: "coreEmailWorkflow",
-    name: "email_status",
+    name: "Email Status",
     label: "Email",
     description: "Email settings",
     icon: "fa fa-envelope-o",

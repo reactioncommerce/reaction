@@ -5,7 +5,7 @@ class EmailDashboardTabs extends Component {
   render() {
     return (
       <div>
-        <a href={Router.pathFor("email")}>Status</a>
+        <a href={Router.pathFor("Email Status")}>Status</a>
       </div>
     );
   }
