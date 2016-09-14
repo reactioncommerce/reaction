@@ -22,13 +22,6 @@ Reaction.registerPackage({
       template: "shipping"
     },
     {
-      label: "Shipping Settings",
-      route: "/dashboard/shipping/settings",
-      name: "shipping/settings",
-      provides: "settings",
-      template: "shippingSettings"
-    },
-    {
       template: "flatRateCheckoutShipping",
       provides: "shippingMethod"
     }

@@ -2,7 +2,7 @@ import Core from "./core";
 import * as Accounts from "./accounts";
 import * as AssignRoles from "./assignRoles";
 import * as Email from "./email";
-import Import from "./import";
+import * as Import from "./import";
 import * as LoadSettings from "./loadSettings";
 import Log from "../logger";
 import Router from "../router";
@@ -23,7 +23,7 @@ const Reaction = Object.assign({},
   AssignRoles,
   { Collections },
   { Email },
-  { Import },
+  Import,
   LoadSettings,
   { Log },
   { Router },

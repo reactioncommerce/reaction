@@ -3,15 +3,14 @@ import { EJSON } from "meteor/ejson";
 import * as Collections from "/lib/collections";
 import Hooks from "../hooks";
 import Logger from "../logger";
+import doRightJoinNoIntersection from "./rightJoin";
 
 /**
  * @file Exposes the Import object implementing methods for bulk imports.
  * @author Tom De Caluwé
  */
 
-const Import = {};
-
-export const ReactionFixture = Object.create(Import);
+export const Import = {};
 
 Import._buffers = {};
 Import._contexts = {};
@@ -27,14 +26,9 @@ Import._upsert = function () {
   return true;
 };
 
-ReactionFixture._upsert = function () {
-  return false;
-};
-
-Import.fixture = function () {
-  return ReactionFixture;
-};
-
+//
+// TODO Verify if Import.startup is deprecated
+//
 Import.startup = function () {
   return true;
 };
@@ -119,7 +113,7 @@ Import.commit = function (collection) {
   if (this._count[name]) {
     this.buffer(collection).execute(function (error, result) {
       // Inserted document counts don't affect the modified document count, so we
-      // throw everythin together.
+      // throw everything together.
       const nImported = result.nModified + result.nInserted + result.nUpserted;
       const nTouched = result.nMatched + result.nInserted + result.nUpserted;
       const nRemoved = result.nRemoved;
@@ -256,6 +250,11 @@ Import.package = function (pkg, shopId) {
   return this.object(Collections.Packages, key, pkg);
 };
 
+//
+// Import.translation
+// server/startup/i18n.js
+//
+
 /**
  * @summary Store a translation in the import buffer.
  * @param {Object} key A key to look up the translation
@@ -266,10 +265,6 @@ Import.translation = function (key, translation) {
   const modifiedKey = Object.assign(key, { ns: translation.ns });
   return this.object(Collections.Translations, modifiedKey, translation);
 };
-
-//
-// See reaction-i18n/server/import.js
-//
 
 /**
  * @summary Store a shop in the import buffer.
@@ -299,12 +294,29 @@ Import.layout = function (layout, shopId) {
 
 /**
  * @summary Store shipping in the import buffer.
- * @param {Object} key A key to look up the tag
+ * @param {Object} key A shipping service key used in combination with provider
  * @param {Object} shipping The shipping data to be updated
  * @returns {Object} this shipping
  */
 Import.shipping = function (key, shipping) {
-  return this.object(Collections.Shipping, key, shipping);
+  let importKey = {};
+  //
+  // we have a bit of a strange structure in Shipping
+  // and don't really have a key that is good for
+  // determining if we imported this before
+  // so we're just saying that if this service
+  // already exists then we're not going to import
+  //
+  const result = Collections.Shipping.findOne(key);
+  if (result) {
+    importKey = {
+      _id: result._id,
+      shopId: result.shopId
+    };
+    delete shipping.methods;
+  }
+  const modifiedKey = Object.assign({}, key, importKey);
+  return this.object(Collections.Shipping, modifiedKey, shipping);
 };
 
 /**
@@ -318,78 +330,6 @@ Import.tag = function (key, tag) {
 };
 
 /**
- * @summary Returns an disjoint object as right join. For a visualization, see:
- *          http://www.codeproject.com/KB/database/Visual_SQL_Joins/Visual_SQL_JOINS_orig.jpg
- *          Additionally, the join is done recursively on properties of
- *          nested objects as well. Nested arrays are handled like
- *          primitive values.
- * @param {Object} leftSet An object that can contain nested sub-objects
- * @param {Object} rightSet An object that can contain nested sub-objects
- * @returns {Object} The disjoint object that does only contain properties
- *                   from the rightSet. But only those, that were not present
- *                   in the leftSet.
- */
-function doRightJoinNoIntersection(leftSet, rightSet) {
-  if (rightSet === null) return null;
-
-  let rightJoin;
-  if (Array.isArray(rightSet)) {
-    rightJoin = [];
-  } else {
-    rightJoin = {};
-  }
-  const findRightOnlyProperties = () => {
-    return Object.keys(rightSet).filter(function (key) {
-      if (typeof(rightSet[key]) === "object" &&
-        !Array.isArray(rightSet[key])) {
-        // Nested objects are always considered
-        return true;
-      }
-      // Array or primitive value
-      return !leftSet.hasOwnProperty(key);
-    });
-  };
-
-  for (const key of findRightOnlyProperties()) {
-    if (typeof(rightSet[key]) === "object") {
-      // subobject or array
-      if (leftSet.hasOwnProperty(key) && (typeof(leftSet[key]) !== "object" ||
-           Array.isArray(leftSet[key]) !== Array.isArray(rightSet[ key ]))) {
-        // This is not expected!
-        throw new Error(
-          "Left object and right object's internal structure must be " +
-          "congruent! Offending key: " + key
-        );
-      }
-      const rightSubJoin = doRightJoinNoIntersection(
-        leftSet.hasOwnProperty(key) ? leftSet[key] : {},
-        rightSet[key]
-      );
-
-      const obj = {};
-      if (rightSubJoin === null) {
-        obj[key] = null;
-      } else if (Object.keys(rightSubJoin).length !== 0 ||
-                 Array.isArray(rightSubJoin)) {
-        // object or (empty) array
-        obj[key] = rightSubJoin;
-      }
-      rightJoin = Object.assign(rightJoin, obj);
-    } else {
-      // primitive value (or array)
-      if (Array.isArray(rightSet)) {
-        rightJoin.push(rightSet[key]);
-      } else {
-        const obj = {};
-        obj[key] = rightSet[key];
-        rightJoin = Object.assign(rightJoin, obj);
-      }
-    }
-  }
-  return rightJoin;
-}
-
-/**
  * @summary Push a new upsert document to the import buffer.
  * @param {Mongo.Collection} collection The target collection
  * @param {Object} key A key to look up the object
@@ -400,11 +340,11 @@ Import.object = function (collection, key, object) {
   check(collection, Mongo.Collection);
   check(key, Object);
   check(object, Object);
-
-  const selector = object;
+  const updateObject = object;
 
   // enforce strings instead of Mongo.ObjectId
   if (!collection.findOne(key) && !object._id) key._id = Random.id();
+
   // hooks for additional import manipulation.
   const importObject = Hooks.Events.run(`onImport${this._name(collection)}`, object);
 
@@ -413,8 +353,9 @@ Import.object = function (collection, key, object) {
 
   // Cleaning the object adds default values from schema, if value doesn't exist
   collection.simpleSchema(importObject).clean(cleanedObject);
+
   // And validate the object against the schema
-  this.context(collection, selector).validate(cleanedObject, {});
+  this.context(collection, updateObject).validate(cleanedObject, {});
 
   // Disjoint importObject and cleanedObject again
   // to prevent `Cannot update '<field>' and '<field>' at the same time` errors
@@ -422,6 +363,10 @@ Import.object = function (collection, key, object) {
 
   // Upsert the object.
   const find = this.buffer(collection).find(key);
+
+  // With the upsert option set to true, if no matching documents exist for the Bulk.find() condition,
+  // then the update or the replacement operation performs an insert.
+  // https://docs.mongodb.com/manual/reference/method/Bulk.find.upsert/
   if (Object.keys(defaultValuesObject).length === 0) {
     find.upsert().update({
       $set: importObject
@@ -442,7 +387,6 @@ Import.object = function (collection, key, object) {
  * @param {Object[]} json An array containing the import documents
  * @param {string[]} keys Fields that should be used as the import key.
  * @param {Function} callback A callback accepting two parameters.
- *{}
  * The callback should accept a key document to consult the database as a first
  * parameter and an update document as the second parameter.
  * @returns {undefined}
@@ -473,6 +417,13 @@ Import.indication("currencies", Collections.Shops, 0.5);
 Import.indication("timezone", Collections.Shops, 0.5);
 Import.indication("isTopLevel", Collections.Tags, 0.4);
 Import.indication("slug", Collections.Tags, 0.5);
+Import.indication("provider", Collections.Shipping, 0.2);
 
-
-export default Import;
+//
+// exporting Fixture
+// use this instead of Import if you want
+// Bulk.find.upsert() to equal false
+//
+export const Fixture = Object.assign({}, Import, {
+  _upsert: () => { return false; }
+});
