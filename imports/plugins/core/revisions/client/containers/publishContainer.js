@@ -3,8 +3,8 @@ import { composeWithTracker } from "react-komposer";
 import PublishControls from "../components/publishControls";
 import { Revisions } from "/lib/collections";
 import { Meteor } from "meteor/meteor";
-import TranslationProvider from "/imports/plugins/core/ui/client/providers/translationProvider"
-import isArray from "lodash/isArray";
+import TranslationProvider from "/imports/plugins/core/ui/client/providers/translationProvider";
+
 /**
  * Publish container is a stateless container component connected to Meteor data source.
  * @param  {Object} props Component props
@@ -28,7 +28,7 @@ PublishContainer.propTypes = {
 };
 
 export function handlePublishClick(revisions) {
-  if (isArray(revisions)) {
+  if (Array.isArray(revisions)) {
     const documentIds = revisions.map((revision) => {
       return revision.documentId;
     });

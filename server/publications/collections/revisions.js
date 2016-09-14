@@ -1,6 +1,5 @@
 import { Revisions } from "/lib/collections";
 import { Reaction } from "/server/api";
-import isArray from "lodash/isarray";
 import { check, Match } from "meteor/check";
 
 /**
@@ -21,7 +20,7 @@ Meteor.publish("Revisions", function (documentIds) {
   }
 
   if (Roles.userIsInRole(this.userId, ["admin", "owner"])) {
-    if (isArray(documentIds)) {
+    if (Array.isArray(documentIds)) {
       return Revisions.find({
         // shopId,
         documentId: {

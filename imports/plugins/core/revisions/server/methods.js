@@ -1,6 +1,5 @@
 import { Products, Revisions } from "/lib/collections";
 import { Meteor } from "meteor/meteor";
-import isArray from "lodash/isarray";
 import { check, Match } from "meteor/check";
 
 Meteor.methods({
@@ -10,7 +9,7 @@ Meteor.methods({
     // Also publish variants if they have a draft
     let revisions;
 
-    if (isArray(documentIds)) {
+    if (Array.isArray(documentIds)) {
       revisions = Revisions.find({
         "workflow.status": {
           $nin: [
