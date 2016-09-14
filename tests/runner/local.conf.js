@@ -1,9 +1,12 @@
 const yaml = require("js-yaml");
 const fs   = require("fs");
+const testSuite = require("./test-suite.js")
 
 
 const testSettings = yaml.safeLoad(fs.readFileSync("./tests/acceptance-tests/config/settings.yml" , "utf8"));
 const browserType = testSettings.browser;
+
+const getSpecs = testSuite.getToggles();
 
 exports.config = {
   updateJob: false,
@@ -30,7 +33,8 @@ exports.config = {
     "./tests/acceptance-tests/test/specs/authorizenet-refund.app-test.js",
     "./tests/acceptance-tests/test/specs/braintree-refund.app-test.js",
     **/
-    "./tests/acceptance-tests/test/specs/simple-login.app-test.js"
+    // "./tests/acceptance-tests/test/specs/simple-login.app-test.js"
+    getSpecs
   ],
   exclude: [],
 

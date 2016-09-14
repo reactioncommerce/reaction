@@ -1,0 +1,8 @@
+# Enable and disable differnt suites of tests
+
+# Payment Processor specific tests
+braintree: true
+stripe: true
+authnet: true
+paypal: true
+example: true
