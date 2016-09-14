@@ -4,7 +4,7 @@ import { diff } from "deep-diff";
 
 
 Products.before.insert((userId, product) => {
-  let productRevision = Revisions.findOne({
+  const productRevision = Revisions.findOne({
     "documentId": product._id,
     "workflow.status": {
       $nin: [
@@ -55,7 +55,7 @@ Products.before.update(function (userId, product, fieldNames, modifier, options)
   //
   // This is especially important since we may need to update some fields
   // like metadata, and the selector is very important to that.
-  let revisionSelector = {
+  const revisionSelector = {
     "documentId": product._id,
     "workflow.status": {
       $nin: [
@@ -65,7 +65,7 @@ Products.before.update(function (userId, product, fieldNames, modifier, options)
   };
 
   // Create a new modifier for the revision
-  let revisionModifier = {
+  const revisionModifier = {
     $set: {
       "workflow.status": "revision/update"
     }
@@ -84,13 +84,13 @@ Products.before.update(function (userId, product, fieldNames, modifier, options)
     return true;
   }
 
-  for (let operation in modifier) {
+  for (const operation in modifier) {
     if (Object.hasOwnProperty.call(modifier, operation)) {
       if (!revisionModifier[operation]) {
         revisionModifier[operation] = {};
       }
 
-      for (let property in modifier[operation]) {
+      for (const property in modifier[operation]) {
         if (modifier[operation].hasOwnProperty(property)) {
           if (operation === "$set" && property === "isVisible") {
             // Special handling for isVisible
@@ -108,6 +108,11 @@ Products.before.update(function (userId, product, fieldNames, modifier, options)
             // where 0, 1, n represent an array index.
             revisionSelector["documentData.metafields"] = originalSelector.metafields;
             revisionModifier.$set[`documentData.${property}`] = modifier.$set[property];
+          } else if (operation === "$push" && property === "hashtags") {
+            if (!revisionModifier.$addToSet) {
+              revisionModifier.$addToSet = {};
+            }
+            revisionModifier.$addToSet[`documentData.${property}`] = modifier.$push[property];
           } else {
             // Let everything else through
             revisionModifier[operation][`documentData.${property}`] = modifier[operation][property];
@@ -124,24 +129,33 @@ Products.before.update(function (userId, product, fieldNames, modifier, options)
   if (modifier.$pull && modifier.$pull.hashtags) {
     const tagId = modifier.$pull.hashtags;
 
-    let productCount = Products.find({
+    const productCount = Products.find({
       hashtags: {
         $in: [tagId]
       }
     }).count();
 
-    let relatedTagsCount = Tags.find({
+    const relatedTagsCount = Tags.find({
       relatedTagIds: {
         $in: [tagId]
       }
     }).count();
 
     if (productCount === 0 && relatedTagsCount === 0) {
+      // Mark tag as deleted
       Tags.update({
         _id: tagId
       }, {
         $set: {
           isDeleted: true
+        }
+      });
+    } else {
+      Tags.update({
+        _id: tagId
+      }, {
+        $set: {
+          isDeleted: false
         }
       });
     }
@@ -157,7 +171,7 @@ Products.before.update(function (userId, product, fieldNames, modifier, options)
       "inventoryQuantity"
     ];
 
-    for (let field of ignoredFields) {
+    for (const field of ignoredFields) {
       if (modifier.$set && modifier.$set[field]) {
         newSet[field] = modifier.$set[field];
       }
@@ -174,36 +188,6 @@ Products.before.update(function (userId, product, fieldNames, modifier, options)
   // prevent the underlying document from being modified as it is in draft mode
   return false;
 });
-
-// Products.after.update(function (userId, product, fieldNames, modifier, options) {
-//   // if (options.publish === true || (product.workflow && product.workflow.status === "product/publish")) {
-//     if (modifier.$pull && modifier.$pull.hashtags) {
-//       const tagId = modifier.$pull.hashtags;
-//
-//       let productCount = Products.find({
-//         hashtags: {
-//           $in: [tagId]
-//         }
-//       }).count();
-//
-//       let relatedTagsCount = Tags.find({
-//         relatedTagIds: {
-//           $in: [tagId]
-//         }
-//       }).count();
-//
-//       if (productCount === 0 && relatedTagsCount === 0) {
-//         Tags.update({
-//           _id: tagId
-//         }, {
-//           $set: {
-//             isDeleted: true
-//           }
-//         });
-//       }
-//     }
-//   // }
-// });
 
 Products.before.remove(function (userId, product) {
   let productRevision = Revisions.findOne({

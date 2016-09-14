@@ -2,21 +2,32 @@ import React, { Component, PropTypes } from "react";
 import { PropTypes as ReactionPropTypes } from "/lib/api";
 import { TagItem } from "./";
 import classnames from "classnames";
-import Sortable from "sortablejs";
 
 class Tags extends Component {
   displayName = "Tag List (Tags)";
 
-  handleNewTagSubmit = (event) => {
+  handleNewTagSave = (event, tag) => {
     event.preventDefault();
-    if (this.props.onTagCreate) {
-      this.props.onTagCreate(event.target.tag.value, this.props.parentTag);
+    if (this.props.onNewTagSave) {
+      this.props.onNewTagSave(tag, this.props.parentTag);
     }
   };
+
+  handleNewTagUpdate = (event, tag) => {
+    if (this.props.onNewTagUpdate) {
+      this.props.onNewTagUpdate(tag, this.props.parentTag);
+    }
+  }
 
   handleTagCreate = (tagId, tagName) => {
     if (this.props.onTagCreate) {
       this.props.onTagCreate(tagId, tagName);
+    }
+  };
+
+  handleTagSave = (event, tag) => {
+    if (this.props.onTagSave) {
+      this.props.onTagSave(tag);
     }
   };
 
@@ -65,26 +76,25 @@ class Tags extends Component {
   renderTags() {
     if (_.isArray(this.props.tags)) {
       const tags = this.props.tags.map((tag, index) => {
-        if (tag) {
-          return (
-            <TagItem
-              data-id={tag._id}
-              editable={this.props.editable}
-              index={index}
-              key={index}
-              onGetSuggestions={this.props.handleGetSuggestions}
-              onMove={this.props.onMoveTag}
-              onSuggestionUpdateRequested={this.props.onSuggestionUpdateRequested}
-              onTagBookmark={this.handleTagBookmark}
-              onTagMouseOut={this.handleTagMouseOut}
-              onTagMouseOver={this.handleTagMouseOver}
-              onTagRemove={this.handleTagRemove}
-              onTagSave={this.handleTagUpdate}
-              suggestions={this.props.suggestions}
-              tag={tag}
-            />
-          );
-        }
+        return (
+          <TagItem
+            data-id={tag._id}
+            editable={this.props.editable}
+            index={index}
+            key={index}
+            onGetSuggestions={this.props.onGetSuggestions}
+            onMove={this.props.onMoveTag}
+            onTagBookmark={this.handleTagBookmark}
+            onTagInputBlur={this.handleTagSave}
+            onTagMouseOut={this.handleTagMouseOut}
+            onTagMouseOver={this.handleTagMouseOver}
+            onTagRemove={this.handleTagRemove}
+            onTagSave={this.handleTagUpdate}
+            onTagUpdate={this.handleTagUpdate}
+            suggestions={this.props.suggestions}
+            tag={tag}
+          />
+        );
       });
 
       // Render an blank tag for creating new tags
@@ -93,19 +103,19 @@ class Tags extends Component {
           <TagItem
             blank={true}
             key="newTagForm"
-            onGetSuggestions={this.props.handleGetSuggestions}
-            onTagCreate={this.handleTagCreate}
-            onTagSave={this.props.onNewTagInputBlur}
+            onGetSuggestions={this.props.onGetSuggestions}
+            onTagInputBlur={this.handleNewTagSave}
+            onTagUpdate={this.handleNewTagUpdate}
             suggestions={this.props.suggestions}
-            tag={{
-              name: ""
-            }}
+            tag={this.props.newTag}
           />
         );
       }
 
       return tags;
     }
+
+    return null;
   }
 
   render() {
@@ -136,21 +146,25 @@ Tags.defaultProps = {
 Tags.propTypes = {
   editable: PropTypes.bool,
   enableNewTagForm: PropTypes.bool,
-
-  // Event handelers
+  newTag: PropTypes.object,
+  onGetSuggestions: PropTypes.func,
+  onMoveTag: PropTypes.func,
+  onNewTagSave: PropTypes.func,
+  onNewTagUpdate: PropTypes.func,
+  onSuggestionUpdateRequested: PropTypes.func,
   onTagBookmark: PropTypes.func,
   onTagCreate: PropTypes.func,
   onTagDragAdd: PropTypes.func,
   onTagMouseOut: PropTypes.func,
   onTagMouseOver: PropTypes.func,
   onTagRemove: PropTypes.func,
+  onTagSave: PropTypes.func,
   onTagSort: PropTypes.func,
   onTagUpdate: PropTypes.func,
-
   parentTag: ReactionPropTypes.Tag,
   placeholder: PropTypes.string,
   showBookmark: PropTypes.bool,
-  // tag: PropTypes.Tag
+  suggestions: PropTypes.arrayOf(PropTypes.object),
   tags: ReactionPropTypes.arrayOfTags
 };
 

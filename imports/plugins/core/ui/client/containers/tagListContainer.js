@@ -5,30 +5,51 @@ import { Reaction } from "/client/api";
 import { composeWithTracker } from "react-komposer";
 import { TagList } from "../components/tags";
 import { Tags } from "/lib/collections";
-import { ReactiveDict } from "meteor/reactive-dict";
 import { getTagIds } from "/lib/selectors/tags";
 import { DragDropProvider } from "/imports/plugins/core/ui/client/providers";
 
-const externalState = new ReactiveDict();
-externalState.set("suggestions", []);
-
-function updateSuggestions(term) {
-  const datums = [];
+function updateSuggestions(term, { excludeTags }) {
   const slug = Reaction.getSlug(term);
 
-  Tags.find({
+  const selector = {
     slug: new RegExp(slug, "i")
-  }).forEach(function (tag) {
-    return datums.push({
+  };
+
+  if (Array.isArray(excludeTags)) {
+    selector._id = {
+      $nin: excludeTags
+    };
+  }
+
+  const tags = Tags.find(selector).map((tag) => {
+    return {
       label: tag.name
-    });
+    };
   });
 
-
-  externalState.set("suggestions", datums);
+  return tags;
 }
 
 class TagListContainer extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      tagIds: props.tagIds || [],
+      tagsByKey: props.tagsByKey || {},
+      newTag: {
+        name: ""
+      },
+      suggestions: []
+    };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      tagIds: nextProps.tagIds || [],
+      tagsByKey: nextProps.tagsByKey || {}
+    });
+  }
 
   get productId() {
     if (this.props.product) {
@@ -37,17 +58,70 @@ class TagListContainer extends Component {
     return null;
   }
 
-  handleTagCreate = (tag) => {
-    if (this.productId) {
+  canSaveTag(tag) {
+    // Blank tags cannot be saved
+    if (typeof tag.name === "string" && tag.name.trim().length === 0) {
+      return false;
+    }
+
+    // If the tag does not have an id, then allow the save
+    if (!tag._id) {
+      return true;
+    }
+
+    // Get the original tag from the props
+    // Tags from props are not mutated, and come from an outside source
+    const originalTag = this.props.tagsByKey[tag._id];
+
+    if (originalTag && originalTag.name !== tag.name) {
+      return true;
+    }
+
+    return false;
+  }
+
+  handleNewTagSave = (tag) => {
+    if (this.productId && this.canSaveTag(tag)) {
       Meteor.call("products/updateProductTags", this.productId, tag.name, null, (error) => {
         if (error) {
-          Alerts.toast("Tag already exists, duplicate add failed.", "error");
+          return Alerts.toast("Tag already exists, duplicate add failed.", "error");
         }
+
+        this.setState({
+          newTag: {
+            name: ""
+          },
+          suggestions: []
+        });
+
+        return true;
       });
     }
   }
 
-  handleTagRemove = (tag) =>{
+  handleNewTagUpdate = (tag) => {
+    this.setState({
+      newTag: tag
+    });
+  }
+
+  handleTagSave = (tag) => {
+    if (this.productId && this.canSaveTag(tag)) {
+      Meteor.call("products/updateProductTags", this.productId, tag.name, tag._id, (error) => {
+        if (error) {
+          return Alerts.toast("Tag already exists, duplicate add failed.", "error");
+        }
+
+        this.setState({
+          suggestions: []
+        });
+
+        return true;
+      });
+    }
+  }
+
+  handleTagRemove = (tag) => {
     if (this.productId) {
       Meteor.call("products/removeProductTag", this.productId, tag._id, (error) => {
         if (error) {
@@ -58,50 +132,82 @@ class TagListContainer extends Component {
   }
 
   handleTagUpdate = (tag) => {
-    if (this.productId) {
-      Meteor.call("products/updateProductTags", this.productId, tag.name, tag._id, (error) => {
-        if (error) {
-          Alerts.toast("Tag already exists, duplicate add failed.", "error");
+    const newState = update(this.state, {
+      tagsByKey: {
+        [tag._id]: {
+          $set: tag
         }
-      });
-    }
+      }
+    });
+
+    this.setState(newState);
   }
 
   handleMoveTag = (dragIndex, hoverIndex) => {
-    const variant = this.props.tags[dragIndex];
+    const variant = this.props.tagIds[dragIndex];
 
     // Apply new sort order to variant list
-    const newTagOrder = update(this.props.tags, {
-      $splice: [
-        [dragIndex, 1],
-        [hoverIndex, 0, variant]
-      ]
+    const newState = update(this.state, {
+      tagIds: {
+        $splice: [
+          [dragIndex, 1],
+          [hoverIndex, 0, variant]
+        ]
+      }
     });
 
     // Set local state so the component does't have to wait for a round-trip
     // to the server to get the updated list of variants
-    this.setState({
-      tags: newTagOrder
+    this.setState(newState, () => {
+      // Save the updated positions
+      Meteor.defer(() => {
+        if (this.props.product) {
+          // const tagIds = thigetTagIds({ tags: newTagOrder });
+          Meteor.call(
+            "products/updateProductField",
+            this.props.product._id,
+            "hashtags",
+            this.state.tagIds
+          );
+        }
+      });
     });
+  }
 
-    // Save the updated positions
-    Meteor.defer(() => {
-      if (this.props.product) {
-        const tagIds = getTagIds({ tags: newTagOrder });
-        Meteor.call("products/updateProductField", this.props.product._id, "hashtags", tagIds);
-      }
+  handleGetSuggestions = (suggestionUpdateRequest) => {
+    const suggestions = updateSuggestions(
+      suggestionUpdateRequest.value,
+      { excludeTags: this.state.tagIds }
+    );
+
+    this.setState({
+      suggestions: suggestions
     });
+  }
+
+  get tags() {
+    if (this.props.editable) {
+      return this.state.tagIds.map((tagId) => this.state.tagsByKey[tagId]);
+    }
+
+    return this.props.tagsAsArray;
   }
 
   render() {
     return (
       <DragDropProvider>
         <TagList
+          newTag={this.state.newTag}
           onClick={this.handleEditButtonClick}
+          onGetSuggestions={this.handleGetSuggestions}
           onMoveTag={this.handleMoveTag}
-          onNewTagInputBlur={this.handleTagCreate}
+          onNewTagSave={this.handleNewTagSave}
+          onNewTagUpdate={this.handleNewTagUpdate}
           onTagRemove={this.handleTagRemove}
+          onTagSave={this.handleTagSave}
           onTagUpdate={this.handleTagUpdate}
+          suggestions={this.state.suggestions}
+          tags={this.tags}
           tooltip="Unpublised changes"
           {...this.props}
         />
@@ -112,9 +218,12 @@ class TagListContainer extends Component {
 
 TagListContainer.propTypes = {
   children: PropTypes.node,
+  editable: PropTypes.bool,
   hasPermission: PropTypes.bool,
   product: PropTypes.object,
-  tags: PropTypes.arrayOf(PropTypes.object)
+  tagIds: PropTypes.arrayOf(PropTypes.string),
+  tagsAsArray: PropTypes.arrayOf(PropTypes.object),
+  tagsByKey: PropTypes.object
 };
 
 function composer(props, onData) {
@@ -128,20 +237,25 @@ function composer(props, onData) {
     }
   }
 
-
   let isEditable = props.editable;
 
   if (typeof isEditable !== "boolean") {
     isEditable = Reaction.hasPermission(props.premissions);
   }
 
+  const tagsByKey = {};
+
+  if (Array.isArray(tags)) {
+    for (const tag of tags) {
+      tagsByKey[tag._id] = tag;
+    }
+  }
+
   onData(null, {
-    handleGetSuggestions(term) {
-      updateSuggestions(term);
-    },
     isProductTags: props.product !== undefined,
-    suggestions: externalState.get("suggestions"),
-    tags,
+    tagIds: getTagIds({ tags }),
+    tagsByKey,
+    tagsAsArray: tags,
     editable: isEditable
   });
 }

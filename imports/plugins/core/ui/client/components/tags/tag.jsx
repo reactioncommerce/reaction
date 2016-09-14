@@ -8,51 +8,38 @@ import { SortableItem } from "../../containers";
 class Tag extends Component {
   displayName: "Tag";
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      oldInputValue: props.tag.name,
-      inputValue: props.tag.name,
-      suggestion: ""
+  get tag() {
+    return this.props.tag || {
+      name: ""
     };
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (this.state.oldInputValue !== nextProps.tag.name) {
-      this.setState({
-        oldInputValue: nextProps.tag.name,
-        inputValue: nextProps.tag.name
-      });
-    }
+  get updatedTag() {
+    return Object.assign({}, this.props.tag, {
+      name: this.state.inputValue
+    });
+  }
+
+  getSuggestionValue(suggestion) {
+    return suggestion.label;
   }
 
   saveTag(event) {
-    const tag = Object.assign(this.props.tag, {
-      name: this.state.inputValue
-    });
+    const tag = this.updatedTag;
 
-    if (this.state.oldInputValue !== this.state.inputValue) {
-      if (this.props.onTagSave) {
-        this.props.onTagSave(event, tag);
-      }
+    if (this.props.onTagSave) {
+      this.props.onTagSave(event, tag);
     }
-  }
-
-  handleSuggestionUpdateRequest = ({ value }) => {
-    this.setState("suggestions", getSuggestions(value));
   }
 
   /**
-   * Handle tag create events and pass them up the component chain
+   * Handle tag form submit events and pass them up the component chain
    * @param  {Event} event Event object
    * @return {void} no return value
    */
-  handleTagCreate = (event) => {
+  handleTagFormSubmit = (event) => {
     event.preventDefault();
-    if (this.props.onTagCreate) {
-      this.props.onTagCreate(event.target.tag.value, this.props.parentTag);
-    }
+    saveTag(event);
   };
 
   /**
@@ -123,16 +110,29 @@ class Tag extends Component {
    * @return {void} no return value
    */
   handleTagInputBlur = (event) => {
-    const tag = Object.assign(this.props.tag, {
-      name: this.state.inputValue
-    });
-
     if (this.props.onTagInputBlur) {
-      this.props.onTagInputBlur(event, tag);
+      this.props.onTagInputBlur(event, this.props.tag);
+    }
+  };
+
+  handleInputChange = (event, { newValue }) => {
+    if (this.props.onGetSuggestions) {
+      this.props.onGetSuggestions(newValue);
     }
 
-    this.saveTag(event);
-  };
+    if (this.props.onTagUpdate) {
+      const updatedTag = Object.assign({}, this.props.tag, {
+        name: newValue
+      });
+      this.props.onTagUpdate(event, updatedTag);
+    }
+  }
+
+  handleSuggestionsUpdateRequested = (suggestion) => {
+    if (this.props.onGetSuggestions) {
+      this.props.onGetSuggestions(suggestion);
+    }
+  }
 
   /**
    * Render a simple tag for display purposes only
@@ -172,9 +172,7 @@ class Tag extends Component {
         data-id={this.props.tag._id}
       >
         <Button icon="bars" />
-          {this.renderAutosuggestInput()}
-
-
+        {this.renderAutosuggestInput()}
         <Button icon="times-circle" onClick={this.handleTagRemove} status="danger" />
       </div>
     );
@@ -187,7 +185,7 @@ class Tag extends Component {
   renderBlankEditableTag() {
     return (
       <div className="rui tag edit create">
-        <form onSubmit={this.handleTagCreate}>
+        <form onSubmit={this.handleTagFormSubmit}>
           <Button icon="tag" />
           {this.renderAutosuggestInput()}
           <Button icon="plus" />
@@ -202,27 +200,6 @@ class Tag extends Component {
     );
   }
 
-  getSuggestionValue(suggestion) {
-    return suggestion.label;
-  }
-
-  handleInputChange = (event, { newValue }) => {
-    if (this.props.onGetSuggestions) {
-      this.props.onGetSuggestions(newValue);
-    }
-
-    this.setState({
-      suggestion: this.getSuggestionValue(newValue),
-      inputValue: newValue
-    });
-  }
-
-  handleSuggestionsUpdateRequested = (suggestion) => {
-    if (this.props.onSuggestionsUpdateRequested) {
-      this.props.onSuggestionsUpdateRequested(suggestion);
-    }
-  }
-
   renderAutosuggestInput() {
     const inputPlaceholder = i18next.t(this.props.i18nPlaceholderKey, {
       defaultValue: this.props.i18nPlaceholderValue
@@ -231,10 +208,9 @@ class Tag extends Component {
     return (
       <Autosuggest
         getSuggestionValue={this.getSuggestionValue}
-
         inputProps={{
           placeholder: inputPlaceholder,
-          value: this.state.inputValue,
+          value: this.props.tag.name,
           onKeyDown(event) {
             // 9 == Tab key
             // 13 == Enter Key
@@ -259,7 +235,6 @@ class Tag extends Component {
    */
   render() {
     if (this.props.editable) {
-      // console.log(SortableItem(this.props.dragItemType || "tag", this.renderEditableTag()));
       return this.renderEditableTag();
     } else if (this.props.blank) {
       return this.renderBlankEditableTag();
@@ -275,8 +250,8 @@ Tag.propTypes = {
   i18nPlaceholderKey: PropTypes.string,
   i18nPlaceholderValue: PropTypes.string,
   index: PropTypes.number,
-
-  // Event handelers
+  onGetSuggestions: PropTypes.func,
+  onSuggestionsUpdateRequested: PropTypes.func,
   onTagBookmark: PropTypes.func,
   onTagCreate: PropTypes.func,
   onTagInputBlur: PropTypes.func,
@@ -285,7 +260,6 @@ Tag.propTypes = {
   onTagRemove: PropTypes.func,
   onTagSave: PropTypes.func,
   onTagUpdate: PropTypes.func,
-
   parentTag: PropTypes.object,
   placeholder: PropTypes.string,
   showBookmark: PropTypes.bool,
