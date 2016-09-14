@@ -16,6 +16,8 @@ Meteor.methods({
       throw new Meteor.Error("access-denied", "Access Denied");
     }
 
+    this.unblock();
+
     check(settings, Match.Optional(Object));
 
     let config;
