@@ -215,7 +215,6 @@
         "addtracking": "添加追踪",
         "shipmentEmpty": "出货单中没有货品",
         "shipmentPacked": "所有货品已经打包",
-        "shipped": "已出货",
         "shippingNotifyCustomer": "通知客户他们的货品即将被发出。",
         "resendNotification": "重新发送出货通知"
       },
