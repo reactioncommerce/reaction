@@ -11,6 +11,12 @@ import { transformations } from "./transformations";
 const requiredFields = {};
 requiredFields.products = ["_id", "hashtags", "shopId", "handle", "price", "isVisible"];
 
+// https://docs.mongodb.com/manual/reference/text-search-languages/#text-search-languages
+// MongoDb supports a subset of languages for analysis of the text data which includes
+// things like stop words and stems. With this language support the quality of the search matches
+// and weighting increases, however without this search will still work and delivery good results.
+// We currently support the languages which are supported by Mongo by default but more languages
+// are available through custom configuration.
 const supportedLanguages = ["da", "nl", "en", "fi", "fr", "de", "hu", "it", "nb", "pt", "ro", "ru", "es", "sv", "tr"];
 
 
