@@ -136,15 +136,14 @@
   }
 }
 .rui.search-tag.active-tag {
-  background-color: @brand-primary-color;
-  color: @brand-light-color;
-
+  color: @btn-active-color;
+  background-color: @btn-active-bg;
   padding-right: 35px;
   position: relative;
   order: -1;
 
   &:hover {
-    background-color: fade(@brand-primary-color, 80%);
+    background-color: fade(@btn-active-bg, 60%);
   }
 }
 .rui.search-tag.active-tag:after {
@@ -157,7 +156,7 @@
   right: 12px;
 }
 
-/*--------------------------------------------------------------TO DO----------------------------------------------------------------*/
+
 /* -------------------------- Modal Container -------------------------- */
 .rui.search-modal-results-container {
   width: 100%;
@@ -175,6 +174,7 @@
 ** Styles taken from productGrid.less
 ** wrapped in .search-modal here for easy disconnection
 */
+
 .search-modal {
   .container-main {
     height: 100%;
@@ -219,6 +219,41 @@
     font-size: @font-size-base;
     font-weight: 400;
     text-align: center;
+  }
+
+
+  .product-grid-item {
+    .overlay-description {
+      height: 0;
+      opacity: 0.0;
+      transition: opacity 100ms linear;
+      padding-left: 20px;
+      padding-right: 10px;
+      padding-bottom: 10px;
+    }
+
+    .item-content {
+      background-color: none;
+      transition: box-shadow 200ms linear;
+    }
+
+    &:hover {
+      background: #fff;
+      z-index: 1;
+      height: 0;
+
+      .item-content {
+        box-shadow: 0 0 0 10px white, 0 2px 8px 9px rgba(0, 0, 0, 0.2);
+        background-color: @white;
+      }
+
+      .overlay-description {
+        height: auto;
+        opacity: 1.0;
+        background: #fff;
+        transition: box-shadow 400ms linear;
+      }
+    }
   }
 
 
@@ -532,82 +567,4 @@
       position: relative;
     }
   }
-
-
-
-
-
-
-
-
-
-
-  .product-grid-item {
-
-    .item-content {
-      background-color: none;
-      transition: box-shadow 200ms linear;
-    }
-
-    .overlay-description {
-      height: 0;
-      opacity: 0.0;
-      transition: opacity 100ms linear;
-      padding-left: 20px;
-      padding-right: 10px;
-      padding-bottom: 10px;
-    }
-
-    &:hover {
-      background: #fff;
-      z-index: 1;
-      height: 0;
-
-      .item-content {
-        box-shadow: 0 0 0 10px white, 0 2px 8px 9px rgba(0, 0, 0, 0.2);
-        background-color: @white;
-      }
-
-      .overlay-description {
-        height: auto;
-        opacity: 1.0;
-        background: #fff;
-        transition: box-shadow 400ms linear;
-      }
-    }
-
-  }
-//
-//   .item-content {
-//     background-color: none;
-//     transition: box-shadow 200ms linear;
-//   }
-//
-//   .product-grid-item .overlay-description {
-//     height: 0;
-//     opacity: 0.0;
-//     transition: opacity 100ms linear;
-//     padding-left: 20px;
-//     padding-right: 10px;
-//     padding-bottom: 10px;
-//   }
-//
-//   .product-grid-item:hover {
-//     background: #fff;
-//     z-index: 1;
-//     height: 0;
-//
-//     .item-content {
-//       box-shadow: 0 0 0 10px white, 0 2px 8px 9px rgba(0, 0, 0, 0.2);
-//       background-color: @white;
-//     }
-//
-//     .overlay-description {
-//       height: auto;
-//       opacity: 1.0;
-//       background: #fff;
-//       transition: box-shadow 400ms linear;
-//     }
-//
-//   }
 }
