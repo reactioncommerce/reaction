@@ -540,6 +540,8 @@
         "removeShippingMethodConfirm": "Are you sure you want to delete {{method}}?",
         "removeShippingMethodTitle": "Remove Shipping Method",
         "shippingMethodDeleted": "This shipping method has been deleted.",
+        "removeShippingProvider": "Remove Shipping Provider",
+        "removeShippingProviderConfirm": "Are you sure you want to delete {{provider}}?",
         "shippingProviderSaved": "Shipping provider saved.",
         "shippingProviderUpdated": "Shipping provider data updated.",
         "shippingMethodRateAdded": "Shipping method rate added.",

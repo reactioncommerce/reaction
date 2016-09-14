@@ -438,7 +438,7 @@ export default {
         }
         // Import package data
         this.Import.package(combinedSettings, shopId);
-        return Logger.info(`Initializing ${shop.name} ${pkgName}`);
+        return Logger.debug(`Initializing ${shop.name} ${pkgName}`);
       }); // end shops
     });
 
@@ -456,7 +456,7 @@ export default {
       return Packages.find().forEach((pkg) => {
         // delete registry entries for packages that have been removed
         if (!_.has(this.Packages, pkg.name)) {
-          Logger.info(`Removing ${pkg.name}`);
+          Logger.debug(`Removing ${pkg.name}`);
           return Packages.remove({
             shopId: shop._id,
             name: pkg.name
