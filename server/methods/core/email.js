@@ -26,7 +26,7 @@ Meteor.methods({
     if (typeof settings === "object") {
       const { service, host, port, user, password } = settings;
 
-      if (service === "custom" && user && password) {
+      if (service === "custom" && host && port && user && password) {
         // create a custom Nodemailer config
         config = { host, port, auth: { user, pass: password } };
       } else if (service && user && password) {
