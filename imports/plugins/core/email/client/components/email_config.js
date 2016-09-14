@@ -28,7 +28,6 @@ class EmailConfig extends Component {
     const Header = () => (
       <div className="email-config-header">
         <div className="email-config-title">Configuration</div>
-
         <div className="email-config-status">
           Status:
           {status ?

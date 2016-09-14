@@ -7,7 +7,8 @@ class EmailSettings extends Component {
     super(props);
 
     this.state = {
-      settings: props.settings
+      settings: props.settings,
+      isSaving: false
     };
 
     this.handleStateChange = this.handleStateChange.bind(this);
@@ -24,12 +25,13 @@ class EmailSettings extends Component {
     e.preventDefault();
     const { saveSettings } = this.props;
     const { settings } = this.state;
-    saveSettings(settings);
+    this.setState({ isSaving: true });
+    saveSettings(settings, () => this.setState({ isSaving: false }));
   }
 
   render() {
     const { providers } = this.props;
-    const { settings } = this.state;
+    const { settings, isSaving } = this.state;
 
     return (
       <Panel header={<h3 data-i18n="shopSettings.mail">Mail Provider</h3>}>
@@ -74,8 +76,8 @@ class EmailSettings extends Component {
             name="password"
             value={settings.password}
             onChange={this.handleStateChange}/>
-          <Button bsStyle="primary" className="pull-right" type="submit">
-            Save
+          <Button bsStyle="primary" className="pull-right" type="submit" disabled={isSaving}>
+            {isSaving ? <i className={"fa fa-refresh fa-spin"} /> : "Save"}
           </Button>
         </form>
       </Panel>

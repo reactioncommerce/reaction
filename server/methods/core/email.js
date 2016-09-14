@@ -1,24 +1,43 @@
+import getServiceConfig from "nodemailer-wellknown";
 import { Meteor } from "meteor/meteor";
-import { check } from "meteor/check";
+import { check, Match } from "meteor/check";
 import { Jobs, Packages } from "/lib/collections";
 import { Logger, Reaction } from "/server/api";
 
 Meteor.methods({
-
   /**
    * Verify the current email configuration
+   * @param {Object} settings - optional settings object (otherwise uses settings in database)
    * @return {Boolean} - returns true if SMTP connection succeeds
    */
-  "email/verifySettings"() {
+  "email/verifySettings"(settings) {
     if (!Roles.userIsInRole(this.userId, ["owner", "admin", "dashboard"])) {
       Logger.error("email/verifySettings: Access Denied");
       throw new Meteor.Error("access-denied", "Access Denied");
     }
 
+    check(settings, Match.Optional(Object));
+
+    let config;
+
+    // if a settings object has been provided, build a config
+    if (typeof settings === "object") {
+      const { service, host, port, user, password } = settings;
+
+      if (service === "custom" && user && password) {
+        // create a custom Nodemailer config
+        config = { host, port, auth: { user, pass: password } };
+      } else if (service && user && password) {
+        // create a Nodemailer config from the nodemailer-wellknown services
+        config = getServiceConfig(service) || {};
+        config.auth = { user, pass: password };
+      }
+    }
+
     const { Email } = Reaction;
 
     try {
-      return Meteor.wrapAsync(Email.verifyConfig)(Email.getMailConfig());
+      return Meteor.wrapAsync(Email.verifyConfig)(config || Email.getMailConfig());
     } catch (e) {
       Logger.error(e);
       throw new Meteor.Error(e.responseCode, e.response);
