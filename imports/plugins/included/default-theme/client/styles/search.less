@@ -126,7 +126,7 @@
   padding-left: 12px;
   margin-right: 5px;
   border-radius: 4px;
-  background-color: @black50;
+  background-color: @black40;
   color: @brand-light-color;
   cursor: pointer;
   transition: background-color 200ms linear, padding-right 200ms ease-out;
@@ -491,15 +491,6 @@
 
   // ----------------------------------------------------------------------------
 
-    // position: absolute;
-    // top: 10px;
-    // right: 10px;
-    // border: none;
-    // background-color: rgb(239, 102, 198);
-    // color: white;
-    // padding: 10px 15px;
-
-
   .product-grid-controls {
     .display(flex);
     .flex(0 1 auto);
@@ -540,12 +531,6 @@
     .more-options-container {
       position: relative;
     }
-
-
-    // background-color: @controlbar-bg;
-
-    // border-radius: 5px;
-    // box-shadow: 0 3px 6px rgba(0,0,0,0.2);
   }
 
 
@@ -557,46 +542,72 @@
 
 
 
-  
-
-  .item-content {
-    background-color: none;
-    // box-shadow: 0 2px 5px rgba(0,0,0,.2);
-    transition: box-shadow 200ms linear;
-  }
-
-  .product-grid-item .overlay-description {
-    height: 0;
-    opacity: 0.0;
-    transition: opacity 100ms linear;
-        // margin-left: -10px;
-
-      padding-left: 20px;
-    padding-right: 10px;
-    padding-bottom: 10px;
-
-  }
-  .product-grid-item:hover {
-    background: #fff;
-    z-index: 1;
-    height: 0;
+  .product-grid-item {
 
     .item-content {
-      box-shadow: 0 0 0 10px white, 0 2px 8px 9px rgba(0, 0, 0, 0.2);
-      background-color: @white;
-
-
+      background-color: none;
+      transition: box-shadow 200ms linear;
     }
 
     .overlay-description {
+      height: 0;
+      opacity: 0.0;
+      transition: opacity 100ms linear;
+      padding-left: 20px;
+      padding-right: 10px;
+      padding-bottom: 10px;
+    }
 
-      height: auto;
-      opacity: 1.0;
-
+    &:hover {
       background: #fff;
-    transition: box-shadow 400ms linear;
+      z-index: 1;
+      height: 0;
 
+      .item-content {
+        box-shadow: 0 0 0 10px white, 0 2px 8px 9px rgba(0, 0, 0, 0.2);
+        background-color: @white;
+      }
+
+      .overlay-description {
+        height: auto;
+        opacity: 1.0;
+        background: #fff;
+        transition: box-shadow 400ms linear;
+      }
     }
 
   }
+//
+//   .item-content {
+//     background-color: none;
+//     transition: box-shadow 200ms linear;
+//   }
+//
+//   .product-grid-item .overlay-description {
+//     height: 0;
+//     opacity: 0.0;
+//     transition: opacity 100ms linear;
+//     padding-left: 20px;
+//     padding-right: 10px;
+//     padding-bottom: 10px;
+//   }
+//
+//   .product-grid-item:hover {
+//     background: #fff;
+//     z-index: 1;
+//     height: 0;
+//
+//     .item-content {
+//       box-shadow: 0 0 0 10px white, 0 2px 8px 9px rgba(0, 0, 0, 0.2);
+//       background-color: @white;
+//     }
+//
+//     .overlay-description {
+//       height: auto;
+//       opacity: 1.0;
+//       background: #fff;
+//       transition: box-shadow 400ms linear;
+//     }
+//
+//   }
 }
