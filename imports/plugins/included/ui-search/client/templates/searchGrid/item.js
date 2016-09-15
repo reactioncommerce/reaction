@@ -20,8 +20,7 @@ Template.searchGridItems.helpers({
     return {
       product: instance.data,
       onEditButtonClick() {
-        const data = instance.data;
-
+        const data = instance.data.product;
         const $checkbox = instance.$(`input[type=checkbox][value=${data._id}]`);
 
         Session.set("productGrid/selectedProducts", []);
