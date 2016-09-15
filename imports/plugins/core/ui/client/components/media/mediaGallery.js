@@ -6,7 +6,6 @@ class MediaGallery extends Component {
 
   renderMedia() {
     if (Array.isArray(this.props.media) && this.props.media.length) {
-      console.log("ok??", this.props.media);
       return this.props.media.map((media, index) => {
         return (
           <MediaItem
@@ -30,7 +29,12 @@ class MediaGallery extends Component {
   renderMediaGalleryUploader() {
     return (
       <div className="rui media-gallery">
-        <Dropzone className="rui gallery-drop-pane" disableClick={true} onDrop={this.props.onDrop}>
+        <Dropzone
+          className="rui gallery-drop-pane"
+          disableClick={true}
+          multiple={true}
+          onDrop={this.props.onDrop}
+        >
           <div className="gallery">
             {this.renderMedia()}
           </div>

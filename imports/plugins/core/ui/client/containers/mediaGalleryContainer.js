@@ -5,7 +5,6 @@ import { MediaGallery } from "../components";
 import { Reaction } from "/client/api";
 import { ReactionProduct } from "/lib/api";
 import { Media } from "/lib/collections";
-import { default as ReactionAlerts } from "/imports/plugins/core/layout/client/templates/layout/alerts/inlineAlerts";
 
 function uploadHandler(files) {
   // TODO: It would be cool to move this logic to common ValidatedMethod, but
@@ -32,7 +31,6 @@ function uploadHandler(files) {
   // will have a chance to be displayed
   const toGrid = variant.ancestors.length === 1;
 
-
   for (const file of files) {
     const fileObj = new FS.File(file);
 
@@ -44,25 +42,13 @@ function uploadHandler(files) {
       priority: count,
       toGrid: +toGrid // we need number
     };
-    Media.insert(fileObj);
-    return count++;
-  }
-}
-//
-// function updateImagePriorities() {
-//   $(".gallery > .gallery-image")
-//     .toArray()
-//     .map((element, index) => {
-//       const mediaId = element.getAttribute("data-index");
-//
-//       Media.update(mediaId, {
-//         $set: {
-//           "metadata.priority": index
-//         }
-//       });
-//     });
-// }
 
+    Media.insert(fileObj);
+    count++;
+  }
+
+  return true;
+}
 
 class MediaGalleryContainer extends Component {
 
@@ -118,8 +104,8 @@ class MediaGalleryContainer extends Component {
 
     // Save the updated positions
     Meteor.defer(() => {
-      newMediaOrder.forEach((media, index) => {
-        Media.update(media._id, {
+      newMediaOrder.forEach((mediaItem, index) => {
+        Media.update(mediaItem._id, {
           $set: {
             "metadata.priority": index
           }
@@ -158,6 +144,7 @@ function composer(props, onData) {
 
 MediaGalleryContainer.propTypes = {
   id: PropTypes.string,
+  media: PropTypes.arrayOf(PropTypes.object),
   placement: PropTypes.string
 };
 
