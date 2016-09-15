@@ -3,6 +3,28 @@ import Dropzone from "react-dropzone";
 import MediaItem from "./media";
 
 class MediaGallery extends Component {
+  handleDropClick = () => {
+    this.refs.dropzone.open();
+  }
+
+  renderAddItem() {
+    if (this.props.editable) {
+      return (
+        <div className="gallery-image add" onClick={this.handleDropClick}>
+          <img
+            alt=""
+            className="img-responsive"
+            src={"/resources/placeholder.gif"}
+          />
+          <div className="rui badge-container">
+            <i className="fa fa-plus fa-2x" />
+          </div>
+        </div>
+      );
+    }
+
+    return null;
+  }
 
   renderMedia() {
     if (Array.isArray(this.props.media) && this.props.media.length) {
@@ -34,9 +56,11 @@ class MediaGallery extends Component {
           disableClick={true}
           multiple={true}
           onDrop={this.props.onDrop}
+          ref="dropzone"
         >
           <div className="gallery">
             {this.renderMedia()}
+            {this.renderAddItem()}
           </div>
         </Dropzone>
       </div>
