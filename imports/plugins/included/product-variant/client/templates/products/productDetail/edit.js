@@ -43,7 +43,9 @@ Template.productDetailEdit.events({
           if (self.field === "title") {
             Meteor.call("products/setHandle", productId,
               (err, res) => {
+                Alerts.removeSeen();
                 if (err) {
+                  Alerts.removeType("error");
                   Alerts.inline(err.reason, "error", {
                     placement: "productManagement",
                     i18nKey: "productDetail.errorMsg",
