@@ -65,6 +65,12 @@ Meteor.methods({
           Reaction.Router.go("cart/completed", {}, {
             _id: cartId
           });
+          // Close cart drawer
+          if ($("#cart-drawer-container").is(":visible")) {
+            $("#cart-drawer-container").fadeOut(300, () => Reaction.toggleSession("displayCart"));
+          }
+          // Scroll to top
+          $("html,body").animate({ scrollTop: 0 }, 0);
         } else {
           Alerts.inline(i18next.t("checkoutPayment.failedToPlaceOrder"), "danger", {
             autoHide: true,
