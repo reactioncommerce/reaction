@@ -4,9 +4,10 @@ import {
   Card,
   CardHeader,
   CardBody,
+  CardGroup,
   Metadata,
   TextField,
-  TagList,
+  TagList
 } from "/imports/plugins/core/ui/client/components";
 import { PublishContainer } from "/imports/plugins/core/revisions";
 import { TagListContainer } from "/imports/plugins/core/ui/client/containers";
@@ -69,7 +70,7 @@ class ProductAdmin extends Component {
 
   render() {
     return (
-      <div>
+      <CardGroup>
         <Card>
           <CardHeader
             i18nKeyTitle="productDetailEdit.publish"
@@ -195,7 +196,7 @@ class ProductAdmin extends Component {
             />
           </CardBody>
         </Card>
-      </div>
+      </CardGroup>
     );
   }
 }
