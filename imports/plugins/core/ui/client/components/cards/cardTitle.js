@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import { Translation } from "../translation";
 
-class CardHeader extends Component {
+class CardTitle extends Component {
 
   render() {
     const { element, ...props } = this.props;
@@ -19,11 +19,11 @@ class CardHeader extends Component {
   }
 }
 
-CardHeader.propTypes = {
+CardTitle.propTypes = {
   children: PropTypes.node,
   element: PropTypes.node,
   i18nKeyTitle: PropTypes.string,
   title: PropTypes.string
 };
 
-export default CardHeader;
+export default CardTitle;
