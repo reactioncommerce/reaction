@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from "react";
 import CardTitle from "./cardTitle";
-import { Translation } from "../translation";
 
 class CardHeader extends Component {
 
@@ -8,11 +7,12 @@ class CardHeader extends Component {
     if (this.props.title) {
       return (
         <CardTitle
-          title={this.props.title}
           i18nKeyTitle={this.props.i18nKeyTitle}
+          title={this.props.title}
         />
-      )
+      );
     }
+    return null;
   }
 
   render() {
@@ -26,7 +26,9 @@ class CardHeader extends Component {
 }
 
 CardHeader.propTypes = {
-  children: PropTypes.node
+  children: PropTypes.node,
+  i18nKeyTitle: PropTypes.string,
+  title: PropTypes.string
 };
 
 export default CardHeader;

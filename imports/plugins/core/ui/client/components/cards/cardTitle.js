@@ -12,7 +12,7 @@ class CardHeader extends Component {
 
     return (
       <h3 className="panel-title">
-        <Translation defaultValue={this.props.title} i18nKey={this.props.i18nKey} />
+        <Translation defaultValue={this.props.title} i18nKey={this.props.i18nKeyTitle} />
         {this.props.children}
       </h3>
     );
@@ -22,7 +22,7 @@ class CardHeader extends Component {
 CardHeader.propTypes = {
   children: PropTypes.node,
   element: PropTypes.node,
-  i18nKey: PropTypes.string,
+  i18nKeyTitle: PropTypes.string,
   title: PropTypes.string
 };
 
