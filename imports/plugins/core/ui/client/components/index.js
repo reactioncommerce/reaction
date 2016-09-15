@@ -15,5 +15,5 @@ export { Translation, Currency } from "./translation";
 export { default as Tooltip } from "./tooltip/tooltip";
 export { Metadata, Metafield } from "./metadata";
 export { TagList, TagItem } from "./tags";
-export { Card, CardHeader, CardBody} from "./cards";
+export { Card, CardHeader, CardBody, CardGroup, CardTitle } from "./cards";
 export { MediaGallery, MediaItem } from "./media";
