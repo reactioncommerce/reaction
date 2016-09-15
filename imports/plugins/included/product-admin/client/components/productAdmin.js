@@ -1,66 +1,43 @@
 import React, { Component, PropTypes } from "react";
-
 import {
   Card,
   CardHeader,
   CardBody,
   CardGroup,
   Metadata,
-  TextField,
-  TagList
+  TextField
 } from "/imports/plugins/core/ui/client/components";
 import { PublishContainer } from "/imports/plugins/core/revisions";
 import { TagListContainer } from "/imports/plugins/core/ui/client/containers";
 
 class ProductAdmin extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      ...props.product
-    };
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.setState({
-      ...nextProps.product
-    });
-  }
-
   handleFieldChange = (event, value, field) => {
-    this.setState({ [field]: value });
+    if (this.props.onFieldChange) {
+      this.props.onFieldChange(field, value);
+    }
   }
 
   handleMetaChange = (event, metafield, index) => {
-    const newMetadata = this.state.metafields.map((data, currentIndex) => {
-      if (index === currentIndex) {
-        return metafield;
-      }
-
-      return data;
-    });
-
-    this.setState({
-      metafields: newMetadata
-    });
+    if (this.props.onMetaChange) {
+      this.props.onMetaChange(metafield, index);
+    }
   }
 
   handleFieldBlur = (event, value, field) => {
-    if (this.props.handleProductFieldChange) {
-      this.props.handleProductFieldChange(this.product._id, field, value);
+    if (this.props.onProductFieldSave) {
+      this.props.onProductFieldSave(this.product._id, field, value);
     }
   }
 
   handleMetaSave = (event, metafield, index) => {
-    if (this.props.handleProductMetafieldChange) {
-      console.log("wpuld update", index, metafield);
-      this.props.handleProductMetafieldChange(this.product._id, metafield, index);
+    if (this.props.onMetaSave) {
+      this.props.onMetaSave(this.product._id, metafield, index);
     }
   }
 
   handleMetaRemove = (event, metafield, index) => {
-    if (this.props.handleProductMetafieldRemove) {
-      this.props.handleProductMetafieldRemove(this.product._id, metafield, index);
+    if (this.props.onMetaRemove) {
+      this.props.onMetaRemove(this.product._id, metafield, index);
     }
   }
 
@@ -95,7 +72,7 @@ class ProductAdmin extends Component {
               name="title"
               onBlur={this.handleFieldBlur}
               onChange={this.handleFieldChange}
-              value={this.state.title}
+              value={this.product.title}
             />
             <TextField
               i18nKeyLabel="productDetailEdit.pageTitle"
@@ -104,7 +81,7 @@ class ProductAdmin extends Component {
               name="pageTitle"
               onBlur={this.handleFieldBlur}
               onChange={this.handleFieldChange}
-              value={this.state.pageTitle}
+              value={this.product.pageTitle}
             />
             <TextField
               i18nKeyLabel="productDetailEdit.vendor"
@@ -113,7 +90,7 @@ class ProductAdmin extends Component {
               name="vendor"
               onBlur={this.handleFieldBlur}
               onChange={this.handleFieldChange}
-              value={this.state.vendor}
+              value={this.product.vendor}
             />
             <TextField
               i18nKeyLabel="productDetailEdit.description"
@@ -122,7 +99,7 @@ class ProductAdmin extends Component {
               name="description"
               onBlur={this.handleFieldBlur}
               onChange={this.handleFieldChange}
-              value={this.state.description}
+              value={this.product.description}
             />
           </CardBody>
         </Card>
@@ -140,7 +117,7 @@ class ProductAdmin extends Component {
               name="facebookMsg"
               onBlur={this.handleFieldBlur}
               onChange={this.handleFieldChange}
-              value={this.state.facebookMsg}
+              value={this.product.facebookMsg}
             />
             <TextField
               i18nKeyLabel="productDetailEdit.twitterMsg"
@@ -149,7 +126,7 @@ class ProductAdmin extends Component {
               name="twitterMsg"
               onBlur={this.handleFieldBlur}
               onChange={this.handleFieldChange}
-              value={this.state.twitterMsg}
+              value={this.product.twitterMsg}
             />
             <TextField
               i18nKeyLabel="productDetailEdit.pinterestMsg"
@@ -158,7 +135,7 @@ class ProductAdmin extends Component {
               name="pinterestMsg"
               onBlur={this.handleFieldBlur}
               onChange={this.handleFieldChange}
-              value={this.state.pinterestMsg}
+              value={this.product.pinterestMsg}
             />
             <TextField
               i18nKeyLabel="productDetailEdit.googleplusMsg"
@@ -167,7 +144,7 @@ class ProductAdmin extends Component {
               name="googleplusMsg"
               onBlur={this.handleFieldBlur}
               onChange={this.handleFieldChange}
-              value={this.state.googleplusMsg}
+              value={this.product.googleplusMsg}
             />
           </CardBody>
         </Card>
@@ -180,7 +157,7 @@ class ProductAdmin extends Component {
           <CardBody>
             <TagListContainer
               enableNewTagForm={true}
-              product={this.props.product}
+              product={this.product}
             />
           </CardBody>
         </Card>
@@ -192,7 +169,8 @@ class ProductAdmin extends Component {
           />
           <CardBody>
             <Metadata
-              metafields={this.state.metafields}
+              metafields={this.product.metafields}
+              newMetafield={this.props.newMetafield}
               onMetaChange={this.handleMetaChange}
               onMetaRemove={this.handleMetaRemove}
               onMetaSave={this.handleMetaSave}
@@ -208,6 +186,12 @@ ProductAdmin.propTypes = {
   handleFieldBlur: PropTypes.func,
   handleFieldChange: PropTypes.func,
   handleProductFieldChange: PropTypes.func,
+  newMetafield: PropTypes.object,
+  onFieldChange: PropTypes.func,
+  onMetaChange: PropTypes.func,
+  onMetaRemove: PropTypes.func,
+  onMetaSave: PropTypes.func,
+  onProductFieldSave: PropTypes.func,
   product: PropTypes.object,
   revisonDocumentIds: PropTypes.arrayOf(PropTypes.string)
 };

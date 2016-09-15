@@ -1,36 +1,109 @@
 import React, { Component, PropTypes } from "react";
+import update from "react/lib/update";
 import { composeWithTracker } from "react-komposer";
 import { ReactionProduct } from "/lib/api";
 import { Tags, Media } from "/lib/collections";
 import { ProductAdmin } from "../components";
 
 class ProductAdminContainer extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      product: props.product,
+      newMetafield: {
+        key: "",
+        value: ""
+      }
+    };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      product: nextProps.product
+    });
+  }
+
+  get product() {
+    return this.state.product || this.props.product || {};
+  }
+
+  handleFieldChange = (field, value) => {
+    const newState = update(this.state, {
+      product: {
+        $merge: {
+          [field]: value
+        }
+      }
+    });
+
+    this.setState(newState);
+  }
+
+  handleProductFieldSave = (productId, fieldName, value) => {
+    Meteor.call("products/updateProductField", productId, fieldName, value);
+  }
+
+
+  handleMetaChange = (metafield, index) => {
+    let newState = {};
+
+    if (index >= 0) {
+      newState = update(this.state, {
+        product: {
+          metafields: {
+            [index]: {
+              $set: metafield
+            }
+          }
+        }
+      });
+    } else {
+      newState = {
+        newMetafield: metafield
+      };
+    }
+
+    this.setState(newState);
+  }
+
+  handleMetafieldSave = (productId, metafield, index) => {
+    // update existing metafield
+    if (index >= 0) {
+      Meteor.call("products/updateMetaFields", productId, metafield, index);
+    } else if (metafield.key && metafield.value) {
+      Meteor.call("products/updateMetaFields", productId, metafield);
+    }
+
+    this.setState({
+      newMetafield: {
+        key: "",
+        value: ""
+      }
+    });
+  }
+
+  handleMetaRemove = (productId, metafield) => {
+    Meteor.call("products/removeMetaFields", productId, metafield);
+  }
+
   render() {
     return (
-      <ProductAdmin {...this.props} />
+      <ProductAdmin
+        newMetafield={this.state.newMetafield}
+        onFieldChange={this.handleFieldChange}
+        onMetaChange={this.handleMetaChange}
+        onMetaRemove={this.handleMetaRemove}
+        onMetaSave={this.handleMetafieldSave}
+        onProductFieldSave={this.handleProductFieldSave}
+        {...this.props}
+        product={this.product}
+        tags={this.props.tags}
+      />
     );
   }
 }
 
-function handleProductFieldChange(productId, fieldName, value) {
-  Meteor.call("products/updateProductField", productId, fieldName, value);
-}
-
-function handleProductMetafieldChange(productId, metafield, index) {
-  // update existing metafield
-  if (index >= 0) {
-    Meteor.call("products/updateMetaFields", productId, metafield, index);
-  }
-
-  // Create new meta field
-  if (metafield.key && metafield.value) {
-    Meteor.call("products/updateMetaFields", productId, metafield);
-  }
-}
-
-function handleProductMetafieldRemove(productId, metafield) {
-  Meteor.call("products/removeMetaFields", productId, metafield);
-}
 
 function composer(props, onData) {
   const product = ReactionProduct.selectedProduct();
@@ -64,15 +137,14 @@ function composer(props, onData) {
     product: product,
     media,
     tags,
-    revisonDocumentIds,
-    handleProductFieldChange,
-    handleProductMetafieldChange,
-    handleProductMetafieldRemove
+    revisonDocumentIds
   });
 }
 
-// Decorate component and export
-let decoratedComponent;
-decoratedComponent = composeWithTracker(composer)(ProductAdminContainer);
+ProductAdminContainer.propTypes = {
+  product: PropTypes.object,
+  tags: PropTypes.arrayOf(PropTypes.object)
+};
 
-export default decoratedComponent;
+// Decorate component and export
+export default composeWithTracker(composer)(ProductAdminContainer);
