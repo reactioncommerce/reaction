@@ -59,6 +59,9 @@
           "routingLabel": "Routing",
           "routingTitle": "Routing",
           "routingDescription": "Routing utilities",
+          "searchLabel": "Search",
+          "searchTitle": "Search",
+          "searchDescription": "Product Search",
           "socialLabel": "Social",
           "socialTitle": "Social",
           "socialDescription": "Social Channel configuration",
@@ -89,6 +92,7 @@
           "permissionsSettingsLabel": "Permissions",
           "braintreeSettingsLabel": "Braintree Settings",
           "localizationAndI18NLabel": "Localization and i18n",
+          "searchSettingsLabel": "Search Settings",
           "shopSettingsLabel": "Shop Settings",
           "socialSettingsLabel": "Social Settings",
           "shippingSettingsLabel": "Shipping Settings",
@@ -144,8 +148,24 @@
         "loadMoreProducts": "Load more products",
         "noProductsFound": "No products found."
       },
-      "search": {
-        "noProductsFound": "No products found."
+      "searchSettings": {
+        "productSearchSettings": {
+          "panelTitle": "Product Search",
+          "includeTitle": "Include title",
+          "includeDescription": "Include description",
+          "includePageTitle": "Include page title",
+          "includeMetafields": "Include metafields",
+          "includeVendor": "Include vendor"
+        },
+        "orderSearchSettings": {
+          "panelTitle": "Order Search Settings"
+        },
+        "accountSearchSettings": {
+          "panelTitle": "Account Search Settings"
+        },
+        "noSettings": "No settings currently available",
+        "settingsSaved": "Search settings saved",
+        "settingsfailed": "Search settings update failed"
       },
       "shopSettings": {
         "general": "General",
@@ -610,6 +630,12 @@
         "twitter": "Twitter",
         "vk": "VK",
         "weibo": "Weibo"
+      },
+      "search": {
+        "clearSearch": "Clear",
+        "noProductsFound": "No products found",
+        "searchInputLabel": "Search Reaction ",
+        "suggestedTags": "Suggested tags"
       },
       "accountsUI": {
         "members": "Members",

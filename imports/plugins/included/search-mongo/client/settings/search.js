@@ -1,5 +1,5 @@
 import { Template } from "meteor/templating";
-import { Reaction } from "/client/api";
+import { Reaction, i18next } from "/client/api";
 import { Packages } from "/lib/collections";
 import { SearchPackageConfig } from "../../lib/collections/schemas";
 
@@ -26,13 +26,16 @@ Template.searchSettings.events({
 AutoForm.hooks({
   "search-update-form": {
     /* eslint-disable no-unused-vars*/
-    onSuccess() {
+    onSuccess: function () {
       Alerts.removeSeen();
-      return Alerts.add("Search settings saved.", "success");
+      return Alerts.toast(i18next.t("searchSettings.settingsSaved"),
+        "success");
     },
-    onError(operation, error) {
+    onError: function (operation, error) {
       Alerts.removeSeen();
-      return Alerts.add(`Search settings update failed. ${error}`, "danger");
+      return Alerts.toast(
+        `${i18next.t("searchSettings.settingsFailed")} ${error}`, "error"
+      );
     }
     /* eslint-enable no-unused-vars*/
   }
