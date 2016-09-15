@@ -91,6 +91,7 @@ class ProductAdmin extends Component {
             <TextField
               i18nKeyLabel="productDetailEdit.productTitle"
               label="Product Title"
+              multiline={true}
               name="title"
               onBlur={this.handleFieldBlur}
               onChange={this.handleFieldChange}
@@ -99,6 +100,7 @@ class ProductAdmin extends Component {
             <TextField
               i18nKeyLabel="productDetailEdit.pageTitle"
               label="Product Sub Title"
+              multiline={true}
               name="pageTitle"
               onBlur={this.handleFieldBlur}
               onChange={this.handleFieldChange}
@@ -107,6 +109,7 @@ class ProductAdmin extends Component {
             <TextField
               i18nKeyLabel="productDetailEdit.vendor"
               label="Vendor"
+              multiline={true}
               name="vendor"
               onBlur={this.handleFieldBlur}
               onChange={this.handleFieldChange}
