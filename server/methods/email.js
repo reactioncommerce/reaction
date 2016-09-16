@@ -72,6 +72,8 @@ Meteor.methods({
       }
     });
 
+    Logger.info(settings, "Email settings updated");
+
     return true;
   },
 
