@@ -25,15 +25,18 @@ export default {
     const { service, host, port, user, password } = settings;
 
     if (!service) {
-      return Alert("Error", "Please choose a mail provider service", "error");
+      Alert("Error", "Please choose a mail provider service", "error");
+      callback();
     }
 
     if (service !== "custom" && (!user || !password)) {
-      return Alert("Error", `SMTP user and password are required for ${service}`, "error");
+      Alert("Error", `SMTP user and password are required for ${service}`, "error");
+      callback();
     }
 
     if (service === "custom" && (!host || !port || !user || !password)) {
-      return Alert("Error", "All fields are required for a custom service!", "error");
+      Alert("Error", "All fields are required for a custom service!", "error");
+      callback();
     }
 
     const save = () => {
