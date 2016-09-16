@@ -79,6 +79,7 @@ export function getMailConfig() {
     // parse the url
     const parsedUrl = url.parse(mailString);
     const creds = parsedUrl.auth.split(":");
+    parsedUrl.port = Number(parsedUrl.port);
 
     Logger.debug(`Using ${parsedUrl.hostname} to send email`);
 
@@ -132,8 +133,8 @@ export function getMailConfig() {
 
     return {
       host,
-      port,
-      secure: port.toString() === "465" || port.toString() === "587",
+      port: port,
+      secure: port === 465 || port === 587,
       auth: { user, pass: password },
       logger: process.env.EMAIL_DEBUG === "true"
     };

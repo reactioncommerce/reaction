@@ -26,17 +26,25 @@ export default {
 
     if (!service) {
       Alert("Error", "Please choose a mail provider service", "error");
-      callback();
+      return callback();
     }
 
     if (service !== "custom" && (!user || !password)) {
       Alert("Error", `SMTP user and password are required for ${service}`, "error");
-      callback();
+      return callback();
     }
 
     if (service === "custom" && (!host || !port || !user || !password)) {
       Alert("Error", "All fields are required for a custom service!", "error");
-      callback();
+      return callback();
+    }
+
+    // make sure port is a Number
+    settings.port = Number(settings.port);
+
+    if (isNaN(settings.port)) {
+      Alert("Error", "The port must be a number!", "error");
+      return callback();
     }
 
     const save = () => {

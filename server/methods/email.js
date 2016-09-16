@@ -61,7 +61,7 @@ Meteor.methods({
     check(settings, {
       service: String,
       host: Match.Optional(String),
-      port: Match.Optional(Match.OneOf(String, Number)),
+      port: Match.Optional(Number),
       user: String,
       password: String
     });
