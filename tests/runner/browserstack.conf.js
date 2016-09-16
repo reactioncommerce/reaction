@@ -1,39 +1,17 @@
 const browserstack = require("browserstack-local");
 const yaml = require("js-yaml");
 const fs   = require("fs");
+const testSuite = require("./test-suite.js")
 
 const testSettings = yaml.safeLoad(fs.readFileSync("./tests/acceptance-tests/config/settings.yml", "utf8"));
+const getSpecs = testSuite.getToggles();
 
 exports.config = {
   user: process.env.BROWSERSTACK_USERNAME || "BROWSERSTACK_USERNAME",
   key: process.env.BROWSERSTACK_ACCESS_KEY || "BROWSERSTACK_ACCESS_KEY",
 
   updateJob: false,
-  specs: [
-    /**
-    "./tests/acceptance-tests/test/specs/dashboard-permissions.app-test.js",
-    "./tests/acceptance-tests/test/specs/paypal-refund.app-test.js",
-    "./tests/acceptance-tests/test/specs/stripe-refund.app-test.js",
-    "./tests/acceptance-tests/test/specs/logged-in-stripe-checkout.app-test.js",
-    "./tests/acceptance-tests/test/specs/guest-stripe-checkout.app-test.js",
-    **/
-    /**
-    "./tests/acceptance-tests/test/specs/authorizenet-void.app-test.js",
-    "./tests/acceptance-tests/test/specs/braintree-void.app-test.js",
-    "./tests/acceptance-tests/test/specs/example-payment-refund.app-test.js",
-    "./tests/acceptance-tests/test/specs/guest-braintree-checkout.app-test.js",
-    "./tests/acceptance-tests/test/specs/guest-authorizenet-checkout.app-test.js",
-    "./tests/acceptance-tests/test/specs/guest-example-payment-checkout.app-test.js",
-    "./tests/acceptance-tests/test/specs/guest-paypal-checkout.app-test.js",
-    "./tests/acceptance-tests/test/specs/logged-in-authorizenet-checkout.app-test.js",
-    "./tests/acceptance-tests/test/specs/logged-in-braintree-checkout.app-test.js",
-    "./tests/acceptance-tests/test/specs/logged-in-example-payment-checkout.app-test.js",
-    "./tests/acceptance-tests/test/specs/logged-in-paypal-checkout.app-test.js",
-    "./tests/acceptance-tests/test/specs/authorizenet-refund.app-test.js",
-    "./tests/acceptance-tests/test/specs/braintree-refund.app-test.js",
-    **/
-    "./tests/acceptance-tests/test/specs/simple-login.app-test.js"
-  ],
+  specs: getSpecs,
   exclude: [],
 
   capabilities: [{

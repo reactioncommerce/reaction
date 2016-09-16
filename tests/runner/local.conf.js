@@ -11,6 +11,7 @@ const getSpecs = testSuite.getToggles();
 exports.config = {
   updateJob: false,
   specs: getSpecs,
+  // specs: ["./tests/acceptance-tests/test/specs/payment-processors/authnet/guest-authorizenet-checkout.app-test.js"],
   exclude: [],
 
   capabilities: [{

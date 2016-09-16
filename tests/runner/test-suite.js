@@ -15,6 +15,10 @@ const authNetSpecs = ["./tests/acceptance-tests/test/specs/payment-processors/au
 
 const examplePaymentSpecs = ["./tests/acceptance-tests/test/specs/payment-processors/example/**/*.js"];
 
+const permissionSpecs = ["./tests/acceptance-tests/test/specs/permissions/**/*.js"];
+
+const smokeTestSpecs = ["./tests/acceptance-tests/test/specs/smoke-tests/**/*.js"];
+
 module.exports = {
   getToggles: function () {
     let toggles = [];
@@ -28,8 +32,11 @@ module.exports = {
       toggles.push(paypalSpecs[0]);
     } if (suiteConfig.example === true) {
       toggles.push(examplePaymentSpecs[0]);
+    } if (suiteConfig.permissions === true) {
+      toggles.push(permissionSpecs[0]);
+    } if (suiteConfig.smoke_test === true) {
+      toggles.push(smokeTestSpecs[0]);
     }
-    console.log("toggles", toggles);
     return toggles;
   }
 };

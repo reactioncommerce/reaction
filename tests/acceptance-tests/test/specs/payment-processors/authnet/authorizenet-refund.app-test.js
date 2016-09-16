@@ -2,9 +2,9 @@
 const yaml = require("js-yaml");
 const fs   = require("fs");
 const expect = require("chai").expect;
-const shopUser = require("../../lib/user-shop-actions.js");
-const userDo = require("../../lib/basic-user-actions.js");
-const adminUser = require("../../lib/admin-order-actions.js");
+const shopUser = require("../../../../lib/user-shop-actions.js");
+const userDo = require("../../../../lib/basic-user-actions.js");
+const adminUser = require("../../../../lib/admin-order-actions.js");
 
 
 beforeEach(function () {
