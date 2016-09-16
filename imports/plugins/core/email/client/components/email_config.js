@@ -44,13 +44,13 @@ class EmailConfig extends Component {
             <a onClick={this.props.toggleSettings}><Icon icon="gear"/></a>
           </div>
           <div><strong>Service:</strong> {service || "Not set"}</div>
-          <div>
+          <div className="truncate">
             <strong>Host:</strong> {host || "Not set"}
           </div>
           <div>
             <strong>Port:</strong> {port || "Not set"}
           </div>
-          <div><strong>User:</strong> {user || "Not set"}</div>
+          <div className="truncate"><strong>User:</strong> {user || "Not set"}</div>
           <div>
             <strong>Password:</strong>&nbsp;&nbsp;
             {password ?

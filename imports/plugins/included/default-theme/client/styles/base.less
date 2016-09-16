@@ -83,6 +83,14 @@ a {
   }
 }
 
+// Truncate and add an ellipsis when text extends
+// beyond the bounds of its parent container
+.truncate {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
 /* Badge Colors
 // Contextual variations of badges
 // Bootstrap 3.0 removed contexts for badges, we re-introduce them, based on what is done for labels
