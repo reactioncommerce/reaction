@@ -12,7 +12,7 @@ export default function () {
   /**
    * before product update
    */
-  // TODO: review this.  not sure this does what it does what it's supposed to
+  // TODO: review this.  not sure this does what it was intended to
   Products.before.update((userId, product, fieldNames, modifier) => {
     // handling product positions updates
     if (_.indexOf(fieldNames, "positions") !== -1) {
