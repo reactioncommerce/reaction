@@ -36,6 +36,17 @@ export default {
       return Alert("Error", "All fields are required for a custom service!", "error");
     }
 
+    const save = () => {
+      Meteor.call("email/saveSettings", settings, (err) => {
+        if (err) {
+          return Alert("Error",
+          `${i18next.t("shopSettings.shopMailSettingsFailed")} ${err.reason}`,
+          "error");
+        }
+        return Alert("Success!", "Mail settings saved.", "success");
+      });
+    };
+
     // check if the settings work first
     Meteor.call("email/verifySettings", settings, (error) => {
       callback();
@@ -48,19 +59,12 @@ export default {
           showCancelButton: true,
           confirmButtonColor: "#DD6B55",
           confirmButtonText: "Save"
-        }).then(() => {
-          // save the failed settings if confirmed
-          Meteor.call("email/saveSettings", settings, (err) => {
-            if (err) {
-              return Alert("Error",
-              `${i18next.t("shopSettings.shopMailSettingsFailed")} ${err.reason}`,
-              "error");
-            }
-            return Alert("Success!", "Mail settings saved.", "success");
-          });
-        }).catch(() => true);
+        }).then(() => save()).catch(() => true);
+      } else {
+        save();
       }
     });
+
     return true;
   }
 };
