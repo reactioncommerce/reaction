@@ -15,13 +15,33 @@ class IconButton extends Component {
     } = this.props;
 
 
-    let buttonClassName = classnames({
-      "rui": true,
-      "button": true,
-      "edit": true,
-      "variant-edit": true
-      // "btn-success": isEditing
-    });
+// this.props.buttonKind === 'flat'
+// default should be default, flat is new css that makes the bakcground tarnsparent
+
+    let buttonClassName;
+
+    if (this.props.kind === "flat") {
+      buttonClassName = classnames({
+        "rui": true,
+        "button": true,
+        "flat": true
+      });
+    }
+    else if (this.props.kind === "close") {
+      buttonClassName = classnames({
+        "rui": true,
+        "button": true,
+        "close": true
+      });
+    }
+    else {
+      buttonClassName = classnames({
+        "rui": true,
+        "button": true,
+        "edit": true,
+        "variant-edit": true
+      });
+    }
 
     let iconClassName = classnames({
       "fa-lg": true,

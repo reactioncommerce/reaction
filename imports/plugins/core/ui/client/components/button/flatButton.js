@@ -12,16 +12,16 @@ import IconButton from "./iconButton";
  * @param {Object} props Props passed into component
  * @returns {IconButton} Retruns an IconButton component with pre-configured icons for editing
  */
-const EditButton = (props) => {
+const FlatButton = (props) => {
   return (
     <IconButton
       icon="fa fa-pencil"
       onIcon="fa fa-check"
       toggle={true}
-      kind="round"
+      kind="flat"
       {...props}
     />
   );
 };
 
-export default EditButton;
+export default FlatButton;
