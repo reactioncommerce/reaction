@@ -20,15 +20,19 @@ const composer = ({}, onData) => {
       settings.port = config.port;
     }
 
-    onData(null, { settings, status: null, error: null });
+    const { service, host, port, user, password } = settings;
 
-    // check if the current settings work
-    Meteor.call("email/verifySettings", (error) => {
-      if (error) {
-        return onData(null, { settings, status: "error", error: error.reason });
-      }
-      return onData(null, { settings, status: "valid", error: null });
-    });
+    // if all settings exist, check if they work
+    if (service && host && port && user && password) {
+      Meteor.call("email/verifySettings", (error) => {
+        if (error) {
+          return onData(null, { settings, status: "error", error: error.reason });
+        }
+        return onData(null, { settings, status: "valid", error: null });
+      });
+    } else {
+      onData(null, { settings, status: "error", error: null });
+    }
   }
 };
 
