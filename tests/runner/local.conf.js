@@ -1,9 +1,9 @@
 const yaml = require("js-yaml");
 const fs   = require("fs");
-const testSuite = require("./test-suite.js")
+const testSuite = require("./test-suite.js");
 
 
-const testSettings = yaml.safeLoad(fs.readFileSync("./tests/acceptance-tests/config/settings.yml" , "utf8"));
+const testSettings = yaml.safeLoad(fs.readFileSync("./tests/acceptance-tests/config/settings.yml", "utf8"));
 const browserType = testSettings.browser;
 
 const getSpecs = testSuite.getToggles();
