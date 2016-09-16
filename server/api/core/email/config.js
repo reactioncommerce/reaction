@@ -133,7 +133,7 @@ export function getMailConfig() {
 
     return {
       host,
-      port: port,
+      port,
       secure: port === 465 || port === 587,
       auth: { user, pass: password },
       logger: process.env.EMAIL_DEBUG === "true"
