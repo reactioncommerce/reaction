@@ -18,7 +18,7 @@ Meteor.publish("Accounts", function (userId) {
     return this.ready();
   }
 
-  const nonAnonUsers = _.pluck(Meteor.users.find({
+  const nonAnonUsers = _.map(Meteor.users.find({
     [`roles.${shopId}`]: {
       $nin: [ "anonymous" ]
     }
