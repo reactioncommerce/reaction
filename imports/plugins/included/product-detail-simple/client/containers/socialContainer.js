@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from "react";
 import { composeWithTracker } from "react-komposer";
 import { ReactionProduct } from "/lib/api";
-import { Reaction } from "/client/api";
-import SocialContainer from "/imports/plugins/included/social/client/containers/socialContainer"
+import SocialButtons from "/imports/plugins/included/social/client/components/socialButtons";
+import { createSocialSettings } from "/imports/plugins/included/social/lib/helpers";
 import { EditContainer } from "/imports/plugins/core/ui/client/containers";
 
 class ProductSocialContainer extends Component {
@@ -16,7 +16,7 @@ class ProductSocialContainer extends Component {
         label="Edit Social Messaging"
         permissions={["createProduct"]}
       >
-        <SocialContainer {...this.props} />
+        <SocialButtons {...this.props.socialSettings} />
       </EditContainer>
     );
   }
@@ -36,7 +36,7 @@ function composer(props, onData) {
     description = product.description.substring(0, 254);
   }
 
-  onData(null, {
+  const options = {
     data: product,
     title: product.title,
     description,
@@ -57,11 +57,19 @@ function composer(props, onData) {
         description: product.pinterestMsg || description
       }
     }
+  };
+
+  const socialSettings = createSocialSettings(options);
+
+  onData(null, {
+    data: product,
+    socialSettings
   });
 }
 
 ProductSocialContainer.propTypes = {
-  data: PropTypes.object
+  data: PropTypes.object,
+  socialSettings: PropTypes.object
 };
 
 export default composeWithTracker(composer)(ProductSocialContainer);
