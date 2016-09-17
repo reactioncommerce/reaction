@@ -89,7 +89,7 @@ class Tags extends Component {
             onTagMouseOut={this.handleTagMouseOut}
             onTagMouseOver={this.handleTagMouseOver}
             onTagRemove={this.handleTagRemove}
-            onTagSave={this.handleTagUpdate}
+            onTagSave={this.handleTagSave}
             onTagUpdate={this.handleTagUpdate}
             suggestions={this.props.suggestions}
             tag={tag}
@@ -105,6 +105,7 @@ class Tags extends Component {
             key="newTagForm"
             onGetSuggestions={this.props.onGetSuggestions}
             onTagInputBlur={this.handleNewTagSave}
+            onTagSave={this.handleNewTagSave}
             onTagUpdate={this.handleNewTagUpdate}
             suggestions={this.props.suggestions}
             tag={this.props.newTag}

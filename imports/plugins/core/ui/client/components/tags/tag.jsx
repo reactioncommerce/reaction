@@ -14,21 +14,13 @@ class Tag extends Component {
     };
   }
 
-  get updatedTag() {
-    return Object.assign({}, this.props.tag, {
-      name: this.state.inputValue
-    });
-  }
-
   getSuggestionValue(suggestion) {
     return suggestion.label;
   }
 
   saveTag(event) {
-    const tag = this.updatedTag;
-
     if (this.props.onTagSave) {
-      this.props.onTagSave(event, tag);
+      this.props.onTagSave(event, this.props.tag);
     }
   }
 
@@ -39,7 +31,7 @@ class Tag extends Component {
    */
   handleTagFormSubmit = (event) => {
     event.preventDefault();
-    saveTag(event);
+    this.saveTag(event);
   };
 
   /**
@@ -171,9 +163,11 @@ class Tag extends Component {
         className="rui tag edit"
         data-id={this.props.tag._id}
       >
-        <Button icon="bars" />
-        {this.renderAutosuggestInput()}
-        <Button icon="times-circle" onClick={this.handleTagRemove} status="danger" />
+        <form onSubmit={this.handleTagFormSubmit}>
+          <Button icon="bars" />
+          {this.renderAutosuggestInput()}
+          <Button icon="times-circle" onClick={this.handleTagRemove} status="danger" />
+        </form>
       </div>
     );
   }
