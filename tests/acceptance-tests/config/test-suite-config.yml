@@ -1,4 +1,4 @@
-# Enable and disable differnt suites of tests
+# Enable and disable different suites of tests
 
 # Payment Processor specific tests
 braintree: false

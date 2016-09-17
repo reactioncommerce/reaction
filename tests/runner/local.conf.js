@@ -11,14 +11,14 @@ const getSpecs = testSuite.getToggles();
 exports.config = {
   updateJob: false,
   specs: getSpecs,
-  // specs: ["./tests/acceptance-tests/test/specs/payment-processors/authnet/guest-authorizenet-checkout.app-test.js"],
   exclude: [],
 
   capabilities: [{
+    maxInstances: 1,
     browserName: browserType
   }],
 
-  logLevel: "verbose",
+  logLevel: "silent",
   coloredLogs: true,
   // screenshotPath: "./errorShots/",
   waitforTimeout: 10000,
@@ -29,5 +29,12 @@ exports.config = {
   mochaOpts: {
     ui: "bdd",
     timeout: 999999
+  },
+  reporters: ["allure"],
+  reporterOptions: {
+    allure: {
+    // maybe add a function to include a timstamp on allure results directory
+      outputDir: "allure-results"
+    }
   }
 };
