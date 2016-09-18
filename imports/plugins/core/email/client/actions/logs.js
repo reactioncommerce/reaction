@@ -1,4 +1,4 @@
-import { Router } from "/client/api";
+import { Router, i18next } from "/client/api";
 
 export default {
 
@@ -27,9 +27,9 @@ export default {
   resend(email) {
     Meteor.call("emails/retryFailed", email._id, (err) => {
       if (err) {
-        return Alerts.toast(`Error: ${err.reason}`, "error");
+        return Alerts.toast(i18next.t("app.error", { error: err.reason }), "error");
       }
-      return Alerts.toast(`Attempting to resend email to ${email.data.to}`, "success");
+      return Alerts.toast(i18next.t("mail.alerts.resendSuccess", { email: email.data.to }), "success");
     });
   }
 };

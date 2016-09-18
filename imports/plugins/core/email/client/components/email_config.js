@@ -21,15 +21,17 @@ class EmailConfig extends Component {
   }
 
   render() {
-    const { settings, status } = this.props;
+    const { settings, status, toggleSettings } = this.props;
     const { service, host, port, user, password } = settings;
     const { passwordHidden } = this.state;
 
     const Header = () => (
       <div className="email-config-header">
-        <div className="email-config-title">Configuration</div>
+        <div className="email-config-title" data-i18n="mail.headers.config">
+          Configuration
+        </div>
         <div className="email-config-status">
-          Status:
+          <span data-i18n="mail.headers.status">Status</span>:
           {status ?
               <i className={`fa fa-circle ${status}`} />
             : <i className={"fa fa-refresh fa-spin"} />}
@@ -37,32 +39,41 @@ class EmailConfig extends Component {
       </div>
     );
 
+    const NotSet = () => <span data-i18n="mail.settings.fieldNotSet">Not set</span>;
+
     return (
       <Col md={4} sm={12}>
         <Panel header={<Header/>}>
           <div className="pull-right">
-            <a onClick={this.props.toggleSettings}><Icon icon="gear"/></a>
+            <a onClick={toggleSettings}><Icon icon="gear"/></a>
           </div>
-          <div><strong>Service:</strong> {service || "Not set"}</div>
+          <div>
+            <strong data-i18n="mail.settings.service">Service</strong>: {service || <NotSet/>}
+          </div>
           <div className="truncate">
-            <strong>Host:</strong> {host || "Not set"}
+            <strong data-i18n="mail.settings.host">Host</strong>: {host || <NotSet/>}
           </div>
           <div>
-            <strong>Port:</strong> {port || "Not set"}
+            <strong data-i18n="mail.settings.port">Port</strong>: <NotSet/>
           </div>
-          <div className="truncate"><strong>User:</strong> {user || "Not set"}</div>
+          <div className="truncate">
+            <strong data-i18n="mail.settings.user">User</strong>: {user || <NotSet/>}
+          </div>
           <div>
-            <strong>Password:</strong>&nbsp;&nbsp;
+            <strong data-i18n="mail.settings.password">Password</strong>:&nbsp;&nbsp;
             {password ?
               <span>
                 {passwordHidden ? "********" : password}
                 <a onClick={this.togglePassword}>
                   <span style={{ marginLeft: "1rem" }}>
-                    <em>{passwordHidden ? "Show" : "Hide"}</em>
+                    <em>{passwordHidden ?
+                        <span data-i18n="mail.settings.passwordShow">Show</span>
+                      : <span data-i18n="mail.settings.passwordHide">Hide</span>}
+                    </em>
                   </span>
                 </a>
               </span>
-              : "Not set"}
+              : <NotSet/>}
           </div>
         </Panel>
       </Col>

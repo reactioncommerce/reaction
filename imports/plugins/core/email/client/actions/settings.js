@@ -9,7 +9,7 @@ export default {
    */
   toggleSettings() {
     Reaction.showActionView({
-      label: "Email Settings",
+      label: i18next.t("mail.headers.emailSettings"),
       template: "emailSettings"
     });
     return true;
@@ -25,17 +25,17 @@ export default {
     const { service, host, port, user, password } = settings;
 
     if (!service) {
-      Alert("Error", "Please choose a mail provider service", "error");
+      Alert(i18next.t("app.error"), i18next.t("mail.alerts.missingService"), "error");
       return callback();
     }
 
     if (service !== "custom" && (!user || !password)) {
-      Alert("Error", `SMTP user and password are required for ${service}`, "error");
+      Alert(i18next.t("app.error"), i18next.t("mail.alerts.userPassRequired", { service }), "error");
       return callback();
     }
 
     if (service === "custom" && (!host || !port || !user || !password)) {
-      Alert("Error", "All fields are required for a custom service!", "error");
+      Alert(i18next.t("app.error"), i18next.t("mail.alerts.allFieldsRequired"), "error");
       return callback();
     }
 
@@ -43,18 +43,23 @@ export default {
     settings.port = Number(settings.port);
 
     if (isNaN(settings.port)) {
-      Alert("Error", "The port must be a number!", "error");
+      Alert(i18next.t("app.error"), i18next.t("mail.alerts.portNaN"), "error");
       return callback();
     }
 
     const save = () => {
       Meteor.call("email/saveSettings", settings, (err) => {
         if (err) {
-          return Alert("Error",
-          `${i18next.t("shopSettings.shopMailSettingsFailed")} ${err.reason}`,
-          "error");
+          return Alert(i18next.t("app.error"),
+            i18next.t("mail.alerts.saveFailed", { error: err.reason }),
+            "error");
         }
-        return Alert("Success!", "Mail settings saved.", "success");
+        return Alert({
+          title: i18next.t("app.success"),
+          text: i18next.t("mail.alerts.saveSuccess"),
+          type: "success",
+          timer: 1700
+        });
       });
     };
 
@@ -64,12 +69,13 @@ export default {
       // if the connection fails
       if (error) {
         Alert({
-          title: "Connection failed!",
-          text: "Do you want to save the settings anyway?",
+          title: i18next.t("mail.alerts.connectionFailed"),
+          text: i18next.t("mail.alerts.saveAnyway"),
           type: "warning",
           showCancelButton: true,
+          cancelButtonText: i18next.t("app.cancel"),
           confirmButtonColor: "#DD6B55",
-          confirmButtonText: "Save"
+          confirmButtonText: i18next.t("app.save")
         }).then(() => save()).catch(() => true);
       } else {
         save();

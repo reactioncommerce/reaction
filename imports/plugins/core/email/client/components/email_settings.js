@@ -34,7 +34,7 @@ class EmailSettings extends Component {
     const { settings, isSaving } = this.state;
 
     return (
-      <Panel header={<h3 data-i18n="shopSettings.mail">Mail Provider</h3>}>
+      <Panel header={<h3 data-i18n="mail.headers.settings">Mail Provider</h3>}>
         <form onSubmit={this.handleSubmit}>
           <FieldGroup
             label="Service"
@@ -42,8 +42,8 @@ class EmailSettings extends Component {
             name="service"
             value={settings.service}
             onChange={this.handleStateChange}>
-            <option value="">Select a Service...</option>
-            <option value="custom">Custom</option>
+            <option value="" data-i18n="mail.settings.selectService">Select a Service...</option>
+            <option value="custom" data-i18n="mail.settings.custom">Custom</option>
             {providers.map((name, i) => (
               <option key={i} value={name}>{name}</option>
             ))}
@@ -53,12 +53,14 @@ class EmailSettings extends Component {
             <div>
               <FieldGroup
                 label="Host"
+                i18n="mail.settings.host"
                 type="text"
                 name="host"
                 value={settings.host}
                 onChange={this.handleStateChange}/>
               <FieldGroup
                 label="Port"
+                i18n="mail.settings.port"
                 type="text"
                 name="port"
                 value={settings.port}
@@ -66,18 +68,22 @@ class EmailSettings extends Component {
             </div>}
           <FieldGroup
             label="User"
+            i18n="mail.settings.user"
             type="text"
             name="user"
             value={settings.user}
             onChange={this.handleStateChange}/>
           <FieldGroup
             label="Password"
+            i18n="mail.settings.password"
             type="password"
             name="password"
             value={settings.password}
             onChange={this.handleStateChange}/>
           <Button bsStyle="primary" className="pull-right" type="submit" disabled={isSaving}>
-            {isSaving ? <i className={"fa fa-refresh fa-spin"} /> : "Save"}
+            {isSaving ?
+                <i className={"fa fa-refresh fa-spin"} />
+              : <span i18n="app.save">Save</span>}
           </Button>
         </form>
       </Panel>

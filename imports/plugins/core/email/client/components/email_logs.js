@@ -7,7 +7,7 @@ class EmailLogs extends Component {
   renderNoEmails() {
     return (
       <div>
-        <h4 className="text-center">No emails sent yet</h4>
+        <h4 className="text-center" data-i18n="mail.logs.noEmails">No emails sent yet</h4>
       </div>
     );
   }
@@ -17,7 +17,7 @@ class EmailLogs extends Component {
       <div>
         <div className="table-controls">
           <div className="table-filter">
-            <h5>Quantity</h5>
+            <h5 data-i18n="mail.logs.limit">Quantity</h5>
             <input
               defaultValue={this.props.limit || 10}
               onChange={this.props.updateLimit}
@@ -27,10 +27,10 @@ class EmailLogs extends Component {
         <Table responsive>
           <thead>
             <tr>
-              <th>Email</th>
-              <th>Subject</th>
-              <th>Sent</th>
-              <th>Status</th>
+              <th data-i18n="mail.logs.headers.email">Email</th>
+              <th data-i18n="mail.logs.headers.subject">Subject</th>
+              <th data-i18n="mail.logs.headers.sent">Sent</th>
+              <th data-i18n="mail.logs.headers.status">Status</th>
             </tr>
           </thead>
           <tbody>
@@ -41,7 +41,11 @@ class EmailLogs extends Component {
                 <td>{moment(email.created).format("LLL")}</td>
                 <td>
                   {email.status === "failed" || email.status === "waiting" ?
-                    <Button onClick={this.props.resend.bind(this, email)}>Retry</Button>
+                    <Button
+                      onClick={this.props.resend.bind(this, email)}
+                      data-i18n="mail.logs.retry">
+                      Retry
+                    </Button>
                     : email.status}
                 </td>
               </tr>
@@ -56,7 +60,7 @@ class EmailLogs extends Component {
     return (
       <Col md={8} sm={12}>
         <Panel>
-          <h3 className="text-center">Email Logs</h3>
+          <h3 className="text-center" data-i18n="mail.logs.headers.emailLogs">Email Logs</h3>
           <hr/>
           {this.props.emails.length === 0 ?
               this.renderNoEmails()
