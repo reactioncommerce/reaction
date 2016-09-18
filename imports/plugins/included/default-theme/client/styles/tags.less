@@ -4,16 +4,16 @@
   flex-wrap: wrap;
 }
 
-.rui.tags.edit .rui.draggable-tag {
-  width: 100%;
-}
-
 .rui.tag {
   display: flex;
   background-color: @black10;
   padding: @padding-base-vertical @padding-base-horizontal;
   border-radius: @border-radius-base;
   margin: 5px;
+}
+
+.rui.tag.full-width {
+  width: 100%;
 }
 
 .rui.tag.edit {
@@ -43,7 +43,7 @@
   border-left: none;
 }
 
-.rui.tag.edit button {
+.rui.tag.edit .btn {
   border-radius: 0;
   border: 1px solid @border-color;
   border-left: none;
@@ -51,23 +51,23 @@
   color: @text-color;
 }
 
-.rui.tag.edit button:first-child {
+.rui.tag.edit .btn:first-child {
   border-left: 1px solid @border-color;
   border-radius: @border-radius-base 0 0 @border-radius-base;
 }
 
-html.rtl .rui.tag.edit button:first-child {
+html.rtl .rui.tag.edit .btn:first-child {
   border-left: none;
   border-right: 1px solid @border-color;
   border-radius: 0 @border-radius-base @border-radius-base 0;
 }
 
-.rui.tag.edit button:last-child {
+.rui.tag.edit .btn:last-child {
   border-right: 1px solid @border-color;
   border-radius: 0 @border-radius-base @border-radius-base 0;
 }
 
-html.rtl .rui.tag.edit button:last-child {
+html.rtl .rui.tag.edit .btn:last-child {
   border-left: 1px solid @border-color;
   border-radius: @border-radius-base 0 0 @border-radius-base;
 }

@@ -118,16 +118,7 @@ const cardTarget = {
 
 export default function ComposeSortableItem(itemType, SortableItemComponent) {
   const SortableItem = (props) => {
-    const { isDragging, connectDragSource, connectDropTarget } = props;
-    return (
-      connectDragSource(
-        connectDropTarget(
-          <div className={`rui draggable-${itemType}`}>
-            <SortableItemComponent isDragging={isDragging} {...props} />
-          </div>
-        )
-      )
-    );
+    return <SortableItemComponent {...props} />;
   };
 
   SortableItem.contextTypes = {
@@ -137,6 +128,7 @@ export default function ComposeSortableItem(itemType, SortableItemComponent) {
   SortableItem.propTypes = {
     // Injected by React DnD:
     connectDragSource: PropTypes.func.isRequired,
+    connectDropTarget: PropTypes.func.isRequired,
     isDragging: PropTypes.bool.isRequired
   };
 

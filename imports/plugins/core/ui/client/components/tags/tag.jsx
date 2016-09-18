@@ -1,9 +1,11 @@
-import { i18next } from "/client/api";
 import React, { Component, PropTypes } from "react";
-// import { PropTypes } from "/lib/api";
+import classnames from "classnames";
 import Autosuggest from "react-autosuggest";
-import { Button } from "/imports/plugins/core/ui/client/components";
+import { Router } from "/client/api";
+import { i18next } from "/client/api";
+import { Button, Handle } from "/imports/plugins/core/ui/client/components";
 import { SortableItem } from "../../containers";
+
 
 class Tag extends Component {
   displayName: "Tag";
@@ -131,10 +133,22 @@ class Tag extends Component {
    * @return {JSX} simple tag
    */
   renderTag() {
-    const url = `/product/tag/${this.props.tag.slug}`;
+    const url = Router.pathFor("tag", {
+      hash: {
+        slug: this.props.tag.slug
+      }
+    });
+
+    const baseClassName = classnames({
+      "rui": true,
+      "tag": true,
+      "link": true,
+      "full-width": this.props.fullWidth
+    });
+
     return (
       <a
-        className="rui tag link"
+        className={baseClassName}
         href={url}
         onMouseOut={this.handleTagMouseOut}
         onMouseOver={this.handleTagMouseOver}
@@ -158,17 +172,26 @@ class Tag extends Component {
    * @return {JSX} editable tag
    */
   renderEditableTag() {
+    const baseClassName = classnames({
+      "rui": true,
+      "tag": true,
+      "edit": true,
+      "full-width": this.props.fullWidth
+    });
+
     return (
-      <div
-        className="rui tag edit"
-        data-id={this.props.tag._id}
-      >
-        <form onSubmit={this.handleTagFormSubmit}>
-          <Button icon="bars" />
-          {this.renderAutosuggestInput()}
-          <Button icon="times-circle" onClick={this.handleTagRemove} status="danger" />
-        </form>
-      </div>
+      this.props.connectDropTarget(
+        <div
+          className={baseClassName}
+          data-id={this.props.tag._id}
+        >
+          <form onSubmit={this.handleTagFormSubmit}>
+            <Handle connectDragSource={this.props.connectDragSource} />
+            {this.renderAutosuggestInput()}
+            <Button icon="times-circle" onClick={this.handleTagRemove} status="danger" />
+          </form>
+        </div>
+      )
     );
   }
 
@@ -177,8 +200,16 @@ class Tag extends Component {
    * @return {JSX} blank tag for creating new tags
    */
   renderBlankEditableTag() {
+    const baseClassName = classnames({
+      "rui": true,
+      "tag": true,
+      "edit": true,
+      "create": true,
+      "full-width": this.props.fullWidth
+    });
+
     return (
-      <div className="rui tag edit create">
+      <div className={baseClassName}>
         <form onSubmit={this.handleTagFormSubmit}>
           <Button icon="tag" />
           {this.renderAutosuggestInput()}
@@ -241,6 +272,7 @@ class Tag extends Component {
 Tag.propTypes = {
   blank: PropTypes.bool,
   editable: PropTypes.bool,
+  fullWidth: PropTypes.bool,
   i18nPlaceholderKey: PropTypes.string,
   i18nPlaceholderValue: PropTypes.string,
   index: PropTypes.number,

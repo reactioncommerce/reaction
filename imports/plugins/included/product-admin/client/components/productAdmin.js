@@ -158,6 +158,9 @@ class ProductAdmin extends Component {
             <TagListContainer
               enableNewTagForm={true}
               product={this.product}
+              tagProps={{
+                fullWidth: true
+              }}
             />
           </CardBody>
         </Card>

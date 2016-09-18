@@ -7,6 +7,7 @@ import { TagList } from "../components/tags";
 import { Tags } from "/lib/collections";
 import { getTagIds } from "/lib/selectors/tags";
 import { DragDropProvider } from "/imports/plugins/core/ui/client/providers";
+import debounce from "lodash/debounce";
 
 function updateSuggestions(term, { excludeTags }) {
   const slug = Reaction.getSlug(term);
@@ -42,6 +43,15 @@ class TagListContainer extends Component {
       },
       suggestions: []
     };
+
+    this.debounceUpdateTagOrder = debounce(() => {
+      Meteor.call(
+        "products/updateProductField",
+        this.props.product._id,
+        "hashtags",
+        this.state.tagIds
+      );
+    }, 500);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -144,14 +154,14 @@ class TagListContainer extends Component {
   }
 
   handleMoveTag = (dragIndex, hoverIndex) => {
-    const variant = this.props.tagIds[dragIndex];
+    const tag = this.state.tagIds[dragIndex];
 
     // Apply new sort order to variant list
     const newState = update(this.state, {
       tagIds: {
         $splice: [
           [dragIndex, 1],
-          [hoverIndex, 0, variant]
+          [hoverIndex, 0, tag]
         ]
       }
     });
@@ -160,17 +170,9 @@ class TagListContainer extends Component {
     // to the server to get the updated list of variants
     this.setState(newState, () => {
       // Save the updated positions
-      Meteor.defer(() => {
-        if (this.props.product) {
-          // const tagIds = thigetTagIds({ tags: newTagOrder });
-          Meteor.call(
-            "products/updateProductField",
-            this.props.product._id,
-            "hashtags",
-            this.state.tagIds
-          );
-        }
-      });
+      if (this.props.product) {
+        this.debounceUpdateTagOrder();
+      }
     });
   }
 

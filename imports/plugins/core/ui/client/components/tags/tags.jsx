@@ -78,6 +78,7 @@ class Tags extends Component {
       const tags = this.props.tags.map((tag, index) => {
         return (
           <TagItem
+            {...this.props.tagProps}
             data-id={tag._id}
             editable={this.props.editable}
             index={index}
@@ -101,6 +102,7 @@ class Tags extends Component {
       if (this.props.editable && this.props.enableNewTagForm) {
         tags.push(
           <TagItem
+            {...this.props.tagProps}
             blank={true}
             key="newTagForm"
             onGetSuggestions={this.props.onGetSuggestions}
@@ -166,6 +168,7 @@ Tags.propTypes = {
   placeholder: PropTypes.string,
   showBookmark: PropTypes.bool,
   suggestions: PropTypes.arrayOf(PropTypes.object),
+  tagProps: PropTypes.object,
   tags: ReactionPropTypes.arrayOfTags
 };
 
