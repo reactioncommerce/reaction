@@ -2,6 +2,7 @@ import React, { Component, PropTypes} from "react";
 import classnames from "classnames";
 import TextareaAutosize from "react-textarea-autosize";
 import { Translation } from "../translation";
+import { i18next } from "/client/api";
 
 class TextField extends Component {
   constructor(props) {
@@ -58,12 +59,16 @@ class TextField extends Component {
    * @return {JSX} jsx
    */
   renderMultilineInput() {
+    const placeholder = i18next.t(this.props.i18nKeyPlaceholder, {
+      defaultValue: this.props.placeholder
+    });
+
     return (
       <TextareaAutosize
         className="{this.props.name}-edit-input"
         onBlur={this.onBlur}
         onChange={this.onChange}
-        placeholder={this.props.placeholder}
+        placeholder={placeholder}
         ref="input"
         value={this.state.value}
       />
@@ -79,13 +84,17 @@ class TextField extends Component {
       [`${this.props.name || "text"}-edit-input`]: true
     }, this.props.className);
 
+    const placeholder = i18next.t(this.props.i18nKeyPlaceholder, {
+      defaultValue: this.props.placeholder
+    });
+
     return (
       <input
         className={inputClassName}
         name={this.props.name}
         onBlur={this.onBlur}
         onChange={this.onChange}
-        placeholder={this.props.placeholder}
+        placeholder={placeholder}
         ref="input"
         type="text"
         value={this.state.value}
@@ -152,11 +161,12 @@ TextField.propTypes = {
   align: PropTypes.oneOf(["left", "center", "right", "justify"]),
   className: PropTypes.string,
   i18nKeyLabel: PropTypes.string,
+  i18nKeyPlaceholder: PropTypes.string,
   label: PropTypes.string,
   multiline: PropTypes.bool,
   name: PropTypes.string,
-  onChange: PropTypes.func,
   onBlur: PropTypes.func,
+  onChange: PropTypes.func,
   placeholder: PropTypes.string
 };
 

@@ -74,14 +74,11 @@ class Metadata extends Component {
   renderMetadataCreateForm() {
     return (
       <Metafield
-        detailNamePlaceholder="Detail Name"
-        i18nKeyDetailInformation="productDetailEdit.detailName"
-        i18nKeyDetailName="productDetailEdit.detailName"
+        blank={true}
         metafield={this.props.newMetafield}
         onBlur={this.handleMetaSave}
         onChange={this.handleMetaChange}
         ref="newMetadataFields"
-        valuePlaceholder="Detail Name"
       />
     );
   }

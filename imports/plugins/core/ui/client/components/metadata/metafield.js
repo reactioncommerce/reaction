@@ -3,6 +3,22 @@ import { TextField, Button } from "../";
 
 class Metafield extends Component {
 
+  get detailNamePlaceholder() {
+    return this.props.detailNamePlaceholder || "Detail Name";
+  }
+
+  get i18nKeyDetailName() {
+    return this.props.i18nKeyDetailName || "productDetailEdit.detailName";
+  }
+
+  get detailInfoPlaceholder() {
+    return this.props.detailInfoPlaceholder || "Detail Information";
+  }
+
+  get i18nKeyDetailInformation() {
+    return this.props.i18nKeyDetailInfo || "productDetail.detailsInfo";
+  }
+
   /**
    * Handle form submit
    * @param  {Event} event Event object
@@ -42,6 +58,17 @@ class Metafield extends Component {
     }
   }
 
+  renderActionButton() {
+    if (this.props.blank === true) {
+      return (
+        <Button icon="plus" onClick={this.handleSubmit} type="submit" />
+      );
+    }
+    return (
+      <Button icon="times-circle" onClick={this.handleRemove} type="button" />
+    );
+  }
+
   /**
    * Render a metadata form
    * @return {JSX} metadata forms for each row of metadata
@@ -53,21 +80,25 @@ class Metafield extends Component {
           <form className="form form-inline" onSubmit={this.handleSubmit}>
             <TextField
               className="metafield-key-input"
+              i18nKeyPlaceholder={this.i18nKeyDetailName}
               name="key"
               onBlur={this.handleBlur}
               onChange={this.handleChange}
+              placeholder={this.detailNamePlaceholder}
               ref="keyInput"
               value={this.props.metafield.key}
             />
             <TextField
               className="metafield-value-input"
+              i18nKeyPlaceholder={this.i18nKeyDetailInformation}
               name="value"
               onBlur={this.handleBlur}
               onChange={this.handleChange}
+              placeholder={this.detailInfoPlaceholder}
               ref="valueInput"
               value={this.props.metafield.value}
             />
-            <Button icon="times-circle" onClick={this.handleRemove} type="button" />
+            {this.renderActionButton()}
           </form>
         </div>
       );
@@ -82,6 +113,11 @@ Metafield.defaultProps = {
 
 // Prop Types
 Metafield.propTypes = {
+  blank: PropTypes.bool,
+  detailInfoPlaceholder: PropTypes.func,
+  detailNamePlaceholder: PropTypes.func,
+  i18nKeyDetailInfo: PropTypes.func,
+  i18nKeyDetailName: PropTypes.func,
   index: PropTypes.number,
   metafield: PropTypes.object,
   onBlur: PropTypes.func,
