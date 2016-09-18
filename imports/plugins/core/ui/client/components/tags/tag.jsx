@@ -110,10 +110,6 @@ class Tag extends Component {
   };
 
   handleInputChange = (event, { newValue }) => {
-    if (this.props.onGetSuggestions) {
-      this.props.onGetSuggestions(newValue);
-    }
-
     if (this.props.onTagUpdate) {
       const updatedTag = Object.assign({}, this.props.tag, {
         name: newValue
@@ -271,6 +267,8 @@ class Tag extends Component {
 
 Tag.propTypes = {
   blank: PropTypes.bool,
+  connectDragSource: PropTypes.func,
+  connectDropTarget: PropTypes.func,
   editable: PropTypes.bool,
   fullWidth: PropTypes.bool,
   i18nPlaceholderKey: PropTypes.string,
