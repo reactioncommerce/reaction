@@ -4,6 +4,10 @@ import { SortableItem } from "../../containers";
 
 
 class MediaItem extends Component {
+  // componentDidMount() {
+  //
+  // }
+
   handleRemoveMedia = (event) => {
     event.stopPropagation();
 
@@ -23,6 +27,8 @@ class MediaItem extends Component {
         </div>
       );
     }
+
+    return null;
   }
 
   get defaultSource() {
@@ -37,21 +43,42 @@ class MediaItem extends Component {
     return this.props.source || this.defaultSource;
   }
 
+  renderImage() {
+    const image = (
+      <img
+        alt=""
+        className="img-responsive"
+        src={this.source}
+      />
+    );
+
+    return image;
+  }
+
   render() {
-    return (
+    const mediaElement = (
       <div className="gallery-image">
-        <img
-          alt=""
-          className="img-responsive"
-          src={this.source}
-        />
+        {this.renderImage()}
         {this.renderControls()}
       </div>
     );
+
+    if (this.props.editable) {
+      return this.props.connectDragSource(
+        this.props.connectDropTarget(
+          mediaElement
+        )
+      );
+    }
+
+    return mediaElement;
   }
 }
 
 MediaItem.propTypes = {
+  connectDragSource: PropTypes.func,
+  connectDropTarget: PropTypes.func,
+  defaultSource: PropTypes.string,
   editable: PropTypes.bool,
   onRemoveMedia: PropTypes.func,
   source: PropTypes.oneOfType([PropTypes.string, PropTypes.object])

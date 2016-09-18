@@ -19,6 +19,7 @@ const cardSource = {
 function collectDropSource(connect, monitor) {
   return {
     connectDragSource: connect.dragSource(),
+    connectDragPreview: connect.dragPreview(),
     isDragging: monitor.isDragging()
   };
 }
@@ -129,6 +130,7 @@ export default function ComposeSortableItem(itemType, SortableItemComponent) {
     // Injected by React DnD:
     connectDragSource: PropTypes.func.isRequired,
     connectDropTarget: PropTypes.func.isRequired,
+    connectDragPreview: PropTypes.func.isRequired,
     isDragging: PropTypes.bool.isRequired
   };
 
