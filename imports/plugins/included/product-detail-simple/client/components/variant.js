@@ -1,9 +1,6 @@
 import React, { Component, PropTypes} from "react";
 import classnames from "classnames";
-import {
-  Currency,
-  Translation
-} from "/imports/plugins/core/ui/client/components";
+import { Currency, Translation } from "/imports/plugins/core/ui/client/components";
 import { SortableItem } from "/imports/plugins/core/ui/client/containers";
 
 class Variant extends Component {
@@ -14,14 +11,8 @@ class Variant extends Component {
     }
   }
 
-  get quantity() {
-    return this.props.quantity; //ReactionProduct.getVariantQuantity(this);
-  }
   get price() {
     return this.props.displayPrice || this.props.variant.price;
-  }
-  get isSoldOut() {
-    return this.props.isSoldOut; //ReactionProduct.getVariantQuantity(this) < 1;
   }
 
   renderInventoryStatus() {
@@ -56,7 +47,7 @@ class Variant extends Component {
       "variant-detail-selected": this.props.isSelected
     });
 
-    return (
+    const variantElement = (
       <li
         className="variant-list-item"
         id="variant-list-item-{variant._id}"
@@ -82,11 +73,30 @@ class Variant extends Component {
         </div>
       </li>
     );
+
+    if (this.props.editable) {
+      return this.props.connectDragSource(
+        this.props.connectDropTarget(
+          variantElement
+        )
+      );
+    }
+
+    return variantElement;
   }
 }
 
 Variant.propTypes = {
-  onClick: PropTypes.func
+  connectDragSource: PropTypes.func,
+  connectDropTarget: PropTypes.func,
+  displayPrice: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  editButton: PropTypes.node,
+  editable: PropTypes.bool,
+  isSelected: PropTypes.bool,
+  onClick: PropTypes.func,
+  soldOut: PropTypes.bool,
+  variant: PropTypes.object,
+  visibilityButton: PropTypes.node
 };
 
 export default SortableItem("product-variant", Variant);

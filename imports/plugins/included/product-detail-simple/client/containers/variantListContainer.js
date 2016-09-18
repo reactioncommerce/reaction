@@ -162,7 +162,8 @@ function composer(props, onData) {
     variantIsInActionView,
     childVariants: getChildVariants(),
     displayPrice: ReactionProduct.getVariantPriceRange,
-    isSoldOut: isSoldOut
+    isSoldOut: isSoldOut,
+    editable: Reaction.hasPermission(["createProduct"])
   });
 }
 
