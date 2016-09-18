@@ -3,6 +3,10 @@ import Dropzone from "react-dropzone";
 import MediaItem from "./media";
 
 class MediaGallery extends Component {
+  get hasMedia() {
+    return Array.isArray(this.props.media) && this.props.media.length > 0;
+  }
+
   handleDropClick = () => {
     this.refs.dropzone.open();
   }
@@ -27,7 +31,7 @@ class MediaGallery extends Component {
   }
 
   renderMedia() {
-    if (Array.isArray(this.props.media) && this.props.media.length) {
+    if (this.hasMedia) {
       return this.props.media.map((media, index) => {
         return (
           <MediaItem
@@ -49,6 +53,13 @@ class MediaGallery extends Component {
   }
 
   renderMediaGalleryUploader() {
+    let gallery;
+
+    // Only render media only if there is any
+    if (this.hasMedia) {
+      gallery = this.renderMedia();
+    }
+
     return (
       <div className="rui media-gallery">
         <Dropzone
@@ -59,7 +70,7 @@ class MediaGallery extends Component {
           ref="dropzone"
         >
           <div className="gallery">
-            {this.renderMedia()}
+            {gallery}
             {this.renderAddItem()}
           </div>
         </Dropzone>

@@ -4,9 +4,6 @@ import { SortableItem } from "../../containers";
 
 
 class MediaItem extends Component {
-  // componentDidMount() {
-  //
-  // }
 
   handleRemoveMedia = (event) => {
     event.stopPropagation();
@@ -36,7 +33,7 @@ class MediaItem extends Component {
   }
 
   get source() {
-    if (typeof this.props.source === "object") {
+    if (typeof this.props.source === "object" && this.props.source) {
       return this.props.source.url() || this.defaultSource;
     }
 
