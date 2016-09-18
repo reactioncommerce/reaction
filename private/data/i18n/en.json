@@ -259,6 +259,7 @@
         "notFoundError": "This is not the product you were looking for."
       },
       "tags": {
+        "tagName": "Tag Name",
         "addTag": "Add Tag",
         "updateTag": "Update Tag",
         "addGroupTag": "Add Group Tag",

@@ -16,6 +16,12 @@ class Tag extends Component {
     };
   }
 
+  get inputPlaceholder() {
+    return i18next.t(this.props.i18nKeyInputPlaceholder || "tags.tagName", {
+      defaultValue: this.props.inputPlaceholder || "Tag Name"
+    });
+  }
+
   getSuggestionValue(suggestion) {
     return suggestion.label;
   }
@@ -222,15 +228,11 @@ class Tag extends Component {
   }
 
   renderAutosuggestInput() {
-    const inputPlaceholder = i18next.t(this.props.i18nPlaceholderKey, {
-      defaultValue: this.props.i18nPlaceholderValue
-    });
-
     return (
       <Autosuggest
         getSuggestionValue={this.getSuggestionValue}
         inputProps={{
-          placeholder: inputPlaceholder,
+          placeholder: this.inputPlaceholder,
           value: this.props.tag.name,
           onKeyDown(event) {
             // 9 == Tab key
@@ -271,9 +273,9 @@ Tag.propTypes = {
   connectDropTarget: PropTypes.func,
   editable: PropTypes.bool,
   fullWidth: PropTypes.bool,
-  i18nPlaceholderKey: PropTypes.string,
-  i18nPlaceholderValue: PropTypes.string,
+  i18nKeyInputPlaceholder: PropTypes.string,
   index: PropTypes.number,
+  inputPlaceholder: PropTypes.string,
   onGetSuggestions: PropTypes.func,
   onSuggestionsUpdateRequested: PropTypes.func,
   onTagBookmark: PropTypes.func,
