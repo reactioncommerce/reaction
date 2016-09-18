@@ -5,7 +5,6 @@
 // Core variables and mixins
 @import "{}/node_modules/bootstrap/less/variables.less";
 @import "{}/node_modules/bootstrap/less/mixins.less";
-@import "variables.less";
 
 // Reset and dependencies
 @import "{}/node_modules/bootstrap/less/normalize.less";
@@ -61,20 +60,29 @@
 
 // Base Styles
 @import "alerts.less";
+@import "base.less";
 @import "brand.less";
 @import "button.less";
 @import "buttonGroup.less";
 @import "cardGroup.less";
 @import "cards.less";
+@import "dropdowns.less";
 @import "fonts.less";
-@import "items.less";
 @import "loading.less";
+@import "forms.less";
+@import "grid.less";
+@import "items.less";
 @import "media.less";
 @import "metadata.less";
+@import "mixins.less";
 @import "navbar.less";
+@import "navs.less";
+@import "panels.less";
 @import "popover.less";
+@import "popovers.less";
 @import "select.less";
 @import "separator.less";
+@import "spinner.less";
 @import "tables.less";
 @import "tagGroup.less";
 @import "tagNav.less";
@@ -84,15 +92,7 @@
 @import "themeEditor.less";
 @import "tooltip.less";
 @import "tooltip.less";
-@import "base.less";
-@import "dropdowns.less";
-@import "forms.less";
-@import "grid.less";
-@import "mixins.less";
-@import "navs.less";
-@import "panels.less";
-@import "popovers.less";
-@import "spinner.less";
+@import "variables.less";
 
 // Accounts
 @import "accounts/accounts.less";
@@ -122,6 +122,7 @@
 @import "layout/header.less";
 @import "layout/tags.less";
 
+// Products
 @import "products/products.less";
 @import "products/attributes.less";
 @import "products/productImageGallery.less";
@@ -133,3 +134,7 @@
 @import "products/variantList.less";
 @import "products/productGrid.less";
 @import "products/productList.less";
+
+// Search
+@import "search/dashboard.less";
+@import "search/results.less";

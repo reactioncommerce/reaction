@@ -51,3 +51,53 @@
   color: @btn-active-color;
   background-color: @btn-active-bg;
 }
+
+.rui.button.flat, .btn-flat {
+  border: none;
+  font-size: 10px;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 24px;
+  height: 24px;
+  color: inherit;
+  background-color: transparent;
+  // margin-left: 5px;
+}
+
+.rui.button.round, .btn-round {
+  border: none;
+  font-size: 10px;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50px;
+  width: 24px;
+  height: 24px;
+  color: @btn-edit-color;
+  background-color: @btn-edit-bg;
+  margin-left: 5px;
+}
+
+.rui.button.close, .btn-close {
+  border: none;
+  font-size: 15px;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 75px;
+  width: 36px;
+  height: 36px;
+  color: @black60;
+  background-color: @black30;
+  opacity: 1;
+  transition: background-color 200ms linear, color 200ms linear;
+
+  &:hover {
+    background-color: @black60;
+    color: @black30;
+  }
+}
