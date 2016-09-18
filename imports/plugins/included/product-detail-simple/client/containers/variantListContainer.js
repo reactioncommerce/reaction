@@ -1,12 +1,10 @@
-import React, { Component } from "react";
+import React, { Component, PropTypes } from "react";
 import { composeWithTracker } from "react-komposer";
 import { ReactionProduct } from "/lib/api";
 import { Reaction } from "/client/api";
 import { VariantList } from "../components";
 import { getChildVariants } from "../selectors/variants";
-import { Products } from "/lib/collections";
-import { DragDropContext } from "react-dnd";
-import HTML5Backend from "react-dnd-html5-backend";
+import { Products, Media } from "/lib/collections";
 import update from "react/lib/update";
 import { getVariantIds } from "/lib/selectors/variants";
 import { DragDropProvider } from "/imports/plugins/core/ui/client/providers";
@@ -36,17 +34,17 @@ function getTopVariants() {
   const variants = ReactionProduct.getTopVariants();
   if (variants.length) {
     // calculate inventory total for all variants
-    for (let variant of variants) {
+    for (const variant of variants) {
       if (variant.inventoryManagement) {
-        let qty = ReactionProduct.getVariantQuantity(variant);
+        const qty = ReactionProduct.getVariantQuantity(variant);
         if (typeof qty === "number") {
           inventoryTotal += qty;
         }
       }
     }
     // calculate percentage of total inventory of this product
-    for (let variant of variants) {
-      let qty = ReactionProduct.getVariantQuantity(variant);
+    for (const variant of variants) {
+      const qty = ReactionProduct.getVariantQuantity(variant);
       variant.inventoryTotal = inventoryTotal;
       if (variant.inventoryManagement && inventoryTotal) {
         variant.inventoryPercentage = parseInt(qty / inventoryTotal * 100, 10);
@@ -70,22 +68,17 @@ function getTopVariants() {
   return [];
 }
 
-function displayQuantity(variant) {
-  return ReactionProduct.getVariantQuantity(variant);
-}
-
 function isSoldOut(variant) {
   return ReactionProduct.getVariantQuantity(variant) < 1;
 }
 
 class VariantListContainer extends Component {
-
-  get variants() {
-    return (this.state && this.state.variants) || this.props.variants
+  componentWillReceiveProps() {
+    this.setState({});
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.setState({});
+  get variants() {
+    return (this.state && this.state.variants) || this.props.variants;
   }
 
   handleVariantClick = (event, variant) => {
@@ -156,20 +149,35 @@ class VariantListContainer extends Component {
 }
 
 function composer(props, onData) {
+  let childVariantMedia = [];
+  const childVariants = getChildVariants();
+
+  if (Array.isArray(childVariants)) {
+    childVariantMedia = Media.find({
+      "metadata.variantId": {
+        $in: getVariantIds(childVariants)
+      }
+    }, {
+      sort: {
+        "metadata.priority": 1
+      }
+    }).fetch();
+  }
+
   onData(null, {
     variants: getTopVariants(),
     variantIsSelected,
     variantIsInActionView,
-    childVariants: getChildVariants(),
+    childVariants,
+    childVariantMedia,
     displayPrice: ReactionProduct.getVariantPriceRange,
     isSoldOut: isSoldOut,
     editable: Reaction.hasPermission(["createProduct"])
   });
 }
 
-let decoratedComponent = VariantListContainer;
-// decoratedComponent = DragDropContext(HTML5Backend)(decoratedComponent);
-decoratedComponent = composeWithTracker(composer)(decoratedComponent);
-// decoratedComponent = SortableList(decoratedComponent);
+VariantListContainer.propTypes = {
+  variants: PropTypes.arrayOf(PropTypes.object)
+};
 
-export default decoratedComponent;
+export default composeWithTracker(composer)(VariantListContainer);

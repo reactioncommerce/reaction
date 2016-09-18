@@ -71,6 +71,13 @@ class VariantList extends Component {
   renderChildVariants() {
     if (this.props.childVariants) {
       return this.props.childVariants.map((childVariant, index) => {
+        const media = this.props.childVariantMedia.filter((mediaItem) => {
+          if (mediaItem.metadata.variantId === childVariant._id) {
+            return true;
+          }
+          return false;
+        });
+
         return (
           <EditContainer
             data={childVariant}
@@ -84,6 +91,7 @@ class VariantList extends Component {
           >
             <ChildVariant
               isSelected={this.props.variantIsSelected(childVariant._id)}
+              media={media}
               onClick={this.props.onVariantClick}
               variant={childVariant}
             />
@@ -118,10 +126,13 @@ class VariantList extends Component {
 }
 
 VariantList.propTypes = {
+  childVariantMedia: PropTypes.arrayOf(PropTypes.any),
   childVariants: PropTypes.arrayOf(PropTypes.object),
   displayPrice: PropTypes.func,
+  editable: PropTypes.bool,
   isSoldOut: PropTypes.func,
   onEditVariant: PropTypes.func,
+  onMoveVariant: PropTypes.func,
   onVariantClick: PropTypes.func,
   variantIsSelected: PropTypes.func,
   variants: PropTypes.arrayOf(PropTypes.object)

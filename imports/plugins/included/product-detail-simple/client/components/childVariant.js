@@ -1,18 +1,32 @@
 import React, { Component, PropTypes} from "react";
 import classnames from "classnames";
-import { Media } from "/imports/plugins/core/ui/client/components";
+import { MediaItem } from "/imports/plugins/core/ui/client/components";
 
-class VariantList extends Component {
+class ChildVariant extends Component {
   handleClick = (event) => {
     if (this.props.onClick) {
       this.props.onClick(event, this.props.variant);
     }
   }
 
+  get hasMedia() {
+    return Array.isArray(this.props.media) && this.props.media.length > 0;
+  }
+
+  get primaryMediaItem() {
+    if (this.hasMedia) {
+      return this.props.media[0];
+    }
+
+    return null;
+  }
+
   renderMedia() {
-    if (this.props.childVariantMedia) {
+    if (this.hasMedia) {
+      const media = this.primaryMediaItem;
+
       return (
-        <Media media={this.props.childVariantMedia} />
+        <MediaItem source={media.url()} />
       );
     }
 
@@ -47,14 +61,14 @@ class VariantList extends Component {
   }
 }
 
-VariantList.propTypes = {
-  childVariantMedia: PropTypes.object,
+ChildVariant.propTypes = {
   editButton: PropTypes.node,
   isSelected: PropTypes.bool,
+  media: PropTypes.arrayOf(PropTypes.object),
   onClick: PropTypes.func,
   variant: PropTypes.object,
   visibilityButton: PropTypes.node
 };
 
 
-export default VariantList;
+export default ChildVariant;
