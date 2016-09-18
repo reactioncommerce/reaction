@@ -59,7 +59,7 @@ export default {
           text: i18next.t("mail.alerts.saveSuccess"),
           type: "success",
           timer: 1700
-        });
+        }).catch(() => null);
       });
     };
 
