@@ -50,3 +50,133 @@
   border-radius: 0 0 @btn-border-radius-base 0;
   border-bottom: 1px solid @border-color;
 }
+
+
+.rui.metafield-list-item,
+.rui.metafield-new-item {
+  padding: 0;
+  background-color: transparent;
+
+  .row {
+    padding: 5px 3px 5px;
+  }
+
+  border: none;
+  cursor: pointer;
+
+  form {
+    display: flex;
+  }
+
+  input {
+    flex: 1 1 auto;
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
+    border: 1px solid @border-color;
+    border-right: none;
+    width: auto;
+    min-width: 0;
+  }
+
+  button {
+    flex: 0 0 auto;
+    height: 100%;
+    width: 44px;
+    border-radius: 0;
+    background-color: @white;
+    border: 1px solid @border-color;
+  }
+}
+
+
+
+// First item
+.rui.metafield-list-item:first-child .metafield-key-input {
+  border-radius: @border-radius-base 0 0 0;
+}
+
+.rui.metafield-list-item:first-child .metafield-value-input {
+  border-radius: 0;
+  border-left: none;
+}
+
+.rui.metafield-list-item:first-child button {
+  border-radius: 0 @border-radius-base 0 0;
+  border-left: none;
+}
+
+// Middle Items
+.rui.metafield-list-item .metafield-key-input {
+  border-radius: 0;
+}
+
+.rui.metafield-list-item .metafield-value-input {
+  border-radius: 0;
+  border-left: none;
+}
+
+.rui.metafield-list-item button {
+  border-left: none;
+}
+
+// Last Item
+.rui.metafield-list-item:last-child .metafield-key-input {
+  border-radius: 0 0 0 @border-radius-base;
+}
+
+.rui.metafield-list-item:last-child .metafield-value-input {
+  border-radius: 0;
+  border-left: none;
+}
+
+.rui.metafield-list-item:last-child button {
+  border-radius: 0 0 @border-radius-base 0;
+  border-left: none;
+}
+
+html.rtl {
+  // First item
+  .rui.metafield-list-item:first-child .metafield-key-input {
+    border-radius: 0 @border-radius-base 0 0;
+  }
+
+  .rui.metafield-list-item:first-child .metafield-value-input {
+    border-radius: 0;
+    border-right: none;
+  }
+
+  .rui.metafield-list-item:first-child button {
+    border-radius: @border-radius-base 0 0 0;
+    border-left: 1px solid @border-color;
+  }
+
+  // Middle Items
+  .rui.metafield-list-item .metafield-key-input {
+    border-radius: 0;
+  }
+
+  .rui.metafield-list-item .metafield-value-input {
+    border-radius: 0;
+    border-right: none;
+  }
+
+  .rui.metafield-list-item button {
+    border-left: 1px solid @border-color;
+  }
+
+  // Last Item
+  .rui.metafield-list-item:last-child .metafield-key-input {
+    border-radius: 0 0 @border-radius-base 0;
+  }
+
+  .rui.metafield-list-item:last-child .metafield-value-input {
+    border-radius: 0;
+    border-right: none;
+  }
+
+  .rui.metafield-list-item:last-child button {
+    border-radius: 0 0 0 @border-radius-base;
+    border-left: 1px solid @border-color;
+  }
+}
