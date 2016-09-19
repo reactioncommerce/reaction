@@ -5,6 +5,7 @@ const testSuite = require("./test-suite.js");
 
 const testSettings = yaml.safeLoad(fs.readFileSync("./tests/acceptance-tests/config/settings.yml", "utf8"));
 const getSpecs = testSuite.getToggles();
+const getResult = testSuite.getResults();
 
 exports.config = {
   user: process.env.BROWSERSTACK_USERNAME || "BROWSERSTACK_USERNAME",
@@ -19,13 +20,12 @@ exports.config = {
     "browser_version": testSettings.browser_version,
     "os": testSettings.os,
     "os_version": testSettings.os_version,
-    // "os_version": toString(testSettings.os_version),
     "resolution": testSettings.resolution,
     "browserstack.local": true,
     "browserstack.debug": true
   }],
 
-  logLevel: "verbose",
+  logLevel: "silent",
   coloredLogs: true,
   // screenshotPath: "./errorShots/",
   baseUrl: "http://localhost",
@@ -54,6 +54,17 @@ exports.config = {
 
   // Code to stop browserstack local after end of test
   onComplete: function (capabilties, specs) {
-    exports.bs_local.stop(function () {});
+    try {
+      exports.bs_local.stop(function () {});
+    } catch (e) {
+      // console.log("oops!");
+    }
+  },
+
+  reporters: getResult,
+  reporterOptions: {
+    allure: {
+      outputDir: "allure-results"
+    }
   }
 };
