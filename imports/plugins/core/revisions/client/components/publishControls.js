@@ -73,6 +73,7 @@ class PublishControls extends Component {
           i18nKeyLabel={this.showChangesButtoni18nKeyLabel}
           label={this.showChangesButtonLabel}
           onClick={this.handleToggleShowChanges}
+          status="link"
         />
         <Button
           i18nKeyLabel="app.publishChanges"

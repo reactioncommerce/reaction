@@ -80,6 +80,7 @@ class Button extends Component {
       "btn-danger": this.props.status === "danger",
       "btn-info": this.props.status === "info",
       "btn-warning": this.props.status === "warning",
+      "btn-link": this.props.status === "link",
       "btn-primary": this.props.primary === true || this.props.status === "primary"
     }, this.props.className);
 
