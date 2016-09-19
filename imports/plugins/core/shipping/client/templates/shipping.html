@@ -1,0 +1,345 @@
+
+<template name="shippingDashboardControls">
+  <button type="button" class="btn btn-default" data-event-action="addShippingProvider">
+    <i class="fa fa-plus fa-lg" title="{{i18n 'shipping.addShippingProvider' 'Add shipping provider'}}"></i> Add Provider
+  </button>
+</template>
+
+<template name="shipping">
+  <div class="container-fluid-sm">
+    <div class="shipping-rate-tables">
+      {{> shippingProviderTable}}
+    </div>
+    <span id="shipping-alerts">
+      {{> inlineAlerts placement="shippingPackage"}}
+    </span>
+  </div>
+
+</template>
+
+<template name="shippingSettings">
+  <div class="panel">
+    <div class="panel-heading">
+      <div class="panel-title" data-i18n="shipping.noSettingsForThisView">No settings for this view</div>
+    </div>
+  </div>
+
+</template>
+
+
+<template name="shippingProviderTable">
+  {{#each shipping}}
+      <div class="panel panel-default">
+        <div class="panel-heading" data-event-action="editShippingProvider">
+          <span class="text-left">{{provider.name}}</span>
+          <span class="pull-right">
+            <i class="fa fa-cog" id="edit-shipping-provider" title="{{i18n 'shipping.editShippingProvider' 'Edit shipping provider'}}"></i>
+          </span>
+        </div>
+        {{#if selectedShippingProvider}}
+          <div class="panel-body">
+          {{> updateShippingProvider}}
+          </div>
+        {{/if}}
+        <div class="panel-body">
+        {{#if methods}}
+          <table class="table table-striped">
+            <thead>
+              <tr class="info">
+                <th>{{i18n "shippingMethod.name" "Name"}}</th>
+                <th>{{i18n "shippingMethod.label" "Label"}}</th>
+                <th>{{i18n "shippingMethod.group" "Group"}}</th>
+                <th>{{i18n "shippingMethod.cost" "Cost"}}</th>
+                <th>{{i18n "shippingMethod.handling" "Handling"}}</th>
+                <th>{{i18n "shippingMethod.rate" "Rate"}}</th>
+                <th>{{i18n "shippingMethod.enabled" "Enabled"}}</th>
+                <th><i class="fa fa-plus pull-right add-shipping-method" title="{{i18n 'shipping.addShippingMethod' 'Add shipping method'}}" data-event-action="addShippingMethod"></i></th>
+              </tr>
+            </thead>
+            <tbody>
+            {{#if selectedAddShippingMethod}}
+              <tr class="active">
+              <td colspan="8">
+              {{> addShippingMethod provider=this._id }}
+              </td>
+              </tr>
+            {{/if}}
+            {{#each methods}}
+              <tr class="edit-shipping-method" data-event-action="editShippingMethod">
+                <td>{{name}}</td>
+                <td>{{label}}</td>
+                <td>{{group}}</td>
+                <td>{{formatPrice cost}}</td>
+                <td>{{formatPrice handling}}</td>
+                <td>{{formatPrice rate}}</td>
+                <td>
+                  {{#if enabled}}
+                    <i class="fa fa-check text-success" title="Enabled"></i>
+                  {{else}}
+                    <i class="fa fa-ban text-danger" title="Disabled"></i>
+                  {{/if}}
+                </td>
+                <td class="text-right">
+                  <i class="fa fa-cog edit-shipping-method" title="{{i18n 'shipping.editShippingMethod' 'Edit shipping method'}}" data-event-action="editShippingMethod"></i>
+                  <i class="fa fa-trash delete-shipping-method" data-provider-id="{{../_id}}" title="{{i18n 'shipping.deleteShippingMethod' 'Delete shipping method'}}" data-event-action="deleteShippingMethod"></i>
+                </td>
+              </tr>
+              {{#if selectedShippingMethod}}
+              <tr class="active">
+                <td colspan="8">
+                  {{> editShippingMethod}}
+                </td>
+              </tr>
+              {{/if}}
+            {{/each}}
+            </tbody>
+          </table>
+        {{else}}
+          {{> addShippingMethod provider=this }}
+        {{/if}}
+        </div>
+      </div>
+
+  {{else}}
+    <div class="alert alert-info" data-i18n="shipping.noShippingMethods">No shipping methods are configured.</div>
+    {{>addShippingProvider}}
+  {{/each}}
+</template>
+
+
+<template name="addShippingMethod">
+  {{#autoForm
+    schema=Schemas.ShippingMethod
+    id="shipping-method-add-form"
+    resetOnSuccess=true
+    doc=provider
+    meteormethod="shipping/methods/add"
+    type="normal"
+    }}
+
+    <div class="panel panel-default">
+      <div class="panel-heading" data-i18n="shipping.addRate">Add rate</div>
+      <div class="panel-body">
+        <div class="col-md-6">
+          {{>afQuickField name='name' autofocus=''}}
+          {{>afQuickField name='label'}}
+          {{>afQuickField name='group'}}
+          {{>afQuickField name='enabled' value=true}}
+        </div>
+        <div class="col-md-6">
+          {{>afQuickField name='cost'}}
+          {{>afQuickField name='handling'}}
+          {{>afQuickField name='rate'}}
+        </div>
+        <div class="pull-right">
+          <button type="submit" class="btn btn-primary" data-i18n="app.submit">Submit</button>
+          <button type="cancel" class="btn btn-primary cancel" data-i18n="app.cancel">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+
+
+  {{/autoForm}}
+</template>
+
+
+<template name="editShippingMethod">
+  {{#autoForm
+    schema=Schemas.ShippingMethod
+    id="shipping-method-edit-form"
+    template="bootstrap3-inline"
+    doc=selectedMethodDoc
+    }}
+
+
+    <div class="panel panel-default">
+      <div class="panel-heading">Update {{name}} rate</div>
+      <div class="panel-body">
+        <div class="col-md-6">
+          {{>afQuickField name='name' autofocus=''}}
+          {{>afQuickField name='label'}}
+          {{>afQuickField name='group'}}
+          {{>afQuickField name='enabled'}}
+        </div>
+        <div class="col-md-6">
+          {{>afQuickField name='cost'}}
+          {{>afQuickField name='handling'}}
+          {{>afQuickField name='rate'}}
+        </div>
+      </div>
+
+      <div class="panel-footer">
+        <div class="right">
+          <!-- <button type="button" class="btn btn-link" data-event-action="cancelShippingMethodEdit">Cancel</button> -->
+          <button type="submit" class="btn btn-primary">Update</button>
+        </div>
+      </div>
+    </div>
+
+    <!--
+    {{>afArrayField name='validLocales' template="inlineRange" class="form-control"}}
+
+    {{>afArrayField name='validRanges' template="inlineRange"}}
+    -->
+
+
+    {{/autoForm}}
+</template>
+
+
+<template name="addShippingProvider">
+  <div class="panel">
+    <div class="panel-body">
+      {{#autoForm
+        collection=Collections.Shipping
+        doc=.
+        id="shipping-provider-add-form"
+        template="bootstrap3-inline"
+        type="method"
+        meteormethod="shipping/provider/add"
+        resetOnSuccess=false
+        }}
+      <fieldset>
+      <!-- <legend>Add Provider</legend> -->
+      <div class="col-md-6">
+        {{>afQuickField name='provider.name' autofocus='' placeholder="STDPOSTAL" class='form-control'}}
+        {{>afQuickField name='provider.label' placeholder="FLAT RATE" class='form-control'}}
+        {{>afQuickField name='provider.enabled'}}
+      </div>
+      </fieldset>
+      <button type="submit" class="btn btn-primary">Submit</button>
+      <button type="button" class="btn btn-link" data-event-action="cancelAddShippingProvider">Cancel</button>
+      {{/autoForm}}
+    </div>
+  </div>
+</template>
+
+
+<template name="editShippingProvider">
+
+  <div class="panel panel-default">
+    <div class="panel-heading panel-heading-flex">
+      <h3 class="panel-title">
+        {{provider.name}}
+      </h3>
+      <div class="panel-controls">
+        <button type="button" class="btn btn-link" data-event-action="deleteShippingProvider"><i class="fa fa-trash-o"></i></button>
+      </div>
+    </div>
+    <div class="panel-body">
+      {{#autoForm
+        schema=Schemas.Shipping
+        doc=.
+        template="bootstrap3-inline"
+        id="shipping-provider-update-form"
+        type="method-update"
+        meteormethod="shipping/provider/update"
+        resetOnSuccess=false
+        }}
+
+        <div class="col-md-12">
+          {{>afQuickField name='provider.name' autofocus='' default="Flat Rate"}}
+          {{>afQuickField name='provider.label'}}
+          {{>afQuickField name='provider.enabled'}}
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="button" class="btn btn-link" data-event-action="cancelUpdateShippingProvider">Cancel</button>
+      {{/autoForm}}
+    </div>
+  </div>
+
+</template>
+
+
+<template name="afArrayField_inlineRange">
+  <div class="panel panel-default">
+    <div class="panel-heading">{{afFieldLabelText name=this.atts.name}}
+    <span class="autoform-add-item pull-right" title="{{i18n 'shipping.addNewCondition' 'Add new condition'}}" data-autoform-field="{{this.atts.name}}" data-autoform-minCount="{{this.atts.minCount}}" data-autoform-maxCount="{{this.atts.maxCount}}"><span class="fa fa-plus-square-o fa-lg"></span></span>
+    </div>
+    {{#if afFieldIsInvalid name=this.name}}
+    <div class="panel-body has-error">
+      <span class="help-block">{{{afFieldMessage name=this.atts.name}}}</span>
+    </div>
+    {{/if}}
+    <ul class="list-group">
+      {{#afEachArrayItem name=this.atts.name minCount=this.atts.minCount maxCount=this.atts.maxCount}}
+      <li class="list-group-item autoform-array-item">
+        <div class="row">
+          {{> afQuickField name=this.name label=false options=afOptionsFromSchema template=../atts.name}}
+          <div class="col-sm-12">
+            {{#if afArrayFieldHasMoreThanMinimum name=../atts.name minCount=../atts.minCount maxCount=../atts.maxCount}}
+              <span class="pull-right" title="{{i18n 'shipping.deleteCondition' 'Delete condition'}}"><span class="fa fa-trash-o fa-lg"></span></span>
+            {{/if}}
+          </div>
+        </div>
+      </li>
+      {{/afEachArrayItem}}
+      {{#if afArrayFieldHasLessThanMaximum name=this.atts.name minCount=this.atts.minCount maxCount=this.atts.maxCount}}
+      {{/if}}
+    </ul>
+  </div>
+</template>
+
+<template name="afObjectField_validRanges">
+  {{#if afFieldIsInvalid name=this.name}}
+    <span class="help-block">{{{afFieldMessage name=this.name}}}</span>
+  {{/if}}
+
+  <div class="flex flex-2x">
+    {{> afQuickFields name=this.name}}
+  </div>
+</template>
+
+
+<template name="afObjectField_validLocales">
+  {{#if afFieldIsInvalid name=this.name}}
+    <span class="help-block">{{{afFieldMessage name=this.name}}}</span>
+  {{/if}}
+
+  <div class="flex flex-2x">
+    {{> afQuickFields name=this.name}}
+  </div>
+</template>
+
+
+<template name="afFormGroup_validRanges">
+  <div class="flex-item">
+    <div class="form-group form-inline {{#if afFieldIsInvalid name=this.name}}has-error{{/if}} {{afFormGroupClass}}" data-required={{required}} {{afFormGroupAtts}}>
+
+      {{#unless skipLabel}}
+        <label {{bsFieldLabelAtts}}>
+          {{#if this.labelText}}{{this.labelText}}{{else}}{{afFieldLabelText name=this.name}}{{/if}}
+        </label>
+      {{/unless}}
+      {{> afFieldInput afFieldInputAtts}}
+
+      {{#if afFieldMessage name=this.name}}
+        <span class="help-block">{{{afFieldMessage name=this.name}}}</span>
+      {{/if}}
+    </div>
+  </div>
+
+</template>
+
+
+<template name="afFormGroup_validLocales">
+  <div class="flex-item">
+    <div class="form-group form-inline {{#if afFieldIsInvalid name=this.name}}has-error{{/if}} {{afFormGroupClass}}" data-required={{required}} {{afFormGroupAtts}}>
+      {{#unless skipLabel}}
+      <div>
+        <label {{bsFieldLabelAtts}}>
+          {{#if this.labelText}}{{this.labelText}}{{else}}{{afFieldLabelText name=this.name}}{{/if}}
+        </label>
+      </div>
+      {{/unless}}
+
+      {{> afFieldInput afFieldInputAtts}}
+
+      {{#if afFieldMessage name=this.name}}
+        <span class="help-block">{{{afFieldMessage name=this.name}}}</span>
+      {{/if}}
+    </div>
+  </div>
+</template>

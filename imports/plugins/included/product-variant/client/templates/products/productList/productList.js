@@ -13,7 +13,7 @@ Template.productList.helpers({
     let defaultImage;
     const variants = getTopVariants();
     if (variants.length > 0) {
-      let variantId = variants[0]._id;
+      const variantId = variants[0]._id;
       defaultImage = Media.findOne({
         "metadata.variantId": variantId,
         "metadata.priority": 0

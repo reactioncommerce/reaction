@@ -9,9 +9,6 @@ import Logger from "/client/modules/logger";
 import { ReactionProduct } from "/lib/api";
 import { Media } from "/lib/collections";
 
-// load modules
-require("jquery-ui");
-
 /**
  * productGridItems helpers
  */
@@ -64,12 +61,12 @@ Template.productGridItems.helpers({
     const positions = this.positions && this.positions[tag] || {};
     const weight = positions.weight || 0;
     switch (weight) {
-    case 1:
-      return "product-medium";
-    case 2:
-      return "product-large";
-    default:
-      return "product-small";
+      case 1:
+        return "product-medium";
+      case 2:
+        return "product-large";
+      default:
+        return "product-small";
     }
   },
   isSelected: function () {
@@ -176,44 +173,5 @@ Template.productGridItems.events({
       }
     });
     return Tracker.flush();
-  }
-});
-
-Template.productGridItems.onRendered(function () {
-  if (Reaction.hasPermission("createProduct")) {
-    let productSort = $(".product-grid-list");
-
-    productSort.sortable({
-      items: "> li.product-grid-item",
-      cursor: "move",
-      opacity: 0.5,
-      revert: true,
-      scroll: false,
-      update: function (event, ui) {
-        let productId = ui.item[0].id;
-        let uiPositions = $(this).sortable("toArray", {
-          attribute: "data-id"
-        });
-        let index = _.indexOf(uiPositions, productId);
-        let _i;
-        let _len;
-        const tag = ReactionProduct.getTag();
-        for (index = _i = 0, _len = uiPositions.length; _i < _len; index = ++_i) {
-          productId = uiPositions[index];
-          let position = {
-            position: index,
-            updatedAt: new Date()
-          };
-          Meteor.call("products/updateProductPosition", productId, position, tag,
-            error => {
-              if (error) {
-                Logger.warn(error);
-                throw new Meteor.Error(403, error);
-              }
-            });
-        }
-        return Tracker.flush();
-      }
-    });
   }
 });

@@ -32,7 +32,7 @@ describe("cart methods", function () {
     });
 
     it("should remove item from cart", function (done) {
-      let cart = Factory.create("cart");
+      const cart = Factory.create("cart");
       const cartUserId = cart.userId;
       sandbox.stub(Reaction, "getShopId", () => shop._id);
       sandbox.stub(Meteor, "userId", () => cartUserId);
@@ -42,14 +42,14 @@ describe("cart methods", function () {
       sandbox.stub(Meteor.server.method_handlers, "shipping/updateShipmentQuotes", function () {
         check(arguments, [Match.Any]);
       });
-      let updateSpy = sandbox.spy(Collections.Cart, "update");
-      let cartFromCollection = Collections.Cart.findOne(cart._id);
+      const updateSpy = sandbox.spy(Collections.Cart, "update");
+      const cartFromCollection = Collections.Cart.findOne(cart._id);
       const cartItemId = cartFromCollection.items[0]._id;
       assert.equal(cartFromCollection.items.length, 2);
       Meteor.call("cart/removeFromCart", cartItemId);
       assert.equal(updateSpy.callCount, 1, "update should be called one time");
       Meteor._sleepForMs(1000);
-      let updatedCart = Collections.Cart.findOne(cart._id);
+      const updatedCart = Collections.Cart.findOne(cart._id);
       assert.equal(updatedCart.items.length, 1, "there should be one item left in cart");
       return done();
     });
@@ -61,15 +61,15 @@ describe("cart methods", function () {
       sandbox.stub(Meteor.server.method_handlers, "shipping/updateShipmentQuotes", function () {
         check(arguments, [Match.Any]);
       });
-      let cart = Factory.create("cartTwo");
+      const cart = Factory.create("cartTwo");
       const cartUserId = cart.userId;
       sandbox.stub(Reaction, "getShopId", () => shop._id);
       sandbox.stub(Meteor, "userId", () => cartUserId);
-      let cartFromCollection = Collections.Cart.findOne(cart._id);
+      const cartFromCollection = Collections.Cart.findOne(cart._id);
       const cartItemId = cartFromCollection.items[0]._id;
       Meteor.call("cart/removeFromCart", cartItemId, 1);
       Meteor._sleepForMs(500);
-      let updatedCart = Collections.Cart.findOne(cart._id);
+      const updatedCart = Collections.Cart.findOne(cart._id);
       expect(updatedCart.items[0].quantity).to.equal(1);
     });
 
@@ -80,16 +80,16 @@ describe("cart methods", function () {
       sandbox.stub(Meteor.server.method_handlers, "shipping/updateShipmentQuotes", function () {
         check(arguments, [Match.Any]);
       });
-      let cart = Factory.create("cartOne");
+      const cart = Factory.create("cartOne");
       const cartUserId = cart.userId;
       sandbox.stub(Reaction, "getShopId", () => shop._id);
       sandbox.stub(Meteor, "userId", () => cartUserId);
-      let cartFromCollection = Collections.Cart.findOne(cart._id);
+      const cartFromCollection = Collections.Cart.findOne(cart._id);
       const cartItemId = cartFromCollection.items[0]._id;
       const originalQty = cartFromCollection.items[0].quantity;
       Meteor.call("cart/removeFromCart", cartItemId, originalQty);
       Meteor._sleepForMs(500);
-      let updatedCart = Collections.Cart.findOne(cart._id);
+      const updatedCart = Collections.Cart.findOne(cart._id);
       expect(updatedCart.items.length).to.equal(0);
     });
 

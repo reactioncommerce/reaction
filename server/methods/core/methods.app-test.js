@@ -23,8 +23,8 @@ describe("Server/Core", function () {
     it("should throw 403 error by non admin", function (done) {
       let currentTag;
       let tag;
-      let tagUpdateSpy = sandbox.spy(Tags, "update");
-      let tagRemoveSpy = sandbox.spy(Tags, "remove");
+      const tagUpdateSpy = sandbox.spy(Tags, "update");
+      const tagRemoveSpy = sandbox.spy(Tags, "remove");
       tag = Factory.create("tag");
       currentTag = Factory.create("tag");
       function removeTagFunc() {
@@ -98,7 +98,7 @@ describe("Server/Core", function () {
         return true;
       });
       let tag;
-      let tagCount = Tags.find().count();
+      const tagCount = Tags.find().count();
       Factory.create("shop"); // Create shop so that ReactionCore.getShopId() doesn't fail
       Meteor.call("shop/updateHeaderTags", "new tag");
       expect(Tags.find().count()).to.equal(tagCount + 1);
@@ -126,14 +126,14 @@ describe("Server/Core", function () {
   describe("shop/locateAddress", function () {
     it("should locate an address based on known US coordinates", function (done) {
       this.timeout(10000);
-      let address = Meteor.call("shop/locateAddress", 34.043125, -118.267118);
+      const address = Meteor.call("shop/locateAddress", 34.043125, -118.267118);
       expect(address.zipcode).to.equal("90015");
       return done();
     });
 
     it("should locate an address with known international coordinates", function () {
       this.timeout(10000);
-      let address = Meteor.call("shop/locateAddress", 53.414619, -2.947065);
+      const address = Meteor.call("shop/locateAddress", 53.414619, -2.947065);
       expect(address.formattedAddress).to.not.be.undefined;
       expect(address.formattedAddress).to.contain("248 Molyneux Rd, Kensington");
       expect(address.formattedAddress).to.contain("Liverpool");
@@ -143,8 +143,8 @@ describe("Server/Core", function () {
 
     it("should provide default empty address", function (done) {
       this.timeout(10000);
-      let address = Meteor.call("shop/locateAddress", 26.352498, -89.25293);
-      let defaultAddress = {
+      const address = Meteor.call("shop/locateAddress", 26.352498, -89.25293);
+      const defaultAddress = {
         latitude: null,
         longitude: null,
         country: "United States",

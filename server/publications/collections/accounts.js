@@ -1,3 +1,4 @@
+import _ from "lodash";
 import * as Collections from "/lib/collections";
 import { Reaction } from "/server/api";
 
@@ -16,12 +17,24 @@ Meteor.publish("Accounts", function (userId) {
   if (!shopId) {
     return this.ready();
   }
+
+  const nonAnonUsers = _.map(Meteor.users.find({
+    [`roles.${shopId}`]: {
+      $nin: [ "anonymous" ]
+    }
+  }, {
+    fields: { _id: 1 }
+  }).fetch(), "_id");
+
   // global admin can get all accounts
   if (Roles.userIsInRole(this.userId, ["owner"], Roles.GLOBAL_GROUP)) {
-    return Collections.Accounts.find();
-    // shop admin gets accounts for just this shop
+    return Collections.Accounts.find({
+      _id: { $in: nonAnonUsers }
+    });
+  // shop admin gets accounts for just this shop
   } else if (Roles.userIsInRole(this.userId, ["admin", "owner"], shopId)) {
     return Collections.Accounts.find({
+      _id: { $in: nonAnonUsers },
       shopId: shopId
     });
   }
@@ -55,6 +68,7 @@ Meteor.publish("UserProfile", function (profileUserId) {
   // no need to normal user so see his password hash
   const fields = {
     "emails": 1,
+    "profile.lang": 1,
     "profile.firstName": 1,
     "profile.lastName": 1,
     "profile.familyName": 1,

@@ -43,10 +43,10 @@ AutoForm.addHooks("authnet-payment-form", {
   onSubmit(doc) {
     // Process form (pre-validated by autoform)
     submitting = true;
-    let tpl = this.template;
+    const tpl = this.template;
     // regEx in the schema ensures that there will be exactly two names with one space between
-    let payerNamePieces = doc.payerName.split(" ");
-    let form = {
+    const payerNamePieces = doc.payerName.split(" ");
+    const form = {
       first_name: payerNamePieces[0],
       last_name: payerNamePieces[1],
       number: doc.cardNumber,
@@ -77,7 +77,7 @@ AutoForm.addHooks("authnet-payment-form", {
         handleAuthNetSubmitError(error);
         uiEnd(tpl, "Resubmit payment");
       } else {
-        let normalizedMode = "authorize";
+        const normalizedMode = "authorize";
         let normalizedStatus = "failed";
 
         const transId = transaction.transactionId[0].toString();
@@ -86,7 +86,7 @@ AutoForm.addHooks("authnet-payment-form", {
           normalizedStatus = "created";
         }
 
-        let paymentMethod = {
+        const paymentMethod = {
           processor: "AuthNet",
           storedCard: storedCard,
           method: "credit_card",

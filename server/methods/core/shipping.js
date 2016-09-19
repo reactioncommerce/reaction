@@ -21,9 +21,9 @@ Meteor.methods({
     }
     check(cartId, String);
     this.unblock();
-    let cart = Cart.findOne(cartId);
+    const cart = Cart.findOne(cartId);
     if (cart) {
-      let rates = Meteor.call("shipping/getShippingRates", cart);
+      const rates = Meteor.call("shipping/getShippingRates", cart);
       // no rates found
       if (!rates) {
         return [];
@@ -75,9 +75,9 @@ Meteor.methods({
    */
   "shipping/getShippingRates": function (cart) {
     check(cart, Object);
-    let rates = [];
-    let shops = [];
-    let products = cart.items;
+    const rates = [];
+    const shops = [];
+    const products = cart.items;
     // default selector is current shop
     let selector = {
       shopId: Reaction.getShopId()
@@ -88,7 +88,7 @@ Meteor.methods({
     }
     // create an array of shops, allowing
     // the cart to have products from multiple shops
-    for (let product of products) {
+    for (const product of products) {
       if (product.shopId) {
         shops.push(product.shopId);
       }
@@ -102,11 +102,11 @@ Meteor.methods({
       };
     }
 
-    let shippingMethods = Shipping.find(selector);
+    const shippingMethods = Shipping.find(selector);
 
     shippingMethods.forEach(function (shipping) {
-      let _results = [];
-      for (let method of shipping.methods) {
+      const _results = [];
+      for (const method of shipping.methods) {
         if (!(method.enabled === true)) {
           continue;
         }
@@ -126,8 +126,7 @@ Meteor.methods({
       }
       return _results;
     });
-    Logger.info("getShippingrates returning rates");
-    Logger.debug("rates", rates);
+    Logger.debug("getShippingrates returning rates", rates);
     return rates;
   }
 });

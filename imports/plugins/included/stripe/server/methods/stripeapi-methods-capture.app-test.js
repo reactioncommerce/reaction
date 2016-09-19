@@ -4,7 +4,7 @@ import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
 import { StripeApi } from "./stripeapi";
 
-let stripeCaptureResult = {
+const stripeCaptureResult = {
   id: "ch_17hZ4wBXXkbZQs3xL5JhlSgS",
   object: "charge",
   amount: 1999,
@@ -78,7 +78,7 @@ describe("stripe/payment/capture", function () {
   });
 
   it("should call StripeApi.methods.captureCharge with the proper parameters and return saved = true", function (done) {
-    let paymentMethod = {
+    const paymentMethod = {
       processor: "Stripe",
       storedCard: "Visa 4242",
       method: "credit",
@@ -125,7 +125,7 @@ describe("stripe/payment/capture", function () {
   });
 
   it("should should return a match error if transactionId is not available", function (done) {
-    let paymentMethod = {
+    const paymentMethod = {
       processor: "Stripe",
       storedCard: "Visa 4242",
       method: "credit",

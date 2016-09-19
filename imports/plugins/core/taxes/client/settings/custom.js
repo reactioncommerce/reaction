@@ -1,0 +1,260 @@
+import { Template } from "meteor/templating";
+import { ReactiveDict } from "meteor/reactive-dict";
+import { AutoForm } from "meteor/aldeed:autoform";
+import { Shops } from "/lib/collections";
+import { Countries } from "/client/collections";
+import { Taxes, TaxCodes } from "../../lib/collections";
+import { i18next } from "/client/api";
+import { Taxes as TaxSchema } from "../../lib/collections/schemas";
+import MeteorGriddle from "/imports/plugins/core/ui-grid/client/griddle";
+import { IconButton } from "/imports/plugins/core/ui/client/components";
+
+/* eslint no-shadow: ["error", { "allow": ["options"] }] */
+/* eslint no-unused-vars: ["error", { "argsIgnorePattern": "[oO]ptions" }] */
+
+Template.customTaxRates.onCreated(function () {
+  this.autorun(() => {
+    this.subscribe("Taxes");
+  });
+
+  this.state = new ReactiveDict();
+  this.state.setDefault({
+    isEditing: false,
+    editingId: null
+  });
+});
+
+Template.customTaxRates.helpers({
+  editButton() {
+    const instance = Template.instance();
+    const state = instance.state;
+    const isEditing = state.equals("isEditing", true);
+    let editingId = state.get("editingId");
+    // toggle edit state
+    if (!isEditing) {
+      editingId = null;
+    }
+    // return icon
+    return {
+      component: IconButton,
+      icon: "fa fa-plus",
+      onIcon: "fa fa-pencil",
+      toggle: true,
+      toggleOn: isEditing,
+      style: {
+        position: "relative",
+        top: "-25px",
+        right: "8px"
+      },
+      onClick() {
+        // remove active rows from grid
+        $(".tax-grid-row").removeClass("active");
+        return state.set({
+          isEditing: !isEditing,
+          editingId: editingId
+        });
+      }
+    };
+  },
+  taxGrid() {
+    const filteredFields = ["taxCode", "rate", "country", "region", "postal"];
+    const noDataMessage = i18next.t("taxSettings.noCustomTaxRatesFound");
+    const instance = Template.instance();
+
+    //
+    // helper to get and select row from griddle
+    // into blaze for to select tax row for editing
+    //
+    function editRow(options) {
+      const currentId = instance.state.get("editingId");
+      // isEditing is tax rate object
+      instance.state.set("isEditing", options.props.data);
+      instance.state.set("editingId", options.props.data._id);
+      // toggle edit mode clicking on same row
+      if (currentId === options.props.data._id) {
+        instance.state.set("isEditing", null);
+        instance.state.set("editingId", null);
+      }
+    }
+
+    //
+    // helper adds a class to every grid row
+    //
+    const customRowMetaData = {
+      bodyCssClassName: () =>  {
+        return "tax-grid-row";
+      }
+    };
+
+    // return tax Grid
+    return {
+      component: MeteorGriddle,
+      publication: "Taxes",
+      collection: Taxes,
+      matchingResultsCount: "taxes-count",
+      showFilter: true,
+      useGriddleStyles: false,
+      rowMetadata: customRowMetaData,
+      filteredFields: filteredFields,
+      columns: filteredFields,
+      noDataMessage: noDataMessage,
+      onRowClick: editRow
+    };
+  },
+
+  instance() {
+    const instance = Template.instance();
+    return instance;
+  },
+  // schema for forms
+  taxSchema() {
+    return TaxSchema;
+  },
+  // list of countries for tax input
+  countryOptions: function () {
+    return Countries.find().fetch();
+  },
+  statesForCountry: function () {
+    const shop = Shops.findOne();
+    const selectedCountry = AutoForm.getFieldValue("country");
+    if (!selectedCountry) {
+      return false;
+    }
+    if ((shop !== null ? shop.locales.countries[selectedCountry].states : void 0) === null) {
+      return false;
+    }
+    options = [];
+    if (shop && typeof shop.locales.countries[selectedCountry].states === "object") {
+      for (const state in shop.locales.countries[selectedCountry].states) {
+        if ({}.hasOwnProperty.call(shop.locales.countries[selectedCountry].states, state)) {
+          const locale = shop.locales.countries[selectedCountry].states[state];
+          options.push({
+            label: locale.name,
+            value: state
+          });
+        }
+      }
+    }
+    return options;
+  },
+  taxRate() {
+    const shop = Shops.findOne();
+    const instance = Template.instance();
+    const id = instance.state.get("editingId");
+    const tax = Taxes.findOne(id) || {};
+    // enforce a default country that makes sense.
+    if (!tax.country) {
+      if (shop && typeof shop.addressBook === "object") {
+        tax.country = shop.addressBook[0].country;
+      }
+    }
+    return tax;
+  },
+  taxCodes() {
+    const instance = Template.instance();
+    if (instance.subscriptionsReady()) {
+      const taxCodes = TaxCodes.find().fetch();
+      const options = [{
+        label: i18next.t("taxSettings.taxable"),
+        value: "RC_TAX"
+      }, {
+        label: i18next.t("taxSettings.nottaxable"),
+        value: "RC_NOTAX"
+      }];
+
+      for (const taxCode of taxCodes) {
+        options.push({
+          label: i18next.t(taxCode.label),
+          value: taxCode.id
+        });
+      }
+      return options;
+    }
+    return [];
+  }
+});
+
+//
+// on submit lets clear the form state
+//
+Template.customTaxRates.events({
+  "submit #customTaxRates-update-form": function () {
+    const instance = Template.instance();
+    instance.state.set({
+      isEditing: false,
+      editingId: null
+    });
+  },
+  "submit #customTaxRates-insert-form": function () {
+    const instance = Template.instance();
+    instance.state.set({
+      isEditing: true,
+      editingId: null
+    });
+  },
+  "click .cancel, .tax-grid-row .active": function () {
+    instance = Template.instance();
+    // remove active rows from grid
+    instance.state.set({
+      isEditing: false,
+      editingId: null
+    });
+    // ugly hack
+    $(".tax-grid-row").removeClass("active");
+  },
+  "click .delete": function () {
+    const confirmTitle = i18next.t("taxSettings.confirmRateDelete");
+    const confirmButtonText = i18next.t("app.delete");
+    const instance = Template.instance();
+    const id = instance.state.get("editingId");
+    // confirm delete
+    Alerts.alert({
+      title: confirmTitle,
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonText: confirmButtonText
+    }, (isConfirm) => {
+      if (isConfirm) {
+        if (id) {
+          Meteor.call("taxes/deleteRate", id);
+          instance.state.set({
+            isEditing: false,
+            editingId: null
+          });
+        }
+      }
+    });
+  },
+  "click .tax-grid-row": function (event) {
+    // toggle all rows off, then add our active row
+    $(".tax-grid-row").removeClass("active");
+    $(event.currentTarget).addClass("active");
+  }
+});
+
+//
+// Hooks for update and insert forms
+//
+AutoForm.hooks({
+  "customTaxRates-update-form": {
+    onSuccess: function () {
+      return Alerts.toast(i18next.t("taxSettings.shopCustomTaxRatesSaved"),
+        "success");
+    },
+    onError: function (operation, error) {
+      return Alerts.toast(
+        `${i18next.t("taxSettings.shopCustomTaxRatesFailed")} ${error}`, "error"
+      );
+    }
+  },
+  "customTaxRates-insert-form": {
+    onSuccess: function () {
+      return Alerts.toast(i18next.t("taxSettings.shopCustomTaxRatesSaved"), "success");
+    },
+    onError: function (operation, error) {
+      return Alerts.toast(
+        `${i18next.t("taxSettings.shopCustomTaxRatesFailed")} ${error}`, "error"
+      );
+    }
+  }
+});

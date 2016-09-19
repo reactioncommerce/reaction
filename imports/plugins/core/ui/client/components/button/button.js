@@ -1,8 +1,8 @@
 import _ from "lodash";
+import Tooltip from "tether-tooltip";
 import { Template }  from "meteor/templating";
 import { i18next, i18nextDep } from "/client/api";
 import { Icon } from "/imports/plugins/core/ui/client/components";
-import Tooltip from "tether-tooltip";
 
 Template.button.onRendered(function () {
   const buttonElement = this.$("button, a")[0];
@@ -26,6 +26,10 @@ Template.button.onRendered(function () {
   });
 });
 
+/* eslint no-unused-vars: 1 */
+//
+// TODO review Template.button helpers for unused elementProps
+//
 Template.button.helpers({
   iconComponent() {
     return Icon;

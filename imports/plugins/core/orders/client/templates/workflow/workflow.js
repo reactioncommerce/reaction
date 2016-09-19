@@ -34,7 +34,7 @@ Template.coreOrderWorkflow.helpers({
    * @return {Object|Boolean} An order or false
    */
   order() {
-    let id = Reaction.Router.getQueryParam("_id");
+    const id = Reaction.Router.getQueryParam("_id");
     if (id) {
       return Orders.findOne(id);
     }
@@ -56,7 +56,7 @@ Template.coreOrderWorkflow.helpers({
    * @return {String|Boolean} order completion status or false
    */
   isCompleted() {
-    let order = Template.parentData(1);
+    const order = Template.parentData(1);
     if (this.status === true) {
       return order.workflow.status;
     }

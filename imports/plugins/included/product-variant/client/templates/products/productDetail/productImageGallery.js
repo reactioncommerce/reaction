@@ -5,9 +5,8 @@ import { Media } from "/lib/collections";
 import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
 import { Template } from "meteor/templating";
+import Sortable from "sortablejs";
 
-// load modules
-require("jquery-ui");
 /**
  * productImageGallery helpers
  */
@@ -21,7 +20,7 @@ function uploadHandler(event) {
   // and it `Blob`s which is our event.target.files.
   // There is a way to do this: http://stackoverflow.com/a/24003932. but it's too
   // tricky
-  let productId = ReactionProduct.selectedProductId();
+  const productId = ReactionProduct.selectedProductId();
   const variant = ReactionProduct.selectedVariant();
   if (typeof variant !== "object") {
     return Alerts.add("Please, create new Variant first.", "danger", {
@@ -29,8 +28,8 @@ function uploadHandler(event) {
     });
   }
   const variantId = variant._id;
-  let shopId = ReactionProduct.selectedProduct().shopId || Reaction.getShopId();
-  let userId = Meteor.userId();
+  const shopId = ReactionProduct.selectedProduct().shopId || Reaction.getShopId();
+  const userId = Meteor.userId();
   let count = Media.find({
     "metadata.variantId": variantId
   }).count();
@@ -60,24 +59,17 @@ function uploadHandler(event) {
  * updateImagePriorities method
  */
 function updateImagePriorities() {
-  const sortedMedias = _.map($(".gallery").sortable("toArray", {
-    attribute: "data-index"
-  }), function (index) {
-    return {
-      mediaId: index
-    };
-  });
+  $(".gallery > .gallery-image")
+    .toArray()
+    .map((element, index) => {
+      const mediaId = element.getAttribute("data-index");
 
-  const results = [];
-  sortedMedias.forEach((image, index) => {
-    results.push(Media.update(image.mediaId, {
-      $set: {
-        "metadata.priority": index
-      }
-    }));
-  });
-
-  return results;
+      Media.update(mediaId, {
+        $set: {
+          "metadata.priority": index
+        }
+      });
+    });
 }
 
 /**
@@ -87,7 +79,7 @@ function updateImagePriorities() {
 Template.productImageGallery.helpers({
   media: function () {
     let mediaArray = [];
-    let variant = ReactionProduct.selectedVariant();
+    const variant = ReactionProduct.selectedVariant();
 
     if (variant) {
       mediaArray = Media.find({
@@ -110,28 +102,16 @@ Template.productImageGallery.helpers({
  */
 
 Template.productImageGallery.onRendered(function () {
-  return this.autorun(function () {
+  this.autorun(function () {
     let $gallery;
     if (Reaction.hasAdminAccess()) {
-      $gallery = $(".gallery");
-      return $gallery.sortable({
-        cursor: "move",
-        opacity: 0.3,
-        placeholder: "sortable",
-        forcePlaceholderSize: true,
-        update: function () {
-          let variant;
-          if (typeof variant !== "object") {
-            variant = ReactionProduct.selectedVariant();
-          }
-          variant.medias = [];
-          return updateImagePriorities();
-        },
-        start: function (event, ui) {
-          ui.placeholder.html("Drop image to reorder");
-          ui.placeholder.css("padding-top", "30px");
-          ui.placeholder.css("border", "1px dashed #ccc");
-          return ui.placeholder.css("border-radius", "6px");
+      $gallery = $(".gallery")[0];
+
+      this.sortable = Sortable.create($gallery, {
+        group: "gallery",
+        handle: ".gallery-image",
+        onUpdate() {
+          updateImagePriorities();
         }
       });
     }
@@ -150,8 +130,8 @@ Template.productImageGallery.events({
       return undefined;
     }
     if (!Reaction.hasPermission("createProduct")) {
-      let first = $(".gallery li:nth-child(1)");
-      let target = $(event.currentTarget);
+      const first = $(".gallery li:nth-child(1)");
+      const target = $(event.currentTarget);
       if ($(target).data("index") !== first.data("index")) {
         return $(".gallery li:nth-child(1)").fadeOut(400, function () {
           $(this).replaceWith(target);

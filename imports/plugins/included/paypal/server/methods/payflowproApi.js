@@ -13,7 +13,7 @@ PayflowproApi.apiCall = {};
 PayflowproApi.apiCall.paymentSubmit = function (paymentSubmitDetails) {
   PayFlow.configure(Paypal.payflowAccountOptions());
 
-  let paymentObj = Paypal.paymentObj();
+  const paymentObj = Paypal.paymentObj();
   paymentObj.intent = paymentSubmitDetails.transactionType;
   paymentObj.payer.funding_instruments.push(Paypal.parseCardData(paymentSubmitDetails.cardData));
   paymentObj.transactions.push(Paypal.parsePaymentData(paymentSubmitDetails.paymentData));
@@ -43,7 +43,7 @@ PayflowproApi.apiCall.captureCharge = function (paymentCaptureDetails) {
   const shop = Shops.findOne(Reaction.getShopId());
   const wrappedFunc = Meteor.wrapAsync(PayFlow.authorization.capture, PayFlow.authorization);
   const wrappedFuncVoid = Meteor.wrapAsync(PayFlow.authorization.void, PayFlow.authorization);
-  let captureTotal = Math.round(parseFloat(paymentCaptureDetails.amount) * 100) / 100;
+  const captureTotal = Math.round(parseFloat(paymentCaptureDetails.amount) * 100) / 100;
   const captureDetails = {
     amount: {
       currency: shop.currency,
@@ -99,12 +99,12 @@ PayflowproApi.apiCall.captureCharge = function (paymentCaptureDetails) {
 PayflowproApi.apiCall.createRefund = function (refundDetails) {
   PayFlow.configure(Paypal.payflowAccountOptions());
 
-  let createRefund = Meteor.wrapAsync(PayFlow.capture.refund, PayFlow.capture);
+  const createRefund = Meteor.wrapAsync(PayFlow.capture.refund, PayFlow.capture);
   let result;
 
   try {
     Logger.debug("payflowpro/refund/create: paymentMethod.metadata.captureId", refundDetails.captureId);
-    let response = createRefund(refundDetails.captureId, {
+    const response = createRefund(refundDetails.captureId, {
       amount: {
         total: refundDetails.amount,
         currency: "USD"
@@ -132,20 +132,20 @@ PayflowproApi.apiCall.createRefund = function (refundDetails) {
 PayflowproApi.apiCall.listRefunds = function (refundListDetails) {
   PayFlow.configure(Paypal.payflowAccountOptions());
 
-  let listPayments = Meteor.wrapAsync(PayFlow.payment.get, PayFlow.payment);
+  const listPayments = Meteor.wrapAsync(PayFlow.payment.get, PayFlow.payment);
   let result = [];
   // todo: review parentPaymentId vs authorizationId, are they both correct?
   // added authorizationId without fully understanding the intent of parentPaymentId
   // let authId = paymentMethod.metadata.parentPaymentId || paymentMethod.metadata.authorizationId;
-  let authId = refundListDetails.transactionId;
+  const authId = refundListDetails.transactionId;
 
   if (authId) {
     Logger.debug("payflowpro/refund/list: paymentMethod.metadata.parentPaymentId", authId);
     try {
-      let response = listPayments(authId);
+      const response = listPayments(authId);
 
-      for (let transaction of response.transactions) {
-        for (let resource of transaction.related_resources) {
+      for (const transaction of response.transactions) {
+        for (const resource of transaction.related_resources) {
           if (_.isObject(resource.refund)) {
             if (resource.refund.state === "completed") {
               result.push({

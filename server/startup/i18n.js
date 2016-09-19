@@ -19,7 +19,7 @@ export function loadCoreTranslations() {
   if (directoryExists(i18nFolder)) {
     fs.readdir(i18nFolder, Meteor.bindEnvironment(function (err, files) {
       if (err) throw new Meteor.Error("No translations found for import.", err);
-      for (let file of files) {
+      for (const file of files) {
         if (~file.indexOf("json")) {
           Logger.debug(`Importing Translations from ${file}`);
           const json = fs.readFileSync(i18nFolder + file, "utf8");
@@ -40,7 +40,7 @@ export function loadCoreTranslations() {
       }
 
       Assets.find({ type: "i18n" }).forEach((t) => {
-        Logger.info(`Importing ${t.name} translation for \"${t.ns}\"`);
+        Logger.debug(`Importing ${t.name} translation for \"${t.ns}\"`);
         if (t.content) {
           Reaction.Import.process(t.content, ["i18n"], Reaction.Import.translation);
         } else {

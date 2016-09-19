@@ -44,7 +44,7 @@ export default function () {
       workTimeout: 60 * 1000
     },
     (job, callback) => {
-      let current = new Date();
+      const current = new Date();
       // todo: set this interval in the admin UI
       current.setMinutes(current.getMinutes() - 5);
       const ids = getJobIds(current);

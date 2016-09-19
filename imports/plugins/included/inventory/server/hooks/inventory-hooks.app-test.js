@@ -61,7 +61,7 @@ describe("Inventory Hooks", function () {
     sandbox.stub(Reaction, "getShopId", function () {
       return cart.shopId;
     });
-    let product = cart.items[0];
+    const product = cart.items[0];
     const inventoryItem = Inventory.findOne({
       productId: product.productId,
       variantId: product.variants._id,
@@ -78,7 +78,7 @@ describe("Inventory Hooks", function () {
       });
     spyOnMethod("copyCartToOrder", cart.userId);
     Meteor.call("cart/copyCartToOrder", cart._id);
-    let updatedInventoryItem = Inventory.findOne({
+    const updatedInventoryItem = Inventory.findOne({
       productId: product.productId,
       variantId: product.variants._id,
       shopId: cart.shopId,
@@ -96,7 +96,7 @@ describe("Inventory Hooks", function () {
     sandbox.stub(Reaction, "getShopId", function () {
       return cart.shopId;
     });
-    let cartProduct = cart.items[0];
+    const cartProduct = cart.items[0];
     const inventoryItem = Inventory.findOne({
       productId: cartProduct.productId,
       variantId: cartProduct.variants._id,

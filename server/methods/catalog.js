@@ -37,7 +37,7 @@ const toDenormalize = [
 function createTitle(newTitle, productId) {
   // exception product._id needed for cases then double triggering happens
   let title = newTitle || "";
-  let titleCount = Products.find({
+  const titleCount = Products.find({
     title: title,
     _id: {
       $nin: [productId]
@@ -48,7 +48,7 @@ function createTitle(newTitle, productId) {
   // product handle prefix
   let titleString = title;
   // copySuffix "-copy-number" suffix of product
-  let copySuffix = titleString.match(/-copy-\d+$/) || titleString.match(/-copy$/);
+  const copySuffix = titleString.match(/-copy-\d+$/) || titleString.match(/-copy$/);
   // if product is a duplicate, we should take the copy number, and cut
   // the handle
   if (copySuffix) {
@@ -92,7 +92,7 @@ function createTitle(newTitle, productId) {
 function createHandle(productHandle, productId) {
   let handle = productHandle || "";
   // exception product._id needed for cases then double triggering happens
-  let handleCount = Products.find({
+  const handleCount = Products.find({
     handle: handle,
     _id: {
       $nin: [productId]
@@ -103,7 +103,7 @@ function createHandle(productHandle, productId) {
   // product handle prefix
   let handleString = handle;
   // copySuffix "-copy-number" suffix of product
-  let copySuffix = handleString.match(/-copy-\d+$/) || handleString.match(/-copy$/);
+  const copySuffix = handleString.match(/-copy-\d+$/) || handleString.match(/-copy$/);
 
   // if product is a duplicate, we should take the copy number, and cut
   // the handle
@@ -151,7 +151,7 @@ function copyMedia(newId, variantOldId, variantNewId) {
   Media.find({
     "metadata.variantId": variantOldId
   }).forEach(function (fileObj) {
-    let newFile = fileObj.copy();
+    const newFile = fileObj.copy();
     return newFile.update({
       $set: {
         "metadata.productId": newId,
@@ -188,28 +188,28 @@ function denormalize(id, field) {
   } else if (doc.type === "variant" && doc.ancestors.length === 1) {
     variants = Catalog.getVariants(id);
   }
-  let update = {};
+  const update = {};
 
   switch (field) {
-  case "inventoryPolicy":
-  case "inventoryQuantity":
-  case "inventoryManagement":
-    Object.assign(update, {
-      isSoldOut: isSoldOut(variants),
-      isLowQuantity: isLowQuantity(variants),
-      isBackorder: isBackorder(variants)
-    });
-    break;
-  case "lowInventoryWarningThreshold":
-    Object.assign(update, {
-      isLowQuantity: isLowQuantity(variants)
-    });
-    break;
-  default: // "price" is object with range, min, max
-    const priceObject = Catalog.getProductPriceRange(id);
-    Object.assign(update, {
-      price: priceObject
-    });
+    case "inventoryPolicy":
+    case "inventoryQuantity":
+    case "inventoryManagement":
+      Object.assign(update, {
+        isSoldOut: isSoldOut(variants),
+        isLowQuantity: isLowQuantity(variants),
+        isBackorder: isBackorder(variants)
+      });
+      break;
+    case "lowInventoryWarningThreshold":
+      Object.assign(update, {
+        isLowQuantity: isLowQuantity(variants)
+      });
+      break;
+    default: // "price" is object with range, min, max
+      const priceObject = Catalog.getProductPriceRange(id);
+      Object.assign(update, {
+        price: priceObject
+      });
   }
   Products.update(id, {
     $set: update
@@ -230,7 +230,7 @@ function denormalize(id, field) {
 function isSoldOut(variants) {
   return variants.every(variant => {
     if (variant.inventoryManagement && variant.inventoryPolicy) {
-      return Catalog.getVariantQuantity(variant) === 0;
+      return Catalog.getVariantQuantity(variant) <= 0;
     }
     return false;
   });
@@ -344,7 +344,7 @@ Meteor.methods({
     return sortedVariants.map(variant => {
       const oldId = variant._id;
       let type = "child";
-      let clone = {};
+      const clone = {};
       if (variantId === variant._id) {
         type = "parent";
         Object.assign(clone, variant, {
@@ -467,7 +467,7 @@ Meteor.methods({
       throw new Meteor.Error(403, "Access Denied");
     }
 
-    let currentVariant = Products.findOne(variant._id);
+    const currentVariant = Products.findOne(variant._id);
     // update variants
     if (typeof currentVariant === "object") {
       const newVariant = Object.assign({}, currentVariant, variant);
@@ -575,7 +575,7 @@ Meteor.methods({
     function buildAncestors(ancestors) {
       const newAncestors = [];
       ancestors.map(oldId => {
-        let pair = getIds(oldId);
+        const pair = getIds(oldId);
         // TODO do we always have newId on this step?
         newAncestors.push(pair[0].newId);
       });
@@ -588,15 +588,15 @@ Meteor.methods({
       products = productOrArray;
     }
 
-    for (let product of products) {
+    for (const product of products) {
       // cloning product
-      let productNewId = Random.id();
+      const productNewId = Random.id();
       setId({
         oldId: product._id,
         newId: productNewId
       });
 
-      let newProduct = Object.assign({}, product, {
+      const newProduct = Object.assign({}, product, {
         _id: productNewId
           // ancestors: product.ancestors.push(product._id)
       });
@@ -628,14 +628,14 @@ Meteor.methods({
       }).fetch();
       // why we are using `_.sortBy` described in `products/cloneVariant`
       const sortedVariants = _.sortBy(variants, doc => doc.ancestors.length);
-      for (let variant of sortedVariants) {
-        let variantNewId = Random.id();
+      for (const variant of sortedVariants) {
+        const variantNewId = Random.id();
         setId({
           oldId: variant._id,
           newId: variantNewId
         });
-        let ancestors = buildAncestors(variant.ancestors);
-        let newVariant = Object.assign({}, variant, {
+        const ancestors = buildAncestors(variant.ancestors);
+        const newVariant = Object.assign({}, variant, {
           _id: variantNewId,
           ancestors: ancestors
         });
@@ -700,7 +700,7 @@ Meteor.methods({
   "products/deleteProduct": function (productId) {
     check(productId, Match.OneOf(Array, String));
     // must have admin permission to delete
-    if (!Reaction.hasAdminAccess()) {
+    if (!Reaction.hasPermission("createProduct") && !Reaction.hasAdminAccess()) {
       throw new Meteor.Error(403, "Access Denied");
     }
 
@@ -777,8 +777,14 @@ Meteor.methods({
 
     const doc = Products.findOne(_id);
     const type = doc.type;
-    let stringValue = EJSON.stringify(value);
-    let update = EJSON.parse("{\"" + field + "\":" + stringValue + "}");
+    let update;
+    // handle booleans with correct typing
+    if (value === "false" || value === "true") {
+      update = EJSON.parse(`{${field}:${value}}`);
+    } else {
+      const stringValue = EJSON.stringify(value);
+      update = EJSON.parse("{\"" + field + "\":" + stringValue + "}");
+    }
 
     // we need to use sync mode here, to return correct error and result to UI
     const result = Products.update(_id, {
@@ -794,7 +800,6 @@ Meteor.methods({
         denormalize(doc.ancestors[0], field);
       }
     }
-
     return result;
   },
 
@@ -816,17 +821,17 @@ Meteor.methods({
     }
     this.unblock();
 
-    let newTag = {
+    const newTag = {
       slug: Reaction.getSlug(tagName),
       name: tagName
     };
 
-    let existingTag = Tags.findOne({
+    const existingTag = Tags.findOne({
       slug: Reaction.getSlug(tagName)
     });
 
     if (existingTag) {
-      let productCount = Products.find({
+      const productCount = Products.find({
         _id: productId,
         hashtags: {
           $in: [existingTag._id]
@@ -892,13 +897,13 @@ Meteor.methods({
       }
     });
 
-    let productCount = Products.find({
+    const productCount = Products.find({
       hashtags: {
         $in: [tagId]
       }
     }).count();
 
-    let relatedTagsCount = Tags.find({
+    const relatedTagsCount = Tags.find({
       relatedTagIds: {
         $in: [tagId]
       }
@@ -922,7 +927,7 @@ Meteor.methods({
       throw new Meteor.Error(403, "Access Denied");
     }
 
-    let product = Products.findOne(productId);
+    const product = Products.findOne(productId);
     let handle = Reaction.getSlug(product.title);
     handle = createHandle(handle, product._id);
     Products.update(product._id, {
@@ -959,8 +964,8 @@ Meteor.methods({
       };
     }
 
-    let product = Products.findOne(productId);
-    let tag = Tags.findOne(tagId);
+    const product = Products.findOne(productId);
+    const tag = Tags.findOne(tagId);
     // set handle
     if (product.handle === tag.slug) {
       let handle = Reaction.getSlug(product.title);
@@ -970,13 +975,13 @@ Meteor.methods({
       return handle;
     }
     // toggle handle
-    let existingHandles = Products.find({
+    const existingHandles = Products.find({
       handle: tag.slug
     }).fetch();
     // this is needed to take care about product's handle which(product) was
     // previously tagged.
-    for (let currentProduct of existingHandles) {
-      let currentProductHandle = createHandle(
+    for (const currentProduct of existingHandles) {
+      const currentProductHandle = createHandle(
         Reaction.getSlug(currentProduct.title),
         currentProduct._id);
       Products.update(currentProduct._id,

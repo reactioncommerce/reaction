@@ -99,7 +99,7 @@ export function getProducts(limit = 2) {
   const products = [];
   const existingProducts = Products.find({}, {limit: limit}).fetch();
   for (let i = 0; i < limit; i = i + 1) {
-    let product = existingProducts[i] || Factory.create("product");
+    const product = existingProducts[i] || Factory.create("product");
     products.push(product);
   }
   return products;
@@ -137,7 +137,7 @@ export default function () {
     max: 12.99
   };
 
-  let product = {
+  const product = {
     title: faker.commerce.productName(),
     pageTitle: faker.lorem.sentence(),
     description: faker.lorem.paragraph(),

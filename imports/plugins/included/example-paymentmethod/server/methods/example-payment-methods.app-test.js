@@ -4,7 +4,7 @@ import { sinon } from "meteor/practicalmeteor:sinon";
 
 import { ExampleApi } from "./exampleapi";
 
-let paymentMethod = {
+const paymentMethod = {
   processor: "Generic",
   storedCard: "Visa 4242",
   status: "captured",
@@ -25,7 +25,7 @@ describe("ExampleApi", function () {
   });
 
   it("should return data from ThirdPartyAPI authorize", function () {
-    let cardData = {
+    const cardData = {
       name: "Test User",
       number: "4242424242424242",
       expireMonth: "2",
@@ -33,13 +33,13 @@ describe("ExampleApi", function () {
       cvv2: "123",
       type: "visa"
     };
-    let paymentData = {
+    const paymentData = {
       currency: "USD",
       total: "19.99"
     };
 
-    let transactionType = "authorize";
-    let transaction = ExampleApi.methods.authorize.call({
+    const transactionType = "authorize";
+    const transaction = ExampleApi.methods.authorize.call({
       transactionType: transactionType,
       cardData: cardData,
       paymentData: paymentData
@@ -48,9 +48,9 @@ describe("ExampleApi", function () {
   });
 
   it("should return data from ThirdPartAPI capture", function (done) {
-    let authorizationId = "abc123";
-    let amount = 19.99;
-    let results = ExampleApi.methods.capture.call({
+    const authorizationId = "abc123";
+    const amount = 19.99;
+    const results = ExampleApi.methods.capture.call({
       authorizationId: authorizationId,
       amount: amount
     });
@@ -76,7 +76,7 @@ describe("Submit payment", function () {
     // but a bug in the Meteor test runner (or something) seems to make this test stall
     // it actually stalls after the entire test is completed
     this.timeout(30000);
-    let cardData = {
+    const cardData = {
       name: "Test User",
       number: "4242424242424242",
       expireMonth: "2",
@@ -84,18 +84,18 @@ describe("Submit payment", function () {
       cvv2: "123",
       type: "visa"
     };
-    let paymentData = {
+    const paymentData = {
       currency: "USD",
       total: "19.99"
     };
 
-    let authorizeResult = {
+    const authorizeResult = {
       saved: true,
       currency: "USD"
     };
 
-    let authorizeStub = sandbox.stub(ExampleApi.methods.authorize, "call", () => authorizeResult);
-    let results = Meteor.call("exampleSubmit", "authorize", cardData, paymentData);
+    const authorizeStub = sandbox.stub(ExampleApi.methods.authorize, "call", () => authorizeResult);
+    const results = Meteor.call("exampleSubmit", "authorize", cardData, paymentData);
     expect(authorizeStub).to.have.been.calledWith({
       transactionType: "authorize",
       cardData: cardData,
@@ -105,13 +105,13 @@ describe("Submit payment", function () {
   });
 
   it("should throw an error if card data is not correct", function () {
-    let badCardData = {
+    const badCardData = {
       name: "Test User",
       cvv2: "123",
       type: "visa"
     };
 
-    let paymentData = {
+    const paymentData = {
       currency: "USD",
       total: "19.99"
     };
@@ -136,13 +136,13 @@ describe("Capture payment", function () {
   });
 
   it("should call ExampleApi with transaction ID", function () {
-    let captureResults = { success: true };
-    let authorizationId = "abc1234";
+    const captureResults = { success: true };
+    const authorizationId = "abc1234";
     paymentMethod.transactionId = authorizationId;
     paymentMethod.amount = 19.99;
 
-    let captureStub = sandbox.stub(ExampleApi.methods.capture, "call", () => captureResults);
-    let results = Meteor.call("example/payment/capture", paymentMethod);
+    const captureStub = sandbox.stub(ExampleApi.methods.capture, "call", () => captureResults);
+    const results = Meteor.call("example/payment/capture", paymentMethod);
     expect(captureStub).to.have.been.calledWith({
       authorizationId: authorizationId,
       amount: 19.99
@@ -172,11 +172,11 @@ describe("Refund", function () {
   });
 
   it("should call ExampleApi with transaction ID", function () {
-    let refundResults = { success: true };
-    let transactionId = "abc1234";
-    let amount = 19.99;
+    const refundResults = { success: true };
+    const transactionId = "abc1234";
+    const amount = 19.99;
     paymentMethod.transactionId = transactionId;
-    let refundStub = sandbox.stub(ExampleApi.methods.refund, "call", () => refundResults);
+    const refundStub = sandbox.stub(ExampleApi.methods.refund, "call", () => refundResults);
     Meteor.call("example/refund/create", paymentMethod, amount);
     expect(refundStub).to.have.been.calledWith({
       transactionId: transactionId,
@@ -188,7 +188,7 @@ describe("Refund", function () {
     sandbox.stub(ExampleApi.methods.refund, "call", function () {
       throw new Meteor.Error("404", "Not Found");
     });
-    let transactionId = "abc1234";
+    const transactionId = "abc1234";
     paymentMethod.transactionId =  transactionId;
     expect(function () {
       Meteor.call("example/refund/create", paymentMethod, 19.99);
@@ -208,11 +208,11 @@ describe("List Refunds", function () {
   });
 
   it("should call ExampleApi with transaction ID", function () {
-    let refundResults = { refunds: [] };
+    const refundResults = { refunds: [] };
     const refundArgs = {
       transactionId: "abc1234"
     };
-    let refundStub = sandbox.stub(ExampleApi.methods.refunds, "call", () => refundResults);
+    const refundStub = sandbox.stub(ExampleApi.methods.refunds, "call", () => refundResults);
     Meteor.call("example/refund/list", paymentMethod);
     expect(refundStub).to.have.been.calledWith(refundArgs);
   });

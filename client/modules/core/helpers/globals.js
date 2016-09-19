@@ -50,8 +50,8 @@ export function toggleSession(sessionVariable, positiveState) {
  */
 export function locateUser() {
   function successFunction(position) {
-    let lat = position.coords.latitude;
-    let lng = position.coords.longitude;
+    const lat = position.coords.latitude;
+    const lng = position.coords.longitude;
     return Meteor.call("shop/locateAddress", lat, lng, function (error,
       address) {
       if (address) {

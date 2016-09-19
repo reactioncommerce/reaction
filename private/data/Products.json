@@ -54,7 +54,7 @@
     "value": null
   }],
   "shopId": "J8Bhq3uTtdgwZx3rz",
-  "taxable": false,
+  "taxable": true,
   "type": "variant"
 }, {
   "_id": "SMr4rhDFnYvFMtDTX",
@@ -80,7 +80,7 @@
     "value": null
   }],
   "shopId": "J8Bhq3uTtdgwZx3rz",
-  "taxable": false,
+  "taxable": true,
   "type": "variant"
 }, {
   "_id": "CJoRBm9vRrorc9mxZ",
@@ -106,6 +106,6 @@
     "value": null
   }],
   "shopId": "J8Bhq3uTtdgwZx3rz",
-  "taxable": false,
+  "taxable": true,
   "type": "variant"
 }]

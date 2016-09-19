@@ -1,0 +1,97 @@
+<template name="customTaxRates">
+  <div>
+    {{> React taxGrid }}
+  </div>
+
+  <div class="pull-right">
+    {{> React editButton }}
+  </div>
+
+  {{#if instance.state.get 'isEditing'}}
+    <div>
+    {{#if instance.state.get 'editingId'}}
+
+      {{#autoForm
+        schema=taxSchema
+        type="method-update"
+        meteormethod="taxes/addRate"
+        doc=taxRate
+        id="customTaxRates-update-form"
+        resetOnSuccess=true
+      }}
+        <div>
+          <!-- {{> afQuickField name='taxCode' options=taxCodes class='form-control'}}
+          {{> afQuickField name='cartMethod' options="allowed" class='form-control'}}
+          {{> afQuickField name='taxLocale' options="allowed" class='form-control'}}
+          {{> afQuickField name='taxShipping'}}
+          {{> afQuickField name='taxIncluded'}}
+          {{> afQuickField name='discountsIncluded'}} -->
+          {{> afQuickField name='country' options=countryOptions class='form-control'}}
+
+          <label class="control-label">{{afFieldLabelText name='region'}}</label>
+          {{#if statesForCountry}}
+            {{>afFieldInput name="region" value=region options=statesForCountry class='form-control'}}
+          {{else}}
+            {{>afFieldInput name="region" value=region class='form-control'}}
+          {{/if}}
+          {{#if afFieldIsInvalid name="region"}}
+            <span class="help-block">{{afFieldMessage name="region"}}</span>
+          {{/if}}
+
+          {{> afQuickField name='postal' class='form-control' placeholder="Postal Code"}}
+          {{> afQuickField name='rate' class='form-control' placeholder="Rate as a percentage"}}
+        </div>
+        {{> taxSettingsSubmitButton instance=instance}}
+      {{/autoForm}}
+
+    {{else}}
+
+      {{#autoForm
+        schema=taxSchema
+        type="method"
+        meteormethod="taxes/addRate"
+        id="customTaxRates-insert-form"
+        doc=taxRate
+        resetOnSuccess=true
+      }}
+        <div>
+          <!-- {{> afQuickField name='taxCode' options=taxCodes class='form-control'}}
+          {{> afQuickField name='cartMethod' options="allowed" class='form-control'}}
+          {{> afQuickField name='taxLocale' options="allowed" class='form-control'}}
+          {{> afQuickField name='taxShipping'}}
+          {{> afQuickField name='taxIncluded'}}
+          {{> afQuickField name='discountsIncluded'}} -->
+          {{> afQuickField name='country' options=countryOptions class='form-control'}}
+
+          <label class="control-label">{{afFieldLabelText name='region'}}</label>
+          {{#if statesForCountry}}
+            {{>afFieldInput name="region" value=region options=statesForCountry class='form-control'}}
+          {{else}}
+            {{>afFieldInput name="region" value=region class='form-control'}}
+          {{/if}}
+          {{#if afFieldIsInvalid name="region"}}
+            <span class="help-block">{{afFieldMessage name="region" placeholder="State/Region/Province"}}</span>
+          {{/if}}
+
+          {{> afQuickField name='postal' class='form-control' placeholder="Postal Code"}}
+          {{> afQuickField name='rate' class='form-control' placeholder="Rate as a percentage"}}
+        </div>
+        {{> taxSettingsSubmitButton instance=instance}}
+      {{/autoForm}}
+    {{/if}}
+    </div>
+  {{/if}}
+</template>
+
+
+<template name="taxSettingsSubmitButton">
+   <div class="clearfix">
+    <div class="pull-right">
+      <button type="button" class="btn btn-primary cancel" data-i18n="app.cancel">Cancel</button>
+      {{#if instance.state.get 'editingId'}}
+      <button type="button" class="btn btn-primary delete" data-i18n="app.delete">Delete</button>
+      {{/if}}
+      <button type="submit" class="btn btn-primary" data-i18n="app.saveChanges">Save Changes</button>
+    </div>
+  </div>
+</template>

@@ -18,8 +18,8 @@ Meteor.publish("ShopMembers", function () {
   if (typeof this.userId !== "string") {
     return this.ready();
   }
-  let readPermissions = ["reaction-orders", "owner", "admin", "reaction-accounts"];
-  let shopId = Reaction.getShopId();
+  const readPermissions = ["reaction-orders", "owner", "admin", "reaction-accounts"];
+  const shopId = Reaction.getShopId();
   if (!shopId) {
     return this.ready();
   }
@@ -34,6 +34,7 @@ Meteor.publish("ShopMembers", function () {
         emails: 1,
         username: 1,
         roles: 1,
+        "profile.lang": 1,
         "services.google.name": 1,
         "services.google.email": 1,
         "services.google.picture": 1,

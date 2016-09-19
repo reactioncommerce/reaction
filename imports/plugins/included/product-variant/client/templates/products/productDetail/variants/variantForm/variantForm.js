@@ -39,14 +39,6 @@ Template.variantForm.helpers({
   hasChildVariants: function () {
     return ReactionProduct.checkChildVariants(this._id) > 0;
   },
-  hasInventoryVariants: function () {
-    if (!hasChildVariants()) {
-      return ReactionProduct.checkInventoryVariants(this._id) > 0;
-    }
-  },
-  nowDate: function () {
-    return new Date();
-  },
   variantFormId: function () {
     return "variant-form-" + this._id;
   },
@@ -95,26 +87,40 @@ Template.variantForm.helpers({
 
 Template.variantForm.events({
   "change form :input": function (event, template) {
-    let formId;
-    formId = "#variant-form-" + template.data._id;
-    template.$(formId).submit();
-    ReactionProduct.setCurrentVariant(template.data._id);
+    const field = $(event.currentTarget).attr("name");
+    //
+    // this should really move into a method
+    //
+    if (field === "taxable" || field === "inventoryManagement" || field === "inventoryPolicy") {
+      const value = $(event.currentTarget).prop("checked");
+      if (ReactionProduct.checkChildVariants(template.data._id) > 0) {
+        const childVariants = ReactionProduct.getVariants(template.data._id);
+        for (const child of childVariants) {
+          Meteor.call("products/updateProductField", child._id, field, value,
+            error => {
+              if (error) {
+                throw new Meteor.Error("error updating variant", error);
+              }
+            });
+        }
+      }
+    }
+    // template.$(formId).submit();
+    // ReactionProduct.setCurrentVariant(template.data._id);
   },
   "click .btn-child-variant-form": function (event, template) {
-    let productId;
     event.stopPropagation();
     event.preventDefault();
-    productId = ReactionProduct.selectedProductId();
+    const productId = ReactionProduct.selectedProductId();
     if (!productId) {
       return;
     }
     Meteor.call("products/createVariant", template.data._id);
   },
   "click .btn-clone-variant": function (event, template) {
-    let productId;
     event.stopPropagation();
     event.preventDefault();
-    productId = ReactionProduct.selectedProductId();
+    const productId = ReactionProduct.selectedProductId();
     if (!productId) {
       return;
     }

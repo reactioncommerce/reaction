@@ -16,7 +16,7 @@ describe("payflowpro/refund/create", function () {
   });
 
   it("Should call payflowpro/refund/create with the proper parameters and return saved = true", function (done) {
-    let paymentMethod = {
+    const paymentMethod = {
       processor: "PayflowPro",
       storedCard: "Visa 0322",
       method: "credit_card",
@@ -39,7 +39,7 @@ describe("payflowpro/refund/create", function () {
     };
 
 
-    let payflowproRefundResult = {
+    const payflowproRefundResult = {
       saved: true,
       type: "refund",
       created: "2016-08-15T05:58:14Z",
