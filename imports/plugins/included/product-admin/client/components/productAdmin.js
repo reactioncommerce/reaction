@@ -1,20 +1,35 @@
 import React, { Component, PropTypes } from "react";
 import {
+  Button,
   Card,
   CardHeader,
   CardBody,
   CardGroup,
+  Divider,
   Metadata,
-  TextField
+  TextField,
+  Translation
 } from "/imports/plugins/core/ui/client/components";
 import { Router } from "/client/api";
 import { PublishContainer } from "/imports/plugins/core/revisions";
 import { TagListContainer } from "/imports/plugins/core/ui/client/containers";
 
 class ProductAdmin extends Component {
+  handleDeleteProduct = () => {
+    if (this.props.onDeleteProduct) {
+      this.props.onDeleteProduct(this.props.product);
+    }
+  }
+
   handleFieldChange = (event, value, field) => {
     if (this.props.onFieldChange) {
       this.props.onFieldChange(field, value);
+    }
+  }
+
+  handleToggleVisibility = () => {
+    if (this.props.onFieldChange) {
+      this.props.onFieldChange("isVisible", !this.product.isVisible);
     }
   }
 
@@ -123,9 +138,40 @@ class ProductAdmin extends Component {
               onChange={this.handleFieldChange}
               value={this.product.description}
             />
+            <Divider />
+            <Button
+              i18nKeyLabel="productDetailEdit.deleteProduct"
+              label="Delete Product"
+              onClick={this.handleDeleteProduct}
+              status="danger"
+            />
           </CardBody>
         </Card>
-
+        <Card>
+          <CardBody>
+            <div className="rui items flex">
+              <div className="rui item three-quarters">
+                {this.product.isVisible &&
+                  <Translation defaultValue="Product is visible" />
+                }
+                {!this.product.isVisible &&
+                  <Translation defaultValue="Product is not visible" />
+                }
+              </div>
+              <div className="rui item quarter">
+                <Button
+                  i18nKeyLabel="productDetailEdit.makeVisible"
+                  i18nKeyToggleOnLabel="productDetailEdit.hideProduct"
+                  label="Make Visible"
+                  onClick={this.handleToggleVisibility}
+                  toggle={true}
+                  toggleOn={this.product.isVisible}
+                  toggleOnLabel="Hide Product"
+                />
+              </div>
+            </div>
+          </CardBody>
+        </Card>
         <Card>
           <CardHeader
             i18nKeyTitle="social.socialTitle"
@@ -212,6 +258,7 @@ ProductAdmin.propTypes = {
   handleFieldChange: PropTypes.func,
   handleProductFieldChange: PropTypes.func,
   newMetafield: PropTypes.object,
+  onDeleteProduct: PropTypes.func,
   onFieldChange: PropTypes.func,
   onMetaChange: PropTypes.func,
   onMetaRemove: PropTypes.func,

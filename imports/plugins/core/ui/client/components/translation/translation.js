@@ -1,22 +1,24 @@
-import React, { Component, PropTypes, Children } from "react"; // eslint-disable-line
+import React, { Component, PropTypes } from "react";
 import { i18next } from "/client/api";
 import camelcase from "lodash/camelcase";
 
 class Translation extends Component {
   render() {
-    const key = this.props.i18nKey || camelcase(this.props.defaultValue)
+    const i18nKey = this.props.i18nKey || camelcase(this.props.defaultValue);
 
-    const translation = i18next.t(key, {
+    const translation = i18next.t(i18nKey, {
       defaultValue: this.props.defaultValue
-    })
+    });
+
     return (
       <span>{translation}</span>
     );
   }
 }
 
-// Translation.propTypes = {
-//   translation: PropTypes.object.isRequired
-// };
+Translation.propTypes = {
+  defaultValue: PropTypes.string.isRequired,
+  i18nKey: PropTypes.string.isRequired
+};
 
-export default Translation
+export default Translation;

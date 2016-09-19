@@ -71,6 +71,30 @@ class Button extends Component {
     return null;
   }
 
+  renderLabel() {
+    if (this.props.label) {
+      if (this.props.toggle) {
+        if (this.props.toggleOn && this.props.toggleOnLabel) {
+          return (
+            <Translation
+              defaultValue={this.props.toggleOnlabel}
+              i18nKey={this.props.i18nKeyToggleOnLabel}
+            />
+          );
+        }
+      }
+
+      return (
+        <Translation
+          defaultValue={this.props.label}
+          i18nKey={this.props.i18nKeyLabel}
+        />
+      );
+    }
+
+    return null;
+  }
+
   render() {
     const classes = classnames({
       "btn": true,
@@ -104,10 +128,7 @@ class Button extends Component {
         {...attrs}
       >
         {this.renderIcon()}
-        <Translation
-          defaultValue={label}
-          i18nKey={i18nKeyLabel}
-        />
+        {this.renderLabel()}
         {this.props.children}
       </button>
     );
