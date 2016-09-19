@@ -93,7 +93,13 @@ Meteor.methods({
 
     check(jobId, String);
 
-    Jobs.restartJobs([jobId]);
+    Logger.debug(`emails/retryFailed - restarting email job "${jobId}"`);
+
+    Jobs.update({ _id: jobId }, {
+      $set: {
+        status: "ready"
+      }
+    });
 
     return true;
   }
