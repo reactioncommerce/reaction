@@ -156,7 +156,7 @@
           "includeTitle": "Include title",
           "includeDescription": "Include description",
           "includePageTitle": "Include page title",
-          "includeMetafields": "Include metafields",
+          "includeDetails": "Include details",
           "includeVendor": "Include vendor"
         },
         "orderSearchSettings": {
