@@ -82,7 +82,7 @@ class EmailSettings extends Component {
             onChange={this.handleStateChange}/>
           <Button bsStyle="primary" className="pull-right" type="submit" disabled={isSaving}>
             {isSaving ?
-                <i className={"fa fa-refresh fa-spin"} />
+                <i className="fa fa-refresh fa-spin"/>
               : <span data-i18n="app.save">Save</span>}
           </Button>
         </form>
