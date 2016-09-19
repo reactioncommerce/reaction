@@ -41,12 +41,12 @@ export const SearchPackageConfig = new SimpleSchema([
     },
     "settings.products.includes.metafields": {
       type: Boolean,
-      label: "Include metafields",
+      label: "Include details",
       defaultValue: true
     },
     "settings.products.weights.metafields": {
       type: Number,
-      label: "Metafields weight",
+      label: "Details weight",
       defaultValue: 6,
       max: 10,
       min: 1
@@ -65,4 +65,3 @@ export const SearchPackageConfig = new SimpleSchema([
     }
   }
 ]);
-
