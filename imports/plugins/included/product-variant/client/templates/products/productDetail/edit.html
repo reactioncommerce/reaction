@@ -1,14 +1,19 @@
 <template name="productDetailEdit">
 {{#if condition type "eq" "textarea"}}
-<p class="product-detail-edit {{field}}-edit">
-  <textarea class="form-control {{field}}-edit-input" name="{{field}}" placeholder="{{i18nPlaceholder}}">{{value}}</textarea>
-</p>
-{{else}}
 <div class="product-detail-edit {{field}}-edit">
-  <input type="text" value="{{value}}" class="{{field}}-edit-input" placeholder="{{i18nPlaceholder}}"/>
+  {{> React TextArea }}
 </div>
+{{else}}
+  {{#if condition type "eq" "select"}}
+    <div class="product-detail-edit {{field}}-edit">
+      {{> React Select }}
+    </div>  
+  {{else}}
+    <div class="product-detail-edit {{field}}-edit">
+    {{> React TextBox }}
+    </div>
+  {{/if}}
 {{/if}}
-<span class="product-detail-message" id="{{field}}-message"></span>
 </template>
 
 <template name="productDetailField">
