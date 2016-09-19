@@ -4,7 +4,6 @@ const fs   = require("fs");
 
 const suiteConfig = yaml.safeLoad(fs.readFileSync("./tests/acceptance-tests/config/test-suite-config.yml", "utf8"));
 
-// but what if the user wants to just run one braintree test...
 const braintreeSpecs = ["./tests/acceptance-tests/test/specs/payment-processors/braintree/**/*.js"];
 
 const stripeSpecs = ["./tests/acceptance-tests/test/specs/payment-processors/stripe/**/*.js"];
@@ -21,7 +20,7 @@ const smokeTestSpecs = ["./tests/acceptance-tests/test/specs/smoke-tests/**/*.js
 
 module.exports = {
   getToggles: function () {
-    let toggles = [];
+    const toggles = [];
     if (suiteConfig.braintree === true) {
       toggles.push(braintreeSpecs[0]);
     } if (suiteConfig.stripe === true) {
@@ -40,7 +39,7 @@ module.exports = {
     return toggles;
   },
   getResults: function () {
-    let allureArr = [];
+    const allureArr = [];
     if (suiteConfig.allure === true) {
       allureArr.push("allure");
     }
