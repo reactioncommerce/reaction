@@ -83,12 +83,24 @@
 
 
                 <div class="pdp add-to-cart block">
+                {{#if inCart product._id}}
+                  <button class="input-group-addon view-cart js-view-cart">
+                    View item already in cart
+                  </button>
+                  <input type="number" class="form-control input-md" name="addToCartQty" id="add-to-cart-quantity" value="1" min="1"/>
+                  <button
+                    class="input-group-addon add-more-to-cart-text js-add-to-cart"
+                    data-i18n="productDetail.addMoreToCart">
+                    Add more to cart
+                  </button>
+                {{else}}
                   <input type="number" class="form-control input-md" name="addToCartQty" id="add-to-cart-quantity" value="1" min="1"/>
                   <button
                     class="input-group-addon add-to-cart-text js-add-to-cart"
                     data-i18n="productDetail.addToCart">
                     Add to cart
                   </button>
+                {{/if}}
                 </div>
               </div>
 
