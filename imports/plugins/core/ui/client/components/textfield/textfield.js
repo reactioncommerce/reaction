@@ -126,6 +126,18 @@ class TextField extends Component {
     return null;
   }
 
+  renderHelpText() {
+    if (this.props.helpText) {
+      return (
+        <span className="help-block">
+          <Translation defaultValue={this.props.helpText} i18nKey={this.props.i18nKeyHelpText} />
+        </span>
+      );
+    }
+
+    return null;
+  }
+
   /**
    * Render Component
    * @return {JSX} component
@@ -147,6 +159,7 @@ class TextField extends Component {
       <div className={classes}>
         {this.renderLabel()}
         {this.renderField()}
+        {this.renderHelpText()}
         <span className="product-detail-message" id="{{field}}-message" />
       </div>
     );

@@ -7,6 +7,7 @@ import {
   Metadata,
   TextField
 } from "/imports/plugins/core/ui/client/components";
+import { Router } from "/client/api";
 import { PublishContainer } from "/imports/plugins/core/revisions";
 import { TagListContainer } from "/imports/plugins/core/ui/client/containers";
 
@@ -45,6 +46,18 @@ class ProductAdmin extends Component {
     return this.props.product || {};
   }
 
+  get permalink() {
+    if (this.props.product) {
+      return Router.pathFor("product", {
+        hash: {
+          handle: this.props.product.handle
+        }
+      });
+    }
+
+    return "";
+  }
+
   render() {
     return (
       <CardGroup>
@@ -67,7 +80,7 @@ class ProductAdmin extends Component {
           <CardBody>
             <TextField
               i18nKeyLabel="productDetailEdit.productTitle"
-              label="Product Title"
+              label="Title"
               multiline={true}
               name="title"
               onBlur={this.handleFieldBlur}
@@ -75,8 +88,17 @@ class ProductAdmin extends Component {
               value={this.product.title}
             />
             <TextField
+              helpText={this.permalink}
+              i18nKeyLabel="productDetailEdit.permalink"
+              label="Permalink"
+              name="handle"
+              onBlur={this.handleFieldBlur}
+              onChange={this.handleFieldChange}
+              value={this.product.handle}
+            />
+            <TextField
               i18nKeyLabel="productDetailEdit.pageTitle"
-              label="Product Sub Title"
+              label="Subtitle"
               multiline={true}
               name="pageTitle"
               onBlur={this.handleFieldBlur}
