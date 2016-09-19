@@ -44,7 +44,7 @@
     "jquery": "^3.1.0",
     "jquery-i18next": "^1.0.1",
     "later": "^1.2.0",
-    "lodash": "^4.14.2",
+    "lodash": "^4.16.0",
     "meteor-node-stubs": "^0.2.3",
     "moment": "^2.14.1",
     "moment-timezone": "^0.5.4",
@@ -59,14 +59,14 @@
     "react-addons-pure-render-mixin": "^15.3.0",
     "react-autosuggest": "^5.1.2",
     "react-bootstrap": "^0.30.3",
-    "react-color": "^2.2.7",
+    "react-color": "^2.3.0",
     "react-dom": "^15.3.0",
     "react-komposer": "^1.13.1",
     "react-simple-di": "^1.2.0",
     "react-textarea-autosize": "^4.0.5",
     "sortablejs": "^1.4.2",
-    "stripe": "^4.9.0",
-    "sweetalert2": "^4.3.2",
+    "stripe": "^4.11.0",
+    "sweetalert2": "^4.3.3",
     "swiper": "^3.3.1",
     "tether-drop": "^1.4.2",
     "tether-tooltip": "^1.2.0",
@@ -83,7 +83,7 @@
     "js-yaml": "^3.6.1",
     "react-addons-test-utils": "^15.3.1",
     "wdio-mocha-framework": "^0.4.2",
-    "webdriverio": "^4.2.12"
+    "webdriverio": "^4.2.16"
   },
   "postcss": {
     "plugins": {
