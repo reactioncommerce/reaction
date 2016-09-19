@@ -1,27 +1,51 @@
-import React from "react";
-import IconButton from "./iconButton";
+/* eslint no-unused-vars: 1 */
+//
+// TODO review PropTypes import in flatButton.js
+//
+import React, { Component, PropTypes } from "react";
+import classnames from "classnames";
+import Button from "./button.jsx";
 
-/**
- * Edit button is a special type of Icon Button that is toggable by default
- * and presents a pencil ( or edit icon ) in its of state, and a check ( or success icon)
- * when it is on.
- *
- * Use this button in places where you need a pre-styled button for toggling editing
- * states of components.
- *
- * @param {Object} props Props passed into component
- * @returns {IconButton} Retruns an IconButton component with pre-configured icons for editing
- */
-const FlatButton = (props) => {
-  return (
-    <IconButton
-      icon="fa fa-pencil"
-      onIcon="fa fa-check"
-      toggle={true}
-      kind="flat"
-      {...props}
-    />
-  );
-};
+class FlatButton extends Component {
+  render() {
+    const {
+      icon,
+      onIcon,
+      ...otherProps
+    } = this.props;
+
+    let buttonClassName = classnames({
+      "rui": true,
+      "button": true,
+      "flat": true
+    });
+
+
+    let iconClassName = classnames({
+      "fa-lg": false,
+      [icon]: true
+    });
+
+    let onIconClassName;
+
+    if (onIcon) {
+      onIconClassName = classnames({
+        "fa-lg": true,
+        [onIcon]: true
+      });
+    }
+
+    return (
+      <Button
+        className={buttonClassName}
+        icon={iconClassName}
+        onIcon={onIconClassName}
+        {...otherProps}
+      />
+    );
+  }
+}
+
+FlatButton.propTypes = Object.assign({}, Button.propTypes);
 
 export default FlatButton;
