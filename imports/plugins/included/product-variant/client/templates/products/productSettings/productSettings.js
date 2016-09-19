@@ -25,7 +25,6 @@ Template.productSettings.onCreated(function () {
           $in: productIds
         }
       }).map((product) => {
-        console.log(product);
         if (product.__revisions && product.__revisions.length) {
           return product.__revisions[0].documentData;
         }
