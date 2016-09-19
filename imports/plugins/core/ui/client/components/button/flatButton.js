@@ -15,10 +15,10 @@ class FlatButton extends Component {
     } = this.props;
 
     let buttonClassName = classnames({
-        "rui": true,
-        "button": true,
-        "flat": true
-      });
+      "rui": true,
+      "button": true,
+      "flat": true
+    });
 
 
     let iconClassName = classnames({
