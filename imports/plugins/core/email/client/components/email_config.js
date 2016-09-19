@@ -54,7 +54,7 @@ class EmailConfig extends Component {
             <strong data-i18n="mail.settings.host">Host</strong>: {host || <NotSet/>}
           </div>
           <div>
-            <strong data-i18n="mail.settings.port">Port</strong>: <NotSet/>
+            <strong data-i18n="mail.settings.port">Port</strong>: {port || <NotSet/>}
           </div>
           <div className="truncate">
             <strong data-i18n="mail.settings.user">User</strong>: {user || <NotSet/>}
