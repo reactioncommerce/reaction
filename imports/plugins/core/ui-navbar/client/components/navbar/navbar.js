@@ -1,4 +1,4 @@
-import { IconButton } from "/imports/plugins/core/ui/client/components";
+import { FlatButton } from "/imports/plugins/core/ui/client/components";
 import { Reaction } from "/client/api";
 import { Tags } from "/lib/collections";
 
@@ -28,7 +28,7 @@ Template.CoreNavigationBar.events({
 Template.CoreNavigationBar.helpers({
   IconButtonComponent() {
     return {
-      component: IconButton,
+      component: FlatButton,
       icon: "fa fa-search",
       kind: "flat"
       // onClick() {
