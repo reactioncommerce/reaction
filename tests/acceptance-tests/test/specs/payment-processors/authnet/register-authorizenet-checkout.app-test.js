@@ -13,9 +13,9 @@ beforeEach(function () {
 });
 
 
-describe("authorize net logged in checkout test", function () {
+describe("authorize net register user and checkout test", function () {
   const eleMap = yaml.safeLoad(fs.readFileSync("./tests/acceptance-tests/elements/element-map.yml", "utf8"));
-  it("verify logged in user can checkout with authorize net", function () {
+  it("verify user can register checkout with authorize net", function () {
     // userDo.UserActions.userLogin("guest");
     userDo.UserActions.registerUser();
     browser.pause("5000");
