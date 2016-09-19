@@ -69,7 +69,6 @@
 
 .rui.button.flat, .btn-flat {
   border: none;
-  font-size: 10px;
   padding: 0;
   display: flex;
   justify-content: center;
@@ -78,7 +77,6 @@
   height: 24px;
   color: inherit;
   background-color: transparent;
-  // margin-left: 5px;
 }
 
 .rui.button.round, .btn-round {
@@ -115,4 +113,15 @@
     background-color: @black60;
     color: @black30;
   }
+}
+
+.btn-flat {
+  .btn-link();
+}
+
+.btn-flat:hover,
+.btn-flat:active,
+.btn-flat:focus,
+.btn-flat:visited {
+  text-decoration: none;
 }

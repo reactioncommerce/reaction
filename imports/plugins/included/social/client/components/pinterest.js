@@ -48,7 +48,7 @@ class PinterestSocialButton extends Component {
     });
 
     return (
-      <a className="pinterest-share" href={this.url} onClick={this.handleClick} target="_blank">
+      <a className="btn btn-flat pinterest-share" href={this.url} onClick={this.handleClick} target="_blank">
         <i className={iconClassNames} />
         {this.renderText()}
       </a>
