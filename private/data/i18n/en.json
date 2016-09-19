@@ -196,7 +196,8 @@
           "emailSettings": "Email Settings",
           "config": "Configuration",
           "settings": "Mail Provider",
-          "status": "Status"
+          "status": "Status",
+          "actions": "Actions"
         },
         "settings": {
           "service": "Service",
@@ -220,7 +221,8 @@
           },
           "noEmails": "No emails sent yet",
           "limit": "Quantity",
-          "retry": "Retry"
+          "retry": "Retry",
+          "noneAvailble": "None available"
         },
         "alerts": {
           "error": "Error: {{error}}",

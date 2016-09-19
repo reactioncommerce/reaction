@@ -31,6 +31,7 @@ class EmailLogs extends Component {
               <th data-i18n="mail.logs.headers.subject">Subject</th>
               <th data-i18n="mail.logs.headers.sent">Sent</th>
               <th data-i18n="mail.logs.headers.status">Status</th>
+              <th data-i18n="mail.logs.headers.actions">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -38,7 +39,8 @@ class EmailLogs extends Component {
               <tr key={email._id}>
                 <td>{email.data.to}</td>
                 <td>{email.data.subject}</td>
-                <td>{moment(email.created).format("LLL")}</td>
+                <td>{moment(email.updated).format("LLL")}</td>
+                <td>{email.status}</td>
                 <td>
                   {email.status === "failed" || email.status === "waiting" ?
                     <Button
@@ -46,7 +48,7 @@ class EmailLogs extends Component {
                       data-i18n="mail.logs.retry">
                       Retry
                     </Button>
-                    : email.status}
+                    : <span data-i18n="mail.logs.noneAvailble">None available</span>}
                 </td>
               </tr>
             ))}
