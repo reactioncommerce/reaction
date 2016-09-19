@@ -7,6 +7,7 @@ const testSettings = yaml.safeLoad(fs.readFileSync("./tests/acceptance-tests/con
 const browserType = testSettings.browser;
 
 const getSpecs = testSuite.getToggles();
+const getResult = testSuite.getResults();
 
 exports.config = {
   updateJob: false,
@@ -30,10 +31,9 @@ exports.config = {
     ui: "bdd",
     timeout: 999999
   },
-  reporters: ["allure"],
+  reporters: getResult,
   reporterOptions: {
     allure: {
-    // maybe add a function to include a timstamp on allure results directory
       outputDir: "allure-results"
     }
   }

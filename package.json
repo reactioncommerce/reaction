@@ -91,6 +91,7 @@
   },
   "scripts": {
     "create-report": "allure generate allure-results/ -o ~/allure-report",
+    "del-report": "rm -rf ~/allure-report && rm -rf allure-results",
     "test-local": "wdio tests/runner/local.conf.js",
     "test-browserstack": "wdio tests/runner/browserstack.conf.js"
   }

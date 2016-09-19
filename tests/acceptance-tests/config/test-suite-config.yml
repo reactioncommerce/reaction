@@ -12,3 +12,6 @@ permissions: false
 
 # Regression suites
 smoke_test: true
+
+# Test reporter
+allure: true

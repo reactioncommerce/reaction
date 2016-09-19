@@ -38,5 +38,12 @@ module.exports = {
       toggles.push(smokeTestSpecs[0]);
     }
     return toggles;
+  },
+  getResults: function () {
+    let allureArr = [];
+    if (suiteConfig.allure === true) {
+      allureArr.push("allure");
+    }
+    return allureArr;
   }
 };
