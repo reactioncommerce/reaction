@@ -28,6 +28,10 @@ class ProductAdminContainer extends Component {
     return this.state.product || this.props.product || {};
   }
 
+  handleDeleteProduct = (product) => {
+    ReactionProduct.maybeDeleteProduct(product || this.product);
+  }
+
   handleFieldChange = (field, value) => {
     const newState = update(this.state, {
       product: {
@@ -91,6 +95,7 @@ class ProductAdminContainer extends Component {
     return (
       <ProductAdmin
         newMetafield={this.state.newMetafield}
+        onDeleteProduct={this.handleDeleteProduct}
         onFieldChange={this.handleFieldChange}
         onMetaChange={this.handleMetaChange}
         onMetaRemove={this.handleMetaRemove}
