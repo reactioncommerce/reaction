@@ -53,6 +53,7 @@ Template.searchModal.helpers({
       kind: "close",
       onClick() {
         $(".js-search-modal").fadeOut(400, () => {
+          $("body").css("overflow", "visible");
           Blaze.remove(view);
         });
       }
@@ -80,6 +81,7 @@ Template.searchModal.events({
       const instance = Template.instance();
       const view = instance.view;
       $(".js-search-modal").fadeOut(400, () => {
+        $("body").css("overflow", "visible");
         Blaze.remove(view);
       });
     }
