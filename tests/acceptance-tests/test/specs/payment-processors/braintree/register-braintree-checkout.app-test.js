@@ -16,7 +16,7 @@ beforeEach(function () {
 describe("braintree logged in checkout test", function () {
   const eleMap = yaml.safeLoad(fs.readFileSync("./tests/acceptance-tests/elements/element-map.yml", "utf8"));
   it("verify logged in user can checkout with braintree", function () {
-    userDo.UserActions.userLogin("guest");
+    userDo.UserActions.registerUser();
     browser.pause("5000");
     userDo.UserActions.refreshShop();
     browser.click(eleMap.product);
