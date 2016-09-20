@@ -13,7 +13,7 @@ import { Media } from "/lib/collections";
  * productGridItems helpers
  */
 
-Template.searchGridItems.helpers({
+Template.productItem.helpers({
   controlProps() {
     const instance = Template.instance();
 
@@ -103,7 +103,7 @@ Template.searchGridItems.helpers({
  * productGridItems events
  */
 
-Template.searchGridItems.events({
+Template.productItem.events({
   "click [data-event-action=productClick]": function (event, template) {
     // if (Reaction.hasPermission("createProduct")) {
     //   if (event.metaKey || event.ctrlKey || event.shiftKey) {

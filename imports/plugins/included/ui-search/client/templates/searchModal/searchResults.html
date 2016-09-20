@@ -3,17 +3,15 @@
   <div class="rui search-modal-results-container">
     <div class="rui search-modal-results">
       {{#if productSearchResults}}
-        {{> searchGrid productSearchResults=productSearchResults}}
+        {{> productResults productSearchResults=productSearchResults}}
       {{/if}}
 
       {{#if orderSearchResults}}
-        <!-- {{> searchGrid productSearchResults=productSearchResults}} -->
-        <h2>nothing here yet, come back soon</h2>
+        {{> orderResults orderSearchResults=orderSearchResults}}
       {{/if}}
 
       {{#if accountSearchResults}}
-        <!-- {{> searchGrid productSearchResults=productSearchResults}} -->
-        <h2>come back soon, there is nothing here yet</h2>
+        {{> accountResults accountSearchResults=accountSearchResults}}
       {{/if}}
     </div>
   </div>

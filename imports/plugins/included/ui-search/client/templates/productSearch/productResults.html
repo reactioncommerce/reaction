@@ -1,0 +1,19 @@
+<template name="productResults">
+  <div class="container-main">
+    <div class="product-grid">
+      <ul class="product-grid-list list-unstyled" id="product-grid-list">
+        {{#each product in productSearchResults}}
+          {{> productItem product=product}}
+        {{else}}
+          <div class="row">
+            <div class="text-center">
+              <h3>
+                <span data-i18n="search.noProductsFound">No products found.</span>
+              </h3>
+            </div>
+          </div>
+        {{/each}}
+      </ul>
+    </div>
+  </div>
+</template>

@@ -1,14 +1,14 @@
-<template name="searchGrid">
+<template name="orderResults">
   <div class="container-main">
     <div class="product-grid">
       <ul class="product-grid-list list-unstyled" id="product-grid-list">
-        {{#each product in productSearchResults}}
-          {{> searchGridItems product=product}}
+        {{#each order in orderSearchResults}}
+          {{> orderItem order=order}}
         {{else}}
           <div class="row">
             <div class="text-center">
               <h3>
-                <span data-i18n="search.noProductsFound">No products found.</span>
+                <span data-i18n="search.noOrdersFound">No orders found.</span>
               </h3>
             </div>
           </div>

@@ -10,11 +10,11 @@ import Sortable from "sortablejs";
  * productGrid helpers
  */
 
-Template.searchGrid.onCreated(function () {
+Template.productResults.onCreated(function () {
   Session.set("productGrid/selectedProducts", []);
 });
 
-Template.searchGrid.onRendered(function () {
+Template.productResults.onRendered(function () {
   const instance = this;
 
   if (Reaction.hasPermission("createProduct")) {
@@ -50,7 +50,7 @@ Template.searchGrid.onRendered(function () {
   }
 });
 
-Template.searchGrid.events({
+Template.productResults.events({
   "click [data-event-action=loadMoreProducts]": (event) => {
     event.preventDefault();
     loadMoreProducts();
@@ -88,7 +88,7 @@ Template.searchGrid.events({
   }
 });
 
-Template.searchGrid.helpers({
+Template.productResults.helpers({
   loadMoreProducts() {
     return Template.instance().state.equals("canLoadMoreProducts", true);
   },
