@@ -235,7 +235,12 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
       }).observeChanges({
         added: (id, fields) => {
           const revisions = Revisions.find({
-            documentId: id
+            "documentId": id,
+            "workflow.status": {
+              $nin: [
+                "revision/published"
+              ]
+            }
           }).fetch();
           fields.__revisions = revisions;
 
@@ -243,7 +248,12 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
         },
         changed: (id, fields) => {
           const revisions = Revisions.find({
-            documentId: id
+            "documentId": id,
+            "workflow.status": {
+              $nin: [
+                "revision/published"
+              ]
+            }
           }).fetch();
 
           fields.__revisions = revisions;
@@ -254,7 +264,13 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
         }
       });
 
-      const handle2 = Revisions.find({}).observeChanges({
+      const handle2 = Revisions.find({
+        "workflow.status": {
+          $nin: [
+            "revision/published"
+          ]
+        }
+      }).observeChanges({
         added: (id, fields) => {
           this.added("Revisions", id, fields);
         },

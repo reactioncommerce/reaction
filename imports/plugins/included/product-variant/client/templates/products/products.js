@@ -1,5 +1,6 @@
 import { Reaction } from "/client/api";
 import { ReactionProduct } from "/lib/api";
+import { applyProductRevision } from "/lib/api/products";
 import { Products, Tags } from "/lib/collections";
 import { Session } from "meteor/session";
 import { Template } from "meteor/templating";
@@ -88,10 +89,7 @@ Template.products.onCreated(function () {
     });
 
     const products = productCursor.map((product) => {
-      if (product.__revisions && product.__revisions.length) {
-        return product.__revisions[0].documentData;
-      }
-      return product;
+      return applyProductRevision(product);
     });
 
     this.state.set("canLoadMoreProducts", productCursor.count() >= Session.get("productScrollLimit"));
