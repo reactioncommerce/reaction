@@ -64,8 +64,8 @@ getResults.orders = function (searchTerm, facets, maxResults, userId) {
         } }
       ] }
     ]};
-  if (Roles.userIsInRole(userId, ["admin", "owner"], shopId)) {
-    orderResults = OrderSearch.find(findTerm);
+  if (Reaction.hasPermission("orders", userId)) {
+    orderResults = OrderSearch.find(findTerm, { limit: maxResults });
     Logger.debug(`Found ${orderResults.count()} orders`);
   }
   return orderResults;
@@ -74,10 +74,12 @@ getResults.orders = function (searchTerm, facets, maxResults, userId) {
 getResults.accounts = function (searchTerm, facets, maxResults, userId) {
   let accountResults;
   const shopId = Reaction.getShopId();
-  if (Roles.userIsInRole(userId, ["admin", "owner"], shopId)) {
+  if (Reaction.hasPermission("reaction-accounts", userId)) {
     accountResults = AccountSearch.find({
       shopId: shopId,
       emails: searchTerm
+    }, {
+      limit: maxResults
     });
     Logger.debug(`Found ${accountResults.count()} accounts searching for ${searchTerm}`);
   }
