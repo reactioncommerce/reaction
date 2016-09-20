@@ -17,24 +17,22 @@ cd reaction
 reaction
 ```
 
-> **reaction-cli** requires a recent version of [npm](https://www.npmjs.com/).
+`reaction -v` provides useful version information you'll need for debugging if you have issues with `reaction`.
+
+[ImageMagick](http://www.imagemagick.org/script/binary-releases.php) is optional, but required for transforming images for responsive sizing.
+
+**Windows** users should review the [Windows specific installation requirements for Meteor and Reaction](https://docs.reactioncommerce.com/reaction-docs/development/requirements).
+
+**reaction-cli** also requires a recent version of [npm](https://www.npmjs.com/).
+
+You can use [npm](https://www.npmjs.com/) to update to the latest version.
 
 ```
 npm i -g n
 n stable
 ```
 
-[ImageMagick](http://www.imagemagick.org/script/binary-releases.php) is optional, but required for transforming images for responsive sizing.
-
-**Windows** users should review the [Windows specific installation requirements for Meteor and Reaction](https://docs.reactioncommerce.com/reaction-docs/development/requirements).
-
 Additional setup options, such as how to set the default credentials, installation without `reaction-cli`, and [Meteor](https://www.meteor.com/install) installation can be found in the [installation](https://docs.reactioncommerce.com/reaction-docs/development/installation) and [configuration documentation](https://docs.reactioncommerce.com/reaction-docs/development/configuration).
-
-## Docs
-
-Installation, configuration and development documentation is available on [docs.reactioncommerce.com](https://docs.reactioncommerce.com/)
-
-The Reaction documentation source is located in the [reaction-docs](https://github.com/reactioncommerce/reaction-docs) repository, while the documentation site is the [reactioncommerce/redoc](https://github.com/reactioncommerce/redoc) application.
 
 ![dashboard_and_new_tab](https://cloud.githubusercontent.com/assets/439959/17002746/a9fd1694-4e81-11e6-9963-28d6352787a3.png)
 
@@ -44,27 +42,61 @@ Reaction is expected to have a stable codebase ready for some production configu
 
 Currently good for contributing, observing progress, and testing. We'd encourage due diligence in production usage, be very comfortable with the code, and risk tolerant. There are still many parts in development!
 
-- Master ( [stable](https://github.com/reactioncommerce/reaction/tree/master) )
-- Development ( [latest](https://github.com/reactioncommerce/reaction/tree/development) )
+-   Master ( [stable](https://github.com/reactioncommerce/reaction/tree/master) )
+-   Development ( [latest](https://github.com/reactioncommerce/reaction/tree/development) )
 
-## Roadmap
+## Participation
 
-With ongoing feature development, and strong community contributions, we have a fluid roadmap.
+If you are interested in participating in the development of Reaction, that's really great!
 
+Our [community guidelines](https://docs.reactioncommerce.com/reaction-docs/master/guidelines) can be found in our [documentation](https://docs.reactioncommerce.com/). This is a good place to start getting more familar with Reaction.
+
+The [Reaction Gitter channel](https://gitter.im/reactioncommerce/reaction) and [forum](http://discourse.reactioncommerce.com/) are good places to engage with core contributors and the community.
+
+
+### Planning
 For a high level review our roadmap, take a look at the [Reaction vision page](http://reactioncommerce.com/vision).
 
-For grouping of development channels by feature, review the [project milestones](https://github.com/reactioncommerce/reaction/milestones).
+For a kanban-esque, hardcore, real time progress overview of all Reaction Commerce projects use our [waffle board](https://waffle.io/reactioncommerce/reaction).
 
-And finally for the kanban-esque, hardcore real time progress overview of Reaction, take a look our [waffle board](https://waffle.io/reactioncommerce/reaction)
+Grouped by functional area, [reactioncommerce/reaction projects](https://github.com/reactioncommerce/reaction/projects) deliver a progress view of the Reaction sub-projects.
 
-## Feedback
+For grouping of issues with an estimated release schedule, review the [release milestones](https://github.com/reactioncommerce/reaction/milestones).
 
-**Create a GitHub Issue** on the [Reaction project](https://github.com/reactioncommerce/reaction) to report an issue.
+### Contributing
 
-Visit the **[Reaction forum](http://discourse.reactioncommerce.com/)** to engage with the core team and community on new feature requests, or get community support with customization of Reaction.
+If you are planning on [contributing](https://guides.github.com/activities/contributing-to-open-source/#contributing) to Reaction, that's great. We welcome contributions to Reaction.
 
-Join us on our **[Gitter chat room](https://gitter.im/reactioncommerce/reaction)** to engage with other Meteor and Reaction users.
+Explore the GitHub issues already opened. If you find something you want to work on, let us know right there in the comments. If you are interested in a specific aspect of the [project](https://github.com/reactioncommerce/reaction/projects) but aren’t sure where to begin, feel free to ask. Start small and open up a dialogue with us. This will help to get your contributions accepted easily.
 
-## Docker
+If the contribution you wish to make isn't documented in an existing issue, please [create an issue](https://github.com/reactioncommerce/reaction/issues/new), before you submit a [Pull Request](https://help.github.com/articles/about-pull-requests/). This will allow the Reaction Maintainers and Collaborators a chance to give additional feedback as well.
 
-Docker images are available on the [Docker Hub](https://hub.docker.com/u/reactioncommerce/). There are two images available: [reactioncommerce:prequel](https://hub.docker.com/r/reactioncommerce/prequel/) - the latest `development` image and [reactioncommerce:reaction](https://hub.docker.com/r/reactioncommerce/reaction/), the `master` image.
+[Pull Requests](https://help.github.com/articles/about-pull-requests/) should
+-   Have an associated issue
+-   Have accepted the Contributor License Agreement
+-   Enforce the [Reaction style guide](https://docs.reactioncommerce.com/reaction-docs/master/styleguide)
+-   Pass both [Acceptance tests and Unit testing](https://docs.reactioncommerce.com/reaction-docs/master/testing-reaction).
+
+
+### Documentation
+
+Installation, configuration and development documentation is available on [docs.reactioncommerce.com](https://docs.reactioncommerce.com/)
+
+The Reaction documentation source is located in the [reaction-docs](https://github.com/reactioncommerce/reaction-docs) repository, while the documentation site is the [reactioncommerce/redoc](https://github.com/reactioncommerce/redoc) application.
+
+### Testing
+
+Testing is an important way of participating as well. If you do discover an issue, please create an [issue here](https://github.com/reactioncommerce/reaction/issues/new) to report an issue.
+
+Integration tests can be run at the command line with `reaction test`. Use `npm run-script test-local` to run local tests.
+
+We use [BrowserStack](https://www.browserstack.com) for automated acceptance testing.
+
+![BrowserStack Logo](https://d98b8t1nnulk5.cloudfront.net/production/images/layout/logo-header.png?1469004780)
+
+### Deployment
+We require that all releases are deployable as [Docker](https://www.docker.com/) containers.  While we do not actively test or support other methods of deployment, the community has documented deployment strategies for [Heroku](https://github.com/reactioncommerce/reaction/issues/1363), AWS, [Digital Ocean](https://gist.github.com/jshimko/745ca66748846551692e24c267a56060) and Galaxy.
+
+##### Docker
+
+Docker images are pushed when Reaction sucessfully builds and passes all tests on the `master` or `development` branches. These images are released on [Reaction Commerce Docker Hub](https://hub.docker.com/u/reactioncommerce/). There are two images available: [reactioncommerce:prequel](https://hub.docker.com/r/reactioncommerce/prequel/) - the latest `development` image and [reactioncommerce:reaction](https://hub.docker.com/r/reactioncommerce/reaction/), the `master` image.
