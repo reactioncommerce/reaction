@@ -65,7 +65,7 @@ Template.searchModal.onCreated(function () {
       else {
         this.state.set("productSearchResults", "");
         this.state.set("tagSearchResults", "");
-        console.log("If searchCollection !== products, clear result", searchCollection);
+        console.log("If searchCollection !== products, clear result. New collection is: ", searchCollection);
       }
     }
   });
