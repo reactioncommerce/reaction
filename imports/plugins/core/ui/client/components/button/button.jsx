@@ -77,7 +77,7 @@ class Button extends Component {
         if (this.props.toggleOn && this.props.toggleOnLabel) {
           return (
             <Translation
-              defaultValue={this.props.toggleOnlabel}
+              defaultValue={this.props.toggleOnLabel}
               i18nKey={this.props.i18nKeyToggleOnLabel}
             />
           );
@@ -112,6 +112,7 @@ class Button extends Component {
       // Destructure these vars as they aren't valid as attributes on the HTML element button
       label, active, className, status, i18nKeyTitle, i18nKeyLabel, i18nKeyTooltip, // eslint-disable-line no-unused-vars
       tooltip, icon, toggle, onIcon, primary, toggleOn, eventAction, // eslint-disable-line no-unused-vars
+      toggleOnLabel, i18nKeyToggleOnLabel, // eslint-disable-line no-unused-vars
 
       // Get the rest of the properties and put them in attrs
       // these will most likely be HTML attributes
@@ -153,6 +154,7 @@ Button.propTypes = {
   eventAction: PropTypes.string,
   i18nKeyLabel: PropTypes.string,
   i18nKeyTitle: PropTypes.string,
+  i18nKeyToggleOnLabel: PropTypes.string,
   i18nKeyTooltip: PropTypes.string,
   icon: PropTypes.string,
   label: PropTypes.string,
@@ -162,6 +164,7 @@ Button.propTypes = {
   title: PropTypes.string,
   toggle: PropTypes.bool,
   toggleOn: PropTypes.bool,
+  toggleOnLabel: PropTypes.string,
   tooltip: PropTypes.oneOfType([PropTypes.string, PropTypes.object, PropTypes.node])
 };
 
