@@ -185,6 +185,8 @@ Template.searchModal.events({
     $('.search-type-option').not(event.target).removeClass('search-type-active');
     $(event.target).addClass("search-type-active");
 
+    $("#search-input").focus();
+
     templateInstance.state.set("searchCollection", searchCollection);
   }
 });
