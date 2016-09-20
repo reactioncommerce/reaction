@@ -1,6 +1,6 @@
 import { Products, Revisions } from "/lib/collections";
 import { Reaction } from "/server/api";
-
+import { isRevisionControlEnabled } from "/imports/plugins/core/revisions/lib/api";
 //
 // define search filters as a schema so we can validate
 // params supplied to the products publication
@@ -229,75 +229,82 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
         $in: [true, false, undefined]
       };
 
-      const handle = Products.find(selector, {
+      if (isRevisionControlEnabled()) {
+        const handle = Products.find(selector, {
+          sort: sort,
+          limit: productScrollLimit
+        }).observeChanges({
+          added: (id, fields) => {
+            const revisions = Revisions.find({
+              "documentId": id,
+              "workflow.status": {
+                $nin: [
+                  "revision/published"
+                ]
+              }
+            }).fetch();
+            fields.__revisions = revisions;
+
+            this.added("Products", id, fields);
+          },
+          changed: (id, fields) => {
+            const revisions = Revisions.find({
+              "documentId": id,
+              "workflow.status": {
+                $nin: [
+                  "revision/published"
+                ]
+              }
+            }).fetch();
+
+            fields.__revisions = revisions;
+            this.changed("Products", id, fields);
+          },
+          removed: (id) => {
+            this.removed("Products", id);
+          }
+        });
+
+        const handle2 = Revisions.find({
+          "workflow.status": {
+            $nin: [
+              "revision/published"
+            ]
+          }
+        }).observeChanges({
+          added: (id, fields) => {
+            this.added("Revisions", id, fields);
+          },
+          changed: (id, fields) => {
+            const revision = Revisions.findOne(id);
+
+            // Only update the revision on the published products if
+            // the revision status was update
+            if (revision.workflow.status === "revision/update") {
+              const product = Products.findOne(revision.documentId);
+
+              product.__revisions = [revision];
+              this.changed("Products", product._id, product);
+            }
+            this.changed("Revisions", id, fields);
+          },
+          removed: (id) => {
+            this.removed("Revisions", id);
+          }
+        });
+
+        this.onStop(() => {
+          handle.stop();
+          handle2.stop();
+        });
+
+        return this.ready();
+      }
+      // Revision control is disabled
+      return Products.find(selector, {
         sort: sort,
         limit: productScrollLimit
-      }).observeChanges({
-        added: (id, fields) => {
-          const revisions = Revisions.find({
-            "documentId": id,
-            "workflow.status": {
-              $nin: [
-                "revision/published"
-              ]
-            }
-          }).fetch();
-          fields.__revisions = revisions;
-
-          this.added("Products", id, fields);
-        },
-        changed: (id, fields) => {
-          const revisions = Revisions.find({
-            "documentId": id,
-            "workflow.status": {
-              $nin: [
-                "revision/published"
-              ]
-            }
-          }).fetch();
-
-          fields.__revisions = revisions;
-          this.changed("Products", id, fields);
-        },
-        removed: (id) => {
-          this.removed("Products", id);
-        }
       });
-
-      const handle2 = Revisions.find({
-        "workflow.status": {
-          $nin: [
-            "revision/published"
-          ]
-        }
-      }).observeChanges({
-        added: (id, fields) => {
-          this.added("Revisions", id, fields);
-        },
-        changed: (id, fields) => {
-          const revision = Revisions.findOne(id);
-
-          // Only update the revision on the published products if
-          // the revision status was update
-          if (revision.workflow.status === "revision/update") {
-            const product = Products.findOne(revision.documentId);
-
-            product.__revisions = [revision];
-            this.changed("Products", product._id, product);
-          }
-          this.changed("Revisions", id, fields);
-        },
-        removed: (id) => {
-          this.removed("Revisions", id);
-        }
-      });
-
-      this.onStop(() => {
-        handle.stop();
-        handle2.stop();
-      });
-
-      return this.ready();
     }
 
     // Everyone else gets the standard, visibile products

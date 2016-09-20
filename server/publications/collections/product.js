@@ -1,5 +1,6 @@
 import { Products, Revisions } from "/lib/collections";
 import { Logger, Reaction } from "/server/api";
+import { isRevisionControlEnabled } from "/imports/plugins/core/revisions/lib/api";
 
 /**
  * product detail publication
@@ -68,68 +69,73 @@ Meteor.publish("Product", function (productId) {
       $in: [true, false, undefined]
     };
 
-    const handle = Products.find(selector).observeChanges({
-      added: (id, fields) => {
-        const revisions = Revisions.find({
-          "documentId": id,
-          "workflow.status": {
-            $nin: [
-              "revision/published"
-            ]
-          }
-        }).fetch();
-        fields.__revisions = revisions;
+    if (isRevisionControlEnabled()) {
+      const handle = Products.find(selector).observeChanges({
+        added: (id, fields) => {
+          const revisions = Revisions.find({
+            "documentId": id,
+            "workflow.status": {
+              $nin: [
+                "revision/published"
+              ]
+            }
+          }).fetch();
+          fields.__revisions = revisions;
 
-        this.added("Products", id, fields);
-      },
-      changed: (id, fields) => {
-        const revisions = Revisions.find({
-          "documentId": id,
-          "workflow.status": {
-            $nin: [
-              "revision/published"
-            ]
-          }
-        }).fetch();
+          this.added("Products", id, fields);
+        },
+        changed: (id, fields) => {
+          const revisions = Revisions.find({
+            "documentId": id,
+            "workflow.status": {
+              $nin: [
+                "revision/published"
+              ]
+            }
+          }).fetch();
 
-        fields.__revisions = revisions;
-        this.changed("Products", id, fields);
-      },
-      removed: (id) => {
-        this.removed("Products", id);
-      }
-    });
+          fields.__revisions = revisions;
+          this.changed("Products", id, fields);
+        },
+        removed: (id) => {
+          this.removed("Products", id);
+        }
+      });
 
-    const handle2 = Revisions.find({
-      "workflow.status": {
-        $nin: [
-          "revision/published"
-        ]
-      }
-    }).observeChanges({
-      added: (id, fields) => {
-        this.added("Revisions", id, fields);
-      },
-      changed: (id, fields) => {
-        const revision = Revisions.findOne(id);
-        const product = Products.findOne(revision.documentId);
+      const handle2 = Revisions.find({
+        "workflow.status": {
+          $nin: [
+            "revision/published"
+          ]
+        }
+      }).observeChanges({
+        added: (id, fields) => {
+          this.added("Revisions", id, fields);
+        },
+        changed: (id, fields) => {
+          const revision = Revisions.findOne(id);
+          const product = Products.findOne(revision.documentId);
 
-        product.__revisions = [revision];
+          product.__revisions = [revision];
 
-        this.changed("Products", product._id, product);
-        this.changed("Revisions", id, fields);
-      },
-      removed: (id) => {
-        this.removed("Revisions", id);
-      }
-    });
+          this.changed("Products", product._id, product);
+          this.changed("Revisions", id, fields);
+        },
+        removed: (id) => {
+          this.removed("Revisions", id);
+        }
+      });
 
-    this.onStop(() => {
-      handle.stop();
-      handle2.stop();
-    });
+      this.onStop(() => {
+        handle.stop();
+        handle2.stop();
+      });
 
-    return this.ready();
+      return this.ready();
+    }
+
+    // Revision control is disabled
+    return Products.find(selector);
   }
 
   // Everyone else gets the standard, visibile products and variants

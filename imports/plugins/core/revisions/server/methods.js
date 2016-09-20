@@ -5,7 +5,6 @@ import { check, Match } from "meteor/check";
 export function updateSettings(settings) {
   check(settings, Object);
 
-  console.log("Server", settings);
   Packages.update({
     name: "reaction-revisions"
   }, {

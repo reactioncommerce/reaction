@@ -1,9 +1,13 @@
 import { Products, Revisions, Tags } from "/lib/collections";
 import { Logger } from "/server/api";
 import { diff } from "deep-diff";
-
+import { isRevisionControlEnabled } from "../lib/api";
 
 Products.before.insert((userId, product) => {
+  if (isRevisionControlEnabled() !== true) {
+    return true;
+  }
+
   const productRevision = Revisions.findOne({
     "documentId": product._id,
     "workflow.status": {
@@ -25,6 +29,10 @@ Products.before.insert((userId, product) => {
 
 
 Products.before.update(function (userId, product, fieldNames, modifier, options) {
+  if (isRevisionControlEnabled() !== true) {
+    return true;
+  }
+
   let productRevision = Revisions.findOne({
     "documentId": product._id,
     "workflow.status": {
@@ -190,6 +198,10 @@ Products.before.update(function (userId, product, fieldNames, modifier, options)
 });
 
 Products.before.remove(function (userId, product) {
+  if (isRevisionControlEnabled() === false) {
+    return true;
+  }
+
   let productRevision = Revisions.findOne({
     documentId: product._id
   });
@@ -236,6 +248,10 @@ Products.before.remove(function (userId, product) {
 });
 
 Revisions.after.update(function (userId, revision) {
+  if (isRevisionControlEnabled() === false) {
+    return true;
+  }
+
   // Make diff
   const product = Products.findOne({
     _id: revision.documentId
