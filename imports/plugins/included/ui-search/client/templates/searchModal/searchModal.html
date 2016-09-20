@@ -23,6 +23,15 @@
         </div>
       </div>
       {{/if}}
+
+      {{#if hasPermission "createProduct"}}
+      <div class="rui search-type-choser">
+        <span data-event-action="searchCollection" data-event-value="products">Products</span> |
+        <span data-event-action="searchCollection" data-event-value="accounts">Accounts</span> |
+        <span data-event-action="searchCollection" data-event-value="orders">Orders</span>
+      </div>
+      {{/if}}
+
     </div>
 
     <div class="rui search-modal-results-container">

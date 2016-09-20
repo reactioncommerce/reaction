@@ -1,8 +1,15 @@
-import "./templates/searchModal.html";
-import "./templates/searchModal.js";
-import "./templates/searchGrid/searchGrid.html";
-import "./templates/searchGrid/searchGrid.js";
-import "./templates/searchGrid/item.html";
-import "./templates/searchGrid/item.js";
-import "./templates/searchGrid/content.html";
-import "./templates/searchGrid/content.js";
+// Search Modal
+import "./templates/searchModal/searchModal.html";
+import "./templates/searchModal/searchModal.js";
+
+// Product Search
+import "./templates/productSearch/searchGrid/searchGrid.html";
+import "./templates/productSearch/searchGrid/searchGrid.js";
+import "./templates/productSearch/searchGrid/item.html";
+import "./templates/productSearch/searchGrid/item.js";
+import "./templates/productSearch/searchGrid/content.html";
+import "./templates/productSearch/searchGrid/content.js";
+
+// Order Search
+
+// Account Search
