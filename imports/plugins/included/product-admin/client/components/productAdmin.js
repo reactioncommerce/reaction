@@ -152,10 +152,10 @@ class ProductAdmin extends Component {
             <div className="rui items flex">
               <div className="rui item three-quarters">
                 {this.product.isVisible &&
-                  <Translation defaultValue="Product is visible" />
+                  <Translation defaultValue="Product is visible" i18nKey="productDetailEdit.productIsVisible" />
                 }
                 {!this.product.isVisible &&
-                  <Translation defaultValue="Product is not visible" />
+                  <Translation defaultValue="Product is not visible" i18nKey="productDetailEdit.productIsNotVisible" />
                 }
               </div>
               <div className="rui item quarter">

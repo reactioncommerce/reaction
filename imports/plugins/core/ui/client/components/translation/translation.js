@@ -17,8 +17,8 @@ class Translation extends Component {
 }
 
 Translation.propTypes = {
-  defaultValue: PropTypes.string.isRequired,
-  i18nKey: PropTypes.string.isRequired
+  defaultValue: PropTypes.string,
+  i18nKey: PropTypes.string
 };
 
 export default Translation;
