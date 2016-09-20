@@ -637,7 +637,10 @@
         "clearSearch": "Clear",
         "noProductsFound": "No products found",
         "searchInputLabel": "Search Reaction ",
-        "suggestedTags": "Suggested tags"
+        "suggestedTags": "Suggested tags",
+        "searchTypeProducts": "Products",
+        "searchTypeAccounts": "Accounts",
+        "searchTypeOrders": "Orders"
       },
       "accountsUI": {
         "members": "Members",
