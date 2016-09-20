@@ -1,7 +1,7 @@
 import _ from "lodash";
 import { IconButton } from "/imports/plugins/core/ui/client/components";
 import { Template } from "meteor/templating";
-import { ProductSearch, Tags } from "/lib/collections";
+import { ProductSearch, Tags, OrderSearch, AccountSearch } from "/lib/collections";
 
 
 /**
@@ -44,11 +44,15 @@ Template.searchModal.onCreated(function () {
     const sub = this.subscribe("SearchResults", searchCollection, searchQuery, facets);
 
     if (sub.ready()) {
+
+      /**
+       * Product Search
+       */
       if (searchCollection === "products") {
-        const results = ProductSearch.find().fetch();
-        this.state.set("productSearchResults", results);
+        const productResults = ProductSearch.find().fetch();
+        this.state.set("productSearchResults", productResults);
         const hashtags = [];
-        for (const product of results) {
+        for (const product of productResults) {
           if (product.hashtags) {
             for (const hashtag of product.hashtags) {
               if (!_.includes(hashtags, hashtag)) {
@@ -61,11 +65,40 @@ Template.searchModal.onCreated(function () {
           _id: { $in: hashtags }
         }).fetch();
         this.state.set("tagSearchResults", tagResults);
+
+        // Do we need this?
+        this.state.set("accountSearchResults", "");
+        this.state.set("orderSearchResults", "");
       }
-      else {
+
+      /**
+       * Account Search
+       */
+      if (searchCollection === "accounts") {
+        const accountResults = AccountSearch.find().fetch();
+        this.state.set("accountSearchResults", accountResults);
+
+          console.log("-----accountResults-----", accountResults);
+
+        // Do we need this?
+        this.state.set("orderSearchResults", "");
         this.state.set("productSearchResults", "");
         this.state.set("tagSearchResults", "");
-        console.log("If searchCollection !== products, clear result. New collection is: ", searchCollection);
+      }
+
+      /**
+       * Order Search
+       */
+      if (searchCollection === "orders") {
+        const orderResults = OrderSearch.find().fetch();
+        this.state.set("orderSearchResults", orderResults);
+
+        console.log("-----orderResults-----", orderResults);
+
+        // Do we need this?
+        this.state.set("accountSearchResults", "");
+        this.state.set("productSearchResults", "");
+        this.state.set("tagSearchResults", "");
       }
     }
   });
@@ -150,6 +183,9 @@ Template.searchModal.events({
     event.preventDefault();
     const instance = Template.instance();
     const searchCollection = $(event.target).data("event-value");
+
+    $('.search-type-option').not(event.target).removeClass('search-type-active');
+    $(event.target).addClass("search-type-active");
 
     templateInstance.state.set("searchCollection", searchCollection);
   }
