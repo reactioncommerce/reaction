@@ -15,6 +15,20 @@ Template.searchModal.onCreated(function () {
     tagSearchResults: []
   });
 
+
+  // Allow modal to be closed by clicking ESC
+  // Must be done in Template.searchModal.onCreated and not in Template.searchModal.events
+  $(document).on('keyup', (event) => {
+    if (event.keyCode === 27) {
+      const view = this.view;
+      $(".js-search-modal").fadeOut(400, () => {
+        $("body").css("overflow", "visible");
+        Blaze.remove(view);
+      });
+    }
+  });
+
+
   this.autorun(() => {
     const searchQuery = this.state.get("searchQuery");
     const facets = this.state.get("facets") || [];
@@ -53,6 +67,7 @@ Template.searchModal.helpers({
       kind: "close",
       onClick() {
         $(".js-search-modal").fadeOut(400, () => {
+          $("body").css("overflow", "visible");
           Blaze.remove(view);
         });
       }
@@ -76,13 +91,6 @@ Template.searchModal.events({
   // on type, reload Reaction.SaerchResults
   "keyup input": (event, templateInstance) => {
     event.preventDefault();
-    if (event.keyCode === 27) {
-      const instance = Template.instance();
-      const view = instance.view;
-      $(".js-search-modal").fadeOut(400, () => {
-        Blaze.remove(view);
-      });
-    }
     const searchQuery = templateInstance.find("#search-input").value;
     templateInstance.state.set("searchQuery", searchQuery);
     $(".search-modal-header:not(.active-search)").addClass(".active-search");
@@ -115,6 +123,11 @@ Template.searchModal.events({
     const searchQuery = templateInstance.find("#search-input").value;
     templateInstance.state.set("searchQuery", searchQuery);
   }
+});
+
+Template.searchModal.onDestroyed(() => {
+  // Kill Allow modal to be closed by clicking ESC, which was initiated in Template.searchModal.onCreated
+  $(document).off('keyup');
 });
 
 function tagToggle(arr, val) {
