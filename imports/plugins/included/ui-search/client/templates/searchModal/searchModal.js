@@ -19,11 +19,6 @@ Template.searchModal.onCreated(function () {
   });
 
 
-  // Set products collection as the default searchCollection
-  const searchCollection = "products";
-  this.state.set("searchCollection", searchCollection);
-
-
   // Allow modal to be closed by clicking ESC
   // Must be done in Template.searchModal.onCreated and not in Template.searchModal.events
   $(document).on("keyup", (event) => {
@@ -38,13 +33,12 @@ Template.searchModal.onCreated(function () {
 
 
   this.autorun(() => {
-    const searchCollection = this.state.get("searchCollection");
+    const searchCollection = this.state.get("searchCollection") || "products";
     const searchQuery = this.state.get("searchQuery");
     const facets = this.state.get("facets") || [];
     const sub = this.subscribe("SearchResults", searchCollection, searchQuery, facets);
 
     if (sub.ready()) {
-
       /**
        * Product Search
        */
@@ -66,7 +60,7 @@ Template.searchModal.onCreated(function () {
         }).fetch();
         this.state.set("tagSearchResults", tagResults);
 
-        // Do we need this?
+        // TODO: Do we need this?
         this.state.set("accountSearchResults", "");
         this.state.set("orderSearchResults", "");
       }
@@ -78,9 +72,7 @@ Template.searchModal.onCreated(function () {
         const accountResults = AccountSearch.find().fetch();
         this.state.set("accountSearchResults", accountResults);
 
-          console.log("-----accountResults-----", accountResults);
-
-        // Do we need this?
+        // TODO: Do we need this?
         this.state.set("orderSearchResults", "");
         this.state.set("productSearchResults", "");
         this.state.set("tagSearchResults", "");
@@ -93,9 +85,7 @@ Template.searchModal.onCreated(function () {
         const orderResults = OrderSearch.find().fetch();
         this.state.set("orderSearchResults", orderResults);
 
-        console.log("-----orderResults-----", orderResults);
-
-        // Do we need this?
+        // TODO: Do we need this?
         this.state.set("accountSearchResults", "");
         this.state.set("productSearchResults", "");
         this.state.set("tagSearchResults", "");
@@ -128,13 +118,21 @@ Template.searchModal.helpers({
   productSearchResults() {
     const instance = Template.instance();
     const results = instance.state.get("productSearchResults");
-    // console.log("productSearchResults", results);
     return results;
   },
   tagSearchResults() {
     const instance = Template.instance();
     const results = instance.state.get("tagSearchResults");
-    // console.log("tagSearchResults", results);
+    return results;
+  },
+  orderSearchResults() {
+    const instance = Template.instance();
+    const results = instance.state.get("orderSearchResults");
+    return results;
+  },
+  accountSearchResults() {
+    const instance = Template.instance();
+    const results = instance.state.get("accountSearchResults");
     return results;
   }
 });
