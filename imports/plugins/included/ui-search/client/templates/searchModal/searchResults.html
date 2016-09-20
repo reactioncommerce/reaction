@@ -1,0 +1,21 @@
+<template name="searchResults">
+
+  <div class="rui search-modal-results-container">
+    <div class="rui search-modal-results">
+      {{#if productSearchResults}}
+        {{> searchGrid productSearchResults=productSearchResults}}
+      {{/if}}
+
+      {{#if orderSearchResults}}
+        <!-- {{> searchGrid productSearchResults=productSearchResults}} -->
+        <h2>nothing here yet, come back soon</h2>
+      {{/if}}
+
+      {{#if accountSearchResults}}
+        <!-- {{> searchGrid productSearchResults=productSearchResults}} -->
+        <h2>come back soon, there is nothing here yet</h2>
+      {{/if}}
+    </div>
+  </div>
+
+</template>
