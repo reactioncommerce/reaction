@@ -635,8 +635,10 @@
       },
       "search": {
         "clearSearch": "Clear",
-        "noProductsFound": "No products found",
-        "searchInputLabel": "Search Reaction ",
+        "noProductsFound": "No products found.",
+        "noOrdersFound": "No orders found.",
+        "noAccountsFound": "No accounts found.",
+        "searchInputLabel": "Search Reaction",
         "suggestedTags": "Suggested tags",
         "searchTypeProducts": "Products",
         "searchTypeAccounts": "Accounts",
