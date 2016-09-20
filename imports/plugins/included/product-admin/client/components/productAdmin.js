@@ -73,6 +73,18 @@ class ProductAdmin extends Component {
     return "";
   }
 
+  renderProductVisibilityLabel() {
+    if (this.product.isVisible) {
+      return (
+        <Translation defaultValue="Product is visible" i18nKey="productDetailEdit.productIsVisible" />
+      );
+    }
+
+    return (
+      <Translation defaultValue="Product is not visible" i18nKey="productDetailEdit.productIsNotVisible" />
+    );
+  }
+
   render() {
     return (
       <CardGroup>
@@ -151,12 +163,7 @@ class ProductAdmin extends Component {
           <CardBody>
             <div className="rui items flex">
               <div className="rui item three-quarters">
-                {this.product.isVisible &&
-                  <Translation defaultValue="Product is visible" i18nKey="productDetailEdit.productIsVisible" />
-                }
-                {!this.product.isVisible &&
-                  <Translation defaultValue="Product is not visible" i18nKey="productDetailEdit.productIsNotVisible" />
-                }
+                {this.renderProductVisibilityLabel()}
               </div>
               <div className="rui item quarter">
                 <Button

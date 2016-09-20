@@ -1,8 +1,23 @@
-import { Products, Revisions } from "/lib/collections";
+import { Products, Revisions, Packages } from "/lib/collections";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 
+export function updateSettings(settings) {
+  check(settings, Object);
+
+  console.log("Server", settings);
+  Packages.update({
+    name: "reaction-revisions"
+  }, {
+    $set: {
+      settings
+    }
+  });
+}
+
+
 Meteor.methods({
+  "revisions/settings/update": updateSettings,
   "revisions/publish"(documentIds) {
     check(documentIds, Match.OneOf(String, Array));
 
