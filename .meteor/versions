@@ -117,11 +117,7 @@ mongo-id@1.0.5
 mongo-livedata@1.0.12
 mrt:later@1.6.1
 npm-bcrypt@0.9.1
-<<<<<<< HEAD
 npm-mongo@1.5.49
-=======
-npm-mongo@1.5.48
->>>>>>> master
 oauth@1.1.11
 oauth-encryption@1.2.0
 oauth1@1.1.10
