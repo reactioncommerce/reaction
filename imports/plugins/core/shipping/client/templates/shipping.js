@@ -1,9 +1,10 @@
-import { Reaction, i18next } from "/client/api";
-import { Packages, Shipping } from "/lib/collections";
 import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
 import { Template } from "meteor/templating";
 import { Blaze } from "meteor/blaze";
+import { AutoForm } from "meteor/aldeed:autoform";
+import { Reaction, i18next } from "/client/api";
+import { Packages, Shipping } from "/lib/collections";
 
 /*
  * Template shipping Helpers
@@ -18,6 +19,8 @@ Template.shippingDashboardControls.events({
 });
 
 Template.shippingSettings.onCreated(function () {
+  // don't show unless we have services
+  Reaction.hideActionView();
   this.autorun(() => {
     this.subscribe("Shipping");
   });
@@ -76,23 +79,12 @@ Template.shipping.events({
 });
 
 /*
- * template addShippingMethod Helpers
- */
-
-Template.addShippingMethod.helpers({
-  shipping() {
-    return Shipping.find();
-  }
-});
-
-
-/*
  *  template editShippingMethod helpers
  */
 
 Template.editShippingMethod.helpers({
   selectedMethodDoc() {
-    Doc = Session.get("updatedMethodObj") || Session.get("selectedMethodObj");
+    const Doc = Session.get("updatedMethodObj") || Session.get("selectedMethodObj");
     if (Doc) {
       return Doc;
     }
@@ -123,6 +115,21 @@ Template.editShippingProvider.events({
   "click [data-event-action=cancelUpdateShippingProvider]"(event) {
     event.preventDefault();
     Reaction.hideActionView();
+  },
+  "click [data-event-action=deleteShippingProvider]"(event) {
+    event.preventDefault();
+    // confirm delete
+    Alerts.alert({
+      title: i18next.t("shipping.removeShippingProvider"),
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonText: i18next.t("shipping.removeShippingProviderConfirm", { provider: this.provider.name })
+    }, (isConfirm) => {
+      if (isConfirm) {
+        Meteor.call("shipping/provider/remove", this._id);
+        Reaction.hideActionView();
+      }
+    });
   }
 });
 
@@ -143,6 +150,7 @@ Template.addShippingMethod.events({
   "click .cancel"(event) {
     event.preventDefault();
     Reaction.toggleSession("selectedAddShippingMethod");
+    Reaction.hideActionView();
   }
 });
 
@@ -202,16 +210,18 @@ Template.shippingProviderTable.events({
     event.preventDefault();
     event.stopPropagation();
 
+    // confirm delete
     Alerts.alert({
       title: i18next.t("shipping.removeShippingMethodTitle"),
-      text: i18next.t("shipping.removeShippingMethodConfirm", { method: this.name }),
       type: "warning",
-      closeOnConfirm: false
-    },
-      () => {
-        Meteor.call("removeShippingMethod", $(event.currentTarget).data("provider-id"), this);
-        Alerts.alert(i18next.t("shipping.shippingMethodDeleted"), "", "success");
-      });
+      showCancelButton: true,
+      confirmButtonText: i18next.t("shipping.removeShippingMethodConfirm", { method: this.name })
+    }, (isConfirm) => {
+      if (isConfirm) {
+        Meteor.call("shipping/methods/remove", $(event.currentTarget).data("provider-id"), this);
+        Reaction.hideActionView();
+      }
+    });
   },
   "click [data-event-action=addShippingMethod]"(event) {
     event.preventDefault();
@@ -243,12 +253,14 @@ AutoForm.hooks({
 AutoForm.hooks({
   "shipping-method-add-form": {
     onSubmit(insertDoc, updateDoc, currentDoc) {
+      const providerId = currentDoc ?  currentDoc._id : Template.instance().parentTemplate(4).$(".delete-shipping-method").data("provider-id");
       let error;
       try {
-        Meteor.call("addShippingMethod", insertDoc, currentDoc._id || currentDoc.id);
+        Meteor.call("shipping/methods/add", insertDoc, providerId);
         this.done();
       } catch (_error) {
         error = _error;
+        this.event.preventDefault();
         this.done(new Error("Submission failed"));
       }
       return error || false;
@@ -267,10 +279,12 @@ AutoForm.hooks({
   "shipping-method-edit-form": {
     onSubmit(insertDoc, updateDoc, currentDoc) {
       let error;
+      // handling case where we are either inserting inline this providers first methods
+      // or where we are adding additional methods to an existing array of provider methods in the admin panel.
       const providerId = Template.instance().parentTemplate(4).$(".delete-shipping-method").data("provider-id");
       try {
         _.extend(insertDoc, { _id: currentDoc._id });
-        Meteor.call("updateShippingMethods", providerId, currentDoc._id, insertDoc);
+        Meteor.call("shipping/methods/update", providerId, currentDoc._id, insertDoc);
         Session.set("updatedMethodObj", insertDoc);
         this.done();
       } catch (_error) {

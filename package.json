@@ -1,7 +1,7 @@
 {
   "name": "reaction",
   "description": "Reaction is a modern reactive, real-time event driven ecommerce platform.",
-  "version": "0.15.2",
+  "version": "0.16.0",
   "main": "main.js",
   "directories": {
     "test": "tests"
@@ -60,7 +60,7 @@
     "react-textarea-autosize": "^4.0.4",
     "sortablejs": "^1.4.2",
     "stripe": "^4.9.0",
-    "sweetalert2": "^4.1.7",
+    "sweetalert2": "^4.2.4",
     "swiper": "^3.3.1",
     "tether-drop": "^1.4.2",
     "tether-tooltip": "^1.2.0",
@@ -70,8 +70,13 @@
   "devDependencies": {
     "babel-eslint": "^6.1.2",
     "babel-preset-stage-2": "^6.13.0",
+    "chai": "^3.5.0",
     "eslint": "^3.3.1",
-    "eslint-plugin-react": "^6.1.2"
+    "eslint-plugin-react": "^6.1.2",
+    "js-yaml": "^3.6.1",
+    "react-addons-test-utils": "^15.3.1",
+    "wdio-mocha-framework": "^0.4.0",
+    "webdriverio": "^4.2.3"
   },
   "postcss": {
     "plugins": {

@@ -51,7 +51,6 @@ export default function () {
     if (!options.anonymous) {
       return {};
     }
-    let loginHandler;
     const stampedToken = Accounts._generateStampedLoginToken();
     const userId = Accounts.insertUserDoc({
       services: {
@@ -59,7 +58,7 @@ export default function () {
       },
       token: stampedToken.token
     });
-    loginHandler = {
+    const loginHandler = {
       type: "anonymous",
       userId: userId
     };
@@ -72,6 +71,9 @@ export default function () {
    * adds Accounts record for reaction user profiles
    * we clone the user into accounts, as the user collection is
    * only to be used for authentication.
+   * - defaultVisitorRole
+   * - defaultRoles
+   * can be overriden from Shops
    *
    * @see: http://docs.meteor.com/#/full/accounts_oncreateuser
    */
@@ -88,6 +90,17 @@ export default function () {
     // init default user roles
     // we won't create users unless we have a shop.
     if (shop) {
+      // retain language when user has defined a language
+      // perhaps should be treated as additionals
+      // or in onLogin below, or in the anonymous method options
+      if (!(Meteor.users.find().count() === 0)) { // dont set on inital admin
+        if (!user.profile) user.profile = {};
+        const currentUser = Meteor.user(user);
+        if (currentUser && currentUser.profile && currentUser.profile.lang && !user.profile.lang) {
+          user.profile.lang = currentUser.profile.lang;
+        }
+      }
+
       // if we don't have user.services we're an anonymous user
       if (!user.services) {
         roles[shopId] = shop.defaultVisitorRole || defaultVisitorRole;
@@ -137,7 +150,6 @@ export default function () {
       // run onCreateUser hooks
       // (the user object must be returned by all callbacks)
       const userDoc = Hooks.Events.run("onCreateUser", user, options);
-
       return userDoc;
     }
   });
@@ -180,6 +192,7 @@ export default function () {
       const cart = Collections.Cart.findOne({
         userId: options.user._id
       });
+
       // for a rare use cases
       if (typeof cart !== "object") return false;
       // in current version currentSessionId will be available for anonymous

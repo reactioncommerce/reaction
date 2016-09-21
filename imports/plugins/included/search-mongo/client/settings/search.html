@@ -1,0 +1,90 @@
+<template name="searchSettings">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <div data-i18n="searchSettings.productSearchSettings.panelTitle" class="panel-title">Product Search Settings</div>
+    </div>
+    <div class="panel-body">
+      {{#autoForm
+        collection=Collections.Packages
+        schema=SearchPackageConfig
+        doc=packageData
+        type="method-update"
+        meteormethod="search/updateSearchSettings"
+        id="search-update-form"
+        class="container-fluid-md"
+      }}
+
+        <div class="row">
+          <div class="form-group col-md-8">
+            {{>afFieldInput name="settings.products.includes.title" i18nKey="searchSettings.productSearchSettings.includeTitle" template="searchCheckbox"}}
+          </div>
+
+          <div class="form-group{{#if afFieldIsInvalid name="settings.products.weights.title"}} has-error{{/if}} col-md-3">
+            {{>afFieldInput name="settings.products.weights.title" type="number"}}
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="form-group col-md-8">
+            {{>afFieldInput name="settings.products.includes.description" i18nKey="searchSettings.productSearchSettings.includeDescription" template="searchCheckbox"}}
+          </div>
+
+          <div class="form-group{{#if afFieldIsInvalid name="settings.products.weights.description"}} has-error{{/if}} col-md-3">
+            {{>afFieldInput name="settings.products.weights.description"}}
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="form-group col-md-8">
+            {{>afFieldInput name="settings.products.includes.pageTitle" i18nKey="searchSettings.productSearchSettings.includePageTitle" template="searchCheckbox"}}
+          </div>
+
+          <div class="form-group{{#if afFieldIsInvalid name="settings.products.weights.pageTitle"}} has-error{{/if}} col-md-3">
+            {{>afFieldInput name="settings.products.weights.pageTitle" type="number"}}
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="form-group col-md-8">
+            {{>afFieldInput name="settings.products.includes.metafields" i18nKey="searchSettings.productSearchSettings.includeDetails" template="searchCheckbox"}}
+          </div>
+
+          <div class="form-group{{#if afFieldIsInvalid name="settings.products.weights.metafields"}} has-error{{/if}} col-md-3">
+            {{>afFieldInput name="settings.products.weights.metafields" type="number"}}
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="form-group col-md-8">
+            {{>afFieldInput name="settings.products.includes.vendor" i18nKey="searchSettings.productSearchSettings.includeVendor" template="searchCheckbox"}}
+          </div>
+
+          <div class="form-group{{#if afFieldIsInvalid name="settings.products.weights.vendor"}} has-error{{/if}} col-md-3">
+            {{>afFieldInput name="settings.products.weights.vendor" type="number"}}
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary pull-right">Update</button>
+      {{/autoForm}}
+    </div>
+    <!--<div class="panel-heading">
+      <div data-i18n="searchSettings.orderSearchSettings.panelTitle" class="panel-title">Order Search Settings</div>
+    </div>
+    <div data-i18n="searchSettings.noSettings" class="panel-body">No settings currently available</div>
+
+    <div class="panel-heading">
+      <div data-i18n="searchSettings.accountSearchSettings.panelTitle" class="panel-title">Account Search Settings</div>
+    </div>
+    <div data-i18n="searchSettings.noSettings" class="panel-body">No settings currently available</div>-->
+  </div>
+</template>
+
+
+<template name="afCheckbox_searchCheckbox">
+  <div class="checkbox">
+    <label>
+      <input type="checkbox" value="true" {{atts}} />
+      <span class="searchSettingsCheckbox" data-i18n="{{atts.i18nKey}}">{{afFieldLabelText name=this.name}}</span>
+    </label>
+  </div>
+</template>

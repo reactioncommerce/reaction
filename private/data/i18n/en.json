@@ -59,6 +59,9 @@
           "routingLabel": "Routing",
           "routingTitle": "Routing",
           "routingDescription": "Routing utilities",
+          "searchLabel": "Search",
+          "searchTitle": "Search",
+          "searchDescription": "Product Search",
           "socialLabel": "Social",
           "socialTitle": "Social",
           "socialDescription": "Social Channel configuration",
@@ -89,6 +92,7 @@
           "permissionsSettingsLabel": "Permissions",
           "braintreeSettingsLabel": "Braintree Settings",
           "localizationAndI18NLabel": "Localization and i18n",
+          "searchSettingsLabel": "Search Settings",
           "shopSettingsLabel": "Shop Settings",
           "socialSettingsLabel": "Social Settings",
           "shippingSettingsLabel": "Shipping Settings",
@@ -142,7 +146,26 @@
         "notFoundError": "Page not found.",
         "productNotFound": "This product was not found.",
         "loadMoreProducts": "Load more products",
-        "noProductsFound": "No Products found"
+        "noProductsFound": "No products found."
+      },
+      "searchSettings": {
+        "productSearchSettings": {
+          "panelTitle": "Product Search",
+          "includeTitle": "Include title",
+          "includeDescription": "Include description",
+          "includePageTitle": "Include page title",
+          "includeDetails": "Include details",
+          "includeVendor": "Include vendor"
+        },
+        "orderSearchSettings": {
+          "panelTitle": "Order Search Settings"
+        },
+        "accountSearchSettings": {
+          "panelTitle": "Account Search Settings"
+        },
+        "noSettings": "No settings currently available",
+        "settingsSaved": "Search settings saved",
+        "settingsfailed": "Search settings update failed"
       },
       "shopSettings": {
         "general": "General",
@@ -540,6 +563,8 @@
         "removeShippingMethodConfirm": "Are you sure you want to delete {{method}}?",
         "removeShippingMethodTitle": "Remove Shipping Method",
         "shippingMethodDeleted": "This shipping method has been deleted.",
+        "removeShippingProvider": "Remove Shipping Provider",
+        "removeShippingProviderConfirm": "Are you sure you want to delete {{provider}}?",
         "shippingProviderSaved": "Shipping provider saved.",
         "shippingProviderUpdated": "Shipping provider data updated.",
         "shippingMethodRateAdded": "Shipping method rate added.",
@@ -607,6 +632,12 @@
         "twitter": "Twitter",
         "vk": "VK",
         "weibo": "Weibo"
+      },
+      "search": {
+        "clearSearch": "Clear",
+        "noProductsFound": "No products found",
+        "searchInputLabel": "Search Reaction ",
+        "suggestedTags": "Suggested tags"
       },
       "accountsUI": {
         "members": "Members",
