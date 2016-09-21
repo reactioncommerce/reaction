@@ -101,7 +101,6 @@ MediaGallery.propTypes = {
   editable: PropTypes.bool,
   media: PropTypes.arrayOf(PropTypes.object),
   onDrop: PropTypes.func,
-  onMove: PropTypes.func,
   onMoveMedia: PropTypes.func,
   onRemoveMedia: PropTypes.func
 };

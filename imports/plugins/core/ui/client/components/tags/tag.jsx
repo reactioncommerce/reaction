@@ -43,17 +43,6 @@ class Tag extends Component {
   };
 
   /**
-   * Handle tag bookmark events and pass them up the component chain
-   * @param  {Event} event Event object
-   * @return {void} no return value
-   */
-  handleTagBookmark = () => {
-    if (this.props.onTagBookmark) {
-      this.props.onTagBookmark(this.props.tag._id);
-    }
-  };
-
-  /**
    * Handle tag remove events and pass them up the component chain
    * @param  {Event} event Event object
    * @return {void} no return value
@@ -158,15 +147,6 @@ class Tag extends Component {
         {this.props.tag.name}
       </a>
     );
-  }
-
-  renderBookmarkButton() {
-    if (this.props.showBookmark) {
-      return (
-        <Button icon="bookmark" onClick={this.handleTagBookmark} />
-      );
-    }
-    return null;
   }
 
   /**
@@ -277,9 +257,6 @@ Tag.propTypes = {
   index: PropTypes.number,
   inputPlaceholder: PropTypes.string,
   onGetSuggestions: PropTypes.func,
-  onSuggestionsUpdateRequested: PropTypes.func,
-  onTagBookmark: PropTypes.func,
-  onTagCreate: PropTypes.func,
   onTagInputBlur: PropTypes.func,
   onTagMouseOut: PropTypes.func,
   onTagMouseOver: PropTypes.func,
@@ -287,8 +264,6 @@ Tag.propTypes = {
   onTagSave: PropTypes.func,
   onTagUpdate: PropTypes.func,
   parentTag: PropTypes.object,
-  placeholder: PropTypes.string,
-  showBookmark: PropTypes.bool,
   suggestions: PropTypes.arrayOf(PropTypes.object),
   tag: PropTypes.object
 };

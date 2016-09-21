@@ -19,15 +19,9 @@ class Tags extends Component {
     }
   }
 
-  handleTagCreate = (tagId, tagName) => {
-    if (this.props.onTagCreate) {
-      this.props.onTagCreate(tagId, tagName);
-    }
-  };
-
   handleTagSave = (event, tag) => {
     if (this.props.onTagSave) {
-      this.props.onTagSave(tag);
+      this.props.onTagSave(tag, this.props.parentTag);
     }
   };
 
@@ -45,7 +39,7 @@ class Tags extends Component {
    */
   handleTagMouseOut = (event, tag) => {
     if (this.props.onTagMouseOut) {
-      this.props.onTagMouseOut(event, tag);
+      this.props.onTagMouseOut(event, tag, this.props.parentTag);
     }
   };
 
@@ -57,7 +51,7 @@ class Tags extends Component {
    */
   handleTagMouseOver = (event, tag) => {
     if (this.props.onTagMouseOver) {
-      this.props.onTagMouseOver(event, tag);
+      this.props.onTagMouseOver(event, tag, this.props.parentTag);
     }
   };
 
@@ -66,11 +60,6 @@ class Tags extends Component {
     if (this.props.onTagUpdate) {
       this.props.onTagUpdate(tag, this.props.parentTag);
     }
-  };
-
-  handleTagBookmark = (event) => {
-    event;
-    // handle event
   };
 
   renderTags() {
@@ -85,7 +74,6 @@ class Tags extends Component {
             key={index}
             onGetSuggestions={this.props.onGetSuggestions}
             onMove={this.props.onMoveTag}
-            onTagBookmark={this.handleTagBookmark}
             onTagInputBlur={this.handleTagSave}
             onTagMouseOut={this.handleTagMouseOut}
             onTagMouseOver={this.handleTagMouseOver}
@@ -154,10 +142,6 @@ Tags.propTypes = {
   onMoveTag: PropTypes.func,
   onNewTagSave: PropTypes.func,
   onNewTagUpdate: PropTypes.func,
-  onSuggestionUpdateRequested: PropTypes.func,
-  onTagBookmark: PropTypes.func,
-  onTagCreate: PropTypes.func,
-  onTagDragAdd: PropTypes.func,
   onTagMouseOut: PropTypes.func,
   onTagMouseOver: PropTypes.func,
   onTagRemove: PropTypes.func,
@@ -165,7 +149,6 @@ Tags.propTypes = {
   onTagSort: PropTypes.func,
   onTagUpdate: PropTypes.func,
   parentTag: ReactionPropTypes.Tag,
-  placeholder: PropTypes.string,
   showBookmark: PropTypes.bool,
   suggestions: PropTypes.arrayOf(PropTypes.object),
   tagProps: PropTypes.object,
