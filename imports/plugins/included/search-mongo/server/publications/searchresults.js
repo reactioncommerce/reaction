@@ -77,7 +77,10 @@ getResults.accounts = function (searchTerm, facets, maxResults, userId) {
   if (Reaction.hasPermission("reaction-accounts", userId)) {
     accountResults = AccountSearch.find({
       shopId: shopId,
-      emails: searchTerm
+      emails: {
+        $regex: "^" + searchTerm + "$",
+        $options: "i"
+      }
     }, {
       limit: maxResults
     });
