@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor";
 import { Job } from "meteor/vsivsi:job-collection";
-import { Jobs } from "/lib/collections";
+import { Jobs, Templates } from "/lib/collections";
 import { Logger } from "/server/api";
 
 
@@ -32,6 +32,25 @@ export function getTemplate(template) {
     throw new Meteor.Error("no-template-name", msg);
   }
 
+  // set default
+  let language = "en";
+
+  const shopLocale = Meteor.call("shop/getLocale");
+
+  // set the language if found
+  if (shopLocale && shopLocale.locale && shopLocale.locale.languages) {
+    language = shopLocale.locale.languages;
+  }
+
+  // check database for a matching template
+  const tmpl = Templates.findOne({ template, language });
+
+  // use that template if found
+  if (tmpl && tmpl.source) {
+    return tmpl.source;
+  }
+
+  // otherwise, use the default template from the filesystem
   const file = `email/templates/${template}.html`;
 
   try {
