@@ -3,7 +3,7 @@
   <div class="row">
     <div class="col-sm-12 col-lg-6 form-group{{#if afFieldIsInvalid name='payerName'}} has-error{{/if}}">
       <label class="control-label">{{afFieldLabelText name='payerName'}}</label>
-      {{>afFieldInput name="payerName" value=cartPayerName}}
+      {{>afFieldInput name="payerName"}}
       {{#if afFieldIsInvalid name="payerName"}}
       <span class="help-block">{{afFieldMessage name="payerName"}}</span>
       {{/if}}
