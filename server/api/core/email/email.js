@@ -1,7 +1,6 @@
 import { Meteor } from "meteor/meteor";
-import { check } from "meteor/check";
 import { Job } from "meteor/vsivsi:job-collection";
-import { Jobs, Packages, Templates } from "/lib/collections";
+import { Jobs, Templates } from "/lib/collections";
 import { Logger } from "/server/api";
 
 
@@ -27,29 +26,31 @@ export function send(options) {
  * @returns {Object} returns source
  */
 export function getTemplate(template) {
-  check(template, String);
+  if (typeof template !== "string") {
+    const msg = "Reaction.Email.getTemplate() requires a template name";
+    Logger.error(msg);
+    throw new Meteor.Error("no-template-name", msg);
+  }
 
-  const language = "en";
+  // set default
+  let language = "en";
 
   const shopLocale = Meteor.call("shop/getLocale");
 
+  // set the language if found
   if (shopLocale && shopLocale.locale && shopLocale.locale.languages) {
-    lang = shopLocale.locale.languages;
+    language = shopLocale.locale.languages;
   }
 
-  // using layout where in the future a more comprehensive rule based
-  // filter of the email templates can be implemented.
-  const tpl = Packages.findOne({
-    "layout.template": template
-  });
+  // check database for a matching template
+  const tmpl = Templates.findOne({ template, language });
 
-  if (tpl) {
-    const tplSource = Templates.findOne({ template, language });
-    if (tplSource.source) {
-      return tplSource.source;
-    }
+  // use that template if found
+  if (tmpl && tmpl.source) {
+    return tmpl.source;
   }
 
+  // otherwise, use the default template from the filesystem
   const file = `email/templates/${template}.html`;
 
   try {

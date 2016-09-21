@@ -16,8 +16,8 @@ export default function () {
       mail: {
         user: "",
         password: "",
-        host: "localhost",
-        port: "25"
+        host: "",
+        port: ""
       },
       openexchangerates: {
         appId: "",
