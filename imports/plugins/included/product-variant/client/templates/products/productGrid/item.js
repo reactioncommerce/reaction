@@ -35,9 +35,10 @@ Template.productGridItems.helpers({
   media: function () {
     const media = Media.findOne({
       "metadata.productId": this._id,
-      "metadata.priority": 0,
       "metadata.toGrid": 1
-    }, { sort: { uploadedAt: 1 } });
+    }, {
+      sort: { "metadata.priority": 1, uploadedAt: 1 }
+    });
 
     return media instanceof FS.File ? media : false;
   },
