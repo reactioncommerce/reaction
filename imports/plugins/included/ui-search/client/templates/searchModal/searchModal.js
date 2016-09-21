@@ -1,6 +1,8 @@
 import _ from "lodash";
 import { IconButton } from "/imports/plugins/core/ui/client/components";
 import { Template } from "meteor/templating";
+import { i18next } from "/client/api";
+import { MeteorGriddle } from "/imports/plugins/core/ui-grid/client/griddle";
 import { ProductSearch, Tags, OrderSearch, AccountSearch } from "/lib/collections";
 
 
@@ -76,6 +78,9 @@ Template.searchModal.onCreated(function () {
         this.state.set("orderSearchResults", "");
         this.state.set("productSearchResults", "");
         this.state.set("tagSearchResults", "");
+
+        console.log("-----Accounts-----", accountResults);
+
       }
 
       /**
@@ -89,6 +94,8 @@ Template.searchModal.onCreated(function () {
         this.state.set("accountSearchResults", "");
         this.state.set("productSearchResults", "");
         this.state.set("tagSearchResults", "");
+
+        console.log("-----Orders-----", orderResults);
       }
     }
   });
@@ -134,6 +141,35 @@ Template.searchModal.helpers({
     const instance = Template.instance();
     const results = instance.state.get("accountSearchResults");
     return results;
+  },
+  accountGrid() {
+    const filteredFields = ["_id", "emails", "shopId"];
+    const noDataMessage = i18next.t("search.noAccountsFound");
+    // const instance = Template.instance();
+
+    //
+    // helper adds a class to every grid row
+    //
+    const customRowMetaData = {
+      bodyCssClassName: () =>  {
+        return "account-grid-row";
+      }
+    };
+
+    // return account grid
+    return {
+      component: MeteorGriddle,
+      publication: "SearchResults",
+      collection: "accounts",
+      matchingResultsCount: "50",
+      showFilter: true,
+      useGriddleStyles: true,
+      rowMetadata: customRowMetaData,
+      filteredFields: filteredFields,
+      columns: filteredFields,
+      noDataMessage: noDataMessage
+      // onRowClick: alert('holla')
+    };
   }
 });
 

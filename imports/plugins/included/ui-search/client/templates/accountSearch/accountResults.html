@@ -2,6 +2,9 @@
   <div class="container-main">
     <div class="product-grid">
       <ul class="product-grid-list list-unstyled" id="product-grid-list">
+        <div>
+          {{> React accountGrid }}
+        </div>
         {{#each account in accountSearchResults}}
           {{> accountItem account=account}}
         {{else}}

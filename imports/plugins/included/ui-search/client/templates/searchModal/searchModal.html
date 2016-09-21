@@ -14,7 +14,11 @@
 
     </div>
 
-    {{> searchResults productSearchResults=productSearchResults orderSearchResults=orderSearchResults accountSearchResults=accountSearchResults }}
+    {{> searchResults productSearchResults=productSearchResults orderSearchResults=orderSearchResults accountSearchResults=accountSearchResults accountGrid=accountGrid }}
+
+    <div>
+      {{> React accountGrid }}
+    </div>
 
   </div>
 
