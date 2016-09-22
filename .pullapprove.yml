@@ -1,15 +1,61 @@
-approve_by_comment: true
-approve_regex: '^(Approved|:\+1:)' # this only matches at the start of a line, just my suggestion -- read the docs for why
-reject_regex: '^(Rejected|:-1:)'
-reset_on_push: false
-reviewers:
-  members:
-  - aaronjudd
-  - jshimko
-  - mikemurray
-  - zenweasel
-  - kieckhafer
-  - Capt-Slow
-  - rymorgan
-  name: pullapprove
-  required: 2
+version: 2
+always_pending:
+  title_regex: 'WIP'
+  explanation: 'Work in progress!'
+
+# Group settings to apply to all groups by default, optionally being overridden later
+group_defaults:
+  approve_by_comment:
+    enabled: true
+      approve_regex: '^(Approved|:shipit:|:\+1:|LGTM)'
+      reject_regex: '^(Rejected|:-1:)'
+  reset_on_push: true
+
+# Groups of reviewers and their respective settings
+groups:
+  development-reviewers:
+    required: 2
+    users: all
+    conditions:
+      branches:
+        - development  # this group only reviews when PR is merging into development
+      files:
+        exclude:
+          - '*.md'
+    approve_by_comment:
+      enabled: true
+      approve_regex: '^(Approved|:shipit:|:\+1:|LGTM)'
+      reject_regex: '^(Rejected|:-1:)'
+    author_approval:
+      ignored: true
+    reset_on_reopened:
+      enabled: true
+    reject_value: 2
+  master-reviewers:
+    required: 2
+    users:
+      - aaronjudd
+      - jshimko
+      - mikemurray
+      - zenweasel
+      - kieckhafer
+    conditions:
+      branches:
+        - master  # this group only reviews when PR is merging into master
+      files:
+    author_approval:
+      required: true
+    reset_on_reopened:
+      enabled: true
+    reject_value: 1
+  security:
+    required: -1  # require approval from everyone
+    users:
+      - Capt-Slow
+    reset_on_push:
+      enabled: true
+    reset_on_reopened:
+      enabled: true
+    author_approval:
+      ignored: true
+    reject_value: -100  # any rejection means a failure
