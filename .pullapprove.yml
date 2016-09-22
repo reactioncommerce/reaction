@@ -18,7 +18,7 @@ groups:
       files:
         exclude:
           - "*.md"
-    reject_value: 2
+    reject_value: -2
     required: 2
     reset_on_reopened:
       enabled: true
@@ -30,7 +30,7 @@ groups:
       branches:
         - master
       files: ~
-    reject_value: 1
+    reject_value: -1
     required: 2
     reset_on_reopened:
       enabled: true
