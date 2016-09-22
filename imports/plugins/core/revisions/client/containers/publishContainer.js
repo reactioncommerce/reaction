@@ -4,6 +4,7 @@ import PublishControls from "../components/publishControls";
 import { Revisions } from "/lib/collections";
 import { Meteor } from "meteor/meteor";
 import TranslationProvider from "/imports/plugins/core/ui/client/providers/translationProvider";
+import { isRevisionControlEnabled } from "../../lib/api";
 
 /**
  * Publish container is a stateless container component connected to Meteor data source.
@@ -48,6 +49,7 @@ function composer(props, onData) {
       }).fetch();
 
       onData(null, {
+        isEnabled: isRevisionControlEnabled(),
         revisions
       });
 
@@ -55,7 +57,9 @@ function composer(props, onData) {
     }
   }
 
-  onData(null, {});
+  onData(null, {
+    isEnabled: isRevisionControlEnabled()
+  });
 }
 
 export default composeWithTracker(composer)(PublishContainer);

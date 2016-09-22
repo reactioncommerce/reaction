@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from "react";
-import { Button } from "/imports/plugins/core/ui/client/components";
+import { Button, Translation } from "/imports/plugins/core/ui/client/components";
 import SimpleDiff from "./simpleDiff";
 import { Translatable } from "/imports/plugins/core/ui/client/providers";
 
@@ -67,28 +67,40 @@ class PublishControls extends Component {
   }
 
   render() {
+    if (this.props.isEnabled) {
+      return (
+        <div className="rui publish-controls">
+          <Button
+            i18nKeyLabel={this.showChangesButtoni18nKeyLabel}
+            label={this.showChangesButtonLabel}
+            onClick={this.handleToggleShowChanges}
+            status="link"
+          />
+          <Button
+            i18nKeyLabel="app.publishChanges"
+            label="Publish Changes"
+            onClick={this.handlePublishClick}
+            primary={true}
+          />
+          {this.showDiffs && <hr />}
+          {this.renderChanges()}
+        </div>
+      );
+    }
+
     return (
       <div className="rui publish-controls">
-        <Button
-          i18nKeyLabel={this.showChangesButtoni18nKeyLabel}
-          label={this.showChangesButtonLabel}
-          onClick={this.handleToggleShowChanges}
-          status="link"
+        <Translation
+          defaultValue="Revision control is disabled. Any changes will be published immediately."
+          i18nKey="revisions.isDisabled"
         />
-        <Button
-          i18nKeyLabel="app.publishChanges"
-          label="Publish Changes"
-          onClick={this.handlePublishClick}
-          primary={true}
-        />
-        {this.showDiffs && <hr />}
-        {this.renderChanges()}
       </div>
     );
   }
 }
 
 PublishControls.propTypes = {
+  isEnabled: PropTypes.bool,
   onPublishClick: PropTypes.func,
   revisions: PropTypes.arrayOf(PropTypes.object),
   translation: PropTypes.shape({

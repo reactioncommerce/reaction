@@ -561,6 +561,7 @@
         }
       },
       "revisions": {
+        "isDisabled": "Revision control is disabled. Any changes will be published immediately.",
         "unpublishedChanges": "Unpublished Changes",
         "publishChanges": "Publish Changes",
         "showChanges": "Show Changes",
