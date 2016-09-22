@@ -32,7 +32,6 @@ groups:
     conditions:
       branches:
         - master
-      files: ~
     reject_value: -1
     required: 2
     reset_on_reopened:
