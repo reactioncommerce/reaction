@@ -16,6 +16,7 @@ const PublishContainer = (props) => {
     <div>
       <TranslationProvider>
         <PublishControls
+          isEnabled={props.isEnabled}
           onPublishClick={handlePublishClick}
           revisions={props.revisions}
         />
@@ -25,6 +26,7 @@ const PublishContainer = (props) => {
 };
 
 PublishContainer.propTypes = {
+  isEnabled: PropTypes.bool,
   revisions: PropTypes.arrayOf(PropTypes.object)
 };
 
