@@ -90,7 +90,7 @@
     "js-yaml": "^3.6.1",
     "react-addons-test-utils": "^15.3.1",
     "wdio-mocha-framework": "^0.4.2",
-    "webdriverio": "^4.2.16"
+    "webdriverio": "^4.2.3"
   },
   "postcss": {
     "plugins": {
