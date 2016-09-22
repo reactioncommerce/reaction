@@ -16,3 +16,5 @@ export { Card, CardHeader, CardBody, CardGroup, CardTitle } from "./cards";
 export { MediaGallery, MediaItem } from "./media";
 export { default as FlatButton } from "./button/flatButton";
 export { Checkbox } from "./checkbox";
+export { default as Loading } from "./loading/loading";
+export { default as FieldGroup } from "./forms/field_group";

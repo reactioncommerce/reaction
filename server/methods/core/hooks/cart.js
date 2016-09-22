@@ -22,7 +22,11 @@ MethodHooks.after("cart/submitPayment", function (options) {
 
     // create order
     if (cart) {
-      if (cart.items && cart.billing[0].paymentMethod) {
+      if (!cart.billing) {
+        Logger.info("MethodHooks after cart/submitPayment. No billing address after payment! userId:", Meteor.userId(), "options:", options);
+      }
+
+      if (cart.items && cart.billing && cart.billing[0].paymentMethod) {
         const orderId = Meteor.call("cart/copyCartToOrder", cart._id);
         // Return orderId as result from this after hook call.
         // This is done by extending the existing result.

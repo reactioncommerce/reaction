@@ -1,4 +1,5 @@
 import Reaction from "./core";
+import * as Accounts from "./core/accounts";
 import Router from "./router";
 import { GeoCoder } from "./geocoder";
 import Hooks from "./hooks";
@@ -22,6 +23,7 @@ ReactionRegistry = {
 
 export {
   Reaction,
+  Accounts,
   Router,
   GeoCoder,
   Hooks,

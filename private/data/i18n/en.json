@@ -124,6 +124,8 @@
         "saveChanges": "Save Changes",
         "selectOne": "(Select One)",
         "cancel": "Cancel",
+        "success": "Success",
+        "error": "Error",
         "submit": "Submit",
         "delete": "Delete",
         "create": "Create",
@@ -171,7 +173,6 @@
         "general": "General",
         "address": "Address",
         "import": "Import",
-        "mail": "Mail",
         "localization": "Localization",
         "options": "Options",
         "availableOptions": "Available Options",
@@ -181,8 +182,6 @@
         "shopGeneralSettingsFailed": "Shop general settings update failed.",
         "shopAddressSettingsSaved": "Shop address settings saved.",
         "shopAddressSettingsFailed": "Shop address settings update failed.",
-        "shopMailSettingsSaved": "Shop mail settings saved.",
-        "shopMailSettingsFailed": "Shop mail settings update failed.",
         "shopExternalServicesSettingsSaved": "Shop external services settings saved.",
         "shopExternalServicesSettingsFailed": "Shop external services settings update failed.",
         "shopLocalizationSettingsSaved": "Shop localization settings saved.",
@@ -191,6 +190,53 @@
         "shopOptionsSettingsFailed": "Shop options update failed.",
         "shopPaymentMethodsSaved": "Shop Payment Methods settings saved.",
         "shopPaymentMethodsFailed": "Shop Payment Methods settings update failed."
+      },
+      "mail": {
+        "headers": {
+          "email": "Email",
+          "emailSettings": "Email Settings",
+          "config": "Configuration",
+          "settings": "Mail Provider",
+          "status": "Status",
+          "actions": "Actions"
+        },
+        "settings": {
+          "service": "Service",
+          "user": "User",
+          "password": "Password",
+          "host": "Host",
+          "port": "Port",
+          "passwordShow": "Show",
+          "passwordHide": "Hide",
+          "fieldNotSet": "Not set",
+          "selectService": "Select a service...",
+          "custom": "custom"
+        },
+        "logs": {
+          "headers": {
+            "emailLogs": "Email Logs",
+            "email": "Email",
+            "subject": "Subject",
+            "sent": "Sent",
+            "status": "Status"
+          },
+          "noEmails": "No emails sent yet",
+          "limit": "Quantity",
+          "retry": "Retry",
+          "noneAvailble": "None available"
+        },
+        "alerts": {
+          "error": "Error: {{error}}",
+          "resendSuccess": "Attempting to resend email to {{email}}",
+          "missingService": "Please choose a mail provider service",
+          "userPassRequired": "SMTP user and password are required for {{service}}",
+          "allFieldsRequired": "All fields are required for a custom service!",
+          "portNaN": "The port must be a number!",
+          "connectionFailed": "Connection failed!",
+          "saveAnyway": "Do you want to save the settings anyway?",
+          "saveSuccess": "Mail settings saved.",
+          "saveFailed": "Failed to save mail settings. {{error}}"
+        }
       },
       "taxSettings": {
         "noCustomTaxRatesFound": "No custom tax rates found.",
@@ -462,12 +508,6 @@
       },
       "corePackageConfig": {
         "settings": {
-          "mail": {
-            "user": "Username",
-            "password": "Password",
-            "host": "Host",
-            "port": "Port"
-          },
           "public": {
             "allowGuestCheckout": "Allow Guest Checkout"
           },
