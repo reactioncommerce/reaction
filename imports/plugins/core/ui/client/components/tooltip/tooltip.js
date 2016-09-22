@@ -43,8 +43,10 @@ class Tooltip extends Component {
             {this.props.tooltipContent}
           </div>
         </div>
-      )
+      );
     }
+
+    return null;
   }
 
   render() {
@@ -61,12 +63,13 @@ class Tooltip extends Component {
         </div>
         {this.renderTooltip()}
       </TetherComponent>
-    )
+    );
   }
 }
 
 Tooltip.propTypes = {
   attachment: PropTypes.string,
+  children: PropTypes.node,
   tooltipContent: PropTypes.node
 };
 
