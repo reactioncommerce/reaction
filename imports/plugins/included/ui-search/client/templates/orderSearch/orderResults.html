@@ -1,19 +1,23 @@
 <template name="orderResults">
-  <div class="container-main">
-    <div class="product-grid">
-      <ul class="product-grid-list list-unstyled" id="product-grid-list">
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <td>Order ID</td>
+          <td>Billing Name</td>
+          <td>Shipping Namme</td>
+          <td>ShopId</td>
+        </tr>
+      </thead>
+      <tbody>
         {{#each order in orderSearchResults}}
           {{> orderItem order=order}}
         {{else}}
-          <div class="row">
-            <div class="text-center">
-              <h3>
-                <span data-i18n="search.noOrdersFound">No orders found.</span>
-              </h3>
-            </div>
-          </div>
+          <tr>
+            <td>NO RESULTS</td>
+          </tr>
         {{/each}}
-      </ul>
-    </div>
+      </tbody>
+    </table>
   </div>
 </template>

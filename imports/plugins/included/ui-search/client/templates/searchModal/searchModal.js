@@ -1,8 +1,6 @@
 import _ from "lodash";
 import { IconButton } from "/imports/plugins/core/ui/client/components";
 import { Template } from "meteor/templating";
-import { i18next } from "/client/api";
-import { MeteorGriddle } from "/imports/plugins/core/ui-grid/client/griddle";
 import { ProductSearch, Tags, OrderSearch, AccountSearch } from "/lib/collections";
 
 
@@ -46,7 +44,10 @@ Template.searchModal.onCreated(function () {
        */
       if (searchCollection === "products") {
         const productResults = ProductSearch.find().fetch();
+        const productResultsCount = productResults.length;
         this.state.set("productSearchResults", productResults);
+        this.state.set("productSearchCount", productResultsCount);
+
         const hashtags = [];
         for (const product of productResults) {
           if (product.hashtags) {
@@ -65,6 +66,9 @@ Template.searchModal.onCreated(function () {
         // TODO: Do we need this?
         this.state.set("accountSearchResults", "");
         this.state.set("orderSearchResults", "");
+
+        console.log("-----Products-----", productResults);
+        console.log("-----Products Size-----", productResultsCount);
       }
 
       /**
@@ -72,7 +76,9 @@ Template.searchModal.onCreated(function () {
        */
       if (searchCollection === "accounts") {
         const accountResults = AccountSearch.find().fetch();
+        const accountResultsCount = accountResults.length;
         this.state.set("accountSearchResults", accountResults);
+        this.state.set("accountSearchCount", accountResultsCount);
 
         // TODO: Do we need this?
         this.state.set("orderSearchResults", "");
@@ -80,7 +86,7 @@ Template.searchModal.onCreated(function () {
         this.state.set("tagSearchResults", "");
 
         console.log("-----Accounts-----", accountResults);
-
+        console.log("-----Accounts Size-----", accountResultsCount);
       }
 
       /**
@@ -88,7 +94,10 @@ Template.searchModal.onCreated(function () {
        */
       if (searchCollection === "orders") {
         const orderResults = OrderSearch.find().fetch();
+        const orderResultsCount = orderResults.length;
         this.state.set("orderSearchResults", orderResults);
+        this.state.set("orderSearchCount", orderResultsCount);
+
 
         // TODO: Do we need this?
         this.state.set("accountSearchResults", "");
@@ -96,6 +105,7 @@ Template.searchModal.onCreated(function () {
         this.state.set("tagSearchResults", "");
 
         console.log("-----Orders-----", orderResults);
+        console.log("-----Orders Size-----", orderResultsCount);
       }
     }
   });
@@ -141,35 +151,6 @@ Template.searchModal.helpers({
     const instance = Template.instance();
     const results = instance.state.get("accountSearchResults");
     return results;
-  },
-  accountGrid() {
-    const filteredFields = ["_id", "emails", "shopId"];
-    const noDataMessage = i18next.t("search.noAccountsFound");
-    // const instance = Template.instance();
-
-    //
-    // helper adds a class to every grid row
-    //
-    const customRowMetaData = {
-      bodyCssClassName: () =>  {
-        return "account-grid-row";
-      }
-    };
-
-    // return account grid
-    return {
-      component: MeteorGriddle,
-      publication: "SearchResults",
-      collection: "accounts",
-      matchingResultsCount: "50",
-      showFilter: true,
-      useGriddleStyles: true,
-      rowMetadata: customRowMetaData,
-      filteredFields: filteredFields,
-      columns: filteredFields,
-      noDataMessage: noDataMessage
-      // onRowClick: alert('holla')
-    };
   }
 });
 
@@ -215,10 +196,9 @@ Template.searchModal.events({
   },
   "click [data-event-action=searchCollection]": function (event, templateInstance) {
     event.preventDefault();
-    const instance = Template.instance();
     const searchCollection = $(event.target).data("event-value");
 
-    $('.search-type-option').not(event.target).removeClass('search-type-active');
+    $(".search-type-option").not(event.target).removeClass("search-type-active");
     $(event.target).addClass("search-type-active");
 
     $("#search-input").focus();

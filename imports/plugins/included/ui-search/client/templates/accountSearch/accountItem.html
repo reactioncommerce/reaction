@@ -1,9 +1,11 @@
 <template name="accountItem">
-  <li>
-    | {{account._id}} |
-    {{account.shopId}} |
-  {{#each email in account.emails}}
-    {{email}} |
-  {{/each}}
-</li>
+  <tr>
+    <td>{{account._id}}</td>
+    <td>{{account.shopId}}</td>
+    <td>
+      {{#each email in account.emails}}
+        {{email}}
+      {{/each}}
+    </td>
+  </tr>
 </template>

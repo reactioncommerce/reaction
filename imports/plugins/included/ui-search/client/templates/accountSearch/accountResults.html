@@ -1,22 +1,22 @@
 <template name="accountResults">
-  <div class="container-main">
-    <div class="product-grid">
-      <ul class="product-grid-list list-unstyled" id="product-grid-list">
-        <div>
-          {{> React accountGrid }}
-        </div>
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Account ID</th>
+          <th>Shop ID</th>
+          <th>Email(s)</th>
+        </tr>
+      </thead>
+      <tbody>
         {{#each account in accountSearchResults}}
           {{> accountItem account=account}}
         {{else}}
-          <div class="row">
-            <div class="text-center">
-              <h3>
-                <span data-i18n="search.noAccountsFound">No accounts found.</span>
-              </h3>
-            </div>
-          </div>
+          <tr>
+            <td>NO RESULTS</td>
+          </tr>
         {{/each}}
-      </ul>
-    </div>
+      </tbody>
+    </table>
   </div>
 </template>

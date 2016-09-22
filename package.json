@@ -58,6 +58,7 @@
     "react-color": "^2.2.1",
     "react-dom": "^15.3.0",
     "react-textarea-autosize": "^4.0.4",
+    "reactable": "^0.14.0",
     "sortablejs": "^1.4.2",
     "stripe": "^4.9.0",
     "sweetalert2": "^4.2.4",

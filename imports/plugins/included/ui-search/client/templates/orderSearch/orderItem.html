@@ -1,11 +1,13 @@
 <template name="orderItem">
-  <li>
-    {{order._id}} |
-    {{order.billingName}} |
-    {{order.shippingName}} |
-    {{order.shopId}} |
-  {{#each email in order.userEmails}}
-    {{email}} |
-  {{/each}}
-</li>
+  <tr>
+    <td>{{order._id}}</td>
+    <td>{{order.billingName}}</td>
+    <td>{{order.shippingName}}</td>
+    <td>{{order.shopId}}</td>
+    <td>
+      {{#each email in order.userEmails}}
+        {{email}}
+      {{/each}}
+    </td>
+  </tr>
 </template>
