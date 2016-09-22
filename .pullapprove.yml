@@ -5,7 +5,8 @@ always_pending:
 group_defaults:
   approve_by_comment:
     enabled: "true approve_regex:'^(Approved|:shipit:|:\\+1:|LGTM)' reject_regex:'^(Rejected|:-1:)'"
-  reset_on_push: true
+    reset_on_push:
+      enabled: false
 groups:
   development-reviewers:
     approve_by_comment:
