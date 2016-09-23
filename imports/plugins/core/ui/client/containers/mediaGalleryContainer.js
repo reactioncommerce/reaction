@@ -51,6 +51,9 @@ function uploadHandler(files) {
 }
 
 class MediaGalleryContainer extends Component {
+  state = {
+    featuredMedia: undefined
+  }
 
   handleDrop = (files) => {
     uploadHandler(files);
@@ -85,6 +88,18 @@ class MediaGalleryContainer extends Component {
     return (this.state && this.state.media) || this.props.media;
   }
 
+  handleMouseEnterMedia = (event, media) => {
+    this.setState({
+      featuredMedia: media
+    });
+  }
+
+  handleMouseLeaveMedia = () => {
+    this.setState({
+      featuredMedia: undefined
+    });
+  }
+
   handleMoveMedia = (dragIndex, hoverIndex) => {
     const media = this.props.media[dragIndex];
 
@@ -117,7 +132,11 @@ class MediaGalleryContainer extends Component {
   render() {
     return (
       <MediaGallery
+        allowFeaturedMediaHover={this.props.editable === false}
+        featuredMedia={this.state.featuredMedia}
         onDrop={this.handleDrop}
+        onMouseEnterMedia={this.handleMouseEnterMedia}
+        onMouseLeaveMedia={this.handleMouseLeaveMedia}
         onMoveMedia={this.handleMoveMedia}
         onRemoveMedia={this.handleRemoveMedia}
         {...this.props}
@@ -143,6 +162,7 @@ function composer(props, onData) {
 }
 
 MediaGalleryContainer.propTypes = {
+  editable: PropTypes.bool,
   id: PropTypes.string,
   media: PropTypes.arrayOf(PropTypes.object),
   placement: PropTypes.string

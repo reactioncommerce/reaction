@@ -7,6 +7,18 @@ class MediaGallery extends Component {
     return Array.isArray(this.props.media) && this.props.media.length > 0;
   }
 
+  get allowFeaturedMediaHover() {
+    if (this.props.allowFeaturedMediaHover && this.props.featuredMedia) {
+      return true;
+    }
+
+    return false;
+  }
+
+  get featuredMedia() {
+    return this.props.featuredMedia;
+  }
+
   handleDropClick = () => {
     this.refs.dropzone.open();
   }
@@ -33,12 +45,30 @@ class MediaGallery extends Component {
   renderMedia() {
     if (this.hasMedia) {
       return this.props.media.map((media, index) => {
+        if (index === 0 && this.allowFeaturedMediaHover) {
+          return (
+            <MediaItem
+              editable={this.props.editable}
+              index={index}
+              key={index}
+              metadata={this.featuredMedia.metadata}
+              onMouseEnter={this.props.onMouseEnterMedia}
+              onMouseLeave={this.props.onMouseLeaveMedia}
+              onMove={this.props.onMoveMedia}
+              onRemoveMedia={this.props.onRemoveMedia}
+              source={this.featuredMedia}
+            />
+          );
+        }
+
         return (
           <MediaItem
             editable={this.props.editable}
             index={index}
             key={index}
             metadata={media.metadata}
+            onMouseEnter={this.props.onMouseEnterMedia}
+            onMouseLeave={this.props.onMouseLeaveMedia}
             onMove={this.props.onMoveMedia}
             onRemoveMedia={this.props.onRemoveMedia}
             source={media}
@@ -98,9 +128,13 @@ class MediaGallery extends Component {
 }
 
 MediaGallery.propTypes = {
+  allowFeaturedMediaHover: PropTypes.bool,
   editable: PropTypes.bool,
+  featuredMedia: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   media: PropTypes.arrayOf(PropTypes.object),
   onDrop: PropTypes.func,
+  onMouseEnterMedia: PropTypes.func,
+  onMouseLeaveMedia: PropTypes.func,
   onMoveMedia: PropTypes.func,
   onRemoveMedia: PropTypes.func
 };

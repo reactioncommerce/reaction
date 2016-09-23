@@ -5,6 +5,18 @@ import { SortableItem } from "../../containers";
 
 class MediaItem extends Component {
 
+  handleMouseEnter = (event) => {
+    if (this.props.onMouseEnter) {
+      this.props.onMouseEnter(event, this.props.source);
+    }
+  }
+
+  handleMouseLeave = (event) => {
+    if (this.props.onMouseLeave) {
+      this.props.onMouseLeave(event, this.props.source);
+    }
+  }
+
   handleRemoveMedia = (event) => {
     event.stopPropagation();
 
@@ -54,7 +66,11 @@ class MediaItem extends Component {
 
   render() {
     const mediaElement = (
-      <div className="gallery-image">
+      <div
+        className="gallery-image"
+        onMouseEnter={this.handleMouseEnter}
+        onMouseLeave={this.handleMouseLeave}
+      >
         {this.renderImage()}
         {this.renderControls()}
       </div>
@@ -77,6 +93,8 @@ MediaItem.propTypes = {
   connectDropTarget: PropTypes.func,
   defaultSource: PropTypes.string,
   editable: PropTypes.bool,
+  onMouseEnter: PropTypes.func,
+  onMouseLeave: PropTypes.func,
   onRemoveMedia: PropTypes.func,
   source: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
 };
