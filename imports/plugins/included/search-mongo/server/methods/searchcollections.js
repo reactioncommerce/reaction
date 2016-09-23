@@ -168,7 +168,6 @@ export function buildOrderSearch(cb) {
 
 export function buildOrderSearchRecord(orderId, cb) {
   const order = Orders.findOne(orderId);
-  const shopId = Reaction.getShopId();
   const user = Meteor.users.findOne(order.userId);
   const userEmails = [];
   if (user) {
@@ -176,13 +175,18 @@ export function buildOrderSearchRecord(orderId, cb) {
       userEmails.push(email.address);
     }
   }
-  const orderSearch = {
-    _id: order._id,
-    shopId: shopId,
-    shippingName: order.shipping[0].address.fullName,
-    billingName: order.billing[0].address.fullName,
-    userEmails: userEmails
-  };
+  const orderSearch = {};
+  for (const field of requiredFields.orders) {
+    if (transformations.orders[field]) {
+      orderSearch[field] = transformations.orders[field](order[field]);
+    } else {
+      orderSearch[field] = order[field];
+    }
+  }
+  orderSearch.emails = userEmails;
+  orderSearch.shippingName = order.shipping[0].address.fullName;
+  orderSearch.billingName = order.billing[0].address.fullName;
+  orderSearch.userEmails = userEmails;
   OrderSearch.insert(orderSearch);
   const rawOrderSearchCollection = OrderSearch.rawCollection();
   rawOrderSearchCollection.createIndex({shopId: 1, shippingName: 1, billingName: 1, userEmails: 1});
@@ -219,7 +223,7 @@ export function buildAccountSearchRecord(accountId, cb) {
   check(cb, Match.Optional(Function));
   const account = Accounts.findOne(accountId);
   // let's ignore anonymous accounts
-  if(account.emails.length) {
+  if (account.emails.length) {
     const accountSearch = {};
     for (const field of requiredFields.accounts) {
       if (transformations.accounts[field]) {
