@@ -75,16 +75,28 @@ getResults.accounts = function (searchTerm, facets, maxResults, userId) {
   let accountResults;
   const shopId = Reaction.getShopId();
   if (Reaction.hasPermission("reaction-accounts", userId)) {
-    accountResults = AccountSearch.find({
-      shopId: shopId,
-      emails: {
-        $regex: "^" + searchTerm + "$",
-        $options: "i"
-      }
-    }, {
+    const findTerm = {
+      $and: [
+        {shopId: shopId},
+        {$or: [
+          { emails: {
+            $regex: "^" + searchTerm + "$",
+            $options: "i"
+          } },
+          { firstName: {
+            $regex: "^" + searchTerm + "$",
+            $options: "i"
+          } },
+          { lastName: {
+            $regex: "^" + searchTerm + "$",
+            $options: "i"
+          } }
+        ] }
+      ]};
+    accountResults = AccountSearch.find(findTerm, {
       limit: maxResults
     });
-    Logger.debug(`Found ${accountResults.count()} accounts searching for ${searchTerm}`);
+    Logger.info(`Found ${accountResults.count()} accounts searching for ${searchTerm}`);
   }
   return accountResults;
 };
