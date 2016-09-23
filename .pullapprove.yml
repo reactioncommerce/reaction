@@ -4,9 +4,11 @@ always_pending:
   title_regex: WIP
 group_defaults:
   approve_by_comment:
-    enabled: "true approve_regex:'^(Approved|:shipit:|:\\+1:|LGTM)' reject_regex:'^(Rejected|:-1:)'"
-    reset_on_push:
-      enabled: false
+    enabled: true
+    approve_regex: '^(Approved|:shipit:|:\+1:|LGTM)'
+    reject_regex: '^(Rejected|:-1:)'
+  reset_on_push:
+    enabled: false
 groups:
   development-reviewers:
     approve_by_comment:
@@ -30,7 +32,6 @@ groups:
     conditions:
       branches:
         - master
-      files: ~
     reject_value: -1
     required: 2
     reset_on_reopened:
