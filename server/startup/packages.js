@@ -1,5 +1,5 @@
-import { Packages, Products } from "/lib/collections";
-import { Reaction } from "/server/api";
+import _ from "lodash";
+import { Products } from "/lib/collections";
 
 export default function () {
   /**
@@ -9,23 +9,10 @@ export default function () {
    * See: https://github.com/matb33/meteor-collection-hooks
    */
 
-  /*
-   * refresh mail configuration on package change
-   */
-  Packages.after.update((userId, doc, fieldNames, modifier) => {
-    if (modifier.$set) {
-      if (modifier.$set.settings) {
-        if (modifier.$set.settings.mail || modifier.$set["settings.mail.user"]) {
-          return Reaction.configureMailUrl();
-        }
-      }
-    }
-  });
-
-
   /**
    * before product update
    */
+  // TODO: review this.  not sure this does what it was intended to
   Products.before.update((userId, product, fieldNames, modifier) => {
     // handling product positions updates
     if (_.indexOf(fieldNames, "positions") !== -1) {

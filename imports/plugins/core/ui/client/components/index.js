@@ -7,3 +7,5 @@ export { default as NumericInput } from "./numericInput/numericInput";
 export { default as FlatButton } from "./button/flatButton";
 export { default as IconButton } from "./button/iconButton";
 export { default as EditButton } from "./button/editButton";
+export { default as Loading } from "./loading/loading";
+export { default as FieldGroup } from "./forms/field_group";
