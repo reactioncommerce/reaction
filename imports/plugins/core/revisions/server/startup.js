@@ -18,7 +18,7 @@ Products.before.insert((userId, product) => {
   });
 
   if (!productRevision) {
-    Logger.info(`No revision found for product ${product._id}. Creating new revision`);
+    Logger.debug(`No revision found for product ${product._id}. Creating new revision`);
 
     Revisions.insert({
       documentId: product._id,
@@ -45,7 +45,7 @@ Products.before.update(function (userId, product, fieldNames, modifier, options)
   const originalSelector = this.args[0];
 
   if (!productRevision) {
-    Logger.info(`No revision found for product ${product._id}. Creating new revision`);
+    Logger.debug(`No revision found for product ${product._id}. Creating new revision`);
 
     // Create a new revision
     Revisions.insert({
@@ -82,7 +82,7 @@ Products.before.update(function (userId, product, fieldNames, modifier, options)
   if (options.publish === true || (product.workflow && product.workflow.status === "product/publish")) {
     // Maybe mark the revision as published
 
-    Logger.info(`Publishing revison for product ${product._id}.`);
+    Logger.debug(`Publishing revison for product ${product._id}.`);
     Revisions.update(revisionSelector, {
       $set: {
         "workflow.status": "revision/published"
@@ -132,7 +132,7 @@ Products.before.update(function (userId, product, fieldNames, modifier, options)
 
   Revisions.update(revisionSelector, revisionModifier);
 
-  Logger.info(`Revison updated for product ${product._id}.`);
+  Logger.debug(`Revison updated for product ${product._id}.`);
 
   if (modifier.$pull && modifier.$pull.hashtags) {
     const tagId = modifier.$pull.hashtags;
@@ -207,7 +207,7 @@ Products.before.remove(function (userId, product) {
   });
 
   if (!productRevision) {
-    Logger.info(`No revision found for product ${product._id}. Creating new revision`);
+    Logger.debug(`No revision found for product ${product._id}. Creating new revision`);
 
     Revisions.insert({
       documentId: product._id,
@@ -228,8 +228,8 @@ Products.before.remove(function (userId, product) {
     }
   });
 
-  Logger.info(`Revison updated for product ${product._id}.`);
-  Logger.info(`Product ${product._id} is now marked as deleted.`);
+  Logger.debug(`Revison updated for product ${product._id}.`);
+  Logger.debug(`Product ${product._id} is now marked as deleted.`);
 
   // If the original product is deleted, and the user is trying to delete it again,
   // then actually remove it completly.
@@ -237,12 +237,12 @@ Products.before.remove(function (userId, product) {
   // This acts like a trash. Where the product is sent to trash before it can actually
   // be deleted perminately.
   if (product.isDeleted === true) {
-    Logger.info(`Allowing write to product ${product._id} for Collection.remove().`);
+    Logger.debug(`Allowing write to product ${product._id} for Collection.remove().`);
 
     return true;
   }
 
-  Logger.info(`Preventing write to product ${product._id} for Collection.remove().`);
+  Logger.debug(`Preventing write to product ${product._id} for Collection.remove().`);
 
   return false;
 });
