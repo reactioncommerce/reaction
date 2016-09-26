@@ -62,7 +62,6 @@ const cardTarget = {
     // When dragging downwards, only move when the cursor is below 50%
     // When dragging upwards, only move when the cursor is above 50%
 
-    console.log(dragIndex, hoverIndex, hoverClientX, hoverMiddleX);
     // // Dragging to left
     // // Don't update position if we are dragging an item to the [left],
     // // but have not crossed the middle of the item we are dragging over
@@ -97,9 +96,6 @@ const cardTarget = {
     // if (dragIndex < hoverIndex && (hoverClientX < hoverMiddleX && hoverClientY > hoverMiddleY)) {
     //   return;
     // }
-
-
-
 
     //
     //
