@@ -18,7 +18,7 @@ class PinterestSocialButton extends Component {
     const description = props.settings.description;
     const baseUrl = "http://www.pinterest.com/pin/create/button/";
     let media = props.settings.media;
-console.log(props);
+
     if (props.settings.media) {
       if (!/^http(s?):\/\/+/.test(props.settings.media)) {
         media = location.origin + props.settings.media;
