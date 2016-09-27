@@ -128,6 +128,7 @@
         "error": "Error",
         "submit": "Submit",
         "delete": "Delete",
+        "deleted": "Deleted",
         "create": "Create",
         "close": "Close",
         "settings": "Settings",

@@ -11,7 +11,7 @@ import { DragDropProvider } from "/imports/plugins/core/ui/client/providers";
 
 function variantIsSelected(variantId) {
   const current = ReactionProduct.selectedVariant();
-  if (typeof current === "object" && (variantId === current._id || ~current.ancestors.indexOf(variantId))) {
+  if (current && typeof current === "object" && (variantId === current._id || ~current.ancestors.indexOf(variantId))) {
     return true;
   }
 

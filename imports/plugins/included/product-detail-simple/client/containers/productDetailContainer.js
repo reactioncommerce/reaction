@@ -205,11 +205,11 @@ function composer(props, onData) {
           sort: {
             "metadata.priority": 1
           }
-        });
+        }).fetch();
       }
 
       let priceRange;
-      if (typeof selectedVariant === "object") {
+      if (selectedVariant && typeof selectedVariant === "object") {
         const childVariants = ReactionProduct.getVariants(selectedVariant._id);
         // when top variant has no child variants we display only its price
         if (childVariants.length === 0) {
@@ -223,7 +223,7 @@ function composer(props, onData) {
         product,
         priceRange,
         tags,
-        media: mediaArray.fetch(),
+        media: mediaArray,
         editable: Reaction.hasPermission(["createProduct"]),
         handleProductFieldChange: changeProductField
       });

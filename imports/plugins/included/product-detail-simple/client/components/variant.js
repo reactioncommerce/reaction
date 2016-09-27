@@ -40,11 +40,24 @@ class Variant extends Component {
     return null;
   }
 
+  renderDeletionStatus() {
+    if (this.props.variant.isDeleted) {
+      return (
+        <span className="badge badge-danger">
+          <Translation defaultValue="Deleted" i18nKey="app.deleted" />
+        </span>
+      );
+    }
+
+    return null;
+  }
+
   render() {
     const variant = this.props.variant;
     const classes = classnames({
       "variant-detail": true,
-      "variant-detail-selected": this.props.isSelected
+      "variant-detail-selected": this.props.isSelected,
+      "variant-deleted": this.props.variant.isDeleted
     });
 
     const variantElement = (
@@ -66,6 +79,7 @@ class Variant extends Component {
           </div>
 
           <div className="alerts">
+            {this.renderDeletionStatus()}
             {this.renderInventoryStatus()}
             {this.props.visibilityButton}
             {this.props.editButton}

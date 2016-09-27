@@ -1,5 +1,6 @@
 import React, { Component, PropTypes} from "react";
 import classnames from "classnames";
+import { Translation } from "/imports/plugins/core/ui/client/components";
 import { MediaItem } from "/imports/plugins/core/ui/client/components";
 
 class ChildVariant extends Component {
@@ -16,6 +17,18 @@ class ChildVariant extends Component {
   get primaryMediaItem() {
     if (this.hasMedia) {
       return this.props.media[0];
+    }
+
+    return null;
+  }
+
+  renderDeletionStatus() {
+    if (this.props.variant.isDeleted) {
+      return (
+        <span className="badge badge-danger">
+          <Translation defaultValue="Deleted" i18nKey="app.deleted" />
+        </span>
+      );
     }
 
     return null;
@@ -38,7 +51,8 @@ class ChildVariant extends Component {
     const classes = classnames({
       "btn": true,
       "btn-default": true,
-      "variant-detail-selected": this.props.isSelected
+      "variant-detail-selected": this.props.isSelected,
+      "variant-deleted": this.props.variant.isDeleted
     });
 
     return (
@@ -53,6 +67,7 @@ class ChildVariant extends Component {
         </button>
 
         <div className="variant-controls">
+          {this.renderDeletionStatus()}
           {this.props.visibilityButton}
           {this.props.editButton}
         </div>

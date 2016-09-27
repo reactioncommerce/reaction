@@ -25,7 +25,7 @@ class ProductSocialContainer extends Component {
 
 function composer(props, onData) {
   const product = ReactionProduct.selectedProduct();
-  const selectedVariant = ReactionProduct.selectedVariant();
+  const selectedVariant = ReactionProduct.selectedVariant() || {};
   let title = product.title;
   let mediaUrl;
 
