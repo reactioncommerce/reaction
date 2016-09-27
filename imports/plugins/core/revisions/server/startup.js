@@ -100,15 +100,7 @@ Products.before.update(function (userId, product, fieldNames, modifier, options)
 
       for (const property in modifier[operation]) {
         if (modifier[operation].hasOwnProperty(property)) {
-          if (operation === "$set" && property === "isVisible") {
-            // Special handling for isVisible
-            // Look in the product revision to decided if the revision should be toggled visible or not.
-            //
-            // Since the product is only updated on publish, you can't use it as the source of truth for
-            // toggles
-            const isVisible = !productRevision.documentData.isVisible;
-            revisionModifier.$set[`documentData.${property}`] = isVisible;
-          } else if (operation === "$set" && property === "metafields.$") {
+          if (operation === "$set" && property === "metafields.$") {
             // Special handling for meta fields with $ operator
             // We need to update the selector otherwise the operation would completly fail.
             //

@@ -110,6 +110,10 @@ class VariantListContainer extends Component {
     }
   }
 
+  handleVariantVisibilityToggle = (event, variant, variantIsVisible) => {
+    Meteor.call("products/updateProductField", variant._id, "isVisible", variantIsVisible);
+  }
+
   handleMoveVariant = (dragIndex, hoverIndex) => {
     const variant = this.props.variants[dragIndex];
 
@@ -140,6 +144,7 @@ class VariantListContainer extends Component {
           onEditVariant={this.handleEditVariant}
           onMoveVariant={this.handleMoveVariant}
           onVariantClick={this.handleVariantClick}
+          onVariantVisibiltyToggle={this.handleVariantVisibilityToggle}
           {...this.props}
           variants={this.variants}
         />

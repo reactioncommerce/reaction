@@ -22,6 +22,22 @@ class EditContainer extends Component {
       template: props.editView,
       data: props.data
     });
+
+    return true;
+  }
+
+  handleVisibilityButtonClick = (event) => {
+    const props = this.props;
+
+    if (this.props.onVisibilityButtonClick) {
+      const returnValue = this.props.onVisibilityButtonClick(event, props);
+
+      if (returnValue === false) {
+        return returnValue;
+      }
+    }
+
+    return true;
   }
 
   renderVisibilityButton() {
@@ -136,6 +152,7 @@ EditContainer.propTypes = {
   field: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
   hasPermission: PropTypes.bool,
   onEditButtonClick: PropTypes.func,
+  onVisibilityButtonClick: PropTypes.func,
   showsVisibilityButton: PropTypes.bool
 };
 

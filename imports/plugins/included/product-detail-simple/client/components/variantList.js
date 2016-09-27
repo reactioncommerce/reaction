@@ -12,12 +12,17 @@ class VariantList extends Component {
     }
   }
 
+  handleVariantVisibilityClick = (event, editButtonProps) => {
+    if (this.props.onVariantVisibiltyToggle) {
+      const isVariantVisible = !editButtonProps.data.isVisible;
+      this.props.onVariantVisibiltyToggle(event, editButtonProps.data, isVariantVisible);
+    }
+  }
+
   handleChildVariantEditClick = (event, editButtonProps) => {
     if (this.props.onEditVariant) {
       this.props.onEditVariant(event, editButtonProps.data, 1);
     }
-
-    return false;
   }
 
   isSoldOut(variant) {
@@ -41,6 +46,7 @@ class VariantList extends Component {
             key={index}
             label="Edit Variant"
             onEditButtonClick={this.onVariantEditClick}
+            onVisibilityButtonClick={this.handleVariantVisibilityClick}
             permissions={["createProduct"]}
             showsVisibilityButton={true}
           >
@@ -86,6 +92,7 @@ class VariantList extends Component {
             key={index}
             label="Edit Variant"
             onEditButtonClick={this.handleChildVariantEditClick}
+            onVisibilityButtonClick={this.handleVariantVisibilityClick}
             permissions={["createProduct"]}
             showsVisibilityButton={true}
           >
@@ -134,6 +141,7 @@ VariantList.propTypes = {
   onEditVariant: PropTypes.func,
   onMoveVariant: PropTypes.func,
   onVariantClick: PropTypes.func,
+  onVariantVisibiltyToggle: PropTypes.func,
   variantIsSelected: PropTypes.func,
   variants: PropTypes.arrayOf(PropTypes.object)
 };
