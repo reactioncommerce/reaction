@@ -26,6 +26,7 @@ export function createSocialSettings(options) {
 
     return {
       url: options.url || location.origin + location.pathname,
+      media: options.media,
       settings: socialSettings,
       providers: socialButtons
     };

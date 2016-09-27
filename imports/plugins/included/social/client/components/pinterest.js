@@ -17,10 +17,10 @@ class PinterestSocialButton extends Component {
     const url = encodeURIComponent(preferredUrl);
     const description = props.settings.description;
     const baseUrl = "http://www.pinterest.com/pin/create/button/";
-    let media;
-
+    let media = props.settings.media;
+console.log(props);
     if (props.settings.media) {
-      if (!/^http(s?):\/\/+/.test(prop.settings.media)) {
+      if (!/^http(s?):\/\/+/.test(props.settings.media)) {
         media = location.origin + props.settings.media;
       }
     }
