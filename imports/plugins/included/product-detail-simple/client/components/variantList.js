@@ -8,8 +8,9 @@ class VariantList extends Component {
 
   handleVariantEditClick = (event, editButtonProps) => {
     if (this.props.onEditVariant) {
-      this.props.onEditVariant(event, editButtonProps.data);
+      return this.props.onEditVariant(event, editButtonProps.data);
     }
+    return true;
   }
 
   handleVariantVisibilityClick = (event, editButtonProps) => {
@@ -21,8 +22,9 @@ class VariantList extends Component {
 
   handleChildVariantEditClick = (event, editButtonProps) => {
     if (this.props.onEditVariant) {
-      this.props.onEditVariant(event, editButtonProps.data, 1);
+      return this.props.onEditVariant(event, editButtonProps.data, 1);
     }
+    return true;
   }
 
   isSoldOut(variant) {
@@ -45,7 +47,7 @@ class VariantList extends Component {
             i18nKeyLabel="productDetailEdit.editVariant"
             key={index}
             label="Edit Variant"
-            onEditButtonClick={this.onVariantEditClick}
+            onEditButtonClick={this.handleVariantEditClick}
             onVisibilityButtonClick={this.handleVariantVisibilityClick}
             permissions={["createProduct"]}
             showsVisibilityButton={true}

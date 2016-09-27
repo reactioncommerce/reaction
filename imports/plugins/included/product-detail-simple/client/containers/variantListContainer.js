@@ -98,7 +98,7 @@ class VariantListContainer extends Component {
 
     ReactionProduct.setCurrentVariant(variant._id);
     Session.set("variant-form-" + editVariant._id, true);
-    Reaction.Router.go("product", {handle: selectedProduct.handle, variantId: editVariant._id});
+    Reaction.Router.go("product", {handle: selectedProduct.handle, variantId: variant._id});
 
     if (Reaction.hasPermission("createProduct")) {
       Reaction.showActionView({
@@ -108,6 +108,9 @@ class VariantListContainer extends Component {
         data: editVariant
       });
     }
+
+    // Prevent the default edit button `onEditButtonClick` function from running
+    return false;
   }
 
   handleVariantVisibilityToggle = (event, variant, variantIsVisible) => {
