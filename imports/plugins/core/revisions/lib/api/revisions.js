@@ -14,5 +14,15 @@ export function getPackageSettings() {
 
 export function isRevisionControlEnabled() {
   const settings = getPackageSettings();
-  return settings.general.enabled;
+
+  if (settings && settings.general && typeof settings.general.enabled === "boolean") {
+    return settings.general.enabled;
+  }
+
+  return false;
 }
+
+export const RevisionApi = {
+  isRevisionControlEnabled,
+  getPackageSettings
+};

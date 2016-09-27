@@ -1,6 +1,6 @@
 import { Products, Revisions } from "/lib/collections";
 import { Logger, Reaction } from "/server/api";
-import { isRevisionControlEnabled } from "/imports/plugins/core/revisions/lib/api";
+import { RevisionApi } from "/imports/plugins/core/revisions/lib/api/revisions";
 
 /**
  * product detail publication
@@ -69,7 +69,7 @@ Meteor.publish("Product", function (productId) {
       $in: [true, false, undefined]
     };
 
-    if (isRevisionControlEnabled()) {
+    if (RevisionApi.isRevisionControlEnabled()) {
       const handle = Products.find(selector).observeChanges({
         added: (id, fields) => {
           const revisions = Revisions.find({

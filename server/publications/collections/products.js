@@ -1,6 +1,7 @@
 import { Products, Revisions } from "/lib/collections";
 import { Reaction } from "/server/api";
-import { isRevisionControlEnabled } from "/imports/plugins/core/revisions/lib/api";
+import { RevisionApi } from "/imports/plugins/core/revisions/lib/api/revisions";
+
 //
 // define search filters as a schema so we can validate
 // params supplied to the products publication
@@ -229,7 +230,7 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
         $in: [true, false, undefined]
       };
 
-      if (isRevisionControlEnabled()) {
+      if (RevisionApi.isRevisionControlEnabled()) {
         const handle = Products.find(selector, {
           sort: sort,
           limit: productScrollLimit

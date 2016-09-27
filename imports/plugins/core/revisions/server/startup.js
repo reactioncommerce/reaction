@@ -1,10 +1,10 @@
 import { Products, Revisions, Tags } from "/lib/collections";
 import { Logger } from "/server/api";
 import { diff } from "deep-diff";
-import { isRevisionControlEnabled } from "../lib/api";
+import { RevisionApi } from "../lib/api";
 
 Products.before.insert((userId, product) => {
-  if (isRevisionControlEnabled() !== true) {
+  if (RevisionApi.isRevisionControlEnabled() === false) {
     return true;
   }
 
@@ -29,7 +29,7 @@ Products.before.insert((userId, product) => {
 
 
 Products.before.update(function (userId, product, fieldNames, modifier, options) {
-  if (isRevisionControlEnabled() !== true) {
+  if (RevisionApi.isRevisionControlEnabled() === false) {
     return true;
   }
 
@@ -190,7 +190,7 @@ Products.before.update(function (userId, product, fieldNames, modifier, options)
 });
 
 Products.before.remove(function (userId, product) {
-  if (isRevisionControlEnabled() === false) {
+  if (RevisionApi.isRevisionControlEnabled() === false) {
     return true;
   }
 
@@ -240,7 +240,7 @@ Products.before.remove(function (userId, product) {
 });
 
 Revisions.after.update(function (userId, revision) {
-  if (isRevisionControlEnabled() === false) {
+  if (RevisionApi.isRevisionControlEnabled() === false) {
     return true;
   }
 
