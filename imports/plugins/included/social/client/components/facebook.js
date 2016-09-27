@@ -9,7 +9,7 @@ export function getOpenGraphMeta(props) {
   const title = props.title || document.title;
   const description = props.settings.description;
 
-  let meta = [
+  const meta = [
     { property: "og:type", content: "article" },
     { property: "og:site_name", content: location.hostname },
     { property: "og:url", content: url },
@@ -33,19 +33,15 @@ export function getOpenGraphMeta(props) {
 }
 
 class FacebookSocialButton extends Component {
-  constructor(props) {
-    super(props)
-  }
-
   componentDidMount() {
-    if (window && document && this.props.isEnabled) {
+    if (window && document) {
       $('<div id="fb-root"></div>').appendTo("body");
 
-      window.fbAsyncInit = function () {
+      window.fbAsyncInit = () => {
         return FB.init({
-          appId: apps.facebook.appId,
+          appId: this.props.settings.appId,
           xfbml: true,
-          version: "v2.1"
+          version: this.props.settings.version || "v2.7"
         });
       };
       (function (d, s, id) {
@@ -64,14 +60,12 @@ class FacebookSocialButton extends Component {
 
   handleClick = (event) => {
     event.preventDefault();
-    console.log("FB Button", this.props);
-    if (FB) {
-      FB.ui({
+
+    if (window.FB) {
+      window.FB.ui({
         method: "share",
         display: "popup",
         href: this.props.url
-      }, function (response) {
-        //
       });
     }
   }
@@ -80,8 +74,10 @@ class FacebookSocialButton extends Component {
     if (this.props.showText) {
       return (
         <Translation defaultValue="Share on Facebook" i18nKey="social.shareOnFacebook" />
-      )
+      );
     }
+
+    return null;
   }
 
   render() {
@@ -104,4 +100,13 @@ class FacebookSocialButton extends Component {
   }
 }
 
-export default FacebookSocialButton
+FacebookSocialButton.propTypes = {
+  altIcon: PropTypes.string,
+  media: PropTypes.string,
+  settings: PropTypes.object,
+  showText: PropTypes.bool,
+  size: PropTypes.string,
+  url: PropTypes.string
+};
+
+export default FacebookSocialButton;
