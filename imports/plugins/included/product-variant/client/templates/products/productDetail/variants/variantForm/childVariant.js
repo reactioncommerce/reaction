@@ -99,7 +99,7 @@ Template.childVariantForm.events({
 
     return ReactionProduct.setCurrentVariant(template.data._id);
   },
-  "change .child-variant-form :input": function (event, template) {
+  "change .child-variant-input": function (event, template) {
     const variant = template.data;
     const value = $(event.currentTarget).val();
     const field = $(event.currentTarget).attr("name");
