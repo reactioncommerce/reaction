@@ -119,6 +119,12 @@ class Tag extends Component {
     }
   }
 
+  handleSuggestionsClearRequested = () => {
+    if (this.props.onClearSuggestions) {
+      this.props.onClearSuggestions();
+    }
+  }
+
   /**
    * Render a simple tag for display purposes only
    * @return {JSX} simple tag
@@ -225,7 +231,8 @@ class Tag extends Component {
           onBlur: this.handleTagInputBlur,
           onChange: this.handleInputChange
         }}
-        onSuggestionsUpdateRequested={this.handleSuggestionsUpdateRequested}
+        onSuggestionsClearRequested={this.handleSuggestionsClearRequested}
+        onSuggestionsFetchRequested={this.handleSuggestionsUpdateRequested}
         renderSuggestion={this.renderSuggestion}
         suggestions={this.props.suggestions}
       />

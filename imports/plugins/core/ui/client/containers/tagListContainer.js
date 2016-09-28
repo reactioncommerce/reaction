@@ -187,6 +187,12 @@ class TagListContainer extends Component {
     });
   }
 
+  handleClearSuggestions = () => {
+    this.setState({
+      suggestions: []
+    });
+  }
+
   get tags() {
     if (this.props.editable) {
       return this.state.tagIds.map((tagId) => this.state.tagsByKey[tagId]);
@@ -201,6 +207,7 @@ class TagListContainer extends Component {
         <TagList
           newTag={this.state.newTag}
           onClick={this.handleEditButtonClick}
+          onClearSuggestions={this.handleClearSuggestions}
           onGetSuggestions={this.handleGetSuggestions}
           onMoveTag={this.handleMoveTag}
           onNewTagSave={this.handleNewTagSave}

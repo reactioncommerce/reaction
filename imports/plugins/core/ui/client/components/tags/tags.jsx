@@ -72,6 +72,7 @@ class Tags extends Component {
             editable={this.props.editable}
             index={index}
             key={index}
+            onClearSuggestions={this.props.onClearSuggestions}
             onGetSuggestions={this.props.onGetSuggestions}
             onMove={this.props.onMoveTag}
             onTagInputBlur={this.handleTagSave}
@@ -93,6 +94,7 @@ class Tags extends Component {
             {...this.props.tagProps}
             blank={true}
             key="newTagForm"
+            onClearSuggestions={this.props.onClearSuggestions}
             onGetSuggestions={this.props.onGetSuggestions}
             onTagInputBlur={this.handleNewTagSave}
             onTagSave={this.handleNewTagSave}
@@ -138,6 +140,7 @@ Tags.propTypes = {
   editable: PropTypes.bool,
   enableNewTagForm: PropTypes.bool,
   newTag: PropTypes.object,
+  onClearSuggestions: PropTypes.func,
   onGetSuggestions: PropTypes.func,
   onMoveTag: PropTypes.func,
   onNewTagSave: PropTypes.func,
