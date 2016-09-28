@@ -61,6 +61,12 @@ class Button extends Component {
 
   renderTooltipContent() {
     if (this.isTooltipOpen) {
+      if (typeof this.props.tooltip === "string") {
+        return (
+          <Translation defaultValue={this.props.tooltip} i18nKey={this.props.i18nKeyTooltip} />
+        );
+      }
+
       return (
         <div>
           {this.props.tooltip}

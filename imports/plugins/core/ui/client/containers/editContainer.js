@@ -44,9 +44,10 @@ class EditContainer extends Component {
     if (this.props.showsVisibilityButton) {
       return (
         <VisibilityButton
+          i18nKeyTooltip="revisions.unpublishedChanges"
           onClick={this.handleVisibilityButtonClick}
           toggleOn={this.props.data.isVisible}
-          tooltip="Unpublised changes"
+          tooltip="Unpublised Changes"
         />
       );
     }
@@ -79,7 +80,7 @@ class EditContainer extends Component {
 
             tooltip = (
               <span>
-                <Translation defaultValue="Unpublised changes" i18nKey="revisions.unpublishedChanges" />
+                <Translation defaultValue="Unpublised Changes" i18nKey="revisions.unpublishedChanges" />
               </span>
             );
 
@@ -92,7 +93,7 @@ class EditContainer extends Component {
 
       tooltip = (
         <span>
-          <Translation defaultValue="Unpublised changes" i18nKey="revisions.unpublishedChanges" />
+          <Translation defaultValue="Unpublised Changes" i18nKey="revisions.unpublishedChanges" />
         </span>
       );
     }
