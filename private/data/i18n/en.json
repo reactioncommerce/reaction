@@ -343,6 +343,7 @@
         "pinProduct": "Pin Product",
         "toggleSize": "Toggle Size",
         "deleteProduct": "Delete Product",
+        "restoreProduct": "Restore Product from Trash",
         "deleteThisProduct": "Delete this product?",
         "deleteSelectedProducts": "Delete selected products?",
         "publish": "Publish",

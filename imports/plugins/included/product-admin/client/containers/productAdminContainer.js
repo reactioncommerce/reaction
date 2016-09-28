@@ -91,6 +91,10 @@ class ProductAdminContainer extends Component {
     Meteor.call("products/removeMetaFields", productId, metafield);
   }
 
+  handleProductRestore = (product) => {
+    Meteor.call("products/updateProductField", product._id, "isDeleted", false);
+  }
+
   render() {
     return (
       <ProductAdmin
@@ -101,6 +105,7 @@ class ProductAdminContainer extends Component {
         onMetaRemove={this.handleMetaRemove}
         onMetaSave={this.handleMetafieldSave}
         onProductFieldSave={this.handleProductFieldSave}
+        onRestoreProduct={this.handleProductRestore}
         {...this.props}
         product={this.product}
         tags={this.props.tags}

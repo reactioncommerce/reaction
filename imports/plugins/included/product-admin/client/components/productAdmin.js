@@ -21,6 +21,13 @@ class ProductAdmin extends Component {
     }
   }
 
+  handleRestoreProduct = () => {
+    if (this.props.onRestoreProduct) {
+      this.props.onRestoreProduct(this.props.product);
+    }
+  }
+
+
   handleFieldChange = (event, value, field) => {
     if (this.props.onFieldChange) {
       this.props.onFieldChange(field, value);
@@ -151,12 +158,22 @@ class ProductAdmin extends Component {
               value={this.product.description}
             />
             <Divider />
-            <Button
-              i18nKeyLabel="productDetailEdit.deleteProduct"
-              label="Delete Product"
-              onClick={this.handleDeleteProduct}
-              status="danger"
-            />
+            {this.product.isDeleted && (
+              <Button
+                i18nKeyLabel="productDetailEdit.restoreProduct"
+                label="Restore Product from Trash"
+                onClick={this.handleRestoreProduct}
+                status="default"
+              />
+            )}
+            {!this.product.isDeleted && (
+              <Button
+                i18nKeyLabel="productDetailEdit.deleteProduct"
+                label="Delete Product"
+                onClick={this.handleDeleteProduct}
+                status="danger"
+              />
+            )}
           </CardBody>
         </Card>
         <Card>
@@ -271,6 +288,7 @@ ProductAdmin.propTypes = {
   onMetaRemove: PropTypes.func,
   onMetaSave: PropTypes.func,
   onProductFieldSave: PropTypes.func,
+  onRestoreProduct: PropTypes.func,
   product: PropTypes.object,
   revisonDocumentIds: PropTypes.arrayOf(PropTypes.string)
 };
