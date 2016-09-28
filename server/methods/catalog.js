@@ -524,12 +524,6 @@ Meteor.methods({
     if (!Array.isArray(toDelete) || toDelete.length === 0) return false;
 
     const deleted = Products.remove(selector);
-    toDelete.forEach(variant => {
-      // useless to return results here because all happens async
-      Media.remove({
-        "metadata.variantId": variant._id
-      });
-    });
 
     // after variant were removed from product, we need to recalculate all
     // denormalized fields
