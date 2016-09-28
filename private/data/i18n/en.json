@@ -336,6 +336,7 @@
         "addVariantOption": "Add Option",
         "removeVariant": "Remove",
         "removeVariantConfirm": "Are you sure you want to delete {{title}}",
+        "restoreVariantConfirm": "Are you sure you want to restore {{title}} from the trash?",
         "thisVariant": "this variant",
         "thisOption": "this option",
         "duplicateProduct": "Duplicate Product",

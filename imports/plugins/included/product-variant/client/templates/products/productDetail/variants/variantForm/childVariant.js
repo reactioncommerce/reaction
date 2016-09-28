@@ -135,5 +135,15 @@ Template.childVariantForm.events({
         }
       });
     }
+  },
+
+  "click .js-restore-child-variant": function (event, instance) {
+    event.stopPropagation();
+    event.preventDefault();
+    const title = instance.data.optionTitle || i18next.t("productDetailEdit.thisOption");
+    if (confirm(i18next.t("productDetailEdit.restoreVariantConfirm", { title }))) {
+      const id = instance.data._id;
+      return Meteor.call("products/updateProductField", id, "isDeleted", false);
+    }
   }
 });
