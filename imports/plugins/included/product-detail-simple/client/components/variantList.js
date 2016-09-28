@@ -20,6 +20,12 @@ class VariantList extends Component {
     }
   }
 
+  handleChildleVariantClick = (event, variant) => {
+    if (this.props.onVariantClick) {
+      this.props.onVariantClick(event, variant, 1);
+    }
+  }
+
   handleChildVariantEditClick = (event, editButtonProps) => {
     if (this.props.onEditVariant) {
       return this.props.onEditVariant(event, editButtonProps.data, 1);
@@ -101,7 +107,7 @@ class VariantList extends Component {
             <ChildVariant
               isSelected={this.props.variantIsSelected(childVariant._id)}
               media={media}
-              onClick={this.props.onVariantClick}
+              onClick={this.handleChildleVariantClick}
               variant={childVariant}
             />
           </EditContainer>

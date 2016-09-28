@@ -81,12 +81,16 @@ class VariantListContainer extends Component {
     return (this.state && this.state.variants) || this.props.variants;
   }
 
-  handleVariantClick = (event, variant) => {
-    const selectedProduct = ReactionProduct.selectedProduct();
+  handleVariantClick = (event, variant, ancestors = -1) => {
+    if (Reaction.isActionViewOpen()) {
+      this.handleEditVariant(event, variant, ancestors);
+    } else {
+      const selectedProduct = ReactionProduct.selectedProduct();
 
-    ReactionProduct.setCurrentVariant(variant._id);
-    Session.set("variant-form-" + variant._id, true);
-    Reaction.Router.go("product", {handle: selectedProduct.handle, variantId: variant._id});
+      ReactionProduct.setCurrentVariant(variant._id);
+      Session.set("variant-form-" + variant._id, true);
+      Reaction.Router.go("product", {handle: selectedProduct.handle, variantId: variant._id});
+    }
   }
 
   handleEditVariant = (event, variant, ancestors = -1) => {
