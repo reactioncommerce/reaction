@@ -19,8 +19,8 @@
     "url": "https://github.com/reactioncommerce/reaction/issues"
   },
   "dependencies": {
+    "@reactioncommerce/authorize-net": "^1.0.7",
     "accounting-js": "^1.1.1",
-    "authorize-net": "github:ongoworks/node-authorize-net",
     "autonumeric": "^1.9.45",
     "autosize": "^3.0.17",
     "avalara-taxrates": "^1.0.1",

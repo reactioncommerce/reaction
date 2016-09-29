@@ -6,7 +6,7 @@ import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Promise } from "meteor/promise";
 
-import AuthNetAPI from "authorize-net";
+import AuthNetAPI from "@reactioncommerce/authorize-net";
 import { Reaction, Logger } from "/server/api";
 import { Packages } from "/lib/collections";
 import { PaymentMethod } from "/lib/collections/schemas";
