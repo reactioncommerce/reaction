@@ -1,61 +1,55 @@
 version: 2
 always_pending:
-  title_regex: 'WIP'
-  explanation: 'Work in progress!'
-
-# Group settings to apply to all groups by default, optionally being overridden later
+  explanation: "Work in progress!"
+  title_regex: WIP
 group_defaults:
   approve_by_comment:
     enabled: true
-      approve_regex: '^(Approved|:shipit:|:\+1:|LGTM)'
-      reject_regex: '^(Rejected|:-1:)'
-  reset_on_push: true
-
-# Groups of reviewers and their respective settings
+    approve_regex: '^(Approved|:shipit:|:\+1:|LGTM)'
+    reject_regex: '^(Rejected|:-1:)'
+  reset_on_push:
+    enabled: false
 groups:
   development-reviewers:
-    required: 2
-    users: all
-    conditions:
-      branches:
-        - development  # this group only reviews when PR is merging into development
-      files:
-        exclude:
-          - '*.md'
     approve_by_comment:
       enabled: true
-      approve_regex: '^(Approved|:shipit:|:\+1:|LGTM)'
-      reject_regex: '^(Rejected|:-1:)'
     author_approval:
       ignored: true
+    conditions:
+      branches:
+        - development
+      files:
+        exclude:
+          - "*.md"
+    reject_value: -2
+    required: 2
     reset_on_reopened:
       enabled: true
-    reject_value: 2
+    users: all
   master-reviewers:
+    author_approval:
+      required: true
+    conditions:
+      branches:
+        - master
+    reject_value: -1
     required: 2
+    reset_on_reopened:
+      enabled: true
     users:
       - aaronjudd
       - jshimko
       - mikemurray
       - zenweasel
       - kieckhafer
-    conditions:
-      branches:
-        - master  # this group only reviews when PR is merging into master
-      files:
-    author_approval:
-      required: true
-    reset_on_reopened:
-      enabled: true
-    reject_value: 1
   security:
-    required: -1  # require approval from everyone
-    users:
-      - Capt-Slow
+    author_approval:
+      ignored: true
+    reject_value: -100
+    required: -1
     reset_on_push:
       enabled: true
     reset_on_reopened:
       enabled: true
-    author_approval:
-      ignored: true
-    reject_value: -100  # any rejection means a failure
+    users:
+      - Capt-Slow
