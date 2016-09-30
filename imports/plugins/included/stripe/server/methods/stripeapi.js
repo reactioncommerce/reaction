@@ -103,9 +103,7 @@ StripeApi.methods.captureCharge = new ValidatedMethod({
     } else {
       stripe = require("stripe")(apiKey);
     }
-    const capturePromise = stripe.charges.capture(transactionId, captureDetails, (error, result) => {
-      return { error, result };
-    });
+    const capturePromise = stripe.charges.capture(transactionId, captureDetails);
     const captureResults = Promise.await(capturePromise);
     return captureResults;
   }
@@ -151,9 +149,7 @@ StripeApi.methods.listRefunds = new ValidatedMethod({
     } else {
       stripe = require("stripe")(apiKey);
     }
-    const refundListPromise = stripe.refunds.list({ charge: transactionId }, (error, result) => {
-      return { error, result };
-    });
+    const refundListPromise = stripe.refunds.list({ charge: transactionId });
     const refundListResults = Promise.await(refundListPromise);
     return refundListResults;
   }
