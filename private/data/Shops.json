@@ -460,6 +460,10 @@
     "i18n": "ru",
     "enabled": true
   }, {
+    "label": "Română",
+    "i18n": "ro",
+    "enabled": true
+  }, {
     "label": "Slovenščina",
     "i18n": "sl",
     "enabled": true
@@ -3549,6 +3553,10 @@
   }, {
     "label": "Русский",
     "i18n": "ru",
+    "enabled": true
+  }, {
+    "label": "Română",
+    "i18n": "ro",
     "enabled": true
   }, {
     "label": "Slovenščina",

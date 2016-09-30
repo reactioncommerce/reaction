@@ -1,4 +1,6 @@
-
+.pdp-container {
+  max-width: 1440px;
+}
 
 .pdp-content {
   display: flex;
@@ -14,11 +16,12 @@
 }
 
 // Header
-.php.header {
+.pdp.header {
   text-align: center;
 }
 
-.pdp.header h1 {
+.pdp.header h1,
+.pdp.header .title-edit-input  {
   text-align: center;
   font-family: @headings-font-family-h1;
   font-size: @product-title-font-size;
@@ -26,12 +29,24 @@
   color: @headings-color-h1;
 }
 
-.pdp.header h2 {
+.pdp.header h2,
+.pdp.header .pageTitle-edit-input  {
   text-align: center;
   font-family: @headings-font-family-h2;
   font-size: @product-page-title-font-size;
   font-weight: @headings-font-weight-h2;
   color: @headings-color-h2;
+}
+
+// Product edit fields
+.pdp.product-detail-edit {
+  position: relative;
+}
+
+.pdp.product-detail-edit .edit-controls {
+  position: absolute;
+  top: -@btn-icon-size / 2;
+  right: -@btn-icon-size / 2;
 }
 
 @media only screen and (max-width: @screen-xs-max) {
@@ -89,8 +104,11 @@
   }
 }
 
-
-
+.pdp .rui.social-buttons {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+}
 
 // Right Column
 //
@@ -150,6 +168,12 @@
 .pdp .vendor input {
   width: 100%;
   padding: 5px;
+}
+
+.pdp .tags-header.edit,
+.pdp .meta-header.edit {
+  display: flex;
+  align-items: center;
 }
 
 // Social

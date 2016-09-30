@@ -1,4 +1,5 @@
 <template name="variantForm">
+{{#with variant}}
   <div id="variant-edit-form-{{_id}}" class="panel-group variant-edit-form {{variantFormVisible}}">
     <div class="panel panel-default variant-form">
       <div class="panel-heading panel-heading-flex">
@@ -15,6 +16,13 @@
             {{/unless}}
           {{/if}}
           <span data-i18n="productDetailEdit.variantDetails">Variant Details</span>
+          {{#if isDeleted}}
+            <div class="panel-subheading">
+              <span class="badge badge-danger" data-i18n="app.deleted">
+                <span>Deleted</span>
+              </span>
+            </div>
+          {{/if}}
         </div>
         <div class="panel-controls">
           {{> button
@@ -23,14 +31,23 @@
             tooltip="Duplicate"
             i18nTooltip="productDetailEdit.duplicateVariant"
           }}
-
-          {{> button
-            icon="trash-o"
-            className="btn btn-default btn-remove-variant"
-            tooltip="Remove"
-            i18nTooltip="productDetailEdit.removeVariant"
-            onClick=(removeVariant this)
-          }}
+          {{#if isDeleted}}
+            {{> button
+              icon="refresh"
+              className="btn btn-default btn-restore-variant"
+              tooltip="Restore"
+              i18nTooltip="productDetailEdit.restoreVariant"
+              onClick=(restoreVariant this)
+            }}
+          {{else}}
+            {{> button
+              icon="trash-o"
+              className="btn btn-default btn-remove-variant"
+              tooltip="Remove"
+              i18nTooltip="productDetailEdit.removeVariant"
+              onClick=(removeVariant this)
+            }}
+          {{/if}}
         </div>
       </div>
       <div class="panel-body">
@@ -152,4 +169,5 @@
       </div>
     </div>
   </div>
+{{/with}}
 </template>

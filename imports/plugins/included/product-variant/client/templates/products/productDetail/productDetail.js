@@ -7,7 +7,9 @@ import { Tags } from "/lib/collections";
 import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
 import { Template } from "meteor/templating";
-import { EditButton } from "/imports/plugins/core/ui/client/components";
+import { Button, EditButton } from "/imports/plugins/core/ui/client/components";
+import { PublishContainer } from "/imports/plugins/core/revisions";
+import { ProductDetailContainer } from "/imports/plugins/included/product-detail-simple/client/containers";
 
 Template.productDetail.onCreated(function () {
   this.state = new ReactiveDict();
@@ -59,6 +61,11 @@ Template.productDetail.onCreated(function () {
  * product data source
  */
 Template.productDetail.helpers({
+  PDC() {
+    return {
+      component: ProductDetailContainer
+    }
+  },
   tagListProps() {
     const instance = Template.instance();
     const product = instance.state.get("product") || {};
@@ -428,6 +435,9 @@ Template.productDetail.events({
 
 Template.productDetailForm.onCreated(function () {
   this.state = new ReactiveDict();
+  this.state.setDefault({
+    product: {}
+  });
 
   this.autorun(() => {
     this.state.set({
@@ -443,6 +453,15 @@ Template.productDetailForm.onCreated(function () {
 });
 
 Template.productDetailForm.helpers({
+  PublishContainerComponent() {
+    const instance = Template.instance();
+    const product = instance.state.get("product") || {};
+
+    return {
+      component: PublishContainer,
+      documentIds: [product._id]
+    };
+  },
   product() {
     return Template.instance().state.get("product");
   },

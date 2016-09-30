@@ -71,16 +71,10 @@ Template.registerHelper("cart", function () {
  * @summary gets current cart billing address / payment name
  * @return {String} returns cart.billing[0].fullName
  */
-
 Template.registerHelper("cartPayerName", function () {
   const cart = Cart.findOne();
-  if (cart) {
-    if (cart.billing) {
-      if (cart.billing[0].address) {
-        if (cart.billing[0].address.fullName) {
-          return cart.billing[0].address.fullName;
-        }
-      }
-    }
+  if (cart && cart.billing && cart.billing[0] && cart.billing[0].address && cart.billing[0].address.fullName) {
+    const name = cart.billing[0].address.fullName;
+    if (name.replace(/[a-zA-Z ]*/, "").length === 0) return name;
   }
 });
