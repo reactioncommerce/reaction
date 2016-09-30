@@ -1,8 +1,10 @@
 import { Reaction, i18next } from "/client/api";
 import { ReactionProduct } from "/lib/api";
+import { applyProductRevision } from "/lib/api/products";
 import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
 import { Template } from "meteor/templating";
+import { Products } from "/lib/collections";
 
 Template.variantForm.onCreated(function () {
   this.autorun(() => {
@@ -12,6 +14,11 @@ Template.variantForm.onCreated(function () {
       Reaction.clearActionView();
     }
   });
+
+  this.getVariant = (variant) => {
+    const product = Products.findOne(variant._id);
+    return applyProductRevision(product);
+  };
 });
 
 /**
@@ -19,6 +26,10 @@ Template.variantForm.onCreated(function () {
  */
 
 Template.variantForm.helpers({
+  variant() {
+    const instance = Template.instance();
+    return instance.getVariant(instance.data);
+  },
   variantDetails: function () {
     if (this.ancestors.length === 1) {
       return Template.parentVariantForm;
@@ -74,6 +85,24 @@ Template.variantForm.helpers({
                 return ReactionProduct.setCurrentVariant(null);
               }
             });
+          }
+        });
+      };
+    };
+  },
+  restoreVariant(variant) {
+    return () => {
+      return () => {
+        const title = variant.title || i18next.t("productDetailEdit.thisVariant");
+
+        Alerts.alert({
+          title: i18next.t("productDetailEdit.restoreVariantConfirm", { title }),
+          showCancelButton: true,
+          confirmButtonText: "Restore"
+        }, (isConfirm) => {
+          if (isConfirm) {
+            const id = variant._id;
+            Meteor.call("products/updateProductField", id, "isDeleted", false);
           }
         });
       };

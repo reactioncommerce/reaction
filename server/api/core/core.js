@@ -6,6 +6,8 @@ import { Jobs, Packages, Shops } from "/lib/collections";
 import { Hooks, Logger } from "/server/api";
 import ProcessJobs from "/server/jobs";
 import { getRegistryDomain } from "./setDomain";
+import { sendVerificationEmail } from "./accounts";
+import { getMailUrl } from "./email/config";
 
 export default {
 
@@ -29,7 +31,7 @@ export default {
     // for initilial permissions configuration.
     this.createDefaultAdminUser();
     // hook after init finished
-    Hooks.Events.run("afterCoreInit", this);
+    Hooks.Events.run("afterCoreInit");
 
     Logger.info("Reaction.init() has run");
 
@@ -121,43 +123,12 @@ export default {
     return Roles.getGroupsForUser(this.userId, "admin");
   },
 
-  configureMailUrl(user, password, host, port) {
-    const shopSettings = Packages.findOne({
-      shopId: this.getShopId(),
-      name: "core"
-    });
-
-    let shopMail;
-
-    if (shopSettings) {
-      shopMail = shopSettings.settings.mail || {};
-    }
-
-    let processUrl = process.env.MAIL_URL;
-    let settingsUrl = Meteor.settings.MAIL_URL;
-
-    if (user && password && host && port) {
-      const mailString = `smtp://${user}:${password}@${host}:${port}/`;
-      const mailUrl = processUrl = settingsUrl = mailString;
-      process.env.MAIL_URL = mailUrl;
-      return mailUrl;
-    } else if (shopMail && shopMail.user && shopMail.password && shopMail.host &&
-      shopMail.port) {
-      const mailString =
-        `smtp://${shopMail.user}:${shopMail.password}@${shopMail.host}:${shopMail.port}/`;
-      const mailUrl = processUrl = settingsUrl = mailString;
-      process.env.MAIL_URL = mailUrl;
-
-      Logger.info(`setting default mail url to: ${shopMail.host}`);
-      return mailUrl;
-    } else if (settingsUrl && !processUrl) {
-      const mailUrl = processUrl = settingsUrl;
-      process.env.MAIL_URL = mailUrl;
-      return mailUrl;
-    }
-    // return reasonable warning that we're not configured correctly
-    Logger.warn("Mail server not configured. Unable to send email.");
-    return false;
+  configureMailUrl() {
+    // maintained for legacy support
+    Logger.warn(
+      "Reaction.configureMailUrl() is deprecated. Please use Reaction.Email.getMailUrl() instead"
+    );
+    return getMailUrl();
   },
 
   getCurrentShopCursor() {
@@ -213,6 +184,18 @@ export default {
     return shop && shop.emails && shop.emails[0].address;
   },
 
+  getShopSettings() {
+    const settings = Packages.findOne({
+      name: "core",
+      shopId: this.getShopId()
+    }) || {};
+    return settings.settings || {};
+  },
+
+  getPackageSettings(name) {
+    return Packages.findOne({ name, shopId: this.getShopId() }) || null;
+  },
+
   /**
    * createDefaultAdminUser
    * @summary Method that creates default admin user
@@ -223,9 +206,11 @@ export default {
    */
   createDefaultAdminUser() {
     Logger.info("Starting createDefaultAdminUser");
-    let options = {};
     const domain = getRegistryDomain();
+    const env = process.env;
     const defaultAdminRoles = ["owner", "admin", "guest", "account/profile"];
+    let options = {};
+    let configureEnv = false;
     let accountId;
 
     while (!this.getShopId()) {
@@ -246,15 +231,22 @@ export default {
 
     //
     // process Meteor settings and env variables for initial user config
+    // if ENV variables are set, these always override "settings.json"
+    // this is to allow for testing environments. where we don't want to use
+    // users configured in a settings file.
     //
+    if (env.REACTION_EMAIL && env.REACTION_USER && env.REACTION_AUTH) {
+      configureEnv = true;
+    }
 
     // defaults use either env or generated
-    options.email = process.env.REACTION_EMAIL || Random.id(8).toLowerCase() +
+    options.email = env.REACTION_EMAIL || Random.id(8).toLowerCase() +
       "@" + domain;
-    options.username = process.env.REACTION_USER || "Admin"; // username
-    options.password = process.env.REACTION_AUTH || Random.secret(8);
+    options.username = env.REACTION_USER || "Admin"; // username
+    options.password = env.REACTION_AUTH || Random.secret(8);
+
     // but we can override with provided `meteor --settings`
-    if (Meteor.settings) {
+    if (Meteor.settings && !configureEnv) {
       if (Meteor.settings.reaction) {
         options.username = Meteor.settings.reaction.REACTION_USER || "Admin";
         options.password = Meteor.settings.reaction.REACTION_AUTH || Random.secret(
@@ -310,7 +302,7 @@ export default {
       try {
         // if server is not configured. Error in configuration
         // are caught, but admin isn't verified.
-        Accounts.sendVerificationEmail(accountId);
+        sendVerificationEmail(accountId);
       } catch (error) {
         Logger.warn(error, "Unable to send admin account verification email.");
       }
@@ -429,7 +421,7 @@ export default {
         }
         // Import package data
         this.Import.package(combinedSettings, shopId);
-        return Logger.info(`Initializing ${shop.name} ${pkgName}`);
+        return Logger.debug(`Initializing ${shop.name} ${pkgName}`);
       }); // end shops
     });
 
@@ -447,7 +439,7 @@ export default {
       return Packages.find().forEach((pkg) => {
         // delete registry entries for packages that have been removed
         if (!_.has(this.Packages, pkg.name)) {
-          Logger.info(`Removing ${pkg.name}`);
+          Logger.debug(`Removing ${pkg.name}`);
           return Packages.remove({
             shopId: shop._id,
             name: pkg.name

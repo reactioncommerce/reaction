@@ -1,3 +1,8 @@
+.btn {
+  &:focus {
+    outline: none;
+  }
+}
 
 .rui.button > .contents {
   display: flex;
@@ -17,11 +22,31 @@
   justify-content: center;
   align-items: center;
   border-radius: 50px;
-  width: 24px;
-  height: 24px;
+  width: @btn-icon-size;
+  height: @btn-icon-size;
   color: @btn-edit-color;
   background-color: @btn-edit-bg;
   margin-left: 5px;
+}
+
+// .rui.button.edit.btn-default, .btn-edit.btn-default {
+//   background-color: @btn-default-bg;
+// }
+
+.rui.button.edit.btn-success, .btn-edit.btn-success {
+  background-color: @btn-success-bg;
+}
+
+.rui.button.edit.btn-warning, .btn-edit.btn-warning {
+  background-color: @btn-warning-bg;
+}
+
+.rui.button.edit.btn-danger, .btn-edit.btn-danger {
+  background-color: @btn-danger-bg;
+}
+
+.rui.button.edit.btn-info, .btn-edit.btn-info {
+  background-color: @btn-info-bg;
 }
 
 .rui.button.edit > .icon,
@@ -45,4 +70,67 @@
   box-shadow: none;
   color: @btn-active-color;
   background-color: @btn-active-bg;
+}
+
+.rui.button.flat, .btn-flat {
+  border: none;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 24px;
+  height: 24px;
+  color: inherit;
+  background-color: transparent;
+}
+
+.rui.button.round, .btn-round {
+  border: none;
+  // font-size: 10px;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50px;
+  width: 24px;
+  height: 24px;
+  color: @btn-edit-color;
+  background-color: @btn-edit-bg;
+  margin-left: 5px;
+}
+
+.rui.button.close, .btn-close {
+  border: none;
+  font-size: 15px;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 75px;
+  width: 36px;
+  height: 36px;
+  color: @black60;
+  background-color: @black30;
+  opacity: 1;
+  transition: background-color 200ms linear, color 200ms linear;
+
+  &:hover {
+    background-color: @black60;
+    color: @black30;
+  }
+}
+
+.rui.button.icon-only i {
+  width: 100%;
+}
+
+.btn-flat {
+  .btn-link();
+}
+
+.btn-flat:hover,
+.btn-flat:active,
+.btn-flat:focus,
+.btn-flat:visited {
+  text-decoration: none;
 }

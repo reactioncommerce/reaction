@@ -140,7 +140,6 @@
         "addtracking": "Legg til sporing",
         "shipmentEmpty": "Denne forsendelsen har ingen varer!",
         "shipmentPacked": "Alle varene er pakket klare til sending.",
-        "shipped": "Sendt",
         "shippingNotifyCustomer": "Varsle kunden om at varene er klare til å sendes.",
         "resendNotification": "Send varsel om sending på nytt."
       },

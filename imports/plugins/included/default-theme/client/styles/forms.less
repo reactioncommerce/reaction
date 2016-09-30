@@ -1,5 +1,4 @@
 
-
 .checkbox-switch {
     width: 36px;
     height: 22px;
@@ -8,7 +7,7 @@
     input, label {
         display: none;
     }
-    
+
     cursor: hand;
     padding: 10px;
 
@@ -26,7 +25,7 @@
         /* border: 2px solid darken(#fff, 10%); */
         .lh-transition(all 200ms);
     }
-    
+
     &:after {
         content: "";
         display: block;
@@ -40,18 +39,18 @@
         box-shadow: 0 0 10px rgba(0,0,0,.1);
         .lh-transition(all 200ms);
     }
-    
+
     &:avtive:after {
         background-color: darken(#fff, 10%);
     }
-    
+
     &:checked:before {
         background-color: @brand-success;
         /* box-shadow: 0 0 0 2px green; */
         .lh-transition(all 200ms);
-        
+
     }
-    
+
     &:checked:after {
         left: 16px;
     }
@@ -59,5 +58,5 @@
     &:disabled {
         opacity: 0.6;
     }
-    
+
 }

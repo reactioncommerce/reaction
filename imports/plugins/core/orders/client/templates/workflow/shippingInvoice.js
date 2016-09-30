@@ -4,7 +4,7 @@ import accounting from "accounting-js";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { ReactiveVar } from "meteor/reactive-var";
-import { Reaction, i18next, Logger } from "/client/api";
+import { i18next, Logger, formatNumber } from "/client/api";
 import { NumericInput } from "/imports/plugins/core/ui/client/components";
 import { Media, Orders, Shops } from "/lib/collections";
 import _ from "lodash";
@@ -248,7 +248,7 @@ Template.coreOrderShippingInvoice.helpers({
   },
 
   money(amount) {
-    return Reaction.Currency.formatNumber(amount);
+    return formatNumber(amount);
   },
 
   disabled() {

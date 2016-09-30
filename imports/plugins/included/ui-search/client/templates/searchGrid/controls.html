@@ -1,0 +1,24 @@
+<template name="searchGridControls">
+  {{#if hasPermission "createProduct"}}
+    <div class="product-grid-controls">
+      <label class="like-button hidden" for="select-product-{{product._id}}">
+        <input
+          type="checkbox"
+          name="selectProduct"
+          value="{{product._id}}"
+          id="select-product-{{product._id}}"
+          checked={{checked}}
+        >
+      </label>
+
+      <div>
+        {{> React VisibilityButton}}
+      </div>
+
+      <div>
+        {{> React EditButton}}
+      </div>
+
+    </div>
+  {{/if}}
+</template>

@@ -186,19 +186,6 @@ AutoForm.hooks({
 });
 
 AutoForm.hooks({
-  shopEditEmailForm: {
-    onSuccess: function () {
-      return Alerts.toast(i18next.t("shopSettings.shopMailSettingsSaved"),
-        "success");
-    },
-    onError: function (operation, error) {
-      return Alerts.toast(`${i18next.t("shopSettings.shopMailSettingsFailed")
-        } ${error}`, "error");
-    }
-  }
-});
-
-AutoForm.hooks({
   shopEditExternalServicesForm: {
     onSuccess: function () {
       return Alerts.toast(
