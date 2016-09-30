@@ -72,9 +72,7 @@ StripeApi.methods.createCharge = new ValidatedMethod({
       stripe = require("stripe")(apiKey);
     }
     try {
-      const chargePromise = stripe.charges.create(chargeObj, (error, result) => {
-        return { error, result };
-      });
+      const chargePromise = stripe.charges.create(chargeObj);
       const promiseResult = Promise.await(chargePromise);
       return promiseResult;
     } catch (e) {
