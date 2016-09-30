@@ -8,6 +8,7 @@ import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
 import { Template } from "meteor/templating";
 import { EditButton } from "/imports/plugins/core/ui/client/components";
+import { Cart } from "/lib/collections";
 
 Template.productDetail.onCreated(function () {
   this.state = new ReactiveDict();
@@ -221,6 +222,14 @@ Template.productDetail.helpers({
       return Template.productMetaFieldForm;
     }
     return Template.productMetaField;
+  },
+  inCart(productId) {
+    const storedCart = Cart.findOne();
+    if (typeof storedCart === "object" && storedCart.items) {
+      var result = $.grep(storedCart.items, function(e){ return e.productId == productId; });
+      if(result.length > 0) return true;
+    }
+    return false;
   }
 });
 
@@ -268,6 +277,9 @@ Template.productDetail.events({
         qtyField.val(currentVariant.inventoryQuantity);
       }
     }
+  },
+  "click .js-view-cart"() {
+      return Reaction.toggleSession("displayCart");
   },
   "click .js-add-to-cart": function (event, template) {
     let productId;
