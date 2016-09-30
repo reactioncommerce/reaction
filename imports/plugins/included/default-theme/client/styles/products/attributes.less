@@ -1,4 +1,5 @@
-.pdp-container {
+// Legacy styles for old, Blaze, product detail page
+.pdp {
   .metafield-list-item, .metafield-new-item {
     padding: 0;
     background-color: transparent;
@@ -71,38 +72,39 @@
   .product-attributes {
     padding: 0;
   }
-}
 
-html.rtl .pdp-container {
-  .metafield-list-item, .metafield-new-item {
-    input {
-      border: 1px solid @border-color;
-      border-left: none;
+
+  html.rtl {
+    .metafield-list-item, .metafield-new-item {
+      input {
+        border: 1px solid @border-color;
+        border-left: none;
+      }
+
+      button {
+        border-left: 1px solid @border-color;
+      }
     }
 
-    button {
-      border-left: 1px solid @border-color;
-    }
-  }
+    .metafield-list-item:first-child {
+      input:first-child {
+        border-radius: 0 @border-radius-base 0 0;
+      }
 
-  .metafield-list-item:first-child {
-    input:first-child {
-      border-radius: 0 @border-radius-base 0 0;
-    }
+      button {
+        border-radius: @border-radius-base 0 0 0;
+      }
 
-    button {
-      border-radius: @border-radius-base 0 0 0;
     }
 
-  }
+    .metafield-list-item:last-child {
+      input:first-child {
+        border-radius: 0 0 @border-radius-base 0;
+      }
 
-  .metafield-list-item:last-child {
-    input:first-child {
-      border-radius: 0 0 @border-radius-base 0;
-    }
-
-    button {
-      border-radius: 0 0 0 @border-radius-base;
+      button {
+        border-radius: 0 0 0 @border-radius-base;
+      }
     }
   }
 }

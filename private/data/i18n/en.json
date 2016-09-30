@@ -128,6 +128,7 @@
         "error": "Error",
         "submit": "Submit",
         "delete": "Delete",
+        "deleted": "Deleted",
         "create": "Create",
         "close": "Close",
         "settings": "Settings",
@@ -175,6 +176,7 @@
         "import": "Import",
         "localization": "Localization",
         "options": "Options",
+        "availableOptions": "Available Options",
         "paymentMethods": "Payment Methods",
         "externalServices": "External Services",
         "shopGeneralSettingsSaved": "Shop general settings saved.",
@@ -304,6 +306,7 @@
         "notFoundError": "This is not the product you were looking for."
       },
       "tags": {
+        "tagName": "Tag Name",
         "addTag": "Add Tag",
         "updateTag": "Update Tag",
         "addGroupTag": "Add Group Tag",
@@ -316,11 +319,12 @@
         "productSettings": "Product Settings",
         "product": "Product",
         "size": "Size",
-        "title": "Product title",
+        "title": "Title",
         "untitledProduct": "Untitled Product",
-        "pageTitle": "Product page title",
-        "vendor": "Product vendor",
-        "description": "Add a product description",
+        "parmalink": "Permalink",
+        "pageTitle": "Subtitle",
+        "vendor": "Vendor",
+        "description": "Bescription",
         "facebookMsg": "Facebook Message",
         "twitterMsg": "Twitter Message",
         "pinterestMsg": "Pinterest Message",
@@ -332,18 +336,25 @@
         "addVariantOption": "Add Option",
         "removeVariant": "Remove",
         "removeVariantConfirm": "Are you sure you want to delete {{title}}",
+        "restoreVariantConfirm": "Are you sure you want to restore {{title}} from the trash?",
         "thisVariant": "this variant",
         "thisOption": "this option",
         "duplicateProduct": "Duplicate Product",
         "pinProduct": "Pin Product",
         "toggleSize": "Toggle Size",
         "deleteProduct": "Delete Product",
+        "restoreProduct": "Restore Product from Trash",
         "deleteThisProduct": "Delete this product?",
         "deleteSelectedProducts": "Delete selected products?",
         "publish": "Publish",
         "moreOptions": "More Options",
+        "details": "Details",
         "noSelectedProducts": "No selected products. Use the ",
-        "orShiftCtrlCmd": " or shift|ctrl|cmd + click on products to select multiple. With shift you can select a contiguous range of products."
+        "orShiftCtrlCmd": " or shift|ctrl|cmd + click on products to select multiple. With shift you can select a contiguous range of products.",
+        "makeVisible": "Make Visible",
+        "hideProduct": "Hide Product",
+        "productIsVisible": "Product is visible",
+        "productIsNotVisible": "Product is not visible"
       },
       "productVariant": {
         "inventoryQuantity": "Quantity",
@@ -551,6 +562,13 @@
           "isBillingDefault": "Make this your default billing address?",
           "isCommercial": "This is a commercial address."
         }
+      },
+      "revisions": {
+        "isDisabled": "Revision control is disabled. Any changes will be published immediately.",
+        "unpublishedChanges": "Unpublished Changes",
+        "publishChanges": "Publish Changes",
+        "showChanges": "Show Changes",
+        "hideChanges": "Hide Changes"
       },
       "address": {
         "country": "Country",

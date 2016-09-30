@@ -1,0 +1,11 @@
+<template name="productDetailSimple">
+  {{#if isEnabled}}
+    {{!-- Use new product detail page --}}
+    <div>
+      {{> React component=PDC}}
+    </div>
+  {{else}}
+    {{!-- Use old product detail page --}}
+    {{> productDetail }}
+  {{/if}}
+</template>
