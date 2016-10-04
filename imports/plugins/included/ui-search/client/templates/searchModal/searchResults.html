@@ -7,11 +7,11 @@
       {{/if}}
 
       {{#if orderSearchResults}}
-        {{> orderResults orderSearchResults=orderSearchResults}}
+        {{> orderResults orderSearchResults=orderSearchResults orderTable=orderTable}}
       {{/if}}
 
       {{#if accountSearchResults}}
-        {{> accountResults accountSearchResults=accountSearchResults accountGrid=accountGrid}}
+        {{> accountResults accountSearchResults=accountSearchResults accountTable=accountTable}}
       {{/if}}
     </div>
   </div>

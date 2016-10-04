@@ -7,3 +7,5 @@ export { default as NumericInput } from "./numericInput/numericInput";
 export { default as FlatButton } from "./button/flatButton";
 export { default as IconButton } from "./button/iconButton";
 export { default as EditButton } from "./button/editButton";
+export { default as SortExample } from "./table/table";
+// export { default as Table } from "./table/table";

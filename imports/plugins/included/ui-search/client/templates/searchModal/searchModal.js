@@ -1,5 +1,6 @@
 import _ from "lodash";
-import { IconButton } from "/imports/plugins/core/ui/client/components";
+import { IconButton, SortExample } from "/imports/plugins/core/ui/client/components";
+// import { IconButton, Table } from "/imports/plugins/core/ui/client/components";
 import { Template } from "meteor/templating";
 import { ProductSearch, Tags, OrderSearch, AccountSearch } from "/lib/collections";
 
@@ -151,6 +152,38 @@ Template.searchModal.helpers({
     const instance = Template.instance();
     const results = instance.state.get("accountSearchResults");
     return results;
+  },
+  accountTable() {
+    const instance = Template.instance();
+    const view = instance.view;
+
+    return {
+      component: SortExample
+      // icon: "fa fa-times",
+      // kind: "close",
+      // onClick() {
+      //   $(".js-search-modal").fadeOut(400, () => {
+      //     $("body").css("overflow", "visible");
+      //     Blaze.remove(view);
+      //   });
+      // }
+    };
+  },
+  orderTable() {
+    const instance = Template.instance();
+    const view = instance.view;
+
+    return {
+      component: SortExample
+      // icon: "fa fa-times",
+      // kind: "close",
+      // onClick() {
+      //   $(".js-search-modal").fadeOut(400, () => {
+      //     $("body").css("overflow", "visible");
+      //     Blaze.remove(view);
+      //   });
+      // }
+    };
   }
 });
 

@@ -1,22 +1,29 @@
 <template name="accountResults">
-  <div class="table-responsive">
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>Account ID</th>
-          <th>Shop ID</th>
-          <th>Email(s)</th>
-        </tr>
-      </thead>
-      <tbody>
-        {{#each account in accountSearchResults}}
-          {{> accountItem account=account}}
-        {{else}}
+  <div class="data-table">
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
           <tr>
-            <td>NO RESULTS</td>
+            <th>Account ID</th>
+            <th>Shop ID</th>
+            <th>Email(s)</th>
           </tr>
-        {{/each}}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {{#each account in accountSearchResults}}
+            {{> accountItem account=account}}
+          {{else}}
+            <tr>
+              <td>NO RESULTS</td>
+            </tr>
+          {{/each}}
+        </tbody>
+      </table>
+
+      <div>
+        {{> React accountTable}}
+      </div>
+      
+    </div>
   </div>
 </template>

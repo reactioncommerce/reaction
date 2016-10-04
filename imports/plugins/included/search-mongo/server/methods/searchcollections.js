@@ -232,4 +232,3 @@ export function buildAccountSearchRecord(accountId, cb) {
     cb();
   }
 }
-
