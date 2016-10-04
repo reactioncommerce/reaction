@@ -6,7 +6,6 @@ if [ "${INSTALL_PHANTOMJS}" = "true" ]; then
 
   printf "\n[-] Installing Phantom.js...\n\n"
 
-  PHANTOM_VERSION="2.1.1"
   PHANTOM_JS="phantomjs-$PHANTOM_VERSION-linux-x86_64"
 
   apt-get update
