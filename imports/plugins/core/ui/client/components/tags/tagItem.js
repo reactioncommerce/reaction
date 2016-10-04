@@ -12,8 +12,11 @@ function createAutosuggestInput(templateInstance, options) {
     suggestions: templateInstance.state.get("suggestions"),
     getSuggestionValue: getSuggestionValue,
     renderSuggestion: renderSuggestion,
-    onSuggestionsUpdateRequested({ value }) {
+    onSuggestionsFetchRequested({ value }) {
       templateInstance.state.set("suggestions", getSuggestions(value));
+    },
+    onSuggestionsClearRequested() {
+      templateInstance.state.set("suggestions", []);
     },
     inputProps: {
       placeholder: i18next.t(options.i18nPlaceholderKey, { defaultValue: options.i18nPlaceholderValue}),

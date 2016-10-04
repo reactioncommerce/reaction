@@ -143,3 +143,5 @@ Alerts = {
   },
   collection_: new Mongo.Collection(null)
 };
+
+export default Alerts;

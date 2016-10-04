@@ -1,6 +1,5 @@
 <template name="productDetail">
   {{#with product}}
-
   <div class="container-main">
     <div class="container-fluid pdp-container">
       {{!-- Product Visibility Admin Block --}}
@@ -139,6 +138,13 @@
             data-event-action="deleteProduct"
           }}
         {{/if}}
+      </div>
+    </div>
+  </div>
+  <div id="product-edit-form-{{product._id}}" class="panel-group variant-edit-form">
+    <div class="panel panel-default variant-form">
+      <div class="panel-body">
+          {{> React PublishContainerComponent}}
       </div>
     </div>
   </div>

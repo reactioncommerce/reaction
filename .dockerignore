@@ -5,7 +5,7 @@
 .git
 .build.log
 Dockerfile
-docker/reaction.*
+.reaction/docker/reaction.*
 docs
 node_modules
 packages/*/.npm

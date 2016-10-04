@@ -1,8 +1,4 @@
-/* eslint no-unused-vars: 1 */
-//
-// TODO review PropTypes import in iconButton.js
-//
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 import classnames from "classnames";
 import Button from "./button.jsx";
 
@@ -15,35 +11,36 @@ class IconButton extends Component {
     } = this.props;
 
 
-// this.props.buttonKind === 'flat'
-// default should be default, flat is new css that makes the bakcground tarnsparent
-
+    // this.props.buttonKind === 'flat'
+    // default should be default, flat is new css that makes the bakcground tarnsparent
     let buttonClassName;
 
     if (this.props.kind === "flat") {
       buttonClassName = classnames({
         "rui": true,
         "button": true,
+        "icon": true,
+        "icon-only": true,
         "flat": true
       });
-    }
-    else if (this.props.kind === "close") {
+    } else if (this.props.kind === "close") {
       buttonClassName = classnames({
         "rui": true,
         "button": true,
+        "icon-only": true,
         "close": true
       });
-    }
-    else {
+    } else {
       buttonClassName = classnames({
         "rui": true,
         "button": true,
         "edit": true,
+        "icon-only": true,
         "variant-edit": true
       });
     }
 
-    let iconClassName = classnames({
+    const iconClassName = classnames({
       "fa-lg": true,
       [icon]: true
     });

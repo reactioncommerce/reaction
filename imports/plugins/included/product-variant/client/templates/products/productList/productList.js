@@ -15,8 +15,9 @@ Template.productList.helpers({
     if (variants.length > 0) {
       const variantId = variants[0]._id;
       defaultImage = Media.findOne({
-        "metadata.variantId": variantId,
-        "metadata.priority": 0
+        "metadata.variantId": variantId
+      }, {
+        sort: { "metadata.priority": 1, uploadedAt: 1 }
       });
     }
     if (defaultImage) {

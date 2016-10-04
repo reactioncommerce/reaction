@@ -23,7 +23,7 @@ Hooks.Events.add("afterCoreInit", () => {
   // set 0 to disable fetchTIC
   if (refreshPeriod !== 0) {
     Logger.info(`Adding taxes/fetchTIC to JobControl. Refresh ${refreshPeriod}`);
-    new Job(Jobs, "taxes/fetchTaxCloudTaxCodes", {url: taxCodeUrl})
+    new Job(Jobs, "taxes/fetchTaxCloudTaxCodes", { url: taxCodeUrl })
       .priority("normal")
       .retry({
         retries: 5,

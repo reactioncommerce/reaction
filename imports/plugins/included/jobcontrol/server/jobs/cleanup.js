@@ -1,17 +1,19 @@
+import later from "later";
+import moment from "moment";
 import { Jobs } from "/lib/collections";
 import { Hooks, Logger } from "/server/api";
 
 Hooks.Events.add("onJobServerStart", () => {
-  Logger.info("Adding Job jobControl/removeStaleJobs to JobControl");
+  Logger.debug("Adding Job jobControl/removeStaleJobs to JobControl");
+
   new Job(Jobs, "jobControl/removeStaleJobs", {})
-    .priority("normal")
     .retry({
       retries: 5,
       wait: 60000,
       backoff: "exponential"
     })
     .repeat({
-      schedule: Jobs.later.parse.text("every 15 minutes")
+      schedule: later.parse.text("every day")
     })
     .save({
       cancelRepeats: true
@@ -19,45 +21,51 @@ Hooks.Events.add("onJobServerStart", () => {
 });
 
 
-function getJobIds(current) {
-  const ids = Jobs.find({
-    status: {
-      $in: Job.jobStatusRemovable
-    },
-    updated: {
-      $lt: current
-    }
-  }, {
-    fields: {
-      _id: 1
-    }
-  }).map(function (d) {
-    return d._id;
-  });
-  return ids;
-}
-
 export default function () {
-  Jobs.processJobs("jobControl/removeStaleJobs",
-    {
-      pollInterval: 30 * 1000,
-      workTimeout: 60 * 1000
-    },
-    (job, callback) => {
-      const current = new Date();
-      // todo: set this interval in the admin UI
-      current.setMinutes(current.getMinutes() - 5);
-      const ids = getJobIds(current);
-      let success;
-      if (ids.length > 0) {
-        Jobs.removeJobs(ids);
-        success = `Removed ${ids.length} stale jobs`;
-        Logger.info(success);
-      } else {
-        success = "No eligible jobs to cleanup";
-        Logger.info(success);
+  const removeStaleJobs = Jobs.processJobs("jobControl/removeStaleJobs", {
+    pollInterval: 60 * 60 * 1000, // backup polling, see observer below
+    workTimeout: 60 * 1000
+  }, (job, callback) => {
+    Logger.info("Processing jobControl/removeStaleJobs...");
+
+    // TODO: set this interval in the admin UI
+    const olderThan = moment().subtract(3, "days")._d;
+
+    const ids = Jobs.find({
+      type: {
+        $nin: ["sendEmail"]
+      },
+      status: {
+        $in: ["cancelled", "completed", "failed"]
+      },
+      updated: {
+        $lt: olderThan
       }
-      job.done(success, { repeatId: true });
-      return callback();
-    });
+    }, {
+      fields: {
+        _id: 1
+      }
+    }).map((d) => d._id);
+
+    let success;
+    if (ids.length > 0) {
+      Jobs.removeJobs(ids);
+      success = `Removed ${ids.length} stale jobs`;
+      Logger.debug(success);
+    } else {
+      success = "No eligible jobs to cleanup";
+      Logger.debug(success);
+    }
+    job.done(success, { repeatId: true });
+    return callback();
+  });
+
+  Jobs.find({
+    type: "jobControl/removeStaleJobs",
+    status: "ready"
+  }).observe({
+    added() {
+      return removeStaleJobs.trigger();
+    }
+  });
 }
