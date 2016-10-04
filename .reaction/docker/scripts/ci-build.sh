@@ -11,8 +11,8 @@ if [[ -e ~/docker/image.tar ]]; then
   docker load -i ~/docker/image.tar
 fi
 
-# build new image
-docker build -t reactioncommerce/reaction:latest .
+# build new base and app images
+.reaction/docker/build.sh
 
 # if successful, save in cache
 mkdir -p ~/docker
