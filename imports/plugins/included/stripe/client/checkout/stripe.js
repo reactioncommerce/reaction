@@ -9,6 +9,8 @@ import { StripePayment } from "../../lib/collections/schemas";
 
 import "./stripe.html";
 
+let submitting = false;
+
 //
 // local helpers
 //
@@ -50,6 +52,7 @@ Template.stripePaymentForm.helpers({
 //
 AutoForm.addHooks("stripe-payment-form", {
   onSubmit(doc) {
+    submitting = true;
     const template = this.template;
     hidePaymentAlert();
     const cardData = {
@@ -93,6 +96,7 @@ AutoForm.addHooks("stripe-payment-form", {
                 return "capture";
             }
           })();
+          submitting = false;
           paymentMethod = {
             processor: "Stripe",
             storedCard: storedCard,

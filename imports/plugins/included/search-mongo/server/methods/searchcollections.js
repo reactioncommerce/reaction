@@ -142,8 +142,10 @@ export function buildOrderSearch(cb) {
   for (const order of orders) {
     const user = Meteor.users.findOne(order.userId);
     const userEmails = [];
-    for (const email of user.emails) {
-      userEmails.push(email.address);
+    if (user) {
+      for (const email of user.emails) {
+        userEmails.push(email.address);
+      }
     }
     const orderSearch = {
       _id: order._id,
@@ -167,8 +169,10 @@ export function buildOrderSearchRecord(orderId, cb) {
   const shopId = Reaction.getShopId();
   const user = Meteor.users.findOne(order.userId);
   const userEmails = [];
-  for (const email of user.emails) {
-    userEmails.push(email.address);
+  if (user) {
+    for (const email of user.emails) {
+      userEmails.push(email.address);
+    }
   }
   const orderSearch = {
     _id: order._id,
