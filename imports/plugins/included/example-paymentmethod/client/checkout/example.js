@@ -8,6 +8,8 @@ import { ExamplePayment } from "../../lib/collections/schemas";
 
 import "./example.html";
 
+let submitting = false;
+
 function uiEnd(template, buttonText) {
   template.$(":input").removeAttr("disabled");
   template.$("#btn-complete-order").text(buttonText);
@@ -64,6 +66,7 @@ AutoForm.addHooks("example-payment-form", {
         uiEnd(template, "Resubmit payment");
       } else {
         if (transaction.saved === true) {
+          submitting = false;
           paymentMethod = {
             processor: "Example",
             storedCard: storedCard,
