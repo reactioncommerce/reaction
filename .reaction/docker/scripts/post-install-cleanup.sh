@@ -14,5 +14,5 @@ rm -rf /root/.cache /root/.config /root/.local
 rm -rf /tmp/*
 
 # remove os dependencies
-apt-get -qq -y autoremove
+apt-get -y autoremove
 rm -rf /var/lib/apt/lists/*
