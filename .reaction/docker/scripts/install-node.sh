@@ -2,7 +2,6 @@
 
 set -e
 
-: ${NODE_VERSION:=4.4.7}
 : ${NODE_ARCH:=x64}
 
 printf "\n[-] Installing Node ${NODE_VERSION}...\n\n"
