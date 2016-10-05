@@ -136,37 +136,7 @@ export function ensureProductSearchIndex() {
   rawProductSearchCollection.createIndex(indexObject, weightObject, getSearchLanguage());
 }
 
-
-export function buildOrderSearch(cb) {
-  check(cb, Match.Optional(Function));
-  const shopId = Reaction.getShopId();
-  const orders = Orders.find({}).fetch();
-  for (const order of orders) {
-    const user = Meteor.users.findOne(order.userId);
-    const userEmails = [];
-    if (user) {
-      for (const email of user.emails) {
-        userEmails.push(email.address);
-      }
-    }
-    const orderSearch = {
-      _id: order._id,
-      shopId: shopId,
-      shippingName: order.shipping[0].address.fullName,
-      billingName: order.billing[0].address.fullName,
-      userEmails: userEmails
-    };
-    OrderSearch.insert(orderSearch);
-  }
-  const rawOrderSearchCollection = OrderSearch.rawCollection();
-  rawOrderSearchCollection.dropIndexes("*");
-  rawOrderSearchCollection.createIndex({shopId: 1, shippingName: 1, billingName: 1, userEmails: 1});
-  if (cb) {
-    cb();
-  }
-}
-
-export function buildOrderSearchRecord(orderId, cb) {
+export function buildOrderSearchRecord(orderId) {
   const order = Orders.findOne(orderId);
   const user = Meteor.users.findOne(order.userId);
   const userEmails = [];
@@ -183,17 +153,28 @@ export function buildOrderSearchRecord(orderId, cb) {
       orderSearch[field] = order[field];
     }
   }
-  orderSearch.emails = userEmails;
   orderSearch.shippingName = order.shipping[0].address.fullName;
+  orderSearch.shippingPhone = _.replace(order.shipping[0].address.phone, /\D/g, "");
   orderSearch.billingName = order.billing[0].address.fullName;
+  orderSearch.billingPhone = _.replace(order.billing[0].address.phone, /\D/g, "");
   orderSearch.userEmails = userEmails;
   OrderSearch.insert(orderSearch);
+}
+
+export function buildOrderSearch(cb) {
+  check(cb, Match.Optional(Function));
+  const orders = Orders.find({}).fetch();
+  for (const order of orders) {
+    buildOrderSearchRecord(order._id);
+  }
   const rawOrderSearchCollection = OrderSearch.rawCollection();
+  rawOrderSearchCollection.dropIndexes("*");
   rawOrderSearchCollection.createIndex({shopId: 1, shippingName: 1, billingName: 1, userEmails: 1});
   if (cb) {
     cb();
   }
 }
+
 
 export function buildAccountSearch(cb) {
   check(cb, Match.Optional(Function));
@@ -217,10 +198,9 @@ export function buildAccountSearch(cb) {
   }
 }
 
-export function buildAccountSearchRecord(accountId, cb) {
+export function buildAccountSearchRecord(accountId) {
   Logger.info("building account search record");
   check(accountId, String);
-  check(cb, Match.Optional(Function));
   const account = Accounts.findOne(accountId);
   // let's ignore anonymous accounts
   if (account.emails.length) {
@@ -235,9 +215,6 @@ export function buildAccountSearchRecord(accountId, cb) {
     AccountSearch.insert(accountSearch);
     const rawAccountSearchCollection = AccountSearch.rawCollection();
     rawAccountSearchCollection.createIndex({shopId: 1, emails: 1});
-  }
-  if (cb) {
-    cb();
   }
 }
 
