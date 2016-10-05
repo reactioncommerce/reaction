@@ -45,28 +45,38 @@ getResults.products = function (searchTerm, facets, maxResults, userId) {
 
 getResults.orders = function (searchTerm, facets, maxResults, userId) {
   let orderResults;
+  const searchPhone = _.replace(searchTerm, /\D/g, "");
   const shopId = Reaction.getShopId();
   const findTerm = {
     $and: [
-      {shopId: shopId},
+      { shopId: shopId },
       {$or: [
+        { _id: searchTerm },
         { userEmails: {
           $regex: "^" + searchTerm + "$",
           $options: "i"
         } },
         { shippingName: {
-          $regex: "^" + searchTerm + "$",
+          $regex: searchTerm,
           $options: "i"
         } },
         { billingName: {
-          $regex: "^" + searchTerm + "$",
+          $regex: searchTerm,
+          $options: "i"
+        } },
+        { billingPhone: {
+          $regex: "^" + searchPhone + "$",
+          $options: "i"
+        } },
+        { shippingPhone: {
+          $regex: "^" + searchPhone + "$",
           $options: "i"
         } }
       ] }
     ]};
   if (Reaction.hasPermission("orders", userId)) {
     orderResults = OrderSearch.find(findTerm, { limit: maxResults });
-    Logger.debug(`Found ${orderResults.count()} orders`);
+    Logger.info(`Found ${orderResults.count()} orders searching for ${searchTerm}`);
   }
   return orderResults;
 };
