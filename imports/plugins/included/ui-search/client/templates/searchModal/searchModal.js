@@ -169,7 +169,7 @@ Template.searchModal.helpers({
       {
         id: "shopId",
         type: DataType.String,
-        header: "Shipping Phone"
+        header: "Shop ID"
       },
       {
         id: "firstName",
