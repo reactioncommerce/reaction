@@ -19,7 +19,7 @@ bash $BUILD_SCRIPTS_DIR/build-packages.sh
 bash $BUILD_SCRIPTS_DIR/plugin-loader.sh
 
 # Install app deps
-meteor npm install --production
+meteor npm install
 
 # build the source
 mkdir -p $APP_BUNDLE_DIR
