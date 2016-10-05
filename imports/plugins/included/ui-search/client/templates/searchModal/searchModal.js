@@ -172,25 +172,28 @@ Template.searchModal.helpers({
         header: "Shipping Phone"
       },
       {
-        id: "profile.firstName",
+        id: "firstName",
         type: DataType.String,
-        header: "First Name"
+        header: "First Name",
+        value: rowData => rowData.profile.firstName
         // renderer(cellData, { column, rowData }) {
         //   return <a href={rowData.url} target="_blank">{cellData}</a>;
         // },
       },
       {
-        id: "profile.lastName",
+        id: "lastName",
         type: DataType.String,
-        header: "Last Name"
+        header: "Last Name",
+        value: rowData => rowData.profile.lastName
         // renderer(cellData, { column, rowData }) {
         //   return <a href={rowData.url} target="_blank">{cellData}</a>;
         // },
       },
       {
-        id: "profile.phone",
+        id: "phone",
         type: DataType.String,
-        header: "Phone"
+        header: "Phone",
+        value: rowData => rowData.profile.phone
       }
     ];
 
