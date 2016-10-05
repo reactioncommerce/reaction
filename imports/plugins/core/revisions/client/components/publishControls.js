@@ -43,12 +43,46 @@ class PublishControls extends Component {
     return "app.hideChanges";
   }
 
+  get hasRevisions() {
+    return Array.isArray(this.props.revisions) && this.props.revisions.length;
+  }
+
   get diffs() {
     return this.props.revisions;
   }
 
   get showDiffs() {
     return this.diffs && this.state.showDiffs;
+  }
+
+  /**
+   * Getter hasChanges
+   * @return {Boolean} one or more revision has changes
+   */
+  get hasChanges() {
+    // Verify we even have any revision at all
+    if (this.hasRevisions) {
+      // Loop through all revisions to determin if they have changes
+      const diffHasActualChanges = this.props.revisions.map((revision) => {
+        // We probably do have chnages to publish
+        // Note: Sometimes "updatedAt" will cause false positives, but just incase, lets
+        // enable the publish button anyway.
+        if (Array.isArray(revision.diff) && revision.diff.length) {
+          return true;
+        }
+
+        // If all else fails, we will disable the button
+        return false;
+      });
+
+      // If even one revision as changes we should enable the publish button
+      return diffHasActualChanges.some((element) => {
+        return element === true;
+      });
+    }
+
+    // No revisions, no publishing
+    return false;
   }
 
   renderChanges() {
@@ -66,6 +100,18 @@ class PublishControls extends Component {
     return null;
   }
 
+  renderPublishButton() {
+    return (
+      <Button
+        disabled={this.hasChanges === false}
+        i18nKeyLabel="app.publishChanges"
+        label="Publish Changes"
+        onClick={this.handlePublishClick}
+        status="success"
+      />
+    );
+  }
+
   render() {
     if (this.props.isEnabled) {
       return (
@@ -76,12 +122,7 @@ class PublishControls extends Component {
             onClick={this.handleToggleShowChanges}
             status="link"
           />
-          <Button
-            i18nKeyLabel="app.publishChanges"
-            label="Publish Changes"
-            onClick={this.handlePublishClick}
-            primary={true}
-          />
+          {this.renderPublishButton()}
           {this.showDiffs && <hr />}
           {this.renderChanges()}
         </div>

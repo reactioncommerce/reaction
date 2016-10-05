@@ -568,7 +568,10 @@
         "unpublishedChanges": "Unpublished Changes",
         "publishChanges": "Publish Changes",
         "showChanges": "Show Changes",
-        "hideChanges": "Hide Changes"
+        "hideChanges": "Hide Changes",
+        "changedPublished": "Changes published successfuly",
+        "noChanges": "No Changes",
+        "noChangesPublished": "There are no changes to publish"
       },
       "address": {
         "country": "Country",
