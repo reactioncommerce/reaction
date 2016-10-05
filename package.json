@@ -36,12 +36,8 @@
     "dnd-core": "^2.0.2",
     "domkit": "^0.0.1",
     "faker": "^3.1.0",
-<<<<<<< HEAD
-    "fibers": "^1.0.13",
     "fixed-data-table": "^0.6.3",
-=======
     "fibers": "^1.0.14",
->>>>>>> development
     "font-awesome": "^4.6.3",
     "griddle-react": "^0.6.1",
     "i18next": "^3.4.3",
