@@ -1,32 +1,9 @@
 <template name="orderResults">
   <div class="data-table">
     <div class="table-responsive">
-      <table class="table" data-toggle="table">
-        <thead>
-          <tr>
-            <td data-field="id" data-sortable="true">Order ID <i class="fa fa-angle-down" aria-hidden="true"></i></td>
-            <td data-field="name" data-sortable="true">Name <i class="fa fa-angle-down" aria-hidden="true"></i></td>
-            <td data-field="shippingAddress" data-sortable="true">Shipping Address <i class="fa fa-angle-down" aria-hidden="true"></i></td>
-            <td data-field="billingAddress" data-sortable="true">Billing Address <i class="fa fa-angle-down" aria-hidden="true"></i></td>
-            <td data-field="date" data-sortable="true">Order Date <i class="fa fa-angle-down" aria-hidden="true"></i></td>
-            <td data-field="status" data-sortable="true">Status <i class="fa fa-angle-down" aria-hidden="true"></i></td>
-          </tr>
-        </thead>
-        <tbody>
-          {{#each order in orderSearchResults}}
-            {{> orderItem order=order}}
-          {{else}}
-            <tr>
-              <td>NO RESULTS</td>
-            </tr>
-          {{/each}}
-        </tbody>
-      </table>
-
       <div>
         {{> React orderTable}}
       </div>
-
     </div>
   </div>
 </template>

@@ -10,7 +10,7 @@ import { transformations } from "./transformations";
 
 const requiredFields = {};
 requiredFields.products = ["_id", "hashtags", "shopId", "handle", "price", "isVisible"];
-requiredFields.orders = ["_id", "shopId", "shippingName", "billingName", "userEmails"];
+requiredFields.orders = ["_id", "shopId", "shippingName", "billingName", "userEmails", "shippingAddress"];
 requiredFields.accounts = ["_id", "shopId", "emails", "profile"];
 
 // https://docs.mongodb.com/manual/reference/text-search-languages/#text-search-languages
@@ -217,4 +217,3 @@ export function buildAccountSearchRecord(accountId) {
     rawAccountSearchCollection.createIndex({shopId: 1, emails: 1});
   }
 }
-

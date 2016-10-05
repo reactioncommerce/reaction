@@ -1,8 +1,9 @@
 import _ from "lodash";
-import { IconButton, SortExample } from "/imports/plugins/core/ui/client/components";
+import { IconButton, SortableTable } from "/imports/plugins/core/ui/client/components";
 // import { IconButton, Table } from "/imports/plugins/core/ui/client/components";
 import { Template } from "meteor/templating";
 import { ProductSearch, Tags, OrderSearch, AccountSearch } from "/lib/collections";
+import { DataType } from 'react-taco-table';
 
 
 /**
@@ -155,34 +156,96 @@ Template.searchModal.helpers({
   },
   accountTable() {
     const instance = Template.instance();
-    const view = instance.view;
+    const results = instance.state.get("accountSearchResults");
+    const columns = [
+      {
+        id: "_id",
+        type: DataType.String,
+        header: "Account ID"
+        // renderer(cellData, { column, rowData }) {
+        //   return <a href={rowData.url} target="_blank">{cellData}</a>;
+        // },
+      },
+      {
+        id: "shopId",
+        type: DataType.String,
+        header: "Shipping Phone"
+      },
+      {
+        id: "profile.firstName",
+        type: DataType.String,
+        header: "First Name"
+        // renderer(cellData, { column, rowData }) {
+        //   return <a href={rowData.url} target="_blank">{cellData}</a>;
+        // },
+      },
+      {
+        id: "profile.lastName",
+        type: DataType.String,
+        header: "Last Name"
+        // renderer(cellData, { column, rowData }) {
+        //   return <a href={rowData.url} target="_blank">{cellData}</a>;
+        // },
+      },
+      {
+        id: "profile.phone",
+        type: DataType.String,
+        header: "Phone"
+      }
+    ];
 
     return {
-      component: SortExample
-      // icon: "fa fa-times",
-      // kind: "close",
-      // onClick() {
-      //   $(".js-search-modal").fadeOut(400, () => {
-      //     $("body").css("overflow", "visible");
-      //     Blaze.remove(view);
-      //   });
-      // }
+      component: SortableTable,
+      data: results,
+      columns: columns
     };
   },
   orderTable() {
     const instance = Template.instance();
-    const view = instance.view;
+    const results = instance.state.get("orderSearchResults");
+    const columns = [
+      {
+        id: "shippingName",
+        type: DataType.String,
+        header: "Shipping Name"
+        // renderer(cellData, { column, rowData }) {
+        //   return <a href={rowData.url} target="_blank">{cellData}</a>;
+        // },
+      },
+      {
+        id: "shippingPhone",
+        type: DataType.String,
+        header: "Shipping Phone"
+      },
+      {
+        id: "billingName",
+        type: DataType.String,
+        header: "Billing Name"
+        // renderer(cellData, { column, rowData }) {
+        //   return <a href={rowData.url} target="_blank">{cellData}</a>;
+        // },
+      },
+      {
+        id: "billingPhone",
+        type: DataType.String,
+        header: "Billing Phone"
+      },
+      {
+        id: "shopId",
+        type: DataType.String,
+        header: "Shop ID"
+      },
+      {
+        id: "_id",
+        type: DataType.String,
+        header: "Order ID"
+      }
+    ];
 
     return {
-      component: SortExample
-      // icon: "fa fa-times",
-      // kind: "close",
-      // onClick() {
-      //   $(".js-search-modal").fadeOut(400, () => {
-      //     $("body").css("overflow", "visible");
-      //     Blaze.remove(view);
-      //   });
-      // }
+      component: SortableTable,
+      data: results,
+      columns: columns
     };
   }
 });

@@ -1,29 +1,9 @@
 <template name="accountResults">
   <div class="data-table">
     <div class="table-responsive">
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Account ID</th>
-            <th>Shop ID</th>
-            <th>Email(s)</th>
-          </tr>
-        </thead>
-        <tbody>
-          {{#each account in accountSearchResults}}
-            {{> accountItem account=account}}
-          {{else}}
-            <tr>
-              <td>NO RESULTS</td>
-            </tr>
-          {{/each}}
-        </tbody>
-      </table>
-
       <div>
         {{> React accountTable}}
-      </div>
-      
+      </div>    
     </div>
   </div>
 </template>
