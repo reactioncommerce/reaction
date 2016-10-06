@@ -35,8 +35,8 @@ class ProductAdmin extends Component {
   }
 
   handleToggleVisibility = () => {
-    if (this.props.onFieldChange) {
-      this.props.onFieldChange("isVisible", !this.product.isVisible);
+    if (this.props.onProductFieldSave) {
+      this.props.onProductFieldSave(this.product._id, "isVisible", !this.product.isVisible);
     }
   }
 
