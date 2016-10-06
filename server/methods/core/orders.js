@@ -1,8 +1,10 @@
+import { getSlug } from "/lib/api";
+import moment from "moment";
 import accounting from "accounting-js";
 import Future from "fibers/future";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
-import { Cart, Orders, Products, Shops } from "/lib/collections";
+import { Cart, Media, Orders, Products, Shops } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 import { Logger, Reaction } from "/server/api";
 
@@ -329,7 +331,52 @@ Meteor.methods({
     this.unblock();
 
     const shop = Shops.findOne(order.shopId);
-    const shipment = order.shipping[0];
+    const shopContact = shop.addressBook[0];
+
+    const combinedItems = [];
+    if (order) {
+      // Loop through all items in the order. The items are split into indivital items
+      for (const orderItem of order.items) {
+        // Find an exising item in the combinedItems array
+        const foundItem = combinedItems.find((combinedItem) => {
+          // If and item variant exists, then we return true
+          if (combinedItem.variants) {
+            return combinedItem.variants._id === orderItem.variants._id;
+          }
+
+          return false;
+        });
+
+        // Increment the quantity count for the duplicate product variants
+        if (foundItem) {
+          foundItem.quantity++;
+        } else {
+          // Otherwise push the unique item into the combinedItems array
+          combinedItems.push(orderItem);
+        }
+      }
+    }
+
+
+    // TODO: rename this const? break it up and send each one into the email template separately?
+    // I don't know if it makes sense. The thought is to format
+    // all data inside something here, so we don't have 18 email templates that wed needed
+    // to fix if anything every changes
+    const dataForOrderEmail = {
+      orderDate: moment(order.createdAt).format("MM/DD/YYYY"),
+      billing: {
+        subtotal: accounting.toFixed(order.billing[0].invoice.subtotal, 2),
+        shipping: accounting.toFixed(order.billing[0].invoice.shipping, 2),
+        taxes: accounting.toFixed(order.billing[0].invoice.taxes, 2),
+        discounts: accounting.toFixed(order.billing[0].invoice.discounts, 2),
+        total: accounting.toFixed(order.billing[0].invoice.total, 2)
+      },
+      shipping: order.shipping[0],
+      orderUrl: getSlug(shop.name) + "/cart/completed?_id=" + order.cartId,
+      combinedItems: combinedItems
+    };
+
+    console.log("------combinedItems-----", combinedItems);
 
     Logger.info(`orders/sendNotification status: ${order.workflow.status}`);
 
@@ -354,8 +401,9 @@ Meteor.methods({
     Reaction.Email.send({
       to: order.email,
       from: `${shop.name} <${shop.emails[0].address}>`,
-      subject: `Order update from ${shop.name}`,
-      html: SSR.render(tpl, { homepage: Meteor.absoluteUrl(), shop, order, shipment })
+      subject: `Your order is confirmed`,
+      // subject: `Order update from ${shop.name}`,
+      html: SSR.render(tpl, { homepage: Meteor.absoluteUrl(), shop, shopContact, order, dataForOrderEmail })
     });
 
     return true;
