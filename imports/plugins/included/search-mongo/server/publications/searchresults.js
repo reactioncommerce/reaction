@@ -93,11 +93,11 @@ getResults.accounts = function (searchTerm, facets, maxResults, userId) {
             $regex: "^" + searchTerm + "$",
             $options: "i"
           } },
-          { firstName: {
+          { "profile.firstName": {
             $regex: "^" + searchTerm + "$",
             $options: "i"
           } },
-          { lastName: {
+          { "profile.lastName": {
             $regex: "^" + searchTerm + "$",
             $options: "i"
           } }
