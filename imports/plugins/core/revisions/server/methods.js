@@ -64,7 +64,7 @@ Meteor.methods({
     let updatedDocuments = 0;
 
     if (revisions) {
-      for (let revision of revisions) {
+      for (const revision of revisions) {
         const res = Products.update({
           _id: revision.documentId
         }, {
@@ -81,6 +81,6 @@ Meteor.methods({
       return true;
     }
 
-    throw new Meteor.Error(403, "Forbidden", "Could not publish product revision");
+    return false;
   }
 });
