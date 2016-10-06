@@ -75,7 +75,7 @@ class PublishControls extends Component {
         return false;
       });
 
-      // If even one revision as changes we should enable the publish button
+      // If even one revision has changes we should enable the publish button
       return diffHasActualChanges.some((element) => {
         return element === true;
       });
