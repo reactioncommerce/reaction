@@ -44,10 +44,8 @@ class EditContainer extends Component {
     if (this.props.showsVisibilityButton) {
       return (
         <VisibilityButton
-          i18nKeyTooltip="revisions.unpublishedChanges"
           onClick={this.handleVisibilityButtonClick}
           toggleOn={this.props.data.isVisible}
-          tooltip="Unpublised Changes"
         />
       );
     }
