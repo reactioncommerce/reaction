@@ -5,16 +5,12 @@ import { Translation } from "../translation";
 import { i18next } from "/client/api";
 
 class TextField extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      value: props.value
-    };
-  }
-
-  state = {
-    value: ""
+  /**
+   * Getter: value
+   * @return {String} value for text input
+   */
+  get value() {
+    return this.props.value || "";
   }
 
   /**
@@ -42,19 +38,6 @@ class TextField extends Component {
   }
 
   /**
-   * componentWillReceiveProps - Component Lifecycle
-   * @param  {Object} props Properties passed from the parent component
-   * @return {Void} no return value
-   */
-  componentWillReceiveProps(props) {
-    if (props) {
-      this.setState({
-        value: props.value
-      });
-    }
-  }
-
-  /**
    * Render a multiline input (textarea)
    * @return {JSX} jsx
    */
@@ -70,7 +53,7 @@ class TextField extends Component {
         onChange={this.onChange}
         placeholder={placeholder}
         ref="input"
-        value={this.state.value}
+        value={this.value}
       />
     );
   }
@@ -97,7 +80,7 @@ class TextField extends Component {
         placeholder={placeholder}
         ref="input"
         type="text"
-        value={this.state.value}
+        value={this.value}
       />
     );
   }
@@ -173,6 +156,8 @@ TextField.defaultProps = {
 TextField.propTypes = {
   align: PropTypes.oneOf(["left", "center", "right", "justify"]),
   className: PropTypes.string,
+  helpText: PropTypes.string,
+  i18nKeyHelpText: PropTypes.string,
   i18nKeyLabel: PropTypes.string,
   i18nKeyPlaceholder: PropTypes.string,
   label: PropTypes.string,
@@ -180,7 +165,8 @@ TextField.propTypes = {
   name: PropTypes.string,
   onBlur: PropTypes.func,
   onChange: PropTypes.func,
-  placeholder: PropTypes.string
+  placeholder: PropTypes.string,
+  value: PropTypes.string
 };
 
 export default TextField;
