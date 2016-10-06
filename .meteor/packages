@@ -10,26 +10,26 @@
 meteor-base@1.0.4             # Packages every Meteor app needs to have
 mobile-experience@1.0.4       # Packages for a great mobile UX
 blaze-html-templates@1.0.4    # Compile .html files into Meteor Blaze views
-es5-shim@4.6.14               # ECMAScript 5 compatibility for older browsers.
-ecmascript@0.5.8              # Enable ECMAScript2015+ syntax in app code
+es5-shim@4.6.14_1               # ECMAScript 5 compatibility for older browsers.
+ecmascript@0.5.8_1              # Enable ECMAScript2015+ syntax in app code
 audit-argument-checks@1.0.7   # ensure meteor method argument validation
 browser-policy@1.0.9          # security-related policies enforced by newer browsers
 juliancwirko:postcss          # CSS post-processing plugin (replaces standard-minifier-css)
-standard-minifier-js@1.2.0    # a minifier plugin used for Meteor apps by default
+standard-minifier-js@1.2.0_1    # a minifier plugin used for Meteor apps by default
 session@1.1.6                 # ReactiveDict whose contents are preserved across Hot Code Push
 tracker@1.1.0                 # Meteor transparent reactive programming library
-mongo@1.1.12
+mongo@1.1.12_1
 random@1.0.10
 reactive-var@1.0.10
 reactive-dict@1.1.8
 check@1.2.3
-http@1.2.9
+http@1.2.9_1
 ddp-rate-limiter@1.0.5
 underscore@1.0.9
-logging@1.1.15
+logging@1.1.15_1
 reload@1.1.10
 ejson@1.0.12
-less@2.7.5
+less@2.7.5_1
 service-configuration@1.0.10
 amplify
 mdg:validated-method
