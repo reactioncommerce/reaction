@@ -40,7 +40,7 @@ export function handlePublishClick(revisions) {
     Meteor.call("revisions/publish", documentIds, (error, result) => {
       if (result === true) {
         const message = i18next.t("revisions.changedPublished", {
-          defaultValue: "Changes published successfuly"
+          defaultValue: "Changes published successfully"
         });
 
         Alerts.toast(message, "success");
