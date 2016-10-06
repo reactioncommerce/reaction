@@ -160,6 +160,12 @@ Template.productSettings.events({
         Meteor.call("products/updateProductField", product._id, "isVisible", !products[0].isVisible);
       }
     } else {
+      // The legacy behavior will bulk toggle visibilty of each product seperatly.
+      //
+      // Example:
+      // If you selected 10 products, and 5 were visible and 5 were not visible, and then
+      // clicked the visibility button, 5 products would switched from not visible to visible, and the other 5
+      // would be swiched from visible to not visible.
       ReactionProduct.publishProduct(products);
     }
   },
