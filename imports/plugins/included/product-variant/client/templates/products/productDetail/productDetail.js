@@ -10,6 +10,7 @@ import { Template } from "meteor/templating";
 import { Button, EditButton } from "/imports/plugins/core/ui/client/components";
 import { PublishContainer } from "/imports/plugins/core/revisions";
 import { ProductDetailContainer } from "/imports/plugins/included/product-detail-simple/client/containers";
+import { isRevisionControlEnabled } from "/imports/plugins/core/revisions/lib/api";
 
 Template.productDetail.onCreated(function () {
   this.state = new ReactiveDict();
@@ -574,45 +575,50 @@ Template.productDetailDashboardControls.helpers({
  */
 Template.productDetailDashboardControls.events({
   "click [data-event-action=publishProduct]": function (event, template) {
-    let errorMsg = "";
     const instance = Template.instance();
     const self = instance.state.get("product") || {};
-    if (!self.title) {
-      errorMsg += `${i18next.t("error.isRequired", { field: i18next.t("productDetailEdit.title") })} `;
-      template.$(".title-edit-input").focus();
-    }
-    const variants = ReactionProduct.getVariants(self._id);
-    variants.forEach((variant, index) => {
-      if (!variant.title) {
-        errorMsg +=
-          `${i18next.t("error.variantFieldIsRequired", { field: i18next.t("productVariant.title"), number: index + 1 })} `;
-      }
-      // if top variant has children, it is not necessary to check its price
-      if (variant.ancestors.length === 1 && !ReactionProduct.checkChildVariants(variant._id) ||
-        variant.ancestors.length !== 1) {
-        if (!variant.price) {
-          errorMsg +=
-            `${i18next.t("error.variantFieldIsRequired", { field: i18next.t("productVariant.price"), number: index + 1 })} `;
-        }
-      }
-    });
-    if (errorMsg.length > 0) {
-      Alerts.inline(errorMsg, "warning", {
-        placement: "productManagement",
-        i18nKey: "productDetail.errorMsg"
-      });
-    } else {
-      Meteor.call("products/publishProduct", self._id, function (error) {
-        if (error) {
-          return Alerts.inline(error.reason, "error", {
-            placement: "productManagement",
-            id: self._id,
-            i18nKey: "productDetail.errorMsg"
-          });
-        }
 
-        return true;
+    if (isRevisionControlEnabled()) {
+      Meteor.call("products/updateProductField", self._id, "isVisible", !self.isVisible);
+    } else {
+      let errorMsg = "";
+      if (!self.title) {
+        errorMsg += `${i18next.t("error.isRequired", { field: i18next.t("productDetailEdit.title") })} `;
+        template.$(".title-edit-input").focus();
+      }
+      const variants = ReactionProduct.getVariants(self._id);
+      variants.forEach((variant, index) => {
+        if (!variant.title) {
+          errorMsg +=
+            `${i18next.t("error.variantFieldIsRequired", { field: i18next.t("productVariant.title"), number: index + 1 })} `;
+        }
+        // if top variant has children, it is not necessary to check its price
+        if (variant.ancestors.length === 1 && !ReactionProduct.checkChildVariants(variant._id) ||
+          variant.ancestors.length !== 1) {
+          if (!variant.price) {
+            errorMsg +=
+              `${i18next.t("error.variantFieldIsRequired", { field: i18next.t("productVariant.price"), number: index + 1 })} `;
+          }
+        }
       });
+      if (errorMsg.length > 0) {
+        Alerts.inline(errorMsg, "warning", {
+          placement: "productManagement",
+          i18nKey: "productDetail.errorMsg"
+        });
+      } else {
+        Meteor.call("products/publishProduct", self._id, function (error) {
+          if (error) {
+            return Alerts.inline(error.reason, "error", {
+              placement: "productManagement",
+              id: self._id,
+              i18nKey: "productDetail.errorMsg"
+            });
+          }
+
+          return true;
+        });
+      }
     }
   }
 });
