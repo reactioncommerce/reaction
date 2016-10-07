@@ -4,6 +4,8 @@ import Logger from "/client/modules/logger";
 import { ReactionProduct } from "/lib/api";
 import { Media, Products } from "/lib/collections";
 import { PublishContainer } from "/imports/plugins/core/revisions";
+import { isRevisionControlEnabled } from "/imports/plugins/core/revisions/lib/api";
+import { applyProductRevision } from "/lib/api/products";
 
 Template.productSettings.onCreated(function () {
   this.state = new ReactiveDict();
@@ -19,18 +21,16 @@ Template.productSettings.onCreated(function () {
       const productIds = currentData.products.map((product) => {
         return product._id;
       });
-      this.state.set("productIds", productIds);
+
       const products = Products.find({
         _id: {
           $in: productIds
         }
       }).map((product) => {
-        if (product.__revisions && product.__revisions.length) {
-          return product.__revisions[0].documentData;
-        }
-        return product._id;
+        return applyProductRevision(product);
       });
 
+      this.state.set("productIds", productIds);
       this.state.set("products", products);
     }
   });
@@ -45,6 +45,17 @@ Template.productSettings.helpers({
       component: PublishContainer,
       documentIds: productIds
     };
+  },
+  isVisible() {
+    const instance = Template.instance();
+    const products = instance.state.get("products") || [];
+
+    // Use the first selected product to determin status of bulk, isVisible button
+    if (Array.isArray(products) && products.length) {
+      return products[0].isVisible;
+    }
+
+    return false;
   },
   hasSelectedProducts() {
     return this.products.length > 0;
@@ -138,7 +149,25 @@ Template.productSettingsListItem.inheritsHelpersFrom("productSettingsGridItem");
 
 Template.productSettings.events({
   "click [data-event-action=publishProduct]": function () {
-    ReactionProduct.publishProduct(this.products);
+    const instance = Template.instance();
+    const products = instance.state.get("products") || [];
+
+    if (isRevisionControlEnabled()) {
+      for (const product of products) {
+        // Update the visibility using the first selected product to determine the proper
+        // visibility toggle. This is to ensure that all selected products will become visible or not visible
+        // at the same time so it's not confusing.
+        Meteor.call("products/updateProductField", product._id, "isVisible", !products[0].isVisible);
+      }
+    } else {
+      // The legacy behavior will bulk toggle visibilty of each product seperatly.
+      //
+      // Example:
+      // If you selected 10 products, and 5 were visible and 5 were not visible, and then
+      // clicked the visibility button, 5 products would switched from not visible to visible, and the other 5
+      // would be swiched from visible to not visible.
+      ReactionProduct.publishProduct(products);
+    }
   },
   "click [data-event-action=cloneProduct]": function () {
     ReactionProduct.cloneProduct(this.products);
