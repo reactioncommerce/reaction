@@ -353,6 +353,30 @@ Meteor.methods({
         } else {
           // Otherwise push the unique item into the combinedItems array
           combinedItems.push(orderItem);
+
+
+
+          const variantImage = Media.findOne({
+            "metadata.productId": orderItem.productId,
+            "metadata.variantId": orderItem.variants._id
+          });
+          // variant image
+          if (variantImage) {
+            orderItem.variantImage = variantImage;
+            // orderItem.variantImageUrl = "/assets/files/Media/" + variantImage._id + "/" + variantImage._id.copies.thumbnail.name + "?store=thumbnail";
+          }
+          // find a default image
+          const productImage = Media.findOne({
+            "metadata.productId": orderItem.productId
+          });
+          if (productImage) {
+            orderItem.productImage = productImage;
+            // orderItem.productImageUrl = "/assets/files/Media/" + productImage + "/" + + "?store=thumbnail";
+            // http://localhost:3000/assets/files/Media/Sv2ieuXc4HNFJ3uhS/red.png?store=thumbnail
+          }
+
+
+
         }
       }
     }
@@ -376,7 +400,11 @@ Meteor.methods({
       combinedItems: combinedItems
     };
 
-    console.log("------combinedItems-----", combinedItems);
+
+    console.log("------Varient Image-----", combinedItems[0].variantImage);
+    console.log("------Varient Image ID -----", combinedItems[0].variantImage._id);
+    // console.log("------cvariangimage OR-----", combinedItems[0].variantImage._id.original.name);
+    // console.log("------thumbnail.name-----", combinedItems[0].variantImage._id.copies.thumbnail.name);
 
     Logger.info(`orders/sendNotification status: ${order.workflow.status}`);
 
