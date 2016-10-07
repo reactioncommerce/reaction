@@ -1,25 +1,16 @@
-import { Jobs, Packages } from "/lib/collections";
+import later from "later";
+import { Jobs } from "/lib/collections";
 import { Hooks, Logger, Reaction } from "/server/api";
-
-function getJobConfig() {
-  const config = Packages.findOne({
-    name: "core",
-    shopId: Reaction.getShopId()
-  });
-  return config;
-}
 
 // While we don't necessarily need to wait for anything to add a job
 // in this case we need to have packages loaded so we can check for the OER API key
 Hooks.Events.add("afterCoreInit", () => {
-  const config = getJobConfig();
-  let exchangeConfig;
-  if (config) {
-    exchangeConfig = config.settings.openexchangerates;
-  }
-  if (exchangeConfig && exchangeConfig.appId) {
-    const refreshPeriod = exchangeConfig.refreshPeriod || "Every 4 hours";
-    Logger.info(`Adding shop/fetchCurrencyRates to JobControl. Refresh ${refreshPeriod}`);
+  const settings = Reaction.getShopSettings();
+  const exchangeConfig = settings.openexchangerates || {};
+
+  if (exchangeConfig.appId) {
+    const refreshPeriod = exchangeConfig.refreshPeriod || "every 4 hours";
+    Logger.debug(`Adding shop/fetchCurrencyRates to JobControl. Refresh ${refreshPeriod}`);
     new Job(Jobs, "shop/fetchCurrencyRates", {})
       .priority("normal")
       .retry({
@@ -28,7 +19,7 @@ Hooks.Events.add("afterCoreInit", () => {
         backoff: "exponential" // delay by twice as long for each subsequent retry
       })
       .repeat({
-        schedule: Jobs.later.parse.text(refreshPeriod)
+        schedule: later.parse.text(refreshPeriod)
       })
       .save({
         // Cancel any jobs of the same type,
@@ -36,18 +27,16 @@ Hooks.Events.add("afterCoreInit", () => {
         cancelRepeats: true
       });
   } else {
-    Logger.info("OpenExchangeRates API not configured. Not adding fetchRates job");
+    Logger.warn("OpenExchangeRates API not configured. Not adding fetchRates job");
   }
 });
 
 Hooks.Events.add("afterCoreInit", () => {
-  const config = getJobConfig();
-  let exchangeConfig;
-  if (config) {
-    exchangeConfig = config.settings.openexchangerates;
-  }
-  if (exchangeConfig && exchangeConfig.appId) {
-    Logger.info("Adding shop/flushCurrencyRates to JobControl");
+  const settings = Reaction.getShopSettings();
+  const exchangeConfig = settings.openexchangerates || {};
+
+  if (exchangeConfig.appId) {
+    Logger.debug("Adding shop/flushCurrencyRates to JobControl");
     // TODO: Add this as a configurable option
     const refreshPeriod = "Every 24 hours";
     new Job(Jobs, "shop/flushCurrencyRates", {})
@@ -58,61 +47,65 @@ Hooks.Events.add("afterCoreInit", () => {
         backoff: "exponential"
       })
       .repeat({
-        schedule: Jobs.later.parse.text(refreshPeriod)
+        schedule: later.parse.text(refreshPeriod)
       })
       .save({
         cancelRepeats: true
       });
   } else {
-    Logger.info("OpenExchangeRates API not configured. Not adding flushRates job");
+    Logger.warn("OpenExchangeRates API not configured. Not adding flushRates job");
   }
 });
 
 
 export default function () {
-  Jobs.processJobs(
-    "shop/fetchCurrencyRates",
-    {
-      pollInterval: 30 * 1000,
-      workTimeout: 180 * 1000
-    },
-    (job, callback) => {
-      Meteor.call("shop/fetchCurrencyRate", error => {
-        if (error) {
-          if (error.error === "notConfigured") {
-            Logger.warn(error.message);
-            job.done(error.message, { repeatId: true });
-          } else {
-            job.done(error.toString(), { repeatId: true });
-          }
+  const fetchCurrencyRates = Jobs.processJobs("shop/fetchCurrencyRates", {
+    pollInterval: 60 * 60 * 1000, // backup polling, see observer below
+    workTimeout: 180 * 1000
+  }, (job, callback) => {
+    Meteor.call("shop/fetchCurrencyRate", (error) => {
+      if (error) {
+        if (error.error === "notConfigured") {
+          Logger.error(error.message);
+          job.done(error.message, { repeatId: true });
         } else {
-          // we should always return "completed" job here, because errors are fine
-          // result for this task, so that's why we show message if error happens
-          // and return job.done();
-          // you can read more about job.repeat() here:
-          // https://github.com/vsivsi/meteor-job-collection#set-how-many-times-this
-          // -job-will-be-automatically-re-run-by-the-job-collection
-          const success = "Latest exchange rates were fetched successfully.";
-          Logger.info(success);
-          job.done(success, { repeatId: true });
+          job.done(error.toString(), { repeatId: true });
         }
-      });
-      callback();
-    }
-  );
+      } else {
+        // we should always return "completed" job here, because errors are fine
+        // result for this task, so that's why we show message if error happens
+        // and return job.done();
+        // you can read more about job.repeat() here:
+        // https://github.com/vsivsi/meteor-job-collection#set-how-many-times-this
+        // -job-will-be-automatically-re-run-by-the-job-collection
+        const success = "Latest exchange rates were fetched successfully.";
+        Logger.info(success);
+        job.done(success, { repeatId: true });
+      }
+    });
+    callback();
+  });
 
-  Jobs.processJobs(
-    "shop/flushCurrencyRates",
-    {
-      pollInterval: 60 * 60 * 1000, // How often to ask the remote job Collection for
-      // more work, in ms. Every hour will be fine here I suppose.
+  Jobs.find({
+    type: "shop/fetchCurrencyRates",
+    status: "ready"
+  }).observe({
+    added() {
+      return fetchCurrencyRates.trigger();
+    }
+  });
+
+
+  const flushCurrencyRates = Jobs.processJobs(
+    "shop/flushCurrencyRates", {
+      pollInterval: 60 * 60 * 1000, // backup polling, see observer below
       workTimeout: 180 * 1000
     },
     (job, callback) => {
       Meteor.call("shop/flushCurrencyRate", error => {
         if (error) {
           if (error.error === "notExists") {
-            Logger.warn(error.message);
+            Logger.error(error.message);
             job.done(error.message, { repeatId: true });
           } else {
             // Logger.error(error.toString());
@@ -129,4 +122,13 @@ export default function () {
       callback();
     }
   );
+
+  Jobs.find({
+    type: "shop/flushCurrencyRates",
+    status: "ready"
+  }).observe({
+    added() {
+      return flushCurrencyRates.trigger();
+    }
+  });
 }

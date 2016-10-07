@@ -1,0 +1,30 @@
+.email-config-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.email-config-title {
+  font-size: 2rem;
+  font-weight: 200;
+}
+
+.email-config-status {
+  margin-top: .4rem;
+}
+
+.email-status-error {
+  padding-top: 1rem;
+  color: #b94628;
+}
+
+.email-config-status i {
+  margin-left: .3rem;
+}
+
+.email-config-status i.valid {
+  color: #2dc378;
+}
+
+.email-config-status i.error {
+  color: #b94628;
+}

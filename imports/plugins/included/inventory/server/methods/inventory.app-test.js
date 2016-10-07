@@ -7,6 +7,7 @@ import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
 import { addProduct } from "/server/imports/fixtures/products";
 import Fixtures from "/server/imports/fixtures";
+import { RevisionApi } from "/imports/plugins/core/revisions/lib/api/revisions";
 
 Fixtures();
 
@@ -39,6 +40,7 @@ describe("inventory method", function () {
 
   beforeEach(function () {
     sandbox = sinon.sandbox.create();
+    sandbox.stub(RevisionApi, "isRevisionControlEnabled", () => true);
     // again hack. w/o this we can't remove products from previous spec.
     Inventory.remove({}); // Empty Inventory
   });
@@ -62,21 +64,33 @@ describe("inventory method", function () {
   });
 
   describe("inventory/remove", function () {
-    it("should remove deleted variants from inventory", function () {
-      // register inventory (that we'll should delete on variant removal)
+    // register inventory (that we'll should delete on variant removal)
+    let qty;
+    let newQty;
+
+    before(function () {
+      qty = options[1].inventoryQuantity;
+    });
+
+    beforeEach(function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
+    });
+
+    it("should have option quantity greater then 0", function () {
       // checking our option quantity. It should be greater than zero.
-      const qty =  options[1].inventoryQuantity;
       expect(qty).to.be.above(0);
-      // before spec we're cleared collection, so we need to insert all docs
-      // again and make sure quantity will be equal with `qty`
+    });
+
+    it("should have equal quantities", function () {
       Meteor.call("inventory/register", options[1]);
       const midQty = Inventory.find({ variantId: options[1]._id }).count();
       expect(midQty).to.equal(qty);
+    });
+
+    it("should have new quantity equal to 0", function () {
       // then we are removing option and docs should be automatically removed
       Meteor.call("products/deleteVariant", options[1]._id);
-      const newQty = Inventory.find({ variantId: options[1]._id }).count();
-      expect(newQty).to.not.equal(qty);
+      newQty = Inventory.find({ variantId: options[1]._id }).count();
       expect(newQty).to.equal(0);
     });
   });
@@ -175,4 +189,3 @@ describe("inventory method", function () {
     // });
   });
 });
-

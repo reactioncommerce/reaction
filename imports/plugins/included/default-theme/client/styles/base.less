@@ -75,7 +75,21 @@ h3 {
   font-weight: @headings-font-weight-h3;
 }
 
+a {
+  cursor: pointer;
 
+  &:focus, &:hover {
+    text-decoration: none;
+  }
+}
+
+// Truncate and add an ellipsis when text extends
+// beyond the bounds of its parent container
+.truncate {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
 
 /* Badge Colors
 // Contextual variations of badges
