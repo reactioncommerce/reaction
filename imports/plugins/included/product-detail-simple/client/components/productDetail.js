@@ -35,6 +35,10 @@ class ProductDetail extends Component {
               element={<h1 />}
               onProductFieldChange={this.props.handleProductFieldChange}
               product={this.product}
+              textFieldProps={{
+                i18nKeyPlaceholder: "productDetailEdit.title",
+                placeholder: "Title"
+              }}
             />
 
             <ProductField
@@ -44,6 +48,10 @@ class ProductDetail extends Component {
               element={<h2 />}
               onProductFieldChange={this.props.handleProductFieldChange}
               product={this.product}
+              textFieldProps={{
+                i18nKeyPlaceholder: "productDetailEdit.pageTitle",
+                placeholder: "Subtitle"
+              }}
             />
           </header>
 
@@ -79,6 +87,10 @@ class ProductDetail extends Component {
                   fieldTitle="Vendor"
                   onProductFieldChange={this.props.handleProductFieldChange}
                   product={this.product}
+                  textFieldProps={{
+                    i18nKeyPlaceholder: "productDetailEdit.vendor",
+                    placeholder: "Vendor"
+                  }}
                 />
               </div>
 
@@ -90,6 +102,10 @@ class ProductDetail extends Component {
                   multiline={true}
                   onProductFieldChange={this.props.handleProductFieldChange}
                   product={this.product}
+                  textFieldProps={{
+                    i18nKeyPlaceholder: "productDetailEdit.description",
+                    placeholder: "Description"
+                  }}
                 />
               </div>
 
