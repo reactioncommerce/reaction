@@ -10,7 +10,7 @@ import { transformations } from "./transformations";
 
 const requiredFields = {};
 requiredFields.products = ["_id", "hashtags", "shopId", "handle", "price", "isVisible"];
-requiredFields.orders = ["_id", "shopId", "shippingName", "billingName", "userEmails", "shippingAddress"];
+requiredFields.orders = ["_id", "shopId", "shippingName", "billingName", "userEmails", "shippingAddress", "billingAddress", "orderTotal", "url"];
 requiredFields.accounts = ["_id", "shopId", "emails", "profile"];
 
 // https://docs.mongodb.com/manual/reference/text-search-languages/#text-search-languages
@@ -157,7 +157,23 @@ export function buildOrderSearchRecord(orderId) {
   orderSearch.shippingPhone = _.replace(order.shipping[0].address.phone, /\D/g, "");
   orderSearch.billingName = order.billing[0].address.fullName;
   orderSearch.billingPhone = _.replace(order.billing[0].address.phone, /\D/g, "");
+  orderSearch.billingAddress = {
+    address: order.billing[0].address.address1,
+    postal: order.billing[0].address.postal,
+    city: order.billing[0].address.city,
+    region: order.billing[0].address.region,
+    country: order.billing[0].address.country
+  };
+  orderSearch.shippingAddress = {
+    address: order.shipping[0].address.address1,
+    postal: order.shipping[0].address.postal,
+    city: order.shipping[0].address.city,
+    region: order.shipping[0].address.region,
+    country: order.shipping[0].address.country
+  };
   orderSearch.userEmails = userEmails;
+  orderSearch.orderTotal = order.billing[0].invoice.total;
+  orderSearch.url = "/reaction/dashboard/orders?_id=" + order._id;
   OrderSearch.insert(orderSearch);
 }
 

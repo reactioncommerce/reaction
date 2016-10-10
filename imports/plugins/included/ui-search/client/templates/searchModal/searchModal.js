@@ -3,7 +3,9 @@ import { IconButton, SortableTable } from "/imports/plugins/core/ui/client/compo
 // import { IconButton, Table } from "/imports/plugins/core/ui/client/components";
 import { Template } from "meteor/templating";
 import { ProductSearch, Tags, OrderSearch, AccountSearch } from "/lib/collections";
-import { DataType } from "react-taco-table";
+import { TacoTable, DataType, SortDirection, Formatters,
+  Summarizers, TdClassNames } from "react-taco-table";
+import React from "react";
 
 
 /**
@@ -226,28 +228,97 @@ Template.searchModal.helpers({
       {
         id: "shippingName",
         type: DataType.String,
-        header: "Shipping Name"
-        // renderer(cellData, { column, rowData }) {
-        //   return <a href={rowData.url} target="_blank">{cellData}</a>;
-        // },
+        header: "Name"
+      },
+      {
+        id: "shippingAddress",
+        type: DataType.String,
+        header: "Street Address",
+        value: rowData => {
+            return rowData.shippingAddress.address;
+        }
+      },
+      {
+        id: "shippingCity",
+        type: DataType.String,
+        header: "City",
+        value: rowData => {
+            return rowData.shippingAddress.city;
+        }
+      },
+      {
+        id: "shippingRegion",
+        type: DataType.String,
+        header: "State / Region",
+        value: rowData => {
+            return rowData.shippingAddress.region;
+        }
+      },
+      {
+        id: "shippingCountry",
+        type: DataType.String,
+        header: "SCountry",
+        value: rowData => {
+            return rowData.shippingAddress.country;
+        }
       },
       {
         id: "shippingPhone",
         type: DataType.String,
-        header: "Shipping Phone"
+        header: "Phone"
       },
+      // {
+      //   id: "billingName",
+      //   type: DataType.String,
+      //   header: "Billing Name"
+      //   // renderer(cellData, { column, rowData }) {
+      //   //   return <a href={rowData.url} target="_blank">{cellData}</a>;
+      //   // },http://localhost:3000/reaction/dashboard/orders?_id=EPQnoqeeQHwJXxr87
+      // },
+      // {
+      //   id: "billingAddress",
+      //   type: DataType.String,
+      //   header: "Billing Address",
+      //   value: rowData => {
+      //       return rowData.billingAddress.address;
+      //   }
+      // },
+      // {
+      //   id: "billingCity",
+      //   type: DataType.String,
+      //   header: "Billing City",
+      //   value: rowData => {
+      //       return rowData.billingAddress.city;
+      //   }
+      // },
+      // {
+      //   id: "billingRegion",
+      //   type: DataType.String,
+      //   header: "Billing Region",
+      //   value: rowData => {
+      //       return rowData.billingAddress.region;
+      //   }
+      // },
+      // {
+      //   id: "billingCountry",
+      //   type: DataType.String,
+      //   header: "Billing Country",
+      //   value: rowData => {
+      //       return rowData.billingAddress.country;
+      //   }
+      // },
+      // {
+      //   id: "billingPhone",
+      //   type: DataType.String,
+      //   header: "Billing Phone"
+      // },
       {
-        id: "billingName",
+        id: "userEmail",
         type: DataType.String,
-        header: "Billing Name"
-        // renderer(cellData, { column, rowData }) {
-        //   return <a href={rowData.url} target="_blank">{cellData}</a>;
-        // },
-      },
-      {
-        id: "billingPhone",
-        type: DataType.String,
-        header: "Billing Phone"
+        header: "Email",
+        value: rowData => {
+            return rowData.userEmails[0];
+        }
       },
       {
         id: "shopId",
@@ -255,9 +326,17 @@ Template.searchModal.helpers({
         header: "Shop ID"
       },
       {
-        id: "_id",
+        id: '_id',
         type: DataType.String,
-        header: "Order ID"
+        header: 'Order ID',
+        renderer(cellData, { column, rowData }) {
+          return <a href={rowData.url} target="_blank">{cellData}</a>;
+        }
+      },
+      {
+        id: "orderTotal",
+        type: DataType.Number,
+        header: "Order Total"
       }
     ];
 
