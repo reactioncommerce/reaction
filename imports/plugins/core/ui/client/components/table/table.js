@@ -17,15 +17,14 @@ class SortableTable extends React.Component {
         data={data}
         // striped
         sortable
-        thClassName="woopty"
       />
     );
   }
 }
 
 SortableTable.propTypes = {
-  columns: PropTypes.node,
-  data: PropTypes.node
+  columns: PropTypes.array,
+  data: PropTypes.array
 };
 
 export default SortableTable;
