@@ -3,7 +3,7 @@ import { IconButton, SortableTable } from "/imports/plugins/core/ui/client/compo
 // import { IconButton, Table } from "/imports/plugins/core/ui/client/components";
 import { Template } from "meteor/templating";
 import { ProductSearch, Tags, OrderSearch, AccountSearch } from "/lib/collections";
-import { DataType } from 'react-taco-table';
+import { DataType } from "react-taco-table";
 
 
 /**
@@ -157,6 +157,7 @@ Template.searchModal.helpers({
   accountTable() {
     const instance = Template.instance();
     const results = instance.state.get("accountSearchResults");
+
     const columns = [
       {
         id: "_id",
@@ -175,7 +176,12 @@ Template.searchModal.helpers({
         id: "firstName",
         type: DataType.String,
         header: "First Name",
-        value: rowData => rowData.profile.firstName
+        value: rowData => {
+          if (rowData.profile) {
+            return rowData.profile.firstName;
+          }
+          return undefined;
+        }
         // renderer(cellData, { column, rowData }) {
         //   return <a href={rowData.url} target="_blank">{cellData}</a>;
         // },
@@ -184,7 +190,12 @@ Template.searchModal.helpers({
         id: "lastName",
         type: DataType.String,
         header: "Last Name",
-        value: rowData => rowData.profile.lastName
+        value: rowData => {
+          if (rowData.profile) {
+            return rowData.profile.firstName;
+          }
+          return undefined;
+        }
         // renderer(cellData, { column, rowData }) {
         //   return <a href={rowData.url} target="_blank">{cellData}</a>;
         // },
@@ -193,7 +204,12 @@ Template.searchModal.helpers({
         id: "phone",
         type: DataType.String,
         header: "Phone",
-        value: rowData => rowData.profile.phone
+        value: rowData => {
+          if (rowData.profile) {
+            return rowData.profile.phone;
+          }
+          return undefined;
+        }
       }
     ];
 
