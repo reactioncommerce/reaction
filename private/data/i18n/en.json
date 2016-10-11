@@ -703,7 +703,27 @@
         "suggestedTags": "Suggested tags",
         "searchTypeProducts": "Products",
         "searchTypeAccounts": "Accounts",
-        "searchTypeOrders": "Orders"
+        "searchTypeOrders": "Orders",
+        "orderSearchResults": {
+          "orderId": "Order ID",
+          "shopId": "Shop ID",
+          "shippingName": "Name",
+          "shippingAddress": "Address",
+          "shippingCity": "City",
+          "shippingRegion": "Region",
+          "shippingCountry": "Country",
+          "shippingPhone": "Phone",
+          "shippingName": "Name",
+          "shippingStatus": "Status",
+          "billingAddress": "Address",
+          "billingCity": "City",
+          "billingRegion": "Region",
+          "billingCountry": "Country",
+          "billingPhone": "Phone",
+          "billingStatus": "Status",
+          "userEmails": "Email",
+          "orderTotal": "Total"
+        }
       },
       "accountsUI": {
         "members": "Members",

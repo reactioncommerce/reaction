@@ -6,6 +6,8 @@ import { ProductSearch, Tags, OrderSearch, AccountSearch } from "/lib/collection
 import { TacoTable, DataType, SortDirection, Formatters,
   Summarizers, TdClassNames } from "react-taco-table";
 import React from "react";
+import { Reaction, i18next, i18nextDep } from "/client/api";
+
 
 
 /**
@@ -228,115 +230,86 @@ Template.searchModal.helpers({
       {
         id: "shippingName",
         type: DataType.String,
-        header: "Name"
+        header: i18next.t("search.orderSearchResults.shippingName", {defaultValue: "Name"})
       },
       {
         id: "shippingAddress",
         type: DataType.String,
-        header: "Street Address",
+        header: i18next.t("search.orderSearchResults.shippingAddress", {defaultValue: "Address"}),
         value: rowData => {
-            return rowData.shippingAddress.address;
+          return rowData.shippingAddress.address;
         }
       },
       {
         id: "shippingCity",
         type: DataType.String,
-        header: "City",
+        header: i18next.t("search.orderSearchResults.shippingCity", {defaultValue: "City"}),
         value: rowData => {
-            return rowData.shippingAddress.city;
+          return rowData.shippingAddress.city;
         }
       },
       {
         id: "shippingRegion",
         type: DataType.String,
-        header: "State / Region",
+        header: i18next.t("search.orderSearchResults.shippingRegion", {defaultValue: "Region"}),
         value: rowData => {
-            return rowData.shippingAddress.region;
+          return rowData.shippingAddress.region;
         }
       },
       {
         id: "shippingCountry",
         type: DataType.String,
-        header: "SCountry",
+        header: i18next.t("search.orderSearchResults.shippingCountry", {defaultValue: "Country"}),
         value: rowData => {
-            return rowData.shippingAddress.country;
+          return rowData.shippingAddress.country;
         }
       },
       {
         id: "shippingPhone",
         type: DataType.String,
-        header: "Phone"
+        header: i18next.t("search.orderSearchResults.shippingPhone", {defaultValue: "Phone"})
       },
-      // {
-      //   id: "billingName",
-      //   type: DataType.String,
-      //   header: "Billing Name"
-      //   // renderer(cellData, { column, rowData }) {
-      //   //   return <a href={rowData.url} target="_blank">{cellData}</a>;
-      //   // },http://localhost:3000/reaction/dashboard/orders?_id=EPQnoqeeQHwJXxr87
-      // },
-      // {
-      //   id: "billingAddress",
-      //   type: DataType.String,
-      //   header: "Billing Address",
-      //   value: rowData => {
-      //       return rowData.billingAddress.address;
-      //   }
-      // },
-      // {
-      //   id: "billingCity",
-      //   type: DataType.String,
-      //   header: "Billing City",
-      //   value: rowData => {
-      //       return rowData.billingAddress.city;
-      //   }
-      // },
-      // {
-      //   id: "billingRegion",
-      //   type: DataType.String,
-      //   header: "Billing Region",
-      //   value: rowData => {
-      //       return rowData.billingAddress.region;
-      //   }
-      // },
-      // {
-      //   id: "billingCountry",
-      //   type: DataType.String,
-      //   header: "Billing Country",
-      //   value: rowData => {
-      //       return rowData.billingAddress.country;
-      //   }
-      // },
-      // {
-      //   id: "billingPhone",
-      //   type: DataType.String,
-      //   header: "Billing Phone"
-      // },
       {
         id: "userEmail",
         type: DataType.String,
-        header: "Email",
+        header: i18next.t("search.orderSearchResults.userEmails", {defaultValue: "Email"}),
         value: rowData => {
-            return rowData.userEmails[0];
+          return rowData.userEmails[0];
         }
       },
       {
         id: "shopId",
         type: DataType.String,
-        header: "Shop ID"
+        header: i18next.t("search.orderSearchResults.shopId", {defaultValue: "Shop ID"})
       },
       {
-        id: '_id',
+        id: "_id",
         type: DataType.String,
-        header: 'Order ID',
+        header: i18next.t("search.orderSearchResults.orderId", {defaultValue: "Order ID"}),
         renderer(cellData, { column, rowData }) {
           return <a href={rowData.url} target="_blank">{cellData}</a>;
         }
       },
       {
+        id: "billingStatus",
+        type: DataType.String,
+        header: i18next.t("search.orderSearchResults.billingStatus", {defaultValue: "Billing Status"}),
+        value: rowData => {
+          return rowData.billingStatus;
+        }
+      },
+      {
+        id: "shippingStatus",
+        type: DataType.String,
+        header: i18next.t("search.orderSearchResults.shippingStatus", {defaultValue: "Shipping Status"}),
+        value: rowData => {
+          return rowData.shippingStatus;
+        }
+      },
+      {
         id: "orderTotal",
         type: DataType.Number,
-        header: "Order Total"
+        header: i18next.t("search.orderSearchResults.orderTotal", {defaultValue: "Total"})
       }
     ];
 
