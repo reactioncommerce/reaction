@@ -22,7 +22,7 @@ Meteor.publish("Product", function (productId) {
 
   let selector = {};
   selector.isVisible = true;
-  selector.isDeleted = false;
+  selector.isDeleted = {$in: [null, false]};
 
   if (Roles.userIsInRole(this.userId, ["owner", "admin", "createProduct"],
       shop._id)) {
