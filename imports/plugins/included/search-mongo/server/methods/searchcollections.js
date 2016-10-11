@@ -10,7 +10,7 @@ import { transformations } from "./transformations";
 
 const requiredFields = {};
 requiredFields.products = ["_id", "hashtags", "shopId", "handle", "price", "isVisible"];
-requiredFields.orders = ["_id", "shopId", "shippingName", "billingName", "userEmails", "shippingAddress", "billingAddress", "orderTotal", "url"];
+requiredFields.orders = ["_id", "shopId", "shippingName", "billingName", "userEmails", "shippingAddress", "billingAddress", "shippingStatus", "billingStatus", "orderTotal", "url"];
 requiredFields.accounts = ["_id", "shopId", "emails", "profile"];
 
 // https://docs.mongodb.com/manual/reference/text-search-languages/#text-search-languages
@@ -153,10 +153,11 @@ export function buildOrderSearchRecord(orderId) {
       orderSearch[field] = order[field];
     }
   }
-  orderSearch.shippingName = order.shipping[0].address.fullName;
-  orderSearch.shippingPhone = _.replace(order.shipping[0].address.phone, /\D/g, "");
   orderSearch.billingName = order.billing[0].address.fullName;
   orderSearch.billingPhone = _.replace(order.billing[0].address.phone, /\D/g, "");
+  orderSearch.shippingName = order.shipping[0].address.fullName;
+  orderSearch.shippingPhone = _.replace(order.shipping[0].address.phone, /\D/g, "");
+  phone: _.replace(order.shipping[0].address.phone, /\D/g, ""),
   orderSearch.billingAddress = {
     address: order.billing[0].address.address1,
     postal: order.billing[0].address.postal,
@@ -173,6 +174,14 @@ export function buildOrderSearchRecord(orderId) {
   };
   orderSearch.userEmails = userEmails;
   orderSearch.orderTotal = order.billing[0].invoice.total;
+  orderSearch.billingStatus = order.billing[0].paymentMethod.status;
+  if (order.shipping[0].shipped) {
+    orderSearch.shippingStatus = "Shipped";
+  } else if (order.shipping[0].packed) {
+    orderSearch.shippingStatus = "Packed";
+  } else {
+    orderSearch.shippingStatus = "New";
+  }
   orderSearch.url = "/reaction/dashboard/orders?_id=" + order._id;
   OrderSearch.insert(orderSearch);
 }
