@@ -157,7 +157,6 @@ export function buildOrderSearchRecord(orderId) {
   orderSearch.billingPhone = _.replace(order.billing[0].address.phone, /\D/g, "");
   orderSearch.shippingName = order.shipping[0].address.fullName;
   orderSearch.shippingPhone = _.replace(order.shipping[0].address.phone, /\D/g, "");
-  phone: _.replace(order.shipping[0].address.phone, /\D/g, ""),
   orderSearch.billingAddress = {
     address: order.billing[0].address.address1,
     postal: order.billing[0].address.postal,

@@ -1,13 +1,10 @@
 import _ from "lodash";
-import { IconButton, SortableTable } from "/imports/plugins/core/ui/client/components";
-// import { IconButton, Table } from "/imports/plugins/core/ui/client/components";
-import { Template } from "meteor/templating";
-import { ProductSearch, Tags, OrderSearch, AccountSearch } from "/lib/collections";
-import { TacoTable, DataType, SortDirection, Formatters,
-  Summarizers, TdClassNames } from "react-taco-table";
 import React from "react";
-import { Reaction, i18next, i18nextDep } from "/client/api";
-
+import { DataType } from "react-taco-table";
+import { Template } from "meteor/templating";
+import { i18next } from "/client/api";
+import { ProductSearch, Tags, OrderSearch, AccountSearch } from "/lib/collections";
+import { IconButton, SortableTable } from "/imports/plugins/core/ui/client/components";
 
 
 /**
@@ -72,9 +69,6 @@ Template.searchModal.onCreated(function () {
         // TODO: Do we need this?
         this.state.set("accountSearchResults", "");
         this.state.set("orderSearchResults", "");
-
-        console.log("-----Products-----", productResults);
-        console.log("-----Products Size-----", productResultsCount);
       }
 
       /**
@@ -90,9 +84,6 @@ Template.searchModal.onCreated(function () {
         this.state.set("orderSearchResults", "");
         this.state.set("productSearchResults", "");
         this.state.set("tagSearchResults", "");
-
-        console.log("-----Accounts-----", accountResults);
-        console.log("-----Accounts Size-----", accountResultsCount);
       }
 
       /**
@@ -109,9 +100,6 @@ Template.searchModal.onCreated(function () {
         this.state.set("accountSearchResults", "");
         this.state.set("productSearchResults", "");
         this.state.set("tagSearchResults", "");
-
-        console.log("-----Orders-----", orderResults);
-        console.log("-----Orders Size-----", orderResultsCount);
       }
     }
   });
