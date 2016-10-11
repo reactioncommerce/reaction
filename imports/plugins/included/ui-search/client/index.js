@@ -16,8 +16,6 @@ import "./templates/productSearch/content.js";
 
 // Order Search
 import "./templates/orderSearch/orderResults.html";
-import "./templates/orderSearch/orderItem.html";
 
 // Account Search
 import "./templates/accountSearch/accountResults.html";
-import "./templates/accountSearch/accountItem.html";
