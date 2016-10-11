@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from "react";
-import { Currency } from "/imports/plugins/core/ui/client/components/";
+import { Alert, Currency } from "/imports/plugins/core/ui/client/components/";
 import {
   AddToCartButton,
   ProductMetadata,
@@ -7,6 +7,7 @@ import {
   ProductField
 } from "./";
 import { AlertContainer, EditContainer } from "/imports/plugins/core/ui/client/containers";
+import { PublishContainer } from "/imports/plugins/core/revisions";
 
 class ProductDetail extends Component {
   get tags() {
@@ -26,6 +27,10 @@ class ProductDetail extends Component {
       <div className="container-main">
         <div className="container-fluid pdp-container" itemScope itemType="http://schema.org/Product">
           <AlertContainer placement="productManagement" />
+          <Alert mode="info">
+            <PublishContainer documentIds={[this.product._id]} />
+          </Alert>
+
 
           <header className="pdp header">
             <ProductField

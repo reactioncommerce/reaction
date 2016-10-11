@@ -112,10 +112,17 @@ class PublishControls extends Component {
     );
   }
 
+  renderDescription() {
+    return (
+      <span>{"This product has changes that need to be published before they are visible to your customers."}</span>
+    );
+  }
+
   render() {
     if (this.props.isEnabled) {
       return (
         <div className="rui publish-controls">
+          {this.renderDescription()}
           <Button
             i18nKeyLabel={this.showChangesButtoni18nKeyLabel}
             label={this.showChangesButtonLabel}

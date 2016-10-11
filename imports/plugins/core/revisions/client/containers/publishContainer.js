@@ -14,15 +14,13 @@ import { i18next } from "/client/api";
  */
 const PublishContainer = (props) => {
   return (
-    <div>
-      <TranslationProvider>
-        <PublishControls
-          isEnabled={props.isEnabled}
-          onPublishClick={handlePublishClick}
-          revisions={props.revisions}
-        />
-      </TranslationProvider>
-    </div>
+    <TranslationProvider>
+      <PublishControls
+        isEnabled={props.isEnabled}
+        onPublishClick={handlePublishClick}
+        revisions={props.revisions}
+      />
+    </TranslationProvider>
   );
 };
 
