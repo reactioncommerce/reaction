@@ -309,7 +309,10 @@ Template.searchModal.helpers({
       {
         id: "orderTotal",
         type: DataType.Number,
-        header: i18next.t("search.orderSearchResults.orderTotal", {defaultValue: "Total"})
+        header: i18next.t("search.orderSearchResults.orderTotal", {defaultValue: "Total"}),
+        value: rowData => {
+          return rowData.orderTotal;
+        }
       }
     ];
 
