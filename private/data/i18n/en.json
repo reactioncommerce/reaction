@@ -704,6 +704,14 @@
         "searchTypeProducts": "Products",
         "searchTypeAccounts": "Accounts",
         "searchTypeOrders": "Orders",
+        "accountSearchResults": {
+          "accountId": "Account ID",
+          "shopId": "Shop ID",
+          "firstName": "First Name",
+          "lastName": "Last Name",
+          "phone": "Phone",
+          "emails": "Email"
+        },
         "orderSearchResults": {
           "orderId": "Order ID",
           "shopId": "Shop ID",

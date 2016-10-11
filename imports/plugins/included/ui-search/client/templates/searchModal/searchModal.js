@@ -166,53 +166,49 @@ Template.searchModal.helpers({
       {
         id: "_id",
         type: DataType.String,
-        header: "Account ID"
-        // renderer(cellData, { column, rowData }) {
-        //   return <a href={rowData.url} target="_blank">{cellData}</a>;
-        // },
+        header: i18next.t("search.accountSearchResults.accountId", {defaultValue: "Account ID"}),
+        value: rowData => {
+          return rowData._id;
+        }
       },
       {
         id: "shopId",
         type: DataType.String,
-        header: "Shop ID"
+        header: i18next.t("search.accountSearchResults.shopId", {defaultValue: "Shop ID"}),
+        value: rowData => {
+          return rowData.shopId;
+        }
       },
       {
         id: "firstName",
         type: DataType.String,
-        header: "First Name",
+        header: i18next.t("search.accountSearchResults.firstName", {defaultValue: "First Name"}),
         value: rowData => {
-          if (rowData.profile) {
-            return rowData.profile.firstName;
-          }
-          return undefined;
+          return rowData.profile.firstName;
         }
-        // renderer(cellData, { column, rowData }) {
-        //   return <a href={rowData.url} target="_blank">{cellData}</a>;
-        // },
       },
       {
         id: "lastName",
         type: DataType.String,
-        header: "Last Name",
+        header: i18next.t("search.accountSearchResults.lastName", {defaultValue: "Last Name"}),
         value: rowData => {
-          if (rowData.profile) {
-            return rowData.profile.firstName;
-          }
-          return undefined;
+          return rowData.profile.lastName;
         }
-        // renderer(cellData, { column, rowData }) {
-        //   return <a href={rowData.url} target="_blank">{cellData}</a>;
-        // },
       },
       {
         id: "phone",
         type: DataType.String,
-        header: "Phone",
+        header: i18next.t("search.accountSearchResults.phone", {defaultValue: "Phone"}),
         value: rowData => {
-          if (rowData.profile) {
-            return rowData.profile.phone;
-          }
-          return undefined;
+          return rowData.profile.phone;
+        }
+      },
+      {
+        id: "email",
+        type: DataType.String,
+        header: i18next.t("search.accountSearchResults.emails", {defaultValue: "Email"}),
+        value: rowData => {
+          return rowData.emails[0];
         }
       }
     ];
@@ -230,7 +226,10 @@ Template.searchModal.helpers({
       {
         id: "shippingName",
         type: DataType.String,
-        header: i18next.t("search.orderSearchResults.shippingName", {defaultValue: "Name"})
+        header: i18next.t("search.orderSearchResults.shippingName", {defaultValue: "Name"}),
+        value: rowData => {
+          return rowData.shippingName;
+        }
       },
       {
         id: "shippingAddress",
@@ -267,7 +266,10 @@ Template.searchModal.helpers({
       {
         id: "shippingPhone",
         type: DataType.String,
-        header: i18next.t("search.orderSearchResults.shippingPhone", {defaultValue: "Phone"})
+        header: i18next.t("search.orderSearchResults.shippingPhone", {defaultValue: "Phone"}),
+        value: rowData => {
+          return rowData.shippingPhone;
+        }
       },
       {
         id: "userEmail",
