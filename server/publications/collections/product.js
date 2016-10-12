@@ -51,7 +51,7 @@ Meteor.publish("Product", function (productId) {
   // Selector for hih?
   selector = {
     isVisible: true,
-    isDeleted: false,
+    isDeleted: {$in: [null, false]},
     $or: [
       { _id: _id },
       {
