@@ -97,17 +97,6 @@ class ProductAdmin extends Component {
       <CardGroup>
         <Card>
           <CardHeader
-            i18nKeyTitle="productDetailEdit.publish"
-            title="Publish"
-          />
-          <CardBody>
-            <PublishContainer
-              documentIds={this.props.revisonDocumentIds}
-            />
-          </CardBody>
-        </Card>
-        <Card>
-          <CardHeader
             i18nKeyTitle="productDetailEdit.productSettings"
             title="Product Settings"
           />

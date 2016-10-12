@@ -1,5 +1,17 @@
 import React, { Component, PropTypes } from "react";
-import { Alert, Currency } from "/imports/plugins/core/ui/client/components/";
+import {
+  Alert,
+  Button,
+  Currency,
+  Divider,
+  Menu,
+  MenuItem,
+  Popover,
+  Translation,
+  Toolbar,
+  ToolbarGroup,
+  ToolbarText
+} from "/imports/plugins/core/ui/client/components/";
 import {
   AddToCartButton,
   ProductMetadata,
@@ -22,15 +34,48 @@ class ProductDetail extends Component {
     return this.props.editable;
   }
 
+  renderToolbar() {
+    /*
+    <ToolbarText>
+      <Translation defaultValue="You are viewing this product as an administrator" />
+    </ToolbarText>
+    <Button label="View As Customer" />
+     */
+    if (this.props.hasAdminPrivilages || true) {
+      return (
+        <Toolbar>
+          <ToolbarGroup firstChild={true}>
+            <Translation defaultValue="Viewing as administrator" />
+            <Popover buttonElement={<Button label="Switch" />}>
+              <Menu onChange={this.props.onViewContextChange}>
+                <MenuItem label="View draft as administrator" value="administrator" />
+                <MenuItem label="View draft as customer" value="customer" />
+                <Divider />
+                <MenuItem label="View published as administrator" value="published-admin" />
+                <MenuItem label="View published as customer" value="published-customer" />
+              </Menu>
+            </Popover>
+          </ToolbarGroup>
+          <ToolbarGroup lastChild={true}>
+            <PublishContainer documentIds={[this.product._id]} />
+              <Popover buttonElement={<Button icon="fa fa-ellipsis-v" />}>
+                <Menu onChange={this.props.onViewContextChange}>
+                  <MenuItem label="Delete" value="delete" />
+                </Menu>
+              </Popover>
+          </ToolbarGroup>
+        </Toolbar>
+      );
+    }
+  }
+
   render() {
     return (
-      <div className="container-main">
-        <div className="container-fluid pdp-container" itemScope itemType="http://schema.org/Product">
-          <AlertContainer placement="productManagement" />
-          <Alert mode="info">
-            <PublishContainer documentIds={[this.product._id]} />
-          </Alert>
+      <div className="" style={{position: "relative"}}>
+        {this.renderToolbar()}
 
+        <div className="container-main container-fluid pdp-container" itemScope itemType="http://schema.org/Product">
+          <AlertContainer placement="productManagement" />
 
           <header className="pdp header">
             <ProductField

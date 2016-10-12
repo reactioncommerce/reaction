@@ -108,13 +108,8 @@ class PublishControls extends Component {
         label="Publish Changes"
         onClick={this.handlePublishClick}
         status="success"
+        tooltip={"This product has changes that need to be published before they are visible to your customers."}
       />
-    );
-  }
-
-  renderDescription() {
-    return (
-      <span>{"This product has changes that need to be published before they are visible to your customers."}</span>
     );
   }
 
@@ -122,7 +117,6 @@ class PublishControls extends Component {
     if (this.props.isEnabled) {
       return (
         <div className="rui publish-controls">
-          {this.renderDescription()}
           <Button
             i18nKeyLabel={this.showChangesButtoni18nKeyLabel}
             label={this.showChangesButtonLabel}

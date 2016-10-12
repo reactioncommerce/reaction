@@ -158,8 +158,16 @@ EditContainer.propTypes = {
 };
 
 function composer(props, onData) {
+  let hasPermission;
+
+  if (props.disabled === true) {
+    hasPermission = false;
+  } else {
+    hasPermission = Reaction.hasPermission(props.premissions);
+  }
+
   onData(null, {
-    hasPermission: Reaction.hasPermission(props.premissions)
+    hasPermission
   });
 }
 

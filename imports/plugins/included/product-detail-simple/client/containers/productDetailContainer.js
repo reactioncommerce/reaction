@@ -4,6 +4,7 @@ import { composeWithTracker } from "react-komposer";
 // import { DragDropContext } from "react-dnd";
 // import HTML5Backend from "react-dnd-html5-backend";
 import { ReactionProduct } from "/lib/api";
+
 import { Reaction, i18next, Logger } from "/client/api";
 import { Tags, Media } from "/lib/collections";
 import { Loading } from "/imports/plugins/core/ui/client/components";
@@ -141,6 +142,11 @@ class ProductDetailContainer extends Component {
     return null;
   }
 
+  handleViewContextChange = (event, value) => {
+    console.log("value", value);
+    Reaction.Router.setQueryParams({as: value});
+  }
+
   render() {
     return (
       <TranslationProvider>
@@ -150,6 +156,7 @@ class ProductDetailContainer extends Component {
             mediaGalleryComponent={<MediaGalleryContainer media={this.props.media} />}
             onAddToCart={this.handleAddToCart}
             onCartQuantityChange={this.handleCartQuantityChange}
+            onViewContextChange={this.handleViewContextChange}
             socialComponent={<SocialContainer />}
             topVariantComponent={<VariantListContainer />}
             {...this.props}
@@ -168,6 +175,9 @@ function composer(props, onData) {
   const tagSub = Meteor.subscribe("Tags");
   const productId = Reaction.Router.getParam("handle");
   const variantId = Reaction.Router.getParam("variantId");
+  const revisionType = Reaction.Router.getQueryParam("revision");
+  const viewProductAs = Reaction.Router.getQueryParam("as");
+console.log("Vew", revisionType, viewProductAs);
   let productSub;
 
   if (productId) {
@@ -220,12 +230,27 @@ function composer(props, onData) {
         priceRange = ReactionProduct.getVariantPriceRange();
       }
 
+      let productRevision;
+
+      if (revisionType === "published") {
+        productRevision = product.__published;
+      }
+
+      let editable;
+
+      if (viewProductAs === "customer") {
+        editable = false;
+      } else {
+        editable = Reaction.hasPermission(["createProduct"]);
+      }
+
       onData(null, {
-        product,
+        product: productRevision || product,
         priceRange,
         tags,
         media: mediaArray,
-        editable: Reaction.hasPermission(["createProduct"]),
+        editable,
+        hasAdminPrivilages: Reaction.hasPermission(["createProduct"]),
         handleProductFieldChange: changeProductField
       });
     }

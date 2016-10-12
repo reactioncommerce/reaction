@@ -1,0 +1,27 @@
+.rui.toolbar {
+  // Use bootstrap styles
+  .navbar();
+  .navbar-inverse();
+  display: flex;
+  align-items: center;
+  padding-left: @navbar-padding-horizontal;
+  padding-right: @navbar-padding-horizontal;
+}
+
+.rui.toolbar-group {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+}
+
+.rui.toolbar-group.left {
+  justify-content: flex-start;
+}
+
+.rui.toolbar-group.center {
+  justify-content: center;
+}
+
+.rui.toolbar-group.right {
+  justify-content: flex-end;
+}

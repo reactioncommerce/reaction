@@ -176,6 +176,14 @@ function composer(props, onData) {
     }).fetch();
   }
 
+  let editable;
+
+  if (Reaction.Router.getQueryParam("as") === "customer") {
+    editable = false;
+  } else {
+    editable = Reaction.hasPermission(["createProduct"]);
+  }
+
   onData(null, {
     variants: getTopVariants(),
     variantIsSelected,
@@ -184,7 +192,7 @@ function composer(props, onData) {
     childVariantMedia,
     displayPrice: ReactionProduct.getVariantPriceRange,
     isSoldOut: isSoldOut,
-    editable: Reaction.hasPermission(["createProduct"])
+    editable
   });
 }
 

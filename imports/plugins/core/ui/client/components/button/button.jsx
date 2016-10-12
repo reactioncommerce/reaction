@@ -1,5 +1,5 @@
 import React, { Component, PropTypes} from "react";
-import classnames from "classnames";
+import classnames from "classnames/dedupe";
 import Icon from "../icon/icon.jsx";
 import { Tooltip, Translation } from "../";
 
@@ -29,6 +29,16 @@ class Button extends Component {
     this.setState({
       tooltipOpen: false
     });
+  }
+
+  handleClick = (event) => {
+    if (this.props.tagName === "a") {
+      event.preventDefault();
+    }
+
+    if (this.props.onClick) {
+      this.props.onClick(event, this.props.value);
+    }
   }
 
   renderOnStateIcon() {
@@ -116,36 +126,44 @@ class Button extends Component {
 
     const {
       // Destructure these vars as they aren't valid as attributes on the HTML element button
-      label, active, className, status, i18nKeyTitle, i18nKeyLabel, i18nKeyTooltip, // eslint-disable-line no-unused-vars
+      attachment, label, active, className, status, i18nKeyTitle, i18nKeyLabel, i18nKeyTooltip, // eslint-disable-line no-unused-vars
       tooltip, icon, toggle, onIcon, primary, toggleOn, eventAction, // eslint-disable-line no-unused-vars
-      toggleOnLabel, i18nKeyToggleOnLabel, // eslint-disable-line no-unused-vars
+      toggleOnLabel, i18nKeyToggleOnLabel, tagName, onClick, // eslint-disable-line no-unused-vars
 
       // Get the rest of the properties and put them in attrs
       // these will most likely be HTML attributes
       ...attrs
     } = this.props;
 
-    const button = (
-      <button
-        className={classes}
-        data-event-action={eventAction}
-        onMouseOut={this.handleButtonMouseOut}
-        onMouseOver={this.handleButtonMouseOver}
-        type="button"
-        {...attrs}
-      >
-        {this.renderIcon()}
-        {this.renderLabel()}
-        {this.props.children}
-      </button>
-    );
+    const extraProps = {};
+
+    if (tagName === "a") {
+      extraProps.href = "#";
+    }
+
+    const button = React.createElement(tagName, {
+      "className": classes,
+      "data-event-action": eventAction,
+      "onMouseOut": this.handleButtonMouseOut,
+      "onMouseOver": this.handleButtonMouseOver,
+      "onClick": this.handleClick,
+      "type": "button",
+      ...attrs,
+      ...extraProps
+    }, [
+      this.renderIcon(),
+      this.renderLabel(),
+      this.props.children
+    ]);
 
 
     if (tooltip) {
       return (
-        <Tooltip tooltipContent={this.renderTooltipContent()}>
-          {button}
-        </Tooltip>
+        <span className="rui btn-tooltip" style={{display: "inline-flex"}}>
+          <Tooltip tooltipContent={this.renderTooltipContent()}>
+            {button}
+          </Tooltip>
+        </span>
       );
     }
 
@@ -156,7 +174,7 @@ class Button extends Component {
 Button.propTypes = {
   active: PropTypes.bool,
   children: PropTypes.node,
-  className: PropTypes.string,
+  className: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   eventAction: PropTypes.string,
   i18nKeyLabel: PropTypes.string,
   i18nKeyTitle: PropTypes.string,
@@ -164,19 +182,23 @@ Button.propTypes = {
   i18nKeyTooltip: PropTypes.string,
   icon: PropTypes.string,
   label: PropTypes.string,
+  onClick: PropTypes.func,
   onIcon: PropTypes.string,
   primary: PropTypes.bool,
   status: PropTypes.string,
+  tagName: PropTypes.string,
   title: PropTypes.string,
   toggle: PropTypes.bool,
   toggleOn: PropTypes.bool,
   toggleOnLabel: PropTypes.string,
-  tooltip: PropTypes.oneOfType([PropTypes.string, PropTypes.object, PropTypes.node])
+  tooltip: PropTypes.oneOfType([PropTypes.string, PropTypes.object, PropTypes.node]),
+  value: PropTypes.any
 };
 
 Button.defaultProps = {
   toggle: false,
-  active: false
+  active: false,
+  tagName: "button"
 };
 
 export default Button;
