@@ -730,6 +730,7 @@
           "billingPhone": "Phone",
           "billingStatus": "Status",
           "userEmails": "Email",
+          "orderDate": "Date",
           "orderTotal": "Total"
         }
       },

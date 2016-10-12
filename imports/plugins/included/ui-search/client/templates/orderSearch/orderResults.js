@@ -20,11 +20,27 @@ Template.searchModal.helpers({
     const results = instance.state.get("orderSearchResults");
     const columns = [
       {
+        id: "_id",
+        type: DataType.String,
+        header: i18next.t("search.orderSearchResults.orderId", {defaultValue: "Order ID"}),
+        renderer(cellData, { column, rowData }) {
+          return <a href={rowData.url} target="_blank">{cellData}</a>;
+        }
+      },
+      {
         id: "shippingName",
         type: DataType.String,
         header: i18next.t("search.orderSearchResults.shippingName", {defaultValue: "Name"}),
         value: rowData => {
           return rowData.shippingName;
+        }
+      },
+      {
+        id: "userEmail",
+        type: DataType.String,
+        header: i18next.t("search.orderSearchResults.userEmails", {defaultValue: "Email"}),
+        value: rowData => {
+          return rowData.userEmails[0];
         }
       },
       {
@@ -68,27 +84,6 @@ Template.searchModal.helpers({
         }
       },
       {
-        id: "userEmail",
-        type: DataType.String,
-        header: i18next.t("search.orderSearchResults.userEmails", {defaultValue: "Email"}),
-        value: rowData => {
-          return rowData.userEmails[0];
-        }
-      },
-      {
-        id: "shopId",
-        type: DataType.String,
-        header: i18next.t("search.orderSearchResults.shopId", {defaultValue: "Shop ID"})
-      },
-      {
-        id: "_id",
-        type: DataType.String,
-        header: i18next.t("search.orderSearchResults.orderId", {defaultValue: "Order ID"}),
-        renderer(cellData, { column, rowData }) {
-          return <a href={rowData.url} target="_blank">{cellData}</a>;
-        }
-      },
-      {
         id: "billingStatus",
         type: DataType.String,
         header: i18next.t("search.orderSearchResults.billingStatus", {defaultValue: "Billing Status"}),
@@ -102,6 +97,14 @@ Template.searchModal.helpers({
         header: i18next.t("search.orderSearchResults.shippingStatus", {defaultValue: "Shipping Status"}),
         value: rowData => {
           return rowData.shippingStatus;
+        }
+      },
+      {
+        id: "orderDate",
+        type: DataType.Date,
+        header: i18next.t("search.orderSearchResults.orderDate", {defaultValue: "Date"}),
+        value: rowData => {
+          return rowData.orderDate;
         }
       },
       {
