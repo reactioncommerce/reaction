@@ -41,7 +41,10 @@ Template.searchModal.helpers({
         type: DataType.String,
         header: i18next.t("search.accountSearchResults.firstName", {defaultValue: "First Name"}),
         value: rowData => {
-          return rowData.profile.firstName;
+          if (rowData.profile) {
+            return rowData.profile.firstName;
+          }
+          return undefined;
         }
       },
       {
@@ -49,7 +52,10 @@ Template.searchModal.helpers({
         type: DataType.String,
         header: i18next.t("search.accountSearchResults.lastName", {defaultValue: "Last Name"}),
         value: rowData => {
-          return rowData.profile.lastName;
+          if (rowData.profile) {
+            return rowData.profile.lastName;
+          }
+          return undefined;
         }
       },
       {
@@ -57,7 +63,10 @@ Template.searchModal.helpers({
         type: DataType.String,
         header: i18next.t("search.accountSearchResults.phone", {defaultValue: "Phone"}),
         value: rowData => {
-          return rowData.profile.phone;
+          if (rowData.profile) {
+            return rowData.profile.phone;
+          }
+          return undefined;
         }
       },
       {
