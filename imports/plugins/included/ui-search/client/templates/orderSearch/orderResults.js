@@ -84,14 +84,6 @@ Template.searchModal.helpers({
         }
       },
       {
-        id: "billingStatus",
-        type: DataType.String,
-        header: i18next.t("search.orderSearchResults.billingStatus", {defaultValue: "Billing Status"}),
-        value: rowData => {
-          return rowData.billingStatus;
-        }
-      },
-      {
         id: "shippingStatus",
         type: DataType.String,
         header: i18next.t("search.orderSearchResults.shippingStatus", {defaultValue: "Shipping Status"}),
