@@ -136,182 +136,185 @@ Template.searchModal.helpers({
     const results = instance.state.get("tagSearchResults");
     return results;
   },
-  orderSearchResults() {
-    const instance = Template.instance();
-    const results = instance.state.get("orderSearchResults");
-    return results;
-  },
-  accountSearchResults() {
-    const instance = Template.instance();
-    const results = instance.state.get("accountSearchResults");
-    return results;
-  },
-  accountTable() {
-    const instance = Template.instance();
-    const results = instance.state.get("accountSearchResults");
-
-    const columns = [
-      {
-        id: "_id",
-        type: DataType.String,
-        header: i18next.t("search.accountSearchResults.accountId", {defaultValue: "Account ID"}),
-        value: rowData => {
-          return rowData._id;
-        }
-      },
-      {
-        id: "shopId",
-        type: DataType.String,
-        header: i18next.t("search.accountSearchResults.shopId", {defaultValue: "Shop ID"}),
-        value: rowData => {
-          return rowData.shopId;
-        }
-      },
-      {
-        id: "firstName",
-        type: DataType.String,
-        header: i18next.t("search.accountSearchResults.firstName", {defaultValue: "First Name"}),
-        value: rowData => {
-          return rowData.profile.firstName;
-        }
-      },
-      {
-        id: "lastName",
-        type: DataType.String,
-        header: i18next.t("search.accountSearchResults.lastName", {defaultValue: "Last Name"}),
-        value: rowData => {
-          return rowData.profile.lastName;
-        }
-      },
-      {
-        id: "phone",
-        type: DataType.String,
-        header: i18next.t("search.accountSearchResults.phone", {defaultValue: "Phone"}),
-        value: rowData => {
-          return rowData.profile.phone;
-        }
-      },
-      {
-        id: "email",
-        type: DataType.String,
-        header: i18next.t("search.accountSearchResults.emails", {defaultValue: "Email"}),
-        value: rowData => {
-          return rowData.emails[0];
-        }
-      }
-    ];
-
-    return {
-      component: SortableTable,
-      data: results,
-      columns: columns
-    };
-  },
-  orderTable() {
-    const instance = Template.instance();
-    const results = instance.state.get("orderSearchResults");
-    const columns = [
-      {
-        id: "shippingName",
-        type: DataType.String,
-        header: i18next.t("search.orderSearchResults.shippingName", {defaultValue: "Name"}),
-        value: rowData => {
-          return rowData.shippingName;
-        }
-      },
-      {
-        id: "shippingAddress",
-        type: DataType.String,
-        header: i18next.t("search.orderSearchResults.shippingAddress", {defaultValue: "Address"}),
-        value: rowData => {
-          return rowData.shippingAddress.address;
-        }
-      },
-      {
-        id: "shippingCity",
-        type: DataType.String,
-        header: i18next.t("search.orderSearchResults.shippingCity", {defaultValue: "City"}),
-        value: rowData => {
-          return rowData.shippingAddress.city;
-        }
-      },
-      {
-        id: "shippingRegion",
-        type: DataType.String,
-        header: i18next.t("search.orderSearchResults.shippingRegion", {defaultValue: "Region"}),
-        value: rowData => {
-          return rowData.shippingAddress.region;
-        }
-      },
-      {
-        id: "shippingCountry",
-        type: DataType.String,
-        header: i18next.t("search.orderSearchResults.shippingCountry", {defaultValue: "Country"}),
-        value: rowData => {
-          return rowData.shippingAddress.country;
-        }
-      },
-      {
-        id: "shippingPhone",
-        type: DataType.String,
-        header: i18next.t("search.orderSearchResults.shippingPhone", {defaultValue: "Phone"}),
-        value: rowData => {
-          return rowData.shippingPhone;
-        }
-      },
-      {
-        id: "userEmail",
-        type: DataType.String,
-        header: i18next.t("search.orderSearchResults.userEmails", {defaultValue: "Email"}),
-        value: rowData => {
-          return rowData.userEmails[0];
-        }
-      },
-      {
-        id: "shopId",
-        type: DataType.String,
-        header: i18next.t("search.orderSearchResults.shopId", {defaultValue: "Shop ID"})
-      },
-      {
-        id: "_id",
-        type: DataType.String,
-        header: i18next.t("search.orderSearchResults.orderId", {defaultValue: "Order ID"}),
-        renderer(cellData, { column, rowData }) {
-          return <a href={rowData.url} target="_blank">{cellData}</a>;
-        }
-      },
-      {
-        id: "billingStatus",
-        type: DataType.String,
-        header: i18next.t("search.orderSearchResults.billingStatus", {defaultValue: "Billing Status"}),
-        value: rowData => {
-          return rowData.billingStatus;
-        }
-      },
-      {
-        id: "shippingStatus",
-        type: DataType.String,
-        header: i18next.t("search.orderSearchResults.shippingStatus", {defaultValue: "Shipping Status"}),
-        value: rowData => {
-          return rowData.shippingStatus;
-        }
-      },
-      {
-        id: "orderTotal",
-        type: DataType.Number,
-        header: i18next.t("search.orderSearchResults.orderTotal", {defaultValue: "Total"}),
-        value: rowData => {
-          return rowData.orderTotal;
-        }
-      }
-    ];
-
-    return {
-      component: SortableTable,
-      data: results,
-      columns: columns
-    };
+  // orderSearchResults() {
+  //   const instance = Template.instance();
+  //   const results = instance.state.get("orderSearchResults");
+  //   return results;
+  // },
+  // accountSearchResults() {
+  //   const instance = Template.instance();
+  //   const results = instance.state.get("accountSearchResults");
+  //   return results;
+  // },
+  showSearchResults() {
+    return false;
   }
+  // accountTable() {
+  //   const instance = Template.instance();
+  //   const results = instance.state.get("accountSearchResults");
+  //
+  //   const columns = [
+  //     {
+  //       id: "_id",
+  //       type: DataType.String,
+  //       header: i18next.t("search.accountSearchResults.accountId", {defaultValue: "Account ID"}),
+  //       value: rowData => {
+  //         return rowData._id;
+  //       }
+  //     },
+  //     {
+  //       id: "shopId",
+  //       type: DataType.String,
+  //       header: i18next.t("search.accountSearchResults.shopId", {defaultValue: "Shop ID"}),
+  //       value: rowData => {
+  //         return rowData.shopId;
+  //       }
+  //     },
+  //     {
+  //       id: "firstName",
+  //       type: DataType.String,
+  //       header: i18next.t("search.accountSearchResults.firstName", {defaultValue: "First Name"}),
+  //       value: rowData => {
+  //         return rowData.profile.firstName;
+  //       }
+  //     },
+  //     {
+  //       id: "lastName",
+  //       type: DataType.String,
+  //       header: i18next.t("search.accountSearchResults.lastName", {defaultValue: "Last Name"}),
+  //       value: rowData => {
+  //         return rowData.profile.lastName;
+  //       }
+  //     },
+  //     {
+  //       id: "phone",
+  //       type: DataType.String,
+  //       header: i18next.t("search.accountSearchResults.phone", {defaultValue: "Phone"}),
+  //       value: rowData => {
+  //         return rowData.profile.phone;
+  //       }
+  //     },
+  //     {
+  //       id: "email",
+  //       type: DataType.String,
+  //       header: i18next.t("search.accountSearchResults.emails", {defaultValue: "Email"}),
+  //       value: rowData => {
+  //         return rowData.emails[0];
+  //       }
+  //     }
+  //   ];
+  //
+  //   return {
+  //     component: SortableTable,
+  //     data: results,
+  //     columns: columns
+  //   };
+  // }
+  // orderTable() {
+  //   const instance = Template.instance();
+  //   const results = instance.state.get("orderSearchResults");
+  //   const columns = [
+  //     {
+  //       id: "shippingName",
+  //       type: DataType.String,
+  //       header: i18next.t("search.orderSearchResults.shippingName", {defaultValue: "Name"}),
+  //       value: rowData => {
+  //         return rowData.shippingName;
+  //       }
+  //     },
+  //     {
+  //       id: "shippingAddress",
+  //       type: DataType.String,
+  //       header: i18next.t("search.orderSearchResults.shippingAddress", {defaultValue: "Address"}),
+  //       value: rowData => {
+  //         return rowData.shippingAddress.address;
+  //       }
+  //     },
+  //     {
+  //       id: "shippingCity",
+  //       type: DataType.String,
+  //       header: i18next.t("search.orderSearchResults.shippingCity", {defaultValue: "City"}),
+  //       value: rowData => {
+  //         return rowData.shippingAddress.city;
+  //       }
+  //     },
+  //     {
+  //       id: "shippingRegion",
+  //       type: DataType.String,
+  //       header: i18next.t("search.orderSearchResults.shippingRegion", {defaultValue: "Region"}),
+  //       value: rowData => {
+  //         return rowData.shippingAddress.region;
+  //       }
+  //     },
+  //     {
+  //       id: "shippingCountry",
+  //       type: DataType.String,
+  //       header: i18next.t("search.orderSearchResults.shippingCountry", {defaultValue: "Country"}),
+  //       value: rowData => {
+  //         return rowData.shippingAddress.country;
+  //       }
+  //     },
+  //     {
+  //       id: "shippingPhone",
+  //       type: DataType.String,
+  //       header: i18next.t("search.orderSearchResults.shippingPhone", {defaultValue: "Phone"}),
+  //       value: rowData => {
+  //         return rowData.shippingPhone;
+  //       }
+  //     },
+  //     {
+  //       id: "userEmail",
+  //       type: DataType.String,
+  //       header: i18next.t("search.orderSearchResults.userEmails", {defaultValue: "Email"}),
+  //       value: rowData => {
+  //         return rowData.userEmails[0];
+  //       }
+  //     },
+  //     {
+  //       id: "shopId",
+  //       type: DataType.String,
+  //       header: i18next.t("search.orderSearchResults.shopId", {defaultValue: "Shop ID"})
+  //     },
+  //     {
+  //       id: "_id",
+  //       type: DataType.String,
+  //       header: i18next.t("search.orderSearchResults.orderId", {defaultValue: "Order ID"}),
+  //       renderer(cellData, { column, rowData }) {
+  //         return <a href={rowData.url} target="_blank">{cellData}</a>;
+  //       }
+  //     },
+  //     {
+  //       id: "billingStatus",
+  //       type: DataType.String,
+  //       header: i18next.t("search.orderSearchResults.billingStatus", {defaultValue: "Billing Status"}),
+  //       value: rowData => {
+  //         return rowData.billingStatus;
+  //       }
+  //     },
+  //     {
+  //       id: "shippingStatus",
+  //       type: DataType.String,
+  //       header: i18next.t("search.orderSearchResults.shippingStatus", {defaultValue: "Shipping Status"}),
+  //       value: rowData => {
+  //         return rowData.shippingStatus;
+  //       }
+  //     },
+  //     {
+  //       id: "orderTotal",
+  //       type: DataType.Number,
+  //       header: i18next.t("search.orderSearchResults.orderTotal", {defaultValue: "Total"}),
+  //       value: rowData => {
+  //         return rowData.orderTotal;
+  //       }
+  //     }
+  //   ];
+  //
+  //   return {
+  //     component: SortableTable,
+  //     data: results,
+  //     columns: columns
+  //   };
+  // }
 });
 
 
