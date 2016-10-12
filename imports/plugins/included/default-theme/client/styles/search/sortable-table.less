@@ -22,9 +22,6 @@
 
 
 
-
-
-
 .taco-table {
   border-collapse: collapse;
   border-spacing: 0;
@@ -147,11 +144,27 @@
 }
 
 
+  .taco-table td.shipping-status span {
 
+    border-radius: 5px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    padding-left: 8px;
+    padding-right: 8px;
 
+    &.shipped {
+      background: #fe8163;
+      color: #fff;
+    }
+    &.packed {
+      background: #dd5b42;
+      color: #fff;
+    }
+    &.new {
+      background: #64e192;
+      color: #fff;
+    }
 
-
-
-
+  }
 
 }

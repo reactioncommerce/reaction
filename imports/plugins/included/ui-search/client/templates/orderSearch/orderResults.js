@@ -97,6 +97,11 @@ Template.searchModal.helpers({
         header: i18next.t("search.orderSearchResults.shippingStatus", {defaultValue: "Shipping Status"}),
         value: rowData => {
           return rowData.shippingStatus;
+        },
+        tdClassName: "shipping-status",
+        renderer(cellData, { column, rowData }) {
+          const rowClassName = _.lowerCase(rowData.shippingStatus);
+          return <span className={rowClassName}>{cellData}</span>;
         }
       },
       {
