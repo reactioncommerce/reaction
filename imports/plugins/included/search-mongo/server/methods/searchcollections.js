@@ -10,7 +10,7 @@ import { transformations } from "./transformations";
 
 const requiredFields = {};
 requiredFields.products = ["_id", "hashtags", "shopId", "handle", "price", "isVisible"];
-requiredFields.orders = ["_id", "shopId", "shippingName", "billingName", "userEmails", "shippingAddress", "billingAddress", "shippingStatus", "billingStatus", "orderTotal", "orderDate", "url"];
+requiredFields.orders = ["_id", "shopId", "shippingName", "shippingPhone", "billingName", "userEmails", "shippingAddress", "billingAddress", "shippingStatus", "billingStatus", "orderTotal", "orderDate", "url"];
 requiredFields.accounts = ["_id", "shopId", "emails", "profile"];
 
 // https://docs.mongodb.com/manual/reference/text-search-languages/#text-search-languages
@@ -224,7 +224,7 @@ export function buildAccountSearch(cb) {
 }
 
 export function buildAccountSearchRecord(accountId) {
-  Logger.info("building account search record");
+  Logger.debug("building account search record");
   check(accountId, String);
   const account = Accounts.findOne(accountId);
   // let's ignore anonymous accounts

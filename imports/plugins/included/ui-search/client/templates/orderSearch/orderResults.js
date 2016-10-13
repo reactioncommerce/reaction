@@ -122,6 +122,7 @@ Template.searchModal.helpers({
   }
 });
 
+
 /**
  * orderResults events
  */

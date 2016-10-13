@@ -105,32 +105,6 @@ Template.productItem.helpers({
 
 Template.productItem.events({
   "click [data-event-action=productClick]": function (event, template) {
-    // if (Reaction.hasPermission("createProduct")) {
-    //   if (event.metaKey || event.ctrlKey || event.shiftKey) {
-    //     event.preventDefault();
-    //
-    //     let $checkbox = template.$(`input[type=checkbox][value=${this._id}]`);
-    //     const $items = $("li.product-grid-item");
-    //     const $activeItems = $("li.product-grid-item.active");
-    //     const selected = $activeItems.length;
-    //
-    //     if (event.shiftKey && selected > 0) {
-    //       const indexes = [
-    //         $items.index($checkbox.parents("li.product-grid-item")),
-    //         $items.index($activeItems.get(0)),
-    //         $items.index($activeItems.get(selected - 1))
-    //       ];
-    //       for (let i = _.min(indexes); i <= _.max(indexes); i++) {
-    //         $checkbox = $("input[type=checkbox]", $items.get(i));
-    //         if ($checkbox.prop("checked") === false) {
-    //           $checkbox.prop("checked", true).trigger("change");
-    //         }
-    //       }
-    //     } else {
-    //       $checkbox.prop("checked", !$checkbox.prop("checked")).trigger("change");
-    //     }
-    //   }
-    // }
     const instance = Template.instance();
     const view = instance.view;
     $(".js-search-modal").delay(400).fadeOut(400, () => {

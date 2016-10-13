@@ -76,7 +76,7 @@ getResults.orders = function (searchTerm, facets, maxResults, userId) {
     ]};
   if (Reaction.hasPermission("orders", userId)) {
     orderResults = OrderSearch.find(findTerm, { limit: maxResults });
-    Logger.info(`Found ${orderResults.count()} orders searching for ${searchTerm}`);
+    Logger.debug(`Found ${orderResults.count()} orders searching for ${searchTerm}`);
   }
   return orderResults;
 };
@@ -106,7 +106,7 @@ getResults.accounts = function (searchTerm, facets, maxResults, userId) {
     accountResults = AccountSearch.find(findTerm, {
       limit: maxResults
     });
-    Logger.info(`Found ${accountResults.count()} accounts searching for ${searchTerm}`);
+    Logger.debug(`Found ${accountResults.count()} accounts searching for ${searchTerm}`);
   }
   return accountResults;
 };

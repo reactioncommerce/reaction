@@ -58,7 +58,7 @@ function addBuildAccountSearchCollection() {
         cancelRepeats: true
       });
   } else {
-    Logger.info("AccountSearch collection already exists, not building");
+    Logger.debug("AccountSearch collection already exists, not building");
   }
 }
 
@@ -156,4 +156,3 @@ export default function () {
     }
   );
 }
-
