@@ -53,7 +53,7 @@ getResults.orders = function (searchTerm, facets, maxResults, userId) {
       {$or: [
         { _id: searchTerm },
         { userEmails: {
-          $regex: "^" + searchTerm + "$",
+          $regex: searchTerm,
           $options: "i"
         } },
         { shippingName: {
@@ -90,7 +90,7 @@ getResults.accounts = function (searchTerm, facets, maxResults, userId) {
         {shopId: shopId},
         {$or: [
           { emails: {
-            $regex: "^" + searchTerm + "$",
+            $regex: searchTerm,
             $options: "i"
           } },
           { "profile.firstName": {
