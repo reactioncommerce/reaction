@@ -35,8 +35,8 @@ class ProductAdmin extends Component {
   }
 
   handleToggleVisibility = () => {
-    if (this.props.onFieldChange) {
-      this.props.onFieldChange("isVisible", !this.product.isVisible);
+    if (this.props.onProductFieldSave) {
+      this.props.onProductFieldSave(this.product._id, "isVisible", !this.product.isVisible);
     }
   }
 
@@ -113,48 +113,58 @@ class ProductAdmin extends Component {
           />
           <CardBody>
             <TextField
-              i18nKeyLabel="productDetailEdit.productTitle"
+              i18nKeyLabel="productDetailEdit.title"
+              i18nKeyPlaceholder="productDetailEdit.title"
               label="Title"
               multiline={true}
               name="title"
               onBlur={this.handleFieldBlur}
               onChange={this.handleFieldChange}
+              placeholder="Title"
               value={this.product.title}
             />
             <TextField
               helpText={this.permalink}
               i18nKeyLabel="productDetailEdit.permalink"
+              i18nKeyPlaceholder="productDetailEdit.permalink"
               label="Permalink"
               name="handle"
               onBlur={this.handleFieldBlur}
               onChange={this.handleFieldChange}
+              placeholder="Permalink"
               value={this.product.handle}
             />
             <TextField
               i18nKeyLabel="productDetailEdit.pageTitle"
+              i18nKeyPlaceholder="productDetailEdit.pageTitle"
               label="Subtitle"
               multiline={true}
               name="pageTitle"
               onBlur={this.handleFieldBlur}
               onChange={this.handleFieldChange}
+              placeholder="Subtitle"
               value={this.product.pageTitle}
             />
             <TextField
               i18nKeyLabel="productDetailEdit.vendor"
+              i18nKeyPlaceholder="productDetailEdit.vendor"
               label="Vendor"
               multiline={true}
               name="vendor"
               onBlur={this.handleFieldBlur}
               onChange={this.handleFieldChange}
+              placeholder="Vendor"
               value={this.product.vendor}
             />
             <TextField
               i18nKeyLabel="productDetailEdit.description"
+              i18nKeyPlaceholder="productDetailEdit.description"
               label="Description"
               multiline={true}
               name="description"
               onBlur={this.handleFieldBlur}
               onChange={this.handleFieldChange}
+              placeholder="Description"
               value={this.product.description}
             />
             <Divider />
