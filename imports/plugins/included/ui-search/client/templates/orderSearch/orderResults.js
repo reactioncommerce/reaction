@@ -1,13 +1,13 @@
 import _ from "lodash";
 import React from "react";
-import { i18next } from "/client/api";
+import { Reaction, i18next } from "/client/api";
 import { DataType } from "react-taco-table";
 import { Template } from "meteor/templating";
 import { SortableTable } from "/imports/plugins/core/ui/client/components";
 
 
 /**
- * searchModal helpers
+ * orderResults helpers
  */
 Template.searchModal.helpers({
   orderSearchResults() {
@@ -24,7 +24,7 @@ Template.searchModal.helpers({
         type: DataType.String,
         header: i18next.t("search.orderSearchResults.orderId", {defaultValue: "Order ID"}),
         renderer(cellData, { column, rowData }) {
-          return <a href={rowData.url} target="_blank">{cellData}</a>;
+          return <a href={rowData.url} data-event-action="goToOrder" data-event-data={cellData}>{cellData}</a>;
         }
       },
       {
@@ -119,5 +119,33 @@ Template.searchModal.helpers({
       data: results,
       columns: columns
     };
+  }
+});
+
+/**
+ * orderResults events
+ */
+Template.searchModal.events({
+  "click [data-event-action=goToOrder]": function () {
+    const instance = Template.instance();
+    const view = instance.view;
+    const isActionViewOpen = Reaction.isActionViewOpen();
+
+    // toggle detail views
+    if (isActionViewOpen === false) {
+      Reaction.showActionView({
+        label: "Order Details",
+        i18nKeyLabel: "orderWorkflow.orderDetails",
+        data: instance.data.order,
+        props: {
+          size: "large"
+        },
+        template: "coreOrderWorkflow"
+      });
+    }
+
+    $(".js-search-modal").delay(400).fadeOut(400, () => {
+      Blaze.remove(view);
+    });
   }
 });
