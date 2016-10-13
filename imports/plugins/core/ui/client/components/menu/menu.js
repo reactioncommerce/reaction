@@ -5,23 +5,25 @@ import classnames from "classnames";
 
 class Menu extends Component {
 
-  handleChange = (event, value) => {
-    console.log("--", value);
+  handleChange = (event, value, menuItem) => {
     if (this.props.onChange) {
-      this.props.onChange(event, value);
+      this.props.onChange(event, value, menuItem);
     }
   }
 
   renderMenuItems() {
-    return Children.map(this.props.children, (element) => {
-      const newChild = React.cloneElement(element, {
-        onClick: this.handleChange
-      });
+    if (this.props.children) {
+      return Children.map(this.props.children, (element) => {
+        const newChild = React.cloneElement(element, {
+          onClick: this.handleChange,
+          active: element.props.value === this.props.value
+        });
 
-      return (
-        <li>{newChild}</li>
-      );
-    });
+        return (
+          <li>{newChild}</li>
+        );
+      });
+    }
   }
 
   render() {
@@ -35,7 +37,8 @@ class Menu extends Component {
 
 Menu.propTypes = {
   attachment: PropTypes.string,
-  children: PropTypes.node
+  children: PropTypes.node,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.bool, PropTypes.number])
 };
 
 Menu.defaultProps = {

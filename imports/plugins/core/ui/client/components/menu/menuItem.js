@@ -1,40 +1,74 @@
 import React, { Component, PropTypes } from "react";
-import { Button } from "../button";
+import classnames from "classnames/dedupe";
+import Icon from "../icon/icon.jsx";
+import { Translation } from "../";
 
 class MenuItem extends Component {
 
   handleClick = (event) => {
-    console.log("lolol", this.props.value);
     event.preventDefault();
     if (this.props.onClick) {
-      this.props.onClick(event, this.props.value);
+      this.props.onClick(event, this.props.value, this);
     }
   }
 
+  renderIcon() {
+    if (this.props.icon) {
+      return (
+        <Icon icon={this.props.icon} />
+      );
+    }
+    return null;
+  }
+
+  renderLabel() {
+    if (this.props.label) {
+      return (
+        <Translation
+          defaultValue={this.props.label}
+          i18nKey={this.props.i18nKeyLabel}
+        />
+      );
+    }
+
+    return null;
+  }
+
   render() {
+    const baseClassName = classnames({
+      active: this.props.active
+    }, this.props.className);
+
     return (
-      <Button
-        {...this.props}
+      <a
+        className={baseClassName}
+        href="#"
+        data-event-action={this.props.eventAction}
         onClick={this.handleClick}
-        className={{
-          "btn": false,
-          "btn-default": false
-        }}
-        tagName="a"
-      />
+      >
+        {this.renderIcon()}
+        {this.renderLabel()}
+      </a>
     );
   }
 }
 
 MenuItem.propTypes = {
-  attachment: PropTypes.string,
+  active: PropTypes.bool,
   children: PropTypes.node,
+  className: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  eventAction: PropTypes.string,
+  i18nKeyLabel: PropTypes.string,
+  i18nKeySelectedLabel: PropTypes.string,
+  icon: PropTypes.string,
+  label: PropTypes.string,
   onClick: PropTypes.func,
+  selectionLabel: PropTypes.string,
   value: PropTypes.any
 };
 
 MenuItem.defaultProps = {
-  attachment: "top"
+  active: false
 };
 
 export default MenuItem;

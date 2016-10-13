@@ -10,18 +10,23 @@
 
 .rui.toolbar-group {
   display: flex;
-  flex: 1 1 auto;
+  flex: 0 0 auto;
   align-items: center;
+  padding-left: @navbar-padding-horizontal;
+  padding-right: @navbar-padding-horizontal;
 }
 
 .rui.toolbar-group.left {
+  flex: 0 0 auto;
   justify-content: flex-start;
 }
 
 .rui.toolbar-group.center {
+  flex: 0 0 auto;
   justify-content: center;
 }
 
 .rui.toolbar-group.right {
+  flex: 1 1 auto;
   justify-content: flex-end;
 }

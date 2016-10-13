@@ -4,6 +4,7 @@ import {
   Button,
   Currency,
   Divider,
+  DropDownMenu,
   Menu,
   MenuItem,
   Popover,
@@ -34,35 +35,34 @@ class ProductDetail extends Component {
     return this.props.editable;
   }
 
+  handleVisibilityChange = (event, isProductVisible) => {
+    if (this.props.onProductFieldChange) {
+      this.props.onProductFieldChange(this.product._id, "isVisible", isProductVisible);
+    }
+  }
+
   renderToolbar() {
-    /*
-    <ToolbarText>
-      <Translation defaultValue="You are viewing this product as an administrator" />
-    </ToolbarText>
-    <Button label="View As Customer" />
-     */
     if (this.props.hasAdminPrivilages || true) {
       return (
         <Toolbar>
           <ToolbarGroup firstChild={true}>
-            <Translation defaultValue="Viewing as administrator" />
-            <Popover buttonElement={<Button label="Switch" />}>
-              <Menu onChange={this.props.onViewContextChange}>
-                <MenuItem label="View draft as administrator" value="administrator" />
-                <MenuItem label="View draft as customer" value="customer" />
-                <Divider />
-                <MenuItem label="View published as administrator" value="published-admin" />
-                <MenuItem label="View published as customer" value="published-customer" />
-              </Menu>
-            </Popover>
+            <Translation defaultValue="Product Management" i18nKey="productDetail.productManagement"/>
+          </ToolbarGroup>
+          <ToolbarGroup>
+            <DropDownMenu
+              buttonElement={<Button label="Switch" />}
+              onChange={this.props.onViewContextChange}
+              value={this.props.viewAs}
+            >
+              <MenuItem label="Administrator" value="administrator" />
+              <MenuItem label="Customer" value="customer" />
+            </DropDownMenu>
           </ToolbarGroup>
           <ToolbarGroup lastChild={true}>
-            <PublishContainer documentIds={[this.product._id]} />
-              <Popover buttonElement={<Button icon="fa fa-ellipsis-v" />}>
-                <Menu onChange={this.props.onViewContextChange}>
-                  <MenuItem label="Delete" value="delete" />
-                </Menu>
-              </Popover>
+            <PublishContainer
+              documentIds={[this.product._id]}
+              onVisibilityChange={this.handleVisibilityChange}
+            />
           </ToolbarGroup>
         </Toolbar>
       );
@@ -83,7 +83,7 @@ class ProductDetail extends Component {
               fieldName="title"
               fieldTitle="Title"
               element={<h1 />}
-              onProductFieldChange={this.props.handleProductFieldChange}
+              onProductFieldChange={this.props.onProductFieldChange}
               product={this.product}
               textFieldProps={{
                 i18nKeyPlaceholder: "productDetailEdit.title",
@@ -96,7 +96,7 @@ class ProductDetail extends Component {
               fieldName="pageTitle"
               fieldTitle="Sub Title"
               element={<h2 />}
-              onProductFieldChange={this.props.handleProductFieldChange}
+              onProductFieldChange={this.props.onProductFieldChange}
               product={this.product}
               textFieldProps={{
                 i18nKeyPlaceholder: "productDetailEdit.pageTitle",
@@ -109,8 +109,8 @@ class ProductDetail extends Component {
           <div className="pdp-content">
             <div className="pdp column left pdp-left-column">
               {this.props.mediaGalleryComponent}
-              <ProductTags editable={true} product={this.product} tags={this.tags} />
-              <ProductMetadata editable={true} product={this.product} />
+              <ProductTags editable={this.props.editable} product={this.product} tags={this.tags} />
+              <ProductMetadata editable={this.props.editable} product={this.product} />
             </div>
 
             <div className="pdp column right pdp-right-column">
@@ -135,7 +135,7 @@ class ProductDetail extends Component {
                   editable={this.editable}
                   fieldName="vendor"
                   fieldTitle="Vendor"
-                  onProductFieldChange={this.props.handleProductFieldChange}
+                  onProductFieldChange={this.props.onProductFieldChange}
                   product={this.product}
                   textFieldProps={{
                     i18nKeyPlaceholder: "productDetailEdit.vendor",
@@ -150,7 +150,7 @@ class ProductDetail extends Component {
                   fieldName="description"
                   fieldTitle="Description"
                   multiline={true}
-                  onProductFieldChange={this.props.handleProductFieldChange}
+                  onProductFieldChange={this.props.onProductFieldChange}
                   product={this.product}
                   textFieldProps={{
                     i18nKeyPlaceholder: "productDetailEdit.description",

@@ -1,5 +1,14 @@
 import React, { Component, PropTypes } from "react";
-import { Button, Translation } from "/imports/plugins/core/ui/client/components";
+import {
+  Button,
+  ButtonToolbar,
+  Divider,
+  DropDownMenu,
+  Menu,
+  MenuItem,
+  Popover,
+  Translation
+} from "/imports/plugins/core/ui/client/components";
 import SimpleDiff from "./simpleDiff";
 import { Translatable } from "/imports/plugins/core/ui/client/providers";
 
@@ -24,6 +33,18 @@ class PublishControls extends Component {
   handlePublishClick() {
     if (this.props.onPublishClick) {
       this.props.onPublishClick(this.props.revisions);
+    }
+  }
+
+  handleVisibilityChange = (event, value) => {
+    if (this.props.onVisibilityChange) {
+      let isDocumentVisible = false;
+
+      if (value === "public") {
+        isDocumentVisible = true;
+      }
+console.log("isdocvis", isDocumentVisible);
+      this.props.onVisibilityChange(event, isDocumentVisible);
     }
   }
 
@@ -53,6 +74,18 @@ class PublishControls extends Component {
 
   get showDiffs() {
     return this.diffs && this.state.showDiffs;
+  }
+
+  get isVisible() {
+    if (Array.isArray(this.props.revisions) && this.props.revisions.length) {
+      const primaryRevision = this.props.revisions[0];
+
+      if (primaryRevision.documentData.isVisible) {
+        return "public";
+      }
+    }
+
+    return "private";
   }
 
   /**
@@ -101,31 +134,60 @@ class PublishControls extends Component {
   }
 
   renderPublishButton() {
+                // tooltip={"This product has changes that need to be published before they are visible to your customers."}
+                // i18nKeyLabel="app.publishChanges"
     return (
-      <Button
-        disabled={this.hasChanges === false}
-        i18nKeyLabel="app.publishChanges"
-        label="Publish Changes"
-        onClick={this.handlePublishClick}
-        status="success"
-        tooltip={"This product has changes that need to be published before they are visible to your customers."}
-      />
+      <Popover
+        buttonElement={
+          <Button
+            disabled={this.hasChanges === false}
+            label="Publish Changes"
+            onClick={this.handlePublishClick}
+            status="success"
+
+          />
+        }
+        showDropdownButton={true}
+      >
+        <Menu onChange={this.props.onViewContextChange}>
+          <MenuItem label="History" value="history" />
+          <Divider />
+          <MenuItem label="Delete" value="delete" />
+        </Menu>
+      </Popover>
     );
+  }
+
+  renderViewControls() {
+    if (this.props.showViewAsControls) {
+      return (
+        <DropDownMenu
+          onChange={this.handleVisibilityChange}
+          value={this.isVisible}
+          >
+          <MenuItem
+            label="Public"
+            selectLabel="Public"
+            value="public"
+          />
+          <MenuItem
+            label="Private"
+            selectLabel="Public"
+            value="private"
+          />
+        </DropDownMenu>
+      );
+    }
   }
 
   render() {
     if (this.props.isEnabled) {
       return (
         <div className="rui publish-controls">
-          <Button
-            i18nKeyLabel={this.showChangesButtoni18nKeyLabel}
-            label={this.showChangesButtonLabel}
-            onClick={this.handleToggleShowChanges}
-            status="link"
-          />
-          {this.renderPublishButton()}
-          {this.showDiffs && <hr />}
-          {this.renderChanges()}
+          <ButtonToolbar>
+            {this.renderViewControls()}
+            {this.renderPublishButton()}
+          </ButtonToolbar>
         </div>
       );
     }
@@ -148,6 +210,10 @@ PublishControls.propTypes = {
   translation: PropTypes.shape({
     lang: PropTypes.string
   })
+};
+
+PublishControls.defaultProps = {
+  showViewAsControls: true
 };
 
 export default Translatable()(PublishControls);

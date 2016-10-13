@@ -3,6 +3,7 @@ import classnames from "classnames";
 import onclickOutside from "react-onclickoutside";
 import TetherComponent from "react-tether";
 import PopoverContent from "./popoverContent"
+import { Button, ButtonGroup } from "/imports/plugins/core/ui/client/components/";
 
 class Popover extends Component {
   state = {
@@ -24,6 +25,12 @@ class Popover extends Component {
    */
   get attachment() {
     return this.props.attachment || Tooltip.defaultProps.attachment;
+  }
+
+  handleDisplayButtonClick = (event, value) => {
+    if (this.props.onDisplayButtonClick) {
+      this.props.onDisplayButtonClick(event, value)
+    }
   }
 
   handleOpen = () => {
@@ -51,9 +58,24 @@ class Popover extends Component {
   }
 
   render() {
-    const button = React.cloneElement(this.props.buttonElement, {
-      onClick: this.handleOpen
-    });
+    let buttons;
+
+    if (this.props.showDropdownButton) {
+      buttons = [
+        this.props.buttonElement,
+        <Button
+          icon="fa fa-chevron-down"
+          onClick={this.handleOpen}
+          status={this.props.buttonElement.props.status}
+        />
+      ];
+    } else {
+      buttons = [
+        React.cloneElement(this.props.buttonElement, {
+          onClick: this.handleOpen
+        })
+      ];
+    }
 
     return (
       <TetherComponent
@@ -71,7 +93,9 @@ class Popover extends Component {
         }]}
         targetAttachment={this.props.targetAttachment}
       >
-        {button}
+        <ButtonGroup>
+          {buttons}
+        </ButtonGroup>
         {this.renderPopoverChildren()}
       </TetherComponent>
     );

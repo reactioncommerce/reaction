@@ -143,7 +143,6 @@ class ProductDetailContainer extends Component {
   }
 
   handleViewContextChange = (event, value) => {
-    console.log("value", value);
     Reaction.Router.setQueryParams({as: value});
   }
 
@@ -168,6 +167,7 @@ class ProductDetailContainer extends Component {
 }
 
 function changeProductField(productId, fieldName, value) {
+  console.log("productId", productId, fieldName, value);
   Meteor.call("products/updateProductField", productId, fieldName, value);
 }
 
@@ -177,7 +177,7 @@ function composer(props, onData) {
   const variantId = Reaction.Router.getParam("variantId");
   const revisionType = Reaction.Router.getQueryParam("revision");
   const viewProductAs = Reaction.Router.getQueryParam("as");
-console.log("Vew", revisionType, viewProductAs);
+
   let productSub;
 
   if (productId) {
@@ -250,8 +250,9 @@ console.log("Vew", revisionType, viewProductAs);
         tags,
         media: mediaArray,
         editable,
+        viewAs: viewProductAs,
         hasAdminPrivilages: Reaction.hasPermission(["createProduct"]),
-        handleProductFieldChange: changeProductField
+        onProductFieldChange: changeProductField
       });
     }
   }

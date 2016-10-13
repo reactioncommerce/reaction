@@ -126,7 +126,7 @@ class Button extends Component {
 
     const {
       // Destructure these vars as they aren't valid as attributes on the HTML element button
-      attachment, label, active, className, status, i18nKeyTitle, i18nKeyLabel, i18nKeyTooltip, // eslint-disable-line no-unused-vars
+      attachment, iconAfter, label, active, className, status, i18nKeyTitle, i18nKeyLabel, i18nKeyTooltip, // eslint-disable-line no-unused-vars
       tooltip, icon, toggle, onIcon, primary, toggleOn, eventAction, // eslint-disable-line no-unused-vars
       toggleOnLabel, i18nKeyToggleOnLabel, tagName, onClick, // eslint-disable-line no-unused-vars
 
@@ -136,9 +136,24 @@ class Button extends Component {
     } = this.props;
 
     const extraProps = {};
+    let buttonChildren;
 
     if (tagName === "a") {
       extraProps.href = "#";
+    }
+
+    if (iconAfter) {
+      buttonChildren = [
+        this.renderLabel(),
+        this.renderIcon(),
+        this.props.children
+      ];
+    } else {
+      buttonChildren = [
+        this.renderIcon(),
+        this.renderLabel(),
+        this.props.children
+      ];
     }
 
     const button = React.createElement(tagName, {
@@ -150,11 +165,7 @@ class Button extends Component {
       "type": "button",
       ...attrs,
       ...extraProps
-    }, [
-      this.renderIcon(),
-      this.renderLabel(),
-      this.props.children
-    ]);
+    }, buttonChildren);
 
 
     if (tooltip) {
@@ -181,6 +192,7 @@ Button.propTypes = {
   i18nKeyToggleOnLabel: PropTypes.string,
   i18nKeyTooltip: PropTypes.string,
   icon: PropTypes.string,
+  iconAfter: PropTypes.bool,
   label: PropTypes.string,
   onClick: PropTypes.func,
   onIcon: PropTypes.string,
@@ -198,6 +210,7 @@ Button.propTypes = {
 Button.defaultProps = {
   toggle: false,
   active: false,
+  iconAfter: false,
   tagName: "button"
 };
 

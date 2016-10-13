@@ -16,6 +16,7 @@ const PublishContainer = (props) => {
   return (
     <TranslationProvider>
       <PublishControls
+        onVisibilityChange={props.onVisibilityChange}
         isEnabled={props.isEnabled}
         onPublishClick={handlePublishClick}
         revisions={props.revisions}
@@ -80,6 +81,7 @@ function composer(props, onData) {
 
       onData(null, {
         isEnabled: isRevisionControlEnabled(),
+        documentIds: props.documentIds,
         revisions
       });
 
