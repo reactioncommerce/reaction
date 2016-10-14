@@ -7,7 +7,7 @@ import { buildProductSearch, buildOrderSearch, buildAccountSearch, rebuildProduc
 function addBuildProductSearchCollection() {
   const productSearchCount = ProductSearch.find({}).count();
   if (!productSearchCount) {
-    Logger.info("No ProductSearch records found. Adding build ProductSearch Collection to jobs");
+    Logger.debug("No ProductSearch records found. Adding build ProductSearch Collection to jobs");
     new Job(Jobs, "product/buildSearchCollection", {})
       .priority("normal")
       .retry({
@@ -27,7 +27,7 @@ function addBuildOrderSearchCollection() {
   const orderSearchCount = OrderSearch.find({}).count();
   const orderCount = Orders.find({}).count();
   if (!orderSearchCount && orderCount) {
-    Logger.info("No OrderSearch records found. Adding build OrderSearch Collection to jobs");
+    Logger.debug("No OrderSearch records found. Adding build OrderSearch Collection to jobs");
     new Job(Jobs, "order/buildSearchCollection", {})
       .priority("normal")
       .retry({
@@ -46,7 +46,7 @@ function addBuildOrderSearchCollection() {
 function addBuildAccountSearchCollection() {
   const accountSearchCount = AccountSearch.find({}).count();
   if (!accountSearchCount) {
-    Logger.info("No AccountSearch records found. Adding build AccountSearch Collection to jobs");
+    Logger.debug("No AccountSearch records found. Adding build AccountSearch Collection to jobs");
     new Job(Jobs, "account/buildSearchCollection", {})
       .priority("normal")
       .retry({
