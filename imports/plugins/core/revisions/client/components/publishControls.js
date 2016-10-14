@@ -43,8 +43,14 @@ class PublishControls extends Component {
       if (value === "public") {
         isDocumentVisible = true;
       }
-console.log("isdocvis", isDocumentVisible);
+
       this.props.onVisibilityChange(event, isDocumentVisible);
+    }
+  }
+
+  handleAction = (event, value) => {
+    if (this.props.onAction) {
+      this.props.onAction(event, value, this.props.documentIds);
     }
   }
 
@@ -62,6 +68,13 @@ console.log("isdocvis", isDocumentVisible);
     }
 
     return "app.hideChanges";
+  }
+
+  get revisionIds() {
+    if (this.hasRevisions) {
+      return this.props.revisions.map(revision => revision._id);
+    }
+    return false;
   }
 
   get hasRevisions() {
@@ -149,8 +162,8 @@ console.log("isdocvis", isDocumentVisible);
         }
         showDropdownButton={true}
       >
-        <Menu onChange={this.props.onViewContextChange}>
-          <MenuItem label="History" value="history" />
+        <Menu onChange={this.handleAction}>
+          <MenuItem label="Discard Changes" value="discard" />
           <Divider />
           <MenuItem label="Delete" value="delete" />
         </Menu>
@@ -164,7 +177,7 @@ console.log("isdocvis", isDocumentVisible);
         <DropDownMenu
           onChange={this.handleVisibilityChange}
           value={this.isVisible}
-          >
+        >
           <MenuItem
             label="Public"
             selectLabel="Public"
@@ -178,6 +191,8 @@ console.log("isdocvis", isDocumentVisible);
         </DropDownMenu>
       );
     }
+
+    return null;
   }
 
   render() {
@@ -204,9 +219,13 @@ console.log("isdocvis", isDocumentVisible);
 }
 
 PublishControls.propTypes = {
+  documentIds: PropTypes.arrayOf(PropTypes.string),
   isEnabled: PropTypes.bool,
+  onAction: PropTypes.func,
   onPublishClick: PropTypes.func,
+  onVisibilityChange: PropTypes.func,
   revisions: PropTypes.arrayOf(PropTypes.object),
+  showViewAsControls: PropTypes.bool,
   translation: PropTypes.shape({
     lang: PropTypes.string
   })
