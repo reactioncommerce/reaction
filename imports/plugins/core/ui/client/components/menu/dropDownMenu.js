@@ -2,9 +2,7 @@ import React, { Children, Component, PropTypes } from "react";
 import {
   Button,
   Menu,
-  MenuItem,
-  Popover,
-  Translation
+  Popover
 } from "../";
 
 class DropDownMenu extends Component {
@@ -29,8 +27,6 @@ class DropDownMenu extends Component {
   get label() {
     let label = this.state.label;
     Children.forEach(this.props.children, (element) => {
-      console.log(element.props.value, this.props.value);
-
       if (element.props.value === this.props.value) {
         label = element.props.label;
       }
@@ -47,39 +43,34 @@ class DropDownMenu extends Component {
   }
 
   render() {
-    if (this.props.showViewAsControls) {
-      return (
-        <Popover
-          buttonElement={
-            <Button
-              icon="fa fa-chevron-down"
-              iconAfter={true}
-              label={this.label}
-            />
-          }
-        >
-          <Menu value={this.props.value} onChange={this.handleMenuItemChange}>
-            {this.props.children}
-          </Menu>
-        </Popover>
-      );
-    }
+    return (
+      <Popover
+        buttonElement={
+          <Button
+            icon="fa fa-chevron-down"
+            iconAfter={true}
+            label={this.label}
+          />
+        }
+      >
+        <Menu value={this.props.value} onChange={this.handleMenuItemChange}>
+          {this.props.children}
+        </Menu>
+      </Popover>
+    );
   }
 }
 
 DropDownMenu.propTypes = {
   children: PropTypes.node,
   isEnabled: PropTypes.bool,
+  onChange: PropTypes.func,
   onPublishClick: PropTypes.func,
   revisions: PropTypes.arrayOf(PropTypes.object),
   translation: PropTypes.shape({
     lang: PropTypes.string
   }),
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.bool, PropTypes.number])
-};
-
-DropDownMenu.defaultProps = {
-  showViewAsControls: true
 };
 
 export default DropDownMenu;
