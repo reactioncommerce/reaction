@@ -84,6 +84,7 @@ getResults.orders = function (searchTerm, facets, maxResults, userId) {
 getResults.accounts = function (searchTerm, facets, maxResults, userId) {
   let accountResults;
   const shopId = Reaction.getShopId();
+  const searchPhone = _.replace(searchTerm, /\D/g, "");
   if (Reaction.hasPermission("reaction-accounts", userId)) {
     const findTerm = {
       $and: [
@@ -99,6 +100,10 @@ getResults.accounts = function (searchTerm, facets, maxResults, userId) {
           } },
           { "profile.lastName": {
             $regex: "^" + searchTerm + "$",
+            $options: "i"
+          } },
+          { "profile.phone": {
+            $regex: "^" + searchPhone + "$",
             $options: "i"
           } }
         ] }
