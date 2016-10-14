@@ -15,12 +15,9 @@ export function updateSettings(settings) {
 }
 
 export function discardDrafts(documentIds) {
-  console.log("documentIds", documentIds);
   check(documentIds, Match.OneOf(String, Array));
 
   let documentIdArray;
-
-  console.log("discard drafts!!!");
 
   if (Array.isArray(documentIds)) {
     documentIdArray = documentIds;
