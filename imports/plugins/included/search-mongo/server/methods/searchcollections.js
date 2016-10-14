@@ -10,7 +10,8 @@ import { transformations } from "./transformations";
 
 const requiredFields = {};
 requiredFields.products = ["_id", "hashtags", "shopId", "handle", "price", "isVisible"];
-requiredFields.orders = ["_id", "shopId", "shippingName", "shippingPhone", "billingName", "userEmails", "shippingAddress", "billingAddress", "shippingStatus", "billingStatus", "orderTotal", "orderDate", "url"];
+requiredFields.orders = ["_id", "shopId", "shippingName", "shippingPhone", "billingName", "userEmails",
+  "shippingAddress","billingAddress", "shippingStatus", "billingStatus", "orderTotal", "orderDate", "url"];
 requiredFields.accounts = ["_id", "shopId", "emails", "profile"];
 
 // https://docs.mongodb.com/manual/reference/text-search-languages/#text-search-languages
