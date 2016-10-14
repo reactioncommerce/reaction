@@ -7,7 +7,7 @@ class MenuItem extends Component {
 
   handleClick = (event) => {
     event.preventDefault();
-    if (this.props.onClick) {
+    if (this.props.onClick && this.props.disabled === false) {
       this.props.onClick(event, this.props.value, this);
     }
   }
@@ -36,7 +36,8 @@ class MenuItem extends Component {
 
   render() {
     const baseClassName = classnames({
-      active: this.props.active
+      active: this.props.active,
+      disabled: this.props.disabled === true
     }, this.props.className);
 
     return (
@@ -45,6 +46,7 @@ class MenuItem extends Component {
         href="#"
         data-event-action={this.props.eventAction}
         onClick={this.handleClick}
+        role="button"
       >
         {this.renderIcon()}
         {this.renderLabel()}
@@ -57,6 +59,7 @@ MenuItem.propTypes = {
   active: PropTypes.bool,
   children: PropTypes.node,
   className: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  disabled: PropTypes.bool,
   eventAction: PropTypes.string,
   i18nKeyLabel: PropTypes.string,
   i18nKeySelectedLabel: PropTypes.string,
@@ -68,7 +71,8 @@ MenuItem.propTypes = {
 };
 
 MenuItem.defaultProps = {
-  active: false
+  active: false,
+  disabled: false
 };
 
 export default MenuItem;
