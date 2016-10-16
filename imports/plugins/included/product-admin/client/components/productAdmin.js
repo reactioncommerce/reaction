@@ -156,43 +156,6 @@ class ProductAdmin extends Component {
               placeholder="Description"
               value={this.product.description}
             />
-            <Divider />
-            {this.product.isDeleted && (
-              <Button
-                i18nKeyLabel="productDetailEdit.restoreProduct"
-                label="Restore Product from Trash"
-                onClick={this.handleRestoreProduct}
-                status="default"
-              />
-            )}
-            {!this.product.isDeleted && (
-              <Button
-                i18nKeyLabel="productDetailEdit.deleteProduct"
-                label="Delete Product"
-                onClick={this.handleDeleteProduct}
-                status="danger"
-              />
-            )}
-          </CardBody>
-        </Card>
-        <Card>
-          <CardBody>
-            <div className="rui items flex">
-              <div className="rui item three-quarters">
-                {this.renderProductVisibilityLabel()}
-              </div>
-              <div className="rui item quarter">
-                <Button
-                  i18nKeyLabel="productDetailEdit.makeVisible"
-                  i18nKeyToggleOnLabel="productDetailEdit.hideProduct"
-                  label="Make Visible"
-                  onClick={this.handleToggleVisibility}
-                  toggle={true}
-                  toggleOn={this.product.isVisible}
-                  toggleOnLabel="Hide Product"
-                />
-              </div>
-            </div>
           </CardBody>
         </Card>
         <Card>
