@@ -41,6 +41,14 @@ class ProductDetail extends Component {
     }
   }
 
+  handlePublishActions = (event, action) => {
+    console.log("action", action);
+    if (action === "delete" && this.props.onDeleteProduct) {
+      console.log("delete product");
+      this.props.onDeleteProduct(this.product._id);
+    }
+  }
+
   renderToolbar() {
     if (this.props.hasAdminPrivilages || true) {
       return (
@@ -62,6 +70,7 @@ class ProductDetail extends Component {
             <PublishContainer
               documentIds={[this.product._id]}
               onVisibilityChange={this.handleVisibilityChange}
+              onAction={this.handlePublishActions}
             />
           </ToolbarGroup>
         </Toolbar>

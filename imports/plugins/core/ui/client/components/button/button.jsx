@@ -169,13 +169,25 @@ class Button extends Component {
 
 
     if (tooltip) {
-      return (
-        <span className="rui btn-tooltip" style={{display: "inline-flex"}}>
-          <Tooltip tooltipContent={this.renderTooltipContent()}>
-            {button}
-          </Tooltip>
-        </span>
-      );
+      const button = React.createElement(tagName, {
+        "className": classes,
+        "data-event-action": eventAction,
+        "onMouseOut": this.handleButtonMouseOut,
+        "onMouseOver": this.handleButtonMouseOver,
+        "onClick": this.handleClick,
+        "type": "button",
+        ...attrs,
+        ...extraProps
+      },
+      <span className="rui btn-tooltip" style={{display: "inline-flex"}}>
+        <Tooltip tooltipContent={this.renderTooltipContent()}>
+          {buttonChildren}
+        </Tooltip>
+      </span>
+    );
+
+
+      return button;
     }
 
     return button;

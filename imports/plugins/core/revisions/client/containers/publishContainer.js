@@ -1,4 +1,4 @@
-import React, { PropTypes } from "react";
+import React, { Component, PropTypes } from "react";
 import { composeWithTracker } from "react-komposer";
 import PublishControls from "../components/publishControls";
 import { Revisions } from "/lib/collections";
@@ -12,20 +12,74 @@ import { i18next } from "/client/api";
  * @param  {Object} props Component props
  * @return {PropTypes.node} react node
  */
-const PublishContainer = (props) => {
-  return (
-    <TranslationProvider>
-      <PublishControls
-        documentIds={props.documentIds}
-        isEnabled={props.isEnabled}
-        onPublishClick={handlePublishClick}
-        onAction={handlePublishActions}
-        onVisibilityChange={props.onVisibilityChange}
-        revisions={props.revisions}
-      />
-    </TranslationProvider>
-  );
-};
+class PublishContainer extends Component {
+  handlePublishClick = (revisions) => {
+    if (Array.isArray(revisions)) {
+      const documentIds = revisions.map((revision) => {
+        return revision.documentId;
+      });
+
+      Meteor.call("revisions/publish", documentIds, (error, result) => {
+        if (result === true) {
+          const message = i18next.t("revisions.changedPublished", {
+            defaultValue: "Changes published successfully"
+          });
+
+          Alerts.toast(message, "success");
+        } else {
+          const message = i18next.t("revisions.noChangesPublished", {
+            defaultValue: "There are no changes to publish"
+          });
+
+          Alerts.toast(message, "warning");
+        }
+      });
+    }
+  }
+
+  handlePublishActions = (event, action, documentIds) => {
+    switch (action) {
+      case "delete":
+        if (this.props.onAction) {
+          this.props.onAction(event, action, this.props.documentIds);
+        }
+        break;
+      case "discard":
+        Meteor.call("revisions/discard", documentIds, (error, result) => {
+          if (result === true) {
+            const message = i18next.t("revisions.changesDiscarded", {
+              defaultValue: "Changes discarded successfully"
+            });
+
+            Alerts.toast(message, "success");
+          } else {
+            const message = i18next.t("revisions.noChangesDiscarded", {
+              defaultValue: "There are no changes to discard"
+            });
+
+            Alerts.toast(message, "warning");
+          }
+        });
+        break;
+      default:
+    }
+  }
+
+  render() {
+    return (
+      <TranslationProvider>
+        <PublishControls
+          documentIds={this.props.documentIds}
+          isEnabled={this.props.isEnabled}
+          onPublishClick={this.handlePublishClick}
+          onAction={this.handlePublishActions}
+          onVisibilityChange={this.props.onVisibilityChange}
+          revisions={this.props.revisions}
+        />
+      </TranslationProvider>
+    );
+  }
+}
 
 PublishContainer.propTypes = {
   documentIds: PropTypes.arrayOf(PropTypes.string),
@@ -33,58 +87,6 @@ PublishContainer.propTypes = {
   onVisibilityChange: PropTypes.func,
   revisions: PropTypes.arrayOf(PropTypes.object)
 };
-
-export function handlePublishActions(event, action, documentIds) {
-  switch (action) {
-    case "delete":
-      if (this.props.onAction) {
-        this.props.onAction(event, value, this.props.documentIds);
-      }
-      break;
-    case "discard":
-      Meteor.call("revisions/discard", documentIds, (error, result) => {
-        if (result === true) {
-          const message = i18next.t("revisions.changesDiscarded", {
-            defaultValue: "Changes discarded successfully"
-          });
-
-          Alerts.toast(message, "success");
-        } else {
-          const message = i18next.t("revisions.noChangesDiscarded", {
-            defaultValue: "There are no changes to discard"
-          });
-
-          Alerts.toast(message, "warning");
-        }
-      });
-      break;
-    default:
-  }
-}
-
-export function handlePublishClick(revisions) {
-  if (Array.isArray(revisions)) {
-    const documentIds = revisions.map((revision) => {
-      return revision.documentId;
-    });
-
-    Meteor.call("revisions/publish", documentIds, (error, result) => {
-      if (result === true) {
-        const message = i18next.t("revisions.changedPublished", {
-          defaultValue: "Changes published successfully"
-        });
-
-        Alerts.toast(message, "success");
-      } else {
-        const message = i18next.t("revisions.noChangesPublished", {
-          defaultValue: "There are no changes to publish"
-        });
-
-        Alerts.toast(message, "warning");
-      }
-    });
-  }
-}
 
 function composer(props, onData) {
   if (props.documentIds) {

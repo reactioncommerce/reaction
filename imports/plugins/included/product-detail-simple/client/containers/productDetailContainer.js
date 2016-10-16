@@ -146,6 +146,10 @@ class ProductDetailContainer extends Component {
     Reaction.Router.setQueryParams({as: value});
   }
 
+  handleDeleteProduct = () => {
+    ReactionProduct.maybeDeleteProduct(this.props.product);
+  }
+
   render() {
     return (
       <TranslationProvider>
@@ -158,6 +162,7 @@ class ProductDetailContainer extends Component {
             onViewContextChange={this.handleViewContextChange}
             socialComponent={<SocialContainer />}
             topVariantComponent={<VariantListContainer />}
+            onDeleteProduct={this.handleDeleteProduct}
             {...this.props}
           />
         </DragDropProvider>

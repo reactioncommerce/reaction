@@ -146,9 +146,24 @@ class PublishControls extends Component {
     return null;
   }
 
+  renderDeletionStatus() {
+    if (this.hasChanges) {
+      if (this.props.revisions[0].documentData.isDeleted) {
+        return (
+          <Button
+            label="Deleted"
+            onClick={this.handleRestore}
+            status="danger"
+            i18nKeyLabel="app.deleted"
+          />
+        );
+      }
+    }
+
+    return null;
+  }
+
   renderPublishButton() {
-                // tooltip={"This product has changes that need to be published before they are visible to your customers."}
-                // i18nKeyLabel="app.publishChanges"
     return (
       <Popover
         buttonElement={
@@ -157,13 +172,18 @@ class PublishControls extends Component {
             label="Publish Changes"
             onClick={this.handlePublishClick}
             status="success"
-
+            tooltip={"This product has changes that need to be published before they are visible to your customers."}
+            i18nKeyLabel="app.publishChanges"
           />
         }
         showDropdownButton={true}
       >
         <Menu onChange={this.handleAction}>
-          <MenuItem label="Discard Changes" value="discard" />
+          <MenuItem
+            disabled={this.hasChanges === false}
+            label="Discard Changes"
+            value="discard"
+          />
           <Divider />
           <MenuItem label="Delete" value="delete" />
         </Menu>
@@ -200,6 +220,7 @@ class PublishControls extends Component {
       return (
         <div className="rui publish-controls">
           <ButtonToolbar>
+            {this.renderDeletionStatus()}
             {this.renderViewControls()}
             {this.renderPublishButton()}
           </ButtonToolbar>
