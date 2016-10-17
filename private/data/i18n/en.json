@@ -103,6 +103,7 @@
           "reactionConnectLabel": "Reaction Connect",
           "examplePaymentSettingsLabel": "Example Payment Settings",
           "productSettingsLabel": "Product Settings",
+          "productDetailsLabel": "Product Details",
           "taxSettingsLabel": "Tax Settings"
         },
         "userAccountDropdown": {
@@ -573,7 +574,7 @@
         "changesDiscarded": "Changes discarded successfully",
         "noChanges": "No Changes",
         "noChangesPublished": "There are no changes to publish",
-        "noChangesDiscarded": "There are no changes to discard",
+        "noChangesDiscarded": "There are no changes to discard"
       },
       "address": {
         "country": "Country",

@@ -11,7 +11,7 @@ Reaction.registerPackage({
     template: "productDetailSimple",
     workflow: "coreProductWorkflow"
   }, {
-    label: "Product Settings",
+    label: "Product Details",
     provides: "settings",
     route: "/product/:handle/:variantId?",
     container: "product",
