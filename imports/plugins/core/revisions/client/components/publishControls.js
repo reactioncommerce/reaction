@@ -96,6 +96,12 @@ class PublishControls extends Component {
       if (primaryRevision.documentData.isVisible) {
         return "public";
       }
+    } else if (Array.isArray(this.props.documents) && this.props.documents.length) {
+      const primaryDocument = this.props.documents[0];
+
+      if (primaryDocument.isVisible) {
+        return "public";
+      }
     }
 
     return "private";
@@ -252,6 +258,7 @@ class PublishControls extends Component {
 
 PublishControls.propTypes = {
   documentIds: PropTypes.arrayOf(PropTypes.string),
+  documents: PropTypes.arrayOf(PropTypes.object),
   isEnabled: PropTypes.bool,
   onAction: PropTypes.func,
   onPublishClick: PropTypes.func,

@@ -62,6 +62,7 @@ class ProductDetail extends Component {
           <ToolbarGroup lastChild={true}>
             <PublishContainer
               documentIds={[this.product._id]}
+              documents={[this.product]}
               onVisibilityChange={this.handleVisibilityChange}
               onAction={this.handlePublishActions}
             />

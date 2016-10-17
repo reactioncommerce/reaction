@@ -7,10 +7,8 @@ import TranslationProvider from "/imports/plugins/core/ui/client/providers/trans
 import { isRevisionControlEnabled } from "../../lib/api";
 import { i18next } from "/client/api";
 
-/**
- * Publish container is a stateless container component connected to Meteor data source.
- * @param  {Object} props Component props
- * @return {PropTypes.node} react node
+/*
+ * PublishContainer is a container component connected to Meteor data source.
  */
 class PublishContainer extends Component {
   handlePublishClick = (revisions) => {
@@ -70,6 +68,7 @@ class PublishContainer extends Component {
       <TranslationProvider>
         <PublishControls
           documentIds={this.props.documentIds}
+          documents={this.props.documents}
           isEnabled={this.props.isEnabled}
           onPublishClick={this.handlePublishClick}
           onAction={this.handlePublishActions}
@@ -83,7 +82,9 @@ class PublishContainer extends Component {
 
 PublishContainer.propTypes = {
   documentIds: PropTypes.arrayOf(PropTypes.string),
+  documents: PropTypes.arrayOf(PropTypes.object),
   isEnabled: PropTypes.bool,
+  onAction: PropTypes.func,
   onVisibilityChange: PropTypes.func,
   revisions: PropTypes.arrayOf(PropTypes.object)
 };
@@ -116,6 +117,7 @@ function composer(props, onData) {
       onData(null, {
         isEnabled: isRevisionControlEnabled(),
         documentIds: props.documentIds,
+        documents: props.documents,
         revisions
       });
 
