@@ -532,7 +532,7 @@
         "namePlaceholder": "Shop Name",
         "description": "Description",
         "descriptionPlaceholder": "Describe your shop for SEO",
-        "descriptionTooltip": "This field used by meta description tag. It is allow to search engines to describe your shop",
+        "descriptionTooltip": "Meta Description for SEO",
         "email": "Email",
         "emailPlaceholder": "Primary Contact Email",
         "keywords": "Keywords",
