@@ -28,7 +28,7 @@ class Menu extends Component {
 
   render() {
     return (
-      <ul className="rui dropdown-menu">
+      <ul className="rui menu dropdown-menu">
         {this.renderMenuItems()}
       </ul>
     );
