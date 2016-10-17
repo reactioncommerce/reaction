@@ -84,12 +84,14 @@
     "autoprefixer": "^6.5.0",
     "babel-eslint": "^7.0.0",
     "babel-preset-stage-2": "^6.17.0",
+    "browserstack-local": "^1.0.0",
     "chai": "^3.5.0",
     "eslint": "^3.7.1",
     "eslint-plugin-react": "^6.3.0",
     "js-yaml": "^3.6.1",
     "react-addons-test-utils": "^15.3.2",
     "wdio-mocha-framework": "^0.4.3",
+    "wdio-allure-reporter": "^0.1.1",
     "webdriverio": "^4.2.16"
   },
   "postcss": {
@@ -100,5 +102,12 @@
         ]
       }
     }
+  },
+  "scripts": {
+    "create-report": "allure generate allure-results/ -o ~/allure-report",
+    "open-report": "cd && allure report open",
+    "del-report": "rm -rf ~/allure-report && rm -rf allure-results",
+    "test-local": "wdio tests/runner/local.conf.js",
+    "test-browserstack": "wdio tests/runner/browserstack.conf.js; kill $(ps aux | grep '[b]rowserstack' | awk '{print $2}')"
   }
 }

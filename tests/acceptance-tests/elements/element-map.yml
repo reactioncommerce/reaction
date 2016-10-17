@@ -3,6 +3,12 @@ login_email_fld: "[class='form-control login-input-email']"
 login_pw_fld: "[class='form-control login-input-password']"
 login_btn: "[data-event-action='submitSignInForm']"
 
+#account profile
+pl_email_address_fld: "//div[2]/div/div/div/form/div/input"
+pl_password_fld: "//div[2]/div/div/div/form/div[2]/input"
+pl_register_lnk: "//div[2]/div/div/div/form/div[4]/a[2]"
+pl_register_btn: "//button[@type='Submit']"
+
 # dashoard locators
 dashboard_btn: "span.icon > i.icon-reaction-logo"
 dashboard_hdr_txt: "h3.nav-dashboard-title > span"

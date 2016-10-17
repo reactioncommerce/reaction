@@ -1,9 +1,9 @@
 "use strict";
 const yaml = require("js-yaml");
 const fs   = require("fs");
-const shopUser = require("../../lib/user-shop-actions.js");
-const userDo = require("../../lib/basic-user-actions.js");
-const adminUser = require("../../lib/admin-order-actions.js");
+const shopUser = require("../../../../lib/user-shop-actions.js");
+const userDo = require("../../../../lib/basic-user-actions.js");
+const adminUser = require("../../../../lib/admin-order-actions.js");
 
 
 beforeEach(function () {
@@ -13,9 +13,9 @@ beforeEach(function () {
 });
 
 
-describe("paypal refund test", function () {
+describe("stripe refund test", function () {
   const eleMap = yaml.safeLoad(fs.readFileSync("./tests/acceptance-tests/elements/element-map.yml", "utf8"));
-  it("verify user can refund with paypal", function () {
+  it("verify user can refund with stripe", function () {
     userDo.UserActions.userLogin("admin");
     browser.pause("5000");
     userDo.UserActions.refreshShop();
@@ -29,16 +29,16 @@ describe("paypal refund test", function () {
     shopUser.checkForAddress();
     // free shipping option
     browser.click(eleMap.free_shipping);
-    browser.waitForEnabled(eleMap.paypal, 5000);
-    browser.click(eleMap.paypal);
-    shopUser.paypalPaymentInfo();
-    browser.click(eleMap.paypal_complete_order_btn);
-    // paypal takes forever 45sec wait
-    browser.pause("45000");
+    browser.waitForEnabled(eleMap.stripe, 5000);
+    browser.click(eleMap.stripe);
+    shopUser.stripePaymentInfo();
+    browser.waitForEnabled(eleMap.stripe_complete_order_btn, 5000);
+    browser.click(eleMap.stripe_complete_order_btn);
+    browser.pause("9000");
     browser.click(eleMap.orders_page_btn);
     browser.pause("5000");
     browser.click(eleMap.first_order_new_btn);
-    browser.pause("2000");
+    browser.waitForEnabled(eleMap.approve_btn, 5000);
     browser.click(eleMap.approve_btn);
     browser.waitForEnabled(eleMap.capture_payment_btn, 5000);
     browser.click(eleMap.capture_payment_btn);
