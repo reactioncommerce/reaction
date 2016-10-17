@@ -127,8 +127,7 @@ Template.searchModal.helpers({
         },
         tdClassName: "account-manage",
         renderer(cellData, { column, rowData }) {
-          const rowClassName = "hello";
-          return <span className={rowClassName} data-event-action="manageAccount" data-event-data={rowData._id}>Manage</span>;
+          return <span data-event-action="manageAccount" data-event-data={rowData._id}>Manage</span>;
         }
       }
     ];
