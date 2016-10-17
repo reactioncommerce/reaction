@@ -1,10 +1,9 @@
-// import { Versions } from "/imports/plugins/core/versions";
-import { Migrations } from "meteor/percolate:migrations";
+import { Versions } from "/imports/plugins/core/versions";
 import { OrderSearch, AccountSearch } from "/lib/collections";
 import { buildOrderSearch,
   buildAccountSearch } from "/imports/plugins/included/search-mongo/server/methods/searchcollections";
 
-Migrations.add({
+Versions.add({
   version: 17,
   up: function () {
     OrderSearch.remove({});
