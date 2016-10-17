@@ -14,4 +14,4 @@ permissions: false
 smoke_test: true
 
 # Test reporter
-allure: false
+allure: true

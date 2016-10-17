@@ -2,6 +2,7 @@ admin_user: Administrator
 admin_email: testing@reactioncommerce.com
 admin_pw: password123
 
+guest_email: "guest@reactioncommerce.com"
 guest_pw: password123
 
 # shop address
