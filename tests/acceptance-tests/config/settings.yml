@@ -1,3 +1,11 @@
 #This setting describes the url to test against
 #Sould also be a command line setting for this
 base_url: http://localhost:3000
+
+browser: chrome
+
+# browserstack additional capabilities
+browser_version: "52.0"
+os: Windows
+os_version: "10"
+resolution: "1920x1080"

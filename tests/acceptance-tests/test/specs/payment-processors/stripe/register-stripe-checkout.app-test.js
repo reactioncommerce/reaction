@@ -2,8 +2,8 @@
 const yaml = require("js-yaml");
 const fs   = require("fs");
 const expect = require("chai").expect;
-const shopUser = require("../../lib/user-shop-actions.js");
-const userDo = require("../../lib/basic-user-actions.js");
+const shopUser = require("../../../../lib/user-shop-actions.js");
+const userDo = require("../../../../lib/basic-user-actions.js");
 
 
 beforeEach(function () {
@@ -13,10 +13,10 @@ beforeEach(function () {
 });
 
 
-describe("braintree logged in checkout test", function () {
+describe("stripe register user and checkout test", function () {
   const eleMap = yaml.safeLoad(fs.readFileSync("./tests/acceptance-tests/elements/element-map.yml", "utf8"));
-  it("verify logged in user can checkout with braintree", function () {
-    userDo.UserActions.userLogin("guest");
+  it("verify user can register and checkout with stripe", function () {
+    userDo.UserActions.registerUser();
     browser.pause("5000");
     userDo.UserActions.refreshShop();
     browser.click(eleMap.product);
@@ -29,12 +29,12 @@ describe("braintree logged in checkout test", function () {
     shopUser.checkForAddress();
     // free shipping option
     browser.click(eleMap.free_shipping);
-    browser.waitForEnabled(eleMap.braintree, 5000);
-    browser.click(eleMap.braintree);
-    shopUser.braintreePaymentInfo();
-    browser.waitForEnabled(eleMap.braintree_complete_order_btn, 5000);
-    browser.click(eleMap.braintree_complete_order_btn);
-    browser.waitForVisible("#order-status", 20000);
+    browser.waitForEnabled(eleMap.stripe, 5000);
+    browser.click(eleMap.stripe);
+    shopUser.stripePaymentInfo();
+    browser.waitForEnabled(eleMap.stripe_complete_order_btn, 5000);
+    browser.click(eleMap.stripe_complete_order_btn);
+    browser.waitForVisible("#order-status", 10000);
     expect(browser.getText("#order-status")).to.equal("Your order is now submitted.");
   });
 });
