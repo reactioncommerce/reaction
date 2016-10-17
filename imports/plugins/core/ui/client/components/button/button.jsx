@@ -1,4 +1,5 @@
 import React, { Component, PropTypes} from "react";
+import createFragment from "react-addons-create-fragment";
 import classnames from "classnames/dedupe";
 import Icon from "../icon/icon.jsx";
 import { Tooltip, Translation } from "../";
@@ -126,7 +127,7 @@ class Button extends Component {
 
     const {
       // Destructure these vars as they aren't valid as attributes on the HTML element button
-      attachment, iconAfter, label, active, className, status, i18nKeyTitle, i18nKeyLabel, i18nKeyTooltip, // eslint-disable-line no-unused-vars
+      iconAfter, label, active, className, status, i18nKeyTitle, i18nKeyLabel, i18nKeyTooltip, // eslint-disable-line no-unused-vars
       tooltip, icon, toggle, onIcon, primary, toggleOn, eventAction, // eslint-disable-line no-unused-vars
       toggleOnLabel, i18nKeyToggleOnLabel, tagName, onClick, // eslint-disable-line no-unused-vars
 
@@ -136,61 +137,51 @@ class Button extends Component {
     } = this.props;
 
     const extraProps = {};
-    let buttonChildren;
 
     if (tagName === "a") {
       extraProps.href = "#";
     }
 
-    if (iconAfter) {
-      buttonChildren = [
-        this.renderLabel(),
-        this.renderIcon(),
-        this.props.children
-      ];
-    } else {
-      buttonChildren = [
-        this.renderIcon(),
-        this.renderLabel(),
-        this.props.children
-      ];
-    }
-
-    const button = React.createElement(tagName, {
+    const buttonProps = Object.assign({
       "className": classes,
       "data-event-action": eventAction,
       "onMouseOut": this.handleButtonMouseOut,
       "onMouseOver": this.handleButtonMouseOver,
       "onClick": this.handleClick,
-      "type": "button",
-      ...attrs,
-      ...extraProps
-    }, buttonChildren);
+      "type": "button"
+    }, attrs, extraProps);
 
 
-    if (tooltip) {
-      const button = React.createElement(tagName, {
-        "className": classes,
-        "data-event-action": eventAction,
-        "onMouseOut": this.handleButtonMouseOut,
-        "onMouseOver": this.handleButtonMouseOver,
-        "onClick": this.handleClick,
-        "type": "button",
-        ...attrs,
-        ...extraProps
-      },
-      <span className="rui btn-tooltip" style={{display: "inline-flex"}}>
-        <Tooltip tooltipContent={this.renderTooltipContent()}>
-          {buttonChildren}
-        </Tooltip>
-      </span>
-    );
+    // Create a react fragment for all the button children
+    let buttonChildren;
 
-
-      return button;
+    if (iconAfter) {
+      buttonChildren = createFragment({
+        label: this.renderLabel(),
+        icon: this.renderIcon(),
+        children: this.props.children
+      });
+    } else {
+      buttonChildren = createFragment({
+        icon: this.renderIcon(),
+        label: this.renderLabel(),
+        children: this.props.children
+      });
     }
 
-    return button;
+    // Button with tooltip gets some special treatment
+    if (tooltip) {
+      return React.createElement(tagName, buttonProps,
+        <span className="rui btn-tooltip" style={{display: "inline-flex"}}>
+          <Tooltip tooltipContent={this.renderTooltipContent()}>
+            {buttonChildren}
+          </Tooltip>
+        </span>
+      );
+    }
+
+    // Normal button, without tooltip
+    return React.createElement(tagName, buttonProps, buttonChildren);
   }
 }
 

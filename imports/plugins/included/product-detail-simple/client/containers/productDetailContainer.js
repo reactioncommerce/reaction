@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, PropTypes } from "react";
 import { composeWithTracker } from "react-komposer";
 import { Meteor } from "meteor/meteor";
 import { ReactionProduct } from "/lib/api";
@@ -251,8 +251,7 @@ function composer(props, onData) {
         media: mediaArray,
         editable,
         viewAs: viewProductAs,
-        hasAdminPrivilages: Reaction.hasPermission(["createProduct"]),
-        onProductFieldChange: changeProductField
+        hasAdminPrivilages: Reaction.hasPermission(["createProduct"])
       });
     }
   }
