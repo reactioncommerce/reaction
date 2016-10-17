@@ -1,17 +1,12 @@
 import React, { Component, PropTypes } from "react";
 import {
-  Alert,
   Button,
   Currency,
-  Divider,
   DropDownMenu,
-  Menu,
   MenuItem,
-  Popover,
   Translation,
   Toolbar,
-  ToolbarGroup,
-  ToolbarText
+  ToolbarGroup
 } from "/imports/plugins/core/ui/client/components/";
 import {
   AddToCartButton,
@@ -19,7 +14,7 @@ import {
   ProductTags,
   ProductField
 } from "./";
-import { AlertContainer, EditContainer } from "/imports/plugins/core/ui/client/containers";
+import { AlertContainer } from "/imports/plugins/core/ui/client/containers";
 import { PublishContainer } from "/imports/plugins/core/revisions";
 
 class ProductDetail extends Component {
@@ -42,15 +37,13 @@ class ProductDetail extends Component {
   }
 
   handlePublishActions = (event, action) => {
-    console.log("action", action);
     if (action === "delete" && this.props.onDeleteProduct) {
-      console.log("delete product");
       this.props.onDeleteProduct(this.product._id);
     }
   }
 
   renderToolbar() {
-    if (this.props.hasAdminPrivilages || true) {
+    if (this.props.hasAdminPrivilages) {
       return (
         <Toolbar>
           <ToolbarGroup firstChild={true}>
@@ -76,6 +69,8 @@ class ProductDetail extends Component {
         </Toolbar>
       );
     }
+
+    return null;
   }
 
   render() {
@@ -191,9 +186,19 @@ class ProductDetail extends Component {
 ProductDetail.propTypes = {
   cartQuantity: PropTypes.number,
   editable: PropTypes.bool,
+  hasAdminPrivilages: PropTypes.bool,
+  mediaGalleryComponent: PropTypes.node,
   onAddToCart: PropTypes.func,
   onCartQuantityChange: PropTypes.func,
-  product: PropTypes.object
+  onDeleteProduct: PropTypes.func,
+  onProductFieldChange: PropTypes.func,
+  onViewContextChange: PropTypes.func,
+  priceRange: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  product: PropTypes.object,
+  socialComponent: PropTypes.node,
+  tags: PropTypes.arrayOf(PropTypes.object),
+  topVariantComponent: PropTypes.node,
+  viewAs: PropTypes.string
 };
 
 export default ProductDetail;
