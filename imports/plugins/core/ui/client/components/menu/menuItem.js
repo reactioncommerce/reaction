@@ -36,8 +36,10 @@ class MenuItem extends Component {
 
   render() {
     const baseClassName = classnames({
-      active: this.props.active,
-      disabled: this.props.disabled === true
+      "rui": true,
+      "menu-item": true,
+      "active": this.props.active,
+      "disabled": this.props.disabled === true
     }, this.props.className);
 
     return (

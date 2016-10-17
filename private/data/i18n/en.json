@@ -570,6 +570,7 @@
         "publishChanges": "Publish Changes",
         "showChanges": "Show Changes",
         "hideChanges": "Hide Changes",
+        "discardChanges": "Discard Changes",
         "changedPublished": "Changes published successfully",
         "changesDiscarded": "Changes discarded successfully",
         "noChanges": "No Changes",

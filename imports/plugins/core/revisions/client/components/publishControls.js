@@ -181,11 +181,18 @@ class PublishControls extends Component {
         <Menu onChange={this.handleAction}>
           <MenuItem
             disabled={this.hasChanges === false}
+            i18nKeyLabel="revisions.discardChanges"
+            icon="fa fa-undo"
             label="Discard Changes"
             value="discard"
           />
           <Divider />
-          <MenuItem label="Delete" value="delete" />
+          <MenuItem
+            i18nKeyLabel="app.delete"
+            icon="fa fa-trash-o"
+            label="Delete"
+            value="delete"
+          />
         </Menu>
       </Popover>
     );
@@ -199,12 +206,16 @@ class PublishControls extends Component {
           value={this.isVisible}
         >
           <MenuItem
+            i18nKeyLabel="app.public"
+            icon="fa fa-unlock"
             label="Public"
             selectLabel="Public"
             value="public"
           />
           <MenuItem
+            i18nKeyLabel="app.private"
             label="Private"
+            icon="fa fa-lock"
             selectLabel="Public"
             value="private"
           />
