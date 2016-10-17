@@ -13,10 +13,7 @@ class SortableTable extends React.Component {
       <TacoTable
         className="table sortable-table"
         columns={columns}
-        // columnHighlighting
         data={data}
-        // striped
-        sortable
       />
     );
   }
