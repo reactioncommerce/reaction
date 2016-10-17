@@ -8,6 +8,7 @@ import { Reaction } from "/client/api";
 import Logger from "/client/modules/logger";
 import { ReactionProduct } from "/lib/api";
 import { Media } from "/lib/collections";
+import { isRevisionControlEnabled } from "/imports/plugins/core/revisions/lib/api";
 
 /**
  * productGridItems helpers
@@ -49,7 +50,11 @@ Template.productGridItems.helpers({
         $checkbox.prop("checked", true).trigger("change");
       },
       onPublishButtonClick() {
-        ReactionProduct.publishProduct(instance.data);
+        if (isRevisionControlEnabled()) {
+          Meteor.call("products/updateProductField", instance.data._id, "isVisible", !instance.data.isVisible);
+        } else {
+          ReactionProduct.publishProduct(instance.data);
+        }
       }
     };
   },

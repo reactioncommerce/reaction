@@ -18,6 +18,7 @@ node_modules
 npm-debug.log
 pids
 results
+allure-results
 
 client/plugins.js
 server/plugins.js

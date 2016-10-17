@@ -6,6 +6,7 @@ import { composeWithTracker } from "react-komposer";
 import { ReactionProduct } from "/lib/api";
 import { Reaction, i18next, Logger } from "/client/api";
 import { Tags, Media } from "/lib/collections";
+import { Loading } from "/imports/plugins/core/ui/client/components";
 import { ProductDetail } from "../components";
 import {
   SocialContainer,
@@ -235,6 +236,6 @@ function composer(props, onData) {
 let decoratedComponent = ProductDetailContainer;
 // decoratedComponent = DragDropContext(HTML5Backend)(decoratedComponent);
 // decoratedComponent = DragDropable(decoratedComponent);
-decoratedComponent = composeWithTracker(composer)(decoratedComponent);
+decoratedComponent = composeWithTracker(composer, Loading)(decoratedComponent);
 
 export default decoratedComponent;

@@ -2,7 +2,7 @@
 const yaml = require("js-yaml");
 const fs   = require("fs");
 const expect = require("chai").expect;
-const adminUser = require("../../lib/basic-user-actions.js");
+const adminUser = require("../../../lib/basic-user-actions.js");
 
 beforeEach(function () {
   const browserConfig = yaml.safeLoad(fs.readFileSync("./tests/acceptance-tests/config/settings.yml", "utf8"));

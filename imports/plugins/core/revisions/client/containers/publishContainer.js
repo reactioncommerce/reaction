@@ -5,6 +5,7 @@ import { Revisions } from "/lib/collections";
 import { Meteor } from "meteor/meteor";
 import TranslationProvider from "/imports/plugins/core/ui/client/providers/translationProvider";
 import { isRevisionControlEnabled } from "../../lib/api";
+import { i18next } from "/client/api";
 
 /**
  * Publish container is a stateless container component connected to Meteor data source.
@@ -35,7 +36,22 @@ export function handlePublishClick(revisions) {
     const documentIds = revisions.map((revision) => {
       return revision.documentId;
     });
-    Meteor.call("revisions/publish", documentIds);
+
+    Meteor.call("revisions/publish", documentIds, (error, result) => {
+      if (result === true) {
+        const message = i18next.t("revisions.changedPublished", {
+          defaultValue: "Changes published successfully"
+        });
+
+        Alerts.toast(message, "success");
+      } else {
+        const message = i18next.t("revisions.noChangesPublished", {
+          defaultValue: "There are no changes to publish"
+        });
+
+        Alerts.toast(message, "warning");
+      }
+    });
   }
 }
 
@@ -45,8 +61,22 @@ function composer(props, onData) {
 
     if (subscription.ready()) {
       const revisions = Revisions.find({
-        documentId: {
-          $in: props.documentIds
+        "$or": [
+          {
+            documentId: {
+              $in: props.documentIds
+            }
+          },
+          {
+            "documentData.ancestors": {
+              $in: props.documentIds
+            }
+          }
+        ],
+        "workflow.status": {
+          $nin: [
+            "revision/published"
+          ]
         }
       }).fetch();
 
