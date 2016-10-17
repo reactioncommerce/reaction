@@ -148,6 +148,8 @@ class MediaGalleryContainer extends Component {
 
 function composer(props, onData) {
   let media;
+  let editable;
+  const viewAs = Reaction.Router.getQueryParam("as");
 
   if (!props.media) {
     // Fetch media based on props
@@ -155,8 +157,14 @@ function composer(props, onData) {
     media = props.media;
   }
 
+  if (viewAs === "customer") {
+    editable = false;
+  } else {
+    editable = Reaction.hasPermission(props.permission || ["createProduct"]);
+  }
+
   onData(null, {
-    editable: Reaction.hasPermission(props.permission || ["createProduct"]),
+    editable,
     media
   });
 }
