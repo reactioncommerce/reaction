@@ -11,7 +11,7 @@ import { transformations } from "./transformations";
 const requiredFields = {};
 requiredFields.products = ["_id", "hashtags", "shopId", "handle", "price", "isVisible"];
 requiredFields.orders = ["_id", "shopId", "shippingName", "shippingPhone", "billingName", "userEmails",
-  "shippingAddress","billingAddress", "shippingStatus", "billingStatus", "orderTotal", "orderDate", "url"];
+  "shippingAddress","billingAddress", "shippingStatus", "billingStatus", "orderTotal", "orderDate"];
 requiredFields.accounts = ["_id", "shopId", "emails", "profile"];
 
 // https://docs.mongodb.com/manual/reference/text-search-languages/#text-search-languages
@@ -183,7 +183,6 @@ export function buildOrderSearchRecord(orderId) {
   } else {
     orderSearch.shippingStatus = "New";
   }
-  orderSearch.url = "/reaction/dashboard/orders?_id=" + order._id;
   OrderSearch.insert(orderSearch);
 }
 

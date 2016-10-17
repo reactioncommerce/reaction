@@ -1,6 +1,6 @@
 import _ from "lodash";
 import React from "react";
-import { Reaction, i18next } from "/client/api";
+import { Reaction, Router, i18next } from "/client/api";
 import { DataType } from "react-taco-table";
 import { Template } from "meteor/templating";
 import { SortableTable } from "/imports/plugins/core/ui/client/components";
@@ -18,13 +18,14 @@ Template.searchModal.helpers({
   orderTable() {
     const instance = Template.instance();
     const results = instance.state.get("orderSearchResults");
+    // const route = rowData.url;
     const columns = [
       {
         id: "_id",
         type: DataType.String,
         header: i18next.t("search.orderSearchResults.orderId", {defaultValue: "Order ID"}),
         renderer(cellData, { column, rowData }) {
-          return <a href={rowData.url} data-event-action="goToOrder" data-event-data={cellData}>{cellData}</a>;
+          return <a data-event-action="goToOrder" data-event-data={cellData}>{cellData}</a>;
         }
       },
       {
@@ -127,10 +128,11 @@ Template.searchModal.helpers({
  * orderResults events
  */
 Template.searchModal.events({
-  "click [data-event-action=goToOrder]": function () {
+  "click [data-event-action=goToOrder]": function (event) {
     const instance = Template.instance();
     const view = instance.view;
     const isActionViewOpen = Reaction.isActionViewOpen();
+    const orderId = $(event.target).data("event-data");
 
     // toggle detail views
     if (isActionViewOpen === false) {
@@ -144,6 +146,10 @@ Template.searchModal.events({
         template: "coreOrderWorkflow"
       });
     }
+
+    Reaction.Router.go("dashboard/orders", {}, {
+      _id: orderId
+    });
 
     $(".js-search-modal").delay(400).fadeOut(400, () => {
       Blaze.remove(view);
