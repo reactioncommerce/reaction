@@ -10,5 +10,13 @@ Migrations.add({
     AccountSearch.remove();
     buildOrderSearch();
     buildAccountSearch();
+  },
+  down: function () {
+    // whether we are going up or down we just want to update the search collections
+    // to match whatever the current code in the build methods are.
+    OrderSearch.remove({});
+    AccountSearch.remove();
+    buildOrderSearch();
+    buildAccountSearch();
   }
 });
