@@ -71,7 +71,7 @@ class Button extends Component {
   }
 
   renderTooltipContent() {
-    if (this.isTooltipOpen) {
+    if (this.isTooltipOpen && this.props.disabled === false) {
       if (typeof this.props.tooltip === "string") {
         return (
           <Translation defaultValue={this.props.tooltip} i18nKey={this.props.i18nKeyTooltip} />
@@ -189,6 +189,7 @@ Button.propTypes = {
   active: PropTypes.bool,
   children: PropTypes.node,
   className: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  disabled: PropTypes.bool,
   eventAction: PropTypes.string,
   i18nKeyLabel: PropTypes.string,
   i18nKeyTitle: PropTypes.string,
@@ -211,10 +212,11 @@ Button.propTypes = {
 };
 
 Button.defaultProps = {
-  toggle: false,
   active: false,
+  disabled: false,
   iconAfter: false,
-  tagName: "button"
+  tagName: "button",
+  toggle: false
 };
 
 export default Button;
