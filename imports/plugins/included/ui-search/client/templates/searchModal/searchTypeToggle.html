@@ -1,0 +1,13 @@
+<template name="searchTypeToggle">
+  {{#if hasPermission "admin"}}
+    <div class="rui search-type-toggle">
+      <div class="search-type-option search-type-active" data-i18n="search.searchTypeProducts" data-event-action="searchCollection" data-event-value="products">Products</div>
+      {{#if hasPermission "accounts"}}
+        <div class="search-type-option" data-i18n="search.searchTypeAccounts" data-event-action="searchCollection" data-event-value="accounts">Accounts</div>
+      {{/if}}
+      {{#if hasPermission "orders"}}
+        <div class="search-type-option" data-i18n="search.searchTypeOrders" data-event-action="searchCollection" data-event-value="orders">Orders</div>
+      {{/if}}
+    </div>
+  {{/if}}
+</template>

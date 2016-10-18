@@ -126,6 +126,7 @@ oauth2@1.1.10
 observe-sequence@1.0.13
 ongoworks:security@2.0.1
 ordered-dict@1.0.8
+percolate:migrations@0.9.8
 practicalmeteor:chai@2.1.0_1
 practicalmeteor:mocha-core@1.0.1
 practicalmeteor:sinon@1.14.1_2

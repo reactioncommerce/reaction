@@ -10,6 +10,9 @@ import { transformations } from "./transformations";
 
 const requiredFields = {};
 requiredFields.products = ["_id", "hashtags", "shopId", "handle", "price", "isVisible"];
+requiredFields.orders = ["_id", "shopId", "shippingName", "shippingPhone", "billingName", "userEmails",
+  "shippingAddress","billingAddress", "shippingStatus", "billingStatus", "orderTotal", "orderDate"];
+requiredFields.accounts = ["_id", "shopId", "emails", "profile"];
 
 // https://docs.mongodb.com/manual/reference/text-search-languages/#text-search-languages
 // MongoDb supports a subset of languages for analysis of the text data which includes
@@ -134,27 +137,60 @@ export function ensureProductSearchIndex() {
   rawProductSearchCollection.createIndex(indexObject, weightObject, getSearchLanguage());
 }
 
+export function buildOrderSearchRecord(orderId) {
+  const order = Orders.findOne(orderId);
+  const user = Meteor.users.findOne(order.userId);
+  const userEmails = [];
+  if (user) {
+    for (const email of user.emails) {
+      userEmails.push(email.address);
+    }
+  }
+  const orderSearch = {};
+  for (const field of requiredFields.orders) {
+    if (transformations.orders[field]) {
+      orderSearch[field] = transformations.orders[field](order[field]);
+    } else {
+      orderSearch[field] = order[field];
+    }
+  }
+  orderSearch.billingName = order.billing[0].address.fullName;
+  orderSearch.billingPhone = _.replace(order.billing[0].address.phone, /\D/g, "");
+  orderSearch.shippingName = order.shipping[0].address.fullName;
+  orderSearch.shippingPhone = _.replace(order.shipping[0].address.phone, /\D/g, "");
+  orderSearch.billingAddress = {
+    address: order.billing[0].address.address1,
+    postal: order.billing[0].address.postal,
+    city: order.billing[0].address.city,
+    region: order.billing[0].address.region,
+    country: order.billing[0].address.country
+  };
+  orderSearch.shippingAddress = {
+    address: order.shipping[0].address.address1,
+    postal: order.shipping[0].address.postal,
+    city: order.shipping[0].address.city,
+    region: order.shipping[0].address.region,
+    country: order.shipping[0].address.country
+  };
+  orderSearch.userEmails = userEmails;
+  orderSearch.orderTotal = order.billing[0].invoice.total;
+  orderSearch.orderDate = moment(order.createdAt).format("YYYY/MM/DD");
+  orderSearch.billingStatus = order.billing[0].paymentMethod.status;
+  if (order.shipping[0].shipped) {
+    orderSearch.shippingStatus = "Shipped";
+  } else if (order.shipping[0].packed) {
+    orderSearch.shippingStatus = "Packed";
+  } else {
+    orderSearch.shippingStatus = "New";
+  }
+  OrderSearch.insert(orderSearch);
+}
 
 export function buildOrderSearch(cb) {
   check(cb, Match.Optional(Function));
-  const shopId = Reaction.getShopId();
   const orders = Orders.find({}).fetch();
   for (const order of orders) {
-    const user = Meteor.users.findOne(order.userId);
-    const userEmails = [];
-    if (user) {
-      for (const email of user.emails) {
-        userEmails.push(email.address);
-      }
-    }
-    const orderSearch = {
-      _id: order._id,
-      shopId: shopId,
-      shippingName: order.shipping[0].address.fullName,
-      billingName: order.billing[0].address.fullName,
-      userEmails: userEmails
-    };
-    OrderSearch.insert(orderSearch);
+    buildOrderSearchRecord(order._id);
   }
   const rawOrderSearchCollection = OrderSearch.rawCollection();
   rawOrderSearchCollection.dropIndexes("*");
@@ -164,46 +200,20 @@ export function buildOrderSearch(cb) {
   }
 }
 
-export function buildOrderSearchRecord(orderId, cb) {
-  const order = Orders.findOne(orderId);
-  const shopId = Reaction.getShopId();
-  const user = Meteor.users.findOne(order.userId);
-  const userEmails = [];
-  if (user) {
-    for (const email of user.emails) {
-      userEmails.push(email.address);
-    }
-  }
-  const orderSearch = {
-    _id: order._id,
-    shopId: shopId,
-    shippingName: order.shipping[0].address.fullName,
-    billingName: order.billing[0].address.fullName,
-    userEmails: userEmails
-  };
-  OrderSearch.insert(orderSearch);
-  const rawOrderSearchCollection = OrderSearch.rawCollection();
-  rawOrderSearchCollection.createIndex({shopId: 1, shippingName: 1, billingName: 1, userEmails: 1});
-  if (cb) {
-    cb();
-  }
-}
 
 export function buildAccountSearch(cb) {
   check(cb, Match.Optional(Function));
   AccountSearch.remove({});
   const accounts = Accounts.find({}).fetch();
   for (const account of accounts) {
-    const accountEmails = [];
-    for (const email of account.emails) {
-      accountEmails.push(email.address);
+    const accountSearch = {};
+    for (const field of requiredFields.accounts) {
+      if (transformations.accounts[field]) {
+        accountSearch[field] = transformations.accounts[field](account[field]);
+      } else {
+        accountSearch[field] = account[field];
+      }
     }
-    const accountSearch = {
-      _id: account._id,
-      shopId: account.shopId,
-      emails: accountEmails
-    };
-    AccountSearch.insert(accountSearch);
   }
   const rawAccountSearchCollection = AccountSearch.rawCollection();
   rawAccountSearchCollection.dropIndexes("*");
@@ -213,24 +223,22 @@ export function buildAccountSearch(cb) {
   }
 }
 
-export function buildAccountSearchRecord(accountId, cb) {
+export function buildAccountSearchRecord(accountId) {
+  Logger.debug("building account search record");
   check(accountId, String);
-  check(cb, Match.Optional(Function));
   const account = Accounts.findOne(accountId);
-  const accountEmails = [];
-  for (const email of account.emails) {
-    accountEmails.push(email.address);
-  }
-  const accountSearch = {
-    _id: account._id,
-    shopId: account.shopId,
-    emails: accountEmails
-  };
-  AccountSearch.insert(accountSearch);
-  const rawAccountSearchCollection = AccountSearch.rawCollection();
-  rawAccountSearchCollection.createIndex({shopId: 1, emails: 1});
-  if (cb) {
-    cb();
+  // let's ignore anonymous accounts
+  if (account.emails.length) {
+    const accountSearch = {};
+    for (const field of requiredFields.accounts) {
+      if (transformations.accounts[field]) {
+        accountSearch[field] = transformations.accounts[field](account[field]);
+      } else {
+        accountSearch[field] = account[field];
+      }
+    }
+    AccountSearch.insert(accountSearch);
+    const rawAccountSearchCollection = AccountSearch.rawCollection();
+    rawAccountSearchCollection.createIndex({shopId: 1, emails: 1});
   }
 }
-

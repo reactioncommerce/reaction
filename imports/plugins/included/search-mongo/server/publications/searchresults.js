@@ -45,28 +45,38 @@ getResults.products = function (searchTerm, facets, maxResults, userId) {
 
 getResults.orders = function (searchTerm, facets, maxResults, userId) {
   let orderResults;
+  const searchPhone = _.replace(searchTerm, /\D/g, "");
   const shopId = Reaction.getShopId();
   const findTerm = {
     $and: [
-      {shopId: shopId},
+      { shopId: shopId },
       {$or: [
+        { _id: searchTerm },
         { userEmails: {
-          $regex: "^" + searchTerm + "$",
+          $regex: searchTerm,
           $options: "i"
         } },
         { shippingName: {
-          $regex: "^" + searchTerm + "$",
+          $regex: searchTerm,
           $options: "i"
         } },
         { billingName: {
-          $regex: "^" + searchTerm + "$",
+          $regex: searchTerm,
+          $options: "i"
+        } },
+        { billingPhone: {
+          $regex: "^" + searchPhone + "$",
+          $options: "i"
+        } },
+        { shippingPhone: {
+          $regex: "^" + searchPhone + "$",
           $options: "i"
         } }
       ] }
     ]};
-  if (Roles.userIsInRole(userId, ["admin", "owner"], shopId)) {
-    orderResults = OrderSearch.find(findTerm);
-    Logger.debug(`Found ${orderResults.count()} orders`);
+  if (Reaction.hasPermission("orders", userId)) {
+    orderResults = OrderSearch.find(findTerm, { limit: maxResults });
+    Logger.debug(`Found ${orderResults.count()} orders searching for ${searchTerm}`);
   }
   return orderResults;
 };
@@ -74,10 +84,32 @@ getResults.orders = function (searchTerm, facets, maxResults, userId) {
 getResults.accounts = function (searchTerm, facets, maxResults, userId) {
   let accountResults;
   const shopId = Reaction.getShopId();
-  if (Roles.userIsInRole(userId, ["admin", "owner"], shopId)) {
-    accountResults = AccountSearch.find({
-      shopId: shopId,
-      emails: searchTerm
+  const searchPhone = _.replace(searchTerm, /\D/g, "");
+  if (Reaction.hasPermission("reaction-accounts", userId)) {
+    const findTerm = {
+      $and: [
+        {shopId: shopId},
+        {$or: [
+          { emails: {
+            $regex: searchTerm,
+            $options: "i"
+          } },
+          { "profile.firstName": {
+            $regex: "^" + searchTerm + "$",
+            $options: "i"
+          } },
+          { "profile.lastName": {
+            $regex: "^" + searchTerm + "$",
+            $options: "i"
+          } },
+          { "profile.phone": {
+            $regex: "^" + searchPhone + "$",
+            $options: "i"
+          } }
+        ] }
+      ]};
+    accountResults = AccountSearch.find(findTerm, {
+      limit: maxResults
     });
     Logger.debug(`Found ${accountResults.count()} accounts searching for ${searchTerm}`);
   }
