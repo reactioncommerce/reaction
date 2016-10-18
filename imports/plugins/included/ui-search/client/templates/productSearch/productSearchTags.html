@@ -1,0 +1,15 @@
+
+<template name="productSearchTags">
+
+  {{#if tagSearchResults}}
+  <div class="rui search-modal-tags-container">
+    <p class="rui suggested-tags" data-i18n="search.suggestedTags">Suggested tags</p>
+    <div class="rui search-tags">
+      {{#each tag in tagSearchResults}}
+        <span class="rui search-tag" data-event-action="filter" data-event-value="{{tag._id}}">{{tag.name}}</span>
+      {{/each}}
+    </div>
+  </div>
+  {{/if}}
+
+</template>
