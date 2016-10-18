@@ -1,10 +1,10 @@
-import { Versions } from "/imports/plugins/core/versions";
+import { Migrations } from "/imports/plugins/core/versions";
 import { OrderSearch, AccountSearch } from "/lib/collections";
 import { buildOrderSearch,
   buildAccountSearch } from "/imports/plugins/included/search-mongo/server/methods/searchcollections";
 
-Versions.add({
-  version: 17,
+Migrations.add({
+  version: 1,
   up: function () {
     OrderSearch.remove({});
     AccountSearch.remove();

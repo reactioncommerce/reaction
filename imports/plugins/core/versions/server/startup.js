@@ -1,7 +1,7 @@
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Hooks, Logger } from "/server/api";
-import { Versions } from "/imports/plugins/core/versions";
+import { Migrations } from "/imports/plugins/core/versions";
 
 function reactionLogger(opts) {
   if (_.includes(["warn", "info", "error"], opts.level)) {
@@ -10,13 +10,14 @@ function reactionLogger(opts) {
 }
 
 Meteor.startup(() => {
-  Versions.config({
+  Migrations.config({
     logger: reactionLogger,
-    log: false,
-    logIfLatest: false
+    log: true,
+    logIfLatest: false,
+    collectionName: "Migrations"
   });
 });
 
 Hooks.Events.add("afterCoreInit", () => {
-  Versions.migrateTo("latest");
+  Migrations.migrateTo("latest");
 });

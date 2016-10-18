@@ -1,1 +1,1 @@
-export { Migrations as Versions } from "meteor/percolate:migrations";
+export { Migrations as Migrations } from "meteor/percolate:migrations";
