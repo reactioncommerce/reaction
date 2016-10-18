@@ -339,7 +339,8 @@ Meteor.methods({
     let emailLogo;
     if (_.isArray(shop.brandAssets)) {
       const brandAsset = _.find(shop.brandAssets, (asset) => asset.type === "navbarBrandImage");
-      emailLogo = Media.findOne(brandAsset.mediaId);
+      const mediaId = Media.findOne(brandAsset.mediaId);
+      emailLogo = path.join(Meteor.absoluteUrl(), mediaId.url());
     } else {
       emailLogo = Meteor.absoluteUrl() + "resources/email-templates/shop-logo.png";
     }
