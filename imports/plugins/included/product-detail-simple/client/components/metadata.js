@@ -18,6 +18,7 @@ class ProductMetadata extends Component {
         <span className="edit-button">
           <EditContainer
             data={this.props.product}
+            disabled={this.props.editable === false}
             editTypes={["edit"]}
             editView="ProductAdmin"
             field="metafields"

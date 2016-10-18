@@ -18,6 +18,7 @@ class ProductTags extends Component {
         <span className="edit-button">
           <EditContainer
             data={this.props.product}
+            disabled={this.props.editable === false}
             editView="ProductAdmin"
             field="hashtags"
             i18nKeyLabel="productDetailEdit.productSettings"

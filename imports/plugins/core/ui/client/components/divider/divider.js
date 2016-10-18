@@ -14,6 +14,7 @@ class Divider extends Component {
     const classes = classnames({
       rui: true,
       separator: true,
+      divider: true,
       labeled: label || i18nKeyLabel
     });
 

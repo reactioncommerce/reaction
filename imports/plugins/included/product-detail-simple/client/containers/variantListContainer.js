@@ -89,7 +89,12 @@ class VariantListContainer extends Component {
 
       ReactionProduct.setCurrentVariant(variant._id);
       Session.set("variant-form-" + variant._id, true);
-      Reaction.Router.go("product", {handle: selectedProduct.handle, variantId: variant._id});
+      Reaction.Router.go("product", {
+        handle: selectedProduct.handle,
+        variantId: variant._id
+      }, {
+        as: Reaction.Router.getQueryParam("as")
+      });
     }
   }
 
@@ -102,7 +107,12 @@ class VariantListContainer extends Component {
 
     ReactionProduct.setCurrentVariant(variant._id);
     Session.set("variant-form-" + editVariant._id, true);
-    Reaction.Router.go("product", {handle: selectedProduct.handle, variantId: variant._id});
+    Reaction.Router.go("product", {
+      handle: selectedProduct.handle,
+      variantId: variant._id
+    }, {
+      as: Reaction.Router.getQueryParam("as")
+    });
 
     if (Reaction.hasPermission("createProduct")) {
       Reaction.showActionView({
@@ -176,6 +186,14 @@ function composer(props, onData) {
     }).fetch();
   }
 
+  let editable;
+
+  if (Reaction.Router.getQueryParam("as") === "customer") {
+    editable = false;
+  } else {
+    editable = Reaction.hasPermission(["createProduct"]);
+  }
+
   onData(null, {
     variants: getTopVariants(),
     variantIsSelected,
@@ -184,7 +202,7 @@ function composer(props, onData) {
     childVariantMedia,
     displayPrice: ReactionProduct.getVariantPriceRange,
     isSoldOut: isSoldOut,
-    editable: Reaction.hasPermission(["createProduct"])
+    editable
   });
 }
 

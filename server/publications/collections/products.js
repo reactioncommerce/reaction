@@ -80,7 +80,7 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
 
   if (shop) {
     const selector = {
-      isDeleted: false,
+      isDeleted: {$in: [null, false]},
       ancestors: {
         $exists: true,
         $eq: []
