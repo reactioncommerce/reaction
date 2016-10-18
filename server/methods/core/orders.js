@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import _ from "lodash";
 import path from "path";
 import moment from "moment";
 import accounting from "accounting-js";
