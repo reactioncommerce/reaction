@@ -251,7 +251,7 @@ function composer(props, onData) {
         media: mediaArray,
         editable,
         viewAs: viewProductAs,
-        hasAdminPrivilages: Reaction.hasPermission(["createProduct"])
+        hasAdminPermission: Reaction.hasPermission(["createProduct"])
       });
     }
   }

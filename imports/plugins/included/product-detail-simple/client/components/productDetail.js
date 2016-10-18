@@ -43,7 +43,7 @@ class ProductDetail extends Component {
   }
 
   renderToolbar() {
-    if (this.props.hasAdminPrivilages) {
+    if (this.props.hasAdminPermission) {
       return (
         <Toolbar>
           <ToolbarGroup firstChild={true}>
@@ -187,7 +187,7 @@ class ProductDetail extends Component {
 ProductDetail.propTypes = {
   cartQuantity: PropTypes.number,
   editable: PropTypes.bool,
-  hasAdminPrivilages: PropTypes.bool,
+  hasAdminPermission: PropTypes.bool,
   mediaGalleryComponent: PropTypes.node,
   onAddToCart: PropTypes.func,
   onCartQuantityChange: PropTypes.func,
