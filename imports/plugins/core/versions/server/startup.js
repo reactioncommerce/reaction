@@ -1,5 +1,4 @@
 import _ from "lodash";
-import { Meteor } from "meteor/meteor";
 import { Hooks, Logger } from "/server/api";
 import { Migrations } from "/imports/plugins/core/versions";
 
@@ -9,13 +8,11 @@ function reactionLogger(opts) {
   }
 }
 
-Meteor.startup(() => {
-  Migrations.config({
-    logger: reactionLogger,
-    log: true,
-    logIfLatest: false,
-    collectionName: "Migrations"
-  });
+Migrations.config({
+  logger: reactionLogger,
+  log: true,
+  logIfLatest: false,
+  collectionName: "Migrations"
 });
 
 Hooks.Events.add("afterCoreInit", () => {
