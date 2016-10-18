@@ -13,35 +13,11 @@ class Tooltip extends Component {
     return this.props.attachment || Tooltip.defaultProps.attachment;
   }
 
-  get attachmentClassNames() {
-    if (this.props.attachment) {
-      const classes = {};
-      const parts = this.attachment.split(" ");
-
-      if (parts) {
-        for (const attachment of parts) {
-          classes[`tooltip-element-attached-${attachment}`] = true;
-        }
-
-        return classes;
-      }
-    }
-    return null;
-  }
-
   renderTooltip() {
     if (this.props.tooltipContent) {
-      const classes = classnames({
-        "tooltip-element": true,
-        "tooltip-open": true,
-        "tooltip-theme-arrows": true
-      }, this.attachmentClassNames);
-
       return (
-        <div className={classes} style={{position: "relative"}}>
-          <div className="tooltip-content">
-            {this.props.tooltipContent}
-          </div>
+        <div className="tooltip-content">
+          {this.props.tooltipContent}
         </div>
       );
     }
@@ -52,7 +28,13 @@ class Tooltip extends Component {
   render() {
     return (
       <TetherComponent
-        attachment={this.props.attachment}
+        attachment={this.attachment}
+        classPrefix="tooltip"
+        className={classnames({
+          "tooltip-element": true,
+          "tooltip-open": true,
+          "tooltip-theme-arrows": true
+        })}
         constraints={[{
           to: "scrollParent",
           attachment: "together"

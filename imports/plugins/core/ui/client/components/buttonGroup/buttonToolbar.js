@@ -1,11 +1,11 @@
 import React, { Component, PropTypes} from "react";
 import classnames from "classnames";
 
-class ButtonGroup extends Component {
+class ButtonToolbar extends Component {
   render() {
     const baseClassName = classnames({
       "rui": true,
-      "btn-group": true
+      "btn-toolbar": true
     });
 
     return (
@@ -16,8 +16,8 @@ class ButtonGroup extends Component {
   }
 }
 
-ButtonGroup.propTypes = {
+ButtonToolbar.propTypes = {
   children: PropTypes.node
 };
 
-export default ButtonGroup;
+export default ButtonToolbar;

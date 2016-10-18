@@ -14,9 +14,45 @@ export function updateSettings(settings) {
   });
 }
 
+export function discardDrafts(documentIds) {
+  check(documentIds, Match.OneOf(String, Array));
+
+  let documentIdArray;
+
+  if (Array.isArray(documentIds)) {
+    documentIdArray = documentIds;
+  } else {
+    documentIdArray = [documentIds];
+  }
+
+  const selector = {
+    "workflow.status": {
+      $nin: [
+        "revision/published"
+      ]
+    },
+    "$or": [
+      {
+        documentId: {
+          $in: documentIdArray
+        }
+      },
+      {
+        "documentData.ancestors": {
+          $in: documentIdArray
+        }
+      }
+    ]
+  };
+
+  const result = Revisions.remove(selector);
+
+  return result > 0;
+}
 
 Meteor.methods({
   "revisions/settings/update": updateSettings,
+  "revisions/discard": discardDrafts,
   "revisions/publish"(documentIds) {
     check(documentIds, Match.OneOf(String, Array));
 

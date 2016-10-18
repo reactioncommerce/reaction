@@ -1,17 +1,12 @@
-import { Meteor } from "meteor/meteor";
-import React, { Component } from "react";
+import React, { Component, PropTypes } from "react";
 import { composeWithTracker } from "react-komposer";
-// import { DragDropContext } from "react-dnd";
-// import HTML5Backend from "react-dnd-html5-backend";
+import { Meteor } from "meteor/meteor";
 import { ReactionProduct } from "/lib/api";
 import { Reaction, i18next, Logger } from "/client/api";
 import { Tags, Media } from "/lib/collections";
 import { Loading } from "/imports/plugins/core/ui/client/components";
 import { ProductDetail } from "../components";
-import {
-  SocialContainer,
-  VariantListContainer
-} from "./";
+import { SocialContainer, VariantListContainer } from "./";
 import { MediaGalleryContainer } from "/imports/plugins/core/ui/client/containers";
 import { DragDropProvider, TranslationProvider } from "/imports/plugins/core/ui/client/providers";
 
@@ -32,7 +27,6 @@ class ProductDetailContainer extends Component {
 
   handleAddToCart = () => {
     let productId;
-    let qtyField;
     let quantity;
     const currentVariant = ReactionProduct.selectedVariant();
     const currentProduct = ReactionProduct.selectedProduct();
@@ -60,7 +54,6 @@ class ProductDetailContainer extends Component {
         return [];
       }
 
-      // qtyField =  //, template.$('input[name="addToCartQty"]'); //****
       quantity = parseInt(this.state.cartQuantity, 10);
 
       if (quantity < 1) {
@@ -68,7 +61,6 @@ class ProductDetailContainer extends Component {
       }
 
       if (!currentProduct.isVisible) {
-        console.log("cant add to cart");
         Alerts.inline("Publish product before adding to cart.", "error", {
           placement: "productDetail",
           i18nKey: "productDetail.publishFirst",
@@ -79,16 +71,15 @@ class ProductDetailContainer extends Component {
 
         if (productId) {
           Meteor.call("cart/addToCart", productId, currentVariant._id, quantity, (error) => {
-              if (error) {
-                Logger.error("Failed to add to cart.", error);
-                return error;
-              }
-              // Reset cart quantity on success
-              this.handleCartQuantityChange(null, 1);
-
-              return true;
+            if (error) {
+              Logger.error("Failed to add to cart.", error);
+              return error;
             }
-          );
+            // Reset cart quantity on success
+            this.handleCartQuantityChange(null, 1);
+
+            return true;
+          });
         }
 
         // template.$(".variant-select-option").removeClass("active");
@@ -141,6 +132,18 @@ class ProductDetailContainer extends Component {
     return null;
   }
 
+  handleProductFieldChange = (productId, fieldName, value) => {
+    Meteor.call("products/updateProductField", productId, fieldName, value);
+  }
+
+  handleViewContextChange = (event, value) => {
+    Reaction.Router.setQueryParams({as: value});
+  }
+
+  handleDeleteProduct = () => {
+    ReactionProduct.maybeDeleteProduct(this.props.product);
+  }
+
   render() {
     return (
       <TranslationProvider>
@@ -150,8 +153,11 @@ class ProductDetailContainer extends Component {
             mediaGalleryComponent={<MediaGalleryContainer media={this.props.media} />}
             onAddToCart={this.handleAddToCart}
             onCartQuantityChange={this.handleCartQuantityChange}
+            onViewContextChange={this.handleViewContextChange}
             socialComponent={<SocialContainer />}
             topVariantComponent={<VariantListContainer />}
+            onDeleteProduct={this.handleDeleteProduct}
+            onProductFieldChange={this.handleProductFieldChange}
             {...this.props}
           />
         </DragDropProvider>
@@ -160,14 +166,18 @@ class ProductDetailContainer extends Component {
   }
 }
 
-function changeProductField(productId, fieldName, value) {
-  Meteor.call("products/updateProductField", productId, fieldName, value);
-}
+ProductDetailContainer.propTypes = {
+  media: PropTypes.arrayOf(PropTypes.object),
+  product: PropTypes.object
+};
 
 function composer(props, onData) {
   const tagSub = Meteor.subscribe("Tags");
   const productId = Reaction.Router.getParam("handle");
   const variantId = Reaction.Router.getParam("variantId");
+  const revisionType = Reaction.Router.getQueryParam("revision");
+  const viewProductAs = Reaction.Router.getQueryParam("as");
+
   let productSub;
 
   if (productId) {
@@ -220,22 +230,32 @@ function composer(props, onData) {
         priceRange = ReactionProduct.getVariantPriceRange();
       }
 
+      let productRevision;
+
+      if (revisionType === "published") {
+        productRevision = product.__published;
+      }
+
+      let editable;
+
+      if (viewProductAs === "customer") {
+        editable = false;
+      } else {
+        editable = Reaction.hasPermission(["createProduct"]);
+      }
+
       onData(null, {
-        product,
+        product: productRevision || product,
         priceRange,
         tags,
         media: mediaArray,
-        editable: Reaction.hasPermission(["createProduct"]),
-        handleProductFieldChange: changeProductField
+        editable,
+        viewAs: viewProductAs,
+        hasAdminPermission: Reaction.hasPermission(["createProduct"])
       });
     }
   }
 }
 
 // Decorate component and export
-let decoratedComponent = ProductDetailContainer;
-// decoratedComponent = DragDropContext(HTML5Backend)(decoratedComponent);
-// decoratedComponent = DragDropable(decoratedComponent);
-decoratedComponent = composeWithTracker(composer, Loading)(decoratedComponent);
-
-export default decoratedComponent;
+export default composeWithTracker(composer, Loading)(ProductDetailContainer);

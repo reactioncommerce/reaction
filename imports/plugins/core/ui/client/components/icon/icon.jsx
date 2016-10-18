@@ -1,7 +1,7 @@
-import React from "react";
-import classnames from "classnames";
+import React, { Component, PropTypes } from "react";
+import classnames from "classnames/dedupe";
 
-class Icon extends React.Component {
+class Icon extends Component {
   render() {
     const { icon } = this.props;
     let classes;
@@ -11,11 +11,16 @@ class Icon extends React.Component {
         classes = icon;
       } else {
         classes = classnames({
-          fa: true,
+          "fa": true,
           [`fa-${icon}`]: true
         });
       }
     }
+
+    classes = classnames({
+      "rui": true,
+      "font-icon": true,
+    }, classes, this.props.className);
 
     return (
       <i className={classes} />
@@ -24,7 +29,8 @@ class Icon extends React.Component {
 }
 
 Icon.propTypes = {
-  icon: React.PropTypes.string.isRequired
+  className: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  icon: PropTypes.string.isRequired
 };
 
 export default Icon;
