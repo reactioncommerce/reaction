@@ -1,8 +1,8 @@
 import _ from "lodash";
 import React from "react";
-import { Reaction, Router, i18next } from "/client/api";
 import { DataType } from "react-taco-table";
 import { Template } from "meteor/templating";
+import { Reaction, Router, i18next } from "/client/api";
 import { SortableTable } from "/imports/plugins/core/ui/client/components";
 
 
