@@ -70,6 +70,7 @@
     "react-komposer": "^1.13.1",
     "react-onclickoutside": "^5.7.1",
     "react-simple-di": "^1.2.0",
+    "react-taco-table": "^0.4.1",
     "react-tether": "^0.5.2",
     "react-textarea-autosize": "^4.0.5",
     "sortablejs": "^1.4.2",

@@ -700,9 +700,43 @@
       },
       "search": {
         "clearSearch": "Clear",
-        "noProductsFound": "No products found",
-        "searchInputLabel": "Search Reaction ",
-        "suggestedTags": "Suggested tags"
+        "noProductsFound": "No products found.",
+        "noOrdersFound": "No orders found.",
+        "noAccountsFound": "No accounts found.",
+        "searchInputLabel": "Search Reaction",
+        "suggestedTags": "Suggested tags",
+        "searchTypeProducts": "Products",
+        "searchTypeAccounts": "Accounts",
+        "searchTypeOrders": "Orders",
+        "accountSearchResults": {
+          "accountId": "Account ID",
+          "shopId": "Shop ID",
+          "firstName": "First Name",
+          "lastName": "Last Name",
+          "phone": "Phone",
+          "emails": "Email"
+        },
+        "orderSearchResults": {
+          "orderId": "Order ID",
+          "shopId": "Shop ID",
+          "shippingName": "Name",
+          "shippingAddress": "Address",
+          "shippingCity": "City",
+          "shippingRegion": "Region",
+          "shippingCountry": "Country",
+          "shippingPhone": "Phone",
+          "shippingName": "Name",
+          "shippingStatus": "Status",
+          "billingAddress": "Address",
+          "billingCity": "City",
+          "billingRegion": "Region",
+          "billingCountry": "Country",
+          "billingPhone": "Phone",
+          "billingStatus": "Status",
+          "userEmails": "Email",
+          "orderDate": "Date",
+          "orderTotal": "Total"
+        }
       },
       "accountsUI": {
         "members": "Members",
