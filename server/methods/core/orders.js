@@ -1,3 +1,4 @@
+import path from "path";
 import { getSlug } from "/lib/api";
 import moment from "moment";
 import accounting from "accounting-js";
@@ -330,9 +331,20 @@ Meteor.methods({
 
     this.unblock();
 
+    // Get Shop information
     const shop = Shops.findOne(order.shopId);
     const shopContact = shop.addressBook[0];
 
+    // Get shop logo, if available
+    let emailLogo;
+    if (_.isArray(shop.brandAssets)) {
+      const brandAsset = _.find(shop.brandAssets, (asset) => asset.type === "navbarBrandImage");
+      emailLogo = Media.findOne(brandAsset.mediaId);
+    } else {
+      emailLogo = Meteor.absoluteUrl() + "resources/email-templates/shop-logo.png";
+    }
+
+    // Combine same products into single "product" for display purposes
     const combinedItems = [];
     if (order) {
       // Loop through all items in the order. The items are split into indivital items
@@ -354,7 +366,8 @@ Meteor.methods({
           // Otherwise push the unique item into the combinedItems array
           combinedItems.push(orderItem);
 
-
+          // Placeholder image if there is no product image
+          orderItem.placeholderImage = Meteor.absoluteUrl() + "resources/placeholder.gif";
 
           const variantImage = Media.findOne({
             "metadata.productId": orderItem.productId,
@@ -362,31 +375,27 @@ Meteor.methods({
           });
           // variant image
           if (variantImage) {
-            orderItem.variantImage = variantImage;
-            // orderItem.variantImageUrl = "/assets/files/Media/" + variantImage._id + "/" + variantImage._id.copies.thumbnail.name + "?store=thumbnail";
+            orderItem.variantImage = path.join(Meteor.absoluteUrl(), variantImage.url());
           }
           // find a default image
           const productImage = Media.findOne({
             "metadata.productId": orderItem.productId
           });
           if (productImage) {
-            orderItem.productImage = productImage;
-            // orderItem.productImageUrl = "/assets/files/Media/" + productImage + "/" + + "?store=thumbnail";
-            // http://localhost:3000/assets/files/Media/Sv2ieuXc4HNFJ3uhS/red.png?store=thumbnail
+            orderItem.productImage = path.join(Meteor.absoluteUrl(), productImage.url());
           }
-
-
-
         }
       }
     }
 
-
-    // TODO: rename this const? break it up and send each one into the email template separately?
-    // I don't know if it makes sense. The thought is to format
-    // all data inside something here, so we don't have 18 email templates that wed needed
-    // to fix if anything every changes
+    // Merge data into single object to pass to email template
     const dataForOrderEmail = {
+      homepage: Meteor.absoluteUrl(),
+      emailLogo: emailLogo,
+      copyrightDate: moment().format("YYYY"),
+      shop: shop,
+      shopContact: shopContact,
+      order: order,
       orderDate: moment(order.createdAt).format("MM/DD/YYYY"),
       billing: {
         subtotal: accounting.toFixed(order.billing[0].invoice.subtotal, 2),
@@ -399,12 +408,6 @@ Meteor.methods({
       orderUrl: getSlug(shop.name) + "/cart/completed?_id=" + order.cartId,
       combinedItems: combinedItems
     };
-
-
-    console.log("------Varient Image-----", combinedItems[0].variantImage);
-    console.log("------Varient Image ID -----", combinedItems[0].variantImage._id);
-    // console.log("------cvariangimage OR-----", combinedItems[0].variantImage._id.original.name);
-    // console.log("------thumbnail.name-----", combinedItems[0].variantImage._id.copies.thumbnail.name);
 
     Logger.info(`orders/sendNotification status: ${order.workflow.status}`);
 
@@ -431,7 +434,7 @@ Meteor.methods({
       from: `${shop.name} <${shop.emails[0].address}>`,
       subject: `Your order is confirmed`,
       // subject: `Order update from ${shop.name}`,
-      html: SSR.render(tpl, { homepage: Meteor.absoluteUrl(), shop, shopContact, order, dataForOrderEmail })
+      html: SSR.render(tpl, { dataForOrderEmail })
     });
 
     return true;
