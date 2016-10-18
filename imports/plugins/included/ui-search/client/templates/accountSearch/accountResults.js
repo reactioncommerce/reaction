@@ -1,4 +1,3 @@
-// import _ from "lodash";
 import React from "react";
 import { DataType } from "react-taco-table";
 import { Template } from "meteor/templating";
