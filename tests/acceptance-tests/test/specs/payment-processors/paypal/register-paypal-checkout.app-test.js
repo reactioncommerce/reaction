@@ -2,8 +2,8 @@
 const yaml = require("js-yaml");
 const fs   = require("fs");
 const expect = require("chai").expect;
-const shopUser = require("../../lib/user-shop-actions.js");
-const userDo = require("../../lib/basic-user-actions.js");
+const shopUser = require("../../../../lib/user-shop-actions.js");
+const userDo = require("../../../../lib/basic-user-actions.js");
 
 
 beforeEach(function () {
@@ -13,10 +13,10 @@ beforeEach(function () {
 });
 
 
-describe("example payment logged in checkout test", function () {
+describe("paypal logged in checkout test", function () {
   const eleMap = yaml.safeLoad(fs.readFileSync("./tests/acceptance-tests/elements/element-map.yml", "utf8"));
-  it("verify logged in user can checkout with example payment", function () {
-    userDo.UserActions.userLogin("guest");
+  it("verify logged in user can checkout with paypal", function () {
+    userDo.UserActions.registerUser();
     browser.pause("5000");
     userDo.UserActions.refreshShop();
     browser.click(eleMap.product);
@@ -27,13 +27,15 @@ describe("example payment logged in checkout test", function () {
     browser.waitForEnabled(eleMap.checkout_btn, 5000);
     browser.click(eleMap.checkout_btn);
     shopUser.checkForAddress();
+    // free shipping option
     browser.click(eleMap.free_shipping);
-    browser.waitForEnabled(eleMap.example_payment, 5000);
-    browser.click(eleMap.example_payment);
-    shopUser.examplePaymentInfo();
-    browser.waitForEnabled(eleMap.example_payment_complete_order_btn, 5000);
-    browser.click(eleMap.example_payment_complete_order_btn);
-    browser.waitForVisible("#order-status", 20000);
+    browser.waitForEnabled(eleMap.paypal, 5000);
+    browser.click(eleMap.paypal);
+    shopUser.paypalPaymentInfo();
+    browser.waitForEnabled(eleMap.paypal_complete_order_btn, 5000);
+    browser.click(eleMap.paypal_complete_order_btn);
+    // paypal takes forever 45sec wait
+    browser.waitForVisible("#order-status", 45000);
     expect(browser.getText("#order-status")).to.equal("Your order is now submitted.");
   });
 });
