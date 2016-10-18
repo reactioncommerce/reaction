@@ -1,5 +1,14 @@
 import React, { Component, PropTypes } from "react";
-import { Button, Translation } from "/imports/plugins/core/ui/client/components";
+import {
+  Button,
+  ButtonToolbar,
+  Divider,
+  DropDownMenu,
+  Menu,
+  MenuItem,
+  Popover,
+  Translation
+} from "/imports/plugins/core/ui/client/components";
 import SimpleDiff from "./simpleDiff";
 import { Translatable } from "/imports/plugins/core/ui/client/providers";
 
@@ -27,6 +36,24 @@ class PublishControls extends Component {
     }
   }
 
+  handleVisibilityChange = (event, value) => {
+    if (this.props.onVisibilityChange) {
+      let isDocumentVisible = false;
+
+      if (value === "public") {
+        isDocumentVisible = true;
+      }
+
+      this.props.onVisibilityChange(event, isDocumentVisible);
+    }
+  }
+
+  handleAction = (event, value) => {
+    if (this.props.onAction) {
+      this.props.onAction(event, value, this.props.documentIds);
+    }
+  }
+
   get showChangesButtonLabel() {
     if (!this.showDiffs) {
       return "Show Changes";
@@ -43,6 +70,13 @@ class PublishControls extends Component {
     return "app.hideChanges";
   }
 
+  get revisionIds() {
+    if (this.hasRevisions) {
+      return this.props.revisions.map(revision => revision._id);
+    }
+    return false;
+  }
+
   get hasRevisions() {
     return Array.isArray(this.props.revisions) && this.props.revisions.length;
   }
@@ -53,6 +87,24 @@ class PublishControls extends Component {
 
   get showDiffs() {
     return this.diffs && this.state.showDiffs;
+  }
+
+  get isVisible() {
+    if (Array.isArray(this.props.revisions) && this.props.revisions.length) {
+      const primaryRevision = this.props.revisions[0];
+
+      if (primaryRevision.documentData.isVisible) {
+        return "public";
+      }
+    } else if (Array.isArray(this.props.documents) && this.props.documents.length) {
+      const primaryDocument = this.props.documents[0];
+
+      if (primaryDocument.isVisible) {
+        return "public";
+      }
+    }
+
+    return "private";
   }
 
   /**
@@ -100,31 +152,95 @@ class PublishControls extends Component {
     return null;
   }
 
+  renderDeletionStatus() {
+    if (this.hasChanges) {
+      if (this.props.revisions[0].documentData.isDeleted) {
+        return (
+          <Button
+            label="Deleted"
+            onClick={this.handleRestore}
+            status="danger"
+            i18nKeyLabel="app.deleted"
+          />
+        );
+      }
+    }
+
+    return null;
+  }
+
   renderPublishButton() {
     return (
-      <Button
-        disabled={this.hasChanges === false}
-        i18nKeyLabel="app.publishChanges"
-        label="Publish Changes"
-        onClick={this.handlePublishClick}
-        status="success"
-      />
+      <Popover
+        buttonElement={
+          <Button
+            disabled={this.hasChanges === false}
+            label="Publish Changes"
+            onClick={this.handlePublishClick}
+            status="success"
+            tooltip={"This product has changes that need to be published before they are visible to your customers."}
+            i18nKeyLabel="app.publishChanges"
+          />
+        }
+        showDropdownButton={true}
+      >
+        <Menu onChange={this.handleAction}>
+          <MenuItem
+            disabled={this.hasChanges === false}
+            i18nKeyLabel="revisions.discardChanges"
+            icon="fa fa-undo"
+            label="Discard Changes"
+            value="discard"
+          />
+          <Divider />
+          <MenuItem
+            i18nKeyLabel="app.delete"
+            icon="fa fa-trash-o"
+            label="Delete"
+            value="delete"
+          />
+        </Menu>
+      </Popover>
     );
+  }
+
+  renderViewControls() {
+    if (this.props.showViewAsControls) {
+      return (
+        <DropDownMenu
+          onChange={this.handleVisibilityChange}
+          value={this.isVisible}
+        >
+          <MenuItem
+            i18nKeyLabel="app.public"
+            icon="fa fa-unlock"
+            label="Public"
+            selectLabel="Public"
+            value="public"
+          />
+          <MenuItem
+            i18nKeyLabel="app.private"
+            label="Private"
+            icon="fa fa-lock"
+            selectLabel="Public"
+            value="private"
+          />
+        </DropDownMenu>
+      );
+    }
+
+    return null;
   }
 
   render() {
     if (this.props.isEnabled) {
       return (
         <div className="rui publish-controls">
-          <Button
-            i18nKeyLabel={this.showChangesButtoni18nKeyLabel}
-            label={this.showChangesButtonLabel}
-            onClick={this.handleToggleShowChanges}
-            status="link"
-          />
-          {this.renderPublishButton()}
-          {this.showDiffs && <hr />}
-          {this.renderChanges()}
+          <ButtonToolbar>
+            {this.renderDeletionStatus()}
+            {this.renderViewControls()}
+            {this.renderPublishButton()}
+          </ButtonToolbar>
         </div>
       );
     }
@@ -141,12 +257,21 @@ class PublishControls extends Component {
 }
 
 PublishControls.propTypes = {
+  documentIds: PropTypes.arrayOf(PropTypes.string),
+  documents: PropTypes.arrayOf(PropTypes.object),
   isEnabled: PropTypes.bool,
+  onAction: PropTypes.func,
   onPublishClick: PropTypes.func,
+  onVisibilityChange: PropTypes.func,
   revisions: PropTypes.arrayOf(PropTypes.object),
+  showViewAsControls: PropTypes.bool,
   translation: PropTypes.shape({
     lang: PropTypes.string
   })
+};
+
+PublishControls.defaultProps = {
+  showViewAsControls: true
 };
 
 export default Translatable()(PublishControls);

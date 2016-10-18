@@ -1,12 +1,21 @@
 import React, { Component, PropTypes } from "react";
-import { Currency } from "/imports/plugins/core/ui/client/components/";
+import {
+  Button,
+  Currency,
+  DropDownMenu,
+  MenuItem,
+  Translation,
+  Toolbar,
+  ToolbarGroup
+} from "/imports/plugins/core/ui/client/components/";
 import {
   AddToCartButton,
   ProductMetadata,
   ProductTags,
   ProductField
 } from "./";
-import { AlertContainer, EditContainer } from "/imports/plugins/core/ui/client/containers";
+import { AlertContainer } from "/imports/plugins/core/ui/client/containers";
+import { PublishContainer } from "/imports/plugins/core/revisions";
 
 class ProductDetail extends Component {
   get tags() {
@@ -21,10 +30,56 @@ class ProductDetail extends Component {
     return this.props.editable;
   }
 
+  handleVisibilityChange = (event, isProductVisible) => {
+    if (this.props.onProductFieldChange) {
+      this.props.onProductFieldChange(this.product._id, "isVisible", isProductVisible);
+    }
+  }
+
+  handlePublishActions = (event, action) => {
+    if (action === "delete" && this.props.onDeleteProduct) {
+      this.props.onDeleteProduct(this.product._id);
+    }
+  }
+
+  renderToolbar() {
+    if (this.props.hasAdminPermission) {
+      return (
+        <Toolbar>
+          <ToolbarGroup firstChild={true}>
+            <Translation defaultValue="Product Management" i18nKey="productDetail.productManagement"/>
+          </ToolbarGroup>
+          <ToolbarGroup>
+            <DropDownMenu
+              buttonElement={<Button label="Switch" />}
+              onChange={this.props.onViewContextChange}
+              value={this.props.viewAs}
+            >
+              <MenuItem label="Administrator" value="administrator" />
+              <MenuItem label="Customer" value="customer" />
+            </DropDownMenu>
+          </ToolbarGroup>
+          <ToolbarGroup lastChild={true}>
+            <PublishContainer
+              documentIds={[this.product._id]}
+              documents={[this.product]}
+              onVisibilityChange={this.handleVisibilityChange}
+              onAction={this.handlePublishActions}
+            />
+          </ToolbarGroup>
+        </Toolbar>
+      );
+    }
+
+    return null;
+  }
+
   render() {
     return (
-      <div className="container-main">
-        <div className="container-fluid pdp-container" itemScope itemType="http://schema.org/Product">
+      <div className="" style={{position: "relative"}}>
+        {this.renderToolbar()}
+
+        <div className="container-main container-fluid pdp-container" itemScope itemType="http://schema.org/Product">
           <AlertContainer placement="productManagement" />
 
           <header className="pdp header">
@@ -33,7 +88,7 @@ class ProductDetail extends Component {
               fieldName="title"
               fieldTitle="Title"
               element={<h1 />}
-              onProductFieldChange={this.props.handleProductFieldChange}
+              onProductFieldChange={this.props.onProductFieldChange}
               product={this.product}
               textFieldProps={{
                 i18nKeyPlaceholder: "productDetailEdit.title",
@@ -46,7 +101,7 @@ class ProductDetail extends Component {
               fieldName="pageTitle"
               fieldTitle="Sub Title"
               element={<h2 />}
-              onProductFieldChange={this.props.handleProductFieldChange}
+              onProductFieldChange={this.props.onProductFieldChange}
               product={this.product}
               textFieldProps={{
                 i18nKeyPlaceholder: "productDetailEdit.pageTitle",
@@ -59,8 +114,8 @@ class ProductDetail extends Component {
           <div className="pdp-content">
             <div className="pdp column left pdp-left-column">
               {this.props.mediaGalleryComponent}
-              <ProductTags editable={true} product={this.product} tags={this.tags} />
-              <ProductMetadata editable={true} product={this.product} />
+              <ProductTags editable={this.props.editable} product={this.product} tags={this.tags} />
+              <ProductMetadata editable={this.props.editable} product={this.product} />
             </div>
 
             <div className="pdp column right pdp-right-column">
@@ -85,7 +140,7 @@ class ProductDetail extends Component {
                   editable={this.editable}
                   fieldName="vendor"
                   fieldTitle="Vendor"
-                  onProductFieldChange={this.props.handleProductFieldChange}
+                  onProductFieldChange={this.props.onProductFieldChange}
                   product={this.product}
                   textFieldProps={{
                     i18nKeyPlaceholder: "productDetailEdit.vendor",
@@ -100,7 +155,7 @@ class ProductDetail extends Component {
                   fieldName="description"
                   fieldTitle="Description"
                   multiline={true}
-                  onProductFieldChange={this.props.handleProductFieldChange}
+                  onProductFieldChange={this.props.onProductFieldChange}
                   product={this.product}
                   textFieldProps={{
                     i18nKeyPlaceholder: "productDetailEdit.description",
@@ -132,9 +187,19 @@ class ProductDetail extends Component {
 ProductDetail.propTypes = {
   cartQuantity: PropTypes.number,
   editable: PropTypes.bool,
+  hasAdminPermission: PropTypes.bool,
+  mediaGalleryComponent: PropTypes.node,
   onAddToCart: PropTypes.func,
   onCartQuantityChange: PropTypes.func,
-  product: PropTypes.object
+  onDeleteProduct: PropTypes.func,
+  onProductFieldChange: PropTypes.func,
+  onViewContextChange: PropTypes.func,
+  priceRange: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  product: PropTypes.object,
+  socialComponent: PropTypes.node,
+  tags: PropTypes.arrayOf(PropTypes.object),
+  topVariantComponent: PropTypes.node,
+  viewAs: PropTypes.string
 };
 
 export default ProductDetail;
