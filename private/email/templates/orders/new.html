@@ -132,7 +132,7 @@
                             </tr>
                             <tr>
                               <td align="left" valign="top">
-                                <a href="#"><img src="{{dataForOrderEmail.emailLogo}}" width="49" height="49"
+                                <a href="#"><img src="{{emailLogo}}" width="49" height="49"
                                       alt="logo"></a>
                               </td>
                             </tr>
@@ -177,8 +177,8 @@
                                         <table width="100%" border="0" cellspacing="0" cellpadding="0" class="emailwrapto100pc">
                                           <tbody>
                                             <tr>
-                                              <td width="33%" align="left" valign="top" style="font-size:14px; line-height:normal; color:#1c98d5; font-family:Arial, helvetica;"><a href="{{dataForOrderEmail.homepage}}{{dataForOrderEmail.orderUrl}}" style="color:#1c98d5;">{{dataForOrderEmail.order._id}}</a></td>
-                                              <td width="33%" align="left" valign="top" style="font-size:14px; line-height:normal; color:#4c4c4d; font-family:Arial, helvetica;">{{dataForOrderEmail.orderDate}}</td>
+                                              <td width="33%" align="left" valign="top" style="font-size:14px; line-height:normal; color:#1c98d5; font-family:Arial, helvetica;"><a href="{{homepage}}{{orderUrl}}" style="color:#1c98d5;">{{order._id}}</a></td>
+                                              <td width="33%" align="left" valign="top" style="font-size:14px; line-height:normal; color:#4c4c4d; font-family:Arial, helvetica;">{{orderDate}}</td>
                                               <td width="33%" align="left" valign="top" style="font-size:14px; line-height:normal; color:#4c4c4d; font-family:Arial, helvetica;">&nbsp;</td>
                                             </tr>
                                           </tbody>
@@ -220,11 +220,11 @@
                                         <table width="100%" border="0" cellspacing="0" cellpadding="0" class="emailwrapto100pc">
                                           <tbody>
                                             <tr>
-                                              <td width="33%" align="left" valign="top" style="font-size:10px; line-height:normal; color:#4c4c4d; font-family:Arial, helvetica;">{{dataForOrderEmail.shipping.address.address1}},<br> {{dataForOrderEmail.shipping.address.city}},
-                                                {{dataForOrderEmail.shipping.address.region}} {{dataForOrderEmail.shipping.address.postal}}</td>
-                                              <td width="33%" align="left" valign="top" style="font-size:10px; line-height:normal; color:#4c4c4d; font-family:Arial, helvetica;">{{dataForOrderEmail.order.billing.[0].address.address1}},<br> {{dataForOrderEmail.order.billing.[0].address.city}},
-                                                {{dataForOrderEmail.order.billing.[0].address.region}} {{dataForOrderEmail.order.billing.[0].address.postal}}</td>
-                                              <td width="33%" align="left" valign="top" style="font-size:10px; line-height:normal; color:#4c4c4d; font-family:Arial, helvetica;">{{dataForOrderEmail.order.billing.[0].paymentMethod.storedCard}}</td>
+                                              <td width="33%" align="left" valign="top" style="font-size:10px; line-height:normal; color:#4c4c4d; font-family:Arial, helvetica;">{{shipping.address.address1}},<br> {{shipping.address.city}},
+                                                {{shipping.address.region}} {{shipping.address.postal}}</td>
+                                              <td width="33%" align="left" valign="top" style="font-size:10px; line-height:normal; color:#4c4c4d; font-family:Arial, helvetica;">{{order.billing.[0].address.address1}},<br> {{order.billing.[0].address.city}},
+                                                {{order.billing.[0].address.region}} {{order.billing.[0].address.postal}}</td>
+                                              <td width="33%" align="left" valign="top" style="font-size:10px; line-height:normal; color:#4c4c4d; font-family:Arial, helvetica;">{{order.billing.[0].paymentMethod.storedCard}}</td>
                                             </tr>
                                             <tr>
                                               <td valign="top" align="left" height="30" style="line-height:1px; font-size:1px;">&nbsp;</td>
@@ -242,7 +242,7 @@
                                     <tr>
                                       <td valign="top" align="left" height="2" style="line-height:1px; font-size:1px; border-top:solid 2px #efefee;">&nbsp;</td>
                                     </tr>
-                                    {{#each dataForOrderEmail.combinedItems}}
+                                    {{#each combinedItems}}
                                     <tr>
                                       <td valign="top" align="left">
                                         <table width="100%" border="0" cellspacing="0" cellpadding="0" class="emailwrapto100pc">
@@ -299,16 +299,16 @@
                                               <td valign="top" align="left" height="20" style="line-height:1px; font-size:1px;">&nbsp;</td>
                                             </tr>
                                             <tr>
-                                              <td valign="top" align="right" style="font-size:12px; line-height:normal; color:#4c4c4d; font-family:Arial, helvetica;">Subtotal: ${{dataForOrderEmail.billing.subtotal}}</td>
+                                              <td valign="top" align="right" style="font-size:12px; line-height:normal; color:#4c4c4d; font-family:Arial, helvetica;">Subtotal: ${{billing.subtotal}}</td>
                                             </tr>
                                             <tr>
-                                              <td valign="top" align="right" style="font-size:12px; line-height:normal; color:#4c4c4d; font-family:Arial, helvetica;">Shipping: ${{dataForOrderEmail.billing.shipping}}</td>
+                                              <td valign="top" align="right" style="font-size:12px; line-height:normal; color:#4c4c4d; font-family:Arial, helvetica;">Shipping: ${{billing.shipping}}</td>
                                             </tr>
                                             <tr>
-                                              <td valign="top" align="right" style="font-size:12px; line-height:normal; color:#4c4c4d; font-family:Arial, helvetica;">Tax: ${{dataForOrderEmail.billing.taxes}}</td>
+                                              <td valign="top" align="right" style="font-size:12px; line-height:normal; color:#4c4c4d; font-family:Arial, helvetica;">Tax: ${{billing.taxes}}</td>
                                             </tr>
                                             <tr>
-                                              <td valign="top" align="right" style="font-size:12px; line-height:normal; color:#4c4c4d; font-family:Arial, helvetica;">Discounts: ${{dataForOrderEmail.billing.discounts}}</td>
+                                              <td valign="top" align="right" style="font-size:12px; line-height:normal; color:#4c4c4d; font-family:Arial, helvetica;">Discounts: ${{billing.discounts}}</td>
                                             </tr>
                                             <tr>
                                               <td valign="top" align="left" height="10" style="line-height:1px; font-size:1px;">&nbsp;</td>
@@ -325,7 +325,7 @@
                                                   <tbody>
                                                     <tr>
                                                       <td valign="top" align="left" style="font-size:12px; line-height:normal; color:#a2a1a3; font-family:Arial, helvetica;">ORDER TOTAL:</td>
-                                                      <td valign="top" align="right" style="font-size:22px; line-height:normal; color:#4d4d4e; font-family:Arial, helvetica;">${{dataForOrderEmail.billing.total}}</td>
+                                                      <td valign="top" align="right" style="font-size:22px; line-height:normal; color:#4d4d4e; font-family:Arial, helvetica;">${{billing.total}}</td>
                                                     </tr>
                                                   </tbody>
                                                 </table>
@@ -344,8 +344,8 @@
                               <td height="50" align="left" valign="top" style="font-size:1px; line-height:1px;">&nbsp;</td>
                             </tr>
                             <tr>
-                              <td align="left" valign="top" style="font-family:Arial, Helvetica, sans-serif; font-size:12px; font-weight:normal; line-height:17px;">You received this email because you created an order with {{dataForOrderEmail.shop.addressBook.[0].company}}. If you have any questions, concerns, or suggestions please email us:
-                                <a href="mailto:{{dataForOrderEmail.shop.emails.[0].address}}" style="text-decoration:none; color:#1e98d5;">{{dataForOrderEmail.shop.emails.[0].address}}</a></td>
+                              <td align="left" valign="top" style="font-family:Arial, Helvetica, sans-serif; font-size:12px; font-weight:normal; line-height:17px;">You received this email because you created an order with {{shop.addressBook.[0].company}}. If you have any questions, concerns, or suggestions please email us:
+                                <a href="mailto:{{shop.emails.[0].address}}" style="text-decoration:none; color:#1e98d5;">{{shop.emails.[0].address}}</a></td>
                             </tr>
                             <tr>
                               <td height="21" align="left" valign="top" style="font-size:1px; line-height:1px;">&nbsp;</td>
@@ -355,17 +355,17 @@
                                 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="emailwrapto100pc">
                                   <tr>
                                     <td width="26" align="left" valign="top">
-                                      <a href="#"><img src="{{dataForOrderEmail.homepage}}resources/email-templates/twitter-icon.png" width="26"
+                                      <a href="#"><img src="{{homepage}}resources/email-templates/twitter-icon.png" width="26"
                                             height="26" alt="twt_icon"></a>
                                     </td>
                                     <td width="10" align="left" valign="top">&nbsp;</td>
                                     <td width="26" align="left" valign="top">
-                                      <a href="#"><img src="{{dataForOrderEmail.homepage}}resources/email-templates/facebook-icon.png" width="26"
+                                      <a href="#"><img src="{{homepage}}resources/email-templates/facebook-icon.png" width="26"
                                             height="26" alt="fb_icon"></a>
                                     </td>
                                     <td width="10" align="left" valign="top">&nbsp;</td>
                                     <td>
-                                      <a href="#"><img src="{{dataForOrderEmail.homepage}}resources/email-templates/google-plus-icon.png" width="26"
+                                      <a href="#"><img src="{{homepage}}resources/email-templates/google-plus-icon.png" width="26"
                                             height="26" alt="g_plus_icon"></a>
                                     </td>
                                   </tr>
@@ -382,14 +382,14 @@
                               <td height="18" align="left" valign="top" style="font-size:1px; line-height:1px;">&nbsp;</td>
                             </tr>
                             <tr>
-                              <td align="left" valign="top" style="font-family:Arial, Helvetica, sans-serif; font-size:12px; font-weight:normal; line-height:12px; color:#4d4c4d;">&copy; {{dataForOrderEmail.copyrightDate}} {{dataForOrderEmail.shop.addressBook.[0].company}}. All rights reserved</td>
+                              <td align="left" valign="top" style="font-family:Arial, Helvetica, sans-serif; font-size:12px; font-weight:normal; line-height:12px; color:#4d4c4d;">&copy; {{copyrightDate}} {{shop.addressBook.[0].company}}. All rights reserved</td>
                             </tr>
                             <tr>
                               <td height="8" align="left" valign="top" style="font-size:1px; line-height:1px;">&nbsp;</td>
                             </tr>
                             <tr>
-                              <td align="left" valign="top" style="font-family:Arial, Helvetica, sans-serif; font-size:10px; font-weight:normal; line-height:10px; color:#787878;">{{dataForOrderEmail.shop.addressBook.[0].address1}} {{dataForOrderEmail.shop.addressBook.[0].address2}}, {{dataForOrderEmail.shop.addressBook.[0].city}},
-                                {{dataForOrderEmail.shop.addressBook.[0].region}} {{dataForOrderEmail.shop.addressBook.[0].postal}}</td>
+                              <td align="left" valign="top" style="font-family:Arial, Helvetica, sans-serif; font-size:10px; font-weight:normal; line-height:10px; color:#787878;">{{shop.addressBook.[0].address1}} {{shop.addressBook.[0].address2}}, {{shop.addressBook.[0].city}},
+                                {{shop.addressBook.[0].region}} {{shop.addressBook.[0].postal}}</td>
                             </tr>
                           </table>
                         </td>

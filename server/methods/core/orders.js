@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import path from "path";
 import moment from "moment";
 import accounting from "accounting-js";
@@ -337,7 +338,7 @@ Meteor.methods({
 
     // Get shop logo, if available
     let emailLogo;
-    if (_.isArray(shop.brandAssets)) {
+    if (Array.isArray(shop.brandAssets)) {
       const brandAsset = _.find(shop.brandAssets, (asset) => asset.type === "navbarBrandImage");
       const mediaId = Media.findOne(brandAsset.mediaId);
       emailLogo = path.join(Meteor.absoluteUrl(), mediaId.url());
@@ -435,7 +436,7 @@ Meteor.methods({
       from: `${shop.name} <${shop.emails[0].address}>`,
       subject: `Your order is confirmed`,
       // subject: `Order update from ${shop.name}`,
-      html: SSR.render(tpl, { dataForOrderEmail })
+      html: SSR.render(tpl,  dataForOrderEmail)
     });
 
     return true;
