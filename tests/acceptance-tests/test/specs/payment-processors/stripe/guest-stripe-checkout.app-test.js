@@ -2,8 +2,8 @@
 const yaml = require("js-yaml");
 const fs   = require("fs");
 const expect = require("chai").expect;
-const shopUser = require("../../lib/user-shop-actions.js");
-const userDo = require("../../lib/basic-user-actions.js");
+const shopUser = require("../../../../lib/user-shop-actions.js");
+const userDo = require("../../../../lib/basic-user-actions.js");
 
 beforeEach(function () {
   const browserConfig = yaml.safeLoad(fs.readFileSync("./tests/acceptance-tests/config/settings.yml", "utf8"));
@@ -12,9 +12,9 @@ beforeEach(function () {
 });
 
 
-describe("example payment guest checkout test", function () {
+describe("stripe guest checkout test", function () {
   const eleMap = yaml.safeLoad(fs.readFileSync("./tests/acceptance-tests/elements/element-map.yml", "utf8"));
-  it("verify guest can checkout with example payment", function () {
+  it("verify guest can checkout with stripe", function () {
     browser.pause("5000");
     userDo.UserActions.refreshShop();
     browser.click(eleMap.product);
@@ -29,12 +29,11 @@ describe("example payment guest checkout test", function () {
     shopUser.userAddress();
     // free shipping option
     browser.click(eleMap.free_shipping);
-    browser.waitForEnabled(eleMap.example_payment, 5000);
-    browser.click(eleMap.example_payment);
-    shopUser.examplePaymentInfo();
-    browser.waitForEnabled(eleMap.example_payment_complete_order_btn, 5000);
-    browser.click(eleMap.example_payment_complete_order_btn);
-    browser.waitForVisible("#order-status", 10000);
+    browser.waitForEnabled(eleMap.stripe, 3000);
+    browser.click(eleMap.stripe);
+    shopUser.stripePaymentInfo();
+    browser.click(eleMap.stripe_complete_order_btn);
+    browser.waitForVisible("#order-status", 20000);
     expect(browser.getText("#order-status")).to.equal("Your order is now submitted.");
   });
 });
