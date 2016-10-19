@@ -1,274 +1,833 @@
-[
-    {
-        "language": "German",
-        "i18n": "de",
-        "ns": "core",
-        "translation": {
-            "core": {
-                "languages": {
-                    "select": "Sprache auswählen"
-                },
-                "app": {
-                    "saveAndContinue": "Speichern und fortfahren",
-                    "cancel": "Abbrechen",
-                    "submit": "Abschicken",
-                    "delete": "Löschen",
-                    "create": "Erstellen",
-                    "close": "Schließen",
-                    "settings": "Einstellungen",
-                    "loading": "Laden",
-                    "toggle": "Umschalten",
-                    "warning": "Ups!",
-                    "unauthorizedMessage": "Ihnen fehlen die Rechte, um die Seite anzuzeigen."
-                },
-                "header": {
-                    "tagsAdd": "Tag hinzufügen",
-                    "search": "Suche in Produkten..."
-                },
-                "productDetail": {
-                    "productManagement": "Produkte verwalten",
-                    "whenYouAreDone": "wenn Sie mit editieren fertig sind.",
-                    "tags": "Tags",
-                    "tagsAdd": "Tag hinzufügen",
-                    "details": "Details",
-                    "detailsName": "Detailname",
-                    "detailsInfo": "Detailinformation",
-                    "options": "Optionen",
-                    "addToCart": "Zum Warenkorb hinzufügen",
-                    "chooseOptions": "Es muss eine Produktoption ausgewählt werden, bevor es in den Warenkorb gelegt werden kann.",
-                    "outOfStock": "Dieses Produkt ist leider vergriffen und kann nicht geordert werden!",
-                    "productDeleteError": "Fehler beim Löschen von ",
-                    "publishFirst": "Produkt kann erst nach Veröffentlichung in den Warenkorb gelegt werden.",
-                    "selectOption": "Es muss eine Produktoption ausgewählt werden, bevor es in den Warenkorb gelegt werden kann.",
-                    "addedToCart": "hinzugefügt"
-                },
-                "productDetailEdit": {
-                    "title": "Produkttitle",
-                    "pageTitle": "Produkt Seitentitel",
-                    "vendor": "Hersteller",
-                    "description": "Produktbeschreibung hinzufügen",
-                    "facebookMsg": "Facebook Nachricht",
-                    "twitterMsg": "Twitter Nachricht",
-                    "pinterestMsg": "Pinterest Nachricht",
-                    "googleplusMsg": "Google+ Nachricht"
-                },
-                "variantList": {
-                    "moreOptions": "Für diese Auswahl gibt's noch weitere Optionen.",
-                    "createVariant": "Produktvariante erzeugen"
-                },
-                "gridPackage": {
-                    "pkgEnabled": " wurde aktiviert.",
-                    "pkgDisabled": " wurde deaktiviert."
-                },
-                "cartDrawer": {
-                    "empty": "Ihr Warenkorb ist leer.",
-                    "keepShopping": "Zurück zum Shop",
-                    "checkout": "Zur Kasse"
-                },
-                "cartSubTotals": {
-                    "head": "Ihr Warenkorb",
-                    "items": "Warenkorbartikel",
-                    "subtotal": "Zwischensumme",
-                    "shipping": "Versand",
-                    "tax": "Mehrwertsteuer",
-                    "total": "Summe"
-                },
-                "cartDrawerItems": {
-                    "left": "links"
-                },
-                "cartCompleted": {
-                    "thankYou": "Vielen Dank!",
-                    "itemsFrom": "Artikel von",
-                    "yourOrderIsNow": "Im Warenkorb",
-                    "summaryMessage": "Vielen Dank für Ihren Einkauf.",
-                    "submitted": "gesendet",
-                    "registerGuest": "Bei Eingabe Ihrer E-Mail-Adresse benachrichtigen wir Sie über Artikelupdates.",
-                    "trackYourDelivery": "Ihre Bestellung wird verschickt an",
-                    "noOrdersFound": "Keine Bestellung vorhanden."
-                },
-                "checkoutLogin": {
-                    "loginCompleted": "Benutzerkonte abgeschlossen",
-                    "createOrLogin": "Benutzerkonto anlegen oder anmelden",
-                    "guestOrLogin": "Anmelden oder als Gast fortfahren",
-                    "continueAsGuest": "Als Gast fortfahren",
-                    "guestMessage": "Sie können ohne Benutzerkonto fortfahren. Auch später haben Sie noch die Möglichkeit, ein Benutzerkonto anzulegen."
-                },
-                "addressBookGrid": {
-                    "chooseAddress": "Bitte wählen Sie die Versandadresse",
-                    "createDefault": "Standardadresse festlegen",
-                    "selectShippingAddress": "Bitte Versandadresse wählen",
-                    "selectBillingAddress": "Bitte Rechnungsadresse wählen"
-                },
-                "addressBookAdd": {
-                    "addAddress": "Neuen Adresse anlegen",
-                    "createAddress": "Standardadresse festlegen"
-                },
-                "addressBookEdit": {
-                    "editAddress": "Adresse editieren"
-                },
-                "shop": {
-                    "addressBook": {
-                        "country": "Land",
-                        "fullName": "Vor- und Zuname",
-                        "address1": "Adresse 1",
-                        "address2": "Adresse 2",
-                        "postal": "PLZ",
-                        "city": "Stadt",
-                        "region": "Region",
-                        "phone": "Telefon",
-                        "isShippingDefault": "Make this your default shipping address?",
-                        "isBillingDefault": "Make this your default billing address?",
-                        "isCommercial": "This is a commercial address."
-                    }
-                },
-                "address": {
-                    "country": "Land",
-                    "fullName": "Vor- und Zuname",
-                    "address1": "Straße",
-                    "address2": "zusätzliche Adressangaben",
-                    "postal": "Postleitzahl",
-                    "city": "Stadt",
-                    "region": "Bundesland",
-                    "phone": "Telefonnummer",
-                    "isShippingDefault": "Als Standard-Versandadresse festlegen?",
-                    "isBillingDefault": "Als Standard-Rechnungsadresse festlegen?",
-                    "isCommercial": "Es handelt sich um eine kommerzielle Adresse."
-                },
-                "checkoutProgressBar": {
-                    "login": "Konto",
-                    "shippingBilling": "Adressdetails",
-                    "shippingOptions": "Versandoptionen",
-                    "reviewPayment": "Überprüfung der Zahlung",
-                    "complete": "Fertig"
-                },
-                "checkoutPayment": {
-                    "addPaymentToCompleteOrder": "Bitte Zahlungsart festlegen um den Einkauf abzuschließen."
-                },
-                "checkoutReview": {
-                    "review": "Durchsicht"
-                },
-                "checkoutShipping": {
-                    "selectShippingOption": "Bitte Versandmethode wählen.",
-                    "noShippingMethods": "Es wurde keine Versandmethode festgelegt.",
-                    "configureNow": "Einstellungen vornehmen.",
-                    "shipping": "Versand"
-                },
-                "shopEditForm": {
-                    "name": "Name",
-                    "email": "E-Mail"
-                },
-                "shopEditAdressForm": {
-                    "company": "Firma",
-                    "fullname": "Vollständiger Name",
-                    "address1": "Adresse 1"
-                },
-                "consoleIcon": {
-                    "iconTitle": "Console anzeigen",
-                    "text": "Console"
-                },
-                "createProductIcon": {
-                    "iconTitle": "Produkt erstellen",
-                    "text": "Erstellen"
-                },
-                "social": {
-                    "facebook": "Facebook",
-                    "google": "Google",
-                    "github": "GitHub",
-                    "meetup": "Meetup",
-                    "twitter": "Twitter",
-                    "weibo": "Weibo"
-                },
-                "accountsUI": {
-                    "add": "hinzufügen",
-                    "and": "und",
-                    "back": "zurück",
-                    "changePassword": "Passwort ändern",
-                    "choosePassword": "Passwort auswählen",
-                    "clickAgree": "Durch die Registrierung akzeptieren Sie unsere",
-                    "configure": "Einstellungen",
-                    "createAccount": "Konto anlegen",
-                    "currentPassword": "Aktuelles Passwort",
-                    "dontHaveAnAccount": "Noch kein Konto?",
-                    "email": "E-Mail",
-                    "emailAddress": "E-Mail-Adresse",
-                    "emailResetLink": "Senden",
-                    "forgotPassword": "Passwort vergessen?",
-                    "ifYouAlreadyHaveAnAccount": "Falls Sie ein Konto haben, bitte hier",
-                    "newPassword": "Neues Passwort",
-                    "newPasswordAgain": "Neues Passwort (wiederholen)",
-                    "optional": "Optional",
-                    "or": "oder",
-                    "password": "Passwort",
-                    "passwordAgain": "Passwort (wiederholen)",
-                    "privacyPolicy": "Datenschutzerklärung",
-                    "remove": "entfernen",
-                    "resetYourPassword": "Passwort zurücksetzen",
-                    "setPassword": "Passwort neu setzen",
-                    "sign": "Anmelden",
-                    "signIn": "Anmelden",
-                    "signin": "anmelden",
-                    "signInWith": "Anmelden mit",
-                    "signedIn": "Sie sind angemeldet.",
-                    "signOut": "Abmelden",
-                    "signUp": "Registrieren",
-                    "signupCode": "Registrierungscode",
-                    "signUpWithYourEmailAddress": "Mit E-Mail registrieren",
-                    "terms": "Geschäftsbedingungen",
-                    "updateYourPassword": "Passwort aktualisieren",
-                    "username": "Benutzername",
-                    "usernameOrEmail": "Benutzername oder E-Mail",
-                    "with": "mit",
-                    "checkoutAsGuest": "Ohne Benutzerkonto bestellen",
-                    "info": {
-                        "emailSent": "E-Mail gesendet",
-                        "emailVerified": "E-Mail verifiziert",
-                        "PasswordChanged": "Das Passwort wurde geändert",
-                        "PasswordReset": "Das Passwort wurde zurückgesetzt"
-                    },
-                    "error": {
-                        "emailRequired": "Es muss eine E-Mail-Adressen angegeben werden.",
-                        "passwordMustBeAtLeast6CharactersLong": "Das Passwort muss mindestens aus 6 Zeichen bestehen.",
-                        "minChar": "Das Passwort muss mindesten 6 Zeichen lang sein.",
-                        "pwdsDontMatch": "Die Passwörter stimmen nicht überein.",
-                        "pwOneDigit": "Das Passwort muss mindestens eine Ziffer enthalten.",
-                        "pwOneLetter": "Das Passwort muss mindestens einen Buchstaben enthalten.",
-                        "signInRequired": "Sie müssen sich anmelden.",
-                        "signupCodeIncorrect": "Registrierungscode ungültig.",
-                        "signupCodeRequired": "Registrierungscode benötigt.",
-                        "usernameIsEmail": "Benutzername darf keine E-Mail-Adresse sein.",
-                        "usernameRequired": "Benutzername muss angegeben werden.",
-                        "emailAlreadyExists": "E-Mail-Adresse schon vorhanden.",
-                        "emailDoesntMatchTheCriteria": "Das Format der E-Mail-Adresse ist falsch.",
-                        "invalidLoginToken": "Ungültiges Login-Token",
-                        "loginForbidden": "Login nicht zulässig",
-                        "serviceUnknown": "UnbekannterService",
-                        "unrecognizedOptionsForLoginRequest": "Unbekannte Login Aktion",
-                        "userValidationFailed": "Die Benutzerdaten sind nicht korrekt",
-                        "usernameAlreadyExists": "Der Benutzername ist schon vergeben.",
-                        "youAreNotLoggedIn": "Sie sind nicht eingeloggt.",
-                        "youveBeenLoggedOutByTheServer": "Die Sitzung wurde vom Server beendet. Bitte melden Sie sich erneut an.",
-                        "yourSessionHasExpired": "Die Sitzung ist abgelaufen. Bitte melden Sie sich erneut an.",
-                        "noMatchingLoginAttemptFound": "Kein passender Login-Vorgang gefunden.",
-                        "passWordIsOld": "Das Passwort ist abgelaufen, bitte vergeben Sie es erneut.",
-                        "incorrectPassword": "Das Passwort ist nicht korrekt.",
-                        "invalidEmail": "E-Mail-Adresse ist ungültig.",
-                        "addressMustBeAValidEMailAddress": "Ungültige E-Mail-Adresse",
-                        "mustBeLoggedIn": "Bitte melden Sie sich zuerst an",
-                        "needToSetUsernameOrEmail": "Bitte Benutzernamen oder E-Mail-Adresse angeben",
-                        "oldPasswordFormat": "Altes Passwort-Format",
-                        "passwordMayNotBeEmpty": "Das Passwort darf nicht leer sein",
-                        "signupsForbidden": "Anmeldung ist nicht möglich.",
-                        "tokenExpired": "Das Token ist abgelaufen",
-                        "tokenHasInvalidEmailAddress": "E-Mail-Adresse stimmt nicht mit dem Token überein.",
-                        "userHasNoPasswordSet": "Kein Passwort für den Benutzer angegeben",
-                        "userNotFound": "Benutzer nicht gefunden",
-                        "verifyEmailLinkExpired": "Das Token zur Verifizierung der E-Mail ist abgelaufen",
-                        "verifyEmailLinkIsForUnknownAddress": "Verifizierung des Tokens fehlgeschlagen. (Das Token gehört zu einer unbekannten E-Mail-Adresse.)",
-                        "matchFailed": "Abgleich fehlgeschlagen",
-                        "unknownError": "Unbekannter Fehler"
-                    }
-                }
-            }
+[{
+  "language": "German",
+  "i18n": "de",
+  "ns": "core",
+  "translation": {
+    "core": {
+      "languages": {
+        "select": "Sprache auswählen"
+      },
+      "admin": {
+        "shortcut": {
+          "dashboardLabel": "Dashboard",
+          "ordersLabel": "Bestellungen",
+          "addProductLabel": "Produkt hinzufügen.",
+          "accountsLabel": "Konten"
+        },
+        "dashboard": {
+          "accountsLabel": "Konten",
+          "accountsTitle": "Konten",
+          "accountsDescription": "Mitgliederberechtigungen verwalten",
+          "analyticsLabel": "Analytics",
+          "analyticsTitle": "Analytics",
+          "analyticsDescription": "Integrierung von Analysen und Tracking",
+          "authorizenetLabel": "Authorize.net",
+          "authorizenetTitle": "Authorize.net",
+          "authorizenetDescription": "Authorize.net Zahlungen",
+          "shippingLabel": "Versand",
+          "shippingTitle": "Versand",
+          "shippingDescription": "Lieferkosten angeben",
+          "braintreeLabel": "Braintree",
+          "braintreeTitle": "Braintree",
+          "braintreeDescription": "Braintree Zahlungen",
+          "catalogLabel": "Katalog",
+          "catalogTitle": "Katalog",
+          "catalogDescription": "Produktkatalog",
+          "coreLabel": "Einstellungen",
+          "coreTitle": "Dashboard",
+          "coreDescription": "Ergebnis-Konfiguration",
+          "examplePaymentProviderLabel": "Beispielzahlung",
+          "examplePaymentProviderDescription": "Zahlungsart-Beispiel",
+          "i18NLabel": "i18n",
+          "i18NTitle": "i18n",
+          "i18NDescription": "Internationalisierungs-Dienstprogramme ",
+          "inventoryLabel": "Bestand",
+          "inventoryTitle": "Bestand",
+          "inventoryDescription": "Bestand-Dienstprogramme",
+          "layoutLabel": "Layout",
+          "layoutTitle": "Layout",
+          "layoutDescription": "Layout-Dienstprogramme",
+          "connectLabel": "Verbinden",
+          "connectTitle": "Verbinden",
+          "connectDescription": "Ergebnis als eingesetztes Dienstprogramm verbinden",
+          "ordersLabel": "Bestellungen",
+          "ordersTitle": "Bestellungen",
+          "ordersDescription": "Ihre Bestellungen ausführen",
+          "paypalLabel": "PayPal",
+          "paypalTitle": "PayPal",
+          "paypalDescription": "PayPal Zahlungen",
+          "routingLabel": "Routing",
+          "routingTitle": "Routing",
+          "routingDescription": "Routing-Dienstprogramme",
+          "searchLabel": "Suchen",
+          "searchTitle": "Suche",
+          "searchDescription": "Produktsuche",
+          "socialLabel": "Sozial",
+          "socialTitle": "Sozial",
+          "socialDescription": "Social Channel Konfiguration",
+          "taxesLabel": "Steuern",
+          "taxesTitle": "Steuern\n",
+          "taxesDescription": "Steuer-Konfiguration",
+          "themesLabel": "Themen",
+          "themesTitle": "Themen",
+          "themesDescription": "Themen und UI-Komponenten",
+          "stripeLabel": "Streifen",
+          "stripeDescription": "Zahlungen mit Magnetstreifen ",
+          "filtrationLabel": "Filtern",
+          "filtrationDescription": "Produktfilter für Ergebnis"
+        },
+        "groups": {
+          "appearance": "Erscheinungsbild",
+          "connect": "Verbinden",
+          "core": "Kern",
+          "dashboard": "Dashboard",
+          "misc": "Verschiedenes",
+          "paymentMethod": "Zahlungs-Anbieter",
+          "utilities": "Dienstprogramme"
+        },
+        "settings": {
+          "accountSettingsLabel": "Kontoeinstellungen",
+          "addShopMemberLabel": "Shop-Mitglied hinzufügen",
+          "authorizenetSettingsLabel": "Authorize.net Einstellungen",
+          "permissionsSettingsLabel": "Berechtigungen",
+          "braintreeSettingsLabel": "Braintree Einstellungen",
+          "localizationAndI18NLabel": "Lokalisierung und i18n",
+          "searchSettingsLabel": "Sucheinstellungen",
+          "shopSettingsLabel": "Geschäfts-Einstellungen",
+          "socialSettingsLabel": "Soziale Einstellungen",
+          "shippingSettingsLabel": "Versand-Einstellungen",
+          "stripeSettingsLabel": "Streifen-Einstellungen",
+          "inventorySettingsLabel": "Verzeichnis-Einstellungen",
+          "analyticsSettingsLabel": "Analytics-Einstellungen",
+          "paypalSettingsLabel": "PayPal Einstellungen",
+          "reactionConnectLabel": "Ergebnis verbinden",
+          "examplePaymentSettingsLabel": "Zahlungsbeispiel-Einstellungen",
+          "productSettingsLabel": "Produkteinstellungen",
+          "taxSettingsLabel": "Steuer-Einstellungen"
+        },
+        "userAccountDropdown": {
+          "profileLabel": "Profil"
         }
+      },
+      "accounts": {
+        "addMember": "Mitglied hinzufügen",
+        "shopMembers": "Geschäfts-Mitglieder",
+        "guests": "Gäste"
+      },
+      "app": {
+        "add": "Hinzufügen",
+        "editMode": "Bearbeitungs-Modus",
+        "createContent": "Inhalt erstellen",
+        "auto": "Automatisch",
+        "save": "Speichern",
+        "saveAndContinue": "Speichern und fortfahren",
+        "saveChanges": "Änderungen speichern",
+        "selectOne": "(Eine wählen)",
+        "cancel": "Abbrechen",
+        "success": "Erfolg",
+        "error": "Fehler",
+        "submit": "Abschicken",
+        "delete": "Löschen",
+        "deleted": "Gelöscht",
+        "create": "Erstellen",
+        "close": "Schließen",
+        "settings": "Einstellungen",
+        "loading": "Laden",
+        "toggle": "Umschalten",
+        "toggleEditMode": "Auf Bearbeitungs-Modus umschalten",
+        "warning": "Ups!",
+        "unauthorizedMessage": "Ihnen fehlen die Rechte, um die Seite anzuzeigen.",
+        "updateSettings": "Einstellungen aktualisieren",
+        "monthOptions": "Monat wählen",
+        "yearOptions": "Jahr wählen",
+        "shopSettings": "Shop-Einstellungen",
+        "dashboard": "Dashboard",
+        "print": "Drucken",
+        "notFound": "Diese Seite wurde nicht gefunden.",
+        "pageNotFound": "Diese Seite wurde nicht gefunden.",
+        "notFoundTitle": "Hoppla!",
+        "notFoundError": "Die Seite wurde nicht gefunden. ",
+        "productNotFound": "Dieses Produkt wurde nicht gefunden.",
+        "loadMoreProducts": "Weitere Produkte laden",
+        "noProductsFound": "Es wurden keine Produkte gefunden"
+      },
+      "searchSettings": {
+        "productSearchSettings": {
+          "panelTitle": "Produktsuche",
+          "includeTitle": "Titel mit einschließen",
+          "includeDescription": "Beschreibung mit einschließen",
+          "includePageTitle": "Seitentitel mit einschließen",
+          "includeDetails": "Details mit einschließen",
+          "includeVendor": "Anbieter mit einschließen"
+        },
+        "orderSearchSettings": {
+          "panelTitle": "Bestellungs-Sucheinstellungen"
+        },
+        "accountSearchSettings": {
+          "panelTitle": "Konto-Sucheinstellungen"
+        },
+        "noSettings": "Aktuell sind keine Einstellungen verfügbar",
+        "settingsSaved": "Die Sucheinstellungen wurden gespeichert",
+        "settingsfailed": "Die Aktualisierung der Sucheinstellungen ist fehlgeschlagen"
+      },
+      "shopSettings": {
+        "general": "Allgemein",
+        "address": "Adresse",
+        "import": "Importieren",
+        "localization": "Lokalisierung",
+        "options": "Optionen",
+        "availableOptions": "Verfügbare Optionen",
+        "paymentMethods": "Zahlungsarten",
+        "externalServices": "Externe Dienste",
+        "shopGeneralSettingsSaved": "Die allgemeinen Einstellungen des Geschäfts wurden gespeichert.",
+        "shopGeneralSettingsFailed": "Die Aktualisierung der allgemeinen Geschäfts-Einstellungen ist fehlgeschlagen. ",
+        "shopAddressSettingsSaved": "Die Adresseinstellungen des Geschäfts wurden gespeichert. ",
+        "shopAddressSettingsFailed": "Die Aktualisierung der Geschäfts-Adresse ist fehlgeschlagen.",
+        "shopExternalServicesSettingsSaved": "Die Einstellungen der externen Dienste des Geschäfts wurden gespeichert.",
+        "shopExternalServicesSettingsFailed": "Die Aktualisierung der externen Dienst-Einstellungen des Geschäfts ist fehlgeschlagen. ",
+        "shopLocalizationSettingsSaved": "Die Lokalisierungs-Einstellungen des Geschäfts wurden gespeichert.",
+        "shopLocalizationSettingsFailed": "Die Aktualisierung der Lokalisierungseinstellungen des Geschäfts ist fehlgeschlagen.",
+        "shopOptionsSettingsSaved": "Die Geschäfts-Optionen wurden gespeichert.",
+        "shopOptionsSettingsFailed": "Die Aktualisierung der Shop-Optionen ist fehlgeschlagen.",
+        "shopPaymentMethodsSaved": "Die Zahlungsarten-Einstellungen des Geschäfts wurden gespeichert.",
+        "shopPaymentMethodsFailed": "Die Aktualisierung der Zahlungsarten-Einstellung des Geschäfts ist fehlgeschlagen."
+      },
+      "mail": {
+        "headers": {
+          "email": "E-Mail",
+          "emailSettings": "E-Mail-Einstellungen",
+          "config": "Konfiguration",
+          "settings": "E-Mail-Anbieter",
+          "status": "Status",
+          "actions": "Aktionen"
+        },
+        "settings": {
+          "service": "Dienst",
+          "user": "Benutzer",
+          "password": "Passwort",
+          "host": "Host",
+          "port": "Port",
+          "passwordShow": "Anzeigen",
+          "passwordHide": "Verbergen",
+          "fieldNotSet": "Nicht eingestellt",
+          "selectService": "Dienst wählen ...",
+          "custom": "benutzerdefiniert"
+        },
+        "logs": {
+          "headers": {
+            "emailLogs": "E-Mail-Protokolle",
+            "email": "E-Mail",
+            "subject": "Thema",
+            "sent": "Gesendet",
+            "status": "Status"
+          },
+          "noEmails": "Es wurden noch keine E-Mails gesendet",
+          "limit": "Menge",
+          "retry": "Neu versuchen",
+          "noneAvailble": "Keine verfügbar"
+        },
+        "alerts": {
+          "error": "Fehler: {{error}}",
+          "resendSuccess": "Erneuter E-Mail-Sendeversuch an {{email}}",
+          "missingService": "Bitte wählen Sie einen E-Mail-Anbieter",
+          "userPassRequired": "SMTP-Benutzername und -Passwort sind erforderlich für {{service}}",
+          "allFieldsRequired": "Für eine maßgeschneiderte Dienstleistung sind alle Felder erforderlich!",
+          "portNaN": "Der Port muss eine Zahl sein!",
+          "connectionFailed": "Verbindung fehlgeschlagen!",
+          "saveAnyway": "Möchten Sie die Einstellungen trotzdem speichern?",
+          "saveSuccess": "Die E-Mail-Einstellungen wurden gespeichert.",
+          "saveFailed": "Die E-Mail-Einstellungen konnten nicht gespeichert werden.  {{error}}"
+        }
+      },
+      "taxSettings": {
+        "noCustomTaxRatesFound": "Es wurden keine benutzerdefinierten Steuersätze gefunden.",
+        "shopCustomTaxRatesSaved": "Der benutzerdefinierte Steuersatz wurde gespeichert.",
+        "shopCustomTaxRatesFailed": "Fehler beim Speichern des Steuersatzes.",
+        "shopTaxMethodsSaved": "Besteuerungsart speichern.",
+        "shopTaxMethodsFailed": "Die Besteuerungsart konnte nicht gespeichert werden. ",
+        "customRatesDescription": "Benutzerdefinierte Preise",
+        "taxCode": "Steuercode",
+        "taxShipping": "Versand mit einschließen",
+        "taxRate": "Preis",
+        "discountsIncluded": "Rabatte mit einschließen",
+        "taxable": "Steuerpflichtig",
+        "nottaxable": "Nicht steuerpflichtig",
+        "confirmRateDelete": "Löschen des Steuersatzes bestätigen"
+      },
+      "header": {
+        "tagsAdd": "Tag hinzufügen",
+        "search": "Suche in Produkten..."
+      },
+      "productDetail": {
+        "productManagement": "Produkte verwalten",
+        "whenYouAreDone": "wenn Sie mit editieren fertig sind.",
+        "tags": "Tags",
+        "tagsAdd": "Tag hinzufügen",
+        "tagsEdit": "Tags bearbeiten",
+        "tagExists": "Der Tag existiert bereits oder ist leer. ",
+        "dropFiles": "Dateien zum Hochladen hierherziehen",
+        "addInventory": "Bestand hinzufügen",
+        "barcode": "Barcode",
+        "confirmDeleteBarcode": "Sind Sie sicher, dass Sie den Barcode löschen möchten?",
+        "details": "Details",
+        "detailsName": "Detailname",
+        "detailsInfo": "Detailinformation",
+        "generate": "Erstellen",
+        "generateBarcodes": "Barcodes generieren",
+        "hideBarcodes": "Barcodes verbergen",
+        "options": "Optionen",
+        "addToCart": "Zum Warenkorb hinzufügen",
+        "chooseOptions": "Es muss eine Produktoption ausgewählt werden, bevor es in den Warenkorb gelegt werden kann.",
+        "outOfStock": "Dieses Produkt ist leider vergriffen und kann nicht geordert werden!",
+        "productDeleteError": "Fehler beim Löschen von {{product}}",
+        "deleteErrorTheProduct": "das Produkt",
+        "deleteErrorTheSelectedProducts": "die gewählten Produkte",
+        "publishFirst": "Produkt kann erst nach Veröffentlichung in den Warenkorb gelegt werden.",
+        "quantityAbbreviation": "MENGE",
+        "selectOption": "Es muss eine Produktoption ausgewählt werden, bevor es in den Warenkorb gelegt werden kann.",
+        "addedToCart": "hinzugefügt",
+        "showBarcodes": "Barcodes anzeigen",
+        "soldOut": "Ausverkauft!",
+        "backOrder": "Lieferrückstand",
+        "limitedSupply": "Begrenztes Angebot",
+        "publishProductVisible": "{{product}} ist jetzt sichtbar",
+        "publishProductHidden": "{{product}} ist jetzt verborgen",
+        "clonedAlert": "Geklont {{product}}",
+        "clonedAlert_plural": "Geklont {{product}}",
+        "deletedAlert": "Gelöscht {{product}}",
+        "deletedAlert_plural": "Gelöscht {{product}}",
+        "theProduct": "das Produkt",
+        "theSelectedProducts": "die gewählten Produkte",
+        "startTracking": "Tracking starten",
+        "addBarcode": "Barcode hinzufügen",
+        "quantity": "Menge",
+        "quantityGreaterThanZero": "Fehler: Die Menge muss über Null sein",
+        "notFoundTitle": "Hoppla!",
+        "notFoundError": "Dies ist nicht das Produkt, das Sie suchten. "
+      },
+      "tags": {
+        "tagName": "Tag-Bezeichnung",
+        "addTag": "Tag hinzufügen",
+        "updateTag": "Tag aktualisieren",
+        "addGroupTag": "Gruppen-Tag hinzufügen",
+        "addSubTag": "Unter-Tag hinzufügen",
+        "removeTag": "Tag entfernen",
+        "createTag": "Tag erstellen"
+      },
+      "productDetailEdit": {
+        "editOption": "Option bearbeiten",
+        "productSettings": "Produkteinstellungen",
+        "product": "Produkt",
+        "size": "Größe",
+        "title": "Produkttitle",
+        "untitledProduct": "Produkt ohne Titel",
+        "parmalink": "Permalink",
+        "pageTitle": "Produkt Seitentitel",
+        "vendor": "Hersteller",
+        "description": "Produktbeschreibung hinzufügen",
+        "facebookMsg": "Facebook Nachricht",
+        "twitterMsg": "Twitter Nachricht",
+        "pinterestMsg": "Pinterest Nachricht",
+        "googleplusMsg": "Google+ Nachricht",
+        "editVariant": "Variante bearbeiten",
+        "variantOptions": "Varianten-Optionen",
+        "variantDetails": "Varianten-Details",
+        "duplicateVariant": "Duplizieren",
+        "addVariantOption": "Option hinzufügen",
+        "removeVariant": "Entfernen",
+        "removeVariantConfirm": "Sind Sie sicher, dass Sie {{title}} löschen möchten?",
+        "restoreVariantConfirm": "Sind Sie sicher, dass Sie {{title}} aus dem Papierkorb wiederherstellen möchten?",
+        "thisVariant": "diese Variante",
+        "thisOption": "diese Option",
+        "duplicateProduct": "Produkt duplizieren",
+        "pinProduct": "Produkt anheften",
+        "toggleSize": "Größe anpassen",
+        "deleteProduct": "Produkt löschen",
+        "restoreProduct": "Produkt aus dem Papierkorb wiederherstellen",
+        "deleteThisProduct": "Dieses Produkt löschen?",
+        "deleteSelectedProducts": "Gewählte Produkte löschen?",
+        "publish": "Veröffentlichen",
+        "moreOptions": "Weitere Optionen",
+        "details": "Details",
+        "noSelectedProducts": "Es wurden keine Produkte gewählt. Verwenden Sie den/die ",
+        "orShiftCtrlCmd": " oder Umschalttaste|ctrl|cmd + Klick auf Produkte, um mehrere zu wählen. Mithilfe der Umschalttaste können Sie eine Reihe von aneinander angrenzenden Produkten wählen. ",
+        "makeVisible": "Sichtbar machen",
+        "hideProduct": "Produkt verbergen",
+        "productIsVisible": "Das Produkt ist sichbar",
+        "productIsNotVisible": "Das Produkt ist nicht sichtbar"
+      },
+      "productVariant": {
+        "inventoryQuantity": "Menge",
+        "title": "Label",
+        "price": "Preis",
+        "optionTitle": "Option",
+        "barcode": "Barcode",
+        "compareAtPrice": "Preis (UVP)",
+        "fulfillmentService": "Abwicklungsdienst",
+        "weight": "Gewicht",
+        "taxable": "Steuerpflichtig",
+        "inventoryManagement": "Bestand mitverfolgen",
+        "inventoryManagementLabel": "Produkt im Bestand-System registrieren und seinen Status mitverfolgen",
+        "inventoryPolicy": "Zurückweisen, wenn nicht auf Lager",
+        "inventoryPolicyLabel": "Verkaufen Sie die Produktvariante nicht, wenn sie nicht auf Lager ist",
+        "lowInventoryWarningThreshold": "Warnen @",
+        "lowInventoryWarningThresholdLabel": "Kunden warnen, dass das Produkt fast ausverkauft ist, sobald die Menge den nächsten Schwellenwert erreicht"
+      },
+      "variantList": {
+        "moreOptions": "Für diese Auswahl gibt's noch weitere Optionen.",
+        "createVariant": "Produktvariante erzeugen"
+      },
+      "gridPackage": {
+        "enable": "Aktivieren",
+        "errorDisabling": "Fehler beim Deaktivieren der Packung: ",
+        "errorEnabling": "Fehler beim Aktivieren des Pakets: ",
+        "details": "Details",
+        "disable": "Deaktivieren",
+        "disableConfirm": "Sind Sie sicher, dass Sie {{app}} deaktivieren möchten?",
+        "pkgEnabled": " {{app}} wurde aktiviert.",
+        "pkgDisabled": "  {{app}} wurde deaktiviert."
+      },
+      "cartDrawer": {
+        "empty": "Ihr Warenkorb ist leer.",
+        "keepShopping": "Zurück zum Shop",
+        "checkout": "Zur Kasse"
+      },
+      "cartSubTotals": {
+        "discount": "Rabatt",
+        "head": "Ihr Warenkorb",
+        "items": "Warenkorbartikel",
+        "subtotal": "Zwischensumme",
+        "shipping": "Versand",
+        "tax": "Mehrwertsteuer",
+        "total": "Summe"
+      },
+      "cartDrawerItems": {
+        "left": "links"
+      },
+      "order": {
+        "created": "Erstellt",
+        "reference": "Referenz",
+        "invoice": "Rechnung",
+        "ordersNotFound": "Es wurden keine Bestellungen gefunden",
+        "approveInvoice": "Bestätigen",
+        "makeAdjustments": "Anpassen",
+        "capturePayment": "Zahlung erfassen",
+        "paymentCaptured": "Zahlung erfasst",
+        "capturedTotal": "Erfasst gesamt",
+        "refundAmount": "Betrag erstatten",
+        "applyRefundToThisOrder": "Für diese Bestellung eine Erstattung von {{currencySymbol}}{{refund}} vornehmen?",
+        "applyRefund": "Erstattung vornehmen",
+        "applyDiscount": "Rabatt anwenden",
+        "adjustedTotal": "Angepasste Summe",
+        "invalidDiscount": "Der Rabatt darf den ursprünglichen Gesamtpreis nicht übersteigen",
+        "fullDiscountWarning": "Bei Anwendung eines 100%-Rabatts wird diese Bestellung bei Ihrem Zahlungs-Anbieter anulliert/abgebrochen",
+        "invalidRefund": "Die Summe des/der Rabatt(e) kann den angepassten Gesamtbetrag nicht übersteigen",
+        "processor": "Bearbeiter",
+        "placed": "Bestellt",
+        "on": "am",
+        "status": "Status",
+        "completed": "Beendet",
+        "processing": "In Bearbeitung",
+        "destination": "Zielort",
+        "shipment": "Versand",
+        "payment": "Zahlung",
+        "itemsFrom": "Artikel von",
+        "filter": {
+          "new": "Neu",
+          "captured": "Zahlung erfasst",
+          "processing": "Bearbeiten",
+          "shipped": "Gesendet",
+          "completed": "Beendet",
+          "canceled": "Abgebrochen",
+          "refunded": "Erstattet"
+        },
+        "paymentProvider": {
+          "braintree": {
+            "braintreeSettlementDelay": "Braintree erlaubt keine Erstattungen, bevor die Transaktionen geregelt sind. Dies kann bis zu 24 Stunden in Anspruch nehmen.  Bitte versuchen Sie es später noch einmal."
+          }
+        }
+      },
+      "orderShipping": {
+        "shipTo": "Versenden an",
+        "notShipped": "Noch nicht gesendet",
+        "noTracking": "Kein Tracking ",
+        "tracking": "Tracking",
+        "addTracking": "Tracking hinzufügen",
+        "itemsHaveBeenShipped": "Artikel wurden gesendet",
+        "shipmentEmpty": "Dieser Versand enthält keine Artikel",
+        "shipmentPacked": "Alle Artikel wurden verpackt",
+        "shipped": "Versendet",
+        "shippingNotifyCustomer": "Den Kunden benachrichtigen, dass seine Artikel bald versendet werden. ",
+        "resendNotification": "Versand-Benachrichtigung erneut senden"
+      },
+      "orderWorkflow": {
+        "fulfillment": "Abwicklung",
+        "orderDetails": "Bestellungs-Details",
+        "summary": "Zusammenfassung",
+        "invoice": "Rechnung",
+        "shipmentTracking": "Versand-Tracking"
+      },
+      "cartCheckout": {
+        "surprise": "Wow!",
+        "emptyCheckoutCart": "Ihr Warenkorb scheint leer zu sein!"
+      },
+      "cartCompleted": {
+        "thankYou": "Vielen Dank!",
+        "itemsFrom": "Artikel von",
+        "yourOrderIsNow": "Im Warenkorb",
+        "summaryMessage": "Vielen Dank für Ihren Einkauf.",
+        "submitted": "gesendet",
+        "registerGuest": "Bei Eingabe Ihrer E-Mail-Adresse benachrichtigen wir Sie über Artikelupdates.",
+        "trackYourDelivery": "Ihre Bestellung wird verschickt an",
+        "noOrdersFound": "Keine Bestellung vorhanden.",
+        "adminMessage": "Sie zeigen die Bestellungen als Administrator an"
+      },
+      "checkoutLogin": {
+        "welcome": "Willkommen, wir freuen uns, Sie zu sehen. ",
+        "loginCompleted": "Benutzerkonte abgeschlossen",
+        "createOrLogin": "Benutzerkonto anlegen oder anmelden",
+        "guestOrLogin": "Anmelden oder als Gast fortfahren",
+        "continueAsGuest": "Als Gast fortfahren",
+        "guestMessage": "Sie können ohne Benutzerkonto fortfahren. Auch später haben Sie noch die Möglichkeit, ein Benutzerkonto anzulegen."
+      },
+      "addressBookGrid": {
+        "addAddress": "Adresse hinzufügen",
+        "chooseAddress": "Bitte wählen Sie die Versandadresse",
+        "createDefault": "Standardadresse festlegen",
+        "edit": "Bearbeiten",
+        "removeAddress": "Adresse entfernen",
+        "selectShippingAddress": "Bitte Versandadresse wählen",
+        "selectBillingAddress": "Bitte Rechnungsadresse wählen",
+        "cantRemoveThisAddress": "Diese Adresse kann nicht entfernt werden: {{err}}"
+      },
+      "addressBookAdd": {
+        "addAddress": "Neuen Adresse anlegen",
+        "createAddress": "Standardadresse festlegen",
+        "failedToAddAddress": "Die Adresse konnte nicht hinzugefügt werden: {{err}}"
+      },
+      "addressBookEdit": {
+        "editAddress": "Adresse editieren",
+        "somethingWentWrong": "Ein Fehler ist aufgetreten: {{err}}"
+      },
+      "corePackageConfig": {
+        "settings": {
+          "public": {
+            "allowGuestCheckout": "Gäste zur Kasse zulassen"
+          },
+          "openexchangerates": {
+            "appId": "Open Exchange Rates Anwendungs-ID",
+            "refreshPeriod": "Open Exchange Rates Aktualisierungsperiode",
+            "refreshPeriodPlaceholder": "z. B. jede 1 Stunde"
+          },
+          "google": {
+            "clientId": "Google Kunden-ID",
+            "apiKey": "Google API-Schlüssel"
+          }
+        }
+      },
+      "shop": {
+        "defaultPaymentMethod": "Standard-Zahlungsart",
+        "name": "Name",
+        "namePlaceholder": "Name des Geschäfts",
+        "description": "Beschreibung",
+        "descriptionPlaceholder": "Beschreiben Sie Ihr Geschäft für die SEO",
+        "descriptionTooltip": "Dieses Feld wird von einem Meta-Beschreibungs-Tag verwendet. Es ermöglicht es Suchmaschinen, Ihr Geschäft zu beschreiben",
+        "email": "E-Mail",
+        "emailPlaceholder": "Primäre Kontakt-E-Mail",
+        "keywords": "Schlüsselwörter",
+        "keywordsPlaceholder": "Meta-Schlüsselwörter für die SEO",
+        "language": "Grund-Sprache",
+        "languageTooltip": "Diese Sprache wird verwendet, wenn die automatische Spracherkennung des Geräts fehlschlägt",
+        "timezone": "Zeitzone",
+        "timezoneOptions": "Zeitzone wählen",
+        "currency": "Grund-Währung",
+        "currencyTooltip": "Standard-Währung des Geschäfts",
+        "baseUOM": "Grund-Maßeinheit",
+        "addressBook": {
+          "company": "Firma",
+          "companyPlaceholder": "Dieser Firmenname",
+          "country": "Land",
+          "fullName": "Vor- und Zuname",
+          "fullNamePlaceholder": "Name Ihrer Organisation",
+          "address1": "Adresse 1",
+          "address1Placeholder": "Die Adresse Ihrer Organisation",
+          "address1Tooltip": "Diese Adresse wird für Besucher sichtbar sein",
+          "address2": "Adresse 2",
+          "address2Placeholder": "Zusätzliche Adresse",
+          "postal": "PLZ",
+          "city": "Stadt",
+          "region": "Region",
+          "phone": "Telefon",
+          "isShippingDefault": "Make this your default shipping address?",
+          "isBillingDefault": "Make this your default billing address?",
+          "isCommercial": "This is a commercial address."
+        }
+      },
+      "revisions": {
+        "isDisabled": "Die Revisionsverwaltung ist deaktiviert. Jegliche Änderungen werden sofort veröffentlicht.",
+        "unpublishedChanges": "Unveröffentlichte Änderungen",
+        "publishChanges": "Änderungen veröffentlichen",
+        "showChanges": "Änderungen anzeigen",
+        "hideChanges": "Änderungen verbergen",
+        "changedPublished": "Die Änderungen wurden erfolgreich veröffentlicht",
+        "noChanges": "Keine Änderungen",
+        "noChangesPublished": "Es gibt keine Änderungen zu veröffentlichen"
+      },
+      "address": {
+        "country": "Land",
+        "fullName": "Vor- und Zuname",
+        "address1": "Straße",
+        "address2": "zusätzliche Adressangaben",
+        "postal": "Postleitzahl",
+        "city": "Stadt",
+        "region": "Bundesland",
+        "phone": "Telefonnummer",
+        "isShippingDefault": "Als Standard-Versandadresse festlegen?",
+        "isBillingDefault": "Als Standard-Rechnungsadresse festlegen?",
+        "isCommercial": "Es handelt sich um eine kommerzielle Adresse."
+      },
+      "i18nSettings": {
+        "enabledLanguages": "Sprachen"
+      },
+      "checkoutProgressBar": {
+        "login": "Konto",
+        "shippingBilling": "Adressdetails",
+        "shippingOptions": "Versandoptionen",
+        "reviewPayment": "Überprüfung der Zahlung",
+        "complete": "Fertig"
+      },
+      "checkoutPayment": {
+        "addPaymentToCompleteOrder": "Bitte Zahlungsart festlegen um den Einkauf abzuschließen.",
+        "processingError": "Bei Ihrer Zahlung ist ein Problem aufgetreten. ",
+        "completeYourOrder": "Ihre Bestellung abschließen",
+        "noPaymentMethods": "Es sind keine Zahlungsarten konfiguriert. ",
+        "configureNow": "Jetzt konfigurieren.",
+        "failedToPlaceOrder": "Die Bestellung konnte nicht aufgegeben werden. "
+      },
+      "checkoutReview": {
+        "review": "Durchsicht"
+      },
+      "checkoutShipping": {
+        "selectShippingOption": "Bitte Versandmethode wählen.",
+        "noShippingMethods": "Es wurde keine Versandmethode festgelegt.",
+        "configureNow": "Einstellungen vornehmen.",
+        "shipping": "Versand"
+      },
+      "shipping": {
+        "addShippingProvider": "Versand-Anbieter hinzufügen",
+        "editShippingProvider": "Versand-Anbieter bearbeiten",
+        "addShippingMethod": "Versandart hinzufügen",
+        "editShippingMethod": "Versandart bearbeiten",
+        "deleteShippingMethod": "Versandart löschen",
+        "noSettingsForThisView": "Keine Einstellungen für diese Anzeige",
+        "noShippingMethods": "Es wurden keine Versandarten konfiguriert.",
+        "removeShippingMethodConfirm": "Sind Sie sicher, dass Sie {{method}} löschen möchten?",
+        "removeShippingMethodTitle": "Versandart entfernen",
+        "shippingMethodDeleted": "Diese Versandart wurde gelöscht.",
+        "removeShippingProvider": "Versand-Anbieter entfernen",
+        "removeShippingProviderConfirm": "Sind Sie sicher, dass Sie {{provider}} löschen möchten?",
+        "shippingProviderSaved": "Der Versand-Anbieter wurde gespeichert.",
+        "shippingProviderUpdated": "Die Daten des Versand-Anbieters wurden aktualisiert.",
+        "shippingMethodRateAdded": "Der Preis der Versandart wurde hinzugefügt.",
+        "shippingMethodRateUpdated": "Der Versandart-Preis wurde aktualisiert.",
+        "name": "Name",
+        "label": "Label",
+        "group": "Gruppe",
+        "cost": "Kosten",
+        "handling": "Bearbeitung",
+        "rate": "Preis",
+        "enabled": "Aktiviert",
+        "disabled": "Deaktiviert",
+        "addRate": "Satz hinzufügen",
+        "updateRate": "Preis von {{name}} aktualisieren",
+        "addNewCondition": "Neue Bedingung hinzufügen",
+        "deleteCondition": "Bedingung löschen",
+        "provider": {
+          "name": "Dienstcode",
+          "label": "Öffentliches Label",
+          "enabled": "Aktiviert"
+        }
+      },
+      "shippingMethod": {
+        "name": "Bezeichnung der Methode",
+        "label": "Öffentliches Label",
+        "group": "Gruppe",
+        "cost": "Kosten",
+        "handling": "Bearbeitung",
+        "rate": "Preis",
+        "enabled": "Aktiviert",
+        "matchingCartRanges": "Passende Warenkorb-Auswahl",
+        "validRanges": {
+          "begin": "Beginn",
+          "end": "Beenden"
+        },
+        "matchingLocales": "Passende Standorte",
+        "validLocales": {
+          "origination": "Von",
+          "destination": "An",
+          "deliveryBegin": "Geschätzter Versandtermin.",
+          "deliveryEnd": "Geschätzter Liefertermin"
+        }
+      },
+      "uom": {
+        "OZ": "Unzen",
+        "LB": "Pfund",
+        "GR": "Gramm",
+        "KG": "Kilogramm"
+      },
+      "consoleIcon": {
+        "iconTitle": "Console anzeigen",
+        "text": "Console"
+      },
+      "createProductIcon": {
+        "iconTitle": "Produkt erstellen",
+        "text": "Erstellen"
+      },
+      "social": {
+        "socialTitle": "Sozial",
+        "facebook": "Facebook",
+        "google": "Google",
+        "github": "GitHub",
+        "meetup": "Meetup",
+        "ok": "OK",
+        "twitter": "Twitter",
+        "vk": "VK",
+        "weibo": "Weibo"
+      },
+      "search": {
+        "clearSearch": "Löschen",
+        "noProductsFound": "Es wurden keine Produkte gefunden. ",
+        "searchInputLabel": "Suchergebnis ",
+        "suggestedTags": "Vorgeschlagene Tags"
+      },
+      "accountsUI": {
+        "members": "Mitglieder",
+        "manage": "Verwalten",
+        "guest": "Gast",
+        "addMember": "Mitglied hinzufügen",
+        "add": "hinzufügen",
+        "and": "und",
+        "back": "zurück",
+        "changePassword": "Passwort ändern",
+        "choosePassword": "Passwort auswählen",
+        "clickAgree": "Durch die Registrierung akzeptieren Sie unsere",
+        "configure": "Einstellungen",
+        "createAccount": "Konto anlegen",
+        "currentPassword": "Aktuelles Passwort",
+        "dontHaveAnAccount": "Noch kein Konto?",
+        "email": "E-Mail",
+        "emailAddress": "E-Mail-Adresse",
+        "emailResetLink": "Senden",
+        "forgotPassword": "Passwort vergessen?",
+        "ifYouAlreadyHaveAnAccount": "Falls Sie ein Konto haben, bitte hier",
+        "name": "Name",
+        "newPassword": "Neues Passwort",
+        "newPasswordAgain": "Neues Passwort (wiederholen)",
+        "optional": "Optional",
+        "or": "oder",
+        "password": "Passwort",
+        "passwordAgain": "Passwort (wiederholen)",
+        "privacyPolicy": "Datenschutzerklärung",
+        "remove": "entfernen",
+        "resetYourPassword": "Passwort zurücksetzen",
+        "setPassword": "Passwort neu setzen",
+        "sign": "Anmelden",
+        "signIn": "Anmelden",
+        "signInService": "{{service}} Anmeldung",
+        "signin": "anmelden",
+        "signInWith": "Anmelden mit",
+        "signUpWith": "Anmelden mit",
+        "signedIn": "Sie sind angemeldet.",
+        "signOut": "Abmelden",
+        "signUp": "Registrieren",
+        "signUpButton": "Registrieren",
+        "signupCode": "Registrierungscode",
+        "signUpWithYourEmailAddress": "Mit E-Mail registrieren",
+        "terms": "Geschäftsbedingungen",
+        "updateYourPassword": "Passwort aktualisieren",
+        "updatePasswordAndContinue": "Aktualisieren und weiter",
+        "updatedServiceConfiguration": "Die Dienst-Konfiguration für {{service}} wurde aktualisiert",
+        "username": "Benutzername",
+        "usernameOrEmail": "Benutzername oder E-Mail",
+        "with": "mit",
+        "checkoutAsGuest": "Ohne Benutzerkonto bestellen",
+        "role": "Rolle",
+        "yourOrders": "Ihre Bestellungen",
+        "addressBook": "Adressbuch",
+        "info": {
+          "emailSent": "E-Mail gesendet",
+          "emailVerified": "E-Mail verifiziert",
+          "passwordChanged": "Das Passwort wurde geändert",
+          "passwordReset": "Passwort zurücksetzen",
+          "passwordResetSend": "Eine E-Mail mit Link zum Zurücksetzen des Passworts wurde gesendet. ",
+          "invitationSent": "Die Einladung wurde gesendet.",
+          "sendInvitation": "Einladung senden"
+        },
+        "reactionUI": {
+          "editTheme": "Thema bearbeiten",
+          "duplicateTheme": "Thema duplizieren",
+          "duplicateThemeError": "Das Thema konnte nicht dupliziert werden",
+          "publishThemeError": "Das Thema {{themeName}} konnte nicht veröffentlicht werden",
+          "components": {
+            "navbar": "Navigationsleiste",
+            "button": "Taste"
+          }
+        },
+        "error": {
+          "emailRequired": "Es muss eine E-Mail-Adressen angegeben werden.",
+          "passwordRequired": "Das Passwort ist erforderlich.",
+          "passwordMustBeAtLeast6CharactersLong": "Das Passwort muss mindestens aus 6 Zeichen bestehen.",
+          "passwordMustContainRequirements": "Das Passwort muss mindestens eine Ziffer oder ein Symbol enthalten.",
+          "usernameMinLength": "Der Benutzername muss mindestens 3 Zeichen lang sein",
+          "minChar": "Das Passwort muss mindesten 6 Zeichen lang sein.",
+          "pwdsDontMatch": "Die Passwörter stimmen nicht überein.",
+          "pwOneDigit": "Das Passwort muss mindestens eine Ziffer enthalten.",
+          "pwOneLetter": "Das Passwort muss mindestens einen Buchstaben enthalten.",
+          "signInRequired": "Sie müssen sich anmelden.",
+          "signupCodeIncorrect": "Registrierungscode ungültig.",
+          "signupCodeRequired": "Registrierungscode benötigt.",
+          "usernameIsEmail": "Benutzername darf keine E-Mail-Adresse sein.",
+          "usernameRequired": "Benutzername muss angegeben werden.",
+          "emailAlreadyExists": "E-Mail-Adresse schon vorhanden.",
+          "emailDoesntMatchTheCriteria": "Das Format der E-Mail-Adresse ist falsch.",
+          "errorSendingEmail": "Fehler beim Senden der E-Mail, möglicherweise infolge eines Konfigurationsproblems.",
+          "unableToSendInvitationEmail": "Die Einladungs-E-Mail konnte nicht gesendet werden.",
+          "failedToLogout": "Die Abmeldung ist fehlgeschlagen.",
+          "invalidLoginToken": "Ungültiges Login-Token",
+          "loginForbidden": "Login nicht zulässig",
+          "serviceUnknown": "UnbekannterService",
+          "unrecognizedOptionsForLoginRequest": "Unbekannte Login Aktion",
+          "userValidationFailed": "Die Benutzerdaten sind nicht korrekt",
+          "usernameAlreadyExists": "Der Benutzername ist schon vergeben.",
+          "youAreNotLoggedIn": "Sie sind nicht eingeloggt.",
+          "youveBeenLoggedOutByTheServer": "Die Sitzung wurde vom Server beendet. Bitte melden Sie sich erneut an.",
+          "yourSessionHasExpired": "Die Sitzung ist abgelaufen. Bitte melden Sie sich erneut an.",
+          "noMatchingLoginAttemptFound": "Kein passender Login-Vorgang gefunden.",
+          "passwordIsOld": "Das Passwort ist alt. Bitte setzen Sie Ihr Passwort zurück. ",
+          "incorrectPassword": "Das Passwort ist nicht korrekt.",
+          "invalidEmail": "E-Mail-Adresse ist ungültig.",
+          "addressMustBeAValidEMailAddress": "Ungültige E-Mail-Adresse",
+          "mustBeLoggedIn": "Bitte melden Sie sich zuerst an",
+          "needToSetUsernameOrEmail": "Bitte Benutzernamen oder E-Mail-Adresse angeben",
+          "oldPasswordFormat": "Altes Passwort-Format",
+          "passwordMayNotBeEmpty": "Das Passwort darf nicht leer sein",
+          "signupsForbidden": "Anmeldung ist nicht möglich.",
+          "tokenExpired": "Das Token ist abgelaufen",
+          "tokenHasInvalidEmailAddress": "E-Mail-Adresse stimmt nicht mit dem Token überein.",
+          "userHasNoPasswordSet": "Kein Passwort für den Benutzer angegeben",
+          "userNotFound": "Benutzer nicht gefunden",
+          "verifyEmailLinkExpired": "Das Token zur Verifizierung der E-Mail ist abgelaufen",
+          "verifyEmailLinkIsForUnknownAddress": "Verifizierung des Tokens fehlgeschlagen. (Das Token gehört zu einer unbekannten E-Mail-Adresse.)",
+          "matchFailed": "Abgleich fehlgeschlagen",
+          "unknownError": "Unbekannter Fehler"
+        }
+      },
+      "error": {
+        "nameRequired": "Der Name ist erforderlich.",
+        "isRequired": "{{field}} ist erforderlicht.",
+        "mustBeNumber": "{{field}} muss eine Zahl sein.",
+        "variantFieldIsRequired": "Die Variante {{number}} {{field}} ist erforderlich."
+      }
     }
-]
+  }
+}]

@@ -1,5 +1,5 @@
 [{
-  "language": "Română",
+  "language": "Romanian",
   "i18n": "ro",
   "ns": "core",
   "translation": {
@@ -128,6 +128,7 @@
         "error": "Eroare",
         "submit": "Acceptă",
         "delete": "Șterge",
+        "deleted": "Șters",
         "create": "Crează",
         "close": "Închide",
         "settings": "Setări",
@@ -175,6 +176,7 @@
         "import": "Import",
         "localization": "Localizare",
         "options": "Opțiuni",
+        "availableOptions": "Opțiuni disponibile",
         "paymentMethods": "Metode de plata",
         "externalServices": "Servicii externe",
         "shopGeneralSettingsSaved": "Setările generale ale magazinului au fost salvate.",
@@ -304,6 +306,7 @@
         "notFoundError": "Acesta nu este produsul pe care îl căutați."
       },
       "tags": {
+        "tagName": "Nume etichetă",
         "addTag": "Adăugaţi etichetă",
         "updateTag": "Actualizați eticheta",
         "addGroupTag": "Adăugați un grup de etichete",
@@ -318,6 +321,7 @@
         "size": "Mărime",
         "title": "Denumirea produsului",
         "untitledProduct": "Produs fără titlu",
+        "parmalink": "Link permanent",
         "pageTitle": "Titlul paginii produs",
         "vendor": "Furnizor de produse",
         "description": "Adăugați o descriere produs",
@@ -332,18 +336,25 @@
         "addVariantOption": "Adaugă o optiune",
         "removeVariant": "Elimină",
         "removeVariantConfirm": "Sunteți sigur că doriți să ștergeți {{title}}",
+        "restoreVariantConfirm": "Sunteți sigur(ă) că doriți să recuperați {{title}} din coșul de gunoi?",
         "thisVariant": "această variantă",
         "thisOption": "această opțiune",
         "duplicateProduct": "Duplică produs",
         "pinProduct": "Fixează produsului",
         "toggleSize": "Dimensiune comutare",
         "deleteProduct": "Șterge produs",
+        "restoreProduct": "Recuperare produs din coșul de gunoi",
         "deleteThisProduct": "Ștergeți acest produs?",
         "deleteSelectedProducts": "Ștergeți produsele selectate?",
         "publish": "Publică",
         "moreOptions": "Mai multe opțiuni",
+        "details": "Detalii",
         "noSelectedProducts": "Nici un produs selectat. Folosește",
-        "orShiftCtrlCmd": "sau apăsați shift|ctrl|cmd + clic pe produse pentru a selecta mai multe. Cu shift puteți selecta o gamă de produse învecinate."
+        "orShiftCtrlCmd": "sau apăsați shift|ctrl|cmd + clic pe produse pentru a selecta mai multe. Cu shift puteți selecta o gamă de produse învecinate.",
+        "makeVisible": "Expunere",
+        "hideProduct": "Ascundere produs",
+        "productIsVisible": "Produsul este vizibil",
+        "productIsNotVisible": "Produsul nu este vizibil"
       },
       "productVariant": {
         "inventoryQuantity": "Cantitate",
@@ -551,6 +562,16 @@
           "isBillingDefault": "Doriți să faceți aceasta adresă de facturare implicită?",
           "isCommercial": "Aceasta este o adresă comercială."
         }
+      },
+      "revisions": {
+        "isDisabled": "Opțiunea „Revision control” este dezactivată. Orice schimbare va fi imediat publicată.",
+        "unpublishedChanges": "Schimbări nepublicate",
+        "publishChanges": "Publicare schimbări",
+        "showChanges": "Expunere schimbări",
+        "hideChanges": "Ascundere modificări",
+        "changedPublished": "Schimbările au fost publicate cu succes.",
+        "noChanges": "Nicio schimbare",
+        "noChangesPublished": "Nu există modificări pentru publicare"
       },
       "address": {
         "country": "Țară",
