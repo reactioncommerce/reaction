@@ -398,7 +398,7 @@
   }, {
     "label": "Български",
     "i18n": "bg",
-    "enabled": true
+    "enabled": false
   }, {
     "label": "中文(简体)",
     "i18n": "zh",
@@ -406,7 +406,7 @@
   }, {
     "label": "České",
     "i18n": "cs",
-    "enabled": true
+    "enabled": false
   }, {
     "label": "Deutsch",
     "i18n": "de",
@@ -430,27 +430,27 @@
   }, {
     "label": "Hrvatski",
     "i18n": "hr",
-    "enabled": true
+    "enabled": false
   }, {
     "label": "မြန်မာဘာသာ",
     "i18n": "my",
-    "enabled": true
+    "enabled": false
   }, {
     "label": "Italiano",
     "i18n": "it",
-    "enabled": true
+    "enabled": false
   }, {
     "label": "Nederlands",
     "i18n": "nl",
-    "enabled": true
+    "enabled": false
   }, {
     "label": "Norsk bokmål",
     "i18n": "nb",
-    "enabled": true
+    "enabled": false
   }, {
     "label": "Polski",
     "i18n": "pl",
-    "enabled": true
+    "enabled": false
   }, {
     "label": "Português",
     "i18n": "pt",
@@ -466,19 +466,19 @@
   }, {
     "label": "Slovenščina",
     "i18n": "sl",
-    "enabled": true
+    "enabled": false
   }, {
     "label": "Svenska",
     "i18n": "sv",
-    "enabled": true
+    "enabled": false
   }, {
     "label": "Türkçe",
     "i18n": "tr",
-    "enabled": true
+    "enabled": false
   }, {
     "label": "tiếng Việt",
     "i18n": "vi",
-    "enabled": true
+    "enabled": false
   }],
   "locales": {
     "continents": {
@@ -3489,23 +3489,23 @@
   "languages": [{
     "label": "العربية",
     "i18n": "ar",
-    "enabled": true
+    "enabled": false
   }, {
     "label": "Български",
     "i18n": "bg",
-    "enabled": true
+    "enabled": false
   }, {
     "label": "中文(简体)",
     "i18n": "cn",
-    "enabled": true
+    "enabled": false
   }, {
     "label": "České",
     "i18n": "cs",
-    "enabled": true
+    "enabled": false
   }, {
     "label": "Deutsch",
     "i18n": "de",
-    "enabled": true
+    "enabled": false
   }, {
     "label": "English",
     "i18n": "en",
@@ -3513,67 +3513,67 @@
   }, {
     "label": "Español",
     "i18n": "es",
-    "enabled": true
+    "enabled": false
   }, {
     "label": "Français",
     "i18n": "fr",
-    "enabled": true
+    "enabled": false
   }, {
     "label": "עברית",
     "i18n": "he",
-    "enabled": true
+    "enabled": false
   }, {
     "label": "Hrvatski",
     "i18n": "hr",
-    "enabled": true
+    "enabled": false
   }, {
     "label": "မြန်မာဘာသာ",
     "i18n": "my",
-    "enabled": true
+    "enabled": false
   }, {
     "label": "Italiano",
     "i18n": "it",
-    "enabled": true
+    "enabled": false
   }, {
     "label": "Nederlands",
     "i18n": "nl",
-    "enabled": true
+    "enabled": false
   }, {
     "label": "Norsk bokmål",
     "i18n": "nb",
-    "enabled": true
+    "enabled": false
   }, {
     "label": "Polski",
     "i18n": "pl",
-    "enabled": true
+    "enabled": false
   }, {
     "label": "Português",
     "i18n": "pt",
-    "enabled": true
+    "enabled": false
   }, {
     "label": "Русский",
     "i18n": "ru",
-    "enabled": true
+    "enabled": false
   }, {
     "label": "Română",
     "i18n": "ro",
-    "enabled": true
+    "enabled": false
   }, {
     "label": "Slovenščina",
     "i18n": "sl",
-    "enabled": true
+    "enabled": false
   }, {
     "label": "Svenska",
     "i18n": "sv",
-    "enabled": true
+    "enabled": false
   }, {
     "label": "Türkçe",
     "i18n": "tr",
-    "enabled": true
+    "enabled": false
   }, {
     "label": "tiếng Việt",
     "i18n": "vi",
-    "enabled": true
+    "enabled": false
   }],
   "locales": {
     "continents": {

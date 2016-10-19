@@ -4,6 +4,7 @@
   "ns": "core",
   "translation": {
     "core": {
+      "languageDirection": "ltr",
       "languages": {
         "select": "Select Language"
       },
@@ -38,6 +39,9 @@
           "coreDescription": "Reaction configuration",
           "examplePaymentProviderLabel": "Example Payment",
           "examplePaymentProviderDescription": "Example Payment Method",
+          "emailLabel": "Email",
+          "emailTitle": "Email",
+          "emailDescription": "Email settings",
           "i18NLabel": "i18n",
           "i18NTitle": "i18n",
           "i18NDescription": "Internationalization utilities",
@@ -56,6 +60,9 @@
           "paypalLabel": "PayPal",
           "paypalTitle": "PayPal",
           "paypalDescription": "PayPal payments",
+          "revisionsLabel": "Revisions",
+          "revisionsTitle": "Revisions",
+          "revisionsDescription": "Revision control",
           "routingLabel": "Routing",
           "routingTitle": "Routing",
           "routingDescription": "Routing utilities",
@@ -266,6 +273,7 @@
         "tagsAdd": "Add tag",
         "tagsEdit": "Edit tags",
         "tagExists": "Tag already exists, or is empty.",
+        "tagInUse": "Tag is in use and cannot be deleted.",
         "dropFiles": "Drop files to upload",
         "addInventory": "Add Inventory",
         "barcode": "Barcode",
@@ -532,7 +540,7 @@
         "namePlaceholder": "Shop Name",
         "description": "Description",
         "descriptionPlaceholder": "Describe your shop for SEO",
-        "descriptionTooltip": "This field used by meta description tag. It is allow to search engines to describe your shop",
+        "descriptionTooltip": "Meta Description for SEO",
         "email": "Email",
         "emailPlaceholder": "Primary Contact Email",
         "keywords": "Keywords",
@@ -719,7 +727,6 @@
         "orderSearchResults": {
           "orderId": "Order ID",
           "shopId": "Shop ID",
-          "shippingName": "Name",
           "shippingAddress": "Address",
           "shippingCity": "City",
           "shippingRegion": "Region",
