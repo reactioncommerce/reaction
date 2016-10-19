@@ -1,13 +1,14 @@
 import React, { Component, PropTypes } from "react";
+import debounce from "lodash/debounce";
 import update from "react/lib/update";
 import { Meteor } from "meteor/meteor";
-import { Reaction } from "/client/api";
+import { Reaction, i18next } from "/client/api";
 import { composeWithTracker } from "react-komposer";
 import { TagList } from "../components/tags";
 import { Tags } from "/lib/collections";
 import { getTagIds } from "/lib/selectors/tags";
 import { DragDropProvider } from "/imports/plugins/core/ui/client/providers";
-import debounce from "lodash/debounce";
+
 
 function updateSuggestions(term, { excludeTags }) {
   const slug = Reaction.getSlug(term);
@@ -94,7 +95,7 @@ class TagListContainer extends Component {
     if (this.productId && this.canSaveTag(tag)) {
       Meteor.call("products/updateProductTags", this.productId, tag.name, null, (error) => {
         if (error) {
-          return Alerts.toast("Tag already exists, duplicate add failed.", "error");
+          return Alerts.toast(i18next.t("productDetail.tagExists"), "error");
         }
 
         this.setState({
@@ -119,7 +120,7 @@ class TagListContainer extends Component {
     if (this.productId && this.canSaveTag(tag)) {
       Meteor.call("products/updateProductTags", this.productId, tag.name, tag._id, (error) => {
         if (error) {
-          return Alerts.toast("Tag already exists, duplicate add failed.", "error");
+          return Alerts.toast(i18next.t("productDetail.tagExists"), "error");
         }
 
         this.setState({
@@ -135,7 +136,7 @@ class TagListContainer extends Component {
     if (this.productId) {
       Meteor.call("products/removeProductTag", this.productId, tag._id, (error) => {
         if (error) {
-          Alerts.toast("Tag already exists, duplicate add failed.", "error");
+          Alerts.toast(i18next.t("productDetail.tagInUse"), "error");
         }
       });
     }

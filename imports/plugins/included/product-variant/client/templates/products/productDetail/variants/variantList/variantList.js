@@ -1,11 +1,11 @@
+import Sortable from "sortablejs";
+import { Meteor } from "meteor/meteor";
+import { Session } from "meteor/session";
+import { Template } from "meteor/templating";
 import { Reaction } from "/client/api";
 import { ReactionProduct } from "/lib/api";
 import { Products, Media } from "/lib/collections";
 import { EditButton, VisibilityButton } from "/imports/plugins/core/ui/client/components";
-import { Meteor } from "meteor/meteor";
-import { Session } from "meteor/session";
-import { Template } from "meteor/templating";
-import Sortable from "sortablejs";
 
 function variantIsSelected(variantId) {
   const current = ReactionProduct.selectedVariant();
@@ -181,14 +181,13 @@ Template.variantList.helpers({
   },
   ChildVariantRevisionButton() {
     const variant = Template.currentData();
-    const parentVariant = Products.findOne(variant.ancestors[1]);
+    // const parentVariant = Products.findOne(variant.ancestors[1]);
 
     return {
       component: VisibilityButton,
       toggleOn: variant.isVisible,
       onClick() {
         ReactionProduct.toggleVisibility(variant);
-        console.log("would attempt to publish product", variant._id);
       }
     };
   }

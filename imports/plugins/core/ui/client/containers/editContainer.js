@@ -78,7 +78,7 @@ class EditContainer extends Component {
 
             tooltip = (
               <span>
-                <Translation defaultValue="Unpublised Changes" i18nKey="revisions.unpublishedChanges" />
+                <Translation defaultValue="Unpublished Changes" i18nKey="revisions.unpublishedChanges" />
               </span>
             );
 
@@ -91,7 +91,7 @@ class EditContainer extends Component {
 
       tooltip = (
         <span>
-          <Translation defaultValue="Unpublised Changes" i18nKey="revisions.unpublishedChanges" />
+          <Translation defaultValue="Unpublished Changes" i18nKey="revisions.unpublishedChanges" />
         </span>
       );
     }

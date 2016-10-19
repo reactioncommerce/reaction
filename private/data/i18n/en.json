@@ -267,6 +267,7 @@
         "tagsAdd": "Add tag",
         "tagsEdit": "Edit tags",
         "tagExists": "Tag already exists, or is empty.",
+        "tagInUse": "Tag is in use and cannot be deleted.",
         "dropFiles": "Drop files to upload",
         "addInventory": "Add Inventory",
         "barcode": "Barcode",
