@@ -720,7 +720,6 @@
         "orderSearchResults": {
           "orderId": "Order ID",
           "shopId": "Shop ID",
-          "shippingName": "Name",
           "shippingAddress": "Address",
           "shippingCity": "City",
           "shippingRegion": "Region",
