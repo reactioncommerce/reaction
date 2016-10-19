@@ -76,13 +76,13 @@ tmeasday:publish-counts
 vsivsi:job-collection
 react-meteor-data
 percolate:migrations
+johanbrook:publication-collector@1.0.2
 
 # Testing packages
 dburles:factory
 dispatch:mocha
 practicalmeteor:chai
 practicalmeteor:sinon
-johanbrook:publication-collector@1.0.2
 
 # Performance & Debugging Tools
 # meteorhacks:fast-render                   # improve initial page loads
@@ -95,4 +95,3 @@ johanbrook:publication-collector@1.0.2
 
 
 # Custom Packages
-
