@@ -1,3 +1,4 @@
 {
+  "plugins": ["lodash"],
   "presets": ["stage-2"]
 }

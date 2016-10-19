@@ -1,5 +1,5 @@
 [{
-  "language": "Norwegian",
+  "language": "Bokmål",
   "i18n": "nb",
   "ns": "core",
   "translation": {
@@ -22,7 +22,6 @@
         "unauthorizedMessage": "Du har ikke tilatelse til å se dette innholdet.",
         "monthOptions": "Velg måned",
         "yearOptions": "Velg år",
-        "timezoneOptions": "Velg tidssone",
         "shopSettings": "Butikk Innstillinger",
         "dashboard": "Dashboard",
         "print": "Skriv ut"
@@ -133,13 +132,12 @@
       },
       "orderShipping": {
         "shipTo": "Send til",
-        "shipped": "Sendt",
         "notShipped": "Ikke sendt",
         "noTracking": "Ingen sporing",
         "tracking": "Sporing",
-        "addtracking": "Legg til sporing",
         "shipmentEmpty": "Denne forsendelsen har ingen varer!",
         "shipmentPacked": "Alle varene er pakket klare til sending.",
+        "shipped": "Sendt",
         "shippingNotifyCustomer": "Varsle kunden om at varene er klare til å sendes.",
         "resendNotification": "Send varsel om sending på nytt."
       },
@@ -209,15 +207,6 @@
         "noShippingMethods": "Det er ingen tilgjengelige frakt alternativer.",
         "configureNow": "Konfigurer nå.",
         "shipping": "Frakt"
-      },
-      "shopEditForm": {
-        "name": "Navn",
-        "email": "Epost"
-      },
-      "shopEditAdressForm": {
-        "company": "Selskap",
-        "fullname": "Fullt navn",
-        "address1": "Adresselinje1 1"
       },
       "consoleIcon": {
         "iconTitle": "Vis konsoll",

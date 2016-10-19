@@ -1,5 +1,6 @@
-import { Products } from "/lib/collections";
+import { Products, Revisions } from "/lib/collections";
 import { Reaction } from "/server/api";
+import { RevisionApi } from "/imports/plugins/core/revisions/lib/api/revisions";
 
 //
 // define search filters as a schema so we can validate
@@ -71,7 +72,6 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
   check(productFilters, Match.OneOf(undefined, filters));
   check(sort, Match.OneOf(undefined, Object));
 
-  let shopAdmin;
   const shop = Reaction.getCurrentShop();
 
   if (typeof shop !== "object") {
@@ -80,6 +80,7 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
 
   if (shop) {
     const selector = {
+      isDeleted: {$in: [null, false]},
       ancestors: {
         $exists: true,
         $eq: []
@@ -221,10 +222,94 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
       }
     }
 
-    // products are always visible to owners
-    if (!(Roles.userIsInRole(this.userId, ["owner"], shop._id) || shopAdmin)) {
-      selector.isVisible = true;
+    // Authorized content curators fo the shop get special publication of the product
+    // all all relevant revisions all is one package
+
+    if (Roles.userIsInRole(this.userId, ["owner", "admin", "createProduct"], shop._id)) {
+      selector.isVisible = {
+        $in: [true, false, undefined]
+      };
+
+      if (RevisionApi.isRevisionControlEnabled()) {
+        const handle = Products.find(selector, {
+          sort: sort,
+          limit: productScrollLimit
+        }).observeChanges({
+          added: (id, fields) => {
+            const revisions = Revisions.find({
+              "documentId": id,
+              "workflow.status": {
+                $nin: [
+                  "revision/published"
+                ]
+              }
+            }).fetch();
+            fields.__revisions = revisions;
+
+            this.added("Products", id, fields);
+          },
+          changed: (id, fields) => {
+            const revisions = Revisions.find({
+              "documentId": id,
+              "workflow.status": {
+                $nin: [
+                  "revision/published"
+                ]
+              }
+            }).fetch();
+
+            fields.__revisions = revisions;
+            this.changed("Products", id, fields);
+          },
+          removed: (id) => {
+            this.removed("Products", id);
+          }
+        });
+
+        const handle2 = Revisions.find({
+          "workflow.status": {
+            $nin: [
+              "revision/published"
+            ]
+          }
+        }).observeChanges({
+          added: (id, fields) => {
+            this.added("Revisions", id, fields);
+          },
+          changed: (id, fields) => {
+            const revision = Revisions.findOne(id);
+
+            // Only update the revision on the published products if
+            // the revision status was update
+            if (revision.workflow.status === "revision/update") {
+              const product = Products.findOne(revision.documentId);
+
+              product.__revisions = [revision];
+              this.changed("Products", product._id, product);
+            }
+            this.changed("Revisions", id, fields);
+          },
+          removed: (id) => {
+            this.removed("Revisions", id);
+          }
+        });
+
+        this.onStop(() => {
+          handle.stop();
+          handle2.stop();
+        });
+
+        return this.ready();
+      }
+      // Revision control is disabled
+      return Products.find(selector, {
+        sort: sort,
+        limit: productScrollLimit
+      });
     }
+
+    // Everyone else gets the standard, visibile products
+    selector.isVisible = true;
 
     return Products.find(selector, {
       sort: sort,

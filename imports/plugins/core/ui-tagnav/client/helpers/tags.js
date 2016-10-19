@@ -88,7 +88,7 @@ export const TagHelpers = {
     Meteor.call("shop/updateHeaderTags", tagName, null, parentTagId,
       function (error) {
         if (error) {
-          Alerts.toast("Tag already exists, duplicate add failed.", "error");
+          Alerts.toast(i18next.t("productDetail.tagExists"), "error");
         }
       });
   },
@@ -97,7 +97,7 @@ export const TagHelpers = {
     Meteor.call("shop/updateHeaderTags", tagName, tagId, parentTagId,
       function (error) {
         if (error) {
-          Alerts.toast("Tag already exists, duplicate add failed.", "error");
+          Alerts.toast(i18next.t("productDetail.tagExists"), "error");
         }
       });
   },

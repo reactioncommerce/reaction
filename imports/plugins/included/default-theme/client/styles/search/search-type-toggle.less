@@ -1,0 +1,27 @@
+.rui.search-type-toggle {
+  width: 96%;
+  height: auto;
+  cursor: pointer;
+  .display(flex);
+  border-bottom: solid 1px @black20;
+
+  .search-type-option {
+    flex: 1;
+    text-align: center;
+    padding-top: 10px;
+    padding-bottom: 7px;
+    text-transform: uppercase;
+    border-bottom: 3px solid transparent;
+    transition: border-color 200ms linear;
+
+    &:hover {
+      border-bottom: 3px solid fade(@brand-primary-color, 40%);
+    }
+
+    &.search-type-active {
+      border-bottom: 3px solid @brand-primary-color;
+      transition: border-color 200ms linear;
+    }
+
+  }
+}

@@ -1,11 +1,11 @@
-import { Reaction } from "/client/api";
-import { ReactionProduct } from "/lib/api";
-import { Products, Media } from "/lib/collections";
-import { EditButton } from "/imports/plugins/core/ui/client/components";
+import Sortable from "sortablejs";
 import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
 import { Template } from "meteor/templating";
-import Sortable from "sortablejs";
+import { Reaction } from "/client/api";
+import { ReactionProduct } from "/lib/api";
+import { Products, Media } from "/lib/collections";
+import { EditButton, VisibilityButton } from "/imports/plugins/core/ui/client/components";
 
 function variantIsSelected(variantId) {
   const current = ReactionProduct.selectedVariant();
@@ -176,6 +176,18 @@ Template.variantList.helpers({
             data: parentVariant
           });
         }
+      }
+    };
+  },
+  ChildVariantRevisionButton() {
+    const variant = Template.currentData();
+    // const parentVariant = Products.findOne(variant.ancestors[1]);
+
+    return {
+      component: VisibilityButton,
+      toggleOn: variant.isVisible,
+      onClick() {
+        ReactionProduct.toggleVisibility(variant);
       }
     };
   }

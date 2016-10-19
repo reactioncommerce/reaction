@@ -86,9 +86,9 @@
     "jsx-quotes": [2, "prefer-double"], // http://eslint.org/docs/rules/jsx-quotes
     "react/no-deprecated": 1,
     "react/display-name": 1,
-    "react/forbid-prop-types": 1,
+    "react/forbid-prop-types": 0,
     "react/jsx-boolean-value": 0,
-    "react/jsx-closing-bracket-location": [1, "after-props"],
+    "react/jsx-closing-bracket-location": 1,
     "react/jsx-curly-spacing": 1,
     "react/jsx-indent-props": [1, 2],
     "react/jsx-max-props-per-line": [1, {

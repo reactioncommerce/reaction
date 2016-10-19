@@ -152,15 +152,6 @@
         "configureNow": "Beállítás most.",
         "shipping": "Szállítás"
       },
-      "shopEditForm": {
-        "name": "Név",
-        "email": "Email"
-      },
-      "shopEditAdressForm": {
-        "company": "Cég",
-        "fullname": "Teljes név",
-        "address1": "Cím 1"
-      },
       "consoleIcon": {
         "iconTitle": "Konzol megtekintés",
         "text": "Konzol"
@@ -216,7 +207,6 @@
         "updateYourPassword": "Jelszó frissítése",
         "username": "felhasználó",
         "usernameOrEmail": "Felhasználó vagy email",
-        "with": "",
         "checkoutAsGuest": "Rendelés fiók nélkül",
         "info": {
           "emailSent": "Email elküldve",
