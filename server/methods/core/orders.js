@@ -1,8 +1,12 @@
+import _ from "lodash";
+import path from "path";
+import moment from "moment";
 import accounting from "accounting-js";
 import Future from "fibers/future";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
-import { Cart, Orders, Products, Shops } from "/lib/collections";
+import { getSlug } from "/lib/api";
+import { Cart, Media, Orders, Products, Shops } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 import { Logger, Reaction } from "/server/api";
 
@@ -328,8 +332,84 @@ Meteor.methods({
 
     this.unblock();
 
+    // Get Shop information
     const shop = Shops.findOne(order.shopId);
-    const shipment = order.shipping[0];
+    const shopContact = shop.addressBook[0];
+
+    // Get shop logo, if available
+    let emailLogo;
+    if (Array.isArray(shop.brandAssets)) {
+      const brandAsset = _.find(shop.brandAssets, (asset) => asset.type === "navbarBrandImage");
+      const mediaId = Media.findOne(brandAsset.mediaId);
+      emailLogo = path.join(Meteor.absoluteUrl(), mediaId.url());
+    } else {
+      emailLogo = Meteor.absoluteUrl() + "resources/email-templates/shop-logo.png";
+    }
+
+    // Combine same products into single "product" for display purposes
+    const combinedItems = [];
+    if (order) {
+      // Loop through all items in the order. The items are split into indivital items
+      for (const orderItem of order.items) {
+        // Find an exising item in the combinedItems array
+        const foundItem = combinedItems.find((combinedItem) => {
+          // If and item variant exists, then we return true
+          if (combinedItem.variants) {
+            return combinedItem.variants._id === orderItem.variants._id;
+          }
+
+          return false;
+        });
+
+        // Increment the quantity count for the duplicate product variants
+        if (foundItem) {
+          foundItem.quantity++;
+        } else {
+          // Otherwise push the unique item into the combinedItems array
+          combinedItems.push(orderItem);
+
+          // Placeholder image if there is no product image
+          orderItem.placeholderImage = Meteor.absoluteUrl() + "resources/placeholder.gif";
+
+          const variantImage = Media.findOne({
+            "metadata.productId": orderItem.productId,
+            "metadata.variantId": orderItem.variants._id
+          });
+          // variant image
+          if (variantImage) {
+            orderItem.variantImage = path.join(Meteor.absoluteUrl(), variantImage.url());
+          }
+          // find a default image
+          const productImage = Media.findOne({
+            "metadata.productId": orderItem.productId
+          });
+          if (productImage) {
+            orderItem.productImage = path.join(Meteor.absoluteUrl(), productImage.url());
+          }
+        }
+      }
+    }
+
+    // Merge data into single object to pass to email template
+    const dataForOrderEmail = {
+      homepage: Meteor.absoluteUrl(),
+      emailLogo: emailLogo,
+      copyrightDate: moment().format("YYYY"),
+      shop: shop,
+      shopContact: shopContact,
+      order: order,
+      orderDate: moment(order.createdAt).format("MM/DD/YYYY"),
+      billing: {
+        subtotal: accounting.toFixed(order.billing[0].invoice.subtotal, 2),
+        shipping: accounting.toFixed(order.billing[0].invoice.shipping, 2),
+        taxes: accounting.toFixed(order.billing[0].invoice.taxes, 2),
+        discounts: accounting.toFixed(order.billing[0].invoice.discounts, 2),
+        total: accounting.toFixed(order.billing[0].invoice.total, 2)
+      },
+      shipping: order.shipping[0],
+      orderUrl: getSlug(shop.name) + "/cart/completed?_id=" + order.cartId,
+      combinedItems: combinedItems
+    };
 
     Logger.info(`orders/sendNotification status: ${order.workflow.status}`);
 
@@ -354,8 +434,9 @@ Meteor.methods({
     Reaction.Email.send({
       to: order.email,
       from: `${shop.name} <${shop.emails[0].address}>`,
-      subject: `Order update from ${shop.name}`,
-      html: SSR.render(tpl, { homepage: Meteor.absoluteUrl(), shop, order, shipment })
+      subject: `Your order is confirmed`,
+      // subject: `Order update from ${shop.name}`,
+      html: SSR.render(tpl,  dataForOrderEmail)
     });
 
     return true;

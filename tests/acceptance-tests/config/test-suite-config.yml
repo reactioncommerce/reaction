@@ -1,0 +1,17 @@
+# Enable and disable different suites of tests
+
+# Payment Processor specific tests
+braintree: false
+stripe: false
+authnet: false
+paypal: false
+example: false
+
+# Admin functionality
+permissions: false
+
+# Regression suites
+smoke_test: true
+
+# Test reporter
+allure: true

@@ -1,7 +1,6 @@
 import faker from "faker";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
-import { Roles } from "meteor/alanning:roles";
 import { Reaction } from "/server/api";
 import { getSlug } from "/lib/api";
 import { Products, OrderSearch } from "/lib/collections";
@@ -127,7 +126,7 @@ describe("Account Search results", function () {
 
   describe("account search", function () {
     it("should match accounts when searching by email", function () {
-      const roleStub = sinon.stub(Roles, "userIsInRole", () => true);
+      const roleStub = sinon.stub(Reaction, "hasPermission", () => true);
       const email = account.emails[0].address;
       const results = getResults.accounts(email);
       expect(results.count()).to.equal(1);
@@ -135,7 +134,7 @@ describe("Account Search results", function () {
     });
 
     it("should not return results if not an admin", function () {
-      const roleStub = sinon.stub(Roles, "userIsInRole", () => false);
+      const roleStub = sinon.stub(Reaction, "hasPermission", () => false);
       const email = account.emails[0].address;
       const results = getResults.accounts(email);
       expect(results).to.be.undefined;
@@ -156,35 +155,35 @@ describe("Order Search results", function () {
 
   describe("order search", function () {
     it("should match orders when searching by email", function () {
-      const roleStub = sinon.stub(Roles, "userIsInRole", () => true);
+      const roleStub = sinon.stub(Reaction, "hasPermission", () => true);
       const results = getResults.orders("test@example.com");
       expect(results.count()).to.equal(1);
       roleStub.restore();
     });
 
     it("should not return results if not an admin", function () {
-      const roleStub = sinon.stub(Roles, "userIsInRole", () => false);
+      const roleStub = sinon.stub(Reaction, "hasPermission", () => false);
       const results = getResults.orders("test@example.com");
       expect(results).to.be.undefined;
       roleStub.restore();
     });
 
     it("should return results when searching by shipping name", function () {
-      const roleStub = sinon.stub(Roles, "userIsInRole", () => true);
+      const roleStub = sinon.stub(Reaction, "hasPermission", () => true);
       const results = getResults.orders("Ship Name");
       expect(results.count()).to.equal(1);
       roleStub.restore();
     });
 
     it("should return results when searching by billing name", function () {
-      const roleStub = sinon.stub(Roles, "userIsInRole", () => true);
+      const roleStub = sinon.stub(Reaction, "hasPermission", () => true);
       const results = getResults.orders("Bill Name");
       expect(results.count()).to.equal(1);
       roleStub.restore();
     });
 
     it("should return results when searching by billing name and be case insensitive", function () {
-      const roleStub = sinon.stub(Roles, "userIsInRole", () => true);
+      const roleStub = sinon.stub(Reaction, "hasPermission", () => true);
       const results = getResults.orders("biLl nAme");
       expect(results.count()).to.equal(1);
       roleStub.restore();
