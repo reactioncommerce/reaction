@@ -156,8 +156,17 @@ EditContainer.propTypes = {
 };
 
 function composer(props, onData) {
+  let hasPermission;
+  const viewAs = Reaction.Router.getQueryParam("as");
+
+  if (props.disabled === true || viewAs === "customer") {
+    hasPermission = false;
+  } else {
+    hasPermission = Reaction.hasPermission(props.premissions);
+  }
+
   onData(null, {
-    hasPermission: Reaction.hasPermission(props.premissions)
+    hasPermission
   });
 }
 

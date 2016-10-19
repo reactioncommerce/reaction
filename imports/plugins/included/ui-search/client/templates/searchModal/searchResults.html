@@ -1,0 +1,19 @@
+<template name="searchResults">
+
+  <div class="rui search-modal-results-container">
+    <div class="rui search-modal-results">
+      {{#if productSearchResults}}
+        {{> productResults productSearchResults=productSearchResults}}
+      {{/if}}
+
+      {{#if orderSearchResults}}
+        {{> orderResults orderSearchResults=orderSearchResults orderTable=orderTable}}
+      {{/if}}
+
+      {{#if accountSearchResults}}
+        {{> accountResults accountSearchResults=accountSearchResults accountTable=accountTable}}
+      {{/if}}
+    </div>
+  </div>
+
+</template>

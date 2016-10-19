@@ -25,8 +25,6 @@ Template.searchGridControls.helpers({
     const instance = Template.instance();
     const isSelected = instance.state.equals("isSelected", true);
 
-    console.log("--------instance.data--------", instance.data);
-
     return {
       component: IconButton,
       icon: "fa fa-pencil",

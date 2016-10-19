@@ -5,18 +5,7 @@ Reaction.registerPackage({
   name: "reaction-product-variant",
   icon: "fa fa-cubes",
   autoEnable: true,
-  registry: [/*{
-    route: "/product/:handle/:variantId?",
-    name: "product",
-    template: "productDetail",
-    workflow: "coreProductWorkflow"
-  }, {
-    label: "Product Settings",
-    provides: "settings",
-    route: "/product/:handle/:variantId?",
-    container: "product",
-    template: "productDetailForm"
-  }, */{
+  registry: [{
     route: "/tag/:slug?",
     name: "tag",
     template: "products",

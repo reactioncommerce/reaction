@@ -49,6 +49,7 @@ class VariantList extends Component {
         return (
           <EditContainer
             data={variant}
+            disabled={this.props.editable === false}
             editView="variantForm"
             i18nKeyLabel="productDetailEdit.editVariant"
             key={index}
@@ -95,6 +96,7 @@ class VariantList extends Component {
         return (
           <EditContainer
             data={childVariant}
+            disabled={this.props.editable === false}
             editView="variantForm"
             i18nKeyLabel="productDetailEdit.editVariant"
             key={index}
