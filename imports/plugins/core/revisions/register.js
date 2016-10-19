@@ -13,7 +13,7 @@ Reaction.registerPackage({
     // Dashboard card
     {
       provides: "dashboard",
-      label: "Revision Control",
+      label: "Revisions",
       description: "Revision control",
       icon: "fa fa-undo",
       priority: 2,

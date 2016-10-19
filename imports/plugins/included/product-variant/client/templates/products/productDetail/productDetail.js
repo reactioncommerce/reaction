@@ -7,7 +7,7 @@ import { Tags } from "/lib/collections";
 import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
 import { Template } from "meteor/templating";
-import { Button, EditButton } from "/imports/plugins/core/ui/client/components";
+import { EditButton } from "/imports/plugins/core/ui/client/components";
 import { PublishContainer } from "/imports/plugins/core/revisions";
 import { ProductDetailContainer } from "/imports/plugins/included/product-detail-simple/client/containers";
 import { isRevisionControlEnabled } from "/imports/plugins/core/revisions/lib/api";
@@ -65,7 +65,7 @@ Template.productDetail.helpers({
   PDC() {
     return {
       component: ProductDetailContainer
-    }
+    };
   },
   tagListProps() {
     const instance = Template.instance();
@@ -107,7 +107,7 @@ Template.productDetail.helpers({
         Meteor.call("products/updateProductTags", productId, tagName, null,
           function (error) {
             if (error) {
-              Alerts.toast("Tag already exists, duplicate add failed.", "error");
+              Alerts.toast(i18next.t("productDetail.tagExists"), "error");
             }
           });
       },
@@ -115,7 +115,7 @@ Template.productDetail.helpers({
         Meteor.call("products/removeProductTag", productId, tag._id,
           function (error) {
             if (error) {
-              Alerts.toast("Tag already exists, duplicate add failed.", "error");
+              Alerts.toast(i18next.t("productDetail.tagExists"), "error");
             }
           });
       },
@@ -126,7 +126,7 @@ Template.productDetail.helpers({
         Meteor.call("products/updateProductTags", productId, tagName, tagId,
           function (error) {
             if (error) {
-              Alerts.toast("Tag already exists, duplicate add failed.", "error");
+              Alerts.toast(i18next.t("productDetail.tagExists"), "error");
             }
           });
       }
