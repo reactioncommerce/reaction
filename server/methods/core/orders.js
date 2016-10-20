@@ -397,13 +397,14 @@ Meteor.methods({
       homepage: Meteor.absoluteUrl(),
       emailLogo: emailLogo,
       copyrightDate: moment().format("YYYY"),
+      legalName: shop.addressBook[0].company,
       physicalAddress: {
         address: shop.addressBook[0].address1 + " " + shop.addressBook[0].address2,
         city: shop.addressBook[0].city,
         region: shop.addressBook[0].region,
         postal: shop.addressBook[0].postal
       },
-      shopName: shop.addressBook[0].company,
+      shopName: shop.name,
       socialLinks: {
         display: true,
         facebook: {
@@ -413,7 +414,7 @@ Meteor.methods({
         },
         googlePlus: {
           display: true,
-          icon: Meteor.absoluteUrl() + "resources/email-templates/googlePlus-icon.png",
+          icon: Meteor.absoluteUrl() + "resources/email-templates/google-plus-icon.png",
           link: "https://plus.google.com"
         },
         twitter: {
