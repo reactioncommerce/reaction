@@ -96,8 +96,8 @@ class ProductDetailContainer extends Component {
 
         // Grab and cache the width of the alert to be used in animation
         const alertWidth = $(".cart-alert").width();
-        const direction = i18next.t("languageDirection") === "rtl" ? "left" : "right";
-        const oppositeDirection = i18next.t("languageDirection") === "rtl" ? "right" : "left";
+        const direction = i18next.dir() === "rtl" ? "left" : "right";
+        const oppositeDirection = i18next.dir() === "rtl" ? "right" : "left";
 
         // Animate
         return $(".cart-alert")

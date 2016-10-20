@@ -55,6 +55,7 @@ Meteor.startup(() => {
           }
         }).fetch();
 
+
         // map reduce translations into i18next formatting
         const resources = translations.reduce(function (x, y) {
           const ns = Object.keys(y.translation)[0];
@@ -87,7 +88,7 @@ Meteor.startup(() => {
             // missingKeyHandler: function (lng, ns, key, fallbackValue) {
             //   Meteor.call("i18n/addTranslation", lng, ns, key, fallbackValue);
             // }
-          }, (err, t) => {
+          }, () => {
             // someday this should work
             // see: https://github.com/aldeed/meteor-simple-schema/issues/494
             for (const schema in _.omit(Schemas, "__esModule")) {
@@ -105,7 +106,7 @@ Meteor.startup(() => {
             $elements = $("[data-i18n]").localize();
 
             // apply language direction to html
-            if (t("languageDirection") === "rtl") {
+            if (i18next.dir(language) === "rtl") {
               return $("html").addClass("rtl");
             }
             return $("html").removeClass("rtl");
