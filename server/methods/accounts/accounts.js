@@ -1,4 +1,9 @@
+import _ from "lodash";
+import moment from "moment";
+import path from "path";
 import * as Collections from "/lib/collections";
+// TODO: Change all imports from collections to only pull in needed?
+// import { Media } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 import { Logger, Reaction } from "/server/api";
 
@@ -342,6 +347,34 @@ Meteor.methods({
     const user = Collections.Accounts.findOne(userId);
     const shop = Collections.Shops.findOne(shopId);
 
+    // Get shop logo, if available
+    let emailLogo;
+    if (Array.isArray(shop.brandAssets)) {
+      const brandAsset = _.find(shop.brandAssets, (asset) => asset.type === "navbarBrandImage");
+      const mediaId = Collections.Media.findOne(brandAsset.mediaId);
+      emailLogo = path.join(Meteor.absoluteUrl(), mediaId.url());
+    } else {
+      emailLogo = Meteor.absoluteUrl() + "resources/email-templates/shop-logo.png";
+    }
+
+    const dataForEmail = {
+      // Shop Data
+      shop: shop,
+      contactEmail: shop.emails[0].address,
+      homepage: Meteor.absoluteUrl(),
+      emailLogo: emailLogo,
+      copyrightDate: moment().format("YYYY"),
+      physicalAddress: {
+        address: shop.addressBook[0].address1 + " " + shop.addressBook[0].address2,
+        city: shop.addressBook[0].city,
+        region: shop.addressBook[0].region,
+        postal: shop.addressBook[0].postal
+      },
+      shopName: shop.addressBook[0].company,
+      // Account Data
+      user: Meteor.user()
+    };
+
     // anonymous users arent welcome here
     if (!user.emails || !user.emails.length > 0) {
       return true;
@@ -358,18 +391,14 @@ Meteor.methods({
       shopEmail = shop.emails[0].address;
     }
 
-    const tmpl = "accounts/sendWelcomeEmail";
-    SSR.compileTemplate("accounts/sendWelcomeEmail", Reaction.Email.getTemplate(tmpl));
+    const tpl = "accounts/sendWelcomeEmail";
+    SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl));
 
     Reaction.Email.send({
       to: userEmail,
       from: `${shop.name} <${shopEmail}>`,
-      subject: `Welcome to ${shop.name}!`,
-      html: SSR.render("accounts/sendWelcomeEmail", {
-        homepage: Meteor.absoluteUrl(),
-        shop: shop,
-        user: Meteor.user()
-      })
+      subject: `You're In. Welcome to ${shop.name}!`,
+      html: SSR.render(tpl, dataForEmail)
     });
 
     return true;
