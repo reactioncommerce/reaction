@@ -357,6 +357,8 @@
         "restoreProduct": "Restore Product from Trash",
         "deleteThisProduct": "Delete this product?",
         "deleteSelectedProducts": "Delete selected products?",
+        "archiveThisProduct": "Archive this product?",
+        "archiveSelectedProducts": "Archive selected products?",
         "publish": "Publish",
         "moreOptions": "More Options",
         "details": "Details",
