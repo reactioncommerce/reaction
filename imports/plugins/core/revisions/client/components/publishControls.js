@@ -160,7 +160,7 @@ class PublishControls extends Component {
             label="Archived"
             onClick={this.handleRestore}
             status="danger"
-            i18nKeyLabel="app.deleted"
+            i18nKeyLabel="app.archived"
           />
         );
       }
@@ -197,7 +197,7 @@ class PublishControls extends Component {
             i18nKeyLabel="app.archive"
             icon="fa fa-trash-o"
             label="Archive"
-            value="Archive"
+            value="archive"
           />
         </Menu>
       </Popover>
