@@ -334,7 +334,6 @@ Meteor.methods({
 
     // Get Shop information
     const shop = Shops.findOne(order.shopId);
-    const shopContact = shop.addressBook[0];
 
     // Get shop logo, if available
     let emailLogo;
@@ -391,24 +390,47 @@ Meteor.methods({
     }
 
     // Merge data into single object to pass to email template
-    const dataForOrderEmail = {
+    const dataForEmail = {
+      // Shop Data
+      shop: shop,
+      contactEmail: shop.emails[0].address,
       homepage: Meteor.absoluteUrl(),
       emailLogo: emailLogo,
       copyrightDate: moment().format("YYYY"),
-      shop: shop,
-      shopContact: shopContact,
+      physicalAddress: {
+        address: shop.addressBook[0].address1 + " " + shop.addressBook[0].address2,
+        city: shop.addressBook[0].city,
+        region: shop.addressBook[0].region,
+        postal: shop.addressBook[0].postal
+      },
+      shopName: shop.addressBook[0].company,
+      // Order Data
       order: order,
-      orderDate: moment(order.createdAt).format("MM/DD/YYYY"),
       billing: {
+        address: {
+          address: order.billing[0].address.address1,
+          city: order.billing[0].address.city,
+          region: order.billing[0].address.region,
+          postal: order.billing[0].address.postal
+        },
+        paymentMethod: order.billing[0].paymentMethod.storedCard,
         subtotal: accounting.toFixed(order.billing[0].invoice.subtotal, 2),
         shipping: accounting.toFixed(order.billing[0].invoice.shipping, 2),
         taxes: accounting.toFixed(order.billing[0].invoice.taxes, 2),
         discounts: accounting.toFixed(order.billing[0].invoice.discounts, 2),
         total: accounting.toFixed(order.billing[0].invoice.total, 2)
       },
-      shipping: order.shipping[0],
+      combinedItems: combinedItems,
+      orderDate: moment(order.createdAt).format("MM/DD/YYYY"),
       orderUrl: getSlug(shop.name) + "/cart/completed?_id=" + order.cartId,
-      combinedItems: combinedItems
+      shipping: {
+        address: {
+          address: order.shipping[0].address.address1,
+          city: order.shipping[0].address.city,
+          region: order.shipping[0].address.region,
+          postal: order.shipping[0].address.postal
+        }
+      }
     };
 
     Logger.info(`orders/sendNotification status: ${order.workflow.status}`);
@@ -436,7 +458,7 @@ Meteor.methods({
       from: `${shop.name} <${shop.emails[0].address}>`,
       subject: `Your order is confirmed`,
       // subject: `Order update from ${shop.name}`,
-      html: SSR.render(tpl,  dataForOrderEmail)
+      html: SSR.render(tpl, dataForEmail)
     });
 
     return true;
