@@ -307,6 +307,8 @@
         "clonedAlert_plural": "Cloned {{product}}",
         "deletedAlert": "Deleted {{product}}",
         "deletedAlert_plural": "Deleted {{product}}",
+        "archivedAlert": "Archived {{product}}",
+        "archivedAlert_plural": "Archived {{product}}",
         "theProduct": "the product",
         "theSelectedProducts": "the selected products",
         "startTracking": "Start Tracking",
