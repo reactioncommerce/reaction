@@ -137,6 +137,8 @@
         "submit": "Submit",
         "delete": "Delete",
         "deleted": "Deleted",
+        "archive": "Archive",
+        "archived": "Archived",
         "create": "Create",
         "close": "Close",
         "settings": "Settings",

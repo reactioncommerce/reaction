@@ -157,7 +157,7 @@ class PublishControls extends Component {
       if (this.props.revisions[0].documentData.isDeleted) {
         return (
           <Button
-            label="Deleted"
+            label="Archived"
             onClick={this.handleRestore}
             status="danger"
             i18nKeyLabel="app.deleted"
@@ -194,10 +194,10 @@ class PublishControls extends Component {
           />
           <Divider />
           <MenuItem
-            i18nKeyLabel="app.delete"
+            i18nKeyLabel="app.archive"
             icon="fa fa-trash-o"
-            label="Delete"
-            value="delete"
+            label="Archive"
+            value="Archive"
           />
         </Menu>
       </Popover>
