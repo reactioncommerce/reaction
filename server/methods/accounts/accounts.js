@@ -371,6 +371,24 @@ Meteor.methods({
         postal: shop.addressBook[0].postal
       },
       shopName: shop.addressBook[0].company,
+      socialLinks: {
+        display: true,
+        facebook: {
+          display: true,
+          icon: Meteor.absoluteUrl() + "resources/email-templates/facebook-icon.png",
+          link: "https://www.facebook.com"
+        },
+        googlePlus: {
+          display: true,
+          icon: Meteor.absoluteUrl() + "resources/email-templates/googlePlus-icon.png",
+          link: "https://plus.google.com"
+        },
+        twitter: {
+          display: true,
+          icon: Meteor.absoluteUrl() + "resources/email-templates/twitter-icon.png",
+          link: "https://www.twitter.com"
+        }
+      },
       // Account Data
       user: Meteor.user()
     };

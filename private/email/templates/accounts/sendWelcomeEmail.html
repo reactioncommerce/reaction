@@ -95,6 +95,8 @@ table[class=wrap1001], td[class=wrap1001] { width:96% !important; margin:0 !impo
                   <tr>
                     <td align="left" valign="top" style="font-family:Arial, Helvetica, sans-serif; font-size:12px; font-weight:normal; line-height:17px;">You received this email because you have an account with {{shopName}}. Questions or suggestions? Email us at <a href="mailto:{{contactEmail}}" style="text-decoration:none; color:#1e98d5;">{{contactEmail}}</a></td>
                   </tr>
+                  <!-- Begin Social Icons -->
+                  {{#if socialLinks.display}}
                   <tr>
                     <td height="21" align="left" valign="top" style="font-size:1px; line-height:1px;">&nbsp;</td>
                   </tr>
@@ -102,20 +104,26 @@ table[class=wrap1001], td[class=wrap1001] { width:96% !important; margin:0 !impo
                     <td align="left" valign="top">
                       <table width="100%" border="0" cellspacing="0" cellpadding="0" class="emailwrapto100pc">
                         <tr>
+                          {{#if socialLinks.twitter.display}}
                           <td width="26" align="left" valign="top">
-                            <a href="#"><img src="{{homepage}}resources/email-templates/twitter-icon.png" width="26"
+                            <a href="{{socialLinks.twitter.link}}"><img src="{{socialLinks.twitter.icon}}" width="26"
                                   height="26" alt="twt_icon"></a>
                           </td>
+                          {{/if}}
+                          {{#if socialLinks.facebook.display}}
                           <td width="10" align="left" valign="top">&nbsp;</td>
                           <td width="26" align="left" valign="top">
-                            <a href="#"><img src="{{homepage}}resources/email-templates/facebook-icon.png" width="26"
+                            <a href="{{socialLinks.facebook.link}}"><img src="{{socialLinks.facebook.icon}}" width="26"
                                   height="26" alt="fb_icon"></a>
                           </td>
+                          {{/if}}
+                          {{#if socialLinks.googlePlus.display}}
                           <td width="10" align="left" valign="top">&nbsp;</td>
                           <td>
-                            <a href="#"><img src="{{homepage}}resources/email-templates/google-plus-icon.png" width="26"
+                            <a href="{{socialLinks.googlePlus.link}}"><img src="{{socialLinks.googlePlus.icon}}" width="26"
                                   height="26" alt="g_plus_icon"></a>
                           </td>
+                          {{/if}}
                         </tr>
                       </table>
                     </td>
@@ -123,6 +131,12 @@ table[class=wrap1001], td[class=wrap1001] { width:96% !important; margin:0 !impo
                   <tr>
                     <td height="28" align="left" valign="top" style="font-size:1px; line-height:1px;">&nbsp;</td>
                   </tr>
+                  {{else}}
+                  <tr>
+                    <td height="15" align="left" valign="top" style="font-size:1px; line-height:1px;">&nbsp;</td>
+                  </tr>
+                  {{/if}}
+                  <!-- End Social Icons -->
                   <tr>
                     <td height="3" align="left" valign="top" bgcolor="#1f97d4" style="font-size:1px; line-height:1px;">&nbsp;</td>
                   </tr>
