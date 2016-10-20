@@ -4,6 +4,7 @@
   "ns": "core",
   "translation": {
     "core": {
+      "languageDirection": "l",
       "languages": {
         "select": "Sprache auswählen"
       },
@@ -103,6 +104,7 @@
           "reactionConnectLabel": "Ergebnis verbinden",
           "examplePaymentSettingsLabel": "Zahlungsbeispiel-Einstellungen",
           "productSettingsLabel": "Produkteinstellungen",
+          "productDetailsLabel": "Produktdetails",
           "taxSettingsLabel": "Steuer-Einstellungen"
         },
         "userAccountDropdown": {
@@ -569,9 +571,12 @@
         "publishChanges": "Änderungen veröffentlichen",
         "showChanges": "Änderungen anzeigen",
         "hideChanges": "Änderungen verbergen",
+        "discardChanges": "Änderungen verwerfen",
         "changedPublished": "Die Änderungen wurden erfolgreich veröffentlicht",
+        "changesDiscarded": "Änderungen erfolgreich verworfen",
         "noChanges": "Keine Änderungen",
-        "noChangesPublished": "Es gibt keine Änderungen zu veröffentlichen"
+        "noChangesPublished": "Es gibt keine Änderungen zu veröffentlichen",
+        "noChangesDiscarded": "Keine zu verwerfenden Änderungen gefunden"
       },
       "address": {
         "country": "Land",
@@ -697,8 +702,41 @@
       "search": {
         "clearSearch": "Löschen",
         "noProductsFound": "Es wurden keine Produkte gefunden. ",
+        "noOrdersFound": "Keine Bestellungen gefunden.",
+        "noAccountsFound": "Keine Konten gefunden.",
         "searchInputLabel": "Suchergebnis ",
-        "suggestedTags": "Vorgeschlagene Tags"
+        "suggestedTags": "Vorgeschlagene Tags",
+        "searchTypeProducts": "Produkte",
+        "searchTypeAccounts": "Konto",
+        "searchTypeOrders": "Bestellungen",
+        "accountSearchResults": {
+          "accountId": "Konto-Nr.",
+          "shopId": "Shop-ID",
+          "firstName": "Vorname",
+          "lastName": "Nachname",
+          "phone": "Telefon",
+          "emails": "E-Mail"
+        },
+        "orderSearchResults": {
+          "orderId": "Bestellnummer",
+          "shopId": "Shop-ID",
+          "shippingAddress": "Adresse",
+          "shippingCity": "Stadt",
+          "shippingRegion": "Region",
+          "shippingCountry": "Land",
+          "shippingPhone": "Telefon",
+          "shippingName": "Name",
+          "shippingStatus": "Status",
+          "billingAddress": "Adresse",
+          "billingCity": "Stadt",
+          "billingRegion": "Region",
+          "billingCountry": "Land",
+          "billingPhone": "Telefon",
+          "billingStatus": "Status",
+          "userEmails": "E-Mail",
+          "orderDate": "Datum",
+          "orderTotal": "Gesamt"
+        }
       },
       "accountsUI": {
         "members": "Mitglieder",
