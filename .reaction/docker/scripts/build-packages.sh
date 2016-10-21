@@ -1,11 +1,11 @@
 #!/bin/bash
 
 #
-# add bin/docker/packages to use custom build packages
+# Add .reaction/docker/packages to use custom
+# Meteor packages in the Docker build
 #
 
-if [ -f bin/docker/packages ]; then
+if [ -f .reaction/docker/packages ]; then
   echo "[-] Using custom Meteor packages file..."
   cp docker/packages .meteor/packages
-  exit 0
 fi

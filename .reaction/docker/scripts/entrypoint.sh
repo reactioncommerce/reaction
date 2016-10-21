@@ -7,9 +7,17 @@
 #
 set -e
 
-# set default meteor values if they arent set
-: ${PORT:="80"}
-: ${ROOT_URL:="http://localhost"}
+# start local mongodb if no external MONGO_URL was set
+if [[ "${MONGO_URL}" == *"127.0.0.1"* ]]; then
+  if hash mongod 2>/dev/null; then
+    mkdir -p /data/db
+    printf "\n[-] External MONGO_URL not found. Starting local MongoDB...\n\n"
+    mongod --storageEngine=wiredTiger --fork --logpath /var/log/mongodb.log
+  else
+    echo "ERROR: Mongo not installed inside the container. Rebuild with INSTALL_MONGO=true"
+    exit 1
+  fi
+fi
 
 # Run meteor
 exec node ./main.js

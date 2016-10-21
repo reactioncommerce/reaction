@@ -1,0 +1,29 @@
+<template name="productItem">
+  <li class="product-grid-item {{#if positions.pinned}}pinned{{/if}} {{weightClass}} {{isSelected}}" data-id="{{product._id}}" id="{{product._id}}">
+    <div class="item-content">
+      {{> gridNotice}}
+      <span class="product-grid-item-alerts">
+        {{> inlineAlerts placement="productGridItem" id=product._id}}
+      </span>
+
+      <a class="product-grid-item-images"
+        href="{{pathFor 'product' handle=product.handle}}"
+        data-event-category="grid"
+        data-event-action="productClick"
+        data-event-label="grid product click"
+        data-event-value="{{product._id}}">
+
+        <div class="product-primary-images">
+          {{#with media}}
+            <span class="product-image" style="background-image: url('{{url store='large'}}')"></span>
+          {{else}}
+            <span class="product-image" style="background-image: url(/resources/placeholder.gif)"></span>
+          {{/with}}
+        </div>
+      </a>
+
+      <!-- {{> searchGridControls controlProps product=product}} -->
+      {{> searchGridContent product=product}}
+    </div>
+  </li>
+</template>

@@ -99,7 +99,7 @@ Template.childVariantForm.events({
 
     return ReactionProduct.setCurrentVariant(template.data._id);
   },
-  "change .child-variant-form :input": function (event, template) {
+  "change .child-variant-input": function (event, template) {
     const variant = template.data;
     const value = $(event.currentTarget).val();
     const field = $(event.currentTarget).attr("name");
@@ -112,7 +112,7 @@ Template.childVariantForm.events({
       });
     return ReactionProduct.setCurrentVariant(variant._id);
   },
-  "click .js-child-varaint-heading": function (event, instance) {
+  "click .js-child-variant-heading": function (event, instance) {
     const selectedProduct = ReactionProduct.selectedProduct();
     const variantId = instance.data._id;
 
@@ -126,14 +126,38 @@ Template.childVariantForm.events({
     event.stopPropagation();
     event.preventDefault();
     const title = instance.data.optionTitle || i18next.t("productDetailEdit.thisOption");
-    if (confirm(i18next.t("productDetailEdit.removeVariantConfirm", { title }))) {
-      const id = instance.data._id;
-      return Meteor.call("products/deleteVariant", id, function (error, result) {
-        // TODO why we have this on option remove?
-        if (result && ReactionProduct.selectedVariantId() === id) {
-          return ReactionProduct.setCurrentVariant(null);
-        }
-      });
-    }
+
+    Alerts.alert({
+      title: i18next.t("productDetailEdit.removeVariantConfirm", { title }),
+      showCancelButton: true,
+      confirmButtonText: "Remove"
+    }, (isConfirm) => {
+      if (isConfirm) {
+        const id = instance.data._id;
+        Meteor.call("products/deleteVariant", id, function (error, result) {
+          // TODO why we have this on option remove?
+          if (result && ReactionProduct.selectedVariantId() === id) {
+            ReactionProduct.setCurrentVariant(null);
+          }
+        });
+      }
+    });
+  },
+
+  "click .js-restore-child-variant": function (event, instance) {
+    event.stopPropagation();
+    event.preventDefault();
+    const title = instance.data.optionTitle || i18next.t("productDetailEdit.thisOption");
+
+    Alerts.alert({
+      title: i18next.t("productDetailEdit.restoreVariantConfirm", { title }),
+      showCancelButton: true,
+      confirmButtonText: "Restore"
+    }, (isConfirm) => {
+      if (isConfirm) {
+        const id = instance.data._id;
+        Meteor.call("products/updateProductField", id, "isDeleted", false);
+      }
+    });
   }
 });

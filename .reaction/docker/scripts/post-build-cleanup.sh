@@ -29,10 +29,10 @@ rm -rf /opt/nodejs/bin/npm
 rm -rf /opt/nodejs/lib/node_modules/npm/
 
 # remove meteor
-rm -rf /usr/bin/meteor
+rm -rf /usr/local/bin/meteor
 rm -rf /root/.meteor
 
 # remove os dependencies
-apt-get -qq -y purge ca-certificates curl git bzip2
+apt-get -qq -y purge ca-certificates curl bzip2
 apt-get -qq -y autoremove
 rm -rf /var/lib/apt/lists/*

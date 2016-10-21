@@ -1,32 +1,23 @@
-// import React from "react";
-// import classnames from "classnames";
-//
-// const Items = ReactionUI.Components.Items;
-//
-// class ButtonGroup extends React.Component {
-//
-//   renderButtons() {
-//     if (this.props.children) {
-//       const items = this.props.children.map((item, index) => {
-//         // if (this.props.autoWrap) {   return (     <Item key={index}>       {React.cloneElement(item)}     </Item>   ); }
-//
-//         return React.cloneElement(item);
-//       });
-//
-//       return items;
-//     }
-//   }
-//
-//   render() {
-//     const classes = classnames({rui: true, buttons: true})
-//
-//     return (
-//       <div className="rui buttons">
-//         <Items autoWrap={false} direction="vertical">
-//           {this.renderButtons()}
-//         </Items>
-//       </div>
-//     );
-//   }
-// }
-// export default ButtonGroup;
+import React, { Component, PropTypes} from "react";
+import classnames from "classnames";
+
+class ButtonGroup extends Component {
+  render() {
+    const baseClassName = classnames({
+      "rui": true,
+      "btn-group": true
+    });
+
+    return (
+      <div className={baseClassName}>
+        {this.props.children}
+      </div>
+    );
+  }
+}
+
+ButtonGroup.propTypes = {
+  children: PropTypes.node
+};
+
+export default ButtonGroup;

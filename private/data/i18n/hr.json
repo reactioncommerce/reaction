@@ -71,7 +71,6 @@
       },
       "cartCompleted": {
         "thankYou": "Hvala Vam.",
-        "yourOrderHasBeen": "Vaša naradžba je",
         "summaryMessage": "Hvala Vam za narudžbu."
       },
       "checkoutLogin": {
@@ -138,15 +137,6 @@
         "configureNow": "Postavi sad.",
         "shipping": "Dostava"
       },
-      "shopEditForm": {
-        "name": "Ime",
-        "email": "Email"
-      },
-      "shopEditAdressForm": {
-        "company": "Tvrtka",
-        "fullname": "Puno ime",
-        "address1": "Adresa 1"
-      },
       "consoleIcon": {
         "iconTitle": "Pogledaj konzolu",
         "text": "Konzola"
@@ -193,10 +183,10 @@
         "signIn": "Prijavi se",
         "signin": "prijavi se",
         "signInWith": "Prijavi se s",
+        "signedIn": "Prijavljen(a) si.",
         "signOut": "Odjavi se",
         "signUp": "Registriraj se",
         "signupCode": "Kod za registraciju",
-        "signedIn": "Prijavljen(a) si.",
         "signUpWithYourEmailAddress": "Registriraj se s Email adresom",
         "terms": "Uvjeti korištenja",
         "updateYourPassword": "Ažuriraj lozinku",
@@ -240,7 +230,6 @@
           "mustBeLoggedIn": "Morate biti prijavljeni",
           "needToSetUsernameOrEmail": "Morate postaviti korisničko ime ili Email",
           "oldPasswordFormat": "stara lozinka",
-          "Password may not be empty": "Lozinka ne smije biti prazna",
           "signupsForbidden": "Prijave zabranjene",
           "tokenExpired": "Token je istekao",
           "tokenHasInvalidEmailAddress": "Token ima nevaljanu email adresu",
