@@ -252,7 +252,7 @@ Import.package = function (pkg, shopId) {
 
 /**
  * @summary Store a template in the import buffer.
- * @param {Object} tempalteInfo The template data to be updated
+ * @param {Object} templateInfo The template data to be updated
  * @param {String} shopId The package data to be updated
  * @returns {undefined}
  */
