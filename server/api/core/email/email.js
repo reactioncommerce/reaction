@@ -43,11 +43,11 @@ export function getTemplate(template) {
   }
 
   // check database for a matching template
-  const tmpl = Templates.findOne({ template, language });
+  const tmpl = Templates.findOne({ name: template, language });
 
   // use that template if found
-  if (tmpl && tmpl.source) {
-    return tmpl.source;
+  if (tmpl && tmpl.template) {
+    return tmpl.template;
   }
 
   // otherwise, use the default template from the filesystem
