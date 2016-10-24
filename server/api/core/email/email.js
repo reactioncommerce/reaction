@@ -50,6 +50,7 @@ export function getTemplate(template) {
     return tmpl.template;
   }
 
+  // otherwise, use the default template from the filesystem
   return getTemplateFile(template);
 }
 
