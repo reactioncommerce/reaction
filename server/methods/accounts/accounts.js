@@ -365,7 +365,7 @@ Meteor.methods({
       Reaction.Email.send({
         to: email,
         from: `${shop.name} <${shop.emails[0].address}>`,
-        subject: `(test v2) You've been invited to join ${shop.name}`,
+        subject: `You've been invited to join ${shop.name}`,
         html: SSR.render(tpl, {
           homepage: Meteor.absoluteUrl(),
           shop,
