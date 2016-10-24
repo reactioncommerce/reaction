@@ -15,7 +15,6 @@ import { Reaction, Logger } from "/server/api";
  * @return {Job} - returns a sendEmail Job instance
  */
 export function sendResetPasswordEmail(userId, optionalEmail) {
-
   // Make sure the user exists, and email is one of their addresses.
   const user = Meteor.users.findOne(userId);
 
