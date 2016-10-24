@@ -50,11 +50,23 @@ export function getTemplate(template) {
     return tmpl.template;
   }
 
-  // otherwise, use the default template from the filesystem
-  const file = `email/templates/${template}.html`;
+  return getTemplateFile(template);
+}
+
+/**
+ * Reaction.Email.getTemplateFile
+ * @param  {String} file name of the template on file system
+ * @return {String} returns source
+ */
+export function getTemplateFile(file) {
+  if (typeof file !== "string") {
+    const msg = "Reaction.Email.getTemplateFile() requires a template name";
+    Logger.error(msg);
+    throw new Meteor.Error("no-template-name", msg);
+  }
 
   try {
-    return Assets.getText(file);
+    return Assets.getText(`email/templates/${file}.html`);
   } catch (e) {
     Logger.warn(`Template not found: ${file}. Falling back to coreDefault.html`);
     return Assets.getText("email/templates/coreDefault.html");
