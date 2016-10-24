@@ -28,7 +28,7 @@ transformations.accounts.emails = function (fieldData) {
 
 transformations.accounts.profile = function (fieldData) {
   let profileObject;
-  if (fieldData && fieldData.addressBook && fieldData.addressbook[0] && fieldData.addressBook[0].fullName) {
+  if (fieldData && fieldData.addressBook && "0" in fieldData.addressBook && fieldData.addressBook[0].fullName) {
     profileObject = {
       firstName: _.split(fieldData.addressBook[0].fullName, " ")[0],
       lastName: _.split(fieldData.addressBook[0].fullName, " ")[1],
