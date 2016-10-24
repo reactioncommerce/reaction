@@ -37,7 +37,7 @@ class PublishContainer extends Component {
 
   handlePublishActions = (event, action, documentIds) => {
     switch (action) {
-      case "delete":
+      case "archive":
         if (this.props.onAction) {
           this.props.onAction(event, action, this.props.documentIds);
         }
