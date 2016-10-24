@@ -13,4 +13,4 @@ export const coreOrderCreatedTemplate = "orders/coreOrderCreated";
 export const coreOrderShippingInvoiceTemplate = "orders/coreOrderShippingInvoice";
 export const coreOrderShippingSummaryTemplate = "orders/coreOrderShippingSummary";
 export const coreOrderShippingTrackingTemplate = "orders/coreOrderShippingTracking";
-export const coreOrderNewTemplate = "orders/coreOrderNew";
+export const coreOrderNewTemplate = "orders/new";
