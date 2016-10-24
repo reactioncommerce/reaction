@@ -2,6 +2,7 @@ import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Accounts } from "meteor/accounts-base";
 import { SSR } from "meteor/meteorhacks:ssr";
+import { Media, Shops } from "/lib/collections";
 import { Reaction, Logger } from "/server/api";
 
 
@@ -14,6 +15,7 @@ import { Reaction, Logger } from "/server/api";
  * @return {Job} - returns a sendEmail Job instance
  */
 export function sendResetPasswordEmail(userId, optionalEmail) {
+
   // Make sure the user exists, and email is one of their addresses.
   const user = Meteor.users.findOne(userId);
 
@@ -35,6 +37,7 @@ export function sendResetPasswordEmail(userId, optionalEmail) {
     throw new Meteor.Error("email-not-found", "Email not found");
   }
 
+  // Create token for password reset
   const token = Random.secret();
   const when = new Date();
   const tokenObj = { token, email, when };
@@ -47,16 +50,65 @@ export function sendResetPasswordEmail(userId, optionalEmail) {
 
   Meteor._ensure(user, "services", "password").reset = tokenObj;
 
-  SSR.compileTemplate("resetPassword", Reaction.Email.getTemplate("accounts/reset_password"));
+  const tpl = "accounts/resetPassword";
+  SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl));
 
-  const shopName = Reaction.getShopName();
-  const url = Accounts.urls.resetPassword(token);
+  // Get shop data for email display
+  const shop = Shops.findOne(Reaction.getShopId());
+
+  // Get shop logo, if available. If not, use default logo from file-system
+  let emailLogo;
+  if (Array.isArray(shop.brandAssets)) {
+    const brandAsset = _.find(shop.brandAssets, (asset) => asset.type === "navbarBrandImage");
+    const mediaId = Media.findOne(brandAsset.mediaId);
+    emailLogo = path.join(Meteor.absoluteUrl(), mediaId.url());
+  } else {
+    emailLogo = Meteor.absoluteUrl() + "resources/email-templates/shop-logo.png";
+  }
+
+  const dataForEmail = {
+    // Shop Data
+    shop: shop,
+    contactEmail: shop.emails[0].address,
+    homepage: Meteor.absoluteUrl(),
+    emailLogo: emailLogo,
+    copyrightDate: moment().format("YYYY"),
+    legalName: shop.addressBook[0].company,
+    physicalAddress: {
+      address: shop.addressBook[0].address1 + " " + shop.addressBook[0].address2,
+      city: shop.addressBook[0].city,
+      region: shop.addressBook[0].region,
+      postal: shop.addressBook[0].postal
+    },
+    shopName: shop.name,
+    socialLinks: {
+      display: true,
+      facebook: {
+        display: true,
+        icon: Meteor.absoluteUrl() + "resources/email-templates/facebook-icon.png",
+        link: "https://www.facebook.com"
+      },
+      googlePlus: {
+        display: true,
+        icon: Meteor.absoluteUrl() + "resources/email-templates/google-plus-icon.png",
+        link: "https://plus.google.com"
+      },
+      twitter: {
+        display: true,
+        icon: Meteor.absoluteUrl() + "resources/email-templates/twitter-icon.png",
+        link: "https://www.twitter.com"
+      }
+    },
+    // Account Data
+    passwordResetUrl: Accounts.urls.resetPassword(token),
+    user: user
+  };
 
   return Reaction.Email.send({
     to: email,
     from: Reaction.getShopEmail(),
-    subject: `${shopName} - Reset your password`,
-    html: SSR.render("resetPassword", { shopName, user, url })
+    subject: `${dataForEmail.shopName}: Here's your password reset link`,
+    html: SSR.render(tpl, dataForEmail)
   });
 }
 
