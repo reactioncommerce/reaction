@@ -6,7 +6,7 @@ Reaction.registerTemplate({
   title: "Default",
   name: TemplatePaths.coreDefaultTemplate,
   type: "email",
-  template: Reaction.Email.getTemplate(TemplatePaths.coreDefaultTemplate)
+  template: Reaction.Email.getTemplateFile(TemplatePaths.coreDefaultTemplate)
 });
 
 // Accounts
@@ -14,28 +14,28 @@ Reaction.registerTemplate({
   title: "Reset Password",
   name: TemplatePaths.resetPaswordTemplate,
   type: "email",
-  template: Reaction.Email.getTemplate(TemplatePaths.resetPaswordTemplate)
+  template: Reaction.Email.getTemplateFile(TemplatePaths.resetPaswordTemplate)
 });
 
 Reaction.registerTemplate({
   title: "Invite Shop Member",
   name: TemplatePaths.inviteShopMemberTemplate,
   type: "email",
-  template: Reaction.Email.getTemplate(TemplatePaths.inviteShopMemberTemplate)
+  template: Reaction.Email.getTemplateFile(TemplatePaths.inviteShopMemberTemplate)
 });
 
 Reaction.registerTemplate({
   title: "Welcome Email",
   name: TemplatePaths.welcomeEmailTemplate,
   type: "email",
-  template: Reaction.Email.getTemplate(TemplatePaths.welcomeEmailTemplate)
+  template: Reaction.Email.getTemplateFile(TemplatePaths.welcomeEmailTemplate)
 });
 
 Reaction.registerTemplate({
   title: "Verify Account",
   name: TemplatePaths.verifyEmailTemplate,
   type: "email",
-  template: Reaction.Email.getTemplate(TemplatePaths.verifyEmailTemplate)
+  template: Reaction.Email.getTemplateFile(TemplatePaths.verifyEmailTemplate)
 });
 
 // Checkout
@@ -43,7 +43,7 @@ Reaction.registerTemplate({
   title: "Checkout Login",
   name: TemplatePaths.checkoutLoginTemplate,
   type: "email",
-  template: Reaction.Email.getTemplate(TemplatePaths.checkoutLoginTemplate)
+  template: Reaction.Email.getTemplateFile(TemplatePaths.checkoutLoginTemplate)
 });
 
 // Order workflow
@@ -51,40 +51,40 @@ Reaction.registerTemplate({
   title: "Order Completed",
   name: TemplatePaths.coreOrderCompletedTemplate,
   type: "email",
-  template: Reaction.Email.getTemplate(TemplatePaths.coreOrderCompletedTemplate)
+  template: Reaction.Email.getTemplateFile(TemplatePaths.coreOrderCompletedTemplate)
 });
 
 Reaction.registerTemplate({
   title: "Order Created",
   name: TemplatePaths.coreOrderCreatedTemplate,
   type: "email",
-  template: Reaction.Email.getTemplate(TemplatePaths.coreOrderCreatedTemplate)
+  template: Reaction.Email.getTemplateFile(TemplatePaths.coreOrderCreatedTemplate)
 });
 
 Reaction.registerTemplate({
   title: "Shipping Invoice",
   name: TemplatePaths.coreOrderShippingInvoiceTemplate,
   type: "email",
-  template: Reaction.Email.getTemplate(TemplatePaths.coreOrderShippingInvoiceTemplate)
+  template: Reaction.Email.getTemplateFile(TemplatePaths.coreOrderShippingInvoiceTemplate)
 });
 
 Reaction.registerTemplate({
   title: "Shipping Summary",
   name: TemplatePaths.coreOrderShippingSummaryTemplate,
   type: "email",
-  template: Reaction.Email.getTemplate(TemplatePaths.coreOrderShippingSummaryTemplate)
+  template: Reaction.Email.getTemplateFile(TemplatePaths.coreOrderShippingSummaryTemplate)
 });
 
 Reaction.registerTemplate({
   title: "Shipping Tracking",
   name: TemplatePaths.coreOrderShippingTrackingTemplate,
   type: "email",
-  template: Reaction.Email.getTemplate(TemplatePaths.coreOrderShippingTrackingTemplate)
+  template: Reaction.Email.getTemplateFile(TemplatePaths.coreOrderShippingTrackingTemplate)
 });
 
 Reaction.registerTemplate({
   title: "New Order Started Processing",
   name: TemplatePaths.coreOrderNewTemplate,
   type: "email",
-  template: Reaction.Email.getTemplate(TemplatePaths.coreOrderNewTemplate)
+  template: Reaction.Email.getTemplateFile(TemplatePaths.coreOrderNewTemplate)
 });
