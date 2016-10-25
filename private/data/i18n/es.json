@@ -103,6 +103,7 @@
           "reactionConnectLabel": "Conectar reacción",
           "examplePaymentSettingsLabel": "Opciones de ejemplo de pago",
           "productSettingsLabel": "Opciones del producto",
+          "productDetailsLabel": "Detalles del producto",
           "taxSettingsLabel": "Opciones de impuestos"
         },
         "userAccountDropdown": {
@@ -568,9 +569,12 @@
         "publishChanges": "Publicar cambios",
         "showChanges": "Mostrar cambios",
         "hideChanges": "Ocultar cambios",
+        "discardChanges": "Descartar cambios",
         "changedPublished": "Cambios publicados correctamente",
+        "changesDiscarded": "Los cambios se han descartado",
         "noChanges": "Sin cambios",
-        "noChangesPublished": "No hay cambios para publicar"
+        "noChangesPublished": "No hay cambios para publicar",
+        "noChangesDiscarded": "No hay cambios que descartar"
       },
       "address": {
         "country": "País",
@@ -696,8 +700,41 @@
       "search": {
         "clearSearch": "Borrar",
         "noProductsFound": "No se encontraron productos",
+        "noOrdersFound": "No hay pedidos",
+        "noAccountsFound": "No hay cuentas.",
         "searchInputLabel": "Buscar reacción ",
-        "suggestedTags": "Etiquetas sugeridas"
+        "suggestedTags": "Etiquetas sugeridas",
+        "searchTypeProducts": "Productos",
+        "searchTypeAccounts": "Cuentas",
+        "searchTypeOrders": "Pedidos",
+        "accountSearchResults": {
+          "accountId": "ID de cuenta",
+          "shopId": "ID de tienda",
+          "firstName": "Nombre",
+          "lastName": "Apellido",
+          "phone": "Teléfono",
+          "emails": "Correo electrónico"
+        },
+        "orderSearchResults": {
+          "orderId": "ID de pedido",
+          "shopId": "ID de tienda",
+          "shippingAddress": "Dirección",
+          "shippingCity": "Ciudad",
+          "shippingRegion": "Región",
+          "shippingCountry": "País",
+          "shippingPhone": "Teléfono",
+          "shippingName": "Nombre",
+          "shippingStatus": "Estado",
+          "billingAddress": "Dirección",
+          "billingCity": "Ciudad\n",
+          "billingRegion": "Región",
+          "billingCountry": "País",
+          "billingPhone": "Teléfono",
+          "billingStatus": "Estado",
+          "userEmails": "Correo electrónico",
+          "orderDate": "Fecha",
+          "orderTotal": "Total"
+        }
       },
       "accountsUI": {
         "members": "Miembros",
