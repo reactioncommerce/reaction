@@ -218,7 +218,7 @@ class TagListContainer extends Component {
           onTagUpdate={this.handleTagUpdate}
           suggestions={this.state.suggestions}
           tags={this.tags}
-          tooltip="Unpublised changes"
+          tooltip="Unpublished changes"
           {...this.props}
         />
       </DragDropProvider>
