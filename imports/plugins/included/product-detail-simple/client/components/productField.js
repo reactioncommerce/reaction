@@ -101,7 +101,7 @@ class ProductField extends Component {
     }
 
     if (this.props.element) {
-      return React.cloneElement(this.props.element, {
+      return React.createElement(this.props.element, {
         className: "pdp field",
         itemProp: this.props.itemProp,
         children: this.value

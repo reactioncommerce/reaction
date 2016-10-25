@@ -16,6 +16,8 @@ import {
 } from "./";
 import { AlertContainer } from "/imports/plugins/core/ui/client/containers";
 import { PublishContainer } from "/imports/plugins/core/revisions";
+import SimpleLayout from "../../lib/layout/simple";
+import classnames from "classnames";
 
 class ProductDetail extends Component {
   get tags() {
@@ -74,7 +76,60 @@ class ProductDetail extends Component {
     return null;
   }
 
+  get layout() {
+    return SimpleLayout.bind(this)();
+  }
+
+  onProductFieldChange = () => {
+    console.log("Product Field Change Event");
+  }
+
+  renderLayout(children) {
+    if (!Array.isArray(children)) {
+      return null;
+    }
+
+    const elements = children.map((block, index) => {
+      let childElements;
+
+      if (Array.isArray(block.children)) {
+        childElements = block.children.map((child, childIndex) => {
+          if (child.type === "block") {
+            return this.renderLayout(child);
+          }
+
+          return React.createElement(child.component, {
+            key: childIndex,
+            ...(child.props || {})
+          });
+        });
+      }
+
+      return React.createElement(block.element || "div", {
+        key: index,
+        className: classnames(`rui col-xs-${block.columns}`, block.className),
+        children: childElements
+      });
+    });
+
+    return elements;
+  }
+
   render() {
+    return (
+      <div className="" style={{position: "relative"}}>
+        {this.renderToolbar()}
+        <div className="container container-main pdp-container" itemScope itemType="http://schema.org/Product">
+          <div className="row">
+            <AlertContainer placement="productManagement" />
+            {this.renderLayout(this.layout)}
+          </div>
+        </div>
+      </div>
+    );
+
+
+    return
     return (
       <div className="" style={{position: "relative"}}>
         {this.renderToolbar()}
