@@ -1,7 +1,16 @@
-import { Products, Revisions, Tags } from "/lib/collections";
+import { Products, Revisions, Tags, Media } from "/lib/collections";
 import { Logger } from "/server/api";
 import { diff } from "deep-diff";
 import { RevisionApi } from "../lib/api";
+
+Media.files.before.insert((userid, media) => {
+  if (RevisionApi.isRevisionControlEnabled() === false) {
+    return true;
+  }
+  media.metadata.workflow = "unpublished";
+  return true;
+});
+
 
 Products.before.insert((userId, product) => {
   if (RevisionApi.isRevisionControlEnabled() === false) {
