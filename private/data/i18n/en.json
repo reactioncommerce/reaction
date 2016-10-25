@@ -4,7 +4,6 @@
   "ns": "core",
   "translation": {
     "core": {
-      "languageDirection": "ltr",
       "languages": {
         "select": "Select Language"
       },
