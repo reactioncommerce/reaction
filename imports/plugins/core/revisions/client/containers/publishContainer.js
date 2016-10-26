@@ -105,6 +105,11 @@ function composer(props, onData) {
             "documentData.ancestors": {
               $in: props.documentIds
             }
+          },
+          {
+            parentDocument: {
+              $in: props.documentIds
+            }
           }
         ],
         "workflow.status": {
@@ -113,7 +118,6 @@ function composer(props, onData) {
           ]
         }
       }).fetch();
-
       onData(null, {
         isEnabled: isRevisionControlEnabled(),
         documentIds: props.documentIds,

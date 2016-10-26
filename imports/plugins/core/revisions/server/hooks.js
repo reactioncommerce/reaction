@@ -10,6 +10,12 @@ Media.files.before.insert((userid, media) => {
 
   if (media.metadata.productId) {
     media.metadata.workflow = "unpublished";
+    Revisions.insert({
+      documentId: media._id,
+      documentData: media.metadata,
+      documentType: "image",
+      parentDocument: media.metadata.productId
+    });
   } else {
     media.metadata.workflow = "published";
   }
