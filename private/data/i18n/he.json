@@ -4,7 +4,6 @@
   "ns": "core",
   "translation": {
     "core": {
-      "languageDirection": "rtl",
       "languages": {
         "select": "בחר שפה"
       },
@@ -104,6 +103,7 @@
           "reactionConnectLabel": "חיבור Reaction",
           "examplePaymentSettingsLabel": "הגדרות תשלום לדוגמה",
           "productSettingsLabel": "הגדרות מוצר",
+          "productDetailsLabel": "פרטי המוצר",
           "taxSettingsLabel": "הגדרות מס"
         },
         "userAccountDropdown": {
@@ -345,7 +345,6 @@
         "toggleSize": "החלף מידה/גודל",
         "deleteProduct": "מחק מוצר",
         "restoreProduct": "שחזר מוצר מפח האשפה",
-        "deleteThisProduct": "למחוק מוצר זה?",
         "deleteSelectedProducts": "למחוק מוצרים שנבחרו?",
         "publish": "פרסום",
         "moreOptions": "עוד אפשרויות",
@@ -570,9 +569,12 @@
         "publishChanges": "פרסם שינויים",
         "showChanges": "הצג שינויים",
         "hideChanges": "הסתר שינויים",
+        "discardChanges": "בטל שינויים",
         "changedPublished": "השינויים פורסמו בהצלחה",
+        "changesDiscarded": "השינויים בוטלו בהצלחה",
         "noChanges": "אין שינויים",
-        "noChangesPublished": "אין שינויים לפרסום"
+        "noChangesPublished": "אין שינויים לפרסום",
+        "noChangesDiscarded": "אין שינויים הניתנים לביטול"
       },
       "address": {
         "country": "ארץ",
@@ -698,8 +700,41 @@
       "search": {
         "clearSearch": "מחק",
         "noProductsFound": "לא נמצאו מוצרים",
+        "noOrdersFound": "לא נמצאו הזמנות.",
+        "noAccountsFound": "לא נמצאו חשבונות.",
         "searchInputLabel": "חפש Reaction ",
-        "suggestedTags": "תגיות מוצעות"
+        "suggestedTags": "תגיות מוצעות",
+        "searchTypeProducts": "מוצרים",
+        "searchTypeAccounts": "חשבונות",
+        "searchTypeOrders": "הזמנות",
+        "accountSearchResults": {
+          "accountId": "מזהה חשבון",
+          "shopId": "מזהה חנות",
+          "firstName": "שם פרטי",
+          "lastName": "שם משפחה",
+          "phone": "טלפון",
+          "emails": "דוא\"ל"
+        },
+        "orderSearchResults": {
+          "orderId": "מזהה הזמנה",
+          "shopId": "מזהה חנות",
+          "shippingAddress": "כתובת",
+          "shippingCity": "עיר",
+          "shippingRegion": "אזור",
+          "shippingCountry": "מדינה",
+          "shippingPhone": "טלפון",
+          "shippingName": "שם",
+          "shippingStatus": "סטטוס",
+          "billingAddress": "כתובת",
+          "billingCity": "עיר",
+          "billingRegion": "אזור",
+          "billingCountry": "מדינה",
+          "billingPhone": "טלפון",
+          "billingStatus": "סטטוס",
+          "userEmails": "דוא\"ל",
+          "orderDate": "תאריך",
+          "orderTotal": "סה\"כ"
+        }
       },
       "accountsUI": {
         "members": "חברים",
