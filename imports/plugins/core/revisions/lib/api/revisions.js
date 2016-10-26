@@ -5,7 +5,7 @@ export function getPackageSettings() {
     name: "reaction-revisions"
   });
 
-  if (packageInfo && packageInfo.settings) {
+  if (packageInfo && packageInfo.enabled && packageInfo.settings) {
     return packageInfo.settings;
   }
 

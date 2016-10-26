@@ -103,6 +103,7 @@
           "reactionConnectLabel": "Reaction Connect",
           "examplePaymentSettingsLabel": "Образец платёжной системы",
           "productSettingsLabel": "Настройки продукта",
+          "productDetailsLabel": "Подробные данные о товаре",
           "taxSettingsLabel": "Настройки налогов"
         },
         "userAccountDropdown": {
@@ -568,9 +569,12 @@
         "publishChanges": "Опубликовать изменения",
         "showChanges": "Отобразить изменения",
         "hideChanges": "Скрыть изменения",
+        "discardChanges": "Отменить изменения",
         "changedPublished": "Изменения успешно опубликованы",
+        "changesDiscarded": "Изменения успешно отменены",
         "noChanges": "Изменений нет",
-        "noChangesPublished": "Нет изменений для публикации"
+        "noChangesPublished": "Нет изменений для публикации",
+        "noChangesDiscarded": "Отсутствуют изменения для отмены"
       },
       "address": {
         "country": "Страна",
@@ -696,8 +700,41 @@
       "search": {
         "clearSearch": "Очистить",
         "noProductsFound": "Товар не найден",
+        "noOrdersFound": "Заказы не найдены.",
+        "noAccountsFound": "Аккаунт не найден.",
         "searchInputLabel": "Поиск реакции ",
-        "suggestedTags": "Предлагаемые теги"
+        "suggestedTags": "Предлагаемые теги",
+        "searchTypeProducts": "Товары",
+        "searchTypeAccounts": "Аккаунты",
+        "searchTypeOrders": "Заказы",
+        "accountSearchResults": {
+          "accountId": "Идентификационный номер аккаунта",
+          "shopId": "Идентификационный номер магазина",
+          "firstName": "Имя",
+          "lastName": "Фамилия",
+          "phone": "Телефон",
+          "emails": "Электронный адрес"
+        },
+        "orderSearchResults": {
+          "orderId": "Идентификационный номер заказа",
+          "shopId": "Идентификационный номер магазина",
+          "shippingAddress": "Адрес",
+          "shippingCity": "Страна",
+          "shippingRegion": "Область",
+          "shippingCountry": "Страна",
+          "shippingPhone": "Телефон",
+          "shippingName": "Имя",
+          "shippingStatus": "Статус",
+          "billingAddress": "Адрес",
+          "billingCity": "Город",
+          "billingRegion": "Область",
+          "billingCountry": "Страна",
+          "billingPhone": "Телефон",
+          "billingStatus": "Статус",
+          "userEmails": "Электронный адрес",
+          "orderDate": "Дата",
+          "orderTotal": "Всего"
+        }
       },
       "accountsUI": {
         "members": "Сотрудники",
