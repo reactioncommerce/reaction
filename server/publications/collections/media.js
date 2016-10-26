@@ -24,6 +24,13 @@ Meteor.publish("Media", function (shops) {
       }
     };
   }
+
+  if (!Reaction.hasPermission(["createProduct"], this.userId)) {
+    selector["metadata.workflow"] = {
+      $in: [null, "published"]
+    };
+  }
+
   return Media.find(selector, {
     sort: {
       "metadata.priority": 1
