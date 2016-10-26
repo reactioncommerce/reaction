@@ -105,7 +105,6 @@ export default function blocks() {
       children: [
         {
           type: "block",
-          columns: 6,
           children: [
             {
               component: Currency,

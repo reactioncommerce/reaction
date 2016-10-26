@@ -95,7 +95,7 @@ class ProductDetail extends Component {
       if (Array.isArray(block.children)) {
         childElements = block.children.map((child, childIndex) => {
           if (child.type === "block") {
-            return this.renderLayout(child);
+            return this.renderLayout([child]);
           }
 
           return React.createElement(child.component, {
@@ -107,7 +107,8 @@ class ProductDetail extends Component {
 
       return React.createElement(block.element || "div", {
         key: index,
-        className: classnames(`rui col-xs-${block.columns}`, block.className),
+        className: classnames(`rui col-xs-${block.columns || 12}`, block.className),
+        style: block.style,
         children: childElements
       });
     });
@@ -123,115 +124,6 @@ class ProductDetail extends Component {
           <div className="row">
             <AlertContainer placement="productManagement" />
             {this.renderLayout(this.layout)}
-          </div>
-        </div>
-      </div>
-    );
-
-
-    return
-    return (
-      <div className="" style={{position: "relative"}}>
-        {this.renderToolbar()}
-
-        <div className="container-main container-fluid pdp-container" itemScope itemType="http://schema.org/Product">
-          <AlertContainer placement="productManagement" />
-
-          <header className="pdp header">
-            <ProductField
-              editable={this.editable}
-              fieldName="title"
-              fieldTitle="Title"
-              element={<h1 />}
-              onProductFieldChange={this.props.onProductFieldChange}
-              product={this.product}
-              textFieldProps={{
-                i18nKeyPlaceholder: "productDetailEdit.title",
-                placeholder: "Title"
-              }}
-            />
-
-            <ProductField
-              editable={this.editable}
-              fieldName="pageTitle"
-              fieldTitle="Sub Title"
-              element={<h2 />}
-              onProductFieldChange={this.props.onProductFieldChange}
-              product={this.product}
-              textFieldProps={{
-                i18nKeyPlaceholder: "productDetailEdit.pageTitle",
-                placeholder: "Subtitle"
-              }}
-            />
-          </header>
-
-
-          <div className="pdp-content">
-            <div className="pdp column left pdp-left-column">
-              {this.props.mediaGalleryComponent}
-              <ProductTags editable={this.props.editable} product={this.product} tags={this.tags} />
-              <ProductMetadata editable={this.props.editable} product={this.product} />
-            </div>
-
-            <div className="pdp column right pdp-right-column">
-
-
-              <div className="pricing">
-                <div className="left">
-                  <span className="price">
-                    <span id="price">
-                      <Currency amount={this.props.priceRange} />
-                    </span>
-                  </span>
-                </div>
-                <div className="right">
-                  {this.props.socialComponent}
-                </div>
-              </div>
-
-
-              <div className="vendor">
-                <ProductField
-                  editable={this.editable}
-                  fieldName="vendor"
-                  fieldTitle="Vendor"
-                  onProductFieldChange={this.props.onProductFieldChange}
-                  product={this.product}
-                  textFieldProps={{
-                    i18nKeyPlaceholder: "productDetailEdit.vendor",
-                    placeholder: "Vendor"
-                  }}
-                />
-              </div>
-
-              <div className="pdp product-info">
-                <ProductField
-                  editable={this.editable}
-                  fieldName="description"
-                  fieldTitle="Description"
-                  multiline={true}
-                  onProductFieldChange={this.props.onProductFieldChange}
-                  product={this.product}
-                  textFieldProps={{
-                    i18nKeyPlaceholder: "productDetailEdit.description",
-                    placeholder: "Description"
-                  }}
-                />
-              </div>
-
-              <div className="options-add-to-cart">
-                {this.props.topVariantComponent}
-              </div>
-              <hr />
-              <div>
-                <AlertContainer placement="productDetail" />
-                <AddToCartButton
-                  cartQuantity={this.props.cartQuantity}
-                  onCartQuantityChange={this.props.onCartQuantityChange}
-                  onClick={this.props.onAddToCart}
-                />
-              </div>
-            </div>
           </div>
         </div>
       </div>
