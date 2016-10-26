@@ -18,8 +18,8 @@
           <span data-i18n="productDetailEdit.variantDetails">Variant Details</span>
           {{#if isDeleted}}
             <div class="panel-subheading">
-              <span class="badge badge-danger" data-i18n="app.deleted">
-                <span>Deleted</span>
+              <span class="badge badge-danger" data-i18n="app.archived">
+                <span>Archived</span>
               </span>
             </div>
           {{/if}}
@@ -43,7 +43,7 @@
             {{> button
               icon="trash-o"
               className="btn btn-default btn-remove-variant"
-              tooltip="Remove"
+              tooltip="Archive"
               i18nTooltip="productDetailEdit.removeVariant"
               onClick=(removeVariant this)
             }}
