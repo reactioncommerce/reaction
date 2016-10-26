@@ -205,7 +205,7 @@
           "email": "Email",
           "emailSettings": "Email Settings",
           "config": "Configuration",
-          "settings": "Mail Provider",
+          "settings": "SMTP Provider",
           "status": "Status",
           "actions": "Actions"
         },
