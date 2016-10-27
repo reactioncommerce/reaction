@@ -1,12 +1,10 @@
 import React from "react";
 import {
-  Currency
-} from "/imports/plugins/core/ui/client/components";
-import {
   AddToCartButton,
   ProductMetadata,
   ProductTags,
-  ProductField
+  ProductField,
+  PriceRange
 } from "../../client/components";
 import {
   SocialContainer,
@@ -24,6 +22,8 @@ export default function blocks() {
       columns: 12,
       element: "header",
       className: "pdp header",
+      permissions: ["admin"],
+      audience: ["guest", "anonymous"],
       children: [
         // Title
         {
@@ -103,17 +103,43 @@ export default function blocks() {
       type: "block",
       columns: 6,
       children: [
+        // Price /  Social Buttons split
         {
           type: "block",
+          style: {
+            display: "flex"
+          },
+          permissions: ["createProduct"],
+          audience: ["guest", "anonymous"],
           children: [
+            // Price Range
             {
-              component: Currency,
-              props: {
-                amount: this.props.priceRange
-              }
+              type: "block",
+              style: {
+                flex: 1
+              },
+              children: [
+                {
+                  component: PriceRange,
+                  props: {
+                    amount: this.props.priceRange
+                  }
+                }
+              ]
             },
+            // Social Buttons
             {
-              component: SocialContainer
+              type: "block",
+              style: {
+                display: "flex",
+                flex: 1,
+                justifyContent: "flex-end"
+              },
+              children: [
+                {
+                  component: SocialContainer
+                }
+              ]
             }
           ]
         },

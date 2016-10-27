@@ -1,23 +1,16 @@
 import React, { Component, PropTypes } from "react";
 import {
   Button,
-  Currency,
   DropDownMenu,
   MenuItem,
   Translation,
   Toolbar,
   ToolbarGroup
 } from "/imports/plugins/core/ui/client/components/";
-import {
-  AddToCartButton,
-  ProductMetadata,
-  ProductTags,
-  ProductField
-} from "./";
 import { AlertContainer } from "/imports/plugins/core/ui/client/containers";
 import { PublishContainer } from "/imports/plugins/core/revisions";
 import SimpleLayout from "../../lib/layout/simple";
-import classnames from "classnames";
+import { ReactionLayout } from "/imports/plugins/core/layout/lib";
 
 class ProductDetail extends Component {
   get tags() {
@@ -84,46 +77,16 @@ class ProductDetail extends Component {
     console.log("Product Field Change Event");
   }
 
-  renderLayout(children) {
-    if (!Array.isArray(children)) {
-      return null;
-    }
-
-    const elements = children.map((block, index) => {
-      let childElements;
-
-      if (Array.isArray(block.children)) {
-        childElements = block.children.map((child, childIndex) => {
-          if (child.type === "block") {
-            return this.renderLayout([child]);
-          }
-
-          return React.createElement(child.component, {
-            key: childIndex,
-            ...(child.props || {})
-          });
-        });
-      }
-
-      return React.createElement(block.element || "div", {
-        key: index,
-        className: classnames(`rui col-xs-${block.columns || 12}`, block.className),
-        style: block.style,
-        children: childElements
-      });
-    });
-
-    return elements;
-  }
-
   render() {
     return (
-      <div className="" style={{position: "relative"}}>
+      <div className="pdp" style={{position: "relative"}}>
         {this.renderToolbar()}
         <div className="container container-main pdp-container" itemScope itemType="http://schema.org/Product">
           <div className="row">
             <AlertContainer placement="productManagement" />
-            {this.renderLayout(this.layout)}
+            <ReactionLayout
+              layout={this.layout}
+            />
           </div>
         </div>
       </div>
