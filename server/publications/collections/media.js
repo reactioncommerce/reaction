@@ -29,6 +29,10 @@ Meteor.publish("Media", function (shops) {
     selector["metadata.workflow"] = {
       $in: [null, "published"]
     };
+  } else {
+    selector["metadata.workflow"] = {
+      $nin: ["archived"]
+    };
   }
 
   return Media.find(selector, {

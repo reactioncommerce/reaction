@@ -116,14 +116,35 @@ Meteor.methods({
           });
           updatedDocuments += res;
         } else if (revision.documentType === "image") {
-          const res = Media.update({
-            _id: revision.documentId
+          const media = Media.findOne(revision.documentId);
+          if (media.metadata.workflow === "unpublished") {
+            const res = Media.update({
+              _id: revision.documentId
+            }, {
+              $set: {
+                "metadata.workflow": "published"
+              }
+            });
+            updatedDocuments += res;
+          } else {
+            const res = Media.update({
+              _id: revision.documentId
+            }, {
+              $set: {
+                "metadata.workflow": "archived"
+              }
+            });
+            updatedDocuments += res;
+          }
+          // mark revision published whether we are publishing the image or not
+          Revisions.update({
+            _id: revision._id
           }, {
             $set: {
-              "metadata.workflow": "published"
+              "workflow.status": "revision/published"
             }
           });
-          updatedDocuments += res;
+
         }
       }
     }

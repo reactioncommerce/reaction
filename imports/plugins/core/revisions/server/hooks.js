@@ -14,10 +14,29 @@ Media.files.before.insert((userid, media) => {
       documentId: media._id,
       documentData: media.metadata,
       documentType: "image",
-      parentDocument: media.metadata.productId
+      parentDocument: media.metadata.productId,
+      workflow: {
+        status: "revision/update"
+      }
     });
   } else {
     media.metadata.workflow = "published";
+  }
+  return true;
+});
+
+Media.files.before.remove((userId, media) => {
+  if (RevisionApi.isRevisionControlEnabled() === false) {
+    return true;
+  }
+  if (media.metadata.productId) {
+    Revisions.insert({
+      documentId: media._id,
+      documentData: media.metadata,
+      documentType: "image",
+      parentDocument: media.metadata.productId
+    });
+    return false; // prevent actual deletion of image. This also stops other hooks from running :/
   }
   return true;
 });
