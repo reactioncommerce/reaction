@@ -1,0 +1,98 @@
+<template name="customDiscountCodes">
+  xxxx
+  <div>
+    {{> React discountGrid }}
+  </div>
+
+  <div class="pull-right">
+    {{> React editButton }}
+  </div>
+
+  {{#if instance.state.get 'isEditing'}}
+    <div>
+    {{#if instance.state.get 'editingId'}}
+
+      {{#autoForm
+        schema=discountSchema
+        type="method-update"
+        meteormethod="discounts/addRate"
+        doc=discountRate
+        id="customDiscountCodes-update-form"
+        resetOnSuccess=true
+      }}
+        <div>
+          <!-- {{> afQuickField name='discountCode' options=discountCodes class='form-control'}}
+          {{> afQuickField name='cartMethod' options="allowed" class='form-control'}}
+          {{> afQuickField name='discountLocale' options="allowed" class='form-control'}}
+          {{> afQuickField name='discountShipping'}}
+          {{> afQuickField name='discountIncluded'}}
+          {{> afQuickField name='discountsIncluded'}} -->
+          {{> afQuickField name='country' options=countryOptions class='form-control'}}
+
+          <label class="control-label">{{afFieldLabelText name='region'}}</label>
+          {{#if statesForCountry}}
+            {{>afFieldInput name="region" value=region options=statesForCountry class='form-control'}}
+          {{else}}
+            {{>afFieldInput name="region" value=region class='form-control'}}
+          {{/if}}
+          {{#if afFieldIsInvalid name="region"}}
+            <span class="help-block">{{afFieldMessage name="region"}}</span>
+          {{/if}}
+
+          {{> afQuickField name='postal' class='form-control' placeholder="Postal Code"}}
+          {{> afQuickField name='rate' class='form-control' placeholder="Rate as a percentage"}}
+        </div>
+        {{> discountCodeSettingsSubmitButton instance=instance}}
+      {{/autoForm}}
+
+    {{else}}
+
+      {{#autoForm
+        schema=discountSchema
+        type="method"
+        meteormethod="discounts/addRate"
+        id="customDiscountCodes-insert-form"
+        doc=discountRate
+        resetOnSuccess=true
+      }}
+        <div>
+          <!-- {{> afQuickField name='discountCode' options=discountCodes class='form-control'}}
+          {{> afQuickField name='cartMethod' options="allowed" class='form-control'}}
+          {{> afQuickField name='discountLocale' options="allowed" class='form-control'}}
+          {{> afQuickField name='discountShipping'}}
+          {{> afQuickField name='discountIncluded'}}
+          {{> afQuickField name='discountsIncluded'}} -->
+          {{> afQuickField name='country' options=countryOptions class='form-control'}}
+
+          <label class="control-label">{{afFieldLabelText name='region'}}</label>
+          {{#if statesForCountry}}
+            {{>afFieldInput name="region" value=region options=statesForCountry class='form-control'}}
+          {{else}}
+            {{>afFieldInput name="region" value=region class='form-control'}}
+          {{/if}}
+          {{#if afFieldIsInvalid name="region"}}
+            <span class="help-block">{{afFieldMessage name="region" placeholder="State/Region/Province"}}</span>
+          {{/if}}
+
+          {{> afQuickField name='postal' class='form-control' placeholder="Postal Code"}}
+          {{> afQuickField name='rate' class='form-control' placeholder="Rate as a percentage"}}
+        </div>
+        {{> discountCodeSettingsSubmitButton instance=instance}}
+      {{/autoForm}}
+    {{/if}}
+    </div>
+  {{/if}}
+</template>
+
+
+<template name="discountCodeSettingsSubmitButton">
+   <div class="clearfix">
+    <div class="pull-right">
+      <button type="button" class="btn btn-primary cancel" data-i18n="app.cancel">Cancel</button>
+      {{#if instance.state.get 'editingId'}}
+      <button type="button" class="btn btn-primary delete" data-i18n="app.delete">Delete</button>
+      {{/if}}
+      <button type="submit" class="btn btn-primary" data-i18n="app.saveChanges">Save Changes</button>
+    </div>
+  </div>
+</template>
