@@ -1,7 +1,7 @@
 FROM debian:jessie
 MAINTAINER Reaction Commerce <admin@reactioncommerce.com>
 
-ENV NODE_VERSION "4.6.0"
+ENV NODE_VERSION 4.6.1
 
 # Install MongoDB
 ENV INSTALL_MONGO "true"
