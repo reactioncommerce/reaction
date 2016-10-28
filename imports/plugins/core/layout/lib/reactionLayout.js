@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { composeWithTracker } from "react-komposer";
-import { Reaction, Logger } from "/client/api";
+import { Reaction } from "/client/api";
 import classnames from "classnames";
 
 class ReactionLayout extends Component {
@@ -12,11 +12,6 @@ class ReactionLayout extends Component {
   checkElementPermissions(block) {
     let permissions;
     const hasAdminAccess = Reaction.hasAdminAccess();
-
-    if ((!block.audience || !block.permissions) && hasAdminAccess) {
-      Logger.warn({block: block}, "Permissions not set for element on screen");
-      // console.warn("Permissions not set for element on screen", block);
-    }
 
     if (hasAdminAccess === false) {
       permissions = block.audience || this.props.defaultAudience;
