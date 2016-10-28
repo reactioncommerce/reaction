@@ -70,7 +70,7 @@ Object.assign(Alerts, {
         if (isConfirm === true && typeof messageOrCallback === "function") {
           messageOrCallback(isConfirm);
         }
-      });
+      }).catch(_.noop);
     }
 
     const title = titleOrOptions;
@@ -85,7 +85,7 @@ Object.assign(Alerts, {
       if (isConfirm === true && typeof callback === "function") {
         callback(isConfirm);
       }
-    });
+    }).catch(_.noop);
   },
 
   toast(message, type, options) {
