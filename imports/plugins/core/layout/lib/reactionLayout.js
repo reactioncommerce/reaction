@@ -44,7 +44,8 @@ class ReactionLayout extends Component {
           if (this.checkElementPermissions(child)) {
             return React.createElement(child.component, {
               key: childIndex,
-              ...(child.props || {})
+              ...(child.props || {}),
+              ...this.props.layoutProps
             });
           }
 
@@ -88,7 +89,8 @@ ReactionLayout.propTypes = {
     PropTypes.string,
     PropTypes.arrayOf(PropTypes.string)
   ]),
-  layout: PropTypes.oneOfType([PropTypes.object, PropTypes.array])
+  layout: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
+  layoutProps: PropTypes.object
 };
 
 function composer(props, onData) {

@@ -32,12 +32,9 @@ export default function blocks() {
           permissions: ["admin"],
           audience: ["guest", "anonymous"],
           props: {
-            editable: this.editable,
             fieldName: "title",
             fieldTitle: "Title",
             element: "h1",
-            onProductFieldChange: this.onProductFieldChange,
-            product: this.product,
             textFieldProps: {
               i18nKeyPlaceholder: "productDetailEdit.title",
               placeholder: "Title"
@@ -51,12 +48,10 @@ export default function blocks() {
           permissions: ["admin"],
           audience: ["guest", "anonymous"],
           props: {
-            editable: this.editable,
+            // editable: this.editable,
             fieldName: "pageTitle",
             fieldTitle: "SubTitle",
             element: "h2",
-            onProductFieldChange: this.onProductFieldChange,
-            product: this.product,
             textFieldProps: {
               i18nKeyPlaceholder: "productDetailEdit.pageTitle",
               placeholder: "Subtitle"
@@ -79,28 +74,17 @@ export default function blocks() {
       children: [
         // Media Gallery
         {
-          component: MediaGalleryContainer,
-          props: {
-            media: this.props.media
-          }
+          component: MediaGalleryContainer
         },
 
         // Tags
         {
-          component: ProductTags,
-          props: {
-            editable: this.editable,
-            product: this.product,
-            tags: this.tags
-          }
+          component: ProductTags
         },
 
         // Metadata
         {
-          component: ProductMetadata,
-          props: {
-            product: this.product
-          }
+          component: ProductMetadata
         }
       ]
     },
@@ -129,10 +113,7 @@ export default function blocks() {
               },
               children: [
                 {
-                  component: PriceRange,
-                  props: {
-                    amount: this.props.priceRange
-                  }
+                  component: PriceRange
                 }
               ]
             },
@@ -157,11 +138,8 @@ export default function blocks() {
         {
           component: ProductField,
           props: {
-            editable: this.editable,
             fieldName: "vendor",
             fieldTitle: "Vendor",
-            onProductFieldChange: this.onProductFieldChange,
-            product: this.product,
             textFieldProps: {
               i18nKeyPlaceholder: "productDetailEdit.vendor",
               placeholder: "Vendor"
@@ -171,12 +149,9 @@ export default function blocks() {
         {
           component: ProductField,
           props: {
-            editable: this.editable,
             fieldName: "description",
             fieldTitle: "Description",
             multiline: true,
-            onProductFieldChange: this.onProductFieldChange,
-            product: this.product,
             textFieldProps: {
               i18nKeyPlaceholder: "productDetailEdit.description",
               placeholder: "Description"
@@ -193,18 +168,13 @@ export default function blocks() {
         {
           component: AlertContainer,
           props: {
-            placement: "ProductDetail"
+            placement: "productDetail"
           }
         },
 
         // Add to cart button
         {
-          component: AddToCartButton,
-          props: {
-            cartQuantity: this.props.cartQuantity,
-            onCartQuantityChange: this.props.onCartQuantityChange,
-            onClick: this.props.onAddToCart
-          }
+          component: AddToCartButton
         }
 
       ]

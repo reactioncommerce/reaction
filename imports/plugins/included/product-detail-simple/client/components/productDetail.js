@@ -73,10 +73,6 @@ class ProductDetail extends Component {
     return SimpleLayout.bind(this)();
   }
 
-  onProductFieldChange = () => {
-    console.log("Product Field Change Event");
-  }
-
   render() {
     return (
       <div className="pdp" style={{position: "relative"}}>
@@ -86,6 +82,7 @@ class ProductDetail extends Component {
             <AlertContainer placement="productManagement" />
             <ReactionLayout
               layout={this.layout}
+              layoutProps={this.props}
             />
           </div>
         </div>
