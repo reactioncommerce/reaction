@@ -1,13 +1,14 @@
+import _ from "lodash";
 import { diff } from "deep-diff";
 import { Products, Revisions, Tags, Media } from "/lib/collections";
 import { Logger } from "/server/api";
 import { RevisionApi } from "../lib/api";
 
+
 Media.files.before.insert((userid, media) => {
   if (RevisionApi.isRevisionControlEnabled() === false) {
     return true;
   }
-
   if (media.metadata.productId) {
     media.metadata.workflow = "unpublished";
     Revisions.insert({
@@ -15,6 +16,7 @@ Media.files.before.insert((userid, media) => {
       documentData: media.metadata,
       documentType: "image",
       parentDocument: media.metadata.productId,
+      changeType: "insert",
       workflow: {
         status: "revision/update"
       }
@@ -23,6 +25,32 @@ Media.files.before.insert((userid, media) => {
     media.metadata.workflow = "published";
   }
   return true;
+});
+
+Media.files.before.update((userId, media, fieldNames) => {
+  if (RevisionApi.isRevisionControlEnabled() === false) {
+    return true;
+  }
+  // if all fields are ignored, skip
+  if (!_.includes(fieldNames, "metadata")) {
+    return true;
+  }
+
+  Logger.info("Does contain metadata", media);
+  Logger.info("fieldNames", fieldNames);
+  if (media.metadata.productId) {
+    Revisions.insert({
+      documentId: media._id,
+      documentData: media.metadata,
+      documentType: "image",
+      parentDocument: media.metadata.productId,
+      changeType: "update",
+      workflow: {
+        status: "revision/update"
+      }
+    });
+    return false; // prevent actual deletion of image. This also stops other hooks from running :/
+  }
 });
 
 Media.files.before.remove((userId, media) => {
@@ -34,7 +62,11 @@ Media.files.before.remove((userId, media) => {
       documentId: media._id,
       documentData: media.metadata,
       documentType: "image",
-      parentDocument: media.metadata.productId
+      parentDocument: media.metadata.productId,
+      changeType: "remove",
+      workflow: {
+        status: "revision/update"
+      }
     });
     return false; // prevent actual deletion of image. This also stops other hooks from running :/
   }
@@ -282,13 +314,21 @@ Revisions.after.update(function (userId, revision) {
   if (RevisionApi.isRevisionControlEnabled() === false) {
     return true;
   }
+  let differences;
 
-  // Make diff
-  const product = Products.findOne({
-    _id: revision.documentId
-  });
 
-  const differences = diff(product, revision.documentData);
+  if (!revision.documentType || revision.documentType === "product") {
+    // Make diff
+    const product = Products.findOne({
+      _id: revision.documentId
+    });
+    differences = diff(product, revision.documentData);
+  }
+
+  if (revision.documentType && revision.documentType === "image") {
+    const image = Media.findOne(revision.documentId);
+    differences = diff(image.metadata, revision.documentData);
+  }
 
   Revisions.direct.update({
     _id: revision._id
