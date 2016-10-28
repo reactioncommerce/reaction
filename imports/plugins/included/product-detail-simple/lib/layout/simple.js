@@ -22,12 +22,15 @@ export default function blocks() {
       columns: 12,
       element: "header",
       className: "pdp header",
-      permissions: ["admin"],
-      audience: ["guest", "anonymous"],
+      permissions: ["admin"], // Permissions for staff
+      audience: ["guest", "anonymous"], // Permissions for customers
       children: [
         // Title
         {
           component: ProductField,
+          // Example, you can set permissions components that are children of a block
+          permissions: ["admin"],
+          audience: ["guest", "anonymous"],
           props: {
             editable: this.editable,
             fieldName: "title",
@@ -45,6 +48,8 @@ export default function blocks() {
         // PageTitle
         {
           component: ProductField,
+          permissions: ["admin"],
+          audience: ["guest", "anonymous"],
           props: {
             editable: this.editable,
             fieldName: "pageTitle",
@@ -69,6 +74,8 @@ export default function blocks() {
     {
       type: "block",
       columns: 6,
+      permissions: ["admin"],
+      audience: ["guest", "anonymous"],
       children: [
         // Media Gallery
         {
@@ -102,6 +109,8 @@ export default function blocks() {
     {
       type: "block",
       columns: 6,
+      permissions: ["admin"],
+      audience: ["guest", "anonymous"],
       children: [
         // Price /  Social Buttons split
         {
