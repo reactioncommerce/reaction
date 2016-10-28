@@ -5,6 +5,19 @@ import { Logger } from "/server/api";
 import { RevisionApi } from "../lib/api";
 
 
+function convertMetadata(modifierObject) {
+  const metadata = {};
+  for (const prop in modifierObject) {
+    if (modifierObject.hasOwnProperty(prop)) {
+      if (prop.indexOf("metadata") !== -1) {
+        const splitName = _.split(prop, ".")[1];
+        metadata[splitName] = modifierObject[prop];
+      }
+    }
+  }
+  return metadata;
+}
+
 Media.files.before.insert((userid, media) => {
   if (RevisionApi.isRevisionControlEnabled() === false) {
     return true;
@@ -27,30 +40,55 @@ Media.files.before.insert((userid, media) => {
   return true;
 });
 
-Media.files.before.update((userId, media, fieldNames) => {
+Media.files.before.update((userId, media, fieldNames, modifier) => {
   if (RevisionApi.isRevisionControlEnabled() === false) {
     return true;
   }
-  // if all fields are ignored, skip
+  // if it's not metadata ignore it, as LOTS of othing things change on this record
   if (!_.includes(fieldNames, "metadata")) {
     return true;
   }
 
-  Logger.info("Does contain metadata", media);
-  Logger.info("fieldNames", fieldNames);
   if (media.metadata.productId) {
-    Revisions.insert({
-      documentId: media._id,
-      documentData: media.metadata,
-      documentType: "image",
-      parentDocument: media.metadata.productId,
-      changeType: "update",
-      workflow: {
-        status: "revision/update"
+    const convertedModifier = convertMetadata(modifier.$set);
+    const convertedMetadata = Object.assign({}, media.metadata, convertedModifier);
+    const existingRevision = Revisions.findOne({
+      "documentId": media._id,
+      "workflow.status": {
+        $nin: [
+          "revision/published"
+        ]
       }
     });
-    return false; // prevent actual deletion of image. This also stops other hooks from running :/
+    if (existingRevision) {
+      const updatedMetadata = Object.assign({}, existingRevision.documentData, convertedMetadata);
+      // Special case where if we have both added and reordered images before publishing we don't want to overwrite
+      // the workflow status since it would be "unpublished"
+      if (existingRevision.documentData.workflow === "published" || existingRevision.changeType === "insert") {
+        updatedMetadata.workflow = "published";
+      }
+      Revisions.update({_id: existingRevision._id}, {
+        $set: {
+          documentData: updatedMetadata
+        }
+      });
+    } else {
+      Revisions.insert({
+        documentId: media._id,
+        documentData: convertedMetadata,
+        documentType: "image",
+        parentDocument: media.metadata.productId,
+        changeType: "update",
+        workflow: {
+          status: "revision/update"
+        }
+      });
+    }
+
+    return false; // prevent actual update of image. This also stops other hooks from running :/
   }
+  // for non-product images, just ignore and keep on moving
+  return true;
 });
 
 Media.files.before.remove((userId, media) => {

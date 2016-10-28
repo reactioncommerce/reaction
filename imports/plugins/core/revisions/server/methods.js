@@ -122,7 +122,7 @@ Meteor.methods({
               _id: revision.documentId
             }, {
               $set: {
-                "metadata.workflow": "published"
+                metadata: revision.documentData
               }
             });
             updatedDocuments += res;
@@ -144,7 +144,7 @@ Meteor.methods({
               }
             });
             updatedDocuments += res;
-            Logger.info(`setting metadata for ${revision.documentId} to ${JSON.stringify(revision.documentData, null, 4)}`);
+            Logger.debug(`setting metadata for ${revision.documentId} to ${JSON.stringify(revision.documentData, null, 4)}`);
           }
           // mark revision published whether we are publishing the image or not
           Revisions.direct.update({

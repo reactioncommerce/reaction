@@ -223,7 +223,7 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
     }
 
     // Authorized content curators fo the shop get special publication of the product
-    // all all relevant revisions all is one package
+    // with all relevant revisions all is one package
 
     if (Roles.userIsInRole(this.userId, ["owner", "admin", "createProduct"], shop._id)) {
       selector.isVisible = {
@@ -237,7 +237,10 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
         }).observeChanges({
           added: (id, fields) => {
             const revisions = Revisions.find({
-              "documentId": id,
+              $or: [
+                {"documentId": id },
+                {"parentDocument": id}
+              ],
               "workflow.status": {
                 $nin: [
                   "revision/published"
@@ -250,7 +253,10 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
           },
           changed: (id, fields) => {
             const revisions = Revisions.find({
-              "documentId": id,
+              $or: [
+                {"documentId": id },
+                {"parentDocument": id}
+              ],
               "workflow.status": {
                 $nin: [
                   "revision/published"
@@ -282,8 +288,12 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
             // Only update the revision on the published products if
             // the revision status was update
             if (revision.workflow.status === "revision/update") {
-              const product = Products.findOne(revision.documentId);
-
+              let product;
+              if (!revision.documentType || revision.documentType === "product") {
+                product = Products.findOne(revision.documentId);
+              } else if (revision.documentType === "image" || revision.documentType === "tag") {
+                product = Products.findOne(revision.parentDocument);
+              }
               product.__revisions = [revision];
               this.changed("Products", product._id, product);
             }
@@ -308,7 +318,7 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
       });
     }
 
-    // Everyone else gets the standard, visibile products
+    // Everyone else gets the standard, visible products
     selector.isVisible = true;
 
     return Products.find(selector, {
