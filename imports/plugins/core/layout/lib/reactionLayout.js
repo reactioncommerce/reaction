@@ -53,16 +53,27 @@ class ReactionLayout extends Component {
         });
       }
 
+
       if (this.checkElementPermissions(block)) {
         return React.createElement(block.element || "div", {
           key: index,
-          className: classnames(`rui col-xs-${block.columns || 12}`, block.className),
-          style: block.style
-        },
-          <div className="row">
-            {childElements}
-          </div>
-        );
+          // className: classnames(`rui col-xs-${block.columns || 12}`, block.className),
+          className: classnames({
+            rui: true,
+            item: true,
+            [block.size || "full"]: true,
+            align: typeof block.align === "string",
+            [block.align || "start"]: true,
+
+            justify: typeof block.align === "string",
+            [block.justify || "start"]: true,
+            axis: true, // typeof block.axis === "string",
+            horizontal: block.axis === "horizontal",
+            vertical: block.axis !== "horizontal"
+          }, block.className),
+          style: block.style,
+          children: childElements
+        });
       }
 
       return null;
@@ -73,7 +84,7 @@ class ReactionLayout extends Component {
 
   render() {
     return (
-      <div className="rui layout-base">
+      <div className="rui layout-base items flex">
         {this.renderLayout(this.layout)}
       </div>
     );

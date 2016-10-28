@@ -31,7 +31,9 @@ class Divider extends Component {
     }
 
     return (
-      <hr className={classes} />
+      <div className={classes}>
+        <hr />
+      </div>
     );
   }
 }

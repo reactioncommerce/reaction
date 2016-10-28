@@ -10,8 +10,13 @@ import {
   SocialContainer,
   VariantListContainer
 } from "../../client/containers";
-import { AlertContainer } from "/imports/plugins/core/ui/client/containers";
-import { MediaGalleryContainer } from "/imports/plugins/core/ui/client/containers";
+import {
+  Divider
+} from "/imports/plugins/core/ui/client/components";
+import {
+  AlertContainer,
+  MediaGalleryContainer
+} from "/imports/plugins/core/ui/client/containers";
 
 export default function blocks() {
   return [
@@ -69,6 +74,7 @@ export default function blocks() {
     {
       type: "block",
       columns: 6,
+      size: "half",
       permissions: ["admin"],
       audience: ["guest", "anonymous"],
       children: [
@@ -93,23 +99,28 @@ export default function blocks() {
     {
       type: "block",
       columns: 6,
+      size: "half",
       permissions: ["admin"],
       audience: ["guest", "anonymous"],
       children: [
         // Price /  Social Buttons split
         {
+          axis: "horizontal",
+          align: "center",
           type: "block",
-          style: {
-            display: "flex"
-          },
+          size: "static variable",
           permissions: ["createProduct"],
           audience: ["guest", "anonymous"],
+          style: {
+            padding: 0
+          },
           children: [
             // Price Range
             {
               type: "block",
+              size: "variable",
               style: {
-                flex: 1
+                padding: 0
               },
               children: [
                 {
@@ -120,10 +131,10 @@ export default function blocks() {
             // Social Buttons
             {
               type: "block",
+              size: "static",
+              justify: "end",
               style: {
-                display: "flex",
-                flex: 1,
-                justifyContent: "flex-end"
+                padding: 0
               },
               children: [
                 {
@@ -164,6 +175,11 @@ export default function blocks() {
           component: VariantListContainer
         },
 
+        // Divider
+        {
+          component: Divider
+        },
+
         // Alerts for checkout
         {
           component: AlertContainer,
@@ -174,7 +190,12 @@ export default function blocks() {
 
         // Add to cart button
         {
-          component: AddToCartButton
+          component: AddToCartButton,
+          props: {
+            style: {
+              paddingTop: 20
+            }
+          }
         }
 
       ]
