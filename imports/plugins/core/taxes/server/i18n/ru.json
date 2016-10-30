@@ -1,0 +1,19 @@
+[{
+  "i18n": "ru",
+  "ns": "reaction-taxes",
+  "translation": {
+    "reaction-taxes": {
+      "admin": {
+        "shortcut": {
+          "taxesLabel": "Налоги",
+          "taxesTitle": "Налоги"
+        },
+        "dashboard": {
+          "taxesLabel": "Налоги",
+          "taxesTitle": "Налоги",
+          "taxesDescription": "Конфигурация налогов"
+        }
+      }
+    }
+  }
+}]

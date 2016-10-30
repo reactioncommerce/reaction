@@ -1,0 +1,19 @@
+[{
+  "i18n": "he",
+  "ns": "reaction-taxes",
+  "translation": {
+    "reaction-taxes": {
+      "admin": {
+        "shortcut": {
+          "taxesLabel": "מסים",
+          "taxesTitle": "מסים"
+        },
+        "dashboard": {
+          "taxesLabel": "מסים",
+          "taxesTitle": "מסים",
+          "taxesDescription": "תצורת מס"
+        }
+      }
+    }
+  }
+}]

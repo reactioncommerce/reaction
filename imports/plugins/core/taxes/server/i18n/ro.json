@@ -1,0 +1,19 @@
+[{
+  "i18n": "ro",
+  "ns": "reaction-taxes",
+  "translation": {
+    "reaction-taxes": {
+      "admin": {
+        "shortcut": {
+          "taxesLabel": "Impozite",
+          "taxesTitle": "Impozite"
+        },
+        "dashboard": {
+          "taxesLabel": "Impozite",
+          "taxesTitle": "Impozite",
+          "taxesDescription": "Configurare impozitare"
+        }
+      }
+    }
+  }
+}]

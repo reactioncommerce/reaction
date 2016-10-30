@@ -1,0 +1,19 @@
+[{
+  "i18n": "de",
+  "ns": "reaction-taxes",
+  "translation": {
+    "reaction-taxes": {
+      "admin": {
+        "shortcut": {
+          "taxesLabel": "Steuern",
+          "taxesTitle": "Steuern\n"
+        },
+        "dashboard": {
+          "taxesLabel": "Steuern",
+          "taxesTitle": "Steuern\n",
+          "taxesDescription": "Steuer-Konfiguration"
+        }
+      }
+    }
+  }
+}]

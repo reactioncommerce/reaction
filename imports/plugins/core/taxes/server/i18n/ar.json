@@ -1,0 +1,19 @@
+[{
+  "i18n": "ar",
+  "ns": "reaction-taxes",
+  "translation": {
+    "reaction-taxes": {
+      "admin": {
+        "shortcut": {
+          "taxesLabel": "ضرائب",
+          "taxesTitle": "ضرائب"
+        },
+        "dashboard": {
+          "taxesLabel": "ضرائب",
+          "taxesTitle": "ضرائب",
+          "taxesDescription": "تهيئة الضرائب\n"
+        }
+      }
+    }
+  }
+}]

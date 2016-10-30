@@ -1,0 +1,19 @@
+[{
+  "i18n": "zh",
+  "ns": "reaction-taxes",
+  "translation": {
+    "reaction-taxes": {
+      "admin": {
+        "shortcut": {
+          "taxesLabel": "税款",
+          "taxesTitle": "税款"
+        },
+        "dashboard": {
+          "taxesLabel": "税款",
+          "taxesTitle": "税款",
+          "taxesDescription": "税款配置"
+        }
+      }
+    }
+  }
+}]
