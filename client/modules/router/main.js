@@ -186,7 +186,7 @@ Router.initPackageRoutes = () => {
     for (const pkg of pkgs) {
       const newRoutes = [];
       // pkg registry
-      if (pkg.registry) {
+      if (pkg.registry && pkg.enabled) {
         const registry = Array.from(pkg.registry);
         for (const registryItem of registry) {
           // registryItems

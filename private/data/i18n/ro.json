@@ -103,6 +103,7 @@
           "reactionConnectLabel": "Conectare Reaction",
           "examplePaymentSettingsLabel": "Exemplu setări de plată",
           "productSettingsLabel": "Setări produs",
+          "productDetailsLabel": "Detalii produs",
           "taxSettingsLabel": "Setări impozite"
         },
         "userAccountDropdown": {
@@ -568,9 +569,12 @@
         "publishChanges": "Publicare schimbări",
         "showChanges": "Expunere schimbări",
         "hideChanges": "Ascundere modificări",
+        "discardChanges": "Eliminare schimbări",
         "changedPublished": "Schimbările au fost publicate cu succes.",
+        "changesDiscarded": "Schimbări eliminate cu succes",
         "noChanges": "Nicio schimbare",
-        "noChangesPublished": "Nu există modificări pentru publicare"
+        "noChangesPublished": "Nu există modificări pentru publicare",
+        "noChangesDiscarded": "Nu există nicio schimbare de eliminat"
       },
       "address": {
         "country": "Țară",
@@ -696,8 +700,41 @@
       "search": {
         "clearSearch": "Ștergeți",
         "noProductsFound": "Nu s-au găsit produse",
+        "noOrdersFound": "Nu s-a găsit nicio comandă.",
+        "noAccountsFound": "Nu s-a găsit niciun cont.",
         "searchInputLabel": "Căutare Reaction ",
-        "suggestedTags": "Etichete sugerate"
+        "suggestedTags": "Etichete sugerate",
+        "searchTypeProducts": "Produse",
+        "searchTypeAccounts": "Conturi",
+        "searchTypeOrders": "Comenzi",
+        "accountSearchResults": {
+          "accountId": "ID cont",
+          "shopId": "ID magazin",
+          "firstName": "Prenume",
+          "lastName": "Nume",
+          "phone": "Telefon",
+          "emails": "E-mail"
+        },
+        "orderSearchResults": {
+          "orderId": "ID comandă",
+          "shopId": "ID magazin",
+          "shippingAddress": "Adresă",
+          "shippingCity": "Oraș",
+          "shippingRegion": "Regiune",
+          "shippingCountry": "Țară",
+          "shippingPhone": "Telefon",
+          "shippingName": "Nume",
+          "shippingStatus": "Stare",
+          "billingAddress": "Adresă",
+          "billingCity": "Oraș",
+          "billingRegion": "Regiune",
+          "billingCountry": "Țară",
+          "billingPhone": "Telefon",
+          "billingStatus": "Stare",
+          "userEmails": "E-mail",
+          "orderDate": "Dată",
+          "orderTotal": "Total"
+        }
       },
       "accountsUI": {
         "members": "Membrii",
