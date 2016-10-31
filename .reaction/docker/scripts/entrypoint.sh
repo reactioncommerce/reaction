@@ -7,6 +7,13 @@
 #
 set -e
 
+
+# Set a delay to wait to start meteor container
+if [[ $DELAY ]]; then
+  echo "Delaying startup for $DELAY seconds"
+  sleep $DELAY
+fi
+
 # try to start local MongoDB if no external MONGO_URL was set
 if [[ "${MONGO_URL}" == *"127.0.0.1"* ]]; then
   if hash mongod 2>/dev/null; then
