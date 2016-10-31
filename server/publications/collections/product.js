@@ -114,8 +114,12 @@ Meteor.publish("Product", function (productId) {
         },
         changed: (id, fields) => {
           const revision = Revisions.findOne(id);
-          const product = Products.findOne(revision.documentId);
-
+          let product;
+          if (!revision.parentDocument) {
+            product = Products.findOne(revision.documentId);
+          } else {
+            product = Products.findOne(revision.parentDocument);
+          }
           product.__revisions = [revision];
 
           this.changed("Products", product._id, product);
