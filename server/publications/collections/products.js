@@ -236,7 +236,6 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
           limit: productScrollLimit
         }).observeChanges({
           added: (id, fields) => {
-            console.log("ok?");
             const revisions = Revisions.find({
               "documentId": id,
               "workflow.status": {

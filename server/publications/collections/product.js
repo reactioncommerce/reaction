@@ -72,7 +72,6 @@ Meteor.publish("Product", function (productId) {
     if (RevisionApi.isRevisionControlEnabled()) {
       const handle = Products.find(selector).observeChanges({
         added: (id, fields) => {
-          console.log("ok?");
           const revisions = Revisions.find({
             "documentId": id,
             "workflow.status": {
