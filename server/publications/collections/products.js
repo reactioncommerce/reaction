@@ -236,6 +236,7 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
           limit: productScrollLimit
         }).observeChanges({
           added: (id, fields) => {
+            console.log("ok?");
             const revisions = Revisions.find({
               "documentId": id,
               "workflow.status": {
@@ -272,27 +273,27 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
               "revision/published"
             ]
           }
-        }).observeChanges({
-          added: (id, fields) => {
-            this.added("Revisions", id, fields);
+        }).observe({
+          added: (revision) => {
+            this.added("Revisions", revision._id, revision);
           },
-          changed: (id, fields) => {
-            const revision = Revisions.findOne(id);
+          changed: (revision) => {
+            const product = Products.findOne(revision.documentId);
 
-            // Only update the revision on the published products if
-            // the revision status was update
-            if (revision.workflow.status === "revision/update") {
-              const product = Products.findOne(revision.documentId);
+            product.__revisions = [revision];
 
-              product.__revisions = [revision];
-              this.changed("Products", product._id, product);
-            }
-            this.changed("Revisions", id, fields);
+            this.changed("Products", product._id, product);
+            this.changed("Revisions", revision._id, revision);
           },
-          removed: (id) => {
-            this.removed("Revisions", id);
+          removed: (revision) => {
+            const product = Products.findOne(revision.documentId);
+            product.__revisions = [];
+
+            this.changed("Products", product._id, product);
+            this.removed("Revisions", revision._id, revision);
           }
         });
+
 
         this.onStop(() => {
           handle.stop();
