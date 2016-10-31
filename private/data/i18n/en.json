@@ -579,6 +579,7 @@
       },
       "revisions": {
         "isDisabled": "Revision control is disabled. Any changes will be published immediately.",
+        "isEnabled": "Revision control is enabled for Products. Any changes will be need to be published before being visible to customers.",
         "unpublishedChanges": "Unpublished Changes",
         "publishChanges": "Publish Changes",
         "showChanges": "Show Changes",
