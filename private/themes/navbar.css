@@ -236,3 +236,14 @@
    */
   border: --;
 }
+.sort-inline {
+  display: inline-block;
+  background-color: #000;
+}
+
+.sort-filter {
+  float:left;
+  width:200px;
+  margin: 0 20px;
+  background-color: #000;
+}

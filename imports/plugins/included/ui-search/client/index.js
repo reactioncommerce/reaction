@@ -13,6 +13,7 @@ import "./templates/productSearch/productItem.html";
 import "./templates/productSearch/productItem.js";
 import "./templates/productSearch/content.html";
 import "./templates/productSearch/content.js";
+import "./templates/productSearch/sortAndFilter.html";
 
 // Order Search
 import "./templates/orderSearch/orderResults.html";

@@ -136,6 +136,7 @@ raix:ui-dropped-event@0.0.7
 random@1.0.10
 rate-limit@1.0.5
 react-meteor-data@0.2.9
+react-template-helper@0.2.9
 reactive-dict@1.1.8
 reactive-var@1.0.10
 reload@1.1.10
