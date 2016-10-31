@@ -70,7 +70,12 @@ Object.assign(Alerts, {
         if (isConfirm === true && typeof messageOrCallback === "function") {
           messageOrCallback(isConfirm);
         }
-      }).catch(_.noop);
+      }).catch(function (err) {
+        if (err === "cancel" || err === "overlay" || err === "timer") {
+          return undefined; // Silence error
+        }
+        throw err;
+      });
     }
 
     const title = titleOrOptions;
@@ -85,7 +90,12 @@ Object.assign(Alerts, {
       if (isConfirm === true && typeof callback === "function") {
         callback(isConfirm);
       }
-    }).catch(_.noop);
+    }).catch(function (err) {
+      if (err === "cancel" || err === "overlay" || err === "timer") {
+        return undefined; // Silence error
+      }
+      throw err;
+    });
   },
 
   toast(message, type, options) {
