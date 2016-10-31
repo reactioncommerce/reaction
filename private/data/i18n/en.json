@@ -110,6 +110,7 @@
           "examplePaymentSettingsLabel": "Example Payment Settings",
           "productSettingsLabel": "Product Settings",
           "productDetailsLabel": "Product Details",
+          "productRevisionsLabel": "Product Revisions",
           "taxSettingsLabel": "Tax Settings"
         },
         "userAccountDropdown": {
