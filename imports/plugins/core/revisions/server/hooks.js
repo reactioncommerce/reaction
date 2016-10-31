@@ -23,10 +23,11 @@ Media.files.before.insert((userid, media) => {
     return true;
   }
   if (media.metadata.productId) {
-    media.metadata.workflow = "unpublished";
+    const revisionMetadata = Object.assign({}, media.metadata);
+    revisionMetadata.workflow = "published";
     Revisions.insert({
       documentId: media._id,
-      documentData: media.metadata,
+      documentData: revisionMetadata,
       documentType: "image",
       parentDocument: media.metadata.productId,
       changeType: "insert",
@@ -34,6 +35,7 @@ Media.files.before.insert((userid, media) => {
         status: "revision/update"
       }
     });
+    media.metadata.workflow = "unpublished";
   } else {
     media.metadata.workflow = "published";
   }
