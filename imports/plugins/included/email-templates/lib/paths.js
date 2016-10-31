@@ -1,10 +1,7 @@
 // Tempalte paths relative to private/email/templates
 export const coreDefaultTemplate = "coreDefault";
 
-<<<<<<< HEAD
 // Account related templates
-=======
->>>>>>> release-0.18.0
 export const resetPaswordTemplate = "accounts/resetPassword";
 export const inviteShopMemberTemplate = "accounts/inviteShopMember";
 export const welcomeEmailTemplate = "accounts/sendWelcomeEmail";
