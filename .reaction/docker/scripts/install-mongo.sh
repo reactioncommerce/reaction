@@ -2,7 +2,7 @@
 
 set -e
 
-if [ "${INSTALL_MONGO}" = "true" ]; then
+if [ "${INSTALL_MONGO}" = true ]; then
 
   printf "\n[-] Installing MongoDB ${MONGO_VERSION}...\n\n"
 
@@ -17,11 +17,11 @@ if [ "${INSTALL_MONGO}" = "true" ]; then
     mongodb-org=$MONGO_VERSION \
     mongodb-org-server=$MONGO_VERSION \
     mongodb-org-shell=$MONGO_VERSION \
-    mongodb-org-mongos=$MONGO_VERSION \
     mongodb-org-tools=$MONGO_VERSION
 
-	rm -rf /var/lib/apt/lists/*
-	rm -rf /var/lib/mongodb
+  rm -rf /var/lib/apt/lists/*
+  rm -rf /var/lib/mongodb
+
   mv /etc/mongod.conf /etc/mongod.conf.orig
 
 fi
