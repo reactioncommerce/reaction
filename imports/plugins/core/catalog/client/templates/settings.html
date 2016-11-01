@@ -1,0 +1,19 @@
+<template name="catalogSettings">
+  {{#each reactionApps provides='catalogSettings'}}
+    <div class="panel panel-default">
+      <div class="panel-heading panel-heading-flex">
+        <div class="panel-title">
+          <i class="fa fa-{{name}}"></i>
+          <span data-i18n="{{i18nKeyLabel}}">{{label}}</span>
+
+        </div>
+        <div class="panel-controls">
+          <input class="checkbox-switch" type="checkbox" value={{name}} name="enabled" data-id="{{packageId}}" {{checked .}}>
+        </div>
+      </div>
+      <div class="panel-body {{shown .}}">
+        {{> Template.dynamic template=template data=.}}
+      </div>
+    </div>
+  {{/each}}
+</template>
