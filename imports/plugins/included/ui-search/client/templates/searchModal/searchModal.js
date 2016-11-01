@@ -57,6 +57,7 @@ Template.searchModal.onCreated(function () {
       if (searchCollection === "products") {
         const productResults = ProductSearch.find().fetch();
         const productResultsCount = productResults.length;
+        // console.log(productResults[0]);
         this.state.set("productSearchResults", productResults);
         this.state.set("productSearchCount", productResultsCount);
 

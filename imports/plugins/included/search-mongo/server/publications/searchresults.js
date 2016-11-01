@@ -34,7 +34,9 @@ getResults.products = function (searchTerm, facets, maxResults, userId) {
         hashtags: 1,
         description: 1,
         handle: 1,
-        price: 1
+        price: 1,
+        vendor: 1,
+        shopId: 1
       },
       sort: {score: {$meta: "textScore"}},
       limit: maxResults
