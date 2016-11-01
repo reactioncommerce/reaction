@@ -122,7 +122,8 @@ export function processTemplateInfoForDatabase(templateInfo) {
   const templateData = {
     name: templateInfo.name,
     title: templateInfo.title,
-    type: templateInfo.type
+    type: templateInfo.type,
+    subject: templateInfo.subject
   };
 
 

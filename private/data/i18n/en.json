@@ -206,7 +206,7 @@
           "email": "Email",
           "emailSettings": "Email Settings",
           "config": "Configuration",
-          "settings": "Mail Provider",
+          "settings": "SMTP Provider",
           "status": "Status",
           "actions": "Actions"
         },
@@ -246,6 +246,16 @@
           "saveAnyway": "Do you want to save the settings anyway?",
           "saveSuccess": "Mail settings saved.",
           "saveFailed": "Failed to save mail settings. {{error}}"
+        },
+        "templates": {
+          "edit": "Edit email template",
+          "duplicate": "Duplicate email template",
+          "delete": "Delete email template",
+          "method": "Method",
+          "templateName": "Template Name",
+          "language": "Language",
+          "enabled": "Enabled",
+          "addTemplate": "Add email template"
         }
       },
       "taxSettings": {
