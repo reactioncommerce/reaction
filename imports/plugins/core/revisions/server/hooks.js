@@ -97,6 +97,14 @@ Media.files.before.remove((userId, media) => {
   if (RevisionApi.isRevisionControlEnabled() === false) {
     return true;
   }
+
+  // if the media is unpublished, then go ahead and just delete it
+  if (media.metadata.workflow && media.metadata.workflow === "unpublished") {
+    Revisions.remove({
+      documentId: media._id
+    });
+    return true;
+  }
   if (media.metadata.productId) {
     Revisions.insert({
       documentId: media._id,
