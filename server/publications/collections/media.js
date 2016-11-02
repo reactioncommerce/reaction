@@ -90,7 +90,7 @@ Meteor.publish("Media", function (shops) {
         const media = Media.findOne(revision.documentId);
         media.__revisions = [revision];
         this.changed("Media", media._id, media);
-        this.changed("revisions", revision._id, revision);
+        this.changed("Revisions", revision._id, revision);
       },
       removed: (revision) => {
         if (revision) {

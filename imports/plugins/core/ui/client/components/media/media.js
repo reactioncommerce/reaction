@@ -25,6 +25,14 @@ class MediaItem extends Component {
     }
   }
 
+  renderRevision() {
+    if (this.props.revision) {
+      return (
+        <IconButton icon="fa fa-pencil-square-o" />
+      );
+    }
+  }
+
   renderControls() {
     if (this.props.editable) {
       return (
@@ -33,6 +41,7 @@ class MediaItem extends Component {
             icon="fa fa-times"
             onClick={this.handleRemoveMedia}
           />
+          {this.renderRevision()}
         </div>
       );
     }
@@ -96,7 +105,9 @@ MediaItem.propTypes = {
   onMouseEnter: PropTypes.func,
   onMouseLeave: PropTypes.func,
   onRemoveMedia: PropTypes.func,
-  source: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
+  source: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  metadata: PropTypes.object,
+  revision: PropTypes.object
 };
 
 export default SortableItem("media", MediaItem);

@@ -4,7 +4,7 @@ import { composeWithTracker } from "react-komposer";
 import { MediaGallery } from "../components";
 import { Reaction } from "/client/api";
 import { ReactionProduct } from "/lib/api";
-import { Media } from "/lib/collections";
+import { Media, Revisions } from "/lib/collections";
 
 function uploadHandler(files) {
   // TODO: It would be cool to move this logic to common ValidatedMethod, but
@@ -81,6 +81,7 @@ class MediaGalleryContainer extends Component {
           // updateImagePriorities();
         });
       }
+      // show media as removed (since it will not disappear until changes are published
     });
   }
 
@@ -146,6 +147,32 @@ class MediaGalleryContainer extends Component {
   }
 }
 
+function fetchMediaRevisions() {
+  const productId = ReactionProduct.selectedProductId();
+  const mediaRevisions = Revisions.find({
+    parentDocument: productId,
+    documentType: "image",
+    "workflow.status": {
+      $nin: ["revision/published"]
+    }
+  }).fetch();
+  return mediaRevisions;
+}
+
+// Search through revisions and if we find one for the image, stick it on the object
+function appendRevisionsToMedia(media, mediaRevisions) {
+  const newMedia = [];
+  for (const image of media) {
+    for (const revision of mediaRevisions) {
+      if (revision.documentId === image._id) {
+        image.revision = revision;
+      }
+    }
+    newMedia.push(image);
+  }
+  return newMedia;
+}
+
 function composer(props, onData) {
   let media;
   let editable;
@@ -154,7 +181,8 @@ function composer(props, onData) {
   if (!props.media) {
     // Fetch media based on props
   } else {
-    media = props.media;
+    const mediaRevisions = fetchMediaRevisions();
+    media = appendRevisionsToMedia(props.media, mediaRevisions);
   }
 
   if (viewAs === "customer") {
