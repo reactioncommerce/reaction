@@ -21,6 +21,10 @@ export default class SortnFilter extends TrackerReact(React.Component) {
       });
     }
 
+    alertThem(){
+      alert('Something was pressed');
+    }
+
     handleSubmit(event) {
       alert(this.data.product);
     }
@@ -30,15 +34,20 @@ export default class SortnFilter extends TrackerReact(React.Component) {
       <div style={{'float': 'left', 'width':200, 'margin': '0 20px'}}>
       <h4>Filter</h4>
       <hr/>
-      <h6>Best Sellers</h6>
-      <input name="bestSeller" type="radio"/> Black <br/>
+      <div id="score" name="scoreName">
+      <h4>Best Sellers</h4>
+      <input value="black" name="bestSeller" type="radio"/> Black <br/>
+      </div>
       <hr/>
       <h6>Vendors</h6>
       {this.renderVendors()}
       <hr/>
       <h6>Price</h6>
-      <div style={{'display': 'inline-block'}}>
-        min: <input type="text"/> max: <input type="text"/>
+      <div id="min" style={{'display': 'inline-block'}}>
+        min: <input type="text"/>
+      </div>
+      <div id="max" style={{'display': 'inline-block'}}>
+        max: <input type="text"/>
       </div>
       <hr/>
       </div>

@@ -1,6 +1,6 @@
 <template name="productResults">
   <div class="container-main">
-    <div>{{>React component = SortnFilter}}</div>
+    <div data-event-action="filterSearch">{{>React component = SortnFilter}}</div>
     <div class="product-grid">
       <ul class="product-grid-list list-unstyled" id="product-grid-list">
         {{#each product in productSearchResults}}

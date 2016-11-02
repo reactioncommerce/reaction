@@ -5,18 +5,19 @@ import { Reaction } from "/client/api";
 import Logger from "/client/modules/logger";
 import { ReactionProduct } from "/lib/api";
 import Sortable from "sortablejs";
+import { ProductSearch } from "/lib/collections";
 
 
 /**
  * productGrid helpers
  */
-
 Template.productResults.onCreated(function () {
   Session.set("productGrid/selectedProducts", []);
 });
 
 Template.productResults.onRendered(function () {
   const instance = this;
+  filterItems = [{vendor: []}, {min: 0}, {max: 9999999}, {score: false}];
 
   if (Reaction.hasPermission("createProduct")) {
     const productSort = $(".product-grid-list")[0];
@@ -55,6 +56,31 @@ Template.productResults.events({
   "click [data-event-action=loadMoreProducts]": (event) => {
     event.preventDefault();
     loadMoreProducts();
+  },
+  "change [data-event-action=filterSearch]": (event) => {
+    // {vendor: [China, ireland]}
+    const key = event.target.parentNode.id;
+    const value = event.target.value;
+
+    this.filterItems.forEach((item) => {
+      let itemKey = Object.keys(item).toString();
+      if (itemKey === key) {
+        if (key === "vendor" && !item[itemKey].includes(value)) {
+          item[itemKey].push(value);
+        } else if (key === "vendor") {
+          item[itemKey].splice(item[itemKey].indexOf(value), 1);
+        } else {
+          console.log("item", item["0"]);
+            console.log("key", key);
+          item[itemKey] = value;
+        }
+      }
+    });
+    console.log(this.filterItems);
+    console.log(this.getProducts());
+    // console.log(ProductSearch.find().fetch());
+    // console.log(event.target.value);
+    // console.log(event.target.parentNode.id);
   },
   "change input[name=selectProduct]": (event) => {
     let selectedProducts = Session.get("productGrid/selectedProducts");
@@ -95,5 +121,24 @@ Template.productResults.helpers({
   },
   products() {
     return Template.currentData().products;
+  },
+  // format of items {location: item} e.g {vendor: china}
+  getProducts() {
+    return ProductSearch.find().fetch();
+  },
+  filterResult() {
+    if (this.filterItems.length > 0) {
+      return this.getProducts().filter((product) => {
+        let match = false;
+        this.filterItems.forEach(item => {
+          match = false;
+          const key = Object.keys(item).toString();
+          if (product[key] === item[key]) match = true;
+        });
+        return match ? product : "";
+      });
+    } else {
+      return this.getProducts();
+    }
   }
 });
