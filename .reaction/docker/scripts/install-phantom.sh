@@ -2,7 +2,7 @@
 
 set -e
 
-if [ "${INSTALL_PHANTOMJS}" = "true" ]; then
+if [ "${INSTALL_PHANTOMJS}" = true ]; then
 
   printf "\n[-] Installing Phantom.js...\n\n"
 
@@ -19,7 +19,5 @@ if [ "${INSTALL_PHANTOMJS}" = "true" ]; then
   ln -sf /usr/local/share/$PHANTOM_JS/bin/phantomjs /usr/local/bin/phantomjs
   ln -sf /usr/local/share/$PHANTOM_JS/bin/phantomjs /usr/bin/phantomjs
 
-  apt-get -y purge wget
-
-  phantomjs -v
+  printf "\n[-] Successfully installed PhantomJS $(phantomjs -v)\n\n"
 fi

@@ -7,5 +7,5 @@
 
 if [ -f .reaction/docker/packages ]; then
   echo "[-] Using custom Meteor packages file..."
-  cp docker/packages .meteor/packages
+  cp .reaction/docker/packages .meteor/packages
 fi

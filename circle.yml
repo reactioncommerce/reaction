@@ -12,7 +12,6 @@ dependencies:
     - "~/docker"
   override:
     - cd $HOME/reaction
-    - .reaction/scripts/clone-packages.sh
     - .reaction/docker/scripts/plugin-loader.sh
 
 test:
