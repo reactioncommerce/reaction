@@ -170,11 +170,13 @@ function appendRevisionsToMedia(media) {
   const mediaRevisions = fetchMediaRevisions();
   const newMedia = [];
   for (const image of media) {
+    console.log("image", image.original.name);
     image.revision = undefined;
     for (const revision of mediaRevisions) {
       if (revision.documentId === image._id) {
         image.revision = revision;
-        // image.metadata.priority = revision.documentData.priority;
+        console.log("revision.priority", revision.documentData.priority);
+        image.metadata.priority = revision.documentData.priority;
       }
     }
     newMedia.push(image);
