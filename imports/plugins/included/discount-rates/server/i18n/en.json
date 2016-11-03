@@ -1,0 +1,20 @@
+[{
+  "language": "English",
+  "i18n": "en",
+  "ns": "discount-rates",
+  "translation": {
+    "reaction-discounts": {
+      "admin": {
+        "discountSettings": {
+          "ratesLabel": "Rates",
+          "noCustomDiscountRatesFound": "No discount rates found."
+        },
+        "discountGrid": {
+          "label": "Label",
+          "discountMethod": "Method",
+          "discount": "Discount"
+        }
+      }
+    }
+  }
+}]

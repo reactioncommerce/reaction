@@ -106,8 +106,7 @@
           "reactionConnectLabel": "חיבור Reaction",
           "examplePaymentSettingsLabel": "הגדרות תשלום לדוגמה",
           "productSettingsLabel": "הגדרות מוצר",
-          "productDetailsLabel": "פרטי המוצר",
-          "taxSettingsLabel": "הגדרות מס"
+          "productDetailsLabel": "פרטי המוצר"
         },
         "userAccountDropdown": {
           "profileLabel": "פרופיל"
@@ -244,21 +243,6 @@
           "saveSuccess": "הגדרות הדואר נשמרו.",
           "saveFailed": "שמירת הגדרות הדואר נכשלה. {{error}}"
         }
-      },
-      "taxSettings": {
-        "noCustomTaxRatesFound": "לא נמצאו תעריפים מס בהתאמה אישית.",
-        "shopCustomTaxRatesSaved": "שיעור מס מותאם אישית נשמר.",
-        "shopCustomTaxRatesFailed": "שגיאה בשמירת שיעור המס.",
-        "shopTaxMethodsSaved": "שיטת המס נשמרה.",
-        "shopTaxMethodsFailed": "שמירת שיטת המס נכשלה.",
-        "customRatesDescription": "התאם אישית תעריפים",
-        "taxCode": "קוד מס",
-        "taxShipping": "כלול משלוח",
-        "taxRate": "תעריף",
-        "discountsIncluded": "כלול הנחות",
-        "taxable": "חייב במס",
-        "nottaxable": "לא חייב במס",
-        "confirmRateDelete": "אשר מחיקת שיעור מס"
       },
       "header": {
         "tagsAdd": "הוספת תגית",

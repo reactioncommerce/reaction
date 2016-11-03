@@ -106,8 +106,7 @@
           "reactionConnectLabel": "توصيل التفاعل",
           "examplePaymentSettingsLabel": "مثال إعدادات الدفع",
           "productSettingsLabel": "إعدادات المنتج",
-          "productDetailsLabel": "تفاصيل المنتج",
-          "taxSettingsLabel": "إعدادات ضرائب"
+          "productDetailsLabel": "تفاصيل المنتج"
         },
         "userAccountDropdown": {
           "profileLabel": "الملف الشخصي"
@@ -244,21 +243,6 @@
           "saveSuccess": ".تم حفظ إعدادات البريد",
           "saveFailed": "فشل حفظ إعدادات البريد {{error}}"
         }
-      },
-      "taxSettings": {
-        "noCustomTaxRatesFound": "لا توجد معدلات الضرائب الجمركية.",
-        "shopCustomTaxRatesSaved": ". معدل ضرائب مخصصة محفوظة",
-        "shopCustomTaxRatesFailed": ".خطأ في حفظ معدل الضريبة",
-        "shopTaxMethodsSaved": ".حفظ طريقة الضريبة",
-        "shopTaxMethodsFailed": "فشل حفظ طريقة الضرائب",
-        "customRatesDescription": "المعدلات المخصصة",
-        "taxCode": "رقم الضريبة",
-        "taxShipping": "يشمل الشحن",
-        "taxRate": "معدل",
-        "discountsIncluded": "شمل الخصومات",
-        "taxable": "خاضع للضريبة",
-        "nottaxable": "غير خاضع للضريبة",
-        "confirmRateDelete": "تأكيد إلغاء معدل الضرائب"
       },
       "header": {
         "tagsAdd": "إضافة علامة",

@@ -12,6 +12,24 @@
           "taxesLabel": "מסים",
           "taxesTitle": "מסים",
           "taxesDescription": "תצורת מס"
+        },
+        "settings": {
+          "taxSettingsLabel": "הגדרות מס"
+        },
+        "taxSettings": {
+          "noCustomTaxRatesFound": "לא נמצאו תעריפים מס בהתאמה אישית.",
+          "shopCustomTaxRatesSaved": "שיעור מס מותאם אישית נשמר.",
+          "shopCustomTaxRatesFailed": "שגיאה בשמירת שיעור המס.",
+          "shopTaxMethodsSaved": "שיטת המס נשמרה.",
+          "shopTaxMethodsFailed": "שמירת שיטת המס נכשלה.",
+          "customRatesDescription": "התאם אישית תעריפים",
+          "taxCode": "קוד מס",
+          "taxShipping": "כלול משלוח",
+          "taxRate": "תעריף",
+          "discountsIncluded": "כלול הנחות",
+          "taxable": "חייב במס",
+          "nottaxable": "לא חייב במס",
+          "confirmRateDelete": "אשר מחיקת שיעור מס"
         }
       }
     }

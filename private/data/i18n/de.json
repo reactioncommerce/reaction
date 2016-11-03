@@ -106,8 +106,7 @@
           "reactionConnectLabel": "Ergebnis verbinden",
           "examplePaymentSettingsLabel": "Zahlungsbeispiel-Einstellungen",
           "productSettingsLabel": "Produkteinstellungen",
-          "productDetailsLabel": "Produktdetails",
-          "taxSettingsLabel": "Steuer-Einstellungen"
+          "productDetailsLabel": "Produktdetails"
         },
         "userAccountDropdown": {
           "profileLabel": "Profil"
@@ -244,21 +243,6 @@
           "saveSuccess": "Die E-Mail-Einstellungen wurden gespeichert.",
           "saveFailed": "Die E-Mail-Einstellungen konnten nicht gespeichert werden.  {{error}}"
         }
-      },
-      "taxSettings": {
-        "noCustomTaxRatesFound": "Es wurden keine benutzerdefinierten Steuersätze gefunden.",
-        "shopCustomTaxRatesSaved": "Der benutzerdefinierte Steuersatz wurde gespeichert.",
-        "shopCustomTaxRatesFailed": "Fehler beim Speichern des Steuersatzes.",
-        "shopTaxMethodsSaved": "Besteuerungsart speichern.",
-        "shopTaxMethodsFailed": "Die Besteuerungsart konnte nicht gespeichert werden. ",
-        "customRatesDescription": "Benutzerdefinierte Preise",
-        "taxCode": "Steuercode",
-        "taxShipping": "Versand mit einschließen",
-        "taxRate": "Preis",
-        "discountsIncluded": "Rabatte mit einschließen",
-        "taxable": "Steuerpflichtig",
-        "nottaxable": "Nicht steuerpflichtig",
-        "confirmRateDelete": "Löschen des Steuersatzes bestätigen"
       },
       "header": {
         "tagsAdd": "Tag hinzufügen",

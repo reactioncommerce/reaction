@@ -246,21 +246,6 @@
           "saveFailed": "Failed to save mail settings. {{error}}"
         }
       },
-      "taxSettings": {
-        "noCustomTaxRatesFound": "No custom tax rates found.",
-        "shopCustomTaxRatesSaved": "Custom tax rate saved.",
-        "shopCustomTaxRatesFailed": "Error saving tax rate.",
-        "shopTaxMethodsSaved": "Saved tax method.",
-        "shopTaxMethodsFailed": "Failed saving tax method.",
-        "customRatesDescription": "Custom Rates",
-        "taxCode": "Tax Code",
-        "taxShipping": "Include Shipping",
-        "taxRate": "Rate",
-        "discountsIncluded": "Include Discounts",
-        "taxable": "Taxable",
-        "nottaxable": "Not Taxable",
-        "confirmRateDelete": "Confirm tax rate deletion"
-      },
       "header": {
         "tagsAdd": "Add tag",
         "search": "Search products..."

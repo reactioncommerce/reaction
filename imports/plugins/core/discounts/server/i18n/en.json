@@ -5,6 +5,9 @@
   "translation": {
     "reaction-discounts": {
       "admin": {
+        "settings": {
+          "discountsettingsLabel": "Discount Settings"
+        },
         "shortcut": {
           "discountsLabel": "Discounts",
           "discountsDescription": "Provide promotions and discounts."
