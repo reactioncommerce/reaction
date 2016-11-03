@@ -160,6 +160,7 @@ tmeasday:publish-counts@0.8.0
 tracker@1.1.1
 twitter@1.1.13
 ui@1.0.12
+ultimatejs:tracker-react@1.0.5
 underscore@1.0.10
 url@1.0.11
 vsivsi:job-collection@1.4.0
