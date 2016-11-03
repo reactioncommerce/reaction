@@ -42,6 +42,11 @@ export function discardDrafts(documentIds) {
         "documentData.ancestors": {
           $in: documentIdArray
         }
+      },
+      {
+        parentDocument: {
+          $in: documentIds
+        }
       }
     ]
   };
