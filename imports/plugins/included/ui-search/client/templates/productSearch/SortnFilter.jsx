@@ -31,12 +31,16 @@ export default class SortnFilter extends TrackerReact(React.Component) {
 
   render() {
     return (
-      <div style={{'float': 'left', 'width':200, 'margin': '0 20px'}}>
+      <div style={{'float': 'left', 'width':200, 'margin': '0 20px', 'position': 'relative', 'zIndex': 2000}}>
       <h4>Filter</h4>
       <hr/>
       <div id="score" name="scoreName">
       <h4>Best Sellers</h4>
-      <input value="black" name="bestSeller" type="radio"/> Black <br/>
+      <input value="4" name="bestSeller" type="radio"/> &#9733; &#9733; &#9733; &#9733; &#9733;<br/>
+      <input value="3" name="bestSeller" type="radio"/> &#9733; &#9733; &#9733; &#9733;<br/>
+      <input value="2" name="bestSeller" type="radio"/> &#9733; &#9733; &#9733;<br/>
+      <input value="1" name="bestSeller" type="radio"/> &#9733; &#9733;<br/>
+      <input value="0" name="bestSeller" type="radio"/> &#9733; <br/>
       </div>
       <hr/>
       <h6>Vendors</h6>
