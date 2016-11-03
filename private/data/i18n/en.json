@@ -111,7 +111,9 @@
           "productSettingsLabel": "Product Settings",
           "productDetailsLabel": "Product Details",
           "productRevisionsLabel": "Product Revisions",
-          "taxSettingsLabel": "Tax Settings"
+          "taxSettingsLabel": "Tax Settings",
+          "emailSettingsLabel": "Email Settings",
+          "catalogSettingsLabel": "Catalog Settings"
         },
         "userAccountDropdown": {
           "profileLabel": "Profile"
