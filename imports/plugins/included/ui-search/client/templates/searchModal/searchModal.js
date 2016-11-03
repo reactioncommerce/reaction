@@ -14,8 +14,16 @@ function filterResult() {
   if (JSON.stringify(filterItems) === "[{\"vendor\":[]},{},{},{}]") {
     return getProducts();
   }
+  const tempFilter = [];
+  filterItems.filter((item) => {
+    if (item[Object.keys(item)] !== undefined && (item[Object.keys(item)]).length > 0) {
+      tempFilter.push(Object.keys(item)[0]);
+      console.log(tempFilter);
+    }
+  });
   getProducts().filter((product) => {
     let match = false;
+    let count = 0;
     filterItems.forEach(item => {
       match = false;
       const key = Object.keys(item).toString();
@@ -35,7 +43,13 @@ function filterResult() {
         default:
           match = false;
       }
-      match ? result.push(product) : "";
+      if (match) {
+        count ++;
+        console.log(count + " - " + tempFilter.length);
+        if (count === tempFilter.length) {
+          result.push(product);
+        }
+      }
     });
   });
   return result;
