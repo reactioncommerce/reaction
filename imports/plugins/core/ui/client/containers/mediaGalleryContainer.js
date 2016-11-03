@@ -156,6 +156,7 @@ function fetchMediaRevisions() {
       $nin: ["revision/published"]
     }
   }).fetch();
+  console.log("mediaRevisions", mediaRevisions);
   return mediaRevisions;
 }
 
@@ -166,6 +167,7 @@ function appendRevisionsToMedia(media, mediaRevisions) {
     for (const revision of mediaRevisions) {
       if (revision.documentId === image._id) {
         image.revision = revision;
+        image.metadata.priority = revision.documentData.priority;
       }
     }
     newMedia.push(image);

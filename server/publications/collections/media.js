@@ -27,76 +27,40 @@ Meteor.publish("Media", function (shops) {
     };
   }
 
+  // Product editors can see both published and unpublished images
   if (!Reaction.hasPermission(["createProduct"], this.userId)) {
     selector["metadata.workflow"] = {
       $in: [null, "published"]
     };
   } else {
+    // but no one gets to see archived images
     selector["metadata.workflow"] = {
       $nin: ["archived"]
     };
   }
 
   if (RevisionApi.isRevisionControlEnabled()) {
-    const handle = Media.find(selector).observeChanges({
-      added: (id, fields) => {
-        Logger.info("media: added");
-        const revisions = Revisions.find({
-          "documentId": id,
-          "documentType": "images",
-          "workflow.status": {
-            $nin: [
-              "revision/published"
-            ]
-          }
-        }).fetch();
-        fields.__revisions = revisions;
-        this.added("Media", id, fields);
-      },
-      changed: (id, fields) => {
-        Logger.info("media: changed");
-        const revisions = Revisions.find({
-          "documentId": id,
-          "documentType": "image",
-          "workflow.status": {
-            $nin: [
-              "revisions/published"
-            ]
-          }
-        }).fetch();
-        Logger.info("found revision for changed media", revisions);
-        fields.__revisions = revisions;
-        Logger.info("fields", fields);
-        this.changed("Media", id, fields);
-      },
-      removed: (id) => {
-        Logger.info("media: removed");
-        this.removed("Media", id);
-      }
-    });
-
     const revisionHandle = Revisions.find({
       "documentType": "image",
       "workflow.status": {$nin: [ "revision/published"]}
     }).observe({
       added: (revision) => {
         const media = Media.findOne(revision.documentId);
-        media.__revisions = [revision];
-        this.added("Media", media._id, media);
-        this.added("Revisions", revision._id, revision);
+        if (media) {
+          this.added("Media", media._id, media);
+          this.added("Revisions", revision._id, revision);
+        }
       },
       changed: (revision) => {
-        Logger.info("revision: changed", revision);
+        Logger.info("revision: changed");
         const media = Media.findOne(revision.documentId);
-        media.__revisions = [revision];
         this.changed("Media", media._id, media);
         this.changed("Revisions", revision._id, revision);
       },
       removed: (revision) => {
         if (revision) {
-          Logger.info("revision: removed", revision);
+          Logger.info("revision: removed");
           const media = Media.findOne(revision.documentId);
-          media.__revisions = [];
           this.changed("Media", media._id, media);
           this.removed("Revisions", revision._id, revision);
         }
@@ -104,7 +68,6 @@ Meteor.publish("Media", function (shops) {
     });
 
     this.onStop(() => {
-      handle.stop();
       revisionHandle.stop();
     });
   }

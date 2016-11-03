@@ -26,7 +26,13 @@ class MediaItem extends Component {
   }
 
   renderRevision() {
+    console.log(this.props.revision);
     if (this.props.revision) {
+      if (this.props.revision.changeType === "remove") {
+        return (
+          <IconButton icon="fa fa-pencil-remove" />
+        );
+      }
       return (
         <IconButton icon="fa fa-pencil-square-o" />
       );
@@ -102,12 +108,12 @@ MediaItem.propTypes = {
   connectDropTarget: PropTypes.func,
   defaultSource: PropTypes.string,
   editable: PropTypes.bool,
+  metadata: PropTypes.object,
   onMouseEnter: PropTypes.func,
   onMouseLeave: PropTypes.func,
   onRemoveMedia: PropTypes.func,
-  source: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-  metadata: PropTypes.object,
-  revision: PropTypes.object
+  revision: PropTypes.object,
+  source: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
 };
 
 export default SortableItem("media", MediaItem);
