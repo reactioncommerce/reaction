@@ -89,6 +89,12 @@ class MediaGalleryContainer extends Component {
     return (this.state && this.state.media) || this.props.media;
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      media: nextProps.media
+    });
+  }
+
   handleMouseEnterMedia = (event, media) => {
     this.setState({
       featuredMedia: media
@@ -156,18 +162,19 @@ function fetchMediaRevisions() {
       $nin: ["revision/published"]
     }
   }).fetch();
-  console.log("mediaRevisions", mediaRevisions);
   return mediaRevisions;
 }
 
 // Search through revisions and if we find one for the image, stick it on the object
-function appendRevisionsToMedia(media, mediaRevisions) {
+function appendRevisionsToMedia(media) {
+  const mediaRevisions = fetchMediaRevisions();
   const newMedia = [];
   for (const image of media) {
+    image.revision = undefined;
     for (const revision of mediaRevisions) {
       if (revision.documentId === image._id) {
         image.revision = revision;
-        image.metadata.priority = revision.documentData.priority;
+        // image.metadata.priority = revision.documentData.priority;
       }
     }
     newMedia.push(image);
@@ -183,8 +190,7 @@ function composer(props, onData) {
   if (!props.media) {
     // Fetch media based on props
   } else {
-    const mediaRevisions = fetchMediaRevisions();
-    media = appendRevisionsToMedia(props.media, mediaRevisions);
+    media = appendRevisionsToMedia(props.media);
   }
 
   if (viewAs === "customer") {

@@ -26,7 +26,6 @@ class MediaItem extends Component {
   }
 
   renderRevision() {
-    console.log(this.props.revision);
     if (this.props.revision) {
       if (this.props.revision.changeType === "remove") {
         return (
