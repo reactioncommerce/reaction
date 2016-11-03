@@ -18,8 +18,8 @@
           <span data-i18n="productDetailEdit.variantDetails">Variant Details</span>
           {{#if isDeleted}}
             <div class="panel-subheading">
-              <span class="badge badge-danger" data-i18n="app.deleted">
-                <span>Deleted</span>
+              <span class="badge badge-danger" data-i18n="app.archived">
+                <span>Archived</span>
               </span>
             </div>
           {{/if}}
@@ -43,7 +43,7 @@
             {{> button
               icon="trash-o"
               className="btn btn-default btn-remove-variant"
-              tooltip="Remove"
+              tooltip="Archive"
               i18nTooltip="productDetailEdit.removeVariant"
               onClick=(removeVariant this)
             }}
@@ -66,7 +66,7 @@
             <div class="">
               <div class="form-group{{#if afFieldIsInvalid name='title'}} has-error{{/if}}">
                   <label class="control-label">{{afFieldLabelText name='title'}}</label>
-                  {{>afFieldInput name='title'}}
+                  {{>afFieldInput name='title' placeholder=(i18n "productVariant.title" "Label")}}
                   {{#if afFieldIsInvalid name='title'}}
                   <span class="help-block">{{afFieldMessage name='title'}}</span>
                   {{/if}}
@@ -74,7 +74,7 @@
 
               <div class="col-xs-3 col-sm-3 form-group{{#if afFieldIsInvalid name='weight'}} has-error{{/if}}">
                 <label class="control-label">{{afFieldLabelText name='weight'}}</label>
-                {{>afFieldInput name='weight'}}
+                {{>afFieldInput name='weight' placeholder="0"}}
                 {{#if afFieldIsInvalid name='weight'}}
                 <span class="help-block">{{afFieldMessage name='weight'}}</span>
                 {{/if}}
@@ -82,7 +82,7 @@
 
               <div class="col-xs-3 col-sm-3 form-group {{#unless hasChildVariants}}{{#if afFieldIsInvalid name='inventoryQuantity'}} has-error{{/if}}{{/unless}}">
                 <label class="control-label">{{afFieldLabelText name='inventoryQuantity'}}</label>
-                {{>afFieldInput name='inventoryQuantity' disabled=hasChildVariants}}
+                {{>afFieldInput name='inventoryQuantity' placeholder="0" disabled=hasChildVariants}}
                 {{#if afFieldIsInvalid name='inventoryQuantity'}}
                 <span class="help-block">{{afFieldMessage name='inventoryQuantity'}}</span>
                 {{/if}}
@@ -90,7 +90,7 @@
 
               <div class="col-xs-3 col-sm-3 form-group{{#if afFieldIsInvalid name='compareAtPrice'}} has-error{{/if}}">
                 <label class="control-label">{{afFieldLabelText name='compareAtPrice'}}</label>
-                {{>afFieldInput name='compareAtPrice'}}
+                {{>afFieldInput name='compareAtPrice' placeholder=(formatPrice "0.00")}}
                 {{#if afFieldIsInvalid name='compareAtPrice'}}
                 <span class="help-block">{{afFieldMessage name='compareAtPrice'}}</span>
                 {{/if}}
@@ -98,13 +98,9 @@
 
               <div class="col-xs-3 col-sm-3 form-group {{#if afFieldIsInvalid name='price'}} has-error{{/if}}">
                 <label class="control-label">{{afFieldLabelText name='price'}}</label>
-                {{#if hasChildVariants}}
-                  {{>afFieldInput name='price' value="N/A" disabled=hasChildVariants}}
-                {{else}}
-                  {{>afFieldInput name='price'}}
-                  {{#if afFieldIsInvalid name='price'}}
-                  <span class="help-block">{{afFieldMessage name='price'}}</span>
-                  {{/if}}
+                {{>afFieldInput name='price' placeholder=(formatPrice "0.00") disabled=hasChildVariants}}
+                {{#if afFieldIsInvalid name='price'}}
+                <span class="help-block">{{afFieldMessage name='price'}}</span>
                 {{/if}}
               </div>
 

@@ -44,7 +44,7 @@ class Variant extends Component {
     if (this.props.variant.isDeleted) {
       return (
         <span className="badge badge-danger">
-          <Translation defaultValue="Deleted" i18nKey="app.deleted" />
+          <Translation defaultValue="Archived" i18nKey="app.archived" />
         </span>
       );
     }

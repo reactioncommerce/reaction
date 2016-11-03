@@ -37,7 +37,7 @@ class ProductDetail extends Component {
   }
 
   handlePublishActions = (event, action) => {
-    if (action === "delete" && this.props.onDeleteProduct) {
+    if (action === "archive" && this.props.onDeleteProduct) {
       this.props.onDeleteProduct(this.product._id);
     }
   }
