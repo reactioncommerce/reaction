@@ -193,8 +193,27 @@ Template.ordersListItem.events({
     const isActionViewOpen = Reaction.isActionViewOpen();
     const { order } = instance.data;
 
+
     if (order.workflow.status === "new") {
-      Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "processing", order);
+      Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "processing", order, (err) => {
+
+        if(err){
+          console.log("woof");
+
+        } else {
+
+          Meteor.call("orders/sendNotification", order, (error) => {
+            if (error) {
+              Alerts.toast("Server Error: Can't send email notification.", "error");
+            } else {
+              Alerts.toast("Email notification sent. (moved order to processing)", "success");
+            }
+          });
+
+        }
+
+
+      });
     }
     // toggle detail views
     if (isActionViewOpen === false) {

@@ -253,9 +253,17 @@
           "delete": "Delete email template",
           "method": "Method",
           "templateName": "Template Name",
+          "type": "Type",
           "language": "Language",
           "enabled": "Enabled",
-          "addTemplate": "Add email template"
+          "addTemplate": "Add email template",
+          "alerts": {
+            "removeEmailTemplateConfirm": "Are you sure you want to delete {{title}}?",
+            "removeEmailTemplateTitle": "Remove Email Template",
+            "duplicateEmailTemplateConfirm": "Are you sure you want to duplicate {{title}}?",
+            "duplicateEmailTemplateTitle": "Duplicate Email Template",
+            "failedToUpdate": "Failed to update template: {{err}}"
+          }
         }
       },
       "taxSettings": {

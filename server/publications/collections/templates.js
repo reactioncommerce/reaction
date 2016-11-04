@@ -9,18 +9,13 @@ import { Reaction } from "/server/api";
  * @return {Array} templates
  */
 
-Meteor.publish("Templates", function (type, isOriginalTemplate) {
+Meteor.publish("Templates", function () {
   const shopId = Reaction.getShopId();
-  check(type, Match.OneOf(String, null));
-  check(isOriginalTemplate, Match.OneOf(Boolean, undefined, null));
 
   if (!shopId) {
     return this.ready();
   }
   return Templates.find({
-    shopId: shopId,
-    type: type,
-    // TODO: make this optional
-    isOriginalTemplate: isOriginalTemplate
+    shopId: shopId
   });
 });

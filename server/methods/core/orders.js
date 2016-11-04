@@ -472,10 +472,23 @@ Meteor.methods({
     const tpl = `orders/${order.workflow.status}`;
     SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl));
 
+    console.log("----Template-----", tpl);
+
+    let emailSubject = "Regarding your recent order";
+    if (order.workflow.status === "new") {
+      emailSubject = "Your order is confirmed";
+    }
+    if (order.workflow.status === "coreOrderWorkflow/processing") {
+      emailSubject = "Processing";
+    }
+    if (order.workflow.status === "coreOrderWorkflow/completed") {
+      emailSubject = "Completed";
+    }
+
     Reaction.Email.send({
       to: order.email,
       from: `${shop.name} <${shop.emails[0].address}>`,
-      subject: `${shop.name}: Your order is confirmed`,
+      subject: `${shop.name}: ${emailSubject}`,
       // subject: `Order update from ${shop.name}`,
       html: SSR.render(tpl, dataForEmail)
     });

@@ -1,7 +1,11 @@
 import { SimpleSchema } from "meteor/aldeed:simple-schema";
-import { Audience } from "./layouts";
+// import { Audience } from "./layouts";
 
-export const Templates = new SimpleSchema({
+/**
+* EmailTemplates Schema
+*/
+
+export const EmailTemplates = new SimpleSchema({
   name: {
     type: String
   },
@@ -23,10 +27,10 @@ export const Templates = new SimpleSchema({
     type: String,
     optional: true
   },
-  audience: {
-    type: [Audience],
-    optional: true
-  },
+  // audience: {
+  //   type: [Audience],
+  //   optional: true
+  // },
   type: {
     type: String
   },
