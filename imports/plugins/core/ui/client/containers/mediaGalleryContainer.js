@@ -165,23 +165,30 @@ function fetchMediaRevisions() {
   return mediaRevisions;
 }
 
+// resort the media in
+function sortMedia(media) {
+  const sortedMedia = _.sortBy(media, function(m) { return m.metadata.priority});
+  return sortedMedia;
+}
+
 // Search through revisions and if we find one for the image, stick it on the object
-function appendRevisionsToMedia(media) {
+function appendRevisionsToMedia(props, media) {
+  if (!Reaction.hasPermission(props.permission || ["createProduct"])) {
+    return media;
+  }
   const mediaRevisions = fetchMediaRevisions();
   const newMedia = [];
   for (const image of media) {
-    console.log("image", image.original.name);
     image.revision = undefined;
     for (const revision of mediaRevisions) {
       if (revision.documentId === image._id) {
         image.revision = revision;
-        console.log("revision.priority", revision.documentData.priority);
         image.metadata.priority = revision.documentData.priority;
       }
     }
     newMedia.push(image);
   }
-  return newMedia;
+  return sortMedia(newMedia);
 }
 
 function composer(props, onData) {
@@ -192,7 +199,7 @@ function composer(props, onData) {
   if (!props.media) {
     // Fetch media based on props
   } else {
-    media = appendRevisionsToMedia(props.media);
+    media = appendRevisionsToMedia(props, props.media);
   }
 
   if (viewAs === "customer") {
