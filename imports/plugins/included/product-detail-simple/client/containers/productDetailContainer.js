@@ -245,6 +245,7 @@ function composer(props, onData) {
       }
 
       onData(null, {
+        layout: "productDetailSimple",
         product: productRevision || product,
         priceRange,
         tags,

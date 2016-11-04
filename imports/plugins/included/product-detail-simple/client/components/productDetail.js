@@ -69,10 +69,6 @@ class ProductDetail extends Component {
     return null;
   }
 
-  get layout() {
-    return SimpleLayout.bind(this)();
-  }
-
   render() {
     return (
       <div className="pdp" style={{position: "relative"}}>
@@ -81,7 +77,8 @@ class ProductDetail extends Component {
           <div className="row">
             <AlertContainer placement="productManagement" />
             <ReactionLayout
-              layout={this.layout}
+              context={this}
+              layoutName={this.props.layout}
               layoutProps={this.props}
             />
           </div>
@@ -95,6 +92,7 @@ ProductDetail.propTypes = {
   cartQuantity: PropTypes.number,
   editable: PropTypes.bool,
   hasAdminPermission: PropTypes.bool,
+  layoutName: PropTypes.string,
   mediaGalleryComponent: PropTypes.node,
   onAddToCart: PropTypes.func,
   onCartQuantityChange: PropTypes.func,

@@ -2,6 +2,8 @@ import React, { Component, PropTypes } from "react";
 import { composeWithTracker } from "react-komposer";
 import { Reaction } from "/client/api";
 import classnames from "classnames";
+import { getComponent } from "/imports/plugins/core/layout/lib/components";
+import { Templates } from "/lib/collections";
 
 class ReactionLayout extends Component {
 
@@ -37,7 +39,13 @@ class ReactionLayout extends Component {
           }
 
           if (this.checkElementPermissions(child)) {
-            return React.createElement(child.component, {
+            let component = child.component;
+
+            if (typeof child.component === "string") {
+              component = getComponent(child.component);
+            }
+
+            return React.createElement(component, {
               key: childIndex,
               ...(child.props || {}),
               ...this.props.layoutProps
@@ -100,11 +108,23 @@ ReactionLayout.propTypes = {
 };
 
 function composer(props, onData) {
-  onData(null, {
-    defaultPermissions: ["admin"],
-    defaultAudience: ["guest", "anonymous"],
-    layout: props.layout
-  });
+  const sub = Meteor.subscribe("Templates");
+
+  if (sub.ready()) {
+    const templateInfo = Templates.findOne({
+      name: props.layoutName
+    });
+
+    if (templateInfo) {
+      const templateData = templateInfo.templateData;
+
+      onData(null, {
+        defaultPermissions: ["admin"],
+        defaultAudience: ["guest", "anonymous"],
+        layout: templateData
+      });
+    }
+  }
 }
 
 export default composeWithTracker(composer)(ReactionLayout);
