@@ -292,7 +292,7 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
             product.__revisions = [revision];
 
             this.changed("Products", product._id, product);
-            this.changed("Revisions", revision._id, fields);
+            this.changed("Revisions", revision._id, revision);
           },
           removed: (revision) => {
             let product;
