@@ -4,7 +4,7 @@ MAINTAINER Reaction Commerce <admin@reactioncommerce.com>
 RUN groupadd -r node && useradd -m -g node node
 
 ENV NODE_VERSION 4.6.1
-ENV GOSU_VERSION 1.9
+ENV GOSU_VERSION 1.10
 
 # Install MongoDB
 ENV INSTALL_MONGO true
