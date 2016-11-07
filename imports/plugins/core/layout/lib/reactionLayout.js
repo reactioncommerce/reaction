@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from "react";
+import Radium from "radium";
 import { composeWithTracker } from "react-komposer";
 import { Reaction } from "/client/api";
 import classnames from "classnames";
@@ -67,7 +68,6 @@ class ReactionLayout extends Component {
             [block.size || "full"]: true,
             align: typeof block.align === "string",
             [block.align || "start"]: true,
-
             justify: typeof block.align === "string",
             [block.justify || "start"]: true,
             axis: true, // typeof block.axis === "string",
@@ -87,9 +87,9 @@ class ReactionLayout extends Component {
 
   render() {
     return (
-      <div className="rui layout-base items flex">
-        {this.renderLayout(this.layout)}
-      </div>
+        <div className="rui layout-base items flex">
+          {this.renderLayout(this.layout)}
+        </div>
     );
   }
 }
@@ -127,4 +127,4 @@ function composer(props, onData) {
   }
 }
 
-export default composeWithTracker(composer)(ReactionLayout);
+export default composeWithTracker(composer)(Radium(ReactionLayout));

@@ -58,6 +58,12 @@ export default function blocks() {
       size: "half",
       permissions: ["admin"],
       audience: ["guest", "anonymous"],
+      style: {
+        "@media  only screen and (max-width: 921px)": {
+          minWidth: "100%",
+          maxWidth: "100%"
+        }
+      },
       children: [
         // Media Gallery
         {
@@ -83,6 +89,12 @@ export default function blocks() {
       size: "half",
       permissions: ["admin"],
       audience: ["guest", "anonymous"],
+      style: {
+        "@media  only screen and (max-width: 921px)": {
+          minWidth: "100%",
+          maxWidth: "100%"
+        }
+      },
       children: [
         // Price /  Social Buttons split
         {
