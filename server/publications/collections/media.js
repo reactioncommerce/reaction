@@ -1,5 +1,5 @@
 import { Media, Revisions } from "/lib/collections";
-import { Reaction, Logger } from "/server/api";
+import { Reaction } from "/server/api";
 import { RevisionApi } from "/imports/plugins/core/revisions/lib/api/revisions";
 
 
@@ -52,14 +52,12 @@ Meteor.publish("Media", function (shops) {
         }
       },
       changed: (revision) => {
-        Logger.info("revision: changed");
         const media = Media.findOne(revision.documentId);
         this.changed("Media", media._id, media);
         this.changed("Revisions", revision._id, revision);
       },
       removed: (revision) => {
         if (revision) {
-          Logger.info("revision: removed");
           const media = Media.findOne(revision.documentId);
           this.changed("Media", media._id, media);
           this.removed("Revisions", revision._id, revision);
