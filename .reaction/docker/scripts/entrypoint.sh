@@ -33,7 +33,6 @@ fi
 
 # allow the container to be started with `--user`
 if [ "$1" = "node" -a "$(id -u)" = "0" ]; then
-  chown -R node:node $APP_BUNDLE_DIR
 	exec gosu node "$BASH_SOURCE" "$@"
 fi
 
