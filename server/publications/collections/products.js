@@ -278,31 +278,38 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
               "revision/published"
             ]
           }
-        }).observeChanges({
-          added: (id, fields) => {
-            this.added("Revisions", id, fields);
+        }).observe({
+          added: (revision) => {
+            this.added("Revisions", revision._id, revision);
           },
-          changed: (id, fields) => {
-            const revision = Revisions.findOne(id);
-
-            // Only update the revision on the published products if
-            // the revision status was update
-            if (revision.workflow.status === "revision/update") {
-              let product;
-              if (!revision.documentType || revision.documentType === "product") {
-                product = Products.findOne(revision.documentId);
-              } else if (revision.documentType === "image" || revision.documentType === "tag") {
-                product = Products.findOne(revision.parentDocument);
-              }
-              product.__revisions = [revision];
-              this.changed("Products", product._id, product);
+          changed: (revision) => {
+            let product;
+            if (!revision.documentType || revision.documentType === "product") {
+              product = Products.findOne(revision.documentId);
+            } else if (revision.documentType === "image" || revision.documentType === "tag") {
+              product = Products.findOne(revision.parentDocument);
             }
-            this.changed("Revisions", id, fields);
+            product.__revisions = [revision];
+
+            this.changed("Products", product._id, product);
+            this.changed("Revisions", revision._id, fields);
           },
-          removed: (id) => {
-            this.removed("Revisions", id);
+          removed: (revision) => {
+            let product;
+
+            if (!revision.documentType || revision.documentType === "product") {
+              product = Products.findOne(revision.documentId);
+            } else if (revision.docuentType === "image" || revision.documentType === "tag") {
+              product = Products.findOne(revision.parentDocument);
+            }
+
+            product.__revisions = [];
+
+            this.changed("Products", product._id, product);
+            this.removed("Revisions", revision._id, revision);
           }
         });
+
 
         this.onStop(() => {
           handle.stop();
