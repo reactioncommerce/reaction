@@ -1,20 +1,60 @@
 import React, { Component, PropTypes } from "react";
+import Velocity from "velocity-animate";
+import "velocity-animate/velocity.ui";
 import {
-  Button,
   Card,
   CardHeader,
   CardBody,
   CardGroup,
-  Divider,
   Metadata,
   TextField,
   Translation
 } from "/imports/plugins/core/ui/client/components";
 import { Router } from "/client/api";
-import { PublishContainer } from "/imports/plugins/core/revisions";
 import { TagListContainer } from "/imports/plugins/core/ui/client/containers";
+import { isEqual } from "lodash";
+import update from "react/lib/update";
+
+const fieldNames = [
+  "title",
+  "handle",
+  "subtitle",
+  "vendor",
+  "description",
+  "facebookMsg",
+  "twitterMsg",
+  "pinterestMsg",
+  "googleplusMsg"
+];
 
 class ProductAdmin extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      product: props.product
+    };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (!isEqual(nextProps.product, this.props.product)) {
+      for (const fieldName of fieldNames) {
+        if (nextProps.product[fieldName] !== this.props.product[fieldName]) {
+          const input = this.refs[`${fieldName}Input`].refs.input;
+
+          Velocity.RunSequence([
+            {e: input, p: { backgroundColor: "#e2f2e2" }, o: { duration: 200 }},
+            {e: input, p: { backgroundColor: "#fff" }, o: { duration: 100 }}
+          ]);
+        }
+      }
+    }
+
+    this.setState({
+      product: nextProps.product
+    });
+  }
+
   handleDeleteProduct = () => {
     if (this.props.onDeleteProduct) {
       this.props.onDeleteProduct(this.props.product);
@@ -29,9 +69,19 @@ class ProductAdmin extends Component {
 
 
   handleFieldChange = (event, value, field) => {
-    if (this.props.onFieldChange) {
-      this.props.onFieldChange(field, value);
-    }
+    const newState = update(this.state, {
+      product: {
+        $merge: {
+          [field]: value
+        }
+      }
+    });
+
+    this.setState(newState, () => {
+      if (this.props.onFieldChange) {
+        this.props.onFieldChange(field, value);
+      }
+    });
   }
 
   handleToggleVisibility = () => {
@@ -65,7 +115,7 @@ class ProductAdmin extends Component {
   }
 
   get product() {
-    return this.props.product || {};
+    return this.state.product || this.props.product || {};
   }
 
   get permalink() {
@@ -110,6 +160,7 @@ class ProductAdmin extends Component {
               onBlur={this.handleFieldBlur}
               onChange={this.handleFieldChange}
               placeholder="Title"
+              ref="titleInput"
               value={this.product.title}
             />
             <TextField
@@ -121,6 +172,7 @@ class ProductAdmin extends Component {
               onBlur={this.handleFieldBlur}
               onChange={this.handleFieldChange}
               placeholder="Permalink"
+              ref="handleInput"
               value={this.product.handle}
             />
             <TextField
@@ -132,6 +184,7 @@ class ProductAdmin extends Component {
               onBlur={this.handleFieldBlur}
               onChange={this.handleFieldChange}
               placeholder="Subtitle"
+              ref="subtitleInput"
               value={this.product.pageTitle}
             />
             <TextField
@@ -143,6 +196,7 @@ class ProductAdmin extends Component {
               onBlur={this.handleFieldBlur}
               onChange={this.handleFieldChange}
               placeholder="Vendor"
+              ref="vendorInput"
               value={this.product.vendor}
             />
             <TextField
@@ -154,6 +208,7 @@ class ProductAdmin extends Component {
               onBlur={this.handleFieldBlur}
               onChange={this.handleFieldChange}
               placeholder="Description"
+              ref="descriptionInput"
               value={this.product.description}
             />
           </CardBody>
@@ -171,6 +226,7 @@ class ProductAdmin extends Component {
               name="facebookMsg"
               onBlur={this.handleFieldBlur}
               onChange={this.handleFieldChange}
+              ref="facebookMsgInput"
               value={this.product.facebookMsg}
             />
             <TextField
@@ -180,6 +236,7 @@ class ProductAdmin extends Component {
               name="twitterMsg"
               onBlur={this.handleFieldBlur}
               onChange={this.handleFieldChange}
+              ref="twitterMsgInput"
               value={this.product.twitterMsg}
             />
             <TextField
@@ -189,6 +246,7 @@ class ProductAdmin extends Component {
               name="pinterestMsg"
               onBlur={this.handleFieldBlur}
               onChange={this.handleFieldChange}
+              ref="pinterestMsgInput"
               value={this.product.pinterestMsg}
             />
             <TextField
@@ -198,6 +256,7 @@ class ProductAdmin extends Component {
               name="googleplusMsg"
               onBlur={this.handleFieldBlur}
               onChange={this.handleFieldChange}
+              ref="googleplusMsgInput"
               value={this.product.googleplusMsg}
             />
           </CardBody>
