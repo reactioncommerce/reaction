@@ -10,6 +10,8 @@ Reaction.registerTemplate({
 });
 
 // Accounts
+
+// Reset Password
 Reaction.registerTemplate({
   title: "Reset Password",
   name: TemplatePaths.resetPaswordTemplate,
@@ -17,6 +19,7 @@ Reaction.registerTemplate({
   template: Reaction.Email.getTemplateFile(TemplatePaths.resetPaswordTemplate)
 });
 
+// Invite new shop member
 Reaction.registerTemplate({
   title: "Invite Shop Member",
   name: TemplatePaths.inviteShopMemberTemplate,
@@ -24,6 +27,7 @@ Reaction.registerTemplate({
   template: Reaction.Email.getTemplateFile(TemplatePaths.inviteShopMemberTemplate)
 });
 
+// Welcome email for new account
 Reaction.registerTemplate({
   title: "Welcome Email",
   name: TemplatePaths.welcomeEmailTemplate,
@@ -31,6 +35,7 @@ Reaction.registerTemplate({
   template: Reaction.Email.getTemplateFile(TemplatePaths.welcomeEmailTemplate)
 });
 
+// Account verification email
 Reaction.registerTemplate({
   title: "Verify Account",
   name: TemplatePaths.verifyEmailTemplate,
@@ -39,6 +44,8 @@ Reaction.registerTemplate({
 });
 
 // Checkout
+
+// checkout login
 Reaction.registerTemplate({
   title: "Checkout Login",
   name: TemplatePaths.checkoutLoginTemplate,
@@ -47,19 +54,54 @@ Reaction.registerTemplate({
 });
 
 // Order workflow
+
+// Order workflow completed - old version
 Reaction.registerTemplate({
-  title: "Order Completed",
-  name: TemplatePaths.coreOrderCompletedTemplate,
+  title: "Order Completed 1",
+  name: TemplatePaths.coreOrderCompletedTemplate1,
   type: "email",
-  template: Reaction.Email.getTemplateFile(TemplatePaths.coreOrderCompletedTemplate)
+  template: Reaction.Email.getTemplateFile(TemplatePaths.coreOrderCompletedTemplate1)
 });
 
+// Order workflow completed - old version #2
+Reaction.registerTemplate({
+  title: "Order Completed 2",
+  name: TemplatePaths.coreOrderCompletedTemplate2,
+  type: "email",
+  template: Reaction.Email.getTemplateFile(TemplatePaths.coreOrderCompletedTemplate2)
+});
+
+// Order workflow completed
+Reaction.registerTemplate({
+  title: "Order Completed New",
+  name: TemplatePaths.ordersCoreOrderWorkflowCompleted,
+  type: "email",
+  template: Reaction.Email.getTemplateFile(TemplatePaths.ordersCoreOrderWorkflowCompleted)
+});
+
+// Order workflow processing
+Reaction.registerTemplate({
+  title: "Order Processing New",
+  name: TemplatePaths.ordersCoreOrderWorkflowProcessing,
+  type: "email",
+  template: Reaction.Email.getTemplateFile(TemplatePaths.ordersCoreOrderWorkflowProcessing)
+});
+
+// Order workflow new order created
 Reaction.registerTemplate({
   title: "Order Created",
   name: TemplatePaths.coreOrderCreatedTemplate,
   type: "email",
   template: Reaction.Email.getTemplateFile(TemplatePaths.coreOrderCreatedTemplate)
 });
+
+
+
+
+
+
+
+// Still working through
 
 Reaction.registerTemplate({
   title: "Shipping Invoice",
