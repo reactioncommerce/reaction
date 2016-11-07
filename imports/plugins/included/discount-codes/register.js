@@ -15,7 +15,7 @@ Reaction.registerPackage({
       label: "Codes",
       name: "discounts/settings/codes",
       provides: "discountSettings",
-      template: "discountCodeSettings"
+      template: "customDiscountCodes"
     }
   ]
 });

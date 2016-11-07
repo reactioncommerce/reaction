@@ -1,20 +1,18 @@
 import { Template } from "meteor/templating";
 import { ReactiveDict } from "meteor/reactive-dict";
 import { AutoForm } from "meteor/aldeed:autoform";
-import { Shops } from "/lib/collections";
-import { Countries } from "/client/collections";
-import { Taxes, TaxCodes } from "../../lib/collections";
+import { Discounts} from "/imports/plugins/core/discounts/lib/collections";
 import { i18next } from "/client/api";
-import { Taxes as TaxSchema } from "../../lib/collections/schemas";
+import { DiscountCodes as DiscountSchema } from "../../lib/collections/schemas";
 import MeteorGriddle from "/imports/plugins/core/ui-grid/client/griddle";
-import { IconButton, Loading } from "/imports/plugins/core/ui/client/components";
+import { IconButton, Loading }  from "/imports/plugins/core/ui/client/components";
 
 /* eslint no-shadow: ["error", { "allow": ["options"] }] */
 /* eslint no-unused-vars: ["error", { "argsIgnorePattern": "[oO]ptions" }] */
 
-Template.customTaxRates.onCreated(function () {
+Template.customDiscountCodes.onCreated(function () {
   this.autorun(() => {
-    this.subscribe("Taxes");
+    this.subscribe("DiscountCodes");
   });
 
   this.state = new ReactiveDict();
@@ -24,7 +22,7 @@ Template.customTaxRates.onCreated(function () {
   });
 });
 
-Template.customTaxRates.helpers({
+Template.customDiscountCodes.helpers({
   editButton() {
     const instance = Template.instance();
     const state = instance.state;
@@ -48,7 +46,7 @@ Template.customTaxRates.helpers({
       },
       onClick() {
         // remove active rows from grid
-        $(".tax-grid-row").removeClass("active");
+        $(".discount-codes-grid-row").removeClass("active");
         return state.set({
           isEditing: !isEditing,
           editingId: editingId
@@ -56,18 +54,18 @@ Template.customTaxRates.helpers({
       }
     };
   },
-  taxGrid() {
-    const filteredFields = ["taxCode", "rate", "country", "region", "postal"];
-    const noDataMessage = i18next.t("admin.taxSettings.noCustomTaxRatesFound");
+  discountGrid() {
+    const filteredFields = ["label", "code", "discount", "conditions.redemptionLimit"];
+    const noDataMessage = i18next.t("admin.settings.noCustomDiscountCodesFound");
     const instance = Template.instance();
 
     //
     // helper to get and select row from griddle
-    // into blaze for to select tax row for editing
+    // into blaze for to select discount row for editing
     //
     function editRow(options) {
       const currentId = instance.state.get("editingId");
-      // isEditing is tax rate object
+      // isEditing is discount rate object
       instance.state.set("isEditing", options.props.data);
       instance.state.set("editingId", options.props.data._id);
       // toggle edit mode clicking on same row
@@ -82,7 +80,7 @@ Template.customTaxRates.helpers({
     //
     const customRowMetaData = {
       bodyCssClassName: () =>  {
-        return "tax-grid-row";
+        return "discount-codes-grid-row";
       }
     };
 
@@ -91,17 +89,17 @@ Template.customTaxRates.helpers({
     filteredFields.forEach(function (field) {
       const columnMeta = {
         columnName: field,
-        displayName: i18next.t(`admin.taxGrid.${field}`)
+        displayName: i18next.t(`admin.discountGrid.${field}`)
       };
       customColumnMetadata.push(columnMeta);
     });
 
-    // return tax Grid
+    // return discount Grid
     return {
       component: MeteorGriddle,
-      publication: "Taxes",
-      collection: Taxes,
-      matchingResultsCount: "taxes-count",
+      publication: "DiscountCodes",
+      collection: Discounts,
+      matchingResultsCount: "discounts-count",
       showFilter: true,
       useGriddleStyles: false,
       rowMetadata: customRowMetaData,
@@ -119,92 +117,37 @@ Template.customTaxRates.helpers({
     return instance;
   },
   // schema for forms
-  taxSchema() {
-    return TaxSchema;
+  discountSchema() {
+    return DiscountSchema;
   },
-  // list of countries for tax input
-  countryOptions: function () {
-    return Countries.find().fetch();
-  },
-  statesForCountry: function () {
-    const shop = Shops.findOne();
-    const selectedCountry = AutoForm.getFieldValue("country");
-    if (!selectedCountry) {
-      return false;
-    }
-    if ((shop !== null ? shop.locales.countries[selectedCountry].states : void 0) === null) {
-      return false;
-    }
-    options = [];
-    if (shop && typeof shop.locales.countries[selectedCountry].states === "object") {
-      for (const state in shop.locales.countries[selectedCountry].states) {
-        if ({}.hasOwnProperty.call(shop.locales.countries[selectedCountry].states, state)) {
-          const locale = shop.locales.countries[selectedCountry].states[state];
-          options.push({
-            label: locale.name,
-            value: state
-          });
-        }
-      }
-    }
-    return options;
-  },
-  taxRate() {
-    const shop = Shops.findOne();
+
+  discountCode() {
     const instance = Template.instance();
     const id = instance.state.get("editingId");
-    const tax = Taxes.findOne(id) || {};
-    // enforce a default country that makes sense.
-    if (!tax.country) {
-      if (shop && typeof shop.addressBook === "object") {
-        tax.country = shop.addressBook[0].country;
-      }
-    }
-    return tax;
-  },
-  taxCodes() {
-    const instance = Template.instance();
-    if (instance.subscriptionsReady()) {
-      const taxCodes = TaxCodes.find().fetch();
-      const options = [{
-        label: i18next.t("admin.taxSettings.taxable"),
-        value: "RC_TAX"
-      }, {
-        label: i18next.t("admin.taxSettings.nottaxable"),
-        value: "RC_NOTAX"
-      }];
-
-      for (const taxCode of taxCodes) {
-        options.push({
-          label: i18next.t(taxCode.label),
-          value: taxCode.id
-        });
-      }
-      return options;
-    }
-    return [];
+    const discount = Discounts.findOne(id) || {};
+    return discount;
   }
 });
 
 //
 // on submit lets clear the form state
 //
-Template.customTaxRates.events({
-  "submit #customTaxRates-update-form": function () {
+Template.customDiscountCodes.events({
+  "submit #discount-codes-update-form": function () {
     const instance = Template.instance();
     instance.state.set({
       isEditing: false,
       editingId: null
     });
   },
-  "submit #customTaxRates-insert-form": function () {
+  "submit #discount-codes-insert-form": function () {
     const instance = Template.instance();
     instance.state.set({
       isEditing: true,
       editingId: null
     });
   },
-  "click .cancel, .tax-grid-row .active": function () {
+  "click .cancel, .discount-codes-grid-row .active": function () {
     instance = Template.instance();
     // remove active rows from grid
     instance.state.set({
@@ -212,10 +155,10 @@ Template.customTaxRates.events({
       editingId: null
     });
     // ugly hack
-    $(".tax-grid-row").removeClass("active");
+    $(".discount-codes-grid-row").removeClass("active");
   },
   "click .delete": function () {
-    const confirmTitle = i18next.t("admin.taxSettings.confirmRateDelete");
+    const confirmTitle = i18next.t("admin.settings.confirmRateDelete");
     const confirmButtonText = i18next.t("app.delete");
     const instance = Template.instance();
     const id = instance.state.get("editingId");
@@ -228,7 +171,7 @@ Template.customTaxRates.events({
     }, (isConfirm) => {
       if (isConfirm) {
         if (id) {
-          Meteor.call("taxes/deleteRate", id);
+          Meteor.call("discounts/deleteRate", id);
           instance.state.set({
             isEditing: false,
             editingId: null
@@ -237,9 +180,9 @@ Template.customTaxRates.events({
       }
     });
   },
-  "click .tax-grid-row": function (event) {
+  "click .discount-codes-grid-row": function (event) {
     // toggle all rows off, then add our active row
-    $(".tax-grid-row").removeClass("active");
+    $(".discount-codes-grid-row").removeClass("active");
     $(event.currentTarget).addClass("active");
   }
 });
@@ -248,24 +191,24 @@ Template.customTaxRates.events({
 // Hooks for update and insert forms
 //
 AutoForm.hooks({
-  "customTaxRates-update-form": {
+  "discount-codes-update-form": {
     onSuccess: function () {
-      return Alerts.toast(i18next.t("admin.taxSettings.shopCustomTaxRatesSaved"),
+      return Alerts.toast(i18next.t("admin.settings.settingsSaveSuccess"),
         "success");
     },
     onError: function (operation, error) {
       return Alerts.toast(
-        `${i18next.t("admin.taxSettings.shopCustomTaxRatesFailed")} ${error}`, "error"
+        `${i18next.t("admin.settings.settingsSaveFailure")} ${error}`, "error"
       );
     }
   },
-  "customTaxRates-insert-form": {
+  "discount-codes-insert-form": {
     onSuccess: function () {
-      return Alerts.toast(i18next.t("admin.taxSettings.shopCustomTaxRatesSaved"), "success");
+      return Alerts.toast(i18next.t("admin.settings.settingsSaveSuccess"), "success");
     },
     onError: function (operation, error) {
       return Alerts.toast(
-        `${i18next.t("admin.taxSettings.shopCustomTaxRatesFailed")} ${error}`, "error"
+        `${i18next.t("admin.settings.settingsSaveFailure")} ${error}`, "error"
       );
     }
   }

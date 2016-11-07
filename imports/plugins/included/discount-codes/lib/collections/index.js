@@ -1,6 +1,6 @@
-import { Mongo } from "meteor/mongo";
+// import { Mongo } from "meteor/mongo";
 import * as Schemas from "./schemas";
-
+import { Discounts } from "/imports/plugins/core/discounts/lib/collections";
 /**
 * DiscountCodes Collection
 * @type {Object}
@@ -9,6 +9,8 @@ import * as Schemas from "./schemas";
 * applied to an order apply a discount rate from the
 * discounts collection, with rules applied.
 */
-export const DiscountCodes = new Mongo.Collection("DiscountCodes");
+// export const DiscountCodes = new Mongo.Collection("DiscountCodes");
 
-DiscountCodes.attachSchema(Schemas.DiscountCodes);
+// Discounts.attachSchema(Schemas.DiscountCodes);
+
+Discounts.attachSchema(Schemas.DiscountCodes, {selector: {discountMethod: "code"}});

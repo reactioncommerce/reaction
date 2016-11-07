@@ -1,4 +1,2 @@
-import "./rates/rates.html";
-import "./rates/rates.js";
-import "./settings/settings.html";
-import "./settings/settings.js";
+import "./settings/rates.html";
+import "./settings/rates.js";

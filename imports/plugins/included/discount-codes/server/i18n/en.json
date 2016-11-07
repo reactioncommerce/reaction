@@ -5,9 +5,21 @@
   "translation": {
     "reaction-discounts": {
       "admin": {
-        "discountSettings": {
+        "settings": {
           "ratesLabel": "Codes",
-          "noCustomDiscountCodesFound": "No discount codes found."
+          "noCustomDiscountCodesFound": "No discount codes found.",
+          "settingsSaveSuccess": "Settings saved successfully.",
+          "settingsSaveFailure": "Failed to save settings.",
+          "confirmRateDelete": "Confirm discount rate deletion."
+        },
+        "discountGrid": {
+          "label": "Label",
+          "code": "Code",
+          "discountMethod": "Method",
+          "discount": "Discount",
+          "conditions": {
+            "redemptionLimit": "Limit"
+          }
         }
       }
     }

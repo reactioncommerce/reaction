@@ -22,80 +22,64 @@ export const Discounts = new SimpleSchema({
   "discountMethod": {
     label: "Calculation Method",
     type: String,
-    allowedValues: ["value", "percent", "shipping"],
-    defaultValue: "total"
+    index: 1
   },
   "discount": {
     type: String,
     optional: true
   },
   "conditions": {
-    type: Array,
+    type: Object,
     optional: true,
     label: "Conditions"
   },
-  "conditions.$": {
+  "conditions.order": {
     type: Object
   },
-  "conditions.$.order": {
-    type: Object
-  },
-  "conditions.$.order.min": {
+  "conditions.order.min": {
     type: Number,
     label: "Mininum",
     decimal: true,
     defaultValue: 0.00
   },
-  "conditions.$.order.max": {
+  "conditions.order.max": {
     type: Number,
     label: "Maximum",
     decimal: true,
     optional: true
   },
-  "conditions.$.order.startDate": {
+  "conditions.order.startDate": {
     type: Date,
     label: "Start",
     optional: true
   },
-  "conditions.$.order.endDate": {
+  "conditions.order.endDate": {
     type: Date,
     label: "End",
     optional: true
   },
-  "conditions.$.enabled": {
+  "conditions.enabled": {
     type: Boolean,
     label: "Enabled",
     defaultValue: true,
     optional: true
   },
-  "conditions.$.redemptionLimit": {
-    type: Number,
-    label: "Plugin",
-    defaultValue: "Custom",
-    optional: true
-  },
-  "conditions.$.accountLimit": {
-    type: Number,
-    label: "Enabled",
-    defaultValue: 1,
-    optional: true
-  },
-  "conditions.$.audience": {
+  "conditions.audience": {
     type: [String],
     optional: true,
     label: "Audience"
   },
-  "conditions.$.permissions": {
+  "conditions.permissions": {
     type: [String],
     optional: true,
-    label: "Audience"
+    label: "Permissions"
   },
-  "conditions.$.products": {
+  "conditions.products": {
     type: [String],
     optional: true,
     label: "Products"
   },
-  "conditions.$.tags": {
+  "conditions.tags": {
     type: [String],
     optional: true,
     label: "Tags"

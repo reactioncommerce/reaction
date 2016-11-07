@@ -1,21 +1,18 @@
 import { Template } from "meteor/templating";
 import { ReactiveDict } from "meteor/reactive-dict";
 import { AutoForm } from "meteor/aldeed:autoform";
-import { Shops } from "/lib/collections";
-import { Countries } from "/client/collections";
 import { Discounts} from "/imports/plugins/core/discounts/lib/collections";
-import { DiscountCodes } from "../../lib/collections";
+import { DiscountRates as DiscountSchema } from "../../lib/collections/schemas";
 import { i18next } from "/client/api";
-import { Discounts as DiscountSchema } from "../../lib/collections/schemas";
 import MeteorGriddle from "/imports/plugins/core/ui-grid/client/griddle";
-import { IconButton } from "/imports/plugins/core/ui/client/components";
+import { IconButton, Loading } from "/imports/plugins/core/ui/client/components";
 
 /* eslint no-shadow: ["error", { "allow": ["options"] }] */
 /* eslint no-unused-vars: ["error", { "argsIgnorePattern": "[oO]ptions" }] */
 
-Template.customDiscountCodes.onCreated(function () {
+Template.customDiscountRates.onCreated(function () {
   this.autorun(() => {
-    this.subscribe("Discounts");
+    this.subscribe("DiscountRates");
   });
 
   this.state = new ReactiveDict();
@@ -25,7 +22,7 @@ Template.customDiscountCodes.onCreated(function () {
   });
 });
 
-Template.customDiscountCodes.helpers({
+Template.customDiscountRates.helpers({
   editButton() {
     const instance = Template.instance();
     const state = instance.state;
@@ -49,7 +46,7 @@ Template.customDiscountCodes.helpers({
       },
       onClick() {
         // remove active rows from grid
-        $(".discount-grid-row").removeClass("active");
+        $(".discount-rates-grid-row").removeClass("active");
         return state.set({
           isEditing: !isEditing,
           editingId: editingId
@@ -58,8 +55,8 @@ Template.customDiscountCodes.helpers({
     };
   },
   discountGrid() {
-    const filteredFields = ["discountCode", "rate", "country", "region", "postal"];
-    const noDataMessage = i18next.t("discountSettings.noCustomDiscountRatesFound");
+    const filteredFields = ["label", "discountMethod", "discount"];
+    const noDataMessage = i18next.t("admin.settings.noCustomDiscountRatesFound");
     const instance = Template.instance();
 
     //
@@ -83,14 +80,24 @@ Template.customDiscountCodes.helpers({
     //
     const customRowMetaData = {
       bodyCssClassName: () =>  {
-        return "discount-grid-row";
+        return "discount-rates-grid-row";
       }
     };
+
+    // add i18n handling to headers
+    const customColumnMetadata = [];
+    filteredFields.forEach(function (field) {
+      const columnMeta = {
+        columnName: field,
+        displayName: i18next.t(`admin.discountGrid.${field}`)
+      };
+      customColumnMetadata.push(columnMeta);
+    });
 
     // return discount Grid
     return {
       component: MeteorGriddle,
-      publication: "Discounts",
+      publication: "DiscountRates",
       collection: Discounts,
       matchingResultsCount: "discounts-count",
       showFilter: true,
@@ -99,7 +106,9 @@ Template.customDiscountCodes.helpers({
       filteredFields: filteredFields,
       columns: filteredFields,
       noDataMessage: noDataMessage,
-      onRowClick: editRow
+      onRowClick: editRow,
+      columnMetadata: customColumnMetadata,
+      externalLoadingComponent: Loading
     };
   },
 
@@ -111,89 +120,33 @@ Template.customDiscountCodes.helpers({
   discountSchema() {
     return DiscountSchema;
   },
-  // list of countries for discount input
-  countryOptions: function () {
-    return Countries.find().fetch();
-  },
-  statesForCountry: function () {
-    const shop = Shops.findOne();
-    const selectedCountry = AutoForm.getFieldValue("country");
-    if (!selectedCountry) {
-      return false;
-    }
-    if ((shop !== null ? shop.locales.countries[selectedCountry].states : void 0) === null) {
-      return false;
-    }
-    options = [];
-    if (shop && typeof shop.locales.countries[selectedCountry].states === "object") {
-      for (const state in shop.locales.countries[selectedCountry].states) {
-        if ({}.hasOwnProperty.call(shop.locales.countries[selectedCountry].states, state)) {
-          const locale = shop.locales.countries[selectedCountry].states[state];
-          options.push({
-            label: locale.name,
-            value: state
-          });
-        }
-      }
-    }
-    return options;
-  },
   discountRate() {
-    const shop = Shops.findOne();
     const instance = Template.instance();
     const id = instance.state.get("editingId");
     const discount = Discounts.findOne(id) || {};
-    // enforce a default country that makes sense.
-    if (!discount.country) {
-      if (shop && typeof shop.addressBook === "object") {
-        discount.country = shop.addressBook[0].country;
-      }
-    }
     return discount;
-  },
-  discountCodes() {
-    const instance = Template.instance();
-    if (instance.subscriptionsReady()) {
-      const discountCodes = DiscountCodes.find().fetch();
-      const options = [{
-        label: i18next.t("discountSettings.discountable"),
-        value: true
-      }, {
-        label: i18next.t("discountSettings.notdiscountable"),
-        value: false
-      }];
-
-      for (const discountCode of discountCodes) {
-        options.push({
-          label: i18next.t(discountCode.label),
-          value: discountCode.id
-        });
-      }
-      return options;
-    }
-    return [];
   }
 });
 
 //
 // on submit lets clear the form state
 //
-Template.customDiscountCodes.events({
-  "submit #customDiscountCodes-update-form": function () {
+Template.customDiscountRates.events({
+  "submit #discount-rates-update-form": function () {
     const instance = Template.instance();
     instance.state.set({
       isEditing: false,
       editingId: null
     });
   },
-  "submit #customDiscountCodes-insert-form": function () {
+  "submit #discount-rates-insert-form": function () {
     const instance = Template.instance();
     instance.state.set({
       isEditing: true,
       editingId: null
     });
   },
-  "click .cancel, .discount-grid-row .active": function () {
+  "click .cancel, .discount-rates-grid-row.active": function () {
     instance = Template.instance();
     // remove active rows from grid
     instance.state.set({
@@ -201,10 +154,10 @@ Template.customDiscountCodes.events({
       editingId: null
     });
     // ugly hack
-    $(".discount-grid-row").removeClass("active");
+    $(".discount-rates-grid-row").removeClass("active");
   },
   "click .delete": function () {
-    const confirmTitle = i18next.t("discountSettings.confirmRateDelete");
+    const confirmTitle = i18next.t("admin.settings.confirmRateDelete");
     const confirmButtonText = i18next.t("app.delete");
     const instance = Template.instance();
     const id = instance.state.get("editingId");
@@ -226,35 +179,37 @@ Template.customDiscountCodes.events({
       }
     });
   },
-  "click .discount-grid-row": function (event) {
+  "click .discount-rates-grid-row": function (event) {
     // toggle all rows off, then add our active row
-    $(".discount-grid-row").removeClass("active");
+    $(".discount-rates-grid-row").removeClass("active");
     $(event.currentTarget).addClass("active");
   }
 });
 
-//
-// Hooks for update and insert forms
-//
+
 AutoForm.hooks({
-  "customDiscountCodes-update-form": {
+  "discount-rates-update-form": {
     onSuccess: function () {
-      return Alerts.toast(i18next.t("discountSettings.shopCustomDiscountRatesSaved"),
+      return Alerts.toast(i18next.t("admin.settings.settingsSaveSuccess"),
         "success");
     },
     onError: function (operation, error) {
       return Alerts.toast(
-        `${i18next.t("discountSettings.shopCustomDiscountRatesFailed")} ${error}`, "error"
+        `${i18next.t("admin.settings.settingsSaveFailure")} ${error}`, "error"
       );
     }
-  },
-  "customDiscountCodes-insert-form": {
+  }
+});
+
+AutoForm.hooks({
+  "discount-rates-insert-form": {
     onSuccess: function () {
-      return Alerts.toast(i18next.t("discountSettings.shopCustomDiscountRatesSaved"), "success");
+      return Alerts.toast(i18next.t("admin.settings.settingsSaveSuccess"),
+        "success");
     },
     onError: function (operation, error) {
       return Alerts.toast(
-        `${i18next.t("discountSettings.shopCustomDiscountRatesFailed")} ${error}`, "error"
+        `${i18next.t("admin.settings.settingsSaveFailure")} ${error}`, "error"
       );
     }
   }

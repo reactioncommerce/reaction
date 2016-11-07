@@ -1,2 +1,2 @@
-export * from "./discountcodes";
 export * from "./config";
+export * from "./codes";

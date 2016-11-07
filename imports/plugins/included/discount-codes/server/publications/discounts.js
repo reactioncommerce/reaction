@@ -1,7 +1,7 @@
 import { Meteor } from "meteor/meteor";
-import { Match, check} from "meteor/check";
+import { Match, check } from "meteor/check";
 import { Counts } from "meteor/tmeasday:publish-counts";
-import { Discounts} from "../../lib/collections";
+import { Discounts } from "/imports/plugins/core/discounts/lib/collections";
 import { Reaction } from "/server/api";
 
 //
@@ -12,7 +12,7 @@ import { Reaction } from "/server/api";
 Security.permit(["read", "insert", "update", "remove"]).collections([
   Discounts
 ]).ifHasRole({
-  role: "admin",
+  role: "discount-codes",
   group: Reaction.getShopId()
 });
 
@@ -22,13 +22,13 @@ Security.permit(["read", "insert", "update", "remove"]).collections([
  * @param {Object} query
  * @param {Object} options
  */
-Meteor.publish("Discounts", function (query, options) {
+Meteor.publish("DiscountCodes", function (query, options) {
   check(query, Match.Optional(Object));
   check(options, Match.Optional(Object));
 
   // check shopId
   const shopId = Reaction.getShopId();
-  if (!shopId && query) {
+  if (!shopId) {
     return this.ready();
   }
 
@@ -38,10 +38,13 @@ Meteor.publish("Discounts", function (query, options) {
   // for this users cartId;
   select.shopId = shopId;
   // select.cartId = cartId;
+  if (!select.discountMethod) {
+    select.discountMethod = "code";
+  }
 
   // appends a count to the collection
   // we're doing this for use with griddleTable
-  Counts.publish(this, "discounts-count", Discounts.find(
+  Counts.publish(this, "discount-codes-count", Discounts.find(
     select,
     options
   ));

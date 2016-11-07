@@ -5,9 +5,12 @@
   "translation": {
     "reaction-discounts": {
       "admin": {
-        "discountSettings": {
+        "settings": {
           "ratesLabel": "Rates",
-          "noCustomDiscountRatesFound": "No discount rates found."
+          "noCustomDiscountRatesFound": "No discount rates found.",
+          "settingsSaveSuccess": "Settings saved successfully.",
+          "settingsSaveFailure": "Failed to save settings.",
+          "confirmRateDelete": "Confirm discount rate deletion."
         },
         "discountGrid": {
           "label": "Label",
