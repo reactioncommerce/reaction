@@ -1,8 +1,8 @@
 import { Template } from "meteor/templating";
 import { ReactiveDict } from "meteor/reactive-dict";
 import { AutoForm } from "meteor/aldeed:autoform";
-import { Discounts} from "/imports/plugins/core/discounts/lib/collections";
-import { DiscountRates as DiscountSchema } from "../../lib/collections/schemas";
+import { DiscountRates} from "../collections/rates";
+import { DiscountRates as DiscountRateSchema } from "../../lib/collections/schemas/rates";
 import { i18next } from "/client/api";
 import MeteorGriddle from "/imports/plugins/core/ui-grid/client/griddle";
 import { IconButton, Loading } from "/imports/plugins/core/ui/client/components";
@@ -98,7 +98,7 @@ Template.customDiscountRates.helpers({
     return {
       component: MeteorGriddle,
       publication: "DiscountRates",
-      collection: Discounts,
+      collection: DiscountRates,
       matchingResultsCount: "discounts-count",
       showFilter: true,
       useGriddleStyles: false,
@@ -117,13 +117,13 @@ Template.customDiscountRates.helpers({
     return instance;
   },
   // schema for forms
-  discountSchema() {
-    return DiscountSchema;
+  discountRateSchema() {
+    return DiscountRateSchema;
   },
   discountRate() {
     const instance = Template.instance();
     const id = instance.state.get("editingId");
-    const discount = Discounts.findOne(id) || {};
+    const discount = DiscountRates.findOne(id) || {};
     return discount;
   }
 });

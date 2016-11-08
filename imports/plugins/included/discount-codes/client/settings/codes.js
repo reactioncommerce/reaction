@@ -1,7 +1,7 @@
 import { Template } from "meteor/templating";
 import { ReactiveDict } from "meteor/reactive-dict";
 import { AutoForm } from "meteor/aldeed:autoform";
-import { Discounts} from "/imports/plugins/core/discounts/lib/collections";
+import { DiscountCodes} from "../collections/codes";
 import { i18next } from "/client/api";
 import { DiscountCodes as DiscountSchema } from "../../lib/collections/schemas";
 import MeteorGriddle from "/imports/plugins/core/ui-grid/client/griddle";
@@ -98,7 +98,7 @@ Template.customDiscountCodes.helpers({
     return {
       component: MeteorGriddle,
       publication: "DiscountCodes",
-      collection: Discounts,
+      collection: DiscountCodes,
       matchingResultsCount: "discounts-count",
       showFilter: true,
       useGriddleStyles: false,
@@ -124,7 +124,7 @@ Template.customDiscountCodes.helpers({
   discountCode() {
     const instance = Template.instance();
     const id = instance.state.get("editingId");
-    const discount = Discounts.findOne(id) || {};
+    const discount = DiscountCodes.findOne(id) || {};
     return discount;
   }
 });

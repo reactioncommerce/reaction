@@ -1,20 +1,9 @@
+import { Mongo } from "meteor/mongo";
 import { Meteor } from "meteor/meteor";
 import { Match, check } from "meteor/check";
 import { Counts } from "meteor/tmeasday:publish-counts";
 import { Discounts } from "/imports/plugins/core/discounts/lib/collections";
 import { Reaction } from "/server/api";
-
-//
-// Security
-// import "/server/security/collections";
-// Security definitions
-//
-Security.permit(["read", "insert", "update", "remove"]).collections([
-  Discounts
-]).ifHasRole({
-  role: "discount-codes",
-  group: Reaction.getShopId()
-});
 
 /**
  * Discounts
@@ -34,8 +23,6 @@ Meteor.publish("DiscountCodes", function (query, options) {
 
   const select = query || {};
   // append shopId to query
-  // applicable discounts are published
-  // for this users cartId;
   select.shopId = shopId;
   // select.cartId = cartId;
   if (!select.discountMethod) {
@@ -49,8 +36,8 @@ Meteor.publish("DiscountCodes", function (query, options) {
     options
   ));
 
-  return Discounts.find(
-    select,
-    options
-  );
+  // Publishing our Discounts to a client side collection "DiscountCodes"
+  Mongo.Collection._publishCursor(Discounts.find(select, options), this, "DiscountCodes");
+
+  return this.ready();
 });

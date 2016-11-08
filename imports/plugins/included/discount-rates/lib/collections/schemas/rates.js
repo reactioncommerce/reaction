@@ -1,5 +1,5 @@
 import { SimpleSchema } from "meteor/aldeed:simple-schema";
-import { Discounts } from "/imports/plugins/core/discounts/lib/collections/schemas";
+import { Discounts } from "/imports/plugins/core/discounts/lib/collections/schemas/discounts";
 
 /**
 * Discount Codes Schema
@@ -12,7 +12,6 @@ export const DiscountRates = new SimpleSchema([
     discountMethod: {
       label: "Calculation Method",
       type: String,
-      allowedValues: ["percent", "shipping", "rate"],
       defaultValue: "rate"
     }
   }

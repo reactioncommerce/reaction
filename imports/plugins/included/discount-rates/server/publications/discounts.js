@@ -1,20 +1,9 @@
+import { Mongo } from "meteor/mongo";
 import { Meteor } from "meteor/meteor";
 import { Match, check} from "meteor/check";
 import { Counts } from "meteor/tmeasday:publish-counts";
 import { Discounts} from "/imports/plugins/core/discounts/lib/collections";
 import { Reaction } from "/server/api";
-
-//
-// Security
-// import "/server/security/collections";
-// Security definitions
-//
-Security.permit(["read", "insert", "update", "remove"]).collections([
-  Discounts
-]).ifHasRole({
-  role: "discount-rates",
-  group: Reaction.getShopId()
-});
 
 /**
  * Discounts
@@ -47,8 +36,8 @@ Meteor.publish("DiscountRates", function (query, options) {
     options
   ));
 
-  return Discounts.find(
-    select,
-    options
-  );
+  // Publishing our Discounts to a client side collection "DiscountRates"
+  Mongo.Collection._publishCursor(Discounts.find(select, options), this, "DiscountRates");
+
+  return this.ready();
 });

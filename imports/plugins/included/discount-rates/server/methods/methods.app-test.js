@@ -8,7 +8,7 @@ before(function () {
   Meteor._sleepForMs(7000);
 });
 
-describe("discount code methods", function () {
+describe("discount rate methods", function () {
   let sandbox;
 
   beforeEach(function () {
@@ -19,11 +19,11 @@ describe("discount code methods", function () {
     sandbox.restore();
   });
 
-  describe("discounts/addCode", function () {
+  describe("discounts/addRate", function () {
     it("should throw 403 error with discounts permission", function (done) {
       sandbox.stub(Roles, "userIsInRole", () => false);
       // this should actually trigger a whole lot of things
-      expect(() => Meteor.call("discounts/addCode", "dummystring")).to.throw(Meteor.Error, /Access Denied/);
+      expect(() => Meteor.call("discounts/addRate", "dummystring")).to.throw(Meteor.Error, /Access Denied/);
       return done();
     });
   });

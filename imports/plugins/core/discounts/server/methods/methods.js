@@ -46,28 +46,6 @@ export const methods = {
   },
 
   /**
-   * discounts/addRate
-   * @param  {String} modifier update statement
-   * @param  {String} docId discount docId
-   * @return {String} returns update/insert result
-   */
-  "discounts/addRate": function (modifier, docId) {
-    check(modifier, Object);
-    check(docId, Match.OneOf(String, null, undefined));
-
-    // check permissions to add
-    if (!Reaction.hasPermission("discounts")) {
-      throw new Meteor.Error(403, "Access Denied");
-    }
-    // if no doc, insert
-    if (!docId) {
-      return Discounts.insert(modifier);
-    }
-    // else update and return
-    return Discounts.update(docId, modifier);
-  },
-
-  /**
    * discounts/calculate
    * @param  {String} cartId cartId
    * @return {Object}  returns discount object
@@ -77,21 +55,15 @@ export const methods = {
     const cartToCalc = Cart.findOne(cartId);
     const shopId = cartToCalc.shopId;
     const discountRate = 0;
+
     // get all discount packages
-    //
-    // TODO FIND IN LAYOUT/REGISTRY
-    //
     const pkg = Packages.findOne({
       shopId: shopId,
       name: "reaction-discounts"
     });
+
     //
     // custom rates
-    // TODO Determine calculation method (row, total, shipping)
-    // TODO method for order discount updates
-    // additional logic will be needed for refunds
-    // or discount adjustments
-    //
     // check if plugin is enabled and this calculation method is enabled
     if (pkg && pkg.enabled === true && pkg.settings.rates.enabled === true) {
       Logger.info("Calculating custom discount rates");
