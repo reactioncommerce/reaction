@@ -19,7 +19,9 @@ if [[ "${MONGO_URL}" == *"127.0.0.1"* ]]; then
   if hash mongod 2>/dev/null; then
     mkdir -p /data/{db,configdb,logs}
     printf "\n[-] External MONGO_URL not found. Starting local MongoDB...\n\n"
-    mongod --storageEngine=wiredTiger --fork --logpath /data/logs/mongodb.log
+    mongod --storageEngine=wiredTiger &
+    # give mongo 5 secs to start up before starting the app
+    sleep 5
   else
     echo "ERROR: Mongo not installed inside the container."
     echo "Rebuild with INSTALL_MONGO=true or supply a MONGO_URL environment variable."
@@ -33,7 +35,7 @@ fi
 
 # allow the container to be started with `--user`
 if [ "$1" = "node" -a "$(id -u)" = "0" ]; then
-	exec gosu node "$BASH_SOURCE" "$@"
+  exec gosu node "$BASH_SOURCE" "$@"
 fi
 
 if [ "$1" = "node" ]; then
