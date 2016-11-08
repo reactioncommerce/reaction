@@ -4,18 +4,6 @@ import { Counts } from "meteor/tmeasday:publish-counts";
 import { Discounts} from "../../lib/collections";
 import { Reaction } from "/server/api";
 
-//
-// Security
-// import "/server/security/collections";
-// Security definitions
-//
-Security.permit(["read", "insert", "update", "remove"]).collections([
-  Discounts
-]).ifHasRole({
-  role: "admin",
-  group: Reaction.getShopId()
-});
-
 /**
  * Discounts
  * @type {Publication}
