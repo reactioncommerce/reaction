@@ -45,13 +45,13 @@
   {{/each}} -->
 </template>
 
-<!-- {{> quickForm schema=Schemas.Templates id="email-template-edit-form2" }} -->
+<!-- {{> quickForm schema=Schemas.EmailTemplates id="email-template-edit-form2" }} -->
 <!-- schema=emailTemplateSchema -->
 
 <template name="emailTemplateSettings">
   {{#autoForm
     collection=Collections.Templates
-    schema=Schemas.Templates
+    schema=Schemas.EmailTemplates
     id="email-template-edit-form"
     template="bootstrap3-inline"
     doc=this

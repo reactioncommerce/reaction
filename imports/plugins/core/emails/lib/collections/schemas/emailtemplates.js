@@ -1,5 +1,6 @@
 import { SimpleSchema } from "meteor/aldeed:simple-schema";
-// import { Audience } from "./layouts";
+import { Templates } from "/lib/collections";
+
 
 /**
 * EmailTemplates Schema
@@ -27,12 +28,13 @@ export const EmailTemplates = new SimpleSchema({
     type: String,
     optional: true
   },
-  // audience: {
-  //   type: [Audience],
-  //   optional: true
-  // },
+  audience: {
+    type: [String],
+    optional: true
+  },
   type: {
-    type: String
+    type: String,
+    defaultValue: "email"
   },
   provides: {
     type: String,
@@ -71,3 +73,5 @@ export const EmailTemplates = new SimpleSchema({
     optional: true
   }
 });
+
+Templates.attachSchema(EmailTemplates, { selector: { type: "email" } });
