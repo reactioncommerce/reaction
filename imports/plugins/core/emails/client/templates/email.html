@@ -51,7 +51,7 @@
 <template name="emailTemplateSettings">
   {{#autoForm
     collection=Collections.Templates
-    schema=Schemas.EmailTemplates
+    schema=emailTemplateSchema
     id="email-template-edit-form"
     template="bootstrap3-inline"
     doc=this
@@ -61,15 +61,15 @@
       <div class="panel-heading">Update {{name}} template</div>
       <div class="panel-body">
         <div class="col-md-12 form-group">
-          {{>afQuickField name='subject'}}
-          {{>afQuickField name='name'}}
-          {{>afQuickField name='title'}}
-          {{>afQuickField name='language'}}
-          {{>afQuickField name='template' label='HTML'}}
+          {{>afQuickField name='subject' class="form-control"}}
+          {{>afQuickField name='name' class="form-control"}}
+          {{>afQuickField name='title' class="form-control"}}
+          {{>afQuickField name='language' class="form-control"}}
+          {{>afQuickField name='template' label='HTML' class="form-control" type="textarea" rows="10"}}
           {{>afQuickField name='enabled'}}
-          {{>afQuickField name='type'}}
-          {{>afQuickField name='parser'}}
-          {{>afQuickField name='_id'}}
+          {{>afQuickField name='type' class="form-control"}}
+          {{>afQuickField name='parser' class="form-control"}}
+          {{>afQuickField name='_id' class="form-control"}}
         </div>
       </div>
 

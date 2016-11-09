@@ -33,7 +33,7 @@ Template.emailTemplatesPage.helpers({
 Template.emailTemplateSettings.helpers({
 
   emailTemplateSchema() {
-    return EmailTemplateSchema;
+    return EmailTemplates;
   }
 });
 

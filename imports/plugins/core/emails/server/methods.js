@@ -123,15 +123,17 @@ export const methods = {
     // if (!Reaction.hasPermission("shipping")) {
     //   throw new Meteor.Error(403, "Access Denied");
     // }
-    console.log("-------log----", doc);
+    // console.log("-------log----", doc);
     return Templates.update({
-      _id: templateId
+      _id: templateId,
+      type: "email"
     }, {
       $set: {
         title: doc.title,
         name: doc.name,
         language: doc.language,
-        template: doc.template
+        template: doc.template,
+        subject: doc.subject
       }
     });
   }
