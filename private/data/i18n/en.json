@@ -209,7 +209,7 @@
           "email": "Email",
           "emailSettings": "Email Settings",
           "config": "Configuration",
-          "settings": "Mail Provider",
+          "settings": "SMTP Provider",
           "status": "Status",
           "actions": "Actions"
         },
@@ -249,6 +249,24 @@
           "saveAnyway": "Do you want to save the settings anyway?",
           "saveSuccess": "Mail settings saved.",
           "saveFailed": "Failed to save mail settings. {{error}}"
+        },
+        "templates": {
+          "edit": "Edit email template",
+          "duplicate": "Duplicate email template",
+          "delete": "Delete email template",
+          "method": "Method",
+          "templateName": "Template Name",
+          "type": "Type",
+          "language": "Language",
+          "enabled": "Enabled",
+          "addTemplate": "Add email template",
+          "alerts": {
+            "removeEmailTemplateConfirm": "Are you sure you want to delete {{title}}?",
+            "removeEmailTemplateTitle": "Remove Email Template",
+            "duplicateEmailTemplateConfirm": "Are you sure you want to duplicate {{title}}?",
+            "duplicateEmailTemplateTitle": "Duplicate Email Template",
+            "failedToUpdate": "Failed to update template: {{err}}"
+          }
         }
       },
       "taxSettings": {

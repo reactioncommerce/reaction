@@ -3,10 +3,12 @@
 
 export const coreDefaultTemplate = "coreDefault";
 
+// Account related templates
 export const resetPaswordTemplate = "accounts/resetPassword";
 export const inviteShopMemberTemplate = "accounts/inviteShopMember";
 export const welcomeEmailTemplate = "accounts/sendWelcomeEmail";
 export const verifyEmailTemplate = "accounts/verify_email";
+
 
 export const checkoutLoginTemplate = "checkout/checkoutLogin";
 

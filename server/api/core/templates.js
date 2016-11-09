@@ -50,7 +50,25 @@ export function registerTemplateForDatabase(templateInfo, shopId, insertImmediat
   // and should not stored in the database
   const templateInfoForDatabase = processTemplateInfoForDatabase(templateInfo);
 
-  Import.template(templateInfoForDatabase, shopId);
+  // Import the template, but marke it as original so it sould not be edited
+  // This way, the shop admins will always be able to revert to default,
+  // and it makes logic in the front end a little easier
+  Import.template({
+    ...templateInfoForDatabase,
+    isOriginalTemplate: true
+  }, shopId);
+
+  const foundTemplate = Templates.findOne({
+    name: templateInfoForDatabase.name,
+    isOriginalTemplate: false,
+    shopId: shopId
+  });
+
+  // Import a duplicate that is meant to be user editable, but only once if it
+  // does't exist.
+  if (!foundTemplate) {
+    Import.template(templateInfoForDatabase, shopId);
+  }
 
   if (insertImmediately) {
     Import.flush();
@@ -69,6 +87,16 @@ export function getTemplateByName(templateName, shopId) {
 
   const templateInfo = Templates.findOne({
     name: templateName,
+    $or: [
+      // Attemt to find user editable / edited templated first
+      {
+        isOriginalTemplate: false
+      },
+      // Fallback to the original templates
+      {
+        isOriginalTemplate: true
+      }
+    ],
     shopId
   });
 
@@ -96,7 +124,6 @@ export function processTemplateInfoForDatabase(templateInfo) {
     title: templateInfo.title,
     type: templateInfo.type,
     subject: templateInfo.subject
-    // templateData: templateInfo.template
   };
 
 
