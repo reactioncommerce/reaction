@@ -1,4 +1,6 @@
 // Tempalte paths relative to private/email/templates
+// Templates registered in /imports/plugins/included/email-templates/server/index.js
+
 export const coreDefaultTemplate = "coreDefault";
 
 export const resetPaswordTemplate = "accounts/resetPassword";
@@ -16,4 +18,14 @@ export const coreOrderCreatedTemplate = "orders/coreOrderCreated";
 export const coreOrderShippingInvoiceTemplate = "orders/coreOrderShippingInvoice";
 export const coreOrderShippingSummaryTemplate = "orders/coreOrderShippingSummary";
 export const coreOrderShippingTrackingTemplate = "orders/coreOrderShippingTracking";
+
+/*
+ * Email sent when new order is created
+ */
 export const coreOrderNewTemplate = "orders/new";
+
+/*
+ * Email sent when order is shipped
+ * Also sent when "resend shipping notification" is clicked
+ */
+export const orderShipped = "orders/shipped";

@@ -250,9 +250,14 @@ Meteor.methods({
     }
 
     if (order.email) {
-      Meteor.call("orders/sendNotification", order, (err) => {
+      Meteor.call("orders/sendNotification", order, "shipped", (err) => {
+        console.log("------Order-------", order);
+        console.log("------shipped-------");
         if (err) {
           Logger.error(err, "orders/shipmentShipped: Failed to send notification");
+          Alerts.toast("EEEKkkkkkkkk. Server Error: Can't send email notification.", "error");
+        } else {
+          Alerts.toast("EEEKkkkkkkkk. Email notification sent.", "success");
         }
       });
     } else {
@@ -322,8 +327,11 @@ Meteor.methods({
    * @param {Object} order - order object
    * @return {Boolean} email sent or not
    */
-  "orders/sendNotification": function (order) {
+  "orders/sendNotification": function (order, action) {
     check(order, Object);
+    check(action, Match.OneOf(String, undefined));
+
+    console.log("-----ACTION-----", action);
 
     if (!this.userId) {
       Logger.error("orders/sendNotification: Access denied");
@@ -467,15 +475,29 @@ Meteor.methods({
       throw new Meteor.Error("email-error", msg);
     }
 
+    let subject;
+    let tpl;
+
+    if(action === "shipped"){
+      tpl = "orders/shipped";
+      // tpl = `orders/${order.workflow.status}`;
+      subject = shop.name + ": Your order has shipped - " + order._id;
+      SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl));
+    } else {
+      tpl = `orders/${order.workflow.status}`;
+      subject = shop.name + ": Your order is confirmed";
+      SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl));
+    }
+
     // email templates can be customized in Templates collection
     // loads defaults from /private/email/templates
-    const tpl = `orders/${order.workflow.status}`;
-    SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl));
+    // const tpl = `orders/${order.workflow.status}`;
+    // SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl));
 
     Reaction.Email.send({
       to: order.email,
       from: `${shop.name} <${shop.emails[0].address}>`,
-      subject: `${shop.name}: Your order is confirmed`,
+      subject: subject,
       // subject: `Order update from ${shop.name}`,
       html: SSR.render(tpl, dataForEmail)
     });
