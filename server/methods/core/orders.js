@@ -509,16 +509,16 @@ Meteor.methods({
 
     console.log("----Template-----", tpl);
 
-    let emailSubject = "Regarding your recent order";
-    if (order.workflow.status === "new") {
-      emailSubject = "Your order is confirmed";
-    }
-    if (order.workflow.status === "coreOrderWorkflow/processing") {
-      emailSubject = "Processing";
-    }
-    if (order.workflow.status === "coreOrderWorkflow/completed") {
-      emailSubject = "Completed";
-    }
+    // let emailSubject = "Regarding your recent order";
+    // if (order.workflow.status === "new") {
+    //   emailSubject = "Your order is confirmed";
+    // }
+    // if (order.workflow.status === "coreOrderWorkflow/processing") {
+    //   emailSubject = "Processing";
+    // }
+    // if (order.workflow.status === "coreOrderWorkflow/completed") {
+    //   emailSubject = "Completed";
+    // }
 
     Reaction.Email.send({
       to: order.email,

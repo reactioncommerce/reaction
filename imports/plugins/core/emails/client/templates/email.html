@@ -45,8 +45,10 @@
   {{/each}} -->
 </template>
 
+<!-- {{> quickForm schema=Schemas.Templates id="email-template-edit-form2" }} -->
+<!-- schema=emailTemplateSchema -->
+
 <template name="emailTemplateSettings">
-  {{> quickForm id="email-template-edit-form2" shcema Schemas.Templates }}
   {{#autoForm
     collection=Collections.Templates
     schema=Schemas.Templates
@@ -54,7 +56,6 @@
     template="bootstrap3-inline"
     doc=this
     }}
-        <!-- schema=emailTemplateSchema -->
 
     <div class="panel panel-default">
       <div class="panel-heading">Update {{name}} template</div>
@@ -70,20 +71,10 @@
           {{>afQuickField name='parser'}}
           {{>afQuickField name='_id'}}
         </div>
-        <!-- {{#if languages}}
-            <ul>
-              {{#each languages}}
-                <li class="{{class}}">
-                  <a role="menuitem" class="i18n-language" data-i18n="{{translation}}">{{label}}</a>
-                </li>
-              {{/each}}
-            </ul>
-        {{/if}} -->
       </div>
 
       <div class="panel-footer">
         <div class="right">
-          <!-- <button type="button" class="btn btn-link" data-event-action="cancelShippingMethodEdit">Cancel</button> -->
           <button type="submit" class="btn btn-primary">Update</button>
         </div>
       </div>
