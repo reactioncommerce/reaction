@@ -17,7 +17,8 @@ Migrations.add({
 
             ]
           }
-        }
+        },
+        { multi: true}
       );
     }
   }
