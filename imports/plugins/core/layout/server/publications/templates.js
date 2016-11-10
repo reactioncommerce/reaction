@@ -1,6 +1,16 @@
+import { Reaction } from "/server/api";
 import { Meteor } from "meteor/meteor";
 import { Templates } from "/lib/collections";
 
 Meteor.publish("Templates", () => {
-  return Templates.find({});
+  const shopId = Reaction.getShopId();
+
+  if (!shopId) {
+    return this.ready();
+  }
+
+  return Templates.find({
+    isOriginalTemplate: false,
+    shopId
+  });
 });

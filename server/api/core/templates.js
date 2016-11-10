@@ -133,6 +133,9 @@ export function processTemplateInfoForDatabase(templateInfo) {
   if (typeof templateInfo.template === "string") {
     templateData.template = templateInfo.template;
     templateData.parser = TEMPLATE_PARSER_HANDLEBARS;
+  } else if (typeof templateInfo.template === "object") {
+    templateData.template = templateInfo.template;
+    templateData.parser = TEMPLATE_PARSER_REACT;
   } else if (typeof templateInfo.template === "function") {
     templateData.parser = TEMPLATE_PARSER_REACT;
   }
