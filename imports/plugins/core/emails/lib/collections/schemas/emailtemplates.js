@@ -3,7 +3,8 @@ import { Templates } from "/lib/collections";
 
 
 /**
-* EmailTemplates Schema
+ * EmailTemplates Schema
+ * TODO: Update schema with final fields when known
 */
 
 export const EmailTemplates = new SimpleSchema({
