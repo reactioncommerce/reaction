@@ -21,23 +21,15 @@
           "analyticsLabel": "Analytics",
           "analyticsTitle": "Analytics",
           "analyticsDescription": "Analytics and tracking integrations",
-          "authorizenetLabel": "Authorize.net",
-          "authorizenetTitle": "Authorize.net",
-          "authorizenetDescription": "Authorize.net payments",
           "shippingLabel": "Shipping",
           "shippingTitle": "Shipping",
           "shippingDescription": "Provide shipping rates",
-          "braintreeLabel": "Braintree",
-          "braintreeTitle": "Braintree",
-          "braintreeDescription": "Braintree payments",
           "catalogLabel": "Catalog",
           "catalogTitle": "Catalog",
           "catalogDescription": "Product Catalog",
           "coreLabel": "Settings",
           "coreTitle": "Dashboard",
           "coreDescription": "Reaction configuration",
-          "examplePaymentProviderLabel": "Example Payment",
-          "examplePaymentProviderDescription": "Example Payment Method",
           "emailLabel": "Email",
           "emailTitle": "Email",
           "emailDescription": "Email settings",
@@ -56,9 +48,6 @@
           "ordersLabel": "Orders",
           "ordersTitle": "Orders",
           "ordersDescription": "Fulfill your orders",
-          "paypalLabel": "PayPal",
-          "paypalTitle": "PayPal",
-          "paypalDescription": "PayPal payments",
           "revisionsLabel": "Revisions",
           "revisionsTitle": "Revisions",
           "revisionsDescription": "Revision control",
@@ -74,8 +63,6 @@
           "themesLabel": "Themes",
           "themesTitle": "Themes",
           "themesDescription": "Themes and UI Components",
-          "stripeLabel": "Stripe",
-          "stripeDescription": "Stripe payments",
           "filtrationLabel": "Filtration",
           "filtrationDescription": "Products filtration for Reaction"
         },
@@ -91,24 +78,18 @@
         "settings": {
           "accountSettingsLabel": "Account Settings",
           "addShopMemberLabel": "Add Shop Member",
-          "authorizenetSettingsLabel": "Authorize.net Settings",
           "permissionsSettingsLabel": "Permissions",
-          "braintreeSettingsLabel": "Braintree Settings",
           "localizationAndI18NLabel": "Localization and i18n",
           "searchSettingsLabel": "Search Settings",
           "shopSettingsLabel": "Shop Settings",
           "socialSettingsLabel": "Social Settings",
           "shippingSettingsLabel": "Shipping Settings",
-          "stripeSettingsLabel": "Stripe Settings",
           "inventorySettingsLabel": "Inventory Settings",
           "analyticsSettingsLabel": "Analytics Settings",
-          "paypalSettingsLabel": "PayPal Settings",
           "reactionConnectLabel": "Reaction Connect",
-          "examplePaymentSettingsLabel": "Example Payment Settings",
           "productSettingsLabel": "Product Settings",
           "productDetailsLabel": "Product Details",
           "productRevisionsLabel": "Product Revisions",
-          "taxSettingsLabel": "Tax Settings",
           "emailSettingsLabel": "Email Settings",
           "catalogSettingsLabel": "Catalog Settings"
         },
@@ -439,11 +420,6 @@
           "completed": "Completed",
           "canceled": "Canceled",
           "refunded": "Refunded"
-        },
-        "paymentProvider": {
-          "braintree": {
-            "braintreeSettlementDelay": "Braintree does not allow refunds until transactions are settled. This can take up to 24 hours. Please try again later."
-          }
         }
       },
       "orderShipping": {
@@ -598,14 +574,6 @@
         "shippingOptions": "Shipping Options",
         "reviewPayment": "Review",
         "complete": "Complete"
-      },
-      "checkoutPayment": {
-        "addPaymentToCompleteOrder": "Add payment to complete order",
-        "processingError": "There was a problem with your payment.",
-        "completeYourOrder": "Complete your order",
-        "noPaymentMethods": "No payment methods are configured.",
-        "configureNow": "Configure now.",
-        "failedToPlaceOrder": "Failed to place order."
       },
       "checkoutReview": {
         "review": "Review"

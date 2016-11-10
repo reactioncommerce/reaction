@@ -20,7 +20,7 @@ Reaction.registerPackage({
       label: "Taxes",
       description: "Provide tax rates",
       icon: "fa fa-university",
-      priority: 3,
+      priority: 1,
       container: "core",
       workflow: "coreDashboardWorkflow"
     },

@@ -20,7 +20,7 @@ Reaction.registerPackage({
       label: "Discounts",
       description: "Provide discount rates",
       icon: "fa fa-gift",
-      priority: 3,
+      priority: 1,
       container: "core",
       workflow: "coreDashboardWorkflow"
     },

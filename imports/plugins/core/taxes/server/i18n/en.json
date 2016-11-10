@@ -21,6 +21,9 @@
           "region": "Region",
           "postal": "Postal"
         },
+        "settings": {
+          "taxSettingsLabel": "Tax Settings"
+        },
         "taxSettings": {
           "noCustomTaxRatesFound": "No custom tax rates found.",
           "shopCustomTaxRatesSaved": "Custom tax rate saved.",
