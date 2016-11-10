@@ -251,13 +251,11 @@ Meteor.methods({
 
     if (order.email) {
       Meteor.call("orders/sendNotification", order, "shipped", (err) => {
-        console.log("------Order-------", order);
-        console.log("------shipped-------");
         if (err) {
           Logger.error(err, "orders/shipmentShipped: Failed to send notification");
-          Alerts.toast("EEEKkkkkkkkk. Server Error: Can't send email notification.", "error");
+          Alerts.toast(i18next.t("mail.alerts.cantSendEmail", { err: err.message }), "error");
         } else {
-          Alerts.toast("EEEKkkkkkkkk. Email notification sent.", "success");
+          Alerts.toast(i18next.t("mail.alerts.emailSent"), "success");
         }
       });
     } else {
@@ -330,8 +328,6 @@ Meteor.methods({
   "orders/sendNotification": function (order, action) {
     check(order, Object);
     check(action, Match.OneOf(String, undefined));
-
-    console.log("-----ACTION-----", action);
 
     if (!this.userId) {
       Logger.error("orders/sendNotification: Access denied");
@@ -478,7 +474,8 @@ Meteor.methods({
     let subject;
     let tpl;
 
-    if(action === "shipped"){
+    // TODO: Alot of things here... this is VERY temporary, just want to merge the template things in
+    if (action === "shipped") {
       tpl = "orders/shipped";
       // tpl = `orders/${order.workflow.status}`;
       subject = shop.name + ": Your order has shipped - " + order._id;
@@ -488,37 +485,6 @@ Meteor.methods({
       subject = shop.name + ": Your order is confirmed";
       SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl));
     }
-
-    // email templates can be customized in Templates collection
-    // loads defaults from /private/email/templates
-    // const tpl = `orders/${order.workflow.status}`;
-    // SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl));
-
-    console.log("----Template-----", tpl);
-
-    let emailSubject = "Regarding your recent order";
-    if (order.workflow.status === "new") {
-      emailSubject = "Your order is confirmed";
-    }
-    if (order.workflow.status === "coreOrderWorkflow/processing") {
-      emailSubject = "Processing";
-    }
-    if (order.workflow.status === "coreOrderWorkflow/completed") {
-      emailSubject = "Completed";
-    }
-
-    console.log("----Template-----", tpl);
-
-    // let emailSubject = "Regarding your recent order";
-    // if (order.workflow.status === "new") {
-    //   emailSubject = "Your order is confirmed";
-    // }
-    // if (order.workflow.status === "coreOrderWorkflow/processing") {
-    //   emailSubject = "Processing";
-    // }
-    // if (order.workflow.status === "coreOrderWorkflow/completed") {
-    //   emailSubject = "Completed";
-    // }
 
     Reaction.Email.send({
       to: order.email,

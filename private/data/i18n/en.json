@@ -248,7 +248,9 @@
           "connectionFailed": "Connection failed!",
           "saveAnyway": "Do you want to save the settings anyway?",
           "saveSuccess": "Mail settings saved.",
-          "saveFailed": "Failed to save mail settings. {{error}}"
+          "saveFailed": "Failed to save mail settings. {{error}}",
+          "cantSendEmail": "Server Error: Can't send email notification.",
+          "emailSent": "Email notification sent. 123"
         },
         "templates": {
           "edit": "Edit email template",
