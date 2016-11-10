@@ -1,7 +1,6 @@
 <template name="emailTemplatesPage">
   <div class="panel panel-default">
     <div class="panel-body">
-    <!-- {{#if emailTemplate}} -->
       <table class="table table-striped">
         <thead>
           <tr class="info">
@@ -38,15 +37,8 @@
       </table>
     </div>
   </div>
-
-  <!-- {{else}}
-    <div class="alert alert-info" data-i18n="shipping.noShippingMethods">No shipping methods are configured.</div>
-    {{>addShippingProvider}}
-  {{/each}} -->
 </template>
 
-<!-- {{> quickForm schema=Schemas.EmailTemplates id="email-template-edit-form2" }} -->
-<!-- schema=emailTemplateSchema -->
 
 <template name="emailTemplateSettings">
   {{#autoForm
