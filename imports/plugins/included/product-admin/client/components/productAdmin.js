@@ -155,10 +155,10 @@ class ProductAdmin extends Component {
               i18nKeyLabel="productDetailEdit.title"
               i18nKeyPlaceholder="productDetailEdit.title"
               label="Title"
-              multiline={true}
               name="title"
               onBlur={this.handleFieldBlur}
               onChange={this.handleFieldChange}
+              onReturnKeyDown={this.handleFieldBlur}
               placeholder="Title"
               ref="titleInput"
               value={this.product.title}
@@ -171,6 +171,7 @@ class ProductAdmin extends Component {
               name="handle"
               onBlur={this.handleFieldBlur}
               onChange={this.handleFieldChange}
+              onReturnKeyDown={this.handleFieldBlur}
               placeholder="Permalink"
               ref="handleInput"
               value={this.product.handle}
@@ -179,10 +180,10 @@ class ProductAdmin extends Component {
               i18nKeyLabel="productDetailEdit.pageTitle"
               i18nKeyPlaceholder="productDetailEdit.pageTitle"
               label="Subtitle"
-              multiline={true}
               name="pageTitle"
               onBlur={this.handleFieldBlur}
               onChange={this.handleFieldChange}
+              onReturnKeyDown={this.handleFieldBlur}
               placeholder="Subtitle"
               ref="subtitleInput"
               value={this.product.pageTitle}
@@ -191,10 +192,10 @@ class ProductAdmin extends Component {
               i18nKeyLabel="productDetailEdit.vendor"
               i18nKeyPlaceholder="productDetailEdit.vendor"
               label="Vendor"
-              multiline={true}
               name="vendor"
               onBlur={this.handleFieldBlur}
               onChange={this.handleFieldChange}
+              onReturnKeyDown={this.handleFieldBlur}
               placeholder="Vendor"
               ref="vendorInput"
               value={this.product.vendor}

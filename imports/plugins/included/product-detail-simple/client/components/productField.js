@@ -97,6 +97,7 @@ class ProductField extends Component {
           multiline={this.props.multiline}
           onBlur={this.handleBlur}
           onChange={this.handleChange}
+          onReturnKeyDown={this.handleBlur}
           value={this.state.value}
           {...this.props.textFieldProps}
         />
