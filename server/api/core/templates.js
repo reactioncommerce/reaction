@@ -113,6 +113,9 @@ export function processTemplateInfoForMemoryCache(templateInfo) {
   } else if (typeof templateInfo.template === "function") {
     // Set the parser to react for React components
     return info.set("parser", TEMPLATE_PARSER_REACT).toObject();
+  } else if (typeof templateInfo.template === "object") {
+    // Set the parser to react for React components
+    return info.set("parser", TEMPLATE_PARSER_REACT).toObject();
   }
 
   return null;

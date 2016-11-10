@@ -1,0 +1,37 @@
+[{
+  "i18n": "de",
+  "ns": "reaction-taxes",
+  "translation": {
+    "reaction-taxes": {
+      "admin": {
+        "shortcut": {
+          "taxesLabel": "Steuern",
+          "taxesTitle": "Steuern\n"
+        },
+        "dashboard": {
+          "taxesLabel": "Steuern",
+          "taxesTitle": "Steuern\n",
+          "taxesDescription": "Steuer-Konfiguration"
+        },
+        "settings": {
+          "taxSettingsLabel": "Steuer-Einstellungen"
+        },
+        "taxSettings": {
+          "noCustomTaxRatesFound": "Es wurden keine benutzerdefinierten Steuersätze gefunden.",
+          "shopCustomTaxRatesSaved": "Der benutzerdefinierte Steuersatz wurde gespeichert.",
+          "shopCustomTaxRatesFailed": "Fehler beim Speichern des Steuersatzes.",
+          "shopTaxMethodsSaved": "Besteuerungsart speichern.",
+          "shopTaxMethodsFailed": "Die Besteuerungsart konnte nicht gespeichert werden. ",
+          "customRatesDescription": "Benutzerdefinierte Preise",
+          "taxCode": "Steuercode",
+          "taxShipping": "Versand mit einschließen",
+          "taxRate": "Preis",
+          "discountsIncluded": "Rabatte mit einschließen",
+          "taxable": "Steuerpflichtig",
+          "nottaxable": "Nicht steuerpflichtig",
+          "confirmRateDelete": "Löschen des Steuersatzes bestätigen"
+        }
+      }
+    }
+  }
+}]
