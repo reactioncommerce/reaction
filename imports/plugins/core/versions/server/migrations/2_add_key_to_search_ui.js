@@ -1,12 +1,13 @@
 import { Migrations } from "/imports/plugins/core/versions";
 import { Packages } from "/lib/collections";
-
+import { Hooks, Logger } from "/server/api";
 
 // Add keys to search so that stock search is enabled by default
 Migrations.add({
   version: 2,
   up() {
-    while (!Packages.find({Name: "reaction-ui-search", "registry.provides": "ui-search"})) {
+    Hooks.Events.add("afterCoreInit", () => {
+      Logger.info("Running search package update");
       Packages.update({name: "reaction-ui-search"},
         {
           $set: {
@@ -20,6 +21,6 @@ Migrations.add({
         },
         { multi: true}
       );
-    }
+    });
   }
 });
