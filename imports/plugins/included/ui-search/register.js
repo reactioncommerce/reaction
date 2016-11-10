@@ -4,5 +4,11 @@ Reaction.registerPackage({
   label: "Search UI",
   name: "reaction-ui-search",
   icon: "fa fa-search",
-  autoEnable: true
+  autoEnable: true,
+  registry: [
+    {
+      provides: "search-ui",
+      template: "searchModal"
+    }
+  ]
 });
