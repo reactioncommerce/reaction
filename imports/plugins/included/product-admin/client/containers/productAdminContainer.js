@@ -10,7 +10,6 @@ class ProductAdminContainer extends Component {
     super(props);
 
     this.state = {
-      product: props.product,
       newMetafield: {
         key: "",
         value: ""
@@ -18,30 +17,8 @@ class ProductAdminContainer extends Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.setState({
-      product: nextProps.product
-    });
-  }
-
-  get product() {
-    return this.state.product || this.props.product || {};
-  }
-
   handleDeleteProduct = (product) => {
     ReactionProduct.maybeDeleteProduct(product || this.product);
-  }
-
-  handleFieldChange = (field, value) => {
-    const newState = update(this.state, {
-      product: {
-        $merge: {
-          [field]: value
-        }
-      }
-    });
-
-    this.setState(newState);
   }
 
   handleProductFieldSave = (productId, fieldName, value) => {
@@ -100,15 +77,12 @@ class ProductAdminContainer extends Component {
       <ProductAdmin
         newMetafield={this.state.newMetafield}
         onDeleteProduct={this.handleDeleteProduct}
-        onFieldChange={this.handleFieldChange}
         onMetaChange={this.handleMetaChange}
         onMetaRemove={this.handleMetaRemove}
         onMetaSave={this.handleMetafieldSave}
         onProductFieldSave={this.handleProductFieldSave}
         onRestoreProduct={this.handleProductRestore}
         {...this.props}
-        product={this.product}
-        tags={this.props.tags}
       />
     );
   }
@@ -141,14 +115,14 @@ function composer(props, onData) {
     }
 
     revisonDocumentIds = [product._id];
-  }
 
-  onData(null, {
-    product: product,
-    media,
-    tags,
-    revisonDocumentIds
-  });
+    onData(null, {
+      product: product,
+      media,
+      tags,
+      revisonDocumentIds
+    });
+  }
 }
 
 ProductAdminContainer.propTypes = {
