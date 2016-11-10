@@ -116,7 +116,7 @@ function composer(props, onData) {
     });
 
     if (templateInfo) {
-      const templateData = templateInfo.templateData;
+      const templateData = templateInfo.template;
 
       onData(null, {
         defaultPermissions: ["admin"],
