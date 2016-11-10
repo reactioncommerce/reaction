@@ -7,7 +7,7 @@ Reaction.registerPackage({
   autoEnable: true,
   registry: [
     {
-      provides: "search-ui",
+      provides: "ui-search",
       template: "searchModal"
     }
   ]
