@@ -4,16 +4,23 @@ import { Template } from "meteor/templating";
 import { Blaze } from "meteor/blaze";
 import { AutoForm } from "meteor/aldeed:autoform";
 import { Reaction, i18next } from "/client/api";
-import { Packages, Templates } from "/lib/collections";
+import { Templates } from "/lib/collections";
 import { EmailTemplates } from "../../lib/collections/schemas";
 
-Template.emailTemplatesPage.onCreated(function () {
+/*
+ * Subscribe to Templates collections
+ */
+Template.emailTemplatesDashboard.onCreated(function () {
   this.autorun(() => {
     this.subscribe("Templates");
   });
 });
 
-Template.emailTemplatesPage.helpers({
+
+/*
+ * template emailTemplatesDashboard helpers
+ */
+Template.emailTemplatesDashboard.helpers({
   emailTemplate() {
     const instance = Template.instance();
     if (instance.subscriptionsReady()) {
@@ -28,24 +35,22 @@ Template.emailTemplatesPage.helpers({
 
 
 /*
- * Template emailTemplatesSettings Helpers
+ * template emailTemplatesDashboard events
  */
-Template.emailTemplateSettings.helpers({
+Template.emailTemplatesDashboard.events({
+    // "click [data-event-action=addShippingMethod]"(event) {
+    //   event.preventDefault();
+    //
+    //   Reaction.showActionView({
+    //     label: i18next.t("shipping.addShippingMethod"),
+    //     template: "addShippingMethod"
+    //   });
+    // }
 
-  emailTemplateSchema() {
-    return EmailTemplates;
-  }
-});
-
-/*
- * template emailTemplatesPage events
- */
-Template.emailTemplatesPage.events({
   "click [data-event-action=deleteEmailTemplate]"(event) {
     event.preventDefault();
     event.stopPropagation();
 
-    // confirm delete
     Alerts.alert({
       title: i18next.t("mail.templates.alerts.removeEmailTemplateTitle"),
       type: "warning",
@@ -59,42 +64,45 @@ Template.emailTemplatesPage.events({
     });
   },
 
+  // "click [data-event-action=duplicateEmailTemplate]"(event) {
+  //   event.preventDefault();
+  //   event.stopPropagation();
+  //
+  //   Alerts.alert({
+  //     title: i18next.t("mail.templates.alerts.duplicateEmailTemplateTitle"),
+  //     type: "warning",
+  //     showCancelButton: true,
+  //     confirmButtonText: i18next.t("mail.templates.alerts.duplicateEmailTemplateConfirm", { title: this.title })
+  //   }, (isConfirm) => {
+  //     if (isConfirm) {
+  //       Meteor.call("templates/email/duplicate", $(event.currentTarget).data("template-id"), this);
+  //       Reaction.hideActionView();
+  //     }
+  //   });
+  // },
 
-  "click [data-event-action=duplicateEmailTemplate]"(event) {
-    event.preventDefault();
-    event.stopPropagation();
-
-    Alerts.alert({
-      title: i18next.t("mail.templates.alerts.duplicateEmailTemplateTitle"),
-      type: "warning",
-      showCancelButton: true,
-      confirmButtonText: i18next.t("mail.templates.alerts.duplicateEmailTemplateConfirm", { title: this.title })
-    }, (isConfirm) => {
-      if (isConfirm) {
-        Meteor.call("templates/email/duplicate", $(event.currentTarget).data("template-id"), this);
-        Reaction.hideActionView();
-      }
-    });
-  },
   "click [data-event-action=editEmailTemplate]"(event) {
     event.preventDefault();
 
     Reaction.showActionView({
-      label: i18next.t("shipping.editShippingMethod"),
+      label: i18next.t("mail.templates.edit"),
       data: this,
       template: "emailTemplateSettings"
     });
 
+    // TODO: What does this do?
     Session.set("updatedMethodObj", "");
     Session.set("selectedMethodObj", this);
-  },
-  "click [data-event-action=addShippingMethod]"(event) {
-    event.preventDefault();
+  }
+});
 
-    Reaction.showActionView({
-      label: i18next.t("shipping.addShippingMethod"),
-      template: "addShippingMethod"
-    });
+
+/*
+ * Template emailTemplatesSettings Helpers
+ */
+Template.emailTemplateSettings.helpers({
+  emailTemplateSchema() {
+    return EmailTemplates;
   }
 });
 

@@ -18,7 +18,7 @@ Reaction.registerPackage({
     icon: "fa fa-columns",
     priority: 1,
     container: "appearance",
-    template: "emailTemplatesPage"
+    template: "emailTemplatesDashboard"
   }, {
     label: "Edit Email Template",
     name: "templates/email",
