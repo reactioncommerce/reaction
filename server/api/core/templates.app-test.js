@@ -51,7 +51,8 @@ describe("Templates:", function () {
     // Register template
     const sampleTemplate = {
       name: "test-template",
-      template: "<div>Test</div>"
+      template: "<div>Test</div>",
+      type: "template"
     };
     registerTemplate(sampleTemplate, shopId);
 
@@ -65,7 +66,8 @@ describe("Templates:", function () {
     // Register template
     const sampleTemplate = {
       name: "test-template",
-      template: "<div>Test</div>"
+      template: "<div>Test</div>",
+      type: "template"
     };
 
     registerTemplate(sampleTemplate, shopId);
@@ -83,7 +85,8 @@ describe("Templates:", function () {
     const shopId = Reaction.getShopId();
     const sampleTemplate = {
       name: "test-template-react",
-      template: sampleReactComponent
+      template: sampleReactComponent,
+      type: "template"
     };
 
     registerTemplate(sampleTemplate, shopId);
