@@ -4,7 +4,6 @@
   "ns": "core",
   "translation": {
     "core": {
-      "languageDirection": "rtl",
       "languages": {
         "select": "أختيار للغة"
       },
@@ -39,6 +38,9 @@
           "coreDescription": "تكوين رد فعل",
           "examplePaymentProviderLabel": "نموذج دفع",
           "examplePaymentProviderDescription": "مثال طريقة الدفع",
+          "emailLabel": "البريد الالكتروني ",
+          "emailTitle": "البريد الالكتروني ",
+          "emailDescription": "اعدادات البريد الالكتروني ",
           "i18NLabel": "i18n",
           "i18NTitle": "i18n",
           "i18NDescription": "أدوات مساعدة التدويل",
@@ -57,6 +59,9 @@
           "paypalLabel": "باي بال",
           "paypalTitle": "باي بال",
           "paypalDescription": "دفعة باي بال",
+          "revisionsLabel": "المراجعات ",
+          "revisionsTitle": "المراجعات ",
+          "revisionsDescription": "تحكم بالمراجعة ",
           "routingLabel": "التوجيه",
           "routingTitle": "توجيه",
           "routingDescription": "الأدوات المساعدة للتوجيه",
@@ -104,6 +109,7 @@
           "reactionConnectLabel": "توصيل التفاعل",
           "examplePaymentSettingsLabel": "مثال إعدادات الدفع",
           "productSettingsLabel": "إعدادات المنتج",
+          "productDetailsLabel": "تفاصيل المنتج",
           "taxSettingsLabel": "إعدادات ضرائب"
         },
         "userAccountDropdown": {
@@ -130,6 +136,8 @@
         "submit": "إدخال",
         "delete": "حذف",
         "deleted": "محذوف",
+        "archive": "الارشيف ",
+        "archived": "مؤرشف",
         "create": "إنشاء",
         "close": "قريب",
         "settings": "إعدادات",
@@ -266,6 +274,7 @@
         "tagsAdd": "إضافة علامة",
         "tagsEdit": "إضافة علامة",
         "tagExists": ".العلامة موجودة بالفعل ,أو أنها فارغ",
+        "tagInUse": "العلامة قيد الاستخدام ولايمكن حذفها",
         "dropFiles": "وضع الملفات للتحميل",
         "addInventory": "إضافة جرد",
         "barcode": "الباركود",
@@ -297,6 +306,8 @@
         "clonedAlert_plural": "مستنسخ {{product}}",
         "deletedAlert": "{{product}} المحذوف ",
         "deletedAlert_plural": "محذوف{{product}}",
+        "archivedAlert": " {{product}}الارشيف ",
+        "archivedAlert_plural": "{{product}}مؤرشف ",
         "theProduct": "المنتج",
         "theSelectedProducts": "المنتج المختار",
         "startTracking": "بدء التتبع",
@@ -338,6 +349,7 @@
         "removeVariant": "إزالة",
         "removeVariantConfirm": "{{title}} هل انت متأكد من انك تريد حذف ",
         "restoreVariantConfirm": "هل انت متأكد من أنك تريد استعادة {{title}} من سلة المهملات؟",
+        "archiveVariantConfirm": "هل انت متأكد من  من رغبتك بأرشفة {{title}}",
         "thisVariant": "هذاالبديل",
         "thisOption": "هذا الأختيار",
         "duplicateProduct": "منتج متكرر",
@@ -345,8 +357,9 @@
         "toggleSize": "تبديل الحجم",
         "deleteProduct": "إلغاء منتج",
         "restoreProduct": "إستعادة المنتج من سلة المهملات",
-        "deleteThisProduct": "حذف هذا المنتج؟",
         "deleteSelectedProducts": "هل تريد حذف المنتجات المختارة؟",
+        "archiveThisProduct": "قم بأرشفة هذا المنتج ؟",
+        "archiveSelectedProducts": "منتجات الارشيف المختارة ؟",
         "publish": "نشر",
         "moreOptions": "خيارات إضافية",
         "details": "تفاصيل",
@@ -570,9 +583,12 @@
         "publishChanges": "تغييرات النشر",
         "showChanges": "إظهار التغييرات",
         "hideChanges": "إخفاء التغييرات",
+        "discardChanges": "التراجع عن التغييرات ",
         "changedPublished": "تم نشر التغييرات بنجاح",
+        "changesDiscarded": "تم التراجع عن التغييرات بنجاح ",
         "noChanges": "لا يوجد تغييرات",
-        "noChangesPublished": ".لا يوجد تغييرات لنشرها"
+        "noChangesPublished": ".لا يوجد تغييرات لنشرها",
+        "noChangesDiscarded": "لايوجد تغييرات للتراجع عنها "
       },
       "address": {
         "country": "البلد",
@@ -698,8 +714,41 @@
       "search": {
         "clearSearch": "مسح",
         "noProductsFound": "لا يوجد منتج موجود",
+        "noOrdersFound": "لم يتم اعثور على طلبات ",
+        "noAccountsFound": "لم يتم العثور على حسابات",
         "searchInputLabel": "بحث عن ردةالفعل ",
-        "suggestedTags": "العلامات المقترحة"
+        "suggestedTags": "العلامات المقترحة",
+        "searchTypeProducts": "المنتجات",
+        "searchTypeAccounts": "الحسابات ",
+        "searchTypeOrders": "الطلبات ",
+        "accountSearchResults": {
+          "accountId": "رقم الحساب",
+          "shopId": "بطاقة تعريف المتجر",
+          "firstName": "الاسم الاول ",
+          "lastName": "الاسم الاخير ",
+          "phone": "الهاتف",
+          "emails": "البريد الالكتروني "
+        },
+        "orderSearchResults": {
+          "orderId": "بطاقة تعريف الطلب ",
+          "shopId": "بطاقة تعريف المتجر",
+          "shippingAddress": "العنوان",
+          "shippingCity": "المدينة ",
+          "shippingRegion": "المنطقة ",
+          "shippingCountry": "البلد",
+          "shippingPhone": "الهاتف ",
+          "shippingName": "الاسم",
+          "shippingStatus": "الحالة ",
+          "billingAddress": "العنوان",
+          "billingCity": "المدينة ",
+          "billingRegion": "المنطقة ",
+          "billingCountry": "البلد ",
+          "billingPhone": "الهاتف",
+          "billingStatus": "الحالة ",
+          "userEmails": "البريد الالكتروني",
+          "orderDate": "التاريخ",
+          "orderTotal": "المجموع"
+        }
       },
       "accountsUI": {
         "members": "أعضاء",

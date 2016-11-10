@@ -128,9 +128,9 @@ Template.childVariantForm.events({
     const title = instance.data.optionTitle || i18next.t("productDetailEdit.thisOption");
 
     Alerts.alert({
-      title: i18next.t("productDetailEdit.removeVariantConfirm", { title }),
+      title: i18next.t("productDetailEdit.archiveVariantConfirm", { title }),
       showCancelButton: true,
-      confirmButtonText: "Remove"
+      confirmButtonText: "Archive"
     }, (isConfirm) => {
       if (isConfirm) {
         const id = instance.data._id;

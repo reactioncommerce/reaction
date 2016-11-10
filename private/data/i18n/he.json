@@ -4,7 +4,6 @@
   "ns": "core",
   "translation": {
     "core": {
-      "languageDirection": "rtl",
       "languages": {
         "select": "בחר שפה"
       },
@@ -39,6 +38,9 @@
           "coreDescription": "תצורת Reaction",
           "examplePaymentProviderLabel": "תשלום לדוגמה",
           "examplePaymentProviderDescription": "שיטת תשלום לדוגמה",
+          "emailLabel": "דוא\"ל",
+          "emailTitle": "דוא\"ל",
+          "emailDescription": "הגדרות דוא\"ל",
           "i18NLabel": "i18n",
           "i18NTitle": "i18n",
           "i18NDescription": "תכניות שירות לאינטרנציונליזציה",
@@ -57,6 +59,9 @@
           "paypalLabel": "PayPal",
           "paypalTitle": "PayPal",
           "paypalDescription": "תשלומי PayPal ",
+          "revisionsLabel": "גרסאות",
+          "revisionsTitle": "גרסאות",
+          "revisionsDescription": "ניהול גרסאות",
           "routingLabel": "ניתוב",
           "routingTitle": "ניתוב",
           "routingDescription": "תכניות שירות לניתוב",
@@ -104,6 +109,7 @@
           "reactionConnectLabel": "חיבור Reaction",
           "examplePaymentSettingsLabel": "הגדרות תשלום לדוגמה",
           "productSettingsLabel": "הגדרות מוצר",
+          "productDetailsLabel": "פרטי המוצר",
           "taxSettingsLabel": "הגדרות מס"
         },
         "userAccountDropdown": {
@@ -130,6 +136,8 @@
         "submit": "שלח",
         "delete": "מחק",
         "deleted": "נמחק",
+        "archive": "העבר לארכיון",
+        "archived": "הועבר לארכיון",
         "create": "יצירה",
         "close": "סגירה",
         "settings": "הגדרות",
@@ -266,6 +274,7 @@
         "tagsAdd": "הוספת תגית",
         "tagsEdit": "ערוך תגיות",
         "tagExists": "התגית כבר קיימת או שהיא ריקה.",
+        "tagInUse": "לא ניתן למחוק תגים הנמצאים בשימוש.",
         "dropFiles": "שחרר קבצים כדי להעלות",
         "addInventory": "הוסף מלאי",
         "barcode": "ברקוד",
@@ -297,6 +306,8 @@
         "clonedAlert_plural": "{{product}} משוכפל/ת",
         "deletedAlert": "{{product}} נמחקה/ה",
         "deletedAlert_plural": "{{product}} נמחק/ה",
+        "archivedAlert": "{{product}} הועבר/ה לארכיון",
+        "archivedAlert_plural": "{{product}} הועבר/ה לארכיון",
         "theProduct": "המוצר",
         "theSelectedProducts": "את המוצרים הנבחרים",
         "startTracking": "התחל מעקב",
@@ -338,6 +349,7 @@
         "removeVariant": "הסר",
         "removeVariantConfirm": "האם אתה בטוח שברצונך למחוק את {{title}}",
         "restoreVariantConfirm": "האם אתה בטוח שברצונך לשחזר את {{title}} מפח האשפה?",
+        "archiveVariantConfirm": "האם אתה בטוח שברצונך להעביר לארכיון את {{title}}",
         "thisVariant": "גרסת מוצר זו",
         "thisOption": "אפשרות זו",
         "duplicateProduct": "מוצר משוכפל",
@@ -345,8 +357,9 @@
         "toggleSize": "החלף מידה/גודל",
         "deleteProduct": "מחק מוצר",
         "restoreProduct": "שחזר מוצר מפח האשפה",
-        "deleteThisProduct": "למחוק מוצר זה?",
         "deleteSelectedProducts": "למחוק מוצרים שנבחרו?",
+        "archiveThisProduct": "להעביר לארכיון מוצר זה?",
+        "archiveSelectedProducts": "להעביר לארכיון מוצרים שנבחרו?",
         "publish": "פרסום",
         "moreOptions": "עוד אפשרויות",
         "details": "פרטים",
@@ -570,9 +583,12 @@
         "publishChanges": "פרסם שינויים",
         "showChanges": "הצג שינויים",
         "hideChanges": "הסתר שינויים",
+        "discardChanges": "בטל שינויים",
         "changedPublished": "השינויים פורסמו בהצלחה",
+        "changesDiscarded": "השינויים בוטלו בהצלחה",
         "noChanges": "אין שינויים",
-        "noChangesPublished": "אין שינויים לפרסום"
+        "noChangesPublished": "אין שינויים לפרסום",
+        "noChangesDiscarded": "אין שינויים הניתנים לביטול"
       },
       "address": {
         "country": "ארץ",
@@ -698,8 +714,41 @@
       "search": {
         "clearSearch": "מחק",
         "noProductsFound": "לא נמצאו מוצרים",
+        "noOrdersFound": "לא נמצאו הזמנות.",
+        "noAccountsFound": "לא נמצאו חשבונות.",
         "searchInputLabel": "חפש Reaction ",
-        "suggestedTags": "תגיות מוצעות"
+        "suggestedTags": "תגיות מוצעות",
+        "searchTypeProducts": "מוצרים",
+        "searchTypeAccounts": "חשבונות",
+        "searchTypeOrders": "הזמנות",
+        "accountSearchResults": {
+          "accountId": "מזהה חשבון",
+          "shopId": "מזהה חנות",
+          "firstName": "שם פרטי",
+          "lastName": "שם משפחה",
+          "phone": "טלפון",
+          "emails": "דוא\"ל"
+        },
+        "orderSearchResults": {
+          "orderId": "מזהה הזמנה",
+          "shopId": "מזהה חנות",
+          "shippingAddress": "כתובת",
+          "shippingCity": "עיר",
+          "shippingRegion": "אזור",
+          "shippingCountry": "מדינה",
+          "shippingPhone": "טלפון",
+          "shippingName": "שם",
+          "shippingStatus": "סטטוס",
+          "billingAddress": "כתובת",
+          "billingCity": "עיר",
+          "billingRegion": "אזור",
+          "billingCountry": "מדינה",
+          "billingPhone": "טלפון",
+          "billingStatus": "סטטוס",
+          "userEmails": "דוא\"ל",
+          "orderDate": "תאריך",
+          "orderTotal": "סה\"כ"
+        }
       },
       "accountsUI": {
         "members": "חברים",
