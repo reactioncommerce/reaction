@@ -6,21 +6,19 @@ import { Hooks, Logger } from "/server/api";
 Migrations.add({
   version: 2,
   up() {
-    Hooks.Events.add("afterCoreInit", () => {
-      Logger.info("Running search package update");
-      Packages.update({name: "reaction-ui-search"},
-        {
-          $set: {
-            registry: [{
-              provides: "ui-search",
-              template: "searchModal"
-            }
-
-            ]
+    Logger.info("Running search package update");
+    Packages.update({name: "reaction-ui-search"},
+      {
+        $set: {
+          registry: [{
+            provides: "ui-search",
+            template: "searchModal"
           }
-        },
-        { multi: true}
-      );
-    });
+
+          ]
+        }
+      },
+      { multi: true}
+    );
   }
 });
