@@ -1,9 +1,26 @@
 import { FlatButton } from "/imports/plugins/core/ui/client/components";
 import { Reaction } from "/client/api";
-import { Tags } from "/lib/collections";
+import { Tags, Packages } from "/lib/collections";
+
+function getSearchPackage() {
+  const searchPackage = Packages.findOne({
+    shopId: Reaction.getShopId(),
+    "registry.provides": "ui-search",
+    enabled: true
+  });
+  return searchPackage;
+}
+
 
 Template.CoreNavigationBar.onCreated(function () {
   this.state = new ReactiveDict();
+  const searchPackage = getSearchPackage();
+  if (searchPackage) {
+    this.state.set("searchEnabled", true);
+    this.state.set("searchTemplate", searchPackage.registry[0].template);
+  } else {
+    this.state.set("searchEnabled", false);
+  }
 });
 
 /**
@@ -19,7 +36,10 @@ Template.CoreNavigationBar.events({
     return $(".dashboard-navbar-packages ul li").removeClass("active");
   },
   "click .search": function () {
-    Blaze.renderWithData(Template.searchModal, {
+    const instance = Template.instance();
+    const searchTemplateName = instance.state.get("searchTemplate");
+    const searchTemplate = Template[searchTemplateName];
+    Blaze.renderWithData(searchTemplate, {
     }, $("body").get(0));
     $("body").css("overflow", "hidden");
     $("#search-input").focus();
@@ -27,17 +47,23 @@ Template.CoreNavigationBar.events({
 });
 
 Template.CoreNavigationBar.helpers({
+  isSearchEnabled() {
+    const instance = Template.instance();
+    return instance.state.get("searchEnabled");
+  },
+
+  searchTemplate() {
+    const instance = Template.instance();
+    if (instance.state.get("searchEnabled")) {
+      return instance.state.get("searchTemplate");
+    }
+  },
+
   IconButtonComponent() {
     return {
       component: FlatButton,
       icon: "fa fa-search",
       kind: "flat"
-      // onClick() {
-      //   Blaze.renderWithData(Template.searchModal, {
-      //   }, $("body").get(0));
-      //   $("body").css("overflow-y", "hidden");
-      //   $("#search-input").focus();
-      // }
     };
   },
   onMenuButtonClick() {
@@ -51,9 +77,7 @@ Template.CoreNavigationBar.helpers({
 
   tagNavProps() {
     const instance = Template.instance();
-    let tags = [];
-
-    tags = Tags.find({
+    const tags = Tags.find({
       isTopLevel: true
     }, {
       sort: {
