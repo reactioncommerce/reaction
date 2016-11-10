@@ -196,12 +196,9 @@ Template.ordersListItem.events({
 
     if (order.workflow.status === "new") {
       Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "processing", order, (err) => {
-
-        if(err){
-          console.log("woof");
-
+        if (err) {
+          Alerts.toast("Cannot update coreOrderWorkflow.", "warning");
         } else {
-
           Meteor.call("orders/sendNotification", order, (error) => {
             if (error) {
               Alerts.toast("Server Error: Can't send email notification.", "error");
@@ -209,10 +206,7 @@ Template.ordersListItem.events({
               Alerts.toast("Email notification sent. (moved order to processing)", "success");
             }
           });
-
         }
-
-
       });
     }
     // toggle detail views
