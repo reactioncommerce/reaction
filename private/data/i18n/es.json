@@ -71,9 +71,6 @@
           "socialLabel": "Social",
           "socialTitle": "Social",
           "socialDescription": "Configuración de redes sociales",
-          "taxesLabel": "Impuestos",
-          "taxesTitle": "Impuestos",
-          "taxesDescription": "Configuración de impuesto",
           "themesLabel": "Temas",
           "themesTitle": "Temas",
           "themesDescription": "Temas y componentes de la IU",
@@ -109,8 +106,7 @@
           "reactionConnectLabel": "Conectar reacción",
           "examplePaymentSettingsLabel": "Opciones de ejemplo de pago",
           "productSettingsLabel": "Opciones del producto",
-          "productDetailsLabel": "Detalles del producto",
-          "taxSettingsLabel": "Opciones de impuestos"
+          "productDetailsLabel": "Detalles del producto"
         },
         "userAccountDropdown": {
           "profileLabel": "Perfil"
@@ -247,21 +243,6 @@
           "saveSuccess": "Opciones de correo guardadas.",
           "saveFailed": "Error al guardar las opciones de correo. {{error}}"
         }
-      },
-      "taxSettings": {
-        "noCustomTaxRatesFound": "No se han encontrado tasas de impuestos personalizadas.",
-        "shopCustomTaxRatesSaved": "Tasas de impuestos personalizadas guardadas.",
-        "shopCustomTaxRatesFailed": "Error al guardar la tasa impositiva.",
-        "shopTaxMethodsSaved": "Método de impuesto guardado.",
-        "shopTaxMethodsFailed": "Error al guardar método de impuesto",
-        "customRatesDescription": "Tasas personalizadas",
-        "taxCode": "Código tributario",
-        "taxShipping": "Incluir envío",
-        "taxRate": "Tarifa",
-        "discountsIncluded": "Incluir descuentos",
-        "taxable": "Sujeto a impuestos",
-        "nottaxable": "No imponible",
-        "confirmRateDelete": "Confirmar eliminación de tasa de impuesto"
       },
       "header": {
         "tagsAdd": "Añadir etiqueta",

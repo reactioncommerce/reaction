@@ -238,7 +238,7 @@ Meteor.methods({
     const anonymousUser = Roles.userIsInRole(userId, "anonymous", shopId);
     const sessionCartCount = getSessionCarts(userId, sessionId, shopId).length;
 
-    Logger.info("create cart: shopId", shopId);
+    Logger.debug("create cart: shopId", shopId);
     Logger.debug("create cart: userId", userId);
     Logger.debug("create cart: sessionId", sessionId);
     Logger.debug("create cart: sessionCarts.count", sessionCartCount);
