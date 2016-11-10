@@ -1,16 +1,31 @@
 import { Reaction } from "/server/api";
 import * as TemplatePaths from "../lib/paths.js";
 
-// Default
+/*
+ * Default email templates
+ * Used when no other template is found
+ */
 Reaction.registerTemplate({
   title: "Default",
   name: TemplatePaths.coreDefaultTemplate,
   type: "email",
   template: Reaction.Email.getTemplateFile(TemplatePaths.coreDefaultTemplate),
-  subject: "This is the subject"
+  subject: "A message from {{shop.name}}"
 });
 
-// Accounts
+
+/*
+ * Account related email templates
+ */
+
+ // Invite new shop member
+ Reaction.registerTemplate({
+   title: "Invite Shop Member",
+   name: TemplatePaths.inviteShopMemberTemplate,
+   type: "email",
+   template: Reaction.Email.getTemplateFile(TemplatePaths.inviteShopMemberTemplate),
+   subject: "You have been invited to join {{shop.name}}"
+ });
 
 // Reset Password
 Reaction.registerTemplate({
@@ -18,16 +33,7 @@ Reaction.registerTemplate({
   name: TemplatePaths.resetPaswordTemplate,
   type: "email",
   template: Reaction.Email.getTemplateFile(TemplatePaths.resetPaswordTemplate),
-  subject: "This is the subject"
-});
-
-// Invite new shop member
-Reaction.registerTemplate({
-  title: "Invite Shop Member",
-  name: TemplatePaths.inviteShopMemberTemplate,
-  type: "email",
-  template: Reaction.Email.getTemplateFile(TemplatePaths.inviteShopMemberTemplate),
-  subject: "This is the subject"
+  subject: "{{shop.name}}: Here's your password reset link"
 });
 
 // Welcome email for new account
@@ -36,19 +42,22 @@ Reaction.registerTemplate({
   name: TemplatePaths.welcomeEmailTemplate,
   type: "email",
   template: Reaction.Email.getTemplateFile(TemplatePaths.welcomeEmailTemplate),
-  subject: "This is the subject"
+  subject: "You're In. Welcome to {{shop.name}}!"
 });
 
-// Account verification email
-Reaction.registerTemplate({
-  title: "Verify Account",
-  name: TemplatePaths.verifyEmailTemplate,
-  type: "email",
-  template: Reaction.Email.getTemplateFile(TemplatePaths.verifyEmailTemplate),
-  subject: "This is the subject"
-});
 
-// Checkout
+
+
+
+
+
+
+
+
+
+/*
+ * Checkout related email templates
+ */
 
 // checkout login
 Reaction.registerTemplate({
@@ -59,7 +68,43 @@ Reaction.registerTemplate({
   subject: "This is the subject"
 });
 
-// Order workflow
+
+/*
+ * Order (coreOrder) related email templates
+ */
+
+/*
+ * Order Shipped
+ * Sent on: data-event-action="shipmentShipped"
+ * Sent on: data-event-action="resendNotification"
+ */
+Reaction.registerTemplate({
+  title: "Order Shipped",
+  name: TemplatePaths.orderShipped,
+  type: "email",
+  template: Reaction.Email.getTemplateFile(TemplatePaths.orderShipped),
+  subject: "{{shop.name}}: Your order has shipped = {{order._id}}"
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // Order workflow completed - old version
 Reaction.registerTemplate({
@@ -103,7 +148,7 @@ Reaction.registerTemplate({
   name: TemplatePaths.coreOrderCreatedTemplate,
   type: "email",
   template: Reaction.Email.getTemplateFile(TemplatePaths.coreOrderCreatedTemplate),
-  subject: "This is the subject"
+  subject: "{{shop.name}}: Your order has shipped = {{order._id}}"
 });
 
 
@@ -159,12 +204,14 @@ Reaction.registerTemplate({
 
 
 
-
-
+/*
+ * Account related email templates
+ */
+// Account verification email
 Reaction.registerTemplate({
-  title: "Order Shipped",
-  name: TemplatePaths.orderShipped,
+  title: "Verify Account",
+  name: TemplatePaths.verifyEmailTemplate,
   type: "email",
-  template: Reaction.Email.getTemplateFile(TemplatePaths.orderShipped),
+  template: Reaction.Email.getTemplateFile(TemplatePaths.verifyEmailTemplate),
   subject: "This is the subject"
 });

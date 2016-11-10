@@ -477,19 +477,21 @@ Meteor.methods({
     // TODO: Alot of things here... this is VERY temporary, just want to merge the template things in
     if (action === "shipped") {
       tpl = "orders/shipped";
-      // tpl = `orders/${order.workflow.status}`;
       subject = shop.name + ": Your order has shipped - " + order._id;
       SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl));
+      SSR.compileTemplate(subject, "{{shop.name}}: Your order has shipped - {{order._id}}");
     } else {
       tpl = `orders/${order.workflow.status}`;
       subject = shop.name + ": Your order is confirmed";
       SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl));
+      SSR.compileTemplate(subject, "{{shop.name}}: Your order has shipped - {{order._id}}");
     }
 
     Reaction.Email.send({
       to: order.email,
       from: `${shop.name} <${shop.emails[0].address}>`,
-      subject: subject,
+      subject: SSR.render(subject, dataForEmail),
+      // subject: subject,
       // subject: `Order update from ${shop.name}`,
       html: SSR.render(tpl, dataForEmail)
     });
