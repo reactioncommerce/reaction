@@ -36,7 +36,7 @@ Reaction.registerPackage({
       layoutFooter: "",
       notFound: "notFound",
       dashboardHeader: "dashboardHeader",
-      // dashboardHeaderControls: "emailDashboardTabs", // removed until needed for nav
+      // dashboardHeaderControls: "emailDashboardTabs", // removed until needed for nav tabs
       dashboardControls: "dashboardControls",
       adminControlsFooter: "adminControlsFooter"
     }
