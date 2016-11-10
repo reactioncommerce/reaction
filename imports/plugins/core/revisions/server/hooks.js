@@ -1,7 +1,126 @@
-import { Products, Revisions, Tags } from "/lib/collections";
-import { Logger } from "/server/api";
+import _ from "lodash";
 import { diff } from "deep-diff";
+import { Products, Revisions, Tags, Media } from "/lib/collections";
+import { Logger } from "/server/api";
 import { RevisionApi } from "../lib/api";
+
+
+function convertMetadata(modifierObject) {
+  const metadata = {};
+  for (const prop in modifierObject) {
+    if (modifierObject.hasOwnProperty(prop)) {
+      if (prop.indexOf("metadata") !== -1) {
+        const splitName = _.split(prop, ".")[1];
+        metadata[splitName] = modifierObject[prop];
+      }
+    }
+  }
+  return metadata;
+}
+
+Media.files.before.insert((userid, media) => {
+  if (RevisionApi.isRevisionControlEnabled() === false) {
+    return true;
+  }
+  if (media.metadata.productId) {
+    const revisionMetadata = Object.assign({}, media.metadata);
+    revisionMetadata.workflow = "published";
+    Revisions.insert({
+      documentId: media._id,
+      documentData: revisionMetadata,
+      documentType: "image",
+      parentDocument: media.metadata.productId,
+      changeType: "insert",
+      workflow: {
+        status: "revision/update"
+      }
+    });
+    media.metadata.workflow = "unpublished";
+  } else {
+    media.metadata.workflow = "published";
+  }
+  return true;
+});
+
+Media.files.before.update((userId, media, fieldNames, modifier) => {
+  if (RevisionApi.isRevisionControlEnabled() === false) {
+    return true;
+  }
+  // if it's not metadata ignore it, as LOTS of othing things change on this record
+  if (!_.includes(fieldNames, "metadata")) {
+    return true;
+  }
+
+  if (media.metadata.productId) {
+    const convertedModifier = convertMetadata(modifier.$set);
+    const convertedMetadata = Object.assign({}, media.metadata, convertedModifier);
+    const existingRevision = Revisions.findOne({
+      "documentId": media._id,
+      "workflow.status": {
+        $nin: [
+          "revision/published"
+        ]
+      }
+    });
+    if (existingRevision) {
+      const updatedMetadata = Object.assign({}, existingRevision.documentData, convertedMetadata);
+      // Special case where if we have both added and reordered images before publishing we don't want to overwrite
+      // the workflow status since it would be "unpublished"
+      if (existingRevision.documentData.workflow === "published" || existingRevision.changeType === "insert") {
+        updatedMetadata.workflow = "published";
+      }
+      Revisions.update({_id: existingRevision._id}, {
+        $set: {
+          documentData: updatedMetadata
+        }
+      });
+    } else {
+      Revisions.insert({
+        documentId: media._id,
+        documentData: convertedMetadata,
+        documentType: "image",
+        parentDocument: media.metadata.productId,
+        changeType: "update",
+        workflow: {
+          status: "revision/update"
+        }
+      });
+    }
+
+    return false; // prevent actual update of image. This also stops other hooks from running :/
+  }
+  // for non-product images, just ignore and keep on moving
+  return true;
+});
+
+Media.files.before.remove((userId, media) => {
+  if (RevisionApi.isRevisionControlEnabled() === false) {
+    return true;
+  }
+
+  // if the media is unpublished, then go ahead and just delete it
+  if (media.metadata.workflow && media.metadata.workflow === "unpublished") {
+    Revisions.remove({
+      documentId: media._id
+    });
+    return true;
+  }
+  if (media.metadata.productId) {
+    Revisions.insert({
+      documentId: media._id,
+      documentData: media.metadata,
+      documentType: "image",
+      parentDocument: media.metadata.productId,
+      changeType: "remove",
+      workflow: {
+        status: "revision/update"
+      }
+    });
+    return false; // prevent actual deletion of image. This also stops other hooks from running :/
+  }
+  return true;
+});
+
 
 Products.before.insert((userId, product) => {
   if (RevisionApi.isRevisionControlEnabled() === false) {
@@ -243,13 +362,21 @@ Revisions.after.update(function (userId, revision) {
   if (RevisionApi.isRevisionControlEnabled() === false) {
     return true;
   }
+  let differences;
 
-  // Make diff
-  const product = Products.findOne({
-    _id: revision.documentId
-  });
 
-  const differences = diff(product, revision.documentData);
+  if (!revision.documentType || revision.documentType === "product") {
+    // Make diff
+    const product = Products.findOne({
+      _id: revision.documentId
+    });
+    differences = diff(product, revision.documentData);
+  }
+
+  if (revision.documentType && revision.documentType === "image") {
+    const image = Media.findOne(revision.documentId);
+    differences = diff(image.metadata, revision.documentData);
+  }
 
   Revisions.direct.update({
     _id: revision._id

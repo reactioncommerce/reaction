@@ -228,9 +228,10 @@ function composer(props, onData) {
         // when top variant has no child variants we display only its price
         if (childVariants.length === 0) {
           priceRange = selectedVariant.price;
+        } else {
+          // otherwise we want to show child variants price range
+          priceRange = ReactionProduct.getVariantPriceRange();
         }
-        // otherwise we want to show child variants price range
-        priceRange = ReactionProduct.getVariantPriceRange();
       }
 
       let productRevision;
