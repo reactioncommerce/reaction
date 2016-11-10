@@ -1,7 +1,7 @@
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
-import { Reaction, i18next } from "/client/api";
+import { Reaction, i18next, Logger } from "/client/api";
 import { Orders, Shops } from "/lib/collections";
 
 const orderFilters = [{
@@ -195,20 +195,9 @@ Template.ordersListItem.events({
 
 
     if (order.workflow.status === "new") {
-      Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "processing", order, (err) => {
-        if (err) {
-          Alerts.toast("Cannot update coreOrderWorkflow.", "warning");
-        } else {
-          Meteor.call("orders/sendNotification", order, (error) => {
-            if (error) {
-              Alerts.toast("Server Error: Can't send email notification.", "error");
-            } else {
-              Alerts.toast("Email notification sent. (moved order to processing)", "success");
-            }
-          });
-        }
-      });
+      Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "processing", order);
     }
+
     // toggle detail views
     if (isActionViewOpen === false) {
       Reaction.showActionView({
