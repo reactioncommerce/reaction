@@ -6,7 +6,7 @@ import { Packages } from "/lib/collections";
 Migrations.add({
   version: 2,
   up() {
-    while (!Packages.find({Name: "reaction-ui-search"})) {
+    while (!Packages.find({Name: "reaction-ui-search", "registry.provides": "ui-search"})) {
       Packages.update({name: "reaction-ui-search"},
         {
           $set: {
