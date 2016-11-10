@@ -250,7 +250,7 @@
           "saveSuccess": "Mail settings saved.",
           "saveFailed": "Failed to save mail settings. {{error}}",
           "cantSendEmail": "Server Error: Can't send email notification.",
-          "emailSent": "Email notification sent. 123"
+          "emailSent": "Email notification sent."
         },
         "templates": {
           "edit": "Edit email template",

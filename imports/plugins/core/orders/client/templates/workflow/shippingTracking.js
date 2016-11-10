@@ -2,6 +2,7 @@ import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Tracker } from "meteor/tracker";
 import { Template } from "meteor/templating";
+import { i18next } from "/client/api";
 import { Orders } from "/lib/collections";
 
 Template.coreOrderShippingTracking.onCreated(() => {
@@ -39,9 +40,9 @@ Template.coreOrderShippingTracking.events({
     const template = Template.instance();
     Meteor.call("orders/sendNotification", template.order, "shipped", (err) => {
       if (err) {
-        Alerts.toast("Server Error: Can't send email notification.", "error");
+        Alerts.toast(i18next.t("mail.alerts.cantSendEmail"), "error");
       } else {
-        Alerts.toast("Email notification sent.", "success");
+        Alerts.toast(i18next.t("mail.alerts.emailSent"), "success");
       }
     });
   },
