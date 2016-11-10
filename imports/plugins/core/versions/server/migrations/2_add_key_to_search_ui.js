@@ -1,6 +1,6 @@
 import { Migrations } from "/imports/plugins/core/versions";
 import { Packages } from "/lib/collections";
-import { Hooks, Logger } from "/server/api";
+import { Logger } from "/server/api";
 
 // Add keys to search so that stock search is enabled by default
 Migrations.add({
@@ -11,11 +11,10 @@ Migrations.add({
       {
         $set: {
           registry: [{
+            name: "Search Modal",
             provides: "ui-search",
             template: "searchModal"
-          }
-
-          ]
+          }]
         }
       },
       { multi: true}
