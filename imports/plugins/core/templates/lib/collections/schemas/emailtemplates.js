@@ -1,7 +1,13 @@
 import { SimpleSchema } from "meteor/aldeed:simple-schema";
-import { Audience } from "./layouts";
+import { Templates } from "/lib/collections";
 
-const sharedFields = {
+
+/**
+ * EmailTemplates Schema
+ * TODO: Update schema with final fields when known
+*/
+
+export const EmailTemplates = new SimpleSchema({
   name: {
     type: String
   },
@@ -23,17 +29,13 @@ const sharedFields = {
     type: String,
     optional: true
   },
-  // permissions: {
-  //   type: [String],
-  //   optional: true
-  // },
-  // audience: {
-  //   type: [String],
-  //   optional: true
-  // },
+  audience: {
+    type: [String],
+    optional: true
+  },
   type: {
     type: String,
-    defaultValue: "template"
+    defaultValue: "email"
   },
   provides: {
     type: String,
@@ -48,6 +50,10 @@ const sharedFields = {
     blackbox: true,
     optional: true
   },
+  template: {
+    type: String,
+    optional: true
+  },
   parser: {
     type: String
   },
@@ -59,38 +65,14 @@ const sharedFields = {
   source: {
     type: String,
     optional: true
-  }
-};
-
-export const ReactLayout = new SimpleSchema({
-  ...sharedFields,
-  // permissions: {
-  //   type: [String],
-  //   optional: true
-  // },
-  // audience: {
-  //   type: [String],
-  //   optional: true
-  // },
-  template: {
-    type: [Object],
-    optional: true,
-    blackbox: true
-  }
-});
-
-export const Template = new SimpleSchema({
-  ...sharedFields,
-  // permissions: {
-  //   type: [String],
-  //   optional: true
-  // },
-  // audience: {
-  //   type: [String],
-  //   optional: true
-  // },
-  template: {
+  },
+  title: {
+    type: String
+  },
+  subject: {
     type: String,
     optional: true
   }
 });
+
+Templates.attachSchema(EmailTemplates, { selector: { type: "email" } });
