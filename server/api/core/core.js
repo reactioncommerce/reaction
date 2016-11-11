@@ -47,7 +47,22 @@ export default {
     return registeredPackage;
   },
 
+  /**
+   * registerTemplate
+   * registers Templates into the Tempaltes Collection
+   * @param {Array} templateInfo - Array of Template information
+   * @param {String} shopIds - String of shopId's to add template to
+   * @param {String} checkGroup group - default to shopId
+   * @return {function} Registers template
+   */
   registerTemplate(templateInfo, shopIds) {
+
+    // Wait for shop to be initiated to make sure shop._id is availabe
+    while (!this.getShopId()) {
+      Logger.info("No shops initiated, waiting one second...");
+      Meteor._sleepForMs(1000);
+    }
+
     if (typeof shopIds === "string") {
       // Register template with supplied, single shopId
       registerTemplate(templateInfo, shopIds);
@@ -59,12 +74,6 @@ export default {
     }
 
     // Otherwise template for all available shops
-    // Wait for shop to be initiated to make sure shop._id is availabe
-    while (!this.getShopId()) {
-      Logger.info("No shops initiated, waiting one second...");
-      Meteor._sleepForMs(1000);
-    }
-
     return Shops.find().forEach((shop) => {
       registerTemplate(templateInfo, shop._id);
     });
