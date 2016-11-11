@@ -62,7 +62,6 @@ class MediaItem extends Component {
     return null;
   }
 
-
   get defaultSource() {
     return this.props.defaultSource || "/resources/placeholder.gif";
   }

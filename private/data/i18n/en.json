@@ -21,23 +21,15 @@
           "analyticsLabel": "Analytics",
           "analyticsTitle": "Analytics",
           "analyticsDescription": "Analytics and tracking integrations",
-          "authorizenetLabel": "Authorize.net",
-          "authorizenetTitle": "Authorize.net",
-          "authorizenetDescription": "Authorize.net payments",
           "shippingLabel": "Shipping",
           "shippingTitle": "Shipping",
           "shippingDescription": "Provide shipping rates",
-          "braintreeLabel": "Braintree",
-          "braintreeTitle": "Braintree",
-          "braintreeDescription": "Braintree payments",
           "catalogLabel": "Catalog",
           "catalogTitle": "Catalog",
           "catalogDescription": "Product Catalog",
           "coreLabel": "Settings",
           "coreTitle": "Dashboard",
           "coreDescription": "Reaction configuration",
-          "examplePaymentProviderLabel": "Example Payment",
-          "examplePaymentProviderDescription": "Example Payment Method",
           "emailLabel": "Email",
           "emailTitle": "Email",
           "emailDescription": "Email settings",
@@ -56,9 +48,6 @@
           "ordersLabel": "Orders",
           "ordersTitle": "Orders",
           "ordersDescription": "Fulfill your orders",
-          "paypalLabel": "PayPal",
-          "paypalTitle": "PayPal",
-          "paypalDescription": "PayPal payments",
           "revisionsLabel": "Revisions",
           "revisionsTitle": "Revisions",
           "revisionsDescription": "Revision control",
@@ -71,14 +60,9 @@
           "socialLabel": "Social",
           "socialTitle": "Social",
           "socialDescription": "Social Channel configuration",
-          "taxesLabel": "Taxes",
-          "taxesTitle": "Taxes",
-          "taxesDescription": "Tax configuration",
           "themesLabel": "Themes",
           "themesTitle": "Themes",
           "themesDescription": "Themes and UI Components",
-          "stripeLabel": "Stripe",
-          "stripeDescription": "Stripe payments",
           "filtrationLabel": "Filtration",
           "filtrationDescription": "Products filtration for Reaction"
         },
@@ -94,24 +78,20 @@
         "settings": {
           "accountSettingsLabel": "Account Settings",
           "addShopMemberLabel": "Add Shop Member",
-          "authorizenetSettingsLabel": "Authorize.net Settings",
           "permissionsSettingsLabel": "Permissions",
-          "braintreeSettingsLabel": "Braintree Settings",
           "localizationAndI18NLabel": "Localization and i18n",
           "searchSettingsLabel": "Search Settings",
           "shopSettingsLabel": "Shop Settings",
           "socialSettingsLabel": "Social Settings",
           "shippingSettingsLabel": "Shipping Settings",
-          "stripeSettingsLabel": "Stripe Settings",
           "inventorySettingsLabel": "Inventory Settings",
           "analyticsSettingsLabel": "Analytics Settings",
-          "paypalSettingsLabel": "PayPal Settings",
           "reactionConnectLabel": "Reaction Connect",
-          "examplePaymentSettingsLabel": "Example Payment Settings",
           "productSettingsLabel": "Product Settings",
           "productDetailsLabel": "Product Details",
           "productRevisionsLabel": "Product Revisions",
-          "taxSettingsLabel": "Tax Settings"
+          "emailSettingsLabel": "Email Settings",
+          "catalogSettingsLabel": "Catalog Settings"
         },
         "userAccountDropdown": {
           "profileLabel": "Profile"
@@ -207,7 +187,7 @@
           "email": "Email",
           "emailSettings": "Email Settings",
           "config": "Configuration",
-          "settings": "Mail Provider",
+          "settings": "SMTP Provider",
           "status": "Status",
           "actions": "Actions"
         },
@@ -246,23 +226,28 @@
           "connectionFailed": "Connection failed!",
           "saveAnyway": "Do you want to save the settings anyway?",
           "saveSuccess": "Mail settings saved.",
-          "saveFailed": "Failed to save mail settings. {{error}}"
+          "saveFailed": "Failed to save mail settings. {{error}}",
+          "cantSendEmail": "Server Error: Can't send email notification.",
+          "emailSent": "Email notification sent."
+        },
+        "templates": {
+          "edit": "Edit email template",
+          "duplicate": "Duplicate email template",
+          "delete": "Delete email template",
+          "method": "Method",
+          "templateName": "Template Name",
+          "type": "Type",
+          "language": "Language",
+          "enabled": "Enabled",
+          "addTemplate": "Add email template",
+          "alerts": {
+            "removeEmailTemplateConfirm": "Are you sure you want to delete {{title}}?",
+            "removeEmailTemplateTitle": "Remove Email Template",
+            "duplicateEmailTemplateConfirm": "Are you sure you want to duplicate {{title}}?",
+            "duplicateEmailTemplateTitle": "Duplicate Email Template",
+            "failedToUpdate": "Failed to update template: {{err}}"
+          }
         }
-      },
-      "taxSettings": {
-        "noCustomTaxRatesFound": "No custom tax rates found.",
-        "shopCustomTaxRatesSaved": "Custom tax rate saved.",
-        "shopCustomTaxRatesFailed": "Error saving tax rate.",
-        "shopTaxMethodsSaved": "Saved tax method.",
-        "shopTaxMethodsFailed": "Failed saving tax method.",
-        "customRatesDescription": "Custom Rates",
-        "taxCode": "Tax Code",
-        "taxShipping": "Include Shipping",
-        "taxRate": "Rate",
-        "discountsIncluded": "Include Discounts",
-        "taxable": "Taxable",
-        "nottaxable": "Not Taxable",
-        "confirmRateDelete": "Confirm tax rate deletion"
       },
       "header": {
         "tagsAdd": "Add tag",
@@ -455,11 +440,6 @@
           "completed": "Completed",
           "canceled": "Canceled",
           "refunded": "Refunded"
-        },
-        "paymentProvider": {
-          "braintree": {
-            "braintreeSettlementDelay": "Braintree does not allow refunds until transactions are settled. This can take up to 24 hours. Please try again later."
-          }
         }
       },
       "orderShipping": {
@@ -614,14 +594,6 @@
         "shippingOptions": "Shipping Options",
         "reviewPayment": "Review",
         "complete": "Complete"
-      },
-      "checkoutPayment": {
-        "addPaymentToCompleteOrder": "Add payment to complete order",
-        "processingError": "There was a problem with your payment.",
-        "completeYourOrder": "Complete your order",
-        "noPaymentMethods": "No payment methods are configured.",
-        "configureNow": "Configure now.",
-        "failedToPlaceOrder": "Failed to place order."
       },
       "checkoutReview": {
         "review": "Review"

@@ -20,6 +20,45 @@ export function send(options) {
 
 
 /**
+ * Reaction.Email.getSubject() - Returns a subject source for SSR consumption
+ * layout must be defined + template
+ * @param {String} template name of the template in either Layouts or fs
+ * @returns {Object} returns source
+ */
+export function getSubject(template) {
+  if (typeof template !== "string") {
+    const msg = "Reaction.Email.getTemplate() requires a template name";
+    Logger.error(msg);
+    throw new Meteor.Error("no-template-name", msg);
+  }
+
+  // set default
+  let language = "en";
+
+  const shopLocale = Meteor.call("shop/getLocale");
+
+  // set the language if found
+  if (shopLocale && shopLocale.locale && shopLocale.locale.languages) {
+    language = shopLocale.locale.languages;
+  }
+
+  // check database for a matching template
+  const tmpl = Templates.findOne({
+    name: template,
+    language,
+    isOriginalTemplate: false
+  });
+
+  // use that template if found
+  if (tmpl && tmpl.template) {
+    return tmpl.subject;
+  }
+
+  // otherwise, use the default template from the filesystem
+  return "Test Subject";
+}
+
+/**
  * Reaction.Email.getTemplate() - Returns a template source for SSR consumption
  * layout must be defined + template
  * @param {String} template name of the template in either Layouts or fs
@@ -43,7 +82,11 @@ export function getTemplate(template) {
   }
 
   // check database for a matching template
-  const tmpl = Templates.findOne({ name: template, language });
+  const tmpl = Templates.findOne({
+    name: template,
+    language,
+    isOriginalTemplate: false
+  });
 
   // use that template if found
   if (tmpl && tmpl.template) {

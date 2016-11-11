@@ -1,0 +1,23 @@
+[{
+  "language": "English",
+  "i18n": "en",
+  "ns": "reaction-paypal",
+  "translation": {
+    "reaction-payments": {
+      "admin": {
+        "shortcut": {
+          "paypalLabel": "PayPal"
+        },
+        "dashboard": {
+          "paypalLabel": "PayPal",
+          "paypalTitle": "PayPal",
+          "paypalDescription": "PayPal payments"
+        },
+        "paymentSettings": {
+          "paypalLabel": "PayPal",
+          "paypalSettingsLabel": "PayPal"
+        }
+      }
+    }
+  }
+}]
