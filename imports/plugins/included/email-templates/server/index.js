@@ -19,7 +19,7 @@ Reaction.registerTemplate({
  */
 
  // Invite new shop member
- Reaction.registerTemplate({
+Reaction.registerTemplate({
    title: "Invite Shop Member",
    name: TemplatePaths.inviteShopMemberTemplate,
    type: "email",
