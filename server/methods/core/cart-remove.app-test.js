@@ -32,6 +32,7 @@ describe("cart methods", function () {
     });
 
     it("should remove item from cart", function (done) {
+      this.timeout(5000);
       const cart = Factory.create("cart");
       const cartUserId = cart.userId;
       sandbox.stub(Reaction, "getShopId", () => shop._id);
