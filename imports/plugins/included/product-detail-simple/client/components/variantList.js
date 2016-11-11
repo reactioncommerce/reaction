@@ -1,7 +1,7 @@
 import React, { Component, PropTypes} from "react";
 import Variant from "./variant";
 import { EditContainer } from "/imports/plugins/core/ui/client/containers";
-import { Divider, IconButton, Translation } from "/imports/plugins/core/ui/client/components";
+import { Divider, IconButton } from "/imports/plugins/core/ui/client/components";
 import { ChildVariant } from "./";
 
 class VariantList extends Component {
@@ -42,8 +42,10 @@ class VariantList extends Component {
   }
 
   renderVariants() {
+    let variants = [];
+
     if (this.props.variants) {
-      return this.props.variants.map((variant, index) => {
+      variants = this.props.variants.map((variant, index) => {
         const displayPrice = this.props.displayPrice && this.props.displayPrice(variant._id);
 
         return (
@@ -74,18 +76,43 @@ class VariantList extends Component {
       });
     }
 
-    return (
-      <li>
-        <a href="#" id="create-variant">
-          {"+"} <Translation defaultValue="Create Variant" i18nKey="variantList.createVariant" />
-        </a>
-      </li>
+    const variantList = (
+      <ul className="variant-list list-unstyled" id="variant-list" key="variantList">
+        {variants}
+        <div className="rui items flex">
+          <div className="rui item full justify center">
+            <IconButton
+              i18nKeyTooltip="variantList.createVariant"
+              icon="fa fa-plus"
+              tooltip="Create Variant"
+              onClick={this.props.onCreateVariant}
+            />
+          </div>
+        </div>
+      </ul>
     );
+
+    if (variants.length > 1 || variants.length === 0) {
+      return [
+        <Divider
+          i18nKeyLabel="productDetail.options"
+          key="dividerWithLabel"
+          label="Options"
+        />,
+        variantList
+      ];
+    } else if (variants.length === 1) {
+      return [
+        <Divider key="divider" />,
+        variantList
+      ];
+    }
+
+    return variantList;
   }
 
   renderChildVariants() {
     let childVariants = [];
-    let divider;
 
     if (this.props.childVariants) {
       childVariants = this.props.childVariants.map((childVariant, index) => {
@@ -139,21 +166,7 @@ class VariantList extends Component {
   render() {
     return (
       <div className="product-variants">
-        <Divider
-          i18nKeyLabel="productDetail.options"
-          label="Options"
-        />
-        <ul className="variant-list list-unstyled" id="variant-list">
-          {this.renderVariants()}
-          <div className="rui items flex">
-            <div className="rui item full justify center">
-              <IconButton
-                icon="fa fa-plus"
-                onClick={this.props.onCreateVariant}
-              />
-            </div>
-          </div>
-        </ul>
+        {this.renderVariants()}
         {this.renderChildVariants()}
       </div>
     );
