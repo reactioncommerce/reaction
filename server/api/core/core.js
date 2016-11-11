@@ -57,12 +57,6 @@ export default {
    */
   registerTemplate(templateInfo, shopIds) {
 
-    // Wait for shop to be initiated to make sure shop._id is availabe
-    while (!this.getShopId()) {
-      Logger.info("No shops initiated, waiting one second...");
-      Meteor._sleepForMs(1000);
-    }
-
     if (typeof shopIds === "string") {
       // Register template with supplied, single shopId
       registerTemplate(templateInfo, shopIds);
