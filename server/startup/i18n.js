@@ -12,6 +12,59 @@ function directoryExists(dirPath) {
   }
 }
 
+/**
+ * load a single translation object as an Asset
+ * loadTranslation should generally be used
+ * before startup, to ensure that Assets load.
+ * @param  {Object} source a json i18next object
+ * @return {Boolean} false if assets weren't loaded
+ */
+
+export function loadTranslation(source) {
+  try {
+    const content = typeof source === "string" ? JSON.parse(source) : source;
+    const json = typeof source === "object" ? JSON.stringify(source) : source;
+
+    Assets.update({
+      type: "i18n",
+      name: content[0].i18n,
+      ns: content[0].ns
+    }, {
+      $set: {
+        content: json
+      }
+    }, {
+      upsert: true
+    });
+
+    Logger.debug("Translation assets updated for ", content[0].ns);
+  } catch (e) {
+    return false;
+  }
+  return false;
+}
+
+/**
+ * load an array of translation objects
+ * and import using loadTranslation
+ * @param  {Object} sources array of i18next translations
+ * @return {Boolean} false if assets weren't loaded
+ */
+export function loadTranslations(sources) {
+  sources.forEach(function (source) {
+    loadTranslation(source);
+  });
+}
+
+
+/**
+ * loadCoreTranslations imports i18n json
+ * files from private/data/i18n
+ * into the Assets collection
+ * Assets collection is processed with Reaction.Import
+ * after all assets have been loaded.
+ */
+
 export function loadCoreTranslations() {
   const meteorPath = fs.realpathSync(process.cwd() + "/../");
   const i18nFolder = `${meteorPath}/server/assets/app/data/i18n/`;
@@ -39,12 +92,16 @@ export function loadCoreTranslations() {
         }
       }
 
+      // purposely broad results here
+      // we will be processing assets
+      // inserted using loadTranslation
+      // as well.
       Assets.find({ type: "i18n" }).forEach((t) => {
         Logger.debug(`Importing ${t.name} translation for \"${t.ns}\"`);
         if (t.content) {
           Reaction.Import.process(t.content, ["i18n"], Reaction.Import.translation);
         } else {
-          Logger.warn(`No translation content found for ${t.name} - ${t.ns} asset`);
+          Logger.debug(`No translation content found for ${t.name} - ${t.ns} asset`);
         }
       });
     }));

@@ -97,7 +97,6 @@ export default function () {
     Products,
     Tags,
     Translations,
-    Discounts,
     Shipping,
     Orders,
     Packages,

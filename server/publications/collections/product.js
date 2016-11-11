@@ -113,16 +113,24 @@ Meteor.publish("Product", function (productId) {
           this.added("Revisions", revision._id, revision);
         },
         changed: (revision) => {
-          const product = Products.findOne(revision.documentId);
-
+          let product;
+          if (!revision.parentDocument) {
+            product = Products.findOne(revision.documentId);
+          } else {
+            product = Products.findOne(revision.parentDocument);
+          }
           product.__revisions = [revision];
 
           this.changed("Products", product._id, product);
           this.changed("Revisions", revision._id, revision);
         },
         removed: (revision) => {
-          const product = Products.findOne(revision.documentId);
-
+          let product;
+          if (!revision.parentDocument) {
+            product = Products.findOne(revision.documentId);
+          } else {
+            product = Products.findOne(revision.parentDocument);
+          }
           product.__revisions = [];
 
           this.changed("Products", product._id, product);

@@ -71,9 +71,6 @@
           "socialLabel": "社交媒体",
           "socialTitle": "社交",
           "socialDescription": "分享给社交媒体",
-          "taxesLabel": "税款",
-          "taxesTitle": "税款",
-          "taxesDescription": "税款配置",
           "themesLabel": "主题",
           "themesTitle": "主题",
           "themesDescription": "主题和界面组件",
@@ -109,8 +106,7 @@
           "reactionConnectLabel": "Reaction连接",
           "examplePaymentSettingsLabel": "付款设置示例",
           "productSettingsLabel": "产品设置",
-          "productDetailsLabel": "产品详情",
-          "taxSettingsLabel": "税款设置"
+          "productDetailsLabel": "产品详情"
         },
         "userAccountDropdown": {
           "profileLabel": "个人资料"
@@ -247,21 +243,6 @@
           "saveSuccess": "邮件设置已保存。",
           "saveFailed": "保存邮件设置失败。{{error}}"
         }
-      },
-      "taxSettings": {
-        "noCustomTaxRatesFound": "未找到自定义税率。",
-        "shopCustomTaxRatesSaved": "自定义税率已保存。",
-        "shopCustomTaxRatesFailed": "保存税率时出错。",
-        "shopTaxMethodsSaved": "已保存的纳税方式。",
-        "shopTaxMethodsFailed": "保存纳税方式失败。",
-        "customRatesDescription": "自定义费用",
-        "taxCode": "税码",
-        "taxShipping": "包括发货",
-        "taxRate": "费用",
-        "discountsIncluded": "包括折扣",
-        "taxable": "应税",
-        "nottaxable": "不纳税",
-        "confirmRateDelete": "确认删除税率"
       },
       "header": {
         "tagsAdd": "添加标签",

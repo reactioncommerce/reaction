@@ -1,6 +1,8 @@
 import React, { Component, PropTypes } from "react";
 import classnames from "classnames";
 import Autosuggest from "react-autosuggest";
+import Velocity from "velocity-animate";
+import "velocity-animate/velocity.ui";
 import { Router } from "/client/api";
 import { i18next } from "/client/api";
 import { Button, Handle } from "/imports/plugins/core/ui/client/components";
@@ -9,6 +11,23 @@ import { SortableItem } from "../../containers";
 
 class Tag extends Component {
   displayName: "Tag";
+
+  componentWillReceiveProps(nextProps) {
+    if (this._updated && this._saved && this.refs.autoSuggestInput) {
+      const input = this.refs.autoSuggestInput.input;
+
+      Velocity.RunSequence([
+        {e: input, p: { backgroundColor: "#e2f2e2" }, o: { duration: 200 }},
+        {e: input, p: { backgroundColor: "#fff" }, o: { duration: 100 }}
+      ]);
+
+      this._updated = false;
+    }
+
+    if ((nextProps.tag.name !== this.props.tag.name)) {
+      this._updated = true;
+    }
+  }
 
   get tag() {
     return this.props.tag || {
@@ -39,6 +58,7 @@ class Tag extends Component {
    */
   handleTagFormSubmit = (event) => {
     event.preventDefault();
+    this._saved = true;
     this.saveTag(event);
   };
 
@@ -60,12 +80,14 @@ class Tag extends Component {
    */
   handleTagUpdate = (event) => {
     if (this.props.onTagUpdate && event.keyCode === 13) {
+      this._saved = true;
       this.props.onTagUpdate(this.props.tag._id, event.target.value);
     }
   };
 
   handleTagKeyDown = (event) => {
     if (event.keyCode === 13) {
+      this._saved = true;
       this.saveTag(event);
     }
   }
@@ -100,13 +122,14 @@ class Tag extends Component {
    */
   handleTagInputBlur = (event) => {
     if (this.props.onTagInputBlur) {
+      this._saved = true;
       this.props.onTagInputBlur(event, this.props.tag);
     }
   };
 
   handleInputChange = (event, { newValue }) => {
     if (this.props.onTagUpdate) {
-      const updatedTag = Object.assign({}, this.props.tag, {
+      const updatedTag = Object.assign({}, {...this.props.tag}, {
         name: newValue
       });
       this.props.onTagUpdate(event, updatedTag);
@@ -233,6 +256,7 @@ class Tag extends Component {
         }}
         onSuggestionsClearRequested={this.handleSuggestionsClearRequested}
         onSuggestionsFetchRequested={this.handleSuggestionsUpdateRequested}
+        ref="autoSuggestInput"
         renderSuggestion={this.renderSuggestion}
         suggestions={this.props.suggestions}
       />
@@ -263,6 +287,7 @@ Tag.propTypes = {
   i18nKeyInputPlaceholder: PropTypes.string,
   index: PropTypes.number,
   inputPlaceholder: PropTypes.string,
+  onClearSuggestions: PropTypes.func,
   onGetSuggestions: PropTypes.func,
   onTagInputBlur: PropTypes.func,
   onTagMouseOut: PropTypes.func,

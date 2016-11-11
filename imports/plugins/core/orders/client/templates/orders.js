@@ -1,7 +1,7 @@
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
-import { Reaction, i18next } from "/client/api";
+import { Reaction, i18next, Logger } from "/client/api";
 import { Orders, Shops } from "/lib/collections";
 
 const orderFilters = [{
@@ -193,9 +193,11 @@ Template.ordersListItem.events({
     const isActionViewOpen = Reaction.isActionViewOpen();
     const { order } = instance.data;
 
+
     if (order.workflow.status === "new") {
       Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "processing", order);
     }
+
     // toggle detail views
     if (isActionViewOpen === false) {
       Reaction.showActionView({

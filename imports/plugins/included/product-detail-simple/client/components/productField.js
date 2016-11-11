@@ -1,5 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import classnames from "classnames";
+import Velocity from "velocity-animate";
+import "velocity-animate/velocity.ui";
 import { TextField } from "/imports/plugins/core/ui/client/components/";
 import { EditContainer } from "/imports/plugins/core/ui/client/containers";
 
@@ -15,9 +17,16 @@ class ProductField extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.product.pageTitle !== this.state.value) {
+    if (nextProps.product[this.fieldName] !== this.props.product[this.fieldName]) {
       this.setState({
         value: nextProps.product[this.fieldName]
+      }, () => {
+        const input = this._input.refs.input;
+
+        Velocity.RunSequence([
+          {e: input, p: { backgroundColor: "#e2f2e2" }, o: { duration: 200 }},
+          {e: input, p: { backgroundColor: "#fff" }, o: { duration: 100 }}
+        ]);
       });
     }
   }
@@ -83,10 +92,12 @@ class ProductField extends Component {
     return (
       <div className={baseClassName}>
         <TextField
+          ref={(ref) => { this._input = ref;}}
           className={textFieldClassName}
           multiline={this.props.multiline}
           onBlur={this.handleBlur}
           onChange={this.handleChange}
+          onReturnKeyDown={this.handleBlur}
           value={this.state.value}
           {...this.props.textFieldProps}
         />
@@ -101,7 +112,7 @@ class ProductField extends Component {
     }
 
     if (this.props.element) {
-      return React.cloneElement(this.props.element, {
+      return React.createElement(this.props.element, {
         className: "pdp field",
         itemProp: this.props.itemProp,
         children: this.value

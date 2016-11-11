@@ -262,7 +262,9 @@ Import.template = function (templateInfo, shopId) {
 
   const key = {
     name: templateInfo.name,
-    shopId: shopId
+    isOriginalTemplate: templateInfo.isOriginalTemplate,
+    shopId: shopId,
+    type: templateInfo.type || "template"
   };
 
   return this.object(Collections.Templates, key, templateInfo);
