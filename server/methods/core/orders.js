@@ -253,9 +253,8 @@ Meteor.methods({
       Meteor.call("orders/sendNotification", order, "shipped", (err) => {
         if (err) {
           Logger.error(err, "orders/shipmentShipped: Failed to send notification");
-          Alerts.toast(i18next.t("mail.alerts.cantSendEmail", { err: err.message }), "error");
         } else {
-          Alerts.toast(i18next.t("mail.alerts.emailSent"), "success");
+          Logger.info(`Email sent for order: ${order.id}`);
         }
       });
     } else {
