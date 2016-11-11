@@ -117,6 +117,7 @@ function composer(props, onData) {
     revisonDocumentIds = [product._id];
 
     onData(null, {
+      viewProps: props.viewProps || {},
       product: product,
       media,
       tags,

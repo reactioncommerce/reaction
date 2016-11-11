@@ -20,7 +20,12 @@ class EditContainer extends Component {
       label: props.label,
       i18nKeyLabel: props.i18nKeyLabel,
       template: props.editView,
-      data: props.data
+      data: {
+        data: props.data,
+        viewProps: {
+          field: props.field
+        }
+      }
     });
 
     return true;

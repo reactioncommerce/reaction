@@ -27,6 +27,20 @@ const fieldNames = [
   "googleplusMsg"
 ];
 
+const fieldGroups = {
+  title: { group: "productDetails" },
+  handle: { group: "productDetails" },
+  pageTitle: { group: "productDetails" },
+  vendor: { group: "productDetails" },
+  description: { group: "productDetails" },
+  facebookMsg: { group: "social" },
+  twitterMsg: { group: "social" },
+  pinterestMsg: { group: "social" },
+  googleplusMsg: { group: "social" },
+  hashtags: { group: "hashtags" },
+  metafields: { group: "metafields" }
+};
+
 class ProductAdmin extends Component {
   constructor(props) {
     super(props);
@@ -40,12 +54,7 @@ class ProductAdmin extends Component {
     if (!isEqual(nextProps.product, this.props.product)) {
       for (const fieldName of fieldNames) {
         if (nextProps.product[fieldName] !== this.props.product[fieldName]) {
-          const input = this.refs[`${fieldName}Input`].refs.input;
-
-          Velocity.RunSequence([
-            {e: input, p: { backgroundColor: "#e2f2e2" }, o: { duration: 200 }},
-            {e: input, p: { backgroundColor: "#fff" }, o: { duration: 100 }}
-          ]);
+          this.animateFieldFlash(fieldName);
         }
       }
     }
@@ -53,6 +62,19 @@ class ProductAdmin extends Component {
     this.setState({
       product: nextProps.product
     });
+  }
+
+  animateFieldFlash(fieldName) {
+    const fieldRef = this.refs[`${fieldName}Input`];
+
+    if (fieldRef) {
+      const input = fieldRef.refs.input;
+
+      Velocity.RunSequence([
+        {e: input, p: { backgroundColor: "#e2f2e2" }, o: { duration: 200 }},
+        {e: input, p: { backgroundColor: "#fff" }, o: { duration: 100 }}
+      ]);
+    }
   }
 
   handleDeleteProduct = () => {
@@ -142,15 +164,27 @@ class ProductAdmin extends Component {
     );
   }
 
+  isExpanded(groupName) {
+    const fieldName = this.props.viewProps.field;
+    const field = fieldGroups[fieldName];
+
+    if (field && field.group === groupName) {
+      return true;
+    }
+
+    return false;
+  }
+
   render() {
     return (
       <CardGroup>
-        <Card>
+        <Card expanded={this.isExpanded("productDetails")}>
           <CardHeader
+            actAsExpander={true}
             i18nKeyTitle="productDetailEdit.productSettings"
             title="Product Settings"
           />
-          <CardBody>
+          <CardBody expandable={true}>
             <TextField
               i18nKeyLabel="productDetailEdit.title"
               i18nKeyPlaceholder="productDetailEdit.title"
@@ -214,12 +248,13 @@ class ProductAdmin extends Component {
             />
           </CardBody>
         </Card>
-        <Card>
+        <Card expanded={this.isExpanded("social")}>
           <CardHeader
+            actAsExpander={true}
             i18nKeyTitle="social.socialTitle"
             title="Social"
           />
-          <CardBody>
+          <CardBody expandable={true}>
             <TextField
               i18nKeyLabel="productDetailEdit.facebookMsg"
               label="Facebook Message"
@@ -263,12 +298,13 @@ class ProductAdmin extends Component {
           </CardBody>
         </Card>
 
-        <Card>
+        <Card expanded={this.isExpanded("hashtags")}>
           <CardHeader
+            actAsExpander={true}
             i18nKeyTitle="productDetailEdit.tags"
             title="Tags"
           />
-          <CardBody>
+          <CardBody expandable={true}>
             <TagListContainer
               enableNewTagForm={true}
               product={this.product}
@@ -279,12 +315,13 @@ class ProductAdmin extends Component {
           </CardBody>
         </Card>
 
-        <Card>
+        <Card expanded={this.isExpanded("metafields")}>
           <CardHeader
+            actAsExpander={true}
             i18nKeyTitle="productDetailEdit.details"
             title="Details"
           />
-          <CardBody>
+          <CardBody expandable={true}>
             <Metadata
               metafields={this.product.metafields}
               newMetafield={this.props.newMetafield}
