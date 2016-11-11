@@ -119,22 +119,17 @@ Import.commit = function (collection) {
       const nRemoved = result.nRemoved;
       // Log some information about the import.
       if (nTouched) {
-        let message = "";
-        message += "Modified " + nImported + (nImported === 1 ?
-          " document" : " documents");
+        let message = "Modified " + nImported + (nImported === 1 ? " document" : " documents");
         message += " while importing " + nTouched + " to " + name;
-        Logger.info(message);
+        Logger.debug(message);
       }
       if (nRemoved) {
-        let message = "";
-        message += "Removed " + nRemoved + (nRemoved === 1 ? " document" :
-          " documents");
+        let message = "Removed " + nRemoved + (nRemoved === 1 ? " document" : " documents");
         message += " from " + name;
-        Logger.info(message);
+        Logger.debug(message);
       }
       // Log any errors returned.
-      let message = "";
-      message += "Error while importing to " + name;
+      const message = "Error while importing to " + name;
       const writeErrors = result.getWriteErrors();
       for (let i = 0; i < writeErrors.length; i++) {
         Logger.warn(message + ": " + writeErrors[i].errmsg);
@@ -254,6 +249,26 @@ Import.package = function (pkg, shopId) {
 // Import.translation
 // server/startup/i18n.js
 //
+
+/**
+ * @summary Store a template in the import buffer.
+ * @param {Object} templateInfo The template data to be updated
+ * @param {String} shopId The package data to be updated
+ * @returns {undefined}
+ */
+Import.template = function (templateInfo, shopId) {
+  check(templateInfo, Object);
+  check(shopId, String);
+
+  const key = {
+    name: templateInfo.name,
+    isOriginalTemplate: templateInfo.isOriginalTemplate,
+    shopId: shopId,
+    type: templateInfo.type || "template"
+  };
+
+  return this.object(Collections.Templates, key, templateInfo);
+};
 
 /**
  * @summary Store a translation in the import buffer.

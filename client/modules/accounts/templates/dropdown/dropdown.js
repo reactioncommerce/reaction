@@ -63,9 +63,9 @@ Template.loginDropdown.events({
       });
     } else if (this.route || this.name) {
       event.preventDefault();
-      template.$(".dropdown-toggle").dropdown("toggle");
       const route = this.name || this.route;
       Reaction.Router.go(route);
     }
+    template.$(".dropdown-toggle").dropdown("toggle");
   }
 });

@@ -21,23 +21,18 @@
           "analyticsLabel": "Analytics",
           "analyticsTitle": "Analytics",
           "analyticsDescription": "Analytics and tracking integrations",
-          "authorizenetLabel": "Authorize.net",
-          "authorizenetTitle": "Authorize.net",
-          "authorizenetDescription": "Authorize.net payments",
           "shippingLabel": "Shipping",
           "shippingTitle": "Shipping",
           "shippingDescription": "Provide shipping rates",
-          "braintreeLabel": "Braintree",
-          "braintreeTitle": "Braintree",
-          "braintreeDescription": "Braintree payments",
           "catalogLabel": "Catalog",
           "catalogTitle": "Catalog",
           "catalogDescription": "Product Catalog",
           "coreLabel": "Settings",
           "coreTitle": "Dashboard",
           "coreDescription": "Reaction configuration",
-          "examplePaymentProviderLabel": "Example Payment",
-          "examplePaymentProviderDescription": "Example Payment Method",
+          "emailLabel": "Email",
+          "emailTitle": "Email",
+          "emailDescription": "Email settings",
           "i18NLabel": "i18n",
           "i18NTitle": "i18n",
           "i18NDescription": "Internationalization utilities",
@@ -53,9 +48,9 @@
           "ordersLabel": "Orders",
           "ordersTitle": "Orders",
           "ordersDescription": "Fulfill your orders",
-          "paypalLabel": "PayPal",
-          "paypalTitle": "PayPal",
-          "paypalDescription": "PayPal payments",
+          "revisionsLabel": "Revisions",
+          "revisionsTitle": "Revisions",
+          "revisionsDescription": "Revision control",
           "routingLabel": "Routing",
           "routingTitle": "Routing",
           "routingDescription": "Routing utilities",
@@ -65,14 +60,9 @@
           "socialLabel": "Social",
           "socialTitle": "Social",
           "socialDescription": "Social Channel configuration",
-          "taxesLabel": "Taxes",
-          "taxesTitle": "Taxes",
-          "taxesDescription": "Tax configuration",
           "themesLabel": "Themes",
           "themesTitle": "Themes",
           "themesDescription": "Themes and UI Components",
-          "stripeLabel": "Stripe",
-          "stripeDescription": "Stripe payments",
           "filtrationLabel": "Filtration",
           "filtrationDescription": "Products filtration for Reaction"
         },
@@ -88,22 +78,20 @@
         "settings": {
           "accountSettingsLabel": "Account Settings",
           "addShopMemberLabel": "Add Shop Member",
-          "authorizenetSettingsLabel": "Authorize.net Settings",
           "permissionsSettingsLabel": "Permissions",
-          "braintreeSettingsLabel": "Braintree Settings",
           "localizationAndI18NLabel": "Localization and i18n",
           "searchSettingsLabel": "Search Settings",
           "shopSettingsLabel": "Shop Settings",
           "socialSettingsLabel": "Social Settings",
           "shippingSettingsLabel": "Shipping Settings",
-          "stripeSettingsLabel": "Stripe Settings",
           "inventorySettingsLabel": "Inventory Settings",
           "analyticsSettingsLabel": "Analytics Settings",
-          "paypalSettingsLabel": "PayPal Settings",
           "reactionConnectLabel": "Reaction Connect",
-          "examplePaymentSettingsLabel": "Example Payment Settings",
           "productSettingsLabel": "Product Settings",
-          "taxSettingsLabel": "Tax Settings"
+          "productDetailsLabel": "Product Details",
+          "productRevisionsLabel": "Product Revisions",
+          "emailSettingsLabel": "Email Settings",
+          "catalogSettingsLabel": "Catalog Settings"
         },
         "userAccountDropdown": {
           "profileLabel": "Profile"
@@ -124,8 +112,13 @@
         "saveChanges": "Save Changes",
         "selectOne": "(Select One)",
         "cancel": "Cancel",
+        "success": "Success",
+        "error": "Error",
         "submit": "Submit",
         "delete": "Delete",
+        "deleted": "Deleted",
+        "archive": "Archive",
+        "archived": "Archived",
         "create": "Create",
         "close": "Close",
         "settings": "Settings",
@@ -171,17 +164,15 @@
         "general": "General",
         "address": "Address",
         "import": "Import",
-        "mail": "Mail",
         "localization": "Localization",
         "options": "Options",
+        "availableOptions": "Available Options",
         "paymentMethods": "Payment Methods",
         "externalServices": "External Services",
         "shopGeneralSettingsSaved": "Shop general settings saved.",
         "shopGeneralSettingsFailed": "Shop general settings update failed.",
         "shopAddressSettingsSaved": "Shop address settings saved.",
         "shopAddressSettingsFailed": "Shop address settings update failed.",
-        "shopMailSettingsSaved": "Shop mail settings saved.",
-        "shopMailSettingsFailed": "Shop mail settings update failed.",
         "shopExternalServicesSettingsSaved": "Shop external services settings saved.",
         "shopExternalServicesSettingsFailed": "Shop external services settings update failed.",
         "shopLocalizationSettingsSaved": "Shop localization settings saved.",
@@ -191,20 +182,72 @@
         "shopPaymentMethodsSaved": "Shop Payment Methods settings saved.",
         "shopPaymentMethodsFailed": "Shop Payment Methods settings update failed."
       },
-      "taxSettings": {
-        "noCustomTaxRatesFound": "No custom tax rates found.",
-        "shopCustomTaxRatesSaved": "Custom tax rate saved.",
-        "shopCustomTaxRatesFailed": "Error saving tax rate.",
-        "shopTaxMethodsSaved": "Saved tax method.",
-        "shopTaxMethodsFailed": "Failed saving tax method.",
-        "customRatesDescription": "Custom Rates",
-        "taxCode": "Tax Code",
-        "taxShipping": "Include Shipping",
-        "taxRate": "Rate",
-        "discountsIncluded": "Include Discounts",
-        "taxable": "Taxable",
-        "nottaxable": "Not Taxable",
-        "confirmRateDelete": "Confirm tax rate deletion"
+      "mail": {
+        "headers": {
+          "email": "Email",
+          "emailSettings": "Email Settings",
+          "config": "Configuration",
+          "settings": "SMTP Provider",
+          "status": "Status",
+          "actions": "Actions"
+        },
+        "settings": {
+          "service": "Service",
+          "user": "User",
+          "password": "Password",
+          "host": "Host",
+          "port": "Port",
+          "passwordShow": "Show",
+          "passwordHide": "Hide",
+          "fieldNotSet": "Not set",
+          "selectService": "Select a service...",
+          "custom": "custom"
+        },
+        "logs": {
+          "headers": {
+            "emailLogs": "Email Logs",
+            "email": "Email",
+            "subject": "Subject",
+            "sent": "Sent",
+            "status": "Status"
+          },
+          "noEmails": "No emails sent yet",
+          "limit": "Quantity",
+          "retry": "Retry",
+          "noneAvailble": "None available"
+        },
+        "alerts": {
+          "error": "Error: {{error}}",
+          "resendSuccess": "Attempting to resend email to {{email}}",
+          "missingService": "Please choose a mail provider service",
+          "userPassRequired": "SMTP user and password are required for {{service}}",
+          "allFieldsRequired": "All fields are required for a custom service!",
+          "portNaN": "The port must be a number!",
+          "connectionFailed": "Connection failed!",
+          "saveAnyway": "Do you want to save the settings anyway?",
+          "saveSuccess": "Mail settings saved.",
+          "saveFailed": "Failed to save mail settings. {{error}}",
+          "cantSendEmail": "Server Error: Can't send email notification.",
+          "emailSent": "Email notification sent."
+        },
+        "templates": {
+          "edit": "Edit email template",
+          "duplicate": "Duplicate email template",
+          "delete": "Delete email template",
+          "method": "Method",
+          "templateName": "Template Name",
+          "type": "Type",
+          "language": "Language",
+          "enabled": "Enabled",
+          "addTemplate": "Add email template",
+          "alerts": {
+            "removeEmailTemplateConfirm": "Are you sure you want to delete {{title}}?",
+            "removeEmailTemplateTitle": "Remove Email Template",
+            "duplicateEmailTemplateConfirm": "Are you sure you want to duplicate {{title}}?",
+            "duplicateEmailTemplateTitle": "Duplicate Email Template",
+            "failedToUpdate": "Failed to update template: {{err}}"
+          }
+        }
       },
       "header": {
         "tagsAdd": "Add tag",
@@ -217,6 +260,7 @@
         "tagsAdd": "Add tag",
         "tagsEdit": "Edit tags",
         "tagExists": "Tag already exists, or is empty.",
+        "tagInUse": "Tag is in use and cannot be deleted.",
         "dropFiles": "Drop files to upload",
         "addInventory": "Add Inventory",
         "barcode": "Barcode",
@@ -248,6 +292,8 @@
         "clonedAlert_plural": "Cloned {{product}}",
         "deletedAlert": "Deleted {{product}}",
         "deletedAlert_plural": "Deleted {{product}}",
+        "archivedAlert": "Archived {{product}}",
+        "archivedAlert_plural": "Archived {{product}}",
         "theProduct": "the product",
         "theSelectedProducts": "the selected products",
         "startTracking": "Start Tracking",
@@ -258,6 +304,7 @@
         "notFoundError": "This is not the product you were looking for."
       },
       "tags": {
+        "tagName": "Tag Name",
         "addTag": "Add Tag",
         "updateTag": "Update Tag",
         "addGroupTag": "Add Group Tag",
@@ -270,11 +317,12 @@
         "productSettings": "Product Settings",
         "product": "Product",
         "size": "Size",
-        "title": "Product title",
+        "title": "Title",
         "untitledProduct": "Untitled Product",
-        "pageTitle": "Product page title",
-        "vendor": "Product vendor",
-        "description": "Add a product description",
+        "parmalink": "Permalink",
+        "pageTitle": "Subtitle",
+        "vendor": "Vendor",
+        "description": "Description",
         "facebookMsg": "Facebook Message",
         "twitterMsg": "Twitter Message",
         "pinterestMsg": "Pinterest Message",
@@ -286,18 +334,27 @@
         "addVariantOption": "Add Option",
         "removeVariant": "Remove",
         "removeVariantConfirm": "Are you sure you want to delete {{title}}",
+        "restoreVariantConfirm": "Are you sure you want to restore {{title}} from the trash?",
+        "archiveVariantConfirm": "Are you sure you want to archive {{title}}",
         "thisVariant": "this variant",
         "thisOption": "this option",
         "duplicateProduct": "Duplicate Product",
         "pinProduct": "Pin Product",
         "toggleSize": "Toggle Size",
         "deleteProduct": "Delete Product",
-        "deleteThisProduct": "Delete this product?",
+        "restoreProduct": "Restore Product from Trash",
         "deleteSelectedProducts": "Delete selected products?",
+        "archiveThisProduct": "Archive this product?",
+        "archiveSelectedProducts": "Archive selected products?",
         "publish": "Publish",
         "moreOptions": "More Options",
+        "details": "Details",
         "noSelectedProducts": "No selected products. Use the ",
-        "orShiftCtrlCmd": " or shift|ctrl|cmd + click on products to select multiple. With shift you can select a contiguous range of products."
+        "orShiftCtrlCmd": " or shift|ctrl|cmd + click on products to select multiple. With shift you can select a contiguous range of products.",
+        "makeVisible": "Make Visible",
+        "hideProduct": "Hide Product",
+        "productIsVisible": "Product is visible",
+        "productIsNotVisible": "Product is not visible"
       },
       "productVariant": {
         "inventoryQuantity": "Quantity",
@@ -383,11 +440,6 @@
           "completed": "Completed",
           "canceled": "Canceled",
           "refunded": "Refunded"
-        },
-        "paymentProvider": {
-          "braintree": {
-            "braintreeSettlementDelay": "Braintree does not allow refunds until transactions are settled. This can take up to 24 hours. Please try again later."
-          }
         }
       },
       "orderShipping": {
@@ -454,12 +506,6 @@
       },
       "corePackageConfig": {
         "settings": {
-          "mail": {
-            "user": "Username",
-            "password": "Password",
-            "host": "Host",
-            "port": "Port"
-          },
           "public": {
             "allowGuestCheckout": "Allow Guest Checkout"
           },
@@ -480,7 +526,7 @@
         "namePlaceholder": "Shop Name",
         "description": "Description",
         "descriptionPlaceholder": "Describe your shop for SEO",
-        "descriptionTooltip": "This field used by meta description tag. It is allow to search engines to describe your shop",
+        "descriptionTooltip": "Meta Description for SEO",
         "email": "Email",
         "emailPlaceholder": "Primary Contact Email",
         "keywords": "Keywords",
@@ -512,6 +558,20 @@
           "isCommercial": "This is a commercial address."
         }
       },
+      "revisions": {
+        "isDisabled": "Revision control is disabled. Any changes will be published immediately.",
+        "isEnabled": "Revision control is enabled for Products. Any changes will be need to be published before being visible to customers.",
+        "unpublishedChanges": "Unpublished Changes",
+        "publishChanges": "Publish Changes",
+        "showChanges": "Show Changes",
+        "hideChanges": "Hide Changes",
+        "discardChanges": "Discard Changes",
+        "changedPublished": "Changes published successfully",
+        "changesDiscarded": "Changes discarded successfully",
+        "noChanges": "No Changes",
+        "noChangesPublished": "There are no changes to publish",
+        "noChangesDiscarded": "There are no changes to discard"
+      },
       "address": {
         "country": "Country",
         "fullName": "Full name",
@@ -534,14 +594,6 @@
         "shippingOptions": "Shipping Options",
         "reviewPayment": "Review",
         "complete": "Complete"
-      },
-      "checkoutPayment": {
-        "addPaymentToCompleteOrder": "Add payment to complete order",
-        "processingError": "There was a problem with your payment.",
-        "completeYourOrder": "Complete your order",
-        "noPaymentMethods": "No payment methods are configured.",
-        "configureNow": "Configure now.",
-        "failedToPlaceOrder": "Failed to place order."
       },
       "checkoutReview": {
         "review": "Review"
@@ -635,9 +687,42 @@
       },
       "search": {
         "clearSearch": "Clear",
-        "noProductsFound": "No products found",
-        "searchInputLabel": "Search Reaction ",
-        "suggestedTags": "Suggested tags"
+        "noProductsFound": "No products found.",
+        "noOrdersFound": "No orders found.",
+        "noAccountsFound": "No accounts found.",
+        "searchInputLabel": "Search Reaction",
+        "suggestedTags": "Suggested tags",
+        "searchTypeProducts": "Products",
+        "searchTypeAccounts": "Accounts",
+        "searchTypeOrders": "Orders",
+        "accountSearchResults": {
+          "accountId": "Account ID",
+          "shopId": "Shop ID",
+          "firstName": "First Name",
+          "lastName": "Last Name",
+          "phone": "Phone",
+          "emails": "Email"
+        },
+        "orderSearchResults": {
+          "orderId": "Order ID",
+          "shopId": "Shop ID",
+          "shippingAddress": "Address",
+          "shippingCity": "City",
+          "shippingRegion": "Region",
+          "shippingCountry": "Country",
+          "shippingPhone": "Phone",
+          "shippingName": "Name",
+          "shippingStatus": "Status",
+          "billingAddress": "Address",
+          "billingCity": "City",
+          "billingRegion": "Region",
+          "billingCountry": "Country",
+          "billingPhone": "Phone",
+          "billingStatus": "Status",
+          "userEmails": "Email",
+          "orderDate": "Date",
+          "orderTotal": "Total"
+        }
       },
       "accountsUI": {
         "members": "Members",

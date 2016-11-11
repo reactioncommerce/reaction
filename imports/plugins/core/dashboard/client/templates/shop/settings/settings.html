@@ -86,54 +86,6 @@
       <div class="panel-heading">
         <div class="panel-title">
           <a
-            href="#mail"
-            aria-controls="mail"
-            role="button"
-            data-toggle="collapse"
-            data-parent="#shopSettingsAccordian"
-            data-i18n="shopSettings.mail">Mail</a>
-        </div>
-      </div>
-      <div id="mail" class="panel-collapse collapse" role="tabpanel" aria-labelledby="mail">
-        <div class="panel-body">
-          {{#autoForm collection=Collections.Packages schema=Schemas.CorePackageConfig
-          doc=packageData id="shopEditEmailForm" type="update"}}
-            {{> afQuickField name='settings.mail.user'}}
-            {{> afQuickField name='settings.mail.password'}}
-            {{> afQuickField name='settings.mail.host'}}
-            {{> afQuickField name='settings.mail.port'}}
-            {{> shopSettingsSubmitButton}}
-          {{/autoForm}}
-        </div>
-      </div>
-    </div>
-
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <div class="panel-title">
-          <a
-            href="#payment-methods"
-            aria-controls="paymentMethods"
-            role="button"
-            data-toggle="collapse"
-            data-parent="#shopSettingsAccordian"
-            data-i18n="shopSettings.paymentMethods">Payment Methods</a>
-        </div>
-      </div>
-      <div id="payment-methods" class="panel-collapse collapse" role="tabpanel" aria-labelledby="paymentMethods">
-        <div class="panel-body">
-          {{#autoForm collection=Collections.Shops doc=shop id="shopEditPaymentMethodsForm" type="update"
-          autosave=true}}
-            {{> afQuickField name='defaultPaymentMethod' options=paymentMethodOptions}}
-          {{/autoForm}}
-        </div>
-      </div>
-    </div>
-
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <div class="panel-title">
-          <a
             href="#options"
             aria-controls="options"
             role="button"

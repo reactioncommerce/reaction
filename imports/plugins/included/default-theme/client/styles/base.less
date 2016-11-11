@@ -4,6 +4,10 @@ html, body {
   letter-spacing: @letter-spacing;
 }
 
+body {
+  // margin-top: 50px;
+}
+
 main {
   min-height: 80vh;
   // padding: 20px 60px 135px 60px;
@@ -12,6 +16,7 @@ main {
 }
 
 .container-main {
+  box-sizing: content-box;
   padding: 20px 60px 20px 60px;
 
   @media only screen and (max-width: @screen-sm-max) {
@@ -75,7 +80,20 @@ h3 {
   font-weight: @headings-font-weight-h3;
 }
 
+a {
+  cursor: pointer;
+  &:focus, &:hover {
+    text-decoration: none;
+  }
+}
 
+// Truncate and add an ellipsis when text extends
+// beyond the bounds of its parent container
+.truncate {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
 
 /* Badge Colors
 // Contextual variations of badges

@@ -1,13 +1,11 @@
 [{
-  "language": "中文(简体)",
+  "language": "Chinese",
   "i18n": "zh",
   "ns": "core",
   "translation": {
     "core": {
       "languages": {
-        "select": "选择语言",
-        "english": "English",
-        "chinese": "中文(简体)"
+        "select": "选择语言"
       },
       "admin": {
         "shortcut": {
@@ -17,37 +15,101 @@
           "accountsLabel": "账户"
         },
         "dashboard": {
-          "coreLabel": "核心",
-          "coreDescription": "Reaction Commerce 核心功能",
-          "coreTitle": "控制台",
-          "ordersLabel": "订单",
-          "ordersDescription": "执行订单",
-          "importLabel": "导入",
-          "importDescription": "支持导入和迁移",
           "accountsLabel": "账户",
+          "accountsTitle": "帐户",
           "accountsDescription": "管理会员如何登录",
-          "socialLabel": "社交媒体",
-          "socialDescription": "分享给社交媒体",
-          "basicShippingLabel": "基本运输",
-          "basicShippingDescription": "使用固定费率计算运费",
-          "inventoryLabel": "库存",
-          "inventoryDescription": "基本库存管理",
           "analyticsLabel": "分析",
+          "analyticsTitle": "分析",
           "analyticsDescription": "事件跟踪与分析",
-          "paypalLabel": "PayPal",
-          "paypalDescription": "用PayPal付款",
+          "authorizenetLabel": "Authorize.net",
+          "authorizenetTitle": "Authorize.net",
+          "authorizenetDescription": "Authorize.net 付款",
+          "shippingLabel": "发货",
+          "shippingTitle": "发货",
+          "shippingDescription": "提供运费",
+          "braintreeLabel": "Braintree",
+          "braintreeTitle": "Braintree",
+          "braintreeDescription": "Braintree 付款",
+          "catalogLabel": "目录",
+          "catalogTitle": "目录",
+          "catalogDescription": "产品目录",
+          "coreLabel": "核心",
+          "coreTitle": "控制台",
+          "coreDescription": "Reaction Commerce 核心功能",
           "examplePaymentProviderLabel": "普通付款",
-          "examplePaymentProviderDescription": "普通付款方式"
+          "examplePaymentProviderDescription": "普通付款方式",
+          "emailLabel": "电子邮件",
+          "emailTitle": "电子邮件",
+          "emailDescription": "电子邮件设置",
+          "i18NLabel": "国际化",
+          "i18NTitle": "国际化",
+          "i18NDescription": "国际化实用程序",
+          "inventoryLabel": "库存",
+          "inventoryTitle": "库存",
+          "inventoryDescription": "基本库存管理",
+          "layoutLabel": "布局",
+          "layoutTitle": "布局",
+          "layoutDescription": "布局实用程序",
+          "connectLabel": "连接",
+          "connectTitle": "连接",
+          "connectDescription": "将 Reaction 作为部署服务连接",
+          "ordersLabel": "订单",
+          "ordersTitle": "订单",
+          "ordersDescription": "执行订单",
+          "paypalLabel": "PayPal",
+          "paypalTitle": "PayPal",
+          "paypalDescription": "用PayPal付款",
+          "revisionsLabel": "修改",
+          "revisionsTitle": "修改",
+          "revisionsDescription": "修改控制",
+          "routingLabel": "路线安排",
+          "routingTitle": "路线安排",
+          "routingDescription": "路线安排实用程序",
+          "searchLabel": "搜索",
+          "searchTitle": "搜索",
+          "searchDescription": "产品搜索",
+          "socialLabel": "社交媒体",
+          "socialTitle": "社交",
+          "socialDescription": "分享给社交媒体",
+          "themesLabel": "主题",
+          "themesTitle": "主题",
+          "themesDescription": "主题和界面组件",
+          "stripeLabel": "Stripe",
+          "stripeDescription": "Stripe 付款",
+          "filtrationLabel": "过滤",
+          "filtrationDescription": "Reaction 的产品过滤"
+        },
+        "groups": {
+          "appearance": "外观",
+          "connect": "连接",
+          "core": "核心",
+          "dashboard": "仪表板",
+          "misc": "杂项",
+          "paymentMethod": "支付服务提供商",
+          "utilities": "实用程序"
         },
         "settings": {
           "accountSettingsLabel": "账户设置",
+          "addShopMemberLabel": "添加商店成员",
+          "authorizenetSettingsLabel": "Authorize.net 设置",
+          "permissionsSettingsLabel": "权限",
+          "braintreeSettingsLabel": "Braintree 设置",
+          "localizationAndI18NLabel": "本地化与国际化",
+          "searchSettingsLabel": "搜索设置",
           "shopSettingsLabel": "商店设置",
           "socialSettingsLabel": "社交媒体设置",
           "shippingSettingsLabel": "运输方式设置",
+          "stripeSettingsLabel": "Stripe 设置",
           "inventorySettingsLabel": "库存管理设置",
           "analyticsSettingsLabel": "分析设置",
           "paypalSettingsLabel": "PayPal设置",
-          "genericPaymentSettingsLabel": "普通付款方式设置"
+          "reactionConnectLabel": "Reaction连接",
+          "examplePaymentSettingsLabel": "付款设置示例",
+          "productSettingsLabel": "产品设置",
+          "productDetailsLabel": "产品详情"
+        },
+        "userAccountDropdown": {
+          "profileLabel": "个人资料"
         }
       },
       "accounts": {
@@ -56,22 +118,33 @@
         "guests": "顾客"
       },
       "app": {
+        "add": "添加",
+        "editMode": "编辑模式",
+        "createContent": "创建内容",
+        "auto": "自动",
         "save": "保存",
         "saveAndContinue": "保存并继续",
         "saveChanges": "保存修改",
+        "selectOne": "（选择一个）",
         "cancel": "取消",
+        "success": "成功",
+        "error": "错误",
         "submit": "提交",
         "delete": "删除",
+        "deleted": "已删除",
+        "archive": "存档",
+        "archived": "已存档",
         "create": "创建",
         "close": "关闭",
         "settings": "设置",
         "loading": "加载中",
         "toggle": "切换",
+        "toggleEditMode": "切换编辑模式",
         "warning": "糟糕!",
         "unauthorizedMessage": "您没有权限看这些内容。",
+        "updateSettings": "更新设置",
         "monthOptions": "选择月份",
         "yearOptions": "选择年份",
-        "timezoneOptions": "选择时区",
         "shopSettings": "商店设置",
         "dashboard": "控制台",
         "print": "打印",
@@ -80,15 +153,96 @@
         "notFoundTitle": "糟糕！",
         "notFoundError": "网页找不到",
         "productNotFound": "找不到这个产品",
-        "loadMoreProducts": "载入更多产品"
+        "loadMoreProducts": "载入更多产品",
+        "noProductsFound": "未找到任何产品。"
+      },
+      "searchSettings": {
+        "productSearchSettings": {
+          "panelTitle": "产品搜索",
+          "includeTitle": "包括标题",
+          "includeDescription": "包括描述",
+          "includePageTitle": "包括页面标题",
+          "includeDetails": "包括详细信息",
+          "includeVendor": "包括供应商"
+        },
+        "orderSearchSettings": {
+          "panelTitle": "订单搜索设置"
+        },
+        "accountSearchSettings": {
+          "panelTitle": "帐户搜索设置"
+        },
+        "noSettings": "当前无可用的设置",
+        "settingsSaved": "搜索设置已保存",
+        "settingsfailed": "搜索设置更新失败"
       },
       "shopSettings": {
         "general": "通用",
         "address": "地址",
-        "mail": "邮件",
+        "import": "导入",
         "localization": "本地化",
         "options": "选项",
-        "paymentMethods": "支付方式"
+        "availableOptions": "可用选项",
+        "paymentMethods": "支付方式",
+        "externalServices": "外部服务",
+        "shopGeneralSettingsSaved": "商店常规设置已保存。",
+        "shopGeneralSettingsFailed": "商店常规设置更新失败。",
+        "shopAddressSettingsSaved": "商店地址设置已保存。",
+        "shopAddressSettingsFailed": "商店地址设置更新失败。",
+        "shopExternalServicesSettingsSaved": "商店外部服务设置已保存。",
+        "shopExternalServicesSettingsFailed": "商店外部服务设置更新失败。",
+        "shopLocalizationSettingsSaved": "商店位置设置已保存。",
+        "shopLocalizationSettingsFailed": "商店位置设置更新失败。",
+        "shopOptionsSettingsSaved": "商店选项已保存。",
+        "shopOptionsSettingsFailed": "商店选项更新失败。",
+        "shopPaymentMethodsSaved": "商店付款方式设置已保存。",
+        "shopPaymentMethodsFailed": "商店付款方式设置更新失败。"
+      },
+      "mail": {
+        "headers": {
+          "email": "电子邮件",
+          "emailSettings": "电子邮件设置",
+          "config": "配置",
+          "settings": "邮件提供商",
+          "status": "状态",
+          "actions": "操作"
+        },
+        "settings": {
+          "service": "服务",
+          "user": "用户",
+          "password": "密码",
+          "host": "主机",
+          "port": "端口",
+          "passwordShow": "显示",
+          "passwordHide": "隐藏",
+          "fieldNotSet": "未设置",
+          "selectService": "选择一项服务...",
+          "custom": "自定义"
+        },
+        "logs": {
+          "headers": {
+            "emailLogs": "电子邮件日志",
+            "email": "电子邮件",
+            "subject": "主题",
+            "sent": "已发送",
+            "status": "状态"
+          },
+          "noEmails": "尚未发送任何电子邮件",
+          "limit": "数量",
+          "retry": "重试",
+          "noneAvailble": "无"
+        },
+        "alerts": {
+          "error": "错误：{{error}}",
+          "resendSuccess": "尝试重新发送电子邮件到 {{email}}",
+          "missingService": "请选择邮件提供商服务",
+          "userPassRequired": "{{service}}需要 SMTP 用户和密码",
+          "allFieldsRequired": "自定义服务的所有字段都必须填写！",
+          "portNaN": "端口必须为数字！",
+          "connectionFailed": "连接失败！",
+          "saveAnyway": "您依然想保存设置吗？",
+          "saveSuccess": "邮件设置已保存。",
+          "saveFailed": "保存邮件设置失败。{{error}}"
+        }
       },
       "header": {
         "tagsAdd": "添加标签",
@@ -99,6 +253,10 @@
         "whenYouAreDone": "（完成编辑时点击）",
         "tags": "标签",
         "tagsAdd": "添加标签",
+        "tagsEdit": "编辑标记",
+        "tagExists": "标记已存在或者为空。",
+        "tagInUse": "标签正在被使用，不能删除。",
+        "dropFiles": "拖放文件以上传",
         "addInventory": "增加库存",
         "barcode": "条形码",
         "confirmDeleteBarcode": "您确定要删除条形码？",
@@ -112,7 +270,9 @@
         "addToCart": "添加到购物车",
         "chooseOptions": "在添加到购物车之前请选择选项。",
         "outOfStock": "抱歉，这个产品没有库存了！",
-        "productDeleteError": "在删除产品时发生了错误。 ",
+        "productDeleteError": "删除{{product}}时出错。",
+        "deleteErrorTheProduct": "产品",
+        "deleteErrorTheSelectedProducts": "已选择的产品",
         "publishFirst": "在添加到购物车之前请先发布产品。",
         "quantityAbbreviation": "数量",
         "selectOption": "在添加到购物车之前请选择选项。",
@@ -121,26 +281,40 @@
         "soldOut": "已经售罄！",
         "backOrder": "Backorder",
         "limitedSupply": "供应有限",
-        "publishProductVisible": "产品可见",
-        "publishProductHidden": "产品隐藏",
+        "publishProductVisible": "{{product}}现在已显示",
+        "publishProductHidden": "{{product}}现在已隐藏",
+        "clonedAlert": "已复制{{product}}",
+        "clonedAlert_plural": "已复制{{product}}",
+        "deletedAlert": "已删除的{{product}}",
+        "deletedAlert_plural": "已删除的{{product}}",
+        "archivedAlert": "\t\n已存档{{product}}",
+        "archivedAlert_plural": "已存档{{product}}",
+        "theProduct": "产品",
+        "theSelectedProducts": "已选择的产品",
         "startTracking": "开始跟踪",
         "addBarcode": "添加条形码",
         "quantity": "数量",
         "quantityGreaterThanZero": "错误: 数量必须大于0。",
-        "clonedAlert": "克隆了",
-        "deletedAlert": "删除了",
         "notFoundTitle": "糟糕！",
         "notFoundError": "这不是您要找的产品。"
       },
       "tags": {
+        "tagName": "标记名称",
         "addTag": "增加标签",
+        "updateTag": "更新标记",
         "addGroupTag": "增加群标签",
         "addSubTag": "增加子标签",
         "removeTag": "删除标签",
         "createTag": "创建标签"
       },
       "productDetailEdit": {
+        "editOption": "编辑选项",
+        "productSettings": "产品设置",
+        "product": "产品",
+        "size": "尺寸",
         "title": "产品标题",
+        "untitledProduct": "未命名产品",
+        "parmalink": "永久链接",
         "pageTitle": "产品页标题",
         "vendor": "厂家",
         "description": "产品描述",
@@ -148,23 +322,65 @@
         "twitterMsg": "Twitter 信息",
         "pinterestMsg": "Pinterest 信息",
         "googleplusMsg": "Google+ 信息",
+        "editVariant": "编辑款式",
+        "variantOptions": "款式选项",
+        "variantDetails": "款式详细信息",
         "duplicateVariant": "复制款式",
         "addVariantOption": "添加款式",
         "removeVariant": "删除款式",
+        "removeVariantConfirm": "您确定要删除{{title}}吗？",
+        "restoreVariantConfirm": "您确定要从垃圾箱恢复{{title}}吗？",
+        "archiveVariantConfirm": "确定要把{{title}}存档吗",
+        "thisVariant": "此款式",
+        "thisOption": "此选项",
         "duplicateProduct": "复制产品",
         "pinProduct": "固定产品",
         "toggleSize": "切换大小",
         "deleteProduct": "删除产品",
+        "restoreProduct": "从垃圾箱恢复产品",
+        "deleteSelectedProducts": "删除选择的产品？",
+        "archiveThisProduct": "要把本产品存档吗？",
+        "archiveSelectedProducts": "要把选中的产品存档吗？",
         "publish": "发布",
-        "moreOptions": "更多选项"
+        "moreOptions": "更多选项",
+        "details": "详细信息",
+        "noSelectedProducts": "未选择产品。使用 ",
+        "orShiftCtrlCmd": " 或按 Shift|Ctrl|Cmd + 点击产品来选择多款产品。用 Shift 可以选择连续的产品。",
+        "makeVisible": "显示",
+        "hideProduct": "隐藏产品",
+        "productIsVisible": "产品已显示",
+        "productIsNotVisible": "产品未显示"
+      },
+      "productVariant": {
+        "inventoryQuantity": "数量",
+        "title": "标签",
+        "price": "价格",
+        "optionTitle": "选项",
+        "barcode": "条形码",
+        "compareAtPrice": "价格 (MSRP)",
+        "fulfillmentService": "履行服务",
+        "weight": "重量",
+        "taxable": "应税",
+        "inventoryManagement": "库存跟踪",
+        "inventoryManagementLabel": "在库存系统中注册产品并跟踪其状态",
+        "inventoryPolicy": "缺货时拒绝",
+        "inventoryPolicyLabel": "产品款式缺货时不进行销售",
+        "lowInventoryWarningThreshold": "警告 @",
+        "lowInventoryWarningThresholdLabel": "当数量达到下一个阈值时，提醒顾客产品即将售罄"
       },
       "variantList": {
         "moreOptions": "还有更多选项",
         "createVariant": "新建款式"
       },
       "gridPackage": {
-        "pkgEnabled": "现在可用",
-        "pkgDisabled": "现在不可用"
+        "enable": "启用",
+        "errorDisabling": "禁用套餐时出错： ",
+        "errorEnabling": "启用套餐时出错： ",
+        "details": "详细信息",
+        "disable": "禁用",
+        "disableConfirm": "您确定要禁用 {{app}} 吗？",
+        "pkgEnabled": "{{app}} 现在已启用。",
+        "pkgDisabled": "{{app}} 现在处于禁用状态。"
       },
       "cartDrawer": {
         "empty": "我们非常抱歉，您的购物车是空的。",
@@ -172,6 +388,7 @@
         "checkout": "立刻结算"
       },
       "cartSubTotals": {
+        "discount": "折扣",
         "head": "您的购物车",
         "items": "购买的商品",
         "subtotal": "小计",
@@ -193,9 +410,23 @@
         "paymentCaptured": "已收款",
         "capturedTotal": "已收款总额",
         "refundAmount": "退款金额",
+        "applyRefundToThisOrder": "是否将 {{currencySymbol}}{{refund}} 的退款应用于此订单？",
         "applyRefund": "退款",
+        "applyDiscount": "应用折扣",
         "adjustedTotal": "调整后的总金额",
+        "invalidDiscount": "折扣不能大于原来的总价",
+        "fullDiscountWarning": "应用 100% 折扣将向您的支付服务提供商作废/取消此订单",
+        "invalidRefund": "退款总额不能大于调整后的总额",
         "processor": "经手人",
+        "placed": "已下订单",
+        "on": "日期",
+        "status": "状态",
+        "completed": "已完成",
+        "processing": "正在处理",
+        "destination": "目的地",
+        "shipment": "发货",
+        "payment": "付款",
+        "itemsFrom": "商品来自",
         "filter": {
           "new": "新订单",
           "captured": "已收款",
@@ -204,19 +435,36 @@
           "completed": "已完成",
           "canceled": "已取消",
           "refunded": "已退款"
+        },
+        "paymentProvider": {
+          "braintree": {
+            "braintreeSettlementDelay": "Braintree 不允许在交易完成之前退款。这最长可能需要 24 小时。请稍后重试。"
+          }
         }
       },
       "orderShipping": {
         "shipTo": "发到",
-        "shipped": "已出货",
         "notShipped": "未发货",
         "noTracking": "不追踪",
         "tracking": "追踪",
-        "addtracking": "添加追踪",
+        "addTracking": "添加跟踪",
+        "itemsHaveBeenShipped": "商品已发货",
         "shipmentEmpty": "出货单中没有货品",
         "shipmentPacked": "所有货品已经打包",
+        "shipped": "已出货",
         "shippingNotifyCustomer": "通知客户他们的货品即将被发出。",
         "resendNotification": "重新发送出货通知"
+      },
+      "orderWorkflow": {
+        "fulfillment": "履行",
+        "orderDetails": "订单详细信息",
+        "summary": "概要",
+        "invoice": "账单",
+        "shipmentTracking": "发货跟踪"
+      },
+      "cartCheckout": {
+        "surprise": "哇！",
+        "emptyCheckoutCart": "您的购物车好像是空的！"
       },
       "cartCompleted": {
         "thankYou": "谢谢!",
@@ -241,15 +489,87 @@
         "addAddress": "添加地址",
         "chooseAddress": "选择收货地址和账单地址",
         "createDefault": "创建一个默认地址",
+        "edit": "编辑",
+        "removeAddress": "删除地址",
         "selectShippingAddress": "收货地址",
-        "selectBillingAddress": "账单地址"
+        "selectBillingAddress": "账单地址",
+        "cantRemoveThisAddress": "无法删除此地址：{{err}}"
       },
       "addressBookAdd": {
         "addAddress": "添加新的地址",
-        "createAddress": "创建您的默认地址"
+        "createAddress": "创建您的默认地址",
+        "failedToAddAddress": "未能添加地址：{{err}}"
       },
       "addressBookEdit": {
-        "editAddress": "编辑地址"
+        "editAddress": "编辑地址",
+        "somethingWentWrong": "出现了错误：{{err}}"
+      },
+      "corePackageConfig": {
+        "settings": {
+          "public": {
+            "allowGuestCheckout": "允许访客结账"
+          },
+          "openexchangerates": {
+            "appId": "Open Exchange Rates 应用 ID",
+            "refreshPeriod": "Open Exchange Rates 刷新周期",
+            "refreshPeriodPlaceholder": "即每 1 小时"
+          },
+          "google": {
+            "clientId": "Google 客户端 ID",
+            "apiKey": "Google API 密钥"
+          }
+        }
+      },
+      "shop": {
+        "defaultPaymentMethod": "默认付款方式",
+        "name": "姓名",
+        "namePlaceholder": "商店名称",
+        "description": "描述",
+        "descriptionPlaceholder": "向SEO描述您的商店",
+        "descriptionTooltip": "此字段由描述元标记使用。可用搜索引擎描述您的商店",
+        "email": "电子邮件",
+        "emailPlaceholder": "主联系人电子邮件",
+        "keywords": "关键字",
+        "keywordsPlaceholder": "SEO 元关键字",
+        "language": "基本语言",
+        "languageTooltip": "如果设备语言检测失败，将使用此种语言",
+        "timezone": "时区",
+        "timezoneOptions": "选择时区",
+        "currency": "基本币种",
+        "currencyTooltip": "商店默认币种",
+        "baseUOM": "基本度量单位",
+        "addressBook": {
+          "company": "公司",
+          "companyPlaceholder": "此公司名称",
+          "country": "国家/地区",
+          "fullName": "全名",
+          "fullNamePlaceholder": "您的单位名称",
+          "address1": "地址",
+          "address1Placeholder": "您的单位地址",
+          "address1Tooltip": "此地址将向访客显示",
+          "address2": "地址",
+          "address2Placeholder": "其他地址",
+          "postal": "邮编",
+          "city": "城市",
+          "region": "区域",
+          "phone": "电话",
+          "isShippingDefault": "是否将其设为您的默认发货地址？",
+          "isBillingDefault": "是否将其设为您的默认账单邮寄地址？",
+          "isCommercial": "这是商业地址。"
+        }
+      },
+      "revisions": {
+        "isDisabled": "版本控制已禁用。将立即发布任何更改。",
+        "unpublishedChanges": "未发布更改",
+        "publishChanges": "发布更改",
+        "showChanges": "显示更改",
+        "hideChanges": "隐藏更改",
+        "discardChanges": "放弃更改",
+        "changedPublished": "更改已成功发布",
+        "changesDiscarded": "成功放弃更改",
+        "noChanges": "无更改",
+        "noChangesPublished": "没有要发布的更改",
+        "noChangesDiscarded": "没有需要放弃的更改"
       },
       "address": {
         "country": "国家",
@@ -264,6 +584,9 @@
         "isBillingDefault": "设为您的账单地址",
         "isCommercial": "公司地址"
       },
+      "i18nSettings": {
+        "enabledLanguages": "语言"
+      },
       "checkoutProgressBar": {
         "login": "登录",
         "shippingBilling": "输入收货和账单地址",
@@ -276,7 +599,8 @@
         "processingError": "您的支付遇到了问题",
         "completeYourOrder": "完成您的订单",
         "noPaymentMethods": "未设置支付方式。",
-        "configureNow": "现在设置。"
+        "configureNow": "现在设置。",
+        "failedToPlaceOrder": "下订单失败。"
       },
       "checkoutReview": {
         "review": "核对订单"
@@ -287,14 +611,67 @@
         "configureNow": "现在设置。",
         "shipping": "运输"
       },
-      "shopEditForm": {
+      "shipping": {
+        "addShippingProvider": "添加配送服务提供商",
+        "editShippingProvider": "编辑配送服务提供商",
+        "addShippingMethod": "添加发货方式",
+        "editShippingMethod": "编辑发货方式",
+        "deleteShippingMethod": "删除发货方式",
+        "noSettingsForThisView": "此视图无设置",
+        "noShippingMethods": "未配置任何发货方式。",
+        "removeShippingMethodConfirm": "您确定要删除{{method}}吗？",
+        "removeShippingMethodTitle": "删除发货方式",
+        "shippingMethodDeleted": "此发货方式已删除。",
+        "removeShippingProvider": "删除配送服务提供商",
+        "removeShippingProviderConfirm": "您确定要删除{{provider}}吗？",
+        "shippingProviderSaved": "配送服务提供商已保存。",
+        "shippingProviderUpdated": "配送服务提供商数据已更新。",
+        "shippingMethodRateAdded": "已添加发货方式费用。",
+        "shippingMethodRateUpdated": "发货方式费用已更新。",
         "name": "姓名",
-        "email": "电子邮箱"
+        "label": "标签",
+        "group": "群组",
+        "cost": "成本",
+        "handling": "正在处理",
+        "rate": "费用",
+        "enabled": "已启用",
+        "disabled": "已禁用",
+        "addRate": "添加费用",
+        "updateRate": "更新{{name}}费用",
+        "addNewCondition": "添加新条件",
+        "deleteCondition": "删除条件",
+        "provider": {
+          "name": "服务代码",
+          "label": "公开标签",
+          "enabled": "已启用"
+        }
       },
-      "shopEditAdressForm": {
-        "company": "公司",
-        "fullname": "姓名",
-        "address1": "地址1"
+      "shippingMethod": {
+        "name": "方式名称",
+        "label": "公开标签",
+        "group": "群组",
+        "cost": "成本",
+        "handling": "正在处理",
+        "rate": "费用",
+        "enabled": "已启用",
+        "matchingCartRanges": "匹配购物车范围",
+        "validRanges": {
+          "begin": "开始",
+          "end": "结束"
+        },
+        "matchingLocales": "匹配区域设置",
+        "validLocales": {
+          "origination": "发件人",
+          "destination": "收件人",
+          "deliveryBegin": "预计发货时间",
+          "deliveryEnd": "预计交付时间"
+        }
+      },
+      "uom": {
+        "OZ": "盎司",
+        "LB": "英镑",
+        "GR": "克",
+        "KG": "千克"
       },
       "consoleIcon": {
         "iconTitle": "显示控制台",
@@ -305,15 +682,58 @@
         "text": "增加"
       },
       "social": {
+        "socialTitle": "社交",
         "facebook": "Facebook",
         "google": "Google",
         "github": "GitHub",
         "meetup": "Meetup",
+        "ok": "确定",
         "twitter": "Twitter",
+        "vk": "VK",
         "weibo": "微博"
+      },
+      "search": {
+        "clearSearch": "清除",
+        "noProductsFound": "未找到任何产品",
+        "noOrdersFound": "找不到订单。",
+        "noAccountsFound": "找不到账户。",
+        "searchInputLabel": "搜索 Reaction ",
+        "suggestedTags": "建议的标记",
+        "searchTypeProducts": "产品",
+        "searchTypeAccounts": "账户",
+        "searchTypeOrders": "订单",
+        "accountSearchResults": {
+          "accountId": "账户ID",
+          "shopId": "商店ID",
+          "firstName": "名",
+          "lastName": "姓",
+          "phone": "电话",
+          "emails": "电子邮件"
+        },
+        "orderSearchResults": {
+          "orderId": "订单ID",
+          "shopId": "商店ID",
+          "shippingAddress": "地址",
+          "shippingCity": "城市",
+          "shippingRegion": "地区",
+          "shippingCountry": "国家",
+          "shippingPhone": "电话",
+          "shippingName": "名称",
+          "shippingStatus": "状态",
+          "billingAddress": "地址",
+          "billingCity": "城市",
+          "billingRegion": "地区",
+          "billingCountry": "国家",
+          "billingPhone": "电话",
+          "billingStatus": "状态",
+          "userEmails": "电子邮件",
+          "orderDate": "日期",
+          "orderTotal": "总计"
+        }
       },
       "accountsUI": {
         "members": "会员",
+        "manage": "管理",
         "guest": "访客",
         "addMember": "添加会员",
         "add": "添加",
@@ -331,6 +751,7 @@
         "emailResetLink": "电子邮件重置链接",
         "forgotPassword": "重置密码",
         "ifYouAlreadyHaveAnAccount": "如果您已经有一个账户",
+        "name": "姓名",
         "newPassword": "新密码",
         "newPasswordAgain": "再输入一次新密码",
         "optional": "可选项",
@@ -343,22 +764,27 @@
         "setPassword": "设置密码",
         "sign": "注册",
         "signIn": "登录",
+        "signInService": "{{service}}登录",
         "signin": "登录",
         "signInWith": "登录",
         "signUpWith": "注册",
         "signedIn": "您已经登录",
         "signOut": "退出",
         "signUp": "注册",
+        "signUpButton": "注册",
         "signupCode": "注册码",
         "signUpWithYourEmailAddress": "以您的电子邮件注册",
         "terms": "使用条款",
         "updateYourPassword": "更新您的密码",
         "updatePasswordAndContinue": "更新并继续",
+        "updatedServiceConfiguration": "更新后的{{service}}的服务配置",
         "username": "用户名",
         "usernameOrEmail": "用户名或电子邮箱",
         "with": "以",
         "checkoutAsGuest": "不注册账号，直接结账",
         "role": "角色",
+        "yourOrders": "您的订单",
+        "addressBook": "通讯簿",
         "info": {
           "emailSent": "邮件已发出",
           "emailVerified": "邮箱已验证",
@@ -368,11 +794,22 @@
           "invitationSent": "邀请已发出",
           "sendInvitation": "发送邀请"
         },
+        "reactionUI": {
+          "editTheme": "编辑主题",
+          "duplicateTheme": "复制主题",
+          "duplicateThemeError": "无法复制主题",
+          "publishThemeError": "无法发布主题{{themeName}}",
+          "components": {
+            "navbar": "导航栏",
+            "button": "按钮"
+          }
+        },
         "error": {
           "emailRequired": "需要邮箱地址。",
           "passwordRequired": "需要输入密码。",
           "passwordMustBeAtLeast6CharactersLong": "密码最少包含6个字符。",
           "passwordMustContainRequirements": "密码至少要含有一个数字或符号。",
+          "usernameMinLength": "用户名必须至少长 3 个字符",
           "minChar": "密码最少包含6个字符。",
           "pwdsDontMatch": "密码有误。",
           "pwOneDigit": "密码至少包含一位数字。",
@@ -384,6 +821,9 @@
           "usernameRequired": "需要输入用户名。",
           "emailAlreadyExists": "邮箱已被注册。",
           "emailDoesntMatchTheCriteria": "邮箱不合格。",
+          "errorSendingEmail": "发送电子邮件时出错，配置可能有问题。",
+          "unableToSendInvitationEmail": "无法发送邀请电子邮件。",
+          "failedToLogout": "退出失败。",
           "invalidLoginToken": "登录令牌无效。",
           "loginForbidden": "登录被禁止。",
           "serviceUnknown": "未知服务。",
@@ -412,6 +852,12 @@
           "matchFailed": "匹配失败。",
           "unknownError": "未知错误。"
         }
+      },
+      "error": {
+        "nameRequired": "需要填写姓名。",
+        "isRequired": "{{field}} 为必填项。",
+        "mustBeNumber": "{{field}} 字段必须为数字。",
+        "variantFieldIsRequired": "需要款式 {{number}} {{field}}。"
       }
     }
   }

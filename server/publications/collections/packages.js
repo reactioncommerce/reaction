@@ -37,7 +37,9 @@ Meteor.publish("Packages", function (shopCursor) {
         "enabled": 1,
         "registry": 1,
         "layout": 1,
-        "settings.public": 1
+        "settings.general.enabled": 1,
+        "settings.public": 1,
+        "icon": 1
       }
     });
   }

@@ -32,6 +32,34 @@ const options = {
   htmlTag: document.documentElement
 };
 
+/**
+ * Simple is object check.
+ * @param {Object} item item to check if is an object
+ * @returns {boolean} return true if object
+ */
+function isObject(item) {
+  return (item && typeof item === "object" && !Array.isArray(item) && item !== null);
+}
+
+/**
+ * Helper for Deep merge two objects.
+ * @param {Object} target deep merge into this object
+ * @param {Object} source merge this object
+ * @returns {Object} return deep merged object
+ */
+function mergeDeep(target, source) {
+  if (isObject(target) && isObject(source)) {
+    Object.keys(source).forEach(key => {
+      if (isObject(source[key])) {
+        if (!target[key]) Object.assign(target, { [key]: {} });
+        mergeDeep(target[key], source[key]);
+      } else {
+        Object.assign(target, { [key]: source[key] });
+      }
+    });
+  }
+  return target;
+}
 
 Meteor.startup(() => {
   // use tracker autorun to detect language changes
@@ -55,17 +83,16 @@ Meteor.startup(() => {
           }
         }).fetch();
 
-        // map reduce translations into i18next formatting
-        const resources = translations.reduce(function (x, y) {
-          const ns = Object.keys(y.translation)[0];
-          // first creating the structure, when add additional namespaces
-          if (x[y.i18n]) {
-            x[y.i18n][ns] = y.translation[ns];
-          } else {
-            x[y.i18n] = y.translation;
-          }
-          return x;
-        }, {});
+        //
+        // reduce and merge translations
+        // into i18next resource format
+        //
+        let resources = {};
+        translations.forEach(function (translation) {
+          const resource = {};
+          resource[translation.i18n] = translation.translation;
+          resources = mergeDeep(resources, resource);
+        });
 
         //
         // initialize i18next
@@ -80,14 +107,11 @@ Meteor.startup(() => {
             debug: false,
             ns: packageNamespaces, // translation namespace for every package
             defaultNS: "core", // reaction "core" is the default namespace
+            fallbackNS: packageNamespaces,
             lng: language, // user session language
             fallbackLng: shop ? shop.language : null, // Shop language
             resources: resources
-            // saveMissing: true,
-            // missingKeyHandler: function (lng, ns, key, fallbackValue) {
-            //   Meteor.call("i18n/addTranslation", lng, ns, key, fallbackValue);
-            // }
-          }, (err, t) => {
+          }, () => {
             // someday this should work
             // see: https://github.com/aldeed/meteor-simple-schema/issues/494
             for (const schema in _.omit(Schemas, "__esModule")) {
@@ -105,7 +129,7 @@ Meteor.startup(() => {
             $elements = $("[data-i18n]").localize();
 
             // apply language direction to html
-            if (t("languageDirection") === "rtl") {
+            if (i18next.dir(language) === "rtl") {
               return $("html").addClass("rtl");
             }
             return $("html").removeClass("rtl");

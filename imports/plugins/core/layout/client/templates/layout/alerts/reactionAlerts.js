@@ -67,9 +67,14 @@ Object.assign(Alerts, {
         type: "info",
         ...titleOrOptions
       }).then((isConfirm) => {
-        if (isConfirm === true) {
+        if (isConfirm === true && typeof messageOrCallback === "function") {
           messageOrCallback(isConfirm);
         }
+      }).catch(function (err) {
+        if (err === "cancel" || err === "overlay" || err === "timer") {
+          return undefined; // Silence error
+        }
+        throw err;
       });
     }
 
@@ -82,11 +87,14 @@ Object.assign(Alerts, {
       type: "info",
       ...options
     }).then((isConfirm) => {
-      if (isConfirm === true) {
-        if (callback) {
-          callback(isConfirm);
-        }
+      if (isConfirm === true && typeof callback === "function") {
+        callback(isConfirm);
       }
+    }).catch(function (err) {
+      if (err === "cancel" || err === "overlay" || err === "timer") {
+        return undefined; // Silence error
+      }
+      throw err;
     });
   },
 

@@ -6,6 +6,9 @@ import { Jobs, Packages, Shops } from "/lib/collections";
 import { Hooks, Logger } from "/server/api";
 import ProcessJobs from "/server/jobs";
 import { getRegistryDomain } from "./setDomain";
+import { registerTemplate } from "./templates";
+import { sendVerificationEmail } from "./accounts";
+import { getMailUrl } from "./email/config";
 
 export default {
 
@@ -29,7 +32,7 @@ export default {
     // for initilial permissions configuration.
     this.createDefaultAdminUser();
     // hook after init finished
-    Hooks.Events.run("afterCoreInit", this);
+    Hooks.Events.run("afterCoreInit");
 
     Logger.info("Reaction.init() has run");
 
@@ -42,6 +45,23 @@ export default {
     const registeredPackage = this.Packages[packageInfo.name] =
       packageInfo;
     return registeredPackage;
+  },
+
+  registerTemplate(templateInfo, shopIds) {
+    if (typeof shopIds === "string") {
+      // Register template with supplied, single shopId
+      registerTemplate(templateInfo, shopIds);
+    } else if (Array.isArray(shopIds)) {
+      // Register template for all supplied shopIds
+      for (const shopId of shopIds) {
+        registerTemplate(templateInfo, shopId);
+      }
+    }
+
+    // Otherwise template for all available shops
+    return Shops.find().forEach((shop) => {
+      registerTemplate(templateInfo, shop._id);
+    });
   },
 
   /**
@@ -121,43 +141,12 @@ export default {
     return Roles.getGroupsForUser(this.userId, "admin");
   },
 
-  configureMailUrl(user, password, host, port) {
-    const shopSettings = Packages.findOne({
-      shopId: this.getShopId(),
-      name: "core"
-    });
-
-    let shopMail;
-
-    if (shopSettings) {
-      shopMail = shopSettings.settings.mail || {};
-    }
-
-    let processUrl = process.env.MAIL_URL;
-    let settingsUrl = Meteor.settings.MAIL_URL;
-
-    if (user && password && host && port) {
-      const mailString = `smtp://${user}:${password}@${host}:${port}/`;
-      const mailUrl = processUrl = settingsUrl = mailString;
-      process.env.MAIL_URL = mailUrl;
-      return mailUrl;
-    } else if (shopMail && shopMail.user && shopMail.password && shopMail.host &&
-      shopMail.port) {
-      const mailString =
-        `smtp://${shopMail.user}:${shopMail.password}@${shopMail.host}:${shopMail.port}/`;
-      const mailUrl = processUrl = settingsUrl = mailString;
-      process.env.MAIL_URL = mailUrl;
-
-      Logger.info(`setting default mail url to: ${shopMail.host}`);
-      return mailUrl;
-    } else if (settingsUrl && !processUrl) {
-      const mailUrl = processUrl = settingsUrl;
-      process.env.MAIL_URL = mailUrl;
-      return mailUrl;
-    }
-    // return reasonable warning that we're not configured correctly
-    Logger.warn("Mail server not configured. Unable to send email.");
-    return false;
+  configureMailUrl() {
+    // maintained for legacy support
+    Logger.warn(
+      "Reaction.configureMailUrl() is deprecated. Please use Reaction.Email.getMailUrl() instead"
+    );
+    return getMailUrl();
   },
 
   getCurrentShopCursor() {
@@ -211,6 +200,18 @@ export default {
       fields: { emails: 1 }
     }).fetch()[0];
     return shop && shop.emails && shop.emails[0].address;
+  },
+
+  getShopSettings() {
+    const settings = Packages.findOne({
+      name: "core",
+      shopId: this.getShopId()
+    }) || {};
+    return settings.settings || {};
+  },
+
+  getPackageSettings(name) {
+    return Packages.findOne({ name, shopId: this.getShopId() }) || null;
   },
 
   /**
@@ -319,7 +320,7 @@ export default {
       try {
         // if server is not configured. Error in configuration
         // are caught, but admin isn't verified.
-        Accounts.sendVerificationEmail(accountId);
+        sendVerificationEmail(accountId);
       } catch (error) {
         Logger.warn(error, "Unable to send admin account verification email.");
       }

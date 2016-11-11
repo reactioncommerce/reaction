@@ -66,11 +66,9 @@ Template.productGrid.events({
 
     Session.set("productGrid/selectedProducts", _.uniq(selectedProducts));
 
-    const productCursor = Template.currentData().products;
+    const products = Template.currentData().products;
 
-    if (productCursor) {
-      const products = productCursor.fetch();
-
+    if (products) {
       const filteredProducts = _.filter(products, (product) => {
         return _.includes(selectedProducts, product._id);
       });

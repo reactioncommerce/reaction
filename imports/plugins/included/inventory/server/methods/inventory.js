@@ -42,7 +42,7 @@ export function registerInventory(product) {
       const newQty = variant.inventoryQuantity || 0;
       let i = inventoryVariantCount + 1;
 
-      Logger.info(
+      Logger.debug(
         `inserting ${newQty - inventoryVariantCount
           } new inventory items for ${variant._id}`
       );

@@ -1,5 +1,5 @@
 [{
-  "language": "Български",
+  "language": "Bulgarian",
   "i18n": "bg",
   "ns": "core",
   "translation": {
@@ -22,7 +22,6 @@
         "unauthorizedMessage": "Нямате разрешение да видите това съдържание.",
         "monthOptions": "Изберете месец",
         "yearOptions": "Изберете година",
-        "timezoneOptions": "Изберете времева зона",
         "shopSettings": "Настройки на магазина",
         "dashboard": "Табло",
         "print": "Принтирай"
@@ -123,23 +122,14 @@
         "adjustedTotal": "Корегирана сума",
         "processor": "Начин за плащане"
       },
-      "filter": {
-        "new": "Нов",
-        "captured": "Заплащането е завършено",
-        "shipped": "Изпратено",
-        "completed": "Завършено",
-        "canceled": "Прекратено",
-        "refunded": "Възобновено"
-      },
       "orderShipping": {
         "shipTo": "Изпрати до",
-        "shipped": "Изпратено",
         "notShipped": "Още не е изпратено",
         "noTracking": "Без проследяване",
         "tracking": "Проследяване",
-        "addtracking": "Добави проследяване",
         "shipmentEmpty": "В поръчката няма продукти",
         "shipmentPacked": "Всички продукти са опаковани",
+        "shipped": "Изпратено",
         "shippingNotifyCustomer": "Съобщи на потребителя, че поръчката ще им бъде изпратена.",
         "resendNotification": "Изпрати съобщението за поръчката отново"
       },
@@ -224,15 +214,6 @@
         "noShippingMethods": "Не е избран начин за доставка.",
         "configureNow": "Конфигурирайте сега.",
         "shipping": "доставка"
-      },
-      "shopEditForm": {
-        "name": "Име",
-        "email": "Електронна поща"
-      },
-      "shopEditAdressForm": {
-        "company": "Компания",
-        "fullname": "Пълно име",
-        "address1": "Адрес 1"
       },
       "consoleIcon": {
         "iconTitle": "Преглед на конзолата",

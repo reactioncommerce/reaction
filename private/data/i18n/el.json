@@ -1,5 +1,5 @@
 [{
-  "language": "Ελληνικά",
+  "language": "Greek",
   "i18n": "el",
   "ns": "core",
   "translation": {
@@ -151,15 +151,6 @@
         "noShippingMethods": "Δεν υπάρχουν τρόποι αποστολής.",
         "configureNow": "Ρύθμιση τώρα.",
         "shipping": "Αποστολή"
-      },
-      "shopEditForm": {
-        "name": "Ονομα",
-        "email": "Email"
-      },
-      "shopEditAdressForm": {
-        "company": "Εταιρία",
-        "fullname": "Ονοματεπώνυμο",
-        "address1": "Διεύθυνση 1"
       },
       "consoleIcon": {
         "iconTitle": "Προβολή κονσόλας",

@@ -133,23 +133,6 @@ Template.shopSettings.helpers({
   addressBook: function () {
     const address = Shops.findOne().addressBook;
     return address[0];
-  },
-  paymentMethodOptions() {
-    const paymentMethods = Reaction.Apps({provides: "paymentMethod"});
-    const options = [{
-      label: i18next.t("app.auto"),
-      value: "none"
-    }];
-
-    if (paymentMethods && _.isArray(paymentMethods)) {
-      for (const method of paymentMethods) {
-        options.push({
-          label: i18next.t(method.i18nKeyLabel),
-          value: method.packageName
-        });
-      }
-    }
-    return options;
   }
 });
 
@@ -186,19 +169,6 @@ AutoForm.hooks({
 });
 
 AutoForm.hooks({
-  shopEditEmailForm: {
-    onSuccess: function () {
-      return Alerts.toast(i18next.t("shopSettings.shopMailSettingsSaved"),
-        "success");
-    },
-    onError: function (operation, error) {
-      return Alerts.toast(`${i18next.t("shopSettings.shopMailSettingsFailed")
-        } ${error}`, "error");
-    }
-  }
-});
-
-AutoForm.hooks({
   shopEditExternalServicesForm: {
     onSuccess: function () {
       return Alerts.toast(
@@ -223,20 +193,6 @@ AutoForm.hooks({
     onError: function (operation, error) {
       return Alerts.toast(
         `${i18next.t("shopSettings.shopOptionsSettingsFailed")} ${error}`, "error"
-      );
-    }
-  }
-});
-
-AutoForm.hooks({
-  shopEditPaymentMethodsForm: {
-    onSuccess: function () {
-      return Alerts.toast(i18next.t("shopSettings.shopPaymentMethodsSaved"),
-        "success");
-    },
-    onError: function (operation, error) {
-      return Alerts.toast(
-        `${i18next.t("shopSettings.shopPaymentMethodsFailed")} ${error}`, "error"
       );
     }
   }
