@@ -14,6 +14,7 @@ import { RevisionApi } from "/imports/plugins/core/revisions/lib/api/revisions";
 
 Fixtures();
 
+
 describe("core product methods", function () {
   // we can't clean Products collection after each test from now, because we
   // have functions which called from async db operations callbacks. So, if we
@@ -112,6 +113,7 @@ describe("core product methods", function () {
       let variants = Products.find({ancestors: [product._id]}).fetch();
       expect(variants.length).to.equal(1);
       Meteor.call("products/createVariant", product._id);
+      Meteor._sleepForMs(500);
       variants = Products.find({ancestors: [product._id]}).fetch();
       expect(variants.length).to.equal(2);
       return done();
@@ -128,11 +130,11 @@ describe("core product methods", function () {
       expect(options.length).to.equal(2);
 
       Meteor.call("products/createVariant", variant._id);
+      Meteor._sleepForMs(500);
       options = Products.find({
         ancestors: { $in: [variant._id] }
       }).fetch();
       expect(options.length).to.equal(3);
-
       return done();
     });
 
@@ -164,21 +166,35 @@ describe("core product methods", function () {
       expect(updateProductSpy).to.not.have.been.called;
     });
 
-    it("should update individual variant by admin passing in full object", function (done) {
+    it("should not update individual variant by admin passing in full object", function (done) {
       sandbox.stub(Reaction, "hasPermission", () => true);
       const product = addProduct();
       let variant = Products.find({ ancestors: [product._id] }).fetch()[0];
       variant["title"] = "Updated Title";
       variant["price"] = 7;
-      Meteor.call("products/updateVariant", variant, () => {
-        variant = Products.find({ ancestors: [product._id] }).fetch()[0];
-        expect(variant.price).to.equal(7);
-        expect(variant.title).to.equal("Updated Title");
-        return done();
-      });
+      Meteor.call("products/updateVariant", variant);
+      variant = Products.find({ ancestors: [product._id] }).fetch()[0];
+      expect(variant.price).to.not.equal(7);
+      expect(variant.title).to.not.equal("Updated Title");
+
+      return done();
     });
 
-    it("should update individual variant by admin passing in partial object", function (done) {
+    it("should update individual variant revision by admin passing in full object", function (done) {
+      sandbox.stub(Reaction, "hasPermission", () => true);
+      const product = addProduct();
+      let variant = Products.find({ ancestors: [product._id] }).fetch()[0];
+      variant["title"] = "Updated Title";
+      variant["price"] = 7;
+      Meteor.call("products/updateVariant", variant);
+      let variantRevision = Revisions.find({ documentId: variant._id }).fetch()[0];
+      expect(variantRevision.documentData.price).to.equal(7);
+      expect(variantRevision.documentData.title).to.equal("Updated Title");
+
+      return done();
+    });
+
+    it("should not update individual variant by admin passing in partial object", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       let updatedVariant;
       const product = addProduct();
@@ -187,13 +203,11 @@ describe("core product methods", function () {
         _id: variant._id,
         title: "Updated Title",
         price: 7
-      }, () => {
-        updatedVariant = Products.findOne(variant._id);
-        expect(updatedVariant.price).to.equal(7);
-        expect(updatedVariant.title).to.equal("Updated Title");
-        expect(updatedVariant.optionTitle).to.equal(variant.optionTitle);
-        return done();
       });
+      updatedVariant = Products.findOne(variant._id);
+      expect(updatedVariant.price).to.not.equal(7);
+      expect(updatedVariant.title).to.not.equal("Updated Title");
+      expect(updatedVariant.optionTitle).to.equal(variant.optionTitle);
     });
 
     it("should update individual variant revision by admin passing in partial object", function () {
@@ -459,7 +473,7 @@ describe("core product methods", function () {
       sandbox.stub(Reaction, "hasPermission", () => false);
       const updateProductSpy = sandbox.spy(Products, "update");
       expect(() => Meteor.call("products/updateProductField",
-          "fakeId", "title", "Updated Title")).to.throw(Meteor.Error, /Access Denied/);
+        "fakeId", "title", "Updated Title")).to.throw(Meteor.Error, /Access Denied/);
       expect(updateProductSpy).to.not.have.been.called;
     });
 
@@ -833,7 +847,7 @@ describe("core product methods", function () {
         updatedAt: new Date()
       };
       expect(() => Meteor.call("products/updateProductPosition",
-          product._id, position, tag.slug)).to.not.throw(Meteor.Error, /Access Denied/);
+        product._id, position, tag.slug)).to.not.throw(Meteor.Error, /Access Denied/);
       const updatedProduct = Products.findOne(product._id);
       expect(updatedProduct.positions).to.be.undefined;
 
@@ -850,7 +864,7 @@ describe("core product methods", function () {
         updatedAt: new Date()
       };
       expect(() => Meteor.call("products/updateProductPosition",
-          product._id, position, tag.slug)).to.not.throw(Meteor.Error, /Access Denied/);
+        product._id, position, tag.slug)).to.not.throw(Meteor.Error, /Access Denied/);
       const updatedProductRevision = Revisions.findOne({ documentId: product._id });
       expect(updatedProductRevision.documentData.positions[tag.slug].position).to.equal(0);
 
@@ -867,7 +881,7 @@ describe("core product methods", function () {
         updatedAt: new Date()
       };
       expect(() => Meteor.call("products/updateProductPosition",
-          product._id, position, tag.slug)).to.not.throw(Meteor.Error, /Access Denied/);
+        product._id, position, tag.slug)).to.not.throw(Meteor.Error, /Access Denied/);
       Meteor.call("revisions/publish", product._id);
       const updatedProduct = Products.findOne(product._id);
       expect(updatedProduct.positions[tag.slug].position).to.equal(0);
