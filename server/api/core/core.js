@@ -56,7 +56,6 @@ export default {
    * @return {function} Registers template
    */
   registerTemplate(templateInfo, shopIds) {
-
     if (typeof shopIds === "string") {
       // Register template with supplied, single shopId
       registerTemplate(templateInfo, shopIds);
