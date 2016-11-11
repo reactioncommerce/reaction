@@ -1,7 +1,7 @@
 import { Reaction } from "/server/api";
 
 Reaction.registerPackage({
-  label: "Taxes",
+  label: "Codes",
   name: "discount-codes",
   icon: "fa fa-gift",
   autoEnable: true,
