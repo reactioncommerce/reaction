@@ -1,0 +1,28 @@
+[{
+  "language": "English",
+  "i18n": "en",
+  "ns": "reaction-templates",
+  "translation": {
+    "reaction-templates": {
+      "templates": {
+        "edit": "Edit email template",
+        "editingTemplate": "Editing {{name}} template",
+        "duplicate": "Duplicate email template",
+        "delete": "Delete email template",
+        "method": "Method",
+        "templateName": "Template Name mooo",
+        "type": "Type",
+        "language": "Language",
+        "enabled": "Enabled",
+        "addTemplate": "Add email template",
+        "alerts": {
+          "removeEmailTemplateConfirm": "Are you sure you want to deleted {{title}}?",
+          "removeEmailTemplateTitle": "Remove Email Template",
+          "duplicateEmailTemplateConfirm": "Are you sure you want to duplicate {{title}}?",
+          "duplicateEmailTemplateTitle": "Duplicate Email Template",
+          "failedToUpdate": "Failed to update template: {{err}}"
+        }
+      }
+    }
+  }
+}]
