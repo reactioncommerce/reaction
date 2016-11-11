@@ -29,30 +29,39 @@ class MediaItem extends Component {
     if (this.props.revision) {
       if (this.props.revision.changeType === "remove") {
         return (
-          <IconButton icon="fa fa-pencil-remove" />
+          <IconButton icon="fa fa-eraser" />
         );
       }
       return (
         <IconButton icon="fa fa-pencil-square-o" />
       );
     }
+    return undefined;
   }
 
   renderControls() {
     if (this.props.editable) {
+      // If we have a pending remove, don't show the remove button
+      if (!this.props.revision || this.props.revision.changeType !== "remove") {
+        return (
+          <div className="rui badge-container">
+            <IconButton
+              icon="fa fa-times"
+              onClick={this.handleRemoveMedia}
+            />
+            {this.renderRevision()}
+          </div>
+        );
+      }
       return (
-        <div className="rui badge-container">
-          <IconButton
-            icon="fa fa-times"
-            onClick={this.handleRemoveMedia}
-          />
-          {this.renderRevision()}
-        </div>
-      );
+          <div className="rui badge-container">
+            {this.renderRevision()}
+          </div>
+        );
     }
-
     return null;
   }
+
 
   get defaultSource() {
     return this.props.defaultSource || "/resources/placeholder.gif";
