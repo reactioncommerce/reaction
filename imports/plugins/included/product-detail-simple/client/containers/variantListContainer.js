@@ -81,6 +81,12 @@ class VariantListContainer extends Component {
     return (this.state && this.state.variants) || this.props.variants;
   }
 
+  handleCreateVariant = () => {
+    const selectedProduct =  ReactionProduct.selectedProduct();
+
+    Meteor.call("products/createVariant", selectedProduct._id);
+  }
+
   handleVariantClick = (event, variant, ancestors = -1) => {
     if (Reaction.isActionViewOpen()) {
       this.handleEditVariant(event, variant, ancestors);
@@ -162,6 +168,7 @@ class VariantListContainer extends Component {
           onMoveVariant={this.handleMoveVariant}
           onVariantClick={this.handleVariantClick}
           onVariantVisibiltyToggle={this.handleVariantVisibilityToggle}
+          onCreateVariant={this.handleCreateVariant}
           {...this.props}
           variants={this.variants}
         />

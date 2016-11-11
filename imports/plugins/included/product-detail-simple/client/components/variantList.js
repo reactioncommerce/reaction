@@ -1,7 +1,7 @@
 import React, { Component, PropTypes} from "react";
 import Variant from "./variant";
 import { EditContainer } from "/imports/plugins/core/ui/client/containers";
-import { Divider, Translation } from "/imports/plugins/core/ui/client/components";
+import { Divider, IconButton, Translation } from "/imports/plugins/core/ui/client/components";
 import { ChildVariant } from "./";
 
 class VariantList extends Component {
@@ -84,8 +84,11 @@ class VariantList extends Component {
   }
 
   renderChildVariants() {
+    let childVariants = [];
+    let divider;
+
     if (this.props.childVariants) {
-      return this.props.childVariants.map((childVariant, index) => {
+      childVariants = this.props.childVariants.map((childVariant, index) => {
         const media = this.props.childVariantMedia.filter((mediaItem) => {
           if (mediaItem.metadata.variantId === childVariant._id) {
             return true;
@@ -117,6 +120,19 @@ class VariantList extends Component {
       });
     }
 
+    if (childVariants.length) {
+      return [
+        <Divider
+          key="availableOptionsDivider"
+          i18nKeyLabel="productDetail.availableOptions"
+          label="Available Options"
+        />,
+        <div className="row variant-product-options" key="childVariantList">
+          {childVariants}
+        </div>
+      ];
+    }
+
     return null;
   }
 
@@ -129,14 +145,16 @@ class VariantList extends Component {
         />
         <ul className="variant-list list-unstyled" id="variant-list">
           {this.renderVariants()}
+          <div className="rui items flex">
+            <div className="rui item full justify center">
+              <IconButton
+                icon="fa fa-plus"
+                onClick={this.props.onCreateVariant}
+              />
+            </div>
+          </div>
         </ul>
-        <Divider
-          i18nKeyLabel="productDetail.availableOptions"
-          label="Available Options"
-        />
-        <div className="row variant-product-options">
-          {this.renderChildVariants()}
-        </div>
+        {this.renderChildVariants()}
       </div>
     );
   }
@@ -148,6 +166,7 @@ VariantList.propTypes = {
   displayPrice: PropTypes.func,
   editable: PropTypes.bool,
   isSoldOut: PropTypes.func,
+  onCreateVariant: PropTypes.func,
   onEditVariant: PropTypes.func,
   onMoveVariant: PropTypes.func,
   onVariantClick: PropTypes.func,
