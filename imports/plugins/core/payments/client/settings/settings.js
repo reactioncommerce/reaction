@@ -61,6 +61,9 @@ Template.paymentSettings.helpers({
   },
   Shops() {
     return Shops;
+  },
+  shop() {
+    return Shops.findOne(Reaction.getShopId());
   }
 });
 
