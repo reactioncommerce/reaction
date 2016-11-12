@@ -53,12 +53,15 @@
       <div class="panel-heading">Update {{name}} template</div>
       <div class="panel-body">
         <div class="col-md-12 form-group">
-          {{>afQuickField name='name' class="form-control" readonly=true}}
-          {{>afQuickField name='title' class="form-control"}}
-
           {{>afQuickField name='subject' class="form-control"}}
+          {{>afQuickField name='name' class="form-control"}}
+          {{>afQuickField name='title' class="form-control"}}
           {{>afQuickField name='language' class="form-control"}}
-          {{>afQuickField name='template' label='HTML' class="form-control" type="textarea" rows="15"}}
+          {{>afQuickField name='template' label='HTML' class="form-control" type="textarea" rows="10"}}
+          {{>afQuickField name='enabled'}}
+          {{>afQuickField name='type' class="form-control"}}
+          {{>afQuickField name='parser' class="form-control"}}
+          {{>afQuickField name='_id' class="form-control"}}
         </div>
       </div>
 
