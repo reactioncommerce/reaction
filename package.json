@@ -30,6 +30,7 @@
     "braintree": "^1.41.0",
     "bunyan": "^1.8.1",
     "bunyan-format": "^0.2.1",
+    "bunyan-loggly": "^1.1.0",
     "classnames": "^2.2.5",
     "country-data": "^0.0.30",
     "css-annotation": "^0.6.2",
