@@ -1,23 +1,14 @@
 import { FlatButton } from "/imports/plugins/core/ui/client/components";
 import { Reaction } from "/client/api";
-import { Tags, Packages } from "/lib/collections";
-
-function getSearchPackage() {
-  const searchPackage = Packages.findOne({
-    shopId: Reaction.getShopId(),
-    "registry.provides": "ui-search",
-    enabled: true
-  });
-  return searchPackage;
-}
+import { Tags } from "/lib/collections";
 
 
 Template.CoreNavigationBar.onCreated(function () {
   this.state = new ReactiveDict();
-  const searchPackage = getSearchPackage();
-  if (searchPackage) {
+  const searchPackage = Reaction.Apps({provides: "ui-search"});
+  if (searchPackage.length) {
     this.state.set("searchEnabled", true);
-    this.state.set("searchTemplate", searchPackage.registry[0].template);
+    this.state.set("searchTemplate", searchPackage[0].template);
   } else {
     this.state.set("searchEnabled", false);
   }
