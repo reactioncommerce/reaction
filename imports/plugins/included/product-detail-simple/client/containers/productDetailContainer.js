@@ -9,6 +9,7 @@ import { ProductDetail } from "../components";
 import { SocialContainer, VariantListContainer } from "./";
 import { MediaGalleryContainer } from "/imports/plugins/core/ui/client/containers";
 import { DragDropProvider, TranslationProvider } from "/imports/plugins/core/ui/client/providers";
+import { StyleRoot } from "radium";
 
 class ProductDetailContainer extends Component {
   constructor(props) {
@@ -148,18 +149,20 @@ class ProductDetailContainer extends Component {
     return (
       <TranslationProvider>
         <DragDropProvider>
-          <ProductDetail
-            cartQuantity={this.state.cartQuantity}
-            mediaGalleryComponent={<MediaGalleryContainer media={this.props.media} />}
-            onAddToCart={this.handleAddToCart}
-            onCartQuantityChange={this.handleCartQuantityChange}
-            onViewContextChange={this.handleViewContextChange}
-            socialComponent={<SocialContainer />}
-            topVariantComponent={<VariantListContainer />}
-            onDeleteProduct={this.handleDeleteProduct}
-            onProductFieldChange={this.handleProductFieldChange}
-            {...this.props}
-          />
+          <StyleRoot>
+            <ProductDetail
+              cartQuantity={this.state.cartQuantity}
+              mediaGalleryComponent={<MediaGalleryContainer media={this.props.media} />}
+              onAddToCart={this.handleAddToCart}
+              onCartQuantityChange={this.handleCartQuantityChange}
+              onViewContextChange={this.handleViewContextChange}
+              socialComponent={<SocialContainer />}
+              topVariantComponent={<VariantListContainer />}
+              onDeleteProduct={this.handleDeleteProduct}
+              onProductFieldChange={this.handleProductFieldChange}
+              {...this.props}
+            />
+          </StyleRoot>
         </DragDropProvider>
       </TranslationProvider>
     );
@@ -225,9 +228,10 @@ function composer(props, onData) {
         // when top variant has no child variants we display only its price
         if (childVariants.length === 0) {
           priceRange = selectedVariant.price;
+        } else {
+          // otherwise we want to show child variants price range
+          priceRange = ReactionProduct.getVariantPriceRange();
         }
-        // otherwise we want to show child variants price range
-        priceRange = ReactionProduct.getVariantPriceRange();
       }
 
       let productRevision;
@@ -245,6 +249,7 @@ function composer(props, onData) {
       }
 
       onData(null, {
+        layout: "productDetailSimple",
         product: productRevision || product,
         priceRange,
         tags,

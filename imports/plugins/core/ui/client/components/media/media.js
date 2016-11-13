@@ -25,6 +25,19 @@ class MediaItem extends Component {
     }
   }
 
+  renderRevision() {
+    if (this.props.revision) {
+      if (this.props.revision.changeType === "remove") {
+        return (
+          <IconButton icon="fa fa-pencil-remove" />
+        );
+      }
+      return (
+        <IconButton icon="fa fa-pencil-square-o" />
+      );
+    }
+  }
+
   renderControls() {
     if (this.props.editable) {
       return (
@@ -33,6 +46,7 @@ class MediaItem extends Component {
             icon="fa fa-times"
             onClick={this.handleRemoveMedia}
           />
+          {this.renderRevision()}
         </div>
       );
     }
@@ -93,9 +107,11 @@ MediaItem.propTypes = {
   connectDropTarget: PropTypes.func,
   defaultSource: PropTypes.string,
   editable: PropTypes.bool,
+  metadata: PropTypes.object,
   onMouseEnter: PropTypes.func,
   onMouseLeave: PropTypes.func,
   onRemoveMedia: PropTypes.func,
+  revision: PropTypes.object,
   source: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
 };
 

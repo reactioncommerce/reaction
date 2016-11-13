@@ -93,7 +93,8 @@ export function Apps(optionHash) {
     enabled: 1,
     registry: 1,
     name: 1,
-    provides: 1
+    provides: 1,
+    icon: 1
   };
 
   // fetch the packages

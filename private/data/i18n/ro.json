@@ -71,9 +71,6 @@
           "socialLabel": "Social",
           "socialTitle": "Social",
           "socialDescription": "Configurarea canalelor sociale",
-          "taxesLabel": "Impozite",
-          "taxesTitle": "Impozite",
-          "taxesDescription": "Configurare impozitare",
           "themesLabel": "Teme",
           "themesTitle": "Teme",
           "themesDescription": "Teme și componente UI",
@@ -109,8 +106,7 @@
           "reactionConnectLabel": "Conectare Reaction",
           "examplePaymentSettingsLabel": "Exemplu setări de plată",
           "productSettingsLabel": "Setări produs",
-          "productDetailsLabel": "Detalii produs",
-          "taxSettingsLabel": "Setări impozite"
+          "productDetailsLabel": "Detalii produs"
         },
         "userAccountDropdown": {
           "profileLabel": "Profil"
@@ -247,21 +243,6 @@
           "saveSuccess": "Setările au fost salvate.",
           "saveFailed": "Nu s-au putut salva setările de e-mail. {{error}}"
         }
-      },
-      "taxSettings": {
-        "noCustomTaxRatesFound": "Nu s-au gasit valorile de impozitare personalizată.",
-        "shopCustomTaxRatesSaved": "Rata de impozitarea personalizată a fost salvată.",
-        "shopCustomTaxRatesFailed": "Eroare la salvarea ratei de impozitare.-",
-        "shopTaxMethodsSaved": "Metoda de impozitare a fost salvată.",
-        "shopTaxMethodsFailed": "Acutualizarea metodei de impozitare a eșuat.",
-        "customRatesDescription": "Tarife personalizate",
-        "taxCode": "Codul fiscal",
-        "taxShipping": "Includeți transportul",
-        "taxRate": "Rată",
-        "discountsIncluded": "Includeți reduceri ",
-        "taxable": "Impozabil",
-        "nottaxable": "Neimpozabil",
-        "confirmRateDelete": "Confirmați ștergerea ratei de impozitare"
       },
       "header": {
         "tagsAdd": "Adăugaţi o etichetă",

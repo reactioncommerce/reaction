@@ -3,7 +3,7 @@ import { formatPriceString } from "/client/api";
 
 class Currency extends Component {
   render() {
-    const amount = formatPriceString(this.props.amount);
+    const amount = formatPriceString(this.props.amount || this.props.priceRange);
 
     return (
       <span itemProp="price">{amount}</span>
@@ -12,7 +12,8 @@ class Currency extends Component {
 }
 
 Currency.propTypes = {
-  amount: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
+  amount: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  priceRange: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
 };
 
 export default Currency;
