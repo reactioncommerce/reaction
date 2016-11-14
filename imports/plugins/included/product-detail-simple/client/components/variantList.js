@@ -43,6 +43,22 @@ class VariantList extends Component {
 
   renderVariants() {
     let variants = [];
+    let addButton;
+
+    if (this.props.editable) {
+      addButton = (
+        <div className="rui items flex">
+          <div className="rui item full justify center">
+            <IconButton
+              i18nKeyTooltip="variantList.createVariant"
+              icon="fa fa-plus"
+              tooltip="Create Variant"
+              onClick={this.props.onCreateVariant}
+            />
+          </div>
+        </div>
+      );
+    }
 
     if (this.props.variants) {
       variants = this.props.variants.map((variant, index) => {
@@ -79,16 +95,7 @@ class VariantList extends Component {
     const variantList = (
       <ul className="variant-list list-unstyled" id="variant-list" key="variantList">
         {variants}
-        <div className="rui items flex">
-          <div className="rui item full justify center">
-            <IconButton
-              i18nKeyTooltip="variantList.createVariant"
-              icon="fa fa-plus"
-              tooltip="Create Variant"
-              onClick={this.props.onCreateVariant}
-            />
-          </div>
-        </div>
+        {addButton}
       </ul>
     );
 
