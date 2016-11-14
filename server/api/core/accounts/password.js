@@ -49,9 +49,6 @@ export function sendResetPasswordEmail(userId, optionalEmail) {
 
   Meteor._ensure(user, "services", "password").reset = tokenObj;
 
-  const tpl = "accounts/resetPassword";
-  SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl));
-
   // Get shop data for email display
   const shop = Shops.findOne(Reaction.getShopId());
 
@@ -103,10 +100,16 @@ export function sendResetPasswordEmail(userId, optionalEmail) {
     user: user
   };
 
+  // Compile Email with SSR
+  const tpl = "accounts/resetPassword";
+  const subject = "accounts/resetPassword/subject";
+  SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl));
+  SSR.compileTemplate(subject, Reaction.Email.getSubject(tpl));
+
   return Reaction.Email.send({
     to: email,
     from: Reaction.getShopEmail(),
-    subject: `${dataForEmail.shopName}: Here's your password reset link`,
+    subject: SSR.render(subject, dataForEmail),
     html: SSR.render(tpl, dataForEmail)
   });
 }
