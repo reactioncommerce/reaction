@@ -35,7 +35,8 @@ export const EmailTemplates = new SimpleSchema({
   },
   type: {
     type: String,
-    defaultValue: "email"
+    defaultValue: "email",
+    optional: true
   },
   provides: {
     type: String,
@@ -55,7 +56,8 @@ export const EmailTemplates = new SimpleSchema({
     optional: true
   },
   parser: {
-    type: String
+    type: String,
+    optional: true
   },
   language: {
     type: String,
@@ -67,7 +69,8 @@ export const EmailTemplates = new SimpleSchema({
     optional: true
   },
   title: {
-    type: String
+    type: String,
+    optional: true
   },
   subject: {
     type: String,
