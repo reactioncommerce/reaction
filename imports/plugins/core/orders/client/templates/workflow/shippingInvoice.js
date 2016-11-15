@@ -1,13 +1,13 @@
 require("money");
 require("autonumeric");
 import accounting from "accounting-js";
+import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { ReactiveVar } from "meteor/reactive-var";
 import { i18next, Logger, formatNumber, Reaction } from "/client/api";
 import { NumericInput } from "/imports/plugins/core/ui/client/components";
 import { Media, Orders, Shops } from "/lib/collections";
-import _ from "lodash";
 
 //
 // core order shipping invoice templates
