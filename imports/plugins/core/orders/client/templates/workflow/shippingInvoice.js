@@ -1,5 +1,3 @@
-require("money");
-require("autonumeric");
 import accounting from "accounting-js";
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
