@@ -355,10 +355,6 @@ Meteor.methods({
       SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl));
       SSR.compileTemplate(subject, Reaction.Email.getSubject(tpl));
 
-      console.log("____HEY____", SSR.compileTemplate(subject, Reaction.Email.getSubject(tpl)));
-      console.log("____HEY2____", SSR.render(subject, dataForEmail));
-
-
       Reaction.Email.send({
         to: email,
         from: `${shop.name} <${shop.emails[0].address}>`,
