@@ -185,9 +185,9 @@ export function resetRegisteredTemplates() {
 }
 
 
-export function InitTemplates() {
+export function initTemplates() {
   /**
-   * Hook to setup core i18n imports during Reaction init
+   * Hook to setup core Templates imports during Reaction init
    */
   Hooks.Events.add("afterCoreInit", () => {
     Assets.find({ type: "template" }).forEach((t) => {
