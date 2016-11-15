@@ -256,14 +256,11 @@ Import.package = function (pkg, shopId) {
  * @param {String} shopId The package data to be updated
  * @returns {undefined}
  */
-Import.template = function (templateInfo, shopId) {
+Import.template = function (templateInfo) {
   check(templateInfo, Object);
-  check(shopId, String);
 
   const key = {
     name: templateInfo.name,
-    isOriginalTemplate: templateInfo.isOriginalTemplate,
-    shopId: shopId,
     type: templateInfo.type || "template"
   };
 

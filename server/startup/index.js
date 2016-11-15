@@ -4,10 +4,13 @@ import Load from "./load-data";
 import Packages from "./packages";
 import Registry from "./registry";
 import Init from "./init";
+import { Templates } from "/server/api/core/templates";
+
 
 export default function () {
   Accounts();
   i18n();
+  Templates();
   Load();
   Packages();
   Registry();

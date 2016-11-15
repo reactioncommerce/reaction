@@ -3,7 +3,8 @@ import ReactDOMServer from "react-dom/server";
 import Handlebars from "handlebars";
 import Immutable from "immutable";
 import { Import } from "./import";
-import { Templates } from "/lib/collections";
+import { Assets, Shops, Templates } from "/lib/collections";
+import { Hooks, Logger, Reaction } from "/server/api";
 
 let registeredTemplates = Immutable.OrderedMap();
 let templateCache = Immutable.Map();
@@ -30,8 +31,6 @@ export function registerTemplateForMemoryCache(templateInfo, shopId) {
   // This allows us to have function and class references for the templates for
   // React and other custom parsers
   const templateInfoForMemoryCache = processTemplateInfoForMemoryCache(templateInfo);
-
-
   let shopTemplates = registeredTemplates.get(shopId);
 
   if (!shopTemplates) {
@@ -44,35 +43,23 @@ export function registerTemplateForMemoryCache(templateInfo, shopId) {
   return templateInfoForMemoryCache;
 }
 
-export function registerTemplateForDatabase(templateInfo, shopId, insertImmediately = false) {
+export function registerTemplateForDatabase(templateInfo) {
   // Process template info for use in a database
   // Namely, any literals like functions are stripped as they cannot be safetly,
   // and should not stored in the database
   const templateInfoForDatabase = processTemplateInfoForDatabase(templateInfo);
 
-  // Import the template, but marke it as original so it sould not be edited
-  // This way, the shop admins will always be able to revert to default,
-  // and it makes logic in the front end a little easier
-  Import.template({
-    ...templateInfoForDatabase,
-    isOriginalTemplate: true
-  }, shopId);
-
-  const foundTemplate = Templates.findOne({
-    name: templateInfoForDatabase.name,
-    isOriginalTemplate: false,
-    shopId: shopId
+  // Import template into the Assets collecton.
+  Assets.update({
+    type: "template",
+    name: templateInfoForDatabase.name
+  }, {
+    $set: {
+      content: JSON.stringify(templateInfoForDatabase)
+    }
+  }, {
+    upsert: true
   });
-
-  // Import a duplicate that is meant to be user editable, but only once if it
-  // does't exist.
-  if (!foundTemplate) {
-    Import.template(templateInfoForDatabase, shopId);
-  }
-
-  if (insertImmediately) {
-    Import.flush();
-  }
 
   // Return template data crafted for entry into a database
   return templateInfoForDatabase;
@@ -197,6 +184,24 @@ export function renderTemplateToStaticMarkup(template, props) {
 export function resetRegisteredTemplates() {
   registeredTemplates = Immutable.OrderedMap();
 }
+
+
+export function Templates() {
+  /**
+   * Hook to setup core i18n imports during Reaction init
+   */
+  Hooks.Events.add("onCoreInit", () => {
+    Assets.find({ type: "template" }).forEach((t) => {
+      Logger.debug(`Importing ${t.name} template`);
+      if (t.content) {
+        Reaction.Import.template(JSON.parse(t.content));
+      } else {
+        Logger.debug(`No template content found for ${t.name} asset`);
+      }
+    });
+  });
+}
+
 
 export default {
   get registeredTemplates() {
