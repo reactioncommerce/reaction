@@ -186,7 +186,7 @@ export function resetRegisteredTemplates() {
 }
 
 
-export function Templates() {
+export function InitTemplates() {
   /**
    * Hook to setup core i18n imports during Reaction init
    */
