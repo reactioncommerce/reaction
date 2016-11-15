@@ -452,12 +452,14 @@ Meteor.methods({
     }
 
     const tpl = "accounts/sendWelcomeEmail";
+    const subject = "accounts/sendWelcomeEmail/subject";
     SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl));
+    SSR.compileTemplate(subject, Reaction.Email.getSubject(tpl));
 
     Reaction.Email.send({
       to: userEmail,
       from: `${shop.name} <${shopEmail}>`,
-      subject: `You're In. Welcome to ${shop.name}!`,
+      subject: SSR.render(subject, dataForEmail),
       html: SSR.render(tpl, dataForEmail)
     });
 

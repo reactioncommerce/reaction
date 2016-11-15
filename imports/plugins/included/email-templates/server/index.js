@@ -20,7 +20,7 @@ Reaction.registerTemplate({
 
  // Invite new shop member
 Reaction.registerTemplate({
-  title: "Invite Shop Member",
+  title: "Accounts - Invite Shop Member",
   name: TemplatePaths.inviteShopMemberTemplate,
   type: "email",
   template: Reaction.Email.getTemplateFile(TemplatePaths.inviteShopMemberTemplate),
@@ -35,7 +35,7 @@ Reaction.registerTemplate({
 
 // Reset Password
 Reaction.registerTemplate({
-  title: "Reset Password",
+  title: "Accounts - Reset Password",
   name: TemplatePaths.resetPaswordTemplate,
   type: "email",
   template: Reaction.Email.getTemplateFile(TemplatePaths.resetPaswordTemplate),
@@ -44,12 +44,17 @@ Reaction.registerTemplate({
 
 // Welcome email for new account
 Reaction.registerTemplate({
-  title: "Welcome Email",
+  title: "Accounts - Welcome Email",
   name: TemplatePaths.welcomeEmailTemplate,
   type: "email",
   template: Reaction.Email.getTemplateFile(TemplatePaths.welcomeEmailTemplate),
   subject: "You're In. Welcome to {{shop.name}}!"
 });
+
+
+
+
+
 
 
 /*
