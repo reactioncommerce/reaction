@@ -384,7 +384,7 @@ class ProductAdmin extends Component {
 }
 
 ProductAdmin.propTypes = {
-  editFocus: PropTypes.func,
+  editFocus: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
   handleFieldBlur: PropTypes.func,
   handleFieldChange: PropTypes.func,
   handleProductFieldChange: PropTypes.func,
