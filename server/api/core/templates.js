@@ -2,8 +2,7 @@ import React from "react";
 import ReactDOMServer from "react-dom/server";
 import Handlebars from "handlebars";
 import Immutable from "immutable";
-import { Import } from "./import";
-import { Assets, Shops, Templates } from "/lib/collections";
+import { Assets, Templates } from "/lib/collections";
 import { Hooks, Logger, Reaction } from "/server/api";
 
 let registeredTemplates = Immutable.OrderedMap();
