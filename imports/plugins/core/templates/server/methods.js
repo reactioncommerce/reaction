@@ -43,7 +43,8 @@ export const methods = {
         name: doc.name,
         language: doc.language,
         template: doc.template,
-        subject: doc.subject
+        subject: doc.subject,
+        enabled: doc.enabled
       }
     });
   }

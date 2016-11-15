@@ -37,12 +37,12 @@ Template.emailTemplatesDashboard.helpers({
  * template emailTemplatesDashboard events
  */
 Template.emailTemplatesDashboard.events({
-    // "click [data-event-action=addShippingMethod]"(event) {
+    // "click [data-event-action=addEmailTemplate]"(event) {
     //   event.preventDefault();
     //
     //   Reaction.showActionView({
     //     label: i18next.t("shipping.addShippingMethod"),
-    //     template: "addShippingMethod"
+    //     template: "addEmailTemplate"
     //   });
     // }
 

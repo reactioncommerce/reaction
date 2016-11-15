@@ -471,28 +471,26 @@ Meteor.methods({
       throw new Meteor.Error("email-error", msg);
     }
 
+    // Compile Email with SSR
     let subject;
     let tpl;
 
-    // TODO: Alot of things here... this is VERY temporary, just want to merge the template things in
     if (action === "shipped") {
       tpl = "orders/shipped";
-      subject = shop.name + ": Your order has shipped - " + order._id;
+      subject = "orders/shipped/subject";
       SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl));
-      SSR.compileTemplate(subject, "{{shop.name}}: Your order has shipped - {{order._id}}");
+      SSR.compileTemplate(subject, Reaction.Email.getSubject(tpl));
     } else {
       tpl = `orders/${order.workflow.status}`;
-      subject = shop.name + ": Your order is confirmed";
+      subject = `orders/${order.workflow.status}/subject`;
       SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl));
-      SSR.compileTemplate(subject, "{{shop.name}}: Your order has shipped - {{order._id}}");
+      SSR.compileTemplate(subject, Reaction.Email.getSubject(tpl));
     }
 
     Reaction.Email.send({
       to: order.email,
       from: `${shop.name} <${shop.emails[0].address}>`,
       subject: SSR.render(subject, dataForEmail),
-      // subject: subject,
-      // subject: `Order update from ${shop.name}`,
       html: SSR.render(tpl, dataForEmail)
     });
 
