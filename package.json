@@ -1,7 +1,7 @@
 {
   "name": "reaction",
   "description": "Reaction is a modern reactive, real-time event driven ecommerce platform.",
-  "version": "0.17.1",
+  "version": "0.17.2",
   "main": "main.js",
   "directories": {
     "test": "tests"
@@ -25,6 +25,7 @@
     "autoprefixer": "^6.5.1",
     "autosize": "^3.0.17",
     "avalara-taxrates": "^1.0.1",
+    "babel-runtime": "^6.18.0",
     "bcrypt": "^0.8.7",
     "bootstrap": "^3.3.7",
     "braintree": "^1.41.0",
