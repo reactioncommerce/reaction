@@ -26,8 +26,7 @@ Template.emailTemplatesDashboard.helpers({
     if (instance.subscriptionsReady()) {
       return Templates.find({
         shopId: Reaction.getShopId(),
-        type: "email",
-        isOriginalTemplate: false
+        type: "email"
       });
     }
   }
