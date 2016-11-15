@@ -1,20 +1,20 @@
 import { SimpleSchema } from "meteor/aldeed:simple-schema";
 import { Templates } from "/lib/collections";
-
+import { shopIdAutoValue } from "/lib/collections/schemas/helpers";
 
 /**
  * EmailTemplates Schema
- * TODO: Update schema with final fields when known
 */
 
 export const EmailTemplates = new SimpleSchema({
+  shopId: {
+    type: String,
+    index: 1,
+    autoValue: shopIdAutoValue,
+    label: "Template ShopId"
+  },
   name: {
     type: String
-  },
-  isOriginalTemplate: {
-    type: Boolean,
-    optional: true,
-    defaultValue: false
   },
   priority: {
     type: Number,
