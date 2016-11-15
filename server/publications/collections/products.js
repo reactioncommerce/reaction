@@ -302,11 +302,11 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
             } else if (revision.docuentType === "image" || revision.documentType === "tag") {
               product = Products.findOne(revision.parentDocument);
             }
-
-            product.__revisions = [];
-
-            this.changed("Products", product._id, product);
-            this.removed("Revisions", revision._id, revision);
+            if (product) {
+              product.__revisions = [];
+              this.changed("Products", product._id, product);
+              this.removed("Revisions", revision._id, revision);
+            }
           }
         });
 
