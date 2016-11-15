@@ -189,7 +189,7 @@ export function InitTemplates() {
   /**
    * Hook to setup core i18n imports during Reaction init
    */
-  Hooks.Events.add("onCoreInit", () => {
+  Hooks.Events.add("afterCoreInit", () => {
     Assets.find({ type: "template" }).forEach((t) => {
       Logger.debug(`Importing ${t.name} template`);
       if (t.content) {
@@ -198,6 +198,7 @@ export function InitTemplates() {
         Logger.debug(`No template content found for ${t.name} asset`);
       }
     });
+    Reaction.Import.flush();
   });
 }
 
