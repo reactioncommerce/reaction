@@ -99,7 +99,9 @@ class VariantList extends Component {
       </ul>
     );
 
-    if (variants.length > 1 || variants.length === 0) {
+    if (variants.length === 0 && this.props.editable === false) {
+      return variantList;
+    } else if (variants.length > 1 || variants.length === 0) {
       return [
         <Divider
           i18nKeyLabel="productDetail.options"

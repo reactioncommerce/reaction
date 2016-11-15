@@ -248,7 +248,10 @@ function composer(props, onData) {
         editable = Reaction.hasPermission(["createProduct"]);
       }
 
+      const topVariants = ReactionProduct.getTopVariants();
+
       onData(null, {
+        variants: topVariants,
         layout: "productDetailSimple",
         product: productRevision || product,
         priceRange,
