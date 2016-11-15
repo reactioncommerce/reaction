@@ -27,6 +27,12 @@ Reaction.registerTemplate({
   subject: "You have been invited to join {{shop.name}}"
 });
 
+
+
+
+
+
+
 // Reset Password
 Reaction.registerTemplate({
   title: "Reset Password",
@@ -74,7 +80,7 @@ Reaction.registerTemplate({
   name: TemplatePaths.orderShipped,
   type: "email",
   template: Reaction.Email.getTemplateFile(TemplatePaths.orderShipped),
-  subject: "{{shop.name}}: Your order has shipped = {{order._id}}"
+  subject: "{{shop.name}}: Your order has shipped - {{order._id}}"
 });
 
 
@@ -120,7 +126,7 @@ Reaction.registerTemplate({
   name: TemplatePaths.coreOrderCreatedTemplate,
   type: "email",
   template: Reaction.Email.getTemplateFile(TemplatePaths.coreOrderCreatedTemplate),
-  subject: "{{shop.name}}: Your order has shipped = {{order._id}}"
+  subject: "{{shop.name}}: Your order has shipped - {{order._id}}"
 });
 
 
