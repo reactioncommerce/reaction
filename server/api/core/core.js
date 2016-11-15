@@ -47,22 +47,7 @@ export default {
     return registeredPackage;
   },
 
-  registerTemplate(templateInfo, shopIds) {
-    if (typeof shopIds === "string") {
-      // Register template with supplied, single shopId
-      registerTemplate(templateInfo, shopIds);
-    } else if (Array.isArray(shopIds)) {
-      // Register template for all supplied shopIds
-      for (const shopId of shopIds) {
-        registerTemplate(templateInfo, shopId);
-      }
-    }
-
-    // Otherwise template for all available shops
-    return Shops.find().forEach((shop) => {
-      registerTemplate(templateInfo, shop._id);
-    });
-  },
+  registerTemplate: registerTemplate,
 
   /**
    * hasPermission - server
