@@ -63,7 +63,7 @@ Template.productGridItems.helpers({
       "metadata.productId": this._id,
       "metadata.toGrid": 1
     }, {
-      sort: { "metadata.priority": 1, uploadedAt: 1 }
+      sort: { "metadata.priority": 1, "uploadedAt": 1 }
     });
 
     return media instanceof FS.File ? media : false;

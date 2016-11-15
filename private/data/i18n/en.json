@@ -339,6 +339,7 @@
         "productIsNotVisible": "Product is not visible"
       },
       "productVariant": {
+        "addVariantOptions": "Add options to enable 'Add to Cart' butto",
         "inventoryQuantity": "Quantity",
         "title": "Label",
         "price": "Price",

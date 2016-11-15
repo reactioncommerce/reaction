@@ -1,13 +1,11 @@
-require("money");
-require("autonumeric");
 import accounting from "accounting-js";
+import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { ReactiveVar } from "meteor/reactive-var";
-import { i18next, Logger, formatNumber } from "/client/api";
+import { i18next, Logger, formatNumber, Reaction } from "/client/api";
 import { NumericInput } from "/imports/plugins/core/ui/client/components";
 import { Media, Orders, Shops } from "/lib/collections";
-import _ from "lodash";
 
 //
 // core order shipping invoice templates
@@ -165,6 +163,15 @@ Template.coreOrderShippingInvoice.events({
     event.preventDefault();
     const order = instance.state.get("order");
     Meteor.call("orders/capturePayments", order._id);
+
+    if (order.workflow.status === "new") {
+      Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "processing", order);
+
+      Reaction.Router.setQueryParams({
+        filter: "processing",
+        _id: order._id
+      });
+    }
   },
 
   "change input[name=refund_amount], keyup input[name=refund_amount]": (event, instance) => {

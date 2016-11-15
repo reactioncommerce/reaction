@@ -21,7 +21,6 @@
   "dependencies": {
     "@reactioncommerce/authorize-net": "^1.0.7",
     "accounting-js": "^1.1.1",
-    "autonumeric": "^1.9.46",
     "autoprefixer": "^6.5.1",
     "autosize": "^3.0.17",
     "avalara-taxrates": "^1.0.1",
@@ -53,7 +52,6 @@
     "meteor-node-stubs": "^0.2.3",
     "moment": "^2.15.1",
     "moment-timezone": "^0.5.5",
-    "money": "^0.2.0",
     "node-geocoder": "^3.15.0",
     "nodemailer": "^2.6.4",
     "nodemailer-wellknown": "^0.2.0",
