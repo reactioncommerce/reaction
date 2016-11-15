@@ -10,12 +10,13 @@
  * Creates a GridFS store instance on the client, which is just a shell object
  * storing some info.
  */
-FS.Store.GridFS = function(name, options) {
-  var self = this;
-  if (!(self instanceof FS.Store.GridFS))
+FS.Store.GridFS = function (name, options) {
+  const self = this;
+  if (!(self instanceof FS.Store.GridFS))    {
     throw new Error('FS.Store.GridFS missing keyword "new"');
+  }
 
   return new FS.StorageAdapter(name, options, {
-    typeName: 'storage.gridfs'
+    typeName: "storage.gridfs"
   });
 };

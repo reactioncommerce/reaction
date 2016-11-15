@@ -21,7 +21,8 @@ class EmailLogs extends Component {
             <input
               defaultValue={this.props.limit || 10}
               onChange={this.props.updateLimit}
-              type="number"/>
+              type="number"
+            />
           </div>
         </div>
         <Table responsive>
@@ -45,7 +46,8 @@ class EmailLogs extends Component {
                   {email.status === "failed" || email.status === "waiting" ?
                     <Button
                       onClick={this.props.resend.bind(this, email)}
-                      data-i18n="mail.logs.retry">
+                      data-i18n="mail.logs.retry"
+                    >
                       Retry
                     </Button>
                     : <span data-i18n="mail.logs.noneAvailble">None available</span>}

@@ -26,8 +26,7 @@ Template.emailTemplatesDashboard.helpers({
     if (instance.subscriptionsReady()) {
       return Templates.find({
         shopId: Reaction.getShopId(),
-        type: "email",
-        isOriginalTemplate: false
+        type: "email"
       });
     }
   }
@@ -52,10 +51,10 @@ Template.emailTemplatesDashboard.events({
     event.stopPropagation();
 
     Alerts.alert({
-      title: i18next.t("mail.templates.alerts.removeEmailTemplateTitle"),
+      title: i18next.t("templates.alerts.removeEmailTemplateTitle"),
       type: "warning",
       showCancelButton: true,
-      confirmButtonText: i18next.t("mail.templates.alerts.removeEmailTemplateConfirm", { title: this.title })
+      confirmButtonText: i18next.t("templates.alerts.removeEmailTemplateConfirm", { title: this.title })
     }, (isConfirm) => {
       if (isConfirm) {
         Meteor.call("templates/email/remove", $(event.currentTarget).data("template-id"));
@@ -69,10 +68,10 @@ Template.emailTemplatesDashboard.events({
   //   event.stopPropagation();
   //
   //   Alerts.alert({
-  //     title: i18next.t("mail.templates.alerts.duplicateEmailTemplateTitle"),
+  //     title: i18next.t("templates.alerts.duplicateEmailTemplateTitle"),
   //     type: "warning",
   //     showCancelButton: true,
-  //     confirmButtonText: i18next.t("mail.templates.alerts.duplicateEmailTemplateConfirm", { title: this.title })
+  //     confirmButtonText: i18next.t("templates.alerts.duplicateEmailTemplateConfirm", { title: this.title })
   //   }, (isConfirm) => {
   //     if (isConfirm) {
   //       Meteor.call("templates/email/duplicate", $(event.currentTarget).data("template-id"), this);
@@ -85,7 +84,7 @@ Template.emailTemplatesDashboard.events({
     event.preventDefault();
 
     Reaction.showActionView({
-      label: i18next.t("mail.templates.edit"),
+      label: i18next.t("templates.edit"),
       data: this,
       template: "emailTemplateSettings"
     });
@@ -116,7 +115,7 @@ AutoForm.hooks({
 
       Meteor.call("templates/email/update", templateId, insertDoc, (error, result) => {
         if (error) {
-          Alerts.toast(i18next.t("mail.templates.alerts.failedToUpdate", { err: error.message }), "error");
+          Alerts.toast(i18next.t("templates.alerts.failedToUpdate", { err: error.message }), "error");
           this.done(new Error("Failed to update template: ", error));
           return false;
         }

@@ -237,9 +237,9 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
         }).observeChanges({
           added: (id, fields) => {
             const revisions = Revisions.find({
-              $or: [
-                {"documentId": id },
-                {"parentDocument": id}
+              "$or": [
+                {documentId: id },
+                {parentDocument: id}
               ],
               "workflow.status": {
                 $nin: [
@@ -253,9 +253,9 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
           },
           changed: (id, fields) => {
             const revisions = Revisions.find({
-              $or: [
-                {"documentId": id },
-                {"parentDocument": id}
+              "$or": [
+                {documentId: id },
+                {parentDocument: id}
               ],
               "workflow.status": {
                 $nin: [
@@ -302,11 +302,11 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
             } else if (revision.docuentType === "image" || revision.documentType === "tag") {
               product = Products.findOne(revision.parentDocument);
             }
-
-            product.__revisions = [];
-
-            this.changed("Products", product._id, product);
-            this.removed("Revisions", revision._id, revision);
+            if (product) {
+              product.__revisions = [];
+              this.changed("Products", product._id, product);
+              this.removed("Revisions", revision._id, revision);
+            }
           }
         });
 
