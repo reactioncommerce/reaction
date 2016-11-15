@@ -27,7 +27,7 @@ export function send(options) {
  */
 export function getSubject(template) {
   if (typeof template !== "string") {
-    const msg = "Reaction.Email.getTemplate() requires a template name";
+    const msg = "Reaction.Email.getSubject() requires a template name";
     Logger.error(msg);
     throw new Meteor.Error("no-template-name", msg);
   }
@@ -45,8 +45,7 @@ export function getSubject(template) {
   // check database for a matching template
   const tmpl = Templates.findOne({
     name: template,
-    language,
-    isOriginalTemplate: false
+    language
   });
 
   // use that template if found
@@ -84,8 +83,7 @@ export function getTemplate(template) {
   // check database for a matching template
   const tmpl = Templates.findOne({
     name: template,
-    language,
-    isOriginalTemplate: false
+    language
   });
 
   // use that template if found
