@@ -349,7 +349,6 @@ Meteor.methods({
         user: Meteor.user(),
 
 
-
         currentUserName,
         invitedUserName: name,
         url: Accounts.urls.enrollAccount(token)

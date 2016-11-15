@@ -131,6 +131,6 @@ export const methods = {
 
 // const variantNewId = Random.id();
 
-}
+};
 
 Meteor.methods(methods);

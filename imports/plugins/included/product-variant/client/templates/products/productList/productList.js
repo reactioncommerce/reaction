@@ -17,7 +17,7 @@ Template.productList.helpers({
       defaultImage = Media.findOne({
         "metadata.variantId": variantId
       }, {
-        sort: { "metadata.priority": 1, uploadedAt: 1 }
+        sort: { "metadata.priority": 1, "uploadedAt": 1 }
       });
     }
     if (defaultImage) {
