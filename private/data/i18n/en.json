@@ -229,24 +229,6 @@
           "saveFailed": "Failed to save mail settings. {{error}}",
           "cantSendEmail": "Server Error: Can't send email notification.",
           "emailSent": "Email notification sent."
-        },
-        "templates": {
-          "edit": "Edit email template",
-          "duplicate": "Duplicate email template",
-          "delete": "Delete email template",
-          "method": "Method",
-          "templateName": "Template Name",
-          "type": "Type",
-          "language": "Language",
-          "enabled": "Enabled",
-          "addTemplate": "Add email template",
-          "alerts": {
-            "removeEmailTemplateConfirm": "Are you sure you want to delete {{title}}?",
-            "removeEmailTemplateTitle": "Remove Email Template",
-            "duplicateEmailTemplateConfirm": "Are you sure you want to duplicate {{title}}?",
-            "duplicateEmailTemplateTitle": "Duplicate Email Template",
-            "failedToUpdate": "Failed to update template: {{err}}"
-          }
         }
       },
       "header": {
@@ -357,6 +339,7 @@
         "productIsNotVisible": "Product is not visible"
       },
       "productVariant": {
+        "addVariantOptions": "Add options to enable 'Add to Cart' butto",
         "inventoryQuantity": "Quantity",
         "title": "Label",
         "price": "Price",

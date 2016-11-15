@@ -19,13 +19,13 @@ Reaction.registerTemplate({
  */
 
  // Invite new shop member
- Reaction.registerTemplate({
-   title: "Invite Shop Member",
-   name: TemplatePaths.inviteShopMemberTemplate,
-   type: "email",
-   template: Reaction.Email.getTemplateFile(TemplatePaths.inviteShopMemberTemplate),
-   subject: "You have been invited to join {{shop.name}}"
- });
+Reaction.registerTemplate({
+  title: "Invite Shop Member",
+  name: TemplatePaths.inviteShopMemberTemplate,
+  type: "email",
+  template: Reaction.Email.getTemplateFile(TemplatePaths.inviteShopMemberTemplate),
+  subject: "You have been invited to join {{shop.name}}"
+});
 
 // Reset Password
 Reaction.registerTemplate({
@@ -44,15 +44,6 @@ Reaction.registerTemplate({
   template: Reaction.Email.getTemplateFile(TemplatePaths.welcomeEmailTemplate),
   subject: "You're In. Welcome to {{shop.name}}!"
 });
-
-
-
-
-
-
-
-
-
 
 
 /*
@@ -85,25 +76,6 @@ Reaction.registerTemplate({
   template: Reaction.Email.getTemplateFile(TemplatePaths.orderShipped),
   subject: "{{shop.name}}: Your order has shipped = {{order._id}}"
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 // Order workflow completed - old version
@@ -152,11 +124,6 @@ Reaction.registerTemplate({
 });
 
 
-
-
-
-
-
 // Still working through
 
 Reaction.registerTemplate({
@@ -190,18 +157,6 @@ Reaction.registerTemplate({
   template: Reaction.Email.getTemplateFile(TemplatePaths.coreOrderNewTemplate),
   subject: "This is the subject"
 });
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 /*

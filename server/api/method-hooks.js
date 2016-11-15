@@ -119,7 +119,7 @@ MethodHooks._initializeHook = function (mapping, methodName, hookFunction) {
     // Call after hooks, providing the result and the original arguments
     const afterHooks = MethodHooks._afterHooks[methodName];
     _.each(afterHooks, (afterHook, hooksProcessed) => {
-      let hookResult = afterHook.call(this, {
+      const hookResult = afterHook.call(this, {
         result: methodResult,
         error: methodError,
         arguments: args,

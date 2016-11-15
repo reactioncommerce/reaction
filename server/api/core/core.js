@@ -47,7 +47,14 @@ export default {
     return registeredPackage;
   },
 
+
+  /**
+   * registerTemplate
+   * registers Templates into the Tempaltes Collection
+   * @return {function} Registers template
+   */
   registerTemplate: registerTemplate,
+
 
   /**
    * hasPermission - server
