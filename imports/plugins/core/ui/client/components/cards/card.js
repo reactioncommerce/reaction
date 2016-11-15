@@ -17,10 +17,14 @@ class Card extends Component {
     });
   }
 
-  handleExpanderClick = () => {
+  handleExpanderClick = (event) => {
     this.setState({
       expanded: !this.state.expanded
     });
+
+    if (typeof this.props.onExpand === "function") {
+      this.props.onExpand(event, this);
+    }
   }
 
   render() {
@@ -61,7 +65,8 @@ Card.defaultProps = {
 Card.propTypes = {
   children: PropTypes.node,
   expandable: PropTypes.bool,
-  expanded: PropTypes.bool
+  expanded: PropTypes.bool,
+  onExpand: PropTypes.func
 };
 
 export default Card;

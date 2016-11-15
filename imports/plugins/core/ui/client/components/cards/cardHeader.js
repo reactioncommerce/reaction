@@ -52,6 +52,7 @@ CardHeader.defaultProps = {
 };
 
 CardHeader.propTypes = {
+  actAsExpander: PropTypes.bool,
   children: PropTypes.node,
   i18nKeyTitle: PropTypes.string,
   onClick: PropTypes.func,

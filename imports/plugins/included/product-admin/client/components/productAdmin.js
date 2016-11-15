@@ -46,7 +46,9 @@ class ProductAdmin extends Component {
     super(props);
 
     this.state = {
-      product: props.product
+      expandedCard: this.fieldGroupForFieldName(props.editFocus),
+      product: props.product,
+      viewProps: props.viewProps
     };
   }
 
@@ -59,9 +61,39 @@ class ProductAdmin extends Component {
       }
     }
 
+    const cardGroupName = this.fieldGroupForFieldName(nextProps.editFocus);
+
+    this.setState({
+      expandedCard: cardGroupName,
+      viewProps: nextProps.viewProps
+    });
+
     this.setState({
       product: nextProps.product
     });
+  }
+
+  fieldGroupForFieldName(field) {
+    // Other wise, if a field was passed
+    // const fieldName = this.state.viewProps.field;
+
+    let fieldName;
+
+    // If the field is an array of field name
+    if (Array.isArray(field) && field.length) {
+      // Use the first field name
+      fieldName = field[0];
+    } else {
+      fieldName = field;
+    }
+
+    const fieldData = fieldGroups[fieldName];
+
+    if (fieldData && fieldData.group) {
+      return fieldData.group;
+    }
+
+    return fieldName;
   }
 
   animateFieldFlash(fieldName) {
@@ -74,6 +106,12 @@ class ProductAdmin extends Component {
         {e: input, p: { backgroundColor: "#e2f2e2" }, o: { duration: 200 }},
         {e: input, p: { backgroundColor: "#fff" }, o: { duration: 100 }}
       ]);
+    }
+  }
+
+  handleCardExpand(cardName) {
+    if (this.props.onCardExpand) {
+      this.props.onCardExpand(cardName);
     }
   }
 
@@ -165,10 +203,7 @@ class ProductAdmin extends Component {
   }
 
   isExpanded(groupName) {
-    const fieldName = this.props.viewProps.field;
-    const field = fieldGroups[fieldName];
-
-    if (field && field.group === groupName) {
+    if (this.state.expandedCard && this.state.expandedCard === groupName) {
       return true;
     }
 
@@ -178,7 +213,10 @@ class ProductAdmin extends Component {
   render() {
     return (
       <CardGroup>
-        <Card expanded={this.isExpanded("productDetails")}>
+        <Card
+          expanded={this.isExpanded("productDetails")}
+          onExpand={this.handleCardExpand.bind(this, "productDetails")}
+        >
           <CardHeader
             actAsExpander={true}
             i18nKeyTitle="productDetailEdit.productSettings"
@@ -248,7 +286,10 @@ class ProductAdmin extends Component {
             />
           </CardBody>
         </Card>
-        <Card expanded={this.isExpanded("social")}>
+        <Card
+          expanded={this.isExpanded("social")}
+          onExpand={this.handleCardExpand.bind(this, "social")}
+        >
           <CardHeader
             actAsExpander={true}
             i18nKeyTitle="social.socialTitle"
@@ -298,7 +339,10 @@ class ProductAdmin extends Component {
           </CardBody>
         </Card>
 
-        <Card expanded={this.isExpanded("hashtags")}>
+        <Card
+          expanded={this.isExpanded("hashtags")}
+          onExpand={this.handleCardExpand.bind(this, "hashtags")}
+        >
           <CardHeader
             actAsExpander={true}
             i18nKeyTitle="productDetailEdit.tags"
@@ -315,7 +359,10 @@ class ProductAdmin extends Component {
           </CardBody>
         </Card>
 
-        <Card expanded={this.isExpanded("metafields")}>
+        <Card
+          expanded={this.isExpanded("metafields")}
+          onExpand={this.handleCardExpand.bind(this, "metafields")}
+        >
           <CardHeader
             actAsExpander={true}
             i18nKeyTitle="productDetailEdit.details"
@@ -337,10 +384,12 @@ class ProductAdmin extends Component {
 }
 
 ProductAdmin.propTypes = {
+  editFocus: PropTypes.func,
   handleFieldBlur: PropTypes.func,
   handleFieldChange: PropTypes.func,
   handleProductFieldChange: PropTypes.func,
   newMetafield: PropTypes.object,
+  onCardExpand: PropTypes.func,
   onDeleteProduct: PropTypes.func,
   onFieldChange: PropTypes.func,
   onMetaChange: PropTypes.func,
@@ -349,7 +398,8 @@ ProductAdmin.propTypes = {
   onProductFieldSave: PropTypes.func,
   onRestoreProduct: PropTypes.func,
   product: PropTypes.object,
-  revisonDocumentIds: PropTypes.arrayOf(PropTypes.string)
+  revisonDocumentIds: PropTypes.arrayOf(PropTypes.string),
+  viewProps: PropTypes.object
 };
 
 export default ProductAdmin;
