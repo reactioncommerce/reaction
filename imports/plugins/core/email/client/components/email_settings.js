@@ -41,7 +41,8 @@ class EmailSettings extends Component {
             componentClass="select"
             name="service"
             value={settings.service}
-            onChange={this.handleStateChange}>
+            onChange={this.handleStateChange}
+          >
             <option value="" data-i18n="mail.settings.selectService">Select a Service...</option>
             <option value="custom" data-i18n="mail.settings.custom">Custom</option>
             {providers.map((name, i) => (
@@ -57,14 +58,16 @@ class EmailSettings extends Component {
                 type="text"
                 name="host"
                 value={settings.host}
-                onChange={this.handleStateChange}/>
+                onChange={this.handleStateChange}
+              />
               <FieldGroup
                 label="Port"
                 i18n="mail.settings.port"
                 type="text"
                 name="port"
                 value={settings.port}
-                onChange={this.handleStateChange}/>
+                onChange={this.handleStateChange}
+              />
             </div>}
           <FieldGroup
             label="User"
@@ -72,14 +75,16 @@ class EmailSettings extends Component {
             type="text"
             name="user"
             value={settings.user}
-            onChange={this.handleStateChange}/>
+            onChange={this.handleStateChange}
+          />
           <FieldGroup
             label="Password"
             i18n="mail.settings.password"
             type="password"
             name="password"
             value={settings.password}
-            onChange={this.handleStateChange}/>
+            onChange={this.handleStateChange}
+          />
           <Button bsStyle="primary" className="pull-right" type="submit" disabled={isSaving}>
             {isSaving ?
                 <i className="fa fa-refresh fa-spin"/>
