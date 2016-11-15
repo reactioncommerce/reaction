@@ -47,30 +47,14 @@ export default {
     return registeredPackage;
   },
 
+
   /**
    * registerTemplate
    * registers Templates into the Tempaltes Collection
-   * @param {Array} templateInfo - Array of Template information
-   * @param {String} shopIds - String of shopId's to add template to
-   * @param {String} checkGroup group - default to shopId
    * @return {function} Registers template
    */
-  registerTemplate(templateInfo, shopIds) {
-    if (typeof shopIds === "string") {
-      // Register template with supplied, single shopId
-      registerTemplate(templateInfo, shopIds);
-    } else if (Array.isArray(shopIds)) {
-      // Register template for all supplied shopIds
-      for (const shopId of shopIds) {
-        registerTemplate(templateInfo, shopId);
-      }
-    }
+  registerTemplate: registerTemplate,
 
-    // Otherwise template for all available shops
-    return Shops.find().forEach((shop) => {
-      registerTemplate(templateInfo, shop._id);
-    });
-  },
 
   /**
    * hasPermission - server
