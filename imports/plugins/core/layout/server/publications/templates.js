@@ -10,7 +10,6 @@ Meteor.publish("Templates", () => {
   }
 
   return Templates.find({
-    isOriginalTemplate: false,
     shopId
   });
 });
