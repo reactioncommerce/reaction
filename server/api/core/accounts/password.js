@@ -164,15 +164,51 @@ export function sendVerificationEmail(userId, email) {
     }
   });
 
-  SSR.compileTemplate("verifyEmail", Reaction.Email.getTemplate("accounts/verify_email"));
-
   const shopName = Reaction.getShopName();
   const url = Accounts.urls.verifyEmail(token);
+
+  const dataForEmail = {
+    // Reaction Information
+    contactEmail: "hello@reactioncommerce.com",
+    homepage: Meteor.absoluteUrl(),
+    emailLogo: Meteor.absoluteUrl() + "resources/placeholder.gif",
+    copyrightDate: moment().format("YYYY"),
+    legalName: "Reaction Commerce",
+    physicalAddress: {
+      address: "2110 Main Street, Suite 207",
+      city: "Santa Monica",
+      region: "CA",
+      postal: "90405"
+    },
+    shopName: shopName,
+    socialLinks: {
+      facebook: {
+        link: "https://www.facebook.com/reactioncommerce"
+      },
+      github: {
+        link: "https://github.com/reactioncommerce/reaction"
+      },
+      instagram: {
+        link: "https://instagram.com/reactioncommerce"
+      }
+      twitter: {
+        link: "https://www.twitter.com/getreaction"
+      }
+    },
+    confirmationUrl: url,
+    userEmailAddress: address
+};
+
+  const tpl = "accounts/verifyEmail";
+  const subject = "accounts/verifyEmail/subject";
+
+  SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl));
+  SSR.compileTemplate(subject, Reaction.Email.getSubject(subject));
 
   return Reaction.Email.send({
     to: address,
     from: Reaction.getShopEmail(),
-    subject: `${shopName} - Verify your email`,
-    html: SSR.render("verifyEmail", { shopName, url, email: address })
+    subject: SSR.render(subject, { shopName, url, email: address }),
+    html: SSR.render(tpl, { shopName, url, email: address })
   });
 }
