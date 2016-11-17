@@ -15,7 +15,7 @@ export const inviteShopMemberTemplate = "accounts/inviteShopMember";
 export const resetPaswordTemplate = "accounts/resetPassword";
 export const welcomeEmailTemplate = "accounts/sendWelcomeEmail";
 // TODO: Used by launchdock, I haven't been able to test efficiently
-export const verifyEmailTemplate = "accounts/verify_email";
+export const verifyEmailTemplate = "accounts/verifyEmail";
 
 
 /*
