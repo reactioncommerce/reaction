@@ -395,12 +395,6 @@ Meteor.methods({
       refundTotal += parseFloat(item.amount);
     });
 
-    console.log("------REFUNDS-----", refundTotal);
-
-
-
-
-
     // Merge data into single object to pass to email template
     const dataForEmail = {
       // Shop Data
