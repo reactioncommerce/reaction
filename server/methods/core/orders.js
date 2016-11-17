@@ -3,6 +3,7 @@ import path from "path";
 import moment from "moment";
 import accounting from "accounting-js";
 import Future from "fibers/future";
+import { Template } from "meteor/templating";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { getSlug } from "/lib/api";
@@ -250,14 +251,7 @@ Meteor.methods({
     }
 
     if (order.email) {
-      Meteor.call("orders/sendNotification", order, "shipped", (err) => {
-        if (err) {
-          Logger.error(err, "orders/shipmentShipped: Failed to send notification");
-          Alerts.toast(i18next.t("mail.alerts.cantSendEmail", { err: err.message }), "error");
-        } else {
-          Alerts.toast(i18next.t("mail.alerts.emailSent"), "success");
-        }
-      });
+      Meteor.call("orders/sendNotification", order, "shipped");
     } else {
       Logger.warn("No order email found. No notification sent.");
     }
@@ -393,6 +387,20 @@ Meteor.methods({
       }
     }
 
+    const refundResult = Meteor.call("orders/refunds/list", order.billing[0].paymentMethod);
+
+    let refundTotal = 0;
+
+    _.each(refundResult, function (item) {
+      refundTotal += parseFloat(item.amount);
+    });
+
+    console.log("------REFUNDS-----", refundTotal);
+
+
+
+
+
     // Merge data into single object to pass to email template
     const dataForEmail = {
       // Shop Data
@@ -441,7 +449,9 @@ Meteor.methods({
         shipping: accounting.toFixed(order.billing[0].invoice.shipping, 2),
         taxes: accounting.toFixed(order.billing[0].invoice.taxes, 2),
         discounts: accounting.toFixed(order.billing[0].invoice.discounts, 2),
-        total: accounting.toFixed(order.billing[0].invoice.total, 2)
+        refunds: accounting.toFixed(refundTotal, 2),
+        total: accounting.toFixed(order.billing[0].invoice.total, 2),
+        adjustedTotal: accounting.toFixed(order.billing[0].paymentMethod.amount - refundTotal, 2)
       },
       combinedItems: combinedItems,
       orderDate: moment(order.createdAt).format("MM/DD/YYYY"),
@@ -478,14 +488,16 @@ Meteor.methods({
     if (action === "shipped") {
       tpl = "orders/shipped";
       subject = "orders/shipped/subject";
-      SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl));
-      SSR.compileTemplate(subject, Reaction.Email.getSubject(tpl));
+    } else if (action === "refunded") {
+      tpl = "orders/refunded";
+      subject = "orders/refunded/subject";
     } else {
       tpl = `orders/${order.workflow.status}`;
       subject = `orders/${order.workflow.status}/subject`;
-      SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl));
-      SSR.compileTemplate(subject, Reaction.Email.getSubject(tpl));
     }
+
+    SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl));
+    SSR.compileTemplate(subject, Reaction.Email.getSubject(tpl));
 
     Reaction.Email.send({
       to: order.email,
@@ -905,5 +917,8 @@ Meteor.methods({
       throw new Meteor.Error(
         "Attempt to refund transaction failed", result.error);
     }
+
+    // Send email to notify cuustomer of a refund
+    Meteor.call("orders/sendNotification", order, "refunded");
   }
 });
