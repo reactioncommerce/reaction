@@ -190,14 +190,14 @@ export function sendVerificationEmail(userId, email) {
       },
       instagram: {
         link: "https://instagram.com/reactioncommerce"
-      }
+      },
       twitter: {
         link: "https://www.twitter.com/getreaction"
       }
     },
     confirmationUrl: url,
     userEmailAddress: address
-};
+  };
 
   const tpl = "accounts/verifyEmail";
   const subject = "accounts/verifyEmail/subject";
@@ -208,7 +208,7 @@ export function sendVerificationEmail(userId, email) {
   return Reaction.Email.send({
     to: address,
     from: Reaction.getShopEmail(),
-    subject: SSR.render(subject, { shopName, url, email: address }),
-    html: SSR.render(tpl, { shopName, url, email: address })
+    subject: SSR.render(subject, dataForEmail),
+    html: SSR.render(tpl, dataForEmail)
   });
 }
