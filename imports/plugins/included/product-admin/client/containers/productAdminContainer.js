@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import update from "react/lib/update";
-import { composeWithTracker } from "react-komposer";
 import { Reaction } from "/client/api";
+import { composeWithTracker } from "/lib/api/compose";
 import { ReactionProduct } from "/lib/api";
 import { Tags, Media } from "/lib/collections";
 import { ProductAdmin } from "../components";

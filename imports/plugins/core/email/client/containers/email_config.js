@@ -1,4 +1,3 @@
-import { composeWithTracker, composeAll } from "react-komposer";
 import { useDeps } from "react-simple-di";
 import getServiceConfig from "nodemailer-wellknown";
 import { Meteor } from "meteor/meteor";
@@ -6,6 +5,7 @@ import { Reaction } from "/client/api";
 import { Loading } from "/imports/plugins/core/ui/client/components";
 import actions from "../actions";
 import EmailConfig from "../components/email_config";
+import { composeWithTracker, merge } from "/lib/api/compose";
 
 const composer = ({}, onData) => {
   if (Meteor.subscribe("Packages").ready()) {
@@ -40,7 +40,7 @@ const depsMapper = () => ({
   toggleSettings: actions.settings.toggleSettings
 });
 
-export default composeAll(
+export default merge(
   composeWithTracker(composer, Loading),
   useDeps(depsMapper)
 )(EmailConfig);

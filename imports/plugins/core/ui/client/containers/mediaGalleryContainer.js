@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import update from "react/lib/update";
-import { composeWithTracker } from "react-komposer";
+import { composeWithTracker } from "/lib/api/compose";
 import { MediaGallery } from "../components";
 import { Reaction } from "/client/api";
 import { ReactionProduct } from "/lib/api";

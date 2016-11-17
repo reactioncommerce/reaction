@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import Radium from "radium";
-import { composeWithTracker } from "react-komposer";
+import { composeWithTracker } from "/lib/api/compose";
 import { Reaction } from "/client/api";
 import classnames from "classnames";
 import { getComponent } from "/imports/plugins/core/layout/lib/components";

@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from "react";
-import { composeWithTracker } from "react-komposer";
+import { composeWithTracker } from "/lib/api/compose";
 import { Meteor } from "meteor/meteor";
 import { ReactionProduct } from "/lib/api";
 import { Reaction, i18next, Logger } from "/client/api";
