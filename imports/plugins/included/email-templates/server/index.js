@@ -59,13 +59,13 @@ Reaction.registerTemplate({
  * When: A user signs up through launchdock
  * TODO: Used by launchdock, I haven't been able to test efficiently
  */
- Reaction.registerTemplate({
-   title: "Verify Account",
-   name: TemplatePaths.verifyEmailTemplate,
-   type: "email",
-   template: Reaction.Email.getTemplateFile(TemplatePaths.verifyEmailTemplate),
-   subject: "This is the subject"
- });
+Reaction.registerTemplate({
+  title: "Verify Account",
+  name: TemplatePaths.verifyEmailTemplate,
+  type: "email",
+  template: Reaction.Email.getTemplateFile(TemplatePaths.verifyEmailTemplate),
+  subject: "This is the subject"
+});
 
 
 /*
