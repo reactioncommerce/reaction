@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from "react";
-import { composeWithTracker } from "react-komposer";
+import { composeWithTracker } from "/lib/api/compose";
 import PublishControls from "../components/publishControls";
 import { Revisions } from "/lib/collections";
 import { Meteor } from "meteor/meteor";
