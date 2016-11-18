@@ -54,7 +54,7 @@ export function getSubject(template) {
   }
 
   // otherwise, use the default template from the filesystem
-  return "Test Subject";
+  return "A message from {{shop.name}}";
 }
 
 /**
