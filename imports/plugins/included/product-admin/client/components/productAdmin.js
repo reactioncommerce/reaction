@@ -27,12 +27,28 @@ const fieldNames = [
   "googleplusMsg"
 ];
 
+const fieldGroups = {
+  title: { group: "productDetails" },
+  handle: { group: "productDetails" },
+  pageTitle: { group: "productDetails" },
+  vendor: { group: "productDetails" },
+  description: { group: "productDetails" },
+  facebookMsg: { group: "social" },
+  twitterMsg: { group: "social" },
+  pinterestMsg: { group: "social" },
+  googleplusMsg: { group: "social" },
+  hashtags: { group: "hashtags" },
+  metafields: { group: "metafields" }
+};
+
 class ProductAdmin extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      product: props.product
+      expandedCard: this.fieldGroupForFieldName(props.editFocus),
+      product: props.product,
+      viewProps: props.viewProps
     };
   }
 
@@ -40,19 +56,63 @@ class ProductAdmin extends Component {
     if (!isEqual(nextProps.product, this.props.product)) {
       for (const fieldName of fieldNames) {
         if (nextProps.product[fieldName] !== this.props.product[fieldName]) {
-          const input = this.refs[`${fieldName}Input`].refs.input;
-
-          Velocity.RunSequence([
-            {e: input, p: { backgroundColor: "#e2f2e2" }, o: { duration: 200 }},
-            {e: input, p: { backgroundColor: "#fff" }, o: { duration: 100 }}
-          ]);
+          this.animateFieldFlash(fieldName);
         }
       }
     }
 
+    const cardGroupName = this.fieldGroupForFieldName(nextProps.editFocus);
+
+    this.setState({
+      expandedCard: cardGroupName,
+      viewProps: nextProps.viewProps
+    });
+
     this.setState({
       product: nextProps.product
     });
+  }
+
+  fieldGroupForFieldName(field) {
+    // Other wise, if a field was passed
+    // const fieldName = this.state.viewProps.field;
+
+    let fieldName;
+
+    // If the field is an array of field name
+    if (Array.isArray(field) && field.length) {
+      // Use the first field name
+      fieldName = field[0];
+    } else {
+      fieldName = field;
+    }
+
+    const fieldData = fieldGroups[fieldName];
+
+    if (fieldData && fieldData.group) {
+      return fieldData.group;
+    }
+
+    return fieldName;
+  }
+
+  animateFieldFlash(fieldName) {
+    const fieldRef = this.refs[`${fieldName}Input`];
+
+    if (fieldRef) {
+      const input = fieldRef.refs.input;
+
+      Velocity.RunSequence([
+        {e: input, p: { backgroundColor: "#e2f2e2" }, o: { duration: 200 }},
+        {e: input, p: { backgroundColor: "#fff" }, o: { duration: 100 }}
+      ]);
+    }
+  }
+
+  handleCardExpand(cardName) {
+    if (this.props.onCardExpand) {
+      this.props.onCardExpand(cardName);
+    }
   }
 
   handleDeleteProduct = () => {
@@ -142,15 +202,27 @@ class ProductAdmin extends Component {
     );
   }
 
+  isExpanded(groupName) {
+    if (this.state.expandedCard && this.state.expandedCard === groupName) {
+      return true;
+    }
+
+    return false;
+  }
+
   render() {
     return (
       <CardGroup>
-        <Card>
+        <Card
+          expanded={this.isExpanded("productDetails")}
+          onExpand={this.handleCardExpand.bind(this, "productDetails")}
+        >
           <CardHeader
+            actAsExpander={true}
             i18nKeyTitle="productDetailEdit.productSettings"
             title="Product Settings"
           />
-          <CardBody>
+          <CardBody expandable={true}>
             <TextField
               i18nKeyLabel="productDetailEdit.title"
               i18nKeyPlaceholder="productDetailEdit.title"
@@ -214,12 +286,16 @@ class ProductAdmin extends Component {
             />
           </CardBody>
         </Card>
-        <Card>
+        <Card
+          expanded={this.isExpanded("social")}
+          onExpand={this.handleCardExpand.bind(this, "social")}
+        >
           <CardHeader
+            actAsExpander={true}
             i18nKeyTitle="social.socialTitle"
             title="Social"
           />
-          <CardBody>
+          <CardBody expandable={true}>
             <TextField
               i18nKeyLabel="productDetailEdit.facebookMsg"
               label="Facebook Message"
@@ -263,12 +339,16 @@ class ProductAdmin extends Component {
           </CardBody>
         </Card>
 
-        <Card>
+        <Card
+          expanded={this.isExpanded("hashtags")}
+          onExpand={this.handleCardExpand.bind(this, "hashtags")}
+        >
           <CardHeader
+            actAsExpander={true}
             i18nKeyTitle="productDetailEdit.tags"
             title="Tags"
           />
-          <CardBody>
+          <CardBody expandable={true}>
             <TagListContainer
               enableNewTagForm={true}
               product={this.product}
@@ -279,12 +359,16 @@ class ProductAdmin extends Component {
           </CardBody>
         </Card>
 
-        <Card>
+        <Card
+          expanded={this.isExpanded("metafields")}
+          onExpand={this.handleCardExpand.bind(this, "metafields")}
+        >
           <CardHeader
+            actAsExpander={true}
             i18nKeyTitle="productDetailEdit.details"
             title="Details"
           />
-          <CardBody>
+          <CardBody expandable={true}>
             <Metadata
               metafields={this.product.metafields}
               newMetafield={this.props.newMetafield}
@@ -300,10 +384,12 @@ class ProductAdmin extends Component {
 }
 
 ProductAdmin.propTypes = {
+  editFocus: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
   handleFieldBlur: PropTypes.func,
   handleFieldChange: PropTypes.func,
   handleProductFieldChange: PropTypes.func,
   newMetafield: PropTypes.object,
+  onCardExpand: PropTypes.func,
   onDeleteProduct: PropTypes.func,
   onFieldChange: PropTypes.func,
   onMetaChange: PropTypes.func,
@@ -312,7 +398,8 @@ ProductAdmin.propTypes = {
   onProductFieldSave: PropTypes.func,
   onRestoreProduct: PropTypes.func,
   product: PropTypes.object,
-  revisonDocumentIds: PropTypes.arrayOf(PropTypes.string)
+  revisonDocumentIds: PropTypes.arrayOf(PropTypes.string),
+  viewProps: PropTypes.object
 };
 
 export default ProductAdmin;

@@ -20,8 +20,15 @@ class EditContainer extends Component {
       label: props.label,
       i18nKeyLabel: props.i18nKeyLabel,
       template: props.editView,
-      data: props.data
+      data: {
+        data: props.data,
+        viewProps: {
+          field: props.field
+        }
+      }
     });
+
+    Reaction.state.set(`edit/focus`, props.field);
 
     return true;
   }

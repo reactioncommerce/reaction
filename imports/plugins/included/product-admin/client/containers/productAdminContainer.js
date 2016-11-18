@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import update from "react/lib/update";
+import { Reaction } from "/client/api";
 import { composeWithTracker } from "/lib/api/compose";
 import { ReactionProduct } from "/lib/api";
 import { Tags, Media } from "/lib/collections";
@@ -15,6 +16,10 @@ class ProductAdminContainer extends Component {
         value: ""
       }
     };
+  }
+
+  handleCardExpand = (cardName) => {
+    Reaction.state.set("edit/focus", cardName);
   }
 
   handleDeleteProduct = (product) => {
@@ -76,6 +81,7 @@ class ProductAdminContainer extends Component {
     return (
       <ProductAdmin
         newMetafield={this.state.newMetafield}
+        onCardExpand={this.handleCardExpand}
         onDeleteProduct={this.handleDeleteProduct}
         onMetaChange={this.handleMetaChange}
         onMetaRemove={this.handleMetaRemove}
@@ -117,6 +123,7 @@ function composer(props, onData) {
     revisonDocumentIds = [product._id];
 
     onData(null, {
+      editFocus: Reaction.state.get("edit/focus"),
       product: product,
       media,
       tags,
