@@ -1,10 +1,10 @@
-import { composeWithTracker, composeAll } from "react-komposer";
 import { useDeps } from "react-simple-di";
 import { Meteor } from "meteor/meteor";
 import { Reaction } from "/client/api";
 import { Loading } from "/imports/plugins/core/ui/client/components";
 import actions from "../actions";
 import EmailSettings from "../components/email_settings";
+import { composeWithTracker, merge } from "/lib/api/compose";
 
 const providers = Object.keys(require("nodemailer-wellknown/services.json"));
 
@@ -26,7 +26,7 @@ const depsMapper = () => ({
   saveSettings: actions.settings.saveSettings
 });
 
-export default composeAll(
+export default merge(
   composeWithTracker(composer, Loading),
   useDeps(depsMapper)
 )(EmailSettings);

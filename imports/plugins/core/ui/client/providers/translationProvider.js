@@ -1,6 +1,6 @@
 import React, { Component, PropTypes, Children } from "react"; // eslint-disable-line
-import { composeWithTracker } from "react-komposer";
-import { i18next, i18nextDep } from "/client/api";
+import { composeWithTracker } from "/lib/api/compose";
+import { i18nextDep } from "/client/api";
 
 class TranslationProvider extends Component {
   getChildContext() {
