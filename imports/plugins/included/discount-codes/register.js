@@ -16,6 +16,10 @@ Reaction.registerPackage({
       name: "discounts/settings/codes",
       provides: "paymentSettings",
       template: "customDiscountCodes"
+    },
+    {
+      provides: "paymentMethod",
+      template: "discountCodesCheckout"
     }
   ]
 });

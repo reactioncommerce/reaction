@@ -1,6 +1,7 @@
-import { Reaction, Logger } from "/client/api";
-import { Packages } from "/lib/collections";
-import { Template } from "meteor/templating";
+import { EJSON } from "meteor/ejson";
+import {Reaction, Logger} from "/client/api";
+import {Packages} from "/lib/collections";
+import {Template} from "meteor/templating";
 
 /**
  *
@@ -55,7 +56,6 @@ export function Apps(optionHash) {
   const registryFilter = {};
   let key;
   let match;
-  let packages;
   let reactionApps = [];
   let options = {};
 
@@ -79,14 +79,21 @@ export function Apps(optionHash) {
   for (key in options) {
     if ({}.hasOwnProperty.call(options, key)) {
       const value = options[key];
-      if (!(key === "enabled" || key === "name" || key === "shopId")) {
-        filter["registry." + key] = value;
-        registryFilter[key] = value;
-      } else {
-        filter[key] = value;
+      if (value) {
+        // console.log(key);
+        if (!(key === "enabled" || key === "name" || key === "shopId")) {
+          // filter[key] = value;
+          filter["registry." + key] = value;
+          registryFilter[key] = value;
+          // console.log("is not enabled", key)
+        } else {
+          filter[key] = value;
+        }
       }
     }
   }
+  // console.log("filter", filter, EJSON.stringify(filter));
+  // console.log("registryFilter", registryFilter);
 
   // return these fields
   const fields = {
@@ -94,63 +101,21 @@ export function Apps(optionHash) {
     registry: 1,
     name: 1,
     provides: 1,
-    icon: 1
+    icon: 1,
+    settingsKey: 1
   };
 
   // fetch the packages
   const reactionPackages = Packages.find(filter, fields).fetch();
+  console.table(reactionPackages)
 
   // apply filters to registry items
   if (reactionPackages.length) {
-    // filter by package and enabled true/false
-    if (filter.name && filter.enabled) {
-      packages = (function () {
-        const results = [];
-        for (const pkg of reactionPackages) {
-          if (pkg.name === filter.name && pkg.enabled === filter.enabled) {
-            results.push(pkg);
-          }
-        }
-        return results;
-      })();
-      // we want all entries by package name
-    } else if (filter.name) {
-      packages = (function () {
-        const results = [];
-        for (const pkg of reactionPackages) {
-          if (pkg.name === filter.name) {
-            results.push(pkg);
-          }
-        }
-        return results;
-      })();
-      // just all enabled packages
-    } else if (filter.enabled) {
-      packages = (function () {
-        const results = [];
-        for (const pkg of reactionPackages) {
-          if (pkg.enabled === filter.enabled) {
-            results.push(pkg);
-          }
-        }
-        return results;
-      })();
-      // no filter
-    } else {
-      packages = (function () {
-        const results = [];
-        for (const pkg of reactionPackages) {
-          results.push(pkg);
-        }
-        return results;
-      })();
-    }
-
     // we have all the package app registry entries
-    for (const app of packages) {
+    for (const app of reactionPackages) {
       // go through the registry entries and push enabled entries
       if (app.registry) {
-        for (let registry of app.registry) {
+        for (const registry of app.registry) {
           match = 0;
           for (key in registryFilter) {
             // make sure we're dealing with valid keys
@@ -160,15 +125,12 @@ export function Apps(optionHash) {
                 match += 1;
               }
               if (match === Object.keys(registryFilter).length) {
-                if (!registry.packageName) registry.packageName = app.name;
-                if (registry.enabled !== false) {
-                  registry = Reaction.translateRegistry(registry, app);
-                  registry.enabled = registry.enabled || app.enabled;
-                  registry.packageId = app._id;
-                  // check permissions before pushing so that templates aren't required.
-                  if (Reaction.hasPermission([registry.name, registry.route])) {
-                    reactionApps.push(registry);
-                  }
+                // console.log(registry.packageName, registry.enabled);
+                // check permissions before pushing so that templates aren't required.
+                // we are pushing registry.enabled which should be checked in ui
+                console.log(registry)
+                if (Reaction.hasPermission([registry.packageName]) || registry.enabled === true) {
+                  reactionApps.push(registry);
                 }
               }
             }
@@ -188,6 +150,7 @@ export function Apps(optionHash) {
     Logger.info("Failed to return matching reaction apps for", optionHash);
   }
   // we're done.
+  // console.table(reactionApps);
   return reactionApps;
 }
 

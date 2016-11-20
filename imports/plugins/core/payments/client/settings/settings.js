@@ -8,23 +8,15 @@ Template.paymentSettings.helpers({
   //
   checked(pkg) {
     let enabled;
+    console.log(pkg)
     const pkgData = Packages.findOne(pkg.packageId);
-    const setting = pkg.name.split("/").splice(-1);
 
     if (pkgData && pkgData.settings) {
-      if (pkgData.settings[setting]) {
-        enabled = pkgData.settings[setting].enabled;
+      if (pkgData.settings[pkg.settingsKey]) {
+        enabled = pkgData.settings[pkg.settingsKey].enabled;
       }
     }
     return enabled === true ? "checked" : "";
-  },
-  //
-  // get current packages settings data
-  //
-  packageData() {
-    return Packages.findOne({
-      name: "reaction-payments"
-    });
   },
   //
   // Template helper to add a hidden class if the condition is false
@@ -32,11 +24,10 @@ Template.paymentSettings.helpers({
   shown(pkg) {
     let enabled;
     const pkgData = Packages.findOne(pkg.packageId);
-    const setting = pkg.name.split("/").splice(-1);
 
     if (pkgData && pkgData.settings) {
-      if (pkgData.settings[setting]) {
-        enabled = pkgData.settings[setting].enabled;
+      if (pkgData.settings[pkg.settingsKey]) {
+        enabled = pkgData.settings[pkg.settingsKey].enabled;
       }
     }
 
@@ -69,18 +60,27 @@ Template.paymentSettings.helpers({
 
 Template.paymentSettings.events({
   /**
-   * toggle payment visibility
-   * @param  {event} event    jQuery Event
+   * toggle payment settings visibility
+   * also toggles payment method settings
+   * @param  {event} event jQuery Event
    * @return {void}
    */
   "change input[name=enabled]": (event) => {
     const name = event.target.value;
+    const settings = event.target.getAttribute("data-settings");
     const packageId = event.target.getAttribute("data-id");
+    const methods = Reaction.Apps({provides: "paymentMethod", name: name});
     const fields = [{
       property: "enabled",
       value: event.target.checked
     }];
-    Meteor.call("registry/update", packageId, name, fields);
+    // enable all matching methods for this packageId
+    // we could split out sub packages
+    for (method of methods) {
+      // updates settings.name.enabled
+      Meteor.call("registry/update", packageId, name, fields);
+    }
+    Meteor.call("registry/update", packageId, settings, fields);
   }
 });
 

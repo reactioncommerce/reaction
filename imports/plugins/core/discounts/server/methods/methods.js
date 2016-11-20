@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor";
 import { Match, check } from "meteor/check";
-import { Cart, Packages } from "/lib/collections";
+import { Cart } from "/lib/collections";
 import { Discounts } from "../../lib/collections";
 import Reaction from "../api";
 import { Logger } from "/server/api";
@@ -53,29 +53,17 @@ export const methods = {
   "discounts/calculate": function (cartId) {
     check(cartId, String);
     const cartToCalc = Cart.findOne(cartId);
-    const shopId = cartToCalc.shopId;
+    // const shopId = cartToCalc.shopId;
     const discountRate = 0;
-
-    // get all discount packages
-    const pkg = Packages.findOne({
-      shopId: shopId,
-      name: "reaction-discounts"
-    });
-
-    //
-    // custom rates
-    // check if plugin is enabled and this calculation method is enabled
-    if (pkg && pkg.enabled === true && pkg.settings.rates.enabled === true) {
-      Logger.info("Calculating custom discount rates");
-      Meteor.call("discounts/setRate", cartToCalc._id, discountRate);
-    } else {
-      // we are here because the custom rate package is disabled.
-      // we're going to set an inital rate of 0
-      // all methods that trigger when discounts/calculate will
-      // recalculate this rate as needed.
-      // Meteor.call("discounts/setRate", cartToCalc._id, discountRate);
+    if (cartToCalc.discountMethods) {
+      for (discountMethods of cartToCalc.discountMethods) {
+        // get discount based on id in cartMethods.
+        // validate the discount rules.
+        // return discount rate.
+        //
+      }
     }
-  } // end discounts/calculate
+  }// end discounts/calculate
 };
 
 // export methods to Meteor

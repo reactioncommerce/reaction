@@ -23,11 +23,10 @@ Template.taxSettings.helpers({
   checked(pkg) {
     let enabled;
     const pkgData = Packages.findOne(pkg.packageId);
-    const setting = pkg.name.split("/").splice(-1);
 
     if (pkgData && pkgData.settings) {
-      if (pkgData.settings[setting]) {
-        enabled = pkgData.settings[setting].enabled;
+      if (pkgData.settings[pkg.settings]) {
+        enabled = pkgData.settings[pkg.settings].enabled;
       }
     }
     return enabled === true ? "checked" : "";
@@ -69,11 +68,10 @@ Template.taxSettings.helpers({
   shown(pkg) {
     let enabled;
     const pkgData = Packages.findOne(pkg.packageId);
-    const setting = pkg.name.split("/").splice(-1);
 
     if (pkgData && pkgData.settings) {
-      if (pkgData.settings[setting]) {
-        enabled = pkgData.settings[setting].enabled;
+      if (pkgData.settings[pkg.settings]) {
+        enabled = pkgData.settings[pkg.settings].enabled;
       }
     }
 

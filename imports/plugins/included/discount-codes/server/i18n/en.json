@@ -4,13 +4,20 @@
   "ns": "discount-codes",
   "translation": {
     "reaction-discounts": {
+      "checkoutPayment": {
+        "applyDiscount": "Apply",
+        "discountError": "Sorry, there was an error applying discount."
+      },
       "admin": {
+        "paymentSettings": {
+          "codesLabel": "Codes"
+        },
         "settings": {
-          "ratesLabel": "Codes",
+          "codesLabel": "Codes",
           "noCustomDiscountCodesFound": "No discount codes found.",
           "settingsSaveSuccess": "Settings saved successfully.",
           "settingsSaveFailure": "Failed to save settings.",
-          "confirmRateDelete": "Confirm discount rate deletion."
+          "confirmRateDelete": "Confirm discount code deletion."
         },
         "discountGrid": {
           "label": "Label",

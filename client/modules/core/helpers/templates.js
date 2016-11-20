@@ -5,6 +5,7 @@ import * as Schemas from "/lib/collections/schemas";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import moment from "moment-timezone";
+import { toCamelCase } from "/lib/api";
 
 /*
  *
@@ -159,7 +160,7 @@ Template.registerHelper("capitalize", function (str) {
  * @return {String|undefined} returns camelCased string
  */
 Template.registerHelper("toCamelCase", function (str) {
-  return !!str && str.toCamelCase();
+  return !!str && toCamelCase(str);
 });
 
 
