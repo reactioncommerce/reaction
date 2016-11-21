@@ -108,6 +108,6 @@ export const methods = {
     }
     return Shipping.remove(providerId);
   }
-}
+};
 
 Meteor.methods(methods);

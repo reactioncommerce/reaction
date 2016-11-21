@@ -3,6 +3,14 @@ import CardTitle from "./cardTitle";
 
 class CardHeader extends Component {
 
+  handleClick = (event) => {
+    event.preventDefault();
+
+    if (typeof this.props.onClick === "function") {
+      this.props.onClick(event);
+    }
+  }
+
   renderTitle() {
     if (this.props.title) {
       return (
@@ -16,6 +24,19 @@ class CardHeader extends Component {
   }
 
   render() {
+    if (this.props.actAsExpander) {
+      return (
+        <a
+          className="panel-heading"
+          href="#"
+          onClick={this.handleClick}
+        >
+          {this.renderTitle()}
+          {this.props.children}
+        </a>
+      );
+    }
+
     return (
       <div className="panel-heading">
         {this.renderTitle()}
@@ -25,9 +46,16 @@ class CardHeader extends Component {
   }
 }
 
+CardHeader.defaultProps = {
+  actAsExpander: false,
+  expandable: false
+};
+
 CardHeader.propTypes = {
+  actAsExpander: PropTypes.bool,
   children: PropTypes.node,
   i18nKeyTitle: PropTypes.string,
+  onClick: PropTypes.func,
   title: PropTypes.string
 };
 

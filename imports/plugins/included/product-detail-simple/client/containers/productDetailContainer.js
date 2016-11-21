@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from "react";
-import { composeWithTracker } from "react-komposer";
+import { composeWithTracker } from "/lib/api/compose";
 import { Meteor } from "meteor/meteor";
 import { ReactionProduct } from "/lib/api";
 import { Reaction, i18next, Logger } from "/client/api";
@@ -248,7 +248,10 @@ function composer(props, onData) {
         editable = Reaction.hasPermission(["createProduct"]);
       }
 
+      const topVariants = ReactionProduct.getTopVariants();
+
       onData(null, {
+        variants: topVariants,
         layout: "productDetailSimple",
         product: productRevision || product,
         priceRange,

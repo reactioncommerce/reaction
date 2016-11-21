@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import update from "react/lib/update";
-import { composeWithTracker } from "react-komposer";
+import { composeWithTracker } from "/lib/api/compose";
 import { MediaGallery } from "../components";
 import { Reaction } from "/client/api";
 import { ReactionProduct } from "/lib/api";
@@ -156,8 +156,8 @@ class MediaGalleryContainer extends Component {
 function fetchMediaRevisions() {
   const productId = ReactionProduct.selectedProductId();
   const mediaRevisions = Revisions.find({
-    parentDocument: productId,
-    documentType: "image",
+    "parentDocument": productId,
+    "documentType": "image",
     "workflow.status": {
       $nin: ["revision/published"]
     }
@@ -167,7 +167,7 @@ function fetchMediaRevisions() {
 
 // resort the media in
 function sortMedia(media) {
-  const sortedMedia = _.sortBy(media, function(m) { return m.metadata.priority});
+  const sortedMedia = _.sortBy(media, function (m) { return m.metadata.priority;});
   return sortedMedia;
 }
 

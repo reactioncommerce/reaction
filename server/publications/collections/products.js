@@ -237,9 +237,9 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
         }).observeChanges({
           added: (id, fields) => {
             const revisions = Revisions.find({
-              $or: [
-                {"documentId": id },
-                {"parentDocument": id}
+              "$or": [
+                {documentId: id },
+                {parentDocument: id}
               ],
               "workflow.status": {
                 $nin: [
@@ -253,9 +253,9 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
           },
           changed: (id, fields) => {
             const revisions = Revisions.find({
-              $or: [
-                {"documentId": id },
-                {"parentDocument": id}
+              "$or": [
+                {documentId: id },
+                {parentDocument: id}
               ],
               "workflow.status": {
                 $nin: [
