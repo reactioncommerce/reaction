@@ -40,7 +40,7 @@
     "font-awesome": "^4.6.3",
     "griddle-react": "^0.7.0",
     "handlebars": "^4.0.5",
-    "i18next": "^4.0.0",
+    "i18next": "^4.1.0",
     "i18next-browser-languagedetector": "^1.0.0",
     "i18next-localstorage-cache": "^0.3.0",
     "i18next-sprintf-postprocessor": "^0.2.2",

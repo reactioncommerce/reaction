@@ -1,6 +1,6 @@
 import { Session } from "meteor/session";
 import { Meteor } from "meteor/meteor";
-// import { Roles } from "meteor/roles";
+import { Roles } from "meteor/alanning:roles";
 
 // Reaction Globals
 //

@@ -39,6 +39,7 @@ Template.shippingSettings.helpers({
         shopId: Reaction.getShopId()
       });
     }
+    return [];
   },
   selectedShippingProvider() {
     return Session.equals("selectedShippingProvider", true);

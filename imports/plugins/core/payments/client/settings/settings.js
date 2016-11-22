@@ -1,37 +1,19 @@
 import { Template } from "meteor/templating";
 import { Reaction, i18next } from "/client/api";
-import { Packages, Shops } from "/lib/collections";
+import { Shops } from "/lib/collections";
 
 Template.paymentSettings.helpers({
-  //
-  // check if this package setting is enabled
-  //
-  checked(pkg) {
-    let enabled;
-    console.log(pkg)
-    const pkgData = Packages.findOne(pkg.packageId);
-
-    if (pkgData && pkgData.settings) {
-      if (pkgData.settings[pkg.settingsKey]) {
-        enabled = pkgData.settings[pkg.settingsKey].enabled;
-      }
+  checked(enabled) {
+    if (enabled === true) {
+      return "checked";
     }
-    return enabled === true ? "checked" : "";
+    return "";
   },
-  //
-  // Template helper to add a hidden class if the condition is false
-  //
-  shown(pkg) {
-    let enabled;
-    const pkgData = Packages.findOne(pkg.packageId);
-
-    if (pkgData && pkgData.settings) {
-      if (pkgData.settings[pkg.settingsKey]) {
-        enabled = pkgData.settings[pkg.settingsKey].enabled;
-      }
+  shown(enabled) {
+    if (enabled !== true) {
+      return "hidden";
     }
-
-    return enabled !== true ? "hidden" : "";
+    return "";
   },
   paymentMethodOptions() {
     const paymentMethods = Reaction.Apps({provides: "paymentMethod"});
@@ -50,9 +32,6 @@ Template.paymentSettings.helpers({
     }
     return options;
   },
-  Shops() {
-    return Shops;
-  },
   shop() {
     return Shops.findOne(Reaction.getShopId());
   }
@@ -66,24 +45,20 @@ Template.paymentSettings.events({
    * @return {void}
    */
   "change input[name=enabled]": (event) => {
-    const name = event.target.value;
-    const settings = event.target.getAttribute("data-settings");
+    const settingsKey = event.target.getAttribute("data-key");
     const packageId = event.target.getAttribute("data-id");
-    const methods = Reaction.Apps({provides: "paymentMethod", name: name});
     const fields = [{
       property: "enabled",
       value: event.target.checked
     }];
-    // enable all matching methods for this packageId
-    // we could split out sub packages
-    for (method of methods) {
-      // updates settings.name.enabled
-      Meteor.call("registry/update", packageId, name, fields);
-    }
-    Meteor.call("registry/update", packageId, settings, fields);
+
+    Meteor.call("registry/update", packageId, settingsKey, fields);
+
+    // disable package as well. todo: should probably check if there
+    // are any remaining payment methods defined and only disable if none
+    Meteor.call("shop/togglePackage", packageId, !event.target.checked);
   }
 });
-
 
 AutoForm.hooks({
   shopEditPaymentMethodsForm: {

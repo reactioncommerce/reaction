@@ -5,7 +5,6 @@ const {
   Accounts,
   Cart,
   Packages,
-  Discounts,
   Emails,
   Jobs,
   Media,
