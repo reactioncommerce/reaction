@@ -142,7 +142,7 @@
                               <td height="31" align="left" valign="top" style="font-size:1px; line-height:1px;">&nbsp;</td>
                             </tr>
                             <tr>
-                              <td align="left" valign="top" style="font-family:Arial, Helvetica, sans-serif; font-size:22px; font-weight:bold; line-height:22px; color:#1e98d5;">Order Confirmation COMPLETED / SHIPPED</td>
+                              <td align="left" valign="top" style="font-family:Arial, Helvetica, sans-serif; font-size:22px; font-weight:bold; line-height:22px; color:#1e98d5;">We got your return!</td>
                             </tr>
                             <!-- End Header -->
 
@@ -319,6 +319,21 @@
                                               <td valign="top" align="left" height="10" style="line-height:1px; font-size:1px;">&nbsp;</td>
                                             </tr>
                                             <tr>
+                                              <td valign="top" align="left" height="2" style="line-height:1px; font-size:1px; border-top:solid 1px #a2a1a3;">&nbsp;</td>
+                                            </tr>
+                                            <tr>
+                                              <td valign="top" align="left" height="10" style="line-height:1px; font-size:1px;">&nbsp;</td>
+                                            </tr>
+                                            <tr>
+                                              <td valign="top" align="right" style="font-size:12px; line-height:normal; color:#4c4c4d; font-family:Arial, helvetica;">Previous Total: ${{billing.total}}</td>
+                                            </tr>
+                                            <tr>
+                                              <td valign="top" align="right" style="font-size:12px; line-height:normal; color:#4c4c4d; font-family:Arial, helvetica;">Refunds: <span style="color: #5cb85c; font-weight: bold;">${{billing.refunds}}</span></td>
+                                            </tr>
+                                            <tr>
+                                              <td valign="top" align="left" height="10" style="line-height:1px; font-size:1px;">&nbsp;</td>
+                                            </tr>
+                                            <tr>
                                               <td valign="top" align="left" height="2" style="line-height:1px; font-size:1px; border-top:solid 3px #4c4d4e;">&nbsp;</td>
                                             </tr>
                                             <tr>
@@ -329,8 +344,8 @@
                                                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                                   <tbody>
                                                     <tr>
-                                                      <td valign="top" align="left" style="font-size:12px; line-height:normal; color:#a2a1a3; font-family:Arial, helvetica;">ORDER TOTAL:</td>
-                                                      <td valign="top" align="right" style="font-size:22px; line-height:normal; color:#4d4d4e; font-family:Arial, helvetica;">${{billing.total}}</td>
+                                                      <td valign="top" align="left" style="font-size:12px; line-height:normal; color:#a2a1a3; font-family:Arial, helvetica;">NEW TOTAL:</td>
+                                                      <td valign="top" align="right" style="font-size:22px; line-height:normal; color:#4c4c4d; font-family:Arial, helvetica;">${{billing.adjustedTotal}}</td>
                                                     </tr>
                                                   </tbody>
                                                 </table>

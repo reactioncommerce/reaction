@@ -279,9 +279,6 @@ Meteor.methods({
       "emails.address": email
     });
 
-    const tpl = "accounts/inviteShopMember";
-    SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl));
-
     if (!user) {
       const userId = Accounts.createUser({
         email: email,
@@ -347,31 +344,29 @@ Meteor.methods({
         },
         // Account Data
         user: Meteor.user(),
-
-
         currentUserName,
         invitedUserName: name,
         url: Accounts.urls.enrollAccount(token)
       };
 
+      // Compile Email with SSR
+      const tpl = "accounts/inviteShopMember";
+      const subject = "accounts/inviteShopMember/subject";
+      SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl));
+      SSR.compileTemplate(subject, Reaction.Email.getSubject(tpl));
+
       Reaction.Email.send({
         to: email,
         from: `${shop.name} <${shop.emails[0].address}>`,
-        subject: `You've been invited to join ${shop.name}`,
+        subject: SSR.render(subject, dataForEmail),
         html: SSR.render(tpl, dataForEmail)
       });
     } else {
       Reaction.Email.send({
         to: email,
         from: `${shop.name} <${shop.emails[0].address}>`,
-        subject: `You've been invited to join ${shop.name}`,
-        html: SSR.render(tpl, {
-          homepage: Meteor.absoluteUrl(),
-          shop,
-          currentUserName,
-          invitedUserName: name,
-          url: Meteor.absoluteUrl()
-        })
+        subject: SSR.render(subject, dataForEmail),
+        html: SSR.render(tpl, dataForEmail)
       });
     }
     return true;
@@ -457,12 +452,14 @@ Meteor.methods({
     }
 
     const tpl = "accounts/sendWelcomeEmail";
+    const subject = "accounts/sendWelcomeEmail/subject";
     SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl));
+    SSR.compileTemplate(subject, Reaction.Email.getSubject(tpl));
 
     Reaction.Email.send({
       to: userEmail,
       from: `${shop.name} <${shopEmail}>`,
-      subject: `You're In. Welcome to ${shop.name}!`,
+      subject: SSR.render(subject, dataForEmail),
       html: SSR.render(tpl, dataForEmail)
     });
 
