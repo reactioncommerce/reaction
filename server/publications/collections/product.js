@@ -14,7 +14,14 @@ Meteor.publish("Product", function (productId) {
     return this.ready();
   }
   let _id;
-  const shop = Reaction.getCurrentShop();
+  let shopId;
+
+  if(this.userId) {
+    // get shop for loggedIn user or parent shop as fallback
+    shopId = Roles.getGroupsForUser(this.userId, 'admin')[0] || null;
+  }
+
+  const shop = Reaction.getCurrentShop(shopId);
   // verify that shop is ready
   if (typeof shop !== "object") {
     return this.ready();
@@ -24,7 +31,8 @@ Meteor.publish("Product", function (productId) {
   selector.isVisible = true;
   selector.isDeleted = {$in: [null, false]};
 
-  if (Roles.userIsInRole(this.userId, ["owner", "admin", "createProduct"],
+  // no need for admin, simple perm should be okay per group
+  if (Roles.userIsInRole(this.userId, ["createProduct"],
       shop._id)) {
     selector.isVisible = {
       $in: [true, false]
@@ -62,9 +70,9 @@ Meteor.publish("Product", function (productId) {
     ]
   };
 
-  // Authorized content curators fo the shop get special publication of the product
-  // all all relevant revisions all is one package
-  if (Roles.userIsInRole(this.userId, ["owner", "admin", "createProduct"], shop._id)) {
+  // Authorized content curators for the shop get special publication of the product
+  // all relevant revisions all is one package
+  if (Roles.userIsInRole(this.userId, ["admin", "createProduct"], shop._id)) {
     selector.isVisible = {
       $in: [true, false, undefined]
     };

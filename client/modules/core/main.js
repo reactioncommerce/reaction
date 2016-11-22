@@ -215,8 +215,9 @@ export default {
     return allowGuest;
   },
 
-  getSellerShopId() {
-    return Roles.getGroupsForUser(this.userId, "admin");
+  getSellerShopId(userId) {
+    userId = userId || this.userId;
+    return Roles.getGroupsForUser(userId, "admin");
   },
 
   /**
@@ -265,6 +266,8 @@ export default {
       i18nKeyLabel: ""
     });
   },
+
+
 
   getCurrentTag() {
     if (this.Router.getRouteName() === "tag") {

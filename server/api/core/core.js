@@ -119,8 +119,10 @@ export default {
     return this.hasPermission(["owner", "admin", "dashboard"]);
   },
 
-  getSellerShopId() {
-    return Roles.getGroupsForUser(this.userId, "admin");
+  getSellerShopId(userId) {
+    userId = userId || this.userId;
+
+    return Roles.getGroupsForUser(userId, "admin");
   },
 
   configureMailUrl() {
@@ -131,21 +133,30 @@ export default {
     return getMailUrl();
   },
 
-  getCurrentShopCursor() {
+  getCurrentShopCursor(shopId = this.getShopId()) {
     const domain = this.getDomain();
-    const cursor = Shops.find({
+    let query = {
       domains: domain
-    }, {
+    };
+    if(shopId) {
+      query._id = shopId;
+    }
+
+    const cursor = Shops.find(query, {
       limit: 1
     });
+
     if (!cursor.count()) {
       Logger.debug(domain, "Add a domain entry to shops for ");
     }
+
     return cursor;
   },
 
-  getCurrentShop() {
-    const currentShopCursor = this.getCurrentShopCursor();
+  getCurrentShop(shopId) {
+
+    const currentShopCursor = this.getCurrentShopCursor(shopId);
+
     // also, we could check in such a way: `currentShopCursor instanceof Object`
     // but not instanceof something.Cursor
     if (typeof currentShopCursor === "object") {
@@ -160,6 +171,11 @@ export default {
       limit: 1,
       fields: { _id: 1 }
     }).fetch()[0];
+
+    if (!shop) {
+      Logger.debug(domain, "Add a domain entry to shops for ");
+    }
+
     return shop && shop._id;
   },
 
