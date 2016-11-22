@@ -32,7 +32,13 @@ Template.coreOrderShippingTracking.onCreated(() => {
 Template.coreOrderShippingTracking.events({
   "click [data-event-action=shipmentShipped]": function () {
     const template = Template.instance();
-    Meteor.call("orders/shipmentShipped", template.order, template.order.shipping[0]);
+    Meteor.call("orders/shipmentShipped", template.order, template.order.shipping[0], (err) => {
+      if (err) {
+        Alerts.toast(i18next.t("mail.alerts.cantSendEmail"), "error");
+      } else {
+        Alerts.toast(i18next.t("mail.alerts.emailSent"), "success");
+      }
+    });
     // Meteor.call("workflow/pushOrderShipmentWorkflow", "coreOrderShipmentWorkflow", "orderShipped", this._id);
   },
 

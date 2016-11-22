@@ -147,6 +147,7 @@ Template.coreOrderShippingInvoice.events({
             if (error) {
               Alerts.alert(error.reason);
             }
+            Alerts.toast(i18next.t("mail.alerts.emailSent"), "success");
             state.set("field-refund", 0);
           });
         }
