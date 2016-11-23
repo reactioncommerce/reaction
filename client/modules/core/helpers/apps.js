@@ -1,26 +1,15 @@
 import _ from "lodash";
-import {Reaction, Logger} from "/client/api";
+import {Reaction} from "/client/api";
 import {Packages} from "/lib/collections";
 import {Template} from "meteor/templating";
 
 /**
  *
  * reactionApps
- *
  *   provides="<where matching registry provides is this >"
  *   enabled=true <false for disabled packages>
  *   context= true filter templates to current route
- *
- * returns matching package registry objects
- *  @todo:
- *   - reintroduce a dependency context
- *   - introduce position,zones #148
- *   - is it better to get all packages once and filter in code
- *     and possibly have some cache benefits down the road,
- *     or to retrieve what is requested and gain the advantage of priviledged,
- *     unnecessary data not retrieved with the cost of additional requests.
- *   - context filter should be considered experimental
- *
+ *   returns matching package registry objects
  *   @example {{#each reactionApps provides="settings" name=packageName container=container}}
  *   @example {{#each reactionApps provides="userAccountDropdown" enabled=true}}
  *   @example
@@ -83,36 +72,25 @@ export function Apps(optionHash) {
           filter["registry." + key] = value;
           registryFilter[key] = value;
         } else {
+          // perhaps not the best way to check
+          // but lets admin see all packages
+          if (!Reaction.hasAdminAccess()) {
+            if (key !== "shopId") {
+              registryFilter[key] = value;
+            }
+          }
           filter[key] = value;
         }
       }
     }
   }
-
-  // return these fields
-  const fields = {
-    enabled: 1,
-    registry: 1,
-    name: 1,
-    provides: 1,
-    icon: 1,
-    settingsKey: 1
-    // settings: 1 // restricted to enabled
-  };
-
   // fetch the packages
-  Packages.find(filter, fields).forEach((app) => {
+  Packages.find(filter).forEach((app) => {
     const matchingRegistry = _.find(app.registry, registryFilter);
     if (matchingRegistry) reactionApps.push(matchingRegistry);
   });
-
-  // sort cycle to ensure order
-  // const sortedReactionApps = reactionApps.sort((a, b) => a.priority - b.priority).slice();
-  // enable debug to find missing reaction apps
-  if (reactionApps.length === 0) {
-    Logger.info("Failed to return matching reaction apps for", optionHash);
-  }
-
+  // sort cycle to ensure order aka. is registry.priority working?
+  // .sort((a, b) => a.priority - b.priority).slice();
   return reactionApps;
 }
 

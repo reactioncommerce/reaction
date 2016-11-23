@@ -1,23 +1,20 @@
-import { Reaction } from "/server/api";
+import {Reaction} from "/server/api";
 
 Reaction.registerPackage({
   label: "Codes",
   name: "discount-codes",
   icon: "fa fa-gift",
-  autoEnable: true,
   settings: {
-    codes: {
+    "discount-codes": {
       enabled: false
     }
   },
   registry: [
     {
       label: "Codes",
-      name: "discounts/settings/codes",
       provides: "paymentSettings",
       template: "customDiscountCodes"
-    },
-    {
+    }, {
       provides: "paymentMethod",
       template: "discountCodesCheckout"
     }

@@ -53,7 +53,6 @@ Template.paymentSettings.events({
     }];
 
     Meteor.call("registry/update", packageId, settingsKey, fields);
-
     // disable package as well. todo: should probably check if there
     // are any remaining payment methods defined and only disable if none
     Meteor.call("shop/togglePackage", packageId, !event.target.checked);

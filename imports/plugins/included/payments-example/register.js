@@ -1,5 +1,5 @@
 /* eslint camelcase: 0 */
-import { Reaction } from "/server/api";
+import {Reaction} from "/server/api";
 
 Reaction.registerPackage({
   label: "ExamplePayment",
@@ -7,14 +7,19 @@ Reaction.registerPackage({
   icon: "fa fa-credit-card-alt",
   autoEnable: true,
   settings: {
-    mode: false,
-    apiKey: ""
+    "mode": false,
+    "apiKey": "",
+    "example": {
+      enabled: true
+    },
+    "example-paymentmethod": {
+      enabled: true
+    }
   },
   registry: [
     // Settings panel
     {
       label: "Example Payment", // this key (minus spaces) is used for translations
-      name: "payments/settings/example",
       provides: "paymentSettings",
       container: "dashboard",
       template: "exampleSettings"

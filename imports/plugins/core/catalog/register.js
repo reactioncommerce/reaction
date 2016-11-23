@@ -14,7 +14,6 @@ Reaction.registerPackage({
       label: "Catalog",
       description: "Product catalog",
       icon: "fa fa-archive",
-      priority: 1,
       container: "core"
     },
     {

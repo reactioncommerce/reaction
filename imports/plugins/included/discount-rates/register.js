@@ -4,16 +4,14 @@ Reaction.registerPackage({
   label: "Rates",
   name: "discount-rates",
   icon: "fa fa-gift",
-  autoEnable: true,
   settings: {
-    rates: {
+    "discount-rates": {
       enabled: false
     }
   },
   registry: [
     {
       label: "Rates",
-      name: "discounts/settings/rates",
       provides: "catalogSettings",
       template: "customDiscountRates"
     }
