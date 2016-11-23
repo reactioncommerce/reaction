@@ -215,8 +215,7 @@ export default {
     return allowGuest;
   },
 
-  getSellerShopId(userId) {
-    userId = userId || this.userId;
+  getSellerShopId(userId = this.userId) {
     return Roles.getGroupsForUser(userId, "admin");
   },
 

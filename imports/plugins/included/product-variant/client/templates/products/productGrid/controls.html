@@ -1,4 +1,4 @@
-<template name="gridControls">--
+<template name="gridControls">
   {{#if hasControl }}
     <div class="product-grid-controls">
       <label class="like-button hidden" for="select-product-{{product._id}}">
@@ -7,8 +7,7 @@
           name="selectProduct"
           value="{{product._id}}"
           id="select-product-{{product._id}}"
-          checked={{checked}}
-        >
+          checked={{checked}}>
       </label>
 
       {{#if product.isDeleted}}
