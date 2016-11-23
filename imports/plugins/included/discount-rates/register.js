@@ -14,7 +14,7 @@ Reaction.registerPackage({
     {
       label: "Rates",
       name: "discounts/settings/rates",
-      provides: "discountSettings",
+      provides: "catalogSettings",
       template: "customDiscountRates"
     }
   ]
