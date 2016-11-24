@@ -1,8 +1,18 @@
-import { Template } from "meteor/templating";
-import { Packages } from "/lib/collections";
-import { AutoForm } from "meteor/aldeed:autoform";
-import { Reaction } from "/client/api";
-import { AuthNetPackageConfig } from "../../lib/collections/schemas";
+import {
+  Template
+} from "meteor/templating";
+import {
+  Packages
+} from "/lib/collections";
+import {
+  AutoForm
+} from "meteor/aldeed:autoform";
+import {
+  Reaction
+} from "/client/api";
+import {
+  AuthNetPackageConfig
+} from "../../lib/collections/schemas";
 
 import "./authnet.html";
 
@@ -20,16 +30,11 @@ Template.authnetSettings.helpers({
 
 AutoForm.hooks({
   "authnet-update-form": {
-    onSuccess() {
-      Alerts.removeSeen();
-      return Alerts.add("Authorize.net settings saved", "success", {
-        autoHide: true
-      });
+    onSuccess: function () {
+      return Alerts.toast(i18next.t("admin.settings.saveSuccess"), "success");
     },
-
-    onError(operation, error) {
-      Alerts.removeSeen();
-      return Alerts.add("Authorize.net settings update failed. " + error, "danger");
+    onError: function () {
+      return Alerts.toast(`${i18next.t("admin.settings.saveFailed")} ${error}`, "error");
     }
   }
 });

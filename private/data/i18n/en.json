@@ -76,6 +76,8 @@
           "utilities": "Utilities"
         },
         "settings": {
+          "saveSuccess": "Settings updated.",
+          "saveFailed": "Failed to update settings.",
           "accountSettingsLabel": "Account Settings",
           "addShopMemberLabel": "Add Shop Member",
           "permissionsSettingsLabel": "Permissions",

@@ -1,16 +1,18 @@
 <template name="stripeSettings">
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <div class="panel-title"></div>
-      Don't have a Stripe API key? <a href="https://dashboard.stripe.com/account/apikeys" target="_blank">Get it here.</a> (Need to sign in)
+    {{#unless packageData.settings.api_key}}
+    <div class="alert alert-info">
+      <span data-i18n="admin.paymentSettings.stripeSettingsDescription">Don't have a Stripe API Client ID?</span>
+      <a href="https://dashboard.stripe.com/account/apikeys" target="_blank">
+        <span data-i18n="admin.paymentSettings.stripeSettingsGetItHere">Get it here.</span>
+      </a>
     </div>
-    <div class="panel-body">
+    {{/unless}}
+    <div>
       {{#autoForm collection=Collections.Packages schema=StripePackageConfig doc=packageData type="update" id="stripe-update-form"}}
         {{>afQuickField name='settings.api_key'}}
         <button type="submit" class="btn btn-primary pull-right">Update</button>
       {{/autoForm}}
     </div>
-  </div>
 
 </template>
 

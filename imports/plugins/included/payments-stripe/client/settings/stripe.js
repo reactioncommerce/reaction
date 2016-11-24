@@ -34,15 +34,11 @@ Template.stripe.events({
 
 AutoForm.hooks({
   "stripe-update-form": {
-    /* eslint-disable no-unused-vars*/
-    onSuccess(operation, result, template) {
-      Alerts.removeSeen();
-      return Alerts.add("Stripe settings saved.", "success");
+    onSuccess: function () {
+      return Alerts.toast(i18next.t("admin.settings.saveSuccess"), "success");
     },
-    onError(operation, error, template) {
-      Alerts.removeSeen();
-      return Alerts.add("Stripe settings update failed. " + error, "danger");
+    onError: function () {
+      return Alerts.toast(`${i18next.t("admin.settings.saveFailed")} ${error}`, "error");
     }
-    /* eslint-enable no-unused-vars*/
   }
 });

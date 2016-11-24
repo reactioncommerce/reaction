@@ -1,6 +1,11 @@
 <template name="braintreeSettings">
-  <div class="panel panel-default">
-    <div class="panel-body">
+    {{#unless packageData.settings.merchant_id}}
+    <div class="alert alert-info">
+      <span data-i18n="admin.paymentSettings.braintreeCredentials">Add credentials to enable</span>
+      <a href="https://www.braintreepayments.com/" target="_blank">Braintree</a>
+    </div>
+    {{/unless}}
+    <div>
       {{#autoForm
         collection=Collections.Packages
         schema=BraintreePackageConfig
@@ -15,7 +20,6 @@
         <button type="submit" class="btn btn-primary pull-right">Update</button>
       {{/autoForm}}
     </div>
-  </div>
 </template>
 
 
