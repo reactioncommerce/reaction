@@ -14,31 +14,29 @@ Template.taxSettings.onCreated(function () {
 });
 
 Template.taxSettings.helpers({
-  packageConfigSchema() {
-    return TaxPackageConfig;
-  },
-  //
-  // check if this package setting is enabled
-  //
-  checked(pkg) {
-    let enabled;
-    const pkgData = Packages.findOne(pkg.packageId);
-
-    if (pkgData && pkgData.settings) {
-      if (pkgData.settings[pkg.settings]) {
-        enabled = pkgData.settings[pkg.settings].enabled;
-      }
+  checked(enabled) {
+    if (enabled === true) {
+      return "checked";
     }
-    return enabled === true ? "checked" : "";
+    return "";
   },
+  shown(enabled) {
+    if (enabled !== true) {
+      return "hidden";
+    }
+    return "";
+  },
+  // packageConfigSchema() {
+  //   return TaxPackageConfig;
+  // },
   //
   // get current packages settings data
   //
-  packageData() {
-    return Packages.findOne({
-      name: "reaction-taxes"
-    });
-  },
+  // packageData() {
+  //   return Packages.findOne({
+  //     name: "reaction-taxes"
+  //   });
+  // },
   //
   // prepare and return taxCodes
   // for default shop value
@@ -61,21 +59,6 @@ Template.taxSettings.helpers({
       return options;
     }
     return undefined;
-  },
-  //
-  // Template helper to add a hidden class if the condition is false
-  //
-  shown(pkg) {
-    let enabled;
-    const pkgData = Packages.findOne(pkg.packageId);
-
-    if (pkgData && pkgData.settings) {
-      if (pkgData.settings[pkg.settings]) {
-        enabled = pkgData.settings[pkg.settings].enabled;
-      }
-    }
-
-    return enabled !== true ? "hidden" : "";
   }
 });
 
@@ -86,14 +69,14 @@ Template.taxSettings.events({
    * @return {void}
    */
   "change input[name=enabled]": (event) => {
-    const name = event.target.value;
+    const settingsKey = event.target.getAttribute("data-key");
     const packageId = event.target.getAttribute("data-id");
     const fields = [{
       property: "enabled",
       value: event.target.checked
     }];
-
-    Meteor.call("registry/update", packageId, name, fields);
+    // save tax registry updates
+    Meteor.call("registry/update", packageId, settingsKey, fields);
   },
 
   /**

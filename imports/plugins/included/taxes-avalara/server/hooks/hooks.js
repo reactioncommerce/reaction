@@ -23,7 +23,8 @@ MethodHooks.after("taxes/calculate", function (options) {
 
   const pkg = Packages.findOne({
     name: "taxes-avalara",
-    shopId: shopId
+    shopId: shopId,
+    enabled: true
   });
 
   // check if package is configured
