@@ -2,7 +2,7 @@ import { PayflowproApi } from "./payflowproApi";
 import { Logger } from "/server/api";
 import { PaymentMethod } from "/lib/collections/schemas";
 import { check } from "meteor/check";
-import { Paypal } from "../../lib/api"; // Paypal is the reaction api
+import { PayPal } from "../../lib/api"; // PayPal is the reaction api
 
 
 /**
@@ -36,7 +36,7 @@ export function paymentSubmit(transactionType, cardData, paymentData) {
       saved: false,
       error: `Cannot Submit Payment: ${error.message}`
     };
-    Logger.fatal("PayFlowPro call failed, payment was not submitted");
+    Logger.fatal("PayPal PayFlow call failed, payment was not submitted");
   }
 
   return result;
@@ -69,7 +69,7 @@ export function paymentCapture(paymentMethod) {
       saved: false,
       error: `Cannot Capture Payment: ${error.message}`
     };
-    Logger.fatal("PayFlowPro call failed, payment was not captured");
+    Logger.fatal("PayPal PayFlow call failed, payment was not captured");
   }
 
   return result;
@@ -104,7 +104,7 @@ export function createRefund(paymentMethod, amount) {
       saved: false,
       error: `Cannot issue refund: ${error.message}`
     };
-    Logger.fatal("PaypalPro call failed, refund was not issued");
+    Logger.fatal("PayPal PayFlow call failed, refund was not issued");
   }
 
   return result;
@@ -137,7 +137,7 @@ export function listRefunds(paymentMethod) {
       saved: false,
       error: `Cannot issue refund: ${error.message}`
     };
-    Logger.fatal("PaypalPro call failed, refund was not issued");
+    Logger.fatal("PayPal PayFlow call failed, refund was not issued");
   }
 
   return result;
@@ -145,7 +145,7 @@ export function listRefunds(paymentMethod) {
 
 
 export function getSettings() {
-  const settings = Paypal.payflowAccountOptions();
+  const settings = PayPal.payflowAccountOptions();
   const payflowSettings = {
     mode: settings.mode,
     enabled: settings.enabled

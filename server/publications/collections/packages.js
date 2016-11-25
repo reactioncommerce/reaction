@@ -28,7 +28,7 @@ function transform(doc, userId) {
       registry.shopId = doc.shopId;
       registry.packageName = registry.packageName || doc.name;
       // todo: deprecate doc.icon, expect registry.icon
-      registry.icon = registry.icon || doc.icon;
+      registry.icon = registry.icon || "rui font-icon fa fa-angle-right";
       registry.settingsKey = (registry.name || doc.name).split("/").splice(-1)[0];
 
       // check and set package enabled state

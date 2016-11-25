@@ -86,8 +86,10 @@ export function Apps(optionHash) {
   }
   // fetch the packages
   Packages.find(filter).forEach((app) => {
-    const matchingRegistry = _.find(app.registry, registryFilter);
-    if (matchingRegistry) reactionApps.push(matchingRegistry);
+    const matchingRegistry = _.filter(app.registry, registryFilter);
+    for (registry of matchingRegistry) {
+      reactionApps.push(registry);
+    }
   });
   // sort cycle to ensure order aka. is registry.priority working?
   // .sort((a, b) => a.priority - b.priority).slice();

@@ -9,7 +9,7 @@
     <div>
       {{#autoForm collection=Collections.Packages schema=ExamplePackageConfig doc=packageData type="update" id="example-update-form"}}
         {{>afQuickField name='settings.apiKey'}}
-        <button type="submit" class="btn btn-primary pull-right">Update</button>
+        <button type="submit" class="btn btn-primary pull-right"><span data-i18n="app.saveChanges">Save Changes</span></button>
       {{/autoForm}}
     </div>
 

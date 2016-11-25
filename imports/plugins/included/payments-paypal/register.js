@@ -5,17 +5,26 @@ Reaction.registerPackage({
   name: "reaction-paypal",
   icon: "fa fa-paypal",
   settings: {
-    "reaction-paypal": {
-      enabled: false
+    express: {
+      enabled: true
+    },
+    payflow: {
+      enabled: true
     }
   },
   registry: [
     {
-      label: "PayPal",
+      label: "PayPal Express",
       provides: "paymentSettings",
-      container: "reaction-paypal",
+      name: "paypal/settings/express",
       icon: "fa fa-paypal",
-      template: "paypalSettings"
+      template: "paypalExpressSettings"
+    }, {
+      label: "PayPal PayFlow",
+      provides: "paymentSettings",
+      name: "paypal/settings/payflow",
+      icon: "fa fa-cc-paypal",
+      template: "paypalPayFlowSettings"
     }, {
       route: "/paypal/done",
       template: "paypalDone",
@@ -25,9 +34,17 @@ Reaction.registerPackage({
       template: "paypalCancel",
       workflow: "coreWorkflow"
     }, {
-      template: "paypalPaymentForm",
+      template: "paypalCheckoutButton",
+      label: "Express",
+      name: "payment/method/express",
       provides: "paymentMethod",
       icon: "fa fa-paypal"
+    }, {
+      template: "paypalPayflowForm",
+      label: "Credit Card",
+      name: "payment/method/payflow",
+      provides: "paymentMethod",
+      icon: "fa fa-cc-paypal"
     }
   ]
 });

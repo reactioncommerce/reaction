@@ -1,6 +1,6 @@
 import { Template } from "meteor/templating";
 import { Reaction, i18next } from "/client/api";
-import { Shops } from "/lib/collections";
+import { Shops, Packages } from "/lib/collections";
 
 Template.paymentSettings.helpers({
   checked(enabled) {
@@ -24,10 +24,12 @@ Template.paymentSettings.helpers({
 
     if (paymentMethods && _.isArray(paymentMethods)) {
       for (const method of paymentMethods) {
-        options.push({
-          label: i18next.t(method.i18nKeyLabel),
-          value: method.packageName
-        });
+        if (method.enabled === true) {
+          options.push({
+            label: i18next.t(method.i18nKeyLabel),
+            value: method.settingsKey
+          });
+        }
       }
     }
     return options;
@@ -52,10 +54,22 @@ Template.paymentSettings.events({
       value: event.target.checked
     }];
 
-    Meteor.call("registry/update", packageId, settingsKey, fields);
-    // disable package as well. todo: should probably check if there
-    // are any remaining payment methods defined and only disable if none
-    Meteor.call("shop/togglePackage", packageId, !event.target.checked);
+    Meteor.call("registry/update", packageId, settingsKey, fields, (error, result) => {
+      if (result.numberAffected > 0) {
+        // check to see if we should disable the package as well
+        const pkg = Packages.findOne(packageId);
+        const enabled = pkg.registry.find((registry) => {
+          return registry.enabled === true;
+        });
+        // disable the package if no registry items are enabled.
+        // maybe this would be better placed in togglePackage
+        if (pkg.enabled !== true && enabled) {
+          Meteor.call("shop/togglePackage", packageId, true);
+        } else {
+          Meteor.call("shop/togglePackage", packageId, false);
+        }
+      }
+    });
   }
 });
 

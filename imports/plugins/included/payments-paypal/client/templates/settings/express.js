@@ -2,8 +2,9 @@
 import { Template } from "meteor/templating";
 import { Packages } from "/lib/collections";
 import { PaypalPackageConfig } from "../../../lib/collections/schemas";
+import "./express.html";
 
-Template.paypalSettings.helpers({
+Template.paypalExpressSettings.helpers({
   PaypalPackageConfig: function () {
     return PaypalPackageConfig;
   },

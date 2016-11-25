@@ -3,10 +3,6 @@ import { PackageConfig } from "/lib/collections/schemas/registry";
 
 export const PaypalPackageConfig = new SimpleSchema([
   PackageConfig, {
-    "settings.express_enabled": {
-      type: Boolean,
-      defaultValue: true
-    },
     "settings.express_auth_and_capture": {
       type: Boolean,
       label: "Capture at time of Auth",

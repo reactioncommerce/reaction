@@ -1,8 +1,10 @@
+import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
 import { Template } from "meteor/templating";
 import { Cart } from "/lib/collections";
-import { PaypalClientAPI } from "../../lib/paypalRestApi";
+import { PaypalClientAPI } from "../../../lib/paypalRestApi";
+import "./checkoutButton.html";
 
 /**
  * PayPal Checkout Button
@@ -66,6 +68,11 @@ function expressCheckoutSettingsValid(settings) {
  * @return {undefined} no return value
  */
 Template.paypalCheckoutButton.onCreated(function () {
+  Meteor.call("getExpressCheckoutSettings", function (error, expressCheckoutSettings) {
+    if (!error) {
+      return Session.set("expressCheckoutSettings", expressCheckoutSettings);
+    }
+  });
   PaypalClientAPI.load();
   this.state = new ReactiveDict();
   this.state.setDefault({
@@ -84,7 +91,6 @@ Template.paypalCheckoutButton.onRendered(function () {
   this.autorun(() => {
     if (PaypalClientAPI.loaded()) {
       const expressCheckoutSettings = Session.get("expressCheckoutSettings");
-
       if (expressCheckoutSettingsValid(expressCheckoutSettings)) {
         this.state.set("isConfigured", true);
         doSetup(element, expressCheckoutSettings);
@@ -99,7 +105,10 @@ Template.paypalCheckoutButton.onRendered(function () {
  * PayPal checkout button helpers
  */
 Template.paypalCheckoutButton.helpers({
-
+  expressCheckoutEnabled: function () {
+    const expressCheckoutSettings = Session.get("expressCheckoutSettings");
+    return expressCheckoutSettings !== undefined ? expressCheckoutSettings.enabled : void 0;
+  },
   /**
    * Check for proper configuration of PayPal Express Checkout settings.
    * This function only validates that the required settings exist and are not empty.

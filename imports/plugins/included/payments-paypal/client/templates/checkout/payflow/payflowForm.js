@@ -3,9 +3,10 @@ import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import Logger from "/client/modules/logger";
 import { Cart, Shops } from "/lib/collections";
-import { PaypalPayment } from "../../../lib/collections/schemas";
+import { PaypalPayment } from "/imports/plugins/included/payments-paypal/lib/collections/schemas";
 import { Reaction } from "/client/api";
-import { Paypal } from "../../../lib/api";
+import { PayPal } from "/imports/plugins/included/payments-paypal/lib/api";
+import "./payflowForm.html";
 
 
 function uiEnd(template, buttonText) {
@@ -79,7 +80,7 @@ AutoForm.addHooks("paypal-payment-form", {
       type: Reaction.getCardType(doc.cardNumber)
     };
     const storedCard = form.type.charAt(0).toUpperCase() + form.type.slice(1) + " " + doc.cardNumber.slice(-4);
-    Paypal.authorize(form, {
+    PayPal.authorize(form, {
       total: Cart.findOne().cartTotal(),
       currency: Shops.findOne().currency
     }, function (error, transaction) {
