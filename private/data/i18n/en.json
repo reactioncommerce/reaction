@@ -83,13 +83,14 @@
           "filtrationDescription": "Products filtration for Reaction"
         },
         "groups": {
-          "appearance": "Appearance",
+          "appearance": "Appearance1",
           "connect": "Connect",
           "core": "Core",
           "dashboard": "Dashboard",
           "misc": "Misc",
           "paymentMethod": "Payment Providers",
-          "utilities": "Utilities"
+          "utilities": "Utilities",
+          "marketplace": "Marketplace"
         },
         "settings": {
           "accountSettingsLabel": "Account Settings",
@@ -753,6 +754,9 @@
           "orderDate": "Date",
           "orderTotal": "Total"
         }
+      },
+      "marketplace": {
+        "becomeSeller": "Become a seller"
       },
       "accountsUI": {
         "members": "Members",

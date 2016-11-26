@@ -5,6 +5,7 @@ import { Job } from "meteor/vsivsi:job-collection";
 import * as Collections from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 import { GeoCoder, Logger, Reaction } from "/server/api";
+import { MarketplaceApi } from "/imports/plugins/included/marketplace/lib/api";
 
 /**
  * Reaction Shop Methods
@@ -20,14 +21,16 @@ Meteor.methods({
     check(shopAdminUserId, Match.Optional(String));
     check(shopData, Match.Optional(Schemas.Shop));
     let shop = {};
-    // must have owner access to create new shops
-    if (!Reaction.hasOwnerAccess()) {
+    // must have owner access to create new shops when marketplace is disabled
+    // @todo should also be checking if the owner (parent shop) has allowGuestSellers true
+    if (!Reaction.hasOwnerAccess() && !MarketplaceApi.isMarketplaceEnabled()) {
       throw new Meteor.Error(403, "Access Denied");
     }
 
     // this.unblock();
     const count = Collections.Shops.find().count() || "";
-    const currentUser = Meteor.userId();
+    const currentUser = Meteor.user();
+
     // we'll accept a shop object, or clone the current shop
     shop = shopData || Collections.Shops.findOne(Reaction.getShopId());
     // if we don't have any shop data, use fixture
@@ -39,10 +42,28 @@ Meteor.methods({
 
     // identify a shop admin
     const userId = shopAdminUserId || Meteor.userId();
-    const adminRoles = Roles.getRolesForUser(currentUser, Reaction.getShopId());
+    let adminRoles = Roles.getRolesForUser(currentUser, Reaction.getShopId());
     // ensure unique id and shop name
     shop._id = Random.id();
     shop.name = shop.name + count;
+
+    // if marketplace is on
+    // allow only guests, without a shop of theirs
+    // to become sellers for their shop group
+    // @todo should also be checking if the owner (parent shop) has allowGuestSellers true
+    if(currentUser && MarketplaceApi.isMarketplaceEnabled() && !Roles.getGroupsForUser(currentUser, ['admin']).length) {
+      adminRoles = shop.defaultSellerRoles;
+
+      shop.emails = currentUser.emails;
+
+      // update user
+      currentUser.shopId = shop._id;
+      Collections.Accounts.update({ _id: currentUser._id }, {
+        $set: {
+          "shopId": currentUser.shopId
+        }
+      });
+    }
 
     check(shop, Schemas.Shop);
     try {
