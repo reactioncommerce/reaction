@@ -83,7 +83,7 @@
           "filtrationDescription": "Products filtration for Reaction"
         },
         "groups": {
-          "appearance": "Appearance1",
+          "appearance": "Appearance",
           "connect": "Connect",
           "core": "Core",
           "dashboard": "Dashboard",
