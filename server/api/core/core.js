@@ -119,9 +119,7 @@ export default {
     return this.hasPermission(["owner", "admin", "dashboard"]);
   },
 
-  getSellerShopId(userId) {
-    userId = userId || this.userId;
-
+  getSellerShopId(userId = this.userId) {
     return Roles.getGroupsForUser(userId, "admin");
   },
 
