@@ -1,3 +1,2 @@
-import "./methods/cards.html";
-import "./methods/cards.js";
+import "./methods.html";
 import "./payment.html";

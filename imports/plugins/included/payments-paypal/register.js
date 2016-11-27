@@ -9,7 +9,7 @@ Reaction.registerPackage({
       enabled: true
     },
     payflow: {
-      enabled: true
+      enabled: false
     }
   },
   registry: [
@@ -38,7 +38,8 @@ Reaction.registerPackage({
       label: "Express",
       name: "payment/method/express",
       provides: "paymentMethod",
-      icon: "fa fa-paypal"
+      icon: "fa fa-paypal",
+      priority: 1
     }, {
       template: "paypalPayflowForm",
       label: "Credit Card",

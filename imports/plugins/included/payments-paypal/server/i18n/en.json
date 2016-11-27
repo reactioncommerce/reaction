@@ -27,10 +27,15 @@
         }
       },
       "checkout": {
+        "completeYourOrder": "Complete your order",
         "paymentMethod": {
-          "expressButtonLabel": "Checkout with PayPal Express",
+          "expressButtonLabel": "Pay with PayPal",
           "expressNotConfigured": "Paypal Express not configured.",
-          "expressNotAvailable": "Paypal Express not available"
+          "expressNotAvailable": "Paypal Express not available",
+          "submitting": "Submitting",
+          "invalidCard": "Oops! Credit Card number is invalid.",
+          "unknownError": "Oops! An unknown error has occurred",
+          "resubmit": "Resubmit payment"
         }
       }
     }

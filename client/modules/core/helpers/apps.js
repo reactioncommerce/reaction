@@ -72,8 +72,7 @@ export function Apps(optionHash) {
           filter["registry." + key] = value;
           registryFilter[key] = value;
         } else {
-          // perhaps not the best way to check
-          // but lets admin see all packages
+          // perhaps not the best way to check but lets admin see all packages
           if (!Reaction.hasAdminAccess()) {
             if (key !== "shopId") {
               registryFilter[key] = value;
@@ -84,6 +83,7 @@ export function Apps(optionHash) {
       }
     }
   }
+
   // fetch the packages
   Packages.find(filter).forEach((app) => {
     const matchingRegistry = _.filter(app.registry, registryFilter);
@@ -91,8 +91,7 @@ export function Apps(optionHash) {
       reactionApps.push(registry);
     }
   });
-  // sort cycle to ensure order aka. is registry.priority working?
-  // .sort((a, b) => a.priority - b.priority).slice();
+  // sort cycle to ensure order aka. is registry.priority working? .sort((a, b) => a.priority - b.priority).slice();
   return reactionApps;
 }
 

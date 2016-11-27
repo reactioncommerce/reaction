@@ -4,7 +4,7 @@ import { Template } from "meteor/templating";
 import Logger from "/client/modules/logger";
 import { Cart, Shops } from "/lib/collections";
 import { PaypalPayment } from "/imports/plugins/included/payments-paypal/lib/collections/schemas";
-import { Reaction } from "/client/api";
+import { Reaction, i18next } from "/client/api";
 import { PayPal } from "/imports/plugins/included/payments-paypal/lib/api";
 import "./payflowForm.html";
 
@@ -47,10 +47,11 @@ function handlePaypalSubmitError(error) {
     }
     return results;
   } else if (serverError) {
-    return paymentAlert("Oops! Credit Card number is invalid.");
+    // Alerts.toast(i18next.t("checkout.unknownError", { err: serverError }), "error");
+    return paymentAlert(i18next.t("checkout.paymentMethod.unknownError"));
   }
   Logger.fatal("An unknown error has occurred while processing a Paypal payment");
-  return paymentAlert("Oops! An unknown error has occurred");
+  return paymentAlert(i18next.t("checkout.paymentMethod.unknownError"));
 }
 
 //
@@ -87,7 +88,7 @@ AutoForm.addHooks("paypal-payment-form", {
       submitting = false; // todo: check scope
       if (error) {
         handlePaypalSubmitError(error);
-        uiEnd(template, "Resubmit payment");
+        uiEnd(template, i18next.t("checkout.paymentMethod.resubmit"));
       } else {
         if (transaction.saved === true) {
           const normalizedStatus = (function () {
@@ -151,7 +152,7 @@ AutoForm.addHooks("paypal-payment-form", {
           Meteor.call("cart/submitPayment", paymentMethod);
         } else {
           handlePaypalSubmitError(transaction.error);
-          uiEnd(template, "Resubmit payment");
+          uiEnd(template, i18next.t("checkout.paymentMethod.resubmit"));
         }
       }
     });
@@ -159,12 +160,12 @@ AutoForm.addHooks("paypal-payment-form", {
   },
   beginSubmit: function () {
     this.template.$(".cart-checkout-step *").attr("disabled", true);
-    this.template.$("#btn-complete-order").text("Submitting ");
+    this.template.$("#btn-complete-order").text(i18next.t("checkout.paymentMethod.submitting"));
     return this.template.$("#btn-processing").removeClass("hidden");
   },
   endSubmit: function () {
     if (!submitting) {
-      return uiEnd(this.template, "Complete your order");
+      return uiEnd(this.template, i18next.t("checkout.completeYourOrder"));
     }
     return undefined;
   }
