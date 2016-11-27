@@ -1,11 +1,13 @@
+import * as moment from "moment-timezone";
+import "moment/min/locales.min.js";
+import { Meteor } from "meteor/meteor";
+import { Template } from "meteor/templating";
 import { i18next } from "/client/api";
 import { Reaction } from "../";
 import * as Collections from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
-import { Meteor } from "meteor/meteor";
-import { Template } from "meteor/templating";
-import moment from "moment-timezone";
 import { toCamelCase } from "/lib/api";
+
 
 /*
  *
@@ -51,20 +53,32 @@ if (Package.blaze) {
  */
 Template.registerHelper("monthOptions", function () {
   const label = i18next.t("app.monthOptions", "Choose month");
+  const localLocale = moment;
+  // adding cases where our lang w/o region
+  // isn't predefined in moment.
+  localLocale.defineLocale("zh", {
+    parentLocale: "zh-cn"
+  });
+
+  localLocale.locale(i18next.language);
   const monthOptions = [{
     value: "",
     label: label
   }];
-  const months = moment.months();
+
+  const months = localLocale.months();
+  // parse into autoform array
   for (const index in months) {
     if ({}.hasOwnProperty.call(months, index)) {
       const month = months[index];
+      const mnum = parseInt(index, 10) + 1;
       monthOptions.push({
-        value: parseInt(index, 10) + 1,
-        label: month
+        value: mnum,
+        label: `${mnum} | ${month}`
       });
     }
   }
+
   return monthOptions;
 });
 
