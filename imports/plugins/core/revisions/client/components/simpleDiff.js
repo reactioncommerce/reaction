@@ -15,8 +15,8 @@ class SimpleDiff extends Component {
           return (
             <tr className="success" key={index}>
               <td><i className="fa fa-plus" /></td>
-              <td style={{whiteSpace: "normal"}}>{leftHandSide}</td>
-              <td style={{whiteSpace: "normal"}}>{rightHandSide}</td>
+              <td style={{ whiteSpace: "normal" }}>{leftHandSide}</td>
+              <td style={{ whiteSpace: "normal" }}>{rightHandSide}</td>
             </tr>
           );
 
@@ -25,8 +25,8 @@ class SimpleDiff extends Component {
           return (
             <tr className="success" key={index}>
               <td><i className="fa fa-plus" /></td>
-              <td style={{whiteSpace: "normal"}}>{leftHandSide}</td>
-              <td style={{whiteSpace: "normal"}}>{rightHandSide}</td>
+              <td style={{ whiteSpace: "normal" }}>{leftHandSide}</td>
+              <td style={{ whiteSpace: "normal" }}>{rightHandSide}</td>
             </tr>
           );
 
@@ -35,8 +35,8 @@ class SimpleDiff extends Component {
           return (
             <tr className="warning" key={index}>
               <td><i className="fa fa-pencil" /></td>
-              <td style={{whiteSpace: "normal"}}>{leftHandSide}</td>
-              <td style={{whiteSpace: "normal"}}>{rightHandSide}</td>
+              <td style={{ whiteSpace: "normal" }}>{leftHandSide}</td>
+              <td style={{ whiteSpace: "normal" }}>{rightHandSide}</td>
             </tr>
           );
 
@@ -45,8 +45,8 @@ class SimpleDiff extends Component {
           return (
             <tr className="danger" key={index}>
               <td><i className="fa fa-times" /></td>
-              <td style={{whiteSpace: "normal"}}>{leftHandSide}</td>
-              <td style={{whiteSpace: "normal"}}>{rightHandSide}</td>
+              <td style={{ whiteSpace: "normal" }}>{leftHandSide}</td>
+              <td style={{ whiteSpace: "normal" }}>{rightHandSide}</td>
             </tr>
           );
         default:

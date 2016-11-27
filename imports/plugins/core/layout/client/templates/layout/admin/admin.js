@@ -1,9 +1,9 @@
 import Drop from "tether-drop";
-import {Meteor} from "meteor/meteor";
-import {Blaze} from "meteor/blaze";
-import {Template} from "meteor/templating";
-import {Reaction, i18next} from "/client/api";
-import {Packages} from "/lib/collections";
+import { Meteor } from "meteor/meteor";
+import { Blaze } from "meteor/blaze";
+import { Template } from "meteor/templating";
+import { Reaction, i18next } from "/client/api";
+import { Packages } from "/lib/collections";
 
 Template.coreAdminLayout.onRendered(function () {
   $("body").addClass("admin");
@@ -16,7 +16,7 @@ Template.coreAdminLayout.onDestroyed(() => {
 Template.coreAdminLayout.helpers({
   shortcutButtons() {
     const instance = Template.instance();
-    const shortcuts = Reaction.Apps({provides: "shortcut", enabled: true});
+    const shortcuts = Reaction.Apps({ provides: "shortcut", enabled: true });
     const items = [];
 
     if (_.isArray(shortcuts)) {
@@ -35,7 +35,7 @@ Template.coreAdminLayout.helpers({
       }
     }
 
-    items.push({type: "seperator"});
+    items.push({ type: "seperator" });
 
     items.push({
       icon: "plus",
@@ -44,7 +44,7 @@ Template.coreAdminLayout.helpers({
       tooltipPosition: "left middle",
       onClick(event) {
         if (!instance.dropInstance) {
-          instance.dropInstance = new Drop({target: event.currentTarget, content: "", constrainToWindow: true, classes: "drop-theme-arrows", position: "right center"});
+          instance.dropInstance = new Drop({ target: event.currentTarget, content: "", constrainToWindow: true, classes: "drop-theme-arrows", position: "right center" });
 
           Blaze.renderWithData(Template.createContentMenu, {}, instance.dropInstance.content);
         }
@@ -67,7 +67,7 @@ Template.coreAdminLayout.helpers({
     const routeName = Reaction.Router.getRouteName();
 
     if (routeName !== "dashboard") {
-      const registryItems = Reaction.Apps({provides: "settings", container: routeName});
+      const registryItems = Reaction.Apps({ provides: "settings", container: routeName });
       const buttons = [];
 
       for (const item of registryItems) {

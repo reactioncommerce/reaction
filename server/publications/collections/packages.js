@@ -1,7 +1,7 @@
-import {Packages} from "/lib/collections";
-import {Reaction} from "/server/api";
-import {translateRegistry} from "/lib/api";
-import {Roles} from "meteor/alanning:roles";
+import { Packages } from "/lib/collections";
+import { Reaction } from "/server/api";
+import { translateRegistry } from "/lib/api";
+import { Roles } from "meteor/alanning:roles";
 
 /**
  * Packages contains user specific configuration

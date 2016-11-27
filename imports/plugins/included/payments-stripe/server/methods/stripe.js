@@ -216,7 +216,7 @@ Meteor.methods({
     check(paymentMethod, Reaction.Schemas.PaymentMethod);
     let result;
     try {
-      const refunds = StripeApi.methods.listRefunds.call({transactionId: paymentMethod.transactionId});
+      const refunds = StripeApi.methods.listRefunds.call({ transactionId: paymentMethod.transactionId });
       result = [];
       for (const refund of refunds.data) {
         result.push({

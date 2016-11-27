@@ -16,7 +16,7 @@ Template.paymentSettings.helpers({
     return "";
   },
   paymentMethodOptions() {
-    const paymentMethods = Reaction.Apps({provides: "paymentMethod"});
+    const paymentMethods = Reaction.Apps({ provides: "paymentMethod" });
     const options = [{
       label: i18next.t("app.auto"),
       value: "none"

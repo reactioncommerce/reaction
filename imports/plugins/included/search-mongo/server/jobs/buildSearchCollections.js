@@ -81,7 +81,7 @@ export default function () {
       Logger.debug("(re)build ProductSearch collection running");
       buildProductSearch(function (error) {
         if (error) {
-          job.done(error.toString(), {repeatId: true});
+          job.done(error.toString(), { repeatId: true });
           callback();
         } else {
           const success = "ProductSearch collection (re)built successfully.";
@@ -102,7 +102,7 @@ export default function () {
       Logger.debug("(re)build ProductSearch index running");
       rebuildProductSearchIndex(function (error) {
         if (error) {
-          job.done(error.toString(), {repeatId: true});
+          job.done(error.toString(), { repeatId: true });
           callback();
         } else {
           const success = "ProductSearch Index (re)built successfully.";
@@ -123,7 +123,7 @@ export default function () {
       Logger.debug("(re)build OrderSearch index running");
       buildOrderSearch(function (error) {
         if (error) {
-          job.done(error.toString(), {repeatId: true});
+          job.done(error.toString(), { repeatId: true });
           callback();
         } else {
           const success = "OrderSearch collection (re)built successfully.";
@@ -144,7 +144,7 @@ export default function () {
       Logger.debug("(re)build AccountSearch index running");
       buildAccountSearch(function (error) {
         if (error) {
-          job.done(error.toString(), {repeatId: true});
+          job.done(error.toString(), { repeatId: true });
           callback();
         } else {
           const success = "AccountSearch collection (re)built successfully.";

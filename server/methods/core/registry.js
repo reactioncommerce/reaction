@@ -1,8 +1,8 @@
-import {Meteor} from "meteor/meteor";
-import {check} from "meteor/check";
-import {Packages} from "/lib/collections";
-import {Reaction} from "/server/api";
-import {mergeDeep} from "/lib/api";
+import { Meteor } from "meteor/meteor";
+import { check } from "meteor/check";
+import { Packages } from "/lib/collections";
+import { Reaction } from "/server/api";
+import { mergeDeep } from "/lib/api";
 
 export const methods = {
   "registry/update": function (packageId, name, fields) {
@@ -34,7 +34,7 @@ export const methods = {
         $set: {
           settings: dataToSave
         }
-      }, {upsert: true});
+      }, { upsert: true });
     }
 
     return false;

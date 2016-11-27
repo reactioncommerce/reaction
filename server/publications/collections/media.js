@@ -42,7 +42,7 @@ Meteor.publish("Media", function (shops) {
   if (RevisionApi.isRevisionControlEnabled()) {
     const revisionHandle = Revisions.find({
       "documentType": "image",
-      "workflow.status": {$nin: [ "revision/published"]}
+      "workflow.status": { $nin: [ "revision/published"] }
     }).observe({
       added: (revision) => {
         const media = Media.findOne(revision.documentId);

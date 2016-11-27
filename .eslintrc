@@ -41,8 +41,8 @@
     /**
      * ES6
      */
+    "object-curly-spacing": ["error", "always", { "objectsInObjects": true }],
     "no-var": 2, // http://eslint.org/docs/rules/no-var
-
     /**
      * Variables
      */

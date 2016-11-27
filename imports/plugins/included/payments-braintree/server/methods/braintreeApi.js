@@ -15,7 +15,7 @@ BraintreeApi.apiCall = {};
 function getPaymentObj() {
   return {
     amount: "",
-    options: {submitForSettlement: true}
+    options: { submitForSettlement: true }
   };
 }
 

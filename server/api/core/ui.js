@@ -23,7 +23,7 @@ function cssToObject(styles) {
 
 function objectToCSS(styles) {
   const prefixedStyles = prefixer(styles);
-  return postcss().process(prefixedStyles, {parser: postcssJS});
+  return postcss().process(prefixedStyles, { parser: postcssJS });
 }
 
 function themeToCSS(theme) {

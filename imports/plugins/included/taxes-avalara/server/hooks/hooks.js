@@ -72,7 +72,7 @@ MethodHooks.after("taxes/calculate", function (options) {
           // const countries = require("country-data").countries;
           const lookup = require("country-data").lookup;
           // converting iso alpha 2 country to ISO 3166-1 alpha-3
-          const country = lookup.countries({alpha2: shippingAddress.country})[0];
+          const country = lookup.countries({ alpha2: shippingAddress.country })[0];
 
           // get tax rate by street address
           Avalara.taxByAddress(apiKey,

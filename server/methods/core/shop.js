@@ -684,7 +684,7 @@ Meteor.methods({
       shop.layout[i].layout = newLayout;
     }
     return Collections.Shops.update(shopId, {
-      $set: {layout: shop.layout}
+      $set: { layout: shop.layout }
     });
   }
 });

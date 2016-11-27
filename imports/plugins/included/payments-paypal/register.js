@@ -1,4 +1,4 @@
-import {Reaction} from "/server/api";
+import { Reaction } from "/server/api";
 
 Reaction.registerPackage({
   label: "PayPal",

@@ -1,14 +1,14 @@
 import url from "url";
-import {merge, uniqWith} from "lodash";
-import {Meteor} from "meteor/meteor";
-import {EJSON} from "meteor/ejson";
-import {Jobs, Packages, Shops} from "/lib/collections";
-import {Hooks, Logger} from "/server/api";
+import { merge, uniqWith } from "lodash";
+import { Meteor } from "meteor/meteor";
+import { EJSON } from "meteor/ejson";
+import { Jobs, Packages, Shops } from "/lib/collections";
+import { Hooks, Logger } from "/server/api";
 import ProcessJobs from "/server/jobs";
-import {getRegistryDomain} from "./setDomain";
-import {registerTemplate} from "./templates";
-import {sendVerificationEmail} from "./accounts";
-import {getMailUrl} from "./email/config";
+import { getRegistryDomain } from "./setDomain";
+import { registerTemplate } from "./templates";
+import { sendVerificationEmail } from "./accounts";
+import { getMailUrl } from "./email/config";
 
 export default {
 
@@ -136,7 +136,7 @@ export default {
     const domain = this.getDomain();
     const cursor = Shops.find({
       domains: domain
-    }, {limit: 1});
+    }, { limit: 1 });
     if (!cursor.count()) {
       Logger.debug(domain, "Add a domain entry to shops for ");
     }
@@ -195,12 +195,12 @@ export default {
   },
 
   getShopSettings(name = "core") {
-    const settings = Packages.findOne({name: name, shopId: this.getShopId()}) || {};
+    const settings = Packages.findOne({ name: name, shopId: this.getShopId() }) || {};
     return settings.settings || {};
   },
 
   getPackageSettings(name) {
-    return Packages.findOne({packageName: name, shopId: this.getShopId()}) || null;
+    return Packages.findOne({ packageName: name, shopId: this.getShopId() }) || null;
   },
 
   /**
@@ -275,11 +275,11 @@ export default {
     //
 
     // we're checking again to see if this user was created but not specifically for this shop.
-    if (Meteor.users.find({"emails.address": options.email}).count() === 0) {
+    if (Meteor.users.find({ "emails.address": options.email }).count() === 0) {
       accountId = Accounts.createUser(options);
     } else {
       // this should only occur when existing admin creates a new shop
-      accountId = Meteor.users.findOne({"emails.address": options.email})._id;
+      accountId = Meteor.users.findOne({ "emails.address": options.email })._id;
     }
 
     //
@@ -429,7 +429,7 @@ export default {
         // delete registry entries for packages that have been removed
         if (!_.has(this.Packages, pkg.name)) {
           Logger.debug(`Removing ${pkg.name}`);
-          return Packages.remove({shopId: shop._id, name: pkg.name});
+          return Packages.remove({ shopId: shop._id, name: pkg.name });
         }
         return false;
       });

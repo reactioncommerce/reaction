@@ -25,7 +25,7 @@ describe("stripe/refund/create", function () {
       status: "completed",
       mode: "capture",
       createdAt: new Date(),
-      workflow: {status: "new"},
+      workflow: { status: "new" },
       metadata: {}
     };
 

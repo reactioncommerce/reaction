@@ -9,7 +9,7 @@ import { Reaction } from "/client/api";
 import { Shops, Translations } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 import i18next, { packageNamespaces, getLabelsFor, getMessagesFor, i18nextDep } from "./main";
-import {mergeDeep} from "/lib/api";
+import { mergeDeep } from "/lib/api";
 
 //
 // setup options for i18nextBrowserLanguageDetector

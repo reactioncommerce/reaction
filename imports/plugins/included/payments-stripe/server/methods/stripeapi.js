@@ -20,7 +20,7 @@ export const cardSchema = new SimpleSchema({
 
 export const chargeObjectSchema = new SimpleSchema({
   amount: { type: Number },
-  currency: {type: String},
+  currency: { type: String },
   card: { type: cardSchema },
   capture: { type: Boolean }
 });
@@ -79,7 +79,7 @@ StripeApi.methods.createCharge = new ValidatedMethod({
       // Handle "expected" errors differently
       if (e.rawType === "card_error" && _.includes(expectedErrors, e.code)) {
         Logger.info("Error from Stripe is expected, not throwing");
-        return {error: e, result: null};
+        return { error: e, result: null };
       }
       Logger.error("Received unexpected error code: " + e.code);
       Logger.error(e);
