@@ -1,4 +1,5 @@
-import * as moment from "moment-timezone";
+import * as tz from "moment-timezone";
+import moment from "moment";
 import "moment/min/locales.min.js";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
@@ -7,7 +8,6 @@ import { Reaction } from "../";
 import * as Collections from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 import { toCamelCase } from "/lib/api";
-
 
 /*
  *
@@ -53,7 +53,7 @@ if (Package.blaze) {
  */
 Template.registerHelper("monthOptions", function () {
   const label = i18next.t("app.monthOptions", "Choose month");
-  const localLocale = moment;
+  const localLocale = tz;
 
   // adding cases where our lang w/o region
   // isn't predefined in moment.
@@ -299,11 +299,8 @@ Template.registerHelper("nl2br", function (text) {
  * @return {Date} return formatted date
  */
 Template.registerHelper("dateFormat", function (context, block) {
-  if (window.moment) {
-    const f = block.hash.format || "MMM DD, YYYY hh:mm:ss A";
-    return moment(context).format(f);
-  }
-  return context;
+  const f = block.hash.format || "MMM DD, YYYY hh:mm:ss A";
+  return moment(context).format(f);
 });
 
 /**
@@ -317,10 +314,7 @@ Template.registerHelper("dateFormat", function (context, block) {
  * @return {Date} return formatted date
  */
 Template.registerHelper("timeAgo", function (context) {
-  if (window.moment) {
-    return moment(context).from(new Date());
-  }
-  return context;
+  return moment(context).from(new Date());
 });
 
 
