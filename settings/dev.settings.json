@@ -3,8 +3,8 @@
   "MAIL_URL": "",
   "reaction": {
     "REACTION_USER": "",
-    "REACTION_AUTH": "Tjd11034",
-    "REACTION_EMAIL": "tyler.dunkel@gmail.com"
+    "REACTION_AUTH": "",
+    "REACTION_EMAIL": ""
   },
   "isDebug": "info",
   "public": {}
