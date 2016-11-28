@@ -11,25 +11,17 @@ Template.authnetSettings.helpers({
     return AuthNetPackageConfig;
   },
   packageData() {
-    return Packages.findOne({
-      name: "reaction-auth-net",
-      shopId: Reaction.getShopId()
-    });
+    return Packages.findOne({ name: "reaction-auth-net", shopId: Reaction.getShopId() });
   }
 });
 
 AutoForm.hooks({
   "authnet-update-form": {
-    onSuccess() {
-      Alerts.removeSeen();
-      return Alerts.add("Authorize.net settings saved", "success", {
-        autoHide: true
-      });
+    onSuccess: function () {
+      return Alerts.toast(i18next.t("admin.settings.saveSuccess"), "success");
     },
-
-    onError(operation, error) {
-      Alerts.removeSeen();
-      return Alerts.add("Authorize.net settings update failed. " + error, "danger");
+    onError: function () {
+      return Alerts.toast(`${i18next.t("admin.settings.saveFailed")} ${error}`, "error");
     }
   }
 });

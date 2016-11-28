@@ -24,8 +24,8 @@ class ProductField extends Component {
         const input = this._input.refs.input;
 
         Velocity.RunSequence([
-          {e: input, p: { backgroundColor: "#e2f2e2" }, o: { duration: 200 }},
-          {e: input, p: { backgroundColor: "#fff" }, o: { duration: 100 }}
+          { e: input, p: { backgroundColor: "#e2f2e2" }, o: { duration: 200 } },
+          { e: input, p: { backgroundColor: "#fff" }, o: { duration: 100 } }
         ]);
       });
     }

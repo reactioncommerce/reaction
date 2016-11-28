@@ -14,7 +14,9 @@
         },
         "paymentSettings": {
           "stripeLabel": "Stripe",
-          "stripeSettingsLabel": "Stripe"
+          "stripeSettingsLabel": "Stripe",
+          "stripeSettingsDescription": "Don't have a Stripe API Client ID?",
+          "stripeSettingsGetItHere": "Get it here"
         }
       }
     }

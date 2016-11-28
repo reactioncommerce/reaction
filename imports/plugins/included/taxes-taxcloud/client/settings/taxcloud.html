@@ -1,4 +1,13 @@
 <template name="taxCloudSettings">
+
+  {{#unless packageData.settings.taxcloud.apiLoginId}}
+  <div class="alert alert-info">
+    <span data-i18n="admin.taxSettings.taxcloudCredentials">Add API Login ID to enable</span>
+    <a href="https://www.taxcloud.com/" target="_blank">TaxCloud</a>
+  </div>
+  {{/unless}}
+
+  <div>
   {{#autoForm collection=Collections.Packages schema=packageConfigSchema doc=packageData type="update" id="taxcloud-update-form"}}
       <div class="panel-body">
         {{> afQuickField name='settings.taxcloud.apiLoginId' class='form-control'}}
@@ -8,4 +17,5 @@
       </div>
       {{> shopSettingsSubmitButton}}
   {{/autoForm}}
+  </div>
 </template>

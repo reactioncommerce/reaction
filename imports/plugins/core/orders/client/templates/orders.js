@@ -225,7 +225,7 @@ Template.orderListFilters.onCreated(function () {
     this.subscribe("Orders");
 
     const filters = orderFilters.map((filter) => {
-      filter.label = i18next.t(`order.filter.${filter.name}`, {defaultValue: filter.label});
+      filter.label = i18next.t(`order.filter.${filter.name}`, { defaultValue: filter.label });
       filter.i18nKeyLabel = `order.filter.${filter.name}`;
       filter.count = Orders.find(OrderHelper.makeQuery(filter.name)).count();
 

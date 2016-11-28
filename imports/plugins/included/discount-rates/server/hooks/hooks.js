@@ -5,11 +5,12 @@ MethodHooks.after("discounts/calculate", function (options) {
   const result = options.result || {};
   const pkg = Packages.findOne({
     name: "discount-rates",
-    shopId: Reaction.getShopId()
+    shopId: Reaction.getShopId(),
+    enabled: true
   });
 
   // check if plugin is enabled and this calculation method is enabled
-  if (pkg && pkg.enabled === true && pkg.settings.rates.enabled === true) {
+  if (pkg && pkg.settings["discount-rates"].enabled === true) {
     Logger.info("Discount rates triggered on cartId:", options.arguments[0]);
   }
 

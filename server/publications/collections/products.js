@@ -80,7 +80,7 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
 
   if (shop) {
     const selector = {
-      isDeleted: {$in: [null, false]},
+      isDeleted: { $in: [null, false] },
       ancestors: {
         $exists: true,
         $eq: []
@@ -238,8 +238,8 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
           added: (id, fields) => {
             const revisions = Revisions.find({
               "$or": [
-                {documentId: id },
-                {parentDocument: id}
+                { documentId: id },
+                { parentDocument: id }
               ],
               "workflow.status": {
                 $nin: [
@@ -254,8 +254,8 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
           changed: (id, fields) => {
             const revisions = Revisions.find({
               "$or": [
-                {documentId: id },
-                {parentDocument: id}
+                { documentId: id },
+                { parentDocument: id }
               ],
               "workflow.status": {
                 $nin: [

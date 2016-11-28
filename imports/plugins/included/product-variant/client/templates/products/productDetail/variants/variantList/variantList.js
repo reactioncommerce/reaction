@@ -207,7 +207,7 @@ Template.variantList.events({
     Alerts.removeSeen();
 
     const selectedProduct = ReactionProduct.selectedProduct();
-    Reaction.Router.go("product", {handle: selectedProduct.handle, variantId: this._id});
+    Reaction.Router.go("product", { handle: selectedProduct.handle, variantId: this._id });
 
     return ReactionProduct.setCurrentVariant(this._id);
   }

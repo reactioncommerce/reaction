@@ -28,7 +28,7 @@ class EditContainer extends Component {
       }
     });
 
-    Reaction.state.set(`edit/focus`, props.field);
+    Reaction.state.set("edit/focus", props.field);
 
     return true;
   }

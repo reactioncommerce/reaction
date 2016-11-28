@@ -30,6 +30,7 @@
 
 
   {{#each groupsForUser}}
+    {{#if permissionGroups}}
     <div class="panel-body">
       <h3><i class="fa fa-shopping-cart"></i> {{shopLabel}}</h3>
     </div>
@@ -88,6 +89,6 @@
         </div>
       {{/each}}
       </div>
-    {{/each}}
-
+    {{/if}}
+  {{/each}}
 </template>

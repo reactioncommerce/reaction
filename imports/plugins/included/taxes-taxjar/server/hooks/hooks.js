@@ -6,7 +6,8 @@ MethodHooks.after("taxes/calculate", function (options) {
   const result = options.result || {};
   const pkg = Packages.findOne({
     name: "taxes-taxjar",
-    shopId: Reaction.getShopId()
+    shopId: Reaction.getShopId(),
+    enabled: true
   });
 
   // check if plugin is enabled and this calculation method is enabled

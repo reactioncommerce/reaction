@@ -71,7 +71,7 @@ class ProductDetail extends Component {
 
   render() {
     return (
-      <div className="pdp" style={{position: "relative"}}>
+      <div className="pdp" style={{ position: "relative" }}>
         {this.renderToolbar()}
         <div className="container container-main pdp-container" itemScope itemType="http://schema.org/Product">
           <div className="row">

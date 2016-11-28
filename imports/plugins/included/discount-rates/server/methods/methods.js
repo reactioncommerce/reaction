@@ -5,7 +5,7 @@ import { Discounts } from  "/imports/plugins/core/discounts/lib/collections";
 import { DiscountRates as DiscountSchema } from "../../lib/collections/schemas";
 
 // attach discount code specific schema
-Discounts.attachSchema(DiscountSchema, {selector: {discountMethod: "rate"}});
+Discounts.attachSchema(DiscountSchema, { selector: { discountMethod: "rate" } });
 
 //
 // make all discount methods available

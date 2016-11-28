@@ -4,7 +4,7 @@ import accounting from "accounting-js";
 import { HTTP } from "meteor/http";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
-import { Paypal } from "../../lib/api";
+import { PayPal } from "../../lib/api";
 import { Shops, Cart, Packages } from "/lib/collections";
 import { Reaction, Logger } from "/server/api";
 
@@ -12,12 +12,12 @@ let parseResponse;
 let parseRefundReponse;
 const nvpVersion = "52.0";
 
-Meteor.methods({
+export const methods = {
   /**
-   * Acquire the Token required for Paypal Express transactions
+   * Acquire the Token required for PayPal Express transactions
    * https://developer.paypal.com/docs/classic/api/merchant/SetExpressCheckout_API_Operation_NVP/
    * @param  {String} cartId Reference to the Cart object to be processed
-   * @return {String} Paypal Token
+   * @return {String} PayPal Token
    */
   "getExpressCheckoutToken": function (cartId) {
     check(cartId, String);
@@ -33,7 +33,7 @@ Meteor.methods({
     const amount = Number(cart.cartTotal());
     const description = shop.name + " Ref: " + cartId;
     const currency = shop.currency;
-    const options = Paypal.expressCheckoutAccountOptions();
+    const options = PayPal.expressCheckoutAccountOptions();
     let response;
 
     try {
@@ -70,10 +70,10 @@ Meteor.methods({
     return parsedResponse.TOKEN;
   },
   /**
-   * Perform the Paypal Express payment application
+   * Perform the PayPal Express payment application
    * https://developer.paypal.com/docs/classic/api/merchant/DoExpressCheckoutPayment_API_Operation_NVP/
    * @param  {String} cartId Reference to the cart we are checking out
-   * @param  {String} token The Token provided by Paypal for this transaction
+   * @param  {String} token The Token provided by PayPal for this transaction
    * @param  {String} payerId Reference to the payer
    * @return {Object} results from PayPal normalized
    */
@@ -89,7 +89,7 @@ Meteor.methods({
     const amount = Number(cart.cartTotal());
     const shop = Shops.findOne(cart.shopId);
     const currency = shop.currency;
-    const options = Paypal.expressCheckoutAccountOptions();
+    const options = PayPal.expressCheckoutAccountOptions();
     const captureAtAuth = getSetting(cart.shopId, "express_auth_and_capture");
     let paymentAction;
     if (captureAtAuth) {
@@ -131,11 +131,11 @@ Meteor.methods({
   },
 
   /**
-   * Return the settings for the Paypal Express payment Method
+   * Return the settings for the PayPal Express payment Method
    * @return {Object} Express Checkout settings
    */
   "getExpressCheckoutSettings": function () {
-    const settings = Paypal.expressCheckoutAccountOptions();
+    const settings = PayPal.expressCheckoutAccountOptions();
     const expressCheckoutSettings = {
       merchantId: settings.merchantId,
       mode: settings.mode,
@@ -153,7 +153,7 @@ Meteor.methods({
   "paypalexpress/payment/capture": function (paymentMethod) {
     check(paymentMethod, Reaction.Schemas.PaymentMethod);
     this.unblock();
-    const options = Paypal.expressCheckoutAccountOptions();
+    const options = PayPal.expressCheckoutAccountOptions();
     const amount = accounting.toFixed(paymentMethod.amount, 2);
     const authorizationId = paymentMethod.transactions[0].TRANSACTIONID;
     const currencycode = paymentMethod.transactions[0].CURRENCYCODE;
@@ -198,7 +198,7 @@ Meteor.methods({
     }
 
     if (!response || response.statusCode !== 200) {
-      throw new Meteor.Error("Bad Response from Paypal during Capture");
+      throw new Meteor.Error("Bad Response from PayPal during Capture");
     }
 
     const parsedResponse = parseResponse(response);
@@ -231,7 +231,7 @@ Meteor.methods({
     check(amount, Number);
     this.unblock();
 
-    const options = Paypal.expressCheckoutAccountOptions();
+    const options = PayPal.expressCheckoutAccountOptions();
     const previousTransaction = _.last(paymentMethod.transactions);
     const transactionId = previousTransaction.transactionId;
     const currencycode = previousTransaction.currencycode;
@@ -257,8 +257,8 @@ Meteor.methods({
     }
 
     if (!response || response.statusCode !== 200) {
-      Logger.debug(error, "Bad Response from Paypal during Refund Creation");
-      throw new Meteor.Error("Bad Response from Paypal during Refund Creation");
+      Logger.debug(error, "Bad Response from PayPal during Refund Creation");
+      throw new Meteor.Error("Bad Response from PayPal during Refund Creation");
     }
 
     const parsedResponse = parseResponse(response);
@@ -287,7 +287,7 @@ Meteor.methods({
     return result;
   },
   /**
-   * Query Paypal Express NVP API for Refund transactions
+   * Query PayPal Express NVP API for Refund transactions
    * Refunds returned here are listed in the dashboard
    * https://developer.paypal.com/docs/classic/api/merchant/GetTransactionDetails_API_Operation_NVP/
    * @param  {Object} paymentMethod A PaymentMethod object
@@ -297,7 +297,7 @@ Meteor.methods({
     check(paymentMethod, Reaction.Schemas.PaymentMethod);
     this.unblock();
 
-    const options = Paypal.expressCheckoutAccountOptions();
+    const options = PayPal.expressCheckoutAccountOptions();
     const transactionId = paymentMethod.transactionId;
     let response;
 
@@ -319,7 +319,7 @@ Meteor.methods({
     }
 
     if (!response || response.statusCode !== 200) {
-      throw new Meteor.Error("Bad Response from Paypal during refund list");
+      throw new Meteor.Error("Bad Response from PayPal during refund list");
     }
 
     const parsedResponse = parseResponse(response);
@@ -331,8 +331,9 @@ Meteor.methods({
     return result;
   }
 
-});
+};
 
+// internal helpers
 parseResponse = function (response) {
   const result = {};
   const pieces = response.content.split("&");
@@ -346,7 +347,7 @@ parseResponse = function (response) {
 
 /**
  * Parse PayPal's 'unique' Transaction Query response to look for refunds
- * @param  {Object} response The response from Paypal
+ * @param  {Object} response The response from PayPal
  * @return {Object} Refunds, normalized to an Array
  */
 parseRefundReponse = function (response) {
@@ -384,3 +385,6 @@ getSetting = function (shopId, parameter) {
   }).settings;
   return settings[parameter];
 };
+
+// export methods to Meteor
+Meteor.methods(methods);

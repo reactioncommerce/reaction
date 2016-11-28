@@ -1,4 +1,4 @@
-import React, { Component, PropTypes} from "react";
+import React, { Component, PropTypes } from "react";
 import classnames from "classnames";
 import TextareaAutosize from "react-textarea-autosize";
 import { Translation } from "../translation";

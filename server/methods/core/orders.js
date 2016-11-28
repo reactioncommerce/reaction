@@ -680,7 +680,7 @@ Meteor.methods({
       throw new Meteor.Error(403, "Access Denied. You are not connected.");
     }
 
-    return Orders.update({cartId: cartId}, {
+    return Orders.update({ cartId: cartId }, {
       $set: {
         email: email
       }
@@ -836,7 +836,7 @@ Meteor.methods({
               }
             });
 
-            return {error: "orders/capturePayments: Failed to capture transaction"};
+            return { error: "orders/capturePayments: Failed to capture transaction" };
           }
         });
       }

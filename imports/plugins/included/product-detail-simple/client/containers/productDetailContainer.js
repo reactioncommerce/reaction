@@ -138,7 +138,7 @@ class ProductDetailContainer extends Component {
   }
 
   handleViewContextChange = (event, value) => {
-    Reaction.Router.setQueryParams({as: value});
+    Reaction.Router.setQueryParams({ as: value });
   }
 
   handleDeleteProduct = () => {

@@ -5,7 +5,7 @@ import { Tags } from "/lib/collections";
 
 Template.CoreNavigationBar.onCreated(function () {
   this.state = new ReactiveDict();
-  const searchPackage = Reaction.Apps({provides: "ui-search"});
+  const searchPackage = Reaction.Apps({ provides: "ui-search" });
   if (searchPackage.length) {
     this.state.set("searchEnabled", true);
     this.state.set("searchTemplate", searchPackage[0].template);

@@ -24,7 +24,5 @@ import "./templates/checkout/progressBar/progressBar.html";
 import "./templates/checkout/progressBar/progressBar.js";
 import "./templates/checkout/review/review.html";
 import "./templates/checkout/review/review.js";
-import "./templates/checkout/shipping/shipping.html";
-import "./templates/checkout/shipping/shipping.js";
 import "./templates/checkout/checkout.html";
 import "./templates/checkout/checkout.js";

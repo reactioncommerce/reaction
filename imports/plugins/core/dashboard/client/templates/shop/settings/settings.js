@@ -82,8 +82,8 @@ Template.shopSettings.helpers({
       optionTemplate: "shopBrandImageOption",
       selected: selectedMediaId,
       classNames: {
-        itemList: {half: true},
-        input: {hidden: true}
+        itemList: { half: true },
+        input: { hidden: true }
       },
       onSelect(value) {
         const asset = {

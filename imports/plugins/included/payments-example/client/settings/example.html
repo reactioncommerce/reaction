@@ -1,15 +1,17 @@
 <template name="exampleSettings">
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <div class="panel-title" data-i18n="admin.paymentSettings.examplePaymentLabel">Example Credentials</div>
+
+    {{#unless packageData.settings.apiKey}}
+    <div class="alert alert-info">
+      <span data-i18n="admin.paymentSettings.exampleCredentials">Example Credentials</span>
     </div>
-    <div class="panel-body">
+    {{/unless}}
+
+    <div>
       {{#autoForm collection=Collections.Packages schema=ExamplePackageConfig doc=packageData type="update" id="example-update-form"}}
         {{>afQuickField name='settings.apiKey'}}
-        <button type="submit" class="btn btn-primary pull-right">Update</button>
+        <button type="submit" class="btn btn-primary pull-right"><span data-i18n="app.saveChanges">Save Changes</span></button>
       {{/autoForm}}
     </div>
-  </div>
 
 </template>
 

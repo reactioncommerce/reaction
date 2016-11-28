@@ -10,8 +10,8 @@ class Metafield extends Component {
       const input = this.refs.keyInput.refs.input;
 
       Velocity.RunSequence([
-        {e: input, p: { backgroundColor: "#e2f2e2" }, o: { duration: 200 }},
-        {e: input, p: { backgroundColor: "#fff" }, o: { duration: 100 }}
+        { e: input, p: { backgroundColor: "#e2f2e2" }, o: { duration: 200 } },
+        { e: input, p: { backgroundColor: "#fff" }, o: { duration: 100 } }
       ]);
     }
 
@@ -19,8 +19,8 @@ class Metafield extends Component {
       const input = this.refs.valueInput.refs.input;
 
       Velocity.RunSequence([
-        {e: input, p: { backgroundColor: "#e2f2e2" }, o: { duration: 200 }},
-        {e: input, p: { backgroundColor: "#fff" }, o: { duration: 100 }}
+        { e: input, p: { backgroundColor: "#e2f2e2" }, o: { duration: 200 } },
+        { e: input, p: { backgroundColor: "#fff" }, o: { duration: 100 } }
       ]);
     }
   }

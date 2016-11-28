@@ -5,6 +5,11 @@ Reaction.registerPackage({
   name: "reaction-payments",
   icon: "fa fa-credit-card",
   autoEnable: true,
+  settings: {
+    payments: {
+      enabled: true
+    }
+  },
   registry: [
     {
       provides: "dashboard",

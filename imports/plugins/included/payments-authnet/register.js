@@ -6,16 +6,21 @@ Reaction.registerPackage({
   name: "reaction-auth-net",
   icon: "fa fa-credit-card",
   settings: {
-    api_id: "",
-    transaction_key: "",
-    mode: false
+    "api_id": "",
+    "transaction_key": "",
+    "mode": false,
+    "authnet": {
+      enabled: false
+    },
+    "reaction-auth-net": {
+      enabled: false
+    }
   },
   registry: [
     // Settings panel
     {
       provides: "paymentSettings",
       label: "Authorize.net",
-      name: "payments/settings/authnet",
       container: "dashboard",
       template: "authnetSettings"
     },

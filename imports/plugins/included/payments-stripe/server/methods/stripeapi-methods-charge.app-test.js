@@ -70,7 +70,7 @@ describe("Stripe.authorize", function () {
     const total = "22.98";
     const currency = "USD";
     let chargeResult = null;
-    Stripe.authorize(cardData, {total: total, currency: currency}, function (error, result) {
+    Stripe.authorize(cardData, { total: total, currency: currency }, function (error, result) {
       chargeResult = result;
     });
     expect(chargeResult).to.not.be.undefined;
@@ -106,7 +106,7 @@ describe("Stripe.authorize", function () {
     });
     // spyOn(StripeApi.methods.createCharge, "call").and.returnValue(stripeChargeResult);
     let chargeResult = null;
-    Stripe.authorize(form, {total: total, currency: currency}, function (error, result) {
+    Stripe.authorize(form, { total: total, currency: currency }, function (error, result) {
       chargeResult = result;
     });
 
@@ -179,7 +179,7 @@ describe("Stripe.authorize", function () {
     // spyOn(StripeApi.methods.createCharge, "call").and.returnValue(stripeDeclineResult);
 
     let chargeResult = null;
-    Stripe.authorize(form, {total: total, currency: currency}, function (error, result) {
+    Stripe.authorize(form, { total: total, currency: currency }, function (error, result) {
       chargeResult = result;
     });
 
@@ -255,7 +255,7 @@ describe("Stripe.authorize", function () {
     // spyOn(StripeApi.methods.createCharge, "call").and.returnValue(stripeExpiredCardResult);
 
     let chargeResult = null;
-    Stripe.authorize(form, {total: total, currency: currency}, function (error, result) {
+    Stripe.authorize(form, { total: total, currency: currency }, function (error, result) {
       chargeResult = result;
     });
 

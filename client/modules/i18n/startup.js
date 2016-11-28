@@ -9,6 +9,7 @@ import { Reaction } from "/client/api";
 import { Shops, Translations } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 import i18next, { packageNamespaces, getLabelsFor, getMessagesFor, i18nextDep } from "./main";
+import { mergeDeep } from "/lib/api";
 
 //
 // setup options for i18nextBrowserLanguageDetector
@@ -31,35 +32,6 @@ const options = {
   // optional htmlTag with lang attribute, the default is:
   htmlTag: document.documentElement
 };
-
-/**
- * Simple is object check.
- * @param {Object} item item to check if is an object
- * @returns {boolean} return true if object
- */
-function isObject(item) {
-  return (item && typeof item === "object" && !Array.isArray(item) && item !== null);
-}
-
-/**
- * Helper for Deep merge two objects.
- * @param {Object} target deep merge into this object
- * @param {Object} source merge this object
- * @returns {Object} return deep merged object
- */
-function mergeDeep(target, source) {
-  if (isObject(target) && isObject(source)) {
-    Object.keys(source).forEach(key => {
-      if (isObject(source[key])) {
-        if (!target[key]) Object.assign(target, { [key]: {} });
-        mergeDeep(target[key], source[key]);
-      } else {
-        Object.assign(target, { [key]: source[key] });
-      }
-    });
-  }
-  return target;
-}
 
 Meteor.startup(() => {
   // use tracker autorun to detect language changes

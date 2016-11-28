@@ -1,7 +1,7 @@
 import { Template } from "meteor/templating";
 import { ReactiveDict } from "meteor/reactive-dict";
 import { AutoForm } from "meteor/aldeed:autoform";
-import { DiscountRates} from "../collections/rates";
+import { DiscountRates } from "../collections/rates";
 import { DiscountRates as DiscountRateSchema } from "../../lib/collections/schemas/rates";
 import { i18next } from "/client/api";
 import MeteorGriddle from "/imports/plugins/core/ui-grid/client/griddle";

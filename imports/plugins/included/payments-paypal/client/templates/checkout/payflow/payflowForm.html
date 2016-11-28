@@ -1,8 +1,8 @@
 <template name="paypalPayflowForm">
-  <div>
+
     {{#autoForm schema=PaypalPayment id="paypal-payment-form"}}
     <div class="row">
-      <div class="col-sm-12 col-lg-6 form-group{{#if afFieldIsInvalid name='payerName'}} has-error{{/if}}">
+      <div class="form-group{{#if afFieldIsInvalid name='payerName'}} has-error{{/if}}">
         <label class="control-label">{{afFieldLabelText name='payerName'}}</label>
         {{>afFieldInput name="payerName" value=cartPayerName}}
         {{#if afFieldIsInvalid name="payerName"}}
@@ -10,7 +10,7 @@
         {{/if}}
       </div>
 
-      <div class="col-sm-12 col-lg-6 form-group{{#if afFieldIsInvalid name='cardNumber'}} has-error{{/if}}">
+      <div class="form-group{{#if afFieldIsInvalid name='cardNumber'}} has-error{{/if}}">
         <label class="control-label">{{afFieldLabelText name='cardNumber'}}</label>
         {{>afFieldInput name="cardNumber" placeholder='XXXX XXXX XXXX XXXX'}}
         {{#if afFieldIsInvalid name="cardNumber"}}
@@ -52,5 +52,5 @@
     </button>
 
     {{/autoForm}}
-  </div>
+
 </template>

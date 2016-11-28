@@ -128,7 +128,7 @@ export const methods = {
               }, {
                 shopId: shopId
               }]
-            }, {sort: { postal: -1 } }
+            }, { sort: { postal: -1 } }
           ).fetch();
 
           // return custom rates

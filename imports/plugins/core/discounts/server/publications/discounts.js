@@ -1,7 +1,7 @@
 import { Meteor } from "meteor/meteor";
-import { Match, check} from "meteor/check";
+import { Match, check } from "meteor/check";
 import { Counts } from "meteor/tmeasday:publish-counts";
-import { Discounts} from "../../lib/collections";
+import { Discounts } from "../../lib/collections";
 import { Reaction } from "/server/api";
 
 /**
