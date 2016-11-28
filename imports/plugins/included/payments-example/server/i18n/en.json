@@ -17,7 +17,7 @@
         "paymentSettings": {
           "examplePaymentLabel": "Example Provider",
           "examplePaymentSettingsLabel": "Example Payment",
-          "exampleCredentials": "This is an example payment method API setting.",
+          "exampleCredentials": "This is an example payment method setting.",
           "apiClientId": "API Client ID"
         }
       }
