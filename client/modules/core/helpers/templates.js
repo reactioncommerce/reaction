@@ -54,13 +54,21 @@ if (Package.blaze) {
 Template.registerHelper("monthOptions", function () {
   const label = i18next.t("app.monthOptions", "Choose month");
   const localLocale = moment;
+
   // adding cases where our lang w/o region
   // isn't predefined in moment.
-  localLocale.defineLocale("zh", {
-    parentLocale: "zh-cn"
-  });
+  // because using defineLocale throws
+  // ugly deprecation warnings, we aren't doing:
+  //
+  // localLocale.defineLocale("zh", {
+  //   parentLocale: "zh-cn"
+  // });
+  let lang = i18next.language;
+  if (lang === "zh") {
+    lang = "zh-cn";
+  }
 
-  localLocale.locale(i18next.language);
+  localLocale.locale(lang);
   const monthOptions = [{
     value: "",
     label: label
