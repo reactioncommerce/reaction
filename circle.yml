@@ -12,7 +12,6 @@ dependencies:
     - "~/docker"
   override:
     - cd $HOME/reaction
-    - .reaction/scripts/clone-packages.sh
     - .reaction/docker/scripts/plugin-loader.sh
 
 test:
@@ -26,20 +25,24 @@ deployment:
   prequel:
     branch: development
     commands:
-      - docker tag reactioncommerce/base:latest reactioncommerce/base:devel
-      - docker tag reactioncommerce/reaction:latest reactioncommerce/prequel:latest
-      - docker tag reactioncommerce/reaction:latest reactioncommerce/prequel:$CIRCLE_BUILD_NUM
+      - DOCKER_NAMESPACE=${DOCKER_NAMESPACE:-reactioncommerce}
+      - docker tag reactioncommerce/base:latest $DOCKER_NAMESPACE/base:devel
+      - docker tag reactioncommerce/reaction:latest $DOCKER_NAMESPACE/prequel:latest
+      - docker tag reactioncommerce/reaction:latest $DOCKER_NAMESPACE/prequel:$CIRCLE_BUILD_NUM
       - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
-      - docker push reactioncommerce/base:devel
-      - docker push reactioncommerce/prequel:$CIRCLE_BUILD_NUM
-      - docker push reactioncommerce/prequel:latest
+      - docker push $DOCKER_NAMESPACE/base:devel
+      - docker push $DOCKER_NAMESPACE/prequel:$CIRCLE_BUILD_NUM
+      - docker push $DOCKER_NAMESPACE/prequel:latest
   release:
     branch: master
     commands:
-      - docker tag reactioncommerce/base:latest  reactioncommerce/base:$CIRCLE_BUILD_NUM
-      - docker tag reactioncommerce/reaction:latest  reactioncommerce/reaction:$CIRCLE_BUILD_NUM
+      - DOCKER_NAMESPACE=${DOCKER_NAMESPACE:-reactioncommerce}
+      - docker tag reactioncommerce/base:latest  $DOCKER_NAMESPACE/base:latest
+      - docker tag reactioncommerce/base:latest  $DOCKER_NAMESPACE/base:$CIRCLE_BUILD_NUM
+      - docker tag reactioncommerce/reaction:latest  $DOCKER_NAMESPACE/reaction:latest
+      - docker tag reactioncommerce/reaction:latest  $DOCKER_NAMESPACE/reaction:$CIRCLE_BUILD_NUM
       - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
-      - docker push reactioncommerce/base:$CIRCLE_BUILD_NUM
-      - docker push reactioncommerce/base:latest
-      - docker push reactioncommerce/reaction:$CIRCLE_BUILD_NUM
-      - docker push reactioncommerce/reaction:latest
+      - docker push $DOCKER_NAMESPACE/base:$CIRCLE_BUILD_NUM
+      - docker push $DOCKER_NAMESPACE/base:latest
+      - docker push $DOCKER_NAMESPACE/reaction:$CIRCLE_BUILD_NUM
+      - docker push $DOCKER_NAMESPACE/reaction:latest

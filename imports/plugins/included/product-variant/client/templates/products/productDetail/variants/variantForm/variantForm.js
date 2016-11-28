@@ -74,9 +74,9 @@ Template.variantForm.helpers({
         const title = variant.title || i18next.t("productDetailEdit.thisVariant");
 
         Alerts.alert({
-          title: i18next.t("productDetailEdit.removeVariantConfirm", { title }),
+          title: i18next.t("productDetailEdit.archiveVariantConfirm", { title }),
           showCancelButton: true,
-          confirmButtonText: "Remove"
+          confirmButtonText: "Archive"
         }, (isConfirm) => {
           if (isConfirm) {
             const id = variant._id;

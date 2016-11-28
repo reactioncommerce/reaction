@@ -11,7 +11,7 @@ import { transformations } from "./transformations";
 const requiredFields = {};
 requiredFields.products = ["_id", "hashtags", "shopId", "handle", "price", "isVisible"];
 requiredFields.orders = ["_id", "shopId", "shippingName", "shippingPhone", "billingName", "userEmails",
-  "shippingAddress","billingAddress", "shippingStatus", "billingStatus", "orderTotal", "orderDate"];
+  "shippingAddress", "billingAddress", "shippingStatus", "billingStatus", "orderTotal", "orderDate"];
 requiredFields.accounts = ["_id", "shopId", "emails", "profile"];
 
 // https://docs.mongodb.com/manual/reference/text-search-languages/#text-search-languages
@@ -206,14 +206,7 @@ export function buildAccountSearch(cb) {
   AccountSearch.remove({});
   const accounts = Accounts.find({}).fetch();
   for (const account of accounts) {
-    const accountSearch = {};
-    for (const field of requiredFields.accounts) {
-      if (transformations.accounts[field]) {
-        accountSearch[field] = transformations.accounts[field](account[field]);
-      } else {
-        accountSearch[field] = account[field];
-      }
-    }
+    buildAccountSearchRecord(account._id);
   }
   const rawAccountSearchCollection = AccountSearch.rawCollection();
   rawAccountSearchCollection.dropIndexes("*");
