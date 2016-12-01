@@ -4,7 +4,8 @@ import { Template } from "meteor/templating";
 import { Reaction, i18next } from "/client/api";
 import { ReactionProduct } from "/lib/api";
 import { applyProductRevision } from "/lib/api/products";
-import { Products } from "/lib/collections";
+import { Media, Products } from "/lib/collections";
+
 
 Template.variantForm.onCreated(function () {
   this.autorun(() => {
@@ -35,6 +36,37 @@ Template.variantForm.helpers({
       return Template.parentVariantForm;
     }
     return Template.childVariantForm;
+  },
+  media: function () {
+    const media = Media.find({
+      "metadata.variantId": this._id
+    }, {
+      sort: {
+        "metadata.priority": 1
+      }
+    });
+
+    return media;
+  },
+  handleFileUpload() {
+    const ownerId = Meteor.userId();
+    const productId = ReactionProduct.selectedProductId();
+    const shopId = Reaction.getShopId();
+    const currentData = Template.currentData();
+    const variantId = currentData._id;
+
+    return (files) => {
+      for (const file of files) {
+        file.metadata = {
+          variantId,
+          productId,
+          shopId,
+          ownerId
+        };
+
+        Media.insert(file);
+      }
+    };
   },
   childVariants: function () {
     const _id = this._id;

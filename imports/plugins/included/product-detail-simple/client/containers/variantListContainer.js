@@ -173,11 +173,15 @@ class VariantListContainer extends Component {
 function composer(props, onData) {
   let childVariantMedia = [];
   const childVariants = getChildVariants();
+  const topLevelVariants = getTopVariants();
 
   if (Array.isArray(childVariants)) {
     childVariantMedia = Media.find({
       "metadata.variantId": {
-        $in: getVariantIds(childVariants)
+        $in: [
+          ...getVariantIds(childVariants),
+          ...getVariantIds(topLevelVariants)
+        ]
       }
     }, {
       sort: {
