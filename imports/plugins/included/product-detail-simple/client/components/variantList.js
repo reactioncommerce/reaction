@@ -134,7 +134,7 @@ class VariantList extends Component {
           i18nKeyLabel="productDetail.options"
           label="Options"
         />
-        <ul className="variant-list list-unstyled" id="variant-list">
+        <ul className="variant-list variant-product-options list-unstyled" id="variant-list">
           {this.renderVariants()}
         </ul>
         <Divider
