@@ -19,11 +19,6 @@ Reaction.registerPackage({
     priority: 1,
     container: "appearance",
     template: "emailTemplatesDashboard"
-  }, {
-    label: "Edit Email Template",
-    name: "templates/email",
-    provides: "settings",
-    template: "emailTemplateSettings"
   }],
   layout: [{
     layout: "coreLayout",
