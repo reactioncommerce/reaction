@@ -37,15 +37,6 @@ Template.emailTemplatesDashboard.helpers({
  * template emailTemplatesDashboard events
  */
 Template.emailTemplatesDashboard.events({
-    // "click [data-event-action=addEmailTemplate]"(event) {
-    //   event.preventDefault();
-    //
-    //   Reaction.showActionView({
-    //     label: i18next.t("shipping.addShippingMethod"),
-    //     template: "addEmailTemplate"
-    //   });
-    // }
-
   "click [data-event-action=deleteEmailTemplate]"(event) {
     event.preventDefault();
     event.stopPropagation();
@@ -62,24 +53,6 @@ Template.emailTemplatesDashboard.events({
       }
     });
   },
-
-  // "click [data-event-action=duplicateEmailTemplate]"(event) {
-  //   event.preventDefault();
-  //   event.stopPropagation();
-  //
-  //   Alerts.alert({
-  //     title: i18next.t("templates.alerts.duplicateEmailTemplateTitle"),
-  //     type: "warning",
-  //     showCancelButton: true,
-  //     confirmButtonText: i18next.t("templates.alerts.duplicateEmailTemplateConfirm", { title: this.title })
-  //   }, (isConfirm) => {
-  //     if (isConfirm) {
-  //       Meteor.call("templates/email/duplicate", $(event.currentTarget).data("template-id"), this);
-  //       Reaction.hideActionView();
-  //     }
-  //   });
-  // },
-
   "click [data-event-action=editEmailTemplate]"(event) {
     event.preventDefault();
 
@@ -99,7 +72,26 @@ Template.emailTemplatesDashboard.events({
 /*
  * Template emailTemplatesSettings Helpers
  */
+Template.emailTemplateSettings.onCreated(function () {
+  this.state = new ReactiveDict();
+
+  this.autorun(() => {
+    const currentData = Template.currentData();
+    const template = Templates.findOne(currentData._id);
+
+    this.state.set("template", template);
+  });
+});
+
+
+/*
+ * Template emailTemplatesSettings Helpers
+ */
 Template.emailTemplateSettings.helpers({
+  template() {
+    return Template.instance().state.get("template");
+  },
+
   emailTemplateSchema() {
     return EmailTemplates;
   }
