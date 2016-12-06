@@ -5,6 +5,7 @@
   "translation": {
     "reaction-templates": {
       "templates": {
+        "actions": "Actions",
         "edit": "Edit template",
         "editingTemplate": "Editing {{name}} template",
         "duplicate": "Duplicate template",
