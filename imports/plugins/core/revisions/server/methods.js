@@ -1,4 +1,4 @@
-import { Products, Revisions, Packages } from "/lib/collections";
+import { Products, Media, Revisions, Packages } from "/lib/collections";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 
@@ -76,6 +76,11 @@ Meteor.methods({
             "documentData.ancestors": {
               $in: documentIds
             }
+          },
+          {
+            parentDocument: {
+              $in: documentIds
+            }
           }
         ]
       }).fetch();
@@ -101,15 +106,25 @@ Meteor.methods({
 
     if (revisions) {
       for (const revision of revisions) {
-        const res = Products.update({
-          _id: revision.documentId
-        }, {
-          $set: revision.documentData
-        }, {
-          publish: true
-        });
-
-        updatedDocuments += res;
+        if (!revision.documentType || revision.documentType === "product") {
+          const res = Products.update({
+            _id: revision.documentId
+          }, {
+            $set: revision.documentData
+          }, {
+            publish: true
+          });
+          updatedDocuments += res;
+        } else if (revision.documentType === "image") {
+          const res = Media.update({
+            _id: revision.documentId
+          }, {
+            $set: {
+              "metadata.workflow": "published"
+            }
+          });
+          updatedDocuments += res;
+        }
       }
     }
 

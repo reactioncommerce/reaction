@@ -13,10 +13,15 @@ import { i18next } from "/client/api";
 class PublishContainer extends Component {
   handlePublishClick = (revisions) => {
     if (Array.isArray(revisions)) {
-      const documentIds = revisions.map((revision) => {
+      let documentIds = revisions.map((revision) => {
+        if (revision.parentDocument && revision.documentType !== "product") {
+          return revision.parentDocument;
+        }
         return revision.documentId;
       });
 
+      const documentIdsSet = new Set(documentIds); // ensures they are unique
+      documentIds = Array.from(documentIdsSet);
       Meteor.call("revisions/publish", documentIds, (error, result) => {
         if (result === true) {
           const message = i18next.t("revisions.changedPublished", {
@@ -105,6 +110,11 @@ function composer(props, onData) {
             "documentData.ancestors": {
               $in: props.documentIds
             }
+          },
+          {
+            parentDocument: {
+              $in: props.documentIds
+            }
           }
         ],
         "workflow.status": {
@@ -113,7 +123,6 @@ function composer(props, onData) {
           ]
         }
       }).fetch();
-
       onData(null, {
         isEnabled: isRevisionControlEnabled(),
         documentIds: props.documentIds,

@@ -1,7 +1,27 @@
-import { Products, Revisions, Tags } from "/lib/collections";
-import { Logger } from "/server/api";
 import { diff } from "deep-diff";
+import { Products, Revisions, Tags, Media } from "/lib/collections";
+import { Logger } from "/server/api";
 import { RevisionApi } from "../lib/api";
+
+Media.files.before.insert((userid, media) => {
+  if (RevisionApi.isRevisionControlEnabled() === false) {
+    return true;
+  }
+
+  if (media.metadata.productId) {
+    media.metadata.workflow = "unpublished";
+    Revisions.insert({
+      documentId: media._id,
+      documentData: media.metadata,
+      documentType: "image",
+      parentDocument: media.metadata.productId
+    });
+  } else {
+    media.metadata.workflow = "published";
+  }
+  return true;
+});
+
 
 Products.before.insert((userId, product) => {
   if (RevisionApi.isRevisionControlEnabled() === false) {
