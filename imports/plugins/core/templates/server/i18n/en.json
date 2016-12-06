@@ -16,10 +16,10 @@
         "enabled": "Enabled",
         "addTemplate": "Add template",
         "alerts": {
-          "removeEmailTemplateConfirm": "Confirm",
-          "removeEmailTemplateTitle": "Remove Template",
-          "duplicateEmailTemplateConfirm": "Are you sure you want to duplicate {{title}}?",
-          "duplicateEmailTemplateTitle": "Duplicate Template",
+          "removeTemplateConfirm": "Confirm",
+          "removeTemplateTitle": "Remove Template",
+          "duplicateTemplateConfirm": "Are you sure you want to duplicate {{title}}?",
+          "duplicateTemplateTitle": "Duplicate Template",
           "failedToUpdate": "Failed to update template: {{err}}"
         }
       }
