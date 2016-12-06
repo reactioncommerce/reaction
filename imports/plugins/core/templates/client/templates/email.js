@@ -61,9 +61,9 @@ Template.emailTemplateSettings.onCreated(function () {
 
   this.autorun(() => {
     const currentData = Template.currentData();
-    const template = Templates.findOne(currentData._id);
+    const currentTemplate = Templates.findOne(currentData._id);
 
-    this.state.set("template", template);
+    this.state.set("template", currentTemplate);
   });
 });
 
