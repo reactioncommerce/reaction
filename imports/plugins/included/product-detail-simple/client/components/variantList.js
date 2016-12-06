@@ -1,4 +1,4 @@
-import React, { Component, PropTypes} from "react";
+import React, { Component, PropTypes } from "react";
 import Variant from "./variant";
 import { EditContainer } from "/imports/plugins/core/ui/client/containers";
 import { Divider, IconButton } from "/imports/plugins/core/ui/client/components";

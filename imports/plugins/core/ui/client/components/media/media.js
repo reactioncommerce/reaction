@@ -57,7 +57,7 @@ class MediaItem extends Component {
           <div className="rui badge-container">
             {this.renderRevision()}
           </div>
-        );
+      );
     }
     return null;
   }

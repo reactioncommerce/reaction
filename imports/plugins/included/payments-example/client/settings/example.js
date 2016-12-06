@@ -37,12 +37,10 @@ Template.example.events({
 AutoForm.hooks({
   "example-update-form": {
     onSuccess: function () {
-      Alerts.removeSeen();
-      return Alerts.add("Example Payment Method settings saved.", "success");
+      return Alerts.toast(i18next.t("admin.settings.saveSuccess"), "success");
     },
-    onError: function (operation, error) {
-      Alerts.removeSeen();
-      return Alerts.add("Example Payment Method settings update failed. " + error, "danger");
+    onError: function () {
+      return Alerts.toast(`${i18next.t("admin.settings.saveFailed")} ${error}`, "error");
     }
   }
 });

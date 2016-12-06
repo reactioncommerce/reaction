@@ -6,14 +6,16 @@ Reaction.registerPackage({
   name: "reaction-stripe",
   icon: "fa fa-cc-stripe",
   settings: {
-    mode: false,
-    api_key: ""
+    "mode": false,
+    "api_key": "",
+    "reaction-stripe": {
+      enabled: false
+    }
   },
   registry: [
     // Settings panel
     {
       label: "Stripe",
-      name: "payments/settings/stripe",
       provides: "paymentSettings",
       container: "dashboard",
       template: "stripeSettings"

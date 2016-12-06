@@ -22,7 +22,7 @@ Meteor.publish("Product", function (productId) {
 
   let selector = {};
   selector.isVisible = true;
-  selector.isDeleted = {$in: [null, false]};
+  selector.isDeleted = { $in: [null, false] };
 
   if (Roles.userIsInRole(this.userId, ["owner", "admin", "createProduct"],
       shop._id)) {
@@ -51,7 +51,7 @@ Meteor.publish("Product", function (productId) {
   // Selector for hih?
   selector = {
     isVisible: true,
-    isDeleted: {$in: [null, false]},
+    isDeleted: { $in: [null, false] },
     $or: [
       { _id: _id },
       {

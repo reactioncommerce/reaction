@@ -1,4 +1,4 @@
-import React, {Component, PropTypes} from "react";
+import React, { Component, PropTypes } from "react";
 import { TacoTable, DataType, SortDirection, Formatters, Summarizers, TdClassNames } from "react-taco-table";
 
 class SortableTable extends React.Component {

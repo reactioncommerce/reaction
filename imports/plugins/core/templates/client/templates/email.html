@@ -4,18 +4,17 @@
       <table class="table table-striped">
         <thead>
           <tr class="info">
-            <th>{{i18n "templates.method" "Method"}}</th>
-            <th>{{i18n "templates.templateName" "Template Name"}}</th>
-            <th>{{i18n "templates.type" "Type"}}</th>
-            <th>{{i18n "templates.language" "Language"}}</th>
-            <th>{{i18n "templates.enabled" "Enabled"}}</th>
-            <th><i class="fa fa-plus pull-right add-shipping-method" title="{{i18n 'templates.addTemplate' 'Add email template'}}" data-event-action="addShippingMethod"></i></th>
+            <th>{{i18n "mail.templates.templateName" "Template Name"}}</th>
+            <th>{{i18n "mail.templates.type" "Type"}}</th>
+            <th>{{i18n "mail.templates.language" "Language"}}</th>
+            <th>{{i18n "mail.templates.enabled" "Enabled"}}</th>
+            <!-- <th><i class="fa fa-plus pull-right add-shipping-method" title="{{i18n 'mail.templates.addTemplate' 'Add email template'}}" data-event-action="addEmailTemplateMethod"></i></th> -->
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
         {{#each emailTemplate}}
           <tr class="edit-shipping-method" data-event-action="editEmailTemplate">
-            <td>{{name}}</td>
             <td>{{title}}</td>
             <td>{{type}}</td>
             <td>{{language}}</td>
@@ -27,9 +26,9 @@
               {{/if}}
             </td>
             <td class="text-right">
-              <i class="fa fa-pencil" data-template-id="{{_id}}" title="{{i18n 'templates.edit' 'Edit email template'}}" data-event-action="editEmailTemplate"></i>
-              <i class="fa fa-files-o" data-template-id="{{_id}}" title="{{i18n 'templates.duplicate' 'Duplicate email template'}}" data-event-action="duplicateEmailTemplate"></i>
-              <i class="fa fa-trash" data-template-id="{{_id}}" title="{{i18n 'templates.delete' 'Delete email template'}}" data-event-action="deleteEmailTemplate"></i>
+              <i class="fa fa-pencil" data-template-id="{{_id}}" title="{{i18n 'mail.templates.edit' 'Edit email template'}}" data-event-action="editEmailTemplate"></i>
+              <!-- <i class="fa fa-files-o" data-template-id="{{_id}}" title="{{i18n 'mail.templates.duplicate' 'Duplicate email template'}}" data-event-action="duplicateEmailTemplate"></i> -->
+              <i class="fa fa-trash" data-template-id="{{_id}}" title="{{i18n 'mail.templates.delete' 'Delete email template'}}" data-event-action="deleteEmailTemplate"></i>
             </td>
           </tr>
         {{/each}}
@@ -53,15 +52,12 @@
       <div class="panel-heading">Update {{name}} template</div>
       <div class="panel-body">
         <div class="col-md-12 form-group">
-          {{>afQuickField name='subject' class="form-control"}}
-          {{>afQuickField name='name' class="form-control"}}
-          {{>afQuickField name='title' class="form-control"}}
-          {{>afQuickField name='language' class="form-control"}}
-          {{>afQuickField name='template' label='HTML' class="form-control" type="textarea" rows="10"}}
-          {{>afQuickField name='enabled'}}
-          {{>afQuickField name='type' class="form-control"}}
-          {{>afQuickField name='parser' class="form-control"}}
-          {{>afQuickField name='_id' class="form-control"}}
+          {{>afQuickField name="title" class="form-control"}}
+          {{>afQuickField name="name" class="form-control" disabled=true}}
+          {{>afQuickField name="enabled"}}
+          {{>afQuickField name="language" class="form-control" disabled=true}}
+          {{>afQuickField name="subject" class="form-control"}}
+          {{>afQuickField name="template" label="HTML" class="form-control" type="textarea" rows="15"}}
         </div>
       </div>
 

@@ -1,7 +1,7 @@
 /* eslint camelcase: 0 */
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
-import {AutoForm} from "meteor/aldeed:autoform";
+import { AutoForm } from "meteor/aldeed:autoform";
 import { getCardType } from "/client/modules/core/helpers/globals";
 import { Cart, Shops } from "/lib/collections";
 import { Stripe } from "../../lib/api";

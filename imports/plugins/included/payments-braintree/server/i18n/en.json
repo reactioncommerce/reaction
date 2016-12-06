@@ -16,7 +16,8 @@
         },
         "paymentSettings": {
           "braintreeLabel": "Braintree",
-          "braintreeSettingsLabel": "Braintree"
+          "braintreeSettingsLabel": "Braintree",
+          "braintreeCredentials": "Add credentials to enable"
         }
       },
       "order": {

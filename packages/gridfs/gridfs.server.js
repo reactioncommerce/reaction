@@ -37,7 +37,7 @@ FS.Store.GridFS = function (name, options) {
   }
 
   if (!options.mongoOptions) {
-    options.mongoOptions = { db: { native_parser: true }, server: { auto_reconnect: true }};
+    options.mongoOptions = { db: { native_parser: true }, server: { auto_reconnect: true } };
   }
 
   if (options.chunkSize) {
@@ -57,9 +57,9 @@ FS.Store.GridFS = function (name, options) {
 
       // If we're passed a fileObj, we retrieve the _id and filename from it.
       if (fileObj) {
-        const info = fileObj._getInfo(name, {updateFileRecordFirst: false});
+        const info = fileObj._getInfo(name, { updateFileRecordFirst: false });
         key._id = info.key || null;
-        key.filename = info.name || fileObj.name({updateFileRecordFirst: false}) || (fileObj.collectionName + "-" + fileObj._id);
+        key.filename = info.name || fileObj.name({ updateFileRecordFirst: false }) || (fileObj.collectionName + "-" + fileObj._id);
       }
 
       // If key._id is null at this point, createWriteStream will let GridFS generate a new ID

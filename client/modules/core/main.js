@@ -297,7 +297,8 @@ export default {
       registry: 1,
       route: 1,
       name: 1,
-      label: 1
+      label: 1,
+      settings: 1
     });
 
     // valid application

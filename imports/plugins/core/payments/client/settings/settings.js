@@ -1,49 +1,22 @@
 import { Template } from "meteor/templating";
 import { Reaction, i18next } from "/client/api";
-import { Packages, Shops } from "/lib/collections";
+import { Shops, Packages } from "/lib/collections";
 
 Template.paymentSettings.helpers({
-  //
-  // check if this package setting is enabled
-  //
-  checked(pkg) {
-    let enabled;
-    const pkgData = Packages.findOne(pkg.packageId);
-    const setting = pkg.name.split("/").splice(-1);
-
-    if (pkgData && pkgData.settings) {
-      if (pkgData.settings[setting]) {
-        enabled = pkgData.settings[setting].enabled;
-      }
+  checked(enabled) {
+    if (enabled === true) {
+      return "checked";
     }
-    return enabled === true ? "checked" : "";
+    return "";
   },
-  //
-  // get current packages settings data
-  //
-  packageData() {
-    return Packages.findOne({
-      name: "reaction-payments"
-    });
-  },
-  //
-  // Template helper to add a hidden class if the condition is false
-  //
-  shown(pkg) {
-    let enabled;
-    const pkgData = Packages.findOne(pkg.packageId);
-    const setting = pkg.name.split("/").splice(-1);
-
-    if (pkgData && pkgData.settings) {
-      if (pkgData.settings[setting]) {
-        enabled = pkgData.settings[setting].enabled;
-      }
+  shown(enabled) {
+    if (enabled !== true) {
+      return "hidden";
     }
-
-    return enabled !== true ? "hidden" : "";
+    return "";
   },
   paymentMethodOptions() {
-    const paymentMethods = Reaction.Apps({provides: "paymentMethod"});
+    const paymentMethods = Reaction.Apps({ provides: "paymentMethod" });
     const options = [{
       label: i18next.t("app.auto"),
       value: "none"
@@ -51,36 +24,54 @@ Template.paymentSettings.helpers({
 
     if (paymentMethods && _.isArray(paymentMethods)) {
       for (const method of paymentMethods) {
-        options.push({
-          label: i18next.t(method.i18nKeyLabel),
-          value: method.packageName
-        });
+        if (method.enabled === true) {
+          options.push({
+            label: i18next.t(method.i18nKeyLabel),
+            value: method.settingsKey
+          });
+        }
       }
     }
     return options;
   },
-  Shops() {
-    return Shops;
+  shop() {
+    return Shops.findOne(Reaction.getShopId());
   }
 });
 
 Template.paymentSettings.events({
   /**
-   * toggle payment visibility
-   * @param  {event} event    jQuery Event
+   * toggle payment settings visibility
+   * also toggles payment method settings
+   * @param  {event} event jQuery Event
    * @return {void}
    */
   "change input[name=enabled]": (event) => {
-    const name = event.target.value;
+    const settingsKey = event.target.getAttribute("data-key");
     const packageId = event.target.getAttribute("data-id");
     const fields = [{
       property: "enabled",
       value: event.target.checked
     }];
-    Meteor.call("registry/update", packageId, name, fields);
+
+    Meteor.call("registry/update", packageId, settingsKey, fields, (error, result) => {
+      if (result.numberAffected > 0) {
+        // check to see if we should disable the package as well
+        const pkg = Packages.findOne(packageId);
+        const enabled = pkg.registry.find((registry) => {
+          return registry.enabled === true;
+        });
+        // disable the package if no registry items are enabled.
+        // maybe this would be better placed in togglePackage
+        if (pkg.enabled !== true && enabled) {
+          Meteor.call("shop/togglePackage", packageId, true);
+        } else {
+          Meteor.call("shop/togglePackage", packageId, false);
+        }
+      }
+    });
   }
 });
-
 
 AutoForm.hooks({
   shopEditPaymentMethodsForm: {

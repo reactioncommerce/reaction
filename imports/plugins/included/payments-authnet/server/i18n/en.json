@@ -16,7 +16,9 @@
         },
         "paymentSettings": {
           "authorizenetLabel": "Authorize.net",
-          "authorizenetSettingsLabel": "Authorize.net"
+          "authorizenetSettingsLabel": "Authorize.net",
+          "authorizenetCredentials": "Don't have a Login ID and Transaction Key?",
+          "authorizenetCredentialURL": "Get one from Authorize.net"
         }
       }
     }

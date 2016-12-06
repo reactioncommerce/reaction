@@ -147,6 +147,7 @@ Template.coreOrderShippingInvoice.events({
             if (error) {
               Alerts.alert(error.reason);
             }
+            Alerts.toast(i18next.t("mail.alerts.emailSent"), "success");
             state.set("field-refund", 0);
           });
         }
@@ -202,7 +203,7 @@ Template.coreOrderShippingInvoice.helpers({
       isEditing: !isApprovedAmount, // Dont allow editing if its approved
       format: state.get("currency"),
       classNames: {
-        input: {amount: true},
+        input: { amount: true },
         text: {
           "text-success": status === "completed"
         }
@@ -232,7 +233,7 @@ Template.coreOrderShippingInvoice.helpers({
       maxValue: adjustedTotal,
       format: state.get("currency"),
       classNames: {
-        input: {amount: true}
+        input: { amount: true }
       },
       onChange(event, data) {
         state.set("field-refund", data.numberValue);
@@ -371,7 +372,7 @@ Template.coreOrderShippingInvoice.helpers({
     const instance = Template.instance();
     const order = instance.state.get("order");
 
-    const shipment = _.filter(order.shipping, {_id: currentData.fulfillment._id})[0];
+    const shipment = _.filter(order.shipping, { _id: currentData.fulfillment._id })[0];
 
     return shipment;
   },

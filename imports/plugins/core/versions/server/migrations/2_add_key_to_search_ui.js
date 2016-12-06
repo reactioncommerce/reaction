@@ -5,7 +5,7 @@ import { Packages } from "/lib/collections";
 Migrations.add({
   version: 2,
   up() {
-    Packages.update({name: "reaction-ui-search"},
+    Packages.update({ name: "reaction-ui-search" },
       {
         $set: {
           registry: [{
@@ -15,7 +15,7 @@ Migrations.add({
           }]
         }
       },
-      { multi: true}
+      { multi: true }
     );
   }
 });

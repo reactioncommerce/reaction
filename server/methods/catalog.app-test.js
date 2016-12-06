@@ -70,10 +70,10 @@ describe("core product methods", function () {
     it("should clone variant by admin", function (done) {
       sandbox.stub(Roles, "userIsInRole", () => true);
       const product = addProduct();
-      let variants = Products.find({ancestors: [product._id]}).fetch();
+      let variants = Products.find({ ancestors: [product._id] }).fetch();
       expect(variants.length).to.equal(1);
       Meteor.call("products/cloneVariant", product._id, variants[0]._id);
-      variants = Products.find({ancestors: [product._id]}).count();
+      variants = Products.find({ ancestors: [product._id] }).count();
       expect(variants).to.equal(2);
       return done();
     });
@@ -81,20 +81,20 @@ describe("core product methods", function () {
     it("number of `child variants` between source and cloned `variants` should be equal", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       const product = addProduct();
-      const variant = Products.find({ancestors: [product._id]}).fetch();
+      const variant = Products.find({ ancestors: [product._id] }).fetch();
       let optionCount = Products.find({ ancestors: {
         $in: [variant[0]._id]
-      }}).count();
+      } }).count();
       expect(optionCount).to.equal(2);
 
       Meteor.call("products/cloneVariant", product._id, variant[0]._id);
-      const variants = Products.find({ancestors: [product._id]}).fetch();
+      const variants = Products.find({ ancestors: [product._id] }).fetch();
       const clonedVariant = variants.filter(v => v._id !== variant[0]._id);
       expect(variant[0]._id).to.not.equal(clonedVariant[0]._id);
       expect(_.isEqual(variant[0].ancestors, clonedVariant[0].ancestors)).to.be.true;
       // expect(variant[0].ancestors).to.equal(clonedVariant[0].ancestors);
 
-      optionCount = Products.find({ ancestors: {$in: [clonedVariant[0]._id]}}).count();
+      optionCount = Products.find({ ancestors: { $in: [clonedVariant[0]._id] } }).count();
       expect(optionCount).to.equal(2);
     });
   });
@@ -110,7 +110,7 @@ describe("core product methods", function () {
     it("should create top level variant", function (done) {
       sandbox.stub(Reaction, "hasPermission", () => true);
       const product = addProduct();
-      let variants = Products.find({ancestors: [product._id]}).fetch();
+      let variants = Products.find({ ancestors: [product._id] }).fetch();
       expect(variants.length).to.equal(1);
       Meteor.call("products/createVariant", product._id);
       Meteor._sleepForMs(500);
@@ -196,7 +196,6 @@ describe("core product methods", function () {
 
     it("should not update individual variant by admin passing in partial object", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
-      let updatedVariant;
       const product = addProduct();
       const variant = Products.find({ ancestors: [product._id] }).fetch()[0];
       Meteor.call("products/updateVariant", {
@@ -204,7 +203,7 @@ describe("core product methods", function () {
         title: "Updated Title",
         price: 7
       });
-      updatedVariant = Products.findOne(variant._id);
+      const updatedVariant = Products.findOne(variant._id);
       expect(updatedVariant.price).to.not.equal(7);
       expect(updatedVariant.title).to.not.equal("Updated Title");
       expect(updatedVariant.optionTitle).to.equal(variant.optionTitle);
@@ -272,7 +271,7 @@ describe("core product methods", function () {
       const variant = Products.find({ ancestors: [product._id] }).fetch()[0];
       const variants = Products.find({ ancestors: {
         $in: [variant._id]
-      }}).fetch();
+      } }).fetch();
       expect(variants.length).to.equal(2);
       Meteor.call("products/deleteVariant", variant._id);
     });
@@ -302,11 +301,10 @@ describe("core product methods", function () {
         check(arguments, [Match.Any]);
       });
       const product = addProduct();
-      let productCloned;
       expect(Products.find({ type: "simple" }).count()).to.equal(1);
       Meteor.call("products/cloneProduct", product);
       expect(Products.find({ type: "simple" }).count()).to.equal(2);
-      productCloned = Products.find({
+      const productCloned = Products.find({
         _id: {
           $ne: product._id
         },
@@ -417,7 +415,7 @@ describe("core product methods", function () {
         if (result) {
           // this test successfully finds product variant only by such way
           Meteor.setTimeout(() => {
-            expect(Products.find({ancestors: [result]}).count()).to.equal(1);
+            expect(Products.find({ ancestors: [result] }).count()).to.equal(1);
             return done();
           }, 50);
         }
@@ -549,7 +547,7 @@ describe("core product methods", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       let product = addProduct();
       const tagName = "Product Tag";
-      expect(Tags.findOne({ name: tagName})).to.be.undefined;
+      expect(Tags.findOne({ name: tagName })).to.be.undefined;
       Meteor.call("products/updateProductTags", product._id, tagName, null);
       const tag = Tags.findOne({ name: tagName });
       expect(tag.slug).to.equal(Reaction.getSlug(tagName));
@@ -561,7 +559,7 @@ describe("core product methods", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       const product = addProduct();
       const tagName = "Product Tag";
-      expect(Tags.findOne({ name: tagName})).to.be.undefined;
+      expect(Tags.findOne({ name: tagName })).to.be.undefined;
       Meteor.call("products/updateProductTags", product._id, tagName, null);
       const tag = Tags.findOne({ name: tagName });
       expect(tag.slug).to.equal(Reaction.getSlug(tagName));
@@ -573,7 +571,7 @@ describe("core product methods", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       let product = addProduct();
       const tagName = "Product Tag";
-      expect(Tags.findOne({ name: tagName})).to.be.undefined;
+      expect(Tags.findOne({ name: tagName })).to.be.undefined;
       Meteor.call("products/updateProductTags", product._id, tagName, null);
       const tag = Tags.findOne({ name: tagName });
       expect(tag.slug).to.equal(Reaction.getSlug(tagName));
@@ -1104,7 +1102,7 @@ describe("core product methods", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       let product = addProduct();
       const isVisible = product.isVisible;
-      const variant = Products.findOne({ancestors: [product._id]});
+      const variant = Products.findOne({ ancestors: [product._id] });
       expect(variant.ancestors[0]).to.equal(product._id);
       const options = Products.find({
         ancestors: [product._id, variant._id]
@@ -1131,7 +1129,7 @@ describe("core product methods", function () {
       let product = addProduct();
       const isVisible = product.isVisible;
       sandbox.stub(Roles, "userIsInRole", () => true);
-      Products.remove({ancestors: { $in: [product._id] }});
+      Products.remove({ ancestors: { $in: [product._id] } });
       product = Products.findOne(product._id);
       expect(product.isVisible).to.equal(isVisible);
     });

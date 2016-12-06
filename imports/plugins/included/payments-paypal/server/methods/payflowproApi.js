@@ -4,19 +4,19 @@ import accounting from "accounting-js";
 import { Meteor } from "meteor/meteor";
 import { Reaction, Logger } from "/server/api";
 import { Shops } from "/lib/collections";
-import { Paypal } from "../../lib/api"; // Paypal is the reaction api
+import { PayPal } from "../../lib/api"; // PayPal is the reaction api
 
 export const PayflowproApi = {};
 PayflowproApi.apiCall = {};
 
 
 PayflowproApi.apiCall.paymentSubmit = function (paymentSubmitDetails) {
-  PayFlow.configure(Paypal.payflowAccountOptions());
+  PayFlow.configure(PayPal.payflowAccountOptions());
 
-  const paymentObj = Paypal.paymentObj();
+  const paymentObj = PayPal.paymentObj();
   paymentObj.intent = paymentSubmitDetails.transactionType;
-  paymentObj.payer.funding_instruments.push(Paypal.parseCardData(paymentSubmitDetails.cardData));
-  paymentObj.transactions.push(Paypal.parsePaymentData(paymentSubmitDetails.paymentData));
+  paymentObj.payer.funding_instruments.push(PayPal.parseCardData(paymentSubmitDetails.cardData));
+  paymentObj.transactions.push(PayPal.parsePaymentData(paymentSubmitDetails.paymentData));
   const wrappedFunc = Meteor.wrapAsync(PayFlow.payment.create, PayFlow.payment);
   let result;
   try {
@@ -36,7 +36,7 @@ PayflowproApi.apiCall.paymentSubmit = function (paymentSubmitDetails) {
 
 
 PayflowproApi.apiCall.captureCharge = function (paymentCaptureDetails) {
-  PayFlow.configure(Paypal.payflowAccountOptions());
+  PayFlow.configure(PayPal.payflowAccountOptions());
 
   let result;
   // TODO: This should be changed to some ReactionCore method
@@ -97,7 +97,7 @@ PayflowproApi.apiCall.captureCharge = function (paymentCaptureDetails) {
 
 
 PayflowproApi.apiCall.createRefund = function (refundDetails) {
-  PayFlow.configure(Paypal.payflowAccountOptions());
+  PayFlow.configure(PayPal.payflowAccountOptions());
 
   const createRefund = Meteor.wrapAsync(PayFlow.capture.refund, PayFlow.capture);
   let result;
@@ -130,7 +130,7 @@ PayflowproApi.apiCall.createRefund = function (refundDetails) {
 
 
 PayflowproApi.apiCall.listRefunds = function (refundListDetails) {
-  PayFlow.configure(Paypal.payflowAccountOptions());
+  PayFlow.configure(PayPal.payflowAccountOptions());
 
   const listPayments = Meteor.wrapAsync(PayFlow.payment.get, PayFlow.payment);
   let result = [];

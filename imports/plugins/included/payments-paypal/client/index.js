@@ -1,18 +1,8 @@
-import "./templates/checkout/return/cancel.html";
-import "./templates/checkout/return/cancel.js";
-import "./templates/checkout/return/done.html";
-import "./templates/checkout/return/done.js";
-import "./templates/checkout/checkoutButton.html";
-import "./templates/checkout/checkoutButton.js";
-import "./templates/checkout/payflowForm.html";
-import "./templates/checkout/payflowForm.js";
-import "./templates/checkout/paymentForm.html";
-import "./templates/checkout/paymentForm.js";
+import "./templates/checkout/return";
+import "./templates/checkout/express";
+import "./templates/checkout/payflow";
 
-import "./templates/dashboard/dashboard.html";
-import "./templates/dashboard/dashboard.js";
-
-import "./templates/settings/settings.html";
-import "./templates/settings/settings.js";
+import "./templates/settings/express";
+import "./templates/settings/payflow";
 
 import "./paypal.less";

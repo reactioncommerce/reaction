@@ -51,6 +51,6 @@ Meteor.methods({
     `;
 
     const setTran = `"translation.${namespace}.${key}": "${message}"`;
-    Translations.update({tran}, {setTran});
+    Translations.update({ tran }, { setTran });
   }
 });

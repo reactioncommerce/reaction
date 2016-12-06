@@ -69,7 +69,7 @@ Media.files.before.update((userId, media, fieldNames, modifier) => {
       if (existingRevision.documentData.workflow === "published" || existingRevision.changeType === "insert") {
         updatedMetadata.workflow = "published";
       }
-      Revisions.update({_id: existingRevision._id}, {
+      Revisions.update({ _id: existingRevision._id }, {
         $set: {
           documentData: updatedMetadata
         }

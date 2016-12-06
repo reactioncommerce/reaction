@@ -18,8 +18,8 @@ class CardBody extends Component {
   render() {
     return (
       <VelocityTransitionGroup
-        enter={{animation: "slideDown"}}
-        leave={{animation: "slideUp"}}
+        enter={{ animation: "slideDown" }}
+        leave={{ animation: "slideUp" }}
       >
         {this.renderCard()}
       </VelocityTransitionGroup>
