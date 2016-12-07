@@ -26,6 +26,15 @@ Reaction.registerPackage({
         label: "Marketplace",
         permission: "dashboard/marketplace"
       }]
+    },
+
+    // dashboard settings
+    {
+      label: "Marketplace Settings",
+      route: "/dashboard/marketplace",
+      provides: "settings",
+      container: "dashboard",
+      template: "marketplaceSettings"
     }
   ]
 });
