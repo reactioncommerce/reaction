@@ -1,1 +1,1 @@
-import "./codes.html";
+import "./codes";

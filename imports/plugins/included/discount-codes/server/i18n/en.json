@@ -8,6 +8,11 @@
         "applyDiscount": "Apply",
         "discountError": "Sorry, there was an error applying discount."
       },
+      "discounts": {
+        "enterItHere": "Have a code? Enter it here.",
+        "saved": "Discount applied.",
+        "discountLabel": "Discount Code"
+      },
       "admin": {
         "paymentSettings": {
           "codesLabel": "Codes"
