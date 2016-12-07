@@ -1,0 +1,34 @@
+[{
+  "language": "English",
+  "i18n": "en",
+  "ns": "reaction-payments",
+  "translation": {
+    "reaction-payments": {
+      "admin": {
+        "shortcut": {
+          "paymentsLabel": "Payments",
+          "paymentsTitle": "Payments"
+        },
+        "dashboard": {
+          "paymentsLabel": "Payments",
+          "paymentsTitle": "Payments",
+          "paymentsDescription": "Payments configuration"
+        },
+        "settings": {
+          "paymentSettingsLabel": "Payment Settings"
+        },
+        "paymentSettings": {
+          "paymentMethod": "Default Provider"
+        }
+      },
+      "checkoutPayment": {
+        "addPaymentToCompleteOrder": "Add payment to complete order",
+        "processingError": "There was a problem with your payment.",
+        "completeYourOrder": "Complete your order",
+        "noPaymentMethods": "No payment methods are configured.",
+        "configureNow": "Configure now.",
+        "failedToPlaceOrder": "Failed to place order."
+      }
+    }
+  }
+}]

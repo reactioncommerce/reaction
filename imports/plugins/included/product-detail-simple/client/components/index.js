@@ -5,3 +5,4 @@ export { default as AddToCartButton } from "./addToCartButton";
 export { default as ProductMetadata } from "./metadata";
 export { default as ProductTags } from "./tags";
 export { default as ProductField } from "./productField";
+export { default as PriceRange } from "./priceRange";

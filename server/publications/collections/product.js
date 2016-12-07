@@ -29,7 +29,7 @@ Meteor.publish("Product", function (productId) {
 
   let selector = {};
   selector.isVisible = true;
-  selector.isDeleted = {$in: [null, false]};
+  selector.isDeleted = { $in: [null, false] };
 
   // no need for admin, simple perm should be okay per group
   if (Roles.userIsInRole(this.userId, ["createProduct"],
@@ -59,7 +59,7 @@ Meteor.publish("Product", function (productId) {
   // Selector for hih?
   selector = {
     isVisible: true,
-    isDeleted: {$in: [null, false]},
+    isDeleted: { $in: [null, false] },
     $or: [
       { _id: _id },
       {
@@ -121,16 +121,24 @@ Meteor.publish("Product", function (productId) {
           this.added("Revisions", revision._id, revision);
         },
         changed: (revision) => {
-          const product = Products.findOne(revision.documentId);
-
+          let product;
+          if (!revision.parentDocument) {
+            product = Products.findOne(revision.documentId);
+          } else {
+            product = Products.findOne(revision.parentDocument);
+          }
           product.__revisions = [revision];
 
           this.changed("Products", product._id, product);
           this.changed("Revisions", revision._id, revision);
         },
         removed: (revision) => {
-          const product = Products.findOne(revision.documentId);
-
+          let product;
+          if (!revision.parentDocument) {
+            product = Products.findOne(revision.documentId);
+          } else {
+            product = Products.findOne(revision.parentDocument);
+          }
           product.__revisions = [];
 
           this.changed("Products", product._id, product);

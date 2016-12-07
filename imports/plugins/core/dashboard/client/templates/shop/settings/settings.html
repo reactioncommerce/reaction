@@ -86,28 +86,6 @@
       <div class="panel-heading">
         <div class="panel-title">
           <a
-            href="#payment-methods"
-            aria-controls="paymentMethods"
-            role="button"
-            data-toggle="collapse"
-            data-parent="#shopSettingsAccordian"
-            data-i18n="shopSettings.paymentMethods">Payment Methods</a>
-        </div>
-      </div>
-      <div id="payment-methods" class="panel-collapse collapse" role="tabpanel" aria-labelledby="paymentMethods">
-        <div class="panel-body">
-          {{#autoForm collection=Collections.Shops doc=shop id="shopEditPaymentMethodsForm" type="update"
-          autosave=true}}
-            {{> afQuickField name='defaultPaymentMethod' options=paymentMethodOptions}}
-          {{/autoForm}}
-        </div>
-      </div>
-    </div>
-
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <div class="panel-title">
-          <a
             href="#options"
             aria-controls="options"
             role="button"
@@ -130,25 +108,6 @@
       </div>
     </div>
 
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <div class="panel-title">
-          <a
-            href="#import"
-            aria-controls="import"
-            role="button"
-            data-toggle="collapse"
-            data-parent="#shopSettingsAccordian"
-            data-i18n="shopSettings.import">Import</a>
-        </div>
-      </div>
-      <div id="import" class="panel-collapse collapse" role="tabpanel" aria-labelledby="import">
-        <div class="panel-body">
-          {{> import}}
-        </div>
-      </div>
-
-    </div>
   </div>
 </template>
 

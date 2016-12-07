@@ -1,4 +1,4 @@
-import React, { Component, PropTypes} from "react";
+import React, { Component, PropTypes } from "react";
 import classnames from "classnames";
 import TextareaAutosize from "react-textarea-autosize";
 import { Translation } from "../translation";
@@ -34,6 +34,22 @@ class TextField extends Component {
   onBlur = (event) => {
     if (this.props.onBlur) {
       this.props.onBlur(event, event.target.value, this.props.name);
+    }
+  }
+
+  /**
+   * onKeyDown
+   * @summary set the state when the value of the input is changed
+   * @param  {Event} event Event object
+   * @return {void}
+   */
+  onKeyDown = (event) => {
+    if (this.props.onKeyDown) {
+      this.props.onKeyDown(event, this.props.name);
+    }
+
+    if (this.props.onReturnKeyDown && event.keyCode === 13) {
+      this.props.onReturnKeyDown(event, event.target.value, this.props.name);
     }
   }
 
@@ -77,6 +93,7 @@ class TextField extends Component {
         name={this.props.name}
         onBlur={this.onBlur}
         onChange={this.onChange}
+        onKeyDown={this.onKeyDown}
         placeholder={placeholder}
         ref="input"
         type="text"
@@ -165,6 +182,8 @@ TextField.propTypes = {
   name: PropTypes.string,
   onBlur: PropTypes.func,
   onChange: PropTypes.func,
+  onKeyDown: PropTypes.func,
+  onReturnKeyDown: PropTypes.func,
   placeholder: PropTypes.string,
   value: PropTypes.string
 };

@@ -1,4 +1,4 @@
-import React, { Component, PropTypes} from "react";
+import React, { Component, PropTypes } from "react";
 import classnames from "classnames";
 import { Translation } from "/imports/plugins/core/ui/client/components";
 import { MediaItem } from "/imports/plugins/core/ui/client/components";

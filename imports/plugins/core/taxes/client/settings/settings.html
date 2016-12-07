@@ -17,10 +17,10 @@
 
         </div>
         <div class="panel-controls">
-          <input class="checkbox-switch" type="checkbox" value={{name}} name="enabled" data-id="{{packageId}}" {{checked .}}>
+          <input class="checkbox-switch" type="checkbox" name="enabled" data-id={{packageId}} data-key="{{settingsKey}}" {{checked enabled}}>
         </div>
       </div>
-      <div class="panel-body {{shown .}}">
+      <div class="panel-body {{shown enabled}}">
         {{> Template.dynamic template=template data=.}}
       </div>
     </div>

@@ -20,7 +20,8 @@ MethodHooks.after("taxes/calculate", function (options) {
   const shop = Shops.findOne(shopId);
   const pkg = Packages.findOne({
     name: "taxes-taxcloud",
-    shopId: shopId
+    shopId: shopId,
+    enabled: true
   });
 
   // check if package is configured

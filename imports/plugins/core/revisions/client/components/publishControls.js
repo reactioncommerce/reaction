@@ -114,12 +114,12 @@ class PublishControls extends Component {
   get hasChanges() {
     // Verify we even have any revision at all
     if (this.hasRevisions) {
-      // Loop through all revisions to determin if they have changes
+      // Loop through all revisions to determine if they have changes
       const diffHasActualChanges = this.props.revisions.map((revision) => {
         // We probably do have chnages to publish
         // Note: Sometimes "updatedAt" will cause false positives, but just incase, lets
         // enable the publish button anyway.
-        if (Array.isArray(revision.diff) && revision.diff.length) {
+        if (Array.isArray(revision.diff) && revision.diff.length || revision.documentType !== "product") {
           return true;
         }
 

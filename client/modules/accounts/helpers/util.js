@@ -49,7 +49,7 @@ export class ServiceConfigHelper {
     const configurations = ServiceConfiguration.configurations.find().fetch();
 
     return _.map(availableServices, (name) => {
-      const matchingConfigurations = _.filter(configurations, {service: name});
+      const matchingConfigurations = _.filter(configurations, { service: name });
       let service = {
         name,
         label: this.capitalizedServiceName(name),

@@ -1,0 +1,60 @@
+<template name="emailTemplatesDashboard">
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <table class="table table-striped">
+        <thead>
+          <tr class="info">
+            <th>{{i18n "templates.templateName" "Template Name"}}</th>
+            <th>{{i18n "templates.type" "Type"}}</th>
+            <th>{{i18n "templates.language" "Language"}}</th>
+            <th class="textAlignRight">{{i18n "templates.actions" "Actions"}}</th>
+          </tr>
+        </thead>
+        <tbody>
+        {{#each emailTemplate}}
+          <tr class="edit-shipping-method" data-event-action="editEmailTemplate">
+            <td>{{title}}</td>
+            <td>{{type}}</td>
+            <td>{{language}}</td>
+            <td class="text-right">
+              <i class="fa fa-pencil" data-template-id="{{_id}}" title="{{i18n 'mail.templates.edit' 'Edit email template'}}" data-event-action="editEmailTemplate"></i>
+            </td>
+          </tr>
+        {{/each}}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</template>
+
+
+<template name="emailTemplateSettings">
+  {{#autoForm
+    collection=Collections.Templates
+    schema=emailTemplateSchema
+    id="email-template-edit-form"
+    template="bootstrap3-inline"
+    doc=template
+    }}
+
+    <div class="panel panel-default">
+      <div class="panel-heading">Update {{name}} template</div>
+      <div class="panel-body">
+        <div class="col-md-12 form-group">
+          {{>afQuickField name="title" class="form-control"}}
+          {{>afQuickField name="name" class="form-control" disabled=true}}
+          {{>afQuickField name="language" class="form-control" disabled=true}}
+          {{>afQuickField name="subject" class="form-control"}}
+          {{>afQuickField name="template" label="HTML" class="form-control" type="textarea" rows="15"}}
+        </div>
+      </div>
+
+      <div class="panel-footer">
+        <div class="right">
+          <button type="submit" class="btn btn-primary">Update</button>
+        </div>
+      </div>
+    </div>
+
+  {{/autoForm}}
+</template>

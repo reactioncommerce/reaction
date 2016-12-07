@@ -20,7 +20,7 @@ const MeteorGriddle = React.createClass({
   mixins: [ReactMeteorData],
 
   getDefaultProps() {
-    return {useExternal: false, externalFilterDebounceWait: 300, externalResultsPerPage: 10};
+    return { useExternal: false, externalFilterDebounceWait: 300, externalResultsPerPage: 10 };
   },
 
   getInitialState() {
@@ -36,7 +36,7 @@ const MeteorGriddle = React.createClass({
 
   componentWillMount() {
     this.applyQuery = _.debounce((query) => {
-      this.setState({query});
+      this.setState({ query });
     }, this.props.externalFilterDebounceWait);
   },
 
@@ -83,17 +83,17 @@ const MeteorGriddle = React.createClass({
   },
 
   resetQuery() {
-    this.setState({query: {}});
+    this.setState({ query: {} });
   },
 
   // what page is currently viewed
   setPage(index) {
-    this.setState({currentPage: index});
+    this.setState({ currentPage: index });
   },
 
   // this changes whether data is sorted in ascending or descending order
   changeSort(sort, sortAscending) {
-    this.setState({externalSortColumn: sort, externalSortAscending: sortAscending});
+    this.setState({ externalSortColumn: sort, externalSortAscending: sortAscending });
   },
 
   setFilter(filter) {
@@ -107,7 +107,7 @@ const MeteorGriddle = React.createClass({
         };
         return filterItem;
       });
-      this.applyQuery({$or: orArray});
+      this.applyQuery({ $or: orArray });
     } else {
       this.resetQuery();
     }
@@ -115,7 +115,7 @@ const MeteorGriddle = React.createClass({
 
   // this method handles determining the page size
   setPageSize(size) {
-    this.setState({externalResultsPerPage: size});
+    this.setState({ externalResultsPerPage: size });
   },
 
   render() {

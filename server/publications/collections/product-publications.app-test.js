@@ -84,7 +84,7 @@ describe("Publication", function () {
         sandbox.stub(Reaction, "getCurrentShop", () => shop);
         sandbox.stub(Roles, "userIsInRole", () => true);
 
-        const collector = new PublicationCollector({userId: Random.id()});
+        const collector = new PublicationCollector({ userId: Random.id() });
 
         collector.collect("Products", 24, undefined, {}, (collections) => {
           const products = collections.Products;
@@ -98,7 +98,7 @@ describe("Publication", function () {
         sandbox.stub(Reaction, "getCurrentShop", () => shop);
         sandbox.stub(Roles, "userIsInRole", () => true);
 
-        const collector = new PublicationCollector({userId: Random.id()});
+        const collector = new PublicationCollector({ userId: Random.id() });
 
         collector.collect("Products", 24, undefined, {}, (collections) => {
           const products = collections.Products;
@@ -115,7 +115,7 @@ describe("Publication", function () {
         sandbox.stub(Reaction, "getCurrentShop", () => shop);
         sandbox.stub(Roles, "userIsInRole", () => false);
 
-        const collector = new PublicationCollector({userId: Random.id()});
+        const collector = new PublicationCollector({ userId: Random.id() });
 
         collector.collect("Products", 24, undefined, {}, (collections) => {
           const products = collections.Products;
@@ -131,11 +131,11 @@ describe("Publication", function () {
 
       it("should return only products matching query", function (done) {
         const productScrollLimit = 24;
-        const filters = {query: "Shopkins"};
+        const filters = { query: "Shopkins" };
         sandbox.stub(Reaction, "getCurrentShop", () => shop);
         sandbox.stub(Roles, "userIsInRole", () => false);
 
-        const collector = new PublicationCollector({userId: Random.id()});
+        const collector = new PublicationCollector({ userId: Random.id() });
 
         collector.collect("Products", productScrollLimit, filters, {}, (collections) => {
           const products = collections.Products;
@@ -149,11 +149,11 @@ describe("Publication", function () {
 
       it("should not return products not matching query", function (done) {
         const productScrollLimit = 24;
-        const filters = {query: "random search"};
+        const filters = { query: "random search" };
         sandbox.stub(Reaction, "getCurrentShop", () => shop);
         sandbox.stub(Roles, "userIsInRole", () => false);
 
-        const collector = new PublicationCollector({userId: Random.id()});
+        const collector = new PublicationCollector({ userId: Random.id() });
 
         collector.collect("Products", productScrollLimit, filters, {}, (collections) => {
           const products = collections.Products;
@@ -166,11 +166,11 @@ describe("Publication", function () {
 
       it("should return products in price.min query", function (done) {
         const productScrollLimit = 24;
-        const filters = {"price.min": "2.00"};
+        const filters = { "price.min": "2.00" };
         sandbox.stub(Reaction, "getCurrentShop", () => shop);
         sandbox.stub(Roles, "userIsInRole", () => false);
 
-        const collector = new PublicationCollector({userId: Random.id()});
+        const collector = new PublicationCollector({ userId: Random.id() });
 
         collector.collect("Products", productScrollLimit, filters, {}, (collections) => {
           const products = collections.Products;
@@ -183,11 +183,11 @@ describe("Publication", function () {
 
       it("should return products in price.max query", function (done) {
         const productScrollLimit = 24;
-        const filters = {"price.max": "24.00"};
+        const filters = { "price.max": "24.00" };
         sandbox.stub(Reaction, "getCurrentShop", () => shop);
         sandbox.stub(Roles, "userIsInRole", () => false);
 
-        const collector = new PublicationCollector({userId: Random.id()});
+        const collector = new PublicationCollector({ userId: Random.id() });
 
         collector.collect("Products", productScrollLimit, filters, {}, (collections) => {
           const products = collections.Products;
@@ -200,11 +200,11 @@ describe("Publication", function () {
 
       it("should return products in price.min - price.max range query", function (done) {
         const productScrollLimit = 24;
-        const filters = {"price.min": "12.00", "price.max": "19.98"};
+        const filters = { "price.min": "12.00", "price.max": "19.98" };
         sandbox.stub(Reaction, "getCurrentShop", () => shop);
         sandbox.stub(Roles, "userIsInRole", () => false);
 
-        const collector = new PublicationCollector({userId: Random.id()});
+        const collector = new PublicationCollector({ userId: Random.id() });
 
         collector.collect("Products", productScrollLimit, filters, {}, (collections) => {
           const products = collections.Products;
@@ -217,11 +217,11 @@ describe("Publication", function () {
 
       it("should return products where value is in price set query", function (done) {
         const productScrollLimit = 24;
-        const filters = {"price.min": "13.00", "price.max": "24.00"};
+        const filters = { "price.min": "13.00", "price.max": "24.00" };
         sandbox.stub(Reaction, "getCurrentShop", () => shop);
         sandbox.stub(Roles, "userIsInRole", () => false);
 
-        const collector = new PublicationCollector({userId: Random.id()});
+        const collector = new PublicationCollector({ userId: Random.id() });
 
         collector.collect("Products", productScrollLimit, filters, {}, (collections) => {
           const products = collections.Products;
@@ -233,12 +233,12 @@ describe("Publication", function () {
       });
 
       it("should return products from all shops when multiple shops are provided", function (done) {
-        const filters = {shops: [shop._id]};
+        const filters = { shops: [shop._id] };
         const productScrollLimit = 24;
-        sandbox.stub(Reaction, "getCurrentShop", function () {return {_id: "123"};});
+        sandbox.stub(Reaction, "getCurrentShop", function () {return { _id: "123" };});
         sandbox.stub(Roles, "userIsInRole", () => true);
 
-        const collector = new PublicationCollector({userId: Random.id()});
+        const collector = new PublicationCollector({ userId: Random.id() });
 
         collector.collect("Products", productScrollLimit, filters, {}, (collections) => {
           const products = collections.Products;
@@ -259,7 +259,7 @@ describe("Publication", function () {
         });
         sandbox.stub(Reaction, "getCurrentShop", () => shop);
 
-        const collector = new PublicationCollector({userId: Random.id()});
+        const collector = new PublicationCollector({ userId: Random.id() });
 
         collector.collect("Product", product._id, (collections) => {
           const products = collections.Products;
@@ -274,7 +274,7 @@ describe("Publication", function () {
       it("should return a product based on a regex", function (done) {
         sandbox.stub(Reaction, "getCurrentShop", () => shop);
 
-        const collector = new PublicationCollector({userId: Random.id()});
+        const collector = new PublicationCollector({ userId: Random.id() });
 
         collector.collect("Product", "shopkins", (collections) => {
           const products = collections.Products;
@@ -290,7 +290,7 @@ describe("Publication", function () {
         sandbox.stub(Reaction, "getCurrentShop", () => shop);
         sandbox.stub(Roles, "userIsInRole", () => false);
 
-        const collector = new PublicationCollector({userId: Random.id()});
+        const collector = new PublicationCollector({ userId: Random.id() });
 
         collector.collect("Product", "my", (collections) => {
           const products = collections.Products;
@@ -305,7 +305,7 @@ describe("Publication", function () {
         sandbox.stub(Reaction, "getCurrentShop", () => shop);
         sandbox.stub(Roles, "userIsInRole", () => true);
 
-        const collector = new PublicationCollector({userId: Random.id()});
+        const collector = new PublicationCollector({ userId: Random.id() });
 
         collector.collect("Product", "my", (collections) => {
           const products = collections.Products;

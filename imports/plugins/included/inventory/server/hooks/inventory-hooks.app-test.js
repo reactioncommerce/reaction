@@ -22,7 +22,7 @@ function reduceCart(cart) {
   });
   Cart.update(cart._id, {
     $pull: {
-      "items.$.quantity": {$gt: 1}
+      "items.$.quantity": { $gt: 1 }
     }
   });
 }

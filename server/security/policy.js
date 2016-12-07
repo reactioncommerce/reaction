@@ -23,6 +23,8 @@ if (process.env.NODE_ENV === "development") {
   BrowserPolicy.content.allowConnectOrigin("https://localhost:*");
   BrowserPolicy.framing.allowAll();
 }
+// allow production local websockets
+BrowserPolicy.content.allowConnectOrigin("ws://localhost:*");
 
 BrowserPolicy.content.allowOriginForAll("*.facebook.com");
 BrowserPolicy.content.allowOriginForAll("*.fbcdn.net");
