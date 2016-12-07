@@ -2,7 +2,7 @@ import { Reaction } from "/client/api";
 import * as Collections from "/lib/collections";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
-import { MarketplaceApi } from "/imports/plugins/included/marketplace/lib/api";
+import { Marketplace } from "/imports/plugins/included/marketplace/lib/api";
 
 /**
  * onCreated: Account Profile View
@@ -68,7 +68,7 @@ Template.accountProfile.helpers({
     return "addressBookAdd";
   },
 
-  allowGuestSellers: function() {
-    return MarketplaceApi.isMarketplaceEnabled() && !Reaction.hasAdminAccess();
+  isMarketplaceGuest: function() {
+    return Marketplace.hasMarketplaceGuestAccess();
   }
 });

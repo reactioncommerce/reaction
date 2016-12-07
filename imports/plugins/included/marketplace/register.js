@@ -4,7 +4,7 @@ Reaction.registerPackage({
   label: "Marketplace",
   name: "reaction-marketplace",
   icon: "fa fa-globe",
-  autoEnable: false,
+  autoEnable: true,
   settings: {
     name: "Marketplace",
     public: {
@@ -23,7 +23,7 @@ Reaction.registerPackage({
       priority: 2,
       container: "marketplace",
       permissions: [{
-        label: "Maretplace",
+        label: "Marketplace",
         permission: "dashboard/marketplace"
       }]
     }

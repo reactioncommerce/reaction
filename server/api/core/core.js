@@ -211,6 +211,38 @@ export default {
   },
 
   /**
+   * Check if package is enabled
+   * @param  {String}  name Package name
+   * @return {Boolean}      True if the package is enabled
+   */
+  isPackageEnabled(name) {
+    const settings = this.getPackageSettings(name);
+
+    return !!settings.enabled;
+  },
+
+  /**
+   * Add default roles for new visitors
+   * @param {String|Array} roles A string or array of roles and routes
+   */
+  addRolesToVisitors(roles) {
+    Logger.info("Adding defaultRole & defaultVisitorRole permissions for "+ roles);
+
+    const shop = Shops.findOne(this.getShopId());
+
+    roles = typeof roles === "string" ? [roles] : roles;
+    _.each(roles, (role) => {
+      Shops.update(shop._id, {
+          $addToSet: { "defaultVisitorRole": role}
+        }
+      );
+      Shops.update(shop._id, {
+        $addToSet: { "defaultRoles": role}
+      });
+    });
+  },
+
+  /**
    * createDefaultAdminUser
    * @summary Method that creates default admin user
    * Settings load precendence:
