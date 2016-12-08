@@ -1,17 +1,29 @@
 <template name="shippoSettings">
-  {{#autoForm collection=Collections.Packages schema=Schemas.ShippoPackageConfig doc=packageData type="update" id="shippo-update-form" autosave=true}}
-
-    <div class="panel panel-default">
-      <div class="panel-heading panel-heading-flex">
-        <h3 class="panel-title">
-          <i class="fa fa-at"></i> Shippo
-        </h3>
-
-      </div>
-      <div class="panel-body">
-        {{>afQuickField name='settings.shippo.app_key'}}
-      </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <div data-i18n="shippoSettings.panelTitle" class="panel-title">Shippo Settings</div>
     </div>
+    <div class="panel-body">
+      {{#autoForm
+        collection=Collections.Packages
+        schema=ShippoPackageConfig
+        doc=packageData
+        type="update"
+        id="shippo-update-form"
+        autosave=true
+      }}
+
+          <div class="row">
+            <div class="form-group col-md-8">
+              {{> afQuickField name="settings.shippo.api_key" class="form-control" placeholder="WRITE Key"}}
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary pull-right"><span data-i18n="app.saveChanges">Save Changes</span></button>
+
+      {{/autoForm}}
+    </div>
+  </div>
 </template>
 
 

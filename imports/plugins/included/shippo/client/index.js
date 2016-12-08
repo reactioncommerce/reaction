@@ -1,2 +1,2 @@
-import "./templates/shippo.html";
-import "./templates/shippo.js";
+import "./templates/dashboard/shippo.html";
+import "./templates/dashboard/shippo.js";

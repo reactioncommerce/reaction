@@ -6,7 +6,10 @@ Reaction.registerPackage({
   icon: "fa fa-at",
   autoEnable: true,
   settings: {
-    name: "Shippo"
+    name: "Shippo",
+    "reaction-shippo": {
+      enabled: false
+    }
   },
   registry: [{
     provides: "dashboard",
