@@ -1,11 +1,15 @@
-import { Shops } from "/lib/collections";
-import { Hooks, Logger } from "/server/api";
-import { Reaction } from "/server/api";
-
+import { Reaction, Hooks } from "/server/api";
 
 /**
- * Hook to make additional configuration changes
+ * Hook to make additional configuration changes		   * Hook to make additional configuration changes
  */
 Hooks.Events.add("afterCoreInit", function() {
-  //Reaction.addRolesToVisitors("marketplace/");
+  // WIP these will most probably derive from the cart, payment and shipping flows
+  const roles = [
+    "marketplace/cart",
+    "marketplace/shipping",
+    "marketplace/payments"
+  ];
+
+  Reaction.addRolesToVisitors(roles);
 });

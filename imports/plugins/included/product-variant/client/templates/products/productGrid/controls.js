@@ -24,9 +24,8 @@ Template.gridControls.onRendered(function () {
 
 Template.gridControls.helpers({
   hasControl() {
-    const userId = Meteor.userId();
     const instance = Template.instance();
-    const shopIds = Reaction.getSellerShopId(userId);
+    const shopIds = Meteor.call("shop/getSellerShopId");
     // owner (parent shop in marketplace) will return all shopIds
 
     return (

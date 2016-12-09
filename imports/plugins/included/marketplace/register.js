@@ -12,9 +12,8 @@ Reaction.registerPackage({
     }
   },
   registry: [
-    // page
-
     // Dashboard card
+    /* Moved into catalog - settings below will provide a card instead
     {
       provides: "dashboard",
       label: "Marketplace",
@@ -26,15 +25,15 @@ Reaction.registerPackage({
         label: "Marketplace",
         permission: "dashboard/marketplace"
       }]
-    },
+    },*/
 
-    // dashboard settings
+    // Settings reside in Catalog settings
     {
       label: "Marketplace Settings",
-      route: "/dashboard/marketplace",
-      provides: "settings",
+      icon: "fa fa-globe",
+      provides: "catalogSettings",
       container: "dashboard",
-      template: "marketplaceSettings"
+      template: "marketplaceCatalogSettings"
     }
   ]
 });

@@ -1,39 +1,21 @@
 import { Meteor } from "meteor/meteor";
-import { Packages } from "/lib/collections";
 import { Reaction } from "/lib/api";
 
-const name = "reaction-marketplace";
-
-/*
-No need for this anymore
-Use Reaction.getPackageSettings(name) instead
-export function getPackageSettings() {
-
-  return Reaction.getPackageSettings(name)
-}*/
-
-/*
- No need for this anymore
- Use Reaction.isPackageEnabled(name) instead
-export function isEnabled() {
-  const packageInfo = getPackageSettings();
-
-  if (typeof packageInfo.enabled === "boolean") {
-    return packageInfo.enabled;
-  }
-
-  return false;
-}*/
-
-export function hasMarketplaceGuestAccess() {
+/**
+ * hasMarketplaceGuestAccess
+ * @summary Checks if the current user is a guest in the marketplace and not a seller
+ *          Owners always have full access
+ * @returns {Boolean} True if current user is a guest and not a seller, or the owner
+ */
+function hasMarketplaceGuestAccess() {
   const currentUser = Meteor.user();
 
   // parent shop owners have full access
-  if(Roles.getGroupsForUser(currentUser, ['owner']).length) {
+  if (Roles.getGroupsForUser(currentUser, "owner").length) {
     return true;
   }
 
-  const packageSettings = Reaction.getPackageSettings('reaction-marketplace');
+  const packageSettings = Reaction.getPackageSettings("reaction-marketplace");
 
   // if marketplace is on
   // allow only guests, who aren't sellers already
@@ -41,9 +23,9 @@ export function hasMarketplaceGuestAccess() {
   return (
     packageSettings.enabled &&
     packageSettings.settings.public.allowGuestSellers &&
-    Roles.getGroupsForUser(currentUser, 'admin').length < 1
+    Roles.getGroupsForUser(currentUser, "admin").length < 1
   );
-};
+}
 
 export const Marketplace = {
   hasMarketplaceGuestAccess

@@ -122,10 +122,6 @@ export default {
     return this.hasPermission(["owner", "admin", "dashboard"]);
   },
 
-  getSellerShopId(userId = this.userId) {
-    return Roles.getGroupsForUser(userId, "admin");
-  },
-
   configureMailUrl() {
     // maintained for legacy support
     Logger.warn("Reaction.configureMailUrl() is deprecated. Please use Reaction.Email.getMailUrl() instead");
@@ -134,10 +130,10 @@ export default {
 
   getCurrentShopCursor(shopId = this.getShopId()) {
     const domain = this.getDomain();
-    let query = {
+    const query = {
       domains: domain
     };
-    if(shopId) {
+    if (shopId) {
       query._id = shopId;
     }
 
@@ -146,14 +142,13 @@ export default {
     });
 
     if (!cursor.count()) {
-      Logger.debug(domain, "Add a domain entry to shops for ");
+      Logger.warn(`getCurrentShopCursor: Add a domain entry to shops for {$domain}`);
     }
 
     return cursor;
   },
 
   getCurrentShop(shopId) {
-
     const currentShopCursor = this.getCurrentShopCursor(shopId);
 
     // also, we could check in such a way: `currentShopCursor instanceof Object`
@@ -236,20 +231,27 @@ export default {
    * @param {String|Array} roles A string or array of roles and routes
    */
   addRolesToVisitors(roles) {
-    Logger.info("Adding defaultRole & defaultVisitorRole permissions for "+ roles);
+    Logger.info("Adding defaultRoles & defaultVisitorRole permissions for ", roles);
 
     const shop = Shops.findOne(this.getShopId());
 
-    roles = typeof roles === "string" ? [roles] : roles;
-    _.each(roles, (role) => {
+    if (Match.test(roles, [String])) {
       Shops.update(shop._id, {
-          $addToSet: { "defaultVisitorRole": role}
-        }
-      );
-      Shops.update(shop._id, {
-        $addToSet: { "defaultRoles": role}
+        $addToSet: { defaultVisitorRole: { $each: roles } }
       });
-    });
+      Shops.update(shop._id, {
+        $addToSet: { defaultRoles: { $each: roles } }
+      });
+    } else if (Match.test(roles, String)) {
+      Shops.update(shop._id, {
+        $addToSet: { defaultVisitorRole: roles }
+      });
+      Shops.update(shop._id, {
+        $addToSet: { defaultRoles: roles }
+      });
+    } else {
+      throw new Meteor.Error("Failed to add roles " + roles);
+    }
   },
 
   /**

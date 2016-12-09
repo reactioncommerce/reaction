@@ -8,12 +8,21 @@
       <div class="panel-body">
         {{#autoForm collection=Collections.Packages schema=MarketplacePackageConfig
                     doc=packageData id="marketplaceOptionsForm" type="update" autosave=true}}
-          {{> afQuickField name='settings.public.allowGuestSellers'}}
+          {{> afFieldInput name='settings.public.allowGuestSellers'}}
         {{/autoForm}}
 
         {{schema}}
       </div>
     </div>
+</template>
+
+<template name="marketplaceCatalogSettings">
+  {{#autoForm collection=Collections.Packages schema=MarketplacePackageConfig
+              doc=packageData id="marketplaceOptionsForm" type="update" autosave=true}}
+    {{> afFieldInput name='settings.public.allowGuestSellers'}}
+  {{/autoForm}}
+
+  {{schema}}
 </template>
 
 

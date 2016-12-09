@@ -226,10 +226,6 @@ export default {
     return allowGuest;
   },
 
-  getSellerShopId(userId = this.userId) {
-    return Roles.getGroupsForUser(userId, "admin");
-  },
-
   /**
    * @description showActionView
    *
@@ -276,7 +272,6 @@ export default {
       i18nKeyLabel: ""
     });
   },
-
 
 
   getCurrentTag() {

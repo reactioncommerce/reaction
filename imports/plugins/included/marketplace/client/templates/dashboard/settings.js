@@ -4,7 +4,7 @@ import { MarketplacePackageConfig } from "../../../lib/collections/schemas";
 
 
 /**
- * shopSettings helpers
+ * marketplaceSettings helpers
  *
  */
 Template.marketplaceSettings.helpers({
@@ -20,18 +20,23 @@ Template.marketplaceSettings.helpers({
 });
 
 /**
- * Marketplace Settings autoform alerts
+ * marketplace Catalog settings
+ */
+Template.marketplaceCatalogSettings.inheritsHelpersFrom("marketplaceSettings");
+
+/**
+ * marketplaceSettings autoform alerts
  */
 
 AutoForm.hooks({
-  shopEditOptionsForm: {
+  marketplaceOptionsForm: {
     onSuccess() {
-      return Alerts.toast(i18next.t("shopSettings.shopOptionsSettingsSaved"),
+      return Alerts.toast(i18next.t("marketplace.dashboardSettingsSaved"),
         "success");
     },
     onError(operation, error) {
       return Alerts.toast(
-        `${i18next.t("shopSettings.shopOptionsSettingsFailed")} ${error}`, "error"
+        `${i18next.t("marketplace.dashboardSettingsFailed")} ${error}`, "error"
       );
     }
   }

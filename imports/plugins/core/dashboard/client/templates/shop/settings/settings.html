@@ -26,11 +26,11 @@
         </div>
       </div>
       <div id="general" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="General">
-        <div class="panel-body">-
+        <div class="panel-body">
           {{#autoForm collection=Collections.Packages schema=Schemas.CorePackageConfig
           doc=packageData id="shopEditOptionsForm" type="update" autosave=true}}
             {{> afFieldInput name='settings.public.allowGuestCheckout'}}
-          {{/autoForm}}-
+          {{/autoForm}}
         </div>
         <div class="panel-body">
           {{> select brandImageSelectProps}}

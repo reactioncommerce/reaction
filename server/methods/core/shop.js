@@ -35,7 +35,7 @@ Meteor.methods({
     }
 
     // we'll accept a shop object, or clone the current shop
-    let shop = shopData || Collections.Shops.findOne(Reaction.getShopId());
+    const shop = shopData || Collections.Shops.findOne(Reaction.getShopId());
     // if we don't have any shop data, use fixture
 
     // identify a shop admin
@@ -46,7 +46,7 @@ Meteor.methods({
     shop.name = shop.name + count;
 
     // admin or marketplace needs to be on and guests alowed to create shops
-    if(currentUser && Marketplace.hasMarketplaceGuestAccess()) {
+    if (currentUser && Marketplace.hasMarketplaceGuestAccess()) {
       adminRoles = shop.defaultSellerRoles;
 
       shop.emails = currentUser.emails;
@@ -55,25 +55,58 @@ Meteor.methods({
       currentUser.shopId = shop._id;
       Collections.Accounts.update({ _id: currentUser._id }, {
         $set: {
-          "shopId": currentUser.shopId
+          shopId: currentUser.shopId
         }
       });
     }
 
     // We trust the owner's shop clone, check only if shopData is passed as an argument
-    if(shopData) {
+    if (shopData) {
       check(shop, Schemas.Shop);
     }
 
     try {
       Collections.Shops.insert(shop);
     } catch (error) {
-      return Logger.error("Failed to shop/createShop", error);
+      return Logger.error(error, "Failed to shop/createShop");
     }
     // we should have created new shop, or errored
     Logger.info("Created shop: ", shop._id);
     Roles.addUsersToRoles([currentUser, userId], adminRoles, shop._id);
     return shop._id;
+  },
+
+  /**
+   * shop/getSeller
+   * @summary Get a shop's seller
+   * @param shopId An optional shopId to get the seller for, otherwise current user is used
+   * @returns {Object|null} The user hash if found, null otherwise
+   */
+  "shop/getSeller": function (shopId) {
+    let sellerShopId;
+
+    if (!shopId) {
+      const currentUser = Meteor.user();
+      if(currentUser) {
+        sellerShopId = Roles.getGroupsForUser(currentUser.id, "admin")[0];
+      }
+    }
+
+    const users = Roles.getUsersInRole("admin", sellerShopId);
+
+    return users[0] || null;
+
+  },
+
+  "shop/getSellerShopId": function (userId = Meteor.userId()) {
+    if (userId) {
+      const group = Roles.getGroupsForUser(userId, "admin")[0];
+      if (group) {
+        return group;
+      }
+    }
+
+    return Reaction.getShopId();
   },
 
   /**
@@ -107,10 +140,9 @@ Meteor.methods({
     });
 
     if (!shop) {
-      throw new Meteor.Error(
-        "Failed to find shop data. Unable to determine locale.");
+      throw new Meteor.Error("Failed to find shop data. Unable to determine locale.");
     }
-    // cofigure default defaultCountryCode
+    // configure default defaultCountryCode
     // fallback to shop settings
     if (shop.addressBook) {
       if (shop.addressBook.length >= 1) {

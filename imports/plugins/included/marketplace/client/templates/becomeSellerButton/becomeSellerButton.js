@@ -1,5 +1,5 @@
 import { Meteor } from "meteor/meteor";
-import { Logger, Reaction, i18next } from "/client/api";
+import { Reaction, i18next } from "/client/api";
 
 
 // Page
@@ -12,24 +12,26 @@ Template.becomeSellerButton.helpers({
    * @return {String} The classes
    */
   classes() {
-    var classes = [
-      (this.style || 'btn-info'),
-      (this.size || '')
+    const classes = [
+      (this.type || "btn-info"),
+      (this.size || "")
     ];
 
-    return classes.join(' ');
+    return classes.join(" ");
   }
 });
 
 
 Template.becomeSellerButton.events({
-  "click [data-event-action='button-click-become-seller']": function() {
-    Meteor.call("shop/createShop", Meteor.userId(), function(err, response) {
-      if(err) {
-        return Alerts.toast("Unable to create shop with specified user", "error");
+  "click [data-event-action='button-click-become-seller']": function () {
+    Meteor.call("shop/createShop", Meteor.userId(), function (error, response) {
+      if (error) {
+        const error = i18next.t("marketplace.cannotCreateShop", { defaultValue: "Could not create shop for current user {{user}}" });
+        return Alerts.toast(error, "error");
       }
 
-      return Alerts.toast("Your shop is now ready!", "success");
+      const success = i18next.t("marketplace.yourShopIsReady", { defaultValue: "Your shop is now ready!" });
+      return Alerts.toast(success, "success");
     });
   }
 });
