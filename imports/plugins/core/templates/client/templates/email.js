@@ -155,12 +155,12 @@ AutoForm.hooks({
 
       Meteor.call("templates/email/update", templateId, insertDoc, (error, result) => {
         if (error) {
-          Alerts.toast(i18next.t("templates.alerts.failedToUpdate", { err: error.message }), "error");
+          Alerts.toast(i18next.t("templateUpdateForm.alerts.failedToUpdate", { err: error.message }), "error");
           this.done(new Error("Failed to update template: ", error));
           return false;
         }
         if (result) {
-          Alerts.toast(i18next.t("templateGrid.templateUpdated", "Template successfully updated"), "success");
+          Alerts.toast(i18next.t("templateUpdateForm.alerts.templateUpdated", "Template successfully updated"), "success");
           this.done();
         }
       });
