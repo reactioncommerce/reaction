@@ -1,83 +1,148 @@
+import MeteorGriddle from "/imports/plugins/core/ui-grid/client/griddle";
+import { Loading } from "/imports/plugins/core/ui/client/components";
 import { Meteor } from "meteor/meteor";
-import { Session } from "meteor/session";
-import { Template } from "meteor/templating";
-import { Blaze } from "meteor/blaze";
 import { AutoForm } from "meteor/aldeed:autoform";
-import { Reaction, i18next } from "/client/api";
-import { Templates } from "/lib/collections";
+import { Blaze } from "meteor/blaze";
+import { ReactiveDict } from "meteor/reactive-dict";
+import { Template } from "meteor/templating";
 import { EmailTemplates } from "../../lib/collections/schemas";
+import { i18next } from "/client/api";
+import { Templates } from "/lib/collections";
+
 
 /*
- * Subscribe to Templates collections
+ * template templateSettings onCreated
  */
-Template.emailTemplatesDashboard.onCreated(function () {
+Template.templateSettings.onCreated(function () {
+  // Subscribe to Templates collections
   this.autorun(() => {
     this.subscribe("Templates");
   });
-});
 
-
-/*
- * template emailTemplatesDashboard helpers
- */
-Template.emailTemplatesDashboard.helpers({
-  emailTemplate() {
-    const instance = Template.instance();
-    if (instance.subscriptionsReady()) {
-      return Templates.find({
-        shopId: Reaction.getShopId(),
-        type: "email"
-      });
-    }
-  }
-});
-
-
-/*
- * template emailTemplatesDashboard events
- */
-Template.emailTemplatesDashboard.events({
-  "click [data-event-action=editEmailTemplate]"(event) {
-    event.preventDefault();
-
-    Reaction.showActionView({
-      label: i18next.t("templates.edit"),
-      data: this,
-      template: "emailTemplateSettings"
-    });
-
-    // TODO: What does this do?
-    Session.set("updatedMethodObj", "");
-    Session.set("selectedMethodObj", this);
-  }
-});
-
-
-/*
- * Template emailTemplatesSettings Helpers
- */
-Template.emailTemplateSettings.onCreated(function () {
+  // Initiate State
   this.state = new ReactiveDict();
-
-  this.autorun(() => {
-    const currentData = Template.currentData();
-    const currentTemplate = Templates.findOne(currentData._id);
-
-    this.state.set("template", currentTemplate);
+  this.state.setDefault({
+    isEditing: false,
+    editingId: null
   });
 });
 
 
 /*
- * Template emailTemplatesSettings Helpers
+ * template templateSettings helpers
  */
-Template.emailTemplateSettings.helpers({
+Template.templateSettings.helpers({
+  templateGrid() {
+    const filteredFields = ["title", "type", "language"];
+    const noDataMessage = i18next.t("templateGrid.noTemplatesFound");
+    const instance = Template.instance();
+
+    //
+    // helper to get and select row from griddle
+    // into blaze to get correct template to edit
+    //
+    function editRow(options) {
+      const currentId = instance.state.get("editingId");
+
+      // isEditing is current template
+      instance.state.set("isEditing", options.props.data);
+      instance.state.set("editingId", options.props.data._id);
+      // toggle edit mode clicking on same row
+      if (currentId === options.props.data._id) {
+        instance.state.set("isEditing", null);
+        instance.state.set("editingId", null);
+      }
+    }
+
+    // helper adds a class to every grid row
+    const customRowMetaData = {
+      bodyCssClassName: () =>  {
+        return "template-grid-row";
+      }
+    };
+
+    // add i18n handling to headers
+    const customColumnMetadata = [];
+    filteredFields.forEach(function (field) {
+      const columnMeta = {
+        columnName: field,
+        displayName: i18next.t(`templateGrid.columns.${field}`)
+      };
+      customColumnMetadata.push(columnMeta);
+    });
+
+    // return template Grid
+    return {
+      component: MeteorGriddle,
+      publication: "Templates",
+      collection: Templates,
+      matchingResultsCount: "templates-count",
+      showFilter: true,
+      useGriddleStyles: false,
+      rowMetadata: customRowMetaData,
+      filteredFields: filteredFields,
+      columns: filteredFields,
+      noDataMessage: noDataMessage,
+      onRowClick: editRow,
+      columnMetadata: customColumnMetadata,
+      externalLoadingComponent: Loading
+    };
+  },
+
+  instance() {
+    const instance = Template.instance();
+    return instance;
+  },
+
   template() {
-    return Template.instance().state.get("template");
+    const instance = Template.instance();
+    const id = instance.state.get("editingId");
+    const template = Templates.findOne(id) || {};
+    console.log("template", template);
+    return template;
+  },
+
+  typeEmail() {
+    const instance = Template.instance();
+    const id = instance.state.get("editingId");
+    const template = Templates.findOne(id) || {};
+    if(template.type === "email"){
+      return true;
+    }
+    return false;
   },
 
   emailTemplateSchema() {
     return EmailTemplates;
+  }
+});
+
+
+/*
+ * template templateSettings events
+ */
+Template.templateSettings.events({
+  "click .template-grid-row": function (event) {
+    // toggle all rows off, then add our active row
+    $(".template-grid-row").removeClass("active");
+    $(event.currentTarget).addClass("active");
+  },
+  "submit #email-template-edit-form": function () {
+    const instance = Template.instance();
+    instance.state.set({
+      isEditing: false,
+      editingId: null
+    });
+  },
+  "click .cancel, .template-grid-row .active": function () {
+    instance = Template.instance();
+    // remove active rows from grid
+    instance.state.set({
+      isEditing: false,
+      editingId: null
+    });
+    // ugly hack
+    $(".template-grid-row").removeClass("active");
   }
 });
 
@@ -96,6 +161,7 @@ AutoForm.hooks({
           return false;
         }
         if (result) {
+          Alerts.toast(i18next.t("templateGrid.templateUpdated", "Template successfully updated"), "success");
           this.done();
         }
       });

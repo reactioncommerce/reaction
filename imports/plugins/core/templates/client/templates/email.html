@@ -1,60 +1,67 @@
-<template name="emailTemplatesDashboard">
+<template name="templateSettings">
   <div class="panel panel-default">
     <div class="panel-body">
-      <table class="table table-striped">
-        <thead>
-          <tr class="info">
-            <th>{{i18n "templates.templateName" "Template Name"}}</th>
-            <th>{{i18n "templates.type" "Type"}}</th>
-            <th>{{i18n "templates.language" "Language"}}</th>
-            <th class="textAlignRight">{{i18n "templates.actions" "Actions"}}</th>
-          </tr>
-        </thead>
-        <tbody>
-        {{#each emailTemplate}}
-          <tr class="edit-shipping-method" data-event-action="editEmailTemplate">
-            <td>{{title}}</td>
-            <td>{{type}}</td>
-            <td>{{language}}</td>
-            <td class="text-right">
-              <i class="fa fa-pencil" data-template-id="{{_id}}" title="{{i18n 'mail.templates.edit' 'Edit email template'}}" data-event-action="editEmailTemplate"></i>
-            </td>
-          </tr>
-        {{/each}}
-        </tbody>
-      </table>
+      <div class="col-md-12">
+        {{> React templateGrid }}
+      </div>
     </div>
   </div>
+
+  {{#if instance.state.get 'isEditing'}}
+    {{#if instance.state.get 'editingId'}}
+      {{#if typeEmail}}
+        <div>
+          {{#autoForm
+            collection=Collections.Templates
+            schema=emailTemplateSchema
+            id="email-template-edit-form"
+            template="bootstrap3-inline"
+            doc=template
+            }}
+
+            <div class="panel panel-default">
+              <div class="panel-heading">Update email template</div>
+              <div class="panel-body">
+                <div class="col-md-12 form-group">
+                  {{>afQuickField name="title" class="form-control"}}
+                  {{>afQuickField name="name" class="form-control" disabled=true}}
+                  {{>afQuickField name="language" class="form-control" disabled=true}}
+                  {{>afQuickField name="subject" class="form-control"}}
+                  {{>afQuickField name="template" label="HTML" class="form-control" type="textarea" rows="15"}}
+                </div>
+              </div>
+
+              <div class="panel-footer">
+                <div class="right">
+                  {{> templateSubmitButton instance=instance }}
+                </div>
+              </div>
+            </div>
+
+          {{/autoForm}}
+        </div>
+      {{else}}
+      <div>
+        <div class="panel panel-default">
+          <div class="panel-heading">Update React template</div>
+          <div class="panel-body">
+            <div class="col-md-12">
+              <p>React templates cannot be edited through this interface</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      {{/if}}
+    {{/if}}
+  {{/if}}
 </template>
 
 
-<template name="emailTemplateSettings">
-  {{#autoForm
-    collection=Collections.Templates
-    schema=emailTemplateSchema
-    id="email-template-edit-form"
-    template="bootstrap3-inline"
-    doc=template
-    }}
-
-    <div class="panel panel-default">
-      <div class="panel-heading">Update {{name}} template</div>
-      <div class="panel-body">
-        <div class="col-md-12 form-group">
-          {{>afQuickField name="title" class="form-control"}}
-          {{>afQuickField name="name" class="form-control" disabled=true}}
-          {{>afQuickField name="language" class="form-control" disabled=true}}
-          {{>afQuickField name="subject" class="form-control"}}
-          {{>afQuickField name="template" label="HTML" class="form-control" type="textarea" rows="15"}}
-        </div>
-      </div>
-
-      <div class="panel-footer">
-        <div class="right">
-          <button type="submit" class="btn btn-primary">Update</button>
-        </div>
-      </div>
+<template name="templateSubmitButton">
+   <div class="clearfix">
+    <div class="pull-right">
+      <button type="button" class="btn btn-primary cancel" data-i18n="app.cancel">Cancel</button>
+      <button type="submit" class="btn btn-primary" data-i18n="app.saveChanges">Save Changes</button>
     </div>
-
-  {{/autoForm}}
+  </div>
 </template>

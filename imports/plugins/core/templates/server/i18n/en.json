@@ -4,6 +4,15 @@
   "ns": "reaction-templates",
   "translation": {
     "reaction-templates": {
+      "templateGrid": {
+        "noTemplatesFound": "No templates found",
+        "columns": {
+          "title": "Title",
+          "type": "Type",
+          "language": "Language"
+        },
+        "templateUpdated": "Template succesfully updated"
+      },
       "templates": {
         "actions": "Actions",
         "edit": "Edit template",
