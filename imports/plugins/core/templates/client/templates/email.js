@@ -105,7 +105,7 @@ Template.templateSettings.helpers({
     const instance = Template.instance();
     const id = instance.state.get("editingId");
     const template = Templates.findOne(id) || {};
-    if(template.type === "email"){
+    if (template.type === "email") {
       return true;
     }
     return false;
