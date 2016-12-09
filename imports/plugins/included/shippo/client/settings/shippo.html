@@ -5,20 +5,18 @@
     </div>
     <div class="panel-body">
       {{#autoForm
-        collection=Collections.Packages
+        meteormethod="shippo/updateApiKey"
         schema=ShippoPackageConfig
         doc=packageData
-        type="update"
+        type="method-update"
         id="shippo-update-form"
-        autosave=true
       }}
 
           <div class="row">
             <div class="form-group col-md-8">
-              {{> afQuickField name="settings.shippo.api_key" class="form-control" placeholder="WRITE Key"}}
+              {{> afQuickField name="settings.api_key"}}
             </div>
           </div>
-
           <button type="submit" class="btn btn-primary pull-right"><span data-i18n="app.saveChanges">Save Changes</span></button>
 
       {{/autoForm}}

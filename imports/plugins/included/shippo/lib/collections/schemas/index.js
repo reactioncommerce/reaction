@@ -1,1 +1,1 @@
-import "./shippo.js";
+export * from "./shippo";

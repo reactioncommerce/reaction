@@ -1,2 +1,2 @@
-import "./templates/dashboard/shippo.html";
-import "./templates/dashboard/shippo.js";
+import "./settings/shippo.js";
+AutoForm.debug();

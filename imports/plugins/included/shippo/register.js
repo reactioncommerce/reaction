@@ -6,10 +6,7 @@ Reaction.registerPackage({
   icon: "fa fa-at",
   autoEnable: true,
   settings: {
-    name: "Shippo",
-    "reaction-shippo": {
-      enabled: false
-    }
+    api_key: ""
   },
   registry: [{
     provides: "dashboard",
@@ -29,19 +26,5 @@ Reaction.registerPackage({
     container: "connection",
     template: "shippoSettings"
   }
-  // , {
-  //   route: "/paypal/done",
-  //   name: "paypalDone",
-  //   template: "paypalDone",
-  //   workflow: "coreWorkflow"
-  // }, {
-  //   route: "/paypal/cancel",
-  //   name: "paypalCancel",
-  //   template: "paypalCancel",
-  //   workflow: "coreWorkflow"
-  // }, {
-  //   template: "paypalPaymentForm",
-  //   provides: "paymentMethod"
-  // }
   ]
 });

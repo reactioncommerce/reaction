@@ -1,16 +1,18 @@
 import { Template } from "meteor/templating";
 import { Reaction, i18next } from "/client/api";
 import { Packages } from "/lib/collections";
-import { ShippoPackageConfig } from "../../../lib/collections/schemas";
+import { ShippoPackageConfig } from "../../lib/collections/schemas";
 
+import "./shippo.html";
 
 Template.shippoSettings.helpers({
   packageData() {
     return Packages.findOne({
-      name: "reaction-shippo"
+      name: "reaction-shippo",
+      shopId: Reaction.getShopId()
     });
   },
-  SearchPackageConfig() {
+  ShippoPackageConfig() {
     return ShippoPackageConfig;
   }
   // ,
@@ -22,6 +24,9 @@ Template.shippoSettings.helpers({
   //   };
   // }
 });
+
+
+
 
 //
 // AutoForm.hooks({
