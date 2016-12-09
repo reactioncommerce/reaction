@@ -2,7 +2,7 @@ import _ from  "lodash";
 import { EJSON } from "meteor/ejson";
 import { check } from "meteor/check";
 import { Meteor } from "meteor/meteor";
-import { Catalog } from "/lib/api";
+import { Catalog, copyFile } from "/lib/api";
 import { Media, Products, Revisions, Tags } from "/lib/collections";
 import { Logger, Reaction } from "/server/api";
 
@@ -151,12 +151,10 @@ function copyMedia(newId, variantOldId, variantNewId) {
   Media.find({
     "metadata.variantId": variantOldId
   }).forEach(function (fileObj) {
-    const newFile = fileObj.copy();
-    return newFile.update({
-      $set: {
-        "metadata.productId": newId,
-        "metadata.variantId": variantNewId
-      }
+    // Copy File and insert directly, bypasing revision control
+    copyFile(fileObj, {
+      productId: newId,
+      variantId: variantNewId
     });
   });
 }
