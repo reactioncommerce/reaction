@@ -98,7 +98,6 @@ Template.templateSettings.helpers({
     const instance = Template.instance();
     const id = instance.state.get("editingId");
     const template = Templates.findOne(id) || {};
-    console.log("template", template);
     return template;
   },
 
