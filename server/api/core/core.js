@@ -142,7 +142,7 @@ export default {
     });
 
     if (!cursor.count()) {
-      Logger.warn(`getCurrentShopCursor: Add a domain entry to shops for {$domain}`);
+      Logger.warn(`getCurrentShopCursor: Add a domain entry to shops for ${domain}`);
     }
 
     return cursor;
@@ -171,7 +171,7 @@ export default {
     }).fetch()[0];
 
     if (!shop) {
-      Logger.debug(domain, "Add a domain entry to shops for ");
+      Logger.warn(`getCurrentShopCursor: Add a domain entry to shops for ${domain}`);
     }
 
     return shop && shop._id;
@@ -231,7 +231,7 @@ export default {
    * @param {String|Array} roles A string or array of roles and routes
    */
   addRolesToVisitors(roles) {
-    Logger.info("Adding defaultRoles & defaultVisitorRole permissions for ", roles);
+    Logger.info(`Adding defaultRoles & defaultVisitorRole permissions for ${roles}`);
 
     const shop = Shops.findOne(this.getShopId());
 
@@ -250,7 +250,7 @@ export default {
         $addToSet: { defaultRoles: roles }
       });
     } else {
-      throw new Meteor.Error("Failed to add roles " + roles);
+      throw new Meteor.Error(`Failed to add roles ${roles}`);
     }
   },
 

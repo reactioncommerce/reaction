@@ -95,9 +95,14 @@ Meteor.methods({
     const users = Roles.getUsersInRole("admin", sellerShopId);
 
     return users[0] || null;
-
   },
 
+  /**
+   * shop/getSellerShopId
+   * @summary Get a shop's seller. Defaults to parent shopId
+   * @param shopId An optional userId to get the shopId when the user is a seller
+   * @returns {String} The shopId of the seller, otherwise the parent shop
+   */
   "shop/getSellerShopId": function (userId = Meteor.userId()) {
     if (userId) {
       const group = Roles.getGroupsForUser(userId, "admin")[0];
