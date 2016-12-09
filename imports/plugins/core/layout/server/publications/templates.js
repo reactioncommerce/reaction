@@ -14,7 +14,7 @@ Meteor.publish("Templates", function (query, options) {
 
   const select = query || {};
   // append shopId to query
-  // taxes could be shared
+  // templates could be shared
   // if you disregarded shopId
   select.shopId = shopId;
 
