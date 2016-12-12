@@ -131,7 +131,7 @@ Meteor.publish("Product", function (productId) {
 
             // When adding a new product as a guest seller and then edit that product
             // the new product cannot be found in the Products collection when fields are changed
-            // and this.changed("Products") return an error below
+            // and this.changed("Products") returns an error below
             // The product does however exist in the collection
             // Note that sometimes it works **right after registering** and becoming a seller, we can post a product successfully
             // RC to investigate
