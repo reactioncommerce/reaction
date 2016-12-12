@@ -387,7 +387,7 @@ Meteor.methods({
       }
     }
 
-    const refundResult = Meteor.call("orders/refunds/list", order.billing[0].paymentMethod);
+    const refundResult = Meteor.call("orders/refunds/list", order);
 
     let refundTotal = 0;
 
@@ -850,10 +850,12 @@ Meteor.methods({
    * @param {Object} paymentMethod - paymentMethod object
    * @return {null} no return value
    */
-  "orders/refunds/list": function (paymentMethod) {
-    check(paymentMethod, Object);
+  "orders/refunds/list": function (order) {
+    check(order, Object);
 
-    if (!Reaction.hasPermission("orders")) {
+    const paymentMethod = order.billing[0].paymentMethod;
+
+    if (!this.userId === order.userId && !Reaction.hasPermission("orders")) {
       throw new Meteor.Error(403, "Access Denied");
     }
 

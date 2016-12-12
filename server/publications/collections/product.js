@@ -133,7 +133,7 @@ Meteor.publish("Product", function (productId) {
             // the new product cannot be found in the Products collection when fields are changed
             // and this.changed("Products") return an error below
             // The product does however exist in the collection
-            // Note that sometimes it works right after registering and becoming a seller we can post a product successfully
+            // Note that sometimes it works **right after registering** and becoming a seller, we can post a product successfully
             // RC to investigate
             // Possible cause? https://github.com/meteor/meteor/issues/1354
             // console.log(Products.find({_id:product._id}).fetch());
@@ -148,10 +148,11 @@ Meteor.publish("Product", function (productId) {
           } else {
             product = Products.findOne(revision.parentDocument);
           }
-          product.__revisions = [];
-
-          this.changed("Products", product._id, product);
-          this.removed("Revisions", revision._id, revision);
+          if (product) {
+            product.__revisions = [];
+            this.changed("Products", product._id, product);
+            this.removed("Revisions", revision._id, revision);
+          }
         }
       });
 
