@@ -212,7 +212,16 @@ export default {
   },
 
   getPackageSettings(name) {
-    return Packages.findOne({ name: name, shopId: this.getShopId() }) || null;
+    const shopId = this.getShopId();
+    let query = {
+      name
+    };
+
+    if(shopId) {
+      query.shopId = shopId;
+    }
+
+    return Packages.findOne(query) || null;
   },
 
   /**

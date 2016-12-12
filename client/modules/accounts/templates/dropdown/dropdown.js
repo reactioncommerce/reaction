@@ -69,3 +69,24 @@ Template.loginDropdown.events({
     template.$(".dropdown-toggle").dropdown("toggle");
   }
 });
+
+Template.accountsDropdownApps.helpers({
+
+  // Might be best if Reaction.Apps did the permission check instead
+  // for simplicity the check here affects only our menu
+  // For a menu item to appear for a sub-seller, seller needs permissions on shortcut provided in registry
+  isShortcutAllowed(shortcut) {
+    const permissions = shortcut.permissions;
+    const shopId = Reaction.getSellerShopId();
+    let allowed;
+    _.each(permissions, function(perm) {
+      if(Roles.userIsInRole(Meteor.userId(), perm.permission, shopId)) {
+        allowed = true;
+      }
+    });
+
+    return allowed;
+  }
+
+});
+

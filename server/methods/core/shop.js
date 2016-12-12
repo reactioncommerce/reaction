@@ -104,9 +104,13 @@ Meteor.methods({
    * @returns {String} The shopId of the seller, otherwise the parent shop
    */
   "shop/getSellerShopId": function (userId = Meteor.userId()) {
+    check(userId, Match.OneOf(String, null));
+    console.log(`user is: ${userId}`, arguments);
     if (userId) {
+      console.log(`user is> ${userId}`);
       const group = Roles.getGroupsForUser(userId, "admin")[0];
       if (group) {
+        console.log(`user has shop ID ${group}`);
         return group;
       }
     }
