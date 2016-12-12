@@ -1,5 +1,5 @@
 import { Template } from "meteor/templating";
-import { Reaction } from "/client/api";
+import { Reaction, i18next } from "/client/api";
 import { Packages } from "/lib/collections";
 import { ShippoPackageConfig } from "../../lib/collections/schemas";
 
@@ -17,11 +17,14 @@ Template.shippoSettings.helpers({
   }
 });
 
+
 AutoForm.hooks({
   "shippo-update-form": {
-    onSuccess() {
+    onSuccess(msg) {
       Alerts.removeSeen();
-      return Alerts.toast("Shippo settings saved.", "success", {
+      const successMsg = (msg.type === "delete") ? i18next.t("admin.settings.saveSuccess") :
+                                                   i18next.t("shippo.connectedAndSaved");
+      return Alerts.toast(successMsg, "success", {
         autoHide: true
       });
     },

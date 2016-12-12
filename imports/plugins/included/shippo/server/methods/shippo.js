@@ -7,10 +7,19 @@ Meteor.methods({
     // Important server-side check for security and data integrity
     check(modifier, ShippoPackageConfig);
     check(_id, String);
+
+    // If user want to delete existing key
+    if (modifier.hasOwnProperty("$unset")) {
+      const customModifier = { $set: { "settings.api_key": "" } };
+      Packages.update(_id, customModifier);
+      return { type: "delete" };
+    }
+
     const apiKey = modifier.$set["settings.api_key"];
 
     // Tries to use the apiKey . if not possible throws a relative Meteor Error
     ShippoApi.methods.confirmValidApiKey.call({ apiKey });
-    return Packages.update(_id, modifier);
+    Packages.update(_id, modifier);
+    return { type: "update" };
   }
 });

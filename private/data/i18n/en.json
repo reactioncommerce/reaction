@@ -709,6 +709,9 @@
           "orderTotal": "Total"
         }
       },
+      "shippo": {
+        "connectedAndSaved": "Connected to Shippo Api, successfully. Settings Saved!"
+      },
       "accountsUI": {
         "members": "Members",
         "manage": "Manage",

@@ -6,7 +6,8 @@ export const ShippoPackageConfig = new SimpleSchema([
     "settings.api_key": {
       type: String,
       label: "API Key",
-      min: 10
+      min: 10,
+      optional: true
     }
   }
 ]);
