@@ -20,9 +20,9 @@ Template.shippoSettings.helpers({
 
 AutoForm.hooks({
   "shippo-update-form": {
-    onSuccess(msg) {
+    onSuccess(formType, result) {
       Alerts.removeSeen();
-      const successMsg = (msg.type === "delete") ? i18next.t("admin.settings.saveSuccess") :
+      const successMsg = (result.type === "delete") ? i18next.t("admin.settings.saveSuccess") :
                                                    i18next.t("shippo.connectedAndSaved");
       return Alerts.toast(successMsg, "success", {
         autoHide: true

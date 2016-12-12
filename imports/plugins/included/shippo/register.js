@@ -3,7 +3,7 @@ import { Reaction } from "/server/api";
 Reaction.registerPackage({
   label: "Shippo",
   name: "reaction-shippo",
-  icon: "fa fa-at",
+  icon: "fa fa-plane",
   autoEnable: true,
   settings: {
     api_key: ""
