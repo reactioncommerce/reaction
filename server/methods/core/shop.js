@@ -79,7 +79,7 @@ Meteor.methods({
   /**
    * shop/getSeller
    * @summary Get a shop's seller
-   * @param shopId An optional shopId to get the seller for, otherwise current user is used
+   * @param {Object} shopId An optional shopId to get the seller for, otherwise current user is used
    * @returns {Object|null} The user hash if found, null otherwise
    */
   "shop/getSeller": function (shopId) {
@@ -87,7 +87,7 @@ Meteor.methods({
 
     if (!shopId) {
       const currentUser = Meteor.user();
-      if(currentUser) {
+      if (currentUser) {
         sellerShopId = Roles.getGroupsForUser(currentUser.id, "admin")[0];
       }
     }
@@ -100,17 +100,14 @@ Meteor.methods({
   /**
    * shop/getSellerShopId
    * @summary Get a shop's seller. Defaults to parent shopId
-   * @param shopId An optional userId to get the shopId when the user is a seller
+   * @param {Object} userId An optional userId to get the shopId when the user is a seller
    * @returns {String} The shopId of the seller, otherwise the parent shop
    */
   "shop/getSellerShopId": function (userId = Meteor.userId()) {
     check(userId, Match.OneOf(String, null));
-    console.log(`user is: ${userId}`, arguments);
     if (userId) {
-      console.log(`user is> ${userId}`);
       const group = Roles.getGroupsForUser(userId, "admin")[0];
       if (group) {
-        console.log(`user has shop ID ${group}`);
         return group;
       }
     }

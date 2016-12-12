@@ -1,4 +1,4 @@
-import { Reaction } from "/client/api";
+import { Reaction } from "/lib/api";
 import { Session } from "meteor/session";
 import { Template } from "meteor/templating";
 import { ReactiveDict } from "meteor/reactive-dict";
@@ -25,7 +25,7 @@ Template.gridControls.onRendered(function () {
 Template.gridControls.helpers({
   hasControl() {
     const instance = Template.instance();
-    const shopIds = Meteor.call("shop/getSellerShopId");
+    const shopIds = Reaction.getSellerShopId() || [];
     // owner (parent shop in marketplace) will return all shopIds
 
     return (

@@ -27,9 +27,12 @@ Meteor.publish("Product", function (productId) {
     return this.ready();
   }
 
-  let selector = {};
-  selector.isVisible = true;
-  selector.isDeleted = { $in: [null, false] };
+  // selector for hih - What's hih?
+  // selector should come first as default, alteration take place later depending on role
+  const selector = {
+    isVisible: true,
+    isDeleted: { $in: [null, false] }
+  };
 
   // no need for admin, simple perm should be okay per group
   if (Roles.userIsInRole(this.userId, ["createProduct"],
@@ -56,19 +59,14 @@ Meteor.publish("Product", function (productId) {
     }
   }
 
-  // Selector for hih?
-  selector = {
-    isVisible: true,
-    isDeleted: { $in: [null, false] },
-    $or: [
-      { _id: _id },
-      {
-        ancestors: {
-          $in: [_id]
-        }
+  selector.$or = [
+    { _id: _id },
+    {
+      ancestors: {
+        $in: [_id]
       }
-    ]
-  };
+    }
+  ];
 
   // Authorized content curators for the shop get special publication of the product
   // all relevant revisions all is one package
@@ -127,10 +125,21 @@ Meteor.publish("Product", function (productId) {
           } else {
             product = Products.findOne(revision.parentDocument);
           }
-          product.__revisions = [revision];
 
-          this.changed("Products", product._id, product);
-          this.changed("Revisions", revision._id, revision);
+          if (product) {
+            product.__revisions = [revision];
+
+            // When adding a new product as a guest seller and then edit that product
+            // the new product cannot be found in the Products collection when fields are changed
+            // and this.changed("Products") return an error below
+            // The product does however exist in the collection
+            // Note that sometimes it works right after registering and becoming a seller we can post a product successfully
+            // RC to investigate
+            // Possible cause? https://github.com/meteor/meteor/issues/1354
+            // console.log(Products.find({_id:product._id}).fetch());
+            this.changed("Products", product._id, product);
+            this.changed("Revisions", revision._id, revision);
+          }
         },
         removed: (revision) => {
           let product;
