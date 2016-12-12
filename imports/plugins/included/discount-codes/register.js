@@ -4,9 +4,10 @@ Reaction.registerPackage({
   label: "Codes",
   name: "discount-codes",
   icon: "fa fa-gift",
+  autoEnable: true,
   settings: {
     "discount-codes": {
-      enabled: false
+      enabled: true
     }
   },
   registry: [

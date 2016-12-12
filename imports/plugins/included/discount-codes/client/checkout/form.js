@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import debounce from "lodash/debounce";
+import { Translation } from "/imports/plugins/core/ui/client/components";
 
 export default class DiscountForm extends Component {
   constructor(props) {
@@ -7,13 +8,13 @@ export default class DiscountForm extends Component {
     this.state = {
       discount: this.props.discount,
       validatedInput: false,
+      attempts: 0,
       discountApplied: false
     };
 
     // debounce helper so to wait on user input
     this.debounceDiscounts = debounce(() => {
       const { discount } = this.state;
-      // this.setState({ discountApplied: true });
       Meteor.call("discounts/codes/apply", this.props.cartId, discount, (error, results) => {
         if (results) {
           this.setState({ discountApplied: results, discount: "" });
@@ -26,51 +27,58 @@ export default class DiscountForm extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
   }
+
+  // handle apply
+  renderApplied() {
+    return (
+      <a onClick={this.handleClick}>
+        <Translation defaultValue="Discount submitted." i18nKey={"discounts.submitted"} />
+      </a>
+    );
+  }
+
   // handle form input
   handleChange(event) {
-    this.setState({ discount: event.target.value });
+    const { attempts } = this.state;
+    this.setState({ discount: event.target.value, attempts: attempts + 1 });
     this.debounceDiscounts();
   }
+
   // handle display or not
-  handleClick(event) {
+  handleClick() {
     event.preventDefault();
     this.setState({ validatedInput: true });
   }
-  // render discount applied
-  renderApplied() {
-    return (
-      <div>
-        <span data-i18n="discounts.saved">Discount applied.</span>
-      </div>
-    );
-  }
+
   // render discount form
   renderDiscountForm() {
     return (
       <form>
         <label>
-          <span data-i18n="discounts.discountLabel">Discount Code</span>
+          <Translation defaultValue="Discount Code" i18nKey={"discounts.discountLabel"} />
         </label>
         <input autoFocus value={this.state.value} onChange={this.handleChange}/>
       </form>
     );
   }
+  // have a code link
   renderDiscountLink() {
     return (
       <a onClick={this.handleClick}>
-        <span data-i18n="discounts.enterItHere">Have a code? Enter it here.</span>
+        <Translation defaultValue="Have a code? Enter it here." i18nKey={"discounts.enterItHere"} />
       </a>
     );
   }
+
   // render discount code input form
   render() {
     const { discountApplied, validatedInput } = this.state;
     if (discountApplied === true && validatedInput === true) {
-      this.renderApplied();
+      return this.renderApplied();
     } else if (validatedInput === true) {
-      this.renderDiscountForm();
+      return this.renderDiscountForm();
     }
-    this.renderDiscountLink();
+    return this.renderDiscountLink();
   }
 }
 

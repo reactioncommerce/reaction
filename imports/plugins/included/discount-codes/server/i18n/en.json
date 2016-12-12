@@ -10,8 +10,9 @@
       },
       "discounts": {
         "enterItHere": "Have a code? Enter it here.",
-        "saved": "Discount applied.",
-        "discountLabel": "Discount Code"
+        "discountLabel": "Discount Code",
+        "submitted": "Discount saved and applied",
+        "applied": "applied"
       },
       "admin": {
         "paymentSettings": {

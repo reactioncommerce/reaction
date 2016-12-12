@@ -1,32 +1,40 @@
 import React, { Component, PropTypes } from "react";
 import { Cart } from "/lib/collections";
-import { Loading } from "/imports/plugins/core/ui/client/components";
+import { Loading, Translation } from "/imports/plugins/core/ui/client/components";
 import DiscountForm from "./form";
+import { composeWithTracker } from "/lib/api/compose";
+import { Reaction } from "/client/api";
 
-export default class DiscountList extends Component {
+class DiscountList extends Component {
   constructor(props) {
     super(props);
-    const currentCart = Cart.findOne(this.props.cartId);
-    this.listItems = [];
-    for (billing of currentCart.billing) {
-      if (billing.paymentMethod && billing.paymentMethod.processor === "discount-code") {
-        this.listItems.push(this.renderItem(billing._id, billing.paymentMethod.code));
-      }
-    }
-
     this.handleClick = this.handleClick.bind(this);
   }
+
   // handle remove click
   handleClick(event, codeId) {
     return Meteor.call("discounts/codes/remove", this.props.cartId, codeId);
   }
+  // list items
+  renderList() {
+    const listItems = this.props.listItems.map((listItem) => {
+      return this.renderItem(listItem.id, listItem.code, listItem.discount);
+    });
+
+    return (
+      <div className="rui list-group">{listItems}</div>
+    );
+  }
   // render item
-  renderItem(_id, code) {
+  renderItem(_id, code, discount) {
     return (
       <div className="rui list-group-item" key={_id}>
-        <span>{code}</span>
+        <span>
+          <label>{code} - {discount} <Translation defaultValue="Discount applied" i18nKey={"discounts.applied"} />
+          </label>
+        </span>
         <span className="pull-right">
-          <i className="fa fa-trash" onClick={(e) => this.handleClick(e, _id)}/>
+          <i className="fa fa-trash fa-lg" onClick={(e) => this.handleClick(e, _id)}/>
         </span>
       </div>
     );
@@ -44,18 +52,52 @@ export default class DiscountList extends Component {
       <DiscountForm cartId={this.props.cartId}/>
     );
   }
-  // list items
-  renderList() {
-    return (
-      <div className="rui list-group">{this.listItems}</div>
-    );
-  }
+
   // render list view
   render() {
-    return this.listItems.length ? this.renderList() : this.renderNoneFound();
+    const { listItems } = this.props;
+    return (listItems.length >= 1) ? this.renderList() : this.renderNoneFound();
   }
 }
 
 DiscountList.propTypes = {
-  cartId: PropTypes.string
+  cartId: PropTypes.string,
+  listItems: PropTypes.array
 };
+
+function composer(props, onData) {
+  const sub = Reaction.Subscriptions.Cart;
+
+  if (sub.ready()) {
+    const currentCart = Cart.findOne({
+      _id: props.cartId
+    });
+
+    const listItems = [];
+    for (billing of currentCart.billing) {
+      if (billing.paymentMethod && billing.paymentMethod.processor === "discount-code") {
+        listItems.push({
+          id: billing._id,
+          code: billing.paymentMethod.code,
+          discount: billing.paymentMethod.amount
+        });
+      }
+    }
+
+    onData(null, {
+      cartId: props.cartId,
+      listItems: listItems
+    });
+  }
+}
+
+
+// export default composeWithTracker(composer)(DiscountList)
+const options = {
+  propsToWatch: ["billing"]
+};
+
+let discountListComponent = DiscountList;
+discountListComponent = composeWithTracker(composer, options)(discountListComponent);
+
+export default discountListComponent;
