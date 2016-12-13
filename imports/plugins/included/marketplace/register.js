@@ -34,6 +34,18 @@ Reaction.registerPackage({
       provides: "catalogSettings",
       container: "dashboard",
       template: "marketplaceCatalogSettings"
+    },
+    {
+      route: "/shop/settings",
+      template: "shopSettings",
+      name: "shopSettings",
+      label: "Settings",
+      icon: "fa fa-th",
+      provides: "shortcut",
+      permissions: [{
+        label: "Seller",
+        permission: "seller"
+      }]
     }
   ]
 });
