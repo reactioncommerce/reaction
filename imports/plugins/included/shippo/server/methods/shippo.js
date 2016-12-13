@@ -10,12 +10,12 @@ Meteor.methods({
 
     // If user want to delete existing key
     if (modifier.hasOwnProperty("$unset")) {
-      const customModifier = { $set: { "settings.api_key": "" } };
+      const customModifier = { $set: { "settings.apiKey": null } };
       Packages.update(_id, customModifier);
       return { type: "delete" };
     }
 
-    const apiKey = modifier.$set["settings.api_key"];
+    const apiKey = modifier.$set["settings.apiKey"];
 
     // Tries to use the apiKey . if not possible throws a relative Meteor Error
     ShippoApi.methods.confirmValidApiKey.call({ apiKey });

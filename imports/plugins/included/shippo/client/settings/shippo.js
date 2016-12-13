@@ -17,7 +17,6 @@ Template.shippoSettings.helpers({
   }
 });
 
-
 AutoForm.hooks({
   "shippo-update-form": {
     onSuccess(formType, result) {

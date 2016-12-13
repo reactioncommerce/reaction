@@ -6,13 +6,16 @@ Reaction.registerPackage({
   icon: "fa fa-plane",
   autoEnable: true,
   settings: {
-    api_key: ""
+    shippo: {
+      enabled: true
+    },
+    apiKey: ""
   },
   registry: [{
     provides: "dashboard",
     label: "Shippo",
     description: "Shippo service",
-    icon: "fa fa-at",
+    icon: "fa fa-plane",
     priority: 3,
     container: "connect",
     permissions: [{
@@ -25,6 +28,10 @@ Reaction.registerPackage({
     provides: "settings",
     container: "connection",
     template: "shippoSettings"
+  }, {
+    provides: "shippingMethod",
+    name: "shipping/methods/shippo",
+    template: "shippoMethods"
   }
   ]
 });

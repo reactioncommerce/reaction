@@ -3,7 +3,7 @@ import { PackageConfig } from "/lib/collections/schemas/registry";
 
 export const ShippoPackageConfig = new SimpleSchema([
   PackageConfig, {
-    "settings.api_key": {
+    "settings.apiKey": {
       type: String,
       label: "API Key",
       min: 10,

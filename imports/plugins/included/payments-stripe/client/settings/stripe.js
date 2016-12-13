@@ -10,7 +10,6 @@ Template.stripeSettings.helpers({
     return StripePackageConfig;
   },
   packageData() {
-
     return Packages.findOne({
       name: "reaction-stripe",
       shopId: Reaction.getShopId()
