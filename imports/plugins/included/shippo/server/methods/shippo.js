@@ -8,7 +8,7 @@ Meteor.methods({
     check(modifier, ShippoPackageConfig);
     check(_id, String);
 
-    // If user want to delete existing key
+    // If user wants to delete existing key
     if (modifier.hasOwnProperty("$unset")) {
       const customModifier = { $set: { "settings.apiKey": null } };
       Packages.update(_id, customModifier);
