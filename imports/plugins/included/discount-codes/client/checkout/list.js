@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { Cart } from "/lib/collections";
-import { Loading, Translation } from "/imports/plugins/core/ui/client/components";
+import { Loading, Translation, IconButton } from "/imports/plugins/core/ui/client/components";
 import DiscountForm from "./form";
 import { composeWithTracker } from "/lib/api/compose";
 import { Reaction } from "/client/api";
@@ -30,12 +30,11 @@ class DiscountList extends Component {
     return (
       <div className="rui list-group-item" key={_id}>
         <span>
-          <label>{code} - {discount} <Translation defaultValue="Discount applied" i18nKey={"discounts.applied"} />
-          </label>
+          {code} - {discount} <Translation defaultValue="Discount applied" i18nKey={"discounts.applied"} />
         </span>
-        <span className="pull-right">
-          <i className="fa fa-trash fa-lg" onClick={(e) => this.handleClick(e, _id)}/>
-        </span>
+        <a className="pull-right">
+          <IconButton icon="fa fa-remove" onClick={(e) => this.handleClick(e, _id)}/>
+        </a>
       </div>
     );
   }

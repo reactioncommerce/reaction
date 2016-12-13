@@ -52,12 +52,29 @@ export default class DiscountForm extends Component {
 
   // render discount form
   renderDiscountForm() {
+    const { attempts } = this.state;
+    let loader;
+    if (attempts > 2) {
+      loader = <i className="fa fa-circle-o-notch fa-spin fa-fw"/>;
+    } else {
+      loader = <i className="fa fa-search"/>;
+    }
     return (
       <form>
-        <label>
-          <Translation defaultValue="Discount Code" i18nKey={"discounts.discountLabel"} />
+        <label htmlFor="discount-url">
+          <Translation defaultValue="Discount Code" i18nKey={"discounts.discountLabel"}/>
         </label>
-        <input autoFocus value={this.state.value} onChange={this.handleChange}/>
+        <div className="input-group">
+          <input autoFocus
+            onChange={this.handleChange}
+            className="form-control"
+            id="discount-input"
+            aria-describedby="discount-input-addon"
+          />
+          <span className="input-group-addon" id="discount-input-addon">
+            {loader}
+          </span>
+        </div>
       </form>
     );
   }

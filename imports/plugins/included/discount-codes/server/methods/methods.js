@@ -48,11 +48,13 @@ export const methods = {
 
     //
     // delete code from cart
-    // TODO update a history record of transaction
+    // TODO: update a history record of transaction
     //
+
+    // TODO: recalculate cart discounts (not simply 0)
     return Cart.update(
       { _id: cartId },
-      { $pull: { billing: { _id: codeId } } },
+      { $set: { discount: 0 }, $pull: { billing: { _id: codeId } } },
       { multi: true }
     );
   },
@@ -68,18 +70,15 @@ export const methods = {
     check(cartId, String);
     check(code, String);
 
-    // get current cart conditions from cartId
-    const currentCart = Cart.findOne(cartId);
+    // TODO: further expand to meet all condition rules
+    // const conditions = {
+    //   enabled: true
+    // };
 
-    // todo further expand to meet all condition rules
-    const conditions = {
-      enabled: true
-    };
-
-    // add  conditions: conditions
+    // TODO: add  conditions: conditions
     const discount = Discounts.findOne({ code: code });
 
-    // check usage limit
+    // TODO: check usage limit
     // don't apply if cart has exceeded usage limit
     // will also need to check all time usage.
     // which means storing the use data with the Discounts
@@ -102,7 +101,17 @@ export const methods = {
       // apply to cart
       Meteor.call("payments/cart/apply", cartId, paymentMethod, (error, result) => {
         if (result) {
-          console.log("TODO: discount applied.")
+          const currentCart = Cart.findOne(cartId);
+          let currentDiscount = 0;
+          for (billing of currentCart.billing) {
+            if (billing.paymentMethod && billing.paymentMethod.processor === "discount-code") {
+              currentDiscount += parseFloat(billing.paymentMethod.amount);
+            }
+          }
+
+          Cart.update(cartId, { $set: { discount: currentDiscount } });
+
+          // TODO: discount transaction records
           // we need transaction records of the discount status
           // ie: has the user used this before, in other carts?
           // increment the discount use counter, etc.
