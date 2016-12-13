@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from "react";
+import { Meteor } from "meteor/meteor";
 import debounce from "lodash/debounce";
 import { Translation } from "/imports/plugins/core/ui/client/components";
 
@@ -32,16 +33,26 @@ export default class DiscountForm extends Component {
   renderApplied() {
     return (
       <a onClick={this.handleClick}>
-        <Translation defaultValue="Discount submitted." i18nKey={"discounts.submitted"} />
+        <Translation defaultValue="Discount submitted." i18nKey="discounts.submitted"/>
       </a>
     );
   }
 
-  // handle form input
+  // handle keydown and change events
   handleChange(event) {
     const { attempts } = this.state;
+    // clear input if user hits escape key
+    if (event.keyCode === 27) {
+      return this.setState({
+        discount: "",
+        validatedInput: false,
+        attempts: 0,
+        discountApplied: false
+      });
+    }
     this.setState({ discount: event.target.value, attempts: attempts + 1 });
-    this.debounceDiscounts();
+    // TODO: doesn't always need to exec
+    return this.debounceDiscounts();
   }
 
   // handle display or not
@@ -50,29 +61,37 @@ export default class DiscountForm extends Component {
     this.setState({ validatedInput: true });
   }
 
-  // render discount form
-  renderDiscountForm() {
-    const { attempts } = this.state;
+  // loader button
+  loader() {
+    const { attempts, discount } = this.state;
     let loader;
-    if (attempts > 2) {
+    if (discount && discount.length >= 10 && attempts >= 12) {
+      loader = <i className="fa fa-circle fa-fw warning"/>;
+    } else if (discount && discount.length >= 2 && attempts >= 2) {
       loader = <i className="fa fa-circle-o-notch fa-spin fa-fw"/>;
     } else {
       loader = <i className="fa fa-search"/>;
     }
+    return loader;
+  }
+
+  // render discount form
+  renderDiscountForm() {
     return (
       <form>
         <label htmlFor="discount-url">
-          <Translation defaultValue="Discount Code" i18nKey={"discounts.discountLabel"}/>
+          <Translation defaultValue="Discount Code" i18nKey="discounts.discountLabel"/>
         </label>
         <div className="input-group">
           <input autoFocus
             onChange={this.handleChange}
+            onKeyDown={this.handleChange}
             className="form-control"
             id="discount-input"
             aria-describedby="discount-input-addon"
           />
           <span className="input-group-addon" id="discount-input-addon">
-            {loader}
+            {this.loader()}
           </span>
         </div>
       </form>
@@ -82,7 +101,7 @@ export default class DiscountForm extends Component {
   renderDiscountLink() {
     return (
       <a onClick={this.handleClick}>
-        <Translation defaultValue="Have a code? Enter it here." i18nKey={"discounts.enterItHere"} />
+        <Translation defaultValue="Have a code? Enter it here." i18nKey="discounts.enterItHere" />
       </a>
     );
   }
