@@ -4,6 +4,7 @@ import Load from "./load-data";
 import Packages from "./packages";
 import Registry from "./registry";
 import Init from "./init";
+import Prerender from "./prerender";
 
 export default function () {
   Accounts();
@@ -12,4 +13,5 @@ export default function () {
   Packages();
   Registry();
   Init();
+  Prerender();
 }
