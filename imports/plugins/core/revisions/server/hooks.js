@@ -4,7 +4,6 @@ import { Products, Revisions, Tags, Media } from "/lib/collections";
 import { Logger } from "/server/api";
 import { RevisionApi } from "../lib/api";
 
-
 function convertMetadata(modifierObject) {
   const metadata = {};
   for (const prop in modifierObject) {
@@ -17,6 +16,130 @@ function convertMetadata(modifierObject) {
   }
   return metadata;
 }
+
+const ProductRevision = {
+  getProductPriceRange(productId) {
+    const product = Products.findOne(productId);
+    if (!product) {
+      return "";
+    }
+    const variants = this.getTopVariants(product._id);
+    // if we have variants we have a price range.
+    // this processing will default on the server
+    if (variants.length > 0) {
+      const variantPrices = [];
+      variants.forEach(variant => {
+        if (variant.isVisible === true) {
+          const range = this.getVariantPriceRange(variant._id);
+          if (typeof range === "string") {
+            const firstPrice = parseFloat(range.substr(0, range.indexOf(" ")));
+            const lastPrice = parseFloat(range.substr(range.lastIndexOf(" ") + 1));
+            variantPrices.push(firstPrice, lastPrice);
+          } else {
+            variantPrices.push(range);
+          }
+        } else {
+          variantPrices.push(0, 0);
+        }
+      });
+      const priceMin = _.min(variantPrices);
+      const priceMax = _.max(variantPrices);
+      let priceRange = `${priceMin} - ${priceMax}`;
+      // if we don't have a range
+      if (priceMin === priceMax) {
+        priceRange = priceMin.toString();
+      }
+      const priceObject = {
+        range: priceRange,
+        min: priceMin,
+        max: priceMax
+      };
+      return priceObject;
+    }
+    // if we have no variants subscribed to (client)
+    // we'll get the price object previously from the product
+    return product.price;
+  },
+
+  getVariantPriceRange(variantId) {
+    const children = this.getVariants(variantId);
+
+    switch (children.length) {
+      case 0:
+        const topVariant = this.getProduct(variantId);
+        // topVariant could be undefined when we removing last top variant
+        return topVariant && topVariant.price;
+      case 1:
+        return children[0].price;
+      default:
+        let priceMin = Number.POSITIVE_INFINITY;
+        let priceMax = Number.NEGATIVE_INFINITY;
+
+        children.map(child => {
+          if (child.isVisible === true) {
+            if (child.price < priceMin) {
+              priceMin = child.price;
+            }
+            if (child.price > priceMax) {
+              priceMax = child.price;
+            }
+          }
+        });
+
+        if (priceMin === priceMax) {
+          // TODO check impact on i18n/formatPrice from moving return to string
+          return priceMin.toString();
+        }
+        return `${priceMin} - ${priceMax}`;
+    }
+  },
+
+  findRevision({ documentId }) {
+    return Revisions.findOne({
+      "documentId": documentId,
+      "workflow.status": {
+        $nin: [
+          "revision/published"
+        ]
+      }
+    });
+  },
+
+  getProduct(variantId) {
+    const product = Products.findOne(variantId);
+    const revision = this.findRevision({
+      documentId: variantId
+    });
+
+    return revision && revision.documentData || product;
+  },
+
+  getTopVariants(id) {
+    return Products.find({
+      ancestors: [id],
+      type: "variant"
+    }).map((product) => {
+      const revision = this.findRevision({
+        documentId: product._id
+      });
+
+      return revision && revision.documentData || product;
+    });
+  },
+
+  getVariants(id, type) {
+    return Products.find({
+      ancestors: { $in: [id] },
+      type: type || "variant"
+    }).map((product) => {
+      const revision = this.findRevision({
+        documentId: product._id
+      });
+
+      return revision && revision.documentData || product;
+    });
+  }
+};
 
 Media.files.before.insert((userid, media) => {
   if (RevisionApi.isRevisionControlEnabled() === false) {
@@ -232,6 +355,28 @@ Products.before.update(function (userId, product, fieldNames, modifier, options)
               revisionModifier.$addToSet = {};
             }
             revisionModifier.$addToSet[`documentData.${property}`] = modifier.$push[property];
+          } else if (operation === "$set" && property === "price" && Array.isArray(product.ancestors) && product.ancestors.length) {
+            Revisions.update(revisionSelector, {
+              $set: {
+                "documentData.price": modifier.$set.price
+              }
+            });
+
+            const updateId = product.ancestors[0] || product._id;
+            const priceRange = ProductRevision.getProductPriceRange(updateId);
+
+            Meteor.call("products/updateProductField", updateId, "price", priceRange);
+          } else if (operation === "$set" && property === "isVisible" && Array.isArray(product.ancestors) && product.ancestors.length) {
+            Revisions.update(revisionSelector, {
+              $set: {
+                "documentData.isVisible": modifier.$set.isVisible
+              }
+            });
+
+            const updateId = product.ancestors[0] || product._id;
+            const priceRange = ProductRevision.getProductPriceRange(updateId);
+
+            Meteor.call("products/updateProductField", updateId, "price", priceRange);
           } else {
             // Let everything else through
             revisionModifier[operation][`documentData.${property}`] = modifier[operation][property];

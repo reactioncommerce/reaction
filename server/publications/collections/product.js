@@ -110,7 +110,16 @@ Meteor.publish("Product", function (productId) {
         }
       }).observe({
         added: (revision) => {
-          this.added("Revisions", revision._id, revision);
+          let product;
+          if (!revision.parentDocument) {
+            product = Products.findOne(revision.documentId);
+          } else {
+            product = Products.findOne(revision.parentDocument);
+          }
+          if (product) {
+            this.added("Products", product._id, product);
+            this.added("Revisions", revision._id, revision);
+          }
         },
         changed: (revision) => {
           let product;
