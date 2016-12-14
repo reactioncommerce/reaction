@@ -1,5 +1,5 @@
 import "./codes.html";
-import DiscountList from "./list.js";
+import DiscountList from "../components/list.js";
 import { Cart } from "/lib/collections";
 
 Template.discountCodesCheckout.helpers({

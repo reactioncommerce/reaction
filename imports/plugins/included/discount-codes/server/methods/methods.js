@@ -90,9 +90,10 @@ export const methods = {
     if (discount) {
       // save to payment methods
       // and update status in Discounts
+      // payment methods can be debit or credit.
       const paymentMethod = {
         processor: "discount-code",
-        method: "discounts/codes/apply",
+        method: "debit",
         code: discount.code,
         transactionId: Random.id(),
         amount: discount.discount, // pre-process to amount.
