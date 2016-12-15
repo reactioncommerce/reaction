@@ -1,7 +1,6 @@
 import { Meteor } from "meteor/meteor";
 import { Match, check } from "meteor/check";
 import { Reaction } from "/server/api";
-import { Cart } from "/lib/collections";
 import { Discounts } from  "/imports/plugins/core/discounts/lib/collections";
 import { DiscountCodes as DiscountSchema } from "../../lib/collections/schemas";
 
@@ -38,23 +37,48 @@ export const methods = {
    * discounts/codes/remove
    * removes discounts that have been previously applied
    * to a cart.
-   * @param  {String} cartId cart id of which to remove a code
+   * @param  {String} id cart id of which to remove a code
    * @param  {String} codeId discount Id from cart.billing
+   * @param  {String} collection collection (either Orders or Cart)
    * @return {String} returns update/insert result
    */
-  "discounts/codes/remove": function (cartId, codeId) {
-    check(cartId, String);
+  "discounts/codes/remove": function (id, codeId, collection = "Cart") {
+    check(id, String);
     check(codeId, String);
-
+    check(collection, String);
+    const Collection = Reaction.Collections[collection];
     //
     // delete code from cart
-    // TODO: update a history record of transaction
     //
-
+    const cart = Collection.findOne(id);
+    let hasInvoice = false;
+    let currentDiscount = 0;
+    for (billing of cart.billing) {
+      if (billing.paymentMethod && billing.paymentMethod.processor === "discount-code" && billing._id !== codeId) {
+        currentDiscount += parseFloat(billing.paymentMethod.amount);
+      }
+      if (billing.paymentMethod && billing.invoice) {
+        hasInvoice = true;
+      }
+    }
+    // only if this is an order
+    if (hasInvoice) {
+      selector = {
+        "_id": id,
+        "billing._id": cart.billing[0]._id
+      };
+      update = {
+        $set: {
+          "billing.$.invoice.discounts": currentDiscount
+        }
+      };
+      Collection.update(selector, update);
+    }
+    // TODO: update a history record of transaction
     // TODO: recalculate cart discounts (not simply 0)
-    return Cart.update(
-      { _id: cartId },
-      { $set: { discount: 0 }, $pull: { billing: { _id: codeId } } },
+    return Collection.update(
+      { _id: id },
+      { $set: { discount: currentDiscount }, $pull: { billing: { _id: codeId } } },
       { multi: true }
     );
   },
@@ -62,13 +86,15 @@ export const methods = {
    * discounts/codes/apply
    * checks validity of code conditions and then
    * applies a discount as a paymentMethod to cart
-   * @param  {String} cartId cart id of which to remove a code
+   * @param  {String} id cart id of which to remove a code
    * @param  {String} code valid discount code
+   * @param  {String} collection collection (either Orders or Cart)
    * @return {Boolean} returns true if successfully applied
    */
-  "discounts/codes/apply": function (cartId, code) {
-    check(cartId, String);
+  "discounts/codes/apply": function (id, code, collection = "Cart") {
+    check(id, String);
     check(code, String);
+    check(collection, String);
 
     // TODO: further expand to meet all condition rules
     // const conditions = {
@@ -99,18 +125,36 @@ export const methods = {
         amount: discount.discount, // pre-process to amount.
         status: "created"
       };
-      // apply to cart
-      Meteor.call("payments/cart/apply", cartId, paymentMethod, (error, result) => {
+      // apply to cart / order
+      Meteor.call("payments/apply", id, paymentMethod, collection, (error, result) => {
         if (result) {
-          const currentCart = Cart.findOne(cartId);
+          const Collection = Reaction.Collections[collection];
+          const cart = Collection.findOne(id);
+          let hasInvoice = false;
           let currentDiscount = 0;
-          for (billing of currentCart.billing) {
+          for (billing of cart.billing) {
             if (billing.paymentMethod && billing.paymentMethod.processor === "discount-code") {
               currentDiscount += parseFloat(billing.paymentMethod.amount);
             }
+            if (billing.paymentMethod && billing.invoice) {
+              hasInvoice = true;
+            }
           }
 
-          Cart.update(cartId, { $set: { discount: currentDiscount } });
+          Collection.update(id, { $set: { discount: currentDiscount } });
+          // if this is an order, we'll update the invoice as well.
+          if (hasInvoice) {
+            selector = {
+              "_id": id,
+              "billing._id": cart.billing[0]._id
+            };
+            update = {
+              $set: {
+                "billing.$.invoice.discounts": currentDiscount
+              }
+            };
+            Collection.update(selector, update);
+          }
 
           // TODO: discount transaction records
           // we need transaction records of the discount status

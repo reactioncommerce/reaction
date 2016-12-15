@@ -6,6 +6,7 @@ import { ReactiveVar } from "meteor/reactive-var";
 import { i18next, Logger, formatNumber, Reaction } from "/client/api";
 import { NumericInput } from "/imports/plugins/core/ui/client/components";
 import { Media, Orders, Shops } from "/lib/collections";
+import DiscountList from "/imports/plugins/core/discounts/client/components/list";
 
 //
 // core order shipping invoice templates
@@ -42,6 +43,18 @@ Template.coreOrderShippingInvoice.onCreated(function () {
   });
 });
 
+Template.coreOrderShippingInvoice.helpers({
+  DiscountList() {
+    return DiscountList;
+  },
+  orderId() {
+    const instance = Template.instance();
+    const state = instance.state;
+    const order = state.get("order");
+    return order._id;
+  }
+});
+
 /**
  * coreOrderAdjustments events
  */
@@ -54,7 +67,6 @@ Template.coreOrderShippingInvoice.events({
    */
   "submit form[name=capture]": (event, instance) => {
     event.preventDefault();
-
     const state = instance.state;
     const order = state.get("order");
     const orderTotal = accounting.toFixed(
@@ -62,7 +74,8 @@ Template.coreOrderShippingInvoice.events({
       + order.billing[0].invoice.shipping
       + order.billing[0].invoice.taxes
       , 2);
-    const discount = state.get("field-discount") || 0;
+
+    const discount = state.get("field-discount") || order.discount;
 
     if (discount > orderTotal) {
       Alerts.inline("Discount cannot be greater than original total price", "error", {
@@ -121,14 +134,8 @@ Template.coreOrderShippingInvoice.events({
     _.each(refunds, function (item) {
       refundTotal += parseFloat(item.amount);
     });
-    let adjustedTotal;
 
-    // Stripe counts discounts as refunds, so we need to re-add the discount to not "double discount" in the adjustedTotal
-    if (paymentMethod.processor === "Stripe") {
-      adjustedTotal = accounting.toFixed(orderTotal + discounts - refundTotal, 2);
-    } else {
-      adjustedTotal = accounting.toFixed(orderTotal - refundTotal, 2);
-    }
+    const adjustedTotal = accounting.toFixed(orderTotal - discounts - refundTotal, 2);
 
     if (refund > adjustedTotal) {
       Alerts.inline("Refund(s) total cannot be greater than adjusted total", "error", {

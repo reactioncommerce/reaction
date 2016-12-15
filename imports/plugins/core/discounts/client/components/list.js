@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from "react";
-import { Cart } from "/lib/collections";
 import { Loading, Translation, IconButton } from "/imports/plugins/core/ui/client/components";
 import DiscountForm from "./form";
 import { composeWithTracker } from "/lib/api/compose";
@@ -13,7 +12,7 @@ class DiscountList extends Component {
 
   // handle remove click
   handleClick(event, codeId) {
-    return Meteor.call("discounts/codes/remove", this.props.cartId, codeId);
+    return Meteor.call("discounts/codes/remove", this.props.id, codeId, this.props.collection);
   }
   // list items
   renderList() {
@@ -48,7 +47,7 @@ class DiscountList extends Component {
   // list loading
   renderNoneFound() {
     return (
-      <DiscountForm cartId={this.props.cartId}/>
+      <DiscountForm id={this.props.id} collection={this.props.collection}/>
     );
   }
 
@@ -60,36 +59,33 @@ class DiscountList extends Component {
 }
 
 DiscountList.propTypes = {
-  cartId: PropTypes.string,
+  collection: PropTypes.string,
+  id: PropTypes.string,
   listItems: PropTypes.array
 };
 
 function composer(props, onData) {
-  const sub = Reaction.Subscriptions.Cart;
+  const currentCart = Reaction.Collections[props.collection].findOne({
+    _id: props.id
+  });
 
-  if (sub.ready()) {
-    const currentCart = Cart.findOne({
-      _id: props.cartId
-    });
-
-    const listItems = [];
-    for (billing of currentCart.billing) {
-      if (billing.paymentMethod && billing.paymentMethod.processor === "discount-code") {
-        listItems.push({
-          id: billing._id,
-          code: billing.paymentMethod.code,
-          discount: billing.paymentMethod.amount
-        });
-      }
+  const listItems = [];
+  for (billing of currentCart.billing) {
+    if (billing.paymentMethod && billing.paymentMethod.processor === "discount-code") {
+      listItems.push({
+        id: billing._id,
+        code: billing.paymentMethod.code,
+        discount: billing.paymentMethod.amount
+      });
     }
-
-    onData(null, {
-      cartId: props.cartId,
-      listItems: listItems
-    });
   }
-}
 
+  onData(null, {
+    collection: props.collection,
+    id: props.id,
+    listItems: listItems
+  });
+}
 
 // export default composeWithTracker(composer)(DiscountList)
 const options = {

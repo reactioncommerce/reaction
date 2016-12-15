@@ -16,7 +16,7 @@ export default class DiscountForm extends Component {
     // debounce helper so to wait on user input
     this.debounceDiscounts = debounce(() => {
       const { discount } = this.state;
-      Meteor.call("discounts/codes/apply", this.props.cartId, discount, (error, results) => {
+      Meteor.call("discounts/codes/apply", this.props.id, discount, this.props.collection, (error, results) => {
         if (results) {
           this.setState({ discountApplied: results, discount: "" });
         } else {
@@ -119,6 +119,7 @@ export default class DiscountForm extends Component {
 }
 
 DiscountForm.propTypes = {
-  cartId: PropTypes.string,
+  collection: PropTypes.string,
+  id: PropTypes.string,
   discount: PropTypes.string
 };
