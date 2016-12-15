@@ -31,7 +31,7 @@ Reaction.registerPackage({
   }, {
     provides: "shippingMethod",
     name: "shipping/methods/shippo",
-    template: "shippoMethods"
+    template: "shippoCheckoutShipping"
   }
   ]
 });

@@ -1,4 +1,4 @@
-import { Packages } from "/lib/collections";
+import { Packages, Shops } from "/lib/collections";
 import { ShippoPackageConfig } from "../../lib/collections/schemas";
 import { ShippoApi } from "./shippoapi";
 
@@ -21,5 +21,11 @@ Meteor.methods({
     ShippoApi.methods.confirmValidApiKey.call({ apiKey });
     Packages.update(_id, modifier);
     return { type: "update" };
+  },
+  "shippo/getCarrierRates"(cart) {
+    const addressFrom = cart && cart.billing && cart.billing[0] && cart.billing[0].address;
+    const addressTo = Shops.findOne({_id : cart.shopId}, {fields: {'addressBook':1}})[0];
+    const item = cart.items[0];
+
   }
 });
