@@ -24,8 +24,7 @@ const ProductRevision = {
       return "";
     }
     const variants = this.getTopVariants(product._id);
-    // if we have variants we have a price range.
-    // this processing will default on the server
+
     if (variants.length > 0) {
       const variantPrices = [];
       variants.forEach(variant => {
@@ -63,26 +62,25 @@ const ProductRevision = {
 
   getVariantPriceRange(variantId) {
     const children = this.getVariants(variantId);
+    const visibleChildren = children.filter(child => child.isVisible);
 
-    switch (children.length) {
+    switch (visibleChildren.length) {
       case 0:
         const topVariant = this.getProduct(variantId);
         // topVariant could be undefined when we removing last top variant
         return topVariant && topVariant.price;
       case 1:
-        return children[0].price;
+        return visibleChildren[0].price;
       default:
         let priceMin = Number.POSITIVE_INFINITY;
         let priceMax = Number.NEGATIVE_INFINITY;
 
-        children.map(child => {
-          if (child.isVisible === true) {
-            if (child.price < priceMin) {
-              priceMin = child.price;
-            }
-            if (child.price > priceMax) {
-              priceMax = child.price;
-            }
+        visibleChildren.map(child => {
+          if (child.price < priceMin) {
+            priceMin = child.price;
+          }
+          if (child.price > priceMax) {
+            priceMax = child.price;
           }
         });
 
@@ -115,29 +113,46 @@ const ProductRevision = {
   },
 
   getTopVariants(id) {
-    return Products.find({
+    const variants = [];
+
+    Products.find({
       ancestors: [id],
-      type: "variant"
+      type: "variant",
+      isDeleted: false
     }).map((product) => {
       const revision = this.findRevision({
         documentId: product._id
       });
 
-      return revision && revision.documentData || product;
+      if (revision && revision.documentData.isVisible) {
+        variants.push(revision.documentData);
+      } else if (!revision && product.isVisible) {
+        variants.push(product);
+      }
     });
+
+    return variants;
   },
 
   getVariants(id, type) {
-    return Products.find({
+    const variants = [];
+
+    Products.find({
       ancestors: { $in: [id] },
-      type: type || "variant"
-    }).map((product) => {
+      type: type || "variant",
+      isDeleted: false
+    }).forEach((product) => {
       const revision = this.findRevision({
         documentId: product._id
       });
 
-      return revision && revision.documentData || product;
+      if (revision && revision.documentData.isVisible) {
+        variants.push(revision.documentData);
+      } else if (!revision && product.isVisible) {
+        variants.push(product);
+      }
     });
+    return variants;
   }
 };
 
