@@ -122,6 +122,6 @@ export default class DiscountForm extends Component {
 
 DiscountForm.propTypes = {
   collection: PropTypes.string,
-  id: PropTypes.string,
-  discount: PropTypes.string
+  discount: PropTypes.string,
+  id: PropTypes.string
 };

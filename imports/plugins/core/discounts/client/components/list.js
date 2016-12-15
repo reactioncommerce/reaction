@@ -26,14 +26,19 @@ class DiscountList extends Component {
   }
   // render item
   renderItem(_id, code, discount) {
+    let TrashCan;
+    if (this.props.collection !== "Orders") {
+      TrashCan =
+        <a className="pull-right">
+          <IconButton icon="fa fa-remove" onClick={(e) => this.handleClick(e, _id)}/>
+        </a>;
+    }
     return (
       <div className="rui list-group-item" key={_id}>
         <span>
           {code} - {discount} <Translation defaultValue="Discount applied" i18nKey={"discounts.applied"} />
         </span>
-        <a className="pull-right">
-          <IconButton icon="fa fa-remove" onClick={(e) => this.handleClick(e, _id)}/>
-        </a>
+        {TrashCan}
       </div>
     );
   }
