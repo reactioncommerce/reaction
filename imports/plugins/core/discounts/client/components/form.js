@@ -51,12 +51,14 @@ export default class DiscountForm extends Component {
       });
     }
     this.setState({ discount: event.target.value, attempts: attempts + 1 });
-    // TODO: doesn't always need to exec
+    // TODO: this.debounce doesn't always need to exec
+    // we should add some logic to determine based on attempts
+    // or some other cleverness if now is a good time to apply the code.
     return this.debounceDiscounts();
   }
 
   // handle display or not
-  handleClick() {
+  handleClick(event) {
     event.preventDefault();
     this.setState({ validatedInput: true });
   }
