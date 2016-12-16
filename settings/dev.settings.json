@@ -2,9 +2,9 @@
   "ROOT_URL": "",
   "MAIL_URL": "",
   "reaction": {
-    "REACTION_USER": "",
-    "REACTION_AUTH": "",
-    "REACTION_EMAIL": ""
+    "REACTION_USER": "admin",
+    "REACTION_AUTH": "password",
+    "REACTION_EMAIL": "admin@localhost"
   },
   "REACTION_LOG_LEVEL": "info",
   "public": {}
