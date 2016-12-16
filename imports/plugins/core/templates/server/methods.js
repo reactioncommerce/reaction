@@ -1,8 +1,6 @@
 import { Templates } from "/lib/collections";
-import { Reaction } from "/server/api";
 
 export const methods = {
-
   /**
    * templates/email/remove
    * @summary removes email template from Templates collection
