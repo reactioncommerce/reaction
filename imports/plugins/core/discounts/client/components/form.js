@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from "react";
-import { Meteor } from "meteor/meteor";
 import debounce from "lodash/debounce";
+import { Meteor } from "meteor/meteor";
 import { Translation } from "/imports/plugins/core/ui/client/components";
 
 export default class DiscountForm extends Component {

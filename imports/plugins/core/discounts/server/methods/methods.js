@@ -3,7 +3,6 @@ import { Match, check } from "meteor/check";
 import { Cart } from "/lib/collections";
 import { Discounts } from "../../lib/collections";
 import Reaction from "../api";
-import { Logger } from "/server/api";
 
 //
 // make all discount methods available
@@ -22,7 +21,7 @@ export const methods = {
       throw new Meteor.Error(403, "Access Denied");
     }
 
-    return Discounts.remove(discountId);
+    return Discounts.remove({ _id: discountId });
   },
 
   /**
@@ -54,9 +53,10 @@ export const methods = {
     check(cartId, String);
     const cartToCalc = Cart.findOne(cartId);
     // const shopId = cartToCalc.shopId;
-    const discountRate = 0;
+    // const discountRate = 0;
     if (cartToCalc.discountMethods) {
       for (discountMethods of cartToCalc.discountMethods) {
+        // Logger.info("discounts/calculate", discountMethods);
         // get discount based on id in cartMethods.
         // validate the discount rules.
         // return discount rate.

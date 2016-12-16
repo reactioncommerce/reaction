@@ -63,11 +63,11 @@ export const methods = {
     }
     // only if this is an order
     if (hasInvoice) {
-      selector = {
+      const selector = {
         "_id": id,
         "billing._id": cart.billing[0]._id
       };
-      update = {
+      const update = {
         $set: {
           "billing.$.invoice.discounts": currentDiscount
         }

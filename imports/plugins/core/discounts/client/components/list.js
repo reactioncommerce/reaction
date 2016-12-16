@@ -44,14 +44,8 @@ class DiscountList extends Component {
       </div>
     );
   }
-  // list loading
-  renderLoader() {
-    return (
-      <Loading/>
-    );
-  }
 
-  // list loading
+  // load form input view
   renderNoneFound() {
     return (
       <DiscountForm id={this.props.id} collection={this.props.collection}/>
