@@ -1,6 +1,9 @@
 // Favicons
 import "./favicons";
 
+// Escaped Fragment
+import "./escapedFragment";
+
 // Styles
 import "./styles/main.less";
 
