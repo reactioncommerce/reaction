@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from "react";
 import { Loading, Translation, IconButton } from "/imports/plugins/core/ui/client/components";
 import DiscountForm from "./form";
 import { composeWithTracker } from "/lib/api/compose";
-import { Reaction } from "/client/api";
+import { Reaction, formatNumber } from "/client/api";
 
 class DiscountList extends Component {
   constructor(props) {
@@ -27,6 +27,8 @@ class DiscountList extends Component {
   // render item
   renderItem(_id, code, discount) {
     let TrashCan;
+    const formattedDiscount = formatNumber(discount);
+
     if (this.props.collection !== "Orders") {
       TrashCan =
         <a className="pull-right">
@@ -36,7 +38,7 @@ class DiscountList extends Component {
     return (
       <div className="rui list-group-item" key={_id}>
         <span>
-          {code} - {discount} <Translation defaultValue="Discount applied" i18nKey={"discounts.applied"} />
+          {code} - {formattedDiscount} <Translation defaultValue="Discount applied" i18nKey={"discounts.applied"} />
         </span>
         {TrashCan}
       </div>
