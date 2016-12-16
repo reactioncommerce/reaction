@@ -386,8 +386,7 @@ export const methods = {
       }
 
       const billing = orderCreditMethod(order);
-      const refundResult = Meteor.call("orders/refunds/list", billing.paymentMethod);
-
+      const refundResult = Meteor.call("orders/refunds/list", order);
       let refundTotal = 0;
 
       _.each(refundResult, function (item) {
@@ -854,15 +853,16 @@ export const methods = {
 
   /**
    * orders/refund/list
-   *
+   * loop through order's payments and find existing refunds.
    * @summary Get a list of refunds for a particular payment method.
-   * @param {Object} paymentMethod - paymentMethod object
+   * @param {Object} order - order object
    * @return {null} no return value
    */
-  "orders/refunds/list": function (paymentMethod) {
-    check(paymentMethod, Object);
+  "orders/refunds/list": function (order) {
+    check(order, Object);
+    const paymentMethod = orderCreditMethod(order).paymentMethod;
 
-    if (!Reaction.hasPermission("orders")) {
+    if (!this.userId === order.userId && !Reaction.hasPermission("orders")) {
       throw new Meteor.Error(403, "Access Denied");
     }
 
@@ -916,7 +916,6 @@ export const methods = {
 
     if (result.saved === false) {
       Logger.fatal("Attempt for refund transaction failed", order._id, paymentMethod.transactionId, result.error);
-
       throw new Meteor.Error("Attempt to refund transaction failed", result.error);
     }
 

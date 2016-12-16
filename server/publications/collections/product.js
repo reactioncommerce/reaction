@@ -119,10 +119,11 @@ Meteor.publish("Product", function (productId) {
           } else {
             product = Products.findOne(revision.parentDocument);
           }
-          product.__revisions = [revision];
-
-          this.changed("Products", product._id, product);
-          this.changed("Revisions", revision._id, revision);
+          if (product) {
+            product.__revisions = [revision];
+            this.changed("Products", product._id, product);
+            this.changed("Revisions", revision._id, revision);
+          }
         },
         removed: (revision) => {
           let product;
@@ -131,10 +132,11 @@ Meteor.publish("Product", function (productId) {
           } else {
             product = Products.findOne(revision.parentDocument);
           }
-          product.__revisions = [];
-
-          this.changed("Products", product._id, product);
-          this.removed("Revisions", revision._id, revision);
+          if (product) {
+            product.__revisions = [];
+            this.changed("Products", product._id, product);
+            this.removed("Revisions", revision._id, revision);
+          }
         }
       });
 

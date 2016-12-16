@@ -32,7 +32,7 @@ Template.coreOrderShippingInvoice.onCreated(function () {
     this.state.set("currency", shop.currencies[shop.currency]);
 
     if (order) {
-      Meteor.call("orders/refunds/list", orderCreditMethod(order).paymentMethod, (error, result) => {
+      Meteor.call("orders/refunds/list", order, (error, result) => {
         if (!error) {
           this.refunds.set(result);
         }
