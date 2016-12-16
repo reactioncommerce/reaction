@@ -73,7 +73,7 @@ export function Apps(optionHash) {
           registryFilter[key] = value;
         } else {
           // perhaps not the best way to check but lets admin see all packages
-          if (!Reaction.hasAdminAccess()) {
+          if (!Reaction.hasOwnerAccess()) {
             if (key !== "shopId") {
               registryFilter[key] = value;
             }
@@ -86,8 +86,30 @@ export function Apps(optionHash) {
 
   // fetch the packages
   Packages.find(filter).forEach((app) => {
-    const matchingRegistry = _.filter(app.registry, registryFilter);
-    for (registry of matchingRegistry) {
+    const matchingRegistry = _.filter(app.registry, function (item) {
+      const itemFilter = registryFilter;
+
+      // check audience permissions only if they exist as part of options
+      // but also in the registry item
+      // ideally all routes should use it, safe for backwards compatibility though
+      if (item.audience && registryFilter.audience) {
+
+        if (item.audience.indexOf(registryFilter.audience) < 0) {
+          return false;
+        }
+        // make sure user also has audience perms
+        if (!Roles.userIsInRole(Meteor.userId(), item.audience, Reaction.getShopId())) {
+          return false;
+        }
+
+        // safe to clean up now, and isMatch can ignore audience
+        delete itemFilter.audience;
+      }
+
+      return _.isMatch(item, itemFilter);
+    });
+
+    for (const registry of matchingRegistry) {
       reactionApps.push(registry);
     }
   });

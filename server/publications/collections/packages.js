@@ -11,24 +11,39 @@ import { Roles } from "meteor/alanning:roles";
  */
 
 // for transforming packages before publication sets some defaults for the client and adds i18n while checking
-// priviledged settings for enabled status.
+// privileged settings for enabled status.
 function transform(doc, userId) {
   const registrySettings = {};
   const packageSettings = {};
+  let permissions = ["admin", "owner", doc.name];
+
+  // Get all permissions, add them to an array
+  if (doc.registry && doc.registry.permissions) {
+    for (const item of doc.registry.permissions) {
+      permissions.push(item.permission);
+    }
+  }
+  permissions = _.uniq(permissions);
 
   // check for admin,owner or package permissions to view settings
-  const hasAdmin = Roles.userIsInRole(userId, [
-    "admin", "owner", doc.name
-  ], doc.shopId);
+  const hasAdmin = Roles.userIsInRole(userId, permissions, doc.shopId);
 
   if (doc.registry) {
-    for (registry of doc.registry) {
+    for (let registry of doc.registry) {
       // add some normalized defaults
       registry.packageId = doc._id;
       registry.shopId = doc.shopId;
       registry.packageName = registry.packageName || doc.name;
       registry.settingsKey = (registry.name || doc.name).split("/").splice(-1)[0];
 
+      if(registry.name === "shopSettings") {
+        console.log(registry.packageName, " - ", registry, " ", registry.name);
+      }
+
+     /* if(registry.audience) {
+
+        debugger;
+      }*/
       // check and set package enabled state
       // todo could add audience permissions to registry
       if (doc.settings && doc.settings[registry.settingsKey]) {
@@ -78,7 +93,8 @@ Meteor.publish("Packages", function (shopCursor) {
         registry: 1,
         layout: 1,
         icon: 1,
-        settings: 1
+        settings: 1,
+        audience: 1
       }
     };
 

@@ -69,3 +69,13 @@ Template.loginDropdown.events({
     template.$(".dropdown-toggle").dropdown("toggle");
   }
 });
+
+Template.accountsDropdownApps.helpers({
+  reactionAppsOptions() {
+    return {
+      provides: "shortcut",
+      enabled: true,
+      audience: "guest"
+    };
+  }
+});
