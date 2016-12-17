@@ -144,11 +144,11 @@ export const methods = {
           Collection.update(id, { $set: { discount: currentDiscount } });
           // if this is an order, we'll update the invoice as well.
           if (hasInvoice) {
-            selector = {
+            const selector = {
               "_id": id,
               "billing._id": cart.billing[0]._id
             };
-            update = {
+            const update = {
               $set: {
                 "billing.$.invoice.discounts": currentDiscount
               }
