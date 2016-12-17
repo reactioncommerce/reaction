@@ -436,7 +436,7 @@ export const methods = {
             region: billing.address.region,
             postal: billing.address.postal
           },
-          paymentMethod: billing.paymentMethod.storedCard,
+          paymentMethod: billing.paymentMethod.storedCard || billing.paymentMethod.processor,
           subtotal: accounting.toFixed(billing.invoice.subtotal, 2),
           shipping: accounting.toFixed(billing.invoice.shipping, 2),
           taxes: accounting.toFixed(billing.invoice.taxes, 2),
