@@ -36,14 +36,6 @@ function transform(doc, userId) {
       registry.packageName = registry.packageName || doc.name;
       registry.settingsKey = (registry.name || doc.name).split("/").splice(-1)[0];
 
-      if(registry.name === "shopSettings") {
-        console.log(registry.packageName, " - ", registry, " ", registry.name);
-      }
-
-     /* if(registry.audience) {
-
-        debugger;
-      }*/
       // check and set package enabled state
       // todo could add audience permissions to registry
       if (doc.settings && doc.settings[registry.settingsKey]) {

@@ -47,6 +47,11 @@ export function Apps(optionHash) {
   const reactionApps = [];
   let options = {};
 
+  // remove audience permissions for owner
+  if (Reaction.hasOwnerAccess() && optionHash.audience) {
+    delete optionHash.audience;
+  }
+
   // allow for object or option.hash
   if (optionHash) {
     if (optionHash.hash) {
@@ -69,7 +74,7 @@ export function Apps(optionHash) {
       const value = options[key];
       if (value) {
         if (!(key === "enabled" || key === "name" || key === "shopId")) {
-          filter["registry." + key] = value;
+          filter["registry." + key] = Array.isArray(options[key]) ? { $in: value } : value;
           registryFilter[key] = value;
         } else {
           // perhaps not the best way to check but lets admin see all packages
@@ -89,16 +94,23 @@ export function Apps(optionHash) {
     const matchingRegistry = _.filter(app.registry, function (item) {
       const itemFilter = registryFilter;
 
-      // check audience permissions only if they exist as part of options
-      // but also in the registry item
+      // check audience permissions only if they exist as part of optionHash and are part of the registry item
       // ideally all routes should use it, safe for backwards compatibility though
-      if (item.audience && registryFilter.audience) {
+      // owner bypasses permissions
+      if (!Reaction.hasOwnerAccess() && item.audience && registryFilter.audience) {
+        let hasAccess;
 
-        if (item.audience.indexOf(registryFilter.audience) < 0) {
-          return false;
+        for (const permission of registryFilter.audience) {
+          if (item.audience.indexOf(permission) > -1) {
+            hasAccess = true;
+          }
+          // make sure user also has audience perms
+          if (Roles.userIsInRole(Meteor.userId(), permission, Reaction.getShopId())) {
+            hasAccess = true;
+          }
         }
-        // make sure user also has audience perms
-        if (!Roles.userIsInRole(Meteor.userId(), item.audience, Reaction.getShopId())) {
+
+        if (!hasAccess) {
           return false;
         }
 
