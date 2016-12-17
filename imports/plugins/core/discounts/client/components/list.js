@@ -71,7 +71,7 @@ function composer(props, onData) {
   });
 
   const listItems = [];
-  for (billing of currentCart.billing) {
+  for (const billing of currentCart.billing) {
     if (billing.paymentMethod && billing.paymentMethod.processor === "discount-code") {
       listItems.push({
         id: billing._id,
