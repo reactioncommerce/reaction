@@ -53,7 +53,7 @@ export const methods = {
     const cart = Collection.findOne(id);
     let hasInvoice = false;
     let currentDiscount = 0;
-    for (billing of cart.billing) {
+    for (const billing of cart.billing) {
       if (billing.paymentMethod && billing.paymentMethod.processor === "discount-code" && billing._id !== codeId) {
         currentDiscount += parseFloat(billing.paymentMethod.amount);
       }
@@ -132,7 +132,7 @@ export const methods = {
           const cart = Collection.findOne(id);
           let hasInvoice = false;
           let currentDiscount = 0;
-          for (billing of cart.billing) {
+          for (const billing of cart.billing) {
             if (billing.paymentMethod && billing.paymentMethod.processor === "discount-code") {
               currentDiscount += parseFloat(billing.paymentMethod.amount);
             }
