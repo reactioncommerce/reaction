@@ -22,11 +22,3 @@ export const MarketplacePackageConfig = new SimpleSchema([
   }
 ]);
 
-/* WIP
-export const Marketplace = new SimpleSchema({
-
-});
-
-Marketplace.messages({
-
-});*/

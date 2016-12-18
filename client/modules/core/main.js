@@ -225,11 +225,9 @@ export default {
 
   getPackageSettings(name) {
     const shopId = this.getShopId();
-    let query = {
-      name
-    };
+    const query = { name };
 
-    if(shopId) {
+    if (shopId) {
       query.shopId = shopId;
     }
 

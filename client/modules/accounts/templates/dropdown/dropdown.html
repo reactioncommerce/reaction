@@ -34,22 +34,17 @@
 <template name="accountsDropdownApps">
   <ul class="user-accounts-dropdown-apps">
     {{> userAccountsDropdown}}
-
     <!--administrative shortcut icons -->
-
-      {{#each reactionApps provides="shortcut" enabled=true}}
-        {{#if isShortcutAllowed this}}
-          <li class="dropdown-apps-icon">
-            <a href={{pathFor name}} id="dropdown-apps-{{name}}" title="{{label}}">
-              <i class="{{icon}}"></i>
-              <span class="icon-text">
-                {{i18n i18nKeyLabel label}}
-              </span>
-            </a>
-          </li>
-        {{/if}}
-      {{/each}}
-
+    {{#each reactionApps provides="shortcut" enabled=true}}
+      <li class="dropdown-apps-icon">
+        <a href={{pathFor name}} id="dropdown-apps-{{name}}" title="{{label}}">
+          <i class="{{icon}}"></i>
+          <span class="icon-text">
+            {{i18n i18nKeyLabel label}}
+          </span>
+        </a>
+      </li>
+    {{/each}}
   </ul>
 </template>
 
