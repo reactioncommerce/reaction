@@ -28,15 +28,14 @@ Meteor.publish("Product", function (productId) {
   }
 
   // selector for hih - What's hih?
-  // selector should come first as default, alteration take place later depending on role
+  // selector should come first as default, alterations take place later depending on role
   const selector = {
     isVisible: true,
     isDeleted: { $in: [null, false] }
   };
 
-  // no need for admin, simple perm should be okay per group
-  if (Roles.userIsInRole(this.userId, ["createProduct"],
-      shop._id)) {
+  // no need for admin, simple perm should be ok per group
+  if (Roles.userIsInRole(this.userId, ["createProduct"], shop._id)) {
     selector.isVisible = {
       $in: [true, false]
     };
