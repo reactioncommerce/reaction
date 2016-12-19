@@ -9,7 +9,5 @@ export default function () {
     prerender.set("protocol", "https");
     WebApp.rawConnectHandlers.use(prerender);
     Logger.info("Prerender Initialization finished.");
-  } else {
-    Logger.info("Prerender Not Configured. Skipping");
   }
 }
