@@ -50,7 +50,7 @@ Meteor.methods({
   },
   "shippo/getCarrierRates"(cart) {
     const addressFrom = normalizeAddress(cart && cart.billing && cart.billing[0] && cart.billing[0].address);
-    const addressTo = normalizeAddress(Shops.findOne({ _id: cart.shopId }, { fields: { addressBook: 1 } })[0]);
+    const addressTo = normalizeAddress(Shops.findOne({ _id: cart.shopId }, { fields: { addressBook: 1 } }).addressBook[0]);
     const parcel = normalizeParcel(cart.items[0].parcel);
     const rates = ShippoApi.methods.getCarrierRates(addressFrom, addressTo, parcel);
   }
