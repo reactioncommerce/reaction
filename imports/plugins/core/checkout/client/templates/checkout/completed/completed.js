@@ -57,7 +57,7 @@ Template.cartCompleted.events({
 
     return Meteor.call("orders/addOrderEmail", cartId, email, (err) => {
       if (err) {
-        Alerts.toast(i18next.t("mail.alert.cantSendEmail"), "error");
+        Alerts.toast(i18next.t("mail.alerts.cantSendEmail"), "error");
       } else {
         const order = Orders.findOne({
           userId: Meteor.userId(),
