@@ -32,7 +32,7 @@ function handleDelete(id) {
 
 function composer(props, onData) {
   Meteor.subscribe("Notification", Meteor.userId()).ready();
-  const notificationList = Notifications.find({}, {sort: {timeSent: -1}, limit: 5}).fetch();
+  const notificationList = Notifications.find({}, {sort: {timeSent: -1}}).fetch();
   const unread = Notifications.find({status: "unread"}).count();
 
   onData(null, {
