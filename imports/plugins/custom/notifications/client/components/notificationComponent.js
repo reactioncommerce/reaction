@@ -3,7 +3,7 @@ import NotificationDropdown from "./notificationDropdown.js";
 import "../styles/main.less";
 import "../styles/dropdown.css";
 
-class Notification extends Component {
+class NotificationComponent extends Component {
   constructor(props) {
     super(props);
 
@@ -27,17 +27,32 @@ class Notification extends Component {
   }
 
   render() {
+    const { notificationList, handleDelete, unread, markOneAsRead, markAllAsRead } = this.props;
     return (
       <div className="dropdown">
         <div className="notification-icon" data-toggle="dropdown">
-          { this.handleBtn() }
+          { this.handleBtn(unread) }
         </div>
         <div className="notify-drop dropdown-menu">
-          <NotificationDropdown />
+          <NotificationDropdown
+            notificationList={notificationList}
+            unread={unread}
+            handleDelete={handleDelete}
+            markAllAsRead={markAllAsRead}
+            markOneAsRead={markOneAsRead}
+          />
         </div>
       </div>
     );
   }
 }
 
-export default Notification;
+NotificationComponent.propTypes = {
+  handleDelete: PropTypes.func,
+  markAllAsRead: PropTypes.func,
+  markOneAsRead: PropTypes.func,
+  notificationList: PropTypes.array,
+  unread: PropTypes.number
+};
+
+export default NotificationComponent;

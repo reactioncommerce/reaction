@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from "react";
 import moment from "moment";
 
 
-class NotificationDropdown extends Component {
+class NotificationRoute extends Component {
   constructor(props) {
     super(props);
 
@@ -69,15 +69,12 @@ class NotificationDropdown extends Component {
                   );
                 })}
              </ul>
-             <div className="dropdown-footer text-center">
-                 <a href="/reaction/notifications">View All</a>
-             </div>
         </div>
     );
   }
 }
 
-NotificationDropdown.propTypes = {
+NotificationRoute.propTypes = {
   handleDelete: PropTypes.func,
   markAllAsRead: PropTypes.func,
   markOneAsRead: PropTypes.func,
@@ -85,4 +82,4 @@ NotificationDropdown.propTypes = {
   unread: PropTypes.number
 };
 
-export default NotificationDropdown;
+export default NotificationRoute;

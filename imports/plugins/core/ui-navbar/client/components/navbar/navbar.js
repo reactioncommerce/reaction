@@ -1,5 +1,5 @@
 import { FlatButton } from "/imports/plugins/core/ui/client/components";
-import NotifcationComponent from "/imports/plugins/custom/notifications/client/components/notificationComponent";
+import { NotificationContainer } from "/imports/plugins/custom/notifications/client/containers";
 import { Reaction } from "/client/api";
 import { Tags } from "/lib/collections";
 
@@ -47,7 +47,7 @@ Template.CoreNavigationBar.helpers({
   },
   notificationButtonComponent() {
     return {
-      component: NotifcationComponent
+      component: NotificationContainer
       // icon: "fa fa-bell",
       // kind: "flat"
       // onClick() {

@@ -1,6 +1,9 @@
-
 .notify-toolbar {
     height:30px;
+}
+
+.unread {
+  background-color: #777777;
 }
 
 .notify-mark-all {
