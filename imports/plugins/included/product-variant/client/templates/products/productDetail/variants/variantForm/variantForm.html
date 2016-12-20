@@ -51,6 +51,17 @@
         </div>
       </div>
       <div class="panel-body">
+        <div class="row">
+          <div class="form-group">
+            <div class="upload-form">
+              {{> upload
+                mediaTemplate="variantImageMedia"
+                media=media
+                onUpload=handleFileUpload
+              }}
+            </div>
+          </div>
+        </div>
         {{#autoForm
           schema=Schemas.ProductVariant
           doc=.
@@ -166,4 +177,16 @@
     </div>
   </div>
 {{/with}}
+</template>
+
+<template name="variantImageMedia">
+  {{#each media}}
+    <div class="media-item">
+      <img src="{{url store='large'}}">
+    </div>
+  {{else}}
+    <div class="media-item">
+      <img src="/resources/placeholder.gif">
+    </div>
+  {{/each}}
 </template>

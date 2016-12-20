@@ -45,6 +45,12 @@ class VariantList extends Component {
     if (this.props.variants) {
       return this.props.variants.map((variant, index) => {
         const displayPrice = this.props.displayPrice && this.props.displayPrice(variant._id);
+        const media = this.props.childVariantMedia.filter((mediaItem) => {
+          if (mediaItem.metadata.variantId === variant._id) {
+            return true;
+          }
+          return false;
+        });
 
         return (
           <EditContainer
@@ -63,6 +69,7 @@ class VariantList extends Component {
               displayPrice={displayPrice}
               editable={this.props.editable}
               index={index}
+              media={media}
               isSelected={this.props.variantIsSelected(variant._id)}
               onClick={this.props.onVariantClick}
               onMove={this.props.onMoveVariant}
@@ -127,7 +134,7 @@ class VariantList extends Component {
           i18nKeyLabel="productDetail.options"
           label="Options"
         />
-        <ul className="variant-list list-unstyled" id="variant-list">
+        <ul className="variant-list variant-product-options list-unstyled" id="variant-list">
           {this.renderVariants()}
         </ul>
         <Divider
