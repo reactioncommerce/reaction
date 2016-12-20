@@ -5,21 +5,22 @@
   "translation": {
     "reaction-templates": {
       "templates": {
-        "edit": "Edit email template",
+        "actions": "Actions",
+        "edit": "Edit template",
         "editingTemplate": "Editing {{name}} template",
-        "duplicate": "Duplicate email template",
-        "delete": "Delete email template",
+        "duplicate": "Duplicate template",
+        "delete": "Delete template",
         "method": "Method",
         "templateName": "Template Name",
         "type": "Type",
         "language": "Language",
         "enabled": "Enabled",
-        "addTemplate": "Add email template",
+        "addTemplate": "Add template",
         "alerts": {
-          "removeEmailTemplateConfirm": "Are you sure you want to deleted {{title}}?",
-          "removeEmailTemplateTitle": "Remove Email Template",
-          "duplicateEmailTemplateConfirm": "Are you sure you want to duplicate {{title}}?",
-          "duplicateEmailTemplateTitle": "Duplicate Email Template",
+          "removeTemplateConfirm": "Confirm",
+          "removeTemplateTitle": "Remove Template",
+          "duplicateTemplateConfirm": "Are you sure you want to duplicate {{title}}?",
+          "duplicateTemplateTitle": "Duplicate Template",
           "failedToUpdate": "Failed to update template: {{err}}"
         }
       }

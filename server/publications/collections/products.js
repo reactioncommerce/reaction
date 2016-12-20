@@ -289,7 +289,6 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
             } else if (revision.documentType === "image" || revision.documentType === "tag") {
               product = Products.findOne(revision.parentDocument);
             }
-
             if (product) {
               product.__revisions = [revision];
               this.changed("Products", product._id, product);

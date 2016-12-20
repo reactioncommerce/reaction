@@ -33,7 +33,7 @@ Template.coreOrderShippingInvoice.onCreated(function () {
     // template.order = getOrder(currentData.orderId);
     if (order) {
       const paymentMethod = order.billing[0].paymentMethod;
-      Meteor.call("orders/refunds/list", paymentMethod, (error, result) => {
+      Meteor.call("orders/refunds/list", order, (error, result) => {
         if (!error) {
           this.refunds.set(result);
         }

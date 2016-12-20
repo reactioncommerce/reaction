@@ -14,7 +14,8 @@ export const EmailTemplates = new SimpleSchema({
     label: "Template ShopId"
   },
   name: {
-    type: String
+    type: String,
+    optional: true
   },
   priority: {
     type: Number,
