@@ -4,23 +4,24 @@
   "ns": "reaction-templates",
   "translation": {
     "reaction-templates": {
-      "templates": {
-        "actions": "Actions",
-        "edit": "Edit template",
-        "editingTemplate": "Editing {{name}} template",
-        "duplicate": "Duplicate template",
-        "delete": "Delete template",
-        "method": "Method",
-        "templateName": "Template Name",
-        "type": "Type",
-        "language": "Language",
-        "enabled": "Enabled",
-        "addTemplate": "Add template",
+      "templateGrid": {
+        "noTemplatesFound": "No templates found",
+        "columns": {
+          "title": "Title",
+          "type": "Type",
+          "language": "Language"
+        }
+      },
+      "templateUpdateForm": {
+        "emailTemplates": {
+          "updateEmailTemplate": "Update email template"
+        },
+        "reactTemplates": {
+          "updateReactTemplate": "Update React template",
+          "updateUnavailable": "React templates cannot be edited through this interface"
+        },
         "alerts": {
-          "removeTemplateConfirm": "Confirm",
-          "removeTemplateTitle": "Remove Template",
-          "duplicateTemplateConfirm": "Are you sure you want to duplicate {{title}}?",
-          "duplicateTemplateTitle": "Duplicate Template",
+          "templateUpdated": "Template succesfully updated",
           "failedToUpdate": "Failed to update template: {{err}}"
         }
       }
