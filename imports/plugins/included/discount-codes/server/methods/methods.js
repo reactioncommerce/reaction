@@ -1,6 +1,7 @@
 import { Meteor } from "meteor/meteor";
 import { Match, check } from "meteor/check";
 import { Reaction, Logger } from "/server/api";
+import { Cart } from "/lib/collections";
 import { Discounts } from  "/imports/plugins/core/discounts/lib/collections";
 import { DiscountCodes as DiscountSchema } from "../../lib/collections/schemas";
 
@@ -14,7 +15,10 @@ export const methods = {
   /**
    * discounts/codes/discount
    * calculates percentage off discount rates
-   * for discount codes
+   * we intentionally passed ids, instead
+   * of the cart,discount Object
+   * for a smaller request providing an
+   * additional level of validation.
    * @param  {String} cartId cartId
    * @param  {String} discountId discountId
    * @return {String} returns discount total
@@ -23,7 +27,13 @@ export const methods = {
     check(cartId, String);
     check(discountId, String);
     let discount = 0;
-    Logger.info("discounts/codes/discount");
+    const discountMethod = Discounts.findOne(discountId);
+    const cart = Cart.findOne(cartId);
+
+    for (const item of cart.items) {
+      const preDiscount = item.quantity * item.variants.price;
+      discount += preDiscount * discountMethod.discount / 100;
+    }
 
     return discount;
   },
@@ -39,7 +49,8 @@ export const methods = {
     check(cartId, String);
     check(discountId, String);
     let discount = 0;
-    Logger.info("discounts/codes/credit");
+    const discountMethod = Discounts.findOne(discountId);
+    discount = discountMethod.discount;
     return discount;
   },
   /**
@@ -53,7 +64,17 @@ export const methods = {
     check(cartId, String);
     check(discountId, String);
     let discount = 0;
-    Logger.info("discounts/codes/sale");
+    const discountMethod = Discounts.findOne(discountId);
+    const cart = Cart.findOne(cartId);
+
+    // TODO add item specific conditions to sale calculations.
+    for (const item of cart.items) {
+      const preDiscountItemTotal = item.quantity * item.variants.price;
+      const salePriceItemTotal = item.quantity * discountMethod.discount;
+      // we if the sale is below 0, we won't discount at all. that's invalid.
+      discount += Math.max(0, preDiscountItemTotal - salePriceItemTotal);
+    }
+
     return discount;
   },
   /**
@@ -68,7 +89,15 @@ export const methods = {
     check(cartId, String);
     check(discountId, String);
     let discount = 0;
-    Logger.info("discounts/codes/shipping");
+    const discountMethod = Discounts.findOne(discountId);
+    const cart = Cart.findOne(cartId);
+
+    for (const shipping of cart.shipping) {
+      if (shipping.shipmentMethod && shipping.shipmentMethod.name === discountMethod.discount) {
+        discount += Math.max(0, shipping.shipmentMethod.rate);
+      }
+    }
+
     return discount;
   },
   /**

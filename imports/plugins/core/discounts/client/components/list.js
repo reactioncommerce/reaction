@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from "react";
-import { Loading, Translation, IconButton } from "/imports/plugins/core/ui/client/components";
+import { Translation, IconButton } from "/imports/plugins/core/ui/client/components";
 import DiscountForm from "./form";
 import { composeWithTracker } from "/lib/api/compose";
-import { Reaction, formatNumber } from "/client/api";
+import { Reaction } from "/client/api";
 
 class DiscountList extends Component {
   constructor(props) {
@@ -17,7 +17,7 @@ class DiscountList extends Component {
   // list items
   renderList() {
     const listItems = this.props.listItems.map((listItem) => {
-      return this.renderItem(listItem.id, listItem.code, listItem.discount);
+      return this.renderItem(listItem.id, listItem.code);
     });
 
     return (
@@ -25,9 +25,8 @@ class DiscountList extends Component {
     );
   }
   // render item
-  renderItem(_id, code, discount) {
+  renderItem(_id, code) {
     let TrashCan;
-    const formattedDiscount = formatNumber(discount);
 
     if (this.props.collection !== "Orders") {
       TrashCan =
@@ -38,7 +37,7 @@ class DiscountList extends Component {
     return (
       <div className="rui list-group-item" key={_id}>
         <span>
-          {code} - {formattedDiscount} <Translation defaultValue="Discount applied" i18nKey={"discounts.applied"} />
+          {code} <Translation defaultValue="Discount applied" i18nKey={"discounts.applied"} />
         </span>
         {TrashCan}
       </div>

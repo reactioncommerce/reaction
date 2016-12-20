@@ -13,7 +13,7 @@ Discounts.attachSchema(DiscountSchema, { selector: { discountMethod: "rate" } })
 export const methods = {
   /**
    * discounts/rates/amount
-   * for discount codes
+   * for discount rates
    * @param  {String} cartId cartId
    * @param  {String} rateId rateid
    * @return {String} returns discount total
