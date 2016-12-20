@@ -56,7 +56,7 @@ Template.customDiscountCodes.helpers({
     };
   },
   discountGrid() {
-    const filteredFields = ["label", "code", "discount", "conditions.redemptionLimit"];
+    const filteredFields = ["code", "discount", "conditions.redemptionLimit", "calculation.method"];
     const noDataMessage = i18next.t("admin.settings.noCustomDiscountCodesFound");
     const instance = Template.instance();
 

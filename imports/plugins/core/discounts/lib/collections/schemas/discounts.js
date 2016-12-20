@@ -13,7 +13,8 @@ export const Discounts = new SimpleSchema({
     label: "Discounts shopId"
   },
   "label": {
-    type: String
+    type: String,
+    optional: true
   },
   "description": {
     type: String,
@@ -25,6 +26,8 @@ export const Discounts = new SimpleSchema({
     index: 1,
     allowedValues: ["code", "rate"]
   },
+  // discount is allowed to be string or number.
+  // it's a formula value (could be shipping code)
   "discount": {
     type: String,
     optional: true

@@ -30,6 +30,9 @@
           "code": "Code",
           "discountMethod": "Method",
           "discount": "Discount",
+          "calculation": {
+            "method": "Calculation"
+          },
           "conditions": {
             "redemptionLimit": "Limit"
           }
