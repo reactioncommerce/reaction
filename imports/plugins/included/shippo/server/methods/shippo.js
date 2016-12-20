@@ -1,25 +1,29 @@
-import { Packages, Shops } from "/lib/collections";
+import { Packages, Accounts, Shops } from "/lib/collections";
 import { ShippoPackageConfig } from "../../lib/collections/schemas";
 import { ShippoApi } from "./shippoapi";
 
-function normalizeAddress(address) {
-const shippoAddress = {
-    "object_purpose" : "QUOTE",
+function createShippoAddress(address, email, purpose) {
+  const shippoAddress = {
+    "object_purpose" : purpose,
     "name": address.fullName,
     "street1": address.address1,
+    "street2": address.address2,
     "city": address.city,
     "state": address.region,
     "zip": address.zip,
     "country": address.country,
     "phone": address.phone,
-    "email": "ms-hippo@gosh.gr"
+    "email": email,
+    "is_residential": !address.isCommercial
   };
+
   return shippoAddress;
 }
 
-function normalizeParcel(parcel) {
+function createShippoParcel(parcel) {
   const shippoParcel = {
     "width": parcel.width,
+    "length": parcel.length,
     "height": parcel.height,
     "weight": parcel.weight,
     "distance_unit": "in",
@@ -48,10 +52,17 @@ Meteor.methods({
     Packages.update(_id, modifier);
     return { type: "update" };
   },
-  "shippo/getCarrierRates"(cart) {
-    const addressFrom = normalizeAddress(cart && cart.billing && cart.billing[0] && cart.billing[0].address);
-    const addressTo = normalizeAddress(Shops.findOne({ _id: cart.shopId }, { fields: { addressBook: 1 } }).addressBook[0]);
-    const parcel = normalizeParcel(cart.items[0].parcel);
-    const rates = ShippoApi.methods.getCarrierRates(addressFrom, addressTo, parcel);
+  "shippo/getCarriersRatesForCart"(cart) {
+    const purpose = "PURCHASE";
+    const shop = Shops.findOne({ _id: cart.shopId },
+                               { fields: {addressBook: 1, emails: 1}});
+    const addressFrom = createShippoAddress( shop.addressBook[0], shop.emails[0].address, purpose);
+
+    const buyer = Accounts.findOne({ _id: cart.userId}, { fields: {emails: 1}});
+    const addressTo = createShippoAddress( cart.billing[0].address, buyer.emails[0].address, purpose);
+
+
+    const parcel = createShippoParcel(cart.items[0].parcel);
+    const rates = ShippoApi.methods.getCarriersRates.call({addressFrom, addressTo, parcel, purpose});
   }
 });

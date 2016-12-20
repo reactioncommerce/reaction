@@ -377,7 +377,8 @@ Meteor.methods({
           quantity: quantity,
           variants: variant,
           title: product.title,
-          type: product.type
+          type: product.type,
+          parcel: product.parcel || null
         }
       }
     }, function (error, result) {
