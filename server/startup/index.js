@@ -4,6 +4,7 @@ import Load from "./load-data";
 import Packages from "./packages";
 import Registry from "./registry";
 import Init from "./init";
+import Prerender from "./prerender";
 import { initTemplates } from "/server/api/core/templates";
 
 
@@ -15,4 +16,5 @@ export default function () {
   Packages();
   Registry();
   Init();
+  Prerender();
 }
