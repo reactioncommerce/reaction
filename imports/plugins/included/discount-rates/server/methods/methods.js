@@ -12,6 +12,21 @@ Discounts.attachSchema(DiscountSchema, { selector: { discountMethod: "rate" } })
 //
 export const methods = {
   /**
+   * discounts/rates/amount
+   * for discount codes
+   * @param  {String} cartId cartId
+   * @param  {String} rateId rateid
+   * @return {String} returns discount total
+   */
+  "discounts/rates/amount": function (cartId, rateId) {
+    check(cartId, String);
+    check(rateId, String);
+    let rate = 0;
+    // TODO: discounts/rates/amount
+    // should be pricing rate lookup.
+    return rate;
+  },
+  /**
    * discounts/addRate
    * @param  {String} modifier update statement
    * @param  {String} docId discount docId

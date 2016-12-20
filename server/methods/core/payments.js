@@ -17,13 +17,6 @@ export const methods = {
     check(collection, String);
     const Collection = Reaction.Collections[collection];
 
-    // temp hack until we build out multiple payment handlers
-    // const cart = Cart.findOne(id);
-    // let paymentId = "";
-    // if (cart.billing) {
-    //   paymentId = cart.billing[0]._id;
-    // }
-
     return Collection.update({
       _id: id
     }, {

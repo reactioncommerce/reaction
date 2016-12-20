@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor";
 import { Match, check } from "meteor/check";
-import { Reaction } from "/server/api";
+import { Reaction, Logger } from "/server/api";
 import { Discounts } from  "/imports/plugins/core/discounts/lib/collections";
 import { DiscountCodes as DiscountSchema } from "../../lib/collections/schemas";
 
@@ -11,6 +11,66 @@ Discounts.attachSchema(DiscountSchema, { selector: { discountMethod: "code" } })
 // make all discount methods available
 //
 export const methods = {
+  /**
+   * discounts/codes/discount
+   * calculates percentage off discount rates
+   * for discount codes
+   * @param  {String} cartId cartId
+   * @param  {String} discountId discountId
+   * @return {String} returns discount total
+   */
+  "discounts/codes/discount": function (cartId, discountId) {
+    check(cartId, String);
+    check(discountId, String);
+    let discount = 0;
+    Logger.info("discounts/codes/discount");
+
+    return discount;
+  },
+  /**
+   * TODO discounts/codes/credit
+   * calculates a credit off cart
+   * for discount codes
+   * @param  {String} cartId cartId
+   * @param  {String} discountId discountId
+   * @return {String} returns discount total
+   */
+  "discounts/codes/credit": function (cartId, discountId) {
+    check(cartId, String);
+    check(discountId, String);
+    let discount = 0;
+    Logger.info("discounts/codes/credit");
+    return discount;
+  },
+  /**
+   * TODO discounts/codes/sale
+   * calculates a new price for an item
+   * @param  {String} cartId cartId
+   * @param  {String} discountId discountId
+   * @return {String} returns discount total
+   */
+  "discounts/codes/sale": function (cartId, discountId) {
+    check(cartId, String);
+    check(discountId, String);
+    let discount = 0;
+    Logger.info("discounts/codes/sale");
+    return discount;
+  },
+  /**
+   * TODO discounts/codes/shipping
+   * calculates a discount based on the value
+   * of a calculated shipping rate in the cart.
+   * @param  {String} cartId cartId
+   * @param  {String} discountId discountId
+   * @return {String} returns discount total
+   */
+  "discounts/codes/shipping": function (cartId, discountId) {
+    check(cartId, String);
+    check(discountId, String);
+    let discount = 0;
+    Logger.info("discounts/codes/shipping");
+    return discount;
+  },
   /**
    * discounts/addCode
    * @param  {String} modifier update statement
@@ -54,7 +114,7 @@ export const methods = {
     let hasInvoice = false;
     let currentDiscount = 0;
     for (const billing of cart.billing) {
-      if (billing.paymentMethod && billing.paymentMethod.processor === "discount-code" && billing._id !== codeId) {
+      if (billing.paymentMethod && billing.paymentMethod.processor === "code" && billing._id !== codeId) {
         currentDiscount += parseFloat(billing.paymentMethod.amount);
       }
       if (billing.paymentMethod && billing.invoice) {
@@ -112,58 +172,21 @@ export const methods = {
     // and if a user cancels an order,
     // is the discount now re-activated
 
-
     if (discount) {
       // save to payment methods
       // and update status in Discounts
       // payment methods can be debit or credit.
       const paymentMethod = {
-        processor: "discount-code",
-        method: "debit",
+        id: discount._id,
+        processor: discount.discountMethod,
+        method: discount.calculation.method,
         code: discount.code,
         transactionId: Random.id(),
         amount: discount.discount, // pre-process to amount.
         status: "created"
       };
       // apply to cart / order
-      Meteor.call("payments/apply", id, paymentMethod, collection, (error, result) => {
-        if (result) {
-          const Collection = Reaction.Collections[collection];
-          const cart = Collection.findOne(id);
-          let hasInvoice = false;
-          let currentDiscount = 0;
-          for (const billing of cart.billing) {
-            if (billing.paymentMethod && billing.paymentMethod.processor === "discount-code") {
-              currentDiscount += parseFloat(billing.paymentMethod.amount);
-            }
-            if (billing.paymentMethod && billing.invoice) {
-              hasInvoice = true;
-            }
-          }
-
-          Collection.update(id, { $set: { discount: currentDiscount } });
-          // if this is an order, we'll update the invoice as well.
-          if (hasInvoice) {
-            const selector = {
-              "_id": id,
-              "billing._id": cart.billing[0]._id
-            };
-            const update = {
-              $set: {
-                "billing.$.invoice.discounts": currentDiscount
-              }
-            };
-            Collection.update(selector, update);
-          }
-
-          // TODO: discount transaction records
-          // we need transaction records of the discount status
-          // ie: has the user used this before, in other carts?
-          // increment the discount use counter, etc.
-        }
-      });
-      // and update Discounts status.
-      return true;
+      return Meteor.call("payments/apply", id, paymentMethod, collection);
     }
     return false;
   }
