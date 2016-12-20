@@ -1,4 +1,4 @@
-import indexof from "lodash/indexof";
+import { indexOf } from "lodash";
 import { Cart } from "/lib/collections";
 
 /**
@@ -16,7 +16,7 @@ Cart.after.update((userId, cart, fieldNames) => {
   const trigger = ["discount", "billing", "shipping"];
 
   for (const field of fieldNames) {
-    if (indexof(trigger, field) !== -1) {
+    if (indexOf(trigger, field) !== -1) {
       Meteor.call("taxes/calculate", cart._id);
     }
   }
