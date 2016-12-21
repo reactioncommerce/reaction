@@ -7,17 +7,23 @@
         <span data-i18n="checkoutShipping.selectShippingOption">Select shipping option</span>
       </h3>
     </div>
-    {{#each reactionApps provides='shippingMethod' enabled=true}}
-      {{> Template.dynamic template=template}}
-    {{else}}
-      <div class="panel-body">
-        <div class="alert alert-danger">
-          <span data-i18n="checkoutShipping.noShippingPackages">No shipping packages are configured. </span>
-          <a href="{{pathFor 'dashboard/shipping'}}">
-            <span data-i18n="checkoutShipping.configureNow">Configure now.</span>
-          </a>
+    {{#if isReady}}
+      {{#each reactionApps provides='shippingMethod' enabled=true}}
+        {{> Template.dynamic template=template}}
+      {{else}}
+        <div class="panel-body">
+          <div class="alert alert-danger">
+            <span data-i18n="checkoutShipping.noShippingPackages">No shipping packages are configured. </span>
+            <a href="{{pathFor 'dashboard/shipping'}}">
+              <span data-i18n="checkoutShipping.configureNow">Configure now.</span>
+            </a>
+          </div>
         </div>
+      {{/each}}
+    {{else}}
+      <div class="spinner-container">
+        <div class="spinner"></div>
       </div>
-    {{/each}}
+    {{/if}}
   </div>
 </template>
