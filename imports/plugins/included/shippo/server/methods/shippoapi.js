@@ -2,10 +2,22 @@
 import { Meteor } from "meteor/meteor";
 import { SimpleSchema } from "meteor/aldeed:simple-schema";
 import { purchaseAddressSchema, parcelSchema } from "../lib/shippoApiSchema";
+import { Packages } from "/lib/collections";
 
 export const ShippoApi = {};
 ShippoApi.methods = {};
 
+ShippoApi.methods.getApiKey = new ValidatedMethod({
+  name: "ShippoApi.methods.getApiKey",
+  validate: null,
+  run() {
+    const settings = Packages.findOne({ name: "reaction-shippo" }).settings;
+    if (!settings.apiKey) {
+      throw new Meteor.Error("403", "Invalid Shippo Credentials");
+    }
+    return settings.apiKey;
+  }
+});
 
 // Checks if the Api key is valid one by trying to get the Shippo account's addresses list
 ShippoApi.methods.confirmValidApiKey = new ValidatedMethod({
@@ -26,17 +38,26 @@ ShippoApi.methods.confirmValidApiKey = new ValidatedMethod({
   }
 });
 
+
+
 ShippoApi.methods.getCarriersRates = new ValidatedMethod({
   name: "ShippoApi.methods.getCarriersRates",
   validate: new SimpleSchema({
     addressFrom: { type: purchaseAddressSchema },
     addressTo: { type: purchaseAddressSchema },
     parcel: { type: parcelSchema },
-    purpose: { type: String, allowedValues: ["QUOTE", "PURCHASE"] }
+    purpose: { type: String, allowedValues: ["QUOTE", "PURCHASE"] },
+    apiKey: { type: String, optional: true }
   }).validator(),
-  run({ addressFrom, addressTo, parcel, purpose }) {
+  run({ addressFrom, addressTo, parcel, purpose, apiKey }) {
     let shippo;
-    shippo = require("shippo")(apiKey);
+    if (!apiKey) {
+      const dynamicApiKey = ShippoApi.methods.getApiKey.call();
+      shippo = require("shippo")(dynamicApiKey);
+    } else {
+      shippo = require("shippo")(apiKey);
+    }
+
 
     try {
       shipment = shippo.shipment.create({
