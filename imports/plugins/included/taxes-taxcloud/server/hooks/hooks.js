@@ -51,7 +51,7 @@ MethodHooks.after("taxes/calculate", function (options) {
         const shippingAddress = cartToCalc.shipping[0].address;
 
         if (shippingAddress) {
-          Logger.info("TaxCloud triggered on taxes/calculate for cartId:", cartId);
+          Logger.debug("TaxCloud triggered on taxes/calculate for cartId:", cartId);
           const url = "https://api.taxcloud.net/1.0/TaxCloud/Lookup";
           const cartItems = [];
           const destination = {

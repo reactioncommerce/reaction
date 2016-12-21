@@ -3,7 +3,6 @@ import path from "path";
 import moment from "moment";
 import accounting from "accounting-js";
 import Future from "fibers/future";
-import { Template } from "meteor/templating";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { getSlug } from "/lib/api";
@@ -11,10 +10,22 @@ import { Cart, Media, Orders, Products, Shops } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 import { Logger, Reaction } from "/server/api";
 
+
+// helper to return the order credit object
+// the first credit paymentMethod on the order
+// returns entire payment method
+export function orderCreditMethod(order) {
+  return order.billing.filter(value => value.paymentMethod.method ===  "credit")[0];
+}
+// helper to return the order debit object
+export function orderDebitMethod(order) {
+  return order.billing.filter(value => value.paymentMethod.method ===  "debit")[0];
+}
+
 /**
  * Reaction Order Methods
  */
-Meteor.methods({
+export const methods = {
   /**
    * orders/shipmentTracking
    * @summary wraps addTracking and triggers workflow update
@@ -34,10 +45,8 @@ Meteor.methods({
     const orderId = order._id;
 
     Meteor.call("orders/addTracking", orderId, tracking);
-    Meteor.call("orders/updateHistory", orderId, "Tracking Added",
-      tracking);
-    Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow",
-      "coreShipmentTracking", order._id);
+    Meteor.call("orders/updateHistory", orderId, "Tracking Added", tracking);
+    Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreShipmentTracking", order._id);
 
     // Set the status of the items as shipped
     const itemIds = template.order.shipping[0].items.map((item) => {
@@ -53,8 +62,7 @@ Meteor.methods({
     this.unblock();
 
     if (order) {
-      return Meteor.call("workflow/pushOrderWorkflow",
-        "coreOrderWorkflow", "coreOrderDocuments", order._id);
+      return Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreOrderDocuments", order._id);
     }
   },
 
@@ -122,9 +130,12 @@ Meteor.methods({
 
     this.unblock();
 
-    return Orders.update(order._id, {
+    return Orders.update({
+      "_id": order._id,
+      "billing.paymentMethod.method": "credit"
+    }, {
       $set: {
-        "billing.0.paymentMethod.status": "adjustments"
+        "billing.$.paymentMethod.status": "adjustments"
       }
     });
   },
@@ -134,46 +145,36 @@ Meteor.methods({
    *
    * @summary Approve payment and apply any adjustments
    * @param {Object} order - order object
-   * @param {Number} discount - Amount of the discount, as a positive number
    * @return {Object} return this.processPayment result
    */
-  "orders/approvePayment": function (order, discount) {
+  "orders/approvePayment": function (order) {
     check(order, Object);
-    check(discount, Number);
+    const invoice = orderCreditMethod(order).invoice;
 
     if (!Reaction.hasPermission("orders")) {
       throw new Meteor.Error(403, "Access Denied");
     }
-
-    // Server-side check to make sure discount is not greater than orderTotal.
-    const orderTotal = accounting.toFixed(
-      order.billing[0].invoice.subtotal
-      + order.billing[0].invoice.shipping
-      + order.billing[0].invoice.taxes
-      , 2);
-
-
-    if (discount > orderTotal) {
-      const error = "Discount is greater than the order total";
-      Logger.error(error);
-      throw new Meteor.Error("orders/approvePayment.discount-amount", error);
-    }
-
     this.unblock();
 
-    const total =
-      order.billing[0].invoice.subtotal
-      + order.billing[0].invoice.shipping
-      + order.billing[0].invoice.taxes
-      - Math.abs(discount);
+    // this is server side check to verify
+    // that the math all still adds up.
+    const subTotal = invoice.subtotal;
+    const shipping = invoice.shipping;
+    const taxes = invoice.taxes;
+    const discount = invoice.discounts;
+    const discountTotal = Math.max(0, subTotal - discount); // ensure no discounting below 0.
+    const total = accounting.toFixed(discountTotal + shipping + taxes, 2);
 
-    return Orders.update(order._id, {
+    return Orders.update({
+      "_id": order._id,
+      "billing.paymentMethod.method": "credit"
+    }, {
       $set: {
-        "billing.0.paymentMethod.amount": total,
-        "billing.0.paymentMethod.status": "approved",
-        "billing.0.paymentMethod.mode": "capture",
-        "billing.0.invoice.discounts": discount,
-        "billing.0.invoice.total": accounting.toFixed(total, 2)
+        "billing.$.paymentMethod.amount": total,
+        "billing.$.paymentMethod.status": "approved",
+        "billing.$.paymentMethod.mode": "capture",
+        "billing.$.invoice.discounts": discount,
+        "billing.$.invoice.total": total
       }
     });
   },
@@ -196,8 +197,7 @@ Meteor.methods({
 
     return Meteor.call("orders/processPayments", order._id, function (error, result) {
       if (result) {
-        Meteor.call("workflow/pushOrderWorkflow",
-          "coreOrderWorkflow", "coreProcessPayment", order._id);
+        Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreProcessPayment", order._id);
 
         // Set the status of the items as shipped
         const itemIds = order.shipping[0].items.map((item) => {
@@ -206,9 +206,9 @@ Meteor.methods({
 
         Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/captured", order, itemIds);
 
-
         return this.processPayment(order);
       }
+      return false;
     });
   },
   /**
@@ -317,6 +317,7 @@ Meteor.methods({
    *
    * @summary send order notification email
    * @param {Object} order - order object
+   * @param {Object} action - send notification action
    * @return {Boolean} email sent or not
    */
   "orders/sendNotification": function (order, action) {
@@ -377,130 +378,130 @@ Meteor.methods({
             orderItem.variantImage = path.join(Meteor.absoluteUrl(), variantImage.url());
           }
           // find a default image
-          const productImage = Media.findOne({
-            "metadata.productId": orderItem.productId
-          });
+          const productImage = Media.findOne({ "metadata.productId": orderItem.productId });
           if (productImage) {
             orderItem.productImage = path.join(Meteor.absoluteUrl(), productImage.url());
           }
         }
       }
-    }
 
-    const refundResult = Meteor.call("orders/refunds/list", order);
+      const billing = orderCreditMethod(order);
+      const refundResult = Meteor.call("orders/refunds/list", order);
+      let refundTotal = 0;
 
-    let refundTotal = 0;
+      _.each(refundResult, function (item) {
+        refundTotal += parseFloat(item.amount);
+      });
 
-    _.each(refundResult, function (item) {
-      refundTotal += parseFloat(item.amount);
-    });
-
-    // Merge data into single object to pass to email template
-    const dataForEmail = {
-      // Shop Data
-      shop: shop,
-      contactEmail: shop.emails[0].address,
-      homepage: Meteor.absoluteUrl(),
-      emailLogo: emailLogo,
-      copyrightDate: moment().format("YYYY"),
-      legalName: shop.addressBook[0].company,
-      physicalAddress: {
-        address: shop.addressBook[0].address1 + " " + shop.addressBook[0].address2,
-        city: shop.addressBook[0].city,
-        region: shop.addressBook[0].region,
-        postal: shop.addressBook[0].postal
-      },
-      shopName: shop.name,
-      socialLinks: {
-        display: true,
-        facebook: {
-          display: true,
-          icon: Meteor.absoluteUrl() + "resources/email-templates/facebook-icon.png",
-          link: "https://www.facebook.com"
+      // Merge data into single object to pass to email template
+      const dataForEmail = {
+        // Shop Data
+        shop: shop,
+        contactEmail: shop.emails[0].address,
+        homepage: Meteor.absoluteUrl(),
+        emailLogo: emailLogo,
+        copyrightDate: moment().format("YYYY"),
+        legalName: shop.addressBook[0].company,
+        physicalAddress: {
+          address: shop.addressBook[0].address1 + " " + shop.addressBook[0].address2,
+          city: shop.addressBook[0].city,
+          region: shop.addressBook[0].region,
+          postal: shop.addressBook[0].postal
         },
-        googlePlus: {
+        shopName: shop.name,
+        socialLinks: {
           display: true,
-          icon: Meteor.absoluteUrl() + "resources/email-templates/google-plus-icon.png",
-          link: "https://plus.google.com"
+          facebook: {
+            display: true,
+            icon: Meteor.absoluteUrl() + "resources/email-templates/facebook-icon.png",
+            link: "https://www.facebook.com"
+          },
+          googlePlus: {
+            display: true,
+            icon: Meteor.absoluteUrl() + "resources/email-templates/google-plus-icon.png",
+            link: "https://plus.google.com"
+          },
+          twitter: {
+            display: true,
+            icon: Meteor.absoluteUrl() + "resources/email-templates/twitter-icon.png",
+            link: "https://www.twitter.com"
+          }
         },
-        twitter: {
-          display: true,
-          icon: Meteor.absoluteUrl() + "resources/email-templates/twitter-icon.png",
-          link: "https://www.twitter.com"
+        // Order Data
+        order: order,
+        billing: {
+          address: {
+            address: billing.address.address1,
+            city: billing.address.city,
+            region: billing.address.region,
+            postal: billing.address.postal
+          },
+          paymentMethod: billing.paymentMethod.storedCard || billing.paymentMethod.processor,
+          subtotal: accounting.toFixed(billing.invoice.subtotal, 2),
+          shipping: accounting.toFixed(billing.invoice.shipping, 2),
+          taxes: accounting.toFixed(billing.invoice.taxes, 2),
+          discounts: accounting.toFixed(billing.invoice.discounts, 2),
+          refunds: accounting.toFixed(refundTotal, 2),
+          total: accounting.toFixed(billing.invoice.total, 2),
+          adjustedTotal: accounting.toFixed(billing.paymentMethod.amount - refundTotal, 2)
+        },
+        combinedItems: combinedItems,
+        orderDate: moment(order.createdAt).format("MM/DD/YYYY"),
+        orderUrl: getSlug(shop.name) + "/cart/completed?_id=" + order.cartId,
+        shipping: {
+          address: {
+            address: order.shipping[0].address.address1,
+            city: order.shipping[0].address.city,
+            region: order.shipping[0].address.region,
+            postal: order.shipping[0].address.postal
+          }
         }
-      },
-      // Order Data
-      order: order,
-      billing: {
-        address: {
-          address: order.billing[0].address.address1,
-          city: order.billing[0].address.city,
-          region: order.billing[0].address.region,
-          postal: order.billing[0].address.postal
-        },
-        paymentMethod: order.billing[0].paymentMethod.storedCard,
-        subtotal: accounting.toFixed(order.billing[0].invoice.subtotal, 2),
-        shipping: accounting.toFixed(order.billing[0].invoice.shipping, 2),
-        taxes: accounting.toFixed(order.billing[0].invoice.taxes, 2),
-        discounts: accounting.toFixed(order.billing[0].invoice.discounts, 2),
-        refunds: accounting.toFixed(refundTotal, 2),
-        total: accounting.toFixed(order.billing[0].invoice.total, 2),
-        adjustedTotal: accounting.toFixed(order.billing[0].paymentMethod.amount - refundTotal, 2)
-      },
-      combinedItems: combinedItems,
-      orderDate: moment(order.createdAt).format("MM/DD/YYYY"),
-      orderUrl: getSlug(shop.name) + "/cart/completed?_id=" + order.cartId,
-      shipping: {
-        address: {
-          address: order.shipping[0].address.address1,
-          city: order.shipping[0].address.city,
-          region: order.shipping[0].address.region,
-          postal: order.shipping[0].address.postal
-        }
+      };
+
+      Logger.info(`orders/sendNotification status: ${order.workflow.status}`);
+
+
+      // handle missing root shop email
+      if (!shop.emails[0].address) {
+        shop.emails[0].address = "no-reply@reactioncommerce.com";
+        Logger.warn("No shop email configured. Using no-reply to send mail");
       }
-    };
 
-    Logger.info(`orders/sendNotification status: ${order.workflow.status}`);
+      // anonymous users without emails.
+      if (!order.email) {
+        const msg = "No order email found. No notification sent.";
+        Logger.warn(msg);
+        throw new Meteor.Error("email-error", msg);
+      }
 
-    // handle missing root shop email
-    if (!shop.emails[0].address) {
-      shop.emails[0].address = "no-reply@reactioncommerce.com";
-      Logger.warn("No shop email configured. Using no-reply to send mail");
+      // Compile Email with SSR
+      let subject;
+      let tpl;
+
+      if (action === "shipped") {
+        tpl = "orders/shipped";
+        subject = "orders/shipped/subject";
+      } else if (action === "refunded") {
+        tpl = "orders/refunded";
+        subject = "orders/refunded/subject";
+      } else {
+        tpl = `orders/${order.workflow.status}`;
+        subject = `orders/${order.workflow.status}/subject`;
+      }
+
+      SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl));
+      SSR.compileTemplate(subject, Reaction.Email.getSubject(tpl));
+
+      Reaction.Email.send({
+        to: order.email,
+        from: `${shop.name} <${shop.emails[0].address}>`,
+        subject: SSR.render(subject, dataForEmail),
+        html: SSR.render(tpl, dataForEmail)
+      });
+
+      return true;
     }
-
-    // anonymous users without emails.
-    if (!order.email) {
-      const msg = "No order email found. No notification sent.";
-      Logger.warn(msg);
-      throw new Meteor.Error("email-error", msg);
-    }
-
-    // Compile Email with SSR
-    let subject;
-    let tpl;
-
-    if (action === "shipped") {
-      tpl = "orders/shipped";
-      subject = "orders/shipped/subject";
-    } else if (action === "refunded") {
-      tpl = "orders/refunded";
-      subject = "orders/refunded/subject";
-    } else {
-      tpl = `orders/${order.workflow.status}`;
-      subject = `orders/${order.workflow.status}/subject`;
-    }
-
-    SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl));
-    SSR.compileTemplate(subject, Reaction.Email.getSubject(tpl));
-
-    Reaction.Email.send({
-      to: order.email,
-      from: `${shop.name} <${shop.emails[0].address}>`,
-      subject: SSR.render(subject, dataForEmail),
-      html: SSR.render(tpl, dataForEmail)
-    });
-
-    return true;
+    return false;
   },
 
   /**
@@ -680,7 +681,9 @@ Meteor.methods({
       throw new Meteor.Error(403, "Access Denied. You are not connected.");
     }
 
-    return Orders.update({ cartId: cartId }, {
+    return Orders.update({
+      cartId: cartId
+    }, {
       $set: {
         email: email
       }
@@ -763,7 +766,11 @@ Meteor.methods({
         $inc: {
           inventoryQuantity: -item.quantity
         }
-      }, { selector: { type: "variant" } });
+      }, {
+        selector: {
+          type: "variant"
+        }
+      });
     });
   },
 
@@ -838,6 +845,7 @@ Meteor.methods({
 
             return { error: "orders/capturePayments: Failed to capture transaction" };
           }
+          return { error, result };
         });
       }
     });
@@ -845,15 +853,14 @@ Meteor.methods({
 
   /**
    * orders/refund/list
-   *
+   * loop through order's payments and find existing refunds.
    * @summary Get a list of refunds for a particular payment method.
-   * @param {Object} paymentMethod - paymentMethod object
+   * @param {Object} order - order object
    * @return {null} no return value
    */
   "orders/refunds/list": function (order) {
     check(order, Object);
-
-    const paymentMethod = order.billing[0].paymentMethod;
+    const paymentMethod = orderCreditMethod(order).paymentMethod;
 
     if (!this.userId === order.userId && !Reaction.hasPermission("orders")) {
       throw new Meteor.Error(403, "Access Denied");
@@ -909,12 +916,12 @@ Meteor.methods({
 
     if (result.saved === false) {
       Logger.fatal("Attempt for refund transaction failed", order._id, paymentMethod.transactionId, result.error);
-
-      throw new Meteor.Error(
-        "Attempt to refund transaction failed", result.error);
+      throw new Meteor.Error("Attempt to refund transaction failed", result.error);
     }
 
     // Send email to notify cuustomer of a refund
     Meteor.call("orders/sendNotification", order, "refunded");
   }
-});
+};
+
+Meteor.methods(methods);

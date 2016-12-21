@@ -8,7 +8,7 @@ class CircularProgress extends Component {
   }
 
   render() {
-    if (this.props.indetermate === true) {
+    if (this.props.indeterminate === true) {
       return this.renderInderterminateProgress();
     }
 
@@ -17,11 +17,11 @@ class CircularProgress extends Component {
 }
 
 CircularProgress.propTypes = {
-  indetermate: PropTypes.bool
+  indeterminate: PropTypes.bool
 };
 
 CircularProgress.defaultProps = {
-  indetermate: true
+  indeterminate: true
 };
 
 export default CircularProgress;

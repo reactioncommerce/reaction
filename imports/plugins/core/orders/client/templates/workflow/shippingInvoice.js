@@ -6,21 +6,22 @@ import { ReactiveVar } from "meteor/reactive-var";
 import { i18next, Logger, formatNumber, Reaction } from "/client/api";
 import { NumericInput } from "/imports/plugins/core/ui/client/components";
 import { Media, Orders, Shops } from "/lib/collections";
+import DiscountList from "/imports/plugins/core/discounts/client/components/list";
+
+// helper to return the order payment object
+// the first credit paymentMethod on the order
+// returns entire payment method
+function orderCreditMethod(order) {
+  return order.billing.filter(value => value.paymentMethod.method ===  "credit")[0];
+}
 
 //
 // core order shipping invoice templates
 //
 Template.coreOrderShippingInvoice.onCreated(function () {
   this.state = new ReactiveDict();
-
-  // template.orderDep = new Tracker.Dependency;
   this.refunds = new ReactiveVar([]);
   this.refundAmount = new ReactiveVar(0.00);
-
-  // function getOrder(orderId) {
-  //   template.orderDep.depend();
-  //   return Orders.findOne(orderId);
-  // }
 
   this.autorun(() => {
     const currentData = Template.currentData();
@@ -30,9 +31,7 @@ Template.coreOrderShippingInvoice.onCreated(function () {
     this.state.set("order", order);
     this.state.set("currency", shop.currencies[shop.currency]);
 
-    // template.order = getOrder(currentData.orderId);
     if (order) {
-      const paymentMethod = order.billing[0].paymentMethod;
       Meteor.call("orders/refunds/list", order, (error, result) => {
         if (!error) {
           this.refunds.set(result);
@@ -40,6 +39,18 @@ Template.coreOrderShippingInvoice.onCreated(function () {
       });
     }
   });
+});
+
+Template.coreOrderShippingInvoice.helpers({
+  DiscountList() {
+    return DiscountList;
+  },
+  orderId() {
+    const instance = Template.instance();
+    const state = instance.state;
+    const order = state.get("order");
+    return order._id;
+  }
 });
 
 /**
@@ -54,16 +65,19 @@ Template.coreOrderShippingInvoice.events({
    */
   "submit form[name=capture]": (event, instance) => {
     event.preventDefault();
-
     const state = instance.state;
     const order = state.get("order");
-    const orderTotal = accounting.toFixed(
-      order.billing[0].invoice.subtotal
-      + order.billing[0].invoice.shipping
-      + order.billing[0].invoice.taxes
-      , 2);
-    const discount = state.get("field-discount") || 0;
 
+    const paymentMethod = orderCreditMethod(order);
+    const orderTotal = accounting.toFixed(
+      paymentMethod.invoice.subtotal
+      + paymentMethod.invoice.shipping
+      + paymentMethod.invoice.taxes
+      , 2);
+
+    const discount = state.get("field-discount") || order.discount;
+    // TODO: review Discount cannot be greater than original total price
+    // logic is probably not valid any more. Discounts aren't valid below 0 order.
     if (discount > orderTotal) {
       Alerts.inline("Discount cannot be greater than original total price", "error", {
         placement: "coreOrderShippingInvoice",
@@ -77,7 +91,7 @@ Template.coreOrderShippingInvoice.events({
         confirmButtonText: i18next.t("order.applyDiscount")
       }, (isConfirm) => {
         if (isConfirm) {
-          Meteor.call("orders/approvePayment", order, discount, (error) => {
+          Meteor.call("orders/approvePayment", order, (error) => {
             if (error) {
               Logger.warn(error);
             }
@@ -85,7 +99,7 @@ Template.coreOrderShippingInvoice.events({
         }
       });
     } else {
-      Meteor.call("orders/approvePayment", order, discount, (error) => {
+      Meteor.call("orders/approvePayment", order, (error) => {
         if (error) {
           Logger.warn(error);
           if (error.error === "orders/approvePayment.discount-amount") {
@@ -112,17 +126,19 @@ Template.coreOrderShippingInvoice.events({
     const { state } = Template.instance();
     const currencySymbol = state.get("currency").symbol;
     const order = instance.state.get("order");
-    const orderTotal = order.billing[0].paymentMethod.amount;
-    const paymentMethod = order.billing[0].paymentMethod;
-    const discounts = order.billing[0].invoice.discounts;
+    const paymentMethod = orderCreditMethod(order).paymentMethod;
+    const orderTotal = paymentMethod.amount;
+    const discounts = paymentMethod.discounts;
     const refund = state.get("field-refund") || 0;
     const refunds = Template.instance().refunds.get();
     let refundTotal = 0;
     _.each(refunds, function (item) {
       refundTotal += parseFloat(item.amount);
     });
+
     let adjustedTotal;
 
+    // TODO extract Stripe specific fullfilment payment handling out of core.
     // Stripe counts discounts as refunds, so we need to re-add the discount to not "double discount" in the adjustedTotal
     if (paymentMethod.processor === "Stripe") {
       adjustedTotal = accounting.toFixed(orderTotal + discounts - refundTotal, 2);
@@ -192,7 +208,8 @@ Template.coreOrderShippingInvoice.helpers({
   numericInputProps(fieldName, value = 0, enabled = true) {
     const { state } = Template.instance();
     const order = state.get("order");
-    const status = order.billing[0].paymentMethod.status;
+    const paymentMethod = orderCreditMethod(order);
+    const status = paymentMethod.status;
     const isApprovedAmount = (status === "approved" || status === "completed");
 
     return {
@@ -217,7 +234,7 @@ Template.coreOrderShippingInvoice.helpers({
   refundInputProps() {
     const { state } = Template.instance();
     const order = state.get("order");
-    const paymentMethod = order.billing[0].paymentMethod;
+    const paymentMethod = orderCreditMethod(order).paymentMethod;
     const refunds = Template.instance().refunds.get();
 
     let refundTotal = 0;
@@ -262,7 +279,7 @@ Template.coreOrderShippingInvoice.helpers({
   disabled() {
     const instance = Template.instance();
     const order = instance.state.get("order");
-    const status = order.billing[0].paymentMethod.status;
+    const status = orderCreditMethod(order).paymentMethod.status;
 
     if (status === "approved" || status === "completed") {
       return "disabled";
@@ -274,7 +291,7 @@ Template.coreOrderShippingInvoice.helpers({
   paymentPendingApproval() {
     const instance = Template.instance();
     const order = instance.state.get("order");
-    const status = order.billing[0].paymentMethod.status;
+    const status = orderCreditMethod(order).paymentMethod.status;
 
     return status === "created" || status === "adjustments" || status === "error";
   },
@@ -282,7 +299,7 @@ Template.coreOrderShippingInvoice.helpers({
   canMakeAdjustments() {
     const instance = Template.instance();
     const order = instance.state.get("order");
-    const status = order.billing[0].paymentMethod.status;
+    const status = orderCreditMethod(order).paymentMethod.status;
 
     if (status === "approved" || status === "completed") {
       return false;
@@ -301,13 +318,13 @@ Template.coreOrderShippingInvoice.helpers({
     const instance = Template.instance();
     const order = instance.state.get("order");
 
-    return order.billing[0].paymentMethod.status === "completed";
+    return orderCreditMethod(order).paymentMethod.status === "completed";
   },
 
   refundTransactions() {
     const instance = Template.instance();
     const order = instance.state.get("order");
-    const transactions = order.billing[0].paymentMethod.transactions;
+    const transactions = orderCreditMethod(order).paymentMethod.transactions;
 
     return _.filter(transactions, (transaction) => {
       return transaction.type === "refund";
@@ -331,8 +348,8 @@ Template.coreOrderShippingInvoice.helpers({
   adjustedTotal() {
     const instance = Template.instance();
     const order = instance.state.get("order");
-    const paymentMethod = order.billing[0].paymentMethod;
-    const discounts = order.billing[0].invoice.discounts;
+    const paymentMethod = orderCreditMethod(order).paymentMethod;
+    const discounts = orderCreditMethod(order).invoice.discounts;
     const refunds = Template.instance().refunds.get();
     let refundTotal = 0;
 

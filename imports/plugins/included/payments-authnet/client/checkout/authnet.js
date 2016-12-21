@@ -89,7 +89,7 @@ AutoForm.addHooks("authnet-payment-form", {
         const paymentMethod = {
           processor: "AuthNet",
           storedCard: storedCard,
-          method: "credit_card",
+          method: "credit",
           transactionId: transId,
           amount: +paymentInfo.total,
           status: normalizedStatus,
@@ -121,4 +121,3 @@ AutoForm.addHooks("authnet-payment-form", {
     }
   }
 });
-
