@@ -1,7 +1,9 @@
 <template name="searchResults">
 
   <div class="rui search-modal-results-container">
+
     <div class="rui search-modal-results">
+      <div data-event-action="filterSearch">{{>React component = SortnFilter}}</div>
       {{#if productSearchResults}}
         {{> productResults productSearchResults=productSearchResults}}
       {{/if}}

@@ -95,3 +95,5 @@ practicalmeteor:sinon
 
 
 # Custom Packages
+react-template-helper
+ultimatejs:tracker-react@1.0.5

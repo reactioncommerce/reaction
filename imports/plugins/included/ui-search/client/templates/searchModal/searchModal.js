@@ -6,6 +6,94 @@ import { i18next } from "/client/api";
 import { ProductSearch, Tags, OrderSearch, AccountSearch } from "/lib/collections";
 import { IconButton, SortableTable } from "/imports/plugins/core/ui/client/components";
 
+
+
+ // filterItems = [{vendor: []}, {min: 0}, {max: 9999999}, {score: false}];
+function filterResult() {
+  const result = [];
+  if (JSON.stringify(filterItems) === "[{\"vendor\":[]},{},{},{}]") {
+    return getProducts();
+  }
+  const tempFilter = [];
+  filterItems.filter((item) => {
+    if (item[Object.keys(item)] !== undefined && (item[Object.keys(item)]).length > 0) {
+      tempFilter.push(Object.keys(item)[0]);
+      console.log(tempFilter);
+    }
+  });
+  getProducts().filter((product) => {
+    let match = false;
+    let count = 0;
+    filterItems.forEach(item => {
+      match = false;
+      const key = Object.keys(item).toString();
+      switch (key) {
+        case "vendor":
+          match = vendorMatch(item[key], product[key]);
+          break;
+        case "min":
+          match = priceMatch("min", product.price, item[key]);
+          break;
+        case "max":
+          match = priceMatch("max", product.price, item[key]);
+          break;
+        case "score":
+          match = scoreMatch(item[key], product[key]);
+          break;
+        default:
+          match = false;
+      }
+      if (match) {
+        count ++;
+        console.log(count + " - " + tempFilter.length);
+        if (count === tempFilter.length) {
+          result.push(product);
+        }
+      }
+    });
+  });
+  return result;
+}
+
+function setSearchResults(result) {
+  const instance = Template.instance();
+  if (result !== undefined) {
+    instance.state.set("productSearchResults", result);
+  }
+}
+
+// Match for score
+function scoreMatch(itemKey, productKey) {
+  return productKey >= itemKey ? true : false;
+}
+
+// Match for price
+function priceMatch(type, value, condition) {
+  if (!value) {
+    return false;
+  }
+
+  if (type === "min" && (value.min >= condition || value.max >= condition)) {
+    return true;
+  }
+  if (type === "max" && value.max <= condition) {
+    return true;
+  }
+  return false;
+}
+
+// Match for vendors
+function vendorMatch(itemKey, productKey) {
+  return (itemKey.includes(productKey.toString())) ?
+    true : false;
+}
+
+// format of items {location: item} e.g {vendor: china}
+function getProducts() {
+  return ProductSearch.find().fetch();
+}
+
+
 /*
  * searchModal extra functions
  */
@@ -21,6 +109,8 @@ function tagToggle(arr, val) {
  */
 Template.searchModal.onCreated(function () {
   this.state = new ReactiveDict();
+  filterItems = [{vendor: []}, {min: undefined}, {max: undefined}, {score: undefined}];
+  emptyFilter = [{vendor: []}, {min: undefined}, {max: undefined}, {score: undefined}];
   this.state.setDefault({
     initialLoad: true,
     slug: "",
@@ -57,6 +147,7 @@ Template.searchModal.onCreated(function () {
       if (searchCollection === "products") {
         const productResults = ProductSearch.find().fetch();
         const productResultsCount = productResults.length;
+        // console.log(productResults[0]);
         this.state.set("productSearchResults", productResults);
         this.state.set("productSearchCount", productResultsCount);
 
@@ -164,6 +255,26 @@ Template.searchModal.events({
     if (!$(".search-modal-header").hasClass("active-search")) {
       $(".search-modal-header").addClass("active-search");
     }
+  },
+  "change [data-event-action=filterSearch]": (event) => {
+    // {vendor: [China, ireland]}
+    const key = event.target.parentNode.id;
+    const value = event.target.value;
+    this.filterItems.forEach((item) => {
+      let itemKey = Object.keys(item).toString();
+      if (itemKey === key) {
+        if (key === "vendor" && !item[itemKey].includes(value)) {
+          item[itemKey].push(value);
+        } else if (key === "vendor") {
+          item[itemKey].splice(item[itemKey].indexOf(value), 1);
+        } else {
+          item[itemKey] = value;
+        }
+      }
+    });
+    const result = filterResult();
+    setSearchResults(result);
+    console.log(result);
   },
   "click [data-event-action=filter]": function (event, templateInstance) {
     event.preventDefault();
