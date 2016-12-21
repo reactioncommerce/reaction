@@ -40,6 +40,7 @@ export const Discounts = new SimpleSchema({
   "calculation.method": {
     type: String,
     index: 1,
+    defaultValue: "discount",
     allowedValues: ["credit", "discount", "sale", "shipping"]
   },
   "conditions": {

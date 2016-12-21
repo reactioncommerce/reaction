@@ -61,7 +61,7 @@ export const methods = {
       for (const billing of cart.billing) {
         if (billing.paymentMethod) {
           const discount = Discounts.findOne(billing.paymentMethod.id);
-          if (discount) {
+          if (discount && discount.calculation) {
             const processor = billing.paymentMethod.processor;
             const calculation = discount.calculation.method;
             // we're using processor/calculation

@@ -21,7 +21,7 @@ export const methods = {
    * additional level of validation.
    * @param  {String} cartId cartId
    * @param  {String} discountId discountId
-   * @return {String} returns discount total
+   * @return {Number} returns discount total
    */
   "discounts/codes/discount": function (cartId, discountId) {
     check(cartId, String);
@@ -43,7 +43,7 @@ export const methods = {
    * for discount codes
    * @param  {String} cartId cartId
    * @param  {String} discountId discountId
-   * @return {String} returns discount total
+   * @return {Number} returns discount total
    */
   "discounts/codes/credit": function (cartId, discountId) {
     check(cartId, String);
@@ -58,7 +58,7 @@ export const methods = {
    * calculates a new price for an item
    * @param  {String} cartId cartId
    * @param  {String} discountId discountId
-   * @return {String} returns discount total
+   * @return {Number} returns discount total
    */
   "discounts/codes/sale": function (cartId, discountId) {
     check(cartId, String);
@@ -83,7 +83,7 @@ export const methods = {
    * of a calculated shipping rate in the cart.
    * @param  {String} cartId cartId
    * @param  {String} discountId discountId
-   * @return {String} returns discount total
+   * @return {Number} returns discount total
    */
   "discounts/codes/shipping": function (cartId, discountId) {
     check(cartId, String);
