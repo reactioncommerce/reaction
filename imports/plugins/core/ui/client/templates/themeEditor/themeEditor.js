@@ -58,7 +58,7 @@ Template.uiThemeEditor.onCreated(function () {
   };
 
   this.autorun(() => {
-    const theme = Themes.findOne({name: "base"});
+    const theme = Themes.findOne({ name: "base" });
     this.state.set("theme", theme);
 
     if (theme) {

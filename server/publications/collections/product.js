@@ -22,7 +22,7 @@ Meteor.publish("Product", function (productId) {
 
   let selector = {};
   selector.isVisible = true;
-  selector.isDeleted = {$in: [null, false]};
+  selector.isDeleted = { $in: [null, false] };
 
   if (Roles.userIsInRole(this.userId, ["owner", "admin", "createProduct"],
       shop._id)) {
@@ -51,7 +51,7 @@ Meteor.publish("Product", function (productId) {
   // Selector for hih?
   selector = {
     isVisible: true,
-    isDeleted: {$in: [null, false]},
+    isDeleted: { $in: [null, false] },
     $or: [
       { _id: _id },
       {
@@ -110,23 +110,42 @@ Meteor.publish("Product", function (productId) {
         }
       }).observe({
         added: (revision) => {
-          this.added("Revisions", revision._id, revision);
+          let product;
+          if (!revision.parentDocument) {
+            product = Products.findOne(revision.documentId);
+          } else {
+            product = Products.findOne(revision.parentDocument);
+          }
+          if (product) {
+            this.added("Products", product._id, product);
+            this.added("Revisions", revision._id, revision);
+          }
         },
         changed: (revision) => {
-          const product = Products.findOne(revision.documentId);
-
-          product.__revisions = [revision];
-
-          this.changed("Products", product._id, product);
-          this.changed("Revisions", revision._id, revision);
+          let product;
+          if (!revision.parentDocument) {
+            product = Products.findOne(revision.documentId);
+          } else {
+            product = Products.findOne(revision.parentDocument);
+          }
+          if (product) {
+            product.__revisions = [revision];
+            this.changed("Products", product._id, product);
+            this.changed("Revisions", revision._id, revision);
+          }
         },
         removed: (revision) => {
-          const product = Products.findOne(revision.documentId);
-
-          product.__revisions = [];
-
-          this.changed("Products", product._id, product);
-          this.removed("Revisions", revision._id, revision);
+          let product;
+          if (!revision.parentDocument) {
+            product = Products.findOne(revision.documentId);
+          } else {
+            product = Products.findOne(revision.parentDocument);
+          }
+          if (product) {
+            product.__revisions = [];
+            this.changed("Products", product._id, product);
+            this.removed("Revisions", revision._id, revision);
+          }
         }
       });
 

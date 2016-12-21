@@ -1,10 +1,10 @@
-var path = Npm.require('path');
-var mongodb = Npm.require('mongodb');
-var ObjectID = Npm.require('mongodb').ObjectID;
-var Grid = Npm.require('gridfs-stream');
-//var Grid = Npm.require('gridfs-locking-stream');
+const path = Npm.require("path");
+const mongodb = Npm.require("mongodb");
+const ObjectID = Npm.require("mongodb").ObjectID;
+const Grid = Npm.require("gridfs-stream");
+// var Grid = Npm.require('gridfs-locking-stream');
 
-var chunkSize = 1024*1024*2; // 256k is default GridFS chunk size, but performs terribly for largish files
+let chunkSize = 1024 * 1024 * 2; // 256k is default GridFS chunk size, but performs terribly for largish files
 
 /**
  * @public
@@ -19,15 +19,16 @@ var chunkSize = 1024*1024*2; // 256k is default GridFS chunk size, but performs 
  * type.
  */
 
-FS.Store.GridFS = function(name, options) {
-  var self = this;
+FS.Store.GridFS = function (name, options) {
+  const self = this;
   options = options || {};
 
-  var gridfsName = name;
-  var mongoOptions = options.mongoOptions || {};
+  let gridfsName = name;
+  const mongoOptions = options.mongoOptions || {};
 
-  if (!(self instanceof FS.Store.GridFS))
+  if (!(self instanceof FS.Store.GridFS))    {
     throw new Error('FS.Store.GridFS missing keyword "new"');
+  }
 
   if (!options.mongoUrl) {
     options.mongoUrl = process.env.MONGO_URL;
@@ -36,7 +37,7 @@ FS.Store.GridFS = function(name, options) {
   }
 
   if (!options.mongoOptions) {
-    options.mongoOptions = { db: { native_parser: true }, server: { auto_reconnect: true }};
+    options.mongoOptions = { db: { native_parser: true }, server: { auto_reconnect: true } };
   }
 
   if (options.chunkSize) {
@@ -45,39 +46,39 @@ FS.Store.GridFS = function(name, options) {
 
   return new FS.StorageAdapter(name, options, {
 
-    typeName: 'storage.gridfs',
-    fileKey: function(fileObj) {
+    typeName: "storage.gridfs",
+    fileKey: function (fileObj) {
       // We should not have to mount the file here - We assume its taken
       // care of - Otherwise we create new files instead of overwriting
-      var key = {
+      const key = {
         _id: null,
         filename: null
       };
 
       // If we're passed a fileObj, we retrieve the _id and filename from it.
       if (fileObj) {
-        var info = fileObj._getInfo(name, {updateFileRecordFirst: false});
+        const info = fileObj._getInfo(name, { updateFileRecordFirst: false });
         key._id = info.key || null;
-        key.filename = info.name || fileObj.name({updateFileRecordFirst: false}) || (fileObj.collectionName + '-' + fileObj._id);
+        key.filename = info.name || fileObj.name({ updateFileRecordFirst: false }) || (fileObj.collectionName + "-" + fileObj._id);
       }
 
       // If key._id is null at this point, createWriteStream will let GridFS generate a new ID
       return key;
     },
-    createReadStream: function(fileKey, options) {
+    createReadStream: function (fileKey, options) {
       options = options || {};
 
       // Init GridFS
-      var gfs = new Grid(self.db, mongodb);
+      const gfs = new Grid(self.db, mongodb);
 
       // Set the default streamning settings
-      var settings = {
+      const settings = {
         _id: new ObjectID(fileKey._id),
         root: gridfsName
       };
 
       // Check if this should be a partial read
-      if (typeof options.start !== 'undefined' && typeof options.end !== 'undefined' ) {
+      if (typeof options.start !== "undefined" && typeof options.end !== "undefined") {
         // Add partial info
         settings.range = {
           startPos: options.start,
@@ -85,36 +86,35 @@ FS.Store.GridFS = function(name, options) {
         };
       }
 
-      FS.debug && console.log('GRIDFS', settings);
+      FS.debug && console.log("GRIDFS", settings);
 
       return gfs.createReadStream(settings);
-
     },
-    createWriteStream: function(fileKey, options) {
+    createWriteStream: function (fileKey, options) {
       options = options || {};
 
       // Init GridFS
-      var gfs = new Grid(self.db, mongodb);
+      const gfs = new Grid(self.db, mongodb);
 
-      var opts = {
+      const opts = {
         filename: fileKey.filename,
-        mode: 'w',
+        mode: "w",
         root: gridfsName,
         chunk_size: options.chunk_size || chunkSize,
         // We allow aliases, metadata and contentType to be passed in via
         // options
         aliases: options.aliases || [],
         metadata: options.metadata || null,
-        content_type: options.contentType || 'application/octet-stream'
+        content_type: options.contentType || "application/octet-stream"
       };
 
       if (fileKey._id) {
         opts._id = new ObjectID(fileKey._id);
       }
 
-      var writeStream = gfs.createWriteStream(opts);
+      const writeStream = gfs.createWriteStream(opts);
 
-      writeStream.on('close', function(file) {
+      writeStream.on("close", function (file) {
         if (!file) {
           // gridfs-stream will emit "close" without passing a file
           // if there is an error. We can simply exit here because
@@ -122,10 +122,10 @@ FS.Store.GridFS = function(name, options) {
           return;
         }
 
-        if (FS.debug) console.log('SA GridFS - DONE!');
+        if (FS.debug) console.log("SA GridFS - DONE!");
 
         // Emit end and return the fileKey, size, and updated date
-        writeStream.emit('stored', {
+        writeStream.emit("stored", {
           // Set the generated _id so that we know it for future reads and writes.
           // We store the _id as a string and only convert to ObjectID right before
           // reading, writing, or deleting. If we store the ObjectID itself,
@@ -137,30 +137,29 @@ FS.Store.GridFS = function(name, options) {
         });
       });
 
-      writeStream.on('error', function(error) {
-        console.log('SA GridFS - ERROR!', error);
+      writeStream.on("error", function (error) {
+        console.log("SA GridFS - ERROR!", error);
       });
 
       return writeStream;
-
     },
-    remove: function(fileKey, callback) {
+    remove: function (fileKey, callback) {
       // Init GridFS
-      var gfs = new Grid(self.db, mongodb);
+      const gfs = new Grid(self.db, mongodb);
 
       try {
         gfs.remove({ _id: new ObjectID(fileKey._id), root: gridfsName }, callback);
-      } catch(err) {
+      } catch (err) {
         callback(err);
       }
     },
 
     // Not implemented
-    watch: function() {
+    watch: function () {
       throw new Error("GridFS storage adapter does not support the sync option");
     },
 
-    init: function(callback) {
+    init: function (callback) {
       mongodb.MongoClient.connect(options.mongoUrl, mongoOptions, function (err, db) {
         if (err) { return callback(err); }
         self.db = db;

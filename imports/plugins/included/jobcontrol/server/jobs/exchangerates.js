@@ -79,7 +79,7 @@ export default function () {
         // https://github.com/vsivsi/meteor-job-collection#set-how-many-times-this
         // -job-will-be-automatically-re-run-by-the-job-collection
         const success = "Latest exchange rates were fetched successfully.";
-        Logger.info(success);
+        Logger.debug(success);
         job.done(success, { repeatId: true });
       }
     });

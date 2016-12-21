@@ -15,7 +15,7 @@ class Toolbar extends Component {
 
 Toolbar.propTypes = {
   attachment: PropTypes.string,
-  children: PropTypes.node,
+  children: PropTypes.node
 };
 
 Toolbar.defaultProps = {

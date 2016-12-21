@@ -38,7 +38,7 @@ Template.i18nSettings.helpers({
     const uomOptions = [];
     for (const measure of unitsOfMeasure) {
       uomOptions.push({
-        label: i18next.t(`uom.${measure.uom}`, {defaultValue: measure.uom}),
+        label: i18next.t(`uom.${measure.uom}`, { defaultValue: measure.uom }),
         value: measure.uom
       });
     }

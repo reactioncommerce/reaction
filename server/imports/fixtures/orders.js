@@ -121,7 +121,7 @@ export default function () {
     Factory.extend("order", {
       billing: [{
         _id: Random.id(),
-        address: getAddress({isBillingDefault: true}),
+        address: getAddress({ isBillingDefault: true }),
         paymentMethod: paymentMethod({
           processor: "Paypal",
           mode: "authorize",

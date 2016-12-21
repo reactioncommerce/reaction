@@ -1,0 +1,34 @@
+[{
+  "language": "English",
+  "i18n": "en",
+  "ns": "discount-codes",
+  "translation": {
+    "reaction-discounts": {
+      "checkoutPayment": {
+        "applyDiscount": "Apply",
+        "discountError": "Sorry, there was an error applying discount."
+      },
+      "admin": {
+        "paymentSettings": {
+          "codesLabel": "Codes"
+        },
+        "settings": {
+          "codesLabel": "Codes",
+          "noCustomDiscountCodesFound": "No discount codes found.",
+          "settingsSaveSuccess": "Settings saved successfully.",
+          "settingsSaveFailure": "Failed to save settings.",
+          "confirmRateDelete": "Confirm discount code deletion."
+        },
+        "discountGrid": {
+          "label": "Label",
+          "code": "Code",
+          "discountMethod": "Method",
+          "discount": "Discount",
+          "conditions": {
+            "redemptionLimit": "Limit"
+          }
+        }
+      }
+    }
+  }
+}]

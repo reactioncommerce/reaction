@@ -127,6 +127,8 @@
                       <tr>
                         <td valign="top" align="left">
                           <table width="100%" border="0" cellspacing="0" cellpadding="0" class="emailwrapto100pc">
+
+                            <!-- Begin Header -->
                             <tr>
                               <td height="34" align="left" valign="top" style="font-size:1px; line-height:1px;">&nbsp;</td>
                             </tr>
@@ -142,6 +144,9 @@
                             <tr>
                               <td align="left" valign="top" style="font-family:Arial, Helvetica, sans-serif; font-size:22px; font-weight:bold; line-height:22px; color:#1e98d5;">Order Confirmation</td>
                             </tr>
+                            <!-- End Header -->
+
+                            <!-- Begin Body -->
                             <tr>
                               <td align="left" valign="top">
                                 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="emailwrapto100pc">
@@ -220,11 +225,11 @@
                                         <table width="100%" border="0" cellspacing="0" cellpadding="0" class="emailwrapto100pc">
                                           <tbody>
                                             <tr>
-                                              <td width="33%" align="left" valign="top" style="font-size:10px; line-height:normal; color:#4c4c4d; font-family:Arial, helvetica;">{{shipping.address.address1}},<br> {{shipping.address.city}},
+                                              <td width="33%" align="left" valign="top" style="font-size:10px; line-height:normal; color:#4c4c4d; font-family:Arial, helvetica;">{{shipping.address.address}},<br> {{shipping.address.city}},
                                                 {{shipping.address.region}} {{shipping.address.postal}}</td>
-                                              <td width="33%" align="left" valign="top" style="font-size:10px; line-height:normal; color:#4c4c4d; font-family:Arial, helvetica;">{{order.billing.[0].address.address1}},<br> {{order.billing.[0].address.city}},
-                                                {{order.billing.[0].address.region}} {{order.billing.[0].address.postal}}</td>
-                                              <td width="33%" align="left" valign="top" style="font-size:10px; line-height:normal; color:#4c4c4d; font-family:Arial, helvetica;">{{order.billing.[0].paymentMethod.storedCard}}</td>
+                                              <td width="33%" align="left" valign="top" style="font-size:10px; line-height:normal; color:#4c4c4d; font-family:Arial, helvetica;">{{billing.address.address}},<br> {{billing.address.city}},
+                                                {{billing.address.region}} {{billing.address.postal}}</td>
+                                              <td width="33%" align="left" valign="top" style="font-size:10px; line-height:normal; color:#4c4c4d; font-family:Arial, helvetica;">{{billing.paymentMethod}}</td>
                                             </tr>
                                             <tr>
                                               <td valign="top" align="left" height="30" style="line-height:1px; font-size:1px;">&nbsp;</td>
@@ -339,14 +344,23 @@
                                 </table>
                               </td>
                             </tr>
+                            <!-- End Body -->
 
+                            <!-- Begin footer -->
                             <tr>
-                              <td height="50" align="left" valign="top" style="font-size:1px; line-height:1px;">&nbsp;</td>
+                              <td height="32" align="left" valign="top" style="font-size:1px; line-height:1px;">&nbsp;</td>
                             </tr>
                             <tr>
-                              <td align="left" valign="top" style="font-family:Arial, Helvetica, sans-serif; font-size:12px; font-weight:normal; line-height:17px;">You received this email because you created an order with {{shop.addressBook.[0].company}}. If you have any questions, concerns, or suggestions please email us:
-                                <a href="mailto:{{shop.emails.[0].address}}" style="text-decoration:none; color:#1e98d5;">{{shop.emails.[0].address}}</a></td>
+                              <td height="1" align="left" valign="middle" bgcolor="#e2e2e2" style="font-size:1px; line-height:1px;">&nbsp;</td>
                             </tr>
+                            <tr>
+                              <td height="15" align="left" valign="top" style="font-size:1px; line-height:1px;">&nbsp;</td>
+                            </tr>
+                            <tr>
+                              <td align="left" valign="top" style="font-family:Arial, Helvetica, sans-serif; font-size:12px; font-weight:normal; line-height:17px;">You received this email because you created an order with {{shopName}}. Questions or suggestions? Email us at <a href="mailto:{{contactEmail}}" style="text-decoration:none; color:#1e98d5;">{{contactEmail}}</a></td>
+                            </tr>
+                            <!-- Begin Social Icons -->
+                            {{#if socialLinks.display}}
                             <tr>
                               <td height="21" align="left" valign="top" style="font-size:1px; line-height:1px;">&nbsp;</td>
                             </tr>
@@ -354,20 +368,26 @@
                               <td align="left" valign="top">
                                 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="emailwrapto100pc">
                                   <tr>
+                                    {{#if socialLinks.twitter.display}}
                                     <td width="26" align="left" valign="top">
-                                      <a href="#"><img src="{{homepage}}resources/email-templates/twitter-icon.png" width="26"
+                                      <a href="{{socialLinks.twitter.link}}"><img src="{{socialLinks.twitter.icon}}" width="26"
                                             height="26" alt="twt_icon"></a>
                                     </td>
+                                    {{/if}}
+                                    {{#if socialLinks.facebook.display}}
                                     <td width="10" align="left" valign="top">&nbsp;</td>
                                     <td width="26" align="left" valign="top">
-                                      <a href="#"><img src="{{homepage}}resources/email-templates/facebook-icon.png" width="26"
+                                      <a href="{{socialLinks.facebook.link}}"><img src="{{socialLinks.facebook.icon}}" width="26"
                                             height="26" alt="fb_icon"></a>
                                     </td>
+                                    {{/if}}
+                                    {{#if socialLinks.googlePlus.display}}
                                     <td width="10" align="left" valign="top">&nbsp;</td>
                                     <td>
-                                      <a href="#"><img src="{{homepage}}resources/email-templates/google-plus-icon.png" width="26"
+                                      <a href="{{socialLinks.googlePlus.link}}"><img src="{{socialLinks.googlePlus.icon}}" width="26"
                                             height="26" alt="g_plus_icon"></a>
                                     </td>
+                                    {{/if}}
                                   </tr>
                                 </table>
                               </td>
@@ -375,6 +395,12 @@
                             <tr>
                               <td height="28" align="left" valign="top" style="font-size:1px; line-height:1px;">&nbsp;</td>
                             </tr>
+                            {{else}}
+                            <tr>
+                              <td height="15" align="left" valign="top" style="font-size:1px; line-height:1px;">&nbsp;</td>
+                            </tr>
+                            {{/if}}
+                            <!-- End Social Icons -->
                             <tr>
                               <td height="3" align="left" valign="top" bgcolor="#1f97d4" style="font-size:1px; line-height:1px;">&nbsp;</td>
                             </tr>
@@ -382,15 +408,16 @@
                               <td height="18" align="left" valign="top" style="font-size:1px; line-height:1px;">&nbsp;</td>
                             </tr>
                             <tr>
-                              <td align="left" valign="top" style="font-family:Arial, Helvetica, sans-serif; font-size:12px; font-weight:normal; line-height:12px; color:#4d4c4d;">&copy; {{copyrightDate}} {{shop.addressBook.[0].company}}. All rights reserved</td>
+                              <td align="left" valign="top" style="font-family:Arial, Helvetica, sans-serif; font-size:12px; font-weight:normal; line-height:12px; color:#4d4c4d;">&copy; {{copyrightDate}} {{legalName}}. All rights reserved</td>
                             </tr>
                             <tr>
                               <td height="8" align="left" valign="top" style="font-size:1px; line-height:1px;">&nbsp;</td>
                             </tr>
                             <tr>
-                              <td align="left" valign="top" style="font-family:Arial, Helvetica, sans-serif; font-size:10px; font-weight:normal; line-height:10px; color:#787878;">{{shop.addressBook.[0].address1}} {{shop.addressBook.[0].address2}}, {{shop.addressBook.[0].city}},
-                                {{shop.addressBook.[0].region}} {{shop.addressBook.[0].postal}}</td>
+                              <td align="left" valign="top" style="font-family:Arial, Helvetica, sans-serif; font-size:10px; font-weight:normal; line-height:10px; color:#787878;">{{physicalAddress.address}}, {{physicalAddress.city}}, {{physicalAddress.region}} {{physicalAddress.postal}}</td>
                             </tr>
+                            <!-- End footer -->
+
                           </table>
                         </td>
                       </tr>

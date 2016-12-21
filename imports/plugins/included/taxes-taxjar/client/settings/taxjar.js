@@ -20,12 +20,12 @@ Template.taxJarSettings.helpers({
 AutoForm.hooks({
   "taxjar-update-form": {
     onSuccess: function () {
-      return Alerts.toast(i18next.t("taxSettings.shopTaxMethodsSaved"),
+      return Alerts.toast(i18next.t("admin.taxSettings.shopTaxMethodsSaved"),
         "success");
     },
     onError: function (operation, error) {
       return Alerts.toast(
-        `${i18next.t("taxSettings.shopTaxMethodsFailed")} ${error}`, "error"
+        `${i18next.t("admin.taxSettings.shopTaxMethodsFailed")} ${error}`, "error"
       );
     }
   }

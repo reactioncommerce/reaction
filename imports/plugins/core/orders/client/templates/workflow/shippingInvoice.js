@@ -1,13 +1,11 @@
-require("money");
-require("autonumeric");
 import accounting from "accounting-js";
+import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { ReactiveVar } from "meteor/reactive-var";
-import { i18next, Logger, formatNumber } from "/client/api";
+import { i18next, Logger, formatNumber, Reaction } from "/client/api";
 import { NumericInput } from "/imports/plugins/core/ui/client/components";
 import { Media, Orders, Shops } from "/lib/collections";
-import _ from "lodash";
 
 //
 // core order shipping invoice templates
@@ -35,7 +33,7 @@ Template.coreOrderShippingInvoice.onCreated(function () {
     // template.order = getOrder(currentData.orderId);
     if (order) {
       const paymentMethod = order.billing[0].paymentMethod;
-      Meteor.call("orders/refunds/list", paymentMethod, (error, result) => {
+      Meteor.call("orders/refunds/list", order, (error, result) => {
         if (!error) {
           this.refunds.set(result);
         }
@@ -149,6 +147,7 @@ Template.coreOrderShippingInvoice.events({
             if (error) {
               Alerts.alert(error.reason);
             }
+            Alerts.toast(i18next.t("mail.alerts.emailSent"), "success");
             state.set("field-refund", 0);
           });
         }
@@ -165,6 +164,15 @@ Template.coreOrderShippingInvoice.events({
     event.preventDefault();
     const order = instance.state.get("order");
     Meteor.call("orders/capturePayments", order._id);
+
+    if (order.workflow.status === "new") {
+      Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "processing", order);
+
+      Reaction.Router.setQueryParams({
+        filter: "processing",
+        _id: order._id
+      });
+    }
   },
 
   "change input[name=refund_amount], keyup input[name=refund_amount]": (event, instance) => {
@@ -195,7 +203,7 @@ Template.coreOrderShippingInvoice.helpers({
       isEditing: !isApprovedAmount, // Dont allow editing if its approved
       format: state.get("currency"),
       classNames: {
-        input: {amount: true},
+        input: { amount: true },
         text: {
           "text-success": status === "completed"
         }
@@ -225,7 +233,7 @@ Template.coreOrderShippingInvoice.helpers({
       maxValue: adjustedTotal,
       format: state.get("currency"),
       classNames: {
-        input: {amount: true}
+        input: { amount: true }
       },
       onChange(event, data) {
         state.set("field-refund", data.numberValue);
@@ -364,7 +372,7 @@ Template.coreOrderShippingInvoice.helpers({
     const instance = Template.instance();
     const order = instance.state.get("order");
 
-    const shipment = _.filter(order.shipping, {_id: currentData.fulfillment._id})[0];
+    const shipment = _.filter(order.shipping, { _id: currentData.fulfillment._id })[0];
 
     return shipment;
   },

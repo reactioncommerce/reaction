@@ -3,6 +3,7 @@ import path from "path";
 import moment from "moment";
 import accounting from "accounting-js";
 import Future from "fibers/future";
+import { Template } from "meteor/templating";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { getSlug } from "/lib/api";
@@ -250,11 +251,7 @@ Meteor.methods({
     }
 
     if (order.email) {
-      Meteor.call("orders/sendNotification", order, (err) => {
-        if (err) {
-          Logger.error(err, "orders/shipmentShipped: Failed to send notification");
-        }
-      });
+      Meteor.call("orders/sendNotification", order, "shipped");
     } else {
       Logger.warn("No order email found. No notification sent.");
     }
@@ -322,8 +319,9 @@ Meteor.methods({
    * @param {Object} order - order object
    * @return {Boolean} email sent or not
    */
-  "orders/sendNotification": function (order) {
+  "orders/sendNotification": function (order, action) {
     check(order, Object);
+    check(action, Match.OneOf(String, undefined));
 
     if (!this.userId) {
       Logger.error("orders/sendNotification: Access denied");
@@ -334,7 +332,6 @@ Meteor.methods({
 
     // Get Shop information
     const shop = Shops.findOne(order.shopId);
-    const shopContact = shop.addressBook[0];
 
     // Get shop logo, if available
     let emailLogo;
@@ -390,25 +387,77 @@ Meteor.methods({
       }
     }
 
+    const refundResult = Meteor.call("orders/refunds/list", order);
+
+    let refundTotal = 0;
+
+    _.each(refundResult, function (item) {
+      refundTotal += parseFloat(item.amount);
+    });
+
     // Merge data into single object to pass to email template
-    const dataForOrderEmail = {
+    const dataForEmail = {
+      // Shop Data
+      shop: shop,
+      contactEmail: shop.emails[0].address,
       homepage: Meteor.absoluteUrl(),
       emailLogo: emailLogo,
       copyrightDate: moment().format("YYYY"),
-      shop: shop,
-      shopContact: shopContact,
+      legalName: shop.addressBook[0].company,
+      physicalAddress: {
+        address: shop.addressBook[0].address1 + " " + shop.addressBook[0].address2,
+        city: shop.addressBook[0].city,
+        region: shop.addressBook[0].region,
+        postal: shop.addressBook[0].postal
+      },
+      shopName: shop.name,
+      socialLinks: {
+        display: true,
+        facebook: {
+          display: true,
+          icon: Meteor.absoluteUrl() + "resources/email-templates/facebook-icon.png",
+          link: "https://www.facebook.com"
+        },
+        googlePlus: {
+          display: true,
+          icon: Meteor.absoluteUrl() + "resources/email-templates/google-plus-icon.png",
+          link: "https://plus.google.com"
+        },
+        twitter: {
+          display: true,
+          icon: Meteor.absoluteUrl() + "resources/email-templates/twitter-icon.png",
+          link: "https://www.twitter.com"
+        }
+      },
+      // Order Data
       order: order,
-      orderDate: moment(order.createdAt).format("MM/DD/YYYY"),
       billing: {
+        address: {
+          address: order.billing[0].address.address1,
+          city: order.billing[0].address.city,
+          region: order.billing[0].address.region,
+          postal: order.billing[0].address.postal
+        },
+        paymentMethod: order.billing[0].paymentMethod.storedCard,
         subtotal: accounting.toFixed(order.billing[0].invoice.subtotal, 2),
         shipping: accounting.toFixed(order.billing[0].invoice.shipping, 2),
         taxes: accounting.toFixed(order.billing[0].invoice.taxes, 2),
         discounts: accounting.toFixed(order.billing[0].invoice.discounts, 2),
-        total: accounting.toFixed(order.billing[0].invoice.total, 2)
+        refunds: accounting.toFixed(refundTotal, 2),
+        total: accounting.toFixed(order.billing[0].invoice.total, 2),
+        adjustedTotal: accounting.toFixed(order.billing[0].paymentMethod.amount - refundTotal, 2)
       },
-      shipping: order.shipping[0],
+      combinedItems: combinedItems,
+      orderDate: moment(order.createdAt).format("MM/DD/YYYY"),
       orderUrl: getSlug(shop.name) + "/cart/completed?_id=" + order.cartId,
-      combinedItems: combinedItems
+      shipping: {
+        address: {
+          address: order.shipping[0].address.address1,
+          city: order.shipping[0].address.city,
+          region: order.shipping[0].address.region,
+          postal: order.shipping[0].address.postal
+        }
+      }
     };
 
     Logger.info(`orders/sendNotification status: ${order.workflow.status}`);
@@ -426,17 +475,29 @@ Meteor.methods({
       throw new Meteor.Error("email-error", msg);
     }
 
-    // email templates can be customized in Templates collection
-    // loads defaults from /private/email/templates
-    const tpl = `orders/${order.workflow.status}`;
+    // Compile Email with SSR
+    let subject;
+    let tpl;
+
+    if (action === "shipped") {
+      tpl = "orders/shipped";
+      subject = "orders/shipped/subject";
+    } else if (action === "refunded") {
+      tpl = "orders/refunded";
+      subject = "orders/refunded/subject";
+    } else {
+      tpl = `orders/${order.workflow.status}`;
+      subject = `orders/${order.workflow.status}/subject`;
+    }
+
     SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl));
+    SSR.compileTemplate(subject, Reaction.Email.getSubject(tpl));
 
     Reaction.Email.send({
       to: order.email,
       from: `${shop.name} <${shop.emails[0].address}>`,
-      subject: `Your order is confirmed`,
-      // subject: `Order update from ${shop.name}`,
-      html: SSR.render(tpl,  dataForOrderEmail)
+      subject: SSR.render(subject, dataForEmail),
+      html: SSR.render(tpl, dataForEmail)
     });
 
     return true;
@@ -619,7 +680,7 @@ Meteor.methods({
       throw new Meteor.Error(403, "Access Denied. You are not connected.");
     }
 
-    return Orders.update({cartId: cartId}, {
+    return Orders.update({ cartId: cartId }, {
       $set: {
         email: email
       }
@@ -775,7 +836,7 @@ Meteor.methods({
               }
             });
 
-            return {error: "orders/capturePayments: Failed to capture transaction"};
+            return { error: "orders/capturePayments: Failed to capture transaction" };
           }
         });
       }
@@ -789,10 +850,12 @@ Meteor.methods({
    * @param {Object} paymentMethod - paymentMethod object
    * @return {null} no return value
    */
-  "orders/refunds/list": function (paymentMethod) {
-    check(paymentMethod, Object);
+  "orders/refunds/list": function (order) {
+    check(order, Object);
 
-    if (!Reaction.hasPermission("orders")) {
+    const paymentMethod = order.billing[0].paymentMethod;
+
+    if (!this.userId === order.userId && !Reaction.hasPermission("orders")) {
       throw new Meteor.Error(403, "Access Denied");
     }
 
@@ -850,5 +913,8 @@ Meteor.methods({
       throw new Meteor.Error(
         "Attempt to refund transaction failed", result.error);
     }
+
+    // Send email to notify cuustomer of a refund
+    Meteor.call("orders/sendNotification", order, "refunded");
   }
 });

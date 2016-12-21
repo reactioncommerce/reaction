@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from "react";
-import { composeWithTracker } from "react-komposer";
+import { composeWithTracker } from "/lib/api/compose";
 import { ReactionProduct } from "/lib/api";
 import { Reaction } from "/client/api";
 import { VariantList } from "../components";
@@ -79,6 +79,12 @@ class VariantListContainer extends Component {
 
   get variants() {
     return (this.state && this.state.variants) || this.props.variants;
+  }
+
+  handleCreateVariant = () => {
+    const selectedProduct =  ReactionProduct.selectedProduct();
+
+    Meteor.call("products/createVariant", selectedProduct._id);
   }
 
   handleVariantClick = (event, variant, ancestors = -1) => {
@@ -162,6 +168,7 @@ class VariantListContainer extends Component {
           onMoveVariant={this.handleMoveVariant}
           onVariantClick={this.handleVariantClick}
           onVariantVisibiltyToggle={this.handleVariantVisibilityToggle}
+          onCreateVariant={this.handleCreateVariant}
           {...this.props}
           variants={this.variants}
         />

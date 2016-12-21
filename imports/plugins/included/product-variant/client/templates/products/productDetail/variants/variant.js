@@ -90,7 +90,7 @@ function showVariant(variant) {
 
   ReactionProduct.setCurrentVariant(variant._id);
   Session.set("variant-form-" + variant._id, true);
-  Reaction.Router.go("product", {handle: selectedProduct.handle, variantId: variant._id});
+  Reaction.Router.go("product", { handle: selectedProduct.handle, variantId: variant._id });
 
   if (Reaction.hasPermission("createProduct")) {
     Reaction.showActionView({

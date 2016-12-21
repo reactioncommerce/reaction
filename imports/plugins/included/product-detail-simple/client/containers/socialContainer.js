@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from "react";
-import { composeWithTracker } from "react-komposer";
+import { composeWithTracker } from "/lib/api/compose";
 import { ReactionProduct } from "/lib/api";
 import SocialButtons from "/imports/plugins/included/social/client/components/socialButtons";
 import { createSocialSettings } from "/imports/plugins/included/social/lib/helpers";
@@ -24,7 +24,7 @@ class ProductSocialContainer extends Component {
 }
 
 function composer(props, onData) {
-  const product = ReactionProduct.selectedProduct();
+  const product = ReactionProduct.selectedProduct() || {};
   const selectedVariant = ReactionProduct.selectedVariant() || {};
   let title = product.title;
   let mediaUrl;
