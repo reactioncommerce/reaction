@@ -36,7 +36,7 @@ export function getCartItem(options = {}) {
 }
 
 function getSingleCartItem(options = {}) {
-  let cartItem = getCartItem(options);
+  const cartItem = getCartItem(options);
   const quantity = options.cartQuantity || 1;
   cartItem.quantity = quantity;
   return cartItem;
@@ -55,7 +55,7 @@ export function createCart(productId, variantId) {
     title: product.title
   };
 
-  let cart = {
+  const cart = {
     shopId: getShop()._id,
     userId: user._id,
     sessionId: Random.id(),
@@ -141,7 +141,7 @@ export default function () {
 
   const cartTwo = {
     items: [
-      getSingleCartItem({ cartQuantity: 2})
+      getSingleCartItem({ cartQuantity: 2 })
     ]
   };
 

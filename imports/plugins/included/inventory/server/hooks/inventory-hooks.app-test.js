@@ -15,7 +15,7 @@ Fixtures();
 function resetInventory() {
   Inventory.remove({});
   const products = Products.find().fetch();
-  for (let product of products) {
+  for (const product of products) {
     registerInventory(product);
   }
 }
