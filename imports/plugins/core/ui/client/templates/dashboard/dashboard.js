@@ -30,7 +30,7 @@ Template.uiDashboard.helpers({
           icon: "files-o fa-fw",
           onClick() {
             Alerts.alert({
-              title: i18n.t("reactionUI.duplicateTheme", "Duplicate Theme"),
+              title: i18next.t("reactionUI.duplicateTheme", "Duplicate Theme"),
               showCancelButton: true,
               confirmButtonText: "Duplicate"
             }, () => {
