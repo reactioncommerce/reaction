@@ -1,2 +1,2 @@
-import "./templates/email.html";
-import "./templates/email.js";
+import "./templates/settings.html";
+import "./templates/settings.js";

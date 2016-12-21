@@ -27,6 +27,7 @@ export const methods = {
 
   /**
    * taxes/setRate
+   * update the cart without hooks
    * @param  {String} cartId cartId
    * @param  {Number} taxRate taxRate
    * @param  {Object} taxes taxes
@@ -37,7 +38,7 @@ export const methods = {
     check(taxRate, Number);
     check(taxes, Match.Optional(Array));
 
-    return Cart.update(cartId, {
+    return Cart.direct.update(cartId, {
       $set: {
         taxes: taxes,
         tax: taxRate

@@ -182,9 +182,10 @@ Meteor.methods({
 
     let result;
     try {
+      console.log(refundDetails)
       const refundResult = StripeApi.methods.createRefund.call({ refundDetails });
       Logger.info(refundResult);
-      if (refundResult.object === "refund") {
+      if (refundResult && refundResult.object === "refund") {
         result = {
           saved: true,
           response: refundResult

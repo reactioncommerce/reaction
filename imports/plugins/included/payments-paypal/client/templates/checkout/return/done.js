@@ -23,7 +23,7 @@ function showError(error) {
 function buildPaymentMethod(result, status, mode) {
   const paymentMethod = {
     processor: "PaypalExpress",
-    method: "Paypal Express Checkout",
+    method: "credit",
     transactionId: result.TRANSACTIONID,
     amount: parseFloat(result.AMT, 10),
     status: status,

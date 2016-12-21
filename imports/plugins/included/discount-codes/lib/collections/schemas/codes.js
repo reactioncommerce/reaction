@@ -14,6 +14,11 @@ export const DiscountCodes = new SimpleSchema([
       type: String,
       defaultValue: "code"
     },
+    "calculation.method": {
+      type: String,
+      index: 1,
+      defaultValue: "discount"
+    },
     "code": {
       label: "Discount Code",
       type: String

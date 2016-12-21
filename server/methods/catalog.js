@@ -2,7 +2,7 @@ import _ from  "lodash";
 import { EJSON } from "meteor/ejson";
 import { check } from "meteor/check";
 import { Meteor } from "meteor/meteor";
-import { Catalog, copyFile } from "/lib/api";
+import { Catalog, copyFile, ReactionProduct } from "/lib/api";
 import { Media, Products, Revisions, Tags } from "/lib/collections";
 import { Logger, Reaction } from "/server/api";
 
@@ -1257,6 +1257,13 @@ Meteor.methods({
         type: product.type
       }
     });
+
+    if (Array.isArray(product.ancestors) && product.ancestors.length) {
+      const updateId = product.ancestors[0] || product._id;
+      const updatedPriceRange = ReactionProduct.getProductPriceRange(updateId);
+
+      Meteor.call("products/updateProductField", updateId, "price", updatedPriceRange);
+    }
 
     // if collection updated we return new `isVisible` state
     return res === 1 && !product.isVisible;

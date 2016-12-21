@@ -70,7 +70,7 @@ AutoForm.addHooks("example-payment-form", {
           paymentMethod = {
             processor: "Example",
             storedCard: storedCard,
-            method: "Example Payment",
+            method: "credit",
             transactionId: transaction.transactionId,
             currency: transaction.currency,
             amount: transaction.amount,

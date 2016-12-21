@@ -6,7 +6,7 @@ Reaction.registerPackage({
   icon: "fa fa-paypal",
   settings: {
     express: {
-      enabled: true
+      enabled: false
     },
     payflow: {
       enabled: false

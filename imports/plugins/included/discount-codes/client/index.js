@@ -1,3 +1,2 @@
-import "./collections/codes.js";
-import "./settings/codes";
-import "./checkout/codes";
+import "./collections/codes";
+import "./templates";

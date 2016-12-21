@@ -8,6 +8,13 @@
         "applyDiscount": "Apply",
         "discountError": "Sorry, there was an error applying discount."
       },
+      "discounts": {
+        "enterItHere": "Have a code? Enter it here.",
+        "discountLabel": "Discount Code",
+        "submitted": "Discount saved and applied",
+        "applied": "applied",
+        "code": "code"
+      },
       "admin": {
         "paymentSettings": {
           "codesLabel": "Codes"
@@ -24,6 +31,9 @@
           "code": "Code",
           "discountMethod": "Method",
           "discount": "Discount",
+          "calculation": {
+            "method": "Calculation"
+          },
           "conditions": {
             "redemptionLimit": "Limit"
           }
