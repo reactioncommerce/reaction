@@ -48,6 +48,10 @@ Template.products.onCreated(function () {
     canLoadMoreProducts: false
   });
 
+  // We're not ready to serve prerendered page until products have loaded
+  window.prerenderReady = false;
+
+
   // Update product subscription
   this.autorun(() => {
     const slug = Reaction.Router.getParam("slug");
@@ -71,7 +75,12 @@ Template.products.onCreated(function () {
     this.state.set("slug", slug);
 
     const queryParams = Object.assign({}, tags, Reaction.Router.current().queryParams);
-    this.subscribe("Products", scrollLimit, queryParams);
+    const productsSubscription = this.subscribe("Products", scrollLimit, queryParams);
+
+    // Once our products subscription is ready, we are ready to render
+    if (productsSubscription.ready()) {
+      window.prerenderReady = true;
+    }
 
     // we are caching `currentTag` or if we are not inside tag route, we will
     // use shop name as `base` name for `positions` object

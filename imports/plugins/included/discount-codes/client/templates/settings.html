@@ -21,12 +21,11 @@
         resetOnSuccess=true
       }}
         <div>
-          {{> afQuickField name='code' class='form-control' placeholder="Discount Code"}}
-          {{> afQuickField name='label' class='form-control' placeholder="Public Label"}}
-          {{> afQuickField name='description' class='form-control' placeholder="description"}}
-          {{> afQuickField name='discount' class='form-control'}}
-          {{> afQuickField name='conditions.accountLimit' class='form-control'}}
-          {{> afQuickField name='conditions.redemptionLimit' class='form-control'}}
+          {{> afQuickField name='code' placeholder="Discount Code"}}
+          {{> afQuickField name='discount' placeholder="Discount formula value"}}
+          {{> afQuickField name='conditions.accountLimit'}}
+          {{> afQuickField name='conditions.redemptionLimit'}}
+          {{> afQuickField name='calculation'}}
           {{> afQuickField name='discountMethod' type="hidden"}}
         </div>
         {{> discountCodeSettingsSubmitButton instance=instance}}
@@ -43,12 +42,11 @@
         resetOnSuccess=true
       }}
         <div>
-          {{> afQuickField name='code' class='form-control' placeholder="Discount Code"}}
-          {{> afQuickField name='label' class='form-control' placeholder="Public Label"}}
-          {{> afQuickField name='description' class='form-control' placeholder="description"}}
-          {{> afQuickField name='discount' class='form-control'}}
-          {{> afQuickField name='conditions.accountLimit' class='form-control'}}
-          {{> afQuickField name='conditions.redemptionLimit' class='form-control'}}
+          {{> afQuickField name='code' placeholder="Discount Code"}}
+          {{> afQuickField name='discount' placeholder="Discount formula value"}}
+          {{> afQuickField name='conditions.accountLimit'}}
+          {{> afQuickField name='conditions.redemptionLimit'}}
+          {{> afQuickField name='calculation'}}
           {{> afQuickField name='discountMethod' type="hidden"}}
         </div>
         {{> discountCodeSettingsSubmitButton instance=instance}}

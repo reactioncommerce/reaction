@@ -2,7 +2,7 @@
 
    {{#if editTracking}}
    <form class="form-inline" name="addTrackingForm">
-     <div class="form-group">
+     <div>
        {{i18n "orderShipping.tracking" "Tracking"}}: <label>{{tracking}}</label>
        <input class="form-control" type="text" name="trackingNumber" value="{{shipment.tracking}}">
        <button class="btn btn-default" type="submit" data-i18n="app.save">Save</button>

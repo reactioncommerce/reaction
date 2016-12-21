@@ -9,5 +9,8 @@ import { Template } from "meteor/templating";
 Template.cartSubTotals.helpers({
   cart() {
     return Cart.findOne();
+  },
+  isValid(option) {
+    return option > 0 ? true : false;
   }
 });

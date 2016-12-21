@@ -13,20 +13,35 @@ export const Discounts = new SimpleSchema({
     label: "Discounts shopId"
   },
   "label": {
-    type: String
+    type: String,
+    optional: true
   },
   "description": {
     type: String,
     optional: true
   },
   "discountMethod": {
-    label: "Calculation Method",
+    label: "Discount Method Type",
     type: String,
-    index: 1
+    index: 1,
+    allowedValues: ["code", "rate"]
   },
+  // discount is allowed to be string or number.
+  // it's a formula value (could be shipping code)
   "discount": {
     type: String,
     optional: true
+  },
+  "calculation": {
+    type: Object,
+    optional: true,
+    label: "Calculation"
+  },
+  "calculation.method": {
+    type: String,
+    index: 1,
+    defaultValue: "discount",
+    allowedValues: ["credit", "discount", "sale", "shipping"]
   },
   "conditions": {
     type: Object,
