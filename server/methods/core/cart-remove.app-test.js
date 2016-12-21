@@ -32,6 +32,7 @@ describe("cart methods", function () {
     });
 
     it("should remove item from cart", function (done) {
+      this.timeout(5000);
       const cart = Factory.create("cart");
       const cartUserId = cart.userId;
       sandbox.stub(Reaction, "getShopId", () => shop._id);
@@ -54,34 +55,33 @@ describe("cart methods", function () {
       return done();
     });
 
-    it("when called with a quantity, should decrease the quantity", function () {
+    it("should decrease the quantity when called with a quantity", function () {
       sandbox.stub(Meteor.server.method_handlers, "cart/resetShipmentMethod", function () {
         check(arguments, [Match.Any]);
       });
       sandbox.stub(Meteor.server.method_handlers, "shipping/updateShipmentQuotes", function () {
         check(arguments, [Match.Any]);
       });
-      const cart = Factory.create("cart");
+      const cart = Factory.create("cartTwo");
       const cartUserId = cart.userId;
       sandbox.stub(Reaction, "getShopId", () => shop._id);
       sandbox.stub(Meteor, "userId", () => cartUserId);
       const cartFromCollection = Collections.Cart.findOne(cart._id);
       const cartItemId = cartFromCollection.items[0]._id;
-      const originalQty = cartFromCollection.items[0].quantity;
       Meteor.call("cart/removeFromCart", cartItemId, 1);
       Meteor._sleepForMs(500);
       const updatedCart = Collections.Cart.findOne(cart._id);
-      expect(updatedCart.items[0].quantity).to.equal(originalQty - 1);
+      expect(updatedCart.items[0].quantity).to.equal(1);
     });
 
-    it("when quantity is decresed to zero, remove cart item", function () {
+    it("should remove cart item when quantity is decresed to zero", function () {
       sandbox.stub(Meteor.server.method_handlers, "cart/resetShipmentMethod", function () {
         check(arguments, [Match.Any]);
       });
       sandbox.stub(Meteor.server.method_handlers, "shipping/updateShipmentQuotes", function () {
         check(arguments, [Match.Any]);
       });
-      const cart = Factory.create("cart");
+      const cart = Factory.create("cartOne");
       const cartUserId = cart.userId;
       sandbox.stub(Reaction, "getShopId", () => shop._id);
       sandbox.stub(Meteor, "userId", () => cartUserId);
@@ -91,7 +91,7 @@ describe("cart methods", function () {
       Meteor.call("cart/removeFromCart", cartItemId, originalQty);
       Meteor._sleepForMs(500);
       const updatedCart = Collections.Cart.findOne(cart._id);
-      expect(updatedCart.items.length).to.equal(1);
+      expect(updatedCart.items.length).to.equal(0);
     });
 
     it("should throw an exception when attempting to remove item from cart of another user", function (done) {

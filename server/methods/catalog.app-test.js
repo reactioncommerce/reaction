@@ -14,10 +14,6 @@ import { RevisionApi } from "/imports/plugins/core/revisions/lib/api/revisions";
 
 Fixtures();
 
-before(function () {
-  this.timeout(6000);
-  Meteor._sleepForMs(500);
-});
 
 describe("core product methods", function () {
   // we can't clean Products collection after each test from now, because we
@@ -117,6 +113,7 @@ describe("core product methods", function () {
       let variants = Products.find({ ancestors: [product._id] }).fetch();
       expect(variants.length).to.equal(1);
       Meteor.call("products/createVariant", product._id);
+      Meteor._sleepForMs(500);
       variants = Products.find({ ancestors: [product._id] }).fetch();
       expect(variants.length).to.equal(2);
       return done();
@@ -133,11 +130,11 @@ describe("core product methods", function () {
       expect(options.length).to.equal(2);
 
       Meteor.call("products/createVariant", variant._id);
+      Meteor._sleepForMs(500);
       options = Products.find({
         ancestors: { $in: [variant._id] }
       }).fetch();
       expect(options.length).to.equal(3);
-
       return done();
     });
 
@@ -199,7 +196,6 @@ describe("core product methods", function () {
 
     it("should not update individual variant by admin passing in partial object", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
-      let updatedVariant;
       const product = addProduct();
       const variant = Products.find({ ancestors: [product._id] }).fetch()[0];
       Meteor.call("products/updateVariant", {
@@ -207,7 +203,7 @@ describe("core product methods", function () {
         title: "Updated Title",
         price: 7
       });
-      updatedVariant = Products.findOne(variant._id);
+      const updatedVariant = Products.findOne(variant._id);
       expect(updatedVariant.price).to.not.equal(7);
       expect(updatedVariant.title).to.not.equal("Updated Title");
       expect(updatedVariant.optionTitle).to.equal(variant.optionTitle);
@@ -305,11 +301,10 @@ describe("core product methods", function () {
         check(arguments, [Match.Any]);
       });
       const product = addProduct();
-      let productCloned;
       expect(Products.find({ type: "simple" }).count()).to.equal(1);
       Meteor.call("products/cloneProduct", product);
       expect(Products.find({ type: "simple" }).count()).to.equal(2);
-      productCloned = Products.find({
+      const productCloned = Products.find({
         _id: {
           $ne: product._id
         },
@@ -476,7 +471,7 @@ describe("core product methods", function () {
       sandbox.stub(Reaction, "hasPermission", () => false);
       const updateProductSpy = sandbox.spy(Products, "update");
       expect(() => Meteor.call("products/updateProductField",
-          "fakeId", "title", "Updated Title")).to.throw(Meteor.Error, /Access Denied/);
+        "fakeId", "title", "Updated Title")).to.throw(Meteor.Error, /Access Denied/);
       expect(updateProductSpy).to.not.have.been.called;
     });
 
@@ -850,7 +845,7 @@ describe("core product methods", function () {
         updatedAt: new Date()
       };
       expect(() => Meteor.call("products/updateProductPosition",
-          product._id, position, tag.slug)).to.not.throw(Meteor.Error, /Access Denied/);
+        product._id, position, tag.slug)).to.not.throw(Meteor.Error, /Access Denied/);
       const updatedProduct = Products.findOne(product._id);
       expect(updatedProduct.positions).to.be.undefined;
 
@@ -867,7 +862,7 @@ describe("core product methods", function () {
         updatedAt: new Date()
       };
       expect(() => Meteor.call("products/updateProductPosition",
-          product._id, position, tag.slug)).to.not.throw(Meteor.Error, /Access Denied/);
+        product._id, position, tag.slug)).to.not.throw(Meteor.Error, /Access Denied/);
       const updatedProductRevision = Revisions.findOne({ documentId: product._id });
       expect(updatedProductRevision.documentData.positions[tag.slug].position).to.equal(0);
 
@@ -884,7 +879,7 @@ describe("core product methods", function () {
         updatedAt: new Date()
       };
       expect(() => Meteor.call("products/updateProductPosition",
-          product._id, position, tag.slug)).to.not.throw(Meteor.Error, /Access Denied/);
+        product._id, position, tag.slug)).to.not.throw(Meteor.Error, /Access Denied/);
       Meteor.call("revisions/publish", product._id);
       const updatedProduct = Products.findOne(product._id);
       expect(updatedProduct.positions[tag.slug].position).to.equal(0);

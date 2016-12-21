@@ -30,9 +30,65 @@ export function getCartItem(options = {}) {
     shopId: getShop()._id,
     quantity: _.random(1, selectedOption.inventoryQuantity),
     variants: selectedOption,
-    title: "cart title"
+    title: product.title
   };
   return _.defaults(options, defaults);
+}
+
+function getSingleCartItem(options = {}) {
+  const cartItem = getCartItem(options);
+  const quantity = options.cartQuantity || 1;
+  cartItem.quantity = quantity;
+  return cartItem;
+}
+
+export function createCart(productId, variantId) {
+  const product = Products.findOne(productId);
+  const variant = Products.findOne(variantId);
+  const user = Factory.create("user");
+  const cartItem = {
+    _id: Random.id(),
+    productId: product._id,
+    shopId: getShop()._id,
+    quantity: 1,
+    variants: variant,
+    title: product.title
+  };
+
+  const cart = {
+    shopId: getShop()._id,
+    userId: user._id,
+    sessionId: Random.id(),
+    email: faker.internet.email(),
+    items: [cartItem],
+    shipping: [
+      {
+        _id: Random.id(),
+        address: getAddress()
+      }
+    ],
+    billing: [
+      {
+        _id: Random.id(),
+        address: getAddress()
+      }
+    ],
+    workflow: {
+      status: "checkoutPayment",
+      workflow: [
+        "checkoutLogin",
+        "checkoutAddressBook",
+        "coreCheckoutShipping",
+        "checkoutReview",
+        "checkoutPayment"
+      ]
+    },
+    createdAt: faker.date.past(),
+    updatedAt: new Date()
+  };
+  const newCartId = Cart.insert(cart);
+  const insertedCart = Cart.findOne(newCartId);
+  return insertedCart;
 }
 
 
@@ -41,6 +97,22 @@ export default function () {
    * Cart Factory
    * @summary define cart Factory
    */
+
+  const cartNoItems = {
+    shopId: getShop()._id,
+    userId: Factory.get("user"),
+    sessionId: Random.id(),
+    email: faker.internet.email(),
+    items: [],
+    shipping: [],
+    billing: [],
+    workflow: {
+      status: "new",
+      workflow: []
+    },
+    createdAt: faker.date.past(),
+    updatedAt: new Date()
+  };
 
   const cart = {
     shopId: getShop()._id,
@@ -60,6 +132,19 @@ export default function () {
     createdAt: faker.date.past(),
     updatedAt: new Date()
   };
+
+  const cartOne = {
+    items: [
+      getSingleCartItem()
+    ]
+  };
+
+  const cartTwo = {
+    items: [
+      getSingleCartItem({ cartQuantity: 2 })
+    ]
+  };
+
   const addressForOrder = getAddress();
   const cartToOrder = {
     shopId: getShop()._id,
@@ -94,4 +179,7 @@ export default function () {
   Factory.define("cart", Cart, Object.assign({}, cart));
   Factory.define("cartToOrder", Cart, Object.assign({}, cart, cartToOrder));
   Factory.define("anonymousCart", Cart, Object.assign({}, cart, anonymousCart));
+  Factory.define("cartOne", Cart, Object.assign({}, cart, cartToOrder, cartOne));
+  Factory.define("cartTwo", Cart, Object.assign({}, cart, cartToOrder, cartTwo));
+  Factory.define("cartNoItems", Cart, Object.assign({}, cart, cartToOrder, cartNoItems));
 }
