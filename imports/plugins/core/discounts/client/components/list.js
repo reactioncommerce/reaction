@@ -37,7 +37,9 @@ class DiscountList extends Component {
     return (
       <div className="rui list-group-item" key={_id}>
         <span>
-          {code} <Translation defaultValue="Discount applied" i18nKey={"discounts.applied"} />
+          {code}&nbsp;
+          <Translation defaultValue="code" i18nKey={"discounts.code"} />&nbsp;
+          <Translation defaultValue="Discount applied" i18nKey={"discounts.applied"} />
         </span>
         {TrashCan}
       </div>

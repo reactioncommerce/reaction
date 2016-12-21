@@ -1,7 +1,8 @@
 import _ from "lodash";
+import accounting from "accounting-js";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
-import { Reaction, i18next, Logger } from "/client/api";
+import { Reaction, i18next } from "/client/api";
 import { Orders, Shops } from "/lib/collections";
 
 const orderFilters = [{
@@ -294,6 +295,15 @@ Template.orderStatusDetail.onCreated(function () {
 });
 
 Template.orderStatusDetail.helpers({
+  // helper to format currency
+  formatAmount(value) {
+    let amount = value || "";
+    if (typeof value === "number") {
+      amount = accounting.toFixed(value, 2);
+    }
+    return amount;
+  },
+  // order age helper
   orderAge: function () {
     return moment(this.createdAt).fromNow();
   },

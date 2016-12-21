@@ -12,7 +12,8 @@
         "enterItHere": "Have a code? Enter it here.",
         "discountLabel": "Discount Code",
         "submitted": "Discount saved and applied",
-        "applied": "code applied"
+        "applied": "applied",
+        "code": "code"
       },
       "admin": {
         "paymentSettings": {
