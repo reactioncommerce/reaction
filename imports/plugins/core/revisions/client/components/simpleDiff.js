@@ -14,9 +14,9 @@ class SimpleDiff extends Component {
         case "A":
           return (
             <tr className="success" key={index}>
-              <td><i className="fa fa-plus"></i></td>
-              <td style={{whiteSpace: "normal"}}>{leftHandSide}</td>
-              <td style={{whiteSpace: "normal"}}>{rightHandSide}</td>
+              <td><i className="fa fa-plus" /></td>
+              <td style={{ whiteSpace: "normal" }}>{leftHandSide}</td>
+              <td style={{ whiteSpace: "normal" }}>{rightHandSide}</td>
             </tr>
           );
 
@@ -24,9 +24,9 @@ class SimpleDiff extends Component {
         case "N":
           return (
             <tr className="success" key={index}>
-              <td><i className="fa fa-plus"></i></td>
-              <td style={{whiteSpace: "normal"}}>{leftHandSide}</td>
-              <td style={{whiteSpace: "normal"}}>{rightHandSide}</td>
+              <td><i className="fa fa-plus" /></td>
+              <td style={{ whiteSpace: "normal" }}>{leftHandSide}</td>
+              <td style={{ whiteSpace: "normal" }}>{rightHandSide}</td>
             </tr>
           );
 
@@ -34,9 +34,9 @@ class SimpleDiff extends Component {
         case "E":
           return (
             <tr className="warning" key={index}>
-              <td><i className="fa fa-pencil"></i></td>
-              <td style={{whiteSpace: "normal"}}>{leftHandSide}</td>
-              <td style={{whiteSpace: "normal"}}>{rightHandSide}</td>
+              <td><i className="fa fa-pencil" /></td>
+              <td style={{ whiteSpace: "normal" }}>{leftHandSide}</td>
+              <td style={{ whiteSpace: "normal" }}>{rightHandSide}</td>
             </tr>
           );
 
@@ -44,9 +44,9 @@ class SimpleDiff extends Component {
         case "D":
           return (
             <tr className="danger" key={index}>
-              <td><i className="fa fa-times"></i></td>
-              <td style={{whiteSpace: "normal"}}>{leftHandSide}</td>
-              <td style={{whiteSpace: "normal"}}>{rightHandSide}</td>
+              <td><i className="fa fa-times" /></td>
+              <td style={{ whiteSpace: "normal" }}>{leftHandSide}</td>
+              <td style={{ whiteSpace: "normal" }}>{rightHandSide}</td>
             </tr>
           );
         default:
@@ -61,7 +61,7 @@ class SimpleDiff extends Component {
         <table className="table table-bordered">
           <thead>
             <tr>
-              <th></th>
+              <th />
               <th>{"Current"}</th>
               <th>{"Change"}</th>
             </tr>

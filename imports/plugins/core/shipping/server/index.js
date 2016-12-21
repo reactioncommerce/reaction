@@ -1,1 +1,1 @@
-import "./methods";
+import "./methods/methods";

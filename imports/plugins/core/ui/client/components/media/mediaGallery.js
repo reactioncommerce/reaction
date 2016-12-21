@@ -51,6 +51,7 @@ class MediaGallery extends Component {
               editable={this.props.editable}
               index={index}
               key={index}
+              revision={this.featuredMedia.revision}
               metadata={this.featuredMedia.metadata}
               onMouseEnter={this.props.onMouseEnterMedia}
               onMouseLeave={this.props.onMouseLeaveMedia}
@@ -66,6 +67,7 @@ class MediaGallery extends Component {
             editable={this.props.editable}
             index={index}
             key={index}
+            revision={media.revision}
             metadata={media.metadata}
             onMouseEnter={this.props.onMouseEnterMedia}
             onMouseLeave={this.props.onMouseLeaveMedia}

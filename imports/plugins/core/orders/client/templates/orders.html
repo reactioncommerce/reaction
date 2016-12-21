@@ -44,11 +44,11 @@
         <div class="order-detail-item address">
           {{> orderDetail order}}
         </div>
-        <div class="order-detail-item status">
-          {{> orderStatusDetail order}}
-        </div>
         <div class="order-detail-item summary">
           {{> ordersListSummary order=order currencyFormat=currencyFormat}}
+        </div>
+        <div class="order-detail-item status">
+          {{> orderStatusDetail order}}
         </div>
       </div>
 
@@ -70,11 +70,53 @@
 
 <template name="orderStatusDetail">
   <div class="col-xs-8">
-    <div data-i18n="orderDetail.created">Created {{orderAge}} {{dateFormat createdAt format="MMM D, YYYY hh:mm:ss A"}}</div>
-    <p>
-      Tracking: <a href="#">{{shipmentTracking}}</a> - 
-      <span class="badge badge-{{shipmentStatus.status}}">{{shipmentStatus.label}}</span>
-    </p>
+    <div>
+      <i class="fa fa-cart-plus"></i>
+      <span>{{orderAge}}</span>
+      <span>{{dateFormat createdAt format="MMM D"}}</span>
+    </div>
+
+    {{#each billing}}
+        {{#if condition paymentMethod.method 'eq' "discount"}}
+          <div>
+            <i class="fa fa-cart-arrow-down"></i>
+            {{paymentMethod.code}}
+            <span data-i18n="discounts.applied">applied</span>
+          </div>
+        {{/if}}
+
+        {{#if condition paymentMethod.method 'eq' "rate"}}
+          <div>
+            <i class="fa fa-money"></i>
+            {{paymentMethod.amount}}
+            <span data-i18n="discounts.applied">applied</span>
+          </div>
+        {{/if}}
+
+        {{#if condition paymentMethod.method 'eq' "credit"}}
+          <div>
+            <i class="fa fa-credit-card-alt"></i>
+            {{paymentMethod.storedCard}} ({{formatAmount paymentMethod.amount}})
+          </div>
+        {{/if}}
+
+        {{#if condition paymentMethod.method 'eq' "shipping"}}
+          <div>
+            <i class="fa fa-cart-arrow-down"></i>
+            {{paymentMethod.code}} - ({{paymentMethod.amount}})
+            <span data-i18n="discounts.applied">applied</span>
+          </div>
+        {{/if}}
+
+    {{/each}}
+
+    {{#if shipmentTracking}}
+      <div>
+        <i class="fa fa-truck"></i>
+        <span class="badge badge-{{shipmentStatus.status}}">{{shipmentStatus.label}}</span>
+        <a href="#">{{shipmentTracking}}</a>
+      </div>
+    {{/if}}
   </div>
 </template>
 

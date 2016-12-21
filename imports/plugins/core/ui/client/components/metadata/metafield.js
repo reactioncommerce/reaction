@@ -1,7 +1,29 @@
 import React, { Component, PropTypes } from "react";
+import Velocity from "velocity-animate";
+import "velocity-animate/velocity.ui";
 import { TextField, Button } from "../";
 
 class Metafield extends Component {
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.metafield.key !== this.props.metafield.key) {
+      const input = this.refs.keyInput.refs.input;
+
+      Velocity.RunSequence([
+        { e: input, p: { backgroundColor: "#e2f2e2" }, o: { duration: 200 } },
+        { e: input, p: { backgroundColor: "#fff" }, o: { duration: 100 } }
+      ]);
+    }
+
+    if (nextProps.metafield.value !== this.props.metafield.value) {
+      const input = this.refs.valueInput.refs.input;
+
+      Velocity.RunSequence([
+        { e: input, p: { backgroundColor: "#e2f2e2" }, o: { duration: 200 } },
+        { e: input, p: { backgroundColor: "#fff" }, o: { duration: 100 } }
+      ]);
+    }
+  }
 
   get detailNamePlaceholder() {
     return this.props.detailNamePlaceholder || "Detail Name";
@@ -84,6 +106,7 @@ class Metafield extends Component {
               name="key"
               onBlur={this.handleBlur}
               onChange={this.handleChange}
+              onReturnKeyDown={this.handleBlur}
               placeholder={this.detailNamePlaceholder}
               ref="keyInput"
               value={this.props.metafield.key}
@@ -94,6 +117,7 @@ class Metafield extends Component {
               name="value"
               onBlur={this.handleBlur}
               onChange={this.handleChange}
+              onReturnKeyDown={this.handleBlur}
               placeholder={this.detailInfoPlaceholder}
               ref="valueInput"
               value={this.props.metafield.value}

@@ -3,7 +3,7 @@ import { Meteor } from "meteor/meteor";
 import { Tracker } from "meteor/tracker";
 import { SimpleSchema } from "meteor/aldeed:simple-schema";
 import { Reaction } from "/client/api";
-import { Packages, Translations } from "/lib/collections";
+import { Packages } from "/lib/collections";
 
 //
 // Reaction i18n Translations, RTL and Currency Exchange Support

@@ -1,0 +1,24 @@
+[{
+  "language": "English",
+  "i18n": "en",
+  "ns": "reaction-stripe",
+  "translation": {
+    "reaction-payments": {
+      "admin": {
+        "shortcut": {
+          "stripeLabel": "Stripe"
+        },
+        "dashboard": {
+          "stripeLabel": "Stripe",
+          "stripeDescription": "Stripe payments"
+        },
+        "paymentSettings": {
+          "stripeLabel": "Stripe",
+          "stripeSettingsLabel": "Stripe",
+          "stripeSettingsDescription": "Don't have a Stripe API Client ID?",
+          "stripeSettingsGetItHere": "Get it here"
+        }
+      }
+    }
+  }
+}]

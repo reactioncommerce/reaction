@@ -23,7 +23,7 @@ Template.searchModal.helpers({
       {
         id: "_id",
         type: DataType.String,
-        header: i18next.t("search.orderSearchResults.orderId", {defaultValue: "Order ID"}),
+        header: i18next.t("search.orderSearchResults.orderId", { defaultValue: "Order ID" }),
         renderer(cellData, { column, rowData }) {
           return <a data-event-action="goToOrder" data-event-data={cellData}>{cellData}</a>;
         }
@@ -31,7 +31,7 @@ Template.searchModal.helpers({
       {
         id: "shippingName",
         type: DataType.String,
-        header: i18next.t("search.orderSearchResults.shippingName", {defaultValue: "Name"}),
+        header: i18next.t("search.orderSearchResults.shippingName", { defaultValue: "Name" }),
         value: rowData => {
           return rowData.shippingName;
         }
@@ -39,7 +39,7 @@ Template.searchModal.helpers({
       {
         id: "userEmail",
         type: DataType.String,
-        header: i18next.t("search.orderSearchResults.userEmails", {defaultValue: "Email"}),
+        header: i18next.t("search.orderSearchResults.userEmails", { defaultValue: "Email" }),
         value: rowData => {
           return rowData.userEmails[0];
         }
@@ -47,7 +47,7 @@ Template.searchModal.helpers({
       {
         id: "shippingAddress",
         type: DataType.String,
-        header: i18next.t("search.orderSearchResults.shippingAddress", {defaultValue: "Address"}),
+        header: i18next.t("search.orderSearchResults.shippingAddress", { defaultValue: "Address" }),
         value: rowData => {
           return rowData.shippingAddress.address;
         }
@@ -55,7 +55,7 @@ Template.searchModal.helpers({
       {
         id: "shippingCity",
         type: DataType.String,
-        header: i18next.t("search.orderSearchResults.shippingCity", {defaultValue: "City"}),
+        header: i18next.t("search.orderSearchResults.shippingCity", { defaultValue: "City" }),
         value: rowData => {
           return rowData.shippingAddress.city;
         }
@@ -63,7 +63,7 @@ Template.searchModal.helpers({
       {
         id: "shippingRegion",
         type: DataType.String,
-        header: i18next.t("search.orderSearchResults.shippingRegion", {defaultValue: "Region"}),
+        header: i18next.t("search.orderSearchResults.shippingRegion", { defaultValue: "Region" }),
         value: rowData => {
           return rowData.shippingAddress.region;
         }
@@ -71,7 +71,7 @@ Template.searchModal.helpers({
       {
         id: "shippingCountry",
         type: DataType.String,
-        header: i18next.t("search.orderSearchResults.shippingCountry", {defaultValue: "Country"}),
+        header: i18next.t("search.orderSearchResults.shippingCountry", { defaultValue: "Country" }),
         value: rowData => {
           return rowData.shippingAddress.country;
         }
@@ -79,7 +79,7 @@ Template.searchModal.helpers({
       {
         id: "shippingPhone",
         type: DataType.String,
-        header: i18next.t("search.orderSearchResults.shippingPhone", {defaultValue: "Phone"}),
+        header: i18next.t("search.orderSearchResults.shippingPhone", { defaultValue: "Phone" }),
         value: rowData => {
           return rowData.shippingPhone;
         }
@@ -87,7 +87,7 @@ Template.searchModal.helpers({
       {
         id: "shippingStatus",
         type: DataType.String,
-        header: i18next.t("search.orderSearchResults.shippingStatus", {defaultValue: "Shipping Status"}),
+        header: i18next.t("search.orderSearchResults.shippingStatus", { defaultValue: "Shipping Status" }),
         value: rowData => {
           return rowData.shippingStatus;
         },
@@ -100,7 +100,7 @@ Template.searchModal.helpers({
       {
         id: "orderDate",
         type: DataType.Date,
-        header: i18next.t("search.orderSearchResults.orderDate", {defaultValue: "Date"}),
+        header: i18next.t("search.orderSearchResults.orderDate", { defaultValue: "Date" }),
         value: rowData => {
           return rowData.orderDate;
         }
@@ -108,7 +108,7 @@ Template.searchModal.helpers({
       {
         id: "orderTotal",
         type: DataType.Number,
-        header: i18next.t("search.orderSearchResults.orderTotal", {defaultValue: "Total"}),
+        header: i18next.t("search.orderSearchResults.orderTotal", { defaultValue: "Total" }),
         value: rowData => {
           return rowData.orderTotal;
         }

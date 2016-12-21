@@ -38,7 +38,7 @@ Template.loginFormSignInView.events({
     const password = passwordInput.val().trim();
 
     const validatedEmail = LoginFormValidation.email(username);
-    const validatedPassword = LoginFormValidation.password(password, {validationLevel: "exists"});
+    const validatedPassword = LoginFormValidation.password(password, { validationLevel: "exists" });
 
     const templateInstance = Template.instance();
     const errors = {};
