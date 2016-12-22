@@ -58,27 +58,18 @@ ShippoApi.methods.getCarriersRates = new ValidatedMethod({
       shippo = require("shippo")(apiKey);
     }
 
-
+    const createShipmentFiber = Meteor.wrapAsync(shippo.shipment.create, shippo.shipment);
     try {
-      shipment = shippo.shipment.create({
-        "object_purpose": purpose,
-        "address_from": addressFrom,
-        "address_to": addressTo,
-        "parcel": parcel,
-        "submission_type": "DROPOFF",
-        "async": false
+      const shipment = createShipmentFiber({
+            "object_purpose": purpose,
+            "address_from": addressFrom,
+            "address_to": addressTo,
+            "parcel": parcel
       });
-      console.log(JSON.stringify(shipment));
     } catch (error) {
       throw new Meteor.Error(error.message);
     }
-    // const getCarrierRatesFiber = Meteor.wrapAsync(shippo.ship, shippo.address);
-    // try {
-    //   getAddressListFiber();
-    // } catch (error) {
-    //   throw new Meteor.Error(error.message);
-    // }
-    // return true;
+    return true;
 
   }
 });

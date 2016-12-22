@@ -13,15 +13,15 @@ export const addressSchema = new SimpleSchema({
   zip: { type: String, optional: true },
   country: { type: String }, // maybe iso 2
   phone: { type: String, optional: true },
-  email: { type: String, optional: true
-    //, regex: SimpleSchema.RegEx.Email
-  },
+  email: { type: String, regEx: SimpleSchema.RegEx.Email, optional: true },
   is_residential: { type: Boolean, optional: true },
   validate: { type: Boolean, optional: true },
   metadata: { type: String, optional: true }
 });
 
-// overrides the properties required for purchasing labels/shipping
+// Overrides the properties required for purchasing labels/shipping.
+// we don't override the purpose because for some cases like getRatesForCart we don't want to
+// purchase Labels(purpose="QUOTE" but we want all the fields required for purchasing to be present.
 export const purchaseAddressSchema = new SimpleSchema([addressSchema, {
   name: { type: String, optional: false },
   street1: { type: String, optional: false },
@@ -29,11 +29,7 @@ export const purchaseAddressSchema = new SimpleSchema([addressSchema, {
   state: { type: String, optional: false },
   zip: { type: String, optional: false },
   phone: { type: String, optional: false },
-  email: { type: String, optional: true
-    //,
-
-    //regex: SimpleSchema.RegEx.Email
-  }
+  email: { type: String, regEx: SimpleSchema.RegEx.Email, optional: true }
 }]);
 
 export const parcelSchema = new SimpleSchema({

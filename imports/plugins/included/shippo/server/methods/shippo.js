@@ -57,13 +57,13 @@ Meteor.methods({
   },
   "shippo/getCarriersRatesForCart"(cart) {  // Intended to be called from Buyer ..concern for serurity problems
     check(cart, CartSchema);
-    const purpose = "PURCHASE";
+    const purpose = "QUOTE";
     const shop = Shops.findOne({ _id: cart.shopId },
                                { fields: { addressBook: 1, emails: 1 } });
     const addressFrom = createShippoAddress(shop.addressBook[0], shop.emails[0].address, purpose);
 
     const buyer = Accounts.findOne({ _id: cart.userId }, { fields: { emails: 1} });
-    const addressTo = createShippoAddress( cart.billing[0].address, buyer.emails[0].address, purpose);
+    const addressTo = createShippoAddress(cart.billing[0].address, buyer.emails[0].address, purpose);
 
     const parcel = createShippoParcel(cart.items[0].parcel);
     const rates = ShippoApi.methods.getCarriersRates.call({ addressFrom, addressTo, parcel, purpose });
