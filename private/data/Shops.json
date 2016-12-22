@@ -3434,7 +3434,7 @@
     },
     "PHP": {
       "format": "%s %v",
-      "symbol": "PHP"
+      "symbol": "₱"
     },
     "PLN": {
       "format": "%s%v",

@@ -21,7 +21,7 @@ export const methods = {
   "discounts/rates/amount": function (cartId, rateId) {
     check(cartId, String);
     check(rateId, String);
-    let rate = 0;
+    const rate = 0;
     // TODO: discounts/rates/amount
     // should be pricing rate lookup.
     return rate;
@@ -29,7 +29,7 @@ export const methods = {
   "discounts/rates/discount": function (cartId, rateId) {
     check(cartId, String);
     check(rateId, String);
-    let rate = 0;
+    const rate = 0;
     // TODO: discounts/rates/discount
     return rate;
   },
