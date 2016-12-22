@@ -128,6 +128,8 @@ Meteor.publish("Product", function (productId) {
           } else {
             product = Products.findOne(revision.parentDocument);
           }
+
+
           if (product) {
             product.__revisions = [revision];
             this.changed("Products", product._id, product);
