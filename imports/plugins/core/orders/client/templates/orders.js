@@ -312,7 +312,7 @@ Template.orderStatusDetail.helpers({
     if (this.shipping[0].tracking) {
       return this.shipping[0].tracking;
     }
-    return i18next.t("orderShipping.noTracking");
+    return "";
   },
 
   shipmentStatus() {
