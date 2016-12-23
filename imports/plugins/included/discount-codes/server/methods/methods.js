@@ -175,7 +175,7 @@ export const methods = {
    * discounts/codes/apply
    * checks validity of code conditions and then
    * applies a discount as a paymentMethod to cart
-   * @param  {String} id cart id of which to remove a code
+   * @param  {String} id cart/order id of which to remove a code
    * @param  {String} code valid discount code
    * @param  {String} collection collection (either Orders or Cart)
    * @return {Boolean} returns true if successfully applied
@@ -214,7 +214,6 @@ export const methods = {
         amount: discount.discount, // pre-process to amount.
         status: "created"
       };
-      // apply to cart / order
       return Meteor.call("payments/apply", id, paymentMethod, collection);
     }
     return false;
