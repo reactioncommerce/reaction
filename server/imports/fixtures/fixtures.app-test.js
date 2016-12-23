@@ -6,6 +6,8 @@ import { sinon } from "meteor/practicalmeteor:sinon";
 import { Reaction } from "/server/api";
 import * as Collections from "/lib/collections";
 import Fixtures from "/server/imports/fixtures";
+import { addProductSingleVariant } from "/server/imports/fixtures/products";
+import { createCart } from "/server/imports/fixtures/cart";
 
 Fixtures();
 
@@ -34,6 +36,33 @@ describe("Fixtures:", function () {
     expect(cart).to.not.be.undefined;
     const cartCount = Collections.Cart.find().count();
     expect(cartCount).to.be.above(0);
+  });
+
+  it("CartOne fixture should create a cart with one item with a quantity of one", function () {
+    const cartOne = Factory.create("cartOne");
+    expect(cartOne).to.not.be.undefined;
+    const createdCart = Collections.Cart.findOne(cartOne._id);
+    expect(createdCart).to.not.be.undefined;
+    expect(createdCart.items.length).to.equal(1);
+    expect(createdCart.items[0].quantity).to.equal(1);
+  });
+
+  it("CartTwo fixture should create a cart with one item with a quantity of two", function () {
+    const cartOne = Factory.create("cartTwo");
+    expect(cartOne).to.not.be.undefined;
+    const createdCart = Collections.Cart.findOne(cartOne._id);
+    expect(createdCart).to.not.be.undefined;
+    expect(createdCart.items.length).to.equal(1);
+    expect(createdCart.items[0].quantity).to.equal(2);
+  });
+
+  it("createCart function should create a cart with a specific product", function () {
+    const { product, variant } = addProductSingleVariant();
+    const cart = createCart(product._id, variant._id);
+    expect(cart).to.not.be.undefined;
+    const createdCart = Collections.Cart.findOne(cart._id);
+    expect(createdCart).to.not.be.undefined;
+    expect(createdCart.items.length).to.equal(1);
   });
 
   it("Order fixture should create an order", function () {

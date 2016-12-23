@@ -88,7 +88,6 @@ Products.after.insert((userId, doc) => {
   if (doc.type !== "variant") {
     return false;
   }
-  // Meteor.call("inventory/register", doc);
   registerInventory(doc);
 });
 
