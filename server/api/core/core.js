@@ -122,30 +122,37 @@ export default {
     return this.hasPermission(["owner", "admin", "dashboard"]);
   },
 
-  getSellerShopId() {
-    return Roles.getGroupsForUser(this.userId, "admin");
-  },
-
   configureMailUrl() {
     // maintained for legacy support
     Logger.warn("Reaction.configureMailUrl() is deprecated. Please use Reaction.Email.getMailUrl() instead");
     return getMailUrl();
   },
 
-  getCurrentShopCursor() {
+  getCurrentShopCursor(shopId = this.getShopId()) {
     const domain = this.getDomain();
-    const cursor = Shops.find({
+    const query = {
       domains: domain
-    }, { limit: 1 });
-    if (!cursor.count()) {
-      Logger.debug(domain, "Add a domain entry to shops for ");
+    };
+    if (shopId) {
+      query._id = shopId;
     }
+
+    const cursor = Shops.find(query, {
+      limit: 1
+    });
+
+    if (!cursor.count()) {
+      Logger.warn(`getCurrentShopCursor: Add a domain entry to shops for ${domain}`);
+    }
+
     return cursor;
   },
 
-  getCurrentShop() {
-    const currentShopCursor = this.getCurrentShopCursor();
-    // also, we could check in such a way: `currentShopCursor instanceof Object` but not instanceof something.Cursor
+  getCurrentShop(shopId) {
+    const currentShopCursor = this.getCurrentShopCursor(shopId);
+
+    // also, we could check in such a way: `currentShopCursor instanceof Object`
+    // but not instanceof something.Cursor
     if (typeof currentShopCursor === "object") {
       return currentShopCursor.fetch()[0];
     }
@@ -162,6 +169,11 @@ export default {
         _id: 1
       }
     }).fetch()[0];
+
+    if (!shop) {
+      Logger.warn(`getCurrentShopCursor: Add a domain entry to shops for ${domain}`);
+    }
+
     return shop && shop._id;
   },
 
@@ -200,7 +212,55 @@ export default {
   },
 
   getPackageSettings(name) {
-    return Packages.findOne({ packageName: name, shopId: this.getShopId() }) || null;
+    const shopId = this.getShopId();
+    const query = {
+      name
+    };
+
+    if (shopId) {
+      query.shopId = shopId;
+    }
+
+    return Packages.findOne(query) || null;
+  },
+
+  /**
+   * Check if package is enabled
+   * @param  {String}  name Package name
+   * @return {Boolean}      True if the package is enabled
+   */
+  isPackageEnabled(name) {
+    const settings = this.getPackageSettings(name);
+
+    return !!settings.enabled;
+  },
+
+  /**
+   * Add default roles for new visitors
+   * @param {String|Array} roles A string or array of roles and routes
+   */
+  addRolesToVisitors(roles) {
+    Logger.info(`Adding defaultRoles & defaultVisitorRole permissions for ${roles}`);
+
+    const shop = Shops.findOne(this.getShopId());
+
+    if (Match.test(roles, [String])) {
+      Shops.update(shop._id, {
+        $addToSet: { defaultVisitorRole: { $each: roles } }
+      });
+      Shops.update(shop._id, {
+        $addToSet: { defaultRoles: { $each: roles } }
+      });
+    } else if (Match.test(roles, String)) {
+      Shops.update(shop._id, {
+        $addToSet: { defaultVisitorRole: roles }
+      });
+      Shops.update(shop._id, {
+        $addToSet: { defaultRoles: roles }
+      });
+    } else {
+      throw new Meteor.Error(`Failed to add roles ${roles}`);
+    }
   },
 
   /**

@@ -26,7 +26,11 @@ Reaction.registerPackage({
     label: "Orders",
     description: "Fulfill your orders",
     icon: "fa fa-sun-o",
-    priority: 1
+    priority: 1,
+    permissions: [{
+      label: "Create Product",
+      permission: "createProduct"
+    }]
   }, {
     route: "/dashboard/pdf/orders/:id",
     workflow: "coreOrderPrintWorkflow",

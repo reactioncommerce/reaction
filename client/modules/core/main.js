@@ -196,6 +196,17 @@ export default {
     return this.hasPermission(dashboardPermissions);
   },
 
+  getSellerShopId: function (userId = Meteor.userId()) {
+    if (userId) {
+      const group = Roles.getGroupsForUser(userId, "admin")[0];
+      if (group) {
+        return group;
+      }
+    }
+
+    return this.getShopId();
+  },
+
   getShopId() {
     return this.shopId;
   },
@@ -213,7 +224,14 @@ export default {
   },
 
   getPackageSettings(name) {
-    return Packages.findOne({ name, shopId: this.getShopId() });
+    const shopId = this.getShopId();
+    const query = { name };
+
+    if (shopId) {
+      query.shopId = shopId;
+    }
+
+    return Packages.findOne(query);
   },
 
   allowGuestCheckout() {
@@ -224,10 +242,6 @@ export default {
       allowGuest = settings.public.allowGuestCheckout;
     }
     return allowGuest;
-  },
-
-  getSellerShopId() {
-    return Roles.getGroupsForUser(this.userId, "admin");
   },
 
   /**
@@ -276,6 +290,7 @@ export default {
       i18nKeyLabel: ""
     });
   },
+
 
   getCurrentTag() {
     if (this.Router.getRouteName() === "tag") {
