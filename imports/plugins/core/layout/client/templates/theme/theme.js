@@ -10,29 +10,36 @@ import { Tracker } from "meteor/tracker";
  * @returns {Object|null} The layout hash
  */
 function getRouteLayout(context) {
-  const registry = Packages.findOne({ "registry.name": context.route.name, "enabled": true }).registry;
-  const registryRoute = registry.find((x) => {
-    return x.name === context.route.name;
-  });
+  const package = Packages.findOne({ "registry.name": context.route.name, "enabled": true });
 
-  // set a default layout if none is given
-  if (!registryRoute.layout) {
-    registryRoute.layout = Session.get("DEFAULT_LAYOUT") || "coreLayout";
+  if(package) {
+    const registryRoute = package.registry.find((x) => {
+      return x.name === context.route.name;
+    });
+
+    if (registryRoute) {
+      // set a default layout if none is given
+      if (!registryRoute.layout) {
+        registryRoute.layout = Session.get("DEFAULT_LAYOUT") || "coreLayout";
+      }
+
+      const shop = Shops.findOne(Reaction.getShopId());
+      const currentLayout = shop.layout.find((x) => {
+        if (x.layout === registryRoute.layout && x.workflow === registryRoute.workflow && x.enabled === true) {
+          return true;
+        }
+      });
+
+      return currentLayout;
+    }
   }
 
-  const shop = Shops.findOne(Reaction.getShopId());
-  const currentLayout = shop.layout.find((x) => {
-    if (x.layout === registryRoute.layout && x.workflow === registryRoute.workflow && x.enabled === true) {
-      return true;
-    }
-  });
-
-  return currentLayout || null;
+  return null;
 }
 
 /**
  * addBodyClasses
- * Adds body classes to help themes distinguish pages and components based on route name and theme
+ * Adds body classes to help themes distinguish pages and components based on the current route name and layout theme
  * @param  {Object} context - route context
  */
 function addBodyClasses(context) {
@@ -41,14 +48,15 @@ function addBodyClasses(context) {
     "app-" + context.route.name.replace(/[\/_]/i, "-")
   ];
 
-  // no theme defined for index
-  if (context.route.name !== "index") {
-    // find the layout combo for this route
-    const currentLayout = getRouteLayout(context);
+  // find the layout combo for this route
+  const currentLayout = getRouteLayout(context);
 
-    if (currentLayout.theme) {
-      classes.push(currentLayout.theme);
-    }
+  // add theme class for route layout or default
+  if (currentLayout && currentLayout.theme) {
+    classes.push(currentLayout.theme);
+  }
+  else {
+    classes.push("default");
   }
 
   classes = classes.join(" ");
@@ -59,7 +67,7 @@ function addBodyClasses(context) {
   Session.set("BODY_CLASS", classes);
 }
 
-Router.triggers.enter(addBodyClasses);
+Router.Hooks.onEnter(addBodyClasses);
 
 Meteor.startup(() => {
   Tracker.autorun(() => {
