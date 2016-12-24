@@ -184,6 +184,8 @@ export const methods = {
     check(id, String);
     check(code, String);
     check(collection, String);
+    let userCount = 0;
+    let orderCount = 0;
 
     // TODO: further expand to meet all condition rules
     // const conditions = {
@@ -202,6 +204,19 @@ export const methods = {
     // is the discount now re-activated
 
     if (discount) {
+      const { conditions } = discount;
+      if (discount.transactions) {
+        const users = Array.from(discount.transactions, (t) => t.userId);
+        const orders = Array.from(discount.transactions, (t) => t.cartId);
+        userCount = users.length;
+        orderCount = orders.length;
+      }
+
+      // basic limit handling
+      if (conditions.accountLimit <= userCount && conditions.redemptionLimit <= orderCount) {
+        return { i18nKeyLabel: "Code is expired", i18nKey: "discounts.codeIsExpired" };
+      }
+
       // save to payment methods
       // and update status in Discounts
       // payment methods can be debit or credit.
@@ -216,7 +231,6 @@ export const methods = {
       };
       return Meteor.call("payments/apply", id, paymentMethod, collection);
     }
-    return false;
   }
 };
 
