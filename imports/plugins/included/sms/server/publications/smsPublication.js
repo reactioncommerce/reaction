@@ -6,7 +6,7 @@ import { Sms } from "/lib/collections";
  * Sms publication
  * @return {Object} return sms cursor
  */
-Meteor.publish("Sms", function () {
+Meteor.publish("SmsSettings", function () {
   const shopId = Reaction.getShopId();
   if (!shopId) {
     Logger.info("Ignoring null request on Sms Subscription");

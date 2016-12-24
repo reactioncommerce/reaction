@@ -8,9 +8,9 @@ import SmsSettings from "../components/smsSettings";
 
 
 const composer = ({}, onData) => {
-  if (Meteor.subscribe("Sms").ready()) {
-    const settings = Sms.find().fetch();
-    onData(null, { settings: settings[0] });
+  if (Meteor.subscribe("SmsSettings").ready()) {
+    const settings = Sms.findOne();
+    onData(null, { settings: settings });
   }
 };
 

@@ -54,8 +54,8 @@
           "connectTitle": "Connect",
           "connectDescription": "Connect Reaction as a deployed service",
           "ordersLabel": "Orders",
-          "smsLabel": "Sms",
-          "smsTitle": "Sms",
+          "smsLabel": "SMS",
+          "smsTitle": "SMS",
           "smsDescription": "Notifications",
           "ordersTitle": "Orders",
           "ordersDescription": "Fulfill your orders",
@@ -103,6 +103,7 @@
           "localizationAndI18NLabel": "Localization and i18n",
           "searchSettingsLabel": "Search Settings",
           "shopSettingsLabel": "Shop Settings",
+          "smsSettingsLabel": "SMS settings",
           "socialSettingsLabel": "Social Settings",
           "shippingSettingsLabel": "Shipping Settings",
           "stripeSettingsLabel": "Stripe Settings",
@@ -206,6 +207,41 @@
         "shopOptionsSettingsFailed": "Shop options update failed.",
         "shopPaymentMethodsSaved": "Shop Payment Methods settings saved.",
         "shopPaymentMethodsFailed": "Shop Payment Methods settings update failed."
+      },
+      "notifications": {
+        "body": {
+          "noNotifications": "No notifications yet",
+          "markAllAsRead": "Mark all as read",
+          "recent": "Recent",
+          "viewAll": "View All"
+        },
+        "messages": {
+          "orderCancelled": "Your order was canceled.",
+          "newOrder": "Your order is being processed.",
+          "forAdmin": "You have a new order.",
+          "orderDelivered": "Your order has been delivered.",
+          "orderAccepted": "Your order has been accepted.",
+          "orderShipped": "Your order has been shipped."
+        }
+      },
+      "sms": {
+        "headers": {
+          "settings": "SMS Provider"
+        },
+        "settings": {
+          "provider": "Provider",
+          "selectProvider": "Select an SMS provider...",
+          "smsPhone": "SMS Phone Number",
+          "apiKey": "API Key",
+          "apiToken": "API Token/Secret"
+        },
+        "alerts": {
+          "noApiKey": "Please add an API Key",
+          "noApiToken": "Please add an API TOKEN/Secret",
+          "noSmsProvider": "Please choose an SMS provider",
+          "noSmsPhone": "Please add the phone number given to you by your SMS provider",
+          "saveSuccess": "SMS Settings saved"
+        }
       },
       "mail": {
         "headers": {

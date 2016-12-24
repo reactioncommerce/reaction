@@ -2,16 +2,16 @@ import React, { Component } from "react";
 import { composeWithTracker } from "react-komposer";
 import { Meteor } from "meteor/meteor";
 import { Notifications } from "/lib/collections";
-import { NotificationComponent } from "../components";
+import { NotificationRoute } from "../components";
 
-class NotificationContainer extends Component {
+class NotificationRouteContainer extends Component {
   constructor(props) {
     super(props);
   }
 
   render() {
     return (
-        <NotificationComponent {...this.props}/>
+        <NotificationRoute {...this.props}/>
     );
   }
 }
@@ -31,8 +31,8 @@ function handleDelete(id) {
 }
 
 function composer(props, onData) {
-  Meteor.subscribe("Notification", Meteor.userId()).ready();
-  const notificationList = Notifications.find({}, {sort: {timeSent: -1}, limit: 5}).fetch();
+  Meteor.subscribe("Notification", Meteor.userId());
+  const notificationList = Notifications.find({}, {sort: {timeSent: -1}}).fetch();
   const unread = Notifications.find({status: "unread"}).count();
 
   onData(null, {
@@ -44,4 +44,4 @@ function composer(props, onData) {
   });
 }
 
-export default composeWithTracker(composer)(NotificationContainer);
+export default composeWithTracker(composer)(NotificationRouteContainer);

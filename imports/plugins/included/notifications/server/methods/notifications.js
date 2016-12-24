@@ -26,9 +26,8 @@ Meteor.methods({
 
     const values = {};
     const types = {
-      orderCancelled: "Your order was cancelled.",
+      orderCancelled: "Your order was canceled.",
       newOrder: "Your order is being processed.",
-      topWallet: "Your wallet has been credited.",
       forAdmin: "You have a new order.",
       orderDelivered: "Your order has been delivered.",
       orderAccepted: "Your order has been accepted.",
@@ -48,9 +47,9 @@ Meteor.methods({
     }
 
     if (sms) {
-      Meteor.subscribe("Packages").ready();
-      const result = Packages.find({ name: "reaction-sms", shopId: Reaction.getShopId()}).fetch();
-      if (result[0].enabled === true) {
+      Meteor.subscribe("Packages");
+      const result = Packages.findOne({ name: "reaction-sms", shopId: Reaction.getShopId()});
+      if (result && result.enabled === true) {
         Meteor.call("sms/send", values.message, userId, Reaction.getShopId(), (error) => {
           if (error) Logger.warn("Error: error occured while sending sms", error);
         });

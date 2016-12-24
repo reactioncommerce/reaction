@@ -1,5 +1,5 @@
 import { FlatButton } from "/imports/plugins/core/ui/client/components";
-import { NotificationContainer } from "/imports/plugins/custom/notifications/client/containers";
+import { NotificationContainer } from "/imports/plugins/included/notifications/client/containers";
 import { Reaction } from "/client/api";
 import { Tags } from "/lib/collections";
 
@@ -48,14 +48,6 @@ Template.CoreNavigationBar.helpers({
   notificationButtonComponent() {
     return {
       component: NotificationContainer
-      // icon: "fa fa-bell",
-      // kind: "flat"
-      // onClick() {
-      //   Blaze.renderWithData(Template.searchModal, {
-      //   }, $("body").get(0));
-      //   $("body").css("overflow-y", "hidden");
-      //   $("#search-input").focus();
-      // }
     };
   },
   onMenuButtonClick() {

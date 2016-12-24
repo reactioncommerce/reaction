@@ -7,10 +7,12 @@ Reaction.registerPackage({
   autoEnable: true,
   registry: [{
     label: "Notifications",
-    name: "Notifications",
+    name: "notifications",
     route: "/notifications",
+    workflow: "coreWorkflow",
     permissions: [{
-      permission: "account/profile"
+      label: "Notifications",
+      permission: "notifications"
     }],
     template: "notificationRoute"
   }]

@@ -1,7 +1,7 @@
-import { Meteor } from "meteor/meteor";
-import { check } from "meteor/check";
 import Twilio from "twilio";
 import Nexmo from "nexmo";
+import { Meteor } from "meteor/meteor";
+import { check } from "meteor/check";
 import { Sms, Accounts } from "/lib/collections";
 import { Reaction, Logger } from "/server/api";
 
@@ -19,7 +19,7 @@ Meteor.methods({
   "sms/saveSettings": (settings) => {
     check(settings, Object);
     settings.shopId = Reaction.getShopId();
-    Meteor.subscribe("Sms").ready();
+    Meteor.subscribe("SmsSettings").ready();
 
     const smsDetails = Sms.find().count();
     if (smsDetails >= 1) {
@@ -43,14 +43,14 @@ Meteor.methods({
     check(userId, String);
     check(shopId, String);
 
-    Meteor.subscribe("Accounts", userId).ready();
-    const user = Accounts.find().fetch();
-    const phone = user[0].profile.addressBook[0].phone;
+    Meteor.subscribe("Accounts", userId);
+    const user = Accounts.findOne();
+    const phone = user.profile.addressBook[0].phone;
 
-    Meteor.subscribe("Sms", shopId).ready();
-    const smsSettings = Sms.find().fetch();
+    Meteor.subscribe("Sms", shopId);
+    const smsSettings = Sms.findOne();
 
-    const { apiKey, apiToken, smsPhone, smsProvider } = smsSettings[0];
+    const { apiKey, apiToken, smsPhone, smsProvider } = smsSettings;
 
     if (smsProvider === "twilio") {
       Logger.info("choose twilio");

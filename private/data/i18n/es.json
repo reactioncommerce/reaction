@@ -68,6 +68,9 @@
           "searchLabel": "Buscar",
           "searchTitle": "Buscar",
           "searchDescription": "Búsqueda de producto",
+          "smsLabel": "SMS",
+          "smsTitle": "SMS",
+          "smsDescription": "Notificaciones",
           "socialLabel": "Social",
           "socialTitle": "Social",
           "socialDescription": "Configuración de redes sociales",
@@ -99,6 +102,7 @@
           "braintreeSettingsLabel": "Opciones de Braintree",
           "localizationAndI18NLabel": "Localización y L10n",
           "searchSettingsLabel": "Configuración de búsqueda",
+          "smsSettingsLabel": "Configuración de SMS",
           "shopSettingsLabel": "Opciones de tienda",
           "socialSettingsLabel": "Opciones de redes sociales",
           "shippingSettingsLabel": "Opciones de envío",
@@ -200,6 +204,41 @@
         "shopOptionsSettingsFailed": "Actualización de opciones de tienda fallida.",
         "shopPaymentMethodsSaved": "Opciones de métodos de pago guardadas.",
         "shopPaymentMethodsFailed": "Actualización de las opciones de métodos de pago fallida."
+      },
+      "notifications": {
+        "body": {
+          "noNotifications": "No hay notificaciones aún",
+          "markAllAsRead": "Marcar todo como leído",
+          "recent": "Recientes",
+          "viewAll": "Ver todos"
+        },
+        "messages": {
+          "orderCancelled": "Su pedido fue cancelado.",
+          "newOrder": "Su pedido se está procesando.",
+          "forAdmin": "Tienes un nuevo orden.",
+          "orderDelivered": "Su pedido ha sido entregado.",
+          "orderAccepted": "Su pedido ha sido aceptado.",
+          "orderShipped": "Su pedido ha sido enviado."
+        }
+      },
+      "sms": {
+        "headers": {
+          "settings": "Proveedor SMS"
+        },
+        "settings": {
+          "provider": "Proveedor",
+          "selectProvider": "Seleccione un proveedor de SMS ...",
+          "smsPhone": "Número de teléfono SMS",
+          "apiKey": "Clave API",
+          "apiToken": "API Token/Secret"
+        },
+        "alerts": {
+          "noApiKey": "Agregue una clave de API",
+          "noApiToken": "Agregue un token/secreto API",
+          "noSmsProvider": "Elija un proveedor de SMS",
+          "noSmsPhone": "Agregue el número de teléfono que le ha proporcionado su proveedor de SMS",
+          "saveSuccess": "Configuración de SMS guardada"
+        }
       },
       "mail": {
         "headers": {

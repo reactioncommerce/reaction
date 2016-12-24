@@ -16,7 +16,7 @@ class NotificationRoute extends Component {
           <li className="notification">
               <div className="media">
                  <div className="media-body">
-                    <strong className="notification-title">No notifications yet</strong>
+                    <strong className="notification-title" data-i18n="notifications.body.noNotifcations">No notifications yet</strong>
                  </div>
               </div>
           </li>
@@ -33,9 +33,10 @@ class NotificationRoute extends Component {
                 <a onClick={() => {
                   markAllAsRead(notificationList);
                 }}
+                  data-i18n="notifications.body.markAllAsRead"
                 > Mark all as read</a>
             </div>
-            <h3 className="dropdown-toolbar-title">Recent ({unread})</h3>
+            <h3 className="dropdown-toolbar-title"><span data-i18n="notifications.body.recent">Recent</span> ({unread})</h3>
         </div>
     );
   }
@@ -50,6 +51,7 @@ class NotificationRoute extends Component {
                 { notificationList.map((notify, key) => {
                   const timeNow = moment(notify.timeSent).fromNow();
                   const read = `notification ${notify.status}`;
+                  const i18n = `notifications.messages.${notify.type}`;
                   return (
                         <li className={read} key={key}>
                             <a href={notify.url} onClick={() => {
@@ -58,7 +60,7 @@ class NotificationRoute extends Component {
                             >
                                 <div className="media">
                                     <div className="media-body">
-                                    <strong className="notification-title">{notify.message}</strong>
+                                    <strong className="notification-title" data-i18n={i18n}>{notify.message}</strong>
                                     <div className="notification-meta">
                                         <small className="timestamp">{timeNow}</small>
                                     </div>

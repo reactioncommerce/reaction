@@ -13,19 +13,19 @@ export default {
     const { apiKey, apiToken, smsProvider, smsPhone } = settings;
 
     if (!apiKey) {
-      Alert("Warning", "Please add an API Key", "error");
+      Alert(i18next.t("app.error"), i18next.t("sms.alerts.noApiKey"), "error");
       return callback();
     }
     if (!apiToken) {
-      Alert("Warning", "Please add an API Tpken/Secret", "error");
+      Alert(i18next.t("app.error"), i18next.t("sms.alerts.noApiToken"), "error");
       return callback();
     }
     if (!smsProvider) {
-      Alert("Warning", "Please choose an sms provider", "error");
+      Alert(i18next.t("app.error"), i18next.t("sms.alerts.noSmsProvider"), "error");
       return callback();
     }
     if (!smsPhone) {
-      Alert("Warning", "Please add the phone number given to you by your sms provider", "error");
+      Alert(i18next.t("app.error"), i18next.t("sms.alerts.noSmsPhone"), "error");
       return callback();
     }
 
@@ -38,7 +38,7 @@ export default {
         }
         return Alert({
           title: i18next.t("app.success"),
-          text: "Sms Settings saved",
+          text: i18next.t("sms.alerts.saveSuccess"),
           type: "success",
           timer: 1700
         }).catch(() => null);
