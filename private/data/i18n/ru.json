@@ -74,9 +74,6 @@
           "socialLabel": "Социальные сети",
           "socialTitle": "Социальные сети",
           "socialDescription": "Интеграция с соц. сетями",
-          "taxesLabel": "Налоги",
-          "taxesTitle": "Налоги",
-          "taxesDescription": "Конфигурация налогов",
           "themesLabel": "Темы",
           "themesTitle": "Темы",
           "themesDescription": "Темы и UI компоненты",
@@ -112,8 +109,7 @@
           "reactionConnectLabel": "Reaction Connect",
           "examplePaymentSettingsLabel": "Образец платёжной системы",
           "productSettingsLabel": "Настройки продукта",
-          "productDetailsLabel": "Подробные данные о товаре",
-          "taxSettingsLabel": "Настройки налогов"
+          "productDetailsLabel": "Подробные данные о товаре"
         },
         "userAccountDropdown": {
           "profileLabel": "Профиль"
@@ -285,21 +281,6 @@
           "saveSuccess": "Настройки почты сохранены.",
           "saveFailed": "Не удалось сохранить настройки почты. {{error}}"
         }
-      },
-      "taxSettings": {
-        "noCustomTaxRatesFound": "Не найдена пользовательская налоговая ставка.",
-        "shopCustomTaxRatesSaved": "Пользовательская налоговая ставка сохранена.",
-        "shopCustomTaxRatesFailed": "Ошибка при сохранении налоговой ставки.",
-        "shopTaxMethodsSaved": "Метод снижения налоговых выплат.",
-        "shopTaxMethodsFailed": "Это метод снижения налогов не работает.",
-        "customRatesDescription": "Пользовательские ставки",
-        "taxCode": "Налоговый код",
-        "taxShipping": "Указывать доставку",
-        "taxRate": "Ставка",
-        "discountsIncluded": "Указывать скидки",
-        "taxable": "Облагается налогом",
-        "nottaxable": "Не облагается налогом",
-        "confirmRateDelete": "Подтвердите удаление налоговой ставки"
       },
       "header": {
         "tagsAdd": "Добавить метку",

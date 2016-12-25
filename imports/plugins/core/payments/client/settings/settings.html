@@ -1,0 +1,44 @@
+<template name="paymentSettings">
+    <div class="panel-group" id="paymentSettingsAccordian" role="tablist" aria-multiselectable="true">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <div class="panel-title">
+          <a
+            href="#payment-methods"
+            aria-controls="paymentMethods"
+            role="button"
+            data-toggle="collapse"
+            data-parent="#paymentSettingsAccordian"
+            data-i18n="admin.paymentSettings.paymentMethods">Default Method</a>
+        </div>
+      </div>
+      <div id="payment-methods" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="paymentMethods">
+        <div class="panel-body">
+          {{#autoForm collection=Collections.Shops doc=shop id="shopEditPaymentMethodsForm" type="update"
+          autosave=true}}
+            {{> afQuickField name='defaultPaymentMethod' options=paymentMethodOptions}}
+          {{/autoForm}}
+        </div>
+      </div>
+    </div>
+
+    {{#each reactionApps provides='paymentSettings'}}
+
+    <div class="panel panel-default">
+      <div class="panel-heading panel-heading-flex">
+        <div class="panel-title">
+          <i class="fa fa-{{name}}"></i>
+          <span data-i18n="{{i18nKeyLabel}}">{{label}}</span>
+
+        </div>
+        <div class="panel-controls">
+          <input class="checkbox-switch" type="checkbox" name="enabled" data-id={{packageId}} data-key="{{settingsKey}}" {{checked enabled}}>
+        </div>
+      </div>
+      <div class="panel-body {{shown enabled}}">
+        {{> Template.dynamic template=template data=.}}
+      </div>
+    </div>
+    {{/each}}
+  </div>
+</template>

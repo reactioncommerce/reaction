@@ -188,7 +188,7 @@ describe("Account Meteor method ", function () {
         Meteor.call("accounts/addressBookAdd", newAddress);
 
         // now we need to get address ids from cart and compare their
-        const cart = Cart.findOne({userId: account.userId});
+        const cart = Cart.findOne({ userId: account.userId });
         expect(cart.shipping[0].address._id).to.equal(newAddress._id);
         expect(cart.billing[0].address._id).to.equal(newAddress._id);
 
@@ -329,7 +329,7 @@ describe("Account Meteor method ", function () {
         isBillingDefault: false
       });
       Meteor.call("accounts/addressBookUpdate", address);
-      let cart = Cart.findOne({userId: account.userId});
+      let cart = Cart.findOne({ userId: account.userId });
       expect(cart.billing).to.be.undefined;
       expect(cart.shipping).to.be.undefined;
 
@@ -338,7 +338,7 @@ describe("Account Meteor method ", function () {
         isBillingDefault: true
       });
       Meteor.call("accounts/addressBookUpdate", address);
-      cart = Cart.findOne({userId: account.userId});
+      cart = Cart.findOne({ userId: account.userId });
       expect(cart).to.not.be.undefined;
 
       expect(cart.billing[0].address._id).to.equal(address._id);
@@ -409,7 +409,7 @@ describe("Account Meteor method ", function () {
 
       Meteor.call("accounts/addressBookUpdate", address, null, "isBillingDefault");
       Meteor.call("accounts/addressBookUpdate", address, null, "isShippingDefault");
-      const cart = Cart.findOne({userId: userId});
+      const cart = Cart.findOne({ userId: userId });
       expect(cart.billing[0].address._id).to.equal(address._id);
       expect(cart.shipping[0].address._id).to.equal(address._id);
     });

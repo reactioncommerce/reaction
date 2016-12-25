@@ -2,7 +2,7 @@ import _ from  "lodash";
 import { EJSON } from "meteor/ejson";
 import { check } from "meteor/check";
 import { Meteor } from "meteor/meteor";
-import { Catalog } from "/lib/api";
+import { Catalog, copyFile, ReactionProduct } from "/lib/api";
 import { Media, Products, Revisions, Tags } from "/lib/collections";
 import { Logger, Reaction } from "/server/api";
 
@@ -151,12 +151,10 @@ function copyMedia(newId, variantOldId, variantNewId) {
   Media.find({
     "metadata.variantId": variantOldId
   }).forEach(function (fileObj) {
-    const newFile = fileObj.copy();
-    return newFile.update({
-      $set: {
-        "metadata.productId": newId,
-        "metadata.variantId": variantNewId
-      }
+    // Copy File and insert directly, bypasing revision control
+    copyFile(fileObj, {
+      productId: newId,
+      variantId: variantNewId
     });
   });
 }
@@ -349,7 +347,7 @@ Meteor.methods({
         type = "parent";
         Object.assign(clone, variant, {
           _id: variantNewId,
-          title: ""
+          title: `${variant.title} - copy`
         });
       } else {
         const parentIndex = variant.ancestors.indexOf(variantId);
@@ -358,27 +356,24 @@ Meteor.methods({
         !!~parentIndex && ancestorsClone.splice(parentIndex, 1, variantNewId);
         Object.assign(clone, variant, {
           _id: Random.id(),
-          ancestors: ancestorsClone,
-          optionTitle: "",
-          title: ""
+          ancestors: ancestorsClone
         });
       }
       delete clone.updatedAt;
       delete clone.createdAt;
       delete clone.inventoryQuantity;
       copyMedia(productId, oldId, clone._id);
-
       return Products.insert(clone, {
         validate: false
       }, (error, result) => {
         if (result) {
           if (type === "child") {
-            Logger.info(
+            Logger.debug(
               `products/cloneVariant: created sub child clone: ${
                 clone._id} from ${variantId}`
             );
           } else {
-            Logger.info(
+            Logger.debug(
               `products/cloneVariant: created clone: ${
                 clone._id} from ${variantId}`
             );
@@ -386,8 +381,7 @@ Meteor.methods({
         }
         if (error) {
           Logger.error(
-            `products/cloneVariant: cloning of ${variantId} was failed: ${
-              error}`
+            `products/cloneVariant: cloning of ${variantId} was failed: ${error}`
           );
         }
       });
@@ -1264,10 +1258,14 @@ Meteor.methods({
       }
     });
 
+    if (Array.isArray(product.ancestors) && product.ancestors.length) {
+      const updateId = product.ancestors[0] || product._id;
+      const updatedPriceRange = ReactionProduct.getProductPriceRange(updateId);
+
+      Meteor.call("products/updateProductField", updateId, "price", updatedPriceRange);
+    }
+
     // if collection updated we return new `isVisible` state
     return res === 1 && !product.isVisible;
-
-    Logger.debug("invalid product visibility ", productId);
-    throw new Meteor.Error(400, "Bad Request");
   }
 });

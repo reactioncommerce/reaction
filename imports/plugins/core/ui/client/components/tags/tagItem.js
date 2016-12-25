@@ -19,7 +19,7 @@ function createAutosuggestInput(templateInstance, options) {
       templateInstance.state.set("suggestions", []);
     },
     inputProps: {
-      placeholder: i18next.t(options.i18nPlaceholderKey, { defaultValue: options.i18nPlaceholderValue}),
+      placeholder: i18next.t(options.i18nPlaceholderKey, { defaultValue: options.i18nPlaceholderValue }),
       value: templateInstance.state.get("inputValue"),
       onKeyDown(event) {
         // 9 == Tab key

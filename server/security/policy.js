@@ -1,3 +1,4 @@
+import url from "url";
 import { BrowserPolicy } from "meteor/browser-policy-common";
 import { WebApp } from "meteor/webapp";
 
@@ -23,6 +24,13 @@ if (process.env.NODE_ENV === "development") {
   BrowserPolicy.content.allowConnectOrigin("https://localhost:*");
   BrowserPolicy.framing.allowAll();
 }
+
+// get current hostname of app
+const { hostname } = url.parse(Meteor.absoluteUrl());
+
+// allow websockets (Safari fails without this)
+BrowserPolicy.content.allowConnectOrigin(`ws://${hostname}`);
+BrowserPolicy.content.allowConnectOrigin(`wss://${hostname}`);
 
 BrowserPolicy.content.allowOriginForAll("*.facebook.com");
 BrowserPolicy.content.allowOriginForAll("*.fbcdn.net");

@@ -5,7 +5,12 @@ import { Inventory } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 import { Logger, Reaction } from "/server/api";
 
-
+/**
+ * inventory/register
+ * @summary check a product and update Inventory collection with inventory documents.
+ * @param {Object} product - valid Schemas.Product object
+ * @return {Number} - returns the total amount of new inventory created
+ */
 export function registerInventory(product) {
   check(product, Match.OneOf(Schemas.ProductVariant, Schemas.Product));
   let type;
@@ -37,7 +42,7 @@ export function registerInventory(product) {
       const newQty = variant.inventoryQuantity || 0;
       let i = inventoryVariantCount + 1;
 
-      Logger.info(
+      Logger.debug(
         `inserting ${newQty - inventoryVariantCount
           } new inventory items for ${variant._id}`
       );
@@ -77,92 +82,79 @@ export function registerInventory(product) {
   return totalNewInventory;
 }
 
+function adjustInventory(product) {
+  let type;
+  let results;
+  // adds or updates inventory collection with this product
+  switch (product.type) {
+    case "variant":
+      check(product, Schemas.ProductVariant);
+      type = "variant";
+      break;
+    default:
+      check(product, Schemas.Product);
+      type = "simple";
+  }
+  // user needs createProduct permission to adjust inventory
+  if (!Reaction.hasPermission("createProduct")) {
+    throw new Meteor.Error(403, "Access Denied");
+  }
+  // this.unblock();
+
+  // Quantity and variants of this product's variant inventory
+  if (type === "variant") {
+    const variant = {
+      _id: product._id,
+      qty: product.inventoryQuantity || 0
+    };
+
+    const inventory = Inventory.find({
+      productId: product.ancestors[0],
+      variantId: product._id
+    });
+    const itemCount = inventory.count();
+
+    if (itemCount !== variant.qty) {
+      if (itemCount < variant.qty) {
+        // we need to register some new variants to inventory
+        results = itemCount + Meteor.call("inventory/register", product);
+      } else if (itemCount > variant.qty) {
+        // determine how many records to delete
+        const removeQty = itemCount - variant.qty;
+        // we're only going to delete records that are new
+        const removeInventory = Inventory.find({
+          "variantId": variant._id,
+          "workflow.status": "new"
+        }, {
+          sort: {
+            updatedAt: -1
+          },
+          limit: removeQty
+        }).fetch();
+
+        results = itemCount;
+        // delete latest inventory "status:new" records
+        for (const inventoryItem of removeInventory) {
+          results -= Meteor.call("inventory/remove", inventoryItem);
+          // we could add handling for the case when aren't enough "new" items
+        }
+      }
+      Logger.info(
+        `adjust variant ${variant._id} from ${itemCount} to ${results}`
+      );
+    }
+  }
+}
+
 Meteor.methods({
-  /**
-   * inventory/register
-   * @summary check a product and update Inventory collection with inventory documents.
-   * @param {Object} product - valid Schemas.Product object
-   * @return {Number} - returns the total amount of new inventory created
-   */
   "inventory/register": function (product) {
     if (!Reaction.hasPermission("createProduct")) {
       throw new Meteor.Error(403, "Access Denied");
     }
     registerInventory(product);
   },
-  /**
-   * inventory/adjust
-   * @summary adjust existing inventory when changes are made we get the
-   * inventoryQuantity for each product variant, and compare the qty to the qty
-   * in the inventory records we will add inventoryItems as needed to have the
-   * same amount as the inventoryQuantity but when deleting, we'll refuse to
-   * delete anything not workflow.status = "new"
-   *
-   * @param  {Object} product - Schemas.Product object
-   * @return {[undefined]} returns undefined
-   * @todo  should be variant
-   */
-  "inventory/adjust": function (product) {
+  "inventory/adjust": function (product) { // TODO: this should be variant
     check(product, Match.OneOf(Schemas.Product, Schemas.ProductVariant));
-    let type;
-    let results;
-    // adds or updates inventory collection with this product
-    switch (product.type) {
-      case "variant":
-        check(product, Schemas.ProductVariant);
-        type = "variant";
-        break;
-      default:
-        check(product, Schemas.Product);
-        type = "simple";
-    }
-    // user needs createProduct permission to adjust inventory
-    if (!Reaction.hasPermission("createProduct")) {
-      throw new Meteor.Error(403, "Access Denied");
-    }
-    // this.unblock();
-
-    // Quantity and variants of this product's variant inventory
-    if (type === "variant") {
-      const variant = {
-        _id: product._id,
-        qty: product.inventoryQuantity || 0
-      };
-
-      const inventory = Inventory.find({
-        productId: product.ancestors[0],
-        variantId: product._id
-      });
-      const itemCount = inventory.count();
-
-      if (itemCount !== variant.qty) {
-        if (itemCount < variant.qty) {
-          // we need to register some new variants to inventory
-          results = itemCount + Meteor.call("inventory/register", product);
-        } else if (itemCount > variant.qty) {
-          // determine how many records to delete
-          const removeQty = itemCount - variant.qty;
-          // we're only going to delete records that are new
-          const removeInventory = Inventory.find({
-            "variantId": variant._id,
-            "workflow.status": "new"
-          }, {
-            sort: {
-              updatedAt: -1
-            },
-            limit: removeQty
-          }).fetch();
-
-          results = itemCount;
-          // delete latest inventory "status:new" records
-          for (const inventoryItem of removeInventory) {
-            results -= Meteor.call("inventory/remove", inventoryItem);
-            // we could add handling for the case when aren't enough "new" items
-          }
-          Logger.info(`adjust variant ${variant._id} from ${itemCount} to ${results}`);
-        }
-      }
-    }
+    adjustInventory(product);
   }
-
 });

@@ -1,4 +1,4 @@
-import React, { Component, PropTypes} from "react";
+import React, { Component, PropTypes } from "react";
 import classnames from "classnames";
 import { Currency, Translation } from "/imports/plugins/core/ui/client/components";
 import { SortableItem } from "/imports/plugins/core/ui/client/containers";

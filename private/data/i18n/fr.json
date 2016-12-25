@@ -74,9 +74,6 @@
           "socialLabel": "Social",
           "socialTitle": "Social",
           "socialDescription": "Configuration des réseaux sociaux",
-          "taxesLabel": "Taxes",
-          "taxesTitle": "Taxes",
-          "taxesDescription": "Configuration de la taxe",
           "themesLabel": "Thèmes",
           "themesTitle": "Thèmes",
           "themesDescription": "Thèmes et composants de l'IU",
@@ -113,8 +110,7 @@
           "reactionConnectLabel": "Connecter la réaction",
           "examplePaymentSettingsLabel": "Exemple de modalités de paiement",
           "productSettingsLabel": "Paramètres du produit",
-          "productDetailsLabel": "Détails produit",
-          "taxSettingsLabel": "Paramètres de taxe"
+          "productDetailsLabel": "Détails produit"
         },
         "userAccountDropdown": {
           "profileLabel": "Profil"
@@ -286,21 +282,6 @@
           "saveSuccess": "Paramètres de messagerie enregistrés.",
           "saveFailed": "Impossible de sauvegarder les paramètres de messagerie. {{error}}"
         }
-      },
-      "taxSettings": {
-        "noCustomTaxRatesFound": "Aucun taux de taxe douanière identifié.",
-        "shopCustomTaxRatesSaved": "Taux des taxes douanières enregistrés.",
-        "shopCustomTaxRatesFailed": "Erreur lors de l'enregistrement du taux de taxation.",
-        "shopTaxMethodsSaved": "Enregistrer la méthode d'application de la taxe.",
-        "shopTaxMethodsFailed": "Echec de l'enregistrement de la méthode d'application de la taxe.",
-        "customRatesDescription": "Frais de douane",
-        "taxCode": "Code fiscal",
-        "taxShipping": "Inclure la livraison",
-        "taxRate": "Taux",
-        "discountsIncluded": "Inclure des réductions",
-        "taxable": "Taxable",
-        "nottaxable": "Non taxable",
-        "confirmRateDelete": "Confirmer la suppression du taux de taxation"
       },
       "header": {
         "tagsAdd": "Ajouter une balise",

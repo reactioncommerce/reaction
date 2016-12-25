@@ -238,7 +238,7 @@ Meteor.methods({
     const anonymousUser = Roles.userIsInRole(userId, "anonymous", shopId);
     const sessionCartCount = getSessionCarts(userId, sessionId, shopId).length;
 
-    Logger.info("create cart: shopId", shopId);
+    Logger.debug("create cart: shopId", shopId);
     Logger.debug("create cart: userId", userId);
     Logger.debug("create cart: sessionId", sessionId);
     Logger.debug("create cart: sessionCarts.count", sessionCartCount);
@@ -309,7 +309,7 @@ Meteor.methods({
     Collections.Products.find({ _id: { $in: [
       productId,
       variantId
-    ]}}).forEach(doc => {
+    ] } }).forEach(doc => {
       if (doc.type === "simple") {
         product = doc;
       } else {
@@ -890,7 +890,7 @@ Meteor.methods({
     const selector = {
       _id: cart._id
     };
-    const update = { $unset: {}};
+    const update = { $unset: {} };
     // user could turn off the checkbox in address to not to be default, then we
     // receive `type` arg
     if (typeof type === "string") {

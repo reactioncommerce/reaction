@@ -1,4 +1,9 @@
+import _ from "lodash";
+import moment from "moment";
+import path from "path";
 import * as Collections from "/lib/collections";
+// TODO: Change all imports from collections to only pull in needed?
+// import { Accounts, Cart, Media, Shops } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 import { Logger, Reaction } from "/server/api";
 
@@ -274,9 +279,6 @@ Meteor.methods({
       "emails.address": email
     });
 
-    const tmpl = "accounts/inviteShopMember";
-    SSR.compileTemplate("accounts/inviteShopMember", Reaction.Email.getTemplate(tmpl));
-
     if (!user) {
       const userId = Accounts.createUser({
         email: email,
@@ -297,30 +299,74 @@ Meteor.methods({
         }
       });
 
+      // Get shop logo, if available. If not, use default logo from file-system
+      let emailLogo;
+      if (Array.isArray(shop.brandAssets)) {
+        const brandAsset = _.find(shop.brandAssets, (asset) => asset.type === "navbarBrandImage");
+        const mediaId = Collections.Media.findOne(brandAsset.mediaId);
+        emailLogo = path.join(Meteor.absoluteUrl(), mediaId.url());
+      } else {
+        emailLogo = Meteor.absoluteUrl() + "resources/email-templates/shop-logo.png";
+      }
+
+      const dataForEmail = {
+        // Shop Data
+        shop: shop,
+        contactEmail: shop.emails[0].address,
+        homepage: Meteor.absoluteUrl(),
+        emailLogo: emailLogo,
+        copyrightDate: moment().format("YYYY"),
+        legalName: shop.addressBook[0].company,
+        physicalAddress: {
+          address: shop.addressBook[0].address1 + " " + shop.addressBook[0].address2,
+          city: shop.addressBook[0].city,
+          region: shop.addressBook[0].region,
+          postal: shop.addressBook[0].postal
+        },
+        shopName: shop.name,
+        socialLinks: {
+          display: true,
+          facebook: {
+            display: true,
+            icon: Meteor.absoluteUrl() + "resources/email-templates/facebook-icon.png",
+            link: "https://www.facebook.com"
+          },
+          googlePlus: {
+            display: true,
+            icon: Meteor.absoluteUrl() + "resources/email-templates/google-plus-icon.png",
+            link: "https://plus.google.com"
+          },
+          twitter: {
+            display: true,
+            icon: Meteor.absoluteUrl() + "resources/email-templates/twitter-icon.png",
+            link: "https://www.twitter.com"
+          }
+        },
+        // Account Data
+        user: Meteor.user(),
+        currentUserName,
+        invitedUserName: name,
+        url: Accounts.urls.enrollAccount(token)
+      };
+
+      // Compile Email with SSR
+      const tpl = "accounts/inviteShopMember";
+      const subject = "accounts/inviteShopMember/subject";
+      SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl));
+      SSR.compileTemplate(subject, Reaction.Email.getSubject(tpl));
+
       Reaction.Email.send({
         to: email,
         from: `${shop.name} <${shop.emails[0].address}>`,
-        subject: `You have been invited to join ${shop.name}`,
-        html: SSR.render("accounts/inviteShopMember", {
-          homepage: Meteor.absoluteUrl(),
-          shop,
-          currentUserName,
-          invitedUserName: name,
-          url: Accounts.urls.enrollAccount(token)
-        })
+        subject: SSR.render(subject, dataForEmail),
+        html: SSR.render(tpl, dataForEmail)
       });
     } else {
       Reaction.Email.send({
         to: email,
         from: `${shop.name} <${shop.emails[0].address}>`,
-        subject: `You have been invited to join ${shop.name}`,
-        html: SSR.render("accounts/inviteShopMember", {
-          homepage: Meteor.absoluteUrl(),
-          shop,
-          currentUserName,
-          invitedUserName: name,
-          url: Meteor.absoluteUrl()
-        })
+        subject: SSR.render(subject, dataForEmail),
+        html: SSR.render(tpl, dataForEmail)
       });
     }
     return true;
@@ -342,6 +388,53 @@ Meteor.methods({
     const user = Collections.Accounts.findOne(userId);
     const shop = Collections.Shops.findOne(shopId);
 
+    // Get shop logo, if available. If not, use default logo from file-system
+    let emailLogo;
+    if (Array.isArray(shop.brandAssets)) {
+      const brandAsset = _.find(shop.brandAssets, (asset) => asset.type === "navbarBrandImage");
+      const mediaId = Collections.Media.findOne(brandAsset.mediaId);
+      emailLogo = path.join(Meteor.absoluteUrl(), mediaId.url());
+    } else {
+      emailLogo = Meteor.absoluteUrl() + "resources/email-templates/shop-logo.png";
+    }
+
+    const dataForEmail = {
+      // Shop Data
+      shop: shop,
+      contactEmail: shop.emails[0].address,
+      homepage: Meteor.absoluteUrl(),
+      emailLogo: emailLogo,
+      copyrightDate: moment().format("YYYY"),
+      legalName: shop.addressBook[0].company,
+      physicalAddress: {
+        address: shop.addressBook[0].address1 + " " + shop.addressBook[0].address2,
+        city: shop.addressBook[0].city,
+        region: shop.addressBook[0].region,
+        postal: shop.addressBook[0].postal
+      },
+      shopName: shop.name,
+      socialLinks: {
+        display: true,
+        facebook: {
+          display: true,
+          icon: Meteor.absoluteUrl() + "resources/email-templates/facebook-icon.png",
+          link: "https://www.facebook.com"
+        },
+        googlePlus: {
+          display: true,
+          icon: Meteor.absoluteUrl() + "resources/email-templates/google-plus-icon.png",
+          link: "https://plus.google.com"
+        },
+        twitter: {
+          display: true,
+          icon: Meteor.absoluteUrl() + "resources/email-templates/twitter-icon.png",
+          link: "https://www.twitter.com"
+        }
+      },
+      // Account Data
+      user: Meteor.user()
+    };
+
     // anonymous users arent welcome here
     if (!user.emails || !user.emails.length > 0) {
       return true;
@@ -358,18 +451,16 @@ Meteor.methods({
       shopEmail = shop.emails[0].address;
     }
 
-    const tmpl = "accounts/sendWelcomeEmail";
-    SSR.compileTemplate("accounts/sendWelcomeEmail", Reaction.Email.getTemplate(tmpl));
+    const tpl = "accounts/sendWelcomeEmail";
+    const subject = "accounts/sendWelcomeEmail/subject";
+    SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl));
+    SSR.compileTemplate(subject, Reaction.Email.getSubject(tpl));
 
     Reaction.Email.send({
       to: userEmail,
       from: `${shop.name} <${shopEmail}>`,
-      subject: `Welcome to ${shop.name}!`,
-      html: SSR.render("accounts/sendWelcomeEmail", {
-        homepage: Meteor.absoluteUrl(),
-        shop: shop,
-        user: Meteor.user()
-      })
+      subject: SSR.render(subject, dataForEmail),
+      html: SSR.render(tpl, dataForEmail)
     });
 
     return true;

@@ -40,7 +40,7 @@ Template.registerHelper("displayName", function (displayUser) {
     // new check covers previous check?
     if (Roles.userIsInRole(user._id || user.userId, "account/profile",
       Reaction.getShopId())) {
-      return i18next.t("accountsUI.guest", {defaultValue: "Guest"});
+      return i18next.t("accountsUI.guest", { defaultValue: "Guest" });
     }
   }
 });
@@ -70,10 +70,10 @@ Template.registerHelper("fName", function (displayUser) {
         case !user.services.pinterest:
           return user.services.pinterest.first_name;
         default:
-          return i18next.t("accountsUI.guest", {defaultValue: "Guest"});
+          return i18next.t("accountsUI.guest", { defaultValue: "Guest" });
       }
     })();
     return username;
   }
-  return i18next.t("accountsUI.signIn", {defaultValue: "Sign in"});
+  return i18next.t("accountsUI.signIn", { defaultValue: "Sign in" });
 });

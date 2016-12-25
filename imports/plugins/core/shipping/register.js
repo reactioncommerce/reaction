@@ -6,7 +6,13 @@ Reaction.registerPackage({
   icon: "fa fa-truck",
   autoEnable: true,
   settings: {
-    name: "Flat Rate Service"
+    name: "Flat Rate Service",
+    shipping: {
+      enabled: true
+    },
+    flatRates: {
+      enabled: true
+    }
   },
   registry: [
     {
@@ -23,6 +29,7 @@ Reaction.registerPackage({
     },
     {
       template: "flatRateCheckoutShipping",
+      name: "shipping/flatRates",
       provides: "shippingMethod"
     }
   ]

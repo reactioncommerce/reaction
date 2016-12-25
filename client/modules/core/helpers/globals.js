@@ -1,6 +1,6 @@
 import { Session } from "meteor/session";
 import { Meteor } from "meteor/meteor";
-// import { Roles } from "meteor/roles";
+import { Roles } from "meteor/alanning:roles";
 
 // Reaction Globals
 //
@@ -8,23 +8,6 @@ import { Meteor } from "meteor/meteor";
 //
 /* eslint "no-extend-native": [2, {"exceptions": ["String"]}] */
 /* eslint "no-alert": 0 */
-
-/**
- * String.prototype.toCamelCase
- * @summary special toCamelCase for converting a string to camelCase for use with i18n keys
- * @return {String} camelCased string
- */
-String.prototype.toCamelCase = function () {
-  let s;
-  s = this.replace(/([^a-zA-Z0-9_\- ])|^[_0-9]+/g, "").trim().toLowerCase();
-  s = s.replace(/([ -]+)([a-zA-Z0-9])/g, function (a, b, c) {
-    return c.toUpperCase();
-  });
-  s = s.replace(/([0-9]+)([a-zA-Z])/g, function (a, b, c) {
-    return b + c.toUpperCase();
-  });
-  return s;
-};
 
 /**
  * toggleSession

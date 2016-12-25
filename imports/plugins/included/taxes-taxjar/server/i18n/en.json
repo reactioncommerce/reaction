@@ -1,0 +1,26 @@
+[{
+  "language": "English",
+  "i18n": "en",
+  "ns": "taxes-taxjar",
+  "translation": {
+    "reaction-taxes": {
+      "admin": {
+        "shortcut": {
+          "taxjarLabel": "TaxJar",
+          "taxjarTitle": "TaxJar"
+        },
+        "dashboard": {
+          "taxjarLabel": "TaxJar",
+          "taxjarTitle": "TaxJar",
+          "taxjarDescription": "TaxJar taxes"
+        },
+        "taxSettings": {
+          "taxjarLabel": "TaxJar",
+          "taxjarSettingsLabel": "TaxJar",
+          "taxjarCredentials": "Add credentials to enable",
+          "taxjarGetCredentialsURL": "Get them here"
+        }
+      }
+    }
+  }
+}]
