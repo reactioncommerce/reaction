@@ -87,14 +87,10 @@
     "tether-drop": "^1.4.2",
     "tether-tooltip": "^1.2.0",
     "transliteration": "^1.1.9",
-<<<<<<< HEAD
     "twilio": "^2.11.1",
-    "url": "^0.11.0"
-=======
     "url": "^0.11.0",
     "velocity-animate": "^1.3.1",
     "velocity-react": "^1.1.11"
->>>>>>> 9b3c45b3d96818fe18d4d61ab7fdb63e1d4a55d4
   },
   "devDependencies": {
     "babel-eslint": "^7.0.0",
