@@ -52,6 +52,11 @@ export default class DiscountForm extends Component {
   // handle keydown and change events
   handleChange(event) {
     const { attempts } = this.state;
+    // ensure we don't submit on enter
+    if (event.keyCode === 13) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
     // clear input if user hits escape key
     if (event.keyCode === 27) {
       return this.setState({ discount: "", validatedInput: false, attempts: 0, discountApplied: false, validationMessage: null });
