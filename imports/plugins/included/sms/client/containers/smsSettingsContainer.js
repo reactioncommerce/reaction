@@ -1,4 +1,4 @@
-import { composeWithTracker, composeAll } from "react-komposer";
+import { composeWithTracker, merge } from "/lib/api/compose";
 import { useDeps } from "react-simple-di";
 import { Meteor } from "meteor/meteor";
 import { Loading } from "/imports/plugins/core/ui/client/components";
@@ -18,7 +18,7 @@ const depsMapper = () => ({
   saveSettings: actions.settings.saveSettings
 });
 
-export default composeAll(
+export default merge(
   composeWithTracker(composer, Loading),
   useDeps(depsMapper)
 )(SmsSettings);

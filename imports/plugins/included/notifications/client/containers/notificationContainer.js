@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { composeWithTracker } from "react-komposer";
+import { composeWithTracker, merge } from "/lib/api/compose";
 import { Meteor } from "meteor/meteor";
 import { Notifications } from "/lib/collections";
 import { NotificationComponent } from "../components";
@@ -44,4 +44,6 @@ function composer(props, onData) {
   });
 }
 
-export default composeWithTracker(composer)(NotificationContainer);
+export default merge(
+  composeWithTracker(composer)
+)(NotificationContainer);

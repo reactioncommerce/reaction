@@ -4,14 +4,18 @@ Reaction.registerPackage({
   label: "SMS",
   name: "reaction-sms",
   icon: "fa fa-mobile",
-  autoEnable: false,
+  autoEnable: true,
+  settings: {
+    name: "SMS"
+  },
   registry: [{
     provides: "dashboard",
     label: "SMS",
     description: "Notifications",
     icon: "fa fa-mobile fa-2x",
     priority: 3,
-    container: "utilities"
+    container: "core",
+    workflow: "coreDashboardWorkflow"
   }, {
     label: "SMS Settings",
     route: "/dashboard/sms",
