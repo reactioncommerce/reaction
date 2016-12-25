@@ -47,38 +47,40 @@ Meteor.methods({
     const user = Accounts.findOne();
     const phone = user.profile.addressBook[0].phone;
 
-    Meteor.subscribe("Sms", shopId);
-    const smsSettings = Sms.findOne();
+    if (phone) {
+      Meteor.subscribe("Sms", shopId);
+      const smsSettings = Sms.findOne();
 
-    const { apiKey, apiToken, smsPhone, smsProvider } = smsSettings;
+      const { apiKey, apiToken, smsPhone, smsProvider } = smsSettings;
 
-    if (smsProvider === "twilio") {
-      Logger.info("choose twilio");
-      const client = new Twilio(apiKey, apiToken);
+      if (smsProvider === "twilio") {
+        Logger.info("choose twilio");
+        const client = new Twilio(apiKey, apiToken);
 
-      client.sendMessage({
-        to: phone,
-        from: smsPhone,
-        body: message
-      }, (err) => {
-        if (err) {
-          return Logger.error(err);
-        }
-      });
-      return;
-    }
+        client.sendMessage({
+          to: phone,
+          from: smsPhone,
+          body: message
+        }, (err) => {
+          if (err) {
+            return Logger.error(err);
+          }
+        });
+        return;
+      }
 
-    if (smsProvider === "nexmo") {
-      Logger.info("choose nexmo");
-      const client = new Nexmo({
-        apiKey,
-        apiSecret: apiToken
-      });
-      client.message.sendSms(smsPhone, phone, message, {}, (err) => {
-        if (err) {
-          return Logger.error(err);
-        }
-      });
+      if (smsProvider === "nexmo") {
+        Logger.info("choose nexmo");
+        const client = new Nexmo({
+          apiKey,
+          apiSecret: apiToken
+        });
+        client.message.sendSms(smsPhone, phone, message, {}, (err) => {
+          if (err) {
+            return Logger.error(err);
+          }
+        });
+      }
     }
   }
 });
