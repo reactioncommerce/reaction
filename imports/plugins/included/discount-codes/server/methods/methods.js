@@ -205,6 +205,10 @@ export const methods = {
 
     if (discount) {
       const { conditions } = discount;
+      let accountLimitExceeded = false;
+      let discountLimitExceeded = false;
+
+      // existing usage count
       if (discount.transactions) {
         const users = Array.from(discount.transactions, (t) => t.userId);
         const orders = Array.from(discount.transactions, (t) => t.cartId);
@@ -212,8 +216,14 @@ export const methods = {
         orderCount = orders.length;
       }
 
-      // basic limit handling
-      if (conditions.accountLimit <= userCount && conditions.redemptionLimit <= orderCount) {
+      // check limits
+      if (conditions) {
+        if (conditions.accountLimit) accountLimitExceeded = conditions.accountLimit <= userCount;
+        if (conditions.redemptionLimit) discountLimitExceeded = conditions.redemptionLimit <= orderCount;
+      }
+
+      // validate basic limit handling
+      if (accountLimitExceeded === true || discountLimitExceeded === true) {
         return { i18nKeyLabel: "Code is expired", i18nKey: "discounts.codeIsExpired" };
       }
 
