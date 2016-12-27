@@ -1,5 +1,6 @@
 /* eslint camelcase: 0 */
-import { Packages, Accounts, Shops } from "/lib/collections";
+import { Reaction } from "/server/api";
+import { Packages, Accounts, Shops, Shipping } from "/lib/collections";
 import { ShippoPackageConfig } from "../../lib/collections/schemas";
 import { Cart as CartSchema } from "/lib/collections/schemas";
 import { ShippoApi } from "./shippoapi";
@@ -35,7 +36,34 @@ function createShippoParcel(reactionParcel/*, distance_unit, weight_unit*/) {
   return shippoParcel;
 }
 
+function formatShippoRates( shippoRates ) {
+  shippoRates.map( rate => ({label: rate.service.level_name }) );
+}
+
+// Creates Shippo Provider in Shipping Collection for the current Shop
+function createShippoShippingProvider() {
+  const shippoProvider = Shipping.findOne({
+    "shopId": Reaction.getShopId(),
+    "provider.name": "Shippo"
+  });
+  if (!shippoProvider) {
+    Shipping.insert({
+      name: "Shippo Shipping provider",
+      methods: [],
+      provider: {
+        name: "Shippo",
+        label: "Shippo",
+        enabled: true
+      },
+      shopId: Reaction.getShopId()
+    });
+  }
+};
+
+
+
 Meteor.methods({
+
   "shippo/updateApiKey"(modifier, _id) {
     // Important server-side check for security and data integrity
     check(modifier, ShippoPackageConfig);
@@ -53,6 +81,10 @@ Meteor.methods({
     // Tries to use the apiKey . if not possible throws a relative Meteor Error
     ShippoApi.methods.confirmValidApiKey.call({ apiKey });
     Packages.update(_id, modifier);
+    // if Shippo Provider doesn't exist create it
+    createShippoShippingProvider();
+    ShippoApi.methods.getActiveCarriersList.call({});
+
     return { type: "update" };
   },
   "shippo/getCarriersRatesForCart"(cart) {  // Intended to be called from Buyer ..concern for serurity problems
@@ -66,7 +98,8 @@ Meteor.methods({
     const addressTo = createShippoAddress(cart.billing[0].address, buyer.emails[0].address, purpose);
 
     const parcel = createShippoParcel(cart.items[0].parcel);
-    const rates = ShippoApi.methods.getCarriersRates.call({ addressFrom, addressTo, parcel, purpose });
+    const shippoRatesResult = ShippoApi.methods.getCarriersRates.call({ addressFrom, addressTo, parcel, purpose });
+    return formatShippoRates(shippoRatesResult);
   },
   "shippo/getCarriersRatesForOrder"(order) { // intended to be called from Seller
 

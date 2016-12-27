@@ -38,7 +38,40 @@ ShippoApi.methods.confirmValidApiKey = new ValidatedMethod({
   }
 });
 
+// Returns a list of the activated/enabled Carriers (activated from the Shippo's account dashboard - not Reaction's)
+ShippoApi.methods.getActiveCarriersList = new ValidatedMethod({
+  name: "ShippoApi.methods.getActiveCarriersList",
+  validate: new SimpleSchema({
+    apiKey: { type: String, optional: true } }).validator(),
+  run({ apiKey }) {
+    let shippo;
+    if (!apiKey) {
+      const dynamicApiKey = ShippoApi.methods.getApiKey.call();
+      shippo = require("shippo")(dynamicApiKey);
+    } else {
+      shippo = require("shippo")(apiKey);
+    }
 
+    const getCarrierAccountsListFiber = Meteor.wrapAsync(shippo.carrier_accounts.list, shippo.carrier_accounts);
+    try {
+      const carrierAccounts = getCarrierAccountsListFiber();
+      let activeCarriersList = [];
+      if (carrierAccounts.count) {
+        carrierAccounts.results.forEach(carrier => {
+          if (carrier.active) {
+            activeCarriersList.push({
+              carrier //this is a property of the returned result with value the name of the carrier
+            });
+          }
+        });
+      }
+      console.log(activeCarriersList);
+      return activeCarriersList;
+    } catch (error) {
+      throw new Meteor.Error(error.message);
+    }
+  }
+});
 
 ShippoApi.methods.getCarriersRates = new ValidatedMethod({
   name: "ShippoApi.methods.getCarriersRates",
@@ -64,12 +97,12 @@ ShippoApi.methods.getCarriersRates = new ValidatedMethod({
             "object_purpose": purpose,
             "address_from": addressFrom,
             "address_to": addressTo,
-            "parcel": parcel
+            "parcel": parcel,
+            "async": false
       });
+      return shipment.rates_list;
     } catch (error) {
       throw new Meteor.Error(error.message);
     }
-    return true;
-
   }
 });
