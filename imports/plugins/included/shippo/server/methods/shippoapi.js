@@ -52,7 +52,7 @@ ShippoApi.methods.getActiveCarriersList = new ValidatedMethod({
       shippo = require("shippo")(apiKey);
     }
 
-    const getCarrierAccountsListFiber = Meteor.wrapAsync(shippo.carrier_accounts.list, shippo.carrier_accounts);
+    const getCarrierAccountsListFiber = Meteor.wrapAsync(shippo.carrieraccount.list, shippo.carrieraccount);
     try {
       const carrierAccounts = getCarrierAccountsListFiber();
       let activeCarriersList = [];
@@ -60,7 +60,7 @@ ShippoApi.methods.getActiveCarriersList = new ValidatedMethod({
         carrierAccounts.results.forEach(carrier => {
           if (carrier.active) {
             activeCarriersList.push({
-              carrier //this is a property of the returned result with value the name of the carrier
+              name: carrier.carrier //this is a property of the returned result with value the name of the carrier
             });
           }
         });

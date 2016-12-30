@@ -30,14 +30,20 @@ function createShippoParcel(reactionParcel/*, distance_unit, weight_unit*/) {
     "length": reactionParcel.length || "",
     "height": reactionParcel.height || "",
     "weight": reactionParcel.weight || "",
-    "distance_unit": "cm", //Propably we need to have for each shop a uom/baseuom for distance
+    "distance_unit": "cm", // Propably we need to have for each shop a uom/baseuom for distance
     "mass_unit": "kg"
   };
   return shippoParcel;
 }
 
-function formatShippoRates( shippoRates ) {
-  shippoRates.map( rate => ({label: rate.service.level_name }) );
+function createDynamicShippingMethodsFromRatesList(shippoRates) {
+  return shippoRates.map(rate => ({
+    name: rate.servicelevel_token,
+    label: `${rate.provider} - ${rate.servicelevel_name}`,
+    enabled: true,
+    rate: rate.amount,
+    handling: 0
+  }));
 }
 
 // Creates Shippo Provider in Shipping Collection for the current Shop
@@ -87,19 +93,26 @@ Meteor.methods({
 
     return { type: "update" };
   },
-  "shippo/getCarriersRatesForCart"(cart) {  // Intended to be called from Buyer ..concern for serurity problems
+  "shippo/getShippingMethodsForCart"(cart) {  // Intended to be called from Buyer ..concern for serurity problems
     check(cart, CartSchema);
     const purpose = "QUOTE";
-    const shop = Shops.findOne({ _id: cart.shopId },
-                               { fields: { addressBook: 1, emails: 1 } });
+    const shop = Shops.findOne({
+      _id: cart.shopId
+    }, {
+      fields: { addressBook: 1, emails: 1 }
+    });
     const addressFrom = createShippoAddress(shop.addressBook[0], shop.emails[0].address, purpose);
 
-    const buyer = Accounts.findOne({ _id: cart.userId }, { fields: { emails: 1} });
-    const addressTo = createShippoAddress(cart.billing[0].address, buyer.emails[0].address, purpose);
+    const buyer = Accounts.findOne({
+      _id: cart.userId
+    }, {
+      fields: { emails: 1 }
+    });
+    const addressTo = createShippoAddress(cart.shipping[0].address, buyer.emails[0].address, purpose);
 
     const parcel = createShippoParcel(cart.items[0].parcel);
-    const shippoRatesResult = ShippoApi.methods.getCarriersRates.call({ addressFrom, addressTo, parcel, purpose });
-    return formatShippoRates(shippoRatesResult);
+    const shippoRates = ShippoApi.methods.getCarriersRates.call({ addressFrom, addressTo, parcel, purpose });
+    return createShippingMethodsFromRatesList(shippoRates);
   },
   "shippo/getCarriersRatesForOrder"(order) { // intended to be called from Seller
 

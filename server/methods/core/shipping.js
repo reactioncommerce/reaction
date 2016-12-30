@@ -3,6 +3,23 @@ import { check } from "meteor/check";
 import { Cart, Shipping } from "/lib/collections";
 import { Logger, Reaction } from "/server/api";
 
+//
+// function getDynamicShippingMethods(packageId) {
+//   const shippingProviderPackage = Packages.findOne({
+//     _id: packageId
+//   }, {
+//     fields: {
+//       methodsNamespace: 1
+//     }
+//   });
+//   // Each dynamic shipping provider has to have a method for fetching available shipping
+//   // methods/rates with the naming convention: package.methodsNamespace/getShippingMethods
+//   // ,for example shippo/getShippingMethods
+//   const packageMethodsNamespace = shippingProviderPackage.methodsNamespace;
+//   return Meteor.call(packageMethodsNamespace + "getShippingMethods", cart);
+// }
+
+
 /*
  * Reaction Shipping Methods
  * methods typically used for checkout (shipping, taxes, etc)
@@ -102,11 +119,19 @@ Meteor.methods({
       };
     }
 
-    const shippingMethods = Shipping.find(selector);
+    const shippingProviders = Shipping.find(selector);
 
-    shippingMethods.forEach(function (shipping) {
+    shippingProviders.forEach(function (shippingProvider) {
       const _results = [];
-      for (const method of shipping.methods) {
+      let shippingMethods;
+      // If the r - we get the rates through a 3rd party Api
+      if (shippingProvider.provider.name === "Shippo") {
+        // shippingMethods = getDynamicShippingMethods(shippingProvider.provider.packageId);
+        shippingMethods = Meteor.call("shippo/getShippingMethodsForCart", cart);
+      } else {
+        shippingMethods = shippingProvider.methods;
+      }
+      for (const method of shippingMethods) {
         if (!(method.enabled === true)) {
           continue;
         }
@@ -118,15 +143,15 @@ Meteor.methods({
         }
         const rate = method.rate + method.handling;
         _results.push(rates.push({
-          carrier: shipping.provider.label,
+          carrier: shippingProvider.provider.label,
           method: method,
           rate: rate,
-          shopId: shipping.shopId
+          shopId: shippingProvider.shopId
         }));
       }
       return _results;
     });
-    Logger.debug("getShippingrates returning rates", rates);
+    Logger.debug("getShippingRates returning rates", rates);
     return rates;
   }
 });
