@@ -76,7 +76,7 @@ Template.shippoCheckoutShipping.helpers({
 
   shippoMethods: function () {
     const cart = Cart.findOne();
-    Meteor.call("shippo/getCarriersRatesForCart", cart);
+   // Meteor.call("shippo/getCarriersRatesForCart", cart);
   },
 
   // helper to make sure there are some shipping providers

@@ -60,7 +60,7 @@ ShippoApi.methods.getActiveCarriersList = new ValidatedMethod({
         carrierAccounts.results.forEach(carrier => {
           if (carrier.active) {
             activeCarriersList.push({
-              carrier //this is a property of the returned result with value the name of the carrier
+              name: carrier.carrier //this is a property of the returned result with value the name of the carrier
             });
           }
         });
