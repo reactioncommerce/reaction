@@ -60,6 +60,12 @@ Template.shippingProviderTable.helpers({
         shopId: Reaction.getShopId()
       });
     }
+  },
+  isShippoShippingProvider() {
+    if (this.shippoShippingProvider.isShippoShippingProvider) {
+      return true;
+    }
+    return false;
   }
 });
 
@@ -131,6 +137,15 @@ Template.editShippingProvider.events({
         Reaction.hideActionView();
       }
     });
+  }
+});
+
+Template.editShippingProvider.helpers({
+  isShippoShippingProvider() {
+    if (this.shippoShippingProvider.isShippoShippingProvider) {
+      return true;
+    }
+    return false;
   }
 });
 

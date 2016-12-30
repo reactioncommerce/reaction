@@ -2,6 +2,7 @@ import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { Cart, Shipping } from "/lib/collections";
 import { Logger, Reaction } from "/server/api";
+import { Cart as CartSchema } from "/lib/collections/schemas";
 
 //
 // function getDynamicShippingMethods(packageId) {
@@ -91,13 +92,14 @@ Meteor.methods({
    * @return {Array} return updated rates in cart
    */
   "shipping/getShippingRates": function (cart) {
-    check(cart, Object);
+    check(cart, CartSchema);
     const rates = [];
     const shops = [];
     const products = cart.items;
     // default selector is current shop
     let selector = {
-      shopId: Reaction.getShopId()
+      "shopId": Reaction.getShopId(),
+      "provider.enabled": true
     };
     // must have products to calculate shipping
     if (!cart.items) {
@@ -113,23 +115,24 @@ Meteor.methods({
     // if we have multiple shops in cart
     if ((shops !== null ? shops.length : void 0) > 0) {
       selector = {
-        shopId: {
+        "shopId": {
           $in: shops
-        }
+        },
+        "provider.enabled": true
       };
     }
 
-    const shippingProviders = Shipping.find(selector);
+    const shippings = Shipping.find(selector);
+    let shippoShippingsProviders = []; //Meteor.call("shippo/getShippingMethodsForCart", cart._id);
 
-    shippingProviders.forEach(function (shippingProvider) {
+    shippings.forEach(function (shipping) {
       const _results = [];
       let shippingMethods;
-      // If the r - we get the rates through a 3rd party Api
-      if (shippingProvider.provider.name === "Shippo") {
-        // shippingMethods = getDynamicShippingMethods(shippingProvider.provider.packageId);
-        shippingMethods = Meteor.call("shippo/getShippingMethodsForCart", cart);
+      // If provider name is Shippo get methods dynamically through shippo account
+      if (shipping.shippoShippingProvider.isShippoShippingProvider) {
+        shippoShippingProviders.push = shipping.shippoShippingProvider.objectId;
       } else {
-        shippingMethods = shippingProvider.methods;
+        shippingMethods = shipping.methods;
       }
       for (const method of shippingMethods) {
         if (!(method.enabled === true)) {
@@ -143,10 +146,10 @@ Meteor.methods({
         }
         const rate = method.rate + method.handling;
         _results.push(rates.push({
-          carrier: shippingProvider.provider.label,
+          carrier: shipping.provider.label,
           method: method,
           rate: rate,
-          shopId: shippingProvider.shopId
+          shopId: shipping.shopId
         }));
       }
       return _results;

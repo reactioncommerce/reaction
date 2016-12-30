@@ -1,2 +1,2 @@
-import "./checkout/shippo";
+//import "./checkout/shippo";
 import "./settings/shippo";

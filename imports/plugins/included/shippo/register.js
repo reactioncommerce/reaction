@@ -28,10 +28,12 @@ Reaction.registerPackage({
     provides: "settings",
     container: "connection",
     template: "shippoSettings"
-  }, {
-    provides: "shippingMethod",
-    name: "shipping/methods/shippo",
-    template: "shippoCheckoutShipping"
   }
+  //, {
+    // provides: "shippingMethod",
+    // name: "shipping/methods/shippo",
+    // template: "shippoCheckoutShipping"
+    // Not needed at the time cause the coreCheckoutShipping is enough(inherited from Flatrate)
+  //}
   ]
 });

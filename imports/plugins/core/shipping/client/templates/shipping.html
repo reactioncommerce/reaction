@@ -31,7 +31,12 @@
   {{#each shipping}}
       <div class="panel panel-default">
         <div class="panel-heading" data-event-action="editShippingProvider">
-          <span class="text-left">{{provider.name}}</span>
+          <span class="text-left">{{provider.name}}
+            {{#if isShippoShippingProvider}}
+               provided by Shippo
+            {{/if}}
+          </span>
+
           <span class="pull-right">
             <i class="fa fa-cog" id="edit-shipping-provider" title="{{i18n 'shipping.editShippingProvider' 'Edit shipping provider'}}"></i>
           </span>
@@ -41,63 +46,67 @@
           {{> updateShippingProvider}}
           </div>
         {{/if}}
-        <div class="panel-body">
-        {{#if methods}}
-          <table class="table table-striped">
-            <thead>
-              <tr class="info">
-                <th>{{i18n "shippingMethod.name" "Name"}}</th>
-                <th>{{i18n "shippingMethod.label" "Label"}}</th>
-                <th>{{i18n "shippingMethod.group" "Group"}}</th>
-                <th>{{i18n "shippingMethod.cost" "Cost"}}</th>
-                <th>{{i18n "shippingMethod.handling" "Handling"}}</th>
-                <th>{{i18n "shippingMethod.rate" "Rate"}}</th>
-                <th>{{i18n "shippingMethod.enabled" "Enabled"}}</th>
-                <th><i class="fa fa-plus pull-right add-shipping-method" title="{{i18n 'shipping.addShippingMethod' 'Add shipping method'}}" data-event-action="addShippingMethod"></i></th>
-              </tr>
-            </thead>
-            <tbody>
-            {{#if selectedAddShippingMethod}}
-              <tr class="active">
-              <td colspan="8">
-              {{> addShippingMethod provider=this._id }}
-              </td>
-              </tr>
-            {{/if}}
-            {{#each methods}}
-              <tr class="edit-shipping-method" data-event-action="editShippingMethod">
-                <td>{{name}}</td>
-                <td>{{label}}</td>
-                <td>{{group}}</td>
-                <td>{{formatPrice cost}}</td>
-                <td>{{formatPrice handling}}</td>
-                <td>{{formatPrice rate}}</td>
-                <td>
-                  {{#if enabled}}
-                    <i class="fa fa-check text-success" title="Enabled"></i>
-                  {{else}}
-                    <i class="fa fa-ban text-danger" title="Disabled"></i>
-                  {{/if}}
-                </td>
-                <td class="text-right">
-                  <i class="fa fa-cog edit-shipping-method" title="{{i18n 'shipping.editShippingMethod' 'Edit shipping method'}}" data-event-action="editShippingMethod"></i>
-                  <i class="fa fa-trash delete-shipping-method" data-provider-id="{{../_id}}" title="{{i18n 'shipping.deleteShippingMethod' 'Delete shipping method'}}" data-event-action="deleteShippingMethod"></i>
-                </td>
-              </tr>
-              {{#if selectedShippingMethod}}
-              <tr class="active">
-                <td colspan="8">
-                  {{> editShippingMethod}}
-                </td>
-              </tr>
-              {{/if}}
-            {{/each}}
-            </tbody>
-          </table>
+        {{#if isShippoShippingProvider}}
+          <!-- We can later get the methods of the specific provider from shippo api and list them here-->
         {{else}}
-          {{> addShippingMethod provider=this }}
+          <div class="panel-body">
+          {{#if methods}}
+            <table class="table table-striped">
+              <thead>
+                <tr class="info">
+                  <th>{{i18n "shippingMethod.name" "Name"}}</th>
+                  <th>{{i18n "shippingMethod.label" "Label"}}</th>
+                  <th>{{i18n "shippingMethod.group" "Group"}}</th>
+                  <th>{{i18n "shippingMethod.cost" "Cost"}}</th>
+                  <th>{{i18n "shippingMethod.handling" "Handling"}}</th>
+                  <th>{{i18n "shippingMethod.rate" "Rate"}}</th>
+                  <th>{{i18n "shippingMethod.enabled" "Enabled"}}</th>
+                  <th><i class="fa fa-plus pull-right add-shipping-method" title="{{i18n 'shipping.addShippingMethod' 'Add shipping method'}}" data-event-action="addShippingMethod"></i></th>
+                </tr>
+              </thead>
+              <tbody>
+              {{#if selectedAddShippingMethod}}
+                <tr class="active">
+                <td colspan="8">
+                {{> addShippingMethod provider=this._id }}
+                </td>
+                </tr>
+              {{/if}}
+              {{#each methods}}
+                <tr class="edit-shipping-method" data-event-action="editShippingMethod">
+                  <td>{{name}}</td>
+                  <td>{{label}}</td>
+                  <td>{{group}}</td>
+                  <td>{{formatPrice cost}}</td>
+                  <td>{{formatPrice handling}}</td>
+                  <td>{{formatPrice rate}}</td>
+                  <td>
+                    {{#if enabled}}
+                      <i class="fa fa-check text-success" title="Enabled"></i>
+                    {{else}}
+                      <i class="fa fa-ban text-danger" title="Disabled"></i>
+                    {{/if}}
+                  </td>
+                  <td class="text-right">
+                    <i class="fa fa-cog edit-shipping-method" title="{{i18n 'shipping.editShippingMethod' 'Edit shipping method'}}" data-event-action="editShippingMethod"></i>
+                    <i class="fa fa-trash delete-shipping-method" data-provider-id="{{../_id}}" title="{{i18n 'shipping.deleteShippingMethod' 'Delete shipping method'}}" data-event-action="deleteShippingMethod"></i>
+                  </td>
+                </tr>
+                {{#if selectedShippingMethod}}
+                <tr class="active">
+                  <td colspan="8">
+                    {{> editShippingMethod}}
+                  </td>
+                </tr>
+                {{/if}}
+              {{/each}}
+              </tbody>
+            </table>
+          {{else}}
+            {{> addShippingMethod provider=this }}
+          {{/if}}
+          </div>
         {{/if}}
-        </div>
       </div>
 
   {{else}}
@@ -239,8 +248,10 @@
         }}
 
         <div class="col-md-12">
-          {{>afQuickField name='provider.name' autofocus='' default="Flat Rate"}}
-          {{>afQuickField name='provider.label'}}
+          {{#unless isShippoShippingProvider }}
+            {{>afQuickField name='provider.name' autofocus='' default="Flat Rate"}}
+            {{>afQuickField name='provider.label'}}
+          {{/unless}}
           {{>afQuickField name='provider.enabled'}}
         </div>
 
