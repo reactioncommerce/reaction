@@ -40,24 +40,31 @@ function formatShippoRates( shippoRates ) {
   shippoRates.map( rate => ({label: rate.service.level_name }) );
 }
 
-// Creates Shippo Provider in Shipping Collection for the current Shop
-function createShippoShippingProvider() {
+// // usps_express to U
+// function formatCarrierLabel( carrierName) {
+//   carrierName.split('_').map( el => el..charAt(0).toUpperCase();)
+// }
+
+// Creates Shippo Shippings Providers in Shipping Collection for the current Shop
+function createShippoShippingProviders(carriers) {
   const shippoProvider = Shipping.findOne({
     "shopId": Reaction.getShopId(),
-    "provider.name": "Shippo"
+    "shippoProvided": true
   });
-  if (!shippoProvider) {
+
+  carriers.forEach( carrier => {
     Shipping.insert({
       name: "Shippo Shipping provider",
       methods: [],
       provider: {
-        name: "Shippo",
-        label: "Shippo",
+        serviceAuth: "shippo",
+        name: carrier.account_id,
+        label: carrier.carrier,
         enabled: true
       },
       shopId: Reaction.getShopId()
     });
-  }
+  });
 };
 
 
@@ -82,8 +89,8 @@ Meteor.methods({
     ShippoApi.methods.confirmValidApiKey.call({ apiKey });
     Packages.update(_id, modifier);
     // if Shippo Provider doesn't exist create it
-    createShippoShippingProvider();
-    ShippoApi.methods.getActiveCarriersList.call({});
+    const shippoCarriersList = ShippoApi.methods.getActiveCarriersList.call({});
+    createShippoShippingProviders(shippoCarriersList);
 
     return { type: "update" };
   },
