@@ -19,7 +19,8 @@ ShippoApi.methods.getApiKey = new ValidatedMethod({
   }
 });
 
-// Checks if the Api key is valid one by trying to get the Shippo account's addresses list
+// Checks if the Api key is valid one by trying to get the Shippo account's
+// addresses list
 ShippoApi.methods.confirmValidApiKey = new ValidatedMethod({
   name: "ShippoApi.methods.confirmValidApiKey",
   validate: new SimpleSchema({
@@ -38,7 +39,8 @@ ShippoApi.methods.confirmValidApiKey = new ValidatedMethod({
   }
 });
 
-// Returns a list of the activated/enabled Carriers (activated from the Shippo's account dashboard - not Reaction's)
+// Returns a list of the activated/enabled Carriers (activated from the Shippo's
+// account dashboard - not Reaction's)
 ShippoApi.methods.getActiveCarriersList = new ValidatedMethod({
   name: "ShippoApi.methods.getActiveCarriersList",
   validate: new SimpleSchema({
@@ -60,12 +62,12 @@ ShippoApi.methods.getActiveCarriersList = new ValidatedMethod({
         carrierAccounts.results.forEach(carrier => {
           if (carrier.active) {
             activeCarriersList.push({
-              name: carrier.carrier //this is a property of the returned result with value the name of the carrier
+              name: carrier.carrier, //this is a property of the returned result with value the name of the carrier
+              carrierShippoId: carrier.object_id
             });
           }
         });
       }
-      console.log(activeCarriersList);
       return activeCarriersList;
     } catch (error) {
       throw new Meteor.Error(error.message);

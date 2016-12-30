@@ -2,6 +2,7 @@ import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { Cart, Shipping } from "/lib/collections";
 import { Logger, Reaction } from "/server/api";
+import { Cart as CartSchema } from "/lib/collections/schemas";
 
 //
 // function getDynamicShippingMethods(packageId) {
@@ -91,7 +92,7 @@ Meteor.methods({
    * @return {Array} return updated rates in cart
    */
   "shipping/getShippingRates": function (cart) {
-    check(cart, Object);
+    check(cart, CartSchema);
     const rates = [];
     const shops = [];
     const products = cart.items;
