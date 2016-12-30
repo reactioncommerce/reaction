@@ -8,10 +8,12 @@ MethodHooks.before("cart/copyCartToOrder", function (options) {
   const cartId = options.arguments[0];
   const cart = Cart.findOne(cartId);
   // record that discounts have been applied to order
-  for (const billing of cart.billing) {
-    // TODO should we enable transactions for rates as well?
-    if (billing.paymentMethod && billing.paymentMethod.processor === "code") {
-      Meteor.call("discounts/transaction", cartId, billing.paymentMethod.id);
+  if (cart && cart.billing) {
+    for (const billing of cart.billing) {
+      // TODO should we enable transactions for rates as well?
+      if (billing.paymentMethod && billing.paymentMethod.processor === "code") {
+        Meteor.call("discounts/transaction", cartId, billing.paymentMethod.id);
+      }
     }
   }
 });
