@@ -125,10 +125,9 @@ Meteor.methods({
     shippingProviders.forEach(function (shippingProvider) {
       const _results = [];
       let shippingMethods;
-      // If the r - we get the rates through a 3rd party Api
+      // If provider name is Shippo get methods dynamically through shippo account
       if (shippingProvider.provider.name === "Shippo") {
-        // shippingMethods = getDynamicShippingMethods(shippingProvider.provider.packageId);
-        shippingMethods = Meteor.call("shippo/getShippingMethodsForCart", cart);
+        shippingMethods = Meteor.call("shippo/getShippingMethodsForCart", cart._id);
       } else {
         shippingMethods = shippingProvider.methods;
       }

@@ -78,13 +78,13 @@ ShippoApi.methods.getActiveCarriersList = new ValidatedMethod({
 ShippoApi.methods.getCarriersRates = new ValidatedMethod({
   name: "ShippoApi.methods.getCarriersRates",
   validate: new SimpleSchema({
-    addressFrom: { type: purchaseAddressSchema },
-    addressTo: { type: purchaseAddressSchema },
-    parcel: { type: parcelSchema },
+    shippoAddressFrom: { type: purchaseAddressSchema },
+    shippoAddressTo: { type: purchaseAddressSchema },
+    shippoParcel: { type: parcelSchema },
     purpose: { type: String, allowedValues: ["QUOTE", "PURCHASE"] },
     apiKey: { type: String, optional: true }
   }).validator(),
-  run({ addressFrom, addressTo, parcel, purpose, apiKey }) {
+  run({ shippoAddressFrom, shippoAddressTo, shippoParcel, purpose, apiKey }) {
     let shippo;
     if (!apiKey) {
       const dynamicApiKey = ShippoApi.methods.getApiKey.call();
@@ -97,9 +97,9 @@ ShippoApi.methods.getCarriersRates = new ValidatedMethod({
     try {
       const shipment = createShipmentFiber({
             "object_purpose": purpose,
-            "address_from": addressFrom,
-            "address_to": addressTo,
-            "parcel": parcel,
+            "address_from": shippoAddressFrom,
+            "address_to": shippoAddressTo,
+            "parcel": shippoParcel,
             "async": false
       });
       return shipment.rates_list;
