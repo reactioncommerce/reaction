@@ -31,3 +31,8 @@ import "./components/textfield/textfield.html";
 
 import "./components/upload/upload.html";
 import "./components/upload/upload.js";
+
+// Safe css import for npm package
+import "nouislider-algolia-fork/src/nouislider.css";
+import "nouislider-algolia-fork/src/nouislider.pips.css";
+import "nouislider-algolia-fork/src/nouislider.tooltips.css";
