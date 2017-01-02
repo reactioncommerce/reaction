@@ -2,7 +2,6 @@
 import { Reaction } from "/server/api";
 import { Packages, Accounts, Shops, Shipping, Cart } from "/lib/collections";
 import { ShippoPackageConfig } from "../../lib/collections/schemas";
-// import { Cart as CartSchema } from "/lib/collections/schemas";
 import { ShippoApi } from "./shippoapi";
 
 // Creates an address (for sender or recipient) suitable for Shippo Api Calls
@@ -136,11 +135,11 @@ Meteor.methods({
 
       shippoAddressFrom = createShippoAddress(shop.addressBook[0], shop.emails[0].address, purpose);
       // product in the cart has to have parcel property with the dimensions
-      if (cart.items && cart.items && cart.items[0] && cart.items[0].parcel) {
-        const massUnit = shop && shop.unitsOfMeasure && shop.unitsOfMeasure[0].uom || "KG";
+      if (cart.items && cart.items[0] && cart.items[0].parcel) {
+        const unitOfMeasure = shop && shop.unitsOfMeasure && shop.unitsOfMeasure[0].uom || "KG";
         // at the moment shops don't have a kind of unitOfMeasure for distance
         // so we put CM...
-        shippoParcel = createShippoParcel(cart.items[0].parcel, massUnit, "CM");
+        shippoParcel = createShippoParcel(cart.items[0].parcel, unitOfMeasure, "CM");
       } else {
         return [];
       }
@@ -160,6 +159,7 @@ Meteor.methods({
       const shippoRates = ShippoApi.methods.getCarriersRates.call({ shippoAddressFrom, shippoAddressTo, shippoParcel, purpose });
       return createShippingMethodsFromRatesList(shippoRates);
     }
+    //WIP
     // ,
     // "shippo/getCarriersRatesForOrder"(order) { // intended to be called from Seller
     //

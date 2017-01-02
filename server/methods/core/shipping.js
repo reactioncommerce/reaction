@@ -4,23 +4,6 @@ import { Cart, Shipping } from "/lib/collections";
 import { Logger, Reaction } from "/server/api";
 import { Cart as CartSchema } from "/lib/collections/schemas";
 
-//
-// function getDynamicShippingMethods(packageId) {
-//   const shippingProviderPackage = Packages.findOne({
-//     _id: packageId
-//   }, {
-//     fields: {
-//       methodsNamespace: 1
-//     }
-//   });
-//   // Each dynamic shipping provider has to have a method for fetching available shipping
-//   // methods/rates with the naming convention: package.methodsNamespace/getShippingMethods
-//   // ,for example shippo/getShippingMethods
-//   const packageMethodsNamespace = shippingProviderPackage.methodsNamespace;
-//   return Meteor.call(packageMethodsNamespace + "getShippingMethods", cart);
-// }
-
-
 /*
  * Reaction Shipping Methods
  * methods typically used for checkout (shipping, taxes, etc)
