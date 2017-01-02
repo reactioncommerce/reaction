@@ -106,37 +106,40 @@ Meteor.methods({
     }
 
     const shippings = Shipping.find(selector);
-    let shippoShippingsProviders = []; //Meteor.call("shippo/getShippingMethodsForCart", cart._id);
+    let shippoShippings = {};
 
     shippings.forEach(function (shipping) {
       const _results = [];
-      let shippingMethods;
       // If provider name is Shippo get methods dynamically through shippo account
-      if (shipping.shippoShippingProvider.isShippoShippingProvider) {
-        shippoShippingProviders.push = shipping.shippoShippingProvider.objectId;
+      if ((shipping.shippoShippingProvider) &&
+      (shipping.shippoShippingProvider.isShippoShippingProvider)) {
+        shippoShippings[shipping.shippoShippingProvider.carrierAccountId] = shipping;
       } else {
-        shippingMethods = shipping.methods;
+        for (const method of shipping.methods) {
+          if (!(method.enabled === true)) {
+            continue;
+          }
+          if (!method.rate) {
+            method.rate = 0;
+          }
+          if (!method.handling) {
+            method.handling = 0;
+          }
+          const rate = method.rate + method.handling;
+          _results.push(rates.push({
+            carrier: shipping.provider.label,
+            method: method,
+            rate: rate,
+            shopId: shipping.shopId
+          }));
+        }
+        return _results;
       }
-      for (const method of shippingMethods) {
-        if (!(method.enabled === true)) {
-          continue;
-        }
-        if (!method.rate) {
-          method.rate = 0;
-        }
-        if (!method.handling) {
-          method.handling = 0;
-        }
-        const rate = method.rate + method.handling;
-        _results.push(rates.push({
-          carrier: shipping.provider.label,
-          method: method,
-          rate: rate,
-          shopId: shipping.shopId
-        }));
-      }
-      return _results;
+
     });
+    //  Get shippingMethods from Shippo
+    const shippoRates = Meteor.call("shippo/getShippingRatesForCart", cart._id, shippoShippings);
+    rates.push(...shippoRates);
     Logger.debug("getShippingRates returning rates", rates);
     return rates;
   }

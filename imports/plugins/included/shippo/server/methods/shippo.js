@@ -36,20 +36,22 @@ function createShippoParcel(reactionParcel, reactionMassUnit, reactionDistanceUn
   return shippoParcel;
 }
 
-// converts the Rates List fetched from the Shippo Api to ShippingMethod form
-function createShippingMethodsFromRatesList(shippoRates) {
-  return shippoRates.map(rate => ({
-    name: rate.servicelevel_token, // eg USPS_priority_mail
-    label: `${rate.provider} - ${rate.servicelevel_name}`, // eg USPS - Priority mail
-    enabled: true,
-    rate: rate.amount,
-    handling: 0 // we could get that from a corresponding property of the Shipping document
-  }));
+// converts the Rates List fetched from the Shippo Api to Reaction Shipping Rates form
+function ratesParser(shippoRates, shippoShippings) {
+  return shippoRates.map(rate => {
+    const reactionRate = {
+      carrier: rate.provider,
+      method: { label: `${rate.provider} - ${rate.servicelevel_name}` },
+      rate: parseInt(rate.amount, 10),
+      shopId: shippoShippings[rate.carrier_account].shopId
+    };
+    return reactionRate;
+  });
 }
 
 
 // usps_express to USPS EXPRESS .We need a better approach
-function formatCarrierLabel( carrierName) {
+function formatCarrierLabel(carrierName) {
   return carrierName.replace(/_/g," ").toUpperCase();
 }
 
@@ -68,7 +70,7 @@ function createShippoShippingProviders(carriers) {
       },
       shippoShippingProvider: {
         isShippoShippingProvider: true,
-        objectId: carrier.object_id
+        carrierAccountId: carrier.carrierAccountId
       },
       shopId: Reaction.getShopId()
     });
@@ -113,9 +115,9 @@ Meteor.methods({
     }
   },
   // Intended to be called from Buyer
-  "shippo/getShippingMethodsForCart"(cartId) {
+  "shippo/getShippingRatesForCart"(cartId, shippoShippings) {
     check(cartId, String);
-
+    check(shippoShippings, Object);
     const cart = Cart.findOne(cartId);
     if (cart && cart.userId === this.userId) { // confirm user has the right
       let shippoAddressFrom;
@@ -155,9 +157,10 @@ Meteor.methods({
       } else {
         return [];
       }
-
-      const shippoRates = ShippoApi.methods.getCarriersRates.call({ shippoAddressFrom, shippoAddressTo, shippoParcel, purpose });
-      return createShippingMethodsFromRatesList(shippoRates);
+      const carrierAccounts = Object.keys(shippoShippings);
+      const shippoRates = ShippoApi.methods.getCarriersRates.call({ shippoAddressFrom, shippoAddressTo, shippoParcel, purpose, carrierAccounts });
+      const reactionRates = ratesParser(shippoRates, shippoShippings);
+      return reactionRates;
     }
     //WIP
     // ,

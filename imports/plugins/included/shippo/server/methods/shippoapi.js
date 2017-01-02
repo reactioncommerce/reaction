@@ -62,7 +62,7 @@ ShippoApi.methods.getActiveCarriersList = new ValidatedMethod({
           if (carrier.active) {
             activeCarriersList.push({
               carrier: carrier.carrier, // this is a property of the returned result with value the name of the carrier
-              object_id: carrier.object_id
+              carrierAccountId: carrier.object_id
             });
           }
         });
@@ -81,9 +81,10 @@ ShippoApi.methods.getCarriersRates = new ValidatedMethod({
     shippoAddressTo: { type: purchaseAddressSchema },
     shippoParcel: { type: parcelSchema },
     purpose: { type: String, allowedValues: ["QUOTE", "PURCHASE"] },
-    apiKey: { type: String, optional: true }
+    apiKey: { type: String, optional: true },
+    carrierAccounts: { type: [String], optional: true }
   }).validator(),
-  run({ shippoAddressFrom, shippoAddressTo, shippoParcel, purpose, apiKey }) {
+  run({ shippoAddressFrom, shippoAddressTo, shippoParcel, purpose, apiKey, carrierAccounts }) {
     let Shippo;
     if (!apiKey) {
       const dynamicApiKey = ShippoApi.methods.getApiKey.call();
@@ -99,7 +100,8 @@ ShippoApi.methods.getCarriersRates = new ValidatedMethod({
             "address_from": shippoAddressFrom,
             "address_to": shippoAddressTo,
             "parcel": shippoParcel,
-            "async": false
+            //"carrier_accounts": carrierAccounts,  //Maybe some bug at the moment with shippo's api
+            "async": false                          //..returns zero results if enabled
       });
       return shipment.rates_list;
     } catch (error) {
