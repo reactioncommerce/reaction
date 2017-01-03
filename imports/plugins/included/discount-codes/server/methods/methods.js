@@ -211,11 +211,13 @@ export const methods = {
       // existing usage count
       if (discount.transactions) {
         const users = Array.from(discount.transactions, (t) => t.userId);
+        const transactionCount = new Map([...new Set(users)].map(
+          x => [x, users.filter(y => y === x).length]
+        ));
         const orders = Array.from(discount.transactions, (t) => t.cartId);
-        userCount = users.length;
+        userCount = transactionCount.get(Meteor.userId());
         orderCount = orders.length;
       }
-
       // check limits
       if (conditions) {
         if (conditions.accountLimit) accountLimitExceeded = conditions.accountLimit <= userCount;
