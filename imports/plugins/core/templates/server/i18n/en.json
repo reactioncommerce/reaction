@@ -4,6 +4,11 @@
   "ns": "reaction-templates",
   "translation": {
     "reaction-templates": {
+      "admin": {
+        "settings": {
+          "templateSettingsLabel": "Template Settings"
+        }
+      },
       "templateGrid": {
         "noTemplatesFound": "No templates found",
         "columns": {
