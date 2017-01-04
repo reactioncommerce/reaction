@@ -118,3 +118,41 @@ ShippoApi.methods.getCarriersRates = new ValidatedMethod({
     }
   }
 });
+
+// Makes the transaction for a chosen rate, and receives the printable label
+
+ShippoApi.methods.purchaseShippingLabel = new ValidatedMethod({
+  name: "ShippoApi.methods.purchaseShippingLabel",
+  validate: new SimpleSchema({
+    rateId: { type: String },
+    apiKey: { type: String, optional: true }
+  }).validator(),
+  run({ rateId, apiKey }) {
+    let shippoObj;
+    if (!apiKey) {
+      const dynamicApiKey = ShippoApi.methods.getApiKey.call();
+      shippoObj = new Shippo(dynamicApiKey);
+    } else {
+      shippoObj = new Shippo(apiKey);
+    }
+
+    const createTransactionFiber = Meteor.wrapAsync(shippoObj.transaction.create, shippoObj.transaction);
+    try {
+      const transaction = createTransactionFiber({
+        rate: rateId,
+        label_file_type: "PDF",
+        async: false
+      });
+      // // check if I will format the received date here or in the shippo.js
+      // return {
+      //   trackingNumber: transaction.tracking_number,
+      //   trackingStatus: transaction.tracking_status,
+      //   trackingUrlProvider: transaction.tracking_url_provider,
+      //   labelUrl: transaction.label_url
+      // };
+      return transaction;
+    } catch (error) {
+      throw new Meteor.Error(error.message);
+    }
+  }
+});

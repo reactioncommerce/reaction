@@ -1,6 +1,6 @@
 /* eslint camelcase: 0 */
 import { Reaction } from "/server/api";
-import { Packages, Accounts, Shops, Shipping, Cart } from "/lib/collections";
+import { Packages, Accounts, Shops, Shipping, Cart, Orders } from "/lib/collections";
 import { ShippoPackageConfig } from "../../lib/collections/schemas";
 import { ShippoApi } from "./shippoapi";
 
@@ -51,7 +51,8 @@ function ratesParser(shippoRates, shippoShippings) {
         handling: 0,
         carrier: rate.provider,
         shippoMethod: {
-          carrierAccount: rate.carrier_account,
+          // carrierAccount: rate.carrier_account,
+          rateId: rate.object_id,
           serviceLevelToken: rate.servicelevel_token
         }
       },
@@ -130,15 +131,15 @@ Meteor.methods({
   },
   // Intended to be called from Buyer
 
-  "shippo/getShippingRatesForCart"(cartId, shippoShippings) {
+  "shippo/getShippingRatesForCart"(cartId, shippoDocs) {
     check(cartId, String);
-    check(shippoShippings, Object);
+    check(shippoDocs, Object);
     const cart = Cart.findOne(cartId);
     if (cart && cart.userId === this.userId) { // confirm user has the right
       let shippoAddressFrom;
       let shippoAddressTo;
       let shippoParcel;
-      const purpose = "QUOTE";
+      const purpose = "PURCHASE";
 
       const shop = Shops.findOne({
         _id: cart.shopId
@@ -172,19 +173,36 @@ Meteor.methods({
       } else {
         return [];
       }
-      const carrierAccounts = Object.keys(shippoShippings);
+      const carrierAccounts = Object.keys(shippoDocs);
       const shippoRates = ShippoApi.methods.getCarriersRates.call({ shippoAddressFrom, shippoAddressTo, shippoParcel, purpose, carrierAccounts });
-      const reactionRates = ratesParser(shippoRates, shippoShippings);
+      const reactionRates = ratesParser(shippoRates, shippoDocs);
 
       return reactionRates;
     }
-    //WIP
-    // ,
-    // "shippo/getCarriersRatesForOrder"(order) { // intended to be called from Seller
-    //
-    // }
-
-
+  },
+  // For a given order ,purchases the shipping label of the selected method
+  // and supplies the order with the tracking and label infos
+  "shippo/confirmShippingMethodForOrder"(orderId) {
+    check(orderId, String);
+    const order = Orders.findOne(orderId);
+    // Make sure user has permissions in the shop's order
+    if (Roles.userIsInRole(this.userId, ["admin", "owner"], order.shopId)) {
+      // Here we done it for the first/unique Shipment only // in the near future it will be done for multiple ones
+      if (order.shipping[0].shipmentMethod.shippoMethod &&
+      order.shipping[0].shipmentMethod.shippoMethod.rateId) {
+        const rateId = order.shipping[0].shipmentMethod.shippoMethod.rateId;
+        // make the actual purchase
+        const shippoLabel = ShippoApi.methods.purchaseShippingLabel.call({ rateId });
+        console.log(Orders.update({
+          _id: orderId
+        }, {
+          $set: {
+            "shipping.0.labelUrl": shippoLabel.label_url,
+            "shipping.0.tracking": shippoLabel.tracking_number
+          }
+        })
+        );
+      }
     }
-
+  }
 });

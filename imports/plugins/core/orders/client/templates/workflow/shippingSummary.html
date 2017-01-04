@@ -18,16 +18,22 @@
       <span>{{order._id}}</span>
     </div>
 
-    <div class="">
+    <div>
       <strong data-i18n="orderShipping.carrier">Carrier</strong>
       <span>{{shipment.shipmentMethod.carrier}} - {{shipment.shipmentMethod.label}}</span>
     </div>
 
-    <div class="">
+    <div>
       <strong data-i18n="orderShipping.tracking">Tracking</strong>
       <span>{{tracking}}</span> -
       <span class="badge badge-{{shipmentStatus.status}}">{{shipmentStatus.label}}</span>
     </div>
 
+    {{#if shipment.labelUrl}}
+    <div>  <!--put i18n for shippingLabel -->
+      <strong data-i18n="orderShipping.shippingLabel">Shipping Label</strong>
+      <a href="{{shipment.labelUrl}}" target="_blank">print it</a>
+    </div>
+    {{/if}}
   </div>
 </template>
