@@ -25,3 +25,4 @@ export { default as Popover } from "./popover/popover";
 export * from "./menu";
 export * from "./buttonGroup";
 export { default as Slider } from "./slider/slider";
+export { default as MultiSelect } from "./multiselect/multiselect";
