@@ -19,7 +19,7 @@ Meteor.methods({
   "sms/saveSettings": (settings) => {
     check(settings, Object);
     settings.shopId = Reaction.getShopId();
-    Meteor.subscribe("SmsSettings").ready();
+    Meteor.subscribe("SmsSettings");
 
     const smsDetails = Sms.find().count();
     if (smsDetails >= 1) {

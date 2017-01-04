@@ -77,7 +77,6 @@ class NotificationRoute extends Component {
 }
 
 NotificationRoute.propTypes = {
-  handleDelete: PropTypes.func,
   markAllAsRead: PropTypes.func,
   markOneAsRead: PropTypes.func,
   notificationList: PropTypes.array,

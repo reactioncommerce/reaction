@@ -70,7 +70,7 @@ Meteor.methods({
   "notification/markOneAsRead": (id) => {
     check(id, String);
 
-    return Notifications.update({_id: id}, {
+    return Notifications.update({ _id: id }, {
       $set: {
         status: "read"
       }

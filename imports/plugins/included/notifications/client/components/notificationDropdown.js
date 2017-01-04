@@ -8,6 +8,7 @@ class NotificationDropdown extends Component {
 
     this.handleNoNotifications = this.handleNoNotifications.bind(this);
     this.renderDropdownHead = this.renderDropdownHead.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   handleNoNotifications(notifyArr) {
@@ -23,6 +24,11 @@ class NotificationDropdown extends Component {
       );
     }
     return null;
+  }
+
+  handleClick(notify) {
+    const { markOneAsRead } = this.props;
+    return markOneAsRead(notify._id);
   }
 
   renderDropdownHead() {
@@ -80,11 +86,10 @@ class NotificationDropdown extends Component {
 }
 
 NotificationDropdown.propTypes = {
-  handleDelete: PropTypes.func,
-  markAllAsRead: PropTypes.func,
-  markOneAsRead: PropTypes.func,
-  notificationList: PropTypes.array,
-  unread: PropTypes.number
+  markAllAsRead: PropTypes.func.isRequired,
+  markOneAsRead: PropTypes.func.isRequired,
+  notificationList: PropTypes.array.isRequired,
+  unread: PropTypes.number.isRequired
 };
 
 export default NotificationDropdown;
