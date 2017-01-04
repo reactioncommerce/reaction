@@ -8,6 +8,7 @@ class NotificationRoute extends Component {
 
     this.handleNoNotifications = this.handleNoNotifications.bind(this);
     this.renderDropdownHead = this.renderDropdownHead.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   handleNoNotifications(notifyArr) {
@@ -23,6 +24,11 @@ class NotificationRoute extends Component {
       );
     }
     return null;
+  }
+
+  handleClick(notify) {
+    const { markOneAsRead } = this.props;
+    return markOneAsRead(notify._id);
   }
 
   renderDropdownHead() {
