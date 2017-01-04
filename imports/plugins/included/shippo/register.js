@@ -16,7 +16,7 @@ Reaction.registerPackage({
     label: "Shippo",
     description: "Shippo service",
     icon: "fa fa-plane",
-    priority: 3,
+    priority: 1,
     container: "connect",
     permissions: [{
       label: "Shippo",

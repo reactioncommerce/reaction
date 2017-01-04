@@ -1,11 +1,13 @@
 /* eslint camelcase: 0 */
+import Shippo from "shippo";
 import { Meteor } from "meteor/meteor";
 import { SimpleSchema } from "meteor/aldeed:simple-schema";
 import { purchaseAddressSchema, parcelSchema } from "../lib/shippoApiSchema";
 import { Packages } from "/lib/collections";
 
-export const ShippoApi = {};
-ShippoApi.methods = {};
+export const ShippoApi = {
+  methods : {}
+};
 
 ShippoApi.methods.getApiKey = new ValidatedMethod({
   name: "ShippoApi.methods.getApiKey",
@@ -24,11 +26,14 @@ ShippoApi.methods.getApiKey = new ValidatedMethod({
 ShippoApi.methods.confirmValidApiKey = new ValidatedMethod({
   name: "ShippoApi.methods.confirmValidApiKey",
   validate: new SimpleSchema({
-    apiKey: { type: String } }).validator(),
+    apiKey: {
+      type: String
+    }
+  }).validator(),
   run({ apiKey }) {
-    const Shippo = require("shippo")(apiKey);
+    const shippoObj = new Shippo(apiKey);
 
-    const getAddressListFiber = Meteor.wrapAsync(Shippo.address.list, Shippo.address);
+    const getAddressListFiber = Meteor.wrapAsync(shippoObj.address.list, shippoObj.address);
     try {
       getAddressListFiber();
     } catch (error) {
@@ -43,17 +48,21 @@ ShippoApi.methods.confirmValidApiKey = new ValidatedMethod({
 ShippoApi.methods.getActiveCarriersList = new ValidatedMethod({
   name: "ShippoApi.methods.getActiveCarriersList",
   validate: new SimpleSchema({
-    apiKey: { type: String, optional: true } }).validator(),
+    apiKey: {
+      type: String,
+      optional: true
+    }
+  }).validator(),
   run({ apiKey }) {
-    let Shippo;
+    let shippoObj;
     if (!apiKey) {
       const dynamicApiKey = ShippoApi.methods.getApiKey.call();
-      Shippo = require("shippo")(dynamicApiKey);
+      shippoObj = new Shippo(dynamicApiKey);
     } else {
-      Shippo = require("shippo")(apiKey);
+      shippoObj = new Shippo(apiKey);
     }
 
-    const getCarrierAccountsListFiber = Meteor.wrapAsync(Shippo.carrieraccount.list, Shippo.carrieraccount);
+    const getCarrierAccountsListFiber = Meteor.wrapAsync(shippoObj.carrieraccount.list, shippoObj.carrieraccount);
     try {
       const carrierAccounts = getCarrierAccountsListFiber();
       let activeCarriersList = [];
@@ -85,15 +94,15 @@ ShippoApi.methods.getCarriersRates = new ValidatedMethod({
     carrierAccounts: { type: [String], optional: true }
   }).validator(),
   run({ shippoAddressFrom, shippoAddressTo, shippoParcel, purpose, apiKey, carrierAccounts }) {
-    let Shippo;
+    let shippoObj;
     if (!apiKey) {
       const dynamicApiKey = ShippoApi.methods.getApiKey.call();
-      Shippo = require("shippo")(dynamicApiKey);
+      shippoObj = new Shippo(dynamicApiKey);
     } else {
-      Shippo = require("shippo")(apiKey);
+      shippoObj = new Shippo(apiKey);
     }
 
-    const createShipmentFiber = Meteor.wrapAsync(Shippo.shipment.create, Shippo.shipment);
+    const createShipmentFiber = Meteor.wrapAsync(shippoObj.shipment.create, shippoObj.shipment);
     try {
       const shipment = createShipmentFiber({
             "object_purpose": purpose,

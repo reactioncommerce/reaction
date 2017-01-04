@@ -1,3 +1,4 @@
+import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { Cart, Shipping } from "/lib/collections";
@@ -110,13 +111,12 @@ Meteor.methods({
 
     shippings.forEach(function (shipping) {
       const _results = [];
-      // If provider name is Shippo get methods dynamically through shippo account
-      if ((shipping.shippoShippingProvider) &&
-      (shipping.shippoShippingProvider.isShippoShippingProvider)) {
-        shippoShippings[shipping.shippoShippingProvider.carrierAccountId] = shipping;
+      // If provider is from Shippo, put it in an object to get rates dynamically for all of them after.
+      if (shipping.provider.shippoProvider) {
+        shippoShippings[shipping.provider.shippoProvider.carrierAccountId] = shipping;
       } else {
         for (const method of shipping.methods) {
-          if (!(method.enabled === true)) {
+          if (!method.enabled) {
             continue;
           }
           if (!method.rate) {
@@ -124,6 +124,11 @@ Meteor.methods({
           }
           if (!method.handling) {
             method.handling = 0;
+          }
+          // Store shipping provider here in order to have it available in shipmentMethod
+          // for cart and order usage
+          if (!method.carrier) {
+            method.carrier = shipping.provider.label;
           }
           const rate = method.rate + method.handling;
           _results.push(rates.push({
@@ -135,11 +140,12 @@ Meteor.methods({
         }
         return _results;
       }
-
     });
-    //  Get shippingMethods from Shippo
-    const shippoRates = Meteor.call("shippo/getShippingRatesForCart", cart._id, shippoShippings);
-    rates.push(...shippoRates);
+    //  Get shippingRates from Shippo
+    if (!_.isEmpty(shippoShippings)) {
+      const shippoRates = Meteor.call("shippo/getShippingRatesForCart", cart._id, shippoShippings);
+      rates.push(...shippoRates);
+    }
     Logger.debug("getShippingRates returning rates", rates);
     return rates;
   }

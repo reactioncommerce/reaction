@@ -32,7 +32,7 @@
       <div class="panel panel-default">
         <div class="panel-heading" data-event-action="editShippingProvider">
           <span class="text-left">{{provider.name}}
-            {{#if isShippoShippingProvider}}
+            {{#if isShippoProvider}}
                provided by Shippo
             {{/if}}
           </span>
@@ -46,7 +46,7 @@
           {{> updateShippingProvider}}
           </div>
         {{/if}}
-        {{#if isShippoShippingProvider}}
+        {{#if isShippoProvider}}
           <!-- We can later get the methods of the specific provider from shippo api and list them here-->
         {{else}}
           <div class="panel-body">
@@ -248,7 +248,7 @@
         }}
 
         <div class="col-md-12">
-          {{#unless isShippoShippingProvider }}
+          {{#unless isShippoProvider }}
             {{>afQuickField name='provider.name' autofocus='' default="Flat Rate"}}
             {{>afQuickField name='provider.label'}}
           {{/unless}}

@@ -110,13 +110,17 @@
 
     {{/each}}
 
-    {{#if shipmentTracking}}
+
+    <div>
+      <i class="fa fa-truck"></i>
+      {{shipmentMethod.carrier}} - {{shipmentMethod.label}}
+      {{#if shipmentTracking}}
       <div>
-        <i class="fa fa-truck"></i>
         <span class="badge badge-{{shipmentStatus.status}}">{{shipmentStatus.label}}</span>
         <a href="#">{{shipmentTracking}}</a>
       </div>
-    {{/if}}
+      {{/if}}
+    </div>
   </div>
 </template>
 

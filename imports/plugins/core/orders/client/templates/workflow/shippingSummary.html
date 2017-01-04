@@ -19,6 +19,11 @@
     </div>
 
     <div class="">
+      <strong data-i18n="orderShipping.carrier">Carrier</strong>
+      <span>{{shipment.shipmentMethod.carrier}} - {{shipment.shipmentMethod.label}}</span>
+    </div>
+
+    <div class="">
       <strong data-i18n="orderShipping.tracking">Tracking</strong>
       <span>{{tracking}}</span> -
       <span class="badge badge-{{shipmentStatus.status}}">{{shipmentStatus.label}}</span>

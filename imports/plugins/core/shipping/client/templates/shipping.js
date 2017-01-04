@@ -61,7 +61,7 @@ Template.shippingProviderTable.helpers({
       });
     }
   },
-  isShippoShippingProvider() {
+  isShippoProvider() {
     if (this.shippoShippingProvider.isShippoShippingProvider) {
       return true;
     }
@@ -141,7 +141,7 @@ Template.editShippingProvider.events({
 });
 
 Template.editShippingProvider.helpers({
-  isShippoShippingProvider() {
+  isShippoProvider() {
     if (this.shippoShippingProvider.isShippoShippingProvider) {
       return true;
     }

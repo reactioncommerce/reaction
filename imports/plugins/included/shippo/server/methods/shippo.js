@@ -33,18 +33,32 @@ function createShippoParcel(reactionParcel, reactionMassUnit, reactionDistanceUn
     distance_unit: reactionDistanceUnit.toLowerCase(), // Propably we need to have for each shop a uom/baseuom for distance
     mass_unit: reactionMassUnit.toLowerCase()
   };
+
   return shippoParcel;
 }
 
 // converts the Rates List fetched from the Shippo Api to Reaction Shipping Rates form
 function ratesParser(shippoRates, shippoShippings) {
   return shippoRates.map(rate => {
+    const rateAmount = parseFloat(rate.amount);
+    //const methodLabel = `${rate.provider} - ${rate.servicelevel_name}`;
     const reactionRate = {
       carrier: rate.provider,
-      method: { label: `${rate.provider} - ${rate.servicelevel_name}` },
-      rate: parseInt(rate.amount, 10),
+      method: {
+        enabled: true,
+        label: rate.servicelevel_name,
+        rate: rateAmount,
+        handling: 0,
+        carrier: rate.provider,
+        shippoMethod: {
+          carrierAccount: rate.carrier_account,
+          serviceLevelToken: rate.servicelevel_token
+        }
+      },
+      rate: rateAmount,
       shopId: shippoShippings[rate.carrier_account].shopId
     };
+
     return reactionRate;
   });
 }
@@ -52,35 +66,35 @@ function ratesParser(shippoRates, shippoShippings) {
 
 // usps_express to USPS EXPRESS .We need a better approach
 function formatCarrierLabel(carrierName) {
-  return carrierName.replace(/_/g," ").toUpperCase();
+
+  return carrierName.replace(/_/g, " ").toUpperCase();
 }
 
-// Creates Shippo Shippings Providers in Shipping Collection for the current Shop
-function createShippoShippingProviders(carriers) {
+// Adds Shippo Shippings Providers in Shipping Collection for the current Shop
+function addShippoProviders(carriers) {
   carriers.forEach(carrier => {
     const carrierName = carrier.carrier;
     const carrierLabel = formatCarrierLabel(carrierName);
     Shipping.insert({
-      name: `${carrierLabel} through Shippo`,
+      name: `${carrierLabel}`, //check it later for a better name
       methods: [],
       provider: {
         name: carrierName,
         label: carrierLabel,
-        enabled: true
-      },
-      shippoShippingProvider: {
-        isShippoShippingProvider: true,
-        carrierAccountId: carrier.carrierAccountId
+        enabled: true,
+        shippoProvider: {
+          carrierAccountId: carrier.carrierAccountId
+        }
       },
       shopId: Reaction.getShopId()
     });
   });
 }
 
-function removeShippoShippingProviders() {
+function removeAllShippoProviders() {
   Shipping.remove({
     "shopId": Reaction.getShopId(),
-    "shippoShippingProvider.isShippoShippingProvider": true
+    "provider.shippoProvider": { $exists: true }
   });
 }
 
@@ -90,14 +104,14 @@ Meteor.methods({
     check(modifier, ShippoPackageConfig);
     check(_id, String);
 
-    // Make sure that the user has proper rights to this package
+    // Make sure user has proper rights to this package
     const shopId = Packages.findOne({ _id }, { field: { shopId: 1 } }).shopId;
     if (shopId && Roles.userIsInRole(this.userId, ["admin", "owner"], shopId)) {
       // If user wants to delete existing key
       if (modifier.hasOwnProperty("$unset")) {
         const customModifier = { $set: { "settings.apiKey": null } };
         Packages.update(_id, customModifier);
-        removeShippoShippingProviders();
+        removeAllShippoProviders();
         return { type: "delete" };
       }
 
@@ -107,14 +121,15 @@ Meteor.methods({
       ShippoApi.methods.confirmValidApiKey.call({ apiKey });
       Packages.update(_id, modifier);
 
-      const shippoActiveCarriersList = ShippoApi.methods.getActiveCarriersList.call({});
-      removeShippoShippingProviders();
-      createShippoShippingProviders(shippoActiveCarriersList);
+      const shippoActiveCarriersList = ShippoApi.methods.getActiveCarriersList.call({ apiKey });
+      removeAllShippoProviders();
+      addShippoProviders(shippoActiveCarriersList);
 
       return { type: "update" };
     }
   },
   // Intended to be called from Buyer
+
   "shippo/getShippingRatesForCart"(cartId, shippoShippings) {
     check(cartId, String);
     check(shippoShippings, Object);
@@ -160,6 +175,7 @@ Meteor.methods({
       const carrierAccounts = Object.keys(shippoShippings);
       const shippoRates = ShippoApi.methods.getCarriersRates.call({ shippoAddressFrom, shippoAddressTo, shippoParcel, purpose, carrierAccounts });
       const reactionRates = ratesParser(shippoRates, shippoShippings);
+
       return reactionRates;
     }
     //WIP

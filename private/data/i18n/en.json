@@ -432,6 +432,7 @@
         "notShipped": "Not Yet Shipped",
         "noTracking": "No Tracking",
         "tracking": "Tracking",
+        "carrier": "Carrier",
         "addTracking": "Add Tracking",
         "itemsHaveBeenShipped": "Items have been shipped",
         "shipmentEmpty": "This shipment has no items",
@@ -710,7 +711,7 @@
         }
       },
       "shippo": {
-        "connectedAndSaved": "Connected to Shippo Api, successfully. Settings Saved!"
+        "connectedAndSaved": "Settings saved! Shippo API is now enabled."
       },
       "accountsUI": {
         "members": "Members",
