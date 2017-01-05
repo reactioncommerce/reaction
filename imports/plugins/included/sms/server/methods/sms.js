@@ -45,7 +45,12 @@ Meteor.methods({
 
     Meteor.subscribe("Accounts", userId);
     const user = Accounts.findOne();
-    const phone = user.profile.addressBook[0].phone;
+    const addressBook = user.profile.addressBook;
+    let phone = false;
+    // check for addressBook phone
+    if (user && addressBook) {
+      if (addressBook[0].phone) phone = addressBook[0].phone;
+    }
 
     if (phone) {
       Meteor.subscribe("Sms", shopId);
