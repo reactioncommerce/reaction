@@ -39,6 +39,14 @@ Template.coreOrderShippingTracking.events({
         Alerts.toast(i18next.t("mail.alerts.emailSent"), "success");
       }
     });
+
+    // send notification to order owner
+    const userId = template.order.userId;
+    const type = "orderShipped";
+    const url = "/reaction/notifications";
+    const sms = true;
+    Meteor.call("notification/send", userId, type, url, sms);
+
     // Meteor.call("workflow/pushOrderShipmentWorkflow", "coreOrderShipmentWorkflow", "orderShipped", this._id);
   },
 

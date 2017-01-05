@@ -68,6 +68,9 @@
           "searchLabel": "Procurar",
           "searchTitle": "Procurar",
           "searchDescription": "Pesquisa de produtos",
+          "smsLabel": "SMS",
+          "smsTitle": "SMS",
+          "smsDescription": "Notificações",
           "socialLabel": "Redes sociais",
           "socialTitle": "Redes sociais",
           "socialDescription": "Configuração dos canais sociais",
@@ -196,6 +199,41 @@
         "shopOptionsSettingsFailed": "Falha ao atualizar as opções da loja.",
         "shopPaymentMethodsSaved": "Definições dos métodos de pagamento da loja guardadas.",
         "shopPaymentMethodsFailed": "Falha ao atualizar as definições dos métodos de pagamento da loja."
+      },
+      "notifications": {
+        "body": {
+          "noNotifications": "Ainda não há notificações",
+          "markAllAsRead": "Marcar tudo como lido",
+          "recent": "Recentes",
+          "viewAll": "Ver todos os"
+        },
+        "messages": {
+          "orderCancelled": "Seu pedido foi cancelado.",
+          "newOrder": "Seu pedido está sendo processado.",
+          "forAdmin": "Você tem uma nova ordem.",
+          "orderDelivered": "Seu pedido foi entregue.",
+          "orderAccepted": "Seu pedido foi aceito.",
+          "orderShipped": "Sua ordem foi enviada."
+        }
+      },
+      "sms": {
+        "headers": {
+          "settings": "Fornecedor SMS"
+        },
+        "settings": {
+          "provider": "Fornecedor",
+          "selectProvider": "Selecione um provedor de SMS ...",
+          "smsPhone": "Número de telefone SMS",
+          "apiKey": "Chave da API",
+          "apiToken": "API Token/Secret"
+        },
+        "alerts": {
+          "noApiKey": "Adicione uma chave de API",
+          "noApiToken": "Adicione um API TOKEN / Secret",
+          "noSmsProvider": "Escolha um fornecedor de SMS",
+          "noSmsPhone": "Adicione o número de telefone fornecido pelo seu provedor de SMS",
+          "saveSuccess": "Configurações de SMS salvas"
+        }
       },
       "mail": {
         "headers": {
