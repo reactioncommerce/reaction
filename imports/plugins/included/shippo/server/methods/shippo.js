@@ -127,6 +127,7 @@ Meteor.methods({
         const customModifier = { $set: { "settings.apiKey": null } };
         Packages.update(_id, customModifier);
         removeAllShippoProviders();
+
         return { type: "delete" };
       }
 

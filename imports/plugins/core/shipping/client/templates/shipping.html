@@ -91,8 +91,13 @@
                     {{/if}}
                   </td>
                   <td class="text-right">
-                    <i class="fa fa-cog edit-shipping-method" title="{{i18n 'shipping.editShippingMethod' 'Edit shipping method'}}" data-event-action="editShippingMethod"></i>
-                    <i class="fa fa-trash delete-shipping-method" data-provider-id="{{../_id}}" title="{{i18n 'shipping.deleteShippingMethod' 'Delete shipping method'}}" data-event-action="deleteShippingMethod"></i>
+                    <i class="fa fa-cog edit-shipping-method"
+                       title="{{i18n 'shipping.editShippingMethod' 'Edit shipping method'}}"
+                       data-event-action="editShippingMethod"></i>
+                    <i class="fa fa-trash delete-shipping-method"
+                       data-provider-id="{{../_id}}"
+                       title="{{i18n 'shipping.deleteShippingMethod' 'Delete shipping method'}}"
+                       data-event-action="deleteShippingMethod"></i>
                   </td>
                 </tr>
                 {{#if selectedShippingMethod}}
@@ -236,7 +241,9 @@
         {{provider.name}}
       </h3>
       <div class="panel-controls">
-        <button type="button" class="btn btn-link" data-event-action="deleteShippingProvider"><i class="fa fa-trash-o"></i></button>
+        <button type="button" class="btn btn-link" data-event-action="deleteShippingProvider">
+          <i class="fa fa-trash-o"></i>
+        </button>
       </div>
     </div>
     <div class="panel-body">
