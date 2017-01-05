@@ -14,18 +14,28 @@ Meteor.publish("Product", function (productId) {
     return this.ready();
   }
   let _id;
-  const shop = Reaction.getCurrentShop();
+  let shopId;
+
+  if (this.userId) {
+    // get shop for loggedIn user or parent shop as fallback
+    shopId = Roles.getGroupsForUser(this.userId, "admin")[0] || null;
+  }
+
+  const shop = Reaction.getCurrentShop(shopId);
   // verify that shop is ready
   if (typeof shop !== "object") {
     return this.ready();
   }
 
-  let selector = {};
-  selector.isVisible = true;
-  selector.isDeleted = { $in: [null, false] };
+  // selector for hih - What's hih?
+  // selector should come first as default, alterations take place later depending on role
+  const selector = {
+    isVisible: true,
+    isDeleted: { $in: [null, false] }
+  };
 
-  if (Roles.userIsInRole(this.userId, ["owner", "admin", "createProduct"],
-      shop._id)) {
+  // no need for admin, simple perm should be ok per group
+  if (Roles.userIsInRole(this.userId, ["createProduct"], shop._id)) {
     selector.isVisible = {
       $in: [true, false]
     };
@@ -48,23 +58,18 @@ Meteor.publish("Product", function (productId) {
     }
   }
 
-  // Selector for hih?
-  selector = {
-    isVisible: true,
-    isDeleted: { $in: [null, false] },
-    $or: [
-      { _id: _id },
-      {
-        ancestors: {
-          $in: [_id]
-        }
+  selector.$or = [
+    { _id: _id },
+    {
+      ancestors: {
+        $in: [_id]
       }
-    ]
-  };
+    }
+  ];
 
-  // Authorized content curators fo the shop get special publication of the product
-  // all all relevant revisions all is one package
-  if (Roles.userIsInRole(this.userId, ["owner", "admin", "createProduct"], shop._id)) {
+  // Authorized content curators for the shop get special publication of the product
+  // all relevant revisions all is one package
+  if (Roles.userIsInRole(this.userId, ["admin", "createProduct"], shop._id)) {
     selector.isVisible = {
       $in: [true, false, undefined]
     };
@@ -131,6 +136,15 @@ Meteor.publish("Product", function (productId) {
 
           if (product) {
             product.__revisions = [revision];
+
+            // When adding a new product as a guest seller and then edit that product
+            // the new product cannot be found in the Products collection when fields are changed
+            // and this.changed("Products") returns an error below
+            // The product does however exist in the collection
+            // Note that sometimes it works **right after registering** and becoming a seller, we can post a product successfully
+            // RC to investigate
+            // Possible cause? https://github.com/meteor/meteor/issues/1354
+            // console.log(Products.find({_id:product._id}).fetch());
             this.changed("Products", product._id, product);
             this.changed("Revisions", revision._id, revision);
           }
@@ -162,6 +176,6 @@ Meteor.publish("Product", function (productId) {
     return Products.find(selector);
   }
 
-  // Everyone else gets the standard, visibile products and variants
+  // Everyone else gets the standard, visible products and variants
   return Products.find(selector);
 });

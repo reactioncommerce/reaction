@@ -5,6 +5,7 @@ import { Job } from "meteor/vsivsi:job-collection";
 import * as Collections from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 import { GeoCoder, Logger, Reaction } from "/server/api";
+import { Marketplace } from "/imports/plugins/included/marketplace/lib/api";
 
 /**
  * Reaction Shop Methods
@@ -19,41 +20,99 @@ Meteor.methods({
   "shop/createShop": function (shopAdminUserId, shopData) {
     check(shopAdminUserId, Match.Optional(String));
     check(shopData, Match.Optional(Schemas.Shop));
-    let shop = {};
-    // must have owner access to create new shops
-    if (!Reaction.hasOwnerAccess()) {
+
+    // must have owner access to create new shops when marketplace is disabled
+    if (!Reaction.hasOwnerAccess() && !Marketplace.hasMarketplaceGuestAccess()) {
       throw new Meteor.Error(403, "Access Denied");
     }
 
     // this.unblock();
     const count = Collections.Shops.find().count() || "";
-    const currentUser = Meteor.userId();
-    // we'll accept a shop object, or clone the current shop
-    shop = shopData || Collections.Shops.findOne(Reaction.getShopId());
-    // if we don't have any shop data, use fixture
+    const currentUser = Meteor.user();
 
-    check(shop, Schemas.Shop);
     if (!currentUser) {
       throw new Meteor.Error("Unable to create shop with specified user");
     }
 
+    // we'll accept a shop object, or clone the current shop
+    const shop = shopData || Collections.Shops.findOne(Reaction.getShopId());
+    // if we don't have any shop data, use fixture
+
     // identify a shop admin
     const userId = shopAdminUserId || Meteor.userId();
-    const adminRoles = Roles.getRolesForUser(currentUser, Reaction.getShopId());
+    let adminRoles = Roles.getRolesForUser(currentUser, Reaction.getShopId());
     // ensure unique id and shop name
     shop._id = Random.id();
     shop.name = shop.name + count;
 
-    check(shop, Schemas.Shop);
+    // admin or marketplace needs to be on and guests alowed to create shops
+    if (currentUser && Marketplace.hasMarketplaceGuestAccess()) {
+      adminRoles = shop.defaultSellerRoles;
+
+      shop.emails = currentUser.emails;
+
+      // update user
+      currentUser.shopId = shop._id;
+      Collections.Accounts.update({ _id: currentUser._id }, {
+        $set: {
+          shopId: currentUser.shopId
+        }
+      });
+    }
+
+    // We trust the owner's shop clone, check only if shopData is passed as an argument
+    if (shopData) {
+      check(shop, Schemas.Shop);
+    }
+
     try {
       Collections.Shops.insert(shop);
     } catch (error) {
-      return Logger.error("Failed to shop/createShop", sanitizedError);
+      return Logger.error(error, "Failed to shop/createShop");
     }
     // we should have created new shop, or errored
     Logger.info("Created shop: ", shop._id);
     Roles.addUsersToRoles([currentUser, userId], adminRoles, shop._id);
     return shop._id;
+  },
+
+  /**
+   * shop/getSeller
+   * @summary Get a shop's seller
+   * @param {Object} shopId An optional shopId to get the seller for, otherwise current user is used
+   * @returns {Object|null} The user hash if found, null otherwise
+   */
+  "shop/getSeller": function (shopId) {
+    let sellerShopId;
+
+    if (!shopId) {
+      const currentUser = Meteor.user();
+      if (currentUser) {
+        sellerShopId = Roles.getGroupsForUser(currentUser.id, "admin")[0];
+      }
+    }
+
+    const users = Roles.getUsersInRole("admin", sellerShopId);
+
+    return users[0] || null;
+  },
+
+  /**
+   * shop/getSellerShopId
+   * @summary Get a shop's seller. Defaults to parent shopId
+   * @param {Object} userId An optional userId to get the shopId when the user is a seller
+   * @returns {String} The shopId of the seller, otherwise the parent shop
+   */
+  "shop/getSellerShopId": function (userId = Meteor.userId()) {
+    check(userId, Match.OneOf(String, null));
+    if (userId) {
+      const group = Roles.getGroupsForUser(userId, "admin")[0];
+      if (group) {
+        return group;
+      }
+    }
+
+    return Reaction.getShopId();
   },
 
   /**
@@ -87,10 +146,9 @@ Meteor.methods({
     });
 
     if (!shop) {
-      throw new Meteor.Error(
-        "Failed to find shop data. Unable to determine locale.");
+      throw new Meteor.Error("Failed to find shop data. Unable to determine locale.");
     }
-    // cofigure default defaultCountryCode
+    // configure default defaultCountryCode
     // fallback to shop settings
     if (shop.addressBook) {
       if (shop.addressBook.length >= 1) {
