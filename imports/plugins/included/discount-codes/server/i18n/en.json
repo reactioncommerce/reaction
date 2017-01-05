@@ -13,7 +13,9 @@
         "discountLabel": "Discount Code",
         "submitted": "Discount saved and applied",
         "applied": "applied",
-        "code": "code"
+        "code": "code",
+        "codeIsExpired": "Code is expired",
+        "codeIsInvalid": "Code is invalid"
       },
       "admin": {
         "paymentSettings": {
