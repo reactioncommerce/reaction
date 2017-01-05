@@ -33,7 +33,7 @@ export default {
     // hook after init finished
     Hooks.Events.run("afterCoreInit");
 
-    Logger.info("Reaction.init() has run");
+    Logger.debug("Reaction.init() has run");
 
     return true;
   },
@@ -272,7 +272,6 @@ export default {
    * @returns {String} return userId
    */
   createDefaultAdminUser() {
-    Logger.info("Starting createDefaultAdminUser");
     const domain = getRegistryDomain();
     const env = process.env;
     const defaultAdminRoles = ["owner", "admin", "guest", "account/profile"];
@@ -288,7 +287,7 @@ export default {
 
     // if an admin user has already been created, we'll exit
     if (Roles.getUsersInRole(defaultAdminRoles, shopId).count() !== 0) {
-      Logger.info("Not creating default admin user, already exists");
+      Logger.debug("Not creating default admin user, already exists");
       return ""; // this default admin has already been created for this shop.
     }
 

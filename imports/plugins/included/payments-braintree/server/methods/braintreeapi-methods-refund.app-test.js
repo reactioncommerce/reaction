@@ -19,7 +19,7 @@ describe("braintree/refund/create", function () {
     const paymentMethod = {
       processor: "Braintree",
       storedCard: "VISA 4242",
-      method: "Visa",
+      method: "credit",
       transactionId: "mqcp30p9",
       amount: 99.95,
       status: "completed",
