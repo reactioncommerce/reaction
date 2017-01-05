@@ -68,6 +68,9 @@
           "searchLabel": "Căutare",
           "searchTitle": "Căutare",
           "searchDescription": "Caută produs",
+          "smsLabel": "Mesaj",
+          "smsTitle": "Mesaj",
+          "smsDescription": "Notificările",
           "socialLabel": "Social",
           "socialTitle": "Social",
           "socialDescription": "Configurarea canalelor sociale",
@@ -196,6 +199,41 @@
         "shopOptionsSettingsFailed": "Actualizarea opțiunilor magazinului au eșuat.",
         "shopPaymentMethodsSaved": "Setările modalități de plată au fost salvate.",
         "shopPaymentMethodsFailed": "Actualizarea setărilor modalități de plată au eșuat."
+      },
+      "notifications": {
+        "body": {
+          "noNotifications": "Notificări nu încă",
+          "markAllAsRead": "Marcheaza toate ca citite",
+          "recent": "Recente",
+          "viewAll": "Vezi toate"
+        },
+        "messages": {
+          "orderCancelled": "Comanda dvs a fost anulat.",
+          "newOrder": "Comanda dumneavoastră este în curs de procesare.",
+          "forAdmin": "Ai o noua ordine.",
+          "orderDelivered": "Comanda dumneavoastra a fost emis.",
+          "orderAccepted": "Comanda dvs a fost acceptata.",
+          "orderShipped": "Comanda dumneavoastra a fost expediat."
+        }
+      },
+      "sms": {
+        "headers": {
+          "settings": "Furnizor de SMS"
+        },
+        "settings": {
+          "provider": "Furnizor",
+          "selectProvider": "Selectaþi un furnizor de SMS-URI...",
+          "smsPhone": "Numărul de telefon SMS",
+          "apiKey": "API-cheie",
+          "apiToken": "API TOKEN / secrete"
+        },
+        "alerts": {
+          "noApiKey": "Vă rugăm să adăugaţi un API-cheie",
+          "noApiToken": "Vă rugăm să adăugaţi un TOKEN de API/Secret",
+          "noSmsProvider": "Va rugam sa alegeti un furnizor de SMS",
+          "noSmsPhone": "Vă rugăm să adăugaţi numărul de telefon dat de furnizorul de SMS",
+          "saveSuccess": "Setări SMS-URI salvate"
+        }
       },
       "mail": {
         "headers": {
