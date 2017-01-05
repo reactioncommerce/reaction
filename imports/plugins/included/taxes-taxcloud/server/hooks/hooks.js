@@ -113,7 +113,11 @@ MethodHooks.after("taxes/calculate", function (options) {
               // taxable
               Meteor.call("taxes/setRate", cartId, taxRate, response.CartItemsResponse);
             } else {
-              Logger.warn("Error fetching tax rate from TaxCloud:", response.data.Messages[0].Message);
+              let errMsg = "Unable to access service. Check credentials.";
+              if (response && response.data.Messages[0].Message) {
+                errMsg = response.data.Messages[0].Message;
+              }
+              Logger.warn("Error fetching tax rate from TaxCloud:", errMsg);
             }
           });
         }
