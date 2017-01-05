@@ -44,7 +44,30 @@ export const methods = {
       }
     });
   },
+  /**
+   * discounts/transaction
+   * applies a transaction to discounts for history
+   * @param  {String} cartId cartId
+   * @param  {String} discountId discountId
+   * @return {String} returns update result
+   */
+  "discounts/transaction": function (cartId, discountId) {
+    check(cartId, String);
+    check(discountId, String);
 
+    const transaction = {
+      cartId: cartId,
+      userId: Meteor.userId(),
+      appliedAt: new Date
+    };
+    // double duty validation, plus we need the method
+    const discount = Discounts.findOne(discountId);
+    return Discounts.update(
+      { _id: discountId },
+      { $addToSet: { transactions: transaction } },
+      { selector: { discountMethod: discount.discountMethod } }
+    );
+  },
   /**
    * discounts/calculate
    * @param  {String} cart cartId
@@ -52,6 +75,7 @@ export const methods = {
    */
   "discounts/calculate": function (cart) {
     check(cart, Object); // Reaction.Schemas.Cart
+
     let currentDiscount = 0;
     // what's going on here?
     // well, we're getting the real details of the discounts from
@@ -76,10 +100,6 @@ export const methods = {
           }
         }
       }
-      // TODO: discount transaction records
-      // we need transaction records of the discount status
-      // ie: has the user used this before, in other carts?
-      // increment the discount use counter, etc.
     }
     return currentDiscount;
   }

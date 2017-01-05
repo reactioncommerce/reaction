@@ -175,7 +175,7 @@ export const methods = {
    * discounts/codes/apply
    * checks validity of code conditions and then
    * applies a discount as a paymentMethod to cart
-   * @param  {String} id cart id of which to remove a code
+   * @param  {String} id cart/order id of which to remove a code
    * @param  {String} code valid discount code
    * @param  {String} collection collection (either Orders or Cart)
    * @return {Boolean} returns true if successfully applied
@@ -184,6 +184,8 @@ export const methods = {
     check(id, String);
     check(code, String);
     check(collection, String);
+    let userCount = 0;
+    let orderCount = 0;
 
     // TODO: further expand to meet all condition rules
     // const conditions = {
@@ -202,6 +204,31 @@ export const methods = {
     // is the discount now re-activated
 
     if (discount) {
+      const { conditions } = discount;
+      let accountLimitExceeded = false;
+      let discountLimitExceeded = false;
+
+      // existing usage count
+      if (discount.transactions) {
+        const users = Array.from(discount.transactions, (t) => t.userId);
+        const transactionCount = new Map([...new Set(users)].map(
+          x => [x, users.filter(y => y === x).length]
+        ));
+        const orders = Array.from(discount.transactions, (t) => t.cartId);
+        userCount = transactionCount.get(Meteor.userId());
+        orderCount = orders.length;
+      }
+      // check limits
+      if (conditions) {
+        if (conditions.accountLimit) accountLimitExceeded = conditions.accountLimit <= userCount;
+        if (conditions.redemptionLimit) discountLimitExceeded = conditions.redemptionLimit <= orderCount;
+      }
+
+      // validate basic limit handling
+      if (accountLimitExceeded === true || discountLimitExceeded === true) {
+        return { i18nKeyLabel: "Code is expired", i18nKey: "discounts.codeIsExpired" };
+      }
+
       // save to payment methods
       // and update status in Discounts
       // payment methods can be debit or credit.
@@ -214,10 +241,8 @@ export const methods = {
         amount: discount.discount, // pre-process to amount.
         status: "created"
       };
-      // apply to cart / order
       return Meteor.call("payments/apply", id, paymentMethod, collection);
     }
-    return false;
   }
 };
 
