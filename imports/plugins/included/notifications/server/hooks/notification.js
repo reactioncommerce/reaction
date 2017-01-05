@@ -3,11 +3,13 @@ import { Logger, MethodHooks, Reaction } from "/server/api";
 import { getSlug } from "/lib/api";
 
 const getAdminUserId = () => {
+  // TODO validate with multiple show owners
+  // switch to using getShopId for role lookup
   const admin = Meteor.users.findOne({
     "roles.__global_roles__": "owner"
   });
-  if (admin) {
-    return admin[0]._id;
+  if (admin && typeof admin === "object") {
+    return admin._id;
   }
   return false;
 };
@@ -30,13 +32,13 @@ MethodHooks.after("cart/copyCartToOrder", function (options) {
   const sms = true;
 
   // Send notification to user who made the order
-  Logger.info(`Sending notification to user: ${userId}`);
+  Logger.info(`sending notification to user: ${userId}`);
   Meteor.call("notification/send", userId, type, url, sms);
 
   // Sending notification to admin
   const adminId = getAdminUserId();
   if (adminId) {
-    return sendNotificationToAdmin();
+    return sendNotificationToAdmin(adminId);
   }
   return options.result;
 });
