@@ -82,11 +82,11 @@ function getApiKey(shopId = Reaction.getShopId) {
 
 // Adds Shippo Shippings Providers in Shipping Collection for the current Shop
 function addShippoProviders(carriers) {
-  let res = true;
+  let result = true;
   carriers.forEach(carrier => {
     const carrierName = carrier.carrier;
     const carrierLabel = formatCarrierLabel(carrierName);
-    const curRes = Shipping.insert({
+    const currentResult = Shipping.insert({
       name: `${carrierLabel}`, // check it later for a better name
       methods: [],
       provider: {
@@ -99,10 +99,10 @@ function addShippoProviders(carriers) {
       },
       shopId: Reaction.getShopId()
     });
-    res = res && curRes;
+    result = result && currentResult;
   });
 
-  return res;
+  return result;
 }
 
 function removeAllShippoProviders() {
