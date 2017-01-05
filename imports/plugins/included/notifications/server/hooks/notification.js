@@ -1,6 +1,8 @@
 import { Meteor } from "meteor/meteor";
-import { Logger, MethodHooks } from "/server/api";
+import { Logger, MethodHooks, Reaction } from "/server/api";
 import { Accounts } from "/lib/collections";
+
+const prefix = Reaction.getSlug(Reaction.getShopName().toLowerCase());
 
 const getAdminUserId = () => {
   const admin = Accounts.find().fetch();
@@ -9,8 +11,8 @@ const getAdminUserId = () => {
 
 const sendNotificationToAdmin = () => {
   const adminId = getAdminUserId();
-  const type = "forAdmin";
-  const url = "/reaction/dashboard/orders";
+  const type = "forAdmin";  
+  const url = `/${prefix}/dashboard/orders`;
   const sms = true;
   // Sending notification to admin
   Logger.info("sending notification to admin");
@@ -20,7 +22,7 @@ const sendNotificationToAdmin = () => {
 MethodHooks.after("cart/copyCartToOrder", function () {
   const userId = Meteor.userId();
   const type = "newOrder";
-  const url = "/reaction/notifications";
+  const url = `/${prefix}/notifications`;
   const sms = true;
 
   // Send notification to user who made the order
