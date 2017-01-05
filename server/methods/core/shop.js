@@ -4,7 +4,8 @@ import { HTTP } from "meteor/http";
 import { Job } from "meteor/vsivsi:job-collection";
 import * as Collections from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
-import { GeoCoder, Logger, Reaction } from "/server/api";
+import { GeoCoder, Logger } from "/server/api";
+import { Reaction } from "/lib/api";
 import { Marketplace } from "/imports/plugins/included/marketplace/lib/api";
 
 /**
@@ -39,13 +40,14 @@ Meteor.methods({
     // if we don't have any shop data, use fixture
 
     // identify a shop admin
-    const userId = shopAdminUserId || Meteor.userId();
-    let adminRoles = Roles.getRolesForUser(currentUser, Reaction.getShopId());
+    const userId = shopAdminUserId || currentUser._id;
+    const sellerShopId = Reaction.getSellerShopId();
+    let adminRoles = Roles.getRolesForUser(userId, sellerShopId);
     // ensure unique id and shop name
     shop._id = Random.id();
     shop.name = shop.name + count;
 
-    // admin or marketplace needs to be on and guests alowed to create shops
+    // admin or marketplace needs to be on and guests allowed to create shops
     if (currentUser && Marketplace.hasMarketplaceGuestAccess()) {
       adminRoles = shop.defaultSellerRoles;
 
