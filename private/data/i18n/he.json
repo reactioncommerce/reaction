@@ -68,6 +68,9 @@
           "searchLabel": "חיפוש",
           "searchTitle": "חיפוש",
           "searchDescription": "חיפוש מוצר",
+          "smsLabel": "SMS",
+          "smsTitle": "SMS",
+          "smsDescription": "התראות",
           "socialLabel": "חברתי",
           "socialTitle": "חברתי",
           "socialDescription": "קביעת תצורה לערוץ חברתי",
@@ -96,6 +99,7 @@
           "braintreeSettingsLabel": "הגדרות Braintree",
           "localizationAndI18NLabel": "מיקום ו- i18n",
           "searchSettingsLabel": "הגדרות חיפוש",
+          "smsSettingsLabel": "הגדרות SMS",
           "shopSettingsLabel": "הגדרות חנות",
           "socialSettingsLabel": "הגדרות חברתיות",
           "shippingSettingsLabel": "הגדרות משלוחים",
@@ -196,6 +200,41 @@
         "shopOptionsSettingsFailed": "עדכון אפשרויות חנות נכשל.",
         "shopPaymentMethodsSaved": "הגדרות שיטות התשלום של החנות נשמרו.",
         "shopPaymentMethodsFailed": "עדכון הגדרות שיטות התשלום לחנות נכשל."
+      },
+      "notifications": {
+        "body": {
+          "noNotifications": "עדיין אין הודעות",
+          "markAllAsRead": "סמן הכל כנקרא",
+          "recent": "לאחרונה",
+          "viewAll": "להציג את כל"
+        },
+        "messages": {
+          "orderCancelled": "ההזמנה שלך בוטלה.",
+          "newOrder": "שההזמנה מעובדת.",
+          "forAdmin": "יש לך הזמנה חדשה.",
+          "orderDelivered": "ההזמנה נשלחה.",
+          "orderAccepted": "הזמנתך התקבלה.",
+          "orderShipped": "ההזמנה נשלחה."
+        }
+      },
+      "sms": {
+        "headers": {
+          "settings": "ספק SMS"
+        },
+        "settings": {
+          "provider": "ספק",
+          "selectProvider": "בחירת ספק SMS ...",
+          "smsPhone": "מספר טלפון SMS",
+          "apiKey": "מפתח API",
+          "apiToken": "אסימון API / סוד"
+        },
+        "alerts": {
+          "noApiKey": "אנא להוסיף מפתח API",
+          "noApiToken": "אנא להוסיף API אסימון / סוד",
+          "noSmsProvider": "בחר ספק SMS",
+          "noSmsPhone": "נא להוסיף את מספר הטלפון שנתן לך ספק SMS שלך",
+          "saveSuccess": "הגדרות SMS הצילו"
+        }
       },
       "mail": {
         "headers": {
