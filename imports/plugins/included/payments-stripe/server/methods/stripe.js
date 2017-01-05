@@ -1,4 +1,3 @@
-
 import accounting from "accounting-js";
 /* eslint camelcase: 0 */
 // meteor modules

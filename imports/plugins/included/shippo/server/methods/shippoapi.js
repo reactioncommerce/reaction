@@ -3,23 +3,10 @@ import Shippo from "shippo";
 import { Meteor } from "meteor/meteor";
 import { SimpleSchema } from "meteor/aldeed:simple-schema";
 import { purchaseAddressSchema, parcelSchema } from "../lib/shippoApiSchema";
-import { Packages } from "/lib/collections";
 
 export const ShippoApi = {
-  methods : {}
+  methods: {}
 };
-
-ShippoApi.methods.getApiKey = new ValidatedMethod({
-  name: "ShippoApi.methods.getApiKey",
-  validate: null,
-  run() {
-    const settings = Packages.findOne({ name: "reaction-shippo" }).settings;
-    if (!settings.apiKey) {
-      throw new Meteor.Error("403", "Invalid Shippo Credentials");
-    }
-    return settings.apiKey;
-  }
-});
 
 // Checks if the Api key is valid one by trying to get the Shippo account's
 // addresses list
@@ -39,6 +26,7 @@ ShippoApi.methods.confirmValidApiKey = new ValidatedMethod({
     } catch (error) {
       throw new Meteor.Error(error.message);
     }
+
     return true;
   }
 });
@@ -49,23 +37,16 @@ ShippoApi.methods.getActiveCarriersList = new ValidatedMethod({
   name: "ShippoApi.methods.getActiveCarriersList",
   validate: new SimpleSchema({
     apiKey: {
-      type: String,
-      optional: true
+      type: String
     }
   }).validator(),
   run({ apiKey }) {
-    let shippoObj;
-    if (!apiKey) {
-      const dynamicApiKey = ShippoApi.methods.getApiKey.call();
-      shippoObj = new Shippo(dynamicApiKey);
-    } else {
-      shippoObj = new Shippo(apiKey);
-    }
+    const shippoObj = new Shippo(apiKey);
 
     const getCarrierAccountsListFiber = Meteor.wrapAsync(shippoObj.carrieraccount.list, shippoObj.carrieraccount);
     try {
       const carrierAccounts = getCarrierAccountsListFiber();
-      let activeCarriersList = [];
+      const activeCarriersList = [];
       if (carrierAccounts.count) {
         carrierAccounts.results.forEach(carrier => {
           if (carrier.active) {
@@ -76,6 +57,7 @@ ShippoApi.methods.getActiveCarriersList = new ValidatedMethod({
           }
         });
       }
+
       return activeCarriersList;
     } catch (error) {
       throw new Meteor.Error(error.message);
@@ -90,28 +72,23 @@ ShippoApi.methods.getCarriersRates = new ValidatedMethod({
     shippoAddressTo: { type: purchaseAddressSchema },
     shippoParcel: { type: parcelSchema },
     purpose: { type: String, allowedValues: ["QUOTE", "PURCHASE"] },
-    apiKey: { type: String, optional: true },
+    apiKey: { type: String },
     carrierAccounts: { type: [String], optional: true }
   }).validator(),
   run({ shippoAddressFrom, shippoAddressTo, shippoParcel, purpose, apiKey, carrierAccounts }) {
-    let shippoObj;
-    if (!apiKey) {
-      const dynamicApiKey = ShippoApi.methods.getApiKey.call();
-      shippoObj = new Shippo(dynamicApiKey);
-    } else {
-      shippoObj = new Shippo(apiKey);
-    }
+    const shippoObj = new Shippo(apiKey);
 
     const createShipmentFiber = Meteor.wrapAsync(shippoObj.shipment.create, shippoObj.shipment);
     try {
       const shipment = createShipmentFiber({
-            "object_purpose": purpose,
-            "address_from": shippoAddressFrom,
-            "address_to": shippoAddressTo,
-            "parcel": shippoParcel,
-            //"carrier_accounts": carrierAccounts,  //Maybe some bug at the moment with shippo's api
-            "async": false                          //..returns zero results if enabled
+        object_purpose: purpose,
+        address_from: shippoAddressFrom,
+        address_to: shippoAddressTo,
+        parcel: shippoParcel,
+          // "carrier_accounts": carrierAccounts,  //Maybe some bug at the moment with shippo's api
+        async: false                          // ..returns zero results if enabled
       });
+
       return shipment.rates_list;
     } catch (error) {
       throw new Meteor.Error(error.message);
@@ -120,21 +97,14 @@ ShippoApi.methods.getCarriersRates = new ValidatedMethod({
 });
 
 // Makes the transaction for a chosen rate, and receives the printable label
-
 ShippoApi.methods.purchaseShippingLabel = new ValidatedMethod({
   name: "ShippoApi.methods.purchaseShippingLabel",
   validate: new SimpleSchema({
     rateId: { type: String },
-    apiKey: { type: String, optional: true }
+    apiKey: { type: String }
   }).validator(),
   run({ rateId, apiKey }) {
-    let shippoObj;
-    if (!apiKey) {
-      const dynamicApiKey = ShippoApi.methods.getApiKey.call();
-      shippoObj = new Shippo(dynamicApiKey);
-    } else {
-      shippoObj = new Shippo(apiKey);
-    }
+    const shippoObj = new Shippo(apiKey);
 
     const createTransactionFiber = Meteor.wrapAsync(shippoObj.transaction.create, shippoObj.transaction);
     try {
@@ -143,13 +113,7 @@ ShippoApi.methods.purchaseShippingLabel = new ValidatedMethod({
         label_file_type: "PDF",
         async: false
       });
-      // // check if I will format the received date here or in the shippo.js
-      // return {
-      //   trackingNumber: transaction.tracking_number,
-      //   trackingStatus: transaction.tracking_status,
-      //   trackingUrlProvider: transaction.tracking_url_provider,
-      //   labelUrl: transaction.label_url
-      // };
+
       return transaction;
     } catch (error) {
       throw new Meteor.Error(error.message);

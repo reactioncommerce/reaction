@@ -106,16 +106,16 @@ Meteor.methods({
       };
     }
 
-    const shippings = Shipping.find(selector);
-    let shippoShippings = {};
+    const shippingCollection = Shipping.find(selector);
+    let shippoDocs = {};
 
-    shippings.forEach(function (shipping) {
+    shippingCollection.forEach(function (doc) {
       const _results = [];
-      // If provider is from Shippo, put it in an object to get rates dynamically for all of them after.
-      if (shipping.provider.shippoProvider) {
-        shippoShippings[shipping.provider.shippoProvider.carrierAccountId] = shipping;
+      // If provider is from Shippo, put it in an object to get rates dynamically(shippoApi) for all of them after.
+      if (doc.provider.shippoProvider) {
+        shippoDocs[doc.provider.shippoProvider.carrierAccountId] = doc;
       } else {
-        for (const method of shipping.methods) {
+        for (const method of doc.methods) {
           if (!method.enabled) {
             continue;
           }
@@ -128,22 +128,24 @@ Meteor.methods({
           // Store shipping provider here in order to have it available in shipmentMethod
           // for cart and order usage
           if (!method.carrier) {
-            method.carrier = shipping.provider.label;
+            method.carrier = doc.provider.label;
           }
           const rate = method.rate + method.handling;
-          _results.push(rates.push({
-            carrier: shipping.provider.label,
-            method: method,
-            rate: rate,
-            shopId: shipping.shopId
-          }));
+          _results.push(
+            rates.push({
+              carrier: doc.provider.label,
+              method: method,
+              rate: rate,
+              shopId: doc.shopId
+            })
+          );
         }
         return _results;
       }
     });
     //  Get shippingRates from Shippo
-    if (!_.isEmpty(shippoShippings)) {
-      const shippoRates = Meteor.call("shippo/getShippingRatesForCart", cart._id, shippoShippings);
+    if (!_.isEmpty(shippoDocs)) {
+      const shippoRates = Meteor.call("shippo/getShippingRatesForCart", cart._id, shippoDocs);
       rates.push(...shippoRates);
     }
     Logger.debug("getShippingRates returning rates", rates);

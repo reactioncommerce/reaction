@@ -33,7 +33,7 @@
         <div class="panel-heading" data-event-action="editShippingProvider">
           <span class="text-left">{{provider.name}}
             {{#if isShippoProvider}}
-               provided by Shippo
+               <small>Shippo</small>
             {{/if}}
           </span>
 
@@ -61,7 +61,10 @@
                   <th>{{i18n "shippingMethod.handling" "Handling"}}</th>
                   <th>{{i18n "shippingMethod.rate" "Rate"}}</th>
                   <th>{{i18n "shippingMethod.enabled" "Enabled"}}</th>
-                  <th><i class="fa fa-plus pull-right add-shipping-method" title="{{i18n 'shipping.addShippingMethod' 'Add shipping method'}}" data-event-action="addShippingMethod"></i></th>
+                  <th><i class="fa fa-plus pull-right add-shipping-method"
+                         title="{{i18n 'shipping.addShippingMethod' 'Add shipping method'}}"
+                         data-event-action="addShippingMethod"></i>
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -82,9 +85,9 @@
                   <td>{{formatPrice rate}}</td>
                   <td>
                     {{#if enabled}}
-                      <i class="fa fa-check text-success" title="Enabled"></i>
+                      <i class="fa fa-check text-success" title="{{i18n "shippingMethod.enabled" "Enabled"}}"></i>
                     {{else}}
-                      <i class="fa fa-ban text-danger" title="Disabled"></i>
+                      <i class="fa fa-ban text-danger" title="{{i18n "shippingMethod.disabled" "Disabled"}}"></i>
                     {{/if}}
                   </td>
                   <td class="text-right">

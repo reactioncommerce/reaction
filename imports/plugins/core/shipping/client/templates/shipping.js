@@ -62,7 +62,7 @@ Template.shippingProviderTable.helpers({
     }
   },
   isShippoProvider() {
-    if (this.shippoShippingProvider.isShippoShippingProvider) {
+    if (this.provider.shippoProvider) {
       return true;
     }
     return false;
@@ -142,7 +142,7 @@ Template.editShippingProvider.events({
 
 Template.editShippingProvider.helpers({
   isShippoProvider() {
-    if (this.shippoShippingProvider.isShippoShippingProvider) {
+    if (this.provider.shippoProvider) {
       return true;
     }
     return false;

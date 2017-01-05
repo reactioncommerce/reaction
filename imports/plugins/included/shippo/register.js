@@ -29,7 +29,13 @@ Reaction.registerPackage({
     container: "connection",
     template: "shippoSettings"
   }
-  //, {
+  // WIP:
+    // For now we use Flat Rate's checkout template( which inherits its methods from coreCheckoutShipping
+    // to show all shipping methods in the same panel.
+    // .If we are gonna proceed with different panel per provider, we need to enable the 'provides:"Shipping Method"',
+    // alter coreCheckoutShipping checkout.js and inherit from there (or write specific logic) for a shippo's
+    // checkout template.
+    //
     // provides: "shippingMethod",
     // name: "shipping/methods/shippo",
     // template: "shippoCheckoutShipping"

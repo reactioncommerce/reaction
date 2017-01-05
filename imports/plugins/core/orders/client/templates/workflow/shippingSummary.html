@@ -29,10 +29,15 @@
       <span class="badge badge-{{shipmentStatus.status}}">{{shipmentStatus.label}}</span>
     </div>
 
-    {{#if shipment.labelUrl}}
-    <div>  <!--put i18n for shippingLabel -->
-      <strong data-i18n="orderShipping.shippingLabel">Shipping Label</strong>
-      <a href="{{shipment.labelUrl}}" target="_blank">print it</a>
+    {{#if printableLabels}}
+    <div>
+      <strong data-i18n="orderShipping.printLabels">Print Labels</strong>
+      {{#if printableLabels.shippingLabelUrl}}
+        <a data-i18n="orderShippings.printShippingLabel" href="{{printableLabels.shippingLabelUrl}}" target="_blank">Shipping</a>
+      {{/if}}
+      {{#if printableLabels.customsLabelUrl}}
+        <a data-i18n="orderShippings.printCustomsLabel" href="{{printableLabels.customsLabelUrl}}" target="_blank">Customs</a>
+      {{/if}}
     </div>
     {{/if}}
   </div>

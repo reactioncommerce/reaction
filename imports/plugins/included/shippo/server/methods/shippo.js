@@ -38,10 +38,10 @@ function createShippoParcel(reactionParcel, reactionMassUnit, reactionDistanceUn
 }
 
 // converts the Rates List fetched from the Shippo Api to Reaction Shipping Rates form
-function ratesParser(shippoRates, shippoShippings) {
+function ratesParser(shippoRates, shippoDocs) {
   return shippoRates.map(rate => {
     const rateAmount = parseFloat(rate.amount);
-    //const methodLabel = `${rate.provider} - ${rate.servicelevel_name}`;
+    // const methodLabel = `${rate.provider} - ${rate.servicelevel_name}`;
     const reactionRate = {
       carrier: rate.provider,
       method: {
@@ -57,7 +57,7 @@ function ratesParser(shippoRates, shippoShippings) {
         }
       },
       rate: rateAmount,
-      shopId: shippoShippings[rate.carrier_account].shopId
+      shopId: shippoDocs[rate.carrier_account].shopId
     };
 
     return reactionRate;
@@ -67,17 +67,27 @@ function ratesParser(shippoRates, shippoShippings) {
 
 // usps_express to USPS EXPRESS .We need a better approach
 function formatCarrierLabel(carrierName) {
-
   return carrierName.replace(/_/g, " ").toUpperCase();
+}
+
+// get Shippo's Api Key from the Shippo package with the supplied shopId or alternatively of the current shop's Id
+function getApiKey(shopId = Reaction.getShopId) {
+  const { settings } = Packages.findOne({
+    name: "reaction-shippo",
+    shopId
+  });
+
+  return settings.apiKey;
 }
 
 // Adds Shippo Shippings Providers in Shipping Collection for the current Shop
 function addShippoProviders(carriers) {
+  let res = true;
   carriers.forEach(carrier => {
     const carrierName = carrier.carrier;
     const carrierLabel = formatCarrierLabel(carrierName);
-    Shipping.insert({
-      name: `${carrierLabel}`, //check it later for a better name
+    const curRes = Shipping.insert({
+      name: `${carrierLabel}`, // check it later for a better name
       methods: [],
       provider: {
         name: carrierName,
@@ -89,11 +99,14 @@ function addShippoProviders(carriers) {
       },
       shopId: Reaction.getShopId()
     });
+    res = res && curRes;
   });
+
+  return res;
 }
 
 function removeAllShippoProviders() {
-  Shipping.remove({
+  return Shipping.remove({
     "shopId": Reaction.getShopId(),
     "provider.shippoProvider": { $exists: true }
   });
@@ -106,7 +119,8 @@ Meteor.methods({
     check(_id, String);
 
     // Make sure user has proper rights to this package
-    const shopId = Packages.findOne({ _id }, { field: { shopId: 1 } }).shopId;
+    const { shopId } = Packages.findOne({ _id },
+                                        { field: { shopId: 1 } });
     if (shopId && Roles.userIsInRole(this.userId, ["admin", "owner"], shopId)) {
       // If user wants to delete existing key
       if (modifier.hasOwnProperty("$unset")) {
@@ -128,9 +142,11 @@ Meteor.methods({
 
       return { type: "update" };
     }
-  },
-  // Intended to be called from Buyer
 
+    return false;
+  },
+
+  // Intended to be called from Buyer
   "shippo/getShippingRatesForCart"(cartId, shippoDocs) {
     check(cartId, String);
     check(shippoDocs, Object);
@@ -147,9 +163,15 @@ Meteor.methods({
         field: {
           addressBook: 1,
           emails: 1,
-          unitsOfMeasure: { $elemMatch: { default: true} }
+          unitsOfMeasure: { $elemMatch: { default: true } }
         }
       });
+
+      const apiKey = getApiKey(cart.shopId);
+      // If for a weird reason Shop hasn't a Shippo Api key anymore return no-rates.
+      if (!apiKey) {
+        return [];
+      }
 
       shippoAddressFrom = createShippoAddress(shop.addressBook[0], shop.emails[0].address, purpose);
       // product in the cart has to have parcel property with the dimensions
@@ -174,11 +196,20 @@ Meteor.methods({
         return [];
       }
       const carrierAccounts = Object.keys(shippoDocs);
-      const shippoRates = ShippoApi.methods.getCarriersRates.call({ shippoAddressFrom, shippoAddressTo, shippoParcel, purpose, carrierAccounts });
+      const shippoRates = ShippoApi.methods.getCarriersRates.call({
+        shippoAddressFrom,
+        shippoAddressTo,
+        shippoParcel,
+        purpose,
+        carrierAccounts,
+        apiKey
+      });
       const reactionRates = ratesParser(shippoRates, shippoDocs);
 
       return reactionRates;
     }
+
+    return false;
   },
   // For a given order ,purchases the shipping label of the selected method
   // and supplies the order with the tracking and label infos
@@ -187,22 +218,30 @@ Meteor.methods({
     const order = Orders.findOne(orderId);
     // Make sure user has permissions in the shop's order
     if (Roles.userIsInRole(this.userId, ["admin", "owner"], order.shopId)) {
-      // Here we done it for the first/unique Shipment only // in the near future it will be done for multiple ones
+      // Here we done it for the first/unique Shipment only . in the near future it will be done for multiple ones
       if (order.shipping[0].shipmentMethod.shippoMethod &&
       order.shipping[0].shipmentMethod.shippoMethod.rateId) {
+        const apiKey = getApiKey(order.shopId);
+        // If for a weird reason Shop hasn't a Shippo Api key anymore you have to throw an error
+        // cause the Shippo label purchasing is not gonna happen.
+        if (!apiKey) {
+          throw new Meteor.Error("403", "Invalid Shippo Credentials");
+        }
         const rateId = order.shipping[0].shipmentMethod.shippoMethod.rateId;
         // make the actual purchase
-        const shippoLabel = ShippoApi.methods.purchaseShippingLabel.call({ rateId });
-        console.log(Orders.update({
+        const shippoLabel = ShippoApi.methods.purchaseShippingLabel.call({ rateId, apiKey });
+
+        return Orders.update({
           _id: orderId
         }, {
           $set: {
-            "shipping.0.labelUrl": shippoLabel.label_url,
+            "shipping.0.shippingLabelUrl": shippoLabel.label_url,
             "shipping.0.tracking": shippoLabel.tracking_number
           }
-        })
-        );
+        });
       }
     }
+
+    return false;
   }
 });
