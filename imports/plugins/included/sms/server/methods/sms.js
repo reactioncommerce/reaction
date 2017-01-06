@@ -19,7 +19,6 @@ Meteor.methods({
   "sms/saveSettings": (settings) => {
     check(settings, Object);
     settings.shopId = Reaction.getShopId();
-    Meteor.subscribe("SmsSettings");
 
     const smsDetails = Sms.find().count();
     if (smsDetails >= 1) {
@@ -43,48 +42,48 @@ Meteor.methods({
     check(userId, String);
     check(shopId, String);
 
-    Meteor.subscribe("Accounts", userId);
     const user = Accounts.findOne();
     const addressBook = user.profile.addressBook;
     let phone = false;
     // check for addressBook phone
     if (user && addressBook) {
-      if (addressBook[0].phone) phone = addressBook[0].phone;
+      if (addressBook[0].phone) {
+        phone = addressBook[0].phone;
+      }
     }
 
     if (phone) {
-      Meteor.subscribe("Sms", shopId);
       const smsSettings = Sms.findOne();
 
-      const { apiKey, apiToken, smsPhone, smsProvider } = smsSettings;
+      if (smsSettings) {
+        const { apiKey, apiToken, smsPhone, smsProvider } = smsSettings;
+        if (smsProvider === "twilio") {
+          Logger.info("choose twilio");
+          const client = new Twilio(apiKey, apiToken);
 
-      if (smsProvider === "twilio") {
-        Logger.info("choose twilio");
-        const client = new Twilio(apiKey, apiToken);
-
-        client.sendMessage({
-          to: phone,
-          from: smsPhone,
-          body: message
-        }, (err) => {
-          if (err) {
-            return Logger.error(err);
-          }
-        });
-        return;
-      }
-
-      if (smsProvider === "nexmo") {
-        Logger.info("choose nexmo");
-        const client = new Nexmo({
-          apiKey,
-          apiSecret: apiToken
-        });
-        client.message.sendSms(smsPhone, phone, message, {}, (err) => {
-          if (err) {
-            return Logger.error(err);
-          }
-        });
+          client.sendMessage({
+            to: phone,
+            from: smsPhone,
+            body: message
+          }, (err) => {
+            if (err) {
+              return Logger.error(err);
+            }
+          });
+          return;
+        }
+        if (smsProvider === "nexmo") {
+          Logger.debug("choose nexmo");
+          const client = new Nexmo({
+            apiKey,
+            apiSecret: apiToken
+          });
+          client.message.sendSms(smsPhone, phone, message, {}, (err) => {
+            if (err) {
+              return Logger.error(err);
+            }
+          });
+        }
       }
     }
   }
