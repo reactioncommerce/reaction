@@ -134,7 +134,7 @@ AutoForm.addHooks("paypal-payment-form", {
           const paymentMethod = {
             processor: "PayflowPro",
             storedCard: storedCard,
-            method: transaction.response.payer.payment_method,
+            method: "credit",
             authorization: authId,
             transactionId: transactionId,
             metadata: {
