@@ -4,11 +4,17 @@ import { Session } from "meteor/session";
 import { check } from "meteor/check";
 import { Tracker } from "meteor/tracker";
 import { ReactiveVar } from "meteor/reactive-var";
+import { ReactiveDict } from "meteor/reactive-dict";
 import Logger from "/client/modules/logger";
 import { Countries } from "/client/collections";
 import { localeDep } from  "/client/modules/i18n";
 import { Packages, Shops } from "/lib/collections";
 import { Router } from "/client/modules/router";
+
+// Global, private state object for client side
+// This is placed outside the main object to make it a private variable.
+// access using `Reaction.state`
+const reactionState = new ReactiveDict();
 
 /**
  * Reaction namespace
@@ -63,6 +69,11 @@ export default {
         }
       }
     });
+  },
+
+  // Return global "reactionState" Reactive Dict
+  get state() {
+    return reactionState;
   },
 
   /**
@@ -193,6 +204,10 @@ export default {
     return this.shopName;
   },
 
+  getShopPrefix() {
+    return "/" + this.getSlug(this.getShopName().toLowerCase());
+  },
+
   getShopSettings() {
     const settings = Packages.findOne({
       name: "core",
@@ -286,7 +301,8 @@ export default {
       registry: 1,
       route: 1,
       name: 1,
-      label: 1
+      label: 1,
+      settings: 1
     });
 
     // valid application

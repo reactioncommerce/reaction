@@ -4,12 +4,17 @@ import Load from "./load-data";
 import Packages from "./packages";
 import Registry from "./registry";
 import Init from "./init";
+import Prerender from "./prerender";
+import { initTemplates } from "/server/api/core/templates";
+
 
 export default function () {
   Accounts();
   i18n();
+  initTemplates();
   Load();
   Packages();
   Registry();
   Init();
+  Prerender();
 }

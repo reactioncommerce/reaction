@@ -68,12 +68,12 @@
           "searchLabel": "Procurar",
           "searchTitle": "Procurar",
           "searchDescription": "Pesquisa de produtos",
+          "smsLabel": "SMS",
+          "smsTitle": "SMS",
+          "smsDescription": "Notificações",
           "socialLabel": "Redes sociais",
           "socialTitle": "Redes sociais",
           "socialDescription": "Configuração dos canais sociais",
-          "taxesLabel": "Impostos",
-          "taxesTitle": "Impostos",
-          "taxesDescription": "Configuração de imposto",
           "themesLabel": "Temas",
           "themesTitle": "Temas",
           "themesDescription": "Temas e componentes da IU",
@@ -109,8 +109,7 @@
           "reactionConnectLabel": "Reaction Connect",
           "examplePaymentSettingsLabel": "Exemplo de definições de pagamento",
           "productSettingsLabel": "Definições do produto",
-          "productDetailsLabel": "Detalhes do produto",
-          "taxSettingsLabel": "Definições de impostos"
+          "productDetailsLabel": "Detalhes do produto"
         },
         "userAccountDropdown": {
           "profileLabel": "Perfil"
@@ -201,6 +200,41 @@
         "shopPaymentMethodsSaved": "Definições dos métodos de pagamento da loja guardadas.",
         "shopPaymentMethodsFailed": "Falha ao atualizar as definições dos métodos de pagamento da loja."
       },
+      "notifications": {
+        "body": {
+          "noNotifications": "Ainda não há notificações",
+          "markAllAsRead": "Marcar tudo como lido",
+          "recent": "Recentes",
+          "viewAll": "Ver todos os"
+        },
+        "messages": {
+          "orderCancelled": "Seu pedido foi cancelado.",
+          "newOrder": "Seu pedido está sendo processado.",
+          "forAdmin": "Você tem uma nova ordem.",
+          "orderDelivered": "Seu pedido foi entregue.",
+          "orderAccepted": "Seu pedido foi aceito.",
+          "orderShipped": "Sua ordem foi enviada."
+        }
+      },
+      "sms": {
+        "headers": {
+          "settings": "Fornecedor SMS"
+        },
+        "settings": {
+          "provider": "Fornecedor",
+          "selectProvider": "Selecione um provedor de SMS ...",
+          "smsPhone": "Número de telefone SMS",
+          "apiKey": "Chave da API",
+          "apiToken": "API Token/Secret"
+        },
+        "alerts": {
+          "noApiKey": "Adicione uma chave de API",
+          "noApiToken": "Adicione um API TOKEN / Secret",
+          "noSmsProvider": "Escolha um fornecedor de SMS",
+          "noSmsPhone": "Adicione o número de telefone fornecido pelo seu provedor de SMS",
+          "saveSuccess": "Configurações de SMS salvas"
+        }
+      },
       "mail": {
         "headers": {
           "email": "Email",
@@ -247,21 +281,6 @@
           "saveSuccess": "Definições de correio guardadas.",
           "saveFailed": "Falha ao guardar definições do correio. {{error}}"
         }
-      },
-      "taxSettings": {
-        "noCustomTaxRatesFound": "Nenhuma taxa personalizada do imposto encontrada.",
-        "shopCustomTaxRatesSaved": "Taxa personalizada do imposto guardada.",
-        "shopCustomTaxRatesFailed": "Erro ao guardar taxa do imposto.",
-        "shopTaxMethodsSaved": "Método de imposto guardado.",
-        "shopTaxMethodsFailed": "Falha ao guardar método de imposto.",
-        "customRatesDescription": "Taxas personalizadas",
-        "taxCode": "Código do imposto",
-        "taxShipping": "Incluir envio",
-        "taxRate": "Taxa",
-        "discountsIncluded": "Incluir descontos",
-        "taxable": "Tributável",
-        "nottaxable": "Não tributável",
-        "confirmRateDelete": "Confirmar eliminação da taxa do imposto"
       },
       "header": {
         "tagsAdd": "Adicionar etiqueta",

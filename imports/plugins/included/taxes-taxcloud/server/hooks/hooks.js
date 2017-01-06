@@ -20,7 +20,8 @@ MethodHooks.after("taxes/calculate", function (options) {
   const shop = Shops.findOne(shopId);
   const pkg = Packages.findOne({
     name: "taxes-taxcloud",
-    shopId: shopId
+    shopId: shopId,
+    enabled: true
   });
 
   // check if package is configured
@@ -50,7 +51,7 @@ MethodHooks.after("taxes/calculate", function (options) {
         const shippingAddress = cartToCalc.shipping[0].address;
 
         if (shippingAddress) {
-          Logger.info("TaxCloud triggered on taxes/calculate for cartId:", cartId);
+          Logger.debug("TaxCloud triggered on taxes/calculate for cartId:", cartId);
           const url = "https://api.taxcloud.net/1.0/TaxCloud/Lookup";
           const cartItems = [];
           const destination = {
@@ -112,7 +113,11 @@ MethodHooks.after("taxes/calculate", function (options) {
               // taxable
               Meteor.call("taxes/setRate", cartId, taxRate, response.CartItemsResponse);
             } else {
-              Logger.warn("Error fetching tax rate from TaxCloud:", response.data.Messages[0].Message);
+              let errMsg = "Unable to access service. Check credentials.";
+              if (response && response.data.Messages[0].Message) {
+                errMsg = response.data.Messages[0].Message;
+              }
+              Logger.warn("Error fetching tax rate from TaxCloud:", errMsg);
             }
           });
         }

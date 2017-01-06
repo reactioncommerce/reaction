@@ -1,4 +1,4 @@
-import _ from "lodash";
+import { includes } from "lodash";
 import bunyan from "bunyan";
 import { Meteor } from "meteor/meteor";
 
@@ -7,27 +7,20 @@ import { Meteor } from "meteor/meteor";
  * See: https://github.com/trentm/node-bunyan#levels
  * client we'll cofigure WARN as default
  */
-let isDebug = "WARN";
-
-if (typeof Meteor.settings === "object" &&
-  typeof Meteor.settings.public === "object" && Meteor.settings.public.debug) {
-  isDebug = Meteor.settings.public.debug;
-}
-
 const levels = ["FATAL", "ERROR", "WARN", "INFO", "DEBUG", "TRACE"];
 
-if (typeof isDebug !== "boolean" && typeof isDebug !== "undefined") {
-  isDebug = isDebug.toUpperCase();
-}
+// set stdout log level
+let level = Meteor.settings.public.REACTION_LOG_LEVEL || "WARN";
 
-if (!_.includes(levels, isDebug)) {
-  isDebug = "INFO";
+level = level.toUpperCase();
+
+if (!includes(levels, level)) {
+  level = "WARN";
 }
 
 const Logger = bunyan.createLogger({
-  name: "core-client"
+  name: "reaction-client",
+  level
 });
-
-Logger.level(isDebug);
 
 export default Logger;

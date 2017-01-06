@@ -1,4 +1,5 @@
 import _ from "lodash";
+import accounting from "accounting-js";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { Reaction, i18next } from "/client/api";
@@ -193,9 +194,19 @@ Template.ordersListItem.events({
     const isActionViewOpen = Reaction.isActionViewOpen();
     const { order } = instance.data;
 
+
     if (order.workflow.status === "new") {
       Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "processing", order);
+
+      // send notification to order owner
+      const userId = order.userId;
+      const type = "orderAccepted";
+      const prefix = Reaction.getShopPrefix();
+      const url = `${prefix}/notifications`;
+      const sms = true;
+      Meteor.call("notification/send", userId, type, url, sms);
     }
+
     // toggle detail views
     if (isActionViewOpen === false) {
       Reaction.showActionView({
@@ -223,7 +234,7 @@ Template.orderListFilters.onCreated(function () {
     this.subscribe("Orders");
 
     const filters = orderFilters.map((filter) => {
-      filter.label = i18next.t(`order.filter.${filter.name}`, {defaultValue: filter.label});
+      filter.label = i18next.t(`order.filter.${filter.name}`, { defaultValue: filter.label });
       filter.i18nKeyLabel = `order.filter.${filter.name}`;
       filter.count = Orders.find(OrderHelper.makeQuery(filter.name)).count();
 
@@ -292,6 +303,15 @@ Template.orderStatusDetail.onCreated(function () {
 });
 
 Template.orderStatusDetail.helpers({
+  // helper to format currency
+  formatAmount(value) {
+    let amount = value || "";
+    if (typeof value === "number") {
+      amount = accounting.toFixed(value, 2);
+    }
+    return amount;
+  },
+  // order age helper
   orderAge: function () {
     return moment(this.createdAt).fromNow();
   },
@@ -300,7 +320,7 @@ Template.orderStatusDetail.helpers({
     if (this.shipping[0].tracking) {
       return this.shipping[0].tracking;
     }
-    return i18next.t("orderShipping.noTracking");
+    return "";
   },
 
   shipmentStatus() {

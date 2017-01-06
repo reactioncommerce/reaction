@@ -68,12 +68,12 @@
           "searchLabel": "חיפוש",
           "searchTitle": "חיפוש",
           "searchDescription": "חיפוש מוצר",
+          "smsLabel": "SMS",
+          "smsTitle": "SMS",
+          "smsDescription": "התראות",
           "socialLabel": "חברתי",
           "socialTitle": "חברתי",
           "socialDescription": "קביעת תצורה לערוץ חברתי",
-          "taxesLabel": "מסים",
-          "taxesTitle": "מסים",
-          "taxesDescription": "תצורת מס",
           "themesLabel": "נושאים",
           "themesTitle": "נושאים",
           "themesDescription": "נושאים ורכיבי ממשק משתמש",
@@ -99,6 +99,7 @@
           "braintreeSettingsLabel": "הגדרות Braintree",
           "localizationAndI18NLabel": "מיקום ו- i18n",
           "searchSettingsLabel": "הגדרות חיפוש",
+          "smsSettingsLabel": "הגדרות SMS",
           "shopSettingsLabel": "הגדרות חנות",
           "socialSettingsLabel": "הגדרות חברתיות",
           "shippingSettingsLabel": "הגדרות משלוחים",
@@ -109,8 +110,7 @@
           "reactionConnectLabel": "חיבור Reaction",
           "examplePaymentSettingsLabel": "הגדרות תשלום לדוגמה",
           "productSettingsLabel": "הגדרות מוצר",
-          "productDetailsLabel": "פרטי המוצר",
-          "taxSettingsLabel": "הגדרות מס"
+          "productDetailsLabel": "פרטי המוצר"
         },
         "userAccountDropdown": {
           "profileLabel": "פרופיל"
@@ -201,6 +201,41 @@
         "shopPaymentMethodsSaved": "הגדרות שיטות התשלום של החנות נשמרו.",
         "shopPaymentMethodsFailed": "עדכון הגדרות שיטות התשלום לחנות נכשל."
       },
+      "notifications": {
+        "body": {
+          "noNotifications": "עדיין אין הודעות",
+          "markAllAsRead": "סמן הכל כנקרא",
+          "recent": "לאחרונה",
+          "viewAll": "להציג את כל"
+        },
+        "messages": {
+          "orderCancelled": "ההזמנה שלך בוטלה.",
+          "newOrder": "שההזמנה מעובדת.",
+          "forAdmin": "יש לך הזמנה חדשה.",
+          "orderDelivered": "ההזמנה נשלחה.",
+          "orderAccepted": "הזמנתך התקבלה.",
+          "orderShipped": "ההזמנה נשלחה."
+        }
+      },
+      "sms": {
+        "headers": {
+          "settings": "ספק SMS"
+        },
+        "settings": {
+          "provider": "ספק",
+          "selectProvider": "בחירת ספק SMS ...",
+          "smsPhone": "מספר טלפון SMS",
+          "apiKey": "מפתח API",
+          "apiToken": "אסימון API / סוד"
+        },
+        "alerts": {
+          "noApiKey": "אנא להוסיף מפתח API",
+          "noApiToken": "אנא להוסיף API אסימון / סוד",
+          "noSmsProvider": "בחר ספק SMS",
+          "noSmsPhone": "נא להוסיף את מספר הטלפון שנתן לך ספק SMS שלך",
+          "saveSuccess": "הגדרות SMS הצילו"
+        }
+      },
       "mail": {
         "headers": {
           "email": "דוא\"ל",
@@ -247,21 +282,6 @@
           "saveSuccess": "הגדרות הדואר נשמרו.",
           "saveFailed": "שמירת הגדרות הדואר נכשלה. {{error}}"
         }
-      },
-      "taxSettings": {
-        "noCustomTaxRatesFound": "לא נמצאו תעריפים מס בהתאמה אישית.",
-        "shopCustomTaxRatesSaved": "שיעור מס מותאם אישית נשמר.",
-        "shopCustomTaxRatesFailed": "שגיאה בשמירת שיעור המס.",
-        "shopTaxMethodsSaved": "שיטת המס נשמרה.",
-        "shopTaxMethodsFailed": "שמירת שיטת המס נכשלה.",
-        "customRatesDescription": "התאם אישית תעריפים",
-        "taxCode": "קוד מס",
-        "taxShipping": "כלול משלוח",
-        "taxRate": "תעריף",
-        "discountsIncluded": "כלול הנחות",
-        "taxable": "חייב במס",
-        "nottaxable": "לא חייב במס",
-        "confirmRateDelete": "אשר מחיקת שיעור מס"
       },
       "header": {
         "tagsAdd": "הוספת תגית",

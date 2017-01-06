@@ -68,12 +68,12 @@
           "searchLabel": "搜索",
           "searchTitle": "搜索",
           "searchDescription": "产品搜索",
+          "smsLabel": "短信",
+          "smsTitle": "短信",
+          "smsDescription": "通知",
           "socialLabel": "社交媒体",
           "socialTitle": "社交",
           "socialDescription": "分享给社交媒体",
-          "taxesLabel": "税款",
-          "taxesTitle": "税款",
-          "taxesDescription": "税款配置",
           "themesLabel": "主题",
           "themesTitle": "主题",
           "themesDescription": "主题和界面组件",
@@ -100,6 +100,7 @@
           "localizationAndI18NLabel": "本地化与国际化",
           "searchSettingsLabel": "搜索设置",
           "shopSettingsLabel": "商店设置",
+          "smsSettingsLabel": "短信设置",
           "socialSettingsLabel": "社交媒体设置",
           "shippingSettingsLabel": "运输方式设置",
           "stripeSettingsLabel": "Stripe 设置",
@@ -109,8 +110,7 @@
           "reactionConnectLabel": "Reaction连接",
           "examplePaymentSettingsLabel": "付款设置示例",
           "productSettingsLabel": "产品设置",
-          "productDetailsLabel": "产品详情",
-          "taxSettingsLabel": "税款设置"
+          "productDetailsLabel": "产品详情"
         },
         "userAccountDropdown": {
           "profileLabel": "个人资料"
@@ -201,6 +201,41 @@
         "shopPaymentMethodsSaved": "商店付款方式设置已保存。",
         "shopPaymentMethodsFailed": "商店付款方式设置更新失败。"
       },
+      "notifications": {
+        "body": {
+          "noNotifications": "没有通知",
+          "markAllAsRead": "标记所有为已读",
+          "recent": "最近",
+          "viewAll": "查看所有"
+        },
+        "messages": {
+          "orderCancelled": "您的订单被取消。",
+          "newOrder": "正在处理您的订单。",
+          "forAdmin": "你有一个新的秩序。",
+          "orderDelivered": "您的订单已交付。",
+          "orderAccepted": "您的订单已被接受。",
+          "orderShipped": "您的订单已发货。"
+        }
+      },
+      "sms": {
+        "headers": {
+          "settings": "短信提供商"
+        },
+        "settings": {
+          "provider": "提供者",
+          "selectProvider": "选择短信提供商...",
+          "smsPhone": "Sms电话号码",
+          "apiKey": "API密钥",
+          "apiToken": "API令牌/秘密"
+        },
+        "alerts": {
+          "noApiKey": "请添加API密钥",
+          "noApiToken": "请添加API TOKEN / Secret",
+          "noSmsProvider": "请选择短信提供商",
+          "noSmsPhone": "请添加您的短信提供商为您提供的电话号码",
+          "saveSuccess": "短信设置已保存"
+        }
+      },
       "mail": {
         "headers": {
           "email": "电子邮件",
@@ -247,21 +282,6 @@
           "saveSuccess": "邮件设置已保存。",
           "saveFailed": "保存邮件设置失败。{{error}}"
         }
-      },
-      "taxSettings": {
-        "noCustomTaxRatesFound": "未找到自定义税率。",
-        "shopCustomTaxRatesSaved": "自定义税率已保存。",
-        "shopCustomTaxRatesFailed": "保存税率时出错。",
-        "shopTaxMethodsSaved": "已保存的纳税方式。",
-        "shopTaxMethodsFailed": "保存纳税方式失败。",
-        "customRatesDescription": "自定义费用",
-        "taxCode": "税码",
-        "taxShipping": "包括发货",
-        "taxRate": "费用",
-        "discountsIncluded": "包括折扣",
-        "taxable": "应税",
-        "nottaxable": "不纳税",
-        "confirmRateDelete": "确认删除税率"
       },
       "header": {
         "tagsAdd": "添加标签",

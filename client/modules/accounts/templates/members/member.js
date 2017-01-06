@@ -52,7 +52,7 @@ Template.memberSettings.helpers({
       _id: shopId
     });
     if (shop && shop.name) {
-      return shop.name;
+      return shop.name || "Default Shop";
     }
   },
   permissionGroups: function (thisShopId) {

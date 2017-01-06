@@ -1,14 +1,12 @@
 import accounting from "accounting-js";
 import { Meteor } from "meteor/meteor";
-import { Template } from "meteor/templating";
-import { localeDep, i18nextDep } from  "./main";
-import { Reaction, Logger, i18next } from "/client/api";
+import { Reaction, Logger } from "/client/api";
 
 /**
  * formatPriceString
  * @summary return shop /locale specific formatted price
  * also accepts a range formatted with " - "
- * @param {String} currentPrice - currentPrice or "xx.xx - xx.xx" formatted String
+ * @param {String} formatPrice - currentPrice or "xx.xx - xx.xx" formatted String
  * @return {String} returns locale formatted and exchange rate converted values
  */
 export function formatPriceString(formatPrice) {

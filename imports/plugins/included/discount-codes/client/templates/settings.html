@@ -1,0 +1,70 @@
+<template name="customDiscountCodes">
+
+  <div>
+    {{> React discountGrid }}
+  </div>
+
+  <div class="pull-right">
+    {{> React editButton }}
+  </div>
+
+  {{#if instance.state.get 'isEditing'}}
+    <div>
+    {{#if instance.state.get 'editingId'}}
+
+      {{#autoForm
+        schema=discountSchema
+        type="method-update"
+        meteormethod="discounts/addCode"
+        doc=discountCode
+        id="discount-codes-update-form"
+        resetOnSuccess=true
+      }}
+        <div>
+          {{> afQuickField name='code' placeholder="Discount Code"}}
+          {{> afQuickField name='discount' placeholder="Discount formula value"}}
+          {{> afQuickField name='conditions.accountLimit'}}
+          {{> afQuickField name='conditions.redemptionLimit'}}
+          {{> afQuickField name='calculation'}}
+          {{> afQuickField name='discountMethod' type="hidden"}}
+        </div>
+        {{> discountCodeSettingsSubmitButton instance=instance}}
+      {{/autoForm}}
+
+    {{else}}
+
+      {{#autoForm
+        schema=discountSchema
+        type="method"
+        meteormethod="discounts/addCode"
+        id="discount-codes-insert-form"
+        doc=discountCode
+        resetOnSuccess=true
+      }}
+        <div>
+          {{> afQuickField name='code' placeholder="Discount Code"}}
+          {{> afQuickField name='discount' placeholder="Discount formula value"}}
+          {{> afQuickField name='conditions.accountLimit'}}
+          {{> afQuickField name='conditions.redemptionLimit'}}
+          {{> afQuickField name='calculation'}}
+          {{> afQuickField name='discountMethod' type="hidden"}}
+        </div>
+        {{> discountCodeSettingsSubmitButton instance=instance}}
+      {{/autoForm}}
+    {{/if}}
+    </div>
+  {{/if}}
+</template>
+
+
+<template name="discountCodeSettingsSubmitButton">
+   <div class="clearfix">
+    <div class="pull-right">
+      <button type="button" class="btn btn-primary cancel" data-i18n="app.cancel">Cancel</button>
+      {{#if instance.state.get 'editingId'}}
+      <button type="button" class="btn btn-primary delete" data-i18n="app.delete">Delete</button>
+      {{/if}}
+      <button type="submit" class="btn btn-primary" data-i18n="app.saveChanges">Save Changes</button>
+    </div>
+  </div>
+</template>

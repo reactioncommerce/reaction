@@ -2,6 +2,7 @@ import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Tracker } from "meteor/tracker";
 import { Template } from "meteor/templating";
+import { i18next, Reaction } from "/client/api";
 import { Orders } from "/lib/collections";
 
 Template.coreOrderShippingTracking.onCreated(() => {
@@ -31,17 +32,32 @@ Template.coreOrderShippingTracking.onCreated(() => {
 Template.coreOrderShippingTracking.events({
   "click [data-event-action=shipmentShipped]": function () {
     const template = Template.instance();
-    Meteor.call("orders/shipmentShipped", template.order, template.order.shipping[0]);
+    Meteor.call("orders/shipmentShipped", template.order, template.order.shipping[0], (err) => {
+      if (err) {
+        Alerts.toast(i18next.t("mail.alerts.cantSendEmail"), "error");
+      } else {
+        Alerts.toast(i18next.t("mail.alerts.emailSent"), "success");
+      }
+    });
+
+    // send notification to order owner
+    const userId = template.order.userId;
+    const type = "orderShipped";
+    const prefix = Reaction.getShopPrefix();
+    const url = `${prefix}/notifications`;
+    const sms = true;
+    Meteor.call("notification/send", userId, type, url, sms);
+
     // Meteor.call("workflow/pushOrderShipmentWorkflow", "coreOrderShipmentWorkflow", "orderShipped", this._id);
   },
 
   "click [data-event-action=resendNotification]": function () {
     const template = Template.instance();
-    Meteor.call("orders/sendNotification", template.order, (err) => {
+    Meteor.call("orders/sendNotification", template.order, "shipped", (err) => {
       if (err) {
-        Alerts.toast("Server Error: Can't send email notification.", "error");
+        Alerts.toast(i18next.t("mail.alerts.cantSendEmail"), "error");
       } else {
-        Alerts.toast("Email notification sent.", "success");
+        Alerts.toast(i18next.t("mail.alerts.emailSent"), "success");
       }
     });
   },

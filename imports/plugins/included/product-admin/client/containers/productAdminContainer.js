@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import update from "react/lib/update";
-import { composeWithTracker } from "react-komposer";
+import { Reaction } from "/client/api";
+import { composeWithTracker } from "/lib/api/compose";
 import { ReactionProduct } from "/lib/api";
 import { Tags, Media } from "/lib/collections";
 import { ProductAdmin } from "../components";
@@ -10,7 +11,6 @@ class ProductAdminContainer extends Component {
     super(props);
 
     this.state = {
-      product: props.product,
       newMetafield: {
         key: "",
         value: ""
@@ -18,30 +18,12 @@ class ProductAdminContainer extends Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.setState({
-      product: nextProps.product
-    });
-  }
-
-  get product() {
-    return this.state.product || this.props.product || {};
+  handleCardExpand = (cardName) => {
+    Reaction.state.set("edit/focus", cardName);
   }
 
   handleDeleteProduct = (product) => {
     ReactionProduct.maybeDeleteProduct(product || this.product);
-  }
-
-  handleFieldChange = (field, value) => {
-    const newState = update(this.state, {
-      product: {
-        $merge: {
-          [field]: value
-        }
-      }
-    });
-
-    this.setState(newState);
   }
 
   handleProductFieldSave = (productId, fieldName, value) => {
@@ -99,16 +81,14 @@ class ProductAdminContainer extends Component {
     return (
       <ProductAdmin
         newMetafield={this.state.newMetafield}
+        onCardExpand={this.handleCardExpand}
         onDeleteProduct={this.handleDeleteProduct}
-        onFieldChange={this.handleFieldChange}
         onMetaChange={this.handleMetaChange}
         onMetaRemove={this.handleMetaRemove}
         onMetaSave={this.handleMetafieldSave}
         onProductFieldSave={this.handleProductFieldSave}
         onRestoreProduct={this.handleProductRestore}
         {...this.props}
-        product={this.product}
-        tags={this.props.tags}
       />
     );
   }
@@ -141,14 +121,15 @@ function composer(props, onData) {
     }
 
     revisonDocumentIds = [product._id];
-  }
 
-  onData(null, {
-    product: product,
-    media,
-    tags,
-    revisonDocumentIds
-  });
+    onData(null, {
+      editFocus: Reaction.state.get("edit/focus"),
+      product: product,
+      media,
+      tags,
+      revisonDocumentIds
+    });
+  }
 }
 
 ProductAdminContainer.propTypes = {

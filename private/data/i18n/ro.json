@@ -68,12 +68,12 @@
           "searchLabel": "Căutare",
           "searchTitle": "Căutare",
           "searchDescription": "Caută produs",
+          "smsLabel": "Mesaj",
+          "smsTitle": "Mesaj",
+          "smsDescription": "Notificările",
           "socialLabel": "Social",
           "socialTitle": "Social",
           "socialDescription": "Configurarea canalelor sociale",
-          "taxesLabel": "Impozite",
-          "taxesTitle": "Impozite",
-          "taxesDescription": "Configurare impozitare",
           "themesLabel": "Teme",
           "themesTitle": "Teme",
           "themesDescription": "Teme și componente UI",
@@ -109,8 +109,7 @@
           "reactionConnectLabel": "Conectare Reaction",
           "examplePaymentSettingsLabel": "Exemplu setări de plată",
           "productSettingsLabel": "Setări produs",
-          "productDetailsLabel": "Detalii produs",
-          "taxSettingsLabel": "Setări impozite"
+          "productDetailsLabel": "Detalii produs"
         },
         "userAccountDropdown": {
           "profileLabel": "Profil"
@@ -201,6 +200,41 @@
         "shopPaymentMethodsSaved": "Setările modalități de plată au fost salvate.",
         "shopPaymentMethodsFailed": "Actualizarea setărilor modalități de plată au eșuat."
       },
+      "notifications": {
+        "body": {
+          "noNotifications": "Notificări nu încă",
+          "markAllAsRead": "Marcheaza toate ca citite",
+          "recent": "Recente",
+          "viewAll": "Vezi toate"
+        },
+        "messages": {
+          "orderCancelled": "Comanda dvs a fost anulat.",
+          "newOrder": "Comanda dumneavoastră este în curs de procesare.",
+          "forAdmin": "Ai o noua ordine.",
+          "orderDelivered": "Comanda dumneavoastra a fost emis.",
+          "orderAccepted": "Comanda dvs a fost acceptata.",
+          "orderShipped": "Comanda dumneavoastra a fost expediat."
+        }
+      },
+      "sms": {
+        "headers": {
+          "settings": "Furnizor de SMS"
+        },
+        "settings": {
+          "provider": "Furnizor",
+          "selectProvider": "Selectaþi un furnizor de SMS-URI...",
+          "smsPhone": "Numărul de telefon SMS",
+          "apiKey": "API-cheie",
+          "apiToken": "API TOKEN / secrete"
+        },
+        "alerts": {
+          "noApiKey": "Vă rugăm să adăugaţi un API-cheie",
+          "noApiToken": "Vă rugăm să adăugaţi un TOKEN de API/Secret",
+          "noSmsProvider": "Va rugam sa alegeti un furnizor de SMS",
+          "noSmsPhone": "Vă rugăm să adăugaţi numărul de telefon dat de furnizorul de SMS",
+          "saveSuccess": "Setări SMS-URI salvate"
+        }
+      },
       "mail": {
         "headers": {
           "email": "Email",
@@ -247,21 +281,6 @@
           "saveSuccess": "Setările au fost salvate.",
           "saveFailed": "Nu s-au putut salva setările de e-mail. {{error}}"
         }
-      },
-      "taxSettings": {
-        "noCustomTaxRatesFound": "Nu s-au gasit valorile de impozitare personalizată.",
-        "shopCustomTaxRatesSaved": "Rata de impozitarea personalizată a fost salvată.",
-        "shopCustomTaxRatesFailed": "Eroare la salvarea ratei de impozitare.-",
-        "shopTaxMethodsSaved": "Metoda de impozitare a fost salvată.",
-        "shopTaxMethodsFailed": "Acutualizarea metodei de impozitare a eșuat.",
-        "customRatesDescription": "Tarife personalizate",
-        "taxCode": "Codul fiscal",
-        "taxShipping": "Includeți transportul",
-        "taxRate": "Rată",
-        "discountsIncluded": "Includeți reduceri ",
-        "taxable": "Impozabil",
-        "nottaxable": "Neimpozabil",
-        "confirmRateDelete": "Confirmați ștergerea ratei de impozitare"
       },
       "header": {
         "tagsAdd": "Adăugaţi o etichetă",

@@ -22,7 +22,7 @@ Meteor.publish("Product", function (productId) {
 
   let selector = {};
   selector.isVisible = true;
-  selector.isDeleted = {$in: [null, false]};
+  selector.isDeleted = { $in: [null, false] };
 
   if (Roles.userIsInRole(this.userId, ["owner", "admin", "createProduct"],
       shop._id)) {
@@ -31,7 +31,7 @@ Meteor.publish("Product", function (productId) {
     };
   }
   // TODO review for REGEX / DOS vulnerabilities.
-  if (productId.match(/^[A-Za-z0-9]{17}$/)) {
+  if (productId.match(/^[23456789ABCDEFGHJKLMNPQRSTWXYZabcdefghijkmnopqrstuvwxyz]{17}$/)) {
     selector._id = productId;
     // TODO try/catch here because we can have product handle passed by such regex
     _id = productId;
@@ -51,8 +51,9 @@ Meteor.publish("Product", function (productId) {
   // Selector for hih?
   selector = {
     isVisible: true,
-    isDeleted: {$in: [null, false]},
+    isDeleted: { $in: [null, false] },
     $or: [
+      { handle: _id },
       { _id: _id },
       {
         ancestors: {
@@ -110,23 +111,43 @@ Meteor.publish("Product", function (productId) {
         }
       }).observe({
         added: (revision) => {
-          this.added("Revisions", revision._id, revision);
+          let product;
+          if (!revision.parentDocument) {
+            product = Products.findOne(revision.documentId);
+          } else {
+            product = Products.findOne(revision.parentDocument);
+          }
+          if (product) {
+            this.added("Products", product._id, product);
+            this.added("Revisions", revision._id, revision);
+          }
         },
         changed: (revision) => {
-          const product = Products.findOne(revision.documentId);
+          let product;
+          if (!revision.parentDocument) {
+            product = Products.findOne(revision.documentId);
+          } else {
+            product = Products.findOne(revision.parentDocument);
+          }
 
-          product.__revisions = [revision];
-
-          this.changed("Products", product._id, product);
-          this.changed("Revisions", revision._id, revision);
+          if (product) {
+            product.__revisions = [revision];
+            this.changed("Products", product._id, product);
+            this.changed("Revisions", revision._id, revision);
+          }
         },
         removed: (revision) => {
-          const product = Products.findOne(revision.documentId);
-
-          product.__revisions = [];
-
-          this.changed("Products", product._id, product);
-          this.removed("Revisions", revision._id, revision);
+          let product;
+          if (!revision.parentDocument) {
+            product = Products.findOne(revision.documentId);
+          } else {
+            product = Products.findOne(revision.parentDocument);
+          }
+          if (product) {
+            product.__revisions = [];
+            this.changed("Products", product._id, product);
+            this.removed("Revisions", revision._id, revision);
+          }
         }
       });
 

@@ -1,6 +1,5 @@
 import { Meteor } from "meteor/meteor";
 import { Tracker } from "meteor/tracker";
-import Logger from "/client/modules/logger";
 import Reaction from "./main";
 
 // @see https://developer.mozilla.org/en-US/docs/Web/API/Page_Visibility_API
@@ -25,11 +24,6 @@ if (typeof document.hidden !== "undefined") {
  *  Init Reaction client
  */
 Meteor.startup(function () {
-  // warn on insecure exporting of PackageRegistry settings
-  if (typeof PackageRegistry !== "undefined" && PackageRegistry !== null) {
-    const msg = "PackageRegistry: Insecure export to client.";
-    Logger.warn(msg, PackageRegistry);
-  }
   // init the core
   Reaction.init();
   // initialize anonymous guest users

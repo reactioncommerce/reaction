@@ -1,53 +1,33 @@
-import { Packages } from "/lib/collections";
-
 Template.catalogSettings.helpers({
-  //
-  // check if this package setting is enabled
-  //
-  checked(pkg) {
-    let enabled;
-    const pkgData = Packages.findOne(pkg.packageId);
-    const setting = pkg.name.split("/").splice(-1);
-
-    if (pkgData && pkgData.settings) {
-      if (pkgData.settings[setting]) {
-        enabled = pkgData.settings[setting].enabled;
-      }
+  checked(enabled) {
+    if (enabled === true) {
+      return "checked";
     }
-    return enabled === true ? "checked" : "";
+    return "";
   },
-  //
-  // Template helper to add a hidden class if the condition is false
-  //
-  shown(pkg) {
-    let enabled;
-    const pkgData = Packages.findOne(pkg.packageId);
-    const setting = pkg.name.split("/").splice(-1);
-
-    if (pkgData && pkgData.settings) {
-      if (pkgData.settings[setting]) {
-        enabled = pkgData.settings[setting].enabled;
-      }
+  shown(enabled) {
+    if (enabled !== true) {
+      return "hidden";
     }
-
-    return enabled !== true ? "hidden" : "";
+    return "";
   }
 });
 
 Template.catalogSettings.events({
   /**
-   * taxSettings settings update enabled status for tax service on change
+   * settings update enabled status for services on change
    * @param  {event} event    jQuery Event
    * @return {void}
    */
   "change input[name=enabled]": (event) => {
-    const name = event.target.value;
+    const settingsKey = event.target.getAttribute("data-key");
     const packageId = event.target.getAttribute("data-id");
     const fields = [{
       property: "enabled",
       value: event.target.checked
     }];
 
-    Meteor.call("registry/update", packageId, name, fields);
+    Meteor.call("registry/update", packageId, settingsKey, fields);
+    Meteor.call("shop/togglePackage", packageId, !event.target.checked);
   }
 });

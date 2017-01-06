@@ -76,16 +76,17 @@ export function productVariant(options = {}) {
 export function addProduct() {
   const product = Factory.create("product");
   // top level variant
-  const variant = Factory.create("variant", Object.assign({},
-    productVariant(), {ancestors: [product._id]}));
-  // option one
-  Factory.create("variant", Object.assign({}, productVariant(),
-    {ancestors: [product._id, variant._id]}));
-  // options two
-  Factory.create("variant", Object.assign({}, productVariant(),
-    {ancestors: [product._id, variant._id]}));
-
+  const variant = Factory.create("variant", Object.assign({}, productVariant(), { ancestors: [product._id] }));
+  Factory.create("variant", Object.assign({}, productVariant(), { ancestors: [product._id, variant._id] }));
+  Factory.create("variant", Object.assign({}, productVariant(), { ancestors: [product._id, variant._id] }));
   return product;
+}
+
+export function addProductSingleVariant() {
+  const product = Factory.create("product");
+  // top level variant
+  const variant = Factory.create("variant", Object.assign({}, productVariant(), { ancestors: [product._id] }));
+  return { product: product, variant: variant };
 }
 
 export function getProduct() {
@@ -96,7 +97,7 @@ export function getProduct() {
 
 export function getProducts(limit = 2) {
   const products = [];
-  const existingProducts = Products.find({}, {limit: limit}).fetch();
+  const existingProducts = Products.find({}, { limit: limit }).fetch();
   for (let i = 0; i < limit; i = i + 1) {
     const product = existingProducts[i] || Factory.create("product");
     products.push(product);
@@ -157,7 +158,6 @@ export default function () {
   };
 
   Factory.define("product", Products, Object.assign({}, base, product));
-
   Factory.define("variant", Products, {
     type: "variant"
   });

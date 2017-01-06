@@ -34,10 +34,23 @@
 
     <hr>
 
+    <div class="order-summary-discounts">
+        {{> React component=DiscountList id=orderId collection="Orders"}}
+    </div>
+
+    <hr>
+
     <div class="form-group order-summary-form-group">
       <label class="form-control-label reason" for="" data-i18n="cartSubTotals.subtotal">Sub total</label>
       <div class="amount">
         {{> React (numericInputProps "subtotal" invoice.subtotal false)}}
+      </div>
+    </div>
+
+    <div class="form-group order-summary-form-group">
+      <label class="form-control-label reason" for="" data-i18n="cartSubTotals.discount">Discount</label>
+      <div class="amount">
+        {{> React (numericInputProps "discount" invoice.discounts false)}}
       </div>
     </div>
 
@@ -51,16 +64,10 @@
     <div class="form-group order-summary-form-group">
       <label class="form-control-label reason" for="" data-i18n="cartSubTotals.tax">Tax</label>
       <div class="amount">
-        {{> React (numericInputProps "discount" invoice.taxes false)}}
+        {{> React (numericInputProps "taxes" invoice.taxes false)}}
       </div>
     </div>
 
-    <div class="form-group order-summary-form-group">
-      <label class="form-control-label reason" for="" data-i18n="cartSubTotals.discount">Discount</label>
-      <div class="amount">
-        {{> React (numericInputProps "discount" invoice.discounts)}}
-      </div>
-    </div>
 
     <div class="reason">
       {{> inlineAlerts placement="coreOrderShippingInvoice"}}
@@ -107,7 +114,6 @@
             data-i18n="app.print">
             Print
           </a>
-          <button class="btn btn-link flex-item-fill" type="button" data-event-action="makeAdjustments" data-i18n="order.makeAdjustments">Make Adjustments</button>
           <button class="btn btn-success flex-item-fill" type="button" data-event-action="capturePayment" data-i18n="order.capturePayment">Capture Payment</button>
       {{/if}}
 

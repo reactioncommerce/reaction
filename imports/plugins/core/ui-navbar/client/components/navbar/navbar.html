@@ -6,8 +6,13 @@
     <div class="menu">
       {{> tagNav tagNavProps}}
     </div>
-    
-    <div class="search">{{> React IconButtonComponent}}</div>
+
+    {{#if isSearchEnabled}}
+      <div class="search">{{> React IconButtonComponent}}</div>
+    {{/if}}
+    {{#if hasPermission 'account/profile'}}
+      <div>{{> React notificationButtonComponent }}</div>
+    {{/if}}
     <div class="languages hidden-xs">{{> i18nChooser}}</div>
     <div class="accounts">{{> accounts tpl="loginDropdown"}}</div>
     <div class="cart">{{> cartIcon}}</div>

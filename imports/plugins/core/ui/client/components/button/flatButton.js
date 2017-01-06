@@ -14,14 +14,14 @@ class FlatButton extends Component {
       ...otherProps
     } = this.props;
 
-    let buttonClassName = classnames({
-      "rui": true,
-      "button": true,
-      "flat": true
+    const buttonClassName = classnames({
+      rui: true,
+      button: true,
+      flat: true
     });
 
 
-    let iconClassName = classnames({
+    const iconClassName = classnames({
       "fa-lg": false,
       [icon]: true
     });
