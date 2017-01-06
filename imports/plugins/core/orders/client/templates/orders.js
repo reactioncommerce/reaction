@@ -201,7 +201,8 @@ Template.ordersListItem.events({
       // send notification to order owner
       const userId = order.userId;
       const type = "orderAccepted";
-      const url = "/reaction/notifications";
+      const prefix = Reaction.getShopPrefix();
+      const url = `${prefix}/notifications`;
       const sms = true;
       Meteor.call("notification/send", userId, type, url, sms);
     }
