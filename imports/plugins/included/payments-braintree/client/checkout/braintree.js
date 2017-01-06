@@ -71,7 +71,7 @@ submitToBrainTree = function (doc, template) {
         paymentMethod = {
           processor: "Braintree",
           storedCard: storedCard,
-          method: results.response.transaction.creditCard.cardType,
+          method: "credit",
           transactionId: results.response.transaction.id,
           amount: parseFloat(results.response.transaction.amount),
           status: normalizedStatus,
