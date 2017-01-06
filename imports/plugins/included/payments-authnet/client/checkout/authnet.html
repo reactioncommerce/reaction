@@ -20,7 +20,7 @@
   <div class="row">
     <div class="col-sm-12 col-lg-6 form-group{{#if afFieldIsInvalid name='expireMonth'}} has-error{{/if}}">
         <label class="control-label">{{afFieldLabelText name='expireMonth'}}</label>
-        {{>afFieldInput name="expireMonth" options=monthOptions firstOption=false placeholder="Exp. Month"}}
+        {{>afFieldInput name="expireMonth" options=(monthOptions false) firstOption=(i18n "app.monthOptions" "Choose month") placeholder="Exp. Month"}}
         {{#if afFieldIsInvalid name="expireMonth"}}
         <span class="help-block">{{afFieldMessage name="expireMonth"}}</span>
         {{/if}}
@@ -28,7 +28,7 @@
 
     <div class="col-sm-12 col-lg-6 form-group{{#if afFieldIsInvalid name='expireYear'}} has-error{{/if}}">
         <label class="control-label">{{afFieldLabelText name='expireYear'}}</label>
-        {{>afFieldInput name="expireYear" options=yearOptions firstOption=false placeholder="Exp. Year"}}
+        {{>afFieldInput name="expireYear" options=(yearOptions false) firstOption=(i18n "app.yearOptions" "Choose year") placeholder="Exp. Year"}}
         {{#if afFieldIsInvalid name="expireYear"}}
         <span class="help-block">{{afFieldMessage name="expireYear"}}</span>
         {{/if}}
