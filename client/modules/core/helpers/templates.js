@@ -51,7 +51,7 @@ if (Package.blaze) {
  * @summary formats moment.js months into an array for autoform selector
  * @return {Array} returns array of months [value:, label:]
  */
-Template.registerHelper("monthOptions", function () {
+Template.registerHelper("monthOptions", function (showDefaultOption = true) {
   const label = i18next.t("app.monthOptions", "Choose month");
   const localLocale = tz;
 
@@ -69,10 +69,14 @@ Template.registerHelper("monthOptions", function () {
   }
 
   localLocale.locale(lang);
-  const monthOptions = [{
-    value: "",
-    label: label
-  }];
+  const monthOptions = [];
+
+  if (showDefaultOption) {
+    monthOptions.push({
+      value: "",
+      label: label
+    });
+  }
 
   const months = localLocale.months();
   // parse into autoform array
@@ -95,12 +99,17 @@ Template.registerHelper("monthOptions", function () {
  * @summary formats moment.js next 9 years into array for autoform selector
  * @return {Array} returns array of years [value:, label:]
  */
-Template.registerHelper("yearOptions", function () {
+Template.registerHelper("yearOptions", function (showDefaultOption = true) {
   const label = i18next.t("app.yearOptions", "Choose year");
-  const yearOptions = [{
-    value: "",
-    label: label
-  }];
+  const yearOptions = [];
+
+  if (showDefaultOption) {
+    yearOptions.push({
+      value: "",
+      label: label
+    });
+  }
+
   let year = new Date().getFullYear();
   for (let i = 1; i < 9; i++) {
     yearOptions.push({
