@@ -43,7 +43,8 @@ Template.coreOrderShippingTracking.events({
     // send notification to order owner
     const userId = template.order.userId;
     const type = "orderShipped";
-    const url = "/reaction/notifications";
+    const prefix = Reaction.getShopPrefix();
+    const url = `${prefix}/notifications`;
     const sms = true;
     Meteor.call("notification/send", userId, type, url, sms);
 

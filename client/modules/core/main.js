@@ -204,6 +204,10 @@ export default {
     return this.shopName;
   },
 
+  getShopPrefix() {
+    return "/" + this.getSlug(this.getShopName().toLowerCase());
+  },
+
   getShopSettings() {
     const settings = Packages.findOne({
       name: "core",
