@@ -4,7 +4,8 @@ import { Packages, Accounts, Shops, Shipping, Cart, Orders } from "/lib/collecti
 import { ShippoPackageConfig } from "../../lib/collections/schemas";
 import { ShippoApi } from "./shippoapi";
 
-// Creates an address (for sender or recipient) suitable for Shippo Api Calls
+// Creates an address (for sender or recipient) suitable for Shippo Api Calls given
+// a reaction address an email and a purpose("QUOTE"|"PURCHASE")
 function createShippoAddress(reactionAddress, email, purpose) {
   const shippoAddress = {
     object_purpose: purpose,
@@ -24,6 +25,8 @@ function createShippoAddress(reactionAddress, email, purpose) {
   return shippoAddress;
 }
 
+// Creates a parcel object suitable for Shippo Api Calls given
+// a reaction product's parcel and units of measure for mass and distance
 function createShippoParcel(reactionParcel, reactionMassUnit, reactionDistanceUnit) {
   const shippoParcel = {
     width: reactionParcel.width || "",
@@ -96,7 +99,7 @@ function getApiKey(shopId = Reaction.getShopId) {
   return settings.apiKey;
 }
 
-// Adds Shippo Shippings Providers in Shipping Collection for the current Shop
+// Adds Shippo carriers in Shipping Collection (one doc per carrier) for the current Shop
 function addShippoProviders(carriers) {
   let result = true;
   carriers.forEach(carrier => {
@@ -131,7 +134,7 @@ function removeAllShippoProviders() {
 Meteor.methods({
 
   /**
-   * Updates the Api key(Live/Test Token) used for connection with the  Shippo account.
+   * Updates the Api key(Live/Test Token) used for connection with the Shippo account.
    * Also inserts(and deletes if already exist) docs in the Shipping collection each of the
    * activated Carriers of the Shippo account.
    * This method is intended to be used mainly by Autoform.
@@ -161,13 +164,17 @@ Meteor.methods({
       const apiKey = modifier.$set["settings.apiKey"];
 
       // Tries to use the apiKey by fetching a list of the addresses of Shippo Account
-      // if not possible throws a relative Meteor Error
+      // if not possible throws a relative Meteor Error (eg invalid_credentials)
       ShippoApi.methods.getAddressList.call({ apiKey });
+      // if everything is ok proceed with the api key update
       Packages.update(_id, modifier);
+      // remove existing shippo providers
+      removeAllShippoProviders();
 
       const activeCarriers = filterActiveCarriers(ShippoApi.methods.getCarrierAccountsList.call({ apiKey }));
-      removeAllShippoProviders();
-      addShippoProviders(activeCarriers);
+      if (activeCarriers.length) {
+        addShippoProviders(activeCarriers);
+      }
 
       return { type: "update" };
     }
@@ -251,11 +258,11 @@ Meteor.methods({
   },
 
   /**
-   * For a given order ,purchases the shipping label of the selected (by the buyer) method/rate
-   * and supplies the order doc with the tracking and label infos.
-   * @param {String} orderId - The id of the ordered that labels are purchased for.
+   * Confirms Shippo order based on buyer's choice at the time of purchase
+   * and supplies the order doc with the tracking and label infos
+   * @param {String} orderId - The id of the ordered that labels are purchased for
    * @return {Boolean} result - True if procedure completed succesfully,otherwise false
-   * */
+   */
   "shippo/confirmShippingMethodForOrder"(orderId) {
     check(orderId, String);
     const order = Orders.findOne(orderId);

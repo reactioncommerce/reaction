@@ -41,7 +41,7 @@ ShippoApi.methods.getAddressList = new ValidatedMethod({
 
 
 /**
- * Retrieves all the accounts of carriers of Shippo's Account
+ * Retrieves all Shippo carriers from the Shippo Account
  * @see https://goshippo.com/docs/reference#carrier-accounts-list
  * @param {Object} parameter - ValidatedMethod's parameter
  * @param {String} parameter.apiKey - The Test or Live Token required
@@ -49,7 +49,8 @@ ShippoApi.methods.getAddressList = new ValidatedMethod({
  * @return {Object} carrierAccountList - the compound object returned by Shippo
  * @return {Array} carrierAccountList.results - An array with the carrier accounts objects
  * @return {Number} carrierAccountList.count - the count of the carrier accounts objects.
- * */
+ *
+ */
 ShippoApi.methods.getCarrierAccountsList = new ValidatedMethod({
   name: "ShippoApi.methods.getCarrierAccountsList",
   validate: new SimpleSchema({
@@ -74,14 +75,14 @@ ShippoApi.methods.getCarrierAccountsList = new ValidatedMethod({
  * Creates a Shippo's Shipment object for the given addresses and gets Rates for the particular shipment)
  * @see https://goshippo.com/docs/reference#shipments-create
  * @param {Object} parameter - ValidatedMethod's parameter
- * @param {Object} parameter.shippoAddressFrom - The address of the sender.
- * @param {Object} parameter.shippoAddressTo - The address of the receiver.
- * @param {Object} parameter.shippoParcel - The parcel dimensions's/weight.
+ * @param {Object} parameter.shippoAddressFrom - The address of the sender
+ * @param {Object} parameter.shippoAddressTo - The address of the receiver
+ * @param {Object} parameter.shippoParcel - The parcel dimensions's/weight
  * @param {String("QUOTE"|"PURCHASE")} parameter.purpose  - The reason of the shipment(check prices/ purchase labels)
  * @param {String} parameter.apiKey - The Test or Live Token required
  * for authentication by Shippo's api
  * @return {Object} shipment - The compound shipment object returned by Shippo
- * @return {Array} shipment.rates_list - The available rate objects.
+ * @return {Array} shipment.rates_list - The available rate objects
  * */
 ShippoApi.methods.createShipment = new ValidatedMethod({
   name: "ShippoApi.methods.createShipment",
