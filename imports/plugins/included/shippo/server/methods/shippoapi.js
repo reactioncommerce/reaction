@@ -104,8 +104,8 @@ ShippoApi.methods.createShipment = new ValidatedMethod({
         address_from: shippoAddressFrom,
         address_to: shippoAddressTo,
         parcel: shippoParcel,
-          // "carrier_accounts": carrierAccounts,  //Maybe some bug at the moment with shippo's api
-        async: false                          // ..returns zero results if enabled
+        carrier_accounts: carrierAccounts,
+        async: false
       });
 
       return shipment;
