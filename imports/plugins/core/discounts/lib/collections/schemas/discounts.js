@@ -1,6 +1,28 @@
 import { SimpleSchema } from "meteor/aldeed:simple-schema";
 import { shopIdAutoValue } from "/lib/collections/schemas/helpers";
 
+// The Discounts Schema validates using multiple schemas
+// be sure to use `{ selector: { discountMethod: "code" } }`
+// to indicate which schema to apply in all updates
+
+/*
+* Discounts Tranaction History Schema
+*/
+export const Transactions = new SimpleSchema({
+  cartId: {
+    type: String,
+    index: 1
+  },
+  userId: {
+    type: String,
+    index: 1
+  },
+  appliedAt: {
+    type: Date,
+    optional: true
+  }
+});
+
 /*
 * Discounts Schema
 */
@@ -30,6 +52,10 @@ export const Discounts = new SimpleSchema({
   // it's a formula value (could be shipping code)
   "discount": {
     type: String,
+    optional: true
+  },
+  "transactions": {
+    type: [Transactions],
     optional: true
   },
   "calculation": {
