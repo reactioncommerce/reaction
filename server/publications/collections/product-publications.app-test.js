@@ -85,11 +85,16 @@ describe("Publication", function () {
         sandbox.stub(Roles, "userIsInRole", () => true);
 
         const collector = new PublicationCollector({ userId: Random.id() });
+        let isDone = false;
 
         collector.collect("Products", 24, undefined, {}, (collections) => {
           const products = collections.Products;
           expect(products.length).to.equal(3);
-          done();
+
+          if (!isDone) {
+            isDone = true;
+            done();
+          }
         });
       });
 
@@ -99,6 +104,7 @@ describe("Publication", function () {
         sandbox.stub(Roles, "userIsInRole", () => true);
 
         const collector = new PublicationCollector({ userId: Random.id() });
+        let isDone = false;
 
         collector.collect("Products", 24, undefined, {}, (collections) => {
           const products = collections.Products;
@@ -107,7 +113,10 @@ describe("Publication", function () {
 
           expect(expectedTitles.some(title => title === data.title)).to.be.ok;
 
-          done();
+          if (!isDone) {
+            isDone = true;
+            done();
+          }
         });
       });
 
@@ -116,6 +125,7 @@ describe("Publication", function () {
         sandbox.stub(Roles, "userIsInRole", () => false);
 
         const collector = new PublicationCollector({ userId: Random.id() });
+        let isDone = false;
 
         collector.collect("Products", 24, undefined, {}, (collections) => {
           const products = collections.Products;
@@ -125,7 +135,10 @@ describe("Publication", function () {
           expect(products.length).to.equal(2);
           expect(expectedTitles.some(title => title === data.title)).to.be.ok;
 
-          done();
+          if (isDone === false) {
+            isDone = true;
+            done();
+          }
         });
       });
 
@@ -239,6 +252,7 @@ describe("Publication", function () {
         sandbox.stub(Roles, "userIsInRole", () => true);
 
         const collector = new PublicationCollector({ userId: Random.id() });
+        let isDone = false;
 
         collector.collect("Products", productScrollLimit, filters, {}, (collections) => {
           const products = collections.Products;
@@ -247,7 +261,10 @@ describe("Publication", function () {
           const data = products[1];
           expect(["My Little Pony", "Shopkins - Peachy"].some(title => title === data.title)).to.be.ok;
 
-          done();
+          if (!isDone) {
+            isDone = true;
+            done();
+          }
         });
       });
     });
@@ -291,13 +308,17 @@ describe("Publication", function () {
         sandbox.stub(Roles, "userIsInRole", () => false);
 
         const collector = new PublicationCollector({ userId: Random.id() });
+        let isDone = false;
 
         collector.collect("Product", "my", (collections) => {
           const products = collections.Products;
 
           expect(products).to.be.undefined;
 
-          done();
+          if (!isDone) {
+            isDone = true;
+            done();
+          }
         });
       });
 
@@ -306,6 +327,7 @@ describe("Publication", function () {
         sandbox.stub(Roles, "userIsInRole", () => true);
 
         const collector = new PublicationCollector({ userId: Random.id() });
+        let isDone = false;
 
         collector.collect("Product", "my", (collections) => {
           const products = collections.Products;
@@ -313,7 +335,10 @@ describe("Publication", function () {
 
           expect(data.title).to.equal("My Little Pony");
 
-          done();
+          if (!isDone) {
+            isDone = true;
+            done();
+          }
         });
       });
     });

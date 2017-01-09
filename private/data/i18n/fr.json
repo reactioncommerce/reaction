@@ -68,6 +68,9 @@
           "searchLabel": "Recherche",
           "searchTitle": "Recherche",
           "searchDescription": "Recherche de produit",
+          "smsLabel": "SMS",
+          "smsTitle": "SMS",
+          "smsDescription": "Notifications",
           "socialLabel": "Social",
           "socialTitle": "Social",
           "socialDescription": "Configuration des réseaux sociaux",
@@ -98,6 +101,7 @@
           "searchSettingsLabel": "Paramètres de recherche",
           "shopSettingsLabel": "Paramètres du magasin",
           "socialSettingsLabel": "Paramètres sociaux",
+          "smsSettingsLabel": "Paramètres SMS",
           "shippingSettingsLabel": "Paramètres d'expédition",
           "stripeSettingsLabel": "Paramètres Stripe",
           "inventorySettingsLabel": "Paramètres de l'inventaire",
@@ -196,6 +200,41 @@
         "shopOptionsSettingsFailed": "Echec de la mise à jour des options du magasin.",
         "shopPaymentMethodsSaved": "Modalités de paiement enregistrées.",
         "shopPaymentMethodsFailed": "Echec de la mise à jour des paramètres de mode de paiement du magasin."
+      },
+      "sms": {
+        "headers": {
+          "settings": "Fournisseur SMS"
+        },
+        "settings": {
+          "provider": "Fournisseur",
+          "selectProvider": "Sélectionnez un fournisseur SMS ...",
+          "smsPhone": "Numéro de téléphone SMS",
+          "apiKey": "clé API",
+          "apiToken": "API Token/Secret"
+        },
+        "alerts": {
+          "noApiKey": "Veuillez ajouter une clé d'API",
+          "noApiToken": "Veuillez ajouter une API TOKEN / Secret",
+          "noSmsProvider": "Veuillez choisir un fournisseur SMS",
+          "noSmsPhone": "Veuillez ajouter le numéro de téléphone qui vous a été attribué par votre fournisseur de SMS",
+          "saveSuccess": "Paramètres SMS enregistrés"
+        }
+      },
+      "notifications": {
+        "body": {
+          "noNotifications": "Il n’y pas pas de notifications",
+          "markAllAsRead": "Il n'y a pas de notifications",
+          "recent": "Récent",
+          "viewAll": "Voir tous les"
+        },
+        "messages": {
+          "orderCancelled": "Votre commande a été annulée.",
+          "newOrder": "Votre commande est en cours de traitement.",
+          "forAdmin": "Vous avez un nouvel ordre.",
+          "orderDelivered": "Votre commande a été livrée.",
+          "orderAccepted": "Votre commande a été acceptée.",
+          "orderShipped": "Votre commande a été expédiée."
+        }
       },
       "mail": {
         "headers": {

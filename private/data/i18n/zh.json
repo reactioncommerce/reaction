@@ -68,6 +68,9 @@
           "searchLabel": "搜索",
           "searchTitle": "搜索",
           "searchDescription": "产品搜索",
+          "smsLabel": "短信",
+          "smsTitle": "短信",
+          "smsDescription": "通知",
           "socialLabel": "社交媒体",
           "socialTitle": "社交",
           "socialDescription": "分享给社交媒体",
@@ -97,6 +100,7 @@
           "localizationAndI18NLabel": "本地化与国际化",
           "searchSettingsLabel": "搜索设置",
           "shopSettingsLabel": "商店设置",
+          "smsSettingsLabel": "短信设置",
           "socialSettingsLabel": "社交媒体设置",
           "shippingSettingsLabel": "运输方式设置",
           "stripeSettingsLabel": "Stripe 设置",
@@ -196,6 +200,41 @@
         "shopOptionsSettingsFailed": "商店选项更新失败。",
         "shopPaymentMethodsSaved": "商店付款方式设置已保存。",
         "shopPaymentMethodsFailed": "商店付款方式设置更新失败。"
+      },
+      "notifications": {
+        "body": {
+          "noNotifications": "没有通知",
+          "markAllAsRead": "标记所有为已读",
+          "recent": "最近",
+          "viewAll": "查看所有"
+        },
+        "messages": {
+          "orderCancelled": "您的订单被取消。",
+          "newOrder": "正在处理您的订单。",
+          "forAdmin": "你有一个新的秩序。",
+          "orderDelivered": "您的订单已交付。",
+          "orderAccepted": "您的订单已被接受。",
+          "orderShipped": "您的订单已发货。"
+        }
+      },
+      "sms": {
+        "headers": {
+          "settings": "短信提供商"
+        },
+        "settings": {
+          "provider": "提供者",
+          "selectProvider": "选择短信提供商...",
+          "smsPhone": "Sms电话号码",
+          "apiKey": "API密钥",
+          "apiToken": "API令牌/秘密"
+        },
+        "alerts": {
+          "noApiKey": "请添加API密钥",
+          "noApiToken": "请添加API TOKEN / Secret",
+          "noSmsProvider": "请选择短信提供商",
+          "noSmsPhone": "请添加您的短信提供商为您提供的电话号码",
+          "saveSuccess": "短信设置已保存"
+        }
       },
       "mail": {
         "headers": {

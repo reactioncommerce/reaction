@@ -61,7 +61,7 @@
       {{#if orderIsNew order}}
         <button class="btn btn-success" data-event-action="startProcessingOrder">Start</button>
       {{else}}
-        <button><i class="fa fa-angle-right fa-2x"></i></button>
+        <button><i class="fa fa-angle-right fa-fw"></i></button>
       {{/if}}
     </div>
   </div>
@@ -71,15 +71,19 @@
 <template name="orderStatusDetail">
   <div class="col-xs-8">
     <div>
-      <i class="fa fa-cart-plus"></i>
+      <i class="fa fa-clock-o fa-fw"></i>
       <span>{{orderAge}}</span>
       <span>{{dateFormat createdAt format="MMM D"}}</span>
+    </div>
+    <div>
+      <i class="fa fa-shopping-cart fa-fw"></i>
+      <span>{{_id}}</span>
     </div>
 
     {{#each billing}}
         {{#if condition paymentMethod.method 'eq' "discount"}}
           <div>
-            <i class="fa fa-cart-arrow-down"></i>
+            <i class="fa fa-minus fa-fw"></i>
             {{paymentMethod.code}}
             <span data-i18n="discounts.applied">applied</span>
           </div>
@@ -87,7 +91,7 @@
 
         {{#if condition paymentMethod.method 'eq' "rate"}}
           <div>
-            <i class="fa fa-money"></i>
+            <i class="fa fa-money fa-fw"></i>
             {{paymentMethod.amount}}
             <span data-i18n="discounts.applied">applied</span>
           </div>
@@ -95,14 +99,14 @@
 
         {{#if condition paymentMethod.method 'eq' "credit"}}
           <div>
-            <i class="fa fa-credit-card-alt"></i>
+            <i class="fa fa-credit-card fa-fw"></i>
             {{paymentMethod.storedCard}} ({{formatAmount paymentMethod.amount}})
           </div>
         {{/if}}
 
         {{#if condition paymentMethod.method 'eq' "shipping"}}
           <div>
-            <i class="fa fa-cart-arrow-down"></i>
+            <i class="fa fa-minus fa-fw"></i>
             {{paymentMethod.code}} - ({{paymentMethod.amount}})
             <span data-i18n="discounts.applied">applied</span>
           </div>
@@ -110,17 +114,17 @@
 
     {{/each}}
 
-
     <div>
       <i class="fa fa-truck"></i>
       {{shipmentMethod.carrier}} - {{shipmentMethod.label}}
-      {{#if shipmentTracking}}
+      <span class="badge badge-{{shipmentStatus.status}}">{{shipmentStatus.label}}</span>
+    </div>
+    {{#if shipmentTracking}}
       <div>
-        <span class="badge badge-{{shipmentStatus.status}}">{{shipmentStatus.label}}</span>
+        <i class="fa fa-barcode"></i>
         <a href="#">{{shipmentTracking}}</a>
       </div>
-      {{/if}}
-    </div>
+    {{/if}}
   </div>
 </template>
 

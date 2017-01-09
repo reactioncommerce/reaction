@@ -31,7 +31,7 @@ Meteor.publish("Product", function (productId) {
     };
   }
   // TODO review for REGEX / DOS vulnerabilities.
-  if (productId.match(/^[A-Za-z0-9]{17}$/)) {
+  if (productId.match(/^[23456789ABCDEFGHJKLMNPQRSTWXYZabcdefghijkmnopqrstuvwxyz]{17}$/)) {
     selector._id = productId;
     // TODO try/catch here because we can have product handle passed by such regex
     _id = productId;
@@ -53,6 +53,7 @@ Meteor.publish("Product", function (productId) {
     isVisible: true,
     isDeleted: { $in: [null, false] },
     $or: [
+      { handle: _id },
       { _id: _id },
       {
         ancestors: {
