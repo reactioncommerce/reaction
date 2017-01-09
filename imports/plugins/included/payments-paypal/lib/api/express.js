@@ -18,7 +18,7 @@ function getSettings(settings, ref, valueName) {
 
 export const Express = {
   expressCheckoutAccountOptions: function () {
-    const prefix = Reaction.getSlug(Reaction.getShopName().toLowerCase());
+    const prefix = Reaction.getShopPrefix();
     const shopId = Reaction.getShopId();
     const settings = Packages.findOne({
       name: "reaction-paypal",

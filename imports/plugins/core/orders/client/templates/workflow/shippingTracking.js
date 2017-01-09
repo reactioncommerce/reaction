@@ -2,7 +2,7 @@ import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Tracker } from "meteor/tracker";
 import { Template } from "meteor/templating";
-import { i18next } from "/client/api";
+import { i18next, Reaction } from "/client/api";
 import { Orders } from "/lib/collections";
 
 Template.coreOrderShippingTracking.onCreated(() => {
@@ -43,7 +43,8 @@ Template.coreOrderShippingTracking.events({
     // send notification to order owner
     const userId = template.order.userId;
     const type = "orderShipped";
-    const url = "/reaction/notifications";
+    const prefix = Reaction.getShopPrefix();
+    const url = `${prefix}/notifications`;
     const sms = true;
     Meteor.call("notification/send", userId, type, url, sms);
 

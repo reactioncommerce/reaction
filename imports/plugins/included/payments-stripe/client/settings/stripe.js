@@ -1,5 +1,5 @@
 import { Template } from "meteor/templating";
-import { Reaction } from "/client/api";
+import { Reaction, i18next } from "/client/api";
 import { Packages } from "/lib/collections";
 import { StripePackageConfig } from "../../lib/collections/schemas";
 

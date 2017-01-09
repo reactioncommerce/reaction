@@ -182,6 +182,10 @@ export default {
     return shop && shop.name;
   },
 
+  getShopPrefix() {
+    return "/" + this.getSlug(this.getShopName().toLowerCase());
+  },
+
   getShopEmail() {
     const shop = Shops.find({
       _id: this.getShopId()

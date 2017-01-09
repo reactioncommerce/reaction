@@ -47,11 +47,12 @@ Meteor.methods({
     }
 
     if (sms) {
-      Meteor.subscribe("Packages");
-      const result = Packages.findOne({ name: "reaction-sms", shopId: Reaction.getShopId()});
-      if (result && result.enabled === true) {
+      const result = Packages.findOne({ name: "reaction-sms", shopId: Reaction.getShopId() });
+      if (result && result.enabled) {
         Meteor.call("sms/send", values.message, userId, Reaction.getShopId(), (error) => {
-          if (error) Logger.warn("Error: error occured while sending sms", error);
+          if (error) {
+            Logger.warn("Error: error occured while sending sms", error);
+          }
         });
       } else {
         Logger.info("Sms is not enabled");
