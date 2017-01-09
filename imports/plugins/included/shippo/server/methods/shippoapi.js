@@ -8,10 +8,19 @@ export const ShippoApi = {
   methods: {}
 };
 
-// Checks if the Api key is valid one by trying to get the Shippo account's
-// addresses list
-ShippoApi.methods.confirmValidApiKey = new ValidatedMethod({
-  name: "ShippoApi.methods.confirmValidApiKey",
+
+/**
+ * Retrieves the address objects stored in Shippo Account
+ * @see https://goshippo.com/docs/reference#addresses
+ * @param {Object} parameter - ValidatedMethod's parameter
+ * @param {String} parameter.apiKey - The Test or Live Token required
+ * for authentication by Shippo's api
+ * @return {Object} addressList - compound object returned returned by Shippo
+ * @return {Array} addressList.results - An array with the address objects
+ * @return {Number} addressList.count - the count of the address objects.
+ * */
+ShippoApi.methods.getAddressList = new ValidatedMethod({
+  name: "ShippoApi.methods.getAddressList",
   validate: new SimpleSchema({
     apiKey: {
       type: String
@@ -19,22 +28,30 @@ ShippoApi.methods.confirmValidApiKey = new ValidatedMethod({
   }).validator(),
   run({ apiKey }) {
     const shippoObj = new Shippo(apiKey);
-
     const getAddressListFiber = Meteor.wrapAsync(shippoObj.address.list, shippoObj.address);
     try {
-      getAddressListFiber();
+      const addressList = getAddressListFiber();
+
+      return addressList;
     } catch (error) {
       throw new Meteor.Error(error.message);
     }
-
-    return true;
   }
 });
 
-// Returns a list of the activated/enabled Carriers (activated from the Shippo's
-// account dashboard - not Reaction's)
-ShippoApi.methods.getActiveCarriersList = new ValidatedMethod({
-  name: "ShippoApi.methods.getActiveCarriersList",
+
+/**
+ * Retrieves all the accounts of carriers of Shippo's Account
+ * @see https://goshippo.com/docs/reference#carrier-accounts-list
+ * @param {Object} parameter - ValidatedMethod's parameter
+ * @param {String} parameter.apiKey - The Test or Live Token required
+ * for authentication by Shippo's api
+ * @return {Object} carrierAccountList - the compound object returned by Shippo
+ * @return {Array} carrierAccountList.results - An array with the carrier accounts objects
+ * @return {Number} carrierAccountList.count - the count of the carrier accounts objects.
+ * */
+ShippoApi.methods.getCarrierAccountsList = new ValidatedMethod({
+  name: "ShippoApi.methods.getCarrierAccountsList",
   validate: new SimpleSchema({
     apiKey: {
       type: String
@@ -45,28 +62,29 @@ ShippoApi.methods.getActiveCarriersList = new ValidatedMethod({
 
     const getCarrierAccountsListFiber = Meteor.wrapAsync(shippoObj.carrieraccount.list, shippoObj.carrieraccount);
     try {
-      const carrierAccounts = getCarrierAccountsListFiber();
-      const activeCarriersList = [];
-      if (carrierAccounts.count) {
-        carrierAccounts.results.forEach(carrier => {
-          if (carrier.active) {
-            activeCarriersList.push({
-              carrier: carrier.carrier, // this is a property of the returned result with value the name of the carrier
-              carrierAccountId: carrier.object_id
-            });
-          }
-        });
-      }
-
-      return activeCarriersList;
+      const carrierAccountList = getCarrierAccountsListFiber();
+      return carrierAccountList;
     } catch (error) {
       throw new Meteor.Error(error.message);
     }
   }
 });
 
-ShippoApi.methods.getCarriersRates = new ValidatedMethod({
-  name: "ShippoApi.methods.getCarriersRates",
+/**
+ * Creates a Shippo's Shipment object for the given addresses and gets Rates for the particular shipment)
+ * @see https://goshippo.com/docs/reference#shipments-create
+ * @param {Object} parameter - ValidatedMethod's parameter
+ * @param {Object} parameter.shippoAddressFrom - The address of the sender.
+ * @param {Object} parameter.shippoAddressTo - The address of the receiver.
+ * @param {Object} parameter.shippoParcel - The parcel dimensions's/weight.
+ * @param {String("QUOTE"|"PURCHASE")} parameter.purpose  - The reason of the shipment(check prices/ purchase labels)
+ * @param {String} parameter.apiKey - The Test or Live Token required
+ * for authentication by Shippo's api
+ * @return {Object} shipment - The compound shipment object returned by Shippo
+ * @return {Array} shipment.rates_list - The available rate objects.
+ * */
+ShippoApi.methods.createShipment = new ValidatedMethod({
+  name: "ShippoApi.methods.createShipment",
   validate: new SimpleSchema({
     shippoAddressFrom: { type: purchaseAddressSchema },
     shippoAddressTo: { type: purchaseAddressSchema },
@@ -89,16 +107,25 @@ ShippoApi.methods.getCarriersRates = new ValidatedMethod({
         async: false                          // ..returns zero results if enabled
       });
 
-      return shipment.rates_list;
+      return shipment;
     } catch (error) {
       throw new Meteor.Error(error.message);
     }
   }
 });
 
-// Makes the transaction for a chosen rate, and receives the printable label
-ShippoApi.methods.purchaseShippingLabel = new ValidatedMethod({
-  name: "ShippoApi.methods.purchaseShippingLabel",
+/**
+ * Makes the transaction (purchasing of a shipping label from a shipping provider for a specific service)
+ * for the specific rateId and returns its Shipping Label ,Tracking number etc
+ * @see https://goshippo.com/docs/reference#transactions-create
+ * @param {Object} parameter - ValidatedMethod's parameter
+ * @param {String} parameter.rateId - unique identifier of the chosen rate object
+ * @param {String} parameter.apiKey - The Test or Live Token required
+ * for authentication by Shippo's api
+ * @return {Object} transaction - The compound transaction object returned by Shippo
+ * */
+ShippoApi.methods.createTransaction = new ValidatedMethod({
+  name: "ShippoApi.methods.createTransaction",
   validate: new SimpleSchema({
     rateId: { type: String },
     apiKey: { type: String }

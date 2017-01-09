@@ -64,8 +64,24 @@ function ratesParser(shippoRates, shippoDocs) {
   });
 }
 
+// Filters the carrier list and gets and parses only the ones that are activated in the Shippo Account
+function filterActiveCarriers(carrierList) {
+  let activeCarriers = [];
+  if (carrierList.results && carrierList.count) {
+    carrierList.results.forEach(carrier => {
+      if (carrier.active) {
+        activeCarriers.push({
+          carrier: carrier.carrier, // this is a property of the returned result with value the name of the carrier
+          carrierAccountId: carrier.object_id
+        });
+      }
+    });
 
-// usps_express to USPS EXPRESS .We need a better approach
+    return activeCarriers;
+  }
+}
+
+// usps_express to USPS EXPRESS .We need a better approach - use a suitable static map object
 function formatCarrierLabel(carrierName) {
   return carrierName.replace(/_/g, " ").toUpperCase();
 }
@@ -113,6 +129,17 @@ function removeAllShippoProviders() {
 }
 
 Meteor.methods({
+
+  /**
+   * Updates the Api key(Live/Test Token) used for connection with the  Shippo account.
+   * Also inserts(and deletes if already exist) docs in the Shipping collection each of the
+   * activated Carriers of the Shippo account.
+   * This method is intended to be used mainly by Autoform.
+   * @param {Object} modifier - The Autoform's modifier string
+   * @param {_id} string - The id of the Shippo package that gets updated
+   * @return {Object} result - The object returned.
+   * @return {string("update"|"delete")} result.type - The type of updating happened.
+   * */
   "shippo/updateApiKey"(modifier, _id) {
     // Important server-side check for security and data integrity
     check(modifier, ShippoPackageConfig);
@@ -133,13 +160,14 @@ Meteor.methods({
 
       const apiKey = modifier.$set["settings.apiKey"];
 
-      // Tries to use the apiKey . if not possible throws a relative Meteor Error
-      ShippoApi.methods.confirmValidApiKey.call({ apiKey });
+      // Tries to use the apiKey by fetching a list of the addresses of Shippo Account
+      // if not possible throws a relative Meteor Error
+      ShippoApi.methods.getAddressList.call({ apiKey });
       Packages.update(_id, modifier);
 
-      const shippoActiveCarriersList = ShippoApi.methods.getActiveCarriersList.call({ apiKey });
+      const activeCarriers = filterActiveCarriers(ShippoApi.methods.getCarrierAccountsList.call({ apiKey }));
       removeAllShippoProviders();
-      addShippoProviders(shippoActiveCarriersList);
+      addShippoProviders(activeCarriers);
 
       return { type: "update" };
     }
@@ -147,7 +175,15 @@ Meteor.methods({
     return false;
   },
 
-  // Intended to be called from Buyer
+  /**
+   * Returns the available Shippo Methods/Rates for a selected cart, in the same form shipping/getShippingRates
+   * returns them.
+   * @param {String} cartId - The id of the cart that rates are to be supplied.
+   * @param {Object} shippoDocs - Contains all the Enabled Shipping Objects with provider.shippoProvider property.
+   * Each property has as key the Shippo's carrierAccountId and as value the corresponding document of shipping
+   * collection.
+   * @return {Array} rates - The rates of the enabled and available Shippo carriers.
+   * */
   "shippo/getShippingRatesForCart"(cartId, shippoDocs) {
     check(cartId, String);
     check(shippoDocs, Object);
@@ -197,7 +233,7 @@ Meteor.methods({
         return [];
       }
       const carrierAccounts = Object.keys(shippoDocs);
-      const shippoRates = ShippoApi.methods.getCarriersRates.call({
+      const shippoShipment = ShippoApi.methods.createShipment.call({
         shippoAddressFrom,
         shippoAddressTo,
         shippoParcel,
@@ -205,6 +241,7 @@ Meteor.methods({
         carrierAccounts,
         apiKey
       });
+      const shippoRates = shippoShipment.rates_list;
       const reactionRates = ratesParser(shippoRates, shippoDocs);
 
       return reactionRates;
@@ -212,8 +249,13 @@ Meteor.methods({
 
     return false;
   },
-  // For a given order ,purchases the shipping label of the selected method
-  // and supplies the order with the tracking and label infos
+
+  /**
+   * For a given order ,purchases the shipping label of the selected (by the buyer) method/rate
+   * and supplies the order doc with the tracking and label infos.
+   * @param {String} orderId - The id of the ordered that labels are purchased for.
+   * @return {Boolean} result - True if procedure completed succesfully,otherwise false
+   * */
   "shippo/confirmShippingMethodForOrder"(orderId) {
     check(orderId, String);
     const order = Orders.findOne(orderId);
@@ -230,7 +272,7 @@ Meteor.methods({
         }
         const rateId = order.shipping[0].shipmentMethod.shippoMethod.rateId;
         // make the actual purchase
-        const shippoLabel = ShippoApi.methods.purchaseShippingLabel.call({ rateId, apiKey });
+        const shippoLabel = ShippoApi.methods.createTransaction.call({ rateId, apiKey });
 
         return Orders.update({
           _id: orderId
