@@ -65,6 +65,17 @@ Template.coreCheckoutShipping.helpers({
       return "active";
     }
     return null;
+  },
+
+  isReady() {
+    const instance = Template.instance();
+    const isReady = instance.subscriptionsReady();
+
+    if (isReady) {
+      return true;
+    }
+
+    return false;
   }
 });
 
