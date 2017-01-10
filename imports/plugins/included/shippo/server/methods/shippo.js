@@ -153,7 +153,7 @@ function updateShippoProviders(activeCarriers, shopId = Reaction.getShopId()) {
   });
 
   // Ids of Shippo Carriers that exist currently as docs in Shipping Collection
-  const currentCarriersIds = currentShippoProviders.map( doc => doc.provider.shippoProvider.carrierAccountId );
+  const currentCarriersIds = currentShippoProviders.map(doc => doc.provider.shippoProvider.carrierAccountId);
 
   let newActiveCarriers = [];
   let unchangedActiveCarriersIds = [];
@@ -230,15 +230,11 @@ Meteor.methods({
   },
 
   /**
-   * Updates the Api key(Live/Test Token) used for connection with the Shippo account.
-   * Also inserts(and deletes if already exist) docs in the Shipping collection each of the
-   * activated Carriers of the Shippo account.
-   * This method is intended to be used mainly by Autoform.
-   * @param {Object} modifier - The Autoform's modifier string
-   * @param {_id} string - The id of the Shippo package that gets updated
-   * @return {Object} result - The object returned.
-   * @return {string("update"|"delete")} result.type - The type of updating happened.
+   * Fetches the current active Shippo Carriers from the Shippo Account and updates the
+   * Shipping Collection by keeping only these as Shippo Providers of the shop.
+   * @return {Boolean} result - if the updating happened succesfully or not.
    * */
+
   "shippo/fetchProviders"() {
     const shopId = Reaction.getShopId();
 
@@ -255,6 +251,7 @@ Meteor.methods({
 
     return false;
   },
+
   /**
    * Returns the available Shippo Methods/Rates for a selected cart, in the same form shipping/getShippingRates
    * returns them.
