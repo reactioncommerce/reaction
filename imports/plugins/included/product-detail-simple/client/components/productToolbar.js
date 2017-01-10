@@ -41,31 +41,41 @@ class ProductToolbar extends Component {
   }
 
   render() {
+    /*
+    <Toolbar>
+      <ToolbarGroup firstChild={true}>
+
+        <DropDownMenu
+          buttonElement={<Button label="Switch" />}
+          onChange={this.props.onViewContextChange}
+          value={this.props.viewAs}
+        >
+          <MenuItem label="Administrator" value="administrator" />
+          <MenuItem label="Customer" value="customer" />
+        </DropDownMenu>
+      </ToolbarGroup>
+      <ToolbarGroup lastChild={true}>
+        <PublishContainer
+          documentIds={[this.product._id]}
+          documents={[this.product]}
+          onVisibilityChange={this.handleVisibilityChange}
+          onAction={this.handlePublishActions}
+        />
+      </ToolbarGroup>
+    </Toolbar>
+     */
+
+
     if (this.props.hasAdminPermission) {
       return (
-        <Toolbar>
-          <ToolbarGroup firstChild={true}>
-            <Translation defaultValue="Product Management" i18nKey="productDetail.productManagement"/>
-          </ToolbarGroup>
-          <ToolbarGroup>
-            <DropDownMenu
-              buttonElement={<Button label="Switch" />}
-              onChange={this.props.onViewContextChange}
-              value={this.props.viewAs}
-            >
-              <MenuItem label="Administrator" value="administrator" />
-              <MenuItem label="Customer" value="customer" />
-            </DropDownMenu>
-          </ToolbarGroup>
-          <ToolbarGroup lastChild={true}>
-            <PublishContainer
-              documentIds={[this.product._id]}
-              documents={[this.product]}
-              onVisibilityChange={this.handleVisibilityChange}
-              onAction={this.handlePublishActions}
-            />
-          </ToolbarGroup>
-        </Toolbar>
+        <PublishContainer
+          value={this.props.viewAs}
+          documentIds={[this.product._id]}
+          documents={[this.product]}
+          onVisibilityChange={this.handleVisibilityChange}
+          onAction={this.handlePublishActions}
+          onViewContextChange={this.props.onViewContextChange}
+        />
       );
     }
 

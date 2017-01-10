@@ -7,7 +7,12 @@ import {
   Menu,
   MenuItem,
   Popover,
-  Translation
+  Translation,
+
+  Toolbar,
+  ToolbarGroup,
+  Switch
+
 } from "/imports/plugins/core/ui/client/components";
 import SimpleDiff from "./simpleDiff";
 import { Translatable } from "/imports/plugins/core/ui/client/providers";
@@ -207,41 +212,116 @@ class PublishControls extends Component {
   renderViewControls() {
     if (this.props.showViewAsControls) {
       return (
-        <DropDownMenu
-          onChange={this.handleVisibilityChange}
-          value={this.isVisible}
-        >
-          <MenuItem
-            i18nKeyLabel="app.public"
-            icon="fa fa-unlock"
-            label="Public"
-            selectLabel="Public"
-            value="public"
-          />
-          <MenuItem
-            i18nKeyLabel="app.private"
-            label="Private"
-            icon="fa fa-lock"
-            selectLabel="Public"
-            value="private"
-          />
-        </DropDownMenu>
+        <Button
+          label="Private"
+          i18nKeyLabel="app.private"
+          i18nKeyToggleOnLabel="app.public"
+          toggleOnLabel="Public"
+          icon="fa fa-eye-slash"
+          onIcon="fa fa-eye"
+          toggle={true}
+          value="public"
+          onValue="private"
+          toggleOn={this.isVisible === "public"}
+          onToggle={this.handleVisibilityChange}
+        />
       );
+      // return (
+      //   <DropDownMenu
+      //     onChange={this.handleVisibilityChange}
+      //     value={this.isVisible}
+      //   >
+      //     <MenuItem
+      //       i18nKeyLabel="app.public"
+      //       icon="fa fa-unlock"
+      //       label="Public"
+      //       selectLabel="Public"
+      //       value="public"
+      //     />
+      //     <MenuItem
+      //       i18nKeyLabel="app.private"
+      //       label="Private"
+      //       icon="fa fa-lock"
+      //       selectLabel="Public"
+      //       value="private"
+      //     />
+      //   </DropDownMenu>
+      // );
     }
 
     return null;
   }
 
+  renderUndoButton() {
+    return (
+      <Button
+        disabled={this.hasChanges === false}
+        tooltip="Discard Changes"
+        i18nKeyTooltip="revisions.discardChanges"
+        icon={"fa fa-undo"}
+        value="discard"
+        onClick={this.handleAction}
+      />
+    );
+  }
+
+  renderArchiveButton() {
+    return (
+      <Button
+        tooltip="Archive"
+        i18nKeyTooltip="app.archive"
+        icon={"fa fa-archive"}
+        value="archive"
+        onClick={this.handleAction}
+      />
+    );
+  }
+
+  renderSettingsButton() {
+    return (
+      <Button
+        icon={"fa fa-cog"}
+        value="settings"
+        onClick={this.handleAction}
+      />
+    );
+  }
+
+  renderVisibilitySwitch() {
+    /*
+    <DropDownMenu
+      buttonElement={<Button label="Switch" />}
+      onChange={this.props.onViewContextChange}
+      value={this.props.viewAs}
+    >
+      <MenuItem label="Administrator" value="administrator" />
+      <MenuItem label="Customer" value="customer" />
+    </DropDownMenu>
+     */
+    return (
+      <Switch
+        label={"Preview"}
+      />
+    );
+  }
+
+
   render() {
     if (this.props.isEnabled) {
       return (
-        <div className="rui publish-controls">
-          <ButtonToolbar>
-            {this.renderDeletionStatus()}
+        <Toolbar>
+          <ToolbarGroup firstChild={true}>
             {this.renderViewControls()}
+            {this.renderVisibilitySwitch()}
+          </ToolbarGroup>
+          <ToolbarGroup lastChild={true}>
+            {this.renderDeletionStatus()}
+            {this.renderUndoButton()}
+            {this.renderArchiveButton()}
+            {this.renderSettingsButton()}
             {this.renderPublishButton()}
-          </ButtonToolbar>
-        </div>
+          </ToolbarGroup>
+        </Toolbar>
       );
     }
 
