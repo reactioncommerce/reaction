@@ -1,0 +1,26 @@
+[{
+  "language": "French",
+  "i18n": "fr",
+  "ns": "example-paymentmethod",
+  "translation": {
+    "reaction-payments": {
+      "admin": {
+        "shortcut": {
+          "examplePaymentProviderLabel": "Exemple Paiement",
+          "examplePaymentProviderTitle": "Exemple Paiement"
+        },
+        "dashboard": {
+          "examplePaymentProviderLabel": "Exemple Paiement",
+          "examplePaymentProviderTitle": "Exemple Paiement",
+          "examplePaymentProviderDescription": "Exemple Méthode de paiement"
+        },
+        "paymentSettings": {
+          "examplePaymentLabel": "Exemple fournisseur",
+          "examplePaymentSettingsLabel": "Exemple Paiement",
+          "exampleCredentials": "Ce paramètre est par exemple de méthode de paiement.",
+          "apiClientId": "API ID client"
+        }
+      }
+    }
+  }
+}]

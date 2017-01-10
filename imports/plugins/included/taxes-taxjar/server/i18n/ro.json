@@ -1,0 +1,26 @@
+[{
+  "language": "Romanian",
+  "i18n": "ro",
+  "ns": "taxes-taxjar",
+  "translation": {
+    "reaction-taxes": {
+      "admin": {
+        "shortcut": {
+          "taxjarLabel": "TaxJar",
+          "taxjarTitle": "TaxJar"
+        },
+        "dashboard": {
+          "taxjarLabel": "TaxJar",
+          "taxjarTitle": "TaxJar",
+          "taxjarDescription": "taxe TaxJar"
+        },
+        "taxSettings": {
+          "taxjarLabel": "TaxJar",
+          "taxjarSettingsLabel": "TaxJar",
+          "taxjarCredentials": "Adăuga acreditările pentru a activa",
+          "taxjarGetCredentialsURL": "Ia-le aici"
+        }
+      }
+    }
+  }
+}]

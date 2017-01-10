@@ -1,0 +1,32 @@
+[{
+  "language": "Burmese",
+  "i18n": "my",
+  "ns": "reaction-braintree",
+  "translation": {
+    "reaction-payments": {
+      "admin": {
+        "shortcut": {
+          "braintreeLabel": "Braintree",
+          "braintreeTitle": "Braintree"
+        },
+        "dashboard": {
+          "braintreeLabel": "Braintree",
+          "braintreeTitle": "Braintree",
+          "braintreeDescription": "Braintree ငွေပေးချေမှု"
+        },
+        "paymentSettings": {
+          "braintreeLabel": "Braintree",
+          "braintreeSettingsLabel": "Braintree",
+          "braintreeCredentials": "ဖွင့်ဖို့အထောက်အထားများ Add"
+        }
+      },
+      "order": {
+        "paymentProvider": {
+          "braintree": {
+            "braintreeSettlementDelay": "အရောင်းအအခြေချမှီတိုင်အောင် Braintree ပြန်အမ်းခွင့်ပြုမထားဘူး။ ဒီ 24 နာရီအထိကြာနိုင်ပါတယ်။ နောက်တခါထပ်ကြိုးစားကြည့်ပါ။"
+          }
+        }
+      }
+    }
+  }
+}]

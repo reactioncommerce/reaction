@@ -1,0 +1,24 @@
+[{
+  "language": "Swedish",
+  "i18n": "sv",
+  "ns": "reaction-stripe",
+  "translation": {
+    "reaction-payments": {
+      "admin": {
+        "shortcut": {
+          "stripeLabel": "Rand"
+        },
+        "dashboard": {
+          "stripeLabel": "Rand",
+          "stripeDescription": "rand betalningar"
+        },
+        "paymentSettings": {
+          "stripeLabel": "Rand",
+          "stripeSettingsLabel": "Rand",
+          "stripeSettingsDescription": "Inte ha en rand API-klient-ID?",
+          "stripeSettingsGetItHere": "Få det här"
+        }
+      }
+    }
+  }
+}]

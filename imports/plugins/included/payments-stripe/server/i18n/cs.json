@@ -1,0 +1,24 @@
+[{
+  "language": "Czech",
+  "i18n": "cs",
+  "ns": "reaction-stripe",
+  "translation": {
+    "reaction-payments": {
+      "admin": {
+        "shortcut": {
+          "stripeLabel": "Proužek"
+        },
+        "dashboard": {
+          "stripeLabel": "Proužek",
+          "stripeDescription": "platby Stripe"
+        },
+        "paymentSettings": {
+          "stripeLabel": "Proužek",
+          "stripeSettingsLabel": "Proužek",
+          "stripeSettingsDescription": "Nemáte Stripe API ID klienta?",
+          "stripeSettingsGetItHere": "Získat ji zde"
+        }
+      }
+    }
+  }
+}]

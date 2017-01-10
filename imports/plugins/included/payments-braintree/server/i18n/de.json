@@ -1,0 +1,32 @@
+[{
+  "language": "German",
+  "i18n": "de",
+  "ns": "reaction-braintree",
+  "translation": {
+    "reaction-payments": {
+      "admin": {
+        "shortcut": {
+          "braintreeLabel": "Braintree",
+          "braintreeTitle": "Braintree"
+        },
+        "dashboard": {
+          "braintreeLabel": "Braintree",
+          "braintreeTitle": "Braintree",
+          "braintreeDescription": "Braintree Zahlungen"
+        },
+        "paymentSettings": {
+          "braintreeLabel": "Braintree",
+          "braintreeSettingsLabel": "Braintree",
+          "braintreeCredentials": "In Anmeldeinformationen zu ermöglichen,"
+        }
+      },
+      "order": {
+        "paymentProvider": {
+          "braintree": {
+            "braintreeSettlementDelay": "Braintree erlaubt keine Rückerstattungen bis Transaktionen abgewickelt werden. Dies kann bis zu 24 Stunden dauern. Bitte versuchen Sie es später noch einmal."
+          }
+        }
+      }
+    }
+  }
+}]

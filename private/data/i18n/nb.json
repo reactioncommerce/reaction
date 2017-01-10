@@ -194,11 +194,6 @@
         "reviewPayment": "Se igjennom",
         "complete": "Fullført"
       },
-      "checkoutPayment": {
-        "addPaymentToCompleteOrder": "Legg til betalingsalternativ for å fullføre bestillingen",
-        "processingError": "Det oppstod et problem med din betaling.",
-        "completeYourOrder": "Fullfør ordren"
-      },
       "checkoutReview": {
         "review": "Se igjennom"
       },

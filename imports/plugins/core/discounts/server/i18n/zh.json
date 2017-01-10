@@ -1,0 +1,22 @@
+[{
+  "language": "Chinese",
+  "i18n": "zh",
+  "ns": "reaction-discounts",
+  "translation": {
+    "reaction-discounts": {
+      "admin": {
+        "settings": {
+          "discountsettingsLabel": "折扣设置"
+        },
+        "shortcut": {
+          "discountsLabel": "折扣",
+          "discountsDescription": "提供促销和折扣。"
+        },
+        "dashboard": {
+          "discountsLabel": "折扣",
+          "discountsDescription": "提供促销和折扣。"
+        }
+      }
+    }
+  }
+}]

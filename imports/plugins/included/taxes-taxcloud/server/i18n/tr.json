@@ -1,0 +1,26 @@
+[{
+  "language": "Turkish",
+  "i18n": "tr",
+  "ns": "taxes-taxcloud",
+  "translation": {
+    "reaction-taxes": {
+      "admin": {
+        "shortcut": {
+          "taxcloudLabel": "TaxCloud",
+          "taxcloudTitle": "TaxCloud"
+        },
+        "dashboard": {
+          "taxcloudLabel": "TaxCloud",
+          "taxcloudTitle": "TaxCloud",
+          "taxcloudDescription": "TaxCloud vergileri"
+        },
+        "taxSettings": {
+          "taxcloudLabel": "TaxCloud",
+          "taxcloudSettingsLabel": "TaxCloud",
+          "taxcloudCredentials": "etkinleştirmek için kimlik bilgilerini ekleme",
+          "taxcloudGetCredentialsURL": "Onları burada alın"
+        }
+      }
+    }
+  }
+}]

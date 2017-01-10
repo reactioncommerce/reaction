@@ -1,0 +1,22 @@
+[{
+  "language": "Dutch",
+  "i18n": "nl",
+  "ns": "reaction-discounts",
+  "translation": {
+    "reaction-discounts": {
+      "admin": {
+        "settings": {
+          "discountsettingsLabel": "Discount Instellingen"
+        },
+        "shortcut": {
+          "discountsLabel": "Kortingen",
+          "discountsDescription": "Zorg voor promoties en kortingen."
+        },
+        "dashboard": {
+          "discountsLabel": "Kortingen",
+          "discountsDescription": "Zorg voor promoties en kortingen."
+        }
+      }
+    }
+  }
+}]

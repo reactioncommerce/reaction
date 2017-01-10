@@ -1,0 +1,24 @@
+[{
+  "language": "Vietnamese",
+  "i18n": "vi",
+  "ns": "reaction-stripe",
+  "translation": {
+    "reaction-payments": {
+      "admin": {
+        "shortcut": {
+          "stripeLabel": "Vạch sọc"
+        },
+        "dashboard": {
+          "stripeLabel": "Vạch sọc",
+          "stripeDescription": "thanh toán sọc"
+        },
+        "paymentSettings": {
+          "stripeLabel": "Vạch sọc",
+          "stripeSettingsLabel": "Vạch sọc",
+          "stripeSettingsDescription": "Không có một ID Khách hàng sọc API?",
+          "stripeSettingsGetItHere": "Lấy nó ở đây"
+        }
+      }
+    }
+  }
+}]

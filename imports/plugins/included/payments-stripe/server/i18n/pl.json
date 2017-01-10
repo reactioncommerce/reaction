@@ -1,0 +1,24 @@
+[{
+  "language": "Polish",
+  "i18n": "pl",
+  "ns": "reaction-stripe",
+  "translation": {
+    "reaction-payments": {
+      "admin": {
+        "shortcut": {
+          "stripeLabel": "Naszywka"
+        },
+        "dashboard": {
+          "stripeLabel": "Naszywka",
+          "stripeDescription": "płatności stripe"
+        },
+        "paymentSettings": {
+          "stripeLabel": "Naszywka",
+          "stripeSettingsLabel": "Naszywka",
+          "stripeSettingsDescription": "Nie masz Stripe API identyfikator klienta?",
+          "stripeSettingsGetItHere": "Pobierz go tutaj"
+        }
+      }
+    }
+  }
+}]

@@ -1,0 +1,24 @@
+[{
+  "language": "Bulgarian",
+  "i18n": "bg",
+  "ns": "reaction-stripe",
+  "translation": {
+    "reaction-payments": {
+      "admin": {
+        "shortcut": {
+          "stripeLabel": "райе"
+        },
+        "dashboard": {
+          "stripeLabel": "райе",
+          "stripeDescription": "плащания Stripe"
+        },
+        "paymentSettings": {
+          "stripeLabel": "райе",
+          "stripeSettingsLabel": "райе",
+          "stripeSettingsDescription": "Не трябва Stripe API Client ID а?",
+          "stripeSettingsGetItHere": "Вземете го от тук"
+        }
+      }
+    }
+  }
+}]

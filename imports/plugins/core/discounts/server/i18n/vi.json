@@ -1,0 +1,22 @@
+[{
+  "language": "Vietnamese",
+  "i18n": "vi",
+  "ns": "reaction-discounts",
+  "translation": {
+    "reaction-discounts": {
+      "admin": {
+        "settings": {
+          "discountsettingsLabel": "Cài đặt giảm giá"
+        },
+        "shortcut": {
+          "discountsLabel": "giảm giá",
+          "discountsDescription": "Cung cấp các chương trình khuyến mãi và giảm giá."
+        },
+        "dashboard": {
+          "discountsLabel": "giảm giá",
+          "discountsDescription": "Cung cấp các chương trình khuyến mãi và giảm giá."
+        }
+      }
+    }
+  }
+}]

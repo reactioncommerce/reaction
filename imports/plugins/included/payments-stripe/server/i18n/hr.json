@@ -1,0 +1,24 @@
+[{
+  "language": "Croatian",
+  "i18n": "hr",
+  "ns": "reaction-stripe",
+  "translation": {
+    "reaction-payments": {
+      "admin": {
+        "shortcut": {
+          "stripeLabel": "Pruga"
+        },
+        "dashboard": {
+          "stripeLabel": "Pruga",
+          "stripeDescription": "plaćanja trakom"
+        },
+        "paymentSettings": {
+          "stripeLabel": "Pruga",
+          "stripeSettingsLabel": "Pruga",
+          "stripeSettingsDescription": "Nemate ID klijenta pruga API?",
+          "stripeSettingsGetItHere": "Nabavite ga ovdje"
+        }
+      }
+    }
+  }
+}]

@@ -21,23 +21,15 @@
           "analyticsLabel": "Аналитика",
           "analyticsTitle": "Аналитика",
           "analyticsDescription": "Внедрение аналитики и отслеживания событий",
-          "authorizenetLabel": "Authorize.net",
-          "authorizenetTitle": "Authorize.net",
-          "authorizenetDescription": "Платежи Authorize.net",
           "shippingLabel": "Доставка",
           "shippingTitle": "Доставка",
           "shippingDescription": "Настройки тарифов по доставке",
-          "braintreeLabel": "Braintree",
-          "braintreeTitle": "Braintree",
-          "braintreeDescription": "Платежи через Braintree",
           "catalogLabel": "Каталог",
           "catalogTitle": "Каталог",
           "catalogDescription": "Каталог товаров",
           "coreLabel": "Ядро",
           "coreTitle": "Панель управления",
           "coreDescription": "Базовые настройки Reaction",
-          "examplePaymentProviderLabel": "Образец платёжной системы",
-          "examplePaymentProviderDescription": "Образец для портирования любых платёжных систем",
           "emailLabel": "Эл. почта",
           "emailTitle": "Эл. адрес",
           "emailDescription": "Настройки эл. почты",
@@ -54,11 +46,11 @@
           "connectTitle": "Connect",
           "connectDescription": "Подключение Reaction как развёрнутого сервиса",
           "ordersLabel": "Заказы",
+          "smsLabel": "смс",
+          "smsTitle": "смс",
+          "smsDescription": "Уведомления",
           "ordersTitle": "Заказы",
           "ordersDescription": "Управление заказами",
-          "paypalLabel": "PayPal",
-          "paypalTitle": "PayPal",
-          "paypalDescription": "Платежи через PayPal",
           "revisionsLabel": "Версии",
           "revisionsTitle": "Версии",
           "revisionsDescription": "Управление версиями",
@@ -68,17 +60,12 @@
           "searchLabel": "Искать",
           "searchTitle": "Искать",
           "searchDescription": "Поиск товара",
-          "smsLabel": "смс",
-          "smsTitle": "смс",
-          "smsDescription": "Уведомления",
           "socialLabel": "Социальные сети",
           "socialTitle": "Социальные сети",
           "socialDescription": "Интеграция с соц. сетями",
           "themesLabel": "Темы",
           "themesTitle": "Темы",
           "themesDescription": "Темы и UI компоненты",
-          "stripeLabel": "Stripe",
-          "stripeDescription": "Платежи через Stripe",
           "filtrationLabel": "Filtration",
           "filtrationDescription": "Products filtration for Reaction"
         },
@@ -92,24 +79,25 @@
           "utilities": "Утилиты"
         },
         "settings": {
+          "saveSuccess": "Настройки обновлены.",
+          "saveFailed": "Не удалось обновить настройки.",
           "accountSettingsLabel": "Настройки учетных записей",
           "addShopMemberLabel": "Добавить сотрудника",
-          "authorizenetSettingsLabel": "Настройки Authorize.net",
           "permissionsSettingsLabel": "Права доступа",
-          "braintreeSettingsLabel": "Настройки Braintree",
           "localizationAndI18NLabel": "Локализация и i18n",
           "searchSettingsLabel": "Настройки поиска",
           "shopSettingsLabel": "Настройки магазина",
+          "smsSettingsLabel": "настройки SMS",
           "socialSettingsLabel": "Настройки соц. сетей",
           "shippingSettingsLabel": "Настройки доставки",
-          "stripeSettingsLabel": "Настройки Stripe",
           "inventorySettingsLabel": "Настройки управления товарами",
           "analyticsSettingsLabel": "Настройки аналитики",
-          "paypalSettingsLabel": "Настройки PayPal",
           "reactionConnectLabel": "Reaction Connect",
-          "examplePaymentSettingsLabel": "Образец платёжной системы",
           "productSettingsLabel": "Настройки продукта",
-          "productDetailsLabel": "Подробные данные о товаре"
+          "productDetailsLabel": "Подробные данные о товаре",
+          "productRevisionsLabel": "Ревизии продукта",
+          "emailSettingsLabel": "Настройки электронной почты",
+          "catalogSettingsLabel": "Настройки каталога"
         },
         "userAccountDropdown": {
           "profileLabel": "Профиль"
@@ -279,7 +267,9 @@
           "connectionFailed": "Соединение прервано!",
           "saveAnyway": "Вы все равно хотите сохранить настройки?",
           "saveSuccess": "Настройки почты сохранены.",
-          "saveFailed": "Не удалось сохранить настройки почты. {{error}}"
+          "saveFailed": "Не удалось сохранить настройки почты. {{error}}",
+          "cantSendEmail": "Ошибка сервера: Не удается отправить уведомление по электронной почте.",
+          "emailSent": "уведомление по электронной почте."
         }
       },
       "header": {
@@ -390,6 +380,7 @@
         "productIsNotVisible": "Товар не виден"
       },
       "productVariant": {
+        "addVariantOptions": "Добавить параметры для включения 'Добавить в корзину' переключате",
         "inventoryQuantity": "Количество",
         "title": "Название",
         "price": "Цена",
@@ -473,11 +464,6 @@
           "completed": "Завершенных",
           "canceled": "Отмененных",
           "refunded": "Возвращенных"
-        },
-        "paymentProvider": {
-          "braintree": {
-            "braintreeSettlementDelay": "Braintree не позволяет осуществлять возвраты до завершения транзакций. Процесс может занять до 24 часов. Попробуйте еще раз позже."
-          }
         }
       },
       "orderShipping": {
@@ -598,6 +584,7 @@
       },
       "revisions": {
         "isDisabled": "Управление версиями отключено. Любые изменения будут немедленно опубликованы.",
+        "isEnabled": "Контроль версий включена для продуктов. Любые изменения будут должны быть опубликованы до быть видимым для клиентов.",
         "unpublishedChanges": "Неопубликованные изменения",
         "publishChanges": "Опубликовать изменения",
         "showChanges": "Отобразить изменения",
@@ -631,14 +618,6 @@
         "shippingOptions": "Варианты доставки",
         "reviewPayment": "Обзор",
         "complete": "Готово"
-      },
-      "checkoutPayment": {
-        "addPaymentToCompleteOrder": "Добавить платёж для завершения заказа",
-        "processingError": "С вашим платежом возникли сложности.",
-        "completeYourOrder": "Завершить ваш заказ",
-        "noPaymentMethods": "Не указан ни один вариант платежа.",
-        "configureNow": "Укажите сейчас.",
-        "failedToPlaceOrder": "Разместить заказ не удалось."
       },
       "checkoutReview": {
         "review": "Обзор"
