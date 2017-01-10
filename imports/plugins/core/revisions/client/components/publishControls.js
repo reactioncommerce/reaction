@@ -17,6 +17,9 @@ import {
 import SimpleDiff from "./simpleDiff";
 import { Translatable } from "/imports/plugins/core/ui/client/providers";
 
+/** TMP **/
+import { Reaction } from "/client/api";
+
 class PublishControls extends Component {
   constructor(props) {
     super(props);
@@ -300,11 +303,38 @@ class PublishControls extends Component {
      */
     return (
       <Switch
+        i18nKeyLabel={"app."}
         label={"Preview"}
       />
     );
   }
 
+  /** TMP **/
+  renderAdminButton() {
+    return (
+      <Button
+        icon={"fa fa-arrow-right"}
+        onClick={() => {
+          Reaction.showActionView({
+            i18nKeyTite: "dashboard.coreTitle",
+            title: "Dashboard",
+            template: "dashboardPackages"
+          });
+        }}
+      />
+    );
+  }
+  renderVerticalDivider() {
+    return (
+      <div style={{
+        height: "20px",
+        width: 1,
+        backgroundColor: "#E6E6E6",
+        margin: "0 10px"
+      }}
+      />
+    );
+  }
 
   render() {
     if (this.props.isEnabled) {
@@ -319,7 +349,12 @@ class PublishControls extends Component {
             {this.renderUndoButton()}
             {this.renderArchiveButton()}
             {this.renderSettingsButton()}
+
+            {this.renderVerticalDivider()}
             {this.renderPublishButton()}
+            {this.renderVerticalDivider()}
+
+            {this.renderAdminButton()}
           </ToolbarGroup>
         </Toolbar>
       );
