@@ -23,8 +23,6 @@ Template.productGrid.onCreated(function () {
         selectedProducts = _.without(selectedProducts, event.target.value);
       }
 
-      Session.set("productGrid/selectedProducts", _.uniq(selectedProducts));
-
       const products = Template.currentData().products;
 
       if (products) {
