@@ -11,7 +11,41 @@ import Sortable from "sortablejs";
  */
 
 Template.productGrid.onCreated(function () {
-  Session.set("productGrid/selectedProducts", []);
+  if (Meteor.user() && Meteor.user().profile && Meteor.user().profile.preferences && Meteor.user().profile.preferences.gridItems) {
+    let selectedProducts = Meteor.user().profile.preferences.gridItems;
+
+    if (_.isEmpty(selectedProducts)) {
+      Reaction.hideActionView();
+    } else {
+      if (event.target.checked) {
+        selectedProducts.push(event.target.value);
+      } else {
+        selectedProducts = _.without(selectedProducts, event.target.value);
+      }
+
+      Session.set("productGrid/selectedProducts", _.uniq(selectedProducts));
+
+      const products = Template.currentData().products;
+
+      if (products) {
+        const filteredProducts = _.filter(products, (product) => {
+          return _.includes(selectedProducts, product._id);
+        });
+
+        Reaction.showActionView({
+          label: "Grid Settings",
+          i18nKeyLabel: "gridSettingsPanel.title",
+          template: "productSettings",
+          type: "product",
+          data: {
+            products: filteredProducts
+          }
+        });
+      }
+    }
+  } else {
+    Reaction.hideActionView();
+  }
 });
 
 Template.productGrid.onRendered(function () {
@@ -64,6 +98,12 @@ Template.productGrid.events({
       selectedProducts = _.without(selectedProducts, event.target.value);
     }
 
+    // Save the selected items to the user profile, for use when returing to the grid view
+    if (Meteor.user()) {
+      Meteor.users.update(Meteor.userId(), { $set: { "profile.preferences.gridItems": selectedProducts } });
+    }
+
+    // Save the selected items to the Session
     Session.set("productGrid/selectedProducts", _.uniq(selectedProducts));
 
     const products = Template.currentData().products;
@@ -74,8 +114,8 @@ Template.productGrid.events({
       });
 
       Reaction.showActionView({
-        label: "Product Settings",
-        i18nKeyLabel: "productDetailEdit.productSettings",
+        label: "Grid Settings",
+        i18nKeyLabel: "gridSettingsPanel.title",
         template: "productSettings",
         type: "product",
         data: {
