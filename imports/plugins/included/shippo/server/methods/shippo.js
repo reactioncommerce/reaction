@@ -100,7 +100,7 @@ function getApiKey(shopId = Reaction.getShopId) {
 }
 
 // Adds Shippo carriers in Shipping Collection (one doc per carrier) for the current Shop
-function addShippoProviders(carriers) {
+function addShippoProviders(carriers, shopId = Reaction.getShopId()) {
   let result = true;
   carriers.forEach(carrier => {
     const carrierName = carrier.carrier;
@@ -116,7 +116,7 @@ function addShippoProviders(carriers) {
           carrierAccountId: carrier.carrierAccountId
         }
       },
-      shopId: Reaction.getShopId()
+      shopId
     });
     result = result && currentResult;
   });
@@ -124,11 +124,57 @@ function addShippoProviders(carriers) {
   return result;
 }
 
-function removeAllShippoProviders() {
+// Remove from Shipping Collection shop's Shippo Providers with carrier account Id in carriersIds
+// or all of them (if carriersIds is set to false)
+function removeShippoProviders(carriersIds, shopId = Reaction.getShopId()) {
+  if (carriersIds) {
+    return Shipping.remove({
+      shopId,
+      "provider.shippoProvider.carrierAccountId": { $in: carriersIds }
+    });
+  }
+
   return Shipping.remove({
-    "shopId": Reaction.getShopId(),
+    shopId,
     "provider.shippoProvider": { $exists: true }
   });
+}
+
+// After getting the current active Carriers of the Shippo Account removes
+// from the Shipping Collection the Shippo providers that are deactivated(don't exist in active carriers)
+// and inserts the newly active carriers in Shipping Collection as shippo providers.
+
+function updateShippoProviders(activeCarriers, shopId = Reaction.getShopId()) {
+  const currentShippoProviders = Shipping.find({
+    "shopId": shopId,
+    "provider.shippoProvider": { $exists: true }
+  }, {
+    fields: { "provider.shippoProvider.carrierAccountId": 1 }
+  });
+
+  // Ids of Shippo Carriers that exist currently as docs in Shipping Collection
+  const currentCarriersIds = currentShippoProviders.map( doc => doc.provider.shippoProvider.carrierAccountId );
+
+  let newActiveCarriers = [];
+  let unchangedActiveCarriersIds = [];
+  activeCarriers.forEach(carrier => {
+    const carrierId = carrier.carrierAccountId;
+    if (!currentCarriersIds.includes(carrierId)) {
+      newActiveCarriers.push(carrier);
+    } else {
+      unchangedActiveCarriersIds.push(carrierId);
+    }
+  });
+
+  const deactivatedCarriersIds = _.difference(currentCarriersIds, unchangedActiveCarriersIds);
+  if (deactivatedCarriersIds.length) {
+    removeShippoProviders(deactivatedCarriersIds, shopId);
+  }
+  if (newActiveCarriers.length) {
+    addShippoProviders(newActiveCarriers, shopId);
+  }
+
+  return true;
 }
 
 Meteor.methods({
@@ -156,7 +202,8 @@ Meteor.methods({
       if (modifier.hasOwnProperty("$unset")) {
         const customModifier = { $set: { "settings.apiKey": null } };
         Packages.update(_id, customModifier);
-        removeAllShippoProviders();
+        // remove shop's existing Shippo Providers from Shipping Collection
+        removeShippoProviders(false, shopId);
 
         return { type: "delete" };
       }
@@ -168,12 +215,12 @@ Meteor.methods({
       ShippoApi.methods.getAddressList.call({ apiKey });
       // if everything is ok proceed with the api key update
       Packages.update(_id, modifier);
-      // remove existing shippo providers
-      removeAllShippoProviders();
+      // remove shop's existing Shippo Providers from Shipping Collection
+      removeShippoProviders(false, shopId);
 
       const activeCarriers = filterActiveCarriers(ShippoApi.methods.getCarrierAccountsList.call({ apiKey }));
       if (activeCarriers.length) {
-        addShippoProviders(activeCarriers);
+        addShippoProviders(activeCarriers, shopId);
       }
 
       return { type: "update" };
@@ -182,6 +229,32 @@ Meteor.methods({
     return false;
   },
 
+  /**
+   * Updates the Api key(Live/Test Token) used for connection with the Shippo account.
+   * Also inserts(and deletes if already exist) docs in the Shipping collection each of the
+   * activated Carriers of the Shippo account.
+   * This method is intended to be used mainly by Autoform.
+   * @param {Object} modifier - The Autoform's modifier string
+   * @param {_id} string - The id of the Shippo package that gets updated
+   * @return {Object} result - The object returned.
+   * @return {string("update"|"delete")} result.type - The type of updating happened.
+   * */
+  "shippo/fetchProviders"() {
+    const shopId = Reaction.getShopId();
+
+    if (Roles.userIsInRole(this.userId, ["admin", "owner"], shopId)) {
+
+      const apiKey = getApiKey(shopId);
+      if (!apiKey) {
+        return false;
+      }
+
+      const activeCarriers = filterActiveCarriers(ShippoApi.methods.getCarrierAccountsList.call({ apiKey }));
+      return updateShippoProviders(activeCarriers, shopId);
+    }
+
+    return false;
+  },
   /**
    * Returns the available Shippo Methods/Rates for a selected cart, in the same form shipping/getShippingRates
    * returns them.

@@ -17,18 +17,26 @@ Template.shippoSettings.helpers({
   }
 });
 
+Template.shippoSettings.events({
+  "click [data-event-action=fetchShippoProviders]"() {
+    Meteor.call("shippo/fetchProviders");
+  }
+});
+
 AutoForm.hooks({
   "shippo-update-form": {
     onSuccess(formType, result) {
       Alerts.removeSeen();
       const successMsg = (result.type === "delete") ? i18next.t("admin.settings.saveSuccess") :
                                                    i18next.t("shippo.connectedAndSaved");
+
       return Alerts.toast(successMsg, "success", {
         autoHide: true
       });
     },
     onError(operation, error) {
       Alerts.removeSeen();
+
       return Alerts.toast(`Shippo settings update failed. ${error}`, "error");
     }
   }
