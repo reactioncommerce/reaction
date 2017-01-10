@@ -338,6 +338,7 @@
       "productDetailEdit": {
         "editOption": "Edit option",
         "productSettings": "Product Settings",
+        "productSettings": "Grid Settings",
         "product": "Product",
         "size": "Size",
         "title": "Title",
@@ -410,6 +411,10 @@
         "disableConfirm": "Are you sure you want to disable {{app}}?",
         "pkgEnabled": "{{app}} is now enabled.",
         "pkgDisabled": "{{app}} is now disabled."
+      },
+      "gridSettingsPanel": {
+        "title": "Grid Settings",
+        "selected": "Selected"
       },
       "cartDrawer": {
         "empty": "We're sad. Your cart is empty.",
