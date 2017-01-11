@@ -1,11 +1,11 @@
 import React, { Component, PropTypes } from "react";
 import moment from "moment";
-
+import { Reaction } from "/client/api";
 
 class NotificationDropdown extends Component {
   constructor(props) {
     super(props);
-
+    this.prefix = Reaction.getShopPrefix();
     this.handleNoNotifications = this.handleNoNotifications.bind(this);
     this.renderDropdownHead = this.renderDropdownHead.bind(this);
     this.handleClick = this.handleClick.bind(this);
@@ -49,6 +49,7 @@ class NotificationDropdown extends Component {
 
   render() {
     const { notificationList } = this.props;
+    const prefix = this.prefix + "/notifications";
     return (
         <div className="notify-bar">
             { this.renderDropdownHead() }
@@ -78,7 +79,7 @@ class NotificationDropdown extends Component {
                 })}
              </ul>
              <div className="dropdown-footer text-center">
-                 <a href="/reaction/notifications" data-i18n="notifications.body.viewAll">View All</a>
+                 <a href={prefix} data-i18n="notifications.body.viewAll">View All</a>
              </div>
         </div>
     );
