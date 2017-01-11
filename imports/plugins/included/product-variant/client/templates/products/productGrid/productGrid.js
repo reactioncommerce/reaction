@@ -11,8 +11,10 @@ import Sortable from "sortablejs";
  */
 
 Template.productGrid.onCreated(function () {
-  if (Meteor.user() && Meteor.user().profile && Meteor.user().profile.preferences && Meteor.user().profile.preferences.gridItems) {
-    let selectedProducts = Meteor.user().profile.preferences.gridItems;
+  const profile = Meteor.user().profile;
+
+  if (profile && profile.preferences && profile.preferences.gridItems) {
+    let selectedProducts = profile.preferences.gridItems;
 
     if (_.isEmpty(selectedProducts)) {
       Reaction.hideActionView();
@@ -101,7 +103,11 @@ Template.productGrid.events({
 
     // Save the selected items to the user profile, for use when returing to the grid view
     if (Meteor.user()) {
-      Meteor.users.update(Meteor.userId(), { $set: { "profile.preferences.gridItems": selectedProducts } });
+      Meteor.users.update(Meteor.userId(), {
+        $set: {
+          "profile.preferences.gridItems": selectedProducts
+        }
+      });
     }
 
     // Save the selected items to the Session
