@@ -1,20 +1,17 @@
-import React, { Component, PropTypes } from "react";
+import React from "react";
+import { groupBy } from "lodash";
 import { composeWithTracker } from "/lib/api/compose";
-import { Meteor } from "meteor/meteor";
-import { ReactionProduct } from "/lib/api";
-import { Reaction, i18next, Logger } from "/client/api";
-import { Tags, Media } from "/lib/collections";
+import { Reaction } from "/client/api";
 import { Loading } from "/imports/plugins/core/ui/client/components";
-import { PackageList } from "../components";
-import { SocialContainer, VariantListContainer } from "./";
-import { MediaGalleryContainer } from "/imports/plugins/core/ui/client/containers";
-import { DragDropProvider, TranslationProvider } from "/imports/plugins/core/ui/client/providers";
-import { groupBt } from "lodash"
+import { TranslationProvider } from "/imports/plugins/core/ui/client/providers";
 
-// function
-
+/**
+ * handleShowPackage - Push package into action view navigation stack
+ * @param  {SyntheticEvent} event Original event
+ * @param  {Object} app Package data
+ * @return {undefined} No return value
+ */
 function handleShowPackage(event, app) {
-  console.log(app);
   Reaction.pushActionView(app);
 }
 
@@ -36,82 +33,9 @@ function composer(props, onData) {
     return packageData;
   });
 
-  const groupedPackages = _.groupBy(packages, (app) => {
+  const groupedPackages = groupBy(packages, (app) => {
     return app.container || "misc";
   });
-
-
-  // const instance = Template.instance();
-  // const data = instance.data;
-  // const apps = Reaction.Apps({
-  //   provides: "settings",
-  //   name: data.package.packageName
-  // });
-  //
-  // const controls = [];
-  //
-  // if (data.package.priority > 1) {
-  //   controls.push({
-  //     icon: "fa fa-plus-square fa-fw",
-  //     onIcon: "fa fa-check-square fa-fw",
-  //     toggle: true,
-  //     toggleOn: data.package.enabled,
-  //     onClick() {
-  //       if (instance.data.enablePackage) {
-  //         instance.data.enablePackage(data.package, !data.package.enabled);
-  //       }
-  //     }
-  //   });
-  // }
-  //
-  // for (const app of apps) {
-  //   controls.push({
-  //     icon: app.icon || "fa fa-cog fa-fw",
-  //     onClick() {
-  //       Reaction.pushActionView(app);
-  //     }
-  //   });
-  // }
-  //
-  // if (data.package.route) {
-  //   controls.push({
-  //     icon: "angle-right",
-  //     onClick() {
-  //       console.log("Data.package", data);
-  //       Reaction.pushActionView(data.package);
-  //       // showPackageDashboard(data.package);
-  //     }
-  //   });
-  // }
-  //
-  // return {
-  //   controls,
-  //   onContentClick() {
-  //     Reaction.pushActionView(data.package);
-  //     // showPackageDashboard(data.package);
-  //   }
-  // };
-  //
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   onData(null, {
     packages,

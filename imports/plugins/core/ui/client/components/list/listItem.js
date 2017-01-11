@@ -4,8 +4,15 @@ import { Icon, Translation } from "/imports/plugins/core/ui/client/components";
 
 class ListItem extends Component {
   static propTypes = {
+    actionType: PropTypes.oneOf(["arrow"]),
+    children: PropTypes.node,
+    i18nKeyLabel: PropTypes.string,
+    icon: PropTypes.string,
+    isAdmin: PropTypes.bool,
+    label: PropTypes.string,
     onClick: PropTypes.func,
-    packageData: PropTypes.object
+    packageData: PropTypes.object,
+    value: PropTypes.any
   }
 
   handleClick = () => {
@@ -19,14 +26,15 @@ class ListItem extends Component {
   }
 
   renderIcon() {
-
     const iconClassName = classnames({
-
-    })
+      "rui": true,
+      "admin": this.props.isAdmin,
+      "list-item-icon": true
+    });
 
     if (this.props.icon) {
       return (
-        <div class>
+        <div className={iconClassName}>
           <Icon icon={this.data.icon} />
         </div>
       );
@@ -36,18 +44,30 @@ class ListItem extends Component {
   }
 
   renderAction() {
+    const actionClassName = classnames({
+      "rui": true,
+      "admin": this.props.isAdmin,
+      "list-item-action": true
+    });
+
     if (this.props.actionType) {
       return (
-        <Icon icon="fa fa-angle-right" />
-      )
+        <div className={actionClassName}>
+          <Icon icon="fa fa-angle-right" />
+        </div>
+      );
     }
+
+    return null;
   }
 
   renderContent() {
     let content;
     const contentClassName = classnames({
-      "list-item-content": true,
-    })
+      "rui": true,
+      "admin": this.props.isAdmin,
+      "list-item-content": true
+    });
 
     if (this.props.label) {
       content = (
@@ -57,23 +77,28 @@ class ListItem extends Component {
         />
       );
     } else {
-      content = this.props.children
+      content = this.props.children;
     }
 
     return (
       <div className={contentClassName}>
         {content}
       </div>
-    )
+    );
   }
 
   render() {
-    return (
-      <div className="rui-admin list-group-item" onClick={this.handleClick}>
-        {this.renderIcon()}
-        <div class
+    const listItemClassName = classnames({
+      "rui": true,
+      "admin": this.props.isAdmin,
+      "list-group-item": true
+    });
 
-        {this.renderAction())}
+    return (
+      <div className={listItemClassName} onClick={this.handleClick}>
+        {this.renderIcon()}
+        {this.renderContent()}
+        {this.renderAction()}
       </div>
     );
   }
