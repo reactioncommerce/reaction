@@ -23,7 +23,6 @@
     "accounting-js": "^1.1.1",
     "autoprefixer": "^6.5.3",
     "autosize": "^3.0.19",
-    "avalara-taxrates": "^1.0.1",
     "babel-runtime": "^6.18.0",
     "bcrypt": "^1.0.2",
     "bootstrap": "^3.3.7",
