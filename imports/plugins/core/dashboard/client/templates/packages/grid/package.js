@@ -59,7 +59,7 @@ Template.gridPackage.helpers({
       controls.push({
         icon: app.icon || "fa fa-cog fa-fw",
         onClick() {
-          Reaction.showActionView(app);
+          Reaction.pushActionView(app);
         }
       });
     }
@@ -69,7 +69,7 @@ Template.gridPackage.helpers({
         icon: "angle-right",
         onClick() {
           console.log("Data.package", data);
-          Reaction.showActionView(data.package);
+          Reaction.pushActionView(data.package);
           // showPackageDashboard(data.package);
         }
       });
@@ -78,7 +78,7 @@ Template.gridPackage.helpers({
     return {
       controls,
       onContentClick() {
-        Reaction.showActionView(data.package);
+        Reaction.pushActionView(data.package);
         // showPackageDashboard(data.package);
       }
     };

@@ -251,7 +251,7 @@ export default {
 
   setActionView(viewData) {
     if (viewData) {
-      Session.set("admin/actionView", viewData);
+      Session.set("admin/actionView", [viewData]);
     } else {
       const registryItem = this.getRegistryForCurrentRoute(
         "settings");
@@ -266,8 +266,51 @@ export default {
     }
   },
 
+  pushActionView(viewData) {
+    Session.set("admin/showActionView", true);
+
+    const actionViewStack = Session.get("admin/actionView");
+
+    if (viewData) {
+      actionViewStack.push(viewData);
+      Session.set("admin/actionView", actionViewStack);
+    } else {
+      const registryItem = this.getRegistryForCurrentRoute(
+        "settings");
+
+      if (registryItem) {
+        this.pushActionView(registryItem);
+      } else {
+        this.pushActionView({ template: "blankControls" });
+      }
+    }
+  },
+
+  isActionViewAtRootView() {
+    const actionViewStack = Session.get("admin/actionView");
+
+    if (Array.isArray(actionViewStack) && actionViewStack.length === 1) {
+      return true;
+    }
+
+    return false;
+  },
+
+  popActionView() {
+    const actionViewStack = Session.get("admin/actionView");
+    actionViewStack.pop();
+
+    Session.set("admin/actionView", actionViewStack);
+  },
+
   getActionView() {
-    return Session.get("admin/actionView") || {};
+    const actionViewStack = Session.get("admin/actionView");
+
+    if (Array.isArray(actionViewStack) && actionViewStack.length) {
+      return actionViewStack.pop();
+    }
+
+    return {};
   },
 
   hideActionView() {
@@ -275,10 +318,10 @@ export default {
   },
 
   clearActionView() {
-    Session.set("admin/actionView", {
+    Session.set("admin/actionView", [{
       label: "",
       i18nKeyLabel: ""
-    });
+    }]);
   },
 
   getCurrentTag() {
