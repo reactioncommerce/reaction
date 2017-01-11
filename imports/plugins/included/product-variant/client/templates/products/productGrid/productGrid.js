@@ -13,8 +13,8 @@ import Sortable from "sortablejs";
 Template.productGrid.onCreated(function () {
   const profile = Meteor.user().profile;
 
-  if (profile && profile.preferences && profile.preferences.gridItems) {
-    let selectedProducts = profile.preferences.gridItems;
+  if (profile && profile.preferences && profile.preferences['reaction-product-variant'] && profile.preferences['reaction-product-variant'].selectedGridItems) {
+    let selectedProducts = profile.preferences['reaction-product-variant'].selectedGridItems;
 
     if (_.isEmpty(selectedProducts)) {
       Reaction.hideActionView();
@@ -105,7 +105,7 @@ Template.productGrid.events({
     if (Meteor.user()) {
       Meteor.users.update(Meteor.userId(), {
         $set: {
-          "profile.preferences.gridItems": selectedProducts
+          "profile.preferences.reaction-product-variant.selectedGridItems": selectedProducts
         }
       });
     }
