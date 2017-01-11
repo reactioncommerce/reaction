@@ -1,5 +1,4 @@
 import { Reaction } from "/client/api";
-
 /* eslint no-loop-func: 0 */
 
 /**
