@@ -40,19 +40,31 @@ class Switch extends Component {
   }
 
   renderLabel() {
+    let labelElement;
+
     if (this.props.checked === false && this.props.label) {
-      return (
+      labelElement = (
         <Translation defaultValue={this.props.label} i18nKey={this.props.i18nKeyLabel} />
       );
     } else if (this.props.checked === true && this.props.onLabel) {
-      return (
+      labelElement = (
         <Translation defaultValue={this.props.onLabel} i18nKey={this.props.i18nKeyOnLabel} />
+      );
+    } else if (this.props.label) {
+      labelElement = (
+        <Translation defaultValue={this.props.label} i18nKey={this.props.i18nKeyLabel} />
+      )
+    }
+
+    if (labelElement) {
+      return (
+        <div class="label">
+          {labelElement}
+        </div>
       );
     }
 
-    return (
-      <Translation defaultValue={this.props.label} i18nKey={this.props.i18nKeyLabel} />
-    )
+    return null;
   }
 
   checkboxRef = (ref) => {

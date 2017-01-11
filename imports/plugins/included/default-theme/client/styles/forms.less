@@ -62,17 +62,23 @@
 }
 
 // A React switch component
-.switch-control {
-  width: 36px;
-  height: 22px;
-
-  position: relative;
-  input, label {
-      display: none;
-  }
-
+.rui.switch {
+  display: flex;
+  align-items: center;
   cursor: hand;
-  padding: 10px;
+  // padding: 10px;
+
+  input, label {
+    display: none;
+  }
+}
+
+.rui.switch .switch-control {
+  position: relative;
+  width: 36px;
+  max-width: 36px;
+  height: 22px;
+  flex: 0 0 auto;
 
   &:before {
       position: absolute;
@@ -121,9 +127,8 @@
   &:disabled {
       opacity: 0.6;
   }
-
 }
 
-.switch label {
-  appearance: none;
+.rui.switch .label {
+  margin-left: 10px;
 }
