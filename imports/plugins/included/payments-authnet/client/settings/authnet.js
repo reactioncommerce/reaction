@@ -1,7 +1,7 @@
 import { Template } from "meteor/templating";
 import { Packages } from "/lib/collections";
 import { AutoForm } from "meteor/aldeed:autoform";
-import { Reaction } from "/client/api";
+import { Reaction, i18next } from "/client/api";
 import { AuthNetPackageConfig } from "../../lib/collections/schemas";
 
 import "./authnet.html";
