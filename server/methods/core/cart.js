@@ -2,7 +2,6 @@ import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import * as Collections from "/lib/collections";
-import * as Schemas from "/lib/collections/schemas";
 import { Logger, Reaction } from "/server/api";
 
 /**
@@ -737,7 +736,7 @@ Meteor.methods({
    */
   "cart/setShipmentAddress": function (cartId, address) {
     check(cartId, String);
-    check(address, Schemas.Address);
+    check(address, Reaction.Schemas.Address);
 
     const cart = Collections.Cart.findOne({
       _id: cartId,
@@ -821,7 +820,7 @@ Meteor.methods({
    */
   "cart/setPaymentAddress": function (cartId, address) {
     check(cartId, String);
-    check(address, Schemas.Address);
+    check(address, Reaction.Schemas.Address);
 
     const cart = Collections.Cart.findOne({
       _id: cartId,
@@ -944,7 +943,7 @@ Meteor.methods({
    * @return {String} returns update result
    */
   "cart/submitPayment": function (paymentMethod) {
-    check(paymentMethod, Schemas.PaymentMethod);
+    check(paymentMethod, Reaction.Schemas.PaymentMethod);
 
     const checkoutCart = Collections.Cart.findOne({
       userId: Meteor.userId()

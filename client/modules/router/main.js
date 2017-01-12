@@ -154,7 +154,7 @@ Router.notFound = {
  */
 Router.initPackageRoutes = () => {
   const pkgs = Packages.find().fetch();
-  const prefix = Reaction.getSlug(Reaction.getShopName()); // todo add shopId
+  const prefix = Reaction.getShopPrefix();
 
   // prefixing isnt necessary if we only have one shop
   // but we need to bypass the current
@@ -241,7 +241,7 @@ Router.initPackageRoutes = () => {
             });
           } else {
             shop.newGroup = Router.group({
-              prefix: "/" + prefix
+              prefix: prefix
             });
           }
 

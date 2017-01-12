@@ -1,6 +1,5 @@
 import { Meteor } from "meteor/meteor";
 import { Logger, MethodHooks, Reaction } from "/server/api";
-import { getSlug } from "/lib/api";
 
 const getAdminUserId = () => {
   // TODO validate with multiple show owners
@@ -16,8 +15,8 @@ const getAdminUserId = () => {
 
 const sendNotificationToAdmin = (adminId) => {
   const type = "forAdmin";
-  const prefix = getSlug(Reaction.getShopName().toLowerCase());
-  const url = `/${prefix}/dashboard/orders`;
+  const prefix = Reaction.getShopPrefix();
+  const url = `${prefix}/dashboard/orders`;
   const sms = true;
   // Sending notification to admin
   Logger.info("sending notification to admin");
@@ -27,8 +26,8 @@ const sendNotificationToAdmin = (adminId) => {
 MethodHooks.after("cart/copyCartToOrder", function (options) {
   const userId = Meteor.userId();
   const type = "newOrder";
-  const prefix = getSlug(Reaction.getShopName().toLowerCase());
-  const url = `/${prefix}/notifications`;
+  const prefix = Reaction.getShopPrefix();
+  const url = `${prefix}/notifications`;
   const sms = true;
 
   // Send notification to user who made the order

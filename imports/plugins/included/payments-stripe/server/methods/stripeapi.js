@@ -123,13 +123,7 @@ StripeApi.methods.createRefund = new ValidatedMethod({
     } else {
       stripe = require("stripe")(apiKey);
     }
-    const refundPromise = stripe.refunds.create({
-      charge: refundDetails.charge,
-      amount: refundDetails.amount
-    }, function (error, result) {
-      return { error, result };
-    });
-
+    const refundPromise = stripe.refunds.create({ charge: refundDetails.charge, amount: refundDetails.amount });
     const refundResults = Promise.await(refundPromise);
     return refundResults;
   }
