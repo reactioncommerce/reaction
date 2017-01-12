@@ -5,12 +5,16 @@ import { Revisions } from "/lib/collections";
 import { Meteor } from "meteor/meteor";
 import TranslationProvider from "/imports/plugins/core/ui/client/providers/translationProvider";
 import { isRevisionControlEnabled } from "../../lib/api";
-import { i18next } from "/client/api";
+import { Reaction, i18next } from "/client/api";
 
 /*
  * PublishContainer is a container component connected to Meteor data source.
  */
 class PublishContainer extends Component {
+  handleViewContextChange = (event, value) => {
+    Reaction.Router.setQueryParams({ as: value });
+  }
+
   handlePublishClick = (revisions) => {
     if (Array.isArray(revisions)) {
       let documentIds = revisions.map((revision) => {
@@ -78,7 +82,9 @@ class PublishContainer extends Component {
           onPublishClick={this.handlePublishClick}
           onAction={this.handlePublishActions}
           onVisibilityChange={this.props.onVisibilityChange}
+          onViewContextChange={this.handleViewContextChange}
           revisions={this.props.revisions}
+          isPreview={this.props.isPreview}
         />
       </TranslationProvider>
     );
@@ -95,6 +101,8 @@ PublishContainer.propTypes = {
 };
 
 function composer(props, onData) {
+  const viewAs = Reaction.Router.getQueryParam("as");
+
   if (props.documentIds) {
     const subscription = Meteor.subscribe("Revisions", props.documentIds);
 
@@ -127,7 +135,8 @@ function composer(props, onData) {
         isEnabled: isRevisionControlEnabled(),
         documentIds: props.documentIds,
         documents: props.documents,
-        revisions
+        revisions,
+        isPreview: viewAs === "customer" ? true : false
       });
 
       return;
@@ -135,7 +144,8 @@ function composer(props, onData) {
   }
 
   onData(null, {
-    isEnabled: isRevisionControlEnabled()
+    isEnabled: isRevisionControlEnabled(),
+    isPreview: viewAs === "customer" ? true : false
   });
 }
 

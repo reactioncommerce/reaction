@@ -74,6 +74,15 @@
 
 .rui.button.flat, .btn-flat {
   border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: inherit;
+  background-color: transparent;
+}
+
+.rui.button.icon, .btn-icon {
+  border: none;
   padding: 0;
   display: flex;
   justify-content: center;
@@ -83,6 +92,7 @@
   color: inherit;
   background-color: transparent;
 }
+
 
 .rui.button.round, .btn-round {
   border: none;
@@ -122,6 +132,7 @@
 
 .rui.button.icon-only i {
   width: 100%;
+  .padding-right(0);
 }
 
 .btn-flat {
@@ -134,3 +145,32 @@
 .btn-flat:visited {
   text-decoration: none;
 }
+
+.rui.button .font-icon {
+  .padding-right(5px);
+}
+
+.rui.btn-bordered {
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: inherit;
+  background-color: transparent;
+
+}
+
+.rui.button.btn-success.bordered, .btn-success.btn-bordered{
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: @btn-success-bg;
+  background-color: transparent;
+  border: 3px solid @btn-success-bg;
+  border-radius: 0;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+// .rui.button .btn-default.btn-bordered
