@@ -1,7 +1,7 @@
 import { Meteor } from "meteor/meteor";
 import { Logger, MethodHooks } from "/server/api";
 import { Cart, Packages } from "/lib/collections";
-import Avalara from "avalara-taxrates";
+import avalaraapi from "../methods/rateLookupApi";
 
 //
 // this entire method will run after the core/taxes
@@ -75,7 +75,7 @@ MethodHooks.after("taxes/calculate", function (options) {
           const country = lookup.countries({ alpha2: shippingAddress.country })[0];
 
           // get tax rate by street address
-          Avalara.taxByAddress(apiKey,
+          avalaraapi.taxByAddress(apiKey,
             shippingAddress.address1,
             shippingAddress.city,
             shippingAddress.region,
