@@ -239,11 +239,57 @@ Meteor.methods({
     const shopId = Reaction.getShopId();
 
     if (Roles.userIsInRole(this.userId, ["admin", "owner"], shopId)) {
-
       const apiKey = getApiKey(shopId);
       if (!apiKey) {
         return false;
       }
+
+      const activeCarriers = filterActiveCarriers(ShippoApi.methods.getCarrierAccountsList.call({ apiKey }));
+      return updateShippoProviders(activeCarriers, shopId);
+    }
+
+    return false;
+  },
+
+  /**
+   * Fetches the current active Shippo Carriers from the Shippo Account and updates the
+   * Shipping Collection by keeping only these as Shippo Providers of the shop.
+   * Intended to be used by a relevant Job
+   * @return {Boolean} result - if the updating happened succesfully or not.
+   * */
+
+  "shippo/fetchTrackingStatuses"() {
+    const shopId = Reaction.getShopId();
+
+    if (Roles.userIsInRole(this.userId, ["admin", "owner"], shopId)) {
+      const apiKey = getApiKey(shopId);
+      if (!apiKey) {
+        return false;
+      }
+
+      // Find the orders of the shop that have shippo provider, tracking number, and are not yet delivered
+      const shippoOrders = Orders.find({
+        shopId,
+        "shipping.0.shipmentMethods.shippoMethod": { $exists: true },
+        "shipping.0.tracking": { $exists: true, $ne: null },
+        "shipping.0.delivered": { $ne: true }
+        // For now we don' t have logic for returned products
+      });
+
+      // For each order get from Shippo the transaction item ,check the tracking and if it has been it has been updated
+      shippoOrders.forEach(order => {
+        const transaction = ShippoApi.methods.getTransaction.call(apiKey);
+        if (transaction.tracking_status &&
+          transaction.tracking_status.status_date !== order.shipping[0].shippo.trackingStatusDate) {
+          Orders.update({
+            _id: order._id
+          }, {
+            $set: {
+              "shipping.0.shippo.trackingStatusDate": transaction.tracking_status.status_date
+            }
+          });
+        }
+      });
 
       const activeCarriers = filterActiveCarriers(ShippoApi.methods.getCarrierAccountsList.call({ apiKey }));
       return updateShippoProviders(activeCarriers, shopId);
@@ -349,14 +395,16 @@ Meteor.methods({
         }
         const rateId = order.shipping[0].shipmentMethod.shippoMethod.rateId;
         // make the actual purchase
-        const shippoLabel = ShippoApi.methods.createTransaction.call({ rateId, apiKey });
+        const transaction = ShippoApi.methods.createTransaction.call({ rateId, apiKey });
 
         return Orders.update({
           _id: orderId
         }, {
           $set: {
-            "shipping.0.shippingLabelUrl": shippoLabel.label_url,
-            "shipping.0.tracking": shippoLabel.tracking_number
+            "shipping.0.shippingLabelUrl": transaction.label_url,
+            "shipping.0.tracking": transaction.tracking_number,
+            "shipping.0.shippo.transactionId": transaction.object_id,
+            "shipping.0.shippo.trackingStatusDate": null
           }
         });
       }
