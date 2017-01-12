@@ -261,7 +261,7 @@ Meteor.methods({
   "shippo/fetchTrackingStatuses"() {
     const shopId = Reaction.getShopId();
 
-    if (Roles.userIsInRole(this.userId, ["admin", "owner"], shopId)) {
+    //if (Roles.userIsInRole(this.userId, ["admin", "owner"], shopId)) {
       const apiKey = getApiKey(shopId);
       if (!apiKey) {
         return false;
@@ -270,32 +270,42 @@ Meteor.methods({
       // Find the orders of the shop that have shippo provider, tracking number, and are not yet delivered
       const shippoOrders = Orders.find({
         shopId,
-        "shipping.0.shipmentMethods.shippoMethod": { $exists: true },
-        "shipping.0.tracking": { $exists: true, $ne: null },
+        "shipping.0.shippo.transactionId": { $exists: true },
+        "shipping.0.tracking": { $exists: true },
         "shipping.0.delivered": { $ne: true }
+        //"shipping.0.shipped": true
         // For now we don' t have logic for returned products
       });
 
       // For each order get from Shippo the transaction item ,check the tracking and if it has been it has been updated
       shippoOrders.forEach(order => {
-        const transaction = ShippoApi.methods.getTransaction.call(apiKey);
+        const transactionId = order.shipping[0].shippo.transactionId;
+        const transaction = ShippoApi.methods.getTransaction.call({ apiKey, transactionId });
         if (transaction.tracking_status &&
           transaction.tracking_status.status_date !== order.shipping[0].shippo.trackingStatusDate) {
+
+          let orderUpdateSet = {
+            "shipping.0.shippo.trackingStatusDate": transaction.tracking_status.status_date,
+            "shipping.0.shippo.trackingStatusStatus": transaction.tracking_status.status
+          };
+
+          // tracking_status.status	enum	Indicates the high level status of the shipment:
+          // 'UNKNOWN', 'DELIVERED', 'TRANSIT', 'FAILURE', 'RETURNED'.
+          if (transaction.tracking_status.status === "DELIVERED") {
+            orderUpdateSet["shipping.0.delivered"] = true;
+          }
+
           Orders.update({
             _id: order._id
           }, {
-            $set: {
-              "shipping.0.shippo.trackingStatusDate": transaction.tracking_status.status_date
-            }
+            $set: orderUpdateSet
           });
         }
-      });
+     });
 
-      const activeCarriers = filterActiveCarriers(ShippoApi.methods.getCarrierAccountsList.call({ apiKey }));
-      return updateShippoProviders(activeCarriers, shopId);
-    }
-
-    return false;
+      return true; // think something smarter ..
+   // }
+   // return false;
   },
 
   /**

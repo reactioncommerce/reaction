@@ -1,4 +1,4 @@
-import fetchTrackingStatusesJob from "./taxcodes";
+import fetchTrackingStatusesJob from "./shippo";
 
 // Start "shippo/fetchTrackingStatusesJob"
 fetchTrackingStatusesJob();

@@ -21,7 +21,7 @@ Hooks.Events.add("afterCoreInit", () => {
   }
 
   Logger.info(`Adding shippo/fetchTrackingStatuses to JobControl. Refresh ${refreshPeriod}`);
-  new Job(Jobs, "shippo/fetchTrackingStatusesJob")
+  new Job(Jobs, "shippo/fetchTrackingStatusesJob", {})
     .priority("normal")
     .retry({
       retries: 5,
