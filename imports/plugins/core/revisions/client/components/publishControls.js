@@ -1,14 +1,12 @@
 import React, { Component, PropTypes } from "react";
 import {
   Button,
-  ButtonToolbar,
+  FlatButton,
+  IconButton,
   Divider,
   DropDownMenu,
-  Menu,
   MenuItem,
-  Popover,
   Translation,
-
   Toolbar,
   ToolbarGroup,
   Switch
@@ -18,6 +16,26 @@ import SimpleDiff from "./simpleDiff";
 import { Translatable } from "/imports/plugins/core/ui/client/providers";
 
 class PublishControls extends Component {
+  static propTypes = {
+    documentIds: PropTypes.arrayOf(PropTypes.string),
+    documents: PropTypes.arrayOf(PropTypes.object),
+    isEnabled: PropTypes.bool,
+    isPreview: PropTypes.bool,
+    onAction: PropTypes.func,
+    onPublishClick: PropTypes.func,
+    onViewContextChange: PropTypes.func,
+    onVisibilityChange: PropTypes.func,
+    revisions: PropTypes.arrayOf(PropTypes.object),
+    showViewAsControls: PropTypes.bool,
+    translation: PropTypes.shape({
+      lang: PropTypes.string
+    })
+  }
+
+  static defaultProps = {
+    showViewAsControls: true
+  }
+
   constructor(props) {
     super(props);
 
@@ -56,6 +74,12 @@ class PublishControls extends Component {
   handleAction = (event, value) => {
     if (this.props.onAction) {
       this.props.onAction(event, value, this.props.documentIds);
+    }
+  }
+
+  onViewContextChange = (event, isChecked) => {
+    if (typeof this.props.onViewContextChange === "function") {
+      this.props.onViewContextChange(event, isChecked ? "customer" : "administrator");
     }
   }
 
@@ -176,43 +200,64 @@ class PublishControls extends Component {
 
   renderPublishButton() {
     return (
-      <Popover
-        buttonElement={
-          <Button
-            disabled={this.hasChanges === false}
-            label="Publish Changes"
-            onClick={this.handlePublishClick}
-            status="success"
-            tooltip={"This product has changes that need to be published before they are visible to your customers."}
-            i18nKeyLabel="app.publishChanges"
-          />
-        }
-        showDropdownButton={true}
+      <FlatButton
+        bordered={true}
+        disabled={this.hasChanges === false}
+        label="Publish"
+        onClick={this.handlePublishClick}
+        status="success"
+        tooltip={"This product has changes that need to be published before they are visible to your customers."}
+        i18nKeyLabel="productDetailEdit.publish"
+      />
+    );
+  }
+
+  renderMoreOptionsButton() {
+    return (
+      <DropDownMenu
+        buttonElement={<IconButton icon={"fa fa-ellipsis-v"}/>}
+        handleMenuItemChange={this.handleAction}
       >
-        <Menu onChange={this.handleAction}>
-          <MenuItem
-            disabled={this.hasChanges === false}
-            i18nKeyLabel="revisions.discardChanges"
-            icon="fa fa-undo"
-            label="Discard Changes"
-            value="discard"
-          />
-          <Divider />
-          <MenuItem
-            i18nKeyLabel="app.archive"
-            icon="fa fa-trash-o"
-            label="Archive"
-            value="archive"
-          />
-        </Menu>
-      </Popover>
+        <MenuItem label="Administrator" value="administrator" />
+        <MenuItem label="Customer" value="customer" />
+        <Divider />
+        <MenuItem
+          i18nKeyLabel="app.public"
+          icon="fa fa-unlock"
+          label="Public"
+          selectLabel="Public"
+          value="public"
+        />
+        <MenuItem
+          i18nKeyLabel="app.private"
+          label="Private"
+          icon="fa fa-lock"
+          selectLabel="Public"
+          value="private"
+        />
+        <Divider />
+        <MenuItem
+          disabled={this.hasChanges === false}
+          i18nKeyLabel="revisions.discardChanges"
+          icon="fa fa-undo"
+          label="Discard Changes"
+          value="discard"
+        />
+        <Divider />
+        <MenuItem
+          i18nKeyLabel="app.archive"
+          icon="fa fa-trash-o"
+          label="Archive"
+          value="archive"
+        />
+      </DropDownMenu>
     );
   }
 
   renderViewControls() {
     if (this.props.showViewAsControls) {
       return (
-        <Button
+        <FlatButton
           label="Private"
           i18nKeyLabel="app.private"
           i18nKeyToggleOnLabel="app.public"
@@ -226,27 +271,6 @@ class PublishControls extends Component {
           onToggle={this.handleVisibilityChange}
         />
       );
-      // return (
-      //   <DropDownMenu
-      //     onChange={this.handleVisibilityChange}
-      //     value={this.isVisible}
-      //   >
-      //     <MenuItem
-      //       i18nKeyLabel="app.public"
-      //       icon="fa fa-unlock"
-      //       label="Public"
-      //       selectLabel="Public"
-      //       value="public"
-      //     />
-      //     <MenuItem
-      //       i18nKeyLabel="app.private"
-      //       label="Private"
-      //       icon="fa fa-lock"
-      //       selectLabel="Public"
-      //       value="private"
-      //     />
-      //   </DropDownMenu>
-      // );
     }
 
     return null;
@@ -254,7 +278,7 @@ class PublishControls extends Component {
 
   renderUndoButton() {
     return (
-      <Button
+      <FlatButton
         disabled={this.hasChanges === false}
         tooltip="Discard Changes"
         i18nKeyTooltip="revisions.discardChanges"
@@ -267,7 +291,7 @@ class PublishControls extends Component {
 
   renderArchiveButton() {
     return (
-      <Button
+      <FlatButton
         tooltip="Archive"
         i18nKeyTooltip="app.archive"
         icon={"fa fa-archive"}
@@ -279,7 +303,7 @@ class PublishControls extends Component {
 
   renderSettingsButton() {
     return (
-      <Button
+      <FlatButton
         icon={"fa fa-cog"}
         value="settings"
         onClick={this.handleAction}
@@ -288,19 +312,11 @@ class PublishControls extends Component {
   }
 
   renderVisibilitySwitch() {
-    /*
-    <DropDownMenu
-      buttonElement={<Button label="Switch" />}
-      onChange={this.props.onViewContextChange}
-      value={this.props.viewAs}
-    >
-      <MenuItem label="Administrator" value="administrator" />
-      <MenuItem label="Customer" value="customer" />
-    </DropDownMenu>
-     */
     return (
       <Switch
         label={"Preview"}
+        checked={this.props.isPreview}
+        onChange={this.onViewContextChange}
       />
     );
   }
@@ -320,6 +336,7 @@ class PublishControls extends Component {
             {this.renderArchiveButton()}
             {this.renderSettingsButton()}
             {this.renderPublishButton()}
+            {/* this.renderMoreOptionsButton() */}
           </ToolbarGroup>
         </Toolbar>
       );
@@ -335,23 +352,5 @@ class PublishControls extends Component {
     );
   }
 }
-
-PublishControls.propTypes = {
-  documentIds: PropTypes.arrayOf(PropTypes.string),
-  documents: PropTypes.arrayOf(PropTypes.object),
-  isEnabled: PropTypes.bool,
-  onAction: PropTypes.func,
-  onPublishClick: PropTypes.func,
-  onVisibilityChange: PropTypes.func,
-  revisions: PropTypes.arrayOf(PropTypes.object),
-  showViewAsControls: PropTypes.bool,
-  translation: PropTypes.shape({
-    lang: PropTypes.string
-  })
-};
-
-PublishControls.defaultProps = {
-  showViewAsControls: true
-};
 
 export default Translatable()(PublishControls);
