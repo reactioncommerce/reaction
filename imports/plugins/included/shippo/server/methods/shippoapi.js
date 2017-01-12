@@ -1,6 +1,7 @@
 /* eslint camelcase: 0 */
 import Shippo from "shippo";
 import { Meteor } from "meteor/meteor";
+import { Logger } from "/server/api";
 import { SimpleSchema } from "meteor/aldeed:simple-schema";
 import { purchaseAddressSchema, parcelSchema } from "../lib/shippoApiSchema";
 
@@ -34,6 +35,7 @@ ShippoApi.methods.getAddressList = new ValidatedMethod({
 
       return addressList;
     } catch (error) {
+      Logger.error(error.message);
       throw new Meteor.Error(error.message);
     }
   }
@@ -64,8 +66,10 @@ ShippoApi.methods.getCarrierAccountsList = new ValidatedMethod({
     const getCarrierAccountsListFiber = Meteor.wrapAsync(shippoObj.carrieraccount.list, shippoObj.carrieraccount);
     try {
       const carrierAccountList = getCarrierAccountsListFiber();
+
       return carrierAccountList;
     } catch (error) {
+      Logger.error(error.message);
       throw new Meteor.Error(error.message);
     }
   }
@@ -110,6 +114,7 @@ ShippoApi.methods.createShipment = new ValidatedMethod({
 
       return shipment;
     } catch (error) {
+      Logger.error(error.message);
       throw new Meteor.Error(error.message);
     }
   }
@@ -142,8 +147,14 @@ ShippoApi.methods.createTransaction = new ValidatedMethod({
         async: false
       });
 
+      if (transaction.object_status !== "SUCCESS") {
+        Logger.error(transaction.messages);
+        throw new Meteor.Error(transaction.messages);
+      }
+
       return transaction;
     } catch (error) {
+      Logger.error(error.message);
       throw new Meteor.Error(error.message);
     }
   }

@@ -49,8 +49,8 @@ Template.paypalDone.helpers({
 Template.paypalDone.onCreated(function () {
   const payerId = Reaction.Router.getQueryParam("PayerID");
   const token = Reaction.Router.getQueryParam("token");
-  const prefix = Reaction.getSlug(Reaction.getShopName().toLowerCase());
-  this.checkoutUrl = `/${prefix}/cart/checkout`;
+  const prefix = Reaction.getShopPrefix();
+  this.checkoutUrl = `${prefix}/cart/checkout`;
   // wait for cart to be ready
   Tracker.autorun(function (c) {
     if (Reaction.Subscriptions.Cart.ready()) {

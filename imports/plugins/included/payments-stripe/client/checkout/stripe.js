@@ -100,7 +100,7 @@ AutoForm.addHooks("stripe-payment-form", {
           paymentMethod = {
             processor: "Stripe",
             storedCard: storedCard,
-            method: transaction.response.source.funding,
+            method: "credit",
             transactionId: transaction.response.id,
             amount: transaction.response.amount * 0.01,
             status: normalizedStatus,
