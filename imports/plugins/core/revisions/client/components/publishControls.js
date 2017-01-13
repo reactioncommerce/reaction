@@ -9,8 +9,8 @@ import {
   Translation,
   Toolbar,
   ToolbarGroup,
-  Switch
-
+  Switch,
+  Icon
 } from "/imports/plugins/core/ui/client/components";
 import SimpleDiff from "./simpleDiff";
 import { Translatable } from "/imports/plugins/core/ui/client/providers";
@@ -25,6 +25,7 @@ class PublishControls extends Component {
     isEnabled: PropTypes.bool,
     isPreview: PropTypes.bool,
     onAction: PropTypes.func,
+    onAddProduct: PropTypes.func,
     onPublishClick: PropTypes.func,
     onViewContextChange: PropTypes.func,
     onVisibilityChange: PropTypes.func,
@@ -325,11 +326,9 @@ class PublishControls extends Component {
     );
   }
 
-  /** TMP **/
   renderAdminButton() {
     return (
-      <Button
-        icon={"fa fa-arrow-right"}
+      <FlatButton
         onClick={() => {
           Reaction.showActionView({
             i18nKeyTite: "dashboard.coreTitle",
@@ -337,7 +336,9 @@ class PublishControls extends Component {
             template: "dashboardPackages"
           });
         }}
-      />
+      >
+      <Icon style={{fontSize: 24}} icon="icon icon-reaction-logo" />
+    </FlatButton>
     );
   }
   renderVerticalDivider() {
@@ -348,6 +349,17 @@ class PublishControls extends Component {
         backgroundColor: "#E6E6E6",
         margin: "0 10px"
       }}
+      />
+    );
+  }
+
+  renderAddButton() {
+    return (
+      <FlatButton
+        i18nKeyTooltip={"app.shortcut.addProduct"}
+        icon={"fa fa-plus"}
+        tooltip={"Add Product"}
+        onClick={this.props.onAddProduct}
       />
     );
   }
@@ -365,6 +377,7 @@ class PublishControls extends Component {
             {this.renderUndoButton()}
             {this.renderArchiveButton()}
             {this.renderSettingsButton()}
+            {this.renderAddButton()}
 
             {this.renderVerticalDivider()}
             {this.renderPublishButton()}
