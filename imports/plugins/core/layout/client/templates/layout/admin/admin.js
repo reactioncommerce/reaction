@@ -18,7 +18,8 @@ Template.coreAdminLayout.onDestroyed(() => {
 Template.coreAdminLayout.helpers({
   ActionViewComponent() {
     return {
-      component: ActionViewContainer(ActionView)
+      component: ActionViewContainer(ActionView),
+      data: Template.currentData()
     };
   },
   shortcutButtons() {

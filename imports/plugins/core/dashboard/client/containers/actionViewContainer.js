@@ -8,9 +8,17 @@ import { Template } from "meteor/templating";
 import { Reaction, i18next } from "/client/api";
 import { Packages } from "/lib/collections";
 
-import { TranslationProvider } from "/imports/plugins/core/ui/client/providers";
+import { TranslationProvider, AdminContextProvider } from "/imports/plugins/core/ui/client/providers";
 import { Loading } from "/imports/plugins/core/ui/client/components";
 
+
+function handleActionViewBack() {
+  Reaction.popActionView();
+}
+
+function handleActionViewClose() {
+  Reaction.hideActionView();
+}
 
 function composer(props, onData) {
   const shortcuts = Reaction.Apps({ provides: "shortcut", enabled: true });
@@ -52,12 +60,18 @@ function composer(props, onData) {
 
 
 
-  console.log(props);
+
   onData(null, {
+    isAdminArea: true,
     actionView: Reaction.getActionView(),
     data: props.data,
     buttons: items,
-    actionViewIsOpen: Reaction.isActionViewOpen()
+    isActionViewAtRootView: Reaction.isActionViewAtRootView(),
+    actionViewIsOpen: Reaction.isActionViewOpen(),
+
+    // Callbacks
+    handleActionViewBack,
+    handleActionViewClose
   });
 }
 
@@ -65,7 +79,9 @@ export default function ActionViewContainer(Comp) {
   function CompositeComponent(props) {
     return (
       <TranslationProvider>
-        <Comp {...props} />
+        <AdminContextProvider>
+          <Comp {...props} />
+        </AdminContextProvider>
       </TranslationProvider>
     );
   }
