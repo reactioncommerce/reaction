@@ -4,7 +4,6 @@ import { Packages } from "/lib/collections";
 import { Reaction } from "/server/api";
 
 function getPackageData() {
-
   const pkgData = Packages.findOne({
     name: "taxes-avalara",
     shopId: Reaction.getShopId(),
@@ -20,9 +19,7 @@ function getUrl() {
   if (!productionMode) {
     baseUrl = "https://sandbox-rest.avatax.com/api/v2/";
   }
-  else {
-    baseUrl = "nope nope nope";
-  }
+  else { baseUrl = "nope nope nope"; }
   return baseUrl;
 }
 
@@ -68,7 +65,16 @@ taxCalc.getCompanies = function (callback) {
     const result = HTTP.get(requestUrl, { auth: auth });
     return result;
   }
+};
 
+taxCalc.saveCompanyCode = function () {
+  const companyData = taxCalc.getCompanies();
+  const companyCode = companyData.data.value[0].companyCode;
+  const packageData = getPackageData();
+  Packages.update({ _id: packageData._id }, {
+    $set: { "settings.avalara.companyCode": companyCode }
+  });
+  return companyCode;
 };
 
 
