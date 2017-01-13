@@ -1,0 +1,26 @@
+[{
+  "language": "Bulgarian",
+  "i18n": "bg",
+  "ns": "taxes-avalara",
+  "translation": {
+    "reaction-taxes": {
+      "admin": {
+        "shortcut": {
+          "avalaraLabel": "Avalara",
+          "avalaraTitle": "Avalara"
+        },
+        "dashboard": {
+          "avalaraLabel": "Avalara",
+          "avalaraTitle": "Avalara",
+          "avalaraDescription": "Avalara Данъчни ставки"
+        },
+        "taxSettings": {
+          "avalaraLabel": "Avalara",
+          "avalaraSettingsLabel": "Avalara",
+          "avalaraCredentials": "Добави пълномощията да се даде възможност",
+          "avalaraGetCredentialsURL": "Сложете ги тук"
+        }
+      }
+    }
+  }
+}]

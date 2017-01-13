@@ -1,0 +1,32 @@
+[{
+  "language": "Greek",
+  "i18n": "el",
+  "ns": "reaction-braintree",
+  "translation": {
+    "reaction-payments": {
+      "admin": {
+        "shortcut": {
+          "braintreeLabel": "Braintree",
+          "braintreeTitle": "Braintree"
+        },
+        "dashboard": {
+          "braintreeLabel": "Braintree",
+          "braintreeTitle": "Braintree",
+          "braintreeDescription": "πληρωμές Braintree"
+        },
+        "paymentSettings": {
+          "braintreeLabel": "Braintree",
+          "braintreeSettingsLabel": "Braintree",
+          "braintreeCredentials": "Προσθέστε τα διαπιστευτήρια για να ενεργοποιήσετε"
+        }
+      },
+      "order": {
+        "paymentProvider": {
+          "braintree": {
+            "braintreeSettlementDelay": "Braintree δεν επιτρέπει τις επιστροφές κατά την μέχρι διακανονίζονται οι συναλλαγές. Αυτό μπορεί να διαρκέσει έως και 24 ώρες. Παρακαλώ δοκιμάστε ξανά αργότερα."
+          }
+        }
+      }
+    }
+  }
+}]

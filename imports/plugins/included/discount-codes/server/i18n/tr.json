@@ -1,0 +1,40 @@
+[{
+  "language": "Turkish",
+  "i18n": "tr",
+  "ns": "discount-codes",
+  "translation": {
+    "reaction-discounts": {
+      "checkoutPayment": {
+        "applyDiscount": "Uygulamak",
+        "discountError": "Maalesef indirim uygulayan bir hata oluştu."
+      },
+      "discounts": {
+        "enterItHere": "Bir kod var mı? Buraya girin.",
+        "discountLabel": "İndirim kodu",
+        "submitted": "İndirim kaydedilir ve uygulanır",
+        "applied": "uygulamalı",
+        "code": "kod",
+        "codeIsExpired": "Kod süresi dolmuş",
+        "codeIsInvalid": "Kod geçersiz"
+      },
+      "admin": {
+        "paymentSettings": {
+          "codesLabel": "kodlar"
+        },
+        "settings": {
+          "codesLabel": "kodlar",
+          "noCustomDiscountCodesFound": "Hiçbir indirim kodları bulunamadı."
+        },
+        "discountGrid": {
+          "code": "Kod",
+          "calculation": {
+            "method": "Hesaplama"
+          },
+          "conditions": {
+            "redemptionLimit": "sınır"
+          }
+        }
+      }
+    }
+  }
+}]

@@ -1,0 +1,26 @@
+[{
+  "language": "Polish",
+  "i18n": "pl",
+  "ns": "taxes-taxcloud",
+  "translation": {
+    "reaction-taxes": {
+      "admin": {
+        "shortcut": {
+          "taxcloudLabel": "TaxCloud",
+          "taxcloudTitle": "TaxCloud"
+        },
+        "dashboard": {
+          "taxcloudLabel": "TaxCloud",
+          "taxcloudTitle": "TaxCloud",
+          "taxcloudDescription": "podatki TaxCloud"
+        },
+        "taxSettings": {
+          "taxcloudLabel": "TaxCloud",
+          "taxcloudSettingsLabel": "TaxCloud",
+          "taxcloudCredentials": "Dodaj poświadczeń w celu umożliwienia",
+          "taxcloudGetCredentialsURL": "Pobierz je tutaj"
+        }
+      }
+    }
+  }
+}]

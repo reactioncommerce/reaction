@@ -1,0 +1,26 @@
+[{
+  "language": "Russian",
+  "i18n": "ru",
+  "ns": "taxes-avalara",
+  "translation": {
+    "reaction-taxes": {
+      "admin": {
+        "shortcut": {
+          "avalaraLabel": "Avalara",
+          "avalaraTitle": "Avalara"
+        },
+        "dashboard": {
+          "avalaraLabel": "Avalara",
+          "avalaraTitle": "Avalara",
+          "avalaraDescription": "Avalara Налоговые ставки"
+        },
+        "taxSettings": {
+          "avalaraLabel": "Avalara",
+          "avalaraSettingsLabel": "Avalara",
+          "avalaraCredentials": "Добавить учетные данные для включения",
+          "avalaraGetCredentialsURL": "Получить их здесь"
+        }
+      }
+    }
+  }
+}]

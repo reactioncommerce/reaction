@@ -1,0 +1,26 @@
+[{
+  "language": "Hungarian",
+  "i18n": "hu",
+  "ns": "taxes-taxjar",
+  "translation": {
+    "reaction-taxes": {
+      "admin": {
+        "shortcut": {
+          "taxjarLabel": "TaxJar",
+          "taxjarTitle": "TaxJar"
+        },
+        "dashboard": {
+          "taxjarLabel": "TaxJar",
+          "taxjarTitle": "TaxJar",
+          "taxjarDescription": "TaxJar adók"
+        },
+        "taxSettings": {
+          "taxjarLabel": "TaxJar",
+          "taxjarSettingsLabel": "TaxJar",
+          "taxjarCredentials": "Add hitelesítő hogy lehetővé tegye",
+          "taxjarGetCredentialsURL": "Hozzák ide"
+        }
+      }
+    }
+  }
+}]

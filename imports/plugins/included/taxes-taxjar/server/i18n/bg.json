@@ -1,0 +1,26 @@
+[{
+  "language": "Bulgarian",
+  "i18n": "bg",
+  "ns": "taxes-taxjar",
+  "translation": {
+    "reaction-taxes": {
+      "admin": {
+        "shortcut": {
+          "taxjarLabel": "TaxJar",
+          "taxjarTitle": "TaxJar"
+        },
+        "dashboard": {
+          "taxjarLabel": "TaxJar",
+          "taxjarTitle": "TaxJar",
+          "taxjarDescription": "TaxJar данъци"
+        },
+        "taxSettings": {
+          "taxjarLabel": "TaxJar",
+          "taxjarSettingsLabel": "TaxJar",
+          "taxjarCredentials": "Добави пълномощията да се даде възможност",
+          "taxjarGetCredentialsURL": "Сложете ги тук"
+        }
+      }
+    }
+  }
+}]
