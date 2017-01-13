@@ -9,7 +9,7 @@ dependencies:
     - "~/.meteor"
   override:
     - [[ -L ~/.meteor/meteor ]] && ln -s ~/.meteor/meteor /usr/local/bin/meteor
-    - hash meteor 2>/dev/null && curl https://install.meteor.com | /bin/sh
+    - hash meteor 2>/dev/null || curl https://install.meteor.com | /bin/sh
     - npm i -g reaction-cli
     - meteor npm install
 
