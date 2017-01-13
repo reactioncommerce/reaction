@@ -1,0 +1,26 @@
+[{
+  "language": "Spanish",
+  "i18n": "es",
+  "ns": "example-paymentmethod",
+  "translation": {
+    "reaction-payments": {
+      "admin": {
+        "shortcut": {
+          "examplePaymentProviderLabel": "ejemplo de Pago",
+          "examplePaymentProviderTitle": "ejemplo de Pago"
+        },
+        "dashboard": {
+          "examplePaymentProviderLabel": "ejemplo de Pago",
+          "examplePaymentProviderTitle": "ejemplo de Pago",
+          "examplePaymentProviderDescription": "Ejemplo Forma de pago"
+        },
+        "paymentSettings": {
+          "examplePaymentLabel": "ejemplo de Proveedores",
+          "examplePaymentSettingsLabel": "ejemplo de Pago",
+          "exampleCredentials": "Este es un ejemplo de confirmación de pago.",
+          "apiClientId": "API ID de cliente"
+        }
+      }
+    }
+  }
+}]

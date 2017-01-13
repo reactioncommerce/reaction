@@ -1,4 +1,5 @@
 import { FlatButton } from "/imports/plugins/core/ui/client/components";
+import { NotificationContainer } from "/imports/plugins/included/notifications/client/containers";
 import { Reaction } from "/client/api";
 import { Tags } from "/lib/collections";
 
@@ -34,6 +35,10 @@ Template.CoreNavigationBar.events({
     }, $("body").get(0));
     $("body").css("overflow", "hidden");
     $("#search-input").focus();
+  },
+  "click .notification-icon": function () {
+    $("body").css("overflow", "hidden");
+    $("#notify-dropdown").focus();
   }
 });
 
@@ -55,6 +60,11 @@ Template.CoreNavigationBar.helpers({
       component: FlatButton,
       icon: "fa fa-search",
       kind: "flat"
+    };
+  },
+  notificationButtonComponent() {
+    return {
+      component: NotificationContainer
     };
   },
   onMenuButtonClick() {

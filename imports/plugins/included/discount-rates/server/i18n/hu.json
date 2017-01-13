@@ -1,0 +1,23 @@
+[{
+  "language": "Hungarian",
+  "i18n": "hu",
+  "ns": "discount-rates",
+  "translation": {
+    "reaction-discounts": {
+      "admin": {
+        "settings": {
+          "ratesLabel": "Az árak",
+          "noCustomDiscountRatesFound": "Nem akciós áron talált.",
+          "settingsSaveSuccess": "Beállítások sikeresen elmentve.",
+          "settingsSaveFailure": "Nem sikerült menteni a beállításokat.",
+          "confirmRateDelete": "Erősítse diszkontráta törlését."
+        },
+        "discountGrid": {
+          "label": "Címke",
+          "discountMethod": "Módszer",
+          "discount": "Kedvezmény"
+        }
+      }
+    }
+  }
+}]

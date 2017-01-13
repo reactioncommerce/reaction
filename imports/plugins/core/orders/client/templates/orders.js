@@ -197,6 +197,14 @@ Template.ordersListItem.events({
 
     if (order.workflow.status === "new") {
       Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "processing", order);
+
+      // send notification to order owner
+      const userId = order.userId;
+      const type = "orderAccepted";
+      const prefix = Reaction.getShopPrefix();
+      const url = `${prefix}/notifications`;
+      const sms = true;
+      Meteor.call("notification/send", userId, type, url, sms);
     }
 
     // toggle detail views
@@ -312,7 +320,7 @@ Template.orderStatusDetail.helpers({
     if (this.shipping[0].tracking) {
       return this.shipping[0].tracking;
     }
-    return i18next.t("orderShipping.noTracking");
+    return "";
   },
 
   shipmentStatus() {

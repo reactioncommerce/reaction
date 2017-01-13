@@ -1,0 +1,32 @@
+[{
+  "language": "Bulgarian",
+  "i18n": "bg",
+  "ns": "reaction-braintree",
+  "translation": {
+    "reaction-payments": {
+      "admin": {
+        "shortcut": {
+          "braintreeLabel": "Braintree",
+          "braintreeTitle": "Braintree"
+        },
+        "dashboard": {
+          "braintreeLabel": "Braintree",
+          "braintreeTitle": "Braintree",
+          "braintreeDescription": "плащания Брейнтрий"
+        },
+        "paymentSettings": {
+          "braintreeLabel": "Braintree",
+          "braintreeSettingsLabel": "Braintree",
+          "braintreeCredentials": "Добави пълномощията да се даде възможност"
+        }
+      },
+      "order": {
+        "paymentProvider": {
+          "braintree": {
+            "braintreeSettlementDelay": "Braintree не позволява възстановявания, докато се уреждат сделки. Това може да отнеме до 24 часа. Моля, опитайте отново по-късно."
+          }
+        }
+      }
+    }
+  }
+}]

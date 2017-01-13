@@ -1,0 +1,44 @@
+[{
+  "i18n": "bg",
+  "ns": "reaction-taxes",
+  "translation": {
+    "reaction-taxes": {
+      "admin": {
+        "shortcut": {
+          "taxesLabel": "Данъци",
+          "taxesTitle": "Данъци"
+        },
+        "dashboard": {
+          "taxesLabel": "Данъци",
+          "taxesTitle": "Данъци",
+          "taxesDescription": "Данъчен конфигурация"
+        },
+        "taxGrid": {
+          "taxCode": "код",
+          "rate": "скорост",
+          "country": "Държава",
+          "region": "област",
+          "postal": "пощенски"
+        },
+        "settings": {
+          "taxSettingsLabel": "Данъчни Settings"
+        },
+        "taxSettings": {
+          "noCustomTaxRatesFound": "Няма намерени обичай данъчните ставки.",
+          "shopCustomTaxRatesSaved": "данъчна ставка по поръчка спасен.",
+          "shopCustomTaxRatesFailed": "спестяване на данъчната ставка за грешка.",
+          "shopTaxMethodsSaved": "Спасен метод данък.",
+          "shopTaxMethodsFailed": "Неуспешно спестяване данъчен метод.",
+          "customRatesDescription": "Персонализирани цени",
+          "taxCode": "Данъчен кодекс",
+          "taxShipping": "Включи Доставка",
+          "taxRate": "скорост",
+          "discountsIncluded": "Включи Купони",
+          "taxable": "облагаем",
+          "nottaxable": "не се облагат",
+          "confirmRateDelete": "Потвърдете изтриването на данъчната ставка"
+        }
+      }
+    }
+  }
+}]

@@ -1,0 +1,26 @@
+[{
+  "language": "Croatian",
+  "i18n": "hr",
+  "ns": "taxes-taxcloud",
+  "translation": {
+    "reaction-taxes": {
+      "admin": {
+        "shortcut": {
+          "taxcloudLabel": "TaxCloud",
+          "taxcloudTitle": "TaxCloud"
+        },
+        "dashboard": {
+          "taxcloudLabel": "TaxCloud",
+          "taxcloudTitle": "TaxCloud",
+          "taxcloudDescription": "TaxCloud poreza"
+        },
+        "taxSettings": {
+          "taxcloudLabel": "TaxCloud",
+          "taxcloudSettingsLabel": "TaxCloud",
+          "taxcloudCredentials": "Dodaj vjerodajnice kako bi se omogućilo",
+          "taxcloudGetCredentialsURL": "Dobiti ih ovdje"
+        }
+      }
+    }
+  }
+}]

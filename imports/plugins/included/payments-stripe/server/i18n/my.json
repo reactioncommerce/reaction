@@ -1,0 +1,24 @@
+[{
+  "language": "Burmese",
+  "i18n": "my",
+  "ns": "reaction-stripe",
+  "translation": {
+    "reaction-payments": {
+      "admin": {
+        "shortcut": {
+          "stripeLabel": "အစင်း"
+        },
+        "dashboard": {
+          "stripeLabel": "အစင်း",
+          "stripeDescription": "အစင်းငွေပေးချေမှု"
+        },
+        "paymentSettings": {
+          "stripeLabel": "အစင်း",
+          "stripeSettingsLabel": "အစင်း",
+          "stripeSettingsDescription": "တစ်ဦး Stripe ဟာ API ကိုလိုင်း ID ကိုရှိသည်မဟုတ်သလား?",
+          "stripeSettingsGetItHere": "ဒီမှာရယူပါ"
+        }
+      }
+    }
+  }
+}]

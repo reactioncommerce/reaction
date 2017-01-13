@@ -21,23 +21,15 @@
           "analyticsLabel": "Analytique",
           "analyticsTitle": "Analytiques",
           "analyticsDescription": "Intégrations de suivi et analytiques",
-          "authorizenetLabel": "Authorize.net",
-          "authorizenetTitle": "Authorize.net",
-          "authorizenetDescription": "Paiements Authorize.net",
           "shippingLabel": "Expédition",
           "shippingTitle": "Expédition",
           "shippingDescription": "Fournir les frais d'expédition",
-          "braintreeLabel": "Braintree",
-          "braintreeTitle": "Braintree",
-          "braintreeDescription": "Paiements Braintree",
           "catalogLabel": "Cataloque",
           "catalogTitle": "Catalogue",
           "catalogDescription": "Catalogue de produits",
           "coreLabel": "Paramètres",
           "coreTitle": "Tableau de bord",
           "coreDescription": "Configuration des réactions",
-          "examplePaymentProviderLabel": "Exemple de paiement",
-          "examplePaymentProviderDescription": "Exemple de méthode de paiement",
           "emailLabel": "E-mail",
           "emailTitle": "E-mail",
           "emailDescription": "Paramètres e-mail",
@@ -54,11 +46,11 @@
           "connectTitle": "Se connecter",
           "connectDescription": "Connecter la réponse en tant que service déployé",
           "ordersLabel": "Commandes",
+          "smsLabel": "SMS",
+          "smsTitle": "SMS",
+          "smsDescription": "Notifications",
           "ordersTitle": "Commandes",
           "ordersDescription": "Compléter votre commande",
-          "paypalLabel": "PayPal",
-          "paypalTitle": "PayPal",
-          "paypalDescription": "Paiements PayPal",
           "revisionsLabel": "Révisions",
           "revisionsTitle": "Révisions",
           "revisionsDescription": "Contrôle de révision",
@@ -74,8 +66,6 @@
           "themesLabel": "Thèmes",
           "themesTitle": "Thèmes",
           "themesDescription": "Thèmes et composants de l'IU",
-          "stripeLabel": "Stripe",
-          "stripeDescription": "Paiements Stripe",
           "filtrationLabel": "Filtrage",
           "filtrationDescription": "Filtrage des produits selon la réaction"
         },
@@ -89,24 +79,25 @@
           "utilities": "Services"
         },
         "settings": {
+          "saveSuccess": "Paramètres mis à jour.",
+          "saveFailed": "Impossible de mettre à jour les paramètres.",
           "accountSettingsLabel": "Paramètres du compte",
           "addShopMemberLabel": "Ajouter un magasin membre",
-          "authorizenetSettingsLabel": "Paramètres Authorize.net",
           "permissionsSettingsLabel": "Autorisations",
-          "braintreeSettingsLabel": "Paramètres Braintree",
           "localizationAndI18NLabel": "Localisation et i18n",
           "searchSettingsLabel": "Paramètres de recherche",
           "shopSettingsLabel": "Paramètres du magasin",
+          "smsSettingsLabel": "Paramètres SMS",
           "socialSettingsLabel": "Paramètres sociaux",
           "shippingSettingsLabel": "Paramètres d'expédition",
-          "stripeSettingsLabel": "Paramètres Stripe",
           "inventorySettingsLabel": "Paramètres de l'inventaire",
           "analyticsSettingsLabel": "Paramètres d'analyse",
-          "paypalSettingsLabel": "Paramètres PayPal",
           "reactionConnectLabel": "Connecter la réaction",
-          "examplePaymentSettingsLabel": "Exemple de modalités de paiement",
           "productSettingsLabel": "Paramètres du produit",
-          "productDetailsLabel": "Détails produit"
+          "productDetailsLabel": "Détails produit",
+          "productRevisionsLabel": "Révisions du produit",
+          "emailSettingsLabel": "Paramètres de messagerie",
+          "catalogSettingsLabel": "Paramètres du catalogue"
         },
         "userAccountDropdown": {
           "profileLabel": "Profil"
@@ -197,6 +188,41 @@
         "shopPaymentMethodsSaved": "Modalités de paiement enregistrées.",
         "shopPaymentMethodsFailed": "Echec de la mise à jour des paramètres de mode de paiement du magasin."
       },
+      "notifications": {
+        "body": {
+          "noNotifications": "Il n’y pas pas de notifications",
+          "markAllAsRead": "Il n'y a pas de notifications",
+          "recent": "Récent",
+          "viewAll": "Voir tous les"
+        },
+        "messages": {
+          "orderCancelled": "Votre commande a été annulée.",
+          "newOrder": "Votre commande est en cours de traitement.",
+          "forAdmin": "Vous avez un nouvel ordre.",
+          "orderDelivered": "Votre commande a été livrée.",
+          "orderAccepted": "Votre commande a été acceptée.",
+          "orderShipped": "Votre commande a été expédiée."
+        }
+      },
+      "sms": {
+        "headers": {
+          "settings": "Fournisseur SMS"
+        },
+        "settings": {
+          "provider": "Fournisseur",
+          "selectProvider": "Sélectionnez un fournisseur SMS ...",
+          "smsPhone": "Numéro de téléphone SMS",
+          "apiKey": "clé API",
+          "apiToken": "API Token/Secret"
+        },
+        "alerts": {
+          "noApiKey": "Veuillez ajouter une clé d'API",
+          "noApiToken": "Veuillez ajouter une API TOKEN / Secret",
+          "noSmsProvider": "Veuillez choisir un fournisseur SMS",
+          "noSmsPhone": "Veuillez ajouter le numéro de téléphone qui vous a été attribué par votre fournisseur de SMS",
+          "saveSuccess": "Paramètres SMS enregistrés"
+        }
+      },
       "mail": {
         "headers": {
           "email": "E-mail",
@@ -241,7 +267,9 @@
           "connectionFailed": "La connexion a échoué !",
           "saveAnyway": "Voulez-vous enregistrer les paramètres de toute façon ?",
           "saveSuccess": "Paramètres de messagerie enregistrés.",
-          "saveFailed": "Impossible de sauvegarder les paramètres de messagerie. {{error}}"
+          "saveFailed": "Impossible de sauvegarder les paramètres de messagerie. {{error}}",
+          "cantSendEmail": "Erreur de serveur: Vous ne pouvez pas envoyer une notification par e-mail.",
+          "emailSent": "notification par courrier électronique envoyé."
         }
       },
       "header": {
@@ -352,6 +380,7 @@
         "productIsNotVisible": "Le produit n'est pas visible"
       },
       "productVariant": {
+        "addVariantOptions": "Ajout d'options pour permettre 'Ajouter au panier' butto",
         "inventoryQuantity": "Quantité",
         "title": "Balise",
         "price": "Prix",
@@ -381,6 +410,10 @@
         "disableConfirm": "Êtes-vous certain de vouloir désactiver {{app}} ?",
         "pkgEnabled": "{{app}} est désormais activé",
         "pkgDisabled": "{{app}} est désormais désactivé"
+      },
+      "gridSettingsPanel": {
+        "title": "Paramètres de la grille",
+        "selected": "Choisi"
       },
       "cartDrawer": {
         "empty": "Nous sommes désolés. Votre panier est vide.",
@@ -435,11 +468,6 @@
           "completed": "Complété",
           "canceled": "Annulé",
           "refunded": "Remboursé"
-        },
-        "paymentProvider": {
-          "braintree": {
-            "braintreeSettlementDelay": "Braintree n'autorise aucun remboursement tant que la transaction n'a pas été réglée. Cela peut prendre jusqu'à 24 heures. Veuillez essayer de nouveau ultérieurement."
-          }
         }
       },
       "orderShipping": {
@@ -560,6 +588,7 @@
       },
       "revisions": {
         "isDisabled": "La gestion de version est désactivée. Toute modification sera immédiatement publiée.",
+        "isEnabled": "le contrôle de révision est activée pour les produits. Toute modification sera doivent être publiés avant d'être visible pour les clients.",
         "unpublishedChanges": "Modifications non publiées",
         "publishChanges": "Publier les modifications",
         "showChanges": "Afficher les modifications",
@@ -593,14 +622,6 @@
         "shippingOptions": "Options d'expédition",
         "reviewPayment": "Réviser",
         "complete": "Complète"
-      },
-      "checkoutPayment": {
-        "addPaymentToCompleteOrder": "Ajouter un mode de paiement pour compléter la commande",
-        "processingError": "Votre paiement a rencontré un problème.",
-        "completeYourOrder": "Compléter votre commande",
-        "noPaymentMethods": "Aucun mode de paiement configuré.",
-        "configureNow": "Configurer maintenant.",
-        "failedToPlaceOrder": "La commande n'a pu être passée."
       },
       "checkoutReview": {
         "review": "Réviser"

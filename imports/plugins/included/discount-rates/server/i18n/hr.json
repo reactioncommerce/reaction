@@ -1,0 +1,23 @@
+[{
+  "language": "Croatian",
+  "i18n": "hr",
+  "ns": "discount-rates",
+  "translation": {
+    "reaction-discounts": {
+      "admin": {
+        "settings": {
+          "ratesLabel": "Cijene",
+          "noCustomDiscountRatesFound": "Nisu pronađene diskontne stope.",
+          "settingsSaveSuccess": "Postavke uspješno spremljene.",
+          "settingsSaveFailure": "Neuspjelo spremanje postavki.",
+          "confirmRateDelete": "Potvrda diskontna stopa brisanje."
+        },
+        "discountGrid": {
+          "label": "Označiti",
+          "discountMethod": "način",
+          "discount": "Popust"
+        }
+      }
+    }
+  }
+}]

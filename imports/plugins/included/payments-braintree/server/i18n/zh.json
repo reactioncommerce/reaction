@@ -1,0 +1,32 @@
+[{
+  "language": "Chinese",
+  "i18n": "zh",
+  "ns": "reaction-braintree",
+  "translation": {
+    "reaction-payments": {
+      "admin": {
+        "shortcut": {
+          "braintreeLabel": "布伦特里",
+          "braintreeTitle": "布伦特里"
+        },
+        "dashboard": {
+          "braintreeLabel": "布伦特里",
+          "braintreeTitle": "布伦特里",
+          "braintreeDescription": "布伦特里支付"
+        },
+        "paymentSettings": {
+          "braintreeLabel": "布伦特里",
+          "braintreeSettingsLabel": "布伦特里",
+          "braintreeCredentials": "添加凭据启用"
+        }
+      },
+      "order": {
+        "paymentProvider": {
+          "braintree": {
+            "braintreeSettlementDelay": "布伦特里不允许退款，直到交易结算。这可能需要长达24小时。请稍后再试。"
+          }
+        }
+      }
+    }
+  }
+}]

@@ -1,0 +1,26 @@
+[{
+  "language": "Croatian",
+  "i18n": "hr",
+  "ns": "taxes-avalara",
+  "translation": {
+    "reaction-taxes": {
+      "admin": {
+        "shortcut": {
+          "avalaraLabel": "Avalara",
+          "avalaraTitle": "Avalara"
+        },
+        "dashboard": {
+          "avalaraLabel": "Avalara",
+          "avalaraTitle": "Avalara",
+          "avalaraDescription": "Avalara porezne stope"
+        },
+        "taxSettings": {
+          "avalaraLabel": "Avalara",
+          "avalaraSettingsLabel": "Avalara",
+          "avalaraCredentials": "Dodaj vjerodajnice kako bi se omogućilo",
+          "avalaraGetCredentialsURL": "Dobiti ih ovdje"
+        }
+      }
+    }
+  }
+}]

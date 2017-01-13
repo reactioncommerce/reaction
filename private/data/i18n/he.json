@@ -21,23 +21,15 @@
           "analyticsLabel": "ניתוח",
           "analyticsTitle": "ניתוח",
           "analyticsDescription": "ניתוח ואינטגרציות מעקב",
-          "authorizenetLabel": "Authorize.net",
-          "authorizenetTitle": "Authorize.net",
-          "authorizenetDescription": "תשלומי Authorize.net",
           "shippingLabel": "משלוח",
           "shippingTitle": "משלוח",
           "shippingDescription": "תן תעריפי משלוח",
-          "braintreeLabel": "Braintree",
-          "braintreeTitle": "Braintree",
-          "braintreeDescription": "תשלומי Braintree",
           "catalogLabel": "קטלוג",
           "catalogTitle": "קטלוג",
           "catalogDescription": "קטלוג מוצרים",
           "coreLabel": "הגדרות",
           "coreTitle": "לוח המחוונים",
           "coreDescription": "תצורת Reaction",
-          "examplePaymentProviderLabel": "תשלום לדוגמה",
-          "examplePaymentProviderDescription": "שיטת תשלום לדוגמה",
           "emailLabel": "דוא\"ל",
           "emailTitle": "דוא\"ל",
           "emailDescription": "הגדרות דוא\"ל",
@@ -54,11 +46,11 @@
           "connectTitle": "התחבר לרשתות",
           "connectDescription": "חבר את Reaction כשירות נפרס (deployed service)",
           "ordersLabel": "הזמנות",
+          "smsLabel": "SMS",
+          "smsTitle": "SMS",
+          "smsDescription": "התראות",
           "ordersTitle": "הזמנות",
           "ordersDescription": "בצע את ההזמנות שלך",
-          "paypalLabel": "PayPal",
-          "paypalTitle": "PayPal",
-          "paypalDescription": "תשלומי PayPal ",
           "revisionsLabel": "גרסאות",
           "revisionsTitle": "גרסאות",
           "revisionsDescription": "ניהול גרסאות",
@@ -74,8 +66,6 @@
           "themesLabel": "נושאים",
           "themesTitle": "נושאים",
           "themesDescription": "נושאים ורכיבי ממשק משתמש",
-          "stripeLabel": "Stripe",
-          "stripeDescription": "תשלומי Stripe",
           "filtrationLabel": "סינון",
           "filtrationDescription": "סינון מוצרים ל- Reaction"
         },
@@ -91,20 +81,16 @@
         "settings": {
           "accountSettingsLabel": "הגדרות חשבון",
           "addShopMemberLabel": "הוסף חבר חנות",
-          "authorizenetSettingsLabel": "הגדרות Authorize.net",
           "permissionsSettingsLabel": "הרשאות",
-          "braintreeSettingsLabel": "הגדרות Braintree",
           "localizationAndI18NLabel": "מיקום ו- i18n",
           "searchSettingsLabel": "הגדרות חיפוש",
           "shopSettingsLabel": "הגדרות חנות",
+          "smsSettingsLabel": "הגדרות SMS",
           "socialSettingsLabel": "הגדרות חברתיות",
           "shippingSettingsLabel": "הגדרות משלוחים",
-          "stripeSettingsLabel": "הגדרות Stripe",
           "inventorySettingsLabel": "הגדרות מלאי",
           "analyticsSettingsLabel": "הגדרות ניתוח",
-          "paypalSettingsLabel": "הגדרות PayPal",
           "reactionConnectLabel": "חיבור Reaction",
-          "examplePaymentSettingsLabel": "הגדרות תשלום לדוגמה",
           "productSettingsLabel": "הגדרות מוצר",
           "productDetailsLabel": "פרטי המוצר"
         },
@@ -196,6 +182,41 @@
         "shopOptionsSettingsFailed": "עדכון אפשרויות חנות נכשל.",
         "shopPaymentMethodsSaved": "הגדרות שיטות התשלום של החנות נשמרו.",
         "shopPaymentMethodsFailed": "עדכון הגדרות שיטות התשלום לחנות נכשל."
+      },
+      "notifications": {
+        "body": {
+          "noNotifications": "עדיין אין הודעות",
+          "markAllAsRead": "סמן הכל כנקרא",
+          "recent": "לאחרונה",
+          "viewAll": "להציג את כל"
+        },
+        "messages": {
+          "orderCancelled": "ההזמנה שלך בוטלה.",
+          "newOrder": "שההזמנה מעובדת.",
+          "forAdmin": "יש לך הזמנה חדשה.",
+          "orderDelivered": "ההזמנה נשלחה.",
+          "orderAccepted": "הזמנתך התקבלה.",
+          "orderShipped": "ההזמנה נשלחה."
+        }
+      },
+      "sms": {
+        "headers": {
+          "settings": "ספק SMS"
+        },
+        "settings": {
+          "provider": "ספק",
+          "selectProvider": "בחירת ספק SMS ...",
+          "smsPhone": "מספר טלפון SMS",
+          "apiKey": "מפתח API",
+          "apiToken": "אסימון API / סוד"
+        },
+        "alerts": {
+          "noApiKey": "אנא להוסיף מפתח API",
+          "noApiToken": "אנא להוסיף API אסימון / סוד",
+          "noSmsProvider": "בחר ספק SMS",
+          "noSmsPhone": "נא להוסיף את מספר הטלפון שנתן לך ספק SMS שלך",
+          "saveSuccess": "הגדרות SMS הצילו"
+        }
       },
       "mail": {
         "headers": {
@@ -435,11 +456,6 @@
           "completed": "הושלם",
           "canceled": "בוטל",
           "refunded": "החזר ניתן"
-        },
-        "paymentProvider": {
-          "braintree": {
-            "braintreeSettlementDelay": "Braintree אינו מאפשר החזרים עד הסדרת העסקאות. התהליך עשוי להימשך עד 24 שעות.  אנא נסה שוב מאוחר יותר."
-          }
         }
       },
       "orderShipping": {
@@ -593,14 +609,6 @@
         "shippingOptions": "אפשרויות משלוח",
         "reviewPayment": "סקירה ותשלום",
         "complete": "הושלם"
-      },
-      "checkoutPayment": {
-        "addPaymentToCompleteOrder": "הוסף תשלום על מנת להשלים את ההזמנה",
-        "processingError": "התגלתה בעיה עם התשלום שלך.",
-        "completeYourOrder": "השלם את הזמנתך",
-        "noPaymentMethods": "לא הוגדרו שיטות תשלום.",
-        "configureNow": "קבע תצורה עכשיו.",
-        "failedToPlaceOrder": "שליחת ההזמנה נכשלה."
       },
       "checkoutReview": {
         "review": "סקירה"

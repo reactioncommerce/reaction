@@ -1,0 +1,32 @@
+[{
+  "language": "Hungarian",
+  "i18n": "hu",
+  "ns": "reaction-braintree",
+  "translation": {
+    "reaction-payments": {
+      "admin": {
+        "shortcut": {
+          "braintreeLabel": "Braintree",
+          "braintreeTitle": "Braintree"
+        },
+        "dashboard": {
+          "braintreeLabel": "Braintree",
+          "braintreeTitle": "Braintree",
+          "braintreeDescription": "Braintree kifizetések"
+        },
+        "paymentSettings": {
+          "braintreeLabel": "Braintree",
+          "braintreeSettingsLabel": "Braintree",
+          "braintreeCredentials": "Add hitelesítő hogy lehetővé tegye"
+        }
+      },
+      "order": {
+        "paymentProvider": {
+          "braintree": {
+            "braintreeSettlementDelay": "Braintree nem teszi lehetővé visszatérítést mindaddig, amíg ügyleteket. Ez eltarthat akár 24 órán keresztül. Kérlek, próbáld újra később."
+          }
+        }
+      }
+    }
+  }
+}]

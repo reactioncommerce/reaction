@@ -7,32 +7,413 @@
       "languages": {
         "select": "ဘာသာစကား ရွေးချယ်ရန်"
       },
+      "admin": {
+        "shortcut": {
+          "dashboardLabel": "dashboard ကို",
+          "ordersLabel": "အမိန့်",
+          "addProductLabel": "ကုန်ပစ္စည်း Add",
+          "accountsLabel": "ငွေစာရင်း"
+        },
+        "dashboard": {
+          "accountsLabel": "ငွေစာရင်း",
+          "accountsTitle": "ငွေစာရင်း",
+          "accountsDescription": "အဖွဲ့ဝင်တဦးခွင့်ပြုချက်ကိုစီမံခန့်ခွဲ",
+          "analyticsLabel": "analytics",
+          "analyticsTitle": "analytics",
+          "analyticsDescription": "Analytics နဲ့ခြေရာခံနိုင်တဲ့ပေါင်းစည်းမှု",
+          "shippingLabel": "သင်္ဘောဖြင့်ကုန်ပစ္စည်းပို့ခြင်း",
+          "shippingTitle": "သင်္ဘောဖြင့်ကုန်ပစ္စည်းပို့ခြင်း",
+          "shippingDescription": "ရေကြောင်းနှုန်းထားများပေး",
+          "catalogLabel": "စာရင်း",
+          "catalogTitle": "စာရင်း",
+          "catalogDescription": "ကုန်ပစ္စည်း Catalog",
+          "coreLabel": "Settings များ",
+          "coreTitle": "dashboard ကို",
+          "coreDescription": "တုံ့ပြန်မှု configuration ကို",
+          "emailLabel": "အီးမေးလ်က",
+          "emailTitle": "အီးမေးလ်က",
+          "emailDescription": "Email settings",
+          "i18NLabel": "i18n",
+          "i18NTitle": "i18n",
+          "i18NDescription": "နိုငျငံတကာ utilities",
+          "inventoryLabel": "စာရင်း",
+          "inventoryTitle": "စာရင်း",
+          "inventoryDescription": "inventory utilities",
+          "layoutLabel": "စီမန်ကိန်း",
+          "layoutTitle": "စီမန်ကိန်း",
+          "layoutDescription": "layout utilities",
+          "connectLabel": "ဆက်",
+          "connectTitle": "ဆက်",
+          "connectDescription": "တစ်တပ်ဖြန့်ဝန်ဆောင်မှုအဖြစ်တုံ့ပြန်မှုချိတ်ဆက်ပါ",
+          "ordersLabel": "အမိန့်",
+          "smsLabel": "စာတို",
+          "smsTitle": "စာတို",
+          "smsDescription": "အသိပေးချက်များ",
+          "ordersTitle": "အမိန့်",
+          "ordersDescription": "သင့်ရဲ့အမိန့်ဖြည့်ဆည်း",
+          "revisionsLabel": "တည်းဖြတ်မူများကို",
+          "revisionsTitle": "တည်းဖြတ်မူများကို",
+          "revisionsDescription": "တည်းဖြတ်မူထိန်းချုပ်မှု",
+          "routingLabel": "routing",
+          "routingTitle": "routing",
+          "routingDescription": "routing utilities",
+          "searchLabel": "ရှာဖှေ",
+          "searchTitle": "ရှာဖှေ",
+          "searchDescription": "ကုန်ပစ္စည်းရှာရန်",
+          "socialLabel": "လူမှုရေး",
+          "socialTitle": "လူမှုရေး",
+          "socialDescription": "လူမှု Channel ကို configuration ကို",
+          "themesLabel": "themes",
+          "themesTitle": "themes",
+          "themesDescription": "themes နှင့် UI ကို Components",
+          "filtrationLabel": "ရေစစ်ထုတ်",
+          "filtrationDescription": "တုံ့ပြန်မှုအဘို့အကုန်ပစ္စည်းများရေစစ်ထုတ်"
+        },
+        "groups": {
+          "appearance": "ပုံပန်းသဏ္ဍာန်",
+          "connect": "ဆက်",
+          "core": "core",
+          "dashboard": "dashboard ကို",
+          "misc": "Misc",
+          "paymentMethod": "ငွေပေးချေမှုရမည့် Providers",
+          "utilities": "အသုံးအဆောင်များ"
+        },
+        "settings": {
+          "saveSuccess": "ချိန်ညှိချက်များကို update လုပ်။",
+          "saveFailed": "setting များကိုပြုပြင်မွမ်းမံရန်မအောင်မြင်ခဲ့ပါ။",
+          "accountSettingsLabel": "အကောင့်ဆက်တင်များ",
+          "addShopMemberLabel": "ဆိုင်အဖွဲ့ဝင် Add",
+          "permissionsSettingsLabel": "ခွင့်ပြုချက်",
+          "localizationAndI18NLabel": "ပြည်တွင်းနှင့် i18n",
+          "searchSettingsLabel": "ရှာရန်ချိန်ညှိ",
+          "shopSettingsLabel": "ဆိုင်က Settings",
+          "smsSettingsLabel": "SMS ကို setting များကို",
+          "socialSettingsLabel": "လူမှုရေးက Settings",
+          "shippingSettingsLabel": "သဘောင်္တင်ချိန်ညှိ",
+          "inventorySettingsLabel": "စာရင်းက Settings",
+          "analyticsSettingsLabel": "analytics ချိန်ညှိ",
+          "reactionConnectLabel": "တုံ့ပြန်မှု Connect ကို",
+          "productSettingsLabel": "ကုန်ပစ္စည်းက Settings",
+          "productDetailsLabel": "ကုန်ပစ္စည်းအသေးစိတ်",
+          "productRevisionsLabel": "ကုန်ပစ္စည်းပြင်ဆင်ချက်များကို",
+          "emailSettingsLabel": "အီးမေးလ်က Settings",
+          "catalogSettingsLabel": "catalog က Settings"
+        },
+        "userAccountDropdown": {
+          "profileLabel": "ပရိုဖိုင်းကို"
+        }
+      },
+      "accounts": {
+        "addMember": "အဖွဲ့ဝင်ပေါင်းထည့်ပါ",
+        "shopMembers": "ဆိုင်အဖွဲ့ဝင်များ",
+        "guests": "ဧည့်သည်"
+      },
       "app": {
+        "add": "ပေါင်း",
+        "editMode": "Edit ကို mode ကို",
+        "createContent": "အကြောင်းအရာ Create",
+        "auto": "အော်တို",
+        "save": "ကြော်ငြာကို Save လုပ်ရန်",
+        "saveAndContinue": "Save နှင့်ဆက်လက်",
+        "saveChanges": "Save Changes",
+        "selectOne": "(တစ်ဦးကို Select လုပ်ပါ)",
         "cancel": "ပယ်ဖျက်ပါ",
+        "success": "အောင်မြင်ခြင်း",
+        "error": "အမှား",
         "submit": "ဆက်လုပ်ပါ",
-        "delete": "ပြင်ဆင်မှုများကို ဖျက်ပါ"
+        "delete": "ပြင်ဆင်မှုများကို ဖျက်ပါ",
+        "deleted": "Deleted",
+        "archive": "မော်ကွန်းတိုက်",
+        "archived": "မော်ကွန်းတင်",
+        "create": "ဖန်တီး",
+        "close": "ပိတ်",
+        "settings": "Settings များ",
+        "loading": "loading",
+        "toggle": "toggle",
+        "toggleEditMode": "toggle Edit ကို Mode ကို",
+        "warning": "သည်းခံပါ!",
+        "unauthorizedMessage": "သင်သည်ဤအကြောင်းအရာကိုကြည့်ရှုရန်ခွင့်ပြုချက်မရှိကြပါဘူး။",
+        "updateSettings": "Update ကိုချိန်ညှိ",
+        "monthOptions": "လကိုရွေးချယ်ပါ",
+        "yearOptions": "တစ်နှစ် Choose",
+        "shopSettings": "ဆိုင်က Settings",
+        "dashboard": "dashboard ကို",
+        "print": "ပုံနှိပ်",
+        "notFound": "ဤစာမျက်နှာကိုမတွေ့ရှိခဲ့သည်။",
+        "pageNotFound": "ဤစာမျက်နှာကိုမတွေ့ရှိခဲ့သည်။",
+        "notFoundTitle": "သည်းခံပါ!",
+        "notFoundError": "စာမကျြနှာမတှေ့။",
+        "productNotFound": "ဒီထုတ်ကုန်မတွေ့ရှိခဲ့သည်။",
+        "loadMoreProducts": "ပိုပြီးထုတ်ကုန် load",
+        "noProductsFound": "အဘယ်သူမျှမကုန်ပစ္စည်းများတွေ့ရှိခဲ့ပါတယ်။"
+      },
+      "searchSettings": {
+        "productSearchSettings": {
+          "panelTitle": "ကုန်ပစ္စည်းရှာရန်",
+          "includeTitle": "ခေါင်းစဉ်တို့ပါဝင်သည်",
+          "includeDescription": "ဖော်ပြချက် Include",
+          "includePageTitle": "စာမျက်နှာခေါင်းစဉ်ကိုပါဝင်စေ",
+          "includeDetails": "အသေးစိတျမြားပါဝငျ",
+          "includeVendor": "ရောင်းချသူ Include"
+        },
+        "orderSearchSettings": {
+          "panelTitle": "အမိန့်ရှာရန်ချိန်ညှိ"
+        },
+        "accountSearchSettings": {
+          "panelTitle": "အကောင့်ရှာရန်ချိန်ညှိ"
+        },
+        "noSettings": "အဘယ်သူမျှမ settings ကိုလက်ရှိရရှိနိုင်",
+        "settingsSaved": "ရှာဖွေမှုဆက်တင်များသည်ကယ်တင်ခြင်းသို့ရောက်",
+        "settingsfailed": "ရှာဖွေမှုဆက်တင်များရှုံးနိမ့်ခဲ့ရကို update"
+      },
+      "shopSettings": {
+        "general": "ယေဘုယျ",
+        "address": "လိပ်စာ",
+        "import": "တင်သွင်း",
+        "localization": "localization",
+        "options": "Options ကို",
+        "availableOptions": "ရရှိနိုင် Options ကို",
+        "paymentMethods": "ငွေပေးချေမှုရမည့်နည်းလမ်းများ",
+        "externalServices": "ပြင်ပန်ဆောင်မှုများ",
+        "shopGeneralSettingsSaved": "ကယ်တင်ခြင်းသို့ရောက်သောယေဘုယျ setting များကိုစျေးဝယ်။",
+        "shopGeneralSettingsFailed": "update ကိုပျက်ကွက်ယေဘုယျ setting များကိုစျေးဝယ်။",
+        "shopAddressSettingsSaved": "ဆိုင်လိပ်စာ settings ကိုကယ်လွှတ်တော်မူ၏။",
+        "shopAddressSettingsFailed": "ဆိုင်လိပ်စာ setting များကို update ကိုပျက်ကွက်ခဲ့သည်။",
+        "shopExternalServicesSettingsSaved": "setting များကိုကယ်တင်ခြင်းသို့ရောက်ရ၏ပြင်ပဝန်ဆောင်မှုများကိုစျေးဝယ်။",
+        "shopExternalServicesSettingsFailed": "update ကိုပျက်ကွက်ပြင်ပဝန်ဆောင်မှုများကို setting များကိုစျေးဝယ်။",
+        "shopLocalizationSettingsSaved": "ဆိုင်ဒေသခံ settings ကိုကယ်လွှတ်တော်မူ၏။",
+        "shopLocalizationSettingsFailed": "ဆိုင်ဒေသခံ setting များကို update ကိုပျက်ကွက်ခဲ့သည်။",
+        "shopOptionsSettingsSaved": "ဆိုင်ရွေးချယ်စရာကယ်တင်ခြင်းသို့ရောက်ရ၏။",
+        "shopOptionsSettingsFailed": "ဆိုင်ရွေးချယ်စရာ update ကိုပျက်ကွက်ခဲ့သည်။",
+        "shopPaymentMethodsSaved": "ဆိုင်ငွေပေးချေမှုရမည့်နည်းလမ်းများ settings ကိုကယ်လွှတ်တော်မူ၏။",
+        "shopPaymentMethodsFailed": "ဆိုင်ငွေပေးချေမှုရမည့်နည်းလမ်းများ setting များကို update ကိုပျက်ကွက်ခဲ့သည်။"
+      },
+      "notifications": {
+        "body": {
+          "noNotifications": "မရှိသေးပါအကြောင်းကြားစာများ",
+          "markAllAsRead": "အားလုံးဖတ်ပြီးအဖြစ်မာကု",
+          "recent": "မကြာမီက",
+          "viewAll": "အားလုံးကြည့်မည်"
+        },
+        "messages": {
+          "orderCancelled": "သင့်ရဲ့အမိန့်ကိုဖျက်သိမ်းခဲ့သည်။",
+          "newOrder": "သင့်ရဲ့အမိန့်လုပ်ငန်းများ၌လျက်ရှိသည်။",
+          "forAdmin": "သငျသညျသစ်တစ်ခုအလို့ငှာရှိသည်။",
+          "orderDelivered": "သင့်ရဲ့အမိန့်ကိုအပ်ခဲ့တာဖြစ်ပါတယ်။",
+          "orderAccepted": "သင့်ရဲ့အမိန့်ကိုလက်ခံခဲ့တာဖြစ်ပါတယ်။",
+          "orderShipped": "သင့်ရဲ့အမိန့်တင်ပို့ခဲ့တာဖြစ်ပါတယ်။"
+        }
+      },
+      "sms": {
+        "headers": {
+          "settings": "SMS ကိုပေးသူ"
+        },
+        "settings": {
+          "provider": "provider",
+          "selectProvider": "SMS တခုပံ့ပိုးပေးသူကို Select လုပ်ပါ ...",
+          "smsPhone": "SMS ကိုဖုန်းနံပါတ်",
+          "apiKey": "API ကို Key ကို",
+          "apiToken": "API ကိုတိုကင် / လျှို့ဝှက်ချက်"
+        },
+        "alerts": {
+          "noApiKey": "တစ်ဦး API ကို Key ကိုထည့်ပါကျေးဇူးပြုပြီး",
+          "noApiToken": "တစ်ဦး API ကို TOKEN / Secret ကို add ပေးပါ",
+          "noSmsProvider": "SMS တခုပံ့ပိုးပေးရှေးခယျြ ကျေးဇူးပြု.",
+          "noSmsPhone": "သင့်ရဲ့ SMS ကိုပံ့ပိုးပေးသူအားဖြင့်သင်တို့ကိုအားပေးပြီးမှဖုန်းနံပါတ်ထည့်ပါကျေးဇူးပြုပြီး",
+          "saveSuccess": "SMS ကိုချိန်ညှိသည်ကယ်တင်ခြင်းသို့ရောက်"
+        }
+      },
+      "mail": {
+        "headers": {
+          "email": "အီးမေးလ်က",
+          "emailSettings": "အီးမေးလ်က Settings",
+          "config": "configuration",
+          "settings": "SMTP ပေးသူ",
+          "status": "status",
+          "actions": "လုပ်ဆောင်ချက်များ"
+        },
+        "settings": {
+          "service": "ဝန်ဆောင်မှု",
+          "user": "အသုံးပြုသူကို",
+          "password": "Password ကို",
+          "host": "host က",
+          "port": "ဆိပ်ကမ်း",
+          "passwordShow": "ပြသ",
+          "passwordHide": "ဝှက်ထား",
+          "fieldNotSet": "မသတ်မှတ်",
+          "selectService": "တစ်ဝန်ဆောင်မှုကို Select လုပ်ပါ ...",
+          "custom": "ထုံးစံဓလေ့"
+        },
+        "logs": {
+          "headers": {
+            "emailLogs": "အီးမေးလ်မှတ်တမ်းများ",
+            "email": "အီးမေးလ်က",
+            "subject": "ဘာသာရပ်",
+            "sent": "Sent",
+            "status": "status"
+          },
+          "noEmails": "အဘယ်သူမျှမအီးမေးလ်များသေးကိုစလှေတျ",
+          "limit": "အရေအတွက်",
+          "retry": "ပြန်ကြိုးစားမည်",
+          "noneAvailble": "ရရှိနိုင်ပါအဘယ်သူမျှမ"
+        },
+        "alerts": {
+          "error": "အမှား: {{error}}",
+          "resendSuccess": "{{email}} အီးမေးလ်ပြန်ပို့ပါဖို့ကြိုးစားနေတဲ့",
+          "missingService": "မေးလ် provider ကဝန်ဆောင်မှုကိုရှေးခယျြ ကျေးဇူးပြု.",
+          "userPassRequired": "SMTP အသုံးပြုသူနှင့် password {{service}} ဘို့လိုအပ်သည်",
+          "allFieldsRequired": "အားလုံးလယ်ကွင်းစိတ်ကြိုက်ဝန်ဆောင်မှုအတွက်လိုအပ်ကြသည်!",
+          "portNaN": "အဆိုပါဆိပ်ကမ်းဟာအရေအတွက်ရှိရမည်!",
+          "connectionFailed": "connection ပျက်ကွက်!",
+          "saveAnyway": "သငျသညျဘာပဲဖြစ်ဖြစ် settings ကိုကယ်ဖို့ချင်ပါသလား?",
+          "saveSuccess": "mail settings ကယ်တင်ခြင်းသို့ရောက်ရ၏။",
+          "saveFailed": "mail settings ကိုကယ်တင်ရန်မအောင်မြင်ခဲ့ပါ။ {{error}}",
+          "cantSendEmail": "Server ကိုအမှား: အီးမေးလ်အကြောင်းကြားစာမပို့နိုင်သ။",
+          "emailSent": "အီးမေးလ်အကြောင်းကြားစာကိုစေလွှတ်။ ,"
+        }
+      },
+      "header": {
+        "tagsAdd": "tag ကို Add",
+        "search": "ရှာရန်ထုတ်ကုန် ..."
       },
       "productDetail": {
         "productManagement": "ပစ္စည်းစီမံခန့်ခွဲမှု",
         "whenYouAreDone": "ပြင်ဆင်ပြီးပါက",
         "tags": "အမျိုးအစား",
+        "tagsAdd": "tag ကို Add",
+        "tagsEdit": "Edit ကို tags များ",
+        "tagExists": "Tag ကိုပြီးသားတည်ရှိ, ဒါမှမဟုတ်အချည်းနှီးဖြစ်၏။",
+        "tagInUse": "Tag ကိုအသုံးပြုသည်နှင့်မဖျက်နိုင်ပါ။",
+        "dropFiles": "upload ဖိုင်များကို drop",
+        "addInventory": "Inventory Add",
+        "barcode": "ဘားကုဒ်",
+        "confirmDeleteBarcode": "သငျသညျဘားကုဒ်ကိုသင်ဖျက်လိုတာသေချာ",
         "details": "အသေးစိတ် အကြောင်းအရာ",
+        "detailsName": "အသေးစိတ် name ကို",
+        "detailsInfo": "အသေးစိတ်သတင်းအချက်အလက်များ",
+        "generate": "ဖွစျပှါးစေ",
+        "generateBarcodes": "ဘားကုဒ် Generate",
+        "hideBarcodes": "ဘားကုဒ်ဝှက်ရန်",
         "options": "ရွေးချယ်မှုများ",
         "addToCart": "စျေးခြင်းထဲ ထည့်ပါ",
         "chooseOptions": "စျေးခြင်းတောင်းထဲ မထည့်ခင် လိုအပ်သည်များ ရွေးချယ်ပါ",
         "outOfStock": "ပစ္စည်းပြတ်နေပါသဖြင့် စိတ်မကောင်းပါ",
         "productDeleteError": "ဤပစ္စည်းကို ဖျက်၍ မရပါ",
+        "deleteErrorTheProduct": "ထုတ်ကုန်",
+        "deleteErrorTheSelectedProducts": "ရွေးချယ်ထားတဲ့ထုတ်ကုန်",
         "publishFirst": "စျေးခြင်းတောင်းထဲ မထည့်ခင် အတည်ပြုပါ",
+        "quantityAbbreviation": "အရည်အတွက်",
         "selectOption": "စျေးခြင်းတောင်းထဲ မထည့်ခင် လိုအပ်သည်ကို ရွေးချယ်ပါ",
-        "addedToCart": "စျေးခြင်းတောင်းထဲ ထည့်ပါ"
+        "addedToCart": "စျေးခြင်းတောင်းထဲ ထည့်ပါ",
+        "showBarcodes": "show ကိုဘားကုဒ်ကို",
+        "soldOut": "ရောင်းကုန်ပြီ!",
+        "backOrder": "Backorder",
+        "limitedSupply": "ကန့်သတ်ထောက်ပံ့ရေး",
+        "publishProductVisible": "{{product}} ယခုမြင်နိုင်သည်",
+        "publishProductHidden": "{{product}} ယခုဝှက်ထားလျက်ရှိ၏",
+        "clonedAlert": "Clone {{product}}",
+        "clonedAlert_plural": "Clone {{product}}",
+        "deletedAlert": "ပယ်ဖျက်ခဲ့တဲ့ {{product}}",
+        "deletedAlert_plural": "ပယ်ဖျက်ခဲ့တဲ့ {{product}}",
+        "archivedAlert": "မော်ကွန်းတင်ပြီး {{product}}",
+        "archivedAlert_plural": "မော်ကွန်းတင်ပြီး {{product}}",
+        "theProduct": "ထုတ်ကုန်",
+        "theSelectedProducts": "ရွေးချယ်ထားတဲ့ထုတ်ကုန်",
+        "startTracking": "ခြေရာကောက် Start",
+        "addBarcode": "ဘားကုဒ် Add",
+        "quantity": "အရေအတွက်",
+        "quantityGreaterThanZero": "အမှား: ပမာဏသုညထက်ကြီးမြတ်သူဖြစ်ရမည်",
+        "notFoundTitle": "သည်းခံပါ!",
+        "notFoundError": "ဤသည်သင်တို့အဘို့အရှာဖွေနေခဲ့ကြသည်ထုတ်ကုန်မဟုတ်ပါဘူး။"
+      },
+      "tags": {
+        "tagName": "tag ကိုအမည်",
+        "addTag": "Tag ကို Add",
+        "updateTag": "Update ကို Tag ကို",
+        "addGroupTag": "Group ကို Tag ကို Add",
+        "addSubTag": "Sub Tag ကို Add",
+        "removeTag": "Tag ကို Remove",
+        "createTag": "Tag ကို Create"
+      },
+      "productDetailEdit": {
+        "editOption": "Edit ကို option ကို",
+        "productSettings": "ကုန်ပစ္စည်းက Settings",
+        "product": "ကုန်ပစ္စည်း",
+        "size": "အရွယ်",
+        "title": "ခေါင်းစဥ်",
+        "untitledProduct": "ခေါင်းစဉ်မဲ့ကုန်ပစ္စည်း",
+        "parmalink": "permalink",
+        "pageTitle": "ခေါင်းစဉ်ကလေး",
+        "vendor": "ရောင်းချသူ",
+        "description": "ဖေါ်ပြချက်",
+        "facebookMsg": "Facebook ကကို Message",
+        "twitterMsg": "တွစ်တာကို Message",
+        "pinterestMsg": "Pinterest ကို Message",
+        "googleplusMsg": "Google+ မှာကို Message",
+        "editVariant": "Edit ကိုမူကွဲ",
+        "variantOptions": "မူကွဲ Options ကို",
+        "variantDetails": "မူကွဲအသေးစိတ်",
+        "duplicateVariant": "မူရငျးခှဲ",
+        "addVariantOption": "Option ကို Add",
+        "removeVariant": "Remove",
+        "removeVariantConfirm": "သငျသညျ {{title}} သင်ဖျက်လိုတာသေချာ",
+        "restoreVariantConfirm": "သင်အမှိုက်မှ {{title}} restore ချင်သေချာလား?",
+        "archiveVariantConfirm": "သငျသညျ {{title}} archive လုပ်ချင်တဲ့သင်သေချာလား",
+        "thisVariant": "ဒီမူကွဲ",
+        "thisOption": "ဒီ option",
+        "duplicateProduct": "ကုန်ပစ္စည်း Duplicate",
+        "pinProduct": "pin ကုန်ပစ္စည်း",
+        "toggleSize": "toggle Size ကို",
+        "deleteProduct": "ကုန်ပစ္စည်းဖျက်ပစ်ပါ",
+        "restoreProduct": "အမှိုက်ပုံးထဲကနေကုန်ပစ္စည်း Restore",
+        "deleteSelectedProducts": "ရွေးချယ်ထားသောကုန်ပစ္စည်းများကိုဖျက်ရမလား?",
+        "archiveThisProduct": "ဒီထုတ်ကုန်မော်ကွန်းတင်မလား?",
+        "archiveSelectedProducts": "မော်ကွန်းတိုက်ထုတ်ကုန်ကိုရှေးခယျြ?",
+        "publish": "ပုံနှိပ်ထုတ်ဝေ",
+        "moreOptions": "ပိုများသော Options ကို",
+        "details": "အသေးစိတ်",
+        "noSelectedProducts": "အဘယ်သူမျှမရွေးချယ်ထားသည့်ထုတ်ကုန်များ။ ထိုသုံးပါ",
+        "orShiftCtrlCmd": " ctrl + | | cmd + မျိုးစုံရွေးဖို့ကုန်ပစ္စည်းများအပေါ်ကိုကလစ်နှိပ်ပါသို့မဟုတ်ပြောင်းလဲရန်။ ပြောင်းကုန်ပြီနှင့်တကွသင်ထုတ်ကုန်တစ်ခုထိစပ်အကွာအဝေးရွေးနိုင်သည်။",
+        "makeVisible": "မြင်နိုင်ပါစေ",
+        "hideProduct": "ဖျောက်ကုန်ပစ္စည်း",
+        "productIsVisible": "ကုန်ပစ္စည်းမြင်နိုင်သည်",
+        "productIsNotVisible": "ကုန်ပစ္စည်းမြင်နိုင်သည်မဟုတ်"
+      },
+      "productVariant": {
+        "addVariantOptions": "butto '' လှည်းထည့်ရန် 'ကို enable ရွေးချယ်စရာ Add",
+        "inventoryQuantity": "အရေအတွက်",
+        "title": "တံဆိပ်",
+        "price": "စျေးနှုန်း",
+        "optionTitle": "option ကို",
+        "barcode": "ဘားကုဒ်",
+        "compareAtPrice": "စျေးနှုန်း (MSRP)",
+        "fulfillmentService": "ပွညျ့စုံဝန်ဆောင်မှု",
+        "weight": "အလေးချိန်",
+        "taxable": "Taxable",
+        "inventoryManagement": "inventory ခြေရာခံခြင်း",
+        "inventoryManagementLabel": "စာရင်းစနစ်ထဲမှာထုတ်ကုန် Register နှင့်၎င်း၏အဆင့်အတန်းကိုခြေရာခံ",
+        "inventoryPolicy": "အခါ, စတော့ရှယ်ယာထဲကငွငျးပယျ",
+        "inventoryPolicyLabel": "ဒါကြောင့်စတော့ရှယ်ယာထဲမှာမပါသောအခါကုန်ပစ္စည်းမူကွဲမရောင်းပါနဲ့",
+        "lowInventoryWarningThreshold": "သတိပေး @",
+        "lowInventoryWarningThresholdLabel": "အရေအတွက်နောက်လာမည့်တံခါးခုံကိုရောက်ရှိသည့်အခါကုန်ပစ္စည်းရောင်းထွက်နီးစပ်ဖြစ်လိမ့်မည်ဟုဖောက်သည်သတိပေး"
       },
       "variantList": {
         "moreOptions": "ဤအတွက်နောက်ထပ်ရွေးချယ်စရာများ ရှိပါသေးသည်",
         "createVariant": "အမျိုးအစားတူ ပစ္စည်းတစ်ခု ထပ်လုပ်ရန်"
       },
       "gridPackage": {
+        "enable": "Enable",
+        "errorDisabling": "အထုပ်ကို disable အမှား:",
+        "errorEnabling": "အထုပ်အားဖွင့်အမှား:",
+        "details": "အသေးစိတ်",
+        "disable": "disable",
+        "disableConfirm": "သငျသညျ {{app}} disable ချင်သေချာလား?",
         "pkgEnabled": " သည် အလုပ်လုပ်နေသည်။",
         "pkgDisabled": " သည် အလုပ်လုပ် မနေပါ။"
+      },
+      "gridSettingsPanel": {
+        "title": "grid က Settings",
+        "selected": "Selected"
       },
       "cartDrawer": {
         "empty": "စျေးခြင်းတောင်းတွင် ဘာမှ ရှိမနေပါ :(",
@@ -40,6 +421,7 @@
         "checkout": "ငွေပေးချေမည်"
       },
       "cartSubTotals": {
+        "discount": "လျှော့စျေး",
         "head": "သင်၏ စျေးခြင်းတောင်း",
         "items": "စျေးခြင်းတောင်းရှိ ပစ္စည်းများ",
         "subtotal": "ပစ္စည်းများ ကျသင့်ငွေ",
@@ -50,16 +432,189 @@
       "cartDrawerItems": {
         "left": "ဘယ်ဘက်"
       },
+      "order": {
+        "created": "Created",
+        "reference": "အညွှန်း",
+        "invoice": "ဝယ်ကုန်စာရင်း",
+        "ordersNotFound": "အမိန့်မတွေ့ရှိပါ",
+        "approveInvoice": "အတည်ပြု",
+        "makeAdjustments": "Adjustments Make",
+        "capturePayment": "ငွေပေးချေမှုရမည့် Capture",
+        "paymentCaptured": "ငွေပေးချေမှုရမည့်ဖမ်းဆီးခံရသော",
+        "capturedTotal": "ဖမ်းမိစုစုပေါင်း",
+        "refundAmount": "ပြန်အမ်းငွေပမာဏ",
+        "applyRefundToThisOrder": "ဒီအမိန့်မှ {{currencySymbol}}{{refund}} ၏ပြန်အမ်းငွေ Apply?",
+        "applyRefund": "ပြန်အမ်းငွေ Apply",
+        "applyDiscount": "လျှော့ Apply",
+        "adjustedTotal": "Adjustments စုစုပေါင်း",
+        "invalidDiscount": "လျှော့စျေးမူရင်းစုစုပေါင်းစျေးနှုန်းထက် သာ. ကြီးမြတ်မဖွစျနိုငျ",
+        "fullDiscountWarning": "တစ်ဦးကို 100% လျှော့စျေးလျှောက်ထားသင့်ရဲ့ငွေပေးချေမှုပံ့ပိုးပေးသူနှင့်အတူဤအမိန့်ကိုပယ်ဖျက် / ပယ်လိမ့်မည်",
+        "invalidRefund": "ပြန်အမ်းငွေ (s) စုစုပေါင်းညှိပြီးစုစုပေါင်းထက် သာ. ကြီးမြတ်မဖွစျနိုငျ",
+        "processor": "processor ကို",
+        "placed": "ထား",
+        "on": "အပေါ်",
+        "status": "status",
+        "completed": "completed",
+        "processing": "လုပ်ဆောင်နေသည်",
+        "destination": "ခရီးလမ်းဆုံး",
+        "shipment": "တင်ပို့",
+        "payment": "ငွေပေးချေမှုရမည့်",
+        "itemsFrom": "ကို item (s) မှ",
+        "filter": {
+          "new": "နယူး",
+          "captured": "ငွေပေးချေမှုရမည့်ဖမ်းဆီးခံရသော",
+          "processing": "လုပ်ဆောင်နေသည်",
+          "shipped": "တင်ပို့",
+          "completed": "completed",
+          "canceled": "ဖျက်သိမ်း",
+          "refunded": "ပြန်အမ်း"
+        }
+      },
+      "orderShipping": {
+        "shipTo": "သို့တင်ပို့သည်",
+        "notShipped": "မသို့သျောလညျးကိုပို့ပြီးဖြစ်၏",
+        "noTracking": "အဘယ်သူမျှမခြေရာကောက်",
+        "tracking": "ခြေရာကောက်",
+        "addTracking": "ခြေရာကောက် Add",
+        "itemsHaveBeenShipped": "items တင်ပို့ခဲ့ကြ",
+        "shipmentEmpty": "ဒီတင်ပို့မရှိပစ္စည်းများရှိပါတယ်",
+        "shipmentPacked": "အားလုံးပစ္စည်းများထုပ်ပိုး",
+        "shipped": "တင်ပို့",
+        "shippingNotifyCustomer": "သူတို့၏ပစ္စည်းများကိုမကြာမီတင်ပို့ခြင်းကိုခံရလတံ့သောဖောက်သည်အကြောင်းကြား။",
+        "resendNotification": "တင်ပို့ခြင်းသတိပေးချက်ပြန်ပို့မည်"
+      },
+      "orderWorkflow": {
+        "fulfillment": "ပွညျ့စုံ",
+        "orderDetails": "အမိန့်အသေးစိတ်",
+        "summary": "အကျဉ်းချုပ်",
+        "invoice": "ဝယ်ကုန်စာရင်း",
+        "shipmentTracking": "တင်ပို့ခြေရာကောက်"
+      },
+      "cartCheckout": {
+        "surprise": "Woah!",
+        "emptyCheckoutCart": "သင့်ရဲ့လှည်းသည်အလွတ်တူ!"
+      },
+      "cartCompleted": {
+        "thankYou": "ကျေးဇူးတင်ပါတယ်!",
+        "itemsFrom": "ကို item (s) မှ",
+        "yourOrderIsNow": "သင့်ရဲ့အမိန့်သည်ယခု",
+        "summaryMessage": "သင့်ရဲ့အမိန့်ပေးသည့်အတွက်ကျေးဇူးတင်ပါသည်။",
+        "submitted": "တင်သွင်း",
+        "registerGuest": "ဟလို! အီးမေးလ်တစ်စောင် Add နှင့်အမိန့် updates များကိုလက်ခံရရှိသည်။",
+        "trackYourDelivery": "အမိန့် updates တွေကိုအပို့ခံရလိမျ့မညျ",
+        "noOrdersFound": "အဘယ်သူမျှမမိန့်တွေ့ရှိခဲ့ပါတယ်။",
+        "adminMessage": "သင်တစ်ဦးအုပ်ချုပ်ရေးမှူးအဖြစ်အမိန့်ကိုကြည့်နေကြတယ်"
+      },
       "checkoutLogin": {
-        "loginCompleted": "အကောင့်ထဲသို့ရောက်ပါပြီ"
+        "welcome": "ကွိုဆိုကြောင့်သင်တို့ကိုတွေ့မြင်ဒါကောင်းပါတယ်။",
+        "loginCompleted": "အကောင့်ထဲသို့ရောက်ပါပြီ",
+        "createOrLogin": "အကောင့်တစ်ခု Create, ဒါမှမဟုတ်အတွက်လက်မှတ်ရေးထိုး",
+        "guestOrLogin": "သို့ဝင်ရန်, ဒါမှမဟုတ်တစ်ဦးဧည့်သည်အဖြစ် Checkout",
+        "continueAsGuest": "ဧည့်သည်အဖြစ် Continue",
+        "guestMessage": "သငျသညျ account တစ်ခုဖန်တီးခြင်းမပါဘဲ Checkout နိုင်ပါတယ်။ သငျသညျအကြာတွင် account တစ်ခုဖန်တီးရန်အခွင့်အလမ်းရှိပါလိမ့်မယ်။"
       },
       "addressBookGrid": {
+        "addAddress": "လိပ်စာ Add",
         "chooseAddress": "ပစ္စည်းပို့ရန်နှင့် ဘောက်ချာပို့ရန် လိပ်စာရွေးပါ",
-        "createDefault": "သုံးနေကျ လိပ်စာဖြည့်စွက်ပါ"
+        "createDefault": "သုံးနေကျ လိပ်စာဖြည့်စွက်ပါ",
+        "edit": "Edit ကို",
+        "removeAddress": "လိပ်စာ Remove",
+        "selectShippingAddress": "တစ်ရေကြောင်းလိပ်စာကို Select လုပ်ပါ",
+        "selectBillingAddress": "တစ်ဦးငွေတောင်းခံလိပ်စာကို Select လုပ်ပါ",
+        "cantRemoveThisAddress": "{{err}}: ဤလိပ်စာမဖယ်ရှားနိုင်သ"
       },
       "addressBookAdd": {
         "addAddress": "လိပ်စာအသစ်ထည့်ရန်",
-        "createAddress": "သုံးနေကျ လိပ်စာဖြည့်စွက်ပါ"
+        "createAddress": "သုံးနေကျ လိပ်စာဖြည့်စွက်ပါ",
+        "failedToAddAddress": "လိပ်စာကိုထည့်ရန်မအောင်မြင်: {{err}}"
+      },
+      "addressBookEdit": {
+        "editAddress": "ဒီလိပ်စာ entry ကိုတည်းဖြတ်ခြင်း",
+        "somethingWentWrong": "တစ်ခုခုမှားသွား: {{err}}"
+      },
+      "corePackageConfig": {
+        "settings": {
+          "public": {
+            "allowGuestCheckout": "ဧည့်သည် Checkout Allow"
+          },
+          "openexchangerates": {
+            "appId": "ပွင့်လင်းချိန်းနှုန်း App ကို Id",
+            "refreshPeriod": "ပွင့်လင်းချိန်းနှုန်းကာလ refresh",
+            "refreshPeriodPlaceholder": "တနည်း, တိုင်း 1 နာရီ"
+          },
+          "google": {
+            "clientId": "Google ကလိုင်းယင့် ID ကို",
+            "apiKey": "Google က API ကို Key ကို"
+          }
+        }
+      },
+      "shop": {
+        "defaultPaymentMethod": "default ငွေပေးချေမှုရမည့်နည်းလမ်း",
+        "name": "နာမကိုအမှီ",
+        "namePlaceholder": "ဆိုင်အမည်",
+        "description": "ဖေါ်ပြချက်",
+        "descriptionPlaceholder": "SEO ဆိုသည်မှာအဘို့သင့်ဆိုင်ကိုဖော်ပြရန်",
+        "descriptionTooltip": "SEO ဆိုသည်မှာအဘို့အ meta ဖျေါပွခကျြ",
+        "email": "အီးမေးလ်က",
+        "emailPlaceholder": "မူလတန်းဆက်သွယ်ရန်အီးမေးလ်",
+        "keywords": "keywords",
+        "keywordsPlaceholder": "SEO ဆိုသည်မှာအဘို့အ meta သော့ချက်စာလုံးများ",
+        "language": "base ဘာသာစကားများ",
+        "languageTooltip": "device ကိုဘာသာစကားထောက်လှမ်းပျက်ကွက်ပါလိမ့်မည်ဆိုပါကဤသည်ဘာသာစကားအသုံးပြုလိမ့်မည်",
+        "timezone": "စံတော်ချိန်",
+        "timezoneOptions": "စံတော်ချိန် Choose",
+        "currency": "base ငွေကြေးစနစ်",
+        "currencyTooltip": "ဆိုင်က default ငွေကြေးကို",
+        "baseUOM": "တိုင်းတာ၏အခြေစိုက်စခန်းယူနစ်",
+        "addressBook": {
+          "company": "ကုမ္ပဏီ",
+          "companyPlaceholder": "ဒီစီးပွားရေးဘွဲ့နာမ",
+          "country": "ပြည်",
+          "fullName": "နာမည်အပြည့်အစုံ",
+          "fullNamePlaceholder": "သင်၏အဖွဲ့အစည်း name ကို",
+          "address1": "လိပ်စာ",
+          "address1Placeholder": "သင်၏အဖွဲ့အစည်းလိပ်စာ",
+          "address1Tooltip": "ဒီလိပ်စာဧည့်သည်များမှမြင်နိုင်ဖြစ်ရလိမ့်မည်",
+          "address2": "လိပ်စာ",
+          "address2Placeholder": "အပိုဆောင်းလိပ်စာ",
+          "postal": "စာတိုက်",
+          "city": "မြို့",
+          "region": "ဒေသ",
+          "phone": "ဖုန်းနံပါတ်",
+          "isShippingDefault": "ဒီကသင့်ကို default ရေကြောင်းလိပ်စာလုပ်ရမလား?",
+          "isBillingDefault": "ဒီကသင့်ကို default ငွေတောင်းခံလိပ်စာလုပ်ရမလား?",
+          "isCommercial": "ဒါကစီးပွားဖြစ်လိပ်စာဖြစ်ပါတယ်။"
+        }
+      },
+      "revisions": {
+        "isDisabled": "တည်းဖြတ်မူထိန်းချုပ်မှုကိုပိတ်ထားသည်။ မဆိုအပြောင်းအလဲများချက်ချင်းပုံနှိပ်ထုတ်ဝေပါလိမ့်မည်။",
+        "isEnabled": "တည်းဖြတ်မူထိန်းချုပ်မှုထုတ်ကုန်များအတွက် enabled ဖြစ်ပါတယ်။ မဆိုစသောအပြောင်းအလဲဖောက်သည်မြင်နိုင်ဖြစ်ခြင်းမီကထုတ်ဝေသောခံရဖို့လိုအပ်ပါလိမ့်မည်။",
+        "unpublishedChanges": "အတည်မပြုရသေးသောအပြောင်းအလဲများ",
+        "publishChanges": "အပြောင်းအလဲများ Publish",
+        "showChanges": "အပြောင်းအလဲများ show ကို",
+        "hideChanges": "အပြောင်းအလဲများဝှက်ရန်",
+        "discardChanges": "စွန့်ပစ်အပြောင်းအလဲများ",
+        "changedPublished": "အောင်မြင်စွာပုံနှိပ်ထုတ်ဝေအပြောင်းအလဲများ",
+        "changesDiscarded": "အောင်မြင်စွာလွှင့်ပစ်အပြောင်းအလဲများ",
+        "noChanges": "အဘယ်သူမျှမအပြောင်းအလဲများ",
+        "noChangesPublished": "ထုတ်ဝေဖို့မအပြောင်းအလဲများရှိပါသည်",
+        "noChangesDiscarded": "ဖယ်ရန်မအပြောင်းအလဲများရှိပါသည်"
+      },
+      "address": {
+        "country": "ပြည်",
+        "fullName": "နာမည်အပြည့်အစုံ",
+        "address1": "လိပ်စာ",
+        "address2": "လိပ်စာ",
+        "postal": "စာတိုက်",
+        "city": "မြို့",
+        "region": "ဒေသ",
+        "phone": "ဖုန်းနံပါတ်",
+        "isShippingDefault": "ဒီကသင့်ကို default ရေကြောင်းလိပ်စာလုပ်ရမလား?",
+        "isBillingDefault": "ဒီကသင့်ကို default ငွေတောင်းခံလိပ်စာလုပ်ရမလား?",
+        "isCommercial": "ဒါကစီးပွားဖြစ်လိပ်စာဖြစ်ပါတယ်။"
+      },
+      "i18nSettings": {
+        "enabledLanguages": "ဘာသာစကားများ"
       },
       "checkoutProgressBar": {
         "login": "အကောင့်သို့ဝင်ရန်",
@@ -68,7 +623,140 @@
         "reviewPayment": "ငွေစာရင်းကို စစ်ဆေးပါ",
         "complete": "ပြီးစီးကြောင်း အသိအမှတ်ပြုပါ"
       },
+      "checkoutReview": {
+        "review": "ဆန်းစစ်ခြင်း"
+      },
+      "checkoutShipping": {
+        "selectShippingOption": "ရေကြောင်း option ကို Select လုပ်ပါ",
+        "noShippingMethods": "အဘယ်သူမျှမရေကြောင်းနည်းလမ်းများ configured ကြသည်။",
+        "configureNow": "ယခု configure ။",
+        "shipping": "သင်္ဘောဖြင့်ကုန်ပစ္စည်းပို့ခြင်း"
+      },
+      "shipping": {
+        "addShippingProvider": "ရေကြောင်းပံ့ပိုးပေး Add",
+        "editShippingProvider": "Edit ကိုရေကြောင်းပံ့ပိုးပေး",
+        "addShippingMethod": "ရေကြောင်းနည်းလမ်း Add",
+        "editShippingMethod": "Edit ကိုရေကြောင်းနည်းလမ်း",
+        "deleteShippingMethod": "ရေကြောင်းနည်းလမ်းဖျက်ပစ်ပါ",
+        "noSettingsForThisView": "ဒီအမြင်အဘို့အဘယ်သူမျှမကအပြင်အဆင်များ",
+        "noShippingMethods": "အဘယ်သူမျှမရေကြောင်းနည်းလမ်းများ configured ကြသည်။",
+        "removeShippingMethodConfirm": "သငျသညျ {{method}} သင်ဖျက်လိုသည်မှာသေချာပါသလား",
+        "removeShippingMethodTitle": "သဘောင်္တင်ခ Method ကို Remove",
+        "shippingMethodDeleted": "ဒီသင်္ဘောနည်းလမ်းဖျက်ထားသည်။",
+        "removeShippingProvider": "သဘောင်္တင်ခပေးသူ Remove",
+        "removeShippingProviderConfirm": "သငျသညျ {{provider}} သင်ဖျက်လိုသည်မှာသေချာပါသလား",
+        "shippingProviderSaved": "သဘောင်္တင်ပံ့ပိုးပေးသူကယ်လွှတ်တော်မူ၏။",
+        "shippingProviderUpdated": "သဘောင်္တင်ပံ့ပိုးပေးသူဒေတာ updated ။",
+        "shippingMethodRateAdded": "သဘောင်္တင်ခနည်းလမ်းမှုနှုန်းကဆက်ပြောသည်။",
+        "shippingMethodRateUpdated": "updated သဘောင်္တင်နည်းလမ်းနှုန်းသည်။",
+        "name": "နာမကိုအမှီ",
+        "label": "တံဆိပ်",
+        "group": "Group က",
+        "cost": "ပေးရ",
+        "handling": "ကိုင်တွယ်",
+        "rate": "rate",
+        "enabled": "enabled",
+        "disabled": "မသန်စွမ်း",
+        "addRate": "နှုန်းမှာ Add",
+        "updateRate": "Update ကို {{name}} မှုနှုန်း",
+        "addNewCondition": "အသစ်အခွအေနေ Add",
+        "deleteCondition": "အခွအေနေဖျက်ပစ်ပါ",
+        "provider": {
+          "name": "Service ကို Code ကို",
+          "label": "ပြည်သူ့တံဆိပ်",
+          "enabled": "enabled"
+        }
+      },
+      "shippingMethod": {
+        "name": "method ကိုအမည်",
+        "label": "ပြည်သူ့တံဆိပ်",
+        "group": "Group က",
+        "cost": "ပေးရ",
+        "handling": "ကိုင်တွယ်",
+        "rate": "rate",
+        "enabled": "enabled",
+        "matchingCartRanges": "ကိုက်ညီတဲ့လှည်းတောင်တန်း",
+        "validRanges": {
+          "begin": "အစ",
+          "end": "အဆုံး"
+        },
+        "matchingLocales": "ကိုက်ညီတဲ့ဒေသခံ",
+        "validLocales": {
+          "origination": "မှ",
+          "destination": "သို့",
+          "deliveryBegin": "သဘောင်္တင်ခ Est ။",
+          "deliveryEnd": "Delivery Est ။"
+        }
+      },
+      "uom": {
+        "OZ": "အောင်စ",
+        "LB": "အလေးချိန်ပေါင်",
+        "GR": "ဂရမ်",
+        "KG": "ကီလိုဂရမျ"
+      },
+      "consoleIcon": {
+        "iconTitle": "ကြည့်ရန် Console",
+        "text": "console"
+      },
+      "createProductIcon": {
+        "iconTitle": "ထုတ်ကုန် Create",
+        "text": "ဖန်တီး"
+      },
+      "social": {
+        "socialTitle": "လူမှုရေး",
+        "facebook": "Facebook က",
+        "google": "Google က",
+        "github": "GitHub",
+        "meetup": "Meetup",
+        "ok": "အိုကေ",
+        "twitter": "တွစ်တာ",
+        "vk": "VK",
+        "weibo": "Weibo"
+      },
+      "search": {
+        "clearSearch": "ရှင်းလင်းသော",
+        "noProductsFound": "အဘယ်သူမျှမကုန်ပစ္စည်းများတွေ့ရှိခဲ့ပါတယ်။",
+        "noOrdersFound": "အဘယ်သူမျှမမိန့်တွေ့ရှိခဲ့ပါတယ်။",
+        "noAccountsFound": "အကောင့်မျှမတွေ့။",
+        "searchInputLabel": "ရှာရန်တုံ့ပြန်မှု",
+        "suggestedTags": "အကြံပြု tags များ",
+        "searchTypeProducts": "ထုတ်ကုန်များ",
+        "searchTypeAccounts": "ငွေစာရင်း",
+        "searchTypeOrders": "အမိန့်",
+        "accountSearchResults": {
+          "accountId": "အကောင့် ID ကို",
+          "shopId": "ဆိုင် ID ကို",
+          "firstName": "နာမည်",
+          "lastName": "မျိုးနွယ်အမည်",
+          "phone": "ဖုန်းနံပါတ်",
+          "emails": "အီးမေးလ်က"
+        },
+        "orderSearchResults": {
+          "orderId": "အမိန့် ID ကို",
+          "shopId": "ဆိုင် ID ကို",
+          "shippingAddress": "လိပ်စာ",
+          "shippingCity": "မြို့",
+          "shippingRegion": "ဒေသ",
+          "shippingCountry": "ပြည်",
+          "shippingPhone": "ဖုန်းနံပါတ်",
+          "shippingName": "နာမကိုအမှီ",
+          "shippingStatus": "status",
+          "billingAddress": "လိပ်စာ",
+          "billingCity": "မြို့",
+          "billingRegion": "ဒေသ",
+          "billingCountry": "ပြည်",
+          "billingPhone": "ဖုန်းနံပါတ်",
+          "billingStatus": "status",
+          "userEmails": "အီးမေးလ်က",
+          "orderDate": "နေ့စှဲ",
+          "orderTotal": "စုစုပေါငျး"
+        }
+      },
       "accountsUI": {
+        "members": "အဖွဲ့ဝင်များ",
+        "manage": "စီမံခန့်ခွဲရန်",
+        "guest": "ဧည့်သည်",
+        "addMember": "အဖွဲ့ဝင်တစ်ဦး Add",
         "add": "ထည့်ရန်",
         "and": "နှင့်",
         "back": "နောက်ပြန်ဆုတ်ရန်",
@@ -84,6 +772,7 @@
         "emailResetLink": "အီးမေးလ်ပြောင်းရန် လင့်ခ်",
         "forgotPassword": "စကားဝှက်မေ့သွားပါသလား။",
         "ifYouAlreadyHaveAnAccount": "အကောင့်ရှိပြီးသားဖြစ်ပါက",
+        "name": "နာမကိုအမှီ",
         "newPassword": "စကားဝှက် အသစ်",
         "newPasswordAgain": "စကားဝှက် အသစ် ထပ်ရိုက်ပါ",
         "optional": "အပိုဖြည့်စွက်ရန်",
@@ -96,24 +785,52 @@
         "setPassword": "စကားဝှက် ထားရန်",
         "sign": "ဝင်ရန်",
         "signIn": "အကောင့်ဝင်ရန်",
+        "signInService": "ခုနှစ်တွင် {{service}} သင်္ကေတပြ",
         "signin": "အကောင့်ဝင်ရန်",
+        "signInWith": "သို့ဝင်ရန်နှင့်အတူ",
+        "signUpWith": "မှတ်ပုံတင်မယ်နှင့်အတူ",
+        "signedIn": "သင်၌လက်မှတ်ရေးထိုးကြသည်။",
         "signOut": "အကောင့်မှ ထွက်ရန်",
         "signUp": "မှတ်ပုံတင်ရန်",
+        "signUpButton": "စာရင်း",
         "signupCode": "မှတ်ပုံတင်ရန် ကုတ်",
         "signUpWithYourEmailAddress": "သင်၏အီးမေးလ်ဖြင့် မှတ်ပုံတင်ပါ",
         "terms": "မူဝါဒနှင့် စည်းကမ်းများ",
         "updateYourPassword": "စကားဝှက် ပြောင်းရန်",
+        "updatePasswordAndContinue": "ကိုအပ်ဒိတ်လုပ်များနှင့်ဆက်လက်",
+        "updatedServiceConfiguration": "{{service}} များအတွက်နောက်ဆုံးရေးသားချိန်ဝန်ဆောင်မှု configuration ကို",
         "username": "အကောင့်နာမည်",
         "usernameOrEmail": "အကောင့်နာမည် သို့ အီးမေးလ်",
         "with": "နှင့်",
+        "checkoutAsGuest": "အသုံးပြုသူအကောင့်မရှိဘဲ Checkout",
+        "role": "အခန်းက္ပ",
+        "yourOrders": "သင့်ရဲ့အမိန့်",
+        "addressBook": "လိပ်စာစာအုပ်",
         "info": {
           "emailSent": "အီးမေးလ်ပို့ထားပြီးပါပြီ",
           "emailVerified": "ဤအီးမေးလ်ကို စစ်ဆေးထားပြီးဖြစ်သည်",
           "passwordChanged": "စကားဝှက် ပြောင်းလိုက်ပြီးဖြစ်သည်",
-          "passwordReset": "စကားဝှက် ပြန်ပြောင်းလိုက်ပြီးဖြစ်သည်"
+          "passwordReset": "စကားဝှက် ပြန်ပြောင်းလိုက်ပြီးဖြစ်သည်",
+          "passwordResetSend": "စကားဝှက်ပြန်ညှိ link ကိုအတူအီးမေးလ်ကိုစလှေတျခဲ့သညျ။",
+          "invitationSent": "ဖိတ်ကြားလွှာ Sent",
+          "sendInvitation": "ဖိတ်ကြားချက်ကို Send"
+        },
+        "reactionUI": {
+          "editTheme": "Edit ကိုအဓိကအကြောင်းအရာ",
+          "duplicateTheme": "အဓိကအကြောင်းအရာ Duplicate",
+          "duplicateThemeError": "ဆောင်ပုဒ်ပွားလို့မရပါ",
+          "publishThemeError": "`ဆောင်ပုဒ်ထုတ်ဝေရန်လို့မရပါ {{themeName}}",
+          "components": {
+            "navbar": "navigation ဘား",
+            "button": "ကြယ်သီး"
+          }
         },
         "error": {
           "emailRequired": "အီးမေးလ်လိုအပ်ပါသည်",
+          "passwordRequired": "Password ကိုလိုအပ်ပါသည်။",
+          "passwordMustBeAtLeast6CharactersLong": "Password ကိုအနည်းဆုံး 6 ဇာတ်ကောင်ရှည်လျားဖြစ်ရပါမည်။",
+          "passwordMustContainRequirements": "Password ကိုအနည်းဆုံးအရေအတွက်သို့မဟုတ်သင်္ကေတဆံ့ရပါမည်။",
+          "usernameMinLength": "username မှာအနည်းဆုံး 3 ဇာတ်ကောင်ရှည်လျားဖြစ်ရပါမည်",
           "minChar": "စကားဝှက်သည် အနည်းဆုံးစကားလုံး ၆ လုံး ဖြစ်ရမည်",
           "pwdsDontMatch": "စကားဝှက်မှားနေပါသည်",
           "pwOneDigit": "စကားဝှက်တွင် အနည်းဆုံးဂဏန်း တစ်လုံး ပါရမည်",
@@ -125,6 +842,9 @@
           "usernameRequired": "အကောင့်နာမည်ကိုဖြည့်စွက်ပါ",
           "emailAlreadyExists": "ဤအီးမေးလ်မှာ မှတ်ပုံတင်ပြီး ဖြစ်ပါသည်",
           "emailDoesntMatchTheCriteria": "ဤအီးမေးလ်မှာ သတ်မှတ်ချက်နှင့် မပြည့်စုံပါ",
+          "errorSendingEmail": "အီးမေးလ်, ဖြစ်နိုင်သမျှ configuration ကိုပြဿနာမပို့အမှား။",
+          "unableToSendInvitationEmail": "ဖိတ်ကြားချက်ကိုအီးမေးလ်ပေးပို့မရနိုင်ပါ။",
+          "failedToLogout": "ထွက်ပြီးရန်မအောင်မြင်ခဲ့ပါ။",
           "invalidLoginToken": "မမှန်ကန်သော အကောင့်တိုကင်",
           "loginForbidden": "အကောင့်ဝင်ခွင့် ပိတ်ထားပါသည်",
           "serviceUnknown": "အမျိုးအမည်မသိသော ဆားဗစ်",
@@ -138,6 +858,7 @@
           "passwordIsOld": "စကားဝှက်ကို အသုံးပြုသည်မှာ ကြာမြင့်ပြီဖြစ်ပါသဖြင့် စကားဝှက်အသစ်ပြောင်းပါ",
           "incorrectPassword": "မှားယွင်းသော စကားဝှက်",
           "invalidEmail": "မှားယွင်းသော အီးမေးလ်လိပ်စာ",
+          "addressMustBeAValidEMailAddress": "မှားနေသောအီးမေးလ်",
           "mustBeLoggedIn": "အကောင့်ထဲ ဝင်ရန်လိုအပ်သည်",
           "needToSetUsernameOrEmail": "အကောင့်နာမည် သို့ အီးမေးလ် သုံးဖို့လိုပါသည်",
           "oldPasswordFormat": "စကားဝှက် ပုံစံဟောင်း",
@@ -152,6 +873,12 @@
           "matchFailed": "တိုက်ဆိုင်စစ်ဆေးချက် မအောင်မြင်ပါ",
           "unknownError": "အမျိုးအမည်မသိသော error"
         }
+      },
+      "error": {
+        "nameRequired": "Name ကိုလိုအပ်ပါသည်။",
+        "isRequired": "{{field}} လိုအပ်ပါသည်။",
+        "mustBeNumber": "{{field}} အတော်များများဖြစ်ရပါမည်။",
+        "variantFieldIsRequired": "မူကွဲ {{number}} {{field}} လိုအပ်ပါသည်။"
       }
     }
   }

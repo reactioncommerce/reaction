@@ -1,0 +1,26 @@
+[{
+  "language": "Slovenian",
+  "i18n": "sl",
+  "ns": "taxes-taxjar",
+  "translation": {
+    "reaction-taxes": {
+      "admin": {
+        "shortcut": {
+          "taxjarLabel": "TaxJar",
+          "taxjarTitle": "TaxJar"
+        },
+        "dashboard": {
+          "taxjarLabel": "TaxJar",
+          "taxjarTitle": "TaxJar",
+          "taxjarDescription": "TaxJar davki"
+        },
+        "taxSettings": {
+          "taxjarLabel": "TaxJar",
+          "taxjarSettingsLabel": "TaxJar",
+          "taxjarCredentials": "Dodaj poverilnice, da se omogoči",
+          "taxjarGetCredentialsURL": "Spravi jih tukaj"
+        }
+      }
+    }
+  }
+}]

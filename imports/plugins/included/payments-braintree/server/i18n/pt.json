@@ -1,0 +1,32 @@
+[{
+  "language": "Portuguese",
+  "i18n": "pt",
+  "ns": "reaction-braintree",
+  "translation": {
+    "reaction-payments": {
+      "admin": {
+        "shortcut": {
+          "braintreeLabel": "Braintree",
+          "braintreeTitle": "Braintree"
+        },
+        "dashboard": {
+          "braintreeLabel": "Braintree",
+          "braintreeTitle": "Braintree",
+          "braintreeDescription": "pagamentos Braintree"
+        },
+        "paymentSettings": {
+          "braintreeLabel": "Braintree",
+          "braintreeSettingsLabel": "Braintree",
+          "braintreeCredentials": "Adicionar credenciais para permitir"
+        }
+      },
+      "order": {
+        "paymentProvider": {
+          "braintree": {
+            "braintreeSettlementDelay": "O Braintree não permite reembolsos até que as transações são liquidadas. Isso pode levar até 24 horas. Por favor, tente novamente mais tarde."
+          }
+        }
+      }
+    }
+  }
+}]
