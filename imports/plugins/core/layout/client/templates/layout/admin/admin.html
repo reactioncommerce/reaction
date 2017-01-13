@@ -31,24 +31,7 @@
     </main>
   </div>
 
-  <div class="admin-controls {{adminControlsClassname}}">
-    <div class="admin-controls-detail">
-      <div class="admin-controls-heading">
-        {{> settingsHeader}}
-      </div>
-      <div class="admin-controls-content action-view-body">
-        <!-- begin admin controls -->
-        {{> Template.dynamic template=control.template data=control.data}}
-        <!-- end aadmin controls-->
-      </div>
-      <div class="admin-controls-footer">
-        <div class="admin-controls-container">
-          <!-- begin adminControlsFooter -->
-          {{> Template.dynamic template=adminControlsFooter}}
-          <!-- end adminControlsFooter -->
-        </div>
-      </div>
-    </div>
+  <div>
+    {{> React ActionViewComponent }}
   </div>
-
 </template>

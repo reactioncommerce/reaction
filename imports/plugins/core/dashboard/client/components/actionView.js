@@ -9,14 +9,14 @@ class ActionView extends Component {
   }
 
   renderControlComponent() {
-    if (this.props.controlComponent) {
-      return (
-        <Blaze
-          template={this.props.controlComponent}
-          data={this.props.controlComponentProps}
-        />
-      );
-    }
+    // if (this.props.controlComponent) {
+    //   return (
+    //     <Blaze
+    //       template={this.props.controlComponent}
+    //       data={this.props.controlComponentProps}
+    //     />
+    //   );
+    // }
   }
 
   renderFooter() {
@@ -37,7 +37,7 @@ class ActionView extends Component {
       <div className={baseClassName}>
         <div className="admin-controls-detail">
           <div className="admin-controls-heading">
-            <Blaze template="settingsHeader" />
+
           </div>
           <div className="admin-controls-content action-view-body">
             {this.renderControlComponent()}

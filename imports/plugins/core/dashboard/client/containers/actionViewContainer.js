@@ -9,6 +9,7 @@ import { Reaction, i18next } from "/client/api";
 import { Packages } from "/lib/collections";
 
 import { TranslationProvider } from "/imports/plugins/core/ui/client/providers";
+import { Loading } from "/imports/plugins/core/ui/client/components";
 
 
 function composer(props, onData) {
@@ -48,9 +49,6 @@ function composer(props, onData) {
     //   instance.dropInstance.open();
     // }
   });
-
-
-
 
 
 
