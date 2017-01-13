@@ -3,14 +3,13 @@ machine:
     version: 7.4.0
   services:
     - docker
-  pre:
-    - hash meteor 2>/dev/null || curl https://install.meteor.com | /bin/sh
 
 dependencies:
   cache_directories:
     - "~/.meteor"
-    - "~/docker"
   override:
+    - [[ -L ~/.meteor/meteor ]] && ln -s ~/.meteor/meteor /usr/local/bin/meteor
+    - hash meteor 2>/dev/null && curl https://install.meteor.com | /bin/sh
     - npm i -g reaction-cli
     - meteor npm install
 
