@@ -94,7 +94,7 @@ export const methods = {
         }
       });
 
-      // Set the status of the items as shipped
+      // Set the status of the items as packed
       const itemIds = shipment.items.map((item) => {
         return item._id;
       });
@@ -256,6 +256,15 @@ export const methods = {
       Logger.warn("No order email found. No notification sent.");
     }
 
+    Orders.update({
+      "_id": order._id,
+      "shipping._id": shipment._id
+    }, {
+      $set: {
+        "shipping.$.shipped": true
+      }
+    });
+
     return {
       workflowResult: workflowResult,
       completedItems: completedItemsResult,
@@ -300,6 +309,15 @@ export const methods = {
 
     const isCompleted = _.every(order.items, (item) => {
       return _.includes(item.workflow.workflow, "coreOrderItemWorkflow/completed");
+    });
+
+    Orders.update({
+      "_id": order._id,
+      "shipping._id": shipment._id
+    }, {
+      $set: {
+        "shipping.$.delivered": true
+      }
     });
 
     if (isCompleted === true) {

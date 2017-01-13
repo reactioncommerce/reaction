@@ -10,7 +10,7 @@ function getJobConfig() {
   }).settings;
 }
 
-// add job hook for "shippo/fetchTrackingStatuses"
+// add job hook for "shippo/fetchTrackingStatusOfOrders"
 Hooks.Events.add("afterCoreInit", () => {
   const config = getJobConfig();
 
@@ -20,8 +20,8 @@ Hooks.Events.add("afterCoreInit", () => {
     return;
   }
 
-  Logger.info(`Adding shippo/fetchTrackingStatuses to JobControl. Refresh ${refreshPeriod}`);
-  new Job(Jobs, "shippo/fetchTrackingStatusesJob", {})
+  Logger.info(`Adding shippo/fetchTrackingStatusForOrders to JobControl. Refresh ${refreshPeriod}`);
+  new Job(Jobs, "shippo/fetchTrackingStatusForOrdersJob", {})
     .priority("normal")
     .retry({
       retries: 5,
@@ -38,33 +38,21 @@ Hooks.Events.add("afterCoreInit", () => {
     });
 });
 
-//
-// index imports and
-// will trigger job to run
-// taxes/fetchTaxCloudTaxCodes
-//
+
 export default function () {
   Jobs.processJobs(
-    "shippo/fetchTrackingStatusesJob",
+    "shippo/fetchTrackingStatusForOrdersJob",
     {
       pollInterval: 30 * 1000,
       workTimeout: 180 * 1000
     },
     (job, callback) => {
-      Meteor.call("shippo/fetchTrackingStatuses", error => {
+      Meteor.call("shippo/fetchTrackingStatusForOrders", error => {
         if (error) {
-          if (error.error === "notConfigured") {
-            Logger.warn(error.message);
-            job.done(error.message, { repeatId: true });
-          } else {
-            job.done(error.toString(), { repeatId: true });
-          }
+          job.done(error.toString(), { repeatId: true });
         } else {
-          // we should always return "completed" job here, because errors are fine
-          const success = "Latest Shippo's Tracking Statuses fetched successfully.";
-          Reaction.Import.flush();
+          const success = "Latest Shippo's Tracking Status of Orders fetched successfully.";
           Logger.info(success);
-
           job.done(success, { repeatId: true });
         }
       });

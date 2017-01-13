@@ -184,6 +184,7 @@ ShippoApi.methods.getTransaction = new ValidatedMethod({
 
       return transaction;
     } catch (error) {
+      Logger.error(error.message);
       throw new Meteor.Error(error.message);
     }
   }
