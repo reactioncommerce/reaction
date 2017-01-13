@@ -411,6 +411,10 @@
         "pkgEnabled": "{{app}} 现在已启用。",
         "pkgDisabled": "{{app}} 现在处于禁用状态。"
       },
+      "gridSettingsPanel": {
+        "title": "网格设置",
+        "selected": "选"
+      },
       "cartDrawer": {
         "empty": "我们非常抱歉，您的购物车是空的。",
         "keepShopping": "继续购物",

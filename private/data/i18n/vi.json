@@ -411,6 +411,10 @@
         "pkgEnabled": "{{app}} được kích hoạt.",
         "pkgDisabled": "{{app}} hiện bị vô hiệu."
       },
+      "gridSettingsPanel": {
+        "title": "Cài đặt lưới",
+        "selected": "Đã chọn"
+      },
       "cartDrawer": {
         "empty": "Chúng tôi đang buồn. Giỏ của bạn trống trơn.",
         "keepShopping": "Tiếp tục mua sắm",

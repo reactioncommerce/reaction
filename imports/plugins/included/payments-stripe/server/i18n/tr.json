@@ -13,8 +13,8 @@
           "stripeDescription": "şerit ödemeleri"
         },
         "paymentSettings": {
-          "stripeLabel": "Şerit",
-          "stripeSettingsLabel": "Şerit",
+          "stripeLabel": "Stripe",
+          "stripeSettingsLabel": "Stripe",
           "stripeSettingsDescription": "Bir şerit API İstemci Kimliği yok mu?",
           "stripeSettingsGetItHere": "Burada Get it"
         }

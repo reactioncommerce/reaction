@@ -6,15 +6,15 @@
     "reaction-payments": {
       "admin": {
         "shortcut": {
-          "stripeLabel": "райе"
+          "stripeLabel": "Stripe"
         },
         "dashboard": {
           "stripeLabel": "райе",
           "stripeDescription": "плащания Stripe"
         },
         "paymentSettings": {
-          "stripeLabel": "райе",
-          "stripeSettingsLabel": "райе",
+          "stripeLabel": "Stripe",
+          "stripeSettingsLabel": "Stripe",
           "stripeSettingsDescription": "Не трябва Stripe API Client ID а?",
           "stripeSettingsGetItHere": "Вземете го от тук"
         }

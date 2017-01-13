@@ -6,15 +6,15 @@
     "reaction-payments": {
       "admin": {
         "shortcut": {
-          "stripeLabel": "Rand"
+          "stripeLabel": "Stripe"
         },
         "dashboard": {
-          "stripeLabel": "Rand",
+          "stripeLabel": "Stripe",
           "stripeDescription": "rand betalningar"
         },
         "paymentSettings": {
-          "stripeLabel": "Rand",
-          "stripeSettingsLabel": "Rand",
+          "stripeLabel": "Stripe",
+          "stripeSettingsLabel": "Stripe",
           "stripeSettingsDescription": "Inte ha en rand API-klient-ID?",
           "stripeSettingsGetItHere": "Få det här"
         }

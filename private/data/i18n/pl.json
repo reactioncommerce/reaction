@@ -411,6 +411,10 @@
         "pkgEnabled": "{{app}} jest teraz włączona.",
         "pkgDisabled": "{{app}} jest obecnie wyłączona."
       },
+      "gridSettingsPanel": {
+        "title": "Ustawienia siatki",
+        "selected": "Wybrany"
+      },
       "cartDrawer": {
         "empty": "Jesteśmy smutni. Twój koszyk jest pusty.",
         "keepShopping": "Lek na zakupy",

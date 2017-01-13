@@ -411,6 +411,10 @@
         "pkgEnabled": " သည် အလုပ်လုပ်နေသည်။",
         "pkgDisabled": " သည် အလုပ်လုပ် မနေပါ။"
       },
+      "gridSettingsPanel": {
+        "title": "grid က Settings",
+        "selected": "Selected"
+      },
       "cartDrawer": {
         "empty": "စျေးခြင်းတောင်းတွင် ဘာမှ ရှိမနေပါ :(",
         "keepShopping": "စျေးဆက်ဝယ်မည်",

@@ -6,15 +6,15 @@
     "reaction-payments": {
       "admin": {
         "shortcut": {
-          "stripeLabel": "Bande"
+          "stripeLabel": "Stripe"
         },
         "dashboard": {
-          "stripeLabel": "Bande",
+          "stripeLabel": "Stripe",
           "stripeDescription": "paiements Stripe"
         },
         "paymentSettings": {
-          "stripeLabel": "Bande",
-          "stripeSettingsLabel": "Bande",
+          "stripeLabel": "Stripe",
+          "stripeSettingsLabel": "Stripe",
           "stripeSettingsDescription": "Ne pas avoir un numéro de client API Stripe?",
           "stripeSettingsGetItHere": "Obtenez-le ici"
         }

@@ -411,6 +411,10 @@
         "pkgEnabled": " je sada dostupan.",
         "pkgDisabled": " je sada onemogućen."
       },
+      "gridSettingsPanel": {
+        "title": "Postavke Grid",
+        "selected": "Odabran"
+      },
       "cartDrawer": {
         "empty": "Nažalost, vaša košarica je prazna.",
         "keepShopping": "Nastavi s kupovinom",

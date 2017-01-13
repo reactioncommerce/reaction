@@ -13,7 +13,7 @@
           "stripeDescription": "pagamentos listra"
         },
         "paymentSettings": {
-          "stripeLabel": "Listra",
+          "stripeLabel": "Stripe",
           "stripeSettingsLabel": "Stripe",
           "stripeSettingsDescription": "Não temos uma listra API ID do cliente?",
           "stripeSettingsGetItHere": "Venha aqui"

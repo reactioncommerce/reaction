@@ -411,6 +411,10 @@
         "pkgEnabled": " è ora abilitato.",
         "pkgDisabled": " è ora disabilitato."
       },
+      "gridSettingsPanel": {
+        "title": "Impostazioni griglia",
+        "selected": "Selezionata"
+      },
       "cartDrawer": {
         "empty": "Il tuo carrello è vuoto :(",
         "keepShopping": "Continua lo shopping!",

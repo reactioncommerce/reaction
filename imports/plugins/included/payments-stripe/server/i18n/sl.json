@@ -6,15 +6,15 @@
     "reaction-payments": {
       "admin": {
         "shortcut": {
-          "stripeLabel": "stripe"
+          "stripeLabel": "Stripe"
         },
         "dashboard": {
-          "stripeLabel": "stripe",
+          "stripeLabel": "Stripe",
           "stripeDescription": "plačila trak"
         },
         "paymentSettings": {
-          "stripeLabel": "stripe",
-          "stripeSettingsLabel": "stripe",
+          "stripeLabel": "Stripe",
+          "stripeSettingsLabel": "Stripe",
           "stripeSettingsDescription": "Še nimate Stripe API ID odjemalca je?",
           "stripeSettingsGetItHere": "Dobite ga tukaj"
         }

@@ -411,6 +411,10 @@
         "pkgEnabled": "{{app}} está ahora permitida.",
         "pkgDisabled": "{{app}} está deshabilitada."
       },
+      "gridSettingsPanel": {
+        "title": "Configuración de cuadrícula",
+        "selected": "Seleccionado"
+      },
       "cartDrawer": {
         "empty": "Estamos tristes. Tu carrito está vacío.",
         "keepShopping": "Seguir con la compra",

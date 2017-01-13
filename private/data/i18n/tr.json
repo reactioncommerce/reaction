@@ -411,6 +411,10 @@
         "pkgEnabled": " şu anda etkin.",
         "pkgDisabled": " şu anda etkin değil."
       },
+      "gridSettingsPanel": {
+        "title": "Izgara Ayarları",
+        "selected": "Seçilmiş"
+      },
       "cartDrawer": {
         "empty": "Üzgünüz. Sepetiniz boş.",
         "keepShopping": "Alışverişe devam et",

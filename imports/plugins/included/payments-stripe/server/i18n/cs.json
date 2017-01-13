@@ -6,15 +6,15 @@
     "reaction-payments": {
       "admin": {
         "shortcut": {
-          "stripeLabel": "Proužek"
+          "stripeLabel": "Stripe"
         },
         "dashboard": {
-          "stripeLabel": "Proužek",
+          "stripeLabel": "Stripe",
           "stripeDescription": "platby Stripe"
         },
         "paymentSettings": {
-          "stripeLabel": "Proužek",
-          "stripeSettingsLabel": "Proužek",
+          "stripeLabel": "Stripe",
+          "stripeSettingsLabel": "Stripe",
           "stripeSettingsDescription": "Nemáte Stripe API ID klienta?",
           "stripeSettingsGetItHere": "Získat ji zde"
         }

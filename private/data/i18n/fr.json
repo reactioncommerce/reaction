@@ -411,6 +411,10 @@
         "pkgEnabled": "{{app}} est désormais activé",
         "pkgDisabled": "{{app}} est désormais désactivé"
       },
+      "gridSettingsPanel": {
+        "title": "Paramètres de la grille",
+        "selected": "Choisi"
+      },
       "cartDrawer": {
         "empty": "Nous sommes désolés. Votre panier est vide.",
         "keepShopping": "Poursuivre les achats",

@@ -6,15 +6,15 @@
     "reaction-payments": {
       "admin": {
         "shortcut": {
-          "stripeLabel": "Streifen"
+          "stripeLabel": "Stripe"
         },
         "dashboard": {
-          "stripeLabel": "Streifen",
+          "stripeLabel": "Stripe",
           "stripeDescription": "Stripe Zahlungen"
         },
         "paymentSettings": {
-          "stripeLabel": "Streifen",
-          "stripeSettingsLabel": "Streifen",
+          "stripeLabel": "Stripe",
+          "stripeSettingsLabel": "Stripe",
           "stripeSettingsDescription": "Verwenden Sie keine Stripe-API-Client-ID?",
           "stripeSettingsGetItHere": "Holen Sie sich hier"
         }

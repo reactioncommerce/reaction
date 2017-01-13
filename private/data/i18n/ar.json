@@ -411,6 +411,10 @@
         "pkgEnabled": "{{app}} مفعل الان.",
         "pkgDisabled": "{{app}} أصبح معطلا."
       },
+      "gridSettingsPanel": {
+        "title": "إعدادات الشبكة",
+        "selected": "مختار"
+      },
       "cartDrawer": {
         "empty": "نشعر بالحزن. .عربتك فارغة",
         "keepShopping": "الأستمرار بالتسوق",

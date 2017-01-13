@@ -411,6 +411,10 @@
         "pkgEnabled": " {{app}} wurde aktiviert.",
         "pkgDisabled": "  {{app}} wurde deaktiviert."
       },
+      "gridSettingsPanel": {
+        "title": "Rastereinstellungen",
+        "selected": "Ausgewählt"
+      },
       "cartDrawer": {
         "empty": "Ihr Warenkorb ist leer.",
         "keepShopping": "Zurück zum Shop",

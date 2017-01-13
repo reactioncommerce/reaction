@@ -411,6 +411,10 @@
         "pkgEnabled": "{{app}} har nu aktiverats.",
         "pkgDisabled": "{{app}} är nu inaktiverad."
       },
+      "gridSettingsPanel": {
+        "title": "galler Inställningar",
+        "selected": "Vald"
+      },
       "cartDrawer": {
         "empty": "Vi är ledsna. Din vagn är tom.",
         "keepShopping": "Håll på shopping",

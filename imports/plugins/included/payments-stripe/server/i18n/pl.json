@@ -6,15 +6,15 @@
     "reaction-payments": {
       "admin": {
         "shortcut": {
-          "stripeLabel": "Naszywka"
+          "stripeLabel": "Stripe"
         },
         "dashboard": {
-          "stripeLabel": "Naszywka",
+          "stripeLabel": "Stripe",
           "stripeDescription": "płatności stripe"
         },
         "paymentSettings": {
-          "stripeLabel": "Naszywka",
-          "stripeSettingsLabel": "Naszywka",
+          "stripeLabel": "Stripe",
+          "stripeSettingsLabel": "Stripe",
           "stripeSettingsDescription": "Nie masz Stripe API identyfikator klienta?",
           "stripeSettingsGetItHere": "Pobierz go tutaj"
         }

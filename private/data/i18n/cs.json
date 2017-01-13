@@ -411,6 +411,10 @@
         "pkgEnabled": "{{app}} je nyní povolena.",
         "pkgDisabled": "{{app}} je nyní zakázána."
       },
+      "gridSettingsPanel": {
+        "title": "Nastavení Grid",
+        "selected": "Vybraný"
+      },
       "cartDrawer": {
         "empty": "Jsme smutní. Tvůj vozík je prázdný.",
         "keepShopping": "Mějte na nákupy",

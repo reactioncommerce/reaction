@@ -6,15 +6,15 @@
     "reaction-payments": {
       "admin": {
         "shortcut": {
-          "stripeLabel": "Csík"
+          "stripeLabel": "Stripe"
         },
         "dashboard": {
-          "stripeLabel": "Csík",
+          "stripeLabel": "Stripe",
           "stripeDescription": "Stripe kifizetések"
         },
         "paymentSettings": {
-          "stripeLabel": "Csík",
-          "stripeSettingsLabel": "Csík",
+          "stripeLabel": "Stripe",
+          "stripeSettingsLabel": "Stripe",
           "stripeSettingsDescription": "Nincs még egy csík API ügyfél azonosító?",
           "stripeSettingsGetItHere": "Szerezd meg itt"
         }

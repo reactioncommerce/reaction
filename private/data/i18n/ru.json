@@ -411,6 +411,10 @@
         "pkgEnabled": "Пакет \"{{app}}\" подключен",
         "pkgDisabled": "Пакет \"{{app}}\" отключен"
       },
+      "gridSettingsPanel": {
+        "title": "Настройки сетки",
+        "selected": "выбранный"
+      },
       "cartDrawer": {
         "empty": "Очень жаль, ваша корзина пуста",
         "keepShopping": "Продолжить покупки",

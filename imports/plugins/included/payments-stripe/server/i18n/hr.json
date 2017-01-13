@@ -6,15 +6,15 @@
     "reaction-payments": {
       "admin": {
         "shortcut": {
-          "stripeLabel": "Pruga"
+          "stripeLabel": "Stripe"
         },
         "dashboard": {
-          "stripeLabel": "Pruga",
+          "stripeLabel": "Stripe",
           "stripeDescription": "plaćanja trakom"
         },
         "paymentSettings": {
-          "stripeLabel": "Pruga",
-          "stripeSettingsLabel": "Pruga",
+          "stripeLabel": "Stripe",
+          "stripeSettingsLabel": "Stripe",
           "stripeSettingsDescription": "Nemate ID klijenta pruga API?",
           "stripeSettingsGetItHere": "Nabavite ga ovdje"
         }

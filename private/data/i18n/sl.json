@@ -411,6 +411,10 @@
         "pkgEnabled": "{{app}} je sedaj omogočeno.",
         "pkgDisabled": "{{app}} je zdaj onemogočeno."
       },
+      "gridSettingsPanel": {
+        "title": "Nastavitve Grid",
+        "selected": "Izbrano"
+      },
       "cartDrawer": {
         "empty": "Mi smo žalostni. Košara je prazna.",
         "keepShopping": "Obdržati na nakupovanje",

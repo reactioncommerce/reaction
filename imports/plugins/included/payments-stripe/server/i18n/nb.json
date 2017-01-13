@@ -2,5 +2,20 @@
   "language": "Bokmål",
   "i18n": "nb",
   "ns": "reaction-stripe",
-  "translation": { }
+  "translation": {
+    "reaction-payments": {
+      "admin": {
+        "shortcut": {
+          "stripeLabel": "Stripe"
+        },
+        "dashboard": {
+          "stripeLabel": "Stripe"
+        },
+        "paymentSettings": {
+          "stripeLabel": "Stripe",
+          "stripeSettingsLabel": "Stripe"
+        }
+      }
+    }
+  }
 }]

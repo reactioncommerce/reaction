@@ -411,6 +411,10 @@
         "pkgEnabled": "{{app}} este acum activată.",
         "pkgDisabled": "{{app}} este acum dezactivată."
       },
+      "gridSettingsPanel": {
+        "title": "Setări de rețea",
+        "selected": "Selectat"
+      },
       "cartDrawer": {
         "empty": "Suntem triști. Coșul dumneavoastră este gol.",
         "keepShopping": "Continuați cumpărăturile",

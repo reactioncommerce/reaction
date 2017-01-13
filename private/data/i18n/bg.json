@@ -298,7 +298,7 @@
         "addToCart": "Добави в количката",
         "chooseOptions": "Моля изберете опции преди да добавите в количката",
         "outOfStock": "Съжеляваме! Този продукт не е в наличност.",
-        "productDeleteError": "Има проблем с изтриването ",
+        "productDeleteError": "Има проблем с изтриването {{product}}",
         "deleteErrorTheProduct": "продуктът",
         "deleteErrorTheSelectedProducts": "избраните продукти",
         "publishFirst": "Публикувайте продуктът, преди да го добавите в количката!",
@@ -309,8 +309,8 @@
         "soldOut": "Продуктът е разпродаден!",
         "backOrder": "Неизпълнена поръчка",
         "limitedSupply": "Ограничени количества",
-        "publishProductVisible": "Продуктът e видим",
-        "publishProductHidden": "Продуктът е видим",
+        "publishProductVisible": "{{product}}Продуктът e видим",
+        "publishProductHidden": "{{product}}Продуктът е видим",
         "clonedAlert": "клонирани {{product}}",
         "clonedAlert_plural": "клонирани {{product}}",
         "deletedAlert": "изтрити {{product}}",
@@ -408,8 +408,12 @@
         "details": "Детайли",
         "disable": "правя неспособен",
         "disableConfirm": "Сигурни ли сте че искате да забраните {{app}}?",
-        "pkgEnabled": "е включен.",
-        "pkgDisabled": "е изключен."
+        "pkgEnabled": "{{app}}е включен.",
+        "pkgDisabled": "{{app}}е изключен."
+      },
+      "gridSettingsPanel": {
+        "title": "Настройки грид",
+        "selected": "подбран"
       },
       "cartDrawer": {
         "empty": "За съжаление кошницата Ви е празна.",

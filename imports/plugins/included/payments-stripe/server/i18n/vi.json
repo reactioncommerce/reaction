@@ -6,15 +6,15 @@
     "reaction-payments": {
       "admin": {
         "shortcut": {
-          "stripeLabel": "Vạch sọc"
+          "stripeLabel": "Stripe"
         },
         "dashboard": {
-          "stripeLabel": "Vạch sọc",
+          "stripeLabel": "Stripe",
           "stripeDescription": "thanh toán sọc"
         },
         "paymentSettings": {
-          "stripeLabel": "Vạch sọc",
-          "stripeSettingsLabel": "Vạch sọc",
+          "stripeLabel": "Stripe",
+          "stripeSettingsLabel": "Stripe",
           "stripeSettingsDescription": "Không có một ID Khách hàng sọc API?",
           "stripeSettingsGetItHere": "Lấy nó ở đây"
         }
