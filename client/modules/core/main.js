@@ -338,7 +338,8 @@ export default {
     // find registry entries for routeName
     const reactionApp = Packages.findOne({
       "registry.name": currentRouteName,
-      "registry.provides": provides
+      "registry.provides": provides,
+      "enabled": true
     }, {
       enabled: 1,
       registry: 1,
