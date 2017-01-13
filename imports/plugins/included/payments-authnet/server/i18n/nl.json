@@ -1,0 +1,26 @@
+[{
+  "language": "Dutch",
+  "i18n": "nl",
+  "ns": "reaction-auth-net",
+  "translation": {
+    "reaction-payments": {
+      "admin": {
+        "shortcut": {
+          "authorizenetLabel": "Authorize.net",
+          "authorizenetTitle": "Authorize.net"
+        },
+        "dashboard": {
+          "authorizenetLabel": "Authorize.net",
+          "authorizenetTitle": "Authorize.net",
+          "authorizenetDescription": "Authorize.net betalingen"
+        },
+        "paymentSettings": {
+          "authorizenetLabel": "Authorize.net",
+          "authorizenetSettingsLabel": "Authorize.net",
+          "authorizenetCredentials": "Heb je geen login-ID en Transaction Key?",
+          "authorizenetCredentialURL": "Krijg één van Authorize.net"
+        }
+      }
+    }
+  }
+}]

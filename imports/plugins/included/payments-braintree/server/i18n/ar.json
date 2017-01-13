@@ -1,0 +1,32 @@
+[{
+  "language": "Arabic",
+  "i18n": "ar",
+  "ns": "reaction-braintree",
+  "translation": {
+    "reaction-payments": {
+      "admin": {
+        "shortcut": {
+          "braintreeLabel": "برينتر",
+          "braintreeTitle": "برينتر"
+        },
+        "dashboard": {
+          "braintreeLabel": "برينتر",
+          "braintreeTitle": "برينتر",
+          "braintreeDescription": "المدفوعات برينتر"
+        },
+        "paymentSettings": {
+          "braintreeLabel": "برينتر",
+          "braintreeSettingsLabel": "برينتر",
+          "braintreeCredentials": "إضافة أوراق لتمكين"
+        }
+      },
+      "order": {
+        "paymentProvider": {
+          "braintree": {
+            "braintreeSettlementDelay": "برينتر لا نسمح المبالغ المستردة حتى تتم تسوية المعاملات. هذا يمكن أن يستغرق ما يصل إلى 24 ساعة. الرجاء معاودة المحاولة في وقت لاحق."
+          }
+        }
+      }
+    }
+  }
+}]

@@ -1,0 +1,32 @@
+[{
+  "language": "Romanian",
+  "i18n": "ro",
+  "ns": "reaction-braintree",
+  "translation": {
+    "reaction-payments": {
+      "admin": {
+        "shortcut": {
+          "braintreeLabel": "Braintree",
+          "braintreeTitle": "Braintree"
+        },
+        "dashboard": {
+          "braintreeLabel": "Braintree",
+          "braintreeTitle": "Braintree",
+          "braintreeDescription": "plăţile Braintree"
+        },
+        "paymentSettings": {
+          "braintreeLabel": "Braintree",
+          "braintreeSettingsLabel": "Braintree",
+          "braintreeCredentials": "Adăuga acreditările pentru a activa"
+        }
+      },
+      "order": {
+        "paymentProvider": {
+          "braintree": {
+            "braintreeSettlementDelay": "Nu permite Braintree restituiri până la tranzacțiile sunt decontate. Acest lucru poate dura până la 24 de ore. Vă rugăm să încercați din nou mai târziu."
+          }
+        }
+      }
+    }
+  }
+}]

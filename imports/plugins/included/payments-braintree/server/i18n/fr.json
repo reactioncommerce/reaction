@@ -1,0 +1,32 @@
+[{
+  "language": "French",
+  "i18n": "fr",
+  "ns": "reaction-braintree",
+  "translation": {
+    "reaction-payments": {
+      "admin": {
+        "shortcut": {
+          "braintreeLabel": "Braintree",
+          "braintreeTitle": "Braintree"
+        },
+        "dashboard": {
+          "braintreeLabel": "Braintree",
+          "braintreeTitle": "Braintree",
+          "braintreeDescription": "paiements Braintree"
+        },
+        "paymentSettings": {
+          "braintreeLabel": "Braintree",
+          "braintreeSettingsLabel": "Braintree",
+          "braintreeCredentials": "Ajouter les informations d'identification pour permettre"
+        }
+      },
+      "order": {
+        "paymentProvider": {
+          "braintree": {
+            "braintreeSettlementDelay": "Braintree ne permet pas le remboursement jusqu'à ce que les transactions sont réglées. Cela peut prendre jusqu'à 24 heures. Veuillez réessayer plus tard."
+          }
+        }
+      }
+    }
+  }
+}]

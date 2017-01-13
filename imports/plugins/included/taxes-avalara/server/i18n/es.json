@@ -1,0 +1,26 @@
+[{
+  "language": "Spanish",
+  "i18n": "es",
+  "ns": "taxes-avalara",
+  "translation": {
+    "reaction-taxes": {
+      "admin": {
+        "shortcut": {
+          "avalaraLabel": "Avalara",
+          "avalaraTitle": "Avalara"
+        },
+        "dashboard": {
+          "avalaraLabel": "Avalara",
+          "avalaraTitle": "Avalara",
+          "avalaraDescription": "Avalara tasas de impuestos"
+        },
+        "taxSettings": {
+          "avalaraLabel": "Avalara",
+          "avalaraSettingsLabel": "Avalara",
+          "avalaraCredentials": "Añadir credenciales para permitir",
+          "avalaraGetCredentialsURL": "Conseguirlos aquí"
+        }
+      }
+    }
+  }
+}]
