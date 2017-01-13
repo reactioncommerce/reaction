@@ -8,7 +8,7 @@ dependencies:
   cache_directories:
     - "~/.meteor"
   override:
-    - [[ -L ~/.meteor/meteor ]] && ln -s ~/.meteor/meteor /usr/local/bin/meteor
+    - if [[ -L ~/.meteor/meteor ]]; then ln -s ~/.meteor/meteor /usr/local/bin/meteor; fi
     - hash meteor 2>/dev/null || curl https://install.meteor.com | /bin/sh
     - npm i -g reaction-cli
     - meteor npm install
