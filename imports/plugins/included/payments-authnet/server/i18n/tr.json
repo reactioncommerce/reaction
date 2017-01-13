@@ -1,0 +1,26 @@
+[{
+  "language": "Turkish",
+  "i18n": "tr",
+  "ns": "reaction-auth-net",
+  "translation": {
+    "reaction-payments": {
+      "admin": {
+        "shortcut": {
+          "authorizenetLabel": "Authorize.net",
+          "authorizenetTitle": "Authorize.net"
+        },
+        "dashboard": {
+          "authorizenetLabel": "Authorize.net",
+          "authorizenetTitle": "Authorize.net",
+          "authorizenetDescription": "Authorize.net ödemeleri"
+        },
+        "paymentSettings": {
+          "authorizenetLabel": "Authorize.net",
+          "authorizenetSettingsLabel": "Authorize.net",
+          "authorizenetCredentials": "Bir Giriş Kimliği ve İşlem Anahtarını yok mu?",
+          "authorizenetCredentialURL": "Authorize.net birini alın"
+        }
+      }
+    }
+  }
+}]

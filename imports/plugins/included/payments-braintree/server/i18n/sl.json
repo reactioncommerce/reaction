@@ -1,0 +1,32 @@
+[{
+  "language": "Slovenian",
+  "i18n": "sl",
+  "ns": "reaction-braintree",
+  "translation": {
+    "reaction-payments": {
+      "admin": {
+        "shortcut": {
+          "braintreeLabel": "Braintree",
+          "braintreeTitle": "Braintree"
+        },
+        "dashboard": {
+          "braintreeLabel": "Braintree",
+          "braintreeTitle": "Braintree",
+          "braintreeDescription": "plačila Braintree"
+        },
+        "paymentSettings": {
+          "braintreeLabel": "Braintree",
+          "braintreeSettingsLabel": "Braintree",
+          "braintreeCredentials": "Dodaj poverilnice, da se omogoči"
+        }
+      },
+      "order": {
+        "paymentProvider": {
+          "braintree": {
+            "braintreeSettlementDelay": "Braintree ne dovoljuje nadomestil, dokler niso poravnane transakcije. To lahko traja do 24 ur. Prosim poskusite kasneje."
+          }
+        }
+      }
+    }
+  }
+}]

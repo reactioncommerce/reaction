@@ -13,6 +13,13 @@
           "taxesTitle": "Taxes",
           "taxesDescription": "Configuration de la taxe"
         },
+        "taxGrid": {
+          "taxCode": "Code",
+          "rate": "Taux",
+          "country": "Pays",
+          "region": "Région",
+          "postal": "Postal"
+        },
         "settings": {
           "taxSettingsLabel": "Paramètres de taxe"
         },

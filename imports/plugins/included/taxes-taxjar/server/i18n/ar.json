@@ -1,0 +1,26 @@
+[{
+  "language": "Arabic",
+  "i18n": "ar",
+  "ns": "taxes-taxjar",
+  "translation": {
+    "reaction-taxes": {
+      "admin": {
+        "shortcut": {
+          "taxjarLabel": "TaxJar",
+          "taxjarTitle": "TaxJar"
+        },
+        "dashboard": {
+          "taxjarLabel": "TaxJar",
+          "taxjarTitle": "TaxJar",
+          "taxjarDescription": "الضرائب TaxJar"
+        },
+        "taxSettings": {
+          "taxjarLabel": "TaxJar",
+          "taxjarSettingsLabel": "TaxJar",
+          "taxjarCredentials": "إضافة أوراق لتمكين",
+          "taxjarGetCredentialsURL": "الحصول عليها هنا"
+        }
+      }
+    }
+  }
+}]

@@ -1,0 +1,26 @@
+[{
+  "language": "Romanian",
+  "i18n": "ro",
+  "ns": "taxes-avalara",
+  "translation": {
+    "reaction-taxes": {
+      "admin": {
+        "shortcut": {
+          "avalaraLabel": "Avalara",
+          "avalaraTitle": "Avalara"
+        },
+        "dashboard": {
+          "avalaraLabel": "Avalara",
+          "avalaraTitle": "Avalara",
+          "avalaraDescription": "Avalara Tarife fiscale"
+        },
+        "taxSettings": {
+          "avalaraLabel": "Avalara",
+          "avalaraSettingsLabel": "Avalara",
+          "avalaraCredentials": "Adăuga acreditările pentru a activa",
+          "avalaraGetCredentialsURL": "Ia-le aici"
+        }
+      }
+    }
+  }
+}]

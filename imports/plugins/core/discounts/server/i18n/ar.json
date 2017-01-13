@@ -1,0 +1,22 @@
+[{
+  "language": "Arabic",
+  "i18n": "ar",
+  "ns": "reaction-discounts",
+  "translation": {
+    "reaction-discounts": {
+      "admin": {
+        "settings": {
+          "discountsettingsLabel": "إعدادات الخصم"
+        },
+        "shortcut": {
+          "discountsLabel": "خصومات",
+          "discountsDescription": "تقديم العروض الترويجية والخصومات."
+        },
+        "dashboard": {
+          "discountsLabel": "خصومات",
+          "discountsDescription": "تقديم العروض الترويجية والخصومات."
+        }
+      }
+    }
+  }
+}]

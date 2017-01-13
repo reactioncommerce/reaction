@@ -1,0 +1,23 @@
+[{
+  "language": "Polish",
+  "i18n": "pl",
+  "ns": "discount-rates",
+  "translation": {
+    "reaction-discounts": {
+      "admin": {
+        "settings": {
+          "ratesLabel": "ceny",
+          "noCustomDiscountRatesFound": "Nie znaleziono dyskontowych.",
+          "settingsSaveSuccess": "Ustawienia zostały zapisane.",
+          "settingsSaveFailure": "Nie udało się zapisać ustawienia.",
+          "confirmRateDelete": "Potwierdź usunięcie stopa dyskontowa."
+        },
+        "discountGrid": {
+          "label": "Etykieta",
+          "discountMethod": "metoda",
+          "discount": "Zniżka"
+        }
+      }
+    }
+  }
+}]

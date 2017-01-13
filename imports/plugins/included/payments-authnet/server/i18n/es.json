@@ -1,0 +1,26 @@
+[{
+  "language": "Spanish",
+  "i18n": "es",
+  "ns": "reaction-auth-net",
+  "translation": {
+    "reaction-payments": {
+      "admin": {
+        "shortcut": {
+          "authorizenetLabel": "Authorize.net",
+          "authorizenetTitle": "Authorize.net"
+        },
+        "dashboard": {
+          "authorizenetLabel": "Authorize.net",
+          "authorizenetTitle": "Authorize.net",
+          "authorizenetDescription": "pagos Authorize.net"
+        },
+        "paymentSettings": {
+          "authorizenetLabel": "Authorize.net",
+          "authorizenetSettingsLabel": "Authorize.net",
+          "authorizenetCredentials": "No tener un ID de usuario y la clave de operación?",
+          "authorizenetCredentialURL": "Conseguir uno de Authorize.net"
+        }
+      }
+    }
+  }
+}]

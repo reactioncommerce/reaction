@@ -1,0 +1,43 @@
+[{
+  "language": "Turkish",
+  "i18n": "tr",
+  "ns": "reaction-paypal",
+  "translation": {
+    "reaction-payments": {
+      "admin": {
+        "shortcut": {
+          "paypalLabel": "PayPal"
+        },
+        "dashboard": {
+          "paypalLabel": "PayPal",
+          "paypalTitle": "PayPal",
+          "paypalDescription": "PayPal ödeme"
+        },
+        "paymentMethod": {
+          "expressLabel": "ekspres",
+          "creditCardLabel": "Kredi kartı"
+        },
+        "paymentSettings": {
+          "paypalLabel": "PayPal",
+          "paypalSettingsLabel": "PayPal",
+          "paypalExpressCredentials": "PayPal kullanıcı adı, şifre ve imza yok mu?",
+          "paypalExpressGetCredentialsHere": "Burada bir tane alın.",
+          "paypalPayflowCredentials": "PayPal istemci kimliği ve gizli yok mu",
+          "paypalPayflowGetCredentialsHere": "Onları burada alın."
+        }
+      },
+      "checkout": {
+        "completeYourOrder": "Siparişinizi tamamlamak",
+        "paymentMethod": {
+          "expressButtonLabel": "PayPal ile öde",
+          "expressNotConfigured": "Paypal Express yapılandırılmamış.",
+          "expressNotAvailable": "Paypal Express mevcut değil",
+          "submitting": "Gönderilmesi",
+          "invalidCard": "Oops! Kredi Kartı numarası geçersiz.",
+          "unknownError": "Oops! Bilinmeyen bir hata oluştu",
+          "resubmit": "ödeme tekrar gönderme"
+        }
+      }
+    }
+  }
+}]

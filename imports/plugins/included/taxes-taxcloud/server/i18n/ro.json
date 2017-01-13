@@ -1,0 +1,26 @@
+[{
+  "language": "Romanian",
+  "i18n": "ro",
+  "ns": "taxes-taxcloud",
+  "translation": {
+    "reaction-taxes": {
+      "admin": {
+        "shortcut": {
+          "taxcloudLabel": "TaxCloud",
+          "taxcloudTitle": "TaxCloud"
+        },
+        "dashboard": {
+          "taxcloudLabel": "TaxCloud",
+          "taxcloudTitle": "TaxCloud",
+          "taxcloudDescription": "taxe TaxCloud"
+        },
+        "taxSettings": {
+          "taxcloudLabel": "TaxCloud",
+          "taxcloudSettingsLabel": "TaxCloud",
+          "taxcloudCredentials": "Adăuga acreditările pentru a activa",
+          "taxcloudGetCredentialsURL": "Ia-le aici"
+        }
+      }
+    }
+  }
+}]

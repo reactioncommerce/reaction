@@ -1,0 +1,23 @@
+[{
+  "language": "Romanian",
+  "i18n": "ro",
+  "ns": "discount-rates",
+  "translation": {
+    "reaction-discounts": {
+      "admin": {
+        "settings": {
+          "ratesLabel": "tarife",
+          "noCustomDiscountRatesFound": "Nu există rate de actualizare găsite.",
+          "settingsSaveSuccess": "Setările au fost salvate cu succes.",
+          "settingsSaveFailure": "pentru a salva setările a eșuat.",
+          "confirmRateDelete": "Confirmați ștergerea cu discount ratei."
+        },
+        "discountGrid": {
+          "label": "Eticheta",
+          "discountMethod": "Metodă",
+          "discount": "Reducere"
+        }
+      }
+    }
+  }
+}]

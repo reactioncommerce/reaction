@@ -1,0 +1,24 @@
+[{
+  "language": "German",
+  "i18n": "de",
+  "ns": "reaction-stripe",
+  "translation": {
+    "reaction-payments": {
+      "admin": {
+        "shortcut": {
+          "stripeLabel": "Stripe"
+        },
+        "dashboard": {
+          "stripeLabel": "Stripe",
+          "stripeDescription": "Stripe Zahlungen"
+        },
+        "paymentSettings": {
+          "stripeLabel": "Stripe",
+          "stripeSettingsLabel": "Stripe",
+          "stripeSettingsDescription": "Verwenden Sie keine Stripe-API-Client-ID?",
+          "stripeSettingsGetItHere": "Holen Sie sich hier"
+        }
+      }
+    }
+  }
+}]

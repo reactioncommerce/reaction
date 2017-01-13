@@ -1,0 +1,26 @@
+[{
+  "language": "Romanian",
+  "i18n": "ro",
+  "ns": "reaction-auth-net",
+  "translation": {
+    "reaction-payments": {
+      "admin": {
+        "shortcut": {
+          "authorizenetLabel": "Authorize.net",
+          "authorizenetTitle": "Authorize.net"
+        },
+        "dashboard": {
+          "authorizenetLabel": "Authorize.net",
+          "authorizenetTitle": "Authorize.net",
+          "authorizenetDescription": "plăţile Authorize.Net"
+        },
+        "paymentSettings": {
+          "authorizenetLabel": "Authorize.net",
+          "authorizenetSettingsLabel": "Authorize.net",
+          "authorizenetCredentials": "Nu au un identificator de conectare și cheia de tranzacție?",
+          "authorizenetCredentialURL": "Obțineți unul din Authorize.net"
+        }
+      }
+    }
+  }
+}]
