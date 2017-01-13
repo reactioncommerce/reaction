@@ -1,0 +1,26 @@
+[{
+  "language": "Hungarian",
+  "i18n": "hu",
+  "ns": "taxes-taxcloud",
+  "translation": {
+    "reaction-taxes": {
+      "admin": {
+        "shortcut": {
+          "taxcloudLabel": "TaxCloud",
+          "taxcloudTitle": "TaxCloud"
+        },
+        "dashboard": {
+          "taxcloudLabel": "TaxCloud",
+          "taxcloudTitle": "TaxCloud",
+          "taxcloudDescription": "TaxCloud adók"
+        },
+        "taxSettings": {
+          "taxcloudLabel": "TaxCloud",
+          "taxcloudSettingsLabel": "TaxCloud",
+          "taxcloudCredentials": "Add hitelesítő hogy lehetővé tegye",
+          "taxcloudGetCredentialsURL": "Hozzák ide"
+        }
+      }
+    }
+  }
+}]

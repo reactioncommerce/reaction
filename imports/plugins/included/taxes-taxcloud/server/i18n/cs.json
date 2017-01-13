@@ -1,0 +1,26 @@
+[{
+  "language": "Czech",
+  "i18n": "cs",
+  "ns": "taxes-taxcloud",
+  "translation": {
+    "reaction-taxes": {
+      "admin": {
+        "shortcut": {
+          "taxcloudLabel": "TaxCloud",
+          "taxcloudTitle": "TaxCloud"
+        },
+        "dashboard": {
+          "taxcloudLabel": "TaxCloud",
+          "taxcloudTitle": "TaxCloud",
+          "taxcloudDescription": "TaxCloud daně"
+        },
+        "taxSettings": {
+          "taxcloudLabel": "TaxCloud",
+          "taxcloudSettingsLabel": "TaxCloud",
+          "taxcloudCredentials": "Přidat pověření k tomu, aby",
+          "taxcloudGetCredentialsURL": "Získat je sem"
+        }
+      }
+    }
+  }
+}]

@@ -1,0 +1,26 @@
+[{
+  "language": "Dutch",
+  "i18n": "nl",
+  "ns": "taxes-taxjar",
+  "translation": {
+    "reaction-taxes": {
+      "admin": {
+        "shortcut": {
+          "taxjarLabel": "TaxJar",
+          "taxjarTitle": "TaxJar"
+        },
+        "dashboard": {
+          "taxjarLabel": "TaxJar",
+          "taxjarTitle": "TaxJar",
+          "taxjarDescription": "TaxJar belastingen"
+        },
+        "taxSettings": {
+          "taxjarLabel": "TaxJar",
+          "taxjarSettingsLabel": "TaxJar",
+          "taxjarCredentials": "geloofsbrieven toe te voegen aan te schakelen",
+          "taxjarGetCredentialsURL": "Haal ze hier"
+        }
+      }
+    }
+  }
+}]

@@ -1,0 +1,26 @@
+[{
+  "language": "Hungarian",
+  "i18n": "hu",
+  "ns": "reaction-auth-net",
+  "translation": {
+    "reaction-payments": {
+      "admin": {
+        "shortcut": {
+          "authorizenetLabel": "Authorize.net",
+          "authorizenetTitle": "Authorize.net"
+        },
+        "dashboard": {
+          "authorizenetLabel": "Authorize.net",
+          "authorizenetTitle": "Authorize.net",
+          "authorizenetDescription": "Authorize.net kifizetések"
+        },
+        "paymentSettings": {
+          "authorizenetLabel": "Authorize.net",
+          "authorizenetSettingsLabel": "Authorize.net",
+          "authorizenetCredentials": "Nem rendelkezik bejelentkezési azonosítót és Tranzakciós Key?",
+          "authorizenetCredentialURL": "Kap egyet Authorize.net"
+        }
+      }
+    }
+  }
+}]

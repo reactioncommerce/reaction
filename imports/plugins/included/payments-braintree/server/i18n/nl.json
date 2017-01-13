@@ -1,0 +1,32 @@
+[{
+  "language": "Dutch",
+  "i18n": "nl",
+  "ns": "reaction-braintree",
+  "translation": {
+    "reaction-payments": {
+      "admin": {
+        "shortcut": {
+          "braintreeLabel": "Braintree",
+          "braintreeTitle": "Braintree"
+        },
+        "dashboard": {
+          "braintreeLabel": "Braintree",
+          "braintreeTitle": "Braintree",
+          "braintreeDescription": "Braintree betalingen"
+        },
+        "paymentSettings": {
+          "braintreeLabel": "Braintree",
+          "braintreeSettingsLabel": "Braintree",
+          "braintreeCredentials": "geloofsbrieven toe te voegen aan te schakelen"
+        }
+      },
+      "order": {
+        "paymentProvider": {
+          "braintree": {
+            "braintreeSettlementDelay": "Braintree geen restitutie mogelijk tot transacties worden afgewikkeld. Dit kan tot 24 uur duren. Probeer het later opnieuw."
+          }
+        }
+      }
+    }
+  }
+}]

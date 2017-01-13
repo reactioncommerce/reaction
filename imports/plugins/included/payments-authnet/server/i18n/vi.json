@@ -1,0 +1,26 @@
+[{
+  "language": "Vietnamese",
+  "i18n": "vi",
+  "ns": "reaction-auth-net",
+  "translation": {
+    "reaction-payments": {
+      "admin": {
+        "shortcut": {
+          "authorizenetLabel": "Authorize.net",
+          "authorizenetTitle": "Authorize.net"
+        },
+        "dashboard": {
+          "authorizenetLabel": "Authorize.net",
+          "authorizenetTitle": "Authorize.net",
+          "authorizenetDescription": "thanh toán Authorize.net"
+        },
+        "paymentSettings": {
+          "authorizenetLabel": "Authorize.net",
+          "authorizenetSettingsLabel": "Authorize.net",
+          "authorizenetCredentials": "Không có một ID đăng nhập và Key giao dịch?",
+          "authorizenetCredentialURL": "Nhận được một từ Authorize.net"
+        }
+      }
+    }
+  }
+}]

@@ -1,0 +1,26 @@
+[{
+  "language": "Vietnamese",
+  "i18n": "vi",
+  "ns": "taxes-taxjar",
+  "translation": {
+    "reaction-taxes": {
+      "admin": {
+        "shortcut": {
+          "taxjarLabel": "TaxJar",
+          "taxjarTitle": "TaxJar"
+        },
+        "dashboard": {
+          "taxjarLabel": "TaxJar",
+          "taxjarTitle": "TaxJar",
+          "taxjarDescription": "thuế TaxJar"
+        },
+        "taxSettings": {
+          "taxjarLabel": "TaxJar",
+          "taxjarSettingsLabel": "TaxJar",
+          "taxjarCredentials": "Thêm thông tin để cho phép",
+          "taxjarGetCredentialsURL": "Nhận được chúng ở đây"
+        }
+      }
+    }
+  }
+}]

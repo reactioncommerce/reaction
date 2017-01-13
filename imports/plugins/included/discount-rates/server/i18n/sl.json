@@ -1,0 +1,23 @@
+[{
+  "language": "Slovenian",
+  "i18n": "sl",
+  "ns": "discount-rates",
+  "translation": {
+    "reaction-discounts": {
+      "admin": {
+        "settings": {
+          "ratesLabel": "Cene",
+          "noCustomDiscountRatesFound": "Ni diskontne stopnje.",
+          "settingsSaveSuccess": "Nastavitve so bile uspešno shranjene.",
+          "settingsSaveFailure": "Ni bilo mogoče shraniti nastavitev.",
+          "confirmRateDelete": "Potrdite popust brisanje tečaja."
+        },
+        "discountGrid": {
+          "label": "Label",
+          "discountMethod": "metoda",
+          "discount": "popust"
+        }
+      }
+    }
+  }
+}]

@@ -1,0 +1,32 @@
+[{
+  "language": "Polish",
+  "i18n": "pl",
+  "ns": "reaction-braintree",
+  "translation": {
+    "reaction-payments": {
+      "admin": {
+        "shortcut": {
+          "braintreeLabel": "Braintree",
+          "braintreeTitle": "Braintree"
+        },
+        "dashboard": {
+          "braintreeLabel": "Braintree",
+          "braintreeTitle": "Braintree",
+          "braintreeDescription": "płatności Braintree"
+        },
+        "paymentSettings": {
+          "braintreeLabel": "Braintree",
+          "braintreeSettingsLabel": "Braintree",
+          "braintreeCredentials": "Dodaj poświadczeń w celu umożliwienia"
+        }
+      },
+      "order": {
+        "paymentProvider": {
+          "braintree": {
+            "braintreeSettlementDelay": "Braintree nie pozwalają refundacji dopóki transakcje są rozliczane. Może to potrwać do 24 godzin. Spróbuj ponownie później."
+          }
+        }
+      }
+    }
+  }
+}]
