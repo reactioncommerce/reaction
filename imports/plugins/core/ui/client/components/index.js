@@ -25,3 +25,4 @@ export { default as Popover } from "./popover/popover";
 export * from "./menu";
 export * from "./buttonGroup";
 export { Switch } from "./switch";
+export { List, ListItem } from "./list";
