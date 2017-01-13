@@ -10,17 +10,53 @@ import { Admin } from "/imports/plugins/core/ui/client/providers";
 import Radium from "radium";
 import Velocity from "velocity-animate";
 import "velocity-animate/velocity.ui";
-import { VelocityTransitionGroup } from "velocity-react"
+import { VelocityTransitionGroup } from "velocity-react";
 
-const styles = {
-  base: {
-    display: "flex",
-    flexDirection: "column",
-    height: "100vh"
-  },
-  body: {
-    webkitOverflowScrolling: "touch"
-  }
+const getStyles = (props) => {
+  return {
+    base: {
+      display: "flex",
+      flexDirection: "column",
+      height: "100vh"
+    },
+    header: {
+      display: "flex",
+      alignItems: "center",
+      position: "relative",
+      height: "56px",
+      padding: "0 20px",
+      margin: 0
+    },
+    heading: {
+      display: "flex",
+      alignItems: "center",
+      flex: "1 1 auto",
+      position: "relative",
+      margin: 0,
+      height: "100%"
+    },
+    body: {
+      webkitOverflowScrolling: "touch"
+    },
+    title: {
+      margin: 0,
+      transition: "200ms all"
+    },
+    titleWithBackButton: {
+      paddingLeft: 40
+    },
+    backButton: {
+      height: "100%",
+      position: "absolute",
+      top: 0,
+      zIndex: 1
+    },
+    backButtonContainers: {
+      display: "flex",
+      alignItems: "center",
+      height: "100%"
+    }
+  };
 };
 
 class ActionView extends Component {
@@ -54,14 +90,46 @@ class ActionView extends Component {
   renderBackButton() {
     if (this.props.isActionViewAtRootView === false) {
       return (
-        <IconButton
-          icon="fa fa-arrow-left"
-          onClick={this.props.handleActionViewBack}
-        />
+        <div style={this.styles.backButton}>
+          <div style={this.styles.backButtonContainers}>
+            <IconButton
+              icon="fa fa-arrow-left"
+              onClick={this.props.handleActionViewBack}
+            />
+          </div>
+        </div>
       );
     }
   }
 
+  get styles() {
+    return getStyles(this.props);
+  }
+
+  get backButtonEnterAnimation() {
+    return {
+      animation: {
+        display: "flex",
+        position: "absolute",
+        left: 20,
+        opaticy: 1
+      },
+      duration: 200
+    };
+  }
+
+  get backButtonLeaveAnimaton() {
+    return {
+      animation: {
+        display: "flex",
+        position: "absolute",
+        left: -30,
+        opaticy: 0
+      },
+      duration: 200
+
+    };
+  }
 
   render() {
     const { actionView } = this.props;
@@ -70,31 +138,40 @@ class ActionView extends Component {
       "show-settings": this.props.actionViewIsOpen
     });
 
+
     return (
-      <div style={styles.base} className={baseClassName}>
-        <div className="admin-controls-heading">
+      <div style={this.styles.base} className={baseClassName}>
+        <div style={this.styles.header} className="admin-controls-heading--">
+          <VelocityTransitionGroup
+            enter={this.backButtonEnterAnimation}
+            leave={this.backButtonLeaveAnimaton}
+          >
+            {this.renderBackButton()}
+          </VelocityTransitionGroup>
 
-          <div className="nav nav-settings">
-            <div className="nav-settings-heading">
-              {this.renderBackButton()}
-              <h3 className="nav-settings-title">
-                <Translation
-                  defaultValue={actionView.label}
-                  i18nKey={actionView.i18nKeyLabel}
-                />
-              </h3>
-            </div>
-
-            <div className="nav-settings-controls">
-              <IconButton
-                icon="fa fa-times"
-                onClick={this.props.handleActionViewClose}
+          <div style={this.styles.heading} className="nav-settings-heading--">
+            <h3
+              className="nav-settings-title--"
+              style={[
+                this.styles.title,
+                !this.props.isActionViewAtRootView ? this.styles.titleWithBackButton : {}
+              ]}
+            >
+              <Translation
+                defaultValue={actionView.label || "Dashboard"}
+                i18nKey={actionView.i18nKeyLabel || "dashboard.coreTitle"}
               />
-            </div>
+            </h3>
           </div>
 
+          <div className="nav-settings-controls--">
+            <IconButton
+              icon="fa fa-times"
+              onClick={this.props.handleActionViewClose}
+            />
+          </div>
         </div>
-        <div style={styles.body} className="admin-controls-content action-view-body">
+        <div style={this.styles.body} className="admin-controls-content action-view-body">
 
             {this.renderControlComponent()}
         </div>
