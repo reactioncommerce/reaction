@@ -16,31 +16,39 @@ function handleShowPackage(event, app) {
 }
 
 function composer(props, onData) {
-  const apps = Reaction.Apps({ provides: "dashboard", enabled: true }) || [];
-  const packages = apps.map((packageData) => {
-    const appData = Reaction.Apps({
-      provides: "settings",
-      name: packageData.packageName
-    });
+  const settings = Reaction.Apps({ provides: "settings", enabled: true }) || [];
 
-    if ((!packageData.route || !packageData.template) && appData.length) {
-      return {
-        ...packageData,
-        ...appData[0]
-      };
-    }
+  const dashboard = Reaction.Apps({ provides: "dashboard", enabled: true }) || [];
 
-    return packageData;
-  });
 
-  const groupedPackages = groupBy(packages, (app) => {
-    return app.container || "misc";
-  });
+
+  // const packages = apps.map((packageData) => {
+  //   const appData = Reaction.Apps({
+  //     provides: "settings",
+  //     name: packageData.packageName
+  //   });
+  //
+  //   if ((!packageData.route || !packageData.template) && appData.length) {
+  //     return {
+  //       ...packageData,
+  //       ...appData[0]
+  //     };
+  //   }
+  //
+  //   return packageData;
+  // });
+
+  // const groupedPackages = groupBy(packages, (app) => {
+  //   return app.container || "misc";
+  // });
 
   onData(null, {
-    packages,
-    groupedPackages,
-    groups: Object.keys(groupedPackages),
+    // packages,
+    groupedPackages: {
+      dashboard: dashboard,
+      settings: settings
+    },
+    // groups: Object.keys(groupedPackages),
 
     // Callbacks
     handleShowPackage

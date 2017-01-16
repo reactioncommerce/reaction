@@ -36,7 +36,7 @@ const getStyles = (props) => {
       height: "100%"
     },
     body: {
-      webkitOverflowScrolling: "touch"
+      // webkitOverflowScrolling: "touch"
     },
     title: {
       margin: 0,
