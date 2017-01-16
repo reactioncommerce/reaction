@@ -13,11 +13,20 @@ import "velocity-animate/velocity.ui";
 import { VelocityTransitionGroup } from "velocity-react";
 
 const getStyles = (props) => {
+  console.log(props);
+  let viewSize = 400
+  // if (props.actionView && props.actionView.priority === 1 && props.actionView.provides === "dashboard") {
+  if (props.actionView && props.actionView.provides === "dashboard") {
+      viewSize = "90vw"
+  }
+
   return {
     base: {
       display: "flex",
       flexDirection: "column",
-      height: "100vh"
+      height: "100vh",
+      position: "relative",
+      width: viewSize
     },
     header: {
       display: "flex",
@@ -36,7 +45,20 @@ const getStyles = (props) => {
       height: "100%"
     },
     body: {
-      // webkitOverflowScrolling: "touch"
+      display: "flex",
+      webkitOverflowScrolling: "touch"
+    },
+    masterView: {
+      flex: "1 1 auto",
+      height: "100%",
+      overflow: "auto",
+      webkitOverflowScrolling: "touch"
+    },
+    detailView: {
+      width: "400px",
+      height: "100%",
+      overflow: "auto",
+      webkitOverflowScrolling: "touch"
     },
     title: {
       margin: 0,
@@ -70,9 +92,27 @@ class ActionView extends Component {
   renderControlComponent() {
     if (this.props.actionView && typeof this.props.actionView.template === "string") {
       return (
-        <Blaze
-          template={this.props.actionView.template}
-        />
+        <div style={this.styles.masterView} className="master">
+          <Blaze
+            template={this.props.actionView.template}
+          />
+        </div>
+      );
+    }
+
+    return null;
+  }
+
+  renderDetailComponent() {
+    console.log("detailvoiew, this.props", this.props.detailView);
+    if (this.props.detailView && typeof this.props.detailView.template === "string") {
+      return (
+        <div style={this.styles.detailView} className="detail">
+          <Blaze
+            template={this.props.detailView.template}
+            data={this.props.detailView.data}
+          />
+      </div>
       );
     }
 
@@ -174,6 +214,7 @@ class ActionView extends Component {
         <div style={this.styles.body} className="admin-controls-content action-view-body">
 
             {this.renderControlComponent()}
+            {this.renderDetailComponent()}
         </div>
         <div className="admin-controls-footer">
           <div className="admin-controls-container">

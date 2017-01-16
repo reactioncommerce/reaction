@@ -64,6 +64,7 @@ function composer(props, onData) {
   onData(null, {
     isAdminArea: true,
     actionView: Reaction.getActionView(),
+    detailView: Reaction.getActionViewDetail(),
     data: props.data,
     buttons: items,
     isActionViewAtRootView: Reaction.isActionViewAtRootView(),

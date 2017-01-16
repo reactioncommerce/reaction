@@ -301,6 +301,32 @@ export default {
     actionViewStack.pop();
 
     Session.set("admin/actionView", actionViewStack);
+
+    this.setActionViewDetail({});
+  },
+
+  setActionViewDetail(viewData) {
+    if (viewData) {
+      Session.set("admin/detailView", [viewData]);
+    }
+  },
+
+  pushActionViewDetail(viewData) {
+    Session.set("admin/showActionView", true);
+
+    const detailViewStack = Session.get("admin/detailView");
+
+    if (viewData) {
+      detailViewStack.push(viewData);
+      Session.set("admin/detailView", detailViewStack);
+    }
+  },
+
+  popActionViewDetail() {
+    const detailViewStack = Session.get("admin/detailView");
+    detailViewStack.pop();
+
+    Session.set("admin/detailView", detailViewStack);
   },
 
   getActionView() {
@@ -308,6 +334,16 @@ export default {
 
     if (Array.isArray(actionViewStack) && actionViewStack.length) {
       return actionViewStack.pop();
+    }
+
+    return {};
+  },
+
+  getActionViewDetail() {
+    const detailViewStack = Session.get("admin/detailView");
+
+    if (Array.isArray(detailViewStack) && detailViewStack.length) {
+      return detailViewStack.pop();
     }
 
     return {};
