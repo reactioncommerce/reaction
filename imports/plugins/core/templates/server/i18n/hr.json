@@ -4,6 +4,11 @@
   "ns": "reaction-templates",
   "translation": {
     "reaction-templates": {
+      "admin": {
+        "settings": {
+          "templateSettingsLabel": "Postavke predloška"
+        }
+      },
       "templateGrid": {
         "noTemplatesFound": "Nema predloške pronađeno",
         "columns": {

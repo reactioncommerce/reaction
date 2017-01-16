@@ -79,6 +79,8 @@
           "utilities": "תכניות שירות"
         },
         "settings": {
+          "saveSuccess": "ההגדרות עודכנו.",
+          "saveFailed": "עדכון ההגדרות נכשל.",
           "accountSettingsLabel": "הגדרות חשבון",
           "addShopMemberLabel": "הוסף חבר חנות",
           "permissionsSettingsLabel": "הרשאות",
@@ -92,7 +94,10 @@
           "analyticsSettingsLabel": "הגדרות ניתוח",
           "reactionConnectLabel": "חיבור Reaction",
           "productSettingsLabel": "הגדרות מוצר",
-          "productDetailsLabel": "פרטי המוצר"
+          "productDetailsLabel": "פרטי המוצר",
+          "productRevisionsLabel": "גרסאות מוצרים",
+          "emailSettingsLabel": "הגדרות דוא\"ל",
+          "catalogSettingsLabel": "הגדרות קטלוג"
         },
         "userAccountDropdown": {
           "profileLabel": "פרופיל"
@@ -262,7 +267,9 @@
           "connectionFailed": "החיבור נכשל!",
           "saveAnyway": "האם ברצונך לשמור את ההגדרות בכל מקרה?",
           "saveSuccess": "הגדרות הדואר נשמרו.",
-          "saveFailed": "שמירת הגדרות הדואר נכשלה. {{error}}"
+          "saveFailed": "שמירת הגדרות הדואר נכשלה. {{error}}",
+          "cantSendEmail": "שגיאת שרת: לא ניתן לשלוח התראת דוא\"ל.",
+          "emailSent": "התראת דוא\"ל נשלחה."
         }
       },
       "header": {
@@ -373,6 +380,7 @@
         "productIsNotVisible": "המוצר אינו גלוי"
       },
       "productVariant": {
+        "addVariantOptions": "הוסף אפשרויות כדי להפעיל  את הלחצן \"הוסף לעגלה\"",
         "inventoryQuantity": "כמות",
         "title": "תווית",
         "price": "מחיר",
@@ -576,6 +584,7 @@
       },
       "revisions": {
         "isDisabled": "ניהול הגרסאות מושבת. כל השינויים יפורסמו באופן מידי.",
+        "isEnabled": "ניהול גרסאות מופעל עבור המוצרים. יש לפרסם את כל השינויים לפני שיהפכו להיות גלויים עבור הלקוחות.",
         "unpublishedChanges": "שינויים שלא פורסמו",
         "publishChanges": "פרסם שינויים",
         "showChanges": "הצג שינויים",
