@@ -1,8 +1,7 @@
 import { DDP } from "meteor/ddp-client";
 import { DDPCommon } from "meteor/ddp-common";
-import { Jobs, Packages } from "/lib/collections";
 import { Logger, Reaction } from "/server/api";
-
+import { Jobs, Packages } from "/lib/collections";
 
 // helper to fetch shippo config
 function getJobConfig() {
@@ -46,7 +45,7 @@ Meteor.methods({ "shippo/startJobs"() {
     },
     (job, callback) => {
     // As this block of code ,doesn't keep Meteor.userId()/this.userId
-    // which "shippo/fetchTrackingStatusForOrders" need we create a new current method invocation
+    // which "shippo/fetchTrackingStatusForOrders" need, we create a new current method invocation
     // in the server which has the userId set as the user which processed the Job.
       const invocation = new DDPCommon.MethodInvocation({
         isSimulation: false,

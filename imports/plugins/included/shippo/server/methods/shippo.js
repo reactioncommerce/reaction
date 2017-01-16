@@ -3,7 +3,6 @@ import { Reaction } from "/server/api";
 import { Packages, Accounts, Shops, Shipping, Cart, Orders } from "/lib/collections";
 import { ShippoPackageConfig } from "../../lib/collections/schemas";
 import { ShippoApi } from "./shippoapi";
-import fetchTrackingStatusForOrdersJob from "../jobs/shippo";
 
 // Creates an address (for sender or recipient) suitable for Shippo Api Calls given
 // a reaction address an email and a purpose("QUOTE"|"PURCHASE")
@@ -223,9 +222,8 @@ Meteor.methods({
       if (activeCarriers.length) {
         addShippoProviders(activeCarriers, shopId);
       }
+      Meteor.call("shippo/startJobs");
 
-      //fetchTrackingStatusForOrdersJob();
-      Meteor.call("shippoJob");
       return { type: "update" };
     }
 
@@ -262,9 +260,6 @@ Meteor.methods({
 
   "shippo/fetchTrackingStatusForOrders"() {
     const shopId = Reaction.getShopId();
-    //check( userId, String);
-   // this.setUserId(userId);
-
 
     const apiKey = getApiKey(shopId);
     if (!apiKey) {
@@ -289,6 +284,7 @@ Meteor.methods({
       const transaction = ShippoApi.methods.getTransaction.call({ apiKey, transactionId });
 
       // const trackingStatus = transaction.tracking_status;
+
       // mocking trackingStatus as Shippo's tracking status for test Shipments isn't getting updated
       //
       const trackingStatus = {};
