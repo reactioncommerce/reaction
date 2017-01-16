@@ -4,6 +4,11 @@
   "ns": "reaction-templates",
   "translation": {
     "reaction-templates": {
+      "admin": {
+        "settings": {
+          "templateSettingsLabel": "Nastavení šablony"
+        }
+      },
       "templateGrid": {
         "noTemplatesFound": "Nebyly nalezeny žádné šablony",
         "columns": {

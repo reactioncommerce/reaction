@@ -4,6 +4,11 @@
   "ns": "reaction-templates",
   "translation": {
     "reaction-templates": {
+      "admin": {
+        "settings": {
+          "templateSettingsLabel": "mall~~POS=TRUNC"
+        }
+      },
       "templateGrid": {
         "noTemplatesFound": "Inga mallar hittades",
         "columns": {

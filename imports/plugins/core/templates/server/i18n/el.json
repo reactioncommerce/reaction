@@ -4,6 +4,11 @@
   "ns": "reaction-templates",
   "translation": {
     "reaction-templates": {
+      "admin": {
+        "settings": {
+          "templateSettingsLabel": "πρότυπο Ρυθμίσεις"
+        }
+      },
       "templateGrid": {
         "noTemplatesFound": "Δεν βρέθηκαν πρότυπα",
         "columns": {
