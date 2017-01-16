@@ -1,6 +1,8 @@
+import _ from "lodash";
+import moment from "moment";
 import { HTTP } from "meteor/http";
 import { check } from "meteor/check";
-import { Packages } from "/lib/collections";
+import { Packages, Shops } from "/lib/collections";
 import { Reaction } from "/server/api";
 
 function getPackageData() {
@@ -36,6 +38,15 @@ function getAuthData() {
   const auth = `${username}:${password}`;
   return auth;
 }
+
+taxCalc.getCompanyCode = function () {
+  const result = Packages.findOne({
+    name: "taxes-avalara",
+    shopId: Reaction.getShopId(),
+    enabled: true
+  }, { fields: { "settings.avalara.companyCode": 1 } });
+  return result.settings.avalara.companyCode;
+};
 
 taxCalc.validateAddress = function (address, callback) {
   check(address, Object);
@@ -75,6 +86,72 @@ taxCalc.saveCompanyCode = function () {
     $set: { "settings.avalara.companyCode": companyCode }
   });
   return companyCode;
+};
+
+taxCalc.recordOrder = function (order) {
+
+};
+
+
+
+
+
+/**
+ * @summary Translate RC cart into format for submission
+ * @param {Object} cart RC cart to send for tax estimate
+ * @returns {Object} SalesOrder in Avalara format
+ */
+function cartToSalesOrder(cart) {
+  const companyCode = taxCalc.getCompanyCode();
+  const company = Shops.findOne(Reaction.getShopId());
+  const companyShipping = _.filter(company.addressBook, (o) => o.isShippingDefault)[0];
+  const lineItems = cart.items.map((item, index) => {
+    return {
+      number: index.toString() + 1,
+      quantity: item.quantity,
+      amount: item.variants.price * item.quantity,
+      description: item.title
+    };
+  });
+
+  console.log("lineItems", lineItems);
+  const salesOrder = {
+    companyCode: companyCode,
+    type: "SalesOrder",
+    code: cart._id,
+    date: moment.utc(cart.createdAt),
+    addresses: {
+      ShipFrom: {
+        line1: companyShipping.address1,
+        line2: companyShipping.address2,
+        city: companyShipping.city,
+        region: companyShipping.region,
+        country: companyShipping.country,
+        postalCode: companyShipping.postal
+      },
+      ShipTo: {
+        line1: cart.shipping[0].address.address1,
+        line2: cart.shipping[0].address.address2 || "",
+        city: cart.shipping[0].address.city,
+        region: cart.shipping[0].address.region,
+        country: cart.shipping[0].address.country || "US"
+      },
+      lines: lineItems
+    }
+  };
+  return salesOrder;
+}
+
+taxCalc.estimateCart = function (cart, callback) {
+  // check(cart, Object);
+
+  const salesOrder = cartToSalesOrder(cart);
+  const auth = getAuthData();
+  const baseUrl = getUrl();
+  const requestUrl = `${baseUrl}/transactions/create`;
+  const result = HTTP.post(requestUrl, { data: salesOrder, auth: auth });
+  return result;
+
 };
 
 
