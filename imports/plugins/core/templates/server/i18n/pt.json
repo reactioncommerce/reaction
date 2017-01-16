@@ -4,6 +4,11 @@
   "ns": "reaction-templates",
   "translation": {
     "reaction-templates": {
+      "admin": {
+        "settings": {
+          "templateSettingsLabel": "Configurações do modelo"
+        }
+      },
       "templateGrid": {
         "noTemplatesFound": "Nenhum modelo encontrado",
         "columns": {

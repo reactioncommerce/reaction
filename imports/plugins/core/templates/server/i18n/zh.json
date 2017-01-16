@@ -4,6 +4,11 @@
   "ns": "reaction-templates",
   "translation": {
     "reaction-templates": {
+      "admin": {
+        "settings": {
+          "templateSettingsLabel": "模板设置"
+        }
+      },
       "templateGrid": {
         "noTemplatesFound": "没有找到模板",
         "columns": {
