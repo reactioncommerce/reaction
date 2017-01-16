@@ -19,7 +19,7 @@ export function getAddress(options = {}) {
     postal: faker.address.zipCode(),
     country: faker.address.countryCode(),
     isCommercial: faker.random.boolean(),
-    isShippingDefault: faker.random.boolean(),
+    isShippingDefault: true,
     isBillingDefault: faker.random.boolean(),
     metafields: []
   };
