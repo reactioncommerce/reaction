@@ -1,5 +1,7 @@
+import { DDP } from "meteor/ddp-client";
+import { DDPCommon } from "meteor/ddp-common";
 import { Jobs, Packages } from "/lib/collections";
-import { Hooks, Logger, Reaction } from "/server/api";
+import { Logger, Reaction } from "/server/api";
 
 
 // helper to fetch shippo config
@@ -10,10 +12,9 @@ function getJobConfig() {
   }).settings;
 }
 
-// add job hook for "shippo/fetchTrackingStatusOfOrders"
-Hooks.Events.add("afterCoreInit", () => {
+Meteor.methods({ "shippo/startJobs"() {
+  const userId = this.userId;
   const config = getJobConfig();
-
   const refreshPeriod = config.refreshPeriod;
 
   if (!config.shippo.enabled || !refreshPeriod) {
@@ -36,10 +37,7 @@ Hooks.Events.add("afterCoreInit", () => {
       // but only if this job repeats forever.
       cancelRepeats: true
     });
-});
 
-
-export default function () {
   Jobs.processJobs(
     "shippo/fetchTrackingStatusForOrdersJob",
     {
@@ -47,16 +45,32 @@ export default function () {
       workTimeout: 180 * 1000
     },
     (job, callback) => {
-      Meteor.call("shippo/fetchTrackingStatusForOrders", error => {
-        if (error) {
-          job.done(error.toString(), { repeatId: true });
-        } else {
-          const success = "Latest Shippo's Tracking Status of Orders fetched successfully.";
-          Logger.info(success);
-          job.done(success, { repeatId: true });
-        }
+    // As this block of code ,doesn't keep Meteor.userId()/this.userId
+    // which "shippo/fetchTrackingStatusForOrders" need we create a new current method invocation
+    // in the server which has the userId set as the user which processed the Job.
+      const invocation = new DDPCommon.MethodInvocation({
+        isSimulation: false,
+        userId: userId,
+        setUserId: ()=>{},
+        unblock: ()=>{},
+        connection: {},
+        randomSeed: Math.random()
+      });
+
+      DDP._CurrentInvocation.withValue(invocation, () => {
+        Meteor.call("shippo/fetchTrackingStatusForOrders", error => {
+          if (error) {
+            job.done(error.toString(), { repeatId: true });
+          } else {
+            const success = "Latest Shippo's Tracking Status of Orders fetched successfully.";
+            Logger.info(success);
+            job.done(success, { repeatId: true });
+          }
+        });
       });
       callback();
     }
   );
 }
+});
+

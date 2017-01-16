@@ -304,8 +304,8 @@ export const methods = {
       return item._id;
     });
 
-    Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/delivered", order._id, itemIds);
-    Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/completed", order._id, itemIds);
+    Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/delivered", order, itemIds);
+    Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/completed", order, itemIds);
 
     const isCompleted = _.every(order.items, (item) => {
       return _.includes(item.workflow.workflow, "coreOrderItemWorkflow/completed");
@@ -321,11 +321,11 @@ export const methods = {
     });
 
     if (isCompleted === true) {
-      Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "completed", order._id);
+      Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "completed", order);
       return true;
     }
 
-    Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "processing", order._id);
+    Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "processing", order);
 
     return false;
   },

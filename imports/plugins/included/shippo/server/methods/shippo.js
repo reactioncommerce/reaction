@@ -224,8 +224,8 @@ Meteor.methods({
         addShippoProviders(activeCarriers, shopId);
       }
 
-      fetchTrackingStatusForOrdersJob();
-
+      //fetchTrackingStatusForOrdersJob();
+      Meteor.call("shippoJob");
       return { type: "update" };
     }
 
@@ -262,6 +262,9 @@ Meteor.methods({
 
   "shippo/fetchTrackingStatusForOrders"() {
     const shopId = Reaction.getShopId();
+    //check( userId, String);
+   // this.setUserId(userId);
+
 
     const apiKey = getApiKey(shopId);
     if (!apiKey) {
