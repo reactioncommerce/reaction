@@ -5,7 +5,7 @@ import { ReactionProduct } from "/lib/api";
 import { Reaction, i18next, Logger } from "/client/api";
 import { Tags, Media } from "/lib/collections";
 import { Loading, Translation } from "/imports/plugins/core/ui/client/components";
-import { ProductDetail } from "../components";
+import { ProductDetail, ProductNotFound } from "../components";
 import { SocialContainer, VariantListContainer } from "./";
 import { MediaGalleryContainer } from "/imports/plugins/core/ui/client/containers";
 import { DragDropProvider, TranslationProvider } from "/imports/plugins/core/ui/client/providers";
@@ -147,37 +147,31 @@ class ProductDetailContainer extends Component {
   }
 
   render() {
-    if(isEmpty(this.props.product)){
-      console.log("hello there test");
+    if (isEmpty(this.props.product)) {
       return (
-        <TranslationProvider>
-          <div>
-            <h1><Translation defaultValue="Product Not Found" i18nKey="app.productNotFound" /></h1>
-          </div>
-        </TranslationProvider>
-      );
-    } else {
-      return (
-        <TranslationProvider>
-          <DragDropProvider>
-            <StyleRoot>
-              <ProductDetail
-                cartQuantity={this.state.cartQuantity}
-                mediaGalleryComponent={<MediaGalleryContainer media={this.props.media} />}
-                onAddToCart={this.handleAddToCart}
-                onCartQuantityChange={this.handleCartQuantityChange}
-                onViewContextChange={this.handleViewContextChange}
-                socialComponent={<SocialContainer />}
-                topVariantComponent={<VariantListContainer />}
-                onDeleteProduct={this.handleDeleteProduct}
-                onProductFieldChange={this.handleProductFieldChange}
-                {...this.props}
-              />
-            </StyleRoot>
-          </DragDropProvider>
-        </TranslationProvider>
+        <ProductNotFound />
       );
     }
+    return (
+      <TranslationProvider>
+        <DragDropProvider>
+          <StyleRoot>
+            <ProductDetail
+              cartQuantity={this.state.cartQuantity}
+              mediaGalleryComponent={<MediaGalleryContainer media={this.props.media} />}
+              onAddToCart={this.handleAddToCart}
+              onCartQuantityChange={this.handleCartQuantityChange}
+              onViewContextChange={this.handleViewContextChange}
+              socialComponent={<SocialContainer />}
+              topVariantComponent={<VariantListContainer />}
+              onDeleteProduct={this.handleDeleteProduct}
+              onProductFieldChange={this.handleProductFieldChange}
+              {...this.props}
+            />
+          </StyleRoot>
+        </DragDropProvider>
+      </TranslationProvider>
+    );
   }
 }
 
@@ -192,8 +186,6 @@ function composer(props, onData) {
   const variantId = Reaction.Router.getParam("variantId");
   const revisionType = Reaction.Router.getQueryParam("revision");
   const viewProductAs = Reaction.Router.getQueryParam("as");
-
-  console.log("Product ID / composer Handle", productId);
 
   let productSub;
 
@@ -276,7 +268,7 @@ function composer(props, onData) {
         hasAdminPermission: Reaction.hasPermission(["createProduct"])
       });
     } else {
-      console.log("we do not have a product lets show the error page instead of the loading symbol");
+      // onData must be called with composeWithTracker, or else the loading icon will show forever.
       onData(null, {});
     }
   }
