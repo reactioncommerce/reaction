@@ -4,6 +4,11 @@
   "ns": "reaction-templates",
   "translation": {
     "reaction-templates": {
+      "admin": {
+        "settings": {
+          "templateSettingsLabel": "template က Settings"
+        }
+      },
       "templateGrid": {
         "noTemplatesFound": "တင်းပလိတ်များမတွေ့ရှိပါ",
         "columns": {
