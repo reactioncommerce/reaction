@@ -116,6 +116,7 @@
 
     <div>
       <i class="fa fa-truck"></i>
+      {{shipmentMethod.carrier}} - {{shipmentMethod.label}}
       <span class="badge badge-{{shipmentStatus.status}}">{{shipmentStatus.label}}</span>
     </div>
     {{#if shipmentTracking}}
