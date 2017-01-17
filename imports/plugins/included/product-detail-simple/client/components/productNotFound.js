@@ -7,7 +7,7 @@ const ProductNotFound = (props) => {
     <TranslationProvider>
       <div className="container-fluid-sm">
         <div className="empty-view-message">
-          <i className="fa fa-barcode"></i>
+          <i className="fa fa-barcode" />
           <Translation defaultValue="Oops" i18nKey="productDetail.notFoundTitle" />
           <Translation defaultValue="Product Not Found" i18nKey="productDetail.notFoundError" />
         </div>
