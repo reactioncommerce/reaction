@@ -1,4 +1,5 @@
 import { Reaction } from "/client/api";
+
 /* eslint no-loop-func: 0 */
 
 /**
@@ -58,7 +59,7 @@ Template.gridPackage.helpers({
       controls.push({
         icon: app.icon || "fa fa-cog fa-fw",
         onClick() {
-          Reaction.pushActionView(app);
+          Reaction.showActionView(app);
         }
       });
     }
@@ -67,7 +68,7 @@ Template.gridPackage.helpers({
       controls.push({
         icon: "angle-right",
         onClick() {
-          Reaction.pushActionView(data.package);
+          showPackageDashboard(data.package);
         }
       });
     }
@@ -75,7 +76,7 @@ Template.gridPackage.helpers({
     return {
       controls,
       onContentClick() {
-        Reaction.pushActionView(data.package);
+        showPackageDashboard(data.package);
       }
     };
   },

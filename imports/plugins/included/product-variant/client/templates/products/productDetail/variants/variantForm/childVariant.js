@@ -12,7 +12,6 @@ Template.onRendered(function () {
 
     $(`div.child-variant-collapse:not(#child-variant-form-${selectedVariantId})`).collapse("hide");
     $(`#child-variant-form-${selectedVariantId}`).collapse("show");
-    $(`#option-child-variant-form-${selectedVariantId}`).focus();
   });
 });
 

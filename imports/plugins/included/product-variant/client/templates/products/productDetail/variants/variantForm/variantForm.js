@@ -144,19 +144,7 @@ Template.variantForm.events({
     if (!productId) {
       return;
     }
-    Meteor.call("products/createVariant", template.data._id, function (error, result) {
-      if (result) {
-        const newVariantId = result;
-        const selectedProduct = ReactionProduct.selectedProduct();
-        ReactionProduct.setCurrentVariant(newVariantId);
-        Session.set("variant-form-" + newVariantId, true);
-
-        Reaction.Router.go("product", {
-          handle: selectedProduct.handle,
-          variantId: newVariantId
-        });
-      }
-    });
+    Meteor.call("products/createVariant", template.data._id);
   },
   "click .btn-clone-variant": function (event, template) {
     event.stopPropagation();
