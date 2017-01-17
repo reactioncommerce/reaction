@@ -181,6 +181,8 @@ function composer(props, onData) {
   const revisionType = Reaction.Router.getQueryParam("revision");
   const viewProductAs = Reaction.Router.getQueryParam("as");
 
+  console.log("Product ID / composer Handle", productId);
+
   let productSub;
 
   if (productId) {
@@ -261,6 +263,10 @@ function composer(props, onData) {
         viewAs: viewProductAs,
         hasAdminPermission: Reaction.hasPermission(["createProduct"])
       });
+    } else {
+      const error = new Error('Oops. Something is not right.');
+      onData(error);
+      console.log("we donot have a product lets show the error page instead of the loading symbol");
     }
   }
 }
