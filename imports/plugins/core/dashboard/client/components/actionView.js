@@ -3,7 +3,6 @@ import classnames from "classnames";
 import Blaze from "meteor/gadicc:blaze-react-component";
 import {
   IconButton,
-  Button,
   Translation
 } from "/imports/plugins/core/ui/client/components";
 import { Admin } from "/imports/plugins/core/ui/client/providers";
@@ -13,11 +12,10 @@ import "velocity-animate/velocity.ui";
 import { VelocityTransitionGroup } from "velocity-react";
 
 const getStyles = (props) => {
-  console.log(props);
-  let viewSize = 400
+  let viewSize = 400;
   // if (props.actionView && props.actionView.priority === 1 && props.actionView.provides === "dashboard") {
   if (props.actionView && props.actionView.provides === "dashboard") {
-      viewSize = "90vw"
+    viewSize = "90vw";
   }
 
   return {
@@ -104,7 +102,6 @@ class ActionView extends Component {
   }
 
   renderDetailComponent() {
-    console.log("detailvoiew, this.props", this.props.detailView);
     if (this.props.detailView && typeof this.props.detailView.template === "string") {
       return (
         <div style={this.styles.detailView} className="detail">

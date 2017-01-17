@@ -187,7 +187,7 @@ Template.ordersListItem.events({
     // Reaction.Router.setQueryParams({
     //   _id: instance.data.order._id
     // });
-    console.log("great!");
+
     Reaction.setActionViewDetail({
       label: "Order Details",
       i18nKeyLabel: "orderWorkflow.orderDetails",

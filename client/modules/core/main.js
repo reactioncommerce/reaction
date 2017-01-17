@@ -358,6 +358,10 @@ export default {
       label: "",
       i18nKeyLabel: ""
     }]);
+    Session.set("admin/detailView", [{
+      label: "",
+      i18nKeyLabel: ""
+    }]);
   },
 
   getCurrentTag() {

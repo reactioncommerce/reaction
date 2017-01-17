@@ -67,9 +67,7 @@ Template.gridPackage.helpers({
       controls.push({
         icon: "angle-right",
         onClick() {
-          console.log("Data.package", data);
           Reaction.pushActionView(data.package);
-          // showPackageDashboard(data.package);
         }
       });
     }
@@ -78,7 +76,6 @@ Template.gridPackage.helpers({
       controls,
       onContentClick() {
         Reaction.pushActionView(data.package);
-        // showPackageDashboard(data.package);
       }
     };
   },
