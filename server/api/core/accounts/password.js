@@ -199,6 +199,22 @@ export function sendVerificationEmail(userId, email) {
     userEmailAddress: address
   };
 
+  if (!Reaction.Email.getMailUrl()) {
+    Logger.warn(`
+
+  ***************************************************
+          IMPORTANT! EMAIL VERIFICATION LINK
+
+           Email sending is not configured.
+
+  Go to the following URL to verify email: ${address}
+
+  ${url}
+  ***************************************************
+
+    `);
+  }
+
   const tpl = "accounts/verifyEmail";
   const subject = "accounts/verifyEmail/subject";
 
