@@ -1,0 +1,34 @@
+[{
+  "language": "Hebrew",
+  "i18n": "he",
+  "ns": "reaction-payments",
+  "translation": {
+    "reaction-payments": {
+      "admin": {
+        "shortcut": {
+          "paymentsLabel": "תשלומים",
+          "paymentsTitle": "תשלומים"
+        },
+        "dashboard": {
+          "paymentsLabel": "תשלומים",
+          "paymentsTitle": "תשלומים",
+          "paymentsDescription": "קביעת תצורה לתשלומים"
+        },
+        "settings": {
+          "paymentSettingsLabel": "הגדרות תשלום"
+        },
+        "paymentSettings": {
+          "paymentMethod": "ספק ברירת מחדל"
+        }
+      },
+      "checkoutPayment": {
+        "addPaymentToCompleteOrder": "הוסף תשלום כדי להשלים את ההזמנה",
+        "processingError": "התגלתה בעיה עם התשלום.",
+        "completeYourOrder": "השלם את ההזמנה שלך",
+        "noPaymentMethods": "לא הוגדרו שיטות תשלום.",
+        "configureNow": "קבע תצורה עכשיו.",
+        "failedToPlaceOrder": "משלוח ההזמנה נכשל."
+      }
+    }
+  }
+}]

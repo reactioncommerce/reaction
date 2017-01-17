@@ -1,0 +1,35 @@
+[{
+  "language": "Spanish",
+  "i18n": "es",
+  "ns": "reaction-templates",
+  "translation": {
+    "reaction-templates": {
+      "admin": {
+        "settings": {
+          "templateSettingsLabel": "Configuración de plantilla"
+        }
+      },
+      "templateGrid": {
+        "noTemplatesFound": "No se encontraron plantillas",
+        "columns": {
+          "title": "Título",
+          "type": "Tipo",
+          "language": "Idioma"
+        }
+      },
+      "templateUpdateForm": {
+        "emailTemplates": {
+          "updateEmailTemplate": "plantilla de correo electrónico de actualización"
+        },
+        "reactTemplates": {
+          "updateReactTemplate": "Reaccionar actualización de plantilla",
+          "updateUnavailable": "Reaccionar plantillas no pueden editarse a través de esta interfaz"
+        },
+        "alerts": {
+          "templateUpdated": "Plantilla actualiza con éxito",
+          "failedToUpdate": "No se pudo actualizar la plantilla: {{err}}"
+        }
+      }
+    }
+  }
+}]

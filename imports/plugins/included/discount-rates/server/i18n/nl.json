@@ -1,0 +1,23 @@
+[{
+  "language": "Dutch",
+  "i18n": "nl",
+  "ns": "discount-rates",
+  "translation": {
+    "reaction-discounts": {
+      "admin": {
+        "settings": {
+          "ratesLabel": "tarieven",
+          "noCustomDiscountRatesFound": "Geen disconteringsvoet gevonden.",
+          "settingsSaveSuccess": "Instellingen succesvol opgeslagen.",
+          "settingsSaveFailure": "Kan instellingen op te slaan.",
+          "confirmRateDelete": "Bevestig discontovoet verwijdering."
+        },
+        "discountGrid": {
+          "label": "Etiket",
+          "discountMethod": "Methode",
+          "discount": "Korting"
+        }
+      }
+    }
+  }
+}]

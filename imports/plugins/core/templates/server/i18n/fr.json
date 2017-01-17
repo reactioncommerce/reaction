@@ -1,0 +1,35 @@
+[{
+  "language": "French",
+  "i18n": "fr",
+  "ns": "reaction-templates",
+  "translation": {
+    "reaction-templates": {
+      "admin": {
+        "settings": {
+          "templateSettingsLabel": "Paramètres du modèle"
+        }
+      },
+      "templateGrid": {
+        "noTemplatesFound": "Aucun modèle trouvé",
+        "columns": {
+          "title": "Titre",
+          "type": "Type",
+          "language": "Langue"
+        }
+      },
+      "templateUpdateForm": {
+        "emailTemplates": {
+          "updateEmailTemplate": "Mise à jour de modèle de courrier électronique"
+        },
+        "reactTemplates": {
+          "updateReactTemplate": "Mise à jour Réagir modèle",
+          "updateUnavailable": "Réagir modèles ne peuvent pas être modifiés par cette interface"
+        },
+        "alerts": {
+          "templateUpdated": "Modèle mis à jour avec succès",
+          "failedToUpdate": "Impossible de mettre à jour template: {{err}}"
+        }
+      }
+    }
+  }
+}]

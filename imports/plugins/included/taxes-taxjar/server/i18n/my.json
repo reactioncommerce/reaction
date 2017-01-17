@@ -1,0 +1,26 @@
+[{
+  "language": "Burmese",
+  "i18n": "my",
+  "ns": "taxes-taxjar",
+  "translation": {
+    "reaction-taxes": {
+      "admin": {
+        "shortcut": {
+          "taxjarLabel": "TaxJar",
+          "taxjarTitle": "TaxJar"
+        },
+        "dashboard": {
+          "taxjarLabel": "TaxJar",
+          "taxjarTitle": "TaxJar",
+          "taxjarDescription": "TaxJar အခွန်အခများ"
+        },
+        "taxSettings": {
+          "taxjarLabel": "TaxJar",
+          "taxjarSettingsLabel": "TaxJar",
+          "taxjarCredentials": "ဖွင့်ဖို့အထောက်အထားများ Add",
+          "taxjarGetCredentialsURL": "ဒီနေရာမှာသူတို့ကို Get"
+        }
+      }
+    }
+  }
+}]

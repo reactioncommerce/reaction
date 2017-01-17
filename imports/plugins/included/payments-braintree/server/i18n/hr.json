@@ -1,0 +1,32 @@
+[{
+  "language": "Croatian",
+  "i18n": "hr",
+  "ns": "reaction-braintree",
+  "translation": {
+    "reaction-payments": {
+      "admin": {
+        "shortcut": {
+          "braintreeLabel": "Braintree",
+          "braintreeTitle": "Braintree"
+        },
+        "dashboard": {
+          "braintreeLabel": "Braintree",
+          "braintreeTitle": "Braintree",
+          "braintreeDescription": "plaćanja Braintree"
+        },
+        "paymentSettings": {
+          "braintreeLabel": "Braintree",
+          "braintreeSettingsLabel": "Braintree",
+          "braintreeCredentials": "Dodaj vjerodajnice kako bi se omogućilo"
+        }
+      },
+      "order": {
+        "paymentProvider": {
+          "braintree": {
+            "braintreeSettlementDelay": "Braintree ne dopušta povrat novca dok su transakcije podmirene. To može potrajati i do 24 sati. Molimo pokušajte ponovo kasnije."
+          }
+        }
+      }
+    }
+  }
+}]

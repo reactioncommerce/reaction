@@ -1,0 +1,23 @@
+[{
+  "language": "Russian",
+  "i18n": "ru",
+  "ns": "discount-rates",
+  "translation": {
+    "reaction-discounts": {
+      "admin": {
+        "settings": {
+          "ratesLabel": "Ставки",
+          "noCustomDiscountRatesFound": "Нет ставки дисконтирования не найдено.",
+          "settingsSaveSuccess": "Настройки успешно сохранены.",
+          "settingsSaveFailure": "Не удалось сохранить настройки.",
+          "confirmRateDelete": "Подтверждение удаления учетной ставки."
+        },
+        "discountGrid": {
+          "label": "Этикетка",
+          "discountMethod": "метод",
+          "discount": "Скидка"
+        }
+      }
+    }
+  }
+}]

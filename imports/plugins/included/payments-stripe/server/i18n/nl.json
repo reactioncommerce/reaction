@@ -1,0 +1,24 @@
+[{
+  "language": "Dutch",
+  "i18n": "nl",
+  "ns": "reaction-stripe",
+  "translation": {
+    "reaction-payments": {
+      "admin": {
+        "shortcut": {
+          "stripeLabel": "Stripe"
+        },
+        "dashboard": {
+          "stripeLabel": "Stripe",
+          "stripeDescription": "Stripe betalingen"
+        },
+        "paymentSettings": {
+          "stripeLabel": "Stripe",
+          "stripeSettingsLabel": "Stripe",
+          "stripeSettingsDescription": "Heb je geen Stripe API Client ID?",
+          "stripeSettingsGetItHere": "Krijg het hier"
+        }
+      }
+    }
+  }
+}]

@@ -1,0 +1,35 @@
+[{
+  "language": "Croatian",
+  "i18n": "hr",
+  "ns": "reaction-templates",
+  "translation": {
+    "reaction-templates": {
+      "admin": {
+        "settings": {
+          "templateSettingsLabel": "Postavke predloška"
+        }
+      },
+      "templateGrid": {
+        "noTemplatesFound": "Nema predloške pronađeno",
+        "columns": {
+          "title": "Titula",
+          "type": "Vrsta",
+          "language": "Jezik"
+        }
+      },
+      "templateUpdateForm": {
+        "emailTemplates": {
+          "updateEmailTemplate": "Ažuriranje predloška e-mail"
+        },
+        "reactTemplates": {
+          "updateReactTemplate": "Update reagiraju predložak",
+          "updateUnavailable": "Reagiraju predlošci ne mogu uređivati ​​putem ovog sučelja"
+        },
+        "alerts": {
+          "templateUpdated": "Predložak uspješno ažurirana",
+          "failedToUpdate": "Neuspješno ažuriranje predložak: {{err}}"
+        }
+      }
+    }
+  }
+}]

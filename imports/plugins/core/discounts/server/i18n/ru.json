@@ -1,0 +1,22 @@
+[{
+  "language": "Russian",
+  "i18n": "ru",
+  "ns": "reaction-discounts",
+  "translation": {
+    "reaction-discounts": {
+      "admin": {
+        "settings": {
+          "discountsettingsLabel": "Настройки скидок"
+        },
+        "shortcut": {
+          "discountsLabel": "Скидки",
+          "discountsDescription": "Обеспечить рекламные акции и скидки."
+        },
+        "dashboard": {
+          "discountsLabel": "Скидки",
+          "discountsDescription": "Обеспечить рекламные акции и скидки."
+        }
+      }
+    }
+  }
+}]

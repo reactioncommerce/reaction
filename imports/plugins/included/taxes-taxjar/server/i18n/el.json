@@ -1,0 +1,26 @@
+[{
+  "language": "Greek",
+  "i18n": "el",
+  "ns": "taxes-taxjar",
+  "translation": {
+    "reaction-taxes": {
+      "admin": {
+        "shortcut": {
+          "taxjarLabel": "TaxJar",
+          "taxjarTitle": "TaxJar"
+        },
+        "dashboard": {
+          "taxjarLabel": "TaxJar",
+          "taxjarTitle": "TaxJar",
+          "taxjarDescription": "φόροι TaxJar"
+        },
+        "taxSettings": {
+          "taxjarLabel": "TaxJar",
+          "taxjarSettingsLabel": "TaxJar",
+          "taxjarCredentials": "Προσθέστε τα διαπιστευτήρια για να ενεργοποιήσετε",
+          "taxjarGetCredentialsURL": "Πάρτε τους εδώ"
+        }
+      }
+    }
+  }
+}]

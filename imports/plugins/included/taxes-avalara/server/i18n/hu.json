@@ -1,0 +1,26 @@
+[{
+  "language": "Hungarian",
+  "i18n": "hu",
+  "ns": "taxes-avalara",
+  "translation": {
+    "reaction-taxes": {
+      "admin": {
+        "shortcut": {
+          "avalaraLabel": "Avalara",
+          "avalaraTitle": "Avalara"
+        },
+        "dashboard": {
+          "avalaraLabel": "Avalara",
+          "avalaraTitle": "Avalara",
+          "avalaraDescription": "Avalara Adókulcsok"
+        },
+        "taxSettings": {
+          "avalaraLabel": "Avalara",
+          "avalaraSettingsLabel": "Avalara",
+          "avalaraCredentials": "Add hitelesítő hogy lehetővé tegye",
+          "avalaraGetCredentialsURL": "Hozzák ide"
+        }
+      }
+    }
+  }
+}]

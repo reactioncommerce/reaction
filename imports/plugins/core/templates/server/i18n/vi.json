@@ -1,0 +1,35 @@
+[{
+  "language": "Vietnamese",
+  "i18n": "vi",
+  "ns": "reaction-templates",
+  "translation": {
+    "reaction-templates": {
+      "admin": {
+        "settings": {
+          "templateSettingsLabel": "Cài đặt template"
+        }
+      },
+      "templateGrid": {
+        "noTemplatesFound": "Không tìm thấy mẫu",
+        "columns": {
+          "title": "Chức vụ",
+          "type": "Kiểu",
+          "language": "Ngôn ngữ"
+        }
+      },
+      "templateUpdateForm": {
+        "emailTemplates": {
+          "updateEmailTemplate": "Cập nhật mẫu email"
+        },
+        "reactTemplates": {
+          "updateReactTemplate": "Cập nhật Phản ứng mẫu",
+          "updateUnavailable": "React mẫu không thể chỉnh sửa thông qua giao diện này"
+        },
+        "alerts": {
+          "templateUpdated": "Mẫu cập nhật thành công",
+          "failedToUpdate": "Không thể cập nhật mẫu: {{err}}"
+        }
+      }
+    }
+  }
+}]

@@ -1,0 +1,34 @@
+[{
+  "language": "French",
+  "i18n": "fr",
+  "ns": "reaction-payments",
+  "translation": {
+    "reaction-payments": {
+      "admin": {
+        "shortcut": {
+          "paymentsLabel": "Paiements",
+          "paymentsTitle": "Paiements"
+        },
+        "dashboard": {
+          "paymentsLabel": "Paiements",
+          "paymentsTitle": "Paiements",
+          "paymentsDescription": "configuration des paiements"
+        },
+        "settings": {
+          "paymentSettingsLabel": "Paramètres de paiement"
+        },
+        "paymentSettings": {
+          "paymentMethod": "fournisseur par défaut"
+        }
+      },
+      "checkoutPayment": {
+        "addPaymentToCompleteOrder": "Ajouter le paiement à terminer la commande",
+        "processingError": "Il y avait un problème avec votre paiement.",
+        "completeYourOrder": "Complétez votre commande",
+        "noPaymentMethods": "Aucun mode de paiement sont configurés.",
+        "configureNow": "Configurer maintenant.",
+        "failedToPlaceOrder": "Impossible de passer commande."
+      }
+    }
+  }
+}]
