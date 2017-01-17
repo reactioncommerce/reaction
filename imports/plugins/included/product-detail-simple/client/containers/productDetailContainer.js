@@ -4,12 +4,13 @@ import { Meteor } from "meteor/meteor";
 import { ReactionProduct } from "/lib/api";
 import { Reaction, i18next, Logger } from "/client/api";
 import { Tags, Media } from "/lib/collections";
-import { Loading } from "/imports/plugins/core/ui/client/components";
+import { Loading, Translation } from "/imports/plugins/core/ui/client/components";
 import { ProductDetail } from "../components";
 import { SocialContainer, VariantListContainer } from "./";
 import { MediaGalleryContainer } from "/imports/plugins/core/ui/client/containers";
 import { DragDropProvider, TranslationProvider } from "/imports/plugins/core/ui/client/providers";
 import { StyleRoot } from "radium";
+import { isEmpty } from "lodash";
 
 class ProductDetailContainer extends Component {
   constructor(props) {
@@ -146,26 +147,37 @@ class ProductDetailContainer extends Component {
   }
 
   render() {
-    return (
-      <TranslationProvider>
-        <DragDropProvider>
-          <StyleRoot>
-            <ProductDetail
-              cartQuantity={this.state.cartQuantity}
-              mediaGalleryComponent={<MediaGalleryContainer media={this.props.media} />}
-              onAddToCart={this.handleAddToCart}
-              onCartQuantityChange={this.handleCartQuantityChange}
-              onViewContextChange={this.handleViewContextChange}
-              socialComponent={<SocialContainer />}
-              topVariantComponent={<VariantListContainer />}
-              onDeleteProduct={this.handleDeleteProduct}
-              onProductFieldChange={this.handleProductFieldChange}
-              {...this.props}
-            />
-          </StyleRoot>
-        </DragDropProvider>
-      </TranslationProvider>
-    );
+    if(isEmpty(this.props.product)){
+      console.log("hello there test");
+      return (
+        <TranslationProvider>
+          <div>
+            <h1><Translation defaultValue="Product Not Found" i18nKey="app.productNotFound" /></h1>
+          </div>
+        </TranslationProvider>
+      );
+    } else {
+      return (
+        <TranslationProvider>
+          <DragDropProvider>
+            <StyleRoot>
+              <ProductDetail
+                cartQuantity={this.state.cartQuantity}
+                mediaGalleryComponent={<MediaGalleryContainer media={this.props.media} />}
+                onAddToCart={this.handleAddToCart}
+                onCartQuantityChange={this.handleCartQuantityChange}
+                onViewContextChange={this.handleViewContextChange}
+                socialComponent={<SocialContainer />}
+                topVariantComponent={<VariantListContainer />}
+                onDeleteProduct={this.handleDeleteProduct}
+                onProductFieldChange={this.handleProductFieldChange}
+                {...this.props}
+              />
+            </StyleRoot>
+          </DragDropProvider>
+        </TranslationProvider>
+      );
+    }
   }
 }
 
@@ -264,9 +276,8 @@ function composer(props, onData) {
         hasAdminPermission: Reaction.hasPermission(["createProduct"])
       });
     } else {
-      const error = new Error('Oops. Something is not right.');
-      onData(error);
-      console.log("we donot have a product lets show the error page instead of the loading symbol");
+      console.log("we do not have a product lets show the error page instead of the loading symbol");
+      onData(null, {});
     }
   }
 }
