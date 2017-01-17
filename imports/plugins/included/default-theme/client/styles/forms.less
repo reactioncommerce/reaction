@@ -1,4 +1,4 @@
-// A checkbox that behaves like a switch
+
 .checkbox-switch {
     width: 36px;
     height: 22px;
@@ -59,76 +59,4 @@
         opacity: 0.6;
     }
 
-}
-
-// A React switch component
-.rui.switch {
-  display: flex;
-  align-items: center;
-  cursor: hand;
-  padding: 10px 0;
-  margin-bottom: 0;
-
-  input, label {
-    display: none;
-  }
-}
-
-.rui.switch .switch-control {
-  position: relative;
-  width: 36px;
-  max-width: 36px;
-  height: 22px;
-  flex: 0 0 auto;
-
-  // Bar
-  &:before {
-    position: absolute;
-    left: 0;
-    top: 6px;
-    content: "";
-    display: block;
-    background-color: darken(#fff, 10%);
-    width: 100%;
-    height: 10px;
-    border-radius: 12px;
-    /* box-shadow: 0 0 0 2px darken(#fff, 10%); */
-    /* border: 2px solid darken(#fff, 10%); */
-    .lh-transition(all 200ms);
-  }
-
-  // Nub
-  &:after {
-    content: "";
-    display: block;
-    width: 18px;
-    height: 18px;
-    background-color: @gray-light;
-    position: absolute;
-    left: 0;
-    top: 2px;
-    border-radius: 10px;
-    // box-shadow: 0 0 10px rgba(0,0,0,.1);
-    .lh-transition(all 200ms);
-  }
-
-  // Bar
-  &.active:before {
-    background-color: lighten(@brand-success, 20%);
-    .lh-transition(all 200ms);
-  }
-
-  // Nub
-  &.active:after {
-    left: 18px;
-    background-color: @brand-success;
-  }
-
-  &:disabled {
-    opacity: 0.6;
-  }
-}
-
-.rui.switch .control-label {
-  margin-left: 10px;
 }

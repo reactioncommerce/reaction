@@ -15,11 +15,11 @@
     transition: border-color 200ms linear;
 
     &:hover {
-      border-bottom: 3px solid @search-type-hover;
+      border-bottom: 3px solid fade(@brand-primary-color, 40%);
     }
 
     &.search-type-active {
-      border-bottom: 3px solid @search-type-active;
+      border-bottom: 3px solid @brand-primary-color;
       transition: border-color 200ms linear;
     }
 

@@ -6,7 +6,6 @@ import "./templates/packages/grid/grid.js";
 import "./templates/packages/grid/package.html";
 import "./templates/packages/grid/package.js";
 import "./templates/packages/packages.html";
-import "./templates/packages/packages.js";
 
 import "./templates/settings/settings.html";
 import "./templates/settings/settings.js";

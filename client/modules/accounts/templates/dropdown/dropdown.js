@@ -61,11 +61,8 @@ Template.loginDropdown.events({
           });
         }
       });
-    } else if (this.name !== "account/profile") {
-      event.preventDefault();
-      /** TMP **/
-      Reaction.showActionView(this);
     } else if (this.route || this.name) {
+      event.preventDefault();
       const route = this.name || this.route;
       Reaction.Router.go(route);
     }
