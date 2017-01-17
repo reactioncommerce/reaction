@@ -3,7 +3,7 @@ import moment from "moment";
 import { HTTP } from "meteor/http";
 import { check } from "meteor/check";
 import { Packages, Shops } from "/lib/collections";
-import { Reaction } from "/server/api";
+import { Reaction, Logger } from "/server/api";
 
 function getPackageData() {
   const pkgData = Packages.findOne({
@@ -27,6 +27,7 @@ function getUrl() {
 
 const taxCalc = {};
 
+
 function getAuthData() {
   const packageData = getPackageData();
   const { username, password } = packageData.settings.avalara;
@@ -39,6 +40,21 @@ function getAuthData() {
   return auth;
 }
 
+/**
+ * @summary Set debug bit
+ * @param {Boolean} isDebug whether to turn debug on or not
+ * @returns {Boolean} this.debug
+ */
+taxCalc.setDebug = function(isDebug = true) {
+  this.debug = isDebug;
+  Logger.info(`debug is ${this.debug}`);
+  return this.debug;
+};
+
+/**
+ * @summary Get the company code from the db
+ * @returns {String} Company Code
+ */
 taxCalc.getCompanyCode = function () {
   const result = Packages.findOne({
     name: "taxes-avalara",
@@ -48,6 +64,11 @@ taxCalc.getCompanyCode = function () {
   return result.settings.avalara.companyCode;
 };
 
+/**
+ * @summary Validate a particular address
+ * @param {Object} address Address to validate
+ * @param {Function} callback Optional callback function
+ */
 taxCalc.validateAddress = function (address, callback) {
   check(address, Object);
   const auth = getAuthData();
