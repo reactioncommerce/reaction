@@ -4,6 +4,9 @@ import { Blaze } from "meteor/blaze";
 import { Template } from "meteor/templating";
 import { Reaction, i18next } from "/client/api";
 import { Packages } from "/lib/collections";
+import PublishContainer from "/imports/plugins/core/revisions/client/containers/publishContainer";
+import { ActionViewContainer } from "/imports/plugins/core/dashboard/client/containers";
+import { ActionView } from "/imports/plugins/core/dashboard/client/components";
 
 Template.coreAdminLayout.onRendered(function () {
   $("body").addClass("admin");
@@ -14,6 +17,17 @@ Template.coreAdminLayout.onDestroyed(() => {
 });
 
 Template.coreAdminLayout.helpers({
+  PublishContainerComponent() {
+    return {
+      component: PublishContainer
+    };
+  },
+  ActionViewComponent() {
+    return {
+      component: ActionViewContainer(ActionView),
+      data: Template.currentData()
+    };
+  },
   shortcutButtons() {
     const instance = Template.instance();
     const shortcuts = Reaction.Apps({ provides: "shortcut", enabled: true });

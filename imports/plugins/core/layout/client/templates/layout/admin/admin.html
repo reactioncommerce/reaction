@@ -1,6 +1,11 @@
 <template name="coreAdminLayout">
   <span class="layout-alerts-global">{{> inlineAlerts}}</span>
+
   <div class="page {{adminControlsClassname}}" id="reactionAppContainer">
+    <div class="reaction-toolbar">
+      {{> React PublishContainerComponent }}
+    </div>
+
     <nav class="reaction-navigation-header">
       <!-- begin layoutHeader -->
       {{> Template.dynamic template=layoutHeader}}
@@ -12,10 +17,6 @@
     </nav>
 
     <main role="main" id="main">
-      <!-- begin dashboardHeader -->
-      {{> Template.dynamic template=dashboardHeader}}
-      <!-- end dashboardHeader -->
-
       <!-- begin template region -->
       {{> Template.dynamic template=template}}
       <!-- end template region -->
@@ -28,51 +29,7 @@
     </main>
   </div>
 
-  <div class="admin-controls {{adminControlsClassname}}">
-    <div class="admin-controls-detail">
-      <div class="admin-controls-heading">
-        {{> settingsHeader}}
-      </div>
-      <div class="admin-controls-content action-view-body">
-        <!-- begin admin controls -->
-        {{> Template.dynamic template=control.template data=control.data}}
-        <!-- end aadmin controls-->
-      </div>
-      <div class="admin-controls-footer">
-        <div class="admin-controls-container">
-          <!-- begin adminControlsFooter -->
-          {{> Template.dynamic template=adminControlsFooter}}
-          <!-- end adminControlsFooter -->
-        </div>
-      </div>
-    </div>
+  <div>
+    {{> React ActionViewComponent }}
   </div>
-
-  <div class="admin-controls-menu">
-
-    <nav class="admin-controls-quicklinks">
-      {{!-- Reaction.Apps provides=shortcut --}}
-      {{#each props in shortcutButtons}}
-        {{#if isSeperator props}}
-          <div class="rui separator padding xs">
-            <hr>
-          </div>
-        {{else}}
-          {{> button props}}
-        {{/if}}
-      {{/each}}
-    </nav>
-
-    <nav class="admin-controls-actions">
-      <!-- begin dashboardControls -->
-      {{> Template.dynamic template=dashboardControls}}
-      <!-- end dashboardControls -->
-
-      {{#each buttonProps in packageButtons}}
-        {{> button buttonProps}}
-      {{/each}}
-    </nav>
-
-  </div>
-
 </template>
