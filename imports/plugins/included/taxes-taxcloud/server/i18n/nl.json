@@ -1,0 +1,26 @@
+[{
+  "language": "Dutch",
+  "i18n": "nl",
+  "ns": "taxes-taxcloud",
+  "translation": {
+    "reaction-taxes": {
+      "admin": {
+        "shortcut": {
+          "taxcloudLabel": "TaxCloud",
+          "taxcloudTitle": "TaxCloud"
+        },
+        "dashboard": {
+          "taxcloudLabel": "TaxCloud",
+          "taxcloudTitle": "TaxCloud",
+          "taxcloudDescription": "TaxCloud belastingen"
+        },
+        "taxSettings": {
+          "taxcloudLabel": "TaxCloud",
+          "taxcloudSettingsLabel": "TaxCloud",
+          "taxcloudCredentials": "geloofsbrieven toe te voegen aan te schakelen",
+          "taxcloudGetCredentialsURL": "Haal ze hier"
+        }
+      }
+    }
+  }
+}]

@@ -1,0 +1,26 @@
+[{
+  "language": "Slovenian",
+  "i18n": "sl",
+  "ns": "taxes-taxcloud",
+  "translation": {
+    "reaction-taxes": {
+      "admin": {
+        "shortcut": {
+          "taxcloudLabel": "TaxCloud",
+          "taxcloudTitle": "TaxCloud"
+        },
+        "dashboard": {
+          "taxcloudLabel": "TaxCloud",
+          "taxcloudTitle": "TaxCloud",
+          "taxcloudDescription": "TaxCloud davki"
+        },
+        "taxSettings": {
+          "taxcloudLabel": "TaxCloud",
+          "taxcloudSettingsLabel": "TaxCloud",
+          "taxcloudCredentials": "Dodaj poverilnice, da se omogoči",
+          "taxcloudGetCredentialsURL": "Spravi jih tukaj"
+        }
+      }
+    }
+  }
+}]

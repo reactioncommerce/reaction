@@ -1,0 +1,26 @@
+[{
+  "language": "Arabic",
+  "i18n": "ar",
+  "ns": "taxes-taxcloud",
+  "translation": {
+    "reaction-taxes": {
+      "admin": {
+        "shortcut": {
+          "taxcloudLabel": "TaxCloud",
+          "taxcloudTitle": "TaxCloud"
+        },
+        "dashboard": {
+          "taxcloudLabel": "TaxCloud",
+          "taxcloudTitle": "TaxCloud",
+          "taxcloudDescription": "الضرائب TaxCloud"
+        },
+        "taxSettings": {
+          "taxcloudLabel": "TaxCloud",
+          "taxcloudSettingsLabel": "TaxCloud",
+          "taxcloudCredentials": "إضافة أوراق لتمكين",
+          "taxcloudGetCredentialsURL": "الحصول عليها هنا"
+        }
+      }
+    }
+  }
+}]

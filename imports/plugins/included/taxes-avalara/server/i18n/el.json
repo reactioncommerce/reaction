@@ -1,0 +1,26 @@
+[{
+  "language": "Greek",
+  "i18n": "el",
+  "ns": "taxes-avalara",
+  "translation": {
+    "reaction-taxes": {
+      "admin": {
+        "shortcut": {
+          "avalaraLabel": "Avalara",
+          "avalaraTitle": "Avalara"
+        },
+        "dashboard": {
+          "avalaraLabel": "Avalara",
+          "avalaraTitle": "Avalara",
+          "avalaraDescription": "Avalara Φορολογικοί Συντελεστές"
+        },
+        "taxSettings": {
+          "avalaraLabel": "Avalara",
+          "avalaraSettingsLabel": "Avalara",
+          "avalaraCredentials": "Προσθέστε τα διαπιστευτήρια για να ενεργοποιήσετε",
+          "avalaraGetCredentialsURL": "Πάρτε τους εδώ"
+        }
+      }
+    }
+  }
+}]

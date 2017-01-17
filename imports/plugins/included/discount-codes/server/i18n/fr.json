@@ -1,0 +1,40 @@
+[{
+  "language": "French",
+  "i18n": "fr",
+  "ns": "discount-codes",
+  "translation": {
+    "reaction-discounts": {
+      "checkoutPayment": {
+        "applyDiscount": "Appliquer",
+        "discountError": "Désolé, une erreur d'appliquer une réduction."
+      },
+      "discounts": {
+        "enterItHere": "Avoir un code? Entrez ici.",
+        "discountLabel": "Code promo",
+        "submitted": "Remise sauvegardé et appliqué",
+        "applied": "appliqué",
+        "code": "code",
+        "codeIsExpired": "Code est expiré",
+        "codeIsInvalid": "Le code est invalide"
+      },
+      "admin": {
+        "paymentSettings": {
+          "codesLabel": "Codes"
+        },
+        "settings": {
+          "codesLabel": "Codes",
+          "noCustomDiscountCodesFound": "Aucun code d'escompte trouvé."
+        },
+        "discountGrid": {
+          "code": "Code",
+          "calculation": {
+            "method": "Calcul"
+          },
+          "conditions": {
+            "redemptionLimit": "Limite"
+          }
+        }
+      }
+    }
+  }
+}]

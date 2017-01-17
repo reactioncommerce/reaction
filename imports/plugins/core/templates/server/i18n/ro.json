@@ -1,0 +1,35 @@
+[{
+  "language": "Romanian",
+  "i18n": "ro",
+  "ns": "reaction-templates",
+  "translation": {
+    "reaction-templates": {
+      "admin": {
+        "settings": {
+          "templateSettingsLabel": "Setări șablon"
+        }
+      },
+      "templateGrid": {
+        "noTemplatesFound": "Nu au găsit șabloane",
+        "columns": {
+          "title": "Titlu",
+          "type": "Tip",
+          "language": "Limba"
+        }
+      },
+      "templateUpdateForm": {
+        "emailTemplates": {
+          "updateEmailTemplate": "șablon de e-mail de actualizare"
+        },
+        "reactTemplates": {
+          "updateReactTemplate": "Actualizare React șablon",
+          "updateUnavailable": "Reacþioneazã template-uri nu pot fi editate prin această interfață"
+        },
+        "alerts": {
+          "templateUpdated": "Șablon actualizat cu succes",
+          "failedToUpdate": "Actualizarea nu a reușit șablon: {{err}}"
+        }
+      }
+    }
+  }
+}]

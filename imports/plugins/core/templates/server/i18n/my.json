@@ -1,0 +1,35 @@
+[{
+  "language": "Burmese",
+  "i18n": "my",
+  "ns": "reaction-templates",
+  "translation": {
+    "reaction-templates": {
+      "admin": {
+        "settings": {
+          "templateSettingsLabel": "template က Settings"
+        }
+      },
+      "templateGrid": {
+        "noTemplatesFound": "တင်းပလိတ်များမတွေ့ရှိပါ",
+        "columns": {
+          "title": "ခေါင်းစဥ်",
+          "type": "ပုံစံ",
+          "language": "ဘာသာစကား"
+        }
+      },
+      "templateUpdateForm": {
+        "emailTemplates": {
+          "updateEmailTemplate": "အီးမေးလ်က template ကိုအပ်ဒိတ်လုပ်ပါ"
+        },
+        "reactTemplates": {
+          "updateReactTemplate": "Update ကို template ကိုရင်တွင်းစကား",
+          "updateUnavailable": "ရင်တွင်းစကားတင်းပလိတ်များကဤ interface ကိုတဆင့်တည်းဖြတ်မရနိုငျ"
+        },
+        "alerts": {
+          "templateUpdated": "template အောင်မြင်စွာ updated",
+          "failedToUpdate": "template ကို update လုပ်ဖို့မရခဲ့ပါ: {{err}}"
+        }
+      }
+    }
+  }
+}]

@@ -1,48 +1,31 @@
 machine:
   node:
-    version: 7.3.0
+    version: 7.4.0
   services:
     - docker
-  pre:
-    - hash meteor 2>/dev/null || curl https://install.meteor.com | /bin/sh
 
 dependencies:
   cache_directories:
     - "~/.meteor"
-    - "~/docker"
   override:
-    - cd $HOME/reaction
-    - .reaction/docker/scripts/plugin-loader.sh
+    - if [[ -L ~/.meteor/meteor ]]; then ln -s ~/.meteor/meteor ~/bin/meteor; export PATH="$PATH:~/bin"; fi
+    - hash meteor 2>/dev/null || curl https://install.meteor.com | /bin/sh
+    - npm i -g reaction-cli
+    - meteor npm install
 
 test:
   override:
-    - cd $HOME/reaction
-    - meteor npm install
-    - SERVER_TEST_REPORTER="dot" meteor test --once --full-app --headless --driver-package dispatch:mocha
-    - .reaction/docker/scripts/ci-build.sh
+    - reaction test
+    - .reaction/ci/build.sh
 
 deployment:
   prequel:
     branch: development
     commands:
-      - DOCKER_NAMESPACE=${DOCKER_NAMESPACE:-reactioncommerce}
-      - docker tag reactioncommerce/base:latest $DOCKER_NAMESPACE/base:devel
-      - docker tag reactioncommerce/reaction:latest $DOCKER_NAMESPACE/prequel:latest
-      - docker tag reactioncommerce/reaction:latest $DOCKER_NAMESPACE/prequel:$CIRCLE_BUILD_NUM
-      - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
-      - docker push $DOCKER_NAMESPACE/base:devel
-      - docker push $DOCKER_NAMESPACE/prequel:$CIRCLE_BUILD_NUM
-      - docker push $DOCKER_NAMESPACE/prequel:latest
+      - .reaction/ci/deploy.sh
+
   release:
-    branch: master
+    tag: /v[0-9]+(\.[0-9]+)*/
+    owner: reactioncommerce
     commands:
-      - DOCKER_NAMESPACE=${DOCKER_NAMESPACE:-reactioncommerce}
-      - docker tag reactioncommerce/base:latest  $DOCKER_NAMESPACE/base:latest
-      - docker tag reactioncommerce/base:latest  $DOCKER_NAMESPACE/base:$CIRCLE_BUILD_NUM
-      - docker tag reactioncommerce/reaction:latest  $DOCKER_NAMESPACE/reaction:latest
-      - docker tag reactioncommerce/reaction:latest  $DOCKER_NAMESPACE/reaction:$CIRCLE_BUILD_NUM
-      - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
-      - docker push $DOCKER_NAMESPACE/base:$CIRCLE_BUILD_NUM
-      - docker push $DOCKER_NAMESPACE/base:latest
-      - docker push $DOCKER_NAMESPACE/reaction:$CIRCLE_BUILD_NUM
-      - docker push $DOCKER_NAMESPACE/reaction:latest
+      - .reaction/ci/deploy.sh

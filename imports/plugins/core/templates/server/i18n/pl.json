@@ -1,0 +1,35 @@
+[{
+  "language": "Polish",
+  "i18n": "pl",
+  "ns": "reaction-templates",
+  "translation": {
+    "reaction-templates": {
+      "admin": {
+        "settings": {
+          "templateSettingsLabel": "Ustawienia szablonu"
+        }
+      },
+      "templateGrid": {
+        "noTemplatesFound": "Nie znaleziono szablonów",
+        "columns": {
+          "title": "Tytuł",
+          "type": "Typ",
+          "language": "Język"
+        }
+      },
+      "templateUpdateForm": {
+        "emailTemplates": {
+          "updateEmailTemplate": "Aktualizacja szablonu e-mail"
+        },
+        "reactTemplates": {
+          "updateReactTemplate": "Aktualizacja React szablonu",
+          "updateUnavailable": "React szablony nie mogą być edytowane za pomocą tego interfejsu"
+        },
+        "alerts": {
+          "templateUpdated": "Szablon pomyślnie zaktualizowane",
+          "failedToUpdate": "Nie udało się zaktualizować szablon: {{err}}"
+        }
+      }
+    }
+  }
+}]

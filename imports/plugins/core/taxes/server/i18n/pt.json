@@ -10,7 +10,15 @@
         },
         "dashboard": {
           "taxesLabel": "Impostos",
-          "taxesTitle": "Impostos"
+          "taxesTitle": "Impostos",
+          "taxesDescription": "configuração de imposto"
+        },
+        "taxGrid": {
+          "taxCode": "Código",
+          "rate": "Taxa",
+          "country": "País",
+          "region": "Região",
+          "postal": "Postal"
         },
         "settings": {
           "taxSettingsLabel": "Definições de impostos"

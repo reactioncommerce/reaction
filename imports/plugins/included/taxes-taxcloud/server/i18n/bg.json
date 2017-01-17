@@ -1,0 +1,26 @@
+[{
+  "language": "Bulgarian",
+  "i18n": "bg",
+  "ns": "taxes-taxcloud",
+  "translation": {
+    "reaction-taxes": {
+      "admin": {
+        "shortcut": {
+          "taxcloudLabel": "TaxCloud",
+          "taxcloudTitle": "TaxCloud"
+        },
+        "dashboard": {
+          "taxcloudLabel": "TaxCloud",
+          "taxcloudTitle": "TaxCloud",
+          "taxcloudDescription": "TaxCloud данъци"
+        },
+        "taxSettings": {
+          "taxcloudLabel": "TaxCloud",
+          "taxcloudSettingsLabel": "TaxCloud",
+          "taxcloudCredentials": "Добави пълномощията да се даде възможност",
+          "taxcloudGetCredentialsURL": "Сложете ги тук"
+        }
+      }
+    }
+  }
+}]

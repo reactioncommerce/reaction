@@ -1,0 +1,35 @@
+[{
+  "language": "German",
+  "i18n": "de",
+  "ns": "reaction-templates",
+  "translation": {
+    "reaction-templates": {
+      "admin": {
+        "settings": {
+          "templateSettingsLabel": "Vorlageneinstellungen"
+        }
+      },
+      "templateGrid": {
+        "noTemplatesFound": "Keine Vorlagen gefunden",
+        "columns": {
+          "title": "Titel",
+          "type": "Art",
+          "language": "Sprache"
+        }
+      },
+      "templateUpdateForm": {
+        "emailTemplates": {
+          "updateEmailTemplate": "Update-E-Mail-Vorlage"
+        },
+        "reactTemplates": {
+          "updateReactTemplate": "Aktualisieren Reagieren Vorlage",
+          "updateUnavailable": "React Vorlagen können nicht durch diese Schnittstelle bearbeitet werden,"
+        },
+        "alerts": {
+          "templateUpdated": "Template erfolgreich aktualisiert",
+          "failedToUpdate": "Fehlgeschlagen Vorlage zu aktualisieren: {{err}}"
+        }
+      }
+    }
+  }
+}]

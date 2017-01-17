@@ -1,0 +1,35 @@
+[{
+  "language": "Czech",
+  "i18n": "cs",
+  "ns": "reaction-templates",
+  "translation": {
+    "reaction-templates": {
+      "admin": {
+        "settings": {
+          "templateSettingsLabel": "Nastavení šablony"
+        }
+      },
+      "templateGrid": {
+        "noTemplatesFound": "Nebyly nalezeny žádné šablony",
+        "columns": {
+          "title": "Nadpis",
+          "type": "Typ",
+          "language": "Jazyk"
+        }
+      },
+      "templateUpdateForm": {
+        "emailTemplates": {
+          "updateEmailTemplate": "Aktualizace šablonu e-mailu"
+        },
+        "reactTemplates": {
+          "updateReactTemplate": "Aktualizace Reagovat šablonu",
+          "updateUnavailable": "Reagovat šablony nelze upravovat přes toto rozhraní"
+        },
+        "alerts": {
+          "templateUpdated": "Šablona úspěšně aktualizováno",
+          "failedToUpdate": "Nepodařilo se aktualizovat šablony: {{err}}"
+        }
+      }
+    }
+  }
+}]

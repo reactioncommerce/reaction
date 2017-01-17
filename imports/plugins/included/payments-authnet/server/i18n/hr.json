@@ -1,0 +1,26 @@
+[{
+  "language": "Croatian",
+  "i18n": "hr",
+  "ns": "reaction-auth-net",
+  "translation": {
+    "reaction-payments": {
+      "admin": {
+        "shortcut": {
+          "authorizenetLabel": "Authorize.net",
+          "authorizenetTitle": "Authorize.net"
+        },
+        "dashboard": {
+          "authorizenetLabel": "Authorize.net",
+          "authorizenetTitle": "Authorize.net",
+          "authorizenetDescription": "plaćanja Authorize.Net"
+        },
+        "paymentSettings": {
+          "authorizenetLabel": "Authorize.net",
+          "authorizenetSettingsLabel": "Authorize.net",
+          "authorizenetCredentials": "Nemate ID za prijavu i transakcije ključ?",
+          "authorizenetCredentialURL": "Dobiti jedan od Authorize.net"
+        }
+      }
+    }
+  }
+}]

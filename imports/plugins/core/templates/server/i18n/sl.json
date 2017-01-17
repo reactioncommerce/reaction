@@ -1,0 +1,35 @@
+[{
+  "language": "Slovenian",
+  "i18n": "sl",
+  "ns": "reaction-templates",
+  "translation": {
+    "reaction-templates": {
+      "admin": {
+        "settings": {
+          "templateSettingsLabel": "Nastavitve predloge"
+        }
+      },
+      "templateGrid": {
+        "noTemplatesFound": "Ni predlog",
+        "columns": {
+          "title": "Naslov",
+          "type": "Vrsta",
+          "language": "Language"
+        }
+      },
+      "templateUpdateForm": {
+        "emailTemplates": {
+          "updateEmailTemplate": "Predloga email Update"
+        },
+        "reactTemplates": {
+          "updateReactTemplate": "Update React predlogo",
+          "updateUnavailable": "Reagirati predloge ni mogoče urejati preko tega vmesnika"
+        },
+        "alerts": {
+          "templateUpdated": "Predloga uspešno posodobljeni",
+          "failedToUpdate": "Ni bilo mogoče posodobiti predlogo: {{err}}"
+        }
+      }
+    }
+  }
+}]

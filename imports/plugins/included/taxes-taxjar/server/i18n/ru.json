@@ -1,0 +1,26 @@
+[{
+  "language": "Russian",
+  "i18n": "ru",
+  "ns": "taxes-taxjar",
+  "translation": {
+    "reaction-taxes": {
+      "admin": {
+        "shortcut": {
+          "taxjarLabel": "TaxJar",
+          "taxjarTitle": "TaxJar"
+        },
+        "dashboard": {
+          "taxjarLabel": "TaxJar",
+          "taxjarTitle": "TaxJar",
+          "taxjarDescription": "налоги TaxJar"
+        },
+        "taxSettings": {
+          "taxjarLabel": "TaxJar",
+          "taxjarSettingsLabel": "TaxJar",
+          "taxjarCredentials": "Добавить учетные данные для включения",
+          "taxjarGetCredentialsURL": "Получить их здесь"
+        }
+      }
+    }
+  }
+}]
