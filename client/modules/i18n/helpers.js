@@ -1,4 +1,6 @@
+import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
+import { Shops } from "/lib/collections";
 import { localeDep, i18nextDep } from  "./main";
 import { formatPriceString } from "./currency";
 import { Reaction, Logger, i18next } from "/client/api";
@@ -36,6 +38,13 @@ Template.registerHelper("i18n", function (i18nKey, i18nMessage) {
  */
 Template.registerHelper("currencySymbol", function () {
   const locale = Reaction.Locale.get();
+  const localStorageCurrency = localStorage.getItem("currency");
+  if (localStorageCurrency) {
+    const shop = Shops.findOne();
+    if (Match.test(shop, Object) && shop.currencies) {
+      return shop.currencies[localStorageCurrency].symbol;
+    }
+  }
   return locale.currency.symbol;
 });
 

@@ -4,6 +4,7 @@ import { Tracker } from "meteor/tracker";
 import { SimpleSchema } from "meteor/aldeed:simple-schema";
 import { Reaction } from "/client/api";
 import { Packages } from "/lib/collections";
+import { Shops } from "/lib/collections";
 
 //
 // Reaction i18n Translations, RTL and Currency Exchange Support
@@ -80,6 +81,7 @@ export function getMessagesFor() {
  *  initialize i18n and load data resources for the current language and fallback "EN"
  *
  */
+export const currencyDep = new Tracker.Dependency();
 export const i18nextDep = new Tracker.Dependency();
 export const localeDep = new Tracker.Dependency();
 export const packageNamespaces = [];
@@ -105,6 +107,23 @@ Meteor.startup(() => {
           const locale = result;
           locale.language = getBrowserLanguage();
           moment.locale(locale.language);
+          // flag in case the locale currency isn't enabled
+          locale.currencyEnabled = locale.currency.enabled;
+          const localStorageCurrency = localStorage.getItem("currency");
+          if (!localStorageCurrency) {
+            if (locale.currencyEnabled) {
+              //in case of multiple locale currencies
+              let primaryCurrency = locale.locale.currency.split(",")[0];
+              localStorage.setItem("currency", primaryCurrency);
+            } else {
+              const shop = Shops.findOne(Reaction.getShopId(), {
+                fields: {
+                  currency: 1
+                }
+              });
+              localStorage.setItem("currency", shop.currency);
+            }
+          }
           Reaction.Locale.set(locale);
           localeDep.changed();
 
