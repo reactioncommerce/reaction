@@ -68,6 +68,7 @@ taxCalc.getCompanyCode = function () {
  * @summary Validate a particular address
  * @param {Object} address Address to validate
  * @param {Function} callback Optional callback function
+ * @returns {Object} The validated address
  */
 taxCalc.validateAddress = function (address, callback) {
   check(address, Object);
@@ -76,7 +77,7 @@ taxCalc.validateAddress = function (address, callback) {
   // provide a synchronous version for testing
   if (callback) {
     HTTP.post(requestUrl, { data: address, auth: auth }, (err, result) => {
-      return (callback(result));
+      return callback(result);
     });
   } else {
     const result = HTTP.post(requestUrl, { data: address, auth: auth });
@@ -84,6 +85,11 @@ taxCalc.validateAddress = function (address, callback) {
   }
 };
 
+/**
+ * @summary Get all registered companies
+ * @param callback
+ * @returns {Object} A list of all companies
+ */
 taxCalc.getCompanies = function (callback) {
   const auth = getAuthData();
   const baseUrl = getUrl();
@@ -99,6 +105,10 @@ taxCalc.getCompanies = function (callback) {
   }
 };
 
+/**
+ * @summary Fetch the company code from the API and save in the DB
+ * @returns {String}
+ */
 taxCalc.saveCompanyCode = function () {
   const companyData = taxCalc.getCompanies();
   const companyCode = companyData.data.value[0].companyCode;
@@ -109,13 +119,16 @@ taxCalc.saveCompanyCode = function () {
   return companyCode;
 };
 
+/**
+ * @summary Record a SalesOrder
+ * @param {Object} order Completed order
+ * @returns {*} Result of record call
+ */
 taxCalc.recordOrder = function (order) {
 
+  const result = {};
+  return result;
 };
-
-
-
-
 
 /**
  * @summary Translate RC cart into format for submission
@@ -135,11 +148,11 @@ function cartToSalesOrder(cart) {
     };
   });
 
-  console.log("lineItems", lineItems);
   const salesOrder = {
     companyCode: companyCode,
     type: "SalesOrder",
     code: cart._id,
+    customerCode: cart.userId,
     date: moment.utc(cart.createdAt),
     addresses: {
       ShipFrom: {
@@ -156,13 +169,19 @@ function cartToSalesOrder(cart) {
         city: cart.shipping[0].address.city,
         region: cart.shipping[0].address.region,
         country: cart.shipping[0].address.country || "US"
-      },
-      lines: lineItems
-    }
+      }
+    },
+    lines: lineItems
   };
   return salesOrder;
 }
 
+/**
+ * @summary Submit cart for tax calculation
+ * @param {Cart} cart Cart object for estimation
+ * @param {Function} callback callback when using async version
+ * @returns {Object} result Result of SalesOrder call
+ */
 taxCalc.estimateCart = function (cart, callback) {
   // check(cart, Object);
 
@@ -170,6 +189,11 @@ taxCalc.estimateCart = function (cart, callback) {
   const auth = getAuthData();
   const baseUrl = getUrl();
   const requestUrl = `${baseUrl}/transactions/create`;
+  if (callback) {
+    HTTP.post(requestUrl, { data: salesOrder, auth: auth }, (err, result) => {
+      return callback(result);
+    });
+  }
   const result = HTTP.post(requestUrl, { data: salesOrder, auth: auth });
   return result;
 

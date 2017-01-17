@@ -68,12 +68,15 @@ describe("Avalara taxRate API", function () {
     });
   });
 
-  describe.only("processing a Sales Invoice", function () {
+  describe.only("processing a Sales Order", function () {
     this.timeout(5000);
-    it("should return a salesinvoice with taxes", function (done) {
+    it("should return a salesOrder with taxes", function (done) {
       const cart = createCart("BCTMZ6HTxFSppJESk", "6qiqPwBkeJdtdQc4G");
 
       const result = taxCalc.estimateCart(cart);
+
+      const data = JSON.parse(result);
+      console.log("salesOrder result", data.content);
       // console.log("line item result", result.data.lines[0]);
       expect(result).to.not.be.undefined;
       done();
