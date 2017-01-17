@@ -18,6 +18,10 @@ const getStyles = (props) => {
     viewSize = "90vw";
   }
 
+  if (props.actionViewIsOpen === false) {
+    viewSize = 0;
+  }
+
   return {
     base: {
       display: "flex",
@@ -92,6 +96,7 @@ class ActionView extends Component {
       return (
         <div style={this.styles.masterView} className="master">
           <Blaze
+            {...this.props.actionView.data}
             template={this.props.actionView.template}
           />
         </div>
@@ -106,8 +111,8 @@ class ActionView extends Component {
       return (
         <div style={this.styles.detailView} className="detail">
           <Blaze
+            {...this.props.detailView.data}
             template={this.props.detailView.template}
-            data={this.props.detailView.data}
           />
       </div>
       );

@@ -58,7 +58,7 @@ Template.productSettings.helpers({
     return false;
   },
   hasSelectedProducts() {
-    return this.products.length > 0;
+    return this.products && this.products.length > 0;
   },
   itemWeightActive: function (weight) {
     const instance = Template.instance();
