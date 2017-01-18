@@ -36,7 +36,7 @@ class ProductToolbar extends Component {
 
   handlePublishActions = (event, action) => {
     if (action === "archive" && this.props.onDeleteProduct) {
-      this.props.onDeleteProduct(this.product._id);
+      this.props.onDeleteProduct(this.product);
     }
   }
 
