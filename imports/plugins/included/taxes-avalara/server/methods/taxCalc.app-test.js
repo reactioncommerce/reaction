@@ -68,16 +68,43 @@ describe("Avalara taxRate API", function () {
     });
   });
 
-  describe.only("processing a Sales Order", function () {
+  describe("processing a Sales Order", function () {
     this.timeout(5000);
-    it("should return a salesOrder with taxes", function (done) {
-      const cart = createCart("BCTMZ6HTxFSppJESk", "6qiqPwBkeJdtdQc4G");
-
+    it.only("should return a tax estimate document", function (done) {
+      const options = {};
+      options.shippingAddress = {
+        country: "US",
+        address1: "2110 Main St.",
+        address2: "Suite 207",
+        postal: "90405",
+        city: "Santa Monica",
+        region: "CA",
+        isBillingDefault: true,
+        isShippingDefault: true
+      };
+      const cart = createCart("BCTMZ6HTxFSppJESk", "6qiqPwBkeJdtdQc4G", options);
       const result = taxCalc.estimateCart(cart);
+      const data = JSON.parse(result.content);
+      console.log("result lines", data);
+      expect(data.status).to.equal("Temporary");
+      done();
+    });
 
-      const data = JSON.parse(result);
-      console.log("salesOrder result", data.content);
-      // console.log("line item result", result.data.lines[0]);
+    it("should return a cart updated with tax informtion", function (done) {
+      const options = {};
+      options.shippingAddress = {
+        country: "US",
+        address1: "2110 Main St.",
+        address2: "Suite 207",
+        postal: "90405",
+        city: "Santa Monica",
+        region: "CA",
+        isBillingDefault: true,
+        isShippingDefault: true
+      };
+      const cart = createCart("BCTMZ6HTxFSppJESk", "6qiqPwBkeJdtdQc4G", options);
+      const result = taxCalc.applyEstimateToCart(cart);
+      console.log("salesOrder result", result);
       expect(result).to.not.be.undefined;
       done();
     });

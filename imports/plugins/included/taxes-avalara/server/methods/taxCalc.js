@@ -41,17 +41,6 @@ function getAuthData() {
 }
 
 /**
- * @summary Set debug bit
- * @param {Boolean} isDebug whether to turn debug on or not
- * @returns {Boolean} this.debug
- */
-taxCalc.setDebug = function(isDebug = true) {
-  this.debug = isDebug;
-  Logger.info(`debug is ${this.debug}`);
-  return this.debug;
-};
-
-/**
  * @summary Get the company code from the db
  * @returns {String} Company Code
  */
@@ -61,7 +50,13 @@ taxCalc.getCompanyCode = function () {
     shopId: Reaction.getShopId(),
     enabled: true
   }, { fields: { "settings.avalara.companyCode": 1 } });
-  return result.settings.avalara.companyCode;
+  const companyCode = result.settings.avalara.companyCode;
+  if (companyCode) {
+    return companyCode;
+  } else {
+    const companyCode = taxCalc.saveCompanyCode();
+    return companyCode;
+  }
 };
 
 /**
@@ -191,11 +186,28 @@ taxCalc.estimateCart = function (cart, callback) {
   const requestUrl = `${baseUrl}/transactions/create`;
   if (callback) {
     HTTP.post(requestUrl, { data: salesOrder, auth: auth }, (err, result) => {
-      return callback(result);
+      const data = JSON.parse(result.content);
+      return callback(data);
     });
   }
   const result = HTTP.post(requestUrl, { data: salesOrder, auth: auth });
-  return result;
+  const data = JSON.parse(result.content);
+  return data;
+};
+
+taxCalc.applyEstimateToCart = function (cart) {
+  const result = taxCalc.estimateCart(cart);
+  const estimate = JSON.parse(result.content);
+  let totalTax = 0;
+  let taxRate = 0;
+  for (const item of cart.items) {
+    if (item.variants.taxable) {
+      const subTotal = item.variants.price * item.quantity;
+      const tax = subTotal * (taxRate / 100);
+      totalTax += tax;
+    }
+  }
+  return cart;
 
 };
 
