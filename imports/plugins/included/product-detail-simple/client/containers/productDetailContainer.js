@@ -1,3 +1,5 @@
+import { isEmpty } from "lodash";
+import { StyleRoot } from "radium";
 import React, { Component, PropTypes } from "react";
 import { composeWithTracker } from "/lib/api/compose";
 import { Meteor } from "meteor/meteor";
@@ -9,8 +11,6 @@ import { ProductDetail, ProductNotFound } from "../components";
 import { SocialContainer, VariantListContainer } from "./";
 import { MediaGalleryContainer } from "/imports/plugins/core/ui/client/containers";
 import { DragDropProvider, TranslationProvider } from "/imports/plugins/core/ui/client/providers";
-import { StyleRoot } from "radium";
-import { isEmpty } from "lodash";
 
 class ProductDetailContainer extends Component {
   constructor(props) {
