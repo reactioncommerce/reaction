@@ -140,8 +140,12 @@ Meteor.methods({
       Object.assign(address, { [type]: true });
     }
 
-    if (oldAddress.isShippingDefault !== address.isShippingDefault ||
-      oldAddress.isBillingDefault !== address.isBillingDefault) {
+    // We want the cart addresses to be updated when current default address
+    // (shipping or Billing) are different than the previous one, but also
+    // when the current default address(ship or bill) gets edited(so Current and Previous default are the same).
+    // This check can be simplified to :
+    if  (address.isShippingDefault || address.isBillingDefault ||
+         oldAddress.isShippingDefault || address.isBillingDefault) {
       const cart = Collections.Cart.findOne({ userId: userId });
       // Cart should exist to this moment, so we doesn't need to to verify its
       // existence.
@@ -164,6 +168,9 @@ Meteor.methods({
           // this address from `cart.shipping`
           Meteor.call("cart/unsetAddresses", address._id, userId, "shipping");
         }
+      } else if (address.isShippingDefault && oldAddress.isShippingDefault) {
+        // If current Shipping Address was edited but not changed update it to cart too
+        Meteor.call("cart/setShipmentAddress", cart._id, address);
       }
 
       // the same logic used for billing
@@ -181,6 +188,9 @@ Meteor.methods({
         } else {
           Meteor.call("cart/unsetAddresses", address._id, userId, "billing");
         }
+      } else if (address.isBillingDefault && oldAddress.isBillingDefault) {
+        // If current Billing Address was edited but not changed update it to cart too
+        Meteor.call("cart/setPaymentAddress", cart._id, address);
       }
     }
 

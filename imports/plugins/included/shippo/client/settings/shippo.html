@@ -1,0 +1,30 @@
+<template name="shippoSettings">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <div data-i18n="shippoSettings.panelTitle" class="panel-title">Shippo Settings</div>
+    </div>
+    <div class="panel-body">
+      {{#autoForm
+        meteormethod="shippo/updateApiKey"
+        schema=ShippoPackageConfig
+        doc=packageData
+        type="method-update"
+        id="shippo-update-form"
+      }}
+          <div class="row">
+            <div class="form-group col-md-8">
+              {{> afQuickField name="settings.apiKey"}}
+            </div>
+          </div>
+          <div class="row">
+            <button type="submit" class="btn btn-primary pull-left"><span data-i18n="app.saveChanges">Save Changes</span></button>
+          </div>
+      {{/autoForm}}
+    </div>
+    <div class="panel-body">
+      <div class="row">
+        <button class="btn btn-primary pull-left"><span data-i18n="shippo.fetchCarriers" data-event-action="fetchShippoProviders">Fetch Carriers</span></button>
+      </div>
+    </div>
+  </div>
+</template>

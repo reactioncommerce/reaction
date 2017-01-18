@@ -475,6 +475,10 @@
         "notShipped": "Not Yet Shipped",
         "noTracking": "No Tracking",
         "tracking": "Tracking",
+        "printLabels": "Print Labels",
+        "printShippingLabel": "Shipping",
+        "printCustomsLabel": "Customs",
+        "carrier": "Carrier",
         "addTracking": "Add Tracking",
         "itemsHaveBeenShipped": "Items have been shipped",
         "shipmentEmpty": "This shipment has no items",
@@ -751,6 +755,9 @@
           "orderDate": "Date",
           "orderTotal": "Total"
         }
+      },
+      "shippo": {
+        "connectedAndSaved": "Settings saved! Shippo API is now enabled."
       },
       "accountsUI": {
         "members": "Members",

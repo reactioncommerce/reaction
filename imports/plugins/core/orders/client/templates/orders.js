@@ -316,6 +316,10 @@ Template.orderStatusDetail.helpers({
     return moment(this.createdAt).fromNow();
   },
 
+  shipmentMethod: function () {
+    return this.shipping[0].shipmentMethod;
+  },
+
   shipmentTracking: function () {
     if (this.shipping[0].tracking) {
       return this.shipping[0].tracking;

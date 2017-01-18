@@ -823,6 +823,13 @@ export const methods = {
                 "billing.$.paymentMethod.transactions": result
               }
             });
+
+            // Temporarily(?) put here the Shippo's method/label purchasing.After a succesfull capture fund
+            if (order.shipping[0].shipmentMethod.shippoMethod) {
+              Meteor.call("shippo/confirmShippingMethodForOrder", orderId);
+            }
+
+
           } else {
             if (result && result.error) {
               Logger.fatal("Failed to capture transaction.", order, paymentMethod.transactionId, result.error);
