@@ -145,4 +145,4 @@ function composer(props, onData) {
   });
 }
 
-export default composeWithTracker(composer)(PublishContainer);
+export default composeWithTracker(composer, null)(PublishContainer);
