@@ -105,16 +105,6 @@ Template.orders.onCreated(function () {
     // Numeric inputs
     this.state.set("currency", shop.currencies[shop.currency]);
   });
-
-  // Open the action view when necessary
-  this.autorun(() => {
-    const isActionViewOpen = Reaction.isActionViewOpen();
-    const queryParams = Reaction.Router.current().queryParams;
-
-    if (isActionViewOpen === false) {
-      Reaction.Router.go("orders", {}, queryParams);
-    }
-  });
 });
 
 /**
