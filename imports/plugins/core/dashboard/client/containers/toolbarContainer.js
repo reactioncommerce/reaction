@@ -6,6 +6,30 @@ import { Reaction, i18next } from "/client/api";
 import { TranslationProvider, AdminContextProvider } from "/imports/plugins/core/ui/client/providers";
 import { Loading } from "/imports/plugins/core/ui/client/components";
 
+const handleAddProduct = () => {
+  Meteor.call("products/createProduct", (error, productId) => {
+    if (Meteor.isClient) {
+      let currentTag;
+      let currentTagId;
+
+      if (error) {
+        throw new Meteor.Error("createProduct error", error);
+      } else if (productId) {
+        currentTagId = Session.get("currentTag");
+        currentTag = Tags.findOne(currentTagId);
+        if (currentTag) {
+          Meteor.call("products/updateProductTags", productId, currentTag.name, currentTagId);
+        }
+        // go to new product
+        Reaction.Router.go("product", {
+          handle: productId
+        });
+      }
+    }
+  });
+}
+
+
 const handleViewContextChange = (event, value) => {
   Reaction.Router.setQueryParams({ as: value });
 };
@@ -50,6 +74,7 @@ function composer(props, onData) {
     actionViewIsOpen: Reaction.isActionViewOpen(),
 
     // Callbacks
+    onAddProduct: handleAddProduct,
     onViewContextChange: handleViewContextChange
   });
 }

@@ -11,33 +11,6 @@ import { Reaction, i18next } from "/client/api";
  * PublishContainer is a container component connected to Meteor data source.
  */
 class PublishContainer extends Component {
-  handleAddProduct() {
-    Meteor.call("products/createProduct", (error, productId) => {
-      if (Meteor.isClient) {
-        let currentTag;
-        let currentTagId;
-
-        if (error) {
-          throw new Meteor.Error("createProduct error", error);
-        } else if (productId) {
-          currentTagId = Session.get("currentTag");
-          currentTag = Tags.findOne(currentTagId);
-          if (currentTag) {
-            Meteor.call("products/updateProductTags", productId, currentTag.name, currentTagId);
-          }
-          // go to new product
-          Reaction.Router.go("product", {
-            handle: productId
-          });
-        }
-      }
-    });
-  }
-
-  handleViewContextChange = (event, value) => {
-    Reaction.Router.setQueryParams({ as: value });
-  }
-
   handlePublishClick = (revisions) => {
     if (Array.isArray(revisions)) {
       let documentIds = revisions.map((revision) => {
@@ -105,8 +78,6 @@ class PublishContainer extends Component {
           onPublishClick={this.handlePublishClick}
           onAction={this.handlePublishActions}
           onVisibilityChange={this.props.onVisibilityChange}
-          onViewContextChange={this.handleViewContextChange}
-          onAddProduct={this.handleAddProduct}
           revisions={this.props.revisions}
           isPreview={this.props.isPreview}
         />
