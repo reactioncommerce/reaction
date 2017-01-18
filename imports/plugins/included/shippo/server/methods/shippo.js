@@ -222,7 +222,6 @@ Meteor.methods({
       if (activeCarriers.length) {
         addShippoProviders(activeCarriers, shopId);
       }
-      Meteor.call("shippo/startJobs");
 
       return { type: "update" };
     }
