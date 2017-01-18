@@ -14,17 +14,15 @@ import { Reaction } from "/client/api";
 
 class PublishControls extends Component {
   static propTypes = {
+    dashboardHeaderTemplate: PropTypes.oneOfType([PropTypes.func, PropTypes.node, PropTypes.string]),
     documentIds: PropTypes.arrayOf(PropTypes.string),
     documents: PropTypes.arrayOf(PropTypes.object),
     isEnabled: PropTypes.bool,
     isPreview: PropTypes.bool,
-    // onAction: PropTypes.func,
     onAddProduct: PropTypes.func,
-    // onPublishClick: PropTypes.func,
     onViewContextChange: PropTypes.func,
     onVisibilityChange: PropTypes.func,
     packageButtons: PropTypes.arrayOf(PropTypes.object),
-    // revisions: PropTypes.arrayOf(PropTypes.object),
     showViewAsControls: PropTypes.bool,
     translation: PropTypes.shape({
       lang: PropTypes.string
@@ -120,9 +118,10 @@ class PublishControls extends Component {
 
   renderCustomControls() {
     if (this.props.dashboardHeaderTemplate) {
-      return (
+      return [
+        this.renderVerticalDivider(),
         <Blaze template={this.props.dashboardHeaderTemplate()} />
-      );
+      ];
     }
 
     return null;
@@ -137,7 +136,6 @@ class PublishControls extends Component {
         <ToolbarGroup lastChild={true}>
           {this.renderAddButton()}
           {this.renderPackageButons()}
-          {this.renderVerticalDivider()}
           {this.renderCustomControls()}
           {this.renderVerticalDivider()}
           {this.renderAdminButton()}
