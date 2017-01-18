@@ -3,8 +3,7 @@ import { Meteor } from "meteor/meteor";
 import { Tracker } from "meteor/tracker";
 import { SimpleSchema } from "meteor/aldeed:simple-schema";
 import { Reaction } from "/client/api";
-import { Packages } from "/lib/collections";
-import { Shops } from "/lib/collections";
+import { Shops, Packages } from "/lib/collections";
 
 //
 // Reaction i18n Translations, RTL and Currency Exchange Support
@@ -81,9 +80,9 @@ export function getMessagesFor() {
  *  initialize i18n and load data resources for the current language and fallback "EN"
  *
  */
-export const currencyDep = new Tracker.Dependency();
 export const i18nextDep = new Tracker.Dependency();
 export const localeDep = new Tracker.Dependency();
+export const currencyDep = new Tracker.Dependency();
 export const packageNamespaces = [];
 
 Meteor.startup(() => {

@@ -1,6 +1,6 @@
+import { Meteor } from "meteor/meteor";
 import { Reaction } from "/client/api";
 import { Shops } from "/lib/collections";
-import { Meteor } from "meteor/meteor";
 
 Template.currencySelect.helpers({
   currencies() {
