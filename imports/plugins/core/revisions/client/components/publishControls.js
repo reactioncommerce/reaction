@@ -367,26 +367,14 @@ class PublishControls extends Component {
   render() {
     if (this.props.isEnabled) {
       return (
-        <Toolbar>
-          <ToolbarGroup firstChild={true}>
-            {this.renderViewControls()}
-            {this.renderVisibilitySwitch()}
-          </ToolbarGroup>
-          <ToolbarGroup lastChild={true}>
-            {this.renderDeletionStatus()}
-            {this.renderUndoButton()}
-            {this.renderArchiveButton()}
-            {this.renderSettingsButton()}
-            {this.renderAddButton()}
-
-            {this.renderVerticalDivider()}
-            {this.renderPublishButton()}
-            {this.renderVerticalDivider()}
-
-            {this.renderAdminButton()}
-            {/* this.renderMoreOptionsButton() */}
-          </ToolbarGroup>
-        </Toolbar>
+        <ToolbarGroup lastChild={true}>
+          {this.renderDeletionStatus()}
+          {this.renderUndoButton()}
+          {this.renderArchiveButton()}
+          {this.renderViewControls()}
+          {this.renderPublishButton()}
+          {/* this.renderMoreOptionsButton() */}
+        </ToolbarGroup>
       );
     }
 
