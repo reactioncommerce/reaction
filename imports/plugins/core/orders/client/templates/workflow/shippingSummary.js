@@ -50,7 +50,6 @@ Template.coreOrderShippingSummary.events({
   }
 });
 
-
 Template.coreOrderShippingSummary.helpers({
   order() {
     const template = Template.instance();
@@ -76,6 +75,16 @@ Template.coreOrderShippingSummary.helpers({
 
     return i18next.t("orderShipping.noTracking");
   },
+
+  printableLabels() {
+    const { shippingLabelUrl, customsLabelUrl } = Template.instance().order.shipping[0];
+    if (shippingLabelUrl || customsLabelUrl) {
+      return { shippingLabelUrl, customsLabelUrl };
+    }
+
+    return false;
+  },
+
   shipmentStatus() {
     const order = Template.instance().order;
     const shipment = Template.instance().order.shipping[0];
