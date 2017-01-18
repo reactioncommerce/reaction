@@ -1,8 +1,12 @@
 import React, { Component, PropTypes } from "react";
-import { Card, CardHeader, CardBody, List, ListItem } from "/imports/plugins/core/ui/client/components"
-import { map } from "lodash"
-class PackageList extends Component {
+import { Card, CardHeader, CardBody, List, ListItem } from "/imports/plugins/core/ui/client/components";
+import { map } from "lodash";
 
+class PackageList extends Component {
+  static propTypes = {
+    groupedPackages: PropTypes.object,
+    handleShowPackage: PropTypes.func
+  }
   // renderPackages() {
   //   if (Array.isArray(this.props.packages)) {
   //     return this.props.packages.map((packageData) => {
@@ -21,12 +25,12 @@ class PackageList extends Component {
   // }
 
   renderPackages() {
-    if (true) {
+    if (this.props.groupedPackages) {
       return map(this.props.groupedPackages, (group, name) => {
-
-        const items = group.map((packageData) => {
+        const items = group.map((packageData, index) => {
           return (
             <ListItem
+              key={index}
               i18nKeyLabel={packageData.i18nKeyLabel}
               icon={packageData.icon}
               label={packageData.label}
@@ -35,8 +39,7 @@ class PackageList extends Component {
               value={packageData}
             />
           );
-        })
-
+        });
 
         return (
           <Card expandable={true}>
@@ -45,11 +48,13 @@ class PackageList extends Component {
               {items}
             </CardBody>
           </Card>
-        )
-
+        );
       });
     }
+
+    return null;
   }
+
   render() {
     return (
       <List>

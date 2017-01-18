@@ -351,6 +351,7 @@ export default {
 
   hideActionView() {
     Session.set("admin/showActionView", false);
+    this.clearActionView();
   },
 
   clearActionView() {
