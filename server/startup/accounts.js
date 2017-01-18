@@ -102,7 +102,6 @@ export default function () {
           }
           if (currentUser.profile.currency && !user.profile.currency) {
             user.profile.currency = currentUser.profile.currency;
-            console.log("CREATED");
           }
         }
       }
