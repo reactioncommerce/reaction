@@ -120,7 +120,7 @@ Meteor.startup(() => {
       if (user.profile && user.profile.currency) {
         const localStorageCurrency = localStorage.getItem("currency");
         if (localStorageCurrency !== user.profile.currency) {
-          Meteor.users.update(Meteor.userId(), { $set: {"profile.currency": localStorage.getItem("currency") }});
+          localStorage.setItem("currency", user.profile.currency);
         }
         currencyDep.changed();
       }

@@ -108,19 +108,24 @@ Meteor.startup(() => {
           moment.locale(locale.language);
           // flag in case the locale currency isn't enabled
           locale.currencyEnabled = locale.currency.enabled;
-          const localStorageCurrency = localStorage.getItem("currency");
-          if (!localStorageCurrency) {
-            if (locale.currencyEnabled) {
-              //in case of multiple locale currencies
-              let primaryCurrency = locale.locale.currency.split(",")[0];
-              localStorage.setItem("currency", primaryCurrency);
-            } else {
-              const shop = Shops.findOne(Reaction.getShopId(), {
-                fields: {
-                  currency: 1
-                }
-              });
-              localStorage.setItem("currency", shop.currency);
+          const user = Meteor.user();
+          if (user && user.profile && user.profile.currency) {
+            localStorage.setItem("currency", user.profile.currency);
+          } else {
+            const localStorageCurrency = localStorage.getItem("currency");
+            if (!localStorageCurrency) {
+              if (locale.currencyEnabled) {
+              // in case of multiple locale currencies
+                const primaryCurrency = locale.locale.currency.split(",")[0];
+                localStorage.setItem("currency", primaryCurrency);
+              } else {
+                const shop = Shops.findOne(Reaction.getShopId(), {
+                  fields: {
+                    currency: 1
+                  }
+                });
+                localStorage.setItem("currency", shop.currency);
+              }
             }
           }
           Reaction.Locale.set(locale);

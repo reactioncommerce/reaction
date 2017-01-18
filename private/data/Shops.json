@@ -2,140 +2,140 @@
   "_id": "J8Bhq3uTtdgwZx3rz",
   "currencies": {
     "AED": {
-      "enabled": true,
+      "enabled": false,
       "format": "%v %s",
       "symbol": "د.إ."
     },
     "AFN": {
-      "enabled": true,
+      "enabled": false,
       "format": "%v%s",
       "symbol": "؋"
     },
     "ALL": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "Lek",
       "decimal": ",",
       "thousand": "."
     },
     "AMD": {
-      "enabled": true,
+      "enabled": false,
       "format": "%v %s",
       "symbol": "AMD",
       "decimal": ",",
       "thousand": "."
     },
     "ANG": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "ƒ",
       "decimal": ",",
       "thousand": "."
     },
     "AOA": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "Kz"
     },
     "ARS": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "$",
       "decimal": ",",
       "thousand": "."
     },
     "AUD": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "$"
     },
     "AWG": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "ƒ"
     },
     "AZN": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "₼",
       "decimal": ",",
       "thousand": "."
     },
     "BAM": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "KM",
       "decimal": ",",
       "thousand": "."
     },
     "BBD": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "Bds$"
     },
     "BDT": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "৳"
     },
     "BGN": {
-      "enabled": true,
+      "enabled": false,
       "format": "%v %s",
       "symbol": "лв.",
       "decimal": ".",
       "thousand": "'"
     },
     "BHD": {
-      "enabled": true,
+      "enabled": false,
       "format": "%v %s",
       "symbol": ".د.ب",
       "scale": 3
     },
     "BIF": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "$",
       "scale": 0
     },
     "BMD": {
-      "enabled": true,
+      "enabled": false,
       "format": "%v %s",
       "symbol": "FBu"
     },
     "BND": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "B$"
     },
     "BOB": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "$b"
     },
     "BRL": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "R$",
       "decimal": ",",
       "thousand": "."
     },
     "BSD": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "$"
     },
     "BTN": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "Nu."
     },
     "BWP": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "P"
     },
     "BYR": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "p.",
       "decimal": ",",
@@ -143,27 +143,27 @@
       "scale": 0
     },
     "BZD": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "BZ$"
     },
     "CAD": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "$"
     },
     "CDF": {
-      "enabled": true,
+      "enabled": false,
       "format": "%v %s",
       "symbol": "CDF"
     },
     "CHF": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "CHF"
     },
     "CLP": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "$",
       "decimal": ",",
@@ -176,58 +176,58 @@
       "symbol": "¥"
     },
     "COP": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "$",
       "decimal": ",",
       "thousand": "."
     },
     "CRC": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "₡",
       "decimal": ",",
       "thousand": "."
     },
     "CUC": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "CUC$",
       "decimal": ",",
       "thousand": "."
     },
     "CUP": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "₱",
       "decimal": ",",
       "thousand": "."
     },
     "CVE": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "$"
     },
     "CZK": {
-      "enabled": true,
+      "enabled": false,
       "format": "%v%s",
       "symbol": "Kč",
       "decimal": ",",
       "thousand": "."
     },
     "DJF": {
-      "enabled": true,
+      "enabled": false,
       "format": "%v %s",
       "symbol": "Fdj",
       "scale": 0
     },
     "DKK": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "kr"
     },
     "DOP": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "RD$",
       "decimal": ",",
@@ -246,12 +246,12 @@
       "thousand": "."
     },
     "INR": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "₹"
     },
     "NOK": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "kr"
     },
@@ -268,24 +268,24 @@
       "thousand": "."
     },
     "ERN": {
-      "enabled": true,
+      "enabled": false,
       "format": "%v %s",
       "symbol": "ናቕፋ",
       "decimal": ",",
       "thousand": "."
     },
     "ETB": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "Br"
     },
     "FJD": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "$"
     },
     "FKP": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "£"
     },
@@ -295,54 +295,54 @@
       "symbol": "£"
     },
     "GEL": {
-      "enabled": true,
+      "enabled": false,
       "format": "%v %s",
       "symbol": "GEL"
     },
     "GHS": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "GH¢"
     },
     "GIP": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "£"
     },
     "GNF": {
-      "enabled": true,
+      "enabled": false,
       "format": "%v %s",
       "symbol": "FG",
       "scale": 0
     },
     "GTQ": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "Q"
     },
     "GYD": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "$"
     },
     "HKD": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "HK$",
       "decimal": ","
     },
     "HRK": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "kn"
     },
     "HUF": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "Ft"
     },
     "IDR": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "Rp",
       "decimal": ",",
@@ -354,67 +354,67 @@
       "symbol": "₪"
     },
     "ISK": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "kr",
       "scale": 0
     },
     "JPY": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "¥",
       "scale": 0
     },
     "KRW": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "₩",
       "scale": 0
     },
     "KZT": {
-      "enabled": true,
+      "enabled": false,
       "format": "%v %s",
       "symbol": "KZT"
     },
     "MAD": {
-      "enabled": true,
+      "enabled": false,
       "format": "%v %s",
       "symbol": "د.م.",
       "decimal": ",",
       "thousand": "."
     },
     "MMK": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "K"
     },
     "MRO": {
-      "enabled": true,
+      "enabled": false,
       "format": "%v %s",
       "symbol": "UM"
     },
     "MXN": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "$"
     },
     "MYR": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "RM"
     },
     "NZD": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "$"
     },
     "PHP": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s %v",
       "symbol": "PHP"
     },
     "PLN": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "zł",
       "decimal": ","
@@ -429,44 +429,44 @@
       "where": "right"
     },
     "SEK": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "kr"
     },
     "SGD": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "$"
     },
     "THB": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "฿"
     },
     "TWD": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "NT$"
     },
     "UAH": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "₴",
       "decimal": ","
     },
     "XAF": {
-      "enabled": true,
+      "enabled": false,
       "format": "%v %s",
       "symbol": "CFA",
       "scale": 0
     },
     "XCD": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "$"
     },
     "XOF": {
-      "enabled": true,
+      "enabled": false,
       "format": "%v %s",
       "symbol": "CFA",
       "scale": 0
@@ -3179,140 +3179,140 @@
   "_id": "ddzuN2YPvgvx7rJS5",
   "currencies": {
     "AED": {
-      "enabled": true,
+      "enabled": false,
       "format": "%v %s",
       "symbol": "د.إ."
     },
     "AFN": {
-      "enabled": true,
+      "enabled": false,
       "format": "%v%s",
       "symbol": "؋"
     },
     "ALL": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "Lek",
       "decimal": ",",
       "thousand": "."
     },
     "AMD": {
-      "enabled": true,
+      "enabled": false,
       "format": "%v %s",
       "symbol": "AMD",
       "decimal": ",",
       "thousand": "."
     },
     "ANG": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "ƒ",
       "decimal": ",",
       "thousand": "."
     },
     "AOA": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "Kz"
     },
     "ARS": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "$",
       "decimal": ",",
       "thousand": "."
     },
     "AUD": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "$"
     },
     "AWG": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "ƒ"
     },
     "AZN": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "₼",
       "decimal": ",",
       "thousand": "."
     },
     "BAM": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "KM",
       "decimal": ",",
       "thousand": "."
     },
     "BBD": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "Bds$"
     },
     "BDT": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "৳"
     },
     "BGN": {
-      "enabled": true,
+      "enabled": false,
       "format": "%v %s",
       "symbol": "лв.",
       "decimal": ".",
       "thousand": "'"
     },
     "BHD": {
-      "enabled": true,
+      "enabled": false,
       "format": "%v %s",
       "symbol": ".د.ب",
       "scale": 3
     },
     "BIF": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "$",
       "scale": 0
     },
     "BMD": {
-      "enabled": true,
+      "enabled": false,
       "format": "%v %s",
       "symbol": "FBu"
     },
     "BND": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "B$"
     },
     "BOB": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "$b"
     },
     "BRL": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "R$",
       "decimal": ",",
       "thousand": "."
     },
     "BSD": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "$"
     },
     "BTN": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "Nu."
     },
     "BWP": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "P"
     },
     "BYR": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "p.",
       "decimal": ",",
@@ -3320,27 +3320,27 @@
       "scale": 0
     },
     "BZD": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "BZ$"
     },
     "CAD": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "$"
     },
     "CDF": {
-      "enabled": true,
+      "enabled": false,
       "format": "%v %s",
       "symbol": "CDF"
     },
     "CHF": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "CHF"
     },
     "CLP": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "$",
       "decimal": ",",
@@ -3348,256 +3348,256 @@
       "scale": 0
     },
     "CNY": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "¥"
     },
     "COP": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "$",
       "decimal": ",",
       "thousand": "."
     },
     "CRC": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "₡",
       "decimal": ",",
       "thousand": "."
     },
     "CUC": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "CUC$",
       "decimal": ",",
       "thousand": "."
     },
     "CUP": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "₱",
       "decimal": ",",
       "thousand": "."
     },
     "CVE": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "$"
     },
     "CZK": {
-      "enabled": true,
+      "enabled": false,
       "format": "%v%s",
       "symbol": "Kč",
       "decimal": ",",
       "thousand": "."
     },
     "DJF": {
-      "enabled": true,
+      "enabled": false,
       "format": "%v %s",
       "symbol": "Fdj",
       "scale": 0
     },
     "DKK": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "kr"
     },
     "DOP": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "RD$",
       "decimal": ",",
       "thousand": "."
     },
     "DZD": {
-      "enabled": true,
+      "enabled": false,
       "format": "%v %s",
       "symbol": "دج"
     },
     "EGP": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "£",
       "decimal": ",",
       "thousand": "."
     },
     "INR": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "₹"
     },
     "NOK": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "kr"
     },
     "USD": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "$"
     },
     "EUR": {
-      "enabled": true,
+      "enabled": false,
       "format": "%v %s",
       "symbol": "€",
       "decimal": ",",
       "thousand": "."
     },
     "ERN": {
-      "enabled": true,
+      "enabled": false,
       "format": "%v %s",
       "symbol": "ናቕፋ",
       "decimal": ",",
       "thousand": "."
     },
     "ETB": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "Br"
     },
     "FJD": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "$"
     },
     "FKP": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "£"
     },
     "GBP": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "£"
     },
     "GEL": {
-      "enabled": true,
+      "enabled": false,
       "format": "%v %s",
       "symbol": "GEL"
     },
     "GHS": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "GH¢"
     },
     "GIP": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "£"
     },
     "GNF": {
-      "enabled": true,
+      "enabled": false,
       "format": "%v %s",
       "symbol": "FG",
       "scale": 0
     },
     "GTQ": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "Q"
     },
     "GYD": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "$"
     },
     "HKD": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "HK$",
       "decimal": ","
     },
     "HRK": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "kn"
     },
     "HUF": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "Ft"
     },
     "IDR": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "Rp",
       "decimal": ",",
       "thousand": "."
     },
     "ILS": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "₪"
     },
     "ISK": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "kr",
       "scale": 0
     },
     "JPY": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "¥",
       "scale": 0
     },
     "KRW": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "₩",
       "scale": 0
     },
     "KZT": {
-      "enabled": true,
+      "enabled": false,
       "format": "%v %s",
       "symbol": "KZT"
     },
     "MAD": {
-      "enabled": true,
+      "enabled": false,
       "format": "%v %s",
       "symbol": "د.م.",
       "decimal": ",",
       "thousand": "."
     },
     "MMK": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "K"
     },
     "MRO": {
-      "enabled": true,
+      "enabled": false,
       "format": "%v %s",
       "symbol": "UM"
     },
     "MXN": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "$"
     },
     "MYR": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "RM"
     },
     "NZD": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "$"
     },
     "PHP": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s %v",
       "symbol": "₱"
     },
     "PLN": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "zł",
       "decimal": ","
     },
     "RUB": {
-      "enabled": true,
+      "enabled": false,
       "format": "%v %s",
       "symbol": "руб.",
       "decimal": ",",
@@ -3606,44 +3606,44 @@
       "where": "right"
     },
     "SEK": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "kr"
     },
     "SGD": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "$"
     },
     "THB": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "฿"
     },
     "TWD": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "NT$"
     },
     "UAH": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "₴",
       "decimal": ","
     },
     "XAF": {
-      "enabled": true,
+      "enabled": false,
       "format": "%v %s",
       "symbol": "CFA",
       "scale": 0
     },
     "XCD": {
-      "enabled": true,
+      "enabled": false,
       "format": "%s%v",
       "symbol": "$"
     },
     "XOF": {
-      "enabled": true,
+      "enabled": false,
       "format": "%v %s",
       "symbol": "CFA",
       "scale": 0
