@@ -119,7 +119,6 @@ class PublishControls extends Component {
   }
 
   renderCustomControls() {
-    console.log(this.props.dashboardHeaderTemplate);
     if (this.props.dashboardHeaderTemplate) {
       return (
         <Blaze template={this.props.dashboardHeaderTemplate()} />
@@ -134,8 +133,6 @@ class PublishControls extends Component {
       <Toolbar>
         <ToolbarGroup firstChild={true}>
           {this.renderVisibilitySwitch()}
-        </ToolbarGroup>
-        <ToolbarGroup>
         </ToolbarGroup>
         <ToolbarGroup lastChild={true}>
           {this.renderAddButton()}

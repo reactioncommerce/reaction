@@ -1,7 +1,6 @@
 <template name="orders">
   {{#if hasPermission 'orders'}}
     <div class="container-fluid-sm">
-      {{> orderListFilters}}
       {{#each order in orders}}
         {{> ordersListItem (itemProps order)}}
       {{else}}
@@ -28,7 +27,7 @@
           data-event-action="toggleFilter"
           data-filter="{{name}}">
             <span class="count">{{count}}</span>
-            <span class="label" data-i18n="{{i18nKeyLabel}}">
+            <span class="filter-label" data-i18n="{{i18nKeyLabel}}">
               {{!-- wrapping label below in a span prevents a console error --}}
               <span>{{label}}</span>
             </span>

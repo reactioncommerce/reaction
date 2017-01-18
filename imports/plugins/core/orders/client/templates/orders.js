@@ -92,7 +92,7 @@ Template.orders.onCreated(function () {
     this.subscribe("Orders");
     const filter = Reaction.Router.getQueryParam("filter");
     const query = OrderHelper.makeQuery(filter);
-    const orders = Orders.find(query).fetch();
+    const orders = Orders.find({}).fetch();
 
     this.state.set("orders", orders);
   });
@@ -181,7 +181,9 @@ Template.ordersListItem.events({
     Reaction.setActionViewDetail({
       label: "Order Details",
       i18nKeyLabel: "orderWorkflow.orderDetails",
-      data: instance.data.order,
+      data: {
+        order: instance.data.order
+      },
       props: {
         size: "large"
       },
@@ -212,17 +214,13 @@ Template.ordersListItem.events({
       Reaction.showActionView({
         label: "Order Details",
         i18nKeyLabel: "orderWorkflow.orderDetails",
-        data: order,
+        data: { order },
         props: {
           size: "large"
         },
         template: "coreOrderWorkflow"
       });
     }
-    Reaction.Router.setQueryParams({
-      filter: "processing",
-      _id: order._id
-    });
   }
 });
 
