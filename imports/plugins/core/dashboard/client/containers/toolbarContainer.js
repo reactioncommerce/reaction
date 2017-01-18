@@ -1,24 +1,10 @@
-import React, { Component, PropTypes } from "react";
+import React from "react";
 import { composeWithTracker } from "/lib/api/compose";
-import { Toolbar } from "../components"
-
 import { Meteor } from "meteor/meteor";
-import { Blaze } from "meteor/blaze";
-import { Template } from "meteor/templating";
 import { Reaction, i18next } from "/client/api";
-import { Packages } from "/lib/collections";
 
 import { TranslationProvider, AdminContextProvider } from "/imports/plugins/core/ui/client/providers";
 import { Loading } from "/imports/plugins/core/ui/client/components";
-
-
-function handleActionViewBack() {
-  Reaction.popActionView();
-}
-
-function handleActionViewClose() {
-  Reaction.hideActionView();
-}
 
 const handleViewContextChange = (event, value) => {
   Reaction.Router.setQueryParams({ as: value });
@@ -55,8 +41,6 @@ function composer(props, onData) {
       }
     }
   }
-
-  console.log("PROPS into toolbar container", props);
 
   onData(null, {
     packageButtons,
