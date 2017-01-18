@@ -4,7 +4,6 @@ import { Meteor } from "meteor/meteor";
 import { Reaction, i18next } from "/client/api";
 
 import { TranslationProvider, AdminContextProvider } from "/imports/plugins/core/ui/client/providers";
-import { Loading } from "/imports/plugins/core/ui/client/components";
 
 const handleAddProduct = () => {
   Meteor.call("products/createProduct", (error, productId) => {
@@ -27,8 +26,7 @@ const handleAddProduct = () => {
       }
     }
   });
-}
-
+};
 
 const handleViewContextChange = (event, value) => {
   Reaction.Router.setQueryParams({ as: value });

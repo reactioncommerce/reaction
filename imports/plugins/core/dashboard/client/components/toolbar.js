@@ -33,6 +33,12 @@ class PublishControls extends Component {
     showViewAsControls: true
   }
 
+  onViewContextChange = (event, isChecked) => {
+    if (typeof this.props.onViewContextChange === "function") {
+      this.props.onViewContextChange(event, isChecked ? "customer" : "administrator");
+    }
+  }
+
   renderViewControls() {
     if (this.props.showViewAsControls) {
       return (
