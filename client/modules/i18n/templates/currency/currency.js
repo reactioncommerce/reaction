@@ -63,7 +63,7 @@ Template.currencySelect.helpers({
         }
       }
     }
-    return "GBP £";
+    return "USD $";
   }
 });
 
