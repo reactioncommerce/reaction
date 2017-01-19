@@ -1,9 +1,12 @@
 import _ from "lodash";
 import moment from "moment";
 import { HTTP } from "meteor/http";
-import { check } from "meteor/check";
+import { check, Match } from "meteor/check";
 import { Packages, Shops } from "/lib/collections";
 import { Reaction, Logger } from "/server/api";
+
+
+// Private methods
 
 function getPackageData() {
   const pkgData = Packages.findOne({
@@ -21,11 +24,11 @@ function getUrl() {
   if (!productionMode) {
     baseUrl = "https://sandbox-rest.avatax.com/api/v2/";
   }
-  else { baseUrl = "nope nope nope"; }
+  else {
+    baseUrl = "nope nope nope";
+  }
   return baseUrl;
 }
-
-const taxCalc = {};
 
 
 function getAuthData() {
@@ -40,6 +43,20 @@ function getAuthData() {
   return auth;
 }
 
+// API Methods
+
+const taxCalc = {};
+
+taxCalc.calcTaxable = function (cart) {
+  let subTotal = 0;
+  for (const item of cart.items) {
+    if (item.variants.taxable) {
+      subTotal += (item.variants.price * item.quantity);
+    }
+  }
+  return subTotal;
+};
+
 /**
  * @summary Get the company code from the db
  * @returns {String} Company Code
@@ -53,10 +70,9 @@ taxCalc.getCompanyCode = function () {
   const companyCode = result.settings.avalara.companyCode;
   if (companyCode) {
     return companyCode;
-  } else {
-    const companyCode = taxCalc.saveCompanyCode();
-    return companyCode;
   }
+  const savedCompanyCode = taxCalc.saveCompanyCode();
+  return savedCompanyCode;
 };
 
 /**
@@ -82,7 +98,7 @@ taxCalc.validateAddress = function (address, callback) {
 
 /**
  * @summary Get all registered companies
- * @param callback
+ * @param {Function} callback Callback function for asynchronous execution
  * @returns {Object} A list of all companies
  */
 taxCalc.getCompanies = function (callback) {
@@ -102,7 +118,7 @@ taxCalc.getCompanies = function (callback) {
 
 /**
  * @summary Fetch the company code from the API and save in the DB
- * @returns {String}
+ * @returns {String} Company code
  */
 taxCalc.saveCompanyCode = function () {
   const companyData = taxCalc.getCompanies();
@@ -115,17 +131,6 @@ taxCalc.saveCompanyCode = function () {
 };
 
 /**
- * @summary Record a SalesOrder
- * @param {Object} order Completed order
- * @returns {*} Result of record call
- */
-taxCalc.recordOrder = function (order) {
-
-  const result = {};
-  return result;
-};
-
-/**
  * @summary Translate RC cart into format for submission
  * @param {Object} cart RC cart to send for tax estimate
  * @returns {Object} SalesOrder in Avalara format
@@ -134,6 +139,7 @@ function cartToSalesOrder(cart) {
   const companyCode = taxCalc.getCompanyCode();
   const company = Shops.findOne(Reaction.getShopId());
   const companyShipping = _.filter(company.addressBook, (o) => o.isShippingDefault)[0];
+  const currencyCode = company.currency;
   const lineItems = cart.items.map((item, index) => {
     return {
       number: index.toString() + 1,
@@ -149,6 +155,7 @@ function cartToSalesOrder(cart) {
     code: cart._id,
     customerCode: cart.userId,
     date: moment.utc(cart.createdAt),
+    currencyCode: currencyCode,
     addresses: {
       ShipFrom: {
         line1: companyShipping.address1,
@@ -178,38 +185,100 @@ function cartToSalesOrder(cart) {
  * @returns {Object} result Result of SalesOrder call
  */
 taxCalc.estimateCart = function (cart, callback) {
-  // check(cart, Object);
+  check(cart, Reaction.Schemas.Cart);
+  check(callback, Match.Optional(Function));
 
-  const salesOrder = cartToSalesOrder(cart);
-  const auth = getAuthData();
-  const baseUrl = getUrl();
-  const requestUrl = `${baseUrl}/transactions/create`;
-  if (callback) {
-    HTTP.post(requestUrl, { data: salesOrder, auth: auth }, (err, result) => {
-      const data = JSON.parse(result.content);
-      return callback(data);
-    });
-  }
-  const result = HTTP.post(requestUrl, { data: salesOrder, auth: auth });
-  const data = JSON.parse(result.content);
-  return data;
-};
-
-taxCalc.applyEstimateToCart = function (cart) {
-  const result = taxCalc.estimateCart(cart);
-  const estimate = JSON.parse(result.content);
-  let totalTax = 0;
-  let taxRate = 0;
-  for (const item of cart.items) {
-    if (item.variants.taxable) {
-      const subTotal = item.variants.price * item.quantity;
-      const tax = subTotal * (taxRate / 100);
-      totalTax += tax;
+  if (cart.shipping && cart.shipping[0].address) {
+    const salesOrder = cartToSalesOrder(cart);
+    const auth = getAuthData();
+    const baseUrl = getUrl();
+    const requestUrl = `${baseUrl}/transactions/create`;
+    if (callback) {
+      HTTP.post(requestUrl, { data: salesOrder, auth: auth }, (err, result) => {
+        const data = JSON.parse(result.content);
+        return callback(data);
+      });
     }
+    const result = HTTP.post(requestUrl, { data: salesOrder, auth: auth });
+    const data = JSON.parse(result.content);
+    return data;
   }
-  return cart;
-
 };
 
+/**
+ * @summary Translate RC order into format for final submission
+ * @param {Object} order RC order to send for tax reporting
+ * @returns {Object} SalesOrder in Avalara format
+ */
+function orderToSalesInvoice(order) {
+  const companyCode = taxCalc.getCompanyCode();
+  const company = Shops.findOne(Reaction.getShopId());
+  const companyShipping = _.filter(company.addressBook, (o) => o.isShippingDefault)[0];
+  const currencyCode = company.currency;
+  const lineItems = order.items.map((item, index) => {
+    return {
+      number: index.toString() + 1,
+      quantity: item.quantity,
+      amount: item.variants.price * item.quantity,
+      description: item.title
+    };
+  });
+
+  const salesInvoice = {
+    companyCode: companyCode,
+    type: "SalesInvoice",
+    commit: true,
+    code: order._id,
+    customerCode: order.userId,
+    date: moment.utc(order.createdAt),
+    currencyCode: currencyCode,
+    addresses: {
+      ShipFrom: {
+        line1: companyShipping.address1,
+        line2: companyShipping.address2,
+        city: companyShipping.city,
+        region: companyShipping.region,
+        country: companyShipping.country,
+        postalCode: companyShipping.postal
+      },
+      ShipTo: {
+        line1: order.shipping[0].address.address1,
+        line2: order.shipping[0].address.address2 || "",
+        city: order.shipping[0].address.city,
+        region: order.shipping[0].address.region,
+        country: order.shipping[0].address.country || "US"
+      }
+    },
+    lines: lineItems
+  };
+  return salesInvoice;
+}
+
+/**
+ * @summary Submit order for tax reporting
+ * @param {Order} order Order object for submission
+ * @param {Function} callback callback when using async version
+ * @returns {Object} result Result of SalesInvoice call
+ */
+taxCalc.recordOrder = function (order, callback) {
+  check(order, Reaction.Schemas.Order);
+  check(callback, Match.Optional(Function));
+
+  if (order.shipping && order.shipping[0].address) {
+    const salesOrder = orderToSalesInvoice(order);
+    const auth = getAuthData();
+    const baseUrl = getUrl();
+    const requestUrl = `${baseUrl}/transactions/create`;
+    if (callback) {
+      HTTP.post(requestUrl, { data: salesOrder, auth: auth }, (err, result) => {
+        const data = JSON.parse(result.content);
+        return callback(data);
+      });
+    }
+    const result = HTTP.post(requestUrl, { data: salesOrder, auth: auth });
+    const data = JSON.parse(result.content);
+    return data;
+  }
+};
 
 export default taxCalc;
