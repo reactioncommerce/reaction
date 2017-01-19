@@ -92,7 +92,7 @@ Template.orders.onCreated(function () {
     this.subscribe("Orders");
     const filter = Reaction.Router.getQueryParam("filter");
     const query = OrderHelper.makeQuery(filter);
-    const orders = Orders.find(query).fetch();
+    const orders = Orders.find({}).fetch();
 
     this.state.set("orders", orders);
   });
@@ -104,16 +104,6 @@ Template.orders.onCreated(function () {
     // Update currency information, this is passed to child components containing
     // Numeric inputs
     this.state.set("currency", shop.currencies[shop.currency]);
-  });
-
-  // Open the action view when necessary
-  this.autorun(() => {
-    const isActionViewOpen = Reaction.isActionViewOpen();
-    const queryParams = Reaction.Router.current().queryParams;
-
-    if (isActionViewOpen === false) {
-      Reaction.Router.go("orders", {}, queryParams);
-    }
   });
 });
 
@@ -173,19 +163,31 @@ Template.ordersListItem.events({
     const instance = Template.instance();
     const isActionViewOpen = Reaction.isActionViewOpen();
     // toggle detail views
-    if (isActionViewOpen === false) {
-      Reaction.showActionView({
-        label: "Order Details",
-        i18nKeyLabel: "orderWorkflow.orderDetails",
-        data: instance.data.order,
-        props: {
-          size: "large"
-        },
-        template: "coreOrderWorkflow"
-      });
-    }
-    Reaction.Router.setQueryParams({
-      _id: instance.data.order._id
+    // if (isActionViewOpen === false) {
+    //   Reaction.showActionView({
+    //     label: "Order Details",
+    //     i18nKeyLabel: "orderWorkflow.orderDetails",
+    //     data: instance.data.order,
+    //     props: {
+    //       size: "large"
+    //     },
+    //     template: "coreOrderWorkflow"
+    //   });
+    // }
+    // Reaction.Router.setQueryParams({
+    //   _id: instance.data.order._id
+    // });
+
+    Reaction.setActionViewDetail({
+      label: "Order Details",
+      i18nKeyLabel: "orderWorkflow.orderDetails",
+      data: {
+        order: instance.data.order
+      },
+      props: {
+        size: "large"
+      },
+      template: "coreOrderWorkflow"
     });
   },
   "click [data-event-action=startProcessingOrder]": function (event) {
@@ -212,17 +214,13 @@ Template.ordersListItem.events({
       Reaction.showActionView({
         label: "Order Details",
         i18nKeyLabel: "orderWorkflow.orderDetails",
-        data: order,
+        data: { order },
         props: {
           size: "large"
         },
         template: "coreOrderWorkflow"
       });
     }
-    Reaction.Router.setQueryParams({
-      filter: "processing",
-      _id: order._id
-    });
   }
 });
 

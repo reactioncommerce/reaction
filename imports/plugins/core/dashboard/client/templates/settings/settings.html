@@ -10,6 +10,11 @@
 <template name="settingsHeader">
   <div class="nav nav-settings">
     <div class="nav-settings-heading">
+      {{#unless isActionViewAtRootView}}
+        <button class="js-back-button">
+          <i class="fa fa-arrow-left"></i>
+        </button>
+      {{/unless}}
       <h3 class="nav-settings-title">
         {{#with registry}}
          <span data-i18n="{{i18nKeyLabel}}">
