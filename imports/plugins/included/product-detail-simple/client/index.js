@@ -7,7 +7,8 @@ import {
   ProductTags,
   ProductMetadata,
   PriceRange,
-  AddToCartButton
+  AddToCartButton,
+  ProductNotFound
 } from "./components";
 
 import {
@@ -74,4 +75,9 @@ registerComponent({
 registerComponent({
   name: "Divider",
   component: Divider
+});
+
+registerComponent({
+  name: "ProductNotFound",
+  component: ProductNotFound
 });
