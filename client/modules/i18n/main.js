@@ -115,7 +115,7 @@ Meteor.startup(() => {
             const localStorageCurrency = localStorage.getItem("currency");
             if (!localStorageCurrency) {
               if (locale.currencyEnabled) {
-              // in case of multiple locale currencies
+                // in case of multiple locale currencies
                 const primaryCurrency = locale.locale.currency.split(",")[0];
                 localStorage.setItem("currency", primaryCurrency);
               } else {

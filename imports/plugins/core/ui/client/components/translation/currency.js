@@ -3,7 +3,7 @@ import { formatPriceString } from "/client/api";
 
 class Currency extends Component {
   render() {
-    const amount = formatPriceString(this.props.amount || this.props.priceRange);
+    const amount = formatPriceString(this.props.amount || this.props.priceRange, this.props.editable);
 
     return (
       <span itemProp="price">{amount}</span>
