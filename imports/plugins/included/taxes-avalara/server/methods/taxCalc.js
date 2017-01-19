@@ -3,7 +3,7 @@ import moment from "moment";
 import { HTTP } from "meteor/http";
 import { check, Match } from "meteor/check";
 import { Packages, Shops } from "/lib/collections";
-import { Reaction, Logger } from "/server/api";
+import { Reaction } from "/server/api";
 
 
 // Private methods
@@ -140,14 +140,18 @@ function cartToSalesOrder(cart) {
   const company = Shops.findOne(Reaction.getShopId());
   const companyShipping = _.filter(company.addressBook, (o) => o.isShippingDefault)[0];
   const currencyCode = company.currency;
-  const lineItems = cart.items.map((item, index) => {
-    return {
-      number: index.toString() + 1,
-      quantity: item.quantity,
-      amount: item.variants.price * item.quantity,
-      description: item.title
-    };
-  });
+  let lineItems = [];
+  if (cart.items) {
+    lineItems = cart.items.map((item, index) => {
+      return {
+        number: index.toString() + 1,
+        quantity: item.quantity,
+        amount: item.variants.price * item.quantity,
+        description: item.title
+      };
+    });
+  }
+
 
   const salesOrder = {
     companyCode: companyCode,
@@ -188,7 +192,7 @@ taxCalc.estimateCart = function (cart, callback) {
   check(cart, Reaction.Schemas.Cart);
   check(callback, Match.Optional(Function));
 
-  if (cart.shipping && cart.shipping[0].address) {
+  if (cart.items && cart.shipping && cart.shipping[0].address) {
     const salesOrder = cartToSalesOrder(cart);
     const auth = getAuthData();
     const baseUrl = getUrl();
@@ -261,7 +265,7 @@ function orderToSalesInvoice(order) {
  * @returns {Object} result Result of SalesInvoice call
  */
 taxCalc.recordOrder = function (order, callback) {
-  check(order, Reaction.Schemas.Order);
+  // check(order, OrderSchema);
   check(callback, Match.Optional(Function));
 
   if (order.shipping && order.shipping[0].address) {
