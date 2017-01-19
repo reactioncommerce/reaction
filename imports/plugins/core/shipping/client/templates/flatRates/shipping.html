@@ -4,7 +4,7 @@
     {{#if shippingConfigured}}
       {{#each shipmentQuotes}}
         <li class="list-group-item {{isSelected ..}}" data-carrier="{{carrier}}" data-method="{{method}}">
-          <span class="text-left">{{method.label}}</span>
+          <span class="text-left">{{method.carrier}} - {{method.label}}</span>
           <span class="pull-right">{{formatPrice rate}}</span>
         </li>
       {{else}}
