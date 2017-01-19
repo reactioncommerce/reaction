@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor";
 import { Logger, MethodHooks } from "/server/api";
-import { Cart, Packages } from "/lib/collections";
+import { Cart, Packages, Orders } from "/lib/collections";
 import taxCalc from "../methods/taxCalc";
 
 MethodHooks.after("taxes/calculate", function (options) {
@@ -26,5 +26,12 @@ MethodHooks.after("taxes/calculate", function (options) {
 });
 
 MethodHooks.after("cart/copyCartToOrder", function (options) {
-  console.log("options", options);
+  const cartId = options.arguments[0];
+  const order = Orders.findOne({ cartId: cartId });
+  taxCalc.recordOrder(order, function (result) {
+    if (result) {
+      Logger.info(`Order ${order._id} recorded with Avalara`);
+    }
+  });
+  return options;
 });
