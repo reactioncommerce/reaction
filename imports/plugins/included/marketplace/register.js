@@ -43,6 +43,10 @@ Reaction.registerPackage({
       icon: "fa fa-th",
       provides: "shortcut",
       permissions: [{
+        label: "Admin",
+        permission: "admin"
+      },
+      {
         label: "Seller",
         permission: "seller"
       }]

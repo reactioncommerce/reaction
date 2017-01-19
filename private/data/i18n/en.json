@@ -94,7 +94,9 @@
           "productDetailsLabel": "Product Details",
           "productRevisionsLabel": "Product Revisions",
           "emailSettingsLabel": "Email Settings",
-          "catalogSettingsLabel": "Catalog Settings"
+          "catalogSettingsLabel": "Catalog Settings",
+          "brandImageLabel": "Brand Image",
+          "shopName": "Shop Name"
         },
         "userAccountDropdown": {
           "profileLabel": "Profile"

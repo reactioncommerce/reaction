@@ -41,7 +41,7 @@ Meteor.methods({
 
     // identify a shop admin
     const userId = shopAdminUserId || currentUser._id;
-    const sellerShopId = Reaction.getSellerShopId();
+    const sellerShopId = Reaction.getSellerShopId(userId);
     let adminRoles = Roles.getRolesForUser(userId, sellerShopId);
     // ensure unique id and shop name
     shop._id = Random.id();
@@ -79,35 +79,19 @@ Meteor.methods({
   },
 
   /**
-   * shop/getSeller
-   * @summary Get a shop's seller
-   * @param {Object} shopId An optional shopId to get the seller for, otherwise current user is used
-   * @returns {Object|null} The user hash if found, null otherwise
-   */
-  "shop/getSeller": function (shopId) {
-    let sellerShopId;
-
-    if (!shopId) {
-      const currentUser = Meteor.user();
-      if (currentUser) {
-        sellerShopId = Roles.getGroupsForUser(currentUser.id, "admin")[0];
-      }
-    }
-
-    const users = Roles.getUsersInRole("admin", sellerShopId);
-
-    return users[0] || null;
-  },
-
-  /**
    * shop/getSellerShopId
    * @summary Get a shop's seller. Defaults to parent shopId
    * @param {Object} userId An optional userId to get the shopId when the user is a seller
    * @returns {String} The shopId of the seller, otherwise the parent shop
    */
-  "shop/getSellerShopId": function (userId = Meteor.userId()) {
-    check(userId, Match.OneOf(String, null));
-    if (userId) {
+  "shop/getSellerShopId": function (userId) {
+
+    check(userId, Match.OneOf(String, null, undefined));
+
+    const sellerId = userId || this.userId;
+console.log("shop/getSellerShopId seller", userId, this.userId, sellerId);
+
+    if (sellerId) {
       const group = Roles.getGroupsForUser(userId, "admin")[0];
       if (group) {
         return group;
