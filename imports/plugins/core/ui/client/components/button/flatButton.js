@@ -11,6 +11,7 @@ class FlatButton extends Component {
     const {
       icon,
       onIcon,
+      bordered,
       ...otherProps
     } = this.props;
 
@@ -18,7 +19,7 @@ class FlatButton extends Component {
       rui: true,
       button: true,
       flat: true,
-      bordered: this.props.bordered
+      bordered: bordered
     });
 
     let iconClassName;

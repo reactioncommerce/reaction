@@ -87,6 +87,24 @@ class ListItem extends Component {
     );
   }
 
+  renderSubItems() {
+    if (typeof this.props.label !== "undefined" && this.props.children) {
+      const listItemClassName = classnames({
+        "rui": true,
+        "admin": this.props.isAdmin,
+        "list-group-item-sub-item": true
+      });
+
+      return (
+        <div className={listItemClassName}>
+          {this.props.children}
+        </div>
+      );
+    }
+
+    return null;
+  }
+
   render() {
     const listItemClassName = classnames({
       "rui": true,
@@ -99,6 +117,7 @@ class ListItem extends Component {
         {this.renderIcon()}
         {this.renderContent()}
         {this.renderAction()}
+        {this.renderSubItems()}
       </div>
     );
   }
