@@ -1,17 +1,12 @@
 import { Meteor } from "meteor/meteor";
 import { Logger, MethodHooks } from "/server/api";
-import { Cart, Packages, Orders } from "/lib/collections";
+import { Cart, Orders } from "/lib/collections";
 import taxCalc from "../methods/taxCalc";
 
 MethodHooks.after("taxes/calculate", function (options) {
   const cartId = options.arguments[0];
   const cartToCalc = Cart.findOne(cartId);
-  const shopId = cartToCalc.shopId;
-  const pkg = Packages.findOne({
-    name: "taxes-avalara",
-    shopId: shopId,
-    enabled: true
-  });
+  const pkg = taxCalc.getPackageData();
 
   Logger.debug("Avalara triggered on taxes/calculate for cartId:", cartId);
   if (pkg && pkg.settings.avalara) {
@@ -26,12 +21,29 @@ MethodHooks.after("taxes/calculate", function (options) {
 });
 
 MethodHooks.after("cart/copyCartToOrder", function (options) {
-  const cartId = options.arguments[0];
-  const order = Orders.findOne({ cartId: cartId });
-  taxCalc.recordOrder(order, function (result) {
-    if (result) {
-      Logger.info(`Order ${order._id} recorded with Avalara`);
-    }
-  });
-  return options;
+  const pkg = taxCalc.getPackageData();
+  if (pkg && pkg.settings.avalara) {
+    const cartId = options.arguments[0];
+    const order = Orders.findOne({ cartId: cartId });
+    taxCalc.recordOrder(order, function (result) {
+      if (result) {
+        Logger.info(`Order ${order._id} recorded with Avalara`);
+      }
+    });
+    return options;
+  }
+});
+
+MethodHooks.after("orders/refunds/create", (options) => {
+  const pkg = taxCalc.getPackageData();
+  if (pkg && pkg.settings.avalara) {
+    const orderId = options.arguments[0];
+    const order = Orders.findOne(orderId);
+    const refundAmount = options.arguments[2];
+    taxCalc.reportRefund(order, refundAmount, function (result) {
+      if (result) {
+        Logger.info(`Refund for order ${order._id} recorded with Avalara`);
+      }
+    });
+  }
 });

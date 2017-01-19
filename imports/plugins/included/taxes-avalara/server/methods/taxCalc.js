@@ -5,34 +5,35 @@ import { check, Match } from "meteor/check";
 import { Packages, Shops } from "/lib/collections";
 import { Reaction } from "/server/api";
 
+const taxCalc = {};
 
-// Private methods
-
-function getPackageData() {
+taxCalc.getPackageData = function () {
   const pkgData = Packages.findOne({
     name: "taxes-avalara",
     shopId: Reaction.getShopId(),
     enabled: true
   });
   return pkgData;
-}
+};
+
+// Private methods
 
 function getUrl() {
-  const packageData = getPackageData();
+  const packageData = taxCalc.getPackageData();
   const { productionMode } = packageData.settings.avalara;
   let baseUrl;
   if (!productionMode) {
     baseUrl = "https://sandbox-rest.avatax.com/api/v2/";
   }
   else {
-    baseUrl = "nope nope nope";
+    baseUrl = "https://rest.avatax.com";
   }
   return baseUrl;
 }
 
 
 function getAuthData() {
-  const packageData = getPackageData();
+  const packageData = taxCalc.getPackageData();
   const { username, password } = packageData.settings.avalara;
 
   if (!username || !password) {
@@ -45,7 +46,6 @@ function getAuthData() {
 
 // API Methods
 
-const taxCalc = {};
 
 taxCalc.calcTaxable = function (cart) {
   let subTotal = 0;
@@ -123,7 +123,7 @@ taxCalc.getCompanies = function (callback) {
 taxCalc.saveCompanyCode = function () {
   const companyData = taxCalc.getCompanies();
   const companyCode = companyData.data.value[0].companyCode;
-  const packageData = getPackageData();
+  const packageData = taxCalc.getPackageData();
   Packages.update({ _id: packageData._id }, {
     $set: { "settings.avalara.companyCode": companyCode }
   });
@@ -151,7 +151,6 @@ function cartToSalesOrder(cart) {
       };
     });
   }
-
 
   const salesOrder = {
     companyCode: companyCode,
@@ -283,6 +282,36 @@ taxCalc.recordOrder = function (order, callback) {
     const data = JSON.parse(result.content);
     return data;
   }
+};
+
+taxCalc.reportRefund = function (order, refundAmount, callback) {
+  check(refundAmount, Number);
+  check(callback, Function);
+  const company = Shops.findOne(Reaction.getShopId());
+  const currencyCode = company.currency;
+  const companyCode = taxCalc.getCompanyCode();
+  const auth = getAuthData();
+  const baseUrl = getUrl();
+  const requestUrl = `${baseUrl}/transactions/create`;
+  const returnAmount = refundAmount * -1;
+  const returnInvoice = {
+    companyCode: companyCode,
+    type: "ReturnInvoice",
+    customerCode: order.userId,
+    taxDate: moment.utc(order.createdAt),
+    currencyCode: currencyCode
+  };
+
+  if (callback) {
+    HTTP.post(requestUrl, { data: returnInvoice, auth: auth }, (err, result) => {
+      const data = JSON.parse(result.content);
+      return callback(data);
+    });
+  }
+  const result = HTTP.post(requestUrl, { data: returnInvoice, auth: auth });
+  const data = JSON.parse(result.content);
+  return data;
+
 };
 
 export default taxCalc;
