@@ -1,0 +1,26 @@
+[{
+  "language": "Czech",
+  "i18n": "cs",
+  "ns": "reaction-auth-net",
+  "translation": {
+    "reaction-payments": {
+      "admin": {
+        "shortcut": {
+          "authorizenetLabel": "Authorize.net",
+          "authorizenetTitle": "Authorize.net"
+        },
+        "dashboard": {
+          "authorizenetLabel": "Authorize.net",
+          "authorizenetTitle": "Authorize.net",
+          "authorizenetDescription": "platby Authorize.Net"
+        },
+        "paymentSettings": {
+          "authorizenetLabel": "Authorize.net",
+          "authorizenetSettingsLabel": "Authorize.net",
+          "authorizenetCredentials": "Nemáte přihlašovací ID a transakční klíč?",
+          "authorizenetCredentialURL": "Získejte jeden z Authorize.net"
+        }
+      }
+    }
+  }
+}]

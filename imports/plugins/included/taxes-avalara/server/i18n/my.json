@@ -1,0 +1,26 @@
+[{
+  "language": "Burmese",
+  "i18n": "my",
+  "ns": "taxes-avalara",
+  "translation": {
+    "reaction-taxes": {
+      "admin": {
+        "shortcut": {
+          "avalaraLabel": "Avalara",
+          "avalaraTitle": "Avalara"
+        },
+        "dashboard": {
+          "avalaraLabel": "Avalara",
+          "avalaraTitle": "Avalara",
+          "avalaraDescription": "Avalara အခွန်နှုန်း"
+        },
+        "taxSettings": {
+          "avalaraLabel": "Avalara",
+          "avalaraSettingsLabel": "Avalara",
+          "avalaraCredentials": "ဖွင့်ဖို့အထောက်အထားများ Add",
+          "avalaraGetCredentialsURL": "ဒီနေရာမှာသူတို့ကို Get"
+        }
+      }
+    }
+  }
+}]

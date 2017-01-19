@@ -1,0 +1,26 @@
+[{
+  "language": "Czech",
+  "i18n": "cs",
+  "ns": "taxes-avalara",
+  "translation": {
+    "reaction-taxes": {
+      "admin": {
+        "shortcut": {
+          "avalaraLabel": "Avalara",
+          "avalaraTitle": "Avalara"
+        },
+        "dashboard": {
+          "avalaraLabel": "Avalara",
+          "avalaraTitle": "Avalara",
+          "avalaraDescription": "Avalara Sazby daně"
+        },
+        "taxSettings": {
+          "avalaraLabel": "Avalara",
+          "avalaraSettingsLabel": "Avalara",
+          "avalaraCredentials": "Přidat pověření k tomu, aby",
+          "avalaraGetCredentialsURL": "Získat je sem"
+        }
+      }
+    }
+  }
+}]

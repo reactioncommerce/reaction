@@ -1,0 +1,35 @@
+[{
+  "language": "Hungarian",
+  "i18n": "hu",
+  "ns": "reaction-templates",
+  "translation": {
+    "reaction-templates": {
+      "admin": {
+        "settings": {
+          "templateSettingsLabel": "sablon beállításai"
+        }
+      },
+      "templateGrid": {
+        "noTemplatesFound": "Nem található sablon",
+        "columns": {
+          "title": "Cím",
+          "type": "típus",
+          "language": "Nyelv"
+        }
+      },
+      "templateUpdateForm": {
+        "emailTemplates": {
+          "updateEmailTemplate": "Frissítés mail sablon"
+        },
+        "reactTemplates": {
+          "updateReactTemplate": "Frissítés reagál sablon",
+          "updateUnavailable": "Reagálnak sablonok nem szerkeszthető ezen az interfészen keresztül"
+        },
+        "alerts": {
+          "templateUpdated": "Sablon sikeresen frissítve",
+          "failedToUpdate": "Nem sikerült módosítani a sablon: {{err}}"
+        }
+      }
+    }
+  }
+}]

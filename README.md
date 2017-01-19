@@ -1,10 +1,14 @@
 # Reaction
 
-[![bitHound Overall Score](https://www.bithound.io/github/reactioncommerce/reaction/badges/score.svg)](https://www.bithound.io/github/reactioncommerce/reaction) [![bitHound Dev Dependencies](https://www.bithound.io/github/reactioncommerce/reaction/badges/devDependencies.svg)](https://www.bithound.io/github/reactioncommerce/reaction/9a858eb459d7260d5ae59124c2b364bc791a3e70/dependencies/npm) [![bitHound Code](https://www.bithound.io/github/reactioncommerce/reaction/badges/code.svg)](https://www.bithound.io/github/reactioncommerce/reaction) [![Code Climate](https://codeclimate.com/github/reactioncommerce/reaction/badges/gpa.svg)](https://codeclimate.com/github/reactioncommerce/reaction) [![Circle CI](https://circleci.com/gh/reactioncommerce/reaction.svg?style=svg)](https://circleci.com/gh/reactioncommerce/reaction) [![Gitter](https://badges.gitter.im/JoinChat.svg)](https://gitter.im/reactioncommerce/reaction?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![bitHound Overall Score](https://www.bithound.io/github/reactioncommerce/reaction/badges/score.svg)](https://www.bithound.io/github/reactioncommerce/reaction) [![bitHound Dev Dependencies](https://www.bithound.io/github/reactioncommerce/reaction/badges/devDependencies.svg)](https://www.bithound.io/github/reactioncommerce/reaction/9a858eb459d7260d5ae59124c2b364bc791a3e70/dependencies/npm) [![bitHound Code](https://www.bithound.io/github/reactioncommerce/reaction/badges/code.svg)](https://www.bithound.io/github/reactioncommerce/reaction) [![Circle CI](https://circleci.com/gh/reactioncommerce/reaction.svg?style=svg)](https://circleci.com/gh/reactioncommerce/reaction) [![Gitter](https://badges.gitter.im/JoinChat.svg)](https://gitter.im/reactioncommerce/reaction?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 Reaction is a modern reactive, real-time event driven ecommerce platform.
 
 Reaction is built with JavaScript (ES6), Meteor, Node.js and works nicely with Docker.
+
+![product-screens-2](https://cloud.githubusercontent.com/assets/439959/21865023/276a4bbe-d7f9-11e6-9525-3131ec43655b.png)
+
+A Reaction installation provides analytics, shipping, payments, taxes, discounts, emails and social network login out of the box. Configuration just requires you to provide service credentials.
 
 ## Installation
 
@@ -17,24 +21,7 @@ cd reaction
 reaction
 ```
 
-`reaction -v` provides useful version information you'll need for debugging if you have issues with `reaction`.
-
-[ImageMagick](http://www.imagemagick.org/script/binary-releases.php) is optional, but required for transforming images for responsive sizing.
-
-**Windows** users should review the [Windows specific installation requirements for Meteor and Reaction](https://docs.reactioncommerce.com/reaction-docs/development/requirements).
-
-**reaction-cli** also requires a recent version of [npm](https://www.npmjs.com/).
-
-You can use [npm](https://www.npmjs.com/) to update to the latest version.
-
-```
-npm i -g n
-n stable
-```
-
-Additional setup options, such as how to set the default credentials, installation without `reaction-cli`, and [Meteor](https://www.meteor.com/install) installation can be found in the [installation](https://docs.reactioncommerce.com/reaction-docs/development/installation) and [configuration documentation](https://docs.reactioncommerce.com/reaction-docs/development/configuration).
-
-![dashboard_and_new_tab](https://cloud.githubusercontent.com/assets/439959/17002746/a9fd1694-4e81-11e6-9963-28d6352787a3.png)
+Additional prerequisites, setup options and detailed installation documentation can be found in the [installation](https://docs.reactioncommerce.com/reaction-docs/development/installation) and [configuration documentation](https://docs.reactioncommerce.com/reaction-docs/development/configuration). Topics covered are Windows installation, setting up the default credentials, installation without `reaction-cli`, and pre-configuring packages.
 
 ## Status
 
@@ -53,8 +40,8 @@ Our [community guidelines](https://docs.reactioncommerce.com/reaction-docs/maste
 
 The [Reaction Gitter channel](https://gitter.im/reactioncommerce/reaction) and [forum](http://discourse.reactioncommerce.com/) are good places to engage with core contributors and the community.
 
-
 ### Planning
+
 For a high level review our roadmap, take a look at the [Reaction vision page](http://reactioncommerce.com/vision).
 
 For a kanban-esque, hardcore, real time progress overview of all Reaction Commerce projects use our [waffle board](https://waffle.io/reactioncommerce/reaction).
@@ -72,11 +59,11 @@ Explore the GitHub issues already opened. If you find something you want to work
 If the contribution you wish to make isn't documented in an existing issue, please [create an issue](https://github.com/reactioncommerce/reaction/issues/new), before you submit a [Pull Request](https://help.github.com/articles/about-pull-requests/). This will allow the Reaction Maintainers and Collaborators a chance to give additional feedback as well.
 
 [Pull Requests](https://help.github.com/articles/about-pull-requests/) should
+
 -   Have an associated issue
 -   Have accepted the Contributor License Agreement
 -   Enforce the [Reaction style guide](https://docs.reactioncommerce.com/reaction-docs/master/styleguide)
 -   Pass both [Acceptance tests and Unit testing](https://docs.reactioncommerce.com/reaction-docs/master/testing-reaction).
-
 
 ### Documentation
 
@@ -90,11 +77,8 @@ Testing is an important way of participating as well. If you do discover an issu
 
 Integration tests can be run at the command line with `reaction test`. Use `npm run-script test-local` to run local tests.
 
-We use [BrowserStack](https://www.browserstack.com) for automated acceptance testing.
-
-![BrowserStack Logo](https://d98b8t1nnulk5.cloudfront.net/production/images/layout/logo-header.png?1469004780)
-
 ### Deployment
+
 We require that all releases are deployable as [Docker](https://www.docker.com/) containers.  While we do not actively test or support other methods of deployment, the community has documented deployment strategies for [Heroku](https://github.com/reactioncommerce/reaction/issues/1363), AWS, [Digital Ocean](https://gist.github.com/jshimko/745ca66748846551692e24c267a56060) and Galaxy.
 
 ##### Docker

@@ -1,0 +1,35 @@
+[{
+  "language": "Greek",
+  "i18n": "el",
+  "ns": "reaction-templates",
+  "translation": {
+    "reaction-templates": {
+      "admin": {
+        "settings": {
+          "templateSettingsLabel": "πρότυπο Ρυθμίσεις"
+        }
+      },
+      "templateGrid": {
+        "noTemplatesFound": "Δεν βρέθηκαν πρότυπα",
+        "columns": {
+          "title": "Τίτλος",
+          "type": "Τύπος",
+          "language": "Γλώσσα"
+        }
+      },
+      "templateUpdateForm": {
+        "emailTemplates": {
+          "updateEmailTemplate": "Ενημέρωση προτύπου email"
+        },
+        "reactTemplates": {
+          "updateReactTemplate": "Ενημέρωση React πρότυπο",
+          "updateUnavailable": "Αντιδρούν πρότυπα δεν μπορούν να επεξεργαστούν μέσω αυτής της διασύνδεσης"
+        },
+        "alerts": {
+          "templateUpdated": "Πρότυπο ενημερώθηκε με επιτυχία",
+          "failedToUpdate": "Απέτυχε να ενημερώσει το πρότυπο: {{err}}"
+        }
+      }
+    }
+  }
+}]

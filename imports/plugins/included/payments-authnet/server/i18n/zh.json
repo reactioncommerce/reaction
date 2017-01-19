@@ -1,0 +1,26 @@
+[{
+  "language": "Chinese",
+  "i18n": "zh",
+  "ns": "reaction-auth-net",
+  "translation": {
+    "reaction-payments": {
+      "admin": {
+        "shortcut": {
+          "authorizenetLabel": "Authorize.net",
+          "authorizenetTitle": "Authorize.net"
+        },
+        "dashboard": {
+          "authorizenetLabel": "Authorize.net",
+          "authorizenetTitle": "Authorize.net",
+          "authorizenetDescription": "Authorize.net支付"
+        },
+        "paymentSettings": {
+          "authorizenetLabel": "Authorize.net",
+          "authorizenetSettingsLabel": "Authorize.net",
+          "authorizenetCredentials": "还没有登录ID和交易的关键？",
+          "authorizenetCredentialURL": "获取一个从Authorize.net"
+        }
+      }
+    }
+  }
+}]

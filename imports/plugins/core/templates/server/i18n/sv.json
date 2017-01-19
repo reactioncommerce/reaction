@@ -1,0 +1,35 @@
+[{
+  "language": "Swedish",
+  "i18n": "sv",
+  "ns": "reaction-templates",
+  "translation": {
+    "reaction-templates": {
+      "admin": {
+        "settings": {
+          "templateSettingsLabel": "mall~~POS=TRUNC"
+        }
+      },
+      "templateGrid": {
+        "noTemplatesFound": "Inga mallar hittades",
+        "columns": {
+          "title": "Titel",
+          "type": "Typ",
+          "language": "Språk"
+        }
+      },
+      "templateUpdateForm": {
+        "emailTemplates": {
+          "updateEmailTemplate": "Uppdatera e-postmall"
+        },
+        "reactTemplates": {
+          "updateReactTemplate": "Uppdatering React mall",
+          "updateUnavailable": "REACT mallar inte kan redigeras via detta gränssnitt"
+        },
+        "alerts": {
+          "templateUpdated": "Mall framgångsrikt uppdaterade",
+          "failedToUpdate": "Det gick inte att uppdatera mall: {{err}}"
+        }
+      }
+    }
+  }
+}]

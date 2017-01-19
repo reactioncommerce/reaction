@@ -1,0 +1,26 @@
+[{
+  "language": "French",
+  "i18n": "fr",
+  "ns": "taxes-taxcloud",
+  "translation": {
+    "reaction-taxes": {
+      "admin": {
+        "shortcut": {
+          "taxcloudLabel": "TaxCloud",
+          "taxcloudTitle": "TaxCloud"
+        },
+        "dashboard": {
+          "taxcloudLabel": "TaxCloud",
+          "taxcloudTitle": "TaxCloud",
+          "taxcloudDescription": "taxes TaxCloud"
+        },
+        "taxSettings": {
+          "taxcloudLabel": "TaxCloud",
+          "taxcloudSettingsLabel": "TaxCloud",
+          "taxcloudCredentials": "Ajouter les informations d'identification pour permettre",
+          "taxcloudGetCredentialsURL": "Obtenez-les ici"
+        }
+      }
+    }
+  }
+}]

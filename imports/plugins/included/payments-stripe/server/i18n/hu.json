@@ -1,0 +1,24 @@
+[{
+  "language": "Hungarian",
+  "i18n": "hu",
+  "ns": "reaction-stripe",
+  "translation": {
+    "reaction-payments": {
+      "admin": {
+        "shortcut": {
+          "stripeLabel": "Stripe"
+        },
+        "dashboard": {
+          "stripeLabel": "Stripe",
+          "stripeDescription": "Stripe kifizetések"
+        },
+        "paymentSettings": {
+          "stripeLabel": "Stripe",
+          "stripeSettingsLabel": "Stripe",
+          "stripeSettingsDescription": "Nincs még egy csík API ügyfél azonosító?",
+          "stripeSettingsGetItHere": "Szerezd meg itt"
+        }
+      }
+    }
+  }
+}]

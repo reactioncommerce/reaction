@@ -1,0 +1,23 @@
+[{
+  "language": "Portuguese",
+  "i18n": "pt",
+  "ns": "discount-rates",
+  "translation": {
+    "reaction-discounts": {
+      "admin": {
+        "settings": {
+          "ratesLabel": "Preços",
+          "noCustomDiscountRatesFound": "Não há taxas de desconto encontrados.",
+          "settingsSaveSuccess": "Configurações salvas com sucesso.",
+          "settingsSaveFailure": "Falha ao salvar as configurações.",
+          "confirmRateDelete": "Confirmar a exclusão taxa de desconto."
+        },
+        "discountGrid": {
+          "label": "Etiqueta",
+          "discountMethod": "Método",
+          "discount": "Desconto"
+        }
+      }
+    }
+  }
+}]

@@ -1,0 +1,26 @@
+[{
+  "language": "Hebrew",
+  "i18n": "he",
+  "ns": "taxes-taxjar",
+  "translation": {
+    "reaction-taxes": {
+      "admin": {
+        "shortcut": {
+          "taxjarLabel": "TaxJar",
+          "taxjarTitle": "TaxJar"
+        },
+        "dashboard": {
+          "taxjarLabel": "TaxJar",
+          "taxjarTitle": "TaxJar",
+          "taxjarDescription": "מסי TaxJar"
+        },
+        "taxSettings": {
+          "taxjarLabel": "TaxJar",
+          "taxjarSettingsLabel": "TaxJar",
+          "taxjarCredentials": "הוסף אישורים כד להפעיל",
+          "taxjarGetCredentialsURL": "קבל אותם/ן כאן"
+        }
+      }
+    }
+  }
+}]

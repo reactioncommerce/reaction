@@ -21,23 +21,15 @@
           "analyticsLabel": "إحصائات",
           "analyticsTitle": "تحليلات",
           "analyticsDescription": "تحليلات التتبع والتكامل",
-          "authorizenetLabel": "Authorize.net",
-          "authorizenetTitle": "Authorize.net\n",
-          "authorizenetDescription": "Authorize.net دفعات",
           "shippingLabel": "شحن",
           "shippingTitle": "الشحن",
           "shippingDescription": "تقديم معدلات الشحن",
-          "braintreeLabel": "برينتر",
-          "braintreeTitle": "برانتري",
-          "braintreeDescription": "مدفوعات برينتري",
           "catalogLabel": "فهرس",
           "catalogTitle": "فهرس",
           "catalogDescription": "فهرس المنتج",
           "coreLabel": "إعدادات",
           "coreTitle": "لوحة المعلومات",
           "coreDescription": "تكوين رد فعل",
-          "examplePaymentProviderLabel": "نموذج دفع",
-          "examplePaymentProviderDescription": "مثال طريقة الدفع",
           "emailLabel": "البريد الالكتروني ",
           "emailTitle": "البريد الالكتروني ",
           "emailDescription": "اعدادات البريد الالكتروني ",
@@ -54,11 +46,11 @@
           "connectTitle": "توصيل",
           "connectDescription": "توصيل ردود الفعل كخدمة نشر",
           "ordersLabel": "الطلبات",
+          "smsLabel": "رسالة قصيرة",
+          "smsTitle": "رسالة قصيرة",
+          "smsDescription": "الإشعارات",
           "ordersTitle": "الطلبات",
           "ordersDescription": "إنجاز طلبيتك",
-          "paypalLabel": "باي بال",
-          "paypalTitle": "باي بال",
-          "paypalDescription": "دفعة باي بال",
           "revisionsLabel": "المراجعات ",
           "revisionsTitle": "المراجعات ",
           "revisionsDescription": "تحكم بالمراجعة ",
@@ -66,9 +58,6 @@
           "routingTitle": "توجيه",
           "routingDescription": "الأدوات المساعدة للتوجيه",
           "searchLabel": "بحث",
-          "smsLabel": "رسالة قصيرة",
-          "smsTitle": "رسالة قصيرة",
-          "smsDescription": "الإشعارات",
           "searchTitle": "بحث",
           "searchDescription": "بحث المنتج",
           "socialLabel": "إجتماعي",
@@ -77,8 +66,6 @@
           "themesLabel": "مواضيع",
           "themesTitle": "مواضيع",
           "themesDescription": "مكونات المواضيع واجهة الأستخدام",
-          "stripeLabel": "شريط",
-          "stripeDescription": "شريط الدفع",
           "filtrationLabel": "تصفية",
           "filtrationDescription": "المنتجات المرشحة لردة الفعل"
         },
@@ -92,25 +79,25 @@
           "utilities": "أدوات مساعدة"
         },
         "settings": {
+          "saveSuccess": "تجديد الإعدادات.",
+          "saveFailed": "فشل تحديث الإعدادات.",
           "accountSettingsLabel": "إعدادات الحساب",
           "addShopMemberLabel": "إضافة عضو للمتجر",
-          "authorizenetSettingsLabel": "Authorize.net إعدادات ",
           "permissionsSettingsLabel": "موافقات",
-          "braintreeSettingsLabel": "إعدادات برينتر",
           "localizationAndI18NLabel": "التحويل و i18n",
           "searchSettingsLabel": "إعدادات البحث",
           "shopSettingsLabel": "إعدادات الشراء",
           "smsSettingsLabel": "إعدادات الرسائل القصيرة",
           "socialSettingsLabel": "إعدادات عامة",
           "shippingSettingsLabel": "إعدادات الشحن",
-          "stripeSettingsLabel": "إعدادات شريط",
           "inventorySettingsLabel": "إعدادات الجرد",
           "analyticsSettingsLabel": ".إعدادات التحليلات",
-          "paypalSettingsLabel": "إعدادات باي بال",
           "reactionConnectLabel": "توصيل التفاعل",
-          "examplePaymentSettingsLabel": "مثال إعدادات الدفع",
           "productSettingsLabel": "إعدادات المنتج",
-          "productDetailsLabel": "تفاصيل المنتج"
+          "productDetailsLabel": "تفاصيل المنتج",
+          "productRevisionsLabel": "مراجعات المنتج",
+          "emailSettingsLabel": "إعدادات البريد الإلكتروني",
+          "catalogSettingsLabel": "إعدادات كتالوج"
         },
         "userAccountDropdown": {
           "profileLabel": "الملف الشخصي"
@@ -280,7 +267,9 @@
           "connectionFailed": "!فشل الأتصال",
           "saveAnyway": "هل تريد حفظ الإعدادات بجميع الاحوال؟",
           "saveSuccess": ".تم حفظ إعدادات البريد",
-          "saveFailed": "فشل حفظ إعدادات البريد {{error}}"
+          "saveFailed": "فشل حفظ إعدادات البريد {{error}}",
+          "cantSendEmail": "خطأ الخادم: لا يمكن إرسال إشعار البريد الإلكتروني.",
+          "emailSent": "إشعار البريد الإلكتروني المرسلة."
         }
       },
       "header": {
@@ -391,6 +380,7 @@
         "productIsNotVisible": "المنتج غير مرئي"
       },
       "productVariant": {
+        "addVariantOptions": "إضافة خيارات لتمكين \"إضافة إلى العربة\" بطو",
         "inventoryQuantity": "كمية",
         "title": "علامة",
         "price": "ثمن",
@@ -420,6 +410,10 @@
         "disableConfirm": "هل أنت متأكد من أنك تريد تعطيل  {{app}}؟",
         "pkgEnabled": "{{app}} مفعل الان.",
         "pkgDisabled": "{{app}} أصبح معطلا."
+      },
+      "gridSettingsPanel": {
+        "title": "إعدادات الشبكة",
+        "selected": "مختار"
       },
       "cartDrawer": {
         "empty": "نشعر بالحزن. .عربتك فارغة",
@@ -474,11 +468,6 @@
           "completed": "مكتمل",
           "canceled": "تم الإلغاء",
           "refunded": "المستردة"
-        },
-        "paymentProvider": {
-          "braintree": {
-            "braintreeSettlementDelay": ".بانتري لا يسمح بإسترداد المبلغ حتى تتم تسوية المعاملات .من الممكن أن يأخذ هذا حتى 24 ساعة .الرجاء المحاولة مرة اخرى لاحقاً"
-          }
         }
       },
       "orderShipping": {
@@ -599,6 +588,7 @@
       },
       "revisions": {
         "isDisabled": ".مراجعة المراقبة  غير مفعل .أي تغيير سوف يتم نشره فوراً",
+        "isEnabled": "يتم تمكين مراجعة مراقبة للمنتجات. سوف يحتاج أي تغييرات على أن تنشر قبل أن يكون مرئيا للعملاء.",
         "unpublishedChanges": "تغييرات غير منشورة",
         "publishChanges": "تغييرات النشر",
         "showChanges": "إظهار التغييرات",
@@ -632,14 +622,6 @@
         "shippingOptions": "خيارات الشحن",
         "reviewPayment": "مراجعة",
         "complete": "تم"
-      },
-      "checkoutPayment": {
-        "addPaymentToCompleteOrder": "إضافة الدفعة لإتمام الطلب",
-        "processingError": ".ثمة هنالك مشكلة في دفعتك",
-        "completeYourOrder": "أكمل طلبك",
-        "noPaymentMethods": ".لا يوجد طريقة دفع منشأة",
-        "configureNow": "قم بالإنشاء الأن",
-        "failedToPlaceOrder": ".حقل لوضع الطلب"
       },
       "checkoutReview": {
         "review": "إعادة العرض"
