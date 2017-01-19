@@ -1,5 +1,3 @@
-import { DDP } from "meteor/ddp-client";
-import { DDPCommon } from "meteor/ddp-common";
 import { Hooks, Logger, Reaction } from "/server/api";
 import { Jobs, Packages } from "/lib/collections";
 
@@ -20,25 +18,6 @@ function getOwnerUserId() {
     return owner._id;
   }
   return false;
-}
-
-// helper to run code from Server Side, as a user with userId,
-// through a created current method invocation
-function runAsUser(userId, func) {
-  const invocation = new DDPCommon.MethodInvocation({
-    isSimulation: false,
-    userId: userId,
-    setUserId: () => {
-    },
-    unblock: () => {
-    },
-    connection: {},
-    randomSeed: Math.random()
-  });
-
-  DDP._CurrentInvocation.withValue(invocation, () => {
-    func();
-  });
 }
 
 Hooks.Events.add("afterCoreInit", () => {
@@ -78,9 +57,9 @@ export default function () {
       },
       (job, callback) => {
         // As this is run by the Server and we don't have userId()/this.userId
-        // which "shippo/fetchTrackingStatusForOrders" need, we create a new current method invocation
-        // which has the userId of Owner.
-        runAsUser(ownerId, () => {
+        // which "shippo/fetchTrackingStatusForOrders" need, we use dispatch:run-as-user
+        // An alternative way is https://forums.meteor.com/t/cant-set-logged-in-user-for-rest-calls/18656/3
+        Meteor.runAsUser(ownerId, ()=> {
           Meteor.call("shippo/fetchTrackingStatusForOrders", error => {
             if (error) {
               job.done(error.toString(), { repeatId: true });

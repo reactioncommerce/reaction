@@ -276,37 +276,39 @@ Meteor.methods({
       // For now we don' t have logic for returned products
     });
 
+    // no orders to update
+    if (!shippoOrders.count()) {
+      return true;
+    }
+
     // For each order get from Shippo the transaction item ,check the tracking and if it has been updated
+    let updatingResult = true;
     shippoOrders.forEach(order => {
       const orderShipment = order.shipping[0];
       const transactionId = orderShipment.shippo.transactionId;
       const transaction = ShippoApi.methods.getTransaction.call({ apiKey, transactionId });
 
-      // const trackingStatus = transaction.tracking_status;
-
-      // mocking trackingStatus as Shippo's tracking status for test Shipments isn't getting updated
-      //
-      const trackingStatus = {};
-      if (transaction.object_state === "VALID") {
-        trackingStatus.status_date = (new Date).toString();
-        trackingStatus.status = (!orderShipment.shippo.trackingStatusStatus ? "TRANSIT" : "DELIVERED");
-      }
-      //
-      //
+      // For Testing:
+      // Comment First line of code, and uncomment following block to mock the updating of tracking status
+      // as Shippo's tracking status for test Shipments isn't getting updated.
+      const trackingStatus = transaction.tracking_status;
+      // const trackingStatus = {};
+      // if (transaction.object_state === "VALID") {
+      //   trackingStatus.status_date = (new Date).toString();
+      //   trackingStatus.status = (!orderShipment.shippo.trackingStatusStatus ? "TRANSIT" : "DELIVERED");
+      // }
 
       if (trackingStatus &&
         trackingStatus.status_date !== orderShipment.shippo.trackingStatusDate) {
         // Shippo's tracking_status.status	enum	Indicates the high level status of the shipment:
         // 'UNKNOWN', 'DELIVERED', 'TRANSIT', 'FAILURE', 'RETURNED'.
         if (trackingStatus.status === "DELIVERED") {
-          // orderUpdateSet["shipping.0.delivered"] = true;
           Meteor.call("orders/shipmentDelivered", order);
         }
 
-
-        // A batch update would be better option. Unfortunately Reaction.import doesn't support
-        // Orders currently
-        Orders.update({
+        // A batch update might be better option. Unfortunately Reaction.import doesn't support
+        // .. Orders currently
+        const orderUpdating = Orders.update({
           _id: order._id
         }, {
           $set: {
@@ -314,10 +316,11 @@ Meteor.methods({
             "shipping.0.shippo.trackingStatusStatus": trackingStatus.status
           }
         });
+        updatingResult = updatingResult && orderUpdating;
       }
     });
 
-    return true; // something smarter needed
+    return updatingResult;
   },
 
   /**

@@ -11,7 +11,7 @@ Reaction.registerPackage({
     },
     // todo: move all settings in shippo subfield
     apiKey: "",
-    refreshPeriod: "every 2 minutes"
+    refreshPeriod: "every 2 hours"
   },
   registry: [{
     provides: "dashboard",
