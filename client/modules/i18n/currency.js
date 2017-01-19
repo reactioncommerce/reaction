@@ -17,7 +17,7 @@ function findCurrency(defaultCurrency) {
     }
   });
   const localStorageCurrencyName = localStorage.getItem("currency");
-  if (Match.test(shop, Object) && shop.currencies && localStorageCurrencyName) {
+  if (typeof shop === "object" && shop.currencies && localStorageCurrencyName) {
     let localStorageCurrency = {};
     if (shop.currencies[localStorageCurrencyName]) {
       localStorageCurrency = shop.currencies[localStorageCurrencyName];
@@ -48,7 +48,7 @@ export function formatPriceString(formatPrice) {
     return false;
   }
   // uses the localStorage currency instead of locale
-  let userCurrency = findCurrency(locale.currency);
+  const userCurrency = findCurrency(locale.currency);
 
   // for the cases then we have only one price. It is a number.
   const currentPrice = formatPrice.toString();
@@ -63,7 +63,7 @@ export function formatPriceString(formatPrice) {
     try {
       // we know the locale, but we don"t know exchange rate. In that case we
       // should return to default shop currency
-      if (!Match.test(userCurrency.rate, Number)) {
+      if (typeof userCurrency.rate !== "number") {
         throw new Meteor.Error("exchangeRateUndefined");
       }
       prices[i] *= userCurrency.rate;
@@ -89,7 +89,7 @@ export function formatNumber(currentPrice) {
     format: "%v"
   });
 
-  if (Match.test(locale.currency, Object) && locale.currency.rate) {
+  if (typeof locale.currency === "object" && locale.currency.rate) {
     price = currentPrice * locale.currency.rate;
     return accounting.formatMoney(price, format);
   }
