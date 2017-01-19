@@ -251,7 +251,7 @@ export default {
 
   setActionView(viewData) {
     if (viewData) {
-      Session.set("admin/actionView", viewData);
+      Session.set("admin/actionView", [viewData]);
     } else {
       const registryItem = this.getRegistryForCurrentRoute(
         "settings");
@@ -266,19 +266,103 @@ export default {
     }
   },
 
+  pushActionView(viewData) {
+    Session.set("admin/showActionView", true);
+
+    const actionViewStack = Session.get("admin/actionView");
+
+    if (viewData) {
+      actionViewStack.push(viewData);
+      Session.set("admin/actionView", actionViewStack);
+    } else {
+      const registryItem = this.getRegistryForCurrentRoute(
+        "settings");
+
+      if (registryItem) {
+        this.pushActionView(registryItem);
+      } else {
+        this.pushActionView({ template: "blankControls" });
+      }
+    }
+  },
+
+  isActionViewAtRootView() {
+    const actionViewStack = Session.get("admin/actionView");
+
+    if (Array.isArray(actionViewStack) && actionViewStack.length === 1) {
+      return true;
+    }
+
+    return false;
+  },
+
+  popActionView() {
+    const actionViewStack = Session.get("admin/actionView");
+    actionViewStack.pop();
+
+    Session.set("admin/actionView", actionViewStack);
+
+    this.setActionViewDetail({});
+  },
+
+  setActionViewDetail(viewData) {
+    if (viewData) {
+      Session.set("admin/detailView", [viewData]);
+    }
+  },
+
+  pushActionViewDetail(viewData) {
+    Session.set("admin/showActionView", true);
+
+    const detailViewStack = Session.get("admin/detailView");
+
+    if (viewData) {
+      detailViewStack.push(viewData);
+      Session.set("admin/detailView", detailViewStack);
+    }
+  },
+
+  popActionViewDetail() {
+    const detailViewStack = Session.get("admin/detailView");
+    detailViewStack.pop();
+
+    Session.set("admin/detailView", detailViewStack);
+  },
+
   getActionView() {
-    return Session.get("admin/actionView") || {};
+    const actionViewStack = Session.get("admin/actionView");
+
+    if (Array.isArray(actionViewStack) && actionViewStack.length) {
+      return actionViewStack.pop();
+    }
+
+    return {};
+  },
+
+  getActionViewDetail() {
+    const detailViewStack = Session.get("admin/detailView");
+
+    if (Array.isArray(detailViewStack) && detailViewStack.length) {
+      return detailViewStack.pop();
+    }
+
+    return {};
   },
 
   hideActionView() {
     Session.set("admin/showActionView", false);
+    this.clearActionView();
   },
 
   clearActionView() {
-    Session.set("admin/actionView", {
+    Session.set("admin/actionView", [{
       label: "",
       i18nKeyLabel: ""
-    });
+    }]);
+    Session.set("admin/detailView", [{
+      label: "",
+      i18nKeyLabel: ""
+    }]);
   },
 
   getCurrentTag() {

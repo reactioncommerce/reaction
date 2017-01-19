@@ -15,6 +15,10 @@ Template.settingsHeader.helpers({
     return Reaction.getActionView() || {};
   },
 
+  isActionViewAtRootView() {
+    return Reaction.isActionViewAtRootView();
+  },
+
   /**
    * thisApp
    * @return {Object} Registry entry for item
@@ -48,6 +52,10 @@ Template.settingsHeader.helpers({
 Template.settingsHeader.events({
   "click [data-event-action=closeSettings]": () => {
     Reaction.hideActionView();
+  },
+
+  "click .js-back-button"() {
+    Reaction.popActionView();
   }
 });
 
