@@ -13,13 +13,6 @@
           "taxesTitle": "Налоги",
           "taxesDescription": "Конфигурация налогов"
         },
-        "taxGrid": {
-          "taxCode": "Код",
-          "rate": "Ставка",
-          "country": "Страна",
-          "region": "Область",
-          "postal": "Почтовый"
-        },
         "settings": {
           "taxSettingsLabel": "Настройки налогов"
         },

@@ -299,9 +299,13 @@ export default {
           "emails.$.verified": true
         }
       });
-    } else {
-      // send verification email to admin
-      sendVerificationEmail(accountId);
+    } else { // send verification email to admin
+      try {
+        // if server is not configured. Error in configuration are caught, but admin isn't verified.
+        sendVerificationEmail(accountId);
+      } catch (error) {
+        Logger.warn(error, "Unable to send admin account verification email.");
+      }
     }
 
     //

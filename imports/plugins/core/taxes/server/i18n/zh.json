@@ -13,13 +13,6 @@
           "taxesTitle": "税款",
           "taxesDescription": "税款配置"
         },
-        "taxGrid": {
-          "taxCode": "代码",
-          "rate": "率",
-          "country": "国家",
-          "region": "地区",
-          "postal": "邮政"
-        },
         "settings": {
           "taxSettingsLabel": "税款设置"
         },

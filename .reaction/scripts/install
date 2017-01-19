@@ -1,0 +1,151 @@
+#!/bin/sh
+
+# This is the Reaction Commerce install script!
+#
+# Are you looking at this in your web browser, and would like to install Reaction?
+# To install the latest Reaction version open up your terminal and type:
+#
+#   curl -L http://getrxn.io/installreaction | /bin/sh
+#
+# You can pass also use specific Reaction version to install
+# example:
+#    curl -L http://getrxn.io/installreaction v0.2.0 | /bin/sh
+#
+
+#
+#  Let's display everything on stderr.
+#
+set -eu
+exec 1>&2
+
+#
+#  check if we're on a supported OS
+#
+UNAME=$(uname)
+
+# Windows?
+if [ "$UNAME" ">" "MINGW" -a "$UNAME" "<" "MINGX" ] ; then
+  echo "Sorry, this install script doesn't support Windows at this time."
+  echo "You will have to manually install Node, NPM, and Meteor."
+  echo "To install Node/NPM, download the installer from:"
+  echo " https://nodejs.org/en/download/package-manager/#windows"
+  echo "To install Meteor, download the installer from:"
+  echo " https://install.meteor.com/windows"
+  echo "Then you can run Reaction with: "
+  echo "  git clone https://github.com/reactioncommerce/reaction "
+  echo "  cd reaction"
+  echo "  meteor"
+  exit 1
+fi
+
+# If not OSX or Linux, exit
+if [ "$UNAME" != "Linux" -a "$UNAME" != "Darwin" ] ; then
+  echo "Sorry, this install script doesn't support your OS."
+  echo "Reaction Commerce requires Meteor to be installed."
+  echo "For more details on supported platforms, see https://www.meteor.com/install"
+  echo "Then you can: "
+  echo "  git clone https://github.com/reactioncommerce/reaction "
+  echo "  cd reaction"
+  echo "  meteor"
+  exit 1
+fi
+
+#
+# check if node + npm is installed.  if not, try to install them.
+#
+if npm -v >/dev/null 2>&1; then
+  echo "Node install verified. Checking Meteor installation."
+else
+  echo "***************************************************"
+  echo "* Installing Node.js & Npm http://nodejs.org      *"
+  echo "***************************************************"
+  #
+  # OSX Node Installer
+  #
+  if [ "$UNAME" = "Darwin" ] ; then
+      # use Homebrew if installed
+    if which brew >/dev/null 2>&1; then
+      brew install node
+    else
+      # else use official installer package
+      curl "https://nodejs.org/dist/latest/node-${VERSION:-$(wget -qO- https://nodejs.org/dist/latest/ | sed -nE 's|.*>node-(.*)\.pkg</a>.*|\1|p')}.pkg" > "$HOME/Downloads/node-latest.pkg" && sudo installer -store -pkg "$HOME/Downloads/node-latest.pkg" -target "/"
+    fi
+  else
+  #
+  # Linux Node Installer
+  #
+    # Ubuntu/Debian
+    if which apt-get >/dev/null 2>&1; then
+      curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -
+      sudo apt-get install -y nodejs build-essential git
+
+    # CentOS/Red Hat/Fedora
+    elif which yum >/dev/null 2>&1; then
+      curl --silent --location https://rpm.nodesource.com/setup | sudo bash -
+      sudo yum -y install nodejs gcc-c++ make git
+
+    # TODO: find a solution for reliably building from source on all other Linux distros
+    else
+      echo "Sorry, this install script doesn't support installing Node on your OS."
+      echo "Please see the official docs for installation instructions:"
+      echo "  https://nodejs.org/en/download/package-manager/"
+      echo "Once Node is installed, try running this script again."
+      exit 1
+    fi
+  fi
+fi
+
+
+#
+# check if meteor is already installed otherwise install.
+#
+if meteor --version >/dev/null 2>&1; then
+  echo "Meteor already installed, skipping installation."
+else
+  curl https://install.meteor.com/ | sh
+fi
+
+
+
+#
+# begin Reaction Commerce installation
+#
+
+# get the latest version from github
+GITHUB_RELEASE=$(curl -s https://api.github.com/repos/reactioncommerce/reaction/releases | grep tag_name | head -n 1 | cut -d '"' -f 4)
+
+# user parameter if passed, otherwise github version
+RELEASE=${1:-$GITHUB_RELEASE}
+VERSION=$(echo $RELEASE | awk  '{ VERSION=substr($0, 2); print VERSION; }' )
+
+# download latest reaction release from github
+#
+cd $HOME
+if [ ! -f /tmp/${RELEASE}.tgz ]; then
+  echo "Downloading Reaction Commerce application ${RELEASE}"
+  cd /tmp/ && curl -Lko ${RELEASE}.tgz https://api.github.com/repos/reactioncommerce/reaction/tarball/${RELEASE}
+else
+  echo "Found existing downloaded Reaction version, skipping download."
+fi
+
+
+#
+# extract and delete downloaded archive
+#
+echo "Extracting to ${HOME}/reactioncommerce/reaction-${VERSION}/"
+mkdir -p ${HOME}/reactioncommerce/reaction-${VERSION}/
+tar -xf /tmp/${RELEASE}.tgz -C ${HOME}/reactioncommerce/reaction-${VERSION}/ --strip-components=1
+
+#
+#  ok we're done here, let's fire it up.
+#
+BOLD='\033[1;36m' #aqua
+NC='\033[0m' #no color
+echo "${BOLD}Reaction ${RELEASE} has been installed."
+echo "Reaction is located in ~/reactioncommerce/reaction-${VERSION}/"
+echo "Using 'meteor' to start the Reaction Commerce Meteor server...${NC}"
+#  starting meteor
+cd ${HOME}/reactioncommerce/reaction-${VERSION}/
+meteor  --raw-logs
+
+EOF

@@ -21,15 +21,23 @@
           "analyticsLabel": "Statistici",
           "analyticsTitle": "Statistici",
           "analyticsDescription": "Integrările pentru analize statistice și urmărire",
+          "authorizenetLabel": "Authorize.net",
+          "authorizenetTitle": "Authorize.net",
+          "authorizenetDescription": "plăţi Authorize.Net",
           "shippingLabel": "livrare",
           "shippingTitle": "livrare",
           "shippingDescription": "Tarife de transport",
+          "braintreeLabel": "Braintree",
+          "braintreeTitle": "Braintree",
+          "braintreeDescription": "plăţile Braintree",
           "catalogLabel": "Catalog",
           "catalogTitle": "Catalog",
           "catalogDescription": "Catalog de produse",
           "coreLabel": "Setări",
           "coreTitle": "Bord",
           "coreDescription": "Configurare reaction",
+          "examplePaymentProviderLabel": "Exemplu de plată",
+          "examplePaymentProviderDescription": "Exemplu metoda de plată",
           "emailLabel": "E-mail",
           "emailTitle": "E-mail",
           "emailDescription": "Configurări e-mail",
@@ -46,11 +54,11 @@
           "connectTitle": "Conectați",
           "connectDescription": "Conecteaza Reaction ca un serviciu",
           "ordersLabel": "Istoric comenzi",
-          "smsLabel": "Mesaj",
-          "smsTitle": "Mesaj",
-          "smsDescription": "Notificările",
           "ordersTitle": "Istoric comenzi",
           "ordersDescription": "Onoraează comenzile",
+          "paypalLabel": "PayPal",
+          "paypalTitle": "PayPal",
+          "paypalDescription": "Plăţile cu PayPal",
           "revisionsLabel": "Revizuiri",
           "revisionsTitle": "Revizuiri",
           "revisionsDescription": "Control revizuiri",
@@ -60,12 +68,17 @@
           "searchLabel": "Căutare",
           "searchTitle": "Căutare",
           "searchDescription": "Caută produs",
+          "smsLabel": "Mesaj",
+          "smsTitle": "Mesaj",
+          "smsDescription": "Notificările",
           "socialLabel": "Social",
           "socialTitle": "Social",
           "socialDescription": "Configurarea canalelor sociale",
           "themesLabel": "Teme",
           "themesTitle": "Teme",
           "themesDescription": "Teme și componente UI",
+          "stripeLabel": "Stripe",
+          "stripeDescription": "Plăţi prin Stripe",
           "filtrationLabel": "Filtrare",
           "filtrationDescription": "Filtrarea produselor pentru reaction"
         },
@@ -79,25 +92,24 @@
           "utilities": "Utilitare"
         },
         "settings": {
-          "saveSuccess": "Setările aduse la zi.",
-          "saveFailed": "Nu s-au putut actualiza setările.",
           "accountSettingsLabel": "Setările contului",
           "addShopMemberLabel": "Adaugă membru magazin",
+          "authorizenetSettingsLabel": "Setări Authorize.Net",
           "permissionsSettingsLabel": "Permisiuni",
+          "braintreeSettingsLabel": "Setări Braintree",
           "localizationAndI18NLabel": "Localizare si i18n",
           "searchSettingsLabel": "Setări de căutare",
           "shopSettingsLabel": "Setări Magazin",
-          "smsSettingsLabel": "setările SMS",
           "socialSettingsLabel": "Setări sociale",
           "shippingSettingsLabel": "Setări de transport",
+          "stripeSettingsLabel": "Setări Stripe",
           "inventorySettingsLabel": "Setări de inventar",
           "analyticsSettingsLabel": "Setări Analize Statistice",
+          "paypalSettingsLabel": "Setări PayPal",
           "reactionConnectLabel": "Conectare Reaction",
+          "examplePaymentSettingsLabel": "Exemplu setări de plată",
           "productSettingsLabel": "Setări produs",
-          "productDetailsLabel": "Detalii produs",
-          "productRevisionsLabel": "Revizuiri produsului",
-          "emailSettingsLabel": "Setări e-mail",
-          "catalogSettingsLabel": "Setări catalog"
+          "productDetailsLabel": "Detalii produs"
         },
         "userAccountDropdown": {
           "profileLabel": "Profil"
@@ -267,9 +279,7 @@
           "connectionFailed": "Conexiunea a eșuat!",
           "saveAnyway": "Doriți să salvați setările in această situație ?",
           "saveSuccess": "Setările au fost salvate.",
-          "saveFailed": "Nu s-au putut salva setările de e-mail. {{error}}",
-          "cantSendEmail": "Eroare de server: Nu se poate trimite o notificare de e-mail.",
-          "emailSent": "Notificare e-mail trimis."
+          "saveFailed": "Nu s-au putut salva setările de e-mail. {{error}}"
         }
       },
       "header": {
@@ -380,7 +390,6 @@
         "productIsNotVisible": "Produsul nu este vizibil"
       },
       "productVariant": {
-        "addVariantOptions": "Adăugați opțiuni pentru a permite 'Adauga in cos' butto",
         "inventoryQuantity": "Cantitate",
         "title": "Etichetă",
         "price": "Preț",
@@ -410,10 +419,6 @@
         "disableConfirm": "Sunteți sigur că doriți să dezactivați {{app}}?",
         "pkgEnabled": "{{app}} este acum activată.",
         "pkgDisabled": "{{app}} este acum dezactivată."
-      },
-      "gridSettingsPanel": {
-        "title": "Setări de rețea",
-        "selected": "Selectat"
       },
       "cartDrawer": {
         "empty": "Suntem triști. Coșul dumneavoastră este gol.",
@@ -468,6 +473,11 @@
           "completed": "Completă",
           "canceled": "Anulată",
           "refunded": "Rambursată"
+        },
+        "paymentProvider": {
+          "braintree": {
+            "braintreeSettlementDelay": "Braintree nu permite restituiri până când tranzacțiile nu sunt finalizate. Acest lucru poate dura până la 24 de ore. Vă rugăm să încercați din nou mai târziu."
+          }
         }
       },
       "orderShipping": {
@@ -588,7 +598,6 @@
       },
       "revisions": {
         "isDisabled": "Opțiunea „Revision control” este dezactivată. Orice schimbare va fi imediat publicată.",
-        "isEnabled": "Controlul revizie este activat pentru produse. Toate modificările vor fi trebui să fie publicate înainte de a fi vizibile pentru clienți.",
         "unpublishedChanges": "Schimbări nepublicate",
         "publishChanges": "Publicare schimbări",
         "showChanges": "Expunere schimbări",
@@ -622,6 +631,14 @@
         "shippingOptions": "Optiuni de expediere",
         "reviewPayment": "Revizuire",
         "complete": "Complet"
+      },
+      "checkoutPayment": {
+        "addPaymentToCompleteOrder": "Adaugă un tip de plată pentru a finaliza comanda",
+        "processingError": "A apărut o problemă cu plata.",
+        "completeYourOrder": "Finalizează comanda",
+        "noPaymentMethods": "Nu s-a configurat nici o metodă de plată.",
+        "configureNow": "Configurati acum.",
+        "failedToPlaceOrder": "Nu s-a putut plasa comanda."
       },
       "checkoutReview": {
         "review": "Revizuire"

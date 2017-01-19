@@ -1,0 +1,15 @@
+# used for CircleCI curl tests
+
+reaction:
+  image: reactioncommerce/reaction:latest
+  links:
+    - mongo
+  ports:
+    - "80:3000"
+  environment:
+    ROOT_URL: "http://localhost"
+    MONGO_URL: "mongodb://mongo:27017/reaction"
+
+mongo:
+  image: mongo:latest
+  command: mongod --storageEngine=wiredTiger

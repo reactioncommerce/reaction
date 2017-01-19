@@ -21,15 +21,23 @@
           "analyticsLabel": "Análise",
           "analyticsTitle": "Análise",
           "analyticsDescription": "Integrações de análise e de monitorização",
+          "authorizenetLabel": "Authorize.net",
+          "authorizenetTitle": "Authorize.net",
+          "authorizenetDescription": "Pagamentos Authorize.net",
           "shippingLabel": "Envio",
           "shippingTitle": "Envio",
           "shippingDescription": "Fornecer taxas de envio",
+          "braintreeLabel": "Braintree",
+          "braintreeTitle": "Braintree",
+          "braintreeDescription": "Pagamentos Braintree",
           "catalogLabel": "Catálogo",
           "catalogTitle": "Catálogo",
           "catalogDescription": "Catálogo de produtos",
           "coreLabel": "Definições",
           "coreTitle": "Painel de controlo",
           "coreDescription": "Configuração da plataforma Reaction",
+          "examplePaymentProviderLabel": "Exemplo de pagamento",
+          "examplePaymentProviderDescription": "Método de pagamento de exemplo",
           "emailLabel": "Email",
           "emailTitle": "Email",
           "emailDescription": "Definições do email",
@@ -46,11 +54,11 @@
           "connectTitle": "Conectar",
           "connectDescription": "Conectar a plataforma Reaction como um serviço implementado",
           "ordersLabel": "Encomendas",
-          "smsLabel": "SMS",
-          "smsTitle": "SMS",
-          "smsDescription": "Notificações",
           "ordersTitle": "Encomendas",
           "ordersDescription": "Concluir as suas encomendas",
+          "paypalLabel": "PayPal",
+          "paypalTitle": "PayPal",
+          "paypalDescription": "Pagamentos por PayPal",
           "revisionsLabel": "Revisões",
           "revisionsTitle": "Revisões",
           "revisionsDescription": "Controlo de revisão",
@@ -60,12 +68,17 @@
           "searchLabel": "Procurar",
           "searchTitle": "Procurar",
           "searchDescription": "Pesquisa de produtos",
+          "smsLabel": "SMS",
+          "smsTitle": "SMS",
+          "smsDescription": "Notificações",
           "socialLabel": "Redes sociais",
           "socialTitle": "Redes sociais",
           "socialDescription": "Configuração dos canais sociais",
           "themesLabel": "Temas",
           "themesTitle": "Temas",
           "themesDescription": "Temas e componentes da IU",
+          "stripeLabel": "Stripe",
+          "stripeDescription": "Pagamentos Stripe",
           "filtrationLabel": "Filtragem",
           "filtrationDescription": "Filtragem de produtos para a plataforma Reaction"
         },
@@ -79,25 +92,24 @@
           "utilities": "Utilitários"
         },
         "settings": {
-          "saveSuccess": "Configurações atualizadas.",
-          "saveFailed": "Falha ao atualizar as configurações.",
           "accountSettingsLabel": "Definições da conta",
           "addShopMemberLabel": "Adicionar membro da loja",
+          "authorizenetSettingsLabel": "Definições de Authorize.net",
           "permissionsSettingsLabel": "Permissões",
+          "braintreeSettingsLabel": "Definições de Braintree",
           "localizationAndI18NLabel": "Localização e i18n",
           "searchSettingsLabel": "Definições de pesquisa",
           "shopSettingsLabel": "Definições da loja",
-          "smsSettingsLabel": "definições de SMS",
           "socialSettingsLabel": "Definições das redes sociais",
           "shippingSettingsLabel": "Definições de envio",
+          "stripeSettingsLabel": "Definições Stripe",
           "inventorySettingsLabel": "Definições do inventário",
           "analyticsSettingsLabel": "Definições analíticas",
+          "paypalSettingsLabel": "Definições do PayPal",
           "reactionConnectLabel": "Reaction Connect",
+          "examplePaymentSettingsLabel": "Exemplo de definições de pagamento",
           "productSettingsLabel": "Definições do produto",
-          "productDetailsLabel": "Detalhes do produto",
-          "productRevisionsLabel": "As revisões de produtos",
-          "emailSettingsLabel": "Configurações de e-mail",
-          "catalogSettingsLabel": "Configurações do catálogo"
+          "productDetailsLabel": "Detalhes do produto"
         },
         "userAccountDropdown": {
           "profileLabel": "Perfil"
@@ -267,9 +279,7 @@
           "connectionFailed": "Falha na ligação!",
           "saveAnyway": "Pretende, mesmo assim, guardar as definições?",
           "saveSuccess": "Definições de correio guardadas.",
-          "saveFailed": "Falha ao guardar definições do correio. {{error}}",
-          "cantSendEmail": "Erro de servidor: Não é possível enviar uma notificação de e-mail.",
-          "emailSent": "notificação de e-mail enviado."
+          "saveFailed": "Falha ao guardar definições do correio. {{error}}"
         }
       },
       "header": {
@@ -380,7 +390,6 @@
         "productIsNotVisible": "O produto não está visível"
       },
       "productVariant": {
-        "addVariantOptions": "Adicionar opções para ativar 'Adicionar ao carrinho' Butto",
         "inventoryQuantity": "Quantidade",
         "title": "Etiqueta",
         "price": "Preço",
@@ -410,10 +419,6 @@
         "disableConfirm": "Tem a certeza de que pretende desativar {{app}}?",
         "pkgEnabled": "A aplicação {{app}} está agora ativada.",
         "pkgDisabled": "A aplicação {{app}} está agora desativada."
-      },
-      "gridSettingsPanel": {
-        "title": "Configurações de grade",
-        "selected": "Selecionado"
       },
       "cartDrawer": {
         "empty": "Lamentamos. O seu carrinho está vazio.",
@@ -468,6 +473,11 @@
           "completed": "Concluído",
           "canceled": "Cancelado",
           "refunded": "Reembolsado"
+        },
+        "paymentProvider": {
+          "braintree": {
+            "braintreeSettlementDelay": "Braintree não permite reembolsos até as transações estarem liquidadas. Isto pode demorar até 24 horas. Tente de novo mais tarde."
+          }
         }
       },
       "orderShipping": {
@@ -588,7 +598,6 @@
       },
       "revisions": {
         "isDisabled": "O controlo da revisão está desativado. As alterações serão publicadas de imediato.",
-        "isEnabled": "controle de revisão está habilitado para os produtos. será preciso qualquer alteração a ser publicado antes de ser visível para os clientes.",
         "unpublishedChanges": "Alterações não publicadas",
         "publishChanges": "Publicar alterações",
         "showChanges": "Mostrar alterações",
@@ -622,6 +631,14 @@
         "shippingOptions": "Opções de envio",
         "reviewPayment": "Rever",
         "complete": "Concluir"
+      },
+      "checkoutPayment": {
+        "addPaymentToCompleteOrder": "Adicionar pagamento para concluir a encomenda",
+        "processingError": "Ocorreu um problema com o seu pagamento.",
+        "completeYourOrder": "Concluir a sua encomenda",
+        "noPaymentMethods": "Não há métodos de pagamento configurados.",
+        "configureNow": "Configure agora.",
+        "failedToPlaceOrder": "Falha ao efetuar a encomenda."
       },
       "checkoutReview": {
         "review": "Rever"

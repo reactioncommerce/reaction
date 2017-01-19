@@ -6,4 +6,3 @@ export { default as ProductMetadata } from "./metadata";
 export { default as ProductTags } from "./tags";
 export { default as ProductField } from "./productField";
 export { default as PriceRange } from "./priceRange";
-export { default as ProductNotFound } from "./productNotFound";
