@@ -411,10 +411,6 @@
         "pkgEnabled": "{{app}} is now enabled.",
         "pkgDisabled": "{{app}} is now disabled."
       },
-      "gridSettingsPanel": {
-        "title": "Grid Settings",
-        "selected": "Selected"
-      },
       "cartDrawer": {
         "empty": "We're sad. Your cart is empty.",
         "keepShopping": "Keep on shopping",

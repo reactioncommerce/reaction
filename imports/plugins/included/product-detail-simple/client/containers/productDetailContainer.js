@@ -1,5 +1,3 @@
-import { isEmpty } from "lodash";
-import { StyleRoot } from "radium";
 import React, { Component, PropTypes } from "react";
 import { composeWithTracker } from "/lib/api/compose";
 import { Meteor } from "meteor/meteor";
@@ -7,10 +5,11 @@ import { ReactionProduct } from "/lib/api";
 import { Reaction, i18next, Logger } from "/client/api";
 import { Tags, Media } from "/lib/collections";
 import { Loading } from "/imports/plugins/core/ui/client/components";
-import { ProductDetail, ProductNotFound } from "../components";
+import { ProductDetail } from "../components";
 import { SocialContainer, VariantListContainer } from "./";
 import { MediaGalleryContainer } from "/imports/plugins/core/ui/client/containers";
 import { DragDropProvider, TranslationProvider } from "/imports/plugins/core/ui/client/providers";
+import { StyleRoot } from "radium";
 
 class ProductDetailContainer extends Component {
   constructor(props) {
@@ -147,11 +146,6 @@ class ProductDetailContainer extends Component {
   }
 
   render() {
-    if (isEmpty(this.props.product)) {
-      return (
-        <ProductNotFound />
-      );
-    }
     return (
       <TranslationProvider>
         <DragDropProvider>
@@ -288,9 +282,6 @@ function composer(props, onData) {
         viewAs: viewProductAs,
         hasAdminPermission: Reaction.hasPermission(["createProduct"])
       });
-    } else {
-      // onData must be called with composeWithTracker, or else the loading icon will show forever.
-      onData(null, {});
     }
   }
 }

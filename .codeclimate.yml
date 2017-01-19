@@ -1,0 +1,27 @@
+exclude_paths:
+- ".meteor/*"
+- "node_modules/*"
+- "packages/*"
+- "client/lib/transliteration.min.js"
+- ".codeclimate.yml"
+engines:
+  eslint:
+    enabled: false
+  csslint:
+    enabled: false
+  duplication:
+    enabled: false
+    config:
+      languages:
+        javascript:
+          mass_threshold: 150
+  fixme:
+    enabled: false
+    config:
+      strings:
+      - FIXME
+      - BUG
+ratings:
+   paths:
+   - "**.js"
+   - "**.css"

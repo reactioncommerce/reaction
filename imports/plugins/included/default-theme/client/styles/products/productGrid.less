@@ -20,7 +20,6 @@
   opacity: 0.7;
   width: 100%;
   padding-top: 10px;
-  word-break: break-all;
   .currency-symbol {
     white-space: nowrap;
     text-decoration: none;
@@ -29,6 +28,9 @@
 }
 
 .product-grid-item .overlay-title {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: clip;
   text-transform: uppercase;
   font-size: @font-size-base;
   font-weight: 400;

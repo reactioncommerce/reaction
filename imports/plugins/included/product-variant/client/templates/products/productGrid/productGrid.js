@@ -11,44 +11,7 @@ import Sortable from "sortablejs";
  */
 
 Template.productGrid.onCreated(function () {
-  const profile = Meteor.user().profile;
-
-  if (profile && profile.preferences && profile.preferences['reaction-product-variant'] && profile.preferences['reaction-product-variant'].selectedGridItems) {
-    let selectedProducts = profile.preferences['reaction-product-variant'].selectedGridItems;
-
-    if (_.isEmpty(selectedProducts)) {
-      Reaction.hideActionView();
-    } else {
-      if (event.target.checked) {
-        selectedProducts.push(event.target.value);
-      } else {
-        selectedProducts = _.without(selectedProducts, event.target.value);
-      }
-
-      // Save the selected items to the Session
-      Session.set("productGrid/selectedProducts", _.uniq(selectedProducts));
-
-      const products = Template.currentData().products;
-
-      if (products) {
-        const filteredProducts = _.filter(products, (product) => {
-          return _.includes(selectedProducts, product._id);
-        });
-
-        Reaction.showActionView({
-          label: "Grid Settings",
-          i18nKeyLabel: "gridSettingsPanel.title",
-          template: "productSettings",
-          type: "product",
-          data: {
-            products: filteredProducts
-          }
-        });
-      }
-    }
-  } else {
-    Reaction.hideActionView();
-  }
+  Session.set("productGrid/selectedProducts", []);
 });
 
 Template.productGrid.onRendered(function () {
@@ -101,16 +64,6 @@ Template.productGrid.events({
       selectedProducts = _.without(selectedProducts, event.target.value);
     }
 
-    // Save the selected items to the user profile, for use when returing to the grid view
-    if (Meteor.user()) {
-      Meteor.users.update(Meteor.userId(), {
-        $set: {
-          "profile.preferences.reaction-product-variant.selectedGridItems": selectedProducts
-        }
-      });
-    }
-
-    // Save the selected items to the Session
     Session.set("productGrid/selectedProducts", _.uniq(selectedProducts));
 
     const products = Template.currentData().products;
@@ -121,8 +74,8 @@ Template.productGrid.events({
       });
 
       Reaction.showActionView({
-        label: "Grid Settings",
-        i18nKeyLabel: "gridSettingsPanel.title",
+        label: "Product Settings",
+        i18nKeyLabel: "productDetailEdit.productSettings",
         template: "productSettings",
         type: "product",
         data: {

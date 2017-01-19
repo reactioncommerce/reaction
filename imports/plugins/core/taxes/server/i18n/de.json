@@ -6,19 +6,12 @@
       "admin": {
         "shortcut": {
           "taxesLabel": "Steuern",
-          "taxesTitle": "Steuern"
+          "taxesTitle": "Steuern\n"
         },
         "dashboard": {
           "taxesLabel": "Steuern",
-          "taxesTitle": "Steuern",
+          "taxesTitle": "Steuern\n",
           "taxesDescription": "Steuer-Konfiguration"
-        },
-        "taxGrid": {
-          "taxCode": "Code",
-          "rate": "Preis",
-          "country": "Land",
-          "region": "Region",
-          "postal": "Post"
         },
         "settings": {
           "taxSettingsLabel": "Steuer-Einstellungen"

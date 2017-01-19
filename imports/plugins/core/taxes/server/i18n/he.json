@@ -13,13 +13,6 @@
           "taxesTitle": "מסים",
           "taxesDescription": "תצורת מס"
         },
-        "taxGrid": {
-          "taxCode": "קוד",
-          "rate": "אחוז",
-          "country": "מדינה",
-          "region": "אזור",
-          "postal": "מיקוד"
-        },
         "settings": {
           "taxSettingsLabel": "הגדרות מס"
         },

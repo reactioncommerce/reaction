@@ -21,15 +21,23 @@
           "analyticsLabel": "Analytics",
           "analyticsTitle": "Analytics",
           "analyticsDescription": "Integrierung von Analysen und Tracking",
+          "authorizenetLabel": "Authorize.net",
+          "authorizenetTitle": "Authorize.net",
+          "authorizenetDescription": "Authorize.net Zahlungen",
           "shippingLabel": "Versand",
           "shippingTitle": "Versand",
           "shippingDescription": "Lieferkosten angeben",
+          "braintreeLabel": "Braintree",
+          "braintreeTitle": "Braintree",
+          "braintreeDescription": "Braintree Zahlungen",
           "catalogLabel": "Katalog",
           "catalogTitle": "Katalog",
           "catalogDescription": "Produktkatalog",
           "coreLabel": "Einstellungen",
           "coreTitle": "Dashboard",
           "coreDescription": "Ergebnis-Konfiguration",
+          "examplePaymentProviderLabel": "Beispielzahlung",
+          "examplePaymentProviderDescription": "Zahlungsart-Beispiel",
           "emailLabel": "E-Mail",
           "emailTitle": "E-Mail",
           "emailDescription": "E-Mail-Einstellungen",
@@ -46,11 +54,11 @@
           "connectTitle": "Verbinden",
           "connectDescription": "Ergebnis als eingesetztes Dienstprogramm verbinden",
           "ordersLabel": "Bestellungen",
-          "smsLabel": "SMS",
-          "smsTitle": "SMS",
-          "smsDescription": "Benachrichtigungen",
           "ordersTitle": "Bestellungen",
           "ordersDescription": "Ihre Bestellungen ausführen",
+          "paypalLabel": "PayPal",
+          "paypalTitle": "PayPal",
+          "paypalDescription": "PayPal Zahlungen",
           "revisionsLabel": "Revisionen",
           "revisionsTitle": "Revisionen",
           "revisionsDescription": "Revisionskontrolle",
@@ -60,12 +68,17 @@
           "searchLabel": "Suchen",
           "searchTitle": "Suche",
           "searchDescription": "Produktsuche",
+          "smsLabel": "SMS",
+          "smsTitle": "SMS",
+          "smsDescription": "Benachrichtigungen",
           "socialLabel": "Sozial",
           "socialTitle": "Sozial",
           "socialDescription": "Social Channel Konfiguration",
           "themesLabel": "Themen",
           "themesTitle": "Themen",
           "themesDescription": "Themen und UI-Komponenten",
+          "stripeLabel": "Streifen",
+          "stripeDescription": "Zahlungen mit Magnetstreifen ",
           "filtrationLabel": "Filtern",
           "filtrationDescription": "Produktfilter für Ergebnis"
         },
@@ -79,25 +92,25 @@
           "utilities": "Dienstprogramme"
         },
         "settings": {
-          "saveSuccess": "Einstellungen aktualisiert.",
-          "saveFailed": "Fehlgeschlagen Einstellungen zu aktualisieren.",
           "accountSettingsLabel": "Kontoeinstellungen",
           "addShopMemberLabel": "Shop-Mitglied hinzufügen",
+          "authorizenetSettingsLabel": "Authorize.net Einstellungen",
           "permissionsSettingsLabel": "Berechtigungen",
+          "braintreeSettingsLabel": "Braintree Einstellungen",
           "localizationAndI18NLabel": "Lokalisierung und i18n",
           "searchSettingsLabel": "Sucheinstellungen",
           "shopSettingsLabel": "Geschäfts-Einstellungen",
-          "smsSettingsLabel": "SMS-Einstellungen",
           "socialSettingsLabel": "Soziale Einstellungen",
           "shippingSettingsLabel": "Versand-Einstellungen",
+          "smsSettingsLabel": "SMS-Einstellungen",
+          "stripeSettingsLabel": "Streifen-Einstellungen",
           "inventorySettingsLabel": "Verzeichnis-Einstellungen",
           "analyticsSettingsLabel": "Analytics-Einstellungen",
+          "paypalSettingsLabel": "PayPal Einstellungen",
           "reactionConnectLabel": "Ergebnis verbinden",
+          "examplePaymentSettingsLabel": "Zahlungsbeispiel-Einstellungen",
           "productSettingsLabel": "Produkteinstellungen",
-          "productDetailsLabel": "Produktdetails",
-          "productRevisionsLabel": "Produkt Revisions",
-          "emailSettingsLabel": "E-Mail-Einstellungen",
-          "catalogSettingsLabel": "Katalogeinstellungen"
+          "productDetailsLabel": "Produktdetails"
         },
         "userAccountDropdown": {
           "profileLabel": "Profil"
@@ -267,9 +280,7 @@
           "connectionFailed": "Verbindung fehlgeschlagen!",
           "saveAnyway": "Möchten Sie die Einstellungen trotzdem speichern?",
           "saveSuccess": "Die E-Mail-Einstellungen wurden gespeichert.",
-          "saveFailed": "Die E-Mail-Einstellungen konnten nicht gespeichert werden.  {{error}}",
-          "cantSendEmail": "Server-Fehler: Kann keine E-Mail-Benachrichtigung senden.",
-          "emailSent": "E-Mail-Benachrichtigung gesendet."
+          "saveFailed": "Die E-Mail-Einstellungen konnten nicht gespeichert werden.  {{error}}"
         }
       },
       "header": {
@@ -380,7 +391,6 @@
         "productIsNotVisible": "Das Produkt ist nicht sichtbar"
       },
       "productVariant": {
-        "addVariantOptions": "Fügen Sie Optionen aktivieren \"In den Warenkorb\" butto",
         "inventoryQuantity": "Menge",
         "title": "Label",
         "price": "Preis",
@@ -410,10 +420,6 @@
         "disableConfirm": "Sind Sie sicher, dass Sie {{app}} deaktivieren möchten?",
         "pkgEnabled": " {{app}} wurde aktiviert.",
         "pkgDisabled": "  {{app}} wurde deaktiviert."
-      },
-      "gridSettingsPanel": {
-        "title": "Rastereinstellungen",
-        "selected": "Ausgewählt"
       },
       "cartDrawer": {
         "empty": "Ihr Warenkorb ist leer.",
@@ -468,6 +474,11 @@
           "completed": "Beendet",
           "canceled": "Abgebrochen",
           "refunded": "Erstattet"
+        },
+        "paymentProvider": {
+          "braintree": {
+            "braintreeSettlementDelay": "Braintree erlaubt keine Erstattungen, bevor die Transaktionen geregelt sind. Dies kann bis zu 24 Stunden in Anspruch nehmen.  Bitte versuchen Sie es später noch einmal."
+          }
         }
       },
       "orderShipping": {
@@ -588,7 +599,6 @@
       },
       "revisions": {
         "isDisabled": "Die Revisionsverwaltung ist deaktiviert. Jegliche Änderungen werden sofort veröffentlicht.",
-        "isEnabled": "Revisionskontrolle für Produkte aktiviert. Alle Änderungen werden müssen, bevor sie an den Kunden sichtbar veröffentlicht.",
         "unpublishedChanges": "Unveröffentlichte Änderungen",
         "publishChanges": "Änderungen veröffentlichen",
         "showChanges": "Änderungen anzeigen",
@@ -622,6 +632,14 @@
         "shippingOptions": "Versandoptionen",
         "reviewPayment": "Überprüfung der Zahlung",
         "complete": "Fertig"
+      },
+      "checkoutPayment": {
+        "addPaymentToCompleteOrder": "Bitte Zahlungsart festlegen um den Einkauf abzuschließen.",
+        "processingError": "Bei Ihrer Zahlung ist ein Problem aufgetreten. ",
+        "completeYourOrder": "Ihre Bestellung abschließen",
+        "noPaymentMethods": "Es sind keine Zahlungsarten konfiguriert. ",
+        "configureNow": "Jetzt konfigurieren.",
+        "failedToPlaceOrder": "Die Bestellung konnte nicht aufgegeben werden. "
       },
       "checkoutReview": {
         "review": "Durchsicht"

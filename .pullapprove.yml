@@ -1,0 +1,44 @@
+version: 2
+always_pending:
+  explanation: "Work in progress!"
+  title_regex: WIP
+group_defaults:
+  approve_by_comment:
+    enabled: true
+    approve_regex: '^(Approved|:shipit:|:\+1:|LGTM)'
+    reject_regex: '^(Rejected|:-1:)'
+  reset_on_push:
+    enabled: false
+groups:
+  development-reviewers:
+    approve_by_comment:
+      enabled: true
+    author_approval:
+      ignored: true
+    conditions:
+      branches:
+        - development
+      files:
+        exclude:
+          - "*.md"
+    reject_value: -2
+    required: 2
+    reset_on_reopened:
+      enabled: true
+    users: all
+  master-reviewers:
+    author_approval:
+      required: true
+    conditions:
+      branches:
+        - master
+    reject_value: -1
+    required: 2
+    reset_on_reopened:
+      enabled: true
+    users:
+      - aaronjudd
+      - jshimko
+      - mikemurray
+      - zenweasel
+      - kieckhafer
