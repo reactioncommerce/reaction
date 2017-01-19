@@ -23,18 +23,16 @@ class ChildVariant extends Component {
   }
 
   renderInventoryStatus() {
-    console.log("this", this);
-    console.log("this2", this.props.variant);
-    console.log("quantity", this.props.variant.inventoryQuantity, typeof this.props.variant.inventoryQuantity);
     const {
       inventoryManagement,
       inventoryPolicy
     } = this.props.variant;
 
+    // If childVariant is sold out, show Sold Out badge
     if (inventoryManagement && this.props.variant.inventoryQuantity <= 0) {
       if (inventoryPolicy) {
         return (
-          <span className="variant-qty-sold-out badge badge-warning">
+          <span className="variant-qty-sold-out badge badge-danger">
             <Translation defaultValue="Sold Out!" i18nKey="productDetail.soldOut" />
           </span>
         );
