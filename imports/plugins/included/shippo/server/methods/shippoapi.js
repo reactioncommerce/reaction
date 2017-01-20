@@ -159,3 +159,33 @@ ShippoApi.methods.createTransaction = new ValidatedMethod({
     }
   }
 });
+
+/**
+ * Retrieves transaction with transactionId of Shippo Account
+ * @see https://goshippo.com/docs/reference#transactions-retrieve
+ * @param {Object} parameter - ValidatedMethod's parameter
+ * @param {String} parameter.transactionId - unique identifier of the transaction object
+ * @param {String} parameter.apiKey - The Test or Live Token required
+ * for authentication by Shippo's api
+ * @return {Object} transaction - transaction object returned by Shippo
+ * */
+ShippoApi.methods.getTransaction = new ValidatedMethod({
+  name: "ShippoApi.methods.getTransaction",
+  validate: new SimpleSchema({
+    transactionId: { type: String },
+    apiKey: { type: String }
+  }).validator(),
+  run({ transactionId, apiKey }) {
+    const shippoObj = new Shippo(apiKey);
+
+    const retrieveTransactionFiber = Meteor.wrapAsync(shippoObj.transaction.retrieve, shippoObj.transaction);
+    try {
+      const transaction = retrieveTransactionFiber(transactionId);
+
+      return transaction;
+    } catch (error) {
+      Logger.error(error.message);
+      throw new Meteor.Error(error.message);
+    }
+  }
+});
