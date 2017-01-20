@@ -7,6 +7,9 @@
       "languages": {
         "select": "Select Language"
       },
+      "currencies": {
+        "select": "Select Currency"
+      },
       "admin": {
         "shortcut": {
           "dashboardLabel": "Dashboard",

@@ -83,24 +83,29 @@
   .padding-left(@navbar-padding-vertical);
 }
 
-.rui.navbar .languages {
+.rui.navbar .languages,
+.rui.navbar .currencies {
   .display(flex);
   .align-items(center);
   .flex(0 0 auto);
   height: @navbar-height;
 }
 
-.rui.navbar .languages:hover {
+.rui.navbar .languages:hover,
+.rui.navbar .currencies:hover {
   background-color: @navbar-default-toggle-icon-bar-bg;
   border-color: @navbar-default-toggle-border-color;
 }
 
-.rui.navbar .languages .dropdown-menu {
+.rui.navbar .languages .dropdown-menu,
+.rui.navbar .currencies .dropdown-menu {
   margin-top: 0;
 }
 
 .rui.navbar .languages li,
-.rui.navbar .languages .menu-item {
+.rui.navbar .languages .menu-item,
+.rui.navbar .currencies li,
+.rui.navbar .currencies .menu-item {
   .text-align(left);
 }
 
