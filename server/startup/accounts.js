@@ -96,8 +96,13 @@ export default function () {
       if (!(Meteor.users.find().count() === 0)) { // dont set on inital admin
         if (!user.profile) user.profile = {};
         const currentUser = Meteor.user(user);
-        if (currentUser && currentUser.profile && currentUser.profile.lang && !user.profile.lang) {
-          user.profile.lang = currentUser.profile.lang;
+        if (currentUser && currentUser.profile) {
+          if (currentUser.profile.lang && !user.profile.lang) {
+            user.profile.lang = currentUser.profile.lang;
+          }
+          if (currentUser.profile.currency && !user.profile.currency) {
+            user.profile.currency = currentUser.profile.currency;
+          }
         }
       }
 

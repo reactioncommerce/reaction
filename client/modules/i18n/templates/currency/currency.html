@@ -1,0 +1,19 @@
+<template name="currencySelect">
+  {{#if currencies}}
+    <div class="dropdown" role="currency">
+      <div class="dropdown-toggle" data-toggle="dropdown" data-delay="1000">{{currentCurrency}}
+        <span class="caret"></span>
+      </div>
+
+      <ul class="dropdown-menu text-center" role="menu">
+        <li class="dropdown-header" role="presentation" data-i18n="currencies.select">Select Currency</li>
+        <li class="divider"></li>
+        {{#each currencies}}
+          <li class="{{class}}">
+            <a class="currency" role="menuitem">{{currency}} {{symbol}}</a>
+          </li>
+        {{/each}}
+      </ul>
+    </div>
+  {{/if}}
+</template>

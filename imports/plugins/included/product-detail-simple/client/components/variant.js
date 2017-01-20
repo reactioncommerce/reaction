@@ -92,7 +92,7 @@ class Variant extends Component {
 
           <div className="actions">
             <span className="variant-price">
-              <Currency amount={this.price}/>
+              <Currency amount={this.price} editable={this.props.editable}/>
             </span>
           </div>
 

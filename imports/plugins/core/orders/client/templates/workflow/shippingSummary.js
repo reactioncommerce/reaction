@@ -88,6 +88,17 @@ Template.coreOrderShippingSummary.helpers({
   shipmentStatus() {
     const order = Template.instance().order;
     const shipment = Template.instance().order.shipping[0];
+
+    // check first if it was delivered
+    if (shipment.delivered) {
+      return {
+        delivered: true,
+        shipped: true,
+        status: "success",
+        label: i18next.t("orderShipping.delivered")
+      };
+    }
+
     const shipped = _.every(shipment.items, (shipmentItem) => {
       for (const fullItem of order.items) {
         if (fullItem._id === shipmentItem._id) {
@@ -102,6 +113,7 @@ Template.coreOrderShippingSummary.helpers({
 
     if (shipped) {
       return {
+        delivered: false,
         shipped: true,
         status: "success",
         label: i18next.t("orderShipping.shipped")
@@ -109,6 +121,7 @@ Template.coreOrderShippingSummary.helpers({
     }
 
     return {
+      delivered: false,
       shipped: false,
       status: "info",
       label: i18next.t("orderShipping.notShipped")
