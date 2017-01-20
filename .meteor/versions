@@ -63,6 +63,7 @@ ddp-server@1.3.12
 deps@1.0.12
 diff-sequence@1.0.7
 dispatch:mocha@0.0.9
+dispatch:run-as-user@1.1.1
 ecmascript@0.6.1
 ecmascript-runtime@0.3.15
 ejson@1.0.13
