@@ -7,6 +7,9 @@
       "languages": {
         "select": "Select Language"
       },
+      "currencies": {
+        "select": "Select Currency"
+      },
       "admin": {
         "shortcut": {
           "dashboardLabel": "Dashboard",
@@ -481,6 +484,7 @@
         "shipmentEmpty": "This shipment has no items",
         "shipmentPacked": "All Items Packed",
         "shipped": "Shipped",
+        "delivered": "Delivered",
         "shippingNotifyCustomer": "Notify the customer that their items will be shipping soon.",
         "resendNotification": "Resend Shipment Notification"
       },

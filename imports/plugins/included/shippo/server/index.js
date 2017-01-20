@@ -1,2 +1,2 @@
-import "./methods/shippo.js";
-
+import "./methods";
+import "./jobs";
