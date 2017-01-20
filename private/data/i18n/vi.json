@@ -7,6 +7,9 @@
       "languages": {
         "select": "Chọn ngôn ngữ"
       },
+      "currencies": {
+        "select": "Chọn ngoại tệ"
+      },
       "admin": {
         "shortcut": {
           "dashboardLabel": "bảng điều khiển",
@@ -24,9 +27,6 @@
           "shippingLabel": "Đang chuyển hàng",
           "shippingTitle": "Đang chuyển hàng",
           "shippingDescription": "Cung cấp mức giá vận chuyển",
-          "catalogLabel": "Mục lục",
-          "catalogTitle": "Mục lục",
-          "catalogDescription": "Danh mục sản phẩm",
           "coreLabel": "Cài đặt",
           "coreTitle": "bảng điều khiển",
           "coreDescription": "cấu hình phản ứng",
@@ -475,11 +475,16 @@
         "notShipped": "Chưa được vận chuyển",
         "noTracking": "không theo dõi",
         "tracking": "Theo dõi",
+        "printLabels": "In Nhãn",
+        "printShippingLabel": "Đang chuyển hàng",
+        "printCustomsLabel": "Phong tục",
+        "carrier": "Vận chuyển",
         "addTracking": "Thêm Theo dõi",
         "itemsHaveBeenShipped": "Mục đã được vận chuyển",
         "shipmentEmpty": "lô hàng này không có mục",
         "shipmentPacked": "Tất cả các mục đóng gói",
         "shipped": "vận chuyển",
+        "delivered": "Đã giao hàng",
         "shippingNotifyCustomer": "Thông báo cho các khách hàng rằng sản phẩm của họ sẽ được vận chuyển sớm.",
         "resendNotification": "Gửi lại lô hàng thông báo"
       },
@@ -751,6 +756,9 @@
           "orderDate": "Ngày",
           "orderTotal": "Tổng số"
         }
+      },
+      "shippo": {
+        "connectedAndSaved": "Cài đặt lưu! Shippo API được kích hoạt."
       },
       "accountsUI": {
         "members": "Thành viên",

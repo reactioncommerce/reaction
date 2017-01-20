@@ -4,13 +4,11 @@
   "translation": {
     "reaction-layout": {
       "admin": {
-        "shortcut": {},
         "dashboard": {
           "layoutLabel": "Layout",
           "layoutTitle": "Layout",
           "layoutDescription": "Layout utilities"
-        },
-        "settings": {}
+        }
       }
     }
   }

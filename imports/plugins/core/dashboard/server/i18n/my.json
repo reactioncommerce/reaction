@@ -1,0 +1,13 @@
+[{
+  "i18n": "my",
+  "ns": "reaction-dashboard",
+  "translation": {
+    "reaction-dashboard": {
+      "admin": {
+        "shortcut": {
+          "dashboardLabel": "dashboard ကို"
+        }
+      }
+    }
+  }
+}]

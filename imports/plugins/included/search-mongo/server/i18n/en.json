@@ -4,14 +4,12 @@
   "translation": {
     "reaction-search": {
       "admin": {
-        "shortcut": {},
         "dashboard": {
           "searchLabel": "Search",
           "searchTitle": "Search",
           "searchDescription": "Product Search"
         },
         "settings": {
-
           "searchSettingsLabel": "Search Settings"
         }
       }

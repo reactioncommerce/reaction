@@ -1,0 +1,13 @@
+[{
+  "i18n": "nl",
+  "ns": "reaction-dashboard",
+  "translation": {
+    "reaction-dashboard": {
+      "admin": {
+        "shortcut": {
+          "dashboardLabel": "Dashboard"
+        }
+      }
+    }
+  }
+}]

@@ -7,6 +7,9 @@
       "languages": {
         "select": "ဘာသာစကား ရွေးချယ်ရန်"
       },
+      "currencies": {
+        "select": "ငွေကြေးကို Select လုပ်ပါ"
+      },
       "admin": {
         "shortcut": {
           "dashboardLabel": "dashboard ကို",
@@ -24,9 +27,6 @@
           "shippingLabel": "သင်္ဘောဖြင့်ကုန်ပစ္စည်းပို့ခြင်း",
           "shippingTitle": "သင်္ဘောဖြင့်ကုန်ပစ္စည်းပို့ခြင်း",
           "shippingDescription": "ရေကြောင်းနှုန်းထားများပေး",
-          "catalogLabel": "စာရင်း",
-          "catalogTitle": "စာရင်း",
-          "catalogDescription": "ကုန်ပစ္စည်း Catalog",
           "coreLabel": "Settings များ",
           "coreTitle": "dashboard ကို",
           "coreDescription": "တုံ့ပြန်မှု configuration ကို",
@@ -475,11 +475,16 @@
         "notShipped": "မသို့သျောလညျးကိုပို့ပြီးဖြစ်၏",
         "noTracking": "အဘယ်သူမျှမခြေရာကောက်",
         "tracking": "ခြေရာကောက်",
+        "printLabels": "ပုံနှိပ်ပါ Labels:",
+        "printShippingLabel": "သင်္ဘောဖြင့်ကုန်ပစ္စည်းပို့ခြင်း",
+        "printCustomsLabel": "အခွန်ဌာန",
+        "carrier": "လေယာဉ်တင်သင်္ဘော",
         "addTracking": "ခြေရာကောက် Add",
         "itemsHaveBeenShipped": "items တင်ပို့ခဲ့ကြ",
         "shipmentEmpty": "ဒီတင်ပို့မရှိပစ္စည်းများရှိပါတယ်",
         "shipmentPacked": "အားလုံးပစ္စည်းများထုပ်ပိုး",
         "shipped": "တင်ပို့",
+        "delivered": "ကယ်နှုတ်တော်မူ၏",
         "shippingNotifyCustomer": "သူတို့၏ပစ္စည်းများကိုမကြာမီတင်ပို့ခြင်းကိုခံရလတံ့သောဖောက်သည်အကြောင်းကြား။",
         "resendNotification": "တင်ပို့ခြင်းသတိပေးချက်ပြန်ပို့မည်"
       },
@@ -751,6 +756,9 @@
           "orderDate": "နေ့စှဲ",
           "orderTotal": "စုစုပေါငျး"
         }
+      },
+      "shippo": {
+        "connectedAndSaved": "ချိန်ညှိချက်များကိုကယ်တင်ခြင်းသို့ရောက်ရ၏! Shippo API ကိုယခု enabled ဖြစ်ပါတယ်။"
       },
       "accountsUI": {
         "members": "အဖွဲ့ဝင်များ",

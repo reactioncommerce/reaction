@@ -7,6 +7,9 @@
       "languages": {
         "select": "Izberi jezik"
       },
+      "currencies": {
+        "select": "Izberite valuto"
+      },
       "admin": {
         "shortcut": {
           "dashboardLabel": "Nadzorna plošča",
@@ -24,9 +27,6 @@
           "shippingLabel": "Dostava",
           "shippingTitle": "Dostava",
           "shippingDescription": "Navedite stroške pošiljanja",
-          "catalogLabel": "katalog",
-          "catalogTitle": "katalog",
-          "catalogDescription": "Katalog izdelkov",
           "coreLabel": "Nastavitve",
           "coreTitle": "Nadzorna plošča",
           "coreDescription": "konfiguracija reakcija",
@@ -475,11 +475,16 @@
         "notShipped": "Ni še odposlano",
         "noTracking": "Ne sledenje",
         "tracking": "sledenje",
+        "printLabels": "Tiskanje Oznake",
+        "printShippingLabel": "Dostava",
+        "printCustomsLabel": "carinska",
+        "carrier": "Carrier",
         "addTracking": "Dodaj sledenje",
         "itemsHaveBeenShipped": "Elementov, ki so bili poslani",
         "shipmentEmpty": "Ta pošiljka nima elementov",
         "shipmentPacked": "Vsi elementi Pakirano",
         "shipped": "pošiljajo",
+        "delivered": "Delivered",
         "shippingNotifyCustomer": "Obvesti stranko, da se njihovi elementi bodo kmalu ladijskega prometa.",
         "resendNotification": "Ponovno pošlji Pošiljka Obvestilo"
       },
@@ -751,6 +756,9 @@
           "orderDate": "Datum",
           "orderTotal": "Skupaj"
         }
+      },
+      "shippo": {
+        "connectedAndSaved": "Nastavitve so shranjene! Shippo API je zdaj omogočeno."
       },
       "accountsUI": {
         "members": "člani",

@@ -1,0 +1,18 @@
+[{
+  "i18n": "hr",
+  "ns": "reaction-email",
+  "translation": {
+    "reaction-email": {
+      "admin": {
+        "dashboard": {
+          "emailLabel": "E-mail",
+          "emailTitle": "E-mail",
+          "emailDescription": "postavke e-pošte"
+        },
+        "settings": {
+          "emailSettingsLabel": "Postavke e-pošte"
+        }
+      }
+    }
+  }
+}]

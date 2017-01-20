@@ -11,8 +11,7 @@
           "ordersLabel": "Orders",
           "ordersTitle": "Orders",
           "ordersDescription": "Fulfill your orders"
-        },
-        "settings": {}
+        }
       }
     }
   }

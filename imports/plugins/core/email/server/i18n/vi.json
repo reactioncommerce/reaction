@@ -1,0 +1,18 @@
+[{
+  "i18n": "vi",
+  "ns": "reaction-email",
+  "translation": {
+    "reaction-email": {
+      "admin": {
+        "dashboard": {
+          "emailLabel": "E-mail",
+          "emailTitle": "E-mail",
+          "emailDescription": "cài đặt email"
+        },
+        "settings": {
+          "emailSettingsLabel": "Cài đặt email"
+        }
+      }
+    }
+  }
+}]

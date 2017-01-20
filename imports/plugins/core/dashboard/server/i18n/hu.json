@@ -1,0 +1,13 @@
+[{
+  "i18n": "hu",
+  "ns": "reaction-dashboard",
+  "translation": {
+    "reaction-dashboard": {
+      "admin": {
+        "shortcut": {
+          "dashboardLabel": "Műszerfal"
+        }
+      }
+    }
+  }
+}]

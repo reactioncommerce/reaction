@@ -1,0 +1,18 @@
+[{
+  "i18n": "de",
+  "ns": "reaction-social",
+  "translation": {
+    "reaction-social": {
+      "admin": {
+        "dashboard": {
+          "socialLabel": "Sozial-",
+          "socialTitle": "Sozial-",
+          "socialDescription": "Social Kanalkonfiguration"
+        },
+        "settings": {
+          "socialSettingsLabel": "Soziale Einstellungen"
+        }
+      }
+    }
+  }
+}]

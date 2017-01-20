@@ -7,6 +7,9 @@
       "languages": {
         "select": "Välj språk"
       },
+      "currencies": {
+        "select": "Välj valuta"
+      },
       "admin": {
         "shortcut": {
           "dashboardLabel": "Instrumentbräda",
@@ -24,9 +27,6 @@
           "shippingLabel": "Frakt",
           "shippingTitle": "Frakt",
           "shippingDescription": "Tillhandahålla fraktkostnader",
-          "catalogLabel": "Katalog",
-          "catalogTitle": "Katalog",
-          "catalogDescription": "Produktkatalog",
           "coreLabel": "Inställningar",
           "coreTitle": "Instrumentbräda",
           "coreDescription": "reaktions konfiguration",
@@ -475,11 +475,16 @@
         "notShipped": "Not yet Sänt",
         "noTracking": "Ingen spårning",
         "tracking": "spårning",
+        "printLabels": "Skriv ut etiketter",
+        "printShippingLabel": "Frakt",
+        "printCustomsLabel": "Tull",
+        "carrier": "Bärare",
         "addTracking": "Lägg Tracking",
         "itemsHaveBeenShipped": "Objekten har sänts",
         "shipmentEmpty": "Denna sändning har inga artiklar",
         "shipmentPacked": "Alla artiklar Packad",
         "shipped": "skeppas",
+        "delivered": "levereras",
         "shippingNotifyCustomer": "Meddela kunden att deras varor kommer att sjöfart snart.",
         "resendNotification": "Återsänd sändning Anmälan"
       },
@@ -751,6 +756,9 @@
           "orderDate": "Datum",
           "orderTotal": "Totalt"
         }
+      },
+      "shippo": {
+        "connectedAndSaved": "Inställningar Sparade! Cloisonne API är nu aktiverat."
       },
       "accountsUI": {
         "members": "Medlemmar",

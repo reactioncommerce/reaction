@@ -1,0 +1,18 @@
+[{
+  "i18n": "ar",
+  "ns": "reaction-connect",
+  "translation": {
+    "reaction-connect": {
+      "admin": {
+        "dashboard": {
+          "connectLabel": "الاتصال",
+          "connectTitle": "الاتصال",
+          "connectDescription": "تواصل ردود الفعل كخدمة نشر"
+        },
+        "settings": {
+          "reactionConnectLabel": "رد فعل الاتصال"
+        }
+      }
+    }
+  }
+}]

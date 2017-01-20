@@ -7,6 +7,9 @@
       "languages": {
         "select": "Odaberite jezik"
       },
+      "currencies": {
+        "select": "Odaberi valuta"
+      },
       "admin": {
         "shortcut": {
           "dashboardLabel": "kontrolna ploča",
@@ -24,9 +27,6 @@
           "shippingLabel": "dostava",
           "shippingTitle": "dostava",
           "shippingDescription": "Osigurati cijene dostave",
-          "catalogLabel": "Katalog",
-          "catalogTitle": "Katalog",
-          "catalogDescription": "Katalog proizvoda",
           "coreLabel": "Postavke",
           "coreTitle": "kontrolna ploča",
           "coreDescription": "konfiguracija reakcije",
@@ -475,11 +475,16 @@
         "notShipped": "Nije još poslano",
         "noTracking": "Bez praćenje",
         "tracking": "Praćenje",
+        "printLabels": "Ispis naljepnica",
+        "printShippingLabel": "dostava",
+        "printCustomsLabel": "carina",
+        "carrier": "Prijevoznik",
         "addTracking": "Dodaj praćenje",
         "itemsHaveBeenShipped": "Predmeti su otpremljena",
         "shipmentEmpty": "Ova je pošiljka nema artikala",
         "shipmentPacked": "Sve stavke Prepuna",
         "shipped": "isporučen",
+        "delivered": "Isporučeno",
         "shippingNotifyCustomer": "Obavijestiti korisnika da su njihovi predmeti će se transportno uskoro.",
         "resendNotification": "Ponovno slanje pošiljke obavijesti"
       },
@@ -751,6 +756,9 @@
           "orderDate": "Rok",
           "orderTotal": "Ukupno"
         }
+      },
+      "shippo": {
+        "connectedAndSaved": "Postavke spremljene! Shippo API sada omogućeno."
       },
       "accountsUI": {
         "members": "članovi",

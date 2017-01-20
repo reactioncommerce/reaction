@@ -4,8 +4,6 @@
   "translation": {
     "product-detail-simple": {
       "admin": {
-        "shortcut": {},
-        "dashboard": {},
         "settings": {
           "productDetailsLabel": "Product Details"
         }

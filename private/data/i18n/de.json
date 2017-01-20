@@ -7,6 +7,9 @@
       "languages": {
         "select": "Sprache auswählen"
       },
+      "currencies": {
+        "select": "Wählen Sie Währung"
+      },
       "admin": {
         "shortcut": {
           "dashboardLabel": "Dashboard",
@@ -24,9 +27,6 @@
           "shippingLabel": "Versand",
           "shippingTitle": "Versand",
           "shippingDescription": "Lieferkosten angeben",
-          "catalogLabel": "Katalog",
-          "catalogTitle": "Katalog",
-          "catalogDescription": "Produktkatalog",
           "coreLabel": "Einstellungen",
           "coreTitle": "Dashboard",
           "coreDescription": "Ergebnis-Konfiguration",
@@ -475,11 +475,16 @@
         "notShipped": "Noch nicht gesendet",
         "noTracking": "Kein Tracking ",
         "tracking": "Tracking",
+        "printLabels": "Etiketten drucken",
+        "printShippingLabel": "Versand",
+        "printCustomsLabel": "Zoll",
+        "carrier": "Träger",
         "addTracking": "Tracking hinzufügen",
         "itemsHaveBeenShipped": "Artikel wurden gesendet",
         "shipmentEmpty": "Dieser Versand enthält keine Artikel",
         "shipmentPacked": "Alle Artikel wurden verpackt",
         "shipped": "Versendet",
+        "delivered": "Geliefert",
         "shippingNotifyCustomer": "Den Kunden benachrichtigen, dass seine Artikel bald versendet werden. ",
         "resendNotification": "Versand-Benachrichtigung erneut senden"
       },
@@ -751,6 +756,9 @@
           "orderDate": "Datum",
           "orderTotal": "Gesamt"
         }
+      },
+      "shippo": {
+        "connectedAndSaved": "Einstellungen gespeichert! Shippo API ist nun aktiviert."
       },
       "accountsUI": {
         "members": "Mitglieder",

@@ -1,0 +1,18 @@
+[{
+  "i18n": "zh",
+  "ns": "reaction-email",
+  "translation": {
+    "reaction-email": {
+      "admin": {
+        "dashboard": {
+          "emailLabel": "电子邮件",
+          "emailTitle": "电子邮件",
+          "emailDescription": "电子邮件设置"
+        },
+        "settings": {
+          "emailSettingsLabel": "电子邮件设置"
+        }
+      }
+    }
+  }
+}]

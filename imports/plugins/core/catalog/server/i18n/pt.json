@@ -1,0 +1,22 @@
+[{
+  "i18n": "pt",
+  "ns": "reaction-catalog",
+  "translation": {
+    "reaction-catalog": {
+      "admin": {
+        "shortcut": {
+          "catalogLabel": "Catálogo",
+          "catalogTitle": "Catálogo"
+        },
+        "dashboard": {
+          "catalogLabel": "Catálogo",
+          "catalogTitle": "Catálogo",
+          "catalogDescription": "Catálogo de mercado"
+        },
+        "settings": {
+          "catalogSettingsLabel": "Configurações do catálogo"
+        }
+      }
+    }
+  }
+}]

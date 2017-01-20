@@ -7,6 +7,9 @@
       "languages": {
         "select": "Избери език"
       },
+      "currencies": {
+        "select": "Изберете Валута"
+      },
       "admin": {
         "shortcut": {
           "dashboardLabel": "Табло",
@@ -24,9 +27,6 @@
           "shippingLabel": "Доставка",
           "shippingTitle": "Доставка",
           "shippingDescription": "Осигуряване на тарифите за доставка",
-          "catalogLabel": "каталог",
-          "catalogTitle": "каталог",
-          "catalogDescription": "Продуктов каталог",
           "coreLabel": "Настройки",
           "coreTitle": "Табло",
           "coreDescription": "реакция конфигурация",
@@ -475,11 +475,16 @@
         "notShipped": "Още не е изпратено",
         "noTracking": "Без проследяване",
         "tracking": "Проследяване",
+        "printLabels": "Печат на етикети",
+        "printShippingLabel": "Доставка",
+        "printCustomsLabel": "митница",
+        "carrier": "носител",
         "addTracking": "Добави за проследяване",
         "itemsHaveBeenShipped": "Предмети, са били изпратени",
         "shipmentEmpty": "В поръчката няма продукти",
         "shipmentPacked": "Всички продукти са опаковани",
         "shipped": "Изпратено",
+        "delivered": "Доставени",
         "shippingNotifyCustomer": "Съобщи на потребителя, че поръчката ще им бъде изпратена.",
         "resendNotification": "Изпрати съобщението за поръчката отново"
       },
@@ -751,6 +756,9 @@
           "orderDate": "Дата",
           "orderTotal": "Общо"
         }
+      },
+      "shippo": {
+        "connectedAndSaved": "Настройките са запазени! Shippo API вече е активиран."
       },
       "accountsUI": {
         "members": "Участници",

@@ -7,6 +7,9 @@
       "languages": {
         "select": "Διάλεξε γλώσσα"
       },
+      "currencies": {
+        "select": "Επιλέξτε Νόμισμα"
+      },
       "admin": {
         "shortcut": {
           "dashboardLabel": "Ταμπλό",
@@ -24,9 +27,6 @@
           "shippingLabel": "Αποστολή",
           "shippingTitle": "Αποστολή",
           "shippingDescription": "Παρέχουν τα έξοδα αποστολής",
-          "catalogLabel": "Κατάλογος",
-          "catalogTitle": "Κατάλογος",
-          "catalogDescription": "Κατάλογος Προϊόντων",
           "coreLabel": "Ρυθμίσεις",
           "coreTitle": "Ταμπλό",
           "coreDescription": "διαμόρφωση αντίδραση",
@@ -475,11 +475,16 @@
         "notShipped": "Δεν έχει ακόμη αποσταλεί",
         "noTracking": "δεν Παρακολούθηση",
         "tracking": "Παρακολούθηση",
+        "printLabels": "Ετικέτες Εκτύπωση",
+        "printShippingLabel": "Αποστολή",
+        "printCustomsLabel": "ΗΘΗ και εθιμα",
+        "carrier": "Φορέας",
         "addTracking": "Προσθέστε Παρακολούθηση",
         "itemsHaveBeenShipped": "στοιχεία έχουν αποσταλεί",
         "shipmentEmpty": "Αυτή η αποστολή δεν έχει στοιχεία",
         "shipmentPacked": "Όλα τα προϊόντα είναι συσκευασμένα",
         "shipped": "αποστέλλονται",
+        "delivered": "Δημοσιεύθηκε",
         "shippingNotifyCustomer": "Ειδοποίηση για τον πελάτη ότι τα στοιχεία τους θα ναυτιλία σύντομα.",
         "resendNotification": "Επανάληψη αποστολής ειδοποιήσεων αποστολή"
       },
@@ -751,6 +756,9 @@
           "orderDate": "Ημερομηνία",
           "orderTotal": "Σύνολο"
         }
+      },
+      "shippo": {
+        "connectedAndSaved": "Οι ρυθμίσεις αποθηκεύτηκαν! Shippo API έχει πλέον ενεργοποιηθεί."
       },
       "accountsUI": {
         "members": "μέλη",

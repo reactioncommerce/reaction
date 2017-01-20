@@ -7,6 +7,9 @@
       "languages": {
         "select": "Selecionar idioma"
       },
+      "currencies": {
+        "select": "Escolha Moeda"
+      },
       "admin": {
         "shortcut": {
           "dashboardLabel": "Painel de controlo",
@@ -24,9 +27,6 @@
           "shippingLabel": "Envio",
           "shippingTitle": "Envio",
           "shippingDescription": "Fornecer taxas de envio",
-          "catalogLabel": "Catálogo",
-          "catalogTitle": "Catálogo",
-          "catalogDescription": "Catálogo de produtos",
           "coreLabel": "Definições",
           "coreTitle": "Painel de controlo",
           "coreDescription": "Configuração da plataforma Reaction",
@@ -475,11 +475,16 @@
         "notShipped": "Ainda não enviado",
         "noTracking": "Sem monitorização",
         "tracking": "Monitorização",
+        "printLabels": "Etiquetas de impressão",
+        "printShippingLabel": "Remessa",
+        "printCustomsLabel": "Costumes",
+        "carrier": "Portador",
         "addTracking": "Adicionar monitorização",
         "itemsHaveBeenShipped": "Os itens foram enviados",
         "shipmentEmpty": "Esta remessa não tem itens",
         "shipmentPacked": "Todos os itens guardados",
         "shipped": "Enviado",
+        "delivered": "entregue",
         "shippingNotifyCustomer": "Notifique o cliente de que os respetivos itens serão enviados em breve.",
         "resendNotification": "Reenviar notificação de envio"
       },
@@ -751,6 +756,9 @@
           "orderDate": "Data",
           "orderTotal": "Total"
         }
+      },
+      "shippo": {
+        "connectedAndSaved": "Configurações salvas! API Shippo agora está ativado."
       },
       "accountsUI": {
         "members": "Membros",

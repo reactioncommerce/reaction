@@ -1,0 +1,18 @@
+[{
+  "i18n": "it",
+  "ns": "reaction-shipping",
+  "translation": {
+    "reaction-shipping": {
+      "admin": {
+        "dashboard": {
+          "shippingLabel": "spedizione",
+          "shippingTitle": "spedizione",
+          "shippingDescription": "Fornire le tariffe di spedizione"
+        },
+        "settings": {
+          "shippingSettingsLabel": "Impostazioni di spedizione"
+        }
+      }
+    }
+  }
+}]

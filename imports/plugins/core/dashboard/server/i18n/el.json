@@ -1,0 +1,13 @@
+[{
+  "i18n": "el",
+  "ns": "reaction-dashboard",
+  "translation": {
+    "reaction-dashboard": {
+      "admin": {
+        "shortcut": {
+          "dashboardLabel": "Ταμπλό"
+        }
+      }
+    }
+  }
+}]

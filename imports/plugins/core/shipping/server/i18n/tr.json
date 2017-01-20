@@ -1,0 +1,18 @@
+[{
+  "i18n": "tr",
+  "ns": "reaction-shipping",
+  "translation": {
+    "reaction-shipping": {
+      "admin": {
+        "dashboard": {
+          "shippingLabel": "Nakliye",
+          "shippingTitle": "Nakliye",
+          "shippingDescription": "nakliye fiyatları sağlamamıza"
+        },
+        "settings": {
+          "shippingSettingsLabel": "Kargo Ayarları"
+        }
+      }
+    }
+  }
+}]

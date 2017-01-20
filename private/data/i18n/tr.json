@@ -7,6 +7,9 @@
       "languages": {
         "select": "Dil Seçimi"
       },
+      "currencies": {
+        "select": "Seçin Döviz"
+      },
       "admin": {
         "shortcut": {
           "dashboardLabel": "Gösterge paneli",
@@ -24,9 +27,6 @@
           "shippingLabel": "Nakliye",
           "shippingTitle": "Nakliye",
           "shippingDescription": "nakliye fiyatları sağlamamıza",
-          "catalogLabel": "Katalog",
-          "catalogTitle": "Katalog",
-          "catalogDescription": "Ürün kataloğu",
           "coreLabel": "Ayarlar",
           "coreTitle": "Gösterge paneli",
           "coreDescription": "reaksiyon yapılandırma",
@@ -475,11 +475,16 @@
         "notShipped": "Henuz gonderilmedi",
         "noTracking": "İzleme yok",
         "tracking": "Takip",
+        "printLabels": "baskı Etiketleri",
+        "printShippingLabel": "Nakliye",
+        "printCustomsLabel": "Gümrük",
+        "carrier": "Taşıyıcı",
         "addTracking": "İzleme ekle",
         "itemsHaveBeenShipped": "Öğeler sevk edilmiştir",
         "shipmentEmpty": "Bu gönderi hiç ürün bulunmuyor",
         "shipmentPacked": "Tüm Ürünleri Paketli",
         "shipped": "gönderilen",
+        "delivered": "teslim",
         "shippingNotifyCustomer": "kendi ürün yakında nakliye olacak müşteri haberdar.",
         "resendNotification": "Yeniden Gönder Gönderi Bildirimi"
       },
@@ -751,6 +756,9 @@
           "orderDate": "Tarih",
           "orderTotal": "Toplam"
         }
+      },
+      "shippo": {
+        "connectedAndSaved": "Ayarlar kaydedildi! Shippo API artık etkindir."
       },
       "accountsUI": {
         "members": "ÜyelerMembers",

@@ -7,6 +7,9 @@
       "languages": {
         "select": "Zvolte jazyk"
       },
+      "currencies": {
+        "select": "Výběr měny"
+      },
       "admin": {
         "shortcut": {
           "dashboardLabel": "přístrojová deska",
@@ -24,9 +27,6 @@
           "shippingLabel": "lodní",
           "shippingTitle": "lodní",
           "shippingDescription": "Poskytnout sazby za dopravu",
-          "catalogLabel": "Katalog",
-          "catalogTitle": "Katalog",
-          "catalogDescription": "Katalog produktů",
           "coreLabel": "Nastavení",
           "coreTitle": "přístrojová deska",
           "coreDescription": "konfigurace reakce",
@@ -475,11 +475,16 @@
         "notShipped": "Ne přesto Posíláme",
         "noTracking": "No Tracking",
         "tracking": "Sledování",
+        "printLabels": "tisk štítků",
+        "printShippingLabel": "lodní",
+        "printCustomsLabel": "Celní",
+        "carrier": "Dopravce",
         "addTracking": "Přidat Tracking",
         "itemsHaveBeenShipped": "Předměty byly odeslány",
         "shipmentEmpty": "Tato zásilka neobsahuje žádné položky",
         "shipmentPacked": "Všechny položky Balíčky",
         "shipped": "Posíláme",
+        "delivered": "dodáno",
         "shippingNotifyCustomer": "Upozornit zákazníka, že jejich zboží bude brzy dopravě.",
         "resendNotification": "Znovu poslat zásilky Oznámení"
       },
@@ -751,6 +756,9 @@
           "orderDate": "Datum",
           "orderTotal": "Celkem"
         }
+      },
+      "shippo": {
+        "connectedAndSaved": "Nastavení uloženo! Shippo API je nyní povolena."
       },
       "accountsUI": {
         "members": "Členové",

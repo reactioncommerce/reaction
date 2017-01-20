@@ -4,8 +4,6 @@
   "translation": {
     "reaction-product-admin": {
       "admin": {
-        "shortcut": {},
-        "dashboard": {},
         "settings": {
           "productSettingsLabel": "Product Settings",
           "productDetailsLabel": "Product Details"

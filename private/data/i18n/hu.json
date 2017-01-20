@@ -7,6 +7,9 @@
       "languages": {
         "select": "Másik nyelv"
       },
+      "currencies": {
+        "select": "válasszuk a Pénznem"
+      },
       "admin": {
         "shortcut": {
           "dashboardLabel": "Műszerfal",
@@ -24,9 +27,6 @@
           "shippingLabel": "Szállítás",
           "shippingTitle": "Szállítás",
           "shippingDescription": "Adjon szállítási díjak",
-          "catalogLabel": "Katalógus",
-          "catalogTitle": "Katalógus",
-          "catalogDescription": "Termék katalógus",
           "coreLabel": "Beállítások",
           "coreTitle": "Műszerfal",
           "coreDescription": "reakció konfiguráció",
@@ -475,11 +475,16 @@
         "notShipped": "Még nincs kiszállítva",
         "noTracking": "nincs követési",
         "tracking": "Követés",
+        "printLabels": "Nyomtatás címkék",
+        "printShippingLabel": "Szállítás",
+        "printCustomsLabel": "Vám",
+        "carrier": "Hordozó",
         "addTracking": "Add követés",
         "itemsHaveBeenShipped": "Tételek szállítása megtörtént",
         "shipmentEmpty": "Ez a szállítmány nem tartalmaz elemeket",
         "shipmentPacked": "Minden elem csomagolt",
         "shipped": "Kiszállított",
+        "delivered": "Megérkezés",
         "shippingNotifyCustomer": "Értesíti az ügyfelet, hogy a tételek lesz hajózás hamarosan.",
         "resendNotification": "Újraküldése Szállítmány Notification"
       },
@@ -751,6 +756,9 @@
           "orderDate": "Dátum",
           "orderTotal": "Teljes"
         }
+      },
+      "shippo": {
+        "connectedAndSaved": "Beállítások elmentve! Shippo API van kapcsolva."
       },
       "accountsUI": {
         "members": "Belépés",

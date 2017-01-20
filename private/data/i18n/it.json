@@ -7,6 +7,9 @@
       "languages": {
         "select": "Seleziona lingua"
       },
+      "currencies": {
+        "select": "Seleziona la valuta"
+      },
       "admin": {
         "shortcut": {
           "dashboardLabel": "Cruscotto",
@@ -24,9 +27,6 @@
           "shippingLabel": "spedizione",
           "shippingTitle": "spedizione",
           "shippingDescription": "Fornire le tariffe di spedizione",
-          "catalogLabel": "Catalogare",
-          "catalogTitle": "Catalogare",
-          "catalogDescription": "Catalogo dei prodotti",
           "coreLabel": "Impostazioni",
           "coreTitle": "Cruscotto",
           "coreDescription": "configurazione di reazione",
@@ -475,11 +475,16 @@
         "notShipped": "Non ancora spedito",
         "noTracking": "No tracciabilità",
         "tracking": "puntamento",
+        "printLabels": "Etichette di stampa",
+        "printShippingLabel": "spedizione",
+        "printCustomsLabel": "dogana",
+        "carrier": "Vettore",
         "addTracking": "Aggiungere monitoraggio",
         "itemsHaveBeenShipped": "I prodotti sono stati spediti",
         "shipmentEmpty": "Questa spedizione non ha articoli",
         "shipmentPacked": "Tutti gli oggetti Pranzo",
         "shipped": "Spedito",
+        "delivered": "Consegnato",
         "shippingNotifyCustomer": "Notifica il cliente che i loro articoli saranno la spedizione presto.",
         "resendNotification": "Notifica della spedizione Rispedisci"
       },
@@ -751,6 +756,9 @@
           "orderDate": "Data",
           "orderTotal": "Totale"
         }
+      },
+      "shippo": {
+        "connectedAndSaved": "Impostazioni salvate! API Shippo è ora abilitato."
       },
       "accountsUI": {
         "members": "Membri",

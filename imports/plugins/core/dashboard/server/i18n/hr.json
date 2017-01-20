@@ -1,0 +1,13 @@
+[{
+  "i18n": "hr",
+  "ns": "reaction-dashboard",
+  "translation": {
+    "reaction-dashboard": {
+      "admin": {
+        "shortcut": {
+          "dashboardLabel": "kontrolna ploča"
+        }
+      }
+    }
+  }
+}]

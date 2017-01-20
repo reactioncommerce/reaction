@@ -1,0 +1,18 @@
+[{
+  "i18n": "my",
+  "ns": "reaction-analytics",
+  "translation": {
+    "reaction-analytics": {
+      "admin": {
+        "dashboard": {
+          "analyticsLabel": "analytics",
+          "analyticsTitle": "analytics",
+          "analyticsDescription": "Analytics နဲ့ခြေရာခံနိုင်တဲ့ပေါင်းစည်းမှု"
+        },
+        "settings": {
+          "analyticsSettingsLabel": "analytics ချိန်ညှိ"
+        }
+      }
+    }
+  }
+}]

@@ -7,6 +7,9 @@
       "languages": {
         "select": "أختيار للغة"
       },
+      "currencies": {
+        "select": "اختر العملة"
+      },
       "admin": {
         "shortcut": {
           "dashboardLabel": "لوحة المعلومات",
@@ -24,9 +27,6 @@
           "shippingLabel": "شحن",
           "shippingTitle": "الشحن",
           "shippingDescription": "تقديم معدلات الشحن",
-          "catalogLabel": "فهرس",
-          "catalogTitle": "فهرس",
-          "catalogDescription": "فهرس المنتج",
           "coreLabel": "إعدادات",
           "coreTitle": "لوحة المعلومات",
           "coreDescription": "تكوين رد فعل",
@@ -475,11 +475,16 @@
         "notShipped": "لم يتم الشحن حتى الأن",
         "noTracking": "عدم التتبع",
         "tracking": "تتبع",
+        "printLabels": "تسميات الطباعة",
+        "printShippingLabel": "الشحن",
+        "printCustomsLabel": "الجمارك",
+        "carrier": "الناقل",
         "addTracking": "إضافة رقم التتبع",
         "itemsHaveBeenShipped": "تم شحن العناصر",
         "shipmentEmpty": "هذه الشحنة لا تحتوي على أي عناصر",
         "shipmentPacked": "جميع العناصر جاهزة",
         "shipped": "تم الشحن",
+        "delivered": "تم التوصيل",
         "shippingNotifyCustomer": " قم بتبليغ العميل بأنه هنالك عناصر ستشحن قريباً",
         "resendNotification": "إعادة إرسال إشعارات الشحنة"
       },
@@ -751,6 +756,9 @@
           "orderDate": "التاريخ",
           "orderTotal": "المجموع"
         }
+      },
+      "shippo": {
+        "connectedAndSaved": "إعدادات حفظ! يتم تمكين API shippo والآن."
       },
       "accountsUI": {
         "members": "أعضاء",

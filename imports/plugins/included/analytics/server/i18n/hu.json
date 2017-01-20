@@ -1,0 +1,18 @@
+[{
+  "i18n": "hu",
+  "ns": "reaction-analytics",
+  "translation": {
+    "reaction-analytics": {
+      "admin": {
+        "dashboard": {
+          "analyticsLabel": "Analitika",
+          "analyticsTitle": "Analitika",
+          "analyticsDescription": "Analytics és nyomkövető integrációk"
+        },
+        "settings": {
+          "analyticsSettingsLabel": "Analytics beállításai"
+        }
+      }
+    }
+  }
+}]

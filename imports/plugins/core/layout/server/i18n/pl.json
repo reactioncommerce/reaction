@@ -1,0 +1,15 @@
+[{
+  "i18n": "pl",
+  "ns": "reaction-layout",
+  "translation": {
+    "reaction-layout": {
+      "admin": {
+        "dashboard": {
+          "layoutLabel": "Układ",
+          "layoutTitle": "Układ",
+          "layoutDescription": "Układ narzędzia"
+        }
+      }
+    }
+  }
+}]

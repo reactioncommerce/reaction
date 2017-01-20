@@ -4,7 +4,6 @@
   "translation": {
     "reaction-inventory": {
       "admin": {
-        "shortcut": {},
         "dashboard": {
           "inventoryLabel": "Inventory",
           "inventoryTitle": "Inventory",

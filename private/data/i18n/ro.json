@@ -7,6 +7,9 @@
       "languages": {
         "select": "Selectează limba"
       },
+      "currencies": {
+        "select": "Selectați valuta"
+      },
       "admin": {
         "shortcut": {
           "dashboardLabel": "Bord",
@@ -24,9 +27,6 @@
           "shippingLabel": "livrare",
           "shippingTitle": "livrare",
           "shippingDescription": "Tarife de transport",
-          "catalogLabel": "Catalog",
-          "catalogTitle": "Catalog",
-          "catalogDescription": "Catalog de produse",
           "coreLabel": "Setări",
           "coreTitle": "Bord",
           "coreDescription": "Configurare reaction",
@@ -475,11 +475,16 @@
         "notShipped": "Inca neexpediată",
         "noTracking": "Nici un număr urmărire a pachetului",
         "tracking": "Număr urmărire",
+        "printLabels": "Etichete de imprimare",
+        "printShippingLabel": "livrare",
+        "printCustomsLabel": "Obiceiuri",
+        "carrier": "Purtător",
         "addTracking": "Adăugaţi număr urmărire a pachetului",
         "itemsHaveBeenShipped": "Articole au fost expediate",
         "shipmentEmpty": "Acest transport nu are elemente",
         "shipmentPacked": "Toate produsele ambalate",
         "shipped": "Expediat",
+        "delivered": "Livrat",
         "shippingNotifyCustomer": "Anunțați clientul că produsele lor vor fi de transporte în curând.",
         "resendNotification": "Retrimitere Notificarea de Transport"
       },
@@ -751,6 +756,9 @@
           "orderDate": "Dată",
           "orderTotal": "Total"
         }
+      },
+      "shippo": {
+        "connectedAndSaved": "Setari Salvate! API Shippo este acum activat."
       },
       "accountsUI": {
         "members": "Membrii",

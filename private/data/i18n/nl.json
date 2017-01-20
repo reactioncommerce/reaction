@@ -7,6 +7,9 @@
       "languages": {
         "select": "Taalselectie"
       },
+      "currencies": {
+        "select": "selecteer valuta"
+      },
       "admin": {
         "shortcut": {
           "dashboardLabel": "Dashboard",
@@ -24,9 +27,6 @@
           "shippingLabel": "Verzenden",
           "shippingTitle": "Verzenden",
           "shippingDescription": "Bieden verzendkosten",
-          "catalogLabel": "Catalogus",
-          "catalogTitle": "Catalogus",
-          "catalogDescription": "Product catalogus",
           "coreLabel": "Instellingen",
           "coreTitle": "Dashboard",
           "coreDescription": "reactie configuratie",
@@ -475,11 +475,16 @@
         "notShipped": "Nog niet verzonden",
         "noTracking": "Geen volgen",
         "tracking": "Tracking",
+        "printLabels": "Print Labels",
+        "printShippingLabel": "Verzenden",
+        "printCustomsLabel": "Douane",
+        "carrier": "Carrier",
         "addTracking": "Tracking toevoegen",
         "itemsHaveBeenShipped": "Punten zijn verscheept",
         "shipmentEmpty": "Deze zending heeft geen items",
         "shipmentPacked": "Alle producten verpakt",
         "shipped": "verzonden",
+        "delivered": "geleverd",
         "shippingNotifyCustomer": "Houd de klant dat hun punten binnenkort zal de scheepvaart.",
         "resendNotification": "Opnieuw verzenden Shipment Notification"
       },
@@ -751,6 +756,9 @@
           "orderDate": "Datum",
           "orderTotal": "Totaal"
         }
+      },
+      "shippo": {
+        "connectedAndSaved": "Instellingen opgeslagen! Shippo API is nu ingeschakeld."
       },
       "accountsUI": {
         "members": "Gebruikers",

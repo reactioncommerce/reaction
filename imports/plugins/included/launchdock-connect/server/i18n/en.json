@@ -4,7 +4,6 @@
   "translation": {
     "reaction-connect": {
       "admin": {
-        "shortcut": {},
         "dashboard": {
           "connectLabel": "Connect",
           "connectTitle": "Connect",

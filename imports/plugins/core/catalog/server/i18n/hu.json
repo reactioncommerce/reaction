@@ -1,0 +1,22 @@
+[{
+  "i18n": "hu",
+  "ns": "reaction-catalog",
+  "translation": {
+    "reaction-catalog": {
+      "admin": {
+        "shortcut": {
+          "catalogLabel": "Katalógus",
+          "catalogTitle": "Katalógus"
+        },
+        "dashboard": {
+          "catalogLabel": "Katalógus",
+          "catalogTitle": "Katalógus",
+          "catalogDescription": "Piac Katalógus"
+        },
+        "settings": {
+          "catalogSettingsLabel": "Katalógus beállítások"
+        }
+      }
+    }
+  }
+}]
