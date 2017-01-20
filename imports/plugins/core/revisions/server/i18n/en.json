@@ -8,7 +8,7 @@
         "dashboard": {
           "revisionsLabel": "Revisions",
           "revisionsTitle": "Revisions",
-          "revisionsDescription": "Revision control",
+          "revisionsDescription": "Revision control"
         },
         "settings": {
           "productRevisionsLabel": "Product Revisions"
