@@ -1,0 +1,16 @@
+[{
+  "i18n": "en",
+  "ns": "reaction-product-admin",
+  "translation": {
+    "reaction-product-admin": {
+      "admin": {
+        "shortcut": {},
+        "dashboard": {},
+        "settings": {
+          "productSettingsLabel": "Product Settings",
+          "productDetailsLabel": "Product Details"
+        }
+      }
+    }
+  }
+}]

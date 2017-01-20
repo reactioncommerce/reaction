@@ -1,0 +1,19 @@
+[{
+  "i18n": "en",
+  "ns": "reaction-shipping",
+  "translation": {
+    "reaction-shipping": {
+      "admin": {
+        "shortcut": {},
+        "dashboard": {
+          "shippingLabel": "Shipping",
+          "shippingTitle": "Shipping",
+          "shippingDescription": "Provide shipping rates"
+        },
+        "settings": {
+          "shippingSettingsLabel": "Shipping Settings"
+        }
+      }
+    }
+  }
+}]

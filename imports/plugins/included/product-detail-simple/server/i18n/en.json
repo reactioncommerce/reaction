@@ -1,0 +1,15 @@
+[{
+  "i18n": "en",
+  "ns": "product-detail-simple",
+  "translation": {
+    "product-detail-simple": {
+      "admin": {
+        "shortcut": {},
+        "dashboard": {},
+        "settings": {
+          "productDetailsLabel": "Product Details"
+        }
+      }
+    }
+  }
+}]
