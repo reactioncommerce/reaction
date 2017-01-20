@@ -86,9 +86,8 @@ Template.products.onCreated(function () {
     // use shop name as `base` name for `positions` object
     const currentTag = ReactionProduct.getTag();
     const productCursor = Products.find({
-      ancestors: []
-      // keep this, as an example
-      // type: { $in: ["simple"] }
+      ancestors: [],
+      type: { $in: ["simple"] }
     }, {
       sort: {
         [`positions.${currentTag}.position`]: 1,
