@@ -5,8 +5,22 @@
     "reaction-catalog": {
       "admin": {
         "shortcut": {},
-        "dashboard": {},
+        "dashboard": {
+          "themesLabel": "Themes",
+          "themesTitle": "Themes",
+          "themesDescription": "Themes and UI Components"
+        },
         "settings": {}
+      },
+      "reactionUI": {
+        "editTheme": "Edit Theme",
+        "duplicateTheme": "Duplicate Theme",
+        "duplicateThemeError": "Couldn't duplicate theme",
+        "publishThemeError": "`Couldn't publish theme {{themeName}}",
+        "components": {
+          "navbar": "Navigation Bar",
+          "button": "Button"
+        }
       }
     }
   }

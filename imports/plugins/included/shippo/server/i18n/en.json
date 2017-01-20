@@ -7,6 +7,9 @@
         "shortcut": {},
         "dashboard": {},
         "settings": {}
+      },
+      "shippo": {
+        "connectedAndSaved": "Settings saved! Shippo API is now enabled."
       }
     }
   }
