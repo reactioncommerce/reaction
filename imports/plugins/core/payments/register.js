@@ -22,7 +22,8 @@ Reaction.registerPackage({
       workflow: "coreDashboardWorkflow"
     },
     {
-      label: "Payment Settings",
+      label: "Payment",
+      icon: "fa fa-credit-card",
       name: "payment/settings",
       provides: "settings",
       template: "paymentSettings"

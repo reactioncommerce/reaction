@@ -20,7 +20,8 @@ Reaction.registerPackage({
     container: "core",
     template: "emailStatusPage"
   }, {
-    label: "Email Settings",
+    label: "Email",
+    icon: "fa fa-envelope-o",
     name: "email/settings",
     provides: "settings",
     template: "emailSettings"
