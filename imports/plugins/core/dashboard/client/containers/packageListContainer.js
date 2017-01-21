@@ -20,7 +20,6 @@ function composer(props, onData) {
 
   const dashboard = Reaction.Apps({ provides: "dashboard", enabled: true }).filter((d) => typeof d.template !== "undefined") || [];
 
-console.log(settings);
 
   // const packages = apps.map((packageData) => {
   //   const appData = Reaction.Apps({
