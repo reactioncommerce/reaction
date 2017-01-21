@@ -11,7 +11,6 @@ Reaction.registerPackage({
   registry: [{
     provides: "dashboard",
     workflow: "coreDashboardWorkflow",
-    template: "dashboardPackages",
     name: "dashboardPackages",
     label: "Core",
     description: "Reaction core shop configuration",

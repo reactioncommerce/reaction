@@ -35,6 +35,9 @@
           "utilities": "Utilities"
         },
         "settings": {
+          "accountSettingsLabel": "Login Services",
+          "accountSettingsTitle": "Login Services",
+          "accountSettingsDescription": "Authentication through social providers",
           "saveSuccess": "Settings updated.",
           "saveFailed": "Failed to update settings.",
           "addShopMemberLabel": "Add Shop Member",

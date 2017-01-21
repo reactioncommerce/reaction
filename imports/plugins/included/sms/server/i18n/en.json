@@ -10,7 +10,7 @@
           "smsDescription": "Notifications"
         },
         "settings": {
-          "smsSettingsLabel": "SMS settings"
+          "smsSettingsLabel": "SMS"
         }
       }
     }

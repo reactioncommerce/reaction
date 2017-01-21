@@ -5,7 +5,11 @@
     "reaction-shippo": {
       "admin": {
         "shortcut": {},
-        "dashboard": {},
+        "dashboard": {
+          "shippoLabel": "Shippo",
+          "shippoTitle": "Shippo",
+          "shippoDescription": "Shipping labels and package tracking"
+        },
         "settings": {}
       },
       "shippo": {
