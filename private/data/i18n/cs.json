@@ -12,60 +12,16 @@
       },
       "admin": {
         "shortcut": {
-          "dashboardLabel": "přístrojová deska",
-          "ordersLabel": "objednávky",
           "addProductLabel": "Přidat produkt",
           "accountsLabel": "účty"
         },
         "dashboard": {
-          "accountsLabel": "účty",
-          "accountsTitle": "účty",
-          "accountsDescription": "Správa oprávnění členů",
-          "analyticsLabel": "analytika",
-          "analyticsTitle": "analytika",
-          "analyticsDescription": "Analytics a sledování integrace",
-          "shippingLabel": "lodní",
-          "shippingTitle": "lodní",
-          "shippingDescription": "Poskytnout sazby za dopravu",
-          "coreLabel": "Nastavení",
-          "coreTitle": "přístrojová deska",
-          "coreDescription": "konfigurace reakce",
-          "emailLabel": "Email",
-          "emailTitle": "Email",
-          "emailDescription": "nastavení e-mailu",
           "i18NLabel": "i18n",
           "i18NTitle": "i18n",
           "i18NDescription": "internacionalizace pomůcky",
-          "inventoryLabel": "Inventář",
-          "inventoryTitle": "Inventář",
-          "inventoryDescription": "Inventář pomůcky",
-          "layoutLabel": "dispozice",
-          "layoutTitle": "dispozice",
-          "layoutDescription": "rozvržení pomůcky",
-          "connectLabel": "Připojit",
-          "connectTitle": "Připojit",
-          "connectDescription": "Připojit reakce jako rozvinuté služby",
-          "ordersLabel": "objednávky",
-          "smsLabel": "SMS",
-          "smsTitle": "SMS",
-          "smsDescription": "Oznámení",
-          "ordersTitle": "objednávky",
-          "ordersDescription": "Splnit Vaše objednávky",
-          "revisionsLabel": "revize",
-          "revisionsTitle": "revize",
-          "revisionsDescription": "ovládání revize",
           "routingLabel": "směrování",
           "routingTitle": "směrování",
           "routingDescription": "směrování pomůcky",
-          "searchLabel": "Vyhledávání",
-          "searchTitle": "Vyhledávání",
-          "searchDescription": "Hledání výrobku",
-          "socialLabel": "Sociální",
-          "socialTitle": "Sociální",
-          "socialDescription": "Konfigurace sociální Channel",
-          "themesLabel": "Témata",
-          "themesTitle": "Témata",
-          "themesDescription": "Témata a UI komponenty",
           "filtrationLabel": "Filtrace",
           "filtrationDescription": "filtrace Produkty pro Reaction"
         },
@@ -79,25 +35,14 @@
           "utilities": "Utility"
         },
         "settings": {
+          "accountSettingsLabel": "Nastavení účtu",
+          "accountSettingsTitle": "Přihlášení Služby",
+          "accountSettingsDescription": "Ověřování prostřednictvím sociálních poskytovatelů",
           "saveSuccess": "Nastavení aktualizována.",
           "saveFailed": "Nepodařilo se aktualizovat nastavení.",
-          "accountSettingsLabel": "Nastavení účtu",
           "addShopMemberLabel": "Přidat e-shop člena",
           "permissionsSettingsLabel": "Oprávnění",
-          "localizationAndI18NLabel": "Lokalizace a i18n",
-          "searchSettingsLabel": "Nastavení hledání",
-          "shopSettingsLabel": "Nastavení Shop",
-          "smsSettingsLabel": "nastavení SMS",
-          "socialSettingsLabel": "sociální Nastavení",
-          "shippingSettingsLabel": "Nastavení doprava",
-          "inventorySettingsLabel": "Nastavení inventář",
-          "analyticsSettingsLabel": "Nastavení Analytics",
-          "reactionConnectLabel": "reakce Connect",
-          "productSettingsLabel": "Nastavení produktu",
-          "productDetailsLabel": "Detaily produktu",
-          "productRevisionsLabel": "Revize produktu",
-          "emailSettingsLabel": "Nastavení e-mailu",
-          "catalogSettingsLabel": "Nastavení Katalog"
+          "localizationAndI18NLabel": "Lokalizace a i18n"
         },
         "userAccountDropdown": {
           "profileLabel": "Profil"
@@ -757,9 +702,6 @@
           "orderTotal": "Celkem"
         }
       },
-      "shippo": {
-        "connectedAndSaved": "Nastavení uloženo! Shippo API je nyní povolena."
-      },
       "accountsUI": {
         "members": "Členové",
         "manage": "Spravovat",
@@ -822,16 +764,6 @@
           "passwordResetSend": "byl odeslán e-mail s odkazem pro resetování hesla.",
           "invitationSent": "Pozvání odesláno",
           "sendInvitation": "Poslat pozvánku"
-        },
-        "reactionUI": {
-          "editTheme": "Upravit téma",
-          "duplicateTheme": "duplicitní téma",
-          "duplicateThemeError": "Nemohl duplicitní téma",
-          "publishThemeError": "`Nelze zveřejnit téma {{themeName}}",
-          "components": {
-            "navbar": "navigační lišta",
-            "button": "Tlačítko"
-          }
         },
         "error": {
           "emailRequired": "Email je povinný.",

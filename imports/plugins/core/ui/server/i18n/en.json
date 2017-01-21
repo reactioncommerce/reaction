@@ -4,13 +4,11 @@
   "translation": {
     "reaction-catalog": {
       "admin": {
-        "shortcut": {},
         "dashboard": {
           "themesLabel": "Themes",
           "themesTitle": "Themes",
           "themesDescription": "Themes and UI Components"
-        },
-        "settings": {}
+        }
       },
       "reactionUI": {
         "editTheme": "Edit Theme",

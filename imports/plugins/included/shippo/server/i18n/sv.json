@@ -1,0 +1,18 @@
+[{
+  "i18n": "sv",
+  "ns": "reaction-shippo",
+  "translation": {
+    "reaction-shippo": {
+      "admin": {
+        "dashboard": {
+          "shippoLabel": "cloisonne",
+          "shippoTitle": "cloisonne",
+          "shippoDescription": "Fraktsedlar och paketspårning"
+        }
+      },
+      "shippo": {
+        "connectedAndSaved": "Inställningar Sparade! Cloisonne API är nu aktiverat."
+      }
+    }
+  }
+}]

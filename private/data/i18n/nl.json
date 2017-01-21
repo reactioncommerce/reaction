@@ -12,60 +12,16 @@
       },
       "admin": {
         "shortcut": {
-          "dashboardLabel": "Dashboard",
-          "ordersLabel": "orders",
           "addProductLabel": "Product toevoegen",
           "accountsLabel": "Rekeningen"
         },
         "dashboard": {
-          "accountsLabel": "Rekeningen",
-          "accountsTitle": "Rekeningen",
-          "accountsDescription": "Beheren lid permissies",
-          "analyticsLabel": "Analytics",
-          "analyticsTitle": "Analytics",
-          "analyticsDescription": "Analytics en het bijhouden integraties",
-          "shippingLabel": "Verzenden",
-          "shippingTitle": "Verzenden",
-          "shippingDescription": "Bieden verzendkosten",
-          "coreLabel": "Instellingen",
-          "coreTitle": "Dashboard",
-          "coreDescription": "reactie configuratie",
-          "emailLabel": "Email",
-          "emailTitle": "Email",
-          "emailDescription": "E-mailinstellingen",
           "i18NLabel": "i18n",
           "i18NTitle": "i18n",
           "i18NDescription": "internationalisering utilities",
-          "inventoryLabel": "Inventaris",
-          "inventoryTitle": "Inventaris",
-          "inventoryDescription": "Inventory utilities",
-          "layoutLabel": "Lay-out",
-          "layoutTitle": "Lay-out",
-          "layoutDescription": "Layout utilities",
-          "connectLabel": "Aansluiten",
-          "connectTitle": "Aansluiten",
-          "connectDescription": "Sluit Reaction als ingezet dienst",
-          "ordersLabel": "orders",
-          "smsLabel": "SMS",
-          "smsTitle": "SMS",
-          "smsDescription": "Bekendmakingen",
-          "ordersTitle": "orders",
-          "ordersDescription": "Vervul uw bestellingen",
-          "revisionsLabel": "herzieningen",
-          "revisionsTitle": "herzieningen",
-          "revisionsDescription": "controle Revision",
           "routingLabel": "routing",
           "routingTitle": "routing",
           "routingDescription": "routing utilities",
-          "searchLabel": "Zoeken",
-          "searchTitle": "Zoeken",
-          "searchDescription": "product zoeken",
-          "socialLabel": "sociaal",
-          "socialTitle": "sociaal",
-          "socialDescription": "Sociale Channel configuratie",
-          "themesLabel": "Thema's",
-          "themesTitle": "Thema's",
-          "themesDescription": "Thema's en UI-componenten",
           "filtrationLabel": "Filtratie",
           "filtrationDescription": "Producten voor filtratie Reaction"
         },
@@ -79,25 +35,14 @@
           "utilities": "nutsbedrijven"
         },
         "settings": {
+          "accountSettingsLabel": "Account instellingen",
+          "accountSettingsTitle": "Inloggen Services",
+          "accountSettingsDescription": "Authenticatie via sociale providers",
           "saveSuccess": "Instellingen bijgewerkt.",
           "saveFailed": "Kan instellingen bij te werken.",
-          "accountSettingsLabel": "Account instellingen",
           "addShopMemberLabel": "Voeg Shop Lid",
           "permissionsSettingsLabel": "Machtigingen",
-          "localizationAndI18NLabel": "Lokalisatie en i18n",
-          "searchSettingsLabel": "Zoek instellingen",
-          "shopSettingsLabel": "Shop Instellingen",
-          "smsSettingsLabel": "SMS-instellingen",
-          "socialSettingsLabel": "sociale Instellingen",
-          "shippingSettingsLabel": "verzending Instellingen",
-          "inventorySettingsLabel": "Inventory Instellingen",
-          "analyticsSettingsLabel": "Analytics-instellingen",
-          "reactionConnectLabel": "reactie Connect",
-          "productSettingsLabel": "productinstellingen",
-          "productDetailsLabel": "Productdetails",
-          "productRevisionsLabel": "product revisies",
-          "emailSettingsLabel": "E-mailinstellingen",
-          "catalogSettingsLabel": "Catalogusinstellingen"
+          "localizationAndI18NLabel": "Lokalisatie en i18n"
         },
         "userAccountDropdown": {
           "profileLabel": "Profiel"
@@ -757,9 +702,6 @@
           "orderTotal": "Totaal"
         }
       },
-      "shippo": {
-        "connectedAndSaved": "Instellingen opgeslagen! Shippo API is nu ingeschakeld."
-      },
       "accountsUI": {
         "members": "Gebruikers",
         "manage": "beheren",
@@ -822,16 +764,6 @@
           "passwordResetSend": "E-mail met wachtwoord opnieuw verbinding is verzonden.",
           "invitationSent": "Uitnodiging verzonden",
           "sendInvitation": "Verstuur uitnodiging"
-        },
-        "reactionUI": {
-          "editTheme": "Thema bewerken",
-          "duplicateTheme": "Duplicate Theme",
-          "duplicateThemeError": "Kon niet dupliceren thema",
-          "publishThemeError": "`Kon thema {{themeName}} niet publiceren",
-          "components": {
-            "navbar": "Navigatiebalk",
-            "button": "Knop"
-          }
         },
         "error": {
           "emailRequired": "E-mail is vereist.",

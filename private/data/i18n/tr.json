@@ -12,60 +12,16 @@
       },
       "admin": {
         "shortcut": {
-          "dashboardLabel": "Gösterge paneli",
-          "ordersLabel": "Emirler",
           "addProductLabel": "Ürün ekle",
           "accountsLabel": "Hesaplar"
         },
         "dashboard": {
-          "accountsLabel": "Hesaplar",
-          "accountsTitle": "Hesaplar",
-          "accountsDescription": "üye izinlerini yönetme",
-          "analyticsLabel": "Analytics",
-          "analyticsTitle": "Analytics",
-          "analyticsDescription": "Analitik ve izleme entegrasyonları",
-          "shippingLabel": "Nakliye",
-          "shippingTitle": "Nakliye",
-          "shippingDescription": "nakliye fiyatları sağlamamıza",
-          "coreLabel": "Ayarlar",
-          "coreTitle": "Gösterge paneli",
-          "coreDescription": "reaksiyon yapılandırma",
-          "emailLabel": "E-posta",
-          "emailTitle": "E-posta",
-          "emailDescription": "E-posta ayarları",
           "i18NLabel": "i18n",
           "i18NTitle": "i18n",
           "i18NDescription": "uluslararasılaşma yarar",
-          "inventoryLabel": "Envanter",
-          "inventoryTitle": "Envanter",
-          "inventoryDescription": "envanter programları",
-          "layoutLabel": "düzen",
-          "layoutTitle": "düzen",
-          "layoutDescription": "Düzen yarar",
-          "connectLabel": "Bağlamak",
-          "connectTitle": "Bağlamak",
-          "connectDescription": "Açılmış bir hizmet olarak Tepki bağlayın",
-          "ordersLabel": "Emirler",
-          "smsLabel": "SMS",
-          "smsTitle": "SMS",
-          "smsDescription": "Bildirimler",
-          "ordersTitle": "Emirler",
-          "ordersDescription": "siparişlerinizi yerine getirmek",
-          "revisionsLabel": "Düzeltmeler",
-          "revisionsTitle": "Düzeltmeler",
-          "revisionsDescription": "Revizyon kontrolü",
           "routingLabel": "yönlendirme",
           "routingTitle": "yönlendirme",
           "routingDescription": "yönlendirme yarar",
-          "searchLabel": "Arama",
-          "searchTitle": "Arama",
-          "searchDescription": "Ürün Arama",
-          "socialLabel": "Sosyal",
-          "socialTitle": "Sosyal",
-          "socialDescription": "Sosyal Kanal yapılandırması",
-          "themesLabel": "Temalar",
-          "themesTitle": "Temalar",
-          "themesDescription": "Temalar ve UI Bileşenleri",
           "filtrationLabel": "süzme",
           "filtrationDescription": "Reaksiyon için ürünler filtreleme"
         },
@@ -79,25 +35,14 @@
           "utilities": "Kamu hizmetleri"
         },
         "settings": {
+          "accountSettingsLabel": "Hesap Ayarları",
+          "accountSettingsTitle": "Giriş Hizmetleri",
+          "accountSettingsDescription": "sosyal sağlayıcılar aracılığıyla kimlik doğrulama",
           "saveSuccess": "Ayarlar güncellendi.",
           "saveFailed": "ayarları güncellenemedi.",
-          "accountSettingsLabel": "Hesap Ayarları",
           "addShopMemberLabel": "Mağaza Üye Ekle",
           "permissionsSettingsLabel": "İzinler",
-          "localizationAndI18NLabel": "Yerelleştirme ve i18n",
-          "searchSettingsLabel": "Arama Ayarları",
-          "shopSettingsLabel": "Mağaza Ayarları",
-          "smsSettingsLabel": "SMS ayarları",
-          "socialSettingsLabel": "sosyal Ayarlar",
-          "shippingSettingsLabel": "Kargo Ayarları",
-          "inventorySettingsLabel": "envanter Ayarları",
-          "analyticsSettingsLabel": "Analytics Ayarları",
-          "reactionConnectLabel": "reaksiyon Bağlan",
-          "productSettingsLabel": "Ürün Ayarları",
-          "productDetailsLabel": "Ürün Detayları",
-          "productRevisionsLabel": "Ürün Düzeltmeler",
-          "emailSettingsLabel": "E-posta Ayarları",
-          "catalogSettingsLabel": "Katalog Ayarları"
+          "localizationAndI18NLabel": "Yerelleştirme ve i18n"
         },
         "userAccountDropdown": {
           "profileLabel": "Profil"
@@ -757,9 +702,6 @@
           "orderTotal": "Toplam"
         }
       },
-      "shippo": {
-        "connectedAndSaved": "Ayarlar kaydedildi! Shippo API artık etkindir."
-      },
       "accountsUI": {
         "members": "ÜyelerMembers",
         "manage": "Yönet",
@@ -822,16 +764,6 @@
           "passwordResetSend": "şifre sıfırlama bağlantısı içeren e-posta gönderildi.",
           "invitationSent": "Davet Yollandı",
           "sendInvitation": "Davet yolla"
-        },
-        "reactionUI": {
-          "editTheme": "Düzenleme Tema",
-          "duplicateTheme": "yinelenen Tema",
-          "duplicateThemeError": "tema yinelenen olamazdı",
-          "publishThemeError": "`Tema {{themeName}} yayınlamak Could not",
-          "components": {
-            "navbar": "Gezinti çubuğu",
-            "button": "düğme"
-          }
         },
         "error": {
           "emailRequired": "E-posta gerekli.",

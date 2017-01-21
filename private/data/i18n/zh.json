@@ -12,60 +12,16 @@
       },
       "admin": {
         "shortcut": {
-          "dashboardLabel": "控制台",
-          "ordersLabel": "订单",
           "addProductLabel": "增加产品",
           "accountsLabel": "账户"
         },
         "dashboard": {
-          "accountsLabel": "账户",
-          "accountsTitle": "帐户",
-          "accountsDescription": "管理会员如何登录",
-          "analyticsLabel": "分析",
-          "analyticsTitle": "分析",
-          "analyticsDescription": "事件跟踪与分析",
-          "shippingLabel": "发货",
-          "shippingTitle": "发货",
-          "shippingDescription": "提供运费",
-          "coreLabel": "核心",
-          "coreTitle": "控制台",
-          "coreDescription": "Reaction Commerce 核心功能",
-          "emailLabel": "电子邮件",
-          "emailTitle": "电子邮件",
-          "emailDescription": "电子邮件设置",
           "i18NLabel": "国际化",
           "i18NTitle": "国际化",
           "i18NDescription": "国际化实用程序",
-          "inventoryLabel": "库存",
-          "inventoryTitle": "库存",
-          "inventoryDescription": "基本库存管理",
-          "layoutLabel": "布局",
-          "layoutTitle": "布局",
-          "layoutDescription": "布局实用程序",
-          "connectLabel": "连接",
-          "connectTitle": "连接",
-          "connectDescription": "将 Reaction 作为部署服务连接",
-          "ordersLabel": "订单",
-          "smsLabel": "短信",
-          "smsTitle": "短信",
-          "smsDescription": "通知",
-          "ordersTitle": "订单",
-          "ordersDescription": "执行订单",
-          "revisionsLabel": "修改",
-          "revisionsTitle": "修改",
-          "revisionsDescription": "修改控制",
           "routingLabel": "路线安排",
           "routingTitle": "路线安排",
           "routingDescription": "路线安排实用程序",
-          "searchLabel": "搜索",
-          "searchTitle": "搜索",
-          "searchDescription": "产品搜索",
-          "socialLabel": "社交媒体",
-          "socialTitle": "社交",
-          "socialDescription": "分享给社交媒体",
-          "themesLabel": "主题",
-          "themesTitle": "主题",
-          "themesDescription": "主题和界面组件",
           "filtrationLabel": "过滤",
           "filtrationDescription": "Reaction 的产品过滤"
         },
@@ -79,25 +35,14 @@
           "utilities": "实用程序"
         },
         "settings": {
+          "accountSettingsLabel": "账户设置",
+          "accountSettingsTitle": "登录服务",
+          "accountSettingsDescription": "通过社会机构的认证",
           "saveSuccess": "设置更新。",
           "saveFailed": "无法更新设置。",
-          "accountSettingsLabel": "账户设置",
           "addShopMemberLabel": "添加商店成员",
           "permissionsSettingsLabel": "权限",
-          "localizationAndI18NLabel": "本地化与国际化",
-          "searchSettingsLabel": "搜索设置",
-          "shopSettingsLabel": "商店设置",
-          "smsSettingsLabel": "短信设置",
-          "socialSettingsLabel": "社交媒体设置",
-          "shippingSettingsLabel": "运输方式设置",
-          "inventorySettingsLabel": "库存管理设置",
-          "analyticsSettingsLabel": "分析设置",
-          "reactionConnectLabel": "Reaction连接",
-          "productSettingsLabel": "产品设置",
-          "productDetailsLabel": "产品详情",
-          "productRevisionsLabel": "产品修订",
-          "emailSettingsLabel": "电子邮件设置",
-          "catalogSettingsLabel": "目录设置"
+          "localizationAndI18NLabel": "本地化与国际化"
         },
         "userAccountDropdown": {
           "profileLabel": "个人资料"
@@ -757,9 +702,6 @@
           "orderTotal": "总计"
         }
       },
-      "shippo": {
-        "connectedAndSaved": "设置保存！七宝API现在已启用。"
-      },
       "accountsUI": {
         "members": "会员",
         "manage": "管理",
@@ -822,16 +764,6 @@
           "passwordResetSend": "重置密码的邮件已经发送。",
           "invitationSent": "邀请已发出",
           "sendInvitation": "发送邀请"
-        },
-        "reactionUI": {
-          "editTheme": "编辑主题",
-          "duplicateTheme": "复制主题",
-          "duplicateThemeError": "无法复制主题",
-          "publishThemeError": "无法发布主题{{themeName}}",
-          "components": {
-            "navbar": "导航栏",
-            "button": "按钮"
-          }
         },
         "error": {
           "emailRequired": "需要邮箱地址。",

@@ -1,0 +1,25 @@
+[{
+  "i18n": "vi",
+  "ns": "reaction-ui",
+  "translation": {
+    "reaction-catalog": {
+      "admin": {
+        "dashboard": {
+          "themesLabel": "chủ đề",
+          "themesTitle": "chủ đề",
+          "themesDescription": "Chủ đề và UI Components"
+        }
+      },
+      "reactionUI": {
+        "editTheme": "chỉnh sửa Theme",
+        "duplicateTheme": "Duplicate Theme",
+        "duplicateThemeError": "Không thể lặp lại chủ đề",
+        "publishThemeError": "`Không thể xuất bản chủ đề {{themeName}}",
+        "components": {
+          "navbar": "Thanh điều hướng",
+          "button": "nút"
+        }
+      }
+    }
+  }
+}]

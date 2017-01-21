@@ -12,60 +12,16 @@
       },
       "admin": {
         "shortcut": {
-          "dashboardLabel": "Bord",
-          "ordersLabel": "Istoric comenzi",
           "addProductLabel": "Adăugare produs",
           "accountsLabel": "Conturi"
         },
         "dashboard": {
-          "accountsLabel": "Conturi",
-          "accountsTitle": "Conturi",
-          "accountsDescription": "Gestionați permisiunile membrilor",
-          "analyticsLabel": "Statistici",
-          "analyticsTitle": "Statistici",
-          "analyticsDescription": "Integrările pentru analize statistice și urmărire",
-          "shippingLabel": "livrare",
-          "shippingTitle": "livrare",
-          "shippingDescription": "Tarife de transport",
-          "coreLabel": "Setări",
-          "coreTitle": "Bord",
-          "coreDescription": "Configurare reaction",
-          "emailLabel": "E-mail",
-          "emailTitle": "E-mail",
-          "emailDescription": "Configurări e-mail",
           "i18NLabel": "i18n",
           "i18NTitle": "i18n",
           "i18NDescription": "Utilitare pentru internaționalizare",
-          "inventoryLabel": "Inventar",
-          "inventoryTitle": "Inventar",
-          "inventoryDescription": "Utilitare pentru inventar",
-          "layoutLabel": "Amplasare",
-          "layoutTitle": "Amplasare",
-          "layoutDescription": "Utilitare pentru aranjare",
-          "connectLabel": "Conectați",
-          "connectTitle": "Conectați",
-          "connectDescription": "Conecteaza Reaction ca un serviciu",
-          "ordersLabel": "Istoric comenzi",
-          "smsLabel": "Mesaj",
-          "smsTitle": "Mesaj",
-          "smsDescription": "Notificările",
-          "ordersTitle": "Istoric comenzi",
-          "ordersDescription": "Onoraează comenzile",
-          "revisionsLabel": "Revizuiri",
-          "revisionsTitle": "Revizuiri",
-          "revisionsDescription": "Control revizuiri",
           "routingLabel": "Rutare",
           "routingTitle": "Rutare",
           "routingDescription": "Utilitare de rutare",
-          "searchLabel": "Căutare",
-          "searchTitle": "Căutare",
-          "searchDescription": "Caută produs",
-          "socialLabel": "Social",
-          "socialTitle": "Social",
-          "socialDescription": "Configurarea canalelor sociale",
-          "themesLabel": "Teme",
-          "themesTitle": "Teme",
-          "themesDescription": "Teme și componente UI",
           "filtrationLabel": "Filtrare",
           "filtrationDescription": "Filtrarea produselor pentru reaction"
         },
@@ -79,25 +35,14 @@
           "utilities": "Utilitare"
         },
         "settings": {
+          "accountSettingsLabel": "Setările contului",
+          "accountSettingsTitle": "Servicii de conectare",
+          "accountSettingsDescription": "Autentificarea prin intermediul furnizorilor sociale",
           "saveSuccess": "Setările aduse la zi.",
           "saveFailed": "Nu s-au putut actualiza setările.",
-          "accountSettingsLabel": "Setările contului",
           "addShopMemberLabel": "Adaugă membru magazin",
           "permissionsSettingsLabel": "Permisiuni",
-          "localizationAndI18NLabel": "Localizare si i18n",
-          "searchSettingsLabel": "Setări de căutare",
-          "shopSettingsLabel": "Setări Magazin",
-          "smsSettingsLabel": "setările SMS",
-          "socialSettingsLabel": "Setări sociale",
-          "shippingSettingsLabel": "Setări de transport",
-          "inventorySettingsLabel": "Setări de inventar",
-          "analyticsSettingsLabel": "Setări Analize Statistice",
-          "reactionConnectLabel": "Conectare Reaction",
-          "productSettingsLabel": "Setări produs",
-          "productDetailsLabel": "Detalii produs",
-          "productRevisionsLabel": "Revizuiri produsului",
-          "emailSettingsLabel": "Setări e-mail",
-          "catalogSettingsLabel": "Setări catalog"
+          "localizationAndI18NLabel": "Localizare si i18n"
         },
         "userAccountDropdown": {
           "profileLabel": "Profil"
@@ -757,9 +702,6 @@
           "orderTotal": "Total"
         }
       },
-      "shippo": {
-        "connectedAndSaved": "Setari Salvate! API Shippo este acum activat."
-      },
       "accountsUI": {
         "members": "Membrii",
         "manage": "Administrează",
@@ -822,16 +764,6 @@
           "passwordResetSend": "E-mail-ul cu link-ul de resetare a parolei a fost trimis.",
           "invitationSent": "Invitația a fost trimisă",
           "sendInvitation": "Trimite invitația"
-        },
-        "reactionUI": {
-          "editTheme": "Editare Temă",
-          "duplicateTheme": "Duplicați Tema",
-          "duplicateThemeError": "Nu s-a putut duplica tema",
-          "publishThemeError": "Nu am putut publica tema {{themeName}}",
-          "components": {
-            "navbar": "Bară de navigare",
-            "button": "Buton"
-          }
         },
         "error": {
           "emailRequired": "Este necesară adresa de e-mail.",

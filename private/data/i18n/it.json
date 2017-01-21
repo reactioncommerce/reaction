@@ -12,60 +12,16 @@
       },
       "admin": {
         "shortcut": {
-          "dashboardLabel": "Cruscotto",
-          "ordersLabel": "Ordini",
           "addProductLabel": "Aggiungi prodotto",
           "accountsLabel": "Conti"
         },
         "dashboard": {
-          "accountsLabel": "Conti",
-          "accountsTitle": "Conti",
-          "accountsDescription": "Gestire le autorizzazioni membri",
-          "analyticsLabel": "Analitica",
-          "analyticsTitle": "Analitica",
-          "analyticsDescription": "Analytics ed integrazioni di monitoraggio",
-          "shippingLabel": "spedizione",
-          "shippingTitle": "spedizione",
-          "shippingDescription": "Fornire le tariffe di spedizione",
-          "coreLabel": "Impostazioni",
-          "coreTitle": "Cruscotto",
-          "coreDescription": "configurazione di reazione",
-          "emailLabel": "Email",
-          "emailTitle": "Email",
-          "emailDescription": "impostazioni e-mail",
           "i18NLabel": "i18n",
           "i18NTitle": "i18n",
           "i18NDescription": "utilità internazionalizzazione",
-          "inventoryLabel": "Inventario",
-          "inventoryTitle": "Inventario",
-          "inventoryDescription": "utilità di inventario",
-          "layoutLabel": "disposizione",
-          "layoutTitle": "disposizione",
-          "layoutDescription": "utilità di layout",
-          "connectLabel": "Collegare",
-          "connectTitle": "Collegare",
-          "connectDescription": "Collegare reazione come un servizio distribuito",
-          "ordersLabel": "Ordini",
-          "smsLabel": "SMS",
-          "smsTitle": "SMS",
-          "smsDescription": "Notifiche",
-          "ordersTitle": "Ordini",
-          "ordersDescription": "Soddisfare i vostri ordini",
-          "revisionsLabel": "revisioni",
-          "revisionsTitle": "revisioni",
-          "revisionsDescription": "controllo di revisione",
           "routingLabel": "Routing",
           "routingTitle": "Routing",
           "routingDescription": "utilità di routing",
-          "searchLabel": "Ricerca",
-          "searchTitle": "Ricerca",
-          "searchDescription": "Ricerca prodotto",
-          "socialLabel": "Sociale",
-          "socialTitle": "Sociale",
-          "socialDescription": "Configurazione del canale sociale",
-          "themesLabel": "Temi",
-          "themesTitle": "Temi",
-          "themesDescription": "Temi e UI Components",
           "filtrationLabel": "Filtrazione",
           "filtrationDescription": "Prodotti di filtrazione per reazione"
         },
@@ -79,25 +35,14 @@
           "utilities": "Utilità"
         },
         "settings": {
+          "accountSettingsLabel": "Impostazioni dell 'account",
+          "accountSettingsTitle": "login Servizi",
+          "accountSettingsDescription": "L'autenticazione tramite i provider sociali",
           "saveSuccess": "Impostazioni aggiornate.",
           "saveFailed": "Impossibile aggiornare le impostazioni.",
-          "accountSettingsLabel": "Impostazioni dell 'account",
           "addShopMemberLabel": "Aggiungere negozio membro",
           "permissionsSettingsLabel": "Permessi",
-          "localizationAndI18NLabel": "Localizzazione e i18n",
-          "searchSettingsLabel": "Impostazioni di ricerca",
-          "shopSettingsLabel": "Impostazioni negozio",
-          "smsSettingsLabel": "impostazioni SMS",
-          "socialSettingsLabel": "contesti sociali",
-          "shippingSettingsLabel": "Impostazioni di spedizione",
-          "inventorySettingsLabel": "Impostazioni di inventario",
-          "analyticsSettingsLabel": "Impostazioni Analytics",
-          "reactionConnectLabel": "reazione Connect",
-          "productSettingsLabel": "Impostazioni prodotto",
-          "productDetailsLabel": "Dettagli del prodotto",
-          "productRevisionsLabel": "Le revisioni del prodotto",
-          "emailSettingsLabel": "Impostazioni e-mail",
-          "catalogSettingsLabel": "Impostazioni catalogo"
+          "localizationAndI18NLabel": "Localizzazione e i18n"
         },
         "userAccountDropdown": {
           "profileLabel": "Profilo"
@@ -757,9 +702,6 @@
           "orderTotal": "Totale"
         }
       },
-      "shippo": {
-        "connectedAndSaved": "Impostazioni salvate! API Shippo è ora abilitato."
-      },
       "accountsUI": {
         "members": "Membri",
         "manage": "Gestire",
@@ -822,16 +764,6 @@
           "passwordResetSend": "E-mail con il link per reimpostare la password è stata inviata.",
           "invitationSent": "Invito spedito",
           "sendInvitation": "Spedire un invito"
-        },
-        "reactionUI": {
-          "editTheme": "Modifica Tema",
-          "duplicateTheme": "Duplicate Tema",
-          "duplicateThemeError": "Impossibile duplicare tema",
-          "publishThemeError": "`Impossibile pubblicare tema {{themeName}}",
-          "components": {
-            "navbar": "Barra di navigazione",
-            "button": "Pulsante"
-          }
         },
         "error": {
           "emailRequired": "L'email è obbligatoria.",

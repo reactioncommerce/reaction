@@ -1,0 +1,25 @@
+[{
+  "i18n": "hu",
+  "ns": "reaction-ui",
+  "translation": {
+    "reaction-catalog": {
+      "admin": {
+        "dashboard": {
+          "themesLabel": "témák",
+          "themesTitle": "témák",
+          "themesDescription": "Témák és UI komponensek"
+        }
+      },
+      "reactionUI": {
+        "editTheme": "téma szerkesztése",
+        "duplicateTheme": "Ismétlődő téma",
+        "duplicateThemeError": "Nem sikerült megismételni a téma",
+        "publishThemeError": "`Nem sikerült a téma {{themeName}}",
+        "components": {
+          "navbar": "Navigációs sáv",
+          "button": "Gomb"
+        }
+      }
+    }
+  }
+}]

@@ -4,13 +4,11 @@
   "translation": {
     "reaction-shippo": {
       "admin": {
-        "shortcut": {},
         "dashboard": {
           "shippoLabel": "Shippo",
           "shippoTitle": "Shippo",
           "shippoDescription": "Shipping labels and package tracking"
-        },
-        "settings": {}
+        }
       },
       "shippo": {
         "connectedAndSaved": "Settings saved! Shippo API is now enabled."

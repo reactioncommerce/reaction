@@ -12,60 +12,16 @@
       },
       "admin": {
         "shortcut": {
-          "dashboardLabel": "Nadzorna plošča",
-          "ordersLabel": "naročila",
           "addProductLabel": "Dodaj izdelek",
           "accountsLabel": "računi"
         },
         "dashboard": {
-          "accountsLabel": "računi",
-          "accountsTitle": "računi",
-          "accountsDescription": "Upravljanje dovoljenj države",
-          "analyticsLabel": "Analytics",
-          "analyticsTitle": "Analytics",
-          "analyticsDescription": "Analytics in sledenje integracije",
-          "shippingLabel": "Dostava",
-          "shippingTitle": "Dostava",
-          "shippingDescription": "Navedite stroške pošiljanja",
-          "coreLabel": "Nastavitve",
-          "coreTitle": "Nadzorna plošča",
-          "coreDescription": "konfiguracija reakcija",
-          "emailLabel": "E-naslov",
-          "emailTitle": "E-naslov",
-          "emailDescription": "E-poštne nastavitve",
           "i18NLabel": "i18n",
           "i18NTitle": "i18n",
           "i18NDescription": "internacionalizacije pripomočki",
-          "inventoryLabel": "popis",
-          "inventoryTitle": "popis",
-          "inventoryDescription": "inventarja pripomočki",
-          "layoutLabel": "postavitev",
-          "layoutTitle": "postavitev",
-          "layoutDescription": "postavitev pripomočki",
-          "connectLabel": "Poveži",
-          "connectTitle": "Poveži",
-          "connectDescription": "Povežite Reakcija kot razporejeno storitev",
-          "ordersLabel": "naročila",
-          "smsLabel": "SMS",
-          "smsTitle": "SMS",
-          "smsDescription": "Obvestila",
-          "ordersTitle": "naročila",
-          "ordersDescription": "Izpolnitev vašega naročila",
-          "revisionsLabel": "Revizije",
-          "revisionsTitle": "Revizije",
-          "revisionsDescription": "nadzor revizija",
           "routingLabel": "usmerjanje",
           "routingTitle": "usmerjanje",
           "routingDescription": "usmerjanja pripomočki",
-          "searchLabel": "Iskanje",
-          "searchTitle": "Iskanje",
-          "searchDescription": "Iskanje",
-          "socialLabel": "socialna",
-          "socialTitle": "socialna",
-          "socialDescription": "Konfiguracija socialni kanal",
-          "themesLabel": "Teme",
-          "themesTitle": "Teme",
-          "themesDescription": "Teme in UI Components",
           "filtrationLabel": "filtracija",
           "filtrationDescription": "Izdelki filtracija za reakcije"
         },
@@ -79,25 +35,14 @@
           "utilities": "Pripomočki"
         },
         "settings": {
+          "accountSettingsLabel": "Nastavitve računa",
+          "accountSettingsTitle": "Prijava Storitve",
+          "accountSettingsDescription": "Avtentikacija preko socialnih ponudnikov",
           "saveSuccess": "Nastavitve posodobljene.",
           "saveFailed": "Ni bilo mogoče posodobiti nastavitve.",
-          "accountSettingsLabel": "Nastavitve računa",
           "addShopMemberLabel": "Dodaj Shop Član",
           "permissionsSettingsLabel": "dovoljenja",
-          "localizationAndI18NLabel": "Lokalizacija in i18n",
-          "searchSettingsLabel": "Nastavitve iskanja",
-          "shopSettingsLabel": "trgovina Nastavitve",
-          "smsSettingsLabel": "nastavitve SMS",
-          "socialSettingsLabel": "socialni Nastavitve",
-          "shippingSettingsLabel": "Nastavitve pošiljanja",
-          "inventorySettingsLabel": "Nastavitve inventarja",
-          "analyticsSettingsLabel": "Nastavitve Analytics",
-          "reactionConnectLabel": "reakcija Connect",
-          "productSettingsLabel": "Nastavitve izdelka",
-          "productDetailsLabel": "Podrobnosti produkta",
-          "productRevisionsLabel": "Revizije izdelka",
-          "emailSettingsLabel": "Nastavitve e-pošte",
-          "catalogSettingsLabel": "Katalog Nastavitve"
+          "localizationAndI18NLabel": "Lokalizacija in i18n"
         },
         "userAccountDropdown": {
           "profileLabel": "Profil"
@@ -757,9 +702,6 @@
           "orderTotal": "Skupaj"
         }
       },
-      "shippo": {
-        "connectedAndSaved": "Nastavitve so shranjene! Shippo API je zdaj omogočeno."
-      },
       "accountsUI": {
         "members": "člani",
         "manage": "upravljanje",
@@ -822,16 +764,6 @@
           "passwordResetSend": "E-pošta s povezavo za ponastavitev gesla so bila poslana.",
           "invitationSent": "Vabilo je poslano",
           "sendInvitation": "Pošlji vabilo"
-        },
-        "reactionUI": {
-          "editTheme": "Uredi Tema",
-          "duplicateTheme": "dvojnik Tema",
-          "duplicateThemeError": "ni mogla podvajati temo",
-          "publishThemeError": "'Ni bilo mogoče objaviti temo {{themeName}}",
-          "components": {
-            "navbar": "Navigation Bar",
-            "button": "Button"
-          }
         },
         "error": {
           "emailRequired": "Email je obvezen vnos.",

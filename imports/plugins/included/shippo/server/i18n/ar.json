@@ -1,0 +1,18 @@
+[{
+  "i18n": "ar",
+  "ns": "reaction-shippo",
+  "translation": {
+    "reaction-shippo": {
+      "admin": {
+        "dashboard": {
+          "shippoLabel": "shippo و",
+          "shippoTitle": "shippo و",
+          "shippoDescription": "ملصقات الشحن وتتبع حزمة"
+        }
+      },
+      "shippo": {
+        "connectedAndSaved": "إعدادات حفظ! يتم تمكين API shippo والآن."
+      }
+    }
+  }
+}]

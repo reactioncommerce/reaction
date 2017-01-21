@@ -1,0 +1,18 @@
+[{
+  "i18n": "el",
+  "ns": "reaction-revisions",
+  "translation": {
+    "reaction-revisions": {
+      "admin": {
+        "dashboard": {
+          "revisionsLabel": "αναθεωρήσεις",
+          "revisionsTitle": "αναθεωρήσεις",
+          "revisionsDescription": "έλεγχο αναθεώρηση"
+        },
+        "settings": {
+          "productRevisionsLabel": "αναθεωρήσεις του προϊόντος"
+        }
+      }
+    }
+  }
+}]

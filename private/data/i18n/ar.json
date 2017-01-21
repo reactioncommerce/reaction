@@ -12,60 +12,16 @@
       },
       "admin": {
         "shortcut": {
-          "dashboardLabel": "لوحة المعلومات",
-          "ordersLabel": "طلبات",
           "addProductLabel": "إضافة منتج",
           "accountsLabel": "حسابات"
         },
         "dashboard": {
-          "accountsLabel": "الحسابات",
-          "accountsTitle": "حسابات",
-          "accountsDescription": "إدارة موافقات العضو",
-          "analyticsLabel": "إحصائات",
-          "analyticsTitle": "تحليلات",
-          "analyticsDescription": "تحليلات التتبع والتكامل",
-          "shippingLabel": "شحن",
-          "shippingTitle": "الشحن",
-          "shippingDescription": "تقديم معدلات الشحن",
-          "coreLabel": "إعدادات",
-          "coreTitle": "لوحة المعلومات",
-          "coreDescription": "تكوين رد فعل",
-          "emailLabel": "البريد الالكتروني ",
-          "emailTitle": "البريد الالكتروني ",
-          "emailDescription": "اعدادات البريد الالكتروني ",
           "i18NLabel": "i18n",
           "i18NTitle": "i18n",
           "i18NDescription": "أدوات مساعدة التدويل",
-          "inventoryLabel": "جرد",
-          "inventoryTitle": "جرد",
-          "inventoryDescription": "الأدوات المساعدة للجرد",
-          "layoutLabel": "تصميم",
-          "layoutTitle": "تصميم",
-          "layoutDescription": "تصميم برامج خدمات تفاعلية",
-          "connectLabel": "توصيل",
-          "connectTitle": "توصيل",
-          "connectDescription": "توصيل ردود الفعل كخدمة نشر",
-          "ordersLabel": "الطلبات",
-          "smsLabel": "رسالة قصيرة",
-          "smsTitle": "رسالة قصيرة",
-          "smsDescription": "الإشعارات",
-          "ordersTitle": "الطلبات",
-          "ordersDescription": "إنجاز طلبيتك",
-          "revisionsLabel": "المراجعات ",
-          "revisionsTitle": "المراجعات ",
-          "revisionsDescription": "تحكم بالمراجعة ",
           "routingLabel": "التوجيه",
           "routingTitle": "توجيه",
           "routingDescription": "الأدوات المساعدة للتوجيه",
-          "searchLabel": "بحث",
-          "searchTitle": "بحث",
-          "searchDescription": "بحث المنتج",
-          "socialLabel": "إجتماعي",
-          "socialTitle": "إجتماعي",
-          "socialDescription": "تشكيل قناة إجتماعية",
-          "themesLabel": "مواضيع",
-          "themesTitle": "مواضيع",
-          "themesDescription": "مكونات المواضيع واجهة الأستخدام",
           "filtrationLabel": "تصفية",
           "filtrationDescription": "المنتجات المرشحة لردة الفعل"
         },
@@ -79,25 +35,14 @@
           "utilities": "أدوات مساعدة"
         },
         "settings": {
+          "accountSettingsLabel": "إعدادات الحساب",
+          "accountSettingsTitle": "خدمات تسجيل الدخول",
+          "accountSettingsDescription": "المصادقة من خلال مقدمي الاجتماعي",
           "saveSuccess": "تجديد الإعدادات.",
           "saveFailed": "فشل تحديث الإعدادات.",
-          "accountSettingsLabel": "إعدادات الحساب",
           "addShopMemberLabel": "إضافة عضو للمتجر",
           "permissionsSettingsLabel": "موافقات",
-          "localizationAndI18NLabel": "التحويل و i18n",
-          "searchSettingsLabel": "إعدادات البحث",
-          "shopSettingsLabel": "إعدادات الشراء",
-          "smsSettingsLabel": "إعدادات الرسائل القصيرة",
-          "socialSettingsLabel": "إعدادات عامة",
-          "shippingSettingsLabel": "إعدادات الشحن",
-          "inventorySettingsLabel": "إعدادات الجرد",
-          "analyticsSettingsLabel": ".إعدادات التحليلات",
-          "reactionConnectLabel": "توصيل التفاعل",
-          "productSettingsLabel": "إعدادات المنتج",
-          "productDetailsLabel": "تفاصيل المنتج",
-          "productRevisionsLabel": "مراجعات المنتج",
-          "emailSettingsLabel": "إعدادات البريد الإلكتروني",
-          "catalogSettingsLabel": "إعدادات كتالوج"
+          "localizationAndI18NLabel": "التحويل و i18n"
         },
         "userAccountDropdown": {
           "profileLabel": "الملف الشخصي"
@@ -757,9 +702,6 @@
           "orderTotal": "المجموع"
         }
       },
-      "shippo": {
-        "connectedAndSaved": "إعدادات حفظ! يتم تمكين API shippo والآن."
-      },
       "accountsUI": {
         "members": "أعضاء",
         "manage": "إدارة",
@@ -822,16 +764,6 @@
           "passwordResetSend": "تم ارسال البريد الإلكتروني مع رابط لإعادة تعيين كلمة المرور.",
           "invitationSent": "تم إرسال الدعوة",
           "sendInvitation": "إرسال دعوة"
-        },
-        "reactionUI": {
-          "editTheme": "إضافة موضوع",
-          "duplicateTheme": "نسخ موضوع",
-          "duplicateThemeError": "لا يمكن نسخ الموضوع",
-          "publishThemeError": "`لم نتمكن من نشر الحالة {{themeName}}",
-          "components": {
-            "navbar": "شريط التنقل",
-            "button": "زر"
-          }
         },
         "error": {
           "emailRequired": "البريد الالكترونى مطلوب",

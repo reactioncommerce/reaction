@@ -12,60 +12,16 @@
       },
       "admin": {
         "shortcut": {
-          "dashboardLabel": "Панель управления",
-          "ordersLabel": "Заказы",
           "addProductLabel": "Создать продукт",
           "accountsLabel": "Пользователи"
         },
         "dashboard": {
-          "accountsLabel": "Учётные записи",
-          "accountsTitle": "Учётные записи",
-          "accountsDescription": "Управление правами пользователей",
-          "analyticsLabel": "Аналитика",
-          "analyticsTitle": "Аналитика",
-          "analyticsDescription": "Внедрение аналитики и отслеживания событий",
-          "shippingLabel": "Доставка",
-          "shippingTitle": "Доставка",
-          "shippingDescription": "Настройки тарифов по доставке",
-          "coreLabel": "Ядро",
-          "coreTitle": "Панель управления",
-          "coreDescription": "Базовые настройки Reaction",
-          "emailLabel": "Эл. почта",
-          "emailTitle": "Эл. адрес",
-          "emailDescription": "Настройки эл. почты",
           "i18NLabel": "i18n",
           "i18NTitle": "i18n",
           "i18NDescription": "Интернационализация",
-          "inventoryLabel": "Товары",
-          "inventoryTitle": "Товары",
-          "inventoryDescription": "Утилиты для работы с товарами",
-          "layoutLabel": "план",
-          "layoutTitle": "план",
-          "layoutDescription": "план",
-          "connectLabel": "Connect",
-          "connectTitle": "Connect",
-          "connectDescription": "Подключение Reaction как развёрнутого сервиса",
-          "ordersLabel": "Заказы",
-          "smsLabel": "смс",
-          "smsTitle": "смс",
-          "smsDescription": "Уведомления",
-          "ordersTitle": "Заказы",
-          "ordersDescription": "Управление заказами",
-          "revisionsLabel": "Версии",
-          "revisionsTitle": "Версии",
-          "revisionsDescription": "Управление версиями",
           "routingLabel": "Маршрутизация",
           "routingTitle": "Маршрутизация",
           "routingDescription": "Утилиты маршрутизации",
-          "searchLabel": "Искать",
-          "searchTitle": "Искать",
-          "searchDescription": "Поиск товара",
-          "socialLabel": "Социальные сети",
-          "socialTitle": "Социальные сети",
-          "socialDescription": "Интеграция с соц. сетями",
-          "themesLabel": "Темы",
-          "themesTitle": "Темы",
-          "themesDescription": "Темы и UI компоненты",
           "filtrationLabel": "Filtration",
           "filtrationDescription": "Products filtration for Reaction"
         },
@@ -79,25 +35,14 @@
           "utilities": "Утилиты"
         },
         "settings": {
+          "accountSettingsLabel": "Настройки учетных записей",
+          "accountSettingsTitle": "Вход Услуги",
+          "accountSettingsDescription": "Аутентификация с помощью социальных провайдеров",
           "saveSuccess": "Настройки обновлены.",
           "saveFailed": "Не удалось обновить настройки.",
-          "accountSettingsLabel": "Настройки учетных записей",
           "addShopMemberLabel": "Добавить сотрудника",
           "permissionsSettingsLabel": "Права доступа",
-          "localizationAndI18NLabel": "Локализация и i18n",
-          "searchSettingsLabel": "Настройки поиска",
-          "shopSettingsLabel": "Настройки магазина",
-          "smsSettingsLabel": "настройки SMS",
-          "socialSettingsLabel": "Настройки соц. сетей",
-          "shippingSettingsLabel": "Настройки доставки",
-          "inventorySettingsLabel": "Настройки управления товарами",
-          "analyticsSettingsLabel": "Настройки аналитики",
-          "reactionConnectLabel": "Reaction Connect",
-          "productSettingsLabel": "Настройки продукта",
-          "productDetailsLabel": "Подробные данные о товаре",
-          "productRevisionsLabel": "Ревизии продукта",
-          "emailSettingsLabel": "Настройки электронной почты",
-          "catalogSettingsLabel": "Настройки каталога"
+          "localizationAndI18NLabel": "Локализация и i18n"
         },
         "userAccountDropdown": {
           "profileLabel": "Профиль"
@@ -757,9 +702,6 @@
           "orderTotal": "Всего"
         }
       },
-      "shippo": {
-        "connectedAndSaved": "Настройки сохранены! Shippo API теперь включена."
-      },
       "accountsUI": {
         "members": "Сотрудники",
         "manage": "Настроить",
@@ -822,16 +764,6 @@
           "passwordResetSend": "Email со сбросом пароля отправлен.",
           "invitationSent": "Приглашение отправлено",
           "sendInvitation": "Отправить приглашение"
-        },
-        "reactionUI": {
-          "editTheme": "Редактировать тему",
-          "duplicateTheme": "Дублировать тему",
-          "duplicateThemeError": "Тему не удалось дублировать",
-          "publishThemeError": "`Невозможно опубликовать тему {{themeName}}",
-          "components": {
-            "navbar": "Меню навигации",
-            "button": "Кнопка"
-          }
         },
         "error": {
           "emailRequired": "Email обязателен.",
