@@ -14,7 +14,9 @@
           "catalogDescription": "Marknads Catalog"
         },
         "settings": {
-          "catalogSettingsLabel": "katalog~~POS=TRUNC"
+          "catalogSettingsLabel": "katalog~~POS=TRUNC",
+          "catalogSettingsTitle": "katalog~~POS=TRUNC",
+          "catalogSettingsDescription": "Marknads Catalog"
         }
       }
     }

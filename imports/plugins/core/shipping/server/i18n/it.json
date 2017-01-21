@@ -10,7 +10,7 @@
           "shippingDescription": "Fornire le tariffe di spedizione"
         },
         "settings": {
-          "shippingSettingsLabel": "Impostazioni di spedizione"
+          "shippingLabel": "spedizione"
         }
       }
     }

@@ -10,7 +10,7 @@
           "shippingDescription": "Oferi tarife de transport maritim"
         },
         "settings": {
-          "shippingSettingsLabel": "Setări de transport"
+          "shippingLabel": "livrare"
         }
       }
     }

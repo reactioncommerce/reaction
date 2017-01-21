@@ -6,6 +6,9 @@
       "admin": {
         "shortcut": {
           "dashboardLabel": "bảng điều khiển"
+        },
+        "settings": {
+          "shopSettingsLabel": "cửa tiệm"
         }
       }
     }

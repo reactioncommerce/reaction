@@ -14,7 +14,9 @@
           "catalogDescription": "Marketplace Κατάλογος"
         },
         "settings": {
-          "catalogSettingsLabel": "Ρυθμίσεις Κατάλογος"
+          "catalogSettingsLabel": "Ρυθμίσεις Κατάλογος",
+          "catalogSettingsTitle": "Ρυθμίσεις Κατάλογος",
+          "catalogSettingsDescription": "Marketplace Κατάλογος"
         }
       }
     }

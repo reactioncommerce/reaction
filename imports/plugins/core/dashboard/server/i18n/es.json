@@ -6,6 +6,9 @@
       "admin": {
         "shortcut": {
           "dashboardLabel": "Salpicadero"
+        },
+        "settings": {
+          "shopSettingsLabel": "tienda"
         }
       }
     }

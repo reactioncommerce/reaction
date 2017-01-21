@@ -6,6 +6,9 @@
       "admin": {
         "shortcut": {
           "dashboardLabel": "Painel de instrumentos"
+        },
+        "settings": {
+          "shopSettingsLabel": "Loja"
         }
       }
     }

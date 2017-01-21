@@ -6,6 +6,9 @@
       "admin": {
         "shortcut": {
           "dashboardLabel": "Dashboard"
+        },
+        "settings": {
+          "shopSettingsLabel": "Sklep"
         }
       }
     }

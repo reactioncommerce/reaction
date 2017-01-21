@@ -10,7 +10,7 @@
           "shippingDescription": "Zapewnić koszty wysyłki"
         },
         "settings": {
-          "shippingSettingsLabel": "Ustawienia wysyłki"
+          "shippingLabel": "Wysyłka"
         }
       }
     }

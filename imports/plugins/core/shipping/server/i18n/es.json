@@ -10,7 +10,7 @@
           "shippingDescription": "Indicar gastos de envío"
         },
         "settings": {
-          "shippingSettingsLabel": "Configuración de envío"
+          "shippingLabel": "Envío"
         }
       }
     }

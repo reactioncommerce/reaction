@@ -6,6 +6,9 @@
       "admin": {
         "shortcut": {
           "dashboardLabel": "Ταμπλό"
+        },
+        "settings": {
+          "shopSettingsLabel": "Κατάστημα"
         }
       }
     }

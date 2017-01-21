@@ -14,7 +14,9 @@
           "catalogDescription": "Il mercato Catalogo"
         },
         "settings": {
-          "catalogSettingsLabel": "Impostazioni catalogo"
+          "catalogSettingsLabel": "Impostazioni catalogo",
+          "catalogSettingsTitle": "Impostazioni catalogo",
+          "catalogSettingsDescription": "Il mercato Catalogo"
         }
       }
     }

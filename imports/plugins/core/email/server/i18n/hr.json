@@ -10,7 +10,9 @@
           "emailDescription": "postavke e-pošte"
         },
         "settings": {
-          "emailSettingsLabel": "Postavke e-pošte"
+          "emailSettingsLabel": "Postavke e-pošte",
+          "emailSettingsTitle": "Postavke e-pošte",
+          "emailSettingsDescription": "postavke e-pošte"
         }
       }
     }

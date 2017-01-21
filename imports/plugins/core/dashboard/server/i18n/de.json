@@ -6,6 +6,9 @@
       "admin": {
         "shortcut": {
           "dashboardLabel": "Armaturenbrett"
+        },
+        "settings": {
+          "shopSettingsLabel": "Geschäft"
         }
       }
     }

@@ -10,7 +10,7 @@
           "shippingDescription": "Tillhandahålla fraktkostnader"
         },
         "settings": {
-          "shippingSettingsLabel": "Frakt Inställningar"
+          "shippingLabel": "Frakt"
         }
       }
     }

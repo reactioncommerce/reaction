@@ -6,6 +6,9 @@
       "admin": {
         "shortcut": {
           "dashboardLabel": "لوحة أجهزة القياس"
+        },
+        "settings": {
+          "shopSettingsLabel": "متجر"
         }
       }
     }

@@ -10,7 +10,7 @@
           "shippingDescription": "Navedite stroške pošiljanja"
         },
         "settings": {
-          "shippingSettingsLabel": "Nastavitve pošiljanja"
+          "shippingLabel": "Dostava"
         }
       }
     }

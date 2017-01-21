@@ -14,7 +14,9 @@
           "catalogDescription": "Marketplace Katalog"
         },
         "settings": {
-          "catalogSettingsLabel": "Katalog Nastavitve"
+          "catalogSettingsLabel": "Katalog Nastavitve",
+          "catalogSettingsTitle": "Katalog Nastavitve",
+          "catalogSettingsDescription": "Marketplace Katalog"
         }
       }
     }

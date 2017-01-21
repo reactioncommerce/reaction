@@ -14,7 +14,9 @@
           "catalogDescription": "Giełda katalogowy"
         },
         "settings": {
-          "catalogSettingsLabel": "Ustawienia katalogu"
+          "catalogSettingsLabel": "Ustawienia katalogu",
+          "catalogSettingsTitle": "Ustawienia katalogu",
+          "catalogSettingsDescription": "Giełda katalogowy"
         }
       }
     }

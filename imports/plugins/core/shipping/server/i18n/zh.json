@@ -10,7 +10,7 @@
           "shippingDescription": "提供运费"
         },
         "settings": {
-          "shippingSettingsLabel": "航运设置"
+          "shippingLabel": "运输"
         }
       }
     }

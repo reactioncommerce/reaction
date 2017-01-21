@@ -6,6 +6,9 @@
       "admin": {
         "shortcut": {
           "dashboardLabel": "仪表盘"
+        },
+        "settings": {
+          "shopSettingsLabel": "店"
         }
       }
     }

@@ -14,7 +14,9 @@
           "catalogDescription": "Piac Katalógus"
         },
         "settings": {
-          "catalogSettingsLabel": "Katalógus beállítások"
+          "catalogSettingsLabel": "Katalógus beállítások",
+          "catalogSettingsTitle": "Katalógus beállítások",
+          "catalogSettingsDescription": "Piac Katalógus"
         }
       }
     }

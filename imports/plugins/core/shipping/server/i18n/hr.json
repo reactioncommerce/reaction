@@ -10,7 +10,7 @@
           "shippingDescription": "Osigurati cijene dostave"
         },
         "settings": {
-          "shippingSettingsLabel": "Postavke Dostava"
+          "shippingLabel": "dostava"
         }
       }
     }

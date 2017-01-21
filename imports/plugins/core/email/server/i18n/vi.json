@@ -10,7 +10,9 @@
           "emailDescription": "cài đặt email"
         },
         "settings": {
-          "emailSettingsLabel": "Cài đặt email"
+          "emailSettingsLabel": "Cài đặt email",
+          "emailSettingsTitle": "Cài đặt email",
+          "emailSettingsDescription": "cài đặt email"
         }
       }
     }

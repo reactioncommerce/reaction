@@ -6,6 +6,9 @@
       "admin": {
         "shortcut": {
           "dashboardLabel": "Nadzorna plošča"
+        },
+        "settings": {
+          "shopSettingsLabel": "trgovina"
         }
       }
     }

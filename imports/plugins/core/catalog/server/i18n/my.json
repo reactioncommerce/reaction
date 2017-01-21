@@ -14,7 +14,9 @@
           "catalogDescription": "Marketplace Catalog"
         },
         "settings": {
-          "catalogSettingsLabel": "catalog က Settings"
+          "catalogSettingsLabel": "catalog က Settings",
+          "catalogSettingsTitle": "catalog က Settings",
+          "catalogSettingsDescription": "Marketplace Catalog"
         }
       }
     }

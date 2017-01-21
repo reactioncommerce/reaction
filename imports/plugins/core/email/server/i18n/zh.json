@@ -10,7 +10,9 @@
           "emailDescription": "电子邮件设置"
         },
         "settings": {
-          "emailSettingsLabel": "电子邮件设置"
+          "emailSettingsLabel": "电子邮件设置",
+          "emailSettingsTitle": "电子邮件设置",
+          "emailSettingsDescription": "电子邮件设置"
         }
       }
     }

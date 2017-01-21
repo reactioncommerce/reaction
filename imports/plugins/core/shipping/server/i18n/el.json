@@ -10,7 +10,7 @@
           "shippingDescription": "Παρέχουν τα έξοδα αποστολής"
         },
         "settings": {
-          "shippingSettingsLabel": "Ρυθμίσεις ναυτιλία"
+          "shippingLabel": "Αποστολή"
         }
       }
     }

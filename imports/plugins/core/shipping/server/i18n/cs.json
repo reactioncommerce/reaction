@@ -10,7 +10,7 @@
           "shippingDescription": "Poskytnout sazby za dopravu"
         },
         "settings": {
-          "shippingSettingsLabel": "Nastavení doprava"
+          "shippingLabel": "lodní"
         }
       }
     }

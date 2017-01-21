@@ -14,7 +14,9 @@
           "catalogDescription": "Marktplatz Katalog"
         },
         "settings": {
-          "catalogSettingsLabel": "Katalogeinstellungen"
+          "catalogSettingsLabel": "Katalogeinstellungen",
+          "catalogSettingsTitle": "Katalogeinstellungen",
+          "catalogSettingsDescription": "Marktplatz Katalog"
         }
       }
     }

@@ -14,7 +14,9 @@
           "catalogDescription": "Marketplace Catalog"
         },
         "settings": {
-          "catalogSettingsLabel": "Cài đặt Catalog"
+          "catalogSettingsLabel": "Cài đặt Catalog",
+          "catalogSettingsTitle": "Cài đặt Catalog",
+          "catalogSettingsDescription": "Marketplace Catalog"
         }
       }
     }

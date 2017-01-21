@@ -14,7 +14,9 @@
           "catalogDescription": "السوق كتالوج"
         },
         "settings": {
-          "catalogSettingsLabel": "إعدادات كتالوج"
+          "catalogSettingsLabel": "إعدادات كتالوج",
+          "catalogSettingsTitle": "إعدادات كتالوج",
+          "catalogSettingsDescription": "السوق كتالوج"
         }
       }
     }

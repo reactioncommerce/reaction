@@ -14,7 +14,9 @@
           "catalogDescription": "Tržište Katalog"
         },
         "settings": {
-          "catalogSettingsLabel": "Postavke Katalog"
+          "catalogSettingsLabel": "Postavke Katalog",
+          "catalogSettingsTitle": "Postavke Katalog",
+          "catalogSettingsDescription": "Tržište Katalog"
         }
       }
     }

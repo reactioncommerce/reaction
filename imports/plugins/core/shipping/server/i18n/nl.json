@@ -10,7 +10,7 @@
           "shippingDescription": "Bieden verzendkosten"
         },
         "settings": {
-          "shippingSettingsLabel": "verzending Instellingen"
+          "shippingLabel": "Verzenden"
         }
       }
     }

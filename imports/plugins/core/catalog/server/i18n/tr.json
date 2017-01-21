@@ -14,7 +14,9 @@
           "catalogDescription": "Pazaryeri Kataloğu"
         },
         "settings": {
-          "catalogSettingsLabel": "Katalog Ayarları"
+          "catalogSettingsLabel": "Katalog Ayarları",
+          "catalogSettingsTitle": "Katalog Ayarları",
+          "catalogSettingsDescription": "Pazaryeri Kataloğu"
         }
       }
     }

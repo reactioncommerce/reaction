@@ -10,7 +10,7 @@
           "shippingDescription": "Fornecer taxas de envio"
         },
         "settings": {
-          "shippingSettingsLabel": "Configurações de envio"
+          "shippingLabel": "Remessa"
         }
       }
     }

@@ -14,7 +14,9 @@
           "catalogDescription": "Piata Catalog"
         },
         "settings": {
-          "catalogSettingsLabel": "Setări catalog"
+          "catalogSettingsLabel": "Setări catalog",
+          "catalogSettingsTitle": "Setări catalog",
+          "catalogSettingsDescription": "Piata Catalog"
         }
       }
     }

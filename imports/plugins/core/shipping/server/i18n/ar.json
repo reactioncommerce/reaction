@@ -10,7 +10,7 @@
           "shippingDescription": "توفير معدلات الشحن"
         },
         "settings": {
-          "shippingSettingsLabel": "إعدادات الشحن"
+          "shippingLabel": "الشحن"
         }
       }
     }

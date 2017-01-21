@@ -14,7 +14,9 @@
           "catalogDescription": "Торговая площадка Каталог"
         },
         "settings": {
-          "catalogSettingsLabel": "Настройки каталога"
+          "catalogSettingsLabel": "Настройки каталога",
+          "catalogSettingsTitle": "Настройки каталога",
+          "catalogSettingsDescription": "Торговая площадка Каталог"
         }
       }
     }

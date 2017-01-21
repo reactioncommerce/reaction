@@ -14,7 +14,9 @@
           "catalogDescription": "市场目录"
         },
         "settings": {
-          "catalogSettingsLabel": "目录设置"
+          "catalogSettingsLabel": "目录设置",
+          "catalogSettingsTitle": "目录设置",
+          "catalogSettingsDescription": "市场目录"
         }
       }
     }

@@ -10,7 +10,7 @@
           "shippingDescription": "Cung cấp mức giá vận chuyển"
         },
         "settings": {
-          "shippingSettingsLabel": "Cài đặt vận chuyển"
+          "shippingLabel": "Đang chuyển hàng"
         }
       }
     }

@@ -10,7 +10,7 @@
           "shippingDescription": "Geben Sie Versandkosten"
         },
         "settings": {
-          "shippingSettingsLabel": "Versandeinstellungen"
+          "shippingLabel": "Versand"
         }
       }
     }

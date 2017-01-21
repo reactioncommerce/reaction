@@ -10,7 +10,7 @@
           "shippingDescription": "nakliye fiyatları sağlamamıza"
         },
         "settings": {
-          "shippingSettingsLabel": "Kargo Ayarları"
+          "shippingLabel": "Nakliye"
         }
       }
     }

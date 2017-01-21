@@ -10,7 +10,9 @@
           "emailDescription": "Email settings"
         },
         "settings": {
-          "emailSettingsLabel": "အီးမေးလ်က Settings"
+          "emailSettingsLabel": "အီးမေးလ်က Settings",
+          "emailSettingsTitle": "အီးမေးလ်က Settings",
+          "emailSettingsDescription": "Email settings"
         }
       }
     }

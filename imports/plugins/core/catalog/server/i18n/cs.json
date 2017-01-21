@@ -14,7 +14,9 @@
           "catalogDescription": "Trh Catalog"
         },
         "settings": {
-          "catalogSettingsLabel": "Nastavení Katalog"
+          "catalogSettingsLabel": "Nastavení Katalog",
+          "catalogSettingsTitle": "Nastavení Katalog",
+          "catalogSettingsDescription": "Trh Catalog"
         }
       }
     }

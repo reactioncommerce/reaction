@@ -10,7 +10,7 @@
           "shippingDescription": "Осигуряване на тарифите за доставка"
         },
         "settings": {
-          "shippingSettingsLabel": "Настройки за доставка"
+          "shippingLabel": "Доставка"
         }
       }
     }

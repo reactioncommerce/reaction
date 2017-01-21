@@ -10,7 +10,9 @@
           "emailDescription": "Paramètres de messagerie"
         },
         "settings": {
-          "emailSettingsLabel": "Paramètres de messagerie"
+          "emailSettingsLabel": "Paramètres de messagerie",
+          "emailSettingsTitle": "Paramètres de messagerie",
+          "emailSettingsDescription": "Paramètres de messagerie"
         }
       }
     }

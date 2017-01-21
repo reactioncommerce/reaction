@@ -10,7 +10,7 @@
           "shippingDescription": "Обеспечить стоимость доставки"
         },
         "settings": {
-          "shippingSettingsLabel": "Настройки доставка"
+          "shippingLabel": "Перевозка"
         }
       }
     }

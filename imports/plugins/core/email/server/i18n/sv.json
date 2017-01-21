@@ -10,7 +10,9 @@
           "emailDescription": "e-postinställningar"
         },
         "settings": {
-          "emailSettingsLabel": "e-postinställningar"
+          "emailSettingsLabel": "e-postinställningar",
+          "emailSettingsTitle": "e-postinställningar",
+          "emailSettingsDescription": "e-postinställningar"
         }
       }
     }
