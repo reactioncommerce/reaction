@@ -1,0 +1,18 @@
+[{
+  "i18n": "bg",
+  "ns": "reaction-shippo",
+  "translation": {
+    "reaction-shippo": {
+      "admin": {
+        "dashboard": {
+          "shippoLabel": "Shippo",
+          "shippoTitle": "Shippo",
+          "shippoDescription": "Доставка етикети и проследяване на пратки"
+        }
+      },
+      "shippo": {
+        "connectedAndSaved": "Настройките са запазени! Shippo API вече е активиран."
+      }
+    }
+  }
+}]

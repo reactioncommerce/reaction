@@ -1,0 +1,18 @@
+[{
+  "i18n": "fr",
+  "ns": "reaction-revisions",
+  "translation": {
+    "reaction-revisions": {
+      "admin": {
+        "dashboard": {
+          "revisionsLabel": "Révisions",
+          "revisionsTitle": "Révisions",
+          "revisionsDescription": "contrôle de la révision"
+        },
+        "settings": {
+          "productRevisionsLabel": "Révisions du produit"
+        }
+      }
+    }
+  }
+}]

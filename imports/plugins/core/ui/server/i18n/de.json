@@ -1,0 +1,25 @@
+[{
+  "i18n": "de",
+  "ns": "reaction-ui",
+  "translation": {
+    "reaction-catalog": {
+      "admin": {
+        "dashboard": {
+          "themesLabel": "Themen",
+          "themesTitle": "Themen",
+          "themesDescription": "Themen und UI-Komponenten"
+        }
+      },
+      "reactionUI": {
+        "editTheme": "Bearbeiten Theme",
+        "duplicateTheme": "Duplizieren Theme",
+        "duplicateThemeError": "Konnte nicht Thema duplizieren",
+        "publishThemeError": "`Konnte nicht Thema {{themeName}} veröffentlichen",
+        "components": {
+          "navbar": "Navigationsleiste",
+          "button": "Taste"
+        }
+      }
+    }
+  }
+}]

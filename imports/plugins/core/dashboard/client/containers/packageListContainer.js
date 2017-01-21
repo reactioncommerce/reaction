@@ -21,7 +21,6 @@ function composer(props, onData) {
   const dashboard = Reaction.Apps({ provides: "dashboard", enabled: true }).filter((d) => typeof d.template !== "undefined") || [];
 
 
-
   // const packages = apps.map((packageData) => {
   //   const appData = Reaction.Apps({
   //     provides: "settings",

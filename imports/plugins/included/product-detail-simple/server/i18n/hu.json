@@ -1,0 +1,13 @@
+[{
+  "i18n": "hu",
+  "ns": "product-detail-simple",
+  "translation": {
+    "product-detail-simple": {
+      "admin": {
+        "settings": {
+          "productDetailsLabel": "termék leírás"
+        }
+      }
+    }
+  }
+}]

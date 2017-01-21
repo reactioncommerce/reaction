@@ -1,0 +1,25 @@
+[{
+  "i18n": "ar",
+  "ns": "reaction-ui",
+  "translation": {
+    "reaction-catalog": {
+      "admin": {
+        "dashboard": {
+          "themesLabel": "المواضيع",
+          "themesTitle": "المواضيع",
+          "themesDescription": "المواضيع ومكونات واجهة المستخدم"
+        }
+      },
+      "reactionUI": {
+        "editTheme": "تحرير الموضوع",
+        "duplicateTheme": "موضوع مكرر",
+        "duplicateThemeError": "لا يمكن تكرار موضوع",
+        "publishThemeError": "`لا يمكن نشر موضوع {{themeName}}",
+        "components": {
+          "navbar": "شريط التنقل",
+          "button": "زر"
+        }
+      }
+    }
+  }
+}]

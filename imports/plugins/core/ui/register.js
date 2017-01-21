@@ -15,8 +15,7 @@ Reaction.registerPackage({
     label: "Themes",
     description: "Themes and UI Components",
     icon: "fa fa-html5",
-    priority: 1,
-    template: "uiDashboard"
+    priority: 1
   }, {
     route: "/dashboard/ui/:id",
     workflow: "coreUIWorkflow",

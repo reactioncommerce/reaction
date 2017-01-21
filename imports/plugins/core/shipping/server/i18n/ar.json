@@ -1,0 +1,18 @@
+[{
+  "i18n": "ar",
+  "ns": "reaction-shipping",
+  "translation": {
+    "reaction-shipping": {
+      "admin": {
+        "dashboard": {
+          "shippingLabel": "الشحن",
+          "shippingTitle": "الشحن",
+          "shippingDescription": "توفير معدلات الشحن"
+        },
+        "settings": {
+          "shippingLabel": "الشحن"
+        }
+      }
+    }
+  }
+}]

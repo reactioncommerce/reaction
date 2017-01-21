@@ -1,0 +1,18 @@
+[{
+  "i18n": "vi",
+  "ns": "reaction-search",
+  "translation": {
+    "reaction-search": {
+      "admin": {
+        "dashboard": {
+          "searchLabel": "Tìm kiếm",
+          "searchTitle": "Tìm kiếm",
+          "searchDescription": "Tìm kiếm sản phẩm"
+        },
+        "settings": {
+          "searchSettingsLabel": "Tìm kiếm Cài đặt"
+        }
+      }
+    }
+  }
+}]

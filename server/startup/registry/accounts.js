@@ -19,14 +19,8 @@ export default function () {
       workflow: "coreAccountsWorkflow",
       priority: 1
     }, {
-      label: "Add Shop Member",
-      icon: "fa fa-user-plus",
-      provides: "settings",
-      container: "accounts",
-      template: "memberForm",
-      priority: 2
-    }, {
       label: "Account Settings",
+      icon: "fa fa-sign-in",
       provides: "settings",
       route: "/dashboard/account/settings",
       container: "accounts",

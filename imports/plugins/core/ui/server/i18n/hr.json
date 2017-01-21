@@ -1,0 +1,25 @@
+[{
+  "i18n": "hr",
+  "ns": "reaction-ui",
+  "translation": {
+    "reaction-catalog": {
+      "admin": {
+        "dashboard": {
+          "themesLabel": "Teme",
+          "themesTitle": "Teme",
+          "themesDescription": "Teme i UI komponente"
+        }
+      },
+      "reactionUI": {
+        "editTheme": "Uredi Tema",
+        "duplicateTheme": "Dvostruki Tema",
+        "duplicateThemeError": "Ne može se udvostručiti temu",
+        "publishThemeError": "'Ne može se objaviti temu {{themeName}}",
+        "components": {
+          "navbar": "Nalazite se ovdje",
+          "button": "Dugme"
+        }
+      }
+    }
+  }
+}]

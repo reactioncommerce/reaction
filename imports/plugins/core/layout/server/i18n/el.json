@@ -1,0 +1,15 @@
+[{
+  "i18n": "el",
+  "ns": "reaction-layout",
+  "translation": {
+    "reaction-layout": {
+      "admin": {
+        "dashboard": {
+          "layoutLabel": "Διάταξη",
+          "layoutTitle": "Διάταξη",
+          "layoutDescription": "διάταξη κοινής ωφελείας"
+        }
+      }
+    }
+  }
+}]

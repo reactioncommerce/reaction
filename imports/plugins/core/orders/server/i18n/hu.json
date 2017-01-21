@@ -1,0 +1,18 @@
+[{
+  "i18n": "hu",
+  "ns": "reaction-orders",
+  "translation": {
+    "reaction-orders": {
+      "admin": {
+        "shortcut": {
+          "ordersLabel": "rendelés"
+        },
+        "dashboard": {
+          "ordersLabel": "rendelés",
+          "ordersTitle": "rendelés",
+          "ordersDescription": "Teljesíteni a megrendeléseket"
+        }
+      }
+    }
+  }
+}]

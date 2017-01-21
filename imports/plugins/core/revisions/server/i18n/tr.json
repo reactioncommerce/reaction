@@ -1,0 +1,18 @@
+[{
+  "i18n": "tr",
+  "ns": "reaction-revisions",
+  "translation": {
+    "reaction-revisions": {
+      "admin": {
+        "dashboard": {
+          "revisionsLabel": "Düzeltmeler",
+          "revisionsTitle": "Düzeltmeler",
+          "revisionsDescription": "Revizyon kontrolü"
+        },
+        "settings": {
+          "productRevisionsLabel": "Ürün Düzeltmeler"
+        }
+      }
+    }
+  }
+}]

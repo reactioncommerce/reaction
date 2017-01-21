@@ -1,0 +1,16 @@
+[{
+  "i18n": "pt",
+  "ns": "reaction-dashboard",
+  "translation": {
+    "reaction-dashboard": {
+      "admin": {
+        "shortcut": {
+          "dashboardLabel": "Painel de instrumentos"
+        },
+        "settings": {
+          "shopSettingsLabel": "Loja"
+        }
+      }
+    }
+  }
+}]

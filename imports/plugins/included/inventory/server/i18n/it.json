@@ -1,0 +1,18 @@
+[{
+  "i18n": "it",
+  "ns": "reaction-inventory",
+  "translation": {
+    "reaction-inventory": {
+      "admin": {
+        "dashboard": {
+          "inventoryLabel": "Inventario",
+          "inventoryTitle": "Inventario",
+          "inventoryDescription": "utilità di inventario"
+        },
+        "settings": {
+          "inventorySettingsLabel": "Impostazioni di inventario"
+        }
+      }
+    }
+  }
+}]

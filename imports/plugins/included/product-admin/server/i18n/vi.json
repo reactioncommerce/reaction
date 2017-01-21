@@ -1,0 +1,14 @@
+[{
+  "i18n": "vi",
+  "ns": "reaction-product-admin",
+  "translation": {
+    "reaction-product-admin": {
+      "admin": {
+        "settings": {
+          "productSettingsLabel": "Cài đặt sản phẩm",
+          "productDetailsLabel": "Thông tin chi tiết sản phẩm"
+        }
+      }
+    }
+  }
+}]

@@ -1,0 +1,18 @@
+[{
+  "i18n": "pt",
+  "ns": "reaction-analytics",
+  "translation": {
+    "reaction-analytics": {
+      "admin": {
+        "dashboard": {
+          "analyticsLabel": "Analítica",
+          "analyticsTitle": "Analítica",
+          "analyticsDescription": "Analytics e integrações de rastreamento"
+        },
+        "settings": {
+          "analyticsSettingsLabel": "Configurações do Google Analytics"
+        }
+      }
+    }
+  }
+}]

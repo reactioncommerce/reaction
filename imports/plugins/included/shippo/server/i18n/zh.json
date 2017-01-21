@@ -1,0 +1,18 @@
+[{
+  "i18n": "zh",
+  "ns": "reaction-shippo",
+  "translation": {
+    "reaction-shippo": {
+      "admin": {
+        "dashboard": {
+          "shippoLabel": "景泰蓝",
+          "shippoTitle": "景泰蓝",
+          "shippoDescription": "货运标签和包裹跟踪"
+        }
+      },
+      "shippo": {
+        "connectedAndSaved": "设置保存！七宝API现在已启用。"
+      }
+    }
+  }
+}]
