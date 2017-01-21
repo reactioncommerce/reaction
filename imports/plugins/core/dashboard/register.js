@@ -34,7 +34,7 @@ Reaction.registerPackage({
     route: "/dashboard/shop/settings",
     template: "shopSettings",
     name: "shopSettings",
-    label: "Shop",
+    label: "Shop Settings",
     icon: "fa fa-th",
     provides: "settings",
     container: "dashboard"
