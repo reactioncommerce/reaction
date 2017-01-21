@@ -10,7 +10,7 @@
           "shippingDescription": "Provide shipping rates"
         },
         "settings": {
-          "shippingSettingsLabel": "Shipping Settings"
+          "shippingLabel": "Shipping"
         }
       }
     }

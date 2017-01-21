@@ -17,7 +17,7 @@ Reaction.registerPackage({
       container: "core"
     },
     {
-      label: "Catalog",
+      label: "Catalog Settings",
       icon: "fa fa-archive",
       name: "catalog/settings",
       provides: "settings",

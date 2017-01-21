@@ -14,7 +14,9 @@
           "catalogDescription": "Marketplace Catalog"
         },
         "settings": {
-          "catalogSettingsLabel": "Catalog Settings"
+          "catalogSettingsLabel": "Catalog",
+          "catalogSettingsTitle": "Catalog",
+          "catalogSettingsDescription": "Marketplace Catalog"
         }
       }
     }

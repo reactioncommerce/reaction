@@ -23,7 +23,7 @@ Reaction.registerPackage({
       container: "appearance"
     },
     {
-      label: "Templates",
+      label: "Template Settings",
       icon: "fa fa-columns",
       name: "templates/settings",
       provides: "settings",

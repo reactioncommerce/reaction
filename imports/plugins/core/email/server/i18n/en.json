@@ -10,7 +10,9 @@
           "emailDescription": "Email settings"
         },
         "settings": {
-          "emailSettingsLabel": "Email Settings"
+          "emailSettingsLabel": "Email",
+          "emailSettingsTitle": "Email",
+          "emailSettingsDescription": "Email settings"
         }
       }
     }

@@ -25,7 +25,7 @@ Reaction.registerPackage({
       workflow: "coreDashboardWorkflow"
     },
     {
-      label: "Taxes",
+      label: "Tax Settings",
       icon: "fa fa-university",
       name: "taxes/settings",
       provides: "settings",
