@@ -17,6 +17,10 @@
   text-decoration: none;
 }
 
+.rui.navbar .button {
+  display: inline-block;
+}
+
 .rui.navbar .showmenu {
   display: none;
   .flex(0 0 auto);
@@ -60,6 +64,12 @@
   .flex(0 0 auto);
   position: relative;
   cursor: pointer;
+  right: -1px;
+}
+
+.rtl .rui.navbar .cart {
+  right: auto !important;
+  left: -1px;
 }
 
 .rui.navbar .dropdown a {
@@ -95,6 +105,21 @@
 .rui.navbar .currencies:hover {
   background-color: @navbar-default-toggle-icon-bar-bg;
   border-color: @navbar-default-toggle-border-color;
+}
+
+.rui.navbar .languages .dropdown-menu {
+  margin-top: 0px;
+  min-width: 250px !important;
+}
+
+html:not(.rtl) .rui.navbar .languages .dropdown-menu {
+  left: auto !important;
+  right: 0px;
+}
+
+.rtl .rui.navbar .languages .dropdown-menu {
+  left: 0px;
+  right: auto !important;
 }
 
 .rui.navbar .languages .dropdown-menu,
