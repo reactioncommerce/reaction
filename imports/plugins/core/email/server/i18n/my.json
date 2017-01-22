@@ -1,0 +1,20 @@
+[{
+  "i18n": "my",
+  "ns": "reaction-email",
+  "translation": {
+    "reaction-email": {
+      "admin": {
+        "dashboard": {
+          "emailLabel": "အီးမေးလ်က",
+          "emailTitle": "အီးမေးလ်က",
+          "emailDescription": "Email settings"
+        },
+        "settings": {
+          "emailSettingsLabel": "အီးမေးလ်က Settings",
+          "emailSettingsTitle": "အီးမေးလ်က Settings",
+          "emailSettingsDescription": "Email settings"
+        }
+      }
+    }
+  }
+}]

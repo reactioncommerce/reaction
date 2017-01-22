@@ -1,0 +1,20 @@
+[{
+  "i18n": "sv",
+  "ns": "reaction-email",
+  "translation": {
+    "reaction-email": {
+      "admin": {
+        "dashboard": {
+          "emailLabel": "E-post",
+          "emailTitle": "E-post",
+          "emailDescription": "e-postinställningar"
+        },
+        "settings": {
+          "emailSettingsLabel": "e-postinställningar",
+          "emailSettingsTitle": "e-postinställningar",
+          "emailSettingsDescription": "e-postinställningar"
+        }
+      }
+    }
+  }
+}]

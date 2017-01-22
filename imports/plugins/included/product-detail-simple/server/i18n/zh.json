@@ -1,0 +1,13 @@
+[{
+  "i18n": "zh",
+  "ns": "product-detail-simple",
+  "translation": {
+    "product-detail-simple": {
+      "admin": {
+        "settings": {
+          "productDetailsLabel": "产品详情"
+        }
+      }
+    }
+  }
+}]

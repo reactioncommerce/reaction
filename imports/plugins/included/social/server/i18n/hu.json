@@ -1,0 +1,18 @@
+[{
+  "i18n": "hu",
+  "ns": "reaction-social",
+  "translation": {
+    "reaction-social": {
+      "admin": {
+        "dashboard": {
+          "socialLabel": "Társadalmi",
+          "socialTitle": "Társadalmi",
+          "socialDescription": "Szociális csatorna konfigurációja"
+        },
+        "settings": {
+          "socialSettingsLabel": "szociális beállítások"
+        }
+      }
+    }
+  }
+}]

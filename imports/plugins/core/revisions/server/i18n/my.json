@@ -1,0 +1,18 @@
+[{
+  "i18n": "my",
+  "ns": "reaction-revisions",
+  "translation": {
+    "reaction-revisions": {
+      "admin": {
+        "dashboard": {
+          "revisionsLabel": "တည်းဖြတ်မူများကို",
+          "revisionsTitle": "တည်းဖြတ်မူများကို",
+          "revisionsDescription": "တည်းဖြတ်မူထိန်းချုပ်မှု"
+        },
+        "settings": {
+          "productRevisionsLabel": "ကုန်ပစ္စည်းပြင်ဆင်ချက်များကို"
+        }
+      }
+    }
+  }
+}]

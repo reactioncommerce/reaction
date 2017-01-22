@@ -1,0 +1,18 @@
+[{
+  "i18n": "hu",
+  "ns": "reaction-inventory",
+  "translation": {
+    "reaction-inventory": {
+      "admin": {
+        "dashboard": {
+          "inventoryLabel": "Leltár",
+          "inventoryTitle": "Leltár",
+          "inventoryDescription": "Inventory segédprogramok"
+        },
+        "settings": {
+          "inventorySettingsLabel": "Inventory beállítások"
+        }
+      }
+    }
+  }
+}]

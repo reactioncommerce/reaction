@@ -49,6 +49,7 @@
     "jquery-i18next": "^1.1.0",
     "later": "^1.2.0",
     "lodash": "^4.17.2",
+    "lodash.pick": "^4.4.0",
     "meteor-node-stubs": "^0.2.3",
     "moment": "^2.17.0",
     "moment-timezone": "^0.5.9",

@@ -1,0 +1,20 @@
+[{
+  "i18n": "bg",
+  "ns": "reaction-email",
+  "translation": {
+    "reaction-email": {
+      "admin": {
+        "dashboard": {
+          "emailLabel": "електронна поща",
+          "emailTitle": "електронна поща",
+          "emailDescription": "настройки по имейл"
+        },
+        "settings": {
+          "emailSettingsLabel": "Email настройки",
+          "emailSettingsTitle": "Email настройки",
+          "emailSettingsDescription": "настройки по имейл"
+        }
+      }
+    }
+  }
+}]

@@ -1,0 +1,18 @@
+[{
+  "i18n": "ro",
+  "ns": "reaction-analytics",
+  "translation": {
+    "reaction-analytics": {
+      "admin": {
+        "dashboard": {
+          "analyticsLabel": "Google Analytics",
+          "analyticsTitle": "Google Analytics",
+          "analyticsDescription": "Google Analytics și integrările de urmărire"
+        },
+        "settings": {
+          "analyticsSettingsLabel": "Setări Google Analytics"
+        }
+      }
+    }
+  }
+}]

@@ -1,0 +1,18 @@
+[{
+  "i18n": "zh",
+  "ns": "reaction-social",
+  "translation": {
+    "reaction-social": {
+      "admin": {
+        "dashboard": {
+          "socialLabel": "社会",
+          "socialTitle": "社会",
+          "socialDescription": "社会渠道的配置"
+        },
+        "settings": {
+          "socialSettingsLabel": "社交设置"
+        }
+      }
+    }
+  }
+}]

@@ -1,0 +1,25 @@
+[{
+  "i18n": "el",
+  "ns": "reaction-ui",
+  "translation": {
+    "reaction-catalog": {
+      "admin": {
+        "dashboard": {
+          "themesLabel": "θέματα",
+          "themesTitle": "θέματα",
+          "themesDescription": "Θέματα και UI Components"
+        }
+      },
+      "reactionUI": {
+        "editTheme": "Επεξεργασία θέματος",
+        "duplicateTheme": "διπλότυπο Θέμα",
+        "duplicateThemeError": "Δεν θα μπορούσε να επαναλάβει το θέμα",
+        "publishThemeError": "`Δεν ήταν δυνατή η δημοσίευση θέμα {{themeName}}",
+        "components": {
+          "navbar": "Μπάρα πλοήγησης",
+          "button": "Κουμπί"
+        }
+      }
+    }
+  }
+}]

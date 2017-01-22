@@ -1,0 +1,18 @@
+[{
+  "i18n": "ru",
+  "ns": "reaction-analytics",
+  "translation": {
+    "reaction-analytics": {
+      "admin": {
+        "dashboard": {
+          "analyticsLabel": "Аналитика",
+          "analyticsTitle": "Аналитика",
+          "analyticsDescription": "Аналитика и отслеживание интеграции"
+        },
+        "settings": {
+          "analyticsSettingsLabel": "Настройки Google Analytics"
+        }
+      }
+    }
+  }
+}]

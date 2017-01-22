@@ -1,0 +1,16 @@
+[{
+  "i18n": "ru",
+  "ns": "reaction-dashboard",
+  "translation": {
+    "reaction-dashboard": {
+      "admin": {
+        "shortcut": {
+          "dashboardLabel": "Панель приборов"
+        },
+        "settings": {
+          "shopSettingsLabel": "Магазин"
+        }
+      }
+    }
+  }
+}]

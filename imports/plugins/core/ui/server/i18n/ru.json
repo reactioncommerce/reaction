@@ -1,0 +1,25 @@
+[{
+  "i18n": "ru",
+  "ns": "reaction-ui",
+  "translation": {
+    "reaction-catalog": {
+      "admin": {
+        "dashboard": {
+          "themesLabel": "Темы",
+          "themesTitle": "Темы",
+          "themesDescription": "Темы и компоненты пользовательского интерфейса"
+        }
+      },
+      "reactionUI": {
+        "editTheme": "Редактировать Theme",
+        "duplicateTheme": "Дубликат Theme",
+        "duplicateThemeError": "Не удалось дублировать тему",
+        "publishThemeError": "`Не удалось опубликовать тему {{themeName}}",
+        "components": {
+          "navbar": "Панель навигации",
+          "button": "кнопка"
+        }
+      }
+    }
+  }
+}]

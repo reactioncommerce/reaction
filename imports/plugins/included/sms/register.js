@@ -18,6 +18,7 @@ Reaction.registerPackage({
     workflow: "coreDashboardWorkflow"
   }, {
     label: "SMS Settings",
+    icon: "fa fa-mobile",
     route: "/dashboard/sms",
     provides: "settings",
     container: "dashboard",

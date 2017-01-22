@@ -1,0 +1,25 @@
+[{
+  "i18n": "sl",
+  "ns": "reaction-ui",
+  "translation": {
+    "reaction-catalog": {
+      "admin": {
+        "dashboard": {
+          "themesLabel": "Teme",
+          "themesTitle": "Teme",
+          "themesDescription": "Teme in UI Components"
+        }
+      },
+      "reactionUI": {
+        "editTheme": "Uredi Tema",
+        "duplicateTheme": "dvojnik Tema",
+        "duplicateThemeError": "ni mogla podvajati temo",
+        "publishThemeError": "'Ni bilo mogoče objaviti temo {{themeName}}",
+        "components": {
+          "navbar": "Navigation Bar",
+          "button": "Button"
+        }
+      }
+    }
+  }
+}]

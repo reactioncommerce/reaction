@@ -1,2 +1,0 @@
-import "./1_rebuild_account_and_order_search_collections";
-import "./2_add_key_to_search_ui";

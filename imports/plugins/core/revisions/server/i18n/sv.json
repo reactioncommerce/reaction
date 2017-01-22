@@ -1,0 +1,18 @@
+[{
+  "i18n": "sv",
+  "ns": "reaction-revisions",
+  "translation": {
+    "reaction-revisions": {
+      "admin": {
+        "dashboard": {
+          "revisionsLabel": "revideringar",
+          "revisionsTitle": "revideringar",
+          "revisionsDescription": "revisionskontroll"
+        },
+        "settings": {
+          "productRevisionsLabel": "produkt~~POS=TRUNC Revideringar"
+        }
+      }
+    }
+  }
+}]

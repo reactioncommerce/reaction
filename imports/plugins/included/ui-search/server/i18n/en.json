@@ -1,0 +1,13 @@
+[{
+  "i18n": "en",
+  "ns": "reaction-ui-search",
+  "translation": {
+    "reaction-ui-search": {
+      "admin": {
+        "shortcut": {},
+        "dashboard": {},
+        "settings": {}
+      }
+    }
+  }
+}]

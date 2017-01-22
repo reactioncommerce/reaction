@@ -1,0 +1,13 @@
+[{
+  "i18n": "en",
+  "ns": "reaction-ui-tagnav",
+  "translation": {
+    "reaction-ui-tagnav": {
+      "admin": {
+        "shortcut": {},
+        "dashboard": {},
+        "settings": {}
+      }
+    }
+  }
+}]

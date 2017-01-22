@@ -1,7 +1,9 @@
+import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
+import { Reaction, Logger, i18next } from "/client/api";
+import { Shops } from "/lib/collections";
 import { localeDep, i18nextDep } from  "./main";
 import { formatPriceString } from "./currency";
-import { Reaction, Logger, i18next } from "/client/api";
 
 /**
  * i18n
@@ -36,6 +38,13 @@ Template.registerHelper("i18n", function (i18nKey, i18nMessage) {
  */
 Template.registerHelper("currencySymbol", function () {
   const locale = Reaction.Locale.get();
+  const localStorageCurrency = localStorage.getItem("currency");
+  if (localStorageCurrency) {
+    const shop = Shops.findOne();
+    if (Match.test(shop, Object) && shop.currencies) {
+      return shop.currencies[localStorageCurrency].symbol;
+    }
+  }
   return locale.currency.symbol;
 });
 
@@ -44,9 +53,10 @@ Template.registerHelper("currencySymbol", function () {
  * @summary return shop /locale specific formatted price
  * also accepts a range formatted with " - "
  * @param {String} currentPrice - currentPrice or "xx.xx - xx.xx" formatted String
+ * @param {Boolean} useDefaultShopCurrency - flag for displaying shop's currency in Admin view of PDP
  * @return {String} returns locale formatted and exchange rate converted values
  */
-Template.registerHelper("formatPrice", function (formatPrice) {
+Template.registerHelper("formatPrice", function (formatPrice, useDefaultShopCurrency) {
   localeDep.depend();
-  return formatPriceString(formatPrice);
+  return formatPriceString(formatPrice, useDefaultShopCurrency);
 });

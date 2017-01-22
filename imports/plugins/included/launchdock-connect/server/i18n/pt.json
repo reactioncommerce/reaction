@@ -1,0 +1,18 @@
+[{
+  "i18n": "pt",
+  "ns": "reaction-connect",
+  "translation": {
+    "reaction-connect": {
+      "admin": {
+        "dashboard": {
+          "connectLabel": "Conectar",
+          "connectTitle": "Conectar",
+          "connectDescription": "Ligue Reaction como um serviço implantado"
+        },
+        "settings": {
+          "reactionConnectLabel": "reação Ligar"
+        }
+      }
+    }
+  }
+}]

@@ -22,10 +22,10 @@ deployment:
   prequel:
     branch: development
     commands:
-      - .reaction/ci/deploy.sh
+      - .reaction/ci/deploy-development.sh
 
   release:
     tag: /v[0-9]+(\.[0-9]+)*/
     owner: reactioncommerce
     commands:
-      - .reaction/ci/deploy.sh
+      - .reaction/ci/deploy-production.sh

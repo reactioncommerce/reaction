@@ -1,0 +1,18 @@
+[{
+  "i18n": "ar",
+  "ns": "reaction-analytics",
+  "translation": {
+    "reaction-analytics": {
+      "admin": {
+        "dashboard": {
+          "analyticsLabel": "تحليلات",
+          "analyticsTitle": "تحليلات",
+          "analyticsDescription": "تحليلات والتكامل تتبع"
+        },
+        "settings": {
+          "analyticsSettingsLabel": "إعدادات Analytics"
+        }
+      }
+    }
+  }
+}]

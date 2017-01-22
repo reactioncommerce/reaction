@@ -1,0 +1,13 @@
+[{
+  "i18n": "es",
+  "ns": "product-detail-simple",
+  "translation": {
+    "product-detail-simple": {
+      "admin": {
+        "settings": {
+          "productDetailsLabel": "detalles del producto"
+        }
+      }
+    }
+  }
+}]

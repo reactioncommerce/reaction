@@ -1,0 +1,15 @@
+[{
+  "i18n": "hu",
+  "ns": "reaction-layout",
+  "translation": {
+    "reaction-layout": {
+      "admin": {
+        "dashboard": {
+          "layoutLabel": "Elrendezés",
+          "layoutTitle": "Elrendezés",
+          "layoutDescription": "Layout segédprogramok"
+        }
+      }
+    }
+  }
+}]

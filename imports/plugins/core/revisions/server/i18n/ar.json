@@ -1,0 +1,18 @@
+[{
+  "i18n": "ar",
+  "ns": "reaction-revisions",
+  "translation": {
+    "reaction-revisions": {
+      "admin": {
+        "dashboard": {
+          "revisionsLabel": "التنقيحات",
+          "revisionsTitle": "التنقيحات",
+          "revisionsDescription": "مراجعة مراقبة"
+        },
+        "settings": {
+          "productRevisionsLabel": "مراجعات المنتج"
+        }
+      }
+    }
+  }
+}]

@@ -1,0 +1,25 @@
+[{
+  "i18n": "bg",
+  "ns": "reaction-ui",
+  "translation": {
+    "reaction-catalog": {
+      "admin": {
+        "dashboard": {
+          "themesLabel": "Теми",
+          "themesTitle": "Теми",
+          "themesDescription": "Теми и UI компоненти"
+        }
+      },
+      "reactionUI": {
+        "editTheme": "Edit Theme",
+        "duplicateTheme": "Duplicate Theme",
+        "duplicateThemeError": "Не може да се дублира тема",
+        "publishThemeError": "`Не може да публикувате тема {{themeName}}",
+        "components": {
+          "navbar": "Navigation Bar",
+          "button": "бутон"
+        }
+      }
+    }
+  }
+}]

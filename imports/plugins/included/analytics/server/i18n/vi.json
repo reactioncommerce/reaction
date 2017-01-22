@@ -1,0 +1,18 @@
+[{
+  "i18n": "vi",
+  "ns": "reaction-analytics",
+  "translation": {
+    "reaction-analytics": {
+      "admin": {
+        "dashboard": {
+          "analyticsLabel": "phân tích",
+          "analyticsTitle": "phân tích",
+          "analyticsDescription": "Phân tích và tích hợp theo dõi"
+        },
+        "settings": {
+          "analyticsSettingsLabel": "Cài đặt Analytics"
+        }
+      }
+    }
+  }
+}]
