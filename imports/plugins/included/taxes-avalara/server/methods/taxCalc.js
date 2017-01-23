@@ -231,7 +231,7 @@ function orderToSalesInvoice(order) {
     companyCode: companyCode,
     type: "SalesInvoice",
     commit: true,
-    code: order._id,
+    code: order.cartId,
     customerCode: order.userId,
     date: moment.utc(order.createdAt),
     currencyCode: currencyCode,
@@ -264,23 +264,26 @@ function orderToSalesInvoice(order) {
  * @returns {Object} result Result of SalesInvoice call
  */
 taxCalc.recordOrder = function (order, callback) {
-  // check(order, OrderSchema);
-  check(callback, Match.Optional(Function));
-
+  check(callback, Function);
   if (order.shipping && order.shipping[0].address) {
     const salesOrder = orderToSalesInvoice(order);
     const auth = getAuthData();
     const baseUrl = getUrl();
-    const requestUrl = `${baseUrl}/transactions/create`;
-    if (callback) {
+    const requestUrl = `${baseUrl}/transactions/creaaate`;
+
+    try {
       HTTP.post(requestUrl, { data: salesOrder, auth: auth }, (err, result) => {
+        if (err) {
+          Logger.error("Encountered error while recording error");
+          Logger.error(err);
+        }
         const data = JSON.parse(result.content);
         return callback(data);
       });
+    } catch (error) {
+      Logger.error("Encountered error while recording error");
+      Logger.error(error);
     }
-    const result = HTTP.post(requestUrl, { data: salesOrder, auth: auth });
-    const data = JSON.parse(result.content);
-    return data;
   }
 };
 
@@ -311,7 +314,6 @@ taxCalc.reportRefund = function (order, refundAmount, callback) {
   const result = HTTP.post(requestUrl, { data: returnInvoice, auth: auth });
   const data = JSON.parse(result.content);
   return data;
-
 };
 
 export default taxCalc;
