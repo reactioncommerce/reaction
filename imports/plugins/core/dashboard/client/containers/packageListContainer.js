@@ -47,12 +47,12 @@ function composer(props, onData) {
     groupedPackages: {
       actions: {
         title: "Actions",
-        i18nKeyTitle: "packageGroupActions",
+        i18nKeyTitle: "admin.dashboard.packageGroupActionsLabel",
         packages: dashboard
       },
       settings: {
-        title: "Actions",
-        i18nKeyTitle: "packageGroupActions",
+        title: "Settings",
+        i18nKeyTitle: "admin.dashboard.packageGroupSettingsLabel",
         packages: settings
       }
     },

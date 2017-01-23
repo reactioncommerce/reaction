@@ -8,8 +8,8 @@
           "dashboardLabel": "Dashboard"
         },
         "dashboard": {
-          "packageGroupActions": "Actions",
-          "packageGroupSettings": "Settings"
+          "packageGroupActionsLabel": "Actions",
+          "packageGroupSettingsLabel": "Settings"
         },
         "settings": {
           "shopSettingsLabel": "Shop"
