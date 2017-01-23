@@ -130,6 +130,8 @@ function composer(props, onData) {
       revisonDocumentIds
     });
   }
+
+  onData(null, {});
 }
 
 ProductAdminContainer.propTypes = {
