@@ -45,8 +45,16 @@ function composer(props, onData) {
   onData(null, {
     // packages,
     groupedPackages: {
-      actions: dashboard,
-      settings: settings
+      actions: {
+        title: "Actions",
+        i18nKeyTitle: "packageGroupActions",
+        packages: dashboard
+      },
+      settings: {
+        title: "Actions",
+        i18nKeyTitle: "packageGroupActions",
+        packages: settings
+      }
     },
     // groups: Object.keys(groupedPackages),
 
