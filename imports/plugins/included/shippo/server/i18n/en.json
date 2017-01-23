@@ -1,0 +1,18 @@
+[{
+  "i18n": "en",
+  "ns": "reaction-shippo",
+  "translation": {
+    "reaction-shippo": {
+      "admin": {
+        "dashboard": {
+          "shippoLabel": "Shippo",
+          "shippoTitle": "Shippo",
+          "shippoDescription": "Shipping labels and package tracking"
+        }
+      },
+      "shippo": {
+        "connectedAndSaved": "Settings saved! Shippo API is now enabled."
+      }
+    }
+  }
+}]

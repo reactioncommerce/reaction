@@ -22,7 +22,6 @@ function composer(props, onData) {
     .filter((d) => typeof Template[d.template] !== "undefined") || [];
 
 
-
   // const packages = apps.map((packageData) => {
   //   const appData = Reaction.Apps({
   //     provides: "settings",

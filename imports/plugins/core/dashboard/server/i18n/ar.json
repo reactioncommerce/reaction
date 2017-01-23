@@ -1,0 +1,16 @@
+[{
+  "i18n": "ar",
+  "ns": "reaction-dashboard",
+  "translation": {
+    "reaction-dashboard": {
+      "admin": {
+        "shortcut": {
+          "dashboardLabel": "لوحة أجهزة القياس"
+        },
+        "settings": {
+          "shopSettingsLabel": "متجر"
+        }
+      }
+    }
+  }
+}]

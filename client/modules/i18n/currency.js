@@ -1,15 +1,55 @@
 import accounting from "accounting-js";
 import { Meteor } from "meteor/meteor";
 import { Reaction, Logger } from "/client/api";
+import { Shops } from "/lib/collections";
+import { currencyDep } from "./main";
+
+/**
+ * findCurrency
+ * private function for returning localStorage currency
+ * @param   {Object}  defaultCurrency    The default currency
+ * @param {Boolean} useDefaultShopCurrency - flag for displaying shop's currency in Admin view of PDP
+ * @return  {Object}  localStorageCurrency The localStorage currency
+ */
+function findCurrency(defaultCurrency, useDefaultShopCurrency) {
+  const shop = Shops.findOne(Reaction.getShopId(), {
+    fields: {
+      currencies: 1,
+      currency: 1
+    }
+  });
+  const localStorageCurrencyName = localStorage.getItem("currency");
+  if (typeof shop === "object" && shop.currencies && localStorageCurrencyName) {
+    let localStorageCurrency = {};
+    if (shop.currencies[localStorageCurrencyName]) {
+      if (useDefaultShopCurrency) {
+        localStorageCurrency = shop.currencies[shop.currency];
+        localStorageCurrency.exchangeRate = 1;
+      } else {
+        localStorageCurrency = shop.currencies[localStorageCurrencyName];
+        localStorageCurrency.exchangeRate = shop.currencies[localStorageCurrencyName].rate;
+      }
+    }
+    return localStorageCurrency;
+  }
+  return defaultCurrency;
+}
 
 /**
  * formatPriceString
  * @summary return shop /locale specific formatted price
  * also accepts a range formatted with " - "
  * @param {String} formatPrice - currentPrice or "xx.xx - xx.xx" formatted String
+ * @param {Boolean} useDefaultShopCurrency - flag for displaying shop's currency in Admin view of PDP
  * @return {String} returns locale formatted and exchange rate converted values
  */
-export function formatPriceString(formatPrice) {
+export function formatPriceString(formatPrice, useDefaultShopCurrency) {
+  // in case useDefaultShopCurrency is a Spacebars.kw we have this check
+  if (typeof useDefaultShopCurrency === "object" || !useDefaultShopCurrency) {
+    useDefaultShopCurrency = false;
+  }
+
+  currencyDep.depend();
   const locale = Reaction.Locale.get();
 
   if (typeof locale !== "object" || typeof locale.currency !== "object") {
@@ -20,6 +60,9 @@ export function formatPriceString(formatPrice) {
   if (typeof formatPrice !== "string" && typeof formatPrice !== "number") {
     return false;
   }
+
+  // uses the localStorage currency instead of locale
+  const userCurrency = findCurrency(locale.currency, useDefaultShopCurrency);
 
   // for the cases then we have only one price. It is a number.
   const currentPrice = formatPrice.toString();
@@ -34,20 +77,19 @@ export function formatPriceString(formatPrice) {
     try {
       // we know the locale, but we don"t know exchange rate. In that case we
       // should return to default shop currency
-      if (typeof locale.currency.rate !== "number") {
+      if (typeof userCurrency.rate !== "number") {
         throw new Meteor.Error("exchangeRateUndefined");
       }
-      prices[i] *= locale.currency.rate;
+      prices[i] *= userCurrency.rate;
 
       price = _formatPrice(price, originalPrice, prices[i],
-        currentPrice, locale.currency, i, len);
+        currentPrice, userCurrency, i, len);
     } catch (error) {
       Logger.debug("currency error, fallback to shop currency");
       price = _formatPrice(price, originalPrice, prices[i],
         currentPrice, locale.shopCurrency, i, len);
     }
   }
-
   return price;
 }
 

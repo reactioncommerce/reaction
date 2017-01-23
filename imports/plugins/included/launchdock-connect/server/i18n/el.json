@@ -1,0 +1,18 @@
+[{
+  "i18n": "el",
+  "ns": "reaction-connect",
+  "translation": {
+    "reaction-connect": {
+      "admin": {
+        "dashboard": {
+          "connectLabel": "Συνδέω",
+          "connectTitle": "Συνδέω",
+          "connectDescription": "Συνδέστε Αντίδραση ως αναπτυχθεί υπηρεσία"
+        },
+        "settings": {
+          "reactionConnectLabel": "αντίδραση Connect"
+        }
+      }
+    }
+  }
+}]

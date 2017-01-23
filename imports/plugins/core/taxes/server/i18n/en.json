@@ -21,7 +21,7 @@
           "postal": "Postal"
         },
         "settings": {
-          "taxSettingsLabel": "Tax Settings"
+          "taxSettingsLabel": "Tax"
         },
         "taxSettings": {
           "noCustomTaxRatesFound": "No custom tax rates found.",

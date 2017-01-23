@@ -1,0 +1,18 @@
+[{
+  "i18n": "pl",
+  "ns": "reaction-analytics",
+  "translation": {
+    "reaction-analytics": {
+      "admin": {
+        "dashboard": {
+          "analyticsLabel": "Analityka",
+          "analyticsTitle": "Analityka",
+          "analyticsDescription": "Analityka i integracje śledzenia"
+        },
+        "settings": {
+          "analyticsSettingsLabel": "Ustawienia Analytics"
+        }
+      }
+    }
+  }
+}]

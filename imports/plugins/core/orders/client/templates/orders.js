@@ -328,6 +328,17 @@ Template.orderStatusDetail.helpers({
   shipmentStatus() {
     const self = this;
     const shipment = this.shipping[0];
+
+    // check first if it was delivered
+    if (shipment.delivered) {
+      return {
+        delivered: true,
+        shipped: true,
+        status: "success",
+        label: i18next.t("orderShipping.delivered")
+      };
+    }
+
     const shipped = _.every(shipment.items, (shipmentItem) => {
       for (const fullItem of self.items) {
         if (fullItem._id === shipmentItem._id) {
@@ -342,6 +353,7 @@ Template.orderStatusDetail.helpers({
 
     if (shipped) {
       return {
+        delivered: false,
         shipped: true,
         status: "success",
         label: i18next.t("orderShipping.shipped")
@@ -349,6 +361,7 @@ Template.orderStatusDetail.helpers({
     }
 
     return {
+      delivered: false,
       shipped: false,
       status: "info",
       label: i18next.t("orderShipping.notShipped")

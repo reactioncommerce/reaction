@@ -1,0 +1,16 @@
+[{
+  "i18n": "sl",
+  "ns": "reaction-dashboard",
+  "translation": {
+    "reaction-dashboard": {
+      "admin": {
+        "shortcut": {
+          "dashboardLabel": "Nadzorna plošča"
+        },
+        "settings": {
+          "shopSettingsLabel": "trgovina"
+        }
+      }
+    }
+  }
+}]

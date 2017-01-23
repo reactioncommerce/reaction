@@ -90,7 +90,7 @@
 
               <div class="col-xs-3 col-sm-3 form-group{{#if afFieldIsInvalid name='compareAtPrice'}} has-error{{/if}}">
                 <label class="control-label">{{afFieldLabelText name='compareAtPrice'}}</label>
-                {{>afFieldInput name='compareAtPrice' placeholder=(formatPrice "0.00")}}
+                {{>afFieldInput name='compareAtPrice' placeholder=(formatPrice "0.00" true)}}
                 {{#if afFieldIsInvalid name='compareAtPrice'}}
                 <span class="help-block">{{afFieldMessage name='compareAtPrice'}}</span>
                 {{/if}}
@@ -98,7 +98,7 @@
 
               <div class="col-xs-3 col-sm-3 form-group {{#if afFieldIsInvalid name='price'}} has-error{{/if}}">
                 <label class="control-label">{{afFieldLabelText name='price'}}</label>
-                {{>afFieldInput name='price' placeholder=(formatPrice "0.00") disabled=hasChildVariants}}
+                {{>afFieldInput name='price' placeholder=(formatPrice "0.00" true) disabled=hasChildVariants}}
                 {{#if afFieldIsInvalid name='price'}}
                 <span class="help-block">{{afFieldMessage name='price'}}</span>
                 {{/if}}

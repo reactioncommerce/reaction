@@ -1,0 +1,14 @@
+[{
+  "i18n": "cs",
+  "ns": "reaction-product-admin",
+  "translation": {
+    "reaction-product-admin": {
+      "admin": {
+        "settings": {
+          "productSettingsLabel": "Nastavení produktu",
+          "productDetailsLabel": "Detaily produktu"
+        }
+      }
+    }
+  }
+}]

@@ -24,7 +24,14 @@ Reaction.registerPackage({
       icon: "fa fa-truck",
       priority: 1,
       container: "core",
-      workflow: "coreDashboardWorkflow",
+      workflow: "coreDashboardWorkflow"
+    },
+    {
+      provides: "settings",
+      name: "settings/shipping",
+      label: "Shipping",
+      description: "Provide shipping rates",
+      icon: "fa fa-truck",
       template: "shipping"
     },
     {

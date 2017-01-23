@@ -1,0 +1,15 @@
+[{
+  "i18n": "ru",
+  "ns": "reaction-layout",
+  "translation": {
+    "reaction-layout": {
+      "admin": {
+        "dashboard": {
+          "layoutLabel": "раскладка",
+          "layoutTitle": "раскладка",
+          "layoutDescription": "Макет утилиты"
+        }
+      }
+    }
+  }
+}]

@@ -1,0 +1,15 @@
+[{
+  "i18n": "sl",
+  "ns": "reaction-layout",
+  "translation": {
+    "reaction-layout": {
+      "admin": {
+        "dashboard": {
+          "layoutLabel": "postavitev",
+          "layoutTitle": "postavitev",
+          "layoutDescription": "postavitev pripomočki"
+        }
+      }
+    }
+  }
+}]

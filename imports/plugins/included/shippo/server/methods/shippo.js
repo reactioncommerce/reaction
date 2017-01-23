@@ -232,14 +232,13 @@ Meteor.methods({
   /**
    * Fetches the current active Shippo Carriers from the Shippo Account and updates the
    * Shipping Collection by keeping only these as Shippo Providers of the shop.
-   * @return {Boolean} result - if the updating happened succesfully or not.
+   * @return {Boolean} result - if the updating happened successfully or not.
    * */
 
   "shippo/fetchProviders"() {
     const shopId = Reaction.getShopId();
 
     if (Roles.userIsInRole(this.userId, ["admin", "owner"], shopId)) {
-
       const apiKey = getApiKey(shopId);
       if (!apiKey) {
         return false;
@@ -250,6 +249,78 @@ Meteor.methods({
     }
 
     return false;
+  },
+
+  /**
+   * Fetches the tracking status of shipped orders from Shippo and updates the
+   * relevant orders' properties
+   * @return {Boolean} result - if the updating happened successfully or not.
+   * */
+
+  "shippo/fetchTrackingStatusForOrders"() {
+    const shopId = Reaction.getShopId();
+
+    const apiKey = getApiKey(shopId);
+    if (!apiKey) {
+      return false;
+    }
+
+    // Find the orders of the shop that have shippo provider, tracking number, that are shipped
+    // but they are not yet delivered;
+    const shippoOrders = Orders.find({
+      shopId,
+      "shipping.0.shippo.transactionId": { $exists: true },
+      "shipping.0.tracking": { $exists: true },
+      "shipping.0.shipped": true,
+      "shipping.0.delivered": { $ne: true }
+      // For now we don' t have logic for returned products
+    });
+
+    // no orders to update
+    if (!shippoOrders.count()) {
+      return true;
+    }
+
+    // For each order get from Shippo the transaction item ,check the tracking and if it has been updated
+    let updatingResult = true;
+    shippoOrders.forEach(order => {
+      const orderShipment = order.shipping[0];
+      const transactionId = orderShipment.shippo.transactionId;
+      const transaction = ShippoApi.methods.getTransaction.call({ apiKey, transactionId });
+
+      // For Testing:
+      // Comment First line of code, and uncomment following block to mock the updating of tracking status
+      // as Shippo's tracking status for test Shipments isn't getting updated.
+      const trackingStatus = transaction.tracking_status;
+      // const trackingStatus = {};
+      // if (transaction.object_state === "VALID") {
+      //   trackingStatus.status_date = (new Date).toString();
+      //   trackingStatus.status = (!orderShipment.shippo.trackingStatusStatus ? "TRANSIT" : "DELIVERED");
+      // }
+
+      if (trackingStatus &&
+        trackingStatus.status_date !== orderShipment.shippo.trackingStatusDate) {
+        // Shippo's tracking_status.status	enum	Indicates the high level status of the shipment:
+        // 'UNKNOWN', 'DELIVERED', 'TRANSIT', 'FAILURE', 'RETURNED'.
+        if (trackingStatus.status === "DELIVERED") {
+          Meteor.call("orders/shipmentDelivered", order);
+        }
+
+        // A batch update might be better option. Unfortunately Reaction.import doesn't support
+        // .. Orders currently
+        const orderUpdating = Orders.update({
+          _id: order._id
+        }, {
+          $set: {
+            "shipping.0.shippo.trackingStatusDate": trackingStatus.status_date,
+            "shipping.0.shippo.trackingStatusStatus": trackingStatus.status
+          }
+        });
+        updatingResult = updatingResult && orderUpdating;
+      }
+    });
+
+    return updatingResult;
   },
 
   /**
@@ -349,14 +420,17 @@ Meteor.methods({
         }
         const rateId = order.shipping[0].shipmentMethod.shippoMethod.rateId;
         // make the actual purchase
-        const shippoLabel = ShippoApi.methods.createTransaction.call({ rateId, apiKey });
+        const transaction = ShippoApi.methods.createTransaction.call({ rateId, apiKey });
 
         return Orders.update({
           _id: orderId
         }, {
           $set: {
-            "shipping.0.shippingLabelUrl": shippoLabel.label_url,
-            "shipping.0.tracking": shippoLabel.tracking_number
+            "shipping.0.shippingLabelUrl": transaction.label_url,
+            "shipping.0.tracking": transaction.tracking_number,
+            "shipping.0.shippo.transactionId": transaction.object_id,
+            "shipping.0.shippo.trackingStatusDate": null,
+            "shipping.0.shippo.trackingStatusStatus": null
           }
         });
       }

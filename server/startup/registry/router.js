@@ -11,7 +11,6 @@ export default function () {
     },
     registry: [{
       provides: "dashboard",
-      template: "routerDashboard",
       label: "Routing",
       description: "Routing utilities",
       icon: "fa fa-share-square-o",

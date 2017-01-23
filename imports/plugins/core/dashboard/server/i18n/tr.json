@@ -1,0 +1,16 @@
+[{
+  "i18n": "tr",
+  "ns": "reaction-dashboard",
+  "translation": {
+    "reaction-dashboard": {
+      "admin": {
+        "shortcut": {
+          "dashboardLabel": "Gösterge paneli"
+        },
+        "settings": {
+          "shopSettingsLabel": "Dükkan"
+        }
+      }
+    }
+  }
+}]

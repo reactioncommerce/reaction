@@ -11,7 +11,6 @@ Reaction.registerPackage({
   registry: [{
     provides: "dashboard",
     workflow: "coreDashboardWorkflow",
-    template: "dashboardPackages",
     name: "dashboardPackages",
     label: "Core",
     description: "Reaction core shop configuration",
@@ -36,6 +35,7 @@ Reaction.registerPackage({
     template: "shopSettings",
     name: "shopSettings",
     label: "Shop Settings",
+    icon: "fa fa-th",
     provides: "settings",
     container: "dashboard"
   }],

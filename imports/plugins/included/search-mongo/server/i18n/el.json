@@ -1,0 +1,18 @@
+[{
+  "i18n": "el",
+  "ns": "reaction-search",
+  "translation": {
+    "reaction-search": {
+      "admin": {
+        "dashboard": {
+          "searchLabel": "Έρευνα",
+          "searchTitle": "Έρευνα",
+          "searchDescription": "Αναζήτηση προϊόντων"
+        },
+        "settings": {
+          "searchSettingsLabel": "Ρυθμίσεις αναζήτησης"
+        }
+      }
+    }
+  }
+}]

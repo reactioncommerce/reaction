@@ -7,65 +7,21 @@
       "languages": {
         "select": "Select Language"
       },
+      "currencies": {
+        "select": "Select Currency"
+      },
       "admin": {
         "shortcut": {
-          "dashboardLabel": "Dashboard",
-          "ordersLabel": "Orders",
           "addProductLabel": "Add Product",
           "accountsLabel": "Accounts"
         },
         "dashboard": {
-          "accountsLabel": "Accounts",
-          "accountsTitle": "Accounts",
-          "accountsDescription": "Manage member permissions",
-          "analyticsLabel": "Analytics",
-          "analyticsTitle": "Analytics",
-          "analyticsDescription": "Analytics and tracking integrations",
-          "shippingLabel": "Shipping",
-          "shippingTitle": "Shipping",
-          "shippingDescription": "Provide shipping rates",
-          "catalogLabel": "Catalog",
-          "catalogTitle": "Catalog",
-          "catalogDescription": "Product Catalog",
-          "coreLabel": "Settings",
-          "coreTitle": "Dashboard",
-          "coreDescription": "Reaction configuration",
-          "emailLabel": "Email",
-          "emailTitle": "Email",
-          "emailDescription": "Email settings",
           "i18NLabel": "i18n",
           "i18NTitle": "i18n",
           "i18NDescription": "Internationalization utilities",
-          "inventoryLabel": "Inventory",
-          "inventoryTitle": "Inventory",
-          "inventoryDescription": "Inventory utilities",
-          "layoutLabel": "Layout",
-          "layoutTitle": "Layout",
-          "layoutDescription": "Layout utilities",
-          "connectLabel": "Connect",
-          "connectTitle": "Connect",
-          "connectDescription": "Connect Reaction as a deployed service",
-          "ordersLabel": "Orders",
-          "smsLabel": "SMS",
-          "smsTitle": "SMS",
-          "smsDescription": "Notifications",
-          "ordersTitle": "Orders",
-          "ordersDescription": "Fulfill your orders",
-          "revisionsLabel": "Revisions",
-          "revisionsTitle": "Revisions",
-          "revisionsDescription": "Revision control",
           "routingLabel": "Routing",
           "routingTitle": "Routing",
           "routingDescription": "Routing utilities",
-          "searchLabel": "Search",
-          "searchTitle": "Search",
-          "searchDescription": "Product Search",
-          "socialLabel": "Social",
-          "socialTitle": "Social",
-          "socialDescription": "Social Channel configuration",
-          "themesLabel": "Themes",
-          "themesTitle": "Themes",
-          "themesDescription": "Themes and UI Components",
           "filtrationLabel": "Filtration",
           "filtrationDescription": "Products filtration for Reaction"
         },
@@ -79,25 +35,14 @@
           "utilities": "Utilities"
         },
         "settings": {
+          "accountSettingsLabel": "Login Services",
+          "accountSettingsTitle": "Login Services",
+          "accountSettingsDescription": "Authentication through social providers",
           "saveSuccess": "Settings updated.",
           "saveFailed": "Failed to update settings.",
-          "accountSettingsLabel": "Account Settings",
           "addShopMemberLabel": "Add Shop Member",
           "permissionsSettingsLabel": "Permissions",
-          "localizationAndI18NLabel": "Localization and i18n",
-          "searchSettingsLabel": "Search Settings",
-          "shopSettingsLabel": "Shop Settings",
-          "smsSettingsLabel": "SMS settings",
-          "socialSettingsLabel": "Social Settings",
-          "shippingSettingsLabel": "Shipping Settings",
-          "inventorySettingsLabel": "Inventory Settings",
-          "analyticsSettingsLabel": "Analytics Settings",
-          "reactionConnectLabel": "Reaction Connect",
-          "productSettingsLabel": "Product Settings",
-          "productDetailsLabel": "Product Details",
-          "productRevisionsLabel": "Product Revisions",
-          "emailSettingsLabel": "Email Settings",
-          "catalogSettingsLabel": "Catalog Settings"
+          "localizationAndI18NLabel": "Localization and i18n"
         },
         "userAccountDropdown": {
           "profileLabel": "Profile"
@@ -484,6 +429,7 @@
         "shipmentEmpty": "This shipment has no items",
         "shipmentPacked": "All Items Packed",
         "shipped": "Shipped",
+        "delivered": "Delivered",
         "shippingNotifyCustomer": "Notify the customer that their items will be shipping soon.",
         "resendNotification": "Resend Shipment Notification"
       },
@@ -756,9 +702,6 @@
           "orderTotal": "Total"
         }
       },
-      "shippo": {
-        "connectedAndSaved": "Settings saved! Shippo API is now enabled."
-      },
       "accountsUI": {
         "members": "Members",
         "manage": "Manage",
@@ -821,16 +764,6 @@
           "passwordResetSend": "Email with password reset link has been sent.",
           "invitationSent": "Invitation Sent",
           "sendInvitation": "Send invitation"
-        },
-        "reactionUI": {
-          "editTheme": "Edit Theme",
-          "duplicateTheme": "Duplicate Theme",
-          "duplicateThemeError": "Couldn't duplicate theme",
-          "publishThemeError": "`Couldn't publish theme {{themeName}}",
-          "components": {
-            "navbar": "Navigation Bar",
-            "button": "Button"
-          }
         },
         "error": {
           "emailRequired": "Email is required.",
