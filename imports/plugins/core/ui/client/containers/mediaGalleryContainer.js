@@ -51,8 +51,9 @@ function uploadHandler(files) {
 }
 
 class MediaGalleryContainer extends Component {
+  // Load first image as featuredImage
   state = {
-    featuredMedia: undefined
+    featuredMedia: this.props.media[0]
   }
 
   handleDrop = (files) => {
