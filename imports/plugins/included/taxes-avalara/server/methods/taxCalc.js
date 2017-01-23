@@ -144,7 +144,7 @@ function cartToSalesOrder(cart) {
   if (cart.items) {
     lineItems = cart.items.map((item, index) => {
       return {
-        number: index.toString() + 1,
+        number: _.toString(index + 1),
         quantity: item.quantity,
         amount: item.variants.price * item.quantity,
         description: item.title
@@ -220,7 +220,7 @@ function orderToSalesInvoice(order) {
   const currencyCode = company.currency;
   const lineItems = order.items.map((item, index) => {
     return {
-      number: index.toString() + 1,
+      number: _.toString(index + 1),
       quantity: item.quantity,
       amount: item.variants.price * item.quantity,
       description: item.title
@@ -291,18 +291,45 @@ taxCalc.reportRefund = function (order, refundAmount, callback) {
   check(refundAmount, Number);
   check(callback, Function);
   const company = Shops.findOne(Reaction.getShopId());
+  const companyShipping = _.filter(company.addressBook, (o) => o.isShippingDefault)[0];
   const currencyCode = company.currency;
   const companyCode = taxCalc.getCompanyCode();
   const auth = getAuthData();
   const baseUrl = getUrl();
   const requestUrl = `${baseUrl}/transactions/create`;
   const returnAmount = refundAmount * -1;
+  const  lineItems = {
+    number: "01",
+    quantity: 1,
+    amount: returnAmount,
+    description: "refund"
+  };
   const returnInvoice = {
     companyCode: companyCode,
     type: "ReturnInvoice",
-    customerCode: order.userId,
+    code: order.cartId,
+    customerCode: order._id,
     taxDate: moment.utc(order.createdAt),
-    currencyCode: currencyCode
+    date: moment(),
+    currencyCode: currencyCode,
+    addresses: {
+      ShipFrom: {
+        line1: companyShipping.address1,
+        line2: companyShipping.address2,
+        city: companyShipping.city,
+        region: companyShipping.region,
+        country: companyShipping.country,
+        postalCode: companyShipping.postal
+      },
+      ShipTo: {
+        line1: order.shipping[0].address.address1,
+        line2: order.shipping[0].address.address2 || "",
+        city: order.shipping[0].address.city,
+        region: order.shipping[0].address.region,
+        country: order.shipping[0].address.country || "US"
+      }
+    },
+    lines: [lineItems]
   };
 
   if (callback) {
