@@ -1,0 +1,13 @@
+[{
+  "i18n": "en",
+  "ns": "reaction-shipping-rates",
+  "translation": {
+    "reaction-shipping-rates": {
+      "admin": {
+        "shippingSettings": {
+          "flatRateLabel": "Flat Rate"
+        }
+      }
+    }
+  }
+}]

@@ -4,7 +4,7 @@ import { Template } from "meteor/templating";
 import { Blaze } from "meteor/blaze";
 import { AutoForm } from "meteor/aldeed:autoform";
 import { Reaction, i18next } from "/client/api";
-import { Packages, Shipping } from "/lib/collections";
+import { Shipping } from "/lib/collections";
 
 /*
  * Template shipping Helpers
@@ -15,34 +15,6 @@ Template.shippingDashboardControls.events({
       label: i18next.t("shipping.addShippingProvider"),
       template: "addShippingProvider"
     });
-  }
-});
-
-Template.shippingSettings.onCreated(function () {
-  // don't show unless we have services
-  Reaction.hideActionView();
-  this.autorun(() => {
-    this.subscribe("Shipping");
-  });
-});
-
-Template.shippingSettings.helpers({
-  packageData() {
-    return Packages.findOne({
-      name: "reaction-shipping"
-    });
-  },
-  shipping() {
-    const instance = Template.instance();
-    if (instance.subscriptionsReady()) {
-      return Shipping.find({
-        shopId: Reaction.getShopId()
-      });
-    }
-    return [];
-  },
-  selectedShippingProvider() {
-    return Session.equals("selectedShippingProvider", true);
   }
 });
 
@@ -69,21 +41,6 @@ Template.shippingProviderTable.helpers({
   }
 });
 
-/*
- * Template Shipping Events
- */
-
-Template.shipping.events({
-  "click"() {
-    return Alerts.removeSeen();
-  },
-  "click [data-action=addShippingProvider]"() {
-    Reaction.setActionViewDetail({
-      label: i18next.t("shipping.addShippingProvider"),
-      template: "addShippingProvider"
-    });
-  }
-});
 
 /*
  *  template editShippingMethod helpers

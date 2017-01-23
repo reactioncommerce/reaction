@@ -27,8 +27,9 @@ Reaction.registerPackage({
   }, {
     label: "Shippo",
     icon: "fa fa-plane",
+    name: "shipping/settings/shippo",
     route: "/dashboard/shippo",
-    provides: "settings",
+    provides: "shippingSettings",
     container: "connection",
     template: "shippoSettings"
   }

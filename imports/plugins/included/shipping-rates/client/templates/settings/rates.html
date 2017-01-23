@@ -1,0 +1,21 @@
+
+<template name="shippingRates">
+  <div class="container-fluid-sm">
+    <div class="shipping-rate-tables">
+      {{> shippingProviderTable}}
+    </div>
+    <span id="shipping-alerts">
+      {{> inlineAlerts placement="shippingPackage"}}
+    </span>
+  </div>
+
+</template>
+
+<template name="shippingRatesSettings">
+  <div class="panel">
+    <div class="panel-heading">
+      <div class="panel-title" data-i18n="shipping.noSettingsForThisView">No settings for this view</div>
+    </div>
+  </div>
+
+</template>
