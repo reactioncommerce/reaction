@@ -1,0 +1,18 @@
+[{
+  "i18n": "hr",
+  "ns": "reaction-revisions",
+  "translation": {
+    "reaction-revisions": {
+      "admin": {
+        "dashboard": {
+          "revisionsLabel": "Izmjene",
+          "revisionsTitle": "Izmjene",
+          "revisionsDescription": "kontrola Revizija"
+        },
+        "settings": {
+          "productRevisionsLabel": "Izmjene proizvoda"
+        }
+      }
+    }
+  }
+}]

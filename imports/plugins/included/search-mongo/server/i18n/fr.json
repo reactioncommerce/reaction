@@ -1,0 +1,18 @@
+[{
+  "i18n": "fr",
+  "ns": "reaction-search",
+  "translation": {
+    "reaction-search": {
+      "admin": {
+        "dashboard": {
+          "searchLabel": "Recherche",
+          "searchTitle": "Recherche",
+          "searchDescription": "Recherche de produit"
+        },
+        "settings": {
+          "searchSettingsLabel": "Paramètres de recherche"
+        }
+      }
+    }
+  }
+}]

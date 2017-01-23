@@ -7,65 +7,21 @@
       "languages": {
         "select": "Selecionar idioma"
       },
+      "currencies": {
+        "select": "Escolha Moeda"
+      },
       "admin": {
         "shortcut": {
-          "dashboardLabel": "Painel de controlo",
-          "ordersLabel": "Encomendas",
           "addProductLabel": "Adicionar produto",
           "accountsLabel": "Contas"
         },
         "dashboard": {
-          "accountsLabel": "Contas",
-          "accountsTitle": "Contas",
-          "accountsDescription": "Gerir permissões do membro",
-          "analyticsLabel": "Análise",
-          "analyticsTitle": "Análise",
-          "analyticsDescription": "Integrações de análise e de monitorização",
-          "shippingLabel": "Envio",
-          "shippingTitle": "Envio",
-          "shippingDescription": "Fornecer taxas de envio",
-          "catalogLabel": "Catálogo",
-          "catalogTitle": "Catálogo",
-          "catalogDescription": "Catálogo de produtos",
-          "coreLabel": "Definições",
-          "coreTitle": "Painel de controlo",
-          "coreDescription": "Configuração da plataforma Reaction",
-          "emailLabel": "Email",
-          "emailTitle": "Email",
-          "emailDescription": "Definições do email",
           "i18NLabel": "i18n",
           "i18NTitle": "i18n",
           "i18NDescription": "Serviços de internacionalização",
-          "inventoryLabel": "Inventário",
-          "inventoryTitle": "Inventário",
-          "inventoryDescription": "Utilitários de inventário",
-          "layoutLabel": "Esquema",
-          "layoutTitle": "Esquema",
-          "layoutDescription": "Serviços de de esquema",
-          "connectLabel": "Conectar",
-          "connectTitle": "Conectar",
-          "connectDescription": "Conectar a plataforma Reaction como um serviço implementado",
-          "ordersLabel": "Encomendas",
-          "smsLabel": "SMS",
-          "smsTitle": "SMS",
-          "smsDescription": "Notificações",
-          "ordersTitle": "Encomendas",
-          "ordersDescription": "Concluir as suas encomendas",
-          "revisionsLabel": "Revisões",
-          "revisionsTitle": "Revisões",
-          "revisionsDescription": "Controlo de revisão",
           "routingLabel": "Encaminhamento",
           "routingTitle": "Encaminhamento",
           "routingDescription": "Serviços de encaminhamento",
-          "searchLabel": "Procurar",
-          "searchTitle": "Procurar",
-          "searchDescription": "Pesquisa de produtos",
-          "socialLabel": "Redes sociais",
-          "socialTitle": "Redes sociais",
-          "socialDescription": "Configuração dos canais sociais",
-          "themesLabel": "Temas",
-          "themesTitle": "Temas",
-          "themesDescription": "Temas e componentes da IU",
           "filtrationLabel": "Filtragem",
           "filtrationDescription": "Filtragem de produtos para a plataforma Reaction"
         },
@@ -79,25 +35,14 @@
           "utilities": "Utilitários"
         },
         "settings": {
+          "accountSettingsLabel": "Definições da conta",
+          "accountSettingsTitle": "Serviços de login",
+          "accountSettingsDescription": "Autenticação por meio de provedores sociais",
           "saveSuccess": "Configurações atualizadas.",
           "saveFailed": "Falha ao atualizar as configurações.",
-          "accountSettingsLabel": "Definições da conta",
           "addShopMemberLabel": "Adicionar membro da loja",
           "permissionsSettingsLabel": "Permissões",
-          "localizationAndI18NLabel": "Localização e i18n",
-          "searchSettingsLabel": "Definições de pesquisa",
-          "shopSettingsLabel": "Definições da loja",
-          "smsSettingsLabel": "definições de SMS",
-          "socialSettingsLabel": "Definições das redes sociais",
-          "shippingSettingsLabel": "Definições de envio",
-          "inventorySettingsLabel": "Definições do inventário",
-          "analyticsSettingsLabel": "Definições analíticas",
-          "reactionConnectLabel": "Reaction Connect",
-          "productSettingsLabel": "Definições do produto",
-          "productDetailsLabel": "Detalhes do produto",
-          "productRevisionsLabel": "As revisões de produtos",
-          "emailSettingsLabel": "Configurações de e-mail",
-          "catalogSettingsLabel": "Configurações do catálogo"
+          "localizationAndI18NLabel": "Localização e i18n"
         },
         "userAccountDropdown": {
           "profileLabel": "Perfil"
@@ -475,11 +420,16 @@
         "notShipped": "Ainda não enviado",
         "noTracking": "Sem monitorização",
         "tracking": "Monitorização",
+        "printLabels": "Etiquetas de impressão",
+        "printShippingLabel": "Remessa",
+        "printCustomsLabel": "Costumes",
+        "carrier": "Portador",
         "addTracking": "Adicionar monitorização",
         "itemsHaveBeenShipped": "Os itens foram enviados",
         "shipmentEmpty": "Esta remessa não tem itens",
         "shipmentPacked": "Todos os itens guardados",
         "shipped": "Enviado",
+        "delivered": "entregue",
         "shippingNotifyCustomer": "Notifique o cliente de que os respetivos itens serão enviados em breve.",
         "resendNotification": "Reenviar notificação de envio"
       },
@@ -814,16 +764,6 @@
           "passwordResetSend": "Foi enviado um email com uma ligação para repor a palavra-passe.",
           "invitationSent": "Convite enviado",
           "sendInvitation": "Enviar convite"
-        },
-        "reactionUI": {
-          "editTheme": "Editar tema",
-          "duplicateTheme": "Duplicar o tema",
-          "duplicateThemeError": "Não foi possível duplicar o tema",
-          "publishThemeError": "`Não foi possível publicar o tema {{themeName}}",
-          "components": {
-            "navbar": "Barra de navegação",
-            "button": "Botão"
-          }
         },
         "error": {
           "emailRequired": "O email é obrigatório.",

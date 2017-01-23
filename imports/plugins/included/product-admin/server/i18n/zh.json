@@ -1,0 +1,14 @@
+[{
+  "i18n": "zh",
+  "ns": "reaction-product-admin",
+  "translation": {
+    "reaction-product-admin": {
+      "admin": {
+        "settings": {
+          "productSettingsLabel": "产品设置",
+          "productDetailsLabel": "产品详情"
+        }
+      }
+    }
+  }
+}]

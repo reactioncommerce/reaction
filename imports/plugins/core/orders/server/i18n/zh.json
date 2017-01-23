@@ -1,0 +1,18 @@
+[{
+  "i18n": "zh",
+  "ns": "reaction-orders",
+  "translation": {
+    "reaction-orders": {
+      "admin": {
+        "shortcut": {
+          "ordersLabel": "命令"
+        },
+        "dashboard": {
+          "ordersLabel": "命令",
+          "ordersTitle": "命令",
+          "ordersDescription": "完成订单"
+        }
+      }
+    }
+  }
+}]

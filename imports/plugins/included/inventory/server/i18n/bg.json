@@ -1,0 +1,18 @@
+[{
+  "i18n": "bg",
+  "ns": "reaction-inventory",
+  "translation": {
+    "reaction-inventory": {
+      "admin": {
+        "dashboard": {
+          "inventoryLabel": "Складова наличност",
+          "inventoryTitle": "Складова наличност",
+          "inventoryDescription": "Опис комунални услуги"
+        },
+        "settings": {
+          "inventorySettingsLabel": "Опис Settings"
+        }
+      }
+    }
+  }
+}]

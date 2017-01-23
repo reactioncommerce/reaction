@@ -24,6 +24,7 @@ Reaction.registerPackage({
     },
     {
       label: "Template Settings",
+      icon: "fa fa-columns",
       name: "templates/settings",
       provides: "settings",
       template: "templateSettings"

@@ -1,0 +1,25 @@
+[{
+  "i18n": "zh",
+  "ns": "reaction-ui",
+  "translation": {
+    "reaction-catalog": {
+      "admin": {
+        "dashboard": {
+          "themesLabel": "主题",
+          "themesTitle": "主题",
+          "themesDescription": "主题和UI组件"
+        }
+      },
+      "reactionUI": {
+        "editTheme": "编辑主题",
+        "duplicateTheme": "重复的主题",
+        "duplicateThemeError": "无法复制主题",
+        "publishThemeError": "`无法发布主题{{themeName}}",
+        "components": {
+          "navbar": "导航栏",
+          "button": "按键"
+        }
+      }
+    }
+  }
+}]

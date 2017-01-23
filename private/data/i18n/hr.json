@@ -7,65 +7,21 @@
       "languages": {
         "select": "Odaberite jezik"
       },
+      "currencies": {
+        "select": "Odaberi valuta"
+      },
       "admin": {
         "shortcut": {
-          "dashboardLabel": "kontrolna ploča",
-          "ordersLabel": "Narudžbe",
           "addProductLabel": "Dodaj proizvod",
           "accountsLabel": "Računi"
         },
         "dashboard": {
-          "accountsLabel": "Računi",
-          "accountsTitle": "Računi",
-          "accountsDescription": "Upravljanje dozvolama članova",
-          "analyticsLabel": "Analitika",
-          "analyticsTitle": "Analitika",
-          "analyticsDescription": "Za analizu i praćenje integracije",
-          "shippingLabel": "dostava",
-          "shippingTitle": "dostava",
-          "shippingDescription": "Osigurati cijene dostave",
-          "catalogLabel": "Katalog",
-          "catalogTitle": "Katalog",
-          "catalogDescription": "Katalog proizvoda",
-          "coreLabel": "Postavke",
-          "coreTitle": "kontrolna ploča",
-          "coreDescription": "konfiguracija reakcije",
-          "emailLabel": "E-mail",
-          "emailTitle": "E-mail",
-          "emailDescription": "postavke e-pošte",
           "i18NLabel": "i18n",
           "i18NTitle": "i18n",
           "i18NDescription": "Internacionalizacija komunalije",
-          "inventoryLabel": "Inventar",
-          "inventoryTitle": "Inventar",
-          "inventoryDescription": "Inventar komunalije",
-          "layoutLabel": "raspored",
-          "layoutTitle": "raspored",
-          "layoutDescription": "izgled komunalije",
-          "connectLabel": "Spojiti",
-          "connectTitle": "Spojiti",
-          "connectDescription": "Povezivanje reakcija kao razmještene usluge",
-          "ordersLabel": "Narudžbe",
-          "smsLabel": "SMS",
-          "smsTitle": "SMS",
-          "smsDescription": "Obavijesti",
-          "ordersTitle": "Narudžbe",
-          "ordersDescription": "Ispuniti Vaše narudžbe",
-          "revisionsLabel": "Izmjene",
-          "revisionsTitle": "Izmjene",
-          "revisionsDescription": "kontrola Revizija",
           "routingLabel": "usmjeravanje",
           "routingTitle": "usmjeravanje",
           "routingDescription": "Routing komunalije",
-          "searchLabel": "Pretraživanje",
-          "searchTitle": "Pretraživanje",
-          "searchDescription": "pretraživanje proizvoda",
-          "socialLabel": "socijalno",
-          "socialTitle": "socijalno",
-          "socialDescription": "Konfiguracija Socijalna kanala",
-          "themesLabel": "Teme",
-          "themesTitle": "Teme",
-          "themesDescription": "Teme i UI komponente",
           "filtrationLabel": "filtracija",
           "filtrationDescription": "Proizvodi za filtraciju za reakciju"
         },
@@ -79,25 +35,14 @@
           "utilities": "komunalne usluge"
         },
         "settings": {
+          "accountSettingsLabel": "Postavke računa",
+          "accountSettingsTitle": "usluge Prijava",
+          "accountSettingsDescription": "Provjera autentičnosti putem društvenih pružatelja",
           "saveSuccess": "Postavke ažurirane.",
           "saveFailed": "Ažuriranje postavki nije uspjelo.",
-          "accountSettingsLabel": "Postavke računa",
           "addShopMemberLabel": "Dodaj Shop član",
           "permissionsSettingsLabel": "Dopuštenja",
-          "localizationAndI18NLabel": "Lokalizacija i i18n",
-          "searchSettingsLabel": "Postavke za pretraživanje",
-          "shopSettingsLabel": "Postavke Shop",
-          "smsSettingsLabel": "SMS postavke",
-          "socialSettingsLabel": "Postavke društvenih mreža",
-          "shippingSettingsLabel": "Postavke Dostava",
-          "inventorySettingsLabel": "Postavke oglasnog prostora",
-          "analyticsSettingsLabel": "Postavke Analytics",
-          "reactionConnectLabel": "reakcija Connect",
-          "productSettingsLabel": "Postavke proizvoda",
-          "productDetailsLabel": "detalji o proizvodu",
-          "productRevisionsLabel": "Izmjene proizvoda",
-          "emailSettingsLabel": "Postavke e-pošte",
-          "catalogSettingsLabel": "Postavke Katalog"
+          "localizationAndI18NLabel": "Lokalizacija i i18n"
         },
         "userAccountDropdown": {
           "profileLabel": "Profil"
@@ -475,11 +420,16 @@
         "notShipped": "Nije još poslano",
         "noTracking": "Bez praćenje",
         "tracking": "Praćenje",
+        "printLabels": "Ispis naljepnica",
+        "printShippingLabel": "dostava",
+        "printCustomsLabel": "carina",
+        "carrier": "Prijevoznik",
         "addTracking": "Dodaj praćenje",
         "itemsHaveBeenShipped": "Predmeti su otpremljena",
         "shipmentEmpty": "Ova je pošiljka nema artikala",
         "shipmentPacked": "Sve stavke Prepuna",
         "shipped": "isporučen",
+        "delivered": "Isporučeno",
         "shippingNotifyCustomer": "Obavijestiti korisnika da su njihovi predmeti će se transportno uskoro.",
         "resendNotification": "Ponovno slanje pošiljke obavijesti"
       },
@@ -814,16 +764,6 @@
           "passwordResetSend": "E-mail s linkom za poništavanje lozinke je poslana.",
           "invitationSent": "Pozivnica je poslana",
           "sendInvitation": "Pošalji pozivnicu"
-        },
-        "reactionUI": {
-          "editTheme": "Uredi Tema",
-          "duplicateTheme": "Dvostruki Tema",
-          "duplicateThemeError": "Ne može se udvostručiti temu",
-          "publishThemeError": "'Ne može se objaviti temu {{themeName}}",
-          "components": {
-            "navbar": "Nalazite se ovdje",
-            "button": "Dugme"
-          }
         },
         "error": {
           "emailRequired": "Email adresa je obavezna.",

@@ -1,0 +1,25 @@
+[{
+  "i18n": "my",
+  "ns": "reaction-ui",
+  "translation": {
+    "reaction-catalog": {
+      "admin": {
+        "dashboard": {
+          "themesLabel": "themes",
+          "themesTitle": "themes",
+          "themesDescription": "themes နှင့် UI ကို Components"
+        }
+      },
+      "reactionUI": {
+        "editTheme": "Edit ကိုအဓိကအကြောင်းအရာ",
+        "duplicateTheme": "အဓိကအကြောင်းအရာ Duplicate",
+        "duplicateThemeError": "ဆောင်ပုဒ်ပွားလို့မရပါ",
+        "publishThemeError": "`ဆောင်ပုဒ်ထုတ်ဝေရန်လို့မရပါ {{themeName}}",
+        "components": {
+          "navbar": "navigation ဘား",
+          "button": "ကြယ်သီး"
+        }
+      }
+    }
+  }
+}]

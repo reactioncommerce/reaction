@@ -58,6 +58,7 @@ cfs:gridfs
 cfs:standard-packages
 cfs:storage-adapter
 cfs:ui
+dispatch:run-as-user
 jeremy:stripe
 jparker:gravatar
 juliancwirko:s-alert
@@ -95,3 +96,4 @@ johanbrook:publication-collector
 
 
 # Custom Packages
+gadicc:blaze-react-component

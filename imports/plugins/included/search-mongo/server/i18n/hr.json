@@ -1,0 +1,18 @@
+[{
+  "i18n": "hr",
+  "ns": "reaction-search",
+  "translation": {
+    "reaction-search": {
+      "admin": {
+        "dashboard": {
+          "searchLabel": "Pretraživanje",
+          "searchTitle": "Pretraživanje",
+          "searchDescription": "pretraživanje proizvoda"
+        },
+        "settings": {
+          "searchSettingsLabel": "Postavke za pretraživanje"
+        }
+      }
+    }
+  }
+}]

@@ -1,0 +1,18 @@
+[{
+  "i18n": "ru",
+  "ns": "reaction-orders",
+  "translation": {
+    "reaction-orders": {
+      "admin": {
+        "shortcut": {
+          "ordersLabel": "заказы"
+        },
+        "dashboard": {
+          "ordersLabel": "заказы",
+          "ordersTitle": "заказы",
+          "ordersDescription": "Исполни ваши заказы"
+        }
+      }
+    }
+  }
+}]

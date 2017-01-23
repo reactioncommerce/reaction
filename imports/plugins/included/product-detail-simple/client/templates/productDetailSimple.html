@@ -9,3 +9,12 @@
     {{> productDetail }}
   {{/if}}
 </template>
+
+<template name="productDetailSimpleToolbar">
+  {{#if isEnabled}}
+    {{!-- Use new product detail page --}}
+    <div>
+      {{> React component=ToolbarComponent}}
+    </div>
+  {{/if}}
+</template>

@@ -35,7 +35,7 @@ Reaction.registerPackage({
       layoutHeader: "layoutHeader",
       layoutFooter: "",
       notFound: "productNotFound",
-      dashboardHeader: "",
+      dashboardHeader: "productDetailSimpleToolbar",
       dashboardControls: "productDetailDashboardControls",
       dashboardHeaderControls: "",
       adminControlsFooter: "adminControlsFooter"

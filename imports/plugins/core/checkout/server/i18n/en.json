@@ -1,0 +1,13 @@
+[{
+  "i18n": "en",
+  "ns": "reaction-checkout",
+  "translation": {
+    "reaction-checkout": {
+      "admin": {
+        "shortcut": {},
+        "dashboard": {},
+        "settings": {}
+      }
+    }
+  }
+}]

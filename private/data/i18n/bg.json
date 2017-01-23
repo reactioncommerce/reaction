@@ -7,65 +7,21 @@
       "languages": {
         "select": "Избери език"
       },
+      "currencies": {
+        "select": "Изберете Валута"
+      },
       "admin": {
         "shortcut": {
-          "dashboardLabel": "Табло",
-          "ordersLabel": "Поръчки",
           "addProductLabel": "Добави продукта",
           "accountsLabel": "Профили"
         },
         "dashboard": {
-          "accountsLabel": "Профили",
-          "accountsTitle": "Профили",
-          "accountsDescription": "Управление на разрешенията на потребителя",
-          "analyticsLabel": "анализ",
-          "analyticsTitle": "анализ",
-          "analyticsDescription": "Анализ и проследяването на интеграции",
-          "shippingLabel": "Доставка",
-          "shippingTitle": "Доставка",
-          "shippingDescription": "Осигуряване на тарифите за доставка",
-          "catalogLabel": "каталог",
-          "catalogTitle": "каталог",
-          "catalogDescription": "Продуктов каталог",
-          "coreLabel": "Настройки",
-          "coreTitle": "Табло",
-          "coreDescription": "реакция конфигурация",
-          "emailLabel": "електронна поща",
-          "emailTitle": "електронна поща",
-          "emailDescription": "настройки по имейл",
           "i18NLabel": "i18n",
           "i18NTitle": "i18n",
           "i18NDescription": "Интернационализация комунални услуги",
-          "inventoryLabel": "Складова наличност",
-          "inventoryTitle": "Складова наличност",
-          "inventoryDescription": "Опис комунални услуги",
-          "layoutLabel": "оформление",
-          "layoutTitle": "оформление",
-          "layoutDescription": "Разпределение комунални услуги",
-          "connectLabel": "Свържете",
-          "connectTitle": "Свържете",
-          "connectDescription": "Свържете Реакция като разгърнати услуга",
-          "ordersLabel": "Поръчки",
-          "smsLabel": "СМС",
-          "smsTitle": "СМС",
-          "smsDescription": "Известия",
-          "ordersTitle": "Поръчки",
-          "ordersDescription": "Изпълним вашите поръчки",
-          "revisionsLabel": "ревизии",
-          "revisionsTitle": "ревизии",
-          "revisionsDescription": "контрол на контрол",
           "routingLabel": "Routing",
           "routingTitle": "Routing",
           "routingDescription": "маршрутизиране комунални услуги",
-          "searchLabel": "Търсене",
-          "searchTitle": "Търсене",
-          "searchDescription": "Търсене на продукт",
-          "socialLabel": "социален",
-          "socialTitle": "социален",
-          "socialDescription": "конфигурация социален Канал",
-          "themesLabel": "Теми",
-          "themesTitle": "Теми",
-          "themesDescription": "Теми и UI компоненти",
           "filtrationLabel": "филтриране",
           "filtrationDescription": "Продукти филтрация за реакция"
         },
@@ -79,25 +35,14 @@
           "utilities": "комунални услуги"
         },
         "settings": {
+          "accountSettingsLabel": "Настройки на профила",
+          "accountSettingsTitle": "Вход за Услуги",
+          "accountSettingsDescription": "Удостоверяване чрез социални доставчици",
           "saveSuccess": "Настройки актуализирани.",
           "saveFailed": "Неуспешно актуализиране на настройките.",
-          "accountSettingsLabel": "Настройки на профила",
           "addShopMemberLabel": "Добави Shop държава",
           "permissionsSettingsLabel": "Permissions",
-          "localizationAndI18NLabel": "Локализация и i18n",
-          "searchSettingsLabel": "Настройки за търсенето",
-          "shopSettingsLabel": "Настройки магазин",
-          "smsSettingsLabel": "настройки на SMS",
-          "socialSettingsLabel": "социални Settings",
-          "shippingSettingsLabel": "Настройки за доставка",
-          "inventorySettingsLabel": "Опис Settings",
-          "analyticsSettingsLabel": "Настройки на Google Анализ",
-          "reactionConnectLabel": "реакция Connect",
-          "productSettingsLabel": "Настройки за продукта",
-          "productDetailsLabel": "информация за продукта",
-          "productRevisionsLabel": "ревизии на продукта",
-          "emailSettingsLabel": "Email настройки",
-          "catalogSettingsLabel": "Каталог Settings"
+          "localizationAndI18NLabel": "Локализация и i18n"
         },
         "userAccountDropdown": {
           "profileLabel": "Профил"
@@ -475,11 +420,16 @@
         "notShipped": "Още не е изпратено",
         "noTracking": "Без проследяване",
         "tracking": "Проследяване",
+        "printLabels": "Печат на етикети",
+        "printShippingLabel": "Доставка",
+        "printCustomsLabel": "митница",
+        "carrier": "носител",
         "addTracking": "Добави за проследяване",
         "itemsHaveBeenShipped": "Предмети, са били изпратени",
         "shipmentEmpty": "В поръчката няма продукти",
         "shipmentPacked": "Всички продукти са опаковани",
         "shipped": "Изпратено",
+        "delivered": "Доставени",
         "shippingNotifyCustomer": "Съобщи на потребителя, че поръчката ще им бъде изпратена.",
         "resendNotification": "Изпрати съобщението за поръчката отново"
       },
@@ -814,16 +764,6 @@
           "passwordResetSend": "Имейл с линк за нулиране на паролата е изпратен.",
           "invitationSent": "Поканата е изпратена",
           "sendInvitation": "Изпрати покана"
-        },
-        "reactionUI": {
-          "editTheme": "Edit Theme",
-          "duplicateTheme": "Duplicate Theme",
-          "duplicateThemeError": "Не може да се дублира тема",
-          "publishThemeError": "`Не може да публикувате тема {{themeName}}",
-          "components": {
-            "navbar": "Navigation Bar",
-            "button": "бутон"
-          }
         },
         "error": {
           "emailRequired": " Изисква си имейл.",

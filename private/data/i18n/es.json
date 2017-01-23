@@ -7,65 +7,21 @@
       "languages": {
         "select": "Elegir idioma"
       },
+      "currencies": {
+        "select": "Seleccionar moneda"
+      },
       "admin": {
         "shortcut": {
-          "dashboardLabel": "Panel principal",
-          "ordersLabel": "Pedidos",
           "addProductLabel": "Añadir producto",
           "accountsLabel": "Cuentas"
         },
         "dashboard": {
-          "accountsLabel": "Cuentas",
-          "accountsTitle": "Cuentas",
-          "accountsDescription": "Gestionar los permisos de miembros",
-          "analyticsLabel": "Analytics",
-          "analyticsTitle": "Analytics",
-          "analyticsDescription": "Analytics e integración de herramientas de rastreo",
-          "shippingLabel": "Envío",
-          "shippingTitle": "Envío",
-          "shippingDescription": "Aprobar tarifas de envío",
-          "catalogLabel": "Catálogo",
-          "catalogTitle": "Catálogo",
-          "catalogDescription": "Catálogo de producto",
-          "coreLabel": "Opciones",
-          "coreTitle": "Panel principal",
-          "coreDescription": "Configuración de reacción",
-          "emailLabel": "Correo electrónico",
-          "emailTitle": "Correo electrónico",
-          "emailDescription": "Ajustes de correo electrónico",
           "i18NLabel": "L10n",
           "i18NTitle": " L10n",
           "i18NDescription": "Herramientas de internacionalización",
-          "inventoryLabel": "Inventario",
-          "inventoryTitle": "Inventario",
-          "inventoryDescription": "Herramientas de inventario",
-          "layoutLabel": "Diseño",
-          "layoutTitle": "Diseño",
-          "layoutDescription": "Herramientas de diseño",
-          "connectLabel": "Conectar",
-          "connectTitle": "Conectar",
-          "connectDescription": "Conectar reacción como un servicio desplegado",
-          "ordersLabel": "Pedidos",
-          "smsLabel": "SMS",
-          "smsTitle": "SMS",
-          "smsDescription": "Notificaciones",
-          "ordersTitle": "Pedidos",
-          "ordersDescription": "Despachar tus pedidos",
-          "revisionsLabel": "Revisiones",
-          "revisionsTitle": "Revisiones",
-          "revisionsDescription": "Control de revisiones",
           "routingLabel": "Ruta",
           "routingTitle": "Ruta",
           "routingDescription": "Herramientas de ruta",
-          "searchLabel": "Buscar",
-          "searchTitle": "Buscar",
-          "searchDescription": "Búsqueda de producto",
-          "socialLabel": "Social",
-          "socialTitle": "Social",
-          "socialDescription": "Configuración de redes sociales",
-          "themesLabel": "Temas",
-          "themesTitle": "Temas",
-          "themesDescription": "Temas y componentes de la IU",
           "filtrationLabel": "Filtración",
           "filtrationDescription": "Filtro de productos para reacción"
         },
@@ -79,25 +35,14 @@
           "utilities": "Herramientas"
         },
         "settings": {
+          "accountSettingsLabel": "Opciones de cuenta",
+          "accountSettingsTitle": "Iniciar sesión Servicios",
+          "accountSettingsDescription": "De autenticación a través de proveedores sociales",
           "saveSuccess": "Ajustes actualizan.",
           "saveFailed": "Error al actualizar la configuración.",
-          "accountSettingsLabel": "Opciones de cuenta",
           "addShopMemberLabel": "Añadir miembro de la tienda",
           "permissionsSettingsLabel": "Permisos",
-          "localizationAndI18NLabel": "Localización y L10n",
-          "searchSettingsLabel": "Configuración de búsqueda",
-          "shopSettingsLabel": "Opciones de tienda",
-          "smsSettingsLabel": "Configuración de SMS",
-          "socialSettingsLabel": "Opciones de redes sociales",
-          "shippingSettingsLabel": "Opciones de envío",
-          "inventorySettingsLabel": "Opciones de inventario",
-          "analyticsSettingsLabel": "Opciones de Analytics",
-          "reactionConnectLabel": "Conectar reacción",
-          "productSettingsLabel": "Opciones del producto",
-          "productDetailsLabel": "Detalles del producto",
-          "productRevisionsLabel": "Las revisiones del producto",
-          "emailSettingsLabel": "Ajustes del correo electrónico",
-          "catalogSettingsLabel": "Ajustes de catálogo"
+          "localizationAndI18NLabel": "Localización y L10n"
         },
         "userAccountDropdown": {
           "profileLabel": "Perfil"
@@ -475,11 +420,16 @@
         "notShipped": "No se ha enviado todavía",
         "noTracking": "Sin seguimiento",
         "tracking": "Seguimiento",
+        "printLabels": "Imprimir etiquetas",
+        "printShippingLabel": "Envío",
+        "printCustomsLabel": "aduana",
+        "carrier": "Carrier",
         "addTracking": "Añadir seguimiento",
         "itemsHaveBeenShipped": "Se han enviado los artículos",
         "shipmentEmpty": "Este envío no incluye ningún artículo",
         "shipmentPacked": "Todos los productos empaquetados",
         "shipped": "Enviado",
+        "delivered": "Entregado",
         "shippingNotifyCustomer": "Notificar al cliente que se le enviarán sus productos pronto.",
         "resendNotification": "Reenviar aviso de envío"
       },
@@ -814,16 +764,6 @@
           "passwordResetSend": "Se ha enviado un correo electrónico con enlace para restablecer la contraseña.",
           "invitationSent": "Invitación enviada",
           "sendInvitation": "Enviar invitación"
-        },
-        "reactionUI": {
-          "editTheme": "Editar tema",
-          "duplicateTheme": "Duplicar tema",
-          "duplicateThemeError": "No se pudo duplicar el tema",
-          "publishThemeError": "`No se ha podido publicar el tema {{themeName}}",
-          "components": {
-            "navbar": "Barra de navegación",
-            "button": "Botón"
-          }
         },
         "error": {
           "emailRequired": "Se necesita una dirección de correo electrónico.",

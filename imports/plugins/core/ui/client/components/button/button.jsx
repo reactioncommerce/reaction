@@ -37,7 +37,16 @@ class Button extends Component {
       event.preventDefault();
     }
 
-    if (this.props.onClick) {
+    // If this is a toogle button, and has a onToggle callback function
+    if (this.props.toggle && this.props.onToggle) {
+      if (this.props.toggleOn) {
+        // If toggleOn is true, return the toggleOn value, or true
+        this.props.onToggle(event, this.props.onValue || true);
+      } else {
+        // Otherwise return the value prop, or false
+        this.props.onToggle(event, this.props.value || false)
+      }
+    } else if (this.props.onClick) {
       this.props.onClick(event, this.props.value);
     }
   }

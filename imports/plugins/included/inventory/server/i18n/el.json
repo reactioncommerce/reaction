@@ -1,0 +1,18 @@
+[{
+  "i18n": "el",
+  "ns": "reaction-inventory",
+  "translation": {
+    "reaction-inventory": {
+      "admin": {
+        "dashboard": {
+          "inventoryLabel": "Καταγραφή εμπορευμάτων",
+          "inventoryTitle": "Καταγραφή εμπορευμάτων",
+          "inventoryDescription": "επιχειρήσεις κοινής ωφέλειας απογραφή"
+        },
+        "settings": {
+          "inventorySettingsLabel": "Ρυθμίσεις απογραφή"
+        }
+      }
+    }
+  }
+}]

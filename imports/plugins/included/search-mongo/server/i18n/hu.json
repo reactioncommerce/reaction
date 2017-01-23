@@ -1,0 +1,18 @@
+[{
+  "i18n": "hu",
+  "ns": "reaction-search",
+  "translation": {
+    "reaction-search": {
+      "admin": {
+        "dashboard": {
+          "searchLabel": "Keresés",
+          "searchTitle": "Keresés",
+          "searchDescription": "termék keresés"
+        },
+        "settings": {
+          "searchSettingsLabel": "Keresési beállítások"
+        }
+      }
+    }
+  }
+}]

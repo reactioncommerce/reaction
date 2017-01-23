@@ -1,0 +1,18 @@
+[{
+  "i18n": "en",
+  "ns": "reaction-connect",
+  "translation": {
+    "reaction-connect": {
+      "admin": {
+        "dashboard": {
+          "connectLabel": "Connect",
+          "connectTitle": "Connect",
+          "connectDescription": "Connect Reaction as a deployed service"
+        },
+        "settings": {
+          "reactionConnectLabel": "Reaction Connect"
+        }
+      }
+    }
+  }
+}]

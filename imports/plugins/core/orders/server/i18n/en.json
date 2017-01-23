@@ -1,0 +1,18 @@
+[{
+  "i18n": "en",
+  "ns": "reaction-orders",
+  "translation": {
+    "reaction-orders": {
+      "admin": {
+        "shortcut": {
+          "ordersLabel": "Orders"
+        },
+        "dashboard": {
+          "ordersLabel": "Orders",
+          "ordersTitle": "Orders",
+          "ordersDescription": "Fulfill your orders"
+        }
+      }
+    }
+  }
+}]

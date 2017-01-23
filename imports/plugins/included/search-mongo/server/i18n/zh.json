@@ -1,0 +1,18 @@
+[{
+  "i18n": "zh",
+  "ns": "reaction-search",
+  "translation": {
+    "reaction-search": {
+      "admin": {
+        "dashboard": {
+          "searchLabel": "搜索",
+          "searchTitle": "搜索",
+          "searchDescription": "产品搜索"
+        },
+        "settings": {
+          "searchSettingsLabel": "搜索设置"
+        }
+      }
+    }
+  }
+}]

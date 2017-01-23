@@ -6,7 +6,7 @@
     "reaction-templates": {
       "admin": {
         "settings": {
-          "templateSettingsLabel": "Template Settings"
+          "templateSettingsLabel": "Template"
         }
       },
       "templateGrid": {

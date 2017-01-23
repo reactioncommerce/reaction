@@ -1,0 +1,13 @@
+[{
+  "i18n": "bg",
+  "ns": "product-detail-simple",
+  "translation": {
+    "product-detail-simple": {
+      "admin": {
+        "settings": {
+          "productDetailsLabel": "информация за продукта"
+        }
+      }
+    }
+  }
+}]

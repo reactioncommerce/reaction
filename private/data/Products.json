@@ -31,7 +31,13 @@
   "updatedAt": {
     "$date": "2014-06-01T12:17:13.949-0700"
   },
-  "vendor": "Example Manufacturer"
+  "vendor": "Example Manufacturer",
+  "parcel": {
+    "length": 10,
+    "width": 5,
+    "height": 3,
+    "weight": 20
+  }
 }, {
   "_id": "6qiqPwBkeJdtdQc4G",
   "ancestors": [

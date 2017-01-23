@@ -1,0 +1,13 @@
+[{
+  "i18n": "en",
+  "ns": "reaction-default-theme",
+  "translation": {
+    "reaction-default-theme": {
+      "admin": {
+        "shortcut": {},
+        "dashboard": {},
+        "settings": {}
+      }
+    }
+  }
+}]

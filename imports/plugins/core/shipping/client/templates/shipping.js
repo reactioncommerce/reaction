@@ -11,7 +11,7 @@ import { Packages, Shipping } from "/lib/collections";
  */
 Template.shippingDashboardControls.events({
   "click [data-event-action=addShippingProvider]": function () {
-    Reaction.showActionView({
+    Reaction.setActionViewDetail({
       label: i18next.t("shipping.addShippingProvider"),
       template: "addShippingProvider"
     });
@@ -60,6 +60,12 @@ Template.shippingProviderTable.helpers({
         shopId: Reaction.getShopId()
       });
     }
+  },
+  isShippoProvider() {
+    if (this.provider.shippoProvider) {
+      return true;
+    }
+    return false;
   }
 });
 
@@ -72,7 +78,7 @@ Template.shipping.events({
     return Alerts.removeSeen();
   },
   "click [data-action=addShippingProvider]"() {
-    Reaction.showActionView({
+    Reaction.setActionViewDetail({
       label: i18next.t("shipping.addShippingProvider"),
       template: "addShippingProvider"
     });
@@ -134,6 +140,15 @@ Template.editShippingProvider.events({
   }
 });
 
+Template.editShippingProvider.helpers({
+  isShippoProvider() {
+    if (this.provider.shippoProvider) {
+      return true;
+    }
+    return false;
+  }
+});
+
 /*
  * template addShippingProvider events
  */
@@ -189,7 +204,7 @@ Template.shippingProviderTable.events({
   "click [data-event-action=editShippingMethod]"(event) {
     event.preventDefault();
 
-    Reaction.showActionView({
+    Reaction.setActionViewDetail({
       label: i18next.t("shipping.editShippingMethod"),
       data: this,
       template: "editShippingMethod"
@@ -201,7 +216,7 @@ Template.shippingProviderTable.events({
   "click [data-event-action=editShippingProvider]"(event) {
     event.preventDefault();
 
-    Reaction.showActionView({
+    Reaction.setActionViewDetail({
       label: i18next.t("shipping.editShippingProvider"),
       data: this,
       template: "editShippingProvider"
@@ -227,7 +242,7 @@ Template.shippingProviderTable.events({
   "click [data-event-action=addShippingMethod]"(event) {
     event.preventDefault();
 
-    Reaction.showActionView({
+    Reaction.setActionViewDetail({
       label: i18next.t("shipping.addShippingMethod"),
       template: "addShippingMethod"
     });
