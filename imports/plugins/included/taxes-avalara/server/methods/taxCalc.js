@@ -18,20 +18,26 @@ taxCalc.getPackageData = function () {
 
 // Private methods
 
+/**
+ * @summary Get the root URL for REST calls
+ * @returns {String} Base url
+ */
 function getUrl() {
   const packageData = taxCalc.getPackageData();
   const { productionMode } = packageData.settings.avalara;
   let baseUrl;
   if (!productionMode) {
     baseUrl = "https://sandbox-rest.avatax.com/api/v2/";
-  }
-  else {
+  } else {
     baseUrl = "https://rest.avatax.com";
   }
   return baseUrl;
 }
 
-
+/**
+ * @summary Get the auth info to authenticate to REST API
+ * @returns {String} Username/Password string
+ */
 function getAuthData() {
   const packageData = taxCalc.getPackageData();
   const { username, password } = packageData.settings.avalara;
@@ -46,7 +52,11 @@ function getAuthData() {
 
 // API Methods
 
-
+/**
+ * @summary Calculate the taxable subtotal for a cart
+ * @param {Cart} cart - Cart to calculate subtotal for
+ * @returns {Number} Taxable subtotal
+ */
 taxCalc.calcTaxable = function (cart) {
   let subTotal = 0;
   for (const item of cart.items) {
@@ -269,7 +279,7 @@ taxCalc.recordOrder = function (order, callback) {
     const salesOrder = orderToSalesInvoice(order);
     const auth = getAuthData();
     const baseUrl = getUrl();
-    const requestUrl = `${baseUrl}/transactions/creaaate`;
+    const requestUrl = `${baseUrl}/transactions/create`;
 
     try {
       HTTP.post(requestUrl, { data: salesOrder, auth: auth }, (err, result) => {
@@ -287,6 +297,13 @@ taxCalc.recordOrder = function (order, callback) {
   }
 };
 
+/**
+ * @summary Report refund to Avalara
+ * @param {Order} order - The original order the refund was against
+ * @param {Number} refundAmount - Amount to be refunded
+ * @param {Function} callback - Callback
+ * @returns {Object} Results from transaction call
+ */
 taxCalc.reportRefund = function (order, refundAmount, callback) {
   check(refundAmount, Number);
   check(callback, Function);
