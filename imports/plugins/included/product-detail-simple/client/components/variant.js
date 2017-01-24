@@ -21,11 +21,29 @@ class Variant extends Component {
       inventoryPolicy
     } = this.props.variant;
 
+    // If variant is sold out, show Sold Out badge
     if (inventoryManagement && this.props.soldOut) {
       if (inventoryPolicy) {
         return (
-          <span className="variant-qty-sold-out badge badge-warning">
+          <span className="variant-qty-sold-out badge badge-danger">
             <Translation defaultValue="Sold Out!" i18nKey="productDetail.soldOut" />
+          </span>
+        );
+      }
+
+      return (
+        <span className="variant-qty-sold-out badge badge-info">
+          <Translation defaultValue="Backorder" i18nKey="productDetail.backOrder" />
+        </span>
+      );
+    }
+
+    // If Warning Threshold is met, show Limited Supply Badge
+    if (inventoryManagement && this.props.variant.lowInventoryWarningThreshold >= this.props.variant.inventoryTotal) {
+      if (inventoryPolicy) {
+        return (
+          <span className="variant-qty-sold-out badge badge-warning">
+            <Translation defaultValue="Limited Supply" i18nKey="productDetail.limitedSupply" />
           </span>
         );
       }
