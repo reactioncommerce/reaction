@@ -164,7 +164,7 @@ EditContainer.propTypes = {
 
 function composer(props, onData) {
   let hasPermission;
-  const viewAs = Meteor.user().profile.preferences["reaction-dashboard"].viewAs;
+  const viewAs = Meteor.user().profile.preferences["reaction-dashboard"].viewAs || "administrator";
 
   if (props.disabled === true || viewAs === "customer") {
     hasPermission = false;
