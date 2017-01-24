@@ -29,12 +29,12 @@ const handleAddProduct = () => {
 };
 
 const handleViewContextChange = (event, value) => {
-  Reaction.Router.setQueryParams({ as: value });
+  Reaction.setUserPreferences("reaction-dashboard", "viewAs", value);
 };
 
 function composer(props, onData) {
   // Reactive data sources
-  const viewAs = Reaction.Router.getQueryParam("as");
+  const viewAs = Reaction.getUserPreferences("reaction-dashboard", "viewAs", "administrator");
   const routeName = Reaction.Router.getRouteName();
 
   // Standard variables
