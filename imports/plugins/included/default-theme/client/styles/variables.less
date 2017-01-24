@@ -32,17 +32,21 @@
 // Brand
 @brand-primary-color: @reaction-brand;
 @brand-secondary-color: #ff00ff; //lighten(@brand-primary-color, 20); // old @brand-secondary-color: #4aa5bd;
-@brand-accent-color: #ffff00; //lighten(@brand-primary-color, 37); // old @brand-accent-color: #abe2e7;
-@brand-vivid-color: #00ff00; //lighten(@brand-primary-color, 20); // old @brand-vivid-color: #00dcdd;
+@brand-accent-color: #94E8D1; //lighten(@brand-primary-color, 37); // old @brand-accent-color: #abe2e7;
+@brand-vivid-color: #1AEFCC; //lighten(@brand-primary-color, 20); // old @brand-vivid-color: #00dcdd;
 
 @brand-light-highlight: @black02;
 @brand-light-color: #e3e3e3;
 @brand-dark-color: #414141;
 
-@brand-success-color:         #5cb85c;
+@brand-success-color:         @reaction-brand;
 @brand-info-color:            #5bc0de;
-@brand-warning-color:         #f0ad4e;
-@brand-danger-color:          #d9534f;
+@brand-warning-color:         #EFC95F;
+@brand-danger-color:          #EB4D5C;
+
+@btn-edit-color: @gray-darker;
+
+.toolbar-group .rui.button.flat { color: @reaction-brand }
 
 //== Bootstrap colors
 //
@@ -54,6 +58,7 @@
 @gray:                   lighten(@gray-base, 33.5%); // #555
 @gray-light:             lighten(@gray-base, 46.7%); // #777
 @gray-lighter:           lighten(@gray-base, 93.5%); // #eee
+@gray-lightest:          lighten(@gray-base, 96%); // #f6f6f6
 
 @brand-primary:         @black60;
 @brand-success:         @brand-success-color;
@@ -61,6 +66,21 @@
 @brand-warning:         @brand-warning-color;
 @brand-danger:          @brand-danger-color;
 
+@state-success-text:             #3c763d;
+@state-success-bg:               @gray-lighter;
+@state-success-border:           darken(spin(@state-success-bg, -10), 5%);
+
+@state-info-text:                #31708f;
+@state-info-bg:                  #d9edf7;
+@state-info-border:              darken(spin(@state-info-bg, -10), 7%);
+
+@state-warning-text:             #8a6d3b;
+@state-warning-bg:               #fcf8e3;
+@state-warning-border:           darken(spin(@state-warning-bg, -10), 5%);
+
+@state-danger-text:              #a94442;
+@state-danger-bg:                #f2dede;
+@state-danger-border:            darken(spin(@state-danger-bg, -10), 5%);
 
 //== Scaffolding
 //
@@ -154,7 +174,7 @@
 
 
 // == Buttons
-@btn-edit-color: @text-color;
+@btn-info-edit-color: @text-color;
 @btn-edit-bg: @black20;
 @btn-active-color: darken(@brand-accent-color, 50%);
 @btn-active-bg: @brand-accent-color;
@@ -194,8 +214,8 @@
 //== Cart Drawer
 @cart-drawer-bg: @white;
 @cart-drawer-height: 275px;
-@cart-icon-bg: @brand-success;
-@cart-icon-badge:  @brand-success;
+@cart-icon-bg: #23566d;
+@cart-icon-badge:  #23566d;
 @cart-icon-badge-warning: @brand-warning;
 @cart-icon-text: @white;
 @cart-icon-color: @white;
