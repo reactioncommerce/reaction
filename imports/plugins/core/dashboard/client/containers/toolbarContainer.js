@@ -29,12 +29,21 @@ const handleAddProduct = () => {
 };
 
 const handleViewContextChange = (event, value) => {
-  Reaction.Router.setQueryParams({ as: value });
+  const viewAs = value;
+
+  // Save viewAs status to profile for consistant use across app
+  if (Meteor.user()) {
+    Meteor.users.update(Meteor.userId(), {
+      $set: {
+        "profile.preferences.reaction-dashboard.viewAs": viewAs
+      }
+    });
+  }
 };
 
 function composer(props, onData) {
   // Reactive data sources
-  const viewAs = Reaction.Router.getQueryParam("as");
+  const viewAs = Meteor.user().profile.preferences["reaction-dashboard"].viewAs || "administrator";
   const routeName = Reaction.Router.getRouteName();
 
   // Standard variables

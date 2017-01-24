@@ -17,7 +17,16 @@ const handleProductFieldChange = (productId, fieldName, value) => {
 };
 
 const handleViewContextChange = (event, value) => {
-  Reaction.Router.setQueryParams({ as: value });
+  const viewAs = value;
+
+  // Save viewAs status to profile for consistant use across app
+  if (Meteor.user()) {
+    Meteor.users.update(Meteor.userId(), {
+      $set: {
+        "profile.preferences.reaction-dashboard.viewAs": viewAs
+      }
+    });
+  }
 };
 
 const handleDeleteProduct = (product) => {
@@ -28,7 +37,7 @@ function composer(props, onData) {
   const productId = Reaction.Router.getParam("handle");
   const variantId = Reaction.Router.getParam("variantId");
   const revisionType = Reaction.Router.getQueryParam("revision");
-  const viewProductAs = Reaction.Router.getQueryParam("as");
+  const viewProductAs = Meteor.user().profile.preferences["reaction-dashboard"].viewAs || "administrator";
 
   let productSub;
 

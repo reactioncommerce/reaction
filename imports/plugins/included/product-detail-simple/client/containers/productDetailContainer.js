@@ -185,7 +185,7 @@ function composer(props, onData) {
   const productId = Reaction.Router.getParam("handle");
   const variantId = Reaction.Router.getParam("variantId");
   const revisionType = Reaction.Router.getQueryParam("revision");
-  const viewProductAs = Reaction.Router.getQueryParam("as");
+  const viewProductAs = Meteor.user().profile.preferences["reaction-dashboard"].viewAs;
 
   let productSub;
 
