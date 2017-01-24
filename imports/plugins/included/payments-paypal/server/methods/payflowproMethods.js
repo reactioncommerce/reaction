@@ -28,7 +28,7 @@ export function paymentSubmit(transactionType, cardData, paymentData) {
 
   try {
     const refundResult = PayflowproApi.apiCall.paymentSubmit(paymentSubmitDetails);
-    Logger.info(refundResult);
+    Logger.debug(refundResult);
     result = refundResult;
   } catch (error) {
     Logger.error(error);
@@ -61,7 +61,7 @@ export function paymentCapture(paymentMethod) {
 
   try {
     const refundResult = PayflowproApi.apiCall.captureCharge(paymentCaptureDetails);
-    Logger.info(refundResult);
+    Logger.debug(refundResult);
     result = refundResult;
   } catch (error) {
     Logger.error(error);
@@ -96,7 +96,7 @@ export function createRefund(paymentMethod, amount) {
 
   try {
     const refundResult = PayflowproApi.apiCall.createRefund(refundDetails);
-    Logger.info(refundResult);
+    Logger.debug(refundResult);
     result = refundResult;
   } catch (error) {
     Logger.error(error);
@@ -129,7 +129,7 @@ export function listRefunds(paymentMethod) {
 
   try {
     const refundResult = PayflowproApi.apiCall.listRefunds(refundListDetails);
-    Logger.info(refundResult);
+    Logger.debug(refundResult);
     result = refundResult;
   } catch (error) {
     Logger.error(error);

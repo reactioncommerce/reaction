@@ -74,7 +74,7 @@ Meteor.methods({
 
     delete settings.password;
 
-    Logger.info(settings, "Email settings updated");
+    Logger.debug(settings, "Email settings updated");
 
     return true;
   },

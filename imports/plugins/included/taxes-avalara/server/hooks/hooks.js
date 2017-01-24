@@ -84,7 +84,7 @@ MethodHooks.after("taxes/calculate", function (options) {
             processTaxes
           );
           // tax call made
-          Logger.info("Avalara triggered on taxes/calculate for cartId:", cartId);
+          Logger.debug("Avalara triggered on taxes/calculate for cartId:", cartId);
         }
       }
     }

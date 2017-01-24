@@ -139,7 +139,7 @@ function adjustInventory(product) {
           // we could add handling for the case when aren't enough "new" items
         }
       }
-      Logger.info(
+      Logger.debug(
         `adjust variant ${variant._id} from ${itemCount} to ${results}`
       );
     }

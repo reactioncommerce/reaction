@@ -10,7 +10,7 @@ import { RevisionApi } from "/imports/plugins/core/revisions/lib/api/revisions";
 Meteor.publish("Product", function (productId) {
   check(productId, Match.OptionalOrNull(String));
   if (!productId) {
-    Logger.info("ignoring null request on Product subscription");
+    Logger.debug("ignoring null request on Product subscription");
     return this.ready();
   }
   let _id;

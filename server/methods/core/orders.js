@@ -476,7 +476,7 @@ export const methods = {
         }
       };
 
-      Logger.info(`orders/sendNotification status: ${order.workflow.status}`);
+      Logger.debug(`orders/sendNotification status: ${order.workflow.status}`);
 
 
       // handle missing root shop email
