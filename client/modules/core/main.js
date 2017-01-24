@@ -249,6 +249,11 @@ export default {
     return Session.equals("admin/showActionView", true);
   },
 
+  isActionViewDetailOpen() {
+    return Session.equals("admin/showActionViewDetail", true);
+  },
+
+
   setActionView(viewData) {
     if (viewData) {
       Session.set("admin/actionView", [viewData]);
@@ -302,10 +307,15 @@ export default {
 
     Session.set("admin/actionView", actionViewStack);
 
-    this.setActionViewDetail({});
+    this.setActionViewDetail({}, { open: false });
   },
 
-  setActionViewDetail(viewData) {
+  setActionViewDetail(viewData, options = {}) {
+    const { open } = options;
+
+    Session.set("admin/showActionView", true);
+    Session.set("admin/showActionViewDetail", typeof open === "boolean" ? open : true);
+
     if (viewData) {
       Session.set("admin/detailView", [viewData]);
     }
@@ -313,6 +323,7 @@ export default {
 
   pushActionViewDetail(viewData) {
     Session.set("admin/showActionView", true);
+    Session.set("admin/showActionViewDetail", true);
 
     const detailViewStack = Session.get("admin/detailView");
 
@@ -327,6 +338,16 @@ export default {
     detailViewStack.pop();
 
     Session.set("admin/detailView", detailViewStack);
+  },
+
+  isActionViewDetailAtRootView() {
+    const actionViewDetailStack = Session.get("admin/detailView");
+
+    if (Array.isArray(actionViewDetailStack) && actionViewDetailStack.length === 1) {
+      return true;
+    }
+
+    return false;
   },
 
   getActionView() {
@@ -354,11 +375,23 @@ export default {
     this.clearActionView();
   },
 
+  hideActionViewDetail() {
+    Session.set("admin/showActionViewDetail", false);
+    this.clearActionViewDetail();
+  },
+
   clearActionView() {
     Session.set("admin/actionView", [{
       label: "",
       i18nKeyLabel: ""
     }]);
+    Session.set("admin/detailView", [{
+      label: "",
+      i18nKeyLabel: ""
+    }]);
+  },
+
+  clearActionViewDetail() {
     Session.set("admin/detailView", [{
       label: "",
       i18nKeyLabel: ""

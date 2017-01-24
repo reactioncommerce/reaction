@@ -30,9 +30,9 @@ class OrderActions extends Component {
 
   renderAction() {
     if (Array.isArray(this.props.filters)) {
-      return this.props.filters.map((filter) => {
+      return this.props.filters.map((filter, index) => {
         return (
-          <div style={styles.item} onClick={this.props.onActionClick.bind(this, filter)}>
+          <div key={index} style={styles.item} onClick={this.props.onActionClick.bind(this, filter)}>
             <div style={styles.stat}>
               <strong style={styles.title}>{filter.count}</strong>
               <span>{filter.label}</span>

@@ -24,11 +24,14 @@ const getStyles = (props) => {
 
   return {
     base: {
-      display: "flex",
-      flexDirection: "column",
-      height: "100vh",
-      position: "relative",
-      width: viewSize
+      "display": "flex",
+      "flexDirection": "row",
+      "height": "100vh",
+      "position": "relative",
+      "width": viewSize,
+      "@media only screen and (max-width: 949px)": {
+        width: "100vw"
+      }
     },
     header: {
       display: "flex",
@@ -48,19 +51,36 @@ const getStyles = (props) => {
     },
     body: {
       display: "flex",
-      webkitOverflowScrolling: "touch"
+      WebkitOverflowScrolling: "touch"
+    },
+    masterViewPanel: {
+      flex: "1 1 auto",
+      // height: "100%"
     },
     masterView: {
       flex: "1 1 auto",
       height: "100%",
       overflow: "auto",
-      webkitOverflowScrolling: "touch"
+      WebkitOverflowScrolling: "touch"
+    },
+    detailViewPanel: {
+      flex: "1 1 auto",
+      width: "400px",
+      // height: "100%",
+      backgroundColor: "white",
+      borderRight: "1px solid #ccc",
+      "@media only screen and (max-width: 949px)": {
+        position: "absolute",
+        top: 0,
+        right: 0,
+        width: "96vw"
+      }
     },
     detailView: {
-      width: "400px",
       height: "100%",
       overflow: "auto",
-      webkitOverflowScrolling: "touch"
+      webkitOverflowScrolling: "touch",
+      backgroundColor: "#ccc"
     },
     title: {
       margin: 0,
@@ -144,6 +164,29 @@ class ActionView extends Component {
     }
   }
 
+  renderDetailViewBackButton() {
+    if (this.props.isDetailViewAtRootView === false) {
+      return (
+        <div style={this.styles.backButton}>
+          <div style={this.styles.backButtonContainers}>
+            <IconButton
+              icon="fa fa-arrow-left"
+              onClick={this.props.handleActionViewDetailBack}
+            />
+          </div>
+        </div>
+      );
+    } else {
+
+      return (
+        <IconButton
+          icon="fa fa-times"
+          onClick={this.props.handleActionViewDetailClose}
+        />
+      )
+    }
+  }
+
   get styles() {
     return getStyles(this.props);
   }
@@ -173,16 +216,11 @@ class ActionView extends Component {
     };
   }
 
-  render() {
+  renderMasterView() {
     const { actionView } = this.props;
-    const baseClassName = classnames({
-      "admin-controls": true,
-      "show-settings": this.props.actionViewIsOpen
-    });
-
 
     return (
-      <div style={this.styles.base} className={baseClassName}>
+      <div style={this.styles.masterViewPanel}>
         <div style={this.styles.header} className="admin-controls-heading--">
           <VelocityTransitionGroup
             enter={this.backButtonEnterAnimation}
@@ -216,8 +254,72 @@ class ActionView extends Component {
         <div style={this.styles.body} className="admin-controls-content action-view-body">
 
             {this.renderControlComponent()}
-            {this.renderDetailComponent()}
+
         </div>
+      </div>
+
+    )
+  }
+
+  renderDetailView() {
+    const { actionView } = this.props;
+
+    if (this.props.detailViewIsOpen) {
+      return (
+        <div style={this.styles.detailViewPanel}>
+          <div style={this.styles.header} className="admin-controls-heading--">
+            <VelocityTransitionGroup
+              enter={this.backButtonEnterAnimation}
+              leave={this.backButtonLeaveAnimaton}
+            >
+              {this.renderDetailViewBackButton()}
+            </VelocityTransitionGroup>
+
+            <div style={this.styles.heading} className="nav-settings-heading--">
+              <h3
+                className="nav-settings-title--"
+                style={[
+                  this.styles.title,
+                  !this.props.isDetailViewAtRootView ? this.styles.titleWithBackButton : {}
+                ]}
+              >
+                <Translation
+                  defaultValue={actionView.label}
+                  i18nKey={actionView.i18nKeyLabel}
+                />
+              </h3>
+            </div>
+
+            <div className="nav-settings-controls--">
+              {/* Controls */}
+            </div>
+          </div>
+          <div style={this.styles.body} className="admin-controls-content action-view-body">
+
+              {/*this.renderControlComponent() */}
+              {this.renderDetailComponent()}
+          </div>
+        </div>
+
+      )
+    }
+  }
+
+  render() {
+    const { actionView } = this.props;
+    const baseClassName = classnames({
+      "admin-controls": true,
+      "show-settings": this.props.actionViewIsOpen
+    });
+
+
+    return (
+      <div style={this.styles.base} className={baseClassName}>
+
+        {this.renderMasterView()}
+        {this.renderDetailView()}
+
+
         <div className="admin-controls-footer">
           <div className="admin-controls-container">
             {this.renderFooter()}
