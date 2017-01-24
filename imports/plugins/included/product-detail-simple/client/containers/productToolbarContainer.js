@@ -17,16 +17,7 @@ const handleProductFieldChange = (productId, fieldName, value) => {
 };
 
 const handleViewContextChange = (event, value) => {
-  const viewAs = value;
-
-  // Save viewAs status to profile for consistant use across app
-  if (Meteor.user()) {
-    Meteor.users.update(Meteor.userId(), {
-      $set: {
-        "profile.preferences.reaction-dashboard.viewAs": viewAs
-      }
-    });
-  }
+  Reaction.setUserPreferences("reaction-dashboard", "viewAs", value);
 };
 
 const handleDeleteProduct = (product) => {
