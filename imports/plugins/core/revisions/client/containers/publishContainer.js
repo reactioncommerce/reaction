@@ -97,7 +97,7 @@ PublishContainer.propTypes = {
 };
 
 function composer(props, onData) {
-  const viewAs = getUserPreferences("reaction-dashboard", "viewAs", "administrator");
+  const viewAs = Reaction.getUserPreferences("reaction-dashboard", "viewAs", "administrator");
 
   if (props.documentIds) {
     const subscription = Meteor.subscribe("Revisions", props.documentIds);

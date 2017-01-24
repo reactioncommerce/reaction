@@ -43,7 +43,7 @@ const handleViewContextChange = (event, value) => {
 
 function composer(props, onData) {
   // Reactive data sources
-  const viewAs = getUserPreferences("reaction-dashboard", "viewAs", "administrator");
+  const viewAs = Reaction.getUserPreferences("reaction-dashboard", "viewAs", "administrator");
   const routeName = Reaction.Router.getRouteName();
 
   // Standard variables

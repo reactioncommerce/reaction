@@ -194,7 +194,7 @@ function appendRevisionsToMedia(props, media) {
 function composer(props, onData) {
   let media;
   let editable;
-  const viewAs = getUserPreferences("reaction-dashboard", "viewAs", "administrator");
+  const viewAs = Reaction.getUserPreferences("reaction-dashboard", "viewAs", "administrator");
 
   if (!props.media) {
     // Fetch media based on props
