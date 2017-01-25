@@ -15,6 +15,7 @@ dependencies:
 
 test:
   override:
+    - reaction test unit
     - reaction test
     - .reaction/ci/build.sh
 
