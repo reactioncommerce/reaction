@@ -1,5 +1,5 @@
 import NodeGeocoder from "node-geocoder";
-
+import { Meteor } from "meteor/meteor";
 
 const options = {
   provider: "google"
@@ -43,3 +43,7 @@ geocoder.geocode = function (address, callback) {
 };
 
 export default geocoder;
+
+Meteor.methods({
+  "reaction/geocoder/geocode": geocoder.geocode
+});
