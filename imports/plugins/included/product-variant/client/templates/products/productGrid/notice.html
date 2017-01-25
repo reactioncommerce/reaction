@@ -1,13 +1,15 @@
 <template name="gridNotice">
-  {{#if isSoldOut}}
-    {{#if isBackorder}}
-      <span class="variant-qty-sold-out badge" data-i18n="productDetail.backOrder">Backorder</span>
+  <div class="product-grid-badges">
+    {{#if isSoldOut}}
+      {{#if isBackorder}}
+        <span class="variant-qty-sold-out badge" data-i18n="productDetail.backOrder">Backorder</span>
+      {{else}}
+        <span class="variant-qty-sold-out badge badge-danger" data-i18n="productDetail.soldOut">Sold Out!</span>
+      {{/if}}
     {{else}}
-      <span class="variant-qty-sold-out badge" data-i18n="productDetail.soldOut">Sold Out!</span>
+      {{#if isLowQuantity}}
+        <div class="badge badge-low-inv-warning" title="" data-i18n="productDetail.limitedSupply">Limited Supply</div>
+      {{/if}}
     {{/if}}
-  {{else}}
-    {{#if isLowQuantity}}
-      <div class="badge badge-low-inv-warning" title="" data-i18n="productDetail.limitedSupply">Limited Supply</div>
-    {{/if}}
-  {{/if}}
+  </div>
 </template>

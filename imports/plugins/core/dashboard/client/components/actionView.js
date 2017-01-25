@@ -65,7 +65,7 @@ const getStyles = (props) => {
     },
     detailViewPanel: {
       flex: "1 1 auto",
-      width: "400px",
+      maxWidth: "400px",
       // height: "100%",
       backgroundColor: "white",
       borderRight: "1px solid #ccc",

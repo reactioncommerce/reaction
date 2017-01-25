@@ -196,6 +196,25 @@ export default {
     return this.hasPermission(dashboardPermissions);
   },
 
+  getUserPreferences(packageName, preference, defaultValue) {
+    const profile = Meteor.user().profile;
+    if (profile && profile.preferences && profile.preferences[packageName] && profile.preferences[packageName][preference]) {
+      return profile.preferences[packageName][preference];
+    }
+    return defaultValue || undefined;
+  },
+
+  setUserPreferences(packageName, preference, value) {
+    if (Meteor.user()) {
+      return Meteor.users.update(Meteor.userId(), {
+        $set: {
+          [`profile.preferences.${packageName}.${preference}`]: value
+        }
+      });
+    }
+    return false;
+  },
+
   getShopId() {
     return this.shopId;
   },

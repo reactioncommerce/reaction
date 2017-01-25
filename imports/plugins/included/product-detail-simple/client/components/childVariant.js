@@ -22,6 +22,32 @@ class ChildVariant extends Component {
     return null;
   }
 
+  renderInventoryStatus() {
+    const {
+      inventoryManagement,
+      inventoryPolicy
+    } = this.props.variant;
+
+    // If childVariant is sold out, show Sold Out badge
+    if (inventoryManagement && this.props.variant.inventoryQuantity <= 0) {
+      if (inventoryPolicy) {
+        return (
+          <span className="variant-qty-sold-out badge badge-danger">
+            <Translation defaultValue="Sold Out!" i18nKey="productDetail.soldOut" />
+          </span>
+        );
+      }
+
+      return (
+        <span className="variant-qty-sold-out badge badge-info">
+          <Translation defaultValue="Backorder" i18nKey="productDetail.backOrder" />
+        </span>
+      );
+    }
+
+    return null;
+  }
+
   renderDeletionStatus() {
     if (this.props.variant.isDeleted) {
       return (
@@ -68,6 +94,7 @@ class ChildVariant extends Component {
 
         <div className="variant-controls">
           {this.renderDeletionStatus()}
+          {this.renderInventoryStatus()}
           {this.props.visibilityButton}
           {this.props.editButton}
         </div>
@@ -81,6 +108,7 @@ ChildVariant.propTypes = {
   isSelected: PropTypes.bool,
   media: PropTypes.arrayOf(PropTypes.object),
   onClick: PropTypes.func,
+  soldOut: PropTypes.bool,
   variant: PropTypes.object,
   visibilityButton: PropTypes.node
 };
