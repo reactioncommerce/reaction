@@ -13,13 +13,13 @@ class PackageList extends Component {
   state = {}
 
   isExpanded(cardName) {
-    return this.state[`card_${cardName}`] && this.state[`card_${cardName}`].isExpanded || true;
+    return this.state[`card_${cardName}`] && this.state[`card_${cardName}`].isExpanded
   }
 
   handleCardExpand(cardName) {
     let isExpanded;
 
-    if (typeof this.state[`card_${cardName}`] && this.state[`card_${cardName}`].isExpanded !== "boolean") {
+    if (typeof this.state[`card_${cardName}`] === "undefined") {
       isExpanded = true;
     } else {
       isExpanded = !this.state[`card_${cardName}`].isExpanded;

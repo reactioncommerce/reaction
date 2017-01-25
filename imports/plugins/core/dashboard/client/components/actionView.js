@@ -3,6 +3,7 @@ import classnames from "classnames";
 import Blaze from "meteor/gadicc:blaze-react-component";
 import {
   IconButton,
+  FlatButton,
   Translation
 } from "/imports/plugins/core/ui/client/components";
 import { Admin } from "/imports/plugins/core/ui/client/providers";
@@ -14,7 +15,8 @@ import { VelocityTransitionGroup } from "velocity-react";
 const getStyles = (props) => {
   let viewSize = 400;
   // if (props.actionView && props.actionView.priority === 1 && props.actionView.provides === "dashboard") {
-  if (props.actionView && props.actionView.provides === "dashboard") {
+  const isBigView = props.actionView && props.actionView.provides === "dashboard";
+  if (isBigView) {
     viewSize = "90vw";
   }
 
@@ -31,7 +33,28 @@ const getStyles = (props) => {
       "width": viewSize,
       "@media only screen and (max-width: 949px)": {
         width: "100vw"
-      }
+      },
+      boxShadow: isBigView ? "0 0 40px rgba(0,0,0,.1)" : "",
+      flex: "0 0 auto",
+      backgroundColor: "white",
+      borderLeft: "1px solid @black10",
+
+      overflow: "hidden",
+      transition: "width 300ms cubic-bezier(0.455, 0.03, 0.515, 0.955))",
+      // boxShadow: "0 0 40px rgba(0,0,0,.1)",
+      zIndex: 100,
+
+      // @media screen and (max-width: @screen-xs-max) {
+      //   transition: top 400ms cubic-bezier(0.645, 0.045, 0.355, 1);
+      //
+      //   position: absolute;
+      //   width: 100vw;
+      //   height: 100vh;
+      //   top: 100vh;
+      //   left: 0;
+      //   z-index: @zindex-modal;
+      //   box-shadow: none;
+      // }
     },
     header: {
       display: "flex",
@@ -54,19 +77,23 @@ const getStyles = (props) => {
       WebkitOverflowScrolling: "touch"
     },
     masterViewPanel: {
+      display: "flex",
+      flexDirection: "column",
       flex: "1 1 auto",
       // height: "100%"
     },
     masterView: {
       flex: "1 1 auto",
-      height: "100%",
+      // height: "100%",
       overflow: "auto",
-      WebkitOverflowScrolling: "touch"
+      // WebkitOverflowScrolling: "touch"
     },
     detailViewPanel: {
+      display: "flex",
+      flexDirection: "column",
       flex: "1 1 auto",
       maxWidth: "400px",
-      // height: "100%",
+      height: "100vh",
       backgroundColor: "white",
       borderRight: "1px solid #ccc",
       "@media only screen and (max-width: 949px)": {
@@ -77,9 +104,9 @@ const getStyles = (props) => {
       }
     },
     detailView: {
-      height: "100%",
+      flex: "1 1 auto",
       overflow: "auto",
-      webkitOverflowScrolling: "touch",
+      // webkitOverflowScrolling: "touch",
       backgroundColor: "#ccc"
     },
     title: {
@@ -221,7 +248,7 @@ class ActionView extends Component {
 
     return (
       <div style={this.styles.masterViewPanel}>
-        <div style={this.styles.header} className="admin-controls-heading--">
+        <div style={this.styles.header} className="header">
           <VelocityTransitionGroup
             enter={this.backButtonEnterAnimation}
             leave={this.backButtonLeaveAnimaton}
@@ -264,10 +291,17 @@ class ActionView extends Component {
   renderDetailView() {
     const { actionView } = this.props;
 
+    const baseClassName = classnames({
+      "rui": true,
+      "admin": true,
+      "action-view-pane": true,
+      "action-view-detail": true
+    });
+
     if (this.props.detailViewIsOpen) {
       return (
-        <div style={this.styles.detailViewPanel}>
-          <div style={this.styles.header} className="admin-controls-heading--">
+        <div className={baseClassName} style={this.styles.detailViewPanel}>
+          <div style={this.styles.header} className="header">
             <VelocityTransitionGroup
               enter={this.backButtonEnterAnimation}
               leave={this.backButtonLeaveAnimaton}
@@ -308,8 +342,11 @@ class ActionView extends Component {
   render() {
     const { actionView } = this.props;
     const baseClassName = classnames({
-      "admin-controls": true,
-      "show-settings": this.props.actionViewIsOpen
+      "rui": true,
+      "admin": true,
+      "action-view-pane": true,
+      "action-view": true
+      // "show-settings": this.props.actionViewIsOpen
     });
 
 
