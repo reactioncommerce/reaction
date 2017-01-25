@@ -40,23 +40,6 @@ Template.gridControls.helpers({
     };
   },
 
-  VisibilityButton() {
-    const instance = Template.instance();
-
-    return {
-      component: IconButton,
-      icon: "fa fa-eye-slash",
-      onIcon: "fa fa-eye",
-      toggle: true,
-      toggleOn: instance.data.product.isVisible,
-      onClick() {
-        if (instance.data.onPublishButtonClick) {
-          instance.data.onPublishButtonClick();
-        }
-      }
-    };
-  },
-
   checked: function () {
     return Template.instance().state.equals("isSelected", true);
   }
