@@ -35,15 +35,17 @@ Template.productGrid.onCreated(function () {
           return _.includes(selectedProducts, product._id);
         });
 
-        Reaction.showActionView({
-          label: "Grid Settings",
-          i18nKeyLabel: "gridSettingsPanel.title",
-          template: "productSettings",
-          type: "product",
-          data: {
-            products: filteredProducts
-          }
-        });
+        if (Reaction.isPreview() === false) {
+          Reaction.showActionView({
+            label: "Grid Settings",
+            i18nKeyLabel: "gridSettingsPanel.title",
+            template: "productSettings",
+            type: "product",
+            data: {
+              products: filteredProducts
+            }
+          });
+        }
       }
     }
   } else {
