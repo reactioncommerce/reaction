@@ -237,11 +237,10 @@ export default {
 
   isPreview() {
     const profile = Meteor.user().profile;
-    if (profile && profile.preferences && profile.preferences["reaction-dashboard"] && profile.preferences["reaction-dashboard"].viewAs) {
-      if (profile.preferences["reaction-dashboard"].viewAs === "customer") {
-        return true;
-      }
-      return false
+    const preferences = profile.preferences;
+    const reactionDashboard = preferences["reaction-dashboard"];
+    if (profile && preferences && reactionDashboard && reactionDashboard.viewAs && reactionDashboard.viewAs === "customer") {
+      return true;
     }
     return false;
   },
