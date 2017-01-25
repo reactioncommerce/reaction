@@ -87,7 +87,7 @@ export default function () {
           callback();
         } else {
           const success = "ProductSearch collection (re)built successfully.";
-          Logger.info(success);
+          Logger.debug(success);
           job.done(success, { repeatId: true });
           callback();
         }
@@ -108,7 +108,7 @@ export default function () {
           callback();
         } else {
           const success = "ProductSearch Index (re)built successfully.";
-          Logger.info(success);
+          Logger.debug(success);
           job.done(success, { repeatId: true });
           callback();
         }
@@ -129,7 +129,7 @@ export default function () {
           callback();
         } else {
           const success = "OrderSearch collection (re)built successfully.";
-          Logger.info(success);
+          Logger.debug(success);
           job.done(success, { repeatId: true });
           callback();
         }
@@ -150,7 +150,7 @@ export default function () {
           callback();
         } else {
           const success = "AccountSearch collection (re)built successfully.";
-          Logger.info(success);
+          Logger.debug(success);
           job.done(success, { repeatId: true });
           callback();
         }
