@@ -2,6 +2,14 @@
   &:focus {
     outline: none;
   }
+
+  &.disabled,
+  &[disabled],
+  fieldset[disabled] & {
+    cursor: @cursor-disabled;
+    .opacity(.65);
+    .box-shadow(none);
+  }
 }
 
 .rui.button > .contents {
@@ -12,7 +20,6 @@
   justify-content: center;
   align-items: center;
 }
-
 
 .rui.button.edit, .btn-edit {
   border: none;
@@ -29,24 +36,64 @@
   margin-left: 5px;
 }
 
-// .rui.button.edit.btn-default, .btn-edit.btn-default {
-//   background-color: @btn-default-bg;
-// }
+.rui.button.edit.btn-default, .btn-edit.btn-default {
+  background-color: @btn-edit-bg;
+
+  &.disabled,
+  &[disabled],
+  fieldset[disabled] & {
+    .opacity(.65);
+  }
+}
+
+.rui.button.edit.active, .btn-edit.active {
+  background-color: @btn-active-bg;
+
+  &.disabled,
+  &[disabled],
+  fieldset[disabled] & {
+    .opacity(.65);
+  }
+}
 
 .rui.button.edit.btn-success, .btn-edit.btn-success {
   background-color: @btn-success-bg;
+
+  &.disabled,
+  &[disabled],
+  fieldset[disabled] & {
+    .opacity(.65);
+  }
 }
 
 .rui.button.edit.btn-warning, .btn-edit.btn-warning {
   background-color: @btn-warning-bg;
+
+  &.disabled,
+  &[disabled],
+  fieldset[disabled] & {
+    .opacity(.65);
+  }
 }
 
 .rui.button.edit.btn-danger, .btn-edit.btn-danger {
   background-color: @btn-danger-bg;
+
+  &.disabled,
+  &[disabled],
+  fieldset[disabled] & {
+    .opacity(.65);
+  }
 }
 
 .rui.button.edit.btn-info, .btn-edit.btn-info {
   background-color: @btn-info-bg;
+
+  &.disabled,
+  &[disabled],
+  fieldset[disabled] & {
+    .opacity(.65);
+  }
 }
 
 .rui.button.edit > .icon,
@@ -79,6 +126,16 @@
   align-items: center;
   color: inherit;
   background-color: transparent;
+}
+
+.toolbar-group .rui.button.flat {
+  color: @reaction-brand;
+
+  &.disabled,
+  &[disabled],
+  fieldset[disabled] & {
+    color: desaturate(mix(@white,@btn-success-bg, 40%),30%);
+  }
 }
 
 .rui.button.icon, .btn-icon {
@@ -171,6 +228,14 @@
   border-radius: 0;
   font-weight: 600;
   text-transform: uppercase;
+
+  &.disabled,
+  &[disabled],
+  fieldset[disabled] & {
+    color: desaturate(mix(@white,@btn-success-bg, 40%),30%);
+    border: 3px solid desaturate(mix(@white,@btn-success-bg, 40%),30%);
+
+  }
 }
 
 // .rui.button .btn-default.btn-bordered
