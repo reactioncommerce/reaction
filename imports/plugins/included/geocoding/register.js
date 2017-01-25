@@ -6,7 +6,11 @@ Reaction.registerPackage({
   icon: "fa fa-globe",
   autoEnable: true,
   settings: {
-    name: "Geocoding"
+    geocoding: {
+      enabled: true
+    }
   },
-  registry: []
+  registry: [{
+    provides: "gocoding"
+  }]
 });
