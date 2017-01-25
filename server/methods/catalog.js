@@ -433,7 +433,7 @@ Meteor.methods({
     Products.insert(assembledVariant,
       (error, result) => {
         if (result) {
-          Logger.info(
+          Logger.debug(
             `products/createVariant: created variant: ${
               newVariantId} for ${parentId}`
           );
@@ -1067,7 +1067,7 @@ Meteor.methods({
         }
       }, (error, result) => {
         if (result) {
-          Logger.info(
+          Logger.debug(
             `Variant ${id} position was updated to index ${index}`
           );
         }
@@ -1216,7 +1216,7 @@ Meteor.methods({
       }
 
       // update product visibility
-      Logger.info("toggle product visibility ", product._id, !product.isVisible);
+      Logger.debug("toggle product visibility ", product._id, !product.isVisible);
 
       const res = Products.update(product._id, {
         $set: {

@@ -58,7 +58,7 @@ Meteor.methods({
       if (smsSettings) {
         const { apiKey, apiToken, smsPhone, smsProvider } = smsSettings;
         if (smsProvider === "twilio") {
-          Logger.info("choose twilio");
+          Logger.debug("choose twilio");
           const client = new Twilio(apiKey, apiToken);
 
           client.sendMessage({
