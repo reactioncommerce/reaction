@@ -39,12 +39,12 @@ const handleViewContextChange = (event, value) => {
     // hideActionView during isPreview === true
     Reaction.hideActionView();
   } else {
-    // Reload previous actionView, if saved. Otherwise, don't show.
-    const savedActionViewState = Reaction.getUserPreferences("reaction-dashboard", "savedActionViewState");
-
-    if (savedActionViewState) {
-      Reaction.showActionView(savedActionViewState);
-    }
+    // // Reload previous actionView, if saved. Otherwise, don't show.
+    // const savedActionViewState = Reaction.getUserPreferences("reaction-dashboard", "savedActionViewState");
+    //
+    // if (savedActionViewState) {
+    //   Reaction.showActionView(savedActionViewState);
+    // }
   }
 };
 
