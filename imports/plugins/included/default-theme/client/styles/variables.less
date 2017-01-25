@@ -49,10 +49,6 @@
 @brand-warning-color:         #EFC95F;
 @brand-danger-color:          #EB4D5C;
 
-@btn-edit-color: @gray-darker;
-
-.toolbar-group .rui.button.flat { color: @reaction-brand }
-
 //== Bootstrap colors
 //
 // All color variables from bootstraps variables.less file in one place for easy override.
@@ -182,9 +178,9 @@
 @line-height-large:         1.3333333; // extra decimals for Win 8.1 Chrome
 @line-height-small:         1.5;
 
-@border-radius-base:        4px;
-@border-radius-large:       6px;
-@border-radius-small:       3px;
+@border-radius-base:        2px;
+@border-radius-large:       4px;
+@border-radius-small:       1px;
 
 //** Global color for active items (e.g., navs or dropdowns).
 @component-active-color:    #fff;
@@ -249,6 +245,15 @@
 @btn-danger-border:              darken(@btn-danger-bg, 5%);
 
 @btn-link-disabled-color:        @gray-light;
+
+@btn-info-edit-color: @text-color;
+@btn-edit-color: @gray-darker;
+@btn-edit-bg: @black20;
+
+@btn-active-color: darken(@brand-accent-color, 50%);
+@btn-active-bg: @brand-accent-color;
+
+@btn-icon-size: 24px;
 
 // Allows for customizing button radius independently from global border radius
 @btn-border-radius-base:         @border-radius-base;
@@ -445,11 +450,11 @@
 @navbar-collapse-max-height:       340px;
 
 @navbar-default-color:             @white;
-@navbar-default-bg:                @black60;
+@navbar-default-bg:                @white;
 @navbar-default-border:            darken(@navbar-default-bg, 6.5%);
 
 // Navbar links
-@navbar-default-link-color:                @black05;
+@navbar-default-link-color:                @black;
 @navbar-default-link-hover-color:          #333;
 @navbar-default-link-hover-bg:             transparent;
 @navbar-default-link-active-color:         #555;
@@ -1018,14 +1023,6 @@
 // == Admin Controls Menu
 @admin-controls-menu-width: 65px;
 @admin-controls-menu-button-height: @admin-controls-menu-width;
-
-
-// == Buttons
-@btn-info-edit-color: @text-color;
-@btn-edit-bg: @black20;
-@btn-active-color: darken(@brand-accent-color, 50%);
-@btn-active-bg: @brand-accent-color;
-@btn-icon-size: 24px;
 
 
 // == Badge
