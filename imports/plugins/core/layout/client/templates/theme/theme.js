@@ -3,7 +3,6 @@ import { Tracker } from "meteor/tracker";
 import { Reaction, Router } from "/client/api";
 import { Packages, Shops } from "/lib/collections";
 
-
 /**
  * getRouteLayout
  * Gets layout combo based on current route context
