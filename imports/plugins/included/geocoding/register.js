@@ -11,6 +11,7 @@ Reaction.registerPackage({
     }
   },
   registry: [{
-    provides: "gocoding"
+    provides: "geocoding",
+    providerName: "reaction"
   }]
 });

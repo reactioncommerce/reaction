@@ -1,12 +1,36 @@
 import _ from "lodash";
 import moment from "moment";
 import path from "path";
-import * as Collections from "/lib/collections";
-// TODO: Change all imports from collections to only pull in needed?
-// import { Accounts, Cart, Media, Shops } from "/lib/collections";
+import { Accounts, Cart, Media, Shops, Packages } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 import { Logger, Reaction } from "/server/api";
 
+
+/**
+ * @summary Returns the name of the geocoder method to use
+ * @returns {string} Name of the Geocoder method to use
+ */
+function getGeocoder() {
+  const shopId = Reaction.getShopId();
+  const geoCoders = Packages.find({
+    "registry.provides": "geocoding",
+    shopId: shopId
+  }).fetch();
+
+  let geoCoder;
+  // Just one?, use that one
+  if (geoCoders.length === 1) {
+    geoCoder = geoCoders[0];
+  }
+  // If there are two, we default to the one that is not the Reaction one
+
+  if (geoCoders.length === 2) {
+    geoCoder = _.filter(geoCoders, function (coder) {
+      return coder.registry.providerName !== "reaction";
+    })[0];
+  }
+  return `${geoCoder.registry[0].providerName}/geocoder/geocode`;
+}
 
 /**
  * Reaction Account Methods
@@ -35,6 +59,10 @@ Meteor.methods({
   "accounts/addressBookAdd": function (address, accountUserId) {
     check(address, Schemas.Address);
     check(accountUserId, Match.Optional(String));
+    const geoCoder = getGeocoder();
+    Meteor.call(geoCoder, address, function (error, result) {
+      console.log("geoCodedAddress", result);
+    });
     // security, check for admin access. We don't need to check every user call
     // here because we are calling `Meteor.userId` from within this Method.
     if (typeof accountUserId === "string") { // if this will not be a String -
@@ -55,7 +83,7 @@ Meteor.methods({
     // if address got shippment or billing default, we need to update cart
     // addresses accordingly
     if (address.isShippingDefault || address.isBillingDefault) {
-      const cart = Collections.Cart.findOne({ userId: userId });
+      const cart = Cart.findOne({ userId: userId });
       // if cart exists
       // First amend the cart,
       if (typeof cart === "object") {
@@ -68,7 +96,7 @@ Meteor.methods({
       }
       // then change the address that has been affected
       if (address.isShippingDefault) {
-        Collections.Accounts.update({
+        Accounts.update({
           "userId": userId,
           "profile.addressBook.isShippingDefault": true
         }, {
@@ -78,7 +106,7 @@ Meteor.methods({
         });
       }
       if (address.isBillingDefault) {
-        Collections.Accounts.update({
+        Accounts.update({
           "userId": userId,
           "profile.addressBook.isBillingDefault": true
         }, {
@@ -89,7 +117,7 @@ Meteor.methods({
       }
     }
 
-    return Collections.Accounts.upsert({
+    return Accounts.upsert({
       userId: userId
     }, {
       $set: {
@@ -127,7 +155,7 @@ Meteor.methods({
     const userId = accountUserId || Meteor.userId();
     // we need to compare old state of isShippingDefault, isBillingDefault with
     // new state and if it was enabled/disabled reflect this changes in cart
-    const account = Collections.Accounts.findOne({
+    const account = Accounts.findOne({
       userId: userId
     });
     const oldAddress = account.profile.addressBook.find(function (addr) {
@@ -146,7 +174,7 @@ Meteor.methods({
     // This check can be simplified to :
     if  (address.isShippingDefault || address.isBillingDefault ||
          oldAddress.isShippingDefault || address.isBillingDefault) {
-      const cart = Collections.Cart.findOne({ userId: userId });
+      const cart = Cart.findOne({ userId: userId });
       // Cart should exist to this moment, so we doesn't need to to verify its
       // existence.
       if (oldAddress.isShippingDefault !== address.isShippingDefault) {
@@ -155,7 +183,7 @@ Meteor.methods({
           // we need to add this address to cart
           Meteor.call("cart/setShipmentAddress", cart._id, address);
           // then, if another address was `ShippingDefault`, we need to unset it
-          Collections.Accounts.update({
+          Accounts.update({
             "userId": userId,
             "profile.addressBook.isShippingDefault": true
           }, {
@@ -177,7 +205,7 @@ Meteor.methods({
       if (oldAddress.isBillingDefault !== address.isBillingDefault) {
         if (address.isBillingDefault) {
           Meteor.call("cart/setPaymentAddress", cart._id, address);
-          Collections.Accounts.update({
+          Accounts.update({
             "userId": userId,
             "profile.addressBook.isBillingDefault": true
           }, {
@@ -194,7 +222,7 @@ Meteor.methods({
       }
     }
 
-    return Collections.Accounts.update({
+    return Accounts.update({
       "userId": userId,
       "profile.addressBook._id": address._id
     }, {
@@ -229,7 +257,7 @@ Meteor.methods({
     // remove this address in cart, if used, before completely removing
     Meteor.call("cart/unsetAddresses", addressId, userId);
 
-    return Collections.Accounts.update({
+    return Accounts.update({
       "userId": userId,
       "profile.addressBook._id": addressId
     }, {
@@ -258,7 +286,7 @@ Meteor.methods({
 
     this.unblock();
 
-    const shop = Collections.Shops.findOne(shopId);
+    const shop = Shops.findOne(shopId);
 
     if (!shop) {
       const msg = `accounts/inviteShopMember - Shop ${shopId} not found`;
@@ -313,7 +341,7 @@ Meteor.methods({
       let emailLogo;
       if (Array.isArray(shop.brandAssets)) {
         const brandAsset = _.find(shop.brandAssets, (asset) => asset.type === "navbarBrandImage");
-        const mediaId = Collections.Media.findOne(brandAsset.mediaId);
+        const mediaId = Media.findOne(brandAsset.mediaId);
         emailLogo = path.join(Meteor.absoluteUrl(), mediaId.url());
       } else {
         emailLogo = Meteor.absoluteUrl() + "resources/email-templates/shop-logo.png";
@@ -395,14 +423,14 @@ Meteor.methods({
 
     this.unblock();
 
-    const user = Collections.Accounts.findOne(userId);
-    const shop = Collections.Shops.findOne(shopId);
+    const user = Accounts.findOne(userId);
+    const shop = Shops.findOne(shopId);
 
     // Get shop logo, if available. If not, use default logo from file-system
     let emailLogo;
     if (Array.isArray(shop.brandAssets)) {
       const brandAsset = _.find(shop.brandAssets, (asset) => asset.type === "navbarBrandImage");
-      const mediaId = Collections.Media.findOne(brandAsset.mediaId);
+      const mediaId = Media.findOne(brandAsset.mediaId);
       emailLogo = path.join(Meteor.absoluteUrl(), mediaId.url());
     } else {
       emailLogo = Meteor.absoluteUrl() + "resources/email-templates/shop-logo.png";
