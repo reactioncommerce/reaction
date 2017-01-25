@@ -156,13 +156,6 @@ Template.productGridItems.helpers({
  */
 
 Template.productGridItems.events({
-  // "dblclick [data-event-action=productClick] .active": function (event, template) {
-  //
-  // },
-  // "dbclick li.active [data-event-action=productClick]": function (event, template) {
-  //   event.preventDefault();
-  //   console.log("yo", event);
-  // },
   "dblclick [data-event-action=productClick]": function (event, template) {
     const instance = template;
     const product = instance.data;
@@ -170,6 +163,12 @@ Template.productGridItems.events({
 
     Reaction.Router.go("product", {
       handle: handle
+    });
+
+    Reaction.setActionView({
+      i18nKeyLabel: "productDetailEdit.productSettings",
+      label: "Product Settings",
+      template: "ProductAdmin"
     });
   },
   "click [data-event-action=productClick]": function (event, template) {
