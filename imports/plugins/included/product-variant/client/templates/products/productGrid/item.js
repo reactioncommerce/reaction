@@ -163,8 +163,14 @@ Template.productGridItems.events({
   //   event.preventDefault();
   //   console.log("yo", event);
   // },
-  "dbclick [data-event-action=productClick]": function (event, template) {
-    console.log("hello");
+  "dblclick [data-event-action=productClick]": function (event, template) {
+    const instance = template;
+    const product = instance.data;
+    const handle = product.handle;
+
+    Reaction.Router.go("product", {
+      handle: handle
+    });
   },
   "click [data-event-action=productClick]": function (event, template) {
     if (Reaction.hasPermission("createProduct") && Reaction.isPreview() === false) {
