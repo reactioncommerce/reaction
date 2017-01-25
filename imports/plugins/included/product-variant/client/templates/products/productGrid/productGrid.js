@@ -101,14 +101,7 @@ Template.productGrid.events({
       selectedProducts = _.without(selectedProducts, event.target.value);
     }
 
-    // Save the selected items to the user profile, for use when returing to the grid view
-    if (Meteor.user()) {
-      Meteor.users.update(Meteor.userId(), {
-        $set: {
-          "profile.preferences.reaction-product-variant.selectedGridItems": selectedProducts
-        }
-      });
-    }
+    Reaction.setUserPreferences("reaction-product-variant", "selectedGridItems", selectedProducts);
 
     // Save the selected items to the Session
     Session.set("productGrid/selectedProducts", _.uniq(selectedProducts));
