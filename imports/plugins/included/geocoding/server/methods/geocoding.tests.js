@@ -4,6 +4,7 @@ import { expect } from "meteor/practicalmeteor:chai";
 
 describe("Geocoding", function () {
   it("should return data for a valid address", function () {
+    this.timeout(50000);
     const address = {
       fullName: "Fake User",
       address1: "8008 Norton Ave.",
