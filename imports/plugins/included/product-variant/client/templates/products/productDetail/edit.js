@@ -13,7 +13,7 @@ Template.productDetailEdit.helpers({
   i18nPlaceholder: function () {
     const i18nKey = `productDetailEdit.${this.field}`;
     if (i18next.t(i18nKey) === i18nKey) {
-      Logger.info(`returning empty placeholder productDetailEdit: ${i18nKey} no i18n key found.`);
+      Logger.warn(`returning empty placeholder productDetailEdit: ${i18nKey} no i18n key found.`);
     } else {
       return i18next.t(i18nKey);
     }
