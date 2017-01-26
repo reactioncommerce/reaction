@@ -5,7 +5,7 @@
     {{> upload onUpload=handleFileUpload}}
   </div>
 
-  {{#autoForm collection=Collections.Shops doc=shop id="sellerShopEditForm" type="update"}}
+  {{#autoForm collection=Collections.Shops doc=sellerShop schema=Schemas.Shop id="sellerShopEditForm" type="method-update" meteormethod="marketplace/updateShopDetails"}}
     <div class="form-group{{#if afFieldIsInvalid name='name'}} has-error{{/if}}">
       <label class="control-label"
              data-i18n="shop.namePlaceholder">Shop Name</label>
@@ -42,12 +42,16 @@
       {{/if}}
     </div>
 
-    <div class="form-group{{#if afFieldIsInvalid name='currencies.0.currency'}} has-error{{/if}}">
+    <div class="form-group{{#if afFieldIsInvalid name='currency'}} has-error{{/if}}">
       <label class="control-label"
              data-i18n="shop.currency">Base Currency</label>
-      {{>afFieldInput type="select" name="currencies.0.currency" class="form-control" options=currencyOptions}}
+      {{>afFieldInput
+          type="select"
+          name="currency"
+          class="form-control"
+          options=currencyOptions}}
       {{#if afFieldIsInvalid name="currencies.0.currency"}}
-        <span class="help-block">{{afFieldMessage name="currencies.0.currency"}}</span>
+        <span class="help-block">{{afFieldMessage name="currency"}}</span>
       {{/if}}
     </div>
 

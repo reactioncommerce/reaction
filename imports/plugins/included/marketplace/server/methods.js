@@ -1,15 +1,9 @@
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
-import { Shops, Packages, Jobs } from "/lib/collections";
-import { CorePackageConfig } from "/lib/collections/schemas";
+import { Shops } from "/lib/collections";
 import { Logger } from "/server/api";
 import { Reaction } from "/lib/api";
 
-Meteor.publish("SellerShops", () => {
-  const _id = Reaction.getSellerShopId(this.userId);
-  console.log("seller: ", _id);
-  return Shops.find(_id);
-});
 
 Meteor.methods({
 
@@ -19,7 +13,7 @@ Meteor.methods({
    * @param {Object} shopId An optional shopId to get the seller for, otherwise current user is used
    * @returns {Object|null} The user hash if found, null otherwise
    */
-  "shop/getSeller": function (shopId) {
+  "marketplace/getSeller": function (shopId) {
     let sellerShopId;
 
     if (!shopId) {
@@ -35,7 +29,7 @@ Meteor.methods({
   },
 
 
-  "shop/getSellerShop": function (shopId = Reaction.getSellerShopId()) {
+  "marketplace/getSellerShop": function (shopId = Reaction.getSellerShopId()) {
     check(shopId, String);
 
     const domain = Reaction.getDomain();
@@ -50,8 +44,6 @@ Meteor.methods({
       limit: 1
     });
 
-    console.log("shopId ", shopId);
-
     // const currentShopCursor = this.getCurrentShopCursor(shopId);
 
     // also, we could check in such a way: `currentShopCursor instanceof Object`
@@ -60,5 +52,24 @@ Meteor.methods({
       return cursor.fetch()[0];
     }
     return null;
+  },
+
+  "marketplace/updateShopDetails": function (doc, _id) {
+    check(_id, String);
+    check(doc, Object);
+
+    if (!Reaction.hasPermission("admin")) {
+      return;
+    }
+
+    Shops.update(_id, doc, function (error) {
+      if (error) {
+        throw new Meteor.Error(500, error.message);
+      } else {
+        console.log("Update Successful");
+      }
+    });
   }
+
 });
+
