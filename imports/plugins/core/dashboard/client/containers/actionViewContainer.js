@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import { composeWithTracker } from "/lib/api/compose";
 import { Admin } from "../components"
-
+import { StyleRoot } from "radium";
 import { Meteor } from "meteor/meteor";
 import { Blaze } from "meteor/blaze";
 import { Template } from "meteor/templating";
@@ -16,8 +16,16 @@ function handleActionViewBack() {
   Reaction.popActionView();
 }
 
+function handleActionViewDetailBack() {
+  Reaction.popActionViewDeatil();
+}
+
 function handleActionViewClose() {
   Reaction.hideActionView();
+}
+
+function handleActionViewDetailClose() {
+  Reaction.hideActionViewDetail();
 }
 
 function composer(props, onData) {
@@ -68,11 +76,16 @@ function composer(props, onData) {
     data: props.data,
     buttons: items,
     isActionViewAtRootView: Reaction.isActionViewAtRootView(),
+    isDetailViewAtRootView: Reaction.isActionViewDetailAtRootView(),
+
     actionViewIsOpen: Reaction.isActionViewOpen(),
+    detailViewIsOpen: Reaction.isActionViewDetailOpen(),
 
     // Callbacks
     handleActionViewBack,
-    handleActionViewClose
+    handleActionViewDetailBack,
+    handleActionViewClose,
+    handleActionViewDetailClose
   });
 }
 
@@ -81,7 +94,9 @@ export default function ActionViewContainer(Comp) {
     return (
       <TranslationProvider>
         <AdminContextProvider>
-          <Comp {...props} />
+          <StyleRoot>
+            <Comp {...props} />
+          </StyleRoot>
         </AdminContextProvider>
       </TranslationProvider>
     );

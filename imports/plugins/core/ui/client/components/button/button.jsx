@@ -1,4 +1,4 @@
-import React, { Component, PropTypes} from "react";
+import React, { Component, PropTypes } from "react";
 import createFragment from "react-addons-create-fragment";
 import classnames from "classnames/dedupe";
 import Icon from "../icon/icon.jsx";
@@ -44,7 +44,7 @@ class Button extends Component {
         this.props.onToggle(event, this.props.onValue || true);
       } else {
         // Otherwise return the value prop, or false
-        this.props.onToggle(event, this.props.value || false)
+        this.props.onToggle(event, this.props.value || false);
       }
     } else if (this.props.onClick) {
       this.props.onClick(event, this.props.value);
@@ -138,7 +138,7 @@ class Button extends Component {
       // Destructure these vars as they aren't valid as attributes on the HTML element button
       iconAfter, label, active, className, status, i18nKeyTitle, i18nKeyLabel, i18nKeyTooltip, // eslint-disable-line no-unused-vars
       tooltip, icon, toggle, onIcon, primary, toggleOn, eventAction, // eslint-disable-line no-unused-vars
-      toggleOnLabel, i18nKeyToggleOnLabel, tagName, onClick, // eslint-disable-line no-unused-vars
+      toggleOnLabel, i18nKeyToggleOnLabel, tagName, onClick, onToggle, onValue, tooltipPosition, // eslint-disable-line no-unused-vars
 
       // Get the rest of the properties and put them in attrs
       // these will most likely be HTML attributes
@@ -181,7 +181,7 @@ class Button extends Component {
     // Button with tooltip gets some special treatment
     if (tooltip) {
       return React.createElement(tagName, buttonProps,
-        <span className="rui btn-tooltip" style={{display: "inline-flex"}}>
+        <span className="rui btn-tooltip" style={{ display: "inline-flex" }}>
           <Tooltip tooltipContent={this.renderTooltipContent()}>
             {buttonChildren}
           </Tooltip>
@@ -209,6 +209,8 @@ Button.propTypes = {
   label: PropTypes.string,
   onClick: PropTypes.func,
   onIcon: PropTypes.string,
+  onToggle: PropTypes.func,
+  onValue: PropTypes.any,
   primary: PropTypes.bool,
   status: PropTypes.string,
   tagName: PropTypes.string,
