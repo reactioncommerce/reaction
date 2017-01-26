@@ -10,7 +10,8 @@ export function registerComponent(componentInfo) {
 }
 
 export function getComponent(name) {
-  return registeredComponents.get(name).component;
+  const componentInfo = registeredComponents.get(name);
+  return componentInfo && componentInfo.component || null;
 }
 
 export function getAllComponents() {

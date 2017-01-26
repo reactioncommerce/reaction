@@ -14,6 +14,7 @@ import { Router } from "/client/api";
 import { TagListContainer } from "/imports/plugins/core/ui/client/containers";
 import { isEqual } from "lodash";
 import update from "react/lib/update";
+import PublishContainer from "/imports/plugins/core/revisions/client/containers/publishContainer";
 
 const fieldNames = [
   "title",
@@ -55,7 +56,7 @@ class ProductAdmin extends Component {
   componentWillReceiveProps(nextProps) {
     if (!isEqual(nextProps.product, this.props.product)) {
       for (const fieldName of fieldNames) {
-        if (nextProps.product[fieldName] !== this.props.product[fieldName]) {
+        if ((nextProps.product && this.props.product) && (nextProps.product[fieldName] !== this.props.product[fieldName])) {
           this.animateFieldFlash(fieldName);
         }
       }
@@ -213,6 +214,11 @@ class ProductAdmin extends Component {
   render() {
     return (
       <CardGroup>
+        <Card>
+          <CardBody>
+            <PublishContainer documentIds={[this.props.revisonDocumentIds]} />
+          </CardBody>
+        </Card>
         <Card
           expanded={this.isExpanded("productDetails")}
           onExpand={this.handleCardExpand.bind(this, "productDetails")}

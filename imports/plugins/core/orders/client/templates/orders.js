@@ -90,9 +90,9 @@ Template.orders.onCreated(function () {
   // fetch available orders
   this.autorun(() => {
     this.subscribe("Orders");
-    const filter = Reaction.Router.getQueryParam("filter");
+    const filter = this.data && this.data.filter.name || Reaction.Router.getQueryParam("filter");
     const query = OrderHelper.makeQuery(filter);
-    const orders = Orders.find({}).fetch();
+    const orders = Orders.find(query).fetch();
 
     this.state.set("orders", orders);
   });

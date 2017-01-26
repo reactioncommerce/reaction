@@ -18,7 +18,8 @@ function handleShowPackage(event, app) {
 function composer(props, onData) {
   const settings = Reaction.Apps({ provides: "settings", enabled: true }) || [];
 
-  const dashboard = Reaction.Apps({ provides: "dashboard", enabled: true }).filter((d) => typeof d.template !== "undefined") || [];
+  const dashboard = Reaction.Apps({ provides: "dashboard", enabled: true })
+    .filter((d) => typeof Template[d.template] !== "undefined") || [];
 
 
   // const packages = apps.map((packageData) => {
@@ -44,8 +45,16 @@ function composer(props, onData) {
   onData(null, {
     // packages,
     groupedPackages: {
-      dashboard: dashboard,
-      settings: settings
+      actions: {
+        title: "Actions",
+        i18nKeyTitle: "admin.dashboard.packageGroupActionsLabel",
+        packages: dashboard
+      },
+      settings: {
+        title: "Settings",
+        i18nKeyTitle: "admin.dashboard.packageGroupSettingsLabel",
+        packages: settings
+      }
     },
     // groups: Object.keys(groupedPackages),
 

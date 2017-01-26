@@ -1,3 +1,5 @@
+import { registerComponent } from "/imports/plugins/core/layout/lib/components";
+
 import "./templates/details/detail.html";
 import "./templates/details/detail.js";
 
@@ -30,3 +32,11 @@ import "./templates/workflow/workflow.js";
 
 import "./templates/orders.html";
 import "./templates/orders.js";
+
+import OrdersActionContainer from "./containers/ordersActionContainer";
+
+// Register PDP components and some others
+registerComponent({
+  name: "orders_ActionDashboard",
+  component: OrdersActionContainer
+});

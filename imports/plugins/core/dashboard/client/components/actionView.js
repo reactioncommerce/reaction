@@ -3,6 +3,7 @@ import classnames from "classnames";
 import Blaze from "meteor/gadicc:blaze-react-component";
 import {
   IconButton,
+  FlatButton,
   Translation
 } from "/imports/plugins/core/ui/client/components";
 import { Admin } from "/imports/plugins/core/ui/client/providers";
@@ -14,7 +15,8 @@ import { VelocityTransitionGroup } from "velocity-react";
 const getStyles = (props) => {
   let viewSize = 400;
   // if (props.actionView && props.actionView.priority === 1 && props.actionView.provides === "dashboard") {
-  if (props.actionView && props.actionView.provides === "dashboard") {
+  const isBigView = props.actionView && props.actionView.provides === "dashboard";
+  if (isBigView) {
     viewSize = "90vw";
   }
 
@@ -24,11 +26,35 @@ const getStyles = (props) => {
 
   return {
     base: {
-      display: "flex",
-      flexDirection: "column",
-      height: "100vh",
-      position: "relative",
-      width: viewSize
+      "display": "flex",
+      "flexDirection": "row",
+      "height": "100vh",
+      "position": "relative",
+      "width": viewSize,
+      "@media only screen and (max-width: 949px)": {
+        width: "100vw"
+      },
+      boxShadow: isBigView ? "0 0 40px rgba(0,0,0,.1)" : "",
+      flex: "0 0 auto",
+      backgroundColor: "white",
+      borderLeft: "1px solid @black10",
+
+      overflow: "hidden",
+      transition: "width 300ms cubic-bezier(0.455, 0.03, 0.515, 0.955))",
+      // boxShadow: "0 0 40px rgba(0,0,0,.1)",
+      zIndex: 100,
+
+      // @media screen and (max-width: @screen-xs-max) {
+      //   transition: top 400ms cubic-bezier(0.645, 0.045, 0.355, 1);
+      //
+      //   position: absolute;
+      //   width: 100vw;
+      //   height: 100vh;
+      //   top: 100vh;
+      //   left: 0;
+      //   z-index: @zindex-modal;
+      //   box-shadow: none;
+      // }
     },
     header: {
       display: "flex",
@@ -48,19 +74,38 @@ const getStyles = (props) => {
     },
     body: {
       display: "flex",
-      webkitOverflowScrolling: "touch"
+      WebkitOverflowScrolling: "touch"
+    },
+    masterViewPanel: {
+      display: "flex",
+      flexDirection: "column",
+      flex: "1 1 auto",
+      // height: "100%"
     },
     masterView: {
       flex: "1 1 auto",
-      height: "100%",
+      // height: "100%",
       overflow: "auto",
-      webkitOverflowScrolling: "touch"
+      // WebkitOverflowScrolling: "touch"
+    },
+    detailViewPanel: {
+      display: "flex",
+      flexDirection: "column",
+      flex: "1 1 auto",
+      maxWidth: "400px",
+      height: "100vh",
+      backgroundColor: "white",
+      borderRight: "1px solid #ccc",
+      "@media only screen and (max-width: 949px)": {
+        position: "absolute",
+        top: 0,
+        right: 0,
+        width: "96vw"
+      }
     },
     detailView: {
-      width: "400px",
-      height: "100%",
-      overflow: "auto",
-      webkitOverflowScrolling: "touch"
+      flex: "1 1 auto",
+      overflow: "auto"
     },
     title: {
       margin: 0,
@@ -144,6 +189,29 @@ class ActionView extends Component {
     }
   }
 
+  renderDetailViewBackButton() {
+    if (this.props.isDetailViewAtRootView === false) {
+      return (
+        <div style={this.styles.backButton}>
+          <div style={this.styles.backButtonContainers}>
+            <IconButton
+              icon="fa fa-arrow-left"
+              onClick={this.props.handleActionViewDetailBack}
+            />
+          </div>
+        </div>
+      );
+    } else {
+
+      return (
+        <IconButton
+          icon="fa fa-times"
+          onClick={this.props.handleActionViewDetailClose}
+        />
+      )
+    }
+  }
+
   get styles() {
     return getStyles(this.props);
   }
@@ -173,17 +241,12 @@ class ActionView extends Component {
     };
   }
 
-  render() {
+  renderMasterView() {
     const { actionView } = this.props;
-    const baseClassName = classnames({
-      "admin-controls": true,
-      "show-settings": this.props.actionViewIsOpen
-    });
-
 
     return (
-      <div style={this.styles.base} className={baseClassName}>
-        <div style={this.styles.header} className="admin-controls-heading--">
+      <div style={this.styles.masterViewPanel}>
+        <div style={this.styles.header} className="header">
           <VelocityTransitionGroup
             enter={this.backButtonEnterAnimation}
             leave={this.backButtonLeaveAnimaton}
@@ -216,8 +279,82 @@ class ActionView extends Component {
         <div style={this.styles.body} className="admin-controls-content action-view-body">
 
             {this.renderControlComponent()}
-            {this.renderDetailComponent()}
+
         </div>
+      </div>
+
+    )
+  }
+
+  renderDetailView() {
+    const { actionView } = this.props;
+
+    const baseClassName = classnames({
+      "rui": true,
+      "admin": true,
+      "action-view-pane": true,
+      "action-view-detail": true
+    });
+
+    if (this.props.detailViewIsOpen) {
+      return (
+        <div className={baseClassName} style={this.styles.detailViewPanel}>
+          <div style={this.styles.header} className="header">
+            <VelocityTransitionGroup
+              enter={this.backButtonEnterAnimation}
+              leave={this.backButtonLeaveAnimaton}
+            >
+              {this.renderDetailViewBackButton()}
+            </VelocityTransitionGroup>
+
+            <div style={this.styles.heading} className="nav-settings-heading--">
+              <h3
+                className="nav-settings-title--"
+                style={[
+                  this.styles.title,
+                  !this.props.isDetailViewAtRootView ? this.styles.titleWithBackButton : {}
+                ]}
+              >
+                <Translation
+                  defaultValue={actionView.label}
+                  i18nKey={actionView.i18nKeyLabel}
+                />
+              </h3>
+            </div>
+
+            <div className="nav-settings-controls--">
+              {/* Controls */}
+            </div>
+          </div>
+          <div style={this.styles.body} className="admin-controls-content action-view-body">
+
+              {/*this.renderControlComponent() */}
+              {this.renderDetailComponent()}
+          </div>
+        </div>
+
+      )
+    }
+  }
+
+  render() {
+    const { actionView } = this.props;
+    const baseClassName = classnames({
+      "rui": true,
+      "admin": true,
+      "action-view-pane": true,
+      "action-view": true
+      // "show-settings": this.props.actionViewIsOpen
+    });
+
+
+    return (
+      <div style={this.styles.base} className={baseClassName}>
+
+        {this.renderMasterView()}
+        {this.renderDetailView()}
+
+
         <div className="admin-controls-footer">
           <div className="admin-controls-container">
             {this.renderFooter()}
