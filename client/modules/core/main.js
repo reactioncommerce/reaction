@@ -235,6 +235,16 @@ export default {
     return settings.settings || {};
   },
 
+  isPreview() {
+    const profile = Meteor.user().profile;
+    const preferences = profile.preferences;
+    const reactionDashboard = preferences["reaction-dashboard"];
+    if (profile && preferences && reactionDashboard && reactionDashboard.viewAs && reactionDashboard.viewAs === "customer") {
+      return true;
+    }
+    return false;
+  },
+
   getPackageSettings(name) {
     return Packages.findOne({ name, shopId: this.getShopId() });
   },
