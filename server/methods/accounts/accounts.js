@@ -14,7 +14,7 @@ function getGeocoder() {
   const shopId = Reaction.getShopId();
   const geoCoders = Packages.find({
     "registry.provides": "geocoding",
-    shopId: shopId
+    "shopId": shopId
   }).fetch();
 
   let geoCoder;
@@ -33,9 +33,26 @@ function getGeocoder() {
 }
 
 /**
+ * @summary Validates an address, and if fails returns details of issues
+ * @param {Object} address - The address object to validate
+ * @returns {{validated: boolean, address: *}} - The results of the validation
+ */
+function validateAddress(address) {
+  check(address, Object);
+  Schemas.Address.clean(address);
+  const geoCoder = getGeocoder();
+  const geocodedAddress = Meteor.call(geoCoder, address);
+  if (geocodedAddress === address) {
+    return { validated: true, address: geocodedAddress };
+  }
+  return { validated: false, error: { message: "Address did not match" }, address: geocodedAddress };
+}
+
+/**
  * Reaction Account Methods
  */
 Meteor.methods({
+  "accounts/validateAddress": validateAddress,
   /*
    * check if current user has password
    */
@@ -59,10 +76,6 @@ Meteor.methods({
   "accounts/addressBookAdd": function (address, accountUserId) {
     check(address, Schemas.Address);
     check(accountUserId, Match.Optional(String));
-    const geoCoder = getGeocoder();
-    Meteor.call(geoCoder, address, function (error, result) {
-      console.log("geoCodedAddress", result);
-    });
     // security, check for admin access. We don't need to check every user call
     // here because we are calling `Meteor.userId` from within this Method.
     if (typeof accountUserId === "string") { // if this will not be a String -
@@ -78,8 +91,6 @@ Meteor.methods({
     if (!address._id) {
       address._id = Random.id();
     }
-    // clean schema
-    Schemas.Address.clean(address);
     // if address got shippment or billing default, we need to update cart
     // addresses accordingly
     if (address.isShippingDefault || address.isBillingDefault) {
