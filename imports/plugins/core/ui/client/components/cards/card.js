@@ -45,7 +45,7 @@ class Card extends Component {
 
     const baseClassName = classnames({
       "panel": true,
-      "panel-default": !this.state.expanded,
+      "panel-default": true,
       "panel-active": this.state.expanded
     });
 
