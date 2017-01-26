@@ -603,7 +603,7 @@ Meteor.methods({
 
     if (orderId) {
       // TODO: check for successful orders/inventoryAdjust
-      // Meteor.call("orders/inventoryAdjust", orderId);
+      Meteor.call("orders/inventoryAdjust", orderId);
       Collections.Cart.remove({
         _id: order.cartId
       });
