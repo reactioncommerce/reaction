@@ -20,7 +20,7 @@ function quantityProcessing(product, variant, itemQty = 1) {
   const MAX = variant.inventoryQuantity || Infinity;
 
   if (MIN > MAX) {
-    Logger.info(`productId: ${product._id}, variantId ${variant._id
+    Logger.debug(`productId: ${product._id}, variantId ${variant._id
       }: inventoryQuantity lower then minimum order`);
     throw new Meteor.Error(`productId: ${product._id}, variantId ${variant._id
       }: inventoryQuantity lower then minimum order`);
@@ -357,7 +357,7 @@ Meteor.methods({
         // reset selected shipment method
         Meteor.call("cart/resetShipmentMethod", cart._id);
 
-        Logger.info(`cart: increment variant ${variantId} quantity by ${
+        Logger.debug(`cart: increment variant ${variantId} quantity by ${
           quantity}`);
 
         return result;
@@ -395,7 +395,7 @@ Meteor.methods({
       // reset selected shipment method
       Meteor.call("cart/resetShipmentMethod", cart._id);
 
-      Logger.info(`cart: add variant ${variantId} to cartId ${cart._id}`);
+      Logger.debug(`cart: add variant ${variantId} to cartId ${cart._id}`);
 
       return result;
     });
@@ -456,7 +456,7 @@ Meteor.methods({
             "error removing from cart");
           return error;
         }
-        Logger.info(`cart: deleted cart item variant id ${cartItem.variants._id}`);
+        Logger.debug(`cart: deleted cart item variant id ${cartItem.variants._id}`);
         return result;
       });
     }
@@ -477,7 +477,7 @@ Meteor.methods({
           "error removing from cart");
         return error;
       }
-      Logger.info(`cart: removed variant ${cartItem._id} quantity of ${quantity}`);
+      Logger.debug(`cart: removed variant ${cartItem._id} quantity of ${quantity}`);
       return result;
     });
   },
@@ -503,7 +503,7 @@ Meteor.methods({
     const order = Object.assign({}, cart);
     const sessionId = cart.sessionId;
 
-    Logger.info("cart/copyCartToOrder", cartId);
+    Logger.debug("cart/copyCartToOrder", cartId);
     // reassign the id, we'll get a new orderId
     order.cartId = cart._id;
 
