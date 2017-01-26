@@ -3,7 +3,7 @@ import { expect } from "meteor/practicalmeteor:chai";
 
 
 describe("Geocoding", function () {
-  it("should return data for a valid address", function (done) {
+  it("should return data for a valid address", function () {
     const address = {
       fullName: "Fake User",
       address1: "8008 Norton Ave.",
@@ -17,19 +17,16 @@ describe("Geocoding", function () {
       isBillingDefault: true,
       isShippingDefault: true
     };
-    geocoder.geocode(address, function (error, result) {
-      expect(result).to.not.be.undefined;
-      expect(result).to.be.an("object");
-      expect(result.address1).to.equal("8008 Norton Ave.");
-      expect(result.address2).to.equal("Apartment 2");
-      expect(result.city).to.equal("West Hollywood");
-      expect(result.country).to.equal("US");
-      expect(result.postal).to.equal("90046");
-      done();
-    });
+    const result = geocoder.geocode(address);
+    expect(result).to.be.an("object");
+    expect(result.address1).to.equal("8008 Norton Ave.");
+    expect(result.address2).to.equal("Apartment 2");
+    expect(result.city).to.equal("West Hollywood");
+    expect(result.country).to.equal("US");
+    expect(result.postal).to.equal("90046");
   });
 
-  it("should return the correct address result for a 'slightly' invalid address", function (done) {
+  it("should return the correct address result for a 'slightly' invalid address", function () {
     const address = {
       fullName: "Fake User",
       address1: "8008 Norton Ave.",
@@ -43,10 +40,8 @@ describe("Geocoding", function () {
       isBillingDefault: true,
       isShippingDefault: true
     };
-    geocoder.geocode(address, function (error, result) {
-      expect(result.postal).to.equal("90046");
-      expect(result.city).to.equal("West Hollywood");
-      done();
-    });
+    const result = geocoder.geocode(address);
+    expect(result.postal).to.equal("90046");
+    expect(result.city).to.equal("West Hollywood");
   });
 });

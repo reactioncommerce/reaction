@@ -12,10 +12,9 @@ const geocoder = {};
 /**
  * @summary Return a verified address from Google
  * @param {Object} address - Address to verify
- * @param {Function} callback - Callback function
  * @returns {Object} Verified address or empty array
  */
-geocoder.geocode = function (address, callback) {
+geocoder.geocode = function (address) {
   // check(address, Schemas.Address);
 
   const street = `${address.address1} ${address.address2}`;
@@ -25,21 +24,17 @@ geocoder.geocode = function (address, callback) {
     zipcode: address.postal
   };
 
-  Geocoder.geocode(advancedAddress, function (error, result) {
-    if (!error) {
-      const addressResult = result[0];
-      const verifiedAddress = {
-        address1: address.address1,
-        address2: address.address2,
-        city: addressResult.city,
-        country: addressResult.countryCode,
-        postal: addressResult.zipcode
-      };
-
-      return callback(error, verifiedAddress);
-    }
-    throw new Meteor.Error("Error while trying to Geocode address");
-  });
+  const wrappedFunction = Meteor.wrapAsync(Geocoder.geocode, Geocoder);
+  const result = wrappedFunction(advancedAddress);
+  const addressResult = result[0];
+  const verifiedAddress = {
+    address1: address.address1,
+    address2: address.address2,
+    city: addressResult.city,
+    country: addressResult.countryCode,
+    postal: addressResult.zipcode
+  };
+  return verifiedAddress;
 };
 
 export default geocoder;
