@@ -105,9 +105,7 @@ const getStyles = (props) => {
     },
     detailView: {
       flex: "1 1 auto",
-      overflow: "auto",
-      // webkitOverflowScrolling: "touch",
-      backgroundColor: "#ccc"
+      overflow: "auto"
     },
     title: {
       margin: 0,

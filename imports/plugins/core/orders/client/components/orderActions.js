@@ -10,7 +10,11 @@ const styles = {
     flex: "1 1 auto",
     height: 100,
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
+    cursor: "pointer",
+    ":hover": {
+
+    }
   },
   title: {
     fontSize: 24,

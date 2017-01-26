@@ -13,14 +13,18 @@ class PackageList extends Component {
   state = {}
 
   isExpanded(cardName) {
-    return this.state[`card_${cardName}`] && this.state[`card_${cardName}`].isExpanded
+    if (this.state[`card_${cardName}`] && typeof this.state[`card_${cardName}`].isExpanded === "boolean") {
+      return this.state[`card_${cardName}`].isExpanded;
+    }
+
+    return true;
   }
 
   handleCardExpand(cardName) {
     let isExpanded;
 
     if (typeof this.state[`card_${cardName}`] === "undefined") {
-      isExpanded = true;
+      isExpanded = false;
     } else {
       isExpanded = !this.state[`card_${cardName}`].isExpanded;
     }
@@ -35,46 +39,11 @@ class PackageList extends Component {
       this.props.onCardExpand(cardName);
     }
   }
-  renderActions() {
-    if (this.props.groupedPackages && Array.isArray(this.props.groupedPackages.actions)) {
-      const items = this.props.groupedPackages.actions.map((packageData, index) => {
-        let element;
-        const actionComponent = getComponent(`${packageData.template}_ActionDashboard`);
-
-        if (actionComponent) {
-          element = (
-            <Card expandable={true} key={`action-${index}`}>
-              <CardBody>
-                {React.createElement(actionComponent)}
-              </CardBody>
-            </Card>
-          );
-        }
-
-        return [
-          <ListItem
-            key={index}
-            i18nKeyLabel={packageData.i18nKeyLabel}
-            icon={packageData.icon}
-            label={packageData.label}
-            onClick={this.props.handleShowPackage}
-            actionType="arrow"
-            value={packageData}
-          />,
-          element
-        ];
-      });
-
-      return items;
-    }
-
-    return null;
-  }
 
   renderSections() {
     if (this.props.groupedPackages) {
       // Loop through the groups of packages
-      return map(this.props.groupedPackages, (group, groupIndex) => {
+      return map(this.props.groupedPackages, (group, groupName) => {
         // Loop through the individual cards of packages
         if (Array.isArray(group.packages)) {
           const items = group.packages.map((packageData, index) => {
@@ -112,16 +81,16 @@ class PackageList extends Component {
 
           return (
             <Card
-              key={groupIndex}
-              expanded={this.isExpanded("productDetails")}
-              onExpand={this.handleCardExpand.bind(this, "productDetails")}
+              key={groupName}
+              expanded={this.isExpanded(groupName)}
+              onExpand={this.handleCardExpand.bind(this, groupName)}
             >
               <CardHeader
                 actAsExpander={true}
                 title={group.title}
                 i18nKeyTitle={group.i18nKeyTitle}
               />
-              <CardBody expandable={true}>
+              <CardBody expandable={true} padded={false}>
                 {items}
               </CardBody>
             </Card>
