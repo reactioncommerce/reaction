@@ -4,7 +4,40 @@ import path from "path";
 import { Accounts, Cart, Media, Shops, Packages } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 import { Logger, Reaction } from "/server/api";
+import zipcode from "/imports/plugins/included/geocoding/server/methods/zipcode";
 
+/**
+ * @summary Validate Zip code against USPS API for US addresses
+ * @param {Object} address - Address to verify
+ * @returns {Object} Verification result object
+ */
+function validateZip(address) {
+  const validationResult = {
+    validated: true,
+    errors: [],
+    errorFields: [],
+  };
+  if (address.countryCode === "US") {
+    const result = zipcode.cityStateLookup(address.postal);
+    if (_.uppercase(address.city) === _.uppercase(results.city) && address.region === result.state) {
+      validationResult.result = result;
+    } else {
+      // Determine the error messages and fields to pass back
+      validationResult.result = result;
+      validationResult.validated = false;
+      if (_.uppercase(address.city) !== _.uppercase(results.city)) {
+        validationResult.errors.push("City did not match");
+        validationResult.errorFields.push("city");
+      }
+
+      if (address.region !== result.state) {
+        validationResult.errors.push("State did not match");
+        validationResult.errorFields.push("region");
+      }
+    }
+  }
+  return validationResult;
+}
 
 /**
  * @summary Returns the name of the geocoder method to use
@@ -39,13 +72,31 @@ function getGeocoder() {
  */
 function validateAddress(address) {
   check(address, Object);
+  const errors = [];
+  const errorFields = [];
+  const errorTypes = [];
+  let validated = true;
+
   Schemas.Address.clean(address);
+  const zipResults = validateZip(address);
+  console.log("zipResults", zipResults);
+  if (!zipResults.validated) {
+    errors.push(zipResults.errors);
+    errorFields.push(zipResults.errorFields);
+    errorTypes.push("zipcode");
+  }
+
   const geoCoder = getGeocoder();
   const geocodedAddress = Meteor.call(geoCoder, address);
   if (geocodedAddress === address) {
-    return { validated: true, address: geocodedAddress };
+    validated = false;
+    errors.push("Failed Geocoding check");
+    errorFields.push("city", "region", "postal", "address1", "address2");
+    errorTypes.push("geocode");
   }
-  return { validated: false, error: { message: "Address did not match" }, address: geocodedAddress };
+  const validationResults = { validated, errors, errorFields, errorTypes };
+  console.log("validationResults", validationResults);
+  return validationResults;
 }
 
 /**
