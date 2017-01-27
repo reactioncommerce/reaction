@@ -30,11 +30,26 @@ const handleAddProduct = () => {
 
 const handleViewContextChange = (event, value) => {
   Reaction.setUserPreferences("reaction-dashboard", "viewAs", value);
+
+  if (Reaction.isPreview() === true) {
+    // Save last action view state
+    const saveActionViewState = Reaction.getActionView();
+    Reaction.setUserPreferences("reaction-dashboard", "savedActionViewState", saveActionViewState);
+
+    // hideActionView during isPreview === true
+    Reaction.hideActionView();
+  } else {
+    // // Reload previous actionView, if saved. Otherwise, don't show.
+    // const savedActionViewState = Reaction.getUserPreferences("reaction-dashboard", "savedActionViewState");
+    //
+    // if (savedActionViewState) {
+    //   Reaction.showActionView(savedActionViewState);
+    // }
+  }
 };
 
 function composer(props, onData) {
   // Reactive data sources
-  const viewAs = Reaction.getUserPreferences("reaction-dashboard", "viewAs", "administrator");
   const routeName = Reaction.Router.getRouteName();
 
   // Standard variables
@@ -67,7 +82,7 @@ function composer(props, onData) {
   onData(null, {
     packageButtons,
     dashboardHeaderTemplate: props.data.dashboardHeader,
-    isPreview: viewAs === "customer" ? true : false,
+    isPreview: Reaction.isPreview(),
     isActionViewAtRootView: Reaction.isActionViewAtRootView(),
     actionViewIsOpen: Reaction.isActionViewOpen(),
 

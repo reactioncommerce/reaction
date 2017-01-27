@@ -1,12 +1,41 @@
 import React, { Component, PropTypes } from "react";
 import { VelocityTransitionGroup } from "velocity-react";
+import Radium from "radium";
+import classnames from "classnames";
+
+const styles = {
+  noPadding: {
+    padding: 0
+  }
+};
 
 class CardBody extends Component {
+  static defaultProps = {
+    expandable: false,
+    expanded: true
+  };
+
+  static propTypes = {
+    children: PropTypes.node,
+    expanded: PropTypes.bool,
+    padded: PropTypes.bool
+  };
 
   renderCard() {
     if (this.props.expanded) {
+      const baseClassName = classnames({
+        "rui": true,
+        "panel-body": true,
+        "no-padding": this.props.padded === false
+      });
+
       return (
-        <div className="panel-body">
+        <div
+          className={baseClassName}
+          style={[
+            this.props.padded === false ? styles.noPadding : void 0
+          ]}
+        >
           {this.props.children}
         </div>
       );
@@ -27,14 +56,4 @@ class CardBody extends Component {
   }
 }
 
-CardBody.defaultProps = {
-  expandable: false,
-  expanded: true
-};
-
-CardBody.propTypes = {
-  children: PropTypes.node,
-  expanded: PropTypes.bool
-};
-
-export default CardBody;
+export default Radium(CardBody);
