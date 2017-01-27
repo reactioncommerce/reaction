@@ -205,7 +205,7 @@ class PublishControls extends Component {
   renderPublishButton() {
     return (
       <FlatButton
-        bordered={true}
+        outline={true}
         disabled={this.hasChanges === false}
         label="Publish"
         onClick={this.handlePublishClick}

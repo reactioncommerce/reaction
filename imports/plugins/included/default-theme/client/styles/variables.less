@@ -67,6 +67,8 @@
 @brand-info:            @brand-info-color;
 @brand-warning:         @brand-warning-color;
 @brand-danger:          @brand-danger-color;
+@brand-default:         #a3a6a7;
+@brand-cta:             #34D891;
 
 @state-success-text:             #3c763d;
 @state-success-bg:               @gray-lighter;
@@ -221,40 +223,147 @@
 
 @btn-font-weight:                normal;
 
-@btn-default-color:              #333;
+// Solid Button Colors
+@btn-default-color:              #000;
 @btn-default-bg:                 #fff;
-@btn-default-border:             #ccc;
+@btn-default-border:             @border-color;
 
 @btn-primary-color:              #fff;
 @btn-primary-bg:                 @brand-primary;
-@btn-primary-border:             darken(@btn-primary-bg, 5%);
+@btn-primary-border:             @btn-primary-bg;
 
 @btn-success-color:              #fff;
 @btn-success-bg:                 @brand-success;
-@btn-success-border:             darken(@btn-success-bg, 5%);
+@btn-success-border:             @btn-success-bg;
 
 @btn-info-color:                 #fff;
 @btn-info-bg:                    @brand-info;
-@btn-info-border:                darken(@btn-info-bg, 5%);
+@btn-info-border:                @btn-info-bg;
 
 @btn-warning-color:              #fff;
 @btn-warning-bg:                 @brand-warning;
-@btn-warning-border:             darken(@btn-warning-bg, 5%);
+@btn-warning-border:             @btn-warning-bg;
 
 @btn-danger-color:               #fff;
 @btn-danger-bg:                  @brand-danger;
-@btn-danger-border:              darken(@btn-danger-bg, 5%);
+@btn-danger-border:              @btn-danger-bg;
+
+@btn-cta-color:               #fff;
+@btn-cta-bg:                  @brand-cta;
+@btn-cta-border:              @btn-cta-bg;
+
+// Flat
+@btn-flat-border-width:               1px;
+@btn-flat-border-radius:              2px;
+
+@btn-flat-default-color:              @brand-default;
+@btn-flat-default-bg:                 transparent;
+@btn-flat-default-border:             transparent;
+
+@btn-flat-primary-color:              @brand-primary;
+@btn-flat-primary-bg:                 transparent;
+@btn-flat-primary-border:             transparent;
+
+@btn-flat-success-color:              @brand-success;
+@btn-flat-success-bg:                 transparent;
+@btn-flat-success-border:             transparent;
+
+@btn-flat-info-color:                 @brand-info;
+@btn-flat-info-bg:                    transparent;
+@btn-flat-info-border:                transparent;
+
+@btn-flat-warning-color:              @brand-warning;
+@btn-flat-warning-bg:                 transparent;
+@btn-flat-warning-border:             transparent;
+
+@btn-flat-danger-color:               @brand-danger;
+@btn-flat-danger-bg:                  transparent;
+@btn-flat-danger-border:              transparent;
+
+@btn-flat-cta-color:               #fff;
+@btn-flat-cta-bg:                  @brand-cta;
+@btn-flat-cta-border:              @btn-cta-bg;
+
+
+// Outline only button colors
+@btn-outline-border-width:               2px;
+@btn-outline-border-radius:              0;
+
+@btn-outline-default-color:              @btn-default-color;
+@btn-outline-default-bg:                 #fff;
+@btn-outline-default-border:             @btn-default-border;
+
+@btn-outline-primary-color:              @brand-primary;
+@btn-outline-primary-bg:                 transparent;
+@btn-outline-primary-border:             @btn-primary-bg;
+
+@btn-outline-success-color:              @brand-success;
+@btn-outline-success-bg:                 transparent;
+@btn-outline-success-border:             @btn-success-bg;
+
+@btn-outline-info-color:                 @brand-info;
+@btn-outline-info-bg:                    transparent;
+@btn-outline-info-border:                @btn-info-bg;
+
+@btn-outline-warning-color:              @brand-warning;
+@btn-outline-warning-bg:                 transparent;
+@btn-outline-warning-border:             @btn-warning-bg;
+
+@btn-outline-danger-color:               @brand-danger;
+@btn-outline-danger-bg:                  transparent;
+@btn-outline-danger-border:              @btn-danger-bg;
+
+@btn-outline-cta-color:                  @brand-cta;
+@btn-outline-cta-bg:                     transparent;
+@btn-outline-cta-border:                 @btn-cta-bg;
+
+
+// Icon Button
+@btn-icon-size: 24px;
+@btn-icon-only-size: 24px;
+@btn-icon-only-border-radius: @btn-icon-size / 2;
+@btn-icon-only-outline-bg:      #fff;
+
+@btn-icon-only-default-color:              @brand-default;
+@btn-icon-only-default-bg:                 @btn-default-bg;
+@btn-icon-only-default-border:             @btn-default-bg;
+
+@btn-icon-only-primary-color:              #fff;
+@btn-icon-only-primary-bg:                 @btn-primary-bg;
+@btn-icon-only-primary-border:             @btn-primary-bg;
+
+@btn-icon-only-success-color:              #fff;
+@btn-icon-only-success-bg:                 @btn-success-bg;
+@btn-icon-only-success-border:             @btn-success-bg;
+
+@btn-icon-only-info-color:                 #fff;
+@btn-icon-only-info-bg:                    @btn-info-bg;
+@btn-icon-only-info-border:                @btn-info-bg;
+
+@btn-icon-only-warning-color:              #fff;
+@btn-icon-only-warning-bg:                 @btn-warning-bg;
+@btn-icon-only-warning-border:             @btn-warning-bg;
+
+@btn-icon-only-danger-color:               #fff;
+@btn-icon-only-danger-bg:                  @btn-danger-bg;
+@btn-icon-only-danger-border:              @btn-danger-bg;
+
+@btn-icon-only-cta-color:                  #fff;
+@btn-icon-only-cta-bg:                     @btn-cta-bg;
+@btn-icon-only-cta-border:                 @btn-cta-bg;
+
+
 
 @btn-link-disabled-color:        @gray-light;
 
 @btn-info-edit-color: @text-color;
-@btn-edit-color: @gray-darker;
-@btn-edit-bg: @black20;
+
+@btn-icon-color: @gray-darker;
+@btn-icon-bg: @black20;
 
 @btn-active-color: darken(@brand-accent-color, 50%);
 @btn-active-bg: @brand-accent-color;
 
-@btn-icon-size: 24px;
 
 // Allows for customizing button radius independently from global border radius
 @btn-border-radius-base:         @border-radius-base;

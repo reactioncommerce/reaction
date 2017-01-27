@@ -3,6 +3,11 @@ import classnames from "classnames";
 import Button from "./button.jsx";
 
 class IconButton extends Component {
+  static defaultProps = {
+    flat: false,
+    solid: false
+  }
+
   render() {
     const {
       icon,
@@ -17,24 +22,18 @@ class IconButton extends Component {
 
     if (this.props.kind === "flat") {
       buttonClassName = classnames({
-        "rui": true,
-        "button": true,
         "icon": true,
         "icon-only": true,
-        "flat": true
+        // "flat": this.props.flat
       });
     } else if (this.props.kind === "close") {
       buttonClassName = classnames({
-        "rui": true,
-        "button": true,
         "icon-only": true,
         "close": true
       });
     } else {
       buttonClassName = classnames({
-        "rui": true,
-        "button": true,
-        "edit": true,
+        "solid": true,
         "icon-only": true,
         "variant-edit": true
       });

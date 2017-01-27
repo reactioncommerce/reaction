@@ -122,3 +122,44 @@
     font-size: 16px;
   }
 }
+
+.rui.card-header {
+  display: flex;
+  padding: 0 !important; // TODO: Remove after all panels use Card component
+  height: 44px;
+}
+
+.rui.card-header .content-view {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  cursor: pointer;
+  .padding-left(20px);
+}
+
+.rui.card-header .content-view {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  .padding-left(20px);
+}
+
+
+.rui.card-header.expandable {
+  position: relative;
+}
+
+.rui.card-header.expandable .expander {
+  position: absolute;
+  bottom: -1rem;
+  margin-left: -1rem;
+  right:;
+  left: 50%;
+  z-index: 1;
+  transition: transform 200ms;
+  transform-origin: 50% 50%;
+}
+
+.rui.card-header.expandable .expander.open {
+  transform: rotate(-180deg);
+}
