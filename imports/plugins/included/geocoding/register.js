@@ -7,7 +7,8 @@ Reaction.registerPackage({
   autoEnable: true,
   settings: {
     geocoding: {
-      enabled: true
+      enabled: true,
+      uspsUserId: ""
     }
   },
   registry: [{
