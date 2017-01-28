@@ -11,10 +11,10 @@ import { Shipping } from "/lib/collections";
  */
 Template.shippingDashboardControls.events({
   "click [data-event-action=addShippingProvider]": function () {
-    Reaction.setActionViewDetail({
-      label: i18next.t("shipping.addShippingProvider"),
-      template: "addShippingProvider"
-    });
+    // Reaction.setActionViewDetail({
+    //   label: i18next.t("shipping.addShippingProvider"),
+    //   template: "addShippingProvider"
+    // });
   }
 });
 
@@ -29,7 +29,8 @@ Template.shippingProviderTable.helpers({
     const instance = Template.instance();
     if (instance.subscriptionsReady()) {
       return Shipping.find({
-        shopId: Reaction.getShopId()
+        "shopId": Reaction.getShopId(),
+        "provider.name": "reaction-shipping-rates"
       });
     }
   },
@@ -56,21 +57,21 @@ Template.editShippingMethod.helpers({
 });
 
 
-Template.afFormGroup_validLocales.helpers({
-  afFieldInputAtts() {
-    return _.extend({
-      template: "bootstrap3"
-    }, this.afFieldInputAtts);
-  }
-});
-
-Template.afFormGroup_validRanges.helpers({
-  afFieldInputAtts() {
-    return _.extend({
-      template: "bootstrap3"
-    }, this.afFieldInputAtts);
-  }
-});
+// Template.afFormGroup_validLocales.helpers({
+//   afFieldInputAtts() {
+//     return _.extend({
+//       template: "bootstrap3"
+//     }, this.afFieldInputAtts);
+//   }
+// });
+//
+// Template.afFormGroup_validRanges.helpers({
+//   afFieldInputAtts() {
+//     return _.extend({
+//       template: "bootstrap3"
+//     }, this.afFieldInputAtts);
+//   }
+// });
 
 /*
  * template addShippingProvider events

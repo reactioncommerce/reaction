@@ -6,6 +6,11 @@
       "admin": {
         "shippingSettings": {
           "flatRateLabel": "Flat Rate"
+        },
+        "shippingGrid": {
+          "group": "Group",
+          "rate": "Rate",
+          "label": "Label"
         }
       }
     }
