@@ -10,71 +10,51 @@
   {{#if instance.state.get 'isEditing'}}
     <div>
     {{#if instance.state.get 'editingId'}}
-
+      <div>
       {{#autoForm
-        schema=shippingSchema
-        type="method-update"
-        meteormethod="shipping/addRate"
+        schema=Schemas.ShippingMethod
+        type="method"
+        meteormethod="shipping/rates/update"
         doc=shippingRate
-        id="shippingFlatRates-update-form"
+        id="shipping-rates-update-form"
         resetOnSuccess=true
-      }}
-        <div>
-          <!-- {{> afQuickField name='shippingCode' options=shippingCodes class='form-control'}}
-          {{> afQuickField name='cartMethod' options="allowed" class='form-control'}}
-          {{> afQuickField name='shippingLocale' options="allowed" class='form-control'}}
-          {{> afQuickField name='shippingShipping'}}
-          {{> afQuickField name='shippingIncluded'}}
-          {{> afQuickField name='discountsIncluded'}} -->
-          {{> afQuickField name='country' options=countryOptions class='form-control'}}
-
-          <label class="control-label">{{afFieldLabelText name='region'}}</label>
-          {{#if statesForCountry}}
-            {{>afFieldInput name="region" value=region options=statesForCountry class='form-control'}}
-          {{else}}
-            {{>afFieldInput name="region" value=region class='form-control'}}
-          {{/if}}
-          {{#if afFieldIsInvalid name="region"}}
-            <span class="help-block">{{afFieldMessage name="region"}}</span>
-          {{/if}}
-
-          {{> afQuickField name='postal' class='form-control' placeholder="Postal Code"}}
-          {{> afQuickField name='rate' class='form-control' placeholder="Rate as a percentage"}}
+        }}
+        <div class="col-sm-7">
+          {{>afQuickField name='name' autofocus='' class='form-control'}}
+          {{>afQuickField name='label' class='form-control'}}
+          {{>afQuickField name='group' class='form-control'}}
+        </div>
+        <div class="col-md-4">
+          {{>afQuickField name='cost' class='form-control'}}
+          {{>afQuickField name='handling' class='form-control'}}
+          {{>afQuickField name='rate' class='form-control'}}
+          {{>afQuickField name='enabled'}}
+          {{>afFieldInput name="_id" type="hidden"}}
         </div>
         {{> shippingSettingsSubmitButton instance=instance}}
       {{/autoForm}}
-
+      </div>
     {{else}}
 
       {{#autoForm
-        schema=shippingSchema
+        schema=Schemas.ShippingMethod
         type="method"
-        meteormethod="shipping/addRate"
-        id="shippingFlatRates-insert-form"
+        meteormethod="shipping/rates/add"
+        id="shipping-rates-insert-form"
         doc=shippingRate
         resetOnSuccess=true
       }}
-        <div>
-          <!-- {{> afQuickField name='shippingCode' options=shippingCodes class='form-control'}}
-          {{> afQuickField name='cartMethod' options="allowed" class='form-control'}}
-          {{> afQuickField name='shippingLocale' options="allowed" class='form-control'}}
-          {{> afQuickField name='shippingShipping'}}
-          {{> afQuickField name='shippingIncluded'}}
-          {{> afQuickField name='discountsIncluded'}} -->
-          {{> afQuickField name='country' options=countryOptions class='form-control'}}
-
-          <label class="control-label">{{afFieldLabelText name='region'}}</label>
-          {{#if statesForCountry}}
-            {{>afFieldInput name="region" value=region options=statesForCountry class='form-control'}}
-          {{else}}
-            {{>afFieldInput name="region" value=region class='form-control'}}
-          {{/if}}
-          {{#if afFieldIsInvalid name="region"}}
-            <span class="help-block">{{afFieldMessage name="region" placeholder="State/Region/Province"}}</span>
-          {{/if}}
-
-          {{> afQuickField name='postal' class='form-control' placeholder="Postal Code"}}
-          {{> afQuickField name='rate' class='form-control' placeholder="Rate as a percentage"}}
+        <div class="col-sm-7">
+          {{>afQuickField name='name' autofocus='' class='form-control'}}
+          {{>afQuickField name='label' class='form-control'}}
+          {{>afQuickField name='group' class='form-control'}}
+        </div>
+        <div class="col-md-4">
+          {{>afQuickField name='cost' class='form-control'}}
+          {{>afQuickField name='handling' class='form-control'}}
+          {{>afQuickField name='rate' class='form-control'}}
+          {{>afQuickField name='enabled'}}
+          {{>afFieldInput name="_id" type="hidden"}}
         </div>
         {{> shippingSettingsSubmitButton instance=instance}}
       {{/autoForm}}

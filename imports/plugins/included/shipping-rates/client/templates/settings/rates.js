@@ -1,16 +1,10 @@
 import { Template } from "meteor/templating";
 import { ReactiveDict } from "meteor/reactive-dict";
 import { AutoForm } from "meteor/aldeed:autoform";
-import { Shops } from "/lib/collections";
-import { Countries } from "/client/collections";
 import { Shipping } from "/lib/collections";
 import { i18next } from "/client/api";
-import { Shipping as ShippingSchema } from "/lib/collections/schemas";
 import MeteorGriddle from "/imports/plugins/core/ui-grid/client/griddle";
 import { IconButton, Loading } from "/imports/plugins/core/ui/client/components";
-
-/* eslint no-shadow: ["error", { "allow": ["options"] }] */
-/* eslint no-unused-vars: ["error", { "argsIgnorePattern": "[oO]ptions" }] */
 
 Template.shippingRatesSettings.onCreated(function () {
   this.autorun(() => {
@@ -48,7 +42,7 @@ Template.shippingRatesSettings.helpers({
       },
       onClick() {
         // remove active rows from grid
-        $(".tax-grid-row").removeClass("active");
+        $(".shipping-grid-row").removeClass("active");
         return state.set({
           isEditing: !isEditing,
           editingId: editingId
@@ -57,17 +51,14 @@ Template.shippingRatesSettings.helpers({
     };
   },
   shippingGrid() {
-    const filteredFields = ["group", "label", "rate"];
-    const noDataMessage = i18next.t("admin.shippingSettings.noCustomShippingRatesFound");
+    const filteredFields = ["name", "group", "label", "rate"];
+    const noDataMessage = i18next.t("admin.shippingSettings.noRatesFound");
     const instance = Template.instance();
 
-    //
-    // helper to get and select row from griddle
-    // into blaze for to select tax row for editing
-    //
+    // griddle helper to select row
     function editRow(options) {
       const currentId = instance.state.get("editingId");
-      // isEditing is tax rate object
+      // isEditing is shipping rate object
       instance.state.set("isEditing", options.props.data);
       instance.state.set("editingId", options.props.data._id);
       // toggle edit mode clicking on same row
@@ -77,12 +68,10 @@ Template.shippingRatesSettings.helpers({
       }
     }
 
-    //
-    // helper adds a class to every grid row
-    //
+    // add shipping-grid-row class
     const customRowMetaData = {
       bodyCssClassName: () =>  {
-        return "tax-grid-row";
+        return "shipping-grid-row";
       }
     };
 
@@ -95,11 +84,24 @@ Template.shippingRatesSettings.helpers({
       };
       customColumnMetadata.push(columnMeta);
     });
-    console.log(Shipping.find().fetch())
-    // return tax Grid
+
+    // filter and extract shipping methods
+    // from flat rate shipping provider
+    function transform(results) {
+      const result = [];
+      for (method of results) {
+        if (method.provider && method.provider.name === "reaction-shipping-rates") {
+          result.push(method.methods);
+        }
+      }
+      return result[0];
+    }
+
+    // return shipping Grid
     return {
       component: MeteorGriddle,
       publication: "Shipping",
+      transform: transform,
       collection: Shipping,
       matchingResultsCount: "shipping-count",
       showFilter: true,
@@ -118,9 +120,25 @@ Template.shippingRatesSettings.helpers({
     const instance = Template.instance();
     return instance;
   },
-  // schema for forms
-  shippingSchema() {
-    return ShippingSchema;
+
+  shippingRate() {
+    const instance = Template.instance();
+    const id = instance.state.get("editingId");
+    const providerRates = Shipping.findOne({ "provider.name": "reaction-shipping-rates" }) || {};
+    let rate = {};
+    if (providerRates && providerRates.methods) {
+      if (id) {
+        for (method of providerRates.methods) {
+          if (method._id === id) {
+            rate = method;
+          }
+        }
+      } else {
+        // a little trick to provide _id for insert
+        rate._id = providerRates._id;
+      }
+    }
+    return rate;
   }
 });
 
@@ -128,21 +146,21 @@ Template.shippingRatesSettings.helpers({
 // on submit lets clear the form state
 //
 Template.shippingRatesSettings.events({
-  "submit #shippingRatesSettings-update-form": function () {
+  "submit #shipping-rates-update-form": function () {
     const instance = Template.instance();
     instance.state.set({
       isEditing: false,
       editingId: null
     });
   },
-  "submit #shippingRatesSettings-insert-form": function () {
+  "submit #shipping-rates-insert-form": function () {
     const instance = Template.instance();
     instance.state.set({
       isEditing: true,
       editingId: null
     });
   },
-  "click .cancel, .tax-grid-row .active": function () {
+  "click .cancel, .shipping-grid-row .active": function () {
     instance = Template.instance();
     // remove active rows from grid
     instance.state.set({
@@ -150,7 +168,7 @@ Template.shippingRatesSettings.events({
       editingId: null
     });
     // ugly hack
-    $(".tax-grid-row").removeClass("active");
+    $(".shipping-grid-row").removeClass("active");
   },
   "click .delete": function () {
     const confirmTitle = i18next.t("admin.shippingSettings.confirmRateDelete");
@@ -166,7 +184,7 @@ Template.shippingRatesSettings.events({
     }, (isConfirm) => {
       if (isConfirm) {
         if (id) {
-          Meteor.call("taxes/deleteRate", id);
+          Meteor.call("shipping/rates/delete", id);
           instance.state.set({
             isEditing: false,
             editingId: null
@@ -175,9 +193,9 @@ Template.shippingRatesSettings.events({
       }
     });
   },
-  "click .tax-grid-row": function (event) {
+  "click .shipping-grid-row": function (event) {
     // toggle all rows off, then add our active row
-    $(".tax-grid-row").removeClass("active");
+    $(".shipping-grid-row").removeClass("active");
     $(event.currentTarget).addClass("active");
   }
 });
@@ -186,24 +204,24 @@ Template.shippingRatesSettings.events({
 // Hooks for update and insert forms
 //
 AutoForm.hooks({
-  "shippingRatesSettings-update-form": {
+  "shipping-rates-update-form": {
     onSuccess: function () {
-      return Alerts.toast(i18next.t("admin.shippingSettings.shopCustomShippingRatesSaved"),
+      return Alerts.toast(i18next.t("admin.shippingSettings.rateSaved"),
         "success");
     },
     onError: function (operation, error) {
       return Alerts.toast(
-        `${i18next.t("admin.shippingSettings.shopCustomShippingRatesFailed")} ${error}`, "error"
+        `${i18next.t("admin.shippingSettings.rateFailed")} ${error}`, "error"
       );
     }
   },
-  "shippingRatesSettings-insert-form": {
+  "shipping-rates-insert-form": {
     onSuccess: function () {
-      return Alerts.toast(i18next.t("admin.shippingSettings.shopCustomShippingRatesSaved"), "success");
+      return Alerts.toast(i18next.t("admin.shippingSettings.rateSaved"), "success");
     },
     onError: function (operation, error) {
       return Alerts.toast(
-        `${i18next.t("admin.shippingSettings.shopCustomShippingRatesFailed")} ${error}`, "error"
+        `${i18next.t("admin.shippingSettings.rateFailed")} ${error}`, "error"
       );
     }
   }
