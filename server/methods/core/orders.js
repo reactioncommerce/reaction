@@ -843,7 +843,7 @@ export const methods = {
             });
 
             // Temporarily(?) put here the Shippo's method/label purchasing.After a succesfull capture fund
-            if (order.shipping[0].shipmentMethod.shippoMethod) {
+            if (order.shipping[0].shipmentMethod.settings) {
               Meteor.call("shippo/confirmShippingMethodForOrder", orderId);
             }
 
