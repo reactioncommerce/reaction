@@ -1,5 +1,5 @@
 import * as Collections from "/lib/collections";
-import { Reaction } from "/server/api";
+import { Reaction } from "/lib/api";
 
 const {
   Accounts,
@@ -33,15 +33,24 @@ const {
  */
 
 export default function () {
+
   /*
    * Define some additional rule chain methods
    */
+  // Replace ifHasRole with this to check seller/shop relationship
+  Security.defineMethod("ifHasSellerRole", {
+    fetch: [],
+    deny: function (type, arg, userId, doc) {
+      const deny = Roles.userIsInRole(["admin", "owner", "createProduct"], Reaction.getSellerShopId(userId));
+      return deny;
+    }
+  });
   // use this rule for collections other than Shops
   // matches this.shopId
   Security.defineMethod("ifShopIdMatches", {
     fetch: [],
     deny: function (type, arg, userId, doc) {
-      return doc.shopId !== Reaction.getShopId();
+      return doc.shopId !== Reaction.getSellerShopId(this.userId);
     }
   });
   // this rule is for the Shops collection
@@ -56,7 +65,8 @@ export default function () {
   Security.defineMethod("ifFileBelongsToShop", {
     fetch: [],
     deny: function (type, arg, userId, doc) {
-      return doc.metadata.shopId !== Reaction.getShopId();
+      const shopId =  Reaction.getSellerShopId(userId);
+      return doc.metadata.shopId !== shopId;
     }
   });
 
@@ -101,19 +111,10 @@ export default function () {
     Packages,
     Templates,
     Jobs
-  ]).ifHasRole({
-    role: "admin",
-    group: Reaction.getShopId()
-  }).ifShopIdMatches().exceptProps(["shopId"]).allowInClientCode();
-
-  /*
-   * Permissive security for users with the "admin" role for FS.Collections
-   */
-
-  Security.permit(["insert", "update", "remove"]).collections([Media]).ifHasRole({
-    role: ["admin", "owner", "createProduct"],
-    group: Reaction.getShopId()
-  }).ifFileBelongsToShop().allowInClientCode();
+  ]).ifHasSellerRole()
+    .ifShopIdMatches()
+    .exceptProps(["shopId"])
+    .allowInClientCode();
 
   /*
    * Users with the "admin" or "owner" role may update and
@@ -130,19 +131,20 @@ export default function () {
    * remove products, but createProduct allows just for just a product editor
    */
 
-  Products.permit(["insert", "update", "remove"]).ifHasRole({
-    role: ["createProduct"],
-    group: Reaction.getShopId()
-  }).ifShopIdMatches().allowInClientCode();
+  Products.permit(["insert", "update", "remove"])
+    .ifHasSellerRole()
+    .ifShopIdMatches()
+    .allowInClientCode();
 
   /*
    * Users with the "owner" role may remove orders for their shop
    */
 
-  Orders.permit("remove").ifHasRole({
-    role: ["admin", "owner"],
-    group: Reaction.getShopId()
-  }).ifShopIdMatches().exceptProps(["shopId"]).allowInClientCode();
+  Orders.permit("remove")
+    .ifHasSellerRole()
+    .ifShopIdMatches()
+    .exceptProps(["shopId"])
+    .allowInClientCode();
 
   /*
    * Can update cart from client. Must insert/remove carts using
@@ -163,6 +165,14 @@ export default function () {
     role: ["anonymous", "guest"],
     group: Reaction.getShopId()
   }).ifUserIdMatches().allowInClientCode();
+
+  /*
+   * Permissive security for users with the "admin" role for FS.Collections
+   */
+  Security.permit(["insert", "update", "remove"]).collections([Media])
+    .ifHasSellerRole()
+    .ifFileBelongsToShop()
+    .allowInClientCode();
 
   /*
    * apply download permissions to file collections

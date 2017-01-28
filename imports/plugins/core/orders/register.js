@@ -30,7 +30,10 @@ Reaction.registerPackage({
     permissions: [{
       label: "Create Product",
       permission: "createProduct"
-    }]
+    }],
+    audience: [
+      "owner","admin","seller"
+    ]
   }, {
     route: "/dashboard/pdf/orders/:id",
     workflow: "coreOrderPrintWorkflow",

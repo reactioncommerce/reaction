@@ -18,6 +18,7 @@ Template.sellerShopSettings.helpers({
   },
 
   brandImageSelectProps() {
+    const instance = Template.instance();
     if (instance.subscriptionsReady()) {
       const sellerShop = Reaction.getSellerShop();
 

@@ -1,5 +1,5 @@
 import { Media, Revisions } from "/lib/collections";
-import { Reaction } from "/server/api";
+import { Reaction } from "/lib/api";
 import { RevisionApi } from "/imports/plugins/core/revisions/lib/api/revisions";
 
 
@@ -10,7 +10,7 @@ import { RevisionApi } from "/imports/plugins/core/revisions/lib/api/revisions";
 Meteor.publish("Media", function (shops) {
   check(shops, Match.Optional(Array));
   let selector;
-  const shopId = Reaction.getShopId();
+  const shopId = Reaction.getSellerShopId(this.userId);
   if (!shopId) {
     return this.ready();
   }
