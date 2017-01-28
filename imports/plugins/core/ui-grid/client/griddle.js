@@ -15,12 +15,13 @@ const MeteorGriddle = React.createClass({
     filteredFields: React.PropTypes.array, // an array of fields to search through when filtering
     matchingResultsCount: React.PropTypes.string, // the name of the matching results counter
     publication: React.PropTypes.string, // the publication that will provide the data
-    subsManager: React.PropTypes.object
+    subsManager: React.PropTypes.object, // subsManager sub
+    transform: React.PropTypes.func // external function to filter result source
   },
   mixins: [ReactMeteorData],
 
   getDefaultProps() {
-    return { useExternal: false, externalFilterDebounceWait: 300, externalResultsPerPage: 10 };
+    return { useExternal: false, externalFilterDebounceWait: 300, externalResultsPerPage: 10, query: {} };
   },
 
   getInitialState() {
@@ -73,7 +74,7 @@ const MeteorGriddle = React.createClass({
       }, options));
     }
 
-    const results = this.props.collection.find(this.state.query, options).fetch();
+    const results = this.props.transform(this.props.collection.find(this.state.query, options).fetch());
 
     return {
       loading: !pubHandle.ready(),
