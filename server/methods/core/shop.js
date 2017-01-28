@@ -79,29 +79,6 @@ Meteor.methods({
   },
 
   /**
-   * shop/getSellerShopId
-   * @summary Get a shop's seller. Defaults to parent shopId
-   * @param {Object} userId An optional userId to get the shopId when the user is a seller
-   * @returns {String} The shopId of the seller, otherwise the parent shop
-   */
-  "shop/getSellerShopId": function (userId) {
-
-    check(userId, Match.OneOf(String, null, undefined));
-
-    const sellerId = userId || this.userId;
-console.log("shop/getSellerShopId seller", userId, this.userId, sellerId);
-
-    if (sellerId) {
-      const group = Roles.getGroupsForUser(userId, "admin")[0];
-      if (group) {
-        return group;
-      }
-    }
-
-    return Reaction.getShopId();
-  },
-
-  /**
    * shop/getLocale
    * @summary determine user's countryCode and return locale object
    * determine local currency and conversion rate from shop currency
