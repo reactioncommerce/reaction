@@ -14,7 +14,7 @@ import { Cart } from "/lib/collections";
 */
 Cart.after.update((userId, cart, fieldNames) => {
   const trigger = ["discount", "billing", "shipping"];
-  let discount;
+  let discount = 0;
   if (cart) {
     for (const field of fieldNames) {
       if (indexOf(trigger, field) !== -1) {

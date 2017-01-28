@@ -1,0 +1,15 @@
+[{
+  "i18n": "vi",
+  "ns": "reaction-layout",
+  "translation": {
+    "reaction-layout": {
+      "admin": {
+        "dashboard": {
+          "layoutLabel": "Bố trí",
+          "layoutTitle": "Bố trí",
+          "layoutDescription": "tiện ích layout"
+        }
+      }
+    }
+  }
+}]

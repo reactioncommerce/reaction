@@ -1,0 +1,35 @@
+[{
+  "language": "Arabic",
+  "i18n": "ar",
+  "ns": "reaction-templates",
+  "translation": {
+    "reaction-templates": {
+      "admin": {
+        "settings": {
+          "templateSettingsLabel": "إعدادات قالب"
+        }
+      },
+      "templateGrid": {
+        "noTemplatesFound": "لا توجد قوالب",
+        "columns": {
+          "title": "عنوان",
+          "type": "اكتب",
+          "language": "لغة"
+        }
+      },
+      "templateUpdateForm": {
+        "emailTemplates": {
+          "updateEmailTemplate": "تحديث نموذج البريد الإلكتروني"
+        },
+        "reactTemplates": {
+          "updateReactTemplate": "تحديث تتفاعل قالب",
+          "updateUnavailable": "تتفاعل قوالب لا يمكن تحريرها من خلال هذه الواجهة"
+        },
+        "alerts": {
+          "templateUpdated": "قالب تحديث بنجاح",
+          "failedToUpdate": "فشل تحديث قالب: {{err}}"
+        }
+      }
+    }
+  }
+}]

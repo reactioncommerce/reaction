@@ -9,73 +9,16 @@
       },
       "admin": {
         "shortcut": {
-          "dashboardLabel": "לוח המחוונים",
-          "ordersLabel": "הזמנות",
           "addProductLabel": "הוסף מוצר",
           "accountsLabel": "חשבונות"
         },
         "dashboard": {
-          "accountsLabel": "חשבונות",
-          "accountsTitle": "חשבונות",
-          "accountsDescription": "נהל הרשאות חבר",
-          "analyticsLabel": "ניתוח",
-          "analyticsTitle": "ניתוח",
-          "analyticsDescription": "ניתוח ואינטגרציות מעקב",
-          "authorizenetLabel": "Authorize.net",
-          "authorizenetTitle": "Authorize.net",
-          "authorizenetDescription": "תשלומי Authorize.net",
-          "shippingLabel": "משלוח",
-          "shippingTitle": "משלוח",
-          "shippingDescription": "תן תעריפי משלוח",
-          "braintreeLabel": "Braintree",
-          "braintreeTitle": "Braintree",
-          "braintreeDescription": "תשלומי Braintree",
-          "catalogLabel": "קטלוג",
-          "catalogTitle": "קטלוג",
-          "catalogDescription": "קטלוג מוצרים",
-          "coreLabel": "הגדרות",
-          "coreTitle": "לוח המחוונים",
-          "coreDescription": "תצורת Reaction",
-          "examplePaymentProviderLabel": "תשלום לדוגמה",
-          "examplePaymentProviderDescription": "שיטת תשלום לדוגמה",
-          "emailLabel": "דוא\"ל",
-          "emailTitle": "דוא\"ל",
-          "emailDescription": "הגדרות דוא\"ל",
           "i18NLabel": "i18n",
           "i18NTitle": "i18n",
           "i18NDescription": "תכניות שירות לאינטרנציונליזציה",
-          "inventoryLabel": "מלאי",
-          "inventoryTitle": "מלאי",
-          "inventoryDescription": "תכניות שירות למלאי",
-          "layoutLabel": "פריסה",
-          "layoutTitle": "פריסה",
-          "layoutDescription": "תכניות שירות לפריסה",
-          "connectLabel": "התחבר לרשתות",
-          "connectTitle": "התחבר לרשתות",
-          "connectDescription": "חבר את Reaction כשירות נפרס (deployed service)",
-          "ordersLabel": "הזמנות",
-          "ordersTitle": "הזמנות",
-          "ordersDescription": "בצע את ההזמנות שלך",
-          "paypalLabel": "PayPal",
-          "paypalTitle": "PayPal",
-          "paypalDescription": "תשלומי PayPal ",
-          "revisionsLabel": "גרסאות",
-          "revisionsTitle": "גרסאות",
-          "revisionsDescription": "ניהול גרסאות",
           "routingLabel": "ניתוב",
           "routingTitle": "ניתוב",
           "routingDescription": "תכניות שירות לניתוב",
-          "searchLabel": "חיפוש",
-          "searchTitle": "חיפוש",
-          "searchDescription": "חיפוש מוצר",
-          "socialLabel": "חברתי",
-          "socialTitle": "חברתי",
-          "socialDescription": "קביעת תצורה לערוץ חברתי",
-          "themesLabel": "נושאים",
-          "themesTitle": "נושאים",
-          "themesDescription": "נושאים ורכיבי ממשק משתמש",
-          "stripeLabel": "Stripe",
-          "stripeDescription": "תשלומי Stripe",
           "filtrationLabel": "סינון",
           "filtrationDescription": "סינון מוצרים ל- Reaction"
         },
@@ -90,23 +33,11 @@
         },
         "settings": {
           "accountSettingsLabel": "הגדרות חשבון",
+          "saveSuccess": "ההגדרות עודכנו.",
+          "saveFailed": "עדכון ההגדרות נכשל.",
           "addShopMemberLabel": "הוסף חבר חנות",
-          "authorizenetSettingsLabel": "הגדרות Authorize.net",
           "permissionsSettingsLabel": "הרשאות",
-          "braintreeSettingsLabel": "הגדרות Braintree",
-          "localizationAndI18NLabel": "מיקום ו- i18n",
-          "searchSettingsLabel": "הגדרות חיפוש",
-          "shopSettingsLabel": "הגדרות חנות",
-          "socialSettingsLabel": "הגדרות חברתיות",
-          "shippingSettingsLabel": "הגדרות משלוחים",
-          "stripeSettingsLabel": "הגדרות Stripe",
-          "inventorySettingsLabel": "הגדרות מלאי",
-          "analyticsSettingsLabel": "הגדרות ניתוח",
-          "paypalSettingsLabel": "הגדרות PayPal",
-          "reactionConnectLabel": "חיבור Reaction",
-          "examplePaymentSettingsLabel": "הגדרות תשלום לדוגמה",
-          "productSettingsLabel": "הגדרות מוצר",
-          "productDetailsLabel": "פרטי המוצר"
+          "localizationAndI18NLabel": "מיקום ו- i18n"
         },
         "userAccountDropdown": {
           "profileLabel": "פרופיל"
@@ -197,6 +128,41 @@
         "shopPaymentMethodsSaved": "הגדרות שיטות התשלום של החנות נשמרו.",
         "shopPaymentMethodsFailed": "עדכון הגדרות שיטות התשלום לחנות נכשל."
       },
+      "notifications": {
+        "body": {
+          "noNotifications": "עדיין אין הודעות",
+          "markAllAsRead": "סמן הכל כנקרא",
+          "recent": "לאחרונה",
+          "viewAll": "להציג את כל"
+        },
+        "messages": {
+          "orderCancelled": "ההזמנה שלך בוטלה.",
+          "newOrder": "שההזמנה מעובדת.",
+          "forAdmin": "יש לך הזמנה חדשה.",
+          "orderDelivered": "ההזמנה נשלחה.",
+          "orderAccepted": "הזמנתך התקבלה.",
+          "orderShipped": "ההזמנה נשלחה."
+        }
+      },
+      "sms": {
+        "headers": {
+          "settings": "ספק SMS"
+        },
+        "settings": {
+          "provider": "ספק",
+          "selectProvider": "בחירת ספק SMS ...",
+          "smsPhone": "מספר טלפון SMS",
+          "apiKey": "מפתח API",
+          "apiToken": "אסימון API / סוד"
+        },
+        "alerts": {
+          "noApiKey": "אנא להוסיף מפתח API",
+          "noApiToken": "אנא להוסיף API אסימון / סוד",
+          "noSmsProvider": "בחר ספק SMS",
+          "noSmsPhone": "נא להוסיף את מספר הטלפון שנתן לך ספק SMS שלך",
+          "saveSuccess": "הגדרות SMS הצילו"
+        }
+      },
       "mail": {
         "headers": {
           "email": "דוא\"ל",
@@ -241,7 +207,9 @@
           "connectionFailed": "החיבור נכשל!",
           "saveAnyway": "האם ברצונך לשמור את ההגדרות בכל מקרה?",
           "saveSuccess": "הגדרות הדואר נשמרו.",
-          "saveFailed": "שמירת הגדרות הדואר נכשלה. {{error}}"
+          "saveFailed": "שמירת הגדרות הדואר נכשלה. {{error}}",
+          "cantSendEmail": "שגיאת שרת: לא ניתן לשלוח התראת דוא\"ל.",
+          "emailSent": "התראת דוא\"ל נשלחה."
         }
       },
       "header": {
@@ -352,6 +320,7 @@
         "productIsNotVisible": "המוצר אינו גלוי"
       },
       "productVariant": {
+        "addVariantOptions": "הוסף אפשרויות כדי להפעיל  את הלחצן \"הוסף לעגלה\"",
         "inventoryQuantity": "כמות",
         "title": "תווית",
         "price": "מחיר",
@@ -435,11 +404,6 @@
           "completed": "הושלם",
           "canceled": "בוטל",
           "refunded": "החזר ניתן"
-        },
-        "paymentProvider": {
-          "braintree": {
-            "braintreeSettlementDelay": "Braintree אינו מאפשר החזרים עד הסדרת העסקאות. התהליך עשוי להימשך עד 24 שעות.  אנא נסה שוב מאוחר יותר."
-          }
         }
       },
       "orderShipping": {
@@ -560,6 +524,7 @@
       },
       "revisions": {
         "isDisabled": "ניהול הגרסאות מושבת. כל השינויים יפורסמו באופן מידי.",
+        "isEnabled": "ניהול גרסאות מופעל עבור המוצרים. יש לפרסם את כל השינויים לפני שיהפכו להיות גלויים עבור הלקוחות.",
         "unpublishedChanges": "שינויים שלא פורסמו",
         "publishChanges": "פרסם שינויים",
         "showChanges": "הצג שינויים",
@@ -593,14 +558,6 @@
         "shippingOptions": "אפשרויות משלוח",
         "reviewPayment": "סקירה ותשלום",
         "complete": "הושלם"
-      },
-      "checkoutPayment": {
-        "addPaymentToCompleteOrder": "הוסף תשלום על מנת להשלים את ההזמנה",
-        "processingError": "התגלתה בעיה עם התשלום שלך.",
-        "completeYourOrder": "השלם את הזמנתך",
-        "noPaymentMethods": "לא הוגדרו שיטות תשלום.",
-        "configureNow": "קבע תצורה עכשיו.",
-        "failedToPlaceOrder": "שליחת ההזמנה נכשלה."
       },
       "checkoutReview": {
         "review": "סקירה"
@@ -793,16 +750,6 @@
           "passwordResetSend": "הודעת דוא\"ל עם קישור לאיפוס הסיסמה נשלחה.",
           "invitationSent": "ההזמנה נשלחה",
           "sendInvitation": "שלח הזמנה"
-        },
-        "reactionUI": {
-          "editTheme": "ערוך נושא",
-          "duplicateTheme": "שכפל נושא",
-          "duplicateThemeError": "לא ניתן לשכפל נושא",
-          "publishThemeError": "לא ניתן לפרסם את הנושא {{themeName}}",
-          "components": {
-            "navbar": "סרגל ניווט",
-            "button": "לחצן"
-          }
         },
         "error": {
           "emailRequired": "חובה להזין כתובת דוא\"ל",

@@ -11,22 +11,27 @@ class FlatButton extends Component {
     const {
       icon,
       onIcon,
+      bordered,
       ...otherProps
     } = this.props;
 
     const buttonClassName = classnames({
       rui: true,
       button: true,
-      flat: true
+      flat: true,
+      bordered: bordered
     });
 
-
-    const iconClassName = classnames({
-      "fa-lg": false,
-      [icon]: true
-    });
-
+    let iconClassName;
     let onIconClassName;
+
+    if (icon) {
+      iconClassName = classnames({
+        "fa-lg": false,
+        [icon]: true
+      });
+    }
+
 
     if (onIcon) {
       onIconClassName = classnames({

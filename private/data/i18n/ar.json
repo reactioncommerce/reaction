@@ -7,75 +7,21 @@
       "languages": {
         "select": "أختيار للغة"
       },
+      "currencies": {
+        "select": "اختر العملة"
+      },
       "admin": {
         "shortcut": {
-          "dashboardLabel": "لوحة المعلومات",
-          "ordersLabel": "طلبات",
           "addProductLabel": "إضافة منتج",
           "accountsLabel": "حسابات"
         },
         "dashboard": {
-          "accountsLabel": "الحسابات",
-          "accountsTitle": "حسابات",
-          "accountsDescription": "إدارة موافقات العضو",
-          "analyticsLabel": "إحصائات",
-          "analyticsTitle": "تحليلات",
-          "analyticsDescription": "تحليلات التتبع والتكامل",
-          "authorizenetLabel": "Authorize.net",
-          "authorizenetTitle": "Authorize.net\n",
-          "authorizenetDescription": "Authorize.net دفعات",
-          "shippingLabel": "شحن",
-          "shippingTitle": "الشحن",
-          "shippingDescription": "تقديم معدلات الشحن",
-          "braintreeLabel": "برينتر",
-          "braintreeTitle": "برانتري",
-          "braintreeDescription": "مدفوعات برينتري",
-          "catalogLabel": "فهرس",
-          "catalogTitle": "فهرس",
-          "catalogDescription": "فهرس المنتج",
-          "coreLabel": "إعدادات",
-          "coreTitle": "لوحة المعلومات",
-          "coreDescription": "تكوين رد فعل",
-          "examplePaymentProviderLabel": "نموذج دفع",
-          "examplePaymentProviderDescription": "مثال طريقة الدفع",
-          "emailLabel": "البريد الالكتروني ",
-          "emailTitle": "البريد الالكتروني ",
-          "emailDescription": "اعدادات البريد الالكتروني ",
           "i18NLabel": "i18n",
           "i18NTitle": "i18n",
           "i18NDescription": "أدوات مساعدة التدويل",
-          "inventoryLabel": "جرد",
-          "inventoryTitle": "جرد",
-          "inventoryDescription": "الأدوات المساعدة للجرد",
-          "layoutLabel": "تصميم",
-          "layoutTitle": "تصميم",
-          "layoutDescription": "تصميم برامج خدمات تفاعلية",
-          "connectLabel": "توصيل",
-          "connectTitle": "توصيل",
-          "connectDescription": "توصيل ردود الفعل كخدمة نشر",
-          "ordersLabel": "الطلبات",
-          "ordersTitle": "الطلبات",
-          "ordersDescription": "إنجاز طلبيتك",
-          "paypalLabel": "باي بال",
-          "paypalTitle": "باي بال",
-          "paypalDescription": "دفعة باي بال",
-          "revisionsLabel": "المراجعات ",
-          "revisionsTitle": "المراجعات ",
-          "revisionsDescription": "تحكم بالمراجعة ",
           "routingLabel": "التوجيه",
           "routingTitle": "توجيه",
           "routingDescription": "الأدوات المساعدة للتوجيه",
-          "searchLabel": "بحث",
-          "searchTitle": "بحث",
-          "searchDescription": "بحث المنتج",
-          "socialLabel": "إجتماعي",
-          "socialTitle": "إجتماعي",
-          "socialDescription": "تشكيل قناة إجتماعية",
-          "themesLabel": "مواضيع",
-          "themesTitle": "مواضيع",
-          "themesDescription": "مكونات المواضيع واجهة الأستخدام",
-          "stripeLabel": "شريط",
-          "stripeDescription": "شريط الدفع",
           "filtrationLabel": "تصفية",
           "filtrationDescription": "المنتجات المرشحة لردة الفعل"
         },
@@ -90,23 +36,13 @@
         },
         "settings": {
           "accountSettingsLabel": "إعدادات الحساب",
+          "accountSettingsTitle": "خدمات تسجيل الدخول",
+          "accountSettingsDescription": "المصادقة من خلال مقدمي الاجتماعي",
+          "saveSuccess": "تجديد الإعدادات.",
+          "saveFailed": "فشل تحديث الإعدادات.",
           "addShopMemberLabel": "إضافة عضو للمتجر",
-          "authorizenetSettingsLabel": "Authorize.net إعدادات ",
           "permissionsSettingsLabel": "موافقات",
-          "braintreeSettingsLabel": "إعدادات برينتر",
-          "localizationAndI18NLabel": "التحويل و i18n",
-          "searchSettingsLabel": "إعدادات البحث",
-          "shopSettingsLabel": "إعدادات الشراء",
-          "socialSettingsLabel": "إعدادات عامة",
-          "shippingSettingsLabel": "إعدادات الشحن",
-          "stripeSettingsLabel": "إعدادات شريط",
-          "inventorySettingsLabel": "إعدادات الجرد",
-          "analyticsSettingsLabel": ".إعدادات التحليلات",
-          "paypalSettingsLabel": "إعدادات باي بال",
-          "reactionConnectLabel": "توصيل التفاعل",
-          "examplePaymentSettingsLabel": "مثال إعدادات الدفع",
-          "productSettingsLabel": "إعدادات المنتج",
-          "productDetailsLabel": "تفاصيل المنتج"
+          "localizationAndI18NLabel": "التحويل و i18n"
         },
         "userAccountDropdown": {
           "profileLabel": "الملف الشخصي"
@@ -197,6 +133,41 @@
         "shopPaymentMethodsSaved": ".تم حفظ إعدادات طريقة الدفع",
         "shopPaymentMethodsFailed": ".تحديث إعدادات طريقة الدفع للشراء فشلت"
       },
+      "notifications": {
+        "body": {
+          "noNotifications": "لا إخطارات حتى الآن",
+          "markAllAsRead": "وضع علامة كمقروءة جميع",
+          "recent": "الأخيرة",
+          "viewAll": "عرض الكل"
+        },
+        "messages": {
+          "orderCancelled": "تم إلغاء طلبك.",
+          "newOrder": "طلبك قيد التنفيذ.",
+          "forAdmin": "لديك النظام الجديد.",
+          "orderDelivered": "وقد تم تسليم طلبك.",
+          "orderAccepted": "تم قبول طلبك.",
+          "orderShipped": "وقد تم شحن طلبك."
+        }
+      },
+      "sms": {
+        "headers": {
+          "settings": "مزود الرسائل القصيرة"
+        },
+        "settings": {
+          "provider": "مزود",
+          "selectProvider": "حدد مزود الرسائل القصيرة ...",
+          "smsPhone": "الرسائل القصيرة رقم الهاتف",
+          "apiKey": "مفتاح API",
+          "apiToken": "API رمز"
+        },
+        "alerts": {
+          "noApiKey": "الرجاء إضافة مفتاح API",
+          "noApiToken": "الرجاء إضافة API TOKEN / سر",
+          "noSmsProvider": "الرجاء اختيار موفر SMS",
+          "noSmsPhone": "الرجاء إضافة رقم الهاتف المعطاة لك من قبل موفر SMS",
+          "saveSuccess": "إعدادات الرسائل القصيرة SMS حفظ"
+        }
+      },
       "mail": {
         "headers": {
           "email": "بريد إلكتروني",
@@ -241,7 +212,9 @@
           "connectionFailed": "!فشل الأتصال",
           "saveAnyway": "هل تريد حفظ الإعدادات بجميع الاحوال؟",
           "saveSuccess": ".تم حفظ إعدادات البريد",
-          "saveFailed": "فشل حفظ إعدادات البريد {{error}}"
+          "saveFailed": "فشل حفظ إعدادات البريد {{error}}",
+          "cantSendEmail": "خطأ الخادم: لا يمكن إرسال إشعار البريد الإلكتروني.",
+          "emailSent": "إشعار البريد الإلكتروني المرسلة."
         }
       },
       "header": {
@@ -352,6 +325,7 @@
         "productIsNotVisible": "المنتج غير مرئي"
       },
       "productVariant": {
+        "addVariantOptions": "إضافة خيارات لتمكين \"إضافة إلى العربة\" بطو",
         "inventoryQuantity": "كمية",
         "title": "علامة",
         "price": "ثمن",
@@ -381,6 +355,10 @@
         "disableConfirm": "هل أنت متأكد من أنك تريد تعطيل  {{app}}؟",
         "pkgEnabled": "{{app}} مفعل الان.",
         "pkgDisabled": "{{app}} أصبح معطلا."
+      },
+      "gridSettingsPanel": {
+        "title": "إعدادات الشبكة",
+        "selected": "مختار"
       },
       "cartDrawer": {
         "empty": "نشعر بالحزن. .عربتك فارغة",
@@ -435,11 +413,6 @@
           "completed": "مكتمل",
           "canceled": "تم الإلغاء",
           "refunded": "المستردة"
-        },
-        "paymentProvider": {
-          "braintree": {
-            "braintreeSettlementDelay": ".بانتري لا يسمح بإسترداد المبلغ حتى تتم تسوية المعاملات .من الممكن أن يأخذ هذا حتى 24 ساعة .الرجاء المحاولة مرة اخرى لاحقاً"
-          }
         }
       },
       "orderShipping": {
@@ -447,11 +420,16 @@
         "notShipped": "لم يتم الشحن حتى الأن",
         "noTracking": "عدم التتبع",
         "tracking": "تتبع",
+        "printLabels": "تسميات الطباعة",
+        "printShippingLabel": "الشحن",
+        "printCustomsLabel": "الجمارك",
+        "carrier": "الناقل",
         "addTracking": "إضافة رقم التتبع",
         "itemsHaveBeenShipped": "تم شحن العناصر",
         "shipmentEmpty": "هذه الشحنة لا تحتوي على أي عناصر",
         "shipmentPacked": "جميع العناصر جاهزة",
         "shipped": "تم الشحن",
+        "delivered": "تم التوصيل",
         "shippingNotifyCustomer": " قم بتبليغ العميل بأنه هنالك عناصر ستشحن قريباً",
         "resendNotification": "إعادة إرسال إشعارات الشحنة"
       },
@@ -560,6 +538,7 @@
       },
       "revisions": {
         "isDisabled": ".مراجعة المراقبة  غير مفعل .أي تغيير سوف يتم نشره فوراً",
+        "isEnabled": "يتم تمكين مراجعة مراقبة للمنتجات. سوف يحتاج أي تغييرات على أن تنشر قبل أن يكون مرئيا للعملاء.",
         "unpublishedChanges": "تغييرات غير منشورة",
         "publishChanges": "تغييرات النشر",
         "showChanges": "إظهار التغييرات",
@@ -593,14 +572,6 @@
         "shippingOptions": "خيارات الشحن",
         "reviewPayment": "مراجعة",
         "complete": "تم"
-      },
-      "checkoutPayment": {
-        "addPaymentToCompleteOrder": "إضافة الدفعة لإتمام الطلب",
-        "processingError": ".ثمة هنالك مشكلة في دفعتك",
-        "completeYourOrder": "أكمل طلبك",
-        "noPaymentMethods": ".لا يوجد طريقة دفع منشأة",
-        "configureNow": "قم بالإنشاء الأن",
-        "failedToPlaceOrder": ".حقل لوضع الطلب"
       },
       "checkoutReview": {
         "review": "إعادة العرض"
@@ -793,16 +764,6 @@
           "passwordResetSend": "تم ارسال البريد الإلكتروني مع رابط لإعادة تعيين كلمة المرور.",
           "invitationSent": "تم إرسال الدعوة",
           "sendInvitation": "إرسال دعوة"
-        },
-        "reactionUI": {
-          "editTheme": "إضافة موضوع",
-          "duplicateTheme": "نسخ موضوع",
-          "duplicateThemeError": "لا يمكن نسخ الموضوع",
-          "publishThemeError": "`لم نتمكن من نشر الحالة {{themeName}}",
-          "components": {
-            "navbar": "شريط التنقل",
-            "button": "زر"
-          }
         },
         "error": {
           "emailRequired": "البريد الالكترونى مطلوب",

@@ -2,6 +2,14 @@
   &:focus {
     outline: none;
   }
+
+  &.disabled,
+  &[disabled],
+  fieldset[disabled] & {
+    cursor: @cursor-disabled;
+    .opacity(.65);
+    .box-shadow(none);
+  }
 }
 
 .rui.button > .contents {
@@ -12,7 +20,6 @@
   justify-content: center;
   align-items: center;
 }
-
 
 .rui.button.edit, .btn-edit {
   border: none;
@@ -29,24 +36,64 @@
   margin-left: 5px;
 }
 
-// .rui.button.edit.btn-default, .btn-edit.btn-default {
-//   background-color: @btn-default-bg;
-// }
+.rui.button.edit.btn-default, .btn-edit.btn-default {
+  background-color: @btn-edit-bg;
+
+  &.disabled,
+  &[disabled],
+  fieldset[disabled] & {
+    .opacity(.65);
+  }
+}
+
+.rui.button.edit.active, .btn-edit.active {
+  background-color: @btn-active-bg;
+
+  &.disabled,
+  &[disabled],
+  fieldset[disabled] & {
+    .opacity(.65);
+  }
+}
 
 .rui.button.edit.btn-success, .btn-edit.btn-success {
   background-color: @btn-success-bg;
+
+  &.disabled,
+  &[disabled],
+  fieldset[disabled] & {
+    .opacity(.65);
+  }
 }
 
 .rui.button.edit.btn-warning, .btn-edit.btn-warning {
   background-color: @btn-warning-bg;
+
+  &.disabled,
+  &[disabled],
+  fieldset[disabled] & {
+    .opacity(.65);
+  }
 }
 
 .rui.button.edit.btn-danger, .btn-edit.btn-danger {
   background-color: @btn-danger-bg;
+
+  &.disabled,
+  &[disabled],
+  fieldset[disabled] & {
+    .opacity(.65);
+  }
 }
 
 .rui.button.edit.btn-info, .btn-edit.btn-info {
   background-color: @btn-info-bg;
+
+  &.disabled,
+  &[disabled],
+  fieldset[disabled] & {
+    .opacity(.65);
+  }
 }
 
 .rui.button.edit > .icon,
@@ -74,6 +121,25 @@
 
 .rui.button.flat, .btn-flat {
   border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: inherit;
+  background-color: transparent;
+}
+
+.toolbar-group .rui.button.flat {
+  color: @reaction-brand;
+
+  &.disabled,
+  &[disabled],
+  fieldset[disabled] & {
+    color: desaturate(mix(@white,@btn-success-bg, 40%),30%);
+  }
+}
+
+.rui.button.icon, .btn-icon {
+  border: none;
   padding: 0;
   display: flex;
   justify-content: center;
@@ -83,6 +149,7 @@
   color: inherit;
   background-color: transparent;
 }
+
 
 .rui.button.round, .btn-round {
   border: none;
@@ -122,6 +189,7 @@
 
 .rui.button.icon-only i {
   width: 100%;
+  .padding-right(0);
 }
 
 .btn-flat {
@@ -134,3 +202,40 @@
 .btn-flat:visited {
   text-decoration: none;
 }
+
+.rui.button .font-icon {
+  .padding-right(5px);
+}
+
+.rui.btn-bordered {
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: inherit;
+  background-color: transparent;
+
+}
+
+.rui.button.btn-success.bordered, .btn-success.btn-bordered{
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: @btn-success-bg;
+  background-color: transparent;
+  border: 3px solid @btn-success-bg;
+  border-radius: 0;
+  font-weight: 600;
+  text-transform: uppercase;
+
+  &.disabled,
+  &[disabled],
+  fieldset[disabled] & {
+    color: desaturate(mix(@white,@btn-success-bg, 40%),30%);
+    border: 3px solid desaturate(mix(@white,@btn-success-bg, 40%),30%);
+
+  }
+}
+
+// .rui.button .btn-default.btn-bordered

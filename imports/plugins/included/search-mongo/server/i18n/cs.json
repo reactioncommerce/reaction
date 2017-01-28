@@ -1,0 +1,18 @@
+[{
+  "i18n": "cs",
+  "ns": "reaction-search",
+  "translation": {
+    "reaction-search": {
+      "admin": {
+        "dashboard": {
+          "searchLabel": "Vyhledávání",
+          "searchTitle": "Vyhledávání",
+          "searchDescription": "Hledání výrobku"
+        },
+        "settings": {
+          "searchSettingsLabel": "Nastavení hledání"
+        }
+      }
+    }
+  }
+}]

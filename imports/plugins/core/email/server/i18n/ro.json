@@ -1,0 +1,20 @@
+[{
+  "i18n": "ro",
+  "ns": "reaction-email",
+  "translation": {
+    "reaction-email": {
+      "admin": {
+        "dashboard": {
+          "emailLabel": "Email",
+          "emailTitle": "Email",
+          "emailDescription": "setări e-mail"
+        },
+        "settings": {
+          "emailSettingsLabel": "Setări e-mail",
+          "emailSettingsTitle": "Setări e-mail",
+          "emailSettingsDescription": "setări e-mail"
+        }
+      }
+    }
+  }
+}]

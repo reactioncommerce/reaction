@@ -11,7 +11,14 @@
         "dashboard": {
           "taxesLabel": "ضرائب",
           "taxesTitle": "ضرائب",
-          "taxesDescription": "تهيئة الضرائب\n"
+          "taxesDescription": "تهيئة الضرائب"
+        },
+        "taxGrid": {
+          "taxCode": "رمز",
+          "rate": "معدل",
+          "country": "بلد",
+          "region": "منطقة",
+          "postal": "بريدي"
         },
         "settings": {
           "taxSettingsLabel": "إعدادات ضرائب"

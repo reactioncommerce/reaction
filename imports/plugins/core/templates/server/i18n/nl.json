@@ -1,0 +1,35 @@
+[{
+  "language": "Dutch",
+  "i18n": "nl",
+  "ns": "reaction-templates",
+  "translation": {
+    "reaction-templates": {
+      "admin": {
+        "settings": {
+          "templateSettingsLabel": "sjabloon Settings"
+        }
+      },
+      "templateGrid": {
+        "noTemplatesFound": "Geen templates gevonden",
+        "columns": {
+          "title": "Titel",
+          "type": "Type",
+          "language": "Taal"
+        }
+      },
+      "templateUpdateForm": {
+        "emailTemplates": {
+          "updateEmailTemplate": "Update e-mail template"
+        },
+        "reactTemplates": {
+          "updateReactTemplate": "Update Reageer template",
+          "updateUnavailable": "Reageer templates kunnen niet worden bewerkt via deze interface"
+        },
+        "alerts": {
+          "templateUpdated": "Sjabloon succesvol bijgewerkt",
+          "failedToUpdate": "Mislukt sjabloon bij te werken: {{err}}"
+        }
+      }
+    }
+  }
+}]

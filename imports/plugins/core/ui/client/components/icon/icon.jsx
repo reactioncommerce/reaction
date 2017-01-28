@@ -23,7 +23,7 @@ class Icon extends Component {
     }, classes, this.props.className);
 
     return (
-      <i className={classes} />
+      <i style={this.props.style} className={classes} />
     );
   }
 }

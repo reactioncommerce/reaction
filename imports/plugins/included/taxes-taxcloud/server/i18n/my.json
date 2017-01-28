@@ -1,0 +1,26 @@
+[{
+  "language": "Burmese",
+  "i18n": "my",
+  "ns": "taxes-taxcloud",
+  "translation": {
+    "reaction-taxes": {
+      "admin": {
+        "shortcut": {
+          "taxcloudLabel": "TaxCloud",
+          "taxcloudTitle": "TaxCloud"
+        },
+        "dashboard": {
+          "taxcloudLabel": "TaxCloud",
+          "taxcloudTitle": "TaxCloud",
+          "taxcloudDescription": "TaxCloud အခွန်အခများ"
+        },
+        "taxSettings": {
+          "taxcloudLabel": "TaxCloud",
+          "taxcloudSettingsLabel": "TaxCloud",
+          "taxcloudCredentials": "ဖွင့်ဖို့အထောက်အထားများ Add",
+          "taxcloudGetCredentialsURL": "ဒီနေရာမှာသူတို့ကို Get"
+        }
+      }
+    }
+  }
+}]

@@ -1,0 +1,16 @@
+[{
+  "i18n": "zh",
+  "ns": "reaction-dashboard",
+  "translation": {
+    "reaction-dashboard": {
+      "admin": {
+        "shortcut": {
+          "dashboardLabel": "仪表盘"
+        },
+        "settings": {
+          "shopSettingsLabel": "店"
+        }
+      }
+    }
+  }
+}]

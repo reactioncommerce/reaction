@@ -194,6 +194,10 @@ export default {
     return shop && shop.name;
   },
 
+  getShopPrefix() {
+    return "/" + this.getSlug(this.getShopName().toLowerCase());
+  },
+
   getShopEmail() {
     const shop = Shops.find({
       _id: this.getShopId()
@@ -302,7 +306,7 @@ export default {
     let accountId;
 
     while (!this.getShopId()) {
-      Logger.info("No shopId, waiting one second...");
+      Logger.debug("No shopId, waiting one second...");
       Meteor._sleepForMs(1000);
     }
     const shopId = this.getShopId();
@@ -377,13 +381,9 @@ export default {
           "emails.$.verified": true
         }
       });
-    } else { // send verification email to admin
-      try {
-        // if server is not configured. Error in configuration are caught, but admin isn't verified.
-        sendVerificationEmail(accountId);
-      } catch (error) {
-        Logger.warn(error, "Unable to send admin account verification email.");
-      }
+    } else {
+      // send verification email to admin
+      sendVerificationEmail(accountId);
     }
 
     //

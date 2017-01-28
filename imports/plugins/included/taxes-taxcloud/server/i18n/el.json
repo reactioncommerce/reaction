@@ -1,0 +1,26 @@
+[{
+  "language": "Greek",
+  "i18n": "el",
+  "ns": "taxes-taxcloud",
+  "translation": {
+    "reaction-taxes": {
+      "admin": {
+        "shortcut": {
+          "taxcloudLabel": "TaxCloud",
+          "taxcloudTitle": "TaxCloud"
+        },
+        "dashboard": {
+          "taxcloudLabel": "TaxCloud",
+          "taxcloudTitle": "TaxCloud",
+          "taxcloudDescription": "φόροι TaxCloud"
+        },
+        "taxSettings": {
+          "taxcloudLabel": "TaxCloud",
+          "taxcloudSettingsLabel": "TaxCloud",
+          "taxcloudCredentials": "Προσθέστε τα διαπιστευτήρια για να ενεργοποιήσετε",
+          "taxcloudGetCredentialsURL": "Πάρτε τους εδώ"
+        }
+      }
+    }
+  }
+}]

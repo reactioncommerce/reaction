@@ -20,6 +20,7 @@
   opacity: 0.7;
   width: 100%;
   padding-top: 10px;
+  word-break: break-all;
   .currency-symbol {
     white-space: nowrap;
     text-decoration: none;
@@ -28,9 +29,6 @@
 }
 
 .product-grid-item .overlay-title {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: clip;
   text-transform: uppercase;
   font-size: @font-size-base;
   font-weight: 400;
@@ -160,6 +158,7 @@
 
     @media screen and (max-width: @screen-xs-max) {
       max-width: 100%;
+      -webkit-flex-basis: 100%;
 
       .product-grid-item-images {
         height: 225px;
@@ -356,4 +355,12 @@
 
   // border-radius: 5px;
   // box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+}
+
+.product-grid-badges {
+  .badge {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+  }
 }

@@ -1,0 +1,32 @@
+[{
+  "language": "Hebrew",
+  "i18n": "he",
+  "ns": "reaction-braintree",
+  "translation": {
+    "reaction-payments": {
+      "admin": {
+        "shortcut": {
+          "braintreeLabel": "Braintree",
+          "braintreeTitle": "Braintree"
+        },
+        "dashboard": {
+          "braintreeLabel": "Braintree",
+          "braintreeTitle": "Braintree",
+          "braintreeDescription": "תשלומי Braintree"
+        },
+        "paymentSettings": {
+          "braintreeLabel": "Braintree",
+          "braintreeSettingsLabel": "Braintree",
+          "braintreeCredentials": "הוסף אישורים כדי להפעיל"
+        }
+      },
+      "order": {
+        "paymentProvider": {
+          "braintree": {
+            "braintreeSettlementDelay": "Braintre אינו מאפשר החזרים עד שהעסקאות ישולמו. התהליך עשוי לארוך עד 24 שעות. אנא נסה שוב מאוחר יותר."
+          }
+        }
+      }
+    }
+  }
+}]

@@ -1,0 +1,35 @@
+[{
+  "language": "Bulgarian",
+  "i18n": "bg",
+  "ns": "reaction-templates",
+  "translation": {
+    "reaction-templates": {
+      "admin": {
+        "settings": {
+          "templateSettingsLabel": "Настройки на шаблон"
+        }
+      },
+      "templateGrid": {
+        "noTemplatesFound": "Няма намерени шаблони",
+        "columns": {
+          "title": "Заглавие",
+          "type": "Тип",
+          "language": "Език"
+        }
+      },
+      "templateUpdateForm": {
+        "emailTemplates": {
+          "updateEmailTemplate": "Актуализация на имейл шаблон"
+        },
+        "reactTemplates": {
+          "updateReactTemplate": "Актуализация реагират шаблон",
+          "updateUnavailable": "Реагират шаблони не могат да бъдат редактирани чрез този интерфейс"
+        },
+        "alerts": {
+          "templateUpdated": "Шаблон успешно актуализиран",
+          "failedToUpdate": "Неуспешно актуализиране на шаблон: {{err}}"
+        }
+      }
+    }
+  }
+}]

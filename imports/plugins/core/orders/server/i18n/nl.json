@@ -1,0 +1,18 @@
+[{
+  "i18n": "nl",
+  "ns": "reaction-orders",
+  "translation": {
+    "reaction-orders": {
+      "admin": {
+        "shortcut": {
+          "ordersLabel": "orders"
+        },
+        "dashboard": {
+          "ordersLabel": "orders",
+          "ordersTitle": "orders",
+          "ordersDescription": "Vervul uw bestellingen"
+        }
+      }
+    }
+  }
+}]

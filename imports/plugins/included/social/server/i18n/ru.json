@@ -1,0 +1,18 @@
+[{
+  "i18n": "ru",
+  "ns": "reaction-social",
+  "translation": {
+    "reaction-social": {
+      "admin": {
+        "dashboard": {
+          "socialLabel": "Социальное",
+          "socialTitle": "Социальное",
+          "socialDescription": "Конфигурация социального канала"
+        },
+        "settings": {
+          "socialSettingsLabel": "Социальные настройки"
+        }
+      }
+    }
+  }
+}]

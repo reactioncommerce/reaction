@@ -1,0 +1,18 @@
+[{
+  "i18n": "my",
+  "ns": "reaction-orders",
+  "translation": {
+    "reaction-orders": {
+      "admin": {
+        "shortcut": {
+          "ordersLabel": "အမိန့်"
+        },
+        "dashboard": {
+          "ordersLabel": "အမိန့်",
+          "ordersTitle": "အမိန့်",
+          "ordersDescription": "သင့်ရဲ့အမိန့်ဖြည့်ဆည်း"
+        }
+      }
+    }
+  }
+}]

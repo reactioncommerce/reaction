@@ -78,7 +78,7 @@ StripeApi.methods.createCharge = new ValidatedMethod({
     } catch (e) {
       // Handle "expected" errors differently
       if (e.rawType === "card_error" && _.includes(expectedErrors, e.code)) {
-        Logger.info("Error from Stripe is expected, not throwing");
+        Logger.debug("Error from Stripe is expected, not throwing");
         return { error: e, result: null };
       }
       Logger.error("Received unexpected error code: " + e.code);
@@ -123,13 +123,7 @@ StripeApi.methods.createRefund = new ValidatedMethod({
     } else {
       stripe = require("stripe")(apiKey);
     }
-    const refundPromise = stripe.refunds.create({
-      charge: refundDetails.charge,
-      amount: refundDetails.amount
-    }, function (error, result) {
-      return { error, result };
-    });
-
+    const refundPromise = stripe.refunds.create({ charge: refundDetails.charge, amount: refundDetails.amount });
     const refundResults = Promise.await(refundPromise);
     return refundResults;
   }

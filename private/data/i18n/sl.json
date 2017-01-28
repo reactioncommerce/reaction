@@ -4,7 +4,709 @@
   "ns": "core",
   "translation": {
     "core": {
+      "languages": {
+        "select": "Izberi jezik"
+      },
+      "currencies": {
+        "select": "Izberite valuto"
+      },
+      "admin": {
+        "shortcut": {
+          "addProductLabel": "Dodaj izdelek",
+          "accountsLabel": "računi"
+        },
+        "dashboard": {
+          "i18NLabel": "i18n",
+          "i18NTitle": "i18n",
+          "i18NDescription": "internacionalizacije pripomočki",
+          "routingLabel": "usmerjanje",
+          "routingTitle": "usmerjanje",
+          "routingDescription": "usmerjanja pripomočki",
+          "filtrationLabel": "filtracija",
+          "filtrationDescription": "Izdelki filtracija za reakcije"
+        },
+        "groups": {
+          "appearance": "videz",
+          "connect": "Poveži",
+          "core": "Core",
+          "dashboard": "Nadzorna plošča",
+          "misc": "Razno",
+          "paymentMethod": "Ponudniki plačilnih",
+          "utilities": "Pripomočki"
+        },
+        "settings": {
+          "accountSettingsLabel": "Nastavitve računa",
+          "accountSettingsTitle": "Prijava Storitve",
+          "accountSettingsDescription": "Avtentikacija preko socialnih ponudnikov",
+          "saveSuccess": "Nastavitve posodobljene.",
+          "saveFailed": "Ni bilo mogoče posodobiti nastavitve.",
+          "addShopMemberLabel": "Dodaj Shop Član",
+          "permissionsSettingsLabel": "dovoljenja",
+          "localizationAndI18NLabel": "Lokalizacija in i18n"
+        },
+        "userAccountDropdown": {
+          "profileLabel": "Profil"
+        }
+      },
+      "accounts": {
+        "addMember": "Dodaj član",
+        "shopMembers": "trgovina Člani",
+        "guests": "gostov"
+      },
+      "app": {
+        "add": "Dodaj",
+        "editMode": "način urejanja",
+        "createContent": "ustvarjanje vsebine",
+        "auto": "Auto",
+        "save": "Shrani",
+        "saveAndContinue": "Shrani in nadaljuj",
+        "saveChanges": "Shrani spremembe",
+        "selectOne": "(Izberi eno)",
+        "cancel": "Prekliči",
+        "success": "uspeh",
+        "error": "Napaka",
+        "submit": "Submit",
+        "delete": "Izbriši",
+        "deleted": "izbrisan",
+        "archive": "Arhiv",
+        "archived": "Arhivirano",
+        "create": "ustvarjanje",
+        "close": "Zapri",
+        "settings": "Nastavitve",
+        "loading": "nalaganje",
+        "toggle": "Toggle",
+        "toggleEditMode": "Preklop Način urejanja",
+        "warning": "Ups!",
+        "unauthorizedMessage": "Nimate dovoljenja za ogled te vsebine.",
+        "updateSettings": "Nastavitve posodobitve",
+        "monthOptions": "Izberi mesec",
+        "yearOptions": "Izberite leto",
+        "shopSettings": "trgovina Nastavitve",
+        "dashboard": "Nadzorna plošča",
+        "print": "Tiskanje",
+        "notFound": "Ta stran ni bilo mogoče najti.",
+        "pageNotFound": "Ta stran ni bilo mogoče najti.",
+        "notFoundTitle": "Ups!",
+        "notFoundError": "Stran ni najdena.",
+        "productNotFound": "Ta izdelek ni bil najden.",
+        "loadMoreProducts": "Naloži več izdelkov",
+        "noProductsFound": "Ni izdelkov."
+      },
+      "searchSettings": {
+        "productSearchSettings": {
+          "panelTitle": "Iskanje",
+          "includeTitle": "vključi naslov",
+          "includeDescription": "Vključite opis",
+          "includePageTitle": "Vključi naslov strani",
+          "includeDetails": "vključuje podrobnosti",
+          "includeVendor": "vključi prodajalca"
+        },
+        "orderSearchSettings": {
+          "panelTitle": "Nastavitve naročilo Iskanje"
+        },
+        "accountSearchSettings": {
+          "panelTitle": "Nastavitve računa iskanja"
+        },
+        "noSettings": "Ni nastavitve trenutno na voljo",
+        "settingsSaved": "Nastavitve iskanja shranjene",
+        "settingsfailed": "Nastavitve iskanja posodobitev ni uspela"
+      },
+      "shopSettings": {
+        "general": "Splošno",
+        "address": "naslov",
+        "import": "Uvoz",
+        "localization": "lokalizacija",
+        "options": "Opcije",
+        "availableOptions": "Opcije na voljo",
+        "paymentMethods": "načini plačila",
+        "externalServices": "zunanje storitve",
+        "shopGeneralSettingsSaved": "Shop splošne nastavitve shranjene.",
+        "shopGeneralSettingsFailed": "Trgovina splošne nastavitve posodobitev ni uspela.",
+        "shopAddressSettingsSaved": "Nastavitve Shop naslov shranjene.",
+        "shopAddressSettingsFailed": "Trgovina nastavitve naslov posodobitev ni uspela.",
+        "shopExternalServicesSettingsSaved": "Shop zunanje nastavitve storitev shranjene.",
+        "shopExternalServicesSettingsFailed": "Shop posodobitev nastavitev zunanjih storitev ni uspelo.",
+        "shopLocalizationSettingsSaved": "Nastavitve Shop lokalizacijo shranjene.",
+        "shopLocalizationSettingsFailed": "Trgovina nastavitve lokalizacijo posodobitev ni uspela.",
+        "shopOptionsSettingsSaved": "Možnosti Trgovina shranjene.",
+        "shopOptionsSettingsFailed": "Možnosti Shop posodobitev ni uspela.",
+        "shopPaymentMethodsSaved": "Trgovina nastavitve Načini plačila shranjene.",
+        "shopPaymentMethodsFailed": "Trgovina nastavitve Načini plačila posodobitev ni uspela."
+      },
+      "notifications": {
+        "body": {
+          "noNotifications": "Še ni obvestila",
+          "markAllAsRead": "Označi vse kot prebrano",
+          "recent": "nedavne",
+          "viewAll": "Poglej vse"
+        },
+        "messages": {
+          "orderCancelled": "Vaše naročilo je bilo preklicano.",
+          "newOrder": "Vaše naročilo je v obdelavi.",
+          "forAdmin": "Imate novo naročilo.",
+          "orderDelivered": "Vaše naročilo je bilo dostavljeno.",
+          "orderAccepted": "Vaše naročilo je bilo sprejeto.",
+          "orderShipped": "Vaše naročilo je bilo poslano."
+        }
+      },
+      "sms": {
+        "headers": {
+          "settings": "Ponudnik SMS"
+        },
+        "settings": {
+          "provider": "ponudnik",
+          "selectProvider": "Izberite ponudnika SMS ...",
+          "smsPhone": "SMS Telefonska številka",
+          "apiKey": "ključ API",
+          "apiToken": "API žeton / Secret"
+        },
+        "alerts": {
+          "noApiKey": "Prosimo, dodajte ključ API",
+          "noApiToken": "Dodajte API TOKEN / Secret",
+          "noSmsProvider": "Izberite ponudnika SMS",
+          "noSmsPhone": "Navedite telefonsko številko, ki ste jih dobili pri ponudniku SMS",
+          "saveSuccess": "Nastavitve SMS shranjene"
+        }
+      },
+      "mail": {
+        "headers": {
+          "email": "E-naslov",
+          "emailSettings": "Nastavitve e-pošte",
+          "config": "konfiguracija",
+          "settings": "Ponudnik SMTP",
+          "status": "Status",
+          "actions": "Dejanja"
+        },
+        "settings": {
+          "service": "Service",
+          "user": "Uporabnik",
+          "password": "Geslo",
+          "host": "Host",
+          "port": "Port",
+          "passwordShow": "Prikaži",
+          "passwordHide": "Skrij",
+          "fieldNotSet": "ni nastavljeno",
+          "selectService": "Izberite storitev ...",
+          "custom": "po meri"
+        },
+        "logs": {
+          "headers": {
+            "emailLogs": "E-pošta Dnevniki",
+            "email": "E-naslov",
+            "subject": "predmet",
+            "sent": "Poslano",
+            "status": "Status"
+          },
+          "noEmails": "Brez e-pošte še ni poslal",
+          "limit": "količina",
+          "retry": "poskusite znova",
+          "noneAvailble": "Niso na voljo"
+        },
+        "alerts": {
+          "error": "Napaka: {{error}}",
+          "resendSuccess": "Poskus, da znova pošljete e-pošto {{email}}",
+          "missingService": "Izberite storitev ponudnika mail",
+          "userPassRequired": "Uporabnik SMTP in geslo so potrebni za {{service}}",
+          "allFieldsRequired": "Vsa polja so obvezna za storitve po meri!",
+          "portNaN": "Pristanišče mora biti število!",
+          "connectionFailed": "Povezava ni uspela!",
+          "saveAnyway": "Ali želite vseeno shraniti nastavitve?",
+          "saveSuccess": "poštne nastavitve shranjene.",
+          "saveFailed": "Ni bilo mogoče shraniti nastavitve pošte. {{error}}",
+          "cantSendEmail": "Napaka strežnika: Ne morem poslati e-poštno obvestilo.",
+          "emailSent": "e-poštno obvestilo poslano."
+        }
+      },
+      "header": {
+        "tagsAdd": "Dodaj oznako",
+        "search": "Iskanje izdelkov ..."
+      },
+      "productDetail": {
+        "productManagement": "upravljanje izdelek",
+        "whenYouAreDone": "Ko končate urejanje.",
+        "tags": "oznake",
+        "tagsAdd": "Dodaj oznako",
+        "tagsEdit": "Urejanje oznak",
+        "tagExists": "Tag že obstaja, ali pa je prazna.",
+        "tagInUse": "Tag je v uporabi in je ni mogoče izbrisati.",
+        "dropFiles": "Spusti datoteke za nalaganje",
+        "addInventory": "Dodaj Inventory",
+        "barcode": "Barcode",
+        "confirmDeleteBarcode": "Ali ste prepričani, da želite izbrisati črtno kodo",
+        "details": "podrobnosti",
+        "detailsName": "podrobnost ime",
+        "detailsInfo": "podrobnost informacije",
+        "generate": "Ustvari",
+        "generateBarcodes": "Ustvari Črtne kode",
+        "hideBarcodes": "Skrij Črtne kode",
+        "options": "Opcije",
+        "addToCart": "Dodaj v voziček",
+        "chooseOptions": "Izberite možnosti pred dodajanjem v košarico",
+        "outOfStock": "Oprostite, ta postavka je na zalogi!",
+        "productDeleteError": "Pri brisanju {{product}} je prišlo do napake.",
+        "deleteErrorTheProduct": "izdelek",
+        "deleteErrorTheSelectedProducts": "izbrani izdelki",
+        "publishFirst": "Objavi izdelka pred dodajanjem v košarico.",
+        "quantityAbbreviation": "QTY",
+        "selectOption": "pred dodajanjem v košarico izberite možnost",
+        "addedToCart": "dodano",
+        "showBarcodes": "Prikaži črtnih kod",
+        "soldOut": "Razprodano!",
+        "backOrder": "prednaročilo",
+        "limitedSupply": "Limited Supply",
+        "publishProductVisible": "{{product}} je zdaj viden",
+        "publishProductHidden": "{{product}} je zdaj skrit",
+        "clonedAlert": "kloniranih {{product}}",
+        "clonedAlert_plural": "kloniranih {{product}}",
+        "deletedAlert": "črtano {{product}}",
+        "deletedAlert_plural": "črtano {{product}}",
+        "archivedAlert": "Archived {{product}}",
+        "archivedAlert_plural": "Archived {{product}}",
+        "theProduct": "izdelek",
+        "theSelectedProducts": "izbrani izdelki",
+        "startTracking": "Začni sledenje",
+        "addBarcode": "Dodajte črtne kode",
+        "quantity": "količina",
+        "quantityGreaterThanZero": "Napaka: Količina mora biti večji od nič",
+        "notFoundTitle": "Ups!",
+        "notFoundError": "To ni izdelek, ki ga iskali."
+      },
+      "tags": {
+        "tagName": "tag Name",
+        "addTag": "Dodaj oznako",
+        "updateTag": "Update Tag",
+        "addGroupTag": "Dodaj skupino oznako",
+        "addSubTag": "Dodaj Sub oznako",
+        "removeTag": "Odstrani oznako",
+        "createTag": "Ustvari oznako"
+      },
+      "productDetailEdit": {
+        "editOption": "Uredi možnost",
+        "productSettings": "Nastavitve izdelka",
+        "product": "Izdelek",
+        "size": "Velikost",
+        "title": "Naslov",
+        "untitledProduct": "Untitled izdelka",
+        "parmalink": "permalink",
+        "pageTitle": "podnaslov",
+        "vendor": "prodajalec",
+        "description": "Opis",
+        "facebookMsg": "Facebook sporočilo",
+        "twitterMsg": "Twitter sporočilo",
+        "pinterestMsg": "Pinterest sporočilo",
+        "googleplusMsg": "Google+ sporočilo",
+        "editVariant": "Uredi Variant",
+        "variantOptions": "Variant Možnosti",
+        "variantDetails": "Variant Podrobnosti",
+        "duplicateVariant": "podvajati",
+        "addVariantOption": "Dodaj možnost",
+        "removeVariant": "Odstraniti",
+        "removeVariantConfirm": "Ali ste prepričani, da želite izbrisati {{title}}",
+        "restoreVariantConfirm": "Ali ste prepričani, da želite obnoviti {{title}} iz smeti?",
+        "archiveVariantConfirm": "Ali ste prepričani, da želite arhivirati {{title}}",
+        "thisVariant": "ta varianta",
+        "thisOption": "ta možnost",
+        "duplicateProduct": "dvojnik izdelka",
+        "pinProduct": "pin izdelka",
+        "toggleSize": "Preklop Velikost",
+        "deleteProduct": "Izbriši izdelek",
+        "restoreProduct": "Obnovitev izdelka iz smetnjaka",
+        "deleteSelectedProducts": "Brisanje izbrane izdelke?",
+        "archiveThisProduct": "Arhivirati ta izdelek?",
+        "archiveSelectedProducts": "Arhiv izbrane izdelke?",
+        "publish": "objavi",
+        "moreOptions": "več možnosti",
+        "details": "podrobnosti",
+        "noSelectedProducts": "Ni izbrane izdelke. Uporabi",
+        "orShiftCtrlCmd": " ali premik | ctrl | cmd + kliknite na izdelke izbrati večkratnik. S premikom lahko izberete sosednji paleto izdelkov.",
+        "makeVisible": "Naj Visible",
+        "hideProduct": "Skrij izdelka",
+        "productIsVisible": "Izdelek je viden",
+        "productIsNotVisible": "Izdelek ni vidna"
+      },
+      "productVariant": {
+        "addVariantOptions": "Dodaj možnosti, da bi \"Dodaj v košarico\" butto",
+        "inventoryQuantity": "količina",
+        "title": "Label",
+        "price": "Cena",
+        "optionTitle": "možnost",
+        "barcode": "Barcode",
+        "compareAtPrice": "Cena (MSRP)",
+        "fulfillmentService": "izpolnitev storitev",
+        "weight": "Teža",
+        "taxable": "Davčni",
+        "inventoryManagement": "sledenje popis",
+        "inventoryManagementLabel": "Vnos izdelek inventarja sistema in sledenje svoj status",
+        "inventoryPolicy": "Zanika, ko ni na zalogi",
+        "inventoryPolicyLabel": "Ne prodati varianto izdelka, če je ni na zalogi",
+        "lowInventoryWarningThreshold": "Opozori @",
+        "lowInventoryWarningThresholdLabel": "Opozarjajo stranke, da bo izdelek skoraj razprodan, ko doseže naslednji količinski prag"
+      },
+      "variantList": {
+        "moreOptions": "Obstaja več možnosti, ki so na voljo za ta izbor.",
+        "createVariant": "Ustvari Variant"
+      },
+      "gridPackage": {
+        "enable": "Omogoči",
+        "errorDisabling": "Napaka onemogočanje paket:",
+        "errorEnabling": "Napaka, ki omogoča paket:",
+        "details": "podrobnosti",
+        "disable": "Onemogoči",
+        "disableConfirm": "Ali ste prepričani, da želite onemogočiti {{app}}?",
+        "pkgEnabled": "{{app}} je sedaj omogočeno.",
+        "pkgDisabled": "{{app}} je zdaj onemogočeno."
+      },
+      "gridSettingsPanel": {
+        "title": "Nastavitve Grid",
+        "selected": "Izbrano"
+      },
+      "cartDrawer": {
+        "empty": "Mi smo žalostni. Košara je prazna.",
+        "keepShopping": "Obdržati na nakupovanje",
+        "checkout": "Naročilo zdaj"
+      },
+      "cartSubTotals": {
+        "discount": "popust",
+        "head": "Vaš voziček",
+        "items": "Izdelki v košarici",
+        "subtotal": "Vmesni seštevek",
+        "shipping": "Dostava",
+        "tax": "davčna",
+        "total": "Skupaj"
+      },
+      "cartDrawerItems": {
+        "left": "levo"
+      },
+      "order": {
+        "created": "Ustvarjeno",
+        "reference": "Reference",
+        "invoice": "Račun",
+        "ordersNotFound": "Ni naročil",
+        "approveInvoice": "Odobri",
+        "makeAdjustments": "prilagoditve",
+        "capturePayment": "Capture plačila",
+        "paymentCaptured": "plačilo Zajeto",
+        "capturedTotal": "Zajeto Skupaj",
+        "refundAmount": "Znesek vračila",
+        "applyRefundToThisOrder": "Uporabi vračilo {{currencySymbol}}{{refund}} k temu, da bi?",
+        "applyRefund": "Uporabi vračilo",
+        "applyDiscount": "Uporabi popust",
+        "adjustedTotal": "prilagojena Skupaj",
+        "invalidDiscount": "Popust ne more biti večja od prvotne skupne cene",
+        "fullDiscountWarning": "Uporaba 100% popust izniči to naročilo / preklic s ponudnikom plačilnih storitev",
+        "invalidRefund": "Nadomestilo (e) skupaj ne sme biti večja od vsote prilagojeni",
+        "processor": "procesor",
+        "placed": "Nahaja se",
+        "on": "na",
+        "status": "Status",
+        "completed": "končan",
+        "processing": "Obravnavati",
+        "destination": "destinacija",
+        "shipment": "pošiljka",
+        "payment": "plačilo",
+        "itemsFrom": "element (-i) iz",
+        "filter": {
+          "new": "New",
+          "captured": "plačilo Zajeto",
+          "processing": "Obravnavati",
+          "shipped": "pošiljajo",
+          "completed": "končan",
+          "canceled": "preklicana",
+          "refunded": "Vrnjeno"
+        }
+      },
+      "orderShipping": {
+        "shipTo": "Poslati v",
+        "notShipped": "Ni še odposlano",
+        "noTracking": "Ne sledenje",
+        "tracking": "sledenje",
+        "printLabels": "Tiskanje Oznake",
+        "printShippingLabel": "Dostava",
+        "printCustomsLabel": "carinska",
+        "carrier": "Carrier",
+        "addTracking": "Dodaj sledenje",
+        "itemsHaveBeenShipped": "Elementov, ki so bili poslani",
+        "shipmentEmpty": "Ta pošiljka nima elementov",
+        "shipmentPacked": "Vsi elementi Pakirano",
+        "shipped": "pošiljajo",
+        "delivered": "Delivered",
+        "shippingNotifyCustomer": "Obvesti stranko, da se njihovi elementi bodo kmalu ladijskega prometa.",
+        "resendNotification": "Ponovno pošlji Pošiljka Obvestilo"
+      },
+      "orderWorkflow": {
+        "fulfillment": "izpolnitev",
+        "orderDetails": "podrobnosti naročila",
+        "summary": "Povzetek",
+        "invoice": "Račun",
+        "shipmentTracking": "pošiljka sledenje"
+      },
+      "cartCheckout": {
+        "surprise": "Woah!",
+        "emptyCheckoutCart": "Izgleda vaša košarica je prazna!"
+      },
+      "cartCompleted": {
+        "thankYou": "Hvala!",
+        "itemsFrom": "element (-i) iz",
+        "yourOrderIsNow": "Vaše naročilo je zdaj",
+        "summaryMessage": "Hvala za vaše naročilo.",
+        "submitted": "predložen",
+        "registerGuest": "Zdravo! Dodajanje e-pošto in prejemanje posodobitev reda.",
+        "trackYourDelivery": "posodobitve naročilo bo poslano",
+        "noOrdersFound": "Ni naročil.",
+        "adminMessage": "Si ogledujete naročila kot skrbnik"
+      },
+      "checkoutLogin": {
+        "welcome": "Dobrodošli, da je tako dober, da te vidim.",
+        "loginCompleted": "račun končana",
+        "createOrLogin": "Ustvarite račun ali pa se vpiši",
+        "guestOrLogin": "Prijavite se, ali prevzeti kot gost",
+        "continueAsGuest": "Nadaljuj kot gost",
+        "guestMessage": "Lahko checkout brez ustvarjanja računa. Imeli boste priložnost, da ustvarite račun pozneje."
+      },
+      "addressBookGrid": {
+        "addAddress": "Dodaj naslov",
+        "chooseAddress": "Izberite za dostavo in naslov za izstavitev računa",
+        "createDefault": "Ustvari svoj privzeti naslov",
+        "edit": "Edit",
+        "removeAddress": "Odstrani naslov",
+        "selectShippingAddress": "Izberite naslov za dostavo",
+        "selectBillingAddress": "Izberite naslov za izstavitev računa",
+        "cantRemoveThisAddress": "ni mogoče odstraniti ta naslov: {{err}}"
+      },
+      "addressBookAdd": {
+        "addAddress": "Dodaj nov vnos naslova",
+        "createAddress": "Ustvari svoj privzeti naslov",
+        "failedToAddAddress": "Ni bilo mogoče dodati naslov: {{err}}"
+      },
+      "addressBookEdit": {
+        "editAddress": "Urejanje ta vnos naslova",
+        "somethingWentWrong": "Nekaj ​​je šlo narobe: {{err}}"
+      },
+      "corePackageConfig": {
+        "settings": {
+          "public": {
+            "allowGuestCheckout": "Dovoli Guest blagajno"
+          },
+          "openexchangerates": {
+            "appId": "Id App Cene odprta izmenjava",
+            "refreshPeriod": "Odprto Menjalni tečaji osvežitev rok",
+            "refreshPeriodPlaceholder": "t.j. vsak 1 uro"
+          },
+          "google": {
+            "clientId": "Google Client ID",
+            "apiKey": "Google ključ API"
+          }
+        }
+      },
+      "shop": {
+        "defaultPaymentMethod": "Privzeti način plačila",
+        "name": "Name",
+        "namePlaceholder": "trgovina Ime",
+        "description": "Opis",
+        "descriptionPlaceholder": "Opišite svojo trgovino za SEO",
+        "descriptionTooltip": "Meta opis za SEO",
+        "email": "E-naslov",
+        "emailPlaceholder": "Primarni Kontaktni e-naslov",
+        "keywords": "ključne besede",
+        "keywordsPlaceholder": "Meta ključne besede za SEO",
+        "language": "Osnovna jezik",
+        "languageTooltip": "Ta jezik bo uporabljen, če bo odkrivanje jezik naprave ni",
+        "timezone": "Časovni pas",
+        "timezoneOptions": "Izberite časovni pas",
+        "currency": "Osnovna valuta",
+        "currencyTooltip": "Trgovina privzeta valuta",
+        "baseUOM": "Osnovna mersko enoto",
+        "addressBook": {
+          "company": "Podjetje",
+          "companyPlaceholder": "Ta firma",
+          "country": "Država",
+          "fullName": "Polno ime",
+          "fullNamePlaceholder": "Vaše ime organizacije",
+          "address1": "naslov",
+          "address1Placeholder": "Vaša organizacija naslov",
+          "address1Tooltip": "Ta naslov bo vidna obiskovalcem",
+          "address2": "naslov",
+          "address2Placeholder": "Dodatni naslov",
+          "postal": "Postal",
+          "city": "Kraj",
+          "region": "regija",
+          "phone": "Telefon",
+          "isShippingDefault": "Naj bo to vaš privzeti naslov za dostavo?",
+          "isBillingDefault": "Naj bo to vaš privzeti naslov za izstavitev računa?",
+          "isCommercial": "To je komercialna naslov."
+        }
+      },
+      "revisions": {
+        "isDisabled": "Nadzor Revizija je onemogočeno. Vse spremembe bodo objavljene takoj.",
+        "isEnabled": "Nadzor Revizija je omogočen za izdelke. Vse spremembe bo treba objaviti, preden se vidno strankam.",
+        "unpublishedChanges": "neobjavljene spremembe",
+        "publishChanges": "objavi spremembe",
+        "showChanges": "prikaži spremembe",
+        "hideChanges": "Skrij spremembe",
+        "discardChanges": "Zavreči spremembe",
+        "changedPublished": "Spremembe so bile uspešno objavljeno",
+        "changesDiscarded": "Spremembe uspešno zavreči",
+        "noChanges": "ni spremembe",
+        "noChangesPublished": "Ni spremembe objavijo",
+        "noChangesDiscarded": "Ni sprememb za zavržke"
+      },
+      "address": {
+        "country": "Država",
+        "fullName": "Polno ime",
+        "address1": "naslov",
+        "address2": "naslov",
+        "postal": "Postal",
+        "city": "Kraj",
+        "region": "regija",
+        "phone": "Telefon",
+        "isShippingDefault": "Naj bo to vaš privzeti naslov za dostavo?",
+        "isBillingDefault": "Naj bo to vaš privzeti naslov za izstavitev računa?",
+        "isCommercial": "To je komercialna naslov."
+      },
+      "i18nSettings": {
+        "enabledLanguages": "jeziki"
+      },
+      "checkoutProgressBar": {
+        "login": "Račun",
+        "shippingBilling": "naslov Podrobnosti",
+        "shippingOptions": "Možnosti pošiljanja",
+        "reviewPayment": "pregled",
+        "complete": "Complete"
+      },
+      "checkoutReview": {
+        "review": "pregled"
+      },
+      "checkoutShipping": {
+        "selectShippingOption": "Izberite možnost ladijskega prometa",
+        "noShippingMethods": "Ni metode pošiljanja so nastavljeni.",
+        "configureNow": "Konfiguracija zdaj.",
+        "shipping": "Dostava"
+      },
+      "shipping": {
+        "addShippingProvider": "Dodaj ponudnika ladijskega",
+        "editShippingProvider": "Uredi ponudnik ladijski promet",
+        "addShippingMethod": "Dodaj način pošiljanja",
+        "editShippingMethod": "Uredite način pošiljanja",
+        "deleteShippingMethod": "Brisanje način pošiljanja",
+        "noSettingsForThisView": "Ni nastavitev za to mnenje",
+        "noShippingMethods": "Ni metode pošiljanja so nastavljeni.",
+        "removeShippingMethodConfirm": "Ali ste prepričani, da želite izbrisati {{method}}?",
+        "removeShippingMethodTitle": "Odstrani Shipping Method",
+        "shippingMethodDeleted": "Ta način pošiljanja je bil izbrisan.",
+        "removeShippingProvider": "Odstrani ponudnika dostave",
+        "removeShippingProviderConfirm": "Ali ste prepričani, da želite izbrisati {{provider}}?",
+        "shippingProviderSaved": "Ponudnik prevoz shranjene.",
+        "shippingProviderUpdated": "Podatki ponudnika prevoz posodabljajo.",
+        "shippingMethodRateAdded": "Dostava stopnja metoda dodal.",
+        "shippingMethodRateUpdated": "Dostava stopnja način posodobljena.",
+        "name": "Name",
+        "label": "Label",
+        "group": "skupina",
+        "cost": "strošek",
+        "handling": "Ravnanje",
+        "rate": "Oceniti",
+        "enabled": "omogočeno",
+        "disabled": "Onemogočeno",
+        "addRate": "Dodaj stopnjo",
+        "updateRate": "Update {{name}} stopnja",
+        "addNewCondition": "Dodaj nov pogoj",
+        "deleteCondition": "Brisanje stanje",
+        "provider": {
+          "name": "Koda Service",
+          "label": "javni Label",
+          "enabled": "omogočeno"
+        }
+      },
+      "shippingMethod": {
+        "name": "Ime metoda",
+        "label": "javni Label",
+        "group": "skupina",
+        "cost": "strošek",
+        "handling": "Ravnanje",
+        "rate": "Oceniti",
+        "enabled": "omogočeno",
+        "matchingCartRanges": "Ujemanje košarice Območja",
+        "validRanges": {
+          "begin": "Začeti",
+          "end": "End"
+        },
+        "matchingLocales": "ujemanje Locales",
+        "validLocales": {
+          "origination": "iz",
+          "destination": "Za",
+          "deliveryBegin": "Dostava Est.",
+          "deliveryEnd": "Dostava Est."
+        }
+      },
+      "uom": {
+        "OZ": "unč",
+        "LB": "funtov",
+        "GR": "Grams",
+        "KG": "kilogramov"
+      },
+      "consoleIcon": {
+        "iconTitle": "Poglej Console",
+        "text": "konzola"
+      },
+      "createProductIcon": {
+        "iconTitle": "Ustvari izdelek",
+        "text": "ustvarjanje"
+      },
+      "social": {
+        "socialTitle": "socialna",
+        "facebook": "Facebook",
+        "google": "Google",
+        "github": "GitHub",
+        "meetup": "Srečati se",
+        "ok": "V redu",
+        "twitter": "Twitter",
+        "vk": "VK",
+        "weibo": "Weibo"
+      },
+      "search": {
+        "clearSearch": "Počisti",
+        "noProductsFound": "Ni izdelkov.",
+        "noOrdersFound": "Ni naročil.",
+        "noAccountsFound": "Ni računov.",
+        "searchInputLabel": "Iskanje Reaction",
+        "suggestedTags": "predlagane oznake",
+        "searchTypeProducts": "izdelki",
+        "searchTypeAccounts": "računi",
+        "searchTypeOrders": "naročila",
+        "accountSearchResults": {
+          "accountId": "ID računa",
+          "shopId": "trgovina ID",
+          "firstName": "Ime",
+          "lastName": "Priimek",
+          "phone": "Telefon",
+          "emails": "E-naslov"
+        },
+        "orderSearchResults": {
+          "orderId": "ID naročila",
+          "shopId": "trgovina ID",
+          "shippingAddress": "naslov",
+          "shippingCity": "Kraj",
+          "shippingRegion": "regija",
+          "shippingCountry": "Država",
+          "shippingPhone": "Telefon",
+          "shippingName": "Name",
+          "shippingStatus": "Status",
+          "billingAddress": "naslov",
+          "billingCity": "Kraj",
+          "billingRegion": "regija",
+          "billingCountry": "Država",
+          "billingPhone": "Telefon",
+          "billingStatus": "Status",
+          "userEmails": "E-naslov",
+          "orderDate": "Datum",
+          "orderTotal": "Skupaj"
+        }
+      },
       "accountsUI": {
+        "members": "člani",
+        "manage": "upravljanje",
+        "guest": "Gost",
+        "addMember": "Dodajanje člana",
         "add": "dodaj",
         "and": "in",
         "back": "nazaj",
@@ -20,6 +722,7 @@
         "emailResetLink": "Pošlji ponastavitveno povezavo",
         "forgotPassword": "Pozabljeno geslo?",
         "ifYouAlreadyHaveAnAccount": "Če si že registriran(a),",
+        "name": "Name",
         "newPassword": "Novo geslo",
         "newPasswordAgain": "Novo geslo (ponovno)",
         "optional": "Po želji",
@@ -32,24 +735,42 @@
         "setPassword": "Nastavi geslo",
         "sign": "Prijava",
         "signIn": "Prijava",
+        "signInService": "{{service}} Prijava",
         "signin": "se prijavi",
+        "signInWith": "Prijavite se z",
+        "signUpWith": "Prijavite se z",
+        "signedIn": "Prijavljeni ste.",
         "signOut": "Odjava",
         "signUp": "Registracija",
+        "signUpButton": "Register",
         "signupCode": "Prijavna koda",
         "signUpWithYourEmailAddress": "Prijava z email naslovom",
         "terms": "Pogoji uporabe",
         "updateYourPassword": "Spremeni geslo",
+        "updatePasswordAndContinue": "Posodobitev in še naprej",
+        "updatedServiceConfiguration": "Posodobljeno konfiguracije storitev za {{service}}",
         "username": "Uporabniško ime",
         "usernameOrEmail": "Uporabniško ime ali email",
         "with": "z",
+        "checkoutAsGuest": "Naročilo brez uporabniškega računa",
+        "role": "vloga",
+        "yourOrders": "Vaša naročila",
+        "addressBook": "Imenik",
         "info": {
           "emailSent": "E-pošta poslana",
           "emailVerified": "Email naslov preverjen",
           "passwordChanged": "Geslo spremenjeno",
-          "passwordReset": "Geslo ponastavljeno"
+          "passwordReset": "Geslo ponastavljeno",
+          "passwordResetSend": "E-pošta s povezavo za ponastavitev gesla so bila poslana.",
+          "invitationSent": "Vabilo je poslano",
+          "sendInvitation": "Pošlji vabilo"
         },
         "error": {
           "emailRequired": "Email je obvezen vnos.",
+          "passwordRequired": "je potrebno geslo.",
+          "passwordMustBeAtLeast6CharactersLong": "Geslo mora biti dolgo vsaj 6 znakov.",
+          "passwordMustContainRequirements": "Geslo mora vsebovati vsaj eno številko ali simbol.",
+          "usernameMinLength": "Uporabniško ime mora biti dolgo najmanj 3 znakov",
           "minChar": "Geslo mora imeti vsaj sedem znakov.",
           "pwdsDontMatch": "Gesli se ne ujemata",
           "pwOneDigit": "V geslu mora biti vsaj ena številka.",
@@ -61,6 +782,9 @@
           "usernameRequired": "Uporabniško ime je obvezen vnos.",
           "emailAlreadyExists": "Email že obstaja.",
           "emailDoesntMatchTheCriteria": "Email ne odgovarja kriterijem.",
+          "errorSendingEmail": "Napaka pri pošiljanju e-pošte, morebitno težavo konfiguracijo.",
+          "unableToSendInvitationEmail": "Mogli poslati povabilo e-pošto.",
+          "failedToLogout": "Ni odjaviti.",
           "invalidLoginToken": "Napačen prijavni žeton",
           "loginForbidden": "Prijava ni dovoljena",
           "serviceUnknown": "Neznana storitev",
@@ -74,6 +798,7 @@
           "passwordIsOld": "Geslo je staro. Zamenjaj ga.",
           "incorrectPassword": "Napačno geslo",
           "invalidEmail": "Napačen email",
+          "addressMustBeAValidEMailAddress": "Neveljaven e-naslov",
           "mustBeLoggedIn": "Moraš biti prijavljane(a)",
           "needToSetUsernameOrEmail": "Prijava ali email sta obvezna",
           "oldPasswordFormat": "stara oblika gesla",
@@ -88,6 +813,12 @@
           "matchFailed": "Prijava neuspešna",
           "unknownError": "Neznana napaka"
         }
+      },
+      "error": {
+        "nameRequired": "Ime je obvezno.",
+        "isRequired": "{{field}} je potrebno.",
+        "mustBeNumber": "{{field}} mora biti številka.",
+        "variantFieldIsRequired": "Varianta {{number}} {{field}} je potrebno."
       }
     }
   }

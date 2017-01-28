@@ -10,7 +10,7 @@ import { RevisionApi } from "/imports/plugins/core/revisions/lib/api/revisions";
 Meteor.publish("Product", function (productId) {
   check(productId, Match.OptionalOrNull(String));
   if (!productId) {
-    Logger.info("ignoring null request on Product subscription");
+    Logger.debug("ignoring null request on Product subscription");
     return this.ready();
   }
   let _id;
@@ -29,7 +29,7 @@ Meteor.publish("Product", function (productId) {
 
   // selector for hih - What's hih?
   // selector should come first as default, alterations take place later depending on role
-  const selector = {
+  let selector = {
     isVisible: true,
     isDeleted: { $in: [null, false] }
   };
@@ -41,7 +41,7 @@ Meteor.publish("Product", function (productId) {
     };
   }
   // TODO review for REGEX / DOS vulnerabilities.
-  if (productId.match(/^[A-Za-z0-9]{17}$/)) {
+  if (productId.match(/^[23456789ABCDEFGHJKLMNPQRSTWXYZabcdefghijkmnopqrstuvwxyz]{17}$/)) {
     selector._id = productId;
     // TODO try/catch here because we can have product handle passed by such regex
     _id = productId;
@@ -58,14 +58,20 @@ Meteor.publish("Product", function (productId) {
     }
   }
 
-  selector.$or = [
-    { _id: _id },
-    {
-      ancestors: {
-        $in: [_id]
+  // Selector for hih?
+  selector = {
+    isVisible: true,
+    isDeleted: {$in: [null, false]},
+    $or: [
+      {handle: _id},
+      {_id: _id},
+      {
+        ancestors: {
+          $in: [_id]
+        }
       }
-    }
-  ];
+    ]
+  };
 
   // Authorized content curators for the shop get special publication of the product
   // all relevant revisions all is one package

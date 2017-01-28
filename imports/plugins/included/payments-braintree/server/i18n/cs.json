@@ -1,0 +1,32 @@
+[{
+  "language": "Czech",
+  "i18n": "cs",
+  "ns": "reaction-braintree",
+  "translation": {
+    "reaction-payments": {
+      "admin": {
+        "shortcut": {
+          "braintreeLabel": "Braintree",
+          "braintreeTitle": "Braintree"
+        },
+        "dashboard": {
+          "braintreeLabel": "Braintree",
+          "braintreeTitle": "Braintree",
+          "braintreeDescription": "platby Braintree"
+        },
+        "paymentSettings": {
+          "braintreeLabel": "Braintree",
+          "braintreeSettingsLabel": "Braintree",
+          "braintreeCredentials": "Přidat pověření k tomu, aby"
+        }
+      },
+      "order": {
+        "paymentProvider": {
+          "braintree": {
+            "braintreeSettlementDelay": "Braintree neumožňuje náhrady do vypořádání transakce. Tento proces může trvat až 24 hodin. Prosím zkuste to znovu později."
+          }
+        }
+      }
+    }
+  }
+}]

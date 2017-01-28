@@ -7,75 +7,21 @@
       "languages": {
         "select": "Selectează limba"
       },
+      "currencies": {
+        "select": "Selectați valuta"
+      },
       "admin": {
         "shortcut": {
-          "dashboardLabel": "Bord",
-          "ordersLabel": "Istoric comenzi",
           "addProductLabel": "Adăugare produs",
           "accountsLabel": "Conturi"
         },
         "dashboard": {
-          "accountsLabel": "Conturi",
-          "accountsTitle": "Conturi",
-          "accountsDescription": "Gestionați permisiunile membrilor",
-          "analyticsLabel": "Statistici",
-          "analyticsTitle": "Statistici",
-          "analyticsDescription": "Integrările pentru analize statistice și urmărire",
-          "authorizenetLabel": "Authorize.net",
-          "authorizenetTitle": "Authorize.net",
-          "authorizenetDescription": "plăţi Authorize.Net",
-          "shippingLabel": "livrare",
-          "shippingTitle": "livrare",
-          "shippingDescription": "Tarife de transport",
-          "braintreeLabel": "Braintree",
-          "braintreeTitle": "Braintree",
-          "braintreeDescription": "plăţile Braintree",
-          "catalogLabel": "Catalog",
-          "catalogTitle": "Catalog",
-          "catalogDescription": "Catalog de produse",
-          "coreLabel": "Setări",
-          "coreTitle": "Bord",
-          "coreDescription": "Configurare reaction",
-          "examplePaymentProviderLabel": "Exemplu de plată",
-          "examplePaymentProviderDescription": "Exemplu metoda de plată",
-          "emailLabel": "E-mail",
-          "emailTitle": "E-mail",
-          "emailDescription": "Configurări e-mail",
           "i18NLabel": "i18n",
           "i18NTitle": "i18n",
           "i18NDescription": "Utilitare pentru internaționalizare",
-          "inventoryLabel": "Inventar",
-          "inventoryTitle": "Inventar",
-          "inventoryDescription": "Utilitare pentru inventar",
-          "layoutLabel": "Amplasare",
-          "layoutTitle": "Amplasare",
-          "layoutDescription": "Utilitare pentru aranjare",
-          "connectLabel": "Conectați",
-          "connectTitle": "Conectați",
-          "connectDescription": "Conecteaza Reaction ca un serviciu",
-          "ordersLabel": "Istoric comenzi",
-          "ordersTitle": "Istoric comenzi",
-          "ordersDescription": "Onoraează comenzile",
-          "paypalLabel": "PayPal",
-          "paypalTitle": "PayPal",
-          "paypalDescription": "Plăţile cu PayPal",
-          "revisionsLabel": "Revizuiri",
-          "revisionsTitle": "Revizuiri",
-          "revisionsDescription": "Control revizuiri",
           "routingLabel": "Rutare",
           "routingTitle": "Rutare",
           "routingDescription": "Utilitare de rutare",
-          "searchLabel": "Căutare",
-          "searchTitle": "Căutare",
-          "searchDescription": "Caută produs",
-          "socialLabel": "Social",
-          "socialTitle": "Social",
-          "socialDescription": "Configurarea canalelor sociale",
-          "themesLabel": "Teme",
-          "themesTitle": "Teme",
-          "themesDescription": "Teme și componente UI",
-          "stripeLabel": "Stripe",
-          "stripeDescription": "Plăţi prin Stripe",
           "filtrationLabel": "Filtrare",
           "filtrationDescription": "Filtrarea produselor pentru reaction"
         },
@@ -90,23 +36,13 @@
         },
         "settings": {
           "accountSettingsLabel": "Setările contului",
+          "accountSettingsTitle": "Servicii de conectare",
+          "accountSettingsDescription": "Autentificarea prin intermediul furnizorilor sociale",
+          "saveSuccess": "Setările aduse la zi.",
+          "saveFailed": "Nu s-au putut actualiza setările.",
           "addShopMemberLabel": "Adaugă membru magazin",
-          "authorizenetSettingsLabel": "Setări Authorize.Net",
           "permissionsSettingsLabel": "Permisiuni",
-          "braintreeSettingsLabel": "Setări Braintree",
-          "localizationAndI18NLabel": "Localizare si i18n",
-          "searchSettingsLabel": "Setări de căutare",
-          "shopSettingsLabel": "Setări Magazin",
-          "socialSettingsLabel": "Setări sociale",
-          "shippingSettingsLabel": "Setări de transport",
-          "stripeSettingsLabel": "Setări Stripe",
-          "inventorySettingsLabel": "Setări de inventar",
-          "analyticsSettingsLabel": "Setări Analize Statistice",
-          "paypalSettingsLabel": "Setări PayPal",
-          "reactionConnectLabel": "Conectare Reaction",
-          "examplePaymentSettingsLabel": "Exemplu setări de plată",
-          "productSettingsLabel": "Setări produs",
-          "productDetailsLabel": "Detalii produs"
+          "localizationAndI18NLabel": "Localizare si i18n"
         },
         "userAccountDropdown": {
           "profileLabel": "Profil"
@@ -197,6 +133,41 @@
         "shopPaymentMethodsSaved": "Setările modalități de plată au fost salvate.",
         "shopPaymentMethodsFailed": "Actualizarea setărilor modalități de plată au eșuat."
       },
+      "notifications": {
+        "body": {
+          "noNotifications": "Notificări nu încă",
+          "markAllAsRead": "Marcheaza toate ca citite",
+          "recent": "Recente",
+          "viewAll": "Vezi toate"
+        },
+        "messages": {
+          "orderCancelled": "Comanda dvs a fost anulat.",
+          "newOrder": "Comanda dumneavoastră este în curs de procesare.",
+          "forAdmin": "Ai o noua ordine.",
+          "orderDelivered": "Comanda dumneavoastra a fost emis.",
+          "orderAccepted": "Comanda dvs a fost acceptata.",
+          "orderShipped": "Comanda dumneavoastra a fost expediat."
+        }
+      },
+      "sms": {
+        "headers": {
+          "settings": "Furnizor de SMS"
+        },
+        "settings": {
+          "provider": "Furnizor",
+          "selectProvider": "Selectaþi un furnizor de SMS-URI...",
+          "smsPhone": "Numărul de telefon SMS",
+          "apiKey": "API-cheie",
+          "apiToken": "API TOKEN / secrete"
+        },
+        "alerts": {
+          "noApiKey": "Vă rugăm să adăugaţi un API-cheie",
+          "noApiToken": "Vă rugăm să adăugaţi un TOKEN de API/Secret",
+          "noSmsProvider": "Va rugam sa alegeti un furnizor de SMS",
+          "noSmsPhone": "Vă rugăm să adăugaţi numărul de telefon dat de furnizorul de SMS",
+          "saveSuccess": "Setări SMS-URI salvate"
+        }
+      },
       "mail": {
         "headers": {
           "email": "Email",
@@ -241,7 +212,9 @@
           "connectionFailed": "Conexiunea a eșuat!",
           "saveAnyway": "Doriți să salvați setările in această situație ?",
           "saveSuccess": "Setările au fost salvate.",
-          "saveFailed": "Nu s-au putut salva setările de e-mail. {{error}}"
+          "saveFailed": "Nu s-au putut salva setările de e-mail. {{error}}",
+          "cantSendEmail": "Eroare de server: Nu se poate trimite o notificare de e-mail.",
+          "emailSent": "Notificare e-mail trimis."
         }
       },
       "header": {
@@ -352,6 +325,7 @@
         "productIsNotVisible": "Produsul nu este vizibil"
       },
       "productVariant": {
+        "addVariantOptions": "Adăugați opțiuni pentru a permite 'Adauga in cos' butto",
         "inventoryQuantity": "Cantitate",
         "title": "Etichetă",
         "price": "Preț",
@@ -381,6 +355,10 @@
         "disableConfirm": "Sunteți sigur că doriți să dezactivați {{app}}?",
         "pkgEnabled": "{{app}} este acum activată.",
         "pkgDisabled": "{{app}} este acum dezactivată."
+      },
+      "gridSettingsPanel": {
+        "title": "Setări de rețea",
+        "selected": "Selectat"
       },
       "cartDrawer": {
         "empty": "Suntem triști. Coșul dumneavoastră este gol.",
@@ -435,11 +413,6 @@
           "completed": "Completă",
           "canceled": "Anulată",
           "refunded": "Rambursată"
-        },
-        "paymentProvider": {
-          "braintree": {
-            "braintreeSettlementDelay": "Braintree nu permite restituiri până când tranzacțiile nu sunt finalizate. Acest lucru poate dura până la 24 de ore. Vă rugăm să încercați din nou mai târziu."
-          }
         }
       },
       "orderShipping": {
@@ -447,11 +420,16 @@
         "notShipped": "Inca neexpediată",
         "noTracking": "Nici un număr urmărire a pachetului",
         "tracking": "Număr urmărire",
+        "printLabels": "Etichete de imprimare",
+        "printShippingLabel": "livrare",
+        "printCustomsLabel": "Obiceiuri",
+        "carrier": "Purtător",
         "addTracking": "Adăugaţi număr urmărire a pachetului",
         "itemsHaveBeenShipped": "Articole au fost expediate",
         "shipmentEmpty": "Acest transport nu are elemente",
         "shipmentPacked": "Toate produsele ambalate",
         "shipped": "Expediat",
+        "delivered": "Livrat",
         "shippingNotifyCustomer": "Anunțați clientul că produsele lor vor fi de transporte în curând.",
         "resendNotification": "Retrimitere Notificarea de Transport"
       },
@@ -560,6 +538,7 @@
       },
       "revisions": {
         "isDisabled": "Opțiunea „Revision control” este dezactivată. Orice schimbare va fi imediat publicată.",
+        "isEnabled": "Controlul revizie este activat pentru produse. Toate modificările vor fi trebui să fie publicate înainte de a fi vizibile pentru clienți.",
         "unpublishedChanges": "Schimbări nepublicate",
         "publishChanges": "Publicare schimbări",
         "showChanges": "Expunere schimbări",
@@ -593,14 +572,6 @@
         "shippingOptions": "Optiuni de expediere",
         "reviewPayment": "Revizuire",
         "complete": "Complet"
-      },
-      "checkoutPayment": {
-        "addPaymentToCompleteOrder": "Adaugă un tip de plată pentru a finaliza comanda",
-        "processingError": "A apărut o problemă cu plata.",
-        "completeYourOrder": "Finalizează comanda",
-        "noPaymentMethods": "Nu s-a configurat nici o metodă de plată.",
-        "configureNow": "Configurati acum.",
-        "failedToPlaceOrder": "Nu s-a putut plasa comanda."
       },
       "checkoutReview": {
         "review": "Revizuire"
@@ -793,16 +764,6 @@
           "passwordResetSend": "E-mail-ul cu link-ul de resetare a parolei a fost trimis.",
           "invitationSent": "Invitația a fost trimisă",
           "sendInvitation": "Trimite invitația"
-        },
-        "reactionUI": {
-          "editTheme": "Editare Temă",
-          "duplicateTheme": "Duplicați Tema",
-          "duplicateThemeError": "Nu s-a putut duplica tema",
-          "publishThemeError": "Nu am putut publica tema {{themeName}}",
-          "components": {
-            "navbar": "Bară de navigare",
-            "button": "Buton"
-          }
         },
         "error": {
           "emailRequired": "Este necesară adresa de e-mail.",

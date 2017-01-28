@@ -1,0 +1,16 @@
+[{
+  "i18n": "pl",
+  "ns": "reaction-dashboard",
+  "translation": {
+    "reaction-dashboard": {
+      "admin": {
+        "shortcut": {
+          "dashboardLabel": "Dashboard"
+        },
+        "settings": {
+          "shopSettingsLabel": "Sklep"
+        }
+      }
+    }
+  }
+}]

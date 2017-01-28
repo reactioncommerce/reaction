@@ -1,0 +1,35 @@
+[{
+  "language": "Turkish",
+  "i18n": "tr",
+  "ns": "reaction-templates",
+  "translation": {
+    "reaction-templates": {
+      "admin": {
+        "settings": {
+          "templateSettingsLabel": "şablon Ayarları"
+        }
+      },
+      "templateGrid": {
+        "noTemplatesFound": "Hiçbir şablonlar bulundu",
+        "columns": {
+          "title": "Başlık",
+          "type": "Tip",
+          "language": "Dil"
+        }
+      },
+      "templateUpdateForm": {
+        "emailTemplates": {
+          "updateEmailTemplate": "Güncelleme e-posta şablonu"
+        },
+        "reactTemplates": {
+          "updateReactTemplate": "Güncelleme şablonu tepki",
+          "updateUnavailable": "şablonlar bu arayüz üzerinden düzenlenemez tepki"
+        },
+        "alerts": {
+          "templateUpdated": "Şablon başarıyla güncellendi",
+          "failedToUpdate": "şablonu güncellenemedi: {{err}}"
+        }
+      }
+    }
+  }
+}]

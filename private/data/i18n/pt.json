@@ -7,75 +7,21 @@
       "languages": {
         "select": "Selecionar idioma"
       },
+      "currencies": {
+        "select": "Escolha Moeda"
+      },
       "admin": {
         "shortcut": {
-          "dashboardLabel": "Painel de controlo",
-          "ordersLabel": "Encomendas",
           "addProductLabel": "Adicionar produto",
           "accountsLabel": "Contas"
         },
         "dashboard": {
-          "accountsLabel": "Contas",
-          "accountsTitle": "Contas",
-          "accountsDescription": "Gerir permissões do membro",
-          "analyticsLabel": "Análise",
-          "analyticsTitle": "Análise",
-          "analyticsDescription": "Integrações de análise e de monitorização",
-          "authorizenetLabel": "Authorize.net",
-          "authorizenetTitle": "Authorize.net",
-          "authorizenetDescription": "Pagamentos Authorize.net",
-          "shippingLabel": "Envio",
-          "shippingTitle": "Envio",
-          "shippingDescription": "Fornecer taxas de envio",
-          "braintreeLabel": "Braintree",
-          "braintreeTitle": "Braintree",
-          "braintreeDescription": "Pagamentos Braintree",
-          "catalogLabel": "Catálogo",
-          "catalogTitle": "Catálogo",
-          "catalogDescription": "Catálogo de produtos",
-          "coreLabel": "Definições",
-          "coreTitle": "Painel de controlo",
-          "coreDescription": "Configuração da plataforma Reaction",
-          "examplePaymentProviderLabel": "Exemplo de pagamento",
-          "examplePaymentProviderDescription": "Método de pagamento de exemplo",
-          "emailLabel": "Email",
-          "emailTitle": "Email",
-          "emailDescription": "Definições do email",
           "i18NLabel": "i18n",
           "i18NTitle": "i18n",
           "i18NDescription": "Serviços de internacionalização",
-          "inventoryLabel": "Inventário",
-          "inventoryTitle": "Inventário",
-          "inventoryDescription": "Utilitários de inventário",
-          "layoutLabel": "Esquema",
-          "layoutTitle": "Esquema",
-          "layoutDescription": "Serviços de de esquema",
-          "connectLabel": "Conectar",
-          "connectTitle": "Conectar",
-          "connectDescription": "Conectar a plataforma Reaction como um serviço implementado",
-          "ordersLabel": "Encomendas",
-          "ordersTitle": "Encomendas",
-          "ordersDescription": "Concluir as suas encomendas",
-          "paypalLabel": "PayPal",
-          "paypalTitle": "PayPal",
-          "paypalDescription": "Pagamentos por PayPal",
-          "revisionsLabel": "Revisões",
-          "revisionsTitle": "Revisões",
-          "revisionsDescription": "Controlo de revisão",
           "routingLabel": "Encaminhamento",
           "routingTitle": "Encaminhamento",
           "routingDescription": "Serviços de encaminhamento",
-          "searchLabel": "Procurar",
-          "searchTitle": "Procurar",
-          "searchDescription": "Pesquisa de produtos",
-          "socialLabel": "Redes sociais",
-          "socialTitle": "Redes sociais",
-          "socialDescription": "Configuração dos canais sociais",
-          "themesLabel": "Temas",
-          "themesTitle": "Temas",
-          "themesDescription": "Temas e componentes da IU",
-          "stripeLabel": "Stripe",
-          "stripeDescription": "Pagamentos Stripe",
           "filtrationLabel": "Filtragem",
           "filtrationDescription": "Filtragem de produtos para a plataforma Reaction"
         },
@@ -90,23 +36,13 @@
         },
         "settings": {
           "accountSettingsLabel": "Definições da conta",
+          "accountSettingsTitle": "Serviços de login",
+          "accountSettingsDescription": "Autenticação por meio de provedores sociais",
+          "saveSuccess": "Configurações atualizadas.",
+          "saveFailed": "Falha ao atualizar as configurações.",
           "addShopMemberLabel": "Adicionar membro da loja",
-          "authorizenetSettingsLabel": "Definições de Authorize.net",
           "permissionsSettingsLabel": "Permissões",
-          "braintreeSettingsLabel": "Definições de Braintree",
-          "localizationAndI18NLabel": "Localização e i18n",
-          "searchSettingsLabel": "Definições de pesquisa",
-          "shopSettingsLabel": "Definições da loja",
-          "socialSettingsLabel": "Definições das redes sociais",
-          "shippingSettingsLabel": "Definições de envio",
-          "stripeSettingsLabel": "Definições Stripe",
-          "inventorySettingsLabel": "Definições do inventário",
-          "analyticsSettingsLabel": "Definições analíticas",
-          "paypalSettingsLabel": "Definições do PayPal",
-          "reactionConnectLabel": "Reaction Connect",
-          "examplePaymentSettingsLabel": "Exemplo de definições de pagamento",
-          "productSettingsLabel": "Definições do produto",
-          "productDetailsLabel": "Detalhes do produto"
+          "localizationAndI18NLabel": "Localização e i18n"
         },
         "userAccountDropdown": {
           "profileLabel": "Perfil"
@@ -197,6 +133,41 @@
         "shopPaymentMethodsSaved": "Definições dos métodos de pagamento da loja guardadas.",
         "shopPaymentMethodsFailed": "Falha ao atualizar as definições dos métodos de pagamento da loja."
       },
+      "notifications": {
+        "body": {
+          "noNotifications": "Ainda não há notificações",
+          "markAllAsRead": "Marcar tudo como lido",
+          "recent": "Recentes",
+          "viewAll": "Ver todos os"
+        },
+        "messages": {
+          "orderCancelled": "Seu pedido foi cancelado.",
+          "newOrder": "Seu pedido está sendo processado.",
+          "forAdmin": "Você tem uma nova ordem.",
+          "orderDelivered": "Seu pedido foi entregue.",
+          "orderAccepted": "Seu pedido foi aceito.",
+          "orderShipped": "Sua ordem foi enviada."
+        }
+      },
+      "sms": {
+        "headers": {
+          "settings": "Fornecedor SMS"
+        },
+        "settings": {
+          "provider": "Fornecedor",
+          "selectProvider": "Selecione um provedor de SMS ...",
+          "smsPhone": "Número de telefone SMS",
+          "apiKey": "Chave da API",
+          "apiToken": "API Token/Secret"
+        },
+        "alerts": {
+          "noApiKey": "Adicione uma chave de API",
+          "noApiToken": "Adicione um API TOKEN / Secret",
+          "noSmsProvider": "Escolha um fornecedor de SMS",
+          "noSmsPhone": "Adicione o número de telefone fornecido pelo seu provedor de SMS",
+          "saveSuccess": "Configurações de SMS salvas"
+        }
+      },
       "mail": {
         "headers": {
           "email": "Email",
@@ -241,7 +212,9 @@
           "connectionFailed": "Falha na ligação!",
           "saveAnyway": "Pretende, mesmo assim, guardar as definições?",
           "saveSuccess": "Definições de correio guardadas.",
-          "saveFailed": "Falha ao guardar definições do correio. {{error}}"
+          "saveFailed": "Falha ao guardar definições do correio. {{error}}",
+          "cantSendEmail": "Erro de servidor: Não é possível enviar uma notificação de e-mail.",
+          "emailSent": "notificação de e-mail enviado."
         }
       },
       "header": {
@@ -352,6 +325,7 @@
         "productIsNotVisible": "O produto não está visível"
       },
       "productVariant": {
+        "addVariantOptions": "Adicionar opções para ativar 'Adicionar ao carrinho' Butto",
         "inventoryQuantity": "Quantidade",
         "title": "Etiqueta",
         "price": "Preço",
@@ -381,6 +355,10 @@
         "disableConfirm": "Tem a certeza de que pretende desativar {{app}}?",
         "pkgEnabled": "A aplicação {{app}} está agora ativada.",
         "pkgDisabled": "A aplicação {{app}} está agora desativada."
+      },
+      "gridSettingsPanel": {
+        "title": "Configurações de grade",
+        "selected": "Selecionado"
       },
       "cartDrawer": {
         "empty": "Lamentamos. O seu carrinho está vazio.",
@@ -435,11 +413,6 @@
           "completed": "Concluído",
           "canceled": "Cancelado",
           "refunded": "Reembolsado"
-        },
-        "paymentProvider": {
-          "braintree": {
-            "braintreeSettlementDelay": "Braintree não permite reembolsos até as transações estarem liquidadas. Isto pode demorar até 24 horas. Tente de novo mais tarde."
-          }
         }
       },
       "orderShipping": {
@@ -447,11 +420,16 @@
         "notShipped": "Ainda não enviado",
         "noTracking": "Sem monitorização",
         "tracking": "Monitorização",
+        "printLabels": "Etiquetas de impressão",
+        "printShippingLabel": "Remessa",
+        "printCustomsLabel": "Costumes",
+        "carrier": "Portador",
         "addTracking": "Adicionar monitorização",
         "itemsHaveBeenShipped": "Os itens foram enviados",
         "shipmentEmpty": "Esta remessa não tem itens",
         "shipmentPacked": "Todos os itens guardados",
         "shipped": "Enviado",
+        "delivered": "entregue",
         "shippingNotifyCustomer": "Notifique o cliente de que os respetivos itens serão enviados em breve.",
         "resendNotification": "Reenviar notificação de envio"
       },
@@ -560,6 +538,7 @@
       },
       "revisions": {
         "isDisabled": "O controlo da revisão está desativado. As alterações serão publicadas de imediato.",
+        "isEnabled": "controle de revisão está habilitado para os produtos. será preciso qualquer alteração a ser publicado antes de ser visível para os clientes.",
         "unpublishedChanges": "Alterações não publicadas",
         "publishChanges": "Publicar alterações",
         "showChanges": "Mostrar alterações",
@@ -593,14 +572,6 @@
         "shippingOptions": "Opções de envio",
         "reviewPayment": "Rever",
         "complete": "Concluir"
-      },
-      "checkoutPayment": {
-        "addPaymentToCompleteOrder": "Adicionar pagamento para concluir a encomenda",
-        "processingError": "Ocorreu um problema com o seu pagamento.",
-        "completeYourOrder": "Concluir a sua encomenda",
-        "noPaymentMethods": "Não há métodos de pagamento configurados.",
-        "configureNow": "Configure agora.",
-        "failedToPlaceOrder": "Falha ao efetuar a encomenda."
       },
       "checkoutReview": {
         "review": "Rever"
@@ -793,16 +764,6 @@
           "passwordResetSend": "Foi enviado um email com uma ligação para repor a palavra-passe.",
           "invitationSent": "Convite enviado",
           "sendInvitation": "Enviar convite"
-        },
-        "reactionUI": {
-          "editTheme": "Editar tema",
-          "duplicateTheme": "Duplicar o tema",
-          "duplicateThemeError": "Não foi possível duplicar o tema",
-          "publishThemeError": "`Não foi possível publicar o tema {{themeName}}",
-          "components": {
-            "navbar": "Barra de navegação",
-            "button": "Botão"
-          }
         },
         "error": {
           "emailRequired": "O email é obrigatório.",

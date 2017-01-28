@@ -1,0 +1,18 @@
+[{
+  "i18n": "hr",
+  "ns": "reaction-connect",
+  "translation": {
+    "reaction-connect": {
+      "admin": {
+        "dashboard": {
+          "connectLabel": "Spojiti",
+          "connectTitle": "Spojiti",
+          "connectDescription": "Povezivanje reakcija kao razmještene usluge"
+        },
+        "settings": {
+          "reactionConnectLabel": "reakcija Connect"
+        }
+      }
+    }
+  }
+}]

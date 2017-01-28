@@ -23,7 +23,7 @@ Meteor.methods({
 
     // pretty info
     if (url) {
-      Logger.info("Fetching TaxCodes from source: ", url);
+      Logger.debug("Fetching TaxCodes from source: ", url);
     }
     // allow for custom taxCodes from alternate sources
     const TAXCODE_SRC = url || "https://taxcloud.net/tic/?format=json";

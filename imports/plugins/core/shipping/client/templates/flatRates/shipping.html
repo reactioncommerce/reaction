@@ -4,7 +4,7 @@
     {{#if shippingConfigured}}
       {{#each shipmentQuotes}}
         <li class="list-group-item {{isSelected ..}}" data-carrier="{{carrier}}" data-method="{{method}}">
-          <span class="text-left">{{method.label}}</span>
+          <span class="text-left">{{method.carrier}} - {{method.label}}</span>
           <span class="pull-right">{{formatPrice rate}}</span>
         </li>
       {{else}}
@@ -13,7 +13,7 @@
     {{else}}
         <div class="alert alert-danger">
           <span data-i18n="checkoutShipping.noShippingMethods">No shipping methods are configured. </span>
-          <a href="{{pathFor 'dashboard/shipping'}}">
+          <a href="{{pathFor 'dashboard'}}">
             <span data-i18n="checkoutShipping.configureNow">Configure now.</span>
           </a>
         </div>

@@ -211,13 +211,11 @@
   }
 
   .product-grid-item .overlay-title {
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: clip;
     text-transform: uppercase;
     font-size: @font-size-base;
     font-weight: 400;
     text-align: center;
+    word-break: break-all;
   }
 
 
@@ -385,6 +383,7 @@
 
       @media screen and (max-width: @screen-xs-max) {
         max-width: 100%;
+        -webkit-flex-basis: 100%;
 
         .product-grid-item-images {
           height: 225px;

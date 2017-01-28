@@ -1,0 +1,32 @@
+[{
+  "language": "Swedish",
+  "i18n": "sv",
+  "ns": "reaction-braintree",
+  "translation": {
+    "reaction-payments": {
+      "admin": {
+        "shortcut": {
+          "braintreeLabel": "Braintree",
+          "braintreeTitle": "Braintree"
+        },
+        "dashboard": {
+          "braintreeLabel": "Braintree",
+          "braintreeTitle": "Braintree",
+          "braintreeDescription": "Braintree betalningar"
+        },
+        "paymentSettings": {
+          "braintreeLabel": "Braintree",
+          "braintreeSettingsLabel": "Braintree",
+          "braintreeCredentials": "Lägg referenser för att möjliggöra"
+        }
+      },
+      "order": {
+        "paymentProvider": {
+          "braintree": {
+            "braintreeSettlementDelay": "Braintree tillåter inte återbetalningar förrän transaktioner avvecklas. Detta kan ta upp till 24 timmar. Försök igen senare."
+          }
+        }
+      }
+    }
+  }
+}]

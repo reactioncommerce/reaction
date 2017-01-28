@@ -90,7 +90,7 @@ Template.orders.onCreated(function () {
   // fetch available orders
   this.autorun(() => {
     this.subscribe("Orders");
-    const filter = Reaction.Router.getQueryParam("filter");
+    const filter = this.data && this.data.filter.name || Reaction.Router.getQueryParam("filter");
     const query = OrderHelper.makeQuery(filter);
     const orders = Orders.find(query).fetch();
 
@@ -104,16 +104,6 @@ Template.orders.onCreated(function () {
     // Update currency information, this is passed to child components containing
     // Numeric inputs
     this.state.set("currency", shop.currencies[shop.currency]);
-  });
-
-  // Open the action view when necessary
-  this.autorun(() => {
-    const isActionViewOpen = Reaction.isActionViewOpen();
-    const queryParams = Reaction.Router.current().queryParams;
-
-    if (isActionViewOpen === false) {
-      Reaction.Router.go("orders", {}, queryParams);
-    }
   });
 });
 
@@ -173,19 +163,31 @@ Template.ordersListItem.events({
     const instance = Template.instance();
     const isActionViewOpen = Reaction.isActionViewOpen();
     // toggle detail views
-    if (isActionViewOpen === false) {
-      Reaction.showActionView({
-        label: "Order Details",
-        i18nKeyLabel: "orderWorkflow.orderDetails",
-        data: instance.data.order,
-        props: {
-          size: "large"
-        },
-        template: "coreOrderWorkflow"
-      });
-    }
-    Reaction.Router.setQueryParams({
-      _id: instance.data.order._id
+    // if (isActionViewOpen === false) {
+    //   Reaction.showActionView({
+    //     label: "Order Details",
+    //     i18nKeyLabel: "orderWorkflow.orderDetails",
+    //     data: instance.data.order,
+    //     props: {
+    //       size: "large"
+    //     },
+    //     template: "coreOrderWorkflow"
+    //   });
+    // }
+    // Reaction.Router.setQueryParams({
+    //   _id: instance.data.order._id
+    // });
+
+    Reaction.setActionViewDetail({
+      label: "Order Details",
+      i18nKeyLabel: "orderWorkflow.orderDetails",
+      data: {
+        order: instance.data.order
+      },
+      props: {
+        size: "large"
+      },
+      template: "coreOrderWorkflow"
     });
   },
   "click [data-event-action=startProcessingOrder]": function (event) {
@@ -197,6 +199,14 @@ Template.ordersListItem.events({
 
     if (order.workflow.status === "new") {
       Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "processing", order);
+
+      // send notification to order owner
+      const userId = order.userId;
+      const type = "orderAccepted";
+      const prefix = Reaction.getShopPrefix();
+      const url = `${prefix}/notifications`;
+      const sms = true;
+      Meteor.call("notification/send", userId, type, url, sms);
     }
 
     // toggle detail views
@@ -204,17 +214,13 @@ Template.ordersListItem.events({
       Reaction.showActionView({
         label: "Order Details",
         i18nKeyLabel: "orderWorkflow.orderDetails",
-        data: order,
+        data: { order },
         props: {
           size: "large"
         },
         template: "coreOrderWorkflow"
       });
     }
-    Reaction.Router.setQueryParams({
-      filter: "processing",
-      _id: order._id
-    });
   }
 });
 
@@ -308,16 +314,31 @@ Template.orderStatusDetail.helpers({
     return moment(this.createdAt).fromNow();
   },
 
+  shipmentMethod: function () {
+    return this.shipping[0].shipmentMethod;
+  },
+
   shipmentTracking: function () {
     if (this.shipping[0].tracking) {
       return this.shipping[0].tracking;
     }
-    return i18next.t("orderShipping.noTracking");
+    return "";
   },
 
   shipmentStatus() {
     const self = this;
     const shipment = this.shipping[0];
+
+    // check first if it was delivered
+    if (shipment.delivered) {
+      return {
+        delivered: true,
+        shipped: true,
+        status: "success",
+        label: i18next.t("orderShipping.delivered")
+      };
+    }
+
     const shipped = _.every(shipment.items, (shipmentItem) => {
       for (const fullItem of self.items) {
         if (fullItem._id === shipmentItem._id) {
@@ -332,6 +353,7 @@ Template.orderStatusDetail.helpers({
 
     if (shipped) {
       return {
+        delivered: false,
         shipped: true,
         status: "success",
         label: i18next.t("orderShipping.shipped")
@@ -339,6 +361,7 @@ Template.orderStatusDetail.helpers({
     }
 
     return {
+      delivered: false,
       shipped: false,
       status: "info",
       label: i18next.t("orderShipping.notShipped")

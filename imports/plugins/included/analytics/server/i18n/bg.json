@@ -1,0 +1,18 @@
+[{
+  "i18n": "bg",
+  "ns": "reaction-analytics",
+  "translation": {
+    "reaction-analytics": {
+      "admin": {
+        "dashboard": {
+          "analyticsLabel": "анализ",
+          "analyticsTitle": "анализ",
+          "analyticsDescription": "Анализ и проследяването на интеграции"
+        },
+        "settings": {
+          "analyticsSettingsLabel": "Настройки на Google Анализ"
+        }
+      }
+    }
+  }
+}]

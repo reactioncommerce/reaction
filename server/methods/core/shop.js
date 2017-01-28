@@ -458,7 +458,7 @@ Meteor.methods({
       return Collections.Tags.update(tagId, {
         $set: newTag
       }, function () {
-        Logger.info(
+        Logger.debug(
           `Changed name of tag ${tagId} to ${tagName}`);
         return true;
       });
@@ -470,7 +470,7 @@ Meteor.methods({
             relatedTagIds: existingTag._id
           }
         }, function () {
-          Logger.info(
+          Logger.debug(
             `Added tag ${existingTag.name} to the related tags list for tag ${currentTagId}`
           );
           return true;
@@ -482,7 +482,7 @@ Meteor.methods({
           isTopLevel: true
         }
       }, function () {
-        Logger.info(`Marked tag ${existingTag.name} as a top level tag`);
+        Logger.debug(`Marked tag ${existingTag.name} as a top level tag`);
         return true;
       });
     }
@@ -500,7 +500,7 @@ Meteor.methods({
           relatedTagIds: newTagId
         }
       }, function () {
-        Logger.info(`Added tag${newTag.name} to the related tags list for tag ${currentTagId}`);
+        Logger.debug(`Added tag${newTag.name} to the related tags list for tag ${currentTagId}`);
         return true;
       });
       // TODO: refactor this. unnecessary check

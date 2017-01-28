@@ -95,7 +95,7 @@ export const methods = {
     //
     // check if plugin is enabled and this calculation method is enabled
     if (pkg && pkg.enabled === true && pkg.settings.rates.enabled === true) {
-      Logger.info("Calculating custom tax rates");
+      Logger.debug("Calculating custom tax rates");
 
       if (typeof cartToCalc.shipping !== "undefined") {
         const shippingAddress = cartToCalc.shipping[0].address;

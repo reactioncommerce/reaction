@@ -1,0 +1,35 @@
+[{
+  "language": "Chinese",
+  "i18n": "zh",
+  "ns": "reaction-templates",
+  "translation": {
+    "reaction-templates": {
+      "admin": {
+        "settings": {
+          "templateSettingsLabel": "模板设置"
+        }
+      },
+      "templateGrid": {
+        "noTemplatesFound": "没有找到模板",
+        "columns": {
+          "title": "称号",
+          "type": "类型",
+          "language": "语言"
+        }
+      },
+      "templateUpdateForm": {
+        "emailTemplates": {
+          "updateEmailTemplate": "更新电子邮件模板"
+        },
+        "reactTemplates": {
+          "updateReactTemplate": "更新模板做出反应",
+          "updateUnavailable": "REACT模板无法通过此界面进行编辑"
+        },
+        "alerts": {
+          "templateUpdated": "模板成功更新",
+          "failedToUpdate": "无法更新模板：{{err}}"
+        }
+      }
+    }
+  }
+}]

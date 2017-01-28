@@ -1,0 +1,26 @@
+[{
+  "language": "Hebrew",
+  "i18n": "he",
+  "ns": "reaction-auth-net",
+  "translation": {
+    "reaction-payments": {
+      "admin": {
+        "shortcut": {
+          "authorizenetLabel": "Authorize.net",
+          "authorizenetTitle": "Authorize.net"
+        },
+        "dashboard": {
+          "authorizenetLabel": "Authorize.net",
+          "authorizenetTitle": "Authorize.net",
+          "authorizenetDescription": "תשלומי Authorize.net"
+        },
+        "paymentSettings": {
+          "authorizenetLabel": "Authorize.net",
+          "authorizenetSettingsLabel": "Authorize.net",
+          "authorizenetCredentials": "אין לך מזהה כניסה ומפתח עסקאות?",
+          "authorizenetCredentialURL": "קבל מ- Authorize.net"
+        }
+      }
+    }
+  }
+}]

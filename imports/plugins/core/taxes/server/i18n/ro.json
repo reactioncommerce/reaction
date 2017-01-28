@@ -13,6 +13,13 @@
           "taxesTitle": "Impozite",
           "taxesDescription": "Configurare impozitare"
         },
+        "taxGrid": {
+          "taxCode": "Cod",
+          "rate": "Rată",
+          "country": "Țară",
+          "region": "Regiune",
+          "postal": "Poştal"
+        },
         "settings": {
           "taxSettingsLabel": "Setări impozite"
         },

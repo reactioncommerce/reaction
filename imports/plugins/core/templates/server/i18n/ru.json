@@ -1,0 +1,35 @@
+[{
+  "language": "Russian",
+  "i18n": "ru",
+  "ns": "reaction-templates",
+  "translation": {
+    "reaction-templates": {
+      "admin": {
+        "settings": {
+          "templateSettingsLabel": "Настройки шаблона"
+        }
+      },
+      "templateGrid": {
+        "noTemplatesFound": "Не найдено ни одного шаблона",
+        "columns": {
+          "title": "заглавие",
+          "type": "Тип",
+          "language": "Язык"
+        }
+      },
+      "templateUpdateForm": {
+        "emailTemplates": {
+          "updateEmailTemplate": "шаблон сообщения электронной почты Обновление"
+        },
+        "reactTemplates": {
+          "updateReactTemplate": "Обновление Реагировать шаблон",
+          "updateUnavailable": "Реагировать шаблоны не могут быть изменены через этот интерфейс"
+        },
+        "alerts": {
+          "templateUpdated": "Шаблон успешно обновлен",
+          "failedToUpdate": "Не удалось обновить шаблон: {{err}}"
+        }
+      }
+    }
+  }
+}]

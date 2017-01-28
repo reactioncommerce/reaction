@@ -10,12 +10,6 @@ Reaction.registerPackage({
     name: "product",
     template: "productDetailSimple",
     workflow: "coreProductWorkflow"
-  }, {
-    label: "Product Details",
-    provides: "settings",
-    route: "/product/:handle/:variantId?",
-    container: "product",
-    template: "ProductAdmin"
   }],
   layout: [{
     layout: "coreLayout",

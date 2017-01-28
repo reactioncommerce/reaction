@@ -1,0 +1,18 @@
+[{
+  "i18n": "hu",
+  "ns": "reaction-notification",
+  "translation": {
+    "reaction-notification": {
+      "admin": {
+        "dashboard": {
+          "smsLabel": "SMS",
+          "smsTitle": "SMS",
+          "smsDescription": "Értesítések"
+        },
+        "settings": {
+          "smsSettingsLabel": "SMS-beállítások"
+        }
+      }
+    }
+  }
+}]

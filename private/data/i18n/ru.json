@@ -7,75 +7,21 @@
       "languages": {
         "select": "Выбрать язык"
       },
+      "currencies": {
+        "select": "Выбор валюты"
+      },
       "admin": {
         "shortcut": {
-          "dashboardLabel": "Панель управления",
-          "ordersLabel": "Заказы",
           "addProductLabel": "Создать продукт",
           "accountsLabel": "Пользователи"
         },
         "dashboard": {
-          "accountsLabel": "Учётные записи",
-          "accountsTitle": "Учётные записи",
-          "accountsDescription": "Управление правами пользователей",
-          "analyticsLabel": "Аналитика",
-          "analyticsTitle": "Аналитика",
-          "analyticsDescription": "Внедрение аналитики и отслеживания событий",
-          "authorizenetLabel": "Authorize.net",
-          "authorizenetTitle": "Authorize.net",
-          "authorizenetDescription": "Платежи Authorize.net",
-          "shippingLabel": "Доставка",
-          "shippingTitle": "Доставка",
-          "shippingDescription": "Настройки тарифов по доставке",
-          "braintreeLabel": "Braintree",
-          "braintreeTitle": "Braintree",
-          "braintreeDescription": "Платежи через Braintree",
-          "catalogLabel": "Каталог",
-          "catalogTitle": "Каталог",
-          "catalogDescription": "Каталог товаров",
-          "coreLabel": "Ядро",
-          "coreTitle": "Панель управления",
-          "coreDescription": "Базовые настройки Reaction",
-          "examplePaymentProviderLabel": "Образец платёжной системы",
-          "examplePaymentProviderDescription": "Образец для портирования любых платёжных систем",
-          "emailLabel": "Эл. почта",
-          "emailTitle": "Эл. адрес",
-          "emailDescription": "Настройки эл. почты",
           "i18NLabel": "i18n",
           "i18NTitle": "i18n",
           "i18NDescription": "Интернационализация",
-          "inventoryLabel": "Товары",
-          "inventoryTitle": "Товары",
-          "inventoryDescription": "Утилиты для работы с товарами",
-          "layoutLabel": "план",
-          "layoutTitle": "план",
-          "layoutDescription": "план",
-          "connectLabel": "Connect",
-          "connectTitle": "Connect",
-          "connectDescription": "Подключение Reaction как развёрнутого сервиса",
-          "ordersLabel": "Заказы",
-          "ordersTitle": "Заказы",
-          "ordersDescription": "Управление заказами",
-          "paypalLabel": "PayPal",
-          "paypalTitle": "PayPal",
-          "paypalDescription": "Платежи через PayPal",
-          "revisionsLabel": "Версии",
-          "revisionsTitle": "Версии",
-          "revisionsDescription": "Управление версиями",
           "routingLabel": "Маршрутизация",
           "routingTitle": "Маршрутизация",
           "routingDescription": "Утилиты маршрутизации",
-          "searchLabel": "Искать",
-          "searchTitle": "Искать",
-          "searchDescription": "Поиск товара",
-          "socialLabel": "Социальные сети",
-          "socialTitle": "Социальные сети",
-          "socialDescription": "Интеграция с соц. сетями",
-          "themesLabel": "Темы",
-          "themesTitle": "Темы",
-          "themesDescription": "Темы и UI компоненты",
-          "stripeLabel": "Stripe",
-          "stripeDescription": "Платежи через Stripe",
           "filtrationLabel": "Filtration",
           "filtrationDescription": "Products filtration for Reaction"
         },
@@ -90,23 +36,13 @@
         },
         "settings": {
           "accountSettingsLabel": "Настройки учетных записей",
+          "accountSettingsTitle": "Вход Услуги",
+          "accountSettingsDescription": "Аутентификация с помощью социальных провайдеров",
+          "saveSuccess": "Настройки обновлены.",
+          "saveFailed": "Не удалось обновить настройки.",
           "addShopMemberLabel": "Добавить сотрудника",
-          "authorizenetSettingsLabel": "Настройки Authorize.net",
           "permissionsSettingsLabel": "Права доступа",
-          "braintreeSettingsLabel": "Настройки Braintree",
-          "localizationAndI18NLabel": "Локализация и i18n",
-          "searchSettingsLabel": "Настройки поиска",
-          "shopSettingsLabel": "Настройки магазина",
-          "socialSettingsLabel": "Настройки соц. сетей",
-          "shippingSettingsLabel": "Настройки доставки",
-          "stripeSettingsLabel": "Настройки Stripe",
-          "inventorySettingsLabel": "Настройки управления товарами",
-          "analyticsSettingsLabel": "Настройки аналитики",
-          "paypalSettingsLabel": "Настройки PayPal",
-          "reactionConnectLabel": "Reaction Connect",
-          "examplePaymentSettingsLabel": "Образец платёжной системы",
-          "productSettingsLabel": "Настройки продукта",
-          "productDetailsLabel": "Подробные данные о товаре"
+          "localizationAndI18NLabel": "Локализация и i18n"
         },
         "userAccountDropdown": {
           "profileLabel": "Профиль"
@@ -197,6 +133,41 @@
         "shopPaymentMethodsSaved": "Настройки платёжных систем обновлены.",
         "shopPaymentMethodsFailed": "Не удалось изменить настройки платёжных систем. "
       },
+      "notifications": {
+        "body": {
+          "noNotifications": "Пока нет уведомлений",
+          "markAllAsRead": "Пометить все как прочитанные",
+          "recent": "Недавние",
+          "viewAll": "Просмотреть все"
+        },
+        "messages": {
+          "orderCancelled": "Ваш заказ был отменен.",
+          "newOrder": "Ваш заказ обрабатывается.",
+          "forAdmin": "У вас новый заказ.",
+          "orderDelivered": "Ваш заказ был доставлен.",
+          "orderAccepted": "Ваш заказ был принят.",
+          "orderShipped": "Ваш заказ был отправлен."
+        }
+      },
+      "sms": {
+        "headers": {
+          "settings": "Провайдер SMS"
+        },
+        "settings": {
+          "provider": "Провайдерs",
+          "selectProvider": "Выберите Провайдерs SMS ...",
+          "smsPhone": "SMS номер телефона",
+          "apiKey": "Ключ API",
+          "apiToken": "API токена/секрет"
+        },
+        "alerts": {
+          "noApiKey": "Пожалуйста, добавьте ключ API",
+          "noApiToken": "Пожалуйста, добавьте API ТОКЕНА/секрет",
+          "noSmsProvider": "Пожалуйста, выберите поставщика SMS",
+          "noSmsPhone": "Пожалуйста, добавьте телефонный номер, присвоенный вам вашим поставщиком SMS",
+          "saveSuccess": "Сохраненные настройки SMS"
+        }
+      },
       "mail": {
         "headers": {
           "email": "Email",
@@ -241,7 +212,9 @@
           "connectionFailed": "Соединение прервано!",
           "saveAnyway": "Вы все равно хотите сохранить настройки?",
           "saveSuccess": "Настройки почты сохранены.",
-          "saveFailed": "Не удалось сохранить настройки почты. {{error}}"
+          "saveFailed": "Не удалось сохранить настройки почты. {{error}}",
+          "cantSendEmail": "Ошибка сервера: Не удается отправить уведомление по электронной почте.",
+          "emailSent": "уведомление по электронной почте."
         }
       },
       "header": {
@@ -352,6 +325,7 @@
         "productIsNotVisible": "Товар не виден"
       },
       "productVariant": {
+        "addVariantOptions": "Добавить параметры для включения 'Добавить в корзину' переключате",
         "inventoryQuantity": "Количество",
         "title": "Название",
         "price": "Цена",
@@ -381,6 +355,10 @@
         "disableConfirm": "Вы уверены в том, что хотите отключить \"{{app}}\"?",
         "pkgEnabled": "Пакет \"{{app}}\" подключен",
         "pkgDisabled": "Пакет \"{{app}}\" отключен"
+      },
+      "gridSettingsPanel": {
+        "title": "Настройки сетки",
+        "selected": "выбранный"
       },
       "cartDrawer": {
         "empty": "Очень жаль, ваша корзина пуста",
@@ -435,11 +413,6 @@
           "completed": "Завершенных",
           "canceled": "Отмененных",
           "refunded": "Возвращенных"
-        },
-        "paymentProvider": {
-          "braintree": {
-            "braintreeSettlementDelay": "Braintree не позволяет осуществлять возвраты до завершения транзакций. Процесс может занять до 24 часов. Попробуйте еще раз позже."
-          }
         }
       },
       "orderShipping": {
@@ -447,11 +420,16 @@
         "notShipped": "Ещё не доставлено",
         "noTracking": "Не отслеживается",
         "tracking": "Трекинг номер",
+        "printLabels": "Печать этикеток",
+        "printShippingLabel": "Перевозка",
+        "printCustomsLabel": "Таможня",
+        "carrier": "Носитель",
         "addTracking": "Добавить идентификатор",
         "itemsHaveBeenShipped": "Товары отправлены",
         "shipmentEmpty": "Эта доставка не содержит товаров",
         "shipmentPacked": "Все товары запакованы и готовы к отгрузке",
         "shipped": "Доставлено",
+        "delivered": "доставлен",
         "shippingNotifyCustomer": "Известить клиента о том, что его товары скоро будут доставлены.",
         "resendNotification": "Отправить уведомление о доставке еще раз"
       },
@@ -560,6 +538,7 @@
       },
       "revisions": {
         "isDisabled": "Управление версиями отключено. Любые изменения будут немедленно опубликованы.",
+        "isEnabled": "Контроль версий включена для продуктов. Любые изменения будут должны быть опубликованы до быть видимым для клиентов.",
         "unpublishedChanges": "Неопубликованные изменения",
         "publishChanges": "Опубликовать изменения",
         "showChanges": "Отобразить изменения",
@@ -593,14 +572,6 @@
         "shippingOptions": "Варианты доставки",
         "reviewPayment": "Обзор",
         "complete": "Готово"
-      },
-      "checkoutPayment": {
-        "addPaymentToCompleteOrder": "Добавить платёж для завершения заказа",
-        "processingError": "С вашим платежом возникли сложности.",
-        "completeYourOrder": "Завершить ваш заказ",
-        "noPaymentMethods": "Не указан ни один вариант платежа.",
-        "configureNow": "Укажите сейчас.",
-        "failedToPlaceOrder": "Разместить заказ не удалось."
       },
       "checkoutReview": {
         "review": "Обзор"
@@ -793,16 +764,6 @@
           "passwordResetSend": "Email со сбросом пароля отправлен.",
           "invitationSent": "Приглашение отправлено",
           "sendInvitation": "Отправить приглашение"
-        },
-        "reactionUI": {
-          "editTheme": "Редактировать тему",
-          "duplicateTheme": "Дублировать тему",
-          "duplicateThemeError": "Тему не удалось дублировать",
-          "publishThemeError": "`Невозможно опубликовать тему {{themeName}}",
-          "components": {
-            "navbar": "Меню навигации",
-            "button": "Кнопка"
-          }
         },
         "error": {
           "emailRequired": "Email обязателен.",

@@ -1,0 +1,26 @@
+[{
+  "language": "Vietnamese",
+  "i18n": "vi",
+  "ns": "taxes-taxcloud",
+  "translation": {
+    "reaction-taxes": {
+      "admin": {
+        "shortcut": {
+          "taxcloudLabel": "TaxCloud",
+          "taxcloudTitle": "TaxCloud"
+        },
+        "dashboard": {
+          "taxcloudLabel": "TaxCloud",
+          "taxcloudTitle": "TaxCloud",
+          "taxcloudDescription": "thuế TaxCloud"
+        },
+        "taxSettings": {
+          "taxcloudLabel": "TaxCloud",
+          "taxcloudSettingsLabel": "TaxCloud",
+          "taxcloudCredentials": "Thêm thông tin để cho phép",
+          "taxcloudGetCredentialsURL": "Nhận được chúng ở đây"
+        }
+      }
+    }
+  }
+}]

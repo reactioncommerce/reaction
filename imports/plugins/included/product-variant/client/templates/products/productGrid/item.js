@@ -10,6 +10,27 @@ import { ReactionProduct } from "/lib/api";
 import { Media } from "/lib/collections";
 import { isRevisionControlEnabled } from "/imports/plugins/core/revisions/lib/api";
 
+
+Template.productGridItems.onRendered( function () {
+  $(".container-main").on("click", function(event) {
+    if ($(event.target).closest(".product-grid-item").length === 0) {
+      Session.set("productGrid/selectedProducts", []);
+
+      Reaction.showActionView({
+        label: "Grid Settings",
+        i18nKeyLabel: "gridSettingsPanel.title",
+        template: "productSettings",
+        type: "product",
+        data: {}
+      });
+    }
+  });
+});
+
+Template.productGridItems.onDestroyed( function() {
+  $(".container-main").off("click");
+});
+
 /**
  * productGridItems helpers
  */
@@ -97,7 +118,10 @@ Template.productGridItems.helpers({
     }
   },
   isSelected: function () {
-    return _.includes(Session.get("productGrid/selectedProducts"), this._id) ? "active" : "";
+    if (Reaction.isPreview() === false) {
+      return _.includes(Session.get("productGrid/selectedProducts"), this._id) ? "active" : "";
+    }
+    return false;
   },
   isMediumWeight: function () {
     const tag = ReactionProduct.getTag();
@@ -132,30 +156,78 @@ Template.productGridItems.helpers({
  */
 
 Template.productGridItems.events({
+  "dblclick [data-event-action=productClick]": function (event, template) {
+    const instance = template;
+    const product = instance.data;
+    const handle = product.handle;
+
+    Reaction.Router.go("product", {
+      handle: handle
+    });
+
+    Reaction.setActionView({
+      i18nKeyLabel: "productDetailEdit.productSettings",
+      label: "Product Settings",
+      template: "ProductAdmin"
+    });
+  },
   "click [data-event-action=productClick]": function (event, template) {
-    if (Reaction.hasPermission("createProduct")) {
-      if (event.metaKey || event.ctrlKey || event.shiftKey) {
-        event.preventDefault();
+    if (Reaction.hasPermission("createProduct") && Reaction.isPreview() === false) {
+      event.preventDefault();
 
-        let $checkbox = template.$(`input[type=checkbox][value=${this._id}]`);
-        const $items = $("li.product-grid-item");
-        const $activeItems = $("li.product-grid-item.active");
-        const selected = $activeItems.length;
+      const isSelected = $(event.target).closest("li.product-grid-item.active").length;
 
-        if (event.shiftKey && selected > 0) {
-          const indexes = [
-            $items.index($checkbox.parents("li.product-grid-item")),
-            $items.index($activeItems.get(0)),
-            $items.index($activeItems.get(selected - 1))
-          ];
-          for (let i = _.min(indexes); i <= _.max(indexes); i++) {
-            $checkbox = $("input[type=checkbox]", $items.get(i));
-            if ($checkbox.prop("checked") === false) {
-              $checkbox.prop("checked", true).trigger("change");
+      if (isSelected) {
+        // If product is already selected, and you are single clicking WITH command key, things whould happen
+        if (event.metaKey || event.ctrlKey || event.shiftKey) {
+          let $checkbox = template.$(`input[type=checkbox][value=${this._id}]`);
+          const $items = $("li.product-grid-item");
+          const $activeItems = $("li.product-grid-item.active");
+          const selected = $activeItems.length;
+
+          if (event.shiftKey && selected > 0) {
+            const indexes = [
+              $items.index($checkbox.parents("li.product-grid-item")),
+              $items.index($activeItems.get(0)),
+              $items.index($activeItems.get(selected - 1))
+            ];
+            for (let i = _.min(indexes); i <= _.max(indexes); i++) {
+              $checkbox = $("input[type=checkbox]", $items.get(i));
+              if ($checkbox.prop("checked") === false) {
+                $checkbox.prop("checked", true).trigger("change");
+              }
             }
+          } else {
+            $checkbox.prop("checked", !$checkbox.prop("checked")).trigger("change");
+          }
+        }
+      } else {
+        if (event.metaKey || event.ctrlKey || event.shiftKey) {
+          let $checkbox = template.$(`input[type=checkbox][value=${this._id}]`);
+          const $items = $("li.product-grid-item");
+          const $activeItems = $("li.product-grid-item.active");
+          const selected = $activeItems.length;
+
+          if (event.shiftKey && selected > 0) {
+            const indexes = [
+              $items.index($checkbox.parents("li.product-grid-item")),
+              $items.index($activeItems.get(0)),
+              $items.index($activeItems.get(selected - 1))
+            ];
+            for (let i = _.min(indexes); i <= _.max(indexes); i++) {
+              $checkbox = $("input[type=checkbox]", $items.get(i));
+              if ($checkbox.prop("checked") === false) {
+                $checkbox.prop("checked", true).trigger("change");
+              }
+            }
+          } else {
+            $checkbox.prop("checked", !$checkbox.prop("checked")).trigger("change");
           }
         } else {
-          $checkbox.prop("checked", !$checkbox.prop("checked")).trigger("change");
+          let $checkbox = template.$(`input[type=checkbox][value=${this._id}]`);
+
+          Session.set("productGrid/selectedProducts", []);
+          $checkbox.prop("checked", true).trigger("change");
         }
       }
     }

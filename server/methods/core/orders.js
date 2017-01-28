@@ -94,7 +94,7 @@ export const methods = {
         }
       });
 
-      // Set the status of the items as shipped
+      // Set the status of the items as packed
       const itemIds = shipment.items.map((item) => {
         return item._id;
       });
@@ -256,6 +256,15 @@ export const methods = {
       Logger.warn("No order email found. No notification sent.");
     }
 
+    Orders.update({
+      "_id": order._id,
+      "shipping._id": shipment._id
+    }, {
+      $set: {
+        "shipping.$.shipped": true
+      }
+    });
+
     return {
       workflowResult: workflowResult,
       completedItems: completedItemsResult,
@@ -295,19 +304,28 @@ export const methods = {
       return item._id;
     });
 
-    Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/delivered", order._id, itemIds);
-    Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/completed", order._id, itemIds);
+    Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/delivered", order, itemIds);
+    Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/completed", order, itemIds);
 
     const isCompleted = _.every(order.items, (item) => {
       return _.includes(item.workflow.workflow, "coreOrderItemWorkflow/completed");
     });
 
+    Orders.update({
+      "_id": order._id,
+      "shipping._id": shipment._id
+    }, {
+      $set: {
+        "shipping.$.delivered": true
+      }
+    });
+
     if (isCompleted === true) {
-      Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "completed", order._id);
+      Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "completed", order);
       return true;
     }
 
-    Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "processing", order._id);
+    Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "processing", order);
 
     return false;
   },
@@ -458,7 +476,7 @@ export const methods = {
         }
       };
 
-      Logger.info(`orders/sendNotification status: ${order.workflow.status}`);
+      Logger.debug(`orders/sendNotification status: ${order.workflow.status}`);
 
 
       // handle missing root shop email
@@ -823,6 +841,13 @@ export const methods = {
                 "billing.$.paymentMethod.transactions": result
               }
             });
+
+            // Temporarily(?) put here the Shippo's method/label purchasing.After a succesfull capture fund
+            if (order.shipping[0].shipmentMethod.shippoMethod) {
+              Meteor.call("shippo/confirmShippingMethodForOrder", orderId);
+            }
+
+
           } else {
             if (result && result.error) {
               Logger.fatal("Failed to capture transaction.", order, paymentMethod.transactionId, result.error);

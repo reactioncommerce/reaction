@@ -7,18 +7,215 @@
       "languages": {
         "select": "Διάλεξε γλώσσα"
       },
+      "currencies": {
+        "select": "Επιλέξτε Νόμισμα"
+      },
+      "admin": {
+        "shortcut": {
+          "addProductLabel": "Προσθέστε το προϊόν",
+          "accountsLabel": "λογαριασμοί"
+        },
+        "dashboard": {
+          "i18NLabel": "i18n",
+          "i18NTitle": "i18n",
+          "i18NDescription": "βοηθητικά προγράμματα διεθνοποίησης",
+          "routingLabel": "Δρομολόγηση",
+          "routingTitle": "Δρομολόγηση",
+          "routingDescription": "δρομολόγηση υπηρεσιών κοινής ωφελείας",
+          "filtrationLabel": "Διήθηση",
+          "filtrationDescription": "Προϊόντα διήθησης για αντίδραση"
+        },
+        "groups": {
+          "appearance": "Εμφάνιση",
+          "connect": "Συνδέω",
+          "core": "Πυρήνας",
+          "dashboard": "Ταμπλό",
+          "misc": "Διάφορα",
+          "paymentMethod": "οι πάροχοι υπηρεσιών πληρωμών",
+          "utilities": "Utilities"
+        },
+        "settings": {
+          "accountSettingsLabel": "Ρυθμίσεις λογαριασμού",
+          "accountSettingsTitle": "Είσοδος Υπηρεσίες",
+          "accountSettingsDescription": "Ο έλεγχος ταυτότητας μέσω των κοινωνικών φορέων παροχής",
+          "saveSuccess": "Ρυθμίσεις ενημερωμένο.",
+          "saveFailed": "Απέτυχε η ενημέρωση των ρυθμίσεων.",
+          "addShopMemberLabel": "Προσθέστε κατάστημα κράτη",
+          "permissionsSettingsLabel": "δικαιώματα",
+          "localizationAndI18NLabel": "Εντοπισμό και i18n"
+        },
+        "userAccountDropdown": {
+          "profileLabel": "Προφίλ"
+        }
+      },
+      "accounts": {
+        "addMember": "Προσθέστε τα κράτη",
+        "shopMembers": "Shop Μέλη",
+        "guests": "Οι επισκέπτες"
+      },
       "app": {
+        "add": "Προσθέτω",
+        "editMode": "κατάσταση επεξεργασίας",
+        "createContent": "Δημιουργία περιεχομένου",
+        "auto": "Αυτο",
+        "save": "Αποθηκεύσετε",
         "saveAndContinue": "Αποθήκευση και συνέχεια",
+        "saveChanges": "Αποθήκευσε τις αλλαγές",
+        "selectOne": "(Επέλεξε ένα)",
         "cancel": "Ακύρωση",
+        "success": "Επιτυχία",
+        "error": "Σφάλμα",
         "submit": "Υποβολή",
         "delete": "Διαγραφή",
+        "deleted": "διαγράφεται",
+        "archive": "Αρχείο",
+        "archived": "Αρχειοθετημένα",
         "create": "Δημιουργία",
         "close": "Κλείσιμο",
         "settings": "Ρυθμίσεις",
         "loading": "φόρτωση..",
         "toggle": "Εναλλαγή",
+        "toggleEditMode": "Εναλλαγή Λειτουργία επεξεργασίας",
         "warning": "Ουπς!",
-        "unauthorizedMessage": "Δεν έχεις πρόσβαση σε αυτό το περιεχόμενο."
+        "unauthorizedMessage": "Δεν έχεις πρόσβαση σε αυτό το περιεχόμενο.",
+        "updateSettings": "Ενημέρωση ρυθμίσεων",
+        "monthOptions": "Επιλέξτε μήνα",
+        "yearOptions": "Επιλέξτε το έτος",
+        "shopSettings": "Ρυθμίσεις Shop",
+        "dashboard": "Ταμπλό",
+        "print": "Αποτύπωμα",
+        "notFound": "Αυτή η σελίδα δεν βρέθηκε.",
+        "pageNotFound": "Αυτή η σελίδα δεν βρέθηκε.",
+        "notFoundTitle": "Ωχ!",
+        "notFoundError": "Η σελίδα δεν βρέθηκε.",
+        "productNotFound": "Το προϊόν δεν βρέθηκε.",
+        "loadMoreProducts": "Φορτώστε περισσότερα προϊόντα",
+        "noProductsFound": "Δεν βρέθηκαν προϊόντα."
+      },
+      "searchSettings": {
+        "productSearchSettings": {
+          "panelTitle": "Αναζήτηση προϊόντων",
+          "includeTitle": "Συμπεριλάβετε τίτλο",
+          "includeDescription": "περιλαμβάνουν περιγραφή",
+          "includePageTitle": "Συμπεριλάβετε τίτλο της σελίδας",
+          "includeDetails": "περιλαμβάνουν λεπτομέρειες",
+          "includeVendor": "περιλαμβάνουν πωλητή"
+        },
+        "orderSearchSettings": {
+          "panelTitle": "Ρυθμίσεις Παραγγελία Αναζήτηση"
+        },
+        "accountSearchSettings": {
+          "panelTitle": "Ρυθμίσεις λογαριασμού Αναζήτηση"
+        },
+        "noSettings": "Δεν ρυθμίσεις που διατίθενται σήμερα",
+        "settingsSaved": "Ρυθμίσεις αναζήτησης αποθηκεύονται",
+        "settingsfailed": "ενημέρωση ρυθμίσεις αναζήτησης απέτυχε"
+      },
+      "shopSettings": {
+        "general": "Γενικός",
+        "address": "Διεύθυνση",
+        "import": "Εισαγωγή",
+        "localization": "Εντοπισμός",
+        "options": "επιλογές",
+        "availableOptions": "διαθέσιμες Επιλογές",
+        "paymentMethods": "Τρόποι Πληρωμής",
+        "externalServices": "εξωτερικές Υπηρεσίες",
+        "shopGeneralSettingsSaved": "Κατάστημα γενικές ρυθμίσεις αποθηκεύονται.",
+        "shopGeneralSettingsFailed": "Κατάστημα ενημέρωση γενικές ρυθμίσεις απέτυχε.",
+        "shopAddressSettingsSaved": "ρυθμίσεις της διεύθυνσης Shop σωθεί.",
+        "shopAddressSettingsFailed": "Κατάστημα ενημέρωση ρυθμίσεις της διεύθυνσης απέτυχε.",
+        "shopExternalServicesSettingsSaved": "Κατάστημα εξωτερικές ρυθμίσεις υπηρεσίες σωθεί.",
+        "shopExternalServicesSettingsFailed": "Κατάστημα ενημέρωση ρυθμίσεις εξωτερικές υπηρεσίες απέτυχε.",
+        "shopLocalizationSettingsSaved": "Ρυθμίσεις κατάστημα εντοπισμού σωθεί.",
+        "shopLocalizationSettingsFailed": "Κατάστημα ενημέρωση ρυθμίσεις εντοπισμού απέτυχε.",
+        "shopOptionsSettingsSaved": "επιλογές Shop σωθεί.",
+        "shopOptionsSettingsFailed": "ενημέρωση επιλογές Shop απέτυχε.",
+        "shopPaymentMethodsSaved": "Κατάστημα ρυθμίσεις Τρόποι Πληρωμής σωθεί.",
+        "shopPaymentMethodsFailed": "Κατάστημα ενημέρωση ρυθμίσεις Τρόποι Πληρωμής απέτυχε."
+      },
+      "notifications": {
+        "body": {
+          "noNotifications": "Δεν υπάρχουν ακόμη ειδοποιήσεων",
+          "markAllAsRead": "Σημείωση όλων ως αναγνωσμένα",
+          "recent": "Πρόσφατος",
+          "viewAll": "Δείτε όλα τα"
+        },
+        "messages": {
+          "orderCancelled": "Η παραγγελία σας ακυρώθηκε.",
+          "newOrder": "Η παραγγελία σας βρίσκεται υπό επεξεργασία.",
+          "forAdmin": "Έχετε μια νέα τάξη πραγμάτων.",
+          "orderDelivered": "Η παραγγελία σας έχει παραδοθεί.",
+          "orderAccepted": "Η παραγγελία σας έχει γίνει αποδεκτή.",
+          "orderShipped": "Η παραγγελία σας έχει αποσταλεί."
+        }
+      },
+      "sms": {
+        "headers": {
+          "settings": "Πάροχος SMS"
+        },
+        "settings": {
+          "provider": "Προμηθευτής",
+          "selectProvider": "Επιλέξτε ένα φορέα SMS ...",
+          "smsPhone": "Τηλέφωνο SMS",
+          "apiKey": "Κλειδί API",
+          "apiToken": "API Token / Secret"
+        },
+        "alerts": {
+          "noApiKey": "Παρακαλείσθε να προσθέσετε ένα κλειδί API",
+          "noApiToken": "Παρακαλείσθε να προσθέσετε ένα API TOKEN / Secret",
+          "noSmsProvider": "Παρακαλώ επιλέξτε ένα φορέα SMS",
+          "noSmsPhone": "Παρακαλώ προσθέστε τον αριθμό τηλεφώνου που σας έχει δοθεί από το φορέα SMS",
+          "saveSuccess": "Ρυθμίσεις SMS αποθηκεύονται"
+        }
+      },
+      "mail": {
+        "headers": {
+          "email": "E-mail",
+          "emailSettings": "Ρυθμίσεις email",
+          "config": "Διαμόρφωση",
+          "settings": "Πάροχος SMTP",
+          "status": "Κατάσταση",
+          "actions": "Δράσεις"
+        },
+        "settings": {
+          "service": "Υπηρεσία",
+          "user": "Μεταχειριζόμενος",
+          "password": "Σύνθημα",
+          "host": "Πλήθος",
+          "port": "Λιμάνι",
+          "passwordShow": "Σόου",
+          "passwordHide": "Κρύβω",
+          "fieldNotSet": "Δεν ρυθμίστηκε",
+          "selectService": "Επιλέξτε μια υπηρεσία ...",
+          "custom": "έθιμο"
+        },
+        "logs": {
+          "headers": {
+            "emailLogs": "Logs email",
+            "email": "E-mail",
+            "subject": "Θέμα",
+            "sent": "Αποστέλλονται",
+            "status": "Κατάσταση"
+          },
+          "noEmails": "Δεν τα μηνύματα που στέλνονται ακόμα",
+          "limit": "Ποσότητα",
+          "retry": "Επανάληψη",
+          "noneAvailble": "Δεν διατίθεται"
+        },
+        "alerts": {
+          "error": "Σφάλμα: {{error}}",
+          "resendSuccess": "Προσπαθώντας να ξαναστείλει e-mail στο {{email}}",
+          "missingService": "Παρακαλώ επιλέξτε μια υπηρεσία παροχέα e-mail",
+          "userPassRequired": "χρήστη και κωδικό πρόσβασης SMTP απαιτούνται για {{service}}",
+          "allFieldsRequired": "Όλα τα πεδία είναι υποχρεωτικά για μια προσαρμοσμένη υπηρεσία!",
+          "portNaN": "Η θύρα πρέπει να είναι αριθμός!",
+          "connectionFailed": "Αποτυχημένη σύνδεση!",
+          "saveAnyway": "Θέλετε να αποθηκεύσετε τις ρυθμίσεις ούτως ή άλλως;",
+          "saveSuccess": "ρυθμίσεις mail αποθηκεύονται.",
+          "saveFailed": "Αποτυχία για να αποθηκεύσετε τις ρυθμίσεις αλληλογραφίας. {{error}}",
+          "cantSendEmail": "Σφάλμα διακομιστή: Δεν είναι δυνατή η αποστολή ειδοποίηση μέσω ηλεκτρονικού ταχυδρομείου.",
+          "emailSent": "ειδοποίηση μέσω ηλεκτρονικού ταχυδρομείου που αποστέλλονται."
+        }
       },
       "header": {
         "tagsAdd": "Προσθήκη ετικέτας",
@@ -29,35 +226,139 @@
         "whenYouAreDone": "όταν τελειώσεις την επεξεργασία.",
         "tags": "Ετικέτες",
         "tagsAdd": "Προσθήκη ετικέτας",
+        "tagsEdit": "Επεξεργασία ετικετών",
+        "tagExists": "Ετικέτα υπάρχει ήδη, ή είναι άδειο.",
+        "tagInUse": "Tag είναι σε χρήση και δεν μπορεί να διαγραφεί.",
+        "dropFiles": "Drop τα αρχεία να ανεβάσετε",
+        "addInventory": "Προσθέστε Απογραφή",
+        "barcode": "barcode",
+        "confirmDeleteBarcode": "Είστε σίγουροι ότι θέλετε να διαγράψετε το barcode",
         "details": "Λεπτομέριες",
         "detailsName": "Ονομα",
         "detailsInfo": "Πληροφορίες",
+        "generate": "Παράγω",
+        "generateBarcodes": "Δημιουργήστε Barcodes",
+        "hideBarcodes": "Απόκρυψη Barcodes",
         "options": "Επιλογές",
         "addToCart": "Προσθήκη στο καλάθι",
         "chooseOptions": "Παρακαλώ διάλεξε μια επιλογή πριν το προσθέσεις στο καλάθι",
         "outOfStock": "Συγγνώμη αυτο το προϊόν δεν είναι στην αποθήκη!",
         "productDeleteError": "Σφαλμα διαγράφοντας το προϊόν ",
+        "deleteErrorTheProduct": "το προϊόν",
+        "deleteErrorTheSelectedProducts": "τα επιλεγμένα προϊόντα",
         "publishFirst": "Πρέπει να δημοσιεύσεις το προϊόν πριν το προσθέσεις στο καλάθι.",
+        "quantityAbbreviation": "QTY",
         "selectOption": "Παρακαλώ διάλεξε μια επιλογή πριν το προσθέσεις στο καλάθι",
-        "addedToCart": "προσθέθηκε"
+        "addedToCart": "προσθέθηκε",
+        "showBarcodes": "Εμφάνιση Barcodes",
+        "soldOut": "Εξαντλημένα!",
+        "backOrder": "backorder",
+        "limitedSupply": "περιορισμένη προσφορά",
+        "publishProductVisible": "{{product}} είναι πλέον ορατή",
+        "publishProductHidden": "{{product}} τώρα κρυμμένο",
+        "clonedAlert": "κλωνοποιημένα {{product}}",
+        "clonedAlert_plural": "κλωνοποιημένα {{product}}",
+        "deletedAlert": "Διαγράφηκε {{product}}",
+        "deletedAlert_plural": "Διαγράφηκε {{product}}",
+        "archivedAlert": "Αρχείο {{product}}",
+        "archivedAlert_plural": "Αρχείο {{product}}",
+        "theProduct": "το προϊόν",
+        "theSelectedProducts": "τα επιλεγμένα προϊόντα",
+        "startTracking": "έναρξη Παρακολούθηση",
+        "addBarcode": "Προσθήκη Barcode",
+        "quantity": "Ποσότητα",
+        "quantityGreaterThanZero": "Σφάλμα: Ποσότητα θα πρέπει να είναι μεγαλύτερη από το μηδέν",
+        "notFoundTitle": "Ωχ!",
+        "notFoundError": "Αυτό δεν είναι το προϊόν που ψάχνετε."
+      },
+      "tags": {
+        "tagName": "ετικέτα Όνομα",
+        "addTag": "Προσθήκη ετικέτας",
+        "updateTag": "Ενημέρωση Tag",
+        "addGroupTag": "Προσθέστε Ομάδα Tag",
+        "addSubTag": "Προσθέστε Sub Tag",
+        "removeTag": "Κατάργηση ετικετών",
+        "createTag": "Δημιουργία ετικέτας"
       },
       "productDetailEdit": {
+        "editOption": "επιλογή Επεξεργασία",
+        "productSettings": "Ρυθμίσεις προϊόντος",
+        "product": "Προϊόν",
+        "size": "Μέγεθος",
         "title": "Τίτλος προϊόντος",
+        "untitledProduct": "Untitled Προϊόν",
+        "parmalink": "Permalink",
         "pageTitle": "Τίτλος σελίδα προϊόντος",
         "vendor": "Πωλητής",
         "description": "Πρόσθεσε περιγραφή προϊόντος",
         "facebookMsg": "Μήνυμα Facebook",
         "twitterMsg": "Μήνυμα Twitter",
         "pinterestMsg": "Μήνυμα Pinterest",
-        "googleplusMsg": "Μήνυμα Google+"
+        "googleplusMsg": "Μήνυμα Google+",
+        "editVariant": "Επεξεργασία παραλλαγή",
+        "variantOptions": "παραλλαγή Επιλογές",
+        "variantDetails": "παραλλαγή Λεπτομέρειες",
+        "duplicateVariant": "Αντίγραφο",
+        "addVariantOption": "Προσθέστε Επιλογή",
+        "removeVariant": "Αφαιρώ",
+        "removeVariantConfirm": "Είστε σίγουροι ότι θέλετε να διαγράψετε {{title}}",
+        "restoreVariantConfirm": "Είστε σίγουροι ότι θέλετε να επαναφέρετε {{title}} από τα σκουπίδια;",
+        "archiveVariantConfirm": "Είστε βέβαιοι ότι θέλετε να αρχειοθετήσετε {{title}}",
+        "thisVariant": "Αυτή η παραλλαγή",
+        "thisOption": "Αυτή η επιλογή",
+        "duplicateProduct": "διπλότυπο Προϊόν",
+        "pinProduct": "pin Προϊόν",
+        "toggleSize": "Εναλλαγή Μέγεθος",
+        "deleteProduct": "Διαγραφή Προϊόν",
+        "restoreProduct": "Επαναφορά του προϊόντος από τον Κάδο απορριμμάτων",
+        "deleteSelectedProducts": "Διαγραφή επιλεγμένων προϊόντων;",
+        "archiveThisProduct": "Αρχειοθετήσετε αυτό το προϊόν;",
+        "archiveSelectedProducts": "Αρχείο επιλεγμένα προϊόντα;",
+        "publish": "Δημοσιεύω",
+        "moreOptions": "Περισσότερες επιλογές",
+        "details": "Καθέκαστα",
+        "noSelectedProducts": "Δεν υπάρχουν επιλεγμένα προϊόντα. Χρησιμοποιήστε το",
+        "orShiftCtrlCmd": " ή μετατόπιση | ctrl | cmd + κλικ στα προϊόντα για να επιλέξετε πολλαπλά. Με μετατόπιση μπορείτε να επιλέξετε μια συνεχόμενη σειρά των προϊόντων.",
+        "makeVisible": "Κάντε Ορατό",
+        "hideProduct": "Απόκρυψη προϊόντων",
+        "productIsVisible": "Το προϊόν είναι ορατό",
+        "productIsNotVisible": "Το προϊόν δεν είναι ορατό"
+      },
+      "productVariant": {
+        "addVariantOptions": "Προσθέστε τις επιλογές για να επιτρέψει «Προσθήκη στο Καλάθι» butto",
+        "inventoryQuantity": "Ποσότητα",
+        "title": "Επιγραφή",
+        "price": "Τίμημα",
+        "optionTitle": "Επιλογή",
+        "barcode": "barcode",
+        "compareAtPrice": "Τιμή (MSRP)",
+        "fulfillmentService": "εκπλήρωση υπηρεσίας",
+        "weight": "Βάρος",
+        "taxable": "Φορολογήσιμος",
+        "inventoryManagement": "παρακολούθηση και την απογραφή",
+        "inventoryManagementLabel": "Καταχωρήστε το προϊόν στο σύστημα απογραφής και να παρακολουθείτε την κατάσταση της",
+        "inventoryPolicy": "Deny όταν εξαντληθεί",
+        "inventoryPolicyLabel": "Μην πουλήσει την παραλλαγή του προϊόντος όταν δεν είναι σε απόθεμα",
+        "lowInventoryWarningThreshold": "προειδοποιούν @",
+        "lowInventoryWarningThresholdLabel": "Προειδοποιούν τους πελάτες ότι το προϊόν θα είναι κοντά στο sold out, όταν η ποσότητα που φθάνει το επόμενο όριο"
       },
       "variantList": {
         "moreOptions": "Υπάρχουν πολλαπλές επιλογές για αυτήν την παραλλαγή.",
         "createVariant": "Δημιουργία παραλλαγής"
       },
       "gridPackage": {
+        "enable": "Ενεργοποίηση",
+        "errorDisabling": "Σφάλμα απενεργοποίηση πακέτο:",
+        "errorEnabling": "Σφάλμα κατά την ενεργοποίηση του πακέτου:",
+        "details": "Καθέκαστα",
+        "disable": "Καθιστώ ανίκανο",
+        "disableConfirm": "Είστε βέβαιοι ότι θέλετε να απενεργοποιήσετε {{app}};",
         "pkgEnabled": " τώρα ενεργοποιήθηκε.",
         "pkgDisabled": " τώρα απενεργοποιήθηκε."
+      },
+      "gridSettingsPanel": {
+        "title": "Ρυθμίσεις πλέγματος",
+        "selected": "επιλεγμένα"
       },
       "cartDrawer": {
         "empty": "Λυπούμαστε. Το καλάθι σου είναι άδειο.",
@@ -65,6 +366,7 @@
         "checkout": "Πήγαινε στο ταμείο"
       },
       "cartSubTotals": {
+        "discount": "Εκπτωση",
         "head": "Το καλάθι σου",
         "items": "Προϊόντα στο καλάθι",
         "subtotal": "Υποσύνολο",
@@ -75,6 +377,73 @@
       "cartDrawerItems": {
         "left": "ακόμη"
       },
+      "order": {
+        "created": "δημιουργήθηκε",
+        "reference": "Αναφορά",
+        "invoice": "Τιμολόγιο",
+        "ordersNotFound": "Δεν βρέθηκαν παραγγελίες",
+        "approveInvoice": "Εγκρίνουν",
+        "makeAdjustments": "Κάντε προσαρμογές",
+        "capturePayment": "σύλληψη πληρωμής",
+        "paymentCaptured": "πληρωμή Συλλαμβάνονται",
+        "capturedTotal": "συλλαμβάνονται Σύνολο",
+        "refundAmount": "Ποσό Επιστροφής Χρημάτων",
+        "applyRefundToThisOrder": "Εφαρμόστε επιστροφή του {{currencySymbol}}{{refund}} σε αυτή τη σειρά;",
+        "applyRefund": "Εφαρμόστε Επιστροφή",
+        "applyDiscount": "Εφαρμόστε Έκπτωση",
+        "adjustedTotal": "Προσαρμοσμένο Σύνολο",
+        "invalidDiscount": "Έκπτωση δεν μπορεί να είναι μεγαλύτερη από την αρχική συνολική τιμή",
+        "fullDiscountWarning": "Εφαρμόζοντας μια έκπτωση 100% θα ακυρώσει / ακυρώσει την εντολή αυτή με τον πάροχο πληρωμής σας",
+        "invalidRefund": "Επιστροφών (s) συνολικό ποσό δεν μπορεί να είναι μεγαλύτερη από ό, τι αναθεωρημένο συνολικό",
+        "processor": "επεξεργαστής",
+        "placed": "Τοποθετούνται",
+        "on": "επί",
+        "status": "Κατάσταση",
+        "completed": "Ολοκληρώθηκε το",
+        "processing": "Επεξεργασία",
+        "destination": "Προορισμός",
+        "shipment": "Αποστολή",
+        "payment": "Πληρωμή",
+        "itemsFrom": "αντικείμενο (α) από",
+        "filter": {
+          "new": "Νέος",
+          "captured": "πληρωμή Συλλαμβάνονται",
+          "processing": "Επεξεργασία",
+          "shipped": "αποστέλλονται",
+          "completed": "Ολοκληρώθηκε το",
+          "canceled": "Ακυρώθηκε",
+          "refunded": "επιστρέφεται"
+        }
+      },
+      "orderShipping": {
+        "shipTo": "Αποστολή προς",
+        "notShipped": "Δεν έχει ακόμη αποσταλεί",
+        "noTracking": "δεν Παρακολούθηση",
+        "tracking": "Παρακολούθηση",
+        "printLabels": "Ετικέτες Εκτύπωση",
+        "printShippingLabel": "Αποστολή",
+        "printCustomsLabel": "ΗΘΗ και εθιμα",
+        "carrier": "Φορέας",
+        "addTracking": "Προσθέστε Παρακολούθηση",
+        "itemsHaveBeenShipped": "στοιχεία έχουν αποσταλεί",
+        "shipmentEmpty": "Αυτή η αποστολή δεν έχει στοιχεία",
+        "shipmentPacked": "Όλα τα προϊόντα είναι συσκευασμένα",
+        "shipped": "αποστέλλονται",
+        "delivered": "Δημοσιεύθηκε",
+        "shippingNotifyCustomer": "Ειδοποίηση για τον πελάτη ότι τα στοιχεία τους θα ναυτιλία σύντομα.",
+        "resendNotification": "Επανάληψη αποστολής ειδοποιήσεων αποστολή"
+      },
+      "orderWorkflow": {
+        "fulfillment": "Εκπλήρωση",
+        "orderDetails": "Λεπτομέρειες Παραγγελίας",
+        "summary": "Περίληψη",
+        "invoice": "Τιμολόγιο",
+        "shipmentTracking": "Παρακολούθηση αποστολής"
+      },
+      "cartCheckout": {
+        "surprise": "Woah!",
+        "emptyCheckoutCart": "μοιάζει καλάθι σας είναι άδειο!"
+      },
       "cartCompleted": {
         "thankYou": "Ευχαριστούμε!",
         "itemsFrom": "προϊόν(α) από",
@@ -83,9 +452,11 @@
         "submitted": "υποβλήθηκε",
         "registerGuest": "Γειά! Πρόσθεσε ένα email για να λαμβάνεις ενημερώσεις.",
         "trackYourDelivery": "Ενημερώσεις για την παραγγελία θα στέλνονται στο ",
-        "noOrdersFound": "Δεν βρέθηκαν παραγγελίες."
+        "noOrdersFound": "Δεν βρέθηκαν παραγγελίες.",
+        "adminMessage": "Βλέπετε παραγγελίες ως διαχειριστής"
       },
       "checkoutLogin": {
+        "welcome": "Καλώς ήρθατε, είναι τόσο καλό που σε βλέπω.",
         "loginCompleted": "Έχεις εισέλθει",
         "createOrLogin": "Δημιούργησε λογαριασμό ή συνδέσου",
         "guestOrLogin": "Κάνε σύνδεση ή συνέχισε ώς επισκέπτης",
@@ -93,24 +464,69 @@
         "guestMessage": "Μπορείς να πληρώσεις χωρίς να έχεις λογαριασμό. Θα έχεις την δυνατότητα να δημιουργήσεις λογαριασμό μετά."
       },
       "addressBookGrid": {
+        "addAddress": "Προσθήκη διεύθυνσης",
         "chooseAddress": "Διάλεξε διεύθυνση αποστολής & πληρωμής",
         "createDefault": "Δημιούργία προεπιλεγμένης διεύθυνσης",
+        "edit": "Επεξεργασία",
+        "removeAddress": "Κατάργηση Διεύθυνση",
         "selectShippingAddress": "Διάλεξε διεύθυνση αποστολής",
-        "selectBillingAddress": "Διάλεξε διεύθυνση πληρωμής"
+        "selectBillingAddress": "Διάλεξε διεύθυνση πληρωμής",
+        "cantRemoveThisAddress": "Δεν μπορείτε να καταργήσετε αυτήν την διεύθυνση: {{err}}"
       },
       "addressBookAdd": {
         "addAddress": "Προσθήκη νέας διεύθυνσης",
-        "createAddress": "Δημιούργία προεπιλεγμένης διεύθυνσης"
+        "createAddress": "Δημιούργία προεπιλεγμένης διεύθυνσης",
+        "failedToAddAddress": "Αποτυχία να προσθέσετε τη διεύθυνση: {{err}}"
       },
       "addressBookEdit": {
-        "editAddress": "Επεξεργασία διεύθυνσης"
+        "editAddress": "Επεξεργασία διεύθυνσης",
+        "somethingWentWrong": "Κάτι πήγε στραβά: {{err}}"
+      },
+      "corePackageConfig": {
+        "settings": {
+          "public": {
+            "allowGuestCheckout": "Επιτρέψτε επισκεπτών Ταμείο"
+          },
+          "openexchangerates": {
+            "appId": "Ανοικτή Τιμές Συναλλάγματος App Id",
+            "refreshPeriod": "Ανοικτή Τιμές Συναλλάγματος ανανεώσετε περίοδο",
+            "refreshPeriodPlaceholder": "δηλαδή κάθε 1 ώρα"
+          },
+          "google": {
+            "clientId": "Αναγνωριστικό πελάτη Google",
+            "apiKey": "Κλειδί API Google"
+          }
+        }
       },
       "shop": {
+        "defaultPaymentMethod": "Προεπιλεγμένη μέθοδο πληρωμής",
+        "name": "Όνομα",
+        "namePlaceholder": "κατάστημα Όνομα",
+        "description": "Περιγραφή",
+        "descriptionPlaceholder": "Περιγράψτε το κατάστημά σας για SEO",
+        "descriptionTooltip": "Meta Περιγραφή για SEO",
+        "email": "E-mail",
+        "emailPlaceholder": "Πρωτοβάθμια Επικοινωνία Email",
+        "keywords": "Λέξεις-κλειδιά",
+        "keywordsPlaceholder": "Meta λέξεις-κλειδιά για SEO",
+        "language": "βάση Γλώσσα",
+        "languageTooltip": "Αυτή η γλώσσα θα χρησιμοποιηθεί αν η ανίχνευση γλώσσα της συσκευής θα αποτύχει να",
+        "timezone": "Ζώνη ώρας",
+        "timezoneOptions": "Επιλέξτε ζώνη ώρας",
+        "currency": "Νόμισμα βάσης",
+        "currencyTooltip": "Κατάστημα προεπιλεγμένο νόμισμα",
+        "baseUOM": "Βάση Μονάδα Μέτρησης",
         "addressBook": {
+          "company": "Εταιρεία",
+          "companyPlaceholder": "Αυτή η εταιρική επωνυμία",
           "country": "Χώρα",
           "fullName": "Ονοματεπώνυμο",
+          "fullNamePlaceholder": "όνομα του οργανισμού σας",
           "address1": "Διεύθυνση 1",
+          "address1Placeholder": "διευθύνσεων της εταιρείας σας",
+          "address1Tooltip": "Αυτή η διεύθυνση θα είναι ορατή στους επισκέπτες",
           "address2": "Διεύθυνση 2",
+          "address2Placeholder": "πρόσθετες διεύθυνση",
           "postal": "Τ.Κ.",
           "city": "Πόλη",
           "region": "Περιοχή",
@@ -119,6 +535,20 @@
           "isBillingDefault": "Είναι η προεπιλεγμένη διεύθυνση πληρωμής;",
           "isCommercial": "Είναι εμπορική διεύθυνση;"
         }
+      },
+      "revisions": {
+        "isDisabled": "έλεγχος αναθεώρηση είναι απενεργοποιημένη. Οποιεσδήποτε αλλαγές θα δημοσιεύονται αμέσως.",
+        "isEnabled": "ελέγχου αναθεώρησης είναι ενεργοποιημένη για Προϊόντα. Οποιεσδήποτε αλλαγές θα πρέπει να δημοσιεύονται πριν να είναι ορατή στους πελάτες.",
+        "unpublishedChanges": "Ανέκδοτες Αλλαγές",
+        "publishChanges": "Δημοσίευση αλλαγών",
+        "showChanges": "Εμφάνιση αλλαγών",
+        "hideChanges": "Απόκρυψη αλλαγών",
+        "discardChanges": "Απορρίψετε τις αλλαγές",
+        "changedPublished": "Αλλαγές που δημοσιεύθηκε με επιτυχία",
+        "changesDiscarded": "Αλλαγές απορρίφθηκε με επιτυχία",
+        "noChanges": "Χωρίς αλλαγές",
+        "noChangesPublished": "Δεν υπάρχουν αλλαγές να δημοσιεύσει",
+        "noChangesDiscarded": "Δεν υπάρχουν αλλαγές για να απορρίψετε"
       },
       "address": {
         "country": "Χώρα",
@@ -133,15 +563,15 @@
         "isBillingDefault": "Είναι η προεπιλεγμένη διεύθυνση πληρωμής;",
         "isCommercial": "Είναι εμπορική διεύθυνση;"
       },
+      "i18nSettings": {
+        "enabledLanguages": "γλώσσες"
+      },
       "checkoutProgressBar": {
         "login": "Λογαριασμός",
         "shippingBilling": "Πληρωμή",
         "shippingOptions": "Αποστολή",
         "reviewPayment": "Επανέλεγχος",
         "complete": "Ολοκληρώθηκε"
-      },
-      "checkoutPayment": {
-        "addPaymentToCompleteOrder": "Πρόσθεσε μια μέθοδο πληρωμής"
       },
       "checkoutReview": {
         "review": "Επανέλεγχος"
@@ -152,6 +582,68 @@
         "configureNow": "Ρύθμιση τώρα.",
         "shipping": "Αποστολή"
       },
+      "shipping": {
+        "addShippingProvider": "Προσθέστε την υπηρεσία αποστολής",
+        "editShippingProvider": "Επεξεργασία υπηρεσία αποστολής",
+        "addShippingMethod": "Προσθήκη μέθοδο αποστολής",
+        "editShippingMethod": "Επεξεργασία μεθόδου αποστολής",
+        "deleteShippingMethod": "Διαγραφή μέθοδο αποστολής",
+        "noSettingsForThisView": "Δεν υπάρχουν ρυθμίσεις για αυτό το σκοπό",
+        "noShippingMethods": "Δεν μέθοδοι ναυτιλίας ρυθμιστεί.",
+        "removeShippingMethodConfirm": "Είστε σίγουροι ότι θέλετε να διαγράψετε {{method}};",
+        "removeShippingMethodTitle": "Κατάργηση Μέθοδος ναυτιλίας",
+        "shippingMethodDeleted": "Αυτή η μέθοδος ναυτιλίας έχει διαγραφεί.",
+        "removeShippingProvider": "Κατάργηση Provider Ναυτιλίας",
+        "removeShippingProviderConfirm": "Είστε σίγουροι ότι θέλετε να διαγράψετε {{provider}};",
+        "shippingProviderSaved": "Ο πάροχος υπηρεσιών αποστολής σωθεί.",
+        "shippingProviderUpdated": "ενημερωμένα δεδομένα παρόχου ναυτιλία.",
+        "shippingMethodRateAdded": "ρυθμός μέθοδο αποστολής πρόσθεσε.",
+        "shippingMethodRateUpdated": "ρυθμός μέθοδο αποστολής ενημερωθεί.",
+        "name": "Όνομα",
+        "label": "Επιγραφή",
+        "group": "Ομάδα",
+        "cost": "Κόστος",
+        "handling": "Χειριζόμενος",
+        "rate": "Τιμή",
+        "enabled": "Ενεργοποιήθηκε",
+        "disabled": "Ανάπηρος",
+        "addRate": "Προσθέστε ποσοστό",
+        "updateRate": "ρυθμό ανανέωσης {{name}}",
+        "addNewCondition": "Προσθήκη νέου κατάσταση",
+        "deleteCondition": "Διαγραφή κατάσταση",
+        "provider": {
+          "name": "Κωδικός υπηρεσίας",
+          "label": "δημόσια Label",
+          "enabled": "Ενεργοποιήθηκε"
+        }
+      },
+      "shippingMethod": {
+        "name": "Όνομα μέθοδο",
+        "label": "δημόσια Label",
+        "group": "Ομάδα",
+        "cost": "Κόστος",
+        "handling": "Χειριζόμενος",
+        "rate": "Τιμή",
+        "enabled": "Ενεργοποιήθηκε",
+        "matchingCartRanges": "Ταιριάζουν καλαθιού Σειρές",
+        "validRanges": {
+          "begin": "Αρχίζουν",
+          "end": "Τέλος"
+        },
+        "matchingLocales": "ταιριάζουν Τοπικές",
+        "validLocales": {
+          "origination": "Από",
+          "destination": "Να",
+          "deliveryBegin": "Αποστολές Est.",
+          "deliveryEnd": "Παράδοση Est."
+        }
+      },
+      "uom": {
+        "OZ": "ουγγιές",
+        "LB": "λίρες",
+        "GR": "γραμμάρια",
+        "KG": "κιλά"
+      },
       "consoleIcon": {
         "iconTitle": "Προβολή κονσόλας",
         "text": "Κονσόλα"
@@ -161,14 +653,60 @@
         "text": "Δημουργία"
       },
       "social": {
+        "socialTitle": "Κοινωνικός",
         "facebook": "Facebook",
         "google": "Google",
         "github": "GitHub",
         "meetup": "Meetup",
+        "ok": "Εντάξει",
         "twitter": "Twitter",
+        "vk": "VK",
         "weibo": "Weibo"
       },
+      "search": {
+        "clearSearch": "Σαφής",
+        "noProductsFound": "Δεν βρέθηκαν προϊόντα.",
+        "noOrdersFound": "Δεν βρέθηκαν παραγγελίες.",
+        "noAccountsFound": "Δεν βρέθηκαν λογαριασμοί.",
+        "searchInputLabel": "Αναζήτηση Αντίδραση",
+        "suggestedTags": "προτεινόμενες ετικέτες",
+        "searchTypeProducts": "προϊόντα",
+        "searchTypeAccounts": "λογαριασμοί",
+        "searchTypeOrders": "παραγγελίες",
+        "accountSearchResults": {
+          "accountId": "Αναγνωριστικό λογαριασμού",
+          "shopId": "κατάστημα ID",
+          "firstName": "Όνομα",
+          "lastName": "Επίθετο",
+          "phone": "Τηλέφωνο",
+          "emails": "E-mail"
+        },
+        "orderSearchResults": {
+          "orderId": "Αριθμός Παραγγελίας",
+          "shopId": "κατάστημα ID",
+          "shippingAddress": "Διεύθυνση",
+          "shippingCity": "Πόλη",
+          "shippingRegion": "Περιοχή",
+          "shippingCountry": "Χώρα",
+          "shippingPhone": "Τηλέφωνο",
+          "shippingName": "Όνομα",
+          "shippingStatus": "Κατάσταση",
+          "billingAddress": "Διεύθυνση",
+          "billingCity": "Πόλη",
+          "billingRegion": "Περιοχή",
+          "billingCountry": "Χώρα",
+          "billingPhone": "Τηλέφωνο",
+          "billingStatus": "Κατάσταση",
+          "userEmails": "E-mail",
+          "orderDate": "Ημερομηνία",
+          "orderTotal": "Σύνολο"
+        }
+      },
       "accountsUI": {
+        "members": "μέλη",
+        "manage": "Διαχειρίζομαι",
+        "guest": "Επισκέπτης",
+        "addMember": "Προσθέστε ένα μέλος",
         "add": "πρόσθεσε",
         "and": "και",
         "back": "πίσω",
@@ -184,6 +722,7 @@
         "emailResetLink": "Επαναφορά λογαριασμού",
         "forgotPassword": "Επαναφορά κωδικού",
         "ifYouAlreadyHaveAnAccount": "Αν έχεις ήδη λογαριασμό",
+        "name": "Όνομα",
         "newPassword": "Νέος κωδικός",
         "newPasswordAgain": "Νέος κωδικός (ξανά)",
         "optional": "Προαιρετικό",
@@ -196,28 +735,42 @@
         "setPassword": "Διάλεξε κωδικό",
         "sign": "Σύνδεση",
         "signIn": "Σύνδεση",
+        "signInService": "{{service}} Συνδεθείτε",
         "signin": "Σύνδεση",
         "signInWith": "Σύνδεση με",
+        "signUpWith": "Εγγραφείτε με",
         "signedIn": "Είσαι συνδεμένος(η).",
         "signOut": "Αποσύνδεση",
         "signUp": "Εγγραφή",
+        "signUpButton": "Κανω ΕΓΓΡΑΦΗ",
         "signupCode": "Κωδικός εγγραφής",
         "signUpWithYourEmailAddress": "Εγγραφή με το email σου",
         "terms": "Οροι χρήσης",
         "updateYourPassword": "Ενημέρωση κωδικού",
+        "updatePasswordAndContinue": "Αναβάθμιση και συνέχεια",
+        "updatedServiceConfiguration": "Ενημερώθηκε διαμόρφωσης υπηρεσίας για {{service}}",
         "username": "Ονομα χρήστη",
         "usernameOrEmail": "Ονομα χρήστη ή email",
         "with": "με",
         "checkoutAsGuest": "Πήγαινε στο ταμείο χωρίς σύνδεση",
+        "role": "Ρόλος",
+        "yourOrders": "Οι παραγγελίες σας",
+        "addressBook": "Βιβλίο διευθύνσεων",
         "info": {
           "emailSent": "Το Email στάλθηκε",
           "emailVerified": "Το Email επαλήθευτηκε",
           "passwordChanged": "Ο κωδικός άλλαξε επιτυχώς",
-          "passwordReset": "Επαναφορά κωδικού"
+          "passwordReset": "Επαναφορά κωδικού",
+          "passwordResetSend": "E-mail με σύνδεσμο επαναφοράς κωδικού πρόσβασης έχει αποσταλεί.",
+          "invitationSent": "πρόσκληση Sent",
+          "sendInvitation": "Αποστολή πρόσκλησης"
         },
         "error": {
           "emailRequired": "Το Email είναι υποχρεωτικό.",
+          "passwordRequired": "Απαιτείται κωδικός.",
           "passwordMustBeAtLeast6CharactersLong": "Ο κωδικός πρέπει να είναι τουλάχιστον 6 χαρακτήρες.",
+          "passwordMustContainRequirements": "Ο κωδικός πρόσβασης πρέπει να περιέχει τουλάχιστον έναν αριθμό ή σύμβολο.",
+          "usernameMinLength": "Το όνομα χρήστη πρέπει να είναι μήκους τουλάχιστον 3 χαρακτήρες",
           "minChar": "6 χαρακτήρες ελάχιστος κωδικός.",
           "pwdsDontMatch": "Οι κωδικοί δεν είναι ίδιοι",
           "pwOneDigit": "Ο κωδικός πρέπει να εχει τουλάχιστον 1 αριθμό.",
@@ -229,6 +782,9 @@
           "usernameRequired": "Το όνομα χρήστη είναι υποχρεωτικό.",
           "emailAlreadyExists": "To Email υπάρχει ήδη.",
           "emailDoesntMatchTheCriteria": "Το email δεν είναι συμβατό.",
+          "errorSendingEmail": "Σφάλμα κατά την αποστολή e-mail, είναι δυνατόν το ζήτημα διαμόρφωσης.",
+          "unableToSendInvitationEmail": "Δεν μπορεί να στείλει email πρόσκλησης.",
+          "failedToLogout": "Αποτυχία να αποσυνδεθείτε.",
           "invalidLoginToken": "Λάθος token σύνδεσης",
           "loginForbidden": "Η σύνδεση απαγορεύεται",
           "serviceUnknown": "Αγνωστη υπηρεσία",
@@ -257,6 +813,12 @@
           "matchFailed": "Δεν ταιριάζει",
           "unknownError": "Αγνωστο σφάλμα"
         }
+      },
+      "error": {
+        "nameRequired": "Όνομα απαιτείται.",
+        "isRequired": "{{field}} απαιτείται.",
+        "mustBeNumber": "{{field}} πρέπει να είναι ένας αριθμός.",
+        "variantFieldIsRequired": "Παραλλαγή {{number}} {{field}} απαιτείται."
       }
     }
   }
