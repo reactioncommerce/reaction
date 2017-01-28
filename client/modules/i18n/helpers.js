@@ -17,7 +17,7 @@ import { formatPriceString } from "./currency";
  */
 Template.registerHelper("i18n", function (i18nKey, i18nMessage) {
   if (!i18nKey || typeof i18nMessage !== "string") {
-    Logger.info("i18n key string required to translate", i18nKey, i18nMessage);
+    Logger.warn("i18n key string required to translate", i18nKey, i18nMessage);
     return "";
   }
   check(i18nKey, String);

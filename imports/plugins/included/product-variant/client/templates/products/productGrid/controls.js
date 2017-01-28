@@ -21,42 +21,6 @@ Template.gridControls.onRendered(function () {
 });
 
 Template.gridControls.helpers({
-  EditButton() {
-    const instance = Template.instance();
-    const isSelected = instance.state.equals("isSelected", true);
-
-    return {
-      component: IconButton,
-      icon: "fa fa-pencil",
-      onIcon: "fa fa-check",
-      status: isSelected ? "active" : "default",
-      toggle: true,
-      toggleOn: isSelected,
-      onClick() {
-        if (instance.data.onEditButtonClick) {
-          instance.data.onEditButtonClick();
-        }
-      }
-    };
-  },
-
-  VisibilityButton() {
-    const instance = Template.instance();
-
-    return {
-      component: IconButton,
-      icon: "fa fa-eye-slash",
-      onIcon: "fa fa-eye",
-      toggle: true,
-      toggleOn: instance.data.product.isVisible,
-      onClick() {
-        if (instance.data.onPublishButtonClick) {
-          instance.data.onPublishButtonClick();
-        }
-      }
-    };
-  },
-
   checked: function () {
     return Template.instance().state.equals("isSelected", true);
   }

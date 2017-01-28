@@ -19,7 +19,7 @@ const sendNotificationToAdmin = (adminId) => {
   const url = `${prefix}/dashboard/orders`;
   const sms = true;
   // Sending notification to admin
-  Logger.info("sending notification to admin");
+  Logger.debug("sending notification to admin");
   return Meteor.call("notification/send", adminId, type, url, sms);
 };
 
@@ -31,7 +31,7 @@ MethodHooks.after("cart/copyCartToOrder", function (options) {
   const sms = true;
 
   // Send notification to user who made the order
-  Logger.info(`sending notification to user: ${userId}`);
+  Logger.debug(`sending notification to user: ${userId}`);
   Meteor.call("notification/send", userId, type, url, sms);
 
   // Sending notification to admin

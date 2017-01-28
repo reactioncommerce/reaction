@@ -43,10 +43,18 @@ function getRouteLayout(context) {
  * @param  {Object} context - route context
  */
 function addBodyClasses(context) {
-  let classes = [
-    // push clean route-name
-    "app-" + context.route.name.replace(/[\/_]/i, "-")
-  ];
+  let classes;
+
+  if (context.route.name === undefined) {
+    classes = [
+      "app-not-found"
+    ];
+  } else {
+    classes = [
+      // push clean route-name
+      "app-" + context.route.name.replace(/[\/_]/i, "-")
+    ];
+  }
 
   // find the layout combo for this route
   const currentLayout = getRouteLayout(context);

@@ -224,7 +224,7 @@ export default {
     let accountId;
 
     while (!this.getShopId()) {
-      Logger.info("No shopId, waiting one second...");
+      Logger.debug("No shopId, waiting one second...");
       Meteor._sleepForMs(1000);
     }
     const shopId = this.getShopId();
