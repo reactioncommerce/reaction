@@ -74,7 +74,11 @@ const MeteorGriddle = React.createClass({
       }, options));
     }
 
-    const results = this.props.transform(this.props.collection.find(this.state.query, options).fetch());
+    // optional transform of collection for grid results
+    let results = this.props.collection.find(this.state.query, options).fetch();
+    if (this.props.transform) {
+      results = this.props.transform(results);
+    }
 
     return {
       loading: !pubHandle.ready(),
