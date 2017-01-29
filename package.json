@@ -38,6 +38,7 @@
     "dnd-core": "^2.0.2",
     "faker": "^3.1.0",
     "fibers": "^1.0.14",
+    "flatten-obj": "^3.1.0",
     "font-awesome": "^4.6.3",
     "griddle-react": "^0.7.0",
     "handlebars": "^4.0.5",
