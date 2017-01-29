@@ -4,7 +4,7 @@ import { AutoForm } from "meteor/aldeed:autoform";
 import { Shipping } from "/lib/collections";
 import { i18next } from "/client/api";
 import MeteorGriddle from "/imports/plugins/core/ui-grid/client/griddle";
-import { IconButton, Loading } from "/imports/plugins/core/ui/client/components";
+import { Loading } from "/imports/plugins/core/ui/client/components";
 
 import "./carriers.html";
 
@@ -21,37 +21,6 @@ Template.shippoCarriers.onCreated(function () {
 });
 
 Template.shippoCarriers.helpers({
-  editButton() {
-    const instance = Template.instance();
-    const state = instance.state;
-    const isEditing = state.equals("isEditing", true);
-    let editingId = state.get("editingId");
-    // toggle edit state
-    if (!isEditing) {
-      editingId = null;
-    }
-    // return icon
-    return {
-      component: IconButton,
-      icon: "fa fa-plus",
-      onIcon: "fa fa-pencil",
-      toggle: true,
-      toggleOn: isEditing,
-      style: {
-        position: "relative",
-        top: "-25px",
-        right: "8px"
-      },
-      onClick() {
-        // remove active rows from grid
-        $(".shipping-carriers-grid-row").removeClass("active");
-        return state.set({
-          isEditing: !isEditing,
-          editingId: editingId
-        });
-      }
-    };
-  },
   carrierGrid() {
     const filteredFields = ["name", "carrier", "label", "enabled"];
     const noDataMessage = i18next.t("admin.shippingSettings.noCarriersFound");
