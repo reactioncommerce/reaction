@@ -1,8 +1,12 @@
 /* eslint camelcase: 0 */
+import { Meteor } from "meteor/meteor";
+import { check } from "meteor/check";
 import { Reaction } from "/server/api";
 import { Packages, Accounts, Shops, Shipping, Cart, Orders } from "/lib/collections";
 import { ShippoPackageConfig } from "../../lib/collections/schemas";
 import { ShippoApi } from "./shippoapi";
+
+const shippingRoles = ["admin", "owner", "shipping", "reaction-shippo"];
 
 // Creates an address (for sender or recipient) suitable for Shippo Api Calls given
 // a reaction address an email and a purpose("QUOTE"|"PURCHASE")
@@ -196,7 +200,7 @@ export const methods = {
     // Make sure user has proper rights to this package
     const { shopId } = Packages.findOne({ _id },
                                         { field: { shopId: 1 } });
-    if (shopId && Roles.userIsInRole(this.userId, ["admin", "owner"], shopId)) {
+    if (shopId && Roles.userIsInRole(this.userId, shippingRoles, shopId)) {
       // If user wants to delete existing key
       if (modifier.hasOwnProperty("$unset")) {
         const customModifier = { $set: { "settings.apiKey": null } };
@@ -237,7 +241,7 @@ export const methods = {
   "shippo/fetchProviders"() {
     const shopId = Reaction.getShopId();
 
-    if (Roles.userIsInRole(this.userId, ["admin", "owner"], shopId)) {
+    if (Roles.userIsInRole(this.userId, shippingRoles, shopId)) {
       const apiKey = getApiKey(shopId);
       if (!apiKey) {
         return false;
@@ -414,7 +418,7 @@ export const methods = {
     check(orderId, String);
     const order = Orders.findOne(orderId);
     // Make sure user has permissions in the shop's order
-    if (Roles.userIsInRole(this.userId, ["admin", "owner"], order.shopId)) {
+    if (Roles.userIsInRole(this.userId, shippingRoles, order.shopId)) {
       // Here we done it for the first/unique Shipment only . in the near future it will be done for multiple ones
       if (order.shipping[0].shipmentMethod.settings &&
       order.shipping[0].shipmentMethod.settings.rateId) {
