@@ -128,31 +128,20 @@ export default {
     return getMailUrl();
   },
 
-  getCurrentShopCursor(shopId = this.getShopId()) {
+  getCurrentShopCursor() {
     const domain = this.getDomain();
-    const query = {
+    const cursor = Shops.find({
       domains: domain
-    };
-    if (shopId) {
-      query._id = shopId;
-    }
-
-    const cursor = Shops.find(query, {
-      limit: 1
-    });
-
+    }, { limit: 1 });
     if (!cursor.count()) {
-      Logger.warn(`getCurrentShopCursor: Add a domain entry to shops for ${domain}`);
+      Logger.debug(domain, "Add a domain entry to shops for ");
     }
-
     return cursor;
   },
 
-  getCurrentShop(shopId) {
-    const currentShopCursor = this.getCurrentShopCursor(shopId);
-
-    // also, we could check in such a way: `currentShopCursor instanceof Object`
-    // but not instanceof something.Cursor
+  getCurrentShop() {
+    const currentShopCursor = this.getCurrentShopCursor();
+    // also, we could check in such a way: `currentShopCursor instanceof Object` but not instanceof something.Cursor
     if (typeof currentShopCursor === "object") {
       return currentShopCursor.fetch()[0];
     }
@@ -169,10 +158,6 @@ export default {
         _id: 1
       }
     }).fetch()[0];
-
-    if (!shop) {
-      Logger.warn(`getCurrentShopCursor: Add a domain entry to shops for ${domain}`);
-    }
 
     return shop && shop._id;
   },

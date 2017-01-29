@@ -41,8 +41,8 @@ export default function () {
   Security.defineMethod("ifHasSellerRole", {
     fetch: [],
     deny: function (type, arg, userId, doc) {
-      const deny = Roles.userIsInRole(["admin", "owner", "createProduct"], Reaction.getSellerShopId(userId));
-      return deny;
+      const isDenied = Roles.userIsInRole(["admin", "owner", "createProduct"], Reaction.getSellerShopId(userId));
+      return isDenied;
     }
   });
   // use this rule for collections other than Shops

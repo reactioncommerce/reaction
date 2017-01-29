@@ -17,7 +17,7 @@ Meteor.publish("Product", function (productId) {
   let shopId;
 
   if (this.userId) {
-    // get shop for loggedIn user or parent shop as fallback
+    // get shopId for loggedIn user, if any
     shopId = Roles.getGroupsForUser(this.userId, "admin")[0] || null;
   }
 
