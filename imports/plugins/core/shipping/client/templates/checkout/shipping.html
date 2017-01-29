@@ -16,16 +16,16 @@
               <span class="text-left">{{method.carrier}} - {{method.label}}</span>
               <span class="pull-right">{{formatPrice rate}}</span>
             </li>
-          {{/each}}
-        {{else}}
-          <div class="panel-body">
-            <div class="alert alert-danger">
-              <span data-i18n="checkoutShipping.noShippingPackages">No shipping packages are configured. </span>
-              <a href="{{pathFor 'dashboard'}}">
-                <span data-i18n="checkoutShipping.configureNow">Configure now.</span>
-              </a>
-            </div>
-          </div>
+            {{else}}
+              <div class="panel-body">
+                <div class="alert alert-danger">
+                  <span data-i18n="checkoutShipping.noShippingMethods">No shipping methods are configured.</span>
+                  <a href="{{pathFor 'dashboard'}}">
+                    <span data-i18n="checkoutShipping.configureNow">Configure now.</span>
+                  </a>
+                </div>
+              </div>
+            {{/each}}
         {{/if}}
         </ul>
       </div>
