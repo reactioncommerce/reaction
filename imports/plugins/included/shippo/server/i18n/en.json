@@ -15,7 +15,9 @@
         },
         "shippingSettings": {
           "noCarriersFound": "No shipping carriers configured.",
-          "editApiKey": "Edit API Key"
+          "editApiKey": "Edit API Key",
+          "carrierSaved": "Carrier saved successfully.",
+          "carrierFailed": "Error updating carrier."
         }
       },
       "shippo": {

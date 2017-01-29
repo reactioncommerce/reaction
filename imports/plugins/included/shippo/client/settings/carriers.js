@@ -94,7 +94,6 @@ Template.shippoCarriers.helpers({
       for (method of results) {
         if (method.provider && typeof method.provider.shippoProvider === "object") {
           method.provider.carrier = method.name;
-          method.provider._id = method._id; // cheap pass to forms
           result.push(method.provider);
         }
       }
@@ -127,7 +126,7 @@ Template.shippoCarriers.helpers({
   shippoCarrier() {
     const instance = Template.instance();
     const id = instance.state.get("editingId");
-    const shippoCarriers = Shipping.findOne(id);
+    const shippoCarriers = Shipping.findOne({ "provider._id": id });
     return shippoCarriers.provider;
   }
 });
@@ -136,13 +135,6 @@ Template.shippoCarriers.helpers({
 // on submit lets clear the form state
 //
 Template.shippoCarriers.events({
-  "submit #shipping-carrier-update-form": function () {
-    const instance = Template.instance();
-    instance.state.set({
-      isEditing: false,
-      editingId: null
-    });
-  },
   "submit #shipping-carrier-insert-form": function () {
     const instance = Template.instance();
     instance.state.set({
@@ -160,29 +152,6 @@ Template.shippoCarriers.events({
     // ugly hack
     $(".shipping-carriers-grid-row").removeClass("active");
   },
-  "click .delete": function () {
-    const confirmTitle = i18next.t("admin.shippingSettings.confirmRateDelete");
-    const confirmButtonText = i18next.t("app.delete");
-    const instance = Template.instance();
-    const id = instance.state.get("editingId");
-    // confirm delete
-    Alerts.alert({
-      title: confirmTitle,
-      type: "warning",
-      showCancelButton: true,
-      confirmButtonText: confirmButtonText
-    }, (isConfirm) => {
-      if (isConfirm) {
-        if (id) {
-          Meteor.call("shipping/carrier/delete", id);
-          instance.state.set({
-            isEditing: false,
-            editingId: null
-          });
-        }
-      }
-    });
-  },
   "click .shipping-carriers-grid-row": function (event) {
     // toggle all rows off, then add our active row
     $(".shipping-carriers-grid-row").removeClass("active");
@@ -196,22 +165,12 @@ Template.shippoCarriers.events({
 AutoForm.hooks({
   "shipping-carrier-update-form": {
     onSuccess: function () {
-      return Alerts.toast(i18next.t("admin.shippingSettings.rateSaved"),
+      return Alerts.toast(i18next.t("admin.shippingSettings.carrierSaved"),
         "success");
     },
     onError: function (operation, error) {
       return Alerts.toast(
-        `${i18next.t("admin.shippingSettings.rateFailed")} ${error}`, "error"
-      );
-    }
-  },
-  "shipping-carrier-insert-form": {
-    onSuccess: function () {
-      return Alerts.toast(i18next.t("admin.shippingSettings.rateSaved"), "success");
-    },
-    onError: function (operation, error) {
-      return Alerts.toast(
-        `${i18next.t("admin.shippingSettings.rateFailed")} ${error}`, "error"
+        `${i18next.t("admin.shippingSettings.carrierFailed")} ${error}`, "error"
       );
     }
   }
