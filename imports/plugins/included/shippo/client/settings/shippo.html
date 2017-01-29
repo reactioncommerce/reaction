@@ -1,17 +1,37 @@
 <template name="shippoSettings">
-  {{#autoForm
-    meteormethod="shippo/updateApiKey"
-    schema=ShippoPackageConfig
-    doc=packageData
-    type="method-update"
-    id="shippo-update-form"
-  }}
-    <div class="panel-body">
-      {{> afQuickField name="settings.apiKey" class='form-control'}}
+  {{#unless packageData.settings.apiKey}}
+    <div class="panel-group">
+      {{#autoForm
+        meteormethod="shippo/updateApiKey"
+        schema=ShippoPackageConfig
+        doc=packageData
+        type="method-update"
+        id="shippo-update-form"
+      }}
+        {{> afQuickField name="settings.apiKey" class='form-control'}}
+        {{> shopSettingsSubmitButton}}
+      {{/autoForm}}
     </div>
-    {{> shopSettingsSubmitButton}}
-  {{/autoForm}}
-  <div class="row">
-    <button class="btn"><span data-i18n="shippo.fetchCarriers" data-event-action="fetchShippoProviders">Fetch Carriers</span></button>
-  </div>
+  {{else}}
+    <div class="panel-group collapse" id="shippo-settings">
+      {{#autoForm
+        meteormethod="shippo/updateApiKey"
+        schema=ShippoPackageConfig
+        doc=packageData
+        type="method-update"
+        id="shippo-update-form"
+      }}
+        {{> afQuickField name="settings.apiKey" class='form-control'}}
+        {{> shopSettingsSubmitButton}}
+      {{/autoForm}}
+    </div>
+    <a data-toggle="collapse" href="#shippo-settings" aria-expanded="false" aria-controls="shippo-settings">
+      <span class="text-success fa fa-circle" aria-hidden="true"></span>
+      <span data-i18n="admin.shippingSettings.editApiKey">Edit API Key</span>
+    </a>
+
+    <div>
+      {{> shippoCarriers}}
+    </div>
+  {{/unless}}
 </template>

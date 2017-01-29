@@ -1,0 +1,57 @@
+<template name="shippoCarriers">
+  <div class="row">
+    {{> React carrierGrid }}
+  </div>
+  <div class="row">
+    <div class="pull-right">
+      {{> React editButton }}
+    </div>
+  </div>
+
+  {{#if instance.state.get 'isEditing'}}
+    <div>
+      {{#if instance.state.get 'editingId'}}
+        <div>
+          {{#autoForm schema=Schemas.ShippingMethod type="method" meteormethod="shipping/carrier/update" doc=shippoCarrier
+          id="shipping-carrier-update-form" resetOnSuccess=true }}
+            <div class="col-sm-12">
+              {{>afQuickField name='label' class='form-control'}}
+              {{>afQuickField name='group' options="allowed" class='form-control'}}
+              <div class="pull-right">
+                {{>afQuickField name='enabled'}}
+                {{>afFieldInput name="_id" type="hidden"}}
+              </div>
+            </div>
+            {{> shippoCarrierSubmitButton instance=instance}}
+          {{/autoForm}}
+        </div>
+      {{else}}
+
+        {{#autoForm schema=Schemas.ShippingMethod type="method" meteormethod="shipping/carrier/add"
+        id="shipping-carrier-insert-form" doc=shippoCarrier resetOnSuccess=true }}
+          <div class="col-sm-12">
+            {{>afQuickField name='label' class='form-control'}}
+            {{>afQuickField name='group' options="allowed" class='form-control'}}
+            <div class="pull-right">
+              {{>afQuickField name='enabled'}}
+              {{>afFieldInput name="_id" type="hidden"}}
+            </div>
+          </div>
+          {{> shippoCarrierSubmitButton instance=instance}}
+        {{/autoForm}}
+      {{/if}}
+    </div>
+  {{/if}}
+</template>
+
+<template name="shippoCarrierSubmitButton">
+  <div class="clearfix">
+    <div class="pull-right">
+      <button type="button" class="btn btn-primary cancel" data-i18n="app.cancel">Cancel</button>
+      {{#if instance.state.get 'editingId'}}
+        <button type="button" class="btn btn-primary delete" data-i18n="app.delete">Delete</button>
+      {{/if}}
+      <button type="submit" class="btn btn-primary" data-i18n="app.saveChanges">Save Changes</button>
+    </div>
+  </div>
+</template>
