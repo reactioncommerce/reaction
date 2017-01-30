@@ -13,6 +13,7 @@ class CardHeader extends Component {
   static propTypes = {
     actAsExpander: PropTypes.bool,
     children: PropTypes.node,
+    expandOnSwitchOn: PropTypes.bool,
     expanded: PropTypes.bool,
     i18nKeyTitle: PropTypes.string,
     onClick: PropTypes.func,
@@ -27,6 +28,16 @@ class CardHeader extends Component {
 
     if (typeof this.props.onClick === "function") {
       this.props.onClick(event);
+    }
+  }
+
+  handleSwitchChange = (event, isChecked, name) => {
+    if (this.props.expandOnSwitchOn && this.props.actAsExpander && this.props.expanded === false && isChecked === true) {
+      this.handleClick(event);
+    }
+
+    if (typeof this.props.onSwitchChange === "function") {
+      this.props.onSwitchChange(event, isChecked, name);
     }
   }
 
@@ -54,6 +65,7 @@ class CardHeader extends Component {
         <IconButton
           icon="fa fa-angle-down"
           outline={true}
+          onClick={this.handleClick}
         />
       </div>
     );
@@ -64,7 +76,7 @@ class CardHeader extends Component {
       return (
         <Switch
           checked={this.props.switchChecked}
-          onChange={this.props.onSwitchChange}
+          onChange={this.handleSwitchChange}
         />
       );
     }
