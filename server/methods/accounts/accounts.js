@@ -17,8 +17,9 @@ function validateZip(address) {
     errors: [],
     errorFields: [],
   };
-  if (address.countryCode === "US") {
+  if (address.country === "US") {
     const result = zipcode.cityStateLookup(address.postal);
+    console.log("zipcode result", result);
     if (_.uppercase(address.city) === _.uppercase(results.city) && address.region === result.state) {
       validationResult.result = result;
     } else {
