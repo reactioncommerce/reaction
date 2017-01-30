@@ -24,11 +24,6 @@ class IconButton extends Component {
         "icon": true,
         "icon-only": true
       });
-    } else if (this.props.kind === "close") {
-      buttonClassName = classnames({
-        "icon-only": true,
-        "close": true
-      });
     } else {
       buttonClassName = classnames({
         "icon-only": true,
