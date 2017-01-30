@@ -1,5 +1,5 @@
-import { Media, Revisions } from "/lib/collections";
 import { Reaction } from "/lib/api";
+import { Media, Revisions } from "/lib/collections";
 import { RevisionApi } from "/imports/plugins/core/revisions/lib/api/revisions";
 
 

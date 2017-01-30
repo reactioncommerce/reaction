@@ -2,10 +2,10 @@ import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { HTTP } from "meteor/http";
 import { Job } from "meteor/vsivsi:job-collection";
-import * as Collections from "/lib/collections";
-import * as Schemas from "/lib/collections/schemas";
 import { GeoCoder, Logger } from "/server/api";
 import { Reaction } from "/lib/api";
+import * as Collections from "/lib/collections";
+import * as Schemas from "/lib/collections/schemas";
 import { Marketplace } from "/imports/plugins/included/marketplace/lib/api";
 
 /**

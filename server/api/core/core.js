@@ -210,12 +210,12 @@ export default {
       query.shopId = shopId;
     }
 
-    return Packages.findOne(query) || null;
+    return Packages.findOne(query);
   },
 
   /**
    * Check if package is enabled
-   * @param  {String}  name Package name
+   * @param  {String}  name - Package name
    * @return {Boolean}      True if the package is enabled
    */
   isPackageEnabled(name) {
@@ -226,7 +226,7 @@ export default {
 
   /**
    * Add default roles for new visitors
-   * @param {String|Array} roles A string or array of roles and routes
+   * @param {String|Array} roles - A string or array of roles and routes
    */
   addDefaultRolesToVisitors(roles) {
     Logger.info(`Adding defaultRoles & defaultVisitorRole permissions for ${roles}`);

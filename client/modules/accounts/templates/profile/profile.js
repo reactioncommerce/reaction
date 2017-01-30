@@ -1,7 +1,6 @@
-import { Reaction } from "/client/api";
-import * as Collections from "/lib/collections";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
+import * as Collections from "/lib/collections";
 import { Marketplace } from "/imports/plugins/included/marketplace/lib/api";
 
 /**

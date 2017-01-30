@@ -1,6 +1,6 @@
-import { Products, Revisions } from "/lib/collections";
 import { Reaction } from "/lib/api";
 import { Logger } from "/server/api";
+import { Products, Revisions } from "/lib/collections";
 import { RevisionApi } from "/imports/plugins/core/revisions/lib/api/revisions";
 
 /**
@@ -133,15 +133,6 @@ Meteor.publish("Product", function (productId) {
 
           if (product) {
             product.__revisions = [revision];
-
-            // When adding a new product as a guest seller and then edit that product
-            // the new product cannot be found in the Products collection when fields are changed
-            // and this.changed("Products") returns an error below
-            // The product does however exist in the collection
-            // Note that sometimes it works **right after registering** and becoming a seller, we can post a product successfully
-            // RC to investigate
-            // Possible cause? https://github.com/meteor/meteor/issues/1354
-            // console.log(Products.find({_id:product._id}).fetch());
             this.changed("Products", product._id, product);
             this.changed("Revisions", revision._id, revision);
           }

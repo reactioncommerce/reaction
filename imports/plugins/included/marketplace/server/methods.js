@@ -1,8 +1,7 @@
 import { Meteor } from "meteor/meteor";
-import { check, Match } from "meteor/check";
-import { Shops } from "/lib/collections";
-import { Logger } from "/server/api";
+import { check } from "meteor/check";
 import { Reaction } from "/lib/api";
+import { Shops } from "/lib/collections";
 
 
 Meteor.methods({
@@ -11,7 +10,7 @@ Meteor.methods({
    * shop/getSeller
    * @summary Get a shop's seller
    * @param {Object} shopId An optional shopId to get the seller for, otherwise current user is used
-   * @returns {Object|null} The user hash if found, null otherwise
+   * @returns {Object|null} - The user hash if found, null otherwise
    */
   "marketplace/getSeller": function (shopId) {
     let sellerShopId;
@@ -40,15 +39,13 @@ Meteor.methods({
       query._id = shopId;
     }
 
-    const cursor = Shops.find(query, {
-      limit: 1
-    });
+    const cursor = Shops.findOne(query);
 
     // const currentShopCursor = this.getCurrentShopCursor(shopId);
 
     // also, we could check in such a way: `currentShopCursor instanceof Object`
     // but not instanceof something.Cursor
-    if (typeof cursor === "object") {
+    if (cursor.count()) {
       return cursor.fetch()[0];
     }
     return null;
