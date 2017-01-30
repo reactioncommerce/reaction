@@ -2,7 +2,7 @@ import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { Reaction } from "/client/api";
-import { Cart, Shipping } from "/lib/collections";
+import { Cart } from "/lib/collections";
 
 // cartShippingQuotes
 // returns multiple methods
@@ -42,6 +42,7 @@ function cartShipmentMethods(currentCart) {
   return shipmentMethods;
 }
 
+// ensure new quotes are
 Template.coreCheckoutShipping.onCreated(function () {
   this.autorun(() => {
     this.subscribe("Shipping");
@@ -58,17 +59,6 @@ Template.coreCheckoutShipping.helpers({
       return cartShippingQuotes(cart);
     }
   },
-
-  // helper to make sure there are some shipping providers
-  shippingConfigured: function () {
-    const instance = Template.instance();
-    if (instance.subscriptionsReady()) {
-      return Shipping.find({
-        "methods.enabled": true
-      }).count();
-    }
-  },
-
   // helper to display currently selected shipmentMethod
   isSelected: function () {
     const self = this;
