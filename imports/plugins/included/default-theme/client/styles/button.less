@@ -240,9 +240,17 @@
 //
 // // .rui.button .btn-default.btn-outline
 
+.rui.btn-cta {
+  color: @btn-cta-color;
+  background-color: @btn-cta-bg;
+  border-color: @btn-cta-border;
+}
+
 // All buttons
 .rui.btn, .btn {
   box-shadow: none;
+  font-weight: 600;
+  border-width: @btn-border-width;
 }
 
 // Icon Button
@@ -268,6 +276,7 @@
 .rui.btn.icon-only.outline {
   color: @btn-icon-only-default-color;
   background-color: @btn-icon-only-outline-bg;
+  border-width: @btn-icon-only-border-width;
   border-radius: @btn-icon-only-border-radius;
 }
 
@@ -425,6 +434,13 @@
   border-color: @btn-outline-danger-border;
 }
 
+.rui.btn-cta.outline {
+  color: @btn-outline-cta-color;
+  background-color: @btn-outline-cta-bg;
+  border-color: @btn-outline-cta-border;
+}
+
+
 
 
 // Flat buttons
@@ -468,4 +484,10 @@
   color: @btn-flat-danger-color;
   background-color: @btn-flat-danger-bg;
   border-color: @btn-flat-danger-border;
+}
+
+.rui.btn-cta.flat {
+  color: @btn-flat-cta-color;
+  background-color: @btn-flat-cta-bg;
+  border-color: @btn-flat-cta-border;
 }

@@ -222,6 +222,7 @@
 //## For each of Bootstrap's buttons, define text, background and border color.
 
 @btn-font-weight:                normal;
+@btn-border-width:               3px;
 
 // Solid Button Colors
 @btn-default-color:              #000;
@@ -253,7 +254,7 @@
 @btn-cta-border:              @btn-cta-bg;
 
 // Flat
-@btn-flat-border-width:               1px;
+@btn-flat-border-width:               3px;
 @btn-flat-border-radius:              2px;
 
 @btn-flat-default-color:              @brand-default;
@@ -280,13 +281,13 @@
 @btn-flat-danger-bg:                  transparent;
 @btn-flat-danger-border:              transparent;
 
-@btn-flat-cta-color:               #fff;
-@btn-flat-cta-bg:                  @brand-cta;
-@btn-flat-cta-border:              @btn-cta-bg;
+@btn-flat-cta-color:                  @brand-cta;
+@btn-flat-cta-bg:                     transparent;
+@btn-flat-cta-border:                 transparent;
 
 
 // Outline only button colors
-@btn-outline-border-width:               2px;
+@btn-outline-border-width:               3px;
 @btn-outline-border-radius:              0;
 
 @btn-outline-default-color:              @btn-default-color;
@@ -319,10 +320,11 @@
 
 
 // Icon Button
-@btn-icon-size: 24px;
-@btn-icon-only-size: 24px;
-@btn-icon-only-border-radius: @btn-icon-size / 2;
-@btn-icon-only-outline-bg:      #fff;
+@btn-icon-size:                       24px;
+@btn-icon-only-size:                  24px;
+@btn-icon-only-border-width:          2px;
+@btn-icon-only-border-radius:         @btn-icon-size / 2;
+@btn-icon-only-outline-bg:            #fff;
 
 @btn-icon-only-default-color:              @brand-default;
 @btn-icon-only-default-bg:                 @btn-default-bg;
