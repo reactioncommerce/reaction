@@ -14,26 +14,22 @@ import zipcode from "/imports/plugins/included/geocoding/server/methods/zipcode"
 function validateZip(address) {
   const validationResult = {
     validated: true,
-    errors: [],
-    errorFields: [],
+    errors: []
   };
   if (address.country === "US") {
     const result = zipcode.cityStateLookup(address.postal);
-    console.log("zipcode result", result);
-    if (_.uppercase(address.city) === _.uppercase(results.city) && address.region === result.state) {
+    if (_.uppercase(address.city) === _.uppercase(result.city) && address.region === result.state) {
       validationResult.result = result;
     } else {
       // Determine the error messages and fields to pass back
       validationResult.result = result;
       validationResult.validated = false;
-      if (_.uppercase(address.city) !== _.uppercase(results.city)) {
-        validationResult.errors.push("City did not match");
-        validationResult.errorFields.push("city");
+      if (_.uppercase(address.city) !== _.uppercase(result.city)) {
+        validationResult.errors.push({ city: "City did not match postal code" });
       }
 
       if (address.region !== result.state) {
-        validationResult.errors.push("State did not match");
-        validationResult.errorFields.push("region");
+        validationResult.errors.push({ region: "State did not match" });
       }
     }
   }
@@ -80,10 +76,10 @@ function validateAddress(address) {
 
   Schemas.Address.clean(address);
   const zipResults = validateZip(address);
-  console.log("zipResults", zipResults);
   if (!zipResults.validated) {
-    errors.push(zipResults.errors);
-    errorFields.push(zipResults.errorFields);
+    validated = false;
+    Array.prototype.push.apply(errors, zipResults.errors);
+    Array.prototype.push.apply(errorFields, zipResults.errorFields);
     errorTypes.push("zipcode");
   }
 
@@ -96,7 +92,6 @@ function validateAddress(address) {
     errorTypes.push("geocode");
   }
   const validationResults = { validated, errors, errorFields, errorTypes };
-  console.log("validationResults", validationResults);
   return validationResults;
 }
 
