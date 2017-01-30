@@ -204,8 +204,8 @@ class PublishControls extends Component {
 
   renderPublishButton() {
     return (
-      <FlatButton
-        outline={true}
+      <Button
+        bezelStyle="outline"
         disabled={this.hasChanges === false}
         label="Publish"
         onClick={this.handlePublishClick}
@@ -341,6 +341,7 @@ class PublishControls extends Component {
       </FlatButton>
     );
   }
+
   renderVerticalDivider() {
     return (
       <div style={{

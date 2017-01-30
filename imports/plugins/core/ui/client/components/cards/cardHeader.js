@@ -64,7 +64,7 @@ class CardHeader extends Component {
       <div className={expanderClassName}>
         <IconButton
           icon="fa fa-angle-down"
-          outline={true}
+          bezelStyle="outline"
           onClick={this.handleClick}
         />
       </div>

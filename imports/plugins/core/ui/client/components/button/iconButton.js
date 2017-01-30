@@ -4,8 +4,7 @@ import Button from "./button.jsx";
 
 class IconButton extends Component {
   static defaultProps = {
-    flat: false,
-    solid: false
+    bezelStyle: "flat"
   }
 
   render() {
@@ -23,8 +22,7 @@ class IconButton extends Component {
     if (this.props.kind === "flat") {
       buttonClassName = classnames({
         "icon": true,
-        "icon-only": true,
-        // "flat": this.props.flat
+        "icon-only": true
       });
     } else if (this.props.kind === "close") {
       buttonClassName = classnames({
@@ -33,7 +31,6 @@ class IconButton extends Component {
       });
     } else {
       buttonClassName = classnames({
-        "solid": true,
         "icon-only": true,
         "variant-edit": true
       });

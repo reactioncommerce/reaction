@@ -125,7 +125,7 @@ class Button extends Component {
     const { } = this.props;
 
     const {
-      active, status, toggleOn, primary, outline, solid, flat, className,
+      active, status, toggleOn, primary, bezelStyle, className,
 
       // Destructure these vars as they aren't valid as attributes on the HTML element button
       iconAfter, label, i18nKeyTitle, i18nKeyLabel, i18nKeyTooltip, // eslint-disable-line no-unused-vars
@@ -149,9 +149,7 @@ class Button extends Component {
       "btn-link": status === "link",
       "btn-cta": status === "cta",
       "btn-primary": primary === true || status === "primary",
-      "outline": outline,
-      "solid": solid,
-      "flat": flat
+      [bezelStyle || "flat"]: true
     }, className);
 
     const extraProps = {};
@@ -205,6 +203,7 @@ class Button extends Component {
 
 Button.propTypes = {
   active: PropTypes.bool,
+  bezelStyle: PropTypes.oneOf(["flat", "solid", "outline"]),
   children: PropTypes.node,
   className: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   disabled: PropTypes.bool,
@@ -238,7 +237,7 @@ Button.defaultProps = {
   iconAfter: false,
   tagName: "button",
   toggle: false,
-  flat: true
+  bezelStyle: "flat"
 };
 
 export default Button;

@@ -16,7 +16,7 @@ const VisibilityButton = (props) => {
     <IconButton
       icon="fa fa-eye-slash"
       onIcon="fa fa-eye"
-      solid={true}
+      bezelStyle="solid"
       toggle={true}
       {...props}
     />
