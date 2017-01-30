@@ -62,8 +62,6 @@ Meteor.methods({
     Shops.update(_id, doc, function (error) {
       if (error) {
         throw new Meteor.Error(500, error.message);
-      } else {
-        console.log("Update Successful");
       }
     });
   }
