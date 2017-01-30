@@ -1,5 +1,6 @@
 import { Products, Revisions } from "/lib/collections";
-import { Logger, Reaction } from "/server/api";
+import { Reaction } from "/lib/api";
+import { Logger } from "/server/api";
 import { RevisionApi } from "/imports/plugins/core/revisions/lib/api/revisions";
 
 /**
@@ -13,20 +14,14 @@ Meteor.publish("Product", function (productId) {
     Logger.debug("ignoring null request on Product subscription");
     return this.ready();
   }
-  let _id;
-  let shopId;
 
-  if (this.userId) {
-    // get shopId for loggedIn user, if any
-    shopId = Roles.getGroupsForUser(this.userId, "admin")[0] || null;
-  }
-
-  const shop = Reaction.getCurrentShop(shopId);
+  const shop = Reaction.getSellerShop(this.userId);
   // verify that shop is ready
   if (typeof shop !== "object") {
     return this.ready();
   }
 
+  let _id;
   // selector for hih - What's hih?
   // selector should come first as default, alterations take place later depending on role
   let selector = {
@@ -59,19 +54,15 @@ Meteor.publish("Product", function (productId) {
   }
 
   // Selector for hih?
-  selector = {
-    isVisible: true,
-    isDeleted: {$in: [null, false]},
-    $or: [
-      {handle: _id},
-      {_id: _id},
-      {
-        ancestors: {
-          $in: [_id]
-        }
+  selector.$or = [
+    {handle: _id},
+    {_id: _id},
+    {
+      ancestors: {
+        $in: [_id]
       }
-    ]
-  };
+    }
+  ];
 
   // Authorized content curators for the shop get special publication of the product
   // all relevant revisions all is one package

@@ -70,7 +70,7 @@ export default {
     if (checkGroup !== undefined && typeof checkGroup === "string") {
       group = checkGroup;
     } else {
-      group = this.getShopId() || Roles.GLOBAL_GROUP;
+      group = this.getSellerShopId() || Roles.GLOBAL_GROUP;
     }
 
     // permissions can be either a string or an array we'll force it into an array and use that

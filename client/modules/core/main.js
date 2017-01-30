@@ -87,7 +87,7 @@ export default {
    * @return {Boolean} Boolean - true if has permission
    */
   hasPermission(checkPermissions, checkUserId, checkGroup) {
-    let group = this.getShopId();
+    let group = this.getSellerShopId();
     let permissions = ["owner"];
     let id = "";
     const userId = checkUserId || this.userId || Meteor.userId();
