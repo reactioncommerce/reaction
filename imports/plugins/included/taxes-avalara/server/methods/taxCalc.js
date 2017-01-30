@@ -325,6 +325,7 @@ taxCalc.reportRefund = function (order, refundAmount, callback) {
     companyCode: companyCode,
     type: "ReturnInvoice",
     code: order.cartId,
+    commit: true,
     customerCode: order._id,
     taxDate: moment.utc(order.createdAt),
     date: moment(),
