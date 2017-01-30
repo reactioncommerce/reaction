@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
-import { Shipping } from "/lib/collections";
+import { Shipping, Packages } from "/lib/collections";
 import { Reaction } from "/server/api";
 
 const shippingRoles = ["admin", "owner", "shipping", "reaction-shippo"];
@@ -9,29 +9,33 @@ export const methods = {
   /**
    * shipping/provider/toggle
    * @summary toggle enabled provider
+   * @param { String } packageId - packageId
    * @param { String } provider - provider name
    * @return { Number } update - result
    */
-  "shipping/provider/toggle": function (provider) {
+  "shipping/provider/toggle": function (packageId, provider) {
+    check(packageId, String);
     check(provider, String);
     if (!Reaction.hasPermission(shippingRoles)) {
       throw new Meteor.Error(403, "Access Denied");
     }
-    current = Shipping.findOne({
-      "provider.name": provider
-    });
-    if (current && current.provider) {
-      const enabled = !current.provider.enabled;
-      return Shipping.update({
-        "_id": current._id,
-        "provider.name": provider
-      }, {
-        $set: {
-          "provider.enabled": enabled
-        }
-      }, {
-        multi: true
-      });
+    const pkg = Packages.findOne(packageId);
+    if (pkg && pkg.settings[provider]) {
+      const current = Shipping.findOne({ "provider.name": provider });
+      const enabled = pkg.settings[provider].enabled;
+      // const enabled = !current.provider.enabled;
+      if (current && current.provider) {
+        return Shipping.update({
+          "_id": current._id,
+          "provider.name": provider
+        }, {
+          $set: {
+            "provider.enabled": enabled
+          }
+        }, {
+          multi: true
+        });
+      }
     }
   }
 };

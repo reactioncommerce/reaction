@@ -23,6 +23,8 @@ Template.shippingSettings.helpers({
   }
 });
 
+// toggle shipping methods visibility
+// also toggles shipping method settings
 Template.shippingSettings.events({
   /**
    * shippingSettings settings update enabled status for shipping service on change
@@ -42,7 +44,7 @@ Template.shippingSettings.events({
       // update package registry
       Meteor.call("registry/update", packageId, settingsKey, fields);
       // also update shipping provider status
-      Meteor.call("shipping/provider/toggle", settingsKey);
+      Meteor.call("shipping/provider/toggle", packageId, settingsKey);
     }
   }
 });

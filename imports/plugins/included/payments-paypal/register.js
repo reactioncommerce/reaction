@@ -4,6 +4,7 @@ Reaction.registerPackage({
   label: "PayPal",
   name: "reaction-paypal",
   icon: "fa fa-paypal",
+  autoEnable: true,
   settings: {
     express: {
       enabled: false
