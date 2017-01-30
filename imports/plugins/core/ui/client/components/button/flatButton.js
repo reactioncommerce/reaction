@@ -7,6 +7,9 @@ import classnames from "classnames";
 import Button from "./button.jsx";
 
 class FlatButton extends Component {
+  static defaultProps = {
+    bezelStyle: "flat"
+  }
   render() {
     const {
       icon,
@@ -17,9 +20,7 @@ class FlatButton extends Component {
 
     const buttonClassName = classnames({
       rui: true,
-      button: true,
-      flat: true,
-      bordered: bordered
+      button: true
     });
 
     let iconClassName;

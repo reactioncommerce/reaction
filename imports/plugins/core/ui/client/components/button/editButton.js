@@ -18,6 +18,8 @@ const EditButton = (props) => {
       icon="fa fa-pencil"
       onIcon="fa fa-check"
       toggle={true}
+      primary={true}
+      bezelStyle="solid"
       kind="round"
       {...props}
     />
