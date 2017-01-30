@@ -39,8 +39,10 @@ Template.shippingSettings.events({
     }];
     // save shipping registry updates
     if (packageId) {
-      // TODO also disable providers
+      // update package registry
       Meteor.call("registry/update", packageId, settingsKey, fields);
+      // also update shipping provider status
+      Meteor.call("shipping/provider/toggle", settingsKey);
     }
   }
 });

@@ -8,7 +8,7 @@ Reaction.registerPackage({
   settings: {
     name: "Flat Rate Service",
     flatRates: {
-      enabled: true
+      enabled: false
     }
   },
   registry: [

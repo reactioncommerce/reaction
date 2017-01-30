@@ -4,6 +4,8 @@ import { Shipping } from "/lib/collections";
 import { ShippingMethod } from "/lib/collections/schemas";
 import { Reaction } from "/server/api";
 
+const shippingRoles = ["admin", "owner", "shipping", "reaction-shipping-rates"];
+
 export const methods = {
   /**
    * shipping/rates/add
@@ -20,7 +22,7 @@ export const methods = {
     const providerId = rate._id;
     rate._id = Random.id();
 
-    if (!Reaction.hasPermission("shipping")) {
+    if (!Reaction.hasPermission(shippingRoles)) {
       throw new Meteor.Error(403, "Access Denied");
     }
 
@@ -41,7 +43,7 @@ export const methods = {
    */
   "shipping/rates/update": function (method) {
     check(method, ShippingMethod);
-    if (!Reaction.hasPermission("shipping")) {
+    if (!Reaction.hasPermission(shippingRoles)) {
       throw new Meteor.Error(403, "Access Denied");
     }
     const methodId = method._id;
@@ -64,7 +66,7 @@ export const methods = {
   "shipping/rates/delete": function (rateId) {
     check(rateId, String);
 
-    if (!Reaction.hasPermission("shipping")) {
+    if (!Reaction.hasPermission(shippingRoles)) {
       throw new Meteor.Error(403, "Access Denied");
     }
 

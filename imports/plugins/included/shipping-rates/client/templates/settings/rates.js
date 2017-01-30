@@ -90,7 +90,7 @@ Template.shippingRatesSettings.helpers({
     function transform(results) {
       const result = [];
       for (method of results) {
-        if (method.provider && method.provider.name === "reaction-shipping-rates") {
+        if (method.provider && method.provider.name === "flatRates") {
           result.push(method.methods);
         }
       }
@@ -124,7 +124,7 @@ Template.shippingRatesSettings.helpers({
   shippingRate() {
     const instance = Template.instance();
     const id = instance.state.get("editingId");
-    const providerRates = Shipping.findOne({ "provider.name": "reaction-shipping-rates" }) || {};
+    const providerRates = Shipping.findOne({ "provider.name": "flatRates" }) || {};
     let rate = {};
     if (providerRates && providerRates.methods) {
       if (id) {

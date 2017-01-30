@@ -35,7 +35,7 @@
     }]
   }],
   "provider": {
-    "name": "reaction-shipping-rates",
+    "name": "flatRates",
     "label": "Flat Rate",
     "enabled": false
   }
