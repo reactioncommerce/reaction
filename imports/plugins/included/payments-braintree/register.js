@@ -4,7 +4,7 @@ import { Reaction } from "/server/api";
 Reaction.registerPackage({
   label: "BrainTree",
   icon: "fa fa-credit-card",
-  autoEnable: false,
+  autoEnable: true,
   name: "reaction-braintree", // usually same as meteor package
   settings: // private package settings config (blackbox)
   {

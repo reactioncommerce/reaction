@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { composeWithTracker } from "/lib/api/compose";
-import { Admin } from "../components"
+import { Admin } from "../components";
 import { StyleRoot } from "radium";
 import { Meteor } from "meteor/meteor";
 import { Blaze } from "meteor/blaze";
@@ -54,7 +54,7 @@ function composer(props, onData) {
     icon: "plus",
     tooltip: "Create Content",
     i18nKeyTooltip: "app.createContent",
-    tooltipPosition: "left middle",
+    tooltipPosition: "left middle"
     // onClick(event) {
     //   if (!instance.dropInstance) {
     //     instance.dropInstance = new Drop({ target: event.currentTarget, content: "", constrainToWindow: true, classes: "drop-theme-arrows", position: "right center" });
@@ -65,8 +65,6 @@ function composer(props, onData) {
     //   instance.dropInstance.open();
     // }
   });
-
-
 
 
   onData(null, {

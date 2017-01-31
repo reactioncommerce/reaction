@@ -14,22 +14,6 @@ import "./checkoutButton.html";
  */
 
 /**
- * Setup PayPal Express Checkout
- * @param  {Element} element DOM element
- * @param  {element} expressCheckoutSettings checkout settings
- * @return {undefined} no return value
- */
-function doSetup(element, expressCheckoutSettings) {
-  Session.set("paypalExpressSetup", true);
-  paypal.checkout.setup(expressCheckoutSettings.merchantId, {
-    environment: expressCheckoutSettings.mode,
-    button: element,
-     // Blank function to disable default paypal onClick functionality
-    click: function () {}
-  });
-}
-
-/**
  * Checkout - Open PayPal Express popup
  * @return {undefined} no return value
  */
@@ -76,7 +60,8 @@ Template.paypalCheckoutButton.onCreated(function () {
   PaypalClientAPI.load();
   this.state = new ReactiveDict();
   this.state.setDefault({
-    isConfigured: false
+    isConfigured: true,
+    isLoading: true
   });
 });
 
@@ -92,11 +77,21 @@ Template.paypalCheckoutButton.onRendered(function () {
     if (PaypalClientAPI.loaded()) {
       const expressCheckoutSettings = Session.get("expressCheckoutSettings");
       if (expressCheckoutSettingsValid(expressCheckoutSettings)) {
-        this.state.set("isConfigured", true);
-        doSetup(element, expressCheckoutSettings);
+        // setup paypal button for this checkout
+        // gives nada back to us?
+        paypal.checkout.setup(expressCheckoutSettings.merchantId, {
+          environment: expressCheckoutSettings.mode,
+          button: element,
+           // Blank function to disable default paypal onClick functionality
+          click: function () {}
+        });
+        this.state.set("isLoading", false);
       } else {
         this.state.set("isConfigured", false);
+        this.state.set("isLoading", false);
       }
+    } else {
+      this.state.set("isLoading", true);
     }
   });
 });
