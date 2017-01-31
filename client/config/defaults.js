@@ -25,3 +25,6 @@ Session.setDefault("DEFAULT_LAYOUT", DEFAULT_LAYOUT);
 Session.setDefault("DEFAULT_WORKFLOW", DEFAULT_WORKFLOW);
 Session.setDefault("INDEX_OPTIONS", INDEX_OPTIONS);
 Session.setDefault("productScrollLimit", ITEMS_INCREMENT);
+
+// autoform default template
+AutoForm.setDefaultTemplate("bootstrap3");

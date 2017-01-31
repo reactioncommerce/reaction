@@ -12,7 +12,7 @@ Template.gridNotice.helpers({
       const inventoryThreshold = topVariant.lowInventoryWarningThreshold;
       const inventoryQuantity = ReactionProduct.getVariantQuantity(topVariant);
 
-      if(inventoryQuantity !== 0 && inventoryThreshold >= inventoryQuantity){
+      if (inventoryQuantity !== 0 && inventoryThreshold >= inventoryQuantity) {
         return true;
       }
     }
@@ -24,7 +24,7 @@ Template.gridNotice.helpers({
     for (const topVariant of topVariants) {
       const inventoryQuantity = ReactionProduct.getVariantQuantity(topVariant);
 
-      if(inventoryQuantity > 0){
+      if (inventoryQuantity > 0) {
         return false;
       }
     }

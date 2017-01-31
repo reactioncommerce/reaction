@@ -7,7 +7,7 @@ Reaction.registerPackage({
   autoEnable: true,
   settings: {
     shippo: {
-      enabled: true
+      enabled: false
     },
     // todo: move all settings in shippo subfield
     apiKey: "",
@@ -27,22 +27,23 @@ Reaction.registerPackage({
   }, {
     label: "Shippo",
     icon: "fa fa-plane",
-    route: "/dashboard/shippo",
-    provides: "settings",
+    name: "shipping/settings/shippo",
+    provides: "shippingSettings",
     container: "connection",
     template: "shippoSettings"
   }
-  // WIP:
-    // For now we use Flat Rate's checkout template( which inherits its methods from coreCheckoutShipping
-    // to show all shipping methods in the same panel.
-    // .If we are gonna proceed with different panel per provider, we need to enable the 'provides:"Shipping Method"',
-    // alter coreCheckoutShipping checkout.js and inherit from there (or write specific logic) for a shippo's
-    // checkout template.
-    //
-    // provides: "shippingMethod",
-    // name: "shipping/methods/shippo",
-    // template: "shippoCheckoutShipping"
-    // Not needed at the time cause the coreCheckoutShipping is enough(inherited from Flatrate)
-  //}
+// WIP:
+// TODO: Review custom shipping in checkout, are layout handling this requirement
+// For now we use Flat Rate's checkout template( which inherits its methods from coreCheckoutShipping
+// to show all shipping methods in the same panel.
+// .If we are gonna proceed with different panel per provider, we need to enable the 'provides:"Shipping Method"',
+// alter coreCheckoutShipping checkout.js and inherit from there (or write specific logic) for a shippo's
+// checkout template.
+//
+// provides: "shippingMethod",
+// name: "shipping/methods/shippo",
+// template: "shippoCheckoutShipping"
+// Not needed at the time cause the coreCheckoutShipping is enough(inherited from Flatrate)
+// }
   ]
 });

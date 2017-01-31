@@ -1,8 +1,11 @@
 /* eslint camelcase: 0 */
+import { Meteor } from "meteor/meteor";
+import { check } from "meteor/check";
 import { Reaction } from "/server/api";
 import { Packages, Accounts, Shops, Shipping, Cart, Orders } from "/lib/collections";
 import { ShippoPackageConfig } from "../../lib/collections/schemas";
 import { ShippoApi } from "./shippoapi";
+import { shippingRoles } from "../lib/roles";
 
 // Creates an address (for sender or recipient) suitable for Shippo Api Calls given
 // a reaction address an email and a purpose("QUOTE"|"PURCHASE")
@@ -53,7 +56,7 @@ function ratesParser(shippoRates, shippoDocs) {
         rate: rateAmount,
         handling: 0,
         carrier: rate.provider,
-        shippoMethod: {
+        settings: {
           // carrierAccount: rate.carrier_account,
           rateId: rate.object_id,
           serviceLevelToken: rate.servicelevel_token
@@ -69,7 +72,7 @@ function ratesParser(shippoRates, shippoDocs) {
 
 // Filters the carrier list and gets and parses only the ones that are activated in the Shippo Account
 function filterActiveCarriers(carrierList) {
-  let activeCarriers = [];
+  const activeCarriers = [];
   if (carrierList.results && carrierList.count) {
     carrierList.results.forEach(carrier => {
       if (carrier.active) {
@@ -155,8 +158,8 @@ function updateShippoProviders(activeCarriers, shopId = Reaction.getShopId()) {
   // Ids of Shippo Carriers that exist currently as docs in Shipping Collection
   const currentCarriersIds = currentShippoProviders.map(doc => doc.provider.shippoProvider.carrierAccountId);
 
-  let newActiveCarriers = [];
-  let unchangedActiveCarriersIds = [];
+  const newActiveCarriers = [];
+  const unchangedActiveCarriersIds = [];
   activeCarriers.forEach(carrier => {
     const carrierId = carrier.carrierAccountId;
     if (!currentCarriersIds.includes(carrierId)) {
@@ -177,8 +180,7 @@ function updateShippoProviders(activeCarriers, shopId = Reaction.getShopId()) {
   return true;
 }
 
-Meteor.methods({
-
+export const methods = {
   /**
    * Updates the Api key(Live/Test Token) used for connection with the Shippo account.
    * Also inserts(and deletes if already exist) docs in the Shipping collection each of the
@@ -197,7 +199,7 @@ Meteor.methods({
     // Make sure user has proper rights to this package
     const { shopId } = Packages.findOne({ _id },
                                         { field: { shopId: 1 } });
-    if (shopId && Roles.userIsInRole(this.userId, ["admin", "owner"], shopId)) {
+    if (shopId && Roles.userIsInRole(this.userId, shippingRoles, shopId)) {
       // If user wants to delete existing key
       if (modifier.hasOwnProperty("$unset")) {
         const customModifier = { $set: { "settings.apiKey": null } };
@@ -238,7 +240,7 @@ Meteor.methods({
   "shippo/fetchProviders"() {
     const shopId = Reaction.getShopId();
 
-    if (Roles.userIsInRole(this.userId, ["admin", "owner"], shopId)) {
+    if (Roles.userIsInRole(this.userId, shippingRoles, shopId)) {
       const apiKey = getApiKey(shopId);
       if (!apiKey) {
         return false;
@@ -337,7 +339,6 @@ Meteor.methods({
     check(shippoDocs, Object);
     const cart = Cart.findOne(cartId);
     if (cart && cart.userId === this.userId) { // confirm user has the right
-      let shippoAddressFrom;
       let shippoAddressTo;
       let shippoParcel;
       const purpose = "PURCHASE";
@@ -357,8 +358,8 @@ Meteor.methods({
       if (!apiKey) {
         return [];
       }
-
-      shippoAddressFrom = createShippoAddress(shop.addressBook[0], shop.emails[0].address, purpose);
+      // TODO create a shipping address book record for shop.
+      const shippoAddressFrom = createShippoAddress(shop.addressBook[0], shop.emails[0].address, purpose);
       // product in the cart has to have parcel property with the dimensions
       if (cart.items && cart.items[0] && cart.items[0].parcel) {
         const unitOfMeasure = shop && shop.unitsOfMeasure && shop.unitsOfMeasure[0].uom || "KG";
@@ -376,7 +377,15 @@ Meteor.methods({
       });
       // check that there is address available in cart
       if (cart.shipping && cart.shipping[0] && cart.shipping[0].address) {
-        shippoAddressTo = createShippoAddress(cart.shipping[0].address, buyer.emails[0].address, purpose);
+        // TODO take a more elegant approach to guest checkout -> no email address
+        // add Logger.trace if this smells
+        let email = shop.emails[0].address || "noreply@localhost";
+        if (buyer.emails.length > 0) {
+          if (buyer.emails[0].address) {
+            email = buyer.emails[0].address;
+          }
+        }
+        shippoAddressTo = createShippoAddress(cart.shipping[0].address, email, purpose);
       } else {
         return [];
       }
@@ -408,17 +417,17 @@ Meteor.methods({
     check(orderId, String);
     const order = Orders.findOne(orderId);
     // Make sure user has permissions in the shop's order
-    if (Roles.userIsInRole(this.userId, ["admin", "owner"], order.shopId)) {
+    if (Roles.userIsInRole(this.userId, shippingRoles, order.shopId)) {
       // Here we done it for the first/unique Shipment only . in the near future it will be done for multiple ones
-      if (order.shipping[0].shipmentMethod.shippoMethod &&
-      order.shipping[0].shipmentMethod.shippoMethod.rateId) {
+      if (order.shipping[0].shipmentMethod.settings &&
+      order.shipping[0].shipmentMethod.settings.rateId) {
         const apiKey = getApiKey(order.shopId);
         // If for a weird reason Shop hasn't a Shippo Api key anymore you have to throw an error
         // cause the Shippo label purchasing is not gonna happen.
         if (!apiKey) {
           throw new Meteor.Error("403", "Invalid Shippo Credentials");
         }
-        const rateId = order.shipping[0].shipmentMethod.shippoMethod.rateId;
+        const rateId = order.shipping[0].shipmentMethod.settings.rateId;
         // make the actual purchase
         const transaction = ShippoApi.methods.createTransaction.call({ rateId, apiKey });
 
@@ -438,4 +447,6 @@ Meteor.methods({
 
     return false;
   }
-});
+};
+
+Meteor.methods(methods);

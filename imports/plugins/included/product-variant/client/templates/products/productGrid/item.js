@@ -236,7 +236,7 @@ Template.productGridItems.events({
             $checkbox.prop("checked", !$checkbox.prop("checked")).trigger("change");
           }
         } else {
-          let $checkbox = template.$(`input[type=checkbox][value=${this._id}]`);
+          const $checkbox = template.$(`input[type=checkbox][value=${this._id}]`);
 
           Session.set("productGrid/selectedProducts", []);
           $checkbox.prop("checked", true).trigger("change");
