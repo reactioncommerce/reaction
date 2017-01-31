@@ -2,8 +2,7 @@ import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { Shipping } from "/lib/collections";
 import { Reaction } from "/server/api";
-
-const shippingRoles = ["admin", "owner", "shipping", "reaction-shippo"];
+import { shippingRoles } from "../lib/roles";
 
 export const methods = {
   /**

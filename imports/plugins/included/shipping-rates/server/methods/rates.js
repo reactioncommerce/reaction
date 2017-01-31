@@ -3,8 +3,7 @@ import { check } from "meteor/check";
 import { Shipping } from "/lib/collections";
 import { ShippingMethod } from "/lib/collections/schemas";
 import { Reaction } from "/server/api";
-
-const shippingRoles = ["admin", "owner", "shipping", "reaction-shipping-rates"];
+import { shippingRoles } from "../lib/roles";
 
 export const methods = {
   /**

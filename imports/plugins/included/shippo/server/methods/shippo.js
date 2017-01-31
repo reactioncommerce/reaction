@@ -5,8 +5,7 @@ import { Reaction } from "/server/api";
 import { Packages, Accounts, Shops, Shipping, Cart, Orders } from "/lib/collections";
 import { ShippoPackageConfig } from "../../lib/collections/schemas";
 import { ShippoApi } from "./shippoapi";
-
-const shippingRoles = ["admin", "owner", "shipping", "reaction-shippo"];
+import { shippingRoles } from "../lib/roles";
 
 // Creates an address (for sender or recipient) suitable for Shippo Api Calls given
 // a reaction address an email and a purpose("QUOTE"|"PURCHASE")
