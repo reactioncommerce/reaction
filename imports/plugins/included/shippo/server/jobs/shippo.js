@@ -27,8 +27,8 @@ Hooks.Events.add("afterCoreInit", () => {
   if (!config.shippo.enabled || !refreshPeriod) {
     return;
   }
-
-  Logger.info(`Adding shippo/fetchTrackingStatusForOrders to JobControl. Refresh ${refreshPeriod}`);
+  // there might be some validity to this being Logger.info.
+  Logger.debug(`Adding shippo/fetchTrackingStatusForOrders to JobControl. Refresh ${refreshPeriod}`);
   new Job(Jobs, "shippo/fetchTrackingStatusForOrdersJob", {})
     .priority("normal")
     .retry({
@@ -56,6 +56,7 @@ export default function () {
         workTimeout: 180 * 1000
       },
       (job, callback) => {
+        // TODO review meteor runAsUser and add to project documentation
         // As this is run by the Server and we don't have userId()/this.userId
         // which "shippo/fetchTrackingStatusForOrders" need, we use dispatch:run-as-user
         // An alternative way is https://forums.meteor.com/t/cant-set-logged-in-user-for-rest-calls/18656/3
@@ -64,8 +65,8 @@ export default function () {
             if (error) {
               job.done(error.toString(), { repeatId: true });
             } else {
-              const success = "Latest Shippo's Tracking Status of Orders fetched successfully.";
-              Logger.info(success);
+              const success = "Shippo tracking status updated.";
+              Logger.debug(success);
               job.done(success, { repeatId: true });
             }
           });

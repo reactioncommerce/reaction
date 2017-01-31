@@ -1,0 +1,23 @@
+[{
+  "i18n": "en",
+  "ns": "reaction-shipping-rates",
+  "translation": {
+    "reaction-shipping-rates": {
+      "admin": {
+        "shippingSettings": {
+          "flatRateLabel": "Flat Rate",
+          "confirmRateDelete": "Delete rate?",
+          "rateSaved": "Flat rate saved.",
+          "rateFailed": "Flat rate update failed.",
+          "noRatesFound": "No rates found."
+        },
+        "shippingGrid": {
+          "name": "Name",
+          "group": "Group",
+          "rate": "Rate",
+          "label": "Label"
+        }
+      }
+    }
+  }
+}]

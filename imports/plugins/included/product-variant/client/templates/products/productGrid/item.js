@@ -11,8 +11,8 @@ import { Media } from "/lib/collections";
 import { isRevisionControlEnabled } from "/imports/plugins/core/revisions/lib/api";
 
 
-Template.productGridItems.onRendered( function () {
-  $(".container-main").on("click", function(event) {
+Template.productGridItems.onRendered(function () {
+  $(".container-main").on("click", function (event) {
     if ($(event.target).closest(".product-grid-item").length === 0) {
       Session.set("productGrid/selectedProducts", []);
 
@@ -27,7 +27,7 @@ Template.productGridItems.onRendered( function () {
   });
 });
 
-Template.productGridItems.onDestroyed( function() {
+Template.productGridItems.onDestroyed(function () {
   $(".container-main").off("click");
 });
 
@@ -224,7 +224,7 @@ Template.productGridItems.events({
             $checkbox.prop("checked", !$checkbox.prop("checked")).trigger("change");
           }
         } else {
-          let $checkbox = template.$(`input[type=checkbox][value=${this._id}]`);
+          const $checkbox = template.$(`input[type=checkbox][value=${this._id}]`);
 
           Session.set("productGrid/selectedProducts", []);
           $checkbox.prop("checked", true).trigger("change");
