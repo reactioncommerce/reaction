@@ -1,2 +1,2 @@
-import "./methods/methods";
 import "./i18n";
+import "./methods/methods";

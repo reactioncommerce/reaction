@@ -1,0 +1,77 @@
+<template name="shippingRatesSettings">
+  <div>
+    {{> React shippingGrid }}
+  </div>
+
+  <div class="pull-right">
+    {{> React editButton }}
+  </div>
+
+  {{#if instance.state.get 'isEditing'}}
+    <div>
+    {{#if instance.state.get 'editingId'}}
+      <div>
+      {{#autoForm
+        schema=Schemas.ShippingMethod
+        type="method"
+        meteormethod="shipping/rates/update"
+        doc=shippingRate
+        id="shipping-rates-update-form"
+        resetOnSuccess=true
+        }}
+        <div class="col-sm-7">
+          {{>afQuickField name='name' autofocus='' class='form-control'}}
+          {{>afQuickField name='label' class='form-control'}}
+          {{>afQuickField name='group' options="allowed" class='form-control'}}
+        </div>
+        <div class="col-md-4">
+          {{>afQuickField name='cost' class='form-control'}}
+          {{>afQuickField name='handling' class='form-control'}}
+          {{>afQuickField name='rate' class='form-control'}}
+          {{>afQuickField name='enabled'}}
+          {{>afFieldInput name="_id" type="hidden"}}
+        </div>
+        {{> shippingSettingsSubmitButton instance=instance}}
+      {{/autoForm}}
+      </div>
+    {{else}}
+
+      {{#autoForm
+        schema=Schemas.ShippingMethod
+        type="method"
+        meteormethod="shipping/rates/add"
+        id="shipping-rates-insert-form"
+        doc=shippingRate
+        resetOnSuccess=true
+      }}
+        <div class="col-sm-7">
+          {{>afQuickField name='name' autofocus='' class='form-control'}}
+          {{>afQuickField name='label' class='form-control'}}
+          {{>afQuickField name='group' options="allowed" class='form-control'}}
+        </div>
+        <div class="col-md-4">
+          {{>afQuickField name='cost' class='form-control'}}
+          {{>afQuickField name='handling' class='form-control'}}
+          {{>afQuickField name='rate' class='form-control'}}
+          {{>afQuickField name='enabled'}}
+          {{>afFieldInput name="_id" type="hidden"}}
+        </div>
+        {{> shippingSettingsSubmitButton instance=instance}}
+      {{/autoForm}}
+    {{/if}}
+    </div>
+  {{/if}}
+</template>
+
+
+<template name="shippingSettingsSubmitButton">
+   <div class="clearfix">
+    <div class="pull-right">
+      <button type="button" class="btn btn-primary cancel" data-i18n="app.cancel">Cancel</button>
+      {{#if instance.state.get 'editingId'}}
+      <button type="button" class="btn btn-primary delete" data-i18n="app.delete">Delete</button>
+      {{/if}}
+      <button type="submit" class="btn btn-primary" data-i18n="app.saveChanges">Save Changes</button>
+    </div>
+  </div>
+</template>
