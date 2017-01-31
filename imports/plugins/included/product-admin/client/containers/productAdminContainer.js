@@ -129,6 +129,8 @@ function composer(props, onData) {
       tags,
       revisonDocumentIds
     });
+  } else {
+    onData(null, {});
   }
 }
 

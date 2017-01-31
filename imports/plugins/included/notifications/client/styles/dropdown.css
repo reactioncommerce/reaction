@@ -19,7 +19,7 @@
 }
 
 .badge.badge-red {
-    background: red !important;
+    background: #d9534f !important;
     position: relative !important;
     min-width: 20px !important;
     padding: 3px 3px !important;

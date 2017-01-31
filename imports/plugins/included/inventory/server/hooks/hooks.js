@@ -16,13 +16,13 @@ Cart.after.update((userId, cart, fieldNames, modifier) => {
   // if we're adding a new product or variant to the cart
   if (modifier.$addToSet) {
     if (modifier.$addToSet.items) {
-      Logger.info("after cart update, call inventory/addReserve");
+      Logger.debug("after cart update, call inventory/addReserve");
       Meteor.call("inventory/addReserve", cart.items);
     }
   }
   // or we're adding more quantity
   if (modifier.$inc) {
-    Logger.info("after variant increment, call inventory/addReserve");
+    Logger.debug("after variant increment, call inventory/addReserve");
     Meteor.call("inventory/addReserve", cart.items);
   }
 });
@@ -34,7 +34,7 @@ Cart.before.update((userId, cart, fieldNames, modifier) => {
   // removing  cart items, clear inventory reserve
   if (modifier.$pull) {
     if (modifier.$pull.items) {
-      Logger.info("remove cart items, call inventory/clearReserve");
+      Logger.debug("remove cart items, call inventory/clearReserve");
       Meteor.call("inventory/clearReserve", cart.items);
     }
   }
@@ -51,7 +51,7 @@ Products.after.remove((userId, doc) => {
       variantId: doc._id,
       shopId: doc.shopId
     };
-    Logger.info(`remove inventory variants for variant: ${doc._id
+    Logger.debug(`remove inventory variants for variant: ${doc._id
       }, call inventory/remove`);
     Meteor.call("inventory/remove", variantItem);
   }

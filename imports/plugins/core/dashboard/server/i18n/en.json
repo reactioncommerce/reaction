@@ -7,6 +7,10 @@
         "shortcut": {
           "dashboardLabel": "Dashboard"
         },
+        "dashboard": {
+          "packageGroupActionsLabel": "Actions",
+          "packageGroupSettingsLabel": "Settings"
+        },
         "settings": {
           "shopSettingsLabel": "Shop"
         }

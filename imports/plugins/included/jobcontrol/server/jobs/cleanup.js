@@ -26,7 +26,7 @@ export default function () {
     pollInterval: 60 * 60 * 1000, // backup polling, see observer below
     workTimeout: 60 * 1000
   }, (job, callback) => {
-    Logger.info("Processing jobControl/removeStaleJobs...");
+    Logger.debug("Processing jobControl/removeStaleJobs...");
 
     // TODO: set this interval in the admin UI
     const olderThan = moment().subtract(3, "days")._d;

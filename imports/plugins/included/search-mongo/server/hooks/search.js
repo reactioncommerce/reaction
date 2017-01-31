@@ -84,6 +84,6 @@ Products.after.insert((userId, doc) => {
   if (ProductSearch && !Meteor.isAppTest && doc.type === "simple") {
     const productId = doc._id;
     buildProductSearchRecord(productId);
-    Logger.info(`Added product ${productId} to ProductSearch`);
+    Logger.debug(`Added product ${productId} to ProductSearch`);
   }
 });

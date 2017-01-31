@@ -23,7 +23,7 @@ MethodHooks.after("cart/submitPayment", function (options) {
     // create order
     if (cart) {
       if (!cart.billing) {
-        Logger.info("MethodHooks after cart/submitPayment. No billing address after payment! userId:", Meteor.userId(), "options:", options);
+        Logger.debug("MethodHooks after cart/submitPayment. No billing address after payment! userId:", Meteor.userId(), "options:", options);
       }
 
       if (cart.items && cart.billing && cart.billing[0].paymentMethod) {

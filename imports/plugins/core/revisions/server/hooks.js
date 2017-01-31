@@ -3,6 +3,7 @@ import { diff } from "deep-diff";
 import { Products, Revisions, Tags, Media } from "/lib/collections";
 import { Logger } from "/server/api";
 import { RevisionApi } from "../lib/api";
+import { isEmpty } from "lodash";
 
 function convertMetadata(modifierObject) {
   const metadata = {};
@@ -462,6 +463,13 @@ Products.before.update(function (userId, product, fieldNames, modifier, options)
 
     modifier.$set = newSet;
     modifier.$inc = newInc;
+
+    // if (isEmpty(newSet) === false) {
+    //   Products.update(originalSelector, modifier, {
+    //     publish: true,
+    //     selector: options.selector
+    //   });
+    // }
   }
 
   // prevent the underlying document from being modified as it is in draft mode

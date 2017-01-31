@@ -39,7 +39,7 @@ Meteor.methods({
     }
     let rebuildJob;
     if (fieldsChanged(changedSettings)) {
-      Logger.info("Fields have changed, we need to rebuild the ProductSearch Collection");
+      Logger.debug("Fields have changed, we need to rebuild the ProductSearch Collection");
       // fields have changed, we need to rebuild entire Product Search Collection
       rebuildJob = new Job(Jobs, "product/buildSearchCollection", {})
         .priority("normal")
@@ -55,7 +55,7 @@ Meteor.methods({
         });
     } else if (weightsChanged(changedSettings)) {
       // only weights have changed, we only need to build the index
-      Logger.info("Weights have changed, we need to rebuild the ProductSearch index");
+      Logger.debug("Weights have changed, we need to rebuild the ProductSearch index");
       rebuildJob = new Job(Jobs, "product/buildSearchIndex", {})
         .priority("normal")
         .retry({

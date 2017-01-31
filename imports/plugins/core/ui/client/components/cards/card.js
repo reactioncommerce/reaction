@@ -36,7 +36,7 @@ class Card extends Component {
         newProps.onClick = this.handleExpanderClick;
       }
 
-      if (child.props.expandable) {
+      if (child.props.expandable || child.props.actAsExpander) {
         newProps.expanded = this.state.expanded;
       }
 
@@ -45,7 +45,7 @@ class Card extends Component {
 
     const baseClassName = classnames({
       "panel": true,
-      "panel-default": !this.state.expanded,
+      "panel-default": true,
       "panel-active": this.state.expanded
     });
 

@@ -9,7 +9,7 @@ import { Sms } from "/lib/collections";
 Meteor.publish("SmsSettings", function () {
   const shopId = Reaction.getShopId();
   if (!shopId) {
-    Logger.info("Ignoring null request on Sms Subscription");
+    Logger.warn("Ignoring null request on Sms Subscription");
     return this.ready();
   }
 

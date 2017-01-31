@@ -1,4 +1,4 @@
-import React, { Component, PropTypes} from "react";
+import React, { Component, PropTypes } from "react";
 import createFragment from "react-addons-create-fragment";
 import classnames from "classnames/dedupe";
 import Icon from "../icon/icon.jsx";
@@ -44,7 +44,7 @@ class Button extends Component {
         this.props.onToggle(event, this.props.onValue || true);
       } else {
         // Otherwise return the value prop, or false
-        this.props.onToggle(event, this.props.value || false)
+        this.props.onToggle(event, this.props.value || false);
       }
     } else if (this.props.onClick) {
       this.props.onClick(event, this.props.value);
@@ -122,28 +122,35 @@ class Button extends Component {
   }
 
   render() {
-    const classes = classnames({
-      "btn": true,
-      "btn-default": this.props.status === null || this.props.status === undefined || this.props.status === "default",
-      "active": this.props.active || this.props.toggleOn,
-      "btn-success": this.props.status === "success",
-      "btn-danger": this.props.status === "danger",
-      "btn-info": this.props.status === "info",
-      "btn-warning": this.props.status === "warning",
-      "btn-link": this.props.status === "link",
-      "btn-primary": this.props.primary === true || this.props.status === "primary"
-    }, this.props.className);
+    const { } = this.props;
 
     const {
+      active, status, toggleOn, primary, bezelStyle, className,
+
       // Destructure these vars as they aren't valid as attributes on the HTML element button
-      iconAfter, label, active, className, status, i18nKeyTitle, i18nKeyLabel, i18nKeyTooltip, // eslint-disable-line no-unused-vars
-      tooltip, icon, toggle, onIcon, primary, toggleOn, eventAction, // eslint-disable-line no-unused-vars
-      toggleOnLabel, i18nKeyToggleOnLabel, tagName, onClick, // eslint-disable-line no-unused-vars
+      iconAfter, label, i18nKeyTitle, i18nKeyLabel, i18nKeyTooltip, // eslint-disable-line no-unused-vars
+      tooltip, icon, toggle, onIcon, eventAction, // eslint-disable-line no-unused-vars
+      toggleOnLabel, i18nKeyToggleOnLabel, tagName, onClick, onToggle, onValue, tooltipPosition, // eslint-disable-line no-unused-vars
 
       // Get the rest of the properties and put them in attrs
       // these will most likely be HTML attributes
       ...attrs
     } = this.props;
+
+    const classes = classnames({
+      "rui": true,
+      "btn": true,
+      "btn-default": !primary &&  (status === null || status === undefined || status === "default"),
+      "active": active || toggleOn,
+      "btn-success": status === "success",
+      "btn-danger": status === "danger",
+      "btn-info": status === "info",
+      "btn-warning": status === "warning",
+      "btn-link": status === "link",
+      "btn-cta": status === "cta",
+      "btn-primary": primary === true || status === "primary",
+      [bezelStyle || "flat"]: true
+    }, className);
 
     const extraProps = {};
 
@@ -181,7 +188,7 @@ class Button extends Component {
     // Button with tooltip gets some special treatment
     if (tooltip) {
       return React.createElement(tagName, buttonProps,
-        <span className="rui btn-tooltip" style={{display: "inline-flex"}}>
+        <span className="rui btn-tooltip" style={{ display: "inline-flex" }}>
           <Tooltip tooltipContent={this.renderTooltipContent()}>
             {buttonChildren}
           </Tooltip>
@@ -196,6 +203,7 @@ class Button extends Component {
 
 Button.propTypes = {
   active: PropTypes.bool,
+  bezelStyle: PropTypes.oneOf(["flat", "solid", "outline"]),
   children: PropTypes.node,
   className: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   disabled: PropTypes.bool,
@@ -209,6 +217,8 @@ Button.propTypes = {
   label: PropTypes.string,
   onClick: PropTypes.func,
   onIcon: PropTypes.string,
+  onToggle: PropTypes.func,
+  onValue: PropTypes.any,
   primary: PropTypes.bool,
   status: PropTypes.string,
   tagName: PropTypes.string,
@@ -217,6 +227,7 @@ Button.propTypes = {
   toggleOn: PropTypes.bool,
   toggleOnLabel: PropTypes.string,
   tooltip: PropTypes.oneOfType([PropTypes.string, PropTypes.object, PropTypes.node]),
+  tooltipPosition: PropTypes.string,
   value: PropTypes.any
 };
 
@@ -225,7 +236,8 @@ Button.defaultProps = {
   disabled: false,
   iconAfter: false,
   tagName: "button",
-  toggle: false
+  toggle: false,
+  bezelStyle: "flat"
 };
 
 export default Button;
