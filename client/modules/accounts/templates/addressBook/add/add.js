@@ -71,20 +71,32 @@ Template.addressBookAdd.events({
 AutoForm.hooks({
   addressBookAddForm: {
     onSubmit: function (insertDoc) {
+      const that = this;
       this.event.preventDefault();
       const addressBook = $(this.template.firstNode).closest(".address-book");
 
-      Meteor.call("accounts/addressBookAdd", insertDoc, (error, result) => {
-        if (error) {
-          Alerts.toast(i18next.t("addressBookAdd.failedToAddAddress", { err: error.message }), "error");
-          this.done(new Error("Failed to add address: ", error));
+      Meteor.call("accounts/validateAddress", insertDoc, function (error, result) {
+        if (result.validated) {
+          Meteor.call("accounts/addressBookAdd", insertDoc, function (error, result) {
+            if (error) {
+              Alerts.toast(i18next.t("addressBookAdd.failedToAddAddress", { err: error.message }), "error");
+              this.done(new Error("Failed to add address: ", error));
+              return false;
+            }
+            if (result) {
+              that.done();
+              addressBook.trigger($.Event("showMainView"));
+              return true;
+            }
+          });
+        } else {
+          Alerts.toast(i18next.t("addressBookAdd.failedToAddAddress", { err: result.error.message }), "error");
+          that.done(new Error("Address did not validate: ", error));
           return false;
         }
-        if (result) {
-          this.done();
-          addressBook.trigger($.Event("showMainView"));
-        }
       });
+
+
     }
   }
 });
