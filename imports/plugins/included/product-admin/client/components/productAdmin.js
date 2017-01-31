@@ -54,9 +54,12 @@ class ProductAdmin extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!isEqual(nextProps.product, this.props.product)) {
+    const nextProduct = nextProps.product || {};
+    const currentProduct = this.props.product || {};
+
+    if (!isEqual(nextProduct, currentProduct)) {
       for (const fieldName of fieldNames) {
-        if ((nextProps.product && this.props.product) && (nextProps.product[fieldName] !== this.props.product[fieldName])) {
+        if (nextProduct[fieldName] !== currentProduct[fieldName]) {
           this.animateFieldFlash(fieldName);
         }
       }
@@ -216,7 +219,7 @@ class ProductAdmin extends Component {
       <CardGroup>
         <Card>
           <CardBody>
-            <PublishContainer documentIds={[this.props.revisonDocumentIds]} />
+            <PublishContainer documentIds={this.props.revisonDocumentIds} />
           </CardBody>
         </Card>
         <Card
