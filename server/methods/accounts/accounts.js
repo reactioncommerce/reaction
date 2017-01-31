@@ -4,37 +4,7 @@ import path from "path";
 import { Accounts, Cart, Media, Shops, Packages } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 import { Logger, Reaction } from "/server/api";
-import zipcode from "/imports/plugins/included/geocoding/server/methods/zipcode";
 
-/**
- * @summary Validate Zip code against USPS API for US addresses
- * @param {Object} address - Address to verify
- * @returns {Object} Verification result object
- */
-function validateZip(address) {
-  const validationResult = {
-    validated: true,
-    errors: []
-  };
-  if (address.country === "US") {
-    const result = zipcode.cityStateLookup(address.postal);
-    if (_.uppercase(address.city) === _.uppercase(result.city) && address.region === result.state) {
-      validationResult.result = result;
-    } else {
-      // Determine the error messages and fields to pass back
-      validationResult.result = result;
-      validationResult.validated = false;
-      if (_.uppercase(address.city) !== _.uppercase(result.city)) {
-        validationResult.errors.push({ city: "City did not match postal code" });
-      }
-
-      if (address.region !== result.state) {
-        validationResult.errors.push({ region: "State did not match" });
-      }
-    }
-  }
-  return validationResult;
-}
 
 /**
  * @summary Returns the name of the geocoder method to use
@@ -75,14 +45,6 @@ function validateAddress(address) {
   let validated = true;
 
   Schemas.Address.clean(address);
-  const zipResults = validateZip(address);
-  if (!zipResults.validated) {
-    validated = false;
-    Array.prototype.push.apply(errors, zipResults.errors);
-    Array.prototype.push.apply(errorFields, zipResults.errorFields);
-    errorTypes.push("zipcode");
-  }
-
   const geoCoder = getGeocoder();
   const geocodedAddress = Meteor.call(geoCoder, address);
   if (geocodedAddress === address) {
