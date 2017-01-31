@@ -12,7 +12,7 @@ function cartShippingQuotes(currentCart) {
 
   if (cart) {
     if (cart.shipping) {
-      for (shipping of cart.shipping) {
+      for (const shipping of cart.shipping) {
         if (shipping.shipmentQuotes) {
           for (quote of shipping.shipmentQuotes) {
             shipmentQuotes.push(quote);
@@ -32,7 +32,7 @@ function cartShipmentMethods(currentCart) {
 
   if (cart) {
     if (cart.shipping) {
-      for (shipping of cart.shipping) {
+      for (const shipping of cart.shipping) {
         if (shipping.shipmentMethod) {
           shipmentMethods.push(shipping.shipmentMethod);
         }

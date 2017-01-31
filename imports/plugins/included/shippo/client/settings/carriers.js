@@ -60,7 +60,7 @@ Template.shippoCarriers.helpers({
     // from flat rate shipping provider
     function transform(results) {
       const result = [];
-      for (method of results) {
+      for (const method of results) {
         if (method.provider && typeof method.provider.shippoProvider === "object") {
           method.provider.carrier = method.name;
           result.push(method.provider);

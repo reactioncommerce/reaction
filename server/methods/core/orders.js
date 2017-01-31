@@ -846,8 +846,6 @@ export const methods = {
             if (order.shipping[0].shipmentMethod.settings) {
               Meteor.call("shippo/confirmShippingMethodForOrder", orderId);
             }
-
-
           } else {
             if (result && result.error) {
               Logger.fatal("Failed to capture transaction.", order, paymentMethod.transactionId, result.error);
