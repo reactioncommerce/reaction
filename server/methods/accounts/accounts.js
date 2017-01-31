@@ -10,13 +10,12 @@ import { Logger, Reaction } from "/server/api";
  * @summary Returns the name of the geocoder method to use
  * @returns {string} Name of the Geocoder method to use
  */
-function getGeocoder() {
+function getValidator() {
   const shopId = Reaction.getShopId();
   const geoCoders = Packages.find({
-    "registry.provides": "geocoding",
+    "registry.provides": "addressValidation",
     "shopId": shopId
   }).fetch();
-
   let geoCoder;
   // Just one?, use that one
   if (geoCoders.length === 1) {
@@ -29,7 +28,10 @@ function getGeocoder() {
       return coder.registry.providerName !== "reaction";
     })[0];
   }
-  return `${geoCoder.registry[0].providerName}/geocoder/geocode`;
+  const geoCoderName = _.filter(geoCoder.registry, function (registry) {
+    return registry.provides === "addressValidation";
+  })[0].providerName;
+  return `${geoCoderName}/geocoder/geocode`;
 }
 
 /**
@@ -45,9 +47,9 @@ function validateAddress(address) {
   let validated = true;
 
   Schemas.Address.clean(address);
-  const geoCoder = getGeocoder();
-  const geocodedAddress = Meteor.call(geoCoder, address);
-  if (geocodedAddress === address) {
+  const validator = getValidator();
+  const validatedAddress = Meteor.call(validator, address);
+  if (validatedAddress === address) {
     validated = false;
     errors.push("Failed Geocoding check");
     errorFields.push("city", "region", "postal", "address1", "address2");

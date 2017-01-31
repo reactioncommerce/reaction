@@ -1,5 +1,6 @@
 import _ from "lodash";
 import moment from "moment";
+import { Meteor } from "meteor/meteor";
 import { HTTP } from "meteor/http";
 import { check, Match } from "meteor/check";
 import { Packages, Shops } from "/lib/collections";
@@ -89,21 +90,28 @@ taxCalc.getCompanyCode = function () {
  * @summary Validate a particular address
  * @param {Object} address Address to validate
  * @param {Function} callback Optional callback function
- * @returns {Object} The validated address
+ * @returns {Object} The validated result
  */
 taxCalc.validateAddress = function (address, callback) {
   check(address, Object);
+  const validationResult = {
+    validated: true,
+    errors: []
+  };
   const auth = getAuthData();
-  const requestUrl = "https://sandbox-rest.avatax.com/api/v2/addresses/resolve";
+  const baseUrl = getUrl();
+  const requestUrl = `${baseUrl}/addresses/resolve`;
   // provide a synchronous version for testing
   if (callback) {
     HTTP.post(requestUrl, { data: address, auth: auth }, (err, result) => {
-      return callback(result);
+      return callback(err, result);
     });
   } else {
     const result = HTTP.post(requestUrl, { data: address, auth: auth });
-    return result;
+    console.log("result", result);
+    return validationResult;
   }
+  return undefined;
 };
 
 /**
@@ -362,3 +370,7 @@ taxCalc.reportRefund = function (order, refundAmount, callback) {
 };
 
 export default taxCalc;
+
+Meteor.methods({
+  "avalara/geocoder/geocode": taxCalc.validateAddress
+});

@@ -17,6 +17,10 @@ Reaction.registerPackage({
       name: "taxes/settings/avalara",
       provides: "taxSettings",
       template: "avalaraSettings"
+    },
+    {
+      provides: "addressValidation",
+      providerName: "avalara"
     }
   ]
 });
