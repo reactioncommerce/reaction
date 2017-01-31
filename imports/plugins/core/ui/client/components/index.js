@@ -4,6 +4,7 @@ export { Alerts, Alert } from "./alerts";
 export { default as Icon } from "./icon/icon";
 export { default as CircularProgress } from "./progress/circularProgress";
 export { default as Divider } from "./divider/divider";
+export { default as VerticalDivider } from "./divider/verticalDivider";
 export { default as Items } from "./items/items";
 export { default as Item } from "./items/item";
 export { default as TextField } from "./textfield/textfield";

@@ -71,7 +71,7 @@ class PublishControls extends Component {
         isDocumentVisible = true;
       }
 
-      this.props.onVisibilityChange(event, isDocumentVisible);
+      this.props.onVisibilityChange(event, isDocumentVisible, this.props.documentIds);
     }
   }
 
