@@ -39,8 +39,6 @@ class ProductPublishContainer extends Component {
 
 function composer(props, onData) {
   const product = ReactionProduct.selectedProduct();
-  let tags;
-  let media;
   let revisonDocumentIds;
 
   if (product) {
@@ -65,10 +63,7 @@ function composer(props, onData) {
     revisonDocumentIds = [product._id];
 
     onData(null, {
-      editFocus: Reaction.state.get("edit/focus"),
-      product: product,
-      media,
-      tags,
+      product,
       documentIds: revisonDocumentIds,
       documents: [product]
     });
