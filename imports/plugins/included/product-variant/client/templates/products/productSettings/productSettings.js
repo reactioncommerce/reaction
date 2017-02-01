@@ -179,7 +179,7 @@ Template.productSettings.events({
     event.preventDefault();
     const tag = ReactionProduct.getTag();
     for (const product of this.products) {
-      const weight = $(event.currentTarget).data("event-data") || 0;
+      const weight = Template.instance().$(event.currentTarget).data("event-data") || 0;
       const positions = {
         weight: weight,
         updatedAt: new Date()

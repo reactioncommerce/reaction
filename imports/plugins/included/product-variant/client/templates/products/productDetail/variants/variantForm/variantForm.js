@@ -116,12 +116,12 @@ Template.variantForm.helpers({
 
 Template.variantForm.events({
   "change form :input": function (event, template) {
-    const field = $(event.currentTarget).attr("name");
+    const field = Template.instance().$(event.currentTarget).attr("name");
     //
     // this should really move into a method
     //
     if (field === "taxable" || field === "inventoryManagement" || field === "inventoryPolicy") {
-      const value = $(event.currentTarget).prop("checked");
+      const value = Template.instance().$(event.currentTarget).prop("checked");
       if (ReactionProduct.checkChildVariants(template.data._id) > 0) {
         const childVariants = ReactionProduct.getVariants(template.data._id);
         for (const child of childVariants) {
