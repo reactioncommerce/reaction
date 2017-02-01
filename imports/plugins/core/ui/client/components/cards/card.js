@@ -36,7 +36,7 @@ class Card extends Component {
         newProps.onClick = this.handleExpanderClick;
       }
 
-      if (child.props.expandable) {
+      if (child.props.expandable || child.props.actAsExpander) {
         newProps.expanded = this.state.expanded;
       }
 

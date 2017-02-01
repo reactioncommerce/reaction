@@ -1,5 +1,5 @@
 import { Products, Revisions } from "/lib/collections";
-import { Reaction } from "/server/api";
+import { Reaction, Logger } from "/server/api";
 import { RevisionApi } from "/imports/plugins/core/revisions/lib/api/revisions";
 
 //
@@ -69,11 +69,19 @@ const filters = new SimpleSchema({
  */
 Meteor.publish("Products", function (productScrollLimit = 24, productFilters, sort = {}) {
   check(productScrollLimit, Number);
-  check(productFilters, Match.OneOf(undefined, filters));
+  check(productFilters, Match.OneOf(undefined, Object));
   check(sort, Match.OneOf(undefined, Object));
 
+  // if there are filter/params that don't match the schema
+  // validate, catch except but return no results
+  try {
+    check(productFilters, Match.OneOf(undefined, filters));
+  } catch (e) {
+    Logger.debug(e, "Invalid Product Filters");
+    return this.ready();
+  }
+  // ensure that we've got a shop instance
   const shop = Reaction.getCurrentShop();
-
   if (typeof shop !== "object") {
     return this.ready();
   }

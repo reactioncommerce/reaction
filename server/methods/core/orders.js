@@ -467,6 +467,8 @@ export const methods = {
         orderDate: moment(order.createdAt).format("MM/DD/YYYY"),
         orderUrl: getSlug(shop.name) + "/cart/completed?_id=" + order.cartId,
         shipping: {
+          tracking: order.shipping[0].tracking,
+          carrier: order.shipping[0].shipmentMethod.carrier,
           address: {
             address: order.shipping[0].address.address1,
             city: order.shipping[0].address.city,
@@ -843,11 +845,9 @@ export const methods = {
             });
 
             // Temporarily(?) put here the Shippo's method/label purchasing.After a succesfull capture fund
-            if (order.shipping[0].shipmentMethod.shippoMethod) {
+            if (order.shipping[0].shipmentMethod.settings) {
               Meteor.call("shippo/confirmShippingMethodForOrder", orderId);
             }
-
-
           } else {
             if (result && result.error) {
               Logger.fatal("Failed to capture transaction.", order, paymentMethod.transactionId, result.error);

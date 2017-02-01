@@ -4,7 +4,6 @@
     "name": "Free",
     "label": "Free Shipping",
     "group": "Ground",
-    "enabled": true,
     "rate": 0,
     "validLocales": [{
       "deliveryBegin": 2,
@@ -17,7 +16,6 @@
     "name": "Standard",
     "label": "Standard",
     "group": "Ground",
-    "enabled": true,
     "rate": 2.99,
     "validLocales": [{
       "deliveryBegin": 2,
@@ -27,7 +25,6 @@
     "name": "Priority",
     "label": "Priority",
     "group": "Priority",
-    "enabled": true,
     "rate": 6.99,
     "validLocales": [{
       "deliveryBegin": 1,
@@ -35,8 +32,7 @@
     }]
   }],
   "provider": {
-    "name": "Flat Rate",
-    "label": "Flat Rate",
-    "enabled": true
+    "name": "flatRates",
+    "label": "Flat Rate"
   }
 }]

@@ -1,15 +1,14 @@
-import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
-import { Cart, Shipping } from "/lib/collections";
-import { Logger, Reaction } from "/server/api";
+import { Cart } from "/lib/collections";
+import { Logger, Hooks } from "/server/api";
 import { Cart as CartSchema } from "/lib/collections/schemas";
 
 /*
  * Reaction Shipping Methods
  * methods typically used for checkout (shipping, taxes, etc)
  */
-Meteor.methods({
+export const methods = {
   /**
    * shipping/updateShipmentQuotes
    * @summary gets shipping rates and updates the users cart methods
@@ -24,17 +23,15 @@ Meteor.methods({
     check(cartId, String);
     this.unblock();
     const cart = Cart.findOne(cartId);
+
+    check(cart, CartSchema);
+
     if (cart) {
       const rates = Meteor.call("shipping/getShippingRates", cart);
-      // no rates found
-      if (!rates) {
-        return [];
-      }
       let selector;
       let update;
-      // temp hack until we build out multiple shipment handlers
-      // if we have an existing item update it, otherwise add to set.
-      if (cart.shipping && rates.length > 0) {
+      // temp hack until we build out multiple shipment handlers if we have an existing item update it, otherwise add to set.
+      if (cart.shipping) {
         selector = {
           "_id": cartId,
           "shipping._id": cart.shipping[0]._id
@@ -57,15 +54,13 @@ Meteor.methods({
         };
       }
       // add quotes to the cart
-      if (rates.length > 0) {
-        Cart.update(selector, update, function (error) {
-          if (error) {
-            Logger.warn(`Error adding rates to cart ${cartId}`, error);
-            return;
-          }
-          Logger.debug(`Success adding rates to cart ${cartId}`, rates);
-        });
-      }
+      Cart.update(selector, update, function (error) {
+        if (error) {
+          Logger.warn(`Error adding rates to cart ${cartId}`, error);
+          return;
+        }
+        Logger.debug(`Success adding rates to cart ${cartId}`, rates);
+      });
     }
   },
 
@@ -78,77 +73,16 @@ Meteor.methods({
   "shipping/getShippingRates": function (cart) {
     check(cart, CartSchema);
     const rates = [];
-    const shops = [];
-    const products = cart.items;
-    // default selector is current shop
-    let selector = {
-      "shopId": Reaction.getShopId(),
-      "provider.enabled": true
-    };
-    // must have products to calculate shipping
+    // must have items to calculate shipping
     if (!cart.items) {
       return [];
     }
-    // create an array of shops, allowing
-    // the cart to have products from multiple shops
-    for (const product of products) {
-      if (product.shopId) {
-        shops.push(product.shopId);
-      }
-    }
-    // if we have multiple shops in cart
-    if ((shops !== null ? shops.length : void 0) > 0) {
-      selector = {
-        "shopId": {
-          $in: shops
-        },
-        "provider.enabled": true
-      };
-    }
-
-    const shippingCollection = Shipping.find(selector);
-    let shippoDocs = {};
-
-    shippingCollection.forEach(function (doc) {
-      const _results = [];
-      // If provider is from Shippo, put it in an object to get rates dynamically(shippoApi) for all of them after.
-      if (doc.provider.shippoProvider) {
-        shippoDocs[doc.provider.shippoProvider.carrierAccountId] = doc;
-      } else {
-        for (const method of doc.methods) {
-          if (!method.enabled) {
-            continue;
-          }
-          if (!method.rate) {
-            method.rate = 0;
-          }
-          if (!method.handling) {
-            method.handling = 0;
-          }
-          // Store shipping provider here in order to have it available in shipmentMethod
-          // for cart and order usage
-          if (!method.carrier) {
-            method.carrier = doc.provider.label;
-          }
-          const rate = method.rate + method.handling;
-          _results.push(
-            rates.push({
-              carrier: doc.provider.label,
-              method: method,
-              rate: rate,
-              shopId: doc.shopId
-            })
-          );
-        }
-        return _results;
-      }
-    });
-    //  Get shippingRates from Shippo
-    if (!_.isEmpty(shippoDocs)) {
-      const shippoRates = Meteor.call("shippo/getShippingRatesForCart", cart._id, shippoDocs);
-      rates.push(...shippoRates);
-    }
+    // hooks for other shipping rate events
+    // all callbacks should return rates
+    Hooks.Events.run("onGetShippingRates", rates, cart);
     Logger.debug("getShippingRates returning rates", rates);
     return rates;
   }
-});
+};
+
+Meteor.methods(methods);
