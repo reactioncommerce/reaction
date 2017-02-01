@@ -51,8 +51,20 @@ function uploadHandler(files) {
 }
 
 class MediaGalleryContainer extends Component {
-  state = {
-    featuredMedia: undefined
+  // Load first image as featuredImage
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      featuredMedia: props.media[0]
+    };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      featuredMedia: nextProps.media[0],
+      media: nextProps.media
+    });
   }
 
   handleDrop = (files) => {
@@ -87,12 +99,6 @@ class MediaGalleryContainer extends Component {
 
   get media() {
     return (this.state && this.state.media) || this.props.media;
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.setState({
-      media: nextProps.media
-    });
   }
 
   handleMouseEnterMedia = (event, media) => {
