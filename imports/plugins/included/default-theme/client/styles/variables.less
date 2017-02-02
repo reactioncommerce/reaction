@@ -64,7 +64,8 @@
 @gray-lightest:          lighten(@gray-base, 96%); // #f6f6f6
 
 // Background Colors
-@brand-primary:         @black60;
+// @brand-primary:         @black60;
+@brand-primary:         darken(#b7c7d0, 10%);
 @brand-success:         @brand-success-color;
 @brand-info:            @brand-info-color;
 @brand-warning:         @brand-warning-color;
@@ -114,7 +115,7 @@
 
 
 //** Global textual link color.
-@link-color:            @brand-primary;
+@link-color:            @brand-primary-dark;
 //** Link hover color set via `darken()` function.
 @link-hover-color:      darken(@link-color, 15%);
 //** Link hover decoration.
@@ -230,7 +231,7 @@
 
 // Solid Button Colors
 @btn-default-color:              @state-default-text;
-@btn-default-bg:                 @brand-default;
+@btn-default-bg:                 #fff;
 @btn-default-border:             @brand-default;
 
 @btn-primary-color:              #fff;
@@ -1184,12 +1185,12 @@
 @cart-icon-padding:  (@navbar-padding-vertical - 4px) 30px (@navbar-padding-vertical - 4px) 24px;
 
 @cart-progress-active: #57aed1; //lighten(@brand-vivid-color, 8); // TODO: @cart-progress-active is used nowhere
-@cart-progress-visited: @brand-vivid-color;
+@cart-progress-visited: @brand-primary-dark;
 @cart-progress-next: @brand-light-color;
 
-@checkout-progress-visited: @brand-vivid-color;
+@checkout-progress-visited: @brand-primary-dark;
 @checkout-progress-visited-text: @white;
-@checkout-progress-active: @brand-vivid-color;
+@checkout-progress-active: @brand-primary-dark;
 @checkout-progress-active-text: @white;
 @checkout-progress-next: @brand-light-color;
 @checkout-progress-next-text: @brand-dark-color;
