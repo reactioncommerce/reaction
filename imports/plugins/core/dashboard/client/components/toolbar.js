@@ -5,7 +5,8 @@ import {
   Toolbar,
   ToolbarGroup,
   Switch,
-  Icon
+  Icon,
+  VerticalDivider
 } from "/imports/plugins/core/ui/client/components";
 import { Translatable } from "/imports/plugins/core/ui/client/providers";
 
@@ -87,17 +88,6 @@ class PublishControls extends Component {
     </FlatButton>
     );
   }
-  renderVerticalDivider() {
-    return (
-      <div style={{
-        height: "20px",
-        width: 1,
-        backgroundColor: "#E6E6E6",
-        margin: "0 10px"
-      }}
-      />
-    );
-  }
 
   renderAddButton() {
     return (
@@ -125,7 +115,7 @@ class PublishControls extends Component {
   renderCustomControls() {
     if (this.props.dashboardHeaderTemplate) {
       return [
-        this.renderVerticalDivider(),
+        <VerticalDivider key="customControlsVerticaldivider" />,
         <Blaze key="customControls" template={this.props.dashboardHeaderTemplate()} />
       ];
     }
@@ -143,7 +133,7 @@ class PublishControls extends Component {
           {this.renderAddButton()}
           {this.renderPackageButons()}
           {this.renderCustomControls()}
-          {this.renderVerticalDivider()}
+          <VerticalDivider />
           {this.renderAdminButton()}
           {/* this.renderMoreOptionsButton() */}
         </ToolbarGroup>

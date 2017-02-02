@@ -4,7 +4,7 @@ import Button from "./button.jsx";
 
 class IconButton extends Component {
   static defaultProps = {
-    bezelStyle: "flat"
+    bezelStyle: "solid"
   }
 
   render() {
