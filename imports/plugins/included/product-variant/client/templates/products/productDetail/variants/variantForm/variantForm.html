@@ -27,14 +27,14 @@
         <div class="panel-controls">
           {{> button
             icon="files-o"
-            className="btn btn-default btn-clone-variant"
+            className="rui btn btn-default btn-clone-variant flat"
             tooltip="Duplicate"
             i18nTooltip="productDetailEdit.duplicateVariant"
           }}
           {{#if isDeleted}}
             {{> button
               icon="refresh"
-              className="btn btn-default btn-restore-variant"
+              className="rui btn btn-default btn-restore-variant flat"
               tooltip="Restore"
               i18nTooltip="productDetailEdit.restoreVariant"
               onClick=(restoreVariant this)
@@ -42,7 +42,7 @@
           {{else}}
             {{> button
               icon="trash-o"
-              className="btn btn-default btn-remove-variant"
+              className="rui btn btn-danger btn-remove-variant flat"
               tooltip="Archive"
               i18nTooltip="productDetailEdit.removeVariant"
               onClick=(removeVariant this)

@@ -14,7 +14,6 @@ class FlatButton extends Component {
     const {
       icon,
       onIcon,
-      bordered,
       ...otherProps
     } = this.props;
 
@@ -28,15 +27,12 @@ class FlatButton extends Component {
 
     if (icon) {
       iconClassName = classnames({
-        "fa-lg": false,
         [icon]: true
       });
     }
 
-
     if (onIcon) {
       onIconClassName = classnames({
-        "fa-lg": true,
         [onIcon]: true
       });
     }

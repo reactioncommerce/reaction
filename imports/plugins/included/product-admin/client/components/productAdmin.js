@@ -217,11 +217,6 @@ class ProductAdmin extends Component {
   render() {
     return (
       <CardGroup>
-        <Card>
-          <CardBody>
-            <PublishContainer documentIds={this.props.revisonDocumentIds} />
-          </CardBody>
-        </Card>
         <Card
           expanded={this.isExpanded("productDetails")}
           onExpand={this.handleCardExpand.bind(this, "productDetails")}

@@ -127,6 +127,7 @@ function composer(props, onData) {
           ]
         }
       }).fetch();
+
       onData(null, {
         isEnabled: isRevisionControlEnabled(),
         documentIds: props.documentIds,

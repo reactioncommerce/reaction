@@ -40,5 +40,21 @@ Reaction.registerPackage({
       dashboardHeaderControls: "",
       adminControlsFooter: "adminControlsFooter"
     }
+  }, {
+    layout: "coreLayout",
+    workflow: "coreProductGridWorkflow",
+    collection: "Products",
+    theme: "default",
+    enabled: true,
+    structure: {
+      template: "products",
+      layoutHeader: "layoutHeader",
+      layoutFooter: "",
+      notFound: "productNotFound",
+      dashboardHeader: "gridPublishControls",
+      dashboardControls: "productDetailDashboardControls",
+      dashboardHeaderControls: "",
+      adminControlsFooter: "adminControlsFooter"
+    }
   }]
 });
