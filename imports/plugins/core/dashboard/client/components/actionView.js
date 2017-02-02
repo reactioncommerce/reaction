@@ -180,6 +180,7 @@ class ActionView extends Component {
         <div style={this.styles.backButton}>
           <div style={this.styles.backButtonContainers}>
             <IconButton
+              bezelStyle={"flat"}
               icon="fa fa-arrow-left"
               onClick={this.props.handleActionViewBack}
             />
@@ -195,6 +196,7 @@ class ActionView extends Component {
         <div style={this.styles.backButton}>
           <div style={this.styles.backButtonContainers}>
             <IconButton
+              bezelStyle={"flat"}
               icon="fa fa-arrow-left"
               onClick={this.props.handleActionViewDetailBack}
             />
@@ -204,6 +206,7 @@ class ActionView extends Component {
     } else {
       return (
         <IconButton
+          bezelStyle={"flat"}
           icon="fa fa-times"
           onClick={this.props.handleActionViewDetailClose}
         />
@@ -270,6 +273,7 @@ class ActionView extends Component {
 
           <div className="nav-settings-controls--">
             <IconButton
+              bezelStyle={"flat"}
               icon="fa fa-times"
               onClick={this.props.handleActionViewClose}
             />
