@@ -15,3 +15,17 @@ Template.corePaymentMethods.helpers({
     return enabledPayments;
   }
 });
+
+Template.corePaymentMethods.events({
+  "click [data-event-action=configure-payment-methods]"(event) {
+    event.preventDefault();
+
+    const dashboardRegistryEntry = Reaction.Apps({ name: "reaction-dashboard", provides: "shortcut" });
+    const paymentRegistryEntry = Reaction.Apps({ name: "reaction-payments", provides: "settings" });
+
+    Reaction.showActionView([
+      dashboardRegistryEntry[0],
+      paymentRegistryEntry[0]
+    ]);
+  }
+});

@@ -1,7 +1,7 @@
 /* eslint camelcase: 0 */
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
-import { Reaction } from "/server/api";
+import { Reaction, Hooks } from "/server/api";
 import { Packages, Accounts, Shops, Shipping, Cart, Orders } from "/lib/collections";
 import { ShippoPackageConfig } from "../../lib/collections/schemas";
 import { ShippoApi } from "./shippoapi";
@@ -93,7 +93,7 @@ function formatCarrierLabel(carrierName) {
 }
 
 // get Shippo's Api Key from the Shippo package with the supplied shopId or alternatively of the current shop's Id
-function getApiKey(shopId = Reaction.getShopId) {
+function getApiKey(shopId = Reaction.getShopId()) {
   const { settings } = Packages.findOne({
     name: "reaction-shippo",
     shopId
@@ -418,16 +418,16 @@ export const methods = {
     const order = Orders.findOne(orderId);
     // Make sure user has permissions in the shop's order
     if (Roles.userIsInRole(this.userId, shippingRoles, order.shopId)) {
+      const orderShipment = order.shipping[0];
       // Here we done it for the first/unique Shipment only . in the near future it will be done for multiple ones
-      if (order.shipping[0].shipmentMethod.settings &&
-      order.shipping[0].shipmentMethod.settings.rateId) {
+      if (orderShipment && orderShipment.shipmentMethod && orderShipment.shipmentMethod.settings && orderShipment.shipmentMethod.settings.rateId) {
         const apiKey = getApiKey(order.shopId);
         // If for a weird reason Shop hasn't a Shippo Api key anymore you have to throw an error
         // cause the Shippo label purchasing is not gonna happen.
         if (!apiKey) {
           throw new Meteor.Error("403", "Invalid Shippo Credentials");
         }
-        const rateId = order.shipping[0].shipmentMethod.settings.rateId;
+        const rateId = orderShipment.shipmentMethod.settings.rateId;
         // make the actual purchase
         const transaction = ShippoApi.methods.createTransaction.call({ rateId, apiKey });
 
@@ -450,3 +450,5 @@ export const methods = {
 };
 
 Meteor.methods(methods);
+
+Hooks.Events.add("onOrderPaymentCaptured", methods["shippo/confirmShippingMethodForOrder"]);

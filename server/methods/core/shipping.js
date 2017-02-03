@@ -17,13 +17,12 @@ export const methods = {
    * @return {undefined}
    */
   "shipping/updateShipmentQuotes": function (cartId) {
+    check(cartId, String);
     if (!cartId) {
       return [];
     }
-    check(cartId, String);
     this.unblock();
     const cart = Cart.findOne(cartId);
-
     check(cart, CartSchema);
 
     if (cart) {
@@ -75,7 +74,7 @@ export const methods = {
     const rates = [];
     // must have items to calculate shipping
     if (!cart.items) {
-      return [];
+      return rates;
     }
     // hooks for other shipping rate events
     // all callbacks should return rates

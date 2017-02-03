@@ -18,7 +18,8 @@ Template.shippoSettings.helpers({
 });
 
 Template.shippoSettings.events({
-  "click [data-event-action=fetchShippoProviders]"() {
+  "click [data-event-action=fetchShippoProviders]"(event) {
+    event.preventDefault();
     Meteor.call("shippo/fetchProviders");
   }
 });
