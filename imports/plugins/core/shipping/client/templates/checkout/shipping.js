@@ -105,5 +105,16 @@ Template.coreCheckoutShipping.events({
       throw new Meteor.Error(error,
         "Cannot change methods while processing.");
     }
+  },
+  "click [data-event-action=configure-shipping]"(event) {
+    event.preventDefault();
+
+    const dashboardRegistryEntry = Reaction.Apps({ name: "reaction-dashboard", provides: "shortcut" });
+    const shippingRegistryEntry = Reaction.Apps({ name: "reaction-shipping", provides: "settings" });
+
+    Reaction.showActionView([
+      dashboardRegistryEntry[0],
+      shippingRegistryEntry[0]
+    ]);
   }
 });
