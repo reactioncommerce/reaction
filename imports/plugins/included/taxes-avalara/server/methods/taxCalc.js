@@ -89,27 +89,37 @@ taxCalc.getCompanyCode = function () {
 /**
  * @summary Validate a particular address
  * @param {Object} address Address to validate
- * @param {Function} callback Optional callback function
  * @returns {Object} The validated result
  */
-taxCalc.validateAddress = function (address, callback) {
+taxCalc.validateAddress = function (address) {
   check(address, Object);
-  const validationResult = {
-    validated: true,
-    errors: []
+
+  const addressToValidate  = {
+    line1: address.address1,
+    city: address.city,
+    region: address.region,
+    postalCode: address.postal,
+    country: address.country
   };
+  if (address.line2) {
+    addressToValidate.line2 = address.address2;
+  }
   const auth = getAuthData();
   const baseUrl = getUrl();
   const requestUrl = `${baseUrl}/addresses/resolve`;
-  // provide a synchronous version for testing
-  if (callback) {
-    HTTP.post(requestUrl, { data: address, auth: auth }, (err, result) => {
-      return callback(err, result);
-    });
-  } else {
-    const result = HTTP.post(requestUrl, { data: address, auth: auth });
-    console.log("result", result);
-    return validationResult;
+  const result = HTTP.post(requestUrl, { data: addressToValidate, auth: auth });
+  if (result && result.data && result.data.address) {
+    const validatedAddress = {
+      address1: result.data.address.line1,
+      city: result.data.address.city,
+      region: result.data.address.region,
+      postal: result.data.address.postalCode,
+      country: result.data.address.country
+    };
+    if (result.data.address.line2) {
+      validatedAddress.addresss2 = result.data.address.line2;
+    }
+    return validatedAddress;
   }
   return undefined;
 };
