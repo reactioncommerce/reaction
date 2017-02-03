@@ -5,6 +5,7 @@ Reaction.registerPackage({
   label: "Stripe",
   name: "reaction-stripe",
   icon: "fa fa-cc-stripe",
+  autoEnable: true,
   settings: {
     "mode": false,
     "api_key": "",

@@ -34,15 +34,15 @@ const getStyles = (props) => {
       "@media only screen and (max-width: 949px)": {
         width: "100vw"
       },
-      boxShadow: isBigView ? "0 0 40px rgba(0,0,0,.1)" : "",
-      flex: "0 0 auto",
-      backgroundColor: "white",
-      borderLeft: "1px solid @black10",
+      "boxShadow": isBigView ? "0 0 40px rgba(0,0,0,.1)" : "",
+      "flex": "0 0 auto",
+      "backgroundColor": "white",
+      "borderLeft": "1px solid @black10",
 
-      overflow: "hidden",
-      transition: "width 300ms cubic-bezier(0.455, 0.03, 0.515, 0.955))",
+      "overflow": "hidden",
+      "transition": "width 300ms cubic-bezier(0.455, 0.03, 0.515, 0.955))",
       // boxShadow: "0 0 40px rgba(0,0,0,.1)",
-      zIndex: 100,
+      "zIndex": 100
 
       // @media screen and (max-width: @screen-xs-max) {
       //   transition: top 400ms cubic-bezier(0.645, 0.045, 0.355, 1);
@@ -79,23 +79,23 @@ const getStyles = (props) => {
     masterViewPanel: {
       display: "flex",
       flexDirection: "column",
-      flex: "1 1 auto",
+      flex: "1 1 auto"
       // height: "100%"
     },
     masterView: {
       flex: "1 1 auto",
       // height: "100%",
-      overflow: "auto",
+      overflow: "auto"
       // WebkitOverflowScrolling: "touch"
     },
     detailViewPanel: {
-      display: "flex",
-      flexDirection: "column",
-      flex: "1 1 auto",
-      maxWidth: "400px",
-      height: "100vh",
-      backgroundColor: "white",
-      borderRight: "1px solid #ccc",
+      "display": "flex",
+      "flexDirection": "column",
+      "flex": "1 1 auto",
+      "maxWidth": "400px",
+      "height": "100vh",
+      "backgroundColor": "white",
+      "borderRight": "1px solid #ccc",
       "@media only screen and (max-width: 949px)": {
         position: "absolute",
         top: 0,
@@ -180,6 +180,7 @@ class ActionView extends Component {
         <div style={this.styles.backButton}>
           <div style={this.styles.backButtonContainers}>
             <IconButton
+              bezelStyle={"flat"}
               icon="fa fa-arrow-left"
               onClick={this.props.handleActionViewBack}
             />
@@ -195,6 +196,7 @@ class ActionView extends Component {
         <div style={this.styles.backButton}>
           <div style={this.styles.backButtonContainers}>
             <IconButton
+              bezelStyle={"flat"}
               icon="fa fa-arrow-left"
               onClick={this.props.handleActionViewDetailBack}
             />
@@ -202,13 +204,13 @@ class ActionView extends Component {
         </div>
       );
     } else {
-
       return (
         <IconButton
+          bezelStyle={"flat"}
           icon="fa fa-times"
           onClick={this.props.handleActionViewDetailClose}
         />
-      )
+      );
     }
   }
 
@@ -271,6 +273,7 @@ class ActionView extends Component {
 
           <div className="nav-settings-controls--">
             <IconButton
+              bezelStyle={"flat"}
               icon="fa fa-times"
               onClick={this.props.handleActionViewClose}
             />
@@ -283,7 +286,7 @@ class ActionView extends Component {
         </div>
       </div>
 
-    )
+    );
   }
 
   renderDetailView() {
@@ -328,12 +331,12 @@ class ActionView extends Component {
           </div>
           <div style={this.styles.body} className="admin-controls-content action-view-body">
 
-              {/*this.renderControlComponent() */}
+              {/* this.renderControlComponent() */}
               {this.renderDetailComponent()}
           </div>
         </div>
 
-      )
+      );
     }
   }
 

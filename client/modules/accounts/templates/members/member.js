@@ -133,14 +133,14 @@ Template.memberSettings.events({
     } else {
       permissions.push(self.permission);
     }
-    if ($(event.currentTarget).is(":checked")) {
+    if (Template.instance().$(event.currentTarget).is(":checked")) {
       Meteor.call("accounts/addUserPermissions", member.userId, permissions, this.shopId);
     } else {
       Meteor.call("accounts/removeUserPermissions", member.userId, permissions, this.shopId);
     }
   },
   "click [data-event-action=resetMemberPermission]": function (event, template) {
-    const $icon = $(event.currentTarget);
+    const $icon = Template.instance().$(event.currentTarget);
     if (confirm($icon.data("confirm"))) {
       const results = [];
       for (const role of template.data.roles) {

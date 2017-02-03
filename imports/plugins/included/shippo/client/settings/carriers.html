@@ -1,0 +1,40 @@
+<template name="shippoCarriers">
+  <div class="row">
+    {{> React carrierGrid }}
+  </div>
+
+  {{#if instance.state.get 'isEditing'}}
+    <div>
+      {{#if instance.state.get 'editingId'}}
+        <div>
+          {{#autoForm
+            schema=Schemas.ShippingProvider
+            type="method"
+            meteormethod="shippo/carrier/update"
+            doc=shippoCarrier
+            id="shipping-carrier-update-form"
+            resetOnSuccess=true
+          }}
+            <div class="col-sm-12">
+              {{> afQuickField name="label" style="pointer-events: none; cursor: not-allowed; tab-index: -1;"}}
+              <div class="pull-right">
+                {{> afQuickField name='enabled'}}
+                {{> afFieldInput name="_id" type="hidden"}}
+              </div>
+            </div>
+            {{> shippoCarrierSubmitButton instance=instance}}
+          {{/autoForm}}
+        </div>
+      {{/if}}
+    </div>
+  {{/if}}
+</template>
+
+<template name="shippoCarrierSubmitButton">
+  <div class="clearfix">
+    <div class="pull-right">
+      <button type="button" class="btn btn-primary cancel" data-i18n="app.cancel">Cancel</button>
+      <button type="submit" class="btn btn-primary" data-i18n="app.saveChanges">Save Changes</button>
+    </div>
+  </div>
+</template>

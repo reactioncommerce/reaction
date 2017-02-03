@@ -85,7 +85,7 @@ Template.openCartDrawer.events({
     event.preventDefault();
     const currentCartItemId = this._id;
 
-    return $(event.currentTarget).fadeOut(300, function () {
+    return Template.instance().$(event.currentTarget).fadeOut(300, function () {
       return Meteor.call("cart/removeFromCart", currentCartItemId);
     });
   }
