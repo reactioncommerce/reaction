@@ -219,7 +219,7 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
           }
         });
       }
-    }
+    } // end if productFilters
 
     // Authorized content curators fo the shop get special publication of the product
     // with all relevant revisions all is one package
@@ -229,8 +229,36 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
         $in: [true, false, undefined]
       };
 
+      // Get _ids of top-level products
+      const productIds = Products.find(selector, {
+        sort: sort,
+        limit: productScrollLimit
+      }).map(product => product._id);
+
+      let newSelector = selector;
+
+      // Remove hashtag filter from selector (hashtags are not applied to variants, we need to get variants)
+      if (productFilters && productFilters.tags) {
+        newSelector = _.omit(selector, ["hashtags"]);
+
+        // Re-configure selector to pick either Variants of one of the top-level products, or the top-level products in the filter
+        _.extend(newSelector, {
+          $or: [
+            {
+              ancestors: {
+                $in: productIds
+              }
+            }, {
+              hashtags: {
+                $in: productFilters.tags
+              }
+            }
+          ]
+        });
+      }
+
       if (RevisionApi.isRevisionControlEnabled()) {
-        const handle = Products.find(selector, {
+        const handle = Products.find(newSelector, {
           sort: sort,
           limit: productScrollLimit
         }).observeChanges({
@@ -338,7 +366,36 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
     // Everyone else gets the standard, visible products
     selector.isVisible = true;
 
-    return Products.find(selector, {
+
+    // Get _ids of top-level products
+    const productIds = Products.find(selector, {
+      sort: sort,
+      limit: productScrollLimit
+    }).map(product => product._id);
+
+    let newSelector = selector;
+
+    // Remove hashtag filter from selector (hashtags are not applied to variants, we need to get variants)
+    if (productFilters && productFilters.tags) {
+      newSelector = _.omit(selector, ["hashtags"]);
+
+      // Re-configure selector to pick either Variants of one of the top-level products, or the top-level products in the filter
+      _.extend(newSelector, {
+        $or: [
+          {
+            ancestors: {
+              $in: productIds
+            }
+          }, {
+            hashtags: {
+              $in: productFilters.tags
+            }
+          }
+        ]
+      });
+    }
+
+    return Products.find(newSelector, {
       sort: sort,
       limit: productScrollLimit
     });

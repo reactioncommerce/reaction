@@ -8,7 +8,7 @@ import { check } from "meteor/check";
 import { getSlug } from "/lib/api";
 import { Cart, Media, Orders, Products, Shops } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
-import { Logger, Reaction } from "/server/api";
+import { Logger, Hooks, Reaction } from "/server/api";
 
 
 // helper to return the order credit object

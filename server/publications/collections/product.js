@@ -22,9 +22,9 @@ Meteor.publish("Product", function (productId) {
   }
 
   let _id;
-  // selector for hih - What's hih?
+
   // selector should come first as default, alterations take place later depending on role
-  let selector = {
+  const selector = {
     isVisible: true,
     isDeleted: { $in: [null, false] }
   };
@@ -37,15 +37,18 @@ Meteor.publish("Product", function (productId) {
   }
   // TODO review for REGEX / DOS vulnerabilities.
   if (productId.match(/^[23456789ABCDEFGHJKLMNPQRSTWXYZabcdefghijkmnopqrstuvwxyz]{17}$/)) {
-    selector._id = productId;
+    // selector._id = productId;
     // TODO try/catch here because we can have product handle passed by such regex
     _id = productId;
   } else {
-    selector.handle = {
-      $regex: productId,
-      $options: "i"
-    };
-    const products = Products.find(selector).fetch();
+    const newSelector = Object.assign({}, selector, {
+      handle: {
+        $regex: productId,
+        $options: "i"
+      }
+    });
+
+    const products = Products.find(newSelector).fetch();
     if (products.length > 0) {
       _id = products[0]._id;
     } else {
@@ -53,10 +56,13 @@ Meteor.publish("Product", function (productId) {
     }
   }
 
-  // Selector for hih?
+  // Selector for product
+  // Try to find a product with _id as a handle "example-product"
+  // Try to find a product with the _is as an Random.id()
+  // Try to find a product variant with _id using the ancestors array
   selector.$or = [
-    {handle: _id},
-    {_id: _id},
+    { handle: { $regex: _id, $options: "i" } },
+    { _id: _id },
     {
       ancestors: {
         $in: [_id]
