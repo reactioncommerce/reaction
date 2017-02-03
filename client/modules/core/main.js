@@ -285,7 +285,15 @@ export default {
 
   setActionView(viewData) {
     if (viewData) {
-      Session.set("admin/actionView", [viewData]);
+      let viewStack;
+
+      if (Array.isArray(viewData)) {
+        viewStack = viewData;
+      } else {
+        viewStack = [viewData];
+      }
+
+      Session.set("admin/actionView", viewStack);
     } else {
       const registryItem = this.getRegistryForCurrentRoute(
         "settings");
