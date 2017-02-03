@@ -227,7 +227,7 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
           }
         });
       }
-    }
+    } // end if productFilters
 
     // Authorized content curators fo the shop get special publication of the product
     // with all relevant revisions all is one package
@@ -246,7 +246,7 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
       let newSelector = selector;
 
       // Remove hashtag filter from selector (hashtags are not applied to variants, we need to get variants)
-      if (productFilters.tags) {
+      if (productFilters && productFilters.tags) {
         newSelector = _.omit(selector, ["hashtags"]);
 
         // Re-configure selector to pick either Variants of one of the top-level products, or the top-level products in the filter
@@ -383,7 +383,7 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
     let newSelector = selector;
 
     // Remove hashtag filter from selector (hashtags are not applied to variants, we need to get variants)
-    if (productFilters.tags) {
+    if (productFilters && productFilters.tags) {
       newSelector = _.omit(selector, ["hashtags"]);
 
       // Re-configure selector to pick either Variants of one of the top-level products, or the top-level products in the filter
