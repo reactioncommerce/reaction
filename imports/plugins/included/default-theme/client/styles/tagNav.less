@@ -47,8 +47,6 @@
 .rui.tagnav .rui.tag.edit.create {
   @color: lighten(@btn-success-bg, 10%);
   @color: @brand-secondary-color;
-  // @color: #238CC3;
-  // @color: @white;
 
   input {
     // background-color: @color;
@@ -62,7 +60,7 @@
     // background-color: @color;
     // border-color: @color;
     background-color: @white;
-    color: @color;
+    color: @brand-primary-color;
   }
 }
 
@@ -95,16 +93,18 @@
   width: 270px;
   height: 100vh;
   -webkit-overflow-scrolling: touch;
-  z-index: @zindex-navbar;
+  z-index: @zindex-modal;
   box-shadow: 0 0 20px rgba(0,0,0,0.2);
+  transition: transform 250ms ease-in-out;
+  transform: translateX(-270px);
 }
 
 .rui.tagnav.fixed.open {
-  .display(flex);
+  transform: translateX(0);
 }
 
 .rui.tagnav.fixed.closed {
-  display: none;
+  transform: translateX(-270px);
 }
 
 // Tag navigation tag list
@@ -328,7 +328,7 @@
   position: absolute;
   top: @navbar-height;
   left: 0;
-  z-index: @zindex-navbar;
+  z-index: @zindex-modal;
   width: 100%;
   max-width: 100%;
   margin: 0;
@@ -364,4 +364,18 @@
   list-style-type: none;
   margin: 0;
   padding: 0;
+}
+
+.rui.tagnav-overlay.fixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: @zindex-modal-background;
+}
+
+.rui.tagnav-overlay.closed {
+  display: none;
 }

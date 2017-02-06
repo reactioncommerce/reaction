@@ -88,6 +88,10 @@ Template.tagNav.onCreated(function () {
     this.state.set(NavbarStates.Visible, !isVisible);
   };
 
+  this.closeNavbar = () => {
+    this.state.set(NavbarStates.Visible, false);
+  };
+
   this.data.onToggleMenu(this.toggleNavbarVisibility);
 
   if (this.data.name) {
@@ -318,7 +322,7 @@ Template.tagNav.events({
 
       if (hasSubTags === false) {
         // click close button to make navbar left disappear
-        $(".rui.button.btn.btn-default.close-button").trigger("click");
+        instance.closeNavbar();
       } else {
         event.preventDefault();
       }
@@ -329,6 +333,10 @@ Template.tagNav.events({
         instance.state.set("selectedTag", TagNavHelpers.tagById(tagId, tags));
       }
     }
+  },
+
+  "click [data-event-action=close-tagnav-overlay]"(event, instance) {
+    instance.closeNavbar();
   },
 
   "mouseover .navbar-item, focus .navbar-item"(event, instance) {
