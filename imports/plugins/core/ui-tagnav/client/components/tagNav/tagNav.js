@@ -133,6 +133,7 @@ Template.tagNav.onCreated(function () {
       this.state.set(NavbarStates.Orientation, NavbarOrientation.Horizontal);
       this.state.set(NavbarStates.Position, NavbarPosition.Static);
       this.state.set(NavbarStates.Anchor, NavbarAnchor.None);
+      this.state.set(NavbarStates.Visible, false);
     }
   };
 });
