@@ -1,6 +1,7 @@
 import Sortable from "sortablejs";
 import { Template } from "meteor/templating";
 import { ReactiveDict } from "meteor/reactive-dict";
+import { Reaction } from "/client/api";
 import { TagHelpers } from "/imports/plugins/core/ui-tagnav/client/helpers";
 import { IconButton } from "/imports/plugins/core/ui/client/components";
 
@@ -251,7 +252,7 @@ Template.tagNav.helpers({
   },
 
   canEdit() {
-    return Template.instance().data.editable;
+    return Template.instance().data.editable && Reaction.isPreview() === false;
   },
 
   handleMenuClose() {
