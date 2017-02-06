@@ -95,7 +95,7 @@
   -webkit-overflow-scrolling: touch;
   z-index: @zindex-modal;
   box-shadow: 0 0 20px rgba(0,0,0,0.2);
-  transition: transform 250ms ease-in-out;
+  transition: transform 250ms ease-in-out, box-shadow  250ms;
   transform: translateX(-270px);
 }
 
@@ -105,6 +105,7 @@
 
 .rui.tagnav.fixed.closed {
   transform: translateX(-270px);
+  box-shadow: 0 0 20px rgba(0,0,0,0);
 }
 
 // Tag navigation tag list
