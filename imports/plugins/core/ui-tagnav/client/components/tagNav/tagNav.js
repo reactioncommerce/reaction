@@ -195,6 +195,8 @@ Template.tagNav.helpers({
 
     return {
       component: IconButton,
+      bezelStyle: "solid",
+      primary: true,
       icon: "fa fa-pencil",
       onIcon: "fa fa-check",
       toggle: true,
@@ -306,21 +308,23 @@ Template.tagNav.helpers({
 
 
 Template.tagNav.events({
-  "click .navbar-item > .rui.tag.link"(event, instance) {
+  "click .navbar-item .rui.tag.link"(event, instance) {
     if (TagNavHelpers.isMobile()) {
       const tagId = event.target.dataset.id;
       const tags = instance.data.tags;
       const selectedTag = instance.state.get("selectedTag");
+      const hasSubTags = TagNavHelpers.hasSubTags(tagId, tags);
 
-      // click close button to make navbar left disappear
-      $(".rui.button.btn.btn-default.close-button").trigger("click");
-
-      if (selectedTag && selectedTag._id === tagId) {
-        return instance.state.set("selectedTag", null);
+      if (hasSubTags === false) {
+        // click close button to make navbar left disappear
+        $(".rui.button.btn.btn-default.close-button").trigger("click");
+      } else {
+        event.preventDefault();
       }
 
-      if (TagNavHelpers.hasSubTags(tagId, tags)) {
-        event.preventDefault();
+      if (selectedTag && selectedTag._id === tagId) {
+        instance.state.set("selectedTag", null);
+      } else if (hasSubTags) {
         instance.state.set("selectedTag", TagNavHelpers.tagById(tagId, tags));
       }
     }
