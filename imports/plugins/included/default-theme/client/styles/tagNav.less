@@ -293,12 +293,18 @@
 }
 
 .rui.tagnav.vertical .navbar-item {
+  width: 100%;
   height: auto;
 }
 
 .rui.tagnav .navbar-item .dropdown-container {
   display: none;
   color: @text-color;
+  box-shadow: 0 5px 12px -3px rgba(0,0,0,0.2);
+  border-radius: 0;
+  border: 0;
+  border-top: 1px solid @border-color;
+  border-bottom: 1px solid @border-color;
 }
 
 .rui.tagnav .navbar-item .dropdown-container a {
@@ -326,7 +332,6 @@
   width: 100%;
   max-width: 100%;
   margin: 0;
-
   background-color: @white;
 }
 
@@ -334,6 +339,12 @@
 .rui.tagnav.vertical .navbar-item .dropdown-container {
   // display: block !important;
   position: static;
+}
+
+.rui.tagnav.vertical .navbar-item.edit-button {
+  display: flex;
+  justify-content: center;
+  padding: 10px 0;
 }
 
 .nav-dropbar-content {
