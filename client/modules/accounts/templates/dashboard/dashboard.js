@@ -188,7 +188,7 @@ Template.accountsSettings.events({
    * @return {void}
    */
   "click [data-event-action=showSecret]": (event) => {
-    const button = $(event.currentTarget);
+    const button = Template.instance().$(event.currentTarget);
     const input = button.closest(".form-group").find("input[name=secret]");
 
     if (input.attr("type") === "password") {

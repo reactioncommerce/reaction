@@ -7,13 +7,13 @@ function getShippingRates(rates, cart) {
   const shops = [];
   const products = cart.items;
 
-  const { settings } = Packages.findOne({
+  const pkgData = Packages.findOne({
     name: "reaction-shippo",
     shopId: Reaction.getShopId()
   });
 
   // must have cart items and package enabled to calculate shipping
-  if (!cart.items || settings.shippo.enabled !== true) {
+  if (!pkgData || !cart.items || pkgData.settings.shippo.enabled !== true) {
     return rates;
   }
 
