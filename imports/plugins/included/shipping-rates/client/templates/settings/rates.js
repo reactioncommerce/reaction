@@ -196,7 +196,7 @@ Template.shippingRatesSettings.events({
   "click .shipping-grid-row": function (event) {
     // toggle all rows off, then add our active row
     $(".shipping-grid-row").removeClass("active");
-    $(event.currentTarget).addClass("active");
+    Template.instance().$(event.currentTarget).addClass("active");
   }
 });
 

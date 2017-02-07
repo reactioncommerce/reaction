@@ -9,13 +9,12 @@ function getShippingRates(rates, cart) {
   const shops = [];
   const products = cart.items;
 
-  const { settings } = Packages.findOne({
+  const pkgData = Packages.findOne({
     name: "reaction-shipping-rates",
     shopId: Reaction.getShopId()
   });
 
-  // must have cart items and package enabled to calculate shipping
-  if (!cart.items || settings.flatRates.enabled !== true) {
+  if (!pkgData || !cart.items || pkgData.settings.flatRates.enabled !== true) {
     return rates;
   }
 
