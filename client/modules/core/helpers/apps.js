@@ -125,11 +125,8 @@ export function Apps(optionHash) {
       reactionApps.push(registry);
     }
   });
-
-  // Sort apps by priority (registry.priority)
-  const sortedApps = reactionApps.sort((a, b) => a.priority - b.priority).slice();
-
-  return sortedApps;
+  // sort cycle to ensure order aka. is registry.priority working? .sort((a, b) => a.priority - b.priority).slice();
+  return reactionApps;
 }
 
 // Register global template helper

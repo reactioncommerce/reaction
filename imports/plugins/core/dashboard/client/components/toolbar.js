@@ -36,7 +36,7 @@ class PublishControls extends Component {
 
   onViewContextChange = (event, isChecked) => {
     if (typeof this.props.onViewContextChange === "function") {
-      this.props.onViewContextChange(event, isChecked ? "administrator" : "customer");
+      this.props.onViewContextChange(event, isChecked ? "customer" : "administrator");
     }
   }
 
@@ -65,11 +65,9 @@ class PublishControls extends Component {
   renderVisibilitySwitch() {
     return (
       <Switch
-        i18nKeyLabel="app.editMode"
-        i18nKeyOnLabel="app.editMode"
-        label={"Edit Mode"}
-        onLabel={"Edit Mode"}
-        checked={!this.props.isPreview}
+        i18nKeyLabel={"app."}
+        label={"Preview"}
+        checked={this.props.isPreview}
         onChange={this.onViewContextChange}
       />
     );
@@ -80,7 +78,7 @@ class PublishControls extends Component {
       <FlatButton
         onClick={() => {
           Reaction.showActionView({
-            i18nKeyTitle: "dashboard.coreTitle",
+            i18nKeyTite: "dashboard.coreTitle",
             title: "Dashboard",
             template: "dashboardPackages"
           });
