@@ -1,14 +1,8 @@
 
 .rui.grouptag {
   flex: 1 1 auto;
-  // max-width: 20%;
-  max-width: 200px;
-  min-width: 150px;
+  max-width: 20%;
   padding: 10px;
-
-  @media screen and (max-width: @screen-xs-max) {
-    max-width: 100%;
-  }
 }
 
 .rui.tagnav.vertical .rui.grouptag {
@@ -55,16 +49,26 @@
 .rui.grouptag > .header .rui.tag.edit.create {
   text-transform: none;
 
-  input, button {
-    background-color: @tag-group-background-color;
-    border-color: @tag-group-border-color;
-    color: @tag-group-text-color;
+  @color: lighten(@btn-success-bg, 10%);
+  @color: @brand-secondary-color;
+  // @color: #238CC3;
+
+  input {
+    background-color: @color;
+    border-color: @color;
+    color: @white;
+  }
+
+  button {
+    background-color: @color;
+    border-color: @color;
+    color: @white;
   }
 }
 
 .rui.grouptag > .header .rui.tag.edit input,
 .rui.grouptag > .header .rui.tag.edit.create input {
-  .placeholder(@tag-group-text-color);
+  .placeholder(@white);
 }
 
 .rui.grouptag > .content .rui.tag.link {

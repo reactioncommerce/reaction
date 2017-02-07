@@ -32,7 +32,7 @@ Reaction.registerPackage({
       permission: "createProduct"
     }],
     audience: [
-      "owner","admin","seller"
+      "owner", "admin", "seller"
     ]
   }, {
     route: "/dashboard/pdf/orders/:id",

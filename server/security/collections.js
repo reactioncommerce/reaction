@@ -33,7 +33,6 @@ const {
  */
 
 export default function () {
-
   /*
    * Define some additional rule chain methods
    */
