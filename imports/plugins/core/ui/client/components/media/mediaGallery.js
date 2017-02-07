@@ -42,7 +42,7 @@ class MediaGallery extends Component {
     return null;
   }
 
-  renderMedia() {
+  renderFeaturedMedia() {
     if (this.hasMedia) {
       return this.props.media.map((media, index) => {
         if (index === 0 && this.allowFeaturedMediaHover) {
@@ -54,14 +54,23 @@ class MediaGallery extends Component {
               revision={this.featuredMedia.revision}
               metadata={this.featuredMedia.metadata}
               onMouseEnter={this.props.onMouseEnterMedia}
-              onMouseLeave={this.props.onMouseLeaveMedia}
               onMove={this.props.onMoveMedia}
               onRemoveMedia={this.props.onRemoveMedia}
               source={this.featuredMedia}
             />
           );
         }
+      });
+    }
 
+    return (
+      <MediaItem />
+    );
+  }
+
+  renderMediaThumbnails() {
+    if (this.hasMedia) {
+      return this.props.media.map((media, index) => {
         return (
           <MediaItem
             editable={this.props.editable}
@@ -70,7 +79,6 @@ class MediaGallery extends Component {
             revision={media.revision}
             metadata={media.metadata}
             onMouseEnter={this.props.onMouseEnterMedia}
-            onMouseLeave={this.props.onMouseLeaveMedia}
             onMove={this.props.onMoveMedia}
             onRemoveMedia={this.props.onRemoveMedia}
             source={media}
@@ -89,7 +97,8 @@ class MediaGallery extends Component {
 
     // Only render media only if there is any
     if (this.hasMedia) {
-      gallery = this.renderMedia();
+      featured = this.renderFeaturedMedia();
+      gallery = this.renderMediaThumbnails();
     }
 
     return (
@@ -102,8 +111,11 @@ class MediaGallery extends Component {
           ref="dropzone"
         >
           <div className="gallery">
-            {gallery}
-            {this.renderAddItem()}
+            {featured}
+            <div className="rui gallery-thumbnails">
+              {gallery}
+              {this.renderAddItem()}
+            </div>
           </div>
         </Dropzone>
       </div>
@@ -114,7 +126,10 @@ class MediaGallery extends Component {
     return (
       <div className="rui media-gallery">
         <div className="gallery">
-          {this.renderMedia()}
+          {this.renderFeaturedMedia()}
+          <div className="rui gallery-thumbnails">
+            {this.renderMediaThumbnails()}
+          </div>
         </div>
       </div>
     );
