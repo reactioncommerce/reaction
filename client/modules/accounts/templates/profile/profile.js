@@ -67,7 +67,7 @@ Template.accountProfile.helpers({
     return "addressBookAdd";
   },
 
-  isMarketplaceGuest: function() {
+  isMarketplaceGuest: function () {
     return Marketplace.hasMarketplaceGuestAccess();
   }
 });
