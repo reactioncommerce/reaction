@@ -97,10 +97,13 @@ taxCalc.validateAddress = function (address) {
   const addressToValidate  = {
     line1: address.address1,
     city: address.city,
-    region: address.region,
     postalCode: address.postal,
     country: address.country
   };
+
+  if (address.country === "US") {
+    addressToValidate.region = address.region;
+  }
   if (address.line2) {
     addressToValidate.line2 = address.address2;
   }
@@ -108,17 +111,19 @@ taxCalc.validateAddress = function (address) {
   const baseUrl = getUrl();
   const requestUrl = `${baseUrl}/addresses/resolve`;
   const result = HTTP.post(requestUrl, { data: addressToValidate, auth: auth });
-  if (result && result.data && result.data.address) {
+  if (result && result.data && result.data.validatedAddresses.length !== 0) {
+    const resultAddress = result.data.validatedAddresses[0];
     const validatedAddress = {
-      address1: result.data.address.line1,
-      city: result.data.address.city,
-      region: result.data.address.region,
-      postal: result.data.address.postalCode,
-      country: result.data.address.country
+      address1: resultAddress.line1,
+      city: resultAddress.city,
+      region: resultAddress.region,
+      postal: resultAddress.postalCode,
+      country: resultAddress.country
     };
     if (result.data.address.line2) {
-      validatedAddress.addresss2 = result.data.address.line2;
+      validatedAddress.addresss2 = resultAddress.line2;
     }
+    console.log("validatedAddress from Avalara");
     return validatedAddress;
   }
   return undefined;

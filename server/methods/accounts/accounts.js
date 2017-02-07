@@ -34,6 +34,40 @@ function getValidator() {
   return `${geoCoderName}/geocoder/geocode`;
 }
 
+
+function compareAddress(address, validationAddress) {
+  console.log("address", address);
+  console.log("validationAddress", validationAddress);
+  const errors = [];
+  if (_.upperCase(address.address1) !== _.upperCase(validationAddress)) {
+    errors.push({ address1: `Address line 1 did not match.
+    Original: ${_.upperCase(address.address1)} / Validated: ${_.upperCase(validationAddress.address1)}` });
+  }
+
+  if (address.address2 && (_.upperCase(address.address2) !== _.upperCase(validationAddress.address2))) {
+    errors.push({ address2: "Address line 2 did not match" });
+  }
+
+  if (_.trim(_.upperCase(address.city)) !== _.trim(_.upperCase(validationAddress.city))) {
+    errors.push({ city: `City did not match:
+    Original: ${_.upperCase(address.city)} / Validated: ${_.upperCase(validationAddress.city)}` });
+  }
+
+  if (_.trim(_.upperCase(address.postal)) !== _.trim(_.upperCase(validationAddress.postal))) {
+    errors.push({ postal: `Postal Code did not match.
+    Original: ${_.upperCase(address.postal)} / Validated: ${_.upperCase(validationAddress.postal)}` });
+  }
+
+  if (_.trim(_.upperCase(address.region)) !== _.trim(_.upperCase(validationAddress.region))) {
+    errors.push({ region: "Region did not match" });
+  }
+
+  if (_.upperCase(address.country) !== _.upperCase(validationAddress.country)) {
+    errors.push({ country: "Country did not match" });
+  }
+  return errors;
+}
+
 /**
  * @summary Validates an address, and if fails returns details of issues
  * @param {Object} address - The address object to validate
@@ -41,21 +75,18 @@ function getValidator() {
  */
 function validateAddress(address) {
   check(address, Object);
-  const errors = [];
-  const errorFields = [];
-  const errorTypes = [];
   let validated = true;
 
   Schemas.Address.clean(address);
   const validator = getValidator();
   const validatedAddress = Meteor.call(validator, address);
-  if (validatedAddress === address) {
+  const validationErrors = compareAddress(address, validatedAddress);
+  if (validationErrors) {
     validated = false;
-    errors.push("Failed Geocoding check");
-    errorFields.push("city", "region", "postal", "address1", "address2");
-    errorTypes.push("geocode");
+    console.log("validationErrors", validationErrors);
+
   }
-  const validationResults = { validated, errors, errorFields, errorTypes };
+  const validationResults = { validated, errors: validationErrors };
   return validationResults;
 }
 
