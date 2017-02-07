@@ -98,6 +98,11 @@ class MediaGalleryContainer extends Component {
   }
 
   get allowFeaturedMediaHover() {
+    // if (this.state.featuredMedia) {
+    //   return true;
+    // }
+
+    // Always return true, as we no longer use featured as the #1 spot, it's a separate image
     return true;
   }
 
