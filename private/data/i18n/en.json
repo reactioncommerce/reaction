@@ -134,7 +134,9 @@
         "shopOptionsSettingsSaved": "Shop options saved.",
         "shopOptionsSettingsFailed": "Shop options update failed.",
         "shopPaymentMethodsSaved": "Shop Payment Methods settings saved.",
-        "shopPaymentMethodsFailed": "Shop Payment Methods settings update failed."
+        "shopPaymentMethodsFailed": "Shop Payment Methods settings update failed.",
+        "shopBrandAssetsSaved": "Updated brand asset",
+        "shopBrandAssetsFailed": "Couldn't update brand asset"
       },
       "notifications": {
         "body": {
@@ -642,13 +644,6 @@
           "orderDate": "Date",
           "orderTotal": "Total"
         }
-      },
-      "marketplace": {
-        "becomeSeller": "Become a seller",
-        "errorCannotCreateShop": "Could not create shop for current user {{user}}",
-        "yourShopIsReady": "Your shop is now ready!",
-        "dashboardSettingsSaved": "Marketplace settings saved successfully!",
-        "dashboardSettingsFailed": "Failed to save Marketplace settings"
       },
       "accountsUI": {
         "members": "Members",
