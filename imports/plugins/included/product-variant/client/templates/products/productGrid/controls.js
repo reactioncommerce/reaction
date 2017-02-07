@@ -8,12 +8,10 @@ Template.gridControls.onCreated(function () {
   this.state = new ReactiveDict();
 
   this.autorun(() => {
-    if (this.data.product) {
-      const selectedProducts = Session.get("productGrid/selectedProducts");
-      const isSelected = _.isArray(selectedProducts) ? selectedProducts.indexOf(this.data.product._id) >= 0 : false;
+    const selectedProducts = Session.get("productGrid/selectedProducts");
+    const isSelected = _.isArray(selectedProducts) ? selectedProducts.indexOf(this.data.product._id) >= 0 : false;
 
-      this.state.set("isSelected", isSelected);
-    }
+    this.state.set("isSelected", isSelected);
   });
 });
 
@@ -75,19 +73,5 @@ Template.gridControls.helpers({
 
   checked: function () {
     return Template.instance().state.equals("isSelected", true);
-  },
-
-  isVisible() {
-    const currentData = Template.currentData();
-    return currentData && currentData.product && currentData.product.isVisible;
-  },
-
-  VisibilityButton() {
-    return {
-      component: IconButton,
-      icon: "",
-      onIcon: "",
-      status: "info"
-    };
   }
 });

@@ -1,9 +1,8 @@
 import Sortable from "sortablejs";
 import { Template } from "meteor/templating";
 import { ReactiveDict } from "meteor/reactive-dict";
-import { Reaction } from "/client/api";
 import { TagHelpers } from "/imports/plugins/core/ui-tagnav/client/helpers";
-import { IconButton, Overlay } from "/imports/plugins/core/ui/client/components";
+import { IconButton } from "/imports/plugins/core/ui/client/components";
 
 const NavbarStates = {
   Orientation: "stateNavbarOrientation",
@@ -88,10 +87,6 @@ Template.tagNav.onCreated(function () {
     this.state.set(NavbarStates.Visible, !isVisible);
   };
 
-  this.closeNavbar = () => {
-    this.state.set(NavbarStates.Visible, false);
-  };
-
   this.data.onToggleMenu(this.toggleNavbarVisibility);
 
   if (this.data.name) {
@@ -133,7 +128,6 @@ Template.tagNav.onCreated(function () {
       this.state.set(NavbarStates.Orientation, NavbarOrientation.Horizontal);
       this.state.set(NavbarStates.Position, NavbarPosition.Static);
       this.state.set(NavbarStates.Anchor, NavbarAnchor.None);
-      this.state.set(NavbarStates.Visible, false);
     }
   };
 });
@@ -201,27 +195,12 @@ Template.tagNav.helpers({
 
     return {
       component: IconButton,
-      bezelStyle: "solid",
-      primary: true,
       icon: "fa fa-pencil",
       onIcon: "fa fa-check",
       toggle: true,
       toggleOn: isEditing,
       onClick() {
         state.set("isEditing", !isEditing);
-      }
-    };
-  },
-
-  OverlayComponent() {
-    const instance = Template.instance();
-    const isVisible = instance.state.get(NavbarStates.Visible);
-
-    return {
-      component: Overlay,
-      isVisible,
-      onClick() {
-        instance.closeNavbar();
       }
     };
   },
@@ -270,7 +249,7 @@ Template.tagNav.helpers({
   },
 
   canEdit() {
-    return Template.instance().data.editable && Reaction.isPreview() === false;
+    return Template.instance().data.editable;
   },
 
   handleMenuClose() {
@@ -327,30 +306,24 @@ Template.tagNav.helpers({
 
 
 Template.tagNav.events({
-  "click .navbar-item .rui.tag.link"(event, instance) {
+  "click .navbar-item > .rui.tag.link"(event, instance) {
     if (TagNavHelpers.isMobile()) {
       const tagId = event.target.dataset.id;
       const tags = instance.data.tags;
       const selectedTag = instance.state.get("selectedTag");
-      const hasSubTags = TagNavHelpers.hasSubTags(tagId, tags);
 
-      if (hasSubTags === false) {
-        // click close button to make navbar left disappear
-        instance.closeNavbar();
-      } else {
-        event.preventDefault();
-      }
+      // click close button to make navbar left disappear
+      $(".rui.button.btn.btn-default.close-button").trigger("click");
 
       if (selectedTag && selectedTag._id === tagId) {
-        instance.state.set("selectedTag", null);
-      } else if (hasSubTags) {
+        return instance.state.set("selectedTag", null);
+      }
+
+      if (TagNavHelpers.hasSubTags(tagId, tags)) {
+        event.preventDefault();
         instance.state.set("selectedTag", TagNavHelpers.tagById(tagId, tags));
       }
     }
-  },
-
-  "click [data-event-action=close-tagnav-overlay]"(event, instance) {
-    instance.closeNavbar();
   },
 
   "mouseover .navbar-item, focus .navbar-item"(event, instance) {

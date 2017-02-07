@@ -8,7 +8,6 @@
         status="default"
         onClick=handleMenuClose
       }}
-      {{> coreNavigationBrand}}
     </div>
     <div class="navbar-items">
       {{#each tag in tags}}
@@ -26,11 +25,10 @@
         </div>
       {{/if}}
       {{#if canEdit}}
-        <div class="navbar-item edit-button">
+        <div class="navbar-item">
           {{> React EditButton }}
         </div>
       {{/if}}
     </div>
   </div>
-  <div>{{> React OverlayComponent}}</div>
 </template>
