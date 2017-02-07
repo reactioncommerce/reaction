@@ -1,10 +1,12 @@
 import React, { Component, PropTypes } from "react";
 import classnames from "classnames";
 import Blaze from "meteor/gadicc:blaze-react-component";
+
 import {
   IconButton,
   FlatButton,
-  Translation
+  Translation,
+  Overlay
 } from "/imports/plugins/core/ui/client/components";
 import { Admin } from "/imports/plugins/core/ui/client/providers";
 import Radium from "radium";
@@ -21,7 +23,7 @@ const getStyles = (props) => {
   }
 
   if (props.actionViewIsOpen === false) {
-    viewSize = 0;
+    viewSize = 400;
   }
 
   return {
@@ -31,9 +33,10 @@ const getStyles = (props) => {
       "height": "100vh",
       "position": "relative",
       "width": viewSize,
-      "@media only screen and (max-width: 949px)": {
-        width: "100vw"
-      },
+      minWidth: 400,
+      // "@media only screen and (max-width: 949px)": {
+      //   width: "100vw"
+      // },
       "boxShadow": isBigView ? "0 0 40px rgba(0,0,0,.1)" : "",
       "flex": "0 0 auto",
       "backgroundColor": "white",
@@ -42,7 +45,7 @@ const getStyles = (props) => {
       "overflow": "hidden",
       "transition": "width 300ms cubic-bezier(0.455, 0.03, 0.515, 0.955))",
       // boxShadow: "0 0 40px rgba(0,0,0,.1)",
-      "zIndex": 100
+      "zIndex": 1050
 
       // @media screen and (max-width: @screen-xs-max) {
       //   transition: top 400ms cubic-bezier(0.645, 0.045, 0.355, 1);
@@ -61,15 +64,14 @@ const getStyles = (props) => {
       alignItems: "center",
       position: "relative",
       height: "56px",
-      padding: "0 20px",
-      margin: 0
+      padding: "0 20px"
     },
     heading: {
       display: "flex",
       alignItems: "center",
       flex: "1 1 auto",
       position: "relative",
-      margin: 0,
+      margin: "0 0 0 1rem",
       height: "100%"
     },
     body: {
@@ -107,18 +109,8 @@ const getStyles = (props) => {
       flex: "1 1 auto",
       overflow: "auto"
     },
-    title: {
-      margin: 0,
-      transition: "200ms all"
-    },
-    titleWithBackButton: {
-      paddingLeft: 40
-    },
     backButton: {
-      height: "100%",
-      position: "absolute",
-      top: 0,
-      zIndex: 1
+      height: "100%"
     },
     backButtonContainers: {
       display: "flex",
@@ -133,7 +125,20 @@ class ActionView extends Component {
     actionView: PropTypes.object,
     actionViewIsOpen: PropTypes.bool,
     buttons: PropTypes.array,
+    handleActionViewBack: PropTypes.func,
+    handleActionViewClose: PropTypes.func,
     isActionViewAtRootView: PropTypes.bool
+  }
+
+  state = {
+    enterAnimation: {
+      animation: { translateX: 0 },
+      duration: 200
+    },
+    leaveAnimation: {
+      animation: { translateX: 400 },
+      duration: 200
+    }
   }
 
   renderControlComponent() {
@@ -175,19 +180,33 @@ class ActionView extends Component {
   }
 
   renderBackButton() {
+    let button;
+
     if (this.props.isActionViewAtRootView === false) {
-      return (
-        <div style={this.styles.backButton}>
-          <div style={this.styles.backButtonContainers}>
-            <IconButton
-              bezelStyle={"flat"}
-              icon="fa fa-arrow-left"
-              onClick={this.props.handleActionViewBack}
-            />
-          </div>
-        </div>
+      button = (
+        <IconButton
+          bezelStyle={"flat"}
+          icon="fa fa-arrow-left"
+          onClick={this.props.handleActionViewBack}
+        />
+      );
+    } else {
+      button = (
+        <IconButton
+          bezelStyle={"flat"}
+          icon="fa fa-times"
+          onClick={this.props.handleActionViewClose}
+        />
       );
     }
+
+    return (
+      <div style={this.styles.backButton}>
+        <div style={this.styles.backButtonContainers}>
+          {button}
+        </div>
+      </div>
+    )
   }
 
   renderDetailViewBackButton() {
@@ -249,21 +268,9 @@ class ActionView extends Component {
     return (
       <div style={this.styles.masterViewPanel}>
         <div style={this.styles.header} className="header">
-          <VelocityTransitionGroup
-            enter={this.backButtonEnterAnimation}
-            leave={this.backButtonLeaveAnimaton}
-          >
-            {this.renderBackButton()}
-          </VelocityTransitionGroup>
-
-          <div style={this.styles.heading} className="nav-settings-heading--">
-            <h3
-              className="nav-settings-title--"
-              style={[
-                this.styles.title,
-                !this.props.isActionViewAtRootView ? this.styles.titleWithBackButton : {}
-              ]}
-            >
+          {this.renderBackButton()}
+          <div style={this.styles.heading} className="heading">
+            <h3 className="title" style={this.styles.title}>
               <Translation
                 defaultValue={actionView.label || "Dashboard"}
                 i18nKey={actionView.i18nKeyLabel || "dashboard.coreTitle"}
@@ -271,12 +278,8 @@ class ActionView extends Component {
             </h3>
           </div>
 
-          <div className="nav-settings-controls--">
-            <IconButton
-              bezelStyle={"flat"}
-              icon="fa fa-times"
-              onClick={this.props.handleActionViewClose}
-            />
+          <div className="controls»">
+            {/* Controls */}
           </div>
         </div>
         <div style={this.styles.body} className="admin-controls-content action-view-body">
@@ -310,14 +313,8 @@ class ActionView extends Component {
               {this.renderDetailViewBackButton()}
             </VelocityTransitionGroup>
 
-            <div style={this.styles.heading} className="nav-settings-heading--">
-              <h3
-                className="nav-settings-title--"
-                style={[
-                  this.styles.title,
-                  !this.props.isDetailViewAtRootView ? this.styles.titleWithBackButton : {}
-                ]}
-              >
+            <div style={this.styles.heading} className="heading">
+              <h3 className="title" style={this.styles.title}>
                 <Translation
                   defaultValue={actionView.label}
                   i18nKey={actionView.i18nKeyLabel}
@@ -325,7 +322,7 @@ class ActionView extends Component {
               </h3>
             </div>
 
-            <div className="nav-settings-controls--">
+            <div className="controls">
               {/* Controls */}
             </div>
           </div>
@@ -340,30 +337,48 @@ class ActionView extends Component {
     }
   }
 
-  render() {
+  renderActionView() {
     const { actionView } = this.props;
     const baseClassName = classnames({
       "rui": true,
       "admin": true,
       "action-view-pane": true,
-      "action-view": true
-      // "show-settings": this.props.actionViewIsOpen
+      "action-view": true,
+      "open": this.props.actionViewIsOpen
     });
 
+    if (this.props.actionViewIsOpen) {
+      return (
+        <div style={this.styles.base} className={baseClassName}>
 
-    return (
-      <div style={this.styles.base} className={baseClassName}>
-
-        {this.renderMasterView()}
-        {this.renderDetailView()}
+          {this.renderMasterView()}
+          {this.renderDetailView()}
 
 
-        <div className="admin-controls-footer">
-          <div className="admin-controls-container">
-            {this.renderFooter()}
+          <div className="admin-controls-footer">
+            <div className="admin-controls-container">
+              {this.renderFooter()}
+            </div>
           </div>
         </div>
+      );
+    }
+  }
 
+  render() {
+    return (
+      <div>
+        <VelocityTransitionGroup
+          enter={this.state.enterAnimation}
+          leave={this.state.leaveAnimation}
+        >
+          {this.renderActionView()}
+        </VelocityTransitionGroup>
+
+        <Overlay
+          isVisible={this.props.actionViewIsOpen}
+          onClick={this.props.handleActionViewClose}
+        />
       </div>
     );
   }
