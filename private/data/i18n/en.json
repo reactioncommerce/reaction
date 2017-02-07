@@ -56,7 +56,9 @@
       },
       "app": {
         "add": "Add",
-        "editMode": "Edit mode",
+        "editMode": "Edit Mode",
+        "administratorView": "Administrator View",
+        "customerView": "Customer View",
         "createContent": "Create Content",
         "auto": "Auto",
         "save": "Save",
