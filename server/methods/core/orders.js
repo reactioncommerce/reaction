@@ -8,7 +8,7 @@ import { check } from "meteor/check";
 import { getSlug } from "/lib/api";
 import { Cart, Media, Orders, Products, Shops } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
-import { Logger, Reaction } from "/server/api";
+import { Logger, Hooks, Reaction } from "/server/api";
 
 
 // helper to return the order credit object
@@ -238,6 +238,7 @@ export const methods = {
     });
 
     // TODO: In the future, this could be handled by shipping delivery status
+    Hooks.Events.run("onOrderShipmentShipped", order, itemIds);
     const workflowResult = Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/shipped", order, itemIds);
 
     if (workflowResult === 1) {
@@ -293,7 +294,7 @@ export const methods = {
     if (order.email) {
       Meteor.call("orders/sendNotification", order, (err) => {
         if (err) {
-          Logger.error(err, "orders/shipmentShipped: Failed to send notification");
+          Logger.error(err, "orders/shipmentDelivered: Failed to send notification");
         }
       });
     } else {
@@ -321,6 +322,7 @@ export const methods = {
     });
 
     if (isCompleted === true) {
+      Hooks.Events.run("onOrderShipmentDelivered", order._id);
       Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "completed", order);
       return true;
     }
@@ -467,6 +469,8 @@ export const methods = {
         orderDate: moment(order.createdAt).format("MM/DD/YYYY"),
         orderUrl: getSlug(shop.name) + "/cart/completed?_id=" + order.cartId,
         shipping: {
+          tracking: order.shipping[0].tracking,
+          carrier: order.shipping[0].shipmentMethod.carrier,
           address: {
             address: order.shipping[0].address.address1,
             city: order.shipping[0].address.city,
@@ -842,12 +846,9 @@ export const methods = {
               }
             });
 
-            // Temporarily(?) put here the Shippo's method/label purchasing.After a succesfull capture fund
-            if (order.shipping[0].shipmentMethod.shippoMethod) {
-              Meteor.call("shippo/confirmShippingMethodForOrder", orderId);
-            }
-
-
+            // event onOrderPaymentCaptured used for confirmation hooks
+            // ie: confirmShippingMethodForOrder is triggered here
+            Hooks.Events.run("onOrderPaymentCaptured", orderId);
           } else {
             if (result && result.error) {
               Logger.fatal("Failed to capture transaction.", order, paymentMethod.transactionId, result.error);
@@ -944,6 +945,7 @@ export const methods = {
       throw new Meteor.Error("Attempt to refund transaction failed", result.error);
     }
 
+    Hooks.Events.run("onOrderRefundCreated", orderId);
     // Send email to notify cuustomer of a refund
     Meteor.call("orders/sendNotification", order, "refunded");
   }

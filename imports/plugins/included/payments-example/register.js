@@ -10,10 +10,10 @@ Reaction.registerPackage({
     "mode": false,
     "apiKey": "",
     "example": {
-      enabled: true
+      enabled: false
     },
     "example-paymentmethod": {
-      enabled: true
+      enabled: false
     }
   },
   registry: [

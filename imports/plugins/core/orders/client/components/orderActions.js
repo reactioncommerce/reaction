@@ -6,12 +6,12 @@ const styles = {
     display: "flex"
   },
   item: {
-    display: "flex",
-    flex: "1 1 auto",
-    height: 100,
-    justifyContent: "center",
-    alignItems: "center",
-    cursor: "pointer",
+    "display": "flex",
+    "flex": "1 1 auto",
+    "height": 100,
+    "justifyContent": "center",
+    "alignItems": "center",
+    "cursor": "pointer",
     ":hover": {
 
     }

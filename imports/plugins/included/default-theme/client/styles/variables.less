@@ -36,8 +36,11 @@
 
 // Brand
 @brand-primary-color: @reaction-brand;
+@brand-primary-dark: #23566D;
+@brand-primary-bg-light: #e4e9ec;
+@brand-primary-border-color: #afbac1;
 
-@brand-secondary-color: #ff00ff; //lighten(@brand-primary-color, 20); // old @brand-secondary-color: #4aa5bd;
+@brand-secondary-color: @brand-primary-dark; //lighten(@brand-primary-color, 20); // old @brand-secondary-color: #4aa5bd;
 @brand-accent-color: #94E8D1; //lighten(@brand-primary-color, 37); // old @brand-accent-color: #abe2e7;
 @brand-vivid-color: #1AEFCC; //lighten(@brand-primary-color, 20); // old @brand-vivid-color: #00dcdd;
 
@@ -49,6 +52,7 @@
 @brand-info-color:            #5bc0de;
 @brand-warning-color:         #EFC95F;
 @brand-danger-color:          #EB4D5C;
+
 
 //== Bootstrap colors
 //
@@ -62,11 +66,17 @@
 @gray-lighter:           lighten(@gray-base, 93.5%); // #eee
 @gray-lightest:          lighten(@gray-base, 96%); // #f6f6f6
 
-@brand-primary:         @black60;
+// Background Colors
+// @brand-primary:         @black60;
+@brand-primary:         darken(#b7c7d0, 10%);
 @brand-success:         @brand-success-color;
 @brand-info:            @brand-info-color;
 @brand-warning:         @brand-warning-color;
 @brand-danger:          @brand-danger-color;
+@brand-default:         #b7c7d0;
+@brand-cta:             #34D891;
+
+@state-default-text:   #505558;
 
 @state-success-text:             #3c763d;
 @state-success-bg:               @gray-lighter;
@@ -108,7 +118,7 @@
 
 
 //** Global textual link color.
-@link-color:            @brand-primary;
+@link-color:            @brand-primary-dark;
 //** Link hover color set via `darken()` function.
 @link-hover-color:      darken(@link-color, 15%);
 //** Link hover decoration.
@@ -220,41 +230,150 @@
 //## For each of Bootstrap's buttons, define text, background and border color.
 
 @btn-font-weight:                normal;
+@btn-border-width:               1px;
 
-@btn-default-color:              #333;
+// Solid Button Colors
+@btn-default-color:              @state-default-text;
 @btn-default-bg:                 #fff;
-@btn-default-border:             #ccc;
+@btn-default-border:             @brand-default;
 
 @btn-primary-color:              #fff;
 @btn-primary-bg:                 @brand-primary;
-@btn-primary-border:             darken(@btn-primary-bg, 5%);
+@btn-primary-border:             @btn-primary-bg;
 
 @btn-success-color:              #fff;
 @btn-success-bg:                 @brand-success;
-@btn-success-border:             darken(@btn-success-bg, 5%);
+@btn-success-border:             @btn-success-bg;
 
 @btn-info-color:                 #fff;
 @btn-info-bg:                    @brand-info;
-@btn-info-border:                darken(@btn-info-bg, 5%);
+@btn-info-border:                @btn-info-bg;
 
 @btn-warning-color:              #fff;
 @btn-warning-bg:                 @brand-warning;
-@btn-warning-border:             darken(@btn-warning-bg, 5%);
+@btn-warning-border:             @btn-warning-bg;
 
 @btn-danger-color:               #fff;
 @btn-danger-bg:                  @brand-danger;
-@btn-danger-border:              darken(@btn-danger-bg, 5%);
+@btn-danger-border:              @btn-danger-bg;
+
+@btn-cta-color:               #fff;
+@btn-cta-bg:                  @brand-cta;
+@btn-cta-border:              @btn-cta-bg;
+
+// Flat
+@btn-flat-border-width:               3px;
+@btn-flat-border-radius:              2px;
+
+@btn-flat-default-color:              @btn-default-color;
+@btn-flat-default-bg:                 transparent;
+@btn-flat-default-border:             transparent;
+
+@btn-flat-primary-color:              @brand-primary;
+@btn-flat-primary-bg:                 transparent;
+@btn-flat-primary-border:             transparent;
+
+@btn-flat-success-color:              @brand-success;
+@btn-flat-success-bg:                 transparent;
+@btn-flat-success-border:             transparent;
+
+@btn-flat-info-color:                 @brand-info;
+@btn-flat-info-bg:                    transparent;
+@btn-flat-info-border:                transparent;
+
+@btn-flat-warning-color:              @brand-warning;
+@btn-flat-warning-bg:                 transparent;
+@btn-flat-warning-border:             transparent;
+
+@btn-flat-danger-color:               @brand-danger;
+@btn-flat-danger-bg:                  transparent;
+@btn-flat-danger-border:              transparent;
+
+@btn-flat-cta-color:                  @brand-cta;
+@btn-flat-cta-bg:                     transparent;
+@btn-flat-cta-border:                 transparent;
+
+
+// Outline only button colors
+@btn-outline-border-width:               3px;
+@btn-outline-border-radius:              0;
+
+@btn-outline-default-color:              @btn-default-color;
+@btn-outline-default-bg:                 #fff;
+@btn-outline-default-border:             @btn-default-border;
+
+@btn-outline-primary-color:              @brand-primary;
+@btn-outline-primary-bg:                 transparent;
+@btn-outline-primary-border:             @btn-primary-bg;
+
+@btn-outline-success-color:              @brand-success;
+@btn-outline-success-bg:                 transparent;
+@btn-outline-success-border:             @btn-success-bg;
+
+@btn-outline-info-color:                 @brand-info;
+@btn-outline-info-bg:                    transparent;
+@btn-outline-info-border:                @btn-info-bg;
+
+@btn-outline-warning-color:              @brand-warning;
+@btn-outline-warning-bg:                 transparent;
+@btn-outline-warning-border:             @btn-warning-bg;
+
+@btn-outline-danger-color:               @brand-danger;
+@btn-outline-danger-bg:                  transparent;
+@btn-outline-danger-border:              @btn-danger-bg;
+
+@btn-outline-cta-color:                  @brand-cta;
+@btn-outline-cta-bg:                     transparent;
+@btn-outline-cta-border:                 @btn-cta-bg;
+
+
+// Icon Button
+@btn-icon-size:                       24px;
+@btn-icon-only-size:                  24px;
+@btn-icon-only-border-width:          2px;
+@btn-icon-only-border-radius:         @btn-icon-size / 2;
+@btn-icon-only-outline-bg:            #fff;
+
+@btn-icon-only-default-color:              @btn-default-color;
+@btn-icon-only-default-bg:                 @btn-default-bg;
+@btn-icon-only-default-border:             @btn-default-bg;
+
+@btn-icon-only-primary-color:              #fff;
+@btn-icon-only-primary-bg:                 @btn-primary-bg;
+@btn-icon-only-primary-border:             @btn-primary-bg;
+
+@btn-icon-only-success-color:              #fff;
+@btn-icon-only-success-bg:                 @btn-success-bg;
+@btn-icon-only-success-border:             @btn-success-bg;
+
+@btn-icon-only-info-color:                 #fff;
+@btn-icon-only-info-bg:                    @btn-info-bg;
+@btn-icon-only-info-border:                @btn-info-bg;
+
+@btn-icon-only-warning-color:              #fff;
+@btn-icon-only-warning-bg:                 @btn-warning-bg;
+@btn-icon-only-warning-border:             @btn-warning-bg;
+
+@btn-icon-only-danger-color:               #fff;
+@btn-icon-only-danger-bg:                  @btn-danger-bg;
+@btn-icon-only-danger-border:              @btn-danger-bg;
+
+@btn-icon-only-cta-color:                  #fff;
+@btn-icon-only-cta-bg:                     @btn-cta-bg;
+@btn-icon-only-cta-border:                 @btn-cta-bg;
+
+
 
 @btn-link-disabled-color:        @gray-light;
 
 @btn-info-edit-color: @text-color;
-@btn-edit-color: @gray-darker;
-@btn-edit-bg: @black20;
+
+@btn-icon-color: @gray-darker;
+@btn-icon-bg: @black20;
 
 @btn-active-color: darken(@brand-accent-color, 50%);
 @btn-active-bg: @brand-accent-color;
 
-@btn-icon-size: 24px;
 
 // Allows for customizing button radius independently from global border radius
 @btn-border-radius-base:         @border-radius-base;
@@ -1013,6 +1132,12 @@
 @navbar-secondary-border: 1px solid @black10;
 
 
+// == Tag Groups
+@tag-group-text-color: @brand-primary-dark;
+@tag-group-border-color: @brand-primary-border-color;
+@tag-group-background-color: @brand-primary-bg-light;
+
+
 //== Dashboard navbar
 @navbar-dashboard-bg: @white;
 @navbar-dashboard-color: @black;
@@ -1069,12 +1194,12 @@
 @cart-icon-padding:  (@navbar-padding-vertical - 4px) 30px (@navbar-padding-vertical - 4px) 24px;
 
 @cart-progress-active: #57aed1; //lighten(@brand-vivid-color, 8); // TODO: @cart-progress-active is used nowhere
-@cart-progress-visited: @brand-vivid-color;
+@cart-progress-visited: @brand-primary-dark;
 @cart-progress-next: @brand-light-color;
 
-@checkout-progress-visited: @brand-vivid-color;
+@checkout-progress-visited: @brand-primary-dark;
 @checkout-progress-visited-text: @white;
-@checkout-progress-active: @brand-vivid-color;
+@checkout-progress-active: @brand-primary-dark;
 @checkout-progress-active-text: @white;
 @checkout-progress-next: @brand-light-color;
 @checkout-progress-next-text: @brand-dark-color;

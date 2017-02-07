@@ -1,19 +1,12 @@
 <template name="productSettings">
   {{#if hasSelectedProducts}}
-  <div class="panel-group variant-edit-form">
-    <div class="panel panel-default variant-form">
-      <div class="panel-body">
-        {{> React PublishContainerComponent}}
-      </div>
-    </div>
-  </div>
   <div class="panel panel-default">
     <div class="panel-heading panel-heading-flex">
       <div class="panel-title" data-i18n="gridSettingsPanel.selected">Selected</div>
       <div class="panel-controls">
         <button
           type="button"
-          class="btn btn-default"
+          class="rui btn btn-default flat"
           data-toggle="tooltip"
           title="{{i18n 'productDetailEdit.publish' 'Publish'}}"
           data-original-title="{{i18n 'productDetailEdit.publish' 'Publish'}}"
@@ -28,7 +21,7 @@
 
         <button
           type="button"
-          class="btn btn-default"
+          class="rui btn btn-default flat"
           data-toggle="tooltip"
           title="{{i18n 'productDetailEdit.duplicateProduct' 'Duplicate Product'}}"
           data-original-title="{{i18n 'productDetailEdit.duplicateProduct' 'Duplicate Product'}}"
@@ -39,7 +32,7 @@
 
         <button
           type="button"
-          class="delete-product2 btn btn-danger"
+          class="rui delete-product2 btn btn-danger flat"
           data-toggle="tooltip"
           title="{{i18n 'productDetailEdit.deleteProduct' 'Delete Product'}}"
           data-original-title="{{i18n 'productDetailEdit.deleteProduct' 'Delete Product'}}"

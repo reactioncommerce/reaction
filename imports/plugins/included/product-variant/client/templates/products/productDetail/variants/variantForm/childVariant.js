@@ -102,8 +102,8 @@ Template.childVariantForm.events({
   },
   "change .child-variant-input": function (event, template) {
     const variant = template.data;
-    const value = $(event.currentTarget).val();
-    const field = $(event.currentTarget).attr("name");
+    const value = Template.instance().$(event.currentTarget).val();
+    const field = Template.instance().$(event.currentTarget).attr("name");
 
     Meteor.call("products/updateProductField", variant._id, field, value,
       error => {

@@ -3,7 +3,6 @@ import { ReactiveDict } from "meteor/reactive-dict";
 import Logger from "/client/modules/logger";
 import { ReactionProduct } from "/lib/api";
 import { Media, Products } from "/lib/collections";
-import { PublishContainer } from "/imports/plugins/core/revisions";
 import { isRevisionControlEnabled } from "/imports/plugins/core/revisions/lib/api";
 import { applyProductRevision } from "/lib/api/products";
 
@@ -37,15 +36,6 @@ Template.productSettings.onCreated(function () {
 });
 
 Template.productSettings.helpers({
-  PublishContainerComponent() {
-    const instance = Template.instance();
-    const productIds = instance.state.get("productIds") || [];
-
-    return {
-      component: PublishContainer,
-      documentIds: productIds
-    };
-  },
   isVisible() {
     const instance = Template.instance();
     const products = instance.state.get("products") || [];
@@ -179,7 +169,7 @@ Template.productSettings.events({
     event.preventDefault();
     const tag = ReactionProduct.getTag();
     for (const product of this.products) {
-      const weight = $(event.currentTarget).data("event-data") || 0;
+      const weight = Template.instance().$(event.currentTarget).data("event-data") || 0;
       const positions = {
         weight: weight,
         updatedAt: new Date()

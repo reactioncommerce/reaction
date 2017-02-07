@@ -17,7 +17,7 @@ class NotificationDropdown extends Component {
           <li className="notification">
               <div className="media">
                  <div className="media-body">
-                    <strong className="notification-title" data-i18n="notifications.body.noNotifcations">No notifications yet</strong>
+                    <strong className="notification-title" data-i18n="notifications.body.noNotifications">No notifications yet</strong>
                  </div>
               </div>
           </li>

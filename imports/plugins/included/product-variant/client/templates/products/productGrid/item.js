@@ -11,24 +11,36 @@ import { Media } from "/lib/collections";
 import { isRevisionControlEnabled } from "/imports/plugins/core/revisions/lib/api";
 
 
-Template.productGridItems.onRendered( function () {
-  $(".container-main").on("click", function(event) {
-    if ($(event.target).closest(".product-grid-item").length === 0) {
-      Session.set("productGrid/selectedProducts", []);
+Template.productGridItems.onRendered(function () {
+  $(".page > main").on("click", function (event) {
+    // Do nothing if we are in preview mode
+    if (Reaction.isPreview() === false) {
+      // Don't trigger the clear selectiion if we're clicking on a grid item.
+      if ($(event.target).closest(".product-grid-item").length === 0) {
+        const selectedProducts = Session.get("productGrid/selectedProducts");
 
-      Reaction.showActionView({
-        label: "Grid Settings",
-        i18nKeyLabel: "gridSettingsPanel.title",
-        template: "productSettings",
-        type: "product",
-        data: {}
-      });
+        // Do we have any selected products?
+        // If we do then lets reset the Grid Settings ActionView
+        if (Array.isArray(selectedProducts) && selectedProducts.length) {
+          // Reset sessions ver of selected products
+          Session.set("productGrid/selectedProducts", []);
+
+          // Reset the action view of selected products
+          Reaction.setActionView({
+            label: "Grid Settings",
+            i18nKeyLabel: "gridSettingsPanel.title",
+            template: "productSettings",
+            type: "product",
+            data: {}
+          });
+        }
+      }
     }
   });
 });
 
-Template.productGridItems.onDestroyed( function() {
-  $(".container-main").off("click");
+Template.productGridItems.onDestroyed(function () {
+  $(".page > main").off("click");
 });
 
 /**
@@ -224,7 +236,7 @@ Template.productGridItems.events({
             $checkbox.prop("checked", !$checkbox.prop("checked")).trigger("change");
           }
         } else {
-          let $checkbox = template.$(`input[type=checkbox][value=${this._id}]`);
+          const $checkbox = template.$(`input[type=checkbox][value=${this._id}]`);
 
           Session.set("productGrid/selectedProducts", []);
           $checkbox.prop("checked", true).trigger("change");

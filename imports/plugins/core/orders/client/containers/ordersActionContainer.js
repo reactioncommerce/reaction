@@ -1,9 +1,9 @@
-import React from "react"
+import React from "react";
 import { Meteor } from "meteor/meteor";
 import { Orders, Shops } from "/lib/collections";
 import { Reaction, i18next } from "/client/api";
 import { composeWithTracker } from "/lib/api/compose";
-import OrderActions from "../components/orderActions"
+import OrderActions from "../components/orderActions";
 
 const orderFilters = [{
   name: "new",

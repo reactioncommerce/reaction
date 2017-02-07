@@ -8,6 +8,17 @@
           "shippoLabel": "Shippo",
           "shippoTitle": "Shippo",
           "shippoDescription": "Shipping labels and package tracking"
+        },
+        "shippingGrid": {
+          "carrier": "Carrier",
+          "enabled": "Enabled"
+        },
+        "shippingSettings": {
+          "noCarriersFound": "No shipping carriers configured.",
+          "editApiKey": "Edit API Key",
+          "carrierSaved": "Carrier saved successfully.",
+          "carrierFailed": "Error updating carrier.",
+          "refresh": "Refresh methods"
         }
       },
       "shippo": {

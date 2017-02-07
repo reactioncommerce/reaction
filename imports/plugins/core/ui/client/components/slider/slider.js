@@ -18,6 +18,7 @@ class Slider extends Component {
         margin={this.props.margin}
         padding={this.props.padding}
         onChange={this.props.onChange}
+        onSlide={this.props.onSlide}
       />
     );
   }
@@ -32,7 +33,8 @@ Slider.propTypes = {
   tooltips: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
   margin: PropTypes.number,
   padding: PropTypes.number,
-  onChange: PropTypes.func
+  onChange: PropTypes.func,
+  onSlide: PropTypes.func
 };
 
 Slider.defaultProps = {

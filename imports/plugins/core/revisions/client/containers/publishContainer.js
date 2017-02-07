@@ -99,7 +99,7 @@ PublishContainer.propTypes = {
 function composer(props, onData) {
   const viewAs = Reaction.getUserPreferences("reaction-dashboard", "viewAs", "administrator");
 
-  if (props.documentIds) {
+  if (Array.isArray(props.documentIds) && props.documentIds.length) {
     const subscription = Meteor.subscribe("Revisions", props.documentIds);
 
     if (subscription.ready()) {
@@ -127,6 +127,7 @@ function composer(props, onData) {
           ]
         }
       }).fetch();
+
       onData(null, {
         isEnabled: isRevisionControlEnabled(),
         documentIds: props.documentIds,

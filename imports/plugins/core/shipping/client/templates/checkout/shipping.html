@@ -8,18 +8,25 @@
       </h3>
     </div>
     {{#if isReady}}
-      {{#each reactionApps provides='shippingMethod' enabled=true}}
-        {{> Template.dynamic template=template}}
-      {{else}}
-        <div class="panel-body">
-          <div class="alert alert-danger">
-            <span data-i18n="checkoutShipping.noShippingPackages">No shipping packages are configured. </span>
-            <a href="{{pathFor 'dashboard'}}">
-              <span data-i18n="checkoutShipping.configureNow">Configure now.</span>
-            </a>
-          </div>
-        </div>
-      {{/each}}
+      <div class="panel-body">
+        <ul class="checkout-shipping list-group">
+          {{#each shipmentQuotes}}
+            <li class="list-group-item {{isSelected ..}}" data-carrier="{{carrier}}" data-method="{{method}}">
+              <span class="text-left">{{method.carrier}} - {{method.label}}</span>
+              <span class="pull-right">{{formatPrice rate}}</span>
+            </li>
+          {{else}}
+            <div class="panel-body">
+              <div class="alert alert-danger">
+                <span data-i18n="checkoutShipping.noShippingMethods">No shipping methods are configured.</span>
+                <a href="#" data-event-action="configure-shipping">
+                  <span data-i18n="checkoutShipping.configureNow">Configure now.</span>
+                </a>
+              </div>
+            </div>
+          {{/each}}
+        </ul>
+      </div>
     {{else}}
       <div class="spinner-container">
         <div class="spinner"></div>
