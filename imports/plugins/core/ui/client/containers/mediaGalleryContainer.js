@@ -51,8 +51,20 @@ function uploadHandler(files) {
 }
 
 class MediaGalleryContainer extends Component {
-  state = {
-    featuredMedia: undefined
+  // Load first image as featuredImage
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      featuredMedia: props.media[0]
+    };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      featuredMedia: nextProps.media[0],
+      media: nextProps.media
+    });
   }
 
   handleDrop = (files) => {
@@ -83,6 +95,10 @@ class MediaGalleryContainer extends Component {
       }
       // show media as removed (since it will not disappear until changes are published
     });
+  }
+
+  get allowFeaturedMediaHover() {
+    return true;
   }
 
   get media() {
@@ -139,7 +155,7 @@ class MediaGalleryContainer extends Component {
   render() {
     return (
       <MediaGallery
-        allowFeaturedMediaHover={this.props.editable === false}
+        allowFeaturedMediaHover={this.allowFeaturedMediaHover}
         featuredMedia={this.state.featuredMedia}
         onDrop={this.handleDrop}
         onMouseEnterMedia={this.handleMouseEnterMedia}
