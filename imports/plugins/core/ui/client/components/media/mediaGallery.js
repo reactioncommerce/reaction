@@ -8,11 +8,11 @@ class MediaGallery extends Component {
   }
 
   get allowFeaturedMediaHover() {
-    // if (this.props.allowFeaturedMediaHover && this.props.featuredMedia) {
-    //   return true;
-    // }
-    // Always return true, as we no longer use featured as the #1 spot, it's a separate image
-    return true;
+    if (this.props.allowFeaturedMediaHover && this.props.featuredMedia) {
+      return true;
+    }
+
+    return false;
   }
 
   get featuredMedia() {
@@ -45,7 +45,7 @@ class MediaGallery extends Component {
   renderFeaturedMedia() {
     if (this.hasMedia) {
       return this.props.media.map((media, index) => {
-        if (index === 0 && this.allowFeaturedMediaHover) {
+        if (index === 0) {
           return (
             <MediaItem
               editable={this.props.editable}
@@ -93,6 +93,7 @@ class MediaGallery extends Component {
   }
 
   renderMediaGalleryUploader() {
+    let featured;
     let gallery;
 
     // Only render media only if there is any
