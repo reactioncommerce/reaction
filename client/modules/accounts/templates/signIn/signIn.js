@@ -70,12 +70,6 @@ Template.loginFormSignInView.events({
           alerts: [error]
         });
       } else {
-        // If you are an admin user logging in for the first time, enable admin / edit mode
-        if (Reaction.hasAdminAccess()) {
-          if (Reaction.getUserPreferences("reaction-dashboard", "viewAs") === undefined) {
-            Reaction.setUserPreferences("reaction-dashboard", "viewAs", "administrator");
-          }
-        }
         // Close dropdown or navigate to page
       }
     });
