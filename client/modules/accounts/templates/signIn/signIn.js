@@ -1,7 +1,6 @@
 import { LoginFormSharedHelpers } from "/client/modules/accounts/helpers";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
-import { Reaction } from "/client/api";
 
 /**
  * onCreated: Login form sign in view
