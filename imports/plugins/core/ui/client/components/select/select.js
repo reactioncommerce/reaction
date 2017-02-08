@@ -25,7 +25,7 @@ Template.select.helpers({
   template() {
     const currentData = Template.currentData();
 
-    if(!currentData) {
+    if (!currentData) {
       return;
     }
 
