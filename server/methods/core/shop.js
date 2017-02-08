@@ -6,7 +6,6 @@ import { GeoCoder, Logger } from "/server/api";
 import { Reaction } from "/lib/api";
 import * as Collections from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
-import { Marketplace } from "/imports/plugins/included/marketplace/lib/api";
 
 /**
  * Reaction Shop Methods
@@ -23,7 +22,7 @@ Meteor.methods({
     check(shopData, Match.Optional(Schemas.Shop));
 
     // must have owner access to create new shops when marketplace is disabled
-    if (!Reaction.hasOwnerAccess() && !Marketplace.hasMarketplaceGuestAccess()) {
+    if (!Reaction.hasOwnerAccess() && !Reaction.hasMarketplaceGuestAccess()) {
       throw new Meteor.Error(403, "Access Denied");
     }
 
@@ -48,7 +47,7 @@ Meteor.methods({
     shop.name = shop.name + count;
 
     // admin or marketplace needs to be on and guests allowed to create shops
-    if (currentUser && Marketplace.hasMarketplaceGuestAccess()) {
+    if (currentUser && Reaction.hasMarketplaceGuestAccess()) {
       adminRoles = shop.defaultSellerRoles;
 
       shop.emails = currentUser.emails;

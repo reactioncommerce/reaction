@@ -29,7 +29,7 @@ Reaction.registerPackage({
 
     // Settings reside in Catalog settings
     {
-      label: "Marketplace Settings",
+      label: "Marketplace",
       icon: "fa fa-globe",
       provides: "catalogSettings",
       container: "dashboard",
