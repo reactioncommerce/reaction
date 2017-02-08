@@ -15,7 +15,7 @@ class ListItem extends Component {
     value: PropTypes.any
   }
 
-  handleClick = () => {
+  handleClick = (event) => {
     if (typeof this.props.onClick === "function") {
       this.props.onClick(event, this.data);
     }
