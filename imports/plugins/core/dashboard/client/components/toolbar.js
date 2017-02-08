@@ -116,19 +116,15 @@ class PublishControls extends Component {
 
   renderCustomControls() {
     if (this.props.dashboardHeaderTemplate) {
+      if (this.props.isEnabled) {
+        return [
+          <VerticalDivider key="customControlsVerticaldivider" />,
+          <Blaze key="customControls" template={this.props.dashboardHeaderTemplate()} />
+        ];
+      }
       return [
         <Blaze key="customControls" template={this.props.dashboardHeaderTemplate()} />
       ];
-    }
-
-    return null;
-  }
-
-  renderRevisionsVerticalDivider() {
-    if (this.props.isEnabled) {
-      return (
-        <VerticalDivider />
-      );
     }
 
     return null;
@@ -143,9 +139,8 @@ class PublishControls extends Component {
         <ToolbarGroup lastChild={true}>
           {this.renderAddButton()}
           {this.renderPackageButons()}
-          <VerticalDivider />
           {this.renderCustomControls()}
-          {this.renderRevisionsVerticalDivider()}
+          <VerticalDivider />
           {this.renderAdminButton()}
           {/* this.renderMoreOptionsButton() */}
         </ToolbarGroup>
