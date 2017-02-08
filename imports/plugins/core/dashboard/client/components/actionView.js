@@ -48,6 +48,7 @@ const getStyles = (props) => {
       display: "flex",
       alignItems: "center",
       position: "relative",
+      minHeight: "56px",
       height: "56px",
       padding: "0 20px"
     },
@@ -136,12 +137,12 @@ class ActionView extends Component {
         easing: "easeInOutQuad"
       },
       enterAnimationForDetailView: {
-        animation: { translateX: 0 },
+        animation: { width: 400 },
         duration: 200,
         easing: "easeInOutQuad"
       },
       leaveAnimationForDetailView: {
-        animation: { translateX: 400 },
+        animation: { width: 0 },
         duration: 200,
         easing: "easeInOutQuad"
       }
