@@ -1,23 +1,22 @@
 import React, { Component, PropTypes } from "react";
 import classnames from "classnames";
 import Blaze from "meteor/gadicc:blaze-react-component";
-
-import {
-  IconButton,
-  FlatButton,
-  Translation,
-  Overlay
-} from "/imports/plugins/core/ui/client/components";
 import { Admin } from "/imports/plugins/core/ui/client/providers";
 import Radium from "radium";
 import Velocity from "velocity-animate";
 import "velocity-animate/velocity.ui";
 import { VelocityTransitionGroup } from "velocity-react";
+import debounce from "lodash/debounce";
+import {
+  IconButton,
+  Translation,
+  Overlay
+} from "/imports/plugins/core/ui/client/components";
 
 const getStyles = (props) => {
   let viewSize = 400;
-  // if (props.actionView && props.actionView.priority === 1 && props.actionView.provides === "dashboard") {
   const isBigView = props.actionView && props.actionView.provides === "dashboard";
+
   if (isBigView) {
     viewSize = "90vw";
   }
@@ -33,31 +32,17 @@ const getStyles = (props) => {
       "height": "100vh",
       "position": "relative",
       "width": viewSize,
-      minWidth: 400,
-      // "@media only screen and (max-width: 949px)": {
-      //   width: "100vw"
-      // },
+      "minWidth": 400,
+      "@media only screen and (max-width: 949px)": {
+        width: "100vw"
+      },
       "boxShadow": isBigView ? "0 0 40px rgba(0,0,0,.1)" : "",
       "flex": "0 0 auto",
       "backgroundColor": "white",
       "borderLeft": "1px solid @black10",
-
       "overflow": "hidden",
       "transition": "width 300ms cubic-bezier(0.455, 0.03, 0.515, 0.955))",
-      // boxShadow: "0 0 40px rgba(0,0,0,.1)",
       "zIndex": 1050
-
-      // @media screen and (max-width: @screen-xs-max) {
-      //   transition: top 400ms cubic-bezier(0.645, 0.045, 0.355, 1);
-      //
-      //   position: absolute;
-      //   width: 100vw;
-      //   height: 100vh;
-      //   top: 100vh;
-      //   left: 0;
-      //   z-index: @zindex-modal;
-      //   box-shadow: none;
-      // }
     },
     header: {
       display: "flex",
@@ -102,7 +87,8 @@ const getStyles = (props) => {
         position: "absolute",
         top: 0,
         right: 0,
-        width: "96vw"
+        width: "96vw",
+        zIndex: 1050
       }
     },
     detailView: {
@@ -125,19 +111,60 @@ class ActionView extends Component {
     actionView: PropTypes.object,
     actionViewIsOpen: PropTypes.bool,
     buttons: PropTypes.array,
+    detailViewIsOpen: PropTypes.bool,
     handleActionViewBack: PropTypes.func,
     handleActionViewClose: PropTypes.func,
-    isActionViewAtRootView: PropTypes.bool
+    handleActionViewDetailBack: PropTypes.func,
+    handleActionViewDetailClose: PropTypes.func,
+    isActionViewAtRootView: PropTypes.bool,
+    isDetailViewAtRootView: PropTypes.bool
   }
 
-  state = {
-    enterAnimation: {
-      animation: { translateX: 0 },
-      duration: 200
-    },
-    leaveAnimation: {
-      animation: { translateX: 400 },
-      duration: 200
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      isMobile: this.isMobile,
+      enterAnimation: {
+        animation: { translateX: 0 },
+        duration: 200,
+        easing: "easeInOutQuad"
+      },
+      leaveAnimation: {
+        animation: { translateX: 400 },
+        duration: 200,
+        easing: "easeInOutQuad"
+      },
+      enterAnimationForDetailView: {
+        animation: { translateX: 0 },
+        duration: 200,
+        easing: "easeInOutQuad"
+      },
+      leaveAnimationForDetailView: {
+        animation: { translateX: 400 },
+        duration: 200,
+        easing: "easeInOutQuad"
+      }
+    };
+
+    this.handleResize = debounce(() => {
+      if (window) {
+        this.setState({
+          isMobile: this.isMobile
+        });
+      }
+    }, 66);
+  }
+
+  componentDidMount() {
+    if (window) {
+      window.addEventListener("resize", this.handleResize, false);
+    }
+  }
+
+  componentWillUnmount() {
+    if (window) {
+      window.removeEventListener("resize", this.handleResize);
     }
   }
 
@@ -206,7 +233,27 @@ class ActionView extends Component {
           {button}
         </div>
       </div>
-    )
+    );
+  }
+
+  get isMobile() {
+    return window.matchMedia("(max-width: 991px)").matches;
+  }
+
+  get actionViewIsLargeSize() {
+    return this.props.actionView.provides === "dashboard";
+  }
+
+  get showOverlay() {
+    if (this.props.actionViewIsOpen === false) {
+      return false;
+    }
+
+    return this.actionViewIsLargeSize || this.state.isMobile;
+  }
+
+  get showDetailViewOverlay() {
+    return this.props.detailViewIsOpen && this.state.isMobile;
   }
 
   renderDetailViewBackButton() {
@@ -222,15 +269,15 @@ class ActionView extends Component {
           </div>
         </div>
       );
-    } else {
-      return (
-        <IconButton
-          bezelStyle={"flat"}
-          icon="fa fa-times"
-          onClick={this.props.handleActionViewDetailClose}
-        />
-      );
     }
+
+    return (
+      <IconButton
+        bezelStyle={"flat"}
+        icon="fa fa-times"
+        onClick={this.props.handleActionViewDetailClose}
+      />
+    );
   }
 
   get styles() {
@@ -338,7 +385,6 @@ class ActionView extends Component {
   }
 
   renderActionView() {
-    const { actionView } = this.props;
     const baseClassName = classnames({
       "rui": true,
       "admin": true,
@@ -352,7 +398,16 @@ class ActionView extends Component {
         <div style={this.styles.base} className={baseClassName}>
 
           {this.renderMasterView()}
-          {this.renderDetailView()}
+          <Overlay
+            isVisible={this.showDetailViewOverlay}
+            onClick={this.props.handleActionViewDetailClose}
+          />
+          <VelocityTransitionGroup
+            enter={this.state.enterAnimationForDetailView}
+            leave={this.state.leaveAnimationForDetailView}
+          >
+            {this.renderDetailView()}
+          </VelocityTransitionGroup>
 
 
           <div className="admin-controls-footer">
@@ -363,6 +418,8 @@ class ActionView extends Component {
         </div>
       );
     }
+
+    return null;
   }
 
   render() {
@@ -376,7 +433,7 @@ class ActionView extends Component {
         </VelocityTransitionGroup>
 
         <Overlay
-          isVisible={this.props.actionViewIsOpen}
+          isVisible={this.showOverlay}
           onClick={this.props.handleActionViewClose}
         />
       </div>
