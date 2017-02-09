@@ -5,6 +5,7 @@ import { Tags } from "/lib/collections";
 import { Reaction, i18next } from "/client/api";
 
 import { TranslationProvider, AdminContextProvider } from "/imports/plugins/core/ui/client/providers";
+import { isRevisionControlEnabled } from "/imports/plugins/core/revisions/lib/api";
 
 const handleAddProduct = () => {
   Meteor.call("products/createProduct", (error, productId) => {
@@ -84,6 +85,7 @@ function composer(props, onData) {
     packageButtons,
     dashboardHeaderTemplate: props.data.dashboardHeader,
     isPreview: Reaction.isPreview(),
+    isEnabled: isRevisionControlEnabled(),
     isActionViewAtRootView: Reaction.isActionViewAtRootView(),
     actionViewIsOpen: Reaction.isActionViewOpen(),
 

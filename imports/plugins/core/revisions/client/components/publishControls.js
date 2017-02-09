@@ -6,8 +6,6 @@ import {
   Divider,
   DropDownMenu,
   MenuItem,
-  Translation,
-  Toolbar,
   ToolbarGroup,
   Switch,
   Icon
@@ -348,18 +346,6 @@ class PublishControls extends Component {
     );
   }
 
-  renderVerticalDivider() {
-    return (
-      <div style={{
-        height: "20px",
-        width: 1,
-        backgroundColor: "#E6E6E6",
-        margin: "0 10px"
-      }}
-      />
-    );
-  }
-
   renderAddButton() {
     return (
       <FlatButton
@@ -385,14 +371,7 @@ class PublishControls extends Component {
       );
     }
 
-    return (
-      <div className="rui publish-controls">
-        <Translation
-          defaultValue="Revision control is disabled. Any changes will be published immediately."
-          i18nKey="revisions.isDisabled"
-        />
-      </div>
-    );
+    return null;
   }
 }
 
