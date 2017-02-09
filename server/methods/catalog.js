@@ -700,6 +700,10 @@ Meteor.methods({
       productIds = productId;
     }
     const productsWithVariants = Products.find({
+      // Don't "archive" products that are already marked deleted.
+      isDeleted: {
+        $in: [false, undefined]
+      },
       $or: [{
         _id: {
           $in: productIds
