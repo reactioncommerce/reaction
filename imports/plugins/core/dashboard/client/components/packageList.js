@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from "react";
-import { Card, CardHeader, CardBody, List, ListItem } from "/imports/plugins/core/ui/client/components";
+import { Card, CardHeader, CardBody, CardGroup, ListItem } from "/imports/plugins/core/ui/client/components";
 import { getComponent } from "/imports/plugins/core/layout/lib/components";
 import { map } from "lodash";
 
@@ -106,9 +106,9 @@ class PackageList extends Component {
 
   render() {
     return (
-      <List>
+      <CardGroup>
         {this.renderSections()}
-      </List>
+      </CardGroup>
     );
   }
 }
