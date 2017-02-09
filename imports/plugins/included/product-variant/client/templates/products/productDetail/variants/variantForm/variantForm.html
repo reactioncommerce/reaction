@@ -127,10 +127,8 @@
                   {{/if}}
               </div>
               <div class="lowInventoryWarningThreshold form-group{{#if afFieldIsInvalid name='lowInventoryWarningThreshold'}} has-error{{/if}}" style="{{displayLowInventoryWarning doc}}">
-                  <span class="col-xs-5 col-sm-8 col-md-8">
                   <label class="control-label">{{afFieldLabelText name='lowInventoryWarningThreshold'}}</label>
                   {{>afFieldInput name='lowInventoryWarningThreshold' placeholder="0"}}
-                  </span>
                   {{#if afFieldIsInvalid name='lowInventoryWarningThreshold'}}
                   <span class="help-block">{{afFieldMessage name='lowInventoryWarningThreshold'}}</span>
                   {{/if}}
