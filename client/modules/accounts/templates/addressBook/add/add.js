@@ -75,8 +75,10 @@ AutoForm.hooks({
       this.event.preventDefault();
       const addressBook = $(this.template.firstNode).closest(".address-book");
 
-      Meteor.call("accounts/validateAddress", insertDoc, function (error, result) {
-        if (result.validated) {
+      Meteor.call("accounts/validateAddress", insertDoc, function (err, res) {
+        console.log("validateAddress error", err);
+        console.log("validatedAddress result", res);
+        if (res.validated) {
           Meteor.call("accounts/addressBookAdd", insertDoc, function (error, result) {
             if (error) {
               Alerts.toast(i18next.t("addressBookAdd.failedToAddAddress", { err: error.message }), "error");
@@ -90,13 +92,23 @@ AutoForm.hooks({
             }
           });
         } else {
-          Alerts.toast(i18next.t("addressBookAdd.failedToAddAddress", { err: result.error.message }), "error");
-          that.done(new Error("Address did not validate: ", error));
-          return false;
+          const city = $("input[name='city']");
+          city.val(res.validatedAddress.city);
+          const postal = $("input[name='postal']");
+          postal.val(res.validatedAddress.postal);
+          const address1 = $("input[name='address1']");
+          address1.val(res.validatedAddress.address1);
+          if (res.validatedAddress.address2) {
+            const address2 = $("input[name='address2']");
+            address2.val(res.validatedAddress.address2);
+          }
+          const country = $("input[name='country']");
+          country.val(res.validatedAddress.country);
+          Alerts.toast(i18next.t("addressBookAdd.validatedAddress", "warning"));
+          that.done();
+          return true;
         }
       });
-
-
     }
   }
 });

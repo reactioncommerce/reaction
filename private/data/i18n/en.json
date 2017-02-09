@@ -476,7 +476,8 @@
       "addressBookAdd": {
         "addAddress": "Add a new address entry",
         "createAddress": "Create your default address",
-        "failedToAddAddress": "Failed to add address: {{err}}"
+        "failedToAddAddress": "Failed to add address: {{err}}",
+        "validatedAddress": "Made changes to your address based upon validation. Please ensure this is correct"
       },
       "addressBookEdit": {
         "editAddress": "Editing this address entry",

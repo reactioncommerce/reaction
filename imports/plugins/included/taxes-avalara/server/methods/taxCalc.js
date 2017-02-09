@@ -123,7 +123,6 @@ taxCalc.validateAddress = function (address) {
     if (result.data.address.line2) {
       validatedAddress.addresss2 = resultAddress.line2;
     }
-    console.log("validatedAddress from Avalara");
     return validatedAddress;
   }
   return undefined;
