@@ -53,15 +53,21 @@ Template.addressBookAdd.helpers({
   }
 });
 
-Template.addressBookAdd.events({
-  // "click #cancel-new, form submit": function(event, template) {
-  //   console.log(event, template, Template.instance())
-  //   return Session.set("addressBookView", "addressBookGrid");
-  // },
-  // "submit form": function() {
-  //   return Session.set("addressBookView", "addressBookGrid");
-  // }
-});
+
+function setValidatedAddress(res) {
+  const city = $("input[name='city']");
+  city.val(res.validatedAddress.city);
+  const postal = $("input[name='postal']");
+  postal.val(res.validatedAddress.postal);
+  const address1 = $("input[name='address1']");
+  address1.val(res.validatedAddress.address1);
+  if (res.validatedAddress.address2) {
+    const address2 = $("input[name='address2']");
+    address2.val(res.validatedAddress.address2);
+  }
+  const country = $("input[name='country']");
+  country.val(res.validatedAddress.country);
+}
 
 /**
  * addressBookAddForm form handling
@@ -76,8 +82,6 @@ AutoForm.hooks({
       const addressBook = $(this.template.firstNode).closest(".address-book");
 
       Meteor.call("accounts/validateAddress", insertDoc, function (err, res) {
-        console.log("validateAddress error", err);
-        console.log("validatedAddress result", res);
         if (res.validated) {
           Meteor.call("accounts/addressBookAdd", insertDoc, function (error, result) {
             if (error) {
@@ -92,21 +96,12 @@ AutoForm.hooks({
             }
           });
         } else {
-          const city = $("input[name='city']");
-          city.val(res.validatedAddress.city);
-          const postal = $("input[name='postal']");
-          postal.val(res.validatedAddress.postal);
-          const address1 = $("input[name='address1']");
-          address1.val(res.validatedAddress.address1);
-          if (res.validatedAddress.address2) {
-            const address2 = $("input[name='address2']");
-            address2.val(res.validatedAddress.address2);
-          }
-          const country = $("input[name='country']");
-          country.val(res.validatedAddress.country);
-          Alerts.toast(i18next.t("addressBookAdd.validatedAddress", "warning"));
-          that.done();
-          return true;
+          setValidatedAddress(res);
+          Alerts.inline("Made changes to your address based upon validation. Please ensure this is correct", "warning", {
+            placement: "addressBookAdd",
+            i18nKey: "addressBookAdd.validatedAddress"
+          });
+          that.done(new Error("Validation failed")); // renable Save and Continue button
         }
       });
     }

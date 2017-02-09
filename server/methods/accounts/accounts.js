@@ -37,9 +37,9 @@ function getValidator() {
 
 function compareAddress(address, validationAddress) {
   const errors = [];
-  if (_.upperCase(address.address1) !== _.upperCase(validationAddress)) {
+  if (_.trim(_.upperCase(address.address1)) !== _.trim(_.upperCase(validationAddress.address1))) {
     errors.push({ address1: `Address line 1 did not match.
-    Original: ${_.upperCase(address.address1)} / Validated: ${_.upperCase(validationAddress.address1)}` });
+    Original: /${_.upperCase(address.address1)}/  Validated: /${_.upperCase(validationAddress.address1)}/` });
   }
 
   if (address.address2 && (_.upperCase(address.address2) !== _.upperCase(validationAddress.address2))) {
@@ -81,7 +81,7 @@ function validateAddress(address) {
   if (validator) {
     validatedAddress = Meteor.call(validator, address);
     validationErrors = compareAddress(address, validatedAddress);
-    if (validationErrors) {
+    if (validationErrors.length) {
       validated = false;
     }
   }
