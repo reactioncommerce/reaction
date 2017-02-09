@@ -505,6 +505,10 @@ Meteor.methods({
     }
 
     const selector = {
+      // Don't "archive" variants that are already marked deleted.
+      isDeleted: {
+        $in: [false, undefined]
+      },
       $or: [{
         _id: variantId
       }, {
