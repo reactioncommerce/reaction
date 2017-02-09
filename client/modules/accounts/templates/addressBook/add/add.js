@@ -65,8 +65,10 @@ function setValidatedAddress(res) {
     const address2 = $("input[name='address2']");
     address2.val(res.validatedAddress.address2);
   }
-  const country = $("input[name='country']");
+  const country = $("select[name='country']");
   country.val(res.validatedAddress.country);
+  const region = $("select[name='region']");
+  region.val(res.validatedAddress.region);
 }
 
 /**
