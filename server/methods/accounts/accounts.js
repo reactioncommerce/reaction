@@ -51,8 +51,7 @@ function getValidator() {
 function compareAddress(address, validationAddress) {
   const errors = [];
   if (_.trim(_.upperCase(address.address1)) !== _.trim(_.upperCase(validationAddress.address1))) {
-    errors.push({ address1: `Address line 1 did not match.
-    Original: /${_.upperCase(address.address1)}/  Validated: /${_.upperCase(validationAddress.address1)}/` });
+    errors.push({ address1: "Address line 1 did not match." });
   }
 
   if (address.address2 && (_.upperCase(address.address2) !== _.upperCase(validationAddress.address2))) {
@@ -60,13 +59,11 @@ function compareAddress(address, validationAddress) {
   }
 
   if (_.trim(_.upperCase(address.city)) !== _.trim(_.upperCase(validationAddress.city))) {
-    errors.push({ city: `City did not match:
-    Original: ${_.upperCase(address.city)} / Validated: ${_.upperCase(validationAddress.city)}` });
+    errors.push({ city: "City did not match" });
   }
 
   if (_.trim(_.upperCase(address.postal)) !== _.trim(_.upperCase(validationAddress.postal))) {
-    errors.push({ postal: `Postal Code did not match.
-    Original: ${_.upperCase(address.postal)} / Validated: ${_.upperCase(validationAddress.postal)}` });
+    errors.push({ postal: "Postal Code did not match." });
   }
 
   if (_.trim(_.upperCase(address.region)) !== _.trim(_.upperCase(validationAddress.region))) {
