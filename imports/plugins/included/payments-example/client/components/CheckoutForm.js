@@ -19,6 +19,7 @@ class CheckoutForm extends Component {
               placeholder="XXXX XXXX XXXX XXXX"
             />
           </div>
+        </div>
           <div className="row">
             <div className="col-sm-12 col-lg-6 form-group">
               <label className="control-label">Expiration month</label>
@@ -52,8 +53,6 @@ class CheckoutForm extends Component {
             <span id="btn-complete-order">Complete your order</span>
             <i className="fa fa-spinner fa-spin hidden" id="btn-processing"/>
           </button>
-
-        </div>
       </div>
     );
   }
