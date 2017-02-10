@@ -12,20 +12,12 @@ import { Logger, Reaction } from "/server/api";
  */
 function getValidator() {
   const shopId = Reaction.getShopId();
-  const allGeoCoders = Packages.find({
+  const geoCoders = Packages.find({
     "registry.provides": "addressValidation",
+    "settings.addressValidation.enabled": true,
     "shopId": shopId,
     "enabled": true
   }).fetch();
-  const geoCoders = [];
-  // filter out disabled providers
-  for (const coder of allGeoCoders) {
-    for (const setting of _.keys(coder.settings)) {
-      if (setting.enabled) {
-        geoCoders.push(coder);
-      }
-    }
-  }
 
   if (!geoCoders.length) {
     return "";
@@ -38,13 +30,11 @@ function getValidator() {
   // If there are two, we default to the one that is not the Reaction one
   if (geoCoders.length === 2) {
     geoCoder = _.filter(geoCoders, function (coder) {
-      return coder.registry.providerName !== "reaction";
+      return !_.includes(coder.name, "reaction");
     })[0];
   }
-  const geoCoderName = _.filter(geoCoder.registry, function (registry) {
-    return registry.provides === "addressValidation";
-  })[0].providerName;
-  return `${geoCoderName}/geocoder/geocode`;
+  const methodName = geoCoder.settings.addressValidation.addressValidationMethod;
+  return methodName;
 }
 
 
