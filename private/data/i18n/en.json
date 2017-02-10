@@ -302,7 +302,7 @@
         "variantDetails": "Variant Details",
         "duplicateVariant": "Duplicate",
         "addVariantOption": "Add Option",
-        "addVariantFail": "Unable to create product variant {{title}}. Check that it's parent product or variant is not archived.",
+        "addVariantFail": "Unable to create variant for product {{title}}. Check that it's parent product or variant is not archived.",
         "removeVariant": "Remove",
         "removeVariantConfirm": "Are you sure you want to delete {{title}}",
         "restoreVariantConfirm": "Are you sure you want to restore {{title}} from the trash?",

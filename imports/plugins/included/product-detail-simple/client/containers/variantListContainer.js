@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import { composeWithTracker } from "/lib/api/compose";
 import { ReactionProduct } from "/lib/api";
-import { Reaction } from "/client/api";
+import { Reaction, i18next } from "/client/api";
 import { VariantList } from "../components";
 import { getChildVariants } from "../selectors/variants";
 import { Products, Media } from "/lib/collections";
@@ -84,7 +84,14 @@ class VariantListContainer extends Component {
   handleCreateVariant = () => {
     const selectedProduct =  ReactionProduct.selectedProduct();
 
-    Meteor.call("products/createVariant", selectedProduct._id);
+    Meteor.call("products/createVariant", selectedProduct._id, (error) => {
+      if (error) {
+        Alerts.alert({
+          text: i18next.t("productDetailEdit.addVariantFail", { title: selectedProduct.title }),
+          confirmButtonText: i18next.t("app.close", { defaultValue: "Close" })
+        });
+      }
+    });
   }
 
   handleVariantClick = (event, variant, ancestors = -1) => {
