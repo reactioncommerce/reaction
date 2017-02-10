@@ -1,5 +1,6 @@
 import _ from "lodash";
 import { ReactiveDict } from "meteor/reactive-dict";
+import { Reaction } from "/client/api";
 import Logger from "/client/modules/logger";
 import { ReactionProduct } from "/lib/api";
 import { Media, Products } from "/lib/collections";
@@ -128,6 +129,15 @@ Template.productSettingsGridItem.helpers({
       return true;
     }
     return false;
+  },
+  listItemActiveClassName(productId) {
+    const handle = Reaction.Router.current().params.handle;
+
+    if (ReactionProduct.equals("productId", productId) && handle) {
+      return "active";
+    }
+
+    return "";
   }
 });
 
