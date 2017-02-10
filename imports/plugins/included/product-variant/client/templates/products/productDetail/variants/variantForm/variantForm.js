@@ -148,11 +148,18 @@ Template.variantForm.events({
     event.stopPropagation();
     event.preventDefault();
     const productId = ReactionProduct.selectedProductId();
+
     if (!productId) {
       return;
     }
+
     Meteor.call("products/createVariant", template.data._id, function (error, result) {
-      if (result) {
+      if (error) {
+        Alerts.alert({
+          text: i18next.t("productDetailEdit.addVariantFail", { title: template.data.title }),
+          confirmButtonText: i18next.t("app.close", { defaultValue: "Close" })
+        });
+      } else if (result) {
         const newVariantId = result;
         const selectedProduct = ReactionProduct.selectedProduct();
         ReactionProduct.setCurrentVariant(newVariantId);

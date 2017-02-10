@@ -406,9 +406,16 @@ Meteor.methods({
 
     const newVariantId = Random.id();
     // get parent ancestors to build new ancestors array
-    const {
-      ancestors
-    } = Products.findOne(parentId);
+    const product = Products.findOne(parentId);
+    const { ancestors } = product;
+
+    // Verify that the parent variant and any ancestors are not deleted.
+    // Child variants cannot be added if a parent product or product revision
+    // is marked as `{ isDeleted: true }`
+    if (ReactionProduct.isAncestorDeleted(product, true)) {
+      throw new Meteor.Error(403, "Unable to create product variant");
+    }
+
     Array.isArray(ancestors) && ancestors.push(parentId);
     const assembledVariant = Object.assign(newVariant || {}, {
       _id: newVariantId,
