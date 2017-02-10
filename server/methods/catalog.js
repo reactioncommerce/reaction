@@ -317,6 +317,15 @@ Meteor.methods({
       throw new Meteor.Error(403, "Access Denied");
     }
 
+    const variant = Products.findOne(variantId);
+
+    // Verify that the parent variant and any ancestors are not deleted.
+    // Child variants cannot be added if a parent product or product revision
+    // is marked as `{ isDeleted: true }`
+    if (ReactionProduct.isAncestorDeleted(variant, true)) {
+      throw new Meteor.Error(403, "Unable to create product variant");
+    }
+
     const variants = Products.find({
       $or: [{
         _id: variantId

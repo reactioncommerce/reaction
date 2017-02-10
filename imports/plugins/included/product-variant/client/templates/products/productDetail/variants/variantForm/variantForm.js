@@ -181,7 +181,12 @@ Template.variantForm.events({
     }
     Meteor.call("products/cloneVariant", productId, template.data._id,
       function (error, result) {
-        if (result) {
+        if (error) {
+          Alerts.alert({
+            text: i18next.t("productDetailEdit.cloneVariantFail", { title: template.data.title }),
+            confirmButtonText: i18next.t("app.close", { defaultValue: "Close" })
+          });
+        } else if (result) {
           const variantId = result[0];
 
           ReactionProduct.setCurrentVariant(variantId);
