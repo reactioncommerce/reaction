@@ -37,7 +37,12 @@ function getValidator() {
   return methodName;
 }
 
-
+/**
+ * @summary Compare individual fields of address and accumulate errors
+ * @param {Object} address - the address provided by the customer
+ * @param {Object} validationAddress - address provided by validator
+ * @returns {Array} Array of errors (or empty)
+ */
 function compareAddress(address, validationAddress) {
   const errors = [];
   if (_.trim(_.upperCase(address.address1)) !== _.trim(_.upperCase(validationAddress.address1))) {
@@ -76,17 +81,19 @@ function validateAddress(address) {
   let validated = true;
   let validationErrors;
   let validatedAddress = address;
+  let formErrors;
   Schemas.Address.clean(address);
   const validator = getValidator();
   if (validator) {
-    validatedAddress = Meteor.call(validator, address);
+    const validationResult = Meteor.call(validator, address);
+    validatedAddress = validationResult.validatedAddress;
+    formErrors = validationResult.errors;
     validationErrors = compareAddress(address, validatedAddress);
-    if (validationErrors.length) {
+    if (validationErrors.length || formErrors.length) {
       validated = false;
     }
   }
-
-  const validationResults = { validated, errors: validationErrors, validatedAddress };
+  const validationResults = { validated, fieldErrors: validationErrors, formErrors, validatedAddress };
   return validationResults;
 }
 

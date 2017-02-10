@@ -88,7 +88,7 @@ AutoForm.hooks({
           Meteor.call("accounts/addressBookAdd", insertDoc, function (error, result) {
             if (error) {
               Alerts.toast(i18next.t("addressBookAdd.failedToAddAddress", { err: error.message }), "error");
-              this.done(new Error("Failed to add address: ", error));
+              that.done(new Error("Failed to add address: ", error));
               return false;
             }
             if (result) {
@@ -103,7 +103,15 @@ AutoForm.hooks({
             placement: "addressBookAdd",
             i18nKey: "addressBookAdd.validatedAddress"
           });
-          that.done(new Error("Validation failed")); // renable Save and Continue button
+
+          if (res.formErrors) {
+            for (const error of res.formErrors) {
+              Alerts.inline(error.details, "error", {
+                placement: "addressBookAdd"
+              });
+            }
+          }
+          that.done("Validation failed"); // renable Save and Continue button
         }
       });
     }

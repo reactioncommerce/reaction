@@ -94,6 +94,8 @@ taxCalc.getCompanyCode = function () {
 taxCalc.validateAddress = function (address) {
   check(address, Object);
 
+  let messages;
+  const errors = [];
   const addressToValidate  = {
     line1: address.address1,
     city: address.city,
@@ -101,7 +103,7 @@ taxCalc.validateAddress = function (address) {
     country: address.country
   };
 
-  if (address.country === "US") {
+  if (address.country === "US" || address.country === "CA") {
     addressToValidate.region = address.region;
   }
   if (address.line2) {
@@ -111,6 +113,16 @@ taxCalc.validateAddress = function (address) {
   const baseUrl = getUrl();
   const requestUrl = `${baseUrl}/addresses/resolve`;
   const result = HTTP.post(requestUrl, { data: addressToValidate, auth: auth });
+  const content = JSON.parse(result.content);
+  if (content.messages) {
+    messages = content.messages;
+  }
+  if (messages) {
+    for (const message of messages) {
+      errors.push({ summary: message.summary, details: message.details });
+    }
+  }
+
   if (result && result.data && result.data.validatedAddresses.length !== 0) {
     const resultAddress = result.data.validatedAddresses[0];
     const validatedAddress = {
@@ -123,7 +135,7 @@ taxCalc.validateAddress = function (address) {
     if (result.data.address.line2) {
       validatedAddress.addresss2 = resultAddress.line2;
     }
-    return validatedAddress;
+    return { validatedAddress, errors };
   }
   return undefined;
 };
@@ -306,14 +318,14 @@ taxCalc.recordOrder = function (order, callback) {
     try {
       HTTP.post(requestUrl, { data: salesOrder, auth: auth }, (err, result) => {
         if (err) {
-          Logger.error("Encountered error while recording error");
+          Logger.error("Encountered error while recording order");
           Logger.error(err);
         }
         const data = JSON.parse(result.content);
         return callback(data);
       });
     } catch (error) {
-      Logger.error("Encountered error while recording error");
+      Logger.error("Encountered error while recording order");
       Logger.error(error);
     }
   }
@@ -386,5 +398,5 @@ taxCalc.reportRefund = function (order, refundAmount, callback) {
 export default taxCalc;
 
 Meteor.methods({
-  "avalara/geocoder/geocode": taxCalc.validateAddress
+  "avalara/addressValidation": taxCalc.validateAddress
 });
