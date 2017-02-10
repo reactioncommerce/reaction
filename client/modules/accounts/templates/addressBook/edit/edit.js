@@ -49,13 +49,19 @@ AutoForm.hooks({
         } else {
           setValidatedAddress(res);
           Alerts.inline("Made changes to your address based upon validation. Please ensure this is correct", "warning", {
-            placement: "addressBookAdd",
+            placement: "addressBookEdit",
             i18nKey: "addressBookAdd.validatedAddress"
           });
-          that.done(new Error("Validation failed")); // renable Save and Continue button
+          if (res.formErrors) {
+            for (const error of res.formErrors) {
+              Alerts.inline(error.details, "error", {
+                placement: "addressBookEdit"
+              });
+            }
+          }
+          that.done("Validation failed"); // renable Save and Continue button
         }
       });
-
     }
   }
 });
