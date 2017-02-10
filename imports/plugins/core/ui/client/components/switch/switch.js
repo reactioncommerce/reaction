@@ -14,7 +14,7 @@ class Switch extends Component {
     label: PropTypes.string,
     name: PropTypes.string,
     onChange: PropTypes.func,
-    onLabel: PropTypes.func
+    onLabel: PropTypes.string
   }
 
   constructor(props) {

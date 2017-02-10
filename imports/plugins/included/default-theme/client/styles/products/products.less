@@ -7,18 +7,20 @@
 
 
 .product-settings-size-controls {
-  .display(flex);
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .product-settings-size-control {
-  .display(flex);
-  .flex(1 1 auto);
+  display: flex;
+  flex: 1 1 auto;
   width: 50px;
   max-width: 50px;
   height: 50px;
   margin: 10px;
 
   .main {
+    position: relative;
     .flex(1 1 auto);
     height: 100%;
     background-color: @black20;
@@ -30,7 +32,7 @@
     .flex-direction(column);
     .flex(0 0 auto);
 
-    width: 33%;
+    width: 20px;
     height: 100%;
   }
 
@@ -39,7 +41,21 @@
     display: block;
     height: 25%;
     background-color: @black20;
-    border: 1px solid @white;
+    border-top: 1px solid @white;
+    border-right: 1px solid @white;
+
+    &:last-child {
+      border-bottom: 1px solid @white;
+    }
+  }
+
+  .main .overlay {
+    width: 45%;
+    height: 25%;
+    position: absolute;
+    background-color: @brand-primary-dark;
+    left: 0.5rem;
+    bottom: 0.5rem;
   }
 }
 
@@ -51,6 +67,32 @@
   max-width: 150px;
 }
 
+.product-settings-size-controls .list-group-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1 1 auto;
+  width: 33%;
+  border: none;
+}
+
+.product-settings-list-item a {
+  display: flex
+}
+
+.product-settings-list-item.active a {
+  color: @list-group-active-color;
+}
+
+.product-settings-list-item .action-view {
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+
 .product-load-more {
-  padding: 0 60px;  
+  padding: 0 60px;
 }

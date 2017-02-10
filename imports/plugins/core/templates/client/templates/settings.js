@@ -124,7 +124,7 @@ Template.templateSettings.events({
   "click .template-grid-row": function (event) {
     // toggle all rows off, then add our active row
     $(".template-grid-row").removeClass("active");
-    $(event.currentTarget).addClass("active");
+    Template.instance().$(event.currentTarget).addClass("active");
   },
   "submit #email-template-edit-form": function () {
     const instance = Template.instance();

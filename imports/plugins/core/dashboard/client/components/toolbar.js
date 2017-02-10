@@ -5,7 +5,8 @@ import {
   Toolbar,
   ToolbarGroup,
   Switch,
-  Icon
+  Icon,
+  VerticalDivider
 } from "/imports/plugins/core/ui/client/components";
 import { Translatable } from "/imports/plugins/core/ui/client/providers";
 
@@ -35,7 +36,7 @@ class PublishControls extends Component {
 
   onViewContextChange = (event, isChecked) => {
     if (typeof this.props.onViewContextChange === "function") {
-      this.props.onViewContextChange(event, isChecked ? "customer" : "administrator");
+      this.props.onViewContextChange(event, isChecked ? "administrator" : "customer");
     }
   }
 
@@ -64,9 +65,11 @@ class PublishControls extends Component {
   renderVisibilitySwitch() {
     return (
       <Switch
-        i18nKeyLabel={"app."}
-        label={"Preview"}
-        checked={this.props.isPreview}
+        i18nKeyLabel="app.editMode"
+        i18nKeyOnLabel="app.editMode"
+        label={"Edit Mode"}
+        onLabel={"Edit Mode"}
+        checked={!this.props.isPreview}
         onChange={this.onViewContextChange}
       />
     );
@@ -77,7 +80,7 @@ class PublishControls extends Component {
       <FlatButton
         onClick={() => {
           Reaction.showActionView({
-            i18nKeyTite: "dashboard.coreTitle",
+            i18nKeyTitle: "dashboard.coreTitle",
             title: "Dashboard",
             template: "dashboardPackages"
           });
@@ -85,17 +88,6 @@ class PublishControls extends Component {
       >
       <Icon style={{ fontSize: 24 }} icon="icon icon-reaction-logo" />
     </FlatButton>
-    );
-  }
-  renderVerticalDivider() {
-    return (
-      <div style={{
-        height: "20px",
-        width: 1,
-        backgroundColor: "#E6E6E6",
-        margin: "0 10px"
-      }}
-      />
     );
   }
 
@@ -124,8 +116,13 @@ class PublishControls extends Component {
 
   renderCustomControls() {
     if (this.props.dashboardHeaderTemplate) {
+      if (this.props.isEnabled) {
+        return [
+          <VerticalDivider key="customControlsVerticaldivider" />,
+          <Blaze key="customControls" template={this.props.dashboardHeaderTemplate()} />
+        ];
+      }
       return [
-        this.renderVerticalDivider(),
         <Blaze key="customControls" template={this.props.dashboardHeaderTemplate()} />
       ];
     }
@@ -143,7 +140,7 @@ class PublishControls extends Component {
           {this.renderAddButton()}
           {this.renderPackageButons()}
           {this.renderCustomControls()}
-          {this.renderVerticalDivider()}
+          <VerticalDivider />
           {this.renderAdminButton()}
           {/* this.renderMoreOptionsButton() */}
         </ToolbarGroup>

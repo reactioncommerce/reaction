@@ -6,8 +6,6 @@ import {
   Divider,
   DropDownMenu,
   MenuItem,
-  Translation,
-  Toolbar,
   ToolbarGroup,
   Switch,
   Icon
@@ -71,7 +69,7 @@ class PublishControls extends Component {
         isDocumentVisible = true;
       }
 
-      this.props.onVisibilityChange(event, isDocumentVisible);
+      this.props.onVisibilityChange(event, isDocumentVisible, this.props.documentIds);
     }
   }
 
@@ -260,15 +258,21 @@ class PublishControls extends Component {
 
   renderViewControls() {
     if (this.props.showViewAsControls) {
+      let tooltip = "Private";
+      let i18nKeyTooltip = "app.private";
+
+      if (this.isVisible === "public") {
+        tooltip = "Public";
+        i18nKeyTooltip = "app.public";
+      }
+
       return (
         <FlatButton
-          label="Private"
-          i18nKeyLabel="app.private"
-          i18nKeyToggleOnLabel="app.public"
-          toggleOnLabel="Public"
+          i18nKeyTooltip={i18nKeyTooltip}
           icon="fa fa-eye-slash"
           onIcon="fa fa-eye"
           toggle={true}
+          tooltip={tooltip}
           value="public"
           onValue="private"
           toggleOn={this.isVisible === "public"}
@@ -318,7 +322,7 @@ class PublishControls extends Component {
   renderVisibilitySwitch() {
     return (
       <Switch
-        i18nKeyLabel={"app."}
+        i18nKeyLabel={"admin.dashboard.preview"}
         label={"Preview"}
         checked={this.props.isPreview}
         onChange={this.onViewContextChange}
@@ -339,18 +343,6 @@ class PublishControls extends Component {
       >
         <Icon style={{ fontSize: 24 }} icon="icon icon-reaction-logo" />
       </FlatButton>
-    );
-  }
-
-  renderVerticalDivider() {
-    return (
-      <div style={{
-        height: "20px",
-        width: 1,
-        backgroundColor: "#E6E6E6",
-        margin: "0 10px"
-      }}
-      />
     );
   }
 
@@ -379,14 +371,7 @@ class PublishControls extends Component {
       );
     }
 
-    return (
-      <div className="rui publish-controls">
-        <Translation
-          defaultValue="Revision control is disabled. Any changes will be published immediately."
-          i18nKey="revisions.isDisabled"
-        />
-      </div>
-    );
+    return null;
   }
 }
 

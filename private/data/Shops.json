@@ -498,6 +498,10 @@
     "i18n": "en",
     "enabled": true
   }, {
+    "label": "Διάλεξε γλώσσα",
+    "i18n": "el",
+    "enabled": true
+  }, {
     "label": "Español",
     "i18n": "es",
     "enabled": true

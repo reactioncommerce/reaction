@@ -65,6 +65,7 @@ class CardHeader extends Component {
         <IconButton
           icon="fa fa-angle-down"
           bezelStyle="outline"
+          style={{ borderColor: "#dddddd" }}
           onClick={this.handleClick}
         />
       </div>

@@ -1,19 +1,12 @@
 <template name="productSettings">
   {{#if hasSelectedProducts}}
-  <div class="panel-group variant-edit-form">
-    <div class="panel panel-default variant-form">
-      <div class="panel-body">
-        {{> React PublishContainerComponent}}
-      </div>
-    </div>
-  </div>
   <div class="panel panel-default">
     <div class="panel-heading panel-heading-flex">
       <div class="panel-title" data-i18n="gridSettingsPanel.selected">Selected</div>
       <div class="panel-controls">
         <button
           type="button"
-          class="btn btn-default"
+          class="rui btn btn-default flat"
           data-toggle="tooltip"
           title="{{i18n 'productDetailEdit.publish' 'Publish'}}"
           data-original-title="{{i18n 'productDetailEdit.publish' 'Publish'}}"
@@ -28,7 +21,7 @@
 
         <button
           type="button"
-          class="btn btn-default"
+          class="rui btn btn-default flat"
           data-toggle="tooltip"
           title="{{i18n 'productDetailEdit.duplicateProduct' 'Duplicate Product'}}"
           data-original-title="{{i18n 'productDetailEdit.duplicateProduct' 'Duplicate Product'}}"
@@ -39,7 +32,7 @@
 
         <button
           type="button"
-          class="delete-product2 btn btn-danger"
+          class="rui delete-product2 btn btn-danger flat"
           data-toggle="tooltip"
           title="{{i18n 'productDetailEdit.deleteProduct' 'Delete Product'}}"
           data-original-title="{{i18n 'productDetailEdit.deleteProduct' 'Delete Product'}}"
@@ -50,19 +43,10 @@
       </div>
     </div>
 
-    <div class="panel-body">
-      <div class="order-items">
-        {{#each product in products}}
-          {{> productSettingsListItem product}}
-        {{/each}}
-      </div>
-      {{!-- Todo: if theres only one selected
-      <div class="product-settings-mock-grid hidden">
-        {{#each product in products}}
-          {{> productSettingsGridItem product}}
-        {{/each}}
-      </div>
-      --}}
+    <div class="list-group order-items">
+      {{#each product in products}}
+        {{> productSettingsListItem product}}
+      {{/each}}
     </div>
 
   </div>
@@ -94,7 +78,9 @@
 
       <div class="list-group-item {{itemWeightActive 2}}" data-event-action="changeProductWeight" data-event-data="2">
         <div class="product-settings-size-control main-full">
-          <div class="main"></div>
+          <div class="main">
+            <div class="overlay"></div>
+          </div>
         </div>
       </div>
 
@@ -114,24 +100,33 @@
 </template>
 
 <template name="productSettingsListItem">
-  <div class="order-item" data-id="{{_id}}" id="{{_id}}">
+  <div class="list-group-item product-settings-list-item {{listItemActiveClassName _id}}" data-id="{{_id}}" id="{{_id}}">
+    <a
+      href="{{pathFor 'product' handle=handle}}"
+      data-event-category="grid"
+      data-event-action="product-click"
+      data-event-label="grid product click"
+      data-event-value="{{_id}}"
+    >
+      <div class="order-item-media">
+        {{#with media}}
+          <img src="{{url store='large'}}">
+        {{else}}
+          <img src="/resources/placeholder.gif">
+        {{/with}}
+      </div>
 
+      <div class="order-item-details">
+        <div>
+          <div class="overlay-title">{{title}}</div>
+          <div class="currency-symbol">{{formatPrice displayPrice}}</div>
+        </div>
+      </div>
 
-    <div class="order-item-media">
-      {{#with media}}
-        <img src="{{url store='large'}}">
-      {{else}}
-        <img src="/resources/placeholder.gif">
-      {{/with}}
-    </div>
-
-    <div class="order-item-details">
-      <a href="{{pathFor 'product' handle=handle}}" data-event-category="grid" data-event-action="product-click" data-event-label="grid product click" data-event-value="{{_id}}">
-        <div class="overlay-title">{{title}}</div>
-        <div class="currency-symbol">{{formatPrice displayPrice}}</div>
-      </a>
-    </div>
-
+      <div class="action-view">
+        <i class="fa fa-angle-right"></i>
+      </div>
+    </a>
   </div>
 </template>
 

@@ -27,14 +27,14 @@
         <div class="panel-controls">
           {{> button
             icon="files-o"
-            className="btn btn-default btn-clone-variant"
+            className="rui btn btn-default btn-clone-variant flat"
             tooltip="Duplicate"
             i18nTooltip="productDetailEdit.duplicateVariant"
           }}
           {{#if isDeleted}}
             {{> button
               icon="refresh"
-              className="btn btn-default btn-restore-variant"
+              className="rui btn btn-default btn-restore-variant flat"
               tooltip="Restore"
               i18nTooltip="productDetailEdit.restoreVariant"
               onClick=(restoreVariant this)
@@ -42,7 +42,7 @@
           {{else}}
             {{> button
               icon="trash-o"
-              className="btn btn-default btn-remove-variant"
+              className="rui btn btn-danger btn-remove-variant flat"
               tooltip="Archive"
               i18nTooltip="productDetailEdit.removeVariant"
               onClick=(removeVariant this)
@@ -127,10 +127,8 @@
                   {{/if}}
               </div>
               <div class="lowInventoryWarningThreshold form-group{{#if afFieldIsInvalid name='lowInventoryWarningThreshold'}} has-error{{/if}}" style="{{displayLowInventoryWarning doc}}">
-                  <span class="col-xs-5 col-sm-8 col-md-8">
                   <label class="control-label">{{afFieldLabelText name='lowInventoryWarningThreshold'}}</label>
                   {{>afFieldInput name='lowInventoryWarningThreshold' placeholder="0"}}
-                  </span>
                   {{#if afFieldIsInvalid name='lowInventoryWarningThreshold'}}
                   <span class="help-block">{{afFieldMessage name='lowInventoryWarningThreshold'}}</span>
                   {{/if}}
