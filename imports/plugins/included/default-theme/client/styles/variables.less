@@ -37,6 +37,8 @@
 // Brand
 @brand-primary-color: @reaction-brand;
 @brand-primary-dark: #23566D;
+@brand-primary-bg-light: #e4e9ec;
+@brand-primary-border-color: #afbac1;
 
 @brand-secondary-color: @brand-primary-dark; //lighten(@brand-primary-color, 20); // old @brand-secondary-color: #4aa5bd;
 @brand-accent-color: #94E8D1; //lighten(@brand-primary-color, 37); // old @brand-accent-color: #abe2e7;
@@ -50,6 +52,7 @@
 @brand-info-color:            #5bc0de;
 @brand-warning-color:         #EFC95F;
 @brand-danger-color:          #EB4D5C;
+
 
 //== Bootstrap colors
 //
@@ -1129,6 +1132,12 @@
 @navbar-secondary-border: 1px solid @black10;
 
 
+// == Tag Groups
+@tag-group-text-color: @brand-primary-dark;
+@tag-group-border-color: @brand-primary-border-color;
+@tag-group-background-color: @brand-primary-bg-light;
+
+
 //== Dashboard navbar
 @navbar-dashboard-bg: @white;
 @navbar-dashboard-color: @black;
@@ -1216,9 +1225,9 @@
 
 //== Responsive
 @highdensity: ~"only screen and (-webkit-min-device-pixel-ratio: 1.5)",
-              ~"only screen and (min--moz-device-pixel-ratio: 1.5)",
-              ~"only screen and (-o-min-device-pixel-ratio: 3/2)",
-              ~"only screen and (min-device-pixel-ratio: 1.5)";
+~"only screen and (min--moz-device-pixel-ratio: 1.5)",
+~"only screen and (-o-min-device-pixel-ratio: 3/2)",
+~"only screen and (min-device-pixel-ratio: 1.5)";
 @mobile:      ~"only screen and (max-width: 649px)";
 @tablet:      ~"only screen and (min-width: 650px) and (max-width: 949px)";
 @mobile-all:   ~"only screen and (max-width: 949px)";

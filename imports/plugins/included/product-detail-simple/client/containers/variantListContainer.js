@@ -195,7 +195,7 @@ function composer(props, onData) {
 
   let editable;
 
-  if (Reaction.Router.getQueryParam("as") === "customer") {
+  if (Reaction.isPreview() === true) {
     editable = false;
   } else {
     editable = Reaction.hasPermission(["createProduct"]);

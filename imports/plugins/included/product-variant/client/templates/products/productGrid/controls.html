@@ -18,6 +18,10 @@
       </div>
       {{/if}}
 
+      {{#unless isVisible}}
+        <div>{{> React VisibilityButton}}</div>
+      {{/unless}}
+
     </div>
   {{/if}}
 </template>
