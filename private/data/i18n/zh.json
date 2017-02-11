@@ -56,6 +56,8 @@
       "app": {
         "add": "添加",
         "editMode": "编辑模式",
+        "administratorView": "管理员查看",
+        "customerView": "客户视图",
         "createContent": "创建内容",
         "auto": "自动",
         "save": "保存",
@@ -575,68 +577,6 @@
       },
       "checkoutReview": {
         "review": "核对订单"
-      },
-      "checkoutShipping": {
-        "selectShippingOption": "选择运输方式",
-        "noShippingMethods": "没有设置运输方式。",
-        "configureNow": "现在设置。",
-        "shipping": "运输"
-      },
-      "shipping": {
-        "addShippingProvider": "添加配送服务提供商",
-        "editShippingProvider": "编辑配送服务提供商",
-        "addShippingMethod": "添加发货方式",
-        "editShippingMethod": "编辑发货方式",
-        "deleteShippingMethod": "删除发货方式",
-        "noSettingsForThisView": "此视图无设置",
-        "noShippingMethods": "未配置任何发货方式。",
-        "removeShippingMethodConfirm": "您确定要删除{{method}}吗？",
-        "removeShippingMethodTitle": "删除发货方式",
-        "shippingMethodDeleted": "此发货方式已删除。",
-        "removeShippingProvider": "删除配送服务提供商",
-        "removeShippingProviderConfirm": "您确定要删除{{provider}}吗？",
-        "shippingProviderSaved": "配送服务提供商已保存。",
-        "shippingProviderUpdated": "配送服务提供商数据已更新。",
-        "shippingMethodRateAdded": "已添加发货方式费用。",
-        "shippingMethodRateUpdated": "发货方式费用已更新。",
-        "name": "姓名",
-        "label": "标签",
-        "group": "群组",
-        "cost": "成本",
-        "handling": "正在处理",
-        "rate": "费用",
-        "enabled": "已启用",
-        "disabled": "已禁用",
-        "addRate": "添加费用",
-        "updateRate": "更新{{name}}费用",
-        "addNewCondition": "添加新条件",
-        "deleteCondition": "删除条件",
-        "provider": {
-          "name": "服务代码",
-          "label": "公开标签",
-          "enabled": "已启用"
-        }
-      },
-      "shippingMethod": {
-        "name": "方式名称",
-        "label": "公开标签",
-        "group": "群组",
-        "cost": "成本",
-        "handling": "正在处理",
-        "rate": "费用",
-        "enabled": "已启用",
-        "matchingCartRanges": "匹配购物车范围",
-        "validRanges": {
-          "begin": "开始",
-          "end": "结束"
-        },
-        "matchingLocales": "匹配区域设置",
-        "validLocales": {
-          "origination": "发件人",
-          "destination": "收件人",
-          "deliveryBegin": "预计发货时间",
-          "deliveryEnd": "预计交付时间"
-        }
       },
       "uom": {
         "OZ": "盎司",

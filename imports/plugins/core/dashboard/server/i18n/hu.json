@@ -7,6 +7,10 @@
         "shortcut": {
           "dashboardLabel": "Műszerfal"
         },
+        "dashboard": {
+          "packageGroupActionsLabel": "Hozzászólások",
+          "packageGroupSettingsLabel": "Beállítások"
+        },
         "settings": {
           "shopSettingsLabel": "Üzlet"
         }

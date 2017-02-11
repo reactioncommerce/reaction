@@ -8,6 +8,17 @@
           "shippoLabel": "Shippo",
           "shippoTitle": "Shippo",
           "shippoDescription": "ετικέτες αποστολής και παρακολούθησης πακέτο"
+        },
+        "shippingGrid": {
+          "carrier": "Φορέας",
+          "enabled": "Ενεργοποιήθηκε"
+        },
+        "shippingSettings": {
+          "noCarriersFound": "Δεν φορείς της ναυτιλίας ρυθμιστεί.",
+          "editApiKey": "Επεξεργασία API Key",
+          "carrierSaved": "Φορέας αποθηκευτεί με επιτυχία.",
+          "carrierFailed": "Σφάλμα κατά την ενημέρωση φορέα.",
+          "refresh": "Ανανέωση των μεθόδων"
         }
       },
       "shippo": {

@@ -8,6 +8,17 @@
           "shippoLabel": "Shippo",
           "shippoTitle": "Shippo",
           "shippoDescription": "Versandetiketten und Paketverfolgung"
+        },
+        "shippingGrid": {
+          "carrier": "Träger",
+          "enabled": "Aktiviert"
+        },
+        "shippingSettings": {
+          "noCarriersFound": "Keine Versandträger konfiguriert.",
+          "editApiKey": "Bearbeiten API Key",
+          "carrierSaved": "Träger erfolgreich gespeichert.",
+          "carrierFailed": "Fehler Träger zu aktualisieren.",
+          "refresh": "Aktualisieren Methoden"
         }
       },
       "shippo": {

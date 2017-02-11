@@ -56,6 +56,8 @@
       "app": {
         "add": "Hinzufügen",
         "editMode": "Bearbeitungs-Modus",
+        "administratorView": "Administrator anzeigen",
+        "customerView": "Kundensicht",
         "createContent": "Inhalt erstellen",
         "auto": "Automatisch",
         "save": "Speichern",
@@ -575,68 +577,6 @@
       },
       "checkoutReview": {
         "review": "Durchsicht"
-      },
-      "checkoutShipping": {
-        "selectShippingOption": "Bitte Versandmethode wählen.",
-        "noShippingMethods": "Es wurde keine Versandmethode festgelegt.",
-        "configureNow": "Einstellungen vornehmen.",
-        "shipping": "Versand"
-      },
-      "shipping": {
-        "addShippingProvider": "Versand-Anbieter hinzufügen",
-        "editShippingProvider": "Versand-Anbieter bearbeiten",
-        "addShippingMethod": "Versandart hinzufügen",
-        "editShippingMethod": "Versandart bearbeiten",
-        "deleteShippingMethod": "Versandart löschen",
-        "noSettingsForThisView": "Keine Einstellungen für diese Anzeige",
-        "noShippingMethods": "Es wurden keine Versandarten konfiguriert.",
-        "removeShippingMethodConfirm": "Sind Sie sicher, dass Sie {{method}} löschen möchten?",
-        "removeShippingMethodTitle": "Versandart entfernen",
-        "shippingMethodDeleted": "Diese Versandart wurde gelöscht.",
-        "removeShippingProvider": "Versand-Anbieter entfernen",
-        "removeShippingProviderConfirm": "Sind Sie sicher, dass Sie {{provider}} löschen möchten?",
-        "shippingProviderSaved": "Der Versand-Anbieter wurde gespeichert.",
-        "shippingProviderUpdated": "Die Daten des Versand-Anbieters wurden aktualisiert.",
-        "shippingMethodRateAdded": "Der Preis der Versandart wurde hinzugefügt.",
-        "shippingMethodRateUpdated": "Der Versandart-Preis wurde aktualisiert.",
-        "name": "Name",
-        "label": "Label",
-        "group": "Gruppe",
-        "cost": "Kosten",
-        "handling": "Bearbeitung",
-        "rate": "Preis",
-        "enabled": "Aktiviert",
-        "disabled": "Deaktiviert",
-        "addRate": "Satz hinzufügen",
-        "updateRate": "Preis von {{name}} aktualisieren",
-        "addNewCondition": "Neue Bedingung hinzufügen",
-        "deleteCondition": "Bedingung löschen",
-        "provider": {
-          "name": "Dienstcode",
-          "label": "Öffentliches Label",
-          "enabled": "Aktiviert"
-        }
-      },
-      "shippingMethod": {
-        "name": "Bezeichnung der Methode",
-        "label": "Öffentliches Label",
-        "group": "Gruppe",
-        "cost": "Kosten",
-        "handling": "Bearbeitung",
-        "rate": "Preis",
-        "enabled": "Aktiviert",
-        "matchingCartRanges": "Passende Warenkorb-Auswahl",
-        "validRanges": {
-          "begin": "Beginn",
-          "end": "Beenden"
-        },
-        "matchingLocales": "Passende Standorte",
-        "validLocales": {
-          "origination": "Von",
-          "destination": "An",
-          "deliveryBegin": "Geschätzter Versandtermin.",
-          "deliveryEnd": "Geschätzter Liefertermin"
-        }
       },
       "uom": {
         "OZ": "Unzen",

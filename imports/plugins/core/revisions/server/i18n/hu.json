@@ -5,6 +5,7 @@
     "reaction-revisions": {
       "admin": {
         "dashboard": {
+          "preview": "Előnézet",
           "revisionsLabel": "Változatok",
           "revisionsTitle": "Változatok",
           "revisionsDescription": "Revision szabályozás"
