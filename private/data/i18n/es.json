@@ -56,6 +56,8 @@
       "app": {
         "add": "Añadir",
         "editMode": "Modo edición",
+        "administratorView": "administrador del Ver",
+        "customerView": "Ver al cliente",
         "createContent": "Crear contenido",
         "auto": "Auto",
         "save": "Guardar",
@@ -575,68 +577,6 @@
       },
       "checkoutReview": {
         "review": "Revisar"
-      },
-      "checkoutShipping": {
-        "selectShippingOption": "Selección opción de envío",
-        "noShippingMethods": "No se han configurado métodos de envío.",
-        "configureNow": "Configurar ahora.",
-        "shipping": "Envío"
-      },
-      "shipping": {
-        "addShippingProvider": "Añadir proveedor de envío",
-        "editShippingProvider": "Editar proveedor de envío",
-        "addShippingMethod": "Añadir método de envío",
-        "editShippingMethod": "Editar método de envío",
-        "deleteShippingMethod": "Eliminar método de envío",
-        "noSettingsForThisView": "No hay configuración para esta vista",
-        "noShippingMethods": "No se ha configurado ningún método de envío.",
-        "removeShippingMethodConfirm": "¿Seguro que quieres eliminar {{method}}?",
-        "removeShippingMethodTitle": "Eliminar método de envío",
-        "shippingMethodDeleted": "Este método de envío se ha eliminado.",
-        "removeShippingProvider": "Eliminar proveedor de servicios de envío",
-        "removeShippingProviderConfirm": "¿Seguro que quieres eliminar {{provider}}?",
-        "shippingProviderSaved": "Proveedor de servicios de envío guardado.",
-        "shippingProviderUpdated": "Datos del proveedor de servicios de envío actualizados.",
-        "shippingMethodRateAdded": "Tarifa del método de envío añadida.",
-        "shippingMethodRateUpdated": "Tarifa de método de envío actualizada.",
-        "name": "Nombre",
-        "label": "Etiqueta",
-        "group": "Grupo",
-        "cost": "Coste",
-        "handling": "Gestión",
-        "rate": "Tarifa",
-        "enabled": "Habilitado",
-        "disabled": "Deshabilitado",
-        "addRate": "Añadir tarifa",
-        "updateRate": "Actualizar tarifa de {{name}}",
-        "addNewCondition": "Añadir una nueva condición",
-        "deleteCondition": "Eliminar condición",
-        "provider": {
-          "name": "Código del servicio",
-          "label": "Etiqueta pública",
-          "enabled": "Activado"
-        }
-      },
-      "shippingMethod": {
-        "name": "Nombre de método",
-        "label": "Etiqueta pública",
-        "group": "Grupo",
-        "cost": "Coste",
-        "handling": "Gestión",
-        "rate": "Tarifa",
-        "enabled": "Habilitado",
-        "matchingCartRanges": "Rangos de coincidencia en el carrito",
-        "validRanges": {
-          "begin": "Empezar",
-          "end": "Fin"
-        },
-        "matchingLocales": "Los lugares son iguales",
-        "validLocales": {
-          "origination": "Desde",
-          "destination": "A",
-          "deliveryBegin": "Envío est.",
-          "deliveryEnd": "Envío est."
-        }
       },
       "uom": {
         "OZ": "Onzas",

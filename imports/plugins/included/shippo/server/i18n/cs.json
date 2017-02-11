@@ -8,6 +8,17 @@
           "shippoLabel": "Shippo",
           "shippoTitle": "Shippo",
           "shippoDescription": "Odeslání etikety a sledování zásilek"
+        },
+        "shippingGrid": {
+          "carrier": "Dopravce",
+          "enabled": "Povoleno"
+        },
+        "shippingSettings": {
+          "noCarriersFound": "Žádné lodní dopravci nakonfigurován.",
+          "editApiKey": "Editace API",
+          "carrierSaved": "Carrier úspěšně uloženy.",
+          "carrierFailed": "Chyba při aktualizaci nosič.",
+          "refresh": "Obnovit metody"
         }
       },
       "shippo": {

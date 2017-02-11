@@ -56,6 +56,8 @@
       "app": {
         "add": "Adicionar",
         "editMode": "Modo de edição",
+        "administratorView": "administrador Ver",
+        "customerView": "cliente Ver",
         "createContent": "Criar conteúdo",
         "auto": "Automático",
         "save": "Guardar",
@@ -575,68 +577,6 @@
       },
       "checkoutReview": {
         "review": "Rever"
-      },
-      "checkoutShipping": {
-        "selectShippingOption": "Selecionar opção de envio",
-        "noShippingMethods": "Não há métodos de envio configurados.",
-        "configureNow": "Configure agora.",
-        "shipping": "Envio"
-      },
-      "shipping": {
-        "addShippingProvider": "Adicionar fornecedor de envio",
-        "editShippingProvider": "Editar fornecedor de envio",
-        "addShippingMethod": "Adicionar método de envio",
-        "editShippingMethod": "Editar método de envio",
-        "deleteShippingMethod": "Eliminar método de envio",
-        "noSettingsForThisView": "Nenhuma definição para esta vista",
-        "noShippingMethods": "Não há métodos de envio configurados.",
-        "removeShippingMethodConfirm": "Tem a certeza de que pretende eliminar o método {{method}}?",
-        "removeShippingMethodTitle": "Remover método de envio",
-        "shippingMethodDeleted": "Este método de envio foi eliminado.",
-        "removeShippingProvider": "Remover fornecedor de envio",
-        "removeShippingProviderConfirm": "Tem a certeza de que pretende eliminar {{provider}}?",
-        "shippingProviderSaved": "Fornecedor de envio guardado.",
-        "shippingProviderUpdated": "Dados do fornecedor de envio atualizados.",
-        "shippingMethodRateAdded": "Taxa de método de envio adicionada.",
-        "shippingMethodRateUpdated": "Taxa do método de envio atualizada.",
-        "name": "Nome",
-        "label": "Etiqueta",
-        "group": "Grupo",
-        "cost": "Custo",
-        "handling": "Processamento",
-        "rate": "Taxa",
-        "enabled": "Ativado",
-        "disabled": "Desativado",
-        "addRate": "Adicionar taxa",
-        "updateRate": "Atualizar taxa de {{name}}",
-        "addNewCondition": "Adicionar nova condição",
-        "deleteCondition": "Eliminar condição",
-        "provider": {
-          "name": "Código de serviço",
-          "label": "Etiqueta pública",
-          "enabled": "Ativado"
-        }
-      },
-      "shippingMethod": {
-        "name": "Nome do método",
-        "label": "Etiqueta pública",
-        "group": "Grupo",
-        "cost": "Custo",
-        "handling": "Processamento",
-        "rate": "Taxa",
-        "enabled": "Ativado",
-        "matchingCartRanges": "Combinar tipos de carrinho de compras",
-        "validRanges": {
-          "begin": "Início",
-          "end": "Fim"
-        },
-        "matchingLocales": "Regiões correspondentes",
-        "validLocales": {
-          "origination": "De",
-          "destination": "Para",
-          "deliveryBegin": "Estimativa dos custos de envio",
-          "deliveryEnd": "Prazo de entrega estimado"
-        }
       },
       "uom": {
         "OZ": "Gramas",
