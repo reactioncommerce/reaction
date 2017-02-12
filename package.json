@@ -59,6 +59,7 @@
     "node-geocoder": "^3.16.0",
     "nodemailer": "^2.7.2",
     "nodemailer-wellknown": "^0.2.1",
+    "nouislider-algolia-fork": "^10.0.0",
     "npm-shrinkwrap": "^6.0.2",
     "paypal-rest-sdk": "^1.7.1",
     "postcss": "^5.2.11",
