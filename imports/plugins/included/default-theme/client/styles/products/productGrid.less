@@ -300,13 +300,12 @@
 
 // ----------------------------------------------------------------------------
 
-  // position: absolute;
-  // top: 10px;
-  // right: 10px;
-  // border: none;
-  // background-color: rgb(239, 102, 198);
-  // color: white;
-  // padding: 10px 15px;
+.grid-alerts {
+  display: flex;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
 
 
 .product-grid-controls {
@@ -318,11 +317,6 @@
   width: auto;
   padding: 0;
   overflow: hidden;
-
-  position: absolute;
-  top: 0;
-  right: 0;
-
 
   // button, .rui.button {
   //   border: none;
@@ -358,9 +352,12 @@
 }
 
 .product-grid-badges {
-  .badge {
-    position: absolute;
-    top: 0px;
-    right: 0px;
-  }
+  .display(flex);
+  .flex(0 1 auto);
+  .align-items(center);
+  .justify-content(center);
+
+  width: auto;
+  padding: 0;
+  overflow: hidden;
 }
