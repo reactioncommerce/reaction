@@ -6,6 +6,7 @@ import { check, Match } from "meteor/check";
 import { Packages, Shops } from "/lib/collections";
 import { Reaction } from "/server/api";
 
+const countriesWithRegions = ["US", "CA", "DE", "AU"];
 const taxCalc = {};
 
 taxCalc.getPackageData = function () {
@@ -104,7 +105,8 @@ taxCalc.validateAddress = function (address) {
     country: address.country
   };
 
-  if (address.country === "US" || address.country === "CA") {
+  if (_.includes(countriesWithRegions, address.country)) {
+    // if this is a country with regions, pass in region
     addressToValidate.region = address.region;
   }
   if (address.line2) {
@@ -318,14 +320,14 @@ taxCalc.recordOrder = function (order, callback) {
     try {
       HTTP.post(requestUrl, { data: salesOrder, auth: auth }, (err, result) => {
         if (err) {
-          Logger.error("Encountered error while recording order");
+          Logger.error("Encountered error while recording order to Avalara");
           Logger.error(err);
         }
         const data = JSON.parse(result.content);
         return callback(data);
       });
     } catch (error) {
-      Logger.error("Encountered error while recording order");
+      Logger.error("Encountered error while recording order to Avalara");
       Logger.error(error);
     }
   }

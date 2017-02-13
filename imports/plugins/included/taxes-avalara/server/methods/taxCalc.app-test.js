@@ -20,15 +20,16 @@ describe("Avalara taxRate API", function () {
     it("should return true", function (done) {
       this.timeout(5000);
       const address = {
-        line1: "8008 Norton Ave.",
-        line2: "Apartment 2",
+        address1: "8008 Norton Ave.",
+        address2: "Apartment 2",
         city: "West Hollywood",
         region: "CA",
-        postalCode: "90046"
+        postal: "90046",
+        country: "US"
       };
       const result = taxCalc.validateAddress(address);
       expect(result).to.be.an("object");
-      expect(result.error).to.be.undefined;
+      expect(result.errors.length).to.equal(0);
       done();
     });
 
@@ -83,8 +84,7 @@ describe("Avalara taxRate API", function () {
       };
       const cart = createCart("BCTMZ6HTxFSppJESk", "6qiqPwBkeJdtdQc4G", options);
       const result = taxCalc.estimateCart(cart);
-      const data = JSON.parse(result.content);
-      expect(data.status).to.equal("Temporary");
+      expect(result.status).to.equal("Temporary");
       done();
     });
 
