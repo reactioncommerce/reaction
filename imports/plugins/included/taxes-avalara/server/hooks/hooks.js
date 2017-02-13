@@ -9,7 +9,7 @@ MethodHooks.after("taxes/calculate", function (options) {
   const pkg = taxCalc.getPackageData();
 
   Logger.debug("Avalara triggered on taxes/calculate for cartId:", cartId);
-  if (pkg && pkg.settings.avalara) {
+  if (pkg && pkg.settings.avalara.enabled) {
     taxCalc.estimateCart(cartToCalc, function (result) {
       if (result) {
         const taxAmount = parseFloat(result.totalTax);
@@ -22,7 +22,7 @@ MethodHooks.after("taxes/calculate", function (options) {
 
 MethodHooks.after("cart/copyCartToOrder", function (options) {
   const pkg = taxCalc.getPackageData();
-  if (pkg && pkg.settings.avalara) {
+  if (pkg && pkg.settings.avalara.enabled) {
     const cartId = options.arguments[0];
     const order = Orders.findOne({ cartId: cartId });
     taxCalc.recordOrder(order, function (result) {
@@ -36,7 +36,7 @@ MethodHooks.after("cart/copyCartToOrder", function (options) {
 
 MethodHooks.after("orders/refunds/create", (options) => {
   const pkg = taxCalc.getPackageData();
-  if (pkg && pkg.settings.avalara) {
+  if (pkg && pkg.settings.avalara.enabled) {
     const orderId = options.arguments[0];
     const order = Orders.findOne(orderId);
     const refundAmount = options.arguments[2];
