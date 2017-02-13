@@ -7,6 +7,10 @@
         "shortcut": {
           "dashboardLabel": "kontrolna ploča"
         },
+        "dashboard": {
+          "packageGroupActionsLabel": "Akcije",
+          "packageGroupSettingsLabel": "Postavke"
+        },
         "settings": {
           "shopSettingsLabel": "Dućan"
         }

@@ -5,6 +5,7 @@
     "reaction-revisions": {
       "admin": {
         "dashboard": {
+          "preview": "ကို preview",
           "revisionsLabel": "တည်းဖြတ်မူများကို",
           "revisionsTitle": "တည်းဖြတ်မူများကို",
           "revisionsDescription": "တည်းဖြတ်မူထိန်းချုပ်မှု"

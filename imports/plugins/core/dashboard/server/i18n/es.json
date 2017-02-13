@@ -7,6 +7,10 @@
         "shortcut": {
           "dashboardLabel": "Salpicadero"
         },
+        "dashboard": {
+          "packageGroupActionsLabel": "Acciones",
+          "packageGroupSettingsLabel": "Ajustes"
+        },
         "settings": {
           "shopSettingsLabel": "tienda"
         }

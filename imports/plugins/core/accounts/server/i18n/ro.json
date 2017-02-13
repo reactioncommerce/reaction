@@ -1,0 +1,20 @@
+[{
+  "i18n": "ro",
+  "ns": "reaction-accounts",
+  "translation": {
+    "reaction-accounts": {
+      "admin": {
+        "dashboard": {
+          "accountsLabel": "Conturi",
+          "accountsTitle": "Conturi",
+          "accountsDescription": "Setările contului"
+        },
+        "settings": {
+          "accountsSettingsLabel": "Conturi",
+          "accountsSettingsTitle": "Conturi",
+          "accountsSettingsDescription": "Setările contului"
+        }
+      }
+    }
+  }
+}]

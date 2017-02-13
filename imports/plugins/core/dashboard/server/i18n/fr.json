@@ -7,6 +7,10 @@
         "shortcut": {
           "dashboardLabel": "Tableau de bord"
         },
+        "dashboard": {
+          "packageGroupActionsLabel": "Actes",
+          "packageGroupSettingsLabel": "Paramètres"
+        },
         "settings": {
           "shopSettingsLabel": "Boutique"
         }

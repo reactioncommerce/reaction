@@ -236,7 +236,7 @@ export default {
   },
 
   isPreview() {
-    const viewAs = this.getUserPreferences("reaction-dashboard", "viewAs", "customer");
+    const viewAs = this.getUserPreferences("reaction-dashboard", "viewAs", "administrator");
 
     if (viewAs === "customer") {
       return true;
