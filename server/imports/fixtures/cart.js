@@ -42,7 +42,7 @@ function getSingleCartItem(options = {}) {
   return cartItem;
 }
 
-export function createCart(productId, variantId, options = {}) {
+export function createCart(productId, variantId) {
   const product = Products.findOne(productId);
   const variant = Products.findOne(variantId);
   const user = Factory.create("user");
@@ -61,6 +61,18 @@ export function createCart(productId, variantId, options = {}) {
     sessionId: Random.id(),
     email: faker.internet.email(),
     items: [cartItem],
+    shipping: [
+      {
+        _id: Random.id(),
+        address: getAddress()
+      }
+    ],
+    billing: [
+      {
+        _id: Random.id(),
+        address: getAddress()
+      }
+    ],
     workflow: {
       status: "checkoutPayment",
       workflow: [
@@ -74,21 +86,6 @@ export function createCart(productId, variantId, options = {}) {
     createdAt: faker.date.past(),
     updatedAt: new Date()
   };
-  if (options.shippingAddress) {
-    cart.shipping = [
-      {
-        _id: Random.id(),
-        address: getAddress(options.shippingAddress)
-      }
-    ];
-  } else {
-    cart.shipping = [
-      {
-        _id: Random.id(),
-        address: getAddress(options.shippingAddress)
-      }
-    ];
-  }
   const newCartId = Cart.insert(cart);
   const insertedCart = Cart.findOne(newCartId);
   return insertedCart;
