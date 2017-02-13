@@ -8,6 +8,17 @@
           "shippoLabel": "景泰蓝",
           "shippoTitle": "景泰蓝",
           "shippoDescription": "货运标签和包裹跟踪"
+        },
+        "shippingGrid": {
+          "carrier": "运营商",
+          "enabled": "启用"
+        },
+        "shippingSettings": {
+          "noCarriersFound": "没有配置运输载体。",
+          "editApiKey": "编辑API密钥",
+          "carrierSaved": "运营商成功保存。",
+          "carrierFailed": "更新时出错载体。",
+          "refresh": "刷新方法"
         }
       },
       "shippo": {

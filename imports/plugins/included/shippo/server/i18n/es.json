@@ -8,6 +8,17 @@
           "shippoLabel": "Shippo",
           "shippoTitle": "Shippo",
           "shippoDescription": "Las etiquetas de envío y seguimiento de paquetes"
+        },
+        "shippingGrid": {
+          "carrier": "Carrier",
+          "enabled": "Activado"
+        },
+        "shippingSettings": {
+          "noCarriersFound": "No hay empresas de transporte configurados.",
+          "editApiKey": "Editar clave de API",
+          "carrierSaved": "Carrier ha guardado correctamente.",
+          "carrierFailed": "Error al actualizar portador.",
+          "refresh": "métodos de actualización"
         }
       },
       "shippo": {

@@ -1,0 +1,20 @@
+[{
+  "i18n": "de",
+  "ns": "reaction-accounts",
+  "translation": {
+    "reaction-accounts": {
+      "admin": {
+        "dashboard": {
+          "accountsLabel": "Buchhaltung",
+          "accountsTitle": "Buchhaltung",
+          "accountsDescription": "Kontoeinstellungen"
+        },
+        "settings": {
+          "accountsSettingsLabel": "Buchhaltung",
+          "accountsSettingsTitle": "Buchhaltung",
+          "accountsSettingsDescription": "Kontoeinstellungen"
+        }
+      }
+    }
+  }
+}]

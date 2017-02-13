@@ -5,6 +5,7 @@
     "reaction-revisions": {
       "admin": {
         "dashboard": {
+          "preview": "Xem trước",
           "revisionsLabel": "Revisions",
           "revisionsTitle": "Revisions",
           "revisionsDescription": "kiểm soát sửa đổi"

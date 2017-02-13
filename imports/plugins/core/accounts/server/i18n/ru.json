@@ -1,0 +1,20 @@
+[{
+  "i18n": "ru",
+  "ns": "reaction-accounts",
+  "translation": {
+    "reaction-accounts": {
+      "admin": {
+        "dashboard": {
+          "accountsLabel": "Счета",
+          "accountsTitle": "Счета",
+          "accountsDescription": "Настройки аккаунта"
+        },
+        "settings": {
+          "accountsSettingsLabel": "Счета",
+          "accountsSettingsTitle": "Счета",
+          "accountsSettingsDescription": "Настройки аккаунта"
+        }
+      }
+    }
+  }
+}]
