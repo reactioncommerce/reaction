@@ -309,7 +309,7 @@ function orderToSalesInvoice(order) {
  */
 taxCalc.recordOrder = function (order, callback) {
   check(callback, Function);
-  if (order.shipping && order.shipping[0].address) {
+  if (order && order.shipping && order.shipping[0].address) {
     const salesOrder = orderToSalesInvoice(order);
     const auth = getAuthData();
     const baseUrl = getUrl();
