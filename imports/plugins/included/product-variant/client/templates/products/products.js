@@ -102,6 +102,7 @@ Template.products.onCreated(function () {
 
     this.state.set("canLoadMoreProducts", productCursor.count() >= Session.get("productScrollLimit"));
     this.products.set(products);
+    Session.set("productGrid/products", products);
   });
 
   this.autorun(() => {

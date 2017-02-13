@@ -36,14 +36,23 @@ class GridProductPublishContainer extends Component {
 
 function composer(props, onData) {
   const selectedProducts = Session.get("productGrid/selectedProducts");
+  const products = Session.get("productGrid/products");
 
-  if (selectedProducts) {
+  let productIds;
+
+  if (Array.isArray(selectedProducts) && selectedProducts.length) {
+    productIds = selectedProducts;
+  } else if (Array.isArray(products) && products.length) {
+    productIds = products.map(p => p._id);
+  }
+
+  if (productIds) {
     const documents = Products.find({
-      _id: { $in: selectedProducts }
+      _id: { $in: productIds }
     }).fetch();
 
     onData(null, {
-      documentIds: selectedProducts,
+      documentIds: productIds,
       documents
     });
   } else {
