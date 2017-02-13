@@ -24,11 +24,11 @@ Template.gridNotice.helpers({
     for (const topVariant of topVariants) {
       const inventoryQuantity = ReactionProduct.getVariantQuantity(topVariant);
 
-      if (inventoryQuantity > 0) {
-        return false;
+      if (inventoryQuantity <= 0) {
+        return true;
       }
     }
-    return true;
+    return false;
   },
   isBackorder: function () {
     return this.isBackorder;
