@@ -11,7 +11,7 @@ MethodHooks.after("taxes/calculate", function (options) {
   Logger.debug("Avalara triggered on taxes/calculate for cartId:", cartId);
   if (pkg && pkg.settings.avalara.enabled) {
     taxCalc.estimateCart(cartToCalc, function (result) {
-      if (result) {
+      if (result && result.totalTax && typeof result.totalTax === "number") {
         const taxAmount = parseFloat(result.totalTax);
         const taxRate = taxAmount / taxCalc.calcTaxable(cartToCalc);
         Meteor.call("taxes/setRate", cartId, taxRate);
