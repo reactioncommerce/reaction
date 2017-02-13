@@ -181,12 +181,13 @@ ProductDetailContainer.propTypes = {
 };
 
 function composer(props, onData) {
+  const userId = Meteor.userId();
   const tagSub = Meteor.subscribe("Tags");
   const productId = Reaction.Router.getParam("handle");
   const variantId = Reaction.Router.getParam("variantId");
   const revisionType = Reaction.Router.getQueryParam("revision");
-  const viewProductAs = Reaction.getUserPreferences("reaction-dashboard", "viewAs", "administrator");
 
+  let viewProductAs = Reaction.getUserPreferences("reaction-dashboard", "viewAs", "administrator");
   let productSub;
 
   if (productId) {
@@ -272,7 +273,11 @@ function composer(props, onData) {
       if (viewProductAs === "customer") {
         editable = false;
       } else {
-        editable = Reaction.hasPermission(["createProduct"]);
+        editable = Reaction.hasPermission(["createProduct"], userId, product.shopId);
+
+        if (!editable) {
+          viewProductAs = "customer";
+        }
       }
 
       const topVariants = ReactionProduct.getTopVariants();
@@ -286,7 +291,7 @@ function composer(props, onData) {
         media: mediaArray,
         editable,
         viewAs: viewProductAs,
-        hasAdminPermission: Reaction.hasPermission(["createProduct"])
+        hasAdminPermission: editable
       });
     } else {
       // onData must be called with composeWithTracker, or else the loading icon will show forever.

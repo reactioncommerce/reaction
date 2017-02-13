@@ -58,13 +58,17 @@ const filters = new SimpleSchema({
   "weight.max": {
     type: String,
     optional: true
+  },
+  "marketplace": {
+    type: Boolean,
+    optional: true
   }
 });
 
 /**
  * products publication
  * @param {Number} productScrollLimit - optional, defaults to 24
- * @param {Array} shops - array of shopId to retrieve product from.
+ * @param {Array} shops - array of shopId to retrieve product from or a mongodb $in regEx
  * @return {Object} return product cursor
  */
 Meteor.publish("Products", function (productScrollLimit = 24, productFilters, sort = {}) {
@@ -96,6 +100,11 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
     };
 
     if (productFilters) {
+      // handle marketplace multiple sellers
+      if (productFilters.marketplace) {
+        delete selector.shopId;
+      }
+
       // handle multiple shops
       if (productFilters.shops) {
         _.extend(selector, {
@@ -232,7 +241,7 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
     // Authorized content curators fo the shop get special publication of the product
     // with all relevant revisions all is one package
 
-    if (Roles.userIsInRole(this.userId, ["owner", "admin", "createProduct"], shop._id)) {
+    if (Roles.userIsInRole(this.userId, ["owner", "admin", "createProduct"], Reaction.getSellerShopId(this.userId))) {
       selector.isVisible = {
         $in: [true, false, undefined]
       };
