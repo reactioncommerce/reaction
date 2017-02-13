@@ -7,6 +7,10 @@
         "shortcut": {
           "dashboardLabel": "Instrumentbräda"
         },
+        "dashboard": {
+          "packageGroupActionsLabel": "Aktiviteter",
+          "packageGroupSettingsLabel": "Inställningar"
+        },
         "settings": {
           "shopSettingsLabel": "Handla"
         }

@@ -56,6 +56,8 @@
       "app": {
         "add": "إضافة",
         "editMode": "إضافة نمط",
+        "administratorView": "مدير مشاهدة",
+        "customerView": "عرض العملاء",
         "createContent": "إنشاء محتوى",
         "auto": "تلقائي",
         "save": "حفظ",
@@ -575,68 +577,6 @@
       },
       "checkoutReview": {
         "review": "إعادة العرض"
-      },
-      "checkoutShipping": {
-        "selectShippingOption": "اختيار خيار الشحن",
-        "noShippingMethods": ".لا يوجد طريقة شحن مؤكدة",
-        "configureNow": "إنشىء الأن",
-        "shipping": "الشحن"
-      },
-      "shipping": {
-        "addShippingProvider": "إضافة مزود الشحن",
-        "editShippingProvider": "تحرير مقدم خدمة الشحن",
-        "addShippingMethod": "إضافة طريقة الشحن",
-        "editShippingMethod": "تغيير طريقة الشحن",
-        "deleteShippingMethod": "حذف طريقة الشحن ",
-        "noSettingsForThisView": "لا يوجد إعدادات لهذا العرض",
-        "noShippingMethods": "لم يتم تهيئة أي طرق للشحن.",
-        "removeShippingMethodConfirm": "هل انت متأكد من حذف {{method}}؟",
-        "removeShippingMethodTitle": "إزالة طريقة الشحن",
-        "shippingMethodDeleted": ".تم حذف طريقة الشحن هذه",
-        "removeShippingProvider": "إزالة مزود الشحن",
-        "removeShippingProviderConfirm": "هل أنت متأكد من أنك تريد حذف {{provider}}?",
-        "shippingProviderSaved": "مزود الشحن محفوظ",
-        "shippingProviderUpdated": ".تحديث معلومات مزود الشحن",
-        "shippingMethodRateAdded": ".تم إضافة طريقة معدل الشحن",
-        "shippingMethodRateUpdated": ". تحديث طريقة معدل الشحن",
-        "name": "الأسم",
-        "label": "ملصق",
-        "group": "مجموعة",
-        "cost": "ثمن",
-        "handling": "معالجة",
-        "rate": "معدل",
-        "enabled": "تم التفعيل",
-        "disabled": "إلغاء الفعيل",
-        "addRate": "إضافة معدل",
-        "updateRate": "تحديث{{name}} معدل",
-        "addNewCondition": "إضافة شرط جديد",
-        "deleteCondition": "حذف شرط",
-        "provider": {
-          "name": "رمز الخدمة",
-          "label": "علامة عامة",
-          "enabled": "تم التفعيل"
-        }
-      },
-      "shippingMethod": {
-        "name": "اسم الطريقة",
-        "label": "علامة عامة",
-        "group": "مجموعة",
-        "cost": "ثمن",
-        "handling": "معالجة",
-        "rate": "معدل ",
-        "enabled": "تفعيل",
-        "matchingCartRanges": "مطابقة نطاقات العربة",
-        "validRanges": {
-          "begin": "بدء ",
-          "end": "نهاية"
-        },
-        "matchingLocales": "مطابقة المواقع",
-        "validLocales": {
-          "origination": "من",
-          "destination": "إلى",
-          "deliveryBegin": "الشحن المتوقع.",
-          "deliveryEnd": "التسليم المتوقع."
-        }
       },
       "uom": {
         "OZ": "أوقية",

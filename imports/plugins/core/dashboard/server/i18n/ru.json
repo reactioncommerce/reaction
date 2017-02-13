@@ -7,6 +7,10 @@
         "shortcut": {
           "dashboardLabel": "Панель приборов"
         },
+        "dashboard": {
+          "packageGroupActionsLabel": "Действия",
+          "packageGroupSettingsLabel": "Настройки"
+        },
         "settings": {
           "shopSettingsLabel": "Магазин"
         }

@@ -1,0 +1,23 @@
+[{
+  "i18n": "sl",
+  "ns": "reaction-shipping-rates",
+  "translation": {
+    "reaction-shipping-rates": {
+      "admin": {
+        "shippingSettings": {
+          "flatRateLabel": "Flat Rate",
+          "confirmRateDelete": "Brisanje hitrost?",
+          "rateSaved": "Pavšalno shranjene.",
+          "rateFailed": "Stanovanje posodobitev stopnja ni uspela.",
+          "noRatesFound": "Ni mere."
+        },
+        "shippingGrid": {
+          "name": "Name",
+          "group": "skupina",
+          "rate": "Oceniti",
+          "label": "Label"
+        }
+      }
+    }
+  }
+}]

@@ -197,12 +197,6 @@
       "checkoutReview": {
         "review": "Se igjennom"
       },
-      "checkoutShipping": {
-        "selectShippingOption": "Velg frakt alternativ",
-        "noShippingMethods": "Det er ingen tilgjengelige frakt alternativer.",
-        "configureNow": "Konfigurer nå.",
-        "shipping": "Frakt"
-      },
       "consoleIcon": {
         "iconTitle": "Vis konsoll",
         "text": "Konsoll"

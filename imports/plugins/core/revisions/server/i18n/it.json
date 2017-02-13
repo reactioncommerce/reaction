@@ -5,6 +5,7 @@
     "reaction-revisions": {
       "admin": {
         "dashboard": {
+          "preview": "Anteprima",
           "revisionsLabel": "revisioni",
           "revisionsTitle": "revisioni",
           "revisionsDescription": "controllo di revisione"
