@@ -95,6 +95,7 @@ taxCalc.validateAddress = function (address) {
   check(address, Object);
 
   let messages;
+  let validatedAddress;
   const errors = [];
   const addressToValidate  = {
     line1: address.address1,
@@ -125,7 +126,7 @@ taxCalc.validateAddress = function (address) {
 
   if (result && result.data && result.data.validatedAddresses.length !== 0) {
     const resultAddress = result.data.validatedAddresses[0];
-    const validatedAddress = {
+    validatedAddress = {
       address1: resultAddress.line1,
       city: resultAddress.city,
       region: resultAddress.region,
@@ -135,9 +136,8 @@ taxCalc.validateAddress = function (address) {
     if (result.data.address.line2) {
       validatedAddress.addresss2 = resultAddress.line2;
     }
-    return { validatedAddress, errors };
   }
-  return undefined;
+  return { validatedAddress, errors };
 };
 
 /**

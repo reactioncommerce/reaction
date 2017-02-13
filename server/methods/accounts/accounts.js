@@ -45,27 +45,52 @@ function getValidator() {
  */
 function compareAddress(address, validationAddress) {
   const errors = [];
-  if (_.trim(_.upperCase(address.address1)) !== _.trim(_.upperCase(validationAddress.address1))) {
-    errors.push({ address1: "Address line 1 did not match." });
+  // first check, if a field is missing (and was present in original address), that means it didn't validate
+  // TODO rewrite with just a loop over field names but KISS for now
+  if (address.address1 && !validationAddress.address1) {
+    errors.push({ address1: "Address line one did not validate" });
   }
 
-  if (address.address2 && (_.upperCase(address.address2) !== _.upperCase(validationAddress.address2))) {
-    errors.push({ address2: "Address line 2 did not match" });
+  if (address.address2 && !validationAddress.address2) {
+    errors.push({ address2: "Address line 2 did not validate" });
   }
 
-  if (_.trim(_.upperCase(address.city)) !== _.trim(_.upperCase(validationAddress.city))) {
+  if (!validationAddress.city) {
+    errors.push({ city: "City did not validate" });
+  }
+  if (address.postal && !validationAddress.postal) {
+    errors.push({ postal: "Postal did not validate" });
+  }
+
+  if (address.region && !validationAddress.region) {
+    errors.push({ region: "Region did not validate" });
+  }
+
+  if (address.country && !validationAddress.country) {
+    errors.push({ country: "Country did not validate" });
+  }
+  // second check if both fields exist, but they don't match (which almost always happen for certain fields on first time)
+  if (validationAddress.address1 && address.address1 && _.trim(_.upperCase(address.address1)) !== _.trim(_.upperCase(validationAddress.address1))) {
+    errors.push({ address1: "Address line 1 did not match" });
+  }
+
+  if (validationAddress.address2 && address.address2 && (_.upperCase(address.address2) !== _.upperCase(validationAddress.address2))) {
+    errors.push({ address2: "Address line 2" });
+  }
+
+  if (validationAddress.city && address.city && _.trim(_.upperCase(address.city)) !== _.trim(_.upperCase(validationAddress.city))) {
     errors.push({ city: "City did not match" });
   }
 
-  if (_.trim(_.upperCase(address.postal)) !== _.trim(_.upperCase(validationAddress.postal))) {
-    errors.push({ postal: "Postal Code did not match." });
+  if (validationAddress.postal && address.postal && _.trim(_.upperCase(address.postal)) !== _.trim(_.upperCase(validationAddress.postal))) {
+    errors.push({ postal: "Postal Code did not match" });
   }
 
-  if (_.trim(_.upperCase(address.region)) !== _.trim(_.upperCase(validationAddress.region))) {
+  if (validationAddress.region && address.region && _.trim(_.upperCase(address.region)) !== _.trim(_.upperCase(validationAddress.region))) {
     errors.push({ region: "Region did not match" });
   }
 
-  if (_.upperCase(address.country) !== _.upperCase(validationAddress.country)) {
+  if (validationAddress.country && address.country && _.upperCase(address.country) !== _.upperCase(validationAddress.country)) {
     errors.push({ country: "Country did not match" });
   }
   return errors;
@@ -88,8 +113,13 @@ function validateAddress(address) {
     const validationResult = Meteor.call(validator, address);
     validatedAddress = validationResult.validatedAddress;
     formErrors = validationResult.errors;
-    validationErrors = compareAddress(address, validatedAddress);
-    if (validationErrors.length || formErrors.length) {
+    if (validatedAddress) {
+      validationErrors = compareAddress(address, validatedAddress);
+      if (validationErrors.length || formErrors.length) {
+        validated = false;
+      }
+    } else {
+      // No address, fail validation
       validated = false;
     }
   }

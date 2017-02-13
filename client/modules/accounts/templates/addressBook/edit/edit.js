@@ -1,23 +1,6 @@
 import { i18next } from "/client/api";
 import { Meteor } from "meteor/meteor";
-
-
-function setValidatedAddress(res) {
-  const city = $("input[name='city']");
-  city.val(res.validatedAddress.city);
-  const postal = $("input[name='postal']");
-  postal.val(res.validatedAddress.postal);
-  const address1 = $("input[name='address1']");
-  address1.val(res.validatedAddress.address1);
-  if (res.validatedAddress.address2) {
-    const address2 = $("input[name='address2']");
-    address2.val(res.validatedAddress.address2);
-  }
-  const country = $("select[name='country']");
-  country.val(res.validatedAddress.country);
-  const region = $("select[name='region']");
-  region.val(res.validatedAddress.region);
-}
+import { setValidatedAddress } from "../add/add";
 
 /*
  * update address book (cart) form handling
@@ -47,11 +30,13 @@ AutoForm.hooks({
             }
           });
         } else {
-          setValidatedAddress(res);
-          Alerts.inline("Made changes to your address based upon validation. Please ensure this is correct", "warning", {
-            placement: "addressBookEdit",
-            i18nKey: "addressBookAdd.validatedAddress"
-          });
+          if (res.validatedAddress) {
+            setValidatedAddress(res);
+            Alerts.inline("Made changes to your address based upon validation. Please ensure this is correct", "warning", {
+              placement: "addressBookEdit",
+              i18nKey: "addressBookAdd.validatedAddress"
+            });
+          }
           if (res.formErrors) {
             for (const error of res.formErrors) {
               Alerts.inline(error.details, "error", {
