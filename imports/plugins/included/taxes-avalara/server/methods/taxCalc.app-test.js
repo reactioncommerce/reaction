@@ -8,7 +8,6 @@ import taxCalc from "./taxCalc";
 Fixtures();
 
 describe("Avalara taxRate API", function () {
-
   before(function () {
     Packages.update({
       name: "taxes-avalara",
@@ -70,7 +69,7 @@ describe("Avalara taxRate API", function () {
 
   describe("processing a Sales Order", function () {
     this.timeout(5000);
-    it.only("should return a tax estimate document", function (done) {
+    it("should return a tax estimate document", function (done) {
       const options = {};
       options.shippingAddress = {
         country: "US",
@@ -85,7 +84,6 @@ describe("Avalara taxRate API", function () {
       const cart = createCart("BCTMZ6HTxFSppJESk", "6qiqPwBkeJdtdQc4G", options);
       const result = taxCalc.estimateCart(cart);
       const data = JSON.parse(result.content);
-      console.log("result lines", data);
       expect(data.status).to.equal("Temporary");
       done();
     });
@@ -104,7 +102,6 @@ describe("Avalara taxRate API", function () {
       };
       const cart = createCart("BCTMZ6HTxFSppJESk", "6qiqPwBkeJdtdQc4G", options);
       const result = taxCalc.applyEstimateToCart(cart);
-      console.log("salesOrder result", result);
       expect(result).to.not.be.undefined;
       done();
     });
