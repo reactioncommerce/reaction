@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from "react";
+import Measure from "react-measure";
 import update from "react/lib/update";
 import { composeWithTracker } from "/lib/api/compose";
 import { MediaGallery } from "../components";
@@ -56,7 +57,11 @@ class MediaGalleryContainer extends Component {
     super(props);
 
     this.state = {
-      featuredMedia: props.media[0]
+      featuredMedia: props.media[0],
+      dimensions: {
+        width: -1,
+        height: -1
+      }
     };
   }
 
@@ -156,18 +161,28 @@ class MediaGalleryContainer extends Component {
   }
 
   render() {
+    const { width, height } = this.state.dimensions;
+
     return (
-      <MediaGallery
-        allowFeaturedMediaHover={this.allowFeaturedMediaHover}
-        featuredMedia={this.state.featuredMedia}
-        onDrop={this.handleDrop}
-        onMouseEnterMedia={this.handleMouseEnterMedia}
-        onMouseLeaveMedia={this.handleMouseLeaveMedia}
-        onMoveMedia={this.handleMoveMedia}
-        onRemoveMedia={this.handleRemoveMedia}
-        {...this.props}
-        media={this.media}
-      />
+      <Measure
+        onMeasure={(dimensions) => {
+          this.setState({ dimensions });
+        }}
+      >
+        <MediaGallery
+          allowFeaturedMediaHover={this.allowFeaturedMediaHover}
+          featuredMedia={this.state.featuredMedia}
+          onDrop={this.handleDrop}
+          onMouseEnterMedia={this.handleMouseEnterMedia}
+          onMouseLeaveMedia={this.handleMouseLeaveMedia}
+          onMoveMedia={this.handleMoveMedia}
+          onRemoveMedia={this.handleRemoveMedia}
+          {...this.props}
+          media={this.media}
+          mediaGalleryHeight={height}
+          mediaGalleryWidth={width}
+        />
+      </Measure>
     );
   }
 }

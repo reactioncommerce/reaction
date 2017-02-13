@@ -1,8 +1,16 @@
 import React, { Component, PropTypes } from "react";
 import Dropzone from "react-dropzone";
+import Measure from "react-measure";
 import MediaItem from "./media";
 
 class MediaGallery extends Component {
+  state = {
+    dimensions: {
+      width: -1,
+      height: -1
+    }
+  };
+
   get hasMedia() {
     return Array.isArray(this.props.media) && this.props.media.length > 0;
   }
@@ -43,21 +51,33 @@ class MediaGallery extends Component {
   }
 
   renderFeaturedMedia() {
+    const { width, height } = this.state.dimensions;
+
     if (this.hasMedia) {
       return this.props.media.map((media, index) => {
         if (index === 0) {
           return (
-            <MediaItem
-              editable={this.props.editable}
-              index={index}
-              key={index}
-              revision={this.featuredMedia.revision}
-              metadata={this.featuredMedia.metadata}
-              onMouseEnter={this.props.onMouseEnterMedia}
-              onMove={this.props.onMoveMedia}
-              onRemoveMedia={this.props.onRemoveMedia}
-              source={this.featuredMedia}
-            />
+            <Measure
+              onMeasure={(dimensions) => {
+                this.setState({ dimensions });
+              }}
+            >
+              <MediaItem
+                editable={this.props.editable}
+                index={index}
+                key={index}
+                revision={this.featuredMedia.revision}
+                metadata={this.featuredMedia.metadata}
+                onMouseEnter={this.props.onMouseEnterMedia}
+                onMove={this.props.onMoveMedia}
+                onRemoveMedia={this.props.onRemoveMedia}
+                source={this.featuredMedia}
+                mediaHeight={height}
+                mediaWidth={width}
+                isFeatured={true}
+                {...this.props}
+              />
+            </Measure>
           );
         }
       });
@@ -86,13 +106,11 @@ class MediaGallery extends Component {
         );
       });
     }
-
-    return (
-      <MediaItem />
-    );
+    return null;
   }
 
   renderMediaGalleryUploader() {
+    const containerWidth = this.props.mediaGalleryWidth;
     let featured;
     let gallery;
 
@@ -112,7 +130,9 @@ class MediaGallery extends Component {
           ref="dropzone"
         >
           <div className="gallery">
-            {featured}
+            <div className="featuredImage" style={{ height: containerWidth + "px" }}>
+              {featured}
+            </div>
             <div className="rui gallery-thumbnails">
               {gallery}
               {this.renderAddItem()}
@@ -124,10 +144,14 @@ class MediaGallery extends Component {
   }
 
   renderMediaGallery() {
+    const containerWidth = this.props.mediaGalleryWidth;
+
     return (
       <div className="rui media-gallery">
         <div className="gallery">
-          {this.renderFeaturedMedia()}
+          <div className="featuredImage" style={{ height: containerWidth + "px" }}>
+            {this.renderFeaturedMedia()}
+          </div>
           <div className="rui gallery-thumbnails">
             {this.renderMediaThumbnails()}
           </div>
@@ -150,6 +174,8 @@ MediaGallery.propTypes = {
   editable: PropTypes.bool,
   featuredMedia: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   media: PropTypes.arrayOf(PropTypes.object),
+  mediaGalleryHeight: PropTypes.number,
+  mediaGalleryWidth: PropTypes.number,
   onDrop: PropTypes.func,
   onMouseEnterMedia: PropTypes.func,
   onMouseLeaveMedia: PropTypes.func,
