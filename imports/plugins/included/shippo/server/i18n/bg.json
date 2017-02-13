@@ -8,6 +8,17 @@
           "shippoLabel": "Shippo",
           "shippoTitle": "Shippo",
           "shippoDescription": "Доставка етикети и проследяване на пратки"
+        },
+        "shippingGrid": {
+          "carrier": "носител",
+          "enabled": "Enabled"
+        },
+        "shippingSettings": {
+          "noCarriersFound": "Не корабни превозвачи конфигурирани.",
+          "editApiKey": "Edit API Key",
+          "carrierSaved": "Carrier записан успешно.",
+          "carrierFailed": "Грешка при актуализирането на носител.",
+          "refresh": "Обнови методи"
         }
       },
       "shippo": {

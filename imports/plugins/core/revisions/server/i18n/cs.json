@@ -5,6 +5,7 @@
     "reaction-revisions": {
       "admin": {
         "dashboard": {
+          "preview": "Náhled",
           "revisionsLabel": "revize",
           "revisionsTitle": "revize",
           "revisionsDescription": "ovládání revize"

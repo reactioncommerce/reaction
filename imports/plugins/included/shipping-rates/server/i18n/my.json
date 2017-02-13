@@ -1,0 +1,23 @@
+[{
+  "i18n": "my",
+  "ns": "reaction-shipping-rates",
+  "translation": {
+    "reaction-shipping-rates": {
+      "admin": {
+        "shippingSettings": {
+          "flatRateLabel": "စျေးနှုန်းတစ်သတ်မှတ်တည်းဖြစ်သော",
+          "confirmRateDelete": "မှုနှုန်းကိုဖျက်ရမလား?",
+          "rateSaved": "ပြားချပ်ချပ်နှုန်းသည်ကယ်တင်ခြင်းသို့ရောက်ရ၏။",
+          "rateFailed": "ပြားချပ်ချပ်နှုန်းကို update ကိုပျက်ကွက်ခဲ့သည်။",
+          "noRatesFound": "အဘယ်သူမျှမနှုန်းထားများတွေ့ရှိခဲ့ပါတယ်။"
+        },
+        "shippingGrid": {
+          "name": "နာမကိုအမှီ",
+          "group": "Group က",
+          "rate": "rate",
+          "label": "တံဆိပ်"
+        }
+      }
+    }
+  }
+}]

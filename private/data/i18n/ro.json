@@ -56,6 +56,8 @@
       "app": {
         "add": "Adăuga",
         "editMode": "Mod editare",
+        "administratorView": "administrator View",
+        "customerView": "Vezi de client",
         "createContent": "Creați conținut",
         "auto": "Auto",
         "save": "Salvați",
@@ -575,68 +577,6 @@
       },
       "checkoutReview": {
         "review": "Revizuire"
-      },
-      "checkoutShipping": {
-        "selectShippingOption": "Selectați opțiunea de transport",
-        "noShippingMethods": "Nu s-a configurat nici o metodă de expediere.",
-        "configureNow": "Configurati acum.",
-        "shipping": "Livrare"
-      },
-      "shipping": {
-        "addShippingProvider": "Adăugați un furnizor de transport",
-        "editShippingProvider": "Editare furnizori de transport",
-        "addShippingMethod": "Adăugați o metodă de transport",
-        "editShippingMethod": "Editare metodă de expediere",
-        "deleteShippingMethod": "Eliminare metodă de expediere",
-        "noSettingsForThisView": "Nu există setări pentru această vizualizare",
-        "noShippingMethods": "Nu s-a configurat nici o metodă de expediere.",
-        "removeShippingMethodConfirm": "Sunteți sigur că doriți să ștergeți {{method}}?",
-        "removeShippingMethodTitle": "Eliminare Metodă de expediere",
-        "shippingMethodDeleted": "Această metodă de transport a fost ștersă.",
-        "removeShippingProvider": "Eliminare furnizor de transport",
-        "removeShippingProviderConfirm": "Sunteți sigur că doriți să eliminați {{provider}}?",
-        "shippingProviderSaved": "Furnizor de transport salvat.",
-        "shippingProviderUpdated": "Datele furnizorului de transport au fost actualizate.",
-        "shippingMethodRateAdded": "S-a adaugat prețul aferent metodei de expediere.",
-        "shippingMethodRateUpdated": "S-a acutualizat prețul aferent metodei de expediere.",
-        "name": "Nume",
-        "label": "Eticheta",
-        "group": "Grup",
-        "cost": "Cost",
-        "handling": "Manevrare",
-        "rate": "Preț",
-        "enabled": "Activat",
-        "disabled": "Dezactivat",
-        "addRate": "Adauga preț",
-        "updateRate": "Actualizare preț pentru {{name}}",
-        "addNewCondition": "Adăugați o condiție nouă",
-        "deleteCondition": "Ștergeți condiție",
-        "provider": {
-          "name": "Codul de service",
-          "label": "Etichetă publică",
-          "enabled": "Activat"
-        }
-      },
-      "shippingMethod": {
-        "name": "Nume metodă",
-        "label": "Etichetă publică",
-        "group": "Grup",
-        "cost": "Cost",
-        "handling": "Manevrare",
-        "rate": "Preț",
-        "enabled": "Activată",
-        "matchingCartRanges": "Potrivirea gamei din Coș",
-        "validRanges": {
-          "begin": "Începe",
-          "end": "Termină"
-        },
-        "matchingLocales": "Potrivirea Localizărilor",
-        "validLocales": {
-          "origination": "Din",
-          "destination": "La",
-          "deliveryBegin": "Est. transport",
-          "deliveryEnd": "Est. Livrare"
-        }
       },
       "uom": {
         "OZ": "uncii",
