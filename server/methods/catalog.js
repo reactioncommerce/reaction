@@ -319,7 +319,7 @@ Meteor.methods({
 
     const variant = Products.findOne(variantId);
 
-    // Verify that the parent variant and any ancestors are not deleted.
+    // Verify that this variant and any ancestors are not deleted.
     // Child variants cannot be added if a parent product or product revision
     // is marked as `{ isDeleted: true }`
     if (ReactionProduct.isAncestorDeleted(variant, true)) {
