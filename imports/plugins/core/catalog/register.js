@@ -3,7 +3,7 @@ import { Reaction } from "/server/api";
 Reaction.registerPackage({
   label: "Catalog",
   name: "reaction-catalog",
-  icon: "fa fa-archive",
+  icon: "fa fa-book",
   autoEnable: true,
   settings: {
     name: "Catalog"
@@ -13,12 +13,12 @@ Reaction.registerPackage({
       provides: "dashboard",
       label: "Catalog",
       description: "Product catalog",
-      icon: "fa fa-archive",
+      icon: "fa fa-book",
       container: "core"
     },
     {
       label: "Catalog Settings",
-      icon: "fa fa-archive",
+      icon: "fa fa-book",
       name: "catalog/settings",
       provides: "settings",
       template: "catalogSettings"

@@ -7,6 +7,10 @@
         "shortcut": {
           "dashboardLabel": "Bord"
         },
+        "dashboard": {
+          "packageGroupActionsLabel": "acţiuni",
+          "packageGroupSettingsLabel": "Setări"
+        },
         "settings": {
           "shopSettingsLabel": "Magazin"
         }

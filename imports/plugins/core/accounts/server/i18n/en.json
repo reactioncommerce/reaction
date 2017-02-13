@@ -1,0 +1,20 @@
+[{
+  "i18n": "en",
+  "ns": "reaction-accounts",
+  "translation": {
+    "reaction-accounts": {
+      "admin": {
+        "dashboard": {
+          "accountsLabel": "Accounts",
+          "accountsTitle": "Accounts",
+          "accountsDescription": "Account Settings"
+        },
+        "settings": {
+          "accountsSettingsLabel": "Accounts",
+          "accountsSettingsTitle": "Accounts",
+          "accountsSettingsDescription": "Account Settings"
+        }
+      }
+    }
+  }
+}]

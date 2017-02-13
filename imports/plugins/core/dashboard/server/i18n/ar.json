@@ -7,6 +7,10 @@
         "shortcut": {
           "dashboardLabel": "لوحة أجهزة القياس"
         },
+        "dashboard": {
+          "packageGroupActionsLabel": "الإجراءات",
+          "packageGroupSettingsLabel": "إعدادات"
+        },
         "settings": {
           "shopSettingsLabel": "متجر"
         }
