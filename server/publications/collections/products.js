@@ -68,7 +68,7 @@ const filters = new SimpleSchema({
 /**
  * products publication
  * @param {Number} productScrollLimit - optional, defaults to 24
- * @param {Array} shops - array of shopId to retrieve product from or a mongodb $in regEx
+ * @param {Array} shops - array of shopId to retrieve product from.
  * @return {Object} return product cursor
  */
 Meteor.publish("Products", function (productScrollLimit = 24, productFilters, sort = {}) {

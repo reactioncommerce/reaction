@@ -56,7 +56,7 @@ Template.products.onCreated(function () {
     const slug = Reaction.Router.getParam("slug");
     const tag = Tags.findOne({ slug: slug }) || Tags.findOne(slug);
     const scrollLimit = Session.get("productScrollLimit");
-    let options = {}; // this could be shop default implementation needed
+    const options = {}; // this could be shop default implementation needed
 
     if (tag) {
       _.extend(options, { tags: [tag._id] });
@@ -68,9 +68,9 @@ Template.products.onCreated(function () {
     }
 
     // allow published content from all sellers
-    if(Reaction.isPackageEnabled("reaction-marketplace")) {
+    if (Reaction.isPackageEnabled("reaction-marketplace")) {
       const packageSettings = Reaction.getPackageSettings("reaction-marketplace");
-      if(packageSettings.settings.public.allowGuestSellers === true) {
+      if (packageSettings.settings.public.allowGuestSellers === true) {
         // show all shops
         _.extend(options, { marketplace: true });
       }
