@@ -19,9 +19,9 @@
         </div>
       {{/if}}
 
-      {{#unless isVisible}}
+      {{#if hasChanges}}
         <div>{{> React VisibilityButton}}</div>
-      {{/unless}}
+      {{/if}}
 
     </div>
   {{/if}}
