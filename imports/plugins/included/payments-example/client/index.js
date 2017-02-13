@@ -3,10 +3,19 @@ import "./templates/checkoutForm";
 import { registerComponent } from "/imports/plugins/core/layout/lib/components";
 
 import {
-  CheckoutForm
+  ExampleCheckoutForm
 } from "./components";
 
+import {
+  ExampleCheckoutFormContainer
+} from "./containers";
+
 registerComponent({
-  name: "CheckoutForm",
-  component: CheckoutForm
+  name: "ExampleCheckoutForm",
+  component: ExampleCheckoutForm
+});
+
+registerComponent({
+  name: "ExampleCheckoutFormContainer",
+  component: ExampleCheckoutFormContainer
 });

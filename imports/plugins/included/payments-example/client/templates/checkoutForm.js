@@ -1,10 +1,10 @@
-import { CheckoutForm } from "../components";
+import { ExampleCheckoutFormContainer } from "../containers";
 import { Template } from "meteor/templating";
 
 Template.examplePaymentForm.helpers({
   ExamplePayment() {
     return {
-      component: CheckoutForm
+      component: ExampleCheckoutFormContainer
     };
   }
 });

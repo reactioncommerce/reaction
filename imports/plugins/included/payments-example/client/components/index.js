@@ -1,1 +1,1 @@
-export { default as CheckoutForm } from "./CheckoutForm";
+export { default as ExampleCheckoutForm } from "./exampleCheckoutForm.js";

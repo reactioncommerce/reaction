@@ -1,8 +1,8 @@
-import React, { Component } from "react";
+import React from "react";
 
-class CheckoutForm extends Component {
-  render() {
-    return (
+const ExampleCheckoutForm = () => {
+  return (
+    <div>
       <div>
         <div className="row">
           <div className="form-group">
@@ -54,8 +54,8 @@ class CheckoutForm extends Component {
             <i className="fa fa-spinner fa-spin hidden" id="btn-processing"/>
           </button>
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
-export default CheckoutForm;
+export default ExampleCheckoutForm;
