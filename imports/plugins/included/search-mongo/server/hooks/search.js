@@ -69,7 +69,9 @@ Products.after.update((userId, doc, fieldNames) => {
     if (modifiedFields.length) {
       Logger.debug(`Rewriting search record for ${doc.title}`);
       ProductSearch.remove(productId);
-      buildProductSearchRecord(productId);
+      if (!doc.isDeleted) { // do not create record if product was archived
+        buildProductSearchRecord(productId);
+      }
     } else {
       Logger.debug("No watched fields modified, skipping");
     }
