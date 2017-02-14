@@ -61,6 +61,7 @@ class MediaGallery extends Component {
         if (index === 0) {
           return (
             <Measure
+              key={index}
               onMeasure={(dimensions) => {
                 this.setState({ dimensions });
               }}
