@@ -1,34 +1,10 @@
-import { ReactionProduct } from "/lib/api";
-import { Catalog } from "/lib/api";
 
-/**
- * gridNotice helpers
- */
 Template.gridNotice.helpers({
   isLowQuantity: function () {
-    const topVariants = ReactionProduct.getTopVariants(this._id);
-
-    for (const topVariant of topVariants) {
-      const inventoryThreshold = topVariant.lowInventoryWarningThreshold;
-      const inventoryQuantity = ReactionProduct.getVariantQuantity(topVariant);
-
-      if (inventoryQuantity !== 0 && inventoryThreshold >= inventoryQuantity) {
-        return true;
-      }
-    }
-    return false;
+    return this.isLowQuantity;
   },
   isSoldOut: function () {
-    const topVariants = ReactionProduct.getTopVariants(this._id);
-
-    for (const topVariant of topVariants) {
-      const inventoryQuantity = ReactionProduct.getVariantQuantity(topVariant);
-
-      if (inventoryQuantity <= 0) {
-        return true;
-      }
-    }
-    return false;
+    return this.isSoldOut;
   },
   isBackorder: function () {
     return this.isBackorder;
