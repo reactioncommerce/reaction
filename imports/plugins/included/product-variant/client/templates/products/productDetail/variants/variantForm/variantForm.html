@@ -104,6 +104,29 @@
                 {{/if}}
               </div>
 
+              <div class="col-xs-4 col-sm-4 form-group{{#if afFieldIsInvalid name='length'}} has-error{{/if}}">
+                <label class="control-label">{{afFieldLabelText name='length'}}</label>
+                {{>afFieldInput name='length' placeholder="0"}}
+                {{#if afFieldIsInvalid name='length'}}
+                <span class="help-block">{{afFieldMessage name='length'}}</span>
+                {{/if}}
+              </div>
+
+              <div class="col-xs-4 col-sm-4 form-group{{#if afFieldIsInvalid name='width'}} has-error{{/if}}">
+                <label class="control-label">{{afFieldLabelText name='width'}}</label>
+                {{>afFieldInput name='width' placeholder="0"}}
+                {{#if afFieldIsInvalid name='width'}}
+                <span class="help-block">{{afFieldMessage name='width'}}</span>
+                {{/if}}
+              </div>
+
+              <div class="col-xs-4 col-sm-4 form-group{{#if afFieldIsInvalid name='height'}} has-error{{/if}}">
+                <label class="control-label">{{afFieldLabelText name='height'}}</label>
+                {{>afFieldInput name='height' placeholder="0"}}
+                {{#if afFieldIsInvalid name='height'}}
+                <span class="help-block">{{afFieldMessage name='height'}}</span>
+                {{/if}}
+              </div>
             </div>
           </div>
           <div class="row">
