@@ -1,6 +1,6 @@
 import { ExampleCheckoutFormContainer } from "../containers";
-// import ExampleSettingsFormContainer from "../containers/exampleSettingsFormContainer";
-import { ExampleSettingsForm } from "../components";
+import { ExampleSettingsFormContainer } from "../containers";
+// import { ExampleSettingsForm } from "../components";
 import { Template } from "meteor/templating";
 
 Template.examplePaymentForm.helpers({
@@ -14,7 +14,7 @@ Template.examplePaymentForm.helpers({
 Template.exampleSettings.helpers({
   ExampleSettings() {
     return {
-      component: ExampleSettingsForm
+      component: ExampleSettingsFormContainer
     };
   }
 });
