@@ -33,20 +33,28 @@ class ExampleSettingsForm extends Component {
     const { packageData } = this.props;
     console.log("Package data:", packageData);
     return (
+      <div>
+        {packageData ?
+          <span></span> :
+          <div className="alert alert-info">
+            <span data-i18n="admin.paymentSettings.exampleCredentials">Example Credentials</span>
+          </div>
+         }
 
-      <form onSubmit={this.handleSubmit}>
-        <FieldGroup
-          label="Api Key"
-          name="apiKey"
-          type="text"
-          onChange={this.handleChange}
-        />
+        <form onSubmit={this.handleSubmit}>
+          <FieldGroup
+            label="API Key"
+            name="apiKey"
+            type="text"
+            onChange={this.handleChange}
+          />
 
-        <Button bsStyle="primary" className="pull-right" type="submit">
-          <span>Save Changes</span>
-        </Button>
-      </form>
+          <Button bsStyle="primary" className="pull-right" type="submit">
+          <span data-i18n="app.saveChanges">Save Changes</span>
+          </Button>
+        </form>
 
+      </div>
     );
   }
 }
