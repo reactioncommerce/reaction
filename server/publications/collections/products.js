@@ -266,10 +266,7 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
       }
 
       if (RevisionApi.isRevisionControlEnabled()) {
-        const handle = Products.find(newSelector, {
-          sort: sort,
-          limit: productScrollLimit
-        }).observeChanges({
+        const handle = Products.find(newSelector).observeChanges({
           added: (id, fields) => {
             const revisions = Revisions.find({
               "$or": [
