@@ -77,6 +77,7 @@
     "react-dropzone": "^3.9.2",
     "react-helmet": "^4.0.0",
     "react-komposer": "^2.0.0",
+    "react-measure": "^1.4.5",
     "react-nouislider": "^1.14.2",
     "react-onclickoutside": "^5.8.4",
     "react-select": "^1.0.0-rc.2",

@@ -75,6 +75,19 @@ class MediaItem extends Component {
   }
 
   renderImage() {
+    const mediaHeight = this.props.mediaHeight;
+    const mediaWidth = this.props.mediaWidth;
+
+    let maxHeight = "auto";
+    let maxWidth = "100%";
+
+    if (this.props.isFeatured) {
+      if (mediaHeight > mediaWidth) {
+        maxHeight = mediaWidth + "px";
+        maxWidth = (mediaWidth / mediaHeight) * mediaWidth;
+      }
+    }
+
     const image = (
       <img
         alt=""
@@ -115,6 +128,9 @@ MediaItem.propTypes = {
   connectDropTarget: PropTypes.func,
   defaultSource: PropTypes.string,
   editable: PropTypes.bool,
+  isFeatured: PropTypes.bool,
+  mediaHeight: PropTypes.number,
+  mediaWidth: PropTypes.number,
   metadata: PropTypes.object,
   onMouseEnter: PropTypes.func,
   onMouseLeave: PropTypes.func,

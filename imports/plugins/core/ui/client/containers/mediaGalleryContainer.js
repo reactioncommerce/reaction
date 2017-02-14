@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from "react";
+import Measure from "react-measure";
 import update from "react/lib/update";
 import { composeWithTracker } from "/lib/api/compose";
 import { MediaGallery } from "../components";
@@ -51,8 +52,24 @@ function uploadHandler(files) {
 }
 
 class MediaGalleryContainer extends Component {
-  state = {
-    featuredMedia: undefined
+  // Load first image as featuredImage
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      featuredMedia: props.media[0],
+      dimensions: {
+        width: -1,
+        height: -1
+      }
+    };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      featuredMedia: nextProps.media[0],
+      media: nextProps.media
+    });
   }
 
   handleDrop = (files) => {
@@ -83,6 +100,13 @@ class MediaGalleryContainer extends Component {
       }
       // show media as removed (since it will not disappear until changes are published
     });
+  }
+
+  get allowFeaturedMediaHover() {
+    if (this.state.featuredMedia) {
+      return true;
+    }
+    return false;
   }
 
   get media() {
@@ -137,18 +161,28 @@ class MediaGalleryContainer extends Component {
   }
 
   render() {
+    const { width, height } = this.state.dimensions;
+
     return (
-      <MediaGallery
-        allowFeaturedMediaHover={this.props.editable === false}
-        featuredMedia={this.state.featuredMedia}
-        onDrop={this.handleDrop}
-        onMouseEnterMedia={this.handleMouseEnterMedia}
-        onMouseLeaveMedia={this.handleMouseLeaveMedia}
-        onMoveMedia={this.handleMoveMedia}
-        onRemoveMedia={this.handleRemoveMedia}
-        {...this.props}
-        media={this.media}
-      />
+      <Measure
+        onMeasure={(dimensions) => {
+          this.setState({ dimensions });
+        }}
+      >
+        <MediaGallery
+          allowFeaturedMediaHover={this.allowFeaturedMediaHover}
+          featuredMedia={this.state.featuredMedia}
+          onDrop={this.handleDrop}
+          onMouseEnterMedia={this.handleMouseEnterMedia}
+          onMouseLeaveMedia={this.handleMouseLeaveMedia}
+          onMoveMedia={this.handleMoveMedia}
+          onRemoveMedia={this.handleRemoveMedia}
+          {...this.props}
+          media={this.media}
+          mediaGalleryHeight={height}
+          mediaGalleryWidth={width}
+        />
+      </Measure>
     );
   }
 }
