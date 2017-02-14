@@ -14,6 +14,10 @@ import {
   ExampleCheckoutFormContainer
 } from "./containers";
 
+import {
+  ExampleSettingsFormContainer
+} from "./containers";
+
 registerComponent({
   name: "ExampleCheckoutForm",
   component: ExampleCheckoutForm
@@ -22,6 +26,11 @@ registerComponent({
 registerComponent({
   name: "ExampleSettingsForm",
   component: ExampleSettingsForm
+});
+
+registerComponent({
+  name: "ExampleSettingsFormContainer",
+  component: ExampleSettingsFormContainer
 });
 
 registerComponent({

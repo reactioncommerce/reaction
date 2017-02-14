@@ -1,5 +1,6 @@
 import { composeWithTracker } from "/lib/api/compose";
-import { ExampleSettingsForm } from "../components";
+import ExampleSettingsForm from "../components/exampleSettingsForm";
+import { Meteor } from "meteor/meteor";
 import { Packages } from "/lib/collections";
 import { Reaction } from "/client/api";
 
