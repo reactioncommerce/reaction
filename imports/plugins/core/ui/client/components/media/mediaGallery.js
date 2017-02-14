@@ -34,7 +34,10 @@ class MediaGallery extends Component {
   renderAddItem() {
     if (this.props.editable) {
       return (
-        <div className="gallery-image add" onClick={this.handleDropClick}>
+        <div
+          className="gallery-image add"
+          onClick={this.handleDropClick}
+        >
           <img
             alt=""
             className="img-responsive"
@@ -111,7 +114,7 @@ class MediaGallery extends Component {
 
   renderMediaGalleryUploader() {
     const containerWidth = this.props.mediaGalleryWidth;
-    let featured;
+    let featured = this.renderAddItem();
     let gallery;
 
     // Only render media only if there is any
@@ -129,7 +132,7 @@ class MediaGallery extends Component {
           onDrop={this.props.onDrop}
           ref="dropzone"
         >
-          <div className="gallery">
+          <div className="rui gallery">
             <div className="featuredImage" style={{ height: containerWidth + "px" }}>
               {featured}
             </div>
@@ -148,7 +151,7 @@ class MediaGallery extends Component {
 
     return (
       <div className="rui media-gallery">
-        <div className="gallery">
+        <div className="rui gallery">
           <div className="featuredImage" style={{ height: containerWidth + "px" }}>
             {this.renderFeaturedMedia()}
           </div>
