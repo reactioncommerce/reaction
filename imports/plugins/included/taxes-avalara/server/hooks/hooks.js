@@ -18,6 +18,7 @@ MethodHooks.after("taxes/calculate", function (options) {
       }
     });
   }
+  return options;
 });
 
 MethodHooks.after("cart/copyCartToOrder", function (options) {
@@ -30,8 +31,8 @@ MethodHooks.after("cart/copyCartToOrder", function (options) {
         Logger.info(`Order ${order._id} recorded with Avalara`);
       }
     });
-    return options;
   }
+  return options;
 });
 
 MethodHooks.after("orders/refunds/create", (options) => {
@@ -46,4 +47,5 @@ MethodHooks.after("orders/refunds/create", (options) => {
       }
     });
   }
+  return options;
 });
