@@ -7,12 +7,21 @@ import {
 } from "./components";
 
 import {
+  ExampleSettingsForm
+} from "./components";
+
+import {
   ExampleCheckoutFormContainer
 } from "./containers";
 
 registerComponent({
   name: "ExampleCheckoutForm",
   component: ExampleCheckoutForm
+});
+
+registerComponent({
+  name: "ExampleSettingsForm",
+  component: ExampleSettingsForm
 });
 
 registerComponent({

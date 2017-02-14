@@ -1,8 +1,21 @@
-import React from "react";
+import React, { Component } from "react";
+// import { SmartForm } from "meteor/nova:forms";
+// import { ExamplePayment } from "../../lib/collections/schemas";
+// import { Cart, Shops } from "/lib/collections";
 
-const ExampleCheckoutForm = () => {
-  return (
-    <div>
+/*class ExampleCheckoutForm extends Component {
+  render() {
+    return (
+      <SmartForm
+        schema={ExamplePayment}
+      />
+    );
+  }
+}*/
+
+class ExampleCheckoutForm extends Component {
+  render() {
+    return (
       <div>
         <div className="row">
           <div className="form-group">
@@ -17,6 +30,7 @@ const ExampleCheckoutForm = () => {
             <input
               type="text"
               placeholder="XXXX XXXX XXXX XXXX"
+              size={16}
             />
           </div>
         </div>
@@ -25,7 +39,7 @@ const ExampleCheckoutForm = () => {
               <label className="control-label">Expiration month</label>
               <input
                 type="text"
-                placeholder="Exp. Month"
+                placeholder="Choose Month"
               />
             </div>
 
@@ -33,7 +47,8 @@ const ExampleCheckoutForm = () => {
               <label className="control-label">Expiration year</label>
               <input
                 type="text"
-                placeholder="Exp. Year"
+                placeholder="Choose Year"
+                size={4}
               />
             </div>
           </div>
@@ -44,6 +59,7 @@ const ExampleCheckoutForm = () => {
               <input
                 type="text"
                 placeholder="CVV"
+                size={4}
               />
             </div>
           </div>
@@ -54,8 +70,8 @@ const ExampleCheckoutForm = () => {
             <i className="fa fa-spinner fa-spin hidden" id="btn-processing"/>
           </button>
       </div>
-    </div>
-  );
-};
+    );
+  }
+}
 
 export default ExampleCheckoutForm;
