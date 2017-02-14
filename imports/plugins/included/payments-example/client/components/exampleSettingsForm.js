@@ -1,32 +1,56 @@
 import React, { Component } from "react";
 import { FieldGroup } from "/imports/plugins/core/ui/client/components";
+import { Meteor } from "meteor/meteor";
 import { Button } from "react-bootstrap";
+import Alert from "sweetalert2";
+import { i18next } from "/client/api";
 
 class ExampleSettingsForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      fields: {}
+      apiKey: props.packageData.settings.apiKey
+
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.saveUpdate = this.saveUpdate.bind(this);
   }
 
   handleSubmit(e) {
     e.preventDefault();
-    const apiKey = this.state.fields;
+    const apiKeyValue = this.state.apiKey;
 
-    console.log("Here", apiKey);
+    const fields = [{
+      property: "apiKey",
+      value: apiKeyValue
+    }];
+    const id = this.props.packageData._id;
+    const name = this.props.packageData.name;
+    this.saveUpdate(fields, id, name);
+  }
+
+  saveUpdate(fields, id, name) {
+    Meteor.call("registry/update", id, name, fields, (err) => {
+      if (err) {
+        return Alert({
+          text: i18next.t("admin.settings.saveFailed"),
+          type: "warning",
+          options: {
+            autoHide: 4000
+          }
+        });
+      }
+      return Alert({
+        text: i18next.t("admin.settings.saveSuccess"),
+        type: "success"
+      });
+    });
   }
 
   handleChange(e) {
     e.preventDefault();
-
-    const fields = this.state.fields;
-
-    fields[e.target.name] = e.target.value;
-
-    this.setState({ fields });
+    this.setState({ apiKey: e.target.value });
   }
 
   render() {

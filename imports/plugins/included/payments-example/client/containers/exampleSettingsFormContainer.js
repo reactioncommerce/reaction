@@ -7,6 +7,15 @@ import { Loading } from "/imports/plugins/core/ui/client/components";
 
 const composer = ({}, onData) => {
   const subscription = Meteor.subscribe("Packages");
+  // console.log(Reaction.Collections.Packages.update({
+  //   name: "example-paymentmethod",
+  //   shopId: Reaction.getShopId() }, {
+  //     $set: {
+  //       settings: {
+  //         apiKey: "123456789"
+  //       }
+  //     }
+  //   }));
   if (subscription.ready()) {
     const packageData = Packages.findOne({
       name: "example-paymentmethod",
