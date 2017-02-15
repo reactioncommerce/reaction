@@ -250,7 +250,7 @@ function composer(props, onData) {
   let isEditable = props.editable;
 
   if (typeof isEditable !== "boolean") {
-    isEditable = Reaction.hasPermission(props.premissions);
+    isEditable = Reaction.hasPermission(props.permissions);
   }
 
   const tagsByKey = {};
