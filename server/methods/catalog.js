@@ -317,6 +317,15 @@ Meteor.methods({
       throw new Meteor.Error(403, "Access Denied");
     }
 
+    const variant = Products.findOne(variantId);
+
+    // Verify that this variant and any ancestors are not deleted.
+    // Child variants cannot be added if a parent product or product revision
+    // is marked as `{ isDeleted: true }`
+    if (ReactionProduct.isAncestorDeleted(variant, true)) {
+      throw new Meteor.Error(403, "Unable to create product variant");
+    }
+
     const variants = Products.find({
       $or: [{
         _id: variantId
@@ -406,9 +415,16 @@ Meteor.methods({
 
     const newVariantId = Random.id();
     // get parent ancestors to build new ancestors array
-    const {
-      ancestors
-    } = Products.findOne(parentId);
+    const product = Products.findOne(parentId);
+    const { ancestors } = product;
+
+    // Verify that the parent variant and any ancestors are not deleted.
+    // Child variants cannot be added if a parent product or product revision
+    // is marked as `{ isDeleted: true }`
+    if (ReactionProduct.isAncestorDeleted(product, true)) {
+      throw new Meteor.Error(403, "Unable to create product variant");
+    }
+
     Array.isArray(ancestors) && ancestors.push(parentId);
     const assembledVariant = Object.assign(newVariant || {}, {
       _id: newVariantId,
@@ -505,6 +521,10 @@ Meteor.methods({
     }
 
     const selector = {
+      // Don't "archive" variants that are already marked deleted.
+      isDeleted: {
+        $in: [false, undefined]
+      },
       $or: [{
         _id: variantId
       }, {
@@ -700,6 +720,10 @@ Meteor.methods({
       productIds = productId;
     }
     const productsWithVariants = Products.find({
+      // Don't "archive" products that are already marked deleted.
+      isDeleted: {
+        $in: [false, undefined]
+      },
       $or: [{
         _id: {
           $in: productIds

@@ -6,7 +6,8 @@ import PublishContainer from "/imports/plugins/core/revisions/client/containers/
 
 class GridProductPublishContainer extends Component {
   static propTypes = {
-    documentIds: PropTypes.arrayOf(PropTypes.string)
+    documentIds: PropTypes.arrayOf(PropTypes.string),
+    documents: PropTypes.arrayOf(PropTypes.object)
   };
 
   handleVisibilityChange = (event, isProductVisible) => {
@@ -17,9 +18,9 @@ class GridProductPublishContainer extends Component {
     }
   }
 
-  handlePublishActions = (event, action, documentIds) => {
+  handlePublishActions = (event, action) => {
     if (action === "archive") {
-      ReactionProduct.maybeDeleteProduct(documentIds);
+      ReactionProduct.maybeDeleteProduct(this.props.documents);
     }
   }
 
