@@ -7,11 +7,7 @@ Reaction.registerPackage({
   icon: "fa fa-credit-card-alt",
   autoEnable: true,
   settings: {
-    "mode": false,
-    "apiKey": "",
-    "example": {
-      enabled: false
-    },
+    "name": "Example Payment",
     "example-paymentmethod": {
       enabled: false
     }

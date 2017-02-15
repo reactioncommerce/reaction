@@ -20,7 +20,7 @@ class ExampleSettingsForm extends Component {
 
     this.props.onSubmit({
       id: this.props.packageData._id,
-      name: this.props.packageData.name,
+      settingsKey: this.props.packageData.registry[0].settingsKey,
       apiKey: this.state.apiKey
     });
   }

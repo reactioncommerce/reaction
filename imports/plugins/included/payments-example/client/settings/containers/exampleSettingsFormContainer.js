@@ -22,11 +22,11 @@ class ExampleSettingsFormContainer extends Component {
       property: "apiKey",
       value: settings.apiKey
     }];
-    this.saveUpdate(fields, settings.id, settings.name);
+    this.saveUpdate(fields, settings.id, settings.settingsKey);
   }
 
-  saveUpdate(fields, id, name) {
-    Meteor.call("registry/update", id, name, fields, (err) => {
+  saveUpdate(fields, id, settingsKey) {
+    Meteor.call("registry/update", id, settingsKey, fields, (err) => {
       if (err) {
         return Alert({
           text: i18next.t("admin.settings.saveFailed"),
