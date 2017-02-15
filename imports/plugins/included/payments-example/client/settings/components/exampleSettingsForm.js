@@ -5,31 +5,6 @@ import { Translation } from "/imports/plugins/core/ui/client/components/";
 
 
 class ExampleSettingsForm extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      apiKey: props.packageData.settings.apiKey
-
-    };
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-  }
-
-  handleSubmit(e) {
-    e.preventDefault();
-
-    this.props.onSubmit({
-      id: this.props.packageData._id,
-      settingsKey: this.props.packageData.registry[0].settingsKey,
-      apiKey: this.state.apiKey
-    });
-  }
-
-  handleChange(e) {
-    e.preventDefault();
-    this.setState({ apiKey: e.target.value });
-  }
-
   render() {
     const { packageData } = this.props;
 
@@ -41,12 +16,12 @@ class ExampleSettingsForm extends Component {
           </div>
         }
 
-        <form onSubmit={this.handleSubmit}>
+        <form onSubmit={this.props.onSubmit}>
           <FieldGroup
             label="API Key"
             name="apiKey"
             type="text"
-            onChange={this.handleChange}
+            onChange={this.props.onChange}
           />
 
           <Button bsStyle="primary" className="pull-right" type="submit">
@@ -60,6 +35,7 @@ class ExampleSettingsForm extends Component {
 }
 
 ExampleSettingsForm.propTypes = {
+  onChange: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
   packageData: PropTypes.object
 };

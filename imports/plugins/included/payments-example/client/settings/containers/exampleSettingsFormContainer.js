@@ -13,16 +13,34 @@ import React, { Component, PropTypes } from "react";
 class ExampleSettingsFormContainer extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      apiKey: ""
+    };
+
+    this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.saveUpdate = this.saveUpdate.bind(this);
   }
 
-  handleSubmit(settings) {
+  handleChange(e) {
+    e.preventDefault();
+    this.setState({ apiKey: e.target.value });
+  }
+
+  handleSubmit(e) {
+    e.preventDefault();
+
+    const packageId = this.props.packageData._id;
+    const settingsKey = this.props.packageData.registry[0].settingsKey;
+    const apiKey = this.state.apiKey;
+
     const fields = [{
       property: "apiKey",
-      value: settings.apiKey
+      value: apiKey
     }];
-    this.saveUpdate(fields, settings.id, settings.settingsKey);
+
+    this.saveUpdate(fields, packageId, settingsKey);
   }
 
   saveUpdate(fields, id, settingsKey) {
@@ -47,6 +65,8 @@ class ExampleSettingsFormContainer extends Component {
     return (
       <TranslationProvider>
         <ExampleSettingsForm
+
+          onChange={this.handleChange}
           onSubmit={this.handleSubmit}
           packageData={this.props.packageData}
         />
