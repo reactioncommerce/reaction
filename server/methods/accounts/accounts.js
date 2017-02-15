@@ -1,3 +1,4 @@
+import { Accounts as MeteorAccounts } from "meteor/accounts-base"
 import _ from "lodash";
 import moment from "moment";
 import path from "path";
@@ -408,7 +409,7 @@ Meteor.methods({
     });
 
     if (!user) {
-      const userId = Accounts.createUser({
+      const userId = MeteorAccounts.createUser({
         email: email,
         username: name
       });
@@ -474,7 +475,7 @@ Meteor.methods({
         user: Meteor.user(),
         currentUserName,
         invitedUserName: name,
-        url: Accounts.urls.enrollAccount(token)
+        url: MeteorAccounts.urls.enrollAccount(token)
       };
 
       // Compile Email with SSR
