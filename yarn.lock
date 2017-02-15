@@ -100,7 +100,7 @@ ansi-escapes@^1.1.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/ansi-escapes/-/ansi-escapes-1.4.0.tgz#d3a8a83b319aa67793662b13e761c7911422306e"
 
-ansi-regex@*, ansi-regex@^2.0.0:
+ansi-regex@^2.0.0:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/ansi-regex/-/ansi-regex-2.1.1.tgz#c3b33ab5ee360d86e0e628f0468ae7ef27d654df"
 
@@ -578,7 +578,7 @@ bcrypt@^1.0.2:
     nan "2.5.0"
     node-pre-gyp "0.6.32"
 
-bindings@1.2.1:
+bindings@1.2.1, bindings@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/bindings/-/bindings-1.2.1.tgz#14ad6113812d2d37d72e67b4cacb4bb726505f11"
 
@@ -611,6 +611,12 @@ boom@2.x.x:
   resolved "https://registry.yarnpkg.com/boom/-/boom-2.10.1.tgz#39c8918ceff5799f83f9492a848f625add0c766f"
   dependencies:
     hoek "2.x.x"
+
+boom@4.x.x:
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/boom/-/boom-4.2.0.tgz#c1a74174b11fbba223f6162d4fd8851a1b82a536"
+  dependencies:
+    hoek "4.x.x"
 
 bootstrap@^3.3.7:
   version "3.3.7"
@@ -1624,6 +1630,12 @@ faker@^3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/faker/-/faker-3.1.0.tgz#0f908faf4e6ec02524e54a57e432c5c013e08c9f"
 
+faketoe@2.x.x:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/faketoe/-/faketoe-2.1.1.tgz#101fa404054ac5af88586154e690d646ba319589"
+  dependencies:
+    node-expat "2.3.x"
+
 fast-levenshtein@~2.0.4:
   version "2.0.6"
   resolved "https://registry.yarnpkg.com/fast-levenshtein/-/fast-levenshtein-2.0.6.tgz#3d8a5c66883a16a30ca8643e851f19baa7797917"
@@ -1987,6 +1999,10 @@ hoek@2.x.x:
   version "2.16.3"
   resolved "https://registry.yarnpkg.com/hoek/-/hoek-2.16.3.tgz#20bb7403d3cea398e91dc4710a8ff1b8274a25ed"
 
+hoek@4.x.x:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/hoek/-/hoek-4.1.0.tgz#4a4557460f69842ed463aa00628cc26d2683afa7"
+
 hoist-non-react-statics@1.x.x, hoist-non-react-statics@^1.0.3, hoist-non-react-statics@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-1.2.0.tgz#aa448cf0986d55cc40773b17174b7dd066cb7cfb"
@@ -2069,7 +2085,7 @@ immutable@^3.8.1:
   version "3.8.1"
   resolved "https://registry.yarnpkg.com/immutable/-/immutable-3.8.1.tgz#200807f11ab0f72710ea485542de088075f68cd2"
 
-imurmurhash@*, imurmurhash@^0.1.4:
+imurmurhash@^0.1.4:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/imurmurhash/-/imurmurhash-0.1.4.tgz#9218b9b2b928a238b13dc4fb6b6d576f231453ea"
 
@@ -2833,7 +2849,7 @@ mv@~2:
     ncp "~2.0.0"
     rimraf "~2.4.0"
 
-nan@2.5.0, nan@^2.3.3:
+nan@2.5.0, nan@^2.3.3, nan@^2.3.5:
   version "2.5.0"
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.5.0.tgz#aa8f1e34531d807e9e27755b234b4a6ec0c152a8"
 
@@ -2852,6 +2868,13 @@ nexmo@^1.1.0:
     jsonwebtoken "^7.1.9"
     uuid "^2.0.2"
 
+node-expat@2.3.x:
+  version "2.3.15"
+  resolved "https://registry.yarnpkg.com/node-expat/-/node-expat-2.3.15.tgz#96a53a0bc00649daf78f4fc074a23e644c223b4c"
+  dependencies:
+    bindings "^1.2.1"
+    nan "^2.3.5"
+
 node-fetch@^1.0.1:
   version "1.6.3"
   resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-1.6.3.tgz#dc234edd6489982d58e8f0db4f695029abcd8c04"
@@ -2859,9 +2882,9 @@ node-fetch@^1.0.1:
     encoding "^0.1.11"
     is-stream "^1.0.1"
 
-node-geocoder@^3.15.0:
-  version "3.15.2"
-  resolved "https://registry.yarnpkg.com/node-geocoder/-/node-geocoder-3.15.2.tgz#f017de31e8c9c6e437acfb1018abdbe1bc509498"
+node-geocoder@^3.16.0:
+  version "3.16.0"
+  resolved "https://registry.yarnpkg.com/node-geocoder/-/node-geocoder-3.16.0.tgz#6aa520c06f46fdf723838c0172b61eb646ea7921"
   dependencies:
     bluebird "^3.4.6"
     request "^2.74.0"
@@ -4603,6 +4626,14 @@ user-home@^2.0.0:
   dependencies:
     os-homedir "^1.0.0"
 
+usps@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/usps/-/usps-2.0.0.tgz#8727f927e7ec201866f4187cbeadae3035efb137"
+  dependencies:
+    faketoe "2.x.x"
+    hoek "4.x.x"
+    wreck "10.x.x"
+
 util-deprecate@~1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/util-deprecate/-/util-deprecate-1.0.2.tgz#450d4dc9fa70de732762fbd2d4a28981419a0ccf"
@@ -4786,6 +4817,13 @@ wrap-ansi@^2.0.0:
 wrappy@1, wrappy@~1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/wrappy/-/wrappy-1.0.2.tgz#b5243d8f3ec1aa35f1364605bc0d1036e30ab69f"
+
+wreck@10.x.x:
+  version "10.0.0"
+  resolved "https://registry.yarnpkg.com/wreck/-/wreck-10.0.0.tgz#98ab882f85e16a526332507f101f5a7841162278"
+  dependencies:
+    boom "4.x.x"
+    hoek "4.x.x"
 
 write-file-atomic@~1.1.4:
   version "1.1.4"
