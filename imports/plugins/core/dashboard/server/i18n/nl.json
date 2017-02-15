@@ -7,6 +7,10 @@
         "shortcut": {
           "dashboardLabel": "Dashboard"
         },
+        "dashboard": {
+          "packageGroupActionsLabel": "Acties",
+          "packageGroupSettingsLabel": "Instellingen"
+        },
         "settings": {
           "shopSettingsLabel": "Winkel"
         }

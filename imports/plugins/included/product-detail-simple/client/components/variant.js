@@ -78,6 +78,18 @@ class Variant extends Component {
       "variant-deleted": this.props.variant.isDeleted
     });
 
+    let variantTitleElement;
+
+    if (typeof variant.title === "string" && variant.title.length) {
+      variantTitleElement = (
+        <span className="variant-title">{variant.title}</span>
+      );
+    } else {
+      variantTitleElement = (
+        <Translation defaultValue="Label" i18nKey="productVariant.title" />
+      );
+    }
+
     const variantElement = (
       <li
         className="variant-list-item"
@@ -87,7 +99,7 @@ class Variant extends Component {
       >
         <div className={classes}>
           <div className="title">
-            <span className="variant-title">{variant.title}</span>
+            {variantTitleElement}
           </div>
 
           <div className="actions">
