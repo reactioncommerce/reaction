@@ -300,13 +300,12 @@
 
 // ----------------------------------------------------------------------------
 
-  // position: absolute;
-  // top: 10px;
-  // right: 10px;
-  // border: none;
-  // background-color: rgb(239, 102, 198);
-  // color: white;
-  // padding: 10px 15px;
+.grid-alerts {
+  display: flex;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
 
 
 .product-grid-controls {
@@ -314,66 +313,29 @@
   .flex(0 1 auto);
   .align-items(center);
   .justify-content(center);
+  .margin-left(5px);
 
   width: auto;
   padding: 0;
   overflow: hidden;
 
-  position: absolute;
-  top: 0;
-  right: 0;
-
-
-  // button, .rui.button {
-  //   border: none;
-  //   border-radius: 0;
-  //   background-color: @black60;
-  //   width: 32px;
-  //   height: 32px;
-  //
-  //   color: @white;
-  //
-  //   border-right: 1px solid @controlbar-seperator;
-  //
-  //   &:last-child {
-  //     border: none;
-  //   }
-  //
-  //   // TODO: Make make this more like bootstrap / like a framework
-  //   &:hover, &.active {
-  //     color: @controlbar-fg-hover;
-  //     background-color: @controlbar-hover;
-  //   }
-  // }
-
   .more-options-container {
     position: relative;
   }
 
-
-  // background-color: @controlbar-bg;
-
-  // border-radius: 5px;
-  // box-shadow: 0 3px 6px rgba(0,0,0,0.2);
-}
-
-.product-grid-badges {
-  .badge {
-    position: absolute;
-    top: 0px;
-    right: 0px;
+  .rui.btn {
+    margin-left: 5px;
   }
 }
 
-.product-grid-item-images .not-visible {
-  position: relative;
-}
+.product-grid-badges {
+  .display(flex);
+  .flex(0 1 auto);
+  .align-items(center);
+  .justify-content(center);
+  .margin-left(5px);
 
-.prodcut-grid-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0,0,0,0.2);
+  width: auto;
+  padding: 0;
+  overflow: hidden;
 }

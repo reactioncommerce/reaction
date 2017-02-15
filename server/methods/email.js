@@ -11,7 +11,7 @@ Meteor.methods({
    * @return {Boolean} - returns true if SMTP connection succeeds
    */
   "email/verifySettings"(settings) {
-    if (!Roles.userIsInRole(this.userId, ["owner", "admin", "dashboard"])) {
+    if (!Reaction.hasPermission(["owner", "admin", "dashboard"], this.userId)) {
       Logger.error("email/verifySettings: Access Denied");
       throw new Meteor.Error("access-denied", "Access Denied");
     }
@@ -53,7 +53,7 @@ Meteor.methods({
    * @return {Boolean} - returns true if update succeeds
    */
   "email/saveSettings"(settings) {
-    if (!Roles.userIsInRole(this.userId, ["owner", "admin", "dashboard"])) {
+    if (!Reaction.hasPermission(["owner", "admin", "dashboard"], this.userId)) {
       Logger.error("email/saveSettings: Access Denied");
       throw new Meteor.Error("access-denied", "Access Denied");
     }
@@ -86,7 +86,7 @@ Meteor.methods({
    * @return {Boolean} - returns true if job is successfully restarted
    */
   "emails/retryFailed"(jobId) {
-    if (!Roles.userIsInRole(this.userId, ["owner", "admin", "dashboard"])) {
+    if (!Reaction.hasPermission(["owner", "admin", "dashboard"], this.userId)) {
       Logger.error("email/retryFailed: Access Denied");
       throw new Meteor.Error("access-denied", "Access Denied");
     }
