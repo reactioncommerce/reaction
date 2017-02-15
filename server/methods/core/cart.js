@@ -3,6 +3,7 @@ import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import * as Collections from "/lib/collections";
 import { Logger, Reaction } from "/server/api";
+import { ordersInventoryAdjust } from "/server/methods/core/orders";
 
 /**
  * quantityProcessing
@@ -603,7 +604,7 @@ Meteor.methods({
 
     if (orderId) {
       // TODO: check for successful orders/inventoryAdjust
-      Meteor.call("orders/inventoryAdjust", orderId);
+      ordersInventoryAdjust(orderId);
       Collections.Cart.remove({
         _id: order.cartId
       });

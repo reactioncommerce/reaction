@@ -23,6 +23,32 @@ export function orderDebitMethod(order) {
 }
 
 /**
+ * ordersInventoryAdjust
+ * adjust inventory when an order is placed
+ * @param {String} orderId - add tracking to orderId
+ * @return {null} no return value
+ */
+export function ordersInventoryAdjust(orderId) {
+  check(orderId, String);
+
+  const order = Orders.findOne(orderId);
+  order.items.forEach(item => {
+    Products.update({
+      _id: item.variants._id
+    }, {
+      $inc: {
+        inventoryQuantity: -item.quantity
+      }
+    }, {
+      selector: {
+        type: "variant"
+      }
+    });
+  });
+}
+
+
+/**
  * Reaction Order Methods
  */
 export const methods = {
@@ -767,34 +793,6 @@ export const methods = {
     });
   },
 
-  /**
-   * orders/inventoryAdjust
-   * adjust inventory when an order is placed
-   * @param {String} orderId - add tracking to orderId
-   * @return {null} no return value
-   */
-  "orders/inventoryAdjust": function (orderId) {
-    check(orderId, String);
-
-    if (!Reaction.hasPermission("orders")) {
-      throw new Meteor.Error(403, "Access Denied");
-    }
-
-    const order = Orders.findOne(orderId);
-    order.items.forEach(item => {
-      Products.update({
-        _id: item.variants._id
-      }, {
-        $inc: {
-          inventoryQuantity: -item.quantity
-        }
-      }, {
-        selector: {
-          type: "variant"
-        }
-      });
-    });
-  },
 
   /**
    * orders/capturePayments
