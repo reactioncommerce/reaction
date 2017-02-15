@@ -86,8 +86,8 @@ class PublishControls extends Component {
           });
         }}
       >
-      <Icon style={{ fontSize: 24 }} icon="icon icon-reaction-logo" />
-    </FlatButton>
+        <Icon style={{ fontSize: 24 }} icon="icon icon-reaction-logo" />
+      </FlatButton>
     );
   }
 

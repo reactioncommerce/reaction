@@ -1,6 +1,7 @@
 import { Session } from "meteor/session";
 import { Template } from "meteor/templating";
 import { ReactiveDict } from "meteor/reactive-dict";
+import { Reaction } from "/lib/api";
 import { IconButton } from "/imports/plugins/core/ui/client/components";
 
 Template.gridControls.onCreated(function () {
@@ -22,14 +23,44 @@ Template.gridControls.onRendered(function () {
   });
 });
 
+
 Template.gridControls.helpers({
   checked: function () {
     return Template.instance().state.equals("isSelected", true);
   },
-
   isVisible() {
     const currentData = Template.currentData();
     return currentData && currentData.product && currentData.product.isVisible;
+  },
+  hasControl() {
+    const instance = Template.instance();
+    const shopIds = Reaction.getSellerShopId() || [];
+    // owner (parent shop in marketplace) will return all shopIds
+
+    return (
+        Reaction.hasPermission("createProduct") &&
+        // does product belongs to this shop seller
+        shopIds.indexOf(instance.data.product.shopId) > -1
+    );
+  },
+
+  EditButton() {
+    const instance = Template.instance();
+    const isSelected = instance.state.equals("isSelected", true);
+
+    return {
+      component: IconButton,
+      icon: "fa fa-pencil",
+      onIcon: "fa fa-check",
+      status: isSelected ? "active" : "default",
+      toggle: true,
+      toggleOn: isSelected,
+      onClick() {
+        if (instance.data.onEditButtonClick) {
+          instance.data.onEditButtonClick();
+        }
+      }
+    };
   },
 
   hasChanges() {
@@ -43,11 +74,19 @@ Template.gridControls.helpers({
   },
 
   VisibilityButton() {
+    const instance = Template.instance();
+
     return {
       component: IconButton,
-      icon: "",
-      onIcon: "",
-      status: "info"
+      icon: "fa fa-eye-slash",
+      onIcon: "fa fa-eye",
+      toggle: true,
+      toggleOn: instance.data.product.isVisible,
+      onClick() {
+        if (instance.data.onPublishButtonClick) {
+          instance.data.onPublishButtonClick();
+        }
+      }
     };
   }
 });

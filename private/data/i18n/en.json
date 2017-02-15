@@ -32,7 +32,8 @@
           "dashboard": "Dashboard",
           "misc": "Misc",
           "paymentMethod": "Payment Providers",
-          "utilities": "Utilities"
+          "utilities": "Utilities",
+          "marketplace": "Marketplace"
         },
         "settings": {
           "accountSettingsLabel": "Login Services",
@@ -55,9 +56,7 @@
       },
       "app": {
         "add": "Add",
-        "editMode": "Edit Mode",
-        "administratorView": "Administrator View",
-        "customerView": "Customer View",
+        "editMode": "Edit mode",
         "createContent": "Create Content",
         "auto": "Auto",
         "save": "Save",
@@ -133,7 +132,9 @@
         "shopOptionsSettingsSaved": "Shop options saved.",
         "shopOptionsSettingsFailed": "Shop options update failed.",
         "shopPaymentMethodsSaved": "Shop Payment Methods settings saved.",
-        "shopPaymentMethodsFailed": "Shop Payment Methods settings update failed."
+        "shopPaymentMethodsFailed": "Shop Payment Methods settings update failed.",
+        "shopBrandAssetsSaved": "Updated brand asset",
+        "shopBrandAssetsFailed": "Couldn't update brand asset"
       },
       "notifications": {
         "body": {

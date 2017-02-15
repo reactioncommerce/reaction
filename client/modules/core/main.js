@@ -87,7 +87,7 @@ export default {
    * @return {Boolean} Boolean - true if has permission
    */
   hasPermission(checkPermissions, checkUserId, checkGroup) {
-    let group = this.getShopId();
+    let group = this.getSellerShopId();
     let permissions = ["owner"];
     let id = "";
     const userId = checkUserId || this.userId || Meteor.userId();
@@ -196,6 +196,17 @@ export default {
     return this.hasPermission(dashboardPermissions);
   },
 
+  getSellerShopId: function (userId = Meteor.userId()) {
+    if (userId) {
+      const group = Roles.getGroupsForUser(userId, "admin")[0];
+      if (group) {
+        return group;
+      }
+    }
+
+    return this.getShopId();
+  },
+
   getUserPreferences(packageName, preference, defaultValue) {
     const profile = Meteor.user().profile;
     if (profile && profile.preferences && profile.preferences[packageName] && profile.preferences[packageName][preference]) {
@@ -246,7 +257,14 @@ export default {
   },
 
   getPackageSettings(name) {
-    return Packages.findOne({ name, shopId: this.getShopId() });
+    const shopId = this.getShopId();
+    const query = { name };
+
+    if (shopId) {
+      query.shopId = shopId;
+    }
+
+    return Packages.findOne(query);
   },
 
   allowGuestCheckout() {
@@ -257,10 +275,6 @@ export default {
       allowGuest = settings.public.allowGuestCheckout;
     }
     return allowGuest;
-  },
-
-  getSellerShopId() {
-    return Roles.getGroupsForUser(this.userId, "admin");
   },
 
   /**
@@ -434,6 +448,7 @@ export default {
       i18nKeyLabel: ""
     }]);
   },
+
 
   getCurrentTag() {
     if (this.Router.getRouteName() === "tag") {

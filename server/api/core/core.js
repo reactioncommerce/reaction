@@ -70,7 +70,7 @@ export default {
     if (checkGroup !== undefined && typeof checkGroup === "string") {
       group = checkGroup;
     } else {
-      group = this.getShopId() || Roles.GLOBAL_GROUP;
+      group = this.getSellerShopId() || Roles.GLOBAL_GROUP;
     }
 
     // permissions can be either a string or an array we'll force it into an array and use that
@@ -122,10 +122,6 @@ export default {
     return this.hasPermission(["owner", "admin", "dashboard"]);
   },
 
-  getSellerShopId() {
-    return Roles.getGroupsForUser(this.userId, "admin");
-  },
-
   configureMailUrl() {
     // maintained for legacy support
     Logger.warn("Reaction.configureMailUrl() is deprecated. Please use Reaction.Email.getMailUrl() instead");
@@ -162,6 +158,7 @@ export default {
         _id: 1
       }
     }).fetch()[0];
+
     return shop && shop._id;
   },
 
@@ -204,7 +201,77 @@ export default {
   },
 
   getPackageSettings(name) {
-    return Packages.findOne({ packageName: name, shopId: this.getShopId() }) || null;
+    const shopId = this.getShopId();
+    const query = {
+      name
+    };
+
+    if (shopId) {
+      query.shopId = shopId;
+    }
+
+    return Packages.findOne(query);
+  },
+
+  /**
+   * Check if package is enabled
+   * @param  {String}  name - Package name
+   * @return {Boolean}      True if the package is enabled
+   */
+  isPackageEnabled(name) {
+    const settings = this.getPackageSettings(name);
+
+    return !!settings.enabled;
+  },
+
+  /**
+   * Add default roles for new visitors
+   * @param {String|Array} roles - A string or array of roles and routes
+   */
+  addDefaultRolesToVisitors(roles) {
+    Logger.info(`Adding defaultRoles & defaultVisitorRole permissions for ${roles}`);
+
+    const shop = Shops.findOne(this.getShopId());
+
+    if (Match.test(roles, [String])) {
+      Shops.update(shop._id, {
+        $addToSet: { defaultVisitorRole: { $each: roles } }
+      });
+      Shops.update(shop._id, {
+        $addToSet: { defaultRoles: { $each: roles } }
+      });
+    } else if (Match.test(roles, String)) {
+      Shops.update(shop._id, {
+        $addToSet: { defaultVisitorRole: roles }
+      });
+      Shops.update(shop._id, {
+        $addToSet: { defaultRoles: roles }
+      });
+    } else {
+      throw new Meteor.Error(`Failed to add default roles ${roles}`);
+    }
+  },
+
+  /**
+   * Add default roles for new sellers
+   * @param {String|Array} roles A string or array of roles and routes
+   */
+  addDefaultRolesToSellers(roles) {
+    Logger.info(`Adding defaultSellerRoles permissions for ${roles}`);
+
+    const shop = Shops.findOne(this.getShopId());
+
+    if (Match.test(roles, [String])) {
+      Shops.update(shop._id, {
+        $addToSet: { defaultSellerRole: { $each: roles } }
+      });
+    } else if (Match.test(roles, String)) {
+      Shops.update(shop._id, {
+        $addToSet: { defaultSellerRole: roles }
+      });
+    } else {
+      throw new Meteor.Error(`Failed to add default seller roles ${roles}`);
+    }
   },
 
   /**

@@ -1,6 +1,7 @@
-import * as Collections from "/lib/collections";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
+import { Reaction } from "/lib/api";
+import * as Collections from "/lib/collections";
 
 /**
  * onCreated: Account Profile View
@@ -64,5 +65,9 @@ Template.accountProfile.helpers({
       return "addressBookGrid";
     }
     return "addressBookAdd";
+  },
+
+  isMarketplaceGuest: function () {
+    return Reaction.hasMarketplaceGuestAccess();
   }
 });

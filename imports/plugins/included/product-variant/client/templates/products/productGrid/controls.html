@@ -1,5 +1,5 @@
 <template name="gridControls">
-  {{#if hasPermission "createProduct"}}
+  {{#if hasControl }}
     <div class="product-grid-controls">
       <label class="like-button hidden" for="select-product-{{product._id}}">
         <input
@@ -7,16 +7,15 @@
           name="selectProduct"
           value="{{product._id}}"
           id="select-product-{{product._id}}"
-          checked={{checked}}
-        >
+          checked={{checked}}>
       </label>
 
       {{#if product.isDeleted}}
         <div>
-          <span class="badge badge-danger" data-i18n="app.archived">
-            <span>Archived</span>
-          </span>
-        </div>
+        <span class="badge badge-danger" data-i18n="app.archived">
+          <span>Archived</span>
+        </span>
+      </div>
       {{/if}}
 
       {{#if hasChanges}}
