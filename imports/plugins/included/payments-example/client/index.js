@@ -1,2 +1,2 @@
-import "./templates/checkoutForm.html";
-import "./templates/checkoutForm";
+import "./checkout/example";
+import "./settings/templates/example";

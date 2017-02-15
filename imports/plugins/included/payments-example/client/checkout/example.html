@@ -1,0 +1,55 @@
+<template name="examplePaymentForm">
+  {{#autoForm schema=ExamplePayment id="example-payment-form"}}
+  <div class="row">
+    <div class="form-group{{#if afFieldIsInvalid name='payerName'}} has-error{{/if}}">
+        <label class="control-label">{{afFieldLabelText name='payerName'}}</label>
+        {{>afFieldInput name="payerName" value=cartPayerName}}
+        {{#if afFieldIsInvalid name="payerName"}}
+        <span class="help-block">{{afFieldMessage name="payerName"}}</span>
+        {{/if}}
+    </div>
+
+    <div class="form-group{{#if afFieldIsInvalid name='cardNumber'}} has-error{{/if}}">
+        <label class="control-label">{{afFieldLabelText name='cardNumber'}}</label>
+        {{>afFieldInput name="cardNumber" placeholder='XXXX XXXX XXXX XXXX'}}
+        {{#if afFieldIsInvalid name="cardNumber"}}
+        <span class="help-block">{{afFieldMessage name="cardNumber"}}</span>
+        {{/if}}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12 col-lg-6 form-group{{#if afFieldIsInvalid name='expireMonth'}} has-error{{/if}}">
+        <label class="control-label">{{afFieldLabelText name='expireMonth'}}</label>
+        {{>afFieldInput name="expireMonth" options=(monthOptions false) firstOption=(i18n "app.monthOptions" "Choose month") placeholder="Exp. Month"}}
+        {{#if afFieldIsInvalid name="expireMonth"}}
+        <span class="help-block">{{afFieldMessage name="expireMonth"}}</span>
+        {{/if}}
+    </div>
+
+    <div class="col-sm-12 col-lg-6 form-group{{#if afFieldIsInvalid name='expireYear'}} has-error{{/if}}">
+        <label class="control-label">{{afFieldLabelText name='expireYear'}}</label>
+        {{>afFieldInput name="expireYear" options=(yearOptions false) firstOption=(i18n "app.yearOptions" "Choose year") placeholder="Exp. Year"}}
+        {{#if afFieldIsInvalid name="expireYear"}}
+        <span class="help-block">{{afFieldMessage name="expireYear"}}</span>
+        {{/if}}
+    </div>
+
+  </div>
+  <div class="row">
+    <div class="col-sm-12 col-lg-3 form-group{{#if afFieldIsInvalid name='cvv'}} has-error{{/if}}">
+        <label class="control-label">{{afFieldLabelText name='cvv'}}</label>
+        {{>afFieldInput name="cvv" placeholder="CVV"}}
+        {{#if afFieldIsInvalid name="cvv"}}
+        <span class="help-block">{{afFieldMessage name="cvv"}}</span>
+        {{/if}}
+    </div>
+  </div>
+
+  <div class="alert alert-danger hidden">Oh! Snap!</div>
+  <button type="submit" class="rui btn btn-lg btn-cta btn-block btn-complete-order">
+    <span id="btn-complete-order" data-i18n="checkoutPayment.completeYourOrder">Complete your order</span>
+    <i class="fa fa-spinner fa-spin hidden" id="btn-processing"></i>
+  </button>
+
+  {{/autoForm}}
+</template>

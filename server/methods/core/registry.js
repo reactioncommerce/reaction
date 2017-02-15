@@ -24,6 +24,7 @@ export const methods = {
     if (currentPackage && currentPackage.settings) {
       dataToSave = mergeDeep(currentPackage.settings, dataToSave);
     }
+
     // user must have permission to package to update settings
     if (Reaction.hasPermission([currentPackage.name])) {
       return Packages.upsert({
