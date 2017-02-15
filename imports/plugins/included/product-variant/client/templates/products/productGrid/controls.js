@@ -32,6 +32,16 @@ Template.gridControls.helpers({
     return currentData && currentData.product && currentData.product.isVisible;
   },
 
+  hasChanges() {
+    const { product } = Template.currentData();
+
+    if (product.__draft) {
+      return true;
+    }
+
+    return false;
+  },
+
   VisibilityButton() {
     return {
       component: IconButton,

@@ -100,8 +100,11 @@ Template.products.onCreated(function () {
       return applyProductRevision(product);
     });
 
+    const sortedProducts = ReactionProduct.sortProducts(products, currentTag);
+
     this.state.set("canLoadMoreProducts", productCursor.count() >= Session.get("productScrollLimit"));
-    this.products.set(products);
+    this.products.set(sortedProducts);
+    Session.set("productGrid/products", sortedProducts);
   });
 
   this.autorun(() => {

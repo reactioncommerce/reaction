@@ -201,6 +201,13 @@ class PublishControls extends Component {
   }
 
   renderPublishButton() {
+    const buttonProps = {};
+
+    if (Array.isArray(this.props.documentIds) && this.props.documentIds.length > 1) {
+      buttonProps.label = "Publish All";
+      buttonProps.i18nKeyLabel = "toolbar.publishAll";
+    }
+
     return (
       <Button
         bezelStyle="outline"
@@ -210,6 +217,7 @@ class PublishControls extends Component {
         status="success"
         tooltip={"This product has changes that need to be published before they are visible to your customers."}
         i18nKeyLabel="productDetailEdit.publish"
+        {...buttonProps}
       />
     );
   }
