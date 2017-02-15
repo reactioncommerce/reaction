@@ -1,7 +1,6 @@
 <template name="productItem">
   <li class="product-grid-item {{#if positions.pinned}}pinned{{/if}} {{weightClass}} {{isSelected}}" data-id="{{product._id}}" id="{{product._id}}">
     <div class="item-content">
-      {{> gridNotice}}
       <span class="product-grid-item-alerts">
         {{> inlineAlerts placement="productGridItem" id=product._id}}
       </span>
@@ -21,6 +20,10 @@
           {{/with}}
         </div>
       </a>
+
+      <div class="grid-alerts">
+        {{> searchGridNotice product=product}}
+      </div>
 
       <!-- {{> searchGridControls controlProps product=product}} -->
       {{> searchGridContent product=product}}
