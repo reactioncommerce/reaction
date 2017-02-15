@@ -56,6 +56,8 @@
       "app": {
         "add": "Ajouter",
         "editMode": "Editer le mode",
+        "administratorView": "Administrator Voir",
+        "customerView": "Régarder",
         "createContent": "Créer du contenu",
         "auto": "Auto",
         "save": "Enregistrer",
@@ -575,68 +577,6 @@
       },
       "checkoutReview": {
         "review": "Réviser"
-      },
-      "checkoutShipping": {
-        "selectShippingOption": "Sélectionner un mode de livraison",
-        "noShippingMethods": "Aucun mode de livraison configuré.",
-        "configureNow": "Configurer maintenant.",
-        "shipping": "Expédition"
-      },
-      "shipping": {
-        "addShippingProvider": "Ajouter un prestataire de transport",
-        "editShippingProvider": "Editer le prestataire de livraison",
-        "addShippingMethod": "Ajouter un mode de livraison",
-        "editShippingMethod": "Editer le mode de livraison",
-        "deleteShippingMethod": "Supprimer le mode d'expédition",
-        "noSettingsForThisView": "Aucun paramètre pour cette vue",
-        "noShippingMethods": "Aucun mode de livraison configuré.",
-        "removeShippingMethodConfirm": "Êtes-vous certain de vouloir supprimer {{method}} ?",
-        "removeShippingMethodTitle": "Supprimer le mode de livraison.",
-        "shippingMethodDeleted": "Ce mode de livraison a été supprimé.",
-        "removeShippingProvider": "Supprimer le prestataire de transport",
-        "removeShippingProviderConfirm": "Êtes-vous certain de vouloir supprimer {{provider}} ?",
-        "shippingProviderSaved": "Prestataire de transport enregistré.",
-        "shippingProviderUpdated": "Données du prestataire de transport mises à jour.",
-        "shippingMethodRateAdded": "Tarif du mode de livraison ajouté.",
-        "shippingMethodRateUpdated": "Tarif du mode de livraison mis à jour.",
-        "name": "Nom",
-        "label": "Balise",
-        "group": "Groupe",
-        "cost": "Coût",
-        "handling": "Traitement",
-        "rate": "Taux",
-        "enabled": "Activé",
-        "disabled": "Désactivé",
-        "addRate": "Ajouter un tarif",
-        "updateRate": "Mettre à jour le tarif {{name}}",
-        "addNewCondition": "Ajouter une nouvelle condition",
-        "deleteCondition": "Supprimer les conditions",
-        "provider": {
-          "name": "Code de service",
-          "label": "Balise publique",
-          "enabled": "Activé"
-        }
-      },
-      "shippingMethod": {
-        "name": "Nom de la méthode",
-        "label": "Balise publique",
-        "group": "Groupe",
-        "cost": "Coût",
-        "handling": "Traitement",
-        "rate": "Taux",
-        "enabled": "Activé",
-        "matchingCartRanges": "Catégories de paniers correspondants",
-        "validRanges": {
-          "begin": "Commencer",
-          "end": "Fin"
-        },
-        "matchingLocales": "Emplacements correspondants",
-        "validLocales": {
-          "origination": "De",
-          "destination": "A",
-          "deliveryBegin": "Estimation du transport",
-          "deliveryEnd": "Estimation de la livraison"
-        }
       },
       "uom": {
         "OZ": "Onces",

@@ -124,7 +124,7 @@ Template.shippoCarriers.events({
   "click .shipping-carriers-grid-row": function (event) {
     // toggle all rows off, then add our active row
     $(".shipping-carriers-grid-row").removeClass("active");
-    $(event.currentTarget).addClass("active");
+    Template.instance().$(event.currentTarget).addClass("active");
   }
 });
 

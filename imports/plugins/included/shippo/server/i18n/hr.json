@@ -8,6 +8,17 @@
           "shippoLabel": "Shippo",
           "shippoTitle": "Shippo",
           "shippoDescription": "etikete Dostava i praćenje paketa"
+        },
+        "shippingGrid": {
+          "carrier": "Prijevoznik",
+          "enabled": "Omogućeno"
+        },
+        "shippingSettings": {
+          "noCarriersFound": "Nema utovar nositelji konfiguriran.",
+          "editApiKey": "Uredi API ključ",
+          "carrierSaved": "Carrier je uspješno spremljen.",
+          "carrierFailed": "Pogreška pri ažuriranju nosač.",
+          "refresh": "Osvježi metode"
         }
       },
       "shippo": {

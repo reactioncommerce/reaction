@@ -1,5 +1,8 @@
 <template name="orders">
   {{#if hasPermission 'orders'}}
+    <div class="orders-list-tabs">
+      {{> React FilterComponent}}
+    </div>
     <div class="container-fluid-sm">
       {{#each order in orders}}
         {{> ordersListItem (itemProps order)}}

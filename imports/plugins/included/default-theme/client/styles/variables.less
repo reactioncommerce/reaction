@@ -37,6 +37,8 @@
 // Brand
 @brand-primary-color: @reaction-brand;
 @brand-primary-dark: #23566D;
+@brand-primary-bg-light: #e4e9ec;
+@brand-primary-border-color: #afbac1;
 
 @brand-secondary-color: @brand-primary-dark; //lighten(@brand-primary-color, 20); // old @brand-secondary-color: #4aa5bd;
 @brand-accent-color: #94E8D1; //lighten(@brand-primary-color, 37); // old @brand-accent-color: #abe2e7;
@@ -51,6 +53,7 @@
 @brand-warning-color:         #EFC95F;
 @brand-danger-color:          #EB4D5C;
 
+
 //== Bootstrap colors
 //
 // All color variables from bootstraps variables.less file in one place for easy override.
@@ -63,13 +66,17 @@
 @gray-lighter:           lighten(@gray-base, 93.5%); // #eee
 @gray-lightest:          lighten(@gray-base, 96%); // #f6f6f6
 
-@brand-primary:         @black60;
+// Background Colors
+// @brand-primary:         @black60;
+@brand-primary:         darken(#b7c7d0, 10%);
 @brand-success:         @brand-success-color;
 @brand-info:            @brand-info-color;
 @brand-warning:         @brand-warning-color;
 @brand-danger:          @brand-danger-color;
-@brand-default:         #a3a6a7;
+@brand-default:         #b7c7d0;
 @brand-cta:             #34D891;
+
+@state-default-text:   #505558;
 
 @state-success-text:             #3c763d;
 @state-success-bg:               @gray-lighter;
@@ -111,7 +118,7 @@
 
 
 //** Global textual link color.
-@link-color:            @brand-primary;
+@link-color:            @brand-primary-dark;
 //** Link hover color set via `darken()` function.
 @link-hover-color:      darken(@link-color, 15%);
 //** Link hover decoration.
@@ -223,12 +230,12 @@
 //## For each of Bootstrap's buttons, define text, background and border color.
 
 @btn-font-weight:                normal;
-@btn-border-width:               3px;
+@btn-border-width:               1px;
 
 // Solid Button Colors
-@btn-default-color:              #000;
+@btn-default-color:              @state-default-text;
 @btn-default-bg:                 #fff;
-@btn-default-border:             @border-color;
+@btn-default-border:             @brand-default;
 
 @btn-primary-color:              #fff;
 @btn-primary-bg:                 @brand-primary;
@@ -258,7 +265,7 @@
 @btn-flat-border-width:               3px;
 @btn-flat-border-radius:              2px;
 
-@btn-flat-default-color:              @brand-default;
+@btn-flat-default-color:              @btn-default-color;
 @btn-flat-default-bg:                 transparent;
 @btn-flat-default-border:             transparent;
 
@@ -327,7 +334,7 @@
 @btn-icon-only-border-radius:         @btn-icon-size / 2;
 @btn-icon-only-outline-bg:            #fff;
 
-@btn-icon-only-default-color:              @brand-default;
+@btn-icon-only-default-color:              @btn-default-color;
 @btn-icon-only-default-bg:                 @btn-default-bg;
 @btn-icon-only-default-border:             @btn-default-bg;
 
@@ -1125,6 +1132,12 @@
 @navbar-secondary-border: 1px solid @black10;
 
 
+// == Tag Groups
+@tag-group-text-color: @brand-primary-dark;
+@tag-group-border-color: @brand-primary-border-color;
+@tag-group-background-color: @brand-primary-bg-light;
+
+
 //== Dashboard navbar
 @navbar-dashboard-bg: @white;
 @navbar-dashboard-color: @black;
@@ -1181,12 +1194,12 @@
 @cart-icon-padding:  (@navbar-padding-vertical - 4px) 30px (@navbar-padding-vertical - 4px) 24px;
 
 @cart-progress-active: #57aed1; //lighten(@brand-vivid-color, 8); // TODO: @cart-progress-active is used nowhere
-@cart-progress-visited: @brand-vivid-color;
+@cart-progress-visited: @brand-primary-dark;
 @cart-progress-next: @brand-light-color;
 
-@checkout-progress-visited: @brand-vivid-color;
+@checkout-progress-visited: @brand-primary-dark;
 @checkout-progress-visited-text: @white;
-@checkout-progress-active: @brand-vivid-color;
+@checkout-progress-active: @brand-primary-dark;
 @checkout-progress-active-text: @white;
 @checkout-progress-next: @brand-light-color;
 @checkout-progress-next-text: @brand-dark-color;

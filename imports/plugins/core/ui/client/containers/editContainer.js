@@ -3,6 +3,13 @@ import { Reaction } from "/client/api";
 import { EditButton, VisibilityButton, Translation } from "/imports/plugins/core/ui/client/components";
 import { composeWithTracker } from "/lib/api/compose";
 
+const styles = {
+  editContainerItem: {
+    display: "flex",
+    marginLeft: 5
+  }
+};
+
 class EditContainer extends Component {
 
   handleEditButtonClick = (event) => {
@@ -50,10 +57,12 @@ class EditContainer extends Component {
   renderVisibilityButton() {
     if (this.props.showsVisibilityButton) {
       return (
-        <VisibilityButton
-          onClick={this.handleVisibilityButtonClick}
-          toggleOn={this.props.data.isVisible}
-        />
+        <span className="edit-container-item" style={styles.editContainerItem}>
+          <VisibilityButton
+            onClick={this.handleVisibilityButtonClick}
+            toggleOn={this.props.data.isVisible}
+          />
+        </span>
       );
     }
 
@@ -108,11 +117,13 @@ class EditContainer extends Component {
     }
 
     return (
-      <EditButton
-        onClick={this.handleEditButtonClick}
-        status={status}
-        tooltip={tooltip}
-      />
+      <span className="edit-container-item" style={styles.editContainerItem}>
+        <EditButton
+          onClick={this.handleEditButtonClick}
+          status={status}
+          tooltip={tooltip}
+        />
+      </span>
     );
   }
 

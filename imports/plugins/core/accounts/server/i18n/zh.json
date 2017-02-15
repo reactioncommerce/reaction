@@ -1,0 +1,20 @@
+[{
+  "i18n": "zh",
+  "ns": "reaction-accounts",
+  "translation": {
+    "reaction-accounts": {
+      "admin": {
+        "dashboard": {
+          "accountsLabel": "帐户",
+          "accountsTitle": "帐户",
+          "accountsDescription": "帐号设定"
+        },
+        "settings": {
+          "accountsSettingsLabel": "帐户",
+          "accountsSettingsTitle": "帐户",
+          "accountsSettingsDescription": "帐号设定"
+        }
+      }
+    }
+  }
+}]
