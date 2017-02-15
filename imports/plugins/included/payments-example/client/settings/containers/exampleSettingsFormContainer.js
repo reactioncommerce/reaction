@@ -48,10 +48,7 @@ class ExampleSettingsFormContainer extends Component {
       if (err) {
         return Alert({
           text: i18next.t("admin.settings.saveFailed"),
-          type: "warning",
-          options: {
-            autoHide: 4000
-          }
+          type: "error"
         });
       }
       return Alert({

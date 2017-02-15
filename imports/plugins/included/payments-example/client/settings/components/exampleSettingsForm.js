@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { FieldGroup } from "/imports/plugins/core/ui/client/components";
-import { Button } from "react-bootstrap";
+import { Button } from "/imports/plugins/core/ui/client/components/";
 import { Translation } from "/imports/plugins/core/ui/client/components/";
 
 
@@ -24,9 +24,9 @@ class ExampleSettingsForm extends Component {
             onChange={this.props.onChange}
           />
 
-          <Button bsStyle="primary" className="pull-right" type="submit">
+          <button className="btn btn-primary pull-right" type="submit">
             <Translation defaultValue="Save Changes" i18nKey="app.saveChanges"/>
-          </Button>
+          </button>
         </form>
 
       </div>
