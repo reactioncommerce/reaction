@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from "react";
 import { FieldGroup } from "/imports/plugins/core/ui/client/components";
-import { Button } from "/imports/plugins/core/ui/client/components/";
 import { Translation } from "/imports/plugins/core/ui/client/components/";
 
 
