@@ -1017,49 +1017,22 @@ Meteor.methods({
     }
     this.unblock();
 
-    const positions = `positions.${tag}`;
-    const product = Products.findOne({
-      _id: productId,
-      [positions]: {
-        $exists: true
+    const position = `positions.${tag}.position`;
+    const pinned = `positions.${tag}.pinned`;
+    const weight = `positions.${tag}.weight`;
+    const updatedAt = `positions.${tag}.updatedAt`;
+
+    return Products.update({
+      _id: productId
+    }, {
+      $set: {
+        [position]: positionData.position,
+        [pinned]: positionData.pinned,
+        [weight]: positionData.weight,
+        [updatedAt]: new Date(),
+        type: "simple" // for multi-schema
       }
     });
-
-    function addPosition() {
-      return Products.update({
-        _id: productId
-      }, {
-        $set: {
-          [positions]: positionData,
-          updatedAt: new Date(),
-          type: "simple" // for multi-schema
-        }
-      });
-    }
-
-    function updatePosition() {
-      const position = `positions.${tag}.position`;
-      const pinned = `positions.${tag}.pinned`;
-      const weight = `positions.${tag}.weight`;
-      const updatedAt = `positions.${tag}.updatedAt`;
-
-      return Products.update({
-        _id: productId
-      }, {
-        $set: {
-          [position]: positionData.position,
-          [pinned]: positionData.pinned,
-          [weight]: positionData.weight,
-          [updatedAt]: new Date(),
-          type: "simple" // for multi-schema
-        }
-      });
-    }
-
-    if (product && product.positions && product.positions[tag]) {
-      return updatePosition();
-    }
-    return addPosition();
   },
 
   /**
