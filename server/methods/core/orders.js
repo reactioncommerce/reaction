@@ -31,6 +31,10 @@ export function orderDebitMethod(order) {
 export function ordersInventoryAdjust(orderId) {
   check(orderId, String);
 
+  if (!Reaction.hasPermission("orders")) {
+    throw new Meteor.Error(403, "Access Denied");
+  }
+
   const order = Orders.findOne(orderId);
   order.items.forEach(item => {
     Products.update({
@@ -40,6 +44,7 @@ export function ordersInventoryAdjust(orderId) {
         inventoryQuantity: -item.quantity
       }
     }, {
+      publish: true,
       selector: {
         type: "variant"
       }
@@ -190,6 +195,9 @@ export const methods = {
     const discount = invoice.discounts;
     const discountTotal = Math.max(0, subTotal - discount); // ensure no discounting below 0.
     const total = accounting.toFixed(discountTotal + shipping + taxes, 2);
+
+    // Updates flattened inventory count on variants in Products collection
+    ordersInventoryAdjust(order._id);
 
     return Orders.update({
       "_id": order._id,
