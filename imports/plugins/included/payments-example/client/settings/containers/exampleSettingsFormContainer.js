@@ -1,14 +1,11 @@
-import { composeWithTracker } from "/lib/api/compose";
-import { ExampleSettingsForm } from "../components";
+import React, { Component, PropTypes } from "react";
 import { Meteor } from "meteor/meteor";
+import { composeWithTracker } from "/lib/api/compose";
 import { Packages } from "/lib/collections";
 import { Loading } from "/imports/plugins/core/ui/client/components";
 import { TranslationProvider } from "/imports/plugins/core/ui/client/providers";
-
-import Alert from "sweetalert2";
 import { Reaction, i18next } from "/client/api";
-
-import React, { Component, PropTypes } from "react";
+import { ExampleSettingsForm } from "../components";
 
 class ExampleSettingsFormContainer extends Component {
   constructor(props) {
@@ -46,15 +43,9 @@ class ExampleSettingsFormContainer extends Component {
   saveUpdate(fields, id, settingsKey) {
     Meteor.call("registry/update", id, settingsKey, fields, (err) => {
       if (err) {
-        return Alert({
-          text: i18next.t("admin.settings.saveFailed"),
-          type: "error"
-        });
+        return Alerts.toast(i18next.t("admin.settings.saveFailed"), "error");
       }
-      return Alert({
-        text: i18next.t("admin.settings.saveSuccess"),
-        type: "success"
-      });
+      return Alerts.toast(i18next.t("admin.settings.saveSuccess"), "success");
     });
   }
 
@@ -62,7 +53,6 @@ class ExampleSettingsFormContainer extends Component {
     return (
       <TranslationProvider>
         <ExampleSettingsForm
-
           onChange={this.handleChange}
           onSubmit={this.handleSubmit}
           packageData={this.props.packageData}
