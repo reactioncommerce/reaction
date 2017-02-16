@@ -130,6 +130,16 @@ class PublishControls extends Component {
     return null;
   }
 
+  renderRevisionsVerticalDivider() {
+    if (this.props.isEnabled) {
+      return (
+        <VerticalDivider />
+      );
+    }
+
+    return null;
+  }
+
   render() {
     return (
       <Toolbar>
@@ -139,8 +149,9 @@ class PublishControls extends Component {
         <ToolbarGroup lastChild={true}>
           {this.renderAddButton()}
           {this.renderPackageButons()}
-          {this.renderCustomControls()}
           <VerticalDivider />
+          {this.renderCustomControls()}
+          {this.renderRevisionsVerticalDivider()}
           {this.renderAdminButton()}
           {/* this.renderMoreOptionsButton() */}
         </ToolbarGroup>
