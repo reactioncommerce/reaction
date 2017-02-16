@@ -1,2 +1,2 @@
 import "./checkout/example";
-import "./settings/example";
+import "./settings/templates/example";
