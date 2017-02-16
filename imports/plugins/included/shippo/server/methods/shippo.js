@@ -256,27 +256,37 @@ export const methods = {
   /**
    * Fetches the tracking status of shipped orders from Shippo and updates the
    * relevant orders' properties
+   * @param {String} orderId - optional orderId to get status of just one order.
    * @return {Boolean} result - if the updating happened successfully or not.
    * */
-
-  "shippo/fetchTrackingStatusForOrders"() {
+  "shippo/fetchTrackingStatusForOrders"(orderId) {
+    check(orderId, Match.Optional(String));
     const shopId = Reaction.getShopId();
-
+    let shippoOrders;
     const apiKey = getApiKey(shopId);
     if (!apiKey) {
       return false;
     }
 
-    // Find the orders of the shop that have shippo provider, tracking number, that are shipped
-    // but they are not yet delivered;
-    const shippoOrders = Orders.find({
-      shopId,
-      "shipping.0.shippo.transactionId": { $exists: true },
-      "shipping.0.tracking": { $exists: true },
-      "shipping.0.shipped": true,
-      "shipping.0.delivered": { $ne: true }
-      // For now we don' t have logic for returned products
-    });
+    if (orderId) {
+      // return a specific order
+      shippoOrders = Orders.find({
+        shopId,
+        orderId
+      });
+    } else {
+      // Find the orders of the shop that have shippo provider, tracking number, that are shipped
+      // but they are not yet delivered;
+      shippoOrders = Orders.find({
+        shopId,
+        "shipping.0.shippo.transactionId": { $exists: true },
+        "shipping.0.tracking": { $exists: true },
+        "shipping.0.shipped": true,
+        "shipping.0.delivered": { $ne: true }
+        // For now we don' t have logic for returned products
+      });
+    }
+
 
     // no orders to update
     if (!shippoOrders.count()) {

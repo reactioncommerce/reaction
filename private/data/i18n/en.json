@@ -425,12 +425,13 @@
         "notShipped": "Not Yet Shipped",
         "noTracking": "No Tracking",
         "tracking": "Tracking",
-        "printLabels": "Print Labels",
-        "printShippingLabel": "Shipping",
-        "printCustomsLabel": "Customs",
+        "printLabels": "Labels",
+        "printShippingLabel": "Print Shipping",
+        "printCustomsLabel": "Print Customs",
+        "generateTracking": "Generate Tracking",
         "carrier": "Carrier",
         "addTracking": "Add Tracking",
-        "itemsHaveBeenShipped": "Items have been shipped",
+        "itemsHaveBeenShipped": "All items have been shipped",
         "shipmentEmpty": "This shipment has no items",
         "shipmentPacked": "All Items Packed",
         "shipped": "Shipped",
@@ -443,7 +444,7 @@
         "orderDetails": "Order Details",
         "summary": "Summary",
         "invoice": "Invoice",
-        "shipmentTracking": "Shipment Tracking"
+        "shipmentTracking": "Shipment"
       },
       "cartCheckout": {
         "surprise": "Woah!",

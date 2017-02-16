@@ -1,33 +1,63 @@
  <template name="coreOrderShippingTracking">
 
-   {{#if editTracking}}
-   <form class="form-inline" name="addTrackingForm">
-     <div>
-       {{i18n "orderShipping.tracking" "Tracking"}}: <label>{{tracking}}</label>
-       <input class="form-control" type="text" name="trackingNumber" value="{{shipment.tracking}}">
-       <button class="btn btn-default" type="submit" data-i18n="app.save">Save</button>
-     </div>
-   </form>
-   {{else}}
-    <strong data-i18n="orderShipping.tracking">Tracking</strong>:
-    <button class="btn btn-link" data-event-action="editTracking">{{shipment.tracking}}</button>
-   {{/if}}
+      {{#if printableLabels}}
+      <div>
+        <div><strong data-i18n="orderShipping.printLabels">Labels</strong></div>
+        {{#if printableLabels.shippingLabelUrl}}
+          <a class="rui btn btn-cta" href="{{printableLabels.shippingLabelUrl}}" target="_blank">
+            <span data-i18n="orderShipping.printShippingLabel">Shipping</span>
+          </a>
+        {{/if}}
+        {{#if printableLabels.customsLabelUrl}}
+          <a class="rui btn btn-cta" href="{{printableLabels.customsLabelUrl}}" target="_blank">
+            <span data-i18n="orderShipping.printCustomsLabel">Customs</span>
+          </a>
+        {{/if}}
+      </div>
+      {{else}}
+         {{#if editTracking}}
+           <form class="form-inline" name="addTrackingForm">
+             <div>
+               {{i18n "orderShipping.tracking" "Tracking"}} <label>{{tracking}}</label>
+               <input class="form-control" type="text" name="trackingNumber" value="{{shipment.tracking}}">
+               <button class="rui btn btn-default" type="submit" data-i18n="app.save">Save</button>
+             </div>
+           </form>
+           {{else}}
+            {{#if shipment.tracking}}
+              <button class="rui btn btn-link" data-event-action="editTracking">{{shipment.tracking}}</button>
+            {{else}}
+              <button class="rui btn btn-link" data-event-action="refresh-shipping" data-i18n="orderShipping.generateTracking">Generate Tracking</button>
+            {{/if}}
+          {{/if}}
+      {{/if}}
+
 
   {{#if isCompleted}}
-    {{i18n "orderShipping.itemsHaveBeenShipped" "Items have been shipped"}}
-    <button class="btn btn-default" data-event-action="resendNotification" data-i18n="orderShipping.resendNotification">Resend Shipment Notification</button>
+  <div>
+    <hr>
+    <div class="text-right">
+      <i class="fa fa-check-circle text-success"></i>
+      <span class="strong" data-i18n="orderShipping.itemsHaveBeenShipped">All items have been shipped</span>
+    </div>
+    <hr>
+    <p>
+      <button class="rui btn btn-info pull-right" data-event-action="resendNotification" data-i18n="orderShipping.resendNotification">Resend Shipment Notification</button>
+    </p>
+  </div>
   {{else}}
-
-  <hr>
+  <div>
+    <hr>
     {{#if shipmentReady}}
       <p data-i18n="orderShipping.shippingNotifyCustomer">Notify the customer that their items will be shipping soon.</p>
       <button class="btn btn-success btn-block" data-event-action="shipmentShipped" data-i18n="orderShipping.shipped">Shipped</button>
     {{else}}
       <button
-        class="btn btn-default btn-block"
+        class="rui btn btn-default btn-block"
         type="button"
         data-i18n="orderShipping.shipmentPacked"
         data-event-action="shipmentPacked">All Items Packed, Ready to Ship</button>
     {{/if}}
+  </div>
   {{/if}}
 </template>
