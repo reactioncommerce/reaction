@@ -27,10 +27,16 @@ Template.cartCompleted.helpers({
     });
   },
   orderStatus: function () {
-    if (this.workflow.status === "new") {
-      return i18next.t("cartCompleted.submitted");
+    switch (this.workflow.status) {
+      case "new":
+        return i18next.t("cartCompleted.submitted");
+      case "coreOrderWorkflow/processing":
+        return i18next.t("cartCompleted.processing");
+      case "coreOrderWorkflow/completed":
+        return i18next.t("cartCompleted.completed");
+      default:
+        return this.workflow.status;
     }
-    return this.workflow.status;
   },
   userOrders: function () {
     if (Meteor.user()) {
