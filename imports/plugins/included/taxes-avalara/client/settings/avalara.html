@@ -26,6 +26,13 @@
     <div class="panel-body">
       {{>afQuickField name='settings.addressValidation.enabled' class='form-control'}}
     </div>
+    <div class="panel-body">
       {{> shopSettingsSubmitButton}}
+    </div>
+    <div class="panel-body">
+      <button type="button" class="btn btn-default pull-right" data-event-action="testConnection" title="Test Connection">
+        Test Connection
+      </button> <!-- Todo i18n -->
+    </div>
   {{/autoForm}}
 </template>
