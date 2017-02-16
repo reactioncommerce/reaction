@@ -50,6 +50,7 @@ class IconButton extends Component {
         className={buttonClassName}
         icon={iconClassName}
         onIcon={onIconClassName}
+        containerStyle={{ display: "flex", width: "100%", justifyContent: "center" }}
         {...otherProps}
       />
     );
