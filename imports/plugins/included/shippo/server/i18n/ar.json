@@ -1,0 +1,29 @@
+[{
+  "i18n": "ar",
+  "ns": "reaction-shippo",
+  "translation": {
+    "reaction-shippo": {
+      "admin": {
+        "dashboard": {
+          "shippoLabel": "shippo و",
+          "shippoTitle": "shippo و",
+          "shippoDescription": "ملصقات الشحن وتتبع حزمة"
+        },
+        "shippingGrid": {
+          "carrier": "الناقل",
+          "enabled": "تمكين"
+        },
+        "shippingSettings": {
+          "noCarriersFound": "لا ناقلات الشحن تكوينها.",
+          "editApiKey": "تحرير مفتاح API",
+          "carrierSaved": "حفظ الناقل بنجاح.",
+          "carrierFailed": "حدث خطأ أثناء تحديث الناقل.",
+          "refresh": "طرق على تحديث"
+        }
+      },
+      "shippo": {
+        "connectedAndSaved": "إعدادات حفظ! يتم تمكين API shippo والآن."
+      }
+    }
+  }
+}]

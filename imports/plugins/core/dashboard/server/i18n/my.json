@@ -1,0 +1,20 @@
+[{
+  "i18n": "my",
+  "ns": "reaction-dashboard",
+  "translation": {
+    "reaction-dashboard": {
+      "admin": {
+        "shortcut": {
+          "dashboardLabel": "dashboard ကို"
+        },
+        "dashboard": {
+          "packageGroupActionsLabel": "လုပ်ဆောင်ချက်များ",
+          "packageGroupSettingsLabel": "Settings များ"
+        },
+        "settings": {
+          "shopSettingsLabel": "ဆိုင်"
+        }
+      }
+    }
+  }
+}]

@@ -1,0 +1,18 @@
+[{
+  "i18n": "zh",
+  "ns": "reaction-inventory",
+  "translation": {
+    "reaction-inventory": {
+      "admin": {
+        "dashboard": {
+          "inventoryLabel": "库存",
+          "inventoryTitle": "库存",
+          "inventoryDescription": "库存公用事业"
+        },
+        "settings": {
+          "inventorySettingsLabel": "清单设置"
+        }
+      }
+    }
+  }
+}]

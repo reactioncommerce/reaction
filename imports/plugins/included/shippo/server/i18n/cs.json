@@ -1,0 +1,29 @@
+[{
+  "i18n": "cs",
+  "ns": "reaction-shippo",
+  "translation": {
+    "reaction-shippo": {
+      "admin": {
+        "dashboard": {
+          "shippoLabel": "Shippo",
+          "shippoTitle": "Shippo",
+          "shippoDescription": "Odeslání etikety a sledování zásilek"
+        },
+        "shippingGrid": {
+          "carrier": "Dopravce",
+          "enabled": "Povoleno"
+        },
+        "shippingSettings": {
+          "noCarriersFound": "Žádné lodní dopravci nakonfigurován.",
+          "editApiKey": "Editace API",
+          "carrierSaved": "Carrier úspěšně uloženy.",
+          "carrierFailed": "Chyba při aktualizaci nosič.",
+          "refresh": "Obnovit metody"
+        }
+      },
+      "shippo": {
+        "connectedAndSaved": "Nastavení uloženo! Shippo API je nyní povolena."
+      }
+    }
+  }
+}]

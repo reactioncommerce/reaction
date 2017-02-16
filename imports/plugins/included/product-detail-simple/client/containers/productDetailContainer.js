@@ -185,7 +185,7 @@ function composer(props, onData) {
   const productId = Reaction.Router.getParam("handle");
   const variantId = Reaction.Router.getParam("variantId");
   const revisionType = Reaction.Router.getQueryParam("revision");
-  const viewProductAs = Reaction.Router.getQueryParam("as");
+  const viewProductAs = Reaction.getUserPreferences("reaction-dashboard", "viewAs", "administrator");
 
   let productSub;
 
@@ -219,6 +219,7 @@ function composer(props, onData) {
       const selectedVariant = ReactionProduct.selectedVariant();
 
       if (selectedVariant) {
+        // Find the media for the selected variant
         mediaArray = Media.find({
           "metadata.variantId": selectedVariant._id
         }, {
@@ -226,6 +227,26 @@ function composer(props, onData) {
             "metadata.priority": 1
           }
         }).fetch();
+
+        // If no media found, broaden the search to include other media from parents
+        if (Array.isArray(mediaArray) && mediaArray.length === 0 && selectedVariant.ancestors) {
+          // Loop through ancestors in reverse to find a variant that has media to use
+          for (const ancestor of selectedVariant.ancestors.reverse()) {
+            const media = Media.find({
+              "metadata.variantId": ancestor
+            }, {
+              sort: {
+                "metadata.priority": 1
+              }
+            }).fetch();
+
+            // If we found some media, then stop here
+            if (Array.isArray(media) && media.length) {
+              mediaArray = media;
+              break;
+            }
+          }
+        }
       }
 
       let priceRange;

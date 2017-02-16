@@ -55,10 +55,10 @@ Meteor.methods({
           }
         });
       } else {
-        Logger.info("Sms is not enabled");
+        Logger.debug("Sms is not enabled");
       }
     }
-    Logger.info(`Sending notification to ${userId}`);
+    Logger.debug(`Sending notification to ${userId}`);
     return Notifications.insert(values);
   },
 

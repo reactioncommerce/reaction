@@ -1,0 +1,18 @@
+[{
+  "i18n": "en",
+  "ns": "reaction-notification",
+  "translation": {
+    "reaction-notification": {
+      "admin": {
+        "dashboard": {
+          "smsLabel": "SMS Notifications",
+          "smsTitle": "SMS",
+          "smsDescription": "Notifications"
+        },
+        "settings": {
+          "smsSettingsLabel": "SMS Notifications"
+        }
+      }
+    }
+  }
+}]

@@ -17,14 +17,14 @@ Reaction.registerPackage({
       description: "Connect Reaction as a deployed service",
       icon: "fa fa-rocket",
       priority: 1,
-      container: "utilities",
-      template: "connectDashboard"
+      container: "utilities"
     },
     {
       provides: "settings",
       route: "/dashboard/connect/settings",
       name: "reaction-connect/settings",
       label: "Reaction Connect",
+      icon: "fa fa-rocket",
       container: "reaction-connect",
       template: "connectSettings"
     }

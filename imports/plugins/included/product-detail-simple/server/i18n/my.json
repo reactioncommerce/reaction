@@ -1,0 +1,13 @@
+[{
+  "i18n": "my",
+  "ns": "product-detail-simple",
+  "translation": {
+    "product-detail-simple": {
+      "admin": {
+        "settings": {
+          "productDetailsLabel": "ကုန်ပစ္စည်းအသေးစိတ်"
+        }
+      }
+    }
+  }
+}]

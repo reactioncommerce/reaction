@@ -7,65 +7,21 @@
       "languages": {
         "select": "Másik nyelv"
       },
+      "currencies": {
+        "select": "válasszuk a Pénznem"
+      },
       "admin": {
         "shortcut": {
-          "dashboardLabel": "Műszerfal",
-          "ordersLabel": "rendelés",
           "addProductLabel": "Termék hozzáadása",
           "accountsLabel": "Fiókok"
         },
         "dashboard": {
-          "accountsLabel": "Fiókok",
-          "accountsTitle": "Fiókok",
-          "accountsDescription": "Kezelés tag jogosultságok",
-          "analyticsLabel": "Analitika",
-          "analyticsTitle": "Analitika",
-          "analyticsDescription": "Analytics és nyomkövető integrációk",
-          "shippingLabel": "Szállítás",
-          "shippingTitle": "Szállítás",
-          "shippingDescription": "Adjon szállítási díjak",
-          "catalogLabel": "Katalógus",
-          "catalogTitle": "Katalógus",
-          "catalogDescription": "Termék katalógus",
-          "coreLabel": "Beállítások",
-          "coreTitle": "Műszerfal",
-          "coreDescription": "reakció konfiguráció",
-          "emailLabel": "E-mail",
-          "emailTitle": "E-mail",
-          "emailDescription": "E-mail beállítások",
           "i18NLabel": "i18n",
           "i18NTitle": "i18n",
           "i18NDescription": "Nemzetközivé segédprogramok",
-          "inventoryLabel": "Leltár",
-          "inventoryTitle": "Leltár",
-          "inventoryDescription": "Inventory segédprogramok",
-          "layoutLabel": "Elrendezés",
-          "layoutTitle": "Elrendezés",
-          "layoutDescription": "Layout segédprogramok",
-          "connectLabel": "Csatlakozás",
-          "connectTitle": "Csatlakozás",
-          "connectDescription": "Csatlakozás Reakció a telepített szolgáltatás",
-          "ordersLabel": "rendelés",
-          "smsLabel": "SMS",
-          "smsTitle": "SMS",
-          "smsDescription": "Értesítések",
-          "ordersTitle": "rendelés",
-          "ordersDescription": "Teljesíteni a megrendeléseket",
-          "revisionsLabel": "Változatok",
-          "revisionsTitle": "Változatok",
-          "revisionsDescription": "Revision szabályozás",
           "routingLabel": "útvonalválasztás",
           "routingTitle": "útvonalválasztás",
           "routingDescription": "routing segédprogramok",
-          "searchLabel": "Keresés",
-          "searchTitle": "Keresés",
-          "searchDescription": "termék keresés",
-          "socialLabel": "Társadalmi",
-          "socialTitle": "Társadalmi",
-          "socialDescription": "Szociális csatorna konfigurációja",
-          "themesLabel": "témák",
-          "themesTitle": "témák",
-          "themesDescription": "Témák és UI komponensek",
           "filtrationLabel": "Szűrés",
           "filtrationDescription": "Termékek szűrés Reaction"
         },
@@ -79,25 +35,14 @@
           "utilities": "segédprogramok"
         },
         "settings": {
+          "accountSettingsLabel": "Fiók beállítások",
+          "accountSettingsTitle": "Bejelentkezés Szolgáltatások",
+          "accountSettingsDescription": "A hitelesítés a szociális szolgáltatók",
           "saveSuccess": "Beállítások frissítve.",
           "saveFailed": "Nem sikerült frissíteni a beállításokat.",
-          "accountSettingsLabel": "Fiók beállítások",
           "addShopMemberLabel": "Add Shop tag",
           "permissionsSettingsLabel": "Engedélyek",
-          "localizationAndI18NLabel": "Lokalizáció és i18n",
-          "searchSettingsLabel": "Keresési beállítások",
-          "shopSettingsLabel": "Bolt beállítások",
-          "smsSettingsLabel": "SMS-beállítások",
-          "socialSettingsLabel": "szociális beállítások",
-          "shippingSettingsLabel": "Szállítási beállítások",
-          "inventorySettingsLabel": "Inventory beállítások",
-          "analyticsSettingsLabel": "Analytics beállításai",
-          "reactionConnectLabel": "reakció Csatlakozás",
-          "productSettingsLabel": "termék Beállítások",
-          "productDetailsLabel": "termék leírás",
-          "productRevisionsLabel": "termék Változatok",
-          "emailSettingsLabel": "E-mail beállítások",
-          "catalogSettingsLabel": "Katalógus beállítások"
+          "localizationAndI18NLabel": "Lokalizáció és i18n"
         },
         "userAccountDropdown": {
           "profileLabel": "Profil"
@@ -111,6 +56,8 @@
       "app": {
         "add": "Add",
         "editMode": "Szerkesztés módban",
+        "administratorView": "Administrator megtekintése",
+        "customerView": "ügyfélkép",
         "createContent": "tartalom létrehozása",
         "auto": "kocsi",
         "save": "Mentés",
@@ -475,11 +422,16 @@
         "notShipped": "Még nincs kiszállítva",
         "noTracking": "nincs követési",
         "tracking": "Követés",
+        "printLabels": "Nyomtatás címkék",
+        "printShippingLabel": "Szállítás",
+        "printCustomsLabel": "Vám",
+        "carrier": "Hordozó",
         "addTracking": "Add követés",
         "itemsHaveBeenShipped": "Tételek szállítása megtörtént",
         "shipmentEmpty": "Ez a szállítmány nem tartalmaz elemeket",
         "shipmentPacked": "Minden elem csomagolt",
         "shipped": "Kiszállított",
+        "delivered": "Megérkezés",
         "shippingNotifyCustomer": "Értesíti az ügyfelet, hogy a tételek lesz hajózás hamarosan.",
         "resendNotification": "Újraküldése Szállítmány Notification"
       },
@@ -626,68 +578,6 @@
       "checkoutReview": {
         "review": "Ellenőrzés"
       },
-      "checkoutShipping": {
-        "selectShippingOption": "Válassz szállítási módot",
-        "noShippingMethods": "Szállítási mód nincs beállítva.",
-        "configureNow": "Beállítás most.",
-        "shipping": "Szállítás"
-      },
-      "shipping": {
-        "addShippingProvider": "Add szállítási szolgáltató",
-        "editShippingProvider": "Szállítás szerkesztése szolgáltató",
-        "addShippingMethod": "Add szállítási mód",
-        "editShippingMethod": "Szállítási mód szerkesztése",
-        "deleteShippingMethod": "Törlés szállítási mód",
-        "noSettingsForThisView": "Nincs beállítás ehhez a nézethez",
-        "noShippingMethods": "Nincs szállítási módszerek vannak beállítva.",
-        "removeShippingMethodConfirm": "Biztosan törölni szeretné {{method}}?",
-        "removeShippingMethodTitle": "Távolítsuk Szállítás módja",
-        "shippingMethodDeleted": "Ez a szállítási mód törölték.",
-        "removeShippingProvider": "Távolítsuk el a Szállítási Szolgáltató",
-        "removeShippingProviderConfirm": "Biztosan törölni szeretné {{provider}}?",
-        "shippingProviderSaved": "Szállítási szolgáltató mentve.",
-        "shippingProviderUpdated": "Szállítási szolgáltató adatai módosítva.",
-        "shippingMethodRateAdded": "Szállítási mód arány hozzá.",
-        "shippingMethodRateUpdated": "Szállítási mód sebesség frissíteni.",
-        "name": "Név",
-        "label": "Címke",
-        "group": "Csoport",
-        "cost": "Költség",
-        "handling": "Kezelése",
-        "rate": "Arány",
-        "enabled": "Engedélyezett",
-        "disabled": "Tiltva",
-        "addRate": "Add ráta",
-        "updateRate": "Frissítés {{name}} ráta",
-        "addNewCondition": "Új állapot",
-        "deleteCondition": "Törlés állapotban",
-        "provider": {
-          "name": "Service Code",
-          "label": "Public Label",
-          "enabled": "Engedélyezett"
-        }
-      },
-      "shippingMethod": {
-        "name": "módszer neve",
-        "label": "Public Label",
-        "group": "Csoport",
-        "cost": "Költség",
-        "handling": "Kezelése",
-        "rate": "Arány",
-        "enabled": "Engedélyezett",
-        "matchingCartRanges": "Matching Cart tartományok",
-        "validRanges": {
-          "begin": "Kezdődik",
-          "end": "vég"
-        },
-        "matchingLocales": "Matching Nyelv",
-        "validLocales": {
-          "origination": "Ból ből",
-          "destination": "Nak nek",
-          "deliveryBegin": "Szállítási Est.",
-          "deliveryEnd": "Szállítási Est."
-        }
-      },
       "uom": {
         "OZ": "uncia",
         "LB": "font",
@@ -814,16 +704,6 @@
           "passwordResetSend": "E-mail és jelszó linket elküldtük.",
           "invitationSent": "Meghívó elküldve",
           "sendInvitation": "Meghívás küldése"
-        },
-        "reactionUI": {
-          "editTheme": "téma szerkesztése",
-          "duplicateTheme": "Ismétlődő téma",
-          "duplicateThemeError": "Nem sikerült megismételni a téma",
-          "publishThemeError": "`Nem sikerült a téma {{themeName}}",
-          "components": {
-            "navbar": "Navigációs sáv",
-            "button": "Gomb"
-          }
         },
         "error": {
           "emailRequired": "Email megadása kötelező.",

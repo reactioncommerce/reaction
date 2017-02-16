@@ -1,0 +1,29 @@
+[{
+  "i18n": "sv",
+  "ns": "reaction-shippo",
+  "translation": {
+    "reaction-shippo": {
+      "admin": {
+        "dashboard": {
+          "shippoLabel": "cloisonne",
+          "shippoTitle": "cloisonne",
+          "shippoDescription": "Fraktsedlar och paketspårning"
+        },
+        "shippingGrid": {
+          "carrier": "Bärare",
+          "enabled": "Aktiverad"
+        },
+        "shippingSettings": {
+          "noCarriersFound": "Inga transportfirmor konfigureras.",
+          "editApiKey": "Redigera API-nyckel",
+          "carrierSaved": "Carrier sparats.",
+          "carrierFailed": "Gick inte att uppdatera bärare.",
+          "refresh": "refresh metoder"
+        }
+      },
+      "shippo": {
+        "connectedAndSaved": "Inställningar Sparade! Cloisonne API är nu aktiverat."
+      }
+    }
+  }
+}]

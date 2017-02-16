@@ -1,11 +1,11 @@
 import React, { Component, PropTypes } from "react";
 import { composeWithTracker } from "/lib/api/compose";
 import PublishControls from "../components/publishControls";
-import { Revisions } from "/lib/collections";
+import { Tags, Revisions } from "/lib/collections";
 import { Meteor } from "meteor/meteor";
 import TranslationProvider from "/imports/plugins/core/ui/client/providers/translationProvider";
 import { isRevisionControlEnabled } from "../../lib/api";
-import { i18next } from "/client/api";
+import { Reaction, i18next } from "/client/api";
 
 /*
  * PublishContainer is a container component connected to Meteor data source.
@@ -79,6 +79,7 @@ class PublishContainer extends Component {
           onAction={this.handlePublishActions}
           onVisibilityChange={this.props.onVisibilityChange}
           revisions={this.props.revisions}
+          isPreview={this.props.isPreview}
         />
       </TranslationProvider>
     );
@@ -89,13 +90,16 @@ PublishContainer.propTypes = {
   documentIds: PropTypes.arrayOf(PropTypes.string),
   documents: PropTypes.arrayOf(PropTypes.object),
   isEnabled: PropTypes.bool,
+  isPreview: PropTypes.bool,
   onAction: PropTypes.func,
   onVisibilityChange: PropTypes.func,
   revisions: PropTypes.arrayOf(PropTypes.object)
 };
 
 function composer(props, onData) {
-  if (props.documentIds) {
+  const viewAs = Reaction.getUserPreferences("reaction-dashboard", "viewAs", "administrator");
+
+  if (Array.isArray(props.documentIds) && props.documentIds.length) {
     const subscription = Meteor.subscribe("Revisions", props.documentIds);
 
     if (subscription.ready()) {
@@ -123,11 +127,13 @@ function composer(props, onData) {
           ]
         }
       }).fetch();
+
       onData(null, {
         isEnabled: isRevisionControlEnabled(),
         documentIds: props.documentIds,
         documents: props.documents,
-        revisions
+        revisions,
+        isPreview: viewAs === "customer" ? true : false
       });
 
       return;
@@ -135,8 +141,9 @@ function composer(props, onData) {
   }
 
   onData(null, {
-    isEnabled: isRevisionControlEnabled()
+    isEnabled: isRevisionControlEnabled(),
+    isPreview: viewAs === "customer" ? true : false
   });
 }
 
-export default composeWithTracker(composer)(PublishContainer);
+export default composeWithTracker(composer, null)(PublishContainer);

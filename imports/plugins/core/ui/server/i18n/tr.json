@@ -1,0 +1,25 @@
+[{
+  "i18n": "tr",
+  "ns": "reaction-ui",
+  "translation": {
+    "reaction-catalog": {
+      "admin": {
+        "dashboard": {
+          "themesLabel": "Temalar",
+          "themesTitle": "Temalar",
+          "themesDescription": "Temalar ve UI Bileşenleri"
+        }
+      },
+      "reactionUI": {
+        "editTheme": "Düzenleme Tema",
+        "duplicateTheme": "yinelenen Tema",
+        "duplicateThemeError": "tema yinelenen olamazdı",
+        "publishThemeError": "`Tema {{themeName}} yayınlamak Could not",
+        "components": {
+          "navbar": "Gezinti çubuğu",
+          "button": "düğme"
+        }
+      }
+    }
+  }
+}]

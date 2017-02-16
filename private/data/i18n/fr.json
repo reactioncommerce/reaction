@@ -7,65 +7,21 @@
       "languages": {
         "select": "Sélectionner la langue"
       },
+      "currencies": {
+        "select": "Sélectionnez la devise"
+      },
       "admin": {
         "shortcut": {
-          "dashboardLabel": "Tableau de bord",
-          "ordersLabel": "Commandes",
           "addProductLabel": "Ajouter un produit",
           "accountsLabel": "Comptes"
         },
         "dashboard": {
-          "accountsLabel": "Comptes",
-          "accountsTitle": "Comptes",
-          "accountsDescription": "Gérer les autorisations des membres",
-          "analyticsLabel": "Analytique",
-          "analyticsTitle": "Analytiques",
-          "analyticsDescription": "Intégrations de suivi et analytiques",
-          "shippingLabel": "Expédition",
-          "shippingTitle": "Expédition",
-          "shippingDescription": "Fournir les frais d'expédition",
-          "catalogLabel": "Cataloque",
-          "catalogTitle": "Catalogue",
-          "catalogDescription": "Catalogue de produits",
-          "coreLabel": "Paramètres",
-          "coreTitle": "Tableau de bord",
-          "coreDescription": "Configuration des réactions",
-          "emailLabel": "E-mail",
-          "emailTitle": "E-mail",
-          "emailDescription": "Paramètres e-mail",
           "i18NLabel": "i18n",
           "i18NTitle": "i18n",
           "i18NDescription": "Services d'internationalisation",
-          "inventoryLabel": "Inventaire",
-          "inventoryTitle": "Inventaire",
-          "inventoryDescription": "Services d'inventaire",
-          "layoutLabel": "Mise en page",
-          "layoutTitle": "Mise en page",
-          "layoutDescription": "Services de mise en page",
-          "connectLabel": "Connecter",
-          "connectTitle": "Se connecter",
-          "connectDescription": "Connecter la réponse en tant que service déployé",
-          "ordersLabel": "Commandes",
-          "smsLabel": "SMS",
-          "smsTitle": "SMS",
-          "smsDescription": "Notifications",
-          "ordersTitle": "Commandes",
-          "ordersDescription": "Compléter votre commande",
-          "revisionsLabel": "Révisions",
-          "revisionsTitle": "Révisions",
-          "revisionsDescription": "Contrôle de révision",
           "routingLabel": "Routage",
           "routingTitle": "Routage",
           "routingDescription": "Services de routage",
-          "searchLabel": "Recherche",
-          "searchTitle": "Recherche",
-          "searchDescription": "Recherche de produit",
-          "socialLabel": "Social",
-          "socialTitle": "Social",
-          "socialDescription": "Configuration des réseaux sociaux",
-          "themesLabel": "Thèmes",
-          "themesTitle": "Thèmes",
-          "themesDescription": "Thèmes et composants de l'IU",
           "filtrationLabel": "Filtrage",
           "filtrationDescription": "Filtrage des produits selon la réaction"
         },
@@ -79,25 +35,14 @@
           "utilities": "Services"
         },
         "settings": {
+          "accountSettingsLabel": "Paramètres du compte",
+          "accountSettingsTitle": "services de connexion",
+          "accountSettingsDescription": "Authentification par des prestataires sociaux",
           "saveSuccess": "Paramètres mis à jour.",
           "saveFailed": "Impossible de mettre à jour les paramètres.",
-          "accountSettingsLabel": "Paramètres du compte",
           "addShopMemberLabel": "Ajouter un magasin membre",
           "permissionsSettingsLabel": "Autorisations",
-          "localizationAndI18NLabel": "Localisation et i18n",
-          "searchSettingsLabel": "Paramètres de recherche",
-          "shopSettingsLabel": "Paramètres du magasin",
-          "smsSettingsLabel": "Paramètres SMS",
-          "socialSettingsLabel": "Paramètres sociaux",
-          "shippingSettingsLabel": "Paramètres d'expédition",
-          "inventorySettingsLabel": "Paramètres de l'inventaire",
-          "analyticsSettingsLabel": "Paramètres d'analyse",
-          "reactionConnectLabel": "Connecter la réaction",
-          "productSettingsLabel": "Paramètres du produit",
-          "productDetailsLabel": "Détails produit",
-          "productRevisionsLabel": "Révisions du produit",
-          "emailSettingsLabel": "Paramètres de messagerie",
-          "catalogSettingsLabel": "Paramètres du catalogue"
+          "localizationAndI18NLabel": "Localisation et i18n"
         },
         "userAccountDropdown": {
           "profileLabel": "Profil"
@@ -111,6 +56,8 @@
       "app": {
         "add": "Ajouter",
         "editMode": "Editer le mode",
+        "administratorView": "Administrator Voir",
+        "customerView": "Régarder",
         "createContent": "Créer du contenu",
         "auto": "Auto",
         "save": "Enregistrer",
@@ -475,11 +422,16 @@
         "notShipped": "Pas encore expédié",
         "noTracking": "Aucun suivi",
         "tracking": "Suivi",
+        "printLabels": "impression d'étiquettes",
+        "printShippingLabel": "livraison",
+        "printCustomsLabel": "Douane",
+        "carrier": "Transporteur",
         "addTracking": "Ajouter un suivi",
         "itemsHaveBeenShipped": "Les articles ont été expédiés",
         "shipmentEmpty": "Cet envoi ne contient aucun article",
         "shipmentPacked": "Tous les articles sont emballés",
         "shipped": "Expédié",
+        "delivered": "Livré",
         "shippingNotifyCustomer": "Informer le client que ses articles seront expédiés prochainement.",
         "resendNotification": "Envoyer de nouveau la notification d'expédition"
       },
@@ -626,68 +578,6 @@
       "checkoutReview": {
         "review": "Réviser"
       },
-      "checkoutShipping": {
-        "selectShippingOption": "Sélectionner un mode de livraison",
-        "noShippingMethods": "Aucun mode de livraison configuré.",
-        "configureNow": "Configurer maintenant.",
-        "shipping": "Expédition"
-      },
-      "shipping": {
-        "addShippingProvider": "Ajouter un prestataire de transport",
-        "editShippingProvider": "Editer le prestataire de livraison",
-        "addShippingMethod": "Ajouter un mode de livraison",
-        "editShippingMethod": "Editer le mode de livraison",
-        "deleteShippingMethod": "Supprimer le mode d'expédition",
-        "noSettingsForThisView": "Aucun paramètre pour cette vue",
-        "noShippingMethods": "Aucun mode de livraison configuré.",
-        "removeShippingMethodConfirm": "Êtes-vous certain de vouloir supprimer {{method}} ?",
-        "removeShippingMethodTitle": "Supprimer le mode de livraison.",
-        "shippingMethodDeleted": "Ce mode de livraison a été supprimé.",
-        "removeShippingProvider": "Supprimer le prestataire de transport",
-        "removeShippingProviderConfirm": "Êtes-vous certain de vouloir supprimer {{provider}} ?",
-        "shippingProviderSaved": "Prestataire de transport enregistré.",
-        "shippingProviderUpdated": "Données du prestataire de transport mises à jour.",
-        "shippingMethodRateAdded": "Tarif du mode de livraison ajouté.",
-        "shippingMethodRateUpdated": "Tarif du mode de livraison mis à jour.",
-        "name": "Nom",
-        "label": "Balise",
-        "group": "Groupe",
-        "cost": "Coût",
-        "handling": "Traitement",
-        "rate": "Taux",
-        "enabled": "Activé",
-        "disabled": "Désactivé",
-        "addRate": "Ajouter un tarif",
-        "updateRate": "Mettre à jour le tarif {{name}}",
-        "addNewCondition": "Ajouter une nouvelle condition",
-        "deleteCondition": "Supprimer les conditions",
-        "provider": {
-          "name": "Code de service",
-          "label": "Balise publique",
-          "enabled": "Activé"
-        }
-      },
-      "shippingMethod": {
-        "name": "Nom de la méthode",
-        "label": "Balise publique",
-        "group": "Groupe",
-        "cost": "Coût",
-        "handling": "Traitement",
-        "rate": "Taux",
-        "enabled": "Activé",
-        "matchingCartRanges": "Catégories de paniers correspondants",
-        "validRanges": {
-          "begin": "Commencer",
-          "end": "Fin"
-        },
-        "matchingLocales": "Emplacements correspondants",
-        "validLocales": {
-          "origination": "De",
-          "destination": "A",
-          "deliveryBegin": "Estimation du transport",
-          "deliveryEnd": "Estimation de la livraison"
-        }
-      },
       "uom": {
         "OZ": "Onces",
         "LB": "Livres",
@@ -814,16 +704,6 @@
           "passwordResetSend": "Un e-mail contenant un lien de réinitialisation du mot de passe a été envoyé.",
           "invitationSent": "Invitation envoyée",
           "sendInvitation": "Envoyer l'invitation"
-        },
-        "reactionUI": {
-          "editTheme": "Editer le thème",
-          "duplicateTheme": "Dupliquer le thème",
-          "duplicateThemeError": "Impossible de dupliquer le thème",
-          "publishThemeError": "Impossible de publier le thème {{themeName}}",
-          "components": {
-            "navbar": "Barre de navigation",
-            "button": "Bouton"
-          }
         },
         "error": {
           "emailRequired": "L'email est requis.",

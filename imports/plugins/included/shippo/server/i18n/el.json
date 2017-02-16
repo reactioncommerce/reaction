@@ -1,0 +1,29 @@
+[{
+  "i18n": "el",
+  "ns": "reaction-shippo",
+  "translation": {
+    "reaction-shippo": {
+      "admin": {
+        "dashboard": {
+          "shippoLabel": "Shippo",
+          "shippoTitle": "Shippo",
+          "shippoDescription": "ετικέτες αποστολής και παρακολούθησης πακέτο"
+        },
+        "shippingGrid": {
+          "carrier": "Φορέας",
+          "enabled": "Ενεργοποιήθηκε"
+        },
+        "shippingSettings": {
+          "noCarriersFound": "Δεν φορείς της ναυτιλίας ρυθμιστεί.",
+          "editApiKey": "Επεξεργασία API Key",
+          "carrierSaved": "Φορέας αποθηκευτεί με επιτυχία.",
+          "carrierFailed": "Σφάλμα κατά την ενημέρωση φορέα.",
+          "refresh": "Ανανέωση των μεθόδων"
+        }
+      },
+      "shippo": {
+        "connectedAndSaved": "Οι ρυθμίσεις αποθηκεύτηκαν! Shippo API έχει πλέον ενεργοποιηθεί."
+      }
+    }
+  }
+}]

@@ -1,0 +1,20 @@
+[{
+  "i18n": "el",
+  "ns": "reaction-dashboard",
+  "translation": {
+    "reaction-dashboard": {
+      "admin": {
+        "shortcut": {
+          "dashboardLabel": "Ταμπλό"
+        },
+        "dashboard": {
+          "packageGroupActionsLabel": "Δράσεις",
+          "packageGroupSettingsLabel": "Ρυθμίσεις"
+        },
+        "settings": {
+          "shopSettingsLabel": "Κατάστημα"
+        }
+      }
+    }
+  }
+}]

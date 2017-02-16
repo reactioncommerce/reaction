@@ -1,0 +1,29 @@
+[{
+  "i18n": "ro",
+  "ns": "reaction-shippo",
+  "translation": {
+    "reaction-shippo": {
+      "admin": {
+        "dashboard": {
+          "shippoLabel": "Shippo",
+          "shippoTitle": "Shippo",
+          "shippoDescription": "etichete de expediere și urmărire a unui pachet"
+        },
+        "shippingGrid": {
+          "carrier": "Purtător",
+          "enabled": "Activat"
+        },
+        "shippingSettings": {
+          "noCarriersFound": "Nici maritime de configurat.",
+          "editApiKey": "Edita Cheie API",
+          "carrierSaved": "Transportatorul a salvat cu succes.",
+          "carrierFailed": "Eroare la actualizarea transportatorului.",
+          "refresh": "metode de reîmprospătare"
+        }
+      },
+      "shippo": {
+        "connectedAndSaved": "Setari Salvate! API Shippo este acum activat."
+      }
+    }
+  }
+}]

@@ -1,5 +1,8 @@
 <template name="orders">
   {{#if hasPermission 'orders'}}
+    <div class="orders-list-tabs">
+      {{> React FilterComponent}}
+    </div>
     <div class="container-fluid-sm">
       {{#each order in orders}}
         {{> ordersListItem (itemProps order)}}
@@ -27,7 +30,7 @@
           data-event-action="toggleFilter"
           data-filter="{{name}}">
             <span class="count">{{count}}</span>
-            <span class="label" data-i18n="{{i18nKeyLabel}}">
+            <span class="filter-label" data-i18n="{{i18nKeyLabel}}">
               {{!-- wrapping label below in a span prevents a console error --}}
               <span>{{label}}</span>
             </span>
@@ -116,6 +119,7 @@
 
     <div>
       <i class="fa fa-truck"></i>
+      {{shipmentMethod.carrier}} - {{shipmentMethod.label}}
       <span class="badge badge-{{shipmentStatus.status}}">{{shipmentStatus.label}}</span>
     </div>
     {{#if shipmentTracking}}

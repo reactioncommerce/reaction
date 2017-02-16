@@ -8,7 +8,7 @@ import { check } from "meteor/check";
 import { getSlug } from "/lib/api";
 import { Cart, Media, Orders, Products, Shops } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
-import { Logger, Reaction } from "/server/api";
+import { Logger, Hooks, Reaction } from "/server/api";
 
 
 // helper to return the order credit object
@@ -21,6 +21,37 @@ export function orderCreditMethod(order) {
 export function orderDebitMethod(order) {
   return order.billing.filter(value => value.paymentMethod.method ===  "debit")[0];
 }
+
+/**
+ * ordersInventoryAdjust
+ * adjust inventory when an order is placed
+ * @param {String} orderId - add tracking to orderId
+ * @return {null} no return value
+ */
+export function ordersInventoryAdjust(orderId) {
+  check(orderId, String);
+
+  if (!Reaction.hasPermission("orders")) {
+    throw new Meteor.Error(403, "Access Denied");
+  }
+
+  const order = Orders.findOne(orderId);
+  order.items.forEach(item => {
+    Products.update({
+      _id: item.variants._id
+    }, {
+      $inc: {
+        inventoryQuantity: -item.quantity
+      }
+    }, {
+      publish: true,
+      selector: {
+        type: "variant"
+      }
+    });
+  });
+}
+
 
 /**
  * Reaction Order Methods
@@ -94,7 +125,7 @@ export const methods = {
         }
       });
 
-      // Set the status of the items as shipped
+      // Set the status of the items as packed
       const itemIds = shipment.items.map((item) => {
         return item._id;
       });
@@ -164,6 +195,9 @@ export const methods = {
     const discount = invoice.discounts;
     const discountTotal = Math.max(0, subTotal - discount); // ensure no discounting below 0.
     const total = accounting.toFixed(discountTotal + shipping + taxes, 2);
+
+    // Updates flattened inventory count on variants in Products collection
+    ordersInventoryAdjust(order._id);
 
     return Orders.update({
       "_id": order._id,
@@ -238,6 +272,7 @@ export const methods = {
     });
 
     // TODO: In the future, this could be handled by shipping delivery status
+    Hooks.Events.run("onOrderShipmentShipped", order, itemIds);
     const workflowResult = Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/shipped", order, itemIds);
 
     if (workflowResult === 1) {
@@ -255,6 +290,15 @@ export const methods = {
     } else {
       Logger.warn("No order email found. No notification sent.");
     }
+
+    Orders.update({
+      "_id": order._id,
+      "shipping._id": shipment._id
+    }, {
+      $set: {
+        "shipping.$.shipped": true
+      }
+    });
 
     return {
       workflowResult: workflowResult,
@@ -284,7 +328,7 @@ export const methods = {
     if (order.email) {
       Meteor.call("orders/sendNotification", order, (err) => {
         if (err) {
-          Logger.error(err, "orders/shipmentShipped: Failed to send notification");
+          Logger.error(err, "orders/shipmentDelivered: Failed to send notification");
         }
       });
     } else {
@@ -295,19 +339,29 @@ export const methods = {
       return item._id;
     });
 
-    Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/delivered", order._id, itemIds);
-    Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/completed", order._id, itemIds);
+    Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/delivered", order, itemIds);
+    Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/completed", order, itemIds);
 
     const isCompleted = _.every(order.items, (item) => {
       return _.includes(item.workflow.workflow, "coreOrderItemWorkflow/completed");
     });
 
+    Orders.update({
+      "_id": order._id,
+      "shipping._id": shipment._id
+    }, {
+      $set: {
+        "shipping.$.delivered": true
+      }
+    });
+
     if (isCompleted === true) {
-      Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "completed", order._id);
+      Hooks.Events.run("onOrderShipmentDelivered", order._id);
+      Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "completed", order);
       return true;
     }
 
-    Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "processing", order._id);
+    Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "processing", order);
 
     return false;
   },
@@ -449,6 +503,8 @@ export const methods = {
         orderDate: moment(order.createdAt).format("MM/DD/YYYY"),
         orderUrl: getSlug(shop.name) + "/cart/completed?_id=" + order.cartId,
         shipping: {
+          tracking: order.shipping[0].tracking,
+          carrier: order.shipping[0].shipmentMethod.carrier,
           address: {
             address: order.shipping[0].address.address1,
             city: order.shipping[0].address.city,
@@ -458,7 +514,7 @@ export const methods = {
         }
       };
 
-      Logger.info(`orders/sendNotification status: ${order.workflow.status}`);
+      Logger.debug(`orders/sendNotification status: ${order.workflow.status}`);
 
 
       // handle missing root shop email
@@ -745,34 +801,6 @@ export const methods = {
     });
   },
 
-  /**
-   * orders/inventoryAdjust
-   * adjust inventory when an order is placed
-   * @param {String} orderId - add tracking to orderId
-   * @return {null} no return value
-   */
-  "orders/inventoryAdjust": function (orderId) {
-    check(orderId, String);
-
-    if (!Reaction.hasPermission("orders")) {
-      throw new Meteor.Error(403, "Access Denied");
-    }
-
-    const order = Orders.findOne(orderId);
-    order.items.forEach(item => {
-      Products.update({
-        _id: item.variants._id
-      }, {
-        $inc: {
-          inventoryQuantity: -item.quantity
-        }
-      }, {
-        selector: {
-          type: "variant"
-        }
-      });
-    });
-  },
 
   /**
    * orders/capturePayments
@@ -823,6 +851,10 @@ export const methods = {
                 "billing.$.paymentMethod.transactions": result
               }
             });
+
+            // event onOrderPaymentCaptured used for confirmation hooks
+            // ie: confirmShippingMethodForOrder is triggered here
+            Hooks.Events.run("onOrderPaymentCaptured", orderId);
           } else {
             if (result && result.error) {
               Logger.fatal("Failed to capture transaction.", order, paymentMethod.transactionId, result.error);
@@ -919,6 +951,7 @@ export const methods = {
       throw new Meteor.Error("Attempt to refund transaction failed", result.error);
     }
 
+    Hooks.Events.run("onOrderRefundCreated", orderId);
     // Send email to notify cuustomer of a refund
     Meteor.call("orders/sendNotification", order, "refunded");
   }

@@ -26,6 +26,7 @@ Reaction.registerPackage({
     },
     {
       label: "Tax Settings",
+      icon: "fa fa-university",
       name: "taxes/settings",
       provides: "settings",
       template: "taxSettings"

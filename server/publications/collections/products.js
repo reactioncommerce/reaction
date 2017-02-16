@@ -1,5 +1,5 @@
 import { Products, Revisions } from "/lib/collections";
-import { Reaction } from "/server/api";
+import { Reaction, Logger } from "/server/api";
 import { RevisionApi } from "/imports/plugins/core/revisions/lib/api/revisions";
 
 //
@@ -69,11 +69,19 @@ const filters = new SimpleSchema({
  */
 Meteor.publish("Products", function (productScrollLimit = 24, productFilters, sort = {}) {
   check(productScrollLimit, Number);
-  check(productFilters, Match.OneOf(undefined, filters));
+  check(productFilters, Match.OneOf(undefined, Object));
   check(sort, Match.OneOf(undefined, Object));
 
+  // if there are filter/params that don't match the schema
+  // validate, catch except but return no results
+  try {
+    check(productFilters, Match.OneOf(undefined, filters));
+  } catch (e) {
+    Logger.debug(e, "Invalid Product Filters");
+    return this.ready();
+  }
+  // ensure that we've got a shop instance
   const shop = Reaction.getCurrentShop();
-
   if (typeof shop !== "object") {
     return this.ready();
   }
@@ -219,7 +227,7 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
           }
         });
       }
-    }
+    } // end if productFilters
 
     // Authorized content curators fo the shop get special publication of the product
     // with all relevant revisions all is one package
@@ -229,11 +237,36 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
         $in: [true, false, undefined]
       };
 
+      // Get _ids of top-level products
+      const productIds = Products.find(selector, {
+        sort: sort,
+        limit: productScrollLimit
+      }).map(product => product._id);
+
+      let newSelector = selector;
+
+      // Remove hashtag filter from selector (hashtags are not applied to variants, we need to get variants)
+      if (productFilters && productFilters.tags) {
+        newSelector = _.omit(selector, ["hashtags"]);
+
+        // Re-configure selector to pick either Variants of one of the top-level products, or the top-level products in the filter
+        _.extend(newSelector, {
+          $or: [
+            {
+              ancestors: {
+                $in: productIds
+              }
+            }, {
+              hashtags: {
+                $in: productFilters.tags
+              }
+            }
+          ]
+        });
+      }
+
       if (RevisionApi.isRevisionControlEnabled()) {
-        const handle = Products.find(selector, {
-          sort: sort,
-          limit: productScrollLimit
-        }).observeChanges({
+        const handle = Products.find(newSelector).observeChanges({
           added: (id, fields) => {
             const revisions = Revisions.find({
               "$or": [
@@ -329,7 +362,7 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
         return this.ready();
       }
       // Revision control is disabled
-      return Products.find(selector, {
+      return Products.find(newSelector, {
         sort: sort,
         limit: productScrollLimit
       });
@@ -338,7 +371,35 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
     // Everyone else gets the standard, visible products
     selector.isVisible = true;
 
-    return Products.find(selector, {
+    // Get _ids of top-level products
+    const productIds = Products.find(selector, {
+      sort: sort,
+      limit: productScrollLimit
+    }).map(product => product._id);
+
+    let newSelector = selector;
+
+    // Remove hashtag filter from selector (hashtags are not applied to variants, we need to get variants)
+    if (productFilters && productFilters.tags) {
+      newSelector = _.omit(selector, ["hashtags"]);
+
+      // Re-configure selector to pick either Variants of one of the top-level products, or the top-level products in the filter
+      _.extend(newSelector, {
+        $or: [
+          {
+            ancestors: {
+              $in: productIds
+            }
+          }, {
+            hashtags: {
+              $in: productFilters.tags
+            }
+          }
+        ]
+      });
+    }
+
+    return Products.find(newSelector, {
       sort: sort,
       limit: productScrollLimit
     });

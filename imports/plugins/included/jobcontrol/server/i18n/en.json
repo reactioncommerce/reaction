@@ -1,0 +1,13 @@
+[{
+  "i18n": "en",
+  "ns": "reaction-jobcontrol",
+  "translation": {
+    "reaction-jobcontrol": {
+      "admin": {
+        "shortcut": {},
+        "dashboard": {},
+        "settings": {}
+      }
+    }
+  }
+}]

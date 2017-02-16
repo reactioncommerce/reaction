@@ -1,0 +1,29 @@
+[{
+  "i18n": "my",
+  "ns": "reaction-shippo",
+  "translation": {
+    "reaction-shippo": {
+      "admin": {
+        "dashboard": {
+          "shippoLabel": "Shippo",
+          "shippoTitle": "Shippo",
+          "shippoDescription": "သဘောင်္တင်ခတံဆိပ်များနှင့်အထုပ်ခြေရာခံခြင်း"
+        },
+        "shippingGrid": {
+          "carrier": "လေယာဉ်တင်သင်္ဘော",
+          "enabled": "enabled"
+        },
+        "shippingSettings": {
+          "noCarriersFound": "အဘယ်သူမျှမရေကြောင်းသင်္ဘော configured ။",
+          "editApiKey": "Edit ကို API ကို Key ကို",
+          "carrierSaved": "လေယာဉ်တင်သင်္ဘောကိုအောင်မြင်စွာကယ်လွှတ်တော်မူ၏။",
+          "carrierFailed": "အမှားမွမ်းမံလေယာဉ်တင်သင်္ဘော။",
+          "refresh": "Refresh နည်းလမ်းများ"
+        }
+      },
+      "shippo": {
+        "connectedAndSaved": "ချိန်ညှိချက်များကိုကယ်တင်ခြင်းသို့ရောက်ရ၏! Shippo API ကိုယခု enabled ဖြစ်ပါတယ်။"
+      }
+    }
+  }
+}]

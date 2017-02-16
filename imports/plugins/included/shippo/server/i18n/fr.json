@@ -1,0 +1,29 @@
+[{
+  "i18n": "fr",
+  "ns": "reaction-shippo",
+  "translation": {
+    "reaction-shippo": {
+      "admin": {
+        "dashboard": {
+          "shippoLabel": "Shippo",
+          "shippoTitle": "Shippo",
+          "shippoDescription": "Les étiquettes d'expédition et le suivi des colis"
+        },
+        "shippingGrid": {
+          "carrier": "Transporteur",
+          "enabled": "Activé"
+        },
+        "shippingSettings": {
+          "noCarriersFound": "Aucun des transporteurs maritimes configurés.",
+          "editApiKey": "Modifier API Key",
+          "carrierSaved": "Transporteur sauvé avec succès.",
+          "carrierFailed": "Erreur de mise à jour porte.",
+          "refresh": "méthodes d'actualisation"
+        }
+      },
+      "shippo": {
+        "connectedAndSaved": "Paramètres sauvegardés! API Shippo est maintenant activé."
+      }
+    }
+  }
+}]

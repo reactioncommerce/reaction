@@ -2,7 +2,7 @@
   color: @brand-success;
 }
 
-.admin-controls {
+.rui.admin.action-view {
   .display(flex);
   .flex(0 0 auto);
   height: 100%;
@@ -11,7 +11,6 @@
   width: 0;
   overflow: hidden;
   .transition(width 300ms cubic-bezier(0.455, 0.03, 0.515, 0.955));
-  box-shadow: 0 0 40px rgba(0,0,0,.1);
   z-index: 100;
 
   @media screen and (max-width: @screen-xs-max) {
@@ -32,7 +31,7 @@
   .padding-right(0);
 }
 
-.admin-controls.show-settings {
+.rui.admin.action-view.show-settings {
   border-right: 1px solid @border-color;
   width: 400px;
 
@@ -93,8 +92,8 @@
   .align-items(center);
   .justify-content(center);
   .flex(0 0 auto);
-  min-height: @admin-controls-menu-button-height;
-  height: @admin-controls-menu-button-height;
+  // min-height: @admin-controls-menu-button-height;
+  // height: @admin-controls-menu-button-height;
 
   border: none;
   border-color: @black10;
@@ -219,12 +218,70 @@ body.admin-vertical .admin-controls {
 
 // patch for autoform's mysteriously
 // not getting the form-control class
-.admin-controls.show-settings label {
+.admin-controls-content label {
   font-weight: lighter;
 }
-.admin-controls.show-settings .form-group input {
+.admin-controls-content .form-group input:not([type=checkbox]) {
   .form-control;
 }
-.admin-controls.show-settings .form-group select {
-  .form-control;
+// .admin-controls-content .form-group select {
+//   .form-control;
+// }
+
+
+
+.rui.admin.action-view {
+  z-index: @zindex-modal;
+}
+
+.rui.admin.action-view.open {
+  @media screen and (max-width: @screen-xs-max) {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+  }
+}
+
+
+.rui.admin.action-view .panel {
+  border: 0;
+  border-radius: 0;
+  border-top: 1px solid @border-color;
+  margin-bottom: 0;
+}
+
+
+.rui.admin.action-view-pane .header {
+  border-bottom: 1px solid @border-color;
+}
+
+// .rui.admin.action-view-pane .header .heading {
+//   margin: 0 0 0 2rem;
+// }
+
+.rui.admin.action-view-pane .header .title {
+  margin: 0;
+}
+
+.rui.admin.action-view-detail {
+  display: flex;
+  border: 0;
+  border-radius: 0;
+  border-left: 1px solid @border-color;
+  margin-bottom: 0;
+}
+
+.rui.admin.action-view-pane .panel-body.no-padding .list-group-item {
+  border-left: 0;
+  border-right: 0;
+  border-bottom: 0;
+}
+
+.rui.admin.action-view-pane .panel-group > .panel:first-child {
+  border-top: none;
+}
+
+.rui.admin.action-view-pane .panel-group > .panel:last-child {
+  border-bottom: 1px solid @list-group-border;
 }

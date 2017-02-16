@@ -196,6 +196,25 @@ export default {
     return this.hasPermission(dashboardPermissions);
   },
 
+  getUserPreferences(packageName, preference, defaultValue) {
+    const profile = Meteor.user().profile;
+    if (profile && profile.preferences && profile.preferences[packageName] && profile.preferences[packageName][preference]) {
+      return profile.preferences[packageName][preference];
+    }
+    return defaultValue || undefined;
+  },
+
+  setUserPreferences(packageName, preference, value) {
+    if (Meteor.user()) {
+      return Meteor.users.update(Meteor.userId(), {
+        $set: {
+          [`profile.preferences.${packageName}.${preference}`]: value
+        }
+      });
+    }
+    return false;
+  },
+
   getShopId() {
     return this.shopId;
   },
@@ -214,6 +233,16 @@ export default {
       shopId: this.shopId
     }) || {};
     return settings.settings || {};
+  },
+
+  isPreview() {
+    const viewAs = this.getUserPreferences("reaction-dashboard", "viewAs", "administrator");
+
+    if (viewAs === "customer") {
+      return true;
+    }
+
+    return false;
   },
 
   getPackageSettings(name) {
@@ -249,9 +278,22 @@ export default {
     return Session.equals("admin/showActionView", true);
   },
 
+  isActionViewDetailOpen() {
+    return Session.equals("admin/showActionViewDetail", true);
+  },
+
+
   setActionView(viewData) {
     if (viewData) {
-      Session.set("admin/actionView", viewData);
+      let viewStack;
+
+      if (Array.isArray(viewData)) {
+        viewStack = viewData;
+      } else {
+        viewStack = [viewData];
+      }
+
+      Session.set("admin/actionView", viewStack);
     } else {
       const registryItem = this.getRegistryForCurrentRoute(
         "settings");
@@ -266,19 +308,131 @@ export default {
     }
   },
 
+  pushActionView(viewData) {
+    Session.set("admin/showActionView", true);
+
+    const actionViewStack = Session.get("admin/actionView");
+
+    if (viewData) {
+      actionViewStack.push(viewData);
+      Session.set("admin/actionView", actionViewStack);
+    } else {
+      const registryItem = this.getRegistryForCurrentRoute(
+        "settings");
+
+      if (registryItem) {
+        this.pushActionView(registryItem);
+      } else {
+        this.pushActionView({ template: "blankControls" });
+      }
+    }
+  },
+
+  isActionViewAtRootView() {
+    const actionViewStack = Session.get("admin/actionView");
+
+    if (Array.isArray(actionViewStack) && actionViewStack.length === 1) {
+      return true;
+    }
+
+    return false;
+  },
+
+  popActionView() {
+    const actionViewStack = Session.get("admin/actionView");
+    actionViewStack.pop();
+
+    Session.set("admin/actionView", actionViewStack);
+
+    this.setActionViewDetail({}, { open: false });
+  },
+
+  setActionViewDetail(viewData, options = {}) {
+    const { open } = options;
+
+    Session.set("admin/showActionView", true);
+    Session.set("admin/showActionViewDetail", typeof open === "boolean" ? open : true);
+
+    if (viewData) {
+      Session.set("admin/detailView", [viewData]);
+    }
+  },
+
+  pushActionViewDetail(viewData) {
+    Session.set("admin/showActionView", true);
+    Session.set("admin/showActionViewDetail", true);
+
+    const detailViewStack = Session.get("admin/detailView");
+
+    if (viewData) {
+      detailViewStack.push(viewData);
+      Session.set("admin/detailView", detailViewStack);
+    }
+  },
+
+  popActionViewDetail() {
+    const detailViewStack = Session.get("admin/detailView");
+    detailViewStack.pop();
+
+    Session.set("admin/detailView", detailViewStack);
+  },
+
+  isActionViewDetailAtRootView() {
+    const actionViewDetailStack = Session.get("admin/detailView");
+
+    if (Array.isArray(actionViewDetailStack) && actionViewDetailStack.length === 1) {
+      return true;
+    }
+
+    return false;
+  },
+
   getActionView() {
-    return Session.get("admin/actionView") || {};
+    const actionViewStack = Session.get("admin/actionView");
+
+    if (Array.isArray(actionViewStack) && actionViewStack.length) {
+      return actionViewStack.pop();
+    }
+
+    return {};
+  },
+
+  getActionViewDetail() {
+    const detailViewStack = Session.get("admin/detailView");
+
+    if (Array.isArray(detailViewStack) && detailViewStack.length) {
+      return detailViewStack.pop();
+    }
+
+    return {};
   },
 
   hideActionView() {
     Session.set("admin/showActionView", false);
+    this.clearActionView();
+  },
+
+  hideActionViewDetail() {
+    Session.set("admin/showActionViewDetail", false);
+    this.clearActionViewDetail();
   },
 
   clearActionView() {
-    Session.set("admin/actionView", {
+    Session.set("admin/actionView", [{
       label: "",
       i18nKeyLabel: ""
-    });
+    }]);
+    Session.set("admin/detailView", [{
+      label: "",
+      i18nKeyLabel: ""
+    }]);
+  },
+
+  clearActionViewDetail() {
+    Session.set("admin/detailView", [{
+      label: "",
+      i18nKeyLabel: ""
+    }]);
   },
 
   getCurrentTag() {
@@ -295,7 +449,8 @@ export default {
     // find registry entries for routeName
     const reactionApp = Packages.findOne({
       "registry.name": currentRouteName,
-      "registry.provides": provides
+      "registry.provides": provides,
+      "enabled": true
     }, {
       enabled: 1,
       registry: 1,

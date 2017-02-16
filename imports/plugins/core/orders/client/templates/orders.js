@@ -4,6 +4,13 @@ import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { Reaction, i18next } from "/client/api";
 import { Orders, Shops } from "/lib/collections";
+import OrdersActionContainer from "../containers/ordersActionContainer";
+import {
+  PACKAGE_NAME,
+  ORDER_LIST_FILTERS_PREFERENCE_NAME,
+  ORDER_LIST_SELECTED_ORDER_PREFERENCE_NAME,
+  DEFAULT_FILTER_NAME
+} from "../../lib/constants";
 
 const orderFilters = [{
   name: "new",
@@ -86,11 +93,14 @@ Template.orders.onCreated(function () {
     orders: []
   });
 
+  const filterName = this.data && this.data.filter && this.data.filter.name || "new";
+  Reaction.setUserPreferences(PACKAGE_NAME, ORDER_LIST_FILTERS_PREFERENCE_NAME, filterName);
+
   // Watch for updates to the subscription and query params
   // fetch available orders
   this.autorun(() => {
     this.subscribe("Orders");
-    const filter = Reaction.Router.getQueryParam("filter");
+    const filter = Reaction.getUserPreferences(PACKAGE_NAME, ORDER_LIST_FILTERS_PREFERENCE_NAME, DEFAULT_FILTER_NAME);
     const query = OrderHelper.makeQuery(filter);
     const orders = Orders.find(query).fetch();
 
@@ -105,22 +115,21 @@ Template.orders.onCreated(function () {
     // Numeric inputs
     this.state.set("currency", shop.currencies[shop.currency]);
   });
-
-  // Open the action view when necessary
-  this.autorun(() => {
-    const isActionViewOpen = Reaction.isActionViewOpen();
-    const queryParams = Reaction.Router.current().queryParams;
-
-    if (isActionViewOpen === false) {
-      Reaction.Router.go("orders", {}, queryParams);
-    }
-  });
 });
 
 /**
  * orders helpers
  */
 Template.orders.helpers({
+  FilterComponent() {
+    return {
+      component: OrdersActionContainer,
+      onActionClick(filter) {
+        Reaction.setUserPreferences(PACKAGE_NAME, ORDER_LIST_FILTERS_PREFERENCE_NAME, filter.name);
+        Reaction.setUserPreferences(PACKAGE_NAME, ORDER_LIST_SELECTED_ORDER_PREFERENCE_NAME, null);
+      }
+    };
+  },
   itemProps(order) {
     return {
       order,
@@ -134,7 +143,7 @@ Template.orders.helpers({
 
   currentFilterLabel() {
     const foundFilter = _.find(orderFilters, (filter) => {
-      return filter.name === Reaction.Router.getQueryParam("filter");
+      return filter.name ===  Reaction.Router.getQueryParam("filter");
     });
 
     if (foundFilter) {
@@ -156,7 +165,10 @@ Template.ordersListItem.helpers({
     return Template.currentData().order;
   },
   activeClassname(orderId) {
-    if (Reaction.Router.getQueryParam("_id") === orderId) {
+    // const Reaction.setUserPreferences(PACKAGE_NAME, ORDER_LIST_FILTERS_PREFERENCE_NAME, filter.name)
+    const selectedOrderId = Reaction.getUserPreferences(PACKAGE_NAME, ORDER_LIST_SELECTED_ORDER_PREFERENCE_NAME);
+
+    if (selectedOrderId === orderId) {
       return "active";
     }
     return "";
@@ -171,21 +183,21 @@ Template.ordersListItem.events({
   "click [data-event-action=selectOrder]": function (event) {
     event.preventDefault();
     const instance = Template.instance();
-    const isActionViewOpen = Reaction.isActionViewOpen();
-    // toggle detail views
-    if (isActionViewOpen === false) {
-      Reaction.showActionView({
-        label: "Order Details",
-        i18nKeyLabel: "orderWorkflow.orderDetails",
-        data: instance.data.order,
-        props: {
-          size: "large"
-        },
-        template: "coreOrderWorkflow"
-      });
-    }
-    Reaction.Router.setQueryParams({
-      _id: instance.data.order._id
+
+    // Set selected order in user preference
+    Reaction.setUserPreferences(PACKAGE_NAME, ORDER_LIST_SELECTED_ORDER_PREFERENCE_NAME, instance.data.order._id);
+
+    // Show the action view - detail view
+    Reaction.setActionViewDetail({
+      label: "Order Details",
+      i18nKeyLabel: "orderWorkflow.orderDetails",
+      data: {
+        order: instance.data.order
+      },
+      props: {
+        size: "large"
+      },
+      template: "coreOrderWorkflow"
     });
   },
   "click [data-event-action=startProcessingOrder]": function (event) {
@@ -207,22 +219,20 @@ Template.ordersListItem.events({
       Meteor.call("notification/send", userId, type, url, sms);
     }
 
+    Reaction.setUserPreferences(PACKAGE_NAME, ORDER_LIST_FILTERS_PREFERENCE_NAME, "processing");
+
     // toggle detail views
     if (isActionViewOpen === false) {
       Reaction.showActionView({
         label: "Order Details",
         i18nKeyLabel: "orderWorkflow.orderDetails",
-        data: order,
+        data: { order },
         props: {
           size: "large"
         },
         template: "coreOrderWorkflow"
       });
     }
-    Reaction.Router.setQueryParams({
-      filter: "processing",
-      _id: order._id
-    });
   }
 });
 
@@ -257,10 +267,9 @@ Template.orderListFilters.events({
     if (isActionViewOpen === true) {
       Reaction.hideActionView();
     }
-    Reaction.Router.setQueryParams({
-      filter: filter,
-      _id: null
-    });
+
+    Reaction.setUserPreferences(PACKAGE_NAME, ORDER_LIST_FILTERS_PREFERENCE_NAME, filter);
+    Reaction.setUserPreferences(PACKAGE_NAME, ORDER_LIST_SELECTED_ORDER_PREFERENCE_NAME, null);
   }
 });
 
@@ -316,6 +325,10 @@ Template.orderStatusDetail.helpers({
     return moment(this.createdAt).fromNow();
   },
 
+  shipmentMethod: function () {
+    return this.shipping[0].shipmentMethod;
+  },
+
   shipmentTracking: function () {
     if (this.shipping[0].tracking) {
       return this.shipping[0].tracking;
@@ -326,6 +339,17 @@ Template.orderStatusDetail.helpers({
   shipmentStatus() {
     const self = this;
     const shipment = this.shipping[0];
+
+    // check first if it was delivered
+    if (shipment.delivered) {
+      return {
+        delivered: true,
+        shipped: true,
+        status: "success",
+        label: i18next.t("orderShipping.delivered")
+      };
+    }
+
     const shipped = _.every(shipment.items, (shipmentItem) => {
       for (const fullItem of self.items) {
         if (fullItem._id === shipmentItem._id) {
@@ -340,6 +364,7 @@ Template.orderStatusDetail.helpers({
 
     if (shipped) {
       return {
+        delivered: false,
         shipped: true,
         status: "success",
         label: i18next.t("orderShipping.shipped")
@@ -347,6 +372,7 @@ Template.orderStatusDetail.helpers({
     }
 
     return {
+      delivered: false,
       shipped: false,
       status: "info",
       label: i18next.t("orderShipping.notShipped")

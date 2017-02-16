@@ -131,7 +131,7 @@ Template.productImageGallery.events({
     }
     if (!Reaction.hasPermission("createProduct")) {
       const first = $(".gallery li:nth-child(1)");
-      const target = $(event.currentTarget);
+      const target = Template.instance().$(event.currentTarget);
       if ($(target).data("index") !== first.data("index")) {
         return $(".gallery li:nth-child(1)").fadeOut(400, function () {
           $(this).replaceWith(target);

@@ -3,6 +3,10 @@ import classnames from "classnames";
 import Button from "./button.jsx";
 
 class IconButton extends Component {
+  static defaultProps = {
+    bezelStyle: "solid"
+  }
+
   render() {
     const {
       icon,
@@ -17,24 +21,11 @@ class IconButton extends Component {
 
     if (this.props.kind === "flat") {
       buttonClassName = classnames({
-        "rui": true,
-        "button": true,
         "icon": true,
-        "icon-only": true,
-        "flat": true
-      });
-    } else if (this.props.kind === "close") {
-      buttonClassName = classnames({
-        "rui": true,
-        "button": true,
-        "icon-only": true,
-        "close": true
+        "icon-only": true
       });
     } else {
       buttonClassName = classnames({
-        "rui": true,
-        "button": true,
-        "edit": true,
         "icon-only": true,
         "variant-edit": true
       });
@@ -59,6 +50,7 @@ class IconButton extends Component {
         className={buttonClassName}
         icon={iconClassName}
         onIcon={onIconClassName}
+        containerStyle={{ display: "flex", width: "100%", justifyContent: "center" }}
         {...otherProps}
       />
     );

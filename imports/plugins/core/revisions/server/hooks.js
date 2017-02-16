@@ -3,6 +3,7 @@ import { diff } from "deep-diff";
 import { Products, Revisions, Tags, Media } from "/lib/collections";
 import { Logger } from "/server/api";
 import { RevisionApi } from "../lib/api";
+import { isEmpty } from "lodash";
 
 function convertMetadata(modifierObject) {
   const metadata = {};
@@ -274,6 +275,33 @@ Products.before.insert((userId, product) => {
     }
   });
 
+  // Prevent this product beign created if a parent product / varaint ancestor is deleted.
+  //
+  // This will prevent cases where a parent variant hase been deleted and a user tries to create a
+  // child variant. You cannot create the child variant becuase the parent will no longer exist when
+  // changes have been published; resulting in a broken inheretence and UI
+  const productHasAncestors = Array.isArray(product.ancestors);
+
+  if (productHasAncestors) {
+    // Verify there are no deleted ancestors,
+    // Variants cannot be restored if their parent product / variant is deleted
+    const archivedCount = Revisions.find({
+      "documentId": { $in: product.ancestors },
+      "documentData.isDeleted": true,
+      "workflow.status": {
+        $nin: [
+          "revision/published"
+        ]
+      }
+    }).count();
+
+    if (archivedCount > 0) {
+      Logger.debug(`Cannot create product ${product._id} as a product/variant higher in it's ancestors tree is marked as 'isDeleted'.`);
+      throw new Meteor.Error(403, "Unable to create product variant");
+    }
+  }
+
+
   if (!productRevision) {
     Logger.debug(`No revision found for product ${product._id}. Creating new revision`);
 
@@ -298,6 +326,34 @@ Products.before.update(function (userId, product, fieldNames, modifier, options)
       ]
     }
   });
+
+  // Prevent this product revision from beign restored from isDeleted state if a product / varaint
+  // ancestor is also deleted.
+  //
+  // This will prevent cases where a parent variant hase been deleted and a user tries to undeleted a
+  // child variant. You cannot undeleted the child variant, becuase the parent will no longer exist when
+  // changes have been published; resulting in a broken inheretence and UI
+  const revisionHasAncestors = productRevision && productRevision.documentData && Array.isArray(productRevision.documentData.ancestors);
+  const modiferContainsIsDeleted = modifier.$set && modifier.$set.isDeleted === false;
+
+  if (revisionHasAncestors && modiferContainsIsDeleted) {
+    // Verify there are no deleted ancestors,
+    // Variants cannot be restored if their parent product / variant is deleted
+    const archivedCount = Revisions.find({
+      "documentId": { $in: productRevision.documentData.ancestors },
+      "documentData.isDeleted": true,
+      "workflow.status": {
+        $nin: [
+          "revision/published"
+        ]
+      }
+    }).count();
+
+    if (archivedCount > 0) {
+      Logger.debug(`Cannot restore product ${product._id} as a product/variant higher in it's ancestors tree is marked as 'isDeleted'.`);
+      throw new Meteor.Error(403, "Unable to delete product variant");
+    }
+  }
 
   const originalSelector = this.args[0];
 
@@ -462,6 +518,13 @@ Products.before.update(function (userId, product, fieldNames, modifier, options)
 
     modifier.$set = newSet;
     modifier.$inc = newInc;
+
+    // if (isEmpty(newSet) === false) {
+    //   Products.update(originalSelector, modifier, {
+    //     publish: true,
+    //     selector: options.selector
+    //   });
+    // }
   }
 
   // prevent the underlying document from being modified as it is in draft mode

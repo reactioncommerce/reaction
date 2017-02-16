@@ -1,0 +1,20 @@
+[{
+  "i18n": "hu",
+  "ns": "reaction-dashboard",
+  "translation": {
+    "reaction-dashboard": {
+      "admin": {
+        "shortcut": {
+          "dashboardLabel": "Műszerfal"
+        },
+        "dashboard": {
+          "packageGroupActionsLabel": "Hozzászólások",
+          "packageGroupSettingsLabel": "Beállítások"
+        },
+        "settings": {
+          "shopSettingsLabel": "Üzlet"
+        }
+      }
+    }
+  }
+}]

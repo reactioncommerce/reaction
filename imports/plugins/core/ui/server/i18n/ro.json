@@ -1,0 +1,25 @@
+[{
+  "i18n": "ro",
+  "ns": "reaction-ui",
+  "translation": {
+    "reaction-catalog": {
+      "admin": {
+        "dashboard": {
+          "themesLabel": "tematică",
+          "themesTitle": "tematică",
+          "themesDescription": "Teme și componente UI"
+        }
+      },
+      "reactionUI": {
+        "editTheme": "Tema de editare",
+        "duplicateTheme": "Tema dublură",
+        "duplicateThemeError": "Nu a putut fi duplicat temă",
+        "publishThemeError": "`Nu am putut publica tema {{themeName}}",
+        "components": {
+          "navbar": "Bară de navigare",
+          "button": "Buton"
+        }
+      }
+    }
+  }
+}]

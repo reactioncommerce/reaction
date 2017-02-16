@@ -7,65 +7,21 @@
       "languages": {
         "select": "Selectează limba"
       },
+      "currencies": {
+        "select": "Selectați valuta"
+      },
       "admin": {
         "shortcut": {
-          "dashboardLabel": "Bord",
-          "ordersLabel": "Istoric comenzi",
           "addProductLabel": "Adăugare produs",
           "accountsLabel": "Conturi"
         },
         "dashboard": {
-          "accountsLabel": "Conturi",
-          "accountsTitle": "Conturi",
-          "accountsDescription": "Gestionați permisiunile membrilor",
-          "analyticsLabel": "Statistici",
-          "analyticsTitle": "Statistici",
-          "analyticsDescription": "Integrările pentru analize statistice și urmărire",
-          "shippingLabel": "livrare",
-          "shippingTitle": "livrare",
-          "shippingDescription": "Tarife de transport",
-          "catalogLabel": "Catalog",
-          "catalogTitle": "Catalog",
-          "catalogDescription": "Catalog de produse",
-          "coreLabel": "Setări",
-          "coreTitle": "Bord",
-          "coreDescription": "Configurare reaction",
-          "emailLabel": "E-mail",
-          "emailTitle": "E-mail",
-          "emailDescription": "Configurări e-mail",
           "i18NLabel": "i18n",
           "i18NTitle": "i18n",
           "i18NDescription": "Utilitare pentru internaționalizare",
-          "inventoryLabel": "Inventar",
-          "inventoryTitle": "Inventar",
-          "inventoryDescription": "Utilitare pentru inventar",
-          "layoutLabel": "Amplasare",
-          "layoutTitle": "Amplasare",
-          "layoutDescription": "Utilitare pentru aranjare",
-          "connectLabel": "Conectați",
-          "connectTitle": "Conectați",
-          "connectDescription": "Conecteaza Reaction ca un serviciu",
-          "ordersLabel": "Istoric comenzi",
-          "smsLabel": "Mesaj",
-          "smsTitle": "Mesaj",
-          "smsDescription": "Notificările",
-          "ordersTitle": "Istoric comenzi",
-          "ordersDescription": "Onoraează comenzile",
-          "revisionsLabel": "Revizuiri",
-          "revisionsTitle": "Revizuiri",
-          "revisionsDescription": "Control revizuiri",
           "routingLabel": "Rutare",
           "routingTitle": "Rutare",
           "routingDescription": "Utilitare de rutare",
-          "searchLabel": "Căutare",
-          "searchTitle": "Căutare",
-          "searchDescription": "Caută produs",
-          "socialLabel": "Social",
-          "socialTitle": "Social",
-          "socialDescription": "Configurarea canalelor sociale",
-          "themesLabel": "Teme",
-          "themesTitle": "Teme",
-          "themesDescription": "Teme și componente UI",
           "filtrationLabel": "Filtrare",
           "filtrationDescription": "Filtrarea produselor pentru reaction"
         },
@@ -79,25 +35,14 @@
           "utilities": "Utilitare"
         },
         "settings": {
+          "accountSettingsLabel": "Setările contului",
+          "accountSettingsTitle": "Servicii de conectare",
+          "accountSettingsDescription": "Autentificarea prin intermediul furnizorilor sociale",
           "saveSuccess": "Setările aduse la zi.",
           "saveFailed": "Nu s-au putut actualiza setările.",
-          "accountSettingsLabel": "Setările contului",
           "addShopMemberLabel": "Adaugă membru magazin",
           "permissionsSettingsLabel": "Permisiuni",
-          "localizationAndI18NLabel": "Localizare si i18n",
-          "searchSettingsLabel": "Setări de căutare",
-          "shopSettingsLabel": "Setări Magazin",
-          "smsSettingsLabel": "setările SMS",
-          "socialSettingsLabel": "Setări sociale",
-          "shippingSettingsLabel": "Setări de transport",
-          "inventorySettingsLabel": "Setări de inventar",
-          "analyticsSettingsLabel": "Setări Analize Statistice",
-          "reactionConnectLabel": "Conectare Reaction",
-          "productSettingsLabel": "Setări produs",
-          "productDetailsLabel": "Detalii produs",
-          "productRevisionsLabel": "Revizuiri produsului",
-          "emailSettingsLabel": "Setări e-mail",
-          "catalogSettingsLabel": "Setări catalog"
+          "localizationAndI18NLabel": "Localizare si i18n"
         },
         "userAccountDropdown": {
           "profileLabel": "Profil"
@@ -111,6 +56,8 @@
       "app": {
         "add": "Adăuga",
         "editMode": "Mod editare",
+        "administratorView": "administrator View",
+        "customerView": "Vezi de client",
         "createContent": "Creați conținut",
         "auto": "Auto",
         "save": "Salvați",
@@ -475,11 +422,16 @@
         "notShipped": "Inca neexpediată",
         "noTracking": "Nici un număr urmărire a pachetului",
         "tracking": "Număr urmărire",
+        "printLabels": "Etichete de imprimare",
+        "printShippingLabel": "livrare",
+        "printCustomsLabel": "Obiceiuri",
+        "carrier": "Purtător",
         "addTracking": "Adăugaţi număr urmărire a pachetului",
         "itemsHaveBeenShipped": "Articole au fost expediate",
         "shipmentEmpty": "Acest transport nu are elemente",
         "shipmentPacked": "Toate produsele ambalate",
         "shipped": "Expediat",
+        "delivered": "Livrat",
         "shippingNotifyCustomer": "Anunțați clientul că produsele lor vor fi de transporte în curând.",
         "resendNotification": "Retrimitere Notificarea de Transport"
       },
@@ -626,68 +578,6 @@
       "checkoutReview": {
         "review": "Revizuire"
       },
-      "checkoutShipping": {
-        "selectShippingOption": "Selectați opțiunea de transport",
-        "noShippingMethods": "Nu s-a configurat nici o metodă de expediere.",
-        "configureNow": "Configurati acum.",
-        "shipping": "Livrare"
-      },
-      "shipping": {
-        "addShippingProvider": "Adăugați un furnizor de transport",
-        "editShippingProvider": "Editare furnizori de transport",
-        "addShippingMethod": "Adăugați o metodă de transport",
-        "editShippingMethod": "Editare metodă de expediere",
-        "deleteShippingMethod": "Eliminare metodă de expediere",
-        "noSettingsForThisView": "Nu există setări pentru această vizualizare",
-        "noShippingMethods": "Nu s-a configurat nici o metodă de expediere.",
-        "removeShippingMethodConfirm": "Sunteți sigur că doriți să ștergeți {{method}}?",
-        "removeShippingMethodTitle": "Eliminare Metodă de expediere",
-        "shippingMethodDeleted": "Această metodă de transport a fost ștersă.",
-        "removeShippingProvider": "Eliminare furnizor de transport",
-        "removeShippingProviderConfirm": "Sunteți sigur că doriți să eliminați {{provider}}?",
-        "shippingProviderSaved": "Furnizor de transport salvat.",
-        "shippingProviderUpdated": "Datele furnizorului de transport au fost actualizate.",
-        "shippingMethodRateAdded": "S-a adaugat prețul aferent metodei de expediere.",
-        "shippingMethodRateUpdated": "S-a acutualizat prețul aferent metodei de expediere.",
-        "name": "Nume",
-        "label": "Eticheta",
-        "group": "Grup",
-        "cost": "Cost",
-        "handling": "Manevrare",
-        "rate": "Preț",
-        "enabled": "Activat",
-        "disabled": "Dezactivat",
-        "addRate": "Adauga preț",
-        "updateRate": "Actualizare preț pentru {{name}}",
-        "addNewCondition": "Adăugați o condiție nouă",
-        "deleteCondition": "Ștergeți condiție",
-        "provider": {
-          "name": "Codul de service",
-          "label": "Etichetă publică",
-          "enabled": "Activat"
-        }
-      },
-      "shippingMethod": {
-        "name": "Nume metodă",
-        "label": "Etichetă publică",
-        "group": "Grup",
-        "cost": "Cost",
-        "handling": "Manevrare",
-        "rate": "Preț",
-        "enabled": "Activată",
-        "matchingCartRanges": "Potrivirea gamei din Coș",
-        "validRanges": {
-          "begin": "Începe",
-          "end": "Termină"
-        },
-        "matchingLocales": "Potrivirea Localizărilor",
-        "validLocales": {
-          "origination": "Din",
-          "destination": "La",
-          "deliveryBegin": "Est. transport",
-          "deliveryEnd": "Est. Livrare"
-        }
-      },
       "uom": {
         "OZ": "uncii",
         "LB": "lire sterline",
@@ -814,16 +704,6 @@
           "passwordResetSend": "E-mail-ul cu link-ul de resetare a parolei a fost trimis.",
           "invitationSent": "Invitația a fost trimisă",
           "sendInvitation": "Trimite invitația"
-        },
-        "reactionUI": {
-          "editTheme": "Editare Temă",
-          "duplicateTheme": "Duplicați Tema",
-          "duplicateThemeError": "Nu s-a putut duplica tema",
-          "publishThemeError": "Nu am putut publica tema {{themeName}}",
-          "components": {
-            "navbar": "Bară de navigare",
-            "button": "Buton"
-          }
         },
         "error": {
           "emailRequired": "Este necesară adresa de e-mail.",

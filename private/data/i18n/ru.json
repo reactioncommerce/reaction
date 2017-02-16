@@ -7,65 +7,21 @@
       "languages": {
         "select": "Выбрать язык"
       },
+      "currencies": {
+        "select": "Выбор валюты"
+      },
       "admin": {
         "shortcut": {
-          "dashboardLabel": "Панель управления",
-          "ordersLabel": "Заказы",
           "addProductLabel": "Создать продукт",
           "accountsLabel": "Пользователи"
         },
         "dashboard": {
-          "accountsLabel": "Учётные записи",
-          "accountsTitle": "Учётные записи",
-          "accountsDescription": "Управление правами пользователей",
-          "analyticsLabel": "Аналитика",
-          "analyticsTitle": "Аналитика",
-          "analyticsDescription": "Внедрение аналитики и отслеживания событий",
-          "shippingLabel": "Доставка",
-          "shippingTitle": "Доставка",
-          "shippingDescription": "Настройки тарифов по доставке",
-          "catalogLabel": "Каталог",
-          "catalogTitle": "Каталог",
-          "catalogDescription": "Каталог товаров",
-          "coreLabel": "Ядро",
-          "coreTitle": "Панель управления",
-          "coreDescription": "Базовые настройки Reaction",
-          "emailLabel": "Эл. почта",
-          "emailTitle": "Эл. адрес",
-          "emailDescription": "Настройки эл. почты",
           "i18NLabel": "i18n",
           "i18NTitle": "i18n",
           "i18NDescription": "Интернационализация",
-          "inventoryLabel": "Товары",
-          "inventoryTitle": "Товары",
-          "inventoryDescription": "Утилиты для работы с товарами",
-          "layoutLabel": "план",
-          "layoutTitle": "план",
-          "layoutDescription": "план",
-          "connectLabel": "Connect",
-          "connectTitle": "Connect",
-          "connectDescription": "Подключение Reaction как развёрнутого сервиса",
-          "ordersLabel": "Заказы",
-          "smsLabel": "смс",
-          "smsTitle": "смс",
-          "smsDescription": "Уведомления",
-          "ordersTitle": "Заказы",
-          "ordersDescription": "Управление заказами",
-          "revisionsLabel": "Версии",
-          "revisionsTitle": "Версии",
-          "revisionsDescription": "Управление версиями",
           "routingLabel": "Маршрутизация",
           "routingTitle": "Маршрутизация",
           "routingDescription": "Утилиты маршрутизации",
-          "searchLabel": "Искать",
-          "searchTitle": "Искать",
-          "searchDescription": "Поиск товара",
-          "socialLabel": "Социальные сети",
-          "socialTitle": "Социальные сети",
-          "socialDescription": "Интеграция с соц. сетями",
-          "themesLabel": "Темы",
-          "themesTitle": "Темы",
-          "themesDescription": "Темы и UI компоненты",
           "filtrationLabel": "Filtration",
           "filtrationDescription": "Products filtration for Reaction"
         },
@@ -79,25 +35,14 @@
           "utilities": "Утилиты"
         },
         "settings": {
+          "accountSettingsLabel": "Настройки учетных записей",
+          "accountSettingsTitle": "Вход Услуги",
+          "accountSettingsDescription": "Аутентификация с помощью социальных провайдеров",
           "saveSuccess": "Настройки обновлены.",
           "saveFailed": "Не удалось обновить настройки.",
-          "accountSettingsLabel": "Настройки учетных записей",
           "addShopMemberLabel": "Добавить сотрудника",
           "permissionsSettingsLabel": "Права доступа",
-          "localizationAndI18NLabel": "Локализация и i18n",
-          "searchSettingsLabel": "Настройки поиска",
-          "shopSettingsLabel": "Настройки магазина",
-          "smsSettingsLabel": "настройки SMS",
-          "socialSettingsLabel": "Настройки соц. сетей",
-          "shippingSettingsLabel": "Настройки доставки",
-          "inventorySettingsLabel": "Настройки управления товарами",
-          "analyticsSettingsLabel": "Настройки аналитики",
-          "reactionConnectLabel": "Reaction Connect",
-          "productSettingsLabel": "Настройки продукта",
-          "productDetailsLabel": "Подробные данные о товаре",
-          "productRevisionsLabel": "Ревизии продукта",
-          "emailSettingsLabel": "Настройки электронной почты",
-          "catalogSettingsLabel": "Настройки каталога"
+          "localizationAndI18NLabel": "Локализация и i18n"
         },
         "userAccountDropdown": {
           "profileLabel": "Профиль"
@@ -111,6 +56,8 @@
       "app": {
         "add": "Создать",
         "editMode": "Режим редактирования",
+        "administratorView": "Администратор Просмотреть",
+        "customerView": "Клиент Просмотреть",
         "createContent": "Создать содержимое",
         "auto": "Автоматически",
         "save": "Сохранить",
@@ -475,11 +422,16 @@
         "notShipped": "Ещё не доставлено",
         "noTracking": "Не отслеживается",
         "tracking": "Трекинг номер",
+        "printLabels": "Печать этикеток",
+        "printShippingLabel": "Перевозка",
+        "printCustomsLabel": "Таможня",
+        "carrier": "Носитель",
         "addTracking": "Добавить идентификатор",
         "itemsHaveBeenShipped": "Товары отправлены",
         "shipmentEmpty": "Эта доставка не содержит товаров",
         "shipmentPacked": "Все товары запакованы и готовы к отгрузке",
         "shipped": "Доставлено",
+        "delivered": "доставлен",
         "shippingNotifyCustomer": "Известить клиента о том, что его товары скоро будут доставлены.",
         "resendNotification": "Отправить уведомление о доставке еще раз"
       },
@@ -626,68 +578,6 @@
       "checkoutReview": {
         "review": "Обзор"
       },
-      "checkoutShipping": {
-        "selectShippingOption": "Выбор тарифа",
-        "noShippingMethods": "Ни один тариф не настроен.",
-        "configureNow": "Настроить сейчас.",
-        "shipping": "Доставка"
-      },
-      "shipping": {
-        "addShippingProvider": "Добавить поставщика услуг",
-        "editShippingProvider": "Редактировать поставщика",
-        "addShippingMethod": "Добавить тариф",
-        "editShippingMethod": "Редактировать тариф",
-        "deleteShippingMethod": "Удалить тариф",
-        "noSettingsForThisView": "Настройки отсутствуют",
-        "noShippingMethods": "Ни один тариф не настроен.",
-        "removeShippingMethodConfirm": "Вы уверены в том, что хотите удалить {{method}}?",
-        "removeShippingMethodTitle": "Удалить тариф",
-        "shippingMethodDeleted": "Этот тариф был удалён.",
-        "removeShippingProvider": "Удалить эту службу доставки",
-        "removeShippingProviderConfirm": "Вы уверены, что хотите удалить провайдера {{provider}}?",
-        "shippingProviderSaved": "Поставщик услуг по доставке сохранён.",
-        "shippingProviderUpdated": "Данные поставщика услуг по доставке обновлены.",
-        "shippingMethodRateAdded": "Тариф добавлен.",
-        "shippingMethodRateUpdated": "Тариф обновлён.",
-        "name": "Название",
-        "label": "Метка",
-        "group": "Группа",
-        "cost": "Стоимость",
-        "handling": "Комплектация",
-        "rate": "Ставка",
-        "enabled": "Включен",
-        "disabled": "Отключен",
-        "addRate": "Добавить ",
-        "updateRate": "Обновить тариф {{name}}",
-        "addNewCondition": "Добавить новое условие",
-        "deleteCondition": "Удалить условие",
-        "provider": {
-          "name": "Сервисный код",
-          "label": "Общедоступное название",
-          "enabled": "Подключен"
-        }
-      },
-      "shippingMethod": {
-        "name": "Название",
-        "label": "Метка",
-        "group": "Группа",
-        "cost": "Стоимость",
-        "handling": "Обслуживание",
-        "rate": "Ставка",
-        "enabled": "Включен",
-        "matchingCartRanges": "Соответствующий диапазон стоимости заказа",
-        "validRanges": {
-          "begin": "Минимальная стоимость заказа",
-          "end": "Максимальная стоимость заказа"
-        },
-        "matchingLocales": "Соответствующие зоны доставки",
-        "validLocales": {
-          "origination": "Откуда",
-          "destination": "Куда",
-          "deliveryBegin": "Ожидаемый срок комплектации",
-          "deliveryEnd": "Ожидаемый срок доставки"
-        }
-      },
       "uom": {
         "OZ": "Унции",
         "LB": "Фунты",
@@ -814,16 +704,6 @@
           "passwordResetSend": "Email со сбросом пароля отправлен.",
           "invitationSent": "Приглашение отправлено",
           "sendInvitation": "Отправить приглашение"
-        },
-        "reactionUI": {
-          "editTheme": "Редактировать тему",
-          "duplicateTheme": "Дублировать тему",
-          "duplicateThemeError": "Тему не удалось дублировать",
-          "publishThemeError": "`Невозможно опубликовать тему {{themeName}}",
-          "components": {
-            "navbar": "Меню навигации",
-            "button": "Кнопка"
-          }
         },
         "error": {
           "emailRequired": "Email обязателен.",

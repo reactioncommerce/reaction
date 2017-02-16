@@ -1,0 +1,37 @@
+<template name="shippoSettings">
+  {{#unless packageData.settings.apiKey}}
+    <div class="panel-group">
+      {{#autoForm
+        meteormethod="shippo/updateApiKey"
+        schema=ShippoPackageConfig
+        doc=packageData
+        type="method-update"
+        id="shippo-update-form"
+      }}
+        {{> afQuickField name="settings.apiKey" class='form-control'}}
+        {{> shopSettingsSubmitButton}}
+      {{/autoForm}}
+    </div>
+  {{else}}
+    <div class="panel-group collapse" id="shippo-settings">
+      {{#autoForm
+        meteormethod="shippo/updateApiKey"
+        schema=ShippoPackageConfig
+        doc=packageData
+        type="method-update"
+        id="shippo-update-form"
+      }}
+        {{> afQuickField name="settings.apiKey" class='form-control'}}
+        {{> shopSettingsSubmitButton}}
+      {{/autoForm}}
+    </div>
+    <a data-toggle="collapse" href="#shippo-settings" aria-expanded="false" aria-controls="shippo-settings">
+      <span class="text-success fa fa-circle" aria-hidden="true"></span>
+      <span data-i18n="admin.shippingSettings.editApiKey">Edit API Key</span>
+    </a>
+    <a class="pull-right" data-event-action="fetchShippoProviders" data-i18n="admin.shippingSettings.refresh">Refresh methods</a>
+    <div>
+      {{> shippoCarriers}}
+    </div>
+  {{/unless}}
+</template>

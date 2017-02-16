@@ -1,0 +1,29 @@
+[{
+  "i18n": "it",
+  "ns": "reaction-shippo",
+  "translation": {
+    "reaction-shippo": {
+      "admin": {
+        "dashboard": {
+          "shippoLabel": "Shippo",
+          "shippoTitle": "Shippo",
+          "shippoDescription": "etichette di spedizione e di inseguimento del pacchetto"
+        },
+        "shippingGrid": {
+          "carrier": "Vettore",
+          "enabled": "Abilitato"
+        },
+        "shippingSettings": {
+          "noCarriersFound": "Non ci sono elementi portanti di spedizione configurati.",
+          "editApiKey": "Modifica API Key",
+          "carrierSaved": "Carrier salvato.",
+          "carrierFailed": "Errore durante l'aggiornamento del vettore.",
+          "refresh": "i metodi di aggiornamento"
+        }
+      },
+      "shippo": {
+        "connectedAndSaved": "Impostazioni salvate! API Shippo è ora abilitato."
+      }
+    }
+  }
+}]
