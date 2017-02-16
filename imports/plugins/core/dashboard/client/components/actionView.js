@@ -81,7 +81,7 @@ const getStyles = (props) => {
       "flexDirection": "column",
       "flex": "1 1 auto",
       "maxWidth": "400px",
-      "height": "100vh",
+      "height": "100%",
       "backgroundColor": "white",
       "borderRight": "1px solid #ccc",
       "@media only screen and (max-width: 949px)": {
