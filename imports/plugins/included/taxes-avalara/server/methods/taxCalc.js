@@ -78,13 +78,13 @@ taxCalc.getCompanyCode = function () {
     name: "taxes-avalara",
     shopId: Reaction.getShopId(),
     enabled: true
-  }, { fields: { "settings.avalara.companyCode": 1 } });
-  const companyCode = result.settings.avalara.companyCode;
+  }, { fields: { "settings.avalara.company.companyCode": 1 } });
+  const companyCode = _.get(result, "settings.avalara.company.companyCode");
   if (companyCode) {
     return companyCode;
   }
-  const savedCompanyCode = taxCalc.saveCompanyCode();
-  return savedCompanyCode;
+  const savedCompany = taxCalc.saveCompany();
+  return savedCompany.companyCode;
 };
 
 /**
@@ -163,17 +163,17 @@ taxCalc.getCompanies = function (callback) {
 };
 
 /**
- * @summary Fetch the company code from the API and save in the DB
- * @returns {String} Company code
+ * @summary Fetch the company object from the API and save in the DB
+ * @returns {String} Company object
  */
-taxCalc.saveCompanyCode = function () {
+taxCalc.saveCompany = function () {
   const companyData = taxCalc.getCompanies();
-  const companyCode = companyData.data.value[0].companyCode;
+  const company = companyData.data.value[0];
   const packageData = taxCalc.getPackageData();
   Packages.update({ _id: packageData._id }, {
-    $set: { "settings.avalara.companyCode": companyCode }
+    $set: { "settings.avalara.company": company }
   });
-  return companyCode;
+  return company;
 };
 
 /**
