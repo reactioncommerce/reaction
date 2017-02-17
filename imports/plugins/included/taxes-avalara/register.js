@@ -8,11 +8,16 @@ Reaction.registerPackage({
   settings: {
     avalara: {
       enabled: false,
-      apiLoginId: ""
+      apiLoginId: "",
+      username: "",
+      password: ""
     },
     addressValidation: {
       enabled: false,
       addressValidationMethod: "avalara/addressValidation"
+    },
+    taxCodes: {
+      getTaxCodeMethod: "avalara/getTaxCodes"
     }
   },
   registry: [
@@ -24,8 +29,18 @@ Reaction.registerPackage({
     },
     {
       label: "Avalara Address Validation",
-      name: "addressValidation/avalara",
+      name: "taxes/addressValidation/avalara",
       provides: "addressValidation"
+    },
+    {
+      label: "Avalara Tax Calculation",
+      provides: "taxMethod",
+      name: "taxes/calculation/avalara"
+    },
+    {
+      label: "Avalara Tax Codes",
+      provides: "taxCodes",
+      name: "taxes/taxcodes/avalara"
     }
   ]
 });
