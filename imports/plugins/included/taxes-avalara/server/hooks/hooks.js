@@ -3,7 +3,23 @@ import { Logger, MethodHooks } from "/server/api";
 import { Cart, Orders } from "/lib/collections";
 import taxCalc from "../methods/taxCalc";
 
-MethodHooks.after("taxes/calculate", function (options) {
+function linesToTaxes(lines) {
+  const taxes = lines.map((line) => {
+    return {
+      lineNumber: line.lineNumber,
+      discountAmount: line.discountAmount,
+      taxable: line.isItemTaxable,
+      tax: line.tax,
+      taxableAmount: line.taxableAmount,
+      taxCode: line.taxCode,
+      details: line.details
+    };
+  });
+  return taxes;
+}
+
+
+MethodHooks.after("taxes/calculate", (options) => {
   const cartId = options.arguments[0];
   const cartToCalc = Cart.findOne(cartId);
   const pkg = taxCalc.getPackageData();
@@ -11,16 +27,19 @@ MethodHooks.after("taxes/calculate", function (options) {
   Logger.debug("Avalara triggered on taxes/calculate for cartId:", cartId);
   if (pkg && pkg.settings.avalara.enabled) {
     taxCalc.estimateCart(cartToCalc, function (result) {
+      const taxes = linesToTaxes(result.lines);
       if (result && result.totalTax && typeof result.totalTax === "number") {
-        const taxAmount = parseFloat(result.totalTax);
+        // we don't use totalTax, that just tells us we have a valid tax calculation
+        const taxAmount = taxes.reduce((totalTaxes, tax) => totalTaxes + tax.tax, 0);
         const taxRate = taxAmount / taxCalc.calcTaxable(cartToCalc);
-        Meteor.call("taxes/setRate", cartId, taxRate);
+        Meteor.call("taxes/setRate", cartId, taxRate, taxes);
       }
     });
   }
+  return options;
 });
 
-MethodHooks.after("cart/copyCartToOrder", function (options) {
+MethodHooks.after("cart/copyCartToOrder", (options) => {
   const pkg = taxCalc.getPackageData();
   if (pkg && pkg.settings.avalara.enabled) {
     const cartId = options.arguments[0];
@@ -30,8 +49,8 @@ MethodHooks.after("cart/copyCartToOrder", function (options) {
         Logger.info(`Order ${order._id} recorded with Avalara`);
       }
     });
-    return options;
   }
+  return options;
 });
 
 MethodHooks.after("orders/refunds/create", (options) => {
@@ -46,4 +65,5 @@ MethodHooks.after("orders/refunds/create", (options) => {
       }
     });
   }
+  return options;
 });
