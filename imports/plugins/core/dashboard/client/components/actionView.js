@@ -62,6 +62,8 @@ const getStyles = (props) => {
     },
     body: {
       display: "flex",
+      flex: "1 1 auto",
+      overflow: "auto",
       WebkitOverflowScrolling: "touch"
     },
     masterViewPanel: {
@@ -92,10 +94,10 @@ const getStyles = (props) => {
         zIndex: 1050
       }
     },
-    detailView: {
-      flex: "1 1 auto",
-      overflow: "auto"
-    },
+    // detailView: {
+    //   flex: "1 1 auto",
+    //   overflow: "auto"
+    // },
     backButton: {
       height: "100%"
     },
@@ -192,7 +194,7 @@ class ActionView extends Component {
             {...this.props.detailView.data}
             template={this.props.detailView.template}
           />
-      </div>
+        </div>
       );
     }
 

@@ -32,7 +32,7 @@ Template.CoreNavigationBar.events({
     const searchTemplateName = instance.state.get("searchTemplate");
     const searchTemplate = Template[searchTemplateName];
     Blaze.renderWithData(searchTemplate, {
-    }, $("body").get(0));
+    }, $("html").get(0));
     $("body").css("overflow", "hidden");
     $("#search-input").focus();
   },
