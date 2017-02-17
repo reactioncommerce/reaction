@@ -86,7 +86,7 @@ function avaPost(requestUrl, options) {
     "X-Avalara-Client": avaClient,
     "X-Avalara-UID": "xxxxxxx"
   };
-  const auth = getAuthData();
+  const auth = { auth: getAuthData() };
   const allOptions = Object.assign({}, options, headers, auth);
   const result = HTTP.post(requestUrl, allOptions);
   return result;
@@ -161,10 +161,9 @@ taxCalc.validateAddress = function (address) {
   if (address.line2) {
     addressToValidate.line2 = address.address2;
   }
-  const auth = getAuthData();
   const baseUrl = getUrl();
   const requestUrl = `${baseUrl}/addresses/resolve`;
-  const result = HTTP.post(requestUrl, { data: addressToValidate, auth: auth });
+  const result = avaPost(requestUrl, { data: addressToValidate });
   const content = JSON.parse(result.content);
   if (content.messages) {
     messages = content.messages;
@@ -256,7 +255,8 @@ function cartToSalesOrder(cart) {
         number: _.toString(index + 1),
         quantity: item.quantity,
         amount: item.variants.price * item.quantity,
-        description: item.title
+        description: item.title,
+        taxCode: item.variants.taxCode
       };
     });
   }
@@ -311,9 +311,8 @@ taxCalc.estimateCart = function (cart, callback) {
         return callback(data);
       });
     }
-    const result = HTTP.post(requestUrl, { data: salesOrder, auth: auth });
-    const data = JSON.parse(result.content);
-    return data;
+    const result = avaPost(requestUrl, { data: salesOrder });
+    return result.data;
   }
 };
 
@@ -332,7 +331,8 @@ function orderToSalesInvoice(order) {
       number: _.toString(index + 1),
       quantity: item.quantity,
       amount: item.variants.price * item.quantity,
-      description: item.title
+      description: item.title,
+      taxCode: item.variants.taxCode
     };
   });
 
