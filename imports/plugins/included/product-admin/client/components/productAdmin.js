@@ -300,6 +300,17 @@ class ProductAdmin extends Component {
               ref="countryOfOriginInput"
               value={this.product.originCountry}
             />
+            <TextField
+              i18nKeyLabel="productDetailEdit.taxDescription"
+              i18nKeyPlaceholder="productDetailEdit.taxDescription"
+              label="Tax Description"
+              name="taxDescription"
+              onBlur={this.handleFieldBlur}
+              onChange={this.handleFieldChange}
+              placeholder="Tax Description"
+              ref="taxDescriptionInput"
+              value={this.product.taxDescription}
+            />
           </CardBody>
         </Card>
         <Card
