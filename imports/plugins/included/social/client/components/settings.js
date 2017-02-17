@@ -1,9 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import {
   CardGroup,
-  Card,
-  CardHeader,
-  CardBody,
+  SettingsCard,
   TextField
 } from "/imports/plugins/core/ui/client/components";
 import { SocialPackageConfig } from "/lib/collections/schemas/social";
@@ -72,28 +70,19 @@ class SocialSettings extends Component {
         });
 
         return (
-          <Card
-            key={provider.name}
+          <SettingsCard
+            i18nKeyTitle={`settings.${provider.name}`}
             expandable={true}
             onExpand={this.props.onSettingExpand}
             expanded={this.props.preferences[provider.name]}
+            title={provider.name}
             name={provider.name}
+            enabled={this.props.socialSettings.settings.apps[provider.name].enabled}
+            icon={provider.icon}
+            onSwitchChange={this.props.onSettingEnableChange}
           >
-            <CardHeader
-              i18nKeyTitle={`settings.${provider.name}`}
-              icon={provider.icon}
-              title={provider.name}
-              showSwitch={true}
-              actAsExpander={true}
-              switchOn={this.props.socialSettings.settings.apps[provider.name].enabled}
-              switchName={provider.name}
-              expandOnSwitchOn={true}
-              onSwitchChange={this.props.onSettingEnableChange}
-            />
-            <CardBody expandable={true}>
-              {fields}
-            </CardBody>
-          </Card>
+            {fields}
+          </SettingsCard>
         );
       });
     }

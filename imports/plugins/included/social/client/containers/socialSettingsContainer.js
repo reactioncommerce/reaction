@@ -34,10 +34,7 @@ class SocialSettingsContainer extends Component {
   }
 
   handleSettingExpand = (event, card, name, isExpanded) => {
-    const currentPreference = Reaction.getUserPreferences("reaction-social", "settingsCards");
-
-    Reaction.setUserPreferences("reaction-social", "settingsCards", {
-      ...currentPreference,
+    Reaction.updateUserPreferences("reaction-social", "settingsCards", {
       [name]: isExpanded
     });
   }
