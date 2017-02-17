@@ -455,6 +455,8 @@
         "yourOrderIsNow": "Your order is now",
         "summaryMessage": "Thank you for your order.",
         "submitted": "submitted",
+        "processing": "processing",
+        "completed": "completed",
         "registerGuest": "Hello! Add an email and receive order updates.",
         "trackYourDelivery": "Order updates will be sent to",
         "noOrdersFound": "No orders found.",
