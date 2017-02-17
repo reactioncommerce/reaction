@@ -148,13 +148,14 @@ ShippoApi.methods.createTransaction = new ValidatedMethod({
       });
 
       if (transaction.object_status !== "SUCCESS") {
-        Logger.error(transaction.messages);
-        throw new Meteor.Error(transaction.messages);
+        const error = transaction.messages[0].text;
+        Logger.error(error);
+        throw new Meteor.Error(error);
       }
 
       return transaction;
     } catch (error) {
-      Logger.error(error.message);
+      Logger.debug(error.message);
       throw new Meteor.Error(error.message);
     }
   }
@@ -181,7 +182,6 @@ ShippoApi.methods.getTransaction = new ValidatedMethod({
     const retrieveTransactionFiber = Meteor.wrapAsync(shippoObj.transaction.retrieve, shippoObj.transaction);
     try {
       const transaction = retrieveTransactionFiber(transactionId);
-
       return transaction;
     } catch (error) {
       Logger.error(error.message);

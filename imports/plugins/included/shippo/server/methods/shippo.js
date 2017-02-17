@@ -440,21 +440,21 @@ export const methods = {
         const rateId = orderShipment.shipmentMethod.settings.rateId;
         // make the actual purchase
         const transaction = ShippoApi.methods.createTransaction.call({ rateId, apiKey });
-
-        return Orders.update({
-          _id: orderId
-        }, {
-          $set: {
-            "shipping.0.shippingLabelUrl": transaction.label_url,
-            "shipping.0.tracking": transaction.tracking_number,
-            "shipping.0.shippo.transactionId": transaction.object_id,
-            "shipping.0.shippo.trackingStatusDate": null,
-            "shipping.0.shippo.trackingStatusStatus": null
-          }
-        });
+        if (transaction) {
+          return Orders.update({
+            _id: orderId
+          }, {
+            $set: {
+              "shipping.0.shippingLabelUrl": transaction.label_url,
+              "shipping.0.tracking": transaction.tracking_number,
+              "shipping.0.shippo.transactionId": transaction.object_id,
+              "shipping.0.shippo.trackingStatusDate": null,
+              "shipping.0.shippo.trackingStatusStatus": null
+            }
+          });
+        }
       }
     }
-
     return false;
   }
 };

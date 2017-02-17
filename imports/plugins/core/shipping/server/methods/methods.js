@@ -10,7 +10,7 @@ export const methods = {
     // this is a stub for future core processing
     // it also serves as a place for Method Hooks
     // in other shipping packages, like Shippo
-    return;
+    return orderId;
   },
   /**
    * shipping/provider/toggle

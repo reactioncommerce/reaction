@@ -31,8 +31,15 @@ Template.coreOrderShippingTracking.onCreated(() => {
  */
 Template.coreOrderShippingTracking.events({
   "click [data-event-action=refresh-shipping]": function () {
+    const instance = Template.instance();
+    instance.$("#btn-processing").removeClass("hidden");
     const orderId = Template.instance().order._id;
-    Meteor.call("shipping/status/refresh", orderId);
+    Meteor.call("shipping/status/refresh", orderId, (result) => {
+      if (result.error) {
+        instance.$("#btn-processing").addClass("hidden");
+        Alerts.toast(i18next.t("orderShipping.labelError", { err: result.error }), "error");
+      }
+    });
   },
   "click [data-event-action=shipmentShipped]": function () {
     const template = Template.instance();
