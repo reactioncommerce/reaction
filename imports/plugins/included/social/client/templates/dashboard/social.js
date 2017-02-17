@@ -1,6 +1,13 @@
 import { Packages } from "/lib/collections";
+import SocialSettingsContainer from "../../containers/socialSettingsContainer";
 
 Template.socialSettings.helpers({
+  SocialSettingsComponent() {
+    return {
+      component: SocialSettingsContainer
+    };
+  },
+
   packageData() {
     return Packages.findOne({
       name: "reaction-social"
