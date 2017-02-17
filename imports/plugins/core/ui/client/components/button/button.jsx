@@ -125,7 +125,7 @@ class Button extends Component {
     const { } = this.props;
 
     const {
-      active, status, toggleOn, primary, bezelStyle, className,
+      active, status, toggleOn, primary, bezelStyle, className, containerStyle,
 
       // Destructure these vars as they aren't valid as attributes on the HTML element button
       iconAfter, label, i18nKeyTitle, i18nKeyLabel, i18nKeyTooltip, // eslint-disable-line no-unused-vars
@@ -188,11 +188,20 @@ class Button extends Component {
     // Button with tooltip gets some special treatment
     if (tooltip) {
       return React.createElement(tagName, buttonProps,
-        <span className="rui btn-tooltip" style={{ display: "inline-flex" }}>
+        <span className="rui btn-tooltip" style={{ display: "inline-flex", ...containerStyle }}>
           <Tooltip tooltipContent={this.renderTooltipContent()}>
             {buttonChildren}
           </Tooltip>
         </span>
+      );
+    }
+
+    // Add a wrapped container with styles for standard button
+    if (containerStyle) {
+      buttonChildren = (
+        <div style={containerStyle}>
+          {buttonChildren}
+        </div>
       );
     }
 
@@ -206,6 +215,7 @@ Button.propTypes = {
   bezelStyle: PropTypes.oneOf(["flat", "solid", "outline"]),
   children: PropTypes.node,
   className: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  containerStyle: PropTypes.object,
   disabled: PropTypes.bool,
   eventAction: PropTypes.string,
   i18nKeyLabel: PropTypes.string,

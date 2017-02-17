@@ -157,7 +157,14 @@ Template.childVariantForm.events({
     }, (isConfirm) => {
       if (isConfirm) {
         const id = instance.data._id;
-        Meteor.call("products/updateProductField", id, "isDeleted", false);
+        Meteor.call("products/updateProductField", id, "isDeleted", false, (error) => {
+          if (error) {
+            Alerts.alert({
+              text: i18next.t("productDetailEdit.restoreVariantFail", { title }),
+              confirmButtonText: i18next.t("app.close", { defaultValue: "Close" })
+            });
+          }
+        });
       }
     });
   }

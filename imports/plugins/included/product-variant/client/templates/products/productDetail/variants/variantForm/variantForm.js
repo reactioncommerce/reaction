@@ -102,7 +102,14 @@ Template.variantForm.helpers({
         }, (isConfirm) => {
           if (isConfirm) {
             const id = variant._id;
-            Meteor.call("products/updateProductField", id, "isDeleted", false);
+            Meteor.call("products/updateProductField", id, "isDeleted", false, (error) => {
+              if (error) {
+                Alerts.alert({
+                  text: i18next.t("productDetailEdit.restoreVariantFail", { title }),
+                  confirmButtonText: i18next.t("app.close", { defaultValue: "Close" })
+                });
+              }
+            });
           }
         });
       };
@@ -141,11 +148,18 @@ Template.variantForm.events({
     event.stopPropagation();
     event.preventDefault();
     const productId = ReactionProduct.selectedProductId();
+
     if (!productId) {
       return;
     }
+
     Meteor.call("products/createVariant", template.data._id, function (error, result) {
-      if (result) {
+      if (error) {
+        Alerts.alert({
+          text: i18next.t("productDetailEdit.addVariantFail", { title: template.data.title }),
+          confirmButtonText: i18next.t("app.close", { defaultValue: "Close" })
+        });
+      } else if (result) {
         const newVariantId = result;
         const selectedProduct = ReactionProduct.selectedProduct();
         ReactionProduct.setCurrentVariant(newVariantId);
@@ -167,7 +181,12 @@ Template.variantForm.events({
     }
     Meteor.call("products/cloneVariant", productId, template.data._id,
       function (error, result) {
-        if (result) {
+        if (error) {
+          Alerts.alert({
+            text: i18next.t("productDetailEdit.cloneVariantFail", { title: template.data.title }),
+            confirmButtonText: i18next.t("app.close", { defaultValue: "Close" })
+          });
+        } else if (result) {
           const variantId = result[0];
 
           ReactionProduct.setCurrentVariant(variantId);

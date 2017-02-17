@@ -1,6 +1,7 @@
 import _ from "lodash";
 import moment from "moment";
 import path from "path";
+import { Accounts as MeteorAccounts } from "meteor/accounts-base"
 import { Accounts, Cart, Media, Shops, Packages } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 import { Logger, Reaction } from "/server/api";
@@ -408,7 +409,7 @@ Meteor.methods({
     });
 
     if (!user) {
-      const userId = Accounts.createUser({
+      const userId = MeteorAccounts.createUser({
         email: email,
         username: name
       });
@@ -474,7 +475,7 @@ Meteor.methods({
         user: Meteor.user(),
         currentUserName,
         invitedUserName: name,
-        url: Accounts.urls.enrollAccount(token)
+        url: MeteorAccounts.urls.enrollAccount(token)
       };
 
       // Compile Email with SSR

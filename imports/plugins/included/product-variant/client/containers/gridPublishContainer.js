@@ -6,7 +6,8 @@ import PublishContainer from "/imports/plugins/core/revisions/client/containers/
 
 class GridProductPublishContainer extends Component {
   static propTypes = {
-    documentIds: PropTypes.arrayOf(PropTypes.string)
+    documentIds: PropTypes.arrayOf(PropTypes.string),
+    documents: PropTypes.arrayOf(PropTypes.object)
   };
 
   handleVisibilityChange = (event, isProductVisible) => {
@@ -17,9 +18,9 @@ class GridProductPublishContainer extends Component {
     }
   }
 
-  handlePublishActions = (event, action, documentIds) => {
+  handlePublishActions = (event, action) => {
     if (action === "archive") {
-      ReactionProduct.maybeDeleteProduct(documentIds);
+      ReactionProduct.maybeDeleteProduct(this.props.documents);
     }
   }
 
@@ -36,14 +37,23 @@ class GridProductPublishContainer extends Component {
 
 function composer(props, onData) {
   const selectedProducts = Session.get("productGrid/selectedProducts");
+  const products = Session.get("productGrid/products");
 
-  if (selectedProducts) {
+  let productIds;
+
+  if (Array.isArray(selectedProducts) && selectedProducts.length) {
+    productIds = selectedProducts;
+  } else if (Array.isArray(products) && products.length) {
+    productIds = products.map(p => p._id);
+  }
+
+  if (productIds) {
     const documents = Products.find({
-      _id: { $in: selectedProducts }
+      _id: { $in: productIds }
     }).fetch();
 
     onData(null, {
-      documentIds: selectedProducts,
+      documentIds: productIds,
       documents
     });
   } else {
