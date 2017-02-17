@@ -1,4 +1,5 @@
 import _ from "lodash";
+import os from "os";
 import moment from "moment";
 import { Meteor } from "meteor/meteor";
 import { HTTP } from "meteor/http";
@@ -52,6 +53,45 @@ function getAuthData() {
   return auth;
 }
 
+/**
+ * @summary function to get HTTP data and pass in extra Avalara-specific headers
+ * @param {String} requestUrl - The URL to make the request to
+ * @returns {Object} Response from call
+ */
+function avaGet(requestUrl) {
+  const appVersion = Reaction.getAppVersion();
+  const machineName = os.hostname();
+  const avaClient = `Reaction; ${appVersion}; Meteor HTTP; 1.0; ${machineName}`;
+  const headers = {
+    "X-Avalara-Client": avaClient,
+    "X-Avalara-UID": "xxxxxxx"
+  };
+  const auth = getAuthData();
+  const result = HTTP.get(requestUrl, { headers, auth });
+  return result;
+}
+
+
+/**
+ * @summary to POST HTTP data and pass in extra Avalara-specific headers
+ * @param {String} requestUrl - The URL to make the request to
+ * @param {Object} options - An object of others options, usually data
+ * @returns {Object} Response from call
+ */
+function avaPost(requestUrl, options) {
+  const appVersion = Reaction.getAppVersion();
+  const machineName = os.hostname();
+  const avaClient = `Reaction; ${appVersion}; Meteor HTTP; 1.0; ${machineName}`;
+  const headers = {
+    "X-Avalara-Client": avaClient,
+    "X-Avalara-UID": "xxxxxxx"
+  };
+  const auth = getAuthData();
+  const allOptions = Object.assign({}, options, headers, auth);
+  const result = HTTP.post(requestUrl, allOptions);
+  return result;
+}
+
 // API Methods
 
 /**
@@ -85,6 +125,15 @@ taxCalc.getCompanyCode = function () {
   }
   const savedCompany = taxCalc.saveCompany();
   return savedCompany.companyCode;
+};
+
+taxCalc.getCompany = function () {
+  const result = Packages.findOne({
+    name: "taxes-avalara",
+    shopId: Reaction.getShopId(),
+    enabled: true
+  }, { fields: { "settings.avalara.company": 1 } });
+  return result;
 };
 
 /**
@@ -174,6 +223,17 @@ taxCalc.saveCompany = function () {
     $set: { "settings.avalara.company": company }
   });
   return company;
+};
+
+/**
+ * @summary get Avalara Tax Codes
+ * @returns {Array} An array of Tax code objects
+ */
+taxCalc.getTaxCodes = function () {
+  const baseUrl = getUrl();
+  const requestUrl = `${baseUrl}taxcodes`;
+  const result = avaGet(requestUrl);
+  return result.data.value;
 };
 
 /**
@@ -400,5 +460,6 @@ taxCalc.reportRefund = function (order, refundAmount, callback) {
 export default taxCalc;
 
 Meteor.methods({
-  "avalara/addressValidation": taxCalc.validateAddress
+  "avalara/addressValidation": taxCalc.validateAddress,
+  "avalara/getTaxCodes": taxCalc.getTaxCodes
 });
