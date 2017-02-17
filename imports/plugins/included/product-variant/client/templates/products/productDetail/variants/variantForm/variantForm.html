@@ -138,12 +138,19 @@
             </div>
           </div>
           <div class="row">
-            <div class="variant-options col-xs-12 col-sm-3 col-md-3">
+            <div class="variant-options col-xs-12">
               <div class="form-group {{#if afFieldIsInvalid name='taxable'}} has-error{{/if}}">
                   {{>afFieldInput name='taxable'}}
                   {{#if afFieldIsInvalid name='taxable'}}
                   <span class="help-block">{{afFieldMessage name='taxable'}}</span>
                   {{/if}}
+              </div>
+              <div class="form-group{{#if afFieldIsInvalid name='taxCode'}} has-error{{/if}} taxCode" style="{{displayTaxCodes}}">
+                <label class="control-label">{{afFieldLabelText name='taxCode'}}</label>
+                {{>afFieldInput name="taxCode" options=(listTaxCodes false) firstOption="Choose Code" placeholder="Exp. TaxCode"}}
+                {{#if afFieldIsInvalid name="taxCode"}}
+                <span class="help-block">{{afFieldMessage name="taxCode"}}</span>
+                {{/if}}
               </div>
               <div class="form-group{{#if afFieldIsInvalid name='inventoryManagement'}} has-error{{/if}}">
                   {{>afFieldInput name='inventoryManagement'}}
@@ -157,7 +164,7 @@
                   <span class="help-block">{{afFieldMessage name='inventoryPolicy'}}</span>
                   {{/if}}
               </div>
-              <div class="lowInventoryWarningThreshold form-group{{#if afFieldIsInvalid name='lowInventoryWarningThreshold'}} has-error{{/if}}" style="{{displayLowInventoryWarning doc}}">
+              <div class=" col-md-3 lowInventoryWarningThreshold form-group{{#if afFieldIsInvalid name='lowInventoryWarningThreshold'}} has-error{{/if}}" style="{{displayLowInventoryWarning doc}}">
                   <label class="control-label">{{afFieldLabelText name='lowInventoryWarningThreshold'}}</label>
                   {{>afFieldInput name='lowInventoryWarningThreshold' placeholder="0"}}
                   {{#if afFieldIsInvalid name='lowInventoryWarningThreshold'}}
