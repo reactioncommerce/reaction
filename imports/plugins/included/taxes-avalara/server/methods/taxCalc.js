@@ -56,9 +56,10 @@ function getAuthData() {
 /**
  * @summary function to get HTTP data and pass in extra Avalara-specific headers
  * @param {String} requestUrl - The URL to make the request to
+ * @param {String} authString - (Optional) Combination of username and password. Uses DB values as default
  * @returns {Object} Response from call
  */
-function avaGet(requestUrl) {
+function avaGet(requestUrl, authString) {
   const appVersion = Reaction.getAppVersion();
   const machineName = os.hostname();
   const avaClient = `Reaction; ${appVersion}; Meteor HTTP; 1.0; ${machineName}`;
@@ -66,7 +67,7 @@ function avaGet(requestUrl) {
     "X-Avalara-Client": avaClient,
     "X-Avalara-UID": "xxxxxxx"
   };
-  const auth = getAuthData();
+  const auth = authString || getAuthData();
   const result = HTTP.get(requestUrl, { headers, auth });
   return result;
 }
@@ -118,8 +119,8 @@ taxCalc.getCompanyCode = function () {
     name: "taxes-avalara",
     shopId: Reaction.getShopId(),
     enabled: true
-  }, { fields: { "settings.avalara.company.companyCode": 1 } });
-  const companyCode = _.get(result, "settings.avalara.company.companyCode");
+  }, { fields: { "settings.avalara.companyCode": 1 } });
+  const companyCode = _.get(result, "settings.avalara.companyCode");
   if (companyCode) {
     return companyCode;
   }
@@ -211,6 +212,21 @@ taxCalc.getCompanies = function (callback) {
     const result = HTTP.get(requestUrl, { auth: auth });
     return result;
   }
+};
+
+/**
+ * @summary Tests supplied Avalara credentials by calling company endpoint
+ * @param {Object} credentials callback Callback function for asynchronous execution
+ * @returns {Object} Object containing "statusCode" on success, empty response on error
+ */
+taxCalc.testCredentials = function (credentials) {
+  check(credentials, Object);
+
+  const baseUrl = getUrl();
+  const auth = `${credentials.username}:${credentials.password}`;
+  const requestUrl = `${baseUrl}/companies/${credentials.companyCode}/transactions`;
+  const result = avaGet(requestUrl, auth);
+  return { statusCode: result.statusCode };
 };
 
 /**
@@ -465,5 +481,5 @@ export default taxCalc;
 Meteor.methods({
   "avalara/addressValidation": taxCalc.validateAddress,
   "avalara/getTaxCodes": taxCalc.getTaxCodes,
-  "avalara/testConnection": taxCalc.getCompanies
+  "avalara/testCredentials": taxCalc.testCredentials
 });
