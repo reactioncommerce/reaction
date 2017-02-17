@@ -4,7 +4,7 @@ import { Template } from "meteor/templating";
 import { Reaction, i18next } from "/client/api";
 import { ReactionProduct } from "/lib/api";
 import { applyProductRevision } from "/lib/api/products";
-import { Products } from "/lib/collections";
+import { Products, Packages } from "/lib/collections";
 
 Template.variantForm.onCreated(function () {
   this.autorun(() => {
@@ -68,6 +68,11 @@ Template.variantForm.helpers({
       return "display:none;";
     }
   },
+  displayTaxCodes: function () {
+    if (this.taxable !== true) {
+      return "display:none;";
+    }
+  },
   removeVariant(variant) {
     return () => {
       return () => {
@@ -114,6 +119,21 @@ Template.variantForm.helpers({
         });
       };
     };
+  },
+  listTaxCodes() {
+    const data = Packages.findOne({
+      "registry.provides": "taxCodes"
+    });
+
+    const providerName = (data.name.split(data.name.match(/-/gi)[0]))[1];
+
+    if (data.settings[providerName].enabled) {
+      Meteor.call(data.settings.taxCodes.getTaxCodeMethod, (error, result) => {
+        Session.set("taxCodes", result);
+      });
+    }
+
+    return Session.get("taxCodes");
   }
 });
 
