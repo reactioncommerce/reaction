@@ -12,6 +12,9 @@
         },
         "settings": {
           "productRevisionsLabel": "Revizije izdelka"
+        },
+        "toolbar": {
+          "publishAll": "objavi Vse"
         }
       }
     }
