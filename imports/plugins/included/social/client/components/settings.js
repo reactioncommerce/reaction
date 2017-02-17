@@ -32,13 +32,14 @@ const socialProviders = [
   }
 ];
 
-
 class SocialSettings extends Component {
   static propTypes = {
     onSettingChange: PropTypes.func,
     onSettingEnableChange: PropTypes.func,
+    onSettingExpand: PropTypes.func,
+    preferences: PropTypes.object,
     providers: PropTypes.arrayOf(PropTypes.string),
-    settings: PropTypes.object
+    socialSettings: PropTypes.object
   }
 
   getSchemaForField(provider, field) {
@@ -53,7 +54,7 @@ class SocialSettings extends Component {
   }
 
   renderCards() {
-    if (Array.isArray(this.props.providers)) {
+    if (Array.isArray(socialProviders)) {
       return socialProviders.map((provider) => {
         const fields = provider.fields.map((field) => {
           const fieldSchema = this.getSchemaForField(provider.name, field);
@@ -64,7 +65,7 @@ class SocialSettings extends Component {
               key={field}
               label={fieldSchema.label}
               name={`${provider.name}.${field}`}
-              value={this.props.settings.apps[provider.name][field]}
+              value={this.props.socialSettings.settings.apps[provider.name][field]}
               onChange={this.handleSettingChange}
             />
           );
@@ -74,6 +75,9 @@ class SocialSettings extends Component {
           <Card
             key={provider.name}
             expandable={true}
+            onExpand={this.props.onSettingExpand}
+            expanded={this.props.preferences[provider.name]}
+            name={provider.name}
           >
             <CardHeader
               i18nKeyTitle={`settings.${provider.name}`}
@@ -81,7 +85,7 @@ class SocialSettings extends Component {
               title={provider.name}
               showSwitch={true}
               actAsExpander={true}
-              switchOn={this.props.settings.apps[provider.name].enabled}
+              switchOn={this.props.socialSettings.settings.apps[provider.name].enabled}
               switchName={provider.name}
               expandOnSwitchOn={true}
               onSwitchChange={this.props.onSettingEnableChange}

@@ -33,6 +33,15 @@ class SocialSettingsContainer extends Component {
     Meteor.call("reaction-social/updateSocialSetting", name, "enabled", isChecked);
   }
 
+  handleSettingExpand = (event, card, name, isExpanded) => {
+    const currentPreference = Reaction.getUserPreferences("reaction-social", "settingsCards");
+
+    Reaction.setUserPreferences("reaction-social", "settingsCards", {
+      ...currentPreference,
+      [name]: isExpanded
+    });
+  }
+
   handleSettingChange = (provider, field, value) => {
     const apps = {
       ...this.state.settings.apps,
@@ -57,6 +66,7 @@ class SocialSettingsContainer extends Component {
       <SocialSettings
         onSettingEnableChange={this.handleSettingEnable}
         onSettingChange={this.handleSettingChange}
+        onSettingExpand={this.handleSettingExpand}
         {...this.props}
         settings={this.state.settings}
       />
@@ -66,10 +76,13 @@ class SocialSettingsContainer extends Component {
 
 function composer(props, onData) {
   const subscription = Reaction.Subscriptions.Packages;
+  const preferences = Reaction.getUserPreferences("reaction-social", "settingsCards", {});
 
   if (subscription.ready()) {
-    const socialSettings = createSocialSettings(props);
-    onData(null, socialSettings);
+    onData(null, {
+      preferences: preferences,
+      socialSettings: createSocialSettings(props)
+    });
   } else {
     onData(null, {});
   }
