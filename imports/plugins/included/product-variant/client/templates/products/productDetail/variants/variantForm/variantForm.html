@@ -72,6 +72,14 @@
                   {{/if}}
               </div>
 
+              <div class="form-group{{#if afFieldIsInvalid name='originCountry'}} has-error{{/if}}">
+                  <label class="control-label">{{afFieldLabelText name='originCountry'}}</label>
+                  {{>afFieldInput name='originCountry' placeholder="Origin Country"}}
+                  {{#if afFieldIsInvalid name='originCountry'}}
+                  <span class="help-block">{{afFieldMessage name='originCountry'}}</span>
+                  {{/if}}
+              </div>
+
               <div class="col-xs-3 col-sm-3 form-group{{#if afFieldIsInvalid name='weight'}} has-error{{/if}}">
                 <label class="control-label">{{afFieldLabelText name='weight'}}</label>
                 {{>afFieldInput name='weight' placeholder="0"}}
