@@ -1,5 +1,5 @@
 import _ from "lodash";
-import { Media, Products } from "/lib/collections";
+import { Media } from "/lib/collections";
 import { Template } from "meteor/templating";
 
 /**
@@ -10,10 +10,10 @@ import { Template } from "meteor/templating";
  */
 Template.cartDrawerItems.helpers({
   product: function () {
-    return Products.findOne(this.productId);
+    return this;
   },
   media: function () {
-    const product = Products.findOne(this.productId);
+    const product = this;
     let defaultImage = Media.findOne({
       "metadata.variantId": this.variants._id
     });
