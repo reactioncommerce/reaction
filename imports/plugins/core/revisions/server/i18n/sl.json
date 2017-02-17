@@ -5,6 +5,7 @@
     "reaction-revisions": {
       "admin": {
         "dashboard": {
+          "preview": "predogled",
           "revisionsLabel": "Revizije",
           "revisionsTitle": "Revizije",
           "revisionsDescription": "nadzor revizija"

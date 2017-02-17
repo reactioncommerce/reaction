@@ -40,7 +40,7 @@ describe("discounts methods", function () {
     // });
 
     it("should delete rate with discounts permission", function (done) {
-      this.timeout(5000);
+      this.timeout(15000);
       sandbox.stub(Roles, "userIsInRole", () => true);
       const discountInsertSpy = sandbox.spy(Discounts, "insert");
       const discountId = Meteor.call("discounts/addRate", rate);

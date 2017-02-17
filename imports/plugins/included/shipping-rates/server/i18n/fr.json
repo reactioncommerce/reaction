@@ -1,0 +1,23 @@
+[{
+  "i18n": "fr",
+  "ns": "reaction-shipping-rates",
+  "translation": {
+    "reaction-shipping-rates": {
+      "admin": {
+        "shippingSettings": {
+          "flatRateLabel": "Forfait",
+          "confirmRateDelete": "Supprimer taux?",
+          "rateSaved": "Tarif forfaitaire sauvé.",
+          "rateFailed": "Appartement mise à jour de taux a échoué.",
+          "noRatesFound": "Pas de prix trouvés."
+        },
+        "shippingGrid": {
+          "name": "Nom",
+          "group": "Groupe",
+          "rate": "Taux",
+          "label": "Étiquette"
+        }
+      }
+    }
+  }
+}]

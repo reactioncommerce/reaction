@@ -1,0 +1,20 @@
+[{
+  "i18n": "sv",
+  "ns": "reaction-accounts",
+  "translation": {
+    "reaction-accounts": {
+      "admin": {
+        "dashboard": {
+          "accountsLabel": "Konton",
+          "accountsTitle": "Konton",
+          "accountsDescription": "Kontoinställningar"
+        },
+        "settings": {
+          "accountsSettingsLabel": "Konton",
+          "accountsSettingsTitle": "Konton",
+          "accountsSettingsDescription": "Kontoinställningar"
+        }
+      }
+    }
+  }
+}]

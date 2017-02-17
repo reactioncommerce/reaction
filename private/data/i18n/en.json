@@ -302,9 +302,12 @@
         "variantDetails": "Variant Details",
         "duplicateVariant": "Duplicate",
         "addVariantOption": "Add Option",
+        "addVariantFail": "Unable to create variant for {{title}}.",
+        "cloneVariantFail": "Unable to clone variant for {{title}}.",
         "removeVariant": "Remove",
         "removeVariantConfirm": "Are you sure you want to delete {{title}}",
         "restoreVariantConfirm": "Are you sure you want to restore {{title}} from the trash?",
+        "restoreVariantFail": "Unable to restore {{title}}.",
         "archiveVariantConfirm": "Are you sure you want to archive {{title}}",
         "thisVariant": "this variant",
         "thisOption": "this option",
@@ -478,7 +481,8 @@
       "addressBookAdd": {
         "addAddress": "Add a new address entry",
         "createAddress": "Create your default address",
-        "failedToAddAddress": "Failed to add address: {{err}}"
+        "failedToAddAddress": "Failed to add address: {{err}}",
+        "validatedAddress": "Made changes to your address based upon validation. Please ensure this is correct"
       },
       "addressBookEdit": {
         "editAddress": "Editing this address entry",

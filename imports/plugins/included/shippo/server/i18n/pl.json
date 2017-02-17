@@ -8,6 +8,17 @@
           "shippoLabel": "Shippo",
           "shippoTitle": "Shippo",
           "shippoDescription": "etykiety wysyłki i śledzenia pakietów"
+        },
+        "shippingGrid": {
+          "carrier": "Nośnik",
+          "enabled": "Włączone"
+        },
+        "shippingSettings": {
+          "noCarriersFound": "skonfigurowane żadne nośniki wysyłki.",
+          "editApiKey": "Edycja Klucz API",
+          "carrierSaved": "Przewoźnik zapisany pomyślnie.",
+          "carrierFailed": "Błąd aktualizacji przewoźnika.",
+          "refresh": "metody Odśwież"
         }
       },
       "shippo": {
