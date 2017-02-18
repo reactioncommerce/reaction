@@ -121,6 +121,7 @@ Template.variantForm.helpers({
     };
   },
   listTaxCodes() {
+    const taxCodeArray = [];
     const data = Packages.findOne({
       "registry.provides": "taxCodes"
     });
@@ -129,10 +130,15 @@ Template.variantForm.helpers({
 
     if (data.settings[providerName].enabled) {
       Meteor.call(data.settings.taxCodes.getTaxCodeMethod, (error, result) => {
-        Session.set("taxCodes", result);
+        result.forEach(function (code) {
+          taxCodeArray.push({
+            value: code.id,
+            label: `${code.taxCode} | ${code.description}`
+          });
+        });
+        Session.set("taxCodes", taxCodeArray);
       });
     }
-
     return Session.get("taxCodes");
   }
 });
