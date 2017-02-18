@@ -23,7 +23,7 @@ class SettingsCard extends Component {
 
   handleSwitchChange = (event, isChecked) => {
     if (typeof this.props.onSwitchChange === "function") {
-      this.props.onSwitchChange(isChecked, this.props.name, this);
+      this.props.onSwitchChange(event, isChecked, this.props.name, this);
     }
   }
 

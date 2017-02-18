@@ -1,9 +1,8 @@
-import { check } from "meteor/check"
-import { SocialPackageConfig } from "/lib/collections/schemas/social";
+import { check, Match } from "meteor/check";
 import { Packages } from "/lib/collections";
 import { Reaction } from "/server/api";
 
-export default function updateSocialSetting(provider, field, value) {
+export function updateSocialSetting(provider, field, value) {
   check(provider, String);
   check(field, String);
   check(value, Match.OneOf(String, Boolean));
@@ -19,9 +18,27 @@ export default function updateSocialSetting(provider, field, value) {
     $set: {
       [`settings.public.apps.${provider}.${field}`]: value
     }
-  })
+  });
+}
+
+export function updateSocialSettings(values) {
+  check(values, Match.OneOf(Object, String, Boolean, Number, null, undefined));
+
+  if (!Reaction.hasPermission(["reaction-social"])) {
+    throw new Meteor.Error(403, "Access Denied");
+  }
+
+  return Packages.update({
+    name: "reaction-social",
+    shopId: Reaction.getShopId()
+  }, {
+    $set: {
+      settings: values
+    }
+  });
 }
 
 Meteor.methods({
-  "reaction-social/updateSocialSetting": updateSocialSetting
-})
+  "reaction-social/updateSocialSetting": updateSocialSetting,
+  "reaction-social/updateSocialSettings": updateSocialSettings
+});

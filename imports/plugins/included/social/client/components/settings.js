@@ -2,10 +2,9 @@ import React, { Component, PropTypes } from "react";
 import {
   CardGroup,
   SettingsCard,
-  TextField
+  Form
 } from "/imports/plugins/core/ui/client/components";
 import { SocialPackageConfig } from "/lib/collections/schemas/social";
-import { toCamelCase } from "/lib/api";
 
 const socialProviders = [
   {
@@ -35,6 +34,8 @@ class SocialSettings extends Component {
     onSettingChange: PropTypes.func,
     onSettingEnableChange: PropTypes.func,
     onSettingExpand: PropTypes.func,
+    onSettingsSave: PropTypes.func,
+    packageData: PropTypes.object,
     preferences: PropTypes.object,
     providers: PropTypes.arrayOf(PropTypes.string),
     socialSettings: PropTypes.object
@@ -51,26 +52,24 @@ class SocialSettings extends Component {
     }
   }
 
+  handleSubmit = (event, data, formName) => {
+    if (typeof this.props.onSettingsSave === "function") {
+      this.props.onSettingsSave(formName, data.doc);
+    }
+  }
+
   renderCards() {
     if (Array.isArray(socialProviders)) {
       return socialProviders.map((provider) => {
-        const fields = provider.fields.map((field) => {
-          const fieldSchema = this.getSchemaForField(provider.name, field);
-
-          return (
-            <TextField
-              i18nKeyLabel={`settings.${toCamelCase(fieldSchema.label)}`}
-              key={field}
-              label={fieldSchema.label}
-              name={`${provider.name}.${field}`}
-              value={this.props.socialSettings.settings.apps[provider.name][field]}
-              onChange={this.handleSettingChange}
-            />
-          );
-        });
+        const doc = {
+          settings: {
+            ...this.props.packageData.settings
+          }
+        };
 
         return (
           <SettingsCard
+            key={provider.name}
             i18nKeyTitle={`settings.${provider.name}`}
             expandable={true}
             onExpand={this.props.onSettingExpand}
@@ -81,7 +80,16 @@ class SocialSettings extends Component {
             icon={provider.icon}
             onSwitchChange={this.props.onSettingEnableChange}
           >
-            {fields}
+            <Form
+              schema={SocialPackageConfig}
+              doc={doc}
+              docPath={`settings.public.apps.${provider.name}`}
+              hideFields={[
+                `settings.public.apps.${provider.name}.enabled`
+              ]}
+              name={`settings.public.apps.${provider.name}`}
+              onSubmit={this.handleSubmit}
+            />
           </SettingsCard>
         );
       });

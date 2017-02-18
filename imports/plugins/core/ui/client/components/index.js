@@ -21,6 +21,7 @@ export { default as SortableTable } from "./table/table";
 export { Checkbox } from "./checkbox";
 export { default as Loading } from "./loading/loading";
 export { default as FieldGroup } from "./forms/fieldGroup";
+export * from "./forms";
 export * from "./toolbar";
 export { default as Popover } from "./popover/popover";
 export * from "./menu";

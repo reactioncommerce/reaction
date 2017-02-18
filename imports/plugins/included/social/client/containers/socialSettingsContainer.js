@@ -2,9 +2,9 @@ import React, { Component, PropTypes } from "react";
 import { Meteor } from "meteor/meteor";
 import { composeWithTracker } from "/lib/api/compose";
 import { Reaction } from "/client/api";
+import { Packages } from "/lib/collections";
 import { SocialSettings } from "../components";
 import { createSocialSettings } from "../../lib/helpers";
-import debounce from "lodash/debounce";
 
 class SocialSettingsContainer extends Component {
   static propTypes = {
@@ -17,10 +17,6 @@ class SocialSettingsContainer extends Component {
     this.state = {
       settings: props.settings
     };
-
-    this.debounceUpdateField = debounce((provider, field, value) => {
-      Meteor.call("reaction-social/updateSocialSetting", provider, field, value);
-    }, 1000);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -39,31 +35,16 @@ class SocialSettingsContainer extends Component {
     });
   }
 
-  handleSettingChange = (provider, field, value) => {
-    const apps = {
-      ...this.state.settings.apps,
-      [provider]: {
-        ...this.state.settings.apps[provider],
-        [field]: value
-      }
-    };
-
-    this.setState({
-      settings: {
-        ...this.state.settings,
-        apps
-      }
-    }, () => {
-      this.debounceUpdateField(provider, field, value);
-    });
+  handleSettingsSave = (settingName, values) => {
+    Meteor.call("reaction-social/updateSocialSettings", values.settings);
   }
 
   render() {
     return (
       <SocialSettings
         onSettingEnableChange={this.handleSettingEnable}
-        onSettingChange={this.handleSettingChange}
         onSettingExpand={this.handleSettingExpand}
+        onSettingsSave={this.handleSettingsSave}
         {...this.props}
         settings={this.state.settings}
       />
@@ -75,9 +56,14 @@ function composer(props, onData) {
   const subscription = Reaction.Subscriptions.Packages;
   const preferences = Reaction.getUserPreferences("reaction-social", "settingsCards", {});
 
+  const socialPackage = Packages.findOne({
+    name: "reaction-social"
+  });
+
   if (subscription.ready()) {
     onData(null, {
       preferences: preferences,
+      packageData: socialPackage,
       socialSettings: createSocialSettings(props)
     });
   } else {
