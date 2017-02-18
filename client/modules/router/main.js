@@ -192,13 +192,12 @@ Router.initPackageRoutes = () => {
           // registryItems
           if (registryItem.route) {
             const {
+              meta,
               route,
               template,
               layout,
               workflow
             } = registryItem;
-
-            // console.log(registryItem);
 
             // get registry route name
             const name = getRegistryRouteName(pkg.name, registryItem);
@@ -208,6 +207,7 @@ Router.initPackageRoutes = () => {
             const newRouteConfig = {
               route,
               options: {
+                meta,
                 name,
                 template,
                 layout,
@@ -218,6 +218,7 @@ Router.initPackageRoutes = () => {
                 }
               }
             };
+
             // push new routes
             newRoutes.push(newRouteConfig);
           } // end registryItems
