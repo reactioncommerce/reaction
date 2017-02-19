@@ -22,8 +22,8 @@ Hooks.Events.add("afterCoreInit", () => {
 
   // set 0 to disable fetchTIC
   if (refreshPeriod !== 0) {
-    Logger.debug(`Adding taxes/fetchTIC to JobControl. Refresh ${refreshPeriod}`);
-    new Job(Jobs, "taxes/fetchTaxCloudTaxCodes", { url: taxCodeUrl })
+    Logger.debug(`Adding taxcloud/getTaxCodes to JobControl. Refresh ${refreshPeriod}`);
+    new Job(Jobs, "taxcloud/getTaxCodes", { url: taxCodeUrl })
       .priority("normal")
       .retry({
         retries: 5,
@@ -48,13 +48,13 @@ Hooks.Events.add("afterCoreInit", () => {
 //
 export default function () {
   Jobs.processJobs(
-    "taxes/fetchTaxCloudTaxCodes",
+    "taxcloud/getTaxCodes",
     {
       pollInterval: 30 * 1000,
       workTimeout: 180 * 1000
     },
     (job, callback) => {
-      Meteor.call("taxes/fetchTIC", error => {
+      Meteor.call("taxcloud/getTaxCodes", error => {
         if (error) {
           if (error.error === "notConfigured") {
             Logger.warn(error.message);
