@@ -269,6 +269,7 @@ function cartToSalesOrder(cart) {
     lineItems = cart.items.map((item, index) => {
       return {
         number: _.toString(index + 1),
+        itemCode: item._id,
         quantity: item.quantity,
         amount: item.variants.price * item.quantity,
         description: item.title,
@@ -345,6 +346,7 @@ function orderToSalesInvoice(order) {
   const lineItems = order.items.map((item, index) => {
     return {
       number: _.toString(index + 1),
+      itemCode: item._id,
       quantity: item.quantity,
       amount: item.variants.price * item.quantity,
       description: item.title,
