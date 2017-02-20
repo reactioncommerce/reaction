@@ -56,7 +56,6 @@ function getAuthData() {
 /**
  * @summary function to get HTTP data and pass in extra Avalara-specific headers
  * @param {String} requestUrl - The URL to make the request to
- * @param {String} authString - (Optional) Combination of username and password. Uses DB values as default
  * @param {Function} callback - An optional callback for async usage
  * @returns {Object} Response from call
  */
@@ -66,7 +65,7 @@ function avaGet(requestUrl, callback) {
   const avaClient = `Reaction; ${appVersion}; Meteor HTTP; 1.0; ${machineName}`;
   const headers = {
     "X-Avalara-Client": avaClient,
-    "X-Avalara-UID": "xxxxxxx"
+    "X-Avalara-UID": "a0o33000004K8g3"
   };
   const auth = getAuthData();
   if (callback) {
@@ -261,7 +260,7 @@ taxCalc.saveCompany = function () {
  */
 taxCalc.getTaxCodes = function () {
   const baseUrl = getUrl();
-  const requestUrl = `${baseUrl}taxcodes`;
+  const requestUrl = `${baseUrl}definitions/taxcodes`;
   const result = avaGet(requestUrl);
   return result.data.value;
 };
@@ -446,7 +445,6 @@ taxCalc.recordOrder = function (order, callback) {
       Logger.error("Encountered error while recording order to Avalara");
       Logger.error(error);
     }
-
   }
 };
 
