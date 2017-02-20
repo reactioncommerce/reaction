@@ -264,6 +264,8 @@ function cartToSalesOrder(cart) {
   const company = Shops.findOne(Reaction.getShopId());
   const companyShipping = _.filter(company.addressBook, (o) => o.isShippingDefault)[0];
   const currencyCode = company.currency;
+  const cartShipping = cart.cartShipping();
+  const shippingTaxCode = taxCalc.getPackageData().settings.avalara.shippingTaxCode || "NT";
   let lineItems = [];
   if (cart.items) {
     lineItems = cart.items.map((item) => {
@@ -276,6 +278,16 @@ function cartToSalesOrder(cart) {
         taxCode: item.variants.taxCode
       };
     });
+    if (cartShipping) {
+      lineItems.push({
+        number: "shipping",
+        itemCode: "shipping",
+        quantity: 1,
+        amount: cartShipping,
+        description: "Shipping",
+        taxCode: shippingTaxCode
+      });
+    }
   }
 
   const salesOrder = {
@@ -343,6 +355,8 @@ function orderToSalesInvoice(order) {
   const company = Shops.findOne(Reaction.getShopId());
   const companyShipping = _.filter(company.addressBook, (o) => o.isShippingDefault)[0];
   const currencyCode = company.currency;
+  const orderShipping = order.orderShipping();
+  const shippingTaxCode = taxCalc.getPackageData().settings.avalara.shippingTaxCode || "NT";
   const lineItems = order.items.map((item) => {
     return {
       number: item._id,
@@ -353,6 +367,16 @@ function orderToSalesInvoice(order) {
       taxCode: item.variants.taxCode
     };
   });
+  if (orderShipping) {
+    lineItems.push({
+      number: "shipping",
+      itemCode: "shipping",
+      quantity: 1,
+      amount: orderShipping,
+      description: "Shipping",
+      taxCode: shippingTaxCode
+    });
+  }
 
   const salesInvoice = {
     companyCode: companyCode,
