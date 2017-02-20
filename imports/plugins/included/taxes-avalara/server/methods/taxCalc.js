@@ -57,9 +57,10 @@ function getAuthData() {
  * @summary function to get HTTP data and pass in extra Avalara-specific headers
  * @param {String} requestUrl - The URL to make the request to
  * @param {String} authString - (Optional) Combination of username and password. Uses DB values as default
+ * @param {Function} callback - An optional callback for async usage
  * @returns {Object} Response from call
  */
-function avaGet(requestUrl, authString) {
+function avaGet(requestUrl, callback) {
   const appVersion = Reaction.getAppVersion();
   const machineName = os.hostname();
   const avaClient = `Reaction; ${appVersion}; Meteor HTTP; 1.0; ${machineName}`;
@@ -67,7 +68,12 @@ function avaGet(requestUrl, authString) {
     "X-Avalara-Client": avaClient,
     "X-Avalara-UID": "xxxxxxx"
   };
-  const auth = authString || getAuthData();
+  const auth = getAuthData();
+  if (callback) {
+    HTTP.get(requestUrl, { headers, auth }, function (error, result) {
+      return callback(result);
+    });
+  }
   const result = HTTP.get(requestUrl, { headers, auth });
   return result;
 }
@@ -77,9 +83,10 @@ function avaGet(requestUrl, authString) {
  * @summary to POST HTTP data and pass in extra Avalara-specific headers
  * @param {String} requestUrl - The URL to make the request to
  * @param {Object} options - An object of others options, usually data
+ * @param {Function} callback - An optional callback for async use
  * @returns {Object} Response from call
  */
-function avaPost(requestUrl, options) {
+function avaPost(requestUrl, options, callback) {
   const appVersion = Reaction.getAppVersion();
   const machineName = os.hostname();
   const avaClient = `Reaction; ${appVersion}; Meteor HTTP; 1.0; ${machineName}`;
@@ -89,6 +96,11 @@ function avaPost(requestUrl, options) {
   };
   const auth = { auth: getAuthData() };
   const allOptions = Object.assign({}, options, headers, auth);
+  if (callback) {
+    HTTP.post(requestUrl, allOptions, function (error, result) {
+      return callback(result);
+    });
+  }
   const result = HTTP.post(requestUrl, allOptions);
   return result;
 }
@@ -331,11 +343,10 @@ taxCalc.estimateCart = function (cart, callback) {
 
   if (cart.items && cart.shipping && cart.shipping[0].address) {
     const salesOrder = cartToSalesOrder(cart);
-    const auth = getAuthData();
     const baseUrl = getUrl();
     const requestUrl = `${baseUrl}/transactions/create`;
     if (callback) {
-      HTTP.post(requestUrl, { data: salesOrder, auth: auth }, (err, result) => {
+      avaPost(requestUrl, { data: salesOrder }, (err, result) => {
         const data = JSON.parse(result.content);
         return callback(data);
       });
@@ -416,14 +427,14 @@ function orderToSalesInvoice(order) {
  */
 taxCalc.recordOrder = function (order, callback) {
   check(callback, Function);
+  // unlike the other functions, we expect this to always be called asynchronously
   if (order && order.shipping && order.shipping[0].address) {
     const salesOrder = orderToSalesInvoice(order);
-    const auth = getAuthData();
     const baseUrl = getUrl();
     const requestUrl = `${baseUrl}/transactions/create`;
 
     try {
-      HTTP.post(requestUrl, { data: salesOrder, auth: auth }, (err, result) => {
+      avaPost(requestUrl, { data: salesOrder }, (err, result) => {
         if (err) {
           Logger.error("Encountered error while recording order to Avalara");
           Logger.error(err);
@@ -435,6 +446,7 @@ taxCalc.recordOrder = function (order, callback) {
       Logger.error("Encountered error while recording order to Avalara");
       Logger.error(error);
     }
+
   }
 };
 
