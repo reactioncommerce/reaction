@@ -33,6 +33,11 @@
       {{>afQuickField name='settings.addressValidation.enabled' class='form-control'}}
     </div>
     <div class="panel-body">
+      <label class="control-label">Address Validation by Country</label>
+      {{>afFieldInput type="select-multiple" name='settings.addressValidation.countryList' options=countryOptions value=country}}
+      <p>Current selection: {{ currentCountryList }}</p>
+    </div>
+    <div class="panel-body">
       {{>afQuickField name='settings.avalara.enableLogging' class='form-control'}}
     </div>
     <div class="panel-body">

@@ -1,6 +1,7 @@
 import _ from "lodash";
 import { Template } from "meteor/templating";
 import { AutoForm } from "meteor/aldeed:autoform";
+import { Countries } from "/client/collections";
 import { Reaction, i18next } from "/client/api";
 import { Packages } from "/lib/collections";
 import { AvalaraPackageConfig } from "../../lib/collections/schemas";
@@ -15,6 +16,12 @@ Template.avalaraSettings.helpers({
       name: "taxes-avalara",
       shopId: Reaction.getShopId()
     });
+  },
+  countryOptions() {
+    return Countries.find().fetch();
+  },
+  currentCountryList() {
+    return AutoForm.getFieldValue("settings.addressValidation.countryList");
   }
 });
 

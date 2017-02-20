@@ -66,6 +66,11 @@ export const AvalaraPackageConfig = new SimpleSchema([
       label: "Request Timeout",
       type: Number,
       defaultValue: 300
+    },
+    "settings.addressValidation.countryList": {
+      label: "Address Validation Country List",
+      type: [String],
+      optional: true
     }
   }
 ]);

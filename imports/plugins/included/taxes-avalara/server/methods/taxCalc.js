@@ -156,6 +156,15 @@ taxCalc.getCompany = function () {
 taxCalc.validateAddress = function (address) {
   check(address, Object);
 
+  const packageData = taxCalc.getPackageData();
+  const { countryList } = packageData.settings.addressValidation;
+
+  if (!_.includes(countryList, address.country)) {
+    // if this is a country selected for validation, proceed
+    // else use current address as response
+    return { validatedAddress: address };
+  }
+
   let messages;
   let validatedAddress;
   const errors = [];
