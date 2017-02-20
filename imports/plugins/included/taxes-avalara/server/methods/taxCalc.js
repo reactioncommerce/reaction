@@ -122,33 +122,6 @@ taxCalc.calcTaxable = function (cart) {
 };
 
 /**
- * @summary Get the company code from the db
- * @returns {String} Company Code
- */
-taxCalc.getCompanyCode = function () {
-  const result = Packages.findOne({
-    name: "taxes-avalara",
-    shopId: Reaction.getShopId(),
-    enabled: true
-  }, { fields: { "settings.avalara.companyCode": 1 } });
-  const companyCode = _.get(result, "settings.avalara.companyCode");
-  if (companyCode) {
-    return companyCode;
-  }
-  const savedCompany = taxCalc.saveCompany();
-  return savedCompany.companyCode;
-};
-
-taxCalc.getCompany = function () {
-  const result = Packages.findOne({
-    name: "taxes-avalara",
-    shopId: Reaction.getShopId(),
-    enabled: true
-  }, { fields: { "settings.avalara.company": 1 } });
-  return result;
-};
-
-/**
  * @summary Validate a particular address
  * @param {Object} address Address to validate
  * @returns {Object} The validated result
@@ -241,20 +214,6 @@ taxCalc.testCredentials = function (credentials) {
 };
 
 /**
- * @summary Fetch the company object from the API and save in the DB
- * @returns {String} Company object
- */
-taxCalc.saveCompany = function () {
-  const companyData = taxCalc.getCompanies();
-  const company = companyData.data.value[0];
-  const packageData = taxCalc.getPackageData();
-  Packages.update({ _id: packageData._id }, {
-    $set: { "settings.avalara.company": company }
-  });
-  return company;
-};
-
-/**
  * @summary get Avalara Tax Codes
  * @returns {Array} An array of Tax code objects
  */
@@ -271,12 +230,12 @@ taxCalc.getTaxCodes = function () {
  * @returns {Object} SalesOrder in Avalara format
  */
 function cartToSalesOrder(cart) {
-  const companyCode = taxCalc.getCompanyCode();
+  const pkgData = taxCalc.getPackageData();
+  const { companyCode, shippingTaxCode } = pkgData.settings.avalara;
   const company = Shops.findOne(Reaction.getShopId());
   const companyShipping = _.filter(company.addressBook, (o) => o.isShippingDefault)[0];
   const currencyCode = company.currency;
   const cartShipping = cart.cartShipping();
-  const shippingTaxCode = taxCalc.getPackageData().settings.avalara.shippingTaxCode || "NT";
   let lineItems = [];
   if (cart.items) {
     lineItems = cart.items.map((item) => {
@@ -361,12 +320,18 @@ taxCalc.estimateCart = function (cart, callback) {
  * @returns {Object} SalesOrder in Avalara format
  */
 function orderToSalesInvoice(order) {
-  const companyCode = taxCalc.getCompanyCode();
+  let documentType;
+  const pkgData = taxCalc.getPackageData();
+  const { companyCode, shippingTaxCode, commitDocuments } = pkgData.settings.avalara;
+  if (commitDocuments) {
+    documentType = "SalesInvoice";
+  } else {
+    documentType = "SalesOrder";
+  }
   const company = Shops.findOne(Reaction.getShopId());
   const companyShipping = _.filter(company.addressBook, (o) => o.isShippingDefault)[0];
   const currencyCode = company.currency;
   const orderShipping = order.orderShipping();
-  const shippingTaxCode = taxCalc.getPackageData().settings.avalara.shippingTaxCode || "NT";
   const lineItems = order.items.map((item) => {
     return {
       number: item._id,
@@ -390,8 +355,8 @@ function orderToSalesInvoice(order) {
 
   const salesInvoice = {
     companyCode: companyCode,
-    type: "SalesInvoice",
-    commit: true,
+    type: documentType,
+    commit: commitDocuments,
     code: order.cartId,
     customerCode: order.userId,
     date: moment.utc(order.createdAt),
@@ -458,10 +423,11 @@ taxCalc.recordOrder = function (order, callback) {
 taxCalc.reportRefund = function (order, refundAmount, callback) {
   check(refundAmount, Number);
   check(callback, Function);
+  const pkgData = taxCalc.getPackageData();
+  const { companyCode } = pkgData.settings.avalara;
   const company = Shops.findOne(Reaction.getShopId());
   const companyShipping = _.filter(company.addressBook, (o) => o.isShippingDefault)[0];
   const currencyCode = company.currency;
-  const companyCode = taxCalc.getCompanyCode();
   const auth = getAuthData();
   const baseUrl = getUrl();
   const requestUrl = `${baseUrl}/transactions/create`;
