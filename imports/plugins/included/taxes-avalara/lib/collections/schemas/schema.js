@@ -47,10 +47,25 @@ export const AvalaraPackageConfig = new SimpleSchema([
       type: Boolean,
       defaultValue: false
     },
+    "settings.avalara.commitDocuments": {
+      label: "Commit Documents",
+      type: Boolean,
+      defaultValue: true
+    },
     "settings.avalara.performTaxCalculation": {
       label: "Perform Tax Calculation",
       type: Boolean,
       defaultValue: true
+    },
+    "settings.avalara.enableLogging": {
+      label: "Enable Transaction Logging",
+      type: Boolean,
+      defaultValue: false
+    },
+    "settings.avalara.requestTimeout": {
+      label: "Request Timeout",
+      type: Number,
+      defaultValue: 300
     }
   }
 ]);
