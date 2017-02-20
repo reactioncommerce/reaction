@@ -266,10 +266,10 @@ function cartToSalesOrder(cart) {
   const currencyCode = company.currency;
   let lineItems = [];
   if (cart.items) {
-    lineItems = cart.items.map((item, index) => {
+    lineItems = cart.items.map((item) => {
       return {
-        number: _.toString(index + 1),
-        itemCode: item._id,
+        number: item._id,
+        itemCode: item.productId,
         quantity: item.quantity,
         amount: item.variants.price * item.quantity,
         description: item.title,
@@ -343,10 +343,10 @@ function orderToSalesInvoice(order) {
   const company = Shops.findOne(Reaction.getShopId());
   const companyShipping = _.filter(company.addressBook, (o) => o.isShippingDefault)[0];
   const currencyCode = company.currency;
-  const lineItems = order.items.map((item, index) => {
+  const lineItems = order.items.map((item) => {
     return {
-      number: _.toString(index + 1),
-      itemCode: item._id,
+      number: item._id,
+      itemCode: item.productId,
       quantity: item.quantity,
       amount: item.variants.price * item.quantity,
       description: item.title,
