@@ -46,6 +46,11 @@ export const AvalaraPackageConfig = new SimpleSchema([
       label: "Address Validation",
       type: Boolean,
       defaultValue: false
+    },
+    "settings.avalara.performTaxCalculation": {
+      label: "Perform Tax Calculation",
+      type: Boolean,
+      defaultValue: true
     }
   }
 ]);
