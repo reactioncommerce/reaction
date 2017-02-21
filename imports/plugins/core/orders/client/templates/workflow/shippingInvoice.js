@@ -407,7 +407,18 @@ Template.coreOrderShippingInvoice.helpers({
       return _.extend(originalItem, item);
     });
 
-    return items;
+    const uniqueItems = _.uniqBy(items, "cartItemId");
+    const groupedItems = _.groupBy(items, "cartItemId");
+    // console.log("group", groupedItems);
+    // console.log("unique", uniqueItems);
+    uniqueItems.forEach((item) => {
+      Object.keys(groupedItems).forEach((key) => {
+        if (item.cartItemId === key) {
+          item.length = groupedItems[key].length;
+        }
+      });
+    });
+    return ({ items, uniqueItems, groupedItems });
   },
 
   /**
