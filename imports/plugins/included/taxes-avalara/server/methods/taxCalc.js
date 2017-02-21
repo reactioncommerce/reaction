@@ -70,9 +70,9 @@ function avaGet(requestUrl, options) {
       "X-Avalara-UID": "a0o33000004K8g3"
     }
   };
-  const auth = getAuthData();
+  const auth = options.auth || getAuthData();
   const timeout = { timeout: pkgData.settings.avalara.requestTimeout };
-  const allOptions = Object.assign({}, options, headers, auth, timeout);
+  const allOptions = Object.assign({}, options, headers, { auth }, timeout);
   if (pkgData.settings.avalara.enableLogging) {
     Logger.info("allOptions", allOptions);
   }
@@ -217,8 +217,8 @@ taxCalc.testCredentials = function (credentials) {
 
   const baseUrl = getUrl();
   const auth = `${credentials.username}:${credentials.password}`;
-  const requestUrl = `${baseUrl}/companies/${credentials.companyCode}/transactions`;
-  const result = avaGet(requestUrl, auth);
+  const requestUrl = `${baseUrl}companies/${credentials.companyCode}/transactions`;
+  const result = avaGet(requestUrl, { auth });
   return { statusCode: result.statusCode };
 };
 
