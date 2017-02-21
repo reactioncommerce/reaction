@@ -18,7 +18,7 @@ Reaction.registerPackage({
       requestTimeout: 300
     },
     addressValidation: {
-      enabled: false,
+      enabled: true,
       addressValidationMethod: "avalara/addressValidation"
     },
     taxCodes: {
