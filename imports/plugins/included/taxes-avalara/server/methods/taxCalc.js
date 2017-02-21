@@ -158,7 +158,7 @@ taxCalc.validateAddress = function (address) {
   if (!_.includes(countryList, address.country)) {
     // if this is a country selected for validation, proceed
     // else use current address as response
-    return { validatedAddress: address };
+    return { validatedAddress: address, errors: [] };
   }
 
   let messages;
