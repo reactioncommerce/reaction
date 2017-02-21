@@ -92,7 +92,13 @@
         "notFoundError": "Page not found.",
         "productNotFound": "This product was not found.",
         "loadMoreProducts": "Load more products",
-        "noProductsFound": "No products found."
+        "noProductsFound": "No products found.",
+        "private": "Private",
+        "public": "Public",
+        "shortcut": {
+          "addProductLabel": "Add Product",
+          "accountsLabel": "Accounts"
+        }
       },
       "searchSettings": {
         "productSearchSettings": {
