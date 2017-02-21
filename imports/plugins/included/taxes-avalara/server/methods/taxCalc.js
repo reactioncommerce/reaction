@@ -71,7 +71,7 @@ function avaGet(requestUrl, options) {
     }
   };
   const auth = options.auth || getAuthData();
-  const timeout = { timeout: pkgData.settings.avalara.requestTimeout };
+  const timeout = { timeout: options.timeout || pkgData.settings.avalara.requestTimeout };
   const allOptions = Object.assign({}, options, headers, { auth }, timeout);
   if (pkgData.settings.avalara.enableLogging) {
     Logger.info("allOptions", allOptions);
@@ -218,7 +218,7 @@ taxCalc.testCredentials = function (credentials) {
   const baseUrl = getUrl();
   const auth = `${credentials.username}:${credentials.password}`;
   const requestUrl = `${baseUrl}companies/${credentials.companyCode}/transactions`;
-  const result = avaGet(requestUrl, { auth });
+  const result = avaGet(requestUrl, { auth, timeout: 5000 });
   return { statusCode: result.statusCode };
 };
 
