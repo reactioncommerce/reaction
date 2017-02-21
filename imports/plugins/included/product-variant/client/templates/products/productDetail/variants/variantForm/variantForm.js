@@ -5,8 +5,12 @@ import { Reaction, i18next } from "/client/api";
 import { ReactionProduct } from "/lib/api";
 import { applyProductRevision } from "/lib/api/products";
 import { Products, Packages } from "/lib/collections";
+import { ReactiveDict } from "meteor/reactive-dict";
 
 Template.variantForm.onCreated(function () {
+  this.state = new ReactiveDict();
+  this.state.set("taxCodes", []);
+
   this.autorun(() => {
     const productHandle = Reaction.Router.getParam("handle");
 
@@ -121,25 +125,33 @@ Template.variantForm.helpers({
     };
   },
   listTaxCodes() {
-    const taxCodeArray = [];
-    const data = Packages.findOne({
-      "registry.provides": "taxCodes"
+    const instance = Template.instance();
+    const codes = instance.state.get("taxCodes");
+    const shopId = Reaction.getShopId();
+
+    const provider = Packages.findOne({
+      "shopId": shopId,
+      "registry.provides": "taxCodes",
+      "$where": function () {
+        const providerName = this.name.split("-")[1];
+        return this.settings[providerName].enabled;
+      }
     });
 
-    const providerName = (data.name.split(data.name.match(/-/gi)[0]))[1];
-
-    if (data.settings[providerName].enabled) {
-      Meteor.call(data.settings.taxCodes.getTaxCodeMethod, (error, result) => {
+    if (provider) {
+      Meteor.call(provider.settings.taxCodes.getTaxCodeMethod, (error, result) => {
         result.forEach(function (code) {
-          taxCodeArray.push({
+          instance.state.set("taxCodes", codes.push({
             value: code.id,
             label: `${code.taxCode} | ${code.description}`
-          });
+          }));
         });
-        Session.set("taxCodes", taxCodeArray);
       });
     }
-    return Session.get("taxCodes");
+    return instance.state.get("taxCodes");
+  },
+  showCodes() {
+    return instance.state.get("taxCodes");
   }
 });
 
