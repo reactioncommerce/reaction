@@ -1,4 +1,5 @@
 import _ from "lodash";
+import accounting from "accounting-js";
 import os from "os";
 import moment from "moment";
 import { Meteor } from "meteor/meteor";
@@ -109,6 +110,9 @@ function avaPost(requestUrl, options) {
   const allOptions = Object.assign({}, options, headers, auth, timeout);
   if (pkgData.settings.avalara.enableLogging) {
     Logger.info("allOptions", allOptions);
+    if (allOptions.data.lines) {
+      Logger.info("lines", allOptions.data.lines);
+    }
   }
   const result = HTTP.post(requestUrl, allOptions);
   if (pkgData.settings.avalara.enableLogging) {
@@ -116,6 +120,9 @@ function avaPost(requestUrl, options) {
     delete smallerResult.content;
     Logger.info("duration", result.headers.serverduration);
     Logger.info("result", smallerResult);
+    if (result.data.lines) {
+      Logger.info("result lines", result.data.lines);
+    }
   }
   return result;
 }
@@ -288,6 +295,17 @@ function cartToSalesOrder(cart) {
     },
     lines: lineItems
   };
+
+  // current "coupon code" discount are based at the cart level, and every iten has it's
+  // discounted property set to true.
+  if (cart.discount)  {
+    salesOrder.discount = accounting.toFixed(cart.discount, 2);
+    for (const line of salesOrder.lines) {
+      if (line.itemCode !== "shipping") {
+        line.discounted = true;
+      }
+    }
+  }
   return salesOrder;
 }
 
@@ -379,6 +397,15 @@ function orderToSalesInvoice(order) {
     },
     lines: lineItems
   };
+
+  if (order.discount)  {
+    salesInvoice.discount = accounting.toFixed(order.discount, 2);
+    for (const line of salesInvoice.lines) {
+      if (line.itemCode !== "shipping") {
+        line.discounted = true;
+      }
+    }
+  }
   return salesInvoice;
 }
 
