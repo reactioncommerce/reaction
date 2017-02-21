@@ -2,7 +2,7 @@
 
   <form name="capture">
     <div class="order-items">
-      {{#each item in items}}
+      {{#each item in items.items}}
         <div class="order-item form-group order-summary-form-group" data-item data-item-id="{{item._id}}">
           <div class="order-item-media">
             {{#with media item.variants}}
@@ -31,6 +31,35 @@
         </div>
       {{/each}}
     </div>
+
+    <hr>
+
+    <div id="returnItemsLink">
+      <a href="#return-items" data-toggle="collapse" role="button" data-parent="#returnItemsLink">Want to return items?</a>
+    </div>
+
+    <div id="return-items" class="panel-collapse collapse">
+      {{#each item in items.uniqueItems}}
+        <div class="order-item form-group order-summary-form-group" data-item data-item-id="{{item._id}}">
+          <input type="checkbox" checked="">
+          <div class="order-item-details">
+            <div class="order-detail-title">
+              {{item.title}} <small>{{item.variants.title}}</small>
+            </div>
+          </div>
+
+          <div class="quantity order-detail-quantity">
+            <!-- <label> Qty </label> -->
+            <input class="form-control" type="number" name="quantity" min="1" max="{{item.length}}">
+          </div>
+        </div>
+        {{/each}}
+
+        <div class="return return-confirmation">
+          <button class="btn btn-info btn-block" type="submit">Return Items</button>
+        </div>
+    </div>
+
 
     <hr>
 
@@ -119,7 +148,6 @@
 
 
     </div>
-
   </form>
 
 
