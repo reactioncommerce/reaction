@@ -318,17 +318,14 @@ function cartToSalesOrder(cart) {
  */
 taxCalc.estimateCart = function (cart, callback) {
   check(cart, Reaction.Schemas.Cart);
-  check(callback, Match.Optional(Function));
+  check(callback, Function);
 
   if (cart.items && cart.shipping && cart.shipping[0].address) {
     const salesOrder = cartToSalesOrder(cart);
     const baseUrl = getUrl();
     const requestUrl = `${baseUrl}/transactions/create`;
     const result = avaPost(requestUrl, { data: salesOrder });
-    if (callback) {
-      return callback(result.data);
-    }
-    return result.data;
+    return callback(result.data);
   }
 };
 
@@ -488,15 +485,9 @@ taxCalc.reportRefund = function (order, refundAmount, callback) {
     lines: [lineItems]
   };
 
-  if (callback) {
-    HTTP.post(requestUrl, { data: returnInvoice, auth: auth }, (err, result) => {
-      const data = JSON.parse(result.content);
-      return callback(data);
-    });
-  }
-  const result = HTTP.post(requestUrl, { data: returnInvoice, auth: auth });
-  const data = JSON.parse(result.content);
-  return data;
+
+  const result = avaPost(requestUrl, { data: returnInvoice });
+  return callback(result.data);
 };
 
 export default taxCalc;
