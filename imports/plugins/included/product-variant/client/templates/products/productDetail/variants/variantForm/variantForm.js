@@ -126,8 +126,8 @@ Template.variantForm.helpers({
   },
   listTaxCodes() {
     const instance = Template.instance();
-    const codes = instance.state.get("taxCodes");
     const shopId = Reaction.getShopId();
+    const taxCodesArray = [];
 
     const provider = Packages.findOne({
       "shopId": shopId,
@@ -141,16 +141,14 @@ Template.variantForm.helpers({
     if (provider) {
       Meteor.call(provider.settings.taxCodes.getTaxCodeMethod, (error, result) => {
         result.forEach(function (code) {
-          instance.state.set("taxCodes", codes.push({
+          taxCodesArray.push({
             value: code.id,
             label: `${code.taxCode} | ${code.description}`
-          }));
+          });
         });
+        instance.state.set("taxCodes", taxCodesArray);
       });
     }
-    return instance.state.get("taxCodes");
-  },
-  showCodes() {
     return instance.state.get("taxCodes");
   }
 });
