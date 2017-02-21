@@ -1,6 +1,8 @@
+// client slugify only works when import minified version.
+import "transliteration/lib/browser/transliteration.min.js";
 
 /**
- * getSlug - return a slugified string using the "slugify"
+ * getSlug - return a client slugified string using the "slugify"
  * global from the transliteration package
  * https://www.npmjs.com/package/transliteration
  * @param  {String} slugString - string to slugify
