@@ -63,7 +63,7 @@ Template.coreOrderShippingInvoice.events({
    * @param  {Template} instance - Blaze Template
    * @return {void}
    */
-  "submit form[name=capture]": (event, instance) => {
+  "submit capture[name=form]": (event, instance) => {
     event.preventDefault();
     const state = instance.state;
     const order = state.get("order");
@@ -113,6 +113,7 @@ Template.coreOrderShippingInvoice.events({
       });
     }
   },
+
 
   /**
    * Submit form
@@ -409,8 +410,7 @@ Template.coreOrderShippingInvoice.helpers({
 
     const uniqueItems = _.uniqBy(items, "cartItemId");
     const groupedItems = _.groupBy(items, "cartItemId");
-    // console.log("group", groupedItems);
-    // console.log("unique", uniqueItems);
+
     uniqueItems.forEach((item) => {
       Object.keys(groupedItems).forEach((key) => {
         if (item.cartItemId === key) {
@@ -418,7 +418,7 @@ Template.coreOrderShippingInvoice.helpers({
         }
       });
     });
-    return ({ items, uniqueItems, groupedItems });
+    return ({ items, uniqueItems });
   },
 
   /**
