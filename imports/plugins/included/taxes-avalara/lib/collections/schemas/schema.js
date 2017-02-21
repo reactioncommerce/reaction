@@ -39,8 +39,7 @@ export const AvalaraPackageConfig = new SimpleSchema([
     },
     "settings.avalara.shippingTaxCode": {
       label: "Shipping Tax Code",
-      type: String,
-      optional: true
+      type: String
     },
     "settings.addressValidation.enabled": {
       label: "Address Validation",
