@@ -67,7 +67,7 @@ export const AvalaraPackageConfig = new SimpleSchema([
       defaultValue: 300
     },
     "settings.addressValidation.countryList": {
-      label: "Address Validation Country List",
+      label: "Enable Address Validation by Country",
       type: [String],
       optional: true
     }
