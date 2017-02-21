@@ -4,9 +4,10 @@ import os from "os";
 import moment from "moment";
 import { Meteor } from "meteor/meteor";
 import { HTTP } from "meteor/http";
-import { check, Match } from "meteor/check";
+import { check } from "meteor/check";
 import { Packages, Shops } from "/lib/collections";
 import { Reaction, Logger } from "/server/api";
+import Avalogger from "./avalogger";
 
 const countriesWithRegions = ["US", "CA", "DE", "AU"];
 const taxCalc = {};
@@ -59,6 +60,7 @@ function getAuthData(packageData = taxCalc.getPackageData()) {
  * @returns {Object} Response from call
  */
 function avaGet(requestUrl, options) {
+  const logObject = {};
   const pkgData = taxCalc.getPackageData();
   const appVersion = Reaction.getAppVersion();
   const meteorVersion = _.split(Meteor.release, "@")[1];
@@ -74,15 +76,14 @@ function avaGet(requestUrl, options) {
   const timeout = { timeout: options.timeout || pkgData.settings.avalara.requestTimeout };
   const allOptions = Object.assign({}, options, headers, { auth }, timeout);
   if (pkgData.settings.avalara.enableLogging) {
-    Logger.info("allOptions", allOptions);
+    logObject.request = allOptions;
   }
   const result = HTTP.get(requestUrl, allOptions);
   if (pkgData.settings.avalara.enableLogging) {
-    const smallerResult = result;
-    delete smallerResult.content;
-    Logger.info("duration", result.headers.serverduration);
-    Logger.info("result", smallerResult);
+    logObject.duration = result.headers.serverDuration;
+    logObject.result = result.data;
   }
+  Avalogger.info(logObject);
   return result;
 }
 
@@ -94,6 +95,7 @@ function avaGet(requestUrl, options) {
  * @returns {Object} Response from call
  */
 function avaPost(requestUrl, options) {
+  const logObject = {};
   const pkgData = taxCalc.getPackageData();
   const appVersion = Reaction.getAppVersion();
   const meteorVersion = _.split(Meteor.release, "@")[1];
@@ -109,21 +111,14 @@ function avaPost(requestUrl, options) {
   const timeout = { timeout: pkgData.settings.avalara.requestTimeout };
   const allOptions = Object.assign({}, options, headers, auth, timeout);
   if (pkgData.settings.avalara.enableLogging) {
-    Logger.info("allOptions", allOptions);
-    if (allOptions.data.lines) {
-      Logger.info("lines", allOptions.data.lines);
-    }
+    logObject.request = allOptions;
   }
   const result = HTTP.post(requestUrl, allOptions);
   if (pkgData.settings.avalara.enableLogging) {
-    const smallerResult = result;
-    delete smallerResult.content;
-    Logger.info("duration", result.headers.serverduration);
-    Logger.info("result", smallerResult);
-    if (result.data.lines) {
-      Logger.info("result lines", result.data.lines);
-    }
+    logObject.duration = result.headers.serverDuration;
+    logObject.result = result.data;
   }
+  Avalogger.info(logObject);
   return result;
 }
 
@@ -446,7 +441,6 @@ taxCalc.reportRefund = function (order, refundAmount, callback) {
   const company = Shops.findOne(Reaction.getShopId());
   const companyShipping = _.filter(company.addressBook, (o) => o.isShippingDefault)[0];
   const currencyCode = company.currency;
-  const auth = getAuthData();
   const baseUrl = getUrl();
   const requestUrl = `${baseUrl}/transactions/create`;
   const returnAmount = refundAmount * -1;
