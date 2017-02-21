@@ -39,16 +39,14 @@ function getUrl() {
 
 /**
  * @summary Get the auth info to authenticate to REST API
+ * @param {Object} packageData - Optionally pass in packageData if we already have it
  * @returns {String} Username/Password string
  */
-function getAuthData() {
-  const packageData = taxCalc.getPackageData();
+function getAuthData(packageData = taxCalc.getPackageData()) {
   const { username, password } = _.get(packageData, "settings.avalara", {});
-
   if (!username || !password) {
     return new Meteor.Error("You cannot use this API without a username and password configured");
   }
-
   const auth = `${username}:${password}`;
   return auth;
 }
@@ -56,18 +54,34 @@ function getAuthData() {
 /**
  * @summary function to get HTTP data and pass in extra Avalara-specific headers
  * @param {String} requestUrl - The URL to make the request to
+ * @param {Object} options - An object of other options
  * @returns {Object} Response from call
  */
-function avaGet(requestUrl) {
+function avaGet(requestUrl, options) {
+  const pkgData = taxCalc.getPackageData();
   const appVersion = Reaction.getAppVersion();
+  const meteorVersion = _.split(Meteor.release, "@")[1];
   const machineName = os.hostname();
-  const avaClient = `Reaction; ${appVersion}; Meteor HTTP; 1.0; ${machineName}`;
+  const avaClient = `Reaction; ${appVersion}; Meteor HTTP; ${meteorVersion}; ${machineName}`;
   const headers = {
-    "X-Avalara-Client": avaClient,
-    "X-Avalara-UID": "a0o33000004K8g3"
+    headers: {
+      "X-Avalara-Client": avaClient,
+      "X-Avalara-UID": "a0o33000004K8g3"
+    }
   };
   const auth = getAuthData();
-  const result = HTTP.get(requestUrl, { headers, auth });
+  const timeout = { timeout: pkgData.settings.avalara.requestTimeout };
+  const allOptions = Object.assign({}, options, headers, auth, timeout);
+  if (pkgData.settings.avalara.enableLogging) {
+    Logger.info("allOptions", allOptions);
+  }
+  const result = HTTP.get(requestUrl, allOptions);
+  if (pkgData.settings.avalara.enableLogging) {
+    const smallerResult = result;
+    delete smallerResult.content;
+    Logger.info("duration", result.headers.serverduration);
+    Logger.info("result", smallerResult);
+  }
   return result;
 }
 
@@ -79,21 +93,30 @@ function avaGet(requestUrl) {
  * @returns {Object} Response from call
  */
 function avaPost(requestUrl, options) {
+  const pkgData = taxCalc.getPackageData();
   const appVersion = Reaction.getAppVersion();
+  const meteorVersion = _.split(Meteor.release, "@")[1];
   const machineName = os.hostname();
-  const avaClient = `Reaction; ${appVersion}; Meteor HTTP; 1.0; ${machineName}`;
+  const avaClient = `Reaction; ${appVersion}; Meteor HTTP; ${meteorVersion}; ${machineName}`;
   const headers = {
-    "X-Avalara-Client": avaClient,
-    "X-Avalara-UID": "a0o33000004K8g3"
+    headers: {
+      "X-Avalara-Client": avaClient,
+      "X-Avalara-UID": "a0o33000004K8g3"
+    }
   };
   const auth = { auth: getAuthData() };
-  const allOptions = Object.assign({}, options, headers, auth);
+  const timeout = { timeout: pkgData.settings.avalara.requestTimeout };
+  const allOptions = Object.assign({}, options, headers, auth, timeout);
+  if (pkgData.settings.avalara.enableLogging) {
+    Logger.info("allOptions", allOptions);
+  }
   const result = HTTP.post(requestUrl, allOptions);
-  const smallerResult = result;
-  delete smallerResult.content;
-  Logger.info("duration", result.headers.serverduration);
-  Logger.info("options", options);
-  Logger.info("result", smallerResult);
+  if (pkgData.settings.avalara.enableLogging) {
+    const smallerResult = result;
+    delete smallerResult.content;
+    Logger.info("duration", result.headers.serverduration);
+    Logger.info("result", smallerResult);
+  }
   return result;
 }
 
@@ -166,29 +189,6 @@ taxCalc.validateAddress = function (address) {
     }
   }
   return { validatedAddress, errors };
-};
-
-/**
- * @summary Get all registered companies
- * @param {Function} callback Callback function for asynchronous execution
- * @returns {Object} API response object
- */
-taxCalc.getCompanies = function (callback) {
-  const auth = getAuthData();
-  if (auth.error) {
-    return _.assign({}, auth, { statusCode: 401 });
-  }
-  const baseUrl = getUrl();
-  const requestUrl = `${baseUrl}/companies`;
-
-  if (callback) {
-    HTTP.get(requestUrl, { auth: auth }, (err, result) => {
-      return (callback(result));
-    });
-  } else {
-    const result = HTTP.get(requestUrl, { auth: auth });
-    return result;
-  }
 };
 
 /**
@@ -388,8 +388,7 @@ taxCalc.recordOrder = function (order, callback) {
     const requestUrl = `${baseUrl}/transactions/create`;
     try {
       const result = avaPost(requestUrl, { data: salesOrder });
-      const data = JSON.parse(result.content);
-      return callback(data);
+      return callback(result.data);
     } catch (error) {
       Logger.error("Encountered error while recording order to Avalara");
       Logger.error(error);
