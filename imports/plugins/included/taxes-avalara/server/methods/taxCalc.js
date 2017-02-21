@@ -5,7 +5,7 @@ import { Meteor } from "meteor/meteor";
 import { HTTP } from "meteor/http";
 import { check, Match } from "meteor/check";
 import { Packages, Shops } from "/lib/collections";
-import { Reaction } from "/server/api";
+import { Reaction, Logger } from "/server/api";
 
 const countriesWithRegions = ["US", "CA", "DE", "AU"];
 const taxCalc = {};
@@ -56,10 +56,9 @@ function getAuthData() {
 /**
  * @summary function to get HTTP data and pass in extra Avalara-specific headers
  * @param {String} requestUrl - The URL to make the request to
- * @param {Function} callback - An optional callback for async usage
  * @returns {Object} Response from call
  */
-function avaGet(requestUrl, callback) {
+function avaGet(requestUrl) {
   const appVersion = Reaction.getAppVersion();
   const machineName = os.hostname();
   const avaClient = `Reaction; ${appVersion}; Meteor HTTP; 1.0; ${machineName}`;
@@ -68,11 +67,6 @@ function avaGet(requestUrl, callback) {
     "X-Avalara-UID": "a0o33000004K8g3"
   };
   const auth = getAuthData();
-  if (callback) {
-    HTTP.get(requestUrl, { headers, auth }, function (error, result) {
-      return callback(result);
-    });
-  }
   const result = HTTP.get(requestUrl, { headers, auth });
   return result;
 }
@@ -82,25 +76,24 @@ function avaGet(requestUrl, callback) {
  * @summary to POST HTTP data and pass in extra Avalara-specific headers
  * @param {String} requestUrl - The URL to make the request to
  * @param {Object} options - An object of others options, usually data
- * @param {Function} callback - An optional callback for async use
  * @returns {Object} Response from call
  */
-function avaPost(requestUrl, options, callback) {
+function avaPost(requestUrl, options) {
   const appVersion = Reaction.getAppVersion();
   const machineName = os.hostname();
   const avaClient = `Reaction; ${appVersion}; Meteor HTTP; 1.0; ${machineName}`;
   const headers = {
     "X-Avalara-Client": avaClient,
-    "X-Avalara-UID": "xxxxxxx"
+    "X-Avalara-UID": "a0o33000004K8g3"
   };
   const auth = { auth: getAuthData() };
   const allOptions = Object.assign({}, options, headers, auth);
-  if (callback) {
-    HTTP.post(requestUrl, allOptions, function (error, result) {
-      return callback(result);
-    });
-  }
   const result = HTTP.post(requestUrl, allOptions);
+  const smallerResult = result;
+  delete smallerResult.content;
+  Logger.info("duration", result.headers.serverduration);
+  Logger.info("options", options);
+  Logger.info("result", smallerResult);
   return result;
 }
 
@@ -312,13 +305,10 @@ taxCalc.estimateCart = function (cart, callback) {
     const salesOrder = cartToSalesOrder(cart);
     const baseUrl = getUrl();
     const requestUrl = `${baseUrl}/transactions/create`;
-    if (callback) {
-      avaPost(requestUrl, { data: salesOrder }, (err, result) => {
-        const data = JSON.parse(result.content);
-        return callback(data);
-      });
-    }
     const result = avaPost(requestUrl, { data: salesOrder });
+    if (callback) {
+      return callback(result.data);
+    }
     return result.data;
   }
 };
@@ -405,16 +395,10 @@ taxCalc.recordOrder = function (order, callback) {
     const salesOrder = orderToSalesInvoice(order);
     const baseUrl = getUrl();
     const requestUrl = `${baseUrl}/transactions/create`;
-
     try {
-      avaPost(requestUrl, { data: salesOrder }, (err, result) => {
-        if (err) {
-          Logger.error("Encountered error while recording order to Avalara");
-          Logger.error(err);
-        }
-        const data = JSON.parse(result.content);
-        return callback(data);
-      });
+      const result = avaPost(requestUrl, { data: salesOrder });
+      const data = JSON.parse(result.content);
+      return callback(data);
     } catch (error) {
       Logger.error("Encountered error while recording order to Avalara");
       Logger.error(error);
