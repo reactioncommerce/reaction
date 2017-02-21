@@ -94,7 +94,7 @@ class PublishControls extends Component {
   renderAddButton() {
     return (
       <FlatButton
-        i18nKeyTooltip={"app.shortcut.addProduct"}
+        i18nKeyTooltip="app.shortcut.addProductLabel"
         icon={"fa fa-plus"}
         tooltip={"Add Product"}
         onClick={this.props.onAddProduct}
