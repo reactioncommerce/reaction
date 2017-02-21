@@ -236,6 +236,7 @@ function cartToSalesOrder(cart) {
   const companyShipping = _.filter(company.addressBook, (o) => o.isShippingDefault)[0];
   const currencyCode = company.currency;
   const cartShipping = cart.cartShipping();
+  const cartDate = moment(cart.createdAt).format();
   let lineItems = [];
   if (cart.items) {
     lineItems = cart.items.map((item) => {
@@ -265,7 +266,7 @@ function cartToSalesOrder(cart) {
     type: "SalesOrder",
     code: cart._id,
     customerCode: cart.userId,
-    date: moment.utc(cart.createdAt),
+    date: cartDate,
     currencyCode: currencyCode,
     addresses: {
       ShipFrom: {
@@ -340,6 +341,7 @@ function orderToSalesInvoice(order) {
   const companyShipping = _.filter(company.addressBook, (o) => o.isShippingDefault)[0];
   const currencyCode = company.currency;
   const orderShipping = order.orderShipping();
+  const orderDate = moment(order.createdAt).format();
   const lineItems = order.items.map((item) => {
     return {
       number: item._id,
@@ -367,7 +369,7 @@ function orderToSalesInvoice(order) {
     commit: commitDocuments,
     code: order.cartId,
     customerCode: order.userId,
-    date: moment.utc(order.createdAt),
+    date: orderDate,
     currencyCode: currencyCode,
     addresses: {
       ShipFrom: {
