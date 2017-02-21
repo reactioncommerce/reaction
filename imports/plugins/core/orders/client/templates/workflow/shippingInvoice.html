@@ -16,8 +16,6 @@
               {{item.title}} <small>{{item.variants.title}}</small>
             </div>
           </div>
-
-
           <div class="amount order-detail-price">
             <div class="amount">
               {{> React (numericInputProps "item" item.variants.price false)}}
@@ -42,6 +40,7 @@
       {{#each item in items.uniqueItems}}
         <div class="order-item form-group order-summary-form-group" data-item data-item-id="{{item._id}}">
           <input type="checkbox" checked="">
+
           <div class="order-item-details">
             <div class="order-detail-title">
               {{item.title}} <small>{{item.variants.title}}</small>
@@ -50,16 +49,50 @@
 
           <div class="quantity order-detail-quantity">
             <!-- <label> Qty </label> -->
-            <input class="form-control" type="number" name="quantity" min="1" max="{{item.length}}">
+            <input class="form-control" type="number" name="quantity" value="1" min="1" max="{{item.length}}">
           </div>
         </div>
         {{/each}}
 
-        <div class="return return-confirmation">
+        <div class="return return-confirmation" data-event-action="returnItems">
           <button class="btn btn-info btn-block" type="submit">Return Items</button>
         </div>
     </div>
 
+    <hr>
+
+    <div id="shippingRefundsLink">
+      <a href="#shipping-refunds" data-toggle="collapse" role="button" data-parent="#shippingRefundsLink">Shipping refunds?</a>
+    </div>
+
+    <div id="shipping-refunds" class="panel-collapse collapse">
+      <div class="form-group order-summary-form-group">
+        <label class="form-control-label reason" data-i18n="cartSubTotals.shipping">Shipping</label>
+        <div class="amount">
+          {{> React (numericInputProps "shipping" invoice.shipping false)}}
+        </div>
+      </div>
+      <div class="form-group order-summary-form-group">
+        <label class="form-control-label reason" for="" data-i18n="order.refundAmount">Refund Amount</label>
+        <div class="amount">
+          {{> React refundInputProps}}
+        </div>
+      </div>
+      <hr>
+      <div class="order-summary-form-group">
+        <span class="reason text-danger">
+          <i class="fa fa-minus-circle"></i>
+          <strong data-i18n="order.adjustedTotal">Adjusted Shipping</strong>
+        </span>
+        <div class="amount text-danger">
+          <strong>{{formatPrice invoice.shipping}}</strong>
+        </div>
+      </div>
+      <hr>
+      <div class="refund-confirmation" data-event-action="shippingRefunds">
+      <button class="btn btn-info btn-block" type="submit">Refund</button>
+      </div>
+    </div>
 
     <hr>
 
