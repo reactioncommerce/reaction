@@ -12,6 +12,9 @@
         },
         "settings": {
           "productRevisionsLabel": "ကုန်ပစ္စည်းပြင်ဆင်ချက်များကို"
+        },
+        "toolbar": {
+          "publishAll": "အားလုံး Publish"
         }
       }
     }

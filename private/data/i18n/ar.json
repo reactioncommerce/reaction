@@ -302,9 +302,12 @@
         "variantDetails": "تفاصيل المتغير",
         "duplicateVariant": "مكرر",
         "addVariantOption": "إضافة خيار",
+        "addVariantFail": "غير قادر على خلق البديل لل{{title}}.",
+        "cloneVariantFail": "غير قادر على استنساخ البديل ل{{title}}.",
         "removeVariant": "إزالة",
         "removeVariantConfirm": "{{title}} هل انت متأكد من انك تريد حذف ",
         "restoreVariantConfirm": "هل انت متأكد من أنك تريد استعادة {{title}} من سلة المهملات؟",
+        "restoreVariantFail": "غير قادر على استعادة {{title}}.",
         "archiveVariantConfirm": "هل انت متأكد من  من رغبتك بأرشفة {{title}}",
         "thisVariant": "هذاالبديل",
         "thisOption": "هذا الأختيار",
@@ -452,6 +455,8 @@
         "yourOrderIsNow": "طلبيتك الأن",
         "summaryMessage": ".شكراً لطلبك",
         "submitted": "تقديم",
+        "processing": "معالجة",
+        "completed": "منجز",
         "registerGuest": "!مرحباً .ضع بريد إلكتروني واستلم تحديثات الطلب",
         "trackYourDelivery": "سيتم إرسال تحديث الطبات",
         "noOrdersFound": "لا يوجد طلبات",
@@ -478,7 +483,8 @@
       "addressBookAdd": {
         "addAddress": "أضف عنوان جديد",
         "createAddress": ".أنشىء عنوانك الإفتراضي",
-        "failedToAddAddress": "فشل في اضافة العنوان: {{err}"
+        "failedToAddAddress": "فشل في اضافة العنوان: {{err}",
+        "validatedAddress": "التغييرات التي أدخلت على عنوانك مبنية على التحقق من الصحة. يرجى التأكد من هذا هو الصحيح"
       },
       "addressBookEdit": {
         "editAddress": "تعديل هذا العنوان ",

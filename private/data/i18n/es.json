@@ -302,9 +302,12 @@
         "variantDetails": "Información de variantes",
         "duplicateVariant": "Duplicado",
         "addVariantOption": "Añadir opción",
+        "addVariantFail": "No se puede crear variante para {{title}}.",
+        "cloneVariantFail": "No es posible clonar variante para {{title}}.",
         "removeVariant": "Eliminar",
         "removeVariantConfirm": "¿Seguro que quieres eliminar {{title}}?",
         "restoreVariantConfirm": "¿Seguro que quieres recuperar {{title}} desde la papelera?",
+        "restoreVariantFail": "No se puede restaurar {{title}}.",
         "archiveVariantConfirm": "¿Seguro que quieres archivar {{title}}?",
         "thisVariant": "esta variante",
         "thisOption": "esta opción",
@@ -452,6 +455,8 @@
         "yourOrderIsNow": "Tu pedido está ahora",
         "summaryMessage": "Gracias por tu pedido.",
         "submitted": "enviado",
+        "processing": "tratamiento",
+        "completed": "terminado",
         "registerGuest": "¡Hola! Añadir un correo electrónico y recibir actualizaciones sobre pedidos.",
         "trackYourDelivery": "Las actualizaciones sobre pedidos se enviarán a",
         "noOrdersFound": "No se han encontrado pedidos.",
@@ -478,7 +483,8 @@
       "addressBookAdd": {
         "addAddress": "Añade una nueva dirección",
         "createAddress": "Crea tu dirección predeterminada",
-        "failedToAddAddress": "No se ha podido acceder: {{err}}"
+        "failedToAddAddress": "No se ha podido acceder: {{err}}",
+        "validatedAddress": "Los cambios realizados en su dirección basan en la validación. Por favor asegúrese de que esto es correcto"
       },
       "addressBookEdit": {
         "editAddress": "Editar esta dirección",
