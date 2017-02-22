@@ -302,9 +302,12 @@
         "variantDetails": "Variant Részletek",
         "duplicateVariant": "Másolat",
         "addVariantOption": "Opció hozzáadása",
+        "addVariantFail": "Nem sikerült létrehozni a variáns {{title}}.",
+        "cloneVariantFail": "Nem sikerült klónozni változatot {{title}}.",
         "removeVariant": "Távolítsuk",
         "removeVariantConfirm": "Biztosan törölni szeretné {{title}}",
         "restoreVariantConfirm": "Biztos, hogy vissza akarja állítani {{title}} a szemetet?",
+        "restoreVariantFail": "Nem lehet visszaállítani {{title}}.",
         "archiveVariantConfirm": "Biztosan archiválni szeretné {{title}}",
         "thisVariant": "ez a változat",
         "thisOption": "ezt a lehetőséget",
@@ -452,6 +455,8 @@
         "yourOrderIsNow": "Megrendelésed most",
         "summaryMessage": "Köszönjük a megrendelést.",
         "submitted": "elküldve",
+        "processing": "feldolgozás",
+        "completed": "befejezték",
         "registerGuest": "Email cím megadásával kaphatsz értesítést rendelésed állapotáról.",
         "trackYourDelivery": "Megrendelésedről az értesítéseket ide küldjük",
         "noOrdersFound": "Nincs megrendelés.",
@@ -478,7 +483,8 @@
       "addressBookAdd": {
         "addAddress": "Adj meg új címet",
         "createAddress": "Hozd létre elsődleges címed",
-        "failedToAddAddress": "Nem sikerült hozzáadni címe: {{err}}"
+        "failedToAddAddress": "Nem sikerült hozzáadni címe: {{err}}",
+        "validatedAddress": "Módosította a cím alapján érvényesítés. Kérjük, ellenőrizze ezt a helyes"
       },
       "addressBookEdit": {
         "editAddress": "Cím szerkesztése",

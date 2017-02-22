@@ -302,9 +302,12 @@
         "variantDetails": "varyant Detayları",
         "duplicateVariant": "Kopyala",
         "addVariantOption": "Seçenek ekle",
+        "addVariantFail": "{{title}} için varyantı oluşturulamıyor.",
+        "cloneVariantFail": "{{title}} için varyantı klonlamak için açılamıyor.",
         "removeVariant": "Sil",
         "removeVariantConfirm": "Eğer {{title}} silmek istediğinizden emin misiniz",
         "restoreVariantConfirm": "Eğer çöp kutusundan {{title}} geri yüklemek istediğiniz emin misiniz?",
+        "restoreVariantFail": "{{title}} geri yüklenemedi.",
         "archiveVariantConfirm": "Eğer {{title}} arşivlemek istediğiniz emin misiniz",
         "thisVariant": "bu varyant",
         "thisOption": "Bu seçenek,",
@@ -452,6 +455,8 @@
         "yourOrderIsNow": "Siparişiniz şu anda",
         "summaryMessage": "Siparişiniz için teşekkürler.",
         "submitted": "gönderildi",
+        "processing": "işleme",
+        "completed": "tamamlandı",
         "registerGuest": "Merhaba! Bir e-posta ekleyin ve sipariş güncellemelerini alın.",
         "trackYourDelivery": "Sipariş güncellemeleri şu adrese gönderilecek",
         "noOrdersFound": "Hiçbir sipariş bulunamadı.",
@@ -478,7 +483,8 @@
       "addressBookAdd": {
         "addAddress": "Yeni bir adres ekleyin",
         "createAddress": "Adresinizi oluşturun",
-        "failedToAddAddress": "adresi eklemek için başarısız oldu: {{err}}"
+        "failedToAddAddress": "adresi eklemek için başarısız oldu: {{err}}",
+        "validatedAddress": "adresinize yapılan değişiklikler doğrulama dayalı. Bu doğru olduğundan emin olun"
       },
       "addressBookEdit": {
         "editAddress": "Bu adresi düzenleyin",

@@ -302,9 +302,12 @@
         "variantDetails": "varijanta Detalji",
         "duplicateVariant": "Duplikat",
         "addVariantOption": "Dodaj Option",
+        "addVariantFail": "Nije moguće stvoriti varijantu za {{title}}.",
+        "cloneVariantFail": "Nije moguće klonirati varijantu za {{title}}.",
         "removeVariant": "Ukloniti",
         "removeVariantConfirm": "Jeste li sigurni da želite obrisati {{title}}",
         "restoreVariantConfirm": "Jeste li sigurni da želite vratiti {{title}} iz kante za smeće?",
+        "restoreVariantFail": "Nije moguće vratiti {{title}}.",
         "archiveVariantConfirm": "Jeste li sigurni da želite arhivirati {{title}}",
         "thisVariant": "ova varijanta",
         "thisOption": "ova opcija",
@@ -452,6 +455,8 @@
         "yourOrderIsNow": "Vaš nalog je sada",
         "summaryMessage": "Hvala Vam za narudžbu.",
         "submitted": "podnio",
+        "processing": "obrada",
+        "completed": "dovršen",
         "registerGuest": "Zdravo! Dodavanje e-mail i primajte novosti o narudžbi.",
         "trackYourDelivery": "ažuriranja narudžba će biti poslana",
         "noOrdersFound": "Nisu pronađene narudžbe.",
@@ -478,7 +483,8 @@
       "addressBookAdd": {
         "addAddress": "Dodaj novu adresu",
         "createAddress": "Odaberi zadanu adresu",
-        "failedToAddAddress": "Neuspjelo dodavanje adresu: {{err}}"
+        "failedToAddAddress": "Neuspjelo dodavanje adresu: {{err}}",
+        "validatedAddress": "Broj promjena na vašu adresu na temelju odobrenja. Provjerite da je to točno"
       },
       "addressBookEdit": {
         "editAddress": "Uređivanje adrese",
