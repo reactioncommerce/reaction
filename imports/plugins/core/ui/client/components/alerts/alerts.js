@@ -26,7 +26,7 @@ class Alerts extends Component {
   }
 }
 
-Alert.propTypes = {
+Alerts.propTypes = {
   alerts: PropTypes.object,
   onAlertRemove: PropTypes.func,
   onAlertSeen: PropTypes.func
