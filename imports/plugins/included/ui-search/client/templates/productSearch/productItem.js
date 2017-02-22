@@ -4,7 +4,6 @@ import { Session } from "meteor/session";
 import { Template } from "meteor/templating";
 import { Tracker } from "meteor/tracker";
 import { $ } from "meteor/jquery";
-import { Reaction } from "/client/api";
 import Logger from "/client/modules/logger";
 import { ReactionProduct } from "/lib/api";
 import { Media } from "/lib/collections";
@@ -85,7 +84,6 @@ Template.productItem.helpers({
 
     return weight === 3;
   },
-  // TODO is it used?
   shouldShowAdditionalImages: function () {
     if (this.isMediumWeight && this.mediaArray) {
       return true;
@@ -104,7 +102,7 @@ Template.productItem.helpers({
  */
 
 Template.productItem.events({
-  "click [data-event-action=productClick]": function (event, template) {
+  "click [data-event-action=productClick]": function (event) {
     const instance = Template.instance();
     const view = instance.view;
     $(".js-search-modal").delay(400).fadeOut(400, () => {
