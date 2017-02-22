@@ -186,7 +186,6 @@ Template.productSettings.events({
       };
       /* eslint no-loop-func: 1 */
       //
-      // TODO review Template.productSettings events for no-loop-func
       //
       Meteor.call("products/updateProductPosition", product._id, positions, tag,
         (error) => { // eslint-disable-line no-loop-func
