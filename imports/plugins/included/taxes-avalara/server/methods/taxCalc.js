@@ -82,8 +82,9 @@ function avaGet(requestUrl, options) {
   if (pkgData.settings.avalara.enableLogging) {
     logObject.duration = result.headers.serverDuration;
     logObject.result = result.data;
+    Avalogger.info(logObject);
   }
-  Avalogger.info(logObject);
+
   return result;
 }
 
@@ -117,8 +118,9 @@ function avaPost(requestUrl, options) {
   if (pkgData.settings.avalara.enableLogging) {
     logObject.duration = result.headers.serverDuration;
     logObject.result = result.data;
+    Avalogger.info(logObject);
   }
-  Avalogger.info(logObject);
+
   return result;
 }
 
