@@ -2,7 +2,7 @@
 //
 // TODO review PropTypes import in flatButton.js
 //
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 import classnames from "classnames";
 import Button from "./button.jsx";
 
