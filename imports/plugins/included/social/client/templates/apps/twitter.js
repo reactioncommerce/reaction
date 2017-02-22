@@ -1,4 +1,4 @@
-/* eslint-disabled */
+/* eslint-disable */
 //
 // TODO twitter social templates need review to ensure proper use of reaction layouts
 //
