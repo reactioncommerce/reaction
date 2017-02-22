@@ -42,6 +42,15 @@ Template.coreOrderShippingInvoice.onCreated(function () {
 });
 
 Template.coreOrderShippingInvoice.helpers({
+  checked(enabled) {
+    if (enabled === true) {
+      console.log("checked");
+      // return "checked";
+    } else {
+      console.log("not checked");
+    }
+    // return "";
+  },
   DiscountList() {
     return DiscountList;
   },
@@ -202,8 +211,11 @@ Template.coreOrderShippingInvoice.events({
     }
   },
 
-  "change input[name=quantity]": (event) => {
+  "change input[name=quantity]": (event, instance) => {
     event.preventDefault();
+    const field = instance.$(event.currentTarget).attr("data-cartId");
+    // instance.quantity.set()
+    console.log(field);
   },
   "change input[name=amount]": (event) => {
     event.preventDefault();
