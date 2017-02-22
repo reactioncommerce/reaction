@@ -18,8 +18,6 @@ if (typeof Meteor.wrapAsync === "undefined") {
 }
 /* eslint func-style: 1 */
 //
-// TODO review GeoCoder export construction
-//
 // init geocoder
 export const GeoCoder = (options) => {
   let extra;
