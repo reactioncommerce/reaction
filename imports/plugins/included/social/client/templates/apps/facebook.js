@@ -1,4 +1,4 @@
-/* eslint no-cond-assign: 1 */
+/* eslint-disable */
 //
 // TODO facebook social templates need review to ensure proper use of reaction layouts
 //
@@ -16,7 +16,7 @@ Template.facebook.onRendered(function () {
     const template = Template.instance();
     const data = Template.currentData();
     $('meta[property^="og:"]').remove();
-    const description = ((ref1 = data.apps.facebook) !== null ? ref1.description : void 0) || $(".product-detail-field.description").text(); // eslint-disable-line
+    const description = ((ref1 = data.apps.facebook) !== null ? ref1.description : void 0) || $(".product-detail-field.description").text();
     let url = data.url || location.origin + location.pathname;
     let title = data.title || document.title;
     $("<meta>", {
