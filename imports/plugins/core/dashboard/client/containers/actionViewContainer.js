@@ -55,15 +55,6 @@ function composer(props, onData) {
     tooltip: "Create Content",
     i18nKeyTooltip: "app.createContent",
     tooltipPosition: "left middle"
-    // onClick(event) {
-    //   if (!instance.dropInstance) {
-    //     instance.dropInstance = new Drop({ target: event.currentTarget, content: "", constrainToWindow: true, classes: "drop-theme-arrows", position: "right center" });
-    //
-    //     Blaze.renderWithData(Template.createContentMenu, {}, instance.dropInstance.content);
-    //   }
-    //
-    //   instance.dropInstance.open();
-    // }
   });
 
 
