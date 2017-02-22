@@ -42,15 +42,6 @@ Template.coreOrderShippingInvoice.onCreated(function () {
 });
 
 Template.coreOrderShippingInvoice.helpers({
-  checked(enabled) {
-    if (enabled === true) {
-      console.log("checked");
-      // return "checked";
-    } else {
-      console.log("not checked");
-    }
-    // return "";
-  },
   DiscountList() {
     return DiscountList;
   },
@@ -181,14 +172,16 @@ Template.coreOrderShippingInvoice.events({
     }
   },
 
-  "click [data-event-action=returnItems]": (event) => {
+  "click [data-event-action=returnItems]": (event, instance) => {
     event.preventDefault();
-    // console.log("returned");
+    const selected = instance.findAll("input[type=checkbox]:checked");
+    _.map(selected, (item) => {
+      return item.defaultValue;
+    });
   },
 
   "click [data-event-action=shippingRefunds]": (event) => {
     event.preventDefault();
-    // console.log("refunded");
   },
 
   "click [data-event-action=makeAdjustments]": (event, instance) => {
@@ -209,16 +202,6 @@ Template.coreOrderShippingInvoice.events({
         _id: order._id
       });
     }
-  },
-
-  "change input[name=quantity]": (event, instance) => {
-    event.preventDefault();
-    const field = instance.$(event.currentTarget).attr("data-cartId");
-    // instance.quantity.set()
-    console.log(field);
-  },
-  "change input[name=amount]": (event) => {
-    event.preventDefault();
   },
 
   "change input[name=refund_amount], keyup input[name=refund_amount]": (event, instance) => {
