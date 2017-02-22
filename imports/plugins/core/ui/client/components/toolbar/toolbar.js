@@ -1,7 +1,4 @@
-import React, { Children, Component, PropTypes } from "react";
-import TetherComponent from "react-tether";
-import classnames from "classnames";
-
+import React, { Component, PropTypes } from "react";
 
 class Toolbar extends Component {
   render() {
