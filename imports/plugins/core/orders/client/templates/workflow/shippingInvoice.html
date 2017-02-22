@@ -49,13 +49,13 @@
 
           <div class="quantity order-detail-quantity">
             <!-- <label> Qty </label> -->
-            <input class="form-control" type="number" name="quantity" value="1" min="1" max="{{item.length}}">
+            <!-- <input class="form-control" type="number" name="quantity" value="1" min="1" max="{{item.length}}"> -->
           </div>
         </div>
         {{/each}}
 
         <div class="return return-confirmation" data-event-action="returnItems">
-          <button class="btn btn-info btn-block" type="submit">Return Items</button>
+          <button class="btn btn-info btn-block" type="submit" data-event-action="returnItems">Return Items</button>
         </div>
     </div>
 
@@ -75,7 +75,8 @@
       <div class="form-group order-summary-form-group">
         <label class="form-control-label reason" for="" data-i18n="order.refundAmount">Refund Amount</label>
         <div class="amount">
-          {{> React refundInputProps}}
+          <!-- {{> React refundInputProps}} -->
+          <!-- <input class="form-control" type="currency" name="amount" value="0.00"> -->
         </div>
       </div>
       <hr>
@@ -89,8 +90,8 @@
         </div>
       </div>
       <hr>
-      <div class="refund-confirmation" data-event-action="shippingRefunds">
-      <button class="btn btn-info btn-block" type="submit">Refund</button>
+      <div class="refund-confirmation">
+        <button class="btn btn-info btn-block" data-event-action="shippingRefunds" type="submit">Refund</button>
       </div>
     </div>
 
