@@ -90,7 +90,7 @@ Template.memberSettings.helpers({
             });
           }
         }
-        // todo review this, hardcoded WIP
+        // TODO review this, hardcoded WIP
         const label = pkg.name.replace("reaction", "").replace(/(-.)/g, function (x) {
           return " " + x[1].toUpperCase();
         });
