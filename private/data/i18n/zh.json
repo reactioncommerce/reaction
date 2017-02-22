@@ -302,9 +302,12 @@
         "variantDetails": "款式详细信息",
         "duplicateVariant": "复制款式",
         "addVariantOption": "添加款式",
+        "addVariantFail": "无法为{{title}}创建变体。",
+        "cloneVariantFail": "无法克隆变种{{title}}。",
         "removeVariant": "删除款式",
         "removeVariantConfirm": "您确定要删除{{title}}吗？",
         "restoreVariantConfirm": "您确定要从垃圾箱恢复{{title}}吗？",
+        "restoreVariantFail": "无法恢复{{title}}。",
         "archiveVariantConfirm": "确定要把{{title}}存档吗",
         "thisVariant": "此款式",
         "thisOption": "此选项",
@@ -452,6 +455,8 @@
         "yourOrderIsNow": "您的订单现在",
         "summaryMessage": "感谢您的订单",
         "submitted": "已提交",
+        "processing": "处理",
+        "completed": "完成",
         "registerGuest": "您好! 请添加您的邮箱以便跟踪订单状况。",
         "trackYourDelivery": "您的订单信息将会发到",
         "noOrdersFound": "没有找到订单。",
@@ -478,7 +483,8 @@
       "addressBookAdd": {
         "addAddress": "添加新的地址",
         "createAddress": "创建您的默认地址",
-        "failedToAddAddress": "未能添加地址：{{err}}"
+        "failedToAddAddress": "未能添加地址：{{err}}",
+        "validatedAddress": "到您的地址进行更改后，验证为主。请确定这是正确的"
       },
       "addressBookEdit": {
         "editAddress": "编辑地址",

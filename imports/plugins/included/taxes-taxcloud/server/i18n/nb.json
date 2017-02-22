@@ -2,5 +2,22 @@
   "language": "Bokmål",
   "i18n": "nb",
   "ns": "taxes-taxcloud",
-  "translation": { }
+  "translation": {
+    "reaction-taxes": {
+      "admin": {
+        "shortcut": {
+          "taxcloudLabel": "TaxCloud",
+          "taxcloudTitle": "TaxCloud"
+        },
+        "dashboard": {
+          "taxcloudLabel": "TaxCloud",
+          "taxcloudTitle": "TaxCloud"
+        },
+        "taxSettings": {
+          "taxcloudLabel": "TaxCloud",
+          "taxcloudSettingsLabel": "TaxCloud"
+        }
+      }
+    }
+  }
 }]

@@ -302,9 +302,12 @@
         "variantDetails": "မူကွဲအသေးစိတ်",
         "duplicateVariant": "မူရငျးခှဲ",
         "addVariantOption": "Option ကို Add",
+        "addVariantFail": "{{title}} ဘို့မူကွဲကိုဖန်တီးရန်မဖြစ်နိုင်ပါ။",
+        "cloneVariantFail": "{{title}} ဘို့မူကွဲ clone လို့မရနိုင်ပါ။",
         "removeVariant": "Remove",
         "removeVariantConfirm": "သငျသညျ {{title}} သင်ဖျက်လိုတာသေချာ",
         "restoreVariantConfirm": "သင်အမှိုက်မှ {{title}} restore ချင်သေချာလား?",
+        "restoreVariantFail": "{{title}} restore လုပ်လို့မရနိုင်ပါ။",
         "archiveVariantConfirm": "သငျသညျ {{title}} archive လုပ်ချင်တဲ့သင်သေချာလား",
         "thisVariant": "ဒီမူကွဲ",
         "thisOption": "ဒီ option",
@@ -452,6 +455,8 @@
         "yourOrderIsNow": "သင့်ရဲ့အမိန့်သည်ယခု",
         "summaryMessage": "သင့်ရဲ့အမိန့်ပေးသည့်အတွက်ကျေးဇူးတင်ပါသည်။",
         "submitted": "တင်သွင်း",
+        "processing": "အပြောင်းအလဲနဲ့",
+        "completed": "ပြီးစီး",
         "registerGuest": "ဟလို! အီးမေးလ်တစ်စောင် Add နှင့်အမိန့် updates များကိုလက်ခံရရှိသည်။",
         "trackYourDelivery": "အမိန့် updates တွေကိုအပို့ခံရလိမျ့မညျ",
         "noOrdersFound": "အဘယ်သူမျှမမိန့်တွေ့ရှိခဲ့ပါတယ်။",
@@ -478,7 +483,8 @@
       "addressBookAdd": {
         "addAddress": "လိပ်စာအသစ်ထည့်ရန်",
         "createAddress": "သုံးနေကျ လိပ်စာဖြည့်စွက်ပါ",
-        "failedToAddAddress": "လိပ်စာကိုထည့်ရန်မအောင်မြင်: {{err}}"
+        "failedToAddAddress": "လိပ်စာကိုထည့်ရန်မအောင်မြင်: {{err}}",
+        "validatedAddress": "အတည်ပြုအပေါ်မှာအခြေခံသင့်ရဲ့လိပ်စာမှစသောအပြောင်းအလဲလုပ်လေ၏။ ဒီမှန်ကန်သေချာ ကျေးဇူးပြု."
       },
       "addressBookEdit": {
         "editAddress": "ဒီလိပ်စာ entry ကိုတည်းဖြတ်ခြင်း",

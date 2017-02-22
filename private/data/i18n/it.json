@@ -302,9 +302,12 @@
         "variantDetails": "variante Dettagli",
         "duplicateVariant": "Duplicare",
         "addVariantOption": "Aggiungi opzione",
+        "addVariantFail": "Impossibile creare variante per {{title}}.",
+        "cloneVariantFail": "Impossibile clonare variante per {{title}}.",
         "removeVariant": "Rimuovi",
         "removeVariantConfirm": "Sei sicuro di voler eliminare {{title}}",
         "restoreVariantConfirm": "Sei sicuro di voler ripristinare {{title}} dal cestino?",
+        "restoreVariantFail": "Impossibile ripristinare {{title}}.",
         "archiveVariantConfirm": "Sei sicuro che si desidera archiviare {{title}}",
         "thisVariant": "questa variante",
         "thisOption": "questa opzione",
@@ -452,6 +455,8 @@
         "yourOrderIsNow": "Il vostro ordine è ora",
         "summaryMessage": "Grazie per il vostro ordine.",
         "submitted": "presentata",
+        "processing": "lavorazione",
+        "completed": "completato",
         "registerGuest": "Ciao! Aggiungere una e-mail e ricevere gli aggiornamenti di ordine.",
         "trackYourDelivery": "aggiornamenti ordine verrà inviato a",
         "noOrdersFound": "Nessun ordine trovato.",
@@ -478,7 +483,8 @@
       "addressBookAdd": {
         "addAddress": "Aggiungere una nuova voce indirizzo",
         "createAddress": "Crea il tuo indirizzo predefinito",
-        "failedToAddAddress": "Impossibile aggiungere l'indirizzo: {{err}}"
+        "failedToAddAddress": "Impossibile aggiungere l'indirizzo: {{err}}",
+        "validatedAddress": "Le modifiche apportate al tuo indirizzo basano su convalida. Assicuratevi che questo è corretto"
       },
       "addressBookEdit": {
         "editAddress": "Modificare questa voce indirizzo",

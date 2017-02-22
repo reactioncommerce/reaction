@@ -302,9 +302,12 @@
         "variantDetails": "Вариант Детайли",
         "duplicateVariant": "Дубликат",
         "addVariantOption": "Добавяне на опция",
+        "addVariantFail": "Не може да се създаде вариант за {{title}}.",
+        "cloneVariantFail": "Не може да се клонира вариант за {{title}}.",
         "removeVariant": "Премахни",
         "removeVariantConfirm": "Сигурни ли сте, че искате да изтриете {{title}}",
         "restoreVariantConfirm": "Сигурни ли сте че искате да възстановите {{title}} от боклука?",
+        "restoreVariantFail": "Не може да се възстанови {{title}}.",
         "archiveVariantConfirm": "Сигурни ли сте че искате да архивирате {{title}}",
         "thisVariant": "този вариант",
         "thisOption": "тази опция",
@@ -452,6 +455,8 @@
         "yourOrderIsNow": "Поръчката Ви се обработва",
         "summaryMessage": "Благодарим Ви за поръчката.",
         "submitted": "Изпратена",
+        "processing": "обработване",
+        "completed": "завършен",
         "registerGuest": "Добавете и-мейл, за да получавате известия за поръчката.",
         "trackYourDelivery": "Информация за пратката",
         "noOrdersFound": "Не е намерена поръчка.",
@@ -478,7 +483,8 @@
       "addressBookAdd": {
         "addAddress": "Добавете адрес",
         "createAddress": "Създайте адрес по подразбиране",
-        "failedToAddAddress": "Неуспешно добавяне на адрес: {{err}}"
+        "failedToAddAddress": "Неуспешно добавяне на адрес: {{err}}",
+        "validatedAddress": "Направени промени в адреса си въз основа на валидирането. Моля, уверете се че това е правилната"
       },
       "addressBookEdit": {
         "editAddress": "Редактирайте адреса",

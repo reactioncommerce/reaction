@@ -256,27 +256,37 @@ export const methods = {
   /**
    * Fetches the tracking status of shipped orders from Shippo and updates the
    * relevant orders' properties
+   * @param {String} orderId - optional orderId to get status of just one order.
    * @return {Boolean} result - if the updating happened successfully or not.
    * */
-
-  "shippo/fetchTrackingStatusForOrders"() {
+  "shippo/fetchTrackingStatusForOrders"(orderId) {
+    check(orderId, Match.Optional(String));
     const shopId = Reaction.getShopId();
-
+    let shippoOrders;
     const apiKey = getApiKey(shopId);
     if (!apiKey) {
       return false;
     }
 
-    // Find the orders of the shop that have shippo provider, tracking number, that are shipped
-    // but they are not yet delivered;
-    const shippoOrders = Orders.find({
-      shopId,
-      "shipping.0.shippo.transactionId": { $exists: true },
-      "shipping.0.tracking": { $exists: true },
-      "shipping.0.shipped": true,
-      "shipping.0.delivered": { $ne: true }
-      // For now we don' t have logic for returned products
-    });
+    if (orderId) {
+      // return a specific order
+      shippoOrders = Orders.find({
+        shopId,
+        orderId
+      });
+    } else {
+      // Find the orders of the shop that have shippo provider, tracking number, that are shipped
+      // but they are not yet delivered;
+      shippoOrders = Orders.find({
+        shopId,
+        "shipping.0.shippo.transactionId": { $exists: true },
+        "shipping.0.tracking": { $exists: true },
+        "shipping.0.shipped": true,
+        "shipping.0.delivered": { $ne: true }
+        // For now we don' t have logic for returned products
+      });
+    }
+
 
     // no orders to update
     if (!shippoOrders.count()) {
@@ -430,21 +440,21 @@ export const methods = {
         const rateId = orderShipment.shipmentMethod.settings.rateId;
         // make the actual purchase
         const transaction = ShippoApi.methods.createTransaction.call({ rateId, apiKey });
-
-        return Orders.update({
-          _id: orderId
-        }, {
-          $set: {
-            "shipping.0.shippingLabelUrl": transaction.label_url,
-            "shipping.0.tracking": transaction.tracking_number,
-            "shipping.0.shippo.transactionId": transaction.object_id,
-            "shipping.0.shippo.trackingStatusDate": null,
-            "shipping.0.shippo.trackingStatusStatus": null
-          }
-        });
+        if (transaction) {
+          return Orders.update({
+            _id: orderId
+          }, {
+            $set: {
+              "shipping.0.shippingLabelUrl": transaction.label_url,
+              "shipping.0.tracking": transaction.tracking_number,
+              "shipping.0.shippo.transactionId": transaction.object_id,
+              "shipping.0.shippo.trackingStatusDate": null,
+              "shipping.0.shippo.trackingStatusStatus": null
+            }
+          });
+        }
       }
     }
-
     return false;
   }
 };

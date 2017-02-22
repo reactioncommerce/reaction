@@ -1,5 +1,4 @@
 import React from "react";
-import { groupBy } from "lodash";
 import { composeWithTracker } from "/lib/api/compose";
 import { Reaction } from "/client/api";
 import { Loading } from "/imports/plugins/core/ui/client/components";
@@ -21,27 +20,6 @@ function composer(props, onData) {
   const dashboard = Reaction.Apps({ provides: "dashboard", enabled: true })
     .filter((d) => typeof Template[d.template] !== "undefined") || [];
 
-
-  // const packages = apps.map((packageData) => {
-  //   const appData = Reaction.Apps({
-  //     provides: "settings",
-  //     name: packageData.packageName
-  //   });
-  //
-  //   if ((!packageData.route || !packageData.template) && appData.length) {
-  //     return {
-  //       ...packageData,
-  //       ...appData[0]
-  //     };
-  //   }
-  //
-  //   return packageData;
-  // });
-
-  // const groupedPackages = groupBy(packages, (app) => {
-  //   return app.container || "misc";
-  // });
-
   onData(null, {
     // packages,
     groupedPackages: {
@@ -56,7 +34,6 @@ function composer(props, onData) {
         packages: settings
       }
     },
-    // groups: Object.keys(groupedPackages),
 
     // Callbacks
     handleShowPackage

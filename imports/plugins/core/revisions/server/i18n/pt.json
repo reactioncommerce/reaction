@@ -12,6 +12,9 @@
         },
         "settings": {
           "productRevisionsLabel": "As revisões de produtos"
+        },
+        "toolbar": {
+          "publishAll": "publicar todos"
         }
       }
     }

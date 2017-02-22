@@ -12,6 +12,9 @@
         },
         "settings": {
           "productRevisionsLabel": "Izmjene proizvoda"
+        },
+        "toolbar": {
+          "publishAll": "objaviti sve"
         }
       }
     }

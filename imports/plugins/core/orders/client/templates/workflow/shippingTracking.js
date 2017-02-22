@@ -30,6 +30,17 @@ Template.coreOrderShippingTracking.onCreated(() => {
  *
  */
 Template.coreOrderShippingTracking.events({
+  "click [data-event-action=refresh-shipping]": function () {
+    const instance = Template.instance();
+    instance.$("#btn-processing").removeClass("hidden");
+    const orderId = Template.instance().order._id;
+    Meteor.call("shipping/status/refresh", orderId, (result) => {
+      if (result.error) {
+        instance.$("#btn-processing").addClass("hidden");
+        Alerts.toast(i18next.t("orderShipping.labelError", { err: result.error }), "error", { timeout: 7000 });
+      }
+    });
+  },
   "click [data-event-action=shipmentShipped]": function () {
     const template = Template.instance();
     Meteor.call("orders/shipmentShipped", template.order, template.order.shipping[0], (err) => {
@@ -91,6 +102,14 @@ Template.coreOrderShippingTracking.events({
 });
 
 Template.coreOrderShippingTracking.helpers({
+  printableLabels() {
+    const { shippingLabelUrl, customsLabelUrl } = Template.instance().order.shipping[0];
+    if (shippingLabelUrl || customsLabelUrl) {
+      return { shippingLabelUrl, customsLabelUrl };
+    }
+
+    return false;
+  },
   isShipped() {
     const currentData = Template.currentData();
     const order = Template.instance().order;
@@ -126,9 +145,23 @@ Template.coreOrderShippingTracking.helpers({
   },
 
   editTracking() {
-    const template = Template.instance();
-    if (!template.order.shipping[0].tracking || template.showTrackingEditForm.get()) {
-      return true;
+    // TODO move to a method where we loop package settings
+    // to determine if this feature is enabled.
+    // somewhere in here is where I wish this was converted to React!
+    const { settings } = Reaction.getPackageSettings("reaction-shipping-rates");
+    // TODO: future proof by not using flatRates, but rather look for editable:true
+    if (settings && settings.flatRates.enabled === true) {
+      const template = Template.instance();
+      const shipment = template.order.shipping[0];
+      const editing = template.showTrackingEditForm.get();
+      let view = false;
+      if (editing === true || !shipment.tracking && editing === false) {
+        view = true;
+      }
+      // TODO modularize tracking more, editable to settings
+      if (view && shipment.shipmentMethod.carrier === "Flat Rate") {
+        return true;
+      }
     }
     return false;
   },
