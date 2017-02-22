@@ -174,14 +174,39 @@ Template.coreOrderShippingInvoice.events({
 
   "click [data-event-action=returnItems]": (event, instance) => {
     event.preventDefault();
+    const order = instance.state.get("order");
+    const paymentMethod = orderCreditMethod(order).paymentMethod;
     const selected = instance.findAll("input[type=checkbox]:checked");
-    _.map(selected, (item) => {
-      return item.defaultValue;
+    const uniqueItems = Template.coreOrderShippingInvoice.__helpers.get("items").call().uniqueItems;
+    const shippingAmount = Template.coreOrderShippingInvoice.__helpers.get("invoice").call().shipping;
+    const checkboxId = _.map(selected, (item) => {
+      return (item.id);
     });
-  },
 
-  "click [data-event-action=shippingRefunds]": (event) => {
-    event.preventDefault();
+    uniqueItems.forEach((uniqueItem) => {
+      checkboxId.forEach((id) => {
+        if (id !== "shipping") {
+          if (uniqueItem.cartItemId === id) {
+            const quantity = instance.find(`input[id=quantity-${id}]`).value;
+            const returnedItems = [uniqueItem.productId, uniqueItem.cartItemId, uniqueItem.variants.price, quantity];
+            Meteor.call("orders/return/create", order.id, paymentMethod, returnedItems, (error) => {
+              if (error) {
+                Alerts.alert(error.reason);
+              }
+              Alerts.toast("Item return works", "success");
+            });
+          }
+        } else {
+          const returnedItems = ["shipping", 1, shippingAmount];
+          Meteor.call("orders/return/create", order.id, paymentMethod, returnedItems, (error) => {
+            if (error) {
+              Alerts.alert(error.reason);
+            }
+            Alerts.toast("Shipping refund works", "success");
+          });
+        }
+      });
+    });
   },
 
   "click [data-event-action=makeAdjustments]": (event, instance) => {
