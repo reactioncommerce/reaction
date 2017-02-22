@@ -27,7 +27,7 @@ class Alerts extends Component {
 }
 
 Alerts.propTypes = {
-  alerts: PropTypes.object,
+  alerts: PropTypes.arrayOf(PropTypes.object),
   onAlertRemove: PropTypes.func,
   onAlertSeen: PropTypes.func
 };
