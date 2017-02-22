@@ -4,7 +4,7 @@
 //
 Template.facebook.onRendered(function () {
   let ref;
-  if (this.data.placement === "footer" && (((ref = this.data.apps.facebook) !== null ? ref.profilePage : void 0) !== null)) {
+  if (this.data.placement === "footer" && (((ref = this.data.apps.facebook) !== null ? ref.profilePage : void 0) !== null)) { // eslint-disable-line no-cond-assign
     return this.$(".facebook-share").attr("href", this.data.apps.facebook.profilePage);
   }
   //
@@ -16,7 +16,7 @@ Template.facebook.onRendered(function () {
     const template = Template.instance();
     const data = Template.currentData();
     $('meta[property^="og:"]').remove();
-    const description = ((ref1 = data.apps.facebook) !== null ? ref1.description : void 0) || $(".product-detail-field.description").text();
+    const description = ((ref1 = data.apps.facebook) !== null ? ref1.description : void 0) || $(".product-detail-field.description").text(); // eslint-disable-line
     let url = data.url || location.origin + location.pathname;
     let title = data.title || document.title;
     $("<meta>", {
@@ -61,7 +61,7 @@ Template.facebook.onRendered(function () {
           method: "share",
           display: "popup",
           href: url
-        }, function (response) {});
+        }, function () {});
       });
     }
     // else return
