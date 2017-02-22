@@ -1,6 +1,6 @@
-Tinytest.add("cfs-gridfs - server - test environment", function (test) {
-  test.isTrue(typeof FS.Collection !== "undefined", "test environment not initialized FS.Collection");
-  test.isTrue(typeof CFSErrorType !== "undefined", "test environment not initialized CFSErrorType");
+Tinytest.add("cfs-gridfs - server - test environment", function (serverTest) {
+  serverTest.isTrue(typeof FS.Collection !== "undefined", "test environment not initialized FS.Collection");
+  serverTest.isTrue(typeof CFSErrorType !== "undefined", "test environment not initialized CFSErrorType");
 });
 
 /*
