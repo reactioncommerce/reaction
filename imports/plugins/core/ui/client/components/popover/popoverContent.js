@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from "react";
-import classnames from "classnames";
 import onclickOutside from "react-onclickoutside";
 
 class PopoverContent extends Component {
@@ -19,6 +18,7 @@ class PopoverContent extends Component {
 }
 
 PopoverContent.propTypes = {
+  children: PropTypes.node,
   onClickOutside: PropTypes.func
 };
 
