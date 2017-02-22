@@ -3,8 +3,7 @@ import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { Reaction } from "/lib/api";
 import { i18next } from "/client/api";
-import { Media } from "/lib/collections";
-import { SellerShops } from "../../../lib/collections";
+import { SellerShops, Media } from "/lib/collections";
 
 Template.sellerShopSettings.onCreated(function () {
   this.autorun(() => {

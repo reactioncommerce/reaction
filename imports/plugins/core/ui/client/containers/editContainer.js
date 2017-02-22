@@ -180,7 +180,7 @@ function composer(props, onData) {
   if (props.disabled === true || viewAs === "customer") {
     hasPermission = false;
   } else {
-    hasPermission = Reaction.hasPermission(props.permissions);
+    hasPermission = Reaction.hasPermission(props.permissions, Meteor.userId(), props.data.shopId);
   }
 
   onData(null, {
