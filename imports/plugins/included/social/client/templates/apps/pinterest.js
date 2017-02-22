@@ -1,4 +1,4 @@
-/* eslint=-disabled */
+/* eslint-disabled */
 //
 // TODO pinterest social templates need review to ensure proper use of reaction layouts
 //
