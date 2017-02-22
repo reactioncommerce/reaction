@@ -4,11 +4,10 @@ const fs   = require("fs");
 const expect = require("chai").expect;
 const adminUser = require("../../../lib/basic-user-actions.js");
 const resetUser = require("../../../lib/user-permissions-reset.js");
+const getTestConfig = require("../../../../lib/get-test-config.js");
 
 beforeEach(function () {
-  const browserConfig = yaml.safeLoad(fs.readFileSync("./tests/acceptance-tests/config/settings.yml", "utf8"));
-  const baseUrl = browserConfig.base_url.toString();
-  browser.url(baseUrl);
+  getTestConfig.init();
 });
 
 afterEach(function () {
