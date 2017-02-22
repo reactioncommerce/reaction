@@ -183,27 +183,26 @@ Template.coreOrderShippingInvoice.events({
       return (item.id);
     });
 
+    const callback = (returnedItems) => {
+      Meteor.call("orders/return/create", order._id, paymentMethod, returnedItems, (error) => {
+        if (error) {
+          Alerts.alert(error.reason);
+        }
+        Alerts.toast("Item return works", "success");
+      });
+    };
+
     uniqueItems.forEach((uniqueItem) => {
       checkboxId.forEach((id) => {
         if (id !== "shipping") {
           if (uniqueItem.cartItemId === id) {
             const quantity = instance.find(`input[id=quantity-${id}]`).value;
             const returnedItems = [uniqueItem.productId, uniqueItem.cartItemId, uniqueItem.variants.price, quantity];
-            Meteor.call("orders/return/create", order._id, paymentMethod, returnedItems, (error) => {
-              if (error) {
-                Alerts.alert(error.reason);
-              }
-              Alerts.toast("Item return works", "success");
-            });
+            callback(returnedItems);
           }
         } else {
           const returnedItems = ["shipping", 1, shippingAmount];
-          Meteor.call("orders/return/create", order._id, paymentMethod, returnedItems, (error) => {
-            if (error) {
-              Alerts.alert(error.reason);
-            }
-            Alerts.toast("Shipping refund works", "success");
-          });
+          callback(returnedItems);
         }
       });
     });
