@@ -26,4 +26,10 @@ class Alerts extends Component {
   }
 }
 
+Alert.propTypes = {
+  alerts: PropTypes.object,
+  onAlertRemove: PropTypes.func,
+  onAlertSeen: PropTypes.func
+};
+
 export default Alerts;
