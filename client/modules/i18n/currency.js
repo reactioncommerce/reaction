@@ -44,9 +44,11 @@ function findCurrency(defaultCurrency, useDefaultShopCurrency) {
  * @return {String} returns locale formatted and exchange rate converted values
  */
 export function formatPriceString(formatPrice, useDefaultShopCurrency) {
+  let defaultShopCurrency = useDefaultShopCurrency;
+
   // in case useDefaultShopCurrency is a Spacebars.kw we have this check
   if (typeof useDefaultShopCurrency === "object" || !useDefaultShopCurrency) {
-    useDefaultShopCurrency = false;
+    defaultShopCurrency = false;
   }
 
   currencyDep.depend();
@@ -62,7 +64,7 @@ export function formatPriceString(formatPrice, useDefaultShopCurrency) {
   }
 
   // uses the localStorage currency instead of locale
-  const userCurrency = findCurrency(locale.currency, useDefaultShopCurrency);
+  const userCurrency = findCurrency(locale.currency, defaultShopCurrency);
 
   // for the cases then we have only one price. It is a number.
   const currentPrice = formatPrice.toString();
