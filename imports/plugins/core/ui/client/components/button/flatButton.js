@@ -1,7 +1,5 @@
 /* eslint no-unused-vars: 1 */
-//
-// TODO review PropTypes import in flatButton.js
-//
+
 import React, { Component } from "react";
 import classnames from "classnames";
 import Button from "./button.jsx";
