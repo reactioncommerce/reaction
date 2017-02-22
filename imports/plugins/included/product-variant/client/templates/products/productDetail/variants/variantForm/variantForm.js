@@ -6,12 +6,16 @@ import { ReactionProduct } from "/lib/api";
 import { applyProductRevision } from "/lib/api/products";
 import { Products, Packages } from "/lib/collections";
 import { ReactiveDict } from "meteor/reactive-dict";
+import { TaxCodes } from "/imports/plugins/core/taxes/lib/collections";
 
 Template.variantForm.onCreated(function () {
   this.state = new ReactiveDict();
   this.state.set("taxCodes", []);
 
   this.autorun(() => {
+    // subscribe to TaxCodes
+    Meteor.subscribe("TaxCodes");
+
     const productHandle = Reaction.Router.getParam("handle");
 
     if (!productHandle) {
@@ -124,6 +128,11 @@ Template.variantForm.helpers({
       };
     };
   },
+  getTaxCodes() {
+    // if (Meteor.subscribe("TaxCodes").ready() && TaxCodes.find({}).count() !== 0) {
+    //
+    // }
+  },
   listTaxCodes() {
     const instance = Template.instance();
     const shopId = Reaction.getShopId();
@@ -139,15 +148,28 @@ Template.variantForm.helpers({
     });
 
     if (provider) {
-      Meteor.call(provider.settings.taxCodes.getTaxCodeMethod, (error, result) => {
-        result.forEach(function (code) {
-          taxCodesArray.push({
-            value: code.id,
-            label: `${code.taxCode} | ${code.description}`
+      if (Meteor.subscribe("TaxCodes").ready() && TaxCodes.find({}).count() === 0) {
+        Meteor.call(provider.settings.taxCodes.getTaxCodeMethod, (error, result) => {
+          result.forEach(function (code) {
+            Meteor.call("taxes/insertTaxCodes", shopId, code, provider.name, (err) => {
+              if (err) {
+                throw new Meteor.Error("Error popula", err);
+              }
+              return;
+            });
+            taxCodesArray.push({
+              value: code.id,
+              label: `${code.taxCode} | ${code.description}`
+            });
+            return;
           });
+          instance.state.set("taxCodes", taxCodesArray);
         });
-        instance.state.set("taxCodes", taxCodesArray);
-      });
+      } else {
+        console.log("TAX CODES COLLECTION ISN'T EMPTY");
+      }
+    } else {
+      return false;
     }
     return instance.state.get("taxCodes");
   }
