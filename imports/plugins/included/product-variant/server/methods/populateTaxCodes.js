@@ -4,12 +4,11 @@ import { TaxCodes } from "/imports/plugins/core/taxes/lib/collections";
 const taxCodes = {};
 
 /*
- * products/updateProductField
- * @summary update single product or variant field
+ * taxes/insertTaxCodes
+ * @summary populate TaxCodes collection
  * @param {String} shopID - current shop's id
  * @param {Object} code - tax code object to insert into TaxCodes collection
  * @param {String} providerName - tax code provider
- * latest changes. its used for products and variants
  * @return {} undefined
  */
 taxCodes.populateTaxCodes = function (shopId, code, providerName) {
@@ -32,6 +31,34 @@ taxCodes.populateTaxCodes = function (shopId, code, providerName) {
   }
 };
 
+/*
+ * taxes/getTaxCodes
+ * @summary fetch tax codes from TaxCodes collection
+ * @param {String} shopID - current shop's id
+ * @param {String} provider - tax code provider
+ * @return {Array} array of tax codes
+ */
+taxCodes.fetchTaxCodes = function (shopId, provider) {
+  check(shopId, String);
+  check(provider, String);
+
+  const taxCodesArray = [];
+
+  const codes = TaxCodes.find({
+    shopId: shopId,
+    taxCodeProvider: provider
+  });
+
+  codes.forEach(function (code) {
+    taxCodesArray.push({
+      value: code.id,
+      label: `${code.taxCode} | ${code.label}`
+    });
+  });
+  return taxCodesArray;
+};
+
 Meteor.methods({
-  "taxes/insertTaxCodes": taxCodes.populateTaxCodes
+  "taxes/insertTaxCodes": taxCodes.populateTaxCodes,
+  "taxes/fetchTaxCodes": taxCodes.fetchTaxCodes
 });

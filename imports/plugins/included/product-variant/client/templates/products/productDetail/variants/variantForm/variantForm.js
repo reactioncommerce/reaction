@@ -128,15 +128,9 @@ Template.variantForm.helpers({
       };
     };
   },
-  getTaxCodes() {
-    // if (Meteor.subscribe("TaxCodes").ready() && TaxCodes.find({}).count() !== 0) {
-    //
-    // }
-  },
   listTaxCodes() {
     const instance = Template.instance();
     const shopId = Reaction.getShopId();
-    const taxCodesArray = [];
 
     const provider = Packages.findOne({
       "shopId": shopId,
@@ -153,20 +147,23 @@ Template.variantForm.helpers({
           result.forEach(function (code) {
             Meteor.call("taxes/insertTaxCodes", shopId, code, provider.name, (err) => {
               if (err) {
-                throw new Meteor.Error("Error popula", err);
+                throw new Meteor.Error("Error populating TaxCodes collection", err);
               }
               return;
             });
-            taxCodesArray.push({
-              value: code.id,
-              label: `${code.taxCode} | ${code.description}`
-            });
-            return;
           });
-          instance.state.set("taxCodes", taxCodesArray);
+        });
+        Meteor.call("taxes/fetchTaxCodes", shopId, provider.name, (res) => {
+          instance.state.set("taxCodes", res);
         });
       } else {
-        console.log("TAX CODES COLLECTION ISN'T EMPTY");
+        Meteor.call("taxes/fetchTaxCodes", shopId, provider.name, (err, res) => {
+          if (err) {
+            throw new Meteor.Error("Error fetching records", err);
+          } else {
+            instance.state.set("taxCodes", res);
+          }
+        });
       }
     } else {
       return false;
