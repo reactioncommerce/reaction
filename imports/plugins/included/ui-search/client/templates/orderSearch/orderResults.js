@@ -24,7 +24,7 @@ Template.searchModal.helpers({
         id: "_id",
         type: DataType.String,
         header: i18next.t("search.orderSearchResults.orderId", { defaultValue: "Order ID" }),
-        renderer(cellData) {
+        renderer(cellData) { // eslint-disable-line react/no-multi-comp
           return <a data-event-action="goToOrder" data-event-data={cellData}>{cellData}</a>;
         }
       },
@@ -92,7 +92,7 @@ Template.searchModal.helpers({
           return rowData.shippingStatus;
         },
         tdClassName: "shipping-status",
-        renderer(cellData, { rowData }) {
+        renderer(cellData, { rowData }) { // eslint-disable-line react/no-multi-comp
           const rowClassName = _.lowerCase(rowData.shippingStatus);
           return <span className={rowClassName}>{cellData}</span>;
         }
