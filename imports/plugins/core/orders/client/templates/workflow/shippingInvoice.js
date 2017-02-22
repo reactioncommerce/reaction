@@ -172,6 +172,16 @@ Template.coreOrderShippingInvoice.events({
     }
   },
 
+  "click [data-event-action=returnItems]": (event) => {
+    event.preventDefault();
+    // console.log("returned");
+  },
+
+  "click [data-event-action=shippingRefunds]": (event) => {
+    event.preventDefault();
+    // console.log("refunded");
+  },
+
   "click [data-event-action=makeAdjustments]": (event, instance) => {
     event.preventDefault();
     Meteor.call("orders/makeAdjustmentsToInvoice", instance.state.get("order"));
@@ -190,6 +200,13 @@ Template.coreOrderShippingInvoice.events({
         _id: order._id
       });
     }
+  },
+
+  "change input[name=quantity]": (event) => {
+    event.preventDefault();
+  },
+  "change input[name=amount]": (event) => {
+    event.preventDefault();
   },
 
   "change input[name=refund_amount], keyup input[name=refund_amount]": (event, instance) => {
