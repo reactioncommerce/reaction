@@ -189,7 +189,7 @@ Template.coreOrderShippingInvoice.events({
           if (uniqueItem.cartItemId === id) {
             const quantity = instance.find(`input[id=quantity-${id}]`).value;
             const returnedItems = [uniqueItem.productId, uniqueItem.cartItemId, uniqueItem.variants.price, quantity];
-            Meteor.call("orders/return/create", order.id, paymentMethod, returnedItems, (error) => {
+            Meteor.call("orders/return/create", order._id, paymentMethod, returnedItems, (error) => {
               if (error) {
                 Alerts.alert(error.reason);
               }
@@ -198,7 +198,7 @@ Template.coreOrderShippingInvoice.events({
           }
         } else {
           const returnedItems = ["shipping", 1, shippingAmount];
-          Meteor.call("orders/return/create", order.id, paymentMethod, returnedItems, (error) => {
+          Meteor.call("orders/return/create", order._id, paymentMethod, returnedItems, (error) => {
             if (error) {
               Alerts.alert(error.reason);
             }
