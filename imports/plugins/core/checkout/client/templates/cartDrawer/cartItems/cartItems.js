@@ -1,6 +1,6 @@
 import _ from "lodash";
-import { Media } from "/lib/collections";
 import { Template } from "meteor/templating";
+import { Media } from "/lib/collections";
 
 /**
  * cartDrawerItems helpers

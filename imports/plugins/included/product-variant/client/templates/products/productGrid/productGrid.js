@@ -11,45 +11,39 @@ import Sortable from "sortablejs";
  */
 
 Template.productGrid.onCreated(function () {
-  const profile = Meteor.user().profile;
+  let selectedProducts = Reaction.getUserPreferences("reaction-product-variant", "selectedGridItems");
 
-  if (profile && profile.preferences && profile.preferences["reaction-product-variant"] && profile.preferences["reaction-product-variant"].selectedGridItems) {
-    let selectedProducts = profile.preferences["reaction-product-variant"].selectedGridItems;
-
-    if (_.isEmpty(selectedProducts)) {
-      Reaction.hideActionView();
+  if (_.isEmpty(selectedProducts)) {
+    Reaction.hideActionView();
+  } else {
+    if (event.target.checked) {
+      selectedProducts.push(event.target.value);
     } else {
-      if (event.target.checked) {
-        selectedProducts.push(event.target.value);
-      } else {
-        selectedProducts = _.without(selectedProducts, event.target.value);
-      }
+      selectedProducts = _.without(selectedProducts, event.target.value);
+    }
 
-      // Save the selected items to the Session
-      Session.set("productGrid/selectedProducts", _.uniq(selectedProducts));
+    // Save the selected items to the Session
+    Session.set("productGrid/selectedProducts", _.uniq(selectedProducts));
 
-      const products = Template.currentData().products;
+    const products = Template.currentData().products;
 
-      if (products) {
-        const filteredProducts = _.filter(products, (product) => {
-          return _.includes(selectedProducts, product._id);
+    if (products) {
+      const filteredProducts = _.filter(products, (product) => {
+        return _.includes(selectedProducts, product._id);
+      });
+
+      if (Reaction.isPreview() === false) {
+        Reaction.showActionView({
+          label: "Grid Settings",
+          i18nKeyLabel: "gridSettingsPanel.title",
+          template: "productSettings",
+          type: "product",
+          data: {
+            products: filteredProducts
+          }
         });
-
-        if (Reaction.isPreview() === false) {
-          Reaction.showActionView({
-            label: "Grid Settings",
-            i18nKeyLabel: "gridSettingsPanel.title",
-            template: "productSettings",
-            type: "product",
-            data: {
-              products: filteredProducts
-            }
-          });
-        }
       }
     }
-  } else {
-    Reaction.hideActionView();
   }
 });
 
