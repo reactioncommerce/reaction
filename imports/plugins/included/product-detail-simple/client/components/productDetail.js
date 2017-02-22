@@ -1,14 +1,5 @@
 import React, { Component, PropTypes } from "react";
-import {
-  Button,
-  DropDownMenu,
-  MenuItem,
-  Translation,
-  Toolbar,
-  ToolbarGroup
-} from "/imports/plugins/core/ui/client/components/";
 import { AlertContainer } from "/imports/plugins/core/ui/client/containers";
-import { PublishContainer } from "/imports/plugins/core/revisions";
 import { ReactionLayout } from "/imports/plugins/core/layout/lib";
 
 class ProductDetail extends Component {
