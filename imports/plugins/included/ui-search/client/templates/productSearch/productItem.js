@@ -103,6 +103,7 @@ Template.productItem.helpers({
 
 Template.productItem.events({
   "click [data-event-action=productClick]": function (event) {
+    event.preventDefault();
     const instance = Template.instance();
     const view = instance.view;
     $(".js-search-modal").delay(400).fadeOut(400, () => {
