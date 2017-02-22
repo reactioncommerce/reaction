@@ -1,0 +1,18 @@
+<template name="taxSettingsPanel">
+  <div class="panel panel-default panel-tax-settings">
+    <div class="panel-heading">
+      <h2 class="panel-title" data-i18n="">Tax Settings</h2>
+      {{#autoForm collection=Collections.Accounts schema=accountsSchema doc=account type="update" id="tax-settgins-form"}}
+        <div class="panel-body">
+          {{>afQuickField name='taxSettings.exemptCode' class='form-control'}}
+        </div>
+        <div class="panel-body">
+          {{>afQuickField name='taxSettings.customerUsageType' class='form-control'}}
+        </div>
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+      {{/autoForm}}
+    </div>
+  </div>
+</template>
