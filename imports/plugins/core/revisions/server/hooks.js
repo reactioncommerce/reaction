@@ -3,7 +3,6 @@ import { diff } from "deep-diff";
 import { Products, Revisions, Tags, Media } from "/lib/collections";
 import { Logger } from "/server/api";
 import { RevisionApi } from "../lib/api";
-import { isEmpty } from "lodash";
 
 function convertMetadata(modifierObject) {
   const metadata = {};
@@ -275,7 +274,7 @@ Products.before.insert((userId, product) => {
     }
   });
 
-  // Prevent this product beign created if a parent product / varaint ancestor is deleted.
+  // Prevent this product from being created if a parent product / varaint ancestor is deleted.
   //
   // This will prevent cases where a parent variant hase been deleted and a user tries to create a
   // child variant. You cannot create the child variant becuase the parent will no longer exist when
@@ -297,7 +296,7 @@ Products.before.insert((userId, product) => {
 
     if (archivedCount > 0) {
       Logger.debug(`Cannot create product ${product._id} as a product/variant higher in it's ancestors tree is marked as 'isDeleted'.`);
-      throw new Meteor.Error(403, "Unable to create product variant");
+      throw new Meteor.Error("Unable to create product variant");
     }
   }
 
@@ -351,7 +350,7 @@ Products.before.update(function (userId, product, fieldNames, modifier, options)
 
     if (archivedCount > 0) {
       Logger.debug(`Cannot restore product ${product._id} as a product/variant higher in it's ancestors tree is marked as 'isDeleted'.`);
-      throw new Meteor.Error(403, "Unable to delete product variant");
+      throw new Meteor.Error("Unable to delete product variant");
     }
   }
 
@@ -518,13 +517,6 @@ Products.before.update(function (userId, product, fieldNames, modifier, options)
 
     modifier.$set = newSet;
     modifier.$inc = newInc;
-
-    // if (isEmpty(newSet) === false) {
-    //   Products.update(originalSelector, modifier, {
-    //     publish: true,
-    //     selector: options.selector
-    //   });
-    // }
   }
 
   // prevent the underlying document from being modified as it is in draft mode
