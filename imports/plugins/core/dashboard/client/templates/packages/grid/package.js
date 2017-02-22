@@ -2,26 +2,6 @@ import { Reaction } from "/client/api";
 /* eslint no-loop-func: 0 */
 
 /**
- * Navigate to package
- * @param  {Object} reactionPackage Reaction package definition
- * @return {Boolean} false if navigation was blocked
- */
-function showPackageDashboard(reactionPackage) {
-  const routeName = reactionPackage.name || reactionPackage.route;
-
-  if (routeName && reactionPackage.route) {
-    const route = Reaction.Router.path(routeName);
-
-    if (route && ReactionCore.hasPermission(routeName, Meteor.userId())) {
-      Reaction.Router.go(route);
-      return true;
-    }
-  }
-
-  return false;
-}
-
-/**
  * gridPackage helpers
  */
 Template.gridPackage.helpers({
