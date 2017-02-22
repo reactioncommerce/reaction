@@ -1,13 +1,7 @@
-import React, { Component, PropTypes } from "react";
-import { composeWithTracker } from "/lib/api/compose";
-import { Admin } from "../components";
+import React from "react";
 import { StyleRoot } from "radium";
-import { Meteor } from "meteor/meteor";
-import { Blaze } from "meteor/blaze";
-import { Template } from "meteor/templating";
-import { Reaction, i18next } from "/client/api";
-import { Packages } from "/lib/collections";
-
+import { composeWithTracker } from "/lib/api/compose";
+import { Reaction } from "/client/api";
 import { TranslationProvider, AdminContextProvider } from "/imports/plugins/core/ui/client/providers";
 import { Loading } from "/imports/plugins/core/ui/client/components";
 
@@ -17,7 +11,7 @@ function handleActionViewBack() {
 }
 
 function handleActionViewDetailBack() {
-  Reaction.popActionViewDeatil();
+  Reaction.popActionViewDetail();
 }
 
 function handleActionViewClose() {
@@ -55,15 +49,6 @@ function composer(props, onData) {
     tooltip: "Create Content",
     i18nKeyTooltip: "app.createContent",
     tooltipPosition: "left middle"
-    // onClick(event) {
-    //   if (!instance.dropInstance) {
-    //     instance.dropInstance = new Drop({ target: event.currentTarget, content: "", constrainToWindow: true, classes: "drop-theme-arrows", position: "right center" });
-    //
-    //     Blaze.renderWithData(Template.createContentMenu, {}, instance.dropInstance.content);
-    //   }
-    //
-    //   instance.dropInstance.open();
-    // }
   });
 
 
