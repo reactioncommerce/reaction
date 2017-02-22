@@ -21,7 +21,7 @@ if (typeof Meteor.wrapAsync === "undefined") {
 // TODO review GeoCoder export construction
 //
 // init geocoder
-export const GeoCoder = function geoCoderConstructor(options) {
+export const GeoCoder = (options) => {
   let extra;
   const self = this;
   // fetch shop settings for api auth credentials
