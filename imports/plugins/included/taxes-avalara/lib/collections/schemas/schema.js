@@ -44,7 +44,7 @@ export const AvalaraPackageConfig = new SimpleSchema([
     "settings.addressValidation.enabled": {
       label: "Address Validation",
       type: Boolean,
-      defaultValue: false
+      defaultValue: true
     },
     "settings.avalara.commitDocuments": {
       label: "Commit Documents",
@@ -64,12 +64,13 @@ export const AvalaraPackageConfig = new SimpleSchema([
     "settings.avalara.requestTimeout": {
       label: "Request Timeout",
       type: Number,
-      defaultValue: 300
+      defaultValue: 1500
     },
     "settings.addressValidation.countryList": {
       label: "Enable Address Validation by Country",
       type: [String],
-      optional: true
+      optional: true,
+      defaultValue: ["US", "CA"]
     }
   }
 ]);
