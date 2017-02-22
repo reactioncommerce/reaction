@@ -966,7 +966,7 @@ export const methods = {
   "orders/return/create": function (orderId, paymentMethod, returnedItems) {
     check(orderId, String);
     check(paymentMethod, Reaction.Schemas.PaymentMethod);
-    check(returnedItems, [Reaction.Schemas.Return]);
+    check(returnedItems, Array);
     // Stub for actual method to process line item returns
     Logger.info("return processed");
     return returnedItems;
