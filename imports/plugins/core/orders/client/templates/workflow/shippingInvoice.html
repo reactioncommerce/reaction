@@ -39,7 +39,7 @@
     <div id="return-items" class="panel-collapse collapse">
       {{#each item in items.uniqueItems}}
         <div class="return-item form-group order-summary-form-group" data-item data-item-id="{{item._id}}">
-          <input type="checkbox" name="enabled" {{checked enabled}}>
+          <input type="checkbox" name="enabled" id="{{item.cartItemId}}">
 
           <div class="return-item-details">
             <div class="return-detail-title">
@@ -54,7 +54,7 @@
       {{/each}}
 
       <div class="shipping-refunds form-group order-summary-form-group">
-        <input type="checkbox" checked="">
+        <input type="checkbox" name="enabled" id="shipping">
         <label class="form-control-label reason">Shipping refunds</label>
         <div class="amount">
           <input class="form-control" type="currency" name="amount" value="{{formatPrice invoice.shipping}}">
