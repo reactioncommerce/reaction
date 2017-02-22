@@ -141,7 +141,7 @@ Template.memberSettings.events({
   },
   "click [data-event-action=resetMemberPermission]": function (event, template) {
     const $icon = Template.instance().$(event.currentTarget);
-    if (confirm($icon.data("confirm"))) {
+    if (confirm($icon.data("confirm"))) { // eslint-disable-line no-alert
       const results = [];
       for (const role of template.data.roles) {
         results.push(Meteor.call("accounts/setUserPermissions", this.userId, ["guest", "account/profile"], role));
