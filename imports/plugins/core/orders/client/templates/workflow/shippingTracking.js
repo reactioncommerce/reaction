@@ -37,7 +37,7 @@ Template.coreOrderShippingTracking.events({
     Meteor.call("shipping/status/refresh", orderId, (result) => {
       if (result.error) {
         instance.$("#btn-processing").addClass("hidden");
-        Alerts.toast(i18next.t("orderShipping.labelError", { err: result.error }), "error", { "timeout": 7000 });
+        Alerts.toast(i18next.t("orderShipping.labelError", { err: result.error }), "error", { timeout: 7000 });
       }
     });
   },
