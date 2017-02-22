@@ -1,5 +1,6 @@
+import { Reaction } from "/lib/api";
+import { Logger } from "/server/api";
 import { Products, Revisions } from "/lib/collections";
-import { Logger, Reaction } from "/server/api";
 import { RevisionApi } from "/imports/plugins/core/revisions/lib/api/revisions";
 
 /**
@@ -13,34 +14,41 @@ Meteor.publish("Product", function (productId) {
     Logger.debug("ignoring null request on Product subscription");
     return this.ready();
   }
-  let _id;
-  const shop = Reaction.getCurrentShop();
+
+  const shop = Reaction.getSellerShop(this.userId);
   // verify that shop is ready
   if (typeof shop !== "object") {
     return this.ready();
   }
 
-  let selector = {};
-  selector.isVisible = true;
-  selector.isDeleted = { $in: [null, false] };
+  let _id;
 
-  if (Roles.userIsInRole(this.userId, ["owner", "admin", "createProduct"],
-      shop._id)) {
+  // selector should come first as default, alterations take place later depending on role
+  const selector = {
+    isVisible: true,
+    isDeleted: { $in: [null, false] }
+  };
+
+  // no need for admin, simple perm should be ok per group
+  if (Roles.userIsInRole(this.userId, ["createProduct"], shop._id)) {
     selector.isVisible = {
       $in: [true, false]
     };
   }
   // TODO review for REGEX / DOS vulnerabilities.
   if (productId.match(/^[23456789ABCDEFGHJKLMNPQRSTWXYZabcdefghijkmnopqrstuvwxyz]{17}$/)) {
-    selector._id = productId;
+    // selector._id = productId;
     // TODO try/catch here because we can have product handle passed by such regex
     _id = productId;
   } else {
-    selector.handle = {
-      $regex: productId,
-      $options: "i"
-    };
-    const products = Products.find(selector).fetch();
+    const newSelector = Object.assign({}, selector, {
+      handle: {
+        $regex: productId,
+        $options: "i"
+      }
+    });
+
+    const products = Products.find(newSelector).fetch();
     if (products.length > 0) {
       _id = products[0]._id;
     } else {
@@ -48,24 +56,23 @@ Meteor.publish("Product", function (productId) {
     }
   }
 
-  // Selector for hih?
-  selector = {
-    isVisible: true,
-    isDeleted: { $in: [null, false] },
-    $or: [
-      { handle: _id },
-      { _id: _id },
-      {
-        ancestors: {
-          $in: [_id]
-        }
+  // Selector for product
+  // Try to find a product with _id as a handle "example-product"
+  // Try to find a product with the _is as an Random.id()
+  // Try to find a product variant with _id using the ancestors array
+  selector.$or = [
+    { handle: { $regex: _id, $options: "i" } },
+    { _id: _id },
+    {
+      ancestors: {
+        $in: [_id]
       }
-    ]
-  };
+    }
+  ];
 
-  // Authorized content curators fo the shop get special publication of the product
-  // all all relevant revisions all is one package
-  if (Roles.userIsInRole(this.userId, ["owner", "admin", "createProduct"], shop._id)) {
+  // Authorized content curators for the shop get special publication of the product
+  // all relevant revisions all is one package
+  if (Roles.userIsInRole(this.userId, ["admin", "createProduct"], shop._id)) {
     selector.isVisible = {
       $in: [true, false, undefined]
     };
@@ -163,6 +170,6 @@ Meteor.publish("Product", function (productId) {
     return Products.find(selector);
   }
 
-  // Everyone else gets the standard, visibile products and variants
+  // Everyone else gets the standard, visible products and variants
   return Products.find(selector);
 });

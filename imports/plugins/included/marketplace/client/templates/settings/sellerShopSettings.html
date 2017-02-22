@@ -1,0 +1,60 @@
+<template name="sellerShopSettings">
+  <div class="form-group">
+    <label class="control-label" data-i18n="admin.settings.brandImageLabel">Brand Image</label>
+    {{> select brandImageSelectProps}}
+    {{> upload onUpload=handleFileUpload}}
+  </div>
+
+  {{#autoForm collection=Collections.Shops doc=sellerShop schema=Schemas.Shop id="sellerShopEditForm" type="method-update" meteormethod="marketplace/updateShopDetails"}}
+    <div class="form-group{{#if afFieldIsInvalid name='name'}} has-error{{/if}}">
+      <label class="control-label"
+             data-i18n="shop.namePlaceholder">Shop Name</label>
+      {{>afFieldInput name="name" class="form-control"}}
+      {{#if afFieldIsInvalid name="name"}}
+        <span class="help-block">{{afFieldMessage name="name"}}</span>
+      {{/if}}
+    </div>
+
+    <div class="form-group{{#if afFieldIsInvalid name='emails.0.address'}} has-error{{/if}}">
+      <label class="control-label"
+             data-i18n="shop.emailPlaceholder">Primary Contact Email</label>
+      {{>afFieldInput name="emails.0.address" class="form-control"}}
+      {{#if afFieldIsInvalid name="emails.0.address"}}
+        <span class="help-block">{{afFieldMessage name="emails.0.address"}}</span>
+      {{/if}}
+    </div>
+
+    <div class="form-group{{#if afFieldIsInvalid name='description'}} has-error{{/if}}">
+      <label class="control-label"
+             data-i18n="shop.description">Description</label>
+      {{>afFieldInput name="description" class="form-control"}}
+      {{#if afFieldIsInvalid name="description"}}
+        <span class="help-block">{{afFieldMessage name="description"}}</span>
+      {{/if}}
+    </div>
+
+    <div class="form-group{{#if afFieldIsInvalid name='keywords'}} has-error{{/if}}">
+      <label class="control-label"
+             data-i18n="shop.keywords">Keywords</label>
+      {{>afFieldInput name="keywords" class="form-control"}}
+      {{#if afFieldIsInvalid name="keywords"}}
+        <span class="help-block">{{afFieldMessage name="keywords"}}</span>
+      {{/if}}
+    </div>
+
+    <div class="form-group{{#if afFieldIsInvalid name='currency'}} has-error{{/if}}">
+      <label class="control-label"
+             data-i18n="shop.currency">Base Currency</label>
+      {{>afFieldInput
+          type="select"
+          name="currency"
+          class="form-control"
+          options=currencyOptions}}
+      {{#if afFieldIsInvalid name="currencies.0.currency"}}
+        <span class="help-block">{{afFieldMessage name="currency"}}</span>
+      {{/if}}
+    </div>
+
+    {{> shopSettingsSubmitButton}}
+  {{/autoForm}}
+</template>

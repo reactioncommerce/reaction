@@ -343,7 +343,7 @@ class PublishControls extends Component {
       <FlatButton
         onClick={() => {
           Reaction.showActionView({
-            i18nKeyTite: "dashboard.coreTitle",
+            i18nKeyTitle: "dashboard.coreTitle",
             title: "Dashboard",
             template: "dashboardPackages"
           });

@@ -87,7 +87,14 @@ export default {
    * @return {Boolean} Boolean - true if has permission
    */
   hasPermission(checkPermissions, checkUserId, checkGroup) {
-    let group = this.getShopId();
+    let group;
+    // default group to the shop or global if shop isn't defined for some reason.
+    if (checkGroup !== undefined && typeof checkGroup === "string") {
+      group = checkGroup;
+    } else {
+      group = this.getSellerShopId() || Roles.GLOBAL_GROUP;
+    }
+
     let permissions = ["owner"];
     let id = "";
     const userId = checkUserId || this.userId || Meteor.userId();
@@ -116,7 +123,7 @@ export default {
       if (Roles.userIsInRole(userId, permissions, group)) {
         return true;
       }
-      // global roles check
+      /*// global roles check
       const sellerShopPermissions = Roles.getGroupsForUser(userId, "admin");
       // we're looking for seller permissions.
       if (sellerShopPermissions) {
@@ -129,7 +136,7 @@ export default {
             }
           }
         }
-      }
+      }*/
       // no specific permissions found returning false
       return false;
     }
@@ -167,15 +174,6 @@ export default {
       } else {
         return roleCheck();
       }
-
-      // default group to the shop or global if shop
-      // isn't defined for some reason.
-      if (checkGroup !== undefined && typeof checkGroup === "string") {
-        group = checkGroup;
-      }
-      if (!group) {
-        group = Roles.GLOBAL_GROUP;
-      }
     }
     // return false to be safe
     return false;
@@ -194,6 +192,17 @@ export default {
   hasDashboardAccess() {
     const dashboardPermissions = ["owner", "admin", "dashboard"];
     return this.hasPermission(dashboardPermissions);
+  },
+
+  getSellerShopId: function (userId = Meteor.userId()) {
+    if (userId) {
+      const group = Roles.getGroupsForUser(userId, "admin")[0];
+      if (group) {
+        return group;
+      }
+    }
+
+    return this.getShopId();
   },
 
   getUserPreferences(packageName, preference, defaultValue) {
@@ -246,7 +255,14 @@ export default {
   },
 
   getPackageSettings(name) {
-    return Packages.findOne({ name, shopId: this.getShopId() });
+    const shopId = this.getShopId();
+    const query = { name };
+
+    if (shopId) {
+      query.shopId = shopId;
+    }
+
+    return Packages.findOne(query);
   },
 
   allowGuestCheckout() {
@@ -257,10 +273,6 @@ export default {
       allowGuest = settings.public.allowGuestCheckout;
     }
     return allowGuest;
-  },
-
-  getSellerShopId() {
-    return Roles.getGroupsForUser(this.userId, "admin");
   },
 
   /**
