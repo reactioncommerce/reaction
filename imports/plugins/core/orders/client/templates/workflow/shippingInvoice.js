@@ -187,8 +187,9 @@ Template.coreOrderShippingInvoice.events({
       Meteor.call("orders/return/create", order._id, paymentMethod, returnedItems, (error) => {
         if (error) {
           Alerts.alert(error.reason);
+        } else {
+          Alerts.toast("Item return works", "success");
         }
-        Alerts.toast("Item return works", "success");
       });
     };
 

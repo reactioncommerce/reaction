@@ -40,10 +40,17 @@
       {{#each item in items.uniqueItems}}
         <div class="return-item form-group order-summary-form-group" data-item data-item-id="{{item._id}}">
           <input type="checkbox" name="enabled" id="{{item.cartItemId}}">
+          <div class="order-item-media">
+            {{#with media item.variants}}
+              <img src="{{url store='thumbnail'}}">
+            {{else}}
+              <img src= "/resources/placeholder.gif">
+            {{/with}}
+          </div>
 
           <div class="return-item-details">
             <div class="return-detail-title">
-              {{item.title}} <small>{{item.variants.title}}</small>
+              {{item.title}}<small>{{item.variants.title}}</small>
             </div>
           </div>
 
