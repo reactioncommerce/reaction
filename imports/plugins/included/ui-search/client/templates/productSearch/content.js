@@ -2,4 +2,4 @@
  * gridContent helpers
  */
 
-Template.searchGridContent.inheritsHelpersFrom(gridContent);
+Template.searchGridContent.inheritsHelpersFrom("gridContent");
