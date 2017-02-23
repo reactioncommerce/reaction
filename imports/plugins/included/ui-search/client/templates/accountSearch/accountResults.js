@@ -125,7 +125,7 @@ Template.searchModal.helpers({
           return rowData.emails[0];
         },
         tdClassName: "account-manage",
-        renderer(cellData, { column, rowData }) {
+        renderer(cellData, { rowData }) {
           return <span data-event-action="manageAccount" data-event-data={rowData._id}>Manage</span>;
         }
       }

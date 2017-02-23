@@ -25,16 +25,16 @@ class Slider extends Component {
 }
 
 Slider.propTypes = {
+  connect: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
+  margin: PropTypes.number,
+  onChange: PropTypes.func,
+  onSlide: PropTypes.func,
+  orientation: PropTypes.string,
+  padding: PropTypes.number,
   range: PropTypes.object,
   start: PropTypes.arrayOf(PropTypes.number),
-  connect: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
   step: PropTypes.number,
-  orientation: PropTypes.string,
-  tooltips: PropTypes.oneOfType([PropTypes.array, PropTypes.bool]),
-  margin: PropTypes.number,
-  padding: PropTypes.number,
-  onChange: PropTypes.func,
-  onSlide: PropTypes.func
+  tooltips: PropTypes.oneOfType([PropTypes.array, PropTypes.bool])
 };
 
 Slider.defaultProps = {

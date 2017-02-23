@@ -113,12 +113,6 @@ class MediaGalleryContainer extends Component {
     return (this.state && this.state.media) || this.props.media;
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.setState({
-      media: nextProps.media
-    });
-  }
-
   handleMouseEnterMedia = (event, media) => {
     this.setState({
       featuredMedia: media

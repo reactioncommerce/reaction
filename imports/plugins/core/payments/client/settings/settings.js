@@ -1,6 +1,6 @@
 import { Template } from "meteor/templating";
 import { Reaction, i18next } from "/client/api";
-import { Shops, Packages } from "/lib/collections";
+import { Shops } from "/lib/collections";
 
 Template.paymentSettings.helpers({
   checked(enabled) {

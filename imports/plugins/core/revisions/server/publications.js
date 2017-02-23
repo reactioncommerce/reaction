@@ -1,5 +1,4 @@
-import { Products, Revisions } from "/lib/collections";
-import { Reaction } from "/server/api";
+import { Revisions } from "/lib/collections";
 
 /**
  * products publication

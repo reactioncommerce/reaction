@@ -3,7 +3,7 @@ import classnames from "classnames";
 import Blaze from "meteor/gadicc:blaze-react-component";
 import { Admin } from "/imports/plugins/core/ui/client/providers";
 import Radium from "radium";
-import Velocity from "velocity-animate";
+import "velocity-animate";
 import "velocity-animate/velocity.ui";
 import { VelocityTransitionGroup } from "velocity-react";
 import debounce from "lodash/debounce";
@@ -114,6 +114,7 @@ class ActionView extends Component {
     actionView: PropTypes.object,
     actionViewIsOpen: PropTypes.bool,
     buttons: PropTypes.array,
+    detailView: PropTypes.object,
     detailViewIsOpen: PropTypes.bool,
     handleActionViewBack: PropTypes.func,
     handleActionViewClose: PropTypes.func,

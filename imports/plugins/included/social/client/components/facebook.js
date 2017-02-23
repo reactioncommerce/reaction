@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from "react";
-import ReactDOM from "react-dom";
 import Helmet from "react-helmet";
 import classnames from "classnames";
 import { Translation } from "/imports/plugins/core/ui/client/components";
