@@ -1,12 +1,11 @@
 import React, { Component, PropTypes } from "react";
-import { TacoTable, DataType, SortDirection, Formatters, Summarizers, TdClassNames } from "react-taco-table";
+import { TacoTable } from "react-taco-table";
 
-class SortableTable extends React.Component {
+class SortableTable extends Component {
   render() {
     const {
       data,
-      columns,
-      ...otherProps
+      columns
     } = this.props;
 
     return (

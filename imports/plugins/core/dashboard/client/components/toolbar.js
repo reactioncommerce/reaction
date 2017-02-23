@@ -9,8 +9,6 @@ import {
   VerticalDivider
 } from "/imports/plugins/core/ui/client/components";
 import { Translatable } from "/imports/plugins/core/ui/client/providers";
-
-/** TMP **/
 import { Reaction } from "/client/api";
 
 class PublishControls extends Component {

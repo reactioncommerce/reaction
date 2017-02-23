@@ -12,6 +12,9 @@
         },
         "settings": {
           "productRevisionsLabel": "produkt~~POS=TRUNC Revideringar"
+        },
+        "toolbar": {
+          "publishAll": "publicera All"
         }
       }
     }

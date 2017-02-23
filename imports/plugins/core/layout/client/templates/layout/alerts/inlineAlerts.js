@@ -74,7 +74,6 @@ Alerts = {
    */
   add: function (alertMessage, mode, alertOptions) {
     let a;
-    let count;
     let message = alertMessage;
     let options = alertOptions;
     // check options to see if we have translation
@@ -99,7 +98,8 @@ Alerts = {
         return;
       }
     }
-    count = Alerts.collection_.find({}).count();
+
+    const count = Alerts.collection_.find({}).count();
     if (count >= options.alertsLimit) {
       Alerts.collection_.find({}, {
         sort: {

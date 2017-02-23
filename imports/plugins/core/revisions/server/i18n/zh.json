@@ -12,6 +12,9 @@
         },
         "settings": {
           "productRevisionsLabel": "产品修订"
+        },
+        "toolbar": {
+          "publishAll": "所有发布"
         }
       }
     }

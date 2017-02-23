@@ -348,19 +348,19 @@ Meteor.methods({
     // @link https://lodash.com/docs#sortBy
     const sortedVariants = _.sortBy(variants, doc => doc.ancestors.length);
 
-    return sortedVariants.map(variant => {
-      const oldId = variant._id;
+    return sortedVariants.map(sortedVariant => {
+      const oldId = sortedVariant._id;
       let type = "child";
       const clone = {};
-      if (variantId === variant._id) {
+      if (variantId === sortedVariant._id) {
         type = "parent";
-        Object.assign(clone, variant, {
+        Object.assign(clone, sortedVariant, {
           _id: variantNewId,
-          title: `${variant.title} - copy`
+          title: `${sortedVariant.title} - copy`
         });
       } else {
-        const parentIndex = variant.ancestors.indexOf(variantId);
-        const ancestorsClone = variant.ancestors.slice(0);
+        const parentIndex = sortedVariant.ancestors.indexOf(variantId);
+        const ancestorsClone = sortedVariant.ancestors.slice(0);
         // if variantId exists in ancestors, we override it by new _id
         !!~parentIndex && ancestorsClone.splice(parentIndex, 1, variantNewId);
         Object.assign(clone, variant, {

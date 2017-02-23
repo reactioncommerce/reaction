@@ -90,7 +90,7 @@ Template.memberSettings.helpers({
             });
           }
         }
-        // todo review this, hardcoded WIP
+        // TODO review this, hardcoded WIP
         const label = pkg.name.replace("reaction", "").replace(/(-.)/g, function (x) {
           return " " + x[1].toUpperCase();
         });
@@ -141,7 +141,7 @@ Template.memberSettings.events({
   },
   "click [data-event-action=resetMemberPermission]": function (event, template) {
     const $icon = Template.instance().$(event.currentTarget);
-    if (confirm($icon.data("confirm"))) {
+    if (confirm($icon.data("confirm"))) { // eslint-disable-line no-alert
       const results = [];
       for (const role of template.data.roles) {
         results.push(Meteor.call("accounts/setUserPermissions", this.userId, ["guest", "account/profile"], role));

@@ -1,8 +1,8 @@
 /* eslint camelcase: 0 */
 import Shippo from "shippo";
 import { Meteor } from "meteor/meteor";
-import { Logger } from "/server/api";
 import { SimpleSchema } from "meteor/aldeed:simple-schema";
+import { Logger } from "/server/api";
 import { purchaseAddressSchema, parcelSchema } from "../lib/shippoApiSchema";
 
 export const ShippoApi = {

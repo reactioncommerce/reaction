@@ -119,8 +119,8 @@
     /**
      * Best practices
      */
-    "consistent-return": [1, { // http://eslint.org/docs/rules/consistent-return
-      "treatUndefinedAsUnspecified": false
+    "consistent-return": [0, { // http://eslint.org/docs/rules/consistent-return
+      "treatUndefinedAsUnspecified": true
     }],
     "curly": [2, "multi-line"], // http://eslint.org/docs/rules/curly
     "default-case": 2, // http://eslint.org/docs/rules/default-case
