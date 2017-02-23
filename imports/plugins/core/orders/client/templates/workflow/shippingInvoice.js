@@ -229,6 +229,10 @@ Template.coreOrderShippingInvoice.events({
     }
   },
 
+  "change input[name=enabled], change input[name=quantity], change input[name=amount]": (event) => {
+    event.preventDefault();
+  },
+
   "change input[name=refund_amount], keyup input[name=refund_amount]": (event, instance) => {
     instance.refundAmount.set(accounting.unformat(event.target.value));
   }
