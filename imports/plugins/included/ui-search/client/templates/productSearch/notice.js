@@ -1,7 +1,7 @@
 /**
- * gridNotice helpers
+ * searchGridNotice helpers
  */
-Template.gridNotice.helpers({
+Template.searchGridNotice.helpers({
   isLowQuantity: function () {
     return this.isLowQuantity;
   },
