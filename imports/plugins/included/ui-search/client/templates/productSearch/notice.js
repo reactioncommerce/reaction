@@ -23,7 +23,7 @@ import { Catalog } from "/lib/api";
  */
 Template.searchGridNotice.helpers({
   isLowQuantity: function () {
-    const topVariants = ReactionProduct.getTopVariants(this._id);
+    const topVariants = ReactionProduct.getTopVariants(this.product._id);
 
     for (const topVariant of topVariants) {
       const inventoryThreshold = topVariant.lowInventoryWarningThreshold;
@@ -36,7 +36,7 @@ Template.searchGridNotice.helpers({
     return false;
   },
   isSoldOut: function () {
-    const topVariants = ReactionProduct.getTopVariants(this._id);
+    const topVariants = ReactionProduct.getTopVariants(this.product._id);
 
     for (const topVariant of topVariants) {
       const inventoryQuantity = ReactionProduct.getVariantQuantity(topVariant);
