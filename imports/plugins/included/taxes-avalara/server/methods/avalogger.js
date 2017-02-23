@@ -1,33 +1,26 @@
 import bunyan from "bunyan";
-import bunyanFormat from "bunyan-format";
-import Bunyan2Loggly from "bunyan-loggly";
+import { Logs } from "/lib/collections";
 
 const level = "INFO";
 
-// default console config (stdout)
-const streams = [{
-  level,
-  stream: bunyanFormat({ outputMode: "short" })
-}];
+class BunyanMongo {}
 
-// Loggly config (only used if configured)
-const logglyToken = process.env.LOGGLY_TOKEN;
-const logglySubdomain = process.env.LOGGLY_SUBDOMAIN;
 
-if (logglyToken && logglySubdomain) {
-  const logglyStream = {
+BunyanMongo.prototype.write = Meteor.bindEnvironment((logData) => {
+  const avalog = { logType: "avalara", data: logData };
+  Logs.insert(avalog);
+});
+
+const streams = [
+  {
     type: "raw",
-    level: "INFO",
-    stream: new Bunyan2Loggly({
-      token: logglyToken,
-      subdomain: logglySubdomain
-    })
-  };
-  streams.push(logglyStream);
-}
+    stream: new BunyanMongo()
+  }
+];
 
 
 const Avalogger = bunyan.createLogger({
+  level,
   name: "Avalara",
   streams
 });
