@@ -302,9 +302,12 @@
         "variantDetails": "variant Detaljer",
         "duplicateVariant": "Duplicera",
         "addVariantOption": "Lägg Alternativ",
+        "addVariantFail": "Det går inte att skapa variant för {{title}}.",
+        "cloneVariantFail": "Det går inte att klona variant för {{title}}.",
         "removeVariant": "Avlägsna",
         "removeVariantConfirm": "Är du säker på att du vill radera {{title}}",
         "restoreVariantConfirm": "Är du säker på att du vill återställa {{title}} från papperskorgen?",
+        "restoreVariantFail": "Det går inte att återställa {{title}}.",
         "archiveVariantConfirm": "Är du säker på att du vill arkivera {{title}}",
         "thisVariant": "denna variant",
         "thisOption": "detta alternativ",
@@ -452,6 +455,8 @@
         "yourOrderIsNow": "Din beställning är nu",
         "summaryMessage": "Tack för din beställning.",
         "submitted": "lämnats",
+        "processing": "bearbetning",
+        "completed": "avslutad",
         "registerGuest": "Hallå! Lägg till ett e-post och ta emot uppdateringar order.",
         "trackYourDelivery": "Order uppdateringar kommer att skickas till",
         "noOrdersFound": "Inga order hittades.",
@@ -478,7 +483,8 @@
       "addressBookAdd": {
         "addAddress": "Lägg till en ny adresspost",
         "createAddress": "Skapa din standardadress",
-        "failedToAddAddress": "Det gick inte att lägga till adress: {{err}}"
+        "failedToAddAddress": "Det gick inte att lägga till adress: {{err}}",
+        "validatedAddress": "Gjort ändringar i din adress baserad på validering. Se detta är korrekt"
       },
       "addressBookEdit": {
         "editAddress": "Redigera den här adressen inträde",

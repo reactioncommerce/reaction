@@ -302,9 +302,12 @@
         "variantDetails": "παραλλαγή Λεπτομέρειες",
         "duplicateVariant": "Αντίγραφο",
         "addVariantOption": "Προσθέστε Επιλογή",
+        "addVariantFail": "Αδύνατη η δημιουργία παραλλαγή για {{title}}.",
+        "cloneVariantFail": "Δεν είναι δυνατή η κλωνοποίηση παραλλαγή για {{title}}.",
         "removeVariant": "Αφαιρώ",
         "removeVariantConfirm": "Είστε σίγουροι ότι θέλετε να διαγράψετε {{title}}",
         "restoreVariantConfirm": "Είστε σίγουροι ότι θέλετε να επαναφέρετε {{title}} από τα σκουπίδια;",
+        "restoreVariantFail": "Δεν είναι δυνατή η αποκατάσταση της {{title}}.",
         "archiveVariantConfirm": "Είστε βέβαιοι ότι θέλετε να αρχειοθετήσετε {{title}}",
         "thisVariant": "Αυτή η παραλλαγή",
         "thisOption": "Αυτή η επιλογή",
@@ -452,6 +455,8 @@
         "yourOrderIsNow": "Η παραγγελία σου είναι τώρα",
         "summaryMessage": "Σε ευχαριστούμε για την παραγγελία σου.",
         "submitted": "υποβλήθηκε",
+        "processing": "επεξεργασία",
+        "completed": "ολοκληρώθηκε το",
         "registerGuest": "Γειά! Πρόσθεσε ένα email για να λαμβάνεις ενημερώσεις.",
         "trackYourDelivery": "Ενημερώσεις για την παραγγελία θα στέλνονται στο ",
         "noOrdersFound": "Δεν βρέθηκαν παραγγελίες.",
@@ -478,7 +483,8 @@
       "addressBookAdd": {
         "addAddress": "Προσθήκη νέας διεύθυνσης",
         "createAddress": "Δημιούργία προεπιλεγμένης διεύθυνσης",
-        "failedToAddAddress": "Αποτυχία να προσθέσετε τη διεύθυνση: {{err}}"
+        "failedToAddAddress": "Αποτυχία να προσθέσετε τη διεύθυνση: {{err}}",
+        "validatedAddress": "Κάνει αλλαγές στη διεύθυνσή σας με βάση την επικύρωση. Παρακαλούμε βεβαιωθείτε ότι αυτό είναι σωστό"
       },
       "addressBookEdit": {
         "editAddress": "Επεξεργασία διεύθυνσης",

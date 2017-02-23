@@ -302,9 +302,12 @@
         "variantDetails": "Variant Podrobnosti",
         "duplicateVariant": "Duplikát",
         "addVariantOption": "Přidat Option",
+        "addVariantFail": "Nelze vytvořit variantu pro {{title}}.",
+        "cloneVariantFail": "Nelze klonovat variantu pro {{title}}.",
         "removeVariant": "Odstranit",
         "removeVariantConfirm": "Jste si jisti, že chcete smazat {{title}}",
         "restoreVariantConfirm": "Jste si jisti, že chcete obnovit {{title}} z koše?",
+        "restoreVariantFail": "Nepodařilo se obnovit {{title}}.",
         "archiveVariantConfirm": "Jste si jisti, že chcete archivovat {{title}}",
         "thisVariant": "tato varianta",
         "thisOption": "tato možnost",
@@ -452,6 +455,8 @@
         "yourOrderIsNow": "Vaše objednávka je nyní",
         "summaryMessage": "Děkuji za Vaši objednávku.",
         "submitted": "předloženy",
+        "processing": "zpracování",
+        "completed": "dokončený",
         "registerGuest": "Ahoj! Přidat e-mail a přijímat aktualizace pořadí.",
         "trackYourDelivery": "Aktualizace objednávka bude zaslána",
         "noOrdersFound": "Nebyly nalezeny žádné objednávky.",
@@ -478,7 +483,8 @@
       "addressBookAdd": {
         "addAddress": "Přidat nový záznam adresy",
         "createAddress": "Vytvořte si svůj výchozí adresu",
-        "failedToAddAddress": "Nepodařilo se přidat adresu: {{err}}"
+        "failedToAddAddress": "Nepodařilo se přidat adresu: {{err}}",
+        "validatedAddress": "Provedli změny adresy založené na validaci. Ujistěte se prosím, toto je správná"
       },
       "addressBookEdit": {
         "editAddress": "Úpravou tohoto zadání adresy",

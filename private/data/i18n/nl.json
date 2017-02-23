@@ -302,9 +302,12 @@
         "variantDetails": "variant Details",
         "duplicateVariant": "Dupliceren",
         "addVariantOption": "Optie toevoegen",
+        "addVariantFail": "Kan geen variant te creëren voor {{title}}.",
+        "cloneVariantFail": "Kan geen variant klonen voor {{title}}.",
         "removeVariant": "Verwijderen",
         "removeVariantConfirm": "Bent u zeker dat u wilt verwijderen {{title}}",
         "restoreVariantConfirm": "Bent u zeker dat u wilt {{title}} herstellen uit de prullenbak?",
+        "restoreVariantFail": "Kan geen {{title}} herstellen.",
         "archiveVariantConfirm": "Bent u zeker dat u wilt archiveren {{title}}",
         "thisVariant": "deze variant",
         "thisOption": "deze optie",
@@ -452,6 +455,8 @@
         "yourOrderIsNow": "Uw bestelling is nu",
         "summaryMessage": "Bedankt voor uw bestelling.",
         "submitted": "verzonden",
+        "processing": "verwerken",
+        "completed": "voltooid",
         "registerGuest": "Hallo! Voeg een e-mailadres toe en ontvang updates over de bestelling",
         "trackYourDelivery": "De updates worden verzonden naar",
         "noOrdersFound": "Geen bestellingen gevonden.",
@@ -478,7 +483,8 @@
       "addressBookAdd": {
         "addAddress": "Nieuw adres toevoegen",
         "createAddress": "Maak een standaardadres aan",
-        "failedToAddAddress": "Mislukt adres toe te voegen: {{err}}"
+        "failedToAddAddress": "Mislukt adres toe te voegen: {{err}}",
+        "validatedAddress": "Wijzigingen in uw adres op basis van validatie. Zorg ervoor dat dit correct is"
       },
       "addressBookEdit": {
         "editAddress": "Dit adres bewerken",

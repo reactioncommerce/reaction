@@ -302,9 +302,12 @@
         "variantDetails": "wariant Szczegóły",
         "duplicateVariant": "Duplikować",
         "addVariantOption": "Dodaj Option",
+        "addVariantFail": "Nie można utworzyć wariant dla {{title}}.",
+        "cloneVariantFail": "Nie można sklonować wariant dla {{title}}.",
         "removeVariant": "Usunąć",
         "removeVariantConfirm": "Czy na pewno chcesz usunąć {{title}}",
         "restoreVariantConfirm": "Czy na pewno chcesz przywrócić {{title}} z kosza?",
+        "restoreVariantFail": "Nie można przywrócić {{title}}.",
         "archiveVariantConfirm": "Czy na pewno chcesz zarchiwizować {{title}}",
         "thisVariant": "ten wariant",
         "thisOption": "ta opcja",
@@ -452,6 +455,8 @@
         "yourOrderIsNow": "Twoje zamówienie jest obecnie",
         "summaryMessage": "Dziękuję za Twoje zamówienie.",
         "submitted": "składać",
+        "processing": "przetwarzanie",
+        "completed": "zakończone",
         "registerGuest": "Witaj! Dodaj e-mail i otrzymywać aktualizacje dotyczące zamówienia.",
         "trackYourDelivery": "aktualizacje Zamówienie zostanie wysłany do",
         "noOrdersFound": "Nie znaleziono zleceń.",
@@ -478,7 +483,8 @@
       "addressBookAdd": {
         "addAddress": "Dodaj nowy wpis adresu",
         "createAddress": "Stwórz swój adres domyślnej",
-        "failedToAddAddress": "Nie udało się dodać adres: {{err}}"
+        "failedToAddAddress": "Nie udało się dodać adres: {{err}}",
+        "validatedAddress": "Wykonane zmiany adresu oparciu walidacji. Należy upewnić się, to prawda"
       },
       "addressBookEdit": {
         "editAddress": "Montaż tego wpisu adresu",

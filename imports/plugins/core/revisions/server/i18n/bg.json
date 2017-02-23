@@ -12,6 +12,9 @@
         },
         "settings": {
           "productRevisionsLabel": "ревизии на продукта"
+        },
+        "toolbar": {
+          "publishAll": "публикува всички"
         }
       }
     }

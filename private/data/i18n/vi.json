@@ -302,9 +302,12 @@
         "variantDetails": "Chi tiết Variant",
         "duplicateVariant": "Bản sao",
         "addVariantOption": "Thêm lựa chọn",
+        "addVariantFail": "Không thể tạo ra biến thể cho {{title}}.",
+        "cloneVariantFail": "Không thể để nhân bản biến thể cho {{title}}.",
         "removeVariant": "Tẩy",
         "removeVariantConfirm": "Bạn có chắc chắn muốn xóa {{title}}",
         "restoreVariantConfirm": "Bạn có chắc chắn muốn khôi phục {{title}} từ thùng rác?",
+        "restoreVariantFail": "Không thể phục hồi {{title}}.",
         "archiveVariantConfirm": "Bạn có chắc chắn muốn lưu trữ {{title}}",
         "thisVariant": "phiên bản này",
         "thisOption": "tùy chọn này",
@@ -452,6 +455,8 @@
         "yourOrderIsNow": "hàng ngay bây giờ là",
         "summaryMessage": "Cảm ơn bạn đã đặt hàng của bạn.",
         "submitted": "trình",
+        "processing": "Chế biến",
+        "completed": "hoàn thành",
         "registerGuest": "Chào bạn! Thêm một email và nhận được cập nhật tự.",
         "trackYourDelivery": "cập nhật theo thứ tự sẽ được gửi đến",
         "noOrdersFound": "Không tìm thấy đơn đặt hàng.",
@@ -478,7 +483,8 @@
       "addressBookAdd": {
         "addAddress": "Thêm mục nhập địa chỉ mới",
         "createAddress": "Tạo địa chỉ mặc định của bạn",
-        "failedToAddAddress": "Không thể thêm địa chỉ: {{err}}"
+        "failedToAddAddress": "Không thể thêm địa chỉ: {{err}}",
+        "validatedAddress": "thay đổi địa chỉ của bạn dựa trên xác nhận. Hãy đảm bảo điều này là chính xác"
       },
       "addressBookEdit": {
         "editAddress": "Chỉnh sửa mục nhập địa chỉ này",
