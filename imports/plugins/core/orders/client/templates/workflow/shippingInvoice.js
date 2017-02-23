@@ -63,7 +63,7 @@ Template.coreOrderShippingInvoice.events({
    * @param  {Template} instance - Blaze Template
    * @return {void}
    */
-  "submit capture[name=form]": (event, instance) => {
+  "submit form[name=capture]": (event, instance) => {
     event.preventDefault();
     const state = instance.state;
     const order = state.get("order");
@@ -227,10 +227,6 @@ Template.coreOrderShippingInvoice.events({
         _id: order._id
       });
     }
-  },
-
-  "change input[name=enabled], change input[name=quantity], change input[name=amount]": (event) => {
-    event.preventDefault();
   },
 
   "change input[name=refund_amount], keyup input[name=refund_amount]": (event, instance) => {
