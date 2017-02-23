@@ -23,6 +23,16 @@ export const AvalaraPackageConfig = new SimpleSchema([
     "settings.avalara.username": {
       type: String
     },
+    "settings.avalara.company.accountId": {
+      label: "Company Id",
+      optional: true,
+      type: String
+    },
+    "settings.avalara.company.companyCode": {
+      label: "Company Code",
+      optional: true,
+      type: String
+    },
     "settings.avalara.password": {
       type: String
     },
