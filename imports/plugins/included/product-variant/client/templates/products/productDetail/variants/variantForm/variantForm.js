@@ -153,8 +153,12 @@ Template.variantForm.helpers({
             });
           });
         });
-        Meteor.call("taxes/fetchTaxCodes", shopId, provider.name, (res) => {
-          instance.state.set("taxCodes", res);
+        Meteor.call("taxes/fetchTaxCodes", shopId, provider.name, (err, res) => {
+          if (err) {
+            throw new Meteor.Error("Error fetching records", err);
+          } else {
+            instance.state.set("taxCodes", res);
+          }
         });
       } else {
         Meteor.call("taxes/fetchTaxCodes", shopId, provider.name, (err, res) => {
