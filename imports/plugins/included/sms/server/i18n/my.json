@@ -1,0 +1,18 @@
+[{
+  "i18n": "my",
+  "ns": "reaction-sms",
+  "translation": {
+    "reaction-sms": {
+      "admin": {
+        "dashboard": {
+          "smsLabel": "စာတို",
+          "smsTitle": "စာတို",
+          "smsDescription": "အသိပေးချက်များ"
+        },
+        "settings": {
+          "smsSettingsLabel": "SMS ကို setting များကို"
+        }
+      }
+    }
+  }
+}]

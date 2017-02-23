@@ -1,0 +1,15 @@
+[{
+  "i18n": "hr",
+  "ns": "reaction-layout",
+  "translation": {
+    "reaction-layout": {
+      "admin": {
+        "dashboard": {
+          "layoutLabel": "raspored",
+          "layoutTitle": "raspored",
+          "layoutDescription": "izgled komunalije"
+        }
+      }
+    }
+  }
+}]

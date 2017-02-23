@@ -1,0 +1,29 @@
+[{
+  "i18n": "vi",
+  "ns": "reaction-shippo",
+  "translation": {
+    "reaction-shippo": {
+      "admin": {
+        "dashboard": {
+          "shippoLabel": "Shippo",
+          "shippoTitle": "Shippo",
+          "shippoDescription": "nhãn vận chuyển và theo dõi gói"
+        },
+        "shippingGrid": {
+          "carrier": "Vận chuyển",
+          "enabled": "Bật"
+        },
+        "shippingSettings": {
+          "noCarriersFound": "Không có hãng vận chuyển cấu hình.",
+          "editApiKey": "Sửa API Key",
+          "carrierSaved": "Carrier lưu thành công.",
+          "carrierFailed": "Lỗi khi cập nhật hãng.",
+          "refresh": "phương pháp làm mới"
+        }
+      },
+      "shippo": {
+        "connectedAndSaved": "Cài đặt lưu! Shippo API được kích hoạt."
+      }
+    }
+  }
+}]

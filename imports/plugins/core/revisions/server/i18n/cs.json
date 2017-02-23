@@ -1,0 +1,22 @@
+[{
+  "i18n": "cs",
+  "ns": "reaction-revisions",
+  "translation": {
+    "reaction-revisions": {
+      "admin": {
+        "dashboard": {
+          "preview": "Náhled",
+          "revisionsLabel": "revize",
+          "revisionsTitle": "revize",
+          "revisionsDescription": "ovládání revize"
+        },
+        "settings": {
+          "productRevisionsLabel": "Revize produktu"
+        },
+        "toolbar": {
+          "publishAll": "publikovat vše"
+        }
+      }
+    }
+  }
+}]

@@ -21,6 +21,10 @@ results
 allure-results
 
 client/plugins.js
+client/plugins.css
+client/plugins.less
+client/plugins.styl
+client/plugins.scss
 server/plugins.js
 
 custom/client/*

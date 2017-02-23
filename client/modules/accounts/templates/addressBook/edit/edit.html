@@ -6,6 +6,9 @@
   </div>
   <div class="panel-body">
   {{#autoForm schema=Schemas.Address id="addressBookEditForm" doc=address type="normal"}}
+    <div class="row">
+      <span id="addressbookEdit-alerts-placement">{{> inlineAlerts placement="addressBookEdit"}}</span>
+    </div>
     <fieldset>
       {{>addressBookForm}}
       <div class="row text-right">

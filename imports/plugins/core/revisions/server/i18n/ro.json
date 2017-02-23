@@ -1,0 +1,22 @@
+[{
+  "i18n": "ro",
+  "ns": "reaction-revisions",
+  "translation": {
+    "reaction-revisions": {
+      "admin": {
+        "dashboard": {
+          "preview": "previzualizare",
+          "revisionsLabel": "reviziile",
+          "revisionsTitle": "reviziile",
+          "revisionsDescription": "controlul revizuirii"
+        },
+        "settings": {
+          "productRevisionsLabel": "Revizuiri produsului"
+        },
+        "toolbar": {
+          "publishAll": "publicaţi toate"
+        }
+      }
+    }
+  }
+}]

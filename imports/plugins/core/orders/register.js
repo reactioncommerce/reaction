@@ -16,7 +16,7 @@ Reaction.registerPackage({
     label: "Orders",
     description: "Fulfill your orders",
     icon: "fa fa-sun-o",
-    priority: 1,
+    priority: 0,
     container: "core",
     template: "orders"
   }, {
@@ -26,7 +26,9 @@ Reaction.registerPackage({
     label: "Orders",
     description: "Fulfill your orders",
     icon: "fa fa-sun-o",
-    priority: 1
+    priority: 1,
+    container: "dashboard",
+    template: "orders"
   }, {
     route: "/dashboard/pdf/orders/:id",
     workflow: "coreOrderPrintWorkflow",

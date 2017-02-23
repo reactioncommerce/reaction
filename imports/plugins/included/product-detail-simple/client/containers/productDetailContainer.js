@@ -1,3 +1,5 @@
+import { isEmpty } from "lodash";
+import { StyleRoot } from "radium";
 import React, { Component, PropTypes } from "react";
 import { composeWithTracker } from "/lib/api/compose";
 import { Meteor } from "meteor/meteor";
@@ -5,11 +7,10 @@ import { ReactionProduct } from "/lib/api";
 import { Reaction, i18next, Logger } from "/client/api";
 import { Tags, Media } from "/lib/collections";
 import { Loading } from "/imports/plugins/core/ui/client/components";
-import { ProductDetail } from "../components";
+import { ProductDetail, ProductNotFound } from "../components";
 import { SocialContainer, VariantListContainer } from "./";
 import { MediaGalleryContainer } from "/imports/plugins/core/ui/client/containers";
 import { DragDropProvider, TranslationProvider } from "/imports/plugins/core/ui/client/providers";
-import { StyleRoot } from "radium";
 
 class ProductDetailContainer extends Component {
   constructor(props) {
@@ -146,6 +147,11 @@ class ProductDetailContainer extends Component {
   }
 
   render() {
+    if (isEmpty(this.props.product)) {
+      return (
+        <ProductNotFound />
+      );
+    }
     return (
       <TranslationProvider>
         <DragDropProvider>
@@ -179,7 +185,7 @@ function composer(props, onData) {
   const productId = Reaction.Router.getParam("handle");
   const variantId = Reaction.Router.getParam("variantId");
   const revisionType = Reaction.Router.getQueryParam("revision");
-  const viewProductAs = Reaction.Router.getQueryParam("as");
+  const viewProductAs = Reaction.getUserPreferences("reaction-dashboard", "viewAs", "administrator");
 
   let productSub;
 
@@ -213,6 +219,7 @@ function composer(props, onData) {
       const selectedVariant = ReactionProduct.selectedVariant();
 
       if (selectedVariant) {
+        // Find the media for the selected variant
         mediaArray = Media.find({
           "metadata.variantId": selectedVariant._id
         }, {
@@ -220,6 +227,26 @@ function composer(props, onData) {
             "metadata.priority": 1
           }
         }).fetch();
+
+        // If no media found, broaden the search to include other media from parents
+        if (Array.isArray(mediaArray) && mediaArray.length === 0 && selectedVariant.ancestors) {
+          // Loop through ancestors in reverse to find a variant that has media to use
+          for (const ancestor of selectedVariant.ancestors.reverse()) {
+            const media = Media.find({
+              "metadata.variantId": ancestor
+            }, {
+              sort: {
+                "metadata.priority": 1
+              }
+            }).fetch();
+
+            // If we found some media, then stop here
+            if (Array.isArray(media) && media.length) {
+              mediaArray = media;
+              break;
+            }
+          }
+        }
       }
 
       let priceRange;
@@ -261,6 +288,9 @@ function composer(props, onData) {
         viewAs: viewProductAs,
         hasAdminPermission: Reaction.hasPermission(["createProduct"])
       });
+    } else {
+      // onData must be called with composeWithTracker, or else the loading icon will show forever.
+      onData(null, {});
     }
   }
 }

@@ -1,0 +1,18 @@
+[{
+  "i18n": "vi",
+  "ns": "reaction-sms",
+  "translation": {
+    "reaction-sms": {
+      "admin": {
+        "dashboard": {
+          "smsLabel": "tin nhắn",
+          "smsTitle": "tin nhắn",
+          "smsDescription": "thông báo"
+        },
+        "settings": {
+          "smsSettingsLabel": "cài đặt SMS"
+        }
+      }
+    }
+  }
+}]

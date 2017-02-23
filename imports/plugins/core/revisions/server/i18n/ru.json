@@ -1,0 +1,22 @@
+[{
+  "i18n": "ru",
+  "ns": "reaction-revisions",
+  "translation": {
+    "reaction-revisions": {
+      "admin": {
+        "dashboard": {
+          "preview": "Предварительный просмотр",
+          "revisionsLabel": "Ревизии",
+          "revisionsTitle": "Ревизии",
+          "revisionsDescription": "контроль версий"
+        },
+        "settings": {
+          "productRevisionsLabel": "Ревизии продукта"
+        },
+        "toolbar": {
+          "publishAll": "Опубликовать все"
+        }
+      }
+    }
+  }
+}]

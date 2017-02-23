@@ -1,0 +1,14 @@
+[{
+  "i18n": "ro",
+  "ns": "reaction-product-admin",
+  "translation": {
+    "reaction-product-admin": {
+      "admin": {
+        "settings": {
+          "productSettingsLabel": "Setări produs",
+          "productDetailsLabel": "Detalii produs"
+        }
+      }
+    }
+  }
+}]

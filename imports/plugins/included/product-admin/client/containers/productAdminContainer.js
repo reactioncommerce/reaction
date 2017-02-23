@@ -27,7 +27,12 @@ class ProductAdminContainer extends Component {
   }
 
   handleProductFieldSave = (productId, fieldName, value) => {
-    Meteor.call("products/updateProductField", productId, fieldName, value);
+    let updateValue = value;
+    // special case, slugify handles.
+    if (fieldName === "handle") {
+      updateValue = Reaction.getSlug(value);
+    }
+    Meteor.call("products/updateProductField", productId, fieldName, updateValue);
   }
 
 
@@ -129,6 +134,8 @@ function composer(props, onData) {
       tags,
       revisonDocumentIds
     });
+  } else {
+    onData(null, {});
   }
 }
 

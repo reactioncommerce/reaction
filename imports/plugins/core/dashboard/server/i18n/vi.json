@@ -1,0 +1,20 @@
+[{
+  "i18n": "vi",
+  "ns": "reaction-dashboard",
+  "translation": {
+    "reaction-dashboard": {
+      "admin": {
+        "shortcut": {
+          "dashboardLabel": "bảng điều khiển"
+        },
+        "dashboard": {
+          "packageGroupActionsLabel": "Hoạt động",
+          "packageGroupSettingsLabel": "Cài đặt"
+        },
+        "settings": {
+          "shopSettingsLabel": "cửa tiệm"
+        }
+      }
+    }
+  }
+}]

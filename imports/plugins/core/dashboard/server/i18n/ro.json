@@ -1,0 +1,20 @@
+[{
+  "i18n": "ro",
+  "ns": "reaction-dashboard",
+  "translation": {
+    "reaction-dashboard": {
+      "admin": {
+        "shortcut": {
+          "dashboardLabel": "Bord"
+        },
+        "dashboard": {
+          "packageGroupActionsLabel": "acţiuni",
+          "packageGroupSettingsLabel": "Setări"
+        },
+        "settings": {
+          "shopSettingsLabel": "Magazin"
+        }
+      }
+    }
+  }
+}]

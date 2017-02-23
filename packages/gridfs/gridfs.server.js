@@ -1,3 +1,4 @@
+/* eslint-disable */
 const path = Npm.require("path");
 const mongodb = Npm.require("mongodb");
 const ObjectID = Npm.require("mongodb").ObjectID;

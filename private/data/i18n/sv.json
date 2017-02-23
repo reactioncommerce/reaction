@@ -7,65 +7,21 @@
       "languages": {
         "select": "Välj språk"
       },
+      "currencies": {
+        "select": "Välj valuta"
+      },
       "admin": {
         "shortcut": {
-          "dashboardLabel": "Instrumentbräda",
-          "ordersLabel": "Order",
           "addProductLabel": "Lägg Produkt",
           "accountsLabel": "Konton"
         },
         "dashboard": {
-          "accountsLabel": "Konton",
-          "accountsTitle": "Konton",
-          "accountsDescription": "Hantera medlemmens behörigheter",
-          "analyticsLabel": "Analytics",
-          "analyticsTitle": "Analytics",
-          "analyticsDescription": "Analytics och spårning integrationer",
-          "shippingLabel": "Frakt",
-          "shippingTitle": "Frakt",
-          "shippingDescription": "Tillhandahålla fraktkostnader",
-          "catalogLabel": "Katalog",
-          "catalogTitle": "Katalog",
-          "catalogDescription": "Produktkatalog",
-          "coreLabel": "Inställningar",
-          "coreTitle": "Instrumentbräda",
-          "coreDescription": "reaktions konfiguration",
-          "emailLabel": "E-post",
-          "emailTitle": "E-post",
-          "emailDescription": "e-postinställningar",
           "i18NLabel": "i18n",
           "i18NTitle": "i18n",
           "i18NDescription": "internationaliseringsverktyg",
-          "inventoryLabel": "Lager",
-          "inventoryTitle": "Lager",
-          "inventoryDescription": "lager verktyg",
-          "layoutLabel": "Layout",
-          "layoutTitle": "Layout",
-          "layoutDescription": "layout verktyg",
-          "connectLabel": "Ansluta",
-          "connectTitle": "Ansluta",
-          "connectDescription": "Anslut reaktion som en utvecklad tjänst",
-          "ordersLabel": "Order",
-          "smsLabel": "SMS",
-          "smsTitle": "SMS",
-          "smsDescription": "Meddelanden",
-          "ordersTitle": "Order",
-          "ordersDescription": "Uppfylla dina beställningar",
-          "revisionsLabel": "revideringar",
-          "revisionsTitle": "revideringar",
-          "revisionsDescription": "revisionskontroll",
           "routingLabel": "routing",
           "routingTitle": "routing",
           "routingDescription": "routing verktyg",
-          "searchLabel": "Sök",
-          "searchTitle": "Sök",
-          "searchDescription": "Sök produkt",
-          "socialLabel": "Socialt",
-          "socialTitle": "Socialt",
-          "socialDescription": "Social kanalkonfiguration",
-          "themesLabel": "teman",
-          "themesTitle": "teman",
-          "themesDescription": "Teman och användargränssnittskomponenter",
           "filtrationLabel": "Filtrering",
           "filtrationDescription": "Produkter filtrering för Reaction"
         },
@@ -79,25 +35,14 @@
           "utilities": "verktyg"
         },
         "settings": {
+          "accountSettingsLabel": "Kontoinställningar",
+          "accountSettingsTitle": "Login Tjänster",
+          "accountSettingsDescription": "Autentisering genom sociala leverantörer",
           "saveSuccess": "Inställningar uppdaterade.",
           "saveFailed": "Det gick inte att uppdatera inställningarna.",
-          "accountSettingsLabel": "Kontoinställningar",
           "addShopMemberLabel": "Lägg Shop Medlem",
           "permissionsSettingsLabel": "Behörigheter",
-          "localizationAndI18NLabel": "Lokalisering och i18n",
-          "searchSettingsLabel": "sökinställningar",
-          "shopSettingsLabel": "butiks Inställningar",
-          "smsSettingsLabel": "SMS-inställningar",
-          "socialSettingsLabel": "sociala inställningar",
-          "shippingSettingsLabel": "Frakt Inställningar",
-          "inventorySettingsLabel": "lager~~POS=TRUNC",
-          "analyticsSettingsLabel": "Inställningar för Analytics",
-          "reactionConnectLabel": "reaktions~~POS=TRUNC Connect",
-          "productSettingsLabel": "produkt~~POS=TRUNC",
-          "productDetailsLabel": "Produktinformation",
-          "productRevisionsLabel": "produkt~~POS=TRUNC Revideringar",
-          "emailSettingsLabel": "e-postinställningar",
-          "catalogSettingsLabel": "katalog~~POS=TRUNC"
+          "localizationAndI18NLabel": "Lokalisering och i18n"
         },
         "userAccountDropdown": {
           "profileLabel": "Profil"
@@ -111,6 +56,8 @@
       "app": {
         "add": "Lägga till",
         "editMode": "redigeringsläge",
+        "administratorView": "administratör View",
+        "customerView": "kund~~POS=TRUNC View",
         "createContent": "Skapa innehåll",
         "auto": "Bil",
         "save": "Spara",
@@ -355,9 +302,12 @@
         "variantDetails": "variant Detaljer",
         "duplicateVariant": "Duplicera",
         "addVariantOption": "Lägg Alternativ",
+        "addVariantFail": "Det går inte att skapa variant för {{title}}.",
+        "cloneVariantFail": "Det går inte att klona variant för {{title}}.",
         "removeVariant": "Avlägsna",
         "removeVariantConfirm": "Är du säker på att du vill radera {{title}}",
         "restoreVariantConfirm": "Är du säker på att du vill återställa {{title}} från papperskorgen?",
+        "restoreVariantFail": "Det går inte att återställa {{title}}.",
         "archiveVariantConfirm": "Är du säker på att du vill arkivera {{title}}",
         "thisVariant": "denna variant",
         "thisOption": "detta alternativ",
@@ -475,11 +425,16 @@
         "notShipped": "Not yet Sänt",
         "noTracking": "Ingen spårning",
         "tracking": "spårning",
+        "printLabels": "Skriv ut etiketter",
+        "printShippingLabel": "Frakt",
+        "printCustomsLabel": "Tull",
+        "carrier": "Bärare",
         "addTracking": "Lägg Tracking",
         "itemsHaveBeenShipped": "Objekten har sänts",
         "shipmentEmpty": "Denna sändning har inga artiklar",
         "shipmentPacked": "Alla artiklar Packad",
         "shipped": "skeppas",
+        "delivered": "levereras",
         "shippingNotifyCustomer": "Meddela kunden att deras varor kommer att sjöfart snart.",
         "resendNotification": "Återsänd sändning Anmälan"
       },
@@ -500,6 +455,8 @@
         "yourOrderIsNow": "Din beställning är nu",
         "summaryMessage": "Tack för din beställning.",
         "submitted": "lämnats",
+        "processing": "bearbetning",
+        "completed": "avslutad",
         "registerGuest": "Hallå! Lägg till ett e-post och ta emot uppdateringar order.",
         "trackYourDelivery": "Order uppdateringar kommer att skickas till",
         "noOrdersFound": "Inga order hittades.",
@@ -526,7 +483,8 @@
       "addressBookAdd": {
         "addAddress": "Lägg till en ny adresspost",
         "createAddress": "Skapa din standardadress",
-        "failedToAddAddress": "Det gick inte att lägga till adress: {{err}}"
+        "failedToAddAddress": "Det gick inte att lägga till adress: {{err}}",
+        "validatedAddress": "Gjort ändringar i din adress baserad på validering. Se detta är korrekt"
       },
       "addressBookEdit": {
         "editAddress": "Redigera den här adressen inträde",
@@ -625,68 +583,6 @@
       },
       "checkoutReview": {
         "review": "Recension"
-      },
-      "checkoutShipping": {
-        "selectShippingOption": "Välj leveransalternativ",
-        "noShippingMethods": "Inga transportsätt konfigureras.",
-        "configureNow": "Konfigurera nu.",
-        "shipping": "Frakt"
-      },
-      "shipping": {
-        "addShippingProvider": "Fogar sändnings provider",
-        "editShippingProvider": "Redigera leverans provider",
-        "addShippingMethod": "Lägg fraktsätt",
-        "editShippingMethod": "Redigera leveranssätt",
-        "deleteShippingMethod": "Radera fraktsätt",
-        "noSettingsForThisView": "Inga inställningar för denna uppfattning",
-        "noShippingMethods": "Inga transportsätt konfigureras.",
-        "removeShippingMethodConfirm": "Är du säker på att du vill radera {{method}}?",
-        "removeShippingMethodTitle": "Ta Sändningsmetod",
-        "shippingMethodDeleted": "Denna leveransmetod har tagits bort.",
-        "removeShippingProvider": "Avlägsna Shipping Provider",
-        "removeShippingProviderConfirm": "Är du säker på att du vill radera {{provider}}?",
-        "shippingProviderSaved": "Speditör sparas.",
-        "shippingProviderUpdated": "Fraktoperatörsdata uppdateras.",
-        "shippingMethodRateAdded": "Fraktsätt hastigheten tillsätts.",
-        "shippingMethodRateUpdated": "Fraktsätt hastighet uppdateras.",
-        "name": "Namn",
-        "label": "Etikett",
-        "group": "Grupp",
-        "cost": "Kosta",
-        "handling": "Hantering",
-        "rate": "Betygsätt",
-        "enabled": "Aktiverad",
-        "disabled": "Funktionshindrade",
-        "addRate": "Lägg hastighet",
-        "updateRate": "Uppdatering {{name}} hastighet",
-        "addNewCondition": "Lägg till nyskick",
-        "deleteCondition": "radera Förhållande",
-        "provider": {
-          "name": "service-kod",
-          "label": "offentliga Label",
-          "enabled": "Aktiverad"
-        }
-      },
-      "shippingMethod": {
-        "name": "metod Namn",
-        "label": "offentliga Label",
-        "group": "Grupp",
-        "cost": "Kosta",
-        "handling": "Hantering",
-        "rate": "Betygsätt",
-        "enabled": "Aktiverad",
-        "matchingCartRanges": "Matchning Vagn Ranges",
-        "validRanges": {
-          "begin": "Börja",
-          "end": "Slut"
-        },
-        "matchingLocales": "matchning språkversioner",
-        "validLocales": {
-          "origination": "Från",
-          "destination": "Till",
-          "deliveryBegin": "Shipping Est.",
-          "deliveryEnd": "Leverans Est."
-        }
       },
       "uom": {
         "OZ": "uns",
@@ -814,16 +710,6 @@
           "passwordResetSend": "E-post med återställning av lösenord länk har skickats.",
           "invitationSent": "inbjudan har skickats",
           "sendInvitation": "Skicka inbjudan"
-        },
-        "reactionUI": {
-          "editTheme": "redigera Tema",
-          "duplicateTheme": "duplikat tema",
-          "duplicateThemeError": "Det gick inte att duplicera tema",
-          "publishThemeError": "`Det gick inte att publicera tema {{themeName}}",
-          "components": {
-            "navbar": "Navigeringsfält",
-            "button": "Knapp"
-          }
         },
         "error": {
           "emailRequired": "Det krävs ett lösenord.",

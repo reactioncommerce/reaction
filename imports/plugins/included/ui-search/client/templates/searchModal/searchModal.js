@@ -123,7 +123,6 @@ Template.searchModal.helpers({
     return {
       component: IconButton,
       icon: "fa fa-times",
-      kind: "close",
       onClick() {
         $(".js-search-modal").fadeOut(400, () => {
           $("body").css("overflow", "visible");

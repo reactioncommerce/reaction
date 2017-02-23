@@ -1,0 +1,20 @@
+[{
+  "i18n": "cs",
+  "ns": "reaction-dashboard",
+  "translation": {
+    "reaction-dashboard": {
+      "admin": {
+        "shortcut": {
+          "dashboardLabel": "přístrojová deska"
+        },
+        "dashboard": {
+          "packageGroupActionsLabel": "Akce",
+          "packageGroupSettingsLabel": "Nastavení"
+        },
+        "settings": {
+          "shopSettingsLabel": "Prodejna"
+        }
+      }
+    }
+  }
+}]

@@ -124,7 +124,7 @@ Meteor.methods({
           response: chargeResult
         };
       } else {
-        Logger.info("Stripe Call succeeded but charge failed");
+        Logger.debug("Stripe Call succeeded but charge failed");
         result = {
           saved: false,
           error: chargeResult.error.message
@@ -183,7 +183,7 @@ Meteor.methods({
     let result;
     try {
       const refundResult = StripeApi.methods.createRefund.call({ refundDetails });
-      Logger.info(refundResult);
+      Logger.debug(refundResult);
       if (refundResult && refundResult.object === "refund") {
         result = {
           saved: true,

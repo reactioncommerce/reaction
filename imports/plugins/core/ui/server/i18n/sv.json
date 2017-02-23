@@ -1,0 +1,25 @@
+[{
+  "i18n": "sv",
+  "ns": "reaction-ui",
+  "translation": {
+    "reaction-catalog": {
+      "admin": {
+        "dashboard": {
+          "themesLabel": "teman",
+          "themesTitle": "teman",
+          "themesDescription": "Teman och användargränssnittskomponenter"
+        }
+      },
+      "reactionUI": {
+        "editTheme": "redigera Tema",
+        "duplicateTheme": "duplikat tema",
+        "duplicateThemeError": "Det gick inte att duplicera tema",
+        "publishThemeError": "`Det gick inte att publicera tema {{themeName}}",
+        "components": {
+          "navbar": "Navigeringsfält",
+          "button": "Knapp"
+        }
+      }
+    }
+  }
+}]

@@ -7,65 +7,21 @@
       "languages": {
         "select": "Διάλεξε γλώσσα"
       },
+      "currencies": {
+        "select": "Επιλέξτε Νόμισμα"
+      },
       "admin": {
         "shortcut": {
-          "dashboardLabel": "Ταμπλό",
-          "ordersLabel": "παραγγελίες",
           "addProductLabel": "Προσθέστε το προϊόν",
           "accountsLabel": "λογαριασμοί"
         },
         "dashboard": {
-          "accountsLabel": "λογαριασμοί",
-          "accountsTitle": "λογαριασμοί",
-          "accountsDescription": "Διαχειριστείτε τα δικαιώματα του μέλους",
-          "analyticsLabel": "Analytics",
-          "analyticsTitle": "Analytics",
-          "analyticsDescription": "Analytics και ολοκληρώσεις παρακολούθησης",
-          "shippingLabel": "Αποστολή",
-          "shippingTitle": "Αποστολή",
-          "shippingDescription": "Παρέχουν τα έξοδα αποστολής",
-          "catalogLabel": "Κατάλογος",
-          "catalogTitle": "Κατάλογος",
-          "catalogDescription": "Κατάλογος Προϊόντων",
-          "coreLabel": "Ρυθμίσεις",
-          "coreTitle": "Ταμπλό",
-          "coreDescription": "διαμόρφωση αντίδραση",
-          "emailLabel": "E-mail",
-          "emailTitle": "E-mail",
-          "emailDescription": "ρυθμίσεις email",
           "i18NLabel": "i18n",
           "i18NTitle": "i18n",
           "i18NDescription": "βοηθητικά προγράμματα διεθνοποίησης",
-          "inventoryLabel": "Καταγραφή εμπορευμάτων",
-          "inventoryTitle": "Καταγραφή εμπορευμάτων",
-          "inventoryDescription": "επιχειρήσεις κοινής ωφέλειας απογραφή",
-          "layoutLabel": "Διάταξη",
-          "layoutTitle": "Διάταξη",
-          "layoutDescription": "διάταξη κοινής ωφελείας",
-          "connectLabel": "Συνδέω",
-          "connectTitle": "Συνδέω",
-          "connectDescription": "Συνδέστε Αντίδραση ως αναπτυχθεί υπηρεσία",
-          "ordersLabel": "παραγγελίες",
-          "smsLabel": "γραπτό μήνυμα",
-          "smsTitle": "γραπτό μήνυμα",
-          "smsDescription": "Ειδοποιήσεις",
-          "ordersTitle": "παραγγελίες",
-          "ordersDescription": "Εκπληρώσει τις παραγγελίες σας",
-          "revisionsLabel": "αναθεωρήσεις",
-          "revisionsTitle": "αναθεωρήσεις",
-          "revisionsDescription": "έλεγχο αναθεώρηση",
           "routingLabel": "Δρομολόγηση",
           "routingTitle": "Δρομολόγηση",
           "routingDescription": "δρομολόγηση υπηρεσιών κοινής ωφελείας",
-          "searchLabel": "Έρευνα",
-          "searchTitle": "Έρευνα",
-          "searchDescription": "Αναζήτηση προϊόντων",
-          "socialLabel": "Κοινωνικός",
-          "socialTitle": "Κοινωνικός",
-          "socialDescription": "διαμόρφωση της κοινωνικής Κανάλι",
-          "themesLabel": "θέματα",
-          "themesTitle": "θέματα",
-          "themesDescription": "Θέματα και UI Components",
           "filtrationLabel": "Διήθηση",
           "filtrationDescription": "Προϊόντα διήθησης για αντίδραση"
         },
@@ -79,25 +35,14 @@
           "utilities": "Utilities"
         },
         "settings": {
+          "accountSettingsLabel": "Ρυθμίσεις λογαριασμού",
+          "accountSettingsTitle": "Είσοδος Υπηρεσίες",
+          "accountSettingsDescription": "Ο έλεγχος ταυτότητας μέσω των κοινωνικών φορέων παροχής",
           "saveSuccess": "Ρυθμίσεις ενημερωμένο.",
           "saveFailed": "Απέτυχε η ενημέρωση των ρυθμίσεων.",
-          "accountSettingsLabel": "Ρυθμίσεις λογαριασμού",
           "addShopMemberLabel": "Προσθέστε κατάστημα κράτη",
           "permissionsSettingsLabel": "δικαιώματα",
-          "localizationAndI18NLabel": "Εντοπισμό και i18n",
-          "searchSettingsLabel": "Ρυθμίσεις αναζήτησης",
-          "shopSettingsLabel": "Ρυθμίσεις Shop",
-          "smsSettingsLabel": "ρυθμίσεις SMS",
-          "socialSettingsLabel": "κοινωνική Ρυθμίσεις",
-          "shippingSettingsLabel": "Ρυθμίσεις ναυτιλία",
-          "inventorySettingsLabel": "Ρυθμίσεις απογραφή",
-          "analyticsSettingsLabel": "Ρυθμίσεις Analytics",
-          "reactionConnectLabel": "αντίδραση Connect",
-          "productSettingsLabel": "Ρυθμίσεις προϊόντος",
-          "productDetailsLabel": "λεπτομέρειες προιόντος",
-          "productRevisionsLabel": "αναθεωρήσεις του προϊόντος",
-          "emailSettingsLabel": "Ρυθμίσεις email",
-          "catalogSettingsLabel": "Ρυθμίσεις Κατάλογος"
+          "localizationAndI18NLabel": "Εντοπισμό και i18n"
         },
         "userAccountDropdown": {
           "profileLabel": "Προφίλ"
@@ -111,6 +56,8 @@
       "app": {
         "add": "Προσθέτω",
         "editMode": "κατάσταση επεξεργασίας",
+        "administratorView": "διαχειριστή View",
+        "customerView": "Προβολή των πελατών",
         "createContent": "Δημιουργία περιεχομένου",
         "auto": "Αυτο",
         "save": "Αποθηκεύσετε",
@@ -355,9 +302,12 @@
         "variantDetails": "παραλλαγή Λεπτομέρειες",
         "duplicateVariant": "Αντίγραφο",
         "addVariantOption": "Προσθέστε Επιλογή",
+        "addVariantFail": "Αδύνατη η δημιουργία παραλλαγή για {{title}}.",
+        "cloneVariantFail": "Δεν είναι δυνατή η κλωνοποίηση παραλλαγή για {{title}}.",
         "removeVariant": "Αφαιρώ",
         "removeVariantConfirm": "Είστε σίγουροι ότι θέλετε να διαγράψετε {{title}}",
         "restoreVariantConfirm": "Είστε σίγουροι ότι θέλετε να επαναφέρετε {{title}} από τα σκουπίδια;",
+        "restoreVariantFail": "Δεν είναι δυνατή η αποκατάσταση της {{title}}.",
         "archiveVariantConfirm": "Είστε βέβαιοι ότι θέλετε να αρχειοθετήσετε {{title}}",
         "thisVariant": "Αυτή η παραλλαγή",
         "thisOption": "Αυτή η επιλογή",
@@ -475,11 +425,16 @@
         "notShipped": "Δεν έχει ακόμη αποσταλεί",
         "noTracking": "δεν Παρακολούθηση",
         "tracking": "Παρακολούθηση",
+        "printLabels": "Ετικέτες Εκτύπωση",
+        "printShippingLabel": "Αποστολή",
+        "printCustomsLabel": "ΗΘΗ και εθιμα",
+        "carrier": "Φορέας",
         "addTracking": "Προσθέστε Παρακολούθηση",
         "itemsHaveBeenShipped": "στοιχεία έχουν αποσταλεί",
         "shipmentEmpty": "Αυτή η αποστολή δεν έχει στοιχεία",
         "shipmentPacked": "Όλα τα προϊόντα είναι συσκευασμένα",
         "shipped": "αποστέλλονται",
+        "delivered": "Δημοσιεύθηκε",
         "shippingNotifyCustomer": "Ειδοποίηση για τον πελάτη ότι τα στοιχεία τους θα ναυτιλία σύντομα.",
         "resendNotification": "Επανάληψη αποστολής ειδοποιήσεων αποστολή"
       },
@@ -500,6 +455,8 @@
         "yourOrderIsNow": "Η παραγγελία σου είναι τώρα",
         "summaryMessage": "Σε ευχαριστούμε για την παραγγελία σου.",
         "submitted": "υποβλήθηκε",
+        "processing": "επεξεργασία",
+        "completed": "ολοκληρώθηκε το",
         "registerGuest": "Γειά! Πρόσθεσε ένα email για να λαμβάνεις ενημερώσεις.",
         "trackYourDelivery": "Ενημερώσεις για την παραγγελία θα στέλνονται στο ",
         "noOrdersFound": "Δεν βρέθηκαν παραγγελίες.",
@@ -526,7 +483,8 @@
       "addressBookAdd": {
         "addAddress": "Προσθήκη νέας διεύθυνσης",
         "createAddress": "Δημιούργία προεπιλεγμένης διεύθυνσης",
-        "failedToAddAddress": "Αποτυχία να προσθέσετε τη διεύθυνση: {{err}}"
+        "failedToAddAddress": "Αποτυχία να προσθέσετε τη διεύθυνση: {{err}}",
+        "validatedAddress": "Κάνει αλλαγές στη διεύθυνσή σας με βάση την επικύρωση. Παρακαλούμε βεβαιωθείτε ότι αυτό είναι σωστό"
       },
       "addressBookEdit": {
         "editAddress": "Επεξεργασία διεύθυνσης",
@@ -625,68 +583,6 @@
       },
       "checkoutReview": {
         "review": "Επανέλεγχος"
-      },
-      "checkoutShipping": {
-        "selectShippingOption": "Διάλεξε τρόπο αποστολής",
-        "noShippingMethods": "Δεν υπάρχουν τρόποι αποστολής.",
-        "configureNow": "Ρύθμιση τώρα.",
-        "shipping": "Αποστολή"
-      },
-      "shipping": {
-        "addShippingProvider": "Προσθέστε την υπηρεσία αποστολής",
-        "editShippingProvider": "Επεξεργασία υπηρεσία αποστολής",
-        "addShippingMethod": "Προσθήκη μέθοδο αποστολής",
-        "editShippingMethod": "Επεξεργασία μεθόδου αποστολής",
-        "deleteShippingMethod": "Διαγραφή μέθοδο αποστολής",
-        "noSettingsForThisView": "Δεν υπάρχουν ρυθμίσεις για αυτό το σκοπό",
-        "noShippingMethods": "Δεν μέθοδοι ναυτιλίας ρυθμιστεί.",
-        "removeShippingMethodConfirm": "Είστε σίγουροι ότι θέλετε να διαγράψετε {{method}};",
-        "removeShippingMethodTitle": "Κατάργηση Μέθοδος ναυτιλίας",
-        "shippingMethodDeleted": "Αυτή η μέθοδος ναυτιλίας έχει διαγραφεί.",
-        "removeShippingProvider": "Κατάργηση Provider Ναυτιλίας",
-        "removeShippingProviderConfirm": "Είστε σίγουροι ότι θέλετε να διαγράψετε {{provider}};",
-        "shippingProviderSaved": "Ο πάροχος υπηρεσιών αποστολής σωθεί.",
-        "shippingProviderUpdated": "ενημερωμένα δεδομένα παρόχου ναυτιλία.",
-        "shippingMethodRateAdded": "ρυθμός μέθοδο αποστολής πρόσθεσε.",
-        "shippingMethodRateUpdated": "ρυθμός μέθοδο αποστολής ενημερωθεί.",
-        "name": "Όνομα",
-        "label": "Επιγραφή",
-        "group": "Ομάδα",
-        "cost": "Κόστος",
-        "handling": "Χειριζόμενος",
-        "rate": "Τιμή",
-        "enabled": "Ενεργοποιήθηκε",
-        "disabled": "Ανάπηρος",
-        "addRate": "Προσθέστε ποσοστό",
-        "updateRate": "ρυθμό ανανέωσης {{name}}",
-        "addNewCondition": "Προσθήκη νέου κατάσταση",
-        "deleteCondition": "Διαγραφή κατάσταση",
-        "provider": {
-          "name": "Κωδικός υπηρεσίας",
-          "label": "δημόσια Label",
-          "enabled": "Ενεργοποιήθηκε"
-        }
-      },
-      "shippingMethod": {
-        "name": "Όνομα μέθοδο",
-        "label": "δημόσια Label",
-        "group": "Ομάδα",
-        "cost": "Κόστος",
-        "handling": "Χειριζόμενος",
-        "rate": "Τιμή",
-        "enabled": "Ενεργοποιήθηκε",
-        "matchingCartRanges": "Ταιριάζουν καλαθιού Σειρές",
-        "validRanges": {
-          "begin": "Αρχίζουν",
-          "end": "Τέλος"
-        },
-        "matchingLocales": "ταιριάζουν Τοπικές",
-        "validLocales": {
-          "origination": "Από",
-          "destination": "Να",
-          "deliveryBegin": "Αποστολές Est.",
-          "deliveryEnd": "Παράδοση Est."
-        }
       },
       "uom": {
         "OZ": "ουγγιές",
@@ -814,16 +710,6 @@
           "passwordResetSend": "E-mail με σύνδεσμο επαναφοράς κωδικού πρόσβασης έχει αποσταλεί.",
           "invitationSent": "πρόσκληση Sent",
           "sendInvitation": "Αποστολή πρόσκλησης"
-        },
-        "reactionUI": {
-          "editTheme": "Επεξεργασία θέματος",
-          "duplicateTheme": "διπλότυπο Θέμα",
-          "duplicateThemeError": "Δεν θα μπορούσε να επαναλάβει το θέμα",
-          "publishThemeError": "`Δεν ήταν δυνατή η δημοσίευση θέμα {{themeName}}",
-          "components": {
-            "navbar": "Μπάρα πλοήγησης",
-            "button": "Κουμπί"
-          }
         },
         "error": {
           "emailRequired": "Το Email είναι υποχρεωτικό.",

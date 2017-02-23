@@ -18,11 +18,31 @@
       <span>{{order._id}}</span>
     </div>
 
-    <div class="">
+    <div>
+      <strong data-i18n="orderShipping.carrier">Carrier</strong>
+      <span>{{shipment.shipmentMethod.carrier}} - {{shipment.shipmentMethod.label}}</span>
+    </div>
+
+    <div>
       <strong data-i18n="orderShipping.tracking">Tracking</strong>
       <span>{{tracking}}</span> -
       <span class="badge badge-{{shipmentStatus.status}}">{{shipmentStatus.label}}</span>
     </div>
 
+    {{#if printableLabels}}
+    <div>
+      <strong data-i18n="orderShipping.printLabels">Labels</strong>
+        {{#if printableLabels.shippingLabelUrl}}
+          <a href="{{printableLabels.shippingLabelUrl}}" target="_blank">
+            <span data-i18n="orderShipping.printShippingLabel">Print Shipping</span>
+          </a>
+        {{/if}}
+        {{#if printableLabels.customsLabelUrl}}
+          <a href="{{printableLabels.customsLabelUrl}}" target="_blank">
+            <span data-i18n="orderShipping.printCustomsLabel">Print Customs</span>
+          </a>
+        {{/if}}
+    </div>
+    {{/if}}
   </div>
 </template>

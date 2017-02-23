@@ -1,0 +1,29 @@
+[{
+  "i18n": "bg",
+  "ns": "reaction-shippo",
+  "translation": {
+    "reaction-shippo": {
+      "admin": {
+        "dashboard": {
+          "shippoLabel": "Shippo",
+          "shippoTitle": "Shippo",
+          "shippoDescription": "Доставка етикети и проследяване на пратки"
+        },
+        "shippingGrid": {
+          "carrier": "носител",
+          "enabled": "Enabled"
+        },
+        "shippingSettings": {
+          "noCarriersFound": "Не корабни превозвачи конфигурирани.",
+          "editApiKey": "Edit API Key",
+          "carrierSaved": "Carrier записан успешно.",
+          "carrierFailed": "Грешка при актуализирането на носител.",
+          "refresh": "Обнови методи"
+        }
+      },
+      "shippo": {
+        "connectedAndSaved": "Настройките са запазени! Shippo API вече е активиран."
+      }
+    }
+  }
+}]

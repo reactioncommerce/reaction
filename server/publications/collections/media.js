@@ -59,8 +59,10 @@ Meteor.publish("Media", function (shops) {
       removed: (revision) => {
         if (revision) {
           const media = Media.findOne(revision.documentId);
-          this.changed("Media", media._id, media);
-          this.removed("Revisions", revision._id, revision);
+          if (media) {
+            this.removed("Media", media._id, media);
+            this.removed("Revisions", revision._id, revision);
+          }
         }
       }
     });

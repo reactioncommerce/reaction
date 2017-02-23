@@ -9,63 +9,16 @@
       },
       "admin": {
         "shortcut": {
-          "dashboardLabel": "לוח המחוונים",
-          "ordersLabel": "הזמנות",
           "addProductLabel": "הוסף מוצר",
           "accountsLabel": "חשבונות"
         },
         "dashboard": {
-          "accountsLabel": "חשבונות",
-          "accountsTitle": "חשבונות",
-          "accountsDescription": "נהל הרשאות חבר",
-          "analyticsLabel": "ניתוח",
-          "analyticsTitle": "ניתוח",
-          "analyticsDescription": "ניתוח ואינטגרציות מעקב",
-          "shippingLabel": "משלוח",
-          "shippingTitle": "משלוח",
-          "shippingDescription": "תן תעריפי משלוח",
-          "catalogLabel": "קטלוג",
-          "catalogTitle": "קטלוג",
-          "catalogDescription": "קטלוג מוצרים",
-          "coreLabel": "הגדרות",
-          "coreTitle": "לוח המחוונים",
-          "coreDescription": "תצורת Reaction",
-          "emailLabel": "דוא\"ל",
-          "emailTitle": "דוא\"ל",
-          "emailDescription": "הגדרות דוא\"ל",
           "i18NLabel": "i18n",
           "i18NTitle": "i18n",
           "i18NDescription": "תכניות שירות לאינטרנציונליזציה",
-          "inventoryLabel": "מלאי",
-          "inventoryTitle": "מלאי",
-          "inventoryDescription": "תכניות שירות למלאי",
-          "layoutLabel": "פריסה",
-          "layoutTitle": "פריסה",
-          "layoutDescription": "תכניות שירות לפריסה",
-          "connectLabel": "התחבר לרשתות",
-          "connectTitle": "התחבר לרשתות",
-          "connectDescription": "חבר את Reaction כשירות נפרס (deployed service)",
-          "ordersLabel": "הזמנות",
-          "smsLabel": "SMS",
-          "smsTitle": "SMS",
-          "smsDescription": "התראות",
-          "ordersTitle": "הזמנות",
-          "ordersDescription": "בצע את ההזמנות שלך",
-          "revisionsLabel": "גרסאות",
-          "revisionsTitle": "גרסאות",
-          "revisionsDescription": "ניהול גרסאות",
           "routingLabel": "ניתוב",
           "routingTitle": "ניתוב",
           "routingDescription": "תכניות שירות לניתוב",
-          "searchLabel": "חיפוש",
-          "searchTitle": "חיפוש",
-          "searchDescription": "חיפוש מוצר",
-          "socialLabel": "חברתי",
-          "socialTitle": "חברתי",
-          "socialDescription": "קביעת תצורה לערוץ חברתי",
-          "themesLabel": "נושאים",
-          "themesTitle": "נושאים",
-          "themesDescription": "נושאים ורכיבי ממשק משתמש",
           "filtrationLabel": "סינון",
           "filtrationDescription": "סינון מוצרים ל- Reaction"
         },
@@ -79,25 +32,12 @@
           "utilities": "תכניות שירות"
         },
         "settings": {
+          "accountSettingsLabel": "הגדרות חשבון",
           "saveSuccess": "ההגדרות עודכנו.",
           "saveFailed": "עדכון ההגדרות נכשל.",
-          "accountSettingsLabel": "הגדרות חשבון",
           "addShopMemberLabel": "הוסף חבר חנות",
           "permissionsSettingsLabel": "הרשאות",
-          "localizationAndI18NLabel": "מיקום ו- i18n",
-          "searchSettingsLabel": "הגדרות חיפוש",
-          "shopSettingsLabel": "הגדרות חנות",
-          "smsSettingsLabel": "הגדרות SMS",
-          "socialSettingsLabel": "הגדרות חברתיות",
-          "shippingSettingsLabel": "הגדרות משלוחים",
-          "inventorySettingsLabel": "הגדרות מלאי",
-          "analyticsSettingsLabel": "הגדרות ניתוח",
-          "reactionConnectLabel": "חיבור Reaction",
-          "productSettingsLabel": "הגדרות מוצר",
-          "productDetailsLabel": "פרטי המוצר",
-          "productRevisionsLabel": "גרסאות מוצרים",
-          "emailSettingsLabel": "הגדרות דוא\"ל",
-          "catalogSettingsLabel": "הגדרות קטלוג"
+          "localizationAndI18NLabel": "מיקום ו- i18n"
         },
         "userAccountDropdown": {
           "profileLabel": "פרופיל"
@@ -622,68 +562,6 @@
       "checkoutReview": {
         "review": "סקירה"
       },
-      "checkoutShipping": {
-        "selectShippingOption": "בחר אפשרות משלוח",
-        "noShippingMethods": "לא מוגדרות אפשרויות משלוח.",
-        "configureNow": "הגדר עכשיו.",
-        "shipping": "משלוח"
-      },
-      "shipping": {
-        "addShippingProvider": "הוסף ספק משלוחים",
-        "editShippingProvider": "ערוך ספק משלוחים",
-        "addShippingMethod": "הוסף שיטת משלוח",
-        "editShippingMethod": "ערוך שיטת משלוח",
-        "deleteShippingMethod": "מחק שיטת משלוח",
-        "noSettingsForThisView": "אין הגדרות לתצוגה זו",
-        "noShippingMethods": "אין שיטות משלוח מוגדרות.",
-        "removeShippingMethodConfirm": "האם אתה בטוח שברצונך למחוק את {{method}}?",
-        "removeShippingMethodTitle": "הסר שיטת משלוח",
-        "shippingMethodDeleted": "שיטת משלוח זו נמחקה.",
-        "removeShippingProvider": "הסר ספק משלוחים",
-        "removeShippingProviderConfirm": "האם אתה בטוח שברצונך למחוק את {{provider}}?",
-        "shippingProviderSaved": "ספק המשלוחים נשמר.",
-        "shippingProviderUpdated": "נתוני ספק משלוח עודכנו.",
-        "shippingMethodRateAdded": "תעריף שיטת המשלוח נוסף.",
-        "shippingMethodRateUpdated": "תעריף שיטת המשלוח עודכן.",
-        "name": "שם",
-        "label": "תווית",
-        "group": "קבוצה",
-        "cost": "עלות",
-        "handling": "בטיפול",
-        "rate": "תעריף",
-        "enabled": "הופעל",
-        "disabled": "הושבת",
-        "addRate": "הוסף תעריף",
-        "updateRate": "עדכן תעריף {{name}}",
-        "addNewCondition": "הוסף תנאי חדש",
-        "deleteCondition": "מחק תנאי",
-        "provider": {
-          "name": "קוד שירות",
-          "label": "תווית ציבורית",
-          "enabled": "הופעל"
-        }
-      },
-      "shippingMethod": {
-        "name": "שם שיטה",
-        "label": "תווית ציבורית",
-        "group": "קבוצה",
-        "cost": "עלות",
-        "handling": "בטיפול",
-        "rate": "תעריף",
-        "enabled": "הופעל",
-        "matchingCartRanges": "התאמת טווחי עגלה",
-        "validRanges": {
-          "begin": "התחל",
-          "end": "סוף"
-        },
-        "matchingLocales": "התאמת אזורים",
-        "validLocales": {
-          "origination": "מ-",
-          "destination": "אל",
-          "deliveryBegin": "אומדן משלוח",
-          "deliveryEnd": "אומדן משלוח"
-        }
-      },
       "uom": {
         "OZ": "אונקיות",
         "LB": "פאונדים",
@@ -810,16 +688,6 @@
           "passwordResetSend": "הודעת דוא\"ל עם קישור לאיפוס הסיסמה נשלחה.",
           "invitationSent": "ההזמנה נשלחה",
           "sendInvitation": "שלח הזמנה"
-        },
-        "reactionUI": {
-          "editTheme": "ערוך נושא",
-          "duplicateTheme": "שכפל נושא",
-          "duplicateThemeError": "לא ניתן לשכפל נושא",
-          "publishThemeError": "לא ניתן לפרסם את הנושא {{themeName}}",
-          "components": {
-            "navbar": "סרגל ניווט",
-            "button": "לחצן"
-          }
         },
         "error": {
           "emailRequired": "חובה להזין כתובת דוא\"ל",

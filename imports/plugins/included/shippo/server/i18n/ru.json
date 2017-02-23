@@ -1,0 +1,29 @@
+[{
+  "i18n": "ru",
+  "ns": "reaction-shippo",
+  "translation": {
+    "reaction-shippo": {
+      "admin": {
+        "dashboard": {
+          "shippoLabel": "Shippo",
+          "shippoTitle": "Shippo",
+          "shippoDescription": "этикетки Доставка и отслеживания пакетов"
+        },
+        "shippingGrid": {
+          "carrier": "Носитель",
+          "enabled": "Включено"
+        },
+        "shippingSettings": {
+          "noCarriersFound": "Нет доставки носителей не настроен.",
+          "editApiKey": "Изменить ключ API",
+          "carrierSaved": "Перевозчик успешно сохранен.",
+          "carrierFailed": "Ошибка обновления носителя.",
+          "refresh": "Обновить методы"
+        }
+      },
+      "shippo": {
+        "connectedAndSaved": "Настройки сохранены! Shippo API теперь включена."
+      }
+    }
+  }
+}]

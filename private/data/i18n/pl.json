@@ -7,65 +7,21 @@
       "languages": {
         "select": "Wybierz język"
       },
+      "currencies": {
+        "select": "Wybierz walutę"
+      },
       "admin": {
         "shortcut": {
-          "dashboardLabel": "Dashboard",
-          "ordersLabel": "Święcenia",
           "addProductLabel": "Dodaj produkt",
           "accountsLabel": "Konta"
         },
         "dashboard": {
-          "accountsLabel": "Konta",
-          "accountsTitle": "Konta",
-          "accountsDescription": "Zarządzanie uprawnieniami członków",
-          "analyticsLabel": "Analityka",
-          "analyticsTitle": "Analityka",
-          "analyticsDescription": "Analityka i integracje śledzenia",
-          "shippingLabel": "Wysyłka",
-          "shippingTitle": "Wysyłka",
-          "shippingDescription": "Zapewnić koszty wysyłki",
-          "catalogLabel": "Katalog",
-          "catalogTitle": "Katalog",
-          "catalogDescription": "Katalog produktów",
-          "coreLabel": "Ustawienia",
-          "coreTitle": "Dashboard",
-          "coreDescription": "konfiguracja reakcji",
-          "emailLabel": "E-mail",
-          "emailTitle": "E-mail",
-          "emailDescription": "ustawienia e-mail",
           "i18NLabel": "i18n",
           "i18NTitle": "i18n",
           "i18NDescription": "narzędzia internacjonalizacji",
-          "inventoryLabel": "Inwentarz",
-          "inventoryTitle": "Inwentarz",
-          "inventoryDescription": "narzędzia Inventory",
-          "layoutLabel": "Układ",
-          "layoutTitle": "Układ",
-          "layoutDescription": "Układ narzędzia",
-          "connectLabel": "Połączyć",
-          "connectTitle": "Połączyć",
-          "connectDescription": "Podłączyć reakcyjnej w postaci wdrożonej usługi",
-          "ordersLabel": "Święcenia",
-          "smsLabel": "SMS",
-          "smsTitle": "SMS",
-          "smsDescription": "Powiadomienia",
-          "ordersTitle": "Święcenia",
-          "ordersDescription": "Spełnij swoje zamówienia",
-          "revisionsLabel": "rewizje",
-          "revisionsTitle": "rewizje",
-          "revisionsDescription": "kontroli wersji",
           "routingLabel": "Routing",
           "routingTitle": "Routing",
           "routingDescription": "narzędzia routingu",
-          "searchLabel": "Poszukiwanie",
-          "searchTitle": "Poszukiwanie",
-          "searchDescription": "Wyszukiwarka produktów",
-          "socialLabel": "Społeczny",
-          "socialTitle": "Społeczny",
-          "socialDescription": "Konfiguracja kanału Społecznej",
-          "themesLabel": "Motywy",
-          "themesTitle": "Motywy",
-          "themesDescription": "Motywy i komponenty UI",
           "filtrationLabel": "Filtrowanie",
           "filtrationDescription": "Filtracja Produkty dla Reakcji"
         },
@@ -79,25 +35,14 @@
           "utilities": "Użytkowe"
         },
         "settings": {
+          "accountSettingsLabel": "Ustawienia konta",
+          "accountSettingsTitle": "Logowanie Usługi",
+          "accountSettingsDescription": "Uwierzytelnianie za pośrednictwem dostawców społecznych",
           "saveSuccess": "Ustawienia zaktualizowane.",
           "saveFailed": "Nie można zaktualizować ustawienia.",
-          "accountSettingsLabel": "Ustawienia konta",
           "addShopMemberLabel": "Dodaj Shop Członek",
           "permissionsSettingsLabel": "Uprawnienia",
-          "localizationAndI18NLabel": "Lokalizacja i i18n",
-          "searchSettingsLabel": "Ustawienia wyszukiwania",
-          "shopSettingsLabel": "Ustawienia Shop",
-          "smsSettingsLabel": "ustawienia SMS",
-          "socialSettingsLabel": "Ustawienia społeczne",
-          "shippingSettingsLabel": "Ustawienia wysyłki",
-          "inventorySettingsLabel": "Ustawienia Inventory",
-          "analyticsSettingsLabel": "Ustawienia Analytics",
-          "reactionConnectLabel": "reakcja Połącz",
-          "productSettingsLabel": "Ustawienia produktu",
-          "productDetailsLabel": "Szczegóły Produktu",
-          "productRevisionsLabel": "Wersje produktu",
-          "emailSettingsLabel": "Ustawienia poczty e-mail",
-          "catalogSettingsLabel": "Ustawienia katalogu"
+          "localizationAndI18NLabel": "Lokalizacja i i18n"
         },
         "userAccountDropdown": {
           "profileLabel": "Profil"
@@ -111,6 +56,8 @@
       "app": {
         "add": "Dodać",
         "editMode": "Tryb edycji",
+        "administratorView": "Administrator Zobacz",
+        "customerView": "Zobacz klienta",
         "createContent": "Tworzenie treści",
         "auto": "Auto",
         "save": "Zapisz",
@@ -355,9 +302,12 @@
         "variantDetails": "wariant Szczegóły",
         "duplicateVariant": "Duplikować",
         "addVariantOption": "Dodaj Option",
+        "addVariantFail": "Nie można utworzyć wariant dla {{title}}.",
+        "cloneVariantFail": "Nie można sklonować wariant dla {{title}}.",
         "removeVariant": "Usunąć",
         "removeVariantConfirm": "Czy na pewno chcesz usunąć {{title}}",
         "restoreVariantConfirm": "Czy na pewno chcesz przywrócić {{title}} z kosza?",
+        "restoreVariantFail": "Nie można przywrócić {{title}}.",
         "archiveVariantConfirm": "Czy na pewno chcesz zarchiwizować {{title}}",
         "thisVariant": "ten wariant",
         "thisOption": "ta opcja",
@@ -475,11 +425,16 @@
         "notShipped": "Jeszcze Wysyłający",
         "noTracking": "Bez śledzenia",
         "tracking": "Śledzenie",
+        "printLabels": "drukowanie etykiet",
+        "printShippingLabel": "Wysyłka",
+        "printCustomsLabel": "Zwyczaje",
+        "carrier": "Nośnik",
         "addTracking": "Dodaj Tracking",
         "itemsHaveBeenShipped": "Produkty zostały wysłane",
         "shipmentEmpty": "Ta przesyłka ma żadnych produktów",
         "shipmentPacked": "Wszystkie przedmioty pakiety",
         "shipped": "Wysłane",
+        "delivered": "Dostarczone",
         "shippingNotifyCustomer": "Poinformować klienta, że ​​ich elementy będą dostarczane szybko.",
         "resendNotification": "Ponowna Powiadomienie przesyłki"
       },
@@ -500,6 +455,8 @@
         "yourOrderIsNow": "Twoje zamówienie jest obecnie",
         "summaryMessage": "Dziękuję za Twoje zamówienie.",
         "submitted": "składać",
+        "processing": "przetwarzanie",
+        "completed": "zakończone",
         "registerGuest": "Witaj! Dodaj e-mail i otrzymywać aktualizacje dotyczące zamówienia.",
         "trackYourDelivery": "aktualizacje Zamówienie zostanie wysłany do",
         "noOrdersFound": "Nie znaleziono zleceń.",
@@ -526,7 +483,8 @@
       "addressBookAdd": {
         "addAddress": "Dodaj nowy wpis adresu",
         "createAddress": "Stwórz swój adres domyślnej",
-        "failedToAddAddress": "Nie udało się dodać adres: {{err}}"
+        "failedToAddAddress": "Nie udało się dodać adres: {{err}}",
+        "validatedAddress": "Wykonane zmiany adresu oparciu walidacji. Należy upewnić się, to prawda"
       },
       "addressBookEdit": {
         "editAddress": "Montaż tego wpisu adresu",
@@ -625,68 +583,6 @@
       },
       "checkoutReview": {
         "review": "Recenzja"
-      },
-      "checkoutShipping": {
-        "selectShippingOption": "Wybierz opcję wysyłki",
-        "noShippingMethods": "są skonfigurowane żadne metody wysyłki.",
-        "configureNow": "Skonfiguruj teraz.",
-        "shipping": "Wysyłka"
-      },
-      "shipping": {
-        "addShippingProvider": "Dodaj dostawcę przesyłki",
-        "editShippingProvider": "Edycja kurierska",
-        "addShippingMethod": "Dodaj metodę wysyłki",
-        "editShippingMethod": "Zmień sposób wysyłki",
-        "deleteShippingMethod": "Usuń metodę wysyłki",
-        "noSettingsForThisView": "Brak ustawienia dla tego widoku",
-        "noShippingMethods": "są skonfigurowane żadne metody wysyłki.",
-        "removeShippingMethodConfirm": "Czy na pewno chcesz usunąć {{method}}?",
-        "removeShippingMethodTitle": "Usuń metody wysyłki",
-        "shippingMethodDeleted": "Ta metoda wysyłki została usunięta.",
-        "removeShippingProvider": "Usuń kurierska",
-        "removeShippingProviderConfirm": "Czy na pewno chcesz usunąć {{provider}}?",
-        "shippingProviderSaved": "dostawcą Dostawa zapisane.",
-        "shippingProviderUpdated": "zaktualizowane dane kurierska.",
-        "shippingMethodRateAdded": "Dostawa stopa metoda dodaje.",
-        "shippingMethodRateUpdated": "Dostawa stopa metoda aktualizowana.",
-        "name": "Nazwa",
-        "label": "Etykieta",
-        "group": "Grupa",
-        "cost": "Koszt",
-        "handling": "Obsługa",
-        "rate": "Oceniać",
-        "enabled": "Włączone",
-        "disabled": "Niepełnosprawny",
-        "addRate": "Dodaj stopę",
-        "updateRate": "Częstotliwość odświeżania {{name}}",
-        "addNewCondition": "Dodaj nowy warunek",
-        "deleteCondition": "Usuń warunek",
-        "provider": {
-          "name": "service Code",
-          "label": "Etykieta publiczny",
-          "enabled": "Włączone"
-        }
-      },
-      "shippingMethod": {
-        "name": "Nazwa metody",
-        "label": "Etykieta publiczny",
-        "group": "Grupa",
-        "cost": "Koszt",
-        "handling": "Obsługa",
-        "rate": "Oceniać",
-        "enabled": "Włączone",
-        "matchingCartRanges": "Dopasowane Koszyk Zakresy",
-        "validRanges": {
-          "begin": "Zaczynać",
-          "end": "Koniec"
-        },
-        "matchingLocales": "Dopasowane Locales",
-        "validLocales": {
-          "origination": "Od",
-          "destination": "Do",
-          "deliveryBegin": "Dostawa Est.",
-          "deliveryEnd": "Dostawa Est."
-        }
       },
       "uom": {
         "OZ": "uncji",
@@ -814,16 +710,6 @@
           "passwordResetSend": "E-mail z linkiem resetowania hasła została wysłana.",
           "invitationSent": "Zaproszenie wysłane",
           "sendInvitation": "Wyślij zaproszenie"
-        },
-        "reactionUI": {
-          "editTheme": "Edit Theme",
-          "duplicateTheme": "duplikat Theme",
-          "duplicateThemeError": "Nie udało się powielić tematu",
-          "publishThemeError": "`Nie można opublikować tematu {{themeName}}",
-          "components": {
-            "navbar": "Pasek nawigacyjny",
-            "button": "Przycisk"
-          }
         },
         "error": {
           "emailRequired": "Wymagany jest adres email.",

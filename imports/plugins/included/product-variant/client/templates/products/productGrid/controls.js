@@ -7,10 +7,12 @@ Template.gridControls.onCreated(function () {
   this.state = new ReactiveDict();
 
   this.autorun(() => {
-    const selectedProducts = Session.get("productGrid/selectedProducts");
-    const isSelected = _.isArray(selectedProducts) ? selectedProducts.indexOf(this.data.product._id) >= 0 : false;
+    if (this.data.product) {
+      const selectedProducts = Session.get("productGrid/selectedProducts");
+      const isSelected = _.isArray(selectedProducts) ? selectedProducts.indexOf(this.data.product._id) >= 0 : false;
 
-    this.state.set("isSelected", isSelected);
+      this.state.set("isSelected", isSelected);
+    }
   });
 });
 
@@ -21,43 +23,31 @@ Template.gridControls.onRendered(function () {
 });
 
 Template.gridControls.helpers({
-  EditButton() {
-    const instance = Template.instance();
-    const isSelected = instance.state.equals("isSelected", true);
+  checked: function () {
+    return Template.instance().state.equals("isSelected", true);
+  },
 
-    return {
-      component: IconButton,
-      icon: "fa fa-pencil",
-      onIcon: "fa fa-check",
-      status: isSelected ? "active" : "default",
-      toggle: true,
-      toggleOn: isSelected,
-      onClick() {
-        if (instance.data.onEditButtonClick) {
-          instance.data.onEditButtonClick();
-        }
-      }
-    };
+  isVisible() {
+    const currentData = Template.currentData();
+    return currentData && currentData.product && currentData.product.isVisible;
+  },
+
+  hasChanges() {
+    const { product } = Template.currentData();
+
+    if (product.__draft) {
+      return true;
+    }
+
+    return false;
   },
 
   VisibilityButton() {
-    const instance = Template.instance();
-
     return {
       component: IconButton,
-      icon: "fa fa-eye-slash",
-      onIcon: "fa fa-eye",
-      toggle: true,
-      toggleOn: instance.data.product.isVisible,
-      onClick() {
-        if (instance.data.onPublishButtonClick) {
-          instance.data.onPublishButtonClick();
-        }
-      }
+      icon: "",
+      onIcon: "",
+      status: "info"
     };
-  },
-
-  checked: function () {
-    return Template.instance().state.equals("isSelected", true);
   }
 });

@@ -1,0 +1,15 @@
+[{
+  "i18n": "my",
+  "ns": "reaction-layout",
+  "translation": {
+    "reaction-layout": {
+      "admin": {
+        "dashboard": {
+          "layoutLabel": "စီမန်ကိန်း",
+          "layoutTitle": "စီမန်ကိန်း",
+          "layoutDescription": "layout utilities"
+        }
+      }
+    }
+  }
+}]

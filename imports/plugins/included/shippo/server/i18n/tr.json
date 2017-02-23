@@ -1,0 +1,29 @@
+[{
+  "i18n": "tr",
+  "ns": "reaction-shippo",
+  "translation": {
+    "reaction-shippo": {
+      "admin": {
+        "dashboard": {
+          "shippoLabel": "Shippo",
+          "shippoTitle": "Shippo",
+          "shippoDescription": "Nakliye etiketleri ve paket izleme"
+        },
+        "shippingGrid": {
+          "carrier": "Taşıyıcı",
+          "enabled": "Etkin"
+        },
+        "shippingSettings": {
+          "noCarriersFound": "Hiçbir nakliye taşıyıcıları yapılandırılmış.",
+          "editApiKey": "Düzenleme API Anahtarı",
+          "carrierSaved": "Taşıyıcı başarıyla kaydedildi.",
+          "carrierFailed": "taşıyıcı güncellenirken hata oluştu.",
+          "refresh": "Yenile yöntemler"
+        }
+      },
+      "shippo": {
+        "connectedAndSaved": "Ayarlar kaydedildi! Shippo API artık etkindir."
+      }
+    }
+  }
+}]

@@ -1,0 +1,29 @@
+[{
+  "i18n": "hu",
+  "ns": "reaction-shippo",
+  "translation": {
+    "reaction-shippo": {
+      "admin": {
+        "dashboard": {
+          "shippoLabel": "Shippo",
+          "shippoTitle": "Shippo",
+          "shippoDescription": "Szállítási címkék és csomagkövetésről"
+        },
+        "shippingGrid": {
+          "carrier": "Hordozó",
+          "enabled": "Engedélyezett"
+        },
+        "shippingSettings": {
+          "noCarriersFound": "Nincs szállítási hordozók konfigurálva.",
+          "editApiKey": "Szerkesztés API-kulcs",
+          "carrierSaved": "Carrier sikeresen mentve.",
+          "carrierFailed": "Hiba frissítése hordozó.",
+          "refresh": "Frissítés módszerek"
+        }
+      },
+      "shippo": {
+        "connectedAndSaved": "Beállítások elmentve! Shippo API van kapcsolva."
+      }
+    }
+  }
+}]

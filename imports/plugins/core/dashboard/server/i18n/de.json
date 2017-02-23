@@ -1,0 +1,20 @@
+[{
+  "i18n": "de",
+  "ns": "reaction-dashboard",
+  "translation": {
+    "reaction-dashboard": {
+      "admin": {
+        "shortcut": {
+          "dashboardLabel": "Armaturenbrett"
+        },
+        "dashboard": {
+          "packageGroupActionsLabel": "Aktionen",
+          "packageGroupSettingsLabel": "Einstellungen"
+        },
+        "settings": {
+          "shopSettingsLabel": "Geschäft"
+        }
+      }
+    }
+  }
+}]

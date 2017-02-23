@@ -1,0 +1,20 @@
+[{
+  "i18n": "tr",
+  "ns": "reaction-dashboard",
+  "translation": {
+    "reaction-dashboard": {
+      "admin": {
+        "shortcut": {
+          "dashboardLabel": "Gösterge paneli"
+        },
+        "dashboard": {
+          "packageGroupActionsLabel": "Eylemler",
+          "packageGroupSettingsLabel": "Ayarlar"
+        },
+        "settings": {
+          "shopSettingsLabel": "Dükkan"
+        }
+      }
+    }
+  }
+}]

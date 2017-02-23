@@ -1,0 +1,20 @@
+[{
+  "i18n": "my",
+  "ns": "reaction-accounts",
+  "translation": {
+    "reaction-accounts": {
+      "admin": {
+        "dashboard": {
+          "accountsLabel": "ငွေစာရင်း",
+          "accountsTitle": "ငွေစာရင်း",
+          "accountsDescription": "အကောင့်ဆက်တင်များ"
+        },
+        "settings": {
+          "accountsSettingsLabel": "ငွေစာရင်း",
+          "accountsSettingsTitle": "ငွေစာရင်း",
+          "accountsSettingsDescription": "အကောင့်ဆက်တင်များ"
+        }
+      }
+    }
+  }
+}]

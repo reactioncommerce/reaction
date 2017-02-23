@@ -1,0 +1,18 @@
+[{
+  "i18n": "vi",
+  "ns": "reaction-inventory",
+  "translation": {
+    "reaction-inventory": {
+      "admin": {
+        "dashboard": {
+          "inventoryLabel": "Hàng tồn kho",
+          "inventoryTitle": "Hàng tồn kho",
+          "inventoryDescription": "tiện ích hàng tồn kho"
+        },
+        "settings": {
+          "inventorySettingsLabel": "Cài đặt Inventory"
+        }
+      }
+    }
+  }
+}]

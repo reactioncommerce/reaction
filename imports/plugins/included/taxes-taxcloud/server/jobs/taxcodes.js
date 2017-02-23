@@ -22,7 +22,7 @@ Hooks.Events.add("afterCoreInit", () => {
 
   // set 0 to disable fetchTIC
   if (refreshPeriod !== 0) {
-    Logger.info(`Adding taxes/fetchTIC to JobControl. Refresh ${refreshPeriod}`);
+    Logger.debug(`Adding taxes/fetchTIC to JobControl. Refresh ${refreshPeriod}`);
     new Job(Jobs, "taxes/fetchTaxCloudTaxCodes", { url: taxCodeUrl })
       .priority("normal")
       .retry({
@@ -66,7 +66,7 @@ export default function () {
           // we should always return "completed" job here, because errors are fine
           const success = "Latest TaxCloud TaxCodes were fetched successfully.";
           Reaction.Import.flush();
-          Logger.info(success);
+          Logger.debug(success);
 
           job.done(success, { repeatId: true });
         }

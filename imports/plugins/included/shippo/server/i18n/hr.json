@@ -1,0 +1,29 @@
+[{
+  "i18n": "hr",
+  "ns": "reaction-shippo",
+  "translation": {
+    "reaction-shippo": {
+      "admin": {
+        "dashboard": {
+          "shippoLabel": "Shippo",
+          "shippoTitle": "Shippo",
+          "shippoDescription": "etikete Dostava i praćenje paketa"
+        },
+        "shippingGrid": {
+          "carrier": "Prijevoznik",
+          "enabled": "Omogućeno"
+        },
+        "shippingSettings": {
+          "noCarriersFound": "Nema utovar nositelji konfiguriran.",
+          "editApiKey": "Uredi API ključ",
+          "carrierSaved": "Carrier je uspješno spremljen.",
+          "carrierFailed": "Pogreška pri ažuriranju nosač.",
+          "refresh": "Osvježi metode"
+        }
+      },
+      "shippo": {
+        "connectedAndSaved": "Postavke spremljene! Shippo API sada omogućeno."
+      }
+    }
+  }
+}]

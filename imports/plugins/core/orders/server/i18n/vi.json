@@ -1,0 +1,18 @@
+[{
+  "i18n": "vi",
+  "ns": "reaction-orders",
+  "translation": {
+    "reaction-orders": {
+      "admin": {
+        "shortcut": {
+          "ordersLabel": "Đơn đặt hàng"
+        },
+        "dashboard": {
+          "ordersLabel": "Đơn đặt hàng",
+          "ordersTitle": "Đơn đặt hàng",
+          "ordersDescription": "Thực hiện đơn đặt hàng của bạn"
+        }
+      }
+    }
+  }
+}]

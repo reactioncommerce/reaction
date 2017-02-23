@@ -1,37 +1,48 @@
 import _ from "lodash";
-import { Cart, Shipping } from "/lib/collections";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
+import { Reaction } from "/client/api";
+import { Cart } from "/lib/collections";
 
-//
-// These helpers can be used in general shipping packages
-// cartShippingMethods to get current shipment methods
-// until we handle multiple methods, we just use the first
-function cartShippingMethods(currentCart) {
+// cartShippingQuotes
+// returns multiple methods
+function cartShippingQuotes(currentCart) {
   const cart = currentCart || Cart.findOne();
+  const shipmentQuotes = [];
+
   if (cart) {
     if (cart.shipping) {
-      if (cart.shipping[0].shipmentQuotes) {
-        return cart.shipping[0].shipmentQuotes;
+      for (const shipping of cart.shipping) {
+        if (shipping.shipmentQuotes) {
+          for (quote of shipping.shipmentQuotes) {
+            shipmentQuotes.push(quote);
+          }
+        }
       }
     }
   }
-  return undefined;
+  return shipmentQuotes;
 }
-// getShipmentMethod to get current shipment method
-// until we handle multiple methods, we just use the first
-function getShipmentMethod(currentCart) {
+// cartShipmentMethods to get current shipment method
+// this returns multiple methods, if more than one carrier
+// has been chosen
+function cartShipmentMethods(currentCart) {
   const cart = currentCart || Cart.findOne();
+  const shipmentMethods = [];
+
   if (cart) {
     if (cart.shipping) {
-      if (cart.shipping[0].shipmentMethod) {
-        return cart.shipping[0].shipmentMethod;
+      for (const shipping of cart.shipping) {
+        if (shipping.shipmentMethod) {
+          shipmentMethods.push(shipping.shipmentMethod);
+        }
       }
     }
   }
-  return undefined;
+  return shipmentMethods;
 }
 
+// ensure new quotes are
 Template.coreCheckoutShipping.onCreated(function () {
   this.autorun(() => {
     this.subscribe("Shipping");
@@ -42,27 +53,22 @@ Template.coreCheckoutShipping.helpers({
   // retrieves current rates and updates shipping rates
   // in the users cart collection (historical, and prevents repeated rate lookup)
   shipmentQuotes: function () {
-    const cart = Cart.findOne();
-    return cartShippingMethods(cart);
-  },
-
-  // helper to make sure there are some shipping providers
-  shippingConfigured: function () {
     const instance = Template.instance();
     if (instance.subscriptionsReady()) {
-      return Shipping.find({
-        "methods.enabled": true
-      }).count();
+      const cart = Cart.findOne();
+      return cartShippingQuotes(cart);
     }
   },
-
   // helper to display currently selected shipmentMethod
   isSelected: function () {
     const self = this;
-    const shipmentMethod = getShipmentMethod();
-    // if there is already a selected method, set active
-    if (_.isEqual(self.method, shipmentMethod)) {
-      return "active";
+    const shipmentMethods = cartShipmentMethods();
+
+    for (method of shipmentMethods) {
+      // if there is already a selected method, set active
+      if (_.isEqual(self.method, method)) {
+        return "active";
+      }
     }
     return null;
   },
@@ -71,8 +77,10 @@ Template.coreCheckoutShipping.helpers({
     const instance = Template.instance();
     const isReady = instance.subscriptionsReady();
 
-    if (isReady) {
-      return true;
+    if (Reaction.Subscriptions.Cart.ready()) {
+      if (isReady) {
+        return true;
+      }
     }
 
     return false;
@@ -97,5 +105,16 @@ Template.coreCheckoutShipping.events({
       throw new Meteor.Error(error,
         "Cannot change methods while processing.");
     }
+  },
+  "click [data-event-action=configure-shipping]"(event) {
+    event.preventDefault();
+
+    const dashboardRegistryEntry = Reaction.Apps({ name: "reaction-dashboard", provides: "shortcut" });
+    const shippingRegistryEntry = Reaction.Apps({ name: "reaction-shipping", provides: "settings" });
+
+    Reaction.showActionView([
+      dashboardRegistryEntry[0],
+      shippingRegistryEntry[0]
+    ]);
   }
 });

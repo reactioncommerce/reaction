@@ -1,8 +1,6 @@
 import { Template } from "meteor/templating";
-import { Packages } from "/lib/collections";
 import { TaxCodes } from "../../lib/collections";
 import { i18next } from "/client/api";
-import { TaxPackageConfig } from "../../lib/collections/schemas";
 
 /*
  * Template taxes Helpers
@@ -26,18 +24,6 @@ Template.taxSettings.helpers({
     }
     return "";
   },
-  // packageConfigSchema() {
-  //   return TaxPackageConfig;
-  // },
-  //
-  // get current packages settings data
-  //
-  // packageData() {
-  //   return Packages.findOne({
-  //     name: "reaction-taxes"
-  //   });
-  // },
-  //
   // prepare and return taxCodes
   // for default shop value
   //
@@ -85,7 +71,7 @@ Template.taxSettings.events({
    * @return {void}
    */
   "click [data-event-action=showSecret]": (event) => {
-    const button = $(event.currentTarget);
+    const button = Template.instance().$(event.currentTarget);
     const input = button.closest(".form-group").find("input[name=secret]");
 
     if (input.attr("type") === "password") {

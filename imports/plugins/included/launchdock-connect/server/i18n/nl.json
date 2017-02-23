@@ -1,0 +1,18 @@
+[{
+  "i18n": "nl",
+  "ns": "reaction-connect",
+  "translation": {
+    "reaction-connect": {
+      "admin": {
+        "dashboard": {
+          "connectLabel": "Aansluiten",
+          "connectTitle": "Aansluiten",
+          "connectDescription": "Sluit Reaction als ingezet dienst"
+        },
+        "settings": {
+          "reactionConnectLabel": "reactie Connect"
+        }
+      }
+    }
+  }
+}]

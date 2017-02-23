@@ -1,0 +1,18 @@
+[{
+  "i18n": "ru",
+  "ns": "reaction-connect",
+  "translation": {
+    "reaction-connect": {
+      "admin": {
+        "dashboard": {
+          "connectLabel": "Подключать",
+          "connectTitle": "Подключать",
+          "connectDescription": "Подключение реакции в качестве развернутой службы"
+        },
+        "settings": {
+          "reactionConnectLabel": "Реакция Connect"
+        }
+      }
+    }
+  }
+}]

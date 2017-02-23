@@ -7,65 +7,21 @@
       "languages": {
         "select": "Zvolte jazyk"
       },
+      "currencies": {
+        "select": "Výběr měny"
+      },
       "admin": {
         "shortcut": {
-          "dashboardLabel": "přístrojová deska",
-          "ordersLabel": "objednávky",
           "addProductLabel": "Přidat produkt",
           "accountsLabel": "účty"
         },
         "dashboard": {
-          "accountsLabel": "účty",
-          "accountsTitle": "účty",
-          "accountsDescription": "Správa oprávnění členů",
-          "analyticsLabel": "analytika",
-          "analyticsTitle": "analytika",
-          "analyticsDescription": "Analytics a sledování integrace",
-          "shippingLabel": "lodní",
-          "shippingTitle": "lodní",
-          "shippingDescription": "Poskytnout sazby za dopravu",
-          "catalogLabel": "Katalog",
-          "catalogTitle": "Katalog",
-          "catalogDescription": "Katalog produktů",
-          "coreLabel": "Nastavení",
-          "coreTitle": "přístrojová deska",
-          "coreDescription": "konfigurace reakce",
-          "emailLabel": "Email",
-          "emailTitle": "Email",
-          "emailDescription": "nastavení e-mailu",
           "i18NLabel": "i18n",
           "i18NTitle": "i18n",
           "i18NDescription": "internacionalizace pomůcky",
-          "inventoryLabel": "Inventář",
-          "inventoryTitle": "Inventář",
-          "inventoryDescription": "Inventář pomůcky",
-          "layoutLabel": "dispozice",
-          "layoutTitle": "dispozice",
-          "layoutDescription": "rozvržení pomůcky",
-          "connectLabel": "Připojit",
-          "connectTitle": "Připojit",
-          "connectDescription": "Připojit reakce jako rozvinuté služby",
-          "ordersLabel": "objednávky",
-          "smsLabel": "SMS",
-          "smsTitle": "SMS",
-          "smsDescription": "Oznámení",
-          "ordersTitle": "objednávky",
-          "ordersDescription": "Splnit Vaše objednávky",
-          "revisionsLabel": "revize",
-          "revisionsTitle": "revize",
-          "revisionsDescription": "ovládání revize",
           "routingLabel": "směrování",
           "routingTitle": "směrování",
           "routingDescription": "směrování pomůcky",
-          "searchLabel": "Vyhledávání",
-          "searchTitle": "Vyhledávání",
-          "searchDescription": "Hledání výrobku",
-          "socialLabel": "Sociální",
-          "socialTitle": "Sociální",
-          "socialDescription": "Konfigurace sociální Channel",
-          "themesLabel": "Témata",
-          "themesTitle": "Témata",
-          "themesDescription": "Témata a UI komponenty",
           "filtrationLabel": "Filtrace",
           "filtrationDescription": "filtrace Produkty pro Reaction"
         },
@@ -79,25 +35,14 @@
           "utilities": "Utility"
         },
         "settings": {
+          "accountSettingsLabel": "Nastavení účtu",
+          "accountSettingsTitle": "Přihlášení Služby",
+          "accountSettingsDescription": "Ověřování prostřednictvím sociálních poskytovatelů",
           "saveSuccess": "Nastavení aktualizována.",
           "saveFailed": "Nepodařilo se aktualizovat nastavení.",
-          "accountSettingsLabel": "Nastavení účtu",
           "addShopMemberLabel": "Přidat e-shop člena",
           "permissionsSettingsLabel": "Oprávnění",
-          "localizationAndI18NLabel": "Lokalizace a i18n",
-          "searchSettingsLabel": "Nastavení hledání",
-          "shopSettingsLabel": "Nastavení Shop",
-          "smsSettingsLabel": "nastavení SMS",
-          "socialSettingsLabel": "sociální Nastavení",
-          "shippingSettingsLabel": "Nastavení doprava",
-          "inventorySettingsLabel": "Nastavení inventář",
-          "analyticsSettingsLabel": "Nastavení Analytics",
-          "reactionConnectLabel": "reakce Connect",
-          "productSettingsLabel": "Nastavení produktu",
-          "productDetailsLabel": "Detaily produktu",
-          "productRevisionsLabel": "Revize produktu",
-          "emailSettingsLabel": "Nastavení e-mailu",
-          "catalogSettingsLabel": "Nastavení Katalog"
+          "localizationAndI18NLabel": "Lokalizace a i18n"
         },
         "userAccountDropdown": {
           "profileLabel": "Profil"
@@ -111,6 +56,8 @@
       "app": {
         "add": "Přidat",
         "editMode": "režim úprav",
+        "administratorView": "Zobrazit správce",
+        "customerView": "Customer View",
         "createContent": "Vytvořit obsah",
         "auto": "Auto",
         "save": "Save",
@@ -355,9 +302,12 @@
         "variantDetails": "Variant Podrobnosti",
         "duplicateVariant": "Duplikát",
         "addVariantOption": "Přidat Option",
+        "addVariantFail": "Nelze vytvořit variantu pro {{title}}.",
+        "cloneVariantFail": "Nelze klonovat variantu pro {{title}}.",
         "removeVariant": "Odstranit",
         "removeVariantConfirm": "Jste si jisti, že chcete smazat {{title}}",
         "restoreVariantConfirm": "Jste si jisti, že chcete obnovit {{title}} z koše?",
+        "restoreVariantFail": "Nepodařilo se obnovit {{title}}.",
         "archiveVariantConfirm": "Jste si jisti, že chcete archivovat {{title}}",
         "thisVariant": "tato varianta",
         "thisOption": "tato možnost",
@@ -475,11 +425,16 @@
         "notShipped": "Ne přesto Posíláme",
         "noTracking": "No Tracking",
         "tracking": "Sledování",
+        "printLabels": "tisk štítků",
+        "printShippingLabel": "lodní",
+        "printCustomsLabel": "Celní",
+        "carrier": "Dopravce",
         "addTracking": "Přidat Tracking",
         "itemsHaveBeenShipped": "Předměty byly odeslány",
         "shipmentEmpty": "Tato zásilka neobsahuje žádné položky",
         "shipmentPacked": "Všechny položky Balíčky",
         "shipped": "Posíláme",
+        "delivered": "dodáno",
         "shippingNotifyCustomer": "Upozornit zákazníka, že jejich zboží bude brzy dopravě.",
         "resendNotification": "Znovu poslat zásilky Oznámení"
       },
@@ -500,6 +455,8 @@
         "yourOrderIsNow": "Vaše objednávka je nyní",
         "summaryMessage": "Děkuji za Vaši objednávku.",
         "submitted": "předloženy",
+        "processing": "zpracování",
+        "completed": "dokončený",
         "registerGuest": "Ahoj! Přidat e-mail a přijímat aktualizace pořadí.",
         "trackYourDelivery": "Aktualizace objednávka bude zaslána",
         "noOrdersFound": "Nebyly nalezeny žádné objednávky.",
@@ -526,7 +483,8 @@
       "addressBookAdd": {
         "addAddress": "Přidat nový záznam adresy",
         "createAddress": "Vytvořte si svůj výchozí adresu",
-        "failedToAddAddress": "Nepodařilo se přidat adresu: {{err}}"
+        "failedToAddAddress": "Nepodařilo se přidat adresu: {{err}}",
+        "validatedAddress": "Provedli změny adresy založené na validaci. Ujistěte se prosím, toto je správná"
       },
       "addressBookEdit": {
         "editAddress": "Úpravou tohoto zadání adresy",
@@ -625,68 +583,6 @@
       },
       "checkoutReview": {
         "review": "Recenze"
-      },
-      "checkoutShipping": {
-        "selectShippingOption": "Vyberte možnost lodní",
-        "noShippingMethods": "Žádné způsoby dopravy jsou konfigurovány.",
-        "configureNow": "Nakofigurujte.",
-        "shipping": "lodní"
-      },
-      "shipping": {
-        "addShippingProvider": "Přidat provozovatele přepravní",
-        "editShippingProvider": "Editovat poskytovatel lodní",
-        "addShippingMethod": "Přidat způsob dopravy",
-        "editShippingMethod": "Upravit způsob dopravy",
-        "deleteShippingMethod": "Smazat způsob dopravy",
-        "noSettingsForThisView": "Žádná nastavení pro tento názor",
-        "noShippingMethods": "Žádné způsoby dopravy jsou konfigurovány.",
-        "removeShippingMethodConfirm": "Jste si jisti, že chcete smazat {{method}}?",
-        "removeShippingMethodTitle": "Odstraňte Způsob dopravy",
-        "shippingMethodDeleted": "Tento způsob dopravy byla smazána.",
-        "removeShippingProvider": "Odstraňte Shipping Provider",
-        "removeShippingProviderConfirm": "Jste si jisti, že chcete smazat {{provider}}?",
-        "shippingProviderSaved": "Poskytovatel vodní doprava uložen.",
-        "shippingProviderUpdated": "Data Provider vodní doprava aktualizována.",
-        "shippingMethodRateAdded": "Způsob dopravy rychlost přidán.",
-        "shippingMethodRateUpdated": "Způsob dopravy rychlost aktualizován.",
-        "name": "Název",
-        "label": "Označení",
-        "group": "Skupina",
-        "cost": "Náklady",
-        "handling": "Zacházení",
-        "rate": "Rychlost",
-        "enabled": "Povoleno",
-        "disabled": "invalidní",
-        "addRate": "Přidejte míru",
-        "updateRate": "Aktualizace {{name}} rychlost",
-        "addNewCondition": "Přidat novou podmínku",
-        "deleteCondition": "smazat podmínku",
-        "provider": {
-          "name": "Service Code",
-          "label": "veřejné Label",
-          "enabled": "Povoleno"
-        }
-      },
-      "shippingMethod": {
-        "name": "Jméno metoda",
-        "label": "veřejné Label",
-        "group": "Skupina",
-        "cost": "Náklady",
-        "handling": "Zacházení",
-        "rate": "Rychlost",
-        "enabled": "Povoleno",
-        "matchingCartRanges": "Odpovídající košík rozsahy",
-        "validRanges": {
-          "begin": "Začít",
-          "end": "Konec"
-        },
-        "matchingLocales": "odpovídající místního prostredí",
-        "validLocales": {
-          "origination": "Od",
-          "destination": "Na",
-          "deliveryBegin": "Vodní doprava Est.",
-          "deliveryEnd": "Dodávka Est."
-        }
       },
       "uom": {
         "OZ": "unce",
@@ -814,16 +710,6 @@
           "passwordResetSend": "byl odeslán e-mail s odkazem pro resetování hesla.",
           "invitationSent": "Pozvání odesláno",
           "sendInvitation": "Poslat pozvánku"
-        },
-        "reactionUI": {
-          "editTheme": "Upravit téma",
-          "duplicateTheme": "duplicitní téma",
-          "duplicateThemeError": "Nemohl duplicitní téma",
-          "publishThemeError": "`Nelze zveřejnit téma {{themeName}}",
-          "components": {
-            "navbar": "navigační lišta",
-            "button": "Tlačítko"
-          }
         },
         "error": {
           "emailRequired": "Email je povinný.",

@@ -11,7 +11,6 @@ export default function () {
     },
     registry: [{
       provides: "dashboard",
-      template: "i18nDashboard",
       label: "i18n",
       description: "Internationalization utilities",
       icon: "fa fa-language",
@@ -21,6 +20,7 @@ export default function () {
       provides: "settings",
       template: "i18nSettings",
       label: "Localization and i18n",
+      icon: "fa fa-language",
       container: "reaction-i18n"
     }]
   });

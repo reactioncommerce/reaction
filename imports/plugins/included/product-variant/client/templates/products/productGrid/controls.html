@@ -12,20 +12,14 @@
       </label>
 
       {{#if product.isDeleted}}
-        <div>
         <span class="badge badge-danger" data-i18n="app.archived">
           <span>Archived</span>
         </span>
-      </div>
       {{/if}}
 
-      <div>
-        {{> React VisibilityButton}}
-      </div>
-
-      <div>
-        {{> React EditButton}}
-      </div>
+      {{#if hasChanges}}
+        <div>{{> React VisibilityButton}}</div>
+      {{/if}}
 
     </div>
   {{/if}}

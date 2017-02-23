@@ -1,0 +1,80 @@
+[{
+  "i18n": "fr",
+  "ns": "reaction-shipping",
+  "translation": {
+    "reaction-shipping": {
+      "admin": {
+        "dashboard": {
+          "shippingLabel": "livraison",
+          "shippingTitle": "livraison",
+          "shippingDescription": "Fournir les tarifs d'expédition"
+        },
+        "settings": {
+          "shippingLabel": "livraison"
+        }
+      },
+      "checkoutShipping": {
+        "selectShippingOption": "Sélectionnez l'option d'expédition",
+        "noShippingMethods": "Aucune méthode d'expédition sont configurés.",
+        "configureNow": "Configurer maintenant.",
+        "shipping": "livraison"
+      },
+      "shipping": {
+        "addShippingProvider": "Ajouter fournisseur d'expédition",
+        "editShippingProvider": "Modifier fournisseur d'expédition",
+        "addShippingMethod": "Ajouter la méthode d'expédition",
+        "editShippingMethod": "Modifier la méthode d'expédition",
+        "deleteShippingMethod": "Supprimer la méthode d'expédition",
+        "noSettingsForThisView": "Pas de paramètres pour cette vue",
+        "noShippingMethods": "Aucune méthode d'expédition sont configurés.",
+        "removeShippingMethodConfirm": "Êtes-vous sûr de vouloir supprimer {{method}}?",
+        "removeShippingMethodTitle": "Supprimer Méthode d'expédition",
+        "shippingMethodDeleted": "Cette méthode d'expédition a été supprimé.",
+        "removeShippingProvider": "Retirer Expédition Fournisseur",
+        "removeShippingProviderConfirm": "Êtes-vous sûr de vouloir supprimer {{provider}}?",
+        "shippingProviderSaved": "Mode de livraison sauvé.",
+        "shippingProviderUpdated": "données du fournisseur de livraison mis à jour.",
+        "shippingMethodRateAdded": "Livraison taux de méthode ajoutée.",
+        "shippingMethodRateUpdated": "Expédition taux de la méthode mise à jour.",
+        "name": "Nom",
+        "label": "Étiquette",
+        "group": "Groupe",
+        "cost": "Coût",
+        "handling": "Manipulation",
+        "rate": "Taux",
+        "enabled": "Activé",
+        "disabled": "Handicapé",
+        "addRate": "Ajouter taux",
+        "updateRate": "Taux de mise à jour {{name}}",
+        "addNewCondition": "Ajouter un nouvel état",
+        "deleteCondition": "Supprimer la condition",
+        "provider": {
+          "name": "Code de service",
+          "label": "public Étiquette",
+          "enabled": "Activé"
+        }
+      },
+      "shippingMethod": {
+        "name": "Nom de la méthode",
+        "label": "public Étiquette",
+        "group": "Groupe",
+        "cost": "Coût",
+        "handling": "Manipulation",
+        "rate": "Taux",
+        "enabled": "Activé",
+        "matchingCartRanges": "Panier Ranges Matching",
+        "validRanges": {
+          "begin": "Commencer",
+          "end": "Fin"
+        },
+        "matchingLocales": "Matching Locales",
+        "validLocales": {
+          "origination": "À partir de",
+          "destination": "À",
+          "deliveryBegin": "Frais de port Est.",
+          "deliveryEnd": "Livraison Est."
+        }
+      }
+    }
+  }
+}]

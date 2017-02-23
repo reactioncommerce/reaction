@@ -7,65 +7,21 @@
       "languages": {
         "select": "Chọn ngôn ngữ"
       },
+      "currencies": {
+        "select": "Chọn ngoại tệ"
+      },
       "admin": {
         "shortcut": {
-          "dashboardLabel": "bảng điều khiển",
-          "ordersLabel": "Đơn đặt hàng",
           "addProductLabel": "Thêm sản phẩm",
           "accountsLabel": "tài khoản"
         },
         "dashboard": {
-          "accountsLabel": "tài khoản",
-          "accountsTitle": "tài khoản",
-          "accountsDescription": "Quản lý quyền thành viên",
-          "analyticsLabel": "phân tích",
-          "analyticsTitle": "phân tích",
-          "analyticsDescription": "Phân tích và tích hợp theo dõi",
-          "shippingLabel": "Đang chuyển hàng",
-          "shippingTitle": "Đang chuyển hàng",
-          "shippingDescription": "Cung cấp mức giá vận chuyển",
-          "catalogLabel": "Mục lục",
-          "catalogTitle": "Mục lục",
-          "catalogDescription": "Danh mục sản phẩm",
-          "coreLabel": "Cài đặt",
-          "coreTitle": "bảng điều khiển",
-          "coreDescription": "cấu hình phản ứng",
-          "emailLabel": "E-mail",
-          "emailTitle": "E-mail",
-          "emailDescription": "cài đặt email",
           "i18NLabel": "i18n",
           "i18NTitle": "i18n",
           "i18NDescription": "tiện ích quốc tế",
-          "inventoryLabel": "Hàng tồn kho",
-          "inventoryTitle": "Hàng tồn kho",
-          "inventoryDescription": "tiện ích hàng tồn kho",
-          "layoutLabel": "Bố trí",
-          "layoutTitle": "Bố trí",
-          "layoutDescription": "tiện ích layout",
-          "connectLabel": "Kết nối",
-          "connectTitle": "Kết nối",
-          "connectDescription": "Kết nối phản ứng như một dịch vụ triển khai",
-          "ordersLabel": "Đơn đặt hàng",
-          "smsLabel": "tin nhắn",
-          "smsTitle": "tin nhắn",
-          "smsDescription": "thông báo",
-          "ordersTitle": "Đơn đặt hàng",
-          "ordersDescription": "Thực hiện đơn đặt hàng của bạn",
-          "revisionsLabel": "Revisions",
-          "revisionsTitle": "Revisions",
-          "revisionsDescription": "kiểm soát sửa đổi",
           "routingLabel": "định tuyến",
           "routingTitle": "định tuyến",
           "routingDescription": "tiện ích Routing",
-          "searchLabel": "Tìm kiếm",
-          "searchTitle": "Tìm kiếm",
-          "searchDescription": "Tìm kiếm sản phẩm",
-          "socialLabel": "Xã hội",
-          "socialTitle": "Xã hội",
-          "socialDescription": "cấu hình kênh xã hội",
-          "themesLabel": "chủ đề",
-          "themesTitle": "chủ đề",
-          "themesDescription": "Chủ đề và UI Components",
           "filtrationLabel": "phương pháp lọc",
           "filtrationDescription": "Sản phẩm lọc cho phản ứng"
         },
@@ -79,25 +35,14 @@
           "utilities": "tiện ích"
         },
         "settings": {
+          "accountSettingsLabel": "Thiết lập tài khoản",
+          "accountSettingsTitle": "Dịch vụ đăng nhập",
+          "accountSettingsDescription": "Xác thực thông qua các nhà cung cấp xã hội",
           "saveSuccess": "Cài đặt đã cập nhật.",
           "saveFailed": "Không cập nhật được cài đặt.",
-          "accountSettingsLabel": "Thiết lập tài khoản",
           "addShopMemberLabel": "Thêm cửa hàng thành viên",
           "permissionsSettingsLabel": "Quyền",
-          "localizationAndI18NLabel": "Nội địa hóa và i18n",
-          "searchSettingsLabel": "Tìm kiếm Cài đặt",
-          "shopSettingsLabel": "cửa hàng Cài đặt",
-          "smsSettingsLabel": "cài đặt SMS",
-          "socialSettingsLabel": "Cài đặt xã hội",
-          "shippingSettingsLabel": "Cài đặt vận chuyển",
-          "inventorySettingsLabel": "Cài đặt Inventory",
-          "analyticsSettingsLabel": "Cài đặt Analytics",
-          "reactionConnectLabel": "phản ứng Connect",
-          "productSettingsLabel": "Cài đặt sản phẩm",
-          "productDetailsLabel": "Thông tin chi tiết sản phẩm",
-          "productRevisionsLabel": "Sửa đổi sản phẩm",
-          "emailSettingsLabel": "Cài đặt email",
-          "catalogSettingsLabel": "Cài đặt Catalog"
+          "localizationAndI18NLabel": "Nội địa hóa và i18n"
         },
         "userAccountDropdown": {
           "profileLabel": "Hồ sơ"
@@ -111,6 +56,8 @@
       "app": {
         "add": "Thêm vào",
         "editMode": "Chế độ chỉnh sửa",
+        "administratorView": "administrator Xem",
+        "customerView": "khách hàng Xem",
         "createContent": "tạo nội dung",
         "auto": "Tự động",
         "save": "Lưu",
@@ -355,9 +302,12 @@
         "variantDetails": "Chi tiết Variant",
         "duplicateVariant": "Bản sao",
         "addVariantOption": "Thêm lựa chọn",
+        "addVariantFail": "Không thể tạo ra biến thể cho {{title}}.",
+        "cloneVariantFail": "Không thể để nhân bản biến thể cho {{title}}.",
         "removeVariant": "Tẩy",
         "removeVariantConfirm": "Bạn có chắc chắn muốn xóa {{title}}",
         "restoreVariantConfirm": "Bạn có chắc chắn muốn khôi phục {{title}} từ thùng rác?",
+        "restoreVariantFail": "Không thể phục hồi {{title}}.",
         "archiveVariantConfirm": "Bạn có chắc chắn muốn lưu trữ {{title}}",
         "thisVariant": "phiên bản này",
         "thisOption": "tùy chọn này",
@@ -475,11 +425,16 @@
         "notShipped": "Chưa được vận chuyển",
         "noTracking": "không theo dõi",
         "tracking": "Theo dõi",
+        "printLabels": "In Nhãn",
+        "printShippingLabel": "Đang chuyển hàng",
+        "printCustomsLabel": "Phong tục",
+        "carrier": "Vận chuyển",
         "addTracking": "Thêm Theo dõi",
         "itemsHaveBeenShipped": "Mục đã được vận chuyển",
         "shipmentEmpty": "lô hàng này không có mục",
         "shipmentPacked": "Tất cả các mục đóng gói",
         "shipped": "vận chuyển",
+        "delivered": "Đã giao hàng",
         "shippingNotifyCustomer": "Thông báo cho các khách hàng rằng sản phẩm của họ sẽ được vận chuyển sớm.",
         "resendNotification": "Gửi lại lô hàng thông báo"
       },
@@ -500,6 +455,8 @@
         "yourOrderIsNow": "hàng ngay bây giờ là",
         "summaryMessage": "Cảm ơn bạn đã đặt hàng của bạn.",
         "submitted": "trình",
+        "processing": "Chế biến",
+        "completed": "hoàn thành",
         "registerGuest": "Chào bạn! Thêm một email và nhận được cập nhật tự.",
         "trackYourDelivery": "cập nhật theo thứ tự sẽ được gửi đến",
         "noOrdersFound": "Không tìm thấy đơn đặt hàng.",
@@ -526,7 +483,8 @@
       "addressBookAdd": {
         "addAddress": "Thêm mục nhập địa chỉ mới",
         "createAddress": "Tạo địa chỉ mặc định của bạn",
-        "failedToAddAddress": "Không thể thêm địa chỉ: {{err}}"
+        "failedToAddAddress": "Không thể thêm địa chỉ: {{err}}",
+        "validatedAddress": "thay đổi địa chỉ của bạn dựa trên xác nhận. Hãy đảm bảo điều này là chính xác"
       },
       "addressBookEdit": {
         "editAddress": "Chỉnh sửa mục nhập địa chỉ này",
@@ -625,68 +583,6 @@
       },
       "checkoutReview": {
         "review": "Ôn tập"
-      },
-      "checkoutShipping": {
-        "selectShippingOption": "Chọn tùy chọn vận chuyển",
-        "noShippingMethods": "Không có phương pháp vận chuyển được cấu hình.",
-        "configureNow": "Cấu hình hiện nay.",
-        "shipping": "Đang chuyển hàng"
-      },
-      "shipping": {
-        "addShippingProvider": "Thêm nhà cung cấp vận chuyển",
-        "editShippingProvider": "Sửa nhà cung cấp vận chuyển",
-        "addShippingMethod": "Thêm phương thức vận chuyển",
-        "editShippingMethod": "Chỉnh sửa phương thức vận chuyển",
-        "deleteShippingMethod": "Xóa phương thức vận chuyển",
-        "noSettingsForThisView": "Không có thiết lập cho quan điểm này",
-        "noShippingMethods": "Không có phương pháp vận chuyển được cấu hình.",
-        "removeShippingMethodConfirm": "Bạn có chắc chắn muốn xóa {{method}}?",
-        "removeShippingMethodTitle": "Di Shipping Method",
-        "shippingMethodDeleted": "Phương pháp vận chuyển này đã bị xóa.",
-        "removeShippingProvider": "Di Vận Chuyển Nhà cung cấp",
-        "removeShippingProviderConfirm": "Bạn có chắc chắn muốn xóa {{provider}}?",
-        "shippingProviderSaved": "cung cấp dịch vụ vận chuyển lưu.",
-        "shippingProviderUpdated": "cung cấp dữ liệu vận chuyển được cập nhật.",
-        "shippingMethodRateAdded": "tỷ lệ phương pháp vận chuyển thêm.",
-        "shippingMethodRateUpdated": "phương pháp tỷ lệ vận chuyển được cập nhật.",
-        "name": "Tên",
-        "label": "Nhãn",
-        "group": "Nhóm",
-        "cost": "Giá cả",
-        "handling": "xử lý",
-        "rate": "Tỷ lệ",
-        "enabled": "Bật",
-        "disabled": "Tàn tật",
-        "addRate": "Thêm tỷ lệ",
-        "updateRate": "tốc độ cập nhật {{name}}",
-        "addNewCondition": "Thêm điều kiện mới",
-        "deleteCondition": "xóa điều kiện",
-        "provider": {
-          "name": "Mã dịch vụ",
-          "label": "Nhãn Công",
-          "enabled": "Bật"
-        }
-      },
-      "shippingMethod": {
-        "name": "Tên phương pháp",
-        "label": "Nhãn Công",
-        "group": "Nhóm",
-        "cost": "Giá cả",
-        "handling": "xử lý",
-        "rate": "Tỷ lệ",
-        "enabled": "Bật",
-        "matchingCartRanges": "Phù hợp với Ranges Giỏ hàng",
-        "validRanges": {
-          "begin": "bắt đầu",
-          "end": "Kết thúc"
-        },
-        "matchingLocales": "phù hợp với miền địa phương",
-        "validLocales": {
-          "origination": "Từ",
-          "destination": "Đến",
-          "deliveryBegin": "Vận Chuyển Est.",
-          "deliveryEnd": "Giao hàng Est."
-        }
       },
       "uom": {
         "OZ": "ounces",
@@ -814,16 +710,6 @@
           "passwordResetSend": "Gửi email với các liên kết thiết lập lại mật khẩu đã được gửi đi.",
           "invitationSent": "lời mời được gửi",
           "sendInvitation": "Gửi lời mời"
-        },
-        "reactionUI": {
-          "editTheme": "chỉnh sửa Theme",
-          "duplicateTheme": "Duplicate Theme",
-          "duplicateThemeError": "Không thể lặp lại chủ đề",
-          "publishThemeError": "`Không thể xuất bản chủ đề {{themeName}}",
-          "components": {
-            "navbar": "Thanh điều hướng",
-            "button": "nút"
-          }
         },
         "error": {
           "emailRequired": "Email phải có.",

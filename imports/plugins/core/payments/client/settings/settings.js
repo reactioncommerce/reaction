@@ -1,6 +1,6 @@
 import { Template } from "meteor/templating";
 import { Reaction, i18next } from "/client/api";
-import { Shops, Packages } from "/lib/collections";
+import { Shops } from "/lib/collections";
 
 Template.paymentSettings.helpers({
   checked(enabled) {
@@ -39,37 +39,21 @@ Template.paymentSettings.helpers({
   }
 });
 
+// toggle payment methods visibility
 Template.paymentSettings.events({
-  /**
-   * toggle payment settings visibility
-   * also toggles payment method settings
-   * @param  {event} event jQuery Event
-   * @return {void}
-   */
   "change input[name=enabled]": (event) => {
+    event.preventDefault();
     const settingsKey = event.target.getAttribute("data-key");
     const packageId = event.target.getAttribute("data-id");
     const fields = [{
       property: "enabled",
       value: event.target.checked
     }];
-
-    Meteor.call("registry/update", packageId, settingsKey, fields, (error, result) => {
-      if (result.numberAffected > 0) {
-        // check to see if we should disable the package as well
-        const pkg = Packages.findOne(packageId);
-        const enabled = pkg.registry.find((registry) => {
-          return registry.enabled === true;
-        });
-        // disable the package if no registry items are enabled.
-        // maybe this would be better placed in togglePackage
-        if (pkg.enabled !== true && enabled) {
-          Meteor.call("shop/togglePackage", packageId, true);
-        } else {
-          Meteor.call("shop/togglePackage", packageId, false);
-        }
-      }
-    });
+    // update package registry
+    if (packageId) {
+      Meteor.call("registry/update", packageId, settingsKey, fields);
+      Meteor.call("shop/togglePackage", packageId, !event.target.checked);
+    }
   }
 });
 

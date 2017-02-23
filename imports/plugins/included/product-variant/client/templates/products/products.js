@@ -86,9 +86,8 @@ Template.products.onCreated(function () {
     // use shop name as `base` name for `positions` object
     const currentTag = ReactionProduct.getTag();
     const productCursor = Products.find({
-      ancestors: []
-      // keep this, as an example
-      // type: { $in: ["simple"] }
+      ancestors: [],
+      type: { $in: ["simple"] }
     }, {
       sort: {
         [`positions.${currentTag}.position`]: 1,
@@ -101,8 +100,11 @@ Template.products.onCreated(function () {
       return applyProductRevision(product);
     });
 
+    const sortedProducts = ReactionProduct.sortProducts(products, currentTag);
+
     this.state.set("canLoadMoreProducts", productCursor.count() >= Session.get("productScrollLimit"));
-    this.products.set(products);
+    this.products.set(sortedProducts);
+    Session.set("productGrid/products", sortedProducts);
   });
 
   this.autorun(() => {

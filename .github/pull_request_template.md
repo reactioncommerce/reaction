@@ -1,11 +1,8 @@
 <!-- Thanks so much for your PR, your contribution is appreciated! -->
-**Are you submitting to `development`?**
 
-We currently only accept PR's to `development` not `master`
+Please provide the following information to help us approve your PR. Failure to provide this
+information may result in your PR being closed without comment.
 
-- [ ] Description explains the issue / use-case resolved
-- [ ] Only contains code directly related to the issue
-- [ ] Has tests.
-- [ ] Has docs.
-- [ ] Passes all tests
-- [ ] Has been linted and follows the style guide
+- [ ] Clearly explain what your PR is trying to accomplish. A link to an issue is best
+- [ ] Provide us detailed instructions on how we can test your PR
+

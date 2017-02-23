@@ -17,6 +17,10 @@
   text-decoration: none;
 }
 
+.rui.navbar .button {
+  display: inline-block;
+}
+
 .rui.navbar .showmenu {
   display: none;
   .flex(0 0 auto);
@@ -30,7 +34,7 @@
 .rui.navbar .showmenu button {
   background-color: transparent;
   border-color: transparent;
-  color: @white;
+  color: @text-color;
 }
 
 .rui.navbar .menu {
@@ -60,6 +64,12 @@
   .flex(0 0 auto);
   position: relative;
   cursor: pointer;
+  right: -1px;
+}
+
+.rtl .rui.navbar .cart {
+  right: auto !important;
+  left: -1px;
 }
 
 .rui.navbar .dropdown a {
@@ -83,24 +93,44 @@
   .padding-left(@navbar-padding-vertical);
 }
 
-.rui.navbar .languages {
+.rui.navbar .languages,
+.rui.navbar .currencies {
   .display(flex);
   .align-items(center);
   .flex(0 0 auto);
   height: @navbar-height;
 }
 
-.rui.navbar .languages:hover {
+.rui.navbar .languages:hover,
+.rui.navbar .currencies:hover {
   background-color: @navbar-default-toggle-icon-bar-bg;
   border-color: @navbar-default-toggle-border-color;
 }
 
 .rui.navbar .languages .dropdown-menu {
+  margin-top: 0px;
+  min-width: 250px !important;
+}
+
+html:not(.rtl) .rui.navbar .languages .dropdown-menu {
+  left: auto !important;
+  right: 0px;
+}
+
+.rtl .rui.navbar .languages .dropdown-menu {
+  left: 0px;
+  right: auto !important;
+}
+
+.rui.navbar .languages .dropdown-menu,
+.rui.navbar .currencies .dropdown-menu {
   margin-top: 0;
 }
 
 .rui.navbar .languages li,
-.rui.navbar .languages .menu-item {
+.rui.navbar .languages .menu-item,
+.rui.navbar .currencies li,
+.rui.navbar .currencies .menu-item {
   .text-align(left);
 }
 

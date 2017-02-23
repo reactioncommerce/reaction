@@ -1,0 +1,29 @@
+[{
+  "i18n": "nl",
+  "ns": "reaction-shippo",
+  "translation": {
+    "reaction-shippo": {
+      "admin": {
+        "dashboard": {
+          "shippoLabel": "Shippo",
+          "shippoTitle": "Shippo",
+          "shippoDescription": "Verzending labels en pakket tracking"
+        },
+        "shippingGrid": {
+          "carrier": "Carrier",
+          "enabled": "Ingeschakeld"
+        },
+        "shippingSettings": {
+          "noCarriersFound": "Geen verzendkosten vervoerders geconfigureerd.",
+          "editApiKey": "Bewerken API Key",
+          "carrierSaved": "Carrier succesvol opgeslagen.",
+          "carrierFailed": "Fout updaten carrier.",
+          "refresh": "Vernieuwen methoden"
+        }
+      },
+      "shippo": {
+        "connectedAndSaved": "Instellingen opgeslagen! Shippo API is nu ingeschakeld."
+      }
+    }
+  }
+}]

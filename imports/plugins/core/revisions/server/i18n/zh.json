@@ -1,0 +1,22 @@
+[{
+  "i18n": "zh",
+  "ns": "reaction-revisions",
+  "translation": {
+    "reaction-revisions": {
+      "admin": {
+        "dashboard": {
+          "preview": "预习",
+          "revisionsLabel": "修订",
+          "revisionsTitle": "修订",
+          "revisionsDescription": "版本控制"
+        },
+        "settings": {
+          "productRevisionsLabel": "产品修订"
+        },
+        "toolbar": {
+          "publishAll": "所有发布"
+        }
+      }
+    }
+  }
+}]

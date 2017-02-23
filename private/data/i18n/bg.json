@@ -7,65 +7,21 @@
       "languages": {
         "select": "Избери език"
       },
+      "currencies": {
+        "select": "Изберете Валута"
+      },
       "admin": {
         "shortcut": {
-          "dashboardLabel": "Табло",
-          "ordersLabel": "Поръчки",
           "addProductLabel": "Добави продукта",
           "accountsLabel": "Профили"
         },
         "dashboard": {
-          "accountsLabel": "Профили",
-          "accountsTitle": "Профили",
-          "accountsDescription": "Управление на разрешенията на потребителя",
-          "analyticsLabel": "анализ",
-          "analyticsTitle": "анализ",
-          "analyticsDescription": "Анализ и проследяването на интеграции",
-          "shippingLabel": "Доставка",
-          "shippingTitle": "Доставка",
-          "shippingDescription": "Осигуряване на тарифите за доставка",
-          "catalogLabel": "каталог",
-          "catalogTitle": "каталог",
-          "catalogDescription": "Продуктов каталог",
-          "coreLabel": "Настройки",
-          "coreTitle": "Табло",
-          "coreDescription": "реакция конфигурация",
-          "emailLabel": "електронна поща",
-          "emailTitle": "електронна поща",
-          "emailDescription": "настройки по имейл",
           "i18NLabel": "i18n",
           "i18NTitle": "i18n",
           "i18NDescription": "Интернационализация комунални услуги",
-          "inventoryLabel": "Складова наличност",
-          "inventoryTitle": "Складова наличност",
-          "inventoryDescription": "Опис комунални услуги",
-          "layoutLabel": "оформление",
-          "layoutTitle": "оформление",
-          "layoutDescription": "Разпределение комунални услуги",
-          "connectLabel": "Свържете",
-          "connectTitle": "Свържете",
-          "connectDescription": "Свържете Реакция като разгърнати услуга",
-          "ordersLabel": "Поръчки",
-          "smsLabel": "СМС",
-          "smsTitle": "СМС",
-          "smsDescription": "Известия",
-          "ordersTitle": "Поръчки",
-          "ordersDescription": "Изпълним вашите поръчки",
-          "revisionsLabel": "ревизии",
-          "revisionsTitle": "ревизии",
-          "revisionsDescription": "контрол на контрол",
           "routingLabel": "Routing",
           "routingTitle": "Routing",
           "routingDescription": "маршрутизиране комунални услуги",
-          "searchLabel": "Търсене",
-          "searchTitle": "Търсене",
-          "searchDescription": "Търсене на продукт",
-          "socialLabel": "социален",
-          "socialTitle": "социален",
-          "socialDescription": "конфигурация социален Канал",
-          "themesLabel": "Теми",
-          "themesTitle": "Теми",
-          "themesDescription": "Теми и UI компоненти",
           "filtrationLabel": "филтриране",
           "filtrationDescription": "Продукти филтрация за реакция"
         },
@@ -79,25 +35,14 @@
           "utilities": "комунални услуги"
         },
         "settings": {
+          "accountSettingsLabel": "Настройки на профила",
+          "accountSettingsTitle": "Вход за Услуги",
+          "accountSettingsDescription": "Удостоверяване чрез социални доставчици",
           "saveSuccess": "Настройки актуализирани.",
           "saveFailed": "Неуспешно актуализиране на настройките.",
-          "accountSettingsLabel": "Настройки на профила",
           "addShopMemberLabel": "Добави Shop държава",
           "permissionsSettingsLabel": "Permissions",
-          "localizationAndI18NLabel": "Локализация и i18n",
-          "searchSettingsLabel": "Настройки за търсенето",
-          "shopSettingsLabel": "Настройки магазин",
-          "smsSettingsLabel": "настройки на SMS",
-          "socialSettingsLabel": "социални Settings",
-          "shippingSettingsLabel": "Настройки за доставка",
-          "inventorySettingsLabel": "Опис Settings",
-          "analyticsSettingsLabel": "Настройки на Google Анализ",
-          "reactionConnectLabel": "реакция Connect",
-          "productSettingsLabel": "Настройки за продукта",
-          "productDetailsLabel": "информация за продукта",
-          "productRevisionsLabel": "ревизии на продукта",
-          "emailSettingsLabel": "Email настройки",
-          "catalogSettingsLabel": "Каталог Settings"
+          "localizationAndI18NLabel": "Локализация и i18n"
         },
         "userAccountDropdown": {
           "profileLabel": "Профил"
@@ -111,6 +56,8 @@
       "app": {
         "add": "Добави",
         "editMode": "режим на редактиране",
+        "administratorView": "Administrator View",
+        "customerView": "Преглед на клиенти",
         "createContent": "Създаване на съдържание",
         "auto": "Автоматичен",
         "save": "Запиши",
@@ -355,9 +302,12 @@
         "variantDetails": "Вариант Детайли",
         "duplicateVariant": "Дубликат",
         "addVariantOption": "Добавяне на опция",
+        "addVariantFail": "Не може да се създаде вариант за {{title}}.",
+        "cloneVariantFail": "Не може да се клонира вариант за {{title}}.",
         "removeVariant": "Премахни",
         "removeVariantConfirm": "Сигурни ли сте, че искате да изтриете {{title}}",
         "restoreVariantConfirm": "Сигурни ли сте че искате да възстановите {{title}} от боклука?",
+        "restoreVariantFail": "Не може да се възстанови {{title}}.",
         "archiveVariantConfirm": "Сигурни ли сте че искате да архивирате {{title}}",
         "thisVariant": "този вариант",
         "thisOption": "тази опция",
@@ -475,11 +425,16 @@
         "notShipped": "Още не е изпратено",
         "noTracking": "Без проследяване",
         "tracking": "Проследяване",
+        "printLabels": "Печат на етикети",
+        "printShippingLabel": "Доставка",
+        "printCustomsLabel": "митница",
+        "carrier": "носител",
         "addTracking": "Добави за проследяване",
         "itemsHaveBeenShipped": "Предмети, са били изпратени",
         "shipmentEmpty": "В поръчката няма продукти",
         "shipmentPacked": "Всички продукти са опаковани",
         "shipped": "Изпратено",
+        "delivered": "Доставени",
         "shippingNotifyCustomer": "Съобщи на потребителя, че поръчката ще им бъде изпратена.",
         "resendNotification": "Изпрати съобщението за поръчката отново"
       },
@@ -500,6 +455,8 @@
         "yourOrderIsNow": "Поръчката Ви се обработва",
         "summaryMessage": "Благодарим Ви за поръчката.",
         "submitted": "Изпратена",
+        "processing": "обработване",
+        "completed": "завършен",
         "registerGuest": "Добавете и-мейл, за да получавате известия за поръчката.",
         "trackYourDelivery": "Информация за пратката",
         "noOrdersFound": "Не е намерена поръчка.",
@@ -526,7 +483,8 @@
       "addressBookAdd": {
         "addAddress": "Добавете адрес",
         "createAddress": "Създайте адрес по подразбиране",
-        "failedToAddAddress": "Неуспешно добавяне на адрес: {{err}}"
+        "failedToAddAddress": "Неуспешно добавяне на адрес: {{err}}",
+        "validatedAddress": "Направени промени в адреса си въз основа на валидирането. Моля, уверете се че това е правилната"
       },
       "addressBookEdit": {
         "editAddress": "Редактирайте адреса",
@@ -625,68 +583,6 @@
       },
       "checkoutReview": {
         "review": "Преглед"
-      },
-      "checkoutShipping": {
-        "selectShippingOption": "Изберете начин за доставка",
-        "noShippingMethods": "Не е избран начин за доставка.",
-        "configureNow": "Конфигурирайте сега.",
-        "shipping": "доставка"
-      },
-      "shipping": {
-        "addShippingProvider": "Добави доставчик корабоплаването",
-        "editShippingProvider": "Edit доставчик корабоплаването",
-        "addShippingMethod": "Добави начин за доставка",
-        "editShippingMethod": "метод Edit корабоплаването",
-        "deleteShippingMethod": "Изтриване на начин за доставка",
-        "noSettingsForThisView": "Не настройки за тази гледка",
-        "noShippingMethods": "Не са методи на доставка са конфигурирани.",
-        "removeShippingMethodConfirm": "Сигурни ли сте, че искате да изтриете {{method}}?",
-        "removeShippingMethodTitle": "Премахване Начин на доставка",
-        "shippingMethodDeleted": "Този метод на пратката е била изтрита.",
-        "removeShippingProvider": "Премахване Provider Доставка",
-        "removeShippingProviderConfirm": "Сигурни ли сте, че искате да изтриете {{provider}}?",
-        "shippingProviderSaved": "доставчик Доставка спасен.",
-        "shippingProviderUpdated": "актуализирани данни на доставчика за доставка.",
-        "shippingMethodRateAdded": "прибавя процент Доставка метод.",
-        "shippingMethodRateUpdated": "ставка метод за доставка се обновява.",
-        "name": "Име",
-        "label": "Етикет",
-        "group": "група",
-        "cost": "цена",
-        "handling": "боравене",
-        "rate": "скорост",
-        "enabled": "Enabled",
-        "disabled": "хора с увреждания",
-        "addRate": "Добави скорост",
-        "updateRate": "Актуализация {{name}} скорост",
-        "addNewCondition": "Добавяне на нов състояние",
-        "deleteCondition": "Изтриване състояние",
-        "provider": {
-          "name": "Service Code",
-          "label": "Public Label",
-          "enabled": "Enabled"
-        }
-      },
-      "shippingMethod": {
-        "name": "Име на метода",
-        "label": "Public Label",
-        "group": "група",
-        "cost": "цена",
-        "handling": "боравене",
-        "rate": "скорост",
-        "enabled": "Enabled",
-        "matchingCartRanges": "Съвпадение Количка диапазоните",
-        "validRanges": {
-          "begin": "започвам",
-          "end": "Край"
-        },
-        "matchingLocales": "съвпадение Локалите",
-        "validLocales": {
-          "origination": "от",
-          "destination": "Да се",
-          "deliveryBegin": "Доставка Est.",
-          "deliveryEnd": "Доставка Est."
-        }
       },
       "uom": {
         "OZ": "Унции",
@@ -814,16 +710,6 @@
           "passwordResetSend": "Имейл с линк за нулиране на паролата е изпратен.",
           "invitationSent": "Поканата е изпратена",
           "sendInvitation": "Изпрати покана"
-        },
-        "reactionUI": {
-          "editTheme": "Edit Theme",
-          "duplicateTheme": "Duplicate Theme",
-          "duplicateThemeError": "Не може да се дублира тема",
-          "publishThemeError": "`Не може да публикувате тема {{themeName}}",
-          "components": {
-            "navbar": "Navigation Bar",
-            "button": "бутон"
-          }
         },
         "error": {
           "emailRequired": " Изисква си имейл.",

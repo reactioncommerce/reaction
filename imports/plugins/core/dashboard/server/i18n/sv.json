@@ -1,0 +1,20 @@
+[{
+  "i18n": "sv",
+  "ns": "reaction-dashboard",
+  "translation": {
+    "reaction-dashboard": {
+      "admin": {
+        "shortcut": {
+          "dashboardLabel": "Instrumentbräda"
+        },
+        "dashboard": {
+          "packageGroupActionsLabel": "Aktiviteter",
+          "packageGroupSettingsLabel": "Inställningar"
+        },
+        "settings": {
+          "shopSettingsLabel": "Handla"
+        }
+      }
+    }
+  }
+}]

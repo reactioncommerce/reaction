@@ -1,0 +1,15 @@
+[{
+  "i18n": "en",
+  "ns": "reaction-layout",
+  "translation": {
+    "reaction-layout": {
+      "admin": {
+        "dashboard": {
+          "layoutLabel": "Layout",
+          "layoutTitle": "Layout",
+          "layoutDescription": "Layout utilities"
+        }
+      }
+    }
+  }
+}]

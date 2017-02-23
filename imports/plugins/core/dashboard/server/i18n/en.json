@@ -1,0 +1,20 @@
+[{
+  "i18n": "en",
+  "ns": "reaction-dashboard",
+  "translation": {
+    "reaction-dashboard": {
+      "admin": {
+        "shortcut": {
+          "dashboardLabel": "Dashboard"
+        },
+        "dashboard": {
+          "packageGroupActionsLabel": "Actions",
+          "packageGroupSettingsLabel": "Settings"
+        },
+        "settings": {
+          "shopSettingsLabel": "Shop"
+        }
+      }
+    }
+  }
+}]

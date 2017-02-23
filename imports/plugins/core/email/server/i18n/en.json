@@ -1,0 +1,20 @@
+[{
+  "i18n": "en",
+  "ns": "reaction-email",
+  "translation": {
+    "reaction-email": {
+      "admin": {
+        "dashboard": {
+          "emailLabel": "Email",
+          "emailTitle": "Email",
+          "emailDescription": "Email settings"
+        },
+        "settings": {
+          "emailSettingsLabel": "Email",
+          "emailSettingsTitle": "Email",
+          "emailSettingsDescription": "Email settings"
+        }
+      }
+    }
+  }
+}]

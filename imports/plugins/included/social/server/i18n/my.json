@@ -1,0 +1,18 @@
+[{
+  "i18n": "my",
+  "ns": "reaction-social",
+  "translation": {
+    "reaction-social": {
+      "admin": {
+        "dashboard": {
+          "socialLabel": "လူမှုရေး",
+          "socialTitle": "လူမှုရေး",
+          "socialDescription": "လူမှု Channel ကို configuration ကို"
+        },
+        "settings": {
+          "socialSettingsLabel": "လူမှုရေးက Settings"
+        }
+      }
+    }
+  }
+}]

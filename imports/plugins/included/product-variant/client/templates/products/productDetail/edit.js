@@ -13,7 +13,7 @@ Template.productDetailEdit.helpers({
   i18nPlaceholder: function () {
     const i18nKey = `productDetailEdit.${this.field}`;
     if (i18next.t(i18nKey) === i18nKey) {
-      Logger.info(`returning empty placeholder productDetailEdit: ${i18nKey} no i18n key found.`);
+      Logger.warn(`returning empty placeholder productDetailEdit: ${i18nKey} no i18n key found.`);
     } else {
       return i18next.t(i18nKey);
     }
@@ -29,7 +29,7 @@ Template.productDetailEdit.events({
     const self = this;
     const productId = ReactionProduct.selectedProductId();
     Meteor.call("products/updateProductField", productId, self.field,
-      $(event.currentTarget).val(),
+      Template.instance().$(event.currentTarget).val(),
       (error, result) => {
         if (error) {
           return Alerts.inline(error.reason, "error", {
@@ -62,7 +62,7 @@ Template.productDetailEdit.events({
           }
           // animate updated field
           // TODO this needs to be moved into a component
-          return $(event.currentTarget).animate({
+          return Template.instance().$(event.currentTarget).animate({
             backgroundColor: "#e2f2e2"
           }).animate({
             backgroundColor: "#fff"
@@ -71,7 +71,7 @@ Template.productDetailEdit.events({
       });
 
     if (this.type === "textarea") {
-      autosize($(event.currentTarget));
+      autosize(Template.instance().$(event.currentTarget));
     }
 
     return Session.set("editing-" + this.field, false);

@@ -1,0 +1,20 @@
+[{
+  "i18n": "hr",
+  "ns": "reaction-dashboard",
+  "translation": {
+    "reaction-dashboard": {
+      "admin": {
+        "shortcut": {
+          "dashboardLabel": "kontrolna ploča"
+        },
+        "dashboard": {
+          "packageGroupActionsLabel": "Akcije",
+          "packageGroupSettingsLabel": "Postavke"
+        },
+        "settings": {
+          "shopSettingsLabel": "Dućan"
+        }
+      }
+    }
+  }
+}]

@@ -1,0 +1,20 @@
+[{
+  "i18n": "es",
+  "ns": "reaction-dashboard",
+  "translation": {
+    "reaction-dashboard": {
+      "admin": {
+        "shortcut": {
+          "dashboardLabel": "Salpicadero"
+        },
+        "dashboard": {
+          "packageGroupActionsLabel": "Acciones",
+          "packageGroupSettingsLabel": "Ajustes"
+        },
+        "settings": {
+          "shopSettingsLabel": "tienda"
+        }
+      }
+    }
+  }
+}]

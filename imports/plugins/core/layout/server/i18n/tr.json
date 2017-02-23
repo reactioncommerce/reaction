@@ -1,0 +1,15 @@
+[{
+  "i18n": "tr",
+  "ns": "reaction-layout",
+  "translation": {
+    "reaction-layout": {
+      "admin": {
+        "dashboard": {
+          "layoutLabel": "düzen",
+          "layoutTitle": "düzen",
+          "layoutDescription": "Düzen yarar"
+        }
+      }
+    }
+  }
+}]

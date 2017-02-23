@@ -7,65 +7,21 @@
       "languages": {
         "select": "Odaberite jezik"
       },
+      "currencies": {
+        "select": "Odaberi valuta"
+      },
       "admin": {
         "shortcut": {
-          "dashboardLabel": "kontrolna ploča",
-          "ordersLabel": "Narudžbe",
           "addProductLabel": "Dodaj proizvod",
           "accountsLabel": "Računi"
         },
         "dashboard": {
-          "accountsLabel": "Računi",
-          "accountsTitle": "Računi",
-          "accountsDescription": "Upravljanje dozvolama članova",
-          "analyticsLabel": "Analitika",
-          "analyticsTitle": "Analitika",
-          "analyticsDescription": "Za analizu i praćenje integracije",
-          "shippingLabel": "dostava",
-          "shippingTitle": "dostava",
-          "shippingDescription": "Osigurati cijene dostave",
-          "catalogLabel": "Katalog",
-          "catalogTitle": "Katalog",
-          "catalogDescription": "Katalog proizvoda",
-          "coreLabel": "Postavke",
-          "coreTitle": "kontrolna ploča",
-          "coreDescription": "konfiguracija reakcije",
-          "emailLabel": "E-mail",
-          "emailTitle": "E-mail",
-          "emailDescription": "postavke e-pošte",
           "i18NLabel": "i18n",
           "i18NTitle": "i18n",
           "i18NDescription": "Internacionalizacija komunalije",
-          "inventoryLabel": "Inventar",
-          "inventoryTitle": "Inventar",
-          "inventoryDescription": "Inventar komunalije",
-          "layoutLabel": "raspored",
-          "layoutTitle": "raspored",
-          "layoutDescription": "izgled komunalije",
-          "connectLabel": "Spojiti",
-          "connectTitle": "Spojiti",
-          "connectDescription": "Povezivanje reakcija kao razmještene usluge",
-          "ordersLabel": "Narudžbe",
-          "smsLabel": "SMS",
-          "smsTitle": "SMS",
-          "smsDescription": "Obavijesti",
-          "ordersTitle": "Narudžbe",
-          "ordersDescription": "Ispuniti Vaše narudžbe",
-          "revisionsLabel": "Izmjene",
-          "revisionsTitle": "Izmjene",
-          "revisionsDescription": "kontrola Revizija",
           "routingLabel": "usmjeravanje",
           "routingTitle": "usmjeravanje",
           "routingDescription": "Routing komunalije",
-          "searchLabel": "Pretraživanje",
-          "searchTitle": "Pretraživanje",
-          "searchDescription": "pretraživanje proizvoda",
-          "socialLabel": "socijalno",
-          "socialTitle": "socijalno",
-          "socialDescription": "Konfiguracija Socijalna kanala",
-          "themesLabel": "Teme",
-          "themesTitle": "Teme",
-          "themesDescription": "Teme i UI komponente",
           "filtrationLabel": "filtracija",
           "filtrationDescription": "Proizvodi za filtraciju za reakciju"
         },
@@ -79,25 +35,14 @@
           "utilities": "komunalne usluge"
         },
         "settings": {
+          "accountSettingsLabel": "Postavke računa",
+          "accountSettingsTitle": "usluge Prijava",
+          "accountSettingsDescription": "Provjera autentičnosti putem društvenih pružatelja",
           "saveSuccess": "Postavke ažurirane.",
           "saveFailed": "Ažuriranje postavki nije uspjelo.",
-          "accountSettingsLabel": "Postavke računa",
           "addShopMemberLabel": "Dodaj Shop član",
           "permissionsSettingsLabel": "Dopuštenja",
-          "localizationAndI18NLabel": "Lokalizacija i i18n",
-          "searchSettingsLabel": "Postavke za pretraživanje",
-          "shopSettingsLabel": "Postavke Shop",
-          "smsSettingsLabel": "SMS postavke",
-          "socialSettingsLabel": "Postavke društvenih mreža",
-          "shippingSettingsLabel": "Postavke Dostava",
-          "inventorySettingsLabel": "Postavke oglasnog prostora",
-          "analyticsSettingsLabel": "Postavke Analytics",
-          "reactionConnectLabel": "reakcija Connect",
-          "productSettingsLabel": "Postavke proizvoda",
-          "productDetailsLabel": "detalji o proizvodu",
-          "productRevisionsLabel": "Izmjene proizvoda",
-          "emailSettingsLabel": "Postavke e-pošte",
-          "catalogSettingsLabel": "Postavke Katalog"
+          "localizationAndI18NLabel": "Lokalizacija i i18n"
         },
         "userAccountDropdown": {
           "profileLabel": "Profil"
@@ -111,6 +56,8 @@
       "app": {
         "add": "Dodati",
         "editMode": "način uređivanja",
+        "administratorView": "Administrator Pogledaj",
+        "customerView": "Kupac Pogledaj",
         "createContent": "Stvaranje sadržaja",
         "auto": "Auto",
         "save": "Spremi",
@@ -355,9 +302,12 @@
         "variantDetails": "varijanta Detalji",
         "duplicateVariant": "Duplikat",
         "addVariantOption": "Dodaj Option",
+        "addVariantFail": "Nije moguće stvoriti varijantu za {{title}}.",
+        "cloneVariantFail": "Nije moguće klonirati varijantu za {{title}}.",
         "removeVariant": "Ukloniti",
         "removeVariantConfirm": "Jeste li sigurni da želite obrisati {{title}}",
         "restoreVariantConfirm": "Jeste li sigurni da želite vratiti {{title}} iz kante za smeće?",
+        "restoreVariantFail": "Nije moguće vratiti {{title}}.",
         "archiveVariantConfirm": "Jeste li sigurni da želite arhivirati {{title}}",
         "thisVariant": "ova varijanta",
         "thisOption": "ova opcija",
@@ -475,11 +425,16 @@
         "notShipped": "Nije još poslano",
         "noTracking": "Bez praćenje",
         "tracking": "Praćenje",
+        "printLabels": "Ispis naljepnica",
+        "printShippingLabel": "dostava",
+        "printCustomsLabel": "carina",
+        "carrier": "Prijevoznik",
         "addTracking": "Dodaj praćenje",
         "itemsHaveBeenShipped": "Predmeti su otpremljena",
         "shipmentEmpty": "Ova je pošiljka nema artikala",
         "shipmentPacked": "Sve stavke Prepuna",
         "shipped": "isporučen",
+        "delivered": "Isporučeno",
         "shippingNotifyCustomer": "Obavijestiti korisnika da su njihovi predmeti će se transportno uskoro.",
         "resendNotification": "Ponovno slanje pošiljke obavijesti"
       },
@@ -500,6 +455,8 @@
         "yourOrderIsNow": "Vaš nalog je sada",
         "summaryMessage": "Hvala Vam za narudžbu.",
         "submitted": "podnio",
+        "processing": "obrada",
+        "completed": "dovršen",
         "registerGuest": "Zdravo! Dodavanje e-mail i primajte novosti o narudžbi.",
         "trackYourDelivery": "ažuriranja narudžba će biti poslana",
         "noOrdersFound": "Nisu pronađene narudžbe.",
@@ -526,7 +483,8 @@
       "addressBookAdd": {
         "addAddress": "Dodaj novu adresu",
         "createAddress": "Odaberi zadanu adresu",
-        "failedToAddAddress": "Neuspjelo dodavanje adresu: {{err}}"
+        "failedToAddAddress": "Neuspjelo dodavanje adresu: {{err}}",
+        "validatedAddress": "Broj promjena na vašu adresu na temelju odobrenja. Provjerite da je to točno"
       },
       "addressBookEdit": {
         "editAddress": "Uređivanje adrese",
@@ -625,68 +583,6 @@
       },
       "checkoutReview": {
         "review": "Pregled"
-      },
-      "checkoutShipping": {
-        "selectShippingOption": "Odaberi opcije dostave",
-        "noShippingMethods": "Opcija dostave nije postavljena",
-        "configureNow": "Postavi sad.",
-        "shipping": "Dostava"
-      },
-      "shipping": {
-        "addShippingProvider": "Dodaj dostave davatelja",
-        "editShippingProvider": "Uredi ponuđač dostave",
-        "addShippingMethod": "Dodaj način dostave",
-        "editShippingMethod": "Uredite način dostave",
-        "deleteShippingMethod": "Brisanje način dostave",
-        "noSettingsForThisView": "Nema postavki za ovu pogled",
-        "noShippingMethods": "Nema načina dostave konfigurirane.",
-        "removeShippingMethodConfirm": "Jeste li sigurni da želite obrisati {{method}}?",
-        "removeShippingMethodTitle": "Ukloni Način dostave",
-        "shippingMethodDeleted": "Ova metoda dostave je obrisan.",
-        "removeShippingProvider": "Ukloni Dostava Provider",
-        "removeShippingProviderConfirm": "Jeste li sigurni da želite obrisati {{provider}}?",
-        "shippingProviderSaved": "Dostava davatelj spasio.",
-        "shippingProviderUpdated": "Dostava davatelja podataka ažurirati.",
-        "shippingMethodRateAdded": "Dostava stopa metoda dodan.",
-        "shippingMethodRateUpdated": "Dostava stopa metoda ažuriran.",
-        "name": "Ime",
-        "label": "Označiti",
-        "group": "Skupina",
-        "cost": "cijena",
-        "handling": "Rukovanje",
-        "rate": "Stopa",
-        "enabled": "Omogućeno",
-        "disabled": "onesposobljen",
-        "addRate": "Dodaj stopu",
-        "updateRate": "Ažuriranje {{name}} stopa",
-        "addNewCondition": "Dodaj novo stanje",
-        "deleteCondition": "Brisanje stanje",
-        "provider": {
-          "name": "kod usluga",
-          "label": "Javni Label",
-          "enabled": "Omogućeno"
-        }
-      },
-      "shippingMethod": {
-        "name": "Naziv metoda",
-        "label": "Javni Label",
-        "group": "Skupina",
-        "cost": "cijena",
-        "handling": "Rukovanje",
-        "rate": "Stopa",
-        "enabled": "Omogućeno",
-        "matchingCartRanges": "Odgovarajući košarice rasponi",
-        "validRanges": {
-          "begin": "Početi",
-          "end": "Kraj"
-        },
-        "matchingLocales": "odgovarajući locales",
-        "validLocales": {
-          "origination": "Iz",
-          "destination": "Do",
-          "deliveryBegin": "Dostava Est.",
-          "deliveryEnd": "Isporuka Est."
-        }
       },
       "uom": {
         "OZ": "unci",
@@ -814,16 +710,6 @@
           "passwordResetSend": "E-mail s linkom za poništavanje lozinke je poslana.",
           "invitationSent": "Pozivnica je poslana",
           "sendInvitation": "Pošalji pozivnicu"
-        },
-        "reactionUI": {
-          "editTheme": "Uredi Tema",
-          "duplicateTheme": "Dvostruki Tema",
-          "duplicateThemeError": "Ne može se udvostručiti temu",
-          "publishThemeError": "'Ne može se objaviti temu {{themeName}}",
-          "components": {
-            "navbar": "Nalazite se ovdje",
-            "button": "Dugme"
-          }
         },
         "error": {
           "emailRequired": "Email adresa je obavezna.",
