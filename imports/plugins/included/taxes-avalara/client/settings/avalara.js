@@ -1,10 +1,21 @@
 import _ from "lodash";
 import { Template } from "meteor/templating";
+import { Tracker } from "meteor/tracker";
+import { Meteor } from "meteor/meteor";
 import { AutoForm } from "meteor/aldeed:autoform";
 import { Countries } from "/client/collections";
 import { Reaction, i18next } from "/client/api";
-import { Packages } from "/lib/collections";
+import { Packages, Logs } from "/lib/collections";
 import { AvalaraPackageConfig } from "../../lib/collections/schemas";
+
+
+Template.avalaraSettings.onCreated(function () {
+  const handle = Meteor.subscribe("Logs");
+  Tracker.autorun(() => {
+    const isReady = handle.ready();
+    console.log(`Handle is ${isReady ? "ready" : "not ready"}`);
+  });
+});
 
 
 Template.avalaraSettings.helpers({
