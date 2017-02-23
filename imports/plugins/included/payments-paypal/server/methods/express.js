@@ -8,8 +8,6 @@ import { PayPal } from "../../lib/api";
 import { Shops, Cart, Packages } from "/lib/collections";
 import { Reaction, Logger } from "/server/api";
 
-let parseResponse;
-let parseRefundReponse;
 const nvpVersion = "52.0";
 
 export const methods = {
@@ -334,7 +332,7 @@ export const methods = {
 };
 
 // internal helpers
-parseResponse = function (response) {
+function parseResponse(response) {
   const result = {};
   const pieces = response.content.split("&");
   pieces.forEach(function (piece) {
@@ -343,14 +341,14 @@ parseResponse = function (response) {
     return decodedResult;
   });
   return result;
-};
+}
 
 /**
  * Parse PayPal's 'unique' Transaction Query response to look for refunds
  * @param  {Object} response The response from PayPal
  * @return {Object} Refunds, normalized to an Array
  */
-parseRefundReponse = function (response) {
+function parseRefundReponse(response) {
   const paypalArray = [];
 
   for (let i = 0; i < 101; i++) {
@@ -375,7 +373,7 @@ parseRefundReponse = function (response) {
   }
 
   return paypalArray;
-};
+}
 
 getSetting = function (shopId, parameter) {
   const settings = Packages.findOne({

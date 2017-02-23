@@ -2,7 +2,7 @@ import React from "react";
 import { Translation } from "/imports/plugins/core/ui/client/components";
 import { TranslationProvider } from "/imports/plugins/core/ui/client/providers";
 
-const ProductNotFound = (props) => {
+const ProductNotFound = () => {
   return (
     <TranslationProvider>
       <div className="container-fluid-sm">

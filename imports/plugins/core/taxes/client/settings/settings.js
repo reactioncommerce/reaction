@@ -1,8 +1,6 @@
 import { Template } from "meteor/templating";
-import { Packages } from "/lib/collections";
 import { TaxCodes } from "../../lib/collections";
 import { i18next } from "/client/api";
-import { TaxPackageConfig } from "../../lib/collections/schemas";
 
 /*
  * Template taxes Helpers
@@ -26,18 +24,6 @@ Template.taxSettings.helpers({
     }
     return "";
   },
-  // packageConfigSchema() {
-  //   return TaxPackageConfig;
-  // },
-  //
-  // get current packages settings data
-  //
-  // packageData() {
-  //   return Packages.findOne({
-  //     name: "reaction-taxes"
-  //   });
-  // },
-  //
   // prepare and return taxCodes
   // for default shop value
   //
