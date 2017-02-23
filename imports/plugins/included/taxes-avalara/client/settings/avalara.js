@@ -8,12 +8,20 @@ import { Reaction, i18next } from "/client/api";
 import { Packages, Logs } from "/lib/collections";
 import { AvalaraPackageConfig } from "../../lib/collections/schemas";
 
+function getPackageData() {
+  return Packages.findOne({
+    name: "taxes-avalara",
+    shopId: Reaction.getShopId()
+  });
+}
+
 
 Template.avalaraSettings.onCreated(function () {
-  const handle = Meteor.subscribe("Logs");
+  const logSub = Meteor.subscribe("Logs", "avalara");
   Tracker.autorun(() => {
-    const isReady = handle.ready();
-    console.log(`Handle is ${isReady ? "ready" : "not ready"}`);
+    if (logSub.ready()) {
+      this.logs = Logs.find({});
+    }
   });
 });
 
@@ -23,10 +31,7 @@ Template.avalaraSettings.helpers({
     return AvalaraPackageConfig;
   },
   packageData() {
-    return Packages.findOne({
-      name: "taxes-avalara",
-      shopId: Reaction.getShopId()
-    });
+    return getPackageData();
   },
   countryOptions() {
     // Avalara supports only Canada and US for address validation
@@ -34,6 +39,13 @@ Template.avalaraSettings.helpers({
   },
   currentCountryList() {
     return AutoForm.getFieldValue("settings.addressValidation.countryList");
+  },
+  loggingEnabled() {
+    const pkgData = getPackageData();
+    return pkgData.settings.avalara.enableLogging;
+  },
+  avalogs() {
+    return Logs.find({}).fetch();
   }
 });
 
