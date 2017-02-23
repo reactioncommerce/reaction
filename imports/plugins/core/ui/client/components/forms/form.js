@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from "react";
-import { map, update, set, at } from "lodash";
+import { map, update, set, at, isEqual } from "lodash";
 import classnames from "classnames";
 import { toCamelCase } from "/lib/api";
 import { Switch, Button, TextField, FormActions } from "../";
@@ -25,9 +25,12 @@ class Form extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({
-      doc: nextProps.doc
-    });
+    if (isEqual(nextProps.doc, this.props.doc) === false) {
+      this.setState({
+        doc: nextProps.doc,
+        schema: this.validationSchema()
+      });
+    }
   }
 
 
@@ -142,7 +145,6 @@ class Form extends Component {
         );
         break;
       case "string":
-      default:
         fieldElement = (
           <TextField
             {...sharedProps}
@@ -150,12 +152,15 @@ class Form extends Component {
             value={this.valueForField(field.name)}
           />
         );
+        break;
+      default:
+        return null;
     }
 
     let fieldHasError = false;
 
     if (this.state.isValid === false) {
-      this.state.schema.invalidKeys()
+      this.state.schema._invalidKeys
         .filter((v) => v.name === field.name)
         .map((validationError) => {
           const message = this.state.schema.keyErrorMessage(validationError.name);
@@ -184,14 +189,13 @@ class Form extends Component {
   }
 
   renderField(field) {
-    const { docPath, fieldName } = field;
-    const fullFieldName = docPath ? `${docPath}.${fieldName}` : fieldName;
+    const { fieldName } = field;
 
-    if (this.isFieldHidden(fullFieldName) === false) {
-      const fieldSchema = this.schema[fullFieldName];
+    if (this.isFieldHidden(fieldName) === false) {
+      const fieldSchema = this.schema[fieldName];
       const fieldProps = {
         ...fieldSchema,
-        name: fullFieldName,
+        name: fieldName,
         type: typeof fieldSchema.type()
       };
 
@@ -205,19 +209,26 @@ class Form extends Component {
     const { docPath } = this.props;
 
     if (this.props.schema) {
-      return map(this.schema, (field, key) => { // eslint-disable-line consistent-return
-        if (key.endsWith(docPath)) {
-          const objectKeys = this.objectKeys[docPath + "."];
-          if (Array.isArray(objectKeys)) {
-            // Use the objectKeys from parent fieldset to generate
-            // actual form fields
-            return objectKeys.map((fieldName) => {
-              return this.renderField({ docPath, fieldName });
-            });
-          }
+      if (docPath) {
+        return map(this.schema, (field, key) => { // eslint-disable-line consistent-return
+          if (key.endsWith(docPath)) {
+            const objectKeys = this.objectKeys[docPath + "."];
+            if (Array.isArray(objectKeys)) {
+              // Use the objectKeys from parent fieldset to generate
+              // actual form fields
+              return objectKeys.map((fieldName) => {
+                const fullFieldName = docPath ? `${docPath}.${fieldName}` : fieldName;
+                return this.renderField({ fieldName: fullFieldName });
+              });
+            }
 
-          return this.renderField({ key });
-        }
+            return this.renderField({ fieldName: key });
+          }
+        });
+      }
+
+      return map(this.schema, (field, key) => { // eslint-disable-line consistent-return
+        return this.renderField({ fieldName: key });
       });
     }
 
@@ -231,7 +242,7 @@ class Form extends Component {
         <FormActions>
           <Button
             label={"Save Changes"}
-            bezelStyle={"outline"}
+            bezelStyle={"solid"}
             primary={true}
             type="submit"
           />

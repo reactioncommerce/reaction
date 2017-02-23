@@ -60,7 +60,7 @@ class SocialSettings extends Component {
 
   renderCards() {
     if (Array.isArray(socialProviders)) {
-      return socialProviders.map((provider) => {
+      return socialProviders.map((provider, index) => {
         const doc = {
           settings: {
             ...this.props.packageData.settings
@@ -69,7 +69,7 @@ class SocialSettings extends Component {
 
         return (
           <SettingsCard
-            key={provider.name}
+            key={index}
             i18nKeyTitle={`settings.${provider.name}`}
             expandable={true}
             onExpand={this.props.onSettingExpand}

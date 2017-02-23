@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from "react";
+import { isEqual } from "lodash";
 import { Meteor } from "meteor/meteor";
 import { composeWithTracker } from "/lib/api/compose";
-import { Reaction } from "/client/api";
+import { Reaction, i18next } from "/client/api";
 import { Packages } from "/lib/collections";
 import { SocialSettings } from "../components";
 import { createSocialSettings } from "../../lib/helpers";
@@ -20,9 +21,11 @@ class SocialSettingsContainer extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({
-      settings: nextProps.settings
-    });
+    if (isEqual(nextProps.settings, this.props.settings) === false) {
+      this.setState({
+        settings: nextProps.settings
+      });
+    }
   }
 
   handleSettingEnable = (event, isChecked, name) => {
@@ -36,7 +39,14 @@ class SocialSettingsContainer extends Component {
   }
 
   handleSettingsSave = (settingName, values) => {
-    Meteor.call("reaction-social/updateSocialSettings", values.settings);
+    Meteor.call("reaction-social/updateSocialSettings", values.settings, (error) => {
+      if (!error) {
+        Alerts.toast(
+          i18next.t("admin.settings.socialSettingsSaved", { defaultValue: "Social settings saved" }),
+          "success"
+        );
+      }
+    });
   }
 
   render() {

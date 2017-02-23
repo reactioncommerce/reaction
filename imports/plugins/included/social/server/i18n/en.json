@@ -18,7 +18,8 @@
           "username": "Username",
           "appSecret": "App Secret",
           "profilePage": "Profile Page",
-          "socialSettingsLabel": "Social"
+          "socialSettingsLabel": "Social",
+          "socialSettingsSaved": "Social settings saved"
         }
       }
     }
