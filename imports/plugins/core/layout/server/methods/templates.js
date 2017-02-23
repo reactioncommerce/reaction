@@ -1,4 +1,3 @@
-import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { Templates } from "/lib/collections";
 import { Reaction } from "/server/api";

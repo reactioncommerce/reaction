@@ -3,14 +3,10 @@ const yaml = require("js-yaml");
 const fs   = require("fs");
 const expect = require("chai").expect;
 const getId = require("../../../lib/get-elements.js");
+const getTestConfig = require("../../../../lib/get-test-config.js");
 
 beforeEach(function () {
-  const browserConfig = yaml.safeLoad(fs.readFileSync("./tests/acceptance-tests/config/settings.yml", "utf8"));
-  const baseUrl = browserConfig.base_url.toString();
-  browser.url(baseUrl);
-  // browser.getSession().then(function (sessionid) {
-  //   browser.sessionID = sessionid.id_;
-  // });
+  getTestConfig.init();
 });
 
 describe("simple login test", function () {

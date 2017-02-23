@@ -21,12 +21,10 @@ describe("Server/Core", function () {
     });
 
     it("should throw 403 error by non admin", function (done) {
-      let currentTag;
-      let tag;
       const tagUpdateSpy = sandbox.spy(Tags, "update");
       const tagRemoveSpy = sandbox.spy(Tags, "remove");
-      tag = Factory.create("tag");
-      currentTag = Factory.create("tag");
+      const tag = Factory.create("tag");
+      const currentTag = Factory.create("tag");
       function removeTagFunc() {
         return Meteor.call("shop/removeHeaderTag", tag._id, currentTag._id);
       }
@@ -41,10 +39,8 @@ describe("Server/Core", function () {
         return true;
       });
 
-      let currentTag;
-      let tag;
-      tag = Factory.create("tag");
-      currentTag = Factory.create("tag");
+      const tag = Factory.create("tag");
+      const currentTag = Factory.create("tag");
       expect(Tags.find().count()).to.equal(2);
       Meteor.call("shop/removeHeaderTag", tag._id, currentTag._id);
       expect(Tags.find().count()).to.equal(1);
@@ -82,9 +78,8 @@ describe("Server/Core", function () {
     });
 
     it("should throw 403 error by non admin", function (done) {
-      let tag;
       sandbox.spy(Tags, "update");
-      tag = Factory.create("tag");
+      const tag = Factory.create("tag");
       function updateTagFunc() {
         return Meteor.call("shop/updateHeaderTags", tag._id);
       }
@@ -97,12 +92,11 @@ describe("Server/Core", function () {
       sandbox.stub(Reaction, "hasPermission", function () {
         return true;
       });
-      let tag;
       const tagCount = Tags.find().count();
       Factory.create("shop"); // Create shop so that ReactionCore.getShopId() doesn't fail
       Meteor.call("shop/updateHeaderTags", "new tag");
       expect(Tags.find().count()).to.equal(tagCount + 1);
-      tag = Tags.find().fetch()[0];
+      const tag = Tags.find().fetch()[0];
       expect(tag.name).to.equal("new tag");
       expect(tag.slug).to.equal("new-tag");
       return done();

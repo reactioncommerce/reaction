@@ -1031,7 +1031,6 @@ describe("core product methods", function () {
     it.skip("should let admin publish product chnages", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       let product = addProduct();
-      const isVisible = product.isVisible;
       expect(() => Meteor.call("products/publishProduct", product._id)).to.not.throw(Meteor.Error, /Access Denied/);
       Meteor.call("revisions/publish", product._id);
       product = Products.findOne(product._id);

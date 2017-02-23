@@ -4,12 +4,10 @@ const fs   = require("fs");
 const shopUser = require("../../../../lib/user-shop-actions.js");
 const userDo = require("../../../../lib/basic-user-actions.js");
 const adminUser = require("../../../../lib/admin-order-actions.js");
-
+const getTestConfig = require("../../../../lib/get-test-config.js");
 
 beforeEach(function () {
-  const browserConfig = yaml.safeLoad(fs.readFileSync("./tests/acceptance-tests/config/settings.yml", "utf8"));
-  const baseUrl = browserConfig.base_url.toString();
-  browser.url(baseUrl);
+  getTestConfig.init();
 });
 
 
