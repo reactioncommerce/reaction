@@ -1,5 +1,6 @@
 import bunyan from "bunyan";
 import { Logs } from "/lib/collections";
+import { Reaction } from "/server/api";
 
 const level = "INFO";
 
@@ -7,7 +8,7 @@ class BunyanMongo {}
 
 
 BunyanMongo.prototype.write = Meteor.bindEnvironment((logData) => {
-  const avalog = { logType: "avalara", data: logData };
+  const avalog = { logType: "avalara", shopId: Reaction.getShopId(), data: logData };
   Logs.insert(avalog);
 });
 
