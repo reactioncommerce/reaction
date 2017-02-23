@@ -15,7 +15,8 @@ import {
 
 const getStyles = (props) => {
   let viewSize = 400;
-  const isBigView = props.actionView && props.actionView.provides === "dashboard";
+  const actionView = props.actionView || {};
+  const isBigView = actionView.provides === "dashboard" || (actionView.provides === "shortcut" && actionView.container === "dashboard");
 
   if (isBigView) {
     viewSize = "90vw";
@@ -94,10 +95,9 @@ const getStyles = (props) => {
         zIndex: 1050
       }
     },
-    // detailView: {
-    //   flex: "1 1 auto",
-    //   overflow: "auto"
-    // },
+    detailView: {
+      width: "100%"
+    },
     backButton: {
       height: "100%"
     },
