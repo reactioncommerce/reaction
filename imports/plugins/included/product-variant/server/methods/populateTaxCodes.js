@@ -51,7 +51,7 @@ taxCodes.fetchTaxCodes = function (shopId, provider) {
 
   codes.forEach(function (code) {
     taxCodesArray.push({
-      value: code.id,
+      value: code.taxCode,
       label: `${code.taxCode} | ${code.label}`
     });
   });
