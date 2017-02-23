@@ -4,7 +4,6 @@ import { Blaze } from "meteor/blaze";
 import { Template } from "meteor/templating";
 import { Reaction, i18next } from "/client/api";
 import { Packages } from "/lib/collections";
-import PublishContainer from "/imports/plugins/core/revisions/client/containers/publishContainer";
 import ToolbarContainer from "/imports/plugins/core/dashboard/client/containers/toolbarContainer";
 import Toolbar from "/imports/plugins/core/dashboard/client/components/toolbar";
 import { ActionViewContainer } from "/imports/plugins/core/dashboard/client/containers";
@@ -61,7 +60,13 @@ Template.coreAdminLayout.helpers({
       tooltipPosition: "left middle",
       onClick(event) {
         if (!instance.dropInstance) {
-          instance.dropInstance = new Drop({ target: event.currentTarget, content: "", constrainToWindow: true, classes: "drop-theme-arrows", position: "right center" });
+          instance.dropInstance = new Drop({
+            target: event.currentTarget,
+            content: "",
+            constrainToWindow: true,
+            classes: "drop-theme-arrows",
+            position: "right center"
+          });
 
           Blaze.renderWithData(Template.createContentMenu, {}, instance.dropInstance.content);
         }
@@ -148,21 +153,3 @@ Template.coreAdminLayout.helpers({
     return reactionApp;
   }
 });
-
-// Template.coreAdminLayout.events({   /**
-//    * Submit sign up form
-//    * @param  {Event} event - jQuery Event
-//    * @param  {Template} template - Blaze Template
-//    * @return {void}    */   "click .admin-controls-quicklinks a, click .admin-controls-quicklinks button"(event) {
-//  if (this.name === "createProduct") {       event.preventDefault();       event.stopPropagation();
-//
-//       if (!this.dropInstance) {         this.dropInstance = new Drop({           target: event.target,
-// content: "",           constrainToWindow: true,           classes: "drop-theme-arrows",           position: "right
-// center"         });
-//
-//         Blaze.renderWithData(Template.createContentMenu, {}, this.dropInstance.content);       }
-//
-//       this.dropInstance.open();     } else if (this.route) {       event.preventDefault();
-// event.stopPropagation();
-//
-//       Reaction.Router.go(this.name);     }   } });

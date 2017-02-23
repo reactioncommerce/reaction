@@ -12,6 +12,9 @@
         },
         "settings": {
           "productRevisionsLabel": "Revize produktu"
+        },
+        "toolbar": {
+          "publishAll": "publikovat vše"
         }
       }
     }

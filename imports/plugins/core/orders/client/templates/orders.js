@@ -143,7 +143,7 @@ Template.orders.helpers({
 
   currentFilterLabel() {
     const foundFilter = _.find(orderFilters, (filter) => {
-      return filter.name ===  Reaction.Router.getQueryParam("filter");
+      return filter.name === Reaction.Router.getQueryParam("filter");
     });
 
     if (foundFilter) {

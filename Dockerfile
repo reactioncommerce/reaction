@@ -1,4 +1,4 @@
-FROM reactioncommerce/base:v1.0.3
+FROM reactioncommerce/base:v1.2.0
 
 # Default environment variables
 ENV ROOT_URL "http://localhost"

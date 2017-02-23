@@ -12,6 +12,9 @@
         },
         "settings": {
           "productRevisionsLabel": "Wersje produktu"
+        },
+        "toolbar": {
+          "publishAll": "publikuje wszystkie"
         }
       }
     }

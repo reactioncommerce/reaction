@@ -18,9 +18,7 @@ function getAccountOptions() {
     enabled: true
   }).settings;
   const ref = Meteor.settings.authnet;
-  let options;
-
-  options = {
+  const options = {
     login: getSettings(settings, ref, "api_id"),
     tran_key: getSettings(settings, ref, "transaction_key")
   };
@@ -85,10 +83,10 @@ Meteor.methods({
 
   "authnet/payment/capture": function (paymentMethod) {
     check(paymentMethod, Reaction.Schemas.PaymentMethod);
-    let {
+    const {
       transactionId,
       amount
-      } = paymentMethod;
+    } = paymentMethod;
 
     const authnetService = getAuthnetService(getAccountOptions());
     const roundedAmount = parseFloat(amount.toFixed(2));

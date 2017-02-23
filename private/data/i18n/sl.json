@@ -302,9 +302,12 @@
         "variantDetails": "Variant Podrobnosti",
         "duplicateVariant": "podvajati",
         "addVariantOption": "Dodaj možnost",
+        "addVariantFail": "Ni mogoče ustvariti varianto za {{title}}.",
+        "cloneVariantFail": "Ni mogoče klonirati varianto za {{title}}.",
         "removeVariant": "Odstraniti",
         "removeVariantConfirm": "Ali ste prepričani, da želite izbrisati {{title}}",
         "restoreVariantConfirm": "Ali ste prepričani, da želite obnoviti {{title}} iz smeti?",
+        "restoreVariantFail": "Ni mogoče obnoviti {{title}}.",
         "archiveVariantConfirm": "Ali ste prepričani, da želite arhivirati {{title}}",
         "thisVariant": "ta varianta",
         "thisOption": "ta možnost",
@@ -452,6 +455,8 @@
         "yourOrderIsNow": "Vaše naročilo je zdaj",
         "summaryMessage": "Hvala za vaše naročilo.",
         "submitted": "predložen",
+        "processing": "obravnavati",
+        "completed": "končan",
         "registerGuest": "Zdravo! Dodajanje e-pošto in prejemanje posodobitev reda.",
         "trackYourDelivery": "posodobitve naročilo bo poslano",
         "noOrdersFound": "Ni naročil.",
@@ -478,7 +483,8 @@
       "addressBookAdd": {
         "addAddress": "Dodaj nov vnos naslova",
         "createAddress": "Ustvari svoj privzeti naslov",
-        "failedToAddAddress": "Ni bilo mogoče dodati naslov: {{err}}"
+        "failedToAddAddress": "Ni bilo mogoče dodati naslov: {{err}}",
+        "validatedAddress": "Spremenili svoj naslov na podlagi potrditve. Prepričajte se, da je to pravilna"
       },
       "addressBookEdit": {
         "editAddress": "Urejanje ta vnos naslova",

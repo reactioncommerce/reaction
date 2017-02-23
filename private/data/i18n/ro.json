@@ -302,9 +302,12 @@
         "variantDetails": "Detalii variantă",
         "duplicateVariant": "Duplică",
         "addVariantOption": "Adaugă o optiune",
+        "addVariantFail": "Nu se poate crea varianta pentru {{title}}.",
+        "cloneVariantFail": "Nu se poate clona varianta pentru {{title}}.",
         "removeVariant": "Elimină",
         "removeVariantConfirm": "Sunteți sigur că doriți să ștergeți {{title}}",
         "restoreVariantConfirm": "Sunteți sigur(ă) că doriți să recuperați {{title}} din coșul de gunoi?",
+        "restoreVariantFail": "Nu se poate restabili {{title}}.",
         "archiveVariantConfirm": "Sigur doriți să arhivați {{title}}",
         "thisVariant": "această variantă",
         "thisOption": "această opțiune",
@@ -452,6 +455,8 @@
         "yourOrderIsNow": "Comanda dvs. este acum",
         "summaryMessage": "Vă mulțumim pentru comanda dumneavoastră.",
         "submitted": "transmisă",
+        "processing": "prelucrare",
+        "completed": "terminat",
         "registerGuest": "Buna! Pentru a fi in orice moment la curent cu progresul comenzii, puteți să adăugați o adresă de e-mail.",
         "trackYourDelivery": "Actualizările comenzii vor fi trimise la",
         "noOrdersFound": "Nu au fost găsite comenzi.",
@@ -478,7 +483,8 @@
       "addressBookAdd": {
         "addAddress": "Adăuga o nouă adresă",
         "createAddress": "Creați adresa prestabilită",
-        "failedToAddAddress": "Nu s-a putut adăuga adresa: {{err}}"
+        "failedToAddAddress": "Nu s-a putut adăuga adresa: {{err}}",
+        "validatedAddress": "Modificări aduse la adresa ta bazată pe validare. Asigurați-vă că acest lucru este corect"
       },
       "addressBookEdit": {
         "editAddress": "Editează această adresă",

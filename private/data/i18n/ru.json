@@ -302,9 +302,12 @@
         "variantDetails": "Детали варианта",
         "duplicateVariant": "Скопировать",
         "addVariantOption": "Добавить опцию",
+        "addVariantFail": "Невозможно создать вариант для {{title}}.",
+        "cloneVariantFail": "Невозможно клонировать вариант для {{title}}.",
         "removeVariant": "Удалить",
         "removeVariantConfirm": "Вы уверены, что хотите удалить {{title}}?",
         "restoreVariantConfirm": "Вы уверены, что хотите восстановить {{title}} из корзины?",
+        "restoreVariantFail": "Невозможно восстановить {{title}}.",
         "archiveVariantConfirm": "Вы уверены, что хотите заархивировать {{title}}",
         "thisVariant": "этот вариант",
         "thisOption": "эту опцию",
@@ -452,6 +455,8 @@
         "yourOrderIsNow": "Ваш заказ ",
         "summaryMessage": "Благодарим за заказ.",
         "submitted": "размещён",
+        "processing": "обработка",
+        "completed": "завершено",
         "registerGuest": "Здравствуйте! Добавьте email для получения обновлений заказа.",
         "trackYourDelivery": "Обновления заказа будут высланы на",
         "noOrdersFound": "Заказов не найдено.",
@@ -478,7 +483,8 @@
       "addressBookAdd": {
         "addAddress": "Добавить ещё адрес",
         "createAddress": "Добавить адрес по умолчанию",
-        "failedToAddAddress": "Добавить адрес не удалось: {{err}}"
+        "failedToAddAddress": "Добавить адрес не удалось: {{err}}",
+        "validatedAddress": "Внесли изменения в свой адрес на основании проверки. Пожалуйста, убедитесь, что это правильно"
       },
       "addressBookEdit": {
         "editAddress": "Редактирование адреса",

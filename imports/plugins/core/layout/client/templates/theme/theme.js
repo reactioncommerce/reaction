@@ -10,10 +10,10 @@ import { Packages, Shops } from "/lib/collections";
  * @returns {Object|null} The layout hash
  */
 function getRouteLayout(context) {
-  const package = Packages.findOne({ "registry.name": context.route.name, "enabled": true });
+  const pkg = Packages.findOne({ "registry.name": context.route.name, "enabled": true });
 
-  if(package) {
-    const registryRoute = package.registry.find((x) => {
+  if (pkg) {
+    const registryRoute = pkg.registry.find((x) => {
       return x.name === context.route.name;
     });
 
@@ -41,6 +41,7 @@ function getRouteLayout(context) {
  * addBodyClasses
  * Adds body classes to help themes distinguish pages and components based on the current route name and layout theme
  * @param  {Object} context - route context
+ * @returns {undefined}
  */
 function addBodyClasses(context) {
   let classes;
@@ -62,8 +63,7 @@ function addBodyClasses(context) {
   // add theme class for route layout or default
   if (currentLayout && currentLayout.theme) {
     classes.push(currentLayout.theme);
-  }
-  else {
+  } else {
     classes.push("default");
   }
 
