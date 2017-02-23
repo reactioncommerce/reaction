@@ -61,6 +61,11 @@ export const AvalaraPackageConfig = new SimpleSchema([
       type: Boolean,
       defaultValue: false
     },
+    "settings.avalara.logRetentionDuration": {
+      label: "Retain Logs Duration (Days)",
+      type: Number,
+      defaultValue: 30
+    },
     "settings.avalara.requestTimeout": {
       label: "Request Timeout",
       type: Number,
