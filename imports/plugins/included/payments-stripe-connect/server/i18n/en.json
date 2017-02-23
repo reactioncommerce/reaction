@@ -1,0 +1,24 @@
+[{
+  "language": "English",
+  "i18n": "en",
+  "ns": "reaction-stripe-connect",
+  "translation": {
+    "reaction-payments": {
+      "admin": {
+        "shortcut": {
+          "stripeConnectConnectLabel": "Stripe Connect"
+        },
+        "dashboard": {
+          "stripeConnectConnectLabel": "Stripe Connect",
+          "stripeConnectConnectDescription": "Stripe Connect payments"
+        },
+        "paymentSettings": {
+          "stripeConnectConnectLabel": "Stripe Connect",
+          "stripeConnectConnectSettingsLabel": "Stripe Connect",
+          "stripeConnectConnectSettingsDescription": "Don't have a Stripe Connect API Client ID?",
+          "stripeConnectConnectSettingsGetItHere": "Get it here"
+        }
+      }
+    }
+  }
+}]

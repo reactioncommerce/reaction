@@ -1,0 +1,24 @@
+[{
+  "language": "Greek",
+  "i18n": "el",
+  "ns": "reaction-stripe-connect",
+  "translation": {
+    "reaction-payments": {
+      "admin": {
+        "shortcut": {
+          "stripeConnectLabel": "Ταινία"
+        },
+        "dashboard": {
+          "stripeConnectLabel": "Ταινία",
+          "stripeConnectDescription": "πληρωμές stripeConnect"
+        },
+        "paymentSettings": {
+          "stripeConnectLabel": "Ταινία",
+          "stripeConnectSettingsLabel": "Ταινία",
+          "stripeConnectSettingsDescription": "Δεν έχετε Stripe Connect API αναγνωριστικό πελάτη;",
+          "stripeConnectSettingsGetItHere": "Αποκτήστε το εδώ"
+        }
+      }
+    }
+  }
+}]

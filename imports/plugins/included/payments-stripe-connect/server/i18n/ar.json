@@ -1,0 +1,24 @@
+[{
+  "language": "Arabic",
+  "i18n": "ar",
+  "ns": "reaction-stripe-connect",
+  "translation": {
+    "reaction-payments": {
+      "admin": {
+        "shortcut": {
+          "stripeConnectLabel": "شريط"
+        },
+        "dashboard": {
+          "stripeConnectLabel": "شريط",
+          "stripeConnectDescription": "المدفوعات شريط"
+        },
+        "paymentSettings": {
+          "stripeConnectLabel": "شريط",
+          "stripeConnectSettingsLabel": "شريط",
+          "stripeConnectSettingsDescription": "لم يكن لديك معرف العميل الشريط API؟",
+          "stripeConnectSettingsGetItHere": "أحضره هنا"
+        }
+      }
+    }
+  }
+}]

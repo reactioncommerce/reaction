@@ -1,0 +1,24 @@
+[{
+  "language": "Spanish",
+  "i18n": "es",
+  "ns": "reaction-stripe-connect",
+  "translation": {
+    "reaction-payments": {
+      "admin": {
+        "shortcut": {
+          "stripeConnectLabel": "Raya"
+        },
+        "dashboard": {
+          "stripeConnectLabel": "Raya",
+          "stripeConnectDescription": "pagos de la raya"
+        },
+        "paymentSettings": {
+          "stripeConnectLabel": "Raya",
+          "stripeConnectSettingsLabel": "Raya",
+          "stripeConnectSettingsDescription": "No tener un ID de cliente de API de la raya?",
+          "stripeConnectSettingsGetItHere": "Consiguelo aqui"
+        }
+      }
+    }
+  }
+}]

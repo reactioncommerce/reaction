@@ -1,0 +1,24 @@
+[{
+  "language": "Romanian",
+  "i18n": "ro",
+  "ns": "reaction-stripe-connect",
+  "translation": {
+    "reaction-payments": {
+      "admin": {
+        "shortcut": {
+          "stripeConnectLabel": "Dunga"
+        },
+        "dashboard": {
+          "stripeConnectLabel": "Dunga",
+          "stripeConnectDescription": "plăţile Stripe Connect"
+        },
+        "paymentSettings": {
+          "stripeConnectLabel": "Dunga",
+          "stripeConnectSettingsLabel": "Dunga",
+          "stripeConnectSettingsDescription": "Nu aveți un ID client Stripe Connect API?",
+          "stripeConnectSettingsGetItHere": "Adu-o aici"
+        }
+      }
+    }
+  }
+}]

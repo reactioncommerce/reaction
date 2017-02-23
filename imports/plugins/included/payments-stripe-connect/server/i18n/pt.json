@@ -1,0 +1,24 @@
+[{
+  "language": "Portuguese",
+  "i18n": "pt",
+  "ns": "reaction-stripe-connect",
+  "translation": {
+    "reaction-payments": {
+      "admin": {
+        "shortcut": {
+          "stripeConnectLabel": "Stripe Connect"
+        },
+        "dashboard": {
+          "stripeConnectLabel": "Stripe Connect",
+          "stripeConnectDescription": "pagamentos listra"
+        },
+        "paymentSettings": {
+          "stripeConnectLabel": "Stripe Connect",
+          "stripeConnectSettingsLabel": "Stripe Connect",
+          "stripeConnectSettingsDescription": "Não temos uma listra API ID do cliente?",
+          "stripeConnectSettingsGetItHere": "Venha aqui"
+        }
+      }
+    }
+  }
+}]

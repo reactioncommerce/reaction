@@ -1,0 +1,24 @@
+[{
+  "language": "Burmese",
+  "i18n": "my",
+  "ns": "reaction-stripe-connect",
+  "translation": {
+    "reaction-payments": {
+      "admin": {
+        "shortcut": {
+          "stripeConnectLabel": "အစင်း"
+        },
+        "dashboard": {
+          "stripeConnectLabel": "အစင်း",
+          "stripeConnectDescription": "အစင်းငွေပေးချေမှု"
+        },
+        "paymentSettings": {
+          "stripeConnectLabel": "အစင်း",
+          "stripeConnectSettingsLabel": "အစင်း",
+          "stripeConnectSettingsDescription": "တစ်ဦး Stripe Connect ဟာ API ကိုလိုင်း ID ကိုရှိသည်မဟုတ်သလား?",
+          "stripeConnectSettingsGetItHere": "ဒီမှာရယူပါ"
+        }
+      }
+    }
+  }
+}]

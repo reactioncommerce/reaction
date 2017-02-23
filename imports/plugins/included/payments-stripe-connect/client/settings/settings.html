@@ -1,9 +1,9 @@
 <template name="stripeConnectSettings">
     {{#unless packageData.settings.api_key}}
     <div class="alert alert-info">
-      <span data-i18n="admin.paymentSettings.stripeSettingsDescription">Don't have a Stripe Connect API Client ID?</span>
+      <span data-i18n="admin.paymentSettings.stripeConnectSettingsDescription">Don't have a Stripe Connect API Client ID?</span>
       <a href="https://dashboard.stripe.com/account/apikeys" target="_blank">
-        <span data-i18n="admin.paymentSettings.stripeSettingsGetItHere">Get it here.</span>
+        <span data-i18n="admin.paymentSettings.stripeConnectSettingsGetItHere">Get it here.</span>
       </a>
     </div>
     {{/unless}}
@@ -22,14 +22,14 @@
     <div class="flex-item">
       <div class="panel panel-default">
         <div class="panel-heading">
-          <div class="panel-title">Stripe Checkout</div>
+          <div class="panel-title">Stripe Connect Checkout</div>
         </div>
         <div class="list-group">
           <div class="list-group-item">
             {{#if packageData.settings.api_key}}
-              <span>API Client ID: <button type="button" class="btn btn-link" data-event-action="showStripeSettings">**********</button></span>
+              <span>API Client ID: <button type="button" class="btn btn-link" data-event-action="showStripeConnectSettings">**********</button></span>
             {{else}}
-              <span>API Client ID: <button type="button" class="btn btn-link" data-event-action="showStripeSettings">Configure Now</button></span>
+              <span>API Client ID: <button type="button" class="btn btn-link" data-event-action="showStripeConnectSettings">Configure Now</button></span>
             {{/if}}
           </div>
         </div>
@@ -46,7 +46,7 @@
             </div>
 
             <div class="panel-footer-item">
-              <button class="btn btn-default" data-event-action="showStripeSettings">
+              <button class="btn btn-default" data-event-action="showStripeConnectSettings">
                 <i class="fa fa-gear"></i>
               </button>
             </div>
