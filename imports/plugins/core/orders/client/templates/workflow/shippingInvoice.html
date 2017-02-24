@@ -40,7 +40,7 @@
       {{#each item in items.uniqueItems}}
         <div class="return-item form-group order-summary-form-group" data-item data-item-id="{{item._id}}">
           <input type="checkbox" name="enabled" id="{{item.cartItemId}}">
-          <div class="order-item-media">
+          <div class="return-item-media">
             {{#with media item.variants}}
               <img src="{{url store='thumbnail'}}">
             {{else}}
@@ -50,12 +50,14 @@
 
           <div class="return-item-details">
             <div class="return-detail-title">
-              {{item.title}}<small>{{item.variants.title}}</small>
+              {{item.title}}
+              <br>
+              <small>{{item.variants.title}}</small>
             </div>
           </div>
 
-          <div class="quantity order-detail-quantity">
-            <input class="form-control" type="number" name="quantity" id="quantity-{{item.cartItemId}}" value="1" min="1" max="{{item.length}}">
+          <div class="quantity">
+            <input class="form-control return-detail-quantity" type="number" name="quantity" id="quantity-{{item.cartItemId}}" value="1" min="1" max="{{item.length}}">
           </div>
         </div>
       {{/each}}
