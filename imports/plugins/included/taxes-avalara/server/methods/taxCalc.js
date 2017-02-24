@@ -336,10 +336,8 @@ taxCalc.estimateCart = function (cart, callback) {
   check(cart, Reaction.Schemas.Cart);
   check(callback, Function);
 
-  const taxSettings = getTaxSettings();
-
   if (cart.items && cart.shipping && cart.shipping[0].address) {
-    const salesOrder = _.assign({}, cartToSalesOrder(cart), taxSettings);
+    const salesOrder = _.assign({}, cartToSalesOrder(cart), getTaxSettings());
     const baseUrl = getUrl();
     const requestUrl = `${baseUrl}/transactions/create`;
     const result = avaPost(requestUrl, { data: salesOrder });
@@ -436,7 +434,7 @@ taxCalc.recordOrder = function (order, callback) {
   check(callback, Function);
   // unlike the other functions, we expect this to always be called asynchronously
   if (order && order.shipping && order.shipping[0].address) {
-    const salesOrder = orderToSalesInvoice(order);
+    const salesOrder = _.assign({}, orderToSalesInvoice(order), getTaxSettings());
     const baseUrl = getUrl();
     const requestUrl = `${baseUrl}/transactions/create`;
     try {
