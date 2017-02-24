@@ -61,14 +61,10 @@ Template.avalaraSettings.helpers({
   },
 
   logGrid() {
-    const fields = ["date", "request", "result", "_id"];
+    const fields = ["date", "docType"];
     const noDataMessage = i18next.t("logGrid.noLogsFound");
     const instance = Template.instance();
 
-    //
-    // helper to get and select row from griddle
-    // into blaze to get correct template to edit
-    //
     function editRow(options) {
       const currentId = instance.state.get("editingId");
       instance.state.set("isEditing", options.props.data);

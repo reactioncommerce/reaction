@@ -30,9 +30,10 @@ const LogGriddle = React.createClass({
     const rawResults = this.props.collection.find({}).fetch();
     const results = rawResults.map((o) => {
       return {
-        date: moment(o.data).format("MM/DD/YYYY hh:mm:ss"),
-        request: JSON.stringify(o.data.request).substring(0, 10),
-        result: JSON.stringify(o.data.result).substring(0, 10),
+        date: moment(o.data).format("MM/DD/YYYY HH:mm:ss"),
+        docType: o.data.request.data.type,
+        request: JSON.stringify(o.data.request),
+        result: JSON.stringify(o.data.result),
         _id: o._id
       }
     });
