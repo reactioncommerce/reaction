@@ -135,7 +135,11 @@ class ProductDetailContainer extends Component {
   }
 
   handleProductFieldChange = (productId, fieldName, value) => {
-    Meteor.call("products/updateProductField", productId, fieldName, value);
+    Meteor.call("products/updateProductField", productId, fieldName, value, (error) => {
+      if (error) {
+        Alerts.toast(error.message, "error");
+      }
+    });
   }
 
   handleViewContextChange = (event, value) => {
