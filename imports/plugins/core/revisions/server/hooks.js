@@ -406,7 +406,7 @@ Products.before.update(function (userId, product, fieldNames, modifier, options)
   }
 
   const hasAncestors = Array.isArray(product.ancestors) && product.ancestors.length > 0;
-console.log(modifier);
+
   for (const operation in modifier) {
     if (Object.hasOwnProperty.call(modifier, operation)) {
       if (!revisionModifier[operation]) {
