@@ -1,5 +1,6 @@
 /* eslint react/prop-types:0, react/jsx-sort-props:0, react/forbid-prop-types: 0, "react/prefer-es6-class": [1, "never"] */
 import React from "react";
+import moment from "moment";
 import Griddle from "griddle-react";
 import { Counts } from "meteor/tmeasday:publish-counts";
 import { ReactMeteorData } from "meteor/react-meteor-data";
@@ -26,7 +27,16 @@ const LogGriddle = React.createClass({
   getMeteorData() {
     const matchingResults = Counts.get(this.props.matchingResultsCount);
     const pubHandle = Meteor.subscribe(this.props.publication, this.props.subscriptionParams);
-    const results = this.props.collection.find({}).fetch();
+    const rawResults = this.props.collection.find({}).fetch();
+    const results = rawResults.map((o) => {
+      return {
+        date: moment(o.data).format("MM/DD/YYYY hh:mm:ss"),
+        request: JSON.stringify(o.data.request).substring(0, 10),
+        result: JSON.stringify(o.data.result).substring(0, 10),
+        _id: o._id
+      }
+    });
+
 
     return {
       loading: !pubHandle.ready(),
@@ -44,17 +54,17 @@ const LogGriddle = React.createClass({
     const allProps = this.props;
 
     return (<Griddle
-    {...allProps}
-    tableClassName="table"
-    results={this.data.results}
-    columnMetaData={this.props.columnMetaData}
-    externalSetPage={this.setPage}
-    externalSetPageSize={this.setPageSize}
-    externalMaxPage={maxPages}
-    externalSortColumn={this.state.externalSortColumn}
-    externalSortAscending={this.state.externalSortAscending}
-    externalIsLoading={this.data.loading}
-    />);
+      {...allProps}
+      tableClassName="table"
+      results={this.data.results}
+      columnMetaData={this.props.columnMetaData}
+      externalSetPage={this.setPage}
+      externalSetPageSize={this.setPageSize}
+      externalMaxPage={maxPages}
+      externalSortColumn={this.state.externalSortColumn}
+      externalSortAscending={this.state.externalSortAscending}
+      externalIsLoading={this.data.loading}
+          />);
   }
 
 });
