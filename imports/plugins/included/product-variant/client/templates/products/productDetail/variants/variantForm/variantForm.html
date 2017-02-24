@@ -146,8 +146,7 @@
                   {{/if}}
               </div>
               <div class="form-group{{#if afFieldIsInvalid name='taxCode'}} has-error{{/if}} taxCode" style="{{displayTaxCodes}}">
-                <label class="control-label">{{afFieldLabelText name='taxCode'}}</label>
-                {{>afFieldInput name="taxCode" options=(listTaxCodes false) firstOption="Choose Code" placeholder="Exp. TaxCode"}}
+                {{>afFieldInput class="select2-container" name="taxCode" type="select2" options=(listTaxCodes) firstOption="Select Tax Rate"}}
                 {{#if afFieldIsInvalid name="taxCode"}}
                 <span class="help-block">{{afFieldMessage name="taxCode"}}</span>
                 {{/if}}

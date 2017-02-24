@@ -23,7 +23,9 @@ export const TaxCodes = new SimpleSchema({
   },
   ssuta: {
     type: Boolean,
-    label: "Streamlined Sales Tax"
+    label: "Streamlined Sales Tax",
+    optional: true,
+    defaultValue: false
   },
   title: {
     type: String,
