@@ -128,7 +128,7 @@ Template.variantForm.helpers({
       };
     };
   },
-  listTaxCodes() {
+  listTaxCodes: function () {
     const instance = Template.instance();
     const shopId = Reaction.getShopId();
 
