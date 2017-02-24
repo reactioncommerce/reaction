@@ -1,10 +1,3 @@
-import { Meteor } from "meteor/meteor";
-import { Reaction, i18next } from "/client/api";
-
-
-// Page
-
-
 // Button
 Template.stripeConnectSignupButton.helpers({
   /**
@@ -20,11 +13,3 @@ Template.stripeConnectSignupButton.helpers({
     return classes.join(" ");
   }
 });
-
-
-Template.stripeConnectSignupButton.events({
-  "click [data-event-action='button-click-stripe-connect-signup']": function () {
-    console.log('clicked');
-  }
-});
-
