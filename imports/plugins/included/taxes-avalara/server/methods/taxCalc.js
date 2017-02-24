@@ -5,7 +5,7 @@ import moment from "moment";
 import { Meteor } from "meteor/meteor";
 import { HTTP } from "meteor/http";
 import { check } from "meteor/check";
-import { Packages, Shops } from "/lib/collections";
+import { Packages, Shops, Accounts } from "/lib/collections";
 import { Reaction, Logger } from "/server/api";
 import Avalogger from "./avalogger";
 
@@ -54,12 +54,20 @@ function getAuthData(packageData = taxCalc.getPackageData()) {
 }
 
 /**
+ * @summary Get exempt tax settings to pass to REST API
+ * @returns {Object} containing exemptCode and customerUsageType
+ */
+function getTaxSettings() {
+  return _.get(Accounts.findOne(), "taxSettings");
+}
+
+/**
  * @summary function to get HTTP data and pass in extra Avalara-specific headers
  * @param {String} requestUrl - The URL to make the request to
  * @param {Object} options - An object of other options
  * @returns {Object} Response from call
  */
-function avaGet(requestUrl, options) {
+function avaGet(requestUrl, options = {}) {
   const logObject = {};
   const pkgData = taxCalc.getPackageData();
   const appVersion = Reaction.getAppVersion();
@@ -123,6 +131,17 @@ function avaPost(requestUrl, options) {
 
   return result;
 }
+
+/**
+ * @summary Gets the full list of Avalara-supported entity use codes.
+ * @returns {Object} API response
+ */
+taxCalc.getEntityCodes = function () {
+  const baseUrl = getUrl();
+  const requestUrl = `${baseUrl}definitions/entityusecodes`;
+  const result = avaGet(requestUrl);
+  return _.get(result, "data.value");
+};
 
 // API Methods
 
@@ -317,8 +336,10 @@ taxCalc.estimateCart = function (cart, callback) {
   check(cart, Reaction.Schemas.Cart);
   check(callback, Function);
 
+  const taxSettings = getTaxSettings();
+
   if (cart.items && cart.shipping && cart.shipping[0].address) {
-    const salesOrder = cartToSalesOrder(cart);
+    const salesOrder = _.assign({}, cartToSalesOrder(cart), taxSettings);
     const baseUrl = getUrl();
     const requestUrl = `${baseUrl}/transactions/create`;
     const result = avaPost(requestUrl, { data: salesOrder });
@@ -491,5 +512,6 @@ export default taxCalc;
 Meteor.methods({
   "avalara/addressValidation": taxCalc.validateAddress,
   "avalara/getTaxCodes": taxCalc.getTaxCodes,
-  "avalara/testCredentials": taxCalc.testCredentials
+  "avalara/testCredentials": taxCalc.testCredentials,
+  "avalara/getEntityCodes": taxCalc.getEntityCodes
 });
