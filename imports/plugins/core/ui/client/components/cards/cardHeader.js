@@ -22,6 +22,7 @@ class CardHeader extends Component {
     onClick: PropTypes.func,
     onSwitchChange: PropTypes.func,
     showSwitch: PropTypes.bool,
+    switchName: PropTypes.string,
     switchOn: PropTypes.bool,
     title: PropTypes.string
   };
