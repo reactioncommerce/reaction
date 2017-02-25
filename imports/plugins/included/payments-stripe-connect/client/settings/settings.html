@@ -10,6 +10,8 @@
     <div>
       {{#autoForm collection=Collections.Packages schema=StripeConnectPackageConfig doc=packageData type="update" id="stripe-connect-update-form"}}
         {{>afQuickField name='settings.api_key'}}
+        {{>afQuickField name='settings.transactionFee.enabled'}}
+        {{>afQuickField name='settings.transactionFee.percentage'}}
         <button type="submit" class="btn btn-primary pull-right"><span data-i18n="app.saveChanges">Save Changes</span></button>
       {{/autoForm}}
     </div>
