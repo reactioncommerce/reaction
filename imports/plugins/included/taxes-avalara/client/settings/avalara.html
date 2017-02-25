@@ -63,12 +63,8 @@
   {{/autoForm}}
 
   {{#if loggingEnabled}}
-    <div class="panel panel-default">
-      <div class="panel-body">
-        <div class="col-md-12">
-          {{> React logGrid }}
-        </div>
-      </div>
+    <div class="col-md-12">
+      {{> React logGrid }}
     </div>
     {{#if instance.state.get 'isEditing'}}
       {{#if instance.state.get 'editingId'}}
@@ -97,5 +93,3 @@
       {{/if}}
     {{/if}}
 </template>
-
-
