@@ -6,7 +6,7 @@ import { StripeConnectPackageConfig } from "../../lib/collections/schemas";
 import "./settings.html";
 
 Template.stripeConnectSettings.helpers({
-  StripePackageConfig() {
+  StripeConnectPackageConfig() {
     return StripeConnectPackageConfig;
   },
   packageData() {
@@ -17,20 +17,20 @@ Template.stripeConnectSettings.helpers({
   }
 });
 
-// Template.stripeConnect.helpers({
-//   packageData() {
-//     return Packages.findOne({
-//       name: "reaction-stripe",
-//       shopId: Reaction.getShopId()
-//     });
-//   }
-// });
+ Template.stripeConnect.helpers({
+   packageData() {
+     return Packages.findOne({
+       name: "reaction-stripe-connect",
+       shopId: Reaction.getShopId()
+     });
+   }
+ });
 
-// Template.stripeConnect.events({
-//   "click [data-event-action=showStripeConnectSettings]"() {
-//     Reaction.showActionView();
-//   }
-// });
+ Template.stripeConnect.events({
+   "click [data-event-action=showStripeConnectSettings]"() {
+     Reaction.showActionView();
+   }
+ });
 
 AutoForm.hooks({
   "stripe-connect-update-form": {
