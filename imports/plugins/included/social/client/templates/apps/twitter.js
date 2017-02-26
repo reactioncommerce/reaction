@@ -1,4 +1,4 @@
-/* eslint no-cond-assign: 1 */
+/* eslint-disable */
 //
 // TODO twitter social templates need review to ensure proper use of reaction layouts
 //

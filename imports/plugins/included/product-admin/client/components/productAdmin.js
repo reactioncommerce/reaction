@@ -14,7 +14,6 @@ import { Router } from "/client/api";
 import { TagListContainer } from "/imports/plugins/core/ui/client/containers";
 import { isEqual } from "lodash";
 import update from "react/lib/update";
-import PublishContainer from "/imports/plugins/core/revisions/client/containers/publishContainer";
 
 const fieldNames = [
   "title",
