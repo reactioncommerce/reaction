@@ -495,10 +495,12 @@ Products.before.update(function (userId, product, fieldNames, modifier, options)
     }
   }
 
-  // Allow the product collection to be updated if
+  // If we are using $set or $inc, and the fields are one of the ignoredFields,
+  // allow product to be updated without going through revision control
   if ((modifier.$set || modifier.$inc) && !modifier.$pull && !modifier.$push) {
     const newSet = {};
     const newInc = {};
+    let hasIgnoredFields = false;
     const ignoredFields = [
       "isLowQuantity",
       "isSoldOut",
@@ -506,17 +508,25 @@ Products.before.update(function (userId, product, fieldNames, modifier, options)
     ];
 
     for (const field of ignoredFields) {
-      if (modifier.$set && modifier.$set[field]) {
+      if (modifier.$set && (typeof modifier.$set[field] === "number" || typeof modifier.$set[field] === "boolean")) {
         newSet[field] = modifier.$set[field];
+        hasIgnoredFields = true;
       }
 
-      if (modifier.$inc && modifier.$inc[field]) {
+      if (modifier.$inc && (typeof modifier.$inc[field] === "number" || typeof modifier.$inc[field] === "boolean")) {
         newInc[field] = modifier.$inc[field];
+        hasIgnoredFields = true;
       }
     }
+    if (_.isEmpty(newSet) === false) {
+      modifier.$set = newSet;
+    }
 
-    modifier.$set = newSet;
-    modifier.$inc = newInc;
+    if (_.isEmpty(newInc) === false) {
+      modifier.$inc = newInc;
+    }
+
+    return hasIgnoredFields === true;
   }
 
   // prevent the underlying document from being modified as it is in draft mode
