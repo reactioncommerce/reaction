@@ -8,7 +8,8 @@ import {
   CardGroup,
   Metadata,
   TextField,
-  Translation
+  Translation,
+  Select
 } from "/imports/plugins/core/ui/client/components";
 import { Router } from "/client/api";
 import { TagListContainer } from "/imports/plugins/core/ui/client/containers";
@@ -132,6 +133,7 @@ class ProductAdmin extends Component {
 
 
   handleFieldChange = (event, value, field) => {
+    console.log(field, value);
     const newState = update(this.state, {
       product: {
         $merge: {
@@ -145,6 +147,12 @@ class ProductAdmin extends Component {
         this.props.onFieldChange(field, value);
       }
     });
+  }
+
+  handleTemplateChange = (value, field) => {
+    if (this.props.onProductFieldSave) {
+      this.props.onProductFieldSave(this.product._id, field, value);
+    }
   }
 
   handleToggleVisibility = () => {
@@ -224,8 +232,17 @@ class ProductAdmin extends Component {
             actAsExpander={true}
             i18nKeyTitle="productDetailEdit.productSettings"
             title="Product Settings"
+            onChange={this.handleFieldChange}
           />
           <CardBody expandable={true}>
+            <Select
+              clearable={false}
+              label="Template"
+              name="template"
+              onChange={this.handleTemplateChange}
+              options={this.props.templates}
+              value={this.product.template}
+            />
             <TextField
               i18nKeyLabel="productDetailEdit.title"
               i18nKeyPlaceholder="productDetailEdit.title"
@@ -402,6 +419,10 @@ ProductAdmin.propTypes = {
   onRestoreProduct: PropTypes.func,
   product: PropTypes.object,
   revisonDocumentIds: PropTypes.arrayOf(PropTypes.string),
+  templates: PropTypes.arrayOf(PropTypes.shape({
+    label: PropTypes.string,
+    value: PropTypes.any
+  })),
   viewProps: PropTypes.object
 };
 
