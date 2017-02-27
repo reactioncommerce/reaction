@@ -130,6 +130,7 @@ function composer(props, onData) {
     const templates = Templates.find({
       parser: "react",
       provides: "template",
+      templateFor: { $in: ["pdp"] },
       enabled: true
     }).map((template) => {
       return {
