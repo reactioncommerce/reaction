@@ -2,8 +2,7 @@ import React, { Component } from "react";
 import { composeWithTracker } from "/lib/api/compose";
 import { Reaction } from "/client/api";
 import { SocialButtons } from "../components";
-import { createSocialSettings } from "../lib/helpers";
-
+import { createSocialSettings } from "../../lib/helpers";
 
 class SocialContainer extends Component {
   render() {

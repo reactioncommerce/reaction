@@ -1,31 +1,9 @@
-import { Packages } from "/lib/collections";
+import SocialSettingsContainer from "../../containers/socialSettingsContainer";
 
 Template.socialSettings.helpers({
-  packageData() {
-    return Packages.findOne({
-      name: "reaction-social"
-    });
-  },
-
-  checkboxAtts() {
+  SocialSettingsComponent() {
     return {
-      class: "checkbox-switch"
+      component: SocialSettingsContainer
     };
-  }
-});
-
-
-AutoForm.hooks({
-  "social-update-form": {
-    onSuccess() {
-      Alerts.removeSeen();
-      return Alerts.toast("Social settings saved.", "success", {
-        autoHide: true
-      });
-    },
-    onError(operation, error) {
-      Alerts.removeSeen();
-      return Alerts.toast(`Social settings update failed. ${error}`, "error");
-    }
   }
 });

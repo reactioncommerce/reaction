@@ -215,6 +215,14 @@ export default {
     return false;
   },
 
+  updateUserPreferences(packageName, preference, values) {
+    const currentPreference = this.getUserPreferences(packageName, preference, {});
+    return this.setUserPreferences(packageName, preference, {
+      ...currentPreference,
+      ...values
+    });
+  },
+
   getShopId() {
     return this.shopId;
   },
