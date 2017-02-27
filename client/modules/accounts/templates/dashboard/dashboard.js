@@ -3,6 +3,7 @@ import { Meteor } from "meteor/meteor";
 import { Reaction, i18next } from "/client/api";
 import { ServiceConfigHelper } from "../../helpers/util";
 import { Template } from "meteor/templating";
+import { Packages } from "/lib/collections";
 
 /**
  * Accounts helpers
@@ -29,7 +30,18 @@ Template.accountsDashboard.helpers({
   isShopGuest() {
     return !_.includes(["dashboard", "admin", "owner"], this.role);
   },
+  /**
+   * showAvalaraTaxSettings
+   * @return {Boolean} True if avalara is enabled. Defaults to false if not found
+   */
+  showAvalaraTaxSettings() {
+    const avalara = Packages.findOne({
+      name: "taxes-avalara",
+      shopId: Reaction.getShopId()
+    });
 
+    return _.get(avalara, "settings.avalara.enabled", false);
+  },
   /**
    * members
    * @return {Boolean} True array of adminsitrative members
