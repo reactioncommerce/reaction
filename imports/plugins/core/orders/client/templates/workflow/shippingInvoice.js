@@ -172,7 +172,7 @@ Template.coreOrderShippingInvoice.events({
     }
   },
 
-  "click [data-event-action=returnItems]": (event, instance) => {
+  "click [name=returnItems]": (event, instance) => {
     event.preventDefault();
     const order = instance.state.get("order");
     const paymentMethod = orderCreditMethod(order).paymentMethod;
@@ -183,29 +183,32 @@ Template.coreOrderShippingInvoice.events({
       return (item.id);
     });
 
-    const callback = (returnedItems) => {
+    const callback = (returnedItems, message) => {
       Meteor.call("orders/return/create", order._id, paymentMethod, returnedItems, (error) => {
         if (error) {
           Alerts.alert(error.reason);
         } else {
-          Alerts.toast("Item return works", "success");
+          Alerts.toast(message, "success");
         }
       });
     };
 
-    uniqueItems.forEach((uniqueItem) => {
-      checkboxId.forEach((id) => {
-        if (id !== "shipping") {
-          if (uniqueItem.cartItemId === id) {
-            const quantity = instance.find(`input[id=quantity-${id}]`).value;
-            const returnedItems = [uniqueItem.productId, uniqueItem.cartItemId, uniqueItem.variants.price, quantity];
-            callback(returnedItems);
-          }
+    let returnedItems = [];
+
+    checkboxId.forEach((id) => {
+      uniqueItems.forEach((uniqueItem) => {
+        if (id === uniqueItem.cartItemId) {
+          const quantity = instance.find(`input[id=quantity-${id}]`).value;
+          returnedItems = [uniqueItem.productId, uniqueItem.cartItemId, uniqueItem.variants.price, quantity];
         } else {
-          const returnedItems = ["shipping", 1, shippingAmount];
-          callback(returnedItems);
+          return;
         }
       });
+      if (id !== "shipping") {
+        callback(returnedItems, "Item returned successfully");
+      } else {
+        callback(["shipping", 1, shippingAmount], "Shipping refunded successfully");
+      }
     });
   },
 
