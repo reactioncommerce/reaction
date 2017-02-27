@@ -1,5 +1,5 @@
-import EmailStatusPage from "../components/email_status_page";
-import EmailSettings from "../containers/email_settings";
+import EmailStatusPage from "../components/emailStatusPage";
+import EmailSettings from "../containers/emailSettings";
 
 // main page content
 Template.emailStatusPage.helpers({

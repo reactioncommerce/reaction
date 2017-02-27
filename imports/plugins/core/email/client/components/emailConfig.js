@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import { Col, Panel } from "react-bootstrap";
 import { Icon } from "/imports/plugins/core/ui/client/components";
-import "./email_config.css";
+import "./emailConfig.css";
 
 class EmailConfig extends Component {
   constructor(props) {
