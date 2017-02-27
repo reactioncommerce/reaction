@@ -818,7 +818,10 @@ Meteor.methods({
       }
     });
 
-    if (typeof result === "number") {
+    // If we get a result from the product update,
+    // meaning the update went past revision control,
+    // denormalize and attach results to top-level product
+    if (result === 1) {
       if (type === "variant" && ~toDenormalize.indexOf(field)) {
         denormalize(doc.ancestors[0], field);
       }
