@@ -1,6 +1,8 @@
 import React, { Component, PropTypes } from "react";
 import { Col, Panel, Table, Button } from "react-bootstrap";
 import moment from "moment";
+import { Card, CardHeader, CardBody, CardGroup, CardTitle, Icon } from "/imports/plugins/core/ui/client/components";
+
 
 class EmailLogs extends Component {
 
@@ -9,6 +11,30 @@ class EmailLogs extends Component {
       <div>
         <h4 className="text-center" data-i18n="mail.logs.noEmails">No emails sent yet</h4>
       </div>
+    );
+  }
+
+  renderNewTable() {
+    return (
+      <CardGroup>
+        <Card
+
+        >
+          <CardHeader
+            actAsExpander={true}
+            i18nKeyTitle="mail.headers.config"
+            title="Configurationsdfas"
+          />
+          <CardBody expandable={true}>
+            <p>Hello</p>
+            <p>Hello</p>
+            <p>Hello</p>
+            <p>Hello</p>
+            <p>Hello</p>
+            <p>Hello</p>
+          </CardBody>
+        </Card>
+      </CardGroup>
     );
   }
 
@@ -62,10 +88,11 @@ class EmailLogs extends Component {
 
   render() {
     return (
-      <Col md={8} sm={12}>
+      <Col md={12} sm={12}>
         <Panel>
           <h3 className="text-center" data-i18n="mail.logs.headers.emailLogs">Email Logs</h3>
           <hr/>
+          {this.renderNewTable()}
           {this.props.emails.length === 0 ?
               this.renderNoEmails()
             : this.renderEmails()}

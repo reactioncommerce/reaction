@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from "react";
 import classnames from "classnames";
 import CardTitle from "./cardTitle";
 import IconButton from "../button/iconButton";
+import Icon from "../icon/icon";
 import Switch from "../switch/switch";
 
 class CardHeader extends Component {
@@ -16,10 +17,13 @@ class CardHeader extends Component {
     expandOnSwitchOn: PropTypes.bool,
     expanded: PropTypes.bool,
     i18nKeyTitle: PropTypes.string,
+    icon: PropTypes.string,
+    imageView: PropTypes.node,
     onClick: PropTypes.func,
     onSwitchChange: PropTypes.func,
     showSwitch: PropTypes.bool,
-    switchChecked: PropTypes.bool,
+    switchName: PropTypes.string,
+    switchOn: PropTypes.bool,
     title: PropTypes.string
   };
 
@@ -53,6 +57,26 @@ class CardHeader extends Component {
     return null;
   }
 
+  renderImage() {
+    if (this.props.icon) {
+      return (
+        <div className="image">
+          <Icon icon={this.props.icon} />
+        </div>
+      );
+    }
+
+    if (this.props.imageView) {
+      return (
+        <div className="image">
+          {this.props.imageView}
+        </div>
+      );
+    }
+
+    return null;
+  }
+
   renderDisclsoureArrow() {
     const expanderClassName = classnames({
       rui: true,
@@ -76,7 +100,8 @@ class CardHeader extends Component {
     if (this.props.showSwitch) {
       return (
         <Switch
-          checked={this.props.switchChecked}
+          checked={this.props.switchOn}
+          name={this.props.switchName}
           onChange={this.handleSwitchChange}
         />
       );
@@ -97,6 +122,7 @@ class CardHeader extends Component {
       return (
         <div className={baseClassName}>
           <div className="content-view" onClick={this.handleClick}>
+            {this.renderImage()}
             {this.renderTitle()}
           </div>
           <div className="action-view">
@@ -109,8 +135,12 @@ class CardHeader extends Component {
 
     return (
       <div className={baseClassName}>
-        {this.renderTitle()}
-        {this.props.children}
+        <div className="content-view">
+          {this.renderTitle()}
+        </div>
+        <div className="action-view">
+          {this.props.children}
+        </div>
       </div>
     );
   }

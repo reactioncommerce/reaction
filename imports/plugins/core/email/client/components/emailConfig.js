@@ -42,7 +42,7 @@ class EmailConfig extends Component {
     const NotSet = () => <span data-i18n="mail.settings.fieldNotSet">Not set</span>;
 
     return (
-      <Col md={4} sm={12}>
+      <Col md={12} sm={12}>
         <Panel header={<Header/>}>
           <div className="pull-right">
             <a onClick={toggleSettings}><Icon icon="gear"/></a>
