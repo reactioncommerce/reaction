@@ -133,7 +133,6 @@ class ProductAdmin extends Component {
 
 
   handleFieldChange = (event, value, field) => {
-    console.log(field, value);
     const newState = update(this.state, {
       product: {
         $merge: {
