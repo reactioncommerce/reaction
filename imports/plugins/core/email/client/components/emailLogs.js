@@ -1,103 +1,70 @@
 import React, { Component, PropTypes } from "react";
-import { Col, Panel, Table, Button } from "react-bootstrap";
 import moment from "moment";
-import { Card, CardHeader, CardBody, CardGroup, CardTitle, Icon } from "/imports/plugins/core/ui/client/components";
+import { Card, CardHeader, CardBody, CardGroup, Loading } from "/imports/plugins/core/ui/client/components";
+import MeteorGriddle from "/imports/plugins/core/ui-grid/client/griddle";
+import { Jobs } from "/lib/collections";
+import { i18next } from "/client/api";
 
 
 class EmailLogs extends Component {
 
-  renderNoEmails() {
-    return (
-      <div>
-        <h4 className="text-center" data-i18n="mail.logs.noEmails">No emails sent yet</h4>
-      </div>
-    );
-  }
+  renderEmailsTable() {
+    const filteredFields = ["data.to", "data.subject"];
+    const filteredFieldsColumns = ["data.to", "data.subject", "resend"];
+    // const filteredFields = ["data.to", "data.subject", "status"];
+    const noDataMessage = i18next.t("admin.logs.noEmails");
 
-  renderNewTable() {
-    return (
-      <CardGroup>
-        <Card
 
-        >
-          <CardHeader
-            actAsExpander={true}
-            i18nKeyTitle="mail.headers.config"
-            title="Configurationsdfas"
-          />
-          <CardBody expandable={true}>
-            <p>Hello</p>
-            <p>Hello</p>
-            <p>Hello</p>
-            <p>Hello</p>
-            <p>Hello</p>
-            <p>Hello</p>
-          </CardBody>
-        </Card>
-      </CardGroup>
-    );
-  }
+    // helper adds a class to every grid row
+    const customRowMetaData = {
+      bodyCssClassName: () =>  {
+        return "email-grid-row";
+      }
+    };
 
-  renderEmails() {
+
+    // add i18n handling to headers
+    const customColumnMetadata = [];
+    filteredFields.forEach(function (field) {
+      const columnMeta = {
+        columnName: field,
+        displayName: i18next.t(`admin.logs.headers.${field}`)
+      };
+      customColumnMetadata.push(columnMeta);
+    });
+
     return (
-      <div>
-        <div className="table-controls">
-          <div className="table-filter">
-            <h5 data-i18n="mail.logs.limit">Quantity</h5>
-            <input
-              defaultValue={this.props.limit || 10}
-              onChange={this.props.updateLimit}
-              type="number"
-            />
-          </div>
-        </div>
-        <Table responsive>
-          <thead>
-            <tr>
-              <th data-i18n="mail.logs.headers.email">Email</th>
-              <th data-i18n="mail.logs.headers.subject">Subject</th>
-              <th data-i18n="mail.logs.headers.sent">Sent</th>
-              <th data-i18n="mail.logs.headers.status">Status</th>
-              <th data-i18n="mail.logs.headers.actions">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {this.props.emails.map((email) => (
-              <tr key={email._id}>
-                <td>{email.data.to}</td>
-                <td>{email.data.subject}</td>
-                <td>{moment(email.updated).format("LLL")}</td>
-                <td>{email.status}</td>
-                <td>
-                  {email.status === "failed" || email.status === "waiting" ?
-                    <Button
-                      onClick={this.props.resend.bind(this, email)}
-                      data-i18n="mail.logs.retry"
-                    >
-                      Retry
-                    </Button>
-                    : <span data-i18n="mail.logs.noneAvailble">None available</span>}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
-      </div>
+      <MeteorGriddle
+        publication="Emails"
+        collection={Jobs}
+        matchingResultsCount="emails-count"
+        showFilter={true}
+        useGriddleStyles={false}
+        rowMetadata={customRowMetaData}
+        filteredFields={filteredFields}
+        columns={filteredFieldsColumns}
+        noDataMessage={noDataMessage}
+        externalLoadingComponent={Loading}
+      />
     );
   }
 
   render() {
     return (
-      <Col md={12} sm={12}>
-        <Panel>
-          <h3 className="text-center" data-i18n="mail.logs.headers.emailLogs">Email Logs</h3>
-          <hr/>
-          {this.renderNewTable()}
-          {this.props.emails.length === 0 ?
-              this.renderNoEmails()
-            : this.renderEmails()}
-        </Panel>
-      </Col>
+      <CardGroup>
+        <Card
+          expanded={false}
+        >
+          <CardHeader
+            actAsExpander={true}
+            i18nKeyTitle="admin.logs.headers.emailLogs"
+            title="Email Logs"
+          />
+          <CardBody expandable={true}>
+            {this.renderEmailsTable()}
+          </CardBody>
+        </Card>
+      </CardGroup>
     );
   }
 }
@@ -112,9 +79,7 @@ EmailLogs.propTypes = {
     }),
     status: PropTypes.string.isRequired
   })),
-  limit: PropTypes.string,
-  resend: PropTypes.func.isRequired,
-  updateLimit: PropTypes.func.isRequired
+  limit: PropTypes.string
 };
 
 export default EmailLogs;
