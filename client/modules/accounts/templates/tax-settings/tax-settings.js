@@ -1,6 +1,6 @@
 import _ from "lodash";
-import { Accounts } from "/lib/collections";
 import { Template } from "meteor/templating";
+import { Accounts } from "/lib/collections";
 import { Reaction } from "/client/api";
 import { TaxEntityCodes } from "/client/collections";
 
