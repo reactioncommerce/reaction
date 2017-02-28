@@ -9,12 +9,6 @@ import { ReactiveDict } from "meteor/reactive-dict";
 import { TaxCodes } from "/imports/plugins/core/taxes/lib/collections";
 
 Template.variantForm.onCreated(function () {
-  $(function () {
-    $("#taxCode").select2({
-      placeholder: "Select Tax Rate"
-    });
-  });
-
   this.state = new ReactiveDict();
   this.state.set("taxCodes", []);
 
@@ -33,6 +27,12 @@ Template.variantForm.onCreated(function () {
     const product = Products.findOne(variant._id);
     return applyProductRevision(product);
   };
+});
+
+Template.variantForm.onRendered(function () {
+  $("#taxCode").select2({
+    placeholder: "Select Tax Rate"
+  });
 });
 
 /**
