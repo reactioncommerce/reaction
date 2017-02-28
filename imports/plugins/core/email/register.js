@@ -15,7 +15,12 @@ Reaction.registerPackage({
     name: "email/settings",
     provides: "settings",
     workflow: "coreEmailWorkflow",
-    template: "emailSettings"
+    template: "emailSettings",
+    meta: {
+      actionView: {
+        dashboardSize: "md"
+      }
+    }
   }],
   layout: [{
     layout: "coreLayout",
