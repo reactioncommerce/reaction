@@ -10,7 +10,16 @@
           "socialDescription": "cấu hình kênh xã hội"
         },
         "settings": {
-          "socialSettingsLabel": "Cài đặt xã hội"
+          "facebook": "Facebook",
+          "twitter": "Twitter",
+          "pinterest": "Pinterest",
+          "googleplus": "Google+",
+          "appId": "Id App",
+          "username": "Tên đăng nhập",
+          "appSecret": "App bí mật",
+          "profilePage": "Profile",
+          "socialSettingsLabel": "Cài đặt xã hội",
+          "socialSettingsSaved": "Cài đặt xã hội lưu"
         }
       }
     }

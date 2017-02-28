@@ -92,7 +92,13 @@
         "notFoundError": "Pagina niet gevonden.",
         "productNotFound": "Dit artikel is niet gevonden.",
         "loadMoreProducts": "Laad meer producten",
-        "noProductsFound": "Geen producten gevonden."
+        "noProductsFound": "Geen producten gevonden.",
+        "private": "Privaat",
+        "public": "Openbaar",
+        "shortcut": {
+          "addProductLabel": "Product toevoegen",
+          "accountsLabel": "Rekeningen"
+        }
       },
       "searchSettings": {
         "productSearchSettings": {
@@ -428,6 +434,8 @@
         "printLabels": "Print Labels",
         "printShippingLabel": "Verzenden",
         "printCustomsLabel": "Douane",
+        "generateTracking": "Genereer Label en Tracking",
+        "labelError": "Fout bij het maken verzendlabel {{err}}",
         "carrier": "Carrier",
         "addTracking": "Tracking toevoegen",
         "itemsHaveBeenShipped": "Punten zijn verscheept",

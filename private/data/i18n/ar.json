@@ -92,7 +92,13 @@
         "notFoundError": "الصفحة غير موجودة",
         "productNotFound": ".هذا المنتج غير موجود ",
         "loadMoreProducts": "تحميل مزيد من المنتجات",
-        "noProductsFound": ".لم يتم إيجاد منتجات"
+        "noProductsFound": ".لم يتم إيجاد منتجات",
+        "private": "خاص",
+        "public": "عامة",
+        "shortcut": {
+          "addProductLabel": "إضافة المنتج",
+          "accountsLabel": "الحسابات"
+        }
       },
       "searchSettings": {
         "productSearchSettings": {
@@ -428,6 +434,8 @@
         "printLabels": "تسميات الطباعة",
         "printShippingLabel": "الشحن",
         "printCustomsLabel": "الجمارك",
+        "generateTracking": "توليد تسمية وتتبع",
+        "labelError": "خطأ في إنشاء بطاقة شحن {{err}}",
         "carrier": "الناقل",
         "addTracking": "إضافة رقم التتبع",
         "itemsHaveBeenShipped": "تم شحن العناصر",

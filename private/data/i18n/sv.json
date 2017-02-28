@@ -92,7 +92,13 @@
         "notFoundError": "Sidan hittas inte.",
         "productNotFound": "Denna produkt hittades inte.",
         "loadMoreProducts": "Ladda fler produkter",
-        "noProductsFound": "Inga produkter hittades."
+        "noProductsFound": "Inga produkter hittades.",
+        "private": "Privat",
+        "public": "offentlig",
+        "shortcut": {
+          "addProductLabel": "Lägg Produkt",
+          "accountsLabel": "Konton"
+        }
       },
       "searchSettings": {
         "productSearchSettings": {
@@ -428,6 +434,8 @@
         "printLabels": "Skriv ut etiketter",
         "printShippingLabel": "Frakt",
         "printCustomsLabel": "Tull",
+        "generateTracking": "Skapa etikett och spårning",
+        "labelError": "Fel skapa fraktetikett {{err}}",
         "carrier": "Bärare",
         "addTracking": "Lägg Tracking",
         "itemsHaveBeenShipped": "Objekten har sänts",
