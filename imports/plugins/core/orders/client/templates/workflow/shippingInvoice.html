@@ -115,16 +115,8 @@
             Print
           </a>
           <button class="btn btn-success flex-item-fill" type="button" data-event-action="capturePayment">
-            <span>Capturing</span>
-            <i class="fa fa-spinner fa-spin" id="btn-processing"></i>
-          </button>
-          <button class="btn btn-success flex-item-fill" type="button" data-event-action="capturePayment">
-            {{#if isLoading}}
-              <span>Capturing</span>
-              <i class="fa fa-spinner fa-spin" id="btn-processing"></i>
-            {{else}}
-              <span data-i18n="order.capturePayment">Capture Payment</span>
-            {{/if}}
+            <i class="fa fa-spinner fa-spin {{#unless isLoading}}hidden{{/unless}}" id="btn-processing"></i>
+            <span data-i18n="order.capturePayment">Capture Payment</span>
           </button>
       {{/if}}
     </div>

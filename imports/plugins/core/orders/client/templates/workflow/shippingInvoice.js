@@ -179,11 +179,10 @@ Template.coreOrderShippingInvoice.events({
 
   "click [data-event-action=capturePayment]": (event, instance) => {
     event.preventDefault();
-    const { state } = Template.instance();
-    console.log("before", instance.state);
+
     instance.state.set("isLoading", true);
+
     const order = instance.state.get("order");
-    console.log("after", instance.state);
     Meteor.call("orders/capturePayments", order._id);
 
     if (order.workflow.status === "new") {
