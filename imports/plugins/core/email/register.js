@@ -9,21 +9,12 @@ Reaction.registerPackage({
     name: "Email"
   },
   registry: [{
-    route: "/dashboard/email/status",
-    provides: "dashboard",
-    workflow: "coreEmailWorkflow",
-    name: "Email Status",
-    label: "Email",
-    description: "Email settings",
-    icon: "fa fa-envelope-o",
-    priority: 1,
-    container: "core",
-    template: "emailStatusPage"
-  }, {
     label: "Email Settings",
+    description: "Email settings",
     icon: "fa fa-envelope-o",
     name: "email/settings",
     provides: "settings",
+    workflow: "coreEmailWorkflow",
     template: "emailSettings"
   }],
   layout: [{
