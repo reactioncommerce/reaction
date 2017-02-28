@@ -86,9 +86,17 @@ function avaGet(requestUrl, options = {}) {
   if (pkgData.settings.avalara.enableLogging) {
     logObject.request = allOptions;
   }
-  const result = HTTP.get(requestUrl, allOptions);
+
+  try {
+    result = HTTP.get(requestUrl, allOptions);
+  } catch (error) {
+    result = error;
+    Logger.error(`Encountered error while calling Avalara API endpoint ${requestUrl}`);
+    Logger.error(error);
+  }
+
   if (pkgData.settings.avalara.enableLogging) {
-    logObject.duration = result.headers.serverDuration;
+    logObject.duration = _.get(result, "headers.serverDuration");
     logObject.result = result.data;
     Avalogger.info(logObject);
   }
@@ -122,9 +130,19 @@ function avaPost(requestUrl, options) {
   if (pkgData.settings.avalara.enableLogging) {
     logObject.request = allOptions;
   }
-  const result = HTTP.post(requestUrl, allOptions);
+
+  let result;
+
+  try {
+    result = HTTP.post(requestUrl, allOptions);
+  } catch (error) {
+    Logger.error(`Encountered error while calling API at ${requestUrl}`);
+    Logger.error(error);
+    result = {};
+  }
+
   if (pkgData.settings.avalara.enableLogging) {
-    logObject.duration = result.headers.serverDuration;
+    logObject.duration = _.get(result, "headers.serverDuration");
     logObject.result = result.data;
     Avalogger.info(logObject);
   }
@@ -134,13 +152,13 @@ function avaPost(requestUrl, options) {
 
 /**
  * @summary Gets the full list of Avalara-supported entity use codes.
- * @returns {Object} API response
+ * @returns {Object[]} API response
  */
 taxCalc.getEntityCodes = function () {
   const baseUrl = getUrl();
   const requestUrl = `${baseUrl}definitions/entityusecodes`;
   const result = avaGet(requestUrl);
-  return _.get(result, "data.value");
+  return _.get(result, "data.value", []);
 };
 
 // API Methods
@@ -178,7 +196,7 @@ taxCalc.validateAddress = function (address) {
   }
 
   let messages;
-  let validatedAddress;
+  let validatedAddress = ""; // set default as falsy value
   const errors = [];
   const addressToValidate  = {
     line1: address.address1,
@@ -197,7 +215,13 @@ taxCalc.validateAddress = function (address) {
   const baseUrl = getUrl();
   const requestUrl = `${baseUrl}/addresses/resolve`;
   const result = avaPost(requestUrl, { data: addressToValidate });
-  const content = JSON.parse(result.content);
+  let content;
+
+  try {
+    content = JSON.parse(result.content);
+  } catch (error) {
+    content = result.content;
+  }
   if (content.messages) {
     messages = content.messages;
   }
@@ -246,7 +270,7 @@ taxCalc.getTaxCodes = function () {
   const baseUrl = getUrl();
   const requestUrl = `${baseUrl}definitions/taxcodes`;
   const result = avaGet(requestUrl);
-  return result.data.value;
+  return _.get(result, "data.value", []);
 };
 
 /**
