@@ -32,15 +32,19 @@ Template.gridControls.helpers({
     const currentData = Template.currentData();
     return currentData && currentData.product && currentData.product.isVisible;
   },
+
   hasControl() {
+    if(Reaction.hasOwnerAccess()) {
+      return true;
+    }
+
     const instance = Template.instance();
-    const shopIds = Reaction.getSellerShopId() || [];
-    // owner (parent shop in marketplace) will return all shopIds
+    const shopId = Reaction.getSellerShopId();
 
     return (
         Reaction.hasPermission("createProduct") &&
         // does product belongs to this shop seller
-        shopIds.indexOf(instance.data.product.shopId) > -1
+        shopId === instance.data.product.shopId
     );
   },
 

@@ -74,8 +74,9 @@ Template.products.onCreated(function () {
       _.extend(options, { marketplace: true });
 
       // check for single shop page and pass it as shops to productFilters
-      if (Reaction.Router.current().params.shopId) {
-        options.shops = [Reaction.Router.current().params.shopId];
+      const shopId = Reaction.Router.current().params.shopId;
+      if (shopId) {
+        options.shops = [shopId];
       }
     }
 

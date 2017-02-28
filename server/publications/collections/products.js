@@ -312,6 +312,7 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
             this.removed("Products", id);
           }
         });
+
         const handle2 = Revisions.find({
           "workflow.status": {
             $nin: [
