@@ -114,14 +114,21 @@
             data-i18n="app.print">
             Print
           </a>
-          <button class="btn btn-success flex-item-fill" type="button" data-event-action="capturePayment" data-i18n="order.capturePayment">Capture Payment</button>
+          <button class="btn btn-success flex-item-fill" type="button" data-event-action="capturePayment">
+            <span>Capturing</span>
+            <i class="fa fa-spinner fa-spin" id="btn-processing"></i>
+          </button>
+          <button class="btn btn-success flex-item-fill" type="button" data-event-action="capturePayment">
+            {{#if isLoading}}
+              <span>Capturing</span>
+              <i class="fa fa-spinner fa-spin" id="btn-processing"></i>
+            {{else}}
+              <span data-i18n="order.capturePayment">Capture Payment</span>
+            {{/if}}
+          </button>
       {{/if}}
-
-
     </div>
-
   </form>
-
 
   {{#if paymentCaptured}}
     <form name="refund">

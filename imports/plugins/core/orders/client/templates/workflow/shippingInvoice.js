@@ -7,6 +7,7 @@ import { i18next, Logger, formatNumber, Reaction } from "/client/api";
 import { NumericInput } from "/imports/plugins/core/ui/client/components";
 import { Media, Orders, Shops } from "/lib/collections";
 import DiscountList from "/imports/plugins/core/discounts/client/components/list";
+import "./shippingInvoice.html";
 
 // helper to return the order payment object
 // the first credit paymentMethod on the order
@@ -22,12 +23,12 @@ Template.coreOrderShippingInvoice.onCreated(function () {
   this.state = new ReactiveDict();
   this.refunds = new ReactiveVar([]);
   this.refundAmount = new ReactiveVar(0.00);
-
   this.autorun(() => {
     const currentData = Template.currentData();
     const order = Orders.findOne(currentData.orderId);
     const shop = Shops.findOne({});
 
+    this.state.set("isLoading", false);
     this.state.set("order", order);
     this.state.set("currency", shop.currencies[shop.currency]);
 
@@ -178,7 +179,11 @@ Template.coreOrderShippingInvoice.events({
 
   "click [data-event-action=capturePayment]": (event, instance) => {
     event.preventDefault();
+    const { state } = Template.instance();
+    console.log("before", instance.state);
+    instance.state.set("isLoading", true);
     const order = instance.state.get("order");
+    console.log("after", instance.state);
     Meteor.call("orders/capturePayments", order._id);
 
     if (order.workflow.status === "new") {
@@ -188,6 +193,7 @@ Template.coreOrderShippingInvoice.events({
         filter: "processing",
         _id: order._id
       });
+      instance.state.set("isLoading", false);
     }
   },
 
