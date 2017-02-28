@@ -9,6 +9,12 @@ import { ReactiveDict } from "meteor/reactive-dict";
 import { TaxCodes } from "/imports/plugins/core/taxes/lib/collections";
 
 Template.variantForm.onCreated(function () {
+  $(function () {
+    $("#taxCode").select2({
+      placeholder: "Select Tax Rate"
+    });
+  });
+
   this.state = new ReactiveDict();
   this.state.set("taxCodes", []);
 
@@ -197,6 +203,25 @@ Template.variantForm.events({
                 throw new Meteor.Error("error updating variant", error);
               }
             });
+        }
+      }
+    } else if (field === "taxCode") {
+      const value = Template.instance().$(event.currentTarget).prop("value");
+      Meteor.call("products/updateProductField", template.data._id, field, value,
+        error => {
+          if (error) {
+            throw new Meteor.Error("error updating variant", error);
+          }
+        });
+      if (ReactionProduct.checkChildVariants(template.data._id) > 0) {
+        const childVariants = ReactionProduct.getVariants(template.data._id);
+        for (const child of childVariants) {
+          Meteor.call("products/updateProductField", child._id, field, value,
+              error => {
+                if (error) {
+                  throw new Meteor.Error("error updating variant", error);
+                }
+              });
         }
       }
     }
