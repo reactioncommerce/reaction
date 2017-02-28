@@ -6,3 +6,6 @@ import "./templates/dashboard/settings.js";
 
 import "./templates/settings/sellerShopSettings.html";
 import "./templates/settings/sellerShopSettings.js";
+
+import "./templates/shops/shopSelect.html";
+import "./templates/shops/shopSelect.js";

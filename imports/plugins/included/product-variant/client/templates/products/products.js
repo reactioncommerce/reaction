@@ -68,12 +68,14 @@ Template.products.onCreated(function () {
       return;
     }
 
-    // allow published content from all sellers
-    if (Reaction.isPackageEnabled("reaction-marketplace")) {
-      const packageSettings = Reaction.getPackageSettings("reaction-marketplace");
-      if (packageSettings.settings.public.allowGuestSellers === true) {
-        // show all shops
-        _.extend(options, { marketplace: true });
+    // allow published content from all sellers for everyone
+    if (Reaction.hasMarketplaceAccess(["anonymous", "guest"])) {
+      // show all shops
+      _.extend(options, { marketplace: true });
+
+      // check for single shop page and pass it as shops to productFilters
+      if (Reaction.Router.current().params.shopId) {
+        options.shops = [Reaction.Router.current().params.shopId];
       }
     }
 

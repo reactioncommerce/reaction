@@ -36,21 +36,16 @@ Reaction.registerPackage({
       template: "marketplaceCatalogSettings"
     },
     {
-      route: "/shop/settings",
-      template: "shopSettings",
-      name: "shopSettings",
-      label: "Settings",
-      icon: "fa fa-th",
-      provides: "shortcut",
-      permissions: [{
-        label: "Admin",
-        permission: "admin"
-      },
-      {
-        label: "Seller",
-        permission: "seller"
-      }]
+      route: "shop/:shopId",
+      name: "shop",
+      template: "products",
+      workflow: "coreProductWorkflow",
+      priority: 1,
+      permissions: ["owner", "admin"],
+      audience: ["owner", "admin", "seller"]
     }
   ]
 });
+
+
 

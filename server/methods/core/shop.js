@@ -22,7 +22,7 @@ Meteor.methods({
     check(shopData, Match.Optional(Schemas.Shop));
 
     // must have owner access to create new shops when marketplace is disabled
-    if (!Reaction.hasOwnerAccess() && !Reaction.hasMarketplaceGuestAccess()) {
+    if (!Reaction.hasOwnerAccess() && !Reaction.hasMarketplaceAccess("guest")) {
       throw new Meteor.Error(403, "Access Denied");
     }
 
@@ -47,7 +47,7 @@ Meteor.methods({
     shop.name = shop.name + count;
 
     // admin or marketplace needs to be on and guests allowed to create shops
-    if (currentUser && Reaction.hasMarketplaceGuestAccess()) {
+    if (currentUser && Reaction.hasMarketplaceAccess("guest")) {
       adminRoles = shop.defaultSellerRoles;
 
       shop.emails = currentUser.emails;
@@ -61,7 +61,7 @@ Meteor.methods({
       });
     }
 
-    // We trust the owner's shop clone, check only if shopData is passed as an argument
+    // We trust the owner's shop clone, check only when shopData is passed as an argument
     if (shopData) {
       check(shop, Schemas.Shop);
     }

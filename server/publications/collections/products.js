@@ -312,13 +312,13 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
             this.removed("Products", id);
           }
         });
-
         const handle2 = Revisions.find({
           "workflow.status": {
             $nin: [
               "revision/published"
             ]
-          }
+          },
+          shopId: newSelector.shopId
         }).observe({
           added: (revision) => {
             let product;
@@ -351,7 +351,7 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
 
             if (!revision.documentType || revision.documentType === "product") {
               product = Products.findOne(revision.documentId);
-            } else if (revision.docuentType === "image" || revision.documentType === "tag") {
+            } else if (revision.documentType === "image" || revision.documentType === "tag") {
               product = Products.findOne(revision.parentDocument);
             }
             if (product) {
@@ -362,7 +362,6 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
           }
         });
 
-
         this.onStop(() => {
           handle.stop();
           handle2.stop();
@@ -370,6 +369,7 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
 
         return this.ready();
       }
+
       // Revision control is disabled
       return Products.find(newSelector, {
         sort: sort,

@@ -1,6 +1,6 @@
 import { FlatButton } from "/imports/plugins/core/ui/client/components";
 import { NotificationContainer } from "/imports/plugins/included/notifications/client/containers";
-import { Reaction } from "/client/api";
+import { Reaction } from "/lib/api";
 import { Tags } from "/lib/collections";
 
 
@@ -43,6 +43,10 @@ Template.CoreNavigationBar.events({
 });
 
 Template.CoreNavigationBar.helpers({
+  isMarketplaceOwner() {
+    return Reaction.hasMarketplaceAccess("owner");
+  },
+
   isSearchEnabled() {
     const instance = Template.instance();
     return instance.state.get("searchEnabled");

@@ -1,0 +1,32 @@
+<template name="shopSelect">
+  {{#if sellerShops}}
+    <div class="shops">
+      <div class="dropdown" role="shops">
+        <div class="dropdown-toggle" data-toggle="dropdown" data-delay="1000">{{currentShop}}
+          <span class="caret"></span>
+        </div>
+        <ul class="dropdown-menu" role="menu">
+          {{#each sellerShops}}
+            <li class="{{class}}">
+              <a class="shop" role="menuitem">{{name}}</a>
+            </li>
+          {{/each}}
+        </ul>
+      </div>
+    </div>
+  {{/if}}
+</template>
+
+<template name="shopOption">
+  {{#if SellerShops}}
+    <div class="select" role="shops">
+      <ul class="dropdown-menu" role="menu">
+        {{#each shops}}
+          <li class="{{class}}">
+            <a class="shop" role="menuitem">{{name}}</a>
+          </li>
+        {{/each}}
+      </ul>
+    </div>
+  {{/if}}
+</template>

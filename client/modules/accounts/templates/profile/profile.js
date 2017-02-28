@@ -68,6 +68,7 @@ Template.accountProfile.helpers({
   },
 
   isMarketplaceGuest: function () {
-    return Reaction.hasMarketplaceGuestAccess();
+    return !Reaction.hasMarketplaceAccess() && !Reaction.hasOwnerAccess();
   }
+
 });
