@@ -10,7 +10,16 @@
           "socialDescription": "Конфигурация социального канала"
         },
         "settings": {
-          "socialSettingsLabel": "Социальные настройки"
+          "facebook": "Facebook",
+          "twitter": "Twitter",
+          "pinterest": "Pinterest",
+          "googleplus": "Google+",
+          "appId": "Идентификатор приложения",
+          "username": "Имя пользователя",
+          "appSecret": "App Secret",
+          "profilePage": "Страница профиля",
+          "socialSettingsLabel": "Социальные настройки",
+          "socialSettingsSaved": "Социальные параметры сохранены"
         }
       }
     }
