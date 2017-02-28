@@ -40,9 +40,7 @@ Reaction.registerPackage({
       name: "shop",
       template: "products",
       workflow: "coreProductWorkflow",
-      priority: 1,
-      permissions: ["owner", "admin"],
-      audience: ["owner", "admin", "seller"]
+      priority: 1
     }
   ]
 });

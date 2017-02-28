@@ -16,17 +16,3 @@
     </div>
   {{/if}}
 </template>
-
-<template name="shopOption">
-  {{#if SellerShops}}
-    <div class="select" role="shops">
-      <ul class="dropdown-menu" role="menu">
-        {{#each shops}}
-          <li class="{{class}}">
-            <a class="shop" role="menuitem">{{name}}</a>
-          </li>
-        {{/each}}
-      </ul>
-    </div>
-  {{/if}}
-</template>

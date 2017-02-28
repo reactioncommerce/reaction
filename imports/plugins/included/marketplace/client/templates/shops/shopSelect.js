@@ -48,35 +48,6 @@ Template.shopSelect.helpers({
       }
       return Reaction.getSellerShop().name;
     }
-  },
-
-  shopSelectProps(shop) {
-    const instance = Template.instance();
-    if (instance.subscriptionsReady()) {
-      const media = Media.find({
-        "metadata.type": "brandAsset"
-      });
-
-      let selectedMediaId;
-      if (_.isArray(shop.brandAssets)) {
-        selectedMediaId = shop.brandAssets[0].mediaId;
-      }
-
-      return {
-        type: "radio",
-        options: media,
-        key: "_id",
-        optionTemplate: "shopOption",
-        selected: shop._id,
-        classNames: {
-          itemList: { half: true },
-          input: { hidden: true }
-        },
-        onSelect(value) {
-          //
-        }
-      };
-    }
   }
 });
 
