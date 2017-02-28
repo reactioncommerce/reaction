@@ -10,7 +10,16 @@
           "socialDescription": "လူမှု Channel ကို configuration ကို"
         },
         "settings": {
-          "socialSettingsLabel": "လူမှုရေးက Settings"
+          "facebook": "Facebook က",
+          "twitter": "တွစ်တာ",
+          "pinterest": "Pinterest",
+          "googleplus": "Google+ မှာ",
+          "appId": "App ကို Id",
+          "username": "အကောင့်နာမည်",
+          "appSecret": "App ကိုလြှို့ဝှကျ",
+          "profilePage": "ပရိုဖိုင်းကို 's Page",
+          "socialSettingsLabel": "လူမှုရေးက Settings",
+          "socialSettingsSaved": "လူမှု setting များကိုကယ်တင်ခြင်းသို့ရောက်"
         }
       }
     }

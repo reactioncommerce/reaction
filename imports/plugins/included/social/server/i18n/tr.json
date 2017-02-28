@@ -10,7 +10,16 @@
           "socialDescription": "Sosyal Kanal yapılandırması"
         },
         "settings": {
-          "socialSettingsLabel": "sosyal Ayarlar"
+          "facebook": "Facebook",
+          "twitter": "Twitter",
+          "pinterest": "pinterest",
+          "googleplus": "Google+",
+          "appId": "Uygulama Kimliği",
+          "username": "Kullanıcı Adı",
+          "appSecret": "Uygulama Gizli",
+          "profilePage": "Profil sayfası",
+          "socialSettingsLabel": "sosyal Ayarlar",
+          "socialSettingsSaved": "Sosyal ayarlar kaydedilir"
         }
       }
     }
