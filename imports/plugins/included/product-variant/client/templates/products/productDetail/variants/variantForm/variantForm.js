@@ -179,6 +179,12 @@ Template.variantForm.helpers({
       return false;
     }
     return instance.state.get("taxCodes");
+  },
+  displayCode: function () {
+    if (this.taxCode && this.taxCode !== "00000") {
+      return this.taxCode;
+    }
+    return "Select Tax Code";
   }
 });
 
