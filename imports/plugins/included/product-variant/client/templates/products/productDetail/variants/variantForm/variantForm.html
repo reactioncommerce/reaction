@@ -147,6 +147,7 @@
               </div>
               <div class="form-group{{#if afFieldIsInvalid name='taxCode'}} has-error{{/if}} taxCode" style="{{displayTaxCodes}}">
                 <select class="input select2-container" name="taxCode" id="taxCode" type="select2">
+                  <option selected="selected">{{displayCode}}</option>
                   {{#each listTaxCodes}}
                   <option value={{value}} id={{_id}}>{{label}}</option>
                   {{/each}}
