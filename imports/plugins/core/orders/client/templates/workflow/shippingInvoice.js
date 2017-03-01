@@ -23,12 +23,13 @@ Template.coreOrderShippingInvoice.onCreated(function () {
   this.state = new ReactiveDict();
   this.refunds = new ReactiveVar([]);
   this.refundAmount = new ReactiveVar(0.00);
+  this.state.setDefault("isLoading", false);
+
   this.autorun(() => {
     const currentData = Template.currentData();
     const order = Orders.findOne(currentData.orderId);
     const shop = Shops.findOne({});
 
-    this.state.set("isLoading", false);
     this.state.set("order", order);
     this.state.set("currency", shop.currencies[shop.currency]);
 
@@ -43,6 +44,15 @@ Template.coreOrderShippingInvoice.onCreated(function () {
 });
 
 Template.coreOrderShippingInvoice.helpers({
+  isLoading() {
+    const instance = Template.instance();
+    if (instance.state.get("isLoading")) {
+      instance.$("#btn-capture-payment").text("Capturing");
+      return true;
+    }
+    return false;
+  },
+
   DiscountList() {
     return DiscountList;
   },
@@ -192,7 +202,6 @@ Template.coreOrderShippingInvoice.events({
         filter: "processing",
         _id: order._id
       });
-      instance.state.set("isLoading", false);
     }
   },
 
