@@ -10,7 +10,16 @@
           "socialDescription": "Konfiguracja kanału Społecznej"
         },
         "settings": {
-          "socialSettingsLabel": "Ustawienia społeczne"
+          "facebook": "Facebook",
+          "twitter": "Świergot",
+          "pinterest": "Pinterest",
+          "googleplus": "Google+",
+          "appId": "App Id",
+          "username": "Nazwa użytkownika",
+          "appSecret": "App Tajny",
+          "profilePage": "Strona profilowa",
+          "socialSettingsLabel": "Ustawienia społeczne",
+          "socialSettingsSaved": "Ustawienia zapisane społeczne"
         }
       }
     }
