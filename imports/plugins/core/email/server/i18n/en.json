@@ -13,9 +13,13 @@
           "headers": {
             "emailLogs": "Email Logs",
             "email": "Email",
-            "subject": "Subject",
+            "data": {
+              "subject": "Subject",
+              "to": "To"
+            },
             "sent": "Sent",
-            "status": "Status"
+            "status": "Status",
+            "updated": "Sent"
           },
           "noEmails": "No emails sent yet",
           "limit": "Quantity",
