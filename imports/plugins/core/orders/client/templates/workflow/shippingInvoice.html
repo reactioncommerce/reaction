@@ -114,7 +114,7 @@
             data-i18n="app.print">
             Print
           </a>
-          <button class="btn btn-success flex-item-fill" type="button" data-event-action="capturePayment">
+          <button class="btn btn-success flex-item-fill" type="button" data-event-action="capturePayment" {{capturedDisabled}}>
             <span id="btn-capture-payment" data-i18n="order.capturePayment">Capture Payment</span>
             <i class="fa fa-spinner fa-spin {{#unless isCapturing}}hidden{{/unless}}" id="btn-processing"></i>
           </button>

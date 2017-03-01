@@ -50,6 +50,7 @@ Template.coreOrderShippingInvoice.helpers({
   isCapturing() {
     const instance = Template.instance();
     if (instance.state.get("isCapturing")) {
+      instance.$(":input").attr("disabled", true);
       instance.$("#btn-capture-payment").text("Capturing");
       return true;
     }
@@ -389,9 +390,18 @@ Template.coreOrderShippingInvoice.helpers({
     return Math.abs(paymentMethod.amount - refundTotal);
   },
 
+  capturedDisabled() {
+    const isLoading = Template.instance().state.get("isCapturing");
+    if (isLoading) {
+      return "disabled";
+    }
+    return null;
+  },
+
   refundSubmitDisabled() {
     const amount = Template.instance().state.get("field-refund") || 0;
-    if (amount === 0) {
+    const isLoading = Template.instance().state.get("isRefunding");
+    if (amount === 0 || isLoading) {
       return "disabled";
     }
 
