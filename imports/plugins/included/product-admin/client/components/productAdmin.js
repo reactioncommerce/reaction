@@ -236,10 +236,13 @@ class ProductAdmin extends Component {
           <CardBody expandable={true}>
             <Select
               clearable={false}
+              i18nKeyLabel="productDetailEdit.template"
+              i18nKeyPlaceholder="productDetailEdit.templateSelectPlaceholder"
               label="Template"
               name="template"
               onChange={this.handleTemplateChange}
               options={this.props.templates}
+              placeholder="Select a template"
               value={this.product.template}
             />
             <TextField
