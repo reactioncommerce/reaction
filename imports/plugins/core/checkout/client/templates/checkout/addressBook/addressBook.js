@@ -5,7 +5,6 @@ Template.checkoutAddressBook.onCreated(function () {
   Reaction.showActionView({
     provides: "settings",
     name: "settings/shipping",
-    label: "Shipping",
     template: "shippingSettings"
   });
 });
