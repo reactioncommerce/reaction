@@ -92,7 +92,13 @@
         "notFoundError": "Страница, которую вы запрашиваете, не найдена.",
         "productNotFound": "This product was not found.",
         "loadMoreProducts": "Загрузить больше продуктов",
-        "noProductsFound": "Товар не найден."
+        "noProductsFound": "Товар не найден.",
+        "private": "Частный",
+        "public": "Общественного",
+        "shortcut": {
+          "addProductLabel": "Добавить продукт",
+          "accountsLabel": "Счета"
+        }
       },
       "searchSettings": {
         "productSearchSettings": {
@@ -428,6 +434,8 @@
         "printLabels": "Печать этикеток",
         "printShippingLabel": "Перевозка",
         "printCustomsLabel": "Таможня",
+        "generateTracking": "Создавать этикетки и отслеживание",
+        "labelError": "Ошибка при создании отправка {{err}} этикетки",
         "carrier": "Носитель",
         "addTracking": "Добавить идентификатор",
         "itemsHaveBeenShipped": "Товары отправлены",

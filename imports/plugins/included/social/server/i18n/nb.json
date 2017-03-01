@@ -1,5 +1,15 @@
 [{
   "i18n": "nb",
   "ns": "reaction-social",
-  "translation": { }
+  "translation": {
+    "reaction-social": {
+      "admin": {
+        "settings": {
+          "facebook": "Facebook",
+          "twitter": "Twitter",
+          "username": "Brukernavn"
+        }
+      }
+    }
+  }
 }]
