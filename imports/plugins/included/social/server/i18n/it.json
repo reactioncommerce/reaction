@@ -10,7 +10,16 @@
           "socialDescription": "Configurazione del canale sociale"
         },
         "settings": {
-          "socialSettingsLabel": "contesti sociali"
+          "facebook": "Facebook",
+          "twitter": "Twitter",
+          "pinterest": "Pinterest",
+          "googleplus": "Google+",
+          "appId": "App Id",
+          "username": "Username",
+          "appSecret": "App Segreto",
+          "profilePage": "Pagina profilo",
+          "socialSettingsLabel": "contesti sociali",
+          "socialSettingsSaved": "contesti sociali salvate"
         }
       }
     }
