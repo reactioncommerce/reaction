@@ -23,7 +23,10 @@ Template.coreOrderShippingInvoice.onCreated(function () {
   this.state = new ReactiveDict();
   this.refunds = new ReactiveVar([]);
   this.refundAmount = new ReactiveVar(0.00);
-  this.state.setDefault("isLoading", false);
+  this.state.setDefault({
+    isCapturing: false,
+    isRefunding: false
+  });
 
   this.autorun(() => {
     const currentData = Template.currentData();
@@ -44,15 +47,22 @@ Template.coreOrderShippingInvoice.onCreated(function () {
 });
 
 Template.coreOrderShippingInvoice.helpers({
-  isLoading() {
+  isCapturing() {
     const instance = Template.instance();
-    if (instance.state.get("isLoading")) {
+    if (instance.state.get("isCapturing")) {
       instance.$("#btn-capture-payment").text("Capturing");
       return true;
     }
     return false;
   },
-
+  isRefunding() {
+    const instance = Template.instance();
+    if (instance.state.get("isRefunding")) {
+      instance.$("#btn-refund-payment").text("Refunding");
+      return true;
+    }
+    return false;
+  },
   DiscountList() {
     return DiscountList;
   },
@@ -170,12 +180,14 @@ Template.coreOrderShippingInvoice.events({
         confirmButtonText: i18next.t("order.applyRefund")
       }, (isConfirm) => {
         if (isConfirm) {
+          state.set("isRefunding", true);
           Meteor.call("orders/refunds/create", order._id, paymentMethod, refund, (error) => {
             if (error) {
               Alerts.alert(error.reason);
             }
             Alerts.toast(i18next.t("mail.alerts.emailSent"), "success");
             state.set("field-refund", 0);
+            state.set("isRefunding", false);
           });
         }
       });
@@ -190,7 +202,7 @@ Template.coreOrderShippingInvoice.events({
   "click [data-event-action=capturePayment]": (event, instance) => {
     event.preventDefault();
 
-    instance.state.set("isLoading", true);
+    instance.state.set("isCapturing", true);
 
     const order = instance.state.get("order");
     Meteor.call("orders/capturePayments", order._id);

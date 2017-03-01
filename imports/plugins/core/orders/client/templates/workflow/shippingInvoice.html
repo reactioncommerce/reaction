@@ -116,7 +116,7 @@
           </a>
           <button class="btn btn-success flex-item-fill" type="button" data-event-action="capturePayment">
             <span id="btn-capture-payment" data-i18n="order.capturePayment">Capture Payment</span>
-            <i class="fa fa-spinner fa-spin {{#unless isLoading}}hidden{{/unless}}" id="btn-processing"></i>
+            <i class="fa fa-spinner fa-spin {{#unless isCapturing}}hidden{{/unless}}" id="btn-processing"></i>
           </button>
       {{/if}}
     </div>
@@ -166,7 +166,11 @@
           class="btn btn-success flex-item-fill"
           type="submit"
           data-event-action="applyRefund"
-          data-i18n="order.applyRefund" {{refundSubmitDisabled}}>Apply Refund</button>
+          {{refundSubmitDisabled}}
+        >
+          <span id="btn-refund-payment" data-i18n="order.applyRefund">Apply Refund</span>
+          <i class="fa fa-spinner fa-spin {{#unless isRefunding}}hidden{{/unless}}"></i>
+        </button>
       </div>
     </form>
   {{else}}
