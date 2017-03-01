@@ -260,25 +260,19 @@ Meteor.methods({
 
     // insert backorder
     let i = 0;
-
-    // check if we support bulk operations
-    const currentBatch = Inventory._collection.rawCollection().currentBatch;
-
-    if (currentBatch && currentBatch.operations && currentBatch.operations.length > 0) {
-      const batch = Inventory._collection.rawCollection().initializeUnorderedBulkOp();
-      if (batch) {
-        while (i < backOrderQty) {
-          const id = Inventory._makeNewID();
-          batch.insert(Object.assign({ _id: id }, newReservation));
-          i++;
-        }
-
-        const execute = Meteor.wrapAsync(batch.execute, batch);
-        const inventoryBackorder = execute();
-        const inserted = inventoryBackorder.nInserted;
-        Logger.debug(`created ${inserted} backorder records for product ${newReservation.productId}, variant ${newReservation.variantId}`);
-        return inserted;
+    const batch = Inventory.rawCollection().initializeUnorderedBulkOp();
+    if (batch) {
+      while (i < backOrderQty) {
+        const id = Inventory._makeNewID();
+        batch.insert(Object.assign({ _id: id }, newReservation));
+        i++;
       }
+
+      const execute = Meteor.wrapAsync(batch.execute, batch);
+      const inventoryBackorder = execute();
+      const inserted = inventoryBackorder.nInserted;
+      Logger.debug(`created ${inserted} backorder records for product ${newReservation.productId}, variant ${newReservation.variantId}`);
+      return inserted;
     }
     //
     // TODO implement a backup inventory/backorder method if bulk operations fail.
