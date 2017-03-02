@@ -269,10 +269,12 @@ Meteor.methods({
       }
 
       const execute = Meteor.wrapAsync(batch.execute, batch);
-      const inventoryBackorder = execute();
-      const inserted = inventoryBackorder.nInserted;
-      Logger.debug(`created ${inserted} backorder records for product ${newReservation.productId}, variant ${newReservation.variantId}`);
-      return inserted;
+      if (batch.length) {
+        const inventoryBackorder = execute();
+        const inserted = inventoryBackorder.nInserted;
+        Logger.debug(`created ${inserted} backorder records for product ${newReservation.productId}, variant ${newReservation.variantId}`);
+        return inserted;
+      }
     }
     //
     // TODO implement a backup inventory/backorder method if bulk operations fail.
