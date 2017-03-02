@@ -145,6 +145,11 @@
                   <span class="help-block">{{afFieldMessage name='taxable'}}</span>
                   {{/if}}
               </div>
+              {{#unless checkIfProviderIsEnabled}}
+              <div class="form-group{{#if afFieldIsInvalid name='taxCode'}} has-error{{/if}} taxCode" style="{{displayTaxCodes}}">
+                {{>afFieldInput name='taxCode'}}
+              </div>
+              {{else}}
               <div class="form-group{{#if afFieldIsInvalid name='taxCode'}} has-error{{/if}} taxCode" style="{{displayTaxCodes}}">
                 <select class="input select2-container" name="taxCode" id="taxCode" type="select2">
                   <option selected="selected">{{displayCode}}</option>
@@ -156,6 +161,7 @@
                 <span class="help-block">{{afFieldMessage name='taxCode'}}</span>
                 {{/if}}
               </div>
+              {{/unless}}
               <div class="form-group{{#if afFieldIsInvalid name='inventoryManagement'}} has-error{{/if}}">
                   {{>afFieldInput name='inventoryManagement'}}
                   {{#if afFieldIsInvalid name='inventoryManagement'}}

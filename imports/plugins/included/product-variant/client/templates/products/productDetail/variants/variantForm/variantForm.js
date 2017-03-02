@@ -134,6 +134,22 @@ Template.variantForm.helpers({
       };
     };
   },
+  checkIfProviderIsEnabled: function () {
+    const shopId = Reaction.getShopId();
+
+    const provider = Packages.findOne({
+      "shopId": shopId,
+      "registry.provides": "taxCodes",
+      "$where": function () {
+        const providerName = this.name.split("-")[1];
+        return this.settings[providerName].enabled;
+      }
+    });
+
+    if (provider) {
+      return true;
+    }
+  },
   listTaxCodes: function () {
     const instance = Template.instance();
     const shopId = Reaction.getShopId();
