@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from "react";
-import { Button, FieldGroup } from "/imports/plugins/core/ui/client/components";
+import { Button, FieldGroup, TextField } from "/imports/plugins/core/ui/client/components";
 
 class EmailSettings extends Component {
   constructor(props) {
@@ -50,35 +50,35 @@ class EmailSettings extends Component {
         </FieldGroup>
         {settings.service === "custom" &&
           <div>
-            <FieldGroup
+            <TextField
               label="Host"
-              i18n="mail.settings.host"
+              i18nKeyLabel="mail.settings.host"
               type="text"
               name="host"
               value={settings.host}
               onChange={this.handleStateChange}
             />
-            <FieldGroup
-              label="Port"
-              i18n="mail.settings.port"
-              type="text"
-              name="port"
-              value={settings.port}
-              onChange={this.handleStateChange}
-            />
+          <TextField
+            label="Port"
+            i18nKeyLabel="mail.settings.port"
+            type="text"
+            name="port"
+            value={settings.port}
+            onChange={this.handleStateChange}
+          />
           </div>
         }
-        <FieldGroup
+        <TextField
           label="User"
-          i18n="mail.settings.user"
+          i18nKeyLabel="mail.settings.user"
           type="text"
           name="user"
           value={settings.user}
           onChange={this.handleStateChange}
         />
-        <FieldGroup
+        <TextField
           label="Password"
-          i18n="mail.settings.password"
+          i18nKeyLabel="mail.settings.password"
           type="password"
           name="password"
           value={settings.password}

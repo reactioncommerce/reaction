@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from "react";
-import { Button, Card, CardHeader, CardBody, CardGroup, FieldGroup } from "/imports/plugins/core/ui/client/components";
+import { Button, Card, CardHeader, CardBody, CardGroup, FieldGroup, TextField } from "/imports/plugins/core/ui/client/components";
 
 class SmsSettings extends Component {
   constructor(props) {
@@ -31,7 +31,6 @@ class SmsSettings extends Component {
     const settings = this.state.settings;
     const isSaving = this.state.isSaving;
     return (
-      <div>
       <CardGroup>
         <Card
           expanded={true}
@@ -56,36 +55,36 @@ class SmsSettings extends Component {
                   <option value="nexmo">Nexmo</option>
               </FieldGroup>
               <hr/>
-              <FieldGroup
+              <TextField
                 label="Sms Phone Number"
                 type="text"
-                i18n="sms.settings.smsPhone"
+                i18nKeyLabel="sms.settings.smsPhone"
                 name="smsPhone"
                 value={settings.smsPhone || ""}
                 onChange={this.handleStateChange}
               />
-              <FieldGroup
+              <TextField
                 label="API Key"
                 type="password"
-                i18n="sms.settings.apiKey"
+                i18nKeyLabel="sms.settings.apiKey"
                 name="apiKey"
                 value={settings.apiKey || ""}
                 onChange={this.handleStateChange}
               />
-              <FieldGroup
+              <TextField
                 label="API Token/Secret"
                 type="password"
-                i18n="sms.settings.apiToken"
+                i18nKeyLabel="sms.settings.apiToken"
                 name="apiToken"
                 value={settings.apiToken || ""}
                 onChange={this.handleStateChange}
               />
-            <Button
-              bezelStyle="solid"
-              status="primary"
-              className="pull-right"
-              type="submit" disabled={isSaving}
-            >
+              <Button
+                bezelStyle="solid"
+                status="primary"
+                className="pull-right"
+                type="submit" disabled={isSaving}
+              >
                 {isSaving ?
                     <i className="fa fa-refresh fa-spin"/>
                   : <span data-i18n="app.save">Save</span>}
@@ -94,7 +93,6 @@ class SmsSettings extends Component {
           </CardBody>
         </Card>
       </CardGroup>
-    </div>
     );
   }
 }
