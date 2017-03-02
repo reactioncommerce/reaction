@@ -7,7 +7,6 @@ import { i18next, Logger, formatNumber, Reaction } from "/client/api";
 import { NumericInput } from "/imports/plugins/core/ui/client/components";
 import { Media, Orders, Shops } from "/lib/collections";
 import DiscountList from "/imports/plugins/core/discounts/client/components/list";
-import "./shippingInvoice.html";
 
 // helper to return the order payment object
 // the first credit paymentMethod on the order
