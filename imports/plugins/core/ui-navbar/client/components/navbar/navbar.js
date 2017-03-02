@@ -1,7 +1,8 @@
-import { FlatButton } from "/imports/plugins/core/ui/client/components";
-import { NotificationContainer } from "/imports/plugins/included/notifications/client/containers";
 import { Reaction } from "/lib/api";
 import { Tags } from "/lib/collections";
+import { FlatButton } from "/imports/plugins/core/ui/client/components";
+import { NotificationContainer } from "/imports/plugins/included/notifications/client/containers";
+import { VerticalDivider } from "/imports/plugins/core/ui/client/components";
 
 
 Template.CoreNavigationBar.onCreated(function () {
@@ -43,6 +44,9 @@ Template.CoreNavigationBar.events({
 });
 
 Template.CoreNavigationBar.helpers({
+  VerticalDivider() {
+    return VerticalDivider;
+  },
   isMarketplaceOwner() {
     return Reaction.hasMarketplaceAccess("owner");
   },
