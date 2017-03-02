@@ -34,7 +34,7 @@ Template.gridControls.helpers({
   },
 
   hasControl() {
-    if(Reaction.hasOwnerAccess()) {
+    if (Reaction.hasOwnerAccess()) {
       return true;
     }
 

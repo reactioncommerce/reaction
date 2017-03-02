@@ -47,6 +47,7 @@ Template.CoreNavigationBar.helpers({
   VerticalDivider() {
     return VerticalDivider;
   },
+
   isMarketplaceOwner() {
     return Reaction.hasMarketplaceAccess("owner");
   },

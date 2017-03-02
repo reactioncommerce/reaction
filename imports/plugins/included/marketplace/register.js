@@ -12,22 +12,7 @@ Reaction.registerPackage({
     }
   },
   registry: [
-    // Dashboard card
-    /* Moved into catalog - settings below will provide a card instead
-    {
-      provides: "dashboard",
-      label: "Marketplace",
-      description: "Allow users to become sellers, switch shops UI",
-      icon: "fa fa-globe",
-      priority: 2,
-      container: "marketplace",
-      permissions: [{
-        label: "Marketplace",
-        permission: "dashboard/marketplace"
-      }]
-    },*/
-
-    // Settings reside in Catalog settings
+    // Settings are in Catalog settings
     {
       label: "Marketplace",
       icon: "fa fa-globe",
@@ -44,6 +29,3 @@ Reaction.registerPackage({
     }
   ]
 });
-
-
-
