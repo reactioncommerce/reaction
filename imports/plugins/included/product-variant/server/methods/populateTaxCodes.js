@@ -26,8 +26,8 @@ taxCodes.populateTaxCodes = function (shopId, code, providerName) {
       label: code.description,
       parent: code.parentTaxCode
     });
-  } catch (e) {
-    throw e;
+  } catch (err) {
+    throw new Meteor.Error("Error populating TaxCodes collection", err);
   }
 };
 
