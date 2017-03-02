@@ -1,11 +1,11 @@
 import { Meteor } from "meteor/meteor";
+import { ReactiveDict } from "meteor/reactive-dict";
 import { Session } from "meteor/session";
 import { Template } from "meteor/templating";
 import { Reaction, i18next } from "/client/api";
 import { ReactionProduct } from "/lib/api";
 import { applyProductRevision } from "/lib/api/products";
 import { Packages, Products } from "/lib/collections";
-import { ReactiveDict } from "meteor/reactive-dict";
 import { TaxCodes } from "/imports/plugins/core/taxes/lib/collections";
 
 Template.variantForm.onCreated(function () {
