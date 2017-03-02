@@ -131,11 +131,21 @@
         </div>
       </div>
 
-      {{#each refund in refunds}}
-        <div class="order-summary-form-group">
-          <span class="reason" data-i18n="cartSubTotals.refundAmount">Refunded on: {{dateFormat refund.created format="MMM D, YYYY"}}</span>
-          <div class="amount">-{{formatPrice refund.amount}}</div>
+      {{#if isFetching}}
+        <div class="form-group order-summary-form-group">
+          <span class="reason">
+            <i class="fa fa-info-circle text-info"></i>
+            <strong class="text-info">Loading Refunds</strong>
+            <i class="fa fa-spinner fa-spin"></i>
+          </span>
         </div>
+      {{/if}}
+
+      {{#each refund in refunds}}
+      <div class="order-summary-form-group">
+        <span class="reason" data-i18n="cartSubTotals.refundAmount">Refunded on: {{dateFormat refund.created format="MMM D, YYYY"}}</span>
+        <div class="amount">-{{formatPrice refund.amount}}</div>
+      </div>
       {{/each}}
 
       <div class="reason">

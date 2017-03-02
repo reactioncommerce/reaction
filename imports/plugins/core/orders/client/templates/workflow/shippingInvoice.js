@@ -24,7 +24,8 @@ Template.coreOrderShippingInvoice.onCreated(function () {
   this.refundAmount = new ReactiveVar(0.00);
   this.state.setDefault({
     isCapturing: false,
-    isRefunding: false
+    isRefunding: false,
+    isFetching: true
   });
 
   this.autorun(() => {
@@ -39,6 +40,7 @@ Template.coreOrderShippingInvoice.onCreated(function () {
       Meteor.call("orders/refunds/list", order, (error, result) => {
         if (!error) {
           this.refunds.set(result);
+          this.state.set("isFetching", false);
         }
       });
     }
@@ -59,6 +61,13 @@ Template.coreOrderShippingInvoice.helpers({
     const instance = Template.instance();
     if (instance.state.get("isRefunding")) {
       instance.$("#btn-refund-payment").text("Refunding");
+      return true;
+    }
+    return false;
+  },
+  isFetching() {
+    const instance = Template.instance();
+    if (instance.state.get("isFetching")) {
       return true;
     }
     return false;
