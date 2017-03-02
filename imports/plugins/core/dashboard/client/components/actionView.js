@@ -3,7 +3,7 @@ import classnames from "classnames";
 import Blaze from "meteor/gadicc:blaze-react-component";
 import { Admin } from "/imports/plugins/core/ui/client/providers";
 import Radium from "radium";
-import Velocity from "velocity-animate";
+import "velocity-animate";
 import "velocity-animate/velocity.ui";
 import { VelocityTransitionGroup } from "velocity-react";
 import debounce from "lodash/debounce";
@@ -15,7 +15,8 @@ import {
 
 const getStyles = (props) => {
   let viewSize = 400;
-  const isBigView = props.actionView && props.actionView.provides === "dashboard";
+  const actionView = props.actionView || {};
+  const isBigView = actionView.provides === "dashboard" || (actionView.provides === "shortcut" && actionView.container === "dashboard");
 
   if (isBigView) {
     viewSize = "90vw";
@@ -94,10 +95,9 @@ const getStyles = (props) => {
         zIndex: 1050
       }
     },
-    // detailView: {
-    //   flex: "1 1 auto",
-    //   overflow: "auto"
-    // },
+    detailView: {
+      width: "100%"
+    },
     backButton: {
       height: "100%"
     },
@@ -114,6 +114,7 @@ class ActionView extends Component {
     actionView: PropTypes.object,
     actionViewIsOpen: PropTypes.bool,
     buttons: PropTypes.array,
+    detailView: PropTypes.object,
     detailViewIsOpen: PropTypes.bool,
     handleActionViewBack: PropTypes.func,
     handleActionViewClose: PropTypes.func,

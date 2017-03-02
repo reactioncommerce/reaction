@@ -39,13 +39,12 @@ export const AvalaraPackageConfig = new SimpleSchema([
     },
     "settings.avalara.shippingTaxCode": {
       label: "Shipping Tax Code",
-      type: String,
-      optional: true
+      type: String
     },
     "settings.addressValidation.enabled": {
       label: "Address Validation",
       type: Boolean,
-      defaultValue: false
+      defaultValue: true
     },
     "settings.avalara.commitDocuments": {
       label: "Commit Documents",
@@ -62,10 +61,21 @@ export const AvalaraPackageConfig = new SimpleSchema([
       type: Boolean,
       defaultValue: false
     },
+    "settings.avalara.logRetentionDuration": {
+      label: "Retain Logs Duration (Days)",
+      type: Number,
+      defaultValue: 30
+    },
     "settings.avalara.requestTimeout": {
       label: "Request Timeout",
       type: Number,
-      defaultValue: 300
+      defaultValue: 1500
+    },
+    "settings.addressValidation.countryList": {
+      label: "Enable Address Validation by Country",
+      type: [String],
+      optional: true,
+      defaultValue: ["US", "CA"]
     }
   }
 ]);

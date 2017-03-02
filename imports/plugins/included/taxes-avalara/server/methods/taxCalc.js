@@ -1,11 +1,13 @@
 import _ from "lodash";
+import accounting from "accounting-js";
 import os from "os";
 import moment from "moment";
 import { Meteor } from "meteor/meteor";
 import { HTTP } from "meteor/http";
-import { check, Match } from "meteor/check";
-import { Packages, Shops } from "/lib/collections";
-import { Reaction } from "/server/api";
+import { check } from "meteor/check";
+import { Packages, Shops, Accounts } from "/lib/collections";
+import { Reaction, Logger } from "/server/api";
+import Avalogger from "./avalogger";
 
 const countriesWithRegions = ["US", "CA", "DE", "AU"];
 const taxCalc = {};
@@ -39,41 +41,66 @@ function getUrl() {
 
 /**
  * @summary Get the auth info to authenticate to REST API
+ * @param {Object} packageData - Optionally pass in packageData if we already have it
  * @returns {String} Username/Password string
  */
-function getAuthData() {
-  const packageData = taxCalc.getPackageData();
+function getAuthData(packageData = taxCalc.getPackageData()) {
   const { username, password } = _.get(packageData, "settings.avalara", {});
-
   if (!username || !password) {
     return new Meteor.Error("You cannot use this API without a username and password configured");
   }
-
   const auth = `${username}:${password}`;
   return auth;
 }
 
 /**
+ * @summary Get exempt tax settings to pass to REST API
+ * @returns {Object} containing exemptCode and customerUsageType
+ */
+function getTaxSettings() {
+  return _.get(Accounts.findOne(), "taxSettings");
+}
+
+/**
  * @summary function to get HTTP data and pass in extra Avalara-specific headers
  * @param {String} requestUrl - The URL to make the request to
- * @param {Function} callback - An optional callback for async usage
+ * @param {Object} options - An object of other options
  * @returns {Object} Response from call
  */
-function avaGet(requestUrl, callback) {
+function avaGet(requestUrl, options = {}) {
+  const logObject = {};
+  const pkgData = taxCalc.getPackageData();
   const appVersion = Reaction.getAppVersion();
+  const meteorVersion = _.split(Meteor.release, "@")[1];
   const machineName = os.hostname();
-  const avaClient = `Reaction; ${appVersion}; Meteor HTTP; 1.0; ${machineName}`;
+  const avaClient = `Reaction; ${appVersion}; Meteor HTTP; ${meteorVersion}; ${machineName}`;
   const headers = {
-    "X-Avalara-Client": avaClient,
-    "X-Avalara-UID": "a0o33000004K8g3"
+    headers: {
+      "X-Avalara-Client": avaClient,
+      "X-Avalara-UID": "a0o33000004K8g3"
+    }
   };
-  const auth = getAuthData();
-  if (callback) {
-    HTTP.get(requestUrl, { headers, auth }, function (error, result) {
-      return callback(result);
-    });
+  const auth = options.auth || getAuthData();
+  const timeout = { timeout: options.timeout || pkgData.settings.avalara.requestTimeout };
+  const allOptions = Object.assign({}, options, headers, { auth }, timeout);
+  if (pkgData.settings.avalara.enableLogging) {
+    logObject.request = allOptions;
   }
-  const result = HTTP.get(requestUrl, { headers, auth });
+
+  try {
+    result = HTTP.get(requestUrl, allOptions);
+  } catch (error) {
+    result = error;
+    Logger.error(`Encountered error while calling Avalara API endpoint ${requestUrl}`);
+    Logger.error(error);
+  }
+
+  if (pkgData.settings.avalara.enableLogging) {
+    logObject.duration = _.get(result, "headers.serverDuration");
+    logObject.result = result.data;
+    Avalogger.info(logObject);
+  }
+
   return result;
 }
 
@@ -82,27 +109,57 @@ function avaGet(requestUrl, callback) {
  * @summary to POST HTTP data and pass in extra Avalara-specific headers
  * @param {String} requestUrl - The URL to make the request to
  * @param {Object} options - An object of others options, usually data
- * @param {Function} callback - An optional callback for async use
  * @returns {Object} Response from call
  */
-function avaPost(requestUrl, options, callback) {
+function avaPost(requestUrl, options) {
+  const logObject = {};
+  const pkgData = taxCalc.getPackageData();
   const appVersion = Reaction.getAppVersion();
+  const meteorVersion = _.split(Meteor.release, "@")[1];
   const machineName = os.hostname();
-  const avaClient = `Reaction; ${appVersion}; Meteor HTTP; 1.0; ${machineName}`;
+  const avaClient = `Reaction; ${appVersion}; Meteor HTTP; ${meteorVersion}; ${machineName}`;
   const headers = {
-    "X-Avalara-Client": avaClient,
-    "X-Avalara-UID": "xxxxxxx"
+    headers: {
+      "X-Avalara-Client": avaClient,
+      "X-Avalara-UID": "a0o33000004K8g3"
+    }
   };
   const auth = { auth: getAuthData() };
-  const allOptions = Object.assign({}, options, headers, auth);
-  if (callback) {
-    HTTP.post(requestUrl, allOptions, function (error, result) {
-      return callback(result);
-    });
+  const timeout = { timeout: pkgData.settings.avalara.requestTimeout };
+  const allOptions = Object.assign({}, options, headers, auth, timeout);
+  if (pkgData.settings.avalara.enableLogging) {
+    logObject.request = allOptions;
   }
-  const result = HTTP.post(requestUrl, allOptions);
+
+  let result;
+
+  try {
+    result = HTTP.post(requestUrl, allOptions);
+  } catch (error) {
+    Logger.error(`Encountered error while calling API at ${requestUrl}`);
+    Logger.error(error);
+    result = {};
+  }
+
+  if (pkgData.settings.avalara.enableLogging) {
+    logObject.duration = _.get(result, "headers.serverDuration");
+    logObject.result = result.data;
+    Avalogger.info(logObject);
+  }
+
   return result;
 }
+
+/**
+ * @summary Gets the full list of Avalara-supported entity use codes.
+ * @returns {Object[]} API response
+ */
+taxCalc.getEntityCodes = function () {
+  const baseUrl = getUrl();
+  const requestUrl = `${baseUrl}definitions/entityusecodes`;
+  const result = avaGet(requestUrl);
+  return _.get(result, "data.value", []);
+};
 
 // API Methods
 
@@ -122,33 +179,6 @@ taxCalc.calcTaxable = function (cart) {
 };
 
 /**
- * @summary Get the company code from the db
- * @returns {String} Company Code
- */
-taxCalc.getCompanyCode = function () {
-  const result = Packages.findOne({
-    name: "taxes-avalara",
-    shopId: Reaction.getShopId(),
-    enabled: true
-  }, { fields: { "settings.avalara.companyCode": 1 } });
-  const companyCode = _.get(result, "settings.avalara.companyCode");
-  if (companyCode) {
-    return companyCode;
-  }
-  const savedCompany = taxCalc.saveCompany();
-  return savedCompany.companyCode;
-};
-
-taxCalc.getCompany = function () {
-  const result = Packages.findOne({
-    name: "taxes-avalara",
-    shopId: Reaction.getShopId(),
-    enabled: true
-  }, { fields: { "settings.avalara.company": 1 } });
-  return result;
-};
-
-/**
  * @summary Validate a particular address
  * @param {Object} address Address to validate
  * @returns {Object} The validated result
@@ -156,8 +186,17 @@ taxCalc.getCompany = function () {
 taxCalc.validateAddress = function (address) {
   check(address, Object);
 
+  const packageData = taxCalc.getPackageData();
+  const { countryList } = packageData.settings.addressValidation;
+
+  if (!_.includes(countryList, address.country)) {
+    // if this is a country selected for validation, proceed
+    // else use current address as response
+    return { validatedAddress: address, errors: [] };
+  }
+
   let messages;
-  let validatedAddress;
+  let validatedAddress = ""; // set default as falsy value
   const errors = [];
   const addressToValidate  = {
     line1: address.address1,
@@ -176,7 +215,13 @@ taxCalc.validateAddress = function (address) {
   const baseUrl = getUrl();
   const requestUrl = `${baseUrl}/addresses/resolve`;
   const result = avaPost(requestUrl, { data: addressToValidate });
-  const content = JSON.parse(result.content);
+  let content;
+
+  try {
+    content = JSON.parse(result.content);
+  } catch (error) {
+    content = result.content;
+  }
   if (content.messages) {
     messages = content.messages;
   }
@@ -203,29 +248,6 @@ taxCalc.validateAddress = function (address) {
 };
 
 /**
- * @summary Get all registered companies
- * @param {Function} callback Callback function for asynchronous execution
- * @returns {Object} API response object
- */
-taxCalc.getCompanies = function (callback) {
-  const auth = getAuthData();
-  if (auth.error) {
-    return _.assign({}, auth, { statusCode: 401 });
-  }
-  const baseUrl = getUrl();
-  const requestUrl = `${baseUrl}/companies`;
-
-  if (callback) {
-    HTTP.get(requestUrl, { auth: auth }, (err, result) => {
-      return (callback(result));
-    });
-  } else {
-    const result = HTTP.get(requestUrl, { auth: auth });
-    return result;
-  }
-};
-
-/**
  * @summary Tests supplied Avalara credentials by calling company endpoint
  * @param {Object} credentials callback Callback function for asynchronous execution
  * @returns {Object} Object containing "statusCode" on success, empty response on error
@@ -235,23 +257,9 @@ taxCalc.testCredentials = function (credentials) {
 
   const baseUrl = getUrl();
   const auth = `${credentials.username}:${credentials.password}`;
-  const requestUrl = `${baseUrl}/companies/${credentials.companyCode}/transactions`;
-  const result = avaGet(requestUrl, auth);
+  const requestUrl = `${baseUrl}companies/${credentials.companyCode}/transactions`;
+  const result = avaGet(requestUrl, { auth, timeout: 5000 });
   return { statusCode: result.statusCode };
-};
-
-/**
- * @summary Fetch the company object from the API and save in the DB
- * @returns {String} Company object
- */
-taxCalc.saveCompany = function () {
-  const companyData = taxCalc.getCompanies();
-  const company = companyData.data.value[0];
-  const packageData = taxCalc.getPackageData();
-  Packages.update({ _id: packageData._id }, {
-    $set: { "settings.avalara.company": company }
-  });
-  return company;
 };
 
 /**
@@ -262,7 +270,7 @@ taxCalc.getTaxCodes = function () {
   const baseUrl = getUrl();
   const requestUrl = `${baseUrl}definitions/taxcodes`;
   const result = avaGet(requestUrl);
-  return result.data.value;
+  return _.get(result, "data.value", []);
 };
 
 /**
@@ -271,12 +279,13 @@ taxCalc.getTaxCodes = function () {
  * @returns {Object} SalesOrder in Avalara format
  */
 function cartToSalesOrder(cart) {
-  const companyCode = taxCalc.getCompanyCode();
+  const pkgData = taxCalc.getPackageData();
+  const { companyCode, shippingTaxCode } = pkgData.settings.avalara;
   const company = Shops.findOne(Reaction.getShopId());
   const companyShipping = _.filter(company.addressBook, (o) => o.isShippingDefault)[0];
   const currencyCode = company.currency;
   const cartShipping = cart.cartShipping();
-  const shippingTaxCode = taxCalc.getPackageData().settings.avalara.shippingTaxCode || "NT";
+  const cartDate = moment(cart.createdAt).format();
   let lineItems = [];
   if (cart.items) {
     lineItems = cart.items.map((item) => {
@@ -306,7 +315,7 @@ function cartToSalesOrder(cart) {
     type: "SalesOrder",
     code: cart._id,
     customerCode: cart.userId,
-    date: moment.utc(cart.createdAt),
+    date: cartDate,
     currencyCode: currencyCode,
     addresses: {
       ShipFrom: {
@@ -327,6 +336,17 @@ function cartToSalesOrder(cart) {
     },
     lines: lineItems
   };
+
+  // current "coupon code" discount are based at the cart level, and every iten has it's
+  // discounted property set to true.
+  if (cart.discount)  {
+    salesOrder.discount = accounting.toFixed(cart.discount, 2);
+    for (const line of salesOrder.lines) {
+      if (line.itemCode !== "shipping") {
+        line.discounted = true;
+      }
+    }
+  }
   return salesOrder;
 }
 
@@ -338,20 +358,14 @@ function cartToSalesOrder(cart) {
  */
 taxCalc.estimateCart = function (cart, callback) {
   check(cart, Reaction.Schemas.Cart);
-  check(callback, Match.Optional(Function));
+  check(callback, Function);
 
   if (cart.items && cart.shipping && cart.shipping[0].address) {
-    const salesOrder = cartToSalesOrder(cart);
+    const salesOrder = _.assign({}, cartToSalesOrder(cart), getTaxSettings());
     const baseUrl = getUrl();
     const requestUrl = `${baseUrl}/transactions/create`;
-    if (callback) {
-      avaPost(requestUrl, { data: salesOrder }, (err, result) => {
-        const data = JSON.parse(result.content);
-        return callback(data);
-      });
-    }
     const result = avaPost(requestUrl, { data: salesOrder });
-    return result.data;
+    return callback(result.data);
   }
 };
 
@@ -361,12 +375,19 @@ taxCalc.estimateCart = function (cart, callback) {
  * @returns {Object} SalesOrder in Avalara format
  */
 function orderToSalesInvoice(order) {
-  const companyCode = taxCalc.getCompanyCode();
+  let documentType;
+  const pkgData = taxCalc.getPackageData();
+  const { companyCode, shippingTaxCode, commitDocuments } = pkgData.settings.avalara;
+  if (commitDocuments) {
+    documentType = "SalesInvoice";
+  } else {
+    documentType = "SalesOrder";
+  }
   const company = Shops.findOne(Reaction.getShopId());
   const companyShipping = _.filter(company.addressBook, (o) => o.isShippingDefault)[0];
   const currencyCode = company.currency;
   const orderShipping = order.orderShipping();
-  const shippingTaxCode = taxCalc.getPackageData().settings.avalara.shippingTaxCode || "NT";
+  const orderDate = moment(order.createdAt).format();
   const lineItems = order.items.map((item) => {
     return {
       number: item._id,
@@ -390,11 +411,11 @@ function orderToSalesInvoice(order) {
 
   const salesInvoice = {
     companyCode: companyCode,
-    type: "SalesInvoice",
-    commit: true,
+    type: documentType,
+    commit: commitDocuments,
     code: order.cartId,
     customerCode: order.userId,
-    date: moment.utc(order.createdAt),
+    date: orderDate,
     currencyCode: currencyCode,
     addresses: {
       ShipFrom: {
@@ -415,6 +436,15 @@ function orderToSalesInvoice(order) {
     },
     lines: lineItems
   };
+
+  if (order.discount)  {
+    salesInvoice.discount = accounting.toFixed(order.discount, 2);
+    for (const line of salesInvoice.lines) {
+      if (line.itemCode !== "shipping") {
+        line.discounted = true;
+      }
+    }
+  }
   return salesInvoice;
 }
 
@@ -428,19 +458,12 @@ taxCalc.recordOrder = function (order, callback) {
   check(callback, Function);
   // unlike the other functions, we expect this to always be called asynchronously
   if (order && order.shipping && order.shipping[0].address) {
-    const salesOrder = orderToSalesInvoice(order);
+    const salesOrder = _.assign({}, orderToSalesInvoice(order), getTaxSettings());
     const baseUrl = getUrl();
     const requestUrl = `${baseUrl}/transactions/create`;
-
     try {
-      avaPost(requestUrl, { data: salesOrder }, (err, result) => {
-        if (err) {
-          Logger.error("Encountered error while recording order to Avalara");
-          Logger.error(err);
-        }
-        const data = JSON.parse(result.content);
-        return callback(data);
-      });
+      const result = avaPost(requestUrl, { data: salesOrder });
+      return callback(result.data);
     } catch (error) {
       Logger.error("Encountered error while recording order to Avalara");
       Logger.error(error);
@@ -458,11 +481,11 @@ taxCalc.recordOrder = function (order, callback) {
 taxCalc.reportRefund = function (order, refundAmount, callback) {
   check(refundAmount, Number);
   check(callback, Function);
+  const pkgData = taxCalc.getPackageData();
+  const { companyCode } = pkgData.settings.avalara;
   const company = Shops.findOne(Reaction.getShopId());
   const companyShipping = _.filter(company.addressBook, (o) => o.isShippingDefault)[0];
   const currencyCode = company.currency;
-  const companyCode = taxCalc.getCompanyCode();
-  const auth = getAuthData();
   const baseUrl = getUrl();
   const requestUrl = `${baseUrl}/transactions/create`;
   const returnAmount = refundAmount * -1;
@@ -501,15 +524,9 @@ taxCalc.reportRefund = function (order, refundAmount, callback) {
     lines: [lineItems]
   };
 
-  if (callback) {
-    HTTP.post(requestUrl, { data: returnInvoice, auth: auth }, (err, result) => {
-      const data = JSON.parse(result.content);
-      return callback(data);
-    });
-  }
-  const result = HTTP.post(requestUrl, { data: returnInvoice, auth: auth });
-  const data = JSON.parse(result.content);
-  return data;
+
+  const result = avaPost(requestUrl, { data: returnInvoice });
+  return callback(result.data);
 };
 
 export default taxCalc;
@@ -517,5 +534,6 @@ export default taxCalc;
 Meteor.methods({
   "avalara/addressValidation": taxCalc.validateAddress,
   "avalara/getTaxCodes": taxCalc.getTaxCodes,
-  "avalara/testCredentials": taxCalc.testCredentials
+  "avalara/testCredentials": taxCalc.testCredentials,
+  "avalara/getEntityCodes": taxCalc.getEntityCodes
 });

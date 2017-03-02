@@ -11,7 +11,7 @@ class Icon extends Component {
         classes = icon;
       } else {
         classes = classnames({
-          "fa": true,
+          fa: true,
           [`fa-${icon}`]: true
         });
       }
@@ -19,7 +19,7 @@ class Icon extends Component {
 
     classes = classnames({
       "rui": true,
-      "font-icon": true,
+      "font-icon": true
     }, classes, this.props.className);
 
     return (
@@ -30,7 +30,8 @@ class Icon extends Component {
 
 Icon.propTypes = {
   className: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-  icon: PropTypes.string.isRequired
+  icon: PropTypes.string.isRequired,
+  style: PropTypes.object
 };
 
 export default Icon;

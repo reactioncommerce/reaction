@@ -13,6 +13,7 @@ class Currency extends Component {
 
 Currency.propTypes = {
   amount: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  editable: PropTypes.bool,
   priceRange: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
 };
 

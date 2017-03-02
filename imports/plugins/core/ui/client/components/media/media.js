@@ -75,19 +75,6 @@ class MediaItem extends Component {
   }
 
   renderImage() {
-    const mediaHeight = this.props.mediaHeight;
-    const mediaWidth = this.props.mediaWidth;
-
-    let maxHeight = "auto";
-    let maxWidth = "100%";
-
-    if (this.props.isFeatured) {
-      if (mediaHeight > mediaWidth) {
-        maxHeight = mediaWidth + "px";
-        maxWidth = (mediaWidth / mediaHeight) * mediaWidth;
-      }
-    }
-
     const image = (
       <img
         alt=""

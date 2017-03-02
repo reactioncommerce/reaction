@@ -32,7 +32,9 @@ Reaction.registerPackage({
     provides: "shortcut",
     label: "Accounts",
     icon: "fa fa-users",
-    priority: 1
+    priority: 1,
+    container: "dashboard",
+    template: "accountsDashboard"
   }, {
     route: "/account/profile",
     template: "accountProfile",

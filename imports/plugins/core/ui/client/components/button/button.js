@@ -39,8 +39,13 @@ Template.button.helpers({
     const data = Template.currentData();
     const {
       // Remove unneeded attributes
-      title, label, status, i18nKeyTitle, i18nKeyLabel, i18nKeyTooltip,
-      tooltip, className, type, href, icon, toggle, onIcon, toggleOn, onClick,
+      className, status, type, href,
+
+      // Pull out invalid HTML attributes / unuesed attributes
+      /* eslint-disable */
+      title, label, i18nKeyTitle, i18nKeyLabel, i18nKeyTooltip,
+      tooltip,  icon, toggle, onIcon, toggleOn, onClick,
+      /* eslint-enable */
 
       // Get the rest of the properties and put them in attrs
       // these will most likely be HTML attributes

@@ -17,8 +17,8 @@ class Tag extends Component {
       const input = this.refs.autoSuggestInput.input;
 
       Velocity.RunSequence([
-        {e: input, p: { backgroundColor: "#e2f2e2" }, o: { duration: 200 }},
-        {e: input, p: { backgroundColor: "#fff" }, o: { duration: 100 }}
+        { e: input, p: { backgroundColor: "#e2f2e2" }, o: { duration: 200 } },
+        { e: input, p: { backgroundColor: "#fff" }, o: { duration: 100 } }
       ]);
 
       this._updated = false;
@@ -129,7 +129,7 @@ class Tag extends Component {
 
   handleInputChange = (event, { newValue }) => {
     if (this.props.onTagUpdate) {
-      const updatedTag = Object.assign({}, {...this.props.tag}, {
+      const updatedTag = Object.assign({}, { ...this.props.tag }, {
         name: newValue
       });
       this.props.onTagUpdate(event, updatedTag);

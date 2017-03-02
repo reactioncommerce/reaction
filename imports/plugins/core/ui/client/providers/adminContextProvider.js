@@ -1,6 +1,5 @@
 import React, { Component, PropTypes, Children } from "react"; // eslint-disable-line
 import { composeWithTracker } from "/lib/api/compose";
-import { i18nextDep } from "/client/api";
 
 class AdminContextProvider extends Component {
   static childContextTypes = {

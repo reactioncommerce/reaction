@@ -1,5 +1,4 @@
 import { ReactionProduct } from "/lib/api";
-import { Catalog } from "/lib/api";
 
 /**
  * gridNotice helpers

@@ -40,6 +40,17 @@
         </ul>
       </div>
 
+      {{#if showAvalaraTaxSettings }}
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            <span data-i18n="accounts.taxSettings">Tax Exempt Settings</span>
+          </h3>
+        </div>
+        {{> taxSettingsPanel}}
+      </div>
+      {{/if}}
+
     </div>
   {{/if}}
 </template>
