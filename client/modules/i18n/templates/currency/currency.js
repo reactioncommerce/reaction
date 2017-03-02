@@ -12,7 +12,7 @@ Template.currencySelect.helpers({
           currency: 1
         }
       });
-      const locale = Reaction.Locale.get();
+      Reaction.Locale.get();
       if (Match.test(shop, Object) && shop.currencies) {
         for (const currencyName in shop.currencies) {
           if (shop.currencies[currencyName].enabled === true) {
@@ -48,19 +48,16 @@ Template.currencySelect.helpers({
           currency: 1
         }
       });
-      const profile = Meteor.user().profile;
       if (Match.test(shop, Object) && shop.currency) {
         const localStorageCurrency = localStorage.getItem("currency");
         if (localStorageCurrency) {
           return localStorageCurrency + " " + shop.currencies[localStorageCurrency].symbol;
-        } else {
-          const locale = Reaction.Locale.get();
-          if (locale && locale.currency && locale.currency.enabled) {
-            return locale.locale.currency + " " + locale.currency.symbol;
-          } else {
-            return shop.currency + " " + shop.currencies[shop.currency].symbol;
-          }
         }
+        const locale = Reaction.Locale.get();
+        if (locale && locale.currency && locale.currency.enabled) {
+          return locale.locale.currency + " " + locale.currency.symbol;
+        }
+        return shop.currency + " " + shop.currencies[shop.currency].symbol;
       }
     }
     return "USD $";

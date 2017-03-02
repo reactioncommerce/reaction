@@ -10,10 +10,16 @@ Reaction.registerPackage({
       enabled: false,
       apiLoginId: "",
       username: "",
-      password: ""
+      password: "",
+      mode: false,
+      commitDocuments: true,
+      performTaxCalculation: true,
+      enableLogging: false,
+      requestTimeout: 300,
+      logRetentionDuration: 30
     },
     addressValidation: {
-      enabled: false,
+      enabled: true,
       addressValidationMethod: "avalara/addressValidation"
     },
     taxCodes: {

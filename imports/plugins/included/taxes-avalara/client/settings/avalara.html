@@ -34,6 +34,32 @@
     </div>
     <div class="panel-body">
       {{>afQuickField name='settings.avalara.enableLogging' class='form-control'}}
+      {{> afQuickField name="settings.addressValidation.countryList" type="select-checkbox" options=countryOptions value=country }}
+    </div>
+    <div class="panel-body">
+      {{>afQuickField name='settings.avalara.enableLogging' class='form-control'}}
+    </div>
+    <div class="panel-body">
+      {{>afQuickField name='settings.avalara.logRetentionDuration' class='form-control'}}
+    </div>
+    <div class="panel-body">
+      {{>afQuickField name='settings.avalara.requestTimeout' class='form-control'}}
+    </div>
+    <div class="panel-body">
+      {{>afQuickField name='settings.avalara.commitDocuments' class='form-control'}}
+    </div>
+    <div class="panel-body">
+      <a href="https://admin-development.avalara.net">Administrators Panel</a>
+    </div>
+
+
+    <div class="panel-body">
+      <button type="button" class="btn btn-default pull-right" data-event-action="testCredentials" data-i18n="admin.dashboard.avalaraTestCredentials">
+        Test Credentials
+      </button>
+    </div>
+    <div class="panel-body">
+      {{> shopSettingsSubmitButton}}
     </div>
     <div class="panel-body">
       {{>afQuickField name='settings.avalara.requestTimeout' class='form-control'}}
@@ -54,4 +80,35 @@
       {{> shopSettingsSubmitButton}}
     </div>
   {{/autoForm}}
+
+  {{#if loggingEnabled}}
+    <div class="col-md-12">
+      {{> React logGrid }}
+    </div>
+    {{#if instance.state.get 'isEditing'}}
+      {{#if instance.state.get 'editingId'}}
+          <div>
+            {{#autoForm
+              collection=logCollection
+              schema=logSchema
+              id="log-view-form"
+              template="bootstrap3-inline"
+              doc=logEntry
+            }}
+
+              <div class="panel panel-default">
+                <div class="panel-body">
+                  <div class="form-group">
+                    {{>afQuickField name="date" class="form-control" disabled=true}}
+                    {{>afQuickField name="data" class="form-control" type="textarea" rows="15"}}
+                  </div>
+                </div>
+              </div>
+
+            {{/autoForm}}
+          </div>
+
+        {{/if}}
+      {{/if}}
+    {{/if}}
 </template>

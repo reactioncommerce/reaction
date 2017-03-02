@@ -1,10 +1,6 @@
 import React, { Children, Component, PropTypes } from "react";
-import TetherComponent from "react-tether";
-import classnames from "classnames";
-
 
 class Menu extends Component {
-
   handleChange = (event, value, menuItem) => {
     if (this.props.onChange) {
       this.props.onChange(event, value, menuItem);
@@ -38,6 +34,7 @@ class Menu extends Component {
 Menu.propTypes = {
   attachment: PropTypes.string,
   children: PropTypes.node,
+  onChange: PropTypes.func,
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.bool, PropTypes.number])
 };
 

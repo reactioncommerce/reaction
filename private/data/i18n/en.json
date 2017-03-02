@@ -51,7 +51,8 @@
       "accounts": {
         "addMember": "Add Member",
         "shopMembers": "Shop Members",
-        "guests": "Guests"
+        "guests": "Guests",
+        "taxSettings": "Tax Settings"
       },
       "app": {
         "add": "Add",

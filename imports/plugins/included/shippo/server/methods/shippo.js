@@ -187,10 +187,10 @@ export const methods = {
    * activated Carriers of the Shippo account.
    * This method is intended to be used mainly by Autoform.
    * @param {Object} modifier - The Autoform's modifier string
-   * @param {_id} string - The id of the Shippo package that gets updated
+   * @param {String} _id - The id of the Shippo package that gets updated
    * @return {Object} result - The object returned.
-   * @return {string("update"|"delete")} result.type - The type of updating happened.
-   * */
+   * @return {String} {string("update"|"delete")} result.type - The type of updating happened.
+   */
   "shippo/updateApiKey"(modifier, _id) {
     // Important server-side check for security and data integrity
     check(modifier, ShippoPackageConfig);
