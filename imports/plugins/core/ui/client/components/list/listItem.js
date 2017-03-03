@@ -12,7 +12,6 @@ class ListItem extends Component {
     label: PropTypes.string,
     onClick: PropTypes.func,
     onSwitchChange: PropTypes.func,
-    packageData: PropTypes.object,
     switchName: PropTypes.string,
     switchOn: PropTypes.bool,
     value: PropTypes.any
