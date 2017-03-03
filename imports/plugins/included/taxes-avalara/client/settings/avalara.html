@@ -45,7 +45,8 @@
     </div>
     {{#if instance.state.get 'isEditing'}}
       {{#if instance.state.get 'editingId'}}
-          <div>
+        <p>Log Detail</p>
+          <div class="panel-body">
             {{#autoForm
               collection=logCollection
               schema=logSchema
