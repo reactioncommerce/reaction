@@ -1,7 +1,7 @@
 import _ from "lodash";
 import { Template } from "meteor/templating";
 import { Accounts } from "/lib/collections";
-import { Accounts as AccountsSchema } from "/lib/collections/accounts";
+import { Accounts as AccountsSchema } from "/lib/collections/schemas/accounts";
 import { Reaction } from "/client/api";
 import { TaxEntityCodes } from "/client/collections";
 
@@ -9,16 +9,19 @@ Template.taxSettingsPanel.helpers({
   account() {
     if (Reaction.Subscriptions.Account.ready()) {
       return Accounts.findOne({
-        userId: Meteor.userId()
+        _id: this.member.userId
       });
     }
     return null;
+  },
+  makeUniqueId() {
+    return `tax-settings-form-${this.member.userId}`;
   },
   accountsSchema() {
     return AccountsSchema;
   },
   entityCodes() {
-    const codes = _.concat(TaxEntityCodes.find().map((entityCode) => {
+    return _.concat(TaxEntityCodes.find().map((entityCode) => {
       return _.assign({}, entityCode, {
         label: entityCode.name,
         value: entityCode.code
@@ -27,8 +30,6 @@ Template.taxSettingsPanel.helpers({
       label: "SET CUSTOM VALUE",
       value: "CUSTOM USER INPUT"
     }]);
-
-    return { codes, showForm: codes.length > 1 };
   }
 });
 
