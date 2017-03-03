@@ -77,11 +77,16 @@ Template.coreOrderShippingInvoice.helpers({
   DiscountList() {
     return DiscountList;
   },
+<<<<<<< HEAD
   InvoiceContainer() {
     return InvoiceContainer;
   },
   LineItemsContainer() {
     return LineItemsContainer;
+=======
+  Invoice() {
+    return Invoice;
+>>>>>>> Add presentational aspect for invoice
   },
   orderId() {
     const instance = Template.instance();
