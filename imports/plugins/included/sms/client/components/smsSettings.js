@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from "react";
-import { Button, Card, CardHeader, CardBody, CardGroup, FieldGroup, TextField } from "/imports/plugins/core/ui/client/components";
+import { Button, Card, CardHeader, CardBody, CardGroup, TextField, Select } from "/imports/plugins/core/ui/client/components";
 
 class SmsSettings extends Component {
   constructor(props) {
@@ -11,6 +11,7 @@ class SmsSettings extends Component {
     };
     this.handleStateChange = this.handleStateChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleSelect = this.handleSelect.bind(this);
   }
 
   handleStateChange(e) {
@@ -27,9 +28,32 @@ class SmsSettings extends Component {
     saveSettings(settings, () => this.setState({ isSaving: false }));
   }
 
+  handleSelect(e) {
+    const { settings } = this.state;
+    settings["smsProvider"] = e;
+    this.setState({ settings });
+  }
+
+  handleProductFieldSave = (productId, fieldName, value) => {
+    let updateValue = value;
+    // special case, slugify handles.
+    if (fieldName === "handle") {
+      updateValue = Reaction.getSlug(value);
+    }
+    Meteor.call("products/updateProductField", productId, fieldName, updateValue);
+  }
+
+
   render() {
     const settings = this.state.settings;
     const isSaving = this.state.isSaving;
+
+    const smsProviders = [{
+      label: "Twilio", value: "twilio"
+    }, {
+      label: "Nexmo", value: "nexmo"
+    }];
+
     return (
       <CardGroup>
         <Card
@@ -42,18 +66,17 @@ class SmsSettings extends Component {
           />
           <CardBody expandable={true}>
             <form onSubmit={this.handleSubmit}>
-              <FieldGroup
-                label="Provider"
-                componentClass="select"
-                i18n="sms.settings.provider"
+              <Select
+                clearable={false}
+                i18nKeyLabel="productDetailEdit.template"
+                i18nKeyPlaceholder="productDetailEdit.templateSelectPlaceholder"
+                label="Template"
                 name="smsProvider"
+                onChange={this.handleSelect}
+                options={smsProviders}
                 value={settings.smsProvider || ""}
-                onChange={this.handleStateChange}
-              >
-                  <option value="" data-i18n="sms.settings.selectProvider">Select an SMS provider...</option>
-                  <option value="twilio">Twilio</option>
-                  <option value="nexmo">Nexmo</option>
-              </FieldGroup>
+                placeholder="Select a template"
+              />
               <hr/>
               <TextField
                 label="Sms Phone Number"
