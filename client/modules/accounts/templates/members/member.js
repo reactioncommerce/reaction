@@ -36,6 +36,9 @@ Template.memberSettings.helpers({
       }
     }
   },
+  userId: function () {
+    return Meteor.userId();
+  },
   hasPermissionChecked: function (permission, userId) {
     if (userId && Roles.userIsInRole(userId, permission, this.shopId || Roles.userIsInRole(userId, permission,
         Roles.GLOBAL_GROUP))) {
