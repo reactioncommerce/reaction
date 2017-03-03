@@ -65,7 +65,7 @@ function compareAddress(address, validationAddress) {
     errors.push({ address1: "Address line one did not validate" });
   }
 
-  if (address.address2 && !validationAddress.address2) {
+  if (address.address2 && validationAddress.address2 && _.trim(_.upperCase(address.address2)) !== _.trim(_.upperCase(validationAddress.address2))) {
     errors.push({ address2: "Address line 2 did not validate" });
   }
 
