@@ -79,7 +79,7 @@ class SmsSettings extends Component {
               />
               <hr/>
               <TextField
-                label="Sms Phone Number"
+                label="SMS Phone Number"
                 type="text"
                 i18nKeyLabel="admin.settings.phoneNumber"
                 name="smsPhone"
