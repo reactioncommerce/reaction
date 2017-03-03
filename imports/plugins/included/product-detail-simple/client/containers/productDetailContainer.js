@@ -138,6 +138,7 @@ class ProductDetailContainer extends Component {
     Meteor.call("products/updateProductField", productId, fieldName, value, (error) => {
       if (error) {
         Alerts.toast(error.message, "error");
+        this.forceUpdate();
       }
     });
   }
