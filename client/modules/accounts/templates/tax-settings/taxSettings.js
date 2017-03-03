@@ -1,6 +1,7 @@
 import _ from "lodash";
 import { Template } from "meteor/templating";
 import { Accounts } from "/lib/collections";
+import { Accounts as AccountsSchema } from "/lib/collections/accounts";
 import { Reaction } from "/client/api";
 import { TaxEntityCodes } from "/client/collections";
 
@@ -12,6 +13,9 @@ Template.taxSettingsPanel.helpers({
       });
     }
     return null;
+  },
+  accountsSchema() {
+    return AccountsSchema;
   },
   entityCodes() {
     const codes = _.concat(TaxEntityCodes.find().map((entityCode) => {

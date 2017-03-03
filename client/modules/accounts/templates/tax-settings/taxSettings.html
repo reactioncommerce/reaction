@@ -3,7 +3,6 @@
       <div class="col-md-6 col-md-offset-1 panel panel-default panel-tax-settings">
         <h4 data-i18n="accounts.taxSettings">Tax Exempt Settings</h4>
         <div>
-          {{ member.userId }}
           {{#autoForm collection=Collections.Accounts schema=accountsSchema doc=member type="update" id="tax-settings-form"}}
             {{>afQuickField name='taxSettings.exemptionNo' class='form-control'}}
             {{#if entityCodes.showForm}}
