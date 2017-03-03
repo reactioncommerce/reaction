@@ -157,25 +157,6 @@
           "orderShipped": "Your order has been shipped."
         }
       },
-      "sms": {
-        "headers": {
-          "settings": "SMS Provider"
-        },
-        "settings": {
-          "provider": "Provider",
-          "selectProvider": "Select an SMS provider...",
-          "smsPhone": "SMS Phone Number",
-          "apiKey": "API Key",
-          "apiToken": "API Token/Secret"
-        },
-        "alerts": {
-          "noApiKey": "Please add an API Key",
-          "noApiToken": "Please add an API TOKEN/Secret",
-          "noSmsProvider": "Please choose an SMS provider",
-          "noSmsPhone": "Please add the phone number given to you by your SMS provider",
-          "saveSuccess": "SMS Settings saved"
-        }
-      },
       "header": {
         "tagsAdd": "Add tag",
         "search": "Search products..."

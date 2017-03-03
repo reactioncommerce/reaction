@@ -61,27 +61,27 @@ class SmsSettings extends Component {
         >
           <CardHeader
             actAsExpander={true}
-            i18nKeyTitle="sms.headers.settings"
+            i18nKeyTitle="admin.settings.smsProvider"
             title="SMS Provider"
           />
           <CardBody expandable={true}>
             <form onSubmit={this.handleSubmit}>
               <Select
                 clearable={false}
-                i18nKeyLabel="productDetailEdit.template"
-                i18nKeyPlaceholder="productDetailEdit.templateSelectPlaceholder"
-                label="Template"
+                label="Provider Name"
+                i18nKeyLabel="admin.settings.providerName"
+                placeholder="Select an SMS provider"
+                i18nKeyPlaceholder="admin.settings.selectProvider"
                 name="smsProvider"
                 onChange={this.handleSelect}
                 options={smsProviders}
                 value={settings.smsProvider || ""}
-                placeholder="Select a template"
               />
               <hr/>
               <TextField
                 label="Sms Phone Number"
                 type="text"
-                i18nKeyLabel="sms.settings.smsPhone"
+                i18nKeyLabel="admin.settings.phoneNumber"
                 name="smsPhone"
                 value={settings.smsPhone || ""}
                 onChange={this.handleStateChange}
@@ -89,7 +89,7 @@ class SmsSettings extends Component {
               <TextField
                 label="API Key"
                 type="password"
-                i18nKeyLabel="sms.settings.apiKey"
+                i18nKeyLabel="admin.settings.apiKey"
                 name="apiKey"
                 value={settings.apiKey || ""}
                 onChange={this.handleStateChange}
@@ -97,7 +97,7 @@ class SmsSettings extends Component {
               <TextField
                 label="API Token/Secret"
                 type="password"
-                i18nKeyLabel="sms.settings.apiToken"
+                i18nKeyLabel="admin.settings.apiToken"
                 name="apiToken"
                 value={settings.apiToken || ""}
                 onChange={this.handleStateChange}
