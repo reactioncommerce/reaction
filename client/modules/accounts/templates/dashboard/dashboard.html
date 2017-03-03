@@ -12,11 +12,14 @@
         </div>
 
         <ul class="list-group">
-          {{#each members}}
-            {{#if isShopMember}}
+          {{#each accountMember in members}}
+            {{#if isShopMember accountMember }}
               <li class="list-group-item flex">
-                {{> member}}
+                {{> member accountMember }}
               </li>
+              {{#if showAvalaraTaxSettings }}
+                {{> taxSettingsPanel member=accountMember}}
+              {{/if}}
             {{/if}}
           {{/each}}
         </ul>
@@ -30,27 +33,18 @@
         </div>
 
         <ul class="list-group">
-          {{#each members}}
-            {{#if isShopGuest}}
+          {{#each guestMember in members}}
+            {{#if isShopGuest guestMember}}
               <li class="list-group-item flex">
-                {{> member}}
+                {{> member guestMember}}
               </li>
+              {{#if showAvalaraTaxSettings }}
+                {{> taxSettingsPanel member=guestMember }}
+              {{/if}}
             {{/if}}
           {{/each}}
         </ul>
       </div>
-
-      {{#if showAvalaraTaxSettings }}
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <h3 class="panel-title">
-            <span data-i18n="accounts.taxSettings">Tax Exempt Settings</span>
-          </h3>
-        </div>
-        {{> taxSettingsPanel}}
-      </div>
-      {{/if}}
-
     </div>
   {{/if}}
 </template>

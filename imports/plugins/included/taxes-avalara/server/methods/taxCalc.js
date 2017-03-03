@@ -157,7 +157,7 @@ function avaPost(requestUrl, options) {
 taxCalc.getEntityCodes = function () {
   const baseUrl = getUrl();
   const requestUrl = `${baseUrl}definitions/entityusecodes`;
-  const result = avaGet(requestUrl);
+  const result = avaGet(requestUrl, { timeout: 5000 });
   return _.get(result, "data.value", []);
 };
 

@@ -14,17 +14,17 @@ Template.taxSettingsPanel.helpers({
     return null;
   },
   entityCodes() {
-    return _.concat(TaxEntityCodes.find().map((entityCode) => {
+    const codes = _.concat(TaxEntityCodes.find().map((entityCode) => {
       return _.assign({}, entityCode, {
         label: entityCode.name,
         value: entityCode.code
       });
-    }), [
-      {
-        label: "SET CUSTOM VALUE",
-        value: "CUSTOM USER INPUT"
-      }
-    ]);
+    }), [{
+      label: "SET CUSTOM VALUE",
+      value: "CUSTOM USER INPUT"
+    }]);
+
+    return { codes, showForm: codes.length > 1 };
   }
 });
 
@@ -43,7 +43,7 @@ Template.taxSettingsPanel.onCreated(function () {
   this.autorun(() => {
     this.subscribe("Account");
   });
-
+  // Todo: Fix: currently called for each customer. To be called once
   Meteor.call("avalara/getEntityCodes", (error, entityCodes) => {
     _.each(entityCodes, (entityCode) => {
       TaxEntityCodes.insert(entityCode);
