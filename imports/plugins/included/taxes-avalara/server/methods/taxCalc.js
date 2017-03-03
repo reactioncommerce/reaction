@@ -55,10 +55,11 @@ function getAuthData(packageData = taxCalc.getPackageData()) {
 
 /**
  * @summary Get exempt tax settings to pass to REST API
+ * @param {String} userId id of user to find settings
  * @returns {Object} containing exemptCode and customerUsageType
  */
-function getTaxSettings() {
-  return _.get(Accounts.findOne(), "taxSettings");
+function getTaxSettings(userId) {
+  return _.get(Accounts.findOne({ _id: userId }), "taxSettings");
 }
 
 /**
@@ -361,7 +362,7 @@ taxCalc.estimateCart = function (cart, callback) {
   check(callback, Function);
 
   if (cart.items && cart.shipping && cart.shipping[0].address) {
-    const salesOrder = _.assign({}, cartToSalesOrder(cart), getTaxSettings());
+    const salesOrder = _.assign({}, cartToSalesOrder(cart), getTaxSettings(cart.userId));
     const baseUrl = getUrl();
     const requestUrl = `${baseUrl}/transactions/create`;
     const result = avaPost(requestUrl, { data: salesOrder });
@@ -458,7 +459,7 @@ taxCalc.recordOrder = function (order, callback) {
   check(callback, Function);
   // unlike the other functions, we expect this to always be called asynchronously
   if (order && order.shipping && order.shipping[0].address) {
-    const salesOrder = _.assign({}, orderToSalesInvoice(order), getTaxSettings());
+    const salesOrder = _.assign({}, orderToSalesInvoice(order), getTaxSettings(order.userId));
     const baseUrl = getUrl();
     const requestUrl = `${baseUrl}/transactions/create`;
     try {
