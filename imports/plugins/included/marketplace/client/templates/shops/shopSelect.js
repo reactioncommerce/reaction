@@ -5,13 +5,15 @@ import { Reaction } from "/lib/api";
 import { SellerShops } from "/lib/collections";
 
 Template.shopSelect.onCreated(function () {
-  this.currentShopId = new ReactiveVar(Reaction.Router.current().params.shopId);
+  const shopId = Reaction.Router.current().params.shopId || 0;
+  this.currentShopId = new ReactiveVar(shopId);
+
   this.autorun(() => {
-    Meteor.subscribe("SellerShops");
+    this.subscribe("SellerShops");
 
     // watch path change to reset toggle
     Reaction.Router.watchPathChange();
-    if (Reaction.Router.current().route.name !== "shop") {
+    if (Reaction.Router.getRouteName() !== "shop") {
       // set toggle to default
       Template.instance().currentShopId.set(0);
     }
@@ -65,7 +67,6 @@ Template.shopSelect.helpers({
   },
 
   isOwnerShop() {
-    console.log("isOwnerShop", Template.instance().currentShopId.get());
     return (Reaction.getSellerShopId() === Template.instance().currentShopId.get());
   }
 });
