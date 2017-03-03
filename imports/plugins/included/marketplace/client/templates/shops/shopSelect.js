@@ -5,18 +5,18 @@ import { Reaction } from "/lib/api";
 import { SellerShops } from "/lib/collections";
 
 Template.shopSelect.onCreated(function () {
-  const shopId = Reaction.Router.current().params.shopId || 0;
-  this.currentShopId = new ReactiveVar(shopId);
+  //const shopId = Reaction.Router.current().params.shopId || 0;
+  //this.currentShopId = new ReactiveVar(shopId);
 
   this.autorun(() => {
     this.subscribe("SellerShops");
 
     // watch path change to reset toggle
     Reaction.Router.watchPathChange();
-    if (Reaction.Router.getRouteName() !== "shop") {
+    /*if (Reaction.Router.getRouteName() !== "shop") {
       // set toggle to default
       Template.instance().currentShopId.set(0);
-    }
+    }*/
   });
 });
 
@@ -24,7 +24,7 @@ Template.shopSelect.helpers({
   sellerShops() {
     const instance = Template.instance();
     if (instance.subscriptionsReady()) {
-      const sellerShopId = instance.currentShopId.get();
+      const currentShopId = Reaction.Router.getParam("shopId") || 0;
       const selector = {
         // ignore blank site
         _id: {
@@ -34,22 +34,23 @@ Template.shopSelect.helpers({
 
       // active class
       const shops = SellerShops.find(selector).fetch().map((shop) => {
-        if (shop._id === sellerShopId) {
+        if (currentShopId && shop._id === currentShopId) {
           shop.class = "active";
         }
         return shop;
       });
 
       return shops;
+
     }
   },
 
-  currentShop() {
+  currentShopName() {
     const instance = Template.instance();
     if (instance.subscriptionsReady()) {
-      const _id = instance.currentShopId.get();
+      const _id = Reaction.Router.getParam("shopId") || 0;
 
-      if (_id !== Reaction.getShopId()) {
+      if (_id && _id !== Reaction.getShopId()) {
         const shop = SellerShops.findOne({
           _id
         });
@@ -62,12 +63,13 @@ Template.shopSelect.helpers({
   },
 
   isChildShop() {
-    const currentShopId = Template.instance().currentShopId.get();
+    const currentShopId = Reaction.Router.getParam("shopId") || 0; //Template.instance().currentShopId.get();
     return (currentShopId && Reaction.getSellerShopId() !== currentShopId);
   },
 
   isOwnerShop() {
-    return (Reaction.getSellerShopId() === Template.instance().currentShopId.get());
+    const currentShopId = Reaction.Router.getParam("shopId") || 0;
+    return (currentShopId === Reaction.getSellerShopId());
   }
 });
 
@@ -77,6 +79,5 @@ Template.shopSelect.events({
     Reaction.Router.go("shop", {
       shopId: this._id
     });
-    Template.instance().currentShopId.set(this._id);
   }
 });
