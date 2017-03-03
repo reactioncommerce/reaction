@@ -283,7 +283,7 @@ function composer(props, onData) {
 
       onData(null, {
         variants: topVariants,
-        layout: "productDetailSimple",
+        layout: product.template || "productDetailSimple",
         product: productRevision || product,
         priceRange,
         tags,
