@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from "react";
-import { Button, FieldGroup, TextField } from "/imports/plugins/core/ui/client/components";
+import { Button, Select, TextField } from "/imports/plugins/core/ui/client/components";
 
 class EmailSettings extends Component {
   constructor(props) {
@@ -12,6 +12,7 @@ class EmailSettings extends Component {
 
     this.handleStateChange = this.handleStateChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleSelect = this.handleSelect.bind(this);
   }
 
   handleStateChange(e) {
@@ -28,26 +29,35 @@ class EmailSettings extends Component {
     saveSettings(settings, () => this.setState({ isSaving: false }));
   }
 
+  handleSelect(e) {
+    const { settings } = this.state;
+    settings["service"] = e;
+    this.setState({ settings });
+  }
+
   render() {
     const { providers } = this.props;
     const { settings, isSaving } = this.state;
 
+    const emailProviders = providers.map((name) => (
+      { label: name, value: name }
+    ));
+
+    emailProviders.unshift({ label: "Custom", value: "custom" });
 
     return (
       <form onSubmit={this.handleSubmit}>
-        <FieldGroup
+        <Select
+          clearable={false}
           label="Service"
-          componentClass="select"
+          i18nKeyLabel="admin.settings.providerName"
+          placeholder="Select a Service"
+          i18nKeyPlaceholder="mail.settings.selectService"
           name="service"
-          value={settings.service}
-          onChange={this.handleStateChange}
-        >
-          <option value="" data-i18n="mail.settings.selectService">Select a Service...</option>
-          <option value="custom" data-i18n="mail.settings.custom">Custom</option>
-          {providers.map((name, i) => (
-            <option key={i} value={name}>{name}</option>
-          ))}
-        </FieldGroup>
+          onChange={this.handleSelect}
+          options={emailProviders}
+          value={settings.service || ""}
+        />
         {settings.service === "custom" &&
           <div>
             <TextField
