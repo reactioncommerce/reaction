@@ -45,9 +45,12 @@ Template.taxSettingsPanel.onCreated(function () {
   });
   // Todo: Fix: currently called for each customer. To be called once
   Meteor.call("avalara/getEntityCodes", (error, entityCodes) => {
-    _.each(entityCodes, (entityCode) => {
-      TaxEntityCodes.insert(entityCode);
-    });
+    const currentCodes = TaxEntityCodes.find().fetch();
+    if (!currentCodes.length) {
+      _.each(entityCodes, (entityCode) => {
+        TaxEntityCodes.insert(entityCode);
+      });
+    }
   });
 });
 
