@@ -9,8 +9,6 @@ Template.shopSelect.onCreated(function () {
   //this.currentShopId = new ReactiveVar(shopId);
 
   this.autorun(() => {
-    this.subscribe("SellerShops");
-
     // watch path change to reset toggle
     Reaction.Router.watchPathChange();
     /*if (Reaction.Router.getRouteName() !== "shop") {
@@ -22,8 +20,6 @@ Template.shopSelect.onCreated(function () {
 
 Template.shopSelect.helpers({
   sellerShops() {
-    const instance = Template.instance();
-    if (instance.subscriptionsReady()) {
       const currentShopId = Reaction.Router.getParam("shopId") || 0;
       const selector = {
         // ignore blank site
@@ -42,12 +38,11 @@ Template.shopSelect.helpers({
 
       return shops;
 
-    }
+
   },
 
   currentShopName() {
-    const instance = Template.instance();
-    if (instance.subscriptionsReady()) {
+
       const _id = Reaction.Router.getParam("shopId") || 0;
 
       if (_id && _id !== Reaction.getShopId()) {
@@ -59,7 +54,7 @@ Template.shopSelect.helpers({
           return shop.name;
         }
       }
-    }
+
   },
 
   isChildShop() {

@@ -4,12 +4,14 @@ import { Template } from "meteor/templating";
 import { Reaction } from "/lib/api";
 import { i18next } from "/client/api";
 import { SellerShops, Media } from "/lib/collections";
+/*
 
 Template.sellerShopSettings.onCreated(function () {
   this.autorun(() => {
     Meteor.subscribe("SellerShops");
   });
 });
+*/
 
 Template.sellerShopSettings.helpers({
   SellerShops() {
@@ -17,52 +19,49 @@ Template.sellerShopSettings.helpers({
   },
 
   brandImageSelectProps() {
-    const instance = Template.instance();
-    if (instance.subscriptionsReady()) {
-      const sellerShop = Reaction.getSellerShop();
+    const sellerShop = Reaction.getSellerShop();
 
-      if (!sellerShop) {
-        return;
-      }
-
-      const media = Media.find({
-        "metadata.type": "brandAsset"
-      });
-
-      let selectedMediaId;
-      if (_.isArray(sellerShop.brandAssets)) {
-        selectedMediaId = sellerShop.brandAssets[0].mediaId;
-      }
-
-      return {
-        type: "radio",
-        options: media,
-        key: "_id",
-        optionTemplate: "shopBrandImageOption",
-        selected: selectedMediaId,
-        classNames: {
-          itemList: { half: true },
-          input: { hidden: true }
-        },
-        onSelect(value) {
-          const asset = {
-            mediaId: value,
-            type: "navbarBrandImage"
-          };
-
-          Meteor.call("shop/updateBrandAssets", asset, (error, result) => {
-            if (error) {
-              // Display Error
-              return Alerts.toast(i18next.t("shopSettings.shopBrandAssetsFailed"), "error");
-            }
-
-            if (result === 1) {
-              Alerts.toast(i18next.t("shopSettings.shopBrandAssetsSaved"), "success");
-            }
-          });
-        }
-      };
+    if (!sellerShop) {
+      return;
     }
+
+    const media = Media.find({
+      "metadata.type": "brandAsset"
+    });
+
+    let selectedMediaId;
+    if (_.isArray(sellerShop.brandAssets)) {
+      selectedMediaId = sellerShop.brandAssets[0].mediaId;
+    }
+
+    return {
+      type: "radio",
+      options: media,
+      key: "_id",
+      optionTemplate: "shopBrandImageOption",
+      selected: selectedMediaId,
+      classNames: {
+        itemList: { half: true },
+        input: { hidden: true }
+      },
+      onSelect(value) {
+        const asset = {
+          mediaId: value,
+          type: "navbarBrandImage"
+        };
+
+        Meteor.call("shop/updateBrandAssets", asset, (error, result) => {
+          if (error) {
+            // Display Error
+            return Alerts.toast(i18next.t("shopSettings.shopBrandAssetsFailed"), "error");
+          }
+
+          if (result === 1) {
+            Alerts.toast(i18next.t("shopSettings.shopBrandAssetsSaved"), "success");
+          }
+        });
+      }
+    };
   },
 
   handleFileUpload() {
@@ -83,47 +82,39 @@ Template.sellerShopSettings.helpers({
   },
 
   currencyOptions() {
-    const instance = Template.instance();
+    const sellerShop = Reaction.getSellerShop();
 
-    if (instance.subscriptionsReady()) {
-      const sellerShop = Reaction.getSellerShop();
-
-      if (!sellerShop) {
-        return;
-      }
-
-      const currencies = [];
-      for (const currency in sellerShop.currencies) {
-        if ({}.hasOwnProperty.call(sellerShop.currencies, currency)) {
-          const structure = sellerShop.currencies[currency];
-          const option = {
-            // TODO global helper needed from i18nSettings.currencyOptions
-            label: currency + "  |  " + structure.symbol,
-            value: currency
-          };
-
-          currencies.push(option);
-        }
-      }
-
-      return currencies;
+    if (!sellerShop) {
+      return;
     }
+
+    const currencies = [];
+    for (const currency in sellerShop.currencies) {
+      if ({}.hasOwnProperty.call(sellerShop.currencies, currency)) {
+        const structure = sellerShop.currencies[currency];
+        const option = {
+          // TODO global helper needed from i18nSettings.currencyOptions
+          label: currency + "  |  " + structure.symbol,
+          value: currency
+        };
+
+        currencies.push(option);
+      }
+    }
+
+    return currencies;
   },
 
   selectedCurrency() {
-    const instance = Template.instance();
+    const sellerShop = Reaction.getSellerShop();
 
-    if (instance.subscriptionsReady()) {
-      const sellerShop = Reaction.getSellerShop();
+    if (!sellerShop) {
+      return;
+    }
 
-      if (!sellerShop) {
-        return;
-      }
-
-      for (const currency in sellerShop.currencies) {
-        if (currency === sellerShop.currency) {
-          return sellerShop.currencies[currency];
-        }
+    for (const currency in sellerShop.currencies) {
+      if (currency === sellerShop.currency) {
+        return sellerShop.currencies[currency];
       }
     }
   },
