@@ -11,7 +11,8 @@ Reaction.registerPackage({
     "api_key": "",
     "reaction-stripe-connect": {
       enabled: false
-    }
+    },
+    "redirect_stripe_connect": "stripe-connect-redirect"
   },
   registry: [
     // Settings panel
@@ -27,6 +28,12 @@ Reaction.registerPackage({
       template: "stripePaymentForm",
       provides: "paymentMethod",
       icon: "fa fa-cc-stripe"
+    },
+
+    // Redirect for Stripe Connect Sign-In
+    {
+      template: "stripeConnectRedirect",
+      route: "/dashboard/connect",  //not sure about this route
     }
   ]
 });
