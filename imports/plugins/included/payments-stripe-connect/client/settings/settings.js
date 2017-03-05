@@ -46,11 +46,11 @@ AutoForm.hooks({
  Template.stripeConnectRedirect.onCreated( function() {
    //grabs values stripe passes back in the url as the params
    this.autorun(() => {
-     FlowRouter.route("/dashboard/connect", {
+     FlowRouter.route("https://connect.stripe.com/oauth/authorize", {
        name: "StripeConnect.url",
        action(params, queryParams) {
          console.log("Gathering Stripe Connect URL parameters.");
-         
+
          Meteor.call("stripeConnect/saveSellerParams", Reaction.getShopId(), params, queryParams);
        }
      });

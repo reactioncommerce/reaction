@@ -5,4 +5,4 @@ import * as Schemas from "/lib/collections/schemas";
  */
 export const SellerShops = new Mongo.Collection("SellerShops");
 
-SellerShops.attachSchema(Schemas.SellerShop);
+SellerShops.attachSchema(Schemas.Shop);

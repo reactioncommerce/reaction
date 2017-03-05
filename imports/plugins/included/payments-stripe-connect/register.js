@@ -33,7 +33,7 @@ Reaction.registerPackage({
     // Redirect for Stripe Connect Sign-In
     {
       template: "stripeConnectRedirect",
-      route: "/dashboard/connect",  //not sure about this route
+      route: "https://connect.stripe.com/oauth/authorize"
     }
   ]
 });

@@ -1,7 +1,6 @@
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { Logger } from "/server/api";
-import { SellerShops } from "/imports/plugins/included/marketplace/lib/collections";
 
 Meteor.methods({
   /**
