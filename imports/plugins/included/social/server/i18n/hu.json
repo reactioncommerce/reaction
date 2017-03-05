@@ -10,7 +10,16 @@
           "socialDescription": "Szociális csatorna konfigurációja"
         },
         "settings": {
-          "socialSettingsLabel": "szociális beállítások"
+          "facebook": "Facebook",
+          "twitter": "Twitter",
+          "pinterest": "pinterest",
+          "googleplus": "Google+",
+          "appId": "App Id",
+          "username": "felhasználó",
+          "appSecret": "App Secret",
+          "profilePage": "Profil oldal",
+          "socialSettingsLabel": "szociális beállítások",
+          "socialSettingsSaved": "Szociális beállítások mentve"
         }
       }
     }

@@ -10,7 +10,16 @@
           "socialDescription": "configuração do Canal social"
         },
         "settings": {
-          "socialSettingsLabel": "Configurações sociais"
+          "facebook": "Facebook",
+          "twitter": "Twitter",
+          "pinterest": "Pinterest",
+          "googleplus": "Google+",
+          "appId": "app Id",
+          "username": "Nome de utilizador",
+          "appSecret": "app Segredo",
+          "profilePage": "Página de perfil",
+          "socialSettingsLabel": "Configurações sociais",
+          "socialSettingsSaved": "ambientes sociais salvo"
         }
       }
     }
