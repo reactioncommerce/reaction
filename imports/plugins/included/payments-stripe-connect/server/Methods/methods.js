@@ -28,15 +28,15 @@ Meteor.methods({
         let stripe_user_id = url.split(stripe_user_id_index, url.indexOf('&', stripe_user_id_index));
         let refresh_token = url.split(refresh_token_index, url.indexOf('&', refresh_token_index));
         let access_token = url.split(access_token_index, url.indexOf('&', access_token_index));
-        db.SellerShops.save({ _
-                          "id" : shopId,
-                          "token_type" : token_type,
-                          "stripe_publishable_key" : stripe_publishable_key,
-                          "scope" : scope,
-                          "livemode" : livemode,
-                          "stripe_user_id" : stripe_user_id,
-                          "refresh_token" : refresh_token,
-                          "access_token" : access_token
+        db.SellerShops.save({
+            "id" : shopId,
+            "token_type" : token_type,
+            "stripe_publishable_key" : stripe_publishable_key,
+            "scope" : scope,
+            "livemode" : livemode,
+            "stripe_user_id" : stripe_user_id,
+            "refresh_token" : refresh_token,
+            "access_token" : access_token
         });
         result = {
           saved: true
