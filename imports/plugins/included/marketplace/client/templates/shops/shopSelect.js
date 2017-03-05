@@ -5,16 +5,9 @@ import { Reaction } from "/lib/api";
 import { SellerShops } from "/lib/collections";
 
 Template.shopSelect.onCreated(function () {
-  //const shopId = Reaction.Router.current().params.shopId || 0;
-  //this.currentShopId = new ReactiveVar(shopId);
-
   this.autorun(() => {
     // watch path change to reset toggle
     Reaction.Router.watchPathChange();
-    /*if (Reaction.Router.getRouteName() !== "shop") {
-      // set toggle to default
-      Template.instance().currentShopId.set(0);
-    }*/
   });
 });
 
@@ -58,7 +51,7 @@ Template.shopSelect.helpers({
   },
 
   isChildShop() {
-    const currentShopId = Reaction.Router.getParam("shopId") || 0; //Template.instance().currentShopId.get();
+    const currentShopId = Reaction.Router.getParam("shopId") || 0;
     return (currentShopId && Reaction.getSellerShopId() !== currentShopId);
   },
 

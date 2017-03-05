@@ -43,7 +43,7 @@ Template.gridControls.helpers({
 
     return (
         Reaction.hasPermission("createProduct") &&
-        // does product belongs to this shop seller
+        // does product belong to this shop seller
         shopId === instance.data.product.shopId
     );
   },
