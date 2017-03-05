@@ -92,7 +92,13 @@
         "notFoundError": "Stran ni najdena.",
         "productNotFound": "Ta izdelek ni bil najden.",
         "loadMoreProducts": "Naloži več izdelkov",
-        "noProductsFound": "Ni izdelkov."
+        "noProductsFound": "Ni izdelkov.",
+        "private": "zasebno",
+        "public": "javni",
+        "shortcut": {
+          "addProductLabel": "Dodaj izdelek",
+          "accountsLabel": "računi"
+        }
       },
       "searchSettings": {
         "productSearchSettings": {
@@ -428,6 +434,8 @@
         "printLabels": "Tiskanje Oznake",
         "printShippingLabel": "Dostava",
         "printCustomsLabel": "carinska",
+        "generateTracking": "Ustvari etikete in sledenje",
+        "labelError": "Napaka pri ustvarjanju ladijski {{err}} label",
         "carrier": "Carrier",
         "addTracking": "Dodaj sledenje",
         "itemsHaveBeenShipped": "Elementov, ki so bili poslani",
