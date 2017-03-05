@@ -12,6 +12,12 @@ Template.sellerShopSettings.onCreated(function() {
   });
 });
 
+Template.sellerShopSettings.onCreated(function() {
+  this.autorun(() => {
+    this.subscribe("SellerShops");
+  });
+});
+
 Template.sellerShopSettings.helpers({
   SellerShops() {
     return SellerShops;

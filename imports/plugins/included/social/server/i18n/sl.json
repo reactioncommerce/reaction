@@ -10,7 +10,16 @@
           "socialDescription": "Konfiguracija socialni kanal"
         },
         "settings": {
-          "socialSettingsLabel": "socialni Nastavitve"
+          "facebook": "Facebook",
+          "twitter": "Twitter",
+          "pinterest": "Pinterest",
+          "googleplus": "Google+",
+          "appId": "ID app",
+          "username": "Uporabniško ime",
+          "appSecret": "App Secret",
+          "profilePage": "profil Page",
+          "socialSettingsLabel": "socialni Nastavitve",
+          "socialSettingsSaved": "Socialni shranijo"
         }
       }
     }

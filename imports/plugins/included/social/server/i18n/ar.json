@@ -10,7 +10,16 @@
           "socialDescription": "التكوين قناة الاجتماعية"
         },
         "settings": {
-          "socialSettingsLabel": "الوضع الاجتماعي"
+          "facebook": "فيسبوك",
+          "twitter": "تويتر",
+          "pinterest": "بينتيريست",
+          "googleplus": "في + Google",
+          "appId": "التطبيق رقم",
+          "username": "اسم المستخدم",
+          "appSecret": "التطبيق السرية",
+          "profilePage": "الصفحة الشخصية",
+          "socialSettingsLabel": "الوضع الاجتماعي",
+          "socialSettingsSaved": "الأوساط الاجتماعية حفظ"
         }
       }
     }

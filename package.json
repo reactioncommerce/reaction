@@ -1,7 +1,7 @@
 {
   "name": "reaction",
   "description": "Reaction is a modern reactive, real-time event driven ecommerce platform.",
-  "version": "0.19.0",
+  "version": "0.19.1",
   "main": "main.js",
   "directories": {
     "test": "tests"
@@ -43,7 +43,7 @@
     "handlebars": "^4.0.6",
     "i18next": "^7.0.1",
     "i18next-browser-languagedetector": "^1.0.1",
-    "i18next-localstorage-cache": "^0.3.0",
+    "i18next-localstorage-cache": "^1.1.0",
     "i18next-sprintf-postprocessor": "^0.2.2",
     "immutable": "^3.8.1",
     "jquery": "^3.1.1",
