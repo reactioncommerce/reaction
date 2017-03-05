@@ -27,7 +27,7 @@ Meteor.methods({
         let refresh_token = url.split(refresh_token_index, url.indexOf('&', refresh_token_index));
         let access_token = url.split(access_token_index, url.indexOf('&', access_token_index));
         //TODO: Add new schema to shop collection or expand current one for these fields?
-        db.Shops.save ( { _id: shopId,
+        db.SellerShops.save ( { _id: shopId,
                           token_type: token_type,
                           stripe_publishable_key: stripe_publishable_key,
                           scope: scope,
