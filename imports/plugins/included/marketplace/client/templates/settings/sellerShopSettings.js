@@ -4,14 +4,6 @@ import { Template } from "meteor/templating";
 import { Reaction } from "/lib/api";
 import { i18next } from "/client/api";
 import { SellerShops, Media } from "/lib/collections";
-/*
-
-Template.sellerShopSettings.onCreated(function () {
-  this.autorun(() => {
-    Meteor.subscribe("SellerShops");
-  });
-});
-*/
 
 Template.sellerShopSettings.helpers({
   SellerShops() {
