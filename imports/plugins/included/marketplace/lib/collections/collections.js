@@ -1,4 +1,4 @@
-import * as Schemas from "/lib/collections/schemas";
+import * as Schemas from "./schemas";
 
 /**
  * SellerShops Collection
