@@ -65,5 +65,9 @@ Template.accountProfile.helpers({
       return "addressBookGrid";
     }
     return "addressBookAdd";
+  },
+
+  isMarketplaceGuest: function () {
+    return (Reaction.hasMarketplaceAccess("guest") && !Reaction.hasAdminAccess());
   }
 });
