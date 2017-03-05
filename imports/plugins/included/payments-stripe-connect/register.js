@@ -12,7 +12,7 @@ Reaction.registerPackage({
     "reaction-stripe-connect": {
       enabled: false
     },
-    "redirect_stripe_connect": "stripe-connect-redirect"
+    "stripe-redirect-url": "stripe-connect-redirect"
   },
   registry: [
     // Settings panel
@@ -33,7 +33,7 @@ Reaction.registerPackage({
     // Redirect for Stripe Connect Sign-In
     {
       template: "stripeConnectRedirect",
-      route: "/dashboard/connect",  //not sure about this route
+      route: "/stripe-connect-redirect"
     }
   ]
 });
