@@ -105,6 +105,11 @@ Template.sellerShopSettings.helpers({
 
   uomOptions() {
     const sellerShop = Reaction.getSellerShop();
+
+    if (!sellerShop) {
+      return;
+    }
+
     const unitsOfMeasure = sellerShop.unitsOfMeasure;
     const uomOptions = [];
     for (const measure of unitsOfMeasure) {
