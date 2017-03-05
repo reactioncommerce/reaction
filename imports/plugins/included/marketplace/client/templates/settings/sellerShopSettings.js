@@ -6,6 +6,12 @@ import { SellerShops, Media } from "/lib/collections";
 import { i18next } from "/client/api";
 import { Countries } from "/client/collections";
 
+Template.sellerShopSettings.onCreated(function() {
+  this.autorun(() => {
+    this.subscribe("SellerShops");
+  });
+});
+
 Template.sellerShopSettings.helpers({
   SellerShops() {
     return SellerShops;
