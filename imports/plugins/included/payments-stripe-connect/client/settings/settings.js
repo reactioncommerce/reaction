@@ -43,11 +43,11 @@ AutoForm.hooks({
   }
 });
 
-Template.stripeConnectRedirect.onCreated( function() {
-  //grabs values stripe passes back in the url as the params
-  this.autorun(() => {
-    FlowRouter.watchPathChange();
-    let url = FlowRouter.current();
-    Meteor.call('stripeConnect/saveSellerParams', Reaction.getShopId(),  url);
-  });
-});
+ Template.stripeConnectRedirect.onCreated( function() {
+   //grabs values stripe passes back in the url as the params
+   this.autorun(() => {
+     FlowRouter.watchPathChange();
+     let url = FlowRouter.current();
+     Meteor.call("stripeConnect/saveSellerParams", Reaction.getShopId(), url);
+   });
+ });

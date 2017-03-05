@@ -1,6 +1,7 @@
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { Logger } from "/server/api";
+import { SellerShops } from "/imports/plugins/included/marketplace/lib/collections";
 
 Meteor.methods({
   /**
@@ -8,8 +9,9 @@ Meteor.methods({
    * save params into sellerShop collection
    **/
     "stripeConnect/saveSellerParams": function(shopId, url) {
-      Logger.warn(url);
+      check(shopId, String);
       check(url, String);
+      Logger.warn(url);
       let result;
       try {
         let token_type_index = url.indexOf("token_type=");
@@ -26,15 +28,16 @@ Meteor.methods({
         let stripe_user_id = url.split(stripe_user_id_index, url.indexOf('&', stripe_user_id_index));
         let refresh_token = url.split(refresh_token_index, url.indexOf('&', refresh_token_index));
         let access_token = url.split(access_token_index, url.indexOf('&', access_token_index));
-        //TODO: Add new schema to shop collection or expand current one for these fields?
-        db.SellerShops.save ( { _id: shopId,
-                          token_type: token_type,
-                          stripe_publishable_key: stripe_publishable_key,
-                          scope: scope,
-                          livemode: livemode,
-                          stripe_user_id: stripe_user_id,
-                          refresh_token: refresh_token,
-                          access_token: access_token } );
+        db.SellerShops.save({ _
+                          "id" : shopId,
+                          "token_type" : token_type,
+                          "stripe_publishable_key" : stripe_publishable_key,
+                          "scope" : scope,
+                          "livemode" : livemode,
+                          "stripe_user_id" : stripe_user_id,
+                          "refresh_token" : refresh_token,
+                          "access_token" : access_token
+        });
         result = {
           saved: true
         };
