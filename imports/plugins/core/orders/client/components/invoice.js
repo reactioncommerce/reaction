@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from "react";
 import { Translation } from "/imports/plugins/core/ui/client/components";
+import { Tooltip } from "/imports/plugins/core/ui/client/components";
 
 class Invoice extends Component {
-
   render() {
     const invoice = this.props.invoice;
 
