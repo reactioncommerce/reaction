@@ -83,7 +83,8 @@
 }
 
 .order-item-details .order-detail-price {
-  flex: 0 0 auto;
+  flex: 1 1 auto;
+  margin-right: 20px;
 }
 
 
@@ -151,9 +152,10 @@
   list-style-type: none;
 }
 
-.order-item {
+.order-item .order-item:hover, .order-item:hover {
   .display(flex);
-  padding: 1rem 0;
+  background-color: @list-group-hover-bg;
+  cursor: pointer;
 }
 
 .order-item-media {
