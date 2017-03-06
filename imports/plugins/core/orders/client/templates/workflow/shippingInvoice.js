@@ -7,7 +7,7 @@ import { i18next, Logger, formatNumber, Reaction } from "/client/api";
 import { NumericInput } from "/imports/plugins/core/ui/client/components";
 import { Media, Orders, Shops } from "/lib/collections";
 import DiscountList from "/imports/plugins/core/discounts/client/components/list";
-import InvoiceContainer from "../../containers/invoiceContainer.js"
+import InvoiceContainer from "../../containers/invoiceContainer.js";
 import LineItemsContainer from "../../containers/lineItemsContainer.js";
 
 // helper to return the order payment object
@@ -83,10 +83,13 @@ Template.coreOrderShippingInvoice.helpers({
   LineItemsContainer() {
     return LineItemsContainer;
   },
+<<<<<<< HEAD
 
   InvoiceContainer() {
     return InvoiceContainer;
   },
+=======
+>>>>>>> Add roll over list capability
   orderId() {
     const instance = Template.instance();
     const state = instance.state;

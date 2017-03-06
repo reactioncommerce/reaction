@@ -9,6 +9,7 @@ import { Media } from "/lib/collections";
 class LineItemsContainer extends Component {
   constructor(props) {
     super(props);
+<<<<<<< HEAD
     this.state = {
     };
     this.handleDisplayMedia = this.handleDisplayMedia.bind(this);
@@ -33,6 +34,15 @@ class LineItemsContainer extends Component {
       [`item_${itemId}`]: true
     });
     // this.setState({ isExpanded: true });
+=======
+    this.handleDisplayMedia = this.handleDisplayMedia.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick(event) {
+    event.preventDefault();
+    console.log("Hey there");
+>>>>>>> Add roll over list capability
   }
 
   handleDisplayMedia(variantObject) {
@@ -51,7 +61,10 @@ class LineItemsContainer extends Component {
     return (
       <TranslationProvider>
         <LineItems
+<<<<<<< HEAD
           isExpanded={this.isExpanded}
+=======
+>>>>>>> Add roll over list capability
           displayMedia={this.handleDisplayMedia}
           handleClick={this.handleClick}
           items={this.props.items}
