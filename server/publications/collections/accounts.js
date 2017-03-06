@@ -45,6 +45,17 @@ Meteor.publish("Accounts", function (userId) {
 });
 
 /**
+ * Single account
+ * @params {String} userId -  id of user to find
+ */
+Meteor.publish("Accounts.single", function (userId) {
+  check(userId, Match.OneOf(String, null));
+  return Collections.Accounts.find({
+    userId: userId
+  });
+});
+
+/**
  * userProfile
  * @deprecated since version 0.10.2
  * get any user name,social profile image

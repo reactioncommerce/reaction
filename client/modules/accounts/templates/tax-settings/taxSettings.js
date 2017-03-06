@@ -1,16 +1,15 @@
 import _ from "lodash";
+import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { Accounts } from "/lib/collections";
 import { Accounts as AccountsSchema } from "/lib/collections/schemas/accounts";
-import { Reaction } from "/client/api";
 import { TaxEntityCodes } from "/client/collections";
 
 Template.taxSettingsPanel.helpers({
   account() {
-    if (Reaction.Subscriptions.Account.ready()) {
-      return Accounts.findOne({
-        _id: this.member.userId
-      });
+    const sub = Meteor.subscribe("Accounts.single", this.member.userId);
+    if (sub.ready()) {
+      return Accounts.findOne({ _id: this.member.userId });
     }
     return null;
   },
