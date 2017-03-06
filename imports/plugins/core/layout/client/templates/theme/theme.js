@@ -41,10 +41,7 @@ function getRouteLayout(context) {
  * addBodyClasses
  * Adds body classes to help themes distinguish pages and components based on the current route name and layout theme
  * @param  {Object} context - route context
-<<<<<<< HEAD
-=======
  * @returns {undefined}
->>>>>>> upstream/marketplace-my-shops
  */
 function addBodyClasses(context) {
   let classes;
