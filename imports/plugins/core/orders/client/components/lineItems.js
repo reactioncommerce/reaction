@@ -9,8 +9,8 @@ class LineItems extends Component {
       <div>
         <div className="order-items">
           {items.map((item) => (
-            <div>
-            <div className="invoice order-item form-group order-summary-form-group" key={item._id} onClick={this.props.handleClick}>
+            <div key={item._id}>
+            <div className="invoice order-item form-group order-summary-form-group" onClick={() => this.props.handleClick(item._id)}>
               <div className="order-item-media">
                 { !this.props.displayMedia(item.variants) &&
                   <img src= "/resources/placeholder.gif" />
@@ -28,36 +28,36 @@ class LineItems extends Component {
                 </div>
               </div>
             </div>
-              {this.props.isExpanded &&
-                <div>
-                  <div className="order-summary-form-group">
-                    <strong><Translation defaultValue="Subtotal" i18nKey="cartSubTotals.subtotal"/></strong>
-                    <div className="invoice-details">
-                      0
-                    </div>
-                  </div>
-
-                  <div className="order-summary-form-group">
-                    <strong><Translation defaultValue="Shipping" i18nKey="cartSubTotals.shipping"/></strong>
-                    <div className="invoice-details">
-                      0
-                    </div>
-                  </div>
-
-                  <div className="order-summary-form-group">
-                    <strong><Translation defaultValue="Tax" i18nKey="cartSubTotals.tax"/></strong>
-                    <div className="invoice-details">
-                      0
-                    </div>
-                  </div>
-
-                  <div className="order-summary-form-group">
-                    <strong><Translation defaultValue="Tax codes"/></strong>
-                    <div className="invoice-details">
-                      0
-                    </div>
+            {this.props.isExpanded(item._id) &&
+              <div>
+                <div className="order-summary-form-group">
+                  <strong><Translation defaultValue="Subtotal" i18nKey="cartSubTotals.subtotal"/></strong>
+                  <div className="invoice-details">
+                    0
                   </div>
                 </div>
+
+                <div className="order-summary-form-group">
+                  <strong><Translation defaultValue="Shipping" i18nKey="cartSubTotals.shipping"/></strong>
+                  <div className="invoice-details">
+                    0
+                  </div>
+                </div>
+
+                <div className="order-summary-form-group">
+                  <strong><Translation defaultValue="Tax" i18nKey="cartSubTotals.tax"/></strong>
+                  <div className="invoice-details">
+                    0
+                  </div>
+                </div>
+
+                <div className="order-summary-form-group">
+                  <strong><Translation defaultValue="Tax codes"/></strong>
+                  <div className="invoice-details">
+                    0
+                  </div>
+                </div>
+              </div>
               }
             </div>
           ))}
@@ -70,7 +70,7 @@ class LineItems extends Component {
 LineItems.propTypes = {
   displayMedia: PropTypes.func,
   handleClick: PropTypes.func,
-  isExpanded: PropTypes.bool,
+  isExpanded: PropTypes.func,
   items: PropTypes.array
 };
 

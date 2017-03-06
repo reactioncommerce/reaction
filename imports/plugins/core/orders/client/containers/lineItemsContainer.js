@@ -10,15 +10,29 @@ class LineItemsContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isExpanded: false
     };
     this.handleDisplayMedia = this.handleDisplayMedia.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.isExpanded = this.isExpanded.bind(this);
   }
 
-  handleClick(event) {
-    event.preventDefault();
-    this.setState({ isExpanded: true });
+  // handleClick(event) {
+  //   event.preventDefault();
+  //   this.setState({ isExpanded: true });
+  // }
+  isExpanded(itemId) {
+    if (this.state[`item_${itemId}`]) {
+      return true;
+    }
+    return false;
+  }
+
+  handleClick(itemId) {
+    console.log("item", itemId);
+    this.setState({
+      [`item_${itemId}`]: true
+    });
+    // this.setState({ isExpanded: true });
   }
 
   handleDisplayMedia(variantObject) {
@@ -37,7 +51,7 @@ class LineItemsContainer extends Component {
     return (
       <TranslationProvider>
         <LineItems
-          isExpanded={this.state.isExpanded}
+          isExpanded={this.isExpanded}
           displayMedia={this.handleDisplayMedia}
           handleClick={this.handleClick}
           items={this.props.items}
