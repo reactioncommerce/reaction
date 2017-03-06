@@ -1,6 +1,6 @@
-import React, { Component } from "react";
+import React, { Component, PropTypes } from "react";
 import { composeWithTracker } from "/lib/api/compose";
-// import { Reaction } from "/client/api";
+import { Reaction } from "/client/api";
 import { Loading } from "/imports/plugins/core/ui/client/components";
 import { TranslationProvider } from "/imports/plugins/core/ui/client/providers";
 import { Orders } from "/lib/collections";
@@ -10,19 +10,22 @@ class InvoiceContainer extends Component {
   render() {
     return (
       <TranslationProvider>
-        <Invoice />
+        <Invoice
+          invoice={this.props.invoice}
+        />
       </TranslationProvider>
     );
   }
 }
 
-const composer = ({}, onData) => {
-  const subscription = Meteor.subscribe("Orders");
+InvoiceContainer.propTypes = {
+  invoice: PropTypes.object
+};
 
-  if (subscription.ready()) {
-    const order = Orders.find();
-    onData(null, { order });
-  }
+const composer = (props, onData) => {
+  onData(null, {
+    invoice: props.invoice
+  });
 };
 
 export default composeWithTracker(composer, Loading)(InvoiceContainer);
