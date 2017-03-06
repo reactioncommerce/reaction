@@ -290,14 +290,16 @@ function cartToSalesOrder(cart) {
   let lineItems = [];
   if (cart.items) {
     lineItems = cart.items.map((item) => {
-      return {
-        number: item._id,
-        itemCode: item.productId,
-        quantity: item.quantity,
-        amount: item.variants.price * item.quantity,
-        description: item.title,
-        taxCode: item.variants.taxCode
-      };
+      if (item.taxable) {
+        return {
+          number: item._id,
+          itemCode: item.productId,
+          quantity: item.quantity,
+          amount: item.variants.price * item.quantity,
+          description: item.title,
+          taxCode: item.variants.taxCode
+        };
+      }
     });
     if (cartShipping) {
       lineItems.push({
@@ -390,14 +392,16 @@ function orderToSalesInvoice(order) {
   const orderShipping = order.orderShipping();
   const orderDate = moment(order.createdAt).format();
   const lineItems = order.items.map((item) => {
-    return {
-      number: item._id,
-      itemCode: item.productId,
-      quantity: item.quantity,
-      amount: item.variants.price * item.quantity,
-      description: item.title,
-      taxCode: item.variants.taxCode
-    };
+    if (item.taxable) {
+      return {
+        number: item._id,
+        itemCode: item.productId,
+        quantity: item.quantity,
+        amount: item.variants.price * item.quantity,
+        description: item.title,
+        taxCode: item.variants.taxCode
+      };
+    }
   });
   if (orderShipping) {
     lineItems.push({
