@@ -12,14 +12,11 @@
         </div>
 
         <ul class="list-group">
-          {{#each accountMember in members}}
-            {{#if isShopMember accountMember }}
+          {{#each members}}
+            {{#if isShopMember}}
               <li class="list-group-item flex">
-                {{> member accountMember }}
+                {{> member}}
               </li>
-              {{#if showAvalaraTaxSettings }}
-                {{> taxSettingsPanel member=accountMember}}
-              {{/if}}
             {{/if}}
           {{/each}}
         </ul>
@@ -33,14 +30,11 @@
         </div>
 
         <ul class="list-group">
-          {{#each guestMember in members}}
-            {{#if isShopGuest guestMember}}
+          {{#each members}}
+            {{#if isShopGuest}}
               <li class="list-group-item flex">
-                {{> member guestMember}}
+                {{> member}}
               </li>
-              {{#if showAvalaraTaxSettings }}
-                {{> taxSettingsPanel member=guestMember }}
-              {{/if}}
             {{/if}}
           {{/each}}
         </ul>

@@ -31,7 +31,9 @@
 
   </div>
 
-
+  {{#if showAvalaraTaxSettings }}
+    {{> taxSettingsPanel member=this }}
+  {{/if}}
 
   {{#each groupsForUser}}
     {{#if permissionGroups}}

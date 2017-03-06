@@ -1,3 +1,4 @@
+import _ from "lodash";
 import { Reaction } from "/client/api";
 import { Packages, Shops } from "/lib/collections";
 import { Meteor } from "meteor/meteor";
@@ -113,6 +114,18 @@ Template.memberSettings.helpers({
 
   hasManyPermissions: function (permissions) {
     return Boolean(permissions.length);
+  },
+  /**
+   * showAvalaraTaxSettings
+   * @return {Boolean} True if avalara is enabled. Defaults to false if not found
+   */
+  showAvalaraTaxSettings() {
+    const avalara = Packages.findOne({
+      name: "taxes-avalara",
+      shopId: Reaction.getShopId()
+    });
+
+    return _.get(avalara, "settings.avalara.enabled", false);
   }
 });
 

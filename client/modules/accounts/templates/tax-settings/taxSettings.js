@@ -48,7 +48,6 @@ Template.taxSettingsPanel.onCreated(function () {
   this.autorun(() => {
     this.subscribe("Account");
   });
-  // Todo: Fix: currently called for each customer. To be called once
   Meteor.call("avalara/getEntityCodes", (error, entityCodes) => {
     const currentCodes = TaxEntityCodes.find().fetch();
     if (!currentCodes.length) {

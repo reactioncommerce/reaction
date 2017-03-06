@@ -20,8 +20,8 @@ Template.accountsDashboard.helpers({
    * @param {Object} member member object
    * @return {Boolean} True if the memnber is an administrator
    */
-  isShopMember(member) {
-    return _.includes(["dashboard", "admin", "owner"], member.role);
+  isShopMember() {
+    return _.includes(["dashboard", "admin", "owner"], this.role);
   },
 
   /**
@@ -29,20 +29,8 @@ Template.accountsDashboard.helpers({
    * @param {Object} member member object
    * @return {Boolean} True if the member is a guest
    */
-  isShopGuest(member) {
-    return !_.includes(["dashboard", "admin", "owner"], member.role);
-  },
-  /**
-   * showAvalaraTaxSettings
-   * @return {Boolean} True if avalara is enabled. Defaults to false if not found
-   */
-  showAvalaraTaxSettings() {
-    const avalara = Packages.findOne({
-      name: "taxes-avalara",
-      shopId: Reaction.getShopId()
-    });
-
-    return _.get(avalara, "settings.avalara.enabled", false);
+  isShopGuest() {
+    return !_.includes(["dashboard", "admin", "owner"], this.role);
   },
   /**
    * members
