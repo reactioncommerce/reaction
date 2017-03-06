@@ -10,7 +10,16 @@
           "socialDescription": "διαμόρφωση της κοινωνικής Κανάλι"
         },
         "settings": {
-          "socialSettingsLabel": "κοινωνική Ρυθμίσεις"
+          "facebook": "Facebook",
+          "twitter": "Twitter",
+          "pinterest": "Pinterest",
+          "googleplus": "Google+",
+          "appId": "App Id",
+          "username": "Ονομα χρήστη",
+          "appSecret": "App μυστικό",
+          "profilePage": "Σελίδα προφίλ",
+          "socialSettingsLabel": "κοινωνική Ρυθμίσεις",
+          "socialSettingsSaved": "Κοινωνική ρυθμίσεις αποθηκεύονται"
         }
       }
     }

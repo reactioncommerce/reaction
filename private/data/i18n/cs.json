@@ -92,7 +92,13 @@
         "notFoundError": "Stránka nenalezena.",
         "productNotFound": "Tento produkt nebyl nalezen.",
         "loadMoreProducts": "Načíst další produkty",
-        "noProductsFound": "Nebyly nalezeny žádné produkty."
+        "noProductsFound": "Nebyly nalezeny žádné produkty.",
+        "private": "soukromý",
+        "public": "Veřejnost",
+        "shortcut": {
+          "addProductLabel": "Přidat produkt",
+          "accountsLabel": "účty"
+        }
       },
       "searchSettings": {
         "productSearchSettings": {
@@ -428,6 +434,8 @@
         "printLabels": "tisk štítků",
         "printShippingLabel": "lodní",
         "printCustomsLabel": "Celní",
+        "generateTracking": "Generovat Label a Tracking",
+        "labelError": "Chyba při vytváření přepravní štítek {{err}}",
         "carrier": "Dopravce",
         "addTracking": "Přidat Tracking",
         "itemsHaveBeenShipped": "Předměty byly odeslány",

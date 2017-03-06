@@ -114,14 +114,13 @@
             data-i18n="app.print">
             Print
           </a>
-          <button class="btn btn-success flex-item-fill" type="button" data-event-action="capturePayment" data-i18n="order.capturePayment">Capture Payment</button>
+          <button class="btn btn-success flex-item-fill" type="button" data-event-action="capturePayment" {{capturedDisabled}}>
+            <span id="btn-capture-payment" data-i18n="order.capturePayment">Capture Payment</span>
+            <i class="fa fa-spinner fa-spin {{#unless isCapturing}}hidden{{/unless}}" id="btn-processing"></i>
+          </button>
       {{/if}}
-
-
     </div>
-
   </form>
-
 
   {{#if paymentCaptured}}
     <form name="refund">
@@ -132,11 +131,21 @@
         </div>
       </div>
 
-      {{#each refund in refunds}}
-        <div class="order-summary-form-group">
-          <span class="reason" data-i18n="cartSubTotals.refundAmount">Refunded on: {{dateFormat refund.created format="MMM D, YYYY"}}</span>
-          <div class="amount">-{{formatPrice refund.amount}}</div>
+      {{#if isFetching}}
+        <div class="form-group order-summary-form-group">
+          <span class="reason">
+            <i class="fa fa-info-circle text-info"></i>
+            <strong class="text-info">Loading Refunds</strong>
+            <i class="fa fa-spinner fa-spin"></i>
+          </span>
         </div>
+      {{/if}}
+
+      {{#each refund in refunds}}
+      <div class="order-summary-form-group">
+        <span class="reason" data-i18n="cartSubTotals.refundAmount">Refunded on: {{dateFormat refund.created format="MMM D, YYYY"}}</span>
+        <div class="amount">-{{formatPrice refund.amount}}</div>
+      </div>
       {{/each}}
 
       <div class="reason">
@@ -167,7 +176,11 @@
           class="btn btn-success flex-item-fill"
           type="submit"
           data-event-action="applyRefund"
-          data-i18n="order.applyRefund" {{refundSubmitDisabled}}>Apply Refund</button>
+          {{refundSubmitDisabled}}
+        >
+          <span id="btn-refund-payment" data-i18n="order.applyRefund">Apply Refund</span>
+          <i class="fa fa-spinner fa-spin {{#unless isRefunding}}hidden{{/unless}}"></i>
+        </button>
       </div>
     </form>
   {{else}}

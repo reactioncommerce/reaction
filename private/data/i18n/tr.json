@@ -92,7 +92,13 @@
         "notFoundError": "Sayfa bulunamadı.",
         "productNotFound": "Bu ürün bulunamadı.",
         "loadMoreProducts": "Daha fazla ürün yükle",
-        "noProductsFound": "Hiçbir ürün bulundu."
+        "noProductsFound": "Hiçbir ürün bulundu.",
+        "private": "Özel",
+        "public": "halka açık",
+        "shortcut": {
+          "addProductLabel": "Ürün ekle",
+          "accountsLabel": "Hesaplar"
+        }
       },
       "searchSettings": {
         "productSearchSettings": {
@@ -428,6 +434,8 @@
         "printLabels": "baskı Etiketleri",
         "printShippingLabel": "Nakliye",
         "printCustomsLabel": "Gümrük",
+        "generateTracking": "Etiket ve Takip oluşturmak",
+        "labelError": "Oluşturma hatası gönderim etiketi {{err}}",
         "carrier": "Taşıyıcı",
         "addTracking": "İzleme ekle",
         "itemsHaveBeenShipped": "Öğeler sevk edilmiştir",

@@ -92,7 +92,13 @@
         "notFoundError": "Pagina nu a fost gasita.",
         "productNotFound": "Acest produs nu a fost găsit.",
         "loadMoreProducts": "Încărcați mai multe produse",
-        "noProductsFound": "Nu s-au găsit produse."
+        "noProductsFound": "Nu s-au găsit produse.",
+        "private": "Privat",
+        "public": "Public",
+        "shortcut": {
+          "addProductLabel": "Adăugare produs",
+          "accountsLabel": "Conturi"
+        }
       },
       "searchSettings": {
         "productSearchSettings": {
@@ -428,6 +434,8 @@
         "printLabels": "Etichete de imprimare",
         "printShippingLabel": "livrare",
         "printCustomsLabel": "Obiceiuri",
+        "generateTracking": "Generarea de etichete și de urmărire",
+        "labelError": "Eroare etichetă crearea de transport maritim {{err}}",
         "carrier": "Purtător",
         "addTracking": "Adăugaţi număr urmărire a pachetului",
         "itemsHaveBeenShipped": "Articole au fost expediate",
