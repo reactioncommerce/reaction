@@ -162,6 +162,14 @@
                 {{/if}}
               </div>
               {{/unless}}
+
+              <div class="form-group{{#if afFieldIsInvalid name='taxDescription'}} has-error{{/if}}">
+                <label class="control-label">{{afFieldLabelText name='taxDescription'}}</label>
+                {{>afFieldInput name='taxDescription' placeholder=""}}
+                {{#if afFieldIsInvalid name='taxDescription'}}
+                  <span class="help-block">{{afFieldMessage name='taxDescription'}}</span>
+                {{/if}}
+              </div>
               <div class="form-group{{#if afFieldIsInvalid name='inventoryManagement'}} has-error{{/if}}">
                   {{>afFieldInput name='inventoryManagement'}}
                   {{#if afFieldIsInvalid name='inventoryManagement'}}

@@ -227,7 +227,7 @@ Template.variantForm.events({
             });
         }
       }
-    } else if (field === "taxCode") {
+    } else if (field === "taxCode" || field === "taxDescription") {
       const value = Template.instance().$(event.currentTarget).prop("value");
       Meteor.call("products/updateProductField", template.data._id, field, value,
         error => {

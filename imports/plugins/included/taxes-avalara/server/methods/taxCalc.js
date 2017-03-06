@@ -296,7 +296,7 @@ function cartToSalesOrder(cart) {
           itemCode: item.productId,
           quantity: item.quantity,
           amount: item.variants.price * item.quantity,
-          description: item.title,
+          description: item.taxDescription || item.title,
           taxCode: item.variants.taxCode
         };
       }
@@ -398,7 +398,7 @@ function orderToSalesInvoice(order) {
         itemCode: item.productId,
         quantity: item.quantity,
         amount: item.variants.price * item.quantity,
-        description: item.title,
+        description: item.taxDescription || item.title,
         taxCode: item.variants.taxCode
       };
     }
