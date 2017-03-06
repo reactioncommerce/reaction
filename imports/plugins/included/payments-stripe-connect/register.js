@@ -11,6 +11,10 @@ Reaction.registerPackage({
     "api_key": "",
     "reaction-stripe-connect": {
       enabled: false
+    },
+    "transactionFee": {
+      enabled: false,
+      percentage: 0
     }
   },
   registry: [
