@@ -490,6 +490,9 @@ taxCalc.reportRefund = function (order, refundAmount, callback) {
   const baseUrl = getUrl();
   const requestUrl = `${baseUrl}/transactions/create`;
   const returnAmount = refundAmount * -1;
+  const orderDate = moment(order.createdAt).format();
+  const refundDate = moment().format();
+  const refundReference = `${order.cartId}:${refundDate}`;
   const  lineItems = {
     number: "01",
     quantity: 1,
@@ -499,11 +502,11 @@ taxCalc.reportRefund = function (order, refundAmount, callback) {
   const returnInvoice = {
     companyCode: companyCode,
     type: "ReturnInvoice",
-    code: order.cartId,
+    code: refundReference,
     commit: true,
     customerCode: order._id,
-    taxDate: moment.utc(order.createdAt),
-    date: moment(),
+    taxDate: orderDate,
+    date: refundDate,
     currencyCode: currencyCode,
     addresses: {
       ShipFrom: {
