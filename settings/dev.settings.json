@@ -2,9 +2,9 @@
   "ROOT_URL": "",
   "MAIL_URL": "",
   "reaction": {
-    "REACTION_USER": "dpearson",
-    "REACTION_AUTH": "dylanpearson",
-    "REACTION_EMAIL": "dylanrichardpearson@gmail.com"
+    "REACTION_USER": "",
+    "REACTION_AUTH": "",
+    "REACTION_EMAIL": ""
   },
   "REACTION_LOG_LEVEL": "info",
   "public": {}
