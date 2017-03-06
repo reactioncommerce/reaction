@@ -8,6 +8,7 @@ import { NumericInput } from "/imports/plugins/core/ui/client/components";
 import { Media, Orders, Shops } from "/lib/collections";
 import DiscountList from "/imports/plugins/core/discounts/client/components/list";
 import InvoiceContainer from "../../containers/invoiceContainer.js";
+import LineItemsContainer from "../../containers/lineItemsContainer.js";
 
 // helper to return the order payment object
 // the first credit paymentMethod on the order
@@ -78,6 +79,9 @@ Template.coreOrderShippingInvoice.helpers({
   },
   InvoiceContainer() {
     return InvoiceContainer;
+  },
+  LineItemsContainer() {
+    return LineItemsContainer;
   },
   orderId() {
     const instance = Template.instance();
@@ -466,7 +470,7 @@ Template.coreOrderShippingInvoice.helpers({
   media(variantObjectOrId) {
     let variantId = variantObjectOrId;
 
-    if (typeof variant === "object") {
+    if (typeof variantId === "object") {
       variantId = variantObjectOrId._id;
     }
 
