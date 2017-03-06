@@ -50,8 +50,14 @@ AutoForm.hooks({
        name: "StripeConnect.url",
        action(params, queryParams) {
          console.log("Gathering Stripe Connect URL parameters.");
-
-         Meteor.call("stripeConnect/saveSellerParams", Reaction.getShopId(), params, queryParams);
+         let tokenType = FlowRouter.getQueryParam("token_type");
+         let stripePublishableKey = FlowRouter.getQueryParams("stripe_publishable_key");
+         let scope = FlowRouter.getQueryParams("scope");
+         let livemode = FlowRouter.getQueryParams("livemode");
+         let stripeUserId = FlowRouter.getQueryParams("stripe_user_id");
+         let refreshToken = FlowRouter.getQueryParams("refresh_token");
+         let accessToken = FlowRouter.getQueryParams("access_token");
+         Meteor.call("stripeConnect/saveSellerParams", Reaction.getShopId(), tokenType, stripePublishableKey, scope, livemode, stripeUserId, refreshToken, accessToken);
        }
      });
    });
