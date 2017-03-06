@@ -32,7 +32,12 @@ class ProductAdminContainer extends Component {
     if (fieldName === "handle") {
       updateValue = Reaction.getSlug(value);
     }
-    Meteor.call("products/updateProductField", productId, fieldName, updateValue);
+    Meteor.call("products/updateProductField", productId, fieldName, updateValue, (error) => {
+      if (error) {
+        Alerts.toast(error.message, "error");
+        this.forceUpdate();
+      }
+    });
   }
 
 
