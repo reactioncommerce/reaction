@@ -260,20 +260,16 @@ Meteor.methods({
 
     // insert backorder
     let i = 0;
+    const batch = Inventory.rawCollection().initializeUnorderedBulkOp();
+    if (batch) {
+      while (i < backOrderQty) {
+        const id = Inventory._makeNewID();
+        batch.insert(Object.assign({ _id: id }, newReservation));
+        i++;
+      }
 
-    // check if we support bulk operations
-    const currentBatch = Inventory._collection.rawCollection().currentBatch;
-
-    if (currentBatch && currentBatch.operations && currentBatch.operations.length > 0) {
-      const batch = Inventory._collection.rawCollection().initializeUnorderedBulkOp();
-      if (batch) {
-        while (i < backOrderQty) {
-          const id = Inventory._makeNewID();
-          batch.insert(Object.assign({ _id: id }, newReservation));
-          i++;
-        }
-
-        const execute = Meteor.wrapAsync(batch.execute, batch);
+      const execute = Meteor.wrapAsync(batch.execute, batch);
+      if (batch.length) {
         const inventoryBackorder = execute();
         const inserted = inventoryBackorder.nInserted;
         Logger.debug(`created ${inserted} backorder records for product ${newReservation.productId}, variant ${newReservation.variantId}`);
