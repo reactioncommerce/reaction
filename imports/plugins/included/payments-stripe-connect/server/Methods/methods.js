@@ -1,4 +1,5 @@
 import { Meteor } from "meteor/meteor";
+import { HTTP } from 'meteor/http';
 import { check } from "meteor/check";
 import { SellerShops } from "/imports/plugins/included/marketplace/lib/collections";
 
@@ -7,13 +8,20 @@ Meteor.methods({
    * separate url into params
    * save params into sellerShop collection
    **/
-  "stripeConnect/saveSellerParams": function (shopId, stripeConnectSettings) {
+  "stripeConnect/saveSellerParams": function (shopId, authCode) {
     // add a robust check for stripe connect settings.
-    check(stripeConnectSettings, Object);
+    check(authCode, String);
     let result;
-    result = SellerShops.update({ shopId }, {
-      $set: { stripeConnectSettings: stripeConnectSettings }
-    });
+    const api_key = Packages.findOne({ name: "reaction-stripe-connect" }).settings.api_key;
+    const stripeUrl = "https://connect.stripe.com/oauth/token";
+    try {
+      const result = HTTP.call("POST", stripeUrl, {params: 
+        { client_secret: api_key, code: authCode, grant_type: "authorization_code" }
+      });
+      // check result for correct data
+      SellerShops.update({ shopId }, {
+        $set: { stripeConnectSettings: result }
+      });
     return result;
   }
 });
