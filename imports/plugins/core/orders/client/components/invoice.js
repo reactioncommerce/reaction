@@ -1,43 +1,45 @@
 import React, { Component } from "react";
 import { Translation } from "/imports/plugins/core/ui/client/components";
+import { Tooltip } from "/imports/plugins/core/ui/client/components";
 
 class Invoice extends Component {
-
   render() {
+    const invoice = this.props.invoice;
+
     return (
       <div>
-        <div className="form-group order-summary-form-group">
+        <div className="order-summary-form-group">
           <strong>Quantity Total</strong>
           <div className="invoice-details">
             0
           </div>
         </div>
 
-        <div className="form-group order-summary-form-group">
+        <div className="order-summary-form-group">
           <strong><Translation defaultValue="Subtotal" i18nKey="cartSubTotals.subtotal"/></strong>
           <div className="invoice-details">
-            0.00
+            {invoice.subtotal}
           </div>
         </div>
 
-        <div className="form-group order-summary-form-group">
+        <div className="order-summary-form-group">
           <strong><Translation defaultValue="Shipping" i18nKey="cartSubTotals.shipping"/></strong>
           <div className="invoice-details">
-            0.00
+            {invoice.shipping}
           </div>
         </div>
 
-        <div className="form-group order-summary-form-group">
+        <div className="order-summary-form-group">
           <strong><Translation defaultValue="Tax" i18nKey="cartSubTotals.tax"/></strong>
           <div className="invoice-details">
-            0.00
+            {invoice.taxes}
           </div>
         </div>
 
-        <div className="form-group order-summary-form-group">
+        <div className="order-summary-form-group">
           <strong><Translation defaultValue="Discount" i18nKey="cartSubTotals.discount"/></strong>
           <div className="invoice-details">
-            0.00
+            <i className="fa fa-tag fa-lg"/> <a>Add Discount</a>
           </div>
         </div>
       </div>
