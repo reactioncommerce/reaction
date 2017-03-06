@@ -10,6 +10,14 @@ export const StripeConnectPackageConfig = new SimpleSchema([
     "settings.api_key": {
       type: String,
       label: "API Client ID"
+    },
+    "settings.transactionFee.enabled": {
+      type: Boolean,
+      label: "Enable Fee"
+    },
+    "settings.transactionFee.percentage": {
+      type: Number,
+      label: "Fee Percentage"
     }
   }
 ]);

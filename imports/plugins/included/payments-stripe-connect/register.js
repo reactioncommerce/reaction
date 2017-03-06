@@ -12,7 +12,11 @@ Reaction.registerPackage({
     "reaction-stripe-connect": {
       enabled: false
     },
-    "stripe-redirect-url": "stripe-connect-redirect"
+    "stripe-redirect-url": "stripe-connect-redirect",
+    "transactionFee": {
+      enabled: false,
+      percentage: 0
+    }
   },
   registry: [
     // Settings panel
