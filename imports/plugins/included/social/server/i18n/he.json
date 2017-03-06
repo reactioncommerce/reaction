@@ -1,5 +1,15 @@
 [{
   "i18n": "he",
   "ns": "reaction-social",
-  "translation": { }
+  "translation": {
+    "reaction-social": {
+      "admin": {
+        "settings": {
+          "facebook": "Facebook",
+          "twitter": "Twitter",
+          "username": "שם משתמש"
+        }
+      }
+    }
+  }
 }]

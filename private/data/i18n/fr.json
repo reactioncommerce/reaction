@@ -92,7 +92,13 @@
         "notFoundError": "Page introuvable.",
         "productNotFound": "Ce produit est introuvable.",
         "loadMoreProducts": "Charger plus de produits",
-        "noProductsFound": "Aucun produit trouvé."
+        "noProductsFound": "Aucun produit trouvé.",
+        "private": "Privé",
+        "public": "Publique",
+        "shortcut": {
+          "addProductLabel": "Ajouter le produit",
+          "accountsLabel": "Comptes"
+        }
       },
       "searchSettings": {
         "productSearchSettings": {
@@ -428,6 +434,8 @@
         "printLabels": "impression d'étiquettes",
         "printShippingLabel": "livraison",
         "printCustomsLabel": "Douane",
+        "generateTracking": "Générer le libellé et le suivi",
+        "labelError": "Erreur de création d'expédition étiquette {{err}}",
         "carrier": "Transporteur",
         "addTracking": "Ajouter un suivi",
         "itemsHaveBeenShipped": "Les articles ont été expédiés",

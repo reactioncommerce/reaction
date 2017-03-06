@@ -10,7 +10,16 @@
           "socialDescription": "社会渠道的配置"
         },
         "settings": {
-          "socialSettingsLabel": "社交设置"
+          "facebook": "Facebook",
+          "twitter": "Twitter",
+          "pinterest": "Pinterest的",
+          "googleplus": "Google+的",
+          "appId": "应用ID",
+          "username": "用户名",
+          "appSecret": "应用秘密",
+          "profilePage": "个人主页",
+          "socialSettingsLabel": "社交设置",
+          "socialSettingsSaved": "社会环境保存"
         }
       }
     }
