@@ -56,6 +56,8 @@
       "app": {
         "add": "Ajouter",
         "editMode": "Editer le mode",
+        "administratorView": "Administrator Voir",
+        "customerView": "Régarder",
         "createContent": "Créer du contenu",
         "auto": "Auto",
         "save": "Enregistrer",
@@ -90,7 +92,13 @@
         "notFoundError": "Page introuvable.",
         "productNotFound": "Ce produit est introuvable.",
         "loadMoreProducts": "Charger plus de produits",
-        "noProductsFound": "Aucun produit trouvé."
+        "noProductsFound": "Aucun produit trouvé.",
+        "private": "Privé",
+        "public": "Publique",
+        "shortcut": {
+          "addProductLabel": "Ajouter le produit",
+          "accountsLabel": "Comptes"
+        }
       },
       "searchSettings": {
         "productSearchSettings": {
@@ -300,9 +308,12 @@
         "variantDetails": "Informations sur la variante",
         "duplicateVariant": "Doublon",
         "addVariantOption": "Ajouter des options",
+        "addVariantFail": "Impossible de créer variante pour {{title}}.",
+        "cloneVariantFail": "Impossible de cloner variante pour {{title}}.",
         "removeVariant": "Supprimer",
         "removeVariantConfirm": "Êtes-vous certain de vouloir supprimer {{title}}",
         "restoreVariantConfirm": "Etes-vous certain de vouloir restaurer {{title}} depuis la corbeille ?",
+        "restoreVariantFail": "Impossible de restaurer {{title}}.",
         "archiveVariantConfirm": "Êtes-vous sûr de vouloir archiver {{title}}",
         "thisVariant": "cette variante",
         "thisOption": "cette option",
@@ -423,6 +434,8 @@
         "printLabels": "impression d'étiquettes",
         "printShippingLabel": "livraison",
         "printCustomsLabel": "Douane",
+        "generateTracking": "Générer le libellé et le suivi",
+        "labelError": "Erreur de création d'expédition étiquette {{err}}",
         "carrier": "Transporteur",
         "addTracking": "Ajouter un suivi",
         "itemsHaveBeenShipped": "Les articles ont été expédiés",
@@ -450,6 +463,8 @@
         "yourOrderIsNow": "Votre commande est  désormais",
         "summaryMessage": "Merci pour votre commande.",
         "submitted": "soumis",
+        "processing": "En traitement",
+        "completed": "terminé",
         "registerGuest": "Bonjour ! Saisir un e-mail pour recevoir les mises à jour de la commande.",
         "trackYourDelivery": "Les mises à jour concernant la commande seront envoyées à",
         "noOrdersFound": "Aucun commande trouvée.",
@@ -476,7 +491,8 @@
       "addressBookAdd": {
         "addAddress": "Ajouter une nouvelle adresse",
         "createAddress": "Créer votre adresse par défaut",
-        "failedToAddAddress": "Echec lors de l'ajout de l'adresse : {{err}}"
+        "failedToAddAddress": "Echec lors de l'ajout de l'adresse : {{err}}",
+        "validatedAddress": "Les modifications apportées à votre adresse sur la base lors de la validation. S'il vous plaît assurer cela est correct"
       },
       "addressBookEdit": {
         "editAddress": "Editer cette adresse",
@@ -575,68 +591,6 @@
       },
       "checkoutReview": {
         "review": "Réviser"
-      },
-      "checkoutShipping": {
-        "selectShippingOption": "Sélectionner un mode de livraison",
-        "noShippingMethods": "Aucun mode de livraison configuré.",
-        "configureNow": "Configurer maintenant.",
-        "shipping": "Expédition"
-      },
-      "shipping": {
-        "addShippingProvider": "Ajouter un prestataire de transport",
-        "editShippingProvider": "Editer le prestataire de livraison",
-        "addShippingMethod": "Ajouter un mode de livraison",
-        "editShippingMethod": "Editer le mode de livraison",
-        "deleteShippingMethod": "Supprimer le mode d'expédition",
-        "noSettingsForThisView": "Aucun paramètre pour cette vue",
-        "noShippingMethods": "Aucun mode de livraison configuré.",
-        "removeShippingMethodConfirm": "Êtes-vous certain de vouloir supprimer {{method}} ?",
-        "removeShippingMethodTitle": "Supprimer le mode de livraison.",
-        "shippingMethodDeleted": "Ce mode de livraison a été supprimé.",
-        "removeShippingProvider": "Supprimer le prestataire de transport",
-        "removeShippingProviderConfirm": "Êtes-vous certain de vouloir supprimer {{provider}} ?",
-        "shippingProviderSaved": "Prestataire de transport enregistré.",
-        "shippingProviderUpdated": "Données du prestataire de transport mises à jour.",
-        "shippingMethodRateAdded": "Tarif du mode de livraison ajouté.",
-        "shippingMethodRateUpdated": "Tarif du mode de livraison mis à jour.",
-        "name": "Nom",
-        "label": "Balise",
-        "group": "Groupe",
-        "cost": "Coût",
-        "handling": "Traitement",
-        "rate": "Taux",
-        "enabled": "Activé",
-        "disabled": "Désactivé",
-        "addRate": "Ajouter un tarif",
-        "updateRate": "Mettre à jour le tarif {{name}}",
-        "addNewCondition": "Ajouter une nouvelle condition",
-        "deleteCondition": "Supprimer les conditions",
-        "provider": {
-          "name": "Code de service",
-          "label": "Balise publique",
-          "enabled": "Activé"
-        }
-      },
-      "shippingMethod": {
-        "name": "Nom de la méthode",
-        "label": "Balise publique",
-        "group": "Groupe",
-        "cost": "Coût",
-        "handling": "Traitement",
-        "rate": "Taux",
-        "enabled": "Activé",
-        "matchingCartRanges": "Catégories de paniers correspondants",
-        "validRanges": {
-          "begin": "Commencer",
-          "end": "Fin"
-        },
-        "matchingLocales": "Emplacements correspondants",
-        "validLocales": {
-          "origination": "De",
-          "destination": "A",
-          "deliveryBegin": "Estimation du transport",
-          "deliveryEnd": "Estimation de la livraison"
-        }
       },
       "uom": {
         "OZ": "Onces",

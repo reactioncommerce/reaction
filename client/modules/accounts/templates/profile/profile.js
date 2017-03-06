@@ -1,7 +1,7 @@
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
+import { Reaction } from "/lib/api";
 import * as Collections from "/lib/collections";
-import { Marketplace } from "/imports/plugins/included/marketplace/lib/api";
 
 /**
  * onCreated: Account Profile View
@@ -68,6 +68,6 @@ Template.accountProfile.helpers({
   },
 
   isMarketplaceGuest: function () {
-    return Marketplace.hasMarketplaceGuestAccess();
+    return (Reaction.hasMarketplaceAccess("guest") && !Reaction.hasAdminAccess());
   }
 });

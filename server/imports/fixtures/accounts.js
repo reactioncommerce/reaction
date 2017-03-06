@@ -1,4 +1,5 @@
 import faker from "faker";
+import _ from "lodash";
 import { Factory } from "meteor/dburles:factory";
 import { Accounts }  from "/lib/collections";
 import { getShop } from "./shops";
@@ -14,18 +15,18 @@ export function getUser() {
 
 export function getAddress(options = {}) {
   const defaults = {
-    fullName: faker.name.findName(),
-    address1: faker.address.streetAddress(),
-    address2: faker.address.secondaryAddress(),
-    city: faker.address.city(),
+    fullName: options.fullName || faker.name.findName(),
+    address1: options.address1 || faker.address.streetAddress(),
+    address2: options.address2 || faker.address.secondaryAddress(),
+    city: options.city || faker.address.city(),
     company: faker.company.companyName(),
     phone: faker.phone.phoneNumber(),
-    region: faker.address.stateAbbr(),
-    postal: faker.address.zipCode(),
-    country: faker.address.countryCode(),
-    isCommercial: faker.random.boolean(),
-    isShippingDefault: faker.random.boolean(),
-    isBillingDefault: faker.random.boolean(),
+    region: options.region || faker.address.stateAbbr(),
+    postal: options.postal || faker.address.zipCode(),
+    country: options.country || faker.address.countryCode(),
+    isCommercial: options.isCommercial || faker.random.boolean(),
+    isShippingDefault: options.isShippingDefault || faker.random.boolean(),
+    isBillingDefault: options.isBillingDefault || faker.random.boolean(),
     metafields: []
   };
   return _.defaults(options, defaults);

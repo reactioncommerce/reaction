@@ -1,0 +1,20 @@
+[{
+  "i18n": "el",
+  "ns": "reaction-accounts",
+  "translation": {
+    "reaction-accounts": {
+      "admin": {
+        "dashboard": {
+          "accountsLabel": "λογαριασμοί",
+          "accountsTitle": "λογαριασμοί",
+          "accountsDescription": "Ρυθμίσεις λογαριασμού"
+        },
+        "settings": {
+          "accountsSettingsLabel": "λογαριασμοί",
+          "accountsSettingsTitle": "λογαριασμοί",
+          "accountsSettingsDescription": "Ρυθμίσεις λογαριασμού"
+        }
+      }
+    }
+  }
+}]

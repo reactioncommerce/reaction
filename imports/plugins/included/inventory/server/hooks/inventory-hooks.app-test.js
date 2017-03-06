@@ -112,7 +112,7 @@ describe("Inventory Hooks", function () {
         }
       });
     spyOnMethod("copyCartToOrder", cart.userId);
-    const orderId = Meteor.call("cart/copyCartToOrder", cart._id);
+    const orderId = Meteor.call("cart/copyCartToOrder", cart._id).result;
     const order = Orders.findOne(orderId);
     const shipping = { items: [] };
     Meteor.call("orders/shipmentShipped", order, shipping, () => {

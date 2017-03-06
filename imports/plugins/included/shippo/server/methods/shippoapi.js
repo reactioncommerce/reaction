@@ -1,8 +1,13 @@
 /* eslint camelcase: 0 */
 import Shippo from "shippo";
 import { Meteor } from "meteor/meteor";
+<<<<<<< HEAD
 import { Logger } from "/server/api";
 import { SimpleSchema } from "meteor/aldeed:simple-schema";
+=======
+import { SimpleSchema } from "meteor/aldeed:simple-schema";
+import { Logger } from "/server/api";
+>>>>>>> upstream/marketplace-my-shops
 import { purchaseAddressSchema, parcelSchema } from "../lib/shippoApiSchema";
 
 export const ShippoApi = {
@@ -148,13 +153,23 @@ ShippoApi.methods.createTransaction = new ValidatedMethod({
       });
 
       if (transaction.object_status !== "SUCCESS") {
+<<<<<<< HEAD
         Logger.error(transaction.messages);
         throw new Meteor.Error(transaction.messages);
+=======
+        const error = transaction.messages[0].text;
+        Logger.error(error);
+        throw new Meteor.Error(error);
+>>>>>>> upstream/marketplace-my-shops
       }
 
       return transaction;
     } catch (error) {
+<<<<<<< HEAD
       Logger.error(error.message);
+=======
+      Logger.debug(error.message);
+>>>>>>> upstream/marketplace-my-shops
       throw new Meteor.Error(error.message);
     }
   }
@@ -181,7 +196,10 @@ ShippoApi.methods.getTransaction = new ValidatedMethod({
     const retrieveTransactionFiber = Meteor.wrapAsync(shippoObj.transaction.retrieve, shippoObj.transaction);
     try {
       const transaction = retrieveTransactionFiber(transactionId);
+<<<<<<< HEAD
 
+=======
+>>>>>>> upstream/marketplace-my-shops
       return transaction;
     } catch (error) {
       Logger.error(error.message);

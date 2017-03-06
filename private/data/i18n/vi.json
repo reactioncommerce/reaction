@@ -56,6 +56,8 @@
       "app": {
         "add": "Thêm vào",
         "editMode": "Chế độ chỉnh sửa",
+        "administratorView": "administrator Xem",
+        "customerView": "khách hàng Xem",
         "createContent": "tạo nội dung",
         "auto": "Tự động",
         "save": "Lưu",
@@ -90,7 +92,13 @@
         "notFoundError": "Không tìm thấy trang.",
         "productNotFound": "Sản phẩm này không được tìm thấy.",
         "loadMoreProducts": "Tải nhiều sản phẩm hơn",
-        "noProductsFound": "Không tìm thấy sản phẩm."
+        "noProductsFound": "Không tìm thấy sản phẩm.",
+        "private": "Riêng tư",
+        "public": "Công cộng",
+        "shortcut": {
+          "addProductLabel": "Thêm sản phẩm",
+          "accountsLabel": "tài khoản"
+        }
       },
       "searchSettings": {
         "productSearchSettings": {
@@ -300,9 +308,12 @@
         "variantDetails": "Chi tiết Variant",
         "duplicateVariant": "Bản sao",
         "addVariantOption": "Thêm lựa chọn",
+        "addVariantFail": "Không thể tạo ra biến thể cho {{title}}.",
+        "cloneVariantFail": "Không thể để nhân bản biến thể cho {{title}}.",
         "removeVariant": "Tẩy",
         "removeVariantConfirm": "Bạn có chắc chắn muốn xóa {{title}}",
         "restoreVariantConfirm": "Bạn có chắc chắn muốn khôi phục {{title}} từ thùng rác?",
+        "restoreVariantFail": "Không thể phục hồi {{title}}.",
         "archiveVariantConfirm": "Bạn có chắc chắn muốn lưu trữ {{title}}",
         "thisVariant": "phiên bản này",
         "thisOption": "tùy chọn này",
@@ -423,6 +434,8 @@
         "printLabels": "In Nhãn",
         "printShippingLabel": "Đang chuyển hàng",
         "printCustomsLabel": "Phong tục",
+        "generateTracking": "Tạo Label và theo dõi",
+        "labelError": "Lỗi tạo vận chuyển nhãn {{err}}",
         "carrier": "Vận chuyển",
         "addTracking": "Thêm Theo dõi",
         "itemsHaveBeenShipped": "Mục đã được vận chuyển",
@@ -450,6 +463,8 @@
         "yourOrderIsNow": "hàng ngay bây giờ là",
         "summaryMessage": "Cảm ơn bạn đã đặt hàng của bạn.",
         "submitted": "trình",
+        "processing": "Chế biến",
+        "completed": "hoàn thành",
         "registerGuest": "Chào bạn! Thêm một email và nhận được cập nhật tự.",
         "trackYourDelivery": "cập nhật theo thứ tự sẽ được gửi đến",
         "noOrdersFound": "Không tìm thấy đơn đặt hàng.",
@@ -476,7 +491,8 @@
       "addressBookAdd": {
         "addAddress": "Thêm mục nhập địa chỉ mới",
         "createAddress": "Tạo địa chỉ mặc định của bạn",
-        "failedToAddAddress": "Không thể thêm địa chỉ: {{err}}"
+        "failedToAddAddress": "Không thể thêm địa chỉ: {{err}}",
+        "validatedAddress": "thay đổi địa chỉ của bạn dựa trên xác nhận. Hãy đảm bảo điều này là chính xác"
       },
       "addressBookEdit": {
         "editAddress": "Chỉnh sửa mục nhập địa chỉ này",
@@ -575,68 +591,6 @@
       },
       "checkoutReview": {
         "review": "Ôn tập"
-      },
-      "checkoutShipping": {
-        "selectShippingOption": "Chọn tùy chọn vận chuyển",
-        "noShippingMethods": "Không có phương pháp vận chuyển được cấu hình.",
-        "configureNow": "Cấu hình hiện nay.",
-        "shipping": "Đang chuyển hàng"
-      },
-      "shipping": {
-        "addShippingProvider": "Thêm nhà cung cấp vận chuyển",
-        "editShippingProvider": "Sửa nhà cung cấp vận chuyển",
-        "addShippingMethod": "Thêm phương thức vận chuyển",
-        "editShippingMethod": "Chỉnh sửa phương thức vận chuyển",
-        "deleteShippingMethod": "Xóa phương thức vận chuyển",
-        "noSettingsForThisView": "Không có thiết lập cho quan điểm này",
-        "noShippingMethods": "Không có phương pháp vận chuyển được cấu hình.",
-        "removeShippingMethodConfirm": "Bạn có chắc chắn muốn xóa {{method}}?",
-        "removeShippingMethodTitle": "Di Shipping Method",
-        "shippingMethodDeleted": "Phương pháp vận chuyển này đã bị xóa.",
-        "removeShippingProvider": "Di Vận Chuyển Nhà cung cấp",
-        "removeShippingProviderConfirm": "Bạn có chắc chắn muốn xóa {{provider}}?",
-        "shippingProviderSaved": "cung cấp dịch vụ vận chuyển lưu.",
-        "shippingProviderUpdated": "cung cấp dữ liệu vận chuyển được cập nhật.",
-        "shippingMethodRateAdded": "tỷ lệ phương pháp vận chuyển thêm.",
-        "shippingMethodRateUpdated": "phương pháp tỷ lệ vận chuyển được cập nhật.",
-        "name": "Tên",
-        "label": "Nhãn",
-        "group": "Nhóm",
-        "cost": "Giá cả",
-        "handling": "xử lý",
-        "rate": "Tỷ lệ",
-        "enabled": "Bật",
-        "disabled": "Tàn tật",
-        "addRate": "Thêm tỷ lệ",
-        "updateRate": "tốc độ cập nhật {{name}}",
-        "addNewCondition": "Thêm điều kiện mới",
-        "deleteCondition": "xóa điều kiện",
-        "provider": {
-          "name": "Mã dịch vụ",
-          "label": "Nhãn Công",
-          "enabled": "Bật"
-        }
-      },
-      "shippingMethod": {
-        "name": "Tên phương pháp",
-        "label": "Nhãn Công",
-        "group": "Nhóm",
-        "cost": "Giá cả",
-        "handling": "xử lý",
-        "rate": "Tỷ lệ",
-        "enabled": "Bật",
-        "matchingCartRanges": "Phù hợp với Ranges Giỏ hàng",
-        "validRanges": {
-          "begin": "bắt đầu",
-          "end": "Kết thúc"
-        },
-        "matchingLocales": "phù hợp với miền địa phương",
-        "validLocales": {
-          "origination": "Từ",
-          "destination": "Đến",
-          "deliveryBegin": "Vận Chuyển Est.",
-          "deliveryEnd": "Giao hàng Est."
-        }
       },
       "uom": {
         "OZ": "ounces",

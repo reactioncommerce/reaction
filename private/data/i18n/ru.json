@@ -56,6 +56,8 @@
       "app": {
         "add": "Создать",
         "editMode": "Режим редактирования",
+        "administratorView": "Администратор Просмотреть",
+        "customerView": "Клиент Просмотреть",
         "createContent": "Создать содержимое",
         "auto": "Автоматически",
         "save": "Сохранить",
@@ -90,7 +92,13 @@
         "notFoundError": "Страница, которую вы запрашиваете, не найдена.",
         "productNotFound": "This product was not found.",
         "loadMoreProducts": "Загрузить больше продуктов",
-        "noProductsFound": "Товар не найден."
+        "noProductsFound": "Товар не найден.",
+        "private": "Частный",
+        "public": "Общественного",
+        "shortcut": {
+          "addProductLabel": "Добавить продукт",
+          "accountsLabel": "Счета"
+        }
       },
       "searchSettings": {
         "productSearchSettings": {
@@ -300,9 +308,12 @@
         "variantDetails": "Детали варианта",
         "duplicateVariant": "Скопировать",
         "addVariantOption": "Добавить опцию",
+        "addVariantFail": "Невозможно создать вариант для {{title}}.",
+        "cloneVariantFail": "Невозможно клонировать вариант для {{title}}.",
         "removeVariant": "Удалить",
         "removeVariantConfirm": "Вы уверены, что хотите удалить {{title}}?",
         "restoreVariantConfirm": "Вы уверены, что хотите восстановить {{title}} из корзины?",
+        "restoreVariantFail": "Невозможно восстановить {{title}}.",
         "archiveVariantConfirm": "Вы уверены, что хотите заархивировать {{title}}",
         "thisVariant": "этот вариант",
         "thisOption": "эту опцию",
@@ -423,6 +434,8 @@
         "printLabels": "Печать этикеток",
         "printShippingLabel": "Перевозка",
         "printCustomsLabel": "Таможня",
+        "generateTracking": "Создавать этикетки и отслеживание",
+        "labelError": "Ошибка при создании отправка {{err}} этикетки",
         "carrier": "Носитель",
         "addTracking": "Добавить идентификатор",
         "itemsHaveBeenShipped": "Товары отправлены",
@@ -450,6 +463,8 @@
         "yourOrderIsNow": "Ваш заказ ",
         "summaryMessage": "Благодарим за заказ.",
         "submitted": "размещён",
+        "processing": "обработка",
+        "completed": "завершено",
         "registerGuest": "Здравствуйте! Добавьте email для получения обновлений заказа.",
         "trackYourDelivery": "Обновления заказа будут высланы на",
         "noOrdersFound": "Заказов не найдено.",
@@ -476,7 +491,8 @@
       "addressBookAdd": {
         "addAddress": "Добавить ещё адрес",
         "createAddress": "Добавить адрес по умолчанию",
-        "failedToAddAddress": "Добавить адрес не удалось: {{err}}"
+        "failedToAddAddress": "Добавить адрес не удалось: {{err}}",
+        "validatedAddress": "Внесли изменения в свой адрес на основании проверки. Пожалуйста, убедитесь, что это правильно"
       },
       "addressBookEdit": {
         "editAddress": "Редактирование адреса",
@@ -575,68 +591,6 @@
       },
       "checkoutReview": {
         "review": "Обзор"
-      },
-      "checkoutShipping": {
-        "selectShippingOption": "Выбор тарифа",
-        "noShippingMethods": "Ни один тариф не настроен.",
-        "configureNow": "Настроить сейчас.",
-        "shipping": "Доставка"
-      },
-      "shipping": {
-        "addShippingProvider": "Добавить поставщика услуг",
-        "editShippingProvider": "Редактировать поставщика",
-        "addShippingMethod": "Добавить тариф",
-        "editShippingMethod": "Редактировать тариф",
-        "deleteShippingMethod": "Удалить тариф",
-        "noSettingsForThisView": "Настройки отсутствуют",
-        "noShippingMethods": "Ни один тариф не настроен.",
-        "removeShippingMethodConfirm": "Вы уверены в том, что хотите удалить {{method}}?",
-        "removeShippingMethodTitle": "Удалить тариф",
-        "shippingMethodDeleted": "Этот тариф был удалён.",
-        "removeShippingProvider": "Удалить эту службу доставки",
-        "removeShippingProviderConfirm": "Вы уверены, что хотите удалить провайдера {{provider}}?",
-        "shippingProviderSaved": "Поставщик услуг по доставке сохранён.",
-        "shippingProviderUpdated": "Данные поставщика услуг по доставке обновлены.",
-        "shippingMethodRateAdded": "Тариф добавлен.",
-        "shippingMethodRateUpdated": "Тариф обновлён.",
-        "name": "Название",
-        "label": "Метка",
-        "group": "Группа",
-        "cost": "Стоимость",
-        "handling": "Комплектация",
-        "rate": "Ставка",
-        "enabled": "Включен",
-        "disabled": "Отключен",
-        "addRate": "Добавить ",
-        "updateRate": "Обновить тариф {{name}}",
-        "addNewCondition": "Добавить новое условие",
-        "deleteCondition": "Удалить условие",
-        "provider": {
-          "name": "Сервисный код",
-          "label": "Общедоступное название",
-          "enabled": "Подключен"
-        }
-      },
-      "shippingMethod": {
-        "name": "Название",
-        "label": "Метка",
-        "group": "Группа",
-        "cost": "Стоимость",
-        "handling": "Обслуживание",
-        "rate": "Ставка",
-        "enabled": "Включен",
-        "matchingCartRanges": "Соответствующий диапазон стоимости заказа",
-        "validRanges": {
-          "begin": "Минимальная стоимость заказа",
-          "end": "Максимальная стоимость заказа"
-        },
-        "matchingLocales": "Соответствующие зоны доставки",
-        "validLocales": {
-          "origination": "Откуда",
-          "destination": "Куда",
-          "deliveryBegin": "Ожидаемый срок комплектации",
-          "deliveryEnd": "Ожидаемый срок доставки"
-        }
       },
       "uom": {
         "OZ": "Унции",

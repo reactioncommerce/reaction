@@ -6,8 +6,6 @@ import {
   Divider,
   DropDownMenu,
   MenuItem,
-  Translation,
-  Toolbar,
   ToolbarGroup,
   Switch,
   Icon
@@ -203,6 +201,13 @@ class PublishControls extends Component {
   }
 
   renderPublishButton() {
+    const buttonProps = {};
+
+    if (Array.isArray(this.props.documentIds) && this.props.documentIds.length > 1) {
+      buttonProps.label = "Publish All";
+      buttonProps.i18nKeyLabel = "toolbar.publishAll";
+    }
+
     return (
       <Button
         bezelStyle="outline"
@@ -212,6 +217,7 @@ class PublishControls extends Component {
         status="success"
         tooltip={"This product has changes that need to be published before they are visible to your customers."}
         i18nKeyLabel="productDetailEdit.publish"
+        {...buttonProps}
       />
     );
   }
@@ -337,7 +343,7 @@ class PublishControls extends Component {
       <FlatButton
         onClick={() => {
           Reaction.showActionView({
-            i18nKeyTite: "dashboard.coreTitle",
+            i18nKeyTitle: "dashboard.coreTitle",
             title: "Dashboard",
             template: "dashboardPackages"
           });
@@ -345,18 +351,6 @@ class PublishControls extends Component {
       >
         <Icon style={{ fontSize: 24 }} icon="icon icon-reaction-logo" />
       </FlatButton>
-    );
-  }
-
-  renderVerticalDivider() {
-    return (
-      <div style={{
-        height: "20px",
-        width: 1,
-        backgroundColor: "#E6E6E6",
-        margin: "0 10px"
-      }}
-      />
     );
   }
 
@@ -385,14 +379,7 @@ class PublishControls extends Component {
       );
     }
 
-    return (
-      <div className="rui publish-controls">
-        <Translation
-          defaultValue="Revision control is disabled. Any changes will be published immediately."
-          i18nKey="revisions.isDisabled"
-        />
-      </div>
-    );
+    return null;
   }
 }
 

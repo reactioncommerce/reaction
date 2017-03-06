@@ -56,7 +56,9 @@
       },
       "app": {
         "add": "Add",
-        "editMode": "Edit mode",
+        "editMode": "Edit Mode",
+        "administratorView": "Administrator View",
+        "customerView": "Customer View",
         "createContent": "Create Content",
         "auto": "Auto",
         "save": "Save",
@@ -91,7 +93,13 @@
         "notFoundError": "Page not found.",
         "productNotFound": "This product was not found.",
         "loadMoreProducts": "Load more products",
-        "noProductsFound": "No products found."
+        "noProductsFound": "No products found.",
+        "private": "Private",
+        "public": "Public",
+        "shortcut": {
+          "addProductLabel": "Add Product",
+          "accountsLabel": "Accounts"
+        }
       },
       "searchSettings": {
         "productSearchSettings": {
@@ -132,7 +140,9 @@
         "shopOptionsSettingsSaved": "Shop options saved.",
         "shopOptionsSettingsFailed": "Shop options update failed.",
         "shopPaymentMethodsSaved": "Shop Payment Methods settings saved.",
-        "shopPaymentMethodsFailed": "Shop Payment Methods settings update failed."
+        "shopPaymentMethodsFailed": "Shop Payment Methods settings update failed.",
+        "shopBrandAssetsSaved": "Updated brand asset",
+        "shopBrandAssetsFailed": "Couldn't update brand asset"
       },
       "notifications": {
         "body": {
@@ -301,9 +311,12 @@
         "variantDetails": "Variant Details",
         "duplicateVariant": "Duplicate",
         "addVariantOption": "Add Option",
+        "addVariantFail": "Unable to create variant for {{title}}.",
+        "cloneVariantFail": "Unable to clone variant for {{title}}.",
         "removeVariant": "Remove",
         "removeVariantConfirm": "Are you sure you want to delete {{title}}",
         "restoreVariantConfirm": "Are you sure you want to restore {{title}} from the trash?",
+        "restoreVariantFail": "Unable to restore {{title}}.",
         "archiveVariantConfirm": "Are you sure you want to archive {{title}}",
         "thisVariant": "this variant",
         "thisOption": "this option",
@@ -421,12 +434,14 @@
         "notShipped": "Not Yet Shipped",
         "noTracking": "No Tracking",
         "tracking": "Tracking",
-        "printLabels": "Print Labels",
-        "printShippingLabel": "Shipping",
-        "printCustomsLabel": "Customs",
+        "printLabels": "Labels",
+        "printShippingLabel": "Print Shipping",
+        "printCustomsLabel": "Print Customs",
+        "generateTracking": "Generate Label and Tracking",
+        "labelError": "Error creating shipping label {{err}}",
         "carrier": "Carrier",
         "addTracking": "Add Tracking",
-        "itemsHaveBeenShipped": "Items have been shipped",
+        "itemsHaveBeenShipped": "All items have been shipped",
         "shipmentEmpty": "This shipment has no items",
         "shipmentPacked": "All Items Packed",
         "shipped": "Shipped",
@@ -439,7 +454,7 @@
         "orderDetails": "Order Details",
         "summary": "Summary",
         "invoice": "Invoice",
-        "shipmentTracking": "Shipment Tracking"
+        "shipmentTracking": "Shipment"
       },
       "cartCheckout": {
         "surprise": "Woah!",
@@ -451,6 +466,8 @@
         "yourOrderIsNow": "Your order is now",
         "summaryMessage": "Thank you for your order.",
         "submitted": "submitted",
+        "processing": "processing",
+        "completed": "completed",
         "registerGuest": "Hello! Add an email and receive order updates.",
         "trackYourDelivery": "Order updates will be sent to",
         "noOrdersFound": "No orders found.",
@@ -477,7 +494,8 @@
       "addressBookAdd": {
         "addAddress": "Add a new address entry",
         "createAddress": "Create your default address",
-        "failedToAddAddress": "Failed to add address: {{err}}"
+        "failedToAddAddress": "Failed to add address: {{err}}",
+        "validatedAddress": "Made changes to your address based upon validation. Please ensure this is correct"
       },
       "addressBookEdit": {
         "editAddress": "Editing this address entry",

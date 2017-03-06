@@ -1,0 +1,20 @@
+[{
+  "i18n": "it",
+  "ns": "reaction-accounts",
+  "translation": {
+    "reaction-accounts": {
+      "admin": {
+        "dashboard": {
+          "accountsLabel": "Conti",
+          "accountsTitle": "Conti",
+          "accountsDescription": "Impostazioni dell 'account"
+        },
+        "settings": {
+          "accountsSettingsLabel": "Conti",
+          "accountsSettingsTitle": "Conti",
+          "accountsSettingsDescription": "Impostazioni dell 'account"
+        }
+      }
+    }
+  }
+}]

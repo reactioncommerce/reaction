@@ -55,7 +55,7 @@ Meteor.methods({
     check(_id, String);
     check(doc, Object);
 
-    if (!Reaction.hasPermission("admin")) {
+    if (!Reaction.hasPermission("admin", this.userId, Reaction.getSellerShopId(this.userId))) {
       return;
     }
 

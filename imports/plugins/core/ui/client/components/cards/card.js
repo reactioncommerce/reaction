@@ -20,11 +20,11 @@ class Card extends Component {
   handleExpanderClick = (event) => {
     this.setState({
       expanded: !this.state.expanded
+    }, () => {
+      if (typeof this.props.onExpand === "function") {
+        this.props.onExpand(event, this, this.props.name, this.state.expanded);
+      }
     });
-
-    if (typeof this.props.onExpand === "function") {
-      this.props.onExpand(event, this);
-    }
   }
 
   render() {
@@ -46,11 +46,12 @@ class Card extends Component {
     const baseClassName = classnames({
       "panel": true,
       "panel-default": true,
-      "panel-active": this.state.expanded
+      "panel-active": this.state.expanded,
+      "closed": this.state.expanded === false
     });
 
     return (
-      <div className={baseClassName}>
+      <div className={baseClassName} style={this.props.style}>
         {elements}
       </div>
     );
@@ -66,7 +67,9 @@ Card.propTypes = {
   children: PropTypes.node,
   expandable: PropTypes.bool,
   expanded: PropTypes.bool,
-  onExpand: PropTypes.func
+  name: PropTypes.string,
+  onExpand: PropTypes.func,
+  style: PropTypes.object
 };
 
 export default Card;

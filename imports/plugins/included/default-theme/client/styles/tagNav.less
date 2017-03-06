@@ -47,8 +47,6 @@
 .rui.tagnav .rui.tag.edit.create {
   @color: lighten(@btn-success-bg, 10%);
   @color: @brand-secondary-color;
-  // @color: #238CC3;
-  // @color: @white;
 
   input {
     // background-color: @color;
@@ -62,7 +60,7 @@
     // background-color: @color;
     // border-color: @color;
     background-color: @white;
-    color: @color;
+    color: @brand-primary-color;
   }
 }
 
@@ -78,7 +76,6 @@
   .align-items(center);
 
   background-color: @navbar-inverse-bg;
-  position: relative;
   text-transform: uppercase;
   height: @navbar-height;
 }
@@ -96,16 +93,19 @@
   width: 270px;
   height: 100vh;
   -webkit-overflow-scrolling: touch;
-  z-index: @zindex-navbar;
+  z-index: @zindex-modal;
   box-shadow: 0 0 20px rgba(0,0,0,0.2);
+  transition: transform 250ms ease-in-out, box-shadow  250ms;
+  transform: translateX(-270px);
 }
 
 .rui.tagnav.fixed.open {
-  .display(flex);
+  transform: translateX(0);
 }
 
 .rui.tagnav.fixed.closed {
-  display: none;
+  transform: translateX(-270px);
+  box-shadow: 0 0 20px rgba(0,0,0,0);
 }
 
 // Tag navigation tag list
@@ -294,13 +294,18 @@
 }
 
 .rui.tagnav.vertical .navbar-item {
+  width: 100%;
   height: auto;
 }
 
 .rui.tagnav .navbar-item .dropdown-container {
   display: none;
   color: @text-color;
-  box-shadow: 0 0 20px rgba(0,0,0,.1);
+  box-shadow: 0 5px 12px -3px rgba(0,0,0,0.2);
+  border-radius: 0;
+  border: 0;
+  border-top: 1px solid @border-color;
+  border-bottom: 1px solid @border-color;
 }
 
 .rui.tagnav .navbar-item .dropdown-container a {
@@ -324,18 +329,23 @@
   position: absolute;
   top: @navbar-height;
   left: 0;
-  z-index: @zindex-navbar;
+  z-index: @zindex-modal;
   width: 100%;
+  max-width: 100%;
   margin: 0;
-
   background-color: @white;
-  border-bottom: 1px solid @border-color;
 }
 
 .rui.tagnav.vertical .navbar-item.selected .dropdown-container,
 .rui.tagnav.vertical .navbar-item .dropdown-container {
   // display: block !important;
   position: static;
+}
+
+.rui.tagnav.vertical .navbar-item.edit-button {
+  display: flex;
+  justify-content: center;
+  padding: 10px 0;
 }
 
 .nav-dropbar-content {
@@ -355,4 +365,18 @@
   list-style-type: none;
   margin: 0;
   padding: 0;
+}
+
+.rui.tagnav-overlay.fixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: @zindex-modal-background;
+}
+
+.rui.tagnav-overlay.closed {
+  display: none;
 }

@@ -9,8 +9,6 @@ import {
   VerticalDivider
 } from "/imports/plugins/core/ui/client/components";
 import { Translatable } from "/imports/plugins/core/ui/client/providers";
-
-/** TMP **/
 import { Reaction } from "/client/api";
 
 class PublishControls extends Component {
@@ -36,7 +34,7 @@ class PublishControls extends Component {
 
   onViewContextChange = (event, isChecked) => {
     if (typeof this.props.onViewContextChange === "function") {
-      this.props.onViewContextChange(event, isChecked ? "customer" : "administrator");
+      this.props.onViewContextChange(event, isChecked ? "administrator" : "customer");
     }
   }
 
@@ -65,9 +63,11 @@ class PublishControls extends Component {
   renderVisibilitySwitch() {
     return (
       <Switch
-        i18nKeyLabel={"app."}
-        label={"Preview"}
-        checked={this.props.isPreview}
+        i18nKeyLabel="app.editMode"
+        i18nKeyOnLabel="app.editMode"
+        label={"Edit Mode"}
+        onLabel={"Edit Mode"}
+        checked={!this.props.isPreview}
         onChange={this.onViewContextChange}
       />
     );
@@ -78,7 +78,7 @@ class PublishControls extends Component {
       <FlatButton
         onClick={() => {
           Reaction.showActionView({
-            i18nKeyTite: "dashboard.coreTitle",
+            i18nKeyTitle: "dashboard.coreTitle",
             title: "Dashboard",
             template: "dashboardPackages"
           });
@@ -92,7 +92,7 @@ class PublishControls extends Component {
   renderAddButton() {
     return (
       <FlatButton
-        i18nKeyTooltip={"app.shortcut.addProduct"}
+        i18nKeyTooltip="app.shortcut.addProductLabel"
         icon={"fa fa-plus"}
         tooltip={"Add Product"}
         onClick={this.props.onAddProduct}
@@ -114,8 +114,13 @@ class PublishControls extends Component {
 
   renderCustomControls() {
     if (this.props.dashboardHeaderTemplate) {
+      if (this.props.isEnabled) {
+        return [
+          <VerticalDivider key="customControlsVerticaldivider" />,
+          <Blaze key="customControls" template={this.props.dashboardHeaderTemplate()} />
+        ];
+      }
       return [
-        <VerticalDivider key="customControlsVerticaldivider" />,
         <Blaze key="customControls" template={this.props.dashboardHeaderTemplate()} />
       ];
     }

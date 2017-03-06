@@ -1,0 +1,20 @@
+[{
+  "i18n": "hr",
+  "ns": "reaction-accounts",
+  "translation": {
+    "reaction-accounts": {
+      "admin": {
+        "dashboard": {
+          "accountsLabel": "Računi",
+          "accountsTitle": "Računi",
+          "accountsDescription": "Postavke računa"
+        },
+        "settings": {
+          "accountsSettingsLabel": "Računi",
+          "accountsSettingsTitle": "Računi",
+          "accountsSettingsDescription": "Postavke računa"
+        }
+      }
+    }
+  }
+}]

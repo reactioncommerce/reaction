@@ -2,7 +2,7 @@ import _ from "lodash";
 import React from "react";
 import { DataType } from "react-taco-table";
 import { Template } from "meteor/templating";
-import { Reaction, Router, i18next } from "/client/api";
+import { Reaction, i18next } from "/client/api";
 import { SortableTable } from "/imports/plugins/core/ui/client/components";
 
 
@@ -24,7 +24,7 @@ Template.searchModal.helpers({
         id: "_id",
         type: DataType.String,
         header: i18next.t("search.orderSearchResults.orderId", { defaultValue: "Order ID" }),
-        renderer(cellData, { column, rowData }) {
+        renderer(cellData) { // eslint-disable-line react/no-multi-comp
           return <a data-event-action="goToOrder" data-event-data={cellData}>{cellData}</a>;
         }
       },
@@ -92,7 +92,7 @@ Template.searchModal.helpers({
           return rowData.shippingStatus;
         },
         tdClassName: "shipping-status",
-        renderer(cellData, { column, rowData }) {
+        renderer(cellData, { rowData }) { // eslint-disable-line react/no-multi-comp
           const rowClassName = _.lowerCase(rowData.shippingStatus);
           return <span className={rowClassName}>{cellData}</span>;
         }

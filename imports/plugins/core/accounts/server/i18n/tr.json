@@ -1,0 +1,20 @@
+[{
+  "i18n": "tr",
+  "ns": "reaction-accounts",
+  "translation": {
+    "reaction-accounts": {
+      "admin": {
+        "dashboard": {
+          "accountsLabel": "Hesaplar",
+          "accountsTitle": "Hesaplar",
+          "accountsDescription": "Hesap Ayarları"
+        },
+        "settings": {
+          "accountsSettingsLabel": "Hesaplar",
+          "accountsSettingsTitle": "Hesaplar",
+          "accountsSettingsDescription": "Hesap Ayarları"
+        }
+      }
+    }
+  }
+}]

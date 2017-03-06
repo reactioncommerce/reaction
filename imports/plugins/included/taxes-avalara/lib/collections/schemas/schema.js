@@ -19,6 +19,22 @@ export const AvalaraPackageConfig = new SimpleSchema([
     "settings.avalara.apiLoginId": {
       type: String,
       label: "Avalara API Login ID"
+    },
+    "settings.avalara.username": {
+      type: String
+    },
+    "settings.avalara.password": {
+      type: String
+    },
+    "settings.avalara.mode": {
+      label: "Production Mode",
+      type: Boolean,
+      defaultValue: false
+    },
+    "settings.addressValidation.enabled": {
+      label: "Address Validation",
+      type: Boolean,
+      defaultValue: false
     }
   }
 ]);

@@ -5,12 +5,16 @@
     "reaction-revisions": {
       "admin": {
         "dashboard": {
+          "preview": "predogled",
           "revisionsLabel": "Revizije",
           "revisionsTitle": "Revizije",
           "revisionsDescription": "nadzor revizija"
         },
         "settings": {
           "productRevisionsLabel": "Revizije izdelka"
+        },
+        "toolbar": {
+          "publishAll": "objavi Vse"
         }
       }
     }

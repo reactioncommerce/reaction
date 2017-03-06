@@ -5,12 +5,16 @@
     "reaction-revisions": {
       "admin": {
         "dashboard": {
+          "preview": "Xem trước",
           "revisionsLabel": "Revisions",
           "revisionsTitle": "Revisions",
           "revisionsDescription": "kiểm soát sửa đổi"
         },
         "settings": {
           "productRevisionsLabel": "Sửa đổi sản phẩm"
+        },
+        "toolbar": {
+          "publishAll": "Xuất bản Tất cả"
         }
       }
     }

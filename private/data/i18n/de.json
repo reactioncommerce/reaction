@@ -56,6 +56,8 @@
       "app": {
         "add": "Hinzufügen",
         "editMode": "Bearbeitungs-Modus",
+        "administratorView": "Administrator anzeigen",
+        "customerView": "Kundensicht",
         "createContent": "Inhalt erstellen",
         "auto": "Automatisch",
         "save": "Speichern",
@@ -90,7 +92,13 @@
         "notFoundError": "Die Seite wurde nicht gefunden. ",
         "productNotFound": "Dieses Produkt wurde nicht gefunden.",
         "loadMoreProducts": "Weitere Produkte laden",
-        "noProductsFound": "Es wurden keine Produkte gefunden"
+        "noProductsFound": "Es wurden keine Produkte gefunden",
+        "private": "Privat",
+        "public": "Öffentliche",
+        "shortcut": {
+          "addProductLabel": "Produkt hinzufügen",
+          "accountsLabel": "Buchhaltung"
+        }
       },
       "searchSettings": {
         "productSearchSettings": {
@@ -300,9 +308,12 @@
         "variantDetails": "Varianten-Details",
         "duplicateVariant": "Duplizieren",
         "addVariantOption": "Option hinzufügen",
+        "addVariantFail": "Unfähig Variante für {{title}} zu erstellen.",
+        "cloneVariantFail": "Unfähig Variante für {{title}} zu klonen.",
         "removeVariant": "Entfernen",
         "removeVariantConfirm": "Sind Sie sicher, dass Sie {{title}} löschen möchten?",
         "restoreVariantConfirm": "Sind Sie sicher, dass Sie {{title}} aus dem Papierkorb wiederherstellen möchten?",
+        "restoreVariantFail": "Unfähig {{title}} wiederherzustellen.",
         "archiveVariantConfirm": "Soll {{title}} wirklich archiviert werden?",
         "thisVariant": "diese Variante",
         "thisOption": "diese Option",
@@ -423,6 +434,8 @@
         "printLabels": "Etiketten drucken",
         "printShippingLabel": "Versand",
         "printCustomsLabel": "Zoll",
+        "generateTracking": "Generieren Sie Etikett und Tracking",
+        "labelError": "Fehler beim Erstellen der Versandetikett {{err}}",
         "carrier": "Träger",
         "addTracking": "Tracking hinzufügen",
         "itemsHaveBeenShipped": "Artikel wurden gesendet",
@@ -450,6 +463,8 @@
         "yourOrderIsNow": "Im Warenkorb",
         "summaryMessage": "Vielen Dank für Ihren Einkauf.",
         "submitted": "gesendet",
+        "processing": "Verarbeitung",
+        "completed": "fertiggestellt",
         "registerGuest": "Bei Eingabe Ihrer E-Mail-Adresse benachrichtigen wir Sie über Artikelupdates.",
         "trackYourDelivery": "Ihre Bestellung wird verschickt an",
         "noOrdersFound": "Keine Bestellung vorhanden.",
@@ -476,7 +491,8 @@
       "addressBookAdd": {
         "addAddress": "Neuen Adresse anlegen",
         "createAddress": "Standardadresse festlegen",
-        "failedToAddAddress": "Die Adresse konnte nicht hinzugefügt werden: {{err}}"
+        "failedToAddAddress": "Die Adresse konnte nicht hinzugefügt werden: {{err}}",
+        "validatedAddress": "Änderungen an Ihrer Adresse auf der Basis Validierung. Bitte stellen Sie sicher, das ist richtig"
       },
       "addressBookEdit": {
         "editAddress": "Adresse editieren",
@@ -575,68 +591,6 @@
       },
       "checkoutReview": {
         "review": "Durchsicht"
-      },
-      "checkoutShipping": {
-        "selectShippingOption": "Bitte Versandmethode wählen.",
-        "noShippingMethods": "Es wurde keine Versandmethode festgelegt.",
-        "configureNow": "Einstellungen vornehmen.",
-        "shipping": "Versand"
-      },
-      "shipping": {
-        "addShippingProvider": "Versand-Anbieter hinzufügen",
-        "editShippingProvider": "Versand-Anbieter bearbeiten",
-        "addShippingMethod": "Versandart hinzufügen",
-        "editShippingMethod": "Versandart bearbeiten",
-        "deleteShippingMethod": "Versandart löschen",
-        "noSettingsForThisView": "Keine Einstellungen für diese Anzeige",
-        "noShippingMethods": "Es wurden keine Versandarten konfiguriert.",
-        "removeShippingMethodConfirm": "Sind Sie sicher, dass Sie {{method}} löschen möchten?",
-        "removeShippingMethodTitle": "Versandart entfernen",
-        "shippingMethodDeleted": "Diese Versandart wurde gelöscht.",
-        "removeShippingProvider": "Versand-Anbieter entfernen",
-        "removeShippingProviderConfirm": "Sind Sie sicher, dass Sie {{provider}} löschen möchten?",
-        "shippingProviderSaved": "Der Versand-Anbieter wurde gespeichert.",
-        "shippingProviderUpdated": "Die Daten des Versand-Anbieters wurden aktualisiert.",
-        "shippingMethodRateAdded": "Der Preis der Versandart wurde hinzugefügt.",
-        "shippingMethodRateUpdated": "Der Versandart-Preis wurde aktualisiert.",
-        "name": "Name",
-        "label": "Label",
-        "group": "Gruppe",
-        "cost": "Kosten",
-        "handling": "Bearbeitung",
-        "rate": "Preis",
-        "enabled": "Aktiviert",
-        "disabled": "Deaktiviert",
-        "addRate": "Satz hinzufügen",
-        "updateRate": "Preis von {{name}} aktualisieren",
-        "addNewCondition": "Neue Bedingung hinzufügen",
-        "deleteCondition": "Bedingung löschen",
-        "provider": {
-          "name": "Dienstcode",
-          "label": "Öffentliches Label",
-          "enabled": "Aktiviert"
-        }
-      },
-      "shippingMethod": {
-        "name": "Bezeichnung der Methode",
-        "label": "Öffentliches Label",
-        "group": "Gruppe",
-        "cost": "Kosten",
-        "handling": "Bearbeitung",
-        "rate": "Preis",
-        "enabled": "Aktiviert",
-        "matchingCartRanges": "Passende Warenkorb-Auswahl",
-        "validRanges": {
-          "begin": "Beginn",
-          "end": "Beenden"
-        },
-        "matchingLocales": "Passende Standorte",
-        "validLocales": {
-          "origination": "Von",
-          "destination": "An",
-          "deliveryBegin": "Geschätzter Versandtermin.",
-          "deliveryEnd": "Geschätzter Liefertermin"
-        }
       },
       "uom": {
         "OZ": "Unzen",

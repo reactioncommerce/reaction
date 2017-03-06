@@ -5,12 +5,16 @@
     "reaction-revisions": {
       "admin": {
         "dashboard": {
+          "preview": "Voorbeeld",
           "revisionsLabel": "herzieningen",
           "revisionsTitle": "herzieningen",
           "revisionsDescription": "controle Revision"
         },
         "settings": {
           "productRevisionsLabel": "product revisies"
+        },
+        "toolbar": {
+          "publishAll": "Alle publiceren"
         }
       }
     }

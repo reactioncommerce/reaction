@@ -66,6 +66,7 @@ export default {
     // Match.Optional(String));
 
     let permissions;
+    let group;
     // default group to the shop or global if shop isn't defined for some reason.
     if (checkGroup !== undefined && typeof checkGroup === "string") {
       group = checkGroup;
@@ -92,7 +93,7 @@ export default {
     }
 
     // global roles check
-    const sellerShopPermissions = Roles.getGroupsForUser(userId, "admin");
+    /*const sellerShopPermissions = Roles.getGroupsForUser(userId, "admin");
 
     // we're looking for seller permissions.
     if (sellerShopPermissions) {
@@ -105,7 +106,7 @@ export default {
           }
         }
       }
-    }
+    }*/
     // no specific permissions found returning false
     return false;
   },
@@ -211,17 +212,6 @@ export default {
     }
 
     return Packages.findOne(query);
-  },
-
-  /**
-   * Check if package is enabled
-   * @param  {String}  name - Package name
-   * @return {Boolean}      True if the package is enabled
-   */
-  isPackageEnabled(name) {
-    const settings = this.getPackageSettings(name);
-
-    return !!settings.enabled;
   },
 
   /**

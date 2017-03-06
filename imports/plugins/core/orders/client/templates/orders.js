@@ -4,6 +4,13 @@ import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { Reaction, i18next } from "/client/api";
 import { Orders, Shops } from "/lib/collections";
+import OrdersActionContainer from "../containers/ordersActionContainer";
+import {
+  PACKAGE_NAME,
+  ORDER_LIST_FILTERS_PREFERENCE_NAME,
+  ORDER_LIST_SELECTED_ORDER_PREFERENCE_NAME,
+  DEFAULT_FILTER_NAME
+} from "../../lib/constants";
 
 const orderFilters = [{
   name: "new",
@@ -86,11 +93,14 @@ Template.orders.onCreated(function () {
     orders: []
   });
 
+  const filterName = this.data && this.data.filter && this.data.filter.name || "new";
+  Reaction.setUserPreferences(PACKAGE_NAME, ORDER_LIST_FILTERS_PREFERENCE_NAME, filterName);
+
   // Watch for updates to the subscription and query params
   // fetch available orders
   this.autorun(() => {
     this.subscribe("Orders");
-    const filter = this.data && this.data.filter && this.data.filter.name || Reaction.Router.getQueryParam("filter");
+    const filter = Reaction.getUserPreferences(PACKAGE_NAME, ORDER_LIST_FILTERS_PREFERENCE_NAME, DEFAULT_FILTER_NAME);
     const query = OrderHelper.makeQuery(filter);
     const orders = Orders.find(query).fetch();
 
@@ -111,6 +121,15 @@ Template.orders.onCreated(function () {
  * orders helpers
  */
 Template.orders.helpers({
+  FilterComponent() {
+    return {
+      component: OrdersActionContainer,
+      onActionClick(filter) {
+        Reaction.setUserPreferences(PACKAGE_NAME, ORDER_LIST_FILTERS_PREFERENCE_NAME, filter.name);
+        Reaction.setUserPreferences(PACKAGE_NAME, ORDER_LIST_SELECTED_ORDER_PREFERENCE_NAME, null);
+      }
+    };
+  },
   itemProps(order) {
     return {
       order,
@@ -146,7 +165,10 @@ Template.ordersListItem.helpers({
     return Template.currentData().order;
   },
   activeClassname(orderId) {
-    if (Reaction.Router.getQueryParam("_id") === orderId) {
+    // const Reaction.setUserPreferences(PACKAGE_NAME, ORDER_LIST_FILTERS_PREFERENCE_NAME, filter.name)
+    const selectedOrderId = Reaction.getUserPreferences(PACKAGE_NAME, ORDER_LIST_SELECTED_ORDER_PREFERENCE_NAME);
+
+    if (selectedOrderId === orderId) {
       return "active";
     }
     return "";
@@ -161,23 +183,11 @@ Template.ordersListItem.events({
   "click [data-event-action=selectOrder]": function (event) {
     event.preventDefault();
     const instance = Template.instance();
-    const isActionViewOpen = Reaction.isActionViewOpen();
-    // toggle detail views
-    // if (isActionViewOpen === false) {
-    //   Reaction.showActionView({
-    //     label: "Order Details",
-    //     i18nKeyLabel: "orderWorkflow.orderDetails",
-    //     data: instance.data.order,
-    //     props: {
-    //       size: "large"
-    //     },
-    //     template: "coreOrderWorkflow"
-    //   });
-    // }
-    // Reaction.Router.setQueryParams({
-    //   _id: instance.data.order._id
-    // });
 
+    // Set selected order in user preference
+    Reaction.setUserPreferences(PACKAGE_NAME, ORDER_LIST_SELECTED_ORDER_PREFERENCE_NAME, instance.data.order._id);
+
+    // Show the action view - detail view
     Reaction.setActionViewDetail({
       label: "Order Details",
       i18nKeyLabel: "orderWorkflow.orderDetails",
@@ -208,6 +218,8 @@ Template.ordersListItem.events({
       const sms = true;
       Meteor.call("notification/send", userId, type, url, sms);
     }
+
+    Reaction.setUserPreferences(PACKAGE_NAME, ORDER_LIST_FILTERS_PREFERENCE_NAME, "processing");
 
     // toggle detail views
     if (isActionViewOpen === false) {
@@ -255,10 +267,9 @@ Template.orderListFilters.events({
     if (isActionViewOpen === true) {
       Reaction.hideActionView();
     }
-    Reaction.Router.setQueryParams({
-      filter: filter,
-      _id: null
-    });
+
+    Reaction.setUserPreferences(PACKAGE_NAME, ORDER_LIST_FILTERS_PREFERENCE_NAME, filter);
+    Reaction.setUserPreferences(PACKAGE_NAME, ORDER_LIST_SELECTED_ORDER_PREFERENCE_NAME, null);
   }
 });
 

@@ -56,6 +56,8 @@
       "app": {
         "add": "ပေါင်း",
         "editMode": "Edit ကို mode ကို",
+        "administratorView": "အုပ်ချုပ်ရေးမှူးကြည့်ရန်",
+        "customerView": "ဖောက်သည်ကြည့်ရန်",
         "createContent": "အကြောင်းအရာ Create",
         "auto": "အော်တို",
         "save": "ကြော်ငြာကို Save လုပ်ရန်",
@@ -90,7 +92,13 @@
         "notFoundError": "စာမကျြနှာမတှေ့။",
         "productNotFound": "ဒီထုတ်ကုန်မတွေ့ရှိခဲ့သည်။",
         "loadMoreProducts": "ပိုပြီးထုတ်ကုန် load",
-        "noProductsFound": "အဘယ်သူမျှမကုန်ပစ္စည်းများတွေ့ရှိခဲ့ပါတယ်။"
+        "noProductsFound": "အဘယ်သူမျှမကုန်ပစ္စည်းများတွေ့ရှိခဲ့ပါတယ်။",
+        "private": "ကိုယ်ပိုင်",
+        "public": "ပြည်သူ့",
+        "shortcut": {
+          "addProductLabel": "ကုန်ပစ္စည်း Add",
+          "accountsLabel": "ငွေစာရင်း"
+        }
       },
       "searchSettings": {
         "productSearchSettings": {
@@ -300,9 +308,12 @@
         "variantDetails": "မူကွဲအသေးစိတ်",
         "duplicateVariant": "မူရငျးခှဲ",
         "addVariantOption": "Option ကို Add",
+        "addVariantFail": "{{title}} ဘို့မူကွဲကိုဖန်တီးရန်မဖြစ်နိုင်ပါ။",
+        "cloneVariantFail": "{{title}} ဘို့မူကွဲ clone လို့မရနိုင်ပါ။",
         "removeVariant": "Remove",
         "removeVariantConfirm": "သငျသညျ {{title}} သင်ဖျက်လိုတာသေချာ",
         "restoreVariantConfirm": "သင်အမှိုက်မှ {{title}} restore ချင်သေချာလား?",
+        "restoreVariantFail": "{{title}} restore လုပ်လို့မရနိုင်ပါ။",
         "archiveVariantConfirm": "သငျသညျ {{title}} archive လုပ်ချင်တဲ့သင်သေချာလား",
         "thisVariant": "ဒီမူကွဲ",
         "thisOption": "ဒီ option",
@@ -423,6 +434,8 @@
         "printLabels": "ပုံနှိပ်ပါ Labels:",
         "printShippingLabel": "သင်္ဘောဖြင့်ကုန်ပစ္စည်းပို့ခြင်း",
         "printCustomsLabel": "အခွန်ဌာန",
+        "generateTracking": "တံဆိပ်နှင့်ခြေရာကောက် Generate",
+        "labelError": "ရေကြောင်းတံဆိပ်ဖန်တီးခြင်းအမှား {{err}}",
         "carrier": "လေယာဉ်တင်သင်္ဘော",
         "addTracking": "ခြေရာကောက် Add",
         "itemsHaveBeenShipped": "items တင်ပို့ခဲ့ကြ",
@@ -450,6 +463,8 @@
         "yourOrderIsNow": "သင့်ရဲ့အမိန့်သည်ယခု",
         "summaryMessage": "သင့်ရဲ့အမိန့်ပေးသည့်အတွက်ကျေးဇူးတင်ပါသည်။",
         "submitted": "တင်သွင်း",
+        "processing": "အပြောင်းအလဲနဲ့",
+        "completed": "ပြီးစီး",
         "registerGuest": "ဟလို! အီးမေးလ်တစ်စောင် Add နှင့်အမိန့် updates များကိုလက်ခံရရှိသည်။",
         "trackYourDelivery": "အမိန့် updates တွေကိုအပို့ခံရလိမျ့မညျ",
         "noOrdersFound": "အဘယ်သူမျှမမိန့်တွေ့ရှိခဲ့ပါတယ်။",
@@ -476,7 +491,8 @@
       "addressBookAdd": {
         "addAddress": "လိပ်စာအသစ်ထည့်ရန်",
         "createAddress": "သုံးနေကျ လိပ်စာဖြည့်စွက်ပါ",
-        "failedToAddAddress": "လိပ်စာကိုထည့်ရန်မအောင်မြင်: {{err}}"
+        "failedToAddAddress": "လိပ်စာကိုထည့်ရန်မအောင်မြင်: {{err}}",
+        "validatedAddress": "အတည်ပြုအပေါ်မှာအခြေခံသင့်ရဲ့လိပ်စာမှစသောအပြောင်းအလဲလုပ်လေ၏။ ဒီမှန်ကန်သေချာ ကျေးဇူးပြု."
       },
       "addressBookEdit": {
         "editAddress": "ဒီလိပ်စာ entry ကိုတည်းဖြတ်ခြင်း",
@@ -575,68 +591,6 @@
       },
       "checkoutReview": {
         "review": "ဆန်းစစ်ခြင်း"
-      },
-      "checkoutShipping": {
-        "selectShippingOption": "ရေကြောင်း option ကို Select လုပ်ပါ",
-        "noShippingMethods": "အဘယ်သူမျှမရေကြောင်းနည်းလမ်းများ configured ကြသည်။",
-        "configureNow": "ယခု configure ။",
-        "shipping": "သင်္ဘောဖြင့်ကုန်ပစ္စည်းပို့ခြင်း"
-      },
-      "shipping": {
-        "addShippingProvider": "ရေကြောင်းပံ့ပိုးပေး Add",
-        "editShippingProvider": "Edit ကိုရေကြောင်းပံ့ပိုးပေး",
-        "addShippingMethod": "ရေကြောင်းနည်းလမ်း Add",
-        "editShippingMethod": "Edit ကိုရေကြောင်းနည်းလမ်း",
-        "deleteShippingMethod": "ရေကြောင်းနည်းလမ်းဖျက်ပစ်ပါ",
-        "noSettingsForThisView": "ဒီအမြင်အဘို့အဘယ်သူမျှမကအပြင်အဆင်များ",
-        "noShippingMethods": "အဘယ်သူမျှမရေကြောင်းနည်းလမ်းများ configured ကြသည်။",
-        "removeShippingMethodConfirm": "သငျသညျ {{method}} သင်ဖျက်လိုသည်မှာသေချာပါသလား",
-        "removeShippingMethodTitle": "သဘောင်္တင်ခ Method ကို Remove",
-        "shippingMethodDeleted": "ဒီသင်္ဘောနည်းလမ်းဖျက်ထားသည်။",
-        "removeShippingProvider": "သဘောင်္တင်ခပေးသူ Remove",
-        "removeShippingProviderConfirm": "သငျသညျ {{provider}} သင်ဖျက်လိုသည်မှာသေချာပါသလား",
-        "shippingProviderSaved": "သဘောင်္တင်ပံ့ပိုးပေးသူကယ်လွှတ်တော်မူ၏။",
-        "shippingProviderUpdated": "သဘောင်္တင်ပံ့ပိုးပေးသူဒေတာ updated ။",
-        "shippingMethodRateAdded": "သဘောင်္တင်ခနည်းလမ်းမှုနှုန်းကဆက်ပြောသည်။",
-        "shippingMethodRateUpdated": "updated သဘောင်္တင်နည်းလမ်းနှုန်းသည်။",
-        "name": "နာမကိုအမှီ",
-        "label": "တံဆိပ်",
-        "group": "Group က",
-        "cost": "ပေးရ",
-        "handling": "ကိုင်တွယ်",
-        "rate": "rate",
-        "enabled": "enabled",
-        "disabled": "မသန်စွမ်း",
-        "addRate": "နှုန်းမှာ Add",
-        "updateRate": "Update ကို {{name}} မှုနှုန်း",
-        "addNewCondition": "အသစ်အခွအေနေ Add",
-        "deleteCondition": "အခွအေနေဖျက်ပစ်ပါ",
-        "provider": {
-          "name": "Service ကို Code ကို",
-          "label": "ပြည်သူ့တံဆိပ်",
-          "enabled": "enabled"
-        }
-      },
-      "shippingMethod": {
-        "name": "method ကိုအမည်",
-        "label": "ပြည်သူ့တံဆိပ်",
-        "group": "Group က",
-        "cost": "ပေးရ",
-        "handling": "ကိုင်တွယ်",
-        "rate": "rate",
-        "enabled": "enabled",
-        "matchingCartRanges": "ကိုက်ညီတဲ့လှည်းတောင်တန်း",
-        "validRanges": {
-          "begin": "အစ",
-          "end": "အဆုံး"
-        },
-        "matchingLocales": "ကိုက်ညီတဲ့ဒေသခံ",
-        "validLocales": {
-          "origination": "မှ",
-          "destination": "သို့",
-          "deliveryBegin": "သဘောင်္တင်ခ Est ။",
-          "deliveryEnd": "Delivery Est ။"
-        }
       },
       "uom": {
         "OZ": "အောင်စ",

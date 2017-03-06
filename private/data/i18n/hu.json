@@ -56,6 +56,8 @@
       "app": {
         "add": "Add",
         "editMode": "Szerkesztés módban",
+        "administratorView": "Administrator megtekintése",
+        "customerView": "ügyfélkép",
         "createContent": "tartalom létrehozása",
         "auto": "kocsi",
         "save": "Mentés",
@@ -90,7 +92,13 @@
         "notFoundError": "Az oldal nem található.",
         "productNotFound": "Ez a termék nem található.",
         "loadMoreProducts": "Töltsön több termék",
-        "noProductsFound": "Nem talált termékek."
+        "noProductsFound": "Nem talált termékek.",
+        "private": "Magán",
+        "public": "Nyilvános",
+        "shortcut": {
+          "addProductLabel": "Termék hozzáadása",
+          "accountsLabel": "Fiókok"
+        }
       },
       "searchSettings": {
         "productSearchSettings": {
@@ -300,9 +308,12 @@
         "variantDetails": "Variant Részletek",
         "duplicateVariant": "Másolat",
         "addVariantOption": "Opció hozzáadása",
+        "addVariantFail": "Nem sikerült létrehozni a variáns {{title}}.",
+        "cloneVariantFail": "Nem sikerült klónozni változatot {{title}}.",
         "removeVariant": "Távolítsuk",
         "removeVariantConfirm": "Biztosan törölni szeretné {{title}}",
         "restoreVariantConfirm": "Biztos, hogy vissza akarja állítani {{title}} a szemetet?",
+        "restoreVariantFail": "Nem lehet visszaállítani {{title}}.",
         "archiveVariantConfirm": "Biztosan archiválni szeretné {{title}}",
         "thisVariant": "ez a változat",
         "thisOption": "ezt a lehetőséget",
@@ -423,6 +434,8 @@
         "printLabels": "Nyomtatás címkék",
         "printShippingLabel": "Szállítás",
         "printCustomsLabel": "Vám",
+        "generateTracking": "Létrehoz Label és nyomon követés",
+        "labelError": "Nem sikerült létrehozni a szállítási címke {{err}}",
         "carrier": "Hordozó",
         "addTracking": "Add követés",
         "itemsHaveBeenShipped": "Tételek szállítása megtörtént",
@@ -450,6 +463,8 @@
         "yourOrderIsNow": "Megrendelésed most",
         "summaryMessage": "Köszönjük a megrendelést.",
         "submitted": "elküldve",
+        "processing": "feldolgozás",
+        "completed": "befejezték",
         "registerGuest": "Email cím megadásával kaphatsz értesítést rendelésed állapotáról.",
         "trackYourDelivery": "Megrendelésedről az értesítéseket ide küldjük",
         "noOrdersFound": "Nincs megrendelés.",
@@ -476,7 +491,8 @@
       "addressBookAdd": {
         "addAddress": "Adj meg új címet",
         "createAddress": "Hozd létre elsődleges címed",
-        "failedToAddAddress": "Nem sikerült hozzáadni címe: {{err}}"
+        "failedToAddAddress": "Nem sikerült hozzáadni címe: {{err}}",
+        "validatedAddress": "Módosította a cím alapján érvényesítés. Kérjük, ellenőrizze ezt a helyes"
       },
       "addressBookEdit": {
         "editAddress": "Cím szerkesztése",
@@ -575,68 +591,6 @@
       },
       "checkoutReview": {
         "review": "Ellenőrzés"
-      },
-      "checkoutShipping": {
-        "selectShippingOption": "Válassz szállítási módot",
-        "noShippingMethods": "Szállítási mód nincs beállítva.",
-        "configureNow": "Beállítás most.",
-        "shipping": "Szállítás"
-      },
-      "shipping": {
-        "addShippingProvider": "Add szállítási szolgáltató",
-        "editShippingProvider": "Szállítás szerkesztése szolgáltató",
-        "addShippingMethod": "Add szállítási mód",
-        "editShippingMethod": "Szállítási mód szerkesztése",
-        "deleteShippingMethod": "Törlés szállítási mód",
-        "noSettingsForThisView": "Nincs beállítás ehhez a nézethez",
-        "noShippingMethods": "Nincs szállítási módszerek vannak beállítva.",
-        "removeShippingMethodConfirm": "Biztosan törölni szeretné {{method}}?",
-        "removeShippingMethodTitle": "Távolítsuk Szállítás módja",
-        "shippingMethodDeleted": "Ez a szállítási mód törölték.",
-        "removeShippingProvider": "Távolítsuk el a Szállítási Szolgáltató",
-        "removeShippingProviderConfirm": "Biztosan törölni szeretné {{provider}}?",
-        "shippingProviderSaved": "Szállítási szolgáltató mentve.",
-        "shippingProviderUpdated": "Szállítási szolgáltató adatai módosítva.",
-        "shippingMethodRateAdded": "Szállítási mód arány hozzá.",
-        "shippingMethodRateUpdated": "Szállítási mód sebesség frissíteni.",
-        "name": "Név",
-        "label": "Címke",
-        "group": "Csoport",
-        "cost": "Költség",
-        "handling": "Kezelése",
-        "rate": "Arány",
-        "enabled": "Engedélyezett",
-        "disabled": "Tiltva",
-        "addRate": "Add ráta",
-        "updateRate": "Frissítés {{name}} ráta",
-        "addNewCondition": "Új állapot",
-        "deleteCondition": "Törlés állapotban",
-        "provider": {
-          "name": "Service Code",
-          "label": "Public Label",
-          "enabled": "Engedélyezett"
-        }
-      },
-      "shippingMethod": {
-        "name": "módszer neve",
-        "label": "Public Label",
-        "group": "Csoport",
-        "cost": "Költség",
-        "handling": "Kezelése",
-        "rate": "Arány",
-        "enabled": "Engedélyezett",
-        "matchingCartRanges": "Matching Cart tartományok",
-        "validRanges": {
-          "begin": "Kezdődik",
-          "end": "vég"
-        },
-        "matchingLocales": "Matching Nyelv",
-        "validLocales": {
-          "origination": "Ból ből",
-          "destination": "Nak nek",
-          "deliveryBegin": "Szállítási Est.",
-          "deliveryEnd": "Szállítási Est."
-        }
       },
       "uom": {
         "OZ": "uncia",

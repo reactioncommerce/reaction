@@ -5,12 +5,16 @@
     "reaction-revisions": {
       "admin": {
         "dashboard": {
+          "preview": "предварителен преглед",
           "revisionsLabel": "ревизии",
           "revisionsTitle": "ревизии",
           "revisionsDescription": "контрол на контрол"
         },
         "settings": {
           "productRevisionsLabel": "ревизии на продукта"
+        },
+        "toolbar": {
+          "publishAll": "публикува всички"
         }
       }
     }

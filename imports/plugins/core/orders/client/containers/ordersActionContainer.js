@@ -1,20 +1,10 @@
 import React from "react";
 import { Meteor } from "meteor/meteor";
-import { Orders, Shops } from "/lib/collections";
+import { Orders } from "/lib/collections";
 import { Reaction, i18next } from "/client/api";
 import { composeWithTracker } from "/lib/api/compose";
 import OrderActions from "../components/orderActions";
-
-const orderFilters = [{
-  name: "new",
-  label: "New"
-}, {
-  name: "processing",
-  label: "Processing"
-}, {
-  name: "completed",
-  label: "Completed"
-}];
+import * as Constants from "../../lib/constants";
 
 const OrderHelper =  {
   makeQuery(filter) {
@@ -93,9 +83,14 @@ function handleActionClick(filter) {
 function composer(props, onData) {
   Meteor.subscribe("Orders");
 
+  const selectedFilterName = Reaction.getUserPreferences(Constants.PACKAGE_NAME, Constants.ORDER_LIST_FILTERS_PREFERENCE_NAME);
   const orders = Orders.find({}).fetch();
+  let selectedIndex;
 
-  const filters = orderFilters.map((filter) => {
+  const filters = Constants.orderFilters.map((filter, index) => {
+    if (filter.name === selectedFilterName) {
+      selectedIndex = index;
+    }
     filter.label = i18next.t(`order.filter.${filter.name}`, { defaultValue: filter.label });
     filter.i18nKeyLabel = `order.filter.${filter.name}`;
     filter.count = Orders.find(OrderHelper.makeQuery(filter.name)).count();
@@ -106,8 +101,9 @@ function composer(props, onData) {
   onData(null, {
     orders,
     filters,
+    selectedIndex,
 
-    onActionClick: handleActionClick
+    onActionClick: props.onActionClick || handleActionClick
   });
 }
 

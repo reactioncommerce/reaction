@@ -11,11 +11,13 @@
       </label>
 
       {{#if product.isDeleted}}
-        <div>
         <span class="badge badge-danger" data-i18n="app.archived">
           <span>Archived</span>
         </span>
-      </div>
+      {{/if}}
+
+      {{#if hasChanges}}
+        <div>{{> React VisibilityButton}}</div>
       {{/if}}
 
     </div>

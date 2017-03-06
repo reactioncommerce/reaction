@@ -31,7 +31,7 @@
   .padding-right(0);
 }
 
-.admin-controls.show-settings {
+.rui.admin.action-view.show-settings {
   border-right: 1px solid @border-color;
   width: 400px;
 
@@ -228,6 +228,25 @@ body.admin-vertical .admin-controls {
 //   .form-control;
 // }
 
+<<<<<<< HEAD
+=======
+
+
+.rui.admin.action-view {
+  z-index: @zindex-modal;
+}
+
+.rui.admin.action-view.open {
+  @media screen and (max-width: @screen-xs-max) {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+  }
+}
+
+
+>>>>>>> upstream/marketplace-my-shops
 .rui.admin.action-view .panel {
   border: 0;
   border-radius: 0;
@@ -240,7 +259,16 @@ body.admin-vertical .admin-controls {
   border-bottom: 1px solid @border-color;
 }
 
+// .rui.admin.action-view-pane .header .heading {
+//   margin: 0 0 0 2rem;
+// }
+
+.rui.admin.action-view-pane .header .title {
+  margin: 0;
+}
+
 .rui.admin.action-view-detail {
+  display: flex;
   border: 0;
   border-radius: 0;
   border-left: 1px solid @border-color;
@@ -250,4 +278,13 @@ body.admin-vertical .admin-controls {
 .rui.admin.action-view-pane .panel-body.no-padding .list-group-item {
   border-left: 0;
   border-right: 0;
+  border-bottom: 0;
+}
+
+.rui.admin.action-view-pane .panel-group > .panel:first-child {
+  border-top: none;
+}
+
+.rui.admin.action-view-pane .panel-group > .panel:last-child {
+  border-bottom: 1px solid @list-group-border;
 }

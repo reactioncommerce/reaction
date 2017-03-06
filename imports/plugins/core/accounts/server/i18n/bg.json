@@ -1,0 +1,20 @@
+[{
+  "i18n": "bg",
+  "ns": "reaction-accounts",
+  "translation": {
+    "reaction-accounts": {
+      "admin": {
+        "dashboard": {
+          "accountsLabel": "Профили",
+          "accountsTitle": "Профили",
+          "accountsDescription": "Настройки на профила"
+        },
+        "settings": {
+          "accountsSettingsLabel": "Профили",
+          "accountsSettingsTitle": "Профили",
+          "accountsSettingsDescription": "Настройки на профила"
+        }
+      }
+    }
+  }
+}]

@@ -56,6 +56,8 @@
       "app": {
         "add": "Dodati",
         "editMode": "način uređivanja",
+        "administratorView": "Administrator Pogledaj",
+        "customerView": "Kupac Pogledaj",
         "createContent": "Stvaranje sadržaja",
         "auto": "Auto",
         "save": "Spremi",
@@ -90,7 +92,13 @@
         "notFoundError": "Stranica nije pronađena.",
         "productNotFound": "Ovaj proizvod nije pronađen.",
         "loadMoreProducts": "Učitaj više proizvoda",
-        "noProductsFound": "Nema pronađenih proizvoda."
+        "noProductsFound": "Nema pronađenih proizvoda.",
+        "private": "Privatna",
+        "public": "Javnost",
+        "shortcut": {
+          "addProductLabel": "Dodaj proizvod",
+          "accountsLabel": "Računi"
+        }
       },
       "searchSettings": {
         "productSearchSettings": {
@@ -300,9 +308,12 @@
         "variantDetails": "varijanta Detalji",
         "duplicateVariant": "Duplikat",
         "addVariantOption": "Dodaj Option",
+        "addVariantFail": "Nije moguće stvoriti varijantu za {{title}}.",
+        "cloneVariantFail": "Nije moguće klonirati varijantu za {{title}}.",
         "removeVariant": "Ukloniti",
         "removeVariantConfirm": "Jeste li sigurni da želite obrisati {{title}}",
         "restoreVariantConfirm": "Jeste li sigurni da želite vratiti {{title}} iz kante za smeće?",
+        "restoreVariantFail": "Nije moguće vratiti {{title}}.",
         "archiveVariantConfirm": "Jeste li sigurni da želite arhivirati {{title}}",
         "thisVariant": "ova varijanta",
         "thisOption": "ova opcija",
@@ -423,6 +434,8 @@
         "printLabels": "Ispis naljepnica",
         "printShippingLabel": "dostava",
         "printCustomsLabel": "carina",
+        "generateTracking": "Generiranje oznake i praćenje",
+        "labelError": "Pogreška pri izradi naljepnicu za otpremu {{err}}",
         "carrier": "Prijevoznik",
         "addTracking": "Dodaj praćenje",
         "itemsHaveBeenShipped": "Predmeti su otpremljena",
@@ -450,6 +463,8 @@
         "yourOrderIsNow": "Vaš nalog je sada",
         "summaryMessage": "Hvala Vam za narudžbu.",
         "submitted": "podnio",
+        "processing": "obrada",
+        "completed": "dovršen",
         "registerGuest": "Zdravo! Dodavanje e-mail i primajte novosti o narudžbi.",
         "trackYourDelivery": "ažuriranja narudžba će biti poslana",
         "noOrdersFound": "Nisu pronađene narudžbe.",
@@ -476,7 +491,8 @@
       "addressBookAdd": {
         "addAddress": "Dodaj novu adresu",
         "createAddress": "Odaberi zadanu adresu",
-        "failedToAddAddress": "Neuspjelo dodavanje adresu: {{err}}"
+        "failedToAddAddress": "Neuspjelo dodavanje adresu: {{err}}",
+        "validatedAddress": "Broj promjena na vašu adresu na temelju odobrenja. Provjerite da je to točno"
       },
       "addressBookEdit": {
         "editAddress": "Uređivanje adrese",
@@ -575,68 +591,6 @@
       },
       "checkoutReview": {
         "review": "Pregled"
-      },
-      "checkoutShipping": {
-        "selectShippingOption": "Odaberi opcije dostave",
-        "noShippingMethods": "Opcija dostave nije postavljena",
-        "configureNow": "Postavi sad.",
-        "shipping": "Dostava"
-      },
-      "shipping": {
-        "addShippingProvider": "Dodaj dostave davatelja",
-        "editShippingProvider": "Uredi ponuđač dostave",
-        "addShippingMethod": "Dodaj način dostave",
-        "editShippingMethod": "Uredite način dostave",
-        "deleteShippingMethod": "Brisanje način dostave",
-        "noSettingsForThisView": "Nema postavki za ovu pogled",
-        "noShippingMethods": "Nema načina dostave konfigurirane.",
-        "removeShippingMethodConfirm": "Jeste li sigurni da želite obrisati {{method}}?",
-        "removeShippingMethodTitle": "Ukloni Način dostave",
-        "shippingMethodDeleted": "Ova metoda dostave je obrisan.",
-        "removeShippingProvider": "Ukloni Dostava Provider",
-        "removeShippingProviderConfirm": "Jeste li sigurni da želite obrisati {{provider}}?",
-        "shippingProviderSaved": "Dostava davatelj spasio.",
-        "shippingProviderUpdated": "Dostava davatelja podataka ažurirati.",
-        "shippingMethodRateAdded": "Dostava stopa metoda dodan.",
-        "shippingMethodRateUpdated": "Dostava stopa metoda ažuriran.",
-        "name": "Ime",
-        "label": "Označiti",
-        "group": "Skupina",
-        "cost": "cijena",
-        "handling": "Rukovanje",
-        "rate": "Stopa",
-        "enabled": "Omogućeno",
-        "disabled": "onesposobljen",
-        "addRate": "Dodaj stopu",
-        "updateRate": "Ažuriranje {{name}} stopa",
-        "addNewCondition": "Dodaj novo stanje",
-        "deleteCondition": "Brisanje stanje",
-        "provider": {
-          "name": "kod usluga",
-          "label": "Javni Label",
-          "enabled": "Omogućeno"
-        }
-      },
-      "shippingMethod": {
-        "name": "Naziv metoda",
-        "label": "Javni Label",
-        "group": "Skupina",
-        "cost": "cijena",
-        "handling": "Rukovanje",
-        "rate": "Stopa",
-        "enabled": "Omogućeno",
-        "matchingCartRanges": "Odgovarajući košarice rasponi",
-        "validRanges": {
-          "begin": "Početi",
-          "end": "Kraj"
-        },
-        "matchingLocales": "odgovarajući locales",
-        "validLocales": {
-          "origination": "Iz",
-          "destination": "Do",
-          "deliveryBegin": "Dostava Est.",
-          "deliveryEnd": "Isporuka Est."
-        }
       },
       "uom": {
         "OZ": "unci",

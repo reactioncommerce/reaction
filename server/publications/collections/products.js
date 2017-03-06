@@ -58,6 +58,10 @@ const filters = new SimpleSchema({
   "weight.max": {
     type: String,
     optional: true
+  },
+  "marketplace": {
+    type: Boolean,
+    optional: true
   }
 });
 
@@ -96,6 +100,11 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
     };
 
     if (productFilters) {
+      // handle marketplace multiple sellers
+      if (productFilters.marketplace) {
+        delete selector.shopId;
+      }
+
       // handle multiple shops
       if (productFilters.shops) {
         _.extend(selector, {
@@ -232,7 +241,7 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
     // Authorized content curators fo the shop get special publication of the product
     // with all relevant revisions all is one package
 
-    if (Roles.userIsInRole(this.userId, ["owner", "admin", "createProduct"], shop._id)) {
+    if (Roles.userIsInRole(this.userId, ["owner", "admin", "createProduct"], Reaction.getSellerShopId(this.userId))) {
       selector.isVisible = {
         $in: [true, false, undefined]
       };
@@ -266,10 +275,7 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
       }
 
       if (RevisionApi.isRevisionControlEnabled()) {
-        const handle = Products.find(newSelector, {
-          sort: sort,
-          limit: productScrollLimit
-        }).observeChanges({
+        const handle = Products.find(newSelector).observeChanges({
           added: (id, fields) => {
             const revisions = Revisions.find({
               "$or": [
@@ -312,7 +318,8 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
             $nin: [
               "revision/published"
             ]
-          }
+          },
+          shopId: newSelector.shopId
         }).observe({
           added: (revision) => {
             let product;
@@ -345,7 +352,7 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
 
             if (!revision.documentType || revision.documentType === "product") {
               product = Products.findOne(revision.documentId);
-            } else if (revision.docuentType === "image" || revision.documentType === "tag") {
+            } else if (revision.documentType === "image" || revision.documentType === "tag") {
               product = Products.findOne(revision.parentDocument);
             }
             if (product) {
@@ -356,7 +363,6 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
           }
         });
 
-
         this.onStop(() => {
           handle.stop();
           handle2.stop();
@@ -364,6 +370,7 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
 
         return this.ready();
       }
+
       // Revision control is disabled
       return Products.find(newSelector, {
         sort: sort,

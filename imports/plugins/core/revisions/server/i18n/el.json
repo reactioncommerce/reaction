@@ -5,12 +5,16 @@
     "reaction-revisions": {
       "admin": {
         "dashboard": {
+          "preview": "Πρεμιέρα",
           "revisionsLabel": "αναθεωρήσεις",
           "revisionsTitle": "αναθεωρήσεις",
           "revisionsDescription": "έλεγχο αναθεώρηση"
         },
         "settings": {
           "productRevisionsLabel": "αναθεωρήσεις του προϊόντος"
+        },
+        "toolbar": {
+          "publishAll": "Δημοσιεύστε Όλα"
         }
       }
     }

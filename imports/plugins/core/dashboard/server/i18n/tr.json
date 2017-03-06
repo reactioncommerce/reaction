@@ -7,6 +7,10 @@
         "shortcut": {
           "dashboardLabel": "Gösterge paneli"
         },
+        "dashboard": {
+          "packageGroupActionsLabel": "Eylemler",
+          "packageGroupSettingsLabel": "Ayarlar"
+        },
         "settings": {
           "shopSettingsLabel": "Dükkan"
         }

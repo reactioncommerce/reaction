@@ -1,0 +1,20 @@
+[{
+  "i18n": "vi",
+  "ns": "reaction-accounts",
+  "translation": {
+    "reaction-accounts": {
+      "admin": {
+        "dashboard": {
+          "accountsLabel": "tài khoản",
+          "accountsTitle": "tài khoản",
+          "accountsDescription": "Thiết lập tài khoản"
+        },
+        "settings": {
+          "accountsSettingsLabel": "tài khoản",
+          "accountsSettingsTitle": "tài khoản",
+          "accountsSettingsDescription": "Thiết lập tài khoản"
+        }
+      }
+    }
+  }
+}]

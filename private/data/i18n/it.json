@@ -56,6 +56,8 @@
       "app": {
         "add": "Aggiungere",
         "editMode": "Modalità Modifica",
+        "administratorView": "Administrator View",
+        "customerView": "clienti Visualizza",
         "createContent": "creazione di contenuti",
         "auto": "Automobile",
         "save": "Salva",
@@ -90,7 +92,13 @@
         "notFoundError": "Pagina non trovata.",
         "productNotFound": "Questo prodotto non è stato trovato.",
         "loadMoreProducts": "Caricare più prodotti",
-        "noProductsFound": "Nessun prodotto trovato."
+        "noProductsFound": "Nessun prodotto trovato.",
+        "private": "Privato",
+        "public": "Pubblico",
+        "shortcut": {
+          "addProductLabel": "Aggiungi prodotto",
+          "accountsLabel": "Conti"
+        }
       },
       "searchSettings": {
         "productSearchSettings": {
@@ -300,9 +308,12 @@
         "variantDetails": "variante Dettagli",
         "duplicateVariant": "Duplicare",
         "addVariantOption": "Aggiungi opzione",
+        "addVariantFail": "Impossibile creare variante per {{title}}.",
+        "cloneVariantFail": "Impossibile clonare variante per {{title}}.",
         "removeVariant": "Rimuovi",
         "removeVariantConfirm": "Sei sicuro di voler eliminare {{title}}",
         "restoreVariantConfirm": "Sei sicuro di voler ripristinare {{title}} dal cestino?",
+        "restoreVariantFail": "Impossibile ripristinare {{title}}.",
         "archiveVariantConfirm": "Sei sicuro che si desidera archiviare {{title}}",
         "thisVariant": "questa variante",
         "thisOption": "questa opzione",
@@ -423,6 +434,8 @@
         "printLabels": "Etichette di stampa",
         "printShippingLabel": "spedizione",
         "printCustomsLabel": "dogana",
+        "generateTracking": "Generare Etichetta e monitoraggio",
+        "labelError": "Errore di spedizione creando {{err}} etichetta",
         "carrier": "Vettore",
         "addTracking": "Aggiungere monitoraggio",
         "itemsHaveBeenShipped": "I prodotti sono stati spediti",
@@ -450,6 +463,8 @@
         "yourOrderIsNow": "Il vostro ordine è ora",
         "summaryMessage": "Grazie per il vostro ordine.",
         "submitted": "presentata",
+        "processing": "lavorazione",
+        "completed": "completato",
         "registerGuest": "Ciao! Aggiungere una e-mail e ricevere gli aggiornamenti di ordine.",
         "trackYourDelivery": "aggiornamenti ordine verrà inviato a",
         "noOrdersFound": "Nessun ordine trovato.",
@@ -476,7 +491,8 @@
       "addressBookAdd": {
         "addAddress": "Aggiungere una nuova voce indirizzo",
         "createAddress": "Crea il tuo indirizzo predefinito",
-        "failedToAddAddress": "Impossibile aggiungere l'indirizzo: {{err}}"
+        "failedToAddAddress": "Impossibile aggiungere l'indirizzo: {{err}}",
+        "validatedAddress": "Le modifiche apportate al tuo indirizzo basano su convalida. Assicuratevi che questo è corretto"
       },
       "addressBookEdit": {
         "editAddress": "Modificare questa voce indirizzo",
@@ -575,68 +591,6 @@
       },
       "checkoutReview": {
         "review": "Revisione"
-      },
-      "checkoutShipping": {
-        "selectShippingOption": "Selezionare l'opzione di spedizione",
-        "noShippingMethods": "No Metodi di spedizione sono configurati.",
-        "configureNow": "Configurare ora.",
-        "shipping": "spedizione"
-      },
-      "shipping": {
-        "addShippingProvider": "Aggiungere corriere",
-        "editShippingProvider": "Fornitore di trasporto Modifica",
-        "addShippingMethod": "Aggiungere il metodo di spedizione",
-        "editShippingMethod": "Modifica metodo di spedizione",
-        "deleteShippingMethod": "Elimina metodo di spedizione",
-        "noSettingsForThisView": "Nessuna impostazione per questo punto di vista",
-        "noShippingMethods": "No Metodi di spedizione sono configurati.",
-        "removeShippingMethodConfirm": "Sei sicuro di voler eliminare {{method}}?",
-        "removeShippingMethodTitle": "Rimuovere Metodo di Spedizione",
-        "shippingMethodDeleted": "Questo metodo di trasporto è stato eliminato.",
-        "removeShippingProvider": "Rimuovere Spedizione Provider",
-        "removeShippingProviderConfirm": "Sei sicuro di voler eliminare {{provider}}?",
-        "shippingProviderSaved": "Fornitore di trasporto salvato.",
-        "shippingProviderUpdated": "i dati del provider Spedizione aggiornati.",
-        "shippingMethodRateAdded": "tasso Metodo di trasporto aggiunto.",
-        "shippingMethodRateUpdated": "tasso Metodo di trasporto aggiornato.",
-        "name": "Nome",
-        "label": "Etichetta",
-        "group": "Gruppo",
-        "cost": "Costo",
-        "handling": "maneggio",
-        "rate": "Tasso",
-        "enabled": "Abilitato",
-        "disabled": "Disabilitato",
-        "addRate": "Aggiungere tasso",
-        "updateRate": "Velocità di aggiornamento {{name}}",
-        "addNewCondition": "Aggiungi nuova condizione",
-        "deleteCondition": "Eliminare condizioni",
-        "provider": {
-          "name": "Codice servizio",
-          "label": "pubblico Label",
-          "enabled": "Abilitato"
-        }
-      },
-      "shippingMethod": {
-        "name": "Nome metodo",
-        "label": "pubblico Label",
-        "group": "Gruppo",
-        "cost": "Costo",
-        "handling": "maneggio",
-        "rate": "Tasso",
-        "enabled": "Abilitato",
-        "matchingCartRanges": "Abbinamento Carrello Ranges",
-        "validRanges": {
-          "begin": "Inizio",
-          "end": "Fine"
-        },
-        "matchingLocales": "Impostazioni internazionali di corrispondenza",
-        "validLocales": {
-          "origination": "Da",
-          "destination": "A",
-          "deliveryBegin": "Spedizione Est.",
-          "deliveryEnd": "Consegna Est."
-        }
       },
       "uom": {
         "OZ": "once",

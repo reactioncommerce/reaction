@@ -5,12 +5,16 @@
     "reaction-revisions": {
       "admin": {
         "dashboard": {
+          "preview": "Előnézet",
           "revisionsLabel": "Változatok",
           "revisionsTitle": "Változatok",
           "revisionsDescription": "Revision szabályozás"
         },
         "settings": {
           "productRevisionsLabel": "termék Változatok"
+        },
+        "toolbar": {
+          "publishAll": "közzétenni minden"
         }
       }
     }

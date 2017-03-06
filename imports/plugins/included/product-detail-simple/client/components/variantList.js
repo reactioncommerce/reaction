@@ -52,6 +52,7 @@ class VariantList extends Component {
             <IconButton
               i18nKeyTooltip="variantList.createVariant"
               icon="fa fa-plus"
+              primary={true}
               tooltip="Create Variant"
               onClick={this.props.onCreateVariant}
             />

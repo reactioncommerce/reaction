@@ -56,6 +56,8 @@
       "app": {
         "add": "Dodaj",
         "editMode": "način urejanja",
+        "administratorView": "administrator Poglej",
+        "customerView": "Poglej Customer",
         "createContent": "ustvarjanje vsebine",
         "auto": "Auto",
         "save": "Shrani",
@@ -90,7 +92,13 @@
         "notFoundError": "Stran ni najdena.",
         "productNotFound": "Ta izdelek ni bil najden.",
         "loadMoreProducts": "Naloži več izdelkov",
-        "noProductsFound": "Ni izdelkov."
+        "noProductsFound": "Ni izdelkov.",
+        "private": "zasebno",
+        "public": "javni",
+        "shortcut": {
+          "addProductLabel": "Dodaj izdelek",
+          "accountsLabel": "računi"
+        }
       },
       "searchSettings": {
         "productSearchSettings": {
@@ -300,9 +308,12 @@
         "variantDetails": "Variant Podrobnosti",
         "duplicateVariant": "podvajati",
         "addVariantOption": "Dodaj možnost",
+        "addVariantFail": "Ni mogoče ustvariti varianto za {{title}}.",
+        "cloneVariantFail": "Ni mogoče klonirati varianto za {{title}}.",
         "removeVariant": "Odstraniti",
         "removeVariantConfirm": "Ali ste prepričani, da želite izbrisati {{title}}",
         "restoreVariantConfirm": "Ali ste prepričani, da želite obnoviti {{title}} iz smeti?",
+        "restoreVariantFail": "Ni mogoče obnoviti {{title}}.",
         "archiveVariantConfirm": "Ali ste prepričani, da želite arhivirati {{title}}",
         "thisVariant": "ta varianta",
         "thisOption": "ta možnost",
@@ -423,6 +434,8 @@
         "printLabels": "Tiskanje Oznake",
         "printShippingLabel": "Dostava",
         "printCustomsLabel": "carinska",
+        "generateTracking": "Ustvari etikete in sledenje",
+        "labelError": "Napaka pri ustvarjanju ladijski {{err}} label",
         "carrier": "Carrier",
         "addTracking": "Dodaj sledenje",
         "itemsHaveBeenShipped": "Elementov, ki so bili poslani",
@@ -450,6 +463,8 @@
         "yourOrderIsNow": "Vaše naročilo je zdaj",
         "summaryMessage": "Hvala za vaše naročilo.",
         "submitted": "predložen",
+        "processing": "obravnavati",
+        "completed": "končan",
         "registerGuest": "Zdravo! Dodajanje e-pošto in prejemanje posodobitev reda.",
         "trackYourDelivery": "posodobitve naročilo bo poslano",
         "noOrdersFound": "Ni naročil.",
@@ -476,7 +491,8 @@
       "addressBookAdd": {
         "addAddress": "Dodaj nov vnos naslova",
         "createAddress": "Ustvari svoj privzeti naslov",
-        "failedToAddAddress": "Ni bilo mogoče dodati naslov: {{err}}"
+        "failedToAddAddress": "Ni bilo mogoče dodati naslov: {{err}}",
+        "validatedAddress": "Spremenili svoj naslov na podlagi potrditve. Prepričajte se, da je to pravilna"
       },
       "addressBookEdit": {
         "editAddress": "Urejanje ta vnos naslova",
@@ -575,68 +591,6 @@
       },
       "checkoutReview": {
         "review": "pregled"
-      },
-      "checkoutShipping": {
-        "selectShippingOption": "Izberite možnost ladijskega prometa",
-        "noShippingMethods": "Ni metode pošiljanja so nastavljeni.",
-        "configureNow": "Konfiguracija zdaj.",
-        "shipping": "Dostava"
-      },
-      "shipping": {
-        "addShippingProvider": "Dodaj ponudnika ladijskega",
-        "editShippingProvider": "Uredi ponudnik ladijski promet",
-        "addShippingMethod": "Dodaj način pošiljanja",
-        "editShippingMethod": "Uredite način pošiljanja",
-        "deleteShippingMethod": "Brisanje način pošiljanja",
-        "noSettingsForThisView": "Ni nastavitev za to mnenje",
-        "noShippingMethods": "Ni metode pošiljanja so nastavljeni.",
-        "removeShippingMethodConfirm": "Ali ste prepričani, da želite izbrisati {{method}}?",
-        "removeShippingMethodTitle": "Odstrani Shipping Method",
-        "shippingMethodDeleted": "Ta način pošiljanja je bil izbrisan.",
-        "removeShippingProvider": "Odstrani ponudnika dostave",
-        "removeShippingProviderConfirm": "Ali ste prepričani, da želite izbrisati {{provider}}?",
-        "shippingProviderSaved": "Ponudnik prevoz shranjene.",
-        "shippingProviderUpdated": "Podatki ponudnika prevoz posodabljajo.",
-        "shippingMethodRateAdded": "Dostava stopnja metoda dodal.",
-        "shippingMethodRateUpdated": "Dostava stopnja način posodobljena.",
-        "name": "Name",
-        "label": "Label",
-        "group": "skupina",
-        "cost": "strošek",
-        "handling": "Ravnanje",
-        "rate": "Oceniti",
-        "enabled": "omogočeno",
-        "disabled": "Onemogočeno",
-        "addRate": "Dodaj stopnjo",
-        "updateRate": "Update {{name}} stopnja",
-        "addNewCondition": "Dodaj nov pogoj",
-        "deleteCondition": "Brisanje stanje",
-        "provider": {
-          "name": "Koda Service",
-          "label": "javni Label",
-          "enabled": "omogočeno"
-        }
-      },
-      "shippingMethod": {
-        "name": "Ime metoda",
-        "label": "javni Label",
-        "group": "skupina",
-        "cost": "strošek",
-        "handling": "Ravnanje",
-        "rate": "Oceniti",
-        "enabled": "omogočeno",
-        "matchingCartRanges": "Ujemanje košarice Območja",
-        "validRanges": {
-          "begin": "Začeti",
-          "end": "End"
-        },
-        "matchingLocales": "ujemanje Locales",
-        "validLocales": {
-          "origination": "iz",
-          "destination": "Za",
-          "deliveryBegin": "Dostava Est.",
-          "deliveryEnd": "Dostava Est."
-        }
       },
       "uom": {
         "OZ": "unč",

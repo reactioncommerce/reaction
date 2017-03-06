@@ -56,6 +56,8 @@
       "app": {
         "add": "Добави",
         "editMode": "режим на редактиране",
+        "administratorView": "Administrator View",
+        "customerView": "Преглед на клиенти",
         "createContent": "Създаване на съдържание",
         "auto": "Автоматичен",
         "save": "Запиши",
@@ -90,7 +92,13 @@
         "notFoundError": "Страницата не е намерена.",
         "productNotFound": "Този продукт не е намерен.",
         "loadMoreProducts": "Зареждане на още продукти",
-        "noProductsFound": "Няма намерени продукти."
+        "noProductsFound": "Няма намерени продукти.",
+        "private": "частен",
+        "public": "обществен",
+        "shortcut": {
+          "addProductLabel": "Добави продукта",
+          "accountsLabel": "Профили"
+        }
       },
       "searchSettings": {
         "productSearchSettings": {
@@ -300,9 +308,12 @@
         "variantDetails": "Вариант Детайли",
         "duplicateVariant": "Дубликат",
         "addVariantOption": "Добавяне на опция",
+        "addVariantFail": "Не може да се създаде вариант за {{title}}.",
+        "cloneVariantFail": "Не може да се клонира вариант за {{title}}.",
         "removeVariant": "Премахни",
         "removeVariantConfirm": "Сигурни ли сте, че искате да изтриете {{title}}",
         "restoreVariantConfirm": "Сигурни ли сте че искате да възстановите {{title}} от боклука?",
+        "restoreVariantFail": "Не може да се възстанови {{title}}.",
         "archiveVariantConfirm": "Сигурни ли сте че искате да архивирате {{title}}",
         "thisVariant": "този вариант",
         "thisOption": "тази опция",
@@ -423,6 +434,8 @@
         "printLabels": "Печат на етикети",
         "printShippingLabel": "Доставка",
         "printCustomsLabel": "митница",
+        "generateTracking": "Генериране Label и проследяване",
+        "labelError": "Грешка при създаване на корабоплаването {{err}} етикет",
         "carrier": "носител",
         "addTracking": "Добави за проследяване",
         "itemsHaveBeenShipped": "Предмети, са били изпратени",
@@ -450,6 +463,8 @@
         "yourOrderIsNow": "Поръчката Ви се обработва",
         "summaryMessage": "Благодарим Ви за поръчката.",
         "submitted": "Изпратена",
+        "processing": "обработване",
+        "completed": "завършен",
         "registerGuest": "Добавете и-мейл, за да получавате известия за поръчката.",
         "trackYourDelivery": "Информация за пратката",
         "noOrdersFound": "Не е намерена поръчка.",
@@ -476,7 +491,8 @@
       "addressBookAdd": {
         "addAddress": "Добавете адрес",
         "createAddress": "Създайте адрес по подразбиране",
-        "failedToAddAddress": "Неуспешно добавяне на адрес: {{err}}"
+        "failedToAddAddress": "Неуспешно добавяне на адрес: {{err}}",
+        "validatedAddress": "Направени промени в адреса си въз основа на валидирането. Моля, уверете се че това е правилната"
       },
       "addressBookEdit": {
         "editAddress": "Редактирайте адреса",
@@ -575,68 +591,6 @@
       },
       "checkoutReview": {
         "review": "Преглед"
-      },
-      "checkoutShipping": {
-        "selectShippingOption": "Изберете начин за доставка",
-        "noShippingMethods": "Не е избран начин за доставка.",
-        "configureNow": "Конфигурирайте сега.",
-        "shipping": "доставка"
-      },
-      "shipping": {
-        "addShippingProvider": "Добави доставчик корабоплаването",
-        "editShippingProvider": "Edit доставчик корабоплаването",
-        "addShippingMethod": "Добави начин за доставка",
-        "editShippingMethod": "метод Edit корабоплаването",
-        "deleteShippingMethod": "Изтриване на начин за доставка",
-        "noSettingsForThisView": "Не настройки за тази гледка",
-        "noShippingMethods": "Не са методи на доставка са конфигурирани.",
-        "removeShippingMethodConfirm": "Сигурни ли сте, че искате да изтриете {{method}}?",
-        "removeShippingMethodTitle": "Премахване Начин на доставка",
-        "shippingMethodDeleted": "Този метод на пратката е била изтрита.",
-        "removeShippingProvider": "Премахване Provider Доставка",
-        "removeShippingProviderConfirm": "Сигурни ли сте, че искате да изтриете {{provider}}?",
-        "shippingProviderSaved": "доставчик Доставка спасен.",
-        "shippingProviderUpdated": "актуализирани данни на доставчика за доставка.",
-        "shippingMethodRateAdded": "прибавя процент Доставка метод.",
-        "shippingMethodRateUpdated": "ставка метод за доставка се обновява.",
-        "name": "Име",
-        "label": "Етикет",
-        "group": "група",
-        "cost": "цена",
-        "handling": "боравене",
-        "rate": "скорост",
-        "enabled": "Enabled",
-        "disabled": "хора с увреждания",
-        "addRate": "Добави скорост",
-        "updateRate": "Актуализация {{name}} скорост",
-        "addNewCondition": "Добавяне на нов състояние",
-        "deleteCondition": "Изтриване състояние",
-        "provider": {
-          "name": "Service Code",
-          "label": "Public Label",
-          "enabled": "Enabled"
-        }
-      },
-      "shippingMethod": {
-        "name": "Име на метода",
-        "label": "Public Label",
-        "group": "група",
-        "cost": "цена",
-        "handling": "боравене",
-        "rate": "скорост",
-        "enabled": "Enabled",
-        "matchingCartRanges": "Съвпадение Количка диапазоните",
-        "validRanges": {
-          "begin": "започвам",
-          "end": "Край"
-        },
-        "matchingLocales": "съвпадение Локалите",
-        "validLocales": {
-          "origination": "от",
-          "destination": "Да се",
-          "deliveryBegin": "Доставка Est.",
-          "deliveryEnd": "Доставка Est."
-        }
       },
       "uom": {
         "OZ": "Унции",

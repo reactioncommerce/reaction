@@ -56,6 +56,8 @@
       "app": {
         "add": "Προσθέτω",
         "editMode": "κατάσταση επεξεργασίας",
+        "administratorView": "διαχειριστή View",
+        "customerView": "Προβολή των πελατών",
         "createContent": "Δημιουργία περιεχομένου",
         "auto": "Αυτο",
         "save": "Αποθηκεύσετε",
@@ -90,7 +92,13 @@
         "notFoundError": "Η σελίδα δεν βρέθηκε.",
         "productNotFound": "Το προϊόν δεν βρέθηκε.",
         "loadMoreProducts": "Φορτώστε περισσότερα προϊόντα",
-        "noProductsFound": "Δεν βρέθηκαν προϊόντα."
+        "noProductsFound": "Δεν βρέθηκαν προϊόντα.",
+        "private": "Ιδιωτικός",
+        "public": "Δημόσιο",
+        "shortcut": {
+          "addProductLabel": "Προσθέστε το προϊόν",
+          "accountsLabel": "λογαριασμοί"
+        }
       },
       "searchSettings": {
         "productSearchSettings": {
@@ -300,9 +308,12 @@
         "variantDetails": "παραλλαγή Λεπτομέρειες",
         "duplicateVariant": "Αντίγραφο",
         "addVariantOption": "Προσθέστε Επιλογή",
+        "addVariantFail": "Αδύνατη η δημιουργία παραλλαγή για {{title}}.",
+        "cloneVariantFail": "Δεν είναι δυνατή η κλωνοποίηση παραλλαγή για {{title}}.",
         "removeVariant": "Αφαιρώ",
         "removeVariantConfirm": "Είστε σίγουροι ότι θέλετε να διαγράψετε {{title}}",
         "restoreVariantConfirm": "Είστε σίγουροι ότι θέλετε να επαναφέρετε {{title}} από τα σκουπίδια;",
+        "restoreVariantFail": "Δεν είναι δυνατή η αποκατάσταση της {{title}}.",
         "archiveVariantConfirm": "Είστε βέβαιοι ότι θέλετε να αρχειοθετήσετε {{title}}",
         "thisVariant": "Αυτή η παραλλαγή",
         "thisOption": "Αυτή η επιλογή",
@@ -423,6 +434,8 @@
         "printLabels": "Ετικέτες Εκτύπωση",
         "printShippingLabel": "Αποστολή",
         "printCustomsLabel": "ΗΘΗ και εθιμα",
+        "generateTracking": "Δημιουργήστε Ετικέτα και Εντοπισμού",
+        "labelError": "Σφάλμα κατά τη δημιουργία της ναυτιλίας {{err}} ετικέτα",
         "carrier": "Φορέας",
         "addTracking": "Προσθέστε Παρακολούθηση",
         "itemsHaveBeenShipped": "στοιχεία έχουν αποσταλεί",
@@ -450,6 +463,8 @@
         "yourOrderIsNow": "Η παραγγελία σου είναι τώρα",
         "summaryMessage": "Σε ευχαριστούμε για την παραγγελία σου.",
         "submitted": "υποβλήθηκε",
+        "processing": "επεξεργασία",
+        "completed": "ολοκληρώθηκε το",
         "registerGuest": "Γειά! Πρόσθεσε ένα email για να λαμβάνεις ενημερώσεις.",
         "trackYourDelivery": "Ενημερώσεις για την παραγγελία θα στέλνονται στο ",
         "noOrdersFound": "Δεν βρέθηκαν παραγγελίες.",
@@ -476,7 +491,8 @@
       "addressBookAdd": {
         "addAddress": "Προσθήκη νέας διεύθυνσης",
         "createAddress": "Δημιούργία προεπιλεγμένης διεύθυνσης",
-        "failedToAddAddress": "Αποτυχία να προσθέσετε τη διεύθυνση: {{err}}"
+        "failedToAddAddress": "Αποτυχία να προσθέσετε τη διεύθυνση: {{err}}",
+        "validatedAddress": "Κάνει αλλαγές στη διεύθυνσή σας με βάση την επικύρωση. Παρακαλούμε βεβαιωθείτε ότι αυτό είναι σωστό"
       },
       "addressBookEdit": {
         "editAddress": "Επεξεργασία διεύθυνσης",
@@ -575,68 +591,6 @@
       },
       "checkoutReview": {
         "review": "Επανέλεγχος"
-      },
-      "checkoutShipping": {
-        "selectShippingOption": "Διάλεξε τρόπο αποστολής",
-        "noShippingMethods": "Δεν υπάρχουν τρόποι αποστολής.",
-        "configureNow": "Ρύθμιση τώρα.",
-        "shipping": "Αποστολή"
-      },
-      "shipping": {
-        "addShippingProvider": "Προσθέστε την υπηρεσία αποστολής",
-        "editShippingProvider": "Επεξεργασία υπηρεσία αποστολής",
-        "addShippingMethod": "Προσθήκη μέθοδο αποστολής",
-        "editShippingMethod": "Επεξεργασία μεθόδου αποστολής",
-        "deleteShippingMethod": "Διαγραφή μέθοδο αποστολής",
-        "noSettingsForThisView": "Δεν υπάρχουν ρυθμίσεις για αυτό το σκοπό",
-        "noShippingMethods": "Δεν μέθοδοι ναυτιλίας ρυθμιστεί.",
-        "removeShippingMethodConfirm": "Είστε σίγουροι ότι θέλετε να διαγράψετε {{method}};",
-        "removeShippingMethodTitle": "Κατάργηση Μέθοδος ναυτιλίας",
-        "shippingMethodDeleted": "Αυτή η μέθοδος ναυτιλίας έχει διαγραφεί.",
-        "removeShippingProvider": "Κατάργηση Provider Ναυτιλίας",
-        "removeShippingProviderConfirm": "Είστε σίγουροι ότι θέλετε να διαγράψετε {{provider}};",
-        "shippingProviderSaved": "Ο πάροχος υπηρεσιών αποστολής σωθεί.",
-        "shippingProviderUpdated": "ενημερωμένα δεδομένα παρόχου ναυτιλία.",
-        "shippingMethodRateAdded": "ρυθμός μέθοδο αποστολής πρόσθεσε.",
-        "shippingMethodRateUpdated": "ρυθμός μέθοδο αποστολής ενημερωθεί.",
-        "name": "Όνομα",
-        "label": "Επιγραφή",
-        "group": "Ομάδα",
-        "cost": "Κόστος",
-        "handling": "Χειριζόμενος",
-        "rate": "Τιμή",
-        "enabled": "Ενεργοποιήθηκε",
-        "disabled": "Ανάπηρος",
-        "addRate": "Προσθέστε ποσοστό",
-        "updateRate": "ρυθμό ανανέωσης {{name}}",
-        "addNewCondition": "Προσθήκη νέου κατάσταση",
-        "deleteCondition": "Διαγραφή κατάσταση",
-        "provider": {
-          "name": "Κωδικός υπηρεσίας",
-          "label": "δημόσια Label",
-          "enabled": "Ενεργοποιήθηκε"
-        }
-      },
-      "shippingMethod": {
-        "name": "Όνομα μέθοδο",
-        "label": "δημόσια Label",
-        "group": "Ομάδα",
-        "cost": "Κόστος",
-        "handling": "Χειριζόμενος",
-        "rate": "Τιμή",
-        "enabled": "Ενεργοποιήθηκε",
-        "matchingCartRanges": "Ταιριάζουν καλαθιού Σειρές",
-        "validRanges": {
-          "begin": "Αρχίζουν",
-          "end": "Τέλος"
-        },
-        "matchingLocales": "ταιριάζουν Τοπικές",
-        "validLocales": {
-          "origination": "Από",
-          "destination": "Να",
-          "deliveryBegin": "Αποστολές Est.",
-          "deliveryEnd": "Παράδοση Est."
-        }
       },
       "uom": {
         "OZ": "ουγγιές",
