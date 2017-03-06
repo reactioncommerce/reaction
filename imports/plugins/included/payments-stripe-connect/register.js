@@ -12,6 +12,7 @@ Reaction.registerPackage({
     "reaction-stripe-connect": {
       enabled: false
     },
+    "stripe-redirect-url": "stripe-connect-redirect",
     "transactionFee": {
       enabled: false,
       percentage: 0
@@ -31,6 +32,12 @@ Reaction.registerPackage({
       template: "stripePaymentForm",
       provides: "paymentMethod",
       icon: "fa fa-cc-stripe"
+    },
+
+    // Redirect for Stripe Connect Sign-In
+    {
+      template: "stripeConnectRedirect",
+      route: "/stripe-connect-redirect"
     }
   ]
 });
