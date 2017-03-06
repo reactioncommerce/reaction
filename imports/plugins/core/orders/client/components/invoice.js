@@ -1,6 +1,5 @@
-import React, { Component } from "react";
+import React, { Component, PropTypes } from "react";
 import { Translation } from "/imports/plugins/core/ui/client/components";
-import { Tooltip } from "/imports/plugins/core/ui/client/components";
 
 class Invoice extends Component {
   render() {
@@ -46,5 +45,9 @@ class Invoice extends Component {
     );
   }
 }
+
+Invoice.propTypes = {
+  invoice: PropTypes.object
+};
 
 export default Invoice;

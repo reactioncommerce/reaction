@@ -32,6 +32,9 @@
       {{/each}}
     </div>
 
+    <div>
+      {{> React component=LineItemsContainer items=items}}
+    </div>
     <hr>
 
     <div class="order-summary-discounts">
@@ -45,35 +48,6 @@
     </div>
 
     <hr>
-
-    <div class="form-group order-summary-form-group">
-      <label class="form-control-label reason" for="" data-i18n="cartSubTotals.subtotal">Sub total</label>
-      <div class="amount">
-        {{> React (numericInputProps "subtotal" invoice.subtotal false)}}
-      </div>
-    </div>
-
-    <div class="form-group order-summary-form-group">
-      <label class="form-control-label reason" for="" data-i18n="cartSubTotals.discount">Discount</label>
-      <div class="amount">
-        {{> React (numericInputProps "discount" invoice.discounts false)}}
-      </div>
-    </div>
-
-    <div class="form-group order-summary-form-group">
-      <label class="form-control-label reason" for="" data-i18n="cartSubTotals.shipping">Shipping</label>
-      <div class="amount">
-        {{> React (numericInputProps "shipping" invoice.shipping false)}}
-      </div>
-    </div>
-
-    <div class="form-group order-summary-form-group">
-      <label class="form-control-label reason" for="" data-i18n="cartSubTotals.tax">Tax</label>
-      <div class="amount">
-        {{> React (numericInputProps "taxes" invoice.taxes false)}}
-      </div>
-    </div>
-
 
     <div class="reason">
       {{> inlineAlerts placement="coreOrderShippingInvoice"}}
