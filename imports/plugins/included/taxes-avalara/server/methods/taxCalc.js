@@ -331,12 +331,15 @@ function cartToSalesOrder(cart) {
         line1: cart.shipping[0].address.address1,
         line2: cart.shipping[0].address.address2 || "",
         city: cart.shipping[0].address.city,
-        region: cart.shipping[0].address.region,
         country: cart.shipping[0].address.country || "US"
       }
     },
     lines: lineItems
   };
+  // Don't add a region unless this is a "country with regions"
+  if (_.includes(countriesWithRegions, cart.shipping[0].address.country)) {
+    salesOrder.ShipTo.region =  cart.shipping[0].address.region;
+  }
 
   // current "coupon code" discount are based at the cart level, and every iten has it's
   // discounted property set to true.
@@ -431,13 +434,16 @@ function orderToSalesInvoice(order) {
         line1: order.shipping[0].address.address1,
         line2: order.shipping[0].address.address2 || "",
         city: order.shipping[0].address.city,
-        region: order.shipping[0].address.region,
         country: order.shipping[0].address.country || "US"
       }
     },
     lines: lineItems
   };
 
+  // Don't add a region unless this is a "country with regions"
+  if (_.includes(countriesWithRegions, order.shipping[0].address.country)) {
+    salesInvoice.ShipTo.region =  order.shipping[0].address.region;
+  }
   if (order.discount)  {
     salesInvoice.discount = accounting.toFixed(order.discount, 2);
     for (const line of salesInvoice.lines) {
@@ -490,6 +496,8 @@ taxCalc.reportRefund = function (order, refundAmount, callback) {
   const baseUrl = getUrl();
   const requestUrl = `${baseUrl}/transactions/create`;
   const returnAmount = refundAmount * -1;
+  const orderDate = moment(order.createdAt).format(); // original date of the order for tax calculation purposes
+  const returnDate = moment().format(); // the date the return is being processed
   const  lineItems = {
     number: "01",
     quantity: 1,
@@ -502,8 +510,8 @@ taxCalc.reportRefund = function (order, refundAmount, callback) {
     code: order.cartId,
     commit: true,
     customerCode: order._id,
-    taxDate: moment.utc(order.createdAt),
-    date: moment(),
+    taxDate: orderDate,
+    date: returnDate,
     currencyCode: currencyCode,
     addresses: {
       ShipFrom: {
@@ -518,14 +526,16 @@ taxCalc.reportRefund = function (order, refundAmount, callback) {
         line1: order.shipping[0].address.address1,
         line2: order.shipping[0].address.address2 || "",
         city: order.shipping[0].address.city,
-        region: order.shipping[0].address.region,
         country: order.shipping[0].address.country || "US"
       }
     },
     lines: [lineItems]
   };
 
-
+  // Don't add a region unless this is a "country with regions"
+  if (_.includes(countriesWithRegions, order.shipping[0].address.country)) {
+    returnInvoice.ShipTo.region =  order.shipping[0].address.region;
+  }
   const result = avaPost(requestUrl, { data: returnInvoice });
   return callback(result.data);
 };
