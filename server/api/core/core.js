@@ -355,22 +355,33 @@ export default {
   loadPackages() {
     const packages = Packages.find().fetch();
 
-    let settingsFromJSON;
+    let registryFixtureData;
 
-    // Attempt to load reaction.json fixture data
-    try {
-      const settingsJSONAsset = Assets.getText("settings/reaction.json");
-      const validatedJson = EJSON.parse(settingsJSONAsset);
-
-      if (!_.isArray(validatedJson[0])) {
-        Logger.warn("Load Settings is not an array. Failed to load settings.");
-      } else {
-        settingsFromJSON = validatedJson;
+    if (process.env.REACTION_REGISTRY) {
+      // check the environment for the registry fixture data first
+      registryFixtureData = process.env.REACTION_REGISTRY;
+      Logger.info("Loaded REACTION_REGISTRY environment variable for registry fixture import");
+    } else {
+      // or attempt to load reaction.json fixture data
+      try {
+        registryFixtureData = Assets.getText("settings/reaction.json");
+      } catch (error) {
+        Logger.warn("Skipped loading settings from reaction.json.");
+        Logger.debug(error, "loadSettings reaction.json not loaded.");
       }
-    } catch (error) {
-      Logger.warn("Skipped loading settings from reaction.json.");
-      Logger.debug(error, "loadSettings reaction.json not loaded.");
+      Logger.info("Loaded \"/private/settings/reaction.json\" for registry fixture import");
     }
+
+    if (!!registryFixtureData) {
+      const validatedJson = EJSON.parse(registryFixtureData);
+
+      if (!Array.isArray(validatedJson[0])) {
+        Logger.warn("Registry fixture data is not an array. Failed to load.");
+      } else {
+        registryFixtureData = validatedJson;
+      }
+    }
+
     const layouts = [];
     // for each shop, we're loading packages in a unique registry
     _.each(this.Packages, (config, pkgName) => {
@@ -393,8 +404,8 @@ export default {
 
         // Setting from a fixture file, most likely reaction.json
         let settingsFromFixture;
-        if (settingsFromJSON) {
-          settingsFromFixture = _.find(settingsFromJSON[0], (packageSetting) => {
+        if (registryFixtureData) {
+          settingsFromFixture = _.find(registryFixtureData[0], (packageSetting) => {
             return config.name === packageSetting.name;
           });
         }

@@ -171,7 +171,7 @@ Template.productGridItems.events({
   "dblclick [data-event-action=productClick]": function (event, template) {
     const instance = template;
     const product = instance.data;
-    const handle = product.handle;
+    const handle = product.__published && product.__published.handle || product.handle;
 
     Reaction.Router.go("product", {
       handle: handle

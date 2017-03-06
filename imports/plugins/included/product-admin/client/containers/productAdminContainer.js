@@ -3,7 +3,7 @@ import update from "react/lib/update";
 import { Reaction } from "/client/api";
 import { composeWithTracker } from "/lib/api/compose";
 import { ReactionProduct } from "/lib/api";
-import { Tags, Media } from "/lib/collections";
+import { Tags, Media, Templates } from "/lib/collections";
 import { ProductAdmin } from "../components";
 
 class ProductAdminContainer extends Component {
@@ -32,7 +32,12 @@ class ProductAdminContainer extends Component {
     if (fieldName === "handle") {
       updateValue = Reaction.getSlug(value);
     }
-    Meteor.call("products/updateProductField", productId, fieldName, updateValue);
+    Meteor.call("products/updateProductField", productId, fieldName, updateValue, (error) => {
+      if (error) {
+        Alerts.toast(error.message, "error");
+        this.forceUpdate();
+      }
+    });
   }
 
 
@@ -127,12 +132,25 @@ function composer(props, onData) {
 
     revisonDocumentIds = [product._id];
 
+    const templates = Templates.find({
+      parser: "react",
+      provides: "template",
+      templateFor: { $in: ["pdp"] },
+      enabled: true
+    }).map((template) => {
+      return {
+        label: template.title,
+        value: template.name
+      };
+    });
+
     onData(null, {
       editFocus: Reaction.state.get("edit/focus"),
       product: product,
       media,
       tags,
-      revisonDocumentIds
+      revisonDocumentIds,
+      templates
     });
   } else {
     onData(null, {});

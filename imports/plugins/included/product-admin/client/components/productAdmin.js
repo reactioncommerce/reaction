@@ -8,7 +8,8 @@ import {
   CardGroup,
   Metadata,
   TextField,
-  Translation
+  Translation,
+  Select
 } from "/imports/plugins/core/ui/client/components";
 import { Router } from "/client/api";
 import { TagListContainer } from "/imports/plugins/core/ui/client/containers";
@@ -148,6 +149,12 @@ class ProductAdmin extends Component {
     });
   }
 
+  handleTemplateChange = (value, field) => {
+    if (this.props.onProductFieldSave) {
+      this.props.onProductFieldSave(this.product._id, field, value);
+    }
+  }
+
   handleToggleVisibility = () => {
     if (this.props.onProductFieldSave) {
       this.props.onProductFieldSave(this.product._id, "isVisible", !this.product.isVisible);
@@ -225,8 +232,20 @@ class ProductAdmin extends Component {
             actAsExpander={true}
             i18nKeyTitle="productDetailEdit.productSettings"
             title="Product Settings"
+            onChange={this.handleFieldChange}
           />
           <CardBody expandable={true}>
+            <Select
+              clearable={false}
+              i18nKeyLabel="productDetailEdit.template"
+              i18nKeyPlaceholder="productDetailEdit.templateSelectPlaceholder"
+              label="Template"
+              name="template"
+              onChange={this.handleTemplateChange}
+              options={this.props.templates}
+              placeholder="Select a template"
+              value={this.product.template}
+            />
             <TextField
               i18nKeyLabel="productDetailEdit.title"
               i18nKeyPlaceholder="productDetailEdit.title"
@@ -414,6 +433,10 @@ ProductAdmin.propTypes = {
   onRestoreProduct: PropTypes.func,
   product: PropTypes.object,
   revisonDocumentIds: PropTypes.arrayOf(PropTypes.string),
+  templates: PropTypes.arrayOf(PropTypes.shape({
+    label: PropTypes.string,
+    value: PropTypes.any
+  })),
   viewProps: PropTypes.object
 };
 

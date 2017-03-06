@@ -92,7 +92,13 @@
         "notFoundError": "Pagina non trovata.",
         "productNotFound": "Questo prodotto non è stato trovato.",
         "loadMoreProducts": "Caricare più prodotti",
-        "noProductsFound": "Nessun prodotto trovato."
+        "noProductsFound": "Nessun prodotto trovato.",
+        "private": "Privato",
+        "public": "Pubblico",
+        "shortcut": {
+          "addProductLabel": "Aggiungi prodotto",
+          "accountsLabel": "Conti"
+        }
       },
       "searchSettings": {
         "productSearchSettings": {
@@ -428,6 +434,8 @@
         "printLabels": "Etichette di stampa",
         "printShippingLabel": "spedizione",
         "printCustomsLabel": "dogana",
+        "generateTracking": "Generare Etichetta e monitoraggio",
+        "labelError": "Errore di spedizione creando {{err}} etichetta",
         "carrier": "Vettore",
         "addTracking": "Aggiungere monitoraggio",
         "itemsHaveBeenShipped": "I prodotti sono stati spediti",

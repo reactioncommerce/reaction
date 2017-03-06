@@ -92,7 +92,13 @@
         "notFoundError": "Az oldal nem található.",
         "productNotFound": "Ez a termék nem található.",
         "loadMoreProducts": "Töltsön több termék",
-        "noProductsFound": "Nem talált termékek."
+        "noProductsFound": "Nem talált termékek.",
+        "private": "Magán",
+        "public": "Nyilvános",
+        "shortcut": {
+          "addProductLabel": "Termék hozzáadása",
+          "accountsLabel": "Fiókok"
+        }
       },
       "searchSettings": {
         "productSearchSettings": {
@@ -428,6 +434,8 @@
         "printLabels": "Nyomtatás címkék",
         "printShippingLabel": "Szállítás",
         "printCustomsLabel": "Vám",
+        "generateTracking": "Létrehoz Label és nyomon követés",
+        "labelError": "Nem sikerült létrehozni a szállítási címke {{err}}",
         "carrier": "Hordozó",
         "addTracking": "Add követés",
         "itemsHaveBeenShipped": "Tételek szállítása megtörtént",

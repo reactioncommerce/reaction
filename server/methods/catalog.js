@@ -810,13 +810,19 @@ Meteor.methods({
     }
 
     // we need to use sync mode here, to return correct error and result to UI
-    const result = Products.update(_id, {
-      $set: update
-    }, {
-      selector: {
-        type: type
-      }
-    });
+    let result;
+
+    try {
+      result = Products.update(_id, {
+        $set: update
+      }, {
+        selector: {
+          type: type
+        }
+      });
+    } catch (e) {
+      throw new Meteor.Error(e.message);
+    }
 
     if (typeof result === "number") {
       if (type === "variant" && ~toDenormalize.indexOf(field)) {

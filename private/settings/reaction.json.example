@@ -37,7 +37,7 @@
         "enabled": true,
         "settings": {
             "express": {
-              enabled: true
+              "enabled": true
             },
             "express_mode": false,
             "merchantId": "",

@@ -92,7 +92,13 @@
         "notFoundError": "စာမကျြနှာမတှေ့။",
         "productNotFound": "ဒီထုတ်ကုန်မတွေ့ရှိခဲ့သည်။",
         "loadMoreProducts": "ပိုပြီးထုတ်ကုန် load",
-        "noProductsFound": "အဘယ်သူမျှမကုန်ပစ္စည်းများတွေ့ရှိခဲ့ပါတယ်။"
+        "noProductsFound": "အဘယ်သူမျှမကုန်ပစ္စည်းများတွေ့ရှိခဲ့ပါတယ်။",
+        "private": "ကိုယ်ပိုင်",
+        "public": "ပြည်သူ့",
+        "shortcut": {
+          "addProductLabel": "ကုန်ပစ္စည်း Add",
+          "accountsLabel": "ငွေစာရင်း"
+        }
       },
       "searchSettings": {
         "productSearchSettings": {
@@ -428,6 +434,8 @@
         "printLabels": "ပုံနှိပ်ပါ Labels:",
         "printShippingLabel": "သင်္ဘောဖြင့်ကုန်ပစ္စည်းပို့ခြင်း",
         "printCustomsLabel": "အခွန်ဌာန",
+        "generateTracking": "တံဆိပ်နှင့်ခြေရာကောက် Generate",
+        "labelError": "ရေကြောင်းတံဆိပ်ဖန်တီးခြင်းအမှား {{err}}",
         "carrier": "လေယာဉ်တင်သင်္ဘော",
         "addTracking": "ခြေရာကောက် Add",
         "itemsHaveBeenShipped": "items တင်ပို့ခဲ့ကြ",
