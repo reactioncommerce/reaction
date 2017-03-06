@@ -9,13 +9,16 @@ import { Media } from "/lib/collections";
 class LineItemsContainer extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      isExpanded: false
+    };
     this.handleDisplayMedia = this.handleDisplayMedia.bind(this);
     this.handleClick = this.handleClick.bind(this);
   }
 
   handleClick(event) {
     event.preventDefault();
-    console.log("Hey there");
+    this.setState({ isExpanded: true });
   }
 
   handleDisplayMedia(variantObject) {
@@ -34,6 +37,7 @@ class LineItemsContainer extends Component {
     return (
       <TranslationProvider>
         <LineItems
+          isExpanded={this.state.isExpanded}
           displayMedia={this.handleDisplayMedia}
           handleClick={this.handleClick}
           items={this.props.items}
