@@ -187,17 +187,10 @@ export const methods = {
    * activated Carriers of the Shippo account.
    * This method is intended to be used mainly by Autoform.
    * @param {Object} modifier - The Autoform's modifier string
-<<<<<<< HEAD
-   * @param {_id} string - The id of the Shippo package that gets updated
-   * @return {Object} result - The object returned.
-   * @return {string("update"|"delete")} result.type - The type of updating happened.
-   * */
-=======
    * @param {String} _id - The id of the Shippo package that gets updated
    * @return {Object} result - The object returned.
    * @return {String} {string("update"|"delete")} result.type - The type of updating happened.
    */
->>>>>>> upstream/marketplace-my-shops
   "shippo/updateApiKey"(modifier, _id) {
     // Important server-side check for security and data integrity
     check(modifier, ShippoPackageConfig);
@@ -263,14 +256,6 @@ export const methods = {
   /**
    * Fetches the tracking status of shipped orders from Shippo and updates the
    * relevant orders' properties
-<<<<<<< HEAD
-   * @return {Boolean} result - if the updating happened successfully or not.
-   * */
-
-  "shippo/fetchTrackingStatusForOrders"() {
-    const shopId = Reaction.getShopId();
-
-=======
    * @param {String} orderId - optional orderId to get status of just one order.
    * @return {Boolean} result - if the updating happened successfully or not.
    * */
@@ -278,24 +263,11 @@ export const methods = {
     check(orderId, Match.Optional(String));
     const shopId = Reaction.getShopId();
     let shippoOrders;
->>>>>>> upstream/marketplace-my-shops
     const apiKey = getApiKey(shopId);
     if (!apiKey) {
       return false;
     }
 
-<<<<<<< HEAD
-    // Find the orders of the shop that have shippo provider, tracking number, that are shipped
-    // but they are not yet delivered;
-    const shippoOrders = Orders.find({
-      shopId,
-      "shipping.0.shippo.transactionId": { $exists: true },
-      "shipping.0.tracking": { $exists: true },
-      "shipping.0.shipped": true,
-      "shipping.0.delivered": { $ne: true }
-      // For now we don' t have logic for returned products
-    });
-=======
     if (orderId) {
       // return a specific order
       shippoOrders = Orders.find({
@@ -315,7 +287,6 @@ export const methods = {
       });
     }
 
->>>>>>> upstream/marketplace-my-shops
 
     // no orders to update
     if (!shippoOrders.count()) {
@@ -469,23 +440,6 @@ export const methods = {
         const rateId = orderShipment.shipmentMethod.settings.rateId;
         // make the actual purchase
         const transaction = ShippoApi.methods.createTransaction.call({ rateId, apiKey });
-<<<<<<< HEAD
-
-        return Orders.update({
-          _id: orderId
-        }, {
-          $set: {
-            "shipping.0.shippingLabelUrl": transaction.label_url,
-            "shipping.0.tracking": transaction.tracking_number,
-            "shipping.0.shippo.transactionId": transaction.object_id,
-            "shipping.0.shippo.trackingStatusDate": null,
-            "shipping.0.shippo.trackingStatusStatus": null
-          }
-        });
-      }
-    }
-
-=======
         if (transaction) {
           return Orders.update({
             _id: orderId
@@ -501,7 +455,6 @@ export const methods = {
         }
       }
     }
->>>>>>> upstream/marketplace-my-shops
     return false;
   }
 };
