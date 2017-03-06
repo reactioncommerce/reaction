@@ -7,7 +7,7 @@ import { i18next, Logger, formatNumber, Reaction } from "/client/api";
 import { NumericInput } from "/imports/plugins/core/ui/client/components";
 import { Media, Orders, Shops } from "/lib/collections";
 import DiscountList from "/imports/plugins/core/discounts/client/components/list";
-import InvoiceContainer from "../../containers/invoiceContainer.js";
+import InvoiceContainer from "../../containers/invoiceContainer.js"
 import LineItemsContainer from "../../containers/lineItemsContainer.js";
 
 // helper to return the order payment object
@@ -77,16 +77,15 @@ Template.coreOrderShippingInvoice.helpers({
   DiscountList() {
     return DiscountList;
   },
-<<<<<<< HEAD
   InvoiceContainer() {
     return InvoiceContainer;
   },
   LineItemsContainer() {
     return LineItemsContainer;
-=======
-  Invoice() {
-    return Invoice;
->>>>>>> Add presentational aspect for invoice
+  },
+
+  InvoiceContainer() {
+    return InvoiceContainer;
   },
   orderId() {
     const instance = Template.instance();

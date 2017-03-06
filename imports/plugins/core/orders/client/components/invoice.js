@@ -1,20 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import { Translation } from "/imports/plugins/core/ui/client/components";
-// import { NumericInput } from "/imports/plugins/core/ui/client/components";
-import { formatNumber } from "/client/api";
-
 
 class Invoice extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-    };
-    this.currency = this.currency.bind(this);
-  }
-
-  currency(price) {
-    return formatNumber(price);
-  }
 
   render() {
     const invoice = this.props.invoice;
