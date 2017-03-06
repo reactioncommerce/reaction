@@ -482,11 +482,11 @@ Products.before.update(function (userId, product, fieldNames, modifier, options)
             // Handle will get changed if conditions are met in the below if block
             revisionModifier.$set[`documentData.${property}`] = newValue;
 
-            if ((handleMatchesId || hasHandle === false) && (hasExistingTitle || hasNewTitle)) {
+            if ((handleMatchesId || hasHandle === false) && (hasExistingTitle || hasNewTitle) && hasNewHandle === false) {
               // Set the handle to be the slug of the product.title
               // when documentId (product._id) matches the handle, then handle is enpty, and a title exists
               revisionModifier.$set["documentData.handle"] = getSlug(newTitle || revisionTitle);
-            } else if (hasHandle === false && hasExistingTitle === false) {
+            } else if (hasHandle === false && hasExistingTitle === false && hasNewHandle === false) {
               // If the handle & title is empty, the handle becomes the product id
               revisionModifier.$set["documentData.handle"] = documentId;
             } else if (hasNewHandle === false && property === "handle") {
