@@ -1,2 +1,2 @@
 export * from "./countries";
-export * from "./tax-entitycodes";
+export * from "./taxEntitycodes";
