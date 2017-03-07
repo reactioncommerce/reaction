@@ -50,9 +50,14 @@ Meteor.publish("Accounts", function (userId) {
  */
 Meteor.publish("Accounts.single", function (userId) {
   check(userId, Match.OneOf(String, null));
-  return Collections.Accounts.find({
-    userId: userId
-  });
+
+  const shopId = Reaction.getShopId();
+  if (Roles.userIsInRole(this.userId, ["admin", "owner"], shopId)) {
+    return Collections.Accounts.find({
+      userId: userId
+    });
+  }
+  return this.ready();
 });
 
 /**
