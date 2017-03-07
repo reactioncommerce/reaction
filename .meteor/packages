@@ -94,3 +94,4 @@ johanbrook:publication-collector
 # spiderable                                # adds phantomjs SEO rendering, use ongoworks:spiderable with Docker
 # meteorhacks:sikka                         # additional ddp, login security
 
+# Custom Packages

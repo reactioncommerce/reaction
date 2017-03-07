@@ -130,7 +130,7 @@ Meteor.methods({
     chargeObj.card = parseCardData(cardData);
     chargeObj.amount = formatForStripe(paymentData.total);
     chargeObj.currency = paymentData.currency;
-    const stripeConnectSettings = Packages.findOne({ name: "reaction-stripe-connect" }).settings;
+    const stripeConnectSettings = Reaction.getPackageSettings("reaction-stripe-connect").settings;
     if (stripeConnectSettings.transactionFee.enabled && sellerShop.stripeConnectSettings) {
       chargeObj.transactionFee = Number(paymentData.total) * stripeConnectSettings.transactionFee.percentage;
     }
