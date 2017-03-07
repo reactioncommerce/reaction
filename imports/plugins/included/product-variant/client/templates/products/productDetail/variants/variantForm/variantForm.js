@@ -31,7 +31,7 @@ Template.variantForm.onCreated(function () {
 
 Template.variantForm.onRendered(function () {
   $("#taxCode").select2({
-    placeholder: "Select Tax Rate"
+    placeholder: "Select Tax Code"
   });
 });
 
