@@ -44,9 +44,6 @@ Template.taxSettingsPanel.events({
 });
 
 Template.taxSettingsPanel.onCreated(function () {
-  this.autorun(() => {
-    this.subscribe("Account");
-  });
   Meteor.call("avalara/getEntityCodes", (error, entityCodes) => {
     const currentCodes = TaxEntityCodes.find().fetch();
     if (!currentCodes.length) {
