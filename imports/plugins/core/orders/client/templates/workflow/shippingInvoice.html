@@ -1,36 +1,13 @@
 <template name="coreOrderShippingInvoice">
 
   <form name="capture">
-    <div class="order-items">
-      {{#each item in items.items}}
-        <div class="order-item form-group order-summary-form-group" data-item data-item-id="{{item._id}}">
-          <div class="order-item-media">
-            {{#with media item.variants}}
-              <img src="{{url store='thumbnail'}}">
-            {{else}}
-              <img src= "/resources/placeholder.gif">
-            {{/with}}
-          </div>
-          <div class="order-item-details">
-            <div class="order-detail-title">
-              {{item.title}} <small>{{item.variants.title}}</small>
-            </div>
-          </div>
-
-
-          <div class="amount order-detail-price">
-            <div class="amount">
-              {{> React (numericInputProps "item" item.variants.price false)}}
-            </div>
-          </div>
-
-        </div>
-      {{else}}
+    <!--<div class="order-items">-->
+      <!--{{#each item in items.items}}-->
+      <!--{{else}}
         <div class="order-item list-group-item" data-i18n="orderShipping.shipmentEmpty">
           This shipment has no items
         </div>
-      {{/each}}
-    </div>
+      {{/each}}-->
 
     <div>
       {{> React component=LineItemsContainer items=items collection="Orders"}}

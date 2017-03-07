@@ -52,6 +52,7 @@ class LineItemsContainer extends Component {
     return (
       <TranslationProvider>
         <LineItems
+          expandable={this.state}
           isExpanded={this.isExpanded}
           displayMedia={this.handleDisplayMedia}
           handleClick={this.handleClick}
