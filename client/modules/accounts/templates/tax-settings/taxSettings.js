@@ -44,14 +44,14 @@ Template.taxSettingsPanel.events({
 });
 
 Template.taxSettingsPanel.onCreated(function () {
-  Meteor.call("avalara/getEntityCodes", (error, entityCodes) => {
-    const currentCodes = TaxEntityCodes.find().fetch();
-    if (!currentCodes.length) {
+  const currentCodes = TaxEntityCodes.find().fetch();
+  if (!currentCodes.length) {
+    Meteor.call("avalara/getEntityCodes", (error, entityCodes) => {
       _.each(entityCodes, (entityCode) => {
         TaxEntityCodes.insert(entityCode);
       });
-    }
-  });
+    });
+  }
 });
 
 AutoForm.hooks({
