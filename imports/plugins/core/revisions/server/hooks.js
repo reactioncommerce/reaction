@@ -518,13 +518,6 @@ Products.before.update(function (userId, product, fieldNames, modifier, options)
 
     modifier.$set = newSet;
     modifier.$inc = newInc;
-
-    // if (isEmpty(newSet) === false) {
-    //   Products.update(originalSelector, modifier, {
-    //     publish: true,
-    //     selector: options.selector
-    //   });
-    // }
   }
 
   // prevent the underlying document from being modified as it is in draft mode

@@ -48,8 +48,8 @@ StripeApi.methods.getApiKey = new ValidatedMethod({
   name: "StripeApi.methods.getApiKey",
   validate: null,
   run() {
-    const settings = Packages.findOne({ name: "reaction-stripe" }).settings;
-    const stripeConnectSettings = Packages.findOne({ name: "reaction-stripe-connect" }).settings;
+    const settings = Reaction.getPackageSettings("reaction-stripe").settings;
+    const stripeConnectSettings = Reaction.getPackageSettings("reaction-stripe-connect").settings;
     if (!settings.api_key && !stripeConnectSettings.api_key) {
       throw new Meteor.Error("403", "Invalid Stripe Credentials");
     }

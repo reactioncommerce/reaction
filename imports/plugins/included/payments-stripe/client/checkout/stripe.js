@@ -3,7 +3,7 @@ import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { AutoForm } from "meteor/aldeed:autoform";
 import { getCardType } from "/client/modules/core/helpers/globals";
-import { Cart, Shops } from "/lib/collections";
+import { Cart, SellerShops } from "/lib/collections";
 import { Stripe } from "../../lib/api";
 import { StripePayment } from "../../lib/collections/schemas";
 
@@ -66,8 +66,8 @@ AutoForm.addHooks("stripe-payment-form", {
     const storedCard = cardData.type.charAt(0).toUpperCase() + cardData.type.slice(1) + " " + doc.cardNumber.slice(-4);
     Stripe.authorize(cardData, {
       total: Cart.findOne().cartTotal(),
-      currency: Shops.findOne().currency,
-      shopId: Shops.findOne()._id
+      currency: SellerShops.findOne().currency,
+      shopId: SellerShops.findOne()._id
     }, function (error, transaction) {
       submitting = false;
       if (error) {

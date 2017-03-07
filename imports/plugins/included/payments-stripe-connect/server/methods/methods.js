@@ -1,7 +1,7 @@
 import { Meteor } from "meteor/meteor";
-import { HTTP } from 'meteor/http';
+import { HTTP } from "meteor/http";
 import { check } from "meteor/check";
-import { SellerShops } from "/imports/plugins/included/marketplace/lib/collections";
+import { Shops } from "/lib/collections";
 
 Meteor.methods({
   /**
@@ -19,7 +19,7 @@ Meteor.methods({
         params: {client_secret: api_key, code: authCode, grant_type: "authorization_code"}
       });
       // check result for correct data
-      SellerShops.update({shopId}, {
+      Shops.update({shopId}, {
         $set: {stripeConnectSettings: result}
       });
     } catch (error) {
