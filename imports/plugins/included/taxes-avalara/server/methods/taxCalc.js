@@ -366,7 +366,7 @@ taxCalc.estimateCart = function (cart, callback) {
   if (cart.items && cart.shipping && cart.shipping[0].address) {
     const salesOrder = _.assign({}, cartToSalesOrder(cart), getTaxSettings(cart.userId));
     const baseUrl = getUrl();
-    const requestUrl = `${baseUrl}/transactions/create`;
+    const requestUrl = `${baseUrl}transactions/create`;
     const result = avaPost(requestUrl, { data: salesOrder });
     return callback(result.data);
   }
@@ -465,7 +465,7 @@ taxCalc.recordOrder = function (order, callback) {
   if (order && order.shipping && order.shipping[0].address) {
     const salesOrder = _.assign({}, orderToSalesInvoice(order), getTaxSettings(order.userId));
     const baseUrl = getUrl();
-    const requestUrl = `${baseUrl}/transactions/create`;
+    const requestUrl = `${baseUrl}transactions/create`;
     try {
       const result = avaPost(requestUrl, { data: salesOrder });
       return callback(result.data);
@@ -492,7 +492,7 @@ taxCalc.reportRefund = function (order, refundAmount, callback) {
   const companyShipping = _.filter(company.addressBook, (o) => o.isShippingDefault)[0];
   const currencyCode = company.currency;
   const baseUrl = getUrl();
-  const requestUrl = `${baseUrl}/transactions/create`;
+  const requestUrl = `${baseUrl}transactions/create`;
   const returnAmount = refundAmount * -1;
   const orderDate = moment(order.createdAt).format();
   const refundDate = moment().format();
