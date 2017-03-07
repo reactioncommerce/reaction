@@ -21,7 +21,9 @@ class LineItems extends Component {
                 {uniqueItem.title} <br/><small>{uniqueItem.variants.title}</small>
                 </div>
               </div>
-
+              <div className="order-detail-quantity">
+                {uniqueItem.length}
+              </div>
               <div className="order-detail-price">
                 <div className="amount">
                   {uniqueItem.variants.price}
