@@ -223,7 +223,7 @@ taxCalc.validateAddress = function (address) {
   } catch (error) {
     content = result.content;
   }
-  if (content.messages) {
+  if (content && content.messages) {
     messages = content.messages;
   }
   if (messages) {
