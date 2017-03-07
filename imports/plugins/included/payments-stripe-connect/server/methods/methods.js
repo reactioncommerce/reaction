@@ -15,13 +15,17 @@ Meteor.methods({
     const api_key = Packages.findOne({ name: "reaction-stripe-connect" }).settings.api_key;
     const stripeUrl = "https://connect.stripe.com/oauth/token";
     try {
-      const result = HTTP.call("POST", stripeUrl, {params: 
-        { client_secret: api_key, code: authCode, grant_type: "authorization_code" }
+      const result = HTTP.call("POST", stripeUrl, {
+        params: {client_secret: api_key, code: authCode, grant_type: "authorization_code"}
       });
       // check result for correct data
-      SellerShops.update({ shopId }, {
-        $set: { stripeConnectSettings: result }
+      SellerShops.update({shopId}, {
+        $set: {stripeConnectSettings: result}
       });
+    } catch (error) {
+        Logger.error(error);
+        result = { error };
+    }
     return result;
   }
 });
