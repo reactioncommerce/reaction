@@ -34,6 +34,8 @@ Template.avalaraSettings.onCreated(function () {
   });
 });
 
+// Avalara supports only Canada and US for address validation
+const countryDefaults = ["US", "CA"];
 
 Template.avalaraSettings.helpers({
   packageConfigSchema() {
@@ -49,8 +51,10 @@ Template.avalaraSettings.helpers({
     return Logs;
   },
   countryOptions() {
-    // Avalara supports only Canada and US for address validation
-    return Countries.find({ value: { $in: ["US", "CA"] } }).fetch();
+    return Countries.find({ value: { $in: countryDefaults } }).fetch();
+  },
+  countryDefaults() {
+    return countryDefaults;
   },
   currentCountryList() {
     return AutoForm.getFieldValue("settings.addressValidation.countryList");

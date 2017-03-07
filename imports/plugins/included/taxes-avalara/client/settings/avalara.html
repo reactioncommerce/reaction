@@ -17,7 +17,8 @@
         {{>afQuickField name='settings.avalara.mode' class='form-control'}}
         {{>afQuickField name='settings.avalara.performTaxCalculation' class='form-control'}}
         {{>afQuickField name='settings.addressValidation.enabled' class='form-control'}}
-        {{>afQuickField name="settings.addressValidation.countryList" type="select-checkbox" options=countryOptions value=country }}
+        {{>afQuickField name="settings.addressValidation.countryList"
+                        type="select-checkbox" options=countryOptions value=country defaultValue=countryDefaults }}
         {{>afQuickField name='settings.avalara.enableLogging' class='form-control'}}
         {{>afQuickField name='settings.avalara.logRetentionDuration' class='form-control'}}
         {{>afQuickField name='settings.avalara.requestTimeout' class='form-control'}}
