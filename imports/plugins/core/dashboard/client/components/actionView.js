@@ -12,6 +12,8 @@ import {
   Translation,
   Overlay
 } from "/imports/plugins/core/ui/client/components";
+import { getComponent } from "/imports/plugins/core/layout/lib/components";
+
 
 const getStyles = (props) => {
   let viewSize = 400;
@@ -190,6 +192,17 @@ class ActionView extends Component {
 
   renderControlComponent() {
     if (this.props.actionView && typeof this.props.actionView.template === "string") {
+      // Render a react component if one has been registered by name
+      const component = getComponent(this.props.actionView.template);
+
+      if (component) {
+        return (
+          <div style={this.styles.masterView} className="master">
+            {React.createElement(component, this.props.actionView.data)}
+          </div>
+        );
+      }
+
       return (
         <div style={this.styles.masterView} className="master">
           <Blaze

@@ -600,6 +600,30 @@ Meteor.methods({
   },
 
   /**
+   * shop/updateCurrencyConfiguration
+   * @summary enable / disable a currency
+   * @param {String} currency - currency name
+   * @param {Boolean} enabled - true / false
+   * @return {Number} returns mongo update result
+   */
+  "shop/updateCurrencyConfiguration": function (currency, enabled) {
+    check(currency, String);
+    check(enabled, Boolean);
+    // must have core permissions
+    if (!Reaction.hasPermission("core")) {
+      throw new Meteor.Error(403, "Access Denied");
+    }
+    this.unblock();
+    return Collections.Shops.update({
+      _id: Reaction.getShopId()
+    }, {
+      $set: {
+        [`currencies.${currency}.enabled`]: enabled
+      }
+    });
+  },
+
+  /**
    * shop/updateBrandAsset
    * @param {Object} asset - brand asset {mediaId: "", type, ""}
    * @return {Int} returns update result
