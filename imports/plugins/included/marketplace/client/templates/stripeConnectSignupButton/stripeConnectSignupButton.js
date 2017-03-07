@@ -1,7 +1,7 @@
 import { Meteor } from "meteor/meteor";
 import { i18next } from "/client/api";
 import { Reaction } from "/lib/api";
-import { SellerShops } from "../../../lib/collections";
+import { SellerShops } from "/lib/collections";
 
 Template.stripeConnectSignupButton.onCreated(function () {
   this.autorun(() => {
