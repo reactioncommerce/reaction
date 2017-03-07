@@ -466,7 +466,18 @@ Template.coreOrderShippingInvoice.helpers({
       return _.extend(originalItem, item);
     });
 
-    return items;
+    const uniqueItems = _.uniqBy(items, "cartItemId");
+    const groupedItems = _.groupBy(items, "cartItemId");
+
+    uniqueItems.forEach((item) => {
+      Object.keys(groupedItems).forEach((key) => {
+        if (item.cartItemId === key) {
+          item.length = groupedItems[key].length;
+        }
+      });
+    });
+
+    return ({ items, uniqueItems });
   },
 
   /**
