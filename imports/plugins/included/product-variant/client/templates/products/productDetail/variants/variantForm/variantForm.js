@@ -134,7 +134,7 @@ Template.variantForm.helpers({
       };
     };
   },
-  checkIfProviderIsEnabled: function () {
+  isProviderIsEnabled: function () {
     const shopId = Reaction.getShopId();
 
     const provider = Packages.findOne({

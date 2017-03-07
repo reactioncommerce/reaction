@@ -145,7 +145,7 @@
                   <span class="help-block">{{afFieldMessage name='taxable'}}</span>
                   {{/if}}
               </div>
-              {{#unless checkIfProviderIsEnabled}}
+              {{#unless isProviderIsEnabled}}
               <div class="form-group{{#if afFieldIsInvalid name='taxCode'}} has-error{{/if}} taxCode" style="{{displayTaxCodes}}">
                 {{>afFieldInput name='taxCode'}}
               </div>
