@@ -15,16 +15,12 @@ Meteor.publish("Logs", function (query, options) {
   check(query, Match.OneOf(undefined, Object));
   check(options, Match.OneOf(undefined, Object));
 
-  if (!query || !query.logType) {
+  const shopId = Reaction.getShopId();
+  if (!query || !query.logType || shopId) {
     return this.ready();
   }
 
   const logType = query.logType;
-  const shopId = Reaction.getShopId();
-  if (!shopId) {
-    return this.ready();
-  }
-
   if (Roles.userIsInRole(this.userId, ["admin", "owner"])) {
     Counts.publish(this, "logs-count", Logs.find({ shopId, logType }));
     return Logs.find({ shopId, logType }, { sort: { date: 1 } });
