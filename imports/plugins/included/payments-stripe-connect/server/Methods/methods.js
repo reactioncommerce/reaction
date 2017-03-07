@@ -1,7 +1,7 @@
 import { Meteor } from "meteor/meteor";
-import { HTTP } from 'meteor/http';
+import { HTTP } from "meteor/http";
 import { check } from "meteor/check";
-import { SellerShops } from "/imports/plugins/included/marketplace/lib/collections";
+import { Shops } from "/lib/collections";
 
 Meteor.methods({
   /**
@@ -15,13 +15,15 @@ Meteor.methods({
     const api_key = Packages.findOne({ name: "reaction-stripe-connect" }).settings.api_key;
     const stripeUrl = "https://connect.stripe.com/oauth/token";
     try {
-      const result = HTTP.call("POST", stripeUrl, {params: 
+      result = HTTP.call("POST", stripeUrl, {params: 
         { client_secret: api_key, code: authCode, grant_type: "authorization_code" }
       });
       // check result for correct data
-      SellerShops.update({ shopId }, {
+      Shops.update({ shopId }, {
         $set: { stripeConnectSettings: result }
       });
+    } catch (error) {
+    }
     return result;
   }
 });
