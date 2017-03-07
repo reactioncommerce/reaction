@@ -2,7 +2,7 @@
 
   <form name="capture">
     <div class="order-items">
-      {{#each item in items}}
+      {{#each item in items.items}}
         <div class="order-item form-group order-summary-form-group" data-item data-item-id="{{item._id}}">
           <div class="order-item-media">
             {{#with media item.variants}}
@@ -33,7 +33,7 @@
     </div>
 
     <div>
-      {{> React component=LineItemsContainer items=items}}
+      {{> React component=LineItemsContainer items=items collection="Orders"}}
     </div>
     <hr>
 

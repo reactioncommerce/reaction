@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from "react";
 import { composeWithTracker } from "/lib/api/compose";
-// import { Reaction } from "/client/api";
 import { Loading } from "/imports/plugins/core/ui/client/components";
 import { TranslationProvider } from "/imports/plugins/core/ui/client/providers";
 import LineItems from "../components/lineItems.js";
@@ -16,10 +15,6 @@ class LineItemsContainer extends Component {
     this.isExpanded = this.isExpanded.bind(this);
   }
 
-  // handleClick(event) {
-  //   event.preventDefault();
-  //   this.setState({ isExpanded: true });
-  // }
   isExpanded(itemId) {
     if (this.state[`item_${itemId}`]) {
       return true;
@@ -28,11 +23,9 @@ class LineItemsContainer extends Component {
   }
 
   handleClick(itemId) {
-    console.log("item", itemId);
     this.setState({
       [`item_${itemId}`]: true
     });
-    // this.setState({ isExpanded: true });
   }
 
   handleDisplayMedia(variantObject) {
@@ -55,6 +48,7 @@ class LineItemsContainer extends Component {
           displayMedia={this.handleDisplayMedia}
           handleClick={this.handleClick}
           items={this.props.items}
+          uniqueItems={this.props.uniqueItems}
         />
       </TranslationProvider>
     );
@@ -62,12 +56,16 @@ class LineItemsContainer extends Component {
 }
 
 LineItemsContainer.propTypes = {
-  items: PropTypes.array
+  items: PropTypes.array,
+  uniqueItems: PropTypes.array
 };
 
 const composer = (props, onData) => {
+  console.log("compose props", props);
+  const lineItems = props.items;
   onData(null, {
-    items: props.items
+    items: lineItems.items,
+    uniqueItems: lineItems.uniqueItems
   });
 };
 
