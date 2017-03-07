@@ -214,7 +214,7 @@ taxCalc.validateAddress = function (address) {
     addressToValidate.line2 = address.address2;
   }
   const baseUrl = getUrl();
-  const requestUrl = `${baseUrl}/addresses/resolve`;
+  const requestUrl = `${baseUrl}addresses/resolve`;
   const result = avaPost(requestUrl, { data: addressToValidate });
   let content;
 
