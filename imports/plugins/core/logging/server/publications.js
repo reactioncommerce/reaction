@@ -16,7 +16,7 @@ Meteor.publish("Logs", function (query, options) {
   check(options, Match.OneOf(undefined, Object));
 
   const shopId = Reaction.getShopId();
-  if (!query || !query.logType || shopId) {
+  if (!query || !query.logType || !shopId) {
     return this.ready();
   }
 
