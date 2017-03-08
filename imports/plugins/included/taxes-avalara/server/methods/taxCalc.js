@@ -94,6 +94,8 @@ function avaGet(requestUrl, options = {}) {
     result = error;
     Logger.error(`Encountered error while calling Avalara API endpoint ${requestUrl}`);
     Logger.error(error);
+    logObject.error = error;
+    Avalogger.info(logObject);
   }
 
   if (pkgData.settings.avalara.enableLogging) {
@@ -139,6 +141,8 @@ function avaPost(requestUrl, options) {
   } catch (error) {
     Logger.error(`Encountered error while calling API at ${requestUrl}`);
     Logger.error(error);
+    logObject.error = error;
+    Avalogger.info(logObject);
     result = {};
   }
 
@@ -290,7 +294,7 @@ function cartToSalesOrder(cart) {
   let lineItems = [];
   if (cart.items) {
     lineItems = cart.items.map((item) => {
-      if (item.taxable) {
+      if (item.variants.taxable) {
         return {
           number: item._id,
           itemCode: item.productId,
@@ -392,7 +396,7 @@ function orderToSalesInvoice(order) {
   const orderShipping = order.orderShipping();
   const orderDate = moment(order.createdAt).format();
   const lineItems = order.items.map((item) => {
-    if (item.taxable) {
+    if (item.variants.taxable) {
       return {
         number: item._id,
         itemCode: item.productId,
