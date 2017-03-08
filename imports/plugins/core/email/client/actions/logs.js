@@ -1,4 +1,4 @@
-import { Router, i18next } from "/client/api";
+import { i18next } from "/client/api";
 
 export default {
   /**
