@@ -9,10 +9,12 @@ class LineItemsContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isClosed: false
     };
     this.handleDisplayMedia = this.handleDisplayMedia.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.isExpanded = this.isExpanded.bind(this);
+    this.handleClose = this.handleClose.bind(this);
   }
 
   isExpanded(itemId) {
@@ -20,6 +22,14 @@ class LineItemsContainer extends Component {
       return true;
     }
     return false;
+  }
+
+  handleClose(event) {
+    event.preventDefault();
+    console.log("closed");
+    this.setState({
+      isClosed: true
+    });
   }
 
   handleClick(itemId) {
@@ -52,7 +62,8 @@ class LineItemsContainer extends Component {
     return (
       <TranslationProvider>
         <LineItems
-          expandable={this.state}
+          onClose={this.handleClose}
+          isClosed={this.state.isClosed}
           isExpanded={this.isExpanded}
           displayMedia={this.handleDisplayMedia}
           handleClick={this.handleClick}
