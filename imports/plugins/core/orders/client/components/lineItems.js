@@ -19,9 +19,9 @@ class LineItems extends Component {
             );
           }
           return (
-            <div>
+            <div className="roll-up-invoice-list">
               <div>
-                <button className="rui btn btn-default flat icon-only" onClick={this.props.onClose}>
+                <button className="rui btn btn-default flat icon-only" onClick={() => this.props.onClose(uniqueItem._id)}>
                   <i
                     className="rui font-icon fa-lg fa fa-times"
                   />
