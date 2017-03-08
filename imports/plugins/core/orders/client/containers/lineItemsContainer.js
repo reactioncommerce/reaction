@@ -24,11 +24,11 @@ class LineItemsContainer extends Component {
     return false;
   }
 
-  handleClose(event) {
+  handleClose(itemId) {
     event.preventDefault();
     console.log("closed");
     this.setState({
-      isClosed: true
+      [`item_${itemId}`]: false
     });
   }
 
