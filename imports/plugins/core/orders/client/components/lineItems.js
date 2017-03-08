@@ -20,13 +20,13 @@ class LineItems extends Component {
           }
           return (
             <div className="roll-up-invoice-list">
-              <div>
+              <div style={{ float: "right" }}>
                 <button className="rui btn btn-default flat icon-only" onClick={() => this.props.onClose(uniqueItem._id)}>
                   <i
                     className="rui font-icon fa-lg fa fa-times"
                   />
                 </button>
-              </div>
+              </div><br/><br/>
               {_.times(uniqueItem.length, () => (
                 <div>
                   <LineItem
@@ -72,7 +72,7 @@ class LineItem extends Component {
                   {quantity}
                 </div>
                 <div className="order-detail-price">
-                  <div className="amount">
+                  <div className="invoice-details">
                   {uniqueItem.variants.price}
                   </div>
                 </div>
@@ -111,6 +111,14 @@ class InvoiceForm extends Component {
             0
           </div>
         </div>
+        <hr/>
+        <div className="order-summary-form-group">
+          <strong>TOTAL</strong>
+          <div className="invoice-details">
+            0
+          </div>
+        </div>
+        <br/>
       </div>
     );
   }

@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { Translation } from "/imports/plugins/core/ui/client/components";
+import DiscountList from "/imports/plugins/core/discounts/client/components/list";
 
 class Invoice extends Component {
   render() {
@@ -38,9 +39,19 @@ class Invoice extends Component {
         <div className="order-summary-form-group">
           <strong><Translation defaultValue="Discount" i18nKey="cartSubTotals.discount"/></strong>
           <div className="invoice-details">
-            <i className="fa fa-tag fa-lg"/> <a>Add Discount</a>
+            <i className="fa fa-tag fa-lg"/> <a onClick={this.props.handleClick}>Add Discount</a>
           </div>
         </div>
+
+        { this.props.isOpen &&
+          <div>
+            <hr/>
+              <DiscountList
+                id={this.props.orderId}
+                collection={this.props.collection}
+              />
+          </div>
+        }
       </div>
     );
   }

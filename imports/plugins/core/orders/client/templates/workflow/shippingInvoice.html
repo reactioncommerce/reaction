@@ -12,19 +12,10 @@
     <div>
       {{> React component=LineItemsContainer items=items collection="Orders"}}
     </div>
-    <hr>
-
-    <div class="order-summary-discounts">
-        {{> React component=DiscountList id=orderId collection="Orders"}}
-    </div>
-
-    <hr>
 
     <div>
-      {{> React component=InvoiceContainer invoice=invoice collection="Orders"}}
+      {{> React component=InvoiceContainer invoice=invoice orderId=orderId collection="Orders"}}
     </div>
-
-    <hr>
 
     <div class="reason">
       {{> inlineAlerts placement="coreOrderShippingInvoice"}}
