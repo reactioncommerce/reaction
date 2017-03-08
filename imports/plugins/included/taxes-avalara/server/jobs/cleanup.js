@@ -7,7 +7,8 @@ import taxCalc from "../methods/taxCalc";
 
 /**
  * @summary Remove logs older than the configured number of days
- * @returns results of remmoval query
+ * @param {Function} callback - function to call when process complete
+ * @returns {Number} results of remmoval query
  */
 function cleanupAvalaraJobs(callback) {
   const pkgData = taxCalc.getPackageData();
