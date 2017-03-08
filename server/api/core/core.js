@@ -12,7 +12,6 @@ import { sendVerificationEmail } from "./accounts";
 import { getMailUrl } from "./email/config";
 
 
-
 export default {
 
   init() {

@@ -57,18 +57,20 @@ const LogGriddle = React.createClass({
     const maxPages = Math.ceil(this.data.matchingResults / this.state.externalResultsPerPage);
     const allProps = this.props;
 
-    return (<Griddle
-      {...allProps}
-      tableClassName="table"
-      results={this.data.results}
-      columnMetaData={this.props.columnMetaData}
-      externalSetPage={this.setPage}
-      externalSetPageSize={this.setPageSize}
-      externalMaxPage={maxPages}
-      externalSortColumn={this.state.externalSortColumn}
-      externalSortAscending={this.state.externalSortAscending}
-      externalIsLoading={this.data.loading}
-          />);
+    return (
+      <Griddle
+        {...allProps}
+        tableClassName="table"
+        results={this.data.results}
+        columnMetaData={this.props.columnMetaData}
+        externalSetPage={this.setPage}
+        externalSetPageSize={this.setPageSize}
+        externalMaxPage={maxPages}
+        externalSortColumn={this.state.externalSortColumn}
+        externalSortAscending={this.state.externalSortAscending}
+        externalIsLoading={this.data.loading}
+      />
+    );
   }
 
 });
