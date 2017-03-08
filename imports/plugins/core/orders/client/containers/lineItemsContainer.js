@@ -26,7 +26,6 @@ class LineItemsContainer extends Component {
 
   handleClose(itemId) {
     event.preventDefault();
-    console.log("closed");
     this.setState({
       [`item_${itemId}`]: false
     });
