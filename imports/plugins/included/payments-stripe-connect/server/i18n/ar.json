@@ -6,15 +6,15 @@
     "reaction-payments": {
       "admin": {
         "shortcut": {
-          "stripeConnectLabel": "شريط"
+          "stripeConnectLabel": "Stripe Connect"
         },
         "dashboard": {
-          "stripeConnectLabel": "شريط",
+          "stripeConnectLabel": "Stripe Connect",
           "stripeConnectDescription": "المدفوعات شريط"
         },
         "paymentSettings": {
-          "stripeConnectLabel": "شريط",
-          "stripeConnectSettingsLabel": "شريط",
+          "stripeConnectLabel": "Stripe Connect",
+          "stripeConnectSettingsLabel": "Stripe Connect",
           "stripeConnectSettingsDescription": "لم يكن لديك معرف العميل الشريط API؟",
           "stripeConnectSettingsGetItHere": "أحضره هنا"
         }

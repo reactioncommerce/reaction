@@ -6,15 +6,15 @@
     "reaction-payments": {
       "admin": {
         "shortcut": {
-          "stripeLabel": "Raya"
+          "stripeLabel": "Stripe"
         },
         "dashboard": {
-          "stripeLabel": "Raya",
+          "stripeLabel": "Stripe",
           "stripeDescription": "pagos de la raya"
         },
         "paymentSettings": {
-          "stripeLabel": "Raya",
-          "stripeSettingsLabel": "Raya",
+          "stripeLabel": "Stripe",
+          "stripeSettingsLabel": "Stripe",
           "stripeSettingsDescription": "No tener un ID de cliente de API de la raya?",
           "stripeSettingsGetItHere": "Consiguelo aqui"
         }
