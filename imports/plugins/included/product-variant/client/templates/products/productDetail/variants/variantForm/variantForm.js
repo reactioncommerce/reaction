@@ -166,14 +166,18 @@ Template.variantForm.helpers({
     if (provider) {
       if (Meteor.subscribe("TaxCodes").ready() && TaxCodes.find({}).count() === 0) {
         Meteor.call(provider.settings.taxCodes.getTaxCodeMethod, (error, result) => {
-          result.forEach(function (code) {
-            Meteor.call("taxes/insertTaxCodes", shopId, code, provider.name, (err) => {
-              if (err) {
-                throw new Meteor.Error("Error populating TaxCodes collection", err);
-              }
-              return;
+          if (error) {
+            throw new Meteor.Error("Error fetching records", err);
+          } else if (result && Array.isArray(result)) {
+            result.forEach(function (code) {
+              Meteor.call("taxes/insertTaxCodes", shopId, code, provider.name, (err) => {
+                if (err) {
+                  throw new Meteor.Error("Error populating TaxCodes collection", err);
+                }
+                return;
+              });
             });
-          });
+          }
         });
         Meteor.call("taxes/fetchTaxCodes", shopId, provider.name, (err, res) => {
           if (err) {
