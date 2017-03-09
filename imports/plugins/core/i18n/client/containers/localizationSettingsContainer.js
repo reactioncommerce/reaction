@@ -69,6 +69,10 @@ function composer(props, onData) {
   const currencyOptions = [];
   for (const currency in currencies) {
     if ({}.hasOwnProperty.call(currencies, currency)) {
+      if (currency === "updatedAt") {
+        continue;
+      }
+
       const structure = currencies[currency];
       const label = currency + "  |  " + structure.symbol + "  |  " +
         structure.format;
@@ -79,10 +83,12 @@ function composer(props, onData) {
         enabled: structure.enabled
       });
 
-      currencyOptions.push({
-        label,
-        value: currency
-      });
+      if (structure.enabled) {
+        currencyOptions.push({
+          label,
+          value: currency
+        });
+      }
     }
   }
 
