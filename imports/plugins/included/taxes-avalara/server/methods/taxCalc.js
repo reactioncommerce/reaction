@@ -89,14 +89,19 @@ function getTaxSettings(userId) {
  * @summary function to get HTTP data and pass in extra Avalara-specific headers
  * @param {String} requestUrl - The URL to make the request to
  * @param {Object} options - An object of other options
+ * @param {Boolean} testCredentials - determines skipping of configuration check
  * @returns {Object} Response from call
  */
-function avaGet(requestUrl, options = {}) {
+function avaGet(requestUrl, options = {}, testCredentials = true) {
   const logObject = {};
   const pkgData = taxCalc.getPackageData();
-  if (!checkConfiguration(pkgData)) {
-    return undefined;
+
+  if (testCredentials) {
+    if (!checkConfiguration(pkgData)) {
+      return undefined;
+    }
   }
+
   const appVersion = Reaction.getAppVersion();
   const meteorVersion = _.split(Meteor.release, "@")[1];
   const machineName = os.hostname();
@@ -290,15 +295,16 @@ taxCalc.validateAddress = function (address) {
 /**
  * @summary Tests supplied Avalara credentials by calling company endpoint
  * @param {Object} credentials callback Callback function for asynchronous execution
+ * @param {Boolean} testCredentials To be set as false so avaGet skips config check
  * @returns {Object} Object containing "statusCode" on success, empty response on error
  */
-taxCalc.testCredentials = function (credentials) {
+taxCalc.testCredentials = function (credentials, testCredentials = false) {
   check(credentials, Object);
 
   const baseUrl = getUrl();
   const auth = `${credentials.username}:${credentials.password}`;
   const requestUrl = `${baseUrl}companies/${credentials.companyCode}/transactions`;
-  const result = avaGet(requestUrl, { auth, timeout: credentials.requestTimeout });
+  const result = avaGet(requestUrl, { auth, timeout: credentials.requestTimeout }, testCredentials);
 
   if (result && result.code === "ETIMEDOUT") {
     throw new Meteor.Error("Request Timed out. Increase your timeout settings");
