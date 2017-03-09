@@ -30,6 +30,9 @@ class InvoiceContainer extends Component {
           orderId={this.props.orderId}
           canMakeAdjustments={this.props.canMakeAdjustments}
           paymentCaptured={this.props.paymentCaptured}
+          adjustedTotal={this.props.adjustedTotal}
+          refunds={this.props.refunds}
+          collection={this.props.collection}
         />
       </TranslationProvider>
     );
@@ -45,7 +48,10 @@ const composer = (props, onData) => {
     invoice: props.invoice,
     orderId: props.orderId,
     canMakeAdjustments: props.canMakeAdjustments,
-    paymentCaptured: props.paymentCaptured
+    paymentCaptured: props.paymentCaptured,
+    adjustedTotal: props.adjustedTotal,
+    refunds: props.refunds,
+    collection: props.collection
   });
 };
 
