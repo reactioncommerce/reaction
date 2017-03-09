@@ -10,6 +10,7 @@ import { Reaction, Logger } from "/server/api";
 import Avalogger from "./avalogger";
 
 const countriesWithRegions = ["US", "CA", "DE", "AU"];
+const requiredFields = ["username", "password", "apiLoginId", "companyCode", "shippingTaxCode"];
 const taxCalc = {};
 
 taxCalc.getPackageData = function () {
@@ -40,17 +41,39 @@ function getUrl() {
 }
 
 /**
+ * @summary Verify that we have all required configuration data before attempting to use the API
+ * @param {Object} packageData - Package data retrieved from the database
+ * @returns {boolean} - isValid Is the current configuration valid
+ */
+function checkConfiguration(packageData = taxCalc.getPackageData()) {
+  let isValid = true;
+  const settings = _.get(packageData, "settings.avalara", {});
+  for (const field of requiredFields) {
+    if (!settings[field]) {
+      const msg = `The Avalara package cannot function unless ${field} is configured`;
+      Logger.fatal(msg);
+      Avalogger.info({ error: msg });
+      isValid = false;
+    }
+  }
+  if (!isValid) {
+    throw new Meteor.Error("The Avalara package is not configured correctly. Cannot continue");
+  }
+  return isValid;
+}
+
+/**
  * @summary Get the auth info to authenticate to REST API
  * @param {Object} packageData - Optionally pass in packageData if we already have it
  * @returns {String} Username/Password string
  */
 function getAuthData(packageData = taxCalc.getPackageData()) {
-  const { username, password } = _.get(packageData, "settings.avalara", {});
-  if (!username || !password) {
-    return new Meteor.Error("You cannot use this API without a username and password configured");
+  if (checkConfiguration(packageData)) {
+    const settings = _.get(packageData, "settings.avalara", {});
+    const { username, password } = settings;
+    const auth = `${username}:${password}`;
+    return auth;
   }
-  const auth = `${username}:${password}`;
-  return auth;
 }
 
 /**
@@ -71,6 +94,9 @@ function getTaxSettings(userId) {
 function avaGet(requestUrl, options = {}) {
   const logObject = {};
   const pkgData = taxCalc.getPackageData();
+  if (!checkConfiguration(pkgData)) {
+    return undefined;
+  }
   const appVersion = Reaction.getAppVersion();
   const meteorVersion = _.split(Meteor.release, "@")[1];
   const machineName = os.hostname();
@@ -160,10 +186,13 @@ function avaPost(requestUrl, options) {
  * @returns {Object[]} API response
  */
 taxCalc.getEntityCodes = function () {
-  const baseUrl = getUrl();
-  const requestUrl = `${baseUrl}definitions/entityusecodes`;
-  const result = avaGet(requestUrl, { timeout: 5000 });
-  return _.get(result, "data.value", []);
+  if (checkConfiguration()) {
+    const baseUrl = getUrl();
+    const requestUrl = `${baseUrl}definitions/entityusecodes`;
+    const result = avaGet(requestUrl, { timeout: 5000 });
+    return _.get(result, "data.value", []);
+  }
+  throw new Meteor.Error("bad-configuration", "Avalara package is enabled, but is not properly configured");
 };
 
 // API Methods
@@ -272,10 +301,13 @@ taxCalc.testCredentials = function (credentials) {
  * @returns {Array} An array of Tax code objects
  */
 taxCalc.getTaxCodes = function () {
-  const baseUrl = getUrl();
-  const requestUrl = `${baseUrl}definitions/taxcodes`;
-  const result = avaGet(requestUrl);
-  return _.get(result, "data.value", []);
+  if (checkConfiguration()) {
+    const baseUrl = getUrl();
+    const requestUrl = `${baseUrl}definitions/taxcodes`;
+    const result = avaGet(requestUrl);
+    return _.get(result, "data.value", []);
+  }
+  throw new Meteor.Error("bad-configuration", "Avalara Tax package is enabled but not properly configured");
 };
 
 /**
