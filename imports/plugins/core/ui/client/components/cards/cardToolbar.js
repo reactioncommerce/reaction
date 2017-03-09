@@ -1,12 +1,8 @@
 import React, { Component, PropTypes } from "react";
-import { Translation } from "../translation";
 
 class CardToobar extends Component {
   static propTypes = {
-    children: PropTypes.node,
-    element: PropTypes.node,
-    i18nKeyTitle: PropTypes.string,
-    title: PropTypes.string
+    children: PropTypes.node
   }
 
   render() {
