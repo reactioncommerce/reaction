@@ -6,15 +6,15 @@
     "reaction-payments": {
       "admin": {
         "shortcut": {
-          "stripeConnectLabel": "Raya"
+          "stripeConnectLabel": "Stripe Connect"
         },
         "dashboard": {
-          "stripeConnectLabel": "Raya",
+          "stripeConnectLabel": "Stripe Connect",
           "stripeConnectDescription": "pagos de la raya"
         },
         "paymentSettings": {
-          "stripeConnectLabel": "Raya",
-          "stripeConnectSettingsLabel": "Raya",
+          "stripeConnectLabel": "Stripe Connect",
+          "stripeConnectSettingsLabel": "Stripe Connect",
           "stripeConnectSettingsDescription": "No tener un ID de cliente de API de la raya?",
           "stripeConnectSettingsGetItHere": "Consiguelo aqui"
         }

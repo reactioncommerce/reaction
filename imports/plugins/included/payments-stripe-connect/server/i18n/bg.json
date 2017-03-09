@@ -9,7 +9,7 @@
           "stripeConnectLabel": "Stripe Connect"
         },
         "dashboard": {
-          "stripeConnectLabel": "райе",
+          "stripeConnectLabel": "Stripe Connect",
           "stripeConnectDescription": "плащания Stripe Connect"
         },
         "paymentSettings": {

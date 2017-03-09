@@ -6,15 +6,15 @@
     "reaction-payments": {
       "admin": {
         "shortcut": {
-          "stripeConnectLabel": "အစင်း"
+          "stripeConnectLabel": "Stripe Connect"
         },
         "dashboard": {
-          "stripeConnectLabel": "အစင်း",
+          "stripeConnectLabel": "Stripe Connect",
           "stripeConnectDescription": "အစင်းငွေပေးချေမှု"
         },
         "paymentSettings": {
-          "stripeConnectLabel": "အစင်း",
-          "stripeConnectSettingsLabel": "အစင်း",
+          "stripeConnectLabel": "Stripe Connect",
+          "stripeConnectSettingsLabel": "Stripe Connect",
           "stripeConnectSettingsDescription": "တစ်ဦး Stripe Connect ဟာ API ကိုလိုင်း ID ကိုရှိသည်မဟုတ်သလား?",
           "stripeConnectSettingsGetItHere": "ဒီမှာရယူပါ"
         }

@@ -6,15 +6,15 @@
     "reaction-payments": {
       "admin": {
         "shortcut": {
-          "stripeConnectLabel": "Ταινία"
+          "stripeConnectLabel": "Stripe Connect"
         },
         "dashboard": {
-          "stripeConnectLabel": "Ταινία",
+          "stripeConnectLabel": "Stripe Connect",
           "stripeConnectDescription": "πληρωμές stripeConnect"
         },
         "paymentSettings": {
-          "stripeConnectLabel": "Ταινία",
-          "stripeConnectSettingsLabel": "Ταινία",
+          "stripeConnectLabel": "Stripe Connect",
+          "stripeConnectSettingsLabel": "Stripe Connect",
           "stripeConnectSettingsDescription": "Δεν έχετε Stripe Connect API αναγνωριστικό πελάτη;",
           "stripeConnectSettingsGetItHere": "Αποκτήστε το εδώ"
         }

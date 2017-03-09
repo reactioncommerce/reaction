@@ -6,15 +6,15 @@
     "reaction-payments": {
       "admin": {
         "shortcut": {
-          "stripeConnectLabel": "Dunga"
+          "stripeConnectLabel": "Stripe Connect"
         },
         "dashboard": {
-          "stripeConnectLabel": "Dunga",
+          "stripeConnectLabel": "Stripe Connect",
           "stripeConnectDescription": "plăţile Stripe Connect"
         },
         "paymentSettings": {
-          "stripeConnectLabel": "Dunga",
-          "stripeConnectSettingsLabel": "Dunga",
+          "stripeConnectLabel": "Stripe Connect",
+          "stripeConnectSettingsLabel": "Stripe Connect",
           "stripeConnectSettingsDescription": "Nu aveți un ID client Stripe Connect API?",
           "stripeConnectSettingsGetItHere": "Adu-o aici"
         }
