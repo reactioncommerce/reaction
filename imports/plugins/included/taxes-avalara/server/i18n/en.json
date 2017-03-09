@@ -18,7 +18,9 @@
         "logRetentionDuration": "Log Retention Duration",
         "requestTimeout": "Request Timeout",
         "commitDocuments": "Commit Documents",
-        "administratorsPanel": "Administrator's Panel"
+        "administratorsPanel": "Administrator's Panel",
+        "testCredentialsSuccess": "Connection Test Success",
+        "testCredentialsFailed": "Connection Test Failed, Check credentials"
       },
       "logGrid": {
         "noLogsFound": "No logs found",

@@ -52,7 +52,7 @@ function checkConfiguration(packageData = taxCalc.getPackageData()) {
     if (!settings[field]) {
       const msg = `The Avalara package cannot function unless ${field} is configured`;
       Logger.fatal(msg);
-      Avalogger.info({ error: msg });
+      Avalogger.error({ error: msg });
       isValid = false;
     }
   }
@@ -190,7 +190,12 @@ taxCalc.getEntityCodes = function () {
   if (checkConfiguration()) {
     const baseUrl = getUrl();
     const requestUrl = `${baseUrl}definitions/entityusecodes`;
-    const result = avaGet(requestUrl, { timeout: 5000 });
+    const result = avaGet(requestUrl);
+
+    if (result && result.code === "ETIMEDOUT") {
+      throw new Meteor.Error("Request timed out while populating entity codes.");
+    }
+
     return _.get(result, "data.value", []);
   }
   throw new Meteor.Error("bad-configuration", "Avalara package is enabled, but is not properly configured");
@@ -293,7 +298,12 @@ taxCalc.testCredentials = function (credentials) {
   const baseUrl = getUrl();
   const auth = `${credentials.username}:${credentials.password}`;
   const requestUrl = `${baseUrl}companies/${credentials.companyCode}/transactions`;
-  const result = avaGet(requestUrl, { auth, timeout: 5000 });
+  const result = avaGet(requestUrl, { auth, timeout: credentials.requestTimeout });
+
+  if (result && result.code === "ETIMEDOUT") {
+    throw new Meteor.Error("Request Timed out. Increase your timeout settings");
+  }
+
   return { statusCode: result.statusCode };
 };
 
