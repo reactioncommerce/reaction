@@ -121,7 +121,7 @@ function avaGet(requestUrl, options = {}) {
     Logger.error(`Encountered error while calling Avalara API endpoint ${requestUrl}`);
     Logger.error(error);
     logObject.error = error;
-    Avalogger.info(logObject);
+    Avalogger.error(logObject);
   }
 
   if (pkgData.settings.avalara.enableLogging) {
@@ -168,7 +168,8 @@ function avaPost(requestUrl, options) {
     Logger.error(`Encountered error while calling API at ${requestUrl}`);
     Logger.error(error);
     logObject.error = error;
-    Avalogger.info(logObject);
+    // whether logging is enabled or not we log out errors
+    Avalogger.error(logObject);
     result = {};
   }
 
