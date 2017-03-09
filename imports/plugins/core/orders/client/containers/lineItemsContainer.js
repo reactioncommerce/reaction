@@ -83,8 +83,7 @@ const composer = (props, onData) => {
   console.log("compose props", props);
   const lineItems = props.items;
   onData(null, {
-    items: lineItems.items,
-    uniqueItems: lineItems.uniqueItems
+    uniqueItems: lineItems
   });
 };
 
