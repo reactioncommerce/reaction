@@ -29,7 +29,7 @@ describe("i18n methods", function () {
       expect(importTranslationSpy).to.not.have.been.called;
     });
 
-    it("should remove and load translations back by admin", function () {
+    it("should remove and load translations back by admin", function (done) {
       sandbox.stub(Meteor, "userId", () => "0123456789");
       sandbox.stub(Roles, "userIsInRole", () => true);
       const removeTranslationSpy = sandbox.spy(Translations, "remove");

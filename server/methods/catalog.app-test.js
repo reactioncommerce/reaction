@@ -194,7 +194,7 @@ describe("core product methods", function () {
       return done();
     });
 
-    it("should not update individual variant by admin passing in partial object", function () {
+    it("should not update individual variant by admin passing in partial object", function (done) {
       sandbox.stub(Reaction, "hasPermission", () => true);
       const product = addProduct();
       const variant = Products.find({ ancestors: [product._id] }).fetch()[0];
