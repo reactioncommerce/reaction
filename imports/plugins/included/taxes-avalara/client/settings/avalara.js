@@ -137,9 +137,13 @@ Template.avalaraSettings.events({
     Template.instance().$(event.currentTarget).addClass("active");
   },
   "click [data-event-action=testCredentials]": function (event) {
+    const formId = "avalara-update-form";
+    if (!AutoForm.validateForm(formId)) {
+      return null;
+    }
     event.preventDefault();
     event.stopPropagation();
-    const formData = AutoForm.getFormValues("avalara-update-form");
+    const formData = AutoForm.getFormValues(formId);
     const settings = _.get(formData, "insertDoc.settings.avalara");
 
     Meteor.call("avalara/testCredentials", settings, function (error, result) {
