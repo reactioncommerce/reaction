@@ -36,8 +36,7 @@ describe("i18n methods", function () {
       Factory.create("shop");
       Meteor.call("i18n/flushTranslations");
       expect(removeTranslationSpy).to.have.been.called;
-
-      return done();
+      // expect(ReactionImport.process).toHaveBeenCalled();
     });
   });
 });
