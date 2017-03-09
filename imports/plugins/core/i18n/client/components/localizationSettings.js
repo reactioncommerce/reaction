@@ -1,10 +1,12 @@
 import React, { Component, PropTypes } from "react";
 import {
   CardGroup,
-  SettingsCard,
+  CardToolbar,
+  FlatButton,
   Form,
   List,
-  ListItem
+  ListItem,
+  SettingsCard
 } from "/imports/plugins/core/ui/client/components";
 
 import { Shop as ShopSchema } from "/lib/collections/schemas/shops";
@@ -17,6 +19,8 @@ class LocalizationSettings extends Component {
     currencyOptions: PropTypes.array,
     enabledLanguages: PropTypes.array,
     languages: PropTypes.array,
+    onEnableAllCurrencies: PropTypes.func,
+    onEnableAllLanguages: PropTypes.func,
     onUpdateCurrencyConfiguration: PropTypes.func,
     onUpdateLanguageConfiguration: PropTypes.func,
     onUpdateLocalization: PropTypes.func,
@@ -59,6 +63,50 @@ class LocalizationSettings extends Component {
     if (typeof this.props.onUpdateLocalization === "function") {
       this.props.onUpdateLocalization(formData.doc);
     }
+  }
+
+  handleAllOn = (event, name) => {
+    if (name === "language") {
+      if (typeof this.props.onEnableAllLanguages === "function") {
+        this.props.onEnableAllLanguages(true);
+      }
+    } else if (name === "currency") {
+      if (typeof this.props.onEnableAllCurrencies === "function") {
+        this.props.onEnableAllCurrencies(true);
+      }
+    }
+  }
+
+  handleAllOff = (event, name) => {
+    if (name === "language") {
+      if (typeof this.props.onEnableAllLanguages === "function") {
+        this.props.onEnableAllLanguages(false);
+      }
+    } else if (name === "currency") {
+      if (typeof this.props.onEnableAllCurrencies === "function") {
+        this.props.onEnableAllCurrencies(false);
+      }
+    }
+  }
+
+  renderListControls(name) {
+    return (
+      <CardToolbar>
+        <FlatButton
+          i18nKeyLabel={"all.allOn"}
+          label="All On"
+          value={name}
+          onClick={this.handleAllOn}
+        />
+        { "|" }
+        <FlatButton
+          i18nKeyLabel={"all.allOff"}
+          label="All Off"
+          value={name}
+          onClick={this.handleAllOff}
+        />
+      </CardToolbar>
+    );
   }
 
   render() {
@@ -107,6 +155,7 @@ class LocalizationSettings extends Component {
           showSwitch={false}
           title="Languages"
         >
+          {this.renderListControls("language")}
           <List>
             {this.renderLanguages()}
           </List>
@@ -120,6 +169,7 @@ class LocalizationSettings extends Component {
           showSwitch={false}
           title="Currencies"
         >
+          {this.renderListControls("currency")}
           <List>
             {this.renderCurrencies()}
           </List>

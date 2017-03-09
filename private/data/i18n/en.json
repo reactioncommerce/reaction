@@ -95,6 +95,8 @@
         "noProductsFound": "No products found.",
         "private": "Private",
         "public": "Public",
+        "allOn": "All On",
+        "allOff": "All Off",
         "shortcut": {
           "addProductLabel": "Add Product",
           "accountsLabel": "Accounts"

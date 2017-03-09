@@ -87,7 +87,7 @@ class SettingsCard extends Component {
           expandOnSwitchOn={true}
           onSwitchChange={this.handleSwitchChange}
         />
-      <CardBody expandable={true} padded={this.props.padded}>
+        <CardBody expandable={true} padded={this.props.padded}>
           {this.renderCardBody()}
         </CardBody>
       </Card>

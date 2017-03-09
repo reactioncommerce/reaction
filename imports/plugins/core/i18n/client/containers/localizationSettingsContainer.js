@@ -34,13 +34,23 @@ class LocalizationSettingsContainer extends Component {
     });
   }
 
+  handleEnableAllLanguages = (isEnabled) => {
+    Meteor.call("shop/updateLanguageConfiguration", "all", isEnabled);
+  }
+
+  handleEnableAllCurrencies = (isEnabled) => {
+    Meteor.call("shop/updateCurrencyConfiguration", "all", isEnabled);
+  }
+
   render() {
     return (
       <LocalizationSettings
         {...this.props}
-        onUpdateLocalization={this.handleSubmit}
-        onUpdateLanguageConfiguration={this.handleUpdateLanguageConfiguration}
+        onEnableAllCurrencies={this.handleEnableAllCurrencies}
+        onEnableAllLanguages={this.handleEnableAllLanguages}
         onUpdateCurrencyConfiguration={this.handleUpdateCurrencyConfiguration}
+        onUpdateLanguageConfiguration={this.handleUpdateLanguageConfiguration}
+        onUpdateLocalization={this.handleSubmit}
       />
     );
   }
