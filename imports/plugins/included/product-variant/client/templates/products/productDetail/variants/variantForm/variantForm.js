@@ -204,7 +204,7 @@ Template.variantForm.helpers({
     if (this.taxCode && this.taxCode !== "00000") {
       return this.taxCode;
     }
-    return "Select Tax Code";
+    return i18next.t("productVariant.selectTaxCode");
   }
 });
 
