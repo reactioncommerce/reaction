@@ -43,7 +43,7 @@ class Invoice extends Component {
           </div>
         </div>
 
-        { this.props.isOpen &&
+        {this.props.isOpen &&
           <div>
             <hr/>
               <DiscountList
@@ -51,6 +51,35 @@ class Invoice extends Component {
                 collection={this.props.collection}
               />
           </div>
+        }
+        <hr/>
+
+        {this.props.canMakeAdjustments ?
+          <div className="order-summary-form-group">
+            <strong>TOTAL</strong>
+            <div className="invoice-details">
+              <strong>{invoice.total}</strong>
+            </div>
+          </div> :
+
+          <span>
+            {this.props.paymentCaptured ?
+              <div className="order-summary-form-group bg-success" style={{ lineHeight: 3 }}>
+                <span>
+                  <strong className="text-success">CAPTURED TOTAL</strong>
+                </span>
+                <div className="invoice-details">
+                  <strong>{invoice.total}</strong>
+                </div>
+              </div> :
+              <div className="order-summary-form-group">
+                <strong>TOTAL</strong>
+                <div className="invoice-details">
+                  <strong>{invoice.total}</strong>
+                </div>
+              </div>
+            }
+          </span>
         }
       </div>
     );
