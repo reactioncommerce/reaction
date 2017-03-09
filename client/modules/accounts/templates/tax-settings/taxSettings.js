@@ -1,7 +1,8 @@
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
-import { Accounts } from "/lib/collections";
+import { Reaction } from "/client/api";
+import { Packages, Accounts } from "/lib/collections";
 import { Accounts as AccountsSchema } from "/lib/collections/schemas/accounts";
 import { TaxEntityCodes } from "/client/collections";
 
@@ -32,7 +33,7 @@ Template.taxSettingsPanel.helpers({
       });
     });
 
-    return entityCodes.concat(customOption);
+    return (entityCodes || []).concat(customOption);
   }
 });
 
@@ -48,10 +49,21 @@ Template.taxSettingsPanel.events({
 });
 
 Template.taxSettingsPanel.onCreated(function () {
+  const avalaraPackage = Packages.findOne({
+    name: "taxes-avalara",
+    shopId: Reaction.getShopId()
+  });
+  const isAvalaraEnabled = _.get(avalaraPackage, "settings.avalara.enabled", false);
   const currentCodes = TaxEntityCodes.find().fetch();
-  if (!currentCodes.length) {
+
+  if (isAvalaraEnabled && !currentCodes.length) {
     Meteor.call("avalara/getEntityCodes", (error, entityCodes) => {
-      entityCodes.forEach((entityCode) => TaxEntityCodes.insert(entityCode));
+      if (error) {
+        return Alerts.toast(
+          `${i18next.t("settings.apiError")} ${error.message}`, "error"
+        );
+      }
+      (entityCodes || []).forEach((entityCode) => TaxEntityCodes.insert(entityCode));
     });
   }
 });

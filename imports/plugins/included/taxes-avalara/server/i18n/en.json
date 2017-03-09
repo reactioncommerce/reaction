@@ -20,7 +20,8 @@
         "commitDocuments": "Commit Documents",
         "administratorsPanel": "Administrator's Panel",
         "testCredentialsSuccess": "Connection Test Success",
-        "testCredentialsFailed": "Connection Test Failed, Check credentials"
+        "testCredentialsFailed": "Connection Test Failed, Check credentials",
+        "apiError": "Avalara not configured correctly"
       },
       "logGrid": {
         "noLogsFound": "No logs found",
