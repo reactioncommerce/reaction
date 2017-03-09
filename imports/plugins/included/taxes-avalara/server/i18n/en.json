@@ -44,6 +44,7 @@
         "taxSettings": {
           "avalaraLabel": "Avalara",
           "avalaraSettingsLabel": "Avalara",
+          "formTitle": "Tax Settings",
           "entityCodeCustomLabel": "SET CUSTOM VALUE"
         }
       }
