@@ -10,35 +10,13 @@
                 invoice=invoice
                 orderId=orderId
                 canMakeAdjustments=canMakeAdjustments
-                paymentCaptured=paymentCaptured}}
+                paymentCaptured=paymentCaptured
+                adjustedTotal=adjustedTotal
+                refunds=refunds
+                collection="Orders"}}
     </div>
 
     <hr>
-<!--
-    {{#if canMakeAdjustments}}
-      <div class="form-group order-summary-form-group">
-        <label class="form-control-label reason" for="" data-i18n="cartSubTotals.total">Total</label>
-        <div class="amount">
-          {{> React (numericInputProps "total" invoice.total false)}}
-        </div>
-      </div>
-    {{else}}
-      <div class="order-summary-form-group {{#if paymentCaptured}}bg-success{{/if}}">
-        <span class="reason">
-          {{#if paymentCaptured}}
-            <i class="fa fa-check-circle text-success"></i>
-            <strong class="text-success" data-i18n="order.capturedTotal">Captured Total</strong>
-          {{else}}
-            <strong data-i18n="cartSubTotals.total">Total</strong>
-          {{/if}}
-        </span>
-        <div class="amount">
-          {{> React (numericInputProps "total" invoice.total false)}}
-        </div>
-      </div>
-    {{/if}}
-
-    <hr>-->
 
     <div class="flex">
 
@@ -92,17 +70,6 @@
         {{> inlineAlerts placement="coreOrderRefund"}}
       </div>
 
-      <hr>
-
-      <div class="order-summary-form-group">
-        <span class="reason text-danger">
-          <i class="fa fa-minus-circle"></i>
-          <strong data-i18n="order.adjustedTotal">Adjusted Total</strong>
-        </span>
-        <div class="amount text-danger">
-          <strong>{{formatPrice adjustedTotal}}</strong>
-        </div>
-      </div>
       <hr>
       <div class="flex">
         <a
