@@ -1,7 +1,7 @@
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
-import { Reaction } from "/client/api";
+import { Reaction, i18next } from "/client/api";
 import { Packages, Accounts } from "/lib/collections";
 import { Accounts as AccountsSchema } from "/lib/collections/schemas/accounts";
 import { TaxEntityCodes } from "/client/collections";
@@ -22,7 +22,7 @@ Template.taxSettingsPanel.helpers({
   },
   entityCodes() {
     const customOption = [{
-      label: "SET CUSTOM VALUE",
+      label: i18next.t("admin.taxSettings.entityCodeCustomLabel"),
       value: "CUSTOM USER INPUT"
     }];
 

@@ -43,7 +43,8 @@
         },
         "taxSettings": {
           "avalaraLabel": "Avalara",
-          "avalaraSettingsLabel": "Avalara"
+          "avalaraSettingsLabel": "Avalara",
+          "entityCodeCustomLabel": "SET CUSTOM VALUE"
         }
       }
     }
