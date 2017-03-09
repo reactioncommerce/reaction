@@ -207,6 +207,8 @@ describe("core product methods", function () {
       expect(updatedVariant.price).to.not.equal(7);
       expect(updatedVariant.title).to.not.equal("Updated Title");
       expect(updatedVariant.optionTitle).to.equal(variant.optionTitle);
+
+      return done();
     });
 
     it("should update individual variant revision by admin passing in partial object", function () {
