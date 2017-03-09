@@ -2,7 +2,7 @@
 
   <form name="capture">
     <div class="order-items">
-      {{#each item in items}}
+      {{#each item in items.items}}
         <div class="order-item form-group order-summary-form-group" data-item data-item-id="{{item._id}}">
           <div class="order-item-media">
             {{#with media item.variants}}
@@ -16,8 +16,6 @@
               {{item.title}} <small>{{item.variants.title}}</small>
             </div>
           </div>
-
-
           <div class="amount order-detail-price">
             <div class="amount">
               {{> React (numericInputProps "item" item.variants.price false)}}
@@ -30,6 +28,51 @@
           This shipment has no items
         </div>
       {{/each}}
+    </div>
+
+    <hr>
+
+    <div id="returnItemsLink">
+      <a href="#return-items" data-toggle="collapse" role="button" data-parent="#returnItemsLink">Want to return items?</a>
+    </div>
+
+    <div id="return-items" class="panel-collapse collapse">
+      {{#each item in items.uniqueItems}}
+        <div class="return-item form-group order-summary-form-group" data-item data-item-id="{{item._id}}">
+          <input type="checkbox" name="enabled" id="{{item.cartItemId}}">
+          <div class="return-item-media">
+            {{#with media item.variants}}
+              <img src="{{url store='thumbnail'}}">
+            {{else}}
+              <img src= "/resources/placeholder.gif">
+            {{/with}}
+          </div>
+
+          <div class="return-item-details">
+            <div class="return-detail-title">
+              {{item.title}}
+              <br>
+              <small>{{item.variants.title}}</small>
+            </div>
+          </div>
+
+          <div class="quantity">
+            <input class="form-control return-detail-quantity" type="number" name="quantity" id="quantity-{{item.cartItemId}}" value="1" min="1" max="{{item.length}}">
+          </div>
+        </div>
+      {{/each}}
+
+      <div class="shipping-refunds form-group order-summary-form-group">
+        <input type="checkbox" name="enabled" id="shipping">
+        <label class="form-control-label reason">Shipping refunds</label>
+        <div class="amount">
+          <input class="form-control" type="currency" name="amount" value="{{formatPrice invoice.shipping}}">
+        </div>
+      </div>
+
+      <div class="return return-confirmation" data-event-action="returnItems">
+        <button class="btn btn-info btn-block" type="button" name="returnItems">Return Items</button>
+      </div>
     </div>
 
     <hr>

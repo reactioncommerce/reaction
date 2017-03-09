@@ -144,6 +144,7 @@ Template.coreOrderShippingInvoice.events({
     }
   },
 
+
   /**
    * Submit form
    * @param  {Event} event - Event object
@@ -201,6 +202,46 @@ Template.coreOrderShippingInvoice.events({
         }
       });
     }
+  },
+
+  "click [name=returnItems]": (event, instance) => {
+    event.preventDefault();
+    const order = instance.state.get("order");
+    const paymentMethod = orderCreditMethod(order).paymentMethod;
+    const selected = instance.findAll("input[type=checkbox]:checked");
+    const uniqueItems = Template.coreOrderShippingInvoice.__helpers.get("items").call().uniqueItems;
+    const shippingAmount = Template.coreOrderShippingInvoice.__helpers.get("invoice").call().shipping;
+    const checkboxId = _.map(selected, (item) => {
+      return (item.id);
+    });
+
+    const callback = (returnedItems, message) => {
+      Meteor.call("orders/return/create", order._id, paymentMethod, returnedItems, (error) => {
+        if (error) {
+          Alerts.alert(error.reason);
+        } else {
+          Alerts.toast(message, "success");
+        }
+      });
+    };
+
+    let returnedItems = [];
+
+    checkboxId.forEach((id) => {
+      uniqueItems.forEach((uniqueItem) => {
+        if (id === uniqueItem.cartItemId) {
+          const quantity = instance.find(`input[id=quantity-${id}]`).value;
+          returnedItems = [uniqueItem.productId, uniqueItem.cartItemId, uniqueItem.variants.price, quantity];
+        } else {
+          return;
+        }
+      });
+      if (id !== "shipping") {
+        callback(returnedItems, "Item returned successfully");
+      } else {
+        callback(["shipping", 1, shippingAmount], "Shipping refunded successfully");
+      }
+    });
   },
 
   "click [data-event-action=makeAdjustments]": (event, instance) => {
@@ -451,7 +492,17 @@ Template.coreOrderShippingInvoice.helpers({
       return _.extend(originalItem, item);
     });
 
-    return items;
+    const uniqueItems = _.uniqBy(items, "cartItemId");
+    const groupedItems = _.groupBy(items, "cartItemId");
+
+    uniqueItems.forEach((item) => {
+      Object.keys(groupedItems).forEach((key) => {
+        if (item.cartItemId === key) {
+          item.length = groupedItems[key].length;
+        }
+      });
+    });
+    return ({ items, uniqueItems });
   },
 
   /**

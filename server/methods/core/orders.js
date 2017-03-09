@@ -954,6 +954,22 @@ export const methods = {
     Hooks.Events.run("onOrderRefundCreated", orderId);
     // Send email to notify cuustomer of a refund
     Meteor.call("orders/sendNotification", order, "refunded");
+  },
+
+  /**
+   * @summary process line item returns
+   * @param {String} orderId - the id of the order to process
+   * @param {Object} paymentMethod - paymentMethod object
+   * @param {Array} returnedItems - An Array of items to be returned
+   * @returns {Array} - list of returned items
+   */
+  "orders/return/create": function (orderId, paymentMethod, returnedItems) {
+    check(orderId, String);
+    check(paymentMethod, Reaction.Schemas.PaymentMethod);
+    check(returnedItems, Array);
+    // Stub for actual method to process line item returns
+    Logger.info("return processed");
+    return returnedItems;
   }
 };
 
