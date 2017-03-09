@@ -72,7 +72,7 @@ LineItemsContainer.propTypes = {
 };
 
 const composer = (props, onData) => {
-  console.log("compose props", props);
+  // console.log("compose props", props);
   const lineItems = props.items;
   onData(null, {
     uniqueItems: lineItems

@@ -470,7 +470,7 @@ Template.coreOrderShippingInvoice.helpers({
         }
       });
     });
-    console.log("customItems", uniqueItems);
+
     return uniqueItems;
   },
 

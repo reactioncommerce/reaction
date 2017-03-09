@@ -28,7 +28,8 @@ class InvoiceContainer extends Component {
           handleClick={this.handleClick}
           invoice={this.props.invoice}
           orderId={this.props.orderId}
-          collection={this.props.collection}
+          canMakeAdjustments={this.props.canMakeAdjustments}
+          paymentCaptured={this.props.paymentCaptured}
         />
       </TranslationProvider>
     );
@@ -40,11 +41,11 @@ InvoiceContainer.propTypes = {
 };
 
 const composer = (props, onData) => {
-  console.log(props);
   onData(null, {
     invoice: props.invoice,
     orderId: props.orderId,
-    collection: props.collection
+    canMakeAdjustments: props.canMakeAdjustments,
+    paymentCaptured: props.paymentCaptured
   });
 };
 
