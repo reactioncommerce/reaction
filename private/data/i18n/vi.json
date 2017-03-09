@@ -92,7 +92,13 @@
         "notFoundError": "Không tìm thấy trang.",
         "productNotFound": "Sản phẩm này không được tìm thấy.",
         "loadMoreProducts": "Tải nhiều sản phẩm hơn",
-        "noProductsFound": "Không tìm thấy sản phẩm."
+        "noProductsFound": "Không tìm thấy sản phẩm.",
+        "private": "Riêng tư",
+        "public": "Công cộng",
+        "shortcut": {
+          "addProductLabel": "Thêm sản phẩm",
+          "accountsLabel": "tài khoản"
+        }
       },
       "searchSettings": {
         "productSearchSettings": {
@@ -428,6 +434,8 @@
         "printLabels": "In Nhãn",
         "printShippingLabel": "Đang chuyển hàng",
         "printCustomsLabel": "Phong tục",
+        "generateTracking": "Tạo Label và theo dõi",
+        "labelError": "Lỗi tạo vận chuyển nhãn {{err}}",
         "carrier": "Vận chuyển",
         "addTracking": "Thêm Theo dõi",
         "itemsHaveBeenShipped": "Mục đã được vận chuyển",

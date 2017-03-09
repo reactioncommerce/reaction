@@ -73,7 +73,6 @@ Meteor.startup(() => {
           .use(i18nextBrowserLanguageDetector)
           .use(i18nextLocalStorageCache)
           .use(i18nextSprintfPostProcessor)
-          .use(i18nextJquery)
           .init({
             detection: options,
             debug: false,

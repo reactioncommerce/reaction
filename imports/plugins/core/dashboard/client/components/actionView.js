@@ -22,6 +22,22 @@ const getStyles = (props) => {
     viewSize = "90vw";
   }
 
+  if (actionView.meta && actionView.meta.actionView) {
+    const isSmView = actionView.meta.actionView.dashboardSize === "sm";
+    const isMdView = actionView.meta.actionView.dashboardSize === "md";
+    const isLgView = actionView.meta.actionView.dashboardSize === "lg";
+
+    if (isSmView) {
+      viewSize = "400px";
+    }
+    if (isMdView) {
+      viewSize = "50vw";
+    }
+    if (isLgView) {
+      viewSize = "90vw";
+    }
+  }
+
   if (props.actionViewIsOpen === false) {
     viewSize = 400;
   }
@@ -245,7 +261,10 @@ class ActionView extends Component {
   }
 
   get actionViewIsLargeSize() {
-    return this.props.actionView.provides === "dashboard";
+    const { meta } = this.props.actionView;
+    const dashboardSize = meta && meta.actionView && meta.actionView.dashboardSize || "sm";
+
+    return this.props.actionView.provides === "dashboard" || dashboardSize !== "sm";
   }
 
   get showOverlay() {

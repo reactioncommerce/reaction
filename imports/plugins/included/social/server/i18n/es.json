@@ -10,7 +10,16 @@
           "socialDescription": "Configuración de canal Social"
         },
         "settings": {
-          "socialSettingsLabel": "Ajustes sociales"
+          "facebook": "Facebook",
+          "twitter": "Twitter",
+          "pinterest": "Pinterest",
+          "googleplus": "Google+",
+          "appId": "ID de aplicación",
+          "username": "Nombre de usuario",
+          "appSecret": "App secreta",
+          "profilePage": "Página de perfil",
+          "socialSettingsLabel": "Ajustes sociales",
+          "socialSettingsSaved": "entornos sociales guardan"
         }
       }
     }
