@@ -143,12 +143,15 @@ Template.avalaraSettings.events({
     const settings = _.get(formData, "insertDoc.settings.avalara");
 
     Meteor.call("avalara/testCredentials", settings, function (error, result) {
+      if (error && error.message) {
+        return Alerts.toast(`${i18next.t("settings.testCredentialsFailed")} ${error.message}`, "error");
+      }
       const statusCode = _.get(result, "statusCode");
       const connectionValid = _.inRange(statusCode, 400);
       if (connectionValid) {
-        return Alerts.toast("Connection Test Success", "success"); // TODO i18n
+        return Alerts.toast(i18next.t("settings.testCredentialsSuccess"), "success");
       }
-      return Alerts.toast("Connection Test Failed, Check credentials", "error"); // TODO i18n
+      return Alerts.toast(i18next.t("settings.testCredentialsFailed"), "error");
     });
   }
 });
