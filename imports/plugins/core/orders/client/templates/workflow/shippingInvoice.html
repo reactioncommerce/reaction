@@ -1,14 +1,6 @@
 <template name="coreOrderShippingInvoice">
 
   <form name="capture">
-    <!--<div class="order-items">-->
-      <!--{{#each item in items.items}}-->
-      <!--{{else}}
-        <div class="order-item list-group-item" data-i18n="orderShipping.shipmentEmpty">
-          This shipment has no items
-        </div>
-      {{/each}}-->
-
     <div>
       {{> React component=LineItemsContainer items=items collection="Orders"}}
     </div>

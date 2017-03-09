@@ -27,15 +27,15 @@ class LineItems extends Component {
                   />
                 </button>
               </div><br/><br/>
-              {_.times(uniqueItem.length, () => (
-                <div>
+              {uniqueItem.items.map((item) => (
+                <div key={item._id}>
                   <LineItem
-                    uniqueItem={uniqueItem}
+                    uniqueItem={item}
                     displayMedia={this.props.displayMedia}
                     handleClick={this.props.handleClick}
                   />
                   <InvoiceForm
-                    uniqueItemDetails={uniqueItem.variants}
+                    uniqueItemDetails={item.variants}
                   />
                 </div>
               ))}

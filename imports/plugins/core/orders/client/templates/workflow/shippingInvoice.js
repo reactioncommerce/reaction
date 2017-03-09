@@ -466,11 +466,12 @@ Template.coreOrderShippingInvoice.helpers({
       Object.keys(groupedItems).forEach((key) => {
         if (item.cartItemId === key) {
           item.length = groupedItems[key].length;
+          item.items = groupedItems[key];
         }
       });
     });
-
-    return ({ items, uniqueItems });
+    console.log("customItems", uniqueItems);
+    return uniqueItems;
   },
 
   /**
