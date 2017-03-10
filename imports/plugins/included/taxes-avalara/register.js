@@ -15,7 +15,7 @@ Reaction.registerPackage({
       commitDocuments: true,
       performTaxCalculation: true,
       enableLogging: false,
-      requestTimeout: 300,
+      requestTimeout: 3000,
       logRetentionDuration: 30
     },
     addressValidation: {
