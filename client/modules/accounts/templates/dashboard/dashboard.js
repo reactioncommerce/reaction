@@ -1,8 +1,8 @@
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
+import { Template } from "meteor/templating";
 import { Reaction, i18next } from "/client/api";
 import { ServiceConfigHelper } from "../../helpers/util";
-import { Template } from "meteor/templating";
 
 /**
  * Accounts helpers
@@ -16,6 +16,7 @@ Template.accountsDashboard.onCreated(function () {
 Template.accountsDashboard.helpers({
   /**
    * isShopMember
+   * @param {Object} member member object
    * @return {Boolean} True if the memnber is an administrator
    */
   isShopMember() {
@@ -24,12 +25,12 @@ Template.accountsDashboard.helpers({
 
   /**
    * isShopGuest
+   * @param {Object} member member object
    * @return {Boolean} True if the member is a guest
    */
   isShopGuest() {
     return !_.includes(["dashboard", "admin", "owner"], this.role);
   },
-
   /**
    * members
    * @return {Boolean} True array of adminsitrative members

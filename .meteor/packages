@@ -69,6 +69,7 @@ kadira:flow-router-ssr
 matb33:collection-hooks
 meteorhacks:ssr
 meteorhacks:subs-manager
+natestrauser:select2
 ongoworks:security
 raix:ui-dropped-event
 risul:moment-timezone
@@ -93,6 +94,5 @@ johanbrook:publication-collector
 # meteorhacks:kadira-profiler               # cpu profiling
 # spiderable                                # adds phantomjs SEO rendering, use ongoworks:spiderable with Docker
 # meteorhacks:sikka                         # additional ddp, login security
-
 
 # Custom Packages

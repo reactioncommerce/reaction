@@ -34,6 +34,19 @@ function getValidator() {
       return !_.includes(coder.name, "reaction");
     })[0];
   }
+
+  // check if addressValidation is enabled but the package is disabled, don't do address validation
+  let registryName;
+  for (const registry of geoCoder.registry) {
+    if (registry.provides === "addressValidation") {
+      registryName = registry.name;
+    }
+  }
+  const packageKey = registryName.split("/")[2];  // "taxes/addressValidation/{packageKey}"
+  if (!_.get(geoCoder.settings[packageKey], "enabled")) {
+    return "";
+  }
+
   const methodName = geoCoder.settings.addressValidation.addressValidationMethod;
   return methodName;
 }
@@ -52,7 +65,7 @@ function compareAddress(address, validationAddress) {
     errors.push({ address1: "Address line one did not validate" });
   }
 
-  if (address.address2 && !validationAddress.address2) {
+  if (address.address2 && validationAddress.address2 && _.trim(_.upperCase(address.address2)) !== _.trim(_.upperCase(validationAddress.address2))) {
     errors.push({ address2: "Address line 2 did not validate" });
   }
 

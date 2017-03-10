@@ -1,13 +1,16 @@
-import React from "react";
+import React, { Component } from "react";
 import MultiSelect from "../multiselect/multiselect";
 
-function Select(props) {
-  return (
-    <MultiSelect
-      multi={false}
-      {...props}
-    />
-  );
+class Select extends Component {
+  render() {
+    return (
+      <MultiSelect
+        multi={false}
+        clearable={false}
+        {...this.props}
+      />
+    );
+  }
 }
 
 export default Select;
