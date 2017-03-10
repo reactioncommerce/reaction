@@ -56,7 +56,7 @@ class MultiSelect extends Component {
     const translatedPlaceholder = i18next.t(i18nKeyPlaceholder, { defaultValue: placeholder });
 
     return (
-      <div className={classes}>
+      <div className={classes} style={{ zIndex: 2, position: "relative" }}>
         {this.renderLabel()}
         <Select
           {...selectProps}
