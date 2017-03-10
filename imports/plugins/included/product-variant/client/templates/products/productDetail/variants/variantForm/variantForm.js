@@ -167,7 +167,7 @@ Template.variantForm.helpers({
       if (Meteor.subscribe("TaxCodes").ready() && TaxCodes.find({}).count() === 0) {
         Meteor.call(provider.settings.taxCodes.getTaxCodeMethod, (error, result) => {
           if (error) {
-            throw new Meteor.Error("Error fetching records", err);
+            throw new Meteor.Error(`Error calling method ${provider.settings.taxCodes.getTaxCodeMethod}`, error);
           } else if (result && Array.isArray(result)) {
             result.forEach(function (code) {
               Meteor.call("taxes/insertTaxCodes", shopId, code, provider.name, (err) => {
