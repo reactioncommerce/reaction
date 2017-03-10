@@ -1,7 +1,6 @@
 import "./review.html";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
-import { Reaction } from "/client/api";
 
 /**
 * review status
@@ -10,9 +9,4 @@ import { Reaction } from "/client/api";
 
 Template.checkoutReview.onRendered(function () {
   Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow", "checkoutReview");
-  Reaction.showActionView({
-    name: "payment/settings",
-    provides: "settings",
-    template: "paymentSettings"
-  });
 });
