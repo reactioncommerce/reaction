@@ -122,6 +122,7 @@ mongo@1.1.15
 mongo-id@1.0.6
 mongo-livedata@1.0.12
 mrt:later@1.6.1
+natestrauser:select2@4.0.3
 npm-bcrypt@0.9.2
 npm-mongo@2.2.16_1
 oauth@1.1.13

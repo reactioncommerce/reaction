@@ -31,7 +31,7 @@ class EmailSettings extends Component {
 
   handleSelect(e) {
     const { settings } = this.state;
-    settings["service"] = e;
+    settings.service = e;
     this.setState({ settings });
   }
 

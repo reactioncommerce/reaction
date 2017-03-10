@@ -5,6 +5,7 @@ import { EJSON } from "meteor/ejson";
 import { Logger } from "/server/api";
 import Reaction from "../../core/taxes/server/api";
 
+
 Meteor.methods({
   /**
    * taxes/fetchTIC
@@ -17,7 +18,7 @@ Meteor.methods({
    * @param  {String} url alternate url to fetch TaxCodes from
    * @return {undefined}
    */
-  "taxes/fetchTIC": function (url) {
+  "taxcloud/getTaxCodes": function (url) {
     check(url, Match.Optional(String));
     // check(url, Match.Optional(SimpleSchema.RegEx.Url));
 
