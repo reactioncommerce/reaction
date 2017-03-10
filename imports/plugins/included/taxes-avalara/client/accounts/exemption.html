@@ -1,0 +1,21 @@
+<template name="taxSettingsPanel">
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1 panel panel-default panel-tax-settings">
+      <h4 data-i18n="admin.taxSettings.formTitle">Tax Exempt Settings</h4>
+      <div>
+        {{#autoForm collection=Collections.Accounts schema=accountsSchema doc=account id=makeUniqueId type="update" }}
+          {{>afQuickField name='taxSettings.exemptionNo' class='form-control'}}
+          {{> afQuickField data-event-action="customType" name="taxSettings.customerUsageType" type="select" options=entityCodes }}
+          <p>Current Saved Entity Code: {{ account.taxSettings.customerUsageType }}</p>
+          <div class="panel-body customerUsageType hide">
+            <label for="customerUsageType">Custom value</label>
+            <input id="customerUsageType" type="text" name="custom-customerUsageType" class="form-control">
+          </div>
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </div>
+        {{/autoForm}}
+      </div>
+    </div>
+  </div>
+</template>

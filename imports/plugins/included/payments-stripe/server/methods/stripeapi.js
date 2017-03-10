@@ -1,10 +1,8 @@
 /* eslint camelcase: 0 */
-// meteor modules
 import { Meteor } from "meteor/meteor";
 import { SimpleSchema } from "meteor/aldeed:simple-schema";
-// reaction modules
 import { Packages } from "/lib/collections";
-import { Logger } from "/server/api";
+import { Reaction, Logger } from "/server/api";
 
 export const StripeApi = {};
 StripeApi.methods = {};
@@ -48,7 +46,10 @@ StripeApi.methods.getApiKey = new ValidatedMethod({
   name: "StripeApi.methods.getApiKey",
   validate: null,
   run() {
-    const settings = Packages.findOne({ name: "reaction-stripe" }).settings;
+    const settings = Packages.findOne({
+      name: "reaction-stripe",
+      shopId: Reaction.getShopId()
+    }).settings;
     if (!settings.api_key) {
       throw new Meteor.Error("403", "Invalid Stripe Credentials");
     }

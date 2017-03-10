@@ -22,6 +22,7 @@ const fieldNames = [
   "subtitle",
   "vendor",
   "description",
+  "origincountry",
   "facebookMsg",
   "twitterMsg",
   "pinterestMsg",
@@ -305,6 +306,17 @@ class ProductAdmin extends Component {
               placeholder="Description"
               ref="descriptionInput"
               value={this.product.description}
+            />
+            <TextField
+              i18nKeyLabel="productDetailEdit.originCountry"
+              i18nKeyPlaceholder="productDetailEdit.originCountry"
+              label="Origin Country"
+              name="originCountry"
+              onBlur={this.handleFieldBlur}
+              onChange={this.handleFieldChange}
+              placeholder="Country of Origin"
+              ref="countryOfOriginInput"
+              value={this.product.originCountry}
             />
           </CardBody>
         </Card>
