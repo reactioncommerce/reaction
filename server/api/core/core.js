@@ -1,5 +1,5 @@
 import url from "url";
-import fs from "fs";
+import packageJson from "/package.json";
 import { merge, uniqWith } from "lodash";
 import { Meteor } from "meteor/meteor";
 import { EJSON } from "meteor/ejson";
@@ -453,11 +453,7 @@ export default {
     });
   },
   setAppVersion() {
-    const currentPath = process.env.PWD;
-    const packagePath = `${currentPath}/package.json`;
-    const data = fs.readFileSync(packagePath).toString();
-    const parsedData = JSON.parse(data);
-    const version = parsedData.version;
+    const version = packageJson.version;
     Logger.info(`Reaction Version: ${version}`);
     Shops.update({}, { $set: { appVersion: version } }, { multi: true });
   }
