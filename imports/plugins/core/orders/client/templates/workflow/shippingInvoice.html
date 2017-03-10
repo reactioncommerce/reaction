@@ -6,11 +6,15 @@
     </div>
 
     <div>
-      {{> React component=InvoiceContainer invoice=invoice collection="Orders"}}
-    </div>
-
-    <div class="reason">
-      {{> inlineAlerts placement="coreOrderShippingInvoice"}}
+      {{> React component=InvoiceContainer
+                invoice=invoice
+                orderId=orderId
+                canMakeAdjustments=canMakeAdjustments
+                paymentCaptured=paymentCaptured
+                adjustedTotal=adjustedTotal
+                refunds=refunds
+                isFetching=isFetching
+                collection="Orders"}}
     </div>
 
     <hr>
@@ -55,13 +59,6 @@
           </span>
         </div>
       {{/if}}
-
-      {{#each refund in refunds}}
-      <div class="order-summary-form-group">
-        <span class="reason" data-i18n="cartSubTotals.refundAmount">Refunded on: {{dateFormat refund.created format="MMM D, YYYY"}}</span>
-        <div class="amount">-{{formatPrice refund.amount}}</div>
-      </div>
-      {{/each}}
 
       <div class="reason">
         {{> inlineAlerts placement="coreOrderRefund"}}
