@@ -2,7 +2,7 @@
 
   <form name="capture">
     <div>
-      {{> React component=LineItemsContainer items=items collection="Orders"}}
+      {{> React component=LineItemsContainer items=items}}
     </div>
 
     <div>
@@ -43,38 +43,14 @@
 
   {{#if paymentCaptured}}
     <form name="refund">
-      <div class="form-group order-summary-form-group">
-        <label class="form-control-label reason" for="" data-i18n="order.refundAmount">Refund Amount</label>
-        <div class="amount">
-          {{> React refundInputProps}}
-        </div>
-      </div>
-
-      {{#if isFetching}}
-        <div class="form-group order-summary-form-group">
-          <span class="reason">
-            <i class="fa fa-info-circle text-info"></i>
-            <strong class="text-info">Loading Refunds</strong>
-            <i class="fa fa-spinner fa-spin"></i>
-          </span>
-        </div>
-      {{/if}}
-
-      <div class="reason">
-        {{> inlineAlerts placement="coreOrderRefund"}}
-      </div>
-
-      <hr>
       <div class="flex">
-        <a
-          class="btn btn-link"
-          href="{{pathFor "dashboard/pdf/orders" id=orderId }}?shipment={{fulfillment._id}}"
-          target="_blank"
-          data-i18n="app.printInvoice">
-          Print Invoice
-        </a>
+        <div class="form-group order-summary-form-group">
+          <div class="invoice-details">
+            {{> React refundInputProps}}
+          </div>
+        </div>
         <button
-          class="btn btn-success flex-item-fill"
+          class="btn btn-success flex-item-fill refund-button"
           type="submit"
           data-event-action="applyRefund"
           {{refundSubmitDisabled}}
@@ -83,6 +59,22 @@
           <i class="fa fa-spinner fa-spin {{#unless isRefunding}}hidden{{/unless}}"></i>
         </button>
       </div>
+
+
+      <div class="reason">
+        {{> inlineAlerts placement="coreOrderRefund"}}
+      </div>
+
+      <button
+        class="btn btn-default btn-block"
+      >
+        <a
+        href="{{pathFor "dashboard/pdf/orders" id=orderId }}?shipment={{fulfillment._id}}"
+        target="_blank"
+        data-i18n="app.printInvoice">
+          Print Invoice
+        </a>
+      </button>
     </form>
   {{else}}
 

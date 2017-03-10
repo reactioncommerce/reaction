@@ -22,7 +22,6 @@ class InvoiceContainer extends Component {
 
   handleClick(event) {
     event.preventDefault();
-    console.log("Here");
     this.setState({
       isOpen: true
     });
@@ -50,7 +49,14 @@ class InvoiceContainer extends Component {
 }
 
 InvoiceContainer.propTypes = {
-  invoice: PropTypes.object
+  adjustedTotal: PropTypes.number,
+  canMakeAdjustments: PropTypes.bool,
+  collection: PropTypes.string,
+  invoice: PropTypes.object,
+  isFetching: PropTypes.bool,
+  orderId: PropTypes.string,
+  paymentCaptured: PropTypes.bool,
+  refunds: PropTypes.array
 };
 
 const composer = (props, onData) => {

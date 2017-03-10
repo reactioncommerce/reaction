@@ -24,6 +24,7 @@ class Invoice extends Component {
                 id={this.props.orderId}
                 collection={this.props.collection}
               />
+            <hr/>
           </div>
         }
       </div>
@@ -44,7 +45,7 @@ class Invoice extends Component {
         {this.props.refunds && this.props.refunds.map((refund) => (
           <div className="order-summary-form-group text-danger" key={refund.created} style={{ marginBottom: 15 }}>
             <strong>Refunded on: {this.props.dateFormat(refund.created, "MM/D/YYYY")}</strong>
-            <div className="invoice-details"><strong>-{formatPriceString(refund.amount)}</strong></div>
+            <div className="invoice-details"><strong>{formatPriceString(refund.amount)}</strong></div>
           </div>
         ))}
       </div>
@@ -128,28 +129,28 @@ class Invoice extends Component {
         <div className="order-summary-form-group">
           <strong><Translation defaultValue="Subtotal" i18nKey="cartSubTotals.subtotal"/></strong>
           <div className="invoice-details">
-            {invoice.subtotal}
+            {formatPriceString(invoice.subtotal)}
           </div>
         </div>
 
         <div className="order-summary-form-group">
           <strong><Translation defaultValue="Shipping" i18nKey="cartSubTotals.shipping"/></strong>
           <div className="invoice-details">
-            {invoice.shipping}
+            {formatPriceString(invoice.shipping)}
           </div>
         </div>
 
         <div className="order-summary-form-group">
           <strong><Translation defaultValue="Tax" i18nKey="cartSubTotals.tax"/></strong>
           <div className="invoice-details">
-            {invoice.taxes}
+            {formatPriceString(invoice.taxes)}
           </div>
         </div>
 
         <div className="order-summary-form-group">
           <strong><Translation defaultValue="Discount" i18nKey="cartSubTotals.discount"/></strong>
           <div className="invoice-details">
-            <i className="fa fa-tag fa-lg"/> <a onClick={this.props.handleClick}>Add Discount</a>
+            <i className="fa fa-tag fa-lg"/> <a className="btn-link" onClick={this.props.handleClick}>Add Discount</a>
           </div>
         </div>
 
@@ -160,7 +161,17 @@ class Invoice extends Component {
 }
 
 Invoice.propTypes = {
-  invoice: PropTypes.object
+  adjustedTotal: PropTypes.number,
+  canMakeAdjustments: PropTypes.bool,
+  collection: PropTypes.string,
+  dateFormat: PropTypes.func,
+  handleClick: PropTypes.func,
+  invoice: PropTypes.object,
+  isFetching: PropTypes.bool,
+  isOpen: PropTypes.bool,
+  orderId: PropTypes.string,
+  paymentCaptured: PropTypes.bool,
+  refunds: PropTypes.array
 };
 
 export default Invoice;
