@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { composeWithTracker } from "/lib/api/compose";
-// import { Reaction } from "/client/api";
+import moment from "moment";
 import { Loading } from "/imports/plugins/core/ui/client/components";
 import { TranslationProvider } from "/imports/plugins/core/ui/client/providers";
 import Invoice from "../components/invoice.js";
@@ -12,9 +12,17 @@ class InvoiceContainer extends Component {
       isOpen: false
     };
     this.handleClick = this.handleClick.bind(this);
+    this.dateFormat = this.dateFormat.bind(this);
   }
 
-  handleClick() {
+  dateFormat(context, block) {
+    const f = block || "MMM DD, YYYY hh:mm:ss A";
+    return moment(context).format(f);
+  }
+
+  handleClick(event) {
+    event.preventDefault();
+    console.log("Here");
     this.setState({
       isOpen: true
     });
@@ -32,6 +40,8 @@ class InvoiceContainer extends Component {
           paymentCaptured={this.props.paymentCaptured}
           adjustedTotal={this.props.adjustedTotal}
           refunds={this.props.refunds}
+          dateFormat={this.dateFormat}
+          isFetching={this.props.isFetching}
           collection={this.props.collection}
         />
       </TranslationProvider>
@@ -51,6 +61,7 @@ const composer = (props, onData) => {
     paymentCaptured: props.paymentCaptured,
     adjustedTotal: props.adjustedTotal,
     refunds: props.refunds,
+    isFetching: props.isFetching,
     collection: props.collection
   });
 };

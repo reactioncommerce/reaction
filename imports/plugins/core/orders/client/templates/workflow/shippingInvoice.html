@@ -13,6 +13,7 @@
                 paymentCaptured=paymentCaptured
                 adjustedTotal=adjustedTotal
                 refunds=refunds
+                isFetching=isFetching
                 collection="Orders"}}
     </div>
 
@@ -58,13 +59,6 @@
           </span>
         </div>
       {{/if}}
-
-      {{#each refund in refunds}}
-      <div class="order-summary-form-group">
-        <span class="reason" data-i18n="cartSubTotals.refundAmount">Refunded on: {{dateFormat refund.created format="MMM D, YYYY"}}</span>
-        <div class="amount">-{{formatPrice refund.amount}}</div>
-      </div>
-      {{/each}}
 
       <div class="reason">
         {{> inlineAlerts placement="coreOrderRefund"}}

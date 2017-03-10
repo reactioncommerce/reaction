@@ -376,7 +376,7 @@ Template.coreOrderShippingInvoice.helpers({
 
   refunds() {
     const refunds = Template.instance().refunds.get();
-
+    console.log("refunds", refunds);
     if (_.isArray(refunds)) {
       return refunds.reverse();
     }
