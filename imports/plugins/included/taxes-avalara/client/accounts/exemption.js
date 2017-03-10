@@ -8,7 +8,7 @@ import { TaxEntityCodes } from "/client/collections";
 
 Template.taxSettingsPanel.helpers({
   account() {
-    const sub = Meteor.subscribe("Accounts.single", this.member.userId);
+    const sub = Meteor.subscribe("UserAccount", this.member.userId);
     if (sub.ready()) {
       return Accounts.findOne({ _id: this.member.userId });
     }

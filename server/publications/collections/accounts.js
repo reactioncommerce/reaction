@@ -48,7 +48,7 @@ Meteor.publish("Accounts", function (userId) {
  * Single account
  * @params {String} userId -  id of user to find
  */
-Meteor.publish("Accounts.single", function (userId) {
+Meteor.publish("UserAccount", function (userId) {
   check(userId, Match.OneOf(String, null));
 
   const shopId = Reaction.getShopId();
