@@ -139,7 +139,7 @@ class LocalizationSettings extends Component {
               },
               language: {
                 type: "select",
-                options: this.props.languages
+                options: this.props.enabledLanguages
               }
             }}
             name="localization"
