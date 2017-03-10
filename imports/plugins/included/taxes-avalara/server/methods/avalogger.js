@@ -4,11 +4,9 @@ import { Reaction } from "/server/api";
 
 const level = "INFO";
 
-class BunyanMongo {}
+class BunyanMongo {
 
-
-BunyanMongo.prototype.write = Meteor.bindEnvironment((logData) => {
-  const levelToName = {
+  levelToName = {
     10: "trace",
     20: "debug",
     30: "info",
@@ -16,14 +14,17 @@ BunyanMongo.prototype.write = Meteor.bindEnvironment((logData) => {
     50: "error",
     60: "fatal"
   };
-  const avalog = {
-    logType: "avalara",
-    shopId: Reaction.getShopId(),
-    data: logData,
-    level: levelToName[logData.level]
-  };
-  Logs.insert(avalog);
-});
+
+  write = Meteor.bindEnvironment((logData) => {
+    const avalog = {
+      logType: "avalara",
+      shopId: Reaction.getShopId(),
+      data: logData,
+      level: this.levelToName[logData.level]
+    };
+    Logs.insert(avalog);
+  });
+}
 
 const streams = [
   {
