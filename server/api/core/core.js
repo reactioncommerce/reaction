@@ -206,6 +206,14 @@ export default {
     return settings.settings || {};
   },
 
+  getShopCurrency() {
+    const shop = Shops.findOne({
+      _id: this.getShopId()
+    }) || {};
+
+    return shop.currency;
+  },
+
   getPackageSettings(name) {
     return Packages.findOne({ packageName: name, shopId: this.getShopId() }) || null;
   },

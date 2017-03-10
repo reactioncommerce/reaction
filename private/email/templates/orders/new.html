@@ -279,7 +279,7 @@
                                                   <tbody>
                                                     <tr>
                                                       <td align="left" valign="middle" style="font-size:12px; line-height:normal; color:#4c4c4d; font-family:Arial, helvetica;">{{title}} - {{variants.title}}</td>
-                                                      <td align="right" valign="middle" style="font-size:12px; line-height:normal; color:#4c4c4d; font-family:Arial, helvetica;">${{variants.price}}</td>
+                                                      <td align="right" valign="middle" style="font-size:12px; line-height:normal; color:#4c4c4d; font-family:Arial, helvetica;">{{variants.displayPrice}}</td>
                                                     </tr>
                                                   </tbody>
                                                 </table>
@@ -304,16 +304,16 @@
                                               <td valign="top" align="left" height="20" style="line-height:1px; font-size:1px;">&nbsp;</td>
                                             </tr>
                                             <tr>
-                                              <td valign="top" align="right" style="font-size:12px; line-height:normal; color:#4c4c4d; font-family:Arial, helvetica;">Subtotal: ${{billing.subtotal}}</td>
+                                              <td valign="top" align="right" style="font-size:12px; line-height:normal; color:#4c4c4d; font-family:Arial, helvetica;">Subtotal: {{billing.subtotal}}</td>
                                             </tr>
                                             <tr>
-                                              <td valign="top" align="right" style="font-size:12px; line-height:normal; color:#4c4c4d; font-family:Arial, helvetica;">Shipping: ${{billing.shipping}}</td>
+                                              <td valign="top" align="right" style="font-size:12px; line-height:normal; color:#4c4c4d; font-family:Arial, helvetica;">Shipping: {{billing.shipping}}</td>
                                             </tr>
                                             <tr>
-                                              <td valign="top" align="right" style="font-size:12px; line-height:normal; color:#4c4c4d; font-family:Arial, helvetica;">Tax: ${{billing.taxes}}</td>
+                                              <td valign="top" align="right" style="font-size:12px; line-height:normal; color:#4c4c4d; font-family:Arial, helvetica;">Tax: {{billing.taxes}}</td>
                                             </tr>
                                             <tr>
-                                              <td valign="top" align="right" style="font-size:12px; line-height:normal; color:#4c4c4d; font-family:Arial, helvetica;">Discounts: ${{billing.discounts}}</td>
+                                              <td valign="top" align="right" style="font-size:12px; line-height:normal; color:#4c4c4d; font-family:Arial, helvetica;">Discounts: {{billing.discounts}}</td>
                                             </tr>
                                             <tr>
                                               <td valign="top" align="left" height="10" style="line-height:1px; font-size:1px;">&nbsp;</td>
@@ -330,7 +330,7 @@
                                                   <tbody>
                                                     <tr>
                                                       <td valign="top" align="left" style="font-size:12px; line-height:normal; color:#a2a1a3; font-family:Arial, helvetica;">ORDER TOTAL:</td>
-                                                      <td valign="top" align="right" style="font-size:22px; line-height:normal; color:#4d4d4e; font-family:Arial, helvetica;">${{billing.total}}</td>
+                                                      <td valign="top" align="right" style="font-size:22px; line-height:normal; color:#4d4d4e; font-family:Arial, helvetica;">{{billing.total}}</td>
                                                     </tr>
                                                   </tbody>
                                                 </table>

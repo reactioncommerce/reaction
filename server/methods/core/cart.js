@@ -273,6 +273,17 @@ Meteor.methods({
       });
     }
 
+    // attach current user currency to cart
+    const currentUser = Meteor.user();
+    let userCurrency = Reaction.getShopCurrency();
+
+    // Check to see if the user has a custom currency saved to their profile
+    // Use it if they do
+    if (currentUser && currentUser.profile && currentUser.profile.currency) {
+      userCurrency = currentUser.profile.currency;
+    }
+    Meteor.call("cart/setUserCurrency", currentCartId, userCurrency);
+
     return currentCartId;
   },
 
@@ -551,6 +562,36 @@ Meteor.methods({
       order.shipping = [];
     }
 
+    // Add current exchange rate into order.billing.currency
+    // If user currenct === shop currency, exchange rate = 1.0
+    const currentUser = Meteor.user();
+    let userCurrency = Reaction.getShopCurrency();
+    let exchangeRate = "1.00";
+
+    if (currentUser && currentUser.profile && currentUser.profile.currency) {
+      userCurrency = Meteor.user().profile.currency;
+    }
+
+    if (userCurrency !== Reaction.getShopCurrency()) {
+      const getExchangeRate = Meteor.call("shop/getCurrencyRates", userCurrency);
+
+      if (typeof getExchangeRate === "number") {
+        exchangeRate = getExchangeRate;
+      } else {
+        Logger.warn("Failed to get currency exchange rates. Setting exchange rate to null.");
+        exchangeRate = null;
+      }
+    }
+
+    if (!order.billing[0].currency) {
+      order.billing[0].currency = {
+        userCurrency: userCurrency
+      };
+    }
+
+    order.billing[0].currency.exchangeRate = exchangeRate;
+
+
     const expandedItems = [];
 
     // init item level workflow
@@ -699,6 +740,65 @@ Meteor.methods({
     // this will transition to review
     return Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow",
       "coreCheckoutShipping");
+  },
+
+  /**
+   * cart/setUserCurrency
+   * @summary saves user currency in cart, to be paired with order/setCurrencyExhange
+   * @param {String} cartId - cartId to apply setUserCurrency
+   * @param {String} userCurrency - userCurrency to set to cart
+   * @return {Number} update result
+   */
+  "cart/setUserCurrency": function (cartId, userCurrency) {
+    check(cartId, String);
+    check(userCurrency, String);
+    const cart = Collections.Cart.findOne({
+      _id: cartId,
+      userId: this.userId
+    });
+    if (!cart) {
+      Logger.error(`Cart not found for user: ${ this.userId }`);
+      throw new Meteor.Error(404, "Cart not found",
+        "Cart not found for user with such id");
+    }
+
+    const userCurrencyString = {
+      userCurrency: userCurrency
+    };
+
+    let selector;
+    let update;
+
+    if (cart.billing) {
+      selector = {
+        "_id": cartId,
+        "billing._id": cart.billing[0]._id
+      };
+      update = {
+        $set: {
+          "billing.$.currency": userCurrencyString
+        }
+      };
+    } else {
+      selector = {
+        _id: cartId
+      };
+      update = {
+        $addToSet: {
+          "billing.currency": userCurrencyString
+        }
+      };
+    }
+
+    // add / or set the shipping address
+    try {
+      Collections.Cart.update(selector, update);
+    } catch (e) {
+      Logger.error(e);
+      throw new Meteor.Error("An error occurred adding the currency");
+    }
+
+    return true;
   },
 
   /**
