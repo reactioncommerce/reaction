@@ -211,7 +211,7 @@ export default {
       _id: this.getShopId()
     });
 
-    return shop.currency;
+    return shop && shop.currency || "USD";
   },
 
   getPackageSettings(name) {

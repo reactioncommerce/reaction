@@ -783,7 +783,9 @@ Meteor.methods({
       };
       update = {
         $addToSet: {
-          "billing.currency": userCurrencyString
+          billing: {
+            currency: userCurrencyString
+          }
         }
       };
     }
