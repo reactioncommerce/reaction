@@ -458,7 +458,6 @@ Template.coreOrderShippingInvoice.helpers({
       return _.extend(originalItem, item);
     });
 
-    console.log("items", items);
     const uniqueItems = _.uniqBy(items, "cartItemId");
     const groupedItems = _.groupBy(items, "cartItemId");
 
