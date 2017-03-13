@@ -1,3 +1,4 @@
+import { isEqual } from "lodash";
 import React, { Component, PropTypes } from "react";
 import Velocity from "velocity-animate";
 import "velocity-animate/velocity.ui";
@@ -13,7 +14,6 @@ import {
 } from "/imports/plugins/core/ui/client/components";
 import { Router } from "/client/api";
 import { TagListContainer } from "/imports/plugins/core/ui/client/containers";
-import { isEqual } from "lodash";
 import update from "react/lib/update";
 
 const fieldNames = [
@@ -149,7 +149,7 @@ class ProductAdmin extends Component {
     });
   }
 
-  handleTemplateChange = (value, field) => {
+  handleSelectChange = (value, field) => {
     if (this.props.onProductFieldSave) {
       this.props.onProductFieldSave(this.product._id, field, value);
     }
@@ -241,7 +241,7 @@ class ProductAdmin extends Component {
               i18nKeyPlaceholder="productDetailEdit.templateSelectPlaceholder"
               label="Template"
               name="template"
-              onChange={this.handleTemplateChange}
+              onChange={this.handleSelectChange}
               options={this.props.templates}
               placeholder="Select a template"
               value={this.product.template}
@@ -307,16 +307,17 @@ class ProductAdmin extends Component {
               ref="descriptionInput"
               value={this.product.description}
             />
-            <TextField
+            <Select
+              clearable={false}
               i18nKeyLabel="productDetailEdit.originCountry"
               i18nKeyPlaceholder="productDetailEdit.originCountry"
               label="Origin Country"
               name="originCountry"
-              onBlur={this.handleFieldBlur}
-              onChange={this.handleFieldChange}
-              placeholder="Country of Origin"
+              onChange={this.handleSelectChange}
+              placeholder="Select a Country"
               ref="countryOfOriginInput"
               value={this.product.originCountry}
+              options={this.props.countries}
             />
           </CardBody>
         </Card>
@@ -418,6 +419,7 @@ class ProductAdmin extends Component {
 }
 
 ProductAdmin.propTypes = {
+  countries: PropTypes.arrayOf(PropTypes.object),
   editFocus: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
   handleFieldBlur: PropTypes.func,
   handleFieldChange: PropTypes.func,
