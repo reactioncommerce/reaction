@@ -573,10 +573,10 @@ Meteor.methods({
     }
 
     if (userCurrency !== Reaction.getShopCurrency()) {
-      const getExchangeRate = Meteor.call("shop/getCurrencyRates", userCurrency);
+      const userExchangeRate = Meteor.call("shop/getCurrencyRates", userCurrency);
 
-      if (typeof getExchangeRate === "number") {
-        exchangeRate = getExchangeRate;
+      if (typeof userExchangeRate === "number") {
+        exchangeRate = userExchangeRate;
       } else {
         Logger.warn("Failed to get currency exchange rates. Setting exchange rate to null.");
         exchangeRate = null;
