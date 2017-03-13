@@ -35,9 +35,6 @@ class InvoiceContainer extends Component {
           handleClick={this.handleClick}
           invoice={this.props.invoice}
           orderId={this.props.orderId}
-          canMakeAdjustments={this.props.canMakeAdjustments}
-          paymentCaptured={this.props.paymentCaptured}
-          adjustedTotal={this.props.adjustedTotal}
           refunds={this.props.refunds}
           dateFormat={this.dateFormat}
           isFetching={this.props.isFetching}
@@ -49,13 +46,10 @@ class InvoiceContainer extends Component {
 }
 
 InvoiceContainer.propTypes = {
-  adjustedTotal: PropTypes.number,
-  canMakeAdjustments: PropTypes.bool,
   collection: PropTypes.string,
   invoice: PropTypes.object,
   isFetching: PropTypes.bool,
   orderId: PropTypes.string,
-  paymentCaptured: PropTypes.bool,
   refunds: PropTypes.array
 };
 
@@ -63,9 +57,6 @@ const composer = (props, onData) => {
   onData(null, {
     invoice: props.invoice,
     orderId: props.orderId,
-    canMakeAdjustments: props.canMakeAdjustments,
-    paymentCaptured: props.paymentCaptured,
-    adjustedTotal: props.adjustedTotal,
     refunds: props.refunds,
     isFetching: props.isFetching,
     collection: props.collection

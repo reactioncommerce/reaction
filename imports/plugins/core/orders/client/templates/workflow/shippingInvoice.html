@@ -9,15 +9,10 @@
       {{> React component=InvoiceContainer
                 invoice=invoice
                 orderId=orderId
-                canMakeAdjustments=canMakeAdjustments
-                paymentCaptured=paymentCaptured
-                adjustedTotal=adjustedTotal
                 refunds=refunds
                 isFetching=isFetching
                 collection="Orders"}}
     </div>
-
-    <hr>
 
     <div class="flex">
 
@@ -60,10 +55,19 @@
         </button>
       </div>
 
+      <div>
+        {{> React component=TotalActionsContainer
+                  invoice=invoice
+                  canMakeAdjustments=canMakeAdjustments
+                  paymentCaptured=paymentCaptured
+                  adjustedTotal=adjustedTotal}}
+      </div>
 
       <div class="reason">
         {{> inlineAlerts placement="coreOrderRefund"}}
       </div>
+
+      <br> <br>
 
       <button
         class="btn btn-default btn-block"

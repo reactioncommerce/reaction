@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { formatPriceString } from "/client/api";
 
 class TotalActions extends Component {
   constructor(props) {
@@ -15,7 +16,7 @@ class TotalActions extends Component {
         </span>
         <div className="invoice-details">
           <i className="fa fa-check text-success" style={{ marginRight: 4 }} />
-          <strong>{this.props.invoice.total}</strong>
+          <strong>{formatPriceString(this.props.invoice.total)}</strong>
         </div>
       </div>
     );
@@ -29,7 +30,7 @@ class TotalActions extends Component {
         </span>
         <div className="invoice-details">
           <i className="fa fa-check text-danger" style={{ marginRight: 4 }} />
-          <strong>{this.props.adjustedTotal}</strong>
+          <strong>{formatPriceString(this.props.adjustedTotal)}</strong>
         </div>
       </div>
     );
