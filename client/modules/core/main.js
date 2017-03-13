@@ -246,7 +246,7 @@ export default {
   getShopCurrency() {
     const shop = Shops.findOne({
       _id: this.shopId
-    }) || {};
+    });
 
     return shop.currency;
   },
