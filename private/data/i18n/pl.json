@@ -92,7 +92,13 @@
         "notFoundError": "Strona nie znaleziona.",
         "productNotFound": "Ten produkt nie został znaleziony.",
         "loadMoreProducts": "Załaduj więcej produktów",
-        "noProductsFound": "Nie znaleziono produktów."
+        "noProductsFound": "Nie znaleziono produktów.",
+        "private": "Prywatne",
+        "public": "Publiczny",
+        "shortcut": {
+          "addProductLabel": "Dodaj produkt",
+          "accountsLabel": "Konta"
+        }
       },
       "searchSettings": {
         "productSearchSettings": {
@@ -428,6 +434,8 @@
         "printLabels": "drukowanie etykiet",
         "printShippingLabel": "Wysyłka",
         "printCustomsLabel": "Zwyczaje",
+        "generateTracking": "Generowanie Label i śledzenie",
+        "labelError": "Błąd podczas tworzenia etykietę {{err}}",
         "carrier": "Nośnik",
         "addTracking": "Dodaj Tracking",
         "itemsHaveBeenShipped": "Produkty zostały wysłane",

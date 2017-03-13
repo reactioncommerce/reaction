@@ -10,7 +10,16 @@
           "socialDescription": "Konfigurace sociální Channel"
         },
         "settings": {
-          "socialSettingsLabel": "sociální Nastavení"
+          "facebook": "Facebook",
+          "twitter": "Cvrlikání",
+          "pinterest": "Pinterest",
+          "googleplus": "Google+",
+          "appId": "Id App",
+          "username": "Uživatelské jméno",
+          "appSecret": "App Secret",
+          "profilePage": "stránka profilu",
+          "socialSettingsLabel": "sociální Nastavení",
+          "socialSettingsSaved": "Sociální nastavení uloženo"
         }
       }
     }

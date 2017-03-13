@@ -92,7 +92,13 @@
         "notFoundError": "Η σελίδα δεν βρέθηκε.",
         "productNotFound": "Το προϊόν δεν βρέθηκε.",
         "loadMoreProducts": "Φορτώστε περισσότερα προϊόντα",
-        "noProductsFound": "Δεν βρέθηκαν προϊόντα."
+        "noProductsFound": "Δεν βρέθηκαν προϊόντα.",
+        "private": "Ιδιωτικός",
+        "public": "Δημόσιο",
+        "shortcut": {
+          "addProductLabel": "Προσθέστε το προϊόν",
+          "accountsLabel": "λογαριασμοί"
+        }
       },
       "searchSettings": {
         "productSearchSettings": {
@@ -428,6 +434,8 @@
         "printLabels": "Ετικέτες Εκτύπωση",
         "printShippingLabel": "Αποστολή",
         "printCustomsLabel": "ΗΘΗ και εθιμα",
+        "generateTracking": "Δημιουργήστε Ετικέτα και Εντοπισμού",
+        "labelError": "Σφάλμα κατά τη δημιουργία της ναυτιλίας {{err}} ετικέτα",
         "carrier": "Φορέας",
         "addTracking": "Προσθέστε Παρακολούθηση",
         "itemsHaveBeenShipped": "στοιχεία έχουν αποσταλεί",

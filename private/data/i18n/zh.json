@@ -92,7 +92,13 @@
         "notFoundError": "网页找不到",
         "productNotFound": "找不到这个产品",
         "loadMoreProducts": "载入更多产品",
-        "noProductsFound": "未找到任何产品。"
+        "noProductsFound": "未找到任何产品。",
+        "private": "私人",
+        "public": "上市",
+        "shortcut": {
+          "addProductLabel": "添加产品",
+          "accountsLabel": "帐户"
+        }
       },
       "searchSettings": {
         "productSearchSettings": {
@@ -428,6 +434,8 @@
         "printLabels": "打印标签",
         "printShippingLabel": "运输",
         "printCustomsLabel": "海关",
+        "generateTracking": "生成标签和跟踪",
+        "labelError": "错误创建货运标签{{err}}",
         "carrier": "运营商",
         "addTracking": "添加跟踪",
         "itemsHaveBeenShipped": "商品已发货",
