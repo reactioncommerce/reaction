@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { Translation } from "/imports/plugins/core/ui/client/components";
+import { formatPriceString } from "/client/api";
 
 class LineItems extends Component {
   constructor(props) {
@@ -37,31 +38,31 @@ class LineItems extends Component {
     );
   }
 
-  renderLineItemInvoice() {
+  renderLineItemInvoice(uniqueItem) {
     return (
       <div>
         <div className="order-summary-form-group">
           <strong><Translation defaultValue="Subtotal" i18nKey="cartSubTotals.subtotal"/></strong>
           <div className="invoice-details">
-            0
+            {formatPriceString(uniqueItem.variants.price)}
           </div>
         </div>
         <div className="order-summary-form-group">
           <strong><Translation defaultValue="Shipping" i18nKey="cartSubTotals.shipping"/></strong>
           <div className="invoice-details">
-            0
+            {formatPriceString(this.props.invoice.shipping)}
           </div>
         </div>
         <div className="order-summary-form-group">
-          <strong><Translation defaultValue="Tax" i18nKey="cartSubTotals.tax"/></strong>
+          <strong>Item tax</strong>
           <div className="invoice-details">
             0
           </div>
         </div>
         <div className="order-summary-form-group">
-          <strong><Translation defaultValue="Tax codes"/></strong>
+          <strong>Tax code</strong>
           <div className="invoice-details">
-            0
+            {uniqueItem.variants.taxCode}
           </div>
         </div>
         <hr/>
@@ -98,7 +99,7 @@ class LineItems extends Component {
               {uniqueItem.items.map((item) => (
                 <div key={item._id}>
                   { this.renderLineItem(item) }
-                  { this.renderLineItemInvoice() }
+                  { this.renderLineItemInvoice(item) }
                 </div>
               ))}
             </div>

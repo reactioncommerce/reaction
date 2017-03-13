@@ -35,14 +35,6 @@ class LineItemsContainer extends Component {
     this.setState({
       [`item_${itemId}`]: true
     });
-    // this.setState({ isExpanded: true });
-    this.handleDisplayMedia = this.handleDisplayMedia.bind(this);
-    this.handleClick = this.handleClick.bind(this);
-  }
-
-  handleClick(event) {
-    event.preventDefault();
-    console.log("Hey there");
   }
 
   handleDisplayMedia(variantObject) {
@@ -62,6 +54,7 @@ class LineItemsContainer extends Component {
       <TranslationProvider>
         <LineItems
           onClose={this.handleClose}
+          invoice={this.props.invoice}
           isClosed={this.state.isClosed}
           isExpanded={this.isExpanded}
           displayMedia={this.handleDisplayMedia}
@@ -75,7 +68,7 @@ class LineItemsContainer extends Component {
 }
 
 LineItemsContainer.propTypes = {
-  items: PropTypes.array,
+  invoice: PropTypes.object,
   uniqueItems: PropTypes.array
 };
 
@@ -83,7 +76,8 @@ const composer = (props, onData) => {
   // console.log("compose props", props);
   const lineItems = props.items;
   onData(null, {
-    uniqueItems: lineItems
+    uniqueItems: lineItems,
+    invoice: props.invoice
   });
 };
 

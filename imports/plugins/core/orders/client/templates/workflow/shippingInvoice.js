@@ -83,13 +83,6 @@ Template.coreOrderShippingInvoice.helpers({
   LineItemsContainer() {
     return LineItemsContainer;
   },
-<<<<<<< HEAD
-
-  InvoiceContainer() {
-    return InvoiceContainer;
-  },
-=======
->>>>>>> Add roll over list capability
   orderId() {
     const instance = Template.instance();
     const state = instance.state;
@@ -318,7 +311,7 @@ Template.coreOrderShippingInvoice.helpers({
   invoice() {
     const instance = Template.instance();
     const order = instance.state.get("order");
-
+    console.log("invoice", order.billing[0].invoice);
     return order.billing[0].invoice;
   },
 
@@ -383,7 +376,6 @@ Template.coreOrderShippingInvoice.helpers({
 
   refunds() {
     const refunds = Template.instance().refunds.get();
-    console.log("refunds", refunds);
     if (_.isArray(refunds)) {
       return refunds.reverse();
     }
@@ -466,6 +458,7 @@ Template.coreOrderShippingInvoice.helpers({
       return _.extend(originalItem, item);
     });
 
+    console.log("items", items);
     const uniqueItems = _.uniqBy(items, "cartItemId");
     const groupedItems = _.groupBy(items, "cartItemId");
 
