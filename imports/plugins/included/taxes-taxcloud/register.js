@@ -20,11 +20,6 @@ Reaction.registerPackage({
       name: "taxes/settings/taxcloud",
       provides: "taxSettings",
       template: "taxCloudSettings"
-    },
-    {
-      label: "TaxCloud Tax Codes",
-      provides: "taxCodes",
-      name: "taxes/taxcodes/taxcloud"
     }
   ]
 });
