@@ -268,7 +268,7 @@ Meteor.methods({
     }
     // Let's doublecheck that the batch is empty before we try to execute
     // Because we get a nasty error if we try to execute an empty batch
-    if (batch.s.currentInsertBatch.size > 0) {
+    if (batch && batch.s && batch.s.currentInsertBatch && batch.s.currentInsertBatch.size > 0) {
       const execute = Meteor.wrapAsync(batch.execute, batch);
       const inventoryBackorder = execute();
       const inserted = inventoryBackorder.nInserted;
