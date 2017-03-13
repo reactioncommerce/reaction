@@ -248,7 +248,7 @@ export default {
       _id: this.shopId
     });
 
-    return shop.currency;
+    return shop && shop.currency || "USD";
   },
 
   isPreview() {
