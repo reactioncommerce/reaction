@@ -51,7 +51,7 @@ function checkConfiguration(packageData = taxCalc.getPackageData()) {
   for (const field of requiredFields) {
     if (!settings[field]) {
       const msg = `The Avalara package cannot function unless ${field} is configured`;
-      Logger.fatal(msg);
+      Logger.warn(msg);
       Avalogger.error({ error: msg });
       isValid = false;
     }

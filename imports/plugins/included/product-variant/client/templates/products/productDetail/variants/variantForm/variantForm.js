@@ -1,3 +1,4 @@
+import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { ReactiveDict } from "meteor/reactive-dict";
 import { Session } from "meteor/session";
@@ -158,23 +159,27 @@ Template.variantForm.helpers({
       "shopId": shopId,
       "registry.provides": "taxCodes",
       "$where": function () {
-        const providerName = this.name.split("-")[1];
+        const providerName = _.filter(this.registry, (o) => o.provides === "taxCodes")[0].name.split("/")[2];
         return this.settings[providerName].enabled;
       }
     });
 
+    const taxCodeProvider = _.filter(provider.registry, (o) => o.provides === "taxCodes")[0].name.split("/")[2];
     if (provider) {
       if (Meteor.subscribe("TaxCodes").ready() && TaxCodes.find({}).count() === 0) {
         Meteor.call(provider.settings.taxCodes.getTaxCodeMethod, (error, result) => {
           if (error) {
-            throw new Meteor.Error(`Error calling method ${provider.settings.taxCodes.getTaxCodeMethod}`, error);
+            if (typeof error === "object") {
+              Meteor.call("logging/logError", taxCodeProvider,  error);
+            } else {
+              Meteor.call("logging/logError", taxCodeProvider,  { error });
+            }
           } else if (result && Array.isArray(result)) {
             result.forEach(function (code) {
               Meteor.call("taxes/insertTaxCodes", shopId, code, provider.name, (err) => {
                 if (err) {
                   throw new Meteor.Error("Error populating TaxCodes collection", err);
                 }
-                return;
               });
             });
           }
@@ -201,7 +206,7 @@ Template.variantForm.helpers({
     return instance.state.get("taxCodes");
   },
   displayCode: function () {
-    if (this.taxCode && this.taxCode !== "00000") {
+    if (this.taxCode && this.taxCode !== "0000") {
       return this.taxCode;
     }
     return i18next.t("productVariant.selectTaxCode");
