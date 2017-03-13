@@ -9,6 +9,8 @@ import { Media, Orders, Shops } from "/lib/collections";
 import DiscountList from "/imports/plugins/core/discounts/client/components/list";
 import InvoiceContainer from "../../containers/invoiceContainer.js";
 import LineItemsContainer from "../../containers/lineItemsContainer.js";
+import TotalActionsContainer from "../../containers/totalActionsContainer.js";
+
 
 // helper to return the order payment object
 // the first credit paymentMethod on the order
@@ -82,6 +84,9 @@ Template.coreOrderShippingInvoice.helpers({
   },
   LineItemsContainer() {
     return LineItemsContainer;
+  },
+  TotalActionsContainer() {
+    return TotalActionsContainer;
   },
   orderId() {
     const instance = Template.instance();
@@ -158,7 +163,7 @@ Template.coreOrderShippingInvoice.events({
    * @param  {Template} instance - Blaze Template
    * @return {void}
    */
-  "submit form[name=refund]": (event, instance) => {
+  "click [data-event-action=applyRefund]": (event, instance) => {
     event.preventDefault();
 
     const { state } = Template.instance();
@@ -311,7 +316,6 @@ Template.coreOrderShippingInvoice.helpers({
   invoice() {
     const instance = Template.instance();
     const order = instance.state.get("order");
-    console.log("invoice", order.billing[0].invoice);
     return order.billing[0].invoice;
   },
 

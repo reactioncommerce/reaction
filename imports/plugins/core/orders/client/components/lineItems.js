@@ -1,9 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { Translation } from "/imports/plugins/core/ui/client/components";
-<<<<<<< HEAD
 import { formatPriceString } from "/client/api";
-=======
->>>>>>> de8f1fffe5aef67a7e2057589b0a567c1405b2df
 
 class LineItems extends Component {
   constructor(props) {
@@ -17,23 +14,24 @@ class LineItems extends Component {
         <div
           className="invoice order-item form-group order-summary-form-group"
           onClick={() => this.props.handleClick(uniqueItem._id)}
+          style={{ marginLeft: -15, marginRight: -15 }}
         >
-          <div className="order-item-media">
+          <div className="order-item-media" style={{ marginLeft: 15 }}>
             { !this.props.displayMedia(uniqueItem.variants) &&
               <img src= "/resources/placeholder.gif" />
             }
           </div>
           <div className="order-item-details">
             <div className="order-detail-title">
-              {uniqueItem.title} <br/><small>{uniqueItem.variants.title}</small>
+            {uniqueItem.title} <br/><small>{uniqueItem.variants.title}</small>
             </div>
           </div>
           <div className="order-detail-quantity">
             {quantity || 1}
           </div>
           <div className="order-detail-price">
-            <div className="invoice-details">
-            {uniqueItem.variants.price}
+            <div className="invoice-details" style={{ marginRight: 15 }}>
+              <strong>{uniqueItem.variants.price}</strong>
             </div>
           </div>
       </div>
@@ -41,60 +39,38 @@ class LineItems extends Component {
     );
   }
 
-<<<<<<< HEAD
   renderLineItemInvoice(uniqueItem) {
-=======
-  renderLineItemInvoice() {
->>>>>>> de8f1fffe5aef67a7e2057589b0a567c1405b2df
     return (
       <div>
         <div className="order-summary-form-group">
           <strong><Translation defaultValue="Subtotal" i18nKey="cartSubTotals.subtotal"/></strong>
           <div className="invoice-details">
-<<<<<<< HEAD
             {formatPriceString(uniqueItem.variants.price)}
-=======
-            0
->>>>>>> de8f1fffe5aef67a7e2057589b0a567c1405b2df
           </div>
         </div>
         <div className="order-summary-form-group">
           <strong><Translation defaultValue="Shipping" i18nKey="cartSubTotals.shipping"/></strong>
           <div className="invoice-details">
-<<<<<<< HEAD
             {formatPriceString(this.props.invoice.shipping)}
           </div>
         </div>
         <div className="order-summary-form-group">
           <strong>Item tax</strong>
-=======
-            0
-          </div>
-        </div>
-        <div className="order-summary-form-group">
-          <strong><Translation defaultValue="Tax" i18nKey="cartSubTotals.tax"/></strong>
->>>>>>> de8f1fffe5aef67a7e2057589b0a567c1405b2df
           <div className="invoice-details">
-            0
+            {formatPriceString(this.props.invoice.taxes)}
           </div>
         </div>
         <div className="order-summary-form-group">
-<<<<<<< HEAD
           <strong>Tax code</strong>
           <div className="invoice-details">
             {uniqueItem.variants.taxCode}
-=======
-          <strong><Translation defaultValue="Tax codes"/></strong>
-          <div className="invoice-details">
-            0
->>>>>>> de8f1fffe5aef67a7e2057589b0a567c1405b2df
           </div>
         </div>
         <hr/>
         <div className="order-summary-form-group">
           <strong>TOTAL</strong>
           <div className="invoice-details">
-            0
+            <strong> 0 </strong>
           </div>
         </div>
         <br/>
@@ -124,11 +100,7 @@ class LineItems extends Component {
               {uniqueItem.items.map((item) => (
                 <div key={item._id}>
                   { this.renderLineItem(item) }
-<<<<<<< HEAD
                   { this.renderLineItemInvoice(item) }
-=======
-                  { this.renderLineItemInvoice() }
->>>>>>> de8f1fffe5aef67a7e2057589b0a567c1405b2df
                 </div>
               ))}
             </div>

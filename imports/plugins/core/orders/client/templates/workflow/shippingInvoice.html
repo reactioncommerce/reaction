@@ -5,19 +5,41 @@
       {{> React component=LineItemsContainer items=items invoice=invoice}}
     </div>
 
-    <div>
-      {{> React component=InvoiceContainer
-                invoice=invoice
-                orderId=orderId
-                canMakeAdjustments=canMakeAdjustments
-                paymentCaptured=paymentCaptured
-                adjustedTotal=adjustedTotal
-                refunds=refunds
-                isFetching=isFetching
-                collection="Orders"}}
+    <div class="invoice-container">
+      <div class="invoice-content">
+        <div>
+          {{> React component=InvoiceContainer
+                    canMakeAdjustments=canMakeAdjustments
+                    paymentCaptured=paymentCaptured
+                    invoice=invoice
+                    orderId=orderId
+                    refunds=refunds
+                    isFetching=isFetching
+                    collection="Orders"}}
+        </div>
+
+        {{#if paymentCaptured}}
+          <div class="flex refund-container">
+          <div class="form-group order-summary-form-group">
+            <div class="invoice-details">
+              {{> React refundInputProps}}
+            </div>
+          </div>
+          <button
+            class="btn btn-success flex-item-fill refund-button"
+            type="button"
+            data-event-action="applyRefund"
+            {{refundSubmitDisabled}}
+          >
+            <span id="btn-refund-payment" data-i18n="order.applyRefund">Apply Refund</span>
+            <i class="fa fa-spinner fa-spin {{#unless isRefunding}}hidden{{/unless}}"></i>
+          </button>
+        </div>
+        {{/if}}
+      </div>
     </div>
 
-    <hr>
+    <br>
 
     <div class="flex">
 
@@ -39,31 +61,20 @@
           </button>
       {{/if}}
     </div>
-  </form>
 
-  {{#if paymentCaptured}}
-    <form name="refund">
-      <div class="flex">
-        <div class="form-group order-summary-form-group">
-          <div class="invoice-details">
-            {{> React refundInputProps}}
-          </div>
-        </div>
-        <button
-          class="btn btn-success flex-item-fill refund-button"
-          type="submit"
-          data-event-action="applyRefund"
-          {{refundSubmitDisabled}}
-        >
-          <span id="btn-refund-payment" data-i18n="order.applyRefund">Apply Refund</span>
-          <i class="fa fa-spinner fa-spin {{#unless isRefunding}}hidden{{/unless}}"></i>
-        </button>
+    {{#if paymentCaptured}}
+      <div class="total-container">
+          {{> React component=TotalActionsContainer
+                    invoice=invoice
+                    canMakeAdjustments=canMakeAdjustments
+                    paymentCaptured=paymentCaptured
+                    adjustedTotal=adjustedTotal}}
       </div>
-
-
       <div class="reason">
         {{> inlineAlerts placement="coreOrderRefund"}}
       </div>
+
+      <br>
 
       <button
         class="btn btn-default btn-block"
@@ -75,9 +86,9 @@
           Print Invoice
         </a>
       </button>
-    </form>
-  {{else}}
 
-  {{/if}}
+    {{else}}
 
+    {{/if}}
+  </form>
 </template>

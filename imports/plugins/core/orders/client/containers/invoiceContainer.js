@@ -31,13 +31,12 @@ class InvoiceContainer extends Component {
     return (
       <TranslationProvider>
         <Invoice
+          canMakeAdjustments={this.props.canMakeAdjustments}
+          paymentCaptured={this.props.paymentCaptured}
           isOpen={this.state.isOpen}
           handleClick={this.handleClick}
           invoice={this.props.invoice}
           orderId={this.props.orderId}
-          canMakeAdjustments={this.props.canMakeAdjustments}
-          paymentCaptured={this.props.paymentCaptured}
-          adjustedTotal={this.props.adjustedTotal}
           refunds={this.props.refunds}
           dateFormat={this.dateFormat}
           isFetching={this.props.isFetching}
@@ -49,7 +48,6 @@ class InvoiceContainer extends Component {
 }
 
 InvoiceContainer.propTypes = {
-  adjustedTotal: PropTypes.number,
   canMakeAdjustments: PropTypes.bool,
   collection: PropTypes.string,
   invoice: PropTypes.object,
@@ -61,11 +59,10 @@ InvoiceContainer.propTypes = {
 
 const composer = (props, onData) => {
   onData(null, {
-    invoice: props.invoice,
-    orderId: props.orderId,
     canMakeAdjustments: props.canMakeAdjustments,
     paymentCaptured: props.paymentCaptured,
-    adjustedTotal: props.adjustedTotal,
+    invoice: props.invoice,
+    orderId: props.orderId,
     refunds: props.refunds,
     isFetching: props.isFetching,
     collection: props.collection
