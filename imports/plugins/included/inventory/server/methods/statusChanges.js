@@ -261,25 +261,24 @@ Meteor.methods({
     // insert backorder
     let i = 0;
     const batch = Inventory.rawCollection().initializeUnorderedBulkOp();
-    if (batch) {
-      while (i < backOrderQty) {
-        const id = Inventory._makeNewID();
-        batch.insert(Object.assign({ _id: id }, newReservation));
-        i++;
-      }
-
-      const execute = Meteor.wrapAsync(batch.execute, batch);
-      if (batch.length) {
-        const inventoryBackorder = execute();
-        const inserted = inventoryBackorder.nInserted;
-        Logger.debug(`created ${inserted} backorder records for product ${newReservation.productId}, variant ${newReservation.variantId}`);
-        return inserted;
-      }
+    while (i < backOrderQty) {
+      const id = Inventory._makeNewID();
+      batch.insert(Object.assign({ _id: id }, newReservation));
+      i++;
     }
+    // Let's doublecheck that the batch is empty before we try to execute
+    // Because we get a nasty error if we try to execute an empty batch
+    if (batch && batch.s && batch.s.currentInsertBatch && batch.s.currentInsertBatch.size > 0) {
+      const execute = Meteor.wrapAsync(batch.execute, batch);
+      const inventoryBackorder = execute();
+      const inserted = inventoryBackorder.nInserted;
+      Logger.debug(`created ${inserted} backorder records for product ${newReservation.productId}, variant ${newReservation.variantId}`);
+      return inserted;
+    }
+    Logger.error("Skipped backorder operation because batch was empty while backorder qty was not 0");
     //
     // TODO implement a backup inventory/backorder method if bulk operations fail.
     //
-    Logger.error("skipped bulk operations backorder updates.");
     return null;
   },
   //
