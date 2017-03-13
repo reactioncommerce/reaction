@@ -33,7 +33,7 @@ export default function twoColumn() {
     // Product Details Block
     // Contains
     // - Title
-    // - Sibtitle
+    // - Subtitle
     // - Price
     // - Social
     // - Vendor
