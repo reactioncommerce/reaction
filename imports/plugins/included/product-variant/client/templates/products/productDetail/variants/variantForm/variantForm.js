@@ -159,7 +159,7 @@ Template.variantForm.helpers({
       "shopId": shopId,
       "registry.provides": "taxCodes",
       "$where": function () {
-        const providerName = this.name.split("-")[1];
+        const providerName = _.filter(this.registry, (o) => o.provides === "taxCodes")[0].name.split("/")[2];
         return this.settings[providerName].enabled;
       }
     });
