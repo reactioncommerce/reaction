@@ -206,7 +206,7 @@ Template.variantForm.helpers({
     return instance.state.get("taxCodes");
   },
   displayCode: function () {
-    if (this.taxCode && this.taxCode !== "00000") {
+    if (this.taxCode && this.taxCode !== "0000") {
       return this.taxCode;
     }
     return i18next.t("productVariant.selectTaxCode");

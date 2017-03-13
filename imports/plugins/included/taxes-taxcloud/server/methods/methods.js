@@ -17,6 +17,11 @@ Meteor.methods({
 
     if (taxCodes) {
       taxCodes.data.tic_list.forEach(function (code) {
+        if (code.tic.children) {
+          code.tic.children.forEach(function (child) {
+            taxCodeArray.push(child.tic);
+          });
+        }
         taxCodeArray.push(code.tic);
       });
       return taxCodeArray;

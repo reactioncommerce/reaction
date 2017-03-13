@@ -20,11 +20,13 @@ taxCodes.populateTaxCodes = function (shopId, code, providerName) {
     TaxCodes.insert({
       id: code.id,
       shopId: shopId,
-      taxCode: code.taxCode,
+      taxCode: code.taxCode || code.id,
       taxCodeProvider: providerName,
       ssuta: code.isSSTCertified,
-      label: code.description,
-      parent: code.parentTaxCode
+      title: code.title || "",
+      label: code.description || code.label,
+      parent: code.parentTaxCode || code.parent,
+      children: code.children || []
     });
   } catch (err) {
     throw new Meteor.Error("Error populating TaxCodes collection", err);
