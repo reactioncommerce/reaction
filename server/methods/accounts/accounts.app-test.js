@@ -330,7 +330,7 @@ describe("Account Meteor method ", function () {
       });
       Meteor.call("accounts/addressBookUpdate", address);
       let cart = Cart.findOne({ userId: account.userId });
-      expect(cart.billing).to.be.undefined;
+      expect(cart.billing).to.be.defined;
       expect(cart.shipping).to.be.undefined;
 
       address = Object.assign({}, account.profile.addressBook[0], {
