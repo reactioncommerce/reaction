@@ -1,28 +1,95 @@
 <template name="avalaraSettings">
-
-  {{#unless packageData.settings.avalara.apiLoginId}}
-  <div class="alert alert-info">
-    <span data-i18n="admin.taxSettings.avalaraCredentials">Add API Login ID to enable</span>
-    <a href="https://www.avalara.com/" target="_blank">Avalara</a>
-  </div>
-  {{/unless}}
-
   {{#autoForm collection=Collections.Packages schema=packageConfigSchema doc=packageData type="update" id="avalara-update-form"}}
       <div class="panel-body">
-        {{>afQuickField name='settings.avalara.apiLoginId'}}
-      </div>
+        {{>afQuickField name='settings.avalara.apiLoginId' class='form-control'}}
+        {{>afQuickField name='settings.avalara.username' class='form-control'}}
+        {{>afQuickField name='settings.avalara.password' class='form-control' type='password'}}
+        {{>afQuickField name='settings.avalara.companyCode' class='form-control'}}
+        {{>afQuickField name='settings.avalara.shippingTaxCode' class='form-control'}}
+        <div class="row">
+          <div class="col-md-10">
+            {{>afQuickField name='settings.addressValidation.enabled'}}
+            {{>afQuickField name="settings.addressValidation.countryList"
+              type="select-checkbox" options=countryOptions value=country defaultValue=countryDefaults }}
+          </div>
+        </div>
+
+
+        {{>afQuickField name='settings.avalara.requestTimeout' class='form-control'}}
+        <div class="row">
+          <div class="col-md-10">
+            {{>afQuickField
+              name='settings.avalara.mode'
+              type='boolean-select'
+              trueLabel='Live - Production Mode'
+              falseLabel='Testing - Sandbox Mode'
+              class='form-control'
+            }}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-10">
+            {{>afQuickField name='settings.avalara.performTaxCalculation'}}
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-10">
+            {{>afQuickField name='settings.avalara.enableLogging'}}
+            {{>afQuickField name='settings.avalara.logRetentionDuration' class='form-control'}}
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-10">
+            {{>afQuickField name='settings.avalara.commitDocuments'}}
+          </div>
+        </div>
+    </div>
+
     <div class="panel-body">
-      {{>afQuickField name='settings.avalara.username'}}
+      <button type="button" class="btn btn-default pull-right" data-event-action="testCredentials" data-i18n="admin.dashboard.avalaraTestCredentials">
+        Test Credentials
+      </button>
     </div>
     <div class="panel-body">
-      {{>afQuickField name='settings.avalara.password' type='password'}}
-    </div>
-    <div class="panel-body">
-      {{>afQuickField name='settings.avalara.mode'}}
-    </div>
-    <div class="panel-body">
-      {{>afQuickField name='settings.addressValidation.enabled'}}
-    </div>
       {{> shopSettingsSubmitButton}}
+    </div>
   {{/autoForm}}
+
+  <div class="panel-body text-center avalara-login-box">
+    <a href="https://admin-development.avalara.net">Avalara Admin Console Login</a>
+  </div>
+
+  {{#if loggingEnabled}}
+    <div class="col-md-12">
+      {{> React logGrid }}
+    </div>
+    {{#if instance.state.get 'isEditing'}}
+      {{#if instance.state.get 'editingId'}}
+        <p>Log Detail</p>
+          <div class="panel-body">
+            {{#autoForm
+              collection=logCollection
+              schema=logSchema
+              id="log-view-form"
+              template="bootstrap3-inline"
+              doc=logEntry
+            }}
+
+              <div class="panel panel-default">
+                <div class="panel-body">
+                  <div class="form-group">
+                    {{>afQuickField name="date" class="form-control" disabled=true}}
+                    {{>afQuickField name="data" class="form-control" type="textarea" rows="15"}}
+                  </div>
+                </div>
+              </div>
+
+            {{/autoForm}}
+          </div>
+
+        {{/if}}
+      {{/if}}
+    {{/if}}
 </template>
