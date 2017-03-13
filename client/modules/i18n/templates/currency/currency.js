@@ -75,7 +75,7 @@ Template.currencySelect.events({
     Meteor.users.update(Meteor.userId(), { $set: { "profile.currency": this.currency } });
     localStorage.setItem("currency", this.currency);
 
-    const cart = Cart.findOne({ userId: Meteor.user()._id });
+    const cart = Cart.findOne({ userId: Meteor.userId() });
 
     // Attach changed currency to this users cart
     Meteor.call("cart/setUserCurrency", cart._id, this.currency);
