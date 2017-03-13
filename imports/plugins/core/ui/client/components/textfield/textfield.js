@@ -96,7 +96,7 @@ class TextField extends Component {
         onKeyDown={this.onKeyDown}
         placeholder={placeholder}
         ref="input"
-        type="text"
+        type={this.props.type || "text"}
         value={this.value}
       />
     );
@@ -185,7 +185,8 @@ TextField.propTypes = {
   onKeyDown: PropTypes.func,
   onReturnKeyDown: PropTypes.func,
   placeholder: PropTypes.string,
-  value: PropTypes.string
+  type: PropTypes.string,
+  value: PropTypes.any
 };
 
 export default TextField;

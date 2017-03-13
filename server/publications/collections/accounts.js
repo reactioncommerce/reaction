@@ -45,6 +45,22 @@ Meteor.publish("Accounts", function (userId) {
 });
 
 /**
+ * Single account
+ * @params {String} userId -  id of user to find
+ */
+Meteor.publish("UserAccount", function (userId) {
+  check(userId, Match.OneOf(String, null));
+
+  const shopId = Reaction.getShopId();
+  if (Roles.userIsInRole(this.userId, ["admin", "owner"], shopId)) {
+    return Collections.Accounts.find({
+      userId: userId
+    });
+  }
+  return this.ready();
+});
+
+/**
  * userProfile
  * @deprecated since version 0.10.2
  * get any user name,social profile image

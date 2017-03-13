@@ -11,12 +11,21 @@ export const TaxCodes = new SimpleSchema({
     unique: true
   },
   shopId: {
+    type: String
+  },
+  taxCode: {
     type: String,
-    optional: true
+    label: "Tax Code"
+  },
+  taxCodeProvider: {
+    type: String,
+    label: "Tax Code Provider"
   },
   ssuta: {
     type: Boolean,
-    label: "Streamlined Sales Tax"
+    label: "Streamlined Sales Tax",
+    optional: true,
+    defaultValue: false
   },
   title: {
     type: String,
