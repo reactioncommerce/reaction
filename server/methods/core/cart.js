@@ -753,8 +753,7 @@ Meteor.methods({
     check(cartId, String);
     check(userCurrency, String);
     const cart = Collections.Cart.findOne({
-      _id: cartId,
-      userId: this.userId
+      _id: cartId
     });
     if (!cart) {
       Logger.error(`Cart not found for user: ${ this.userId }`);
