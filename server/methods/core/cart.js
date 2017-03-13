@@ -757,8 +757,7 @@ Meteor.methods({
     });
     if (!cart) {
       Logger.error(`Cart not found for user: ${ this.userId }`);
-      throw new Meteor.Error(404, "Cart not found",
-        "Cart not found for user with such id");
+      throw new Meteor.Error("Cart not found for user with such id");
     }
 
     const userCurrencyString = {
