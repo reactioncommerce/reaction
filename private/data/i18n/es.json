@@ -95,6 +95,8 @@
         "noProductsFound": "No se han encontrado productos.",
         "private": "Privado",
         "public": "Público",
+        "allOn": "todos de la",
+        "allOff": "Todo apagado",
         "shortcut": {
           "addProductLabel": "Agregar producto",
           "accountsLabel": "Cuentas"
@@ -155,74 +157,6 @@
           "orderDelivered": "Su pedido ha sido entregado.",
           "orderAccepted": "Su pedido ha sido aceptado.",
           "orderShipped": "Su pedido ha sido enviado."
-        }
-      },
-      "sms": {
-        "headers": {
-          "settings": "Proveedor SMS"
-        },
-        "settings": {
-          "provider": "Proveedor",
-          "selectProvider": "Seleccione un proveedor de SMS ...",
-          "smsPhone": "Número de teléfono SMS",
-          "apiKey": "Clave API",
-          "apiToken": "API Token/Secret"
-        },
-        "alerts": {
-          "noApiKey": "Agregue una clave de API",
-          "noApiToken": "Agregue un token/secreto API",
-          "noSmsProvider": "Elija un proveedor de SMS",
-          "noSmsPhone": "Agregue el número de teléfono que le ha proporcionado su proveedor de SMS",
-          "saveSuccess": "Configuración de SMS guardada"
-        }
-      },
-      "mail": {
-        "headers": {
-          "email": "Correo electrónico",
-          "emailSettings": "Opciones de correo electrónico",
-          "config": "Configuración",
-          "settings": "Proveedor de correo",
-          "status": "Estado",
-          "actions": "Acciones"
-        },
-        "settings": {
-          "service": "Servicio",
-          "user": "Usuario",
-          "password": "Contraseña",
-          "host": "Host",
-          "port": "Puerto",
-          "passwordShow": "Mostrar",
-          "passwordHide": "Ocultar",
-          "fieldNotSet": "No establecido",
-          "selectService": "Seleccionar un servicio...",
-          "custom": "personalizar"
-        },
-        "logs": {
-          "headers": {
-            "emailLogs": "Registros de correo electrónico",
-            "email": "Correo electrónico",
-            "subject": "Asunto",
-            "sent": "Enviado",
-            "status": "Estado"
-          },
-          "noEmails": "No se han enviado correos electrónicos todavía",
-          "limit": "Cantidad",
-          "retry": "Volver a intentar",
-          "noneAvailble": "Ninguno disponible"
-        },
-        "alerts": {
-          "error": "Error: {{error}}",
-          "resendSuccess": "Intentando volver a enviar correo electrónico a {{email}}",
-          "missingService": "Selecciona un servicio de proveedor de correo",
-          "userPassRequired": "Se necesitan usuario SMTP y contraseña para {{service}}",
-          "allFieldsRequired": "Todos los campos son obligatorios para recibir un servicio personalizado",
-          "portNaN": "El puerto debe ser un número",
-          "connectionFailed": "La conexión ha fallado",
-          "saveAnyway": "¿Quieres guardar la configuración de todas formas?",
-          "saveSuccess": "Opciones de correo guardadas.",
-          "saveFailed": "Error al guardar las opciones de correo. {{error}}",
-          "cantSendEmail": "Error de servidor: No se puede enviar una notificación por correo electrónico.",
-          "emailSent": "notificación por correo electrónico enviado."
         }
       },
       "header": {
@@ -299,6 +233,7 @@
         "pageTitle": "Subtítulo",
         "vendor": "Proveedor",
         "description": "Descripción",
+        "originCountry": "País de origen",
         "facebookMsg": "Mensaje de Facebook",
         "twitterMsg": "Mensaje de twitter",
         "pinterestMsg": "Mensaje en Pinterest",
@@ -345,13 +280,20 @@
         "compareAtPrice": "Precio (sugerido por el fabricante)",
         "fulfillmentService": "Cumplimiento del servicio",
         "weight": "Peso",
+        "length": "Longitud",
+        "width": "Anchura",
+        "height": "Altura",
         "taxable": "Sujeto a impuestos",
+        "taxCode": "Códigos Tributarios",
+        "taxDescription": "Descripción de Impuestos",
         "inventoryManagement": "Seguimiento de existencias",
         "inventoryManagementLabel": "Registrar producto en el sistema del inventario y realizar un seguimiento de su estado",
         "inventoryPolicy": "Negar cuando no haya existencias",
         "inventoryPolicyLabel": "No vender la variante del producto cuando no está en stock",
         "lowInventoryWarningThreshold": "Advertir @",
-        "lowInventoryWarningThresholdLabel": "Advertir a los clientes que el producto está a punto de agotarse cuando la cantidad alcanza el siguiente umbral"
+        "lowInventoryWarningThresholdLabel": "Advertir a los clientes que el producto está a punto de agotarse cuando la cantidad alcanza el siguiente umbral",
+        "originCountry": "País de origen",
+        "selectTaxCode": "Seleccione Código Tributario"
       },
       "variantList": {
         "moreOptions": "Hay más opciones disponibles para esta selección.",

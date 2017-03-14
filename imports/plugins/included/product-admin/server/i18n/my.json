@@ -8,6 +8,10 @@
           "productSettingsLabel": "ကုန်ပစ္စည်းက Settings",
           "productDetailsLabel": "ကုန်ပစ္စည်းအသေးစိတ်"
         }
+      },
+      "productDetailEdit": {
+        "template": "template",
+        "templateSelectPlaceholder": "တစ်ဦး template ကို Select လုပ်ပါ"
       }
     }
   }

@@ -4,6 +4,32 @@
   "ns": "taxes-avalara",
   "translation": {
     "reaction-taxes": {
+      "settings": {
+        "apiLoginId": "Avalara API Login ID",
+        "username": "Benutzername",
+        "password": "Passwort",
+        "companyCode": "Buchungskreis",
+        "shippingTaxCode": "Versand Steuer-Code",
+        "mode": "Produktionsmodus",
+        "performTaxCalculation": "Führen Sie die Steuerberechnung",
+        "addressValidation": "Adressvalidierung",
+        "enableAddressValidationByCountry": "Aktivieren Adressvalidierung durch Land",
+        "enableLogging": "Aktiviere das Logging",
+        "logRetentionDuration": "Log Retention Dauer",
+        "requestTimeout": "Zeitüberschreitung der Anforderung",
+        "commitDocuments": "commit Dokumente",
+        "administratorsPanel": "Administrator-Gremium",
+        "testCredentialsSuccess": "Verbindungstest Erfolg",
+        "testCredentialsFailed": "Gescheiterte Verbindungstest, Anmeldeinformationen prüfen",
+        "apiError": "Avalara nicht richtig konfiguriert"
+      },
+      "logGrid": {
+        "noLogsFound": "Keine Protokolle gefunden",
+        "columns": {
+          "date": "Datum",
+          "docType": "Dokumenttyp"
+        }
+      },
       "admin": {
         "shortcut": {
           "avalaraLabel": "Avalara",
@@ -12,13 +38,14 @@
         "dashboard": {
           "avalaraLabel": "Avalara",
           "avalaraTitle": "Avalara",
-          "avalaraDescription": "Avalara Steuersätze"
+          "avalaraDescription": "Avalara Steuersätze",
+          "testCredentials": "Testanmeldeinformationen"
         },
         "taxSettings": {
           "avalaraLabel": "Avalara",
           "avalaraSettingsLabel": "Avalara",
-          "avalaraCredentials": "In Anmeldeinformationen zu ermöglichen,",
-          "avalaraGetCredentialsURL": "Holen Sie sich hier"
+          "formTitle": "Steuereinstellungen",
+          "entityCodeCustomLabel": "SET CUSTOM VALUE"
         }
       }
     }

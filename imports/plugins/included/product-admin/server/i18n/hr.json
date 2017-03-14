@@ -8,6 +8,10 @@
           "productSettingsLabel": "Postavke proizvoda",
           "productDetailsLabel": "detalji o proizvodu"
         }
+      },
+      "productDetailEdit": {
+        "template": "Postavke predloška",
+        "templateSelectPlaceholder": "Odaberite predložak"
       }
     }
   }

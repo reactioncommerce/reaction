@@ -10,7 +10,20 @@
           "smsDescription": "الإخطارات"
         },
         "settings": {
-          "smsSettingsLabel": "إعدادات الرسائل القصيرة"
+          "smsSettingsLabel": "إعدادات الرسائل القصيرة",
+          "smsProvider": "موفر SMS",
+          "providerName": "اسم المزود",
+          "selectProvider": "تحديد موفر SMS",
+          "phoneNumber": "SMS رقم الهاتف",
+          "apiKey": "مفتاح API",
+          "apiToken": "API رمز / سر"
+        },
+        "alerts": {
+          "noApiKey": "الرجاء إضافة مفتاح API",
+          "noApiToken": "الرجاء إضافة API TOKEN / سر",
+          "noSmsProvider": "الرجاء اختيار موفر SMS",
+          "noSmsPhone": "الرجاء إضافة رقم الهاتف المعطاة لك من قبل موفر SMS",
+          "saveSuccess": "إعدادات الرسائل القصيرة SMS حفظ"
         }
       }
     }

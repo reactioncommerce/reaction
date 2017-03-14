@@ -43,7 +43,6 @@
           "passwordHide": "Hide"
         }
       },
-
       "mail": {
         "headers": {
           "email": "Email",
