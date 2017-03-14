@@ -6,6 +6,11 @@ class LineItems extends Component {
   constructor(props) {
     super(props);
     this.renderLineItem = this.renderLineItem.bind(this);
+    this.calculateTotal = this.calculateTotal.bind(this);
+  }
+
+  calculateTotal(price, shipping, taxes) {
+    return price + shipping + taxes;
   }
 
   renderLineItem(uniqueItem, quantity) {
@@ -13,7 +18,7 @@ class LineItems extends Component {
       <div className="order-items">
         <div
           className="invoice order-item form-group order-summary-form-group"
-          onClick={() => this.props.handleClick(uniqueItem._id)}
+          onClick={() => this.props.handleClick(uniqueItem.cartItemId)}
           style={{ marginLeft: -15, marginRight: -15 }}
         >
           <div className="order-item-media" style={{ marginLeft: 15 }}>
@@ -66,11 +71,10 @@ class LineItems extends Component {
             {uniqueItem.variants.taxCode}
           </div>
         </div>
-        <hr/>
         <div className="order-summary-form-group">
           <strong>TOTAL</strong>
           <div className="invoice-details">
-            <strong> 0 </strong>
+            <strong> {this.calculateTotal(uniqueItem.variants.price, this.props.invoice.shipping, this.props.invoice.taxes)} </strong>
           </div>
         </div>
         <br/>
@@ -83,15 +87,15 @@ class LineItems extends Component {
     return (
       <div>
         {uniqueItems.map((uniqueItem) => {
-          if (!isExpanded(uniqueItem._id)) {
+          if (!isExpanded(uniqueItem.cartItemId)) {
             return (
-              <div key={uniqueItem._id}> { this.renderLineItem(uniqueItem, uniqueItem.length) } </div>
+              <div key={uniqueItem.cartItemId}> { this.renderLineItem(uniqueItem.items[0], uniqueItem.items.length) } </div>
             );
           }
           return (
-            <div className="roll-up-invoice-list" key={uniqueItem._id}>
+            <div className="roll-up-invoice-list" key={uniqueItem.cartItemId}>
               <div style={{ float: "right" }}>
-                <button className="rui btn btn-default flat icon-only" onClick={() => onClose(uniqueItem._id)}>
+                <button className="rui btn btn-default flat icon-only" onClick={() => onClose(uniqueItem.cartItemId)}>
                   <i
                     className="rui font-icon fa-lg fa fa-times"
                   />

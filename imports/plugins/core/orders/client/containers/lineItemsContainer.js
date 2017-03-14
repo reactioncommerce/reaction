@@ -59,7 +59,6 @@ class LineItemsContainer extends Component {
           isExpanded={this.isExpanded}
           displayMedia={this.handleDisplayMedia}
           handleClick={this.handleClick}
-          items={this.props.items}
           uniqueItems={this.props.uniqueItems}
         />
       </TranslationProvider>
@@ -73,10 +72,8 @@ LineItemsContainer.propTypes = {
 };
 
 const composer = (props, onData) => {
-  // console.log("compose props", props);
-  const lineItems = props.items;
   onData(null, {
-    uniqueItems: lineItems,
+    uniqueItems: props.items,
     invoice: props.invoice
   });
 };

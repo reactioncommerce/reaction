@@ -462,17 +462,27 @@ Template.coreOrderShippingInvoice.helpers({
       return _.extend(originalItem, item);
     });
 
-    const uniqueItems = _.uniqBy(items, "cartItemId");
-    const groupedItems = _.groupBy(items, "cartItemId");
+    const allCarts = items.reduce((carts, item) => {
+      let cart;
 
-    uniqueItems.forEach((item) => {
-      Object.keys(groupedItems).forEach((key) => {
-        if (item.cartItemId === key) {
-          item.length = groupedItems[key].length;
-          item.items = groupedItems[key];
-        }
-      });
-    });
+      if (carts[item.cartItemId]) {
+        cart = carts[item.cartItemId];
+        cart = Object.assign({}, cart, {
+          items: [...cart.items, item]
+        });
+      } else {
+        cart = {
+          cartItemId: item.cartItemId,
+          productId: item.productId,
+          items: [item]
+        };
+      }
+
+      carts[item.cartItemId] = cart;
+      return carts;
+    }, {});
+
+    const uniqueItems = Object.keys(allCarts).map(k => allCarts[k]);
 
     return uniqueItems;
   },
