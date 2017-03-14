@@ -45,6 +45,6 @@ export default {
       });
     };
     save();
-    return true;
+    return callback();
   }
 };
