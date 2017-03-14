@@ -11,7 +11,7 @@ import Sortable from "sortablejs";
  */
 
 Template.productGrid.onCreated(function () {
-  let selectedProducts = Reaction.getUserPreferences("reaction-product-variant", "selectedGridItems");
+  const selectedProducts = Reaction.getUserPreferences("reaction-product-variant", "selectedGridItems");
 
   if (_.isEmpty(selectedProducts)) {
     Reaction.hideActionView();
