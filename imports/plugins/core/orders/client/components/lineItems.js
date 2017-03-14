@@ -10,7 +10,7 @@ class LineItems extends Component {
   }
 
   calculateTotal(price, shipping, taxes) {
-    return price + shipping + taxes;
+    return formatPriceString(price + shipping + taxes);
   }
 
   renderLineItem(uniqueItem, quantity) {
@@ -36,7 +36,7 @@ class LineItems extends Component {
           </div>
           <div className="order-detail-price">
             <div className="invoice-details" style={{ marginRight: 15 }}>
-              <strong>{uniqueItem.variants.price}</strong>
+              <strong>{formatPriceString(uniqueItem.variants.price)}</strong>
             </div>
           </div>
       </div>

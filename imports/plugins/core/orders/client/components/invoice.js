@@ -56,7 +56,7 @@ class Invoice extends Component {
         <hr/>
         <strong>TOTAL</strong>
         <div className="invoice-details">
-          <strong>{this.props.invoice.total}</strong>
+          <strong>{formatPriceString(this.props.invoice.total)}</strong>
         </div>
       </div>
     );
