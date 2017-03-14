@@ -16,12 +16,6 @@ Template.productGrid.onCreated(function () {
   if (_.isEmpty(selectedProducts)) {
     Reaction.hideActionView();
   } else {
-    if (event.target.checked) {
-      selectedProducts.push(event.target.value);
-    } else {
-      selectedProducts = _.without(selectedProducts, event.target.value);
-    }
-
     // Save the selected items to the Session
     Session.set("productGrid/selectedProducts", _.uniq(selectedProducts));
 
