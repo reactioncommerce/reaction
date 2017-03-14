@@ -95,6 +95,8 @@
         "noProductsFound": "Es wurden keine Produkte gefunden",
         "private": "Privat",
         "public": "Öffentliche",
+        "allOn": "all On",
+        "allOff": "all Off",
         "shortcut": {
           "addProductLabel": "Produkt hinzufügen",
           "accountsLabel": "Buchhaltung"
@@ -155,74 +157,6 @@
           "orderDelivered": "Ihre Bestellung wurde geliefert.",
           "orderAccepted": "Ihre Bestellung wurde angenommen.",
           "orderShipped": "Ihre Bestellung wurde versandt."
-        }
-      },
-      "sms": {
-        "headers": {
-          "settings": "SMS-Anbieter"
-        },
-        "settings": {
-          "provider": "Anbieter",
-          "selectProvider": "SMS-Anbieter auswählen ...",
-          "smsPhone": "Sms-Telefonnummer",
-          "apiKey": "API-Schlüssel",
-          "apiToken": "API TOKEN / Geheim"
-        },
-        "alerts": {
-          "noApiKey": "Bitte fügen Sie einen API Key hinzu",
-          "noApiToken": "Bitte fügen Sie ein API TOKEN / Secret hinzu",
-          "noSmsProvider": "Bitte wählen Sie einen SMS Anbieter",
-          "noSmsPhone": "Bitte fügen Sie die von Ihrem SMS-Anbieter angegebene Telefonnummer hinzu",
-          "saveSuccess": "SMS-Einstellungen gespeichert"
-        }
-      },
-      "mail": {
-        "headers": {
-          "email": "E-Mail",
-          "emailSettings": "E-Mail-Einstellungen",
-          "config": "Konfiguration",
-          "settings": "E-Mail-Anbieter",
-          "status": "Status",
-          "actions": "Aktionen"
-        },
-        "settings": {
-          "service": "Dienst",
-          "user": "Benutzer",
-          "password": "Passwort",
-          "host": "Host",
-          "port": "Port",
-          "passwordShow": "Anzeigen",
-          "passwordHide": "Verbergen",
-          "fieldNotSet": "Nicht eingestellt",
-          "selectService": "Dienst wählen ...",
-          "custom": "benutzerdefiniert"
-        },
-        "logs": {
-          "headers": {
-            "emailLogs": "E-Mail-Protokolle",
-            "email": "E-Mail",
-            "subject": "Thema",
-            "sent": "Gesendet",
-            "status": "Status"
-          },
-          "noEmails": "Es wurden noch keine E-Mails gesendet",
-          "limit": "Menge",
-          "retry": "Neu versuchen",
-          "noneAvailble": "Keine verfügbar"
-        },
-        "alerts": {
-          "error": "Fehler: {{error}}",
-          "resendSuccess": "Erneuter E-Mail-Sendeversuch an {{email}}",
-          "missingService": "Bitte wählen Sie einen E-Mail-Anbieter",
-          "userPassRequired": "SMTP-Benutzername und -Passwort sind erforderlich für {{service}}",
-          "allFieldsRequired": "Für eine maßgeschneiderte Dienstleistung sind alle Felder erforderlich!",
-          "portNaN": "Der Port muss eine Zahl sein!",
-          "connectionFailed": "Verbindung fehlgeschlagen!",
-          "saveAnyway": "Möchten Sie die Einstellungen trotzdem speichern?",
-          "saveSuccess": "Die E-Mail-Einstellungen wurden gespeichert.",
-          "saveFailed": "Die E-Mail-Einstellungen konnten nicht gespeichert werden.  {{error}}",
-          "cantSendEmail": "Server-Fehler: Kann keine E-Mail-Benachrichtigung senden.",
-          "emailSent": "E-Mail-Benachrichtigung gesendet."
         }
       },
       "header": {
@@ -299,6 +233,7 @@
         "pageTitle": "Produkt Seitentitel",
         "vendor": "Hersteller",
         "description": "Produktbeschreibung hinzufügen",
+        "originCountry": "Herkunftsland",
         "facebookMsg": "Facebook Nachricht",
         "twitterMsg": "Twitter Nachricht",
         "pinterestMsg": "Pinterest Nachricht",
@@ -345,13 +280,20 @@
         "compareAtPrice": "Preis (UVP)",
         "fulfillmentService": "Abwicklungsdienst",
         "weight": "Gewicht",
+        "length": "Länge",
+        "width": "Breite",
+        "height": "Höhe",
         "taxable": "Steuerpflichtig",
+        "taxCode": "Steuerkennzeichen",
+        "taxDescription": "Steuer Beschreibung",
         "inventoryManagement": "Bestand mitverfolgen",
         "inventoryManagementLabel": "Produkt im Bestand-System registrieren und seinen Status mitverfolgen",
         "inventoryPolicy": "Zurückweisen, wenn nicht auf Lager",
         "inventoryPolicyLabel": "Verkaufen Sie die Produktvariante nicht, wenn sie nicht auf Lager ist",
         "lowInventoryWarningThreshold": "Warnen @",
-        "lowInventoryWarningThresholdLabel": "Kunden warnen, dass das Produkt fast ausverkauft ist, sobald die Menge den nächsten Schwellenwert erreicht"
+        "lowInventoryWarningThresholdLabel": "Kunden warnen, dass das Produkt fast ausverkauft ist, sobald die Menge den nächsten Schwellenwert erreicht",
+        "originCountry": "Herkunftsland",
+        "selectTaxCode": "Wählen Sie Tax Code"
       },
       "variantList": {
         "moreOptions": "Für diese Auswahl gibt's noch weitere Optionen.",

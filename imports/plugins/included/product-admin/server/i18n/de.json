@@ -8,6 +8,10 @@
           "productSettingsLabel": "Produkteinstellungen",
           "productDetailsLabel": "Produktdetails"
         }
+      },
+      "productDetailEdit": {
+        "template": "Vorlageneinstellungen",
+        "templateSelectPlaceholder": "Wählen Sie eine Vorlage"
       }
     }
   }

@@ -4,6 +4,32 @@
   "ns": "taxes-avalara",
   "translation": {
     "reaction-taxes": {
+      "settings": {
+        "apiLoginId": "Avalara API Inloggen ID",
+        "username": "Gebruikersnaam",
+        "password": "Wachtwoord",
+        "companyCode": "Bedrijfscode",
+        "shippingTaxCode": "Verzending Tax Code",
+        "mode": "productie Mode",
+        "performTaxCalculation": "Voer BTW-berekening",
+        "addressValidation": "Address Validation",
+        "enableAddressValidationByCountry": "Inschakelen Address Validation per land",
+        "enableLogging": "Enable Logging",
+        "logRetentionDuration": "Log Retention Duur",
+        "requestTimeout": "Verzoek time-out",
+        "commitDocuments": "commit Documenten",
+        "administratorsPanel": "Panel Administrator's",
+        "testCredentialsSuccess": "Connection Test Succes",
+        "testCredentialsFailed": "Connection Test mislukt, Controleer de geloofsbrieven",
+        "apiError": "Avalara niet juist geconfigureerd"
+      },
+      "logGrid": {
+        "noLogsFound": "Geen logs gevonden",
+        "columns": {
+          "date": "Datum",
+          "docType": "type document"
+        }
+      },
       "admin": {
         "shortcut": {
           "avalaraLabel": "Avalara",
@@ -12,13 +38,14 @@
         "dashboard": {
           "avalaraLabel": "Avalara",
           "avalaraTitle": "Avalara",
-          "avalaraDescription": "Avalara Belastingtarieven"
+          "avalaraDescription": "Avalara Belastingtarieven",
+          "testCredentials": "Test geloofsbrieven"
         },
         "taxSettings": {
           "avalaraLabel": "Avalara",
           "avalaraSettingsLabel": "Avalara",
-          "avalaraCredentials": "geloofsbrieven toe te voegen aan te schakelen",
-          "avalaraGetCredentialsURL": "Haal ze hier"
+          "formTitle": "tax-instellingen",
+          "entityCodeCustomLabel": "SET aangepaste waarde"
         }
       }
     }
