@@ -6,7 +6,7 @@ import { Tracker } from "meteor/tracker";
 import { $ } from "meteor/jquery";
 import Logger from "/client/modules/logger";
 import { ReactionProduct } from "/lib/api";
-import { Media } from "/lib/collections";
+import { Media, Products } from "/lib/collections";
 import { Reaction } from "/client/api";
 
 /**
@@ -107,7 +107,12 @@ Template.productItem.events({
     event.preventDefault();
     const instance = Template.instance();
     const view = instance.view;
-    const handle = event.currentTarget.dataset.eventValue;
+    const product = Products.findOne(event.currentTarget.dataset.eventValue);
+
+    let handle = product.handle;
+    if (product.__published) {
+      handle = product.__published.handle;
+    }
 
     Reaction.Router.go("product", {
       handle: handle
