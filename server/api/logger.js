@@ -6,6 +6,13 @@ import { includes } from "lodash";
 // configure bunyan logging module for reaction server
 // See: https://github.com/trentm/node-bunyan#levels
 const levels = ["FATAL", "ERROR", "WARN", "INFO", "DEBUG", "TRACE"];
+let logFormat = "short";
+
+// default console config (stdout)
+const defaultStream = {
+  level: "INFO",
+  stream: bunyanFormat({ outputMode: "short" })
+};
 
 // set stdout log level
 let level = process.env.REACTION_LOG_LEVEL || Meteor.settings.REACTION_LOG_LEVEL || "INFO";
@@ -16,18 +23,14 @@ if (!includes(levels, level)) {
   level = "INFO";
 }
 
-// default console config (stdout)
-const streams = [{
-  level,
-  stream: bunyanFormat({ outputMode: "short" })
-}];
-
 if (level === "TRACE") {
-  streams.push({
-    level: "TRACE",
-    stream: bunyanFormat({ outputMode: "json" })
-  });
+  logFormat = "json";
 }
+
+const streams = [defaultStream, {
+  level,
+  stream: bunyanFormat({ outputMode: logFormat })
+}];
 
 // Loggly config (only used if configured)
 const logglyToken = process.env.LOGGLY_TOKEN;
