@@ -123,7 +123,7 @@ class LineItems extends Component {
                   </button>
                 </div>
 
-                <br/>
+                <br/><br/>
 
                 {uniqueItem.items.map((item) => (
                   <div key={item._id}>

@@ -53,6 +53,7 @@ InvoiceContainer.propTypes = {
   invoice: PropTypes.object,
   isFetching: PropTypes.bool,
   orderId: PropTypes.string,
+  paymentCaptured: PropTypes.bool,
   refunds: PropTypes.array
 };
 
