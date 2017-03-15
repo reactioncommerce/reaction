@@ -8,6 +8,10 @@
           "productSettingsLabel": "Nastavení produktu",
           "productDetailsLabel": "Detaily produktu"
         }
+      },
+      "productDetailEdit": {
+        "template": "Nastavení šablony",
+        "templateSelectPlaceholder": "Vyberte šablonu"
       }
     }
   }

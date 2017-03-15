@@ -4,6 +4,32 @@
   "ns": "taxes-avalara",
   "translation": {
     "reaction-taxes": {
+      "settings": {
+        "apiLoginId": "Avalara API ကိုဝင်မည် ID ကို",
+        "username": "အကောင့်နာမည်",
+        "password": "Password ကို",
+        "companyCode": "ကုမ္ပဏီ Code ကို",
+        "shippingTaxCode": "သဘောင်္တင်ခအခွန် Code ကို",
+        "mode": "ထုတ်လုပ်မှု Mode ကို",
+        "performTaxCalculation": "အခွန်တွက်ချက်လုပ်ဆောင်",
+        "addressValidation": "လိပ်စာ Validation",
+        "enableAddressValidationByCountry": "နိုင်ငံအားဖြင့်လိပ်စာ Validation Enable",
+        "enableLogging": "သစ်ခုတ် Enable",
+        "logRetentionDuration": "log retention Duration:",
+        "requestTimeout": "တောင်းဆိုမှုရပ်သွားသည်",
+        "commitDocuments": "စာရွက်စာတမ်းများအပ်",
+        "administratorsPanel": "အုပ်ချုပ်ရေးမှူးရဲ့ Panel ကို",
+        "testCredentialsSuccess": "Connection ကိုစမ်းသပ်အောင်မြင်",
+        "testCredentialsFailed": "Connection ကိုစမ်းသပ်အထောက်အထားများ Check, မအောင်မြင်ခဲ့ပါ",
+        "apiError": "Avalara မှန်ကန်စွာ configured မဟုတ်"
+      },
+      "logGrid": {
+        "noLogsFound": "သစ်လုံးများမတွေ့ပါ",
+        "columns": {
+          "date": "နေ့စှဲ",
+          "docType": "စာရွက်စာတမ်းအမျိုးအစား"
+        }
+      },
       "admin": {
         "shortcut": {
           "avalaraLabel": "Avalara",
@@ -12,13 +38,14 @@
         "dashboard": {
           "avalaraLabel": "Avalara",
           "avalaraTitle": "Avalara",
-          "avalaraDescription": "Avalara အခွန်နှုန်း"
+          "avalaraDescription": "Avalara အခွန်နှုန်း",
+          "testCredentials": "စာမေးပွဲသံတမန်ဆောင်ဧည်"
         },
         "taxSettings": {
           "avalaraLabel": "Avalara",
           "avalaraSettingsLabel": "Avalara",
-          "avalaraCredentials": "ဖွင့်ဖို့အထောက်အထားများ Add",
-          "avalaraGetCredentialsURL": "ဒီနေရာမှာသူတို့ကို Get"
+          "formTitle": "အခွန်ကိုဆက်တင်",
+          "entityCodeCustomLabel": "SET CUSTOM တန်ဖိုး"
         }
       }
     }

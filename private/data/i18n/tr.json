@@ -95,6 +95,8 @@
         "noProductsFound": "Hiçbir ürün bulundu.",
         "private": "Özel",
         "public": "halka açık",
+        "allOn": "Hepsi Açık",
+        "allOff": "Hepsi Kapalı",
         "shortcut": {
           "addProductLabel": "Ürün ekle",
           "accountsLabel": "Hesaplar"
@@ -155,74 +157,6 @@
           "orderDelivered": "Siparişiniz teslim edildi.",
           "orderAccepted": "Siparişiniz kabul edildi.",
           "orderShipped": "Siparişiniz kargolandı."
-        }
-      },
-      "sms": {
-        "headers": {
-          "settings": "SMS sağlayıcısı"
-        },
-        "settings": {
-          "provider": "sağlayan",
-          "selectProvider": "SMS sağlayıcısı seçin ...",
-          "smsPhone": "SMS Telefon Numarası",
-          "apiKey": "API Anahtarı",
-          "apiToken": "API Jetonu / Gizli"
-        },
-        "alerts": {
-          "noApiKey": "bir API Anahtarı ekleyin",
-          "noApiToken": "API TOKEN / Gizli ekleyin",
-          "noSmsProvider": "SMS sağlayıcı seçiniz",
-          "noSmsPhone": "SMS sağlayıcınız tarafından size verilen telefon numarasını ekleyiniz",
-          "saveSuccess": "SMS Ayarlar kaydedildi"
-        }
-      },
-      "mail": {
-        "headers": {
-          "email": "E-posta",
-          "emailSettings": "E-posta Ayarları",
-          "config": "Yapılandırma",
-          "settings": "SMTP Sağlayıcı",
-          "status": "Durum",
-          "actions": "Eylemler"
-        },
-        "settings": {
-          "service": "Hizmet",
-          "user": "kullanıcı",
-          "password": "Şifre",
-          "host": "evsahibi",
-          "port": "Liman",
-          "passwordShow": "Gösteri",
-          "passwordHide": "Gizlemek",
-          "fieldNotSet": "Ayarlı değil",
-          "selectService": "Bir servis seçin ...",
-          "custom": "görenek"
-        },
-        "logs": {
-          "headers": {
-            "emailLogs": "E-posta Günlükleri",
-            "email": "E-posta",
-            "subject": "Konu",
-            "sent": "Gönderilen",
-            "status": "Durum"
-          },
-          "noEmails": "Hiçbir e-postalar henüz gönderilmedi",
-          "limit": "miktar",
-          "retry": "Tekrar dene",
-          "noneAvailble": "mevcut Yok"
-        },
-        "alerts": {
-          "error": "Hata: {{error}}",
-          "resendSuccess": "{{email}} için e-postası için çalışılıyor",
-          "missingService": "Posta sağlayıcı hizmeti seçiniz",
-          "userPassRequired": "SMTP kullanıcı ve şifre {{service}} için gerekli olan",
-          "allFieldsRequired": "Tüm alanlar, özel bir hizmet için gerekli!",
-          "portNaN": "Bağlantı noktası bir sayı olmalıdır!",
-          "connectionFailed": "Bağlantı başarısız!",
-          "saveAnyway": "Yine de ayarları kaydetmek ister misiniz?",
-          "saveSuccess": "Posta ayarları kaydedildi.",
-          "saveFailed": "posta ayarlarını kaydedilemedi. {{error}}",
-          "cantSendEmail": "Sunucu Hatası: E-posta bildirimi göndermek olamaz.",
-          "emailSent": "E-posta bildirimi gönderilir."
         }
       },
       "header": {
@@ -299,6 +233,7 @@
         "pageTitle": "Ürün sayfa başlığı",
         "vendor": "Üretici",
         "description": "Ürün açıklması ekle",
+        "originCountry": "Anavatan",
         "facebookMsg": "Facebook Mesaj",
         "twitterMsg": "Twitter Mesaj",
         "pinterestMsg": "Pinterest Mesaj",
@@ -345,13 +280,20 @@
         "compareAtPrice": "Fiyat (MSRP)",
         "fulfillmentService": "Yerine Getirme hizmet",
         "weight": "Ağırlık",
+        "length": "uzunluk",
+        "width": "genişlik",
+        "height": "Yükseklik",
         "taxable": "vergiye tabi",
+        "taxCode": "vergi Kodları",
+        "taxDescription": "vergi Açıklama",
         "inventoryManagement": "stok takibi",
         "inventoryManagementLabel": "envanter sisteminde ürününüzü kaydedin ve durumunu izlemek",
         "inventoryPolicy": "zaman stokta inkar",
         "inventoryPolicyLabel": "o stokta değil, ürün varyantı satmıyoruz",
         "lowInventoryWarningThreshold": "uyar @",
-        "lowInventoryWarningThresholdLabel": "miktarı bir sonraki düzeye ulaştığında ürünün tükendi yakın olacağı müşterileri uyarmak"
+        "lowInventoryWarningThresholdLabel": "miktarı bir sonraki düzeye ulaştığında ürünün tükendi yakın olacağı müşterileri uyarmak",
+        "originCountry": "Anavatan",
+        "selectTaxCode": "Vergi Kanunu seçin"
       },
       "variantList": {
         "moreOptions": "Bu seçim için daha çok seçenek mevcut.",

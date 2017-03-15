@@ -577,24 +577,89 @@ Meteor.methods({
   /**
    * shop/updateLanguageConfiguration
    * @summary enable / disable a language
-   * @param {String} language - language name
+   * @param {String} language - language name | "all" to bulk enable / disable
    * @param {Boolean} enabled - true / false
    * @return {Array} returns workflow array
    */
   "shop/updateLanguageConfiguration": function (language, enabled) {
     check(language, String);
     check(enabled, Boolean);
+
     // must have core permissions
     if (!Reaction.hasPermission("core")) {
       throw new Meteor.Error(403, "Access Denied");
     }
     this.unblock();
+
+    if (language === "all") {
+      const updateObject = {};
+
+      const shop = Collections.Shops.findOne({
+        _id: Reaction.getShopId()
+      });
+
+      if (Array.isArray(shop.languages)) {
+        shop.languages.forEach((languageData, index) => {
+          updateObject[`languages.${index}.enabled`] = enabled;
+        });
+      }
+      return Collections.Shops.update({
+        _id: Reaction.getShopId()
+      }, {
+        $set: updateObject
+      });
+    }
+
     return Collections.Shops.update({
       "_id": Reaction.getShopId(),
       "languages.i18n": language
     }, {
       $set: {
         "languages.$.enabled": enabled
+      }
+    });
+  },
+
+  /**
+   * shop/updateCurrencyConfiguration
+   * @summary enable / disable a currency
+   * @param {String} currency - currency name | "all" to bulk enable / disable
+   * @param {Boolean} enabled - true / false
+   * @return {Number} returns mongo update result
+   */
+  "shop/updateCurrencyConfiguration": function (currency, enabled) {
+    check(currency, String);
+    check(enabled, Boolean);
+    // must have core permissions
+    if (!Reaction.hasPermission("core")) {
+      throw new Meteor.Error(403, "Access Denied");
+    }
+    this.unblock();
+    if (currency === "all") {
+      const updateObject = {};
+
+      const shop = Collections.Shops.findOne({
+        _id: Reaction.getShopId()
+      });
+
+      for (const currencyName in shop.currencies) {
+        if ({}.hasOwnProperty.call(shop.currencies, currencyName) && currencyName !== "updatedAt") {
+          updateObject[`currencies.${currencyName}.enabled`] = enabled;
+        }
+      }
+
+      return Collections.Shops.update({
+        _id: Reaction.getShopId()
+      }, {
+        $set: updateObject
+      });
+    }
+
+    return Collections.Shops.update({
+      _id: Reaction.getShopId()
+    }, {
+      $set: {
+        [`currencies.${currency}.enabled`]: enabled
       }
     });
   },

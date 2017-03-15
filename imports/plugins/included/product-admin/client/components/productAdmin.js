@@ -1,3 +1,4 @@
+import { isEqual } from "lodash";
 import React, { Component, PropTypes } from "react";
 import Velocity from "velocity-animate";
 import "velocity-animate/velocity.ui";
@@ -8,11 +9,11 @@ import {
   CardGroup,
   Metadata,
   TextField,
-  Translation
+  Translation,
+  Select
 } from "/imports/plugins/core/ui/client/components";
 import { Router } from "/client/api";
 import { TagListContainer } from "/imports/plugins/core/ui/client/containers";
-import { isEqual } from "lodash";
 import update from "react/lib/update";
 
 const fieldNames = [
@@ -21,6 +22,7 @@ const fieldNames = [
   "subtitle",
   "vendor",
   "description",
+  "origincountry",
   "facebookMsg",
   "twitterMsg",
   "pinterestMsg",
@@ -147,6 +149,12 @@ class ProductAdmin extends Component {
     });
   }
 
+  handleSelectChange = (value, field) => {
+    if (this.props.onProductFieldSave) {
+      this.props.onProductFieldSave(this.product._id, field, value);
+    }
+  }
+
   handleToggleVisibility = () => {
     if (this.props.onProductFieldSave) {
       this.props.onProductFieldSave(this.product._id, "isVisible", !this.product.isVisible);
@@ -224,8 +232,20 @@ class ProductAdmin extends Component {
             actAsExpander={true}
             i18nKeyTitle="productDetailEdit.productSettings"
             title="Product Settings"
+            onChange={this.handleFieldChange}
           />
           <CardBody expandable={true}>
+            <Select
+              clearable={false}
+              i18nKeyLabel="productDetailEdit.template"
+              i18nKeyPlaceholder="productDetailEdit.templateSelectPlaceholder"
+              label="Template"
+              name="template"
+              onChange={this.handleSelectChange}
+              options={this.props.templates}
+              placeholder="Select a template"
+              value={this.product.template}
+            />
             <TextField
               i18nKeyLabel="productDetailEdit.title"
               i18nKeyPlaceholder="productDetailEdit.title"
@@ -286,6 +306,18 @@ class ProductAdmin extends Component {
               placeholder="Description"
               ref="descriptionInput"
               value={this.product.description}
+            />
+            <Select
+              clearable={false}
+              i18nKeyLabel="productDetailEdit.originCountry"
+              i18nKeyPlaceholder="productDetailEdit.originCountry"
+              label="Origin Country"
+              name="originCountry"
+              onChange={this.handleSelectChange}
+              placeholder="Select a Country"
+              ref="countryOfOriginInput"
+              value={this.product.originCountry}
+              options={this.props.countries}
             />
           </CardBody>
         </Card>
@@ -387,6 +419,7 @@ class ProductAdmin extends Component {
 }
 
 ProductAdmin.propTypes = {
+  countries: PropTypes.arrayOf(PropTypes.object),
   editFocus: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
   handleFieldBlur: PropTypes.func,
   handleFieldChange: PropTypes.func,
@@ -402,6 +435,10 @@ ProductAdmin.propTypes = {
   onRestoreProduct: PropTypes.func,
   product: PropTypes.object,
   revisonDocumentIds: PropTypes.arrayOf(PropTypes.string),
+  templates: PropTypes.arrayOf(PropTypes.shape({
+    label: PropTypes.string,
+    value: PropTypes.any
+  })),
   viewProps: PropTypes.object
 };
 

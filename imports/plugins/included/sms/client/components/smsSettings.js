@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from "react";
-import { Panel, Button } from "react-bootstrap";
-import { FieldGroup } from "/imports/plugins/core/ui/client/components";
+import { Button, Card, CardHeader, CardBody, CardGroup, TextField, Select } from "/imports/plugins/core/ui/client/components";
 
 class SmsSettings extends Component {
   constructor(props) {
@@ -12,6 +11,7 @@ class SmsSettings extends Component {
     };
     this.handleStateChange = this.handleStateChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleSelect = this.handleSelect.bind(this);
   }
 
   handleStateChange(e) {
@@ -28,56 +28,94 @@ class SmsSettings extends Component {
     saveSettings(settings, () => this.setState({ isSaving: false }));
   }
 
+  handleSelect(e) {
+    const { settings } = this.state;
+    settings.smsProvider = e;
+    this.setState({ settings });
+  }
+
+  handleProductFieldSave = (productId, fieldName, value) => {
+    let updateValue = value;
+    // special case, slugify handles.
+    if (fieldName === "handle") {
+      updateValue = Reaction.getSlug(value);
+    }
+    Meteor.call("products/updateProductField", productId, fieldName, updateValue);
+  }
+
+
   render() {
     const settings = this.state.settings;
     const isSaving = this.state.isSaving;
+
+    const smsProviders = [{
+      label: "Twilio", value: "twilio"
+    }, {
+      label: "Nexmo", value: "nexmo"
+    }];
+
     return (
-       <Panel header={<h3 data-i18n="sms.headers.settings">SMS Provider</h3>}>
-        <form onSubmit={this.handleSubmit}>
-          <FieldGroup
-            label="Provider"
-            componentClass="select"
-            i18n="sms.settings.provider"
-            name="smsProvider"
-            value={settings.smsProvider || ""}
-            onChange={this.handleStateChange}
-          >
-              <option value="" data-i18n="sms.settings.selectProvider">Select an SMS provider...</option>
-              <option value="twilio">Twilio</option>
-              <option value="nexmo">Nexmo</option>
-          </FieldGroup>
-          <hr/>
-          <FieldGroup
-            label="Sms Phone Number"
-            type="text"
-            i18n="sms.settings.smsPhone"
-            name="smsPhone"
-            value={settings.smsPhone || ""}
-            onChange={this.handleStateChange}
+      <CardGroup>
+        <Card
+          expanded={true}
+        >
+          <CardHeader
+            actAsExpander={true}
+            i18nKeyTitle="admin.settings.smsProvider"
+            title="SMS Provider"
           />
-          <FieldGroup
-            label="API Key"
-            type="password"
-            i18n="sms.settings.apiKey"
-            name="apiKey"
-            value={settings.apiKey || ""}
-            onChange={this.handleStateChange}
-          />
-          <FieldGroup
-            label="API Token/Secret"
-            type="password"
-            i18n="sms.settings.apiToken"
-            name="apiToken"
-            value={settings.apiToken || ""}
-            onChange={this.handleStateChange}
-          />
-          <Button bsStyle="primary" className="pull-right" type="submit" disabled={isSaving}>
-            {isSaving ?
-                <i className="fa fa-refresh fa-spin"/>
-              : <span data-i18n="app.save">Save</span>}
-          </Button>
-        </form>
-      </Panel>
+          <CardBody expandable={true}>
+            <form onSubmit={this.handleSubmit}>
+              <Select
+                clearable={false}
+                label="Provider Name"
+                i18nKeyLabel="admin.settings.providerName"
+                placeholder="Select an SMS provider"
+                i18nKeyPlaceholder="admin.settings.selectProvider"
+                name="smsProvider"
+                onChange={this.handleSelect}
+                options={smsProviders}
+                value={settings.smsProvider || ""}
+              />
+              <hr/>
+              <TextField
+                label="SMS Phone Number"
+                type="text"
+                i18nKeyLabel="admin.settings.phoneNumber"
+                name="smsPhone"
+                value={settings.smsPhone || ""}
+                onChange={this.handleStateChange}
+              />
+              <TextField
+                label="API Key"
+                type="password"
+                i18nKeyLabel="admin.settings.apiKey"
+                name="apiKey"
+                value={settings.apiKey || ""}
+                onChange={this.handleStateChange}
+              />
+              <TextField
+                label="API Token/Secret"
+                type="password"
+                i18nKeyLabel="admin.settings.apiToken"
+                name="apiToken"
+                value={settings.apiToken || ""}
+                onChange={this.handleStateChange}
+              />
+              <Button
+                bezelStyle="solid"
+                status="primary"
+                className="pull-right"
+                type="submit" disabled={isSaving}
+              >
+                {isSaving ?
+                    <i className="fa fa-refresh fa-spin"/>
+                  : <span data-i18n="app.save">Save</span>}
+              </Button>
+            </form>
+          </CardBody>
+        </Card>
+      </CardGroup>
     );
   }
 }

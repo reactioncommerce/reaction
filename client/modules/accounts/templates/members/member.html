@@ -7,6 +7,10 @@
         {{displayName this}}
         <span>&nbsp;({{this.email}})</span>
       </div>
+      <div class="member-list-item-profile">
+        <span>Customer Id: {{userId}}</span>
+      </div>
+
       <div class="member-list-item-controls">
         <button class="btn btn-default" data-event-action="showMemberSettings" data-i18n="accountsUI.manage">Manage</button>
       </div>
@@ -27,7 +31,9 @@
 
   </div>
 
-
+  {{#if showAvalaraTaxSettings }}
+    {{> taxSettingsPanel member=this }}
+  {{/if}}
 
   {{#each groupsForUser}}
     {{#if permissionGroups}}

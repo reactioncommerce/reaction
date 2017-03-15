@@ -1,23 +1,37 @@
 import React, { Component, PropTypes } from "react";
 import classnames from "classnames";
-import { Icon, Translation } from "/imports/plugins/core/ui/client/components";
+import { Icon, Switch, Translation } from "/imports/plugins/core/ui/client/components";
 
 class ListItem extends Component {
   static propTypes = {
-    actionType: PropTypes.oneOf(["arrow"]),
+    actionType: PropTypes.oneOf(["arrow", "switch"]),
     children: PropTypes.node,
     i18nKeyLabel: PropTypes.string,
     icon: PropTypes.string,
     isAdmin: PropTypes.bool,
     label: PropTypes.string,
     onClick: PropTypes.func,
-    packageData: PropTypes.object,
+    onSwitchChange: PropTypes.func,
+    switchName: PropTypes.string,
+    switchOn: PropTypes.bool,
     value: PropTypes.any
   }
 
   handleClick = (event) => {
-    if (typeof this.props.onClick === "function") {
+    if (this.props.actionType === "switch") {
+      const isChecked = typeof this.props.switchOn === "boolean" ? !this.props.switchOn : true;
+      this.handleSwitchChange(event, isChecked, this.props.switchName);
+    } else if (typeof this.props.onClick === "function") {
       this.props.onClick(event, this.data);
+    }
+  }
+
+  handleSwitchChange = (event, isChecked, name) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (typeof this.props.onSwitchChange === "function") {
+      this.props.onSwitchChange(event, isChecked, name);
     }
   }
 
@@ -49,6 +63,18 @@ class ListItem extends Component {
       "admin": this.props.isAdmin,
       "list-item-action": true
     });
+
+    if (this.props.actionType === "switch") {
+      return (
+        <div className={actionClassName}>
+          <Switch
+            checked={this.props.switchOn}
+            name={this.props.switchName}
+            onChange={this.handleSwitchChange}
+          />
+        </div>
+      );
+    }
 
     if (this.props.actionType) {
       return (

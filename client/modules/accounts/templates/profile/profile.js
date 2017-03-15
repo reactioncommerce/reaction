@@ -1,7 +1,7 @@
-import * as Collections from "/lib/collections";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { Reaction } from "/client/api";
+import * as Collections from "/lib/collections";
 
 /**
  * onCreated: Account Profile View

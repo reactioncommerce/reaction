@@ -4,6 +4,32 @@
   "ns": "taxes-avalara",
   "translation": {
     "reaction-taxes": {
+      "settings": {
+        "apiLoginId": "Avalara API Είσοδος ID",
+        "username": "Ονομα χρήστη",
+        "password": "Σύνθημα",
+        "companyCode": "Κωδικός εταιρείας",
+        "shippingTaxCode": "Κώδικα Φορολογίας Ναυτιλίας",
+        "mode": "Τρόπος παραγωγής",
+        "performTaxCalculation": "Εκτελέστε Υπολογισμός Φόρου",
+        "addressValidation": "διεύθυνση Επικύρωση",
+        "enableAddressValidationByCountry": "Ενεργοποίηση Διεύθυνση Επικύρωση από Χώρα",
+        "enableLogging": "Ενεργοποίηση καταγραφής",
+        "logRetentionDuration": "Σύνδεση Διατήρηση Διάρκεια",
+        "requestTimeout": "Αίτημα χρονικού ορίου",
+        "commitDocuments": "διαπράττουν Έγγραφα",
+        "administratorsPanel": "Πίνακας Διαχειριστή",
+        "testCredentialsSuccess": "Δοκιμή σύνδεσης Επιτυχία",
+        "testCredentialsFailed": "Δοκιμή σύνδεσης απέτυχε, Ελέγξτε τα διαπιστευτήριά",
+        "apiError": "Avalara δεν έχει ρυθμιστεί σωστά"
+      },
+      "logGrid": {
+        "noLogsFound": "Δεν κούτσουρα που βρέθηκαν",
+        "columns": {
+          "date": "Ημερομηνία",
+          "docType": "Είδος αρχείου"
+        }
+      },
       "admin": {
         "shortcut": {
           "avalaraLabel": "Avalara",
@@ -12,13 +38,14 @@
         "dashboard": {
           "avalaraLabel": "Avalara",
           "avalaraTitle": "Avalara",
-          "avalaraDescription": "Avalara Φορολογικοί Συντελεστές"
+          "avalaraDescription": "Avalara Φορολογικοί Συντελεστές",
+          "testCredentials": "Διαπιστευτήρια δοκιμή"
         },
         "taxSettings": {
           "avalaraLabel": "Avalara",
           "avalaraSettingsLabel": "Avalara",
-          "avalaraCredentials": "Προσθέστε τα διαπιστευτήρια για να ενεργοποιήσετε",
-          "avalaraGetCredentialsURL": "Πάρτε τους εδώ"
+          "formTitle": "φορολογικές Ρυθμίσεις",
+          "entityCodeCustomLabel": "Ορίστε την τιμή CUSTOM"
         }
       }
     }

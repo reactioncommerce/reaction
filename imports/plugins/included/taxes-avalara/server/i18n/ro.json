@@ -4,6 +4,32 @@
   "ns": "taxes-avalara",
   "translation": {
     "reaction-taxes": {
+      "settings": {
+        "apiLoginId": "Avalara API ID conectare",
+        "username": "Utilizator",
+        "password": "Parolă",
+        "companyCode": "Codul companiei",
+        "shippingTaxCode": "Codul fiscal de transport maritim",
+        "mode": "Modul de producție",
+        "performTaxCalculation": "Se efectuează calcule fiscale",
+        "addressValidation": "adrese de validare",
+        "enableAddressValidationByCountry": "Activați Adresa de validare de țară",
+        "enableLogging": "activaţi înregistrarea",
+        "logRetentionDuration": "Durata de retenție log",
+        "requestTimeout": "cerere Timeout",
+        "commitDocuments": "Documente comite",
+        "administratorsPanel": "Panoul administratorului",
+        "testCredentialsSuccess": "Conexiune Test de succes",
+        "testCredentialsFailed": "Test de conexiune nu a reușit, Verificați datele de conectare",
+        "apiError": "Avalara nu este configurată corect"
+      },
+      "logGrid": {
+        "noLogsFound": "Nu au fost găsite jurnale",
+        "columns": {
+          "date": "Data",
+          "docType": "Tipul documentului"
+        }
+      },
       "admin": {
         "shortcut": {
           "avalaraLabel": "Avalara",
@@ -12,13 +38,14 @@
         "dashboard": {
           "avalaraLabel": "Avalara",
           "avalaraTitle": "Avalara",
-          "avalaraDescription": "Avalara Tarife fiscale"
+          "avalaraDescription": "Avalara Tarife fiscale",
+          "testCredentials": "Atestări de testare"
         },
         "taxSettings": {
           "avalaraLabel": "Avalara",
           "avalaraSettingsLabel": "Avalara",
-          "avalaraCredentials": "Adăuga acreditările pentru a activa",
-          "avalaraGetCredentialsURL": "Ia-le aici"
+          "formTitle": "Setări fiscale",
+          "entityCodeCustomLabel": "VALUE Custom Set"
         }
       }
     }
