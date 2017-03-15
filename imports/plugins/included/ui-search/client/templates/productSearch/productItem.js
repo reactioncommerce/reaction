@@ -7,6 +7,7 @@ import { $ } from "meteor/jquery";
 import Logger from "/client/modules/logger";
 import { ReactionProduct } from "/lib/api";
 import { Media } from "/lib/collections";
+import { Reaction } from "/client/api";
 
 /**
  * productGridItems helpers
@@ -106,6 +107,12 @@ Template.productItem.events({
     event.preventDefault();
     const instance = Template.instance();
     const view = instance.view;
+    const handle = event.currentTarget.dataset.eventValue;
+
+    Reaction.Router.go("product", {
+      handle: handle
+    });
+
     $(".js-search-modal").delay(400).fadeOut(400, () => {
       $("body").css("overflow-y", "inherit");
       Blaze.remove(view);
