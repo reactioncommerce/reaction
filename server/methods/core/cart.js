@@ -573,10 +573,10 @@ Meteor.methods({
     }
 
     if (userCurrency !== Reaction.getShopCurrency()) {
-      const getExchangeRate = Meteor.call("shop/getCurrencyRates", userCurrency);
+      const userExchangeRate = Meteor.call("shop/getCurrencyRates", userCurrency);
 
-      if (typeof getExchangeRate === "number") {
-        exchangeRate = getExchangeRate;
+      if (typeof userExchangeRate === "number") {
+        exchangeRate = userExchangeRate;
       } else {
         Logger.warn("Failed to get currency exchange rates. Setting exchange rate to null.");
         exchangeRate = null;
@@ -753,13 +753,11 @@ Meteor.methods({
     check(cartId, String);
     check(userCurrency, String);
     const cart = Collections.Cart.findOne({
-      _id: cartId,
-      userId: this.userId
+      _id: cartId
     });
     if (!cart) {
       Logger.error(`Cart not found for user: ${ this.userId }`);
-      throw new Meteor.Error(404, "Cart not found",
-        "Cart not found for user with such id");
+      throw new Meteor.Error("Cart not found for user with such id");
     }
 
     const userCurrencyString = {
@@ -785,7 +783,9 @@ Meteor.methods({
       };
       update = {
         $addToSet: {
-          "billing.currency": userCurrencyString
+          billing: {
+            currency: userCurrencyString
+          }
         }
       };
     }

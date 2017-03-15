@@ -209,9 +209,9 @@ export default {
   getShopCurrency() {
     const shop = Shops.findOne({
       _id: this.getShopId()
-    }) || {};
+    });
 
-    return shop.currency;
+    return shop && shop.currency || "USD";
   },
 
   getPackageSettings(name) {
