@@ -4,6 +4,15 @@
   "ns": "taxes-avalara",
   "translation": {
     "reaction-taxes": {
+      "settings": {
+        "username": "שם משתמש",
+        "password": "סיסמה"
+      },
+      "logGrid": {
+        "columns": {
+          "date": "תאריך"
+        }
+      },
       "admin": {
         "shortcut": {
           "avalaraLabel": "Avalara",
@@ -16,9 +25,7 @@
         },
         "taxSettings": {
           "avalaraLabel": "Avalara",
-          "avalaraSettingsLabel": "Avalara",
-          "avalaraCredentials": "הוסף אישורים כדי להפעיל",
-          "avalaraGetCredentialsURL": "קבל אותם/ן כאן"
+          "avalaraSettingsLabel": "Avalara"
         }
       }
     }

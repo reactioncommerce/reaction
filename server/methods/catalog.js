@@ -810,15 +810,24 @@ Meteor.methods({
     }
 
     // we need to use sync mode here, to return correct error and result to UI
-    const result = Products.update(_id, {
-      $set: update
-    }, {
-      selector: {
-        type: type
-      }
-    });
+    let result;
 
-    if (typeof result === "number") {
+    try {
+      result = Products.update(_id, {
+        $set: update
+      }, {
+        selector: {
+          type: type
+        }
+      });
+    } catch (e) {
+      throw new Meteor.Error(e.message);
+    }
+
+    // If we get a result from the product update,
+    // meaning the update went past revision control,
+    // denormalize and attach results to top-level product
+    if (result === 1) {
       if (type === "variant" && ~toDenormalize.indexOf(field)) {
         denormalize(doc.ancestors[0], field);
       }

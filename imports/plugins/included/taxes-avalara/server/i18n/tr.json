@@ -4,6 +4,32 @@
   "ns": "taxes-avalara",
   "translation": {
     "reaction-taxes": {
+      "settings": {
+        "apiLoginId": "Avalara API Giriş ID",
+        "username": "Kullanıcı adı",
+        "password": "Şifre",
+        "companyCode": "Şirket kodu",
+        "shippingTaxCode": "Kargo Vergisi Kanunu",
+        "mode": "üretim Modu",
+        "performTaxCalculation": "Vergi Hesaplama gerçekleştirin",
+        "addressValidation": "Adres Doğrulama",
+        "enableAddressValidationByCountry": "Ülkelere Göre Adres Doğrulama etkinleştirme",
+        "enableLogging": "Günlük kaydı etkinleştir",
+        "logRetentionDuration": "Log Tutma Süresi",
+        "requestTimeout": "İstek zaman aşımına uğradı",
+        "commitDocuments": "Belgeler Commit",
+        "administratorsPanel": "Yönetici Paneli",
+        "testCredentialsSuccess": "Bağlantı Testi Başarı",
+        "testCredentialsFailed": "Bağlantı Testi Başarısız, kimlik bilgilerini kontrol edin",
+        "apiError": "Avalara doğru yapılandırılmamış"
+      },
+      "logGrid": {
+        "noLogsFound": "Hiçbir günlükleri bulundu",
+        "columns": {
+          "date": "Tarih",
+          "docType": "Belge Türü"
+        }
+      },
       "admin": {
         "shortcut": {
           "avalaraLabel": "Avalara",
@@ -12,13 +38,14 @@
         "dashboard": {
           "avalaraLabel": "Avalara",
           "avalaraTitle": "Avalara",
-          "avalaraDescription": "Avalara Vergi Oranları"
+          "avalaraDescription": "Avalara Vergi Oranları",
+          "testCredentials": "Test Kimlik"
         },
         "taxSettings": {
           "avalaraLabel": "Avalara",
           "avalaraSettingsLabel": "Avalara",
-          "avalaraCredentials": "etkinleştirmek için kimlik bilgilerini ekleme",
-          "avalaraGetCredentialsURL": "Onları burada alın"
+          "formTitle": "vergi Ayarları",
+          "entityCodeCustomLabel": "SET ÖZEL DEĞERİ"
         }
       }
     }
