@@ -44,7 +44,7 @@ class LineItems extends Component {
     );
   }
 
-  renderLineItemInvoice(uniqueItem) {
+  renderLineItemInvoice(uniqueItem, shippingRate) {
     return (
       <div>
         <div className="order-summary-form-group">
@@ -56,25 +56,25 @@ class LineItems extends Component {
         <div className="order-summary-form-group">
           <strong><Translation defaultValue="Shipping" i18nKey="cartSubTotals.shipping"/></strong>
           <div className="invoice-details">
-            {formatPriceString(this.props.invoice.shipping)}
+            {formatPriceString(shippingRate)}
           </div>
         </div>
         <div className="order-summary-form-group">
           <strong>Item tax</strong>
           <div className="invoice-details">
-            {formatPriceString(this.props.invoice.taxes)}
+            {formatPriceString(uniqueItem.taxDetail.tax)}
           </div>
         </div>
         <div className="order-summary-form-group">
           <strong>Tax code</strong>
           <div className="invoice-details">
-            {uniqueItem.variants.taxCode}
+            {uniqueItem.taxDetail.taxCode}
           </div>
         </div>
         <div className="order-summary-form-group">
           <strong>TOTAL</strong>
           <div className="invoice-details">
-            <strong> {this.calculateTotal(uniqueItem.variants.price, this.props.invoice.shipping, this.props.invoice.taxes)} </strong>
+            <strong> {this.calculateTotal(uniqueItem.variants.price, shippingRate, uniqueItem.taxDetail.tax)} </strong>
           </div>
         </div>
         <br/>
@@ -104,7 +104,7 @@ class LineItems extends Component {
               {uniqueItem.items.map((item) => (
                 <div key={item._id}>
                   { this.renderLineItem(item) }
-                  { this.renderLineItemInvoice(item) }
+                  { this.renderLineItemInvoice(item, uniqueItem.shippingRate) }
                 </div>
               ))}
             </div>

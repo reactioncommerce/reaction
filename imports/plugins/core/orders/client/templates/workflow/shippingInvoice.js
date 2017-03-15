@@ -454,15 +454,23 @@ Template.coreOrderShippingInvoice.helpers({
     const order = instance.state.get("order");
     const currentData = Template.currentData();
     const shipment = currentData.fulfillment;
+    const taxes = order.taxes.slice(0, -1);
 
-    const items = _.map(shipment.items, (item) => {
+    let items = _.map(shipment.items, (item) => {
       const originalItem = _.find(order.items, {
         _id: item._id
       });
       return _.extend(originalItem, item);
     });
 
-    const allCarts = items.reduce((carts, item) => {
+    items = _.map(taxes, (taxDetail) => {
+      const originalItem = _.find(order.items, {
+        cartItemId: taxDetail.lineNumber
+      });
+      return _.extend(originalItem, { taxDetail });
+    });
+
+    let uniqueItems = items.reduce((carts, item) => {
       let cart;
 
       if (carts[item.cartItemId]) {
@@ -474,6 +482,7 @@ Template.coreOrderShippingInvoice.helpers({
         cart = {
           cartItemId: item.cartItemId,
           productId: item.productId,
+          shippingRate: shipment.shipmentMethod.rate,
           items: [item]
         };
       }
@@ -482,7 +491,7 @@ Template.coreOrderShippingInvoice.helpers({
       return carts;
     }, {});
 
-    const uniqueItems = Object.keys(allCarts).map(k => allCarts[k]);
+    uniqueItems = Object.keys(uniqueItems).map(k => uniqueItems[k]);
 
     return uniqueItems;
   },
