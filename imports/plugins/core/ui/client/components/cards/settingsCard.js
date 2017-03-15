@@ -55,7 +55,7 @@ class SettingsCard extends Component {
       return this.props.preferences[this.props.name];
     }
 
-    return this.prope.expanded;
+    return this.props.expanded;
   }
 
   renderCardBody() {

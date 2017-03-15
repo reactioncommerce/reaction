@@ -8,6 +8,10 @@
           "productSettingsLabel": "produkt~~POS=TRUNC",
           "productDetailsLabel": "Produktinformation"
         }
+      },
+      "productDetailEdit": {
+        "template": "mall~~POS=TRUNC",
+        "templateSelectPlaceholder": "Välj en mall"
       }
     }
   }

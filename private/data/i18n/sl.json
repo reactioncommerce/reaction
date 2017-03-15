@@ -95,6 +95,8 @@
         "noProductsFound": "Ni izdelkov.",
         "private": "zasebno",
         "public": "javni",
+        "allOn": "vse On",
+        "allOff": "vse Off",
         "shortcut": {
           "addProductLabel": "Dodaj izdelek",
           "accountsLabel": "računi"
@@ -155,74 +157,6 @@
           "orderDelivered": "Vaše naročilo je bilo dostavljeno.",
           "orderAccepted": "Vaše naročilo je bilo sprejeto.",
           "orderShipped": "Vaše naročilo je bilo poslano."
-        }
-      },
-      "sms": {
-        "headers": {
-          "settings": "Ponudnik SMS"
-        },
-        "settings": {
-          "provider": "ponudnik",
-          "selectProvider": "Izberite ponudnika SMS ...",
-          "smsPhone": "SMS Telefonska številka",
-          "apiKey": "ključ API",
-          "apiToken": "API žeton / Secret"
-        },
-        "alerts": {
-          "noApiKey": "Prosimo, dodajte ključ API",
-          "noApiToken": "Dodajte API TOKEN / Secret",
-          "noSmsProvider": "Izberite ponudnika SMS",
-          "noSmsPhone": "Navedite telefonsko številko, ki ste jih dobili pri ponudniku SMS",
-          "saveSuccess": "Nastavitve SMS shranjene"
-        }
-      },
-      "mail": {
-        "headers": {
-          "email": "E-naslov",
-          "emailSettings": "Nastavitve e-pošte",
-          "config": "konfiguracija",
-          "settings": "Ponudnik SMTP",
-          "status": "Status",
-          "actions": "Dejanja"
-        },
-        "settings": {
-          "service": "Service",
-          "user": "Uporabnik",
-          "password": "Geslo",
-          "host": "Host",
-          "port": "Port",
-          "passwordShow": "Prikaži",
-          "passwordHide": "Skrij",
-          "fieldNotSet": "ni nastavljeno",
-          "selectService": "Izberite storitev ...",
-          "custom": "po meri"
-        },
-        "logs": {
-          "headers": {
-            "emailLogs": "E-pošta Dnevniki",
-            "email": "E-naslov",
-            "subject": "predmet",
-            "sent": "Poslano",
-            "status": "Status"
-          },
-          "noEmails": "Brez e-pošte še ni poslal",
-          "limit": "količina",
-          "retry": "poskusite znova",
-          "noneAvailble": "Niso na voljo"
-        },
-        "alerts": {
-          "error": "Napaka: {{error}}",
-          "resendSuccess": "Poskus, da znova pošljete e-pošto {{email}}",
-          "missingService": "Izberite storitev ponudnika mail",
-          "userPassRequired": "Uporabnik SMTP in geslo so potrebni za {{service}}",
-          "allFieldsRequired": "Vsa polja so obvezna za storitve po meri!",
-          "portNaN": "Pristanišče mora biti število!",
-          "connectionFailed": "Povezava ni uspela!",
-          "saveAnyway": "Ali želite vseeno shraniti nastavitve?",
-          "saveSuccess": "poštne nastavitve shranjene.",
-          "saveFailed": "Ni bilo mogoče shraniti nastavitve pošte. {{error}}",
-          "cantSendEmail": "Napaka strežnika: Ne morem poslati e-poštno obvestilo.",
-          "emailSent": "e-poštno obvestilo poslano."
         }
       },
       "header": {
@@ -299,6 +233,7 @@
         "pageTitle": "podnaslov",
         "vendor": "prodajalec",
         "description": "Opis",
+        "originCountry": "izvor Država",
         "facebookMsg": "Facebook sporočilo",
         "twitterMsg": "Twitter sporočilo",
         "pinterestMsg": "Pinterest sporočilo",
@@ -345,13 +280,20 @@
         "compareAtPrice": "Cena (MSRP)",
         "fulfillmentService": "izpolnitev storitev",
         "weight": "Teža",
+        "length": "dolžina",
+        "width": "Širina",
+        "height": "Višina",
         "taxable": "Davčni",
+        "taxCode": "davčni Oznake",
+        "taxDescription": "davčna Opis",
         "inventoryManagement": "sledenje popis",
         "inventoryManagementLabel": "Vnos izdelek inventarja sistema in sledenje svoj status",
         "inventoryPolicy": "Zanika, ko ni na zalogi",
         "inventoryPolicyLabel": "Ne prodati varianto izdelka, če je ni na zalogi",
         "lowInventoryWarningThreshold": "Opozori @",
-        "lowInventoryWarningThresholdLabel": "Opozarjajo stranke, da bo izdelek skoraj razprodan, ko doseže naslednji količinski prag"
+        "lowInventoryWarningThresholdLabel": "Opozarjajo stranke, da bo izdelek skoraj razprodan, ko doseže naslednji količinski prag",
+        "originCountry": "izvor Država",
+        "selectTaxCode": "Izberite davčnega zakonika"
       },
       "variantList": {
         "moreOptions": "Obstaja več možnosti, ki so na voljo za ta izbor.",
