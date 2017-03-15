@@ -213,6 +213,32 @@ export const methods = {
     });
   },
 
+
+  /**
+   * orders/cancelPayment
+   *
+   * @summary Cancel Payment
+   * @param {Object} order - order object
+   * @return {Object} return this.processPayment result
+   */
+  "orders/cancelPayment": function (order) {
+    check(order, Object);
+
+    if (!Reaction.hasPermission("orders")) {
+      throw new Meteor.Error(403, "Access Denied");
+    }
+
+    return Orders.update({
+      "_id": order._id,
+      "billing.paymentMethod.method": "credit"
+    }, {
+      $set: {
+        "billing.$.paymentMethod.status": "cancelled",
+        "billing.$.paymentMethod.mode": "cancel"
+      }
+    });
+  },
+
   /**
    * orders/processPayment
    *
