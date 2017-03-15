@@ -1,9 +1,9 @@
 import React, { Component, PropTypes } from "react";
 import { composeWithTracker } from "/lib/api/compose";
+import { Media } from "/lib/collections";
 import { Loading } from "/imports/plugins/core/ui/client/components";
 import { TranslationProvider } from "/imports/plugins/core/ui/client/providers";
 import LineItems from "../components/lineItems.js";
-import { Media } from "/lib/collections";
 
 class LineItemsContainer extends Component {
   constructor(props) {
@@ -37,15 +37,22 @@ class LineItemsContainer extends Component {
     });
   }
 
-  handleDisplayMedia(variantObject) {
+  handleDisplayMedia(variantObjectOrId) {
+    let variantId = variantObjectOrId;
+
+    if (typeof variantId === "object") {
+      variantId = variantObjectOrId._id;
+    }
+
     const defaultImage = Media.findOne({
-      "metadata.variantId": variantObject._id,
+      "metadata.variantId": variantId,
       "metadata.priority": 0
     });
 
     if (defaultImage) {
       return defaultImage;
     }
+
     return false;
   }
 

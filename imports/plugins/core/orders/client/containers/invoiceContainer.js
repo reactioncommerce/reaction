@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from "react";
-import { composeWithTracker } from "/lib/api/compose";
 import moment from "moment";
+import { composeWithTracker } from "/lib/api/compose";
 import { Loading } from "/imports/plugins/core/ui/client/components";
 import { TranslationProvider } from "/imports/plugins/core/ui/client/providers";
 import Invoice from "../components/invoice.js";

@@ -14,6 +14,7 @@ class TotalActions extends Component {
         <span style={{ marginLeft: 15 }}>
           <strong className="text-success">CAPTURED TOTAL</strong>
         </span>
+
         <div className="invoice-details" style={{ marginRight: 15 }}>
           <strong>{formatPriceString(this.props.invoice.total)}</strong>
         </div>
@@ -27,6 +28,7 @@ class TotalActions extends Component {
         <span className="text-danger" style={{ marginLeft: 15 }}>
           <strong>ADJUSTED TOTAL</strong>
         </span>
+
         <div className="invoice-details" style={{ marginRight: 15 }}>
           <strong>{formatPriceString(this.props.adjustedTotal)}</strong>
         </div>
@@ -38,7 +40,7 @@ class TotalActions extends Component {
     return (
       <div>
         {this.renderCapturedTotal()}
-        {this.renderAdjustedTotal()}
+        {this.props.isAdjusted() && this.renderAdjustedTotal()}
       </div>
     );
   }
@@ -46,7 +48,8 @@ class TotalActions extends Component {
 
 TotalActions.propTypes = {
   adjustedTotal: PropTypes.number,
-  invoice: PropTypes.object
+  invoice: PropTypes.object,
+  isAdjusted: PropTypes.func
 };
 
 export default TotalActions;

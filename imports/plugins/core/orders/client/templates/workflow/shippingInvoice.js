@@ -316,7 +316,11 @@ Template.coreOrderShippingInvoice.helpers({
   invoice() {
     const instance = Template.instance();
     const order = instance.state.get("order");
-    return order.billing[0].invoice;
+
+    const invoice = Object.assign({}, order.billing[0].invoice, {
+      totalItems: order.items.length
+    });
+    return invoice;
   },
 
   money(amount) {
@@ -454,22 +458,36 @@ Template.coreOrderShippingInvoice.helpers({
     const order = instance.state.get("order");
     const currentData = Template.currentData();
     const shipment = currentData.fulfillment;
-    const taxes = order.taxes.slice(0, -1);
 
-    let items = _.map(shipment.items, (item) => {
+    // returns array of individual items that have been checked out
+    const returnItems = _.map(shipment.items, (item) => {
       const originalItem = _.find(order.items, {
         _id: item._id
       });
       return _.extend(originalItem, item);
     });
 
-    items = _.map(taxes, (taxDetail) => {
-      const originalItem = _.find(order.items, {
-        cartItemId: taxDetail.lineNumber
-      });
-      return _.extend(originalItem, { taxDetail });
-    });
+    let items;
 
+    // if avalara tax has been enabled it adds a "taxDetail" field for every item
+    if (order.taxes !== undefined) {
+      const taxes = order.taxes.slice(0, -1);
+
+      items = _.map(returnItems, (item) => {
+        const taxDetail = _.find(taxes, {
+          lineNumber: item.cartItemId
+        });
+        return _.extend(item, { taxDetail });
+      });
+    } else {
+      items = returnItems;
+    }
+
+    /**
+     * It goes through individual items and groups similar items using the cartItemId.
+     * The output is an object whose keys are cartItemId and every item with the same
+     * cartItemId is added as a value
+     */
     let uniqueItems = items.reduce((carts, item) => {
       let cart;
 
@@ -491,6 +509,7 @@ Template.coreOrderShippingInvoice.helpers({
       return carts;
     }, {});
 
+    // Converts the uniqueItems object to an array
     uniqueItems = Object.keys(uniqueItems).map(k => uniqueItems[k]);
 
     return uniqueItems;
