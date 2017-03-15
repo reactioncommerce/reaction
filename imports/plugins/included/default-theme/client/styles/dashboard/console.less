@@ -196,6 +196,12 @@
   padding: 20px;
 }
 
+// Only apply form-control styles to non .rui form fields
+// This should only apply to normal BS3 / Autoform fields
+.admin-controls-content .form-group:not(.rui) input:not([type=checkbox]) {
+  .form-control;
+}
+
 body.admin-vertical .admin-controls {
   height: 20vh;
   min-width: 100%;
