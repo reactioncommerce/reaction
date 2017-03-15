@@ -22,6 +22,13 @@ const streams = [{
   stream: bunyanFormat({ outputMode: "short" })
 }];
 
+if (level === "TRACE") {
+  streams.push({
+    level: "TRACE",
+    stream: bunyanFormat({ outputMode: "json" })
+  });
+}
+
 // Loggly config (only used if configured)
 const logglyToken = process.env.LOGGLY_TOKEN;
 const logglySubdomain = process.env.LOGGLY_SUBDOMAIN;
