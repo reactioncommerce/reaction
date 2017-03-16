@@ -1,0 +1,15 @@
+[{
+  "i18n": "vi",
+  "ns": "reaction-i18n",
+  "translation": {
+    "reaction-i18n": {
+      "admin": {
+        "i18nSettings": {
+          "localization": "Localization",
+          "enabledCurrencies": "Đơn vị tiền tệ",
+          "enabledLanguages": "Ngôn ngữ"
+        }
+      }
+    }
+  }
+}]
