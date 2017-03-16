@@ -121,7 +121,7 @@ class Invoice extends Component {
         <div className="order-summary-form-group">
           <strong><Translation defaultValue="Discount" i18nKey="cartSubTotals.discount"/></strong>
           <div className="invoice-details">
-            <i className="fa fa-tag fa-lg"/>
+            <i className="fa fa-tag fa-lg" style={{ marginRight: 2 }}/>
             <a className="btn-link" onClick={this.props.handleClick}>Add Discount</a>
           </div>
         </div>

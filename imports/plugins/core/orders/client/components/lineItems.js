@@ -24,8 +24,11 @@ class LineItems extends Component {
         >
 
           <div className="order-item-media" style={{ marginLeft: 15 }}>
-            { !this.props.displayMedia(uniqueItem.variants) &&
-              <img src= "/resources/placeholder.gif" />
+            { !this.props.displayMedia(uniqueItem) ?
+              <img src= "/resources/placeholder.gif" /> :
+              <img
+                src={this.props.displayMedia(uniqueItem).url()}
+              />
             }
           </div>
 

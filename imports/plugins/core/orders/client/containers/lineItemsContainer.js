@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from "react";
+import { Meteor } from "meteor/meteor";
 import { composeWithTracker } from "/lib/api/compose";
 import { Media } from "/lib/collections";
 import { Loading } from "/imports/plugins/core/ui/client/components";
@@ -37,22 +38,32 @@ class LineItemsContainer extends Component {
     });
   }
 
-  handleDisplayMedia(variantObjectOrId) {
-    let variantId = variantObjectOrId;
+  /**
+   * Media - find media based on a product/variant
+   * @param  {Object} item object containing a product and variant id
+   * @return {Object|false} An object contianing the media or false
+   */
+  handleDisplayMedia(item) {
+    const variantId = item.variants._id;
+    const productId = item.productId;
 
-    if (typeof variantId === "object") {
-      variantId = variantObjectOrId._id;
+    const variantImage = Media.findOne({
+      "metadata.variantId": variantId,
+      "metadata.productId": productId
+    });
+
+    if (variantImage) {
+      return variantImage;
     }
 
     const defaultImage = Media.findOne({
-      "metadata.variantId": variantId,
+      "metadata.productId": productId,
       "metadata.priority": 0
     });
 
     if (defaultImage) {
       return defaultImage;
     }
-
     return false;
   }
 
@@ -79,10 +90,13 @@ LineItemsContainer.propTypes = {
 };
 
 const composer = (props, onData) => {
-  onData(null, {
-    uniqueItems: props.items,
-    invoice: props.invoice
-  });
+  const subscription = Meteor.subscribe("Media");
+  if (subscription.ready()) {
+    onData(null, {
+      uniqueItems: props.items,
+      invoice: props.invoice
+    });
+  }
 };
 
 export default composeWithTracker(composer, Loading)(LineItemsContainer);
