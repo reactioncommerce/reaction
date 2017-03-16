@@ -60,6 +60,14 @@ Template.shopBrandImageOption.helpers({
  *
  */
 Template.shopSettings.helpers({
+  options() {
+    return [
+          { label: "Every 3 days", value: "every 3 days" },
+          { label: "Every 5 days", value: "every 5 days" },
+          { label: "Every 7 days", value: "every 7 days" },
+          { label: "Every 9 days", value: "every 9 days" }
+    ];
+  },
   brandImageSelectProps() {
     const media = Media.find({
       "metadata.type": "brandAsset"
