@@ -50,7 +50,7 @@ class LineItems extends Component {
     );
   }
 
-  renderLineItemInvoice(uniqueItem, shippingRate) {
+  renderLineItemInvoice(uniqueItem, shippingRate, quantity) {
     return (
       <div>
         <div className="order-summary-form-group">
@@ -70,14 +70,14 @@ class LineItems extends Component {
         <div className="order-summary-form-group">
           <strong>Item tax</strong>
           <div className="invoice-details">
-            {uniqueItem.taxDetail ? formatPriceString(uniqueItem.taxDetail.tax) : formatPriceString(0)}
+            {uniqueItem.taxDetail ? formatPriceString(uniqueItem.taxDetail.tax / quantity) : formatPriceString(0)}
           </div>
         </div>
 
         <div className="order-summary-form-group">
           <strong>Tax code</strong>
           <div className="invoice-details">
-            {uniqueItem.variants.taxCode }
+            {uniqueItem.taxDetail ? uniqueItem.taxDetail.taxCode : uniqueItem.variants.taxCode}
           </div>
         </div>
 
@@ -128,7 +128,7 @@ class LineItems extends Component {
                 {uniqueItem.items.map((item) => (
                   <div key={item._id}>
                     { this.renderLineItem(item) }
-                    { this.renderLineItemInvoice(item, uniqueItem.shippingRate) }
+                    { this.renderLineItemInvoice(item, uniqueItem.shippingRate, uniqueItem.items.length) }
                   </div>
                 ))}
 
