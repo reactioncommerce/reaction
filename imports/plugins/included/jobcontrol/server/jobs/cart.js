@@ -1,6 +1,6 @@
 import later from "later";
 import moment from "moment";
-import { Cart, Jobs } from "/lib/collections";
+import { Accounts, Cart, Jobs } from "/lib/collections";
 import { Hooks, Logger } from "/server/api";
 
 Hooks.Events.add("onJobServerStart", () => {
@@ -15,7 +15,7 @@ Hooks.Events.add("onJobServerStart", () => {
         backoff: "exponential" // delay by twice as long for each subsequent retry
       })
       .repeat({
-        schedule: later.parse.text("every 1 mins")
+        schedule: later.parse.text("every day")
       })
       .save({
         cancelRepeats: true
@@ -39,21 +39,23 @@ export default () => {
       }
     }).fetch();
     cartDetails.map(cart => {
-      if (cart.items || cart.items.length > 0) {
-        Meteor.call("cart/removeFromCart", (error) => {
-          if (error) {
-            if (error.error === "cart-not-found") {
-              Logger.error(error.message);
-              job.done(error.message, { repeatId: true });
-            } else {
-              job.done(error.toString(), { repeatId: true });
+      if (cart.items) {
+        const findAcct = Accounts.find({ userId: cart.userId }).fetch();
+        findAcct.map(user => {
+          if (user.emails.length === 0) {
+            const result = Cart.update(
+              { userId: user._id },
+              { $unset: { items: [] } }
+            );
+            if (result === 1) {
+              const success = "Stale anonymous user cart successfully removed";
+              Logger.info(success);
+              job.done(success, { repeatId: true });
             }
-          } else {
-            const success = "Stale cart successfully removed";
-            Logger.debug(success);
-            job.done(success, { repeatId: true });
           }
         });
+      } else {
+        Logger.info("Anonymous user Cart is currently empty");
       }
     });
     callback();
