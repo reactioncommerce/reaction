@@ -63,7 +63,11 @@ export function assignOwnerRoles(shopId, pkgName, registry) {
       // define permissions if you need to check custom permission
       if (registryItem.permissions) {
         for (const permission of registryItem.permissions) {
-          defaultRoles.push(permission.permission);
+          // Wrong Register.js' permissions value(e.g undefined) results in undefined element in defaultRoles Array
+          // which afterwards makes Roles.getUsersInRole(defaultRoles) to bring every user.
+          if (permission && typeof permission.permission === "string" && permission.permission.length) {
+            defaultRoles.push(permission.permission);
+          }
         }
       }
     }

@@ -1,5 +1,6 @@
 import * as Collections from "/lib/collections";
 import { Reaction } from "/lib/api";
+import { Hooks } from "/server/api";
 
 const {
   Accounts,
@@ -120,10 +121,10 @@ export default function () {
    * remove their shop but may not insert one.
    */
 
-  Shops.permit(["update", "remove"]).ifHasRole({
-    role: ["admin", "owner"],
-    group: Reaction.getShopId()
-  }).ifShopIdMatchesThisId().allowInClientCode();
+  Shops.permit(["insert", "update", "remove"])
+    .ifHasSellerRole()
+    .ifShopIdMatchesThisId()
+    .allowInClientCode();
 
   /*
    * Users with the "admin" or "owner" role may update and
@@ -192,4 +193,8 @@ export default function () {
     update: () => true,
     remove: () => true
   });
+
+  // As the above security Rules definitions happen after all known Core Initialization Event hooks,
+  // a new Event hook is created by which other code can make use of these new Rules.
+  Hooks.Events.run("afterSecurityInit");
 }
