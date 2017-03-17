@@ -68,7 +68,6 @@ class Invoice extends Component {
   renderConditionalDisplay() {
     return (
       <div>
-        {this.renderDiscountForm()}
         {this.props.canMakeAdjustments ?
           <div> {this.renderTotal()} </div> :
           <span>
@@ -118,14 +117,18 @@ class Invoice extends Component {
           </div>
         </div>
 
-        <div className="order-summary-form-group">
-          <strong><Translation defaultValue="Discount" i18nKey="cartSubTotals.discount"/></strong>
-          <div className="invoice-details">
-            <i className="fa fa-tag fa-lg" style={{ marginRight: 2 }}/>
-            <a className="btn-link" onClick={this.props.handleClick}>Add Discount</a>
+        {this.props.discounts &&
+          <div>
+            <div className="order-summary-form-group">
+              <strong><Translation defaultValue="Discount" i18nKey="cartSubTotals.discount"/></strong>
+              <div className="invoice-details">
+                <i className="fa fa-tag fa-lg" style={{ marginRight: 2 }}/>
+                <a className="btn-link" onClick={this.props.handleClick}>Add Discount</a>
+              </div>
+            </div>
+            {this.renderDiscountForm()}
           </div>
-        </div>
-
+        }
         {this.renderConditionalDisplay()}
       </div>
     );
@@ -137,6 +140,7 @@ Invoice.propTypes = {
   canMakeAdjustments: PropTypes.bool,
   collection: PropTypes.string,
   dateFormat: PropTypes.func,
+  discounts: PropTypes.bool,
   handleClick: PropTypes.func,
   invoice: PropTypes.object,
   isFetching: PropTypes.bool,

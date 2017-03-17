@@ -453,6 +453,26 @@ Template.coreOrderShippingInvoice.helpers({
     return shipment;
   },
 
+  discounts() {
+    const enabledPaymentsArr = [];
+    const apps = Reaction.Apps({
+      provides: "paymentMethod",
+      enabled: true
+    });
+    for (app of apps) {
+      if (app.enabled === true) enabledPaymentsArr.push(app);
+    }
+    let discount = false;
+
+    for (enabled of enabledPaymentsArr) {
+      if (enabled.packageName === "discount-codes") {
+        discount = true;
+        break;
+      }
+    }
+    return discount;
+  },
+
   items() {
     const instance = Template.instance();
     const order = instance.state.get("order");
