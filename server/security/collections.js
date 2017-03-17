@@ -120,10 +120,10 @@ export default function () {
    * remove their shop but may not insert one.
    */
 
-  Shops.permit(["update", "remove"]).ifHasRole({
-    role: ["admin", "owner"],
-    group: Reaction.getShopId()
-  }).ifShopIdMatchesThisId().allowInClientCode();
+  Shops.permit(["update", "remove"])
+    .ifHasSellerRole()
+    .ifShopIdMatchesThisId()
+    .allowInClientCode();
 
   /*
    * Users with the "admin" or "owner" role may update and
