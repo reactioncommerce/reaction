@@ -1,7 +1,7 @@
 import later from "later";
 import moment from "moment";
 import { Accounts, Cart, Jobs } from "/lib/collections";
-import { Hooks, Logger } from "/server/api";
+import { Hooks, Logger, Reaction } from "/server/api";
 
 Hooks.Events.add("onJobServerStart", () => {
   Logger.debug("Adding Job removeStaleCart to jobControl");
@@ -12,7 +12,7 @@ Hooks.Events.add("onJobServerStart", () => {
       .retry({
         retries: 5,
         wait: 60000,
-        backoff: "exponential" // delay by twice as long for each subsequent retry
+        backoff: "exponential" // delay by twice as long for each subsequent retry rt
       })
       .repeat({
         schedule: later.parse.text("every day")
@@ -52,10 +52,28 @@ export default () => {
               Logger.info(success);
               job.done(success, { repeatId: true });
             }
+          } else {
+            const settings = Reaction.getShopSettings();
+            const schedule = Number(settings.cart.cleanup); // configurable in shop settings
+            if (!schedule) {
+              Logger.warn("Cleanup Schedule not configured");
+            } else {
+              if (cart.updatedAt <= moment().subtract(schedule, "days")._d) {
+                const userCleanup = Cart.update(
+                  { userId: user._id },
+                  { $unset: { items: [] } }
+                );
+                if (userCleanup === 1) {
+                  const success = "Stale user cart successfully removed";
+                  Logger.info(success);
+                  job.done(success, { repeatId: true });
+                }
+              }
+            }
           }
         });
       } else {
-        Logger.info("Anonymous user Cart is currently empty");
+        Logger.info("Cart is currently empty");
       }
     });
     callback();
