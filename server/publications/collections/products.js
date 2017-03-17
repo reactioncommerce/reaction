@@ -1,6 +1,7 @@
 import { Products, Revisions } from "/lib/collections";
 import { Reaction, Logger } from "/server/api";
 import { RevisionApi } from "/imports/plugins/core/revisions/lib/api/revisions";
+import { getProductMedia } from "/lib/api/media";
 
 //
 // define search filters as a schema so we can validate
@@ -399,9 +400,30 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
       });
     }
 
-    return Products.find(newSelector, {
+    const handle = Products.find(newSelector, {
       sort: sort,
       limit: productScrollLimit
+    }).observe({
+      added: (product) => {
+        product.__media = getProductMedia(product._id);
+
+        this.added("Products", product._id, product);
+      },
+      changed: (product) => {
+        product.__media = getProductMedia(product._id);
+
+        this.changed("Products", product._id, product);
+      },
+      removed: (product) => {
+        this.removed("Products", product._id, product);
+      }
     });
+
+
+    this.onStop(() => {
+      handle.stop();
+    });
+
+    return this.ready();
   }
 });
