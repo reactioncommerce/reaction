@@ -23,15 +23,6 @@ reaction
 
 Additional prerequisites, setup options and detailed installation documentation can be found in the [installation](https://docs.reactioncommerce.com/reaction-docs/development/installation) and [configuration documentation](https://docs.reactioncommerce.com/reaction-docs/development/configuration). Topics covered are Windows installation, setting up the default credentials, installation without `reaction-cli`, and pre-configuring packages.
 
-## Status
-
-Reaction is expected to have a stable codebase ready for some production configurations within the next couple of major releases. Be aware though, that we're updating frequently. Even existing structures that are functionally done are getting frequent updates to ensure we're current with the most current libraries available to us.
-
-Currently good for contributing, observing progress, and testing. We'd encourage due diligence in production usage, be very comfortable with the code, and risk tolerant. There are still many parts in development!
-
--   Master ( [stable](https://github.com/reactioncommerce/reaction/tree/master) )
--   Development ( [latest](https://github.com/reactioncommerce/reaction/tree/development) )
-
 ## Participation
 
 If you are interested in participating in the development of Reaction, that's really great!
@@ -42,9 +33,9 @@ The [Reaction Gitter channel](https://gitter.im/reactioncommerce/reaction) and [
 
 ### Planning
 
-For a high level review our roadmap, take a look at the [Reaction vision page](http://reactioncommerce.com/vision).
+For a high level review our roadmap, take a look at the [Reaction features page](http://reactioncommerce.com/features).
 
-For a kanban-esque, hardcore, real time progress overview of all Reaction Commerce projects use our [waffle board](https://waffle.io/reactioncommerce/reaction).
+For a kanban-esque, hardcore, real time progress overview of all Reaction Commerce projects use our [project board](https://waffle.io/reactioncommerce/reaction).
 
 Grouped by functional area, [reactioncommerce/reaction projects](https://github.com/reactioncommerce/reaction/projects) deliver a progress view of the Reaction sub-projects.
 
