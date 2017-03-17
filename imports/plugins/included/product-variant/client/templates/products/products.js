@@ -70,10 +70,10 @@ Template.products.onCreated(function () {
       return;
     }
 
-    const isMarketplaceEnabled = Reaction.hasMarketplaceAccess(["anonymous", "guest"]);
+    const hasMarketPlaceAccess = Reaction.hasMarketplaceAccess(["anonymous", "guest"]);
 
     // allow published content from all sellers for everyone
-    if (isMarketplaceEnabled) {
+    if (hasMarketPlaceAccess) {
       // show all shops
       _.extend(options, { marketplace: true });
 
@@ -98,7 +98,7 @@ Template.products.onCreated(function () {
 
     // Once our products subscription is ready, we are ready to render.
     // When in Marketplace, we need mediaSubscription also
-    if (productsSubscription.ready() && (!isMarketplaceEnabled || mediaSubscription.ready())) {
+    if (productsSubscription.ready() && (!hasMarketPlaceAccess || mediaSubscription.ready())) {
       window.prerenderReady = true;
     }
 
