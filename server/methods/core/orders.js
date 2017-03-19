@@ -261,14 +261,24 @@ export const methods = {
       if (err) Logger.error(err);
     });
 
+    const shipment = order.shipping[0];
+    const itemIds = shipment.items.map((item) => {
+      return item._id;
+    });
+
+    Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/canceled", order, itemIds);
     // Update the order collection
     Orders.update({
       "_id": order._id,
       "billing.paymentMethod.method": "credit"
     }, {
       $set: {
+        "workflow.status": "coreOrderWorkflow/canceled",
         "billing.$.paymentMethod.status": "canceled",
         "billing.$.paymentMethod.mode": "cancel"
+      },
+      $push: {
+        "workflow.workflow": "coreOrderWorkflow/canceled"
       }
     });
   },

@@ -111,6 +111,16 @@ Template.coreOrderShippingSummary.helpers({
       }
     });
 
+    const canceled = _.every(shipment.items, (shipmentItem) => {
+      for (const fullItem of order.items) {
+        if (fullItem._id === shipmentItem._id) {
+          if (fullItem.workflow) {
+            return fullItem.workflow.status === "coreOrderItemWorkflow/canceled" ? true : false;
+          }
+        }
+      }
+    });
+
     if (shipped) {
       return {
         delivered: false,
@@ -119,6 +129,16 @@ Template.coreOrderShippingSummary.helpers({
         label: i18next.t("orderShipping.shipped")
       };
     }
+
+    if (canceled) {
+      return {
+        delivered: false,
+        shipped: false,
+        status: "danger",
+        label: "Canceled" /* i18next.t("orderShipping.notShipped") */
+      };
+    }
+
 
     return {
       delivered: false,

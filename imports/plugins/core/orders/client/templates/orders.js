@@ -21,6 +21,9 @@ const orderFilters = [{
 }, {
   name: "completed",
   label: "Completed"
+}, {
+  name: "canceled",
+  label: "Canceled"
 }];
 
 const OrderHelper =  {
@@ -69,7 +72,7 @@ const OrderHelper =  {
 
       case "canceled":
         query = {
-          "workflow.status": "canceled"
+          "workflow.status": "coreOrderWorkflow/canceled"
         };
         break;
 
@@ -362,12 +365,31 @@ Template.orderStatusDetail.helpers({
       }
     });
 
+    const canceled = _.every(shipment.items, (shipmentItem) => {
+      for (const fullItem of self.items) {
+        if (fullItem._id === shipmentItem._id) {
+          if (fullItem.workflow) {
+            return fullItem.workflow.status === "coreOrderItemWorkflow/canceled" ? true : false;
+          }
+        }
+      }
+    });
+
     if (shipped) {
       return {
         delivered: false,
         shipped: true,
         status: "success",
         label: i18next.t("orderShipping.shipped")
+      };
+    }
+
+    if (canceled) {
+      return {
+        delivered: false,
+        shipped: false,
+        status: "danger",
+        label: "Canceled" /* i18next.t("orderShipping.notShipped") */
       };
     }
 
