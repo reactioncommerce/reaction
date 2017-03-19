@@ -35,6 +35,10 @@
           <span id="btn-refund-payment" data-i18n="order.applyRefund">Apply Refund</span>
           <i class="fa fa-spinner fa-spin {{#unless isRefunding}}hidden{{/unless}}"></i>
         </button>
+        
+        {{#if checkCancelProcess}}
+          <button class="btn btn-danger" type="button" data-event-action="completeCancelOrder" {{completeCancelOrderDisabled}}>Complete Cancel Order</button>
+        {{/if}}
       </div>
       {{/if}}
     </div>
@@ -45,6 +49,7 @@
       <br>
       {{#if paymentPendingApproval}}
         <button class="btn btn-info btn-block" type="submit" data-event-action="approveInvoice" data-i18n="order.approveInvoice">Approve</button>
+        <button class="btn btn-danger btn-block" type="button" data-event-action="startCancelOrder" data-i18n="order.cancelOrder">Cancel Order</button>
       {{/if}}
 
       {{#if paymentApproved}}

@@ -215,25 +215,59 @@ export const methods = {
 
 
   /**
-   * orders/cancelPayment
+   * orders/startCancelOrder
    *
-   * @summary Cancel Payment
+   * @summary Start the cancel order process
    * @param {Object} order - order object
-   * @return {Object} return this.processPayment result
+   * @param {Boolean} returnToStock - condition to return product to stock
+   * @return {Object} ret
    */
-  "orders/cancelPayment": function (order) {
+  "orders/startCancelOrder": function (order, returnToStock) {
     check(order, Object);
+    check(returnToStock, Boolean);
 
     if (!Reaction.hasPermission("orders")) {
       throw new Meteor.Error(403, "Access Denied");
     }
+
+    if (!returnToStock) ordersInventoryAdjust(order._id);
 
     return Orders.update({
       "_id": order._id,
       "billing.paymentMethod.method": "credit"
     }, {
       $set: {
-        "billing.$.paymentMethod.status": "cancelled",
+        "billing.$.paymentMethod.status": "startCancel",
+        "billing.$.paymentMethod.mode": "refund"
+      }
+    });
+  },
+
+  /**
+   * orders/completeCancelOrder
+   *
+   * @summary Complete the cancel order process
+   * @param {Object} order - order object
+   * @return {Object} return order update cursor
+   */
+  "orders/completeCancelOrder": function (order) {
+    check(order, Object);
+
+    // send notification to user
+    const prefix = Reaction.getShopPrefix();
+    const url = `${prefix}/notifications`;
+    const sms = true;
+    Meteor.call("notification/send", order.userId, "orderCancelled", url, sms, err => {
+      if (err) Logger.error(err);
+    });
+
+    // Update the order collection
+    Orders.update({
+      "_id": order._id,
+      "billing.paymentMethod.method": "credit"
+    }, {
+      $set: {
+        "billing.$.paymentMethod.status": "canceled",
         "billing.$.paymentMethod.mode": "cancel"
       }
     });
@@ -993,6 +1027,9 @@ export const methods = {
       "_id": orderId,
       "billing.paymentMethod.transactionId": transactionId
     }, {
+      $set: {
+        "billing.$.paymentMethod.status": "refunded"
+      },
       $push: {
         "billing.$.paymentMethod.transactions": result
       }

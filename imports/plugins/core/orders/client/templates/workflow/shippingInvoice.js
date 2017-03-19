@@ -101,6 +101,49 @@ Template.coreOrderShippingInvoice.helpers({
  */
 Template.coreOrderShippingInvoice.events({
   /**
+   * Click Start Cancel Order
+   * @param {Event} event - Event Object
+   * @param {Template} instance - Blaze Template
+   * @return {void}
+   */
+  "click [data-event-action=startCancelOrder]": (event, instance) => {
+    event.preventDefault();
+    const order = instance.state.get("order");
+
+    Alerts.alert({
+      title: "Do you want to return the product to stock?",
+      showCancelButton: true,
+      confirmButtonText: "Yes, return to stock",
+      cancelButtonText: "No, continue"
+    }).then(confirm => {
+      let returnToStock;
+      if (confirm) {
+        returnToStock = true;
+        return Meteor.call("orders/startCancelOrder", order, returnToStock, err => {
+          if (err) Logger.warn(err);
+        });
+      }
+      returnToStock = false;
+      return Meteor.call("orders/startCancelOrder", order, returnToStock, err => {
+        if (err) Logger.warn(err);
+      });
+    });
+  },
+  /**
+   * Complete Cancel Order
+   * @param {Event} event - Event Object
+   * @param {Template} instance - Blaze Template
+   * @return {void}
+   */
+  "click [data-event-action=completeCancelOrder]": (event, instance) => {
+    event.preventDefault();
+    const order = instance.state.get("order");
+
+    Meteor.call("orders/completeCancelOrder", order, err => {
+      if (err) Logger.warn(err);
+    });
+  },
+  /**
    * Submit form
    * @param  {Event} event - Event object
    * @param  {Template} instance - Blaze Template
@@ -358,6 +401,22 @@ Template.coreOrderShippingInvoice.helpers({
     return true;
   },
 
+  checkCancelProcess() {
+    const instance = Template.instance();
+    const order = instance.state.get("order");
+    const orderMode = orderCreditMethod(order).paymentMethod.mode;
+
+    return orderMode !== "refund" ? false : true;
+  },
+
+  completeCancelOrderDisabled() {
+    const instance = Template.instance();
+    const order = instance.state.get("order");
+    const orderStatus = orderCreditMethod(order).paymentMethod.status;
+
+    return orderStatus === "refunded" ? null : "disabled";
+  },
+
   paymentApproved() {
     const instance = Template.instance();
     const order = instance.state.get("order");
@@ -368,8 +427,9 @@ Template.coreOrderShippingInvoice.helpers({
   paymentCaptured() {
     const instance = Template.instance();
     const order = instance.state.get("order");
-
-    return orderCreditMethod(order).paymentMethod.status === "completed";
+    const orderStatus = orderCreditMethod(order).paymentMethod.status;
+    const orderMode = orderCreditMethod(order).paymentMethod.mode;
+    return orderStatus === "completed" || orderMode === "refund";
   },
 
   refundTransactions() {
