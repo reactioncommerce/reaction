@@ -76,6 +76,12 @@ export default function () {
     userId: getUserId(),
     sessionId: "Session",
     email: faker.internet.email(),
+    workflow: {
+      status: "new",
+      workflow: [
+        "coreOrderWorkflow/created"
+      ]
+    },
     items: function () {
       const product = addProduct();
       const variant = Products.findOne({ ancestors: [product._id] });
@@ -95,14 +101,20 @@ export default function () {
         shopId: product.shopId,
         productId: product._id,
         quantity: 1,
-        variants: selectedOption
+        variants: selectedOption,
+        workflow: {
+          status: "new"
+        }
       }, {
         _id: Random.id(),
         title: "secondItem",
         shopId: product2.shopId,
         productId: product2._id,
         quantity: 1,
-        variants: selectedOption2
+        variants: selectedOption2,
+        workflow: {
+          status: "new"
+        }
       }];
     },
     requiresShipping: true,

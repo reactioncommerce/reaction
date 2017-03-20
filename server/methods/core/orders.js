@@ -253,6 +253,10 @@ export const methods = {
   "orders/completeCancelOrder": function (order) {
     check(order, Object);
 
+    if (!Reaction.hasPermission("orders")) {
+      throw new Meteor.Error(403, "Access Denied");
+    }
+
     // send notification to user
     const prefix = Reaction.getShopPrefix();
     const url = `${prefix}/notifications`;
