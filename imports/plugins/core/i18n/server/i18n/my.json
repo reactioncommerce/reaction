@@ -1,0 +1,15 @@
+[{
+  "i18n": "my",
+  "ns": "reaction-i18n",
+  "translation": {
+    "reaction-i18n": {
+      "admin": {
+        "i18nSettings": {
+          "localization": "localization",
+          "enabledCurrencies": "ငွေကြေး",
+          "enabledLanguages": "ဘာသာစကားများ"
+        }
+      }
+    }
+  }
+}]

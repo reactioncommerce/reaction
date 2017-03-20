@@ -185,6 +185,7 @@ TextField.propTypes = {
   onKeyDown: PropTypes.func,
   onReturnKeyDown: PropTypes.func,
   placeholder: PropTypes.string,
+  type: PropTypes.string,
   value: PropTypes.any
 };
 

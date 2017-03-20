@@ -31,7 +31,7 @@ class PublishContainer extends Component {
           Alerts.toast(message, "success");
 
           if (this.props.onPublishSuccess) {
-            this.props.onPublishSuccess(result)
+            this.props.onPublishSuccess(result);
           }
         } else {
           const message = i18next.t("revisions.noChangesPublished", {
@@ -96,6 +96,7 @@ PublishContainer.propTypes = {
   isEnabled: PropTypes.bool,
   isPreview: PropTypes.bool,
   onAction: PropTypes.func,
+  onPublishSuccess: PropTypes.func,
   onVisibilityChange: PropTypes.func,
   revisions: PropTypes.arrayOf(PropTypes.object)
 };

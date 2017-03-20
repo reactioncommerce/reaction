@@ -30,7 +30,7 @@ class SmsSettings extends Component {
 
   handleSelect(e) {
     const { settings } = this.state;
-    settings["smsProvider"] = e;
+    settings.smsProvider = e;
     this.setState({ settings });
   }
 

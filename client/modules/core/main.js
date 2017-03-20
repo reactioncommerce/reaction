@@ -243,6 +243,14 @@ export default {
     return settings.settings || {};
   },
 
+  getShopCurrency() {
+    const shop = Shops.findOne({
+      _id: this.shopId
+    });
+
+    return shop && shop.currency || "USD";
+  },
+
   isPreview() {
     const viewAs = this.getUserPreferences("reaction-dashboard", "viewAs", "administrator");
 

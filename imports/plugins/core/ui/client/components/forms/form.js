@@ -2,12 +2,18 @@ import React, { Component, PropTypes } from "react";
 import { map, update, set, at, isEqual } from "lodash";
 import classnames from "classnames";
 import { toCamelCase } from "/lib/api";
-import { Switch, Button, TextField, FormActions } from "../";
+import { Switch, Button, TextField, Select, FormActions } from "../";
 
 class Form extends Component {
+  static defaultProps = {
+    autoSave: false
+  }
+
   static propTypes = {
+    autoSave: PropTypes.bool,
     doc: PropTypes.object,
     docPath: PropTypes.string,
+    fields: PropTypes.object,
     hideFields: PropTypes.arrayOf(PropTypes.string),
     name: PropTypes.string,
     onSubmit: PropTypes.func,
@@ -108,6 +114,14 @@ class Form extends Component {
     }, () => {
       this.validate();
     });
+
+    if (this.props.autoSave === true) {
+      this.handleSubmit(event);
+    }
+  }
+
+  handleSelectChange = (value, name) => {
+    this.handleChange(new Event("onSelect"), value, name);
   }
 
   handleSubmit = (event) => {
@@ -153,6 +167,16 @@ class Form extends Component {
           />
         );
         break;
+      case "select":
+        fieldElement = (
+          <Select
+            {...sharedProps}
+            onChange={this.handleSelectChange}
+            options={field.options}
+            value={this.valueForField(field.name)}
+          />
+        );
+        break;
       default:
         return null;
     }
@@ -181,14 +205,14 @@ class Form extends Component {
     });
 
     return (
-      <div className={formGroupClassName}>
+      <div key={`${sharedProps.key}-group`} className={formGroupClassName}>
         {fieldElement}
         {helpText}
       </div>
     );
   }
 
-  renderField(field) {
+  renderField(field, additionalFieldProps) {
     const { fieldName } = field;
 
     if (this.isFieldHidden(fieldName) === false) {
@@ -196,7 +220,8 @@ class Form extends Component {
       const fieldProps = {
         ...fieldSchema,
         name: fieldName,
-        type: typeof fieldSchema.type()
+        type: typeof fieldSchema.type(),
+        ...additionalFieldProps
       };
 
       return this.renderFormField(fieldProps);
@@ -209,6 +234,7 @@ class Form extends Component {
     const { docPath } = this.props;
 
     if (this.props.schema) {
+      // Render form with a specific docPath
       if (docPath) {
         return map(this.schema, (field, key) => { // eslint-disable-line consistent-return
           if (key.endsWith(docPath)) {
@@ -227,6 +253,17 @@ class Form extends Component {
         });
       }
 
+      // Render form by only using desired fields from schema
+      if (this.props.fields) {
+        return map(this.props.fields, (fieldData, key) => { // eslint-disable-line consistent-return
+          const fieldSchema = this.schema[key];
+          if (fieldSchema) {
+            return this.renderField({ fieldName: key }, fieldData);
+          }
+        });
+      }
+
+      // Render all fields if none of the options are set above
       return map(this.schema, (field, key) => { // eslint-disable-line consistent-return
         return this.renderField({ fieldName: key });
       });
@@ -235,10 +272,9 @@ class Form extends Component {
     return null;
   }
 
-  render() {
-    return (
-      <form onSubmit={this.handleSubmit}>
-        {this.renderWithSchema()}
+  renderFormActions() {
+    if (this.props.autoSave === false) {
+      return (
         <FormActions>
           <Button
             label={"Save Changes"}
@@ -247,6 +283,15 @@ class Form extends Component {
             type="submit"
           />
         </FormActions>
+      );
+    }
+  }
+
+  render() {
+    return (
+      <form onSubmit={this.handleSubmit}>
+        {this.renderWithSchema()}
+        {this.renderFormActions()}
       </form>
     );
   }

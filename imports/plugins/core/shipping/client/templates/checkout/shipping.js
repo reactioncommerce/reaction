@@ -47,6 +47,20 @@ Template.coreCheckoutShipping.onCreated(function () {
   this.autorun(() => {
     this.subscribe("Shipping");
   });
+
+  const shippingOpts = {
+    provides: "settings",
+    name: "settings/shipping",
+    template: "shippingSettings"
+  };
+
+  const cart = Cart.findOne();
+  const shipping = cartShippingQuotes(cart);
+  const shippingAval = shipping.length;
+  // If shipping not set, show shipping settings dashboard
+  if (!shippingAval) {
+    Reaction.showActionView(shippingOpts);
+  }
 });
 
 Template.coreCheckoutShipping.helpers({

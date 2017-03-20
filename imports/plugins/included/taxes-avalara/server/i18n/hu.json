@@ -4,6 +4,32 @@
   "ns": "taxes-avalara",
   "translation": {
     "reaction-taxes": {
+      "settings": {
+        "apiLoginId": "Avalara API bejelentkezési azonosító",
+        "username": "felhasználó",
+        "password": "Jelszó",
+        "companyCode": "Cég kód",
+        "shippingTaxCode": "Szállítási adótörvény",
+        "mode": "termelési mód",
+        "performTaxCalculation": "Végezze Adószámítás",
+        "addressValidation": "cím érvényesítése",
+        "enableAddressValidationByCountry": "Engedélyezze cím érvényesítése Ország",
+        "enableLogging": "Naplózás engedélyezése",
+        "logRetentionDuration": "Naplómegőrzési Időtartam",
+        "requestTimeout": "Időt kér",
+        "commitDocuments": "Commit dokumentumok",
+        "administratorsPanel": "Rendszergazda Panel",
+        "testCredentialsSuccess": "Connection Test Success",
+        "testCredentialsFailed": "Connection Test failed, check hitelesítő",
+        "apiError": "Avalara nincs megfelelően konfigurálva"
+      },
+      "logGrid": {
+        "noLogsFound": "Nem találhatók naplók",
+        "columns": {
+          "date": "Dátum",
+          "docType": "dokumentum típus"
+        }
+      },
       "admin": {
         "shortcut": {
           "avalaraLabel": "Avalara",
@@ -12,13 +38,14 @@
         "dashboard": {
           "avalaraLabel": "Avalara",
           "avalaraTitle": "Avalara",
-          "avalaraDescription": "Avalara Adókulcsok"
+          "avalaraDescription": "Avalara Adókulcsok",
+          "testCredentials": "vizsgálati bizonyítványok"
         },
         "taxSettings": {
           "avalaraLabel": "Avalara",
           "avalaraSettingsLabel": "Avalara",
-          "avalaraCredentials": "Add hitelesítő hogy lehetővé tegye",
-          "avalaraGetCredentialsURL": "Hozzák ide"
+          "formTitle": "Adó beállítások",
+          "entityCodeCustomLabel": "SET egyéni érték"
         }
       }
     }

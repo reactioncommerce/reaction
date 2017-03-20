@@ -1,4 +1,5 @@
 import url from "url";
+import packageJson from "/package.json";
 import { merge, uniqWith } from "lodash";
 import { Meteor } from "meteor/meteor";
 import { EJSON } from "meteor/ejson";
@@ -9,6 +10,7 @@ import { getRegistryDomain } from "./setDomain";
 import { registerTemplate } from "./templates";
 import { sendVerificationEmail } from "./accounts";
 import { getMailUrl } from "./email/config";
+
 
 export default {
 
@@ -30,6 +32,7 @@ export default {
     this.Import.flush();
     // timing is important, packages are rqd for initilial permissions configuration.
     this.createDefaultAdminUser();
+    this.setAppVersion();
     // hook after init finished
     Hooks.Events.run("afterCoreInit");
 
@@ -203,8 +206,20 @@ export default {
     return settings.settings || {};
   },
 
+  getShopCurrency() {
+    const shop = Shops.findOne({
+      _id: this.getShopId()
+    });
+
+    return shop && shop.currency || "USD";
+  },
+
   getPackageSettings(name) {
     return Packages.findOne({ packageName: name, shopId: this.getShopId() }) || null;
+  },
+
+  getAppVersion() {
+    return Shops.findOne().appVersion;
   },
 
   /**
@@ -444,5 +459,10 @@ export default {
         return false;
       });
     });
+  },
+  setAppVersion() {
+    const version = packageJson.version;
+    Logger.info(`Reaction Version: ${version}`);
+    Shops.update({}, { $set: { appVersion: version } }, { multi: true });
   }
 };
