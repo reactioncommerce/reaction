@@ -3,16 +3,11 @@ import moment from "moment";
 import { Accounts, Cart, Jobs } from "/lib/collections";
 import { Hooks, Logger, Reaction } from "/server/api";
 
-const olderThan = moment().subtract(3, "days")._d;
 
 Hooks.Events.add("onJobServerStart", () => {
-  Logger.debug("Adding Job removeStaleCart to jobControl");
-  const staleCarts = Cart.find({
-    updatedAt: {
-      $lte: olderThan
-    }
-  }).fetch();
-  if (staleCarts) {
+  Logger.debug("Adding Job removeStaleCart and Accounts to jobControl");
+  const settings = Reaction.getShopSettings();
+  if (settings.cart) {
     new Job(Jobs, "cart/removeFromCart", {})
       .priority("normal")
       .retry({
@@ -27,7 +22,7 @@ Hooks.Events.add("onJobServerStart", () => {
         cancelRepeats: true
       });
   } else {
-    Logger.info("No stale carts at the moment");
+    Logger.warn("No cart cleanup schedule");
   }
 });
 
@@ -37,31 +32,37 @@ export default () => {
     workTimeout: 180 * 1000
   }, (job, callback) => {
     Logger.debug("Processing cart/removeFromCart");
-    const cartDetails = Cart.find({
-      updatedAt: {
-        $lte: olderThan
-      }
-    }).fetch();
-    cartDetails.map(cart => {
-      if (cart.items) {
-        const user = Accounts.findOne({ userId: cart.userId });
-        if (!user.emails.length) {
-          const result = Cart.update(
-            { userId: user._id },
-            { $unset: { items: [] } }
-          );
-          if (result === 1) {
-            const success = "Stale anonymous user cart successfully cleaned";
-            Logger.debug(success);
-            job.done(success, { repeatId: true });
-          }
-        } else {
-          const settings = Reaction.getShopSettings();
-          const schedule = Number(settings.cart.cleanup); // configurable in shop settings
-          if (!schedule) {
-            Logger.warn("Cleanup Schedule not configured");
+    const settings = Reaction.getShopSettings();
+    if (settings.cart) {
+      const schedule = (settings.cart.cleanupDurationDays).match(/\d/);// configurable in shop settings
+      const olderThan = moment().subtract(Number(schedule[0]), "days")._d;
+      const cartDetails = Cart.find({
+        updatedAt: {
+          $lte: olderThan
+        }
+      }).fetch();
+      cartDetails.map(cart => {
+        const anonUser = Accounts.findOne({
+          _id: cart.userId,
+          emails: []
+        });
+        if (cart.items) {
+          if (anonUser) {
+            const removeCart = Cart.remove({ userId: anonUser._id });
+            const removeAccount = Accounts.remove(
+              {
+                _id: cart.userId,
+                emails: []
+              }
+            );
+            if (removeCart && removeAccount === 1) {
+              const success = "Stale anonymous user cart and account successfully cleaned";
+              Logger.debug(success);
+              job.done(success, { repeatId: true });
+            }
           } else {
-            if (cart.updatedAt <= moment().subtract(schedule, "mins")._d) {
+            const user = Accounts.findOne({ _id: cart.userId });
+            if (cart.updatedAt <= moment().subtract(Number(schedule[0]), "days")._d) {
               const userCleanup = Cart.update(
                 { userId: user._id },
                 { $unset: { items: [] } }
@@ -73,11 +74,13 @@ export default () => {
               }
             }
           }
+        } else {
+          Logger.debug("No item in cart");
         }
-      } else {
-        Logger.debug("Cart is currently empty");
-      }
-    });
+      });
+    } else {
+      Logger.warn("No cart cleanup schedule");
+    }
     callback();
   });
   Jobs.find({
