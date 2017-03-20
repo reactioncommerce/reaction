@@ -49,7 +49,7 @@ class DiscountList extends Component {
   // load form input view
   renderNoneFound() {
     return (
-      <DiscountForm id={this.props.id} collection={this.props.collection}/>
+      <DiscountForm id={this.props.id} collection={this.props.collection} validatedInput={this.props.validatedInput} />
     );
   }
 
@@ -63,7 +63,8 @@ class DiscountList extends Component {
 DiscountList.propTypes = {
   collection: PropTypes.string,
   id: PropTypes.string,
-  listItems: PropTypes.array
+  listItems: PropTypes.array,
+  validatedInput: PropTypes.bool
 };
 
 function composer(props, onData) {
@@ -84,6 +85,7 @@ function composer(props, onData) {
 
   onData(null, {
     collection: props.collection,
+    validatedInput: props.validatedInput,
     id: props.id,
     listItems: listItems
   });
