@@ -34,14 +34,19 @@ reaction
 
 For more information on setup and configuration, check out the [installation](https://docs.reactioncommerce.com/reaction-docs/development/installation) and [configuration](https://docs.reactioncommerce.com/reaction-docs/development/configuration) docs.
 
-## Status
+## Participation
 
-Reaction’s codebase is now **officially** stable and ready for general availability! You may now run your shop on our production-ready platform.
+If you are interested in participating in the development of Reaction, that's really great!
 
-Even though we’ve reached 1.0, we will still continue to release new updates, improve upon existing features, and ensure that we remain up-to-date with the most current libraries available to us.
+Our [community guidelines](https://docs.reactioncommerce.com/reaction-docs/master/guidelines) can be found in our [documentation](https://docs.reactioncommerce.com/). This is a good place to start getting more familar with Reaction.
 
--   Master ( [stable](https://github.com/reactioncommerce/reaction/tree/master) )
--   Development ( [latest](https://github.com/reactioncommerce/reaction/tree/development) )
+The [Reaction Gitter channel](https://gitter.im/reactioncommerce/reaction) and [forum](http://discourse.reactioncommerce.com/) are good places to engage with core contributors and the community.
+
+### Planning
+
+For a high level review our roadmap, take a look at the [Reaction features page](http://reactioncommerce.com/features).
+
+For a kanban-esque, hardcore, real time progress overview of all Reaction Commerce projects use our [project board](https://waffle.io/reactioncommerce/reaction).
 
 ### Testing
 
