@@ -148,7 +148,6 @@ Template.coreOrderShippingInvoice.events({
         });
       }
       if (cancel === "cancel") {
-        console.log("no continue");
         returnToStock = false;
         return Meteor.call("orders/startCancelOrder", order, returnToStock, err => {
           if (err) Logger.warn(err);
@@ -440,7 +439,6 @@ Template.coreOrderShippingInvoice.helpers({
     const instance = Template.instance();
     const order = instance.state.get("order");
     const orderMode = orderCreditMethod(order).paymentMethod.mode;
-    const orderWorkflowStatus = order.workflow.status;
     return orderMode === "capture" ? true : false;
   },
 
