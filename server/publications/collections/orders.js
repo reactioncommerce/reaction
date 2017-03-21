@@ -101,6 +101,36 @@ Meteor.publish("Orders", function () {
 });
 
 /**
+ * paginated orders
+ */
+
+Meteor.publish("Orders.paginated", function (limit) {
+  check(limit, Match.OptionalOrNull(Number));
+
+  if (this.userId === null) {
+    return this.ready();
+  }
+  const shopId = Reaction.getShopId();
+  if (!shopId) {
+    return this.ready();
+  }
+  if (Roles.userIsInRole(this.userId, ["admin", "owner"], shopId)) {
+    Counts.publish(this, "newOrder-count", Orders.find(OrderHelper.makeQuery("new")), { noReady: true });
+    Counts.publish(this, "processingOrder-count", Orders.find(OrderHelper.makeQuery("processing")), { noReady: true });
+    Counts.publish(this, "completedOrder-count", Orders.find(OrderHelper.makeQuery("completed")), { noReady: true });
+    return Orders.find({
+      shopId: shopId
+    }, {
+      limit: limit
+    });
+  }
+  return Orders.find({
+    shopId: shopId,
+    userId: this.userId
+  });
+});
+
+/**
  * account orders
  */
 Meteor.publish("AccountOrders", function (userId, currentShopId) {

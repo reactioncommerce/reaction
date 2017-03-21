@@ -9,19 +9,9 @@ import {
   PACKAGE_NAME,
   ORDER_LIST_FILTERS_PREFERENCE_NAME,
   ORDER_LIST_SELECTED_ORDER_PREFERENCE_NAME,
-  DEFAULT_FILTER_NAME
+  DEFAULT_FILTER_NAME,
+  orderFilters
 } from "../../lib/constants";
-
-const orderFilters = [{
-  name: "new",
-  label: "New"
-}, {
-  name: "processing",
-  label: "Processing"
-}, {
-  name: "completed",
-  label: "Completed"
-}];
 
 const OrderHelper =  {
   makeQuery(filter) {
@@ -89,6 +79,8 @@ const OrderHelper =  {
 
 Template.orders.onCreated(function () {
   this.state = new ReactiveDict();
+  this.loaded = new ReactiveVar(0);
+  this.limit = new ReactiveVar(2);
   this.state.setDefault({
     orders: []
   });
@@ -96,15 +88,12 @@ Template.orders.onCreated(function () {
   const filterName = this.data && this.data.filter && this.data.filter.name || "new";
   Reaction.setUserPreferences(PACKAGE_NAME, ORDER_LIST_FILTERS_PREFERENCE_NAME, filterName);
 
-  // Watch for updates to the subscription and query params
-  // fetch available orders
   this.autorun(() => {
-    this.subscribe("Orders");
-    const filter = Reaction.getUserPreferences(PACKAGE_NAME, ORDER_LIST_FILTERS_PREFERENCE_NAME, DEFAULT_FILTER_NAME);
-    const query = OrderHelper.makeQuery(filter);
-    const orders = Orders.find(query).fetch();
-
-    this.state.set("orders", orders);
+    const limit = this.limit.get();
+    const subscription = this.subscribe("Orders.paginated", limit);
+    if (subscription.ready()) {
+      this.loaded.set(limit);
+    }
   });
 
   // Watch for updates to shop collection
@@ -115,6 +104,13 @@ Template.orders.onCreated(function () {
     // Numeric inputs
     this.state.set("currency", shop.currencies[shop.currency]);
   });
+
+  // fetch available orders
+  this.orders = () => {
+    const filter = Reaction.getUserPreferences(PACKAGE_NAME, ORDER_LIST_FILTERS_PREFERENCE_NAME, DEFAULT_FILTER_NAME);
+    const query = OrderHelper.makeQuery(filter);
+    return Orders.find(query, { limit: this.loaded.get() });
+  };
 });
 
 /**
@@ -138,7 +134,11 @@ Template.orders.helpers({
   },
 
   orders() {
-    return Template.instance().state.get("orders") || false;
+    return Template.instance().orders() || false;
+  },
+
+  hasMoreOrders() {
+    return Template.instance().orders().count() >= Template.instance().limit.get();
   },
 
   currentFilterLabel() {
@@ -157,6 +157,22 @@ Template.orders.helpers({
       return "panel-info";
     }
     return "panel-default";
+  }
+});
+
+/**
+ * orders events
+ */
+Template.orders.events({
+  "click .load-more-orders": function (event, instance) {
+    event.preventDefault();
+
+    // get how many orders are currently displayed
+    let limit = instance.limit.get();
+
+    // increase limit by 5 and update it
+    limit += 5;
+    instance.limit.set(limit);
   }
 });
 
