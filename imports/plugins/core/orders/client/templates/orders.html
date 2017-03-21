@@ -1,21 +1,33 @@
 <template name="orders">
   {{#if hasPermission 'orders'}}
-    <div class="orders-list-tabs">
-      {{> React FilterComponent}}
-    </div>
+<div class="orders-list-tabs">
+  {{> React FilterComponent}}
+</div>
     <div class="container-fluid-sm">
-      {{#each order in orders}}
-        {{> ordersListItem (itemProps order)}}
-      {{else}}
+      {{#if orders}}
+        {{#each order in orders}}
+          {{> ordersListItem (itemProps order)}}
+        {{/each}}
 
-        <div class="empty-view-message">
-            <i class="fa fa-sun-o"></i>
-            <p data-i18n="order.ordersNotFound">No Orders Found</p>
+        {{#if Template.subscriptionsReady}}
+          {{#if hasMoreOrders}}
+            <button class="btn btn-primary load-more-orders" type="button">Show More</button>
+          {{/if}}
+        {{else}}
+        <div class="spinner-container">
+          <div class="spinner"></div>
         </div>
-      {{/each}}
+      {{/if}}
+
+      {{else}}
+        <div class="empty-view-message">
+          <i class="fa fa-sun-o"></i>
+          <p data-i18n="order.ordersNotFound">No Orders Found</p>
+        </div>
+      {{/if}}
     </div>
   {{/if}}
-</template>
+</template
 
 <template name="orderListFilters">
   <ul class="nav nav-pills" role="tablist">
