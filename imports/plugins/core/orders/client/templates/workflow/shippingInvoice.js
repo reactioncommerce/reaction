@@ -1,6 +1,7 @@
 import accounting from "accounting-js";
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
+import swal from "sweetalert2";
 import { Template } from "meteor/templating";
 import { ReactiveVar } from "meteor/reactive-var";
 import { i18next, Logger, formatNumber, Reaction } from "/client/api";
@@ -101,6 +102,29 @@ Template.coreOrderShippingInvoice.helpers({
  */
 Template.coreOrderShippingInvoice.events({
   /**
+   * Click cancelOrderAfterCapture
+   * @param {Event} event = Event Object
+   * @param {Template} instance - Blaze Template
+   * @return {void}
+   */
+  "click [data-event-action=cancelOrderAfterCapture]": (event, instance) => {
+    event.preventDefault();
+    const order = instance.state.get("order");
+
+    Alerts.alert({
+      title: "Are you sure you want to cancel the order?",
+      showCancelButton: true,
+      confirmButtonText: "Yes",
+      cancelButtonText: "No"
+    }, (isConfirm) => {
+      if (isConfirm) {
+        return Meteor.call("orders/completeCancelOrder", order, err => {
+          if (err) Logger.warn(err);
+        });
+      }
+    });
+  },
+  /**
    * Click Start Cancel Order
    * @param {Event} event - Event Object
    * @param {Template} instance - Blaze Template
@@ -112,21 +136,25 @@ Template.coreOrderShippingInvoice.events({
 
     Alerts.alert({
       title: "Do you want to return the product to stock?",
+      type: "info",
       showCancelButton: true,
       confirmButtonText: "Yes, return to stock",
       cancelButtonText: "No, continue"
-    }).then(confirm => {
+    }, (isConfirm, cancel)=> {
       let returnToStock;
-      if (confirm) {
+      if (isConfirm) {
         returnToStock = true;
         return Meteor.call("orders/startCancelOrder", order, returnToStock, err => {
           if (err) Logger.warn(err);
         });
       }
-      returnToStock = false;
-      return Meteor.call("orders/startCancelOrder", order, returnToStock, err => {
-        if (err) Logger.warn(err);
-      });
+      if (cancel === "cancel") {
+        console.log("no continue");
+        returnToStock = false;
+        return Meteor.call("orders/startCancelOrder", order, returnToStock, err => {
+          if (err) Logger.warn(err);
+        });
+      }
     });
   },
   /**
@@ -409,7 +437,15 @@ Template.coreOrderShippingInvoice.helpers({
     return orderMode !== "refund" ? false : true;
   },
 
-  completeCancelOrderDisabled() {
+  showAfterPaymentCaptured() {
+    const instance = Template.instance();
+    const order = instance.state.get("order");
+    const orderMode = orderCreditMethod(order).paymentMethod.mode;
+    const orderWorkflowStatus = order.workflow.status;
+    return orderMode === "capture" ? true : false;
+  },
+
+  cancelOrderDisabled() {
     const instance = Template.instance();
     const order = instance.state.get("order");
     const orderStatus = orderCreditMethod(order).paymentMethod.status;
@@ -429,7 +465,7 @@ Template.coreOrderShippingInvoice.helpers({
     const order = instance.state.get("order");
     const orderStatus = orderCreditMethod(order).paymentMethod.status;
     const orderMode = orderCreditMethod(order).paymentMethod.mode;
-    return orderStatus === "completed" || orderMode === "refund";
+    return orderStatus === "completed" || orderStatus === "refunded" || orderMode === "refund";
   },
 
   refundTransactions() {
