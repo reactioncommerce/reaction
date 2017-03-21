@@ -277,7 +277,7 @@ Template.variantForm.events({
       } else if (result) {
         const newVariantId = result;
         const selectedProduct = ReactionProduct.selectedProduct();
-        const handle=selectedProduct.__published && selectedProduct.__published.handle || selectedProduct.handle;
+        const handle = selectedProduct.__published && selectedProduct.__published.handle || selectedProduct.handle;
         ReactionProduct.setCurrentVariant(newVariantId);
         Session.set("variant-form-" + newVariantId, true);
 
