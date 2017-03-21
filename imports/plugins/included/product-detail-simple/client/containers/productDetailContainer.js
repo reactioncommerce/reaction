@@ -62,6 +62,14 @@ class ProductDetailContainer extends Component {
         quantity = 1;
       }
 
+      if (currentVariant.inventoryManagement && quantity > currentVariant.inventoryQuantity) {
+        Alerts.inline(`Your product quantity has been adjusted to ${currentVariant.inventoryQuantity} items`, "warning", {
+          placement: "productDetail",
+          autoHide: 10000
+        });
+        quantity = currentVariant.inventoryQuantity;
+      }
+
       if (!currentProduct.isVisible) {
         Alerts.inline("Publish product before adding to cart.", "error", {
           placement: "productDetail",
