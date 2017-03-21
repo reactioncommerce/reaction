@@ -1,7 +1,6 @@
 import React from "react";
 import { Meteor } from "meteor/meteor";
 import { Counts } from "meteor/tmeasday:publish-counts";
-import { Orders } from "/lib/collections";
 import { Reaction, i18next } from "/client/api";
 import { composeWithTracker } from "/lib/api/compose";
 import OrderActions from "../components/orderActions";
@@ -18,10 +17,9 @@ function handleActionClick(filter) {
 }
 
 function composer(props, onData) {
-  Meteor.subscribe("Orders");
+  const subscription = Meteor.subscribe("Orders");
 
   const selectedFilterName = Reaction.getUserPreferences(Constants.PACKAGE_NAME, Constants.ORDER_LIST_FILTERS_PREFERENCE_NAME);
-  const orders = Orders.find({}).fetch();
   let selectedIndex;
 
   const filters = Constants.orderFilters.map((filter, index) => {
@@ -42,13 +40,14 @@ function composer(props, onData) {
     return filter;
   });
 
-  onData(null, {
-    orders,
-    filters,
-    selectedIndex,
+  if (subscription.ready()) {
+    onData(null, {
+      filters,
+      selectedIndex,
 
-    onActionClick: props.onActionClick || handleActionClick
-  });
+      onActionClick: props.onActionClick || handleActionClick
+    });
+  }
 }
 
 function OrdersActionContainer(props) {
