@@ -1,7 +1,6 @@
 import accounting from "accounting-js";
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
-import swal from "sweetalert2";
 import { Template } from "meteor/templating";
 import { ReactiveVar } from "meteor/reactive-var";
 import { i18next, Logger, formatNumber, Reaction } from "/client/api";
