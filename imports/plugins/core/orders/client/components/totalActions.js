@@ -2,13 +2,13 @@ import React, { Component, PropTypes } from "react";
 import { formatPriceString } from "/client/api";
 
 class TotalActions extends Component {
-  constructor(props) {
-    super(props);
-    this.renderAdjustedTotal = this.renderAdjustedTotal.bind(this);
-    this.renderCapturedTotal = this.renderCapturedTotal.bind(this);
+  static propTypes = {
+    adjustedTotal: PropTypes.number,
+    invoice: PropTypes.object,
+    isAdjusted: PropTypes.func
   }
 
-  renderCapturedTotal() {
+  renderCapturedTotal = () => {
     return (
       <div className="order-summary-form-group bg-success" style={{ lineHeight: 3, marginRight: -15, marginLeft: -15 }}>
         <span style={{ marginLeft: 15 }}>
@@ -22,7 +22,7 @@ class TotalActions extends Component {
     );
   }
 
-  renderAdjustedTotal() {
+  renderAdjustedTotal = () => {
     return (
       <div className="order-summary-form-group bg-danger" style={{ marginTop: 2, lineHeight: 3, marginRight: -15, marginLeft: -15 }}>
         <span className="text-danger" style={{ marginLeft: 15 }}>
@@ -45,11 +45,5 @@ class TotalActions extends Component {
     );
   }
 }
-
-TotalActions.propTypes = {
-  adjustedTotal: PropTypes.number,
-  invoice: PropTypes.object,
-  isAdjusted: PropTypes.func
-};
 
 export default TotalActions;

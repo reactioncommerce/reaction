@@ -4,12 +4,13 @@ import TotalActions from "../components/totalActions";
 import { Loading } from "/imports/plugins/core/ui/client/components";
 
 class TotalActionsContaner extends Component {
-  constructor(props) {
-    super(props);
-    this.isAdjusted = this.isAdjusted.bind(this);
+  static propTypes = {
+    adjustedTotal: PropTypes.number,
+    invoice: PropTypes.object,
+    paymentCaptured: PropTypes.bool
   }
 
-  isAdjusted() {
+  isAdjusted = () => {
     const { adjustedTotal, invoice } = this.props;
 
     if (invoice.total === adjustedTotal) {
@@ -31,12 +32,6 @@ class TotalActionsContaner extends Component {
     );
   }
 }
-
-TotalActionsContaner.propTypes = {
-  adjustedTotal: PropTypes.number,
-  invoice: PropTypes.object,
-  paymentCaptured: PropTypes.bool
-};
 
 const composer = (props, onData) => {
   onData(null, {

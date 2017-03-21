@@ -3,18 +3,19 @@ import { formatPriceString } from "/client/api";
 import { Translation } from "/imports/plugins/core/ui/client/components";
 
 class LineItems extends Component {
-  constructor(props) {
-    super(props);
-
-    this.renderLineItem = this.renderLineItem.bind(this);
-    this.calculateTotal = this.calculateTotal.bind(this);
+  static propTypes = {
+    displayMedia: PropTypes.func,
+    handleClick: PropTypes.func,
+    isExpanded: PropTypes.func,
+    onClose: PropTypes.func,
+    uniqueItems: PropTypes.array
   }
 
-  calculateTotal(price, shipping, taxes) {
+  calculateTotal = (price, shipping, taxes) => {
     return formatPriceString(price + shipping + taxes);
   }
 
-  renderLineItem(uniqueItem, quantity) {
+  renderLineItem = (uniqueItem, quantity) => {
     return (
       <div className="order-items">
         <div
@@ -53,7 +54,7 @@ class LineItems extends Component {
     );
   }
 
-  renderLineItemInvoice(uniqueItem, shippingRate, quantity) {
+  renderLineItemInvoice = (uniqueItem, shippingRate, quantity) => {
     return (
       <div>
         <div className="order-summary-form-group">
@@ -143,13 +144,5 @@ class LineItems extends Component {
     );
   }
 }
-
-LineItems.propTypes = {
-  displayMedia: PropTypes.func,
-  handleClick: PropTypes.func,
-  isExpanded: PropTypes.func,
-  onClose: PropTypes.func,
-  uniqueItems: PropTypes.array
-};
 
 export default LineItems;

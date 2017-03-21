@@ -7,12 +7,16 @@ import { TranslationProvider } from "/imports/plugins/core/ui/client/providers";
 import LineItems from "../components/lineItems.js";
 
 class LineItemsContainer extends Component {
+  static propTypes = {
+    invoice: PropTypes.object,
+    uniqueItems: PropTypes.array
+  }
+
   constructor(props) {
     super(props);
     this.state = {
       isClosed: false
     };
-    this.handleDisplayMedia = this.handleDisplayMedia.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.isExpanded = this.isExpanded.bind(this);
     this.handleClose = this.handleClose.bind(this);
@@ -43,7 +47,7 @@ class LineItemsContainer extends Component {
    * @param  {Object} item object containing a product and variant id
    * @return {Object|false} An object contianing the media or false
    */
-  handleDisplayMedia(item) {
+  handleDisplayMedia = (item) => {
     const variantId = item.variants._id;
     const productId = item.productId;
 
@@ -83,11 +87,6 @@ class LineItemsContainer extends Component {
     );
   }
 }
-
-LineItemsContainer.propTypes = {
-  invoice: PropTypes.object,
-  uniqueItems: PropTypes.array
-};
 
 const composer = (props, onData) => {
   const subscription = Meteor.subscribe("Media");

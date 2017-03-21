@@ -6,16 +6,26 @@ import { TranslationProvider } from "/imports/plugins/core/ui/client/providers";
 import Invoice from "../components/invoice.js";
 
 class InvoiceContainer extends Component {
+  static propTypes = {
+    canMakeAdjustments: PropTypes.bool,
+    collection: PropTypes.string,
+    discounts: PropTypes.bool,
+    invoice: PropTypes.object,
+    isFetching: PropTypes.bool,
+    orderId: PropTypes.string,
+    paymentCaptured: PropTypes.bool,
+    refunds: PropTypes.array
+  }
+
   constructor(props) {
     super(props);
     this.state = {
       isOpen: false
     };
     this.handleClick = this.handleClick.bind(this);
-    this.dateFormat = this.dateFormat.bind(this);
   }
 
-  dateFormat(context, block) {
+  dateFormat = (context, block) => {
     const f = block || "MMM DD, YYYY hh:mm:ss A";
     return moment(context).format(f);
   }
@@ -47,17 +57,6 @@ class InvoiceContainer extends Component {
     );
   }
 }
-
-InvoiceContainer.propTypes = {
-  canMakeAdjustments: PropTypes.bool,
-  collection: PropTypes.string,
-  discounts: PropTypes.bool,
-  invoice: PropTypes.object,
-  isFetching: PropTypes.bool,
-  orderId: PropTypes.string,
-  paymentCaptured: PropTypes.bool,
-  refunds: PropTypes.array
-};
 
 const composer = (props, onData) => {
   onData(null, {

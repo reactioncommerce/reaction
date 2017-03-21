@@ -4,16 +4,21 @@ import { Translation } from "/imports/plugins/core/ui/client/components";
 import DiscountList from "/imports/plugins/core/discounts/client/components/list";
 
 class Invoice extends Component {
-  constructor(props) {
-    super(props);
-
-    this.renderConditionalDisplay = this.renderConditionalDisplay.bind(this);
-    this.renderDiscountForm = this.renderDiscountForm.bind(this);
-    this.renderRefundsInfo = this.renderRefundsInfo.bind(this);
-    this.renderTotal = this.renderTotal.bind(this);
+  static propTypes = {
+    canMakeAdjustments: PropTypes.bool,
+    collection: PropTypes.string,
+    dateFormat: PropTypes.func,
+    discounts: PropTypes.bool,
+    handleClick: PropTypes.func,
+    invoice: PropTypes.object,
+    isFetching: PropTypes.bool,
+    isOpen: PropTypes.bool,
+    orderId: PropTypes.string,
+    paymentCaptured: PropTypes.bool,
+    refunds: PropTypes.array
   }
 
-  renderDiscountForm() {
+  renderDiscountForm = () => {
     return (
       <div>
         {this.props.isOpen &&
@@ -31,7 +36,7 @@ class Invoice extends Component {
     );
   }
 
-  renderRefundsInfo() {
+  renderRefundsInfo = () => {
     return (
       <div>
         {this.props.isFetching &&
@@ -53,7 +58,7 @@ class Invoice extends Component {
     );
   }
 
-  renderTotal() {
+  renderTotal = () => {
     return (
       <div className="order-summary-form-group">
         <hr/>
@@ -65,7 +70,7 @@ class Invoice extends Component {
     );
   }
 
-  renderConditionalDisplay() {
+  renderConditionalDisplay = () => {
     return (
       <div>
         {this.props.canMakeAdjustments ?
@@ -134,21 +139,6 @@ class Invoice extends Component {
     );
   }
 }
-
-Invoice.propTypes = {
-  adjustedTotal: PropTypes.number,
-  canMakeAdjustments: PropTypes.bool,
-  collection: PropTypes.string,
-  dateFormat: PropTypes.func,
-  discounts: PropTypes.bool,
-  handleClick: PropTypes.func,
-  invoice: PropTypes.object,
-  isFetching: PropTypes.bool,
-  isOpen: PropTypes.bool,
-  orderId: PropTypes.string,
-  paymentCaptured: PropTypes.bool,
-  refunds: PropTypes.array
-};
 
 export default Invoice;
 
