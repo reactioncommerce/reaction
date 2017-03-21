@@ -16,6 +16,10 @@ export function randomProcessor() {
   return _.sample(["Stripe", "Paypal", "Braintree"]);
 }
 
+const itemIdOne = Random.id();
+const itemIdTwo = Random.id();
+
+
 export function randomStatus() {
   return _.sample([
     "created",
@@ -35,6 +39,7 @@ export function randomMode() {
 
 export function paymentMethod(doc) {
   return {
+    ...doc,
     processor: doc.processor ? doc.processor : randomProcessor(),
     storedCard: doc.storedCard ? doc.storedCard : "4242424242424242",
     transactionId: doc.transactionId ? doc.transactionId : Random.id(),
@@ -96,7 +101,7 @@ export default function () {
       ] }).fetch();
       const selectedOption2 = Random.choice(childVariants2);
       return [{
-        _id: Random.id(),
+        _id: itemIdOne,
         title: "firstItem",
         shopId: product.shopId,
         productId: product._id,
@@ -106,7 +111,7 @@ export default function () {
           status: "new"
         }
       }, {
-        _id: Random.id(),
+        _id: itemIdTwo,
         title: "secondItem",
         shopId: product2.shopId,
         productId: product2._id,
@@ -118,8 +123,32 @@ export default function () {
       }];
     },
     requiresShipping: true,
-    shipping: [], // Shipping Schema
-    billing: [], // Payment Schema
+    shipping: [{
+      items: [
+        {
+          _id: itemIdOne,
+          productId: Random.id(),
+          shopId: Random.id(),
+          variantId: Random.id()
+        },
+        {
+          _id: itemIdTwo,
+          productId: Random.id(),
+          shopId: Random.id(),
+          variantId: Random.id()
+        }
+      ]
+    }], // Shipping Schema
+    billing: [{
+      _id: Random.id(),
+      address: getAddress({ isBillingDefault: true }),
+      paymentMethod: paymentMethod({
+        method: "credit",
+        processor: "Mastercard 2346",
+        mode: "authorize",
+        status: "created"
+      })
+    }],
     state: "new",
     createdAt: new Date,
     updatedAt: new Date
