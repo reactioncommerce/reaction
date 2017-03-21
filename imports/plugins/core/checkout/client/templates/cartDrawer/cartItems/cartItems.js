@@ -22,10 +22,12 @@ Template.cartDrawerItems.helpers({
       return defaultImage;
     } else if (product) {
       _.some(product.variants, function (variant) {
-        defaultImage = Media.findOne({
-          "metadata.variantId": variant._id
-        });
-        return !!defaultImage;
+        if (variant) {
+          defaultImage = Media.findOne({
+            "metadata.variantId": variant._id
+          });
+          return !!defaultImage;
+        }
       });
     }
     return defaultImage;
