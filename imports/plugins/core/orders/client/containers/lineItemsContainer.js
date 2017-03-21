@@ -20,23 +20,23 @@ class LineItemsContainer extends Component {
     this.handleClick = this.handleClick.bind(this);
     this.isExpanded = this.isExpanded.bind(this);
     this.handleClose = this.handleClose.bind(this);
+    this.handleDisplayMedia = this.handleDisplayMedia.bind(this);
   }
 
-  isExpanded(itemId) {
+  isExpanded = (itemId) => {
     if (this.state[`item_${itemId}`]) {
       return true;
     }
     return false;
   }
 
-  handleClose(itemId) {
-    event.preventDefault();
+  handleClose = (itemId) => {
     this.setState({
       [`item_${itemId}`]: false
     });
   }
 
-  handleClick(itemId) {
+  handleClick = (itemId) => {
     this.setState({
       [`item_${itemId}`]: true
     });
@@ -72,16 +72,18 @@ class LineItemsContainer extends Component {
   }
 
   render() {
+    const { invoice, uniqueItems } = this.props;
+
     return (
       <TranslationProvider>
         <LineItems
           onClose={this.handleClose}
-          invoice={this.props.invoice}
+          invoice={invoice}
           isClosed={this.state.isClosed}
           isExpanded={this.isExpanded}
           displayMedia={this.handleDisplayMedia}
           handleClick={this.handleClick}
-          uniqueItems={this.props.uniqueItems}
+          uniqueItems={uniqueItems}
         />
       </TranslationProvider>
     );

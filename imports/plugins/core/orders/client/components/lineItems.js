@@ -11,24 +11,26 @@ class LineItems extends Component {
     uniqueItems: PropTypes.array
   }
 
-  calculateTotal = (price, shipping, taxes) => {
+  calculateTotal(price, shipping, taxes) {
     return formatPriceString(price + shipping + taxes);
   }
 
-  renderLineItem = (uniqueItem, quantity) => {
+  renderLineItem(uniqueItem, quantity) {
+    const { handleClick, displayMedia } = this.props;
+
     return (
       <div className="order-items">
         <div
           className="invoice order-item form-group order-summary-form-group"
-          onClick={() => this.props.handleClick(uniqueItem.cartItemId)}
+          onClick={() => handleClick(uniqueItem.cartItemId)}
           style={{ height: 70 }}
         >
 
           <div className="order-item-media" style={{ marginLeft: 15 }}>
-            { !this.props.displayMedia(uniqueItem) ?
+            { !displayMedia(uniqueItem) ?
               <img src= "/resources/placeholder.gif" /> :
               <img
-                src={this.props.displayMedia(uniqueItem).url()}
+                src={displayMedia(uniqueItem).url()}
               />
             }
           </div>
@@ -54,7 +56,7 @@ class LineItems extends Component {
     );
   }
 
-  renderLineItemInvoice = (uniqueItem, shippingRate, quantity) => {
+  renderLineItemInvoice(uniqueItem, shippingRate, quantity) {
     return (
       <div>
         <div className="order-summary-form-group">

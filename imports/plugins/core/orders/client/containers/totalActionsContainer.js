@@ -10,6 +10,11 @@ class TotalActionsContaner extends Component {
     paymentCaptured: PropTypes.bool
   }
 
+  constructor(props) {
+    super(props);
+    this.isAdjusted = this.isAdjusted.bind(this);
+  }
+
   isAdjusted = () => {
     const { adjustedTotal, invoice } = this.props;
 
@@ -20,13 +25,14 @@ class TotalActionsContaner extends Component {
   }
 
   render() {
+    const  { paymentCaptured, adjustedTotal, invoice } =  this.props;
     return (
       <div>
         <TotalActions
           isAdjusted={this.isAdjusted}
-          paymentCaptured={this.props.paymentCaptured}
-          adjustedTotal={this.props.adjustedTotal}
-          invoice={this.props.invoice}
+          paymentCaptured={paymentCaptured}
+          adjustedTotal={adjustedTotal}
+          invoice={invoice}
         />
       </div>
     );

@@ -18,15 +18,17 @@ class Invoice extends Component {
     refunds: PropTypes.array
   }
 
-  renderDiscountForm = () => {
+  renderDiscountForm() {
+    const { isOpen, orderId, collection } = this.props;
+
     return (
       <div>
-        {this.props.isOpen &&
+        {isOpen &&
           <div>
             <hr/>
               <DiscountList
-                id={this.props.orderId}
-                collection={this.props.collection}
+                id={orderId}
+                collection={collection}
                 validatedInput={true}
               />
             <hr/>
@@ -36,10 +38,12 @@ class Invoice extends Component {
     );
   }
 
-  renderRefundsInfo = () => {
+  renderRefundsInfo() {
+    const { isFetching, refunds, dateFormat } = this.props;
+
     return (
       <div>
-        {this.props.isFetching &&
+        {isFetching &&
           <div className="form-group order-summary-form-group">
             <strong>Loading Refunds</strong>
             <div className="invoice-details">
@@ -48,9 +52,9 @@ class Invoice extends Component {
           </div>
         }
 
-        {this.props.refunds && this.props.refunds.map((refund) => (
+        {refunds && refunds.map((refund) => (
           <div className="order-summary-form-group text-danger" key={refund.created} style={{ marginBottom: 15 }}>
-            <strong>Refunded on: {this.props.dateFormat(refund.created, "MM/D/YYYY")}</strong>
+            <strong>Refunded on: {dateFormat(refund.created, "MM/D/YYYY")}</strong>
             <div className="invoice-details"><strong>{formatPriceString(refund.amount)}</strong></div>
           </div>
         ))}
@@ -58,25 +62,29 @@ class Invoice extends Component {
     );
   }
 
-  renderTotal = () => {
+  renderTotal() {
+    const { invoice } = this.props;
+
     return (
       <div className="order-summary-form-group">
         <hr/>
         <strong>TOTAL</strong>
         <div className="invoice-details">
-          <strong>{formatPriceString(this.props.invoice.total)}</strong>
+          <strong>{formatPriceString(invoice.total)}</strong>
         </div>
       </div>
     );
   }
 
-  renderConditionalDisplay = () => {
+  renderConditionalDisplay() {
+    const { canMakeAdjustments, paymentCaptured } = this.props;
+
     return (
       <div>
-        {this.props.canMakeAdjustments ?
+        {canMakeAdjustments ?
           <div> {this.renderTotal()} </div> :
           <span>
-            {this.props.paymentCaptured ?
+            {paymentCaptured ?
               <div>
                 {this.renderRefundsInfo()}
               </div>
@@ -90,7 +98,7 @@ class Invoice extends Component {
   }
 
   render() {
-    const invoice = this.props.invoice;
+    const { invoice, discounts, handleClick } = this.props;
 
     return (
       <div>
@@ -122,13 +130,13 @@ class Invoice extends Component {
           </div>
         </div>
 
-        {this.props.discounts &&
+        {discounts &&
           <div>
             <div className="order-summary-form-group">
               <strong><Translation defaultValue="Discount" i18nKey="cartSubTotals.discount"/></strong>
               <div className="invoice-details">
                 <i className="fa fa-tag fa-lg" style={{ marginRight: 2 }}/>
-                <a className="btn-link" onClick={this.props.handleClick}>Add Discount</a>
+                <a className="btn-link" onClick={handleClick}>Add Discount</a>
               </div>
             </div>
             {this.renderDiscountForm()}

@@ -8,7 +8,9 @@ class TotalActions extends Component {
     isAdjusted: PropTypes.func
   }
 
-  renderCapturedTotal = () => {
+  renderCapturedTotal() {
+    const { invoice } = this.props;
+
     return (
       <div className="order-summary-form-group bg-success" style={{ lineHeight: 3, marginRight: -15, marginLeft: -15 }}>
         <span style={{ marginLeft: 15 }}>
@@ -16,13 +18,15 @@ class TotalActions extends Component {
         </span>
 
         <div className="invoice-details" style={{ marginRight: 15 }}>
-          <strong>{formatPriceString(this.props.invoice.total)}</strong>
+          <strong>{formatPriceString(invoice.total)}</strong>
         </div>
       </div>
     );
   }
 
-  renderAdjustedTotal = () => {
+  renderAdjustedTotal() {
+    const { adjustedTotal } = this.props;
+
     return (
       <div className="order-summary-form-group bg-danger" style={{ marginTop: 2, lineHeight: 3, marginRight: -15, marginLeft: -15 }}>
         <span className="text-danger" style={{ marginLeft: 15 }}>
@@ -30,17 +34,19 @@ class TotalActions extends Component {
         </span>
 
         <div className="invoice-details" style={{ marginRight: 15 }}>
-          <strong>{formatPriceString(this.props.adjustedTotal)}</strong>
+          <strong>{formatPriceString(adjustedTotal)}</strong>
         </div>
       </div>
     );
   }
 
   render() {
+    const { isAdjusted } = this.props;
+
     return (
       <div>
         {this.renderCapturedTotal()}
-        {this.props.isAdjusted() && this.renderAdjustedTotal()}
+        {isAdjusted() && this.renderAdjustedTotal()}
       </div>
     );
   }

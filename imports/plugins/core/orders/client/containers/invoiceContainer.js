@@ -23,6 +23,7 @@ class InvoiceContainer extends Component {
       isOpen: false
     };
     this.handleClick = this.handleClick.bind(this);
+    this.dateFormat = this.dateFormat.bind(this);
   }
 
   dateFormat = (context, block) => {
@@ -30,7 +31,7 @@ class InvoiceContainer extends Component {
     return moment(context).format(f);
   }
 
-  handleClick(event) {
+  handleClick = (event) => {
     event.preventDefault();
     this.setState({
       isOpen: true
@@ -38,20 +39,26 @@ class InvoiceContainer extends Component {
   }
 
   render() {
+    const {
+      canMakeAdjustments, paymentCaptured,
+      discounts, invoice, orderId, refunds,
+      isFetching, collection
+    } = this.props;
+
     return (
       <TranslationProvider>
         <Invoice
-          canMakeAdjustments={this.props.canMakeAdjustments}
-          paymentCaptured={this.props.paymentCaptured}
+          canMakeAdjustments={canMakeAdjustments}
+          paymentCaptured={paymentCaptured}
           isOpen={this.state.isOpen}
-          discounts={this.props.discounts}
+          discounts={discounts}
           handleClick={this.handleClick}
-          invoice={this.props.invoice}
-          orderId={this.props.orderId}
-          refunds={this.props.refunds}
+          invoice={invoice}
+          orderId={orderId}
+          refunds={refunds}
           dateFormat={this.dateFormat}
-          isFetching={this.props.isFetching}
-          collection={this.props.collection}
+          isFetching={isFetching}
+          collection={collection}
         />
       </TranslationProvider>
     );
