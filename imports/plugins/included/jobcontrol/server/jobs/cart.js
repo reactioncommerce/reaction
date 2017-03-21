@@ -2,6 +2,7 @@ import later from "later";
 import moment from "moment";
 import { Accounts, Cart, Jobs } from "/lib/collections";
 import { Hooks, Logger, Reaction } from "/server/api";
+import { ServerSessions } from "/server/publications/collections/sessions";
 
 
 Hooks.Events.add("onJobServerStart", () => {
@@ -55,7 +56,9 @@ export default () => {
                 emails: []
               }
             );
-            if (removeCart && removeAccount === 1) {
+            const destroySession = ServerSessions.remove({ _id: cart.sessionId });
+            Meteor.users.remove({ emails: [] }); // clears out anonymous user
+            if (removeCart && removeAccount && destroySession) {
               const success = "Stale anonymous user cart and account successfully cleaned";
               Logger.debug(success);
               job.done(success, { repeatId: true });
