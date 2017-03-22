@@ -5,7 +5,7 @@ import { composeWithTracker } from "/lib/api/compose";
 import { Meteor } from "meteor/meteor";
 import { ReactionProduct } from "/lib/api";
 import { Reaction, i18next, Logger } from "/client/api";
-import { Tags, Media } from "/lib/collections";
+import { Tags, Media, Cart } from "/lib/collections";
 import { Loading } from "/imports/plugins/core/ui/client/components";
 import { ProductDetail, ProductNotFound } from "../components";
 import { SocialContainer, VariantListContainer } from "./";
@@ -30,6 +30,8 @@ class ProductDetailContainer extends Component {
   handleAddToCart = () => {
     let productId;
     let quantity;
+    let totalQuantity;
+    let cartQuantity;
     const currentVariant = ReactionProduct.selectedVariant();
     const currentProduct = ReactionProduct.selectedProduct();
 
@@ -56,7 +58,16 @@ class ProductDetailContainer extends Component {
         return [];
       }
 
+      if (this.props.storedCart.items) {
+        this.props.storedCart.items.forEach((item) => {
+          if (item.variants._id === currentVariant._id) {
+            cartQuantity = item.quantity;
+          }
+        });
+      }
+
       quantity = parseInt(this.state.cartQuantity, 10);
+      totalQuantity = quantity + cartQuantity;
 
       if (quantity < 1) {
         quantity = 1;
@@ -68,6 +79,13 @@ class ProductDetailContainer extends Component {
           autoHide: 10000
         });
         quantity = currentVariant.inventoryQuantity;
+      }
+
+      if (totalQuantity > currentVariant.inventoryQuantity) {
+        Alerts.inline("Sorry, cart is full. Failed to add product", "error", {
+          placement: "productDetail",
+          autoHide: 10000
+        });
       }
 
       if (!currentProduct.isVisible) {
@@ -190,11 +208,13 @@ class ProductDetailContainer extends Component {
 
 ProductDetailContainer.propTypes = {
   media: PropTypes.arrayOf(PropTypes.object),
-  product: PropTypes.object
+  product: PropTypes.object,
+  storedCart: PropTypes.object
 };
 
 function composer(props, onData) {
   const tagSub = Meteor.subscribe("Tags");
+  const cartSub = Meteor.subscribe("Cart", Meteor.sessionId);
   const productId = Reaction.Router.getParam("handle");
   const variantId = Reaction.Router.getParam("variantId");
   const revisionType = Reaction.Router.getQueryParam("revision");
@@ -206,7 +226,7 @@ function composer(props, onData) {
     productSub = Meteor.subscribe("Product", productId);
   }
 
-  if (productSub && productSub.ready() && tagSub.ready()) {
+  if (productSub && productSub.ready() && tagSub.ready() && cartSub.ready()) {
     // Get the product
     const product = ReactionProduct.setProduct(productId, variantId);
 
@@ -290,6 +310,8 @@ function composer(props, onData) {
 
       const topVariants = ReactionProduct.getTopVariants();
 
+      const storedCart = Cart.findOne();
+
       onData(null, {
         variants: topVariants,
         layout: product.template || "productDetailSimple",
@@ -299,7 +321,8 @@ function composer(props, onData) {
         media: mediaArray,
         editable,
         viewAs: viewProductAs,
-        hasAdminPermission: Reaction.hasPermission(["createProduct"])
+        hasAdminPermission: Reaction.hasPermission(["createProduct"]),
+        storedCart
       });
     } else {
       // onData must be called with composeWithTracker, or else the loading icon will show forever.
