@@ -7,11 +7,12 @@
       {{#if orders}}
         {{#each order in orders}}
           {{> ordersListItem (itemProps order)}}
+
         {{/each}}
 
         {{#if Template.subscriptionsReady}}
           {{#if hasMoreOrders}}
-            <button class="btn btn-primary load-more-orders" type="button">Show More</button>
+            <button class="btn btn-primary {{checkFilter}}" type="button">Show More</button>
           {{/if}}
         {{else}}
         <div class="spinner-container">
@@ -27,7 +28,7 @@
       {{/if}}
     </div>
   {{/if}}
-</template
+</template>
 
 <template name="orderListFilters">
   <ul class="nav nav-pills" role="tablist">
