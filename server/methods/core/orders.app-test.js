@@ -1,5 +1,4 @@
 import { Meteor } from "meteor/meteor";
-import _ from "lodash";
 import { Factory } from "meteor/dburles:factory";
 import { Reaction } from "/server/api";
 import { Orders, Products, Notifications } from "/lib/collections";
