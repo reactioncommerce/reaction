@@ -27,6 +27,25 @@ Hooks.Events.add("afterCoreInit", () => {
   }
 });
 
+const purgeAnonymousUserCart = (olderThan, anonUser, cart) => {
+  if (cart.items) {
+    const removeCart = Cart.remove({ userId: anonUser._id });
+    const removeAccount = Accounts.remove(
+      {
+        _id: cart.userId,
+        emails: []
+      }
+    );
+    const destroySession = ServerSessions.remove({ _id: cart.sessionId });
+    Meteor.users.remove({ _id: anonUser._id, emails: [] }); // clears out anonymous user
+    if (removeCart && removeAccount && destroySession) {
+      return true;
+    }
+  } else {
+    Logger.debug("No items in cart");
+  }
+};
+
 export default () => {
   const removeStaleCart = Jobs.processJobs("cart/removeFromCart", {
     pollInterval: 60 * 60 * 1000, // backup polling, see observer below
@@ -37,48 +56,28 @@ export default () => {
     if (settings.cart) {
       const schedule = (settings.cart.cleanupDurationDays).match(/\d/);// configurable in shop settings
       const olderThan = moment().subtract(Number(schedule[0]), "days")._d;
-      const cartDetails = Cart.find({
-        updatedAt: {
-          $lte: olderThan
-        }
-      }).fetch();
-      cartDetails.map(cart => {
-        const anonUser = Accounts.findOne({
-          _id: cart.userId,
-          emails: []
+      const users = Accounts.find({}).fetch();
+      users.forEach(user => {
+        const cart = Cart.findOne({
+          userId: user._id,
+          updatedAt: {
+            $lte: olderThan
+          }
         });
-        if (cart.items) {
-          if (anonUser) {
-            const removeCart = Cart.remove({ userId: anonUser._id });
-            const removeAccount = Accounts.remove(
-              {
-                _id: cart.userId,
-                emails: []
-              }
-            );
-            const destroySession = ServerSessions.remove({ _id: cart.sessionId });
-            Meteor.users.remove({ emails: [] }); // clears out anonymous user
-            if (removeCart && removeAccount && destroySession) {
-              const success = "Stale anonymous user cart and account successfully cleaned";
-              Logger.debug(success);
-              job.done(success, { repeatId: true });
-            }
-          } else {
-            const user = Accounts.findOne({ _id: cart.userId });
-            if (cart.updatedAt <= moment().subtract(Number(schedule[0]), "days")._d) {
-              const userCleanup = Cart.update(
-                { userId: user._id },
-                { $unset: { items: [] } }
-              );
-              if (userCleanup === 1) {
-                const success = "Stale user cart successfully cleaned";
-                Logger.debug(success);
-                job.done(success, { repeatId: true });
-              }
-            }
+        if (!user.emails.length) {
+          const purged = purgeAnonymousUserCart(olderThan, user, cart);
+          if (purged) {
+            const success = "Stale anonymous user cart and account successfully cleaned";
+            Logger.debug(success);
+            job.done(success, { repeatId: true });
           }
         } else {
-          Logger.debug("No item in cart");
+          if (cart.items) {
+            Cart.remove({ userId: user._id });
+            const success = "Stale user cart successfully cleaned";
+            Logger.debug(success);
+            job.done(success, { repeatId: true });
+          }
         }
       });
     } else {
