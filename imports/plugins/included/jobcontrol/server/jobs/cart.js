@@ -5,7 +5,7 @@ import { Hooks, Logger, Reaction } from "/server/api";
 import { ServerSessions } from "/server/publications/collections/sessions";
 
 
-Hooks.Events.add("onJobServerStart", () => {
+Hooks.Events.add("afterCoreInit", () => {
   Logger.debug("Adding Job removeStaleCart and Accounts to jobControl");
   const settings = Reaction.getShopSettings();
   if (settings.cart) {
