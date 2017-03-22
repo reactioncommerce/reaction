@@ -90,9 +90,15 @@ Template.orders.onCreated(function () {
 
   this.autorun(() => {
     const limit = this.limit.get();
-    const subscription = this.subscribe("Orders.paginated", limit);
+    const subscription = this.subscribe("Orders.paginated", (limit + 1));
     if (subscription.ready()) {
       this.loaded.set(limit);
+
+      const filter = Reaction.getUserPreferences(PACKAGE_NAME, ORDER_LIST_FILTERS_PREFERENCE_NAME, DEFAULT_FILTER_NAME);
+      const query = OrderHelper.makeQuery(filter);
+      const orders = Orders.find(query).fetch();
+
+      this.state.set("orders", orders);
     }
   });
 
@@ -104,19 +110,15 @@ Template.orders.onCreated(function () {
     // Numeric inputs
     this.state.set("currency", shop.currencies[shop.currency]);
   });
-
-  // fetch available orders
-  this.orders = () => {
-    const filter = Reaction.getUserPreferences(PACKAGE_NAME, ORDER_LIST_FILTERS_PREFERENCE_NAME, DEFAULT_FILTER_NAME);
-    const query = OrderHelper.makeQuery(filter);
-    return Orders.find(query, { limit: this.loaded.get() });
-  };
 });
 
 /**
  * orders helpers
  */
 Template.orders.helpers({
+  checkFilter() {
+    return Reaction.getUserPreferences(PACKAGE_NAME, ORDER_LIST_FILTERS_PREFERENCE_NAME, DEFAULT_FILTER_NAME);
+  },
   FilterComponent() {
     return {
       component: OrdersActionContainer,
@@ -134,11 +136,11 @@ Template.orders.helpers({
   },
 
   orders() {
-    return Template.instance().orders() || false;
+    return Template.instance().state.get("orders") || false;
   },
 
   hasMoreOrders() {
-    return Template.instance().orders().count() >= Template.instance().limit.get();
+    return Template.instance().state.get("orders").length >= Template.instance().limit.get();
   },
 
   currentFilterLabel() {
@@ -164,7 +166,7 @@ Template.orders.helpers({
  * orders events
  */
 Template.orders.events({
-  "click .load-more-orders": function (event, instance) {
+  "click .new": function (event, instance) {
     event.preventDefault();
 
     // get how many orders are currently displayed
