@@ -255,7 +255,7 @@
         "duplicateProduct": "Duplicate Product",
         "pinProduct": "Pin Product",
         "toggleSize": "Toggle Size",
-        "deleteProduct": "Delete Product",
+        "archiveProduct": "Archive Product",
         "restoreProduct": "Restore Product from Trash",
         "deleteSelectedProducts": "Delete selected products?",
         "archiveThisProduct": "Archive this product?",
