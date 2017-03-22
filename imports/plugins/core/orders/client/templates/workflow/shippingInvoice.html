@@ -12,10 +12,7 @@
         {{> React component=InvoiceContainer
                   canMakeAdjustments=canMakeAdjustments
                   paymentCaptured=paymentCaptured
-<<<<<<< HEAD
-=======
                   discounts=discounts
->>>>>>> 596e5dd6d9a13189fbcc4af54c2197812fb742c3
                   invoice=invoice
                   orderId=orderId
                   refunds=refunds
@@ -39,7 +36,6 @@
           <span id="btn-refund-payment" data-i18n="order.applyRefund">Apply Refund</span>
           <i class="fa fa-spinner fa-spin {{#unless isRefunding}}hidden{{/unless}}"></i>
         </button>
-<<<<<<< HEAD
 
         {{#if showAfterPaymentCaptured}}
           <button class="btn btn-danger" type="button" data-event-action="cancelOrderAfterCapture" {{cancelOrderDisabled}}>Cancel Order</button>
@@ -47,8 +43,6 @@
         {{#if checkCancelProcess}}
           <button class="btn btn-danger" type="button" data-event-action="completeCancelOrder" {{cancelOrderDisabled}}>Complete Cancel Order</button>
         {{/if}}
-=======
->>>>>>> 596e5dd6d9a13189fbcc4af54c2197812fb742c3
       </div>
       {{/if}}
     </div>
@@ -56,10 +50,6 @@
 
 
     <div class="flex">
-<<<<<<< HEAD
-      <br>
-=======
->>>>>>> 596e5dd6d9a13189fbcc4af54c2197812fb742c3
       {{#if paymentPendingApproval}}
         <button class="btn btn-info btn-block" type="submit" data-event-action="approveInvoice" data-i18n="order.approveInvoice">Approve</button>
         <button class="btn btn-danger btn-block" type="button" data-event-action="startCancelOrder" data-i18n="order.cancelOrder">Cancel Order</button>
