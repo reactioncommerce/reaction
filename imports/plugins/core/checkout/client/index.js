@@ -15,6 +15,7 @@ import "./templates/cartPanel/cartPanel.html";
 import "./templates/cartPanel/cartPanel.js";
 
 import "./templates/checkout/addressBook/addressBook.html";
+import "./templates/checkout/addressBook/addressBook.js";
 import "./templates/checkout/completed/completed.html";
 import "./templates/checkout/completed/completed.js";
 import "./templates/checkout/header/header.html";
