@@ -5,8 +5,12 @@ import { Template } from "meteor/templating";
 import { ReactiveVar } from "meteor/reactive-var";
 import { i18next, Logger, formatNumber, Reaction } from "/client/api";
 import { NumericInput } from "/imports/plugins/core/ui/client/components";
-import { Media, Orders, Shops } from "/lib/collections";
+import { Orders, Shops } from "/lib/collections";
 import DiscountList from "/imports/plugins/core/discounts/client/components/list";
+import InvoiceContainer from "../../containers/invoiceContainer.js";
+import LineItemsContainer from "../../containers/lineItemsContainer.js";
+import TotalActionsContainer from "../../containers/totalActionsContainer.js";
+
 
 // helper to return the order payment object
 // the first credit paymentMethod on the order
@@ -74,6 +78,15 @@ Template.coreOrderShippingInvoice.helpers({
   },
   DiscountList() {
     return DiscountList;
+  },
+  InvoiceContainer() {
+    return InvoiceContainer;
+  },
+  LineItemsContainer() {
+    return LineItemsContainer;
+  },
+  TotalActionsContainer() {
+    return TotalActionsContainer;
   },
   orderId() {
     const instance = Template.instance();
@@ -150,7 +163,7 @@ Template.coreOrderShippingInvoice.events({
    * @param  {Template} instance - Blaze Template
    * @return {void}
    */
-  "submit form[name=refund]": (event, instance) => {
+  "click [data-event-action=applyRefund]": (event, instance) => {
     event.preventDefault();
 
     const { state } = Template.instance();
@@ -304,7 +317,10 @@ Template.coreOrderShippingInvoice.helpers({
     const instance = Template.instance();
     const order = instance.state.get("order");
 
-    return order.billing[0].invoice;
+    const invoice = Object.assign({}, order.billing[0].invoice, {
+      totalItems: order.items.length
+    });
+    return invoice;
   },
 
   money(amount) {
@@ -368,7 +384,6 @@ Template.coreOrderShippingInvoice.helpers({
 
   refunds() {
     const refunds = Template.instance().refunds.get();
-
     if (_.isArray(refunds)) {
       return refunds.reverse();
     }
@@ -438,43 +453,85 @@ Template.coreOrderShippingInvoice.helpers({
     return shipment;
   },
 
+  discounts() {
+    const enabledPaymentsArr = [];
+    const apps = Reaction.Apps({
+      provides: "paymentMethod",
+      enabled: true
+    });
+    for (app of apps) {
+      if (app.enabled === true) enabledPaymentsArr.push(app);
+    }
+    let discount = false;
+
+    for (enabled of enabledPaymentsArr) {
+      if (enabled.packageName === "discount-codes") {
+        discount = true;
+        break;
+      }
+    }
+    return discount;
+  },
+
   items() {
     const instance = Template.instance();
     const order = instance.state.get("order");
     const currentData = Template.currentData();
     const shipment = currentData.fulfillment;
 
-    const items = _.map(shipment.items, (item) => {
+    // returns array of individual items that have been checked out
+    const returnItems = _.map(shipment.items, (item) => {
       const originalItem = _.find(order.items, {
         _id: item._id
       });
       return _.extend(originalItem, item);
     });
 
-    return items;
-  },
+    let items;
 
-  /**
-   * Media - find meda based on a variant
-   * @param  {String|Object} variantObjectOrId A variant of a product or a variant Id
-   * @return {Object|false}    An object contianing the media or false
-   */
-  media(variantObjectOrId) {
-    let variantId = variantObjectOrId;
+    // if avalara tax has been enabled it adds a "taxDetail" field for every item
+    if (order.taxes !== undefined) {
+      const taxes = order.taxes.slice(0, -1);
 
-    if (typeof variant === "object") {
-      variantId = variantObjectOrId._id;
+      items = _.map(returnItems, (item) => {
+        const taxDetail = _.find(taxes, {
+          lineNumber: item.cartItemId
+        });
+        return _.extend(item, { taxDetail });
+      });
+    } else {
+      items = returnItems;
     }
 
-    const defaultImage = Media.findOne({
-      "metadata.variantId": variantId,
-      "metadata.priority": 0
-    });
+    /**
+     * It goes through individual items and groups similar items using the cartItemId.
+     * The output is an object whose keys are cartItemId and every item with the same
+     * cartItemId is added as a value
+     */
+    let uniqueItems = items.reduce((carts, item) => {
+      let cart;
 
-    if (defaultImage) {
-      return defaultImage;
-    }
+      if (carts[item.cartItemId]) {
+        cart = carts[item.cartItemId];
+        cart = Object.assign({}, cart, {
+          items: [...cart.items, item]
+        });
+      } else {
+        cart = {
+          cartItemId: item.cartItemId,
+          productId: item.productId,
+          shippingRate: shipment.shipmentMethod.rate,
+          items: [item]
+        };
+      }
 
-    return false;
+      carts[item.cartItemId] = cart;
+      return carts;
+    }, {});
+
+    // Converts the uniqueItems object to an array
+    uniqueItems = Object.keys(uniqueItems).map(k => uniqueItems[k]);
+
+    return uniqueItems;
   }
 });
