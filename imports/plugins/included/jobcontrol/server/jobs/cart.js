@@ -27,6 +27,13 @@ Hooks.Events.add("afterCoreInit", () => {
   }
 });
 
+/**
+ * Collect garbage of stale user carts, accounts and sessions
+ * @param {Object} olderThan older than date
+ * @param {Object} anonUser anonymous user details
+ * @param {Object} cart stale cart
+ * @return {Boolean} result
+ */
 const purgeAnonymousUserCart = (olderThan, anonUser, cart) => {
   if (cart.items) {
     const removeCart = Cart.remove({ userId: anonUser._id });
