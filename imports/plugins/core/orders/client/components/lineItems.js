@@ -3,11 +3,13 @@ import { formatPriceString } from "/client/api";
 import { Translation } from "/imports/plugins/core/ui/client/components";
 
 class LineItems extends Component {
-  constructor(props) {
-    super(props);
 
-    this.renderLineItem = this.renderLineItem.bind(this);
-    this.calculateTotal = this.calculateTotal.bind(this);
+  static propTypes = {
+    displayMedia: PropTypes.func,
+    handleClick: PropTypes.func,
+    isExpanded: PropTypes.func,
+    onClose: PropTypes.func,
+    uniqueItems: PropTypes.array
   }
 
   calculateTotal(price, shipping, taxes) {
@@ -15,17 +17,22 @@ class LineItems extends Component {
   }
 
   renderLineItem(uniqueItem, quantity) {
+    const { handleClick, displayMedia } = this.props;
+
     return (
       <div className="order-items">
         <div
           className="invoice order-item form-group order-summary-form-group"
-          onClick={() => this.props.handleClick(uniqueItem.cartItemId)}
+          onClick={() => handleClick(uniqueItem.cartItemId)}
           style={{ height: 70 }}
         >
 
           <div className="order-item-media" style={{ marginLeft: 15 }}>
-            { !this.props.displayMedia(uniqueItem.variants) &&
-              <img src= "/resources/placeholder.gif" />
+            { !displayMedia(uniqueItem) ?
+              <img src= "/resources/placeholder.gif" /> :
+              <img
+                src={displayMedia(uniqueItem).url()}
+              />
             }
           </div>
 
@@ -141,12 +148,5 @@ class LineItems extends Component {
   }
 }
 
-LineItems.propTypes = {
-  displayMedia: PropTypes.func,
-  handleClick: PropTypes.func,
-  isExpanded: PropTypes.func,
-  onClose: PropTypes.func,
-  uniqueItems: PropTypes.array
-};
 
 export default LineItems;

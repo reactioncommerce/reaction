@@ -4,24 +4,31 @@ import { Translation } from "/imports/plugins/core/ui/client/components";
 import DiscountList from "/imports/plugins/core/discounts/client/components/list";
 
 class Invoice extends Component {
-  constructor(props) {
-    super(props);
-
-    this.renderConditionalDisplay = this.renderConditionalDisplay.bind(this);
-    this.renderDiscountForm = this.renderDiscountForm.bind(this);
-    this.renderRefundsInfo = this.renderRefundsInfo.bind(this);
-    this.renderTotal = this.renderTotal.bind(this);
+  static propTypes = {
+    canMakeAdjustments: PropTypes.bool,
+    collection: PropTypes.string,
+    dateFormat: PropTypes.func,
+    discounts: PropTypes.bool,
+    handleClick: PropTypes.func,
+    invoice: PropTypes.object,
+    isFetching: PropTypes.bool,
+    isOpen: PropTypes.bool,
+    orderId: PropTypes.string,
+    paymentCaptured: PropTypes.bool,
+    refunds: PropTypes.array
   }
 
   renderDiscountForm() {
+    const { isOpen, orderId, collection } = this.props;
+
     return (
       <div>
-        {this.props.isOpen &&
+        {isOpen &&
           <div>
             <hr/>
               <DiscountList
-                id={this.props.orderId}
-                collection={this.props.collection}
+                id={orderId}
+                collection={collection}
                 validatedInput={true}
               />
             <hr/>
@@ -32,9 +39,11 @@ class Invoice extends Component {
   }
 
   renderRefundsInfo() {
+    const { isFetching, refunds, dateFormat } = this.props;
+
     return (
       <div>
-        {this.props.isFetching &&
+        {isFetching &&
           <div className="form-group order-summary-form-group">
             <strong>Loading Refunds</strong>
             <div className="invoice-details">
@@ -43,9 +52,9 @@ class Invoice extends Component {
           </div>
         }
 
-        {this.props.refunds && this.props.refunds.map((refund) => (
+        {refunds && refunds.map((refund) => (
           <div className="order-summary-form-group text-danger" key={refund.created} style={{ marginBottom: 15 }}>
-            <strong>Refunded on: {this.props.dateFormat(refund.created, "MM/D/YYYY")}</strong>
+            <strong>Refunded on: {dateFormat(refund.created, "MM/D/YYYY")}</strong>
             <div className="invoice-details"><strong>{formatPriceString(refund.amount)}</strong></div>
           </div>
         ))}
@@ -54,25 +63,28 @@ class Invoice extends Component {
   }
 
   renderTotal() {
+    const { invoice } = this.props;
+
     return (
       <div className="order-summary-form-group">
         <hr/>
         <strong>TOTAL</strong>
         <div className="invoice-details">
-          <strong>{formatPriceString(this.props.invoice.total)}</strong>
+          <strong>{formatPriceString(invoice.total)}</strong>
         </div>
       </div>
     );
   }
 
   renderConditionalDisplay() {
+    const { canMakeAdjustments, paymentCaptured } = this.props;
+
     return (
       <div>
-        {this.renderDiscountForm()}
-        {this.props.canMakeAdjustments ?
+        {canMakeAdjustments ?
           <div> {this.renderTotal()} </div> :
           <span>
-            {this.props.paymentCaptured ?
+            {paymentCaptured ?
               <div>
                 {this.renderRefundsInfo()}
               </div>
@@ -86,7 +98,7 @@ class Invoice extends Component {
   }
 
   render() {
-    const invoice = this.props.invoice;
+    const { invoice, discounts, handleClick } = this.props;
 
     return (
       <div>
@@ -118,33 +130,24 @@ class Invoice extends Component {
           </div>
         </div>
 
-        <div className="order-summary-form-group">
-          <strong><Translation defaultValue="Discount" i18nKey="cartSubTotals.discount"/></strong>
-          <div className="invoice-details">
-            <i className="fa fa-tag fa-lg"/>
-            <a className="btn-link" onClick={this.props.handleClick}>Add Discount</a>
+        {discounts &&
+          <div>
+            <div className="order-summary-form-group">
+              <strong><Translation defaultValue="Discount" i18nKey="cartSubTotals.discount"/></strong>
+              <div className="invoice-details">
+                <i className="fa fa-tag fa-lg" style={{ marginRight: 2 }}/>
+                <a className="btn-link" onClick={handleClick}>Add Discount</a>
+              </div>
+            </div>
+            {this.renderDiscountForm()}
           </div>
-        </div>
-
+        }
         {this.renderConditionalDisplay()}
       </div>
     );
   }
 }
 
-Invoice.propTypes = {
-  adjustedTotal: PropTypes.number,
-  canMakeAdjustments: PropTypes.bool,
-  collection: PropTypes.string,
-  dateFormat: PropTypes.func,
-  handleClick: PropTypes.func,
-  invoice: PropTypes.object,
-  isFetching: PropTypes.bool,
-  isOpen: PropTypes.bool,
-  orderId: PropTypes.string,
-  paymentCaptured: PropTypes.bool,
-  refunds: PropTypes.array
-};
 
 export default Invoice;
 

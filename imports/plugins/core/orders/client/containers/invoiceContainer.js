@@ -6,6 +6,18 @@ import { TranslationProvider } from "/imports/plugins/core/ui/client/providers";
 import Invoice from "../components/invoice.js";
 
 class InvoiceContainer extends Component {
+
+  static propTypes = {
+    canMakeAdjustments: PropTypes.bool,
+    collection: PropTypes.string,
+    discounts: PropTypes.bool,
+    invoice: PropTypes.object,
+    isFetching: PropTypes.bool,
+    orderId: PropTypes.string,
+    paymentCaptured: PropTypes.bool,
+    refunds: PropTypes.array
+  }
+
   constructor(props) {
     super(props);
     this.state = {
@@ -15,12 +27,13 @@ class InvoiceContainer extends Component {
     this.dateFormat = this.dateFormat.bind(this);
   }
 
-  dateFormat(context, block) {
+
+  dateFormat = (context, block) => {
     const f = block || "MMM DD, YYYY hh:mm:ss A";
     return moment(context).format(f);
   }
 
-  handleClick(event) {
+  handleClick = (event) => {
     event.preventDefault();
     this.setState({
       isOpen: true
@@ -28,39 +41,38 @@ class InvoiceContainer extends Component {
   }
 
   render() {
+    const {
+      canMakeAdjustments, paymentCaptured,
+      discounts, invoice, orderId, refunds,
+      isFetching, collection
+    } = this.props;
+
     return (
       <TranslationProvider>
         <Invoice
-          canMakeAdjustments={this.props.canMakeAdjustments}
-          paymentCaptured={this.props.paymentCaptured}
+          canMakeAdjustments={canMakeAdjustments}
+          paymentCaptured={paymentCaptured}
           isOpen={this.state.isOpen}
+          discounts={discounts}
           handleClick={this.handleClick}
-          invoice={this.props.invoice}
-          orderId={this.props.orderId}
-          refunds={this.props.refunds}
+          invoice={invoice}
+          orderId={orderId}
+          refunds={refunds}
           dateFormat={this.dateFormat}
-          isFetching={this.props.isFetching}
-          collection={this.props.collection}
+          isFetching={isFetching}
+          collection={collection}
         />
       </TranslationProvider>
     );
   }
 }
 
-InvoiceContainer.propTypes = {
-  canMakeAdjustments: PropTypes.bool,
-  collection: PropTypes.string,
-  invoice: PropTypes.object,
-  isFetching: PropTypes.bool,
-  orderId: PropTypes.string,
-  paymentCaptured: PropTypes.bool,
-  refunds: PropTypes.array
-};
 
 const composer = (props, onData) => {
   onData(null, {
     canMakeAdjustments: props.canMakeAdjustments,
     paymentCaptured: props.paymentCaptured,
+    discounts: props.discounts,
     invoice: props.invoice,
     orderId: props.orderId,
     refunds: props.refunds,

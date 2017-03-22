@@ -5,7 +5,7 @@ import { Template } from "meteor/templating";
 import { ReactiveVar } from "meteor/reactive-var";
 import { i18next, Logger, formatNumber, Reaction } from "/client/api";
 import { NumericInput } from "/imports/plugins/core/ui/client/components";
-import { Media, Orders, Shops } from "/lib/collections";
+import { Orders, Shops } from "/lib/collections";
 import DiscountList from "/imports/plugins/core/discounts/client/components/list";
 import InvoiceContainer from "../../containers/invoiceContainer.js";
 import LineItemsContainer from "../../containers/lineItemsContainer.js";
@@ -546,6 +546,26 @@ Template.coreOrderShippingInvoice.helpers({
     return shipment;
   },
 
+  discounts() {
+    const enabledPaymentsArr = [];
+    const apps = Reaction.Apps({
+      provides: "paymentMethod",
+      enabled: true
+    });
+    for (app of apps) {
+      if (app.enabled === true) enabledPaymentsArr.push(app);
+    }
+    let discount = false;
+
+    for (enabled of enabledPaymentsArr) {
+      if (enabled.packageName === "discount-codes") {
+        discount = true;
+        break;
+      }
+    }
+    return discount;
+  },
+
   items() {
     const instance = Template.instance();
     const order = instance.state.get("order");
@@ -561,6 +581,7 @@ Template.coreOrderShippingInvoice.helpers({
     });
 
     let items;
+
 
     // if avalara tax has been enabled it adds a "taxDetail" field for every item
     if (order.taxes !== undefined) {
@@ -606,29 +627,5 @@ Template.coreOrderShippingInvoice.helpers({
     uniqueItems = Object.keys(uniqueItems).map(k => uniqueItems[k]);
 
     return uniqueItems;
-  },
-
-  /**
-   * Media - find meda based on a variant
-   * @param  {String|Object} variantObjectOrId A variant of a product or a variant Id
-   * @return {Object|false}    An object contianing the media or false
-   */
-  media(variantObjectOrId) {
-    let variantId = variantObjectOrId;
-
-    if (typeof variantId === "object") {
-      variantId = variantObjectOrId._id;
-    }
-
-    const defaultImage = Media.findOne({
-      "metadata.variantId": variantId,
-      "metadata.priority": 0
-    });
-
-    if (defaultImage) {
-      return defaultImage;
-    }
-
-    return false;
   }
 });
