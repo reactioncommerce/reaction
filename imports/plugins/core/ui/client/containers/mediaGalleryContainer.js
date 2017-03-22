@@ -77,7 +77,7 @@ class MediaGalleryContainer extends Component {
   }
 
   handleRemoveMedia = (media) => {
-    const imageUrl = media.url();
+    const imageUrl = media.images && media.images.medium.url;
     const mediaId = media._id;
 
     Alerts.alert({

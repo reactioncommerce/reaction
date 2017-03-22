@@ -67,11 +67,20 @@ class MediaItem extends Component {
   }
 
   get source() {
-    if (typeof this.props.source === "object" && this.props.source) {
-      return this.props.source.url() || this.defaultSource;
+    let imageSrc;
+
+    if (this.props.source) {
+      // Handle FS.File
+      if (typeof this.props.source.url === "function") {
+        imageSrc = this.props.source.url();
+      } else if (typeof this.props.source.images === "object") {
+        imageSrc = this.props.source.images.large && this.props.source.images.large.url;
+      } else {
+        imageSrc = this.props.source;
+      }
     }
 
-    return this.props.source || this.defaultSource;
+    return imageSrc || this.defaultSource;
   }
 
   renderImage() {

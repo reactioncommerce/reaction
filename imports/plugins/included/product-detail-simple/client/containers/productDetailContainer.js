@@ -11,6 +11,7 @@ import { ProductDetail, ProductNotFound } from "../components";
 import { SocialContainer, VariantListContainer } from "./";
 import { MediaGalleryContainer } from "/imports/plugins/core/ui/client/containers";
 import { DragDropProvider, TranslationProvider } from "/imports/plugins/core/ui/client/providers";
+import { Subscriptions } from "/client/modules/core/subscriptions"
 
 class ProductDetailContainer extends Component {
   constructor(props) {
@@ -224,31 +225,35 @@ function composer(props, onData) {
       const selectedVariant = ReactionProduct.selectedVariant();
 
       if (selectedVariant) {
-        // Find the media for the selected variant
-        mediaArray = Media.find({
-          "metadata.variantId": selectedVariant._id
-        }, {
-          sort: {
-            "metadata.priority": 1
-          }
-        }).fetch();
+        if (selectedVariant.media) {
+          mediaArray = selectedVariant.media;
+        } else {
+          // Find the media for the selected variant
+          mediaArray = Media.find({
+            "metadata.variantId": selectedVariant._id
+          }, {
+            sort: {
+              "metadata.priority": 1
+            }
+          }).fetch();
 
-        // If no media found, broaden the search to include other media from parents
-        if (Array.isArray(mediaArray) && mediaArray.length === 0 && selectedVariant.ancestors) {
-          // Loop through ancestors in reverse to find a variant that has media to use
-          for (const ancestor of selectedVariant.ancestors.reverse()) {
-            const media = Media.find({
-              "metadata.variantId": ancestor
-            }, {
-              sort: {
-                "metadata.priority": 1
+          // If no media found, broaden the search to include other media from parents
+          if (Array.isArray(mediaArray) && mediaArray.length === 0 && selectedVariant.ancestors) {
+            // Loop through ancestors in reverse to find a variant that has media to use
+            for (const ancestor of selectedVariant.ancestors.reverse()) {
+              const media = Media.find({
+                "metadata.variantId": ancestor
+              }, {
+                sort: {
+                  "metadata.priority": 1
+                }
+              }).fetch();
+
+              // If we found some media, then stop here
+              if (Array.isArray(media) && media.length) {
+                mediaArray = media;
+                break;
               }
-            }).fetch();
-
-            // If we found some media, then stop here
-            if (Array.isArray(media) && media.length) {
-              mediaArray = media;
-              break;
             }
           }
         }

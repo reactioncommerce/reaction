@@ -280,7 +280,9 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
                 ]
               }
             }).fetch();
+
             fields.__revisions = revisions;
+            fields.media = getProductMedia({ productId: id, getRevisions: true });
 
             this.added("Products", id, fields);
           },
@@ -298,6 +300,8 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
             }).fetch();
 
             fields.__revisions = revisions;
+            fields.media = getProductMedia({ productId: id, getRevisions: true });
+
             this.changed("Products", id, fields);
           },
           removed: (id) => {
@@ -321,6 +325,8 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
             }
 
             if (product) {
+              product.media = getProductMedia({ productId: product._id, getRevisions: true });
+
               this.added("Products", product._id, product);
               this.added("Revisions", revision._id, revision);
             }
@@ -334,6 +340,8 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
             }
             if (product) {
               product.__revisions = [revision];
+              product.media = getProductMedia({ productId: product._id, getRevisions: true });
+
               this.changed("Products", product._id, product);
               this.changed("Revisions", revision._id, revision);
             }
@@ -348,6 +356,8 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
             }
             if (product) {
               product.__revisions = [];
+              product.media = getProductMedia({ productId: product._id, getRevisions: true });
+
               this.changed("Products", product._id, product);
               this.removed("Revisions", revision._id, revision);
             }
@@ -405,12 +415,12 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
       limit: productScrollLimit
     }).observe({
       added: (product) => {
-        product.__media = getProductMedia(product._id);
+        product.media = getProductMedia({ productId: product._id });
 
         this.added("Products", product._id, product);
       },
       changed: (product) => {
-        product.__media = getProductMedia(product._id);
+        product.media = getProductMedia({ productId: product._id });
 
         this.changed("Products", product._id, product);
       },

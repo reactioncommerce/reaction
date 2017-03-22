@@ -1,6 +1,7 @@
 import { Products, Revisions } from "/lib/collections";
 import { Logger, Reaction } from "/server/api";
 import { RevisionApi } from "/imports/plugins/core/revisions/lib/api/revisions";
+import { getProductMedia } from "/lib/api/media";
 
 /**
  * product detail publication
@@ -81,7 +82,9 @@ Meteor.publish("Product", function (productId) {
               ]
             }
           }).fetch();
+
           fields.__revisions = revisions;
+          fields.media = getProductMedia({ productId: id, getRevisions: true });
 
           this.added("Products", id, fields);
         },
@@ -96,6 +99,8 @@ Meteor.publish("Product", function (productId) {
           }).fetch();
 
           fields.__revisions = revisions;
+          fields.media = getProductMedia({ productId: id, getRevisions: true });
+
           this.changed("Products", id, fields);
         },
         removed: (id) => {
@@ -118,6 +123,8 @@ Meteor.publish("Product", function (productId) {
             product = Products.findOne(revision.parentDocument);
           }
           if (product) {
+            product.media = getProductMedia({ productId: product._id });
+
             this.added("Products", product._id, product);
             this.added("Revisions", revision._id, revision);
           }
@@ -132,6 +139,8 @@ Meteor.publish("Product", function (productId) {
 
           if (product) {
             product.__revisions = [revision];
+            product.media = getProductMedia({ productId: product._id });
+
             this.changed("Products", product._id, product);
             this.changed("Revisions", revision._id, revision);
           }
