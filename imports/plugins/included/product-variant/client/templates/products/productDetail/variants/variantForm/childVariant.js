@@ -97,7 +97,7 @@ Template.childVariantForm.events({
     const variantId = template.data._id;
 
     Reaction.Router.go("product", {
-      handle: this.productHandle(),
+      handle: productHandle(),
       variantId: variantId
     });
 
@@ -120,7 +120,7 @@ Template.childVariantForm.events({
     const variantId = instance.data._id;
 
     Reaction.Router.go("product", {
-      handle: this.productHandle(),
+      handle: productHandle(),
       variantId: variantId
     });
   },
