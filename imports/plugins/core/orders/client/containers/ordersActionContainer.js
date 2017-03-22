@@ -17,7 +17,7 @@ function handleActionClick(filter) {
 }
 
 function composer(props, onData) {
-  const subscription = Meteor.subscribe("Orders");
+  Meteor.subscribe("Orders");
 
   const selectedFilterName = Reaction.getUserPreferences(Constants.PACKAGE_NAME, Constants.ORDER_LIST_FILTERS_PREFERENCE_NAME);
   let selectedIndex;
@@ -40,14 +40,12 @@ function composer(props, onData) {
     return filter;
   });
 
-  if (subscription.ready()) {
-    onData(null, {
-      filters,
-      selectedIndex,
+  onData(null, {
+    filters,
+    selectedIndex,
 
-      onActionClick: props.onActionClick || handleActionClick
-    });
-  }
+    onActionClick: props.onActionClick || handleActionClick
+  });
 }
 
 function OrdersActionContainer(props) {
