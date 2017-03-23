@@ -701,7 +701,7 @@ Meteor.methods({
 
   /**
    * products/archiveProduct
-   * @summary delete a product and unlink it from all media
+   * @summary archive a product and unlink it from all media
    * @param {String} productId - productId to delete
    * @returns {Number} returns number of removed products
    */
