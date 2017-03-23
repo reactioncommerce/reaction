@@ -79,8 +79,9 @@ const OrderHelper =  {
 
 Template.orders.onCreated(function () {
   this.state = new ReactiveDict();
-  this.loaded = new ReactiveVar(0);
-  this.limit = new ReactiveVar(2);
+  this.newLimit = new ReactiveVar(2);
+  this.processingLimit = new ReactiveVar(2);
+  this.completedLimit = new ReactiveVar(2);
   this.state.setDefault({
     orders: []
   });
@@ -89,16 +90,23 @@ Template.orders.onCreated(function () {
   Reaction.setUserPreferences(PACKAGE_NAME, ORDER_LIST_FILTERS_PREFERENCE_NAME, filterName);
 
   this.autorun(() => {
-    const limit = this.limit.get();
+    const limit = this.newLimit.get() || this.processingLimit.get() || this.completedLimit.get();
     const subscription = this.subscribe("Orders.paginated", (limit + 1));
-    if (subscription.ready()) {
-      this.loaded.set(limit);
 
+    if (subscription.ready()) {
       const filter = Reaction.getUserPreferences(PACKAGE_NAME, ORDER_LIST_FILTERS_PREFERENCE_NAME, DEFAULT_FILTER_NAME);
       const query = OrderHelper.makeQuery(filter);
-      const orders = Orders.find(query).fetch();
 
-      this.state.set("orders", orders);
+      if (filter === "new") {
+        const orders = Orders.find(query, { limit: this.newLimit.get() }).fetch();
+        this.state.set("orders", orders);
+      } else if (filter === "processing") {
+        const orders = Orders.find(query, { limit: this.processingLimit.get() }).fetch();
+        this.state.set("orders", orders);
+      } else if (filter === "completed") {
+        const orders = Orders.find(query, { limit: this.completedLimit.get() }).fetch();
+        this.state.set("orders", orders);
+      }
     }
   });
 
@@ -140,7 +148,15 @@ Template.orders.helpers({
   },
 
   hasMoreOrders() {
-    return Template.instance().state.get("orders").length >= Template.instance().limit.get();
+    const filter = Reaction.getUserPreferences(PACKAGE_NAME, ORDER_LIST_FILTERS_PREFERENCE_NAME, DEFAULT_FILTER_NAME);
+
+    if (filter === "new") {
+      return Template.instance().state.get("orders").length >= Template.instance().newLimit.get();
+    } else if (filter === "processing") {
+      return Template.instance().state.get("orders").length >= Template.instance().processingLimit.get();
+    } else if (filter === "completed") {
+      return Template.instance().state.get("orders").length >= Template.instance().completedLimit.get();
+    }
   },
 
   currentFilterLabel() {
@@ -169,12 +185,23 @@ Template.orders.events({
   "click .new": function (event, instance) {
     event.preventDefault();
 
-    // get how many orders are currently displayed
-    let limit = instance.limit.get();
-
-    // increase limit by 5 and update it
+    let limit = instance.newLimit.get();
     limit += 5;
-    instance.limit.set(limit);
+    instance.newLimit.set(limit);
+  },
+  "click .processing": function (event, instance) {
+    event.preventDefault();
+
+    let limit = instance.processingLimit.get();
+    limit += 5;
+    instance.processingLimit.set(limit);
+  },
+  "click .completed": function (event, instance) {
+    event.preventDefault();
+
+    let limit = instance.completedLimit.get();
+    limit += 5;
+    instance.completedLimit.set(limit);
   }
 });
 

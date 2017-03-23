@@ -7,7 +7,6 @@
       {{#if orders}}
         {{#each order in orders}}
           {{> ordersListItem (itemProps order)}}
-
         {{/each}}
 
         {{#if Template.subscriptionsReady}}
@@ -15,10 +14,10 @@
             <button class="btn btn-primary {{checkFilter}}" type="button">Show More</button>
           {{/if}}
         {{else}}
-        <div class="spinner-container">
-          <div class="spinner"></div>
-        </div>
-      {{/if}}
+          <div class="spinner-container">
+            <div class="spinner"></div>
+          </div>
+        {{/if}}
 
       {{else}}
         <div class="empty-view-message">
