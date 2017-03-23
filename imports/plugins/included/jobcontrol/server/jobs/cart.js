@@ -28,29 +28,12 @@ Hooks.Events.add("afterCoreInit", () => {
 });
 
 /**
- * Collect garbage of stale user carts, accounts and sessions
+ * {Function} that fetches stale carts
  * @param {Object} olderThan older than date
- * @param {Object} anonUser anonymous user details
- * @param {Object} cart stale cart
- * @return {Boolean} result
+ * @return {Object} stale carts
  */
-const purgeAnonymousUserCart = (olderThan, anonUser, cart) => {
-  if (cart.items) {
-    const removeCart = Cart.remove({ userId: anonUser._id });
-    const removeAccount = Accounts.remove(
-      {
-        _id: cart.userId,
-        emails: []
-      }
-    );
-    const destroySession = ServerSessions.remove({ _id: cart.sessionId });
-    Meteor.users.remove({ _id: anonUser._id, emails: [] }); // clears out anonymous user
-    if (removeCart && removeAccount && destroySession) {
-      return true;
-    }
-  } else {
-    Logger.debug("No items in cart");
-  }
+const staleCarts = (olderThan) => {
+  return Cart.find({ updatedAt: { $lte: olderThan } }).fetch();
 };
 
 export default () => {
@@ -63,28 +46,33 @@ export default () => {
     if (settings.cart) {
       const schedule = (settings.cart.cleanupDurationDays).match(/\d/);// configurable in shop settings
       const olderThan = moment().subtract(Number(schedule[0]), "days")._d;
-      const users = Accounts.find({}).fetch();
-      users.forEach(user => {
-        const cart = Cart.findOne({
-          userId: user._id,
-          updatedAt: {
-            $lte: olderThan
-          }
-        });
-        if (!user.emails.length) {
-          const purged = purgeAnonymousUserCart(olderThan, user, cart);
-          if (purged) {
-            const success = "Stale anonymous user cart and account successfully cleaned";
-            Logger.debug(success);
-            job.done(success, { repeatId: true });
-          }
-        } else {
-          if (cart.items) {
+      const carts = staleCarts(olderThan);
+      carts.forEach(cart => {
+        if (cart.items) {
+          const user = Accounts.findOne({ _id: cart.userId });
+          if (!user.emails.length) {
+            const removeCart = Cart.remove({ userId: user._id });
+            const removeAccount = Accounts.remove(
+              {
+                _id: cart.userId,
+                emails: []
+              }
+            );
+            const destroySession = ServerSessions.remove({ _id: cart.sessionId });
+            Meteor.users.remove({ _id: user._id, emails: [] }); // clears out anonymous user
+            if (removeCart && removeAccount && destroySession) {
+              const success = "Stale anonymous user cart and account successfully cleaned";
+              Logger.debug(success);
+              job.done(success, { repeatId: true });
+            }
+          } else {
             Cart.remove({ userId: user._id });
             const success = "Stale user cart successfully cleaned";
             Logger.debug(success);
             job.done(success, { repeatId: true });
           }
+        } else {
+          Logger.debug("No items in this cart");
         }
       });
     } else {
