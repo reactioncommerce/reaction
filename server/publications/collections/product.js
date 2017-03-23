@@ -1,7 +1,35 @@
-import { Products, Revisions } from "/lib/collections";
+import { Media, Products, Revisions } from "/lib/collections";
 import { Logger, Reaction } from "/server/api";
 import { RevisionApi } from "/imports/plugins/core/revisions/lib/api/revisions";
 import { getProductMedia } from "/lib/api/media";
+
+
+export function createMediaSelector() {
+  let selector;
+
+  const shopId = Reaction.getShopId();
+  if (!shopId) {
+    return false;
+  }
+
+  if (shopId) {
+    selector = {
+      "metadata.shopId": shopId
+    };
+  }
+
+  // Product editors can see both published and unpublished images
+  if (!Reaction.hasPermission(["createProduct"], this.userId)) {
+    selector["metadata.workflow"] = {
+      $in: [null, "published"]
+    };
+  } else {
+    // but no one gets to see archived images
+    selector["metadata.workflow"] = {
+      $nin: ["archived"]
+    };
+  }
+}
 
 /**
  * product detail publication
@@ -22,11 +50,13 @@ Meteor.publish("Product", function (productId) {
   }
 
   let selector = {};
+  let mediaSelector = {}
+
   selector.isVisible = true;
   selector.isDeleted = { $in: [null, false] };
 
-  if (Roles.userIsInRole(this.userId, ["owner", "admin", "createProduct"],
-      shop._id)) {
+
+  if (Roles.userIsInRole(this.userId, ["owner", "admin", "createProduct"], shop._id)) {
     selector.isVisible = {
       $in: [true, false]
     };
@@ -49,7 +79,7 @@ Meteor.publish("Product", function (productId) {
     }
   }
 
-  // Selector for hih?
+  // Selector for product?
   selector = {
     isVisible: true,
     isDeleted: { $in: [null, false] },
@@ -122,10 +152,13 @@ Meteor.publish("Product", function (productId) {
           } else {
             product = Products.findOne(revision.parentDocument);
           }
-          if (product) {
-            product.media = getProductMedia({ productId: product._id });
 
-            this.added("Products", product._id, product);
+          console.log("revision updated when product is updates", product, revision);
+
+          if (product) {
+            product.media = getProductMedia({ productId: product._id, getRevisions: true });
+
+            this.changed("Products", product._id, product);
             this.added("Revisions", revision._id, revision);
           }
         },
@@ -137,9 +170,11 @@ Meteor.publish("Product", function (productId) {
             product = Products.findOne(revision.parentDocument);
           }
 
+          console.log("revision updated when product is updates", product, revision);
+
           if (product) {
             product.__revisions = [revision];
-            product.media = getProductMedia({ productId: product._id });
+            product.media = getProductMedia({ productId: product._id, getRevisions: true });
 
             this.changed("Products", product._id, product);
             this.changed("Revisions", revision._id, revision);

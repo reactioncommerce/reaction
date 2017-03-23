@@ -187,21 +187,7 @@ class VariantListContainer extends Component {
 }
 
 function composer(props, onData) {
-  let childVariantMedia = [];
   const childVariants = getChildVariants();
-
-  if (Array.isArray(childVariants)) {
-    childVariantMedia = Media.find({
-      "metadata.variantId": {
-        $in: getVariantIds(childVariants)
-      }
-    }, {
-      sort: {
-        "metadata.priority": 1
-      }
-    }).fetch();
-  }
-
   let editable;
 
   if (Reaction.isPreview() === true) {
@@ -215,7 +201,6 @@ function composer(props, onData) {
     variantIsSelected,
     variantIsInActionView,
     childVariants,
-    childVariantMedia,
     displayPrice: ReactionProduct.getVariantPriceRange,
     isSoldOut: isSoldOut,
     editable
