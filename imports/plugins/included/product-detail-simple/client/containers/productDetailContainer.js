@@ -106,7 +106,7 @@ class ProductDetailContainer extends Component {
           totalQuantity = quantity + storedQuantity;
 
           if (currentVariant.inventoryPolicy && totalQuantity > currentVariant.inventoryQuantity) {
-            Alerts.inline("Sorry, cart is full. Failed to add product", "error", {
+            Alerts.inline(`Sorry, cart contains maximum quantity of ${currentVariant.title}. Failed to add to cart.`, "error", {
               placement: "productDetail",
               autoHide: 10000
             });
