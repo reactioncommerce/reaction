@@ -31,7 +31,7 @@ class ProductDetailContainer extends Component {
     let productId;
     let quantity;
     let totalQuantity;
-    let cartQuantity;
+    let storedQuantity;
     const currentVariant = ReactionProduct.selectedVariant();
     const currentProduct = ReactionProduct.selectedProduct();
 
@@ -61,31 +61,23 @@ class ProductDetailContainer extends Component {
       if (this.props.storedCart.items) {
         this.props.storedCart.items.forEach((item) => {
           if (item.variants._id === currentVariant._id) {
-            cartQuantity = item.quantity;
+            storedQuantity = item.quantity;
           }
         });
       }
 
       quantity = parseInt(this.state.cartQuantity, 10);
-      totalQuantity = quantity + cartQuantity;
 
       if (quantity < 1) {
         quantity = 1;
       }
 
-      if (currentVariant.inventoryManagement && quantity > currentVariant.inventoryQuantity) {
-        Alerts.inline(`Your product quantity has been adjusted to ${currentVariant.inventoryQuantity} items`, "warning", {
+      if (currentVariant.inventoryPolicy && quantity > currentVariant.inventoryQuantity) {
+        Alerts.inline("Your product quantity has been adjusted to the max quantity in stock", "warning", {
           placement: "productDetail",
           autoHide: 10000
         });
-        quantity = currentVariant.inventoryQuantity;
-      }
-
-      if (totalQuantity > currentVariant.inventoryQuantity) {
-        Alerts.inline("Sorry, cart is full. Failed to add product", "error", {
-          placement: "productDetail",
-          autoHide: 10000
-        });
+        quantity = currentVariant.inventoryQuantity - storedQuantity;
       }
 
       if (!currentProduct.isVisible) {
@@ -97,7 +89,7 @@ class ProductDetailContainer extends Component {
       } else {
         productId = currentProduct._id;
 
-        if (productId) {
+        const addToCart = () => {
           Meteor.call("cart/addToCart", productId, currentVariant._id, quantity, (error) => {
             if (error) {
               Logger.error("Failed to add to cart.", error);
@@ -108,6 +100,19 @@ class ProductDetailContainer extends Component {
 
             return true;
           });
+        };
+
+        if (productId) {
+          totalQuantity = quantity + storedQuantity;
+
+          if (currentVariant.inventoryPolicy && totalQuantity > currentVariant.inventoryQuantity) {
+            Alerts.inline("Sorry, cart is full. Failed to add product", "error", {
+              placement: "productDetail",
+              autoHide: 10000
+            });
+            return [];
+          }
+          addToCart();
         }
 
         // template.$(".variant-select-option").removeClass("active");
