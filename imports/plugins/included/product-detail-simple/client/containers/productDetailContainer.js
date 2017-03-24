@@ -58,7 +58,7 @@ class ProductDetailContainer extends Component {
         return [];
       }
 
-      if (this.props.storedCart && this.props.storedCart.items) {
+      if (this.props.storedCart.items && this.props.storedCart.items) {
         this.props.storedCart.items.forEach((item) => {
           if (item.variants._id === currentVariant._id) {
             storedQuantity = item.quantity;
@@ -67,17 +67,27 @@ class ProductDetailContainer extends Component {
       }
 
       quantity = parseInt(this.state.cartQuantity, 10);
+      totalQuantity = quantity + storedQuantity;
 
       if (quantity < 1) {
         quantity = 1;
       }
 
-      if (currentVariant.inventoryPolicy && quantity > currentVariant.inventoryQuantity) {
+      if (currentVariant.inventoryPolicy && quantity > currentVariant.inventoryQuantity && storedQuantity < currentVariant.inventoryQuantity) {
         Alerts.inline("Your product quantity has been adjusted to the max quantity in stock", "warning", {
           placement: "productDetail",
           autoHide: 10000
         });
-        quantity = currentVariant.inventoryQuantity - storedQuantity;
+        quantity = currentVariant.inventoryQuantity;
+        totalQuantity = totalQuantity - currentVariant.inventoryQuantity;
+      }
+
+      if (currentVariant.inventoryPolicy && totalQuantity > currentVariant.inventoryQuantity) {
+        Alerts.inline(`Sorry, cart contains maximum quantity of ${currentVariant.title}. Failed to add to cart.`, "error", {
+          placement: "productDetail",
+          autoHide: 10000
+        });
+        return [];
       }
 
       if (!currentProduct.isVisible) {
@@ -89,7 +99,7 @@ class ProductDetailContainer extends Component {
       } else {
         productId = currentProduct._id;
 
-        const addToCart = () => {
+        if (productId) {
           Meteor.call("cart/addToCart", productId, currentVariant._id, quantity, (error) => {
             if (error) {
               Logger.error("Failed to add to cart.", error);
@@ -100,19 +110,6 @@ class ProductDetailContainer extends Component {
 
             return true;
           });
-        };
-
-        if (productId) {
-          totalQuantity = quantity + storedQuantity;
-
-          if (currentVariant.inventoryPolicy && totalQuantity > currentVariant.inventoryQuantity) {
-            Alerts.inline(`Sorry, cart contains maximum quantity of ${currentVariant.title}. Failed to add to cart.`, "error", {
-              placement: "productDetail",
-              autoHide: 10000
-            });
-            return [];
-          }
-          addToCart();
         }
 
         // template.$(".variant-select-option").removeClass("active");
