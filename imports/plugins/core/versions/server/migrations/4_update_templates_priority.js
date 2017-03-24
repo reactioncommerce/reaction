@@ -1,28 +1,40 @@
 import { Migrations } from "/imports/plugins/core/versions";
 import { Packages } from "/lib/collections";
 
+const query = { layout: { $type: 3 } }; // gets docs with layout objects
+
 Migrations.add({
   version: 4,
   up() {
-    // grab only packages that have layout on them
-    const packages = Packages.find({ layout: { $type: 3 } }).fetch();
+    const packages = Packages.find(query).fetch();
+    const oldValue = 1;
+    const newValue = 999;
 
-    packages.forEach((pkg) => {
-      let changed = false; // to track if updating is needed
+    packages.forEach(updateHandler(oldValue, newValue));
+  },
+  down() {
+    const packages = Packages.find(query).fetch();
+    const oldValue = 999;
+    const newValue = 1;
 
-      pkg.layout.forEach((layout) => {
-        if (layout.priority === 1) {
-          layout.priority = 999;
-          changed = true;
-        }
-      });
-
-      if (changed) {
-        Packages.update(pkg._id, {
-          $set: { layout: pkg.layout }
-        });
-      }
-    });
+    packages.forEach(updateHandler(oldValue, newValue));
   }
 });
 
+function updateHandler(oldValue, newValue) {
+  return function (pkg) {
+    let changed = false; // to track if updating is needed
+    pkg.layout.forEach((layout) => {
+      if (layout.priority === oldValue) {
+        layout.priority = newValue;
+        changed = true;
+      }
+    });
+
+    if (changed) {
+      Packages.update(pkg._id, {
+        $set: { layout: pkg.layout }
+      });
+    }
+  };
+}
