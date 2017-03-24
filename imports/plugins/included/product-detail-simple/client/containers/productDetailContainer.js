@@ -31,7 +31,7 @@ class ProductDetailContainer extends Component {
     let productId;
     let quantity;
     let totalQuantity;
-    let storedQuantity;
+    let storedQuantity = 0;
     const currentVariant = ReactionProduct.selectedVariant();
     const currentProduct = ReactionProduct.selectedProduct();
 
@@ -58,7 +58,7 @@ class ProductDetailContainer extends Component {
         return [];
       }
 
-      if (this.props.storedCart.items) {
+      if (this.props.storedCart && this.props.storedCart.items) {
         this.props.storedCart.items.forEach((item) => {
           if (item.variants._id === currentVariant._id) {
             storedQuantity = item.quantity;
