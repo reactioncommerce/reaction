@@ -16,7 +16,7 @@ dependencies:
     - if [[ -L ~/.meteor/meteor ]]; then ln -s ~/.meteor/meteor ~/bin/meteor; export PATH="$PATH:~/bin"; fi
     - hash meteor 2>/dev/null || curl https://install.meteor.com | /bin/sh
     - npm i -g reaction-cli
-    - meteor npm install
+    # - meteor npm install
 
 test:
   override:
