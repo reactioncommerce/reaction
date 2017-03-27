@@ -15,7 +15,7 @@ reaction build $DOCKER_NAMESPACE:latest
 
 # run the container and wait for it to boot
 docker run -p 3000:3000 -d $DOCKER_NAMESPACE:latest
-sleep 30
+sleep 180
 
 # use curl to ensure the app returns 200's
 curl --retry 10 --retry-delay 10 -v http://localhost:3000
