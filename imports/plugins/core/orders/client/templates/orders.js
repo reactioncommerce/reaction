@@ -96,7 +96,7 @@ Template.orders.onCreated(function () {
     const filter = Reaction.getUserPreferences(PACKAGE_NAME, ORDER_LIST_FILTERS_PREFERENCE_NAME, DEFAULT_FILTER_NAME);
     const limit = this.orderLimits.get(filter);
     const query = OrderHelper.makeQuery(filter);
-    const subscription = this.subscribe("Orders.paginated", (limit + 1));
+    const subscription = this.subscribe("PaginatedOrders", (limit + 1));
 
     if (subscription.ready()) {
       const orders = Orders.find(query, { limit: limit }).fetch();

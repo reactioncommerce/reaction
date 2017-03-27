@@ -104,7 +104,7 @@ Meteor.publish("Orders", function () {
  * paginated orders
  */
 
-Meteor.publish("Orders.paginated", function (limit) {
+Meteor.publish("PaginatedOrders", function (limit) {
   check(limit, Match.OptionalOrNull(Number));
 
   if (this.userId === null) {
