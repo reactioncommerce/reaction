@@ -35,11 +35,15 @@ custom/server/*
 
 public/custom/*
 !public/custom/.gitkeep
+!public/custom/ReactionPublicCustomFolder
 
 private/custom/*
 !private/custom/.gitkeep
 
 imports/plugins/custom/*
 !imports/plugins/custom/.gitkeep
+!imports/plugins/custom/data_import
+!imports/plugins/custom/ee-front-end
+!imports/plugins/custom/ee-styles
 
 .reaction/config.json

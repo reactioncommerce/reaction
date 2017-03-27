@@ -28,7 +28,7 @@ class ProductPublishContainer extends Component {
     if (result && result.status === "success" && this.props.product) {
       const productDocument = result.previousDocuments.find((product) => this.props.product._id === product._id);
 
-      if (this.props.product.handle !== productDocument.handle) {
+      if (productDocument && this.props.product.handle !== productDocument.handle) {
         const newProductPath = Router.pathFor("product", {
           hash: {
             handle: this.props.product.handle
