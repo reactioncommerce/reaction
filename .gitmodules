@@ -7,3 +7,6 @@
 [submodule "imports/plugins/custom/data_import"]
 	path = imports/plugins/custom/data_import
 	url = https://github.com/evereveofficial/data_import.git
+[submodule "public/custom/ReactionPublicCustomFolder"]
+	path = public/custom/ReactionPublicCustomFolder
+	url = git@github.com:evereveofficial/ReactionPublicCustomFolder.git
