@@ -29,6 +29,7 @@ class AddToCartButton extends Component {
             className="input-group-addon add-to-cart-text js-add-to-cart"
             data-i18n="productDetail.addToCart"
             onClick={this.props.onClick || this.props.onAddToCart}
+            disabled = {this.props.disableAdding}
           >
             <Translation defaultValue="Add to cart" i18nKey="productDetail.addToCart" />
           </button>
@@ -49,6 +50,7 @@ class AddToCartButton extends Component {
 
 AddToCartButton.propTypes = {
   cartQuantity: PropTypes.number,
+  disableAdding: PropTypes.bool,
   editable: PropTypes.bool,
   onAddToCart: PropTypes.func,
   onCartQuantityChange: PropTypes.func,

@@ -17,7 +17,8 @@ class ProductDetailContainer extends Component {
     super(props);
 
     this.state = {
-      cartQuantity: 1
+      cartQuantity: 1,
+      disableAdding: false
     };
   }
 
@@ -79,6 +80,7 @@ class ProductDetailContainer extends Component {
             }
             // Reset cart quantity on success
             this.handleCartQuantityChange(null, 1);
+            this.setState({ disableAdding: true });
 
             return true;
           });
@@ -102,6 +104,7 @@ class ProductDetailContainer extends Component {
         const oppositeDirection = i18next.dir() === "rtl" ? "right" : "left";
 
         // Animate
+        const self = this;
         return $(".cart-alert")
           .show()
           .css({
@@ -112,7 +115,7 @@ class ProductDetailContainer extends Component {
             [oppositeDirection]: "auto",
             [direction]: 0
           }, 600)
-          .delay(4000)
+          .delay(2000)
           .animate({
             [oppositeDirection]: "auto",
             [direction]: -alertWidth
@@ -120,6 +123,7 @@ class ProductDetailContainer extends Component {
             duration: 600,
             complete() {
               $(".cart-alert").hide();
+              self.setState({ disableAdding: false });
             }
           });
       }
@@ -171,6 +175,7 @@ class ProductDetailContainer extends Component {
               topVariantComponent={<VariantListContainer />}
               onDeleteProduct={this.handleDeleteProduct}
               onProductFieldChange={this.handleProductFieldChange}
+              disableAdding = {this.state.disableAdding}
               {...this.props}
             />
           </StyleRoot>
