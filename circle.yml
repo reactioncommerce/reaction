@@ -20,7 +20,7 @@ dependencies:
 
 test:
   override:
-    - reaction test
+    # - reaction test
     - .reaction/ci/build.sh
 
 deployment:
@@ -30,7 +30,8 @@ deployment:
       - .reaction/ci/deploy-development.sh
 
   release:
-    tag: /v[0-9]+(\.[0-9]+)*/
-    owner: reactioncommerce
+    # will deploy based on tag format: ee-v1.2.3
+    tag: /ee-v[0-9]+(\.[0-9]+)*/
+    owner: evereveofficial
     commands:
       - .reaction/ci/deploy-production.sh
