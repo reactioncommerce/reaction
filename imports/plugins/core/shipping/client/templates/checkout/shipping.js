@@ -42,11 +42,36 @@ function cartShipmentMethods(currentCart) {
   return shipmentMethods;
 }
 
+function enabledShipping() {
+  const enabledShippingArr = [];
+  const apps = Reaction.Apps({
+    provides: "shippingSettings",
+    enabled: true
+  });
+  for (app of apps) {
+    if (app.enabled === true) enabledShippingArr.push(app);
+  }
+  return enabledShippingArr;
+}
+
 // ensure new quotes are
 Template.coreCheckoutShipping.onCreated(function () {
   this.autorun(() => {
     this.subscribe("Shipping");
   });
+
+  const enabled = enabledShipping();
+  const isEnabled = enabled.length;
+  const shippingOpts = {
+    provides: "settings",
+    name: "settings/shipping",
+    template: "shippingSettings"
+  };
+
+  // If shipping not set, show shipping settings dashboard
+  if (!isEnabled) {
+    Reaction.showActionView(shippingOpts);
+  }
 });
 
 Template.coreCheckoutShipping.helpers({

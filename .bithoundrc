@@ -1,5 +1,6 @@
 {
   "ignore": [
+    "**/packages/**",
     "**/deps/**",
     "**/node_modules/**",
     "**/thirdparty/**",
@@ -56,7 +57,9 @@
   },
   "dependencies": {
     "mute": [
-      "wdio-mocha-framework"
+      "wdio-mocha-framework",
+      "griddle-react",
+      "nodemailer"
     ],
     "unused-ignores": [
       "jquery",

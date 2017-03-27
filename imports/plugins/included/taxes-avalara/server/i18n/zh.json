@@ -4,6 +4,32 @@
   "ns": "taxes-avalara",
   "translation": {
     "reaction-taxes": {
+      "settings": {
+        "apiLoginId": "Avalara API登录ID",
+        "username": "用户名",
+        "password": "密码",
+        "companyCode": "公司代码",
+        "shippingTaxCode": "航运税法",
+        "mode": "生产模式",
+        "performTaxCalculation": "执行计税",
+        "addressValidation": "地址验证",
+        "enableAddressValidationByCountry": "启用按国家地址验证",
+        "enableLogging": "启用日志记录",
+        "logRetentionDuration": "日志保留时间",
+        "requestTimeout": "请求超时",
+        "commitDocuments": "提交文件",
+        "administratorsPanel": "管理员面板",
+        "testCredentialsSuccess": "连接测试成功",
+        "testCredentialsFailed": "连接测试失败，请检查凭据",
+        "apiError": "Avalara配置不正确"
+      },
+      "logGrid": {
+        "noLogsFound": "没有找到记录",
+        "columns": {
+          "date": "日期",
+          "docType": "文件类型"
+        }
+      },
       "admin": {
         "shortcut": {
           "avalaraLabel": "Avalara",
@@ -12,13 +38,14 @@
         "dashboard": {
           "avalaraLabel": "Avalara",
           "avalaraTitle": "Avalara",
-          "avalaraDescription": "Avalara税率"
+          "avalaraDescription": "Avalara税率",
+          "testCredentials": "测试凭据"
         },
         "taxSettings": {
           "avalaraLabel": "Avalara",
           "avalaraSettingsLabel": "Avalara",
-          "avalaraCredentials": "添加凭据启用",
-          "avalaraGetCredentialsURL": "在这里让他们"
+          "formTitle": "税收设置",
+          "entityCodeCustomLabel": "设置自定义值"
         }
       }
     }

@@ -83,10 +83,13 @@
 }
 
 .order-item-details .order-detail-price {
-  flex: 0 0 auto;
+  flex: 1 1 auto;
+  margin-right: 20px;
 }
 
-
+.order-detail-quantity {
+  margin-right: 50px;
+}
 
 
 
@@ -153,7 +156,35 @@
 
 .order-item {
   .display(flex);
-  padding: 1rem 0;
+}
+
+.invoice .invoice:hover, .invoice:hover {
+  background-color: @list-group-hover-bg;
+  cursor: pointer;
+}
+
+.invoice {
+  margin-left: -15px;
+  margin-right: -15px;
+}
+
+.refund-button {
+  height: 34px;
+  margin-left: 10px;
+}
+
+.refund-container {
+  margin-top: 10px
+}
+
+.roll-up-invoice-list {
+  background-color: @pre-bg;
+  margin-left: -15px;
+  margin-right: -15px;
+}
+
+.roll-up-content {
+  padding: 15px;
 }
 
 .order-item-media {
@@ -171,7 +202,6 @@
   .margin-left(20px);
   align-items: center;
 }
-
 
 .order-shipments {
   list-style-type: none;
@@ -196,5 +226,10 @@
   > .amount {
     .flex(0 0 auto);
     width: 100px;
+  }
+
+  > .invoice-details {
+    .flex(1 1 auto);
+    .text-align(right);
   }
 }

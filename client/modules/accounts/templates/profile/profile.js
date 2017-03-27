@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
-import { Reaction } from "/lib/api";
+import { Reaction } from "/client/api";
 import * as Collections from "/lib/collections";
 
 /**
@@ -14,6 +14,8 @@ Template.accountProfile.onCreated(() => {
   Meteor.call("accounts/currentUserHasPassword", (error, result) => {
     template.userHasPassword.set(result);
   });
+  // hide actionView if open, doesn't relate to profile page
+  Reaction.hideActionView();
 });
 
 /**
@@ -65,9 +67,5 @@ Template.accountProfile.helpers({
       return "addressBookGrid";
     }
     return "addressBookAdd";
-  },
-
-  isMarketplaceGuest: function () {
-    return Reaction.hasMarketplaceGuestAccess();
   }
 });

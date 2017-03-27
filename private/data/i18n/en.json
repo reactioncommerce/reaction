@@ -96,6 +96,8 @@
         "noProductsFound": "No products found.",
         "private": "Private",
         "public": "Public",
+        "allOn": "All On",
+        "allOff": "All Off",
         "shortcut": {
           "addProductLabel": "Add Product",
           "accountsLabel": "Accounts"
@@ -158,74 +160,6 @@
           "orderDelivered": "Your order has been delivered.",
           "orderAccepted": "Your order has been accepted.",
           "orderShipped": "Your order has been shipped."
-        }
-      },
-      "sms": {
-        "headers": {
-          "settings": "SMS Provider"
-        },
-        "settings": {
-          "provider": "Provider",
-          "selectProvider": "Select an SMS provider...",
-          "smsPhone": "SMS Phone Number",
-          "apiKey": "API Key",
-          "apiToken": "API Token/Secret"
-        },
-        "alerts": {
-          "noApiKey": "Please add an API Key",
-          "noApiToken": "Please add an API TOKEN/Secret",
-          "noSmsProvider": "Please choose an SMS provider",
-          "noSmsPhone": "Please add the phone number given to you by your SMS provider",
-          "saveSuccess": "SMS Settings saved"
-        }
-      },
-      "mail": {
-        "headers": {
-          "email": "Email",
-          "emailSettings": "Email Settings",
-          "config": "Configuration",
-          "settings": "SMTP Provider",
-          "status": "Status",
-          "actions": "Actions"
-        },
-        "settings": {
-          "service": "Service",
-          "user": "User",
-          "password": "Password",
-          "host": "Host",
-          "port": "Port",
-          "passwordShow": "Show",
-          "passwordHide": "Hide",
-          "fieldNotSet": "Not set",
-          "selectService": "Select a service...",
-          "custom": "custom"
-        },
-        "logs": {
-          "headers": {
-            "emailLogs": "Email Logs",
-            "email": "Email",
-            "subject": "Subject",
-            "sent": "Sent",
-            "status": "Status"
-          },
-          "noEmails": "No emails sent yet",
-          "limit": "Quantity",
-          "retry": "Retry",
-          "noneAvailble": "None available"
-        },
-        "alerts": {
-          "error": "Error: {{error}}",
-          "resendSuccess": "Attempting to resend email to {{email}}",
-          "missingService": "Please choose a mail provider service",
-          "userPassRequired": "SMTP user and password are required for {{service}}",
-          "allFieldsRequired": "All fields are required for a custom service!",
-          "portNaN": "The port must be a number!",
-          "connectionFailed": "Connection failed!",
-          "saveAnyway": "Do you want to save the settings anyway?",
-          "saveSuccess": "Mail settings saved.",
-          "saveFailed": "Failed to save mail settings. {{error}}",
-          "cantSendEmail": "Server Error: Can't send email notification.",
-          "emailSent": "Email notification sent."
         }
       },
       "header": {
@@ -302,6 +236,7 @@
         "pageTitle": "Subtitle",
         "vendor": "Vendor",
         "description": "Description",
+        "originCountry": "Origin Country",
         "facebookMsg": "Facebook Message",
         "twitterMsg": "Twitter Message",
         "pinterestMsg": "Pinterest Message",
@@ -348,13 +283,20 @@
         "compareAtPrice": "Price (MSRP)",
         "fulfillmentService": "Fulfillment service",
         "weight": "Weight",
+        "length": "Length",
+        "width": "Width",
+        "height": "Height",
         "taxable": "Taxable",
+        "taxCode": "Tax Codes",
+        "taxDescription": "Tax Description",
         "inventoryManagement": "Inventory tracking",
         "inventoryManagementLabel": "Register product in inventory system and track its status",
         "inventoryPolicy": "Deny when out of stock",
         "inventoryPolicyLabel": "Do not sell the product variant when it is not in stock",
         "lowInventoryWarningThreshold": "Warn @",
-        "lowInventoryWarningThresholdLabel": "Warn customers that the product will be close to sold out when the quantity reaches the next threshold"
+        "lowInventoryWarningThresholdLabel": "Warn customers that the product will be close to sold out when the quantity reaches the next threshold",
+        "originCountry": "Origin Country",
+        "selectTaxCode": "Select Tax Code"
       },
       "variantList": {
         "moreOptions": "There are more options available for this selection.",

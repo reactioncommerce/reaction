@@ -4,6 +4,32 @@
   "ns": "taxes-avalara",
   "translation": {
     "reaction-taxes": {
+      "settings": {
+        "apiLoginId": "Avalara API ID přihlášení",
+        "username": "Uživatelské jméno",
+        "password": "Heslo",
+        "companyCode": "Kód společnost",
+        "shippingTaxCode": "Vodní doprava daňový řád",
+        "mode": "Způsob výroby",
+        "performTaxCalculation": "Provést výpočet daně",
+        "addressValidation": "Ověření adresy",
+        "enableAddressValidationByCountry": "Aktivovat Ověření adresy podle země",
+        "enableLogging": "povolit protokolování",
+        "logRetentionDuration": "Log Retenční doba",
+        "requestTimeout": "Zažádat o timeout",
+        "commitDocuments": "commit Dokumenty",
+        "administratorsPanel": "Panel administrátora",
+        "testCredentialsSuccess": "Test připojení Úspěch",
+        "testCredentialsFailed": "Test připojení selhalo, zkontrolujte pověření",
+        "apiError": "Avalara není správně nakonfigurován"
+      },
+      "logGrid": {
+        "noLogsFound": "Nebyly nalezeny žádné protokoly",
+        "columns": {
+          "date": "Datum",
+          "docType": "Typ dokumentu"
+        }
+      },
       "admin": {
         "shortcut": {
           "avalaraLabel": "Avalara",
@@ -12,13 +38,14 @@
         "dashboard": {
           "avalaraLabel": "Avalara",
           "avalaraTitle": "Avalara",
-          "avalaraDescription": "Avalara Sazby daně"
+          "avalaraDescription": "Avalara Sazby daně",
+          "testCredentials": "testovací pověření"
         },
         "taxSettings": {
           "avalaraLabel": "Avalara",
           "avalaraSettingsLabel": "Avalara",
-          "avalaraCredentials": "Přidat pověření k tomu, aby",
-          "avalaraGetCredentialsURL": "Získat je sem"
+          "formTitle": "daňové Nastavení",
+          "entityCodeCustomLabel": "SET vlastní hodnotu"
         }
       }
     }

@@ -8,6 +8,10 @@
           "productSettingsLabel": "Ρυθμίσεις προϊόντος",
           "productDetailsLabel": "λεπτομέρειες προιόντος"
         }
+      },
+      "productDetailEdit": {
+        "template": "πρότυπο Ρυθμίσεις",
+        "templateSelectPlaceholder": "Επιλέξτε ένα πρότυπο"
       }
     }
   }

@@ -1,4 +1,5 @@
 import url from "url";
+import packageJson from "/package.json";
 import { merge, uniqWith } from "lodash";
 import { Meteor } from "meteor/meteor";
 import { EJSON } from "meteor/ejson";
@@ -9,6 +10,7 @@ import { getRegistryDomain } from "./setDomain";
 import { registerTemplate } from "./templates";
 import { sendVerificationEmail } from "./accounts";
 import { getMailUrl } from "./email/config";
+
 
 export default {
 
@@ -30,6 +32,7 @@ export default {
     this.Import.flush();
     // timing is important, packages are rqd for initilial permissions configuration.
     this.createDefaultAdminUser();
+    this.setAppVersion();
     // hook after init finished
     Hooks.Events.run("afterCoreInit");
 
@@ -201,6 +204,14 @@ export default {
     return settings.settings || {};
   },
 
+  getShopCurrency() {
+    const shop = Shops.findOne({
+      _id: this.getShopId()
+    });
+
+    return shop && shop.currency || "USD";
+  },
+
   getPackageSettings(name) {
     const shopId = this.getShopId();
     const query = {
@@ -262,6 +273,10 @@ export default {
     } else {
       throw new Meteor.Error(`Failed to add default seller roles ${roles}`);
     }
+  },
+
+  getAppVersion() {
+    return Shops.findOne().appVersion;
   },
 
   /**
@@ -404,22 +419,33 @@ export default {
   loadPackages() {
     const packages = Packages.find().fetch();
 
-    let settingsFromJSON;
+    let registryFixtureData;
 
-    // Attempt to load reaction.json fixture data
-    try {
-      const settingsJSONAsset = Assets.getText("settings/reaction.json");
-      const validatedJson = EJSON.parse(settingsJSONAsset);
-
-      if (!_.isArray(validatedJson[0])) {
-        Logger.warn("Load Settings is not an array. Failed to load settings.");
-      } else {
-        settingsFromJSON = validatedJson;
+    if (process.env.REACTION_REGISTRY) {
+      // check the environment for the registry fixture data first
+      registryFixtureData = process.env.REACTION_REGISTRY;
+      Logger.info("Loaded REACTION_REGISTRY environment variable for registry fixture import");
+    } else {
+      // or attempt to load reaction.json fixture data
+      try {
+        registryFixtureData = Assets.getText("settings/reaction.json");
+      } catch (error) {
+        Logger.warn("Skipped loading settings from reaction.json.");
+        Logger.debug(error, "loadSettings reaction.json not loaded.");
       }
-    } catch (error) {
-      Logger.warn("Skipped loading settings from reaction.json.");
-      Logger.debug(error, "loadSettings reaction.json not loaded.");
+      Logger.info("Loaded \"/private/settings/reaction.json\" for registry fixture import");
     }
+
+    if (!!registryFixtureData) {
+      const validatedJson = EJSON.parse(registryFixtureData);
+
+      if (!Array.isArray(validatedJson[0])) {
+        Logger.warn("Registry fixture data is not an array. Failed to load.");
+      } else {
+        registryFixtureData = validatedJson;
+      }
+    }
+
     const layouts = [];
     // for each shop, we're loading packages in a unique registry
     _.each(this.Packages, (config, pkgName) => {
@@ -442,8 +468,8 @@ export default {
 
         // Setting from a fixture file, most likely reaction.json
         let settingsFromFixture;
-        if (settingsFromJSON) {
-          settingsFromFixture = _.find(settingsFromJSON[0], (packageSetting) => {
+        if (registryFixtureData) {
+          settingsFromFixture = _.find(registryFixtureData[0], (packageSetting) => {
             return config.name === packageSetting.name;
           });
         }
@@ -490,5 +516,10 @@ export default {
         return false;
       });
     });
+  },
+  setAppVersion() {
+    const version = packageJson.version;
+    Logger.info(`Reaction Version: ${version}`);
+    Shops.update({}, { $set: { appVersion: version } }, { multi: true });
   }
 };

@@ -11,36 +11,36 @@ meteor-base@1.0.4             # Packages every Meteor app needs to have
 mobile-experience@1.0.4       # Packages for a great mobile UX
 blaze-html-templates@1.0.4    # Compile .html files into Meteor Blaze views
 es5-shim@4.6.15               # ECMAScript 5 compatibility for older browsers.
-ecmascript@0.6.1              # Enable ECMAScript2015+ syntax in app code
+ecmascript@0.6.3              # Enable ECMAScript2015+ syntax in app code
 audit-argument-checks@1.0.7   # ensure meteor method argument validation
-browser-policy@1.0.9          # security-related policies enforced by newer browsers
+browser-policy@1.1.0          # security-related policies enforced by newer browsers
 juliancwirko:postcss          # CSS post-processing plugin (replaces standard-minifier-css)
 abernix:standard-minifier-js  # a minifier plugin used for Meteor apps by default
 session@1.1.7                 # ReactiveDict whose contents are preserved across Hot Code Push
-tracker@1.1.1                 # Meteor transparent reactive programming library
-mongo@1.1.14
+tracker@1.1.2                 # Meteor transparent reactive programming library
+mongo@1.1.16
 random@1.0.10
 reactive-var@1.0.11
 reactive-dict@1.1.8
-check@1.2.4
-http@1.2.10
-ddp-rate-limiter@1.0.6
+check@1.2.5
+http@1.2.12
+ddp-rate-limiter@1.0.7
 underscore@1.0.10
-logging@1.1.16
+logging@1.1.17
 reload@1.1.11
 ejson@1.0.13
-less@2.7.8
+less@2.7.9
 service-configuration@1.0.11
 amplify
 mdg:validated-method
-shell-server@0.2.1
+shell-server@0.2.3
 
 # Meteor Auth Packages
-accounts-base@1.2.14
-accounts-password@1.3.3
-accounts-facebook@1.0.11
-accounts-google@1.0.11
-accounts-twitter@1.1.12
+accounts-base@1.2.15
+accounts-password@1.3.4
+accounts-facebook@1.1.1
+accounts-google@1.1.1
+accounts-twitter@1.2.1
 oauth-encryption@1.2.1
 # accounts-github
 # accounts-weibo
@@ -69,6 +69,7 @@ kadira:flow-router-ssr
 matb33:collection-hooks
 meteorhacks:ssr
 meteorhacks:subs-manager
+natestrauser:select2
 ongoworks:security
 raix:ui-dropped-event
 risul:moment-timezone
@@ -94,5 +95,7 @@ johanbrook:publication-collector
 # spiderable                                # adds phantomjs SEO rendering, use ongoworks:spiderable with Docker
 # meteorhacks:sikka                         # additional ddp, login security
 
-
 # Custom Packages
+facebook-config-ui
+google-config-ui
+twitter-config-ui

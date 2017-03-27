@@ -1,0 +1,15 @@
+[{
+  "i18n": "zh",
+  "ns": "reaction-i18n",
+  "translation": {
+    "reaction-i18n": {
+      "admin": {
+        "i18nSettings": {
+          "localization": "本地化",
+          "enabledCurrencies": "货币",
+          "enabledLanguages": "语言"
+        }
+      }
+    }
+  }
+}]

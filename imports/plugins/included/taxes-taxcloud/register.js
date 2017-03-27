@@ -12,6 +12,9 @@ Reaction.registerPackage({
       apiKey: "",
       refreshPeriod: "every 7 days",
       taxCodeUrl: "https://taxcloud.net/tic/?format=json"
+    },
+    taxCodes: {
+      getTaxCodeMethod: "taxcloud/getTaxCodes"
     }
   },
   registry: [
@@ -20,6 +23,11 @@ Reaction.registerPackage({
       name: "taxes/settings/taxcloud",
       provides: "taxSettings",
       template: "taxCloudSettings"
+    },
+    {
+      label: "TaxCloud Tax Codes",
+      provides: "taxCodes",
+      name: "taxes/taxcodes/taxcloud"
     }
   ]
 });
