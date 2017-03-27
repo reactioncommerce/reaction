@@ -79,34 +79,28 @@ const OrderHelper =  {
 
 Template.orders.onCreated(function () {
   this.state = new ReactiveDict();
-  this.newLimit = new ReactiveVar(2);
-  this.processingLimit = new ReactiveVar(2);
-  this.completedLimit = new ReactiveVar(2);
+  this.orderLimits = new ReactiveDict();
   this.state.setDefault({
     orders: []
+  });
+  this.orderLimits.setDefault({
+    new: 2,
+    processing: 2,
+    completed: 2
   });
 
   const filterName = this.data && this.data.filter && this.data.filter.name || "new";
   Reaction.setUserPreferences(PACKAGE_NAME, ORDER_LIST_FILTERS_PREFERENCE_NAME, filterName);
 
   this.autorun(() => {
-    const limit = this.newLimit.get() || this.processingLimit.get() || this.completedLimit.get();
+    const filter = Reaction.getUserPreferences(PACKAGE_NAME, ORDER_LIST_FILTERS_PREFERENCE_NAME, DEFAULT_FILTER_NAME);
+    const limit = this.orderLimits.get(filter);
+    const query = OrderHelper.makeQuery(filter);
     const subscription = this.subscribe("Orders.paginated", (limit + 1));
 
     if (subscription.ready()) {
-      const filter = Reaction.getUserPreferences(PACKAGE_NAME, ORDER_LIST_FILTERS_PREFERENCE_NAME, DEFAULT_FILTER_NAME);
-      const query = OrderHelper.makeQuery(filter);
-
-      if (filter === "new") {
-        const orders = Orders.find(query, { limit: this.newLimit.get() }).fetch();
-        this.state.set("orders", orders);
-      } else if (filter === "processing") {
-        const orders = Orders.find(query, { limit: this.processingLimit.get() }).fetch();
-        this.state.set("orders", orders);
-      } else if (filter === "completed") {
-        const orders = Orders.find(query, { limit: this.completedLimit.get() }).fetch();
-        this.state.set("orders", orders);
-      }
+      const orders = Orders.find(query, { limit: limit }).fetch();
+      this.state.set("orders", orders);
     }
   });
 
@@ -124,9 +118,6 @@ Template.orders.onCreated(function () {
  * orders helpers
  */
 Template.orders.helpers({
-  checkFilter() {
-    return Reaction.getUserPreferences(PACKAGE_NAME, ORDER_LIST_FILTERS_PREFERENCE_NAME, DEFAULT_FILTER_NAME);
-  },
   FilterComponent() {
     return {
       component: OrdersActionContainer,
@@ -149,14 +140,7 @@ Template.orders.helpers({
 
   hasMoreOrders() {
     const filter = Reaction.getUserPreferences(PACKAGE_NAME, ORDER_LIST_FILTERS_PREFERENCE_NAME, DEFAULT_FILTER_NAME);
-
-    if (filter === "new") {
-      return Template.instance().state.get("orders").length >= Template.instance().newLimit.get();
-    } else if (filter === "processing") {
-      return Template.instance().state.get("orders").length >= Template.instance().processingLimit.get();
-    } else if (filter === "completed") {
-      return Template.instance().state.get("orders").length >= Template.instance().completedLimit.get();
-    }
+    return Template.instance().state.get("orders").length >= Template.instance().orderLimits.get(filter);
   },
 
   currentFilterLabel() {
@@ -182,26 +166,12 @@ Template.orders.helpers({
  * orders events
  */
 Template.orders.events({
-  "click .new": function (event, instance) {
+  "click .show-more-orders": function (event, instance) {
     event.preventDefault();
-
-    let limit = instance.newLimit.get();
+    const filter = Reaction.getUserPreferences(PACKAGE_NAME, ORDER_LIST_FILTERS_PREFERENCE_NAME, DEFAULT_FILTER_NAME);
+    let limit = instance.orderLimits.get(filter);
     limit += 5;
-    instance.newLimit.set(limit);
-  },
-  "click .processing": function (event, instance) {
-    event.preventDefault();
-
-    let limit = instance.processingLimit.get();
-    limit += 5;
-    instance.processingLimit.set(limit);
-  },
-  "click .completed": function (event, instance) {
-    event.preventDefault();
-
-    let limit = instance.completedLimit.get();
-    limit += 5;
-    instance.completedLimit.set(limit);
+    instance.orderLimits.set(filter, limit);
   }
 });
 
