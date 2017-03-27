@@ -1,0 +1,9 @@
+[submodule "imports/plugins/custom/ee-styles"]
+	path = imports/plugins/custom/ee-styles
+	url = https://github.com/evereveofficial/ee-styles
+[submodule "imports/plugins/custom/ee-front-end"]
+	path = imports/plugins/custom/ee-front-end
+	url = https://github.com/evereveofficial/ee-front-end
+[submodule "imports/plugins/custom/data_import"]
+	path = imports/plugins/custom/data_import
+	url = https://github.com/evereveofficial/data_import.git

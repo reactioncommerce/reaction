@@ -41,5 +41,8 @@ private/custom/*
 
 imports/plugins/custom/*
 !imports/plugins/custom/.gitkeep
+!imports/plugins/custom/data_import
+!imports/plugins/custom/ee-front-end
+!imports/plugins/custom/ee-styles
 
 .reaction/config.json
