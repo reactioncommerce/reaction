@@ -125,6 +125,29 @@ Meteor.publish("PaginatedOrders", function (filter, limit) {
 });
 
 /**
+ * order counts
+ */
+
+Meteor.publish("OrderCounts", function (filter) {
+  check(filter, String);
+
+  if (this.userId === null) {
+    return this.ready();
+  }
+  const shopId = Reaction.getShopId();
+  if (!shopId) {
+    return this.ready();
+  }
+  if (Roles.userIsInRole(this.userId, ["admin", "owner"], shopId)) {
+    const orders = Orders.rawCollection();
+    return orders.aggregate([
+      { $match: OrderHelper.makeQuery(filter) },
+      { $group: { _id: "$shopId", count: { $sum: 1 } } }
+    ]);
+  }
+});
+
+/**
  * account orders
  */
 Meteor.publish("AccountOrders", function (userId, currentShopId) {
