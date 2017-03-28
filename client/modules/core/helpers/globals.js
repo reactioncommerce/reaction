@@ -27,35 +27,6 @@ export function toggleSession(sessionVariable, positiveState) {
   return Session.get(sessionVariable);
 }
 
-/**
- * locateUser
- * @return {Object} set and return session address based on browser latitude, longitude
- */
-export function locateUser() {
-  function successFunction(position) {
-    const lat = position.coords.latitude;
-    const lng = position.coords.longitude;
-    return Meteor.call("shop/locateAddress", lat, lng, function (error,
-      address) {
-      if (address) {
-        return Session.set("address", address);
-      }
-    });
-  }
-
-  function errorFunction() {
-    return Meteor.call("shop/locateAddress", function (error, address) {
-      if (address) {
-        return Session.set("address", address);
-      }
-    });
-  }
-
-  if (navigator.geolocation) {
-    return navigator.geolocation.getCurrentPosition(successFunction,
-      errorFunction);
-  }
-}
 
 /**
  * getCardTypes
