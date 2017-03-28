@@ -18,7 +18,8 @@ class ProductDetailContainer extends Component {
 
     this.state = {
       cartQuantity: 1,
-      disableAdding: false
+      disableAdding: false,
+      disabledStyle: {}
     };
   }
 
@@ -72,6 +73,7 @@ class ProductDetailContainer extends Component {
       } else {
         productId = currentProduct._id;
         this.setState({ disableAdding: true }); // disable add-to-cart button
+        this.setState({ disabledStyle: { cursor: "not-allowed" } });
 
         if (productId) {
           Meteor.call("cart/addToCart", productId, currentVariant._id, quantity, (error) => {
@@ -124,6 +126,7 @@ class ProductDetailContainer extends Component {
             complete() {
               $(".cart-alert").hide();
               self.setState({ disableAdding: false }); // reactivate button after alert is completed
+              self.setState({ disabledStyle: {} });
             }
           });
       }
@@ -176,6 +179,7 @@ class ProductDetailContainer extends Component {
               onDeleteProduct={this.handleDeleteProduct}
               onProductFieldChange={this.handleProductFieldChange}
               disableAdding={this.state.disableAdding}
+              disabledStyle={this.state.disabledStyle}
               {...this.props}
             />
           </StyleRoot>
