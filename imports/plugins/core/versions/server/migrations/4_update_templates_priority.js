@@ -1,23 +1,30 @@
 import { Migrations } from "/imports/plugins/core/versions";
 import { Packages } from "/lib/collections";
 
-const query = { layout: { $type: 3 } }; // gets docs with layout objects
+const reactionPkgs = [ // reaction packages with layouts
+  "reaction-accounts",
+  "reaction-checkout",
+  "reaction-dashboard",
+  "reaction-email",
+  "reaction-orders",
+  "reaction-ui",
+  "reaction-inventory",
+  "reaction-product-variant"];
+
+const query = {
+  name: { $in: reactionPkgs },
+  layout: { $type: 3 } // docs with layouts set
+};
 
 Migrations.add({
   version: 4,
   up() {
     const packages = Packages.find(query).fetch();
-    const oldValue = 1;
-    const newValue = 999;
-
-    packages.forEach(updateHandler(oldValue, newValue));
+    packages.forEach(updateHandler(1, 999));
   },
   down() {
     const packages = Packages.find(query).fetch();
-    const oldValue = 999;
-    const newValue = 1;
-
-    packages.forEach(updateHandler(oldValue, newValue));
+    packages.forEach(updateHandler(999, 1));
   }
 });
 
@@ -25,7 +32,7 @@ function updateHandler(oldValue, newValue) {
   return function (pkg) {
     let changed = false; // to track if updating is needed
     pkg.layout.forEach((layout) => {
-      if (layout.priority === oldValue) {
+      if (!layout.priority || layout.priority === oldValue) {
         layout.priority = newValue;
         changed = true;
       }
