@@ -68,7 +68,7 @@ function composer(props, onData) {
       languages.push({
         label: language.label,
         value: language.i18n,
-        enabled: language.enabled,
+        enabled: (language.i18n === shop.language || language.enabled),
         i18nKey: i18nKey
       });
     }
@@ -90,10 +90,10 @@ function composer(props, onData) {
       currencyList.push({
         name: currency,
         label,
-        enabled: structure.enabled
+        enabled: (structure.enabled || currency === shop.currency)
       });
 
-      if (structure.enabled) {
+      if (structure.enabled || currency === shop.currency) {
         currencyOptions.push({
           label,
           value: currency
@@ -130,7 +130,7 @@ function composer(props, onData) {
     shop,
     languages,
     currencies: currencyList,
-    enabledLanguages: languages.filter(language => language.enabled),
+    enabledLanguages: languages.filter(language => (language.enabled || language.value === shop.language)),
     countryOptions: countries,
     currencyOptions,
     uomOptions,
