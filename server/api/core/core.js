@@ -214,6 +214,17 @@ export default {
     return shop && shop.currency || "USD";
   },
 
+  getShopLanguage() {
+    const { language } = Shops.findOne({
+      _id: this.getShopId()
+    }, {
+      fields: {
+        language: 1
+      } }
+    );
+    return language;
+  },
+
   getPackageSettings(name) {
     return Packages.findOne({ packageName: name, shopId: this.getShopId() }) || null;
   },

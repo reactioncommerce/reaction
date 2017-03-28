@@ -20,7 +20,7 @@ class ProductPublishContainer extends Component {
 
   handlePublishActions = (event, action, documentIds) => {
     if (action === "archive") {
-      ReactionProduct.maybeDeleteProduct(documentIds);
+      ReactionProduct.archiveProduct(documentIds);
     }
   }
 
