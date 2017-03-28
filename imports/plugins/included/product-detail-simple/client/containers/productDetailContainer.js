@@ -58,7 +58,7 @@ class ProductDetailContainer extends Component {
         return [];
       }
 
-      if (this.props.storedCart.items && this.props.storedCart.items) {
+      if (this.props.storedCart.items) {
         this.props.storedCart.items.forEach((item) => {
           if (item.variants._id === currentVariant._id) {
             storedQuantity = item.quantity;
