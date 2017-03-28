@@ -78,6 +78,7 @@ class ProductDetailContainer extends Component {
       if (currentVariant.inventoryPolicy && quantity > maxQuantity && storedQuantity < maxQuantity) {
         Alerts.inline("Your product quantity has been adjusted to the max quantity in stock", "warning", {
           placement: "productDetail",
+          i18nKey: "admin.inventoryAlerts.adjustedQuantity",
           autoHide: 10000
         });
         quantity = maxQuantity - storedQuantity;
@@ -87,6 +88,7 @@ class ProductDetailContainer extends Component {
       if (currentVariant.inventoryPolicy && totalQuantity > maxQuantity && storedQuantity < maxQuantity && quantity < maxQuantity) {
         Alerts.inline("Your product quantity has been adjusted to the max quantity in stock", "warning", {
           placement: "productDetail",
+          i18nKey: "admin.inventoryAlerts.adjustedQuantity",
           autoHide: 10000
         });
         quantity = maxQuantity - storedQuantity;
@@ -94,8 +96,9 @@ class ProductDetailContainer extends Component {
       }
 
       if (currentVariant.inventoryPolicy && totalQuantity > maxQuantity) {
-        Alerts.inline(`Sorry, cart contains maximum quantity of ${currentVariant.title}. Failed to add to cart.`, "error", {
+        Alerts.inline("Sorry, this item is out of stock!", "error", {
           placement: "productDetail",
+          i18nKey: "productDetail.outOfStock",
           autoHide: 10000
         });
         return [];
