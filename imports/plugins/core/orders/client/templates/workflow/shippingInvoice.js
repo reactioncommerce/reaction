@@ -6,6 +6,7 @@ import { ReactiveVar } from "meteor/reactive-var";
 import { i18next, Logger, formatNumber, Reaction } from "/client/api";
 import { NumericInput } from "/imports/plugins/core/ui/client/components";
 import { Orders, Shops } from "/lib/collections";
+import { ButtonSelectContainer } from "/imports/plugins/core/ui/client/containers";
 import DiscountList from "/imports/plugins/core/discounts/client/components/list";
 import InvoiceContainer from "../../containers/invoiceContainer.js";
 import LineItemsContainer from "../../containers/lineItemsContainer.js";
@@ -81,6 +82,31 @@ Template.coreOrderShippingInvoice.helpers({
   },
   InvoiceContainer() {
     return InvoiceContainer;
+  },
+  buttonSelectComponent() {
+    return {
+      component: ButtonSelectContainer,
+      buttons: [
+        {
+          name: "Approve",
+          active: true,
+          buttonClass: "btn-info",
+          eventAction: "approveInvoice",
+          bgColor: "bg-info"
+        }, {
+          name: "Cancel",
+          active: false,
+          buttonClass: "btn-danger",
+          eventAction: "startCancelOrder",
+          bgColor: "bg-danger"
+        },
+        {
+          name: "Refund",
+          buttonClass: "btn-warning",
+          bgColor: "bg-warning"
+        }
+      ]
+    };
   },
   LineItemsContainer() {
     return LineItemsContainer;
