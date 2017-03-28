@@ -32,7 +32,7 @@ Hooks.Events.add("afterCoreInit", () => {
  * @param {Object} olderThan older than date
  * @return {Object} stale carts
  */
-const staleCarts = (olderThan) => {
+const getstaleCarts = (olderThan) => {
   return Cart.find({ updatedAt: { $lte: olderThan } }).fetch();
 };
 
@@ -46,33 +46,29 @@ export default () => {
     if (settings.cart) {
       const schedule = (settings.cart.cleanupDurationDays).match(/\d/);// configurable in shop settings
       const olderThan = moment().subtract(Number(schedule[0]), "days")._d;
-      const carts = staleCarts(olderThan);
+      const carts = getstaleCarts(olderThan);
       carts.forEach(cart => {
-        if (cart.items) {
-          const user = Accounts.findOne({ _id: cart.userId });
-          if (!user.emails.length) {
-            const removeCart = Cart.remove({ userId: user._id });
-            const removeAccount = Accounts.remove(
-              {
-                _id: cart.userId,
-                emails: []
-              }
-            );
-            const destroySession = ServerSessions.remove({ _id: cart.sessionId });
-            Meteor.users.remove({ _id: user._id, emails: [] }); // clears out anonymous user
-            if (removeCart && removeAccount && destroySession) {
-              const success = "Stale anonymous user cart and account successfully cleaned";
-              Logger.debug(success);
-              job.done(success, { repeatId: true });
+        const user = Accounts.findOne({ _id: cart.userId });
+        if (!user.emails.length) {
+          const removeCart = Cart.remove({ userId: user._id });
+          const removeAccount = Accounts.remove(
+            {
+              _id: cart.userId,
+              emails: []
             }
-          } else {
-            Cart.remove({ userId: user._id });
-            const success = "Stale user cart successfully cleaned";
+          );
+          const destroySession = ServerSessions.remove({ _id: cart.sessionId });
+          Meteor.users.remove({ _id: user._id, emails: [] }); // clears out anonymous user
+          if (removeCart && removeAccount && destroySession) {
+            const success = "Stale anonymous user cart and account successfully cleaned";
             Logger.debug(success);
             job.done(success, { repeatId: true });
           }
         } else {
-          Logger.debug("No items in this cart");
+          Cart.remove({ userId: user._id });
+          const success = "Stale user cart successfully cleaned";
+          Logger.debug(success);
+          job.done(success, { repeatId: true });
         }
       });
     } else {
