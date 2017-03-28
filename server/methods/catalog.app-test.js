@@ -427,14 +427,14 @@ describe("core product methods", function () {
     it("should throw 403 error by non admin", function () {
       sandbox.stub(Reaction, "hasPermission", () => false);
       const removeProductSpy = sandbox.spy(Products, "remove");
-      expect(() => Meteor.call("products/deleteProduct", "fakeId")).to.throw(Meteor.Error, /Access Denied/);
+      expect(() => Meteor.call("products/archiveProduct", "fakeId")).to.throw(Meteor.Error, /Access Denied/);
       expect(removeProductSpy).to.not.have.been.called;
     });
 
     it("should not mark product as deleted by admin", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       let product = addProduct();
-      Meteor.call("products/deleteProduct", product._id);
+      Meteor.call("products/archiveProduct", product._id);
       product = Products.findOne(product._id);
       expect(product.isDeleted).to.equal(false);
     });
@@ -442,7 +442,7 @@ describe("core product methods", function () {
     it("should mark product revision as deleted by admin", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       const product = addProduct();
-      Meteor.call("products/deleteProduct", product._id);
+      Meteor.call("products/archiveProduct", product._id);
       const productRevision = Revisions.findOne({ documentId: product._id });
       expect(productRevision.documentData.isDeleted).to.equal(true);
     });
@@ -450,7 +450,7 @@ describe("core product methods", function () {
     it("should publish product revision marked as deleted by admin", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       let product = addProduct();
-      Meteor.call("products/deleteProduct", product._id);
+      Meteor.call("products/archiveProduct", product._id);
       Meteor.call("revisions/publish", product._id);
       product = Products.findOne(product._id);
       expect(product.isDeleted).to.equal(true);
@@ -460,7 +460,7 @@ describe("core product methods", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       const product = addProduct();
       sandbox.stub(Products, "remove");
-      expect(() => Meteor.call("products/deleteProduct", product._id)).to.throw(Meteor.Error,
+      expect(() => Meteor.call("products/archiveProduct", product._id)).to.throw(Meteor.Error,
         /Something went wrong, nothing was deleted/);
       expect(Products.find(product._id).count()).to.equal(1);
     });

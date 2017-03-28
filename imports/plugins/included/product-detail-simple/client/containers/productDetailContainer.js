@@ -30,6 +30,7 @@ class ProductDetailContainer extends Component {
   handleAddToCart = () => {
     let productId;
     let quantity;
+    let maxQuantity;
     let totalQuantity;
     let storedQuantity = 0;
     const currentVariant = ReactionProduct.selectedVariant();
@@ -58,7 +59,7 @@ class ProductDetailContainer extends Component {
         return [];
       }
 
-      if (this.props.storedCart.items) {
+      if (this.props.storedCart && this.props.storedCart.items) {
         this.props.storedCart.items.forEach((item) => {
           if (item.variants._id === currentVariant._id) {
             storedQuantity = item.quantity;
@@ -68,23 +69,36 @@ class ProductDetailContainer extends Component {
 
       quantity = parseInt(this.state.cartQuantity, 10);
       totalQuantity = quantity + storedQuantity;
+      maxQuantity = currentVariant.inventoryQuantity;
 
       if (quantity < 1) {
         quantity = 1;
       }
 
-      if (currentVariant.inventoryPolicy && quantity > currentVariant.inventoryQuantity && storedQuantity < currentVariant.inventoryQuantity) {
+      if (currentVariant.inventoryPolicy && quantity > maxQuantity && storedQuantity < maxQuantity) {
         Alerts.inline("Your product quantity has been adjusted to the max quantity in stock", "warning", {
           placement: "productDetail",
+          i18nKey: "admin.inventoryAlerts.adjustedQuantity",
           autoHide: 10000
         });
-        quantity = currentVariant.inventoryQuantity;
-        totalQuantity = totalQuantity - currentVariant.inventoryQuantity;
+        quantity = maxQuantity - storedQuantity;
+        totalQuantity = maxQuantity;
       }
 
-      if (currentVariant.inventoryPolicy && totalQuantity > currentVariant.inventoryQuantity) {
-        Alerts.inline(`Sorry, cart contains maximum quantity of ${currentVariant.title}. Failed to add to cart.`, "error", {
+      if (currentVariant.inventoryPolicy && totalQuantity > maxQuantity && storedQuantity < maxQuantity && quantity < maxQuantity) {
+        Alerts.inline("Your product quantity has been adjusted to the max quantity in stock", "warning", {
           placement: "productDetail",
+          i18nKey: "admin.inventoryAlerts.adjustedQuantity",
+          autoHide: 10000
+        });
+        quantity = maxQuantity - storedQuantity;
+        totalQuantity = maxQuantity;
+      }
+
+      if (currentVariant.inventoryPolicy && totalQuantity > maxQuantity) {
+        Alerts.inline("Sorry, this item is out of stock!", "error", {
+          placement: "productDetail",
+          i18nKey: "productDetail.outOfStock",
           autoHide: 10000
         });
         return [];
@@ -176,7 +190,7 @@ class ProductDetailContainer extends Component {
   }
 
   handleDeleteProduct = () => {
-    ReactionProduct.maybeDeleteProduct(this.props.product);
+    ReactionProduct.archiveProduct(this.props.product);
   }
 
   render() {
@@ -216,7 +230,6 @@ ProductDetailContainer.propTypes = {
 
 function composer(props, onData) {
   const tagSub = Meteor.subscribe("Tags");
-  const cartSub = Meteor.subscribe("Cart", Meteor.sessionId);
   const productId = Reaction.Router.getParam("handle");
   const variantId = Reaction.Router.getParam("variantId");
   const revisionType = Reaction.Router.getQueryParam("revision");
@@ -228,7 +241,7 @@ function composer(props, onData) {
     productSub = Meteor.subscribe("Product", productId);
   }
 
-  if (productSub && productSub.ready() && tagSub.ready() && cartSub.ready()) {
+  if (productSub && productSub.ready() && tagSub.ready() && Reaction.Subscriptions.Cart.ready()) {
     // Get the product
     const product = ReactionProduct.setProduct(productId, variantId);
 
