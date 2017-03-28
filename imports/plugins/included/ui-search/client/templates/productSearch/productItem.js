@@ -137,7 +137,7 @@ Template.productItem.events({
   },
   "click .delete-product": function (event) {
     event.preventDefault();
-    ReactionProduct.maybeDeleteProduct(this);
+    ReactionProduct.archiveProduct(this);
   },
   "click .update-product-weight": function (event) {
     event.preventDefault();
