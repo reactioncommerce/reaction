@@ -20,6 +20,9 @@
                 "host": "",
                 "port": ""
             },
+            "cart": {
+                "cleanupDurationDays": "older than 3 days"
+            },
             "services": [{
                 "facebook": {
                     "appId": "",
