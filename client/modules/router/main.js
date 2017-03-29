@@ -121,7 +121,9 @@ export function ReactionLayout(options = {}) {
     if (Reaction.Subscriptions.Shops.ready()) {
       const shop = Shops.findOne(Reaction.getShopId());
       if (shop) {
-        const newLayout = shop.layout.find((x) => selectLayout(x, layout, workflow));
+        const sortedLayout = shop.layout.sort((prev, next) => prev.priority - next.priority);
+        const newLayout = sortedLayout.find((x) => selectLayout(x, layout, workflow));
+
         // oops this layout wasn't found. render notFound
         if (!newLayout) {
           BlazeLayout.render("notFound");
