@@ -48,7 +48,6 @@
         "addToCart": "Legg i handlekurv",
         "chooseOptions": "Vær vennlig å velg variant før du legger i handlekurven.",
         "outOfStock": "Beklager, denne varen finnes ikke på lager!",
-        "productDeleteError": "En feil oppstod ved sletting av {{product}}.",
         "publishFirst": "Publiser produkt først før du kan legge det i handlekurven.",
         "quantityAbbreviation": "stk",
         "selectOption": "Velg et alternativ før du legger i handlekurven",
@@ -79,7 +78,6 @@
         "duplicateProduct": "Dupliser Produkt",
         "pinProduct": "Fest Produkt",
         "toggleSize": "Bytt størrelse",
-        "deleteProduct": "Slett Produkt",
         "publish": "Publiser",
         "moreOptions": "Flere varianter"
       },
