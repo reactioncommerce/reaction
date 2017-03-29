@@ -717,12 +717,12 @@ Meteor.methods({
   },
 
   /**
-   * products/deleteProduct
-   * @summary delete a product and unlink it from all media
+   * products/archiveProduct
+   * @summary archive a product and unlink it from all media
    * @param {String} productId - productId to delete
    * @returns {Number} returns number of removed products
    */
-  "products/deleteProduct": function (productId) {
+  "products/archiveProduct": function (productId) {
     check(productId, Match.OneOf(Array, String));
 
     // Check first if Product exists and then if user has the right to delete it

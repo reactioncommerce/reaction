@@ -398,6 +398,20 @@ export const methods = {
       emailLogo = Meteor.absoluteUrl() + "resources/email-templates/shop-logo.png";
     }
 
+    const billing = orderCreditMethod(order);
+    const refundResult = Meteor.call("orders/refunds/list", order);
+    let refundTotal = 0;
+
+    _.each(refundResult, function (item) {
+      refundTotal += parseFloat(item.amount);
+    });
+
+    // Get user currency formatting from shops collection, remove saved rate
+    const userCurrencyFormatting = _.omit(shop.currencies[billing.currency.userCurrency], ["enabled", "rate"]);
+
+    // Get user currency exchange rate at time of transaction
+    const userCurrencyExchangeRate = billing.currency.exchangeRate;
+
     // Combine same products into single "product" for display purposes
     const combinedItems = [];
     if (order) {
@@ -418,6 +432,12 @@ export const methods = {
           foundItem.quantity++;
         } else {
           // Otherwise push the unique item into the combinedItems array
+
+          // Add displayPrice to match user currency settings
+          orderItem.variants.displayPrice = accounting.formatMoney(
+            orderItem.variants.price * userCurrencyExchangeRate, userCurrencyFormatting
+          );
+
           combinedItems.push(orderItem);
 
           // Placeholder image if there is no product image
@@ -438,14 +458,6 @@ export const methods = {
           }
         }
       }
-
-      const billing = orderCreditMethod(order);
-      const refundResult = Meteor.call("orders/refunds/list", order);
-      let refundTotal = 0;
-
-      _.each(refundResult, function (item) {
-        refundTotal += parseFloat(item.amount);
-      });
 
       // Merge data into single object to pass to email template
       const dataForEmail = {
@@ -491,13 +503,27 @@ export const methods = {
             postal: billing.address.postal
           },
           paymentMethod: billing.paymentMethod.storedCard || billing.paymentMethod.processor,
-          subtotal: accounting.toFixed(billing.invoice.subtotal, 2),
-          shipping: accounting.toFixed(billing.invoice.shipping, 2),
-          taxes: accounting.toFixed(billing.invoice.taxes, 2),
-          discounts: accounting.toFixed(billing.invoice.discounts, 2),
-          refunds: accounting.toFixed(refundTotal, 2),
-          total: accounting.toFixed(billing.invoice.total, 2),
-          adjustedTotal: accounting.toFixed(billing.paymentMethod.amount - refundTotal, 2)
+          subtotal: accounting.formatMoney(
+            billing.invoice.subtotal * userCurrencyExchangeRate, userCurrencyFormatting
+          ),
+          shipping: accounting.formatMoney(
+            billing.invoice.shipping * userCurrencyExchangeRate, userCurrencyFormatting
+          ),
+          taxes: accounting.formatMoney(
+            billing.invoice.taxes * userCurrencyExchangeRate, userCurrencyFormatting
+          ),
+          discounts: accounting.formatMoney(
+            billing.invoice.discounts * userCurrencyExchangeRate, userCurrencyFormatting
+          ),
+          refunds: accounting.formatMoney(
+            refundTotal * userCurrencyExchangeRate, userCurrencyFormatting
+          ),
+          total: accounting.formatMoney(
+            billing.invoice.total * userCurrencyExchangeRate, userCurrencyFormatting
+          ),
+          adjustedTotal: accounting.formatMoney(
+            (billing.paymentMethod.amount - refundTotal) * userCurrencyExchangeRate, userCurrencyFormatting
+          )
         },
         combinedItems: combinedItems,
         orderDate: moment(order.createdAt).format("MM/DD/YYYY"),

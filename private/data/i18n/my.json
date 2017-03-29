@@ -95,6 +95,8 @@
         "noProductsFound": "အဘယ်သူမျှမကုန်ပစ္စည်းများတွေ့ရှိခဲ့ပါတယ်။",
         "private": "ကိုယ်ပိုင်",
         "public": "ပြည်သူ့",
+        "allOn": "အားလုံးတွင်",
+        "allOff": "အားလုံးပိတ်",
         "shortcut": {
           "addProductLabel": "ကုန်ပစ္စည်း Add",
           "accountsLabel": "ငွေစာရင်း"
@@ -157,74 +159,6 @@
           "orderShipped": "သင့်ရဲ့အမိန့်တင်ပို့ခဲ့တာဖြစ်ပါတယ်။"
         }
       },
-      "sms": {
-        "headers": {
-          "settings": "SMS ကိုပေးသူ"
-        },
-        "settings": {
-          "provider": "provider",
-          "selectProvider": "SMS တခုပံ့ပိုးပေးသူကို Select လုပ်ပါ ...",
-          "smsPhone": "SMS ကိုဖုန်းနံပါတ်",
-          "apiKey": "API ကို Key ကို",
-          "apiToken": "API ကိုတိုကင် / လျှို့ဝှက်ချက်"
-        },
-        "alerts": {
-          "noApiKey": "တစ်ဦး API ကို Key ကိုထည့်ပါကျေးဇူးပြုပြီး",
-          "noApiToken": "တစ်ဦး API ကို TOKEN / Secret ကို add ပေးပါ",
-          "noSmsProvider": "SMS တခုပံ့ပိုးပေးရှေးခယျြ ကျေးဇူးပြု.",
-          "noSmsPhone": "သင့်ရဲ့ SMS ကိုပံ့ပိုးပေးသူအားဖြင့်သင်တို့ကိုအားပေးပြီးမှဖုန်းနံပါတ်ထည့်ပါကျေးဇူးပြုပြီး",
-          "saveSuccess": "SMS ကိုချိန်ညှိသည်ကယ်တင်ခြင်းသို့ရောက်"
-        }
-      },
-      "mail": {
-        "headers": {
-          "email": "အီးမေးလ်က",
-          "emailSettings": "အီးမေးလ်က Settings",
-          "config": "configuration",
-          "settings": "SMTP ပေးသူ",
-          "status": "status",
-          "actions": "လုပ်ဆောင်ချက်များ"
-        },
-        "settings": {
-          "service": "ဝန်ဆောင်မှု",
-          "user": "အသုံးပြုသူကို",
-          "password": "Password ကို",
-          "host": "host က",
-          "port": "ဆိပ်ကမ်း",
-          "passwordShow": "ပြသ",
-          "passwordHide": "ဝှက်ထား",
-          "fieldNotSet": "မသတ်မှတ်",
-          "selectService": "တစ်ဝန်ဆောင်မှုကို Select လုပ်ပါ ...",
-          "custom": "ထုံးစံဓလေ့"
-        },
-        "logs": {
-          "headers": {
-            "emailLogs": "အီးမေးလ်မှတ်တမ်းများ",
-            "email": "အီးမေးလ်က",
-            "subject": "ဘာသာရပ်",
-            "sent": "Sent",
-            "status": "status"
-          },
-          "noEmails": "အဘယ်သူမျှမအီးမေးလ်များသေးကိုစလှေတျ",
-          "limit": "အရေအတွက်",
-          "retry": "ပြန်ကြိုးစားမည်",
-          "noneAvailble": "ရရှိနိုင်ပါအဘယ်သူမျှမ"
-        },
-        "alerts": {
-          "error": "အမှား: {{error}}",
-          "resendSuccess": "{{email}} အီးမေးလ်ပြန်ပို့ပါဖို့ကြိုးစားနေတဲ့",
-          "missingService": "မေးလ် provider ကဝန်ဆောင်မှုကိုရှေးခယျြ ကျေးဇူးပြု.",
-          "userPassRequired": "SMTP အသုံးပြုသူနှင့် password {{service}} ဘို့လိုအပ်သည်",
-          "allFieldsRequired": "အားလုံးလယ်ကွင်းစိတ်ကြိုက်ဝန်ဆောင်မှုအတွက်လိုအပ်ကြသည်!",
-          "portNaN": "အဆိုပါဆိပ်ကမ်းဟာအရေအတွက်ရှိရမည်!",
-          "connectionFailed": "connection ပျက်ကွက်!",
-          "saveAnyway": "သငျသညျဘာပဲဖြစ်ဖြစ် settings ကိုကယ်ဖို့ချင်ပါသလား?",
-          "saveSuccess": "mail settings ကယ်တင်ခြင်းသို့ရောက်ရ၏။",
-          "saveFailed": "mail settings ကိုကယ်တင်ရန်မအောင်မြင်ခဲ့ပါ။ {{error}}",
-          "cantSendEmail": "Server ကိုအမှား: အီးမေးလ်အကြောင်းကြားစာမပို့နိုင်သ။",
-          "emailSent": "အီးမေးလ်အကြောင်းကြားစာကိုစေလွှတ်။ ,"
-        }
-      },
       "header": {
         "tagsAdd": "tag ကို Add",
         "search": "ရှာရန်ထုတ်ကုန် ..."
@@ -251,9 +185,8 @@
         "addToCart": "စျေးခြင်းထဲ ထည့်ပါ",
         "chooseOptions": "စျေးခြင်းတောင်းထဲ မထည့်ခင် လိုအပ်သည်များ ရွေးချယ်ပါ",
         "outOfStock": "ပစ္စည်းပြတ်နေပါသဖြင့် စိတ်မကောင်းပါ",
-        "productDeleteError": "ဤပစ္စည်းကို ဖျက်၍ မရပါ",
-        "deleteErrorTheProduct": "ထုတ်ကုန်",
-        "deleteErrorTheSelectedProducts": "ရွေးချယ်ထားတဲ့ထုတ်ကုန်",
+        "productArchiveError": "အဆိုပါမော်ကွန်းတိုက်မှ {{product}} ပေးပို့ခြင်းစဉ်မှားယွင်းမှုတစ်ခုရှိခဲ့သည်။",
+        "archiveErrorTheProduct": "ထုတ်ကုန်",
         "publishFirst": "စျေးခြင်းတောင်းထဲ မထည့်ခင် အတည်ပြုပါ",
         "quantityAbbreviation": "အရည်အတွက်",
         "selectOption": "စျေးခြင်းတောင်းထဲ မထည့်ခင် လိုအပ်သည်ကို ရွေးချယ်ပါ",
@@ -266,8 +199,6 @@
         "publishProductHidden": "{{product}} ယခုဝှက်ထားလျက်ရှိ၏",
         "clonedAlert": "Clone {{product}}",
         "clonedAlert_plural": "Clone {{product}}",
-        "deletedAlert": "ပယ်ဖျက်ခဲ့တဲ့ {{product}}",
-        "deletedAlert_plural": "ပယ်ဖျက်ခဲ့တဲ့ {{product}}",
         "archivedAlert": "မော်ကွန်းတင်ပြီး {{product}}",
         "archivedAlert_plural": "မော်ကွန်းတင်ပြီး {{product}}",
         "theProduct": "ထုတ်ကုန်",
@@ -299,6 +230,7 @@
         "pageTitle": "ခေါင်းစဉ်ကလေး",
         "vendor": "ရောင်းချသူ",
         "description": "ဖေါ်ပြချက်",
+        "originCountry": "မူလအစနိုင်ငံ",
         "facebookMsg": "Facebook ကကို Message",
         "twitterMsg": "တွစ်တာကို Message",
         "pinterestMsg": "Pinterest ကို Message",
@@ -320,9 +252,8 @@
         "duplicateProduct": "ကုန်ပစ္စည်း Duplicate",
         "pinProduct": "pin ကုန်ပစ္စည်း",
         "toggleSize": "toggle Size ကို",
-        "deleteProduct": "ကုန်ပစ္စည်းဖျက်ပစ်ပါ",
+        "archiveProduct": "မော်ကွန်းတိုက်ကုန်ပစ္စည်း",
         "restoreProduct": "အမှိုက်ပုံးထဲကနေကုန်ပစ္စည်း Restore",
-        "deleteSelectedProducts": "ရွေးချယ်ထားသောကုန်ပစ္စည်းများကိုဖျက်ရမလား?",
         "archiveThisProduct": "ဒီထုတ်ကုန်မော်ကွန်းတင်မလား?",
         "archiveSelectedProducts": "မော်ကွန်းတိုက်ထုတ်ကုန်ကိုရှေးခယျြ?",
         "publish": "ပုံနှိပ်ထုတ်ဝေ",
@@ -345,13 +276,20 @@
         "compareAtPrice": "စျေးနှုန်း (MSRP)",
         "fulfillmentService": "ပွညျ့စုံဝန်ဆောင်မှု",
         "weight": "အလေးချိန်",
+        "length": "အရှည်",
+        "width": "width",
+        "height": "အမြင့်",
         "taxable": "Taxable",
+        "taxCode": "အခွန်ကုဒ်များ",
+        "taxDescription": "အခွန်ဖျေါပွခကျြ",
         "inventoryManagement": "inventory ခြေရာခံခြင်း",
         "inventoryManagementLabel": "စာရင်းစနစ်ထဲမှာထုတ်ကုန် Register နှင့်၎င်း၏အဆင့်အတန်းကိုခြေရာခံ",
         "inventoryPolicy": "အခါ, စတော့ရှယ်ယာထဲကငွငျးပယျ",
         "inventoryPolicyLabel": "ဒါကြောင့်စတော့ရှယ်ယာထဲမှာမပါသောအခါကုန်ပစ္စည်းမူကွဲမရောင်းပါနဲ့",
         "lowInventoryWarningThreshold": "သတိပေး @",
-        "lowInventoryWarningThresholdLabel": "အရေအတွက်နောက်လာမည့်တံခါးခုံကိုရောက်ရှိသည့်အခါကုန်ပစ္စည်းရောင်းထွက်နီးစပ်ဖြစ်လိမ့်မည်ဟုဖောက်သည်သတိပေး"
+        "lowInventoryWarningThresholdLabel": "အရေအတွက်နောက်လာမည့်တံခါးခုံကိုရောက်ရှိသည့်အခါကုန်ပစ္စည်းရောင်းထွက်နီးစပ်ဖြစ်လိမ့်မည်ဟုဖောက်သည်သတိပေး",
+        "originCountry": "မူလအစနိုင်ငံ",
+        "selectTaxCode": "အခွန် Code ကို Select လုပ်ပါ"
       },
       "variantList": {
         "moreOptions": "ဤအတွက်နောက်ထပ်ရွေးချယ်စရာများ ရှိပါသေးသည်",

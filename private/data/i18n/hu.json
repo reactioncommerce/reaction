@@ -95,6 +95,8 @@
         "noProductsFound": "Nem talált termékek.",
         "private": "Magán",
         "public": "Nyilvános",
+        "allOn": "minden On",
+        "allOff": "All Off",
         "shortcut": {
           "addProductLabel": "Termék hozzáadása",
           "accountsLabel": "Fiókok"
@@ -157,74 +159,6 @@
           "orderShipped": "Rendelését szállították."
         }
       },
-      "sms": {
-        "headers": {
-          "settings": "SMS Szolgáltató"
-        },
-        "settings": {
-          "provider": "ellátó",
-          "selectProvider": "Válasszon egy SMS-szolgáltató ...",
-          "smsPhone": "SMS telefonszám",
-          "apiKey": "API-kulcs",
-          "apiToken": "API Token / Secret"
-        },
-        "alerts": {
-          "noApiKey": "Kérjük, adjon hozzá egy API-kulcs",
-          "noApiToken": "Kérjük, add egy API TOKEN / Secret",
-          "noSmsProvider": "Kérjük, válasszon egy SMS-szolgáltató",
-          "noSmsPhone": "Kérjük, adja hozzá a telefonszámot adott meg az SMS-szolgáltató",
-          "saveSuccess": "SMS-beállítások mentve"
-        }
-      },
-      "mail": {
-        "headers": {
-          "email": "E-mail",
-          "emailSettings": "E-mail beállítások",
-          "config": "Configuration",
-          "settings": "SMTP Szolgáltató",
-          "status": "Állapot",
-          "actions": "Hozzászólások"
-        },
-        "settings": {
-          "service": "Szolgáltatás",
-          "user": "Használó",
-          "password": "Jelszó",
-          "host": "Házigazda",
-          "port": "Kikötő",
-          "passwordShow": "Előadás",
-          "passwordHide": "Elrejt",
-          "fieldNotSet": "Nincs beállítva",
-          "selectService": "Válasszon szolgáltatást ...",
-          "custom": "szokás"
-        },
-        "logs": {
-          "headers": {
-            "emailLogs": "E-mail Naplók",
-            "email": "E-mail",
-            "subject": "Tantárgy",
-            "sent": "Küldött",
-            "status": "Állapot"
-          },
-          "noEmails": "Nem küldött e-mailek még",
-          "limit": "Mennyiség",
-          "retry": "Próbálja újra",
-          "noneAvailble": "Nem elérhető"
-        },
-        "alerts": {
-          "error": "Hiba: {{error}}",
-          "resendSuccess": "Kísérlet elküldeni e-mail {{email}}",
-          "missingService": "Kérjük, válasszon egy e-mail szolgáltató szolgáltatási",
-          "userPassRequired": "SMTP-felhasználónév és jelszó szükséges {{service}}",
-          "allFieldsRequired": "Minden mező kitöltése kötelező vevőszolgálatnál!",
-          "portNaN": "A port számnak kell lennie!",
-          "connectionFailed": "Kapcsolat nem sikerült!",
-          "saveAnyway": "Szeretnéd elmenteni a beállításokat egyébként?",
-          "saveSuccess": "Mail beállítások mentve.",
-          "saveFailed": "Nem sikerült menteni mail beállításokat. {{error}}",
-          "cantSendEmail": "Szerver hiba: Nem lehet elküldeni e-mail értesítést.",
-          "emailSent": "E-mail értesítést küldeni."
-        }
-      },
       "header": {
         "tagsAdd": "Címke hozzáadása",
         "search": "Termék keresés..."
@@ -251,9 +185,8 @@
         "addToCart": "Kosárba",
         "chooseOptions": "Válassz az opciók közül kosárba tétel előtt",
         "outOfStock": "Elnézést, ez a termék nincs raktáron!",
-        "productDeleteError": "Törlési probléma ",
-        "deleteErrorTheProduct": "a termék",
-        "deleteErrorTheSelectedProducts": "A kiválasztott termékek",
+        "productArchiveError": "Hiba elküldése közben {{product}} a levéltárba.",
+        "archiveErrorTheProduct": "a termék",
         "publishFirst": "Publikáld a terméket kosárba tétel előtt.",
         "quantityAbbreviation": "QTY",
         "selectOption": "Válassz az opciók közül kosárba tétel előtt",
@@ -266,8 +199,6 @@
         "publishProductHidden": "{{product}} most rejtett",
         "clonedAlert": "klónozott {{product}}",
         "clonedAlert_plural": "klónozott {{product}}",
-        "deletedAlert": "Törölt {{product}}",
-        "deletedAlert_plural": "Törölt {{product}}",
         "archivedAlert": "Archív {{product}}",
         "archivedAlert_plural": "Archív {{product}}",
         "theProduct": "a termék",
@@ -299,6 +230,7 @@
         "pageTitle": "Termék oldal címe",
         "vendor": "Gyártó",
         "description": "Adj hozzá termékleírást",
+        "originCountry": "Származási ország",
         "facebookMsg": "Facebook Üzenet",
         "twitterMsg": "Twitter Üzenet",
         "pinterestMsg": "Pinterest Üzenet",
@@ -320,9 +252,8 @@
         "duplicateProduct": "Ismétlődő termék",
         "pinProduct": "pin termék",
         "toggleSize": "Kapcsoló mérete",
-        "deleteProduct": "Törlés termék",
+        "archiveProduct": "Archív termék",
         "restoreProduct": "Restore Termék kukából",
-        "deleteSelectedProducts": "Törli a kiválasztott termékeket?",
         "archiveThisProduct": "Archiválni ezt a terméket?",
         "archiveSelectedProducts": "Archív kiválasztott termékeket?",
         "publish": "közzétesz",
@@ -345,13 +276,20 @@
         "compareAtPrice": "Ár (MSRP)",
         "fulfillmentService": "teljesítő szolgáltató",
         "weight": "Súly",
+        "length": "Hossz",
+        "width": "Szélesség",
+        "height": "Magasság",
         "taxable": "Adóköteles",
+        "taxCode": "Adó kódok",
+        "taxDescription": "Adó Leírás",
         "inventoryManagement": "leltár nyomon követéséhez",
         "inventoryManagementLabel": "Regisztráció termék nyilvántartási rendszert és a pálya az állapota",
         "inventoryPolicy": "Deny amikor elfogyott",
         "inventoryPolicyLabel": "Ne adja el a terméket variáns, ha nincs raktáron",
         "lowInventoryWarningThreshold": "Warn @",
-        "lowInventoryWarningThresholdLabel": "Figyelmeztet, az ügyfelek, hogy a termék közel lesz elfogyott, amikor a mennyiség eléri a következő küszöböt"
+        "lowInventoryWarningThresholdLabel": "Figyelmeztet, az ügyfelek, hogy a termék közel lesz elfogyott, amikor a mennyiség eléri a következő küszöböt",
+        "originCountry": "Származási ország",
+        "selectTaxCode": "Válassza adótörvény"
       },
       "variantList": {
         "moreOptions": "További lehetőségek a kiválasztott termékhez.",

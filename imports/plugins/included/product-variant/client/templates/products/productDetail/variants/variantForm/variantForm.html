@@ -41,9 +41,9 @@
             }}
           {{else}}
             {{> button
-              icon="trash-o"
-              className="rui btn btn-danger btn-remove-variant flat"
-              tooltip="Archive"
+              icon="archive"
+              className="rui btn btn-default btn-remove-variant flat"
+              tooltip="Archive Variant"
               i18nTooltip="productDetailEdit.removeVariant"
               onClick=(removeVariant this)
             }}
@@ -69,6 +69,14 @@
                   {{>afFieldInput name='title' placeholder=(i18n "productVariant.title" "Label")}}
                   {{#if afFieldIsInvalid name='title'}}
                   <span class="help-block">{{afFieldMessage name='title'}}</span>
+                  {{/if}}
+              </div>
+
+              <div class="form-group{{#if afFieldIsInvalid name='originCountry'}} has-error{{/if}}">
+                  <label class="control-label">{{afFieldLabelText name='originCountry'}}</label>
+                  {{>afFieldInput name='originCountry' placeholder=(i18n "productVariant.originCountry" "Origin Country")}}
+                  {{#if afFieldIsInvalid name='originCountry'}}
+                  <span class="help-block">{{afFieldMessage name='originCountry'}}</span>
                   {{/if}}
               </div>
 
@@ -104,15 +112,64 @@
                 {{/if}}
               </div>
 
+              <div class="col-xs-4 col-sm-4 form-group{{#if afFieldIsInvalid name='length'}} has-error{{/if}}">
+                <label class="control-label">{{afFieldLabelText name='length'}}</label>
+                {{>afFieldInput name='length' placeholder="0"}}
+                {{#if afFieldIsInvalid name='length'}}
+                <span class="help-block">{{afFieldMessage name='length'}}</span>
+                {{/if}}
+              </div>
+
+              <div class="col-xs-4 col-sm-4 form-group{{#if afFieldIsInvalid name='width'}} has-error{{/if}}">
+                <label class="control-label">{{afFieldLabelText name='width'}}</label>
+                {{>afFieldInput name='width' placeholder="0"}}
+                {{#if afFieldIsInvalid name='width'}}
+                <span class="help-block">{{afFieldMessage name='width'}}</span>
+                {{/if}}
+              </div>
+
+              <div class="col-xs-4 col-sm-4 form-group{{#if afFieldIsInvalid name='height'}} has-error{{/if}}">
+                <label class="control-label">{{afFieldLabelText name='height'}}</label>
+                {{>afFieldInput name='height' placeholder="0"}}
+                {{#if afFieldIsInvalid name='height'}}
+                <span class="help-block">{{afFieldMessage name='height'}}</span>
+                {{/if}}
+              </div>
             </div>
           </div>
           <div class="row">
-            <div class="variant-options col-xs-12 col-sm-3 col-md-3">
+            <div class="variant-options col-xs-12">
               <div class="form-group {{#if afFieldIsInvalid name='taxable'}} has-error{{/if}}">
                   {{>afFieldInput name='taxable'}}
                   {{#if afFieldIsInvalid name='taxable'}}
                   <span class="help-block">{{afFieldMessage name='taxable'}}</span>
                   {{/if}}
+              </div>
+              {{#unless isProviderEnabled}}
+              <div class="form-group{{#if afFieldIsInvalid name='taxCode'}} has-error{{/if}} taxCode" style="{{displayTaxCodes}}">
+                <label class="control-label">{{afFieldLabelText name='taxCode'}}</label>
+                {{>afFieldInput name='taxCode'}}
+              </div>
+              {{else}}
+              <div class="form-group{{#if afFieldIsInvalid name='taxCode'}} has-error{{/if}} taxCode" style="{{displayTaxCodes}}">
+                <select class="input select2-container" name="taxCode" id="taxCode" type="select2">
+                  <option selected="selected">{{displayCode}}</option>
+                  {{#each listTaxCodes}}
+                  <option value={{value}} id={{_id}}>{{label}}</option>
+                  {{/each}}
+                </select>
+                {{#if afFieldIsInvalid name='taxCode'}}
+                <span class="help-block">{{afFieldMessage name='taxCode'}}</span>
+                {{/if}}
+              </div>
+              {{/unless}}
+
+              <div class="form-group{{#if afFieldIsInvalid name='taxDescription'}} has-error{{/if}}">
+                <label class="control-label">{{afFieldLabelText name='taxDescription'}}</label>
+                {{>afFieldInput name='taxDescription' placeholder=(i18n "productVariant.taxDescription" "Tax Description")}}
+                {{#if afFieldIsInvalid name='taxDescription'}}
+                  <span class="help-block">{{afFieldMessage name='taxDescription'}}</span>
+                {{/if}}
               </div>
               <div class="form-group{{#if afFieldIsInvalid name='inventoryManagement'}} has-error{{/if}}">
                   {{>afFieldInput name='inventoryManagement'}}
@@ -126,7 +183,7 @@
                   <span class="help-block">{{afFieldMessage name='inventoryPolicy'}}</span>
                   {{/if}}
               </div>
-              <div class="lowInventoryWarningThreshold form-group{{#if afFieldIsInvalid name='lowInventoryWarningThreshold'}} has-error{{/if}}" style="{{displayLowInventoryWarning doc}}">
+              <div class=" col-md-3 lowInventoryWarningThreshold form-group{{#if afFieldIsInvalid name='lowInventoryWarningThreshold'}} has-error{{/if}}" style="{{displayLowInventoryWarning doc}}">
                   <label class="control-label">{{afFieldLabelText name='lowInventoryWarningThreshold'}}</label>
                   {{>afFieldInput name='lowInventoryWarningThreshold' placeholder="0"}}
                   {{#if afFieldIsInvalid name='lowInventoryWarningThreshold'}}

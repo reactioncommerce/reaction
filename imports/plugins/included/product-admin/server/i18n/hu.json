@@ -8,6 +8,10 @@
           "productSettingsLabel": "termék Beállítások",
           "productDetailsLabel": "termék leírás"
         }
+      },
+      "productDetailEdit": {
+        "template": "sablon beállításai",
+        "templateSelectPlaceholder": "Válasszon egy sablont"
       }
     }
   }

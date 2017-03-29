@@ -95,6 +95,8 @@
         "noProductsFound": "Geen producten gevonden.",
         "private": "Privaat",
         "public": "Openbaar",
+        "allOn": "All On",
+        "allOff": "All Off",
         "shortcut": {
           "addProductLabel": "Product toevoegen",
           "accountsLabel": "Rekeningen"
@@ -157,74 +159,6 @@
           "orderShipped": "Je bestelling is verzonden."
         }
       },
-      "sms": {
-        "headers": {
-          "settings": "SMS Provider"
-        },
-        "settings": {
-          "provider": "leverancier",
-          "selectProvider": "Selecteer een SMS-provider ...",
-          "smsPhone": "SMS Telefoonnummer",
-          "apiKey": "API Key",
-          "apiToken": "API Token / Secret"
-        },
-        "alerts": {
-          "noApiKey": "Gelieve te voegen een API Key",
-          "noApiToken": "Gelieve te voegen een API TOKEN / Secret",
-          "noSmsProvider": "Kies een SMS-provider",
-          "noSmsPhone": "Voeg dan het telefoonnummer in dat u van uw SMS provider",
-          "saveSuccess": "SMS-instellingen opgeslagen"
-        }
-      },
-      "mail": {
-        "headers": {
-          "email": "Email",
-          "emailSettings": "E-mailinstellingen",
-          "config": "Configuratie",
-          "settings": "SMTP Provider",
-          "status": "Toestand",
-          "actions": "Acties"
-        },
-        "settings": {
-          "service": "Service",
-          "user": "Gebruiker",
-          "password": "Wachtwoord",
-          "host": "gastheer",
-          "port": "Haven",
-          "passwordShow": "Tonen",
-          "passwordHide": "Verbergen",
-          "fieldNotSet": "Niet ingesteld",
-          "selectService": "Kies een service ...",
-          "custom": "gewoonte"
-        },
-        "logs": {
-          "headers": {
-            "emailLogs": "E-mail Logs",
-            "email": "Email",
-            "subject": "Onderwerp",
-            "sent": "Verzonden",
-            "status": "Toestand"
-          },
-          "noEmails": "Er zijn nog geen e-mails verzonden",
-          "limit": "Hoeveelheid",
-          "retry": "Opnieuw proberen",
-          "noneAvailble": "Niet beschikbaar"
-        },
-        "alerts": {
-          "error": "Fout: {{error}}",
-          "resendSuccess": "Poging om e-mail te verzenden naar {{email}}",
-          "missingService": "Kies een mailprovider dienst",
-          "userPassRequired": "SMTP-gebruikersnaam en wachtwoord vereist zijn voor {{service}}",
-          "allFieldsRequired": "Alle velden zijn verplicht voor een aangepaste service!",
-          "portNaN": "De haven moet een getal zijn!",
-          "connectionFailed": "Verbinding mislukt!",
-          "saveAnyway": "Wilt u de instellingen toch te redden?",
-          "saveSuccess": "Mail-instellingen opgeslagen.",
-          "saveFailed": "Kan mail instellingen op te slaan. {{error}}",
-          "cantSendEmail": "Server Error: Kan geen email melding sturen.",
-          "emailSent": "E-mail melding verzonden."
-        }
-      },
       "header": {
         "tagsAdd": "Tag toevoegen",
         "search": "Producten zoeken..."
@@ -251,9 +185,8 @@
         "addToCart": "Aan winkelwagen toevoegen",
         "chooseOptions": "Kies één van de opties voordat u het aan de winkelwagen toevoegt",
         "outOfStock": "Sorry, dit product is niet op voorraad!",
-        "productDeleteError": "Er was een probleem met het verwijderen van ",
-        "deleteErrorTheProduct": "het product",
-        "deleteErrorTheSelectedProducts": "de geselecteerde producten",
+        "productArchiveError": "Er is een fout opgetreden tijdens het verzenden van {{product}} naar het archief.",
+        "archiveErrorTheProduct": "het product",
         "publishFirst": "Product publiceren voor het toevoegen aan de winkelwagen.",
         "quantityAbbreviation": "aant.",
         "selectOption": "Kies een optie voordat u het aan de winkelwagen toevoegt",
@@ -266,8 +199,6 @@
         "publishProductHidden": "is nu verborgen",
         "clonedAlert": "gekloonde {{product}}",
         "clonedAlert_plural": "gekloonde {{product}}",
-        "deletedAlert": "Verwijderde {{product}}",
-        "deletedAlert_plural": "Verwijderde {{product}}",
         "archivedAlert": "gearchiveerd {{product}}",
         "archivedAlert_plural": "gearchiveerd {{product}}",
         "theProduct": "het product",
@@ -299,6 +230,7 @@
         "pageTitle": "Titel productpagina",
         "vendor": "Merk",
         "description": "Voeg een productomschrijving toe",
+        "originCountry": "herkomst Land",
         "facebookMsg": "Facebookbericht",
         "twitterMsg": "Twitterbericht",
         "pinterestMsg": "Pinterest-bericht",
@@ -320,9 +252,8 @@
         "duplicateProduct": "Product dupliceren",
         "pinProduct": "Product vastzetten",
         "toggleSize": "Grootte wisselen",
-        "deleteProduct": "Product verwijderen",
+        "archiveProduct": "archief Product",
         "restoreProduct": "Product te herstellen uit de prullenbak",
-        "deleteSelectedProducts": "Verwijder geselecteerde producten?",
         "archiveThisProduct": "Archiveer dit product?",
         "archiveSelectedProducts": "Archief geselecteerde producten?",
         "publish": "publiceren",
@@ -345,13 +276,20 @@
         "compareAtPrice": "Price (MSRP)",
         "fulfillmentService": "Fulfillment dienst",
         "weight": "Gewicht",
+        "length": "Lengte",
+        "width": "Breedte",
+        "height": "Hoogte",
         "taxable": "belastbaar",
+        "taxCode": "BTW-codes",
+        "taxDescription": "tax Beschrijving",
         "inventoryManagement": "inventaris bijhouden",
         "inventoryManagementLabel": "Registreer product in inventarissysteem en volgen de status",
         "inventoryPolicy": "Deny toen niet op voorraad",
         "inventoryPolicyLabel": "Niet verkopen het product variant wanneer het niet op voorraad",
         "lowInventoryWarningThreshold": "waarschuw @",
-        "lowInventoryWarningThresholdLabel": "Waarschuw klanten die het product dicht bij uitverkocht zal zijn wanneer de hoeveelheid de volgende drempelwaarde bereikt,"
+        "lowInventoryWarningThresholdLabel": "Waarschuw klanten die het product dicht bij uitverkocht zal zijn wanneer de hoeveelheid de volgende drempelwaarde bereikt,",
+        "originCountry": "herkomst Land",
+        "selectTaxCode": "Selecteer Tax Code"
       },
       "variantList": {
         "moreOptions": "Er zijn meerdere opties beschikbaar voor deze selectie.",

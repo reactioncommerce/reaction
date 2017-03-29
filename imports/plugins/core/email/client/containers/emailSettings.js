@@ -3,7 +3,7 @@ import { Meteor } from "meteor/meteor";
 import { Reaction } from "/client/api";
 import { Loading } from "/imports/plugins/core/ui/client/components";
 import actions from "../actions";
-import EmailSettings from "../components/email_settings";
+import EmailSettings from "../components/emailSettings";
 import { composeWithTracker, merge } from "/lib/api/compose";
 
 const providers = Object.keys(require("nodemailer-wellknown/services.json"));

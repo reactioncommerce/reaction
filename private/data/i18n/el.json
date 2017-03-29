@@ -95,6 +95,8 @@
         "noProductsFound": "Δεν βρέθηκαν προϊόντα.",
         "private": "Ιδιωτικός",
         "public": "Δημόσιο",
+        "allOn": "όλα On",
+        "allOff": "όλα Off",
         "shortcut": {
           "addProductLabel": "Προσθέστε το προϊόν",
           "accountsLabel": "λογαριασμοί"
@@ -157,74 +159,6 @@
           "orderShipped": "Η παραγγελία σας έχει αποσταλεί."
         }
       },
-      "sms": {
-        "headers": {
-          "settings": "Πάροχος SMS"
-        },
-        "settings": {
-          "provider": "Προμηθευτής",
-          "selectProvider": "Επιλέξτε ένα φορέα SMS ...",
-          "smsPhone": "Τηλέφωνο SMS",
-          "apiKey": "Κλειδί API",
-          "apiToken": "API Token / Secret"
-        },
-        "alerts": {
-          "noApiKey": "Παρακαλείσθε να προσθέσετε ένα κλειδί API",
-          "noApiToken": "Παρακαλείσθε να προσθέσετε ένα API TOKEN / Secret",
-          "noSmsProvider": "Παρακαλώ επιλέξτε ένα φορέα SMS",
-          "noSmsPhone": "Παρακαλώ προσθέστε τον αριθμό τηλεφώνου που σας έχει δοθεί από το φορέα SMS",
-          "saveSuccess": "Ρυθμίσεις SMS αποθηκεύονται"
-        }
-      },
-      "mail": {
-        "headers": {
-          "email": "E-mail",
-          "emailSettings": "Ρυθμίσεις email",
-          "config": "Διαμόρφωση",
-          "settings": "Πάροχος SMTP",
-          "status": "Κατάσταση",
-          "actions": "Δράσεις"
-        },
-        "settings": {
-          "service": "Υπηρεσία",
-          "user": "Μεταχειριζόμενος",
-          "password": "Σύνθημα",
-          "host": "Πλήθος",
-          "port": "Λιμάνι",
-          "passwordShow": "Σόου",
-          "passwordHide": "Κρύβω",
-          "fieldNotSet": "Δεν ρυθμίστηκε",
-          "selectService": "Επιλέξτε μια υπηρεσία ...",
-          "custom": "έθιμο"
-        },
-        "logs": {
-          "headers": {
-            "emailLogs": "Logs email",
-            "email": "E-mail",
-            "subject": "Θέμα",
-            "sent": "Αποστέλλονται",
-            "status": "Κατάσταση"
-          },
-          "noEmails": "Δεν τα μηνύματα που στέλνονται ακόμα",
-          "limit": "Ποσότητα",
-          "retry": "Επανάληψη",
-          "noneAvailble": "Δεν διατίθεται"
-        },
-        "alerts": {
-          "error": "Σφάλμα: {{error}}",
-          "resendSuccess": "Προσπαθώντας να ξαναστείλει e-mail στο {{email}}",
-          "missingService": "Παρακαλώ επιλέξτε μια υπηρεσία παροχέα e-mail",
-          "userPassRequired": "χρήστη και κωδικό πρόσβασης SMTP απαιτούνται για {{service}}",
-          "allFieldsRequired": "Όλα τα πεδία είναι υποχρεωτικά για μια προσαρμοσμένη υπηρεσία!",
-          "portNaN": "Η θύρα πρέπει να είναι αριθμός!",
-          "connectionFailed": "Αποτυχημένη σύνδεση!",
-          "saveAnyway": "Θέλετε να αποθηκεύσετε τις ρυθμίσεις ούτως ή άλλως;",
-          "saveSuccess": "ρυθμίσεις mail αποθηκεύονται.",
-          "saveFailed": "Αποτυχία για να αποθηκεύσετε τις ρυθμίσεις αλληλογραφίας. {{error}}",
-          "cantSendEmail": "Σφάλμα διακομιστή: Δεν είναι δυνατή η αποστολή ειδοποίηση μέσω ηλεκτρονικού ταχυδρομείου.",
-          "emailSent": "ειδοποίηση μέσω ηλεκτρονικού ταχυδρομείου που αποστέλλονται."
-        }
-      },
       "header": {
         "tagsAdd": "Προσθήκη ετικέτας",
         "search": "Αναζήτηση προϊόντων..."
@@ -251,9 +185,8 @@
         "addToCart": "Προσθήκη στο καλάθι",
         "chooseOptions": "Παρακαλώ διάλεξε μια επιλογή πριν το προσθέσεις στο καλάθι",
         "outOfStock": "Συγγνώμη αυτο το προϊόν δεν είναι στην αποθήκη!",
-        "productDeleteError": "Σφαλμα διαγράφοντας το προϊόν ",
-        "deleteErrorTheProduct": "το προϊόν",
-        "deleteErrorTheSelectedProducts": "τα επιλεγμένα προϊόντα",
+        "productArchiveError": "Παρουσιάστηκε σφάλμα κατά την αποστολή {{product}} στα αρχεία.",
+        "archiveErrorTheProduct": "το προϊόν",
         "publishFirst": "Πρέπει να δημοσιεύσεις το προϊόν πριν το προσθέσεις στο καλάθι.",
         "quantityAbbreviation": "QTY",
         "selectOption": "Παρακαλώ διάλεξε μια επιλογή πριν το προσθέσεις στο καλάθι",
@@ -266,8 +199,6 @@
         "publishProductHidden": "{{product}} τώρα κρυμμένο",
         "clonedAlert": "κλωνοποιημένα {{product}}",
         "clonedAlert_plural": "κλωνοποιημένα {{product}}",
-        "deletedAlert": "Διαγράφηκε {{product}}",
-        "deletedAlert_plural": "Διαγράφηκε {{product}}",
         "archivedAlert": "Αρχείο {{product}}",
         "archivedAlert_plural": "Αρχείο {{product}}",
         "theProduct": "το προϊόν",
@@ -299,6 +230,7 @@
         "pageTitle": "Τίτλος σελίδα προϊόντος",
         "vendor": "Πωλητής",
         "description": "Πρόσθεσε περιγραφή προϊόντος",
+        "originCountry": "Χώρα προέλευσης",
         "facebookMsg": "Μήνυμα Facebook",
         "twitterMsg": "Μήνυμα Twitter",
         "pinterestMsg": "Μήνυμα Pinterest",
@@ -320,9 +252,8 @@
         "duplicateProduct": "διπλότυπο Προϊόν",
         "pinProduct": "pin Προϊόν",
         "toggleSize": "Εναλλαγή Μέγεθος",
-        "deleteProduct": "Διαγραφή Προϊόν",
+        "archiveProduct": "Αρχείο προϊόντων",
         "restoreProduct": "Επαναφορά του προϊόντος από τον Κάδο απορριμμάτων",
-        "deleteSelectedProducts": "Διαγραφή επιλεγμένων προϊόντων;",
         "archiveThisProduct": "Αρχειοθετήσετε αυτό το προϊόν;",
         "archiveSelectedProducts": "Αρχείο επιλεγμένα προϊόντα;",
         "publish": "Δημοσιεύω",
@@ -345,13 +276,20 @@
         "compareAtPrice": "Τιμή (MSRP)",
         "fulfillmentService": "εκπλήρωση υπηρεσίας",
         "weight": "Βάρος",
+        "length": "Μήκος",
+        "width": "Πλάτος",
+        "height": "Υψος",
         "taxable": "Φορολογήσιμος",
+        "taxCode": "Φόρος Κωδικοί",
+        "taxDescription": "Φόρος Περιγραφή",
         "inventoryManagement": "παρακολούθηση και την απογραφή",
         "inventoryManagementLabel": "Καταχωρήστε το προϊόν στο σύστημα απογραφής και να παρακολουθείτε την κατάσταση της",
         "inventoryPolicy": "Deny όταν εξαντληθεί",
         "inventoryPolicyLabel": "Μην πουλήσει την παραλλαγή του προϊόντος όταν δεν είναι σε απόθεμα",
         "lowInventoryWarningThreshold": "προειδοποιούν @",
-        "lowInventoryWarningThresholdLabel": "Προειδοποιούν τους πελάτες ότι το προϊόν θα είναι κοντά στο sold out, όταν η ποσότητα που φθάνει το επόμενο όριο"
+        "lowInventoryWarningThresholdLabel": "Προειδοποιούν τους πελάτες ότι το προϊόν θα είναι κοντά στο sold out, όταν η ποσότητα που φθάνει το επόμενο όριο",
+        "originCountry": "Χώρα προέλευσης",
+        "selectTaxCode": "Επιλέξτε Κώδικα Φορολογίας"
       },
       "variantList": {
         "moreOptions": "Υπάρχουν πολλαπλές επιλογές για αυτήν την παραλλαγή.",

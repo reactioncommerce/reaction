@@ -20,6 +20,9 @@
                 "host": "",
                 "port": ""
             },
+            "cart": {
+                "cleanupDurationDays": "older than 3 days"
+            },
             "services": [{
                 "facebook": {
                     "appId": "",
@@ -37,7 +40,7 @@
         "enabled": true,
         "settings": {
             "express": {
-              enabled: true
+              "enabled": true
             },
             "express_mode": false,
             "merchantId": "",

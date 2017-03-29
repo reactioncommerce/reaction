@@ -1,107 +1,48 @@
 <template name="coreOrderShippingInvoice">
 
   <form name="capture">
-    <div class="order-items">
-      {{#each item in items}}
-        <div class="order-item form-group order-summary-form-group" data-item data-item-id="{{item._id}}">
-          <div class="order-item-media">
-            {{#with media item.variants}}
-              <img src="{{url store='thumbnail'}}">
-            {{else}}
-              <img src= "/resources/placeholder.gif">
-            {{/with}}
+    <div>
+      {{> React component=LineItemsContainer items=items}}
+    </div>
+
+    <hr>
+
+    <div class="invoice-container">
+      <div>
+        {{> React component=InvoiceContainer
+                  canMakeAdjustments=canMakeAdjustments
+                  paymentCaptured=paymentCaptured
+                  discounts=discounts
+                  invoice=invoice
+                  orderId=orderId
+                  refunds=refunds
+                  isFetching=isFetching
+                  collection="Orders"}}
+      </div>
+
+      {{#if paymentCaptured}}
+        <div class="flex refund-container">
+        <div class="form-group order-summary-form-group">
+          <div class="invoice-details">
+            {{> React refundInputProps}}
           </div>
-          <div class="order-item-details">
-            <div class="order-detail-title">
-              {{item.title}} <small>{{item.variants.title}}</small>
-            </div>
-          </div>
-
-
-          <div class="amount order-detail-price">
-            <div class="amount">
-              {{> React (numericInputProps "item" item.variants.price false)}}
-            </div>
-          </div>
-
         </div>
-      {{else}}
-        <div class="order-item list-group-item" data-i18n="orderShipping.shipmentEmpty">
-          This shipment has no items
-        </div>
-      {{/each}}
-    </div>
-
-    <hr>
-
-    <div class="order-summary-discounts">
-        {{> React component=DiscountList id=orderId collection="Orders"}}
-    </div>
-
-    <hr>
-
-    <div class="form-group order-summary-form-group">
-      <label class="form-control-label reason" for="" data-i18n="cartSubTotals.subtotal">Sub total</label>
-      <div class="amount">
-        {{> React (numericInputProps "subtotal" invoice.subtotal false)}}
+        <button
+          class="btn btn-primary flex-item-fill refund-button"
+          type="button"
+          data-event-action="applyRefund"
+          {{refundSubmitDisabled}}
+        >
+          <span id="btn-refund-payment" data-i18n="order.applyRefund">Apply Refund</span>
+          <i class="fa fa-spinner fa-spin {{#unless isRefunding}}hidden{{/unless}}"></i>
+        </button>
       </div>
-    </div>
-
-    <div class="form-group order-summary-form-group">
-      <label class="form-control-label reason" for="" data-i18n="cartSubTotals.discount">Discount</label>
-      <div class="amount">
-        {{> React (numericInputProps "discount" invoice.discounts false)}}
-      </div>
-    </div>
-
-    <div class="form-group order-summary-form-group">
-      <label class="form-control-label reason" for="" data-i18n="cartSubTotals.shipping">Shipping</label>
-      <div class="amount">
-        {{> React (numericInputProps "shipping" invoice.shipping false)}}
-      </div>
-    </div>
-
-    <div class="form-group order-summary-form-group">
-      <label class="form-control-label reason" for="" data-i18n="cartSubTotals.tax">Tax</label>
-      <div class="amount">
-        {{> React (numericInputProps "taxes" invoice.taxes false)}}
-      </div>
+      {{/if}}
     </div>
 
 
-    <div class="reason">
-      {{> inlineAlerts placement="coreOrderShippingInvoice"}}
-    </div>
-
-    <hr>
-
-    {{#if canMakeAdjustments}}
-      <div class="form-group order-summary-form-group">
-        <label class="form-control-label reason" for="" data-i18n="cartSubTotals.total">Total</label>
-        <div class="amount">
-          {{> React (numericInputProps "total" invoice.total false)}}
-        </div>
-      </div>
-    {{else}}
-      <div class="order-summary-form-group {{#if paymentCaptured}}bg-success{{/if}}">
-        <span class="reason">
-          {{#if paymentCaptured}}
-            <i class="fa fa-check-circle text-success"></i>
-            <strong class="text-success" data-i18n="order.capturedTotal">Captured Total</strong>
-          {{else}}
-            <strong data-i18n="cartSubTotals.total">Total</strong>
-          {{/if}}
-        </span>
-        <div class="amount">
-          {{> React (numericInputProps "total" invoice.total false)}}
-        </div>
-      </div>
-    {{/if}}
-
-    <hr>
 
     <div class="flex">
-
       {{#if paymentPendingApproval}}
         <button class="btn btn-info btn-block" type="submit" data-event-action="approveInvoice" data-i18n="order.approveInvoice">Approve</button>
       {{/if}}
@@ -114,64 +55,39 @@
             data-i18n="app.print">
             Print
           </a>
-          <button class="btn btn-success flex-item-fill" type="button" data-event-action="capturePayment" data-i18n="order.capturePayment">Capture Payment</button>
+          <button class="btn btn-success flex-item-fill" type="button" data-event-action="capturePayment" {{capturedDisabled}}>
+            <span id="btn-capture-payment" data-i18n="order.capturePayment">Capture Payment</span>
+            <i class="fa fa-spinner fa-spin {{#unless isCapturing}}hidden{{/unless}}" id="btn-processing"></i>
+          </button>
       {{/if}}
-
-
     </div>
 
-  </form>
-
-
-  {{#if paymentCaptured}}
-    <form name="refund">
-      <div class="form-group order-summary-form-group">
-        <label class="form-control-label reason" for="" data-i18n="order.refundAmount">Refund Amount</label>
-        <div class="amount">
-          {{> React refundInputProps}}
-        </div>
+    {{#if paymentCaptured}}
+      <div class="total-container">
+          {{> React component=TotalActionsContainer
+                    invoice=invoice
+                    paymentCaptured=paymentCaptured
+                    adjustedTotal=adjustedTotal}}
       </div>
-
-      {{#each refund in refunds}}
-        <div class="order-summary-form-group">
-          <span class="reason" data-i18n="cartSubTotals.refundAmount">Refunded on: {{dateFormat refund.created format="MMM D, YYYY"}}</span>
-          <div class="amount">-{{formatPrice refund.amount}}</div>
-        </div>
-      {{/each}}
-
       <div class="reason">
         {{> inlineAlerts placement="coreOrderRefund"}}
       </div>
 
-      <hr>
+      <br>
 
-      <div class="order-summary-form-group">
-        <span class="reason text-danger">
-          <i class="fa fa-minus-circle"></i>
-          <strong data-i18n="order.adjustedTotal">Adjusted Total</strong>
-        </span>
-        <div class="amount text-danger">
-          <strong>{{formatPrice adjustedTotal}}</strong>
-        </div>
-      </div>
-      <hr>
-      <div class="flex">
+      <button
+        class="btn btn-default btn-block"
+      >
         <a
-          class="btn btn-link"
-          href="{{pathFor "dashboard/pdf/orders" id=orderId }}?shipment={{fulfillment._id}}"
-          target="_blank"
-          data-i18n="app.printInvoice">
+        href="{{pathFor "dashboard/pdf/orders" id=orderId }}?shipment={{fulfillment._id}}"
+        target="_blank"
+        data-i18n="app.printInvoice">
           Print Invoice
         </a>
-        <button
-          class="btn btn-success flex-item-fill"
-          type="submit"
-          data-event-action="applyRefund"
-          data-i18n="order.applyRefund" {{refundSubmitDisabled}}>Apply Refund</button>
-      </div>
-    </form>
-  {{else}}
+      </button>
 
-  {{/if}}
+    {{else}}
 
+    {{/if}}
+  </form>
 </template>

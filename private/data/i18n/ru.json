@@ -95,6 +95,8 @@
         "noProductsFound": "Товар не найден.",
         "private": "Частный",
         "public": "Общественного",
+        "allOn": "All On",
+        "allOff": "Все выключить",
         "shortcut": {
           "addProductLabel": "Добавить продукт",
           "accountsLabel": "Счета"
@@ -157,74 +159,6 @@
           "orderShipped": "Ваш заказ был отправлен."
         }
       },
-      "sms": {
-        "headers": {
-          "settings": "Провайдер SMS"
-        },
-        "settings": {
-          "provider": "Провайдерs",
-          "selectProvider": "Выберите Провайдерs SMS ...",
-          "smsPhone": "SMS номер телефона",
-          "apiKey": "Ключ API",
-          "apiToken": "API токена/секрет"
-        },
-        "alerts": {
-          "noApiKey": "Пожалуйста, добавьте ключ API",
-          "noApiToken": "Пожалуйста, добавьте API ТОКЕНА/секрет",
-          "noSmsProvider": "Пожалуйста, выберите поставщика SMS",
-          "noSmsPhone": "Пожалуйста, добавьте телефонный номер, присвоенный вам вашим поставщиком SMS",
-          "saveSuccess": "Сохраненные настройки SMS"
-        }
-      },
-      "mail": {
-        "headers": {
-          "email": "Email",
-          "emailSettings": "Настройки email",
-          "config": "Конфигурация",
-          "settings": "Провайдер почты",
-          "status": "Статус",
-          "actions": "Действия"
-        },
-        "settings": {
-          "service": "Сервис",
-          "user": "Пользователь",
-          "password": "Пароль",
-          "host": "Хост",
-          "port": "Порт",
-          "passwordShow": "Отобразить",
-          "passwordHide": "Скрыть",
-          "fieldNotSet": "Не настроено",
-          "selectService": "Выберите сервис...",
-          "custom": "пользовательская"
-        },
-        "logs": {
-          "headers": {
-            "emailLogs": "Журналы эл. почты",
-            "email": "Email",
-            "subject": "Тема",
-            "sent": "Отправить",
-            "status": "Статус"
-          },
-          "noEmails": "Эл. письма еще не отправлены",
-          "limit": "Количество",
-          "retry": "Еще раз",
-          "noneAvailble": "Доступных нет"
-        },
-        "alerts": {
-          "error": "Ошибка: {{error}}",
-          "resendSuccess": "Попытка заново отправить email по адресу: {{email}}",
-          "missingService": "Выберите провайдера почтовых услуг",
-          "userPassRequired": "Необходимы данные о пользователе и пароле SMTP для {{service}}",
-          "allFieldsRequired": "Все поля для этого сервиса являются обязательными!",
-          "portNaN": "Номер порта должен быть числом!",
-          "connectionFailed": "Соединение прервано!",
-          "saveAnyway": "Вы все равно хотите сохранить настройки?",
-          "saveSuccess": "Настройки почты сохранены.",
-          "saveFailed": "Не удалось сохранить настройки почты. {{error}}",
-          "cantSendEmail": "Ошибка сервера: Не удается отправить уведомление по электронной почте.",
-          "emailSent": "уведомление по электронной почте."
-        }
-      },
       "header": {
         "tagsAdd": "Добавить метку",
         "search": "Искать товары..."
@@ -251,9 +185,8 @@
         "addToCart": "Добавить в корзину",
         "chooseOptions": "Пожалуйста, выберите вариант прежде чем добавить товар в корзину",
         "outOfStock": "Извините, этого товара нет в наличии",
-        "productDeleteError": "Произошла ошибка во время удаления {{product}}.",
-        "deleteErrorTheProduct": "товара",
-        "deleteErrorTheSelectedProducts": "выбранных товаров",
+        "productArchiveError": "Была ошибка при отправке {{product}} в архив.",
+        "archiveErrorTheProduct": "товара",
         "publishFirst": "Опубликуйте товар прежде чем добавить в корзину.",
         "quantityAbbreviation": "Кол-во",
         "selectOption": "Выберите вариант прежде чем добавить в корзину",
@@ -266,8 +199,6 @@
         "publishProductHidden": "{{product}} теперь невидим",
         "clonedAlert": "{{product}} скопирован",
         "clonedAlert_plural": "{{product}} скопированы",
-        "deletedAlert": "{{product}} удален",
-        "deletedAlert_plural": "{{product}} удалены",
         "archivedAlert": "Заархивирован {{product}}",
         "archivedAlert_plural": "Заархивирован {{product}}",
         "theProduct": "Товар",
@@ -299,6 +230,7 @@
         "pageTitle": "Название страницы товара",
         "vendor": "Изготовитель",
         "description": "Добавьте описание товара",
+        "originCountry": "Страна происхождения",
         "facebookMsg": "Сообщение Facebook",
         "twitterMsg": "Сообщение Twitter",
         "pinterestMsg": "Сообщение Pinterest",
@@ -320,9 +252,8 @@
         "duplicateProduct": "Скопировать товар",
         "pinProduct": "Закрепить товар",
         "toggleSize": "Поменять размер",
-        "deleteProduct": "Удалить товар",
+        "archiveProduct": "Архив продуктов",
         "restoreProduct": "Восстановить товар из корзины",
-        "deleteSelectedProducts": "Удалить выбранные товары?",
         "archiveThisProduct": "Архивировать этот продукт?",
         "archiveSelectedProducts": "Архивировать выбранные продукты?",
         "publish": "Опубликовать",
@@ -345,13 +276,20 @@
         "compareAtPrice": "Цена (MSRP)",
         "fulfillmentService": "Обслуживание услуги",
         "weight": "Вес",
+        "length": "длина",
+        "width": "Ширина",
+        "height": "Высота",
         "taxable": "Налогооблагаемый",
+        "taxCode": "Налоговые коды",
+        "taxDescription": "Налог Описание",
         "inventoryManagement": "Следить за кол-вом",
         "inventoryManagementLabel": "Сделать товар складским и отслеживать его состояние",
         "inventoryPolicy": "Откл. при нуле",
         "inventoryPolicyLabel": "Не продавать вариант товара, когда его нет в наличие",
         "lowInventoryWarningThreshold": "Предупреждать при",
-        "lowInventoryWarningThresholdLabel": "Предупреждать покупателей о том, что продукт заканчивается, когда количество достигло следующего порога"
+        "lowInventoryWarningThresholdLabel": "Предупреждать покупателей о том, что продукт заканчивается, когда количество достигло следующего порога",
+        "originCountry": "Страна происхождения",
+        "selectTaxCode": "Выберите Налоговый кодекс"
       },
       "variantList": {
         "moreOptions": "Для этого варианта доступны следующие опции:",

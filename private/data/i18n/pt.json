@@ -95,6 +95,8 @@
         "noProductsFound": "Nenhum produto encontrado.",
         "private": "Particular",
         "public": "Público",
+        "allOn": "Tudo em cima",
+        "allOff": "All Off",
         "shortcut": {
           "addProductLabel": "Adicionar produto",
           "accountsLabel": "Contas"
@@ -157,74 +159,6 @@
           "orderShipped": "Sua ordem foi enviada."
         }
       },
-      "sms": {
-        "headers": {
-          "settings": "Fornecedor SMS"
-        },
-        "settings": {
-          "provider": "Fornecedor",
-          "selectProvider": "Selecione um provedor de SMS ...",
-          "smsPhone": "Número de telefone SMS",
-          "apiKey": "Chave da API",
-          "apiToken": "API Token/Secret"
-        },
-        "alerts": {
-          "noApiKey": "Adicione uma chave de API",
-          "noApiToken": "Adicione um API TOKEN / Secret",
-          "noSmsProvider": "Escolha um fornecedor de SMS",
-          "noSmsPhone": "Adicione o número de telefone fornecido pelo seu provedor de SMS",
-          "saveSuccess": "Configurações de SMS salvas"
-        }
-      },
-      "mail": {
-        "headers": {
-          "email": "Email",
-          "emailSettings": "Definições do email",
-          "config": "Configuração",
-          "settings": "Fornecedor de correio",
-          "status": "Estado",
-          "actions": "Ações"
-        },
-        "settings": {
-          "service": "Serviço",
-          "user": "Utilizador",
-          "password": "Palavra-passe",
-          "host": "Anfitrião",
-          "port": "Porta",
-          "passwordShow": "Mostrar",
-          "passwordHide": "Ocultar",
-          "fieldNotSet": "Não definido",
-          "selectService": "Selecionar um serviço...",
-          "custom": "personalizado"
-        },
-        "logs": {
-          "headers": {
-            "emailLogs": "Registos de email",
-            "email": "Email",
-            "subject": "Assunto",
-            "sent": "Enviado",
-            "status": "Estado"
-          },
-          "noEmails": "Ainda não foram enviados quaisquer emails",
-          "limit": "Quantidade",
-          "retry": "Tentar de novo",
-          "noneAvailble": "Nenhum disponível"
-        },
-        "alerts": {
-          "error": "Erro: {{error}}",
-          "resendSuccess": "A tentar reenviar email para {{email}}",
-          "missingService": "Escolha um serviço de fornecedor de correio",
-          "userPassRequired": "O utilizador e a palavra-passe SMTP são obrigatórios para {{service}}",
-          "allFieldsRequired": "Todos os campos são obrigatórios para um serviço personalizado!",
-          "portNaN": "A porta tem de ter um número!",
-          "connectionFailed": "Falha na ligação!",
-          "saveAnyway": "Pretende, mesmo assim, guardar as definições?",
-          "saveSuccess": "Definições de correio guardadas.",
-          "saveFailed": "Falha ao guardar definições do correio. {{error}}",
-          "cantSendEmail": "Erro de servidor: Não é possível enviar uma notificação de e-mail.",
-          "emailSent": "notificação de e-mail enviado."
-        }
-      },
       "header": {
         "tagsAdd": "Adicionar etiqueta",
         "search": "Procurar produtos..."
@@ -251,9 +185,8 @@
         "addToCart": "Adicionar ao carrinho",
         "chooseOptions": "Escolha as opções antes de adicionar ao carrinho",
         "outOfStock": "Lamentamos. Este item está esgotado!",
-        "productDeleteError": "Ocorreu um erro ao eliminar {{product}}.",
-        "deleteErrorTheProduct": "o produto",
-        "deleteErrorTheSelectedProducts": "os produtos selecionados",
+        "productArchiveError": "Houve um erro ao enviar {{product}} aos arquivos.",
+        "archiveErrorTheProduct": "o produto",
         "publishFirst": "Publique o produto antes de adicionar ao carrinho.",
         "quantityAbbreviation": "QTD",
         "selectOption": "Selecionar uma opção antes de adicionar ao carrinho",
@@ -266,8 +199,6 @@
         "publishProductHidden": "O produto {{product}} está agora oculto",
         "clonedAlert": "{{product}} clonado",
         "clonedAlert_plural": "{{product}} clonado",
-        "deletedAlert": "{{product}} eliminado",
-        "deletedAlert_plural": "{{product}} eliminado",
         "archivedAlert": "{{product}} arquivado",
         "archivedAlert_plural": "{{product}} arquivado",
         "theProduct": "o produto",
@@ -299,6 +230,7 @@
         "pageTitle": "Subtítulo",
         "vendor": "Fornecedor",
         "description": "Descrição",
+        "originCountry": "País de origem",
         "facebookMsg": "Mensagem do Facebook",
         "twitterMsg": "Mensagem do Twitter",
         "pinterestMsg": "Mensagem de Pinterest",
@@ -320,9 +252,8 @@
         "duplicateProduct": "Duplicar o produto",
         "pinProduct": "Afixar produto",
         "toggleSize": "Alternar tamanho",
-        "deleteProduct": "Eliminar produto",
+        "archiveProduct": "Arquivo de Produtos",
         "restoreProduct": "Recuperar o produto do lixo",
-        "deleteSelectedProducts": "Eliminar produtos selecionados?",
         "archiveThisProduct": "Arquivar este produto?",
         "archiveSelectedProducts": "Arquivar os produtos selecionados?",
         "publish": "Publicar",
@@ -345,13 +276,20 @@
         "compareAtPrice": "Preço (preço de venda sugerido pelo fabricante)",
         "fulfillmentService": "Serviço de execução",
         "weight": "Peso",
+        "length": "comprimento",
+        "width": "Largura",
+        "height": "Altura",
         "taxable": "Tributável",
+        "taxCode": "Códigos de imposto",
+        "taxDescription": "Descrição fiscal",
         "inventoryManagement": "Monitorização do inventário",
         "inventoryManagementLabel": "Registar o produto no sistema de inventário e monitorizar o respetivo estado",
         "inventoryPolicy": "Negar quando estiver esgotado",
         "inventoryPolicyLabel": "Não vender a variante do produto quando não estiver em stock",
         "lowInventoryWarningThreshold": "Warn @",
-        "lowInventoryWarningThresholdLabel": "Avisar os clientes de que o produto estará prestes a esgotar quando a quantidade atingir o próximo limite"
+        "lowInventoryWarningThresholdLabel": "Avisar os clientes de que o produto estará prestes a esgotar quando a quantidade atingir o próximo limite",
+        "originCountry": "País de origem",
+        "selectTaxCode": "Selecione Código Tributário"
       },
       "variantList": {
         "moreOptions": "Existem mais opções disponíveis para esta seleção.",

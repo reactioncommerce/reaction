@@ -16,6 +16,7 @@ Template.accountsDashboard.onCreated(function () {
 Template.accountsDashboard.helpers({
   /**
    * isShopMember
+   * @param {Object} member member object
    * @return {Boolean} True if the memnber is an administrator
    */
   isShopMember() {
@@ -24,12 +25,12 @@ Template.accountsDashboard.helpers({
 
   /**
    * isShopGuest
+   * @param {Object} member member object
    * @return {Boolean} True if the member is a guest
    */
   isShopGuest() {
     return !_.includes(["dashboard", "admin", "owner"], this.role);
   },
-
   /**
    * members
    * @return {Boolean} True array of adminsitrative members

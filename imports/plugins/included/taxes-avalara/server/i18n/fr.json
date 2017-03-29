@@ -4,6 +4,32 @@
   "ns": "taxes-avalara",
   "translation": {
     "reaction-taxes": {
+      "settings": {
+        "apiLoginId": "Avalara API ID de connexion",
+        "username": "Nom d'utilisateur",
+        "password": "Mot de passe",
+        "companyCode": "Code de l'entreprise",
+        "shippingTaxCode": "Code fiscal Expédition",
+        "mode": "Production Mode",
+        "performTaxCalculation": "Effectuer le calcul des taxes",
+        "addressValidation": "Adresse validation",
+        "enableAddressValidationByCountry": "Activer Adresse Validation par pays",
+        "enableLogging": "Activer la journalisation",
+        "logRetentionDuration": "Rétention Log Durée",
+        "requestTimeout": "Request Timeout",
+        "commitDocuments": "Engagez Documents",
+        "administratorsPanel": "Panel de l'administrateur",
+        "testCredentialsSuccess": "Test de connexion Success",
+        "testCredentialsFailed": "Test de connexion a échoué, vérifiez les informations d'identification",
+        "apiError": "Avalara pas configuré correctement"
+      },
+      "logGrid": {
+        "noLogsFound": "Aucun journal trouvé",
+        "columns": {
+          "date": "Date",
+          "docType": "Type de document"
+        }
+      },
       "admin": {
         "shortcut": {
           "avalaraLabel": "Avalara",
@@ -12,13 +38,14 @@
         "dashboard": {
           "avalaraLabel": "Avalara",
           "avalaraTitle": "Avalara",
-          "avalaraDescription": "Avalara Taux d'imposition"
+          "avalaraDescription": "Avalara Taux d'imposition",
+          "testCredentials": "Pouvoirs d'essai"
         },
         "taxSettings": {
           "avalaraLabel": "Avalara",
           "avalaraSettingsLabel": "Avalara",
-          "avalaraCredentials": "Ajouter les informations d'identification pour permettre",
-          "avalaraGetCredentialsURL": "Obtenez-les ici"
+          "formTitle": "Paramètres fiscaux",
+          "entityCodeCustomLabel": "SET VALEUR CUSTOM"
         }
       }
     }

@@ -8,6 +8,10 @@
           "productSettingsLabel": "Настройки продукта",
           "productDetailsLabel": "информация о продукте"
         }
+      },
+      "productDetailEdit": {
+        "template": "Настройки шаблона",
+        "templateSelectPlaceholder": "Выберите шаблон"
       }
     }
   }
