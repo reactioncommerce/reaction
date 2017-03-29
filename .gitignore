@@ -41,6 +41,7 @@ private/custom/*
 !private/custom/.gitkeep
 
 imports/plugins/custom/*
+!imports/plugins/custom/ee-pdp
 !imports/plugins/custom/.gitkeep
 !imports/plugins/custom/data_import
 !imports/plugins/custom/ee-front-end
