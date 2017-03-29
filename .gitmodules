@@ -1,3 +1,6 @@
+[submodule "imports/plugins/custom/ee-pdp"]
+	path = imports/plugins/custom/ee-pdp
+	url = https://github.com/evereveofficial/ee-pdp
 [submodule "imports/plugins/custom/ee-styles"]
 	path = imports/plugins/custom/ee-styles
 	url = https://github.com/evereveofficial/ee-styles
