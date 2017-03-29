@@ -700,12 +700,12 @@ Meteor.methods({
   },
 
   /**
-   * products/deleteProduct
-   * @summary delete a product and unlink it from all media
+   * products/archiveProduct
+   * @summary archive a product and unlink it from all media
    * @param {String} productId - productId to delete
    * @returns {Number} returns number of removed products
    */
-  "products/deleteProduct": function (productId) {
+  "products/archiveProduct": function (productId) {
     check(productId, Match.OneOf(Array, String));
     // must have admin permission to delete
     if (!Reaction.hasPermission("createProduct", this.userId, Reaction.getSellerShopId(this.userId)) && !Reaction.hasAdminAccess()) {

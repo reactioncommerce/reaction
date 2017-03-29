@@ -24,7 +24,7 @@ class ProductAdminContainer extends Component {
   }
 
   handleDeleteProduct = (product) => {
-    ReactionProduct.maybeDeleteProduct(product || this.product);
+    ReactionProduct.archiveProduct(product || this.product);
   }
 
   handleProductFieldSave = (productId, fieldName, value) => {
