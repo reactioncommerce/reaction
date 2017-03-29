@@ -42,7 +42,6 @@ Reaction.registerPackage({
     workflow: "coreCartWorkflow",
     container: "checkout-steps-main",
     audience: ["guest", "anonymous"],
-    priority: 1,
     position: "1"
   }, {
     template: "checkoutAddressBook",
@@ -50,7 +49,6 @@ Reaction.registerPackage({
     workflow: "coreCartWorkflow",
     container: "checkout-steps-main",
     audience: ["guest", "anonymous"],
-    priority: 2,
     position: "2"
   }, {
     template: "coreCheckoutShipping",
@@ -58,7 +56,6 @@ Reaction.registerPackage({
     workflow: "coreCartWorkflow",
     container: "checkout-steps-main",
     audience: ["guest", "anonymous"],
-    priority: 3,
     position: "3"
   }, {
     template: "checkoutReview",
@@ -66,7 +63,6 @@ Reaction.registerPackage({
     workflow: "coreCartWorkflow",
     container: "checkout-steps-side",
     audience: ["guest", "anonymous"],
-    priority: 4,
     position: "4"
   }, {
     template: "checkoutPayment",
@@ -74,7 +70,6 @@ Reaction.registerPackage({
     workflow: "coreCartWorkflow",
     container: "checkout-steps-side",
     audience: ["guest", "anonymous"],
-    priority: 5,
     position: "5"
   }]
 });
