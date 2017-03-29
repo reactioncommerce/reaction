@@ -72,15 +72,15 @@ class ProductDetailContainer extends Component {
         });
       } else {
         productId = currentProduct._id;
-        this.setState({ disabledStyle: { cursor: "not-allowed" } }); // sets cursor property style on button
-        this.setState({ disableAdding: true }); // disable add-to-cart button
-
-        // message to user when add-to-cart button gets deactivated
-        Alerts.inline("Add to cart button is currently inactive", "info", {
-          placement: "productDetail",
-          i18nKey: "productDetail.inactiveButton",
-          autoHide: 2000
+        // styles deactivated button
+        this.setState({
+          disabledStyle: {
+            cursor: "not-allowed",
+            backgroundColor: "#A9A9A9",
+            border: "1px solid #A9A9A9"
+          }
         });
+        this.setState({ disableAdding: true }); // disable add-to-cart button
 
         if (productId) {
           Meteor.call("cart/addToCart", productId, currentVariant._id, quantity, (error) => {
