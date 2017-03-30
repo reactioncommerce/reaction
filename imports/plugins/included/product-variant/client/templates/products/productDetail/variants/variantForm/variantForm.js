@@ -63,7 +63,20 @@ Template.variantForm.helpers({
     return childVariants;
   },
   hasChildVariants: function () {
-    return ReactionProduct.checkChildVariants(this._id) > 0;
+    if (ReactionProduct.checkChildVariants(this._id) > 0) {
+      const _id = this._id;
+      const variants = ReactionProduct.getVariants();
+      let variantQuantity = 0;
+      variants.map(variant => {
+        if (~variant.ancestors.indexOf(_id) && variant.type !== "inventory") {
+          variantQuantity += variant.inventoryQuantity;
+        }
+      });
+      Meteor.call("products/updateProductField", _id, "inventoryQuantity", variantQuantity);
+
+      return true;
+    }
+    return false;
   },
   variantFormId: function () {
     return "variant-form-" + this._id;
