@@ -1,6 +1,5 @@
 import React from "react";
 import { Meteor } from "meteor/meteor";
-import { Counts } from "meteor/tmeasday:publish-counts";
 import { Reaction, i18next } from "/client/api";
 import { composeWithTracker } from "/lib/api/compose";
 import OrderActions from "../components/orderActions";
@@ -17,10 +16,14 @@ function handleActionClick(filter) {
 }
 
 function composer(props, onData) {
-  Meteor.subscribe("Orders");
-
   const selectedFilterName = Reaction.getUserPreferences(Constants.PACKAGE_NAME, Constants.ORDER_LIST_FILTERS_PREFERENCE_NAME);
   let selectedIndex;
+  Meteor.call("orders/count", (error, result) => {
+    if (error) {
+      throw new Meteor.Error("Error fetching order count", error);
+    }
+    return result;
+  });
 
   const filters = Constants.orderFilters.map((filter, index) => {
     if (filter.name === selectedFilterName) {
@@ -29,13 +32,6 @@ function composer(props, onData) {
 
     filter.label = i18next.t(`order.filter.${filter.name}`, { defaultValue: filter.label });
     filter.i18nKeyLabel = `order.filter.${filter.name}`;
-    if (filter.name === "new") {
-      filter.count = Counts.get("newOrder-count");
-    } else if (filter.name === "processing") {
-      filter.count = Counts.get("processingOrder-count");
-    } else if (filter.name === "completed") {
-      filter.count = Counts.get("completedOrder-count");
-    }
 
     return filter;
   });
