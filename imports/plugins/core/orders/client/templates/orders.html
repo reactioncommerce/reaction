@@ -29,29 +29,6 @@
   {{/if}}
 </template>
 
-<template name="orderListFilters">
-  <ul class="nav nav-pills" role="tablist">
-    {{#each filters}}
-      <li role="presentation" class="{{activeClassname .}}">
-        <a
-          class="flex"
-          href="#{{name}}"
-          aria-controls="{{name}}"
-          role="tab"
-          data-toggle="tab"
-          data-event-action="toggleFilter"
-          data-filter="{{name}}">
-            <span class="count">{{count}}</span>
-            <span class="filter-label" data-i18n="{{i18nKeyLabel}}">
-              {{!-- wrapping label below in a span prevents a console error --}}
-              <span>{{label}}</span>
-            </span>
-        </a>
-      </li>
-    {{/each}}
-  </ul>
-</template>
-
 <template name="ordersListItem">
   <div class="rui card order {{activeClassname order._id}}" data-event-action="selectOrder">
     <div class="content">

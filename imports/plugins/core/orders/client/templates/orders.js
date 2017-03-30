@@ -251,56 +251,6 @@ Template.ordersListItem.events({
   }
 });
 
-Template.orderListFilters.onCreated(function () {
-  this.state = new ReactiveDict();
-
-  this.autorun(() => {
-    const queryFilter = Reaction.Router.getQueryParam("filter");
-    this.subscribe("Orders");
-
-    const filters = orderFilters.map((filter) => {
-      filter.label = i18next.t(`order.filter.${filter.name}`, { defaultValue: filter.label });
-      filter.i18nKeyLabel = `order.filter.${filter.name}`;
-      filter.count = Orders.find(OrderHelper.makeQuery(filter.name)).count();
-
-      if (queryFilter) {
-        filter.active = queryFilter === filter.name;
-      }
-
-      return filter;
-    });
-
-    this.state.set("filters", filters);
-  });
-});
-
-Template.orderListFilters.events({
-  "click [role=tab]": (event) => {
-    event.preventDefault();
-    const filter = event.currentTarget.getAttribute("data-filter");
-    const isActionViewOpen = Reaction.isActionViewOpen();
-    if (isActionViewOpen === true) {
-      Reaction.hideActionView();
-    }
-
-    Reaction.setUserPreferences(PACKAGE_NAME, ORDER_LIST_FILTERS_PREFERENCE_NAME, filter);
-    Reaction.setUserPreferences(PACKAGE_NAME, ORDER_LIST_SELECTED_ORDER_PREFERENCE_NAME, null);
-  }
-});
-
-Template.orderListFilters.helpers({
-  filters() {
-    return Template.instance().state.get("filters");
-  },
-
-  activeClassname(item) {
-    if (item.active === true) {
-      return "active";
-    }
-    return "";
-  }
-});
-
 /**
  * orderStatusDetail
  *
@@ -308,23 +258,6 @@ Template.orderListFilters.helpers({
  *
  * @returns orderStatusDetails
  */
-Template.orderStatusDetail.onCreated(function () {
-  this.state = new ReactiveDict();
-  this.state.setDefault({
-    orders: []
-  });
-
-  // Watch for updates to the subscription and query params
-  // fetch available orders
-  this.autorun(() => {
-    this.subscribe("Orders");
-    const filter = Reaction.Router.getQueryParam("filter");
-    const query = OrderHelper.makeQuery(filter);
-    const orders = Orders.find(query).fetch();
-
-    this.state.set("orders", orders);
-  });
-});
 
 Template.orderStatusDetail.helpers({
   // helper to format currency
