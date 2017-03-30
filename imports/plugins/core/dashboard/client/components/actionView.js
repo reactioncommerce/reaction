@@ -12,6 +12,8 @@ import {
   Translation,
   Overlay
 } from "/imports/plugins/core/ui/client/components";
+import { getComponent } from "/imports/plugins/core/layout/lib/components";
+
 
 const getStyles = (props) => {
   let viewSize = 400;
@@ -20,6 +22,22 @@ const getStyles = (props) => {
 
   if (isBigView) {
     viewSize = "90vw";
+  }
+
+  if (actionView.meta && actionView.meta.actionView) {
+    const isSmView = actionView.meta.actionView.dashboardSize === "sm";
+    const isMdView = actionView.meta.actionView.dashboardSize === "md";
+    const isLgView = actionView.meta.actionView.dashboardSize === "lg";
+
+    if (isSmView) {
+      viewSize = "400px";
+    }
+    if (isMdView) {
+      viewSize = "50vw";
+    }
+    if (isLgView) {
+      viewSize = "90vw";
+    }
   }
 
   if (props.actionViewIsOpen === false) {
@@ -174,6 +192,17 @@ class ActionView extends Component {
 
   renderControlComponent() {
     if (this.props.actionView && typeof this.props.actionView.template === "string") {
+      // Render a react component if one has been registered by name
+      const component = getComponent(this.props.actionView.template);
+
+      if (component) {
+        return (
+          <div style={this.styles.masterView} className="master">
+            {React.createElement(component, this.props.actionView.data)}
+          </div>
+        );
+      }
+
       return (
         <div style={this.styles.masterView} className="master">
           <Blaze
@@ -245,7 +274,10 @@ class ActionView extends Component {
   }
 
   get actionViewIsLargeSize() {
-    return this.props.actionView.provides === "dashboard";
+    const { meta } = this.props.actionView;
+    const dashboardSize = meta && meta.actionView && meta.actionView.dashboardSize || "sm";
+
+    return this.props.actionView.provides === "dashboard" || dashboardSize !== "sm";
   }
 
   get showOverlay() {

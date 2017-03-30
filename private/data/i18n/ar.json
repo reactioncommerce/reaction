@@ -95,6 +95,8 @@
         "noProductsFound": ".لم يتم إيجاد منتجات",
         "private": "خاص",
         "public": "عامة",
+        "allOn": "الكل في",
+        "allOff": "كل معطلة",
         "shortcut": {
           "addProductLabel": "إضافة المنتج",
           "accountsLabel": "الحسابات"
@@ -157,74 +159,6 @@
           "orderShipped": "وقد تم شحن طلبك."
         }
       },
-      "sms": {
-        "headers": {
-          "settings": "مزود الرسائل القصيرة"
-        },
-        "settings": {
-          "provider": "مزود",
-          "selectProvider": "حدد مزود الرسائل القصيرة ...",
-          "smsPhone": "الرسائل القصيرة رقم الهاتف",
-          "apiKey": "مفتاح API",
-          "apiToken": "API رمز"
-        },
-        "alerts": {
-          "noApiKey": "الرجاء إضافة مفتاح API",
-          "noApiToken": "الرجاء إضافة API TOKEN / سر",
-          "noSmsProvider": "الرجاء اختيار موفر SMS",
-          "noSmsPhone": "الرجاء إضافة رقم الهاتف المعطاة لك من قبل موفر SMS",
-          "saveSuccess": "إعدادات الرسائل القصيرة SMS حفظ"
-        }
-      },
-      "mail": {
-        "headers": {
-          "email": "بريد إلكتروني",
-          "emailSettings": "إعدادات البريد الإلكتروني",
-          "config": "ترتيب",
-          "settings": "مزود البريد",
-          "status": "حالة",
-          "actions": "افعال"
-        },
-        "settings": {
-          "service": "خدمة",
-          "user": "مستخدم",
-          "password": "كلمة المرور",
-          "host": "مضيف",
-          "port": "ميناء",
-          "passwordShow": "إظهار",
-          "passwordHide": "إخفاء",
-          "fieldNotSet": "غير محدد",
-          "selectService": "...أختيار خدمة",
-          "custom": "مخصص"
-        },
-        "logs": {
-          "headers": {
-            "emailLogs": "سجلات البريد لإلكتروني",
-            "email": "بريد إلكتروني",
-            "subject": "موضوع",
-            "sent": "تم الإرسال",
-            "status": "حالة"
-          },
-          "noEmails": "لم يتم رسال اي رسالة حتى الأن",
-          "limit": "كمية",
-          "retry": "إعادة المحاولة",
-          "noneAvailble": "غير متاح"
-        },
-        "alerts": {
-          "error": "خطأ: {{error}}",
-          "resendSuccess": "محاولة اعادة ارسال ايميل الى {{email}}",
-          "missingService": "الرجاء أختيار مزود خدمة البريد",
-          "userPassRequired": "SMTP اسم المستخدم وكلمة السر مطلوبة ل {{service}}",
-          "allFieldsRequired": "!جميع الحقول مطلوبة لخدمة مخصصة",
-          "portNaN": "! يجب أن يكون الميناء رقماً",
-          "connectionFailed": "!فشل الأتصال",
-          "saveAnyway": "هل تريد حفظ الإعدادات بجميع الاحوال؟",
-          "saveSuccess": ".تم حفظ إعدادات البريد",
-          "saveFailed": "فشل حفظ إعدادات البريد {{error}}",
-          "cantSendEmail": "خطأ الخادم: لا يمكن إرسال إشعار البريد الإلكتروني.",
-          "emailSent": "إشعار البريد الإلكتروني المرسلة."
-        }
-      },
       "header": {
         "tagsAdd": "إضافة علامة",
         "search": "ابحث عن منتج..."
@@ -251,9 +185,8 @@
         "addToCart": "إضافة الى العربة",
         "chooseOptions": "الرجاء إختيار احد الخيارات قبل الإضافة للعربة",
         "outOfStock": "نعتذر، هذا العنصر خارج المخزن",
-        "productDeleteError": "حدث خطأ في حذف {{product}}.",
-        "deleteErrorTheProduct": "المنتج",
-        "deleteErrorTheSelectedProducts": "المنتج المختار",
+        "productArchiveError": "حدث خطأ أثناء إرسال {{product}} إلى الأرشيف.",
+        "archiveErrorTheProduct": "المنتج",
         "publishFirst": ".نشر المنتج قبل إضافته العربة",
         "quantityAbbreviation": "كمية",
         "selectOption": "اختار خيار قبل الإضافة للعربة",
@@ -266,8 +199,6 @@
         "publishProductHidden": "{{product}} أصبح مخفيا الآن",
         "clonedAlert": "منسوخ {{product}}",
         "clonedAlert_plural": "مستنسخ {{product}}",
-        "deletedAlert": "{{product}} المحذوف ",
-        "deletedAlert_plural": "محذوف{{product}}",
         "archivedAlert": " {{product}}الارشيف ",
         "archivedAlert_plural": "{{product}}مؤرشف ",
         "theProduct": "المنتج",
@@ -299,6 +230,7 @@
         "pageTitle": "عنوان فرعي",
         "vendor": "بائع ",
         "description": "مواصفات",
+        "originCountry": "بلد المنشأ",
         "facebookMsg": "رسالة  فيسبوك",
         "twitterMsg": "رسالة تويتر",
         "pinterestMsg": "رسالة بيرسنت",
@@ -320,9 +252,8 @@
         "duplicateProduct": "منتج متكرر",
         "pinProduct": "رمز البن للمنتج",
         "toggleSize": "تبديل الحجم",
-        "deleteProduct": "إلغاء منتج",
+        "archiveProduct": "الأرشيف المنتج",
         "restoreProduct": "إستعادة المنتج من سلة المهملات",
-        "deleteSelectedProducts": "هل تريد حذف المنتجات المختارة؟",
         "archiveThisProduct": "قم بأرشفة هذا المنتج ؟",
         "archiveSelectedProducts": "منتجات الارشيف المختارة ؟",
         "publish": "نشر",
@@ -345,13 +276,20 @@
         "compareAtPrice": " (MSRP) ثمن ",
         "fulfillmentService": "خدمة تلبية الطلب",
         "weight": "وزن",
+        "length": "طول",
+        "width": "عرض",
+        "height": "ارتفاع",
         "taxable": "خاضع للضريبة",
+        "taxCode": "رموز الضريبة",
+        "taxDescription": "الضرائب الوصف",
         "inventoryManagement": "تتبع الجرد",
         "inventoryManagementLabel": "تسجيل المنتج في نظام الجرد وتتبع حالتها",
         "inventoryPolicy": "الرفض عندما يكون غير متوفر",
         "inventoryPolicyLabel": "لا تبع المنتج البديل وهو غير موجود في المخزن",
         "lowInventoryWarningThreshold": "Warn @",
-        "lowInventoryWarningThresholdLabel": "تحذير العملاء من أن المنتج سوف ينفذ عندما تصل الكمية الى الحد المحدد التالي"
+        "lowInventoryWarningThresholdLabel": "تحذير العملاء من أن المنتج سوف ينفذ عندما تصل الكمية الى الحد المحدد التالي",
+        "originCountry": "بلد المنشأ",
+        "selectTaxCode": "حدد قانون الضرائب"
       },
       "variantList": {
         "moreOptions": ".هنالك خيارات إضافية متاحة لهذا الأختيار",

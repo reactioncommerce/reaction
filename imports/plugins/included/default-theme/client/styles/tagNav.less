@@ -336,6 +336,12 @@
   background-color: @white;
 }
 
+@media screen and (max-width: @screen-sm-max) {
+  .navbar-item.selected .dropdown-container {
+    float: none;
+  }
+}
+
 .rui.tagnav.vertical .navbar-item.selected .dropdown-container,
 .rui.tagnav.vertical .navbar-item .dropdown-container {
   // display: block !important;

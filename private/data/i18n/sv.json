@@ -95,6 +95,8 @@
         "noProductsFound": "Inga produkter hittades.",
         "private": "Privat",
         "public": "offentlig",
+        "allOn": "alla på",
+        "allOff": "Alla",
         "shortcut": {
           "addProductLabel": "Lägg Produkt",
           "accountsLabel": "Konton"
@@ -157,74 +159,6 @@
           "orderShipped": "Din beställning har skickats."
         }
       },
-      "sms": {
-        "headers": {
-          "settings": "SMS Provider"
-        },
-        "settings": {
-          "provider": "provider",
-          "selectProvider": "Välj en SMS-leverantör ...",
-          "smsPhone": "SMS Telefonnummer",
-          "apiKey": "API-nyckel",
-          "apiToken": "API-token / Secret"
-        },
-        "alerts": {
-          "noApiKey": "Lägg till en API-nyckel",
-          "noApiToken": "Lägg till en API-token / Secret",
-          "noSmsProvider": "Välj ett SMS-leverantör",
-          "noSmsPhone": "Vänligen lägga till telefonnumret som du fått från din SMS-leverantör",
-          "saveSuccess": "SMS-inställningar sparas"
-        }
-      },
-      "mail": {
-        "headers": {
-          "email": "E-post",
-          "emailSettings": "e-postinställningar",
-          "config": "Konfiguration",
-          "settings": "SMTP Provider",
-          "status": "Status",
-          "actions": "Aktiviteter"
-        },
-        "settings": {
-          "service": "Tjänsten",
-          "user": "Användare",
-          "password": "Lösenord",
-          "host": "Värd",
-          "port": "Hamn",
-          "passwordShow": "Visa",
-          "passwordHide": "Göm",
-          "fieldNotSet": "Inte inställd",
-          "selectService": "Välj en tjänst ...",
-          "custom": "beställnings-"
-        },
-        "logs": {
-          "headers": {
-            "emailLogs": "e loggar",
-            "email": "E-post",
-            "subject": "Ämne",
-            "sent": "Skickat",
-            "status": "Status"
-          },
-          "noEmails": "Inga e-postmeddelanden skickas ännu",
-          "limit": "Kvantitet",
-          "retry": "Försöka igen",
-          "noneAvailble": "inga tillgängliga"
-        },
-        "alerts": {
-          "error": "Fel: {{error}}",
-          "resendSuccess": "Att försöka skicka e-post till {{email}}",
-          "missingService": "Välj en postleverantör tjänst",
-          "userPassRequired": "SMTP-användarnamn och lösenord krävs för {{service}}",
-          "allFieldsRequired": "Alla fält är obligatoriska för en anpassad service!",
-          "portNaN": "Porten måste vara ett nummer!",
-          "connectionFailed": "Anslutningen misslyckades!",
-          "saveAnyway": "Vill du spara inställningarna ändå?",
-          "saveSuccess": "E-postinställningar sparas.",
-          "saveFailed": "Det gick inte att spara postinställningar. {{error}}",
-          "cantSendEmail": "Server Error: Kan inte skicka e-postmeddelande.",
-          "emailSent": "E-postmeddelande skickas."
-        }
-      },
       "header": {
         "tagsAdd": "Lägg till tagg",
         "search": "Sök produkter ..."
@@ -251,9 +185,8 @@
         "addToCart": "Lägg till i kundvagn",
         "chooseOptions": "Välj alternativ innan du lägger till i kundvagnen",
         "outOfStock": "Tyvärr är denna punkt slut!",
-        "productDeleteError": "Det gick inte att ta bort {{product}}.",
-        "deleteErrorTheProduct": "produkten",
-        "deleteErrorTheSelectedProducts": "de utvalda produkterna",
+        "productArchiveError": "Det uppstod ett fel när du skickar {{product}} till arkivet.",
+        "archiveErrorTheProduct": "produkten",
         "publishFirst": "Publicera produkten innan du lägger till i kundvagnen.",
         "quantityAbbreviation": "ANTAL",
         "selectOption": "Välj ett alternativ innan du lägger till i kundvagnen",
@@ -266,8 +199,6 @@
         "publishProductHidden": "{{product}} nu gömd",
         "clonedAlert": "klonade {{product}}",
         "clonedAlert_plural": "klonade {{product}}",
-        "deletedAlert": "utgår {{product}}",
-        "deletedAlert_plural": "utgår {{product}}",
         "archivedAlert": "arkiverad {{product}}",
         "archivedAlert_plural": "arkiverad {{product}}",
         "theProduct": "produkten",
@@ -299,6 +230,7 @@
         "pageTitle": "Undertext",
         "vendor": "Försäljare",
         "description": "Beskrivning",
+        "originCountry": "Ursprungsland",
         "facebookMsg": "Facebook Meddelande",
         "twitterMsg": "Twitter Meddelande",
         "pinterestMsg": "pinte Meddelande",
@@ -320,9 +252,8 @@
         "duplicateProduct": "duplikat Produkt",
         "pinProduct": "pin Produkt",
         "toggleSize": "toggle Storlek",
-        "deleteProduct": "radera Produkt",
+        "archiveProduct": "arkiv Produkt",
         "restoreProduct": "Återställ produkten från papperskorgen",
-        "deleteSelectedProducts": "Radera utvalda produkter?",
         "archiveThisProduct": "Arkivera den här produkten?",
         "archiveSelectedProducts": "Arkiv valda produkter?",
         "publish": "Publicera",
@@ -345,13 +276,20 @@
         "compareAtPrice": "Pris (MSRP)",
         "fulfillmentService": "uppfyllandet tjänsten",
         "weight": "Vikt",
+        "length": "Längd",
+        "width": "Bredd",
+        "height": "Höjd",
         "taxable": "Beskattningsbar",
+        "taxCode": "skatte~~POS=TRUNC",
+        "taxDescription": "skatt Beskrivning",
         "inventoryManagement": "inventering spårning",
         "inventoryManagementLabel": "Registrera produkt i inventeringssystem och spåra dess status",
         "inventoryPolicy": "Neka när slutsåld",
         "inventoryPolicyLabel": "Inte sälja produkten varianten när det inte är i lager",
         "lowInventoryWarningThreshold": "Varna @",
-        "lowInventoryWarningThresholdLabel": "Varna kunder att produkten kommer att vara nära slutsålda när mängden når nästa tröskel"
+        "lowInventoryWarningThresholdLabel": "Varna kunder att produkten kommer att vara nära slutsålda när mängden når nästa tröskel",
+        "originCountry": "Ursprungsland",
+        "selectTaxCode": "Välj skattelagen"
       },
       "variantList": {
         "moreOptions": "Det finns fler alternativ för detta val.",

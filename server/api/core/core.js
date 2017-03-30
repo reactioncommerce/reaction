@@ -1,4 +1,5 @@
 import url from "url";
+import packageJson from "/package.json";
 import { merge, uniqWith } from "lodash";
 import { Meteor } from "meteor/meteor";
 import { EJSON } from "meteor/ejson";
@@ -9,6 +10,7 @@ import { getRegistryDomain } from "./setDomain";
 import { registerTemplate } from "./templates";
 import { sendVerificationEmail } from "./accounts";
 import { getMailUrl } from "./email/config";
+
 
 export default {
 
@@ -30,6 +32,7 @@ export default {
     this.Import.flush();
     // timing is important, packages are rqd for initilial permissions configuration.
     this.createDefaultAdminUser();
+    this.setAppVersion();
     // hook after init finished
     Hooks.Events.run("afterCoreInit");
 
@@ -61,18 +64,14 @@ export default {
    * @param {String} checkGroup group - default to shopId
    * @return {Boolean} Boolean - true if has permission
    */
-  hasPermission(checkPermissions, userId = Meteor.userId(), checkGroup = this.getShopId()) {
+  hasPermission(checkPermissions, userId = Meteor.userId(), checkGroup = this.getSellerShopId(userId)) {
     // check(checkPermissions, Match.OneOf(String, Array)); check(userId, String); check(checkGroup,
     // Match.Optional(String));
 
     let permissions;
     let group;
-    // default group to the shop or global if shop isn't defined for some reason.
-    if (checkGroup !== undefined && typeof checkGroup === "string") {
-      group = checkGroup;
-    } else {
-      group = this.getSellerShopId() || Roles.GLOBAL_GROUP;
-    }
+    group = checkGroup || Roles.GLOBAL_GROUP;
+
 
     // permissions can be either a string or an array we'll force it into an array and use that
     if (checkPermissions === undefined) {
@@ -92,21 +91,6 @@ export default {
       return true;
     }
 
-    // global roles check
-    /*const sellerShopPermissions = Roles.getGroupsForUser(userId, "admin");
-
-    // we're looking for seller permissions.
-    if (sellerShopPermissions) {
-      // loop through shops roles and check permissions
-      for (const key in sellerShopPermissions) {
-        if (key) {
-          const shop = sellerShopPermissions[key];
-          if (Roles.userIsInRole(userId, permissions, shop)) {
-            return true;
-          }
-        }
-      }
-    }*/
     // no specific permissions found returning false
     return false;
   },
@@ -201,6 +185,25 @@ export default {
     return settings.settings || {};
   },
 
+  getShopCurrency() {
+    const shop = Shops.findOne({
+      _id: this.getShopId()
+    });
+
+    return shop && shop.currency || "USD";
+  },
+
+  getShopLanguage() {
+    const { language } = Shops.findOne({
+      _id: this.getShopId()
+    }, {
+      fields: {
+        language: 1
+      } }
+    );
+    return language;
+  },
+
   getPackageSettings(name) {
     const shopId = this.getShopId();
     const query = {
@@ -262,6 +265,10 @@ export default {
     } else {
       throw new Meteor.Error(`Failed to add default seller roles ${roles}`);
     }
+  },
+
+  getAppVersion() {
+    return Shops.findOne().appVersion;
   },
 
   /**
@@ -404,22 +411,33 @@ export default {
   loadPackages() {
     const packages = Packages.find().fetch();
 
-    let settingsFromJSON;
+    let registryFixtureData;
 
-    // Attempt to load reaction.json fixture data
-    try {
-      const settingsJSONAsset = Assets.getText("settings/reaction.json");
-      const validatedJson = EJSON.parse(settingsJSONAsset);
-
-      if (!_.isArray(validatedJson[0])) {
-        Logger.warn("Load Settings is not an array. Failed to load settings.");
-      } else {
-        settingsFromJSON = validatedJson;
+    if (process.env.REACTION_REGISTRY) {
+      // check the environment for the registry fixture data first
+      registryFixtureData = process.env.REACTION_REGISTRY;
+      Logger.info("Loaded REACTION_REGISTRY environment variable for registry fixture import");
+    } else {
+      // or attempt to load reaction.json fixture data
+      try {
+        registryFixtureData = Assets.getText("settings/reaction.json");
+      } catch (error) {
+        Logger.warn("Skipped loading settings from reaction.json.");
+        Logger.debug(error, "loadSettings reaction.json not loaded.");
       }
-    } catch (error) {
-      Logger.warn("Skipped loading settings from reaction.json.");
-      Logger.debug(error, "loadSettings reaction.json not loaded.");
+      Logger.info("Loaded \"/private/settings/reaction.json\" for registry fixture import");
     }
+
+    if (!!registryFixtureData) {
+      const validatedJson = EJSON.parse(registryFixtureData);
+
+      if (!Array.isArray(validatedJson[0])) {
+        Logger.warn("Registry fixture data is not an array. Failed to load.");
+      } else {
+        registryFixtureData = validatedJson;
+      }
+    }
+
     const layouts = [];
     // for each shop, we're loading packages in a unique registry
     _.each(this.Packages, (config, pkgName) => {
@@ -442,8 +460,8 @@ export default {
 
         // Setting from a fixture file, most likely reaction.json
         let settingsFromFixture;
-        if (settingsFromJSON) {
-          settingsFromFixture = _.find(settingsFromJSON[0], (packageSetting) => {
+        if (registryFixtureData) {
+          settingsFromFixture = _.find(registryFixtureData[0], (packageSetting) => {
             return config.name === packageSetting.name;
           });
         }
@@ -490,5 +508,10 @@ export default {
         return false;
       });
     });
+  },
+  setAppVersion() {
+    const version = packageJson.version;
+    Logger.info(`Reaction Version: ${version}`);
+    Shops.update({}, { $set: { appVersion: version } }, { multi: true });
   }
 };

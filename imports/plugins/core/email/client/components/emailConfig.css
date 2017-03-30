@@ -21,10 +21,10 @@
   margin-left: .3rem;
 }
 
-.email-config-status i.valid {
+.email-config-status i.valid, i.valid {
   color: #2dc378;
 }
 
-.email-config-status i.error {
+.email-config-status i.error, i.error {
   color: #b94628;
 }

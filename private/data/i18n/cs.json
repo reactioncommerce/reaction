@@ -95,6 +95,8 @@
         "noProductsFound": "Nebyly nalezeny žádné produkty.",
         "private": "soukromý",
         "public": "Veřejnost",
+        "allOn": "Vše On",
+        "allOff": "All Off",
         "shortcut": {
           "addProductLabel": "Přidat produkt",
           "accountsLabel": "účty"
@@ -157,74 +159,6 @@
           "orderShipped": "Vaše objednávka byla odeslána."
         }
       },
-      "sms": {
-        "headers": {
-          "settings": "SMS Provider"
-        },
-        "settings": {
-          "provider": "poskytovatel",
-          "selectProvider": "Vyberte poskytovatele SMS ...",
-          "smsPhone": "SMS telefonní číslo",
-          "apiKey": "klíč API",
-          "apiToken": "API Token / Secret"
-        },
-        "alerts": {
-          "noApiKey": "Prosím, přidejte klíč API",
-          "noApiToken": "Prosím, přidejte API TOKENU / Secret",
-          "noSmsProvider": "Vyberte poskytovatele SMS",
-          "noSmsPhone": "Prosím, přidejte telefonní číslo, které jste dostali od svého poskytovatele SMS",
-          "saveSuccess": "Nastavení SMS uloženo"
-        }
-      },
-      "mail": {
-        "headers": {
-          "email": "Email",
-          "emailSettings": "Nastavení e-mailu",
-          "config": "Konfigurace",
-          "settings": "Poskytovatel SMTP",
-          "status": "Postavení",
-          "actions": "Akce"
-        },
-        "settings": {
-          "service": "Servis",
-          "user": "Uživatel",
-          "password": "Heslo",
-          "host": "Hostitel",
-          "port": "Přístav",
-          "passwordShow": "Show",
-          "passwordHide": "Skrýt",
-          "fieldNotSet": "Nenastaveno",
-          "selectService": "Vyberte službu ...",
-          "custom": "zvyk"
-        },
-        "logs": {
-          "headers": {
-            "emailLogs": "E-mailové protokoly",
-            "email": "Email",
-            "subject": "Předmět",
-            "sent": "poslal",
-            "status": "Postavení"
-          },
-          "noEmails": "Žádné e-maily poslal dosud",
-          "limit": "Množství",
-          "retry": "Opakovat",
-          "noneAvailble": "není k dispozici"
-        },
-        "alerts": {
-          "error": "Chyba: {{error}}",
-          "resendSuccess": "Pokus o opětovné zaslání e-mailu na {{email}}",
-          "missingService": "Prosím, vyberte službu poskytovatele e-mailu",
-          "userPassRequired": "Uživatelské jméno a heslo SMTP jsou potřebné pro {{service}}",
-          "allFieldsRequired": "Všechna pole jsou povinná pro vlastní služby!",
-          "portNaN": "Port musí být číslo!",
-          "connectionFailed": "Připojení se nezdařilo!",
-          "saveAnyway": "Chcete přesto uložit nastavení?",
-          "saveSuccess": "Nastavení pošty uložena.",
-          "saveFailed": "Nepodařilo se uložit nastavení pošty. {{error}}",
-          "cantSendEmail": "Chyba serveru: Nelze odeslat e-mailové oznámení.",
-          "emailSent": "Upozornění na e-mail odeslán."
-        }
-      },
       "header": {
         "tagsAdd": "Přidat značku",
         "search": "Vyhledávání výrobků ..."
@@ -251,9 +185,8 @@
         "addToCart": "Přidat do košíku",
         "chooseOptions": "Prosím, vyberte možnosti, před přidáním do košíku",
         "outOfStock": "Je nám líto, tato položka je vyprodán!",
-        "productDeleteError": "Došlo k chybě při mazání {{product}}.",
-        "deleteErrorTheProduct": "produkt",
-        "deleteErrorTheSelectedProducts": "vybrané produkty",
+        "productArchiveError": "Došlo k chybě při odesílání {{product}} do archivu.",
+        "archiveErrorTheProduct": "produkt",
         "publishFirst": "Publikování produktu před přidáním do košíku.",
         "quantityAbbreviation": "POČET",
         "selectOption": "Před přidáním do košíku vyberte jednu z možností",
@@ -266,8 +199,6 @@
         "publishProductHidden": "{{product}} je nyní skryt",
         "clonedAlert": "Cloned {{product}}",
         "clonedAlert_plural": "Cloned {{product}}",
-        "deletedAlert": "Deleted {{product}}",
-        "deletedAlert_plural": "Deleted {{product}}",
         "archivedAlert": "archivované {{product}}",
         "archivedAlert_plural": "archivované {{product}}",
         "theProduct": "produkt",
@@ -299,6 +230,7 @@
         "pageTitle": "podtitul",
         "vendor": "Prodejce",
         "description": "Popis",
+        "originCountry": "původ Země",
         "facebookMsg": "Facebook Message",
         "twitterMsg": "Twitter Message",
         "pinterestMsg": "Pinterest Message",
@@ -320,9 +252,8 @@
         "duplicateProduct": "duplicitní zboží",
         "pinProduct": "pin zboží",
         "toggleSize": "toggle Velikost",
-        "deleteProduct": "smazat produkt",
+        "archiveProduct": "Archiv produktů",
         "restoreProduct": "Obnovit produkt z koše",
-        "deleteSelectedProducts": "Smazat vybrané produkty?",
         "archiveThisProduct": "Archivovat tento produkt?",
         "archiveSelectedProducts": "Archiv vybrané produkty?",
         "publish": "Publikovat",
@@ -345,13 +276,20 @@
         "compareAtPrice": "Cena (MSRP)",
         "fulfillmentService": "prováděcí služby",
         "weight": "Hmotnost",
+        "length": "Délka",
+        "width": "Šířka",
+        "height": "Výška",
         "taxable": "Zdanitelný",
+        "taxCode": "daňové kódy",
+        "taxDescription": "Tax Popis",
         "inventoryManagement": "sledování inventáře",
         "inventoryManagementLabel": "Zaregistrovat produkt v inventárního systému a sledovat její stav",
         "inventoryPolicy": "Popírají, kdy není skladem",
         "inventoryPolicyLabel": "Neprodáváme si variantu produktu, pokud to není na skladě",
         "lowInventoryWarningThreshold": "varovat @",
-        "lowInventoryWarningThresholdLabel": "Varovat zákazníky, že výrobek bude mít blízko k vyprodáno, když množství dosáhne dalšího limitního"
+        "lowInventoryWarningThresholdLabel": "Varovat zákazníky, že výrobek bude mít blízko k vyprodáno, když množství dosáhne dalšího limitního",
+        "originCountry": "původ Země",
+        "selectTaxCode": "Vyberte daňového řádu"
       },
       "variantList": {
         "moreOptions": "Tam jsou k dispozici pro tento výběr více možností.",

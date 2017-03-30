@@ -1,10 +1,8 @@
 /* eslint camelcase: 0 */
-// meteor modules
 import { Meteor } from "meteor/meteor";
 import { SimpleSchema } from "meteor/aldeed:simple-schema";
-// reaction modules
 import { Packages } from "/lib/collections";
-import { Logger } from "/server/api";
+import { Reaction, Logger } from "/server/api";
 
 export const StripeApi = {};
 StripeApi.methods = {};

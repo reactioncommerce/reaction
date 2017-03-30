@@ -8,6 +8,10 @@
           "productSettingsLabel": "productinstellingen",
           "productDetailsLabel": "Productdetails"
         }
+      },
+      "productDetailEdit": {
+        "template": "sjabloon Settings",
+        "templateSelectPlaceholder": "Selecteer een template"
       }
     }
   }

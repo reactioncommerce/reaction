@@ -1,5 +1,5 @@
 import { Meteor } from "meteor/meteor";
-import { Reaction, i18next } from "/client/api";
+import { i18next } from "/client/api";
 
 
 // Page

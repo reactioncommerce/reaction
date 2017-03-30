@@ -95,6 +95,8 @@
         "noProductsFound": "Không tìm thấy sản phẩm.",
         "private": "Riêng tư",
         "public": "Công cộng",
+        "allOn": "Tất cả Mở",
+        "allOff": "Tất cả đều tắt",
         "shortcut": {
           "addProductLabel": "Thêm sản phẩm",
           "accountsLabel": "tài khoản"
@@ -157,74 +159,6 @@
           "orderShipped": "Đặt hàng của bạn đã được chuyển đi."
         }
       },
-      "sms": {
-        "headers": {
-          "settings": "Nhà cung cấp tin nhắn SMS"
-        },
-        "settings": {
-          "provider": "Các nhà cung cấp",
-          "selectProvider": "Chọn một nhà cung cấp tin nhắn SMS ...",
-          "smsPhone": "Số điện thoại nhắn SMS",
-          "apiKey": "API Key",
-          "apiToken": "API Mã / Secret"
-        },
-        "alerts": {
-          "noApiKey": "Vui lòng thêm một API Key",
-          "noApiToken": "Vui lòng thêm một API TOKEN / Secret",
-          "noSmsProvider": "Vui lòng chọn một nhà cung cấp tin nhắn SMS",
-          "noSmsPhone": "Vui lòng thêm số điện thoại cho bạn bởi nhà cung cấp tin nhắn SMS của bạn",
-          "saveSuccess": "SMS Cài đặt đã lưu"
-        }
-      },
-      "mail": {
-        "headers": {
-          "email": "E-mail",
-          "emailSettings": "Cài đặt email",
-          "config": "Cấu hình",
-          "settings": "Nhà cung cấp SMTP",
-          "status": "Trạng thái",
-          "actions": "Hoạt động"
-        },
-        "settings": {
-          "service": "Dịch vụ",
-          "user": "người sử dụng",
-          "password": "Mật khẩu",
-          "host": "chủ nhà",
-          "port": "Hải cảng",
-          "passwordShow": "Chỉ",
-          "passwordHide": "Ẩn giấu",
-          "fieldNotSet": "Không được thiết lập",
-          "selectService": "Chọn một dịch vụ ...",
-          "custom": "tập quán"
-        },
-        "logs": {
-          "headers": {
-            "emailLogs": "Logs email",
-            "email": "E-mail",
-            "subject": "Môn học",
-            "sent": "Gởi",
-            "status": "Trạng thái"
-          },
-          "noEmails": "Không có email gửi chưa",
-          "limit": "Số lượng, lượng",
-          "retry": "Thử lại",
-          "noneAvailble": "Không có sẵn"
-        },
-        "alerts": {
-          "error": "Lỗi: {{error}}",
-          "resendSuccess": "Cố gắng gửi lại email để {{email}}",
-          "missingService": "Vui lòng chọn một dịch vụ cung cấp mail",
-          "userPassRequired": "người sử dụng SMTP và mật khẩu được yêu cầu cho {{service}}",
-          "allFieldsRequired": "Tất cả các trường được yêu cầu cho một dịch vụ tùy chỉnh!",
-          "portNaN": "Cổng phải là một số!",
-          "connectionFailed": "Kết nối thất bại!",
-          "saveAnyway": "Bạn có muốn lưu các thiết lập không?",
-          "saveSuccess": "thiết lập mail lưu.",
-          "saveFailed": "Không lưu cài đặt mail. {{error}}",
-          "cantSendEmail": "Server Error: Không thể gửi email thông báo.",
-          "emailSent": "Thông báo email gửi đi."
-        }
-      },
       "header": {
         "tagsAdd": "Thêm thẻ",
         "search": "Tìm kiếm các sản phẩm ..."
@@ -251,9 +185,8 @@
         "addToCart": "Thêm vào giỏ hàng",
         "chooseOptions": "Vui lòng chọn tùy chọn trước khi thêm vào giỏ hàng",
         "outOfStock": "Xin lỗi, mục này là hết hàng!",
-        "productDeleteError": "Có lỗi khi xóa {{product}}.",
-        "deleteErrorTheProduct": "sản phẩm",
-        "deleteErrorTheSelectedProducts": "các sản phẩm được chọn",
+        "productArchiveError": "Có lỗi khi gửi {{product}} để lưu trữ.",
+        "archiveErrorTheProduct": "sản phẩm",
         "publishFirst": "Xuất bản phẩm trước khi thêm vào giỏ hàng.",
         "quantityAbbreviation": "QTY",
         "selectOption": "Chọn một tùy chọn trước khi thêm vào giỏ hàng",
@@ -266,8 +199,6 @@
         "publishProductHidden": "{{product}} hiện được ẩn",
         "clonedAlert": "Cloned {{product}}",
         "clonedAlert_plural": "Cloned {{product}}",
-        "deletedAlert": "Deleted {{product}}",
-        "deletedAlert_plural": "Deleted {{product}}",
         "archivedAlert": "lưu trữ {{product}}",
         "archivedAlert_plural": "lưu trữ {{product}}",
         "theProduct": "sản phẩm",
@@ -299,6 +230,7 @@
         "pageTitle": "Subtitle",
         "vendor": "người bán",
         "description": "Sự miêu tả",
+        "originCountry": "nước xuất xứ",
         "facebookMsg": "Đăng tin",
         "twitterMsg": "Twitter tin nhắn",
         "pinterestMsg": "Pinterest nhắn",
@@ -320,9 +252,8 @@
         "duplicateProduct": "Sản phẩm trùng lặp",
         "pinProduct": "pin sản phẩm",
         "toggleSize": "Kích toggle",
-        "deleteProduct": "xóa sản phẩm",
+        "archiveProduct": "lưu trữ sản phẩm",
         "restoreProduct": "Khôi phục sản phẩm từ rác",
-        "deleteSelectedProducts": "Xóa sản phẩm được lựa chọn?",
         "archiveThisProduct": "Lưu trữ sản phẩm này?",
         "archiveSelectedProducts": "Lưu trữ các sản phẩm được lựa chọn?",
         "publish": "Công bố",
@@ -345,13 +276,20 @@
         "compareAtPrice": "Giá (MSRP)",
         "fulfillmentService": "dịch vụ hoàn thành",
         "weight": "Cân nặng",
+        "length": "Chiều dài",
+        "width": "Chiều rộng",
+        "height": "Chiều cao",
         "taxable": "Thu nhập chịu thuế",
+        "taxCode": "Mã số thuế",
+        "taxDescription": "Mô tả thuế",
         "inventoryManagement": "theo dõi hàng tồn kho",
         "inventoryManagementLabel": "Đăng ký sản phẩm trong hệ thống kiểm kê và theo dõi tình trạng của nó",
         "inventoryPolicy": "Từ chối khi hết hàng",
         "inventoryPolicyLabel": "Không bán các phiên bản sản phẩm khi nó không có trong kho",
         "lowInventoryWarningThreshold": "Cảnh báo @",
-        "lowInventoryWarningThresholdLabel": "Cảnh báo khách hàng rằng sản phẩm sẽ được đóng cửa để bán ra khi số lượng đạt đến ngưỡng tiếp theo"
+        "lowInventoryWarningThresholdLabel": "Cảnh báo khách hàng rằng sản phẩm sẽ được đóng cửa để bán ra khi số lượng đạt đến ngưỡng tiếp theo",
+        "originCountry": "nước xuất xứ",
+        "selectTaxCode": "Chọn Mã số thuế"
       },
       "variantList": {
         "moreOptions": "Có rất nhiều tùy chọn có sẵn cho lựa chọn này.",

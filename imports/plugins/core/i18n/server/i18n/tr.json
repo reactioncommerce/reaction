@@ -1,0 +1,15 @@
+[{
+  "i18n": "tr",
+  "ns": "reaction-i18n",
+  "translation": {
+    "reaction-i18n": {
+      "admin": {
+        "i18nSettings": {
+          "localization": "yerelleştirme",
+          "enabledCurrencies": "Kurlar",
+          "enabledLanguages": "Diller"
+        }
+      }
+    }
+  }
+}]

@@ -135,7 +135,12 @@ class ProductDetailContainer extends Component {
   }
 
   handleProductFieldChange = (productId, fieldName, value) => {
-    Meteor.call("products/updateProductField", productId, fieldName, value);
+    Meteor.call("products/updateProductField", productId, fieldName, value, (error) => {
+      if (error) {
+        Alerts.toast(error.message, "error");
+        this.forceUpdate();
+      }
+    });
   }
 
   handleViewContextChange = (event, value) => {
@@ -143,7 +148,7 @@ class ProductDetailContainer extends Component {
   }
 
   handleDeleteProduct = () => {
-    ReactionProduct.maybeDeleteProduct(this.props.product);
+    ReactionProduct.archiveProduct(this.props.product);
   }
 
   render() {
@@ -284,7 +289,7 @@ function composer(props, onData) {
 
       onData(null, {
         variants: topVariants,
-        layout: "productDetailSimple",
+        layout: product.template || "productDetailSimple",
         product: productRevision || product,
         priceRange,
         tags,

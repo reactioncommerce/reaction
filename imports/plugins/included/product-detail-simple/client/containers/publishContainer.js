@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { composeWithTracker } from "/lib/api/compose";
+import { Router } from "/client/api";
 import { ReactionProduct } from "/lib/api";
 import { Tags, Media } from "/lib/collections";
 import PublishContainer from "/imports/plugins/core/revisions/client/containers/publishContainer";
@@ -19,7 +20,23 @@ class ProductPublishContainer extends Component {
 
   handlePublishActions = (event, action, documentIds) => {
     if (action === "archive") {
-      ReactionProduct.maybeDeleteProduct(documentIds);
+      ReactionProduct.archiveProduct(documentIds);
+    }
+  }
+
+  handlePublishSuccess = (result) => {
+    if (result && result.status === "success" && this.props.product) {
+      const productDocument = result.previousDocuments.find((product) => this.props.product._id === product._id);
+
+      if (productDocument && this.props.product.handle !== productDocument.handle) {
+        const newProductPath = Router.pathFor("product", {
+          hash: {
+            handle: this.props.product.handle
+          }
+        });
+
+        window.location.href = newProductPath;
+      }
     }
   }
 
@@ -27,6 +44,7 @@ class ProductPublishContainer extends Component {
     return (
       <PublishContainer
         onAction={this.handlePublishActions}
+        onPublishSuccess={this.handlePublishSuccess}
         onVisibilityChange={this.handleVisibilityChange}
         {...this.props}
       />

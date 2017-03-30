@@ -81,6 +81,11 @@ class VariantListContainer extends Component {
     return (this.state && this.state.variants) || this.props.variants;
   }
 
+  get productHandle() {
+    const selectedProduct = ReactionProduct.selectedProduct();
+    return selectedProduct.__published && selectedProduct.__published.handle || selectedProduct.handle;
+  }
+
   handleCreateVariant = () => {
     const selectedProduct =  ReactionProduct.selectedProduct();
 
@@ -98,12 +103,10 @@ class VariantListContainer extends Component {
     if (Reaction.isActionViewOpen()) {
       this.handleEditVariant(event, variant, ancestors);
     } else {
-      const selectedProduct = ReactionProduct.selectedProduct();
-
       ReactionProduct.setCurrentVariant(variant._id);
       Session.set("variant-form-" + variant._id, true);
       Reaction.Router.go("product", {
-        handle: selectedProduct.handle,
+        handle: this.productHandle,
         variantId: variant._id
       }, {
         as: Reaction.Router.getQueryParam("as")
@@ -112,7 +115,6 @@ class VariantListContainer extends Component {
   }
 
   handleEditVariant = (event, variant, ancestors = -1) => {
-    const selectedProduct = ReactionProduct.selectedProduct();
     let editVariant = variant;
     if (ancestors >= 0) {
       editVariant = Products.findOne(variant.ancestors[ancestors]);
@@ -121,7 +123,7 @@ class VariantListContainer extends Component {
     ReactionProduct.setCurrentVariant(variant._id);
     Session.set("variant-form-" + editVariant._id, true);
     Reaction.Router.go("product", {
-      handle: selectedProduct.handle,
+      handle: this.productHandle,
       variantId: variant._id
     }, {
       as: Reaction.Router.getQueryParam("as")

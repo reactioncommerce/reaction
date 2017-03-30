@@ -95,6 +95,8 @@
         "noProductsFound": "未找到任何产品。",
         "private": "私人",
         "public": "上市",
+        "allOn": "全部打开",
+        "allOff": "全部关闭",
         "shortcut": {
           "addProductLabel": "添加产品",
           "accountsLabel": "帐户"
@@ -157,74 +159,6 @@
           "orderShipped": "您的订单已发货。"
         }
       },
-      "sms": {
-        "headers": {
-          "settings": "短信提供商"
-        },
-        "settings": {
-          "provider": "提供者",
-          "selectProvider": "选择短信提供商...",
-          "smsPhone": "Sms电话号码",
-          "apiKey": "API密钥",
-          "apiToken": "API令牌/秘密"
-        },
-        "alerts": {
-          "noApiKey": "请添加API密钥",
-          "noApiToken": "请添加API TOKEN / Secret",
-          "noSmsProvider": "请选择短信提供商",
-          "noSmsPhone": "请添加您的短信提供商为您提供的电话号码",
-          "saveSuccess": "短信设置已保存"
-        }
-      },
-      "mail": {
-        "headers": {
-          "email": "电子邮件",
-          "emailSettings": "电子邮件设置",
-          "config": "配置",
-          "settings": "邮件提供商",
-          "status": "状态",
-          "actions": "操作"
-        },
-        "settings": {
-          "service": "服务",
-          "user": "用户",
-          "password": "密码",
-          "host": "主机",
-          "port": "端口",
-          "passwordShow": "显示",
-          "passwordHide": "隐藏",
-          "fieldNotSet": "未设置",
-          "selectService": "选择一项服务...",
-          "custom": "自定义"
-        },
-        "logs": {
-          "headers": {
-            "emailLogs": "电子邮件日志",
-            "email": "电子邮件",
-            "subject": "主题",
-            "sent": "已发送",
-            "status": "状态"
-          },
-          "noEmails": "尚未发送任何电子邮件",
-          "limit": "数量",
-          "retry": "重试",
-          "noneAvailble": "无"
-        },
-        "alerts": {
-          "error": "错误：{{error}}",
-          "resendSuccess": "尝试重新发送电子邮件到 {{email}}",
-          "missingService": "请选择邮件提供商服务",
-          "userPassRequired": "{{service}}需要 SMTP 用户和密码",
-          "allFieldsRequired": "自定义服务的所有字段都必须填写！",
-          "portNaN": "端口必须为数字！",
-          "connectionFailed": "连接失败！",
-          "saveAnyway": "您依然想保存设置吗？",
-          "saveSuccess": "邮件设置已保存。",
-          "saveFailed": "保存邮件设置失败。{{error}}",
-          "cantSendEmail": "服务器错误：无法发送电子邮件通知。",
-          "emailSent": "电子邮件通知发送。"
-        }
-      },
       "header": {
         "tagsAdd": "添加标签",
         "search": "搜索产品"
@@ -251,9 +185,8 @@
         "addToCart": "添加到购物车",
         "chooseOptions": "在添加到购物车之前请选择选项。",
         "outOfStock": "抱歉，这个产品没有库存了！",
-        "productDeleteError": "删除{{product}}时出错。",
-        "deleteErrorTheProduct": "产品",
-        "deleteErrorTheSelectedProducts": "已选择的产品",
+        "productArchiveError": "在发送{{product}}到档案时出错。",
+        "archiveErrorTheProduct": "产品",
         "publishFirst": "在添加到购物车之前请先发布产品。",
         "quantityAbbreviation": "数量",
         "selectOption": "在添加到购物车之前请选择选项。",
@@ -266,8 +199,6 @@
         "publishProductHidden": "{{product}}现在已隐藏",
         "clonedAlert": "已复制{{product}}",
         "clonedAlert_plural": "已复制{{product}}",
-        "deletedAlert": "已删除的{{product}}",
-        "deletedAlert_plural": "已删除的{{product}}",
         "archivedAlert": "\t\n已存档{{product}}",
         "archivedAlert_plural": "已存档{{product}}",
         "theProduct": "产品",
@@ -299,6 +230,7 @@
         "pageTitle": "产品页标题",
         "vendor": "厂家",
         "description": "产品描述",
+        "originCountry": "原产地",
         "facebookMsg": "Facebook 信息",
         "twitterMsg": "Twitter 信息",
         "pinterestMsg": "Pinterest 信息",
@@ -320,9 +252,8 @@
         "duplicateProduct": "复制产品",
         "pinProduct": "固定产品",
         "toggleSize": "切换大小",
-        "deleteProduct": "删除产品",
+        "archiveProduct": "归档产品",
         "restoreProduct": "从垃圾箱恢复产品",
-        "deleteSelectedProducts": "删除选择的产品？",
         "archiveThisProduct": "要把本产品存档吗？",
         "archiveSelectedProducts": "要把选中的产品存档吗？",
         "publish": "发布",
@@ -345,13 +276,20 @@
         "compareAtPrice": "价格 (MSRP)",
         "fulfillmentService": "履行服务",
         "weight": "重量",
+        "length": "长度",
+        "width": "宽度",
+        "height": "高低",
         "taxable": "应税",
+        "taxCode": "税码",
+        "taxDescription": "税务说明",
         "inventoryManagement": "库存跟踪",
         "inventoryManagementLabel": "在库存系统中注册产品并跟踪其状态",
         "inventoryPolicy": "缺货时拒绝",
         "inventoryPolicyLabel": "产品款式缺货时不进行销售",
         "lowInventoryWarningThreshold": "警告 @",
-        "lowInventoryWarningThresholdLabel": "当数量达到下一个阈值时，提醒顾客产品即将售罄"
+        "lowInventoryWarningThresholdLabel": "当数量达到下一个阈值时，提醒顾客产品即将售罄",
+        "originCountry": "原产地",
+        "selectTaxCode": "选择税码"
       },
       "variantList": {
         "moreOptions": "还有更多选项",

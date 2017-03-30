@@ -1,0 +1,14 @@
+[{
+  "i18n": "he",
+  "ns": "reaction-i18n",
+  "translation": {
+    "reaction-i18n": {
+      "admin": {
+        "i18nSettings": {
+          "localization": "מיקום",
+          "enabledLanguages": "שפות"
+        }
+      }
+    }
+  }
+}]

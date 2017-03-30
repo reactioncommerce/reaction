@@ -194,12 +194,16 @@ export default {
     return this.hasPermission(dashboardPermissions);
   },
 
-  getSellerShopId: function (userId = Meteor.userId()) {
+  getSellerShopId: function (userId = Meteor.userId(), noFallback = false) {
     if (userId) {
       const group = Roles.getGroupsForUser(userId, "admin")[0];
       if (group) {
         return group;
       }
+    }
+
+    if (noFallback) {
+      return false;
     }
 
     return this.getShopId();
@@ -248,6 +252,14 @@ export default {
       shopId: this.shopId
     }) || {};
     return settings.settings || {};
+  },
+
+  getShopCurrency() {
+    const shop = Shops.findOne({
+      _id: this.shopId
+    });
+
+    return shop && shop.currency || "USD";
   },
 
   isPreview() {
