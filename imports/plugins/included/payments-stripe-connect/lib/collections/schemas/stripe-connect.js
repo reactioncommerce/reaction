@@ -17,7 +17,8 @@ export const StripeConnectPackageConfig = new SimpleSchema([
     },
     "settings.transactionFee.percentage": {
       type: Number,
-      label: "Fee Percentage"
+      label: "Fee Percentage",
+      decimal: true
     }
   }
 ]);
