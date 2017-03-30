@@ -1,7 +1,8 @@
-import { Products, Revisions } from "/lib/collections";
+import { Media, Products, Revisions } from "/lib/collections";
 import { Reaction, Logger } from "/server/api";
 import { RevisionApi } from "/imports/plugins/core/revisions/lib/api/revisions";
 import { getProductMedia } from "/lib/api/media";
+import { fetchPublicProductData } from "./product";
 
 //
 // define search filters as a schema so we can validate
@@ -410,10 +411,15 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
       });
     }
 
-    const handle = Products.find(newSelector, {
+    const productCursor = Products.find(newSelector, {
       sort: sort,
       limit: productScrollLimit
-    }).observe({
+    });
+
+    const foundProducts = productCursor.fetch();
+    const updatedProductIds = foundProducts.map(product => product._id);
+
+    const handle = productCursor.observe({
       added: (product) => {
         product.media = getProductMedia({ productId: product._id });
 
@@ -429,9 +435,42 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
       }
     });
 
+    const mediaHandle = Media.files.find({
+      "$or": [
+        { "metadata.productId": { $in: updatedProductIds } },
+        { "metadata.variantId": { $in: updatedProductIds } }
+      ],
+      "metadata.workflow": "published"
+    }).observe({
+      added: (media) => {
+        if (media.metadata && media.metadata.variantId) {
+          const product = fetchPublicProductData(media.metadata.variantId);
+          this.changed("Products", media.metadata.variantId, product);
+        }
+
+        this.added("Media", media._id, media);
+      },
+      changed: (media) => {
+        if (media.metadata && media.metadata.variantId) {
+          const product = fetchPublicProductData(media.metadata.variantId);
+          this.changed("Products", media.metadata.variantId, product);
+        }
+
+        this.changed("Media", media._id, media);
+      },
+      removed: (media) => {
+        if (media.metadata && media.metadata.variantId) {
+          const product = fetchPublicProductData(media.metadata.variantId);
+          this.changed("Products", media.metadata.variantId, product);
+        }
+
+        this.removed("Media", media._id, media);
+      }
+    });
 
     this.onStop(() => {
       handle.stop();
+      mediaHandle.stop();
     });
 
     return this.ready();

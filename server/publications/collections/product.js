@@ -3,6 +3,33 @@ import { Logger, Reaction } from "/server/api";
 import { RevisionApi } from "/imports/plugins/core/revisions/lib/api/revisions";
 import { getProductMedia } from "/lib/api/media";
 
+export function fetchRevisions(documentId) {
+  return Revisions.find({
+    "documentId": documentId,
+    "workflow.status": {
+      $nin: [
+        "revision/published"
+      ]
+    }
+  }).fetch();
+}
+
+export function fetchAllProductData(productId) {
+  const product = Products.findOne(productId);
+
+  product.__revisions = fetchRevisions(product._id);
+  product.media = getProductMedia({ productId: product._id, getRevisions: true });
+
+  return product;
+}
+
+export function fetchPublicProductData(productId) {
+  const product = Products.findOne(productId);
+
+  product.media = getProductMedia({ productId: product._id });
+
+  return product;
+}
 
 export function createMediaSelector() {
   let selector;
@@ -50,11 +77,9 @@ Meteor.publish("Product", function (productId) {
   }
 
   let selector = {};
-  let mediaSelector = {}
 
   selector.isVisible = true;
   selector.isDeleted = { $in: [null, false] };
-
 
   if (Roles.userIsInRole(this.userId, ["owner", "admin", "createProduct"], shop._id)) {
     selector.isVisible = {
@@ -147,13 +172,12 @@ Meteor.publish("Product", function (productId) {
       }).observe({
         added: (revision) => {
           let product;
+
           if (!revision.parentDocument) {
             product = Products.findOne(revision.documentId);
           } else {
             product = Products.findOne(revision.parentDocument);
           }
-
-          console.log("revision updated when product is updates", product, revision);
 
           if (product) {
             product.media = getProductMedia({ productId: product._id, getRevisions: true });
@@ -164,13 +188,12 @@ Meteor.publish("Product", function (productId) {
         },
         changed: (revision) => {
           let product;
+
           if (!revision.parentDocument) {
             product = Products.findOne(revision.documentId);
           } else {
             product = Products.findOne(revision.parentDocument);
           }
-
-          console.log("revision updated when product is updates", product, revision);
 
           if (product) {
             product.__revisions = [revision];
@@ -182,11 +205,13 @@ Meteor.publish("Product", function (productId) {
         },
         removed: (revision) => {
           let product;
+
           if (!revision.parentDocument) {
             product = Products.findOne(revision.documentId);
           } else {
             product = Products.findOne(revision.parentDocument);
           }
+
           if (product) {
             product.__revisions = [];
             this.changed("Products", product._id, product);
@@ -195,9 +220,45 @@ Meteor.publish("Product", function (productId) {
         }
       });
 
+      const mediaHandle = Media.files.find({
+        "$or": [
+          { "metadata.productId": _id },
+          { "metadata.variantId": _id }
+        ],
+        "metadata.workflow": {
+          $nin: ["archived"]
+        }
+      }).observe({
+        added: (media) => {
+          if (media.metadata && media.metadata.variantId) {
+            const product = fetchAllProductData(media.metadata.variantId);
+            this.changed("Products", media.metadata.variantId, product);
+          }
+
+          this.added("Media", media._id, media);
+        },
+        changed: (media) => {
+          if (media.metadata && media.metadata.variantId) {
+            const product = fetchAllProductData(media.metadata.variantId);
+            this.changed("Products", media.metadata.variantId, product);
+          }
+
+          this.changed("Media", media._id, media);
+        },
+        removed: (media) => {
+          if (media.metadata && media.metadata.variantId) {
+            const product = fetchAllProductData(media.metadata.variantId);
+            this.changed("Products", media.metadata.variantId, product);
+          }
+
+          this.removed("Media", media._id, media);
+        }
+      });
+
       this.onStop(() => {
         handle.stop();
         handle2.stop();
+        mediaHandle.stop();
       });
 
       return this.ready();
@@ -208,5 +269,60 @@ Meteor.publish("Product", function (productId) {
   }
 
   // Everyone else gets the standard, visibile products and variants
-  return Products.find(selector);
+  const handle = Products.find(selector).observe({
+    added: (product) => {
+      product.media = getProductMedia({ productId: product._id });
+
+      this.added("Products", product._id, product);
+    },
+    changed: (product) => {
+      product.media = getProductMedia({ productId: product._id });
+
+      this.changed("Products", product._id, product);
+    },
+    removed: (product) => {
+      this.removed("Products", product._id, product);
+    }
+  });
+
+  const mediaHandle = Media.files.find({
+    "$or": [
+      { "metadata.productId": _id },
+      { "metadata.variantId": _id }
+    ],
+    "metadata.workflow": "published"
+  }).observe({
+    added: (media) => {
+      if (media.metadata && media.metadata.variantId) {
+        const product = fetchPublicProductData(media.metadata.variantId);
+        this.changed("Products", media.metadata.variantId, product);
+      }
+
+      this.added("Media", media._id, media);
+    },
+    changed: (media) => {
+      if (media.metadata && media.metadata.variantId) {
+        const product = fetchPublicProductData(media.metadata.variantId);
+        this.changed("Products", media.metadata.variantId, product);
+      }
+
+      this.changed("Media", media._id, media);
+    },
+    removed: (media) => {
+      if (media.metadata && media.metadata.variantId) {
+        const product = fetchPublicProductData(media.metadata.variantId);
+        this.changed("Products", media.metadata.variantId, product);
+      }
+
+      this.removed("Media", media._id, media);
+    }
+  });
+
+
+  this.onStop(() => {
+    handle.stop();
+    mediaHandle.stop();
+  });
+
+  return this.ready();
 });
