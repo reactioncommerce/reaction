@@ -18,29 +18,35 @@ function handleActionClick(filter) {
 function composer(props, onData) {
   const selectedFilterName = Reaction.getUserPreferences(Constants.PACKAGE_NAME, Constants.ORDER_LIST_FILTERS_PREFERENCE_NAME);
   let selectedIndex;
+
   Meteor.call("orders/count", (error, result) => {
     if (error) {
       throw new Meteor.Error("Error fetching order count", error);
     }
-    return result;
-  });
 
-  const filters = Constants.orderFilters.map((filter, index) => {
-    if (filter.name === selectedFilterName) {
-      selectedIndex = index;
-    }
+    const filters = Constants.orderFilters.map((filter, index) => {
+      if (filter.name === selectedFilterName) {
+        selectedIndex = index;
+      }
 
-    filter.label = i18next.t(`order.filter.${filter.name}`, { defaultValue: filter.label });
-    filter.i18nKeyLabel = `order.filter.${filter.name}`;
+      filter.label = i18next.t(`order.filter.${filter.name}`, { defaultValue: filter.label });
+      filter.i18nKeyLabel = `order.filter.${filter.name}`;
 
-    return filter;
-  });
+      result.forEach((orderCount) => {
+        if (orderCount._id.includes(filter.name)) {
+          filter.count = orderCount.count;
+        }
+      });
 
-  onData(null, {
-    filters,
-    selectedIndex,
+      return filter;
+    });
 
-    onActionClick: props.onActionClick || handleActionClick
+    onData(null, {
+      filters,
+      selectedIndex,
+
+      onActionClick: props.onActionClick || handleActionClick
+    });
   });
 }
 
