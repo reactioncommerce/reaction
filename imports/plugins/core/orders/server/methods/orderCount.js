@@ -13,17 +13,13 @@ const workflowStatusOrderCounts = {};
  */
 workflowStatusOrderCounts.countOrdersByWorkflowStatus = function () {
   const shopId = Reaction.getShopId();
-
-  Orders.rawCollection().aggregate([
+  const pipeline = [
      { $match: { shopId: shopId } },
      { $group: { _id: "$workflow.status", count: { $sum: 1 } } }
-  ], (error, result) => {
-    if (error) {
-      throw new Meteor.Error("Error fetching order count", error);
-    }
+  ];
+  const orders = Orders.rawCollection();
 
-    return result;
-  });
+  return Meteor.wrapAsync(orders.aggregate.bind(orders))(pipeline);
 };
 
 Meteor.methods({
