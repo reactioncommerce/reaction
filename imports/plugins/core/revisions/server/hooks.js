@@ -18,7 +18,7 @@ function convertMetadata(modifierObject) {
   return metadata;
 }
 
-const ProductRevision = {
+export const ProductRevision = {
   getProductPriceRange(productId) {
     const product = Products.findOne(productId);
     if (!product) {
