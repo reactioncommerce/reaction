@@ -89,13 +89,20 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
   }
 
   if (shop) {
-    const selector = {
-      isDeleted: { $in: [null, false] },
-      ancestors: {
-        $exists: true
-      },
-      shopId: shop._id
-    };
+    const selector = {};
+    if (Roles.userIsInRole(this.userId, ["owner", "admin", "createProduct"], shop._id)) {
+      _.extend(selector, {
+        isDeleted: { $in: [null, false] },
+        ancestors: { $exists: true },
+        shopId: shop._id
+      });
+    } else { // Changing the selector for non admin users only. To get top-level products.
+      _.extend(selector, {
+        isDeleted: { $in: [null, false] },
+        ancestors: [],
+        shopId: shop._id
+      });
+    }
 
     if (productFilters) {
       // handle multiple shops
@@ -398,6 +405,7 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
       // Re-configure selector to pick either Variants of one of the top-level products, or the top-level products in the filter
       _.extend(newSelector, {
         $or: [
+          { _id: { $in: productIds } },
           {
             ancestors: {
               $in: productIds
