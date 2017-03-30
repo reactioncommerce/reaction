@@ -87,13 +87,20 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
   }
 
   if (shop) {
-    const selector = {
-      isDeleted: { $in: [null, false] },
-      ancestors: {
-        $exists: true
-      },
-      shopId: shop._id
-    };
+    const selector = {};
+    if (Roles.userIsInRole(this.userId, ["owner", "admin", "createProduct"], shop._id)) {
+      _.extend(selector, {
+        isDeleted: { $in: [null, false] },
+        ancestors: { $exists: true },
+        shopId: shop._id
+      });
+    } else { // Changing the selector for non admin users only. To get top-level products.
+      _.extend(selector, {
+        isDeleted: { $in: [null, false] },
+        ancestors: [],
+        shopId: shop._id
+      });
+    }
 
     if (productFilters) {
       // handle multiple shops
@@ -398,10 +405,12 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
         ]
       });
     }
-
-    return Products.find(newSelector, {
-      sort: sort,
-      limit: productScrollLimit
-    });
+    // Returning Complete product tree for top level products to avoid sold out warning.
+    return Products.find(
+      {
+        $or: [ { _id: { $in: productIds } },
+             { ancestors: { $in: productIds } }
+        ]
+      });
   }
 });
