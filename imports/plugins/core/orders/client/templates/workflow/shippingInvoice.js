@@ -6,7 +6,6 @@ import { ReactiveVar } from "meteor/reactive-var";
 import { i18next, Logger, formatNumber, Reaction } from "/client/api";
 import { NumericInput } from "/imports/plugins/core/ui/client/components";
 import { Orders, Shops } from "/lib/collections";
-import { formatPriceString } from "/client/api";
 import { ButtonSelectContainer } from "/imports/plugins/core/ui/client/containers";
 import DiscountList from "/imports/plugins/core/discounts/client/components/list";
 import InvoiceContainer from "../../containers/invoiceContainer.js";

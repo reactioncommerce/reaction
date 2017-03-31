@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from "react";
 import classnames from "classnames";
-import _ from "lodash";
 import { composeWithTracker, merge } from "/lib/api/compose";
 import Button from "../components/button/button.jsx";
 import { ButtonSelect } from "../components/button";

@@ -34,7 +34,6 @@ describe("orders test", () => {
       check(arguments, [Match.Any]);
     });
     order = Factory.create("order");
-    console.log(order);
     return done();
   });
 
