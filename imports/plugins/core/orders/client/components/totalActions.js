@@ -53,5 +53,4 @@ class TotalActions extends Component {
   }
 }
 
-
 export default TotalActions;

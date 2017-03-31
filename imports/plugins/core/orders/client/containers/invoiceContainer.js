@@ -6,7 +6,6 @@ import { TranslationProvider } from "/imports/plugins/core/ui/client/providers";
 import Invoice from "../components/invoice.js";
 
 class InvoiceContainer extends Component {
-
   static propTypes = {
     canMakeAdjustments: PropTypes.bool,
     collection: PropTypes.string,
@@ -26,7 +25,6 @@ class InvoiceContainer extends Component {
     this.handleClick = this.handleClick.bind(this);
     this.dateFormat = this.dateFormat.bind(this);
   }
-
 
   dateFormat = (context, block) => {
     const f = block || "MMM DD, YYYY hh:mm:ss A";
@@ -66,7 +64,6 @@ class InvoiceContainer extends Component {
     );
   }
 }
-
 
 const composer = (props, onData) => {
   onData(null, {

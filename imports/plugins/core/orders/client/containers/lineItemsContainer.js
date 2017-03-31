@@ -69,7 +69,6 @@ class LineItemsContainer extends Component {
     if (defaultImage) {
       return defaultImage;
     }
-
     return false;
   }
 

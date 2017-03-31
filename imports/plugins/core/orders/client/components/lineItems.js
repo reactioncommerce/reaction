@@ -148,5 +148,4 @@ class LineItems extends Component {
   }
 }
 
-
 export default LineItems;
