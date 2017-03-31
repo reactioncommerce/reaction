@@ -446,7 +446,7 @@ Template.coreOrderShippingInvoice.helpers({
     const instance = Template.instance();
     const order = instance.state.get("order");
     const orderMode = orderCreditMethod(order).paymentMethod.mode;
-    return orderMode === "capture" ? true : false;
+    return orderMode === "capture";
   },
 
   cancelOrderDisabled() {
