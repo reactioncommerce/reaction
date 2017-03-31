@@ -31,6 +31,7 @@ function composer(props, onData) {
 
       filter.label = i18next.t(`order.filter.${filter.name}`, { defaultValue: filter.label });
       filter.i18nKeyLabel = `order.filter.${filter.name}`;
+      filter.count = 0;
 
       result.forEach((orderCount) => {
         if (orderCount._id.includes(filter.name)) {
