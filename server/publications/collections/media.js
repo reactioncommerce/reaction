@@ -70,11 +70,9 @@ Meteor.publish("Media", function (shops) {
     this.onStop(() => {
       revisionHandle.stop();
     });
+
+    return this.ready();
   }
 
-  return Media.find(selector, {
-    sort: {
-      "metadata.priority": 1
-    }
-  });
+  return this.ready();
 });

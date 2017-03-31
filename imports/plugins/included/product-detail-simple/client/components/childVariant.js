@@ -4,6 +4,15 @@ import { Translation } from "/imports/plugins/core/ui/client/components";
 import { MediaItem } from "/imports/plugins/core/ui/client/components";
 
 class ChildVariant extends Component {
+  static propTypes = {
+    editButton: PropTypes.node,
+    isSelected: PropTypes.bool,
+    onClick: PropTypes.func,
+    soldOut: PropTypes.bool,
+    variant: PropTypes.object,
+    visibilityButton: PropTypes.node
+  }
+
   handleClick = (event) => {
     if (this.props.onClick) {
       this.props.onClick(event, this.props.variant);
@@ -11,12 +20,12 @@ class ChildVariant extends Component {
   }
 
   get hasMedia() {
-    return Array.isArray(this.props.media) && this.props.media.length > 0;
+    return Array.isArray(this.props.variant.media) && this.props.variant.media.length > 0;
   }
 
   get primaryMediaItem() {
     if (this.hasMedia) {
-      return this.props.media[0];
+      return this.props.variant.media[0].images.small;
     }
 
     return null;
@@ -65,7 +74,7 @@ class ChildVariant extends Component {
       const media = this.primaryMediaItem;
 
       return (
-        <MediaItem source={media.url()} />
+        <MediaItem source={media.url} />
       );
     }
 
@@ -102,16 +111,5 @@ class ChildVariant extends Component {
     );
   }
 }
-
-ChildVariant.propTypes = {
-  editButton: PropTypes.node,
-  isSelected: PropTypes.bool,
-  media: PropTypes.arrayOf(PropTypes.object),
-  onClick: PropTypes.func,
-  soldOut: PropTypes.bool,
-  variant: PropTypes.object,
-  visibilityButton: PropTypes.node
-};
-
 
 export default ChildVariant;

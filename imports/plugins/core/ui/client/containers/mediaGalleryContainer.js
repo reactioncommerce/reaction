@@ -1,11 +1,12 @@
 import React, { Component, PropTypes } from "react";
 import Measure from "react-measure";
 import update from "react/lib/update";
+import { Meteor } from "meteor/meteor";
 import { composeWithTracker } from "/lib/api/compose";
 import { MediaGallery } from "../components";
 import { Reaction } from "/client/api";
 import { ReactionProduct } from "/lib/api";
-import { Media, Revisions } from "/lib/collections";
+import { Media } from "/lib/collections";
 
 function uploadHandler(files) {
   // TODO: It would be cool to move this logic to common ValidatedMethod, but
@@ -72,12 +73,23 @@ class MediaGalleryContainer extends Component {
     });
   }
 
+  get allowFeaturedMediaHover() {
+    if (this.state.featuredMedia) {
+      return true;
+    }
+    return false;
+  }
+
+  get media() {
+    return (this.state && this.state.media) || this.props.media;
+  }
+
   handleDrop = (files) => {
     uploadHandler(files);
   }
 
   handleRemoveMedia = (media) => {
-    const imageUrl = media.url();
+    const imageUrl = media.images && media.images.medium.url;
     const mediaId = media._id;
 
     Alerts.alert({
@@ -88,29 +100,16 @@ class MediaGalleryContainer extends Component {
       imageHeight: 150
     }, (isConfirm) => {
       if (isConfirm) {
-        Media.remove({ _id: mediaId }, (error) => {
+        Meteor.call("media/remove", mediaId, (error) => {
           if (error) {
             Alerts.toast(error.reason, "warning", {
               autoHide: 10000
             });
           }
-
-          // updateImagePriorities();
         });
       }
       // show media as removed (since it will not disappear until changes are published
     });
-  }
-
-  get allowFeaturedMediaHover() {
-    if (this.state.featuredMedia) {
-      return true;
-    }
-    return false;
-  }
-
-  get media() {
-    return (this.state && this.state.media) || this.props.media;
   }
 
   handleMouseEnterMedia = (event, media) => {
@@ -143,14 +142,14 @@ class MediaGalleryContainer extends Component {
     });
 
     // Save the updated positions
-    Meteor.defer(() => {
-      newMediaOrder.forEach((mediaItem, index) => {
-        Media.update(mediaItem._id, {
-          $set: {
-            "metadata.priority": index
-          }
+    const mediaIds = newMediaOrder.map((mediaItem) => mediaItem._id);
+
+    Meteor.call("media/updatePositions", mediaIds, (error) => {
+      if (error) {
+        Alerts.toast(error.reason, "warning", {
+          autoHide: 10000
         });
-      });
+      }
     });
   }
 
@@ -181,54 +180,10 @@ class MediaGalleryContainer extends Component {
   }
 }
 
-function fetchMediaRevisions() {
-  const productId = ReactionProduct.selectedProductId();
-  const mediaRevisions = Revisions.find({
-    "parentDocument": productId,
-    "documentType": "image",
-    "workflow.status": {
-      $nin: ["revision/published"]
-    }
-  }).fetch();
-  return mediaRevisions;
-}
-
-// resort the media in
-function sortMedia(media) {
-  const sortedMedia = _.sortBy(media, function (m) { return m.metadata.priority;});
-  return sortedMedia;
-}
-
-// Search through revisions and if we find one for the image, stick it on the object
-function appendRevisionsToMedia(props, media) {
-  if (!Reaction.hasPermission(props.permission || ["createProduct"])) {
-    return media;
-  }
-  const mediaRevisions = fetchMediaRevisions();
-  const newMedia = [];
-  for (const image of media) {
-    image.revision = undefined;
-    for (const revision of mediaRevisions) {
-      if (revision.documentId === image._id) {
-        image.revision = revision;
-        image.metadata.priority = revision.documentData.priority;
-      }
-    }
-    newMedia.push(image);
-  }
-  return sortMedia(newMedia);
-}
-
 function composer(props, onData) {
-  let media;
   let editable;
   const viewAs = Reaction.getUserPreferences("reaction-dashboard", "viewAs", "administrator");
-
-  if (!props.media) {
-    // Fetch media based on props
-  } else {
-    media = appendRevisionsToMedia(props, props.media);
-  }
+  const media = props.media;
 
   if (viewAs === "customer") {
     editable = false;

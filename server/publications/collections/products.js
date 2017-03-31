@@ -1,6 +1,8 @@
-import { Products, Revisions } from "/lib/collections";
+import { Media, Products, Revisions } from "/lib/collections";
 import { Reaction, Logger } from "/server/api";
 import { RevisionApi } from "/imports/plugins/core/revisions/lib/api/revisions";
+import { getProductMedia } from "/lib/api/media";
+import { fetchPublicProductData } from "./product";
 
 //
 // define search filters as a schema so we can validate
@@ -286,7 +288,9 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
                 ]
               }
             }).fetch();
+
             fields.__revisions = revisions;
+            fields.media = getProductMedia({ productId: id, getRevisions: true });
 
             this.added("Products", id, fields);
           },
@@ -304,6 +308,8 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
             }).fetch();
 
             fields.__revisions = revisions;
+            fields.media = getProductMedia({ productId: id, getRevisions: true });
+
             this.changed("Products", id, fields);
           },
           removed: (id) => {
@@ -327,6 +333,8 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
             }
 
             if (product) {
+              product.media = getProductMedia({ productId: product._id, getRevisions: true });
+
               this.added("Products", product._id, product);
               this.added("Revisions", revision._id, revision);
             }
@@ -340,6 +348,8 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
             }
             if (product) {
               product.__revisions = [revision];
+              product.media = getProductMedia({ productId: product._id, getRevisions: true });
+
               this.changed("Products", product._id, product);
               this.changed("Revisions", revision._id, revision);
             }
@@ -354,6 +364,8 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
             }
             if (product) {
               product.__revisions = [];
+              product.media = getProductMedia({ productId: product._id, getRevisions: true });
+
               this.changed("Products", product._id, product);
               this.removed("Revisions", revision._id, revision);
             }
@@ -393,6 +405,7 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
       // Re-configure selector to pick either Variants of one of the top-level products, or the top-level products in the filter
       _.extend(newSelector, {
         $or: [
+          { _id: { $in: productIds } },
           {
             ancestors: {
               $in: productIds
@@ -405,12 +418,69 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
         ]
       });
     }
-    // Returning Complete product tree for top level products to avoid sold out warning.
-    return Products.find(
-      {
-        $or: [ { _id: { $in: productIds } },
-             { ancestors: { $in: productIds } }
-        ]
-      });
+
+    const productCursor = Products.find(newSelector, {
+      sort: sort,
+      limit: productScrollLimit
+    });
+
+    const foundProducts = productCursor.fetch();
+    const updatedProductIds = foundProducts.map(product => product._id);
+
+    const handle = productCursor.observe({
+      added: (product) => {
+        product.media = getProductMedia({ productId: product._id });
+
+        this.added("Products", product._id, product);
+      },
+      changed: (product) => {
+        product.media = getProductMedia({ productId: product._id });
+
+        this.changed("Products", product._id, product);
+      },
+      removed: (product) => {
+        this.removed("Products", product._id, product);
+      }
+    });
+
+    const mediaHandle = Media.files.find({
+      "$or": [
+        { "metadata.productId": { $in: updatedProductIds } },
+        { "metadata.variantId": { $in: updatedProductIds } }
+      ],
+      "metadata.workflow": "published"
+    }).observe({
+      added: (media) => {
+        if (media.metadata && media.metadata.variantId) {
+          const product = fetchPublicProductData(media.metadata.variantId);
+          this.changed("Products", media.metadata.variantId, product);
+        }
+
+        this.added("Media", media._id, media);
+      },
+      changed: (media) => {
+        if (media.metadata && media.metadata.variantId) {
+          const product = fetchPublicProductData(media.metadata.variantId);
+          this.changed("Products", media.metadata.variantId, product);
+        }
+
+        this.changed("Media", media._id, media);
+      },
+      removed: (media) => {
+        if (media.metadata && media.metadata.variantId) {
+          const product = fetchPublicProductData(media.metadata.variantId);
+          this.changed("Products", media.metadata.variantId, product);
+        }
+
+        this.removed("Media", media._id, media);
+      }
+    });
+
+    this.onStop(() => {
+      handle.stop();
+      mediaHandle.stop();
+    });
+
+    return this.ready();
   }
 });

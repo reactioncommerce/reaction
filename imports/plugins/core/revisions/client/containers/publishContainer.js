@@ -124,6 +124,16 @@ function composer(props, onData) {
             parentDocument: {
               $in: props.documentIds
             }
+          },
+          {
+            "documentData.productId": {
+              $in: props.documentIds
+            }
+          },
+          {
+            "documentData.variantId": {
+              $in: props.documentIds
+            }
           }
         ],
         "workflow.status": {

@@ -92,26 +92,18 @@ Template.productGridItems.helpers({
     };
   },
   media: function () {
-    const media = Media.findOne({
-      "metadata.productId": this._id,
-      "metadata.toGrid": 1
-    }, {
-      sort: { "metadata.priority": 1, "uploadedAt": 1 }
-    });
+    if (Array.isArray(this.media) && this.media.length) {
+      return this.media[0].images.medium;
+    }
 
-    return media instanceof FS.File ? media : false;
+    return false;
   },
   additionalMedia: function () {
-    const mediaArray = Media.find({
-      "metadata.productId": this._id,
-      "metadata.priority": {
-        $gt: 0
-      },
-      "metadata.toGrid": 1
-    }, { limit: 3 });
-
-    if (mediaArray.count() > 1) {
-      return mediaArray;
+    if (Array.isArray(this.media)) {
+      return this.media
+        .filter(mediaItem => mediaItem.metadata.priority > 0)
+        .map(mediaItem => mediaItem.images.small)
+        .slice(0, 3);
     }
 
     return false;

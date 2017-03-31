@@ -5,6 +5,19 @@ import { Divider, IconButton } from "/imports/plugins/core/ui/client/components"
 import { ChildVariant } from "./";
 
 class VariantList extends Component {
+  static propTypes = {
+    childVariants: PropTypes.arrayOf(PropTypes.object),
+    displayPrice: PropTypes.func,
+    editable: PropTypes.bool,
+    isSoldOut: PropTypes.func,
+    onCreateVariant: PropTypes.func,
+    onEditVariant: PropTypes.func,
+    onMoveVariant: PropTypes.func,
+    onVariantClick: PropTypes.func,
+    onVariantVisibiltyToggle: PropTypes.func,
+    variantIsSelected: PropTypes.func,
+    variants: PropTypes.arrayOf(PropTypes.object)
+  }
 
   handleVariantEditClick = (event, editButtonProps) => {
     if (this.props.onEditVariant) {
@@ -126,13 +139,6 @@ class VariantList extends Component {
 
     if (this.props.childVariants) {
       childVariants = this.props.childVariants.map((childVariant, index) => {
-        const media = this.props.childVariantMedia.filter((mediaItem) => {
-          if (mediaItem.metadata.variantId === childVariant._id) {
-            return true;
-          }
-          return false;
-        });
-
         return (
           <EditContainer
             data={childVariant}
@@ -148,7 +154,6 @@ class VariantList extends Component {
           >
             <ChildVariant
               isSelected={this.props.variantIsSelected(childVariant._id)}
-              media={media}
               onClick={this.handleChildleVariantClick}
               variant={childVariant}
             />
@@ -182,20 +187,5 @@ class VariantList extends Component {
     );
   }
 }
-
-VariantList.propTypes = {
-  childVariantMedia: PropTypes.arrayOf(PropTypes.any),
-  childVariants: PropTypes.arrayOf(PropTypes.object),
-  displayPrice: PropTypes.func,
-  editable: PropTypes.bool,
-  isSoldOut: PropTypes.func,
-  onCreateVariant: PropTypes.func,
-  onEditVariant: PropTypes.func,
-  onMoveVariant: PropTypes.func,
-  onVariantClick: PropTypes.func,
-  onVariantVisibiltyToggle: PropTypes.func,
-  variantIsSelected: PropTypes.func,
-  variants: PropTypes.arrayOf(PropTypes.object)
-};
 
 export default VariantList;

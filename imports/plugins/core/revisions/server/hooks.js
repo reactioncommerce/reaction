@@ -168,7 +168,7 @@ Media.files.before.insert((userid, media) => {
       documentId: media._id,
       documentData: revisionMetadata,
       documentType: "image",
-      parentDocument: media.metadata.productId,
+      parentDocument: media.metadata.variantId || media.metadata.productId,
       changeType: "insert",
       workflow: {
         status: "revision/update"
@@ -218,7 +218,7 @@ Media.files.before.update((userId, media, fieldNames, modifier) => {
         documentId: media._id,
         documentData: convertedMetadata,
         documentType: "image",
-        parentDocument: media.metadata.productId,
+        parentDocument: media.metadata.variantId || media.metadata.productId,
         changeType: "update",
         workflow: {
           status: "revision/update"
@@ -249,7 +249,7 @@ Media.files.before.remove((userId, media) => {
       documentId: media._id,
       documentData: media.metadata,
       documentType: "image",
-      parentDocument: media.metadata.productId,
+      parentDocument: media.metadata.variantId || media.metadata.productId,
       changeType: "remove",
       workflow: {
         status: "revision/update"
