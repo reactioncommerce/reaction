@@ -8,7 +8,6 @@ const workflowStatusOrderCounts = {};
  * orders/count
  *
  * @summary Count number of orders per workflow status
- * @param {String} filterName - string to filter by
  * @return {Array} Array of counts for each status
  */
 workflowStatusOrderCounts.countOrdersByWorkflowStatus = function () {
