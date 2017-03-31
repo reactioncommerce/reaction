@@ -38,10 +38,7 @@
         </button>
 
         {{#if showAfterPaymentCaptured}}
-          <button class="btn btn-danger" type="button" data-event-action="cancelOrderAfterCapture" {{cancelOrderDisabled}}>Cancel Order</button>
-        {{/if}}
-        {{#if checkCancelProcess}}
-          <button class="btn btn-danger" type="button" data-event-action="completeCancelOrder" {{cancelOrderDisabled}}>Complete Cancel Order</button>
+          <button class="btn btn-danger" type="button" data-event-action="cancelOrder" {{cancelOrderDisabled}}>Cancel Order</button>
         {{/if}}
       </div>
       {{/if}}

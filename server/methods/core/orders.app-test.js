@@ -15,8 +15,7 @@ describe("orders test", () => {
 
   before(() => {
     methods = {
-      startCancelOrder: Meteor.server.method_handlers["orders/startCancelOrder"],
-      completeCancelOrder: Meteor.server.method_handlers["orders/completeCancelOrder"]
+      cancelOrder: Meteor.server.method_handlers["orders/cancelOrder"]
     };
   });
 
@@ -35,6 +34,7 @@ describe("orders test", () => {
       check(arguments, [Match.Any]);
     });
     order = Factory.create("order");
+    console.log(order);
     return done();
   });
 
@@ -51,14 +51,14 @@ describe("orders test", () => {
     });
   }
 
-  describe("orders/startCancelOrder", () => {
+  describe("orders/cancelOrder", () => {
     it("should return an error if user is not admin", (done) => {
       sandbox.stub(Reaction, "hasPermission", () => false);
       const returnToStock =  false;
-      spyOnMethod("startCancelOrder", order.userId);
+      spyOnMethod("cancelOrder", order.userId);
 
       function copyStartCancelOrder() {
-        return Meteor.call("orders/startCancelOrder", order, returnToStock);
+        return Meteor.call("orders/cancelOrder", order, returnToStock);
       }
       expect(copyStartCancelOrder).to.throw(Meteor.Error, /Access Denied/);
       return done();
@@ -69,10 +69,20 @@ describe("orders test", () => {
       sandbox.stub(Reaction, "hasPermission", () => true);
       const returnToStock = true;
       const previousProduct = Products.findOne({ _id: order.items[0].variants._id });
-      spyOnMethod("startCancelOrder", order.userId);
-      Meteor.call("orders/startCancelOrder", order, returnToStock);
+      spyOnMethod("cancelOrder", order.userId);
+      Meteor.call("orders/cancelOrder", order, returnToStock);
       const product = Products.findOne({ _id: order.items[0].variants._id });
       expect(previousProduct.inventoryQuantity).to.equal(product.inventoryQuantity);
+      return done();
+    });
+
+    it("should notify owner of the order, if the order is canceled", (done) => {
+      sandbox.stub(Reaction, "hasPermission", () => true);
+      const returnToStock = true;
+      spyOnMethod("cancelOrder", order.userId);
+      Meteor.call("orders/cancelOrder", order, returnToStock);
+      const notify = Notifications.findOne({ to: order.userId, type: "orderCancelled" });
+      expect(notify.message).to.equal("Your order was canceled.");
       return done();
     });
 
@@ -80,59 +90,28 @@ describe("orders test", () => {
       sandbox.stub(Reaction, "hasPermission", () => true);
       const returnToStock = false;
       const previousProduct = Products.findOne({ _id: order.items[0].variants._id });
-      spyOnMethod("startCancelOrder", order.userId);
-      Meteor.call("orders/startCancelOrder", order, returnToStock);
+      spyOnMethod("cancelOrder", order.userId);
+      Meteor.call("orders/cancelOrder", order, returnToStock);
       const product = Products.findOne({ _id: order.items[0].variants._id });
       expect(previousProduct.inventoryQuantity).to.equal(product.inventoryQuantity + 1);
       return done();
     });
 
-    it("should update the payment method status and mode to startCancel and refund respectively", (done) => {
+    it("should update the payment method status and mode to refunded and canceled respectively ", (done) => {
       sandbox.stub(Reaction, "hasPermission", () => true);
       const returnToStock = false;
-      spyOnMethod("startCancelOrder", order.userId);
-      Meteor.call("orders/startCancelOrder", order, returnToStock);
+      spyOnMethod("cancelOrder", order.userId);
+      Meteor.call("orders/cancelOrder", order, returnToStock);
       const Order = Orders.findOne({ _id: order._id });
-      expect(Order.billing[0].paymentMethod.status).to.equal("startCancel");
-      expect(Order.billing[0].paymentMethod.mode).to.equal("refund");
-      return done();
-    });
-  });
-
-  describe("orders/completeCancelOrder", () => {
-    it("should return an error if user is not admin", (done) => {
-      sandbox.stub(Reaction, "hasPermission", () => false);
-      spyOnMethod("completeCancelOrder", order.userId);
-
-      function copyCompleteCancelOrder() {
-        return Meteor.call("orders/completeCancelOrder", order);
-      }
-      expect(copyCompleteCancelOrder).to.throw(Meteor.Error, /Access Denied/);
-      return done();
-    });
-
-    it("should allow an admin complete the cancel order process", (done) => {
-      sandbox.stub(Reaction, "hasPermission", () => true);
-      spyOnMethod("completeCancelOrder", order.userId);
-      Meteor.call("orders/completeCancelOrder", order);
-      const Order = Orders.findOne({ _id: order._id });
-      expect(Order.workflow.status).to.equal("coreOrderWorkflow/canceled");
-      return done();
-    });
-
-    it("should notify the owner the owner of the order, if the order is canceled", (done) => {
-      sandbox.stub(Reaction, "hasPermission", () => true);
-      spyOnMethod("completeCancelOrder", order.userId);
-      Meteor.call("orders/completeCancelOrder", order);
-      const notify = Notifications.findOne({ to: order.userId, type: "orderCancelled" });
-      expect(notify.message).to.equal("Your order was canceled.");
+      expect(Order.billing[0].paymentMethod.mode).to.equal("cancel");
       return done();
     });
 
     it("should change the workflow status of the item to coreOrderItemWorkflow/canceled", (done) => {
       sandbox.stub(Reaction, "hasPermission", () => true);
-      spyOnMethod("completeCancelOrder", order.userId);
-      Meteor.call("orders/completeCancelOrder", order);
+      const returnToStock = false;
+      spyOnMethod("cancelOrder", order.userId);
+      Meteor.call("orders/cancelOrder", order, returnToStock);
       const orderItem = Orders.findOne({ _id: order._id }).items[0];
       expect(orderItem.workflow.status).to.equal("coreOrderItemWorkflow/canceled");
       return done();

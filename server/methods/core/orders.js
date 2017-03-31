@@ -215,14 +215,14 @@ export const methods = {
 
 
   /**
-   * orders/startCancelOrder
+   * orders/cancelOrder
    *
    * @summary Start the cancel order process
    * @param {Object} order - order object
    * @param {Boolean} returnToStock - condition to return product to stock
    * @return {Object} ret
    */
-  "orders/startCancelOrder": function (order, returnToStock) {
+  "orders/cancelOrder": function (order, returnToStock) {
     check(order, Object);
     check(returnToStock, Boolean);
 
@@ -232,30 +232,17 @@ export const methods = {
 
     if (!returnToStock) ordersInventoryAdjust(order._id);
 
-    return Orders.update({
-      "_id": order._id,
-      "billing.paymentMethod.method": "credit"
-    }, {
-      $set: {
-        "billing.$.paymentMethod.status": "startCancel",
-        "billing.$.paymentMethod.mode": "refund"
-      }
+    const paymentMethod = orderCreditMethod(order).paymentMethod;
+    const invoiceTotal = order.billing[0].invoice.total;
+    const shipment = order.shipping[0];
+    const itemIds = shipment.items.map((item) => {
+      return item._id;
     });
-  },
 
-  /**
-   * orders/completeCancelOrder
-   *
-   * @summary Complete the cancel order process
-   * @param {Object} order - order object
-   * @return {Object} return order update cursor
-   */
-  "orders/completeCancelOrder": function (order) {
-    check(order, Object);
-
-    if (!Reaction.hasPermission("orders")) {
-      throw new Meteor.Error(403, "Access Denied");
-    }
+    // refund payment to customer
+    Meteor.call("orders/refunds/create", order._id, paymentMethod, invoiceTotal, err => {
+      if (err) Logger.warn(err);
+    });
 
     // send notification to user
     const prefix = Reaction.getShopPrefix();
@@ -265,20 +252,15 @@ export const methods = {
       if (err) Logger.error(err);
     });
 
-    const shipment = order.shipping[0];
-    const itemIds = shipment.items.map((item) => {
-      return item._id;
-    });
-
+    // update item workflow
     Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/canceled", order, itemIds);
-    // Update the order collection
-    Orders.update({
+
+    return Orders.update({
       "_id": order._id,
       "billing.paymentMethod.method": "credit"
     }, {
       $set: {
         "workflow.status": "coreOrderWorkflow/canceled",
-        "billing.$.paymentMethod.status": "canceled",
         "billing.$.paymentMethod.mode": "cancel"
       },
       $push: {

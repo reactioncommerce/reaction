@@ -147,7 +147,10 @@ export default function () {
         processor: "Mastercard 2346",
         mode: "authorize",
         status: "created"
-      })
+      }),
+      invoice: {
+        total: 12.45
+      }
     }],
     state: "new",
     createdAt: new Date,

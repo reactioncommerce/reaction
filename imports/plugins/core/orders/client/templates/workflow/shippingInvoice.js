@@ -6,6 +6,7 @@ import { ReactiveVar } from "meteor/reactive-var";
 import { i18next, Logger, formatNumber, Reaction } from "/client/api";
 import { NumericInput } from "/imports/plugins/core/ui/client/components";
 import { Orders, Shops } from "/lib/collections";
+import { formatPriceString } from "/client/api";
 import { ButtonSelectContainer } from "/imports/plugins/core/ui/client/containers";
 import DiscountList from "/imports/plugins/core/discounts/client/components/list";
 import InvoiceContainer from "../../containers/invoiceContainer.js";
@@ -88,22 +89,19 @@ Template.coreOrderShippingInvoice.helpers({
       component: ButtonSelectContainer,
       buttons: [
         {
-          name: "Approve",
+          name: i18next.t("order.approveInvoice"),
           active: true,
           buttonClass: "btn-info",
           eventAction: "approveInvoice",
-          bgColor: "bg-info"
+          bgColor: "bg-info",
+          buttonType: "submit"
         }, {
-          name: "Cancel",
+          name: i18next.t("order.cancelInvoice"),
           active: false,
           buttonClass: "btn-danger",
-          eventAction: "startCancelOrder",
-          bgColor: "bg-danger"
-        },
-        {
-          name: "Refund",
-          buttonClass: "btn-warning",
-          bgColor: "bg-warning"
+          eventAction: "cancelOrder",
+          bgColor: "bg-danger",
+          buttonType: "button"
         }
       ]
     };
@@ -127,55 +125,38 @@ Template.coreOrderShippingInvoice.helpers({
  */
 Template.coreOrderShippingInvoice.events({
   /**
-   * Click cancelOrderAfterCapture
-   * @param {Event} event = Event Object
-   * @param {Template} instance - Blaze Template
-   * @return {void}
-   */
-  "click [data-event-action=cancelOrderAfterCapture]": (event, instance) => {
-    event.preventDefault();
-    const order = instance.state.get("order");
-
-    Alerts.alert({
-      title: "Are you sure you want to cancel the order?",
-      showCancelButton: true,
-      confirmButtonText: "Yes",
-      cancelButtonText: "No"
-    }, (isConfirm) => {
-      if (isConfirm) {
-        return Meteor.call("orders/completeCancelOrder", order, err => {
-          if (err) Logger.warn(err);
-        });
-      }
-    });
-  },
-  /**
    * Click Start Cancel Order
    * @param {Event} event - Event Object
    * @param {Template} instance - Blaze Template
    * @return {void}
    */
-  "click [data-event-action=startCancelOrder]": (event, instance) => {
+  "click [data-event-action=cancelOrder]": (event, instance) => {
     event.preventDefault();
     const order = instance.state.get("order");
+    const invoiceTotal = order.billing[0].invoice.total;
+    const currencySymbol = instance.state.get("currency").symbol;
 
     Alerts.alert({
-      title: "Do you want to return the product to stock?",
-      type: "info",
+      title: i18next.t("order.cancelOrder"),
+      text: i18next.t("order.applyRefundDuringCancelOrder", { currencySymbol, invoiceTotal }),
+      type: "warning",
       showCancelButton: true,
-      confirmButtonText: "Yes, return to stock",
-      cancelButtonText: "No, continue"
+      showCloseButton: true,
+      confirmButtonColor: "#98afbc",
+      cancelButtonColor: "#98afbc",
+      confirmButtonText: i18next.t("order.cancelOrderNoRestock"),
+      cancelButtonText: i18next.t("order.cancelOrderThenRestock")
     }, (isConfirm, cancel)=> {
       let returnToStock;
       if (isConfirm) {
-        returnToStock = true;
-        return Meteor.call("orders/startCancelOrder", order, returnToStock, err => {
+        returnToStock = false;
+        return Meteor.call("orders/cancelOrder", order, returnToStock, err => {
           if (err) Logger.warn(err);
         });
       }
       if (cancel === "cancel") {
-        returnToStock = false;
-        return Meteor.call("orders/startCancelOrder", order, returnToStock, err => {
+        returnToStock = true;
+        return Meteor.call("orders/cancelOrder", order, returnToStock, err => {
           if (err) Logger.warn(err);
         });
       }
@@ -453,12 +434,12 @@ Template.coreOrderShippingInvoice.helpers({
     return true;
   },
 
-  checkCancelProcess() {
+  checkIfCanceled() {
     const instance = Template.instance();
     const order = instance.state.get("order");
-    const orderMode = orderCreditMethod(order).paymentMethod.mode;
+    const orderStatus = orderCreditMethod(order).paymentMethod.status;
 
-    return orderMode !== "refund" ? false : true;
+    return orderStatus !== "canceled" ? false : true;
   },
 
   showAfterPaymentCaptured() {

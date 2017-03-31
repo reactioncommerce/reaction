@@ -115,7 +115,7 @@ Template.coreOrderShippingSummary.helpers({
       for (const fullItem of order.items) {
         if (fullItem._id === shipmentItem._id) {
           if (fullItem.workflow) {
-            return fullItem.workflow.status === "coreOrderItemWorkflow/canceled" ? true : false;
+            return fullItem.workflow.status === "coreOrderItemWorkflow/canceled";
           }
         }
       }
@@ -135,7 +135,7 @@ Template.coreOrderShippingSummary.helpers({
         delivered: false,
         shipped: false,
         status: "danger",
-        label: "Canceled" /* i18next.t("orderShipping.notShipped") */
+        label: i18next.t("order.canceledLabel")
       };
     }
 

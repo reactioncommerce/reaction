@@ -24,14 +24,16 @@
     text-align: center;
 }
 
-.blue {
-    background-color: #5bc0de;
+.button-select .button-dropdown {
+    z-index: 1;
+    // position: absolute;
+    // display: none;
 }
 
 .button-select .button-dropdown .button-item {
     width: 100%;
     display: inline-block;
-    font-weight: 400;
+    font-weight: 600;
     margin-top: 2px;
     color: #000000;
     cursor: pointer;
@@ -44,6 +46,14 @@
     padding: .5rem 1rem;
     height: 40px;
     text-align: center;
+}
+
+.button-select .button-dropdown .button-item:hover {
+    background: #f5f5f5;
+}
+
+.show {
+    // display: block;
 }
 
 .button-select.bg-info {

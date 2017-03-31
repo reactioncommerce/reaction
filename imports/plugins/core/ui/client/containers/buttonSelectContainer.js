@@ -11,6 +11,7 @@ class ButtonSelectContainer extends Component {
     const currentButton = <Button
       eventAction={props.defaultButton.eventAction}
       className={props.defaultButton.buttonClass} bezelStyle="solid"
+      buttonType={props.defaultButton.buttonType}
                           >
      {props.defaultButton.name}
     </Button>;
@@ -18,23 +19,29 @@ class ButtonSelectContainer extends Component {
     this.state = {
       toggle: "hidden",
       currentButton,
-      nonActiveButtons: props.nonActiveButtons,
+      buttons: props.buttons,
+      activeButton: "",
+      nonActiveButtons: props.defaultNonActiveButtons,
       defaultBgClassNames: classnames({ "button-select": true, [props.defaultButton.bgColor]: true }),
       toggleIcon: classnames({ "fa": true, "fa-chevron-down": true, "text-center": true, "fa-icon": true }),
-      toggleClassNames: classnames({ "button-dropdown": true, "hidden": true })
+      toggleClassNames: classnames({ "button-dropdown": true, "show": true })
     };
 
     this.handleToggle = this.handleToggle.bind(this);
     // this.renderDefaultButton = this.renderDefaultButton.bind(this);
     this.handleButtonChange = this.handleButtonChange.bind(this);
+    this.filterButtons = this.filterButtons.bind(this);
   }
 
-  changeActiveButton() {
-    const { buttons } = this.props;
-    const index = _.indexOf(buttons, _.find(buttons), { active: true });
-    buttons.splice(index, 1, { active: false, ...buttons[index] });
+  filterButtons() {
+    const { activeButton, buttons } = this.state;
 
-    return buttons;
+    const nonActiveButtons = buttons.filter(button => {
+      if (button.name !== activeButton) {
+        return button;
+      }
+    });
+    return this.setState({ nonActiveButtons });
   }
 
   handleToggle() {
@@ -42,14 +49,14 @@ class ButtonSelectContainer extends Component {
     let className;
 
     if (toggle === "hidden") {
-      className = classnames({ "button-dropdown": true, "hidden": false });
+      className = classnames({ "button-dropdown": true, "show": false });
       return this.setState({ toggle: "show",
         toggleClassNames: className,
         toggleIcon: classnames({ "fa": true, "fa-chevron-up": true, "text-center": true, "fa-icon": true })
       });
     }
 
-    className = classnames({ "button-dropdown": true, "hidden": true });
+    className = classnames({ "button-dropdown": true, "show": true });
     return this.setState({ toggle: "hidden",
       toggleClassNames: className,
       toggleIcon: classnames({ "fa": true, "fa-chevron-down": true, "text-center": true, "fa-icon": true })
@@ -60,23 +67,28 @@ class ButtonSelectContainer extends Component {
     const currentButton = <Button
       eventAction={button.eventAction}
       className={button.buttonClass} bezelStyle="solid"
+      buttonType={button.buttonType}
                           >{button.name}</Button>;
-
     this.handleToggle();
-    this.setState({
+
+    return this.setState({
       currentButton: currentButton,
       defaultBgClassNames: classnames({ "button-select": true, [button.bgColor]: true }),
+      activeButton: button.name
+    }, () => {
+      this.filterButtons();
     });
   }
 
   render() {
-    const { toggleClassNames, defaultBgClassNames, toggleIcon, currentButton } = this.state;
+    const { toggleClassNames, nonActiveButtons, defaultBgClassNames, toggleIcon, currentButton } = this.state;
     return (
       <ButtonSelect
         currentButton={currentButton}
         toggleClassNames={toggleClassNames}
         defaultBgClassNames={defaultBgClassNames}
         toggleIcon={toggleIcon}
+        nonActiveButtons={nonActiveButtons}
         handleToggle={this.handleToggle}
         handleButtonChange={this.handleButtonChange}
         {...this.props}
@@ -89,6 +101,7 @@ ButtonSelectContainer.propTypes = {
   buttons: PropTypes.array,
   currentButton: PropTypes.node,
   defaultButton: PropTypes.object,
+  defaultNonActiveButtons: PropTypes.array,
   nonActiveButtons: PropTypes.array
 };
 
@@ -100,7 +113,7 @@ function composer(props, onData) {
   });
   defaultButton = defaultButton[0];
 
-  const nonActiveButtons = props.buttons.filter(button => {
+  const defaultNonActiveButtons = props.buttons.filter(button => {
     if (button.active === false || button.active === undefined) {
       return button;
     }
@@ -108,7 +121,7 @@ function composer(props, onData) {
 
   onData(null, {
     defaultButton,
-    nonActiveButtons
+    defaultNonActiveButtons
   });
 }
 
