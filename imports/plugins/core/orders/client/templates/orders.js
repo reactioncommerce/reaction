@@ -84,10 +84,11 @@ Template.orders.onCreated(function () {
     orders: []
   });
   this.orderLimits.setDefault({
-    new: 2,
-    processing: 2,
-    completed: 2
+    new: 10,
+    processing: 10,
+    completed: 10
   });
+  this.state.set("count", 0);
 
   const filterName = this.data && this.data.filter && this.data.filter.name || "new";
   Reaction.setUserPreferences(PACKAGE_NAME, ORDER_LIST_FILTERS_PREFERENCE_NAME, filterName);
@@ -140,7 +141,19 @@ Template.orders.helpers({
 
   hasMoreOrders() {
     const filter = Reaction.getUserPreferences(PACKAGE_NAME, ORDER_LIST_FILTERS_PREFERENCE_NAME, DEFAULT_FILTER_NAME);
-    return Template.instance().state.get("orders").length >= Template.instance().orderLimits.get(filter);
+    const instance = Template.instance();
+    const query = OrderHelper.makeQuery(filter);
+    Meteor.call("orders/count", (error, result) => {
+      if (error) {
+        throw new Meteor.Error("Error fetching order count", error);
+      }
+      result.forEach((orderCount) => {
+        if (query["workflow.status"] === orderCount._id) {
+          instance.state.set("count", orderCount.count);
+        }
+      });
+    });
+    return instance.state.get("count") > instance.orderLimits.get(filter);
   },
 
   currentFilterLabel() {
@@ -170,7 +183,7 @@ Template.orders.events({
     event.preventDefault();
     const filter = Reaction.getUserPreferences(PACKAGE_NAME, ORDER_LIST_FILTERS_PREFERENCE_NAME, DEFAULT_FILTER_NAME);
     let limit = instance.orderLimits.get(filter);
-    limit += 5;
+    limit += 10;
     instance.orderLimits.set(filter, limit);
   }
 });
