@@ -1,6 +1,8 @@
 .button-select {
     width: 100%;
     border: 2px solid;
+    z-index: 1;
+    // position: relative;
 }
 .button-select .button-group {
     display: -webkit-flex;
@@ -53,7 +55,7 @@
 }
 
 .show {
-    // display: block;
+    display: block;
 }
 
 .button-select.bg-info {
@@ -114,4 +116,30 @@
 
 .button-select.bg-cta i {
     color: @btn-cta-bg;
+}
+
+
+// Button hovers
+.button-select.bg-info:hover {
+    background-color: darken(@btn-info-bg, 5%)
+}
+
+.button-select.bg-default:hover {
+    background: darken(@btn-default-bg, 5%)
+}
+
+.button-select.bg-warning:hover {
+    background: darken(@btn-warning-bg, 5%)
+}
+
+.button-select.bg-primary:hover {
+    background: darken(@btn-warning-bg, 5%)
+}
+
+.button-select.bg-danger:hover {
+    background: darken(@btn-danger-bg, 5%)
+}
+
+.button-select.bg-cta:hover {
+    background: darken(@btn-cta-bg, 5%)
 }

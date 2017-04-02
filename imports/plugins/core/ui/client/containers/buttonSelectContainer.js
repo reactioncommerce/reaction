@@ -9,7 +9,8 @@ class ButtonSelectContainer extends Component {
     super(props);
     const currentButton = <Button
       eventAction={props.defaultButton.eventAction}
-      className={props.defaultButton.buttonClass} bezelStyle="solid"
+      status={props.defaultButton.status}
+      bezelStyle="solid"
       buttonType={props.defaultButton.buttonType}
                           >
      {props.defaultButton.name}
@@ -23,7 +24,7 @@ class ButtonSelectContainer extends Component {
       nonActiveButtons: props.defaultNonActiveButtons,
       defaultBgClassNames: classnames({ "button-select": true, [props.defaultButton.bgColor]: true }),
       toggleIcon: classnames({ "fa": true, "fa-chevron-down": true, "text-center": true, "fa-icon": true }),
-      toggleClassNames: classnames({ "button-dropdown": true, "show": true })
+      toggleClassNames: classnames({ "button-dropdown": true, "hidden": true })
     };
 
     this.handleToggle = this.handleToggle.bind(this);
@@ -48,14 +49,14 @@ class ButtonSelectContainer extends Component {
     let className;
 
     if (toggle === "hidden") {
-      className = classnames({ "button-dropdown": true, "show": false });
+      className = classnames({ "button-dropdown": true, "hidden": false });
       return this.setState({ toggle: "show",
         toggleClassNames: className,
         toggleIcon: classnames({ "fa": true, "fa-chevron-up": true, "text-center": true, "fa-icon": true })
       });
     }
 
-    className = classnames({ "button-dropdown": true, "show": true });
+    className = classnames({ "button-dropdown": true, "hidden": true });
     return this.setState({ toggle: "hidden",
       toggleClassNames: className,
       toggleIcon: classnames({ "fa": true, "fa-chevron-down": true, "text-center": true, "fa-icon": true })
@@ -65,7 +66,8 @@ class ButtonSelectContainer extends Component {
   handleButtonChange(button) {
     const currentButton = <Button
       eventAction={button.eventAction}
-      className={button.buttonClass} bezelStyle="solid"
+      status={button.status}
+      bezelStyle="solid"
       buttonType={button.buttonType}
                           >{button.name}</Button>;
     this.handleToggle();

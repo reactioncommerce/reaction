@@ -55,7 +55,7 @@ const OrderHelper =  {
           "workflow.status": {
             $in: ["coreOrderWorkflow/completed", "coreOrderWorkflow/canceled"]
           },
-          "items.workflow.workflow": {
+          "items.workflow.status": {
             $in: ["coreOrderItemWorkflow/completed", "coreOrderItemWorkflow/canceled"]
           }
         };

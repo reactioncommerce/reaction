@@ -36,11 +36,15 @@
           <span id="btn-refund-payment" data-i18n="order.applyRefund">Apply Refund</span>
           <i class="fa fa-spinner fa-spin {{#unless isRefunding}}hidden{{/unless}}"></i>
         </button>
-
-        {{#if showAfterPaymentCaptured}}
-          <button class="btn btn-danger" type="button" data-event-action="cancelOrder">Cancel Order</button>
-        {{/if}}
       </div>
+      {{#if showAfterPaymentCaptured}}
+          <button class="btn btn-danger" type="button" data-event-action="cancelOrder" style="margin-bottom: 10px"
+          >Cancel Order</button>
+      {{/if}}
+
+      {{/if}}
+      {{#if paymentCanceled}}
+        <span class="badge badge-danger" style="margin-bottom: 10px">Canceled</span>
       {{/if}}
     </div>
 

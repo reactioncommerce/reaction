@@ -90,14 +90,14 @@ Template.coreOrderShippingInvoice.helpers({
         {
           name: i18next.t("order.approveInvoice"),
           active: true,
-          buttonClass: "btn-info",
+          status: "info",
           eventAction: "approveInvoice",
           bgColor: "bg-info",
           buttonType: "submit"
         }, {
           name: i18next.t("order.cancelInvoice"),
           active: false,
-          buttonClass: "btn-danger",
+          status: "danger",
           eventAction: "cancelOrder",
           bgColor: "bg-danger",
           buttonType: "button"
@@ -159,20 +159,6 @@ Template.coreOrderShippingInvoice.events({
           if (err) Logger.warn(err);
         });
       }
-    });
-  },
-  /**
-   * Complete Cancel Order
-   * @param {Event} event - Event Object
-   * @param {Template} instance - Blaze Template
-   * @return {void}
-   */
-  "click [data-event-action=completeCancelOrder]": (event, instance) => {
-    event.preventDefault();
-    const order = instance.state.get("order");
-
-    Meteor.call("orders/completeCancelOrder", order, err => {
-      if (err) Logger.warn(err);
     });
   },
   /**
@@ -469,6 +455,13 @@ Template.coreOrderShippingInvoice.helpers({
     const orderStatus = orderCreditMethod(order).paymentMethod.status;
     const orderMode = orderCreditMethod(order).paymentMethod.mode;
     return orderStatus === "completed" || orderStatus === "refunded" || orderMode === "refund";
+  },
+
+  paymentCanceled() {
+    const instance = Template.instance();
+    const order = instance.state.get("order");
+    const orderMode = orderCreditMethod(order).paymentMethod.mode;
+    return orderMode === "cancel";
   },
 
   refundTransactions() {
