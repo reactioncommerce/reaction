@@ -1,4 +1,4 @@
-import { Products, Revisions } from "/lib/collections";
+import { Media, Products, Revisions } from "/lib/collections";
 import { Logger, Reaction } from "/server/api";
 import { RevisionApi } from "/imports/plugins/core/revisions/lib/api/revisions";
 
@@ -156,7 +156,17 @@ Meteor.publish("Product", function (productId) {
         handle2.stop();
       });
 
-      return this.ready();
+      const mediaCursor = Media.find({
+        "metadata.productId": _id
+      }, {
+        sort: {
+          "metadata.priority": 1
+        }
+      });
+
+      return [
+        mediaCursor
+      ];
     }
 
     // Revision control is disabled
@@ -164,5 +174,18 @@ Meteor.publish("Product", function (productId) {
   }
 
   // Everyone else gets the standard, visibile products and variants
-  return Products.find(selector);
+  const productCursor = Products.find(selector);
+
+  const mediaCursor = Media.find({
+    "metadata.productId": _id
+  }, {
+    sort: {
+      "metadata.priority": 1
+    }
+  });
+
+  return [
+    productCursor,
+    mediaCursor
+  ];
 });

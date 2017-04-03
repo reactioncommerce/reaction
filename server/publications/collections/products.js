@@ -1,4 +1,4 @@
-import { Products, Revisions } from "/lib/collections";
+import { Media, Products, Revisions } from "/lib/collections";
 import { Reaction, Logger } from "/server/api";
 import { RevisionApi } from "/imports/plugins/core/revisions/lib/api/revisions";
 
@@ -369,10 +369,25 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
         return this.ready();
       }
       // Revision control is disabled
-      return Products.find(newSelector, {
+      const productCursor = Products.find(newSelector, {
         sort: sort,
         limit: productScrollLimit
       });
+
+      const mediaCursor = Media.find({
+        "metadata.productId": {
+          $in: productCursor.fetch().map((p) => p._id)
+        }
+      }, {
+        sort: {
+          "metadata.priority": 1
+        }
+      });
+
+      return [
+        productCursor,
+        mediaCursor
+      ];
     }
 
     // Everyone else gets the standard, visible products
@@ -406,11 +421,26 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
       });
     }
     // Returning Complete product tree for top level products to avoid sold out warning.
-    return Products.find(
-      {
-        $or: [ { _id: { $in: productIds } },
-             { ancestors: { $in: productIds } }
-        ]
-      });
+    const productCursor = Products.find({
+      $or: [
+        { _id: { $in: productIds } },
+        { ancestors: { $in: productIds } }
+      ]
+    });
+
+    const mediaCursor = Media.find({
+      "metadata.productId": {
+        $in: productCursor.fetch().map((p) => p._id)
+      }
+    }, {
+      sort: {
+        "metadata.priority": 1
+      }
+    });
+
+    return [
+      productCursor,
+      mediaCursor
+    ];
   }
 });
