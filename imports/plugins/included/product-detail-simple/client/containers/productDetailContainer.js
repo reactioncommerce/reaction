@@ -15,7 +15,7 @@ import { DragDropProvider, TranslationProvider } from "/imports/plugins/core/ui/
 class ProductDetailContainer extends Component {
   constructor(props) {
     super(props);
-
+    this.animationTimeOut = null;
     this.state = {
       cartQuantity: 1
     };
@@ -136,34 +136,24 @@ class ProductDetailContainer extends Component {
         // slide out label
         const addToCartText = i18next.t("productDetail.addedToCart");
         const addToCartTitle = currentVariant.title || "";
-        $(".cart-alert-text").text(`${quantity} ${addToCartTitle} ${addToCartText}`);
-
         // Grab and cache the width of the alert to be used in animation
         const alertWidth = $(".cart-alert").width();
         const direction = i18next.dir() === "rtl" ? "left" : "right";
         const oppositeDirection = i18next.dir() === "rtl" ? "right" : "left";
-
-        // Animate
-        return $(".cart-alert")
-          .show()
-          .css({
-            [oppositeDirection]: "auto",
-            [direction]: -alertWidth
-          })
-          .animate({
-            [oppositeDirection]: "auto",
-            [direction]: 0
-          }, 600)
-          .delay(4000)
-          .animate({
-            [oppositeDirection]: "auto",
-            [direction]: -alertWidth
-          }, {
-            duration: 600,
-            complete() {
-              $(".cart-alert").hide();
-            }
-          });
+        if ($(".cart-alert").css("display") === "none") {
+          $(".cart-alert-text").text(`${quantity} ${addToCartTitle} ${addToCartText}`);
+          this.handleSlideOut(alertWidth, direction, oppositeDirection);
+          this.animationTimeOut = setTimeout(() => {
+            this.handleSlideIn(alertWidth, direction, oppositeDirection);
+          }, 4000);
+        } else {
+          $(".cart-alert-text").text(`${quantity} ${addToCartTitle} ${addToCartText}`);
+          clearTimeout(this.animationTimeOut);
+          this.handleSlideOut(alertWidth, direction, oppositeDirection);
+          this.animationTimeOut = setTimeout(() => {
+            this.handleSlideIn(alertWidth, direction, oppositeDirection);
+          }, 4000);
+        }
       }
     } else {
       Alerts.inline("Select an option before adding to cart", "warning", {
@@ -174,6 +164,33 @@ class ProductDetailContainer extends Component {
     }
 
     return null;
+  }
+
+  handleSlideOut(alertWidth, direction, oppositeDirection) {
+    // Animate slide out
+    return $(".cart-alert")
+      .show()
+      .css({
+        [oppositeDirection]: "auto",
+        [direction]: -alertWidth
+      })
+      .animate({
+        [oppositeDirection]: "auto",
+        [direction]: 0
+      }, 600);
+  }
+
+  handleSlideIn(alertWidth, direction, oppositeDirection) {
+    // Animate slide in
+    return $(".cart-alert").animate({
+      [oppositeDirection]: "auto",
+      [direction]: -alertWidth
+    }, {
+      duration: 600,
+      complete() {
+        $(".cart-alert").hide();
+      }
+    });
   }
 
   handleProductFieldChange = (productId, fieldName, value) => {
