@@ -1,3 +1,4 @@
+import { Counts } from "meteor/tmeasday:publish-counts";
 import { Orders } from "/lib/collections";
 import { Reaction } from "/server/api";
 
@@ -112,6 +113,9 @@ Meteor.publish("PaginatedOrders", function (filter, limit) {
     return this.ready();
   }
   if (Roles.userIsInRole(this.userId, ["admin", "owner"], shopId)) {
+    Counts.publish(this, "newOrder-count", Orders.find(OrderHelper.makeQuery("new")), { noReady: true });
+    Counts.publish(this, "processingOrder-count", Orders.find(OrderHelper.makeQuery("processing")), { noReady: true });
+    Counts.publish(this, "completedOrder-count", Orders.find(OrderHelper.makeQuery("completed")), { noReady: true });
     return Orders.find(OrderHelper.makeQuery(filter), { limit: limit });
   }
   return Orders.find({

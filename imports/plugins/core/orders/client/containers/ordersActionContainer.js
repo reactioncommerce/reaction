@@ -19,35 +19,32 @@ function composer(props, onData) {
   const selectedFilterName = Reaction.getUserPreferences(Constants.PACKAGE_NAME, Constants.ORDER_LIST_FILTERS_PREFERENCE_NAME);
   let selectedIndex;
 
-  Meteor.call("orders/count", (error, result) => {
-    if (error) {
-      throw new Meteor.Error("Error fetching order count", error);
+  Meteor.subscribe("PaginatedOrders", selectedFilterName, 0);
+
+  const filters = Constants.orderFilters.map((filter, index) => {
+    if (filter.name === selectedFilterName) {
+      selectedIndex = index;
     }
 
-    const filters = Constants.orderFilters.map((filter, index) => {
-      if (filter.name === selectedFilterName) {
-        selectedIndex = index;
-      }
+    filter.label = i18next.t(`order.filter.${filter.name}`, { defaultValue: filter.label });
+    filter.i18nKeyLabel = `order.filter.${filter.name}`;
 
-      filter.label = i18next.t(`order.filter.${filter.name}`, { defaultValue: filter.label });
-      filter.i18nKeyLabel = `order.filter.${filter.name}`;
-      filter.count = 0;
+    if (filter.name === "new") {
+      filter.count = Counts.get("newOrder-count");
+    } else if (filter.name === "processing") {
+      filter.count = Counts.get("processingOrder-count");
+    } else if (filter.name === "completed") {
+      filter.count = Counts.get("completedOrder-count");
+    }
 
-      result.forEach((orderCount) => {
-        if (orderCount._id.includes(filter.name)) {
-          filter.count = orderCount.count;
-        }
-      });
+    return filter;
+  });
 
-      return filter;
-    });
+  onData(null, {
+    filters,
+    selectedIndex,
 
-    onData(null, {
-      filters,
-      selectedIndex,
-
-      onActionClick: props.onActionClick || handleActionClick
-    });
+    onActionClick: props.onActionClick || handleActionClick
   });
 }
 

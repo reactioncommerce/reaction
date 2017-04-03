@@ -97,7 +97,7 @@ Template.orders.onCreated(function () {
     const filter = Reaction.getUserPreferences(PACKAGE_NAME, ORDER_LIST_FILTERS_PREFERENCE_NAME, DEFAULT_FILTER_NAME);
     const limit = this.orderLimits.get(filter);
     const query = OrderHelper.makeQuery(filter);
-    const subscription = this.subscribe("PaginatedOrders", filter, (limit + 1));
+    const subscription = this.subscribe("PaginatedOrders", filter, limit);
 
     if (subscription.ready()) {
       const orders = Orders.find(query, { limit: limit }).fetch();
@@ -142,17 +142,15 @@ Template.orders.helpers({
   hasMoreOrders() {
     const filter = Reaction.getUserPreferences(PACKAGE_NAME, ORDER_LIST_FILTERS_PREFERENCE_NAME, DEFAULT_FILTER_NAME);
     const instance = Template.instance();
-    const query = OrderHelper.makeQuery(filter);
-    Meteor.call("orders/count", (error, result) => {
-      if (error) {
-        throw new Meteor.Error("Error fetching order count", error);
-      }
-      result.forEach((orderCount) => {
-        if (query["workflow.status"] === orderCount._id) {
-          instance.state.set("count", orderCount.count);
-        }
-      });
-    });
+
+    if (filter === "new") {
+      instance.state.set("count", Counts.get("newOrder-count"));
+    } else if (filter === "processing") {
+      instance.state.set("count", Counts.get("processingOrder-count"));
+    } else if (filter === "completed") {
+      instance.state.set("count", Counts.get("completedOrder-count"));
+    }
+
     return instance.state.get("count") > instance.orderLimits.get(filter);
   },
 
