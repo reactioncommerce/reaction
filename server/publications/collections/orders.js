@@ -102,7 +102,7 @@ Meteor.publish("Orders", function () {
  */
 
 Meteor.publish("PaginatedOrders", function (filter, limit) {
-  check(filter, String);
+  check(filter, Match.OptionalOrNull(String));
   check(limit, Number);
 
   if (this.userId === null) {
