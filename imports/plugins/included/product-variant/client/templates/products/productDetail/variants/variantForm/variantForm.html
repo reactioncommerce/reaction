@@ -41,9 +41,9 @@
             }}
           {{else}}
             {{> button
-              icon="trash-o"
-              className="rui btn btn-danger btn-remove-variant flat"
-              tooltip="Archive"
+              icon="archive"
+              className="rui btn btn-default btn-remove-variant flat"
+              tooltip="Archive Variant"
               i18nTooltip="productDetailEdit.removeVariant"
               onClick=(removeVariant this)
             }}
@@ -69,6 +69,14 @@
                   {{>afFieldInput name='title' placeholder=(i18n "productVariant.title" "Label")}}
                   {{#if afFieldIsInvalid name='title'}}
                   <span class="help-block">{{afFieldMessage name='title'}}</span>
+                  {{/if}}
+              </div>
+
+              <div class="form-group{{#if afFieldIsInvalid name='originCountry'}} has-error{{/if}}">
+                  <label class="control-label">{{afFieldLabelText name='originCountry'}}</label>
+                  {{>afFieldInput name='originCountry' placeholder=(i18n "productVariant.originCountry" "Origin Country")}}
+                  {{#if afFieldIsInvalid name='originCountry'}}
+                  <span class="help-block">{{afFieldMessage name='originCountry'}}</span>
                   {{/if}}
               </div>
 
