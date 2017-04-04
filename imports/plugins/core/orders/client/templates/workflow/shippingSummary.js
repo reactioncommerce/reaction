@@ -4,6 +4,7 @@ import { Tracker } from "meteor/tracker";
 import { Template } from "meteor/templating";
 import { i18next } from "/client/api";
 import { Orders } from "/lib/collections";
+import OrderSummary from "../../components/orderSummary";
 
 Template.coreOrderShippingSummary.onCreated(() => {
   const template = Template.instance();
@@ -51,6 +52,9 @@ Template.coreOrderShippingSummary.events({
 });
 
 Template.coreOrderShippingSummary.helpers({
+  blah() {
+    return OrderSummary;
+  },
   order() {
     const template = Template.instance();
     return template.order;
