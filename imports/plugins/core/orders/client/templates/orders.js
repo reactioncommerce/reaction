@@ -120,8 +120,10 @@ Template.orders.onCreated(function () {
  */
 Template.orders.helpers({
   FilterComponent() {
+    const orderFilter = Reaction.getUserPreferences(PACKAGE_NAME, ORDER_LIST_FILTERS_PREFERENCE_NAME, DEFAULT_FILTER_NAME);
     return {
       component: OrdersActionContainer,
+      limit: Template.instance().orderLimits.get(orderFilter),
       onActionClick(filter) {
         Reaction.setUserPreferences(PACKAGE_NAME, ORDER_LIST_FILTERS_PREFERENCE_NAME, filter.name);
         Reaction.setUserPreferences(PACKAGE_NAME, ORDER_LIST_SELECTED_ORDER_PREFERENCE_NAME, null);

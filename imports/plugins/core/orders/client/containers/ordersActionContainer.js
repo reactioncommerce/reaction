@@ -19,7 +19,7 @@ function composer(props, onData) {
   const selectedFilterName = Reaction.getUserPreferences(Constants.PACKAGE_NAME, Constants.ORDER_LIST_FILTERS_PREFERENCE_NAME);
   let selectedIndex;
 
-  Meteor.subscribe("PaginatedOrders", selectedFilterName, 0);
+  Meteor.subscribe("PaginatedOrders", selectedFilterName, (props.limit || 0));
 
   const filters = Constants.orderFilters.map((filter, index) => {
     if (filter.name === selectedFilterName) {
