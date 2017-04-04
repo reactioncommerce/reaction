@@ -5,6 +5,7 @@ import {
   CardHeader,
   CardBody,
   CardGroup,
+  Divider,
   Select,
   TextField
 } from "/imports/plugins/core/ui/client/components";
@@ -27,15 +28,13 @@ class VariantForm extends Component {
               icon="files-o"
               className="rui btn btn-default btn-clone-variant flat"
               tooltip="Duplicate"
-              i18nTooltip="productDetailEdit.duplicateVariant"
             />
-          <Button
-            icon="archive"
-            className="rui btn btn-default btn-remove-variant flat"
-            tooltip="Archive"
-            i18nTooltip="productDetailEdit.removeVariant"
-          />
-     </CardHeader>
+            <Button
+              icon="archive"
+              className="rui btn btn-default btn-remove-variant flat"
+              tooltip="Archive"
+            />
+          </CardHeader>
           <CardBody expandable={true}>
             <TextField
               i18nKeyLabel="productVariant.title"
@@ -58,6 +57,7 @@ class VariantForm extends Component {
               label="Price"
               name="price"
             />
+            <Divider />
             <TextField
               i18nKeyLabel="productVariant.width"
               i18nKeyPlaceholder="0"
@@ -94,7 +94,12 @@ class VariantForm extends Component {
             actAsExpander={true}
             i18nKeyTitle="productVariant.taxable"
             title="Taxable"
-          />
+          >
+            <input
+              className="checkbox-switch"
+              type="checkbox"
+            />
+          </CardHeader>
           <CardBody expandable={true}>
             <Select
               clearable={false}
@@ -118,7 +123,12 @@ class VariantForm extends Component {
             actAsExpander={true}
             i18nKeyTitle="productVariant.inventoryManagement"
             title="Inventory Tracking"
-          />
+          >
+            <input
+              className="checkbox-switch"
+              type="checkbox"
+            />
+          </CardHeader>
           <CardBody expandable={true}>
             <TextField
               i18nKeyLabel="productVariant.inventoryQuantity"
@@ -134,6 +144,14 @@ class VariantForm extends Component {
               label="Warn At"
               name="lowInventoryWarningThreshold"
             />
+          <label>
+            <input
+              className="checkbox-switch"
+              type="checkbox"
+              data-i18n="productVariant.inventoryPolicy"
+              name="inventoryPolicy"
+            />
+          </label>
           </CardBody>
         </Card>
       </CardGroup>
