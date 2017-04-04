@@ -22,16 +22,14 @@ export function findProductMedia(publicationInstance, productIds) {
     selector["metadata.shopId"] = shopId;
   }
 
+  // No one needs to see archived images on products
+  selector["metadata.workflow"] = {
+    $nin: ["archived"]
+  };
+
   // Product editors can see both published and unpublished images
   if (!Reaction.hasPermission(["createProduct"], publicationInstance.userId)) {
-    selector["metadata.workflow"] = {
-      $in: [null, "published"]
-    };
-  } else {
-    // but no one gets to see archived images
-    selector["metadata.workflow"] = {
-      $nin: ["archived"]
-    };
+    selector["metadata.workflow"].$in = [null, "published"];
   }
 
   return Media.find(selector, {
