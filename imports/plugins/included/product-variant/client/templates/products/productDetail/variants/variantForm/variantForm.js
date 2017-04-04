@@ -8,6 +8,7 @@ import { ReactionProduct } from "/lib/api";
 import { applyProductRevision } from "/lib/api/products";
 import { Packages, Products } from "/lib/collections";
 import { TaxCodes } from "/imports/plugins/core/taxes/lib/collections";
+import VariantFormContainer from "../../../../../containers/variantFormContainer";
 
 Template.variantForm.onCreated(function () {
   this.state = new ReactiveDict();
@@ -41,6 +42,9 @@ Template.variantForm.onRendered(function () {
  */
 
 Template.variantForm.helpers({
+  variantFormComponent() {
+    return VariantFormContainer;
+  },
   variant() {
     const instance = Template.instance();
     return instance.getVariant(instance.data);
