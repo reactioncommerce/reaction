@@ -28,6 +28,9 @@ describe("orders test", () => {
     sandbox.stub(Meteor.server.method_handlers, "inventory/register", function () {
       check(arguments, [Match.Any]);
     });
+    sandbox.stub(Meteor.server.method_handlers, "orders/sendNotification", function () {
+      check(arguments, [Match.Any]);
+    });
     sandbox.stub(Meteor.server.method_handlers, "inventory/sold", function () {
       check(arguments, [Match.Any]);
     });
