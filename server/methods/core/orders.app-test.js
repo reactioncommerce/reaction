@@ -14,6 +14,7 @@ describe("orders test", () => {
   let order;
 
   before(() => {
+    Factory.create("user");
     methods = {
       cancelOrder: Meteor.server.method_handlers["orders/cancelOrder"]
     };
@@ -21,9 +22,6 @@ describe("orders test", () => {
 
   beforeEach((done) => {
     sandbox = sinon.sandbox.create();
-    user = Factory.create("user");
-    // sandbox.stub(Meteor, "userId", () => {
-    //   return user._id;
     // });
     sandbox.stub(Orders._hookAspects.insert.before[0], "aspect");
     sandbox.stub(Orders._hookAspects.update.before[0], "aspect");
@@ -33,6 +31,8 @@ describe("orders test", () => {
     sandbox.stub(Meteor.server.method_handlers, "inventory/sold", function () {
       check(arguments, [Match.Any]);
     });
+
+    Factory.create("shop");
     order = Factory.create("order");
     return done();
   });

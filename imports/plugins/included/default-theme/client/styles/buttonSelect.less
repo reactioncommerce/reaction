@@ -2,7 +2,7 @@
     width: 100%;
     border: 2px solid;
     z-index: 1;
-    // position: relative;
+    position: relative;
 }
 .button-select .button-group {
     display: -webkit-flex;
@@ -28,18 +28,22 @@
 
 .button-select .button-dropdown {
     z-index: 1;
-    // position: absolute;
-    // display: none;
+    z-index: 1;
+    position: absolute;
+    width: 100%;
+    top: 38px;
+    border: inherit;
+    border-top: none;
 }
 
 .button-select .button-dropdown .button-item {
     width: 100%;
     display: inline-block;
     font-weight: 600;
-    margin-top: 2px;
     color: #000000;
     cursor: pointer;
     line-height: 30px;
+    border-bottom: 1px solid rgba(111, 105, 105, 0.11);
     white-space: nowrap;
     background: #ffffff;
     -moz-user-select: none;

@@ -144,7 +144,8 @@ export default function () {
       address: getAddress({ isBillingDefault: true }),
       paymentMethod: paymentMethod({
         method: "credit",
-        processor: "Mastercard 2346",
+        processor: "Example",
+        storedCard: "Mastercard 2346",
         mode: "authorize",
         status: "created"
       }),

@@ -232,7 +232,8 @@ export const methods = {
 
     if (!returnToStock) ordersInventoryAdjust(order._id);
 
-    const paymentMethod = orderCreditMethod(order).paymentMethod;
+    let paymentMethod = orderCreditMethod(order).paymentMethod;
+    paymentMethod = Object.assign(paymentMethod, { amount: Number(paymentMethod.amount) });
     const invoiceTotal = order.billing[0].invoice.total;
     const shipment = order.shipping[0];
     const itemIds = shipment.items.map((item) => {
@@ -240,7 +241,7 @@ export const methods = {
     });
 
     // refund payment to customer
-    Meteor.call("orders/refunds/create", order._id, paymentMethod, invoiceTotal, err => {
+    Meteor.call("orders/refunds/create", order._id, paymentMethod, Number(invoiceTotal), err => {
       if (err) Logger.warn(err);
     });
 
