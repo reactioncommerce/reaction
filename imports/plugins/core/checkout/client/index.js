@@ -9,9 +9,6 @@ import "./templates/cartDrawer/cartDrawer.js";
 import "./templates/cartIcon/cartIcon.html";
 import "./templates/cartIcon/cartIcon.js";
 
-import "./templates/cartPanel/cartPanel.html";
-import "./templates/cartPanel/cartPanel.js";
-
 import "./templates/checkout/addressBook/addressBook.html";
 import "./templates/checkout/completed/completed.html";
 import "./templates/checkout/completed/completed.js";
