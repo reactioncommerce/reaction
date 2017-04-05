@@ -9,7 +9,7 @@
           {{> ordersListItem (itemProps order)}}
         {{/each}}
 
-        {{#if Template.subscriptionsReady}}
+        {{#if orderSubscription}}
           {{#if hasMoreOrders}}
             <button class="btn btn-primary show-more-orders" type="button" data-i18n="order.showMore">Show More</button>
           {{/if}}

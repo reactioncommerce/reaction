@@ -97,9 +97,9 @@ Template.orders.onCreated(function () {
     const filter = Reaction.getUserPreferences(PACKAGE_NAME, ORDER_LIST_FILTERS_PREFERENCE_NAME, DEFAULT_FILTER_NAME);
     const limit = this.orderLimits.get(filter);
     const query = OrderHelper.makeQuery(filter);
-    const subscription = this.subscribe("PaginatedOrders", filter, limit);
+    this.subscription = this.subscribe("PaginatedOrders", filter, limit);
 
-    if (subscription.ready()) {
+    if (this.subscription.ready()) {
       const orders = Orders.find(query, { limit: limit }).fetch();
       this.state.set("orders", orders);
     }
@@ -119,6 +119,9 @@ Template.orders.onCreated(function () {
  * orders helpers
  */
 Template.orders.helpers({
+  orderSubscription() {
+    return Template.instance().subscription.ready();
+  },
   FilterComponent() {
     const orderFilter = Reaction.getUserPreferences(PACKAGE_NAME, ORDER_LIST_FILTERS_PREFERENCE_NAME, DEFAULT_FILTER_NAME);
     return {
