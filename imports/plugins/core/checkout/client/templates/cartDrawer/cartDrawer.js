@@ -4,7 +4,7 @@ import { Session } from "meteor/session";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import Swiper from "swiper";
-
+import CartSubtotal from "./cartSubTotals/container/cartSubTotalContainer";
 /**
  * cartDrawer helpers
  *
@@ -67,6 +67,9 @@ Template.openCartDrawer.onRendered(function () {
 Template.openCartDrawer.helpers({
   cartItems: function () {
     return Cart.findOne().items;
+  },
+  CartSubTotals() {
+    return CartSubtotal;
   }
 });
 
