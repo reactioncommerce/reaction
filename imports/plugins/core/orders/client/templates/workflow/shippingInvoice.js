@@ -6,7 +6,7 @@ import { ReactiveVar } from "meteor/reactive-var";
 import { i18next, Logger, formatNumber, Reaction } from "/client/api";
 import { NumericInput } from "/imports/plugins/core/ui/client/components";
 import { Orders, Shops } from "/lib/collections";
-import { ButtonSelectContainer } from "/imports/plugins/core/ui/client/containers";
+import { ButtonSelect } from "../../../../ui/client/components/button";
 import DiscountList from "/imports/plugins/core/discounts/client/components/list";
 import InvoiceContainer from "../../containers/invoiceContainer.js";
 import LineItemsContainer from "../../containers/lineItemsContainer.js";
@@ -85,7 +85,7 @@ Template.coreOrderShippingInvoice.helpers({
   },
   buttonSelectComponent() {
     return {
-      component: ButtonSelectContainer,
+      component: ButtonSelect,
       buttons: [
         {
           name: i18next.t("order.approveInvoice"),
