@@ -148,7 +148,7 @@ class ProductDetailContainer extends Component {
   }
 
   handleDeleteProduct = () => {
-    ReactionProduct.maybeDeleteProduct(this.props.product);
+    ReactionProduct.archiveProduct(this.props.product);
   }
 
   render() {

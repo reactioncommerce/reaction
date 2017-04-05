@@ -1,5 +1,6 @@
 .DS_Store
 .fileStorage/
+.vscode
 .idea
 *.csv
 *.dat

@@ -172,8 +172,8 @@ Template.productSettings.events({
   "click [data-event-action=cloneProduct]": function () {
     ReactionProduct.cloneProduct(this.products);
   },
-  "click [data-event-action=deleteProduct]": function () {
-    ReactionProduct.maybeDeleteProduct(this.products);
+  "click [data-event-action=archiveProduct]": function () {
+    ReactionProduct.archiveProduct(this.products);
   },
   "click [data-event-action=changeProductWeight]": function (event) {
     event.preventDefault();
