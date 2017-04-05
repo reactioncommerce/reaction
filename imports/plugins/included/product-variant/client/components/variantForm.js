@@ -7,7 +7,8 @@ import {
   CardGroup,
   Divider,
   Select,
-  TextField
+  TextField,
+  Translation
 } from "/imports/plugins/core/ui/client/components";
 
 class VariantForm extends Component {
@@ -43,49 +44,93 @@ class VariantForm extends Component {
               label="Label"
               name="title"
             />
-            <TextField
-              i18nKeyLabel="productVariant.compareAtPrice"
-              i18nKeyPlaceholder="0.00"
-              placeholder="0.00"
-              label="MSRP"
-              name="compareAtPrice"
+            <Select
+              clearable={false}
+              i18nKeyLabel="productVariant.originCountry"
+              i18nKeyPlaceholder="productVariant.originCountry"
+              label="Origin Country"
+              name="originCountry"
             />
-            <TextField
-              i18nKeyLabel="productVariant.price"
-              i18nKeyPlaceholder="0.00"
-              placeholder="0.00"
-              label="Price"
-              name="price"
-            />
+            <div className="row">
+              <div className="rui textfield form-group col-sm-6">
+                <label>
+                  <Translation defaultValue="MSRP" i18nKey="productVariant.compareAtPrice" />
+                </label>
+                <input
+                  className="compareAtPrice"
+                  name="compareAtPrice"
+                  type="text"
+                  placeholder="0.00"
+                  ref="input"
+                />
+              </div>
+              <div className="rui textfield form-group col-sm-6">
+                <label>
+                  <Translation defaultValue="Price" i18nKey="productVariant.price" />
+                </label>
+                <input
+                  className="price"
+                  name="price"
+                  type="text"
+                  placeholder="0.00"
+                  ref="input"
+                />
+              </div>
+            </div>
             <Divider />
-            <TextField
-              i18nKeyLabel="productVariant.width"
-              i18nKeyPlaceholder="0"
-              placeholder="0"
-              label="Width"
-              name="width"
-            />
-            <TextField
-              i18nKeyLabel="productVariant.length"
-              i18nKeyPlaceholder="0"
-              placeholder="0"
-              label="Length"
-              name="length"
-            />
-            <TextField
-              i18nKeyLabel="productVariant.height"
-              i18nKeyPlaceholder="0"
-              placeholder="0"
-              label="Height"
-              name="height"
-            />
-            <TextField
-              i18nKeyLabel="productVariant.weight"
-              i18nKeyPlaceholder="0"
-              placeholder="0"
-              label="Weight"
-              name="weight"
-            />
+            <div className="row">
+              <div className="rui textfield form-group col-sm-6">
+                <label>
+                  <Translation defaultValue="Width" i18nKey="productVariant.width" />
+                </label>
+                <input
+                  className="width"
+                  name="width"
+                  type="text"
+                  placeholder="0"
+                  ref="input"
+                />
+              </div>
+              <div className="rui textfield form-group col-sm-6">
+                <label>
+                  <Translation defaultValue="Length" i18nKey="productVariant.length" />
+                </label>
+                <input
+                  className="length"
+                  name="length"
+                  type="text"
+                  placeholder="0"
+                  ref="input"
+                />
+              </div>
+            </div>
+
+            <div className="row">
+              <div className="rui textfield form-group col-sm-6">
+                <label>
+                  <Translation defaultValue="Height" i18nKey="productVariant.height" />
+                </label>
+                <input
+                  className="height"
+                  name="height"
+                  type="text"
+                  placeholder="0"
+                  ref="input"
+                />
+              </div>
+              <div className="rui textfield form-group col-sm-6">
+                <label>
+                  <Translation defaultValue="Weight" i18nKey="productVariant.weight" />
+                </label>
+                <input
+                  className="weight"
+                  name="weight"
+                  type="text"
+                  placeholder="0"
+                  ref="input"
+                />
+              </div>
+            </div>
           </CardBody>
         </Card>
 
@@ -130,28 +175,42 @@ class VariantForm extends Component {
             />
           </CardHeader>
           <CardBody expandable={true}>
-            <TextField
-              i18nKeyLabel="productVariant.inventoryQuantity"
-              i18nKeyPlaceholder="0"
-              placeholder="0"
-              label="Inventory Quantity"
-              name="inventoryQuantity"
-            />
-            <TextField
-              i18nKeyLabel="productVariant.lowInventoryWarningThreshold"
-              i18nKeyPlaceholder="0"
-              placeholder="0"
-              label="Warn At"
-              name="lowInventoryWarningThreshold"
-            />
-          <label>
-            <input
-              className="checkbox-switch"
-              type="checkbox"
-              data-i18n="productVariant.inventoryPolicy"
-              name="inventoryPolicy"
-            />
-          </label>
+            <div className="row">
+              <div className="rui textfield form-group col-sm-6">
+                <label>
+                  <Translation defaultValue="Quantity" i18nKey="productVariant.inventoryQuantity" />
+                </label>
+                <input
+                  className="inventoryQuantity"
+                  name="inventoryQuantity"
+                  type="text"
+                  placeholder="0"
+                  ref="input"
+                />
+              </div>
+              <div className="rui textfield form-group col-sm-6">
+                <label>
+                  <Translation defaultValue="Warn At" i18nKey="productVariant.lowInventoryWarningThreshold" />
+                </label>
+                <input
+                  className="lowInventoryWarningThreshold"
+                  name="lowInventoryWarningThreshold"
+                  type="text"
+                  placeholder="0"
+                  ref="input"
+                />
+              </div>
+            </div>
+            <div className="row">
+              <label>
+                <input
+                  className="checkbox-switch"
+                  type="checkbox"
+                  ref="checkbox"
+                />
+              <Translation defaultValue="inventoryPolicy" i18nKey="productVariant.inventoryPolicy" />
+              </label>
+            </div>
           </CardBody>
         </Card>
       </CardGroup>

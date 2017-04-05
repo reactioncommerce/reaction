@@ -273,7 +273,7 @@
         "price": "Price",
         "optionTitle": "Option",
         "barcode": "Barcode",
-        "compareAtPrice": "Price (MSRP)",
+        "compareAtPrice": "MSRP",
         "fulfillmentService": "Fulfillment service",
         "weight": "Weight",
         "length": "Length",
