@@ -1,6 +1,7 @@
 import { Products, Revisions } from "/lib/collections";
 import { Reaction, Logger } from "/server/api";
 import { RevisionApi } from "/imports/plugins/core/revisions/lib/api/revisions";
+import { findProductMedia } from "./product";
 
 //
 // define search filters as a schema so we can validate
@@ -273,7 +274,8 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
       }
 
       if (RevisionApi.isRevisionControlEnabled()) {
-        const handle = Products.find(newSelector).observeChanges({
+        const productCursor = Products.find(newSelector);
+        const handle = productCursor.observeChanges({
           added: (id, fields) => {
             const revisions = Revisions.find({
               "$or": [
@@ -366,13 +368,25 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
           handle2.stop();
         });
 
-        return this.ready();
+        const mediaProductIds = productCursor.fetch().map((p) => p._id);
+        const mediaCursor = findProductMedia(this, mediaProductIds);
+
+        return [
+          mediaCursor
+        ];
       }
-      // Revision control is disabled
-      return Products.find(newSelector, {
+      // Revision control is disabled, but is admin
+      const productCursor = Products.find(newSelector, {
         sort: sort,
         limit: productScrollLimit
       });
+      const mediaProductIds = productCursor.fetch().map((p) => p._id);
+      const mediaCursor = findProductMedia(this, mediaProductIds);
+
+      return [
+        productCursor,
+        mediaCursor
+      ];
     }
 
     // Everyone else gets the standard, visible products
@@ -406,11 +420,19 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
       });
     }
     // Returning Complete product tree for top level products to avoid sold out warning.
-    return Products.find(
-      {
-        $or: [ { _id: { $in: productIds } },
-             { ancestors: { $in: productIds } }
-        ]
-      });
+    const productCursor = Products.find({
+      $or: [
+        { _id: { $in: productIds } },
+        { ancestors: { $in: productIds } }
+      ]
+    });
+
+    const mediaProductIds = productCursor.fetch().map((p) => p._id);
+    const mediaCursor = findProductMedia(this, mediaProductIds);
+
+    return [
+      productCursor,
+      mediaCursor
+    ];
   }
 });
