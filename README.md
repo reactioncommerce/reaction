@@ -25,8 +25,6 @@ And, since anything in our codebase can be extended, overwritten, or installed a
 
 **_reaction-cli installation_**
 
-_Reaction requires Meteor, Git, MongoDB, OS Specific Build Tools, and (optionally) ImageMagick. See our [Requirements Docs](https://docs.reactioncommerce.com/reaction-docs/master/requirements) for requirements installation information._
-
 ```bash
 npm install -g reaction-cli
 reaction init
@@ -34,6 +32,7 @@ cd reaction
 reaction
 ```
 
+_Reaction requires Meteor, Git, MongoDB, OS Specific Build Tools, and (optionally) ImageMagick. See our [Requirements Docs](https://docs.reactioncommerce.com/reaction-docs/master/requirements) for requirements installation information._
 
 For more information on setup and configuration, check out the [installation](https://docs.reactioncommerce.com/reaction-docs/development/installation) and [configuration](https://docs.reactioncommerce.com/reaction-docs/development/configuration) docs.
 
