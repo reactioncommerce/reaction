@@ -92,12 +92,17 @@ class ButtonSelect extends Component {
   }
 
   handleButtonChange = (button) => {
-    const currentButton = <Button
-      eventAction={button.eventAction}
-      status={button.status}
-      bezelStyle="solid"
-      buttonType={button.buttonType}
-                          >{button.name}</Button>;
+    const currentButton = (
+      <Button
+        eventAction={button.eventAction}
+        status={button.status}
+        bezelStyle="solid"
+        buttonType={button.buttonType}
+      >
+        {button.name}
+      </Button>
+    );
+
     this.handleToggle();
 
     return this.setState({
