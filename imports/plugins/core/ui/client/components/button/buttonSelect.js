@@ -42,14 +42,16 @@ class ButtonSelect extends Component {
         return button;
       }
     });
-    const currentButton = <Button
-      eventAction={defaultButton.eventAction}
-      status={defaultButton.status}
-      bezelStyle="solid"
-      buttonType={defaultButton.buttonType}
-                          >
-     {defaultButton.name}
-    </Button>;
+    const currentButton = (
+      <Button
+        eventAction={defaultButton.eventAction}
+        status={defaultButton.status}
+        bezelStyle="solid"
+        buttonType={defaultButton.buttonType}
+      >
+        {defaultButton.name}
+      </Button>
+    );
 
     return this.setState({
       currentButton,
