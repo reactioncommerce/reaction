@@ -9,7 +9,7 @@ import { Session } from "meteor/session";
 import { Template } from "meteor/templating";
 import { EditButton } from "/imports/plugins/core/ui/client/components";
 import { PublishContainer } from "/imports/plugins/core/revisions";
-import { ProductDetailContainer } from "/imports/plugins/included/product-detail-simple/client/containers";
+import { ProductDetailContainer } from "/imports/plugins/custom/ee-pdp/client/containers";
 import { isRevisionControlEnabled } from "/imports/plugins/core/revisions/lib/api";
 
 Template.productDetail.onCreated(function () {
