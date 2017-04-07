@@ -7,6 +7,7 @@ import {
   CardGroup,
   Divider,
   Select,
+  Switch,
   TextField,
   Translation
 } from "/imports/plugins/core/ui/client/components";
@@ -201,16 +202,13 @@ class VariantForm extends Component {
                 />
               </div>
             </div>
-            <div className="row">
-              <label>
-                <input
-                  className="checkbox-switch"
-                  type="checkbox"
-                  ref="checkbox"
-                />
-              <Translation defaultValue="inventoryPolicy" i18nKey="productVariant.inventoryPolicy" />
-              </label>
-            </div>
+            <Switch
+              i18nKeyLabel="productVariant.inventoryPolicy"
+              i18nKeyOnLabel="productVariant.inventoryPolicy"
+              label={"Allow Backorder"}
+              onLabel={"Allow Backorder"}
+              checked={"false"}
+            />
           </CardBody>
         </Card>
       </CardGroup>
