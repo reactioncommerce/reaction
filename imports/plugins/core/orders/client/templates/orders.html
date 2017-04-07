@@ -1,43 +1,32 @@
 <template name="orders">
   {{#if hasPermission 'orders'}}
-    <div class="orders-list-tabs">
-      {{> React FilterComponent}}
-    </div>
+<div class="orders-list-tabs">
+  {{> React FilterComponent}}
+</div>
     <div class="container-fluid-sm">
-      {{#each order in orders}}
-        {{> ordersListItem (itemProps order)}}
-      {{else}}
+      {{#if orders}}
+        {{#each order in orders}}
+          {{> ordersListItem (itemProps order)}}
+        {{/each}}
 
+        {{#if orderSubscription}}
+          {{#if hasMoreOrders}}
+            <button class="btn btn-primary show-more-orders" type="button" data-i18n="order.showMore">Show More</button>
+          {{/if}}
+        {{else}}
+          <div class="spinner-container">
+            <div class="spinner"></div>
+          </div>
+        {{/if}}
+
+      {{else}}
         <div class="empty-view-message">
-            <i class="fa fa-sun-o"></i>
-            <p data-i18n="order.ordersNotFound">No Orders Found</p>
+          <i class="fa fa-sun-o"></i>
+          <p data-i18n="order.ordersNotFound">No Orders Found</p>
         </div>
-      {{/each}}
+      {{/if}}
     </div>
   {{/if}}
-</template>
-
-<template name="orderListFilters">
-  <ul class="nav nav-pills" role="tablist">
-    {{#each filters}}
-      <li role="presentation" class="{{activeClassname .}}">
-        <a
-          class="flex"
-          href="#{{name}}"
-          aria-controls="{{name}}"
-          role="tab"
-          data-toggle="tab"
-          data-event-action="toggleFilter"
-          data-filter="{{name}}">
-            <span class="count">{{count}}</span>
-            <span class="filter-label" data-i18n="{{i18nKeyLabel}}">
-              {{!-- wrapping label below in a span prevents a console error --}}
-              <span>{{label}}</span>
-            </span>
-        </a>
-      </li>
-    {{/each}}
-  </ul>
 </template>
 
 <template name="ordersListItem">

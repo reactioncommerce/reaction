@@ -10,6 +10,9 @@ to our [Gitter](https://gitter.im/reactioncommerce/reaction) channel instead.
 
 ### Steps to Reproduce the Behavior
 
+### Versions
+(run `reaction -v` from your reaction directory)
+
 For enhancements or other issues, please describe in as much detail as
 possible how the app should be changed and how this would benefit
 users/developers
