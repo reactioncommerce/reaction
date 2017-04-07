@@ -23,30 +23,32 @@ And, since anything in our codebase can be extended, overwritten, or installed a
 
 ## Get Started
 
-### reaction-cli requirements ###
+### reaction-cli requirements
 
 - Node.js (v4 or higher)
 - Meteor
 
-For more information on requirements check out the [requirements](https://docs.reactioncommerce.com/reaction-docs/master/requirements) docs.
+For more information on requirements check out the [requirements](https://docs.reactioncommerce.com/reaction-docs/master/requirements) doc.
 
-### reaction-cli installation ###
+### reaction-cli installation
 
 ```bash
 npm install -g reaction-cli
 ```
 
-For more information on requirements check out the [installation](https://docs.reactioncommerce.com/reaction-docs/development/installation) docs.
+For more information on requirements check out the [installation](https://docs.reactioncommerce.com/reaction-docs/development/installation) doc.
 
-### reaction-cli usage ###
+### reaction-cli usage
 
-Into your workspace
+Into your workspace:
 
 ```bash
 reaction init my-reaction-app
 cd my-reaction-app
 reaction
 ```
+
+For more information on requirements check out the [configuration](https://docs.reactioncommerce.com/reaction-docs/development/configuration) doc.
 
 ## Participation
 
