@@ -9,19 +9,9 @@ import {
   PACKAGE_NAME,
   ORDER_LIST_FILTERS_PREFERENCE_NAME,
   ORDER_LIST_SELECTED_ORDER_PREFERENCE_NAME,
-  DEFAULT_FILTER_NAME
+  DEFAULT_FILTER_NAME,
+  orderFilters
 } from "../../lib/constants";
-
-const orderFilters = [{
-  name: "new",
-  label: "New"
-}, {
-  name: "processing",
-  label: "Processing"
-}, {
-  name: "completed",
-  label: "Completed"
-}];
 
 const OrderHelper =  {
   makeQuery(filter) {
@@ -89,22 +79,30 @@ const OrderHelper =  {
 
 Template.orders.onCreated(function () {
   this.state = new ReactiveDict();
+  this.orderLimits = new ReactiveDict();
   this.state.setDefault({
     orders: []
   });
+  this.orderLimits.setDefault({
+    new: 10,
+    processing: 10,
+    completed: 10
+  });
+  this.state.set("count", 0);
 
   const filterName = this.data && this.data.filter && this.data.filter.name || "new";
   Reaction.setUserPreferences(PACKAGE_NAME, ORDER_LIST_FILTERS_PREFERENCE_NAME, filterName);
 
-  // Watch for updates to the subscription and query params
-  // fetch available orders
   this.autorun(() => {
-    this.subscribe("Orders");
     const filter = Reaction.getUserPreferences(PACKAGE_NAME, ORDER_LIST_FILTERS_PREFERENCE_NAME, DEFAULT_FILTER_NAME);
+    const limit = this.orderLimits.get(filter);
     const query = OrderHelper.makeQuery(filter);
-    const orders = Orders.find(query).fetch();
+    this.subscription = this.subscribe("PaginatedOrders", filter, limit);
 
-    this.state.set("orders", orders);
+    if (this.subscription.ready()) {
+      const orders = Orders.find(query, { limit: limit }).fetch();
+      this.state.set("orders", orders);
+    }
   });
 
   // Watch for updates to shop collection
@@ -121,9 +119,14 @@ Template.orders.onCreated(function () {
  * orders helpers
  */
 Template.orders.helpers({
+  orderSubscription() {
+    return Template.instance().subscription.ready();
+  },
   FilterComponent() {
+    const orderFilter = Reaction.getUserPreferences(PACKAGE_NAME, ORDER_LIST_FILTERS_PREFERENCE_NAME, DEFAULT_FILTER_NAME);
     return {
       component: OrdersActionContainer,
+      limit: Template.instance().orderLimits.get(orderFilter),
       onActionClick(filter) {
         Reaction.setUserPreferences(PACKAGE_NAME, ORDER_LIST_FILTERS_PREFERENCE_NAME, filter.name);
         Reaction.setUserPreferences(PACKAGE_NAME, ORDER_LIST_SELECTED_ORDER_PREFERENCE_NAME, null);
@@ -139,6 +142,21 @@ Template.orders.helpers({
 
   orders() {
     return Template.instance().state.get("orders") || false;
+  },
+
+  hasMoreOrders() {
+    const filter = Reaction.getUserPreferences(PACKAGE_NAME, ORDER_LIST_FILTERS_PREFERENCE_NAME, DEFAULT_FILTER_NAME);
+    const instance = Template.instance();
+
+    if (filter === "new") {
+      instance.state.set("count", Counts.get("newOrder-count"));
+    } else if (filter === "processing") {
+      instance.state.set("count", Counts.get("processingOrder-count"));
+    } else if (filter === "completed") {
+      instance.state.set("count", Counts.get("completedOrder-count"));
+    }
+
+    return instance.state.get("count") > instance.orderLimits.get(filter);
   },
 
   currentFilterLabel() {
@@ -157,6 +175,19 @@ Template.orders.helpers({
       return "panel-info";
     }
     return "panel-default";
+  }
+});
+
+/**
+ * orders events
+ */
+Template.orders.events({
+  "click .show-more-orders": function (event, instance) {
+    event.preventDefault();
+    const filter = Reaction.getUserPreferences(PACKAGE_NAME, ORDER_LIST_FILTERS_PREFERENCE_NAME, DEFAULT_FILTER_NAME);
+    let limit = instance.orderLimits.get(filter);
+    limit += 10;
+    instance.orderLimits.set(filter, limit);
   }
 });
 
@@ -236,56 +267,6 @@ Template.ordersListItem.events({
   }
 });
 
-Template.orderListFilters.onCreated(function () {
-  this.state = new ReactiveDict();
-
-  this.autorun(() => {
-    const queryFilter = Reaction.Router.getQueryParam("filter");
-    this.subscribe("Orders");
-
-    const filters = orderFilters.map((filter) => {
-      filter.label = i18next.t(`order.filter.${filter.name}`, { defaultValue: filter.label });
-      filter.i18nKeyLabel = `order.filter.${filter.name}`;
-      filter.count = Orders.find(OrderHelper.makeQuery(filter.name)).count();
-
-      if (queryFilter) {
-        filter.active = queryFilter === filter.name;
-      }
-
-      return filter;
-    });
-
-    this.state.set("filters", filters);
-  });
-});
-
-Template.orderListFilters.events({
-  "click [role=tab]": (event) => {
-    event.preventDefault();
-    const filter = event.currentTarget.getAttribute("data-filter");
-    const isActionViewOpen = Reaction.isActionViewOpen();
-    if (isActionViewOpen === true) {
-      Reaction.hideActionView();
-    }
-
-    Reaction.setUserPreferences(PACKAGE_NAME, ORDER_LIST_FILTERS_PREFERENCE_NAME, filter);
-    Reaction.setUserPreferences(PACKAGE_NAME, ORDER_LIST_SELECTED_ORDER_PREFERENCE_NAME, null);
-  }
-});
-
-Template.orderListFilters.helpers({
-  filters() {
-    return Template.instance().state.get("filters");
-  },
-
-  activeClassname(item) {
-    if (item.active === true) {
-      return "active";
-    }
-    return "";
-  }
-});
-
 /**
  * orderStatusDetail
  *
@@ -293,23 +274,6 @@ Template.orderListFilters.helpers({
  *
  * @returns orderStatusDetails
  */
-Template.orderStatusDetail.onCreated(function () {
-  this.state = new ReactiveDict();
-  this.state.setDefault({
-    orders: []
-  });
-
-  // Watch for updates to the subscription and query params
-  // fetch available orders
-  this.autorun(() => {
-    this.subscribe("Orders");
-    const filter = Reaction.Router.getQueryParam("filter");
-    const query = OrderHelper.makeQuery(filter);
-    const orders = Orders.find(query).fetch();
-
-    this.state.set("orders", orders);
-  });
-});
 
 Template.orderStatusDetail.helpers({
   // helper to format currency
