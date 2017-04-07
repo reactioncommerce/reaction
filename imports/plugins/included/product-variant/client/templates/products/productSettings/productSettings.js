@@ -67,56 +67,6 @@ Template.productSettings.helpers({
   }
 });
 
-// Template.productSettingsGridItem.helpers({
-
-//   additionalMedia: function () {
-//     const mediaArray = Media.find({
-//       "metadata.productId": this._id,
-//       "metadata.priority": {
-//         $gt: 0
-//       },
-//       "metadata.toGrid": 1
-//     }, { limit: 3 });
-
-//     if (mediaArray.count() > 1) {
-//       return mediaArray;
-//     }
-//     return false;
-//   },
-//   weightClass: function () {
-//     const tag = ReactionProduct.getTag();
-//     const positions = this.positions && this.positions[tag] || {};
-//     const weight = positions.weight || 0;
-//     switch (weight) {
-//       case 1:
-//         return "product-medium";
-//       case 2:
-//         return "product-large";
-//       default:
-//         return "product-small";
-//     }
-//   },
-
-//   isMediumWeight: function () {
-//     const tag = ReactionProduct.getTag();
-//     const positions = this.positions && this.positions[tag] || {};
-//     const weight = positions.weight || 0;
-//     return weight === 1;
-//   },
-//   isLargeWeight: function () {
-//     const tag = ReactionProduct.getTag();
-//     const positions = this.positions && this.positions[tag] || {};
-//     const weight = positions.weight || 0;
-//     return weight === 3;
-//   },
-//   shouldShowAdditionalImages: function () {
-//     if (this.isMediumWeight && this.mediaArray) {
-//       return true;
-//     }
-//     return false;
-//   }
-// });
-
 Template.productSettingsListItem.helpers({
   pdpPath() {
     const product = this;
