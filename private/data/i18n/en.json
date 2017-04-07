@@ -333,6 +333,7 @@
         "invoice": "Invoice",
         "ordersNotFound": "No orders found",
         "approveInvoice": "Approve",
+        "cancelOrderLabel": "Cancel Order",
         "makeAdjustments": "Make Adjustments",
         "capturePayment": "Capture Payment",
         "paymentCaptured": "Payment Captured",

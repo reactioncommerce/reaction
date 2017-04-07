@@ -38,13 +38,20 @@
         </button>
       </div>
       {{#if showAfterPaymentCaptured}}
-          <button class="btn btn-danger" type="button" data-event-action="cancelOrder" style="margin-bottom: 10px"
-          >Cancel Order</button>
+          <button
+            class="btn btn-danger"
+            type="button"
+            data-event-action="cancelOrder"
+            style="margin-bottom: 10px"
+            data-i18n="order.cancelOrderLabel"
+          >
+            Cancel Order
+          </button>
       {{/if}}
 
       {{/if}}
       {{#if paymentCanceled}}
-        <span class="badge badge-danger" style="margin-bottom: 10px">Canceled</span>
+        <span class="badge badge-danger" style="margin-bottom: 10px" data-i18n="order.canceledLabel">Canceled</span>
       {{/if}}
     </div>
 

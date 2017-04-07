@@ -19,7 +19,6 @@ export function randomProcessor() {
 const itemIdOne = Random.id();
 const itemIdTwo = Random.id();
 
-
 export function randomStatus() {
   return _.sample([
     "created",

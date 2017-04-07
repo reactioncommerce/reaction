@@ -99,7 +99,7 @@ Template.coreOrderShippingSummary.helpers({
       };
     }
 
-    const shipped = _.every(shipment.items, (shipmentItem) => {
+    const shipped = shipment.items.every(shipmentItem => {
       for (const fullItem of order.items) {
         if (fullItem._id === shipmentItem._id) {
           if (fullItem.workflow) {
@@ -111,7 +111,7 @@ Template.coreOrderShippingSummary.helpers({
       }
     });
 
-    const canceled = _.every(shipment.items, (shipmentItem) => {
+    const canceled = shipment.items.every(shipmentItem => {
       for (const fullItem of order.items) {
         if (fullItem._id === shipmentItem._id) {
           if (fullItem.workflow) {
