@@ -10,6 +10,8 @@ reaction:
   environment:
     ROOT_URL: "http://localhost"
     MONGO_URL: "mongodb://mongo:27017/reaction"
+    ELASTICSEARCH_AUTH: "elastic:HOGMwBsOMPAghvUBxH8EIZzK"
+    ELASTICSEARCH_HOST: "e46d714d5ae330a95f1f6d77f1911278.us-east-1.aws.found.io"
 
 mongo:
   image: mongo:latest
