@@ -230,7 +230,9 @@ export const methods = {
       throw new Meteor.Error(403, "Access Denied");
     }
 
-    if (!returnToStock) ordersInventoryAdjust(order._id);
+    if (!returnToStock) {
+      return ordersInventoryAdjust(order._id);
+    }
 
     let paymentMethod = orderCreditMethod(order).paymentMethod;
     paymentMethod = Object.assign(paymentMethod, { amount: Number(paymentMethod.amount) });
@@ -241,15 +243,15 @@ export const methods = {
     });
 
     // refund payment to customer
-    Meteor.call("orders/refunds/create", order._id, paymentMethod, Number(invoiceTotal), err => {
-      if (err) Logger.warn(err);
+    Meteor.call("orders/refunds/create", order._id, paymentMethod, Number(invoiceTotal), (err) => {
+      if (err) Logger.error(err);
     });
 
     // send notification to user
     const prefix = Reaction.getShopPrefix();
     const url = `${prefix}/notifications`;
     const sms = true;
-    Meteor.call("notification/send", order.userId, "orderCancelled", url, sms, err => {
+    Meteor.call("notification/send", order.userId, "orderCancelled", url, sms, (err) => {
       if (err) Logger.error(err);
     });
 

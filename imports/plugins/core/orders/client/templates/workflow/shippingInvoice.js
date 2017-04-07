@@ -419,27 +419,11 @@ Template.coreOrderShippingInvoice.helpers({
     return true;
   },
 
-  checkIfCanceled() {
-    const instance = Template.instance();
-    const order = instance.state.get("order");
-    const orderStatus = orderCreditMethod(order).paymentMethod.status;
-
-    return orderStatus !== "canceled" ? false : true;
-  },
-
   showAfterPaymentCaptured() {
     const instance = Template.instance();
     const order = instance.state.get("order");
     const orderMode = orderCreditMethod(order).paymentMethod.mode;
     return orderMode === "capture";
-  },
-
-  cancelOrderDisabled() {
-    const instance = Template.instance();
-    const order = instance.state.get("order");
-    const orderStatus = orderCreditMethod(order).paymentMethod.status;
-
-    return orderStatus === "refunded" ? null : "disabled";
   },
 
   paymentApproved() {
