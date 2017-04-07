@@ -23,12 +23,19 @@ And, since anything in our codebase can be extended, overwritten, or installed a
 
 ## Installation
 
+**_requirements_**
+
+- Node.js (v4 or higher)
+- Meteor
+
+For more information on requirements check out the [requirements](https://docs.reactioncommerce.com/reaction-docs/master/requirements).
+
 **_reaction-cli installation_**
 
 ```bash
 npm install -g reaction-cli
-reaction init
-cd reaction
+reaction init my-reaction-app
+cd my-reaction-app
 reaction
 ```
 
