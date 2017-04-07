@@ -36,7 +36,7 @@ For more information on requirements check out the [requirements](https://docs.r
 npm install -g reaction-cli
 ```
 
-For more information on requirements check out the [installation](https://docs.reactioncommerce.com/reaction-docs/development/installation) doc.
+For more information on installation check out the [installation](https://docs.reactioncommerce.com/reaction-docs/development/installation) doc.
 
 ### reaction-cli usage
 
@@ -48,7 +48,7 @@ cd my-reaction-app
 reaction
 ```
 
-For more information on requirements check out the [configuration](https://docs.reactioncommerce.com/reaction-docs/development/configuration) doc.
+For more information on configuration check out the [configuration](https://docs.reactioncommerce.com/reaction-docs/development/configuration) doc.
 
 ## Participation
 
