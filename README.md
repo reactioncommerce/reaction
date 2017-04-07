@@ -38,7 +38,7 @@ npm install -g reaction-cli
 
 For more information on installation check out the [installation](https://docs.reactioncommerce.com/reaction-docs/development/installation) doc.
 
-### reaction-cli usage
+### reaction-cli init usage
 
 Into your workspace:
 
@@ -47,6 +47,8 @@ reaction init my-reaction-app
 cd my-reaction-app
 reaction
 ```
+
+Go on the url provided and log you with your login/password information also provided.
 
 For more information on configuration check out the [configuration](https://docs.reactioncommerce.com/reaction-docs/development/configuration) doc.
 
