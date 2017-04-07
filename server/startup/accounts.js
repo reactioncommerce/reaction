@@ -49,7 +49,7 @@ export default function () {
    */
   Accounts.registerLoginHandler(function (options) {
     if (!options.anonymous) {
-      return {};
+      return undefined;
     }
     const stampedToken = Accounts._generateStampedLoginToken();
     const userId = Accounts.insertUserDoc({
