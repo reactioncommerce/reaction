@@ -74,7 +74,7 @@
 
               <div class="form-group{{#if afFieldIsInvalid name='originCountry'}} has-error{{/if}}">
                   <label class="control-label">{{afFieldLabelText name='originCountry'}}</label>
-                  {{>afFieldInput name='originCountry' placeholder=(i18n "productVariant.originCountry" "Origin Country")}}
+                  {{>afFieldInput name='originCountry' type='select' options=countries placeholder=(i18n "productVariant.originCountry" "Origin Country")}}
                   {{#if afFieldIsInvalid name='originCountry'}}
                   <span class="help-block">{{afFieldMessage name='originCountry'}}</span>
                   {{/if}}
