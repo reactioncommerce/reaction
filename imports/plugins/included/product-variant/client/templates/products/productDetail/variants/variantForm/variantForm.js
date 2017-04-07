@@ -67,9 +67,15 @@ Template.variantForm.helpers({
       const _id = this._id;
       const variants = ReactionProduct.getVariants();
       let variantQuantity = 0;
+      const childVariants = [];
       variants.map(variant => {
         if (~variant.ancestors.indexOf(_id) && variant.type !== "inventory") {
-          variantQuantity += variant.inventoryQuantity;
+          childVariants.push(variant);
+        }
+      });
+      childVariants.map(child => {
+        if (child.inventoryQuantity !== undefined) {
+          variantQuantity += child.inventoryQuantity;
         }
       });
       Meteor.call("products/updateProductField", _id, "inventoryQuantity", variantQuantity);
