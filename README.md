@@ -21,18 +21,36 @@ Reaction’s out-of-the-box core features include:
 
 And, since anything in our codebase can be extended, overwritten, or installed as a package, you may also develop, scale, and customize anything on our platform.
 
-## Installation
+## Get Started
 
-**_reaction-cli installation_**
+### reaction-cli requirements
+
+- Node.js (v4 or higher)
+- Meteor
+
+For more information on requirements check out the [requirements](https://docs.reactioncommerce.com/reaction-docs/master/requirements) doc.
+
+### reaction-cli installation
 
 ```bash
 npm install -g reaction-cli
-reaction init
-cd reaction
+```
+
+For more information on installation check out the [installation](https://docs.reactioncommerce.com/reaction-docs/development/installation) doc.
+
+### reaction-cli init usage
+
+Into your workspace:
+
+```bash
+reaction init my-reaction-app
+cd my-reaction-app
 reaction
 ```
 
-For more information on setup and configuration, check out the [installation](https://docs.reactioncommerce.com/reaction-docs/development/installation) and [configuration](https://docs.reactioncommerce.com/reaction-docs/development/configuration) docs.
+Go on the url provided and log you with your login/password information also provided.
+
+For more information on configuration check out the [configuration](https://docs.reactioncommerce.com/reaction-docs/development/configuration) doc.
 
 ## Participation
 
