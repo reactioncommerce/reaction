@@ -4,6 +4,7 @@ import { ReactiveDict } from "meteor/reactive-dict";
 import { Session } from "meteor/session";
 import { Template } from "meteor/templating";
 import { Reaction, i18next } from "/client/api";
+import { Countries } from "/client/collections";
 import { ReactionProduct } from "/lib/api";
 import { applyProductRevision } from "/lib/api/products";
 import { Packages, Products } from "/lib/collections";
@@ -12,6 +13,7 @@ import { TaxCodes } from "/imports/plugins/core/taxes/lib/collections";
 Template.variantForm.onCreated(function () {
   this.state = new ReactiveDict();
   this.state.set("taxCodes", []);
+  this.state.set("countries", Countries.find({}).fetch());
 
   this.autorun(() => {
     // subscribe to TaxCodes
@@ -210,6 +212,10 @@ Template.variantForm.helpers({
       return this.taxCode;
     }
     return i18next.t("productVariant.selectTaxCode");
+  },
+  countries: function () {
+    const instance = Template.instance();
+    return instance.state.get("countries");
   }
 });
 
