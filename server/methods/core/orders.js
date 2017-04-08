@@ -231,7 +231,7 @@ export const methods = {
     }
 
     if (!returnToStock) {
-      return ordersInventoryAdjust(order._id);
+      ordersInventoryAdjust(order._id);
     }
 
     let paymentMethod = orderCreditMethod(order).paymentMethod;
