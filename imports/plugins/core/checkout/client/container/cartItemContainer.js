@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { Cart, Media } from "/lib/collections";
-import CartItems from "../component/cartItems";
+import CartItems from "../components/cartItems";
 import { Reaction } from "/client/api";
 import { composeWithTracker } from "/lib/api/compose";
 import { Loading } from "/imports/plugins/core/ui/client/components";
@@ -92,9 +92,8 @@ class CartItemContainer extends Component {
     event.stopPropagation();
     event.preventDefault();
     const currentCartItemId = event.target.getAttribute("data-target");
-    return $(event.currentTarget).fadeOut(300, function () {
-      return Meteor.call("cart/removeFromCart", currentCartItemId);
-    });
+    console.log(event.target);
+    return Meteor.call("cart/removeFromCart", currentCartItemId);
   }
 
   render() {
