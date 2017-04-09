@@ -6,7 +6,7 @@ const EmptyCartDrawer = ({ keepShopping }) => {
       <div className="cart-drawer-empty">
         <div className="row cart-drawer-empty-msg">
           <h1 className="text-align">
-            <i className="fa fa-frown-o fa-lg"></i><strong><p data-i18n="cartDrawer.empty">We're sad. Your cart is empty.</p></strong>
+            <i className="fa fa-frown-o fa-lg">{}</i><strong><p data-i18n="cartDrawer.empty">We're sad. Your cart is empty.</p></strong>
           </h1>
         </div>
         <div className="row">

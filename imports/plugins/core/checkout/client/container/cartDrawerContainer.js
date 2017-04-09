@@ -23,7 +23,7 @@ class CartDrawerContainer extends Component {
             </div>
           </div>
         </div>
-        <div className="cart-drawer-pagination"></div>
+        <div className="cart-drawer-pagination">{}</div>
         <div className="row">
           <span className="rui btn btn-cta btn-lg btn-block" id="btn-checkout" data-i18n="cartDrawer.checkout" onClick={this.handleCheckout}>
             Checkout now
