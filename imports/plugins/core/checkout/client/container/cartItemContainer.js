@@ -92,7 +92,6 @@ class CartItemContainer extends Component {
     event.stopPropagation();
     event.preventDefault();
     const currentCartItemId = event.target.getAttribute("data-target");
-    console.log(event.target);
     return Meteor.call("cart/removeFromCart", currentCartItemId);
   }
 
