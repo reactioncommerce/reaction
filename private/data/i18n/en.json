@@ -362,7 +362,8 @@
           "completed": "Completed",
           "canceled": "Canceled",
           "refunded": "Refunded"
-        }
+        },
+        "showMore": "Show More"
       },
       "orderShipping": {
         "shipTo": "Ship To",
