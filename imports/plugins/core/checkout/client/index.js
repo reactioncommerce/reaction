@@ -1,8 +1,6 @@
 import "./helpers/cart";
 import "./methods/cart";
 
-import "./templates/cartDrawer/cartItems/cartItems.html";
-import "./templates/cartDrawer/cartItems/cartItems.js";
 import "./templates/cartDrawer/cartDrawer.html";
 import "./templates/cartDrawer/cartDrawer.js";
 

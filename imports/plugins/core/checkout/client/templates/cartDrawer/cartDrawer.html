@@ -31,11 +31,9 @@
       <div class="cart-drawer-swiper-slide">
         {{> React component=CartSubTotals}}
       </div>
-      {{#each cartItems}}
-      <div class="cart-drawer-swiper-slide">
-        {{>cartDrawerItems}}
+      <div>
+        {{> React component=CartItems}}
       </div>
-      {{/each}}
     </div>
   </div>
   <div class="cart-drawer-pagination"></div>

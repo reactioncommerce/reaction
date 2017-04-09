@@ -1,10 +1,10 @@
 import { Reaction } from "/client/api";
 import { Cart } from "/lib/collections";
 import { Session } from "meteor/session";
-import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import Swiper from "swiper";
 import CartSubtotal from "./cartSubTotals/container/cartSubTotalContainer";
+import CartItems from "./cartItems/container/cartItemContainer";
 /**
  * cartDrawer helpers
  *
@@ -65,8 +65,8 @@ Template.openCartDrawer.onRendered(function () {
 });
 
 Template.openCartDrawer.helpers({
-  cartItems: function () {
-    return Cart.findOne().items;
+  CartItems() {
+    return CartItems;
   },
   CartSubTotals() {
     return CartSubtotal;
@@ -82,15 +82,6 @@ Template.openCartDrawer.events({
     $("#cart-drawer-container").fadeOut();
     Session.set("displayCart", false);
     return Reaction.Router.go("cart/checkout");
-  },
-  "click .remove-cart-item": function (event) {
-    event.stopPropagation();
-    event.preventDefault();
-    const currentCartItemId = this._id;
-
-    return Template.instance().$(event.currentTarget).fadeOut(300, function () {
-      return Meteor.call("cart/removeFromCart", currentCartItemId);
-    });
   }
 });
 
