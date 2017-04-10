@@ -7,6 +7,7 @@ import {
   CardGroup,
   Divider,
   Select,
+  SettingsCard,
   Switch,
   TextField,
   Translation
@@ -20,7 +21,10 @@ class VariantForm extends Component {
   render() {
     return (
       <CardGroup>
-        <Card>
+        <Card
+          expandable={true}
+          expanded={false}
+        >
           <CardHeader
             actAsExpander={true}
             i18nKeyTitle="productDetailEdit.variantDetails"
@@ -135,82 +139,74 @@ class VariantForm extends Component {
           </CardBody>
         </Card>
 
-        <Card>
-          <CardHeader
-            actAsExpander={true}
-            i18nKeyTitle="productVariant.taxable"
-            title="Taxable"
-          >
-            <input
-              className="checkbox-switch"
-              type="checkbox"
-            />
-          </CardHeader>
-          <CardBody expandable={true}>
-            <Select
-              clearable={false}
-              i18nKeyLabel="productVariant.taxCode"
-              i18nKeyPlaceholder="productVariant.selectTaxCode"
-              label="Tax Code"
-              name="taxCode"
-            />
-            <TextField
-              i18nKeyLabel="productVariant.taxDescription"
-              i18nKeyPlaceholder="productVariant.taxDescription"
-              placeholder="Tax Description"
-              label="Tax Description"
-              name="taxDescription"
-            />
-          </CardBody>
-        </Card>
+        <SettingsCard
+          enabled={false}
+          expandable={true}
+          expanded={false}
+          i18nKeyTitle="productVariant.taxable"
+          name="taxable"
+          showSwitch={true}
+          title="Taxable"
+        >
+          <Select
+            clearable={false}
+            i18nKeyLabel="productVariant.taxCode"
+            i18nKeyPlaceholder="productVariant.selectTaxCode"
+            label="Tax Code"
+            name="taxCode"
+          />
+          <TextField
+            i18nKeyLabel="productVariant.taxDescription"
+            i18nKeyPlaceholder="productVariant.taxDescription"
+            placeholder="Tax Description"
+            label="Tax Description"
+            name="taxDescription"
+          />
+        </SettingsCard>
 
-        <Card>
-          <CardHeader
-            actAsExpander={true}
-            i18nKeyTitle="productVariant.inventoryManagement"
-            title="Inventory Tracking"
-          >
-            <input
-              className="checkbox-switch"
-              type="checkbox"
-            />
-          </CardHeader>
-          <CardBody expandable={true}>
-            <div className="row">
-              <div className="rui textfield form-group col-sm-6">
-                <label>
-                  <Translation defaultValue="Quantity" i18nKey="productVariant.inventoryQuantity" />
-                </label>
-                <input
-                  className="inventoryQuantity"
-                  name="inventoryQuantity"
-                  type="text"
-                  placeholder="0"
-                  ref="input"
-                />
-              </div>
-              <div className="rui textfield form-group col-sm-6">
-                <label>
-                  <Translation defaultValue="Warn At" i18nKey="productVariant.lowInventoryWarningThreshold" />
-                </label>
-                <input
-                  className="lowInventoryWarningThreshold"
-                  name="lowInventoryWarningThreshold"
-                  type="text"
-                  placeholder="0"
-                  ref="input"
-                />
-              </div>
+        <SettingsCard
+          enabled={false}
+          expandable={true}
+          expanded={false}
+          i18nKeyTitle="productVariant.inventoryManagement"
+          name="inventoryManagement"
+          showSwitch={true}
+          title="Inventory Tracking"
+        >
+          <div className="row">
+            <div className="rui textfield form-group col-sm-6">
+              <label>
+                <Translation defaultValue="Quantity" i18nKey="productVariant.inventoryQuantity" />
+              </label>
+              <input
+                className="inventoryQuantity"
+                name="inventoryQuantity"
+                type="text"
+                placeholder="0"
+                ref="input"
+              />
             </div>
-            <Switch
-              i18nKeyLabel="productVariant.inventoryPolicy"
-              i18nKeyOnLabel="productVariant.inventoryPolicy"
-              label={"Allow Backorder"}
-              onLabel={"Allow Backorder"}
-              checked={"false"}
-            />
-          </CardBody>
-        </Card>
+            <div className="rui textfield form-group col-sm-6">
+              <label>
+                <Translation defaultValue="Warn At" i18nKey="productVariant.lowInventoryWarningThreshold" />
+              </label>
+              <input
+                className="lowInventoryWarningThreshold"
+                name="lowInventoryWarningThreshold"
+                type="text"
+                placeholder="0"
+                ref="input"
+              />
+            </div>
+          </div>
+          <Switch
+            i18nKeyLabel="productVariant.inventoryPolicy"
+            i18nKeyOnLabel="productVariant.inventoryPolicy"
+            label={"Allow Backorder"}
+            onLabel={"Allow Backorder"}
+            checked={"false"}
+          />
+        </SettingsCard>
       </CardGroup>
     );
   }
