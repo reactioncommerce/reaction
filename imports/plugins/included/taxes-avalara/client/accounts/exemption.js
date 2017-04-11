@@ -69,22 +69,21 @@ Template.taxSettingsPanel.onCreated(function () {
   }
 });
 
-AutoForm.hooks({
-  "tax-settings-form": {
-    before: {
-      update: function (doc) {
-        if (isCustomValue()) {
-          const value = $(".customerUsageType input").val();
-          doc.$set["taxSettings.customerUsageType"] = value;
-        }
-        return doc;
+AutoForm.addHooks(null, {
+  before: {
+    update: function (doc) {
+      const oldValues = _.get(Template.instance(), "data.doc.taxSettings");
+      if (isCustomValue()) {
+        const value = $(".customerUsageType input").val();
+        doc.$set["taxSettings.customerUsageType"] = value;
       }
+      return Object.assign({}, oldValues, doc);
     }
   }
 });
 
-function isCustomValue(formId) {
-  const formData = AutoForm.getFormValues(formId);
+function isCustomValue(formId = null) {
+  const formData = AutoForm.getFormValues(formId, Template.instance());
   const value = _.get(formData, "insertDoc.taxSettings.customerUsageType");
   return value === "CUSTOM USER INPUT";
 }
