@@ -18,6 +18,30 @@ class VariantForm extends Component {
     super(props);
   }
 
+  renderTaxCodeField() {
+    if (this.props.isProviderEnabled()) {
+      return (
+        <Select
+          clearable={false}
+          i18nKeyLabel="productVariant.taxCode"
+          i18nKeyPlaceholder="productVariant.selectTaxCode"
+          label="Tax Code"
+          name="taxCode"
+        />
+      );
+    }
+    return (
+      <TextField
+        i18nKeyLabel="productVariant.taxCode"
+        i18nKeyPlaceholder="productVariant.selectTaxCode"
+        placeholder="Select Tax Code"
+        label="Tax Code"
+        name="taxCode"
+        value={this.props.selectedVariant.taxCode}
+      />
+    );
+  }
+
   render() {
     return (
       <CardGroup>
@@ -155,13 +179,7 @@ class VariantForm extends Component {
           showSwitch={true}
           title="Taxable"
         >
-          <Select
-            clearable={false}
-            i18nKeyLabel="productVariant.taxCode"
-            i18nKeyPlaceholder="productVariant.selectTaxCode"
-            label="Tax Code"
-            name="taxCode"
-          />
+          {this.renderTaxCodeField()}
           <TextField
             i18nKeyLabel="productVariant.taxDescription"
             i18nKeyPlaceholder="productVariant.taxDescription"
@@ -222,6 +240,7 @@ class VariantForm extends Component {
 
 VariantForm.propTypes = {
   countries: PropTypes.arrayOf(PropTypes.object),
+  isProviderEnabled: PropTypes.func,
   selectedVariant: PropTypes.object
 };
 
