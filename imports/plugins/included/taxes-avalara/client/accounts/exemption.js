@@ -6,6 +6,8 @@ import { Packages, Accounts } from "/lib/collections";
 import { Accounts as AccountsSchema } from "/lib/collections/schemas/accounts";
 import { TaxEntityCodes } from "/client/collections";
 
+let entityCodeList = [];
+
 Template.taxSettingsPanel.helpers({
   account() {
     const sub = Meteor.subscribe("UserAccount", this.member.userId);
@@ -32,7 +34,7 @@ Template.taxSettingsPanel.helpers({
         value: entityCode.code
       });
     });
-
+    entityCodeList = (entityCodes || []).map((a) => a.code);
     return (entityCodes || []).concat(customOption);
   }
 });
@@ -72,9 +74,13 @@ Template.taxSettingsPanel.onCreated(function () {
 AutoForm.addHooks(null, {
   before: {
     update: function (doc) {
+      const oldType = _.get(Template.instance(), "data.doc.taxSettings.customerUsageType");
       if (isCustomValue()) {
         const value = $(".customerUsageType input").val();
         doc.$set["taxSettings.customerUsageType"] = value;
+      }
+      if (oldType && entityCodeList.indexOf(oldType) < 0) {
+        delete doc.$unset; // there's existing custom value.... don't let autoform override it to null
       }
 
       return doc;
