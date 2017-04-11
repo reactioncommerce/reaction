@@ -16,6 +16,7 @@ class ProductDetailContainer extends Component {
   constructor(props) {
     super(props);
     this.animationTimeOut = null;
+    this.textTimeOut = null;
     this.state = {
       cartQuantity: 1
     };
@@ -141,15 +142,26 @@ class ProductDetailContainer extends Component {
         const direction = i18next.dir() === "rtl" ? "left" : "right";
         const oppositeDirection = i18next.dir() === "rtl" ? "right" : "left";
         if ($(".cart-alert").css("display") === "none") {
+          $("#spin").addClass("hidden");
           $(".cart-alert-text").text(`${quantity} ${addToCartTitle} ${addToCartText}`);
           this.handleSlideOut(alertWidth, direction, oppositeDirection);
           this.animationTimeOut = setTimeout(() => {
             this.handleSlideIn(alertWidth, direction, oppositeDirection);
           }, 4000);
         } else {
-          $(".cart-alert-text").text(`${quantity} ${addToCartTitle} ${addToCartText}`);
+          clearTimeout(this.textTimeOut);
+
+          // hides text and display spinner
+          $(".cart-alert-text").hide();
+          $("#spin").removeClass("hidden");
+
+          this.textTimeOut = setTimeout(() => {
+            $("#spin").addClass("hidden");
+            $(".cart-alert-text").text(`${quantity} ${addToCartTitle} ${addToCartText}`);
+            $(".cart-alert-text").fadeIn("slow");
+          }, 2000);
+
           clearTimeout(this.animationTimeOut);
-          this.handleSlideOut(alertWidth, direction, oppositeDirection);
           this.animationTimeOut = setTimeout(() => {
             this.handleSlideIn(alertWidth, direction, oppositeDirection);
           }, 4000);
@@ -186,11 +198,11 @@ class ProductDetailContainer extends Component {
       [oppositeDirection]: "auto",
       [direction]: -alertWidth
     }, {
-      duration: 600,
-      complete() {
-        $(".cart-alert").hide();
-      }
-    });
+        duration: 600,
+        complete() {
+          $(".cart-alert").hide();
+        }
+      });
   }
 
   handleProductFieldChange = (productId, fieldName, value) => {
@@ -288,10 +300,10 @@ function composer(props, onData) {
         mediaArray = Media.find({
           "metadata.variantId": selectedVariant._id
         }, {
-          sort: {
-            "metadata.priority": 1
-          }
-        }).fetch();
+            sort: {
+              "metadata.priority": 1
+            }
+          }).fetch();
 
         // If no media found, broaden the search to include other media from parents
         if (Array.isArray(mediaArray) && mediaArray.length === 0 && selectedVariant.ancestors) {
@@ -300,10 +312,10 @@ function composer(props, onData) {
             const media = Media.find({
               "metadata.variantId": ancestor
             }, {
-              sort: {
-                "metadata.priority": 1
-              }
-            }).fetch();
+                sort: {
+                  "metadata.priority": 1
+                }
+              }).fetch();
 
             // If we found some media, then stop here
             if (Array.isArray(media) && media.length) {
