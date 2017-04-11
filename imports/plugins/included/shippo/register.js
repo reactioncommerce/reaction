@@ -39,7 +39,7 @@ Reaction.registerPackage({
 // .If we are gonna proceed with different panel per provider, we need to enable the 'provides:"Shipping Method"',
 // alter coreCheckoutShipping checkout.js and inherit from there (or write specific logic) for a shippo's
 // checkout template.
-//
+// Another comment line to push to master
 // provides: "shippingMethod",
 // name: "shipping/methods/shippo",
 // template: "shippoCheckoutShipping"

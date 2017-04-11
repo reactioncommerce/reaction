@@ -4,6 +4,11 @@ machine:
   services:
     - docker
 
+checkout:
+  post:
+    - git submodule sync
+    - git submodule update --init
+
 dependencies:
   cache_directories:
     - "~/.meteor"
@@ -11,11 +16,11 @@ dependencies:
     - if [[ -L ~/.meteor/meteor ]]; then ln -s ~/.meteor/meteor ~/bin/meteor; export PATH="$PATH:~/bin"; fi
     - hash meteor 2>/dev/null || curl https://install.meteor.com | /bin/sh
     - npm i -g reaction-cli
-    - meteor npm install
+    # - meteor npm install
 
 test:
   override:
-    - reaction test
+    # - reaction test
     - .reaction/ci/build.sh
 
 deployment:
@@ -25,7 +30,8 @@ deployment:
       - .reaction/ci/deploy-development.sh
 
   release:
-    tag: /v[0-9]+(\.[0-9]+)*/
-    owner: reactioncommerce
+    # will deploy based on tag format: ee-v1.2.3
+    tag: /ee-v[0-9]+(\.[0-9]+)*/
+    owner: evereveofficial
     commands:
       - .reaction/ci/deploy-production.sh
