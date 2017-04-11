@@ -18,7 +18,8 @@ class ProductDetailContainer extends Component {
     this.animationTimeOut = null;
     this.textTimeOut = null;
     this.state = {
-      cartQuantity: 1
+      cartQuantity: 1,
+      click: 0
     };
   }
 
@@ -122,6 +123,7 @@ class ProductDetailContainer extends Component {
             }
             // Reset cart quantity on success
             this.handleCartQuantityChange(null, 1);
+            this.state.click++;
 
             return true;
           });
@@ -157,8 +159,9 @@ class ProductDetailContainer extends Component {
 
           this.textTimeOut = setTimeout(() => {
             $("#spin").addClass("hidden");
-            $(".cart-alert-text").text(`${quantity} ${addToCartTitle} ${addToCartText}`);
+            $(".cart-alert-text").text(`${this.state.click * quantity} ${addToCartTitle} ${addToCartText}`);
             $(".cart-alert-text").fadeIn("slow");
+            this.setState({ click: 0 });
           }, 2000);
 
           clearTimeout(this.animationTimeOut);
