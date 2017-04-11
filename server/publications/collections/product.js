@@ -19,17 +19,29 @@ export function findProductMedia(publicationInstance, productIds) {
     selector["metadata.productId"] = productIds;
   }
 
-  if (shopId) {
-    selector["metadata.shopId"] = shopId;
-  }
+  // if (shopId) {
+  //   selector["metadata.shopId"] = shopId;
+  // }
 
   // No one needs to see archived images on products
   selector["metadata.workflow"] = {
     $nin: ["archived"]
   };
 
-  // Product editors can see both published and unpublished images
-  if (!Reaction.hasPermission(["createProduct"], publicationInstance.userId)) {
+  // get seller-shop id if user is a seller;
+  const sellerShopId = Reaction.getSellerShopId(publicationInstance.userId, true);
+
+  // sellers can see unpublished images only of their shop
+  // Users with create-product access in the Parent shop can see all of them
+  if (sellerShopId) {
+    selector.$or = [
+      {
+        "metadata.workflow.$in": [null, "published"]
+      }, {
+        "metadata.shopId": sellerShopId
+      }
+    ]; //
+  } else if (!Reaction.hasPermission(["createProduct"], publicationInstance.userId, shopId)) {
     selector["metadata.workflow"].$in = [null, "published"];
   }
 
@@ -52,14 +64,13 @@ Meteor.publish("Product", function (productId) {
     Logger.debug("ignoring null request on Product subscription");
     return this.ready();
   }
-
-  const shop = Reaction.getSellerShop(this.userId);
-  // verify that shop is ready
+  let _id;
+  let productShopId;
+  const shop = Reaction.getCurrentShop();
+  // verify that parent shop is ready
   if (typeof shop !== "object") {
     return this.ready();
   }
-
-  let _id;
 
   // selector should come first as default, alterations take place later depending on role
   const selector = {
@@ -67,16 +78,19 @@ Meteor.publish("Product", function (productId) {
     isDeleted: { $in: [null, false] }
   };
 
-  // no need for admin, simple perm should be ok per group
-  if (Reaction.hasPermission("createProduct", this.userId, shop._id)) {
-    selector.isVisible = {
-      $in: [true, false, undefined]
-    };
-  }
+
   // TODO review for REGEX / DOS vulnerabilities.
   if (productId.match(/^[23456789ABCDEFGHJKLMNPQRSTWXYZabcdefghijkmnopqrstuvwxyz]{17}$/)) {
+    // selector._id = productId;
     // TODO try/catch here because we can have product handle passed by such regex
     _id = productId;
+    // we need productShopId in order to check if user can edit this product or view its revisions
+    const product = Products.findOne(_id);
+    if (product) {
+      productShopId = product.shopId;
+    } else {
+      return this.ready();
+    }
   } else {
     const newSelector = Object.assign({}, selector, {
       handle: {
@@ -88,6 +102,7 @@ Meteor.publish("Product", function (productId) {
     const products = Products.find(newSelector).fetch();
     if (products.length > 0) {
       _id = products[0]._id;
+      productShopId = products[0].shopId;
     } else {
       return this.ready();
     }
@@ -106,9 +121,13 @@ Meteor.publish("Product", function (productId) {
     }
   ];
 
-  // Authorized content curators for the shop get special publication of the product
+  // Authorized content curators of the shop get special publication of the product
   // all relevant revisions all is one package
-  if (Reaction.hasPermission(["createProduct"], shop._id)) {
+  if (Reaction.hasPermission(["createProduct"], this.userId, productShopId)) {
+    selector.isVisible = {
+      $in: [true, false, undefined]
+    };
+
     if (RevisionApi.isRevisionControlEnabled()) {
       const productCursor = Products.find(selector);
       const productIds = productCursor.map(p => p._id);
