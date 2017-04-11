@@ -23,10 +23,13 @@ class OrderSummary extends Component {
 
         <div className="roll-up-invoice-list">
           <div className="roll-up-content">
-            {shipmentStatus().status === "success" ?
-              <span className="badge badge-success">{shipmentStatus().label}</span> :
-              <span className="badge badge-info">{shipmentStatus().label}</span>
-            }
+            <div style={{ marginBottom: 4 }}>
+              {shipmentStatus().status === "success" ?
+                <span className="badge badge-success">{shipmentStatus().label}</span> :
+                <span className="badge badge-info">{shipmentStatus().label}</span>
+              }
+            </div>
+
             <div className="order-summary-form-group">
               <strong data-i18n="order.created">Created</strong>
               <div className="invoice-details">
@@ -38,6 +41,20 @@ class OrderSummary extends Component {
               <strong data-i18n="order.processor">Processor</strong>
               <div className="invoice-details">
                 {order.billing[0].paymentMethod.processor}
+              </div>
+            </div>
+
+            <div className="order-summary-form-group">
+              <strong data-i18n="order.payment">Payment</strong>
+              <div className="invoice-details">
+                {order.billing[0].paymentMethod.storedCard} ({order.billing[0].invoice.total})
+              </div>
+            </div>
+
+            <div className="order-summary-form-group">
+              <strong data-i18n="order.transaction">Transaction</strong>
+              <div className="invoice-details">
+                {order.billing[0].paymentMethod.transactionId}
               </div>
             </div>
 
@@ -65,7 +82,7 @@ class OrderSummary extends Component {
           </div>
         </div>
 
-        <div>
+        <div style={{ marginTop: 4 }}>
           <span>{profile.fullName}</span>
           <br/><span>{profile.address1}</span>
           <br/><span>{profile.city}, {profile.region}, {profile.country} {profile.postal}</span>
