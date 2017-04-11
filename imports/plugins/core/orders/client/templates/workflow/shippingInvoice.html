@@ -37,6 +37,7 @@
           <i class="fa fa-spinner fa-spin {{#unless isRefunding}}hidden{{/unless}}"></i>
         </button>
       </div>
+      {{/if}}
       {{#if showAfterPaymentCaptured}}
           <button
             class="btn btn-danger"
@@ -48,8 +49,6 @@
             Cancel Order
           </button>
       {{/if}}
-
-      {{/if}}
       {{#if paymentCanceled}}
         <span class="badge badge-danger" style="margin-bottom: 10px" data-i18n="order.canceledLabel">Canceled</span>
       {{/if}}
@@ -57,13 +56,11 @@
 
 
 
-    <div class="flex">
+    <div class="flex" style="margin-bottom: 15px;">
       {{#if paymentPendingApproval}}
-        <!--<button class="btn btn-info btn-block" type="submit" data-event-action="approveInvoice" data-i18n="order.approveInvoice">Approve</button>-->
         <div class="btn-block">
           {{> React buttonSelectComponent}}
         </div>
-        <!--<button class="btn btn-danger btn-block" type="button" data-event-action="startCancelOrder" data-i18n="order.cancelOrder">Cancel Order</button>-->
       {{/if}}
 
       {{#if paymentApproved}}
