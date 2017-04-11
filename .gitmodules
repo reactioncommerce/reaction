@@ -1,3 +1,6 @@
 [submodule "public/custom/ReactionPublicCustomFolder"]
 	path = public/custom/ReactionPublicCustomFolder
 	url = git@github.com:evereveofficial/ReactionPublicCustomFolder.git
+[submodule "imports/plugins/custom"]
+	path = imports/plugins/custom
+	url = git@github.com:evereveofficial/eePlugins.git
