@@ -4,45 +4,71 @@ class OrderSummary extends Component {
   static propTypes = {
     dateFormat: PropTypes.func,
     order: PropTypes.object,
+    profile: PropTypes.object,
     shipmentStatus: PropTypes.func,
     tracking: PropTypes.func
   }
 
   render() {
-    const { dateFormat, tracking, order, shipmentStatus } = this.props;
+    const { dateFormat, tracking, order, shipmentStatus, profile } = this.props;
 
     return (
       <div>
-        {shipmentStatus().status === "success" ?
-          <span className="badge badge-success">{shipmentStatus().label}</span> :
-           <span className="badge badge-info">{shipmentStatus().label}</span>
-        }
-        <div className="order-summary-form-group">
-          <strong data-i18n="order.created">Created</strong>
-          <div className="invoice-details">
-            {dateFormat(order.createdAt, "MM/D/YYYY")}
+        <div className="order-summary-form-group bg-info" style={{ lineHeight: 3, marginRight: -15, marginLeft: -15 }}>
+          <strong style={{ marginLeft: 15 }}>{profile.fullName}</strong> , {profile.country}
+          <div className="invoice-details" style={{ marginRight: 15 }}>
+            <strong>ID </strong>{profile._id}
           </div>
         </div>
 
-        <div className="order-summary-form-group">
-          <strong data-i18n="order.processor">Processor</strong>
-          <div className="invoice-details">
-            {order.billing[0].paymentMethod.processor}
+        <div className="roll-up-invoice-list">
+          <div className="roll-up-content">
+            {shipmentStatus().status === "success" ?
+              <span className="badge badge-success">{shipmentStatus().label}</span> :
+              <span className="badge badge-info">{shipmentStatus().label}</span>
+            }
+            <div className="order-summary-form-group">
+              <strong data-i18n="order.created">Created</strong>
+              <div className="invoice-details">
+                {dateFormat(order.createdAt, "MM/D/YYYY")}
+              </div>
+            </div>
+
+            <div className="order-summary-form-group">
+              <strong data-i18n="order.processor">Processor</strong>
+              <div className="invoice-details">
+                {order.billing[0].paymentMethod.processor}
+              </div>
+            </div>
+
+            <div className="order-summary-form-group">
+              <strong data-i18n="orderShipping.carrier">Carrier</strong>
+              <div className="invoice-details">
+                {order.shipping[0].shipmentMethod.carrier} - {order.shipping[0].shipmentMethod.label}
+              </div>
+            </div>
+
+            <div className="order-summary-form-group">
+              <strong data-i18n="orderShipping.tracking">Tracking</strong>
+              <div className="invoice-details">
+                {tracking()}
+              </div>
+            </div>
           </div>
         </div>
 
+        <br/>
         <div className="order-summary-form-group">
-          <strong data-i18n="orderShipping.carrier">Carrier</strong>
+          <strong data-i18n="orderShipping.shipTo">Ship to</strong>
           <div className="invoice-details">
-            {order.shipping[0].shipmentMethod.carrier} - {order.shipping[0].shipmentMethod.label}
+            <strong>Phone: </strong>{profile.phone}
           </div>
         </div>
 
-        <div className="order-summary-form-group">
-          <strong data-i18n="orderShipping.tracking">Tracking</strong>
-          <div className="invoice-details">
-            {tracking()}
-          </div>
+        <div>
+          <span>{profile.fullName}</span>
+          <br/><span>{profile.address1}</span>
+          <br/><span>{profile.city}, {profile.region}, {profile.country} {profile.postal}</span>
         </div>
       </div>
     );

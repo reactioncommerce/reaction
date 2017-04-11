@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from "react";
 import moment from "moment";
 import _ from "lodash";
 import { composeWithTracker } from "/lib/api/compose";
+import { Accounts } from "/lib/collections";
 import { i18next } from "/client/api";
 import OrderSummary from "../components/orderSummary";
 
@@ -86,8 +87,21 @@ class OrderSummaryContainer extends Component {
 }
 
 const composer = (props, onData) => {
+  const userId = Meteor.userId();
+  const subscription = Meteor.subscribe("UserProfile", userId);
+  let profile = {};
+  if (subscription.ready()) {
+    if (typeof userId === "string") {
+      const userProfile = Accounts.findOne(userId);
+      if (!userProfile) {
+        return profile;
+      }
+      profile = userProfile.profile.addressBook[0];
+    }
+  }
   onData(null, {
-    order: props.order
+    order: props.order,
+    profile: profile
   });
 };
 

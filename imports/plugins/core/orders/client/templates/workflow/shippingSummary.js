@@ -52,7 +52,7 @@ Template.coreOrderShippingSummary.events({
 });
 
 Template.coreOrderShippingSummary.helpers({
-  blah() {
+  orderSummary() {
     return OrderSummaryContainer;
   },
   order() {

@@ -1,34 +1,7 @@
 <template name="coreOrderShippingSummary">
   <div class="core-order-created">
     <div>
-      {{> React component=blah order=order}}
-    </div>
-    <strong data-i18n="orderShipping.shipTo">Ship to</strong>
-    {{> orderDetail order}}
-
-    <div class="core-order-created">
-      <strong  data-i18n="order.created">Created</strong> {{timeAgo order.createdAt}} - {{dateFormat order.createdAt format="MMM D, YYYY"}}
-    </div>
-
-    <div class="core-order-processor">
-      <strong data-i18n="order.processor">Processor</strong>
-      <span><i class="fa fa-{{paymentProcessor.name}}"></i> {{paymentProcessor.label}}</span>
-    </div>
-
-    <div class="core-order-reference">
-      <strong data-i18n="order.reference">Reference</strong>
-      <span>{{order._id}}</span>
-    </div>
-
-    <div>
-      <strong data-i18n="orderShipping.carrier">Carrier</strong>
-      <span>{{shipment.shipmentMethod.carrier}} - {{shipment.shipmentMethod.label}}</span>
-    </div>
-
-    <div>
-      <strong data-i18n="orderShipping.tracking">Tracking</strong>
-      <span>{{tracking}}</span> -
-      <span class="badge badge-{{shipmentStatus.status}}">{{shipmentStatus.label}}</span>
+      {{> React component=orderSummary order=order}}
     </div>
 
     {{#if printableLabels}}
