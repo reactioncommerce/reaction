@@ -1,7 +1,45 @@
 import { Reaction } from "/lib/api";
 import { Logger } from "/server/api";
-import { Products, Revisions } from "/lib/collections";
+import { Media, Products, Revisions } from "/lib/collections";
 import { RevisionApi } from "/imports/plugins/core/revisions/lib/api/revisions";
+
+export function findProductMedia(publicationInstance, productIds) {
+  const shopId = Reaction.getShopId();
+  const selector = {};
+
+  if (!shopId) {
+    return publicationInstance.ready();
+  }
+
+  if (Array.isArray(productIds)) {
+    selector["metadata.productId"] = {
+      $in: productIds
+    };
+  } else {
+    selector["metadata.productId"] = productIds;
+  }
+
+  if (shopId) {
+    selector["metadata.shopId"] = shopId;
+  }
+
+  // No one needs to see archived images on products
+  selector["metadata.workflow"] = {
+    $nin: ["archived"]
+  };
+
+  // Product editors can see both published and unpublished images
+  if (!Reaction.hasPermission(["createProduct"], publicationInstance.userId)) {
+    selector["metadata.workflow"].$in = [null, "published"];
+  }
+
+  return Media.find(selector, {
+    sort: {
+      "metadata.priority": 1
+    }
+  });
+}
+
 
 /**
  * product detail publication
@@ -30,14 +68,13 @@ Meteor.publish("Product", function (productId) {
   };
 
   // no need for admin, simple perm should be ok per group
-  if (Roles.userIsInRole(this.userId, ["createProduct"], shop._id)) {
+  if (Reaction.hasPermission("createProduct", this.userId, shop._id)) {
     selector.isVisible = {
-      $in: [true, false]
+      $in: [true, false, undefined]
     };
   }
   // TODO review for REGEX / DOS vulnerabilities.
   if (productId.match(/^[23456789ABCDEFGHJKLMNPQRSTWXYZabcdefghijkmnopqrstuvwxyz]{17}$/)) {
-    // selector._id = productId;
     // TODO try/catch here because we can have product handle passed by such regex
     _id = productId;
   } else {
@@ -57,11 +94,10 @@ Meteor.publish("Product", function (productId) {
   }
 
   // Selector for product
-  // Try to find a product with _id as a handle "example-product"
+  // We don't need handle anymore(we got product's id in the previous step)
   // Try to find a product with the _is as an Random.id()
   // Try to find a product variant with _id using the ancestors array
   selector.$or = [
-    { handle: { $regex: _id, $options: "i" } },
     { _id: _id },
     {
       ancestors: {
@@ -72,13 +108,12 @@ Meteor.publish("Product", function (productId) {
 
   // Authorized content curators for the shop get special publication of the product
   // all relevant revisions all is one package
-  if (Roles.userIsInRole(this.userId, ["admin", "createProduct"], shop._id)) {
-    selector.isVisible = {
-      $in: [true, false, undefined]
-    };
-
+  if (Reaction.hasPermission(["createProduct"], shop._id)) {
     if (RevisionApi.isRevisionControlEnabled()) {
-      const handle = Products.find(selector).observeChanges({
+      const productCursor = Products.find(selector);
+      const productIds = productCursor.map(p => p._id);
+
+      const handle = productCursor.observeChanges({
         added: (id, fields) => {
           const revisions = Revisions.find({
             "documentId": id,
@@ -163,13 +198,29 @@ Meteor.publish("Product", function (productId) {
         handle2.stop();
       });
 
-      return this.ready();
+      return [
+        findProductMedia(this, productIds)
+      ];
     }
 
-    // Revision control is disabled
-    return Products.find(selector);
+    // Revision control is disabled, but is an admin
+    const productCursor = Products.find(selector);
+    const productIds = productCursor.map(p => p._id);
+    const mediaCursor = findProductMedia(this, productIds);
+
+    return [
+      productCursor,
+      mediaCursor
+    ];
   }
 
-  // Everyone else gets the standard, visible products and variants
-  return Products.find(selector);
+  // Everyone else gets the standard, visbile products and variants
+  const productCursor = Products.find(selector);
+  const productIds = productCursor.map(p => p._id);
+  const mediaCursor = findProductMedia(this, productIds);
+
+  return [
+    productCursor,
+    mediaCursor
+  ];
 });
