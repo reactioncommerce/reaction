@@ -38,7 +38,7 @@ class VariantForm extends Component {
         placeholder="Select Tax Code"
         label="Tax Code"
         name="taxCode"
-        value={this.props.selectedVariant.taxCode}
+        value={this.props.variant.taxCode}
       />
     );
   }
@@ -73,7 +73,7 @@ class VariantForm extends Component {
               placeholder="Label"
               label="Label"
               name="title"
-              value={this.props.selectedVariant.title}
+              value={this.props.variant.title}
             />
             <Select
               clearable={false}
@@ -106,7 +106,7 @@ class VariantForm extends Component {
                   type="text"
                   placeholder="0.00"
                   ref="input"
-                  value={this.props.selectedVariant.price}
+                  value={this.props.variant.price}
                 />
               </div>
             </div>
@@ -122,7 +122,7 @@ class VariantForm extends Component {
                   type="text"
                   placeholder="0"
                   ref="input"
-                  value={this.props.selectedVariant.width}
+                  value={this.props.variant.width}
                 />
               </div>
               <div className="rui textfield form-group col-sm-6">
@@ -135,7 +135,7 @@ class VariantForm extends Component {
                   type="text"
                   placeholder="0"
                   ref="input"
-                  value={this.props.selectedVariant.length}
+                  value={this.props.variant.length}
                 />
               </div>
             </div>
@@ -151,7 +151,7 @@ class VariantForm extends Component {
                   type="text"
                   placeholder="0"
                   ref="input"
-                  value={this.props.selectedVariant.height}
+                  value={this.props.variant.height}
                 />
               </div>
               <div className="rui textfield form-group col-sm-6">
@@ -164,7 +164,7 @@ class VariantForm extends Component {
                   type="text"
                   placeholder="0"
                   ref="input"
-                  value={this.props.selectedVariant.weight}
+                  value={this.props.variant.weight}
                 />
               </div>
             </div>
@@ -172,7 +172,7 @@ class VariantForm extends Component {
         </Card>
 
         <SettingsCard
-          enabled={this.props.selectedVariant.taxable}
+          enabled={this.props.variant.taxable}
           expandable={true}
           expanded={false}
           i18nKeyTitle="productVariant.taxable"
@@ -191,7 +191,7 @@ class VariantForm extends Component {
         </SettingsCard>
 
         <SettingsCard
-          enabled={this.props.selectedVariant.inventoryManagement}
+          enabled={this.props.variant.inventoryManagement}
           expandable={true}
           expanded={false}
           i18nKeyTitle="productVariant.inventoryManagement"
@@ -210,7 +210,7 @@ class VariantForm extends Component {
                 type="text"
                 placeholder="0"
                 ref="input"
-                value={this.props.selectedVariant.inventoryQuantity}
+                value={this.props.variant.inventoryQuantity}
               />
             </div>
             <div className="rui textfield form-group col-sm-6">
@@ -231,7 +231,7 @@ class VariantForm extends Component {
             i18nKeyOnLabel="productVariant.inventoryPolicy"
             label={"Allow Backorder"}
             onLabel={"Allow Backorder"}
-            checked={this.props.selectedVariant.inventoryPolicy}
+            checked={this.props.variant.inventoryPolicy}
           />
         </SettingsCard>
       </CardGroup>
@@ -243,7 +243,7 @@ VariantForm.propTypes = {
   countries: PropTypes.arrayOf(PropTypes.object),
   fetchTaxCodes: PropTypes.func,
   isProviderEnabled: PropTypes.func,
-  selectedVariant: PropTypes.object
+  variant: PropTypes.object
 };
 
 export default VariantForm;

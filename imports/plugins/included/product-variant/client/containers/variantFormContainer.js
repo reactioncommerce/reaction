@@ -76,7 +76,7 @@ function composer(props, onData) {
 
   onData(null, {
     countries,
-    selectedVariant
+    variant: selectedVariant
   });
 }
 
