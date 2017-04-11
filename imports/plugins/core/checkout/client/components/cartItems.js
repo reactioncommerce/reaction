@@ -1,23 +1,28 @@
 import React, { PropTypes } from "react";
 
-const CartItems = ({ handleLowInventory, pdpPath, handleBgImage, handleImage, handleRemoveItem, items }) => {
+const CartItems = ({ handleLowInventory, pdpPath, handleImage, handleRemoveItem, items }) => {
   return (
     <div>
-      {items.map((item, key) => {
-        const bgImage = handleBgImage(item);
-        const itemStyle = { backgroundImage: `url('${bgImage}')`, display: "inline-block" };
+      {items.map((item) => {
         return (
-          <div className="cart-items" key={key} id={item.productId + item.variants._id} style={itemStyle}>
-            <div className="remove-cart-item fa fa-times fa-lg"
+          <div className="cart-items" key={item._id} style={{ display: "inline-block" }}>
+            <i className="remove-cart-item fa fa-times fa-lg"
               data-target={item._id}
               onClick={handleRemoveItem}
-            >{}</div>
+            />
             <a href={pdpPath(item)}
-              data-event-category="cart"
               data-event-action="product-click"
-              data-event-label="Cart product click"
               data-event-value={item.productId}
-            >{handleImage(item)}</a>
+            >
+              {handleImage(item) ?
+                <div className="center-cropped" style={{ backgroundImage: `url(${handleImage(item).url({ store: "small" })})` }}>
+                  <img src={handleImage(item).url({ store: "small" })} className="product-grid-item-images img-responsive" />
+                </div> :
+                <div className="center-cropped" style={{ backgroundImage: "url('/resources/placeholder.gif')" }}>
+                  <img src="/resources/placeholder.gif" className="product-grid-item-images img-responsive" />
+                </div>
+              }
+            </a>
             <div className="cart-labels">{handleLowInventory(item)}</div>
           </div>
         );

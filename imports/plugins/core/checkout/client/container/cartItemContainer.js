@@ -13,24 +13,12 @@ class CartItemContainer extends Component {
     productItems: PropTypes.array
   }
 
-  handleImage(productItem) {
-    const { defaultImage } = productItem;
-
+  handleImage(item) {
+    const { defaultImage } = item;
     if (defaultImage && defaultImage.url({ store: "small" })) {
-      return (
-        <div className="center-cropped">
-          <img src={defaultImage.url({ store: "small" })} className="product-grid-item-images img-responsive" />
-        </div>
-      );
+      return defaultImage;
     }
-    return (
-      <div
-        className="center-cropped"
-        style={{ backgroundImage: "url('/resources/placeholder.gif')" }}
-      >
-        <img src="/resources/placeholder.gif" className="product-grid-item-images img-responsive" />
-      </div>
-    );
+    return false;
   }
   /**
   * showLowInventoryWarning
@@ -65,16 +53,6 @@ class CartItemContainer extends Component {
       </div>
     );
   }
-
-  handleBgImage(productItem) {
-    const { defaultImage } = productItem;
-
-    if (defaultImage && defaultImage.url({ store: "small" })) {
-      return defaultImage.url({ store: "small" });
-    }
-    return "/resources/placeholder.gif";
-  }
-
 
   pdpPath(productItem) {
     if (productItem) {
@@ -121,7 +99,6 @@ function composer(props, onData) {
     });
     return Object.assign({}, item, { defaultImage });
   });
-
   onData(null, {
     productItems
   });
