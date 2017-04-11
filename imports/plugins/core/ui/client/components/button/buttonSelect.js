@@ -128,6 +128,7 @@ class ButtonSelect extends Component {
           {nonActiveButtons.map((button, key) => {
             return (<div
               className="button-item" key={key}
+              data-i18n={button.i18nKeyLabel}
               onClick={() => this.handleButtonChange(button)}
                     >{button.name}</div>);
           })}

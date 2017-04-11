@@ -122,8 +122,6 @@ class Button extends Component {
   }
 
   render() {
-    const { } = this.props;
-
     const {
       active, status, toggleOn, primary, bezelStyle, className, containerStyle,
 
