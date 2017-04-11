@@ -17,7 +17,7 @@ class OrderSummary extends Component {
         <div className="order-summary-form-group bg-info" style={{ lineHeight: 3, marginRight: -15, marginLeft: -15 }}>
           <strong style={{ marginLeft: 15 }}>{profile.fullName}</strong> , {profile.country}
           <div className="invoice-details" style={{ marginRight: 15 }}>
-            <strong>ID </strong>{profile._id}
+            <strong>ID </strong>{order._id}
           </div>
         </div>
 
