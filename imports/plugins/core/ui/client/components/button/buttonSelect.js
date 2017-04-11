@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import classnames from "classnames";
 import Button from "./button.jsx";
+import { Translation } from "/imports/plugins/core/ui/client/components";
 
 class ButtonSelect extends Component {
   static PropTypes = {
@@ -47,10 +48,10 @@ class ButtonSelect extends Component {
         eventAction={defaultButton.eventAction}
         status={defaultButton.status}
         bezelStyle="solid"
+        label={defaultButton.name}
+        i18nKeyLabel={defaultButton.i18nKeyLabel}
         buttonType={defaultButton.buttonType}
-      >
-        {defaultButton.name}
-      </Button>
+      />
     );
 
     return this.setState({
@@ -97,10 +98,10 @@ class ButtonSelect extends Component {
         eventAction={button.eventAction}
         status={button.status}
         bezelStyle="solid"
+        label={button.name}
+        i18nKeyLabel={button.i18nKeyLabel}
         buttonType={button.buttonType}
-      >
-        {button.name}
-      </Button>
+      />
     );
 
     this.handleToggle();
@@ -132,7 +133,7 @@ class ButtonSelect extends Component {
                 type="button"
                 onClick={() => this.handleButtonChange(button)}
               >
-                {button.name}
+                <Translation defaultValue={button.name} i18nKey={button.i18nKeyLabel} />
               </button>);
           })}
         </div>

@@ -88,7 +88,7 @@ Template.coreOrderShippingInvoice.helpers({
       component: ButtonSelect,
       buttons: [
         {
-          name: i18next.t("order.approveInvoice"),
+          name: "Approve",
           i18nKeyLabel: "order.approveInvoice",
           active: true,
           status: "info",
@@ -96,15 +96,7 @@ Template.coreOrderShippingInvoice.helpers({
           bgColor: "bg-info",
           buttonType: "submit"
         }, {
-          name: i18next.t("order.cancelInvoice"),
-          i18nKeyLabel: "order.cancelInvoice",
-          active: false,
-          status: "danger",
-          eventAction: "cancelOrder",
-          bgColor: "bg-danger",
-          buttonType: "button"
-        }, {
-          name: i18next.t("order.cancelInvoice"),
+          name: "Cancel",
           i18nKeyLabel: "order.cancelInvoice",
           active: false,
           status: "danger",
