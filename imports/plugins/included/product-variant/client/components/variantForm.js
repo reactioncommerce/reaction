@@ -27,6 +27,7 @@ class VariantForm extends Component {
           i18nKeyPlaceholder="productVariant.selectTaxCode"
           label="Tax Code"
           name="taxCode"
+          options={this.props.fetchTaxCodes()}
         />
       );
     }
@@ -240,6 +241,7 @@ class VariantForm extends Component {
 
 VariantForm.propTypes = {
   countries: PropTypes.arrayOf(PropTypes.object),
+  fetchTaxCodes: PropTypes.func,
   isProviderEnabled: PropTypes.func,
   selectedVariant: PropTypes.object
 };
