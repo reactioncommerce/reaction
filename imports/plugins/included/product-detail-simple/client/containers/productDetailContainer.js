@@ -198,11 +198,11 @@ class ProductDetailContainer extends Component {
       [oppositeDirection]: "auto",
       [direction]: -alertWidth
     }, {
-        duration: 600,
-        complete() {
-          $(".cart-alert").hide();
-        }
-      });
+      duration: 600,
+      complete() {
+        $(".cart-alert").hide();
+      }
+    });
   }
 
   handleProductFieldChange = (productId, fieldName, value) => {
@@ -300,10 +300,10 @@ function composer(props, onData) {
         mediaArray = Media.find({
           "metadata.variantId": selectedVariant._id
         }, {
-            sort: {
-              "metadata.priority": 1
-            }
-          }).fetch();
+          sort: {
+            "metadata.priority": 1
+          }
+        }).fetch();
 
         // If no media found, broaden the search to include other media from parents
         if (Array.isArray(mediaArray) && mediaArray.length === 0 && selectedVariant.ancestors) {
@@ -312,10 +312,10 @@ function composer(props, onData) {
             const media = Media.find({
               "metadata.variantId": ancestor
             }, {
-                sort: {
-                  "metadata.priority": 1
-                }
-              }).fetch();
+              sort: {
+                "metadata.priority": 1
+              }
+            }).fetch();
 
             // If we found some media, then stop here
             if (Array.isArray(media) && media.length) {
