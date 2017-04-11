@@ -4,15 +4,20 @@ class OrderSummary extends Component {
   static propTypes = {
     dateFormat: PropTypes.func,
     order: PropTypes.object,
+    shipmentStatus: PropTypes.func,
     tracking: PropTypes.func
   }
 
   render() {
-    const { dateFormat, tracking, order } = this.props;
+    const { dateFormat, tracking, order, shipmentStatus } = this.props;
 
     return (
       <div>
-         <div className="order-summary-form-group">
+        {shipmentStatus().status === "success" ?
+          <span className="badge badge-success">{shipmentStatus().label}</span> :
+           <span className="badge badge-info">{shipmentStatus().label}</span>
+        }
+        <div className="order-summary-form-group">
           <strong data-i18n="order.created">Created</strong>
           <div className="invoice-details">
             {dateFormat(order.createdAt, "MM/D/YYYY")}
