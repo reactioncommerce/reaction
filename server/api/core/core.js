@@ -64,18 +64,14 @@ export default {
    * @param {String} checkGroup group - default to shopId
    * @return {Boolean} Boolean - true if has permission
    */
-  hasPermission(checkPermissions, userId = Meteor.userId(), checkGroup = this.getShopId()) {
+  hasPermission(checkPermissions, userId = Meteor.userId(), checkGroup = this.getSellerShopId(userId)) {
     // check(checkPermissions, Match.OneOf(String, Array)); check(userId, String); check(checkGroup,
     // Match.Optional(String));
 
     let permissions;
     let group;
-    // default group to the shop or global if shop isn't defined for some reason.
-    if (checkGroup !== undefined && typeof checkGroup === "string") {
-      group = checkGroup;
-    } else {
-      group = this.getSellerShopId() || Roles.GLOBAL_GROUP;
-    }
+    group = checkGroup || Roles.GLOBAL_GROUP;
+
 
     // permissions can be either a string or an array we'll force it into an array and use that
     if (checkPermissions === undefined) {
@@ -95,21 +91,6 @@ export default {
       return true;
     }
 
-    // global roles check
-    /*const sellerShopPermissions = Roles.getGroupsForUser(userId, "admin");
-
-    // we're looking for seller permissions.
-    if (sellerShopPermissions) {
-      // loop through shops roles and check permissions
-      for (const key in sellerShopPermissions) {
-        if (key) {
-          const shop = sellerShopPermissions[key];
-          if (Roles.userIsInRole(userId, permissions, shop)) {
-            return true;
-          }
-        }
-      }
-    }*/
     // no specific permissions found returning false
     return false;
   },

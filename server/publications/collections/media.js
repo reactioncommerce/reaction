@@ -72,9 +72,7 @@ Meteor.publish("Media", function (shops) {
     });
   }
 
-  return Media.find(selector, {
-    sort: {
-      "metadata.priority": 1
-    }
+  return Media.find({
+    "metadata.type": "brandAsset"
   });
 });
