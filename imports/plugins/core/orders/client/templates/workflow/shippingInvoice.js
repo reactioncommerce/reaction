@@ -103,6 +103,14 @@ Template.coreOrderShippingInvoice.helpers({
           eventAction: "cancelOrder",
           bgColor: "bg-danger",
           buttonType: "button"
+        }, {
+          name: i18next.t("order.cancelInvoice"),
+          i18nKeyLabel: "order.cancelInvoice",
+          active: false,
+          status: "danger",
+          eventAction: "cancelOrder",
+          bgColor: "bg-danger",
+          buttonType: "button"
         }
       ]
     };

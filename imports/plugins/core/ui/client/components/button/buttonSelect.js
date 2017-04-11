@@ -126,11 +126,14 @@ class ButtonSelect extends Component {
         </div>
         <div className={toggleClassNames}>
           {nonActiveButtons.map((button, key) => {
-            return (<div
-              className="button-item" key={key}
-              data-i18n={button.i18nKeyLabel}
-              onClick={() => this.handleButtonChange(button)}
-                    >{button.name}</div>);
+            return (
+              <button
+                className="btn button-item" key={key}
+                type="button"
+                onClick={() => this.handleButtonChange(button)}
+              >
+                {button.name}
+              </button>);
           })}
         </div>
       </div>
