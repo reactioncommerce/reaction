@@ -72,16 +72,21 @@ Template.taxSettingsPanel.onCreated(function () {
 AutoForm.addHooks(null, {
   before: {
     update: function (doc) {
-      const oldValues = _.get(Template.instance(), "data.doc.taxSettings");
       if (isCustomValue()) {
         const value = $(".customerUsageType input").val();
         doc.$set["taxSettings.customerUsageType"] = value;
       }
-      return Object.assign({}, oldValues, doc);
+
+      return doc;
     }
   }
 });
 
+/**
+ * @summary Checks if customerUsageType is set to "custom"
+ * @param {String} formId - Id of the Autoform instance.. defaults to null
+ * @returns {boolean} - true if Custom Entity Type is set
+ */
 function isCustomValue(formId = null) {
   const formData = AutoForm.getFormValues(formId, Template.instance());
   const value = _.get(formData, "insertDoc.taxSettings.customerUsageType");
