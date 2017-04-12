@@ -128,13 +128,15 @@ export default function () {
           _id: itemIdOne,
           productId: Random.id(),
           shopId: Random.id(),
-          variantId: Random.id()
+          variantId: Random.id(),
+          packed: false
         },
         {
           _id: itemIdTwo,
           productId: Random.id(),
           shopId: Random.id(),
-          variantId: Random.id()
+          variantId: Random.id(),
+          packed: false
         }
       ]
     }], // Shipping Schema
@@ -149,7 +151,11 @@ export default function () {
         status: "created"
       }),
       invoice: {
-        total: 12.45
+        total: 12.45,
+        subTotal: 12.45,
+        discounts: 0,
+        taxes: 0,
+        shipping: 0
       }
     }],
     state: "new",
