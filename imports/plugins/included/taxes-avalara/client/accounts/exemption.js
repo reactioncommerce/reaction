@@ -89,7 +89,7 @@ AutoForm.addHooks(null, {
         doc.$set["taxSettings.customerUsageType"] = value;
       }
       if (oldType && entityCodeList.indexOf(oldType) < 0) {
-        delete doc.$unset; // there's existing custom value.... don't let autoform override it to null
+        delete doc.$unset; // there's existing custom value.... this prevent autoform override
       }
 
       return doc;
