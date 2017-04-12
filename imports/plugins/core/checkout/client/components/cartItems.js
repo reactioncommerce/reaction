@@ -23,7 +23,21 @@ const CartItems = ({ handleLowInventory, pdpPath, handleImage, handleRemoveItem,
                 </div>
               }
             </a>
-            <div className="cart-labels">{handleLowInventory(item)}</div>
+            <div className="cart-labels">
+              {handleLowInventory(item) ?
+              <div className="badge badge-low-inv-warning"
+                title={item.variants.inventoryQuantity}
+                data-i18n="cartDrawerItems.left"
+              >!</div> :
+            <div>
+            <span className="badge">{item.quantity}</span>
+            <span className="cart-item-title">
+              {item.title}
+              <small>{item.variants.title}</small>
+            </span>
+            </div>
+             }
+            </div>
           </div>
         );
       })}

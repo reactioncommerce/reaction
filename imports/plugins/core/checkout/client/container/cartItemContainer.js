@@ -36,21 +36,9 @@ class CartItemContainer extends Component {
 
   handleLowInventory = (productItem) => {
     if (this.showItemLowInventoryWarning(productItem)) {
-      return (
-        <div className="badge badge-low-inv-warning"
-          title={productItem.variants.inventoryQuantity}
-          data-i18n="cartDrawerItems.left"
-        >!</div>);
+      return true;
     }
-    return (
-      <div>
-        <span className="badge">{productItem.quantity}</span>
-        <span className="cart-item-title">
-          {productItem.title}
-          <small>{productItem.variants.title}</small>
-        </span>
-      </div>
-    );
+    return false;
   }
 
   pdpPath(productItem) {
