@@ -515,6 +515,12 @@ Meteor.methods({
     const order = Object.assign({}, cart);
     const sessionId = cart.sessionId;
 
+    if (!order.items || order.items.length === 0) {
+      const msg = "An error occurred saving the order. Missing cart items.";
+      Logger.error(msg);
+      throw new Meteor.Error("no-cart-items", msg);
+    }
+
     Logger.debug("cart/copyCartToOrder", cartId);
     // reassign the id, we'll get a new orderId
     order.cartId = cart._id;

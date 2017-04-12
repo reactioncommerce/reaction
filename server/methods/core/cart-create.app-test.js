@@ -185,7 +185,7 @@ describe("Add/Create cart methods", function () {
       return done();
     });
 
-    it("should throw an error if order creation has failed", function (done) {
+    it("should throw an error if order creation has failed", function () {
       const cart = Factory.create("cartToOrder");
       spyOnMethod("copyCartToOrder", cart.userId);
       // The main moment of test. We are spy on `insert` operation but do not
@@ -196,7 +196,6 @@ describe("Add/Create cart methods", function () {
       }
       expect(copyCartFunc).to.throw(Meteor.Error, /Invalid request/);
       expect(insertStub).to.have.been.called;
-      return done();
     });
 
     it("should create an order", function (done) {
