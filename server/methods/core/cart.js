@@ -590,58 +590,24 @@ Meteor.methods({
       };
     }
 
+    // _.each(order.items, (item) => {
+    //   if (order.shipping[0].items) {
+    //     order.shipping[0].items.push({
+    //       _id: item._id,
+    //       productId: item.productId,
+    //       shopId: item.shopId,
+    //       variantId: item.variants._id
+    //     });
+    //   }
+    // });
+
+
     order.billing[0].currency.exchangeRate = exchangeRate;
-
-
-    const expandedItems = [];
-
-    // init item level workflow
-    _.each(order.items, function (item) {
-      // Split items based on their quantity
-      for (let i = 0; i < item.quantity; i++) {
-        // Clone Item
-        const itemClone = _.clone(item);
-
-        // Remove the quantity since we'll be expanding each item as
-        // it's own record
-        itemClone.quantity = 1;
-
-        itemClone._id = Random.id();
-        itemClone.cartItemId = item._id; // used for transitioning inventry
-        itemClone.workflow = {
-          status: "new"
-        };
-
-        expandedItems.push(itemClone);
-
-        // Add each item clone to the first shipment
-        if (order.shipping[0].items) {
-          order.shipping[0].items.push({
-            _id: itemClone._id,
-            productId: itemClone.productId,
-            shopId: itemClone.shopId,
-            variantId: itemClone.variants._id
-          });
-        }
-      }
-    });
-
-    // Replace the items with the expanded array of items
-    order.items = expandedItems;
-
-    if (!order.items || order.items.length === 0) {
-      const msg = "An error occurred saving the order. Missing cart items.";
-      Logger.error(msg);
-      throw new Meteor.Error("no-cart-items", msg);
-    }
-
-    // set new workflow status
     order.workflow.status = "new";
     order.workflow.workflow = ["coreOrderWorkflow/created"];
 
     // insert new reaction order
     const orderId = Collections.Orders.insert(order);
-    Logger.info("Created orderId", orderId);
 
     if (orderId) {
       Collections.Cart.remove({
