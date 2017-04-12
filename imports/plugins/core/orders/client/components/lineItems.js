@@ -42,7 +42,7 @@ class LineItems extends Component {
           </div>
 
           <div className="order-detail-quantity">
-            {quantity || 1}
+           {quantity}
           </div>
 
           <div className="order-detail-price">
@@ -107,13 +107,12 @@ class LineItems extends Component {
 
   render() {
     const { uniqueItems, isExpanded, onClose } = this.props;
-
     return (
       <div>
         {uniqueItems.map((uniqueItem) => {
-          if (!isExpanded(uniqueItem.cartItemId)) {
+          if (!isExpanded(uniqueItem._id)) {
             return (
-              <div key={uniqueItem.cartItemId}> { this.renderLineItem(uniqueItem.items[0], uniqueItem.items.length) } </div>
+              <div key={uniqueItem._id}> { this.renderLineItem(uniqueItem.items[0], uniqueItem.items[0].quantity) } </div>
             );
           }
 
