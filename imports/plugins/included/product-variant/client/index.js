@@ -10,8 +10,6 @@ import "./templates/products/productDetail/attributes.html";
 import "./templates/products/productDetail/attributes.js";
 import "./templates/products/productDetail/edit.html";
 import "./templates/products/productDetail/edit.js";
-import "./templates/products/productDetail/productDetail.html";
-import "./templates/products/productDetail/productDetail.js";
 import "./templates/products/productDetail/productImageGallery.html";
 import "./templates/products/productDetail/productImageGallery.js";
 import "./templates/products/productDetail/social.html";
