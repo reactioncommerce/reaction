@@ -97,7 +97,7 @@ function markInventoryShipped(doc) {
   const cartItems = [];
   for (const orderItem of orderItems) {
     const cartItem = {
-      _id: orderItem.cartItemId,
+      _id: orderItem._id,
       shopId: orderItem.shopId,
       quantity: orderItem.quantity,
       productId: orderItem.productId,
