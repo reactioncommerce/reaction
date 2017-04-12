@@ -476,12 +476,10 @@ Template.coreOrderShippingInvoice.helpers({
     const currentData = Template.currentData();
     const shipment = currentData.fulfillment;
 
-    // returns array of individual items that have been checked out
-    const returnItems = _.map(shipment.items, (item) => {
-      const originalItem = _.find(order.items, {
-        _id: item._id
-      });
-      return _.extend(originalItem, item);
+    // returns order items with shipping detail
+    const returnItems = _.map(order.items, (item) => {
+      const shipping = shipment.shipmentMethod;
+      return _.extend(item, { shipping });
     });
 
     let items;
@@ -499,36 +497,6 @@ Template.coreOrderShippingInvoice.helpers({
     } else {
       items = returnItems;
     }
-
-    /**
-     * It goes through individual items and groups similar items using the cartItemId.
-     * The output is an object whose keys are cartItemId and every item with the same
-     * cartItemId is added as a value
-     */
-    let uniqueItems = items.reduce((carts, item) => {
-      let cart;
-
-      if (carts[item._id]) {
-        cart = carts[item._id];
-        cart = Object.assign({}, cart, {
-          items: [...cart.items, item]
-        });
-      } else {
-        cart = {
-          _id: item._id,
-          productId: item.productId,
-          shippingRate: shipment.shipmentMethod.rate,
-          items: [item]
-        };
-      }
-
-      carts[item._id] = cart;
-      return carts;
-    }, {});
-
-    // Converts the uniqueItems object to an array
-    uniqueItems = Object.keys(uniqueItems).map(k => uniqueItems[k]);
-
-    return uniqueItems;
+    return items;
   }
 });
