@@ -515,7 +515,7 @@ Template.coreOrderShippingInvoice.helpers({
         });
       } else {
         cart = {
-          cartItemId: item._id,
+          _id: item._id,
           productId: item.productId,
           shippingRate: shipment.shipmentMethod.rate,
           items: [item]

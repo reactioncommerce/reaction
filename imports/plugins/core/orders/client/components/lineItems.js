@@ -22,7 +22,7 @@ class LineItems extends Component {
       <div className="order-items">
         <div
           className="invoice order-item form-group order-summary-form-group"
-          onClick={() => handleClick(uniqueItem.cartItemId)}
+          onClick={() => handleClick(uniqueItem._id)}
           style={{ height: 70 }}
         >
 
@@ -117,11 +117,11 @@ class LineItems extends Component {
           }
 
           return (
-            <div className="roll-up-invoice-list" key={uniqueItem.cartItemId}>
+            <div className="roll-up-invoice-list" key={uniqueItem._id}>
               <div className="roll-up-content">
 
                 <div style={{ float: "right" }}>
-                  <button className="rui btn btn-default flat icon-only" onClick={() => onClose(uniqueItem.cartItemId)}>
+                  <button className="rui btn btn-default flat icon-only" onClick={() => onClose(uniqueItem._id)}>
                     <i
                       className="rui font-icon fa-lg fa fa-times"
                     />

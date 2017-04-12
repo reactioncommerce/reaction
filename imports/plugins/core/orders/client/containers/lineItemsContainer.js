@@ -90,6 +90,7 @@ class LineItemsContainer extends Component {
 }
 
 const composer = (props, onData) => {
+  console.log("props", props.items);
   const subscription = Meteor.subscribe("Media");
   if (subscription.ready()) {
     onData(null, {
