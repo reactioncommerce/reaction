@@ -7,12 +7,15 @@ import { Accounts as AccountsSchema } from "/lib/collections/schemas/accounts";
 import { TaxEntityCodes } from "/client/collections";
 
 let entityCodeList = [];
+let currentAccount;
 
 Template.taxSettingsPanel.helpers({
   account() {
     const sub = Meteor.subscribe("UserAccount", this.member.userId);
     if (sub.ready()) {
-      return Accounts.findOne({ _id: this.member.userId });
+      const account = Accounts.findOne({ _id: this.member.userId });
+      currentAccount = account;
+      return account;
     }
     return null;
   },
@@ -45,8 +48,14 @@ Template.taxSettingsPanel.events({
     const formId = $(event.currentTarget.closest("form")).attr("id");
 
     if (isCustomValue(formId)) {
+      // show input field for custom; pre-fill with existing custom val
+      const currType = _.get(currentAccount, "taxSettings.customerUsageType", "");
+      if (entityCodeList.indexOf(currType) < 0) {
+        $(".customerUsageType input").val(currType);
+      }
       return $(".customerUsageType").toggleClass("hide");
     }
+
     $(".customerUsageType").addClass("hide");
   }
 });
@@ -90,11 +99,11 @@ AutoForm.addHooks(null, {
 
 /**
  * @summary Checks if customerUsageType is set to "custom"
- * @param {String} formId - Id of the Autoform instance.. defaults to null
+ * @param {String} formId - Id of the Autoform instance..
  * @returns {boolean} - true if Custom Entity Type is set
  */
-function isCustomValue(formId = null) {
-  const formData = AutoForm.getFormValues(formId, Template.instance());
+function isCustomValue(formId) {
+  const formData = AutoForm.getFormValues(formId);
   const value = _.get(formData, "insertDoc.taxSettings.customerUsageType");
   return value === "CUSTOM USER INPUT";
 }
