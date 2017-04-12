@@ -39,7 +39,7 @@ Meteor.methods({
     const { Email } = Reaction;
 
     try {
-      return Meteor.wrapAsync(Email.verifyConfig(config || Email.getMailConfig()));
+      return Meteor.wrapAsync(Email.verifyConfig)(config || Email.getMailConfig());
     } catch (e) {
       Logger.error(e);
       throw new Meteor.Error(e.responseCode, e.response);
