@@ -107,6 +107,8 @@ class VariantForm extends Component {
                   placeholder="0.00"
                   ref="input"
                   value={this.props.variant.price}
+                  style={this.props.greyDisabledFields(this.props.variant)}
+                  disabled={this.props.hasChildVariants(this.props.variant)}
                 />
               </div>
             </div>
@@ -209,8 +211,9 @@ class VariantForm extends Component {
                 name="inventoryQuantity"
                 type="text"
                 placeholder="0"
-                ref="input"
                 value={this.props.variant.inventoryQuantity}
+                style={this.props.greyDisabledFields(this.props.variant)}
+                disabled={this.props.hasChildVariants(this.props.variant)}
               />
             </div>
             <div className="rui textfield form-group col-sm-6">
@@ -242,6 +245,8 @@ class VariantForm extends Component {
 VariantForm.propTypes = {
   countries: PropTypes.arrayOf(PropTypes.object),
   fetchTaxCodes: PropTypes.func,
+  greyDisabledFields: PropTypes.func,
+  hasChildVariants: PropTypes.func,
   isProviderEnabled: PropTypes.func,
   variant: PropTypes.object
 };

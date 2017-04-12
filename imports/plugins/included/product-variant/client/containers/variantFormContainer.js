@@ -59,11 +59,26 @@ class VariantFormContainer extends Component {
     return taxCodesArray;
   }
 
+  hasChildVariants = (variant) => {
+    if (ReactionProduct.checkChildVariants(variant._id) > 0) {
+      return true;
+    }
+    return false;
+  }
+
+  greyDisabledFields = (variant) => {
+    if (this.hasChildVariants(variant)) {
+      return { backgroundColor: "lightgrey", cursor: "not-allowed" };
+    }
+  }
+
   render() {
     return (
       <VariantForm
         isProviderEnabled={this.isProviderEnabled}
         fetchTaxCodes={this.fetchTaxCodes}
+        hasChildVariants={this.hasChildVariants}
+        greyDisabledFields={this.greyDisabledFields}
         {...this.props}
       />
     );
