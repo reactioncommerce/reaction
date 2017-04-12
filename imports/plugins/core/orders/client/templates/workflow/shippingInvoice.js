@@ -315,7 +315,7 @@ Template.coreOrderShippingInvoice.helpers({
     const order = instance.state.get("order");
 
     const invoice = Object.assign({}, order.billing[0].invoice, {
-      totalItems: _.sumBy(order.items, function(o) { return o.quantity; })
+      totalItems: _.sumBy(order.items, (o) => o.quantity)
     });
     return invoice;
   },
@@ -492,7 +492,7 @@ Template.coreOrderShippingInvoice.helpers({
 
       items = _.map(returnItems, (item) => {
         const taxDetail = _.find(taxes, {
-          lineNumber: item.cartItemId
+          lineNumber: item._id
         });
         return _.extend(item, { taxDetail });
       });
@@ -508,21 +508,21 @@ Template.coreOrderShippingInvoice.helpers({
     let uniqueItems = items.reduce((carts, item) => {
       let cart;
 
-      if (carts[item.cartItemId]) {
-        cart = carts[item.cartItemId];
+      if (carts[item._id]) {
+        cart = carts[item._id];
         cart = Object.assign({}, cart, {
           items: [...cart.items, item]
         });
       } else {
         cart = {
-          cartItemId: item.cartItemId,
+          cartItemId: item._id,
           productId: item.productId,
           shippingRate: shipment.shipmentMethod.rate,
           items: [item]
         };
       }
 
-      carts[item.cartItemId] = cart;
+      carts[item._id] = cart;
       return carts;
     }, {});
 
