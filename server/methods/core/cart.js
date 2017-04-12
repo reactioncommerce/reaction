@@ -590,17 +590,20 @@ Meteor.methods({
       };
     }
 
-    // _.each(order.items, (item) => {
-    //   if (order.shipping[0].items) {
-    //     order.shipping[0].items.push({
-    //       _id: item._id,
-    //       productId: item.productId,
-    //       shopId: item.shopId,
-    //       variantId: item.variants._id
-    //     });
-    //   }
-    // });
+    _.each(order.items, (item) => {
+      if (order.shipping[0].items) {
+        order.shipping[0].items.push({
+          _id: item._id,
+          productId: item.productId,
+          shopId: item.shopId,
+          variantId: item.variants._id
+        });
+      }
+    });
 
+    order.shipping[0].items.packed = false;
+    order.shipping[0].items.shipped = false;
+    order.shipping[0].items.delivered = false;
 
     order.billing[0].currency.exchangeRate = exchangeRate;
     order.workflow.status = "new";
