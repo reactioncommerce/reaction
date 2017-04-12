@@ -309,16 +309,13 @@ Template.coreOrderShippingInvoice.helpers({
   refundAmount() {
     return Template.instance().refundAmount;
   },
-  /**
-   * Discount
-   * @return {Number} current discount amount
-   */
+
   invoice() {
     const instance = Template.instance();
     const order = instance.state.get("order");
 
     const invoice = Object.assign({}, order.billing[0].invoice, {
-      totalItems: order.items.length
+      totalItems: _.sumBy(order.items, function(o) { return o.quantity; })
     });
     return invoice;
   },
