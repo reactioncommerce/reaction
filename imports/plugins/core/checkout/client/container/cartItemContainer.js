@@ -9,7 +9,6 @@ class CartItemContainer extends Component {
   static propTypes = {
     defaultImage: PropTypes.object,
     lowInventory: PropTypes.bool,
-    path: PropTypes.string,
     productItems: PropTypes.array
   }
 
@@ -80,7 +79,6 @@ class CartItemContainer extends Component {
         pdpPath={this.pdpPath}
         handleLowInventory={this.handleLowInventory}
         handleImage={this.handleImage}
-        handleBgImage={this.handleBgImage}
         handleRemoveItem={this.handleRemoveItem}
         {...this.props}
       />

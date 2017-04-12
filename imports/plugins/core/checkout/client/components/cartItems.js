@@ -32,7 +32,6 @@ const CartItems = ({ handleLowInventory, pdpPath, handleImage, handleRemoveItem,
 };
 
 CartItems.propTypes = {
-  handleBgImage: PropTypes.func,
   handleImage: PropTypes.func,
   handleLowInventory: PropTypes.func,
   handleRemoveItem: PropTypes.func,
