@@ -65,6 +65,9 @@ Template.variantForm.helpers({
     return childVariants;
   },
   hasChildVariants: function () {
+    return ReactionProduct.checkChildVariants(this._id) > 0;
+  },
+  updateQuantityIfChildVariants: function () {
     if (ReactionProduct.checkChildVariants(this._id) > 0) {
       const _id = this._id;
       const variants = ReactionProduct.getVariants();
