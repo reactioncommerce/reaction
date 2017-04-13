@@ -10,6 +10,7 @@ import { ActionViewContainer } from "/imports/plugins/core/dashboard/client/cont
 import { ActionView } from "/imports/plugins/core/dashboard/client/components";
 
 Template.coreAdminLayout.onRendered(function () {
+  console.log("********", this.data);
   $("body").addClass("admin");
 });
 

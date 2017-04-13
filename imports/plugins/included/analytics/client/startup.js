@@ -116,8 +116,8 @@ function notifyMixpanel(context) {
     });
   }
 }
-
-Reaction.Router.triggers.enter([notifySegment, notifyGoogleAnalytics, notifyMixpanel]);
+console.log("TODO: FIX: analytics");
+// Reaction.Router.triggers.enter([notifySegment, notifyGoogleAnalytics, notifyMixpanel]);
 
 //
 // Initialize analytics event tracking

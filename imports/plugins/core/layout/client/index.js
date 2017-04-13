@@ -20,3 +20,14 @@ import "./templates/layout/layout.html";
 
 import "./templates/theme/theme.html";
 import "./templates/theme/theme.js";
+
+
+import AdminView from "./components/admin";
+import AdminContainer from "./containers/adminContainer";
+import { registerComponent } from "../lib/components";
+
+
+registerComponent({
+  name: "AdminView",
+  component: AdminContainer(AdminView)
+});

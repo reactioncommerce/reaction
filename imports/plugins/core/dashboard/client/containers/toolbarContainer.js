@@ -51,13 +51,13 @@ const handleViewContextChange = (event, value) => {
 
 function composer(props, onData) {
   // Reactive data sources
-  const routeName = Reaction.Router.getRouteName();
+  // const routeName = Reaction.Router.getRouteName();
 
   // Standard variables
   const packageButtons = [];
 
-  if (routeName !== "dashboard") {
-    const registryItems = Reaction.Apps({ provides: "settings", container: routeName });
+  // if (routeName !== "dashboard") {
+    const registryItems = Reaction.Apps({ provides: "settings", container: "dashboard" });
 
     for (const item of registryItems) {
       if (Reaction.hasPermission(item.route, Meteor.userId())) {
@@ -78,7 +78,7 @@ function composer(props, onData) {
         });
       }
     }
-  }
+  // }
 
   onData(null, {
     packageButtons,
