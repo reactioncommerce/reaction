@@ -9,14 +9,18 @@ import { TaxEntityCodes } from "/client/collections";
 let entityCodeList = [];
 let currentAccount;
 
+Template.taxSettingsPanel.onCreated(function () {
+  this.subscribe("UserAccount", Meteor.userId());
+});
+
 Template.taxSettingsPanel.helpers({
   account() {
-    const sub = Meteor.subscribe("UserAccount", this.member.userId);
-    if (sub.ready()) {
-      const account = Accounts.findOne({ _id: this.member.userId });
+    if (Template.instance().subscriptionsReady()) {
+      const account = Accounts.findOne(this.member.userId);
       currentAccount = account;
       return account;
     }
+
     return null;
   },
   makeUniqueId() {
