@@ -3,21 +3,5 @@
     <div>
       {{> React component=orderSummary order=order}}
     </div>
-
-    {{#if printableLabels}}
-    <div>
-      <strong data-i18n="orderShipping.printLabels">Labels</strong>
-        {{#if printableLabels.shippingLabelUrl}}
-          <a href="{{printableLabels.shippingLabelUrl}}" target="_blank">
-            <span data-i18n="orderShipping.printShippingLabel">Print Shipping</span>
-          </a>
-        {{/if}}
-        {{#if printableLabels.customsLabelUrl}}
-          <a href="{{printableLabels.customsLabelUrl}}" target="_blank">
-            <span data-i18n="orderShipping.printCustomsLabel">Print Customs</span>
-          </a>
-        {{/if}}
-    </div>
-    {{/if}}
   </div>
 </template>

@@ -4,13 +4,14 @@ class OrderSummary extends Component {
   static propTypes = {
     dateFormat: PropTypes.func,
     order: PropTypes.object,
+    printableLabels: PropTypes.func,
     profile: PropTypes.object,
     shipmentStatus: PropTypes.func,
     tracking: PropTypes.func
   }
 
   render() {
-    const { dateFormat, tracking, order, shipmentStatus, profile } = this.props;
+    const { dateFormat, tracking, order, shipmentStatus, profile, printableLabels } = this.props;
 
     return (
       <div>
@@ -71,6 +72,20 @@ class OrderSummary extends Component {
                 {tracking()}
               </div>
             </div>
+
+            {printableLabels() &&
+              <div className="order-summary-form-group">
+                <strong data-i18n="orderShipping.printLabels">Labels</strong>
+                {printableLabels().shippingLabelUrl ?
+                  <a className="invoice-details" href={printableLabels().shippingLabelUrl} target="_blank">
+                    <span data-i18n="orderShipping.printShippingLabel">Print Shipping</span>
+                  </a> :
+                  <a className="invoice-details" href={printableLabels().customsLabelUrl} target="_blank">
+                    <span data-i18n="orderShipping.printCustomsLabel">Print Customs</span>
+                  </a>
+                }
+              </div>
+            }
           </div>
         </div>
 

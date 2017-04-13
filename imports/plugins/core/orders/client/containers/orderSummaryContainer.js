@@ -32,7 +32,7 @@ class OrderSummaryContainer extends Component {
 
   shipmentStatus = () => {
     const order = this.props.order;
-    const shipment = this.props.order.shipping[0];
+    const shipment = order.shipping[0];
 
     if (shipment.delivered) {
       return {
@@ -72,6 +72,15 @@ class OrderSummaryContainer extends Component {
     };
   }
 
+  printableLabels = () => {
+    const { shippingLabelUrl, customsLabelUrl } = this.props.order.shipping[0];
+    if (shippingLabelUrl || customsLabelUrl) {
+      return { shippingLabelUrl, customsLabelUrl };
+    }
+
+    return false;
+  }
+
   render() {
     return (
       <div>
@@ -80,6 +89,7 @@ class OrderSummaryContainer extends Component {
           dateFormat={this.dateFormat}
           tracking={this.tracking}
           shipmentStatus={this.shipmentStatus}
+          printableLabels={this.printableLabels}
         />
       </div>
     );

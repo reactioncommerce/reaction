@@ -1,8 +1,6 @@
-import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Tracker } from "meteor/tracker";
 import { Template } from "meteor/templating";
-import { i18next } from "/client/api";
 import { Orders } from "/lib/collections";
 import OrderSummaryContainer from "../../containers/orderSummaryContainer";
 
@@ -41,16 +39,6 @@ Template.coreOrderShippingSummary.onRendered(function () {
   }
 });
 
-/**
- * coreOrderCreated events
- *
- */
-Template.coreOrderShippingSummary.events({
-  "click .btn": function () {
-    Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreOrderCreated", this);
-  }
-});
-
 Template.coreOrderShippingSummary.helpers({
   orderSummary() {
     return OrderSummaryContainer;
@@ -58,77 +46,5 @@ Template.coreOrderShippingSummary.helpers({
   order() {
     const template = Template.instance();
     return template.order;
-  },
-  shipment() {
-    return Template.instance().order.shipping[0];
-  },
-
-  paymentProcessor() {
-    const processor = Template.instance().order.billing[0].paymentMethod.processor;
-    return {
-      name: processor.toLowerCase(),
-      label: processor
-    };
-  },
-
-  tracking() {
-    const shipment = Template.instance().order.shipping[0];
-    if (shipment.tracking) {
-      return shipment.tracking;
-    }
-
-    return i18next.t("orderShipping.noTracking");
-  },
-
-  printableLabels() {
-    const { shippingLabelUrl, customsLabelUrl } = Template.instance().order.shipping[0];
-    if (shippingLabelUrl || customsLabelUrl) {
-      return { shippingLabelUrl, customsLabelUrl };
-    }
-
-    return false;
-  },
-
-  shipmentStatus() {
-    const order = Template.instance().order;
-    const shipment = Template.instance().order.shipping[0];
-
-    // check first if it was delivered
-    if (shipment.delivered) {
-      return {
-        delivered: true,
-        shipped: true,
-        status: "success",
-        label: i18next.t("orderShipping.delivered")
-      };
-    }
-
-    const shipped = _.every(shipment.items, (shipmentItem) => {
-      for (const fullItem of order.items) {
-        if (fullItem._id === shipmentItem._id) {
-          if (fullItem.workflow) {
-            if (_.isArray(fullItem.workflow.workflow)) {
-              return _.includes(fullItem.workflow.workflow, "coreOrderItemWorkflow/completed");
-            }
-          }
-        }
-      }
-    });
-
-    if (shipped) {
-      return {
-        delivered: false,
-        shipped: true,
-        status: "success",
-        label: i18next.t("orderShipping.shipped")
-      };
-    }
-
-    return {
-      delivered: false,
-      shipped: false,
-      status: "info",
-      label: i18next.t("orderShipping.notShipped")
-    };
   }
 });
