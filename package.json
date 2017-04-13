@@ -92,7 +92,7 @@
     "swiper": "^3.4.2",
     "tether-drop": "^1.4.2",
     "tether-tooltip": "^1.2.0",
-    "transliteration": "^1.5.3",
+    "transliteration": "1.5.2",
     "twilio": "^2.11.1",
     "url": "^0.11.0",
     "velocity-animate": "^1.5.0",
