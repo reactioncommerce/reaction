@@ -18,7 +18,7 @@ function convertMetadata(modifierObject) {
   return metadata;
 }
 
-const ProductRevision = {
+export const ProductRevision = {
   getProductPriceRange(productId) {
     const product = Products.findOne(productId);
     if (!product) {
@@ -154,6 +154,14 @@ const ProductRevision = {
       }
     });
     return variants;
+  },
+  getVariantQuantity(variant) {
+    const options = this.getVariants(variant._id);
+    if (options && options.length) {
+      return options.reduce((sum, option) =>
+      sum + option.inventoryQuantity || 0, 0);
+    }
+    return variant.inventoryQuantity || 0;
   }
 };
 

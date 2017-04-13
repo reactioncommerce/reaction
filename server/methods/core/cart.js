@@ -33,7 +33,7 @@ function quantityProcessing(product, variant, itemQty = 1) {
     default: // type: `simple` // todo: maybe it should be "variant"
       if (quantity < MIN) {
         quantity = MIN;
-      } else if (quantity > MAX) {
+      } else if (variant.inventoryPolicy && quantity > MAX) {
         quantity = MAX;
       }
   }
@@ -326,6 +326,7 @@ Meteor.methods({
         variant = doc;
       }
     });
+
     // TODO: this lines still needed. We could uncomment them in future if
     // decide to not completely remove product data from this method
     // const product = Collections.Products.findOne(productId);
