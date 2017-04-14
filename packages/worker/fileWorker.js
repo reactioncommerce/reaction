@@ -48,7 +48,7 @@ FS.FileWorker.observe = function(fsCollection) {
       FS.debug && console.log("FileWorker ADDED - calling deleteChunks for", fsFile._id);
       try {
         FS.TempStore.removeFile(fsFile);
-      }catch(err) {
+      } catch(err) {
         console.log(err);
       }
     }
@@ -180,7 +180,7 @@ function saveCopy(fsFile, storeName, options) {
 
     // Pipe the temp data into the storage adapter
     readStream.pipe(writeStream);
-  }catch(err){
+  } catch(err){
     console.log(err);
   }
 }
