@@ -17,7 +17,9 @@ class ProductDetailContainer extends Component {
     super(props);
 
     this.state = {
-      cartQuantity: 1
+      cartQuantity: 1,
+      disableAdding: false,
+      disabledStyle: {}
     };
   }
 
@@ -112,6 +114,15 @@ class ProductDetailContainer extends Component {
         });
       } else {
         productId = currentProduct._id;
+        // styles deactivated button
+        this.setState({
+          disabledStyle: {
+            cursor: "not-allowed",
+            backgroundColor: "#A9A9A9",
+            border: "1px solid #A9A9A9"
+          }
+        });
+        this.setState({ disableAdding: true }); // disable add-to-cart button
 
         if (productId) {
           Meteor.call("cart/addToCart", productId, currentVariant._id, quantity, (error) => {
@@ -144,6 +155,7 @@ class ProductDetailContainer extends Component {
         const oppositeDirection = i18next.dir() === "rtl" ? "right" : "left";
 
         // Animate
+        const self = this;
         return $(".cart-alert")
           .show()
           .css({
@@ -154,7 +166,7 @@ class ProductDetailContainer extends Component {
             [oppositeDirection]: "auto",
             [direction]: 0
           }, 600)
-          .delay(4000)
+          .delay(2000)
           .animate({
             [oppositeDirection]: "auto",
             [direction]: -alertWidth
@@ -162,6 +174,8 @@ class ProductDetailContainer extends Component {
             duration: 600,
             complete() {
               $(".cart-alert").hide();
+              self.setState({ disabledStyle: {} });// reactivates cursor on button
+              self.setState({ disableAdding: false }); // reactivate button after alert is completed
             }
           });
       }
@@ -190,7 +204,7 @@ class ProductDetailContainer extends Component {
   }
 
   handleDeleteProduct = () => {
-    ReactionProduct.archiveProduct(this.props.product);
+    ReactionProduct.maybeDeleteProduct(this.props.product);
   }
 
   render() {
@@ -213,6 +227,8 @@ class ProductDetailContainer extends Component {
               topVariantComponent={<VariantListContainer />}
               onDeleteProduct={this.handleDeleteProduct}
               onProductFieldChange={this.handleProductFieldChange}
+              disableAdding={this.state.disableAdding}
+              disabledStyle={this.state.disabledStyle}
               {...this.props}
             />
           </StyleRoot>

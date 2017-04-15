@@ -6,7 +6,7 @@ class AddToCartButton extends Component {
   get hasVariants() {
     return Array.isArray(this.props.variants) && this.props.variants.length > 0;
   }
-  hanleCartQuantityChange = (event) => {
+  handleCartQuantityChange = (event) => {
     if (this.props.onCartQuantityChange) {
       this.props.onCartQuantityChange(event, event.target.value);
     }
@@ -21,7 +21,7 @@ class AddToCartButton extends Component {
             id="add-to-cart-quantity"
             min="1"
             name="addToCartQty"
-            onChange={this.hanleCartQuantityChange}
+            onChange={this.handleCartQuantityChange}
             type="number"
             value={this.props.cartQuantity}
           />
@@ -29,6 +29,8 @@ class AddToCartButton extends Component {
             className="input-group-addon add-to-cart-text js-add-to-cart"
             data-i18n="productDetail.addToCart"
             onClick={this.props.onClick || this.props.onAddToCart}
+            disabled = {this.props.disableAdding}
+            style={this.props.disabledStyle}
           >
             <Translation defaultValue="Add to cart" i18nKey="productDetail.addToCart" />
           </button>
@@ -49,6 +51,8 @@ class AddToCartButton extends Component {
 
 AddToCartButton.propTypes = {
   cartQuantity: PropTypes.number,
+  disableAdding: PropTypes.bool,
+  disabledStyle: PropTypes.object,
   editable: PropTypes.bool,
   onAddToCart: PropTypes.func,
   onCartQuantityChange: PropTypes.func,
