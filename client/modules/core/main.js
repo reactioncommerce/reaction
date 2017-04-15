@@ -123,7 +123,7 @@ export default {
       if (Roles.userIsInRole(userId, permissions, group)) {
         return true;
       }
-      /*// global roles check
+      /* // global roles check
       const sellerShopPermissions = Roles.getGroupsForUser(userId, "admin");
       // we're looking for seller permissions.
       if (sellerShopPermissions) {

@@ -5,7 +5,7 @@ import { Reaction } from "/lib/api";
 import { i18next } from "/client/api";
 import { SellerShops, Media } from "/lib/collections";
 
-Template.sellerShopSettings.onCreated(function() {
+Template.sellerShopSettings.onCreated(function () {
   this.autorun(() => {
     this.subscribe("SellerShops");
   });
