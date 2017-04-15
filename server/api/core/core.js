@@ -69,8 +69,7 @@ export default {
     // Match.Optional(String));
 
     let permissions;
-    let group;
-    group = checkGroup || Roles.GLOBAL_GROUP;
+    const group = checkGroup || Roles.GLOBAL_GROUP;
 
 
     // permissions can be either a string or an array we'll force it into an array and use that
@@ -220,6 +219,7 @@ export default {
   /**
    * Add default roles for new visitors
    * @param {String|Array} roles - A string or array of roles and routes
+   * @returns {undefined} Does not return.
    */
   addDefaultRolesToVisitors(roles) {
     Logger.info(`Adding defaultRoles & defaultVisitorRole permissions for ${roles}`);
@@ -248,6 +248,7 @@ export default {
   /**
    * Add default roles for new sellers
    * @param {String|Array} roles A string or array of roles and routes
+   * @returns {undefined} Does not return.
    */
   addDefaultRolesToSellers(roles) {
     Logger.info(`Adding defaultSellerRoles permissions for ${roles}`);
