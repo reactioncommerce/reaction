@@ -13,7 +13,7 @@ set -e
 ## Optional Environment Variables
 # (used to customize the destination on Docker Hub without having to edit the circle.yml)
 #
-# $DOCKER_NAMESPACE     - the image name for production deployments [Default]: reactioncommerce/reaction
+# $DOCKER_NAMESPACE - the image name for production deployments [Default]: reactioncommerce/reaction
 
 
 # Development branch deployment
