@@ -28,11 +28,20 @@ MethodHooks.after("taxes/calculate", (options) => {
   if (pkg && pkg.settings.avalara.enabled && pkg.settings.avalara.performTaxCalculation) {
     taxCalc.estimateCart(cartToCalc, function (result) {
       // we don't use totalTax, that just tells us we have a valid tax calculation
-      if (result && result.totalTax && typeof result.totalTax === "number" && result.lines) {
+      if (result && !result.error && result.totalTax && typeof result.totalTax === "number" && result.lines) {
         const taxes = linesToTaxes(result.lines);
         const taxAmount = taxes.reduce((totalTaxes, tax) => totalTaxes + tax.tax, 0);
         const taxRate = taxAmount / taxCalc.calcTaxable(cartToCalc);
         Meteor.call("taxes/setRate", cartId, taxRate, taxes);
+      } else {
+        if (result.error.errorCode === 300) {
+          // could not get tax, typically because of address, but who knows could be anything
+          Meteor.call("workflow/revertCartWorkflow", "checkoutAddressBook");
+        } else if (result.error.errorCode = 503) {
+          Logger.error("timeout error: do nothing here");
+        } else {
+          Logger.error("Unknown error", result.error.errorCode);
+        }
       }
     });
   }
