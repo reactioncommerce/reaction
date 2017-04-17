@@ -15,7 +15,8 @@ AutoForm.hooks({
       const addressBook = $(this.template.firstNode).closest(".address-book");
 
       Meteor.call("accounts/validateAddress", insertDoc, function (err, res) {
-        if (res.validated) {
+        // if the address is validated OR the address has already been through the validation process, pass it on
+        if (res.validated || typeof res.validatedAddress.isValidated === "boolean") {
           Meteor.call("accounts/addressBookUpdate", insertDoc, (error, result) => {
             if (error) {
               Alerts.toast(i18next.t("addressBookEdit.somethingWentWrong", { err: error.message }), "error");

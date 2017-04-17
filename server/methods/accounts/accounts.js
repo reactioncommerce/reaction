@@ -126,15 +126,18 @@ function validateAddress(address) {
   if (validator) {
     const validationResult = Meteor.call(validator, address);
     validatedAddress = validationResult.validatedAddress;
+    validatedAddress.isValidated = true;
     formErrors = validationResult.errors;
     if (validatedAddress) {
       validationErrors = compareAddress(address, validatedAddress);
       if (validationErrors.length || formErrors.length) {
         validated = false;
+        validatedAddress.isValidated = false;
       }
     } else {
       // No address, fail validation
       validated = false;
+      validatedAddress.isValidated = false;
     }
   }
   const validationResults = { validated, fieldErrors: validationErrors, formErrors, validatedAddress };
@@ -151,10 +154,7 @@ Meteor.methods({
    */
   "accounts/currentUserHasPassword": function () {
     const user = Meteor.users.findOne(Meteor.userId());
-    if (user.services.password) {
-      return true;
-    }
-    return false;
+    return !!user.services.password;
   },
 
   /**
