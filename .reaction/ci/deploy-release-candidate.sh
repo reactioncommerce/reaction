@@ -24,8 +24,8 @@ DOCKER_NAMESPACE=${DOCKER_NAMESPACE:-"reactioncommerce/reaction"}
 # so we can grab the version number from it for the Docker tag
 RELEASE_CANDIDATE_VERSION=$(echo "$CIRCLE_BRANCH" | cut -d"-" -f 2)
 
-docker tag $DOCKER_NAMESPACE:latest $DOCKER_NAMESPACE:$RELEASE_CANDIDATE_VERSION-rc
+docker tag $DOCKER_NAMESPACE:latest $DOCKER_NAMESPACE:v$RELEASE_CANDIDATE_VERSION-rc
 
 docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
 
-docker push $DOCKER_NAMESPACE:$RELEASE_CANDIDATE_VERSION-rc
+docker push $DOCKER_NAMESPACE:v$RELEASE_CANDIDATE_VERSION-rc
