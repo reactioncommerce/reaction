@@ -1,6 +1,6 @@
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
-import { check } from "meteor/check";
+import { check, Match } from "meteor/check";
 import * as Collections from "/lib/collections";
 import { Logger, Reaction } from "/server/api";
 
