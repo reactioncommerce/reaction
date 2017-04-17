@@ -19,6 +19,7 @@ import { getComponent } from "/imports/plugins/core/layout/lib/components";
 
 import Blaze from "meteor/gadicc:blaze-react-component";
 import pathToRegexp from "path-to-regexp"
+import queryParse from "query-parse";
 
 // const Router = BrowserRouter
 
@@ -291,24 +292,37 @@ Router.initPackageRoutes = () => {
         for (const route of uniqRoutes) {
           // allow overriding of prefix in route definitions
           // define an "absolute" url by excluding "/"
-          // if (route.route.substring(0, 1) !== "/") {
-          //   route.route = "/" + route.route;
-          //   shop.newGroup = Router.group({
-          //     prefix: ""
-          //   });
-          // } else if (shopCount <= 1) {
-          //   shop.newGroup = Router.group({
-          //     prefix: ""
-          //   });
-          // } else {
-          //   shop.newGroup = Router.group({
-          //     prefix: prefix
-          //   });
-          // }
+          route.group = {}
+
+          if (route.route.substring(0, 1) !== "/") {
+            route.route = "/" + route.route;
+            console.log("--------- Add Shasl to route");
+            route.group.prefix = ""
+            // shop.newGroup = Router.group({
+            //   prefix: ""
+            // });
+          } else if (shopCount <= 1) {
+            route.group.prefix = ""
+
+            // shop.newGroup = Router.group({
+            //   prefix: ""
+            // });
+            console.log("--------- No prefix")
+          } else {
+            console.log("--------- Has prefix", prefix)
+            route.group.prefix = prefix
+            route.route = `${prefix}${route.route}`;
+
+            // shop.newGroup = Router.group({
+            //   prefix: prefix
+            // });
+          }
 
           // todo: look for a cheap way to validate and prevent duplicate additions
           // shop.newGroup.route(route.route, route.options);
           // console.log(route.route);
+
+
           finalRoutes.push(
             <Route key={route.name} path={route.route} component={route.options.component} />
           );
@@ -510,6 +524,7 @@ class ConnectedRouter extends Component {
     });
 
     const params = {};
+    let route = {};
 
     if (foundPath) {
       const keys = [];
@@ -523,22 +538,31 @@ class ConnectedRouter extends Component {
       console.log("### FOUND ###", foundPath, params, keys);
     }
 
+    let search = location.search;
+
+    if (typeof search === "string" && search.startsWith("?")) {
+      search = search.substr(1);
+    }
+
     Router.currentRoute = {
+      route: {
+        ...foundPath,
+        path: location.pathname
+      },
       params,
-      payload: location
+      query: queryParse.toObject(search),
+      payload: location,
+      permissions: {
+
+      }
     };
   }
 
 
   render() {
     return (
-      <ReactRouter
-        ref={(r) => {
-          console.log(r);
-        }}
-        {...this.props}
-      />
-    )
+      <ReactRouter {...this.props} />
+    );
   }
 }
 

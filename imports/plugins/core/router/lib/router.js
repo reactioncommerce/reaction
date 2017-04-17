@@ -19,11 +19,14 @@ import { getComponent } from "/imports/plugins/core/layout/lib/components";
 
 import Blaze from "meteor/gadicc:blaze-react-component";
 import pathToRegexp from "path-to-regexp"
+import queryParse from "query-parse";
 
 // const Router = BrowserRouter
 
 export let history;
 
+
+const currentRoute = new ReactiveVar({});
 
 if (Meteor.isClient) {
   history = createBrowserHistory();
@@ -31,16 +34,18 @@ if (Meteor.isClient) {
   history = createMemoryHistory();
 }
 
-const currentRoute = new ReactiveVar({});
-
-
 class Router {
-  static getParam() {
-    return "";
-  }
+  static history = history
+  static Hooks = Hooks
+  static paths = []
+
 
   static current() {
     return currentRoute.get();
+  }
+
+  static set currentRoute(data) {
+    currentRoute.set(data);
   }
 
   static getRouteName() {
@@ -49,8 +54,16 @@ class Router {
     return current.options && current.options.name || "";
   }
 
-  static set currentRoute(data) {
-    currentRoute.set(data);
+  static getParam(name) {
+    const current = Router.current();
+
+    return current.params && current.params[name] || undefined;
+  }
+
+  static getQueryParam(name) {
+    const current = Router.current();
+
+    return current.query[name];
   }
 }
 
@@ -61,10 +74,10 @@ class Router {
 // client should wait on subs
 // Router.wait();
 //
-Router.history = history
-Router.Hooks = Hooks;
-
-Router.paths = [];
+// Router.history = history
+// Router.Hooks = Hooks;
+//
+// Router.paths = [];
 
 /**
  * pathFor
@@ -90,19 +103,32 @@ Router.pathFor = (path, options = {}) => {
       return true;
     }
     return false;
-  })
+  });
 
   if (foundPath) {
+    // Pull the hash out of options
     //
-    // const m = matchPath(foundPath.route, {
-    //   options.hash
-    // })
-    // console.log("match path", foundPath.route, m);
+    // This is becuase of Spacebars that we have hash.
+    // Spacebars takes all params passed into a template tag and places
+    // them into the options.hash object. This will also include any `query` params
+    const hash = options && options.hash || {};
 
-
+    // Create an executable function based on the route regex
     const toPath = pathToRegexp.compile(foundPath.route);
-    const compiledPath = toPath(options.hash);
 
+    // Compile the regex path with the params from the hash
+    const compiledPath = toPath(hash);
+
+    // Convert the query object to a string
+    // e.g. { a: "one", b: "two"} => "a=one&b=two"
+    const queryString = queryParse.toString(hash.query);
+
+    // Return the compiled path + query string if we have one
+    if (typeof queryString === "string" && queryString.length) {
+      return `${compiledPath}?${queryString}`;
+    }
+
+    // Return only the compiled path
     return compiledPath;
   }
 
@@ -110,27 +136,17 @@ Router.pathFor = (path, options = {}) => {
 };
 
 
-Router.go = (path, params) => {
+Router.go = (path, params, query) => {
   const actualPath = Router.pathFor(path, {
-    hash: params
-  })
-  // console.log(actualPath);
+    hash: {
+      ...params,
+      query
+    }
+  });
 
   if (window) {
-    history.push(actualPath)
+    history.push(actualPath);
   }
-};
-
-
-Router.getParam = function (name) {
-  const current = currentRoute.get();
-
-  return current.params && current.params[name] || undefined;
-};
-
-Router.getQueryParam = function (name) {
-  console.warn("Not-yet implemented. Query param for:", name)
-  return "";
 };
 
 /**
@@ -141,18 +157,20 @@ Router.getQueryParam = function (name) {
  * @return {String} return "active" or null
  */
 Router.isActiveClassName = (routeName) => {
-  // Router.watchPathChange();
-  // const group = Router.current().route.group;
-  // let prefix;
-  // if (group && group.prefix) {
-  //   prefix = Router.current().route.group.prefix;
-  // } else {
-  //   prefix = "";
-  // }
-  // const path = Router.current().route.path;
-  // const routeDef = path.replace(prefix + "/", "");
-  // return routeDef === routeName ? "active" : "";
-  return ""
+  const current = Router.current();
+  const group = current.route.group;
+  const path = current.route.path;
+  let prefix;
+
+  if (group && group.prefix) {
+    prefix = current.route.group.prefix;
+  } else {
+    prefix = "";
+  }
+
+  const routeDef = path.replace(prefix + "/", "");
+
+  return routeDef === routeName ? "active" : "";
 };
 
 export default Router;
