@@ -20,9 +20,9 @@ test:
 
 deployment:
   prequel:
-    branch: development
+    branch: /release-[0-9]+(\.[0-9]+)*/
     commands:
-      - .reaction/ci/deploy-development.sh
+      - .reaction/ci/deploy-release-candidate.sh
 
   release:
     tag: /v[0-9]+(\.[0-9]+)*/
