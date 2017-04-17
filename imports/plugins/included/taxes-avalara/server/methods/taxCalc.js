@@ -86,6 +86,34 @@ function getTaxSettings(userId) {
 }
 
 /**
+ * @summary: Break Avalara error object into consistent format
+ * @param {Object} error The error result from Avalara
+ * @returns {Object} Error object with code and errorDetails
+ */
+function parseError(error) {
+  let errorData;
+  // The Avalara API constantly times out, so handle this special case first
+  if (error.code === "ETIMEDOUT") {
+    errorData = { errorCode: 503, errorDetails: { message: "ETIMEDOUT", description: "The request timeod out" } };
+    return errorData;
+  }
+  const errorDetails = [];
+  if (error.response.data.error.details) {
+    const details = error.response.data.error.details;
+    for (const detail of details) {
+      if (detail.severity === "Error") {
+        errorDetails.push({ message: detail.message, description: detail.description });
+      }
+    }
+    errorData = { errorCode: details[0].number, errorDetails };
+  } else {
+    Avalogger.error("Unknown error or error format");
+    throw new Meteor.Error("bad-error", "Unknown error or error format");
+  }
+  return errorData;
+}
+
+/**
  * @summary function to get HTTP data and pass in extra Avalara-specific headers
  * @param {String} requestUrl - The URL to make the request to
  * @param {Object} options - An object of other options
@@ -119,14 +147,16 @@ function avaGet(requestUrl, options = {}, testCredentials = true) {
     logObject.request = allOptions;
   }
 
+  let result;
   try {
     result = HTTP.get(requestUrl, allOptions);
   } catch (error) {
-    result = error;
     Logger.error(`Encountered error while calling Avalara API endpoint ${requestUrl}`);
     Logger.error(error);
     logObject.error = error;
     Avalogger.error(logObject);
+    const parsedError = parseError(error);
+    result = { error: parsedError };
   }
 
   if (pkgData.settings.avalara.enableLogging) {
@@ -166,7 +196,6 @@ function avaPost(requestUrl, options) {
   }
 
   let result;
-
   try {
     result = HTTP.post(requestUrl, allOptions);
   } catch (error) {
@@ -175,7 +204,8 @@ function avaPost(requestUrl, options) {
     logObject.error = error;
     // whether logging is enabled or not we log out errors
     Avalogger.error(logObject);
-    result = {};
+    const parsedError = parseError(error);
+    result = { error: parsedError };
   }
 
   if (pkgData.settings.avalara.enableLogging) {
@@ -420,7 +450,10 @@ taxCalc.estimateCart = function (cart, callback) {
     const baseUrl = getUrl();
     const requestUrl = `${baseUrl}transactions/create`;
     const result = avaPost(requestUrl, { data: salesOrder });
-    return callback(result.data);
+    if (!result.error) {
+      return callback(result.data);
+    }
+    return callback(result);
   }
 };
 
