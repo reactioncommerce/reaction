@@ -126,8 +126,6 @@ describe("Stripe.authorize", function () {
       });
       done();
     });
-
-
   });
 });
 
