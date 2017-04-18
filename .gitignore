@@ -42,10 +42,10 @@ private/custom/*
 !private/custom/.gitkeep
 
 imports/plugins/custom/*
-!imports/plugins/custom/ee-pdp
+!imports/plugins/custom/product-detail-simple
 !imports/plugins/custom/.gitkeep
 !imports/plugins/custom/data_import
-!imports/plugins/custom/ee-front-end
-!imports/plugins/custom/ee-styles
+!imports/plugins/custom/product-list-page
+!imports/plugins/custom/evereveTheme
 
 .reaction/config.json

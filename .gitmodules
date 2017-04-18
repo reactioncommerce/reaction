@@ -1,15 +1,6 @@
-[submodule "imports/plugins/custom/ee-pdp"]
-	path = imports/plugins/custom/ee-pdp
-	url = https://github.com/evereveofficial/ee-pdp
-[submodule "imports/plugins/custom/ee-styles"]
-	path = imports/plugins/custom/ee-styles
-	url = https://github.com/evereveofficial/ee-styles
-[submodule "imports/plugins/custom/ee-front-end"]
-	path = imports/plugins/custom/ee-front-end
-	url = https://github.com/evereveofficial/ee-front-end
-[submodule "imports/plugins/custom/data_import"]
-	path = imports/plugins/custom/data_import
-	url = https://github.com/evereveofficial/data_import.git
 [submodule "public/custom/ReactionPublicCustomFolder"]
 	path = public/custom/ReactionPublicCustomFolder
 	url = git@github.com:evereveofficial/ReactionPublicCustomFolder.git
+[submodule "imports/plugins/custom"]
+	path = imports/plugins/custom
+	url = git@github.com:evereveofficial/eePlugins.git
