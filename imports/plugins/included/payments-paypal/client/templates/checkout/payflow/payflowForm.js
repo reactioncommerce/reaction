@@ -2,7 +2,7 @@
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import Logger from "/client/modules/logger";
-import { Cart, Shops } from "/lib/collections";
+import { Cart, Shops, Packages } from "/lib/collections";
 import { PaypalPayment } from "/imports/plugins/included/payments-paypal/lib/collections/schemas";
 import { Reaction, i18next } from "/client/api";
 import { PayPal } from "/imports/plugins/included/payments-paypal/lib/api";

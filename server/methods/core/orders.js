@@ -243,9 +243,7 @@ export const methods = {
     });
 
     // refund payment to customer
-    Meteor.call("orders/refunds/create", order._id, paymentMethod, Number(invoiceTotal), (err) => {
-      if (err) Logger.error(err);
-    });
+    Meteor.call("orders/refunds/create", order._id, paymentMethod, Number(invoiceTotal));
 
     // send notification to user
     const prefix = Reaction.getShopPrefix();

@@ -2,7 +2,7 @@
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { getCardType } from "/client/modules/core/helpers/globals";
-import { Cart, Shops } from "/lib/collections";
+import { Cart, Shops, Packages } from "/lib/collections";
 import { Braintree } from "../api/braintree";
 import { Reaction } from "/client/api";
 import { BraintreePayment } from "../../lib/collections/schemas";

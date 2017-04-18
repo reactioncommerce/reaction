@@ -3,7 +3,7 @@ import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { AutoForm } from "meteor/aldeed:autoform";
 import { getCardType } from "/client/modules/core/helpers/globals";
-import { Cart, Shops } from "/lib/collections";
+import { Cart, Shops, Packages } from "/lib/collections";
 import { Stripe } from "../../lib/api";
 import { StripePayment } from "../../lib/collections/schemas";
 
@@ -96,11 +96,19 @@ AutoForm.addHooks("stripe-payment-form", {
                 return "capture";
             }
           })();
+          Meteor.subscribe("Packages");
+          const packageData = Packages.findOne({
+            name: "reaction-stripe",
+            shopId: Reaction.getShopId()
+          });
+
           submitting = false;
           paymentMethod = {
             processor: "Stripe",
             storedCard: storedCard,
             method: "credit",
+            paymentPackageId: packageData._id,
+            paymentSettingsKey: packageData.registry[0].settingsKey,
             transactionId: transaction.response.id,
             amount: transaction.response.amount * 0.01,
             status: normalizedStatus,
