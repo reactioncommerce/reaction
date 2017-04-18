@@ -7,7 +7,7 @@ const CartItems = ({ handleLowInventory, pdpPath, handleImage, handleRemoveItem,
         return (
           <div className="cart-items" key={item._id} style={{ display: "inline-block" }}>
             <i className="remove-cart-item fa fa-times fa-lg"
-              data-target={item._id}
+              id={item._id}
               onClick={handleRemoveItem}
             />
             <a href={pdpPath(item)}

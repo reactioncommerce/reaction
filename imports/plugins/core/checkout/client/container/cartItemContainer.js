@@ -53,8 +53,10 @@ class CartItemContainer extends Component {
   handleRemoveItem(event) {
     event.stopPropagation();
     event.preventDefault();
-    const currentCartItemId = event.target.getAttribute("data-target");
-    return Meteor.call("cart/removeFromCart", currentCartItemId);
+    const currentCartItemId = event.target.getAttribute("id");
+    $(`#${currentCartItemId}`).fadeOut(500, () => {
+      return Meteor.call("cart/removeFromCart", currentCartItemId);
+    });
   }
 
   render() {
