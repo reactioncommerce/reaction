@@ -35,10 +35,7 @@ class CartItemContainer extends Component {
   }
 
   handleLowInventory = (productItem) => {
-    if (this.showItemLowInventoryWarning(productItem)) {
-      return this.showItemLowInventoryWarning(productItem);
-    }
-    return false;
+    return this.showItemLowInventoryWarning(productItem);
   }
 
   pdpPath(productItem) {
