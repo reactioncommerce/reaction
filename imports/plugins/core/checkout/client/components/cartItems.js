@@ -33,6 +33,7 @@ const CartItems = ({ handleLowInventory, pdpPath, handleImage, handleRemoveItem,
             <span className="badge">{item.quantity}</span>
             <span className="cart-item-title">
               {item.title}
+              <br />
               <small>{item.variants.title}</small>
             </span>
             </div>
