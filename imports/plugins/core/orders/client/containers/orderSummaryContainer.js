@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from "react";
 import moment from "moment";
 import _ from "lodash";
 import { composeWithTracker } from "/lib/api/compose";
-import { Accounts } from "/lib/collections";
+import { Accounts, Orders } from "/lib/collections";
 import { i18next } from "/client/api";
 import OrderSummary from "../components/orderSummary";
 
@@ -98,9 +98,11 @@ class OrderSummaryContainer extends Component {
 
 const composer = (props, onData) => {
   const userId = Meteor.userId();
-  const subscription = Meteor.subscribe("UserProfile", userId);
+  const userSub = Meteor.subscribe("UserProfile", userId);
+  const orderSub = Meteor.subscribe("Orders");
   let profile = {};
-  if (subscription.ready()) {
+
+  if (userSub.ready() && orderSub.ready()) {
     if (typeof userId === "string") {
       const userProfile = Accounts.findOne(userId);
       if (!userProfile) {
@@ -108,11 +110,24 @@ const composer = (props, onData) => {
       }
       profile = userProfile.profile.addressBook[0];
     }
+
+    const order = Orders.findOne({
+      "_id": props.orderId,
+      "shipping._id": props.fulfillment._id
+    });
+
+    if (order.workflow) {
+      if (order.workflow.status === "coreOrderCreated") {
+        order.workflow.status = "coreOrderCreated";
+        Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreOrderCreated", order);
+      }
+    }
+
+    onData(null, {
+      order: order,
+      profile: profile
+    });
   }
-  onData(null, {
-    order: props.order,
-    profile: profile
-  });
 };
 
 export default composeWithTracker(composer, null)(OrderSummaryContainer);
