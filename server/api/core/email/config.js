@@ -88,7 +88,7 @@ export function getMailConfig() {
       host: parsedUrl.hostname,
       port: parsedUrl.port,
       // since the port is casted to number above
-      secure: parsedUrl.port === 465 || parsedUrl.port === 587,
+      secure: parsedUrl.port === 465,
       auth: {
         user: creds[0],
         pass: creds[1]
@@ -135,7 +135,7 @@ export function getMailConfig() {
     return {
       host,
       port,
-      secure: port === 465 || port === 587,
+      secure: port === 465,
       auth: { user, pass: password },
       logger: process.env.EMAIL_DEBUG === "true"
     };
