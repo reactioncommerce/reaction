@@ -6,7 +6,7 @@ import Future from "fibers/future";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { getSlug } from "/lib/api";
-import { Cart, Media, Orders, Products, Shops } from "/lib/collections";
+import { Cart, Media, Orders, Products, Shops, Packages } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 import { Logger, Hooks, Reaction } from "/server/api";
 
@@ -1021,7 +1021,43 @@ export const methods = {
     const order = Orders.findOne(orderId);
     const transactionId = paymentMethod.transactionId;
 
-    const result = Meteor.call(`${processor}/refund/create`, paymentMethod, amount);
+    const packageId = paymentMethod.paymentPackageId;
+    const settingsKey = paymentMethod.paymentSettingsKey;
+    // check if payment provider supports de-authorize
+    const checkSupportedMethods = Packages.findOne({
+      _id: packageId,
+      shopId: Reaction.getShopId()
+    }).settings[settingsKey].support;
+
+    const orderStatus = paymentMethod.status;
+    const orderMode = paymentMethod.mode;
+
+    let result;
+    let query = {};
+    if (_.includes(checkSupportedMethods, "de-authorize")) {
+      result = Meteor.call(`${processor}/payment/deAuthorize`, paymentMethod, amount);
+      query = {
+        $push: {
+          "billing.$.paymentMethod.transactions": result
+        }
+      };
+      if (result.saved === false) {
+        Logger.fatal("Attempt for de-authorize transaction failed", order._id, paymentMethod.transactionId, result.error);
+        throw new Meteor.Error("Attempt to de-authorize transaction failed", result.error);
+      }
+    } else if (orderStatus === "completed" && orderMode === "capture") {
+      result = Meteor.call(`${processor}/refund/create`, paymentMethod, amount);
+      query = {
+        $push: {
+          "billing.$.paymentMethod.transactions": result
+        }
+      };
+      if (result.saved === false) {
+        Logger.fatal("Attempt for refund transaction failed", order._id, paymentMethod.transactionId, result.error);
+        throw new Meteor.Error("Attempt to refund transaction failed", result.error);
+      }
+    }
+
     Orders.update({
       "_id": orderId,
       "billing.paymentMethod.transactionId": transactionId
@@ -1029,15 +1065,8 @@ export const methods = {
       $set: {
         "billing.$.paymentMethod.status": "refunded"
       },
-      $push: {
-        "billing.$.paymentMethod.transactions": result
-      }
+      query
     });
-
-    if (result.saved === false) {
-      Logger.fatal("Attempt for refund transaction failed", order._id, paymentMethod.transactionId, result.error);
-      throw new Meteor.Error("Attempt to refund transaction failed", result.error);
-    }
 
     Hooks.Events.run("onOrderRefundCreated", orderId);
     // Send email to notify cuustomer of a refund

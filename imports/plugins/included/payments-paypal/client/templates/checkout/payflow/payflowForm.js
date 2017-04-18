@@ -130,9 +130,16 @@ AutoForm.addHooks("paypal-payment-form", {
           if (typeof transaction.response.transactions[0].related_resources[0] === "object") {
             authId = transaction.response.transactions[0].related_resources[0].authorization.id;
           }
+          Meteor.subscribe("Packages");
+          const packageData = Packages.findOne({
+            name: "reaction-paypal",
+            shopId: Reaction.getShopId()
+          });
 
           const paymentMethod = {
             processor: "PayflowPro",
+            paymentPackageId: packageData._id,
+            paymentSettingsKey: packageData.registry[0].settingsKey,
             storedCard: storedCard,
             method: "credit",
             authorization: authId,

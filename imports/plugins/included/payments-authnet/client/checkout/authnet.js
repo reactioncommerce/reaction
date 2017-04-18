@@ -1,8 +1,8 @@
 /* eslint camelcase: 0 */
 import { Meteor } from "meteor/meteor";
-import { Logger } from "/client/api";
+import { Reaction, Logger } from "/client/api";
 import { getCardType } from "/client/modules/core/helpers/globals";
-import { Cart, Shops } from "/lib/collections";
+import { Cart, Shops, Packages } from "/lib/collections";
 import { AutoForm } from "meteor/aldeed:autoform";
 import { AuthNetPayment } from "../../lib/collections/schemas";
 import { AuthNet } from "../api";
@@ -81,6 +81,11 @@ AutoForm.addHooks("authnet-payment-form", {
         let normalizedStatus = "failed";
 
         const transId = transaction.transactionId[0].toString();
+        Meteor.subscribe("Packages");
+        const packageData = Packages.findOne({
+          name: "reaction-auth-net",
+          shopId: Reaction.getShopId()
+        });
 
         if (transaction._original.responseCode[0] === "1") {
           normalizedStatus = "created";
@@ -88,6 +93,8 @@ AutoForm.addHooks("authnet-payment-form", {
 
         const paymentMethod = {
           processor: "AuthNet",
+          paymentPackageId: packageData._id,
+          paymentSettingsKey: packageData.registry[0].settingsKey,
           storedCard: storedCard,
           method: "credit",
           transactionId: transId,
