@@ -22,7 +22,7 @@ DOCKER_NAMESPACE=${DOCKER_NAMESPACE:-"reactioncommerce/reaction"}
 # Release candidate tag
 # The branch name should always be in the format "release-x.x.x" when this script runs,
 # so we can grab the version number from it for the Docker tag
-RELEASE_CANDIDATE_VERSION=$(echo "$CIRCLE_BRANCH" | cut -d"-" -f 2)
+RELEASE_CANDIDATE_VERSION=$(echo "$CIRCLE_BRANCH" | cut -d "-" -f 2)
 
 docker tag $DOCKER_NAMESPACE:latest $DOCKER_NAMESPACE:v$RELEASE_CANDIDATE_VERSION-rc
 
