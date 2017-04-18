@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from "react";
 import { Currency } from "/imports/plugins/core/ui/client/components/";
 
 class CartSubTotal extends Component {
-  verifyDiscount() {
+  validateDiscount() {
     if (Number(this.props.cartDiscount) > 0) {
       return (
         <div>
@@ -11,7 +11,7 @@ class CartSubTotal extends Component {
         </div>);
     }
   }
-  verifyShipping() {
+  validateShipping() {
     if (Number(this.props.cartShipping) > 0) {
       return (
         <div>
@@ -21,7 +21,7 @@ class CartSubTotal extends Component {
       );
     }
   }
-  verifyTaxes() {
+  validateTaxes() {
     if (Number(this.props.cartTaxes) > 0) {
       return (
         <div>
@@ -42,9 +42,9 @@ class CartSubTotal extends Component {
             <tbody>
               <tr><td data-i18n="cartSubTotals.items">Items in cart</td><td>{this.props.cartCount}</td></tr>
               <tr><td data-i18n="cartSubTotals.subtotal">Sub total</td><td><Currency amount={this.props.cartSubTotal} /></td></tr>
-              <tr>{this.verifyDiscount()}</tr>
-              <tr>{this.verifyShipping()}</tr>
-              <tr>{this.verifyTaxes()}</tr>
+              <tr>{this.validateDiscount()}</tr>
+              <tr>{this.validateShipping()}</tr>
+              <tr>{this.validateTaxes()}</tr>
               <tr><td data-i18n="cartSubTotals.total">Total</td><td><Currency amount={this.props.cartTotal} /></td></tr>
             </tbody>
           </table>

@@ -22,7 +22,7 @@ class CartItemContainer extends Component {
   /**
   * showLowInventoryWarning
   * @param {Object} productItem - product item object
-    * @return {Boolean} return true if low inventory on variant
+  * @return {Boolean} return true if low inventory on variant
   */
   showItemLowInventoryWarning(productItem) {
     const { variants } = productItem;
@@ -36,7 +36,7 @@ class CartItemContainer extends Component {
 
   handleLowInventory = (productItem) => {
     if (this.showItemLowInventoryWarning(productItem)) {
-      return true;
+      return this.showItemLowInventoryWarning(productItem);
     }
     return false;
   }
