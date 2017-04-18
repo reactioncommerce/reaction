@@ -5,29 +5,30 @@ class CartSubTotal extends Component {
   validateDiscount() {
     if (Number(this.props.cartDiscount) > 0) {
       return (
-        <div>
+        <tr>
           <td data-i18n="cartSubTotals.discount">Discount</td>
           <td><Currency amount={this.props.cartDiscount} /></td>
-        </div>);
+        </tr>
+      );
     }
   }
   validateShipping() {
     if (Number(this.props.cartShipping) > 0) {
       return (
-        <div>
+        <tr>
           <td data-i18n="cartSubTotals.shipping">Shipping</td>
           <td><Currency amount={this.props.cartShipping} /></td>
-        </div>
+        </tr>
       );
     }
   }
   validateTaxes() {
     if (Number(this.props.cartTaxes) > 0) {
       return (
-        <div>
+        <tr>
           <td data-i18n="cartSubTotals.tax">Tax</td>
           <td><Currency amount={this.props.cartTaxes} /></td>
-        </div>
+        </tr>
       );
     }
   }
@@ -42,9 +43,9 @@ class CartSubTotal extends Component {
             <tbody>
               <tr><td data-i18n="cartSubTotals.items">Items in cart</td><td>{this.props.cartCount}</td></tr>
               <tr><td data-i18n="cartSubTotals.subtotal">Sub total</td><td><Currency amount={this.props.cartSubTotal} /></td></tr>
-              <tr>{this.validateDiscount()}</tr>
-              <tr>{this.validateShipping()}</tr>
-              <tr>{this.validateTaxes()}</tr>
+              {this.validateDiscount()}
+              {this.validateShipping()}
+              {this.validateTaxes()}
               <tr><td data-i18n="cartSubTotals.total">Total</td><td><Currency amount={this.props.cartTotal} /></td></tr>
             </tbody>
           </table>
