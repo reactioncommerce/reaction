@@ -70,7 +70,7 @@ Docker images are pushed when Reaction sucessfully builds and passes all tests o
 
 ### Contributing
 
-Want to contribute? That's great! [Here's you can get started](https://guides.github.com/activities/contributing-to-open-source/#contributing).
+Want to contribute? That's great! [Here's how you can get started](https://guides.github.com/activities/contributing-to-open-source/#contributing).
 
 Check out our Issues page, and if you find something you want to work on, let us know in the comments. If you're interested in a particular [project](https://github.com/reactioncommerce/reaction/projects) and you aren’t sure where to begin, feel free to ask. Start small!
 
