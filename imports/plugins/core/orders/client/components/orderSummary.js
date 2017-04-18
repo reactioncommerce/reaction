@@ -100,6 +100,7 @@ class OrderSummary extends Component {
         <div style={{ marginTop: 4 }}>
           <span>{profile.fullName}</span>
           <br/><span>{profile.address1}</span>
+          {profile.address2 && <span><br/>{profile.address2}</span>}
           <br/><span>{profile.city}, {profile.region}, {profile.country} {profile.postal}</span>
         </div>
       </div>
