@@ -20,6 +20,8 @@ const getPermissionMap = (permissions) => {
  */
 Template.member.events({
   "click [data-event-action=showMemberSettings]": function () {
+    $(".customerUsageType input").val(""); // form reset
+    $(".customerUsageType").addClass("hide"); // form reset
     Reaction.setActionViewDetail({
       label: "Permissions",
       i18nKeyLabel: "admin.settings.permissionsSettingsLabel",

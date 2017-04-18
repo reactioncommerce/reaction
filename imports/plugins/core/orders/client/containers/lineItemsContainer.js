@@ -74,7 +74,6 @@ class LineItemsContainer extends Component {
 
   render() {
     const { invoice, uniqueItems } = this.props;
-
     return (
       <TranslationProvider>
         <LineItems
