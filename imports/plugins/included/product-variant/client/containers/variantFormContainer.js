@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
 import { composeWithTracker } from "/lib/api/compose";
 import { ReactionProduct } from "/lib/api";
@@ -159,6 +160,7 @@ class VariantFormContainer extends Component {
 
 function composer(props, onData) {
   const countries = Countries.find({}).fetch();
+  Meteor.subscribe("TaxCodes");
 
   onData(null, {
     countries,
