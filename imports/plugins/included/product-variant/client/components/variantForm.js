@@ -16,6 +16,14 @@ import {
 class VariantForm extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      variant: props.variant
+    };
+  }
+
+  get variant() {
+    return this.state.variant || this.props.variant || {};
   }
 
   renderTaxCodeField() {
@@ -38,7 +46,28 @@ class VariantForm extends Component {
         placeholder="Select Tax Code"
         label="Tax Code"
         name="taxCode"
-        value={this.props.variant.taxCode}
+        value={this.variant.taxCode}
+      />
+    );
+  }
+
+  renderArchiveButton() {
+    if (this.variant.isDeleted) {
+      return (
+        <Button
+          icon="refresh"
+          className="rui btn btn-default btn-restore-variant flat"
+          tooltip="Restore"
+          onClick={() => this.props.restoreVariant(this.variant)}
+        />
+      );
+    }
+    return (
+      <Button
+        icon="archive"
+        className="rui btn btn-default btn-remove-variant flat"
+        tooltip="Archive"
+        onClick={() => this.props.removeVariant(this.variant)}
       />
     );
   }
@@ -59,12 +88,9 @@ class VariantForm extends Component {
               icon="files-o"
               className="rui btn btn-default btn-clone-variant flat"
               tooltip="Duplicate"
+              onClick={() => this.props.cloneVariant(this.variant)}
             />
-            <Button
-              icon="archive"
-              className="rui btn btn-default btn-remove-variant flat"
-              tooltip="Archive"
-            />
+          {this.renderArchiveButton()}
           </CardHeader>
           <CardBody expandable={true}>
             <TextField
@@ -73,7 +99,7 @@ class VariantForm extends Component {
               placeholder="Label"
               label="Label"
               name="title"
-              value={this.props.variant.title}
+              value={this.variant.title}
             />
             <Select
               clearable={false}
@@ -106,9 +132,9 @@ class VariantForm extends Component {
                   type="text"
                   placeholder="0.00"
                   ref="input"
-                  value={this.props.variant.price}
-                  style={this.props.greyDisabledFields(this.props.variant)}
-                  disabled={this.props.hasChildVariants(this.props.variant)}
+                  value={this.variant.price}
+                  style={this.props.greyDisabledFields(this.variant)}
+                  disabled={this.props.hasChildVariants(this.variant)}
                 />
               </div>
             </div>
@@ -124,7 +150,7 @@ class VariantForm extends Component {
                   type="text"
                   placeholder="0"
                   ref="input"
-                  value={this.props.variant.width}
+                  value={this.variant.width}
                 />
               </div>
               <div className="rui textfield form-group col-sm-6">
@@ -137,7 +163,7 @@ class VariantForm extends Component {
                   type="text"
                   placeholder="0"
                   ref="input"
-                  value={this.props.variant.length}
+                  value={this.variant.length}
                 />
               </div>
             </div>
@@ -153,7 +179,7 @@ class VariantForm extends Component {
                   type="text"
                   placeholder="0"
                   ref="input"
-                  value={this.props.variant.height}
+                  value={this.variant.height}
                 />
               </div>
               <div className="rui textfield form-group col-sm-6">
@@ -166,7 +192,7 @@ class VariantForm extends Component {
                   type="text"
                   placeholder="0"
                   ref="input"
-                  value={this.props.variant.weight}
+                  value={this.variant.weight}
                 />
               </div>
             </div>
@@ -174,7 +200,7 @@ class VariantForm extends Component {
         </Card>
 
         <SettingsCard
-          enabled={this.props.variant.taxable}
+          enabled={this.variant.taxable}
           expandable={true}
           expanded={false}
           i18nKeyTitle="productVariant.taxable"
@@ -193,7 +219,7 @@ class VariantForm extends Component {
         </SettingsCard>
 
         <SettingsCard
-          enabled={this.props.variant.inventoryManagement}
+          enabled={this.variant.inventoryManagement}
           expandable={true}
           expanded={false}
           i18nKeyTitle="productVariant.inventoryManagement"
@@ -211,9 +237,9 @@ class VariantForm extends Component {
                 name="inventoryQuantity"
                 type="text"
                 placeholder="0"
-                value={this.props.variant.inventoryQuantity}
-                style={this.props.greyDisabledFields(this.props.variant)}
-                disabled={this.props.hasChildVariants(this.props.variant)}
+                value={this.variant.inventoryQuantity}
+                style={this.props.greyDisabledFields(this.variant)}
+                disabled={this.props.hasChildVariants(this.variant)}
               />
             </div>
             <div className="rui textfield form-group col-sm-6">
@@ -234,7 +260,7 @@ class VariantForm extends Component {
             i18nKeyOnLabel="productVariant.inventoryPolicy"
             label={"Allow Backorder"}
             onLabel={"Allow Backorder"}
-            checked={this.props.variant.inventoryPolicy}
+            checked={this.variant.inventoryPolicy}
           />
         </SettingsCard>
       </CardGroup>
@@ -243,11 +269,14 @@ class VariantForm extends Component {
 }
 
 VariantForm.propTypes = {
+  cloneVariant: PropTypes.func,
   countries: PropTypes.arrayOf(PropTypes.object),
   fetchTaxCodes: PropTypes.func,
   greyDisabledFields: PropTypes.func,
   hasChildVariants: PropTypes.func,
   isProviderEnabled: PropTypes.func,
+  removeVariant: PropTypes.func,
+  restoreVariant: PropTypes.func,
   variant: PropTypes.object
 };
 

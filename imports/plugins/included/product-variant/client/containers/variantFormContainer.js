@@ -1,9 +1,10 @@
 import React, { Component } from "react";
+import { Session } from "meteor/session";
 import { composeWithTracker } from "/lib/api/compose";
 import { ReactionProduct } from "/lib/api";
 import { Packages } from "/lib/collections";
 import { Countries } from "/client/collections";
-import { Reaction } from "/client/api";
+import { Reaction, i18next } from "/client/api";
 import { TaxCodes } from "/imports/plugins/core/taxes/lib/collections";
 import VariantForm from "../components/variantForm";
 
@@ -13,6 +14,11 @@ class VariantFormContainer extends Component {
 
     this.isProviderEnabled = this.isProviderEnabled.bind(this);
     this.fetchTaxCodes = this.fetchTaxCodes.bind(this);
+    this.hasChildVariants = this.hasChildVariants.bind(this);
+    this.greyDisabledFields = this.greyDisabledFields.bind(this);
+    this.removeVariant = this.removeVariant.bind(this);
+    this.restoreVariant = this.restoreVariant.bind(this);
+    this.cloneVariant = this.cloneVariant.bind(this);
   }
 
   isProviderEnabled = () => {
@@ -72,6 +78,69 @@ class VariantFormContainer extends Component {
     }
   }
 
+  restoreVariant = (variant) => {
+    const title = variant.title || i18next.t("productDetailEdit.thisVariant");
+
+    Alerts.alert({
+      title: i18next.t("productDetailEdit.restoreVariantConfirm", { title }),
+      showCancelButton: true,
+      confirmButtonText: "Restore"
+    }, (isConfirm) => {
+      if (isConfirm) {
+        const id = variant._id;
+        Meteor.call("products/updateProductField", id, "isDeleted", false, (error) => {
+          if (error) {
+            Alerts.alert({
+              text: i18next.t("productDetailEdit.restoreVariantFail", { title }),
+              confirmButtonText: i18next.t("app.close", { defaultValue: "Close" })
+            });
+          }
+        });
+      }
+    });
+  }
+
+  removeVariant = (variant) => {
+    const title = variant.title || i18next.t("productDetailEdit.thisVariant");
+
+    Alerts.alert({
+      title: i18next.t("productDetailEdit.archiveVariantConfirm", { title }),
+      showCancelButton: true,
+      confirmButtonText: "Archive"
+    }, (isConfirm) => {
+      if (isConfirm) {
+        const id = variant._id;
+        Meteor.call("products/deleteVariant", id, function (error, result) {
+          if (result && ReactionProduct.selectedVariantId() === id) {
+            return ReactionProduct.setCurrentVariant(null);
+          }
+        });
+      }
+    });
+  }
+
+  cloneVariant =  (variant) => {
+    const title = variant.title || i18next.t("productDetailEdit.thisVariant");
+    const productId = ReactionProduct.selectedProductId();
+    if (!productId) {
+      return;
+    }
+    Meteor.call("products/cloneVariant", productId, variant._id,
+     function (error, result) {
+       if (error) {
+         Alerts.alert({
+           text: i18next.t("productDetailEdit.cloneVariantFail", { title }),
+           confirmButtonText: i18next.t("app.close", { defaultValue: "Close" })
+         });
+       } else if (result) {
+         const variantId = result[0];
+
+         ReactionProduct.setCurrentVariant(variantId);
+         Session.set("variant-form-" + variantId, true);
+       }
+     });
+  }
+
   render() {
     return (
       <VariantForm
@@ -79,6 +148,9 @@ class VariantFormContainer extends Component {
         fetchTaxCodes={this.fetchTaxCodes}
         hasChildVariants={this.hasChildVariants}
         greyDisabledFields={this.greyDisabledFields}
+        restoreVariant={this.restoreVariant}
+        removeVariant={this.removeVariant}
+        cloneVariant={this.cloneVariant}
         {...this.props}
       />
     );
