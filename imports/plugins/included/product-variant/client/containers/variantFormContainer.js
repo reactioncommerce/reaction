@@ -87,11 +87,10 @@ class VariantFormContainer extends Component {
 
 function composer(props, onData) {
   const countries = Countries.find({}).fetch();
-  const selectedVariant = ReactionProduct.selectedVariant();
 
   onData(null, {
     countries,
-    variant: selectedVariant
+    variant: props.variant
   });
 }
 
