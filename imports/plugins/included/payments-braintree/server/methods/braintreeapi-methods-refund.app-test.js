@@ -54,21 +54,15 @@ describe("braintree/refund/create", function () {
     sandbox.stub(BraintreeApi.apiCall, "createRefund", function () {
       return braintreeRefundResult;
     });
-
-
     let refundResult = null;
     let refundError = null;
-
-
     Meteor.call("braintree/refund/create", paymentMethod, paymentMethod.amount, function (error, result) {
       refundResult = result;
       refundError = error;
+      expect(refundError).to.be.undefined;
+      expect(refundResult).to.not.be.undefined;
+      expect(refundResult.saved).to.be.true;
+      return done();
     });
-
-
-    expect(refundError).to.be.undefined;
-    expect(refundResult).to.not.be.undefined;
-    expect(refundResult.saved).to.be.true;
-    done();
   });
 });
