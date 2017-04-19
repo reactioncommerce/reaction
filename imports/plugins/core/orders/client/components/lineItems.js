@@ -22,7 +22,7 @@ class LineItems extends Component {
       <div className="order-items">
         <div
           className="invoice order-item form-group order-summary-form-group"
-          onClick={() => handleClick(uniqueItem.cartItemId)}
+          onClick={() => handleClick(uniqueItem._id)}
           style={{ height: 70 }}
         >
 
@@ -42,7 +42,7 @@ class LineItems extends Component {
           </div>
 
           <div className="order-detail-quantity">
-            {quantity || 1}
+           {quantity || uniqueItem.quantity}
           </div>
 
           <div className="order-detail-price">
@@ -56,7 +56,7 @@ class LineItems extends Component {
     );
   }
 
-  renderLineItemInvoice(uniqueItem, shippingRate, quantity) {
+  renderLineItemInvoice(uniqueItem) {
     return (
       <div>
         <div className="order-summary-form-group">
@@ -69,14 +69,14 @@ class LineItems extends Component {
         <div className="order-summary-form-group">
           <strong><Translation defaultValue="Shipping" i18nKey="cartSubTotals.shipping"/></strong>
           <div className="invoice-details">
-            {formatPriceString(shippingRate)}
+            {formatPriceString(uniqueItem.shipping.rate)}
           </div>
         </div>
 
         <div className="order-summary-form-group">
           <strong>Item tax</strong>
           <div className="invoice-details">
-            {uniqueItem.taxDetail ? formatPriceString(uniqueItem.taxDetail.tax / quantity) : formatPriceString(0)}
+            {uniqueItem.taxDetail ? formatPriceString(uniqueItem.taxDetail.tax / uniqueItem.quantity) : formatPriceString(0)}
           </div>
         </div>
 
@@ -92,10 +92,10 @@ class LineItems extends Component {
           <div className="invoice-details">
             {uniqueItem.taxDetail ?
               <strong>
-                {this.calculateTotal(uniqueItem.variants.price, shippingRate, uniqueItem.taxDetail.tax)}
+                {this.calculateTotal(uniqueItem.variants.price, uniqueItem.shipping.rate, uniqueItem.taxDetail.tax)}
               </strong> :
                <strong>
-                {this.calculateTotal(uniqueItem.variants.price, shippingRate, 0)}
+                {this.calculateTotal(uniqueItem.variants.price, uniqueItem.shipping.rate, 0)}
               </strong>
             }
           </div>
@@ -107,22 +107,21 @@ class LineItems extends Component {
 
   render() {
     const { uniqueItems, isExpanded, onClose } = this.props;
-
     return (
       <div>
         {uniqueItems.map((uniqueItem) => {
-          if (!isExpanded(uniqueItem.cartItemId)) {
+          if (!isExpanded(uniqueItem._id)) {
             return (
-              <div key={uniqueItem.cartItemId}> { this.renderLineItem(uniqueItem.items[0], uniqueItem.items.length) } </div>
+              <div key={uniqueItem._id}> { this.renderLineItem(uniqueItem) } </div>
             );
           }
 
           return (
-            <div className="roll-up-invoice-list" key={uniqueItem.cartItemId}>
+            <div className="roll-up-invoice-list" key={uniqueItem._id}>
               <div className="roll-up-content">
 
                 <div style={{ float: "right" }}>
-                  <button className="rui btn btn-default flat icon-only" onClick={() => onClose(uniqueItem.cartItemId)}>
+                  <button className="rui btn btn-default flat icon-only" onClick={() => onClose(uniqueItem._id)}>
                     <i
                       className="rui font-icon fa-lg fa fa-times"
                     />
@@ -131,12 +130,12 @@ class LineItems extends Component {
 
                 <br/><br/>
 
-                {uniqueItem.items.map((item) => (
-                  <div key={item._id}>
-                    { this.renderLineItem(item) }
-                    { this.renderLineItemInvoice(item, uniqueItem.shippingRate, uniqueItem.items.length) }
+                {[...Array(uniqueItem.quantity)].map((v, i) =>
+                  <div key={i}>
+                    { this.renderLineItem(uniqueItem, 1) }
+                    { this.renderLineItemInvoice(uniqueItem) }
                   </div>
-                ))}
+                )}
 
               </div>
           </div>

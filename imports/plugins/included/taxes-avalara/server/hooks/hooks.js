@@ -27,9 +27,9 @@ MethodHooks.after("taxes/calculate", (options) => {
   Logger.debug("Avalara triggered on taxes/calculate for cartId:", cartId);
   if (pkg && pkg.settings.avalara.enabled && pkg.settings.avalara.performTaxCalculation) {
     taxCalc.estimateCart(cartToCalc, function (result) {
-      const taxes = linesToTaxes(result.lines);
-      if (result && result.totalTax && typeof result.totalTax === "number") {
-        // we don't use totalTax, that just tells us we have a valid tax calculation
+      // we don't use totalTax, that just tells us we have a valid tax calculation
+      if (result && result.totalTax && typeof result.totalTax === "number" && result.lines) {
+        const taxes = linesToTaxes(result.lines);
         const taxAmount = taxes.reduce((totalTaxes, tax) => totalTaxes + tax.tax, 0);
         const taxRate = taxAmount / taxCalc.calcTaxable(cartToCalc);
         Meteor.call("taxes/setRate", cartId, taxRate, taxes);
