@@ -97,7 +97,7 @@ function markInventoryShipped(doc) {
   const cartItems = [];
   for (const orderItem of orderItems) {
     const cartItem = {
-      _id: orderItem.cartItemId,
+      _id: orderItem.cartItemId || orderItem._id,
       shopId: orderItem.shopId,
       quantity: orderItem.quantity,
       productId: orderItem.productId,
@@ -112,9 +112,10 @@ function markInventoryShipped(doc) {
 function markInventorySold(doc) {
   const orderItems = doc.items;
   const cartItems = [];
+  // If a cartItemId exists it's a legacy order and we use that
   for (const orderItem of orderItems) {
     const cartItem = {
-      _id: orderItem.cartItemId,
+      _id: orderItem.cartItemId || orderItem._id,
       shopId: orderItem.shopId,
       quantity: orderItem.quantity,
       productId: orderItem.productId,
