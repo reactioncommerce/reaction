@@ -90,26 +90,26 @@ export function Apps(optionHash) {
   }
 
   // fetch the packages
-  Packages.find(filter).forEach((app) => {
+  // Packages.find(filter).forEach((app) => {  TODO: Fix filter
+  Packages.find({}).forEach((app) => {
     const matchingRegistry = _.filter(app.registry, function (item) {
-      const itemFilter = registryFilter;
+      const itemFilter = _.cloneDeep(registryFilter);
 
       // check audience permissions only if they exist as part of optionHash and are part of the registry item
       // ideally all routes should use it, safe for backwards compatibility though
       // owner bypasses permissions
-      if (!Reaction.hasOwnerAccess() && item.audience && registryFilter.audience) {
+      if (!Reaction.hasOwnerAccess() && item.permissions && registryFilter.audience) {
         let hasAccess;
 
         for (const permission of registryFilter.audience) {
-          if (item.audience.indexOf(permission) > -1) {
+          if (item.permissions.indexOf(permission) > -1) {
             hasAccess = true;
           }
           // make sure user also has audience perms
-          if (Roles.userIsInRole(Meteor.userId(), permission, Reaction.getShopId())) {
-            hasAccess = true;
-          }
+          // if (Roles.userIsInRole(Meteor.userId(), permission, Reaction.getShopId())) {
+          //   hasAccess = true;
+          // }
         }
-
         if (!hasAccess) {
           return false;
         }
