@@ -1,4 +1,5 @@
 /* eslint camelcase: 0 */
+import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { SimpleSchema } from "meteor/aldeed:simple-schema";
 import { Packages } from "/lib/collections";

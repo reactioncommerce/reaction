@@ -30,8 +30,10 @@ export default {
     this.loadPackages();
     // process imports from packages and any hooked imports
     this.Import.flush();
-    // timing is important, packages are rqd for initilial permissions configuration.
-    this.createDefaultAdminUser();
+    // timing is important, packages are rqd for initial permissions configuration.
+    if (!Meteor.isAppTest) {
+      this.createDefaultAdminUser();
+    }
     this.setAppVersion();
     // hook after init finished
     Hooks.Events.run("afterCoreInit");
@@ -256,7 +258,7 @@ export default {
     const shopId = this.getShopId();
 
     // if an admin user has already been created, we'll exit
-    if (Roles.getUsersInRole(defaultAdminRoles, shopId).count() !== 0) {
+    if (Roles.getUsersInRole("owner", shopId).count() !== 0) {
       Logger.debug("Not creating default admin user, already exists");
       return ""; // this default admin has already been created for this shop.
     }
