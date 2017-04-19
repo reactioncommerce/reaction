@@ -23,7 +23,7 @@ import queryParse from "query-parse";
 
 // const Router = BrowserRouter
 
-
+import App from "/imports/plugins/core/router/client/app"
 import { Router } from "/imports/plugins/core/router/lib";
 const history = Router.history;
 
@@ -131,50 +131,70 @@ function selectLayout(layout, setLayout, setWorkflow) {
  * @returns {Object} layout - return object of template definitions for Blaze Layout
  */
 export function ReactionLayout(options = {}) {
-  const layout = options.layout || Session.get("DEFAULT_LAYOUT") || "coreLayout";
-  const workflow = options.workflow || Session.get("DEFAULT_WORKFLOW") || "coreWorkflow";
-  if (!options.layout) {
-    options.layout = "coreLayout";
-  }
-  if (!options.workflow) {
-    options.workflow = "coreWorkflow";
+  // Find a workflow layout to render
+  // Get the current shop data
+  const shop = Shops.findOne(Reaction.getShopId());
+
+  // get the layout & workflow from options if they exist
+  // Otherwise get them from the Session. this is set in `/client/config/defaults`
+  // Otherwise, default to hard-coded values
+  const layoutName = options.layout || Session.get("DEFAULT_LAYOUT") || "coreLayout";
+  const workflowName = options.workflow || Session.get("DEFAULT_WORKFLOW") || "coreWorkflow";
+
+  // Layout object used to render
+  // Defaults provided for reference
+  let layoutStructure = {
+    template: "",
+    layoutHeader: "",
+    layoutFooter: "",
+    notFound: "notFound",
+    dashboardHeader: "",
+    dashboardControls: "",
+    dashboardHeaderControls: "",
+    adminControlsFooter: ""
+  };
+
+  // Find a registered layout using the layoutName and workflowName
+  if (shop) {
+    const sortedLayout = shop.layout.sort((prev, next) => prev.priority - next.priority);
+    const foundLayout = sortedLayout.find((x) => selectLayout(x, layoutName, workflowName));
+
+    layoutStructure = {
+      ...foundLayout.structure
+    };
   }
 
-  // check if router has denied permissions
-  // see: checkRouterPermissions
-  const unauthorized = {};
+  // If the original options did not include a workflow, but did have a template,
+  // then we override the template from the layout with the one provided by the options.
+  //
+  // Why is this? We always need a workflow to render the entire layout of the app.
+  // The default layout has a default template that may not be the one we want to render.
+  // Some routes, such as `/account/profile` do no have a workflow, but define a template.
+  // Without the logic below, it would end up rendering the homepage instead of the profile
+  // page.
+  const optionsHasWorkflow = typeof options.workflow === "string";
+  const optionsHasTemplate = typeof options.template === "string";
+
+  if (optionsHasWorkflow === false && optionsHasTemplate) {
+    layoutStructure.template = options.template;
+  }
+
+  // If the current route is unauthorized, then override the template to use
+  // the default unauthroized template
   if (Router.current().unauthorized) {
-    unauthorized.template = "unauthorized";
+    layoutStructure.template = "unauthorized";
   }
 
-  // autorun router rendering
-  // Tracker.autorun(function () {
-  //   if (Reaction.Subscriptions.Shops.ready()) {
-      const shop = Shops.findOne(Reaction.getShopId());
-      if (shop) {
-        const sortedLayout = shop.layout.sort((prev, next) => prev.priority - next.priority);
-        const newLayout = sortedLayout.find((x) => selectLayout(x, layout, workflow));
+  // If there is no Blaze Template (Template[]) or React Component (getComponent)
+  // Then use the notFound template instead
+  if (!Template[layoutStructure.template] && !getComponent(layoutStructure.template)) {
+    return (
+      <Blaze template={layoutStructure.notFound} />
+    );
+  }
 
-        // oops this layout wasn't found. render notFound
-        if (!newLayout) {
-          // BlazeLayout.render("notFound");
-          return <Blaze template="notFound" />
-        } else {
-          const layoutToRender = Object.assign({}, options, newLayout.structure, unauthorized);
-// console.log("RENDER ME", layoutToRender, newLayout.structure.template, options.template);
-
-          // if (typeof layoutToRender.template === "string" && window.Template[layoutToRender.template]) {
-            // return <Blaze  {...layoutToRender} template={newLayout.layout || "notFound"} />
-            // return <Blaze template="notFound" />
-            return React.createElement(getComponent("AdminView"), layoutToRender);
-          // }
-          // BlazeLayout.render(layout, layoutToRender);
-        }
-      }
-  //   }
-  // });
-
-  return <Blaze template="notFound" />
+  // Render the layout
+  return React.createElement(getComponent("AdminView"), layoutStructure);
 }
 
 // default not found route
@@ -195,7 +215,6 @@ export function ReactionLayout(options = {}) {
  * @returns {undefined} returns undefined
  */
 Router.initPackageRoutes = () => {
-  console.log("we good?");
   const pkgs = Packages.find().fetch();
   const prefix = Reaction.getShopPrefix();
   const finalRoutes = [];
@@ -351,12 +370,17 @@ Router.initPackageRoutes = () => {
         // }
       }
     } // end package loop
+/*
 
+ */
+  console.log("PATHS", Router.paths);
     ReactDOM.render((
       <ConnectedRouter history={history}>
         <App children={finalRoutes} />
       </ConnectedRouter>
     ), getRootNode());
+
+    Router._initialized = true
 
     //
     // initialize the router
@@ -565,20 +589,5 @@ class ConnectedRouter extends Component {
     );
   }
 }
-
-class App extends Component {
-  static propTypes = {
-    children: PropTypes.node
-  }
-
-  render() {
-    return (
-      <div>
-        {this.props.children}
-      </div>
-    );
-  }
-}
-
 
 export default Router;

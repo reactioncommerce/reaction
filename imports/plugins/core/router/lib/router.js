@@ -67,6 +67,9 @@ class Router {
   }
 }
 
+
+Router._initialized = false;
+
 // init flow-router
 //
 /* eslint no-loop-func: 0 */
@@ -146,6 +149,19 @@ Router.go = (path, params, query) => {
 
   if (window) {
     history.push(actualPath);
+  }
+};
+
+Router.replace = (path, params, query) => {
+  const actualPath = Router.pathFor(path, {
+    hash: {
+      ...params,
+      query
+    }
+  });
+
+  if (window) {
+    history.replace(actualPath);
   }
 };
 

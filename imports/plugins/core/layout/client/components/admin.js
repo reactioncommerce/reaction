@@ -10,14 +10,6 @@ import CartDrawer from "./cartDrawer";
 import { Content } from "./";
 
 
-import ToolbarContainer from "/imports/plugins/core/dashboard/client/containers/toolbarContainer";
-import Toolbar from "/imports/plugins/core/dashboard/client/components/toolbar";
-import { ActionViewContainer } from "/imports/plugins/core/dashboard/client/containers";
-import { ActionView } from "/imports/plugins/core/dashboard/client/components";
-
-
-const ConnectedToolbarComponent = ToolbarContainer(Toolbar)
-
 class AdminView extends Component {
   static propTypes = {
     actionViewIsOpen: PropTypes.bool,
@@ -35,19 +27,10 @@ class AdminView extends Component {
      */
 
     return (
-      <div style={{display: "flex", flex: "1 1 auto"}}>
-        <div
-          className={pageClassName}
-          id="reactionAppContainer"
-        >
-          <div className="reaction-toolbar">
-            {<ConnectedToolbarComponent data={this.props} />}
-          </div>
-          <Header template={this.props.layoutHeader} />
-          <CartDrawer />
-          <Content template={this.props.template} />
-        </div>
-        {ActionViewContainer(ActionView)}
+      <div className={pageClassName} id="reactionAppContainer">
+        <Header template={this.props.layoutHeader} />
+        <CartDrawer />
+        <Content template={this.props.template} />
       </div>
     );
   }

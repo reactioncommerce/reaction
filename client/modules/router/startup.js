@@ -9,9 +9,9 @@ Meteor.startup(function () {
     if (Reaction.Subscriptions.Packages.ready() && Reaction.Subscriptions.Shops.ready()) {
       console.warn("Handle route init");
 
-      // if (!Router._initialized) {
+      if (!Router._initialized) {
         Router.initPackageRoutes();
-      // }
+      }
     }
   });
 
