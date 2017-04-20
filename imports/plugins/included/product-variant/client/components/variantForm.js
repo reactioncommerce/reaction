@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from "react";
+import update from "react/lib/update";
 import {
   Button,
   Card,
@@ -26,6 +27,36 @@ class VariantForm extends Component {
     return this.state.variant || this.props.variant || {};
   }
 
+  handleFieldChange = (event, value, field) => {
+    const newState = update(this.state, {
+      variant: {
+        $merge: {
+          [field]: value
+        }
+      }
+    });
+
+    this.setState(newState);
+  }
+
+  handleFieldBlur = (event, value, field) => {
+    if (this.props.onVariantFieldSave) {
+      this.props.onVariantFieldSave(this.variant._id, field, value);
+    }
+  }
+
+  handleSelectChange = (value, field) => {
+    if (this.props.onVariantFieldSave) {
+      this.props.onVariantFieldSave(this.variant._id, field, value);
+    }
+  }
+
+  handleCardExpand(cardName) {
+    if (this.props.onCardExpand) {
+      this.props.onCardExpand(cardName);
+    }
+  }
+
   renderTaxCodeField() {
     if (this.props.isProviderEnabled()) {
       return (
@@ -35,7 +66,10 @@ class VariantForm extends Component {
           i18nKeyPlaceholder="productVariant.selectTaxCode"
           label="Tax Code"
           name="taxCode"
+          ref="taxCodeInput"
           options={this.props.fetchTaxCodes()}
+          onChange={this.handleSelectChange}
+          value={this.variant.taxCode}
         />
       );
     }
@@ -76,8 +110,8 @@ class VariantForm extends Component {
     return (
       <CardGroup>
         <Card
-          expandable={true}
-          expanded={false}
+          expanded={true}
+          onExpand={this.handleCardExpand.bind(this, "variantDetails")}
         >
           <CardHeader
             actAsExpander={true}
@@ -99,7 +133,11 @@ class VariantForm extends Component {
               placeholder="Label"
               label="Label"
               name="title"
+              ref="titleInput"
               value={this.variant.title}
+              onBlur={this.handleFieldBlur}
+              onChange={this.handleFieldChange}
+              onReturnKeyDown={this.handleFieldBlur}
             />
             <Select
               clearable={false}
@@ -107,7 +145,10 @@ class VariantForm extends Component {
               i18nKeyPlaceholder="productVariant.originCountry"
               label="Origin Country"
               name="originCountry"
+              ref="countryOfOriginInput"
               options={this.props.countries}
+              onChange={this.handleSelectChange}
+              value={this.variant.originCountry}
             />
             <div className="row">
               <div className="rui textfield form-group col-sm-6">
@@ -119,7 +160,8 @@ class VariantForm extends Component {
                   name="compareAtPrice"
                   type="text"
                   placeholder="0.00"
-                  ref="input"
+                  ref="compareAtPriceInput"
+                  value={this.variant.compareAtPrice}
                 />
               </div>
               <div className="rui textfield form-group col-sm-6">
@@ -131,7 +173,7 @@ class VariantForm extends Component {
                   name="price"
                   type="text"
                   placeholder="0.00"
-                  ref="input"
+                  ref="priceInput"
                   value={this.variant.price}
                   style={this.props.greyDisabledFields(this.variant)}
                   disabled={this.props.hasChildVariants(this.variant)}
@@ -149,7 +191,7 @@ class VariantForm extends Component {
                   name="width"
                   type="text"
                   placeholder="0"
-                  ref="input"
+                  ref="widthInput"
                   value={this.variant.width}
                 />
               </div>
@@ -162,7 +204,7 @@ class VariantForm extends Component {
                   name="length"
                   type="text"
                   placeholder="0"
-                  ref="input"
+                  ref="lengthInput"
                   value={this.variant.length}
                 />
               </div>
@@ -178,7 +220,7 @@ class VariantForm extends Component {
                   name="height"
                   type="text"
                   placeholder="0"
-                  ref="input"
+                  ref="heightInput"
                   value={this.variant.height}
                 />
               </div>
@@ -191,7 +233,7 @@ class VariantForm extends Component {
                   name="weight"
                   type="text"
                   placeholder="0"
-                  ref="input"
+                  ref="weightInput"
                   value={this.variant.weight}
                 />
               </div>
@@ -202,7 +244,7 @@ class VariantForm extends Component {
         <SettingsCard
           enabled={this.variant.taxable}
           expandable={true}
-          expanded={false}
+          expanded={this.variant.taxable}
           i18nKeyTitle="productVariant.taxable"
           name="taxable"
           showSwitch={true}
@@ -215,13 +257,18 @@ class VariantForm extends Component {
             placeholder="Tax Description"
             label="Tax Description"
             name="taxDescription"
+            ref="taxDescriptionInput"
+            value={this.variant.taxDescription}
+            onBlur={this.handleFieldBlur}
+            onChange={this.handleFieldChange}
+            onReturnKeyDown={this.handleFieldBlur}
           />
         </SettingsCard>
 
         <SettingsCard
           enabled={this.variant.inventoryManagement}
           expandable={true}
-          expanded={false}
+          expanded={this.variant.inventoryManagement}
           i18nKeyTitle="productVariant.inventoryManagement"
           name="inventoryManagement"
           showSwitch={true}
@@ -237,6 +284,7 @@ class VariantForm extends Component {
                 name="inventoryQuantity"
                 type="text"
                 placeholder="0"
+                ref="inventoryQuantityInput"
                 value={this.variant.inventoryQuantity}
                 style={this.props.greyDisabledFields(this.variant)}
                 disabled={this.props.hasChildVariants(this.variant)}
@@ -251,7 +299,7 @@ class VariantForm extends Component {
                 name="lowInventoryWarningThreshold"
                 type="text"
                 placeholder="0"
-                ref="input"
+                ref="lowInventoryWarningThresholdinput"
               />
             </div>
           </div>
@@ -275,6 +323,9 @@ VariantForm.propTypes = {
   greyDisabledFields: PropTypes.func,
   hasChildVariants: PropTypes.func,
   isProviderEnabled: PropTypes.func,
+  onCardExpand: PropTypes.func,
+  onFieldChange: PropTypes.func,
+  onVariantFieldSave: PropTypes.func,
   removeVariant: PropTypes.func,
   restoreVariant: PropTypes.func,
   variant: PropTypes.object

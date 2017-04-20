@@ -142,6 +142,19 @@ class VariantFormContainer extends Component {
      });
   }
 
+  handleVariantFieldSave = (variantId, fieldName, value) => {
+    Meteor.call("products/updateProductField", variantId, fieldName, value, (error) => {
+      if (error) {
+        Alerts.toast(error.message, "error");
+        this.forceUpdate();
+      }
+    });
+  }
+
+  handleCardExpand = (cardName) => {
+    Reaction.state.set("edit/focus", cardName);
+  }
+
   render() {
     return (
       <VariantForm
@@ -152,6 +165,8 @@ class VariantFormContainer extends Component {
         restoreVariant={this.restoreVariant}
         removeVariant={this.removeVariant}
         cloneVariant={this.cloneVariant}
+        onVariantFieldSave={this.handleVariantFieldSave}
+        onCardExpand={this.handleCardExpand}
         {...this.props}
       />
     );
@@ -164,7 +179,8 @@ function composer(props, onData) {
 
   onData(null, {
     countries,
-    variant: props.variant
+    variant: props.variant,
+    editFocus: Reaction.state.get("edit/focus")
   });
 }
 
