@@ -1,3 +1,4 @@
+import { $ } from "meteor/jquery";
 import { i18next } from "/client/api";
 import * as Collections from "/lib/collections";
 import { Session } from "meteor/session";
@@ -97,7 +98,7 @@ AutoForm.hooks({
 
       Meteor.call("accounts/validateAddress", insertDoc, function (err, res) {
         // if the address is validated OR the address has already been through the validation process, pass it on
-        if (res.validated || typeof res.validatedAddress.isValidated === "boolean") {
+        if (res.validated) {
           Meteor.call("accounts/addressBookAdd", insertDoc, function (error, result) {
             if (error) {
               Alerts.toast(i18next.t("addressBookAdd.failedToAddAddress", { err: error.message }), "error");
@@ -111,21 +112,16 @@ AutoForm.hooks({
             }
           });
         } else {
-          if (res.validatedAddress) {
-            setValidatedAddress(res);
-            Alerts.inline("Made changes to your address based upon validation. Please ensure this is correct", "warning", {
-              placement: "addressBookAdd",
-              i18nKey: "addressBookAdd.validatedAddress"
-            });
-          }
-          if (res.formErrors) {
-            for (const error of res.formErrors) {
-              Alerts.inline(error.details, "error", {
-                placement: "addressBookAdd"
-              });
-            }
-          }
-          that.done("Validation failed"); // renable Save and Continue button
+          // set addressState and kick it back to review
+          const addressState = {
+            requiresReview: true,
+            address: insertDoc,
+            validatedAddress: res.validatedAddress,
+            formErrors: res.formErrors,
+            fieldErrors: res.fieldErrors
+          };
+          Session.set("addressState", addressState);
+          addressBook.trigger($.Event("addressRequiresReview"));
         }
       });
     }

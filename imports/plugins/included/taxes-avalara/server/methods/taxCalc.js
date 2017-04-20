@@ -290,13 +290,7 @@ taxCalc.validateAddress = function (address) {
   const baseUrl = getUrl();
   const requestUrl = `${baseUrl}addresses/resolve`;
   const result = avaPost(requestUrl, { data: addressToValidate });
-  let content;
-
-  try {
-    content = JSON.parse(result.content);
-  } catch (error) {
-    content = result.content;
-  }
+  const content = result.data;
   if (content && content.messages) {
     messages = content.messages;
   }
@@ -315,7 +309,7 @@ taxCalc.validateAddress = function (address) {
       postal: resultAddress.postalCode,
       country: resultAddress.country
     };
-    if (result.data.address.line2) {
+    if (resultAddress.line2) {
       validatedAddress.addresss2 = resultAddress.line2;
     }
   }

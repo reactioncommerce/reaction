@@ -1,4 +1,5 @@
 import { Meteor } from "meteor/meteor";
+import { Session } from "meteor/session";
 import { ReactiveVar } from "meteor/reactive-var";
 import { i18next } from "/client/api";
 import * as Collections from "/lib/collections";
@@ -9,10 +10,20 @@ import { Template } from "meteor/templating";
  * template determines which view should be used:
  * addAddress (edit or add)
  * addressBookView (view)
+ * addressBookReview (review errors)
  */
 
 Template.addressBook.onCreated(function () {
-  this.currentViewTemplate = ReactiveVar("addressBookAdd");
+  let addressState = Session.get("addressState");
+  if (!addressState) {
+    addressState = { requiresReview: false };
+    Session.setDefault("addressState", addressState);
+  }
+  if (addressState && addressState.requiresReview) {
+    this.currentViewTemplate = ReactiveVar("addressBookReview");
+  } else {
+    this.currentViewTemplate = ReactiveVar("addressBookAdd");
+  }
   this.templateData = ReactiveVar({});
 
   this.autorun(() => {
@@ -22,7 +33,7 @@ Template.addressBook.onCreated(function () {
       userId: Meteor.userId()
     });
 
-    if (account) {
+    if (account && !addressState.requiresReview) {
       if (account.profile) {
         if (account.profile.addressBook) {
           if (account.profile.addressBook.length === 0) {
@@ -118,5 +129,10 @@ Template.addressBook.events({
     event.stopPropagation();
 
     Template.instance().currentViewTemplate.set("addressBookGrid");
+  },
+  "addressRequiresReview": (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    Template.instance().currentViewTemplate.set("addressBookReview");
   }
 });

@@ -126,11 +126,12 @@ function validateAddress(address) {
   if (validator) {
     const validationResult = Meteor.call(validator, address);
     validatedAddress = validationResult.validatedAddress;
-    validatedAddress.isValidated = true;
     formErrors = validationResult.errors;
     if (validatedAddress) {
+      console.log("got validated address");
       validationErrors = compareAddress(address, validatedAddress);
       if (validationErrors.length || formErrors.length) {
+        console.log("failing validation");
         validated = false;
         validatedAddress.isValidated = false;
       }
@@ -141,6 +142,7 @@ function validateAddress(address) {
     }
   }
   const validationResults = { validated, fieldErrors: validationErrors, formErrors, validatedAddress };
+  console.log("validation results", validationResults);
   return validationResults;
 }
 

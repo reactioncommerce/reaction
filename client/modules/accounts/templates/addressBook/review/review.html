@@ -1,0 +1,108 @@
+<template name="addressBookReview">
+  <div class="panel-heading">
+    <h3 class="panel-control-bar">
+      <span  data-i18n="addressBookEdit.editAddress">Review your address</span>
+    </h3>
+  </div>
+  <div class="panel-body">
+
+    <div class="row">
+      <div class="col-md-7">
+        Validated Address
+      </div>
+      <div class="col-md-4">
+        Address
+      </div>
+    </div>
+  <!-- country -->
+  <div class="row">
+    <div class="col-md-5">
+      {{validatedAddress.country}}
+    </div>
+
+    <div class="col-md-2">
+      <span id="copy-country">===></span>
+    </div>
+
+    <div class="col-md-5">
+      {{address.country}}
+    </div>
+  </div>
+    <!-- address1 -->
+    <div class="row">
+      <div class="col-md-5">
+        {{validatedAddress.address1}}
+      </div>
+
+      <div class="col-md-2">
+        <span id="copy-address1">===></span>
+      </div>
+
+      <div class="col-md-5">
+        {{address.address1}}
+      </div>
+    </div>
+
+    {{#if hasAddress2}}
+        <!-- address2 -->
+        <div class="row">
+          <div class="col-md-5">
+            {{validatedAddress.address2}}
+          </div>
+
+          <div class="col-md-2">
+            <span id="copy-address2">===></span>
+          </div>
+
+          <div class="col-md-5">
+            {{address.address2}}
+          </div>
+        </div>
+    {{/if}}
+    <!-- city -->
+    <div class="row">
+      <div class="col-md-5">
+        {{validatedAddress.city}}
+      </div>
+
+      <div class="col-md-2">
+        <span id="copy-city">===></span>
+      </div>
+
+      <div class="col-md-5">
+        {{address.city}}
+      </div>
+    </div>
+
+    <!-- region -->
+    <div class="row">
+      <div class="col-md-5">
+        {{validatedAddress.region}}
+      </div>
+
+      <div class="col-md-2">
+        <span id="copy-region">===></span>
+      </div>
+
+      <div class="col-md-5">
+        {{address.region}}
+      </div>
+    </div>
+
+    <!-- postal -->
+
+    <div class="row">
+      <div class="col-md-5">
+        {{validatedAddress.postal}}
+      </div>
+
+      <div class="col-md-2">
+        <span id="copy-address1">===></span>
+      </div>
+
+      <div class="col-md-5">
+        {{address.postal}}
+      </div>
+    </div>
+  </div>
+</template>
