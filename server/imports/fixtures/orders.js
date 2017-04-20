@@ -2,6 +2,7 @@ import faker from "faker";
 import { Orders, Products } from "/lib/collections";
 import { getShop } from "./shops";
 import { getUser } from "./users";
+import { getPkgData } from "./packages";
 import { getAddress } from "./accounts";
 import { addProduct } from "./products";
 
@@ -145,6 +146,8 @@ export default function () {
         method: "credit",
         processor: "Example",
         storedCard: "Mastercard 2346",
+        paymentPackageId: getPkgData("example-paymentmethod") ? getPkgData("example-paymentmethod")._id : "uiwneiwknekwewe",
+        paymentSettingsKey: "example-paymentmethod",
         mode: "authorize",
         status: "created"
       }),

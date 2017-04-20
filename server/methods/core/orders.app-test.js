@@ -5,18 +5,22 @@ import { Orders, Products, Notifications } from "/lib/collections";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
 import Fixtures from "/server/imports/fixtures";
+// import { examplePaymentMethod } from "/server/imports/fixtures/packages";
 
 Fixtures();
+// examplePaymentMethod();
 
 describe("orders test", function () {
   let methods;
   let sandbox;
   let order;
+  let example;
 
   before(function (done) {
     methods = {
       cancelOrder: Meteor.server.method_handlers["orders/cancelOrder"]
     };
+    example = Factory.create("examplePaymentPackage");
     return done();
   });
 
@@ -37,6 +41,9 @@ describe("orders test", function () {
 
     Factory.create("shop");
     order = Factory.create("order");
+    sandbox.stub(Reaction, "getShopId", () => order.shopId);
+    const paymentMethod = order.billing[0].paymentMethod;
+    sandbox.stub(paymentMethod, "paymentPackageId", example._id);
     return done();
   });
 

@@ -7,6 +7,11 @@ export function getShop() {
   return existingShop || Factory.create("shop");
 }
 
+export function getShopId() {
+  const shop = Shops.find({}).fetch()[0];
+  return shop && shop._id;
+}
+
 export function getAddress(options = {}) {
   const defaults = {
     fullName: faker.name.findName(),

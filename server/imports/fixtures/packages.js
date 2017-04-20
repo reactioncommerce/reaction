@@ -1,0 +1,60 @@
+// import faker from "faker";
+import { Reaction } from "/server/api";
+import { Factory } from "meteor/dburles:factory";
+import { Packages } from "/lib/collections";
+import { getShopId } from "./shops";
+
+export const getPkgData = (pkgName) => {
+  const pkgData = Packages.findOne({
+    name: pkgName
+  });
+  return pkgData;
+};
+
+
+// export const examplePaymentMethod = () => {
+//   Reaction.registerPackage({
+//     label: "ExamplePayment",
+//     name: "example-paymentmethod",
+//     icon: "fa fa-credit-card-alt",
+//     autoEnable: true,
+//     settings: {
+//       "mode": false,
+//       "apiKey": "",
+//       "example": {
+//         enabled: false
+//       },
+//       "example-paymentmethod": {
+//         enabled: false,
+//         support: ["authorize", "capture", "refund"]
+//       }
+//     },
+//     registry: []
+//   });
+// };
+
+
+export default function () {
+  const examplePaymentMethodPackage = {
+    name: "example-paymentmethod",
+    icon: "fa fa-credit-card-alt",
+    shopId: getShopId(),
+    enabled: true,
+    settings: {
+      "mode": false,
+      "apikey": "",
+      "example": {
+        enabled: false
+      },
+      "example-paymentmethod": {
+        enabled: true,
+        support: ["authorize", "capture", "refund"]
+      }
+    },
+    registry: [],
+    layout: null
+  };
+
+  Factory.define("examplePaymentPackage", Packages, Object.assign({}, examplePaymentMethodPackage));
+}
+

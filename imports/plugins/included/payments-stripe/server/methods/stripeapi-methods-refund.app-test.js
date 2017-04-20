@@ -19,6 +19,8 @@ describe("stripe/refund/create", function () {
     const paymentMethod = {
       processor: "Stripe",
       storedCard: "Visa 4242",
+      paymentPackageId: "vrXutd72c2m7Lenqw",
+      paymentSettingsKey: "reaction-stripe",
       method: "credit",
       transactionId: "ch_17hZ4wBXXkbZQs3xL5JhlSgS",
       amount: 19.99,
