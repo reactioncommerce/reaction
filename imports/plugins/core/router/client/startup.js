@@ -1,16 +1,15 @@
 import { Meteor } from "meteor/meteor";
 import { Tracker } from "meteor/tracker";
 import { Reaction } from "/client/api";
-import Router from "./main";
+import { initBrowserRouter } from "./browserRouter";
+import { Router } from "../lib";
 
 Meteor.startup(function () {
   Tracker.autorun(function () {
     // initialize client routing
     if (Reaction.Subscriptions.Packages.ready() && Reaction.Subscriptions.Shops.ready()) {
-      console.warn("Handle route init");
-
       if (!Router._initialized) {
-        Router.initPackageRoutes();
+        initBrowserRouter();
       }
     }
   });
@@ -22,9 +21,9 @@ Meteor.startup(function () {
   // we only do this when the routes table
   // has already been generated (existing user)
   //
-  Accounts.onLogin(() => {
-    if (Meteor.loggingIn() === false && Router._routes.length > 0) {
-      Router.reload();
-    }
-  });
+  // Accounts.onLogin(() => {
+  //   if (Meteor.loggingIn() === false && Router._routes.length > 0) {
+  //     Router.reload();
+  //   }
+  // });
 });
