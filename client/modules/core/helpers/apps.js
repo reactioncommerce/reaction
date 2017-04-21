@@ -91,7 +91,9 @@ export function Apps(optionHash) {
 
   // TODO: Fix filter for Packages.find(filter)
   // current filter setup uses "audience" field which is not in registry array items in most (if not all) docs in Packages coll
-  Packages.find({}).forEach((app) => {
+  delete filter["registry.audience"]; // Temporarily remove "audience" key. Audience check few lines below performs similar effect
+
+  Packages.find(filter).forEach((app) => {
     const matchingRegistry = _.filter(app.registry, function (item) {
       const itemFilter = _.cloneDeep(registryFilter);
 
