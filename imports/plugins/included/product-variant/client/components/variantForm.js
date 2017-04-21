@@ -49,6 +49,8 @@ class VariantForm extends Component {
   }
 
   handleSelectChange = (value, field) => {
+    this.handleFieldChange(event, value, field);
+
     if (this.props.onVariantFieldSave) {
       this.props.onVariantFieldSave(this.variant._id, field, value);
     }
