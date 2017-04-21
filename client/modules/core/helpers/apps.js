@@ -90,7 +90,7 @@ export function Apps(optionHash) {
   }
 
   // TODO: Fix filter for Packages.find(filter)
-  // current filter setup uses "audience" field which is not in egistry items in most (if not all) docs in Packages coll
+  // current filter setup uses "audience" field which is not in registry array items in most (if not all) docs in Packages coll
   Packages.find({}).forEach((app) => {
     const matchingRegistry = _.filter(app.registry, function (item) {
       const itemFilter = _.cloneDeep(registryFilter);
@@ -103,7 +103,7 @@ export function Apps(optionHash) {
 
         for (const permission of registryFilter.audience) {
           const hasPermissionToRegistryItem = item.permissions.indexOf(permission) > -1;
-          const hasRoleAccessForShop = Roles.userIsInRole(Meteor.userId(), permission, Reaction.getShopId()); // make sure user also has audience perms
+          const hasRoleAccessForShop = Roles.userIsInRole(Meteor.userId(), permission, Reaction.getShopId());
           // both checks must pass for access to be granted
           if (hasPermissionToRegistryItem && hasRoleAccessForShop) {
             hasAccess = true;
