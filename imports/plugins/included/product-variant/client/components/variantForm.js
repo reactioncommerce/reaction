@@ -19,7 +19,10 @@ class VariantForm extends Component {
     super(props);
 
     this.state = {
-      variant: props.variant
+      variant: props.variant,
+      inventoryPolicy: props.variant.inventoryPolicy,
+      taxable: props.variant.taxable,
+      inventoryManagement: props.variant.inventoryManagement
     };
   }
 
@@ -49,6 +52,14 @@ class VariantForm extends Component {
     if (this.props.onVariantFieldSave) {
       this.props.onVariantFieldSave(this.variant._id, field, value);
     }
+  }
+
+  handleCheckboxChange = (event, value, field) => {
+    this.setState({
+      [field]: value
+    });
+
+    this.handleFieldBlur(event, value, field);
   }
 
   handleCardExpand(cardName) {
@@ -242,13 +253,14 @@ class VariantForm extends Component {
         </Card>
 
         <SettingsCard
-          enabled={this.variant.taxable}
+          enabled={this.state.taxable}
           expandable={true}
-          expanded={this.variant.taxable}
+          expanded={this.state.taxable}
           i18nKeyTitle="productVariant.taxable"
           name="taxable"
           showSwitch={true}
           title="Taxable"
+          onSwitchChange={this.handleCheckboxChange}
         >
           {this.renderTaxCodeField()}
           <TextField
@@ -266,13 +278,14 @@ class VariantForm extends Component {
         </SettingsCard>
 
         <SettingsCard
-          enabled={this.variant.inventoryManagement}
+          enabled={this.state.inventoryManagement}
           expandable={true}
-          expanded={this.variant.inventoryManagement}
+          expanded={this.state.inventoryManagement}
           i18nKeyTitle="productVariant.inventoryManagement"
           name="inventoryManagement"
           showSwitch={true}
           title="Inventory Tracking"
+          onSwitchChange={this.handleCheckboxChange}
         >
           <div className="row">
             <div className="rui textfield form-group col-sm-6">
@@ -306,9 +319,11 @@ class VariantForm extends Component {
           <Switch
             i18nKeyLabel="productVariant.inventoryPolicy"
             i18nKeyOnLabel="productVariant.inventoryPolicy"
+            name="inventoryPolicy"
             label={"Allow Backorder"}
             onLabel={"Allow Backorder"}
-            checked={this.variant.inventoryPolicy}
+            checked={this.state.inventoryPolicy}
+            onChange={this.handleCheckboxChange}
           />
         </SettingsCard>
       </CardGroup>
