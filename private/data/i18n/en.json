@@ -435,6 +435,7 @@
       },
       "addressBookEdit": {
         "editAddress": "Editing this address entry",
+        "reviewAddress": "Review changes to your address",
         "somethingWentWrong": "Something went wrong: {{err}}"
       },
       "corePackageConfig": {
