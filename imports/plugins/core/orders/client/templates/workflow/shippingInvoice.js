@@ -5,7 +5,7 @@ import { Template } from "meteor/templating";
 import { ReactiveVar } from "meteor/reactive-var";
 import { i18next, Logger, formatNumber, Reaction } from "/client/api";
 import { NumericInput } from "/imports/plugins/core/ui/client/components";
-import { Orders, Shops } from "/lib/collections";
+import { Orders, Shops, Packages } from "/lib/collections";
 import { ButtonSelect } from "../../../../ui/client/components/button";
 import DiscountList from "/imports/plugins/core/discounts/client/components/list";
 import InvoiceContainer from "../../containers/invoiceContainer.js";
@@ -136,6 +136,65 @@ Template.coreOrderShippingInvoice.events({
     const order = instance.state.get("order");
     const invoiceTotal = order.billing[0].invoice.total;
     const currencySymbol = instance.state.get("currency").symbol;
+
+    Meteor.subscribe("Packages");
+    const packageId = order.billing[0].paymentMethod.paymentPackageId;
+    const settingsKey = order.billing[0].paymentMethod.paymentSettingsKey;
+    // check if payment provider supports de-authorize
+    const checkSupportedMethods = Packages.findOne({
+      _id: packageId,
+      shopId: Reaction.getShopId()
+    }).settings[settingsKey].support;
+
+    const orderStatus = order.billing[0].paymentMethod.status;
+    const orderMode = order.billing[0].paymentMethod.mode;
+
+    let alertText;
+    if (_.includes(checkSupportedMethods, "de-authorize") ||
+      (orderStatus === "completed" && orderMode === "capture")) {
+      alertText = i18next.t("order.applyRefundDuringCancelOrder", { currencySymbol, invoiceTotal });
+    }
+
+    Alerts.alert({
+      title: i18next.t("order.cancelOrder"),
+      text: alertText,
+      type: "warning",
+      showCancelButton: true,
+      showCloseButton: true,
+      confirmButtonColor: "#98afbc",
+      cancelButtonColor: "#98afbc",
+      confirmButtonText: i18next.t("order.cancelOrderNoRestock"),
+      cancelButtonText: i18next.t("order.cancelOrderThenRestock")
+    }, (isConfirm, cancel)=> {
+      let returnToStock;
+      if (isConfirm) {
+        returnToStock = false;
+        return Meteor.call("orders/cancelOrder", order, returnToStock, err => {
+          if (err) Logger.warn(err);
+        });
+      }
+      if (cancel === "cancel") {
+        returnToStock = true;
+        return Meteor.call("orders/cancelOrder", order, returnToStock, err => {
+          if (err) Logger.warn(err);
+        });
+      }
+    });
+  },
+  /**
+   * Click Start Cancel Order after payment capture
+   * @param {Event} event - Event Object
+   * @param {Template} instance - Blaze Template
+   * @return {void}
+   */
+  "click [data-event-action=afterCaptureCancelOrder]": (event, instance) => {
+    event.preventDefault();
+    const order = instance.state.get("order");
+    const invoiceTotal = order.billing[0].invoice.total;
+    const currencySymbol = instance.state.get("currency").symbol;
+
+    Meteor.subscribe("Packages");
+
 
     Alerts.alert({
       title: i18next.t("order.cancelOrder"),
@@ -372,16 +431,13 @@ Template.coreOrderShippingInvoice.helpers({
   refundAmount() {
     return Template.instance().refundAmount;
   },
-  /**
-   * Discount
-   * @return {Number} current discount amount
-   */
+
   invoice() {
     const instance = Template.instance();
     const order = instance.state.get("order");
 
     const invoice = Object.assign({}, order.billing[0].invoice, {
-      totalItems: order.items.length
+      totalItems: _.sumBy(order.items, (o) => o.quantity)
     });
     return invoice;
   },
@@ -557,12 +613,10 @@ Template.coreOrderShippingInvoice.helpers({
     const currentData = Template.currentData();
     const shipment = currentData.fulfillment;
 
-    // returns array of individual items that have been checked out
-    const returnItems = _.map(shipment.items, (item) => {
-      const originalItem = _.find(order.items, {
-        _id: item._id
-      });
-      return _.extend(originalItem, item);
+    // returns order items with shipping detail
+    const returnItems = _.map(order.items, (item) => {
+      const shipping = shipment.shipmentMethod;
+      return _.extend(item, { shipping });
     });
 
     let items;
@@ -574,43 +628,13 @@ Template.coreOrderShippingInvoice.helpers({
 
       items = _.map(returnItems, (item) => {
         const taxDetail = _.find(taxes, {
-          lineNumber: item.cartItemId
+          lineNumber: item._id
         });
         return _.extend(item, { taxDetail });
       });
     } else {
       items = returnItems;
     }
-
-    /**
-     * It goes through individual items and groups similar items using the cartItemId.
-     * The output is an object whose keys are cartItemId and every item with the same
-     * cartItemId is added as a value
-     */
-    let uniqueItems = items.reduce((carts, item) => {
-      let cart;
-
-      if (carts[item.cartItemId]) {
-        cart = carts[item.cartItemId];
-        cart = Object.assign({}, cart, {
-          items: [...cart.items, item]
-        });
-      } else {
-        cart = {
-          cartItemId: item.cartItemId,
-          productId: item.productId,
-          shippingRate: shipment.shipmentMethod.rate,
-          items: [item]
-        };
-      }
-
-      carts[item.cartItemId] = cart;
-      return carts;
-    }, {});
-
-    // Converts the uniqueItems object to an array
-    uniqueItems = Object.keys(uniqueItems).map(k => uniqueItems[k]);
-
-    return uniqueItems;
+    return items;
   }
 });

@@ -20,6 +20,8 @@ describe("stripe/refunds/list", function () {
     const paymentMethod = {
       processor: "Stripe",
       storedCard: "Visa 4242",
+      paymentPackageId: "vrXutd72c2m7Lenqw",
+      paymentSettingsKey: "reaction-stripe",
       method: "credit",
       transactionId: "ch_17iCSlBXXkbZQs3xUpRw24mL",
       amount: 19.99,
@@ -54,26 +56,24 @@ describe("stripe/refunds/list", function () {
     sandbox.stub(StripeApi.methods.listRefunds, "call", function () {
       return stripeRefundListResult;
     });
-    // spyOn(StripeApi.methods.listRefunds, "call").and.returnValue(stripeRefundListResult);
 
     let refundListResult = null;
     let refundListError = null;
     Meteor.call("stripe/refund/list", paymentMethod, function (error, result) {
       refundListResult = result;
       refundListError = error;
-    });
+      expect(refundListError).to.be.undefined;
+      expect(refundListResult).to.not.be.undefined;
+      expect(refundListResult.length).to.equal(1);
+      expect(refundListResult[0].type).to.equal("refund");
+      expect(refundListResult[0].amount).to.equal(19.99);
+      expect(refundListResult[0].currency).to.equal("usd");
 
-    expect(refundListError).to.be.undefined;
-    expect(refundListResult).to.not.be.undefined;
-    expect(refundListResult.length).to.equal(1);
-    expect(refundListResult[0].type).to.equal("refund");
-    expect(refundListResult[0].amount).to.equal(19.99);
-    expect(refundListResult[0].currency).to.equal("usd");
-
-    expect(StripeApi.methods.listRefunds.call).to.have.been.calledWith({
-      transactionId: paymentMethod.transactionId
+      expect(StripeApi.methods.listRefunds.call).to.have.been.calledWith({
+        transactionId: paymentMethod.transactionId
+      });
+      done();
     });
-    done();
   });
 });
 

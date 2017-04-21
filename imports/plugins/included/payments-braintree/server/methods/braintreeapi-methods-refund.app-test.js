@@ -20,6 +20,8 @@ describe("braintree/refund/create", function () {
       processor: "Braintree",
       storedCard: "VISA 4242",
       method: "credit",
+      paymentPackageId: "vrXutd72c2m7Lenqw",
+      paymentSettingsKey: "reaction-braintree",
       transactionId: "mqcp30p9",
       amount: 99.95,
       status: "completed",
@@ -54,21 +56,15 @@ describe("braintree/refund/create", function () {
     sandbox.stub(BraintreeApi.apiCall, "createRefund", function () {
       return braintreeRefundResult;
     });
-
-
     let refundResult = null;
     let refundError = null;
-
-
     Meteor.call("braintree/refund/create", paymentMethod, paymentMethod.amount, function (error, result) {
       refundResult = result;
       refundError = error;
+      expect(refundError).to.be.undefined;
+      expect(refundResult).to.not.be.undefined;
+      expect(refundResult.saved).to.be.true;
+      return done();
     });
-
-
-    expect(refundError).to.be.undefined;
-    expect(refundResult).to.not.be.undefined;
-    expect(refundResult.saved).to.be.true;
-    done();
   });
 });

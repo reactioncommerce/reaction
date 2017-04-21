@@ -52,6 +52,7 @@
       {{#if paymentCanceled}}
         <span class="badge badge-danger" style="margin-bottom: 10px" data-i18n="order.canceledLabel">Canceled</span>
       {{/if}}
+      <div class="alert alert-danger hidden">Oh! Snap</div>
     </div>
 
 
@@ -91,16 +92,13 @@
 
       <br>
 
-      <button
-        class="btn btn-default btn-block"
-      >
-        <a
-        href="{{pathFor "dashboard/pdf/orders" id=orderId }}?shipment={{fulfillment._id}}"
-        target="_blank"
-        data-i18n="app.printInvoice">
-          Print Invoice
-        </a>
-      </button>
+      <a
+      class="btn btn-default btn-block"
+      href="{{pathFor "dashboard/pdf/orders" id=orderId }}?shipment={{fulfillment._id}}"
+      target="_blank"
+      data-i18n="app.printInvoice">
+        Print Invoice
+      </a>
 
     {{else}}
 

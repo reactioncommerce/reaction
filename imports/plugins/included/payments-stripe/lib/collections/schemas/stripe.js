@@ -16,6 +16,14 @@ export const StripePackageConfig = new SimpleSchema([
     "settings.api_key": {
       type: String,
       label: "API Client ID"
+    },
+    "settings.reaction-stripe.support": {
+      type: Array,
+      label: "Payment provider supported methods"
+    },
+    "settings.reaction-stripe.support.$": {
+      type: String,
+      allowedValues: ["authorize", "de-authorize", "capture", "refund"]
     }
   }
 ]);
