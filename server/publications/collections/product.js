@@ -78,6 +78,12 @@ Meteor.publish("Product", function (productId) {
     isDeleted: { $in: [null, false] }
   };
 
+  if (Roles.userIsInRole(this.userId, ["owner", "admin", "createProduct"], shop._id)) {
+    selector.isVisible = {
+      $in: [true, false]
+    };
+  }
+
 
   // TODO review for REGEX / DOS vulnerabilities.
   if (productId.match(/^[23456789ABCDEFGHJKLMNPQRSTWXYZabcdefghijkmnopqrstuvwxyz]{17}$/)) {
