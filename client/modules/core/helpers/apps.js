@@ -102,14 +102,14 @@ export function Apps(optionHash) {
         let hasAccess;
 
         for (const permission of registryFilter.audience) {
-          if (item.permissions.indexOf(permission) > -1) {
+          const hasPermissionToRegistryItem = item.permissions.indexOf(permission) > -1;
+          const hasRoleAccessForShop = Roles.userIsInRole(Meteor.userId(), permission, Reaction.getShopId()); // make sure user also has audience perms
+          // both checks must pass for access to be granted
+          if (hasPermissionToRegistryItem && hasRoleAccessForShop) {
             hasAccess = true;
           }
-          // make sure user also has audience perms
-          // if (Roles.userIsInRole(Meteor.userId(), permission, Reaction.getShopId())) {
-          //   hasAccess = true;
-          // }
         }
+
         if (!hasAccess) {
           return false;
         }
