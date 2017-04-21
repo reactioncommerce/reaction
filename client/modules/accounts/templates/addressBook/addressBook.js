@@ -134,5 +134,10 @@ Template.addressBook.events({
     event.preventDefault();
     event.stopPropagation();
     Template.instance().currentViewTemplate.set("addressBookReview");
+  },
+  "addressReviewComplete": (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    Template.instance().currentViewTemplate.set("addressBookEdit");
   }
 });

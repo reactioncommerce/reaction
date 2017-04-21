@@ -2,6 +2,7 @@ import { Template } from "meteor/templating";
 import { ReactiveDict } from "meteor/reactive-dict";
 import { Session } from "meteor/session";
 import { $ } from "meteor/jquery";
+import { i18next } from "/client/api";
 
 
 Template.addressBookReview.onCreated(function () {
@@ -39,6 +40,7 @@ Template.addressBookReview.helpers({
 
 Template.addressBookReview.events({
   "click .address-line-copyover": function (event) {
+    // set address value to be value from validatedAddress
     const addressKey = event.target.getAttribute("data-key");
     const address = Template.instance().state.get("address");
     const validatedAddress = Template.instance().state.get("validatedAddress");
@@ -47,6 +49,32 @@ Template.addressBookReview.events({
     $(`div.${addressKey}-display`).removeClass("address-invalid-line");
     const selector = `[data-key=${addressKey}]`;
     $(selector).hide();
+  },
+  "click [data-event-action=saveAddress]": function () {
+    const instance = Template.instance();
+    const address = instance.state.get("address");
+    const addressState = {
+      requiresReview: false,
+      address: address,
+      formErrors: [],
+      fieldErrors: {}
+    };
+    Session.set("addressState", addressState);
+    Meteor.call("accounts/addressBookAdd", address, function (error, result) {
+      if (error) {
+        Alerts.toast(i18next.t("addressBookAdd.failedToAddAddress", { err: error.message }), "error");
+        return false;
+      }
+      if (result) {
+        const addressBook = $(instance.firstNode).closest(".address-book");
+        addressBook.trigger($.Event("showMainView"));
+        return true;
+      }
+    });
+  },
+  "click [data-event-action=cancelAddressValidate]": function () {
+    const addressBook = $(instance.firstNode).closest(".address-book");
+    addressBook.trigger($.Event("showMainView"));
   }
 });
 
