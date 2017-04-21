@@ -1,5 +1,3 @@
-// import faker from "faker";
-import { Reaction } from "/server/api";
 import { Factory } from "meteor/dburles:factory";
 import { Packages } from "/lib/collections";
 import { getShopId } from "./shops";
@@ -10,28 +8,6 @@ export const getPkgData = (pkgName) => {
   });
   return pkgData;
 };
-
-
-// export const examplePaymentMethod = () => {
-//   Reaction.registerPackage({
-//     label: "ExamplePayment",
-//     name: "example-paymentmethod",
-//     icon: "fa fa-credit-card-alt",
-//     autoEnable: true,
-//     settings: {
-//       "mode": false,
-//       "apiKey": "",
-//       "example": {
-//         enabled: false
-//       },
-//       "example-paymentmethod": {
-//         enabled: false,
-//         support: ["authorize", "capture", "refund"]
-//       }
-//     },
-//     registry: []
-//   });
-// };
 
 
 export default function () {
