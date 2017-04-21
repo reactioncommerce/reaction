@@ -88,7 +88,7 @@
                 {{/if}}
               </div>
 
-              <div class="col-xs-3 col-sm-3 form-group {{#unless hasChildVariants}}{{#if afFieldIsInvalid name='inventoryQuantity'}} has-error{{/if}}{{/unless}}">
+              <div class="col-xs-3 col-sm-3 form-group {{#unless updateQuantityIfChildVariants}}{{#if afFieldIsInvalid name='inventoryQuantity'}} has-error{{/if}}{{/unless}}">
                 <label class="control-label">{{afFieldLabelText name='inventoryQuantity'}}</label>
                 {{>afFieldInput name='inventoryQuantity' placeholder="0" disabled=hasChildVariants}}
                 {{#if afFieldIsInvalid name='inventoryQuantity'}}
