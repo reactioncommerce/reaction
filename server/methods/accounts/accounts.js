@@ -160,7 +160,6 @@ function validateAddress(address) {
     }
   }
   const validationResults = { validated, fieldErrors: validationErrors, formErrors, validatedAddress };
-  console.log("validation results", validationResults);
   return validationResults;
 }
 
