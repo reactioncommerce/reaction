@@ -1,7 +1,7 @@
 <template name="addressBookReview">
   <div class="panel-heading">
     <h3 class="panel-control-bar">
-      <span  data-i18n="addressBookEdit.editAddress">Review your address</span>
+      <span data-i18n="addressBookEdit.editAddress">Review your address</span>
     </h3>
   </div>
   <div class="panel-body">
@@ -15,13 +15,15 @@
       </div>
     </div>
   <!-- country -->
-  <div class="row">
+  <div class="row country-display{{#if fieldErrors.country.length}} address-invalid-line{{/if}}">
     <div class="col-md-5">
       {{validatedAddress.country}}
     </div>
 
     <div class="col-md-2">
-      <span id="copy-country">===></span>
+      {{#if fieldErrors.country.length}}
+        <span data-key="country" class="address-line-copyover fa fa-arrow-right"></span>
+      {{/if}}
     </div>
 
     <div class="col-md-5">
@@ -29,13 +31,13 @@
     </div>
   </div>
     <!-- address1 -->
-    <div class="row">
+    <div class="row address1-display{{#if fieldErrors.address1.length}} address-invalid-line{{/if}}">
       <div class="col-md-5">
         {{validatedAddress.address1}}
       </div>
 
       <div class="col-md-2">
-        <span id="copy-address1">===></span>
+        <span data-key="address1" class="address-line-copyover fa fa-arrow-right"></span>
       </div>
 
       <div class="col-md-5">
@@ -45,13 +47,15 @@
 
     {{#if hasAddress2}}
         <!-- address2 -->
-        <div class="row">
+        <div class="row address2-display{{#if fieldErrors.address2.length}} address-invalid-line{{/if}}">
           <div class="col-md-5">
             {{validatedAddress.address2}}
           </div>
 
           <div class="col-md-2">
-            <span id="copy-address2">===></span>
+            {{#if fieldErrors.address2.length}}
+              <span data-key="address2" class="address-line-copyover fa fa-arrow-right"></span>
+            {{/if}}
           </div>
 
           <div class="col-md-5">
@@ -60,13 +64,15 @@
         </div>
     {{/if}}
     <!-- city -->
-    <div class="row">
+    <div class="row city-display{{#if fieldErrors.city.length}} address-invalid-line{{/if}}">
       <div class="col-md-5">
         {{validatedAddress.city}}
       </div>
 
       <div class="col-md-2">
-        <span id="copy-city">===></span>
+        {{#if fieldErrors.city.length}}
+          <span data-key="address2" class="address-line-copyover fa fa-arrow-right"></span>
+        {{/if}}
       </div>
 
       <div class="col-md-5">
@@ -75,13 +81,15 @@
     </div>
 
     <!-- region -->
-    <div class="row">
+    <div class="row region-display{{#if fieldErrors.region.length}} address-invalid-line{{/if}}">
       <div class="col-md-5">
         {{validatedAddress.region}}
       </div>
 
       <div class="col-md-2">
-        <span id="copy-region">===></span>
+        {{#if fieldErrors.region.length}}
+          <span data-key="address2" class="address-line-copyover fa fa-arrow-right"></span>
+        {{/if}}
       </div>
 
       <div class="col-md-5">
@@ -90,14 +98,15 @@
     </div>
 
     <!-- postal -->
-
-    <div class="row">
+    <div class="row postal-display{{#if fieldErrors.postal.length}} address-invalid-line{{/if}}">
       <div class="col-md-5">
         {{validatedAddress.postal}}
       </div>
 
       <div class="col-md-2">
-        <span id="copy-address1">===></span>
+        {{#if fieldErrors.postal.length}}
+          <span data-key="postal" class="address-line-copyover fa fa-arrow-right"></span>
+        {{/if}}
       </div>
 
       <div class="col-md-5">

@@ -55,57 +55,77 @@ function getValidator() {
  * @summary Compare individual fields of address and accumulate errors
  * @param {Object} address - the address provided by the customer
  * @param {Object} validationAddress - address provided by validator
- * @returns {Array} Array of errors (or empty)
+ * @returns {Object} Array of errors (or empty)
  */
 function compareAddress(address, validationAddress) {
-  const errors = [];
+  const errors = {
+    address1: [],
+    address2: [],
+    city: [],
+    postal: [],
+    region: [],
+    country: [],
+    totalErrors: 0
+  };
   // first check, if a field is missing (and was present in original address), that means it didn't validate
   // TODO rewrite with just a loop over field names but KISS for now
   if (address.address1 && !validationAddress.address1) {
-    errors.push({ address1: "Address line one did not validate" });
+    errors.address1.push("Address line one did not validate");
+    errors.totalErrors++;
   }
 
   if (address.address2 && validationAddress.address2 && _.trim(_.upperCase(address.address2)) !== _.trim(_.upperCase(validationAddress.address2))) {
-    errors.push({ address2: "Address line 2 did not validate" });
+    errors.address2.push("Address line 2 did not validate");
+    errors.totalErrors++;
   }
 
   if (!validationAddress.city) {
-    errors.push({ city: "City did not validate" });
+    errors.city.push("City did not validate");
+    errors.totalErrors++;
   }
   if (address.postal && !validationAddress.postal) {
-    errors.push({ postal: "Postal did not validate" });
+    errors.postal.push("Postal did not validate");
+    errors.totalErrors++;
   }
 
   if (address.region && !validationAddress.region) {
-    errors.push({ region: "Region did not validate" });
+    errors.region.push("Region did not validate");
+    errors.totalErrors++;
   }
 
   if (address.country && !validationAddress.country) {
-    errors.push({ country: "Country did not validate" });
+    errors.country.push("Country did not validate");
+    errors.totalErrors++;
   }
   // second check if both fields exist, but they don't match (which almost always happen for certain fields on first time)
   if (validationAddress.address1 && address.address1 && _.trim(_.upperCase(address.address1)) !== _.trim(_.upperCase(validationAddress.address1))) {
-    errors.push({ address1: "Address line 1 did not match" });
+    errors.address1.push({ address1: "Address line 1 did not match" });
+    errors.totalErrors++;
   }
 
   if (validationAddress.address2 && address.address2 && (_.upperCase(address.address2) !== _.upperCase(validationAddress.address2))) {
-    errors.push({ address2: "Address line 2" });
+    errors.address2.push("Address line 2 did not match");
+    errors.totalErrors++;
   }
 
   if (validationAddress.city && address.city && _.trim(_.upperCase(address.city)) !== _.trim(_.upperCase(validationAddress.city))) {
-    errors.push({ city: "City did not match" });
+    errors.city.push("City did not match");
+    errors.totalErrors++;
   }
 
   if (validationAddress.postal && address.postal && _.trim(_.upperCase(address.postal)) !== _.trim(_.upperCase(validationAddress.postal))) {
-    errors.push({ postal: "Postal Code did not match" });
+    errors.postal.push("Postal Code did not match");
+    errors.totalErrors++;
   }
 
   if (validationAddress.region && address.region && _.trim(_.upperCase(address.region)) !== _.trim(_.upperCase(validationAddress.region))) {
-    errors.push({ region: "Region did not match" });
+    errors.region.push("Region did not match");
+    errors.totalErrors++;
   }
 
   if (validationAddress.country && address.country && _.upperCase(address.country) !== _.upperCase(validationAddress.country)) {
-    errors.push({ country: "Country did not match" });
+    errors.country.push("Country did not match");
+    errors.totalErrors++;
   }
   return errors;
 }
@@ -128,10 +148,8 @@ function validateAddress(address) {
     validatedAddress = validationResult.validatedAddress;
     formErrors = validationResult.errors;
     if (validatedAddress) {
-      console.log("got validated address");
       validationErrors = compareAddress(address, validatedAddress);
-      if (validationErrors.length || formErrors.length) {
-        console.log("failing validation");
+      if (validationErrors.totalErrors || formErrors.length) {
         validated = false;
         validatedAddress.isValidated = false;
       }
