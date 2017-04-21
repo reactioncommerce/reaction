@@ -75,16 +75,13 @@
 
       <br>
 
-      <button
-        class="btn btn-default btn-block"
-      >
-        <a
-        href="{{pathFor "dashboard/pdf/orders" id=orderId }}?shipment={{fulfillment._id}}"
-        target="_blank"
-        data-i18n="app.printInvoice">
-          Print Invoice
-        </a>
-      </button>
+      <a
+      class="btn btn-default btn-block"
+      href="{{pathFor "dashboard/pdf/orders" id=orderId }}?shipment={{fulfillment._id}}"
+      target="_blank"
+      data-i18n="app.printInvoice">
+        Print Invoice
+      </a>
 
     {{else}}
 

@@ -6,7 +6,7 @@ class AddToCartButton extends Component {
   get hasVariants() {
     return Array.isArray(this.props.variants) && this.props.variants.length > 0;
   }
-  hanleCartQuantityChange = (event) => {
+  handleCartQuantityChange = (event) => {
     if (this.props.onCartQuantityChange) {
       this.props.onCartQuantityChange(event, event.target.value);
     }
@@ -21,7 +21,7 @@ class AddToCartButton extends Component {
             id="add-to-cart-quantity"
             min="1"
             name="addToCartQty"
-            onChange={this.hanleCartQuantityChange}
+            onChange={this.handleCartQuantityChange}
             type="number"
             value={this.props.cartQuantity}
           />
