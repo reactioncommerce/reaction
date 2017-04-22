@@ -1,6 +1,7 @@
 import accounting from "accounting-js";
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
+import $ from "jquery";
 import { Template } from "meteor/templating";
 import { ReactiveVar } from "meteor/reactive-var";
 import { i18next, Logger, formatNumber, Reaction } from "/client/api";
@@ -170,7 +171,9 @@ Template.coreOrderShippingInvoice.events({
       if (isConfirm) {
         returnToStock = false;
         return Meteor.call("orders/cancelOrder", order, returnToStock, err => {
-          if (err) Logger.warn(err);
+          if (err) {
+            $(".alert").removeClass("hidden").text(err.message);
+          }
         });
       }
       if (cancel === "cancel") {
@@ -497,13 +500,6 @@ Template.coreOrderShippingInvoice.helpers({
     const orderStatus = orderCreditMethod(order).paymentMethod.status;
     const orderMode = orderCreditMethod(order).paymentMethod.mode;
     return orderStatus === "completed" || (orderStatus === "refunded" && orderMode === "capture");
-  },
-
-  paymentCanceled() {
-    const instance = Template.instance();
-    const order = instance.state.get("order");
-    const orderMode = orderCreditMethod(order).paymentMethod.mode;
-    return orderMode === "cancel";
   },
 
   refundTransactions() {
