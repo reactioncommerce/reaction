@@ -185,47 +185,6 @@ Template.coreOrderShippingInvoice.events({
     });
   },
   /**
-   * Click Start Cancel Order after payment capture
-   * @param {Event} event - Event Object
-   * @param {Template} instance - Blaze Template
-   * @return {void}
-   */
-  "click [data-event-action=afterCaptureCancelOrder]": (event, instance) => {
-    event.preventDefault();
-    const order = instance.state.get("order");
-    const invoiceTotal = order.billing[0].invoice.total;
-    const currencySymbol = instance.state.get("currency").symbol;
-
-    Meteor.subscribe("Packages");
-
-
-    Alerts.alert({
-      title: i18next.t("order.cancelOrder"),
-      text: i18next.t("order.applyRefundDuringCancelOrder", { currencySymbol, invoiceTotal }),
-      type: "warning",
-      showCancelButton: true,
-      showCloseButton: true,
-      confirmButtonColor: "#98afbc",
-      cancelButtonColor: "#98afbc",
-      confirmButtonText: i18next.t("order.cancelOrderNoRestock"),
-      cancelButtonText: i18next.t("order.cancelOrderThenRestock")
-    }, (isConfirm, cancel)=> {
-      let returnToStock;
-      if (isConfirm) {
-        returnToStock = false;
-        return Meteor.call("orders/cancelOrder", order, returnToStock, err => {
-          if (err) Logger.warn(err);
-        });
-      }
-      if (cancel === "cancel") {
-        returnToStock = true;
-        return Meteor.call("orders/cancelOrder", order, returnToStock, err => {
-          if (err) Logger.warn(err);
-        });
-      }
-    });
-  },
-  /**
    * Submit form
    * @param  {Event} event - Event object
    * @param  {Template} instance - Blaze Template
