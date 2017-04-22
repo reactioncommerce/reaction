@@ -64,6 +64,26 @@ class VariantForm extends Component {
     this.handleFieldBlur(event, value, field);
   }
 
+  handleInputChange = (event) => {
+    const target = event.target;
+    const newState = update(this.state, {
+      variant: {
+        $merge: {
+          [target.name]: target.value
+        }
+      }
+    });
+
+    this.setState(newState);
+  }
+
+  handleInputBlur = (event) => {
+    const target = event.target;
+    if (this.props.onVariantFieldSave) {
+      this.props.onVariantFieldSave(this.variant._id, target.name, target.value);
+    }
+  }
+
   handleCardExpand(cardName) {
     if (this.props.onCardExpand) {
       this.props.onCardExpand(cardName);
@@ -175,6 +195,9 @@ class VariantForm extends Component {
                   placeholder="0.00"
                   ref="compareAtPriceInput"
                   value={this.variant.compareAtPrice}
+                  onChange={this.handleInputChange}
+                  onBlur={this.handleInputBlur}
+                  onKeyDown={this.handleInputBlur}
                 />
               </div>
               <div className="rui textfield form-group col-sm-6">
@@ -190,6 +213,9 @@ class VariantForm extends Component {
                   value={this.variant.price}
                   style={this.props.greyDisabledFields(this.variant)}
                   disabled={this.props.hasChildVariants(this.variant)}
+                  onChange={this.handleInputChange}
+                  onBlur={this.handleInputBlur}
+                  onKeyDown={this.handleInputBlur}
                 />
               </div>
             </div>
@@ -206,6 +232,9 @@ class VariantForm extends Component {
                   placeholder="0"
                   ref="widthInput"
                   value={this.variant.width}
+                  onChange={this.handleInputChange}
+                  onBlur={this.handleInputBlur}
+                  onKeyDown={this.handleInputBlur}
                 />
               </div>
               <div className="rui textfield form-group col-sm-6">
@@ -219,6 +248,9 @@ class VariantForm extends Component {
                   placeholder="0"
                   ref="lengthInput"
                   value={this.variant.length}
+                  onChange={this.handleInputChange}
+                  onBlur={this.handleInputBlur}
+                  onKeyDown={this.handleInputBlur}
                 />
               </div>
             </div>
@@ -235,6 +267,9 @@ class VariantForm extends Component {
                   placeholder="0"
                   ref="heightInput"
                   value={this.variant.height}
+                  onChange={this.handleInputChange}
+                  onBlur={this.handleInputBlur}
+                  onKeyDown={this.handleInputBlur}
                 />
               </div>
               <div className="rui textfield form-group col-sm-6">
@@ -248,6 +283,9 @@ class VariantForm extends Component {
                   placeholder="0"
                   ref="weightInput"
                   value={this.variant.weight}
+                  onChange={this.handleInputChange}
+                  onBlur={this.handleInputBlur}
+                  onKeyDown={this.handleInputBlur}
                 />
               </div>
             </div>
@@ -303,6 +341,9 @@ class VariantForm extends Component {
                 value={this.variant.inventoryQuantity}
                 style={this.props.greyDisabledFields(this.variant)}
                 disabled={this.props.hasChildVariants(this.variant)}
+                onChange={this.handleInputChange}
+                onBlur={this.handleInputBlur}
+                onKeyDown={this.handleInputBlur}
               />
             </div>
             <div className="rui textfield form-group col-sm-6">
@@ -314,7 +355,11 @@ class VariantForm extends Component {
                 name="lowInventoryWarningThreshold"
                 type="text"
                 placeholder="0"
-                ref="lowInventoryWarningThresholdinput"
+                ref="lowInventoryWarningThresholdInput"
+                value={this.variant.lowInventoryWarningThreshold}
+                onChange={this.handleInputChange}
+                onBlur={this.handleInputBlur}
+                onKeyDown={this.handleInputBlur}
               />
             </div>
           </div>
