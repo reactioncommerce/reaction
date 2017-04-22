@@ -237,7 +237,7 @@ describe("core product methods", function () {
     it("should throw 403 error by non admin", function () {
       sandbox.stub(Reaction, "hasPermission", () => false);
       const product = addProduct();
-      let variant = Products.findOne({ ancestors: [product._id] });
+      const variant = Products.findOne({ ancestors: [product._id] });
       const removeProductSpy = sandbox.spy(Products, "remove");
       expect(() => Meteor.call("products/deleteVariant", variant._id)).to.throw(Meteor.Error, /Access Denied/);
       expect(removeProductSpy).to.not.have.been.called;
