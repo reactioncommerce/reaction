@@ -78,6 +78,15 @@ Meteor.publish("Product", function (productId) {
     isDeleted: { $in: [null, false] }
   };
 
+  // TODO: Check with @lcampanis about why this was deleted
+  // For marketplace functionality, this seems to be a requirement,
+  // also was breaking tests.
+  if (Roles.userIsInRole(this.userId, ["owner", "admin", "createProduct"], shop._id)) {
+    selector.isVisible = {
+      $in: [true, false]
+    };
+  }
+
 
   // TODO review for REGEX / DOS vulnerabilities.
   if (productId.match(/^[23456789ABCDEFGHJKLMNPQRSTWXYZabcdefghijkmnopqrstuvwxyz]{17}$/)) {
