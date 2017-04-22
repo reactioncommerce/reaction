@@ -139,6 +139,18 @@ class VariantForm extends Component {
     );
   }
 
+  renderArchivedLabel() {
+    if (this.variant.isDeleted) {
+      return (
+        <div className="panel-subheading">
+          <span className="badge badge-danger" data-i18n="app.archived">
+            <span>Archived</span>
+          </span>
+        </div>
+      );
+    }
+  }
+
   render() {
     return (
       <CardGroup>
@@ -151,6 +163,7 @@ class VariantForm extends Component {
             i18nKeyTitle="productDetailEdit.variantDetails"
             title="Variant Details"
           >
+            {this.renderArchivedLabel()}
             <Button
               icon="files-o"
               className="rui btn btn-default btn-clone-variant flat"
