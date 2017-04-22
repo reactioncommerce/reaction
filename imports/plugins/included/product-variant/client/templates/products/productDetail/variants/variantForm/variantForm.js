@@ -76,21 +76,6 @@ Template.variantForm.helpers({
     if (!Session.equals("variant-form-" + this._id, true)) {
       return "hidden";
     }
-  },
-  displayInventoryManagement: function () {
-    if (this.inventoryManagement !== true) {
-      return "display:none;";
-    }
-  },
-  displayLowInventoryWarning: function () {
-    if (this.inventoryManagement !== true) {
-      return "display:none;";
-    }
-  },
-  displayTaxCodes: function () {
-    if (this.taxable !== true) {
-      return "display:none;";
-    }
   }
 });
 
@@ -99,47 +84,6 @@ Template.variantForm.helpers({
  */
 
 Template.variantForm.events({
-  "change form :input": function (event, template) {
-    const field = Template.instance().$(event.currentTarget).attr("name");
-    //
-    // this should really move into a method
-    //
-    if (field === "taxable" || field === "inventoryManagement" || field === "inventoryPolicy") {
-      const value = Template.instance().$(event.currentTarget).prop("checked");
-      if (ReactionProduct.checkChildVariants(template.data._id) > 0) {
-        const childVariants = ReactionProduct.getVariants(template.data._id);
-        for (const child of childVariants) {
-          Meteor.call("products/updateProductField", child._id, field, value,
-            error => {
-              if (error) {
-                throw new Meteor.Error("error updating variant", error);
-              }
-            });
-        }
-      }
-    } else if (field === "taxCode" || field === "taxDescription") {
-      const value = Template.instance().$(event.currentTarget).prop("value");
-      Meteor.call("products/updateProductField", template.data._id, field, value,
-        error => {
-          if (error) {
-            throw new Meteor.Error("error updating variant", error);
-          }
-        });
-      if (ReactionProduct.checkChildVariants(template.data._id) > 0) {
-        const childVariants = ReactionProduct.getVariants(template.data._id);
-        for (const child of childVariants) {
-          Meteor.call("products/updateProductField", child._id, field, value,
-              error => {
-                if (error) {
-                  throw new Meteor.Error("error updating variant", error);
-                }
-              });
-        }
-      }
-    }
-    // template.$(formId).submit();
-    // ReactionProduct.setCurrentVariant(template.data._id);
-  },
   "click .btn-child-variant-form": function (event, template) {
     event.stopPropagation();
     event.preventDefault();
