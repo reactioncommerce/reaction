@@ -1,6 +1,6 @@
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
-import { Reaction } from "/client/api";
+import { Reaction } from "/lib/api";
 import * as Collections from "/lib/collections";
 
 /**
@@ -67,5 +67,9 @@ Template.accountProfile.helpers({
       return "addressBookGrid";
     }
     return "addressBookAdd";
+  },
+
+  isMarketplaceGuest: function () {
+    return (Reaction.hasMarketplaceAccess("guest") && !Reaction.hasAdminAccess());
   }
 });

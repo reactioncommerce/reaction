@@ -49,6 +49,8 @@ Template.products.onCreated(function () {
     canLoadMoreProducts: false
   });
 
+  let mediaSubscription;
+
   // We're not ready to serve prerendered page until products have loaded
   window.prerenderReady = false;
 
@@ -68,13 +70,21 @@ Template.products.onCreated(function () {
       return;
     }
 
-    // allow published content from all sellers
-    if (Reaction.isPackageEnabled("reaction-marketplace")) {
-      const packageSettings = Reaction.getPackageSettings("reaction-marketplace");
-      if (packageSettings.settings.public.allowGuestSellers === true) {
-        // show all shops
-        _.extend(options, { marketplace: true });
+    const hasMarketPlaceAccess = Reaction.hasMarketplaceAccess(["anonymous", "guest"]);
+
+    // allow published content from all sellers for everyone
+    if (hasMarketPlaceAccess) {
+      // show all shops
+      _.extend(options, { marketplace: true });
+
+      // check for single shop page and pass it as shops to productFilters
+      const shopId = Reaction.Router.current().params.shopId;
+      if (shopId) {
+        options.shops = [shopId];
       }
+
+      // subscribe to Media for specific shop
+      mediaSubscription = this.subscribe("Media", { shops: shopId });
     }
 
     if (this.state.equals("slug", slug) === false && this.state.equals("initialLoad", false)) {
@@ -86,8 +96,9 @@ Template.products.onCreated(function () {
     const queryParams = Object.assign({}, options, Reaction.Router.current().queryParams);
     const productsSubscription = this.subscribe("Products", scrollLimit, queryParams);
 
-    // Once our products subscription is ready, we are ready to render
-    if (productsSubscription.ready()) {
+    // Once our products subscription is ready, we are ready to render.
+    // When in Marketplace, we need mediaSubscription also
+    if (productsSubscription.ready() && (!hasMarketPlaceAccess || mediaSubscription.ready())) {
       window.prerenderReady = true;
     }
 

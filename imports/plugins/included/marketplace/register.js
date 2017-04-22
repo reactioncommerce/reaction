@@ -12,22 +12,7 @@ Reaction.registerPackage({
     }
   },
   registry: [
-    // Dashboard card
-    /* Moved into catalog - settings below will provide a card instead
-    {
-      provides: "dashboard",
-      label: "Marketplace",
-      description: "Allow users to become sellers, switch shops UI",
-      icon: "fa fa-globe",
-      priority: 2,
-      container: "marketplace",
-      permissions: [{
-        label: "Marketplace",
-        permission: "dashboard/marketplace"
-      }]
-    },*/
-
-    // Settings reside in Catalog settings
+    // Settings are in Catalog settings
     {
       label: "Marketplace",
       icon: "fa fa-globe",
@@ -36,21 +21,11 @@ Reaction.registerPackage({
       template: "marketplaceCatalogSettings"
     },
     {
-      route: "/shop/settings",
-      template: "shopSettings",
-      name: "shopSettings",
-      label: "Settings",
-      icon: "fa fa-th",
-      provides: "shortcut",
-      permissions: [{
-        label: "Admin",
-        permission: "admin"
-      },
-      {
-        label: "Seller",
-        permission: "seller"
-      }]
+      route: "shop/:shopId",
+      name: "shop",
+      template: "products",
+      workflow: "coreProductWorkflow",
+      priority: 1
     }
   ]
 });
-

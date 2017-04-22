@@ -123,7 +123,7 @@ export default {
       if (Roles.userIsInRole(userId, permissions, group)) {
         return true;
       }
-      /*// global roles check
+      /* // global roles check
       const sellerShopPermissions = Roles.getGroupsForUser(userId, "admin");
       // we're looking for seller permissions.
       if (sellerShopPermissions) {
@@ -194,12 +194,16 @@ export default {
     return this.hasPermission(dashboardPermissions);
   },
 
-  getSellerShopId: function (userId = Meteor.userId()) {
+  getSellerShopId: function (userId = Meteor.userId(), noFallback = false) {
     if (userId) {
       const group = Roles.getGroupsForUser(userId, "admin")[0];
       if (group) {
         return group;
       }
+    }
+
+    if (noFallback) {
+      return false;
     }
 
     return this.getShopId();

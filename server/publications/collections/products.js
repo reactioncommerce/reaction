@@ -96,7 +96,7 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
     // check if user has create-product access to parent Shop
     const hasCreateProductAccessToOwnerShop = Reaction.hasPermission(["create-shop"], this.userId, shop._id);
     // Shop Id of user has a Seller-Shop
-    let sellerShopId = !hasCreateProductAccessToOwnerShop && Reaction.getSellerShopId(this.userId, true);
+    const sellerShopId = !hasCreateProductAccessToOwnerShop && Reaction.getSellerShopId(this.userId, true);
     // if a seller views a page with all his products he gets a special publication (with product revisions etc)
     let sellerViewsHisShop = false;
     if (sellerShopId && productFilters && Array.isArray(productFilters.shops) &&
@@ -413,15 +413,15 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
       limit: productScrollLimit
     }).map(product => product._id);
 
-    //let newSelector = selector;
+    // let newSelector = selector;
 
     // seems to not be used :
     // Remove hashtag filter from selector (hashtags are not applied to variants, we need to get variants)
-    //if (productFilters && productFilters.tags) {
+    // if (productFilters && productFilters.tags) {
 
-    // newSelector = _.omit(selector, ["hashtags"]);
+      // newSelector = _.omit(selector, ["hashtags"]);
 
-    // Re-configure selector to pick either Variants of one of the top-level products, or the top-level products in the filter
+      // Re-configure selector to pick either Variants of one of the top-level products, or the top-level products in the filter
     //   _.extend(newSelector, {
     //     $or: [
     //       {
