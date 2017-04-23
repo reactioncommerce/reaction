@@ -207,14 +207,12 @@ describe("orders test", function () {
       const discount = invoice.discounts;
       const discountTotal = Math.max(0, subTotal - discount); // ensure no discounting below 0.
       const total = accounting.toFixed(discountTotal + shipping + taxes, 2);
-      console.log(total, "total");
-      console.log(typeof total, "type");
       Meteor.call("orders/approvePayment", order);
       const orderBilling = Orders.findOne({ _id: order._id }).billing[0];
-      expect(orderBilling.status).to.equal("approved");
-      expect(orderBilling.mode).to.equal("capture");
+      expect(orderBilling.paymentMethod.status).to.equal("approved");
+      expect(orderBilling.paymentMethod.mode).to.equal("capture");
       expect(orderBilling.invoice.discounts).to.equal(discount);
-      expect(orderBilling.invoice.total).to.equal(total);
+      expect(orderBilling.invoice.total).to.equal(Number(total));
     });
   });
 });

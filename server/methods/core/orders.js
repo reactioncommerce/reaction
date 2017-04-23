@@ -195,7 +195,6 @@ export const methods = {
     const discount = invoice.discounts;
     const discountTotal = Math.max(0, subTotal - discount); // ensure no discounting below 0.
     const total = accounting.toFixed(discountTotal + shipping + taxes, 2);
-    console.log(total, "order total");
 
     // Updates flattened inventory count on variants in Products collection
     ordersInventoryAdjust(order._id);
@@ -209,7 +208,7 @@ export const methods = {
         "billing.$.paymentMethod.status": "approved",
         "billing.$.paymentMethod.mode": "capture",
         "billing.$.invoice.discounts": discount,
-        "billing.$.invoice.total": total
+        "billing.$.invoice.total": Number(total)
       }
     });
   },

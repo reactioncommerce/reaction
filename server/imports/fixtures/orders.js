@@ -155,10 +155,10 @@ export default function () {
       }),
       invoice: {
         total: 12.45,
-        subTotal: 12.45,
+        subtotal: 12.45,
         discounts: 0,
-        taxes: 0,
-        shipping: 0
+        taxes: 0.12,
+        shipping: 4.00
       }
     }],
     state: "new",
