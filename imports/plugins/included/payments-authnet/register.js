@@ -14,7 +14,12 @@ Reaction.registerPackage({
       enabled: false
     },
     "reaction-auth-net": {
-      enabled: false
+      enabled: false,
+      support: [
+        "authorize",
+        "capture",
+        "refund"
+      ]
     }
   },
   registry: [

@@ -11,7 +11,7 @@ class Translation extends Component {
     });
 
     return (
-      <span style={{ paddingLeft: "5px" }}>{translation}</span>
+      <span>{translation}</span>
     );
   }
 }

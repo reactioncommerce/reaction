@@ -1,6 +1,7 @@
 import accounting from "accounting-js";
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
+import $ from "jquery";
 import { Template } from "meteor/templating";
 import { ReactiveVar } from "meteor/reactive-var";
 import { i18next, Logger, formatNumber, Reaction } from "/client/api";
@@ -170,48 +171,9 @@ Template.coreOrderShippingInvoice.events({
       if (isConfirm) {
         returnToStock = false;
         return Meteor.call("orders/cancelOrder", order, returnToStock, err => {
-          if (err) Logger.warn(err);
-        });
-      }
-      if (cancel === "cancel") {
-        returnToStock = true;
-        return Meteor.call("orders/cancelOrder", order, returnToStock, err => {
-          if (err) Logger.warn(err);
-        });
-      }
-    });
-  },
-  /**
-   * Click Start Cancel Order after payment capture
-   * @param {Event} event - Event Object
-   * @param {Template} instance - Blaze Template
-   * @return {void}
-   */
-  "click [data-event-action=afterCaptureCancelOrder]": (event, instance) => {
-    event.preventDefault();
-    const order = instance.state.get("order");
-    const invoiceTotal = order.billing[0].invoice.total;
-    const currencySymbol = instance.state.get("currency").symbol;
-
-    Meteor.subscribe("Packages");
-
-
-    Alerts.alert({
-      title: i18next.t("order.cancelOrder"),
-      text: i18next.t("order.applyRefundDuringCancelOrder", { currencySymbol, invoiceTotal }),
-      type: "warning",
-      showCancelButton: true,
-      showCloseButton: true,
-      confirmButtonColor: "#98afbc",
-      cancelButtonColor: "#98afbc",
-      confirmButtonText: i18next.t("order.cancelOrderNoRestock"),
-      cancelButtonText: i18next.t("order.cancelOrderThenRestock")
-    }, (isConfirm, cancel)=> {
-      let returnToStock;
-      if (isConfirm) {
-        returnToStock = false;
-        return Meteor.call("orders/cancelOrder", order, returnToStock, err => {
-          if (err) Logger.warn(err);
+          if (err) {
+            $(".alert").removeClass("hidden").text(err.message);
+          }
         });
       }
       if (cancel === "cancel") {
@@ -497,13 +459,6 @@ Template.coreOrderShippingInvoice.helpers({
     const orderStatus = orderCreditMethod(order).paymentMethod.status;
     const orderMode = orderCreditMethod(order).paymentMethod.mode;
     return orderStatus === "completed" || (orderStatus === "refunded" && orderMode === "capture");
-  },
-
-  paymentCanceled() {
-    const instance = Template.instance();
-    const order = instance.state.get("order");
-    const orderMode = orderCreditMethod(order).paymentMethod.mode;
-    return orderMode === "cancel";
   },
 
   refundTransactions() {
