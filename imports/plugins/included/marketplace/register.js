@@ -36,7 +36,7 @@ Reaction.registerPackage({
       icon: "fa fa-th",
       provides: "shortcut",
       container: "dashboard",
-      permissions: ["owner","admin"],
+      permissions: ["owner", "admin"],
       audience: ["seller"],
       priority: 1
     }
