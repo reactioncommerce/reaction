@@ -47,11 +47,6 @@ export function Apps(optionHash) {
   const reactionApps = [];
   let options = {};
 
-  // remove audience permissions for owner
-  if (Reaction.hasOwnerAccess() && optionHash.audience) {
-    delete optionHash.audience;
-  }
-
   // allow for object or option.hash
   if (optionHash) {
     if (optionHash.hash) {
@@ -64,6 +59,14 @@ export function Apps(optionHash) {
   // you could provide a shopId in optionHash
   if (!options.shopId) {
     options.shopId = Reaction.getShopId();
+  }
+
+  // make sure audience is used for all calls to ReactionApps
+  options.audience = Roles.getRolesForUser(Meteor.userId(), Reaction.getShopId());
+
+  // remove audience permissions for owner
+  if (Reaction.hasOwnerAccess() && options.audience) {
+    delete options.audience;
   }
 
   //
@@ -89,7 +92,7 @@ export function Apps(optionHash) {
     }
   }
 
-  // TODO: Fix filter for Packages.find(filter)
+  // TODO: Review Fix for filter on Packages.find(filter)
   // current filter setup uses "audience" field which is not in registry array items in most (if not all) docs in Packages coll
   delete filter["registry.audience"]; // Temporarily remove "audience" key. Audience check few lines below performs similar effect
 
