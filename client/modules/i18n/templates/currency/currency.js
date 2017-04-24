@@ -37,7 +37,9 @@ Template.currencySelect.helpers({
         }
       }
     }
-    return currencies;
+    if (currencies.length > 1) {
+      return currencies;
+    }
   },
 
   currentCurrency() {
