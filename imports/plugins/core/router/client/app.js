@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import classnames from "classnames";
-import { Reaction } from "/client/api";
+import { Reaction, Router } from "/client/api";
 import { composeWithTracker } from "/lib/api/compose";
 import { Loading } from "/imports/plugins/core/ui/client/components";
 import ToolbarContainer from "/imports/plugins/core/dashboard/client/containers/toolbarContainer";
@@ -34,7 +34,9 @@ const styles = {
 class App extends Component {
   static propTypes = {
     children: PropTypes.node,
-    hasDashboardAccess: PropTypes.bool
+    currentRoute: PropTypes.object.isRequired,
+    hasDashboardAccess: PropTypes.bool,
+    isActionViewOpen: PropTypes.bool
   }
 
   get isAdminApp() {
@@ -48,13 +50,17 @@ class App extends Component {
       "show-settings": this.props.isActionViewOpen
     });
 
+    const currentRoute = this.props.currentRoute;
+    const routeOptions = currentRoute.route && currentRoute.route.options || {};
+    const routeData = routeOptions && currentRoute.route.options.structure || {};
+
     return (
       <div
         style={styles.adminApp}
       >
         <div className={pageClassName} id="reactionAppContainer" style={styles.adminContentContainer}>
           <div className="reaction-toolbar">
-            <ConnectedToolbarComponent data={this.props} />
+            <ConnectedToolbarComponent data={routeData} />
           </div>
           <div>
             {this.props.children}
@@ -89,7 +95,8 @@ class App extends Component {
 function composer(props, onData) {
   onData(null, {
     isActionViewOpen: Reaction.isActionViewOpen(),
-    hasDashboardAccess: Reaction.hasDashboardAccess()
+    hasDashboardAccess: Reaction.hasDashboardAccess(),
+    currentRoute: Router.current()
   });
 }
 

@@ -45,6 +45,13 @@ class BrowserRouter extends Component {
     this.handleLocationChange(history.location);
   }
 
+  componentDidMount() {
+    console.log("Moutning already???", history.location);
+    // this.handleLocationChange(history.location);
+
+    this.handleLocationChange(history.location);
+  }
+
   componentWillUnmount() {
     if (this.unsubscribeFromHistory) this.unsubscribeFromHistory();
   }
@@ -77,7 +84,9 @@ class BrowserRouter extends Component {
       search = search.substr(1);
     }
 
-    Router.currentRoute = {
+    console.log("params", params);
+
+    Router.currentRoute.set({
       route: {
         ...foundPath,
         path: location.pathname
@@ -85,7 +94,7 @@ class BrowserRouter extends Component {
       params,
       query: queryParse.toObject(search),
       payload: location
-    };
+    });
 
     // Router.Hooks.run()
   }
@@ -111,20 +120,23 @@ export function getRootNode() {
   rootNode = document.getElementById("react-root");
 
   return rootNode;
-};
+}
 
 export function initBrowserRouter() {
-
-  const finalRoutes = Router.initPackageRoutes({
+  Router.initPackageRoutes({
     reactionContext: Reaction,
     indexRoute: Session.get("INDEX_OPTIONS") || {}
-  })
+  });
 
-  ReactDOM.render((
-    <BrowserRouter history={history}>
-      <App children={finalRoutes} />
-    </BrowserRouter>
-  ), getRootNode());
+  Tracker.autorun(() => {
+    if (Router.ready()) {
+      ReactDOM.render((
+        <BrowserRouter history={history} >
+          <App children={Router.reactComponents} />
+        </BrowserRouter>
+      ), getRootNode());
+    }
+  });
 }
 
 export default BrowserRouter;

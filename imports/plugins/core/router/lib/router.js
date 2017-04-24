@@ -25,8 +25,11 @@ import queryParse from "query-parse";
 
 export let history;
 
-
+// Private vars
 const currentRoute = new ReactiveVar({});
+
+const routerDependency = new Tracker.Dependency
+
 
 if (Meteor.isClient) {
   history = createBrowserHistory();
@@ -39,13 +42,17 @@ class Router {
   static Hooks = Hooks
   static routes = []
 
+  static ready() {
+    routerDependency.depend();
+    return Router._initialized;
+  }
 
   static current() {
     return currentRoute.get();
   }
 
-  static set currentRoute(data) {
-    currentRoute.set(data);
+  static get currentRoute() {
+    return currentRoute;
   }
 
   static getRouteName() {
@@ -55,7 +62,7 @@ class Router {
   }
 
   static getParam(name) {
-    const current = Router.current();
+    const current = currentRoute.get();
 
     return current.params && current.params[name] || undefined;
   }
@@ -392,7 +399,10 @@ export function ReactionLayout(options = {}) {
   }
 
   // Render the layout
-  return React.createElement(getComponent("AdminView"), layoutStructure);
+  return {
+    structure: layoutStructure,
+    component: () => React.createElement(getComponent("AdminView"), layoutStructure)
+  };
 }
 
 // default not found route
@@ -404,17 +414,15 @@ export function ReactionLayout(options = {}) {
 //   }
 // };
 
-
-
-const ReactBlazeWrapper = ({ template, workflow, layout }) => {
-  const reactionLayout = ReactionLayout({ template, workflow, layout });
-    // <Blaze template={reactionLayout} />
-
-  return () => {
-    return reactionLayout;
-  };
-};
-
+// const ReactBlazeWrapper = ({ template, workflow, layout }) => {
+//   const reactionLayout = ReactBlazeWrapper({ template, workflow, layout });
+//     // <Blaze template={reactionLayout} />
+//
+//   return () => {
+//     return reactionLayout;
+//   };
+// };
+//
 
 /**
  * initPackageRoutes
@@ -458,7 +466,7 @@ Router.initPackageRoutes = (options) => {
 
     finalRoutes.push(
       <Route
-        component={ReactBlazeWrapper(options.indexRoute)}
+        component={ReactionLayout(options.indexRoute).component}
         exact={true}
         key="index"
         path="/"
@@ -494,6 +502,9 @@ Router.initPackageRoutes = (options) => {
 
             // define new route
             // we could allow the options to be passed in the registry if we need to be more flexible
+
+            const reactionLayout = ReactionLayout({ template, workflow, layout });
+console.log("-------------------", reactionLayout);
             const newRouteConfig = {
               route,
               name,
@@ -504,10 +515,8 @@ Router.initPackageRoutes = (options) => {
                 layout,
                 triggersEnter: Router.Hooks.get("onEnter", name),
                 triggersExit: Router.Hooks.get("onExit", name),
-                component: ReactBlazeWrapper({ template, workflow, layout }),
-                action() {
-                  ReactionLayout({ template, workflow, layout });
-                }
+                component: reactionLayout.component,
+                structure: reactionLayout.structure
               }
             };
 
@@ -552,8 +561,11 @@ Router.initPackageRoutes = (options) => {
     } // end package loop
 
     Router._initialized = true;
+    Router.reactComponents = finalRoutes
+console.log("router initialized");
 
-    return finalRoutes;
+    routerDependency.changed()
+    // return finalRoutes;
   }
 };
 
