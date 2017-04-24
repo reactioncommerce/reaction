@@ -1,7 +1,6 @@
 import { Meteor } from "meteor/meteor";
-import { Security } from "meteor/ongoworks:security";
 import { Reaction } from "/lib/api";
-import { Shops, SellerShops } from "/lib/collections";
+import { Shops } from "/lib/collections";
 
 Meteor.publish("SellerShops", function () {
   const _id = Reaction.getSellerShopId(this.userId);

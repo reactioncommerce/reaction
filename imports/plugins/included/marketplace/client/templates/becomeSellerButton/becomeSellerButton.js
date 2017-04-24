@@ -1,5 +1,5 @@
 import { Meteor } from "meteor/meteor";
-import { Reaction, i18next } from "/client/api";
+import { i18next } from "/client/api";
 
 
 // Page
@@ -24,10 +24,10 @@ Template.becomeSellerButton.helpers({
 
 Template.becomeSellerButton.events({
   "click [data-event-action='button-click-become-seller']": function () {
-    Meteor.call("shop/createShop", Meteor.userId(), function (error, response) {
+    Meteor.call("shop/createShop", Meteor.userId(), function (error) {
       if (error) {
-        const error = i18next.t("marketplace.errorCannotCreateShop", { defaultValue: "Could not create shop for current user {{user}}" });
-        return Alerts.toast(error, "error");
+        const err = i18next.t("marketplace.errorCannotCreateShop", { defaultValue: "Could not create shop for current user {{user}}" });
+        return Alerts.toast(err, "error");
       }
 
       const success = i18next.t("marketplace.yourShopIsReady", { defaultValue: "Your shop is now ready!" });
@@ -35,4 +35,3 @@ Template.becomeSellerButton.events({
     });
   }
 });
-

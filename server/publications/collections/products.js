@@ -319,7 +319,7 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
               "revision/published"
             ]
           },
-          shopId: newSelector.shopId
+          "shopId": newSelector.shopId
         }).observe({
           added: (revision) => {
             let product;
