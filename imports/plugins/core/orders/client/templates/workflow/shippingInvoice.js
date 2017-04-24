@@ -179,7 +179,9 @@ Template.coreOrderShippingInvoice.events({
       if (cancel === "cancel") {
         returnToStock = true;
         return Meteor.call("orders/cancelOrder", order, returnToStock, err => {
-          if (err) Logger.warn(err);
+          if (err) {
+            $(".alert").removeClass("hidden").text(err.message);
+          }
         });
       }
     });
