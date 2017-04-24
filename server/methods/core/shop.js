@@ -42,38 +42,50 @@ Meteor.methods({
     const userId = shopAdminUserId || currentUser._id;
     const sellerShopId = Reaction.getSellerShopId(userId);
     let adminRoles = Roles.getRolesForUser(userId, sellerShopId);
+
     // ensure unique id and shop name
     shop._id = Random.id();
     shop.name = shop.name + count;
-
-    // admin or marketplace needs to be on and guests allowed to create shops
-    if (currentUser && Reaction.hasMarketplaceAccess("guest")) {
-      adminRoles = shop.defaultSellerRoles;
-
-      shop.emails = currentUser.emails;
-
-      // update user
-      currentUser.shopId = shop._id;
-      Collections.Accounts.update({ _id: currentUser._id }, {
-        $set: {
-          shopId: currentUser.shopId
-        }
-      });
-    }
 
     // We trust the owner's shop clone, check only when shopData is passed as an argument
     if (shopData) {
       check(shop, Schemas.Shop);
     }
 
+    // admin or marketplace needs to be on and guests allowed to create shops
+    if (currentUser && Reaction.hasMarketplaceAccess("guest")) {
+      adminRoles = shop.defaultSellerRoles;
+
+      // add user info for new shop
+      shop.emails = currentUser.emails;
+      // TODO: Review source of default address for shop from user
+      // Reaction currently stores addressBook in Accounts collection not users
+      shop.addressBook = currentUser.profile && currentUser.profile.addressBook;
+
+      // clean up new shop
+      delete shop.createdAt;
+      delete shop.updatedAt;
+      // TODO audience permissions need to be consolidated into [object] and not [string]
+      // permissions with [string] on layout ie. orders and checkout, cause the insert to fail
+      delete shop.layout;
+    }
+
     try {
       Collections.Shops.insert(shop);
     } catch (error) {
-      return Logger.error(error, "Failed to shop/createShop");
+      throw new Meteor.Error("insert-failed", "Failed to create new shop");
     }
+
     // we should have created new shop, or errored
     Logger.info("Created shop: ", shop._id);
+
+    // update user
     Roles.addUsersToRoles([currentUser, userId], adminRoles, shop._id);
+    Collections.Accounts.update({ _id: currentUser._id }, {
+      $set: {
+        shopId: shop._id
+      }
+    });
     return shop._id;
   },
 
@@ -597,24 +609,89 @@ Meteor.methods({
   /**
    * shop/updateLanguageConfiguration
    * @summary enable / disable a language
-   * @param {String} language - language name
+   * @param {String} language - language name | "all" to bulk enable / disable
    * @param {Boolean} enabled - true / false
    * @return {Array} returns workflow array
    */
   "shop/updateLanguageConfiguration": function (language, enabled) {
     check(language, String);
     check(enabled, Boolean);
+
     // must have core permissions
     if (!Reaction.hasPermission("core")) {
       throw new Meteor.Error(403, "Access Denied");
     }
     this.unblock();
+
+    if (language === "all") {
+      const updateObject = {};
+
+      const shop = Collections.Shops.findOne({
+        _id: Reaction.getShopId()
+      });
+
+      if (Array.isArray(shop.languages)) {
+        shop.languages.forEach((languageData, index) => {
+          updateObject[`languages.${index}.enabled`] = enabled;
+        });
+      }
+      return Collections.Shops.update({
+        _id: Reaction.getShopId()
+      }, {
+        $set: updateObject
+      });
+    }
+
     return Collections.Shops.update({
       "_id": Reaction.getShopId(),
       "languages.i18n": language
     }, {
       $set: {
         "languages.$.enabled": enabled
+      }
+    });
+  },
+
+  /**
+   * shop/updateCurrencyConfiguration
+   * @summary enable / disable a currency
+   * @param {String} currency - currency name | "all" to bulk enable / disable
+   * @param {Boolean} enabled - true / false
+   * @return {Number} returns mongo update result
+   */
+  "shop/updateCurrencyConfiguration": function (currency, enabled) {
+    check(currency, String);
+    check(enabled, Boolean);
+    // must have core permissions
+    if (!Reaction.hasPermission("core")) {
+      throw new Meteor.Error(403, "Access Denied");
+    }
+    this.unblock();
+    if (currency === "all") {
+      const updateObject = {};
+
+      const shop = Collections.Shops.findOne({
+        _id: Reaction.getShopId()
+      });
+
+      for (const currencyName in shop.currencies) {
+        if ({}.hasOwnProperty.call(shop.currencies, currencyName) && currencyName !== "updatedAt") {
+          updateObject[`currencies.${currencyName}.enabled`] = enabled;
+        }
+      }
+
+      return Collections.Shops.update({
+        _id: Reaction.getShopId()
+      }, {
+        $set: updateObject
+      });
+    }
+
+    return Collections.Shops.update({
+      _id: Reaction.getShopId()
+    }, {
+      $set: {
+        [`currencies.${currency}.enabled`]: enabled
       }
     });
   },

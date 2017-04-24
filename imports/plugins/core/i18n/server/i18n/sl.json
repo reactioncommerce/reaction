@@ -1,0 +1,15 @@
+[{
+  "i18n": "sl",
+  "ns": "reaction-i18n",
+  "translation": {
+    "reaction-i18n": {
+      "admin": {
+        "i18nSettings": {
+          "localization": "lokalizacija",
+          "enabledCurrencies": "valute",
+          "enabledLanguages": "jeziki"
+        }
+      }
+    }
+  }
+}]

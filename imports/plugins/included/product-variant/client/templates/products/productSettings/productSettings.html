@@ -32,13 +32,13 @@
 
         <button
           type="button"
-          class="rui delete-product2 btn btn-danger flat"
+          class="rui btn btn-default flat"
           data-toggle="tooltip"
-          title="{{i18n 'productDetailEdit.deleteProduct' 'Delete Product'}}"
-          data-original-title="{{i18n 'productDetailEdit.deleteProduct' 'Delete Product'}}"
-          data-event-action="deleteProduct"
+          title="{{i18n 'productDetailEdit.archiveProduct' 'Archive Product'}}"
+          data-original-title="{{i18n 'productDetailEdit.archiveProduct' 'Archive Product'}}"
+          data-event-action="archiveProduct"
           >
-          <span class="fa fa-trash-o fa-lg"></span>
+          <span class="fa fa-archive fa-lg"></span>
         </button>
       </div>
     </div>
@@ -102,7 +102,7 @@
 <template name="productSettingsListItem">
   <div class="list-group-item product-settings-list-item {{listItemActiveClassName _id}}" data-id="{{_id}}" id="{{_id}}">
     <a
-      href="{{pathFor 'product' handle=handle}}"
+      href="{{pdpPath}}"
       data-event-category="grid"
       data-event-action="product-click"
       data-event-label="grid product click"
@@ -127,54 +127,5 @@
         <i class="fa fa-angle-right"></i>
       </div>
     </a>
-  </div>
-</template>
-
-
-
-<template name="productSettingsGridItem">
-  <div class="product-grid-item {{#if position.pinned}}pinned{{/if}} {{weightClass}}" data-id="{{_id}}" id="{{_id}}">
-    {{> gridNotice}}
-    <span class="product-grid-item-alerts">
-      {{> inlineAlerts placement="productGridItem" id=_id}}
-    </span>
-
-    <a class="product-grid-item-images"
-      href="{{pathFor 'product' handle=handle}}"
-      data-event-category="grid"
-      data-event-action="product-click"
-      data-event-label="grid product click"
-      data-event-value="{{_id}}">
-
-      <div class="product-primary-images">
-        {{#with media}}
-          <span class="product-image" style="background-image: url('{{url store='large'}}')"></span>
-        {{else}}
-          <span class="product-image" style="background-image: url(/resources/placeholder.gif)"></span>
-        {{/with}}
-      </div>
-
-      {{#if additionalMedia}}
-        {{#if isMediumWeight}}
-          <div class="product-additional-images">
-            {{#each additionalMedia}}
-                <span class="product-image" style="background-image: url('{{url store='medium'}}')"></span>
-
-            {{/each}}
-          </div>
-        {{/if}}
-      {{/if}}
-    </a>
-
-
-    <div class="grid-content">
-      <a href="{{pathFor 'product' handle=handle}}" data-event-category="grid" data-event-action="product-click" data-event-label="grid product click" data-event-value="{{_id}}">
-        <div class="overlay">
-          <div class="overlay-title">{{title}}</div>
-          <div class="currency-symbol">{{formatPrice displayPrice}}</div>
-        </div>
-      </a>
-    </div>
-
   </div>
 </template>

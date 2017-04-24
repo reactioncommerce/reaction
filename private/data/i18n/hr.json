@@ -95,6 +95,8 @@
         "noProductsFound": "Nema pronađenih proizvoda.",
         "private": "Privatna",
         "public": "Javnost",
+        "allOn": "Sve o",
+        "allOff": "Sve Isključeno",
         "shortcut": {
           "addProductLabel": "Dodaj proizvod",
           "accountsLabel": "Računi"
@@ -157,74 +159,6 @@
           "orderShipped": "Vaša je narudžba poslana."
         }
       },
-      "sms": {
-        "headers": {
-          "settings": "SMS-pružatelja usluga"
-        },
-        "settings": {
-          "provider": "Davatelj",
-          "selectProvider": "Odaberite SMS provider ...",
-          "smsPhone": "SMS broj telefona",
-          "apiKey": "API ključ",
-          "apiToken": "API token / Tajna"
-        },
-        "alerts": {
-          "noApiKey": "Molimo dodajte ključ API-ja",
-          "noApiToken": "Molimo dodajte API oznaku / Tajna",
-          "noSmsProvider": "Molimo izaberite SMS provider",
-          "noSmsPhone": "Molimo dodajte telefonski broj koje ste dobili od vašeg SMS-pružatelja usluga",
-          "saveSuccess": "SMS Postavke spremljene"
-        }
-      },
-      "mail": {
-        "headers": {
-          "email": "E-mail",
-          "emailSettings": "Postavke e-pošte",
-          "config": "Konfiguracija",
-          "settings": "SMTP Provider",
-          "status": "Položaj",
-          "actions": "Akcije"
-        },
-        "settings": {
-          "service": "Servis",
-          "user": "Korisnik",
-          "password": "Lozinka",
-          "host": "Domaćin",
-          "port": "Luka",
-          "passwordShow": "Pokazati",
-          "passwordHide": "Sakriti",
-          "fieldNotSet": "Nespreman",
-          "selectService": "Odaberite uslugu ...",
-          "custom": "običaj"
-        },
-        "logs": {
-          "headers": {
-            "emailLogs": "e-Dnevnici",
-            "email": "E-mail",
-            "subject": "Predmet",
-            "sent": "Poslano",
-            "status": "Položaj"
-          },
-          "noEmails": "Nema e-pošte poslana još",
-          "limit": "Količina",
-          "retry": "Ponovo pokušaj",
-          "noneAvailble": "Ništa nije dostupno"
-        },
-        "alerts": {
-          "error": "Pogreška: {{error}}",
-          "resendSuccess": "Pokušaj ponovo poslati e-mail na {{email}}",
-          "missingService": "Odaberite mail usluge davatelja",
-          "userPassRequired": "SMTP korisničko i lozinku potrebne za {{service}}",
-          "allFieldsRequired": "Sva polja su obavezna za prilagođeni servis!",
-          "portNaN": "U luci mora biti broj!",
-          "connectionFailed": "Veza nije uspjela!",
-          "saveAnyway": "Želite li svejedno spremiti postavke?",
-          "saveSuccess": "pošte spremljene.",
-          "saveFailed": "Neuspjelo spremanje postavki pošte. {{error}}",
-          "cantSendEmail": "Pogreška poslužitelja: Ne mogu poslati e-mail obavijesti.",
-          "emailSent": "poslao e-mail obavijesti."
-        }
-      },
       "header": {
         "tagsAdd": "Dodaj oznaku",
         "search": "Pretraži proizvode..."
@@ -251,9 +185,8 @@
         "addToCart": "Dodaj u košaricu",
         "chooseOptions": "Odaberite opcije prije dodavanja u košaricu ",
         "outOfStock": "Nažalost, ovaj artikl nije raspoloživ!",
-        "productDeleteError": "Došlo je do pogreške prilikom brisanja ",
-        "deleteErrorTheProduct": "proizvod",
-        "deleteErrorTheSelectedProducts": "odabranih proizvoda",
+        "productArchiveError": "Došlo je do pogreške prilikom slanja {{product}} u arhivu.",
+        "archiveErrorTheProduct": "proizvod",
         "publishFirst": "Objavi proizvod prije dodavanja u košaricu.",
         "quantityAbbreviation": "Kol",
         "selectOption": "Odaberi opciju prije dodavanja u košaricu",
@@ -266,8 +199,6 @@
         "publishProductHidden": "{{product}} je sada skrivena",
         "clonedAlert": "Klonirana {{product}}",
         "clonedAlert_plural": "Klonirana {{product}}",
-        "deletedAlert": "Izbrisani {{product}}",
-        "deletedAlert_plural": "Izbrisani {{product}}",
         "archivedAlert": "Arhivirani {{product}}",
         "archivedAlert_plural": "Arhivirani {{product}}",
         "theProduct": "proizvod",
@@ -299,6 +230,7 @@
         "pageTitle": "Naslov stranice proizvoda",
         "vendor": "Naziv prodavača",
         "description": "Dodaj opis proizvoda",
+        "originCountry": "Porijeklo Zemlja",
         "facebookMsg": "Facebook poruka",
         "twitterMsg": "Twitter poruka",
         "pinterestMsg": "Pinterest Poruka",
@@ -320,9 +252,8 @@
         "duplicateProduct": "Dvostruki proizvoda",
         "pinProduct": "Pin proizvoda",
         "toggleSize": "Prebaci Veličina",
-        "deleteProduct": "Izbriši proizvod",
+        "archiveProduct": "Arhiva proizvoda",
         "restoreProduct": "Vraćanje proizvoda iz otpada",
-        "deleteSelectedProducts": "Brisanje odabrane proizvode?",
         "archiveThisProduct": "Arhivirati ovaj proizvod?",
         "archiveSelectedProducts": "Arhiva odabrane proizvode?",
         "publish": "Objaviti",
@@ -345,13 +276,20 @@
         "compareAtPrice": "Cijena (MSRP)",
         "fulfillmentService": "ispunjenje usluge",
         "weight": "Težina",
+        "length": "dužina",
+        "width": "Širina",
+        "height": "Visina",
         "taxable": "Oporeziva",
+        "taxCode": "Porezni Codes",
+        "taxDescription": "Porezna Opis",
         "inventoryManagement": "praćenje inventara",
         "inventoryManagementLabel": "Registrirajte proizvod na zalihama sustava i pratiti svoj status",
         "inventoryPolicy": "Deny kad nema na skladištu",
         "inventoryPolicyLabel": "Ne prodavati varijantu proizvoda kada to nije na lageru",
         "lowInventoryWarningThreshold": "upozori @",
-        "lowInventoryWarningThresholdLabel": "Upozoravaju korisnike da će proizvod biti blizu rasprodan kada je količina dosegne sljedeći prag"
+        "lowInventoryWarningThresholdLabel": "Upozoravaju korisnike da će proizvod biti blizu rasprodan kada je količina dosegne sljedeći prag",
+        "originCountry": "Porijeklo Zemlja",
+        "selectTaxCode": "Odaberite porezni broj"
       },
       "variantList": {
         "moreOptions": "Postoji još opcija za ovaj odabir.",

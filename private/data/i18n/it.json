@@ -95,6 +95,8 @@
         "noProductsFound": "Nessun prodotto trovato.",
         "private": "Privato",
         "public": "Pubblico",
+        "allOn": "All On",
+        "allOff": "All Off",
         "shortcut": {
           "addProductLabel": "Aggiungi prodotto",
           "accountsLabel": "Conti"
@@ -157,74 +159,6 @@
           "orderShipped": "Il tuo ordine è stato spedito."
         }
       },
-      "sms": {
-        "headers": {
-          "settings": "SMS Provider"
-        },
-        "settings": {
-          "provider": "Provider",
-          "selectProvider": "Selezionare un provider SMS ...",
-          "smsPhone": "SMS Numero di telefono",
-          "apiKey": "API Key",
-          "apiToken": "API Token / Segreto"
-        },
-        "alerts": {
-          "noApiKey": "Si prega di aggiungere una chiave API",
-          "noApiToken": "Si prega di aggiungere un token API / Segreto",
-          "noSmsProvider": "Scegliere un fornitore di SMS",
-          "noSmsPhone": "Si prega di aggiungere il numero di telefono fornito dal proprio provider SMS",
-          "saveSuccess": "Impostazioni SMS salvati"
-        }
-      },
-      "mail": {
-        "headers": {
-          "email": "Email",
-          "emailSettings": "Impostazioni e-mail",
-          "config": "Configurazione",
-          "settings": "Provider SMTP",
-          "status": "Stato",
-          "actions": "Azioni"
-        },
-        "settings": {
-          "service": "Servizi",
-          "user": "Utente",
-          "password": "Password",
-          "host": "Ospite",
-          "port": "Porta",
-          "passwordShow": "Mostrare",
-          "passwordHide": "Nascondere",
-          "fieldNotSet": "Non impostato",
-          "selectService": "Selezionare un servizio ...",
-          "custom": "costume"
-        },
-        "logs": {
-          "headers": {
-            "emailLogs": "registri e-mail",
-            "email": "Email",
-            "subject": "Soggetto",
-            "sent": "Inviato",
-            "status": "Stato"
-          },
-          "noEmails": "Nessuna email ancora inviato",
-          "limit": "Quantità",
-          "retry": "Riprova",
-          "noneAvailble": "Nessuno disponibile"
-        },
-        "alerts": {
-          "error": "Errore: {{error}}",
-          "resendSuccess": "Il tentativo di inviare nuovamente mail a {{email}}",
-          "missingService": "Scegliere un fornitore di servizi di posta",
-          "userPassRequired": "utente SMTP e la password sono necessari per {{service}}",
-          "allFieldsRequired": "Tutti i campi sono obbligatori per un servizio personalizzato!",
-          "portNaN": "La porta deve essere un numero!",
-          "connectionFailed": "Connessione fallita!",
-          "saveAnyway": "Vuoi salvare le impostazioni in ogni caso?",
-          "saveSuccess": "impostazioni e-mail salvate.",
-          "saveFailed": "Impossibile salvare le impostazioni di posta elettronica. {{error}}",
-          "cantSendEmail": "Errore del server: Non è possibile inviare e-mail di notifica.",
-          "emailSent": "Email di notifica inviato."
-        }
-      },
       "header": {
         "tagsAdd": "Aggiungi tag",
         "search": "Cerca prodotti..."
@@ -251,9 +185,8 @@
         "addToCart": "Aggiungi al carrello",
         "chooseOptions": "Si prega di scegliere le opzioni prima di aggiungere al carrello",
         "outOfStock": "Spiacenti, quest'oggetto non è disponibile!",
-        "productDeleteError": "C'è stato un errore eliminando ",
-        "deleteErrorTheProduct": "il prodotto",
-        "deleteErrorTheSelectedProducts": "i prodotti selezionati",
+        "productArchiveError": "C'è stato un errore durante l'invio {{product}} agli archivi.",
+        "archiveErrorTheProduct": "il prodotto",
         "publishFirst": "Pubblica il prodotto prima di aggiungerlo al carrello.",
         "quantityAbbreviation": "Qtà",
         "selectOption": "Seleziona un'opzione prima di aggiungere al carrello",
@@ -266,8 +199,6 @@
         "publishProductHidden": "è ora nascosto",
         "clonedAlert": "Cloned {{product}}",
         "clonedAlert_plural": "Cloned {{product}}",
-        "deletedAlert": "Deleted {{product}}",
-        "deletedAlert_plural": "Deleted {{product}}",
         "archivedAlert": "Archiviato {{product}}",
         "archivedAlert_plural": "Archiviato {{product}}",
         "theProduct": "il prodotto",
@@ -299,6 +230,7 @@
         "pageTitle": "Titolo pagina prodotto",
         "vendor": "Venditore",
         "description": "Aggiungi una descrizione del prodotto",
+        "originCountry": "Paese di origine",
         "facebookMsg": "Messaggio Facebook",
         "twitterMsg": "Messaggio Twitter",
         "pinterestMsg": "Messaggio Pinterest",
@@ -320,9 +252,8 @@
         "duplicateProduct": "Duplica prodotto",
         "pinProduct": "Pin del prodotto",
         "toggleSize": "Toggle Dimensioni",
-        "deleteProduct": "Elimina prodotto",
+        "archiveProduct": "Archivio prodotti",
         "restoreProduct": "Ripristino del prodotto dal Cestino",
-        "deleteSelectedProducts": "Eliminare i prodotti selezionati?",
         "archiveThisProduct": "Archivia questo prodotto?",
         "archiveSelectedProducts": "Archivio selezionato prodotti?",
         "publish": "Pubblica",
@@ -345,13 +276,20 @@
         "compareAtPrice": "Prezzo (MSRP)",
         "fulfillmentService": "servizio di Fulfillment",
         "weight": "Peso",
+        "length": "Lunghezza",
+        "width": "Larghezza",
+        "height": "Altezza",
         "taxable": "Imponibile",
+        "taxCode": "Codici fiscali",
+        "taxDescription": "Descrizione fiscale",
         "inventoryManagement": "il monitoraggio delle scorte",
         "inventoryManagementLabel": "Registrare il prodotto nel sistema di inventario e monitorare il suo stato",
         "inventoryPolicy": "Nega quando esaurito",
         "inventoryPolicyLabel": "Non vendere la variante di prodotto quando non è in magazzino",
         "lowInventoryWarningThreshold": "Avvertire @",
-        "lowInventoryWarningThresholdLabel": "Avvertire la clientela che il prodotto sarà vicino a esaurito quando la quantità raggiunge la soglia successiva"
+        "lowInventoryWarningThresholdLabel": "Avvertire la clientela che il prodotto sarà vicino a esaurito quando la quantità raggiunge la soglia successiva",
+        "originCountry": "Paese di origine",
+        "selectTaxCode": "Seleziona Codice Fiscale"
       },
       "variantList": {
         "moreOptions": "Ci sono altre opzioni disponibili per questa selezione.",

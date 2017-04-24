@@ -144,74 +144,6 @@
           "orderShipped": "ההזמנה נשלחה."
         }
       },
-      "sms": {
-        "headers": {
-          "settings": "ספק SMS"
-        },
-        "settings": {
-          "provider": "ספק",
-          "selectProvider": "בחירת ספק SMS ...",
-          "smsPhone": "מספר טלפון SMS",
-          "apiKey": "מפתח API",
-          "apiToken": "אסימון API / סוד"
-        },
-        "alerts": {
-          "noApiKey": "אנא להוסיף מפתח API",
-          "noApiToken": "אנא להוסיף API אסימון / סוד",
-          "noSmsProvider": "בחר ספק SMS",
-          "noSmsPhone": "נא להוסיף את מספר הטלפון שנתן לך ספק SMS שלך",
-          "saveSuccess": "הגדרות SMS הצילו"
-        }
-      },
-      "mail": {
-        "headers": {
-          "email": "דוא\"ל",
-          "emailSettings": "הגדרות דוא\"ל",
-          "config": "תצורה",
-          "settings": "ספק דואר",
-          "status": "סטטוס",
-          "actions": "פעולות"
-        },
-        "settings": {
-          "service": "שירות",
-          "user": "משתמש",
-          "password": "סיסמה",
-          "host": "מארח",
-          "port": "יציאה",
-          "passwordShow": "הצג",
-          "passwordHide": "הסתר",
-          "fieldNotSet": "לא הוגדר",
-          "selectService": "בחר שירות...",
-          "custom": "התאמה אישית"
-        },
-        "logs": {
-          "headers": {
-            "emailLogs": "יומני רישום דוא\"ל",
-            "email": "דוא\"ל",
-            "subject": "נושא",
-            "sent": "נשלח",
-            "status": "סטטוס"
-          },
-          "noEmails": "לא נשלחו הודעות דוא\"ל עדיין",
-          "limit": "כמות",
-          "retry": "נסה שנית",
-          "noneAvailble": "אין זמינויות"
-        },
-        "alerts": {
-          "error": "שגיאה: {{error}}",
-          "resendSuccess": "מנסה לשלוח שוב דוא\"ל אל {{email}}",
-          "missingService": "בחר בספק שירות דואר",
-          "userPassRequired": "יש להזין שם משתמש וסיסמה של SMTP עבור {{service}}",
-          "allFieldsRequired": "יש להזין את כל השדות לשירות מותאם אישית!",
-          "portNaN": "היציאה חייבת להיות מספר!",
-          "connectionFailed": "החיבור נכשל!",
-          "saveAnyway": "האם ברצונך לשמור את ההגדרות בכל מקרה?",
-          "saveSuccess": "הגדרות הדואר נשמרו.",
-          "saveFailed": "שמירת הגדרות הדואר נכשלה. {{error}}",
-          "cantSendEmail": "שגיאת שרת: לא ניתן לשלוח התראת דוא\"ל.",
-          "emailSent": "התראת דוא\"ל נשלחה."
-        }
-      },
       "header": {
         "tagsAdd": "הוספת תגית",
         "search": "חיפוש מוצרים..."
@@ -238,9 +170,7 @@
         "addToCart": "הוסף לסל",
         "chooseOptions": "נא לבחור אפשרויות לפני ההוספה לסל",
         "outOfStock": "מצטערים, אך פריט זה אינו במלאי!",
-        "productDeleteError": "התגלתה שגיאה במחיקת {{product}}.",
-        "deleteErrorTheProduct": "המוצר",
-        "deleteErrorTheSelectedProducts": "המוצרים שנבחרו",
+        "archiveErrorTheProduct": "המוצר",
         "publishFirst": "יש לפרסם את המוצר לפני ההוספה לסל.",
         "quantityAbbreviation": "כמות",
         "selectOption": "יש לבחור אפשרות לפני ההוספה לסל",
@@ -253,8 +183,6 @@
         "publishProductHidden": "{{product}} מוסתר/ת כעת",
         "clonedAlert": "{{product}} משוכפל/ת",
         "clonedAlert_plural": "{{product}} משוכפל/ת",
-        "deletedAlert": "{{product}} נמחקה/ה",
-        "deletedAlert_plural": "{{product}} נמחק/ה",
         "archivedAlert": "{{product}} הועבר/ה לארכיון",
         "archivedAlert_plural": "{{product}} הועבר/ה לארכיון",
         "theProduct": "המוצר",
@@ -304,9 +232,7 @@
         "duplicateProduct": "מוצר משוכפל",
         "pinProduct": "סמן מוצר",
         "toggleSize": "החלף מידה/גודל",
-        "deleteProduct": "מחק מוצר",
         "restoreProduct": "שחזר מוצר מפח האשפה",
-        "deleteSelectedProducts": "למחוק מוצרים שנבחרו?",
         "archiveThisProduct": "להעביר לארכיון מוצר זה?",
         "archiveSelectedProducts": "להעביר לארכיון מוצרים שנבחרו?",
         "publish": "פרסום",

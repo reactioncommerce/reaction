@@ -95,6 +95,8 @@
         "noProductsFound": "Nu s-au găsit produse.",
         "private": "Privat",
         "public": "Public",
+        "allOn": "Pe tot",
+        "allOff": "Toate oprite",
         "shortcut": {
           "addProductLabel": "Adăugare produs",
           "accountsLabel": "Conturi"
@@ -157,74 +159,6 @@
           "orderShipped": "Comanda dumneavoastra a fost expediat."
         }
       },
-      "sms": {
-        "headers": {
-          "settings": "Furnizor de SMS"
-        },
-        "settings": {
-          "provider": "Furnizor",
-          "selectProvider": "Selectaþi un furnizor de SMS-URI...",
-          "smsPhone": "Numărul de telefon SMS",
-          "apiKey": "API-cheie",
-          "apiToken": "API TOKEN / secrete"
-        },
-        "alerts": {
-          "noApiKey": "Vă rugăm să adăugaţi un API-cheie",
-          "noApiToken": "Vă rugăm să adăugaţi un TOKEN de API/Secret",
-          "noSmsProvider": "Va rugam sa alegeti un furnizor de SMS",
-          "noSmsPhone": "Vă rugăm să adăugaţi numărul de telefon dat de furnizorul de SMS",
-          "saveSuccess": "Setări SMS-URI salvate"
-        }
-      },
-      "mail": {
-        "headers": {
-          "email": "Email",
-          "emailSettings": "Setări e-mail",
-          "config": "Configurare",
-          "settings": "Mail Provider",
-          "status": "Stare",
-          "actions": "Acținui"
-        },
-        "settings": {
-          "service": "Serviciul",
-          "user": "Utilizator",
-          "password": "Parola",
-          "host": "Host",
-          "port": "Port",
-          "passwordShow": "Afișează",
-          "passwordHide": "Ascunde",
-          "fieldNotSet": "Incomplet",
-          "selectService": "Alegeți un serviciu...",
-          "custom": "personalizat"
-        },
-        "logs": {
-          "headers": {
-            "emailLogs": "Email Logs",
-            "email": "Email",
-            "subject": "Subiect",
-            "sent": "Trimis",
-            "status": "Stare"
-          },
-          "noEmails": "Deocamdată nu s-a trimis nici un email",
-          "limit": "Cantitate",
-          "retry": "Încercați din nou",
-          "noneAvailble": "Niciunul disponibil-"
-        },
-        "alerts": {
-          "error": "Eroare: {{error}}",
-          "resendSuccess": "Se încearcă retrimiterea e-mail-ului către {{email}}",
-          "missingService": "Vă rugăm alegeți un e-mail provider service",
-          "userPassRequired": "Seviciul {{service}} are nevoie de utilizatorul și parola SMTP",
-          "allFieldsRequired": "Pentru un serviciu specializat este necesar să completați toate câmpurile!",
-          "portNaN": "Portul trebuie să fie un număr!",
-          "connectionFailed": "Conexiunea a eșuat!",
-          "saveAnyway": "Doriți să salvați setările in această situație ?",
-          "saveSuccess": "Setările au fost salvate.",
-          "saveFailed": "Nu s-au putut salva setările de e-mail. {{error}}",
-          "cantSendEmail": "Eroare de server: Nu se poate trimite o notificare de e-mail.",
-          "emailSent": "Notificare e-mail trimis."
-        }
-      },
       "header": {
         "tagsAdd": "Adăugaţi o etichetă",
         "search": "Caută produse ..."
@@ -251,9 +185,8 @@
         "addToCart": "Adaugă în coș",
         "chooseOptions": "Vă rugăm să alegeți o opțiune înainte de a adăuga în coș",
         "outOfStock": "Din păcate, acest produs este din stoc!",
-        "productDeleteError": "A apărut o eroare la ștergerea {{product}}.",
-        "deleteErrorTheProduct": "produsul",
-        "deleteErrorTheSelectedProducts": "produsele selectate",
+        "productArchiveError": "A apărut o eroare în timpul trimiterii {{product}} la arhive.",
+        "archiveErrorTheProduct": "produsul",
         "publishFirst": "Publicați produsul înainte de a-l adăuga în coș.",
         "quantityAbbreviation": "CANT",
         "selectOption": "Selectați o opțiune înainte de a adăuga în coș",
@@ -266,8 +199,6 @@
         "publishProductHidden": "{{product}} este acum ascuns",
         "clonedAlert": "Clonat {{product}}",
         "clonedAlert_plural": "Clonat {{product}}",
-        "deletedAlert": "Eliminat {{product}}",
-        "deletedAlert_plural": "Eliminat {{product}}",
         "archivedAlert": "{{product}} arhivat",
         "archivedAlert_plural": "{{product}} arhivat",
         "theProduct": "produsul",
@@ -299,6 +230,7 @@
         "pageTitle": "Titlul paginii produs",
         "vendor": "Furnizor de produse",
         "description": "Adăugați o descriere produs",
+        "originCountry": "Țară de origine",
         "facebookMsg": "Mesaj Facebook",
         "twitterMsg": "Mesaj Twitter",
         "pinterestMsg": "Mesaj Pinterest ",
@@ -320,9 +252,8 @@
         "duplicateProduct": "Duplică produs",
         "pinProduct": "Fixează produsului",
         "toggleSize": "Dimensiune comutare",
-        "deleteProduct": "Șterge produs",
+        "archiveProduct": "Arhiva produse",
         "restoreProduct": "Recuperare produs din coșul de gunoi",
-        "deleteSelectedProducts": "Ștergeți produsele selectate?",
         "archiveThisProduct": "Arhivați acest produs?",
         "archiveSelectedProducts": "Arhivați produsele selectate?",
         "publish": "Publică",
@@ -345,13 +276,20 @@
         "compareAtPrice": "Preț recomandat (MSRP)",
         "fulfillmentService": "Serviciul de onorare a comenzilor",
         "weight": "Greutate",
+        "length": "Lungime",
+        "width": "Lăţime",
+        "height": "Înălţime",
         "taxable": "Impozabil",
+        "taxCode": "Codurile fiscale",
+        "taxDescription": "Descriere Brut",
         "inventoryManagement": "Urmărirea inventarului",
         "inventoryManagementLabel": "Înregistrați-vă produsul în sistemul de inventariere și urmărirea stării acestuia",
         "inventoryPolicy": "Refuzați atunci când nu este din stoc",
         "inventoryPolicyLabel": "Nu vinde varianta de produs atunci când nu este în stoc",
         "lowInventoryWarningThreshold": "Avertizează la",
-        "lowInventoryWarningThresholdLabel": "Avertizează clienții că produsul va fi aproape vândut atunci când cantitatea atinge pragul"
+        "lowInventoryWarningThresholdLabel": "Avertizează clienții că produsul va fi aproape vândut atunci când cantitatea atinge pragul",
+        "originCountry": "Țară de origine",
+        "selectTaxCode": "Selectați Codul Fiscal"
       },
       "variantList": {
         "moreOptions": "Există mai multe opțiuni disponibile pentru această selecție.",

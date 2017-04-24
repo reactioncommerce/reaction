@@ -3,6 +3,7 @@ import { diff } from "deep-diff";
 import { Products, Revisions, Tags, Media } from "/lib/collections";
 import { Logger } from "/server/api";
 import { RevisionApi } from "../lib/api";
+import { getSlug } from "/lib/api";
 
 function convertMetadata(modifierObject) {
   const metadata = {};
@@ -17,7 +18,7 @@ function convertMetadata(modifierObject) {
   return metadata;
 }
 
-const ProductRevision = {
+export const ProductRevision = {
   getProductPriceRange(productId) {
     const product = Products.findOne(productId);
     if (!product) {
@@ -153,6 +154,14 @@ const ProductRevision = {
       }
     });
     return variants;
+  },
+  getVariantQuantity(variant) {
+    const options = this.getVariants(variant._id);
+    if (options && options.length) {
+      return options.reduce((sum, option) =>
+      sum + option.inventoryQuantity || 0, 0);
+    }
+    return variant.inventoryQuantity || 0;
   }
 };
 
@@ -404,6 +413,8 @@ Products.before.update(function (userId, product, fieldNames, modifier, options)
     return true;
   }
 
+  const hasAncestors = Array.isArray(product.ancestors) && product.ancestors.length > 0;
+
   for (const operation in modifier) {
     if (Object.hasOwnProperty.call(modifier, operation)) {
       if (!revisionModifier[operation]) {
@@ -425,7 +436,7 @@ Products.before.update(function (userId, product, fieldNames, modifier, options)
               revisionModifier.$addToSet = {};
             }
             revisionModifier.$addToSet[`documentData.${property}`] = modifier.$push[property];
-          } else if (operation === "$set" && property === "price" && Array.isArray(product.ancestors) && product.ancestors.length) {
+          } else if (operation === "$set" && property === "price" && hasAncestors) {
             Revisions.update(revisionSelector, {
               $set: {
                 "documentData.price": modifier.$set.price
@@ -436,7 +447,7 @@ Products.before.update(function (userId, product, fieldNames, modifier, options)
             const priceRange = ProductRevision.getProductPriceRange(updateId);
 
             Meteor.call("products/updateProductField", updateId, "price", priceRange);
-          } else if (operation === "$set" && property === "isVisible" && Array.isArray(product.ancestors) && product.ancestors.length) {
+          } else if (operation === "$set" && property === "isVisible" && hasAncestors) {
             Revisions.update(revisionSelector, {
               $set: {
                 "documentData.isVisible": modifier.$set.isVisible
@@ -447,6 +458,64 @@ Products.before.update(function (userId, product, fieldNames, modifier, options)
             const priceRange = ProductRevision.getProductPriceRange(updateId);
 
             Meteor.call("products/updateProductField", updateId, "price", priceRange);
+          } else if (operation === "$set" && (property === "title" || property === "handle") && hasAncestors === false) {
+            // Special handling for product title and handle
+            //
+            // Summary:
+            // When a user updates the product title, if the handle matches the product id,
+            // then update the handle to be a sligified version of the title
+            //
+            // This block ensures that the handle is either a custom slug, slug of the title, or
+            // the _id of the product, but is never blank
+
+            // New data
+            const newValue = modifier.$set[property];
+            const newTitle = modifier.$set.title;
+            const newHandle = modifier.$set.handle;
+
+            // Current revision data
+            const documentId = productRevision.documentId;
+            const slugDocId = getSlug(documentId);
+            const revisionTitle = productRevision.documentData.title;
+            const revisionHandle = productRevision.documentData.handle;
+
+            // Checks
+            const hasNewHandle = _.isEmpty(newHandle) === false;
+            const hasExistingTitle = _.isEmpty(revisionTitle) === false;
+            const hasNewTitle = _.isEmpty(newTitle) === false;
+            const hasHandle = _.isEmpty(revisionHandle) === false;
+            const handleMatchesId = revisionHandle === documentId || revisionHandle === slugDocId || newValue === documentId || newValue === slugDocId;
+
+            // Continue to set the title / handle as origionally requested
+            // Handle will get changed if conditions are met in the below if block
+            revisionModifier.$set[`documentData.${property}`] = newValue;
+
+            if ((handleMatchesId || hasHandle === false) && (hasExistingTitle || hasNewTitle) && hasNewHandle === false) {
+              // Set the handle to be the slug of the product.title
+              // when documentId (product._id) matches the handle, then handle is enpty, and a title exists
+              revisionModifier.$set["documentData.handle"] = getSlug(newTitle || revisionTitle);
+            } else if (hasHandle === false && hasExistingTitle === false && hasNewHandle === false) {
+              // If the handle & title is empty, the handle becomes the product id
+              revisionModifier.$set["documentData.handle"] = documentId;
+            } else if (hasNewHandle === false && property === "handle") {
+              // If the handle is empty, the handle becomes the sligified product title, or document id if title does not exist.
+              // const newTitle = modifier.$set["title"];
+              revisionModifier.$set["documentData.handle"] = hasExistingTitle ? getSlug(newTitle || revisionTitle) : documentId;
+            }
+          } else if (operation === "$unset" && property === "handle" && hasAncestors === false) {
+            // Special handling for product handle when it is going to be unset
+            //
+            // Summary:
+            // When a user updates the handle to a black string e.g. deltes all text in field in UI and saves,
+            // the handle will be adjusted so it will not be blank
+            const newValue = modifier.$unset[property];
+            const revisionTitle = productRevision.documentData.title;
+            const hasExistingTitle = _.isEmpty(revisionTitle) === false;
+
+            // If the new handle is going to be empty, the handle becomes the sligified product title, or document id if title does not exist.
+            if (_.isEmpty(newValue)) {
+              revisionModifier.$set["documentData.handle"] = hasExistingTitle ? getSlug(revisionTitle) : documentId;
+            }
           } else {
             // Let everything else through
             revisionModifier[operation][`documentData.${property}`] = modifier[operation][property];
@@ -495,10 +564,12 @@ Products.before.update(function (userId, product, fieldNames, modifier, options)
     }
   }
 
-  // Allow the product collection to be updated if
+  // If we are using $set or $inc, and the fields are one of the ignoredFields,
+  // allow product to be updated without going through revision control
   if ((modifier.$set || modifier.$inc) && !modifier.$pull && !modifier.$push) {
     const newSet = {};
     const newInc = {};
+    let hasIgnoredFields = false;
     const ignoredFields = [
       "isLowQuantity",
       "isSoldOut",
@@ -506,17 +577,25 @@ Products.before.update(function (userId, product, fieldNames, modifier, options)
     ];
 
     for (const field of ignoredFields) {
-      if (modifier.$set && modifier.$set[field]) {
+      if (modifier.$set && (typeof modifier.$set[field] === "number" || typeof modifier.$set[field] === "boolean")) {
         newSet[field] = modifier.$set[field];
+        hasIgnoredFields = true;
       }
 
-      if (modifier.$inc && modifier.$inc[field]) {
+      if (modifier.$inc && (typeof modifier.$inc[field] === "number" || typeof modifier.$inc[field] === "boolean")) {
         newInc[field] = modifier.$inc[field];
+        hasIgnoredFields = true;
       }
     }
+    if (_.isEmpty(newSet) === false) {
+      modifier.$set = newSet;
+    }
 
-    modifier.$set = newSet;
-    modifier.$inc = newInc;
+    if (_.isEmpty(newInc) === false) {
+      modifier.$inc = newInc;
+    }
+
+    return hasIgnoredFields === true;
   }
 
   // prevent the underlying document from being modified as it is in draft mode

@@ -2,5 +2,12 @@
   "language": "Bokmål",
   "i18n": "nb",
   "ns": "taxes-avalara",
-  "translation": { }
+  "translation": {
+    "reaction-taxes": {
+      "settings": {
+        "username": "Brukernavn",
+        "password": "Passord"
+      }
+    }
+  }
 }]

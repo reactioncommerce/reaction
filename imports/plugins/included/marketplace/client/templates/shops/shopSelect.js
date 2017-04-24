@@ -38,6 +38,7 @@ Template.shopSelect.helpers({
       const shop = SellerShops.findOne({
         _id
       });
+
       // always make sure we have a shop in case id was incorrect
       if (shop) {
         return shop.name;

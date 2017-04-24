@@ -1,0 +1,15 @@
+[{
+  "i18n": "fr",
+  "ns": "reaction-i18n",
+  "translation": {
+    "reaction-i18n": {
+      "admin": {
+        "i18nSettings": {
+          "localization": "Localisation",
+          "enabledCurrencies": "Devises",
+          "enabledLanguages": "Langues"
+        }
+      }
+    }
+  }
+}]
