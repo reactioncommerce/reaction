@@ -22,7 +22,8 @@ describe("orders test", function () {
       cancelOrder: Meteor.server.method_handlers["orders/cancelOrder"],
       shipmentPacked: Meteor.server.method_handlers["orders/shipmentPacked"],
       makeAdjustmentsToInvoice: Meteor.server.method_handlers["orders/makeAdjustmentsToInvoice"],
-      approvePayment: Meteor.server.method_handlers["orders/approvePayment"]
+      approvePayment: Meteor.server.method_handlers["orders/approvePayment"],
+      shipmentShipped: Meteor.server.method_handlers["orders/shipmentShipped"]
     };
     example = Factory.create("examplePaymentPackage");
     return done();
@@ -214,5 +215,53 @@ describe("orders test", function () {
       expect(orderBilling.invoice.discounts).to.equal(discount);
       expect(orderBilling.invoice.total).to.equal(Number(total));
     });
+  });
+
+  describe("orders/shipmentShipped", function () {
+    it("should throw an error does not have permission", function () {
+      sandbox.stub(Reaction, "hasPermission", () => false);
+      spyOnMethod("shipmentShipped", order.userId);
+      function shipmentShipped() {
+        return Meteor.call("orders/shipmentShipped", order, order.shipping[0]);
+      }
+      expect(shipmentShipped).to.throw(Meteor.Error, /Access Denied/);
+    });
+
+    it("should update the order item workflow status to coreOrderItemWorkflow/completed", function () {
+      sandbox.stub(Reaction, "hasPermission", () => true);
+      sandbox.stub(Meteor.server.method_handlers, "orders/sendNotification", function () {
+        check(arguments, [Match.Any]);
+      });
+      spyOnMethod("shipmentShipped", order.userId);
+      Meteor.call("orders/shipmentShipped", order, order.shipping[0]);
+      const orderItem = Orders.findOne({ _id: order._id }).items[0];
+      expect(orderItem.workflow.status).to.equal("coreOrderItemWorkflow/completed");
+    });
+
+    it("should update the order workflow status to completed", function () {
+      sandbox.stub(Reaction, "hasPermission", () => true);
+      sandbox.stub(Meteor.server.method_handlers, "orders/sendNotification", function () {
+        check(arguments, [Match.Any]);
+      });
+      spyOnMethod("shipmentShipped", order.userId);
+      Meteor.call("orders/shipmentShipped", order, order.shipping[0]);
+      const orderStatus = Orders.findOne({ _id: order._id }).workflow.status;
+      expect(orderStatus).to.equal("coreOrderWorkflow/completed");
+    });
+
+    it("should update the order shipping status", function () {
+      sandbox.stub(Reaction, "hasPermission", () => true);
+      sandbox.stub(Meteor.server.method_handlers, "orders/sendNotification", function () {
+        check(arguments, [Match.Any]);
+      });
+      spyOnMethod("shipmentShipped", order.userId);
+      Meteor.call("orders/shipmentShipped", order, order.shipping[0]);
+      const orderShipped = Orders.findOne({ _id: order._id }).shipping[0].shipped;
+      expect(orderShipped).to.equal(true);
+    });
+  });
+
+  describe("orders/shipmentDelivered", function () {
+    it("should ");
   });
 });
