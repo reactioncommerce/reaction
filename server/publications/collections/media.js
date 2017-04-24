@@ -32,78 +32,82 @@ Meteor.publish("Media", function (mediaFilters) {
     return this.ready();
   }
 
-  if (mediaFilters && mediaFilters.products) {
-    const products = mediaFilters.products;
-    selector = {
-      "metadata.productId": {
-        $in: products
-      },
-      "metadata.workflow": {
-        $in: [null, "published"]
-      }
-    };
-  } else if (mediaFilters && mediaFilters.shops) {
-    shops = mediaFilters.shops;
-    selector = {
-      "metadata.shopId": {
-        $in: shops
-      },
-      "metadata.workflow": {
-        $in: [null, "published"]
-      }
-    };
+  if (mediaFilters) {
+    if (mediaFilters.products) {
+      const products = mediaFilters.products;
+      selector = {
+        "metadata.productId": {
+          $in: products
+        },
+        "metadata.workflow": {
+          $in: [null, "published"]
+        }
+      };
+    } else if (mediaFilters.shops) {
+      const shops = mediaFilters.shops;
+      selector = {
+        "metadata.shopId": {
+          $in: shops
+        },
+        "metadata.workflow": {
+          $in: [null, "published"]
+        }
+      };
+    }
   } else {
     selector = {
       "metadata.shopId": shopId
     };
 
-    // Product editors can see both published and unpublished images
-    if (!Reaction.hasPermission(["createProduct"], this.userId)) {
+    // non product editors can only see published images
+    if (!Reaction.hasPermission(["createProduct"], this.userId, shopId)) {
       selector["metadata.workflow"] = {
         $in: [null, "published"]
       };
     } else {
-      // but no one gets to see archived images
+      // whereas ,product editors can see published & unpublished images
       selector["metadata.workflow"] = {
         $nin: ["archived"]
       };
-    }
 
-    if (RevisionApi.isRevisionControlEnabled()) {
-      const revisionHandle = Revisions.find({
-        "documentType": "image",
-        "workflow.status": { $nin: [ "revision/published"] }
-      }).observe({
-        added: (revision) => {
-          const media = Media.findOne(revision.documentId);
-          if (media) {
-            this.added("Media", media._id, media);
-            this.added("Revisions", revision._id, revision);
-          }
-        },
-        changed: (revision) => {
-          const media = Media.findOne(revision.documentId);
-          this.changed("Media", media._id, media);
-          this.changed("Revisions", revision._id, revision);
-        },
-        removed: (revision) => {
-          if (revision) {
+      if (RevisionApi.isRevisionControlEnabled()) {
+        const revisionHandle = Revisions.find({
+          "documentType": "image",
+          "workflow.status": { $nin: ["revision/published"] }
+        }).observe({
+          added: (revision) => {
             const media = Media.findOne(revision.documentId);
             if (media) {
-              this.removed("Media", media._id, media);
+              this.added("Media", media._id, media);
+              this.added("Revisions", revision._id, revision);
+            }
+          },
+          changed: (revision) => {
+            const media = Media.findOne(revision.documentId);
+            this.changed("Media", media._id, media);
+            this.changed("Revisions", revision._id, revision);
+          },
+          removed: (revision) => {
+            if (revision) {
               this.removed("Revisions", revision._id, revision);
+              const media = Media.findOne(revision.documentId);
+              if (media) {
+                this.removed("Media", media._id, media);
+              }
             }
           }
-        }
-      });
+        });
 
-      this.onStop(() => {
-        revisionHandle.stop();
-      });
+        this.onStop(() => {
+          revisionHandle.stop();
+        });
+      }
     }
   }
 
-  return Media.find({
-    "metadata.type": "brandAsset"
+  return Media.find(selector, {
+    sort: {
+      "metadata.priority": 1
+    }
   });
 });

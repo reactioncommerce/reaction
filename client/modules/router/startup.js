@@ -21,7 +21,7 @@ Meteor.startup(function () {
   // has already been generated (existing user)
   //
   Accounts.onLogin(() => {
-    if (Meteor.loggingIn() === false && Router._routes.length > 0) {
+    if (Meteor.loggingIn() === false && Router._routes && Router._routes.length > 0) {
       Router.reload();
     }
   });

@@ -14,17 +14,18 @@ Meteor.methods({
    */
   "marketplace/getSeller": function (shopId) {
     let sellerShopId;
+    check(shopId, String);
 
     if (!shopId) {
       const currentUser = Meteor.user();
       if (currentUser) {
         sellerShopId = Roles.getGroupsForUser(currentUser.id, "admin")[0];
       }
+    } else {
+      sellerShopId = shopId;
     }
 
-    const users = Roles.getUsersInRole("admin", sellerShopId);
-
-    return users[0] || null;
+    return Accounts.findOne({ shopId:sellerShopId });
   },
 
 

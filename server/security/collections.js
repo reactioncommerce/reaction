@@ -41,7 +41,7 @@ export default function () {
   Security.defineMethod("ifHasSellerRole", {
     fetch: [],
     deny: function (type, arg, userId) {
-      const isDenied = Roles.userIsInRole("createProduct", Reaction.getSellerShopId(userId));
+      const isDenied = !Roles.userIsInRole(userId, "createProduct", Reaction.getSellerShopId(userId));
       return isDenied;
     }
   });
@@ -58,7 +58,7 @@ export default function () {
   Security.defineMethod("ifShopIdMatchesThisId", {
     fetch: [],
     deny: function (type, arg, userId, doc) {
-      return doc._id !== Reaction.getShopId();
+      return doc._id !== Reaction.getSellerShopId(userId);
     }
   });
 
@@ -66,7 +66,7 @@ export default function () {
     fetch: [],
     deny: function (type, arg, userId, doc) {
       // owner will always have access to this shop
-      const isDenied = Roles.userIsInRole("createProduct", doc.metadata.shopId);
+      const isDenied = Roles.userIsInRole(userId, "createProduct", doc.metadata.shopId);
       if (!isDenied) {
         return false;
       }

@@ -2,10 +2,16 @@ import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { Reaction } from "/lib/api";
-import { i18next } from "/client/api";
 import { SellerShops, Media } from "/lib/collections";
+import { i18next } from "/client/api";
 
-Template.sellerShopSettings.onCreated(function () {
+Template.sellerShopSettings.onCreated(function() {
+  this.autorun(() => {
+    this.subscribe("SellerShops");
+  });
+});
+
+Template.sellerShopSettings.onCreated(function() {
   this.autorun(() => {
     this.subscribe("SellerShops");
   });
@@ -24,7 +30,9 @@ Template.sellerShopSettings.helpers({
     }
 
     const media = Media.find({
-      "metadata.type": "brandAsset"
+      "metadata.type": "brandAsset",
+      "metadata.ownerId": Meteor.userId(),
+      "metadata.shopId": Reaction.getSellerShopId()
     });
 
     let selectedMediaId;

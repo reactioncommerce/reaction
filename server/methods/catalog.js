@@ -75,8 +75,8 @@ function createTitle(newTitle, productId) {
 
   // we should check again if there are any new matches with DB
   if (Products.find({
-    title: title
-  }).count() !== 0) {
+      title: title
+    }).count() !== 0) {
     title = createTitle(title, productId);
   }
   return title;
@@ -132,8 +132,8 @@ function createHandle(productHandle, productId) {
 
   // we should check again if there are any new matches with DB
   if (Products.find({
-    handle: handle
-  }).count() !== 0) {
+      handle: handle
+    }).count() !== 0) {
     handle = createHandle(handle, productId);
   }
 
@@ -828,7 +828,8 @@ Meteor.methods({
     let update;
     // handle booleans with correct typing
     if (value === "false" || value === "true") {
-      update = EJSON.parse(`{${field}:${value}}`);
+      const booleanValue = (value === "true" || value === true);
+      update = EJSON.parse("{\"" + field + "\":" + booleanValue + "}");
     } else {
       const stringValue = EJSON.stringify(value);
       update = EJSON.parse("{\"" + field + "\":" + stringValue + "}");
