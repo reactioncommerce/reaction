@@ -14,6 +14,7 @@ Template.shopSelect.helpers({
     const currentShopId = Reaction.Router.getParam("shopId") || 0;
     const selector = {
       // ignore blank site
+      // TODO: Don't hardcode IDs to ignore
       _id: {
         $ne: "ddzuN2YPvgvx7rJS5"
       }
