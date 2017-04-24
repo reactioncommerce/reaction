@@ -41,7 +41,7 @@ export default function () {
   Security.defineMethod("ifHasSellerRole", {
     fetch: [],
     deny: function (type, arg, userId) {
-      const isDenied = Roles.userIsInRole("createProduct", Reaction.getSellerShopId(userId));
+      const isDenied = Roles.userIsInRole(["admin", "owner", "createProduct"], Reaction.getSellerShopId(userId));
       return isDenied;
     }
   });

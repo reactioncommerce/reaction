@@ -90,6 +90,24 @@ export default {
       return true;
     }
 
+    // global roles check
+    // TODO: Review this commented out code
+    /*
+    const sellerShopPermissions = Roles.getGroupsForUser(userId, "admin");
+
+    // we're looking for seller permissions.
+    if (sellerShopPermissions) {
+      // loop through shops roles and check permissions
+      for (const key in sellerShopPermissions) {
+        if (key) {
+          const shop = sellerShopPermissions[key];
+          if (Roles.userIsInRole(userId, permissions, shop)) {
+            return true;
+          }
+        }
+      }
+    }*/
+
     // no specific permissions found returning false
     return false;
   },
@@ -219,7 +237,7 @@ export default {
   /**
    * Add default roles for new visitors
    * @param {String|Array} roles - A string or array of roles and routes
-   * @returns {undefined} Does not return.
+   * @returns {undefined} - does not specifically return anything
    */
   addDefaultRolesToVisitors(roles) {
     Logger.info(`Adding defaultRoles & defaultVisitorRole permissions for ${roles}`);
@@ -248,7 +266,7 @@ export default {
   /**
    * Add default roles for new sellers
    * @param {String|Array} roles A string or array of roles and routes
-   * @returns {undefined} Does not return.
+   * @returns {undefined} - does not specifically return anything
    */
   addDefaultRolesToSellers(roles) {
     Logger.info(`Adding defaultSellerRoles permissions for ${roles}`);

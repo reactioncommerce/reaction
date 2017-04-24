@@ -69,6 +69,7 @@
     "react-addons-create-fragment": "^15.4.2",
     "react-addons-pure-render-mixin": "^15.4.2",
     "react-autosuggest": "^9.0.0",
+    "react-bootstrap": "^0.30.10",
     "react-color": "^2.11.4",
     "react-dnd": "^2.3.0",
     "react-dnd-html5-backend": "^2.3.0",

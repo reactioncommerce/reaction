@@ -2,8 +2,15 @@ import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { Reaction } from "/lib/api";
-import { i18next } from "/client/api";
 import { SellerShops, Media } from "/lib/collections";
+import { i18next } from "/client/api";
+import { Countries } from "/client/collections";
+
+Template.sellerShopSettings.onCreated(function () {
+  this.autorun(() => {
+    this.subscribe("SellerShops");
+  });
+});
 
 Template.sellerShopSettings.onCreated(function () {
   this.autorun(() => {
@@ -103,6 +110,29 @@ Template.sellerShopSettings.helpers({
     return currencies;
   },
 
+  // TODO change for i18n
+  countryOptions() {
+    return Countries.find().fetch();
+  },
+
+  uomOptions() {
+    const sellerShop = Reaction.getSellerShop();
+
+    if (!sellerShop) {
+      return;
+    }
+
+    const unitsOfMeasure = sellerShop.unitsOfMeasure;
+    const uomOptions = [];
+    for (const measure of unitsOfMeasure) {
+      uomOptions.push({
+        label: i18next.t(`uom.${measure.uom}`, { defaultValue: measure.uom }),
+        value: measure.uom
+      });
+    }
+    return uomOptions;
+  },
+
   selectedCurrency() {
     const sellerShop = Reaction.getSellerShop();
 
@@ -123,9 +153,8 @@ Template.sellerShopSettings.helpers({
 });
 
 /**
- * shopSettings autoform alerts
+ * shop settings autoform alerts
  */
-
 AutoForm.hooks({
   sellerShopEditForm: {
     onSuccess: function () {
@@ -135,6 +164,23 @@ AutoForm.hooks({
     onError: function (operation, error) {
       return Alerts.toast(
         `${i18next.t("shopSettings.shopGeneralSettingsFailed")} ${error}`, "error"
+      );
+    }
+  }
+});
+
+/**
+ * shop address autoform alerts
+ */
+AutoForm.hooks({
+  sellerShopEditAddressForm: {
+    onSuccess: function () {
+      return Alerts.toast(i18next.t("shopSettings.shopAddressSettingsSaved"),
+        "success");
+    },
+    onError: function (operation, error) {
+      return Alerts.toast(
+        `${i18next.t("shopSettings.shopAddressSettingsFailed")} ${error}`, "error"
       );
     }
   }
