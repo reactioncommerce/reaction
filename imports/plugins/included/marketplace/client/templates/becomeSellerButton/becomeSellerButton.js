@@ -24,10 +24,10 @@ Template.becomeSellerButton.helpers({
 
 Template.becomeSellerButton.events({
   "click [data-event-action='button-click-become-seller']": function () {
-    Meteor.call("shop/createShop", Meteor.userId(), function (error, response) {
+    Meteor.call("shop/createShop", Meteor.userId(), function (error) {
       if (error) {
-        const error = i18next.t("marketplace.errorCannotCreateShop", { defaultValue: "Could not create shop for current user {{user}}" });
-        return Alerts.toast(error, "error");
+        const errorMessage = i18next.t("marketplace.errorCannotCreateShop", { defaultValue: "Could not create shop for current user {{user}}" });
+        return Alerts.toast(errorMessage, "error");
       }
 
       const success = i18next.t("marketplace.yourShopIsReady", { defaultValue: "Your shop is now ready!" });
@@ -35,4 +35,3 @@ Template.becomeSellerButton.events({
     });
   }
 });
-

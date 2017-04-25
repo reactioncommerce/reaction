@@ -1,6 +1,4 @@
-import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
-import { ReactiveVar } from "meteor/reactive-var";
 import { Reaction } from "/lib/api";
 import { SellerShops } from "/lib/collections";
 
@@ -13,41 +11,39 @@ Template.shopSelect.onCreated(function () {
 
 Template.shopSelect.helpers({
   sellerShops() {
-      const currentShopId = Reaction.Router.getParam("shopId") || 0;
-      const selector = {
-        // ignore blank site
-        _id: {
-          $ne: "ddzuN2YPvgvx7rJS5"
-        }
-      };
+    const currentShopId = Reaction.Router.getParam("shopId") || 0;
+    const selector = {
+      // ignore blank site
+      // TODO: Don't hardcode IDs to ignore
+      _id: {
+        $ne: "ddzuN2YPvgvx7rJS5"
+      }
+    };
 
-      // active class
-      const shops = SellerShops.find(selector).fetch().map((shop) => {
-        if (currentShopId && shop._id === currentShopId) {
-          shop.class = "active";
-        }
-        return shop;
-      });
+    // active class
+    const shops = SellerShops.find(selector).fetch().map((shop) => {
+      if (currentShopId && shop._id === currentShopId) {
+        shop.class = "active";
+      }
+      return shop;
+    });
 
-      return shops;
-
-
+    return shops;
   },
 
   currentShopName() {
+    const _id = Reaction.Router.getParam("shopId") || 0;
 
-      const _id = Reaction.Router.getParam("shopId") || 0;
+    if (_id && _id !== Reaction.getShopId()) {
+      const shop = SellerShops.findOne({
+        _id
+      });
 
-      if (_id && _id !== Reaction.getShopId()) {
-        const shop = SellerShops.findOne({
-          _id
-        });
-        // always make sure we have a shop in case id was incorrect
-        if (shop) {
-          return shop.name;
-        }
+      // always make sure we have a shop in case id was incorrect
+      if (shop) {
+        return shop.name;
       }
-
+    }
   },
 
   isChildShop() {
