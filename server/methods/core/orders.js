@@ -443,7 +443,8 @@ export const methods = {
     this.unblock();
 
     // Get Shop information
-    const shop = Shops.findOne(order.shopId);
+    const shop = Shops.findOne({ _id: order.shopId });
+    console.log(shop, "shops");
 
     // Get shop logo, if available
     let emailLogo;

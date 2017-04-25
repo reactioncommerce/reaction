@@ -2,8 +2,9 @@ import { Meteor } from "meteor/meteor";
 import { Factory } from "meteor/dburles:factory";
 import accounting from "accounting-js";
 import { Reaction } from "/server/api";
-import { Orders, Products, Notifications } from "/lib/collections";
+import { Orders, Products, Notifications, Media } from "/lib/collections";
 import { expect } from "meteor/practicalmeteor:chai";
+import _ from "lodash";
 import { sinon } from "meteor/practicalmeteor:sinon";
 import Fixtures from "/server/imports/fixtures";
 // import { examplePaymentMethod } from "/server/imports/fixtures/packages";
@@ -16,6 +17,7 @@ describe("orders test", function () {
   let sandbox;
   let order;
   let example;
+  let shop;
 
   before(function (done) {
     methods = {
@@ -23,7 +25,9 @@ describe("orders test", function () {
       shipmentPacked: Meteor.server.method_handlers["orders/shipmentPacked"],
       makeAdjustmentsToInvoice: Meteor.server.method_handlers["orders/makeAdjustmentsToInvoice"],
       approvePayment: Meteor.server.method_handlers["orders/approvePayment"],
-      shipmentShipped: Meteor.server.method_handlers["orders/shipmentShipped"]
+      shipmentShipped: Meteor.server.method_handlers["orders/shipmentShipped"],
+      shipmentDelivered: Meteor.server.method_handlers["orders/shipmentDelivered"],
+      sendNotification: Meteor.server.method_handlers["orders/sendNotification"]
     };
     example = Factory.create("examplePaymentPackage");
     return done();
@@ -41,7 +45,7 @@ describe("orders test", function () {
       check(arguments, [Match.Any]);
     });
 
-    Factory.create("shop");
+    shop = Factory.create("shop");
     order = Factory.create("order");
     sandbox.stub(Reaction, "getShopId", () => order.shopId);
     const paymentMethod = order.billing[0].paymentMethod;
@@ -262,6 +266,69 @@ describe("orders test", function () {
   });
 
   describe("orders/shipmentDelivered", function () {
-    it("should ");
+    it("should throw an error if user does not have permissions", function () {
+      sandbox.stub(Reaction, "hasPermission", () => false);
+      spyOnMethod("shipmentDelivered", order.userId);
+      function shipmentDelivered() {
+        return Meteor.call("orders/shipmentDelivered", order);
+      }
+      expect(shipmentDelivered).to.throw(Meteor.Error, /Access Denied/);
+    });
+
+    it("should update the order item workflow to coreOrderItemWorkflow/completed", function () {
+      sandbox.stub(Reaction, "hasPermission", () => true);
+      spyOnMethod("shipmentDelivered", order.userId);
+      sandbox.stub(Meteor.server.method_handlers, "orders/sendNotification", function () {
+        check(arguments, [Match.Any]);
+      });
+      Meteor.call("orders/shipmentDelivered", order);
+      const orderItemWorkflow = Orders.findOne({ _id: order._id }).items[0].workflow;
+      expect(orderItemWorkflow.status).to.equal("coreOrderItemWorkflow/completed");
+    });
+
+    it("should update the delivered status to true", function () {
+      sandbox.stub(Reaction, "hasPermission", () => true);
+      spyOnMethod("shipmentDelivered", order.userId);
+      sandbox.stub(Meteor.server.method_handlers, "orders/sendNotification", function () {
+        check(arguments, [Match.Any]);
+      });
+      Meteor.call("orders/shipmentDelivered", order);
+      const orderShipping = Orders.findOne({ _id: order._id }).shipping[0];
+      expect(orderShipping.delivered).to.equal(true);
+    });
+
+    it("should update the order workflow status to processing", function () {
+      sandbox.stub(Reaction, "hasPermission", () => true);
+      spyOnMethod("shipmentDelivered", order.userId);
+      Meteor.call("orders/shipmentDelivered", order);
+      const orderWorkflow = Orders.findOne({ _id: order._id }).workflow;
+      expect(orderWorkflow.status).to.equal("coreOrderWorkflow/processing");
+    });
+  });
+
+  describe("orders/sendNotification", function () {
+    it("should return access denied if userId is not availble", function () {
+      spyOnMethod("sendNotification");
+      function sendNotification() {
+        return Meteor.call("orders/sendNotification", order);
+      }
+      expect(sendNotification).to.throw(Meteor.error, /Access Denied/);
+    });
+
+    it("should send email notification", function () {
+      spyOnMethod("sendNotification", order.userId);
+      sandbox.stub(Media, "findOne", () => {
+        // stub url method for media file
+        const url = () => "/stub/url";
+        return {
+          url
+        };
+      });
+      console.log(order.shopId, "shopId");
+      console.log(shop, "shop");
+      const result = Meteor.call("orders/sendNotification", order);
+      console.log(result, "result");
+      expect(true).to.equal(true);
+    });
   });
 });
