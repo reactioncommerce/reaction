@@ -20,6 +20,9 @@ class VariantFormContainer extends Component {
     this.removeVariant = this.removeVariant.bind(this);
     this.restoreVariant = this.restoreVariant.bind(this);
     this.cloneVariant = this.cloneVariant.bind(this);
+    this.handleVariantFieldSave = this.handleVariantFieldSave.bind(this);
+    this.handleCardExpand = this.handleCardExpand.bind(this);
+    this.updateQuantityIfChildVariants = this.updateQuantityIfChildVariants.bind(this);
   }
 
   isProviderEnabled = () => {
@@ -155,6 +158,13 @@ class VariantFormContainer extends Component {
     Reaction.state.set("edit/focus", cardName);
   }
 
+  updateQuantityIfChildVariants =  (variant) => {
+    if (this.hasChildVariants(variant)) {
+      const variantQuantity = ReactionProduct.getVariantQuantity(variant);
+      return variantQuantity;
+    }
+  }
+
   render() {
     return (
       <VariantForm
@@ -167,6 +177,7 @@ class VariantFormContainer extends Component {
         cloneVariant={this.cloneVariant}
         onVariantFieldSave={this.handleVariantFieldSave}
         onCardExpand={this.handleCardExpand}
+        onUpdateQuantityField={this.updateQuantityIfChildVariants}
         {...this.props}
       />
     );

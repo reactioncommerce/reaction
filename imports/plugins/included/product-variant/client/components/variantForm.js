@@ -151,6 +151,49 @@ class VariantForm extends Component {
     }
   }
 
+  renderQuantityField() {
+    if (this.props.hasChildVariants(this.variant)) {
+      return (
+        <div className="rui textfield form-group col-sm-6">
+          <label>
+            <Translation defaultValue="Quantity" i18nKey="productVariant.inventoryQuantity" />
+          </label>
+          <input
+            className="inventoryQuantity"
+            name="inventoryQuantity"
+            type="text"
+            placeholder="0"
+            ref="inventoryQuantityInput"
+            value={this.props.onUpdateQuantityField(this.variant)}
+            style={{ backgroundColor: "lightgrey", cursor: "not-allowed" }}
+            disabled={true}
+            onChange={this.handleInputChange}
+            onBlur={this.handleInputBlur}
+            onKeyDown={this.handleInputBlur}
+          />
+        </div>
+      );
+    }
+    return (
+      <div className="rui textfield form-group col-sm-6">
+        <label>
+          <Translation defaultValue="Quantity" i18nKey="productVariant.inventoryQuantity" />
+        </label>
+        <input
+          className="inventoryQuantity"
+          name="inventoryQuantity"
+          type="text"
+          placeholder="0"
+          ref="inventoryQuantityInput"
+          value={this.variant.inventoryQuantity}
+          onChange={this.handleInputChange}
+          onBlur={this.handleInputBlur}
+          onKeyDown={this.handleInputBlur}
+        />
+      </div>
+    );
+  }
+
   render() {
     return (
       <CardGroup>
@@ -341,24 +384,7 @@ class VariantForm extends Component {
           onSwitchChange={this.handleCheckboxChange}
         >
           <div className="row">
-            <div className="rui textfield form-group col-sm-6">
-              <label>
-                <Translation defaultValue="Quantity" i18nKey="productVariant.inventoryQuantity" />
-              </label>
-              <input
-                className="inventoryQuantity"
-                name="inventoryQuantity"
-                type="text"
-                placeholder="0"
-                ref="inventoryQuantityInput"
-                value={this.variant.inventoryQuantity}
-                style={this.props.greyDisabledFields(this.variant)}
-                disabled={this.props.hasChildVariants(this.variant)}
-                onChange={this.handleInputChange}
-                onBlur={this.handleInputBlur}
-                onKeyDown={this.handleInputBlur}
-              />
-            </div>
+            {this.renderQuantityField()}
             <div className="rui textfield form-group col-sm-6">
               <label>
                 <Translation defaultValue="Warn At" i18nKey="productVariant.lowInventoryWarningThreshold" />
@@ -400,6 +426,7 @@ VariantForm.propTypes = {
   isProviderEnabled: PropTypes.func,
   onCardExpand: PropTypes.func,
   onFieldChange: PropTypes.func,
+  onUpdateQuantityField: PropTypes.func,
   onVariantFieldSave: PropTypes.func,
   removeVariant: PropTypes.func,
   restoreVariant: PropTypes.func,
