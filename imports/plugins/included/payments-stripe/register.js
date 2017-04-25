@@ -12,9 +12,9 @@ Reaction.registerPackage({
     "reaction-stripe": {
       enabled: false,
       support: [
-        "authorize",
-        "capture",
-        "refund"
+        "Authorize",
+        "Capture",
+        "Refund"
       ]
     }
   },

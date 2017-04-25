@@ -16,9 +16,9 @@ Reaction.registerPackage({
     "reaction-auth-net": {
       enabled: false,
       support: [
-        "authorize",
-        "capture",
-        "refund"
+        "Authorize",
+        "Capture",
+        "Refund"
       ]
     }
   },

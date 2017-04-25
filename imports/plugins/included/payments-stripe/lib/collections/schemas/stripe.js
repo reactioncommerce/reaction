@@ -23,7 +23,7 @@ export const StripePackageConfig = new SimpleSchema([
     },
     "settings.reaction-stripe.support.$": {
       type: String,
-      allowedValues: ["authorize", "de-authorize", "capture", "refund"]
+      allowedValues: ["Authorize", "De-authorize", "Capture", "Refund"]
     }
   }
 ]);

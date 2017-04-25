@@ -38,7 +38,7 @@ export const BraintreePackageConfig = new SimpleSchema([
     },
     "settings.reaction-braintree.support.$": {
       type: String,
-      allowedValues: ["authorize", "de-authorize", "capture", "refund"]
+      allowedValues: ["Authorize", "De-authorize", "Capture", "Refund"]
     }
   }
 ]);

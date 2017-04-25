@@ -11,10 +11,10 @@ class ExampleSettingsForm extends Component {
         support: props.settings.support
       },
       checkbox: {
-        "authorize": _.includes(props.settings.support, "authorize"),
-        "de-authorize": _.includes(props.settings.support, "de-authorize"),
-        "capture": _.includes(props.settings.support, "capture"),
-        "refund": _.includes(props.settings.support, "refund")
+        "Authorize": _.includes(props.settings.support, "Authorize"),
+        "De-authorize": _.includes(props.settings.support, "De-authorize"),
+        "Capture": _.includes(props.settings.support, "Capture"),
+        "Refund": _.includes(props.settings.support, "Refund")
       }
     };
   }
@@ -72,37 +72,37 @@ class ExampleSettingsForm extends Component {
 
           <div>
             <Checkbox
-              label="authorize"
+              label="Authorize"
               onChange={this.handleCheckBox}
-              name="authorize"
-              checked={this.state.checkbox.authorize}
+              name="Authorize"
+              checked={this.state.checkbox.Authorize}
             />
           </div>
 
           <div>
             <Checkbox
-              label="de-authorize"
+              label="De-authorize"
               onChange={this.handleCheckBox}
-              name="de-authorize"
-              checked={this.state.checkbox["de-authorize"]}
+              name="De-authorize"
+              checked={this.state.checkbox["De-authorize"]}
             />
           </div>
 
           <div>
             <Checkbox
-              label="capture"
+              label="Capture"
               onChange={this.handleCheckBox}
-              name="capture"
-              checked={this.state.checkbox.capture}
+              name="Capture"
+              checked={this.state.checkbox.Capture}
             />
           </div>
 
           <div>
             <Checkbox
-              label="refund"
+              label="Refund"
               onChange={this.handleCheckBox}
-              name="refund"
-              checked={this.state.checkbox.refund}
+              name="Refund"
+              checked={this.state.checkbox.Refund}
             />
           </div>
 

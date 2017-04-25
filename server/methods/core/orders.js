@@ -1032,7 +1032,7 @@ export const methods = {
 
     let result;
     let query = {};
-    if (_.includes(checkSupportedMethods, "de-authorize")) {
+    if (_.includes(checkSupportedMethods, "De-authorize")) {
       result = Meteor.call(`${processor}/payment/deAuthorize`, paymentMethod, amount);
       query = {
         $push: {
