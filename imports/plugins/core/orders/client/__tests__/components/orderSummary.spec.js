@@ -1,6 +1,3 @@
-// test("Bla", () => {
-//   expect(true).toBe(true);
-// });
 import React from "react";
 import OrderSummary from "../../components/orderSummary";
 import { shallow } from "enzyme";
