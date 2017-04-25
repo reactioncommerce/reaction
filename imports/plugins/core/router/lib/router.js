@@ -414,16 +414,6 @@ export function ReactionLayout(options = {}) {
 //   }
 // };
 
-// const ReactBlazeWrapper = ({ template, workflow, layout }) => {
-//   const reactionLayout = ReactBlazeWrapper({ template, workflow, layout });
-//     // <Blaze template={reactionLayout} />
-//
-//   return () => {
-//     return reactionLayout;
-//   };
-// };
-//
-
 /**
  * initPackageRoutes
  * registers route and template when registry item has
@@ -436,7 +426,7 @@ Router.initPackageRoutes = (options) => {
 
   const pkgs = Packages.find().fetch();
   const prefix = Router.Reaction.getShopPrefix();
-  const finalRoutes = [];
+  const reactRouterRoutes = [];
 
   // prefixing isnt necessary if we only have one shop
   // but we need to bypass the current
@@ -446,39 +436,28 @@ Router.initPackageRoutes = (options) => {
     // using tmeasday:publish-counts
     const shopCount = Counts.get("shops-count");
 
-    // initialize index
-    // define default routing groups
-    // const shop = Router.group({
-    //   name: "shop"
-    // });
+    // Index layout
+    const indexLayout = ReactionLayout(options.indexRoute);
+    const indexRoute = {
+      route: "/",
+      options: {
+        name: "index",
+        ...options.indexRoute,
+        component: indexLayout.component,
+        structure: indexLayout.structure
+      }
+    };
 
-    //
-    // index / home route
-    // to overide layout, ie: home page templates
-    // set INDEX_OPTIONS, in config.js
-    //
-    // shop.route("/", {
-    //   name: "index",
-    //   action() {
-    //     ReactionLayout(Session.get("INDEX_OPTIONS") || {});
-    //   }
-    // });
-
-    finalRoutes.push(
+    reactRouterRoutes.push(
       <Route
-        component={ReactionLayout(options.indexRoute).component}
+        component={indexLayout.component}
         exact={true}
         key="index"
         path="/"
       />
     );
 
-    // Router.routes.push({
-    //   route: "/",
-    //   options: {
-    //     name: "index"
-    //   }
-    // });
+    Router.routes.push(indexRoute);
 
     // get package registry route configurations
     for (const pkg of pkgs) {
@@ -502,9 +481,7 @@ Router.initPackageRoutes = (options) => {
 
             // define new route
             // we could allow the options to be passed in the registry if we need to be more flexible
-
             const reactionLayout = ReactionLayout({ template, workflow, layout });
-console.log("-------------------", reactionLayout);
             const newRouteConfig = {
               route,
               name,
@@ -547,7 +524,7 @@ console.log("-------------------", reactionLayout);
 
           // Check permissions before adding the route to the routing table
           if (hasRoutePermission(route)) {
-            finalRoutes.push(
+            reactRouterRoutes.push(
               <Route
                 key={`${pkg.name}-${route.name}-${index++}`}
                 path={route.route}
@@ -561,11 +538,9 @@ console.log("-------------------", reactionLayout);
     } // end package loop
 
     Router._initialized = true;
-    Router.reactComponents = finalRoutes
-console.log("router initialized");
+    Router.reactComponents = reactRouterRoutes;
 
-    routerDependency.changed()
-    // return finalRoutes;
+    routerDependency.changed();
   }
 };
 

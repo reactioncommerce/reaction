@@ -1,27 +1,13 @@
-import _ from "lodash";
 import { Session } from "meteor/session";
-import { Meteor } from "meteor/meteor";
-import { ReactiveVar } from "meteor/reactive-var";
 import { Tracker } from "meteor/tracker";
-// import { FlowRouter as Router } from "meteor/kadira:flow-router-ssr";
-import React, { Component, PropTypes } from "react"
-import ReactDOM from "react-dom"
-import { matchPath } from 'react-router'
-import { Router as ReactRouter, Route } from "react-router-dom";
-import createHistory from 'history/createBrowserHistory'
+import React, { Component, PropTypes } from "react";
+import ReactDOM from "react-dom";
+import { matchPath } from "react-router";
+import { Router as ReactRouter } from "react-router-dom";
 import { Reaction } from "/client/api";
-
-import { MetaData } from "/lib/api/router/metadata";
-
-import { getComponent } from "/imports/plugins/core/layout/lib/components";
-
-import Blaze from "meteor/gadicc:blaze-react-component";
-import pathToRegexp from "path-to-regexp"
+import pathToRegexp from "path-to-regexp";
 import queryParse from "query-parse";
-
-// const Router = BrowserRouter
-
-import App from "/imports/plugins/core/router/client/app"
+import App from "/imports/plugins/core/router/client/app";
 import { Router } from "../lib";
 
 const history = Router.history;
@@ -38,17 +24,7 @@ class BrowserRouter extends Component {
   }
 
   componentWillMount() {
-    // const { store:propsStore, history } = this.props
-    // this.store = propsStore || this.context.store
-
     this.unsubscribeFromHistory = history.listen(this.handleLocationChange);
-    this.handleLocationChange(history.location);
-  }
-
-  componentDidMount() {
-    console.log("Moutning already???", history.location);
-    // this.handleLocationChange(history.location);
-
     this.handleLocationChange(history.location);
   }
 
@@ -59,12 +35,12 @@ class BrowserRouter extends Component {
   handleLocationChange = location => {
     const foundPath = Router.routes.find((pathObject) => {
       return matchPath(location.pathname, {
-        path: pathObject.route
+        path: pathObject.route,
+        exact: true
       });
     });
 
     const params = {};
-    let route = {};
 
     if (foundPath) {
       const keys = [];
@@ -74,8 +50,6 @@ class BrowserRouter extends Component {
       keys.forEach((key, index) => {
         params[key.name] = values[index + 1];
       });
-
-      console.log("### FOUND ###", foundPath, params, keys);
     }
 
     let search = location.search;
@@ -83,8 +57,6 @@ class BrowserRouter extends Component {
     if (typeof search === "string" && search.startsWith("?")) {
       search = search.substr(1);
     }
-
-    console.log("params", params);
 
     Router.currentRoute.set({
       route: {
@@ -95,10 +67,7 @@ class BrowserRouter extends Component {
       query: queryParse.toObject(search),
       payload: location
     });
-
-    // Router.Hooks.run()
   }
-
 
   render() {
     return (
