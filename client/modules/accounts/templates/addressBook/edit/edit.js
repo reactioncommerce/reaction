@@ -2,7 +2,6 @@ import { $ } from "meteor/jquery";
 import { i18next } from "/client/api";
 import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
-import { setValidatedAddress } from "../add/add";
 
 
 function setWorkingAddress(address) {
@@ -84,21 +83,16 @@ AutoForm.hooks({
             }
           });
         } else {
-          if (res.validatedAddress) {
-            setValidatedAddress(res);
-            Alerts.inline("Made changes to your address based upon validation. Please ensure this is correct", "warning", {
-              placement: "addressBookEdit",
-              i18nKey: "addressBookAdd.validatedAddress"
-            });
-          }
-          if (res.formErrors) {
-            for (const error of res.formErrors) {
-              Alerts.inline(error.details, "error", {
-                placement: "addressBookEdit"
-              });
-            }
-          }
-          that.done("Validation failed"); // renable Save and Continue button
+          // set addressState and kick it back to review
+          const addressState = {
+            requiresReview: true,
+            address: insertDoc,
+            validatedAddress: res.validatedAddress,
+            formErrors: res.formErrors,
+            fieldErrors: res.fieldErrors
+          };
+          Session.set("addressState", addressState);
+          addressBook.trigger($.Event("addressRequiresReview"));
         }
       });
     }

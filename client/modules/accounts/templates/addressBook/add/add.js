@@ -54,36 +54,6 @@ Template.addressBookAdd.helpers({
   }
 });
 
-
-export function setValidatedAddress(res) {
-  if (res.validatedAddress.city) {
-    const city = $("input[name='city']");
-    city.val(res.validatedAddress.city);
-  }
-  if (res.validatedAddress.postal) {
-    const postal = $("input[name='postal']");
-    postal.val(res.validatedAddress.postal);
-  }
-  if (res.validatedAddress.address1) {
-    const address1 = $("input[name='address1']");
-    address1.val(res.validatedAddress.address1);
-  }
-
-  if (res.validatedAddress.address2) {
-    const address2 = $("input[name='address2']");
-    address2.val(res.validatedAddress.address2);
-  }
-  if (res.validatedAddress.country) {
-    const country = $("select[name='country']");
-    country.val(res.validatedAddress.country);
-  }
-
-  if (res.validatedAddress.region) {
-    const region = $("select[name='region']");
-    region.val(res.validatedAddress.region);
-  }
-}
-
 /**
  * addressBookAddForm form handling
  * @description gets accountId and calls addressBookAdd method
