@@ -29,6 +29,7 @@ ShippoApi.methods.getAddressList = new ValidatedMethod({
   }).validator(),
   run({ apiKey }) {
     const shippoObj = new Shippo(apiKey);
+    shippoObj.set("version", "2016-10-25");
     const getAddressListFiber = Meteor.wrapAsync(shippoObj.address.list, shippoObj.address);
     try {
       const addressList = getAddressListFiber();
@@ -62,6 +63,7 @@ ShippoApi.methods.getCarrierAccountsList = new ValidatedMethod({
   }).validator(),
   run({ apiKey }) {
     const shippoObj = new Shippo(apiKey);
+    shippoObj.set("version", "2016-10-25");
     let allCarriers = [];
 
     // recursively fetch carriers because shippo returns paginated results
@@ -114,6 +116,7 @@ ShippoApi.methods.createShipment = new ValidatedMethod({
   }).validator(),
   run({ shippoAddressFrom, shippoAddressTo, shippoParcel, purpose, apiKey, carrierAccounts }) {
     const shippoObj = new Shippo(apiKey);
+    shippoObj.set("version", "2016-10-25");
 
     const createShipmentFiber = Meteor.wrapAsync(shippoObj.shipment.create, shippoObj.shipment);
     try {
@@ -152,6 +155,7 @@ ShippoApi.methods.createTransaction = new ValidatedMethod({
   }).validator(),
   run({ rateId, apiKey }) {
     const shippoObj = new Shippo(apiKey);
+    shippoObj.set("version", "2016-10-25");
 
     const createTransactionFiber = Meteor.wrapAsync(shippoObj.transaction.create, shippoObj.transaction);
     try {
@@ -192,6 +196,7 @@ ShippoApi.methods.getTransaction = new ValidatedMethod({
   }).validator(),
   run({ transactionId, apiKey }) {
     const shippoObj = new Shippo(apiKey);
+    shippoObj.set("version", "2016-10-25");
 
     const retrieveTransactionFiber = Meteor.wrapAsync(shippoObj.transaction.retrieve, shippoObj.transaction);
     try {
