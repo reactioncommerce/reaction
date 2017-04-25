@@ -1,5 +1,4 @@
 import { loadTranslations } from "/server/startup/i18n";
-
 import ar from "./ar.json";
 import bg from "./bg.json";
 import cs from "./cs.json";

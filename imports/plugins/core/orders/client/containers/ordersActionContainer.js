@@ -25,7 +25,6 @@ function composer(props, onData) {
     if (filter.name === selectedFilterName) {
       selectedIndex = index;
     }
-
     filter.label = i18next.t(`order.filter.${filter.name}`, { defaultValue: filter.label });
     filter.i18nKeyLabel = `order.filter.${filter.name}`;
 

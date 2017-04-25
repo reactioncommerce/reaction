@@ -1,7 +1,7 @@
+import { Reaction } from "/lib/api";
 import { Session } from "meteor/session";
 import { Template } from "meteor/templating";
 import { ReactiveDict } from "meteor/reactive-dict";
-import { Reaction } from "/lib/api";
 import { IconButton } from "/imports/plugins/core/ui/client/components";
 
 Template.gridControls.onCreated(function () {
@@ -22,6 +22,7 @@ Template.gridControls.onRendered(function () {
     position: "top"
   });
 });
+
 
 Template.gridControls.helpers({
   checked: function () {

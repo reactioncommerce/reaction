@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import { composeWithTracker } from "/lib/api/compose";
 import PublishControls from "../components/publishControls";
-import { Revisions } from "/lib/collections";
+import { Tags, Revisions } from "/lib/collections";
 import { Meteor } from "meteor/meteor";
 import TranslationProvider from "/imports/plugins/core/ui/client/providers/translationProvider";
 import { isRevisionControlEnabled } from "../../lib/api";

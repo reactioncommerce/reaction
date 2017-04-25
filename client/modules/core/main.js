@@ -231,7 +231,6 @@ export default {
     }
     return false;
   },
-
   updateUserPreferences(packageName, preference, values) {
     const currentPreference = this.getUserPreferences(packageName, preference, {});
     return this.setUserPreferences(packageName, preference, {
@@ -239,7 +238,6 @@ export default {
       ...values
     });
   },
-
   getShopId() {
     return this.shopId;
   },
@@ -470,6 +468,7 @@ export default {
       i18nKeyLabel: ""
     }]);
   },
+
 
   getCurrentTag() {
     if (this.Router.getRouteName() === "tag") {

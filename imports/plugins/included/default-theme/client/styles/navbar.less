@@ -110,6 +110,21 @@
 }
 
 .rui.navbar .languages .dropdown-menu {
+  min-width: 250px !important;
+}
+
+html:not(.rtl) .rui.navbar .languages .dropdown-menu {
+  left: auto !important;
+  right: 0px;
+}
+
+.rtl .rui.navbar .languages .dropdown-menu {
+  left: 0px;
+  right: auto !important;
+}
+
+.rui.navbar .languages .dropdown-menu,
+.rui.navbar .currencies .dropdown-menu {
   margin-top: 0;
   min-width: 250px !important;
 }

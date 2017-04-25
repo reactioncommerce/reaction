@@ -512,8 +512,22 @@ Meteor.methods({
     if (cart.userId !== this.userId) {
       throw new Meteor.Error(403, "Access Denied");
     }
-    const order = Object.assign({}, cart);
+
+    let orders = [];
+    let order = Object.assign({}, cart);
+    delete order.items;
+    delete order.shopId;
     const sessionId = cart.sessionId;
+    const itemsByShop = _.groupBy(cart.items, "shopId");
+    for (var item in itemsByShop) {
+      if (!itemsByShop.hasOwnProperty(item)) {
+        continue;
+      }
+      order.items = itemsByShop[item];
+      order.shopId = item;
+      orders.push(order);
+    }
+    Logger.info("orders array", orders);
 
     Logger.debug("cart/copyCartToOrder", cartId);
     // reassign the id, we'll get a new orderId
