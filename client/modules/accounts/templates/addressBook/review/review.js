@@ -72,9 +72,19 @@ Template.addressBookReview.events({
       }
     });
   },
-  "click [data-event-action=cancelAddressValidate]": function () {
+  "click [data-event-action=cancelAddressEdit]": function () {
+    const address = Template.instance().state.get("address");
+    const addressState = {
+      requiresReview: false,
+      address: address,
+      formErrors: [],
+      fieldErrors: {}
+    };
+    Session.set("addressState", addressState);
+    const instance = Template.instance();
     const addressBook = $(instance.firstNode).closest(".address-book");
-    addressBook.trigger($.Event("showMainView"));
+    addressBook.trigger($.Event("addressReviewComplete"));
+    return false;
   }
 });
 
