@@ -33,7 +33,9 @@ Template.i18nChooser.helpers({
         }
       }
     }
-    return languages;
+    if (languages.length > 1) {
+      return languages;
+    }
   }
 });
 
