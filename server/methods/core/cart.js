@@ -513,6 +513,7 @@ Meteor.methods({
       throw new Meteor.Error(403, "Access Denied");
     }
     const order = Object.assign({}, cart);
+    const sessionId = cart.sessionId;
 
     Logger.debug("cart/copyCartToOrder", cartId);
     // reassign the id, we'll get a new orderId
