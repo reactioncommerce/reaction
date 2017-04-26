@@ -3,13 +3,41 @@ import OrderSummary from "../../components/orderSummary";
 import { shallow } from "enzyme";
 import shallowToJSON from "enzyme-to-json";
 
+/**
+ * Order Summary is a display only component
+ * It receives props and displays them accordingly
+ */
+
+afterEach(() => {
+  jest.clearAllMocks();
+});
+
 test("OrderSummary snapshot test", () => {
-  const component = shallow(<OrderSummary dateFormat={()=>{}}
-                                          tracking={()=>{}}
-                                          order={{ shipping: [{ shipmentMethod: {} }], billing: [{ paymentMethod: {}, invoice: {} }] }}
-                                          shipmentStatus={()=>({})}
-                                          profile={{}}
-                                          printableLabels={()=>({})} />);
+  // Initializing all the props passed into order summary component
+  const dateFormat = jest.fn();
+  const tracking = jest.fn();
+  const profile = jest.fn();
+  const shipmentStatus = jest.fn(()=>({}));
+  const printableLabels = jest.fn(()=>({}));
+  const order = {
+    shipping: [{ shipmentMethod: {} }],
+    billing: [
+      { paymentMethod: {},
+        invoice: {}
+      }
+    ]
+  };
+
+  const component = shallow(
+    <OrderSummary
+      dateFormat={dateFormat}
+      tracking={tracking}
+      profile={profile}
+      shipmentStatus={shipmentStatus}
+      printableLabels={printableLabels}
+      order={order}
+    />
+  );
   const tree = shallowToJSON(component);
   expect(tree).toMatchSnapshot();
 });
