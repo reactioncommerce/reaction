@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, PropTypes } from "react";
 import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
 import { composeWithTracker } from "/lib/api/compose";
@@ -12,6 +12,10 @@ import VariantForm from "../components/variantForm";
 class VariantFormContainer extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      isDeleted: props.variant.isDeleted
+    };
 
     this.isProviderEnabled = this.isProviderEnabled.bind(this);
     this.fetchTaxCodes = this.fetchTaxCodes.bind(this);
@@ -99,6 +103,9 @@ class VariantFormContainer extends Component {
               confirmButtonText: i18next.t("app.close", { defaultValue: "Close" })
             });
           }
+          this.setState({
+            isDeleted: !this.state.isDeleted
+          });
         });
       }
     });
@@ -178,6 +185,7 @@ class VariantFormContainer extends Component {
         onVariantFieldSave={this.handleVariantFieldSave}
         onCardExpand={this.handleCardExpand}
         onUpdateQuantityField={this.updateQuantityIfChildVariants}
+        isDeleted={this.state.isDeleted}
         {...this.props}
       />
     );
@@ -194,5 +202,9 @@ function composer(props, onData) {
     editFocus: Reaction.state.get("edit/focus")
   });
 }
+
+VariantFormContainer.propTypes = {
+  variant: PropTypes.object
+};
 
 export default composeWithTracker(composer)(VariantFormContainer);

@@ -119,7 +119,7 @@ class VariantForm extends Component {
   }
 
   renderArchiveButton() {
-    if (this.variant.isDeleted) {
+    if (this.props.isDeleted) {
       return (
         <Button
           icon="refresh"
@@ -140,7 +140,7 @@ class VariantForm extends Component {
   }
 
   renderArchivedLabel() {
-    if (this.variant.isDeleted) {
+    if (this.props.isDeleted) {
       return (
         <div className="panel-subheading">
           <span className="badge badge-danger" data-i18n="app.archived">
@@ -210,7 +210,7 @@ class VariantForm extends Component {
               tooltip="Duplicate"
               onClick={() => this.props.cloneVariant(this.variant)}
             />
-          {this.renderArchiveButton()}
+            {this.renderArchiveButton()}
           </CardHeader>
           <CardBody expandable={true}>
             <TextField
@@ -420,6 +420,7 @@ VariantForm.propTypes = {
   fetchTaxCodes: PropTypes.func,
   greyDisabledFields: PropTypes.func,
   hasChildVariants: PropTypes.func,
+  isDeleted: PropTypes.bool,
   isProviderEnabled: PropTypes.func,
   onCardExpand: PropTypes.func,
   onFieldChange: PropTypes.func,
