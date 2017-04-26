@@ -19,6 +19,7 @@ export function findProductMedia(publicationInstance, productIds) {
     selector["metadata.productId"] = productIds;
   }
 
+  // TODO: This block is commented out in Marketplace, why??
   // if (shopId) {
   //   selector["metadata.shopId"] = shopId;
   // }
@@ -40,7 +41,7 @@ export function findProductMedia(publicationInstance, productIds) {
       }, {
         "metadata.shopId": sellerShopId
       }
-    ]; //
+    ]; // Product editors can see both published and unpublished images
   } else if (!Reaction.hasPermission(["createProduct"], publicationInstance.userId, shopId)) {
     selector["metadata.workflow"].$in = [null, "published"];
   }
@@ -242,7 +243,7 @@ Meteor.publish("Product", function (productId) {
     ];
   }
 
-  // Everyone else gets the standard, visbile products and variants
+  // Everyone else gets the standard, visibile products and variants
   const productCursor = Products.find(selector);
   const productIds = productCursor.map(p => p._id);
   const mediaCursor = findProductMedia(this, productIds);

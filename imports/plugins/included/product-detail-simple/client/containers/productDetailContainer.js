@@ -341,7 +341,7 @@ function composer(props, onData) {
         media: mediaArray,
         editable,
         viewAs: viewProductAs,
-        hasAdminPermission: editable,
+        hasAdminPermission: Reaction.hasPermission(["createProduct"]),
         storedCart
       });
     } else {
