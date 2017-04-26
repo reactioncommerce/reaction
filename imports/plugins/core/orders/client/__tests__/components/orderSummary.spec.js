@@ -12,6 +12,10 @@ afterEach(() => {
   jest.clearAllMocks();
 });
 
+/**
+ * Snapshots make sure your UI does not change unexpectedly
+ */
+
 test("OrderSummary snapshot test", () => {
   // Initializing all the props passed into order summary component
   const dateFormat = jest.fn();

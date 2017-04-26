@@ -48,7 +48,7 @@ exports[`OrderSummary snapshot test 1`] = `
         }
       >
         <span
-          className="badge badge-info"
+          className="badge badge-undefined"
         />
       </div>
       <div
