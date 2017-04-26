@@ -25,10 +25,7 @@ class OrderSummary extends Component {
         <div className="roll-up-invoice-list">
           <div className="roll-up-content">
             <div style={{ marginBottom: 4 }}>
-              {shipmentStatus().status === "success" ?
-                <span className="badge badge-success">{shipmentStatus().label}</span> :
-                <span className="badge badge-info">{shipmentStatus().label}</span>
-              }
+              <span className={`badge badge-${shipmentStatus().status}`}>{shipmentStatus().label}</span>
             </div>
 
             <div className="order-summary-form-group">
