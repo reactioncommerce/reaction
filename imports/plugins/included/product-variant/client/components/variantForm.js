@@ -108,6 +108,9 @@ class VariantForm extends Component {
         label="Tax Code"
         name="taxCode"
         value={this.variant.taxCode}
+        onChange={this.handleInputChange}
+        onBlur={this.handleInputBlur}
+        onKeyDown={this.handleInputBlur}
       />
     );
   }
