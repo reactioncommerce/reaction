@@ -7,6 +7,8 @@ import { ExampleApi } from "./exampleapi";
 const paymentMethod = {
   processor: "Generic",
   storedCard: "Visa 4242",
+  paymentPackageId: "vrXutd72c2m7Lenqw",
+  paymentSettingsKey: "example-paymentmethod",
   status: "captured",
   mode: "authorize",
   createdAt: new Date()
