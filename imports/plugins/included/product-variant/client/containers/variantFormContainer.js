@@ -25,7 +25,6 @@ class VariantFormContainer extends Component {
     this.restoreVariant = this.restoreVariant.bind(this);
     this.cloneVariant = this.cloneVariant.bind(this);
     this.handleVariantFieldSave = this.handleVariantFieldSave.bind(this);
-    this.handleCardExpand = this.handleCardExpand.bind(this);
     this.updateQuantityIfChildVariants = this.updateQuantityIfChildVariants.bind(this);
   }
 
@@ -164,10 +163,6 @@ class VariantFormContainer extends Component {
     });
   }
 
-  handleCardExpand = (cardName) => {
-    Reaction.state.set("edit/focus", cardName);
-  }
-
   updateQuantityIfChildVariants =  (variant) => {
     if (this.hasChildVariants(variant)) {
       const variantQuantity = ReactionProduct.getVariantQuantity(variant);
@@ -186,7 +181,6 @@ class VariantFormContainer extends Component {
         removeVariant={this.removeVariant}
         cloneVariant={this.cloneVariant}
         onVariantFieldSave={this.handleVariantFieldSave}
-        onCardExpand={this.handleCardExpand}
         onUpdateQuantityField={this.updateQuantityIfChildVariants}
         isDeleted={this.state.isDeleted}
         {...this.props}
@@ -201,8 +195,7 @@ function composer(props, onData) {
 
   onData(null, {
     countries,
-    variant: props.variant,
-    editFocus: Reaction.state.get("edit/focus")
+    variant: props.variant
   });
 }
 

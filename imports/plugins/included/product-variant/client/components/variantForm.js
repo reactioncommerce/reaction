@@ -84,12 +84,6 @@ class VariantForm extends Component {
     }
   }
 
-  handleCardExpand(cardName) {
-    if (this.props.onCardExpand) {
-      this.props.onCardExpand(cardName);
-    }
-  }
-
   renderTaxCodeField() {
     if (this.props.isProviderEnabled()) {
       return (
@@ -196,7 +190,6 @@ class VariantForm extends Component {
       <CardGroup>
         <Card
           expanded={true}
-          onExpand={this.handleCardExpand.bind(this, "variantDetails")}
         >
           <CardHeader
             actAsExpander={true}
@@ -422,7 +415,6 @@ VariantForm.propTypes = {
   hasChildVariants: PropTypes.func,
   isDeleted: PropTypes.bool,
   isProviderEnabled: PropTypes.func,
-  onCardExpand: PropTypes.func,
   onFieldChange: PropTypes.func,
   onUpdateQuantityField: PropTypes.func,
   onVariantFieldSave: PropTypes.func,
