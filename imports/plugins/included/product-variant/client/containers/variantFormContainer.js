@@ -120,6 +120,9 @@ class VariantFormContainer extends Component {
       confirmButtonText: "Archive"
     }, (isConfirm) => {
       if (isConfirm) {
+        this.setState({
+          isDeleted: !this.state.isDeleted
+        });
         const id = variant._id;
         Meteor.call("products/deleteVariant", id, function (error, result) {
           if (result && ReactionProduct.selectedVariantId() === id) {
