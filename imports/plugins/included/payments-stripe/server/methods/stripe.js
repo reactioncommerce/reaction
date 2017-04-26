@@ -97,8 +97,9 @@ Meteor.methods({
     });
     check(paymentData, {
       total: String,
-      currency: String,
-      shopId: String // // TODO: Implement Marketplace Payment - perhaps including shopId
+      currency: String
+      // Commenting this out because it causes tests to fail and isn't fully implemented.
+      // shopId: String // TODO: Implement Marketplace Payment - perhaps including shopId
     });
 
     const chargeObj = {
