@@ -138,7 +138,6 @@ Template.coreOrderShippingTracking.helpers({
         }
       });
 
-
       return fullItem.workflow.status !== "coreOrderItemWorkflow/canceled";
     });
 
