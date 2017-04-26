@@ -50,7 +50,7 @@ export default {
 
   /**
    * registerTemplate
-   * registers Templates into the Tempaltes Collection
+   * registers Templates into the Templates Collection
    * @return {function} Registers template
    */
   registerTemplate: registerTemplate,

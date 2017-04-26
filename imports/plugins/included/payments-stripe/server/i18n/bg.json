@@ -9,7 +9,7 @@
           "stripeLabel": "Stripe"
         },
         "dashboard": {
-          "stripeLabel": "райе",
+          "stripeLabel": "Stripe",
           "stripeDescription": "плащания Stripe"
         },
         "paymentSettings": {

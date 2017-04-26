@@ -6,15 +6,15 @@
     "reaction-payments": {
       "admin": {
         "shortcut": {
-          "stripeLabel": "нашивка"
+          "stripeLabel": "Stripe"
         },
         "dashboard": {
-          "stripeLabel": "нашивка",
+          "stripeLabel": "Stripe",
           "stripeDescription": "нашивки платежи"
         },
         "paymentSettings": {
-          "stripeLabel": "нашивка",
-          "stripeSettingsLabel": "нашивка",
+          "stripeLabel": "Stripe",
+          "stripeSettingsLabel": "Stripe",
           "stripeSettingsDescription": "Не имеют нашивки API идентификатор клиента?",
           "stripeSettingsGetItHere": "Получи это здесь"
         }

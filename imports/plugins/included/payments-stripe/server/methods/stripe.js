@@ -98,6 +98,8 @@ Meteor.methods({
     check(paymentData, {
       total: String,
       currency: String
+      // Commenting this out because it causes tests to fail and isn't fully implemented.
+      // shopId: String // TODO: Implement Marketplace Payment - perhaps including shopId
     });
 
     const chargeObj = {
@@ -107,12 +109,45 @@ Meteor.methods({
       capture: true
     };
 
+    // check if this is a seller shop for destination and transaction fee logic
+    // TODO: Add transaction fee to Stripe chargeObj when stripeConnect is in use.
+
+    // Where is sellerShops coming from here?
+    // const sellerShop = sellerShops.findOne(paymentData.shopId);
+    //
+    // if (sellerShop && sellerShop.stripeConnectSettings) {
+    //   const chargeObj = {
+    //     chargeData: {
+    //       amount: "",
+    //       currency: "",
+    //       transactionFee: 0,
+    //       card: {},
+    //       capture: true
+    //     },
+    //     stripe_account: sellerShop.stripeConnectSettings.stripe_user_id
+    //   };
+    // } else {
+    //   const chargeObj = {
+    //     amount: "",
+    //     currency: "",
+    //     card: {},
+    //     capture: true
+    //   };
+    // }
+
     if (transactionType === "authorize") {
       chargeObj.capture = false;
     }
     chargeObj.card = parseCardData(cardData);
     chargeObj.amount = formatForStripe(paymentData.total);
     chargeObj.currency = paymentData.currency;
+
+    // TODO: Check for a transaction fee and apply
+    // const stripeConnectSettings = Reaction.getPackageSettings("reaction-stripe-connect").settings;
+    // if (sellerShop.stripeConnectSettings && stripeConnectSettings.transactionFee.enabled) {
+    //   chargeObj.transactionFee = chargeObj.amount * stripeConnectSettings.transactionFee.percentage;
+    // }
+
     let result;
     let chargeResult;
 

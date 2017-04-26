@@ -318,7 +318,6 @@ export default {
     return Session.equals("admin/showActionViewDetail", true);
   },
 
-
   setActionView(viewData) {
     if (viewData) {
       let viewStack;
