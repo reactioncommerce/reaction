@@ -167,9 +167,6 @@ class VariantForm extends Component {
             value={this.props.onUpdateQuantityField(this.variant)}
             style={{ backgroundColor: "lightgrey", cursor: "not-allowed" }}
             disabled={true}
-            onChange={this.handleInputChange}
-            onBlur={this.handleInputBlur}
-            onKeyDown={this.handleInputBlur}
           />
         </div>
       );
