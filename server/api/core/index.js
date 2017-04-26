@@ -1,5 +1,6 @@
 import Core from "./core";
 import * as Accounts from "./accounts";
+import * as AddDefaultRoles from "./addDefaultRoles";
 import * as AssignRoles from "./assignRoles";
 import * as Email from "./email";
 import * as Import from "./import";
@@ -20,6 +21,7 @@ import * as Schemas from "/lib/collections/schemas";
 const Reaction = Object.assign({},
   Core,
   { Accounts },
+  AddDefaultRoles,
   AssignRoles,
   { Collections },
   { Email },
