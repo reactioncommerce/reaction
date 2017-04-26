@@ -13,13 +13,14 @@ Template.shopSelect.helpers({
   sellerShops() {
     const currentShopId = Reaction.Router.getParam("shopId") || 0;
     const selector = {
-        // ignore blank site
+      // ignore blank site
+      // TODO: Don't hardcode IDs to ignore
       _id: {
         $ne: "ddzuN2YPvgvx7rJS5"
       }
     };
 
-      // active class
+    // active class
     const shops = SellerShops.find(selector).fetch().map((shop) => {
       if (currentShopId && shop._id === currentShopId) {
         shop.class = "active";
@@ -37,7 +38,8 @@ Template.shopSelect.helpers({
       const shop = SellerShops.findOne({
         _id
       });
-        // always make sure we have a shop in case id was incorrect
+
+      // always make sure we have a shop in case id was incorrect
       if (shop) {
         return shop.name;
       }

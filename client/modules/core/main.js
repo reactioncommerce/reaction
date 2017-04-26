@@ -123,7 +123,11 @@ export default {
       if (Roles.userIsInRole(userId, permissions, group)) {
         return true;
       }
-      /* // global roles check
+
+      // global roles check
+      // TODO: Review this commented out code
+      /*
+
       const sellerShopPermissions = Roles.getGroupsForUser(userId, "admin");
       // we're looking for seller permissions.
       if (sellerShopPermissions) {
@@ -313,7 +317,6 @@ export default {
   isActionViewDetailOpen() {
     return Session.equals("admin/showActionViewDetail", true);
   },
-
 
   setActionView(viewData) {
     if (viewData) {

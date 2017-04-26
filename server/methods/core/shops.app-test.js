@@ -70,6 +70,7 @@ describe("core shop methods", function () {
           }]
         };
       });
+
       sandbox.stub(Reaction, "hasOwnerAccess", () => true);
       Meteor.call("shop/createShop", "12345678", shop);
       const newShopCount = Shops.find({ name: shop.name }).count();

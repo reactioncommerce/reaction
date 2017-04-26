@@ -9,3 +9,6 @@ import "./templates/settings/sellerShopSettings.js";
 
 import "./templates/shops/shopSelect.html";
 import "./templates/shops/shopSelect.js";
+
+import "./templates/stripeConnectSignupButton/stripeConnectSignupButton.html";
+import "./templates/stripeConnectSignupButton/stripeConnectSignupButton.js";

@@ -1,7 +1,6 @@
 /* eslint camelcase: 0 */
 import { Meteor } from "meteor/meteor";
 import { SimpleSchema } from "meteor/aldeed:simple-schema";
-import { Packages } from "/lib/collections";
 import { Reaction, Logger } from "/server/api";
 
 export const StripeApi = {};
@@ -46,14 +45,15 @@ StripeApi.methods.getApiKey = new ValidatedMethod({
   name: "StripeApi.methods.getApiKey",
   validate: null,
   run() {
-    const settings = Packages.findOne({
-      name: "reaction-stripe",
-      shopId: Reaction.getShopId()
-    }).settings;
-    if (!settings.api_key) {
+    const settings = Reaction.getPackageSettings("reaction-stripe").settings;
+    // TODO: We should merge Stripe Connect plugin with reaction-stripe
+    // or fully separate them, but we shouldn't be checking package settings for a package
+    // we don't require.
+    const stripeConnectSettings = Reaction.getPackageSettings("reaction-stripe-connect").settings;
+    if (!settings.api_key && !stripeConnectSettings.api_key) {
       throw new Meteor.Error("403", "Invalid Stripe Credentials");
     }
-    return settings.api_key;
+    return stripeConnectSettings.api_key || settings.api_key;
   }
 });
 
