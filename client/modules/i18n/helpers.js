@@ -1,4 +1,3 @@
-import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { Reaction, Logger, i18next } from "/client/api";
 import { Shops } from "/lib/collections";

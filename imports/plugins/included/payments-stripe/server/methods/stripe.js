@@ -98,31 +98,41 @@ Meteor.methods({
     check(paymentData, {
       total: String,
       currency: String,
-      shopId: String
+      shopId: String // // TODO: Implement Marketplace Payment - perhaps including shopId
     });
 
-    // check if this is a seller shop for destination and transaction fee logic
-    const sellerShop = sellerShops.findOne(paymentData.shopId);
+    const chargeObj = {
+      amount: "",
+      currency: "",
+      card: {},
+      capture: true
+    };
 
-    if (sellerShop && sellerShop.stripeConnectSettings) {
-      const chargeObj = {
-        chargeData: {
-          amount: "",
-          currency: "",
-          transactionFee: 0,
-          card: {},
-          capture: true
-        },
-        stripe_account: sellerShop.stripeConnectSettings.stripe_user_id
-      };
-    } else {
-      const chargeObj = {
-        amount: "",
-        currency: "",
-        card: {},
-        capture: true
-      };
-    }
+    // check if this is a seller shop for destination and transaction fee logic
+    // TODO: Add transaction fee to Stripe chargeObj when stripeConnect is in use.
+
+    // Where is sellerShops coming from here?
+    // const sellerShop = sellerShops.findOne(paymentData.shopId);
+    //
+    // if (sellerShop && sellerShop.stripeConnectSettings) {
+    //   const chargeObj = {
+    //     chargeData: {
+    //       amount: "",
+    //       currency: "",
+    //       transactionFee: 0,
+    //       card: {},
+    //       capture: true
+    //     },
+    //     stripe_account: sellerShop.stripeConnectSettings.stripe_user_id
+    //   };
+    // } else {
+    //   const chargeObj = {
+    //     amount: "",
+    //     currency: "",
+    //     card: {},
+    //     capture: true
+    //   };
+    // }
 
     if (transactionType === "authorize") {
       chargeObj.capture = false;
@@ -131,11 +141,12 @@ Meteor.methods({
     chargeObj.amount = formatForStripe(paymentData.total);
     chargeObj.currency = paymentData.currency;
 
-    // check for a transaction fee and apply.
-    const stripeConnectSettings = Reaction.getPackageSettings("reaction-stripe-connect").settings;
-    if (sellerShop.stripeConnectSettings && stripeConnectSettings.transactionFee.enabled) {
-      chargeObj.transactionFee = chargeObj.amount * stripeConnectSettings.transactionFee.percentage;
-    }
+    // TODO: Check for a transaction fee and apply
+    // const stripeConnectSettings = Reaction.getPackageSettings("reaction-stripe-connect").settings;
+    // if (sellerShop.stripeConnectSettings && stripeConnectSettings.transactionFee.enabled) {
+    //   chargeObj.transactionFee = chargeObj.amount * stripeConnectSettings.transactionFee.percentage;
+    // }
+
     let result;
     let chargeResult;
 

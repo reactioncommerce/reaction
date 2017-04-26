@@ -231,6 +231,7 @@ export default {
     }
     return false;
   },
+
   updateUserPreferences(packageName, preference, values) {
     const currentPreference = this.getUserPreferences(packageName, preference, {});
     return this.setUserPreferences(packageName, preference, {
@@ -238,6 +239,7 @@ export default {
       ...values
     });
   },
+
   getShopId() {
     return this.shopId;
   },
@@ -315,7 +317,6 @@ export default {
   isActionViewDetailOpen() {
     return Session.equals("admin/showActionViewDetail", true);
   },
-
 
   setActionView(viewData) {
     if (viewData) {
@@ -468,7 +469,6 @@ export default {
       i18nKeyLabel: ""
     }]);
   },
-
 
   getCurrentTag() {
     if (this.Router.getRouteName() === "tag") {

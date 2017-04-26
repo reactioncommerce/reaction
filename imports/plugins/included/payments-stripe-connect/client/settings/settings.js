@@ -29,11 +29,13 @@ AutoForm.hooks({
 });
 
 Template.stripeConnectRedirect.onCreated(function () {
+  // TODO: Verify that this works and define steps to reproduce.
   // grab stripe connects oauth values and redirect the user
   const authCode = FlowRouter.getQueryParam("code");
 
   Meteor.call("stripeConnect/saveSellerParams", Reaction.getSellerShopId(), authCode, function (err) {
     if (err) {
+      // TODO: i18n here
       Alerts.toast("There was an error with saving your seller params from stripe.");
     }
     Reaction.Router.go("/");
