@@ -1,5 +1,5 @@
 import { Template } from "meteor/templating";
-import { Reaction, i18next } from "/client/api";
+import { Reaction, i18next, Router } from "/client/api";
 import { Packages } from "/lib/collections";
 import { StripeConnectPackageConfig } from "../../lib/collections/schemas";
 
@@ -31,7 +31,7 @@ AutoForm.hooks({
 Template.stripeConnectRedirect.onCreated(function () {
   // TODO: Verify that this works and define steps to reproduce.
   // grab stripe connects oauth values and redirect the user
-  const authCode = FlowRouter.getQueryParam("code");
+  const authCode = Router.getQueryParam("code");
 
   Meteor.call("stripeConnect/saveSellerParams", Reaction.getSellerShopId(), authCode, function (err) {
     if (err) {
