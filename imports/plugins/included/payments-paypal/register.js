@@ -7,10 +7,20 @@ Reaction.registerPackage({
   autoEnable: true,
   settings: {
     express: {
-      enabled: false
+      enabled: false,
+      support: [
+        "authorize",
+        "capture",
+        "refund"
+      ]
     },
     payflow: {
-      enabled: false
+      enabled: false,
+      support: [
+        "Authorize",
+        "Capture",
+        "Refund"
+      ]
     }
   },
   registry: [

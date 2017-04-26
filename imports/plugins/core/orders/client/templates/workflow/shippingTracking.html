@@ -1,5 +1,6 @@
  <template name="coreOrderShippingTracking">
 
+  {{#if isNotCanceled}}
       {{#if printableLabels}}
       <div>
         <div><strong data-i18n="orderShipping.printLabels">Labels</strong></div>
@@ -60,5 +61,7 @@
         data-event-action="shipmentPacked">All Items Packed, Ready to Ship</button>
     {{/if}}
   </div>
+  {{/if}}
+
   {{/if}}
 </template>

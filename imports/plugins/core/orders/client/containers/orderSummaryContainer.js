@@ -55,12 +55,31 @@ class OrderSummaryContainer extends Component {
       }
     });
 
+    const canceled = _.every(shipment.items, (shipmentItem) => {
+      for (const fullItem of order.items) {
+        if (fullItem._id === shipmentItem._id) {
+          if (fullItem.workflow) {
+            return fullItem.workflow.status === "coreOrderItemWorkflow/canceled";
+          }
+        }
+      }
+    });
+
     if (shipped) {
       return {
         delivered: false,
         shipped: true,
         status: "success",
         label: i18next.t("orderShipping.shipped")
+      };
+    }
+
+    if (canceled) {
+      return {
+        delivered: false,
+        shipped: false,
+        status: "danger",
+        label: i18next.t("order.canceledLabel")
       };
     }
 
