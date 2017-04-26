@@ -5,7 +5,7 @@ import { Shops } from "/lib/collections";
 Meteor.publish("SellerShops", function (userId) {
   const sellerShopId = Reaction.getSellerShopId(this.userId, true);
 
-  // sub publication for all SellerShop that don't belong to current user
+  // sub publication for all shops that don't belong to current user
   const sellerShopsSubPub = () => {
     let selector = {};
 
@@ -29,6 +29,9 @@ Meteor.publish("SellerShops", function (userId) {
       },
       changed: (newDocument) => {
         this.changed("SellerShops", newDocument._id, newDocument);
+      },
+      removed: (document) => {
+        this.removed("SellerShops", document._id);
       }
     });
 
@@ -37,7 +40,7 @@ Meteor.publish("SellerShops", function (userId) {
     });
   };
 
-  // subPublication for the owner of the sellerShop
+  // subPublication for the owner of the shop
   const ownedSellerShopSubPub = () => {
     const ownedSellerShopObserver = Shops.find({ _id: sellerShopId }).observe({
       added: (document) => {
@@ -45,6 +48,9 @@ Meteor.publish("SellerShops", function (userId) {
       },
       changed: (newDocument) => {
         this.changed("SellerShops", newDocument._id, newDocument);
+      },
+      removed: (document) => {
+        this.removed("SellerShops", document._id);
       }
     });
     this.onStop(function () {
