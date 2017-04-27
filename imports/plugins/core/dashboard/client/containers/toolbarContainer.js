@@ -88,7 +88,7 @@ function composer(props, onData) {
     isEnabled: isRevisionControlEnabled(),
     isActionViewAtRootView: Reaction.isActionViewAtRootView(),
     actionViewIsOpen: Reaction.isActionViewOpen(),
-    hasProductsAccess: roles.indexOf("product") > -1,
+    hasCreateProductAccess: roles.indexOf("createProduct") > -1,
 
     // Callbacks
     onAddProduct: handleAddProduct,

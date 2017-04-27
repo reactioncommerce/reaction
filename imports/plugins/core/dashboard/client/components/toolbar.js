@@ -16,7 +16,7 @@ class PublishControls extends Component {
     dashboardHeaderTemplate: PropTypes.oneOfType([PropTypes.func, PropTypes.node, PropTypes.string]),
     documentIds: PropTypes.arrayOf(PropTypes.string),
     documents: PropTypes.arrayOf(PropTypes.object),
-    hasProductsAccess: PropTypes.bool,
+    hasCreateProductAccess: PropTypes.bool,
     isEnabled: PropTypes.bool,
     isPreview: PropTypes.bool,
     onAddProduct: PropTypes.func,
@@ -62,7 +62,7 @@ class PublishControls extends Component {
   }
 
   renderVisibilitySwitch() {
-    if (this.props.hasProductsAccess) {
+    if (this.props.hasCreateProductAccess) {
       return (
         <Switch
           i18nKeyLabel="app.editMode"
@@ -95,7 +95,7 @@ class PublishControls extends Component {
   }
 
   renderAddButton() {
-    if (this.props.hasProductsAccess) {
+    if (this.props.hasCreateProductAccess) {
       return (
         <FlatButton
           i18nKeyTooltip="app.shortcut.addProductLabel"
@@ -122,7 +122,7 @@ class PublishControls extends Component {
   }
 
   renderCustomControls() {
-    if (this.props.dashboardHeaderTemplate && this.props.hasProductsAccess) {
+    if (this.props.dashboardHeaderTemplate && this.props.hasCreateProductAccess) {
       if (this.props.isEnabled) {
         return [
           <VerticalDivider key="customControlsVerticaldivider" />,
