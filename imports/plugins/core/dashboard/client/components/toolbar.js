@@ -122,7 +122,7 @@ class PublishControls extends Component {
   }
 
   renderCustomControls() {
-    if (this.props.dashboardHeaderTemplate) {
+    if (this.props.dashboardHeaderTemplate && this.props.hasProductsAccess) {
       if (this.props.isEnabled) {
         return [
           <VerticalDivider key="customControlsVerticaldivider" />,
