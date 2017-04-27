@@ -9,7 +9,6 @@ import { ReactiveVar } from "meteor/reactive-var";
 import { Tracker } from "meteor/tracker";
 import { Route } from "react-router";
 import { Packages, Shops } from "/lib/collections";
-import { MetaData } from "/lib/api/router/metadata";
 import Hooks from "./hooks";
 import { getComponent } from "/imports/plugins/core/layout/lib/components";
 

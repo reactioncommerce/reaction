@@ -1,14 +1,16 @@
-import { Session } from "meteor/session";
-import { Tracker } from "meteor/tracker";
 import React, { Component, PropTypes } from "react";
 import ReactDOM from "react-dom";
 import { matchPath } from "react-router";
 import { Router as ReactRouter } from "react-router-dom";
 import { Reaction } from "/client/api";
 import pathToRegexp from "path-to-regexp";
+import { isEqual } from "lodash";
 import queryParse from "query-parse";
+import { Session } from "meteor/session";
+import { Tracker } from "meteor/tracker";
 import App from "/imports/plugins/core/router/client/app";
 import { Router } from "../lib";
+import { MetaData } from "/lib/api/router/metadata";
 
 const history = Router.history;
 
@@ -83,12 +85,23 @@ class BrowserRouter extends Component {
       payload: location
     };
 
-    // Run on enter hooks
-    Router.Hooks.run("onEnter", "GLOBAL", routeData.route);
-    Router.Hooks.run("onEnter", foundPath.name, routeData.route);
+    // Get the previousroute, which is the currentRoute just before it changes
+    const previousRoute = Router.currentRoute.get();
 
-    // Set current route reactive-var
-    Router.currentRoute.set(routeData);
+    // If it seems like we've moved to a differen route, then run the onExit
+    // hooks for the previousRoute
+    if (isEqual(previousRoute, routeData) === false) {
+      // Run on enter hooks
+      Router.Hooks.run("onExit", "GLOBAL", routeData.route);
+      Router.Hooks.run("onExit", previousRoute.name, previousRoute.route);
+
+      // Set current route reactive-var
+      Router.currentRoute.set(routeData);
+
+      // Run on enter hooks for the new route
+      Router.Hooks.run("onEnter", "GLOBAL", routeData.route);
+      Router.Hooks.run("onEnter", routeData.name, routeData.route);
+    }
   }
 
   render() {
@@ -118,6 +131,8 @@ export function initBrowserRouter() {
     reactionContext: Reaction,
     indexRoute: Session.get("INDEX_OPTIONS") || {}
   });
+
+  Router.Hooks.onEnter(MetaData.init);
 
   Tracker.autorun(() => {
     if (Router.ready()) {
