@@ -80,13 +80,16 @@ function composer(props, onData) {
     }
   }
 
+  const roles = Roles.getRolesForUser(Meteor.userId(), Reaction.getShopId());
   onData(null, {
     packageButtons,
-    dashboardHeaderTemplate: props.data.dashboardHeader,
+    dashboardHeaderTemplate: null,
+    // dashboardHeaderTemplate: props.data.dashboardHeader,
     isPreview: Reaction.isPreview(),
     isEnabled: isRevisionControlEnabled(),
     isActionViewAtRootView: Reaction.isActionViewAtRootView(),
     actionViewIsOpen: Reaction.isActionViewOpen(),
+    hasProductsAccess: roles.indexOf("product") > -1,
 
     // Callbacks
     onAddProduct: handleAddProduct,

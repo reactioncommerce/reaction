@@ -16,6 +16,7 @@ class PublishControls extends Component {
     dashboardHeaderTemplate: PropTypes.oneOfType([PropTypes.func, PropTypes.node, PropTypes.string]),
     documentIds: PropTypes.arrayOf(PropTypes.string),
     documents: PropTypes.arrayOf(PropTypes.object),
+    hasProductsAccess: PropTypes.bool,
     isEnabled: PropTypes.bool,
     isPreview: PropTypes.bool,
     onAddProduct: PropTypes.func,
@@ -61,16 +62,20 @@ class PublishControls extends Component {
   }
 
   renderVisibilitySwitch() {
-    return (
-      <Switch
-        i18nKeyLabel="app.editMode"
-        i18nKeyOnLabel="app.editMode"
-        label={"Edit Mode"}
-        onLabel={"Edit Mode"}
-        checked={!this.props.isPreview}
-        onChange={this.onViewContextChange}
-      />
-    );
+    if (this.props.hasProductsAccess) {
+      return (
+        <Switch
+          i18nKeyLabel="app.editMode"
+          i18nKeyOnLabel="app.editMode"
+          label={"Edit Mode"}
+          onLabel={"Edit Mode"}
+          checked={!this.props.isPreview}
+          onChange={this.onViewContextChange}
+        />
+      );
+    }
+
+    return null;
   }
 
   renderAdminButton() {
@@ -90,14 +95,18 @@ class PublishControls extends Component {
   }
 
   renderAddButton() {
-    return (
-      <FlatButton
-        i18nKeyTooltip="app.shortcut.addProductLabel"
-        icon={"fa fa-plus"}
-        tooltip={"Add Product"}
-        onClick={this.props.onAddProduct}
-      />
-    );
+    if (this.props.hasProductsAccess) {
+      return (
+        <FlatButton
+          i18nKeyTooltip="app.shortcut.addProductLabel"
+          icon={"fa fa-plus"}
+          tooltip={"Add Product"}
+          onClick={this.props.onAddProduct}
+        />
+      );
+    }
+
+    return null;
   }
 
   renderPackageButons() {
