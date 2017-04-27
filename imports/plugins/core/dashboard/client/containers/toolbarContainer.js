@@ -83,8 +83,7 @@ function composer(props, onData) {
   const roles = Roles.getRolesForUser(Meteor.userId(), Reaction.getShopId());
   onData(null, {
     packageButtons,
-    dashboardHeaderTemplate: null,
-    // dashboardHeaderTemplate: props.data.dashboardHeader,
+    dashboardHeaderTemplate: props.data.dashboardHeader,
     isPreview: Reaction.isPreview(),
     isEnabled: isRevisionControlEnabled(),
     isActionViewAtRootView: Reaction.isActionViewAtRootView(),
