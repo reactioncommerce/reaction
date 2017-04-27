@@ -56,7 +56,7 @@ function composer(props, onData) {
   // Standard variables
   const packageButtons = [];
 
-  if (routeName !== "dashboard") {
+  if (routeName !== "dashboard" && props.showPackageShortcuts) {
     const registryItems = Reaction.Apps({ provides: "settings", container: "dashboard" });
 
     for (const item of registryItems) {
