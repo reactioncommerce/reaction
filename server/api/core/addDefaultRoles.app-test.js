@@ -160,5 +160,15 @@ describe("Server/API/Core", function () {
       expect(shop.defaultVisitorRole).to.contain("test1");
       expect(shop.defaultVisitorRole).to.contain("test2");
     });
+
+    it("should not add roles to non-extant role sets", () => {
+      let shop = Factory.create("shop");
+
+      Reaction.addRolesToDefaultRoleSet({ allShops: true, shops: [shop._id], roles: ["test1", "test2"], roleSets: ["madeupRoleSet"] });
+
+      shop = Shops.findOne({ _id: shop._id });
+
+      expect(shop.madeupRoleSet).to.equal(undefined);
+    });
   });
 });
