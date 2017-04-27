@@ -83,6 +83,7 @@ function composer(props, onData) {
   const userId = Meteor.userId();
   const shopId = Reaction.getShopId();
   let productItems = Cart.findOne({ userId, shopId }).items;
+  Meteor.subscribe("CartImages");
 
   productItems = productItems.map((item) => {
     const defaultImage = Media.findOne({
