@@ -16,7 +16,8 @@ export let history;
 
 // Private vars
 const currentRoute = new ReactiveVar({});
-const routerDependency = new Tracker.Dependency;
+const routerReadyDependency = new Tracker.Dependency;
+const routerChangeDependency = new Tracker.Dependency;
 
 // Create history object depending on if this is client or server
 if (Meteor.isClient) {
@@ -25,14 +26,19 @@ if (Meteor.isClient) {
   history = createMemoryHistory();
 }
 
+history.listen(() => {
+  routerChangeDependency.changed();
+});
+
 // Base router class (static)
 class Router {
   static history = history
   static Hooks = Hooks
   static routes = []
+  static _initialized = false;
 
   static ready() {
-    routerDependency.depend();
+    routerReadyDependency.depend();
     return Router._initialized;
   }
 
@@ -65,50 +71,11 @@ class Router {
 
     return current.query[name];
   }
+
+  static watchPathChange() {
+    routerChangeDependency.depend();
+  }
 }
-
-
-Router._initialized = false;
-
-// Hooks
-// history.listen = (location, action) => {
-//   const foundPath = Router.routes.find((pathObject) => {
-//     return matchPath(location.pathname, {
-//       path: pathObject.route
-//     });
-//   });
-//
-//   const params = {};
-//
-//   if (foundPath) {
-//     const keys = [];
-//     const re = pathToRegexp(foundPath.route, keys);
-//     const values = re.exec(location.pathname);
-//
-//     keys.forEach((key, index) => {
-//       params[key.name] = values[index + 1];
-//     });
-//   }
-//
-//   let search = location.search;
-//
-//   if (typeof search === "string" && search.startsWith("?")) {
-//     search = search.substr(1);
-//   }
-//
-//   Router.currentRoute = {
-//     route: {
-//       ...foundPath,
-//       path: location.pathname
-//     },
-//     action,
-//     params,
-//     query: queryParse.toObject(search),
-//     payload: location
-//   };
-//
-//   // Router.Hooks.run("onEnter", "GLOBAL", Router.currentRoute.get());
-// };
 
 /**
  * pathFor
@@ -542,7 +509,7 @@ Router.initPackageRoutes = (options) => {
     Router._initialized = true;
     Router.reactComponents = reactRouterRoutes;
 
-    routerDependency.changed();
+    routerReadyDependency.changed();
   }
 };
 
