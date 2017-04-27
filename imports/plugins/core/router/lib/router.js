@@ -378,7 +378,6 @@ export function ReactionLayout(options = {}) {
   return {
     structure: layoutStructure,
     component: (props) => { // eslint-disable-line react/no-multi-comp, react/display-name
-      console.log("render props", props);
       const route = Router.current().route;
 
       // If the current route is unauthorized, and is not the "not-found" route,
@@ -387,7 +386,7 @@ export function ReactionLayout(options = {}) {
         layoutStructure.template = "unauthorized";
       }
 
-      return React.createElement(getComponent("AdminView"), {
+      return React.createElement(getComponent(layoutName), {
         ...props,
         structure: layoutStructure
       });

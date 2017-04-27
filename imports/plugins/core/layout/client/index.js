@@ -22,12 +22,11 @@ import "./templates/theme/theme.html";
 import "./templates/theme/theme.js";
 
 
-import AdminView from "./components/admin";
-import AdminContainer from "./containers/adminContainer";
+import CoreLayout from "./components/coreLayout";
 import { registerComponent } from "../lib/components";
 
 
 registerComponent({
-  name: "AdminView",
-  component: AdminContainer(AdminView)
+  name: "coreLayout", // lowercased to match the legacy blaze "coreLayout"
+  component: CoreLayout
 });

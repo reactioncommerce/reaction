@@ -6,7 +6,7 @@ import CartDrawer from "./cartDrawer";
 import { Content } from "./";
 
 
-class AdminView extends Component {
+class CoreLayout extends Component {
   static propTypes = {
     actionViewIsOpen: PropTypes.bool,
     data: PropTypes.object,
@@ -29,4 +29,4 @@ class AdminView extends Component {
   }
 }
 
-export default AdminView;
+export default CoreLayout;
