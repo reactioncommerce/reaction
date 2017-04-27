@@ -60,8 +60,13 @@ Meteor.publish("Cart", function (sessionId, userId) {
   return Cart.find(cartId);
 });
 
-Meteor.publish("CartImages", function () {
-  check(arguments, [Match.Any]);
+Meteor.publish("CartImages", function (item) {
+  check(item, Match.Optional(Object));
+  const variantId = item.variants._id;
+  const productId = item.productId;
 
-  return Media.find({});
+  return Media.find({
+    "metadata.variantId": variantId,
+    "metadata.productId": productId
+  });
 });
