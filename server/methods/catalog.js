@@ -814,7 +814,11 @@ Meteor.methods({
   "products/updateProductField": function (_id, field, value) {
     check(_id, String);
     check(field, String);
-    check(value, Match.OneOf(String, Object, Array, Boolean));
+    check(value, Match.OneOf(String, Object, Array, Boolean, Number));
+    // must have createProduct permission
+    if (!Reaction.hasPermission("createProduct")) {
+      throw new Meteor.Error(403, "Access Denied");
+    }
 
     // Check first if Product exists and then if user has the right to alter it
     const doc = Products.findOne(_id);

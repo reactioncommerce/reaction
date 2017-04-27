@@ -19,6 +19,7 @@ export function findProductMedia(publicationInstance, productIds) {
     selector["metadata.productId"] = productIds;
   }
 
+  // TODO: This block is commented out in Marketplace, why??
   // if (shopId) {
   //   selector["metadata.shopId"] = shopId;
   // }
@@ -105,7 +106,7 @@ Meteor.publish("Product", function (productId) {
     }
   }
 
-  // Begin selector for product
+  // Selector for product
   // We don't need handle anymore(we got product's id in the previous step)
   // Try to find a product with the _is as an Random.id()
   // Try to find a product variant with _id using the ancestors array

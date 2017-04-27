@@ -105,6 +105,7 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
     }
 
     const selector = {};
+     // Marketplace version of userInRole owner/admin/createProduct for shop
     if (hasCreateProductAccessToOwnerShop) {
       _.extend(selector, {
         isDeleted: { $in: [null, false] },
@@ -413,15 +414,19 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
       limit: productScrollLimit
     }).map(product => product._id);
 
+
+    // TODO: Review this commented out code from Marketplace
+    // TODO: Why is newSelector not used?
+
     // let newSelector = selector;
 
     // seems to not be used :
     // Remove hashtag filter from selector (hashtags are not applied to variants, we need to get variants)
     // if (productFilters && productFilters.tags) {
 
-      // newSelector = _.omit(selector, ["hashtags"]);
+    // newSelector = _.omit(selector, ["hashtags"]);
 
-      // Re-configure selector to pick either Variants of one of the top-level products, or the top-level products in the filter
+    // Re-configure selector to pick either Variants of one of the top-level products, or the top-level products in the filter
     //   _.extend(newSelector, {
     //     $or: [
     //       {
@@ -436,6 +441,7 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
     //     ]
     //   });
     // }
+
     // Returning Complete product tree for top level products to avoid sold out warning.
     const productCursor = Products.find({
       $or: [
