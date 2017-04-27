@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import classnames from "classnames";
 import Header from "./header";
 import CartDrawer from "./cartDrawer";
@@ -8,7 +9,8 @@ import { Content } from "./";
 class AdminView extends Component {
   static propTypes = {
     actionViewIsOpen: PropTypes.bool,
-    data: PropTypes.object
+    data: PropTypes.object,
+    structure: PropTypes.object
   }
 
   render() {
@@ -19,9 +21,9 @@ class AdminView extends Component {
 
     return (
       <div className={pageClassName} id="reactionAppContainer">
-        <Header template={this.props.layoutHeader} />
+        <Header template={this.props.structure.layoutHeader} />
         <CartDrawer />
-        <Content template={this.props.template} />
+        <Content template={this.props.structure.template} />
       </div>
     );
   }

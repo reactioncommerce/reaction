@@ -1,42 +1,34 @@
-import { Meteor } from "meteor/meteor";
-import { ReactiveVar } from "meteor/reactive-var";
-import { Tracker } from "meteor/tracker";
-// import { FlowRouter as Router } from "meteor/kadira:flow-router-ssr";
-import React, { Component, PropTypes } from "react"
-import ReactDOM from "react-dom"
-import { matchPath } from 'react-router'
-import { Router as ReactRouter, Route } from "react-router-dom";
+import React from "react";
 import createBrowserHistory from "history/createBrowserHistory";
 import createMemoryHistory from "history/createMemoryHistory";
-// import createHistory from 'history/createBrowserHistory'
+import pathToRegexp from "path-to-regexp";
+import queryParse from "query-parse";
+import { Meteor } from "meteor/meteor";
+import Blaze from "meteor/gadicc:blaze-react-component";
+import { ReactiveVar } from "meteor/reactive-var";
+import { Tracker } from "meteor/tracker";
+import { Route } from "react-router";
 
-import { BlazeLayout } from "meteor/kadira:blaze-layout";
-// import { Reaction, Logger } from "/client/api";
 import { Packages, Shops } from "/lib/collections";
 import { MetaData } from "/lib/api/router/metadata";
 import Hooks from "./hooks";
 import { getComponent } from "/imports/plugins/core/layout/lib/components";
 
-import Blaze from "meteor/gadicc:blaze-react-component";
-import pathToRegexp from "path-to-regexp"
-import queryParse from "query-parse";
-
-// const Router = BrowserRouter
 
 export let history;
 
 // Private vars
 const currentRoute = new ReactiveVar({});
+const routerDependency = new Tracker.Dependency;
 
-const routerDependency = new Tracker.Dependency
-
-
+// Create history object depending on if this is client or server
 if (Meteor.isClient) {
   history = createBrowserHistory();
 } else {
   history = createMemoryHistory();
 }
 
+// Base router class (static)
 class Router {
   static history = history
   static Hooks = Hooks
@@ -116,19 +108,6 @@ Router._initialized = false;
 //
 //   // Router.Hooks.run("onEnter", "GLOBAL", Router.currentRoute.get());
 // };
-
-
-// init flow-router
-//
-/* eslint no-loop-func: 0 */
-
-// client should wait on subs
-// Router.wait();
-//
-// Router.history = history
-// Router.Hooks = Hooks;
-//
-// Router.routes = [];
 
 /**
  * pathFor
@@ -273,15 +252,18 @@ function checkRouterPermissions(context) {
 /**
  * hasRoutePermission
  * check if user has route permissions
- * @param  {Object} context - route context
- * @param  {redirect} null object
- * @return {Object} return context
+ * @param  {Object} route - route context
+ * @return {Boolean} returns `true` if route is autoriized, `false` otherwise
  */
 function hasRoutePermission(route) {
   const routeName = route.name;
-  if (Router.Reaction.hasPermission(routeName, Meteor.userId())) {
+
+  if (routeName === "index" || routeName === "not-found") {
+    return true;
+  } else if (Router.Reaction.hasPermission(routeName, Meteor.userId())) {
     return true;
   }
+
   return false;
 }
 
@@ -377,17 +359,11 @@ export function ReactionLayout(options = {}) {
   // Some routes, such as `/account/profile` do no have a workflow, but define a template.
   // Without the logic below, it would end up rendering the homepage instead of the profile
   // page.
-  const optionsHasWorkflow = typeof options.workflow === "string";
+  // const optionsHasWorkflow = typeof options.workflow === "string";
   const optionsHasTemplate = typeof options.template === "string";
 
   if (optionsHasTemplate) {
     layoutStructure.template = options.template;
-  }
-
-  // If the current route is unauthorized, then override the template to use
-  // the default unauthroized template
-  if (Router.current().unauthorized) {
-    layoutStructure.template = "unauthorized";
   }
 
   // If there is no Blaze Template (Template[]) or React Component (getComponent)
@@ -401,24 +377,29 @@ export function ReactionLayout(options = {}) {
   // Render the layout
   return {
     structure: layoutStructure,
-    component: () => React.createElement(getComponent("AdminView"), layoutStructure)
+    component: (props) => { // eslint-disable-line react/no-multi-comp, react/display-name
+      console.log("render props", props);
+      const route = Router.current().route;
+
+      // If the current route is unauthorized, and is not the "not-found" route,
+      // then override the template to use the default unauthroized template
+      if (hasRoutePermission(route) === false && route.name !== "not-found") {
+        layoutStructure.template = "unauthorized";
+      }
+
+      return React.createElement(getComponent("AdminView"), {
+        ...props,
+        structure: layoutStructure
+      });
+    }
   };
 }
-
-// default not found route
-// Router.notFound = {
-//   action() {
-//     ReactionLayout({
-//       template: "notFound"
-//     });
-//   }
-// };
 
 /**
  * initPackageRoutes
  * registers route and template when registry item has
  * registryItem.route && registryItem.template
- * @param {String} userId - userId
+ * @param {Object} options - options and context for route creation
  * @returns {undefined} returns undefined
  */
 Router.initPackageRoutes = (options) => {
@@ -440,6 +421,7 @@ Router.initPackageRoutes = (options) => {
     const indexLayout = ReactionLayout(options.indexRoute);
     const indexRoute = {
       route: "/",
+      name: "not-found",
       options: {
         name: "index",
         ...options.indexRoute,
@@ -450,14 +432,35 @@ Router.initPackageRoutes = (options) => {
 
     reactRouterRoutes.push(
       <Route
-        component={indexLayout.component}
         exact={true}
         key="index"
         path="/"
+        render={indexLayout.component}
+      />
+    );
+
+    const notFoundLayout = ReactionLayout({ template: "notFound" });
+    const notFoundRoute = {
+      route: "/not-found",
+      name: "not-found",
+      options: {
+        name: "not-found",
+        ...notFoundLayout.indexRoute,
+        component: notFoundLayout.component,
+        structure: notFoundLayout.structure
+      }
+    };
+
+    reactRouterRoutes.push(
+      <Route
+        key="not-found"
+        path="/not-found"
+        render={notFoundLayout.component}
       />
     );
 
     Router.routes.push(indexRoute);
+    Router.routes.push(notFoundRoute);
 
     // get package registry route configurations
     for (const pkg of pkgs) {
@@ -523,16 +526,15 @@ Router.initPackageRoutes = (options) => {
           }
 
           // Check permissions before adding the route to the routing table
-          if (hasRoutePermission(route)) {
-            reactRouterRoutes.push(
-              <Route
-                key={`${pkg.name}-${route.name}-${index++}`}
-                path={route.route}
-                component={route.options.component}
-              />
-            );
-            Router.routes.push(route);
-          }
+          reactRouterRoutes.push(
+            <Route
+              key={`${pkg.name}-${route.name}-${index++}`}
+              path={route.route}
+              render={route.options.component}
+            />
+          );
+
+          Router.routes.push(route);
         }
       }
     } // end package loop

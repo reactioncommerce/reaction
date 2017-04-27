@@ -33,13 +33,19 @@ class BrowserRouter extends Component {
   }
 
   handleLocationChange = location => {
-    const foundPath = Router.routes.find((pathObject) => {
+    const foundPaths = Router.routes.filter((pathObject) => {
       return matchPath(location.pathname, {
         path: pathObject.route,
         exact: true
       });
     });
 
+    if (foundPaths.length === 0 && location.pathname !== "not-found") {
+      Router.replace("not-found");
+      return undefined;
+    }
+
+    const foundPath = foundPaths.length && foundPaths[0];
     const params = {};
 
     if (foundPath) {
@@ -61,6 +67,7 @@ class BrowserRouter extends Component {
     Router.currentRoute.set({
       route: {
         ...foundPath,
+        name: foundPath.name,
         path: location.pathname
       },
       params,
