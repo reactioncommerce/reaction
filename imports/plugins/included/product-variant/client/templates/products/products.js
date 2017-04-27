@@ -83,8 +83,9 @@ Template.products.onCreated(function () {
         options.shops = [shopId];
       }
 
+      // probably this is needed anymore as now Product publication brings Media as well
       // subscribe to Media for specific shop
-      mediaSubscription = this.subscribe("Media", { shops: shopId });
+      mediaSubscription = this.subscribe("Media", { shops: [shopId] });
     }
 
     if (this.state.equals("slug", slug) === false && this.state.equals("initialLoad", false)) {
