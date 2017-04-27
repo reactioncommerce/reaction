@@ -66,7 +66,7 @@ Meteor.publish("Product", function (productId) {
     return this.ready();
   }
   let _id;
-  let selector = {
+  const selector = {
     isDeleted: { $in: [null, false] }
   };
   let productShopId;
@@ -233,9 +233,7 @@ Meteor.publish("Product", function (productId) {
   }
 
   // Everyone else gets the standard, visible products and variants
-  selector = Object.assign(selector, {
-    isVisible: true
-  });
+  selector.isVisible = true;
 
   const productCursor = Products.find(selector);
   const productIds = productCursor.map(p => p._id);
