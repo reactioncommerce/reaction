@@ -8,6 +8,22 @@ export const PaypalPackageConfig = new SimpleSchema([
       label: "Capture at time of Auth",
       defaultValue: false
     },
+    "settings.express.support": {
+      type: Array,
+      label: "Payment provider supported methods"
+    },
+    "settings.express.support.$": {
+      type: String,
+      allowedValues: ["authorize", "de-authorize", "capture", "refund"]
+    },
+    "settings.payflow.support": {
+      type: Array,
+      label: "Payment provider supported methods"
+    },
+    "settings.payflow.support.$": {
+      type: String,
+      allowedValues: ["Authorize", "De-authorize", "Capture", "Refund"]
+    },
     "settings.merchantId": {
       type: String,
       label: "Merchant ID",

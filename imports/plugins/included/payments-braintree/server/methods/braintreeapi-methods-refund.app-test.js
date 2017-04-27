@@ -20,6 +20,8 @@ describe("braintree/refund/create", function () {
       processor: "Braintree",
       storedCard: "VISA 4242",
       method: "credit",
+      paymentPackageId: "vrXutd72c2m7Lenqw",
+      paymentSettingsKey: "reaction-braintree",
       transactionId: "mqcp30p9",
       amount: 99.95,
       status: "completed",

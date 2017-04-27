@@ -3,6 +3,7 @@ import { formatPriceString } from "/client/api";
 import { Translation } from "/imports/plugins/core/ui/client/components";
 
 class LineItems extends Component {
+
   static propTypes = {
     displayMedia: PropTypes.func,
     handleClick: PropTypes.func,
