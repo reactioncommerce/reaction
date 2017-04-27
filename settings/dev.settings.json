@@ -2,9 +2,9 @@
   "ROOT_URL": "",
   "MAIL_URL": "",
   "reaction": {
-    "REACTION_USER": "",
-    "REACTION_AUTH": "",
-    "REACTION_EMAIL": ""
+    "REACTION_USER": "katiebvogel@gmail.com",
+    "REACTION_AUTH": "asdf",
+    "REACTION_EMAIL": "katiebvogel@gmail.com"
   },
   "REACTION_LOG_LEVEL": "info",
   "public": {}

@@ -124,14 +124,14 @@
                     "googleplus"
                 ],
                 "iconOnly": true,
-                "faSize": "fa-2x",
+                "faSize": "fa-3x",
                 "faClass": "square",
                 "targetWindow": "_self",
                 "apps": {
                     "facebook": {
                         "appId": "",
                         "version": "v2.1",
-                        "profilePage": "",
+                        "profilePage": "https://www.facebook.com/evereveofficial/",
                         "enabled": true,
                         "appSecret": ""
                     },
