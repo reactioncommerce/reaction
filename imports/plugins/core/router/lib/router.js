@@ -188,36 +188,6 @@ Router.isActiveClassName = (routeName) => {
 };
 
 /**
- * checkRouterPermissions
- * check if user has route permissions
- * @param  {Object} context - route context
- * @param  {redirect} null object
- * @return {Object} return context
- */
-function checkRouterPermissions(context) {
-  const routeName = context.route.name;
-
-  if (Router.Reaction.hasPermission(routeName, Meteor.userId())) {
-    if (context.unauthorized === true) {
-      delete context.unauthorized;
-      return context;
-    }
-    return context;
-  }
-  // determine if this is a valid route or a 404
-  const routeExists = _.find(Router._routes, function (route) {
-    return route.path === context.path;
-  });
-
-  // if route exists (otherwise this will return 404)
-  // return unauthorized flag on context
-  if (routeExists) {
-    context.unauthorized = true;
-  }
-  return context;
-}
-
-/**
  * hasRoutePermission
  * check if user has route permissions
  * @param  {Object} route - route context
