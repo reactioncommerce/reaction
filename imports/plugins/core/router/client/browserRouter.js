@@ -33,6 +33,7 @@ class BrowserRouter extends Component {
   }
 
   handleLocationChange = location => {
+    // Find all matching paths
     const foundPaths = Router.routes.filter((pathObject) => {
       return matchPath(location.pathname, {
         path: pathObject.route,
@@ -40,40 +41,54 @@ class BrowserRouter extends Component {
       });
     });
 
+    // If no matching pathis, redirect to the not found page
     if (foundPaths.length === 0 && location.pathname !== "not-found") {
       Router.replace("not-found");
       return undefined;
     }
 
+    // If we have a found path, take the first match
     const foundPath = foundPaths.length && foundPaths[0];
     const params = {};
 
+    // Process the params from the found path definiton
     if (foundPath) {
       const keys = [];
-      const re = pathToRegexp(foundPath.route, keys);
-      const values = re.exec(location.pathname);
+      const re = pathToRegexp(foundPath.route, keys); // Create parser with route regex
+      const values = re.exec(location.pathname); // Process values
 
+      // Create params object
       keys.forEach((key, index) => {
         params[key.name] = values[index + 1];
       });
     }
 
+    // Get serach (query) string from current location
     let search = location.search;
 
+    // Remove the ? if it exists at the beginning
     if (typeof search === "string" && search.startsWith("?")) {
       search = search.substr(1);
     }
 
-    Router.currentRoute.set({
+    // Create objext of all necessary data for the current route
+    const routeData = {
       route: {
         ...foundPath,
         name: foundPath.name,
         path: location.pathname
       },
       params,
-      query: queryParse.toObject(search),
+      query: queryParse.toObject(search), // Parse query string into object
       payload: location
-    });
+    };
+
+    // Run on enter hooks
+    Router.Hooks.run("onEnter", "GLOBAL", routeData.route);
+    Router.Hooks.run("onEnter", foundPath.name, routeData.route);
+
+    // Set current route reactive-var
+    Router.currentRoute.set(routeData);
   }
 
   render() {

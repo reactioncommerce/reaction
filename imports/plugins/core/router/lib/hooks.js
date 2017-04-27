@@ -15,6 +15,26 @@ const Hooks = {
     this._hooks[type][routeName].push(callback);
   },
 
+  enter(callback) {
+    if (Array.isArray(callback)) {
+      callback.forEach((cb) => {
+        this.onEnter(cb);
+      });
+    } else {
+      this.onEnter(callback);
+    }
+  },
+
+  leave(callback) {
+    if (Array.isArray(callback)) {
+      callback.forEach((cb) => {
+        this.onExit(cb);
+      });
+    } else {
+      return this.onExit(callback);
+    }
+  },
+
   onEnter(routeName, callback) {
     // global onEnter callback
     if (arguments.length === 1 && typeof arguments[0] === "function") {
