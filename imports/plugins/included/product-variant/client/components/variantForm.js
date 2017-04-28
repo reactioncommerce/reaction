@@ -1,6 +1,7 @@
 import { isEqual } from "lodash";
 import React, { Component, PropTypes } from "react";
 import update from "react/lib/update";
+import { formatPriceString } from "/client/api";
 import {
   Button,
   Card,
@@ -312,7 +313,7 @@ class VariantForm extends Component {
                   className="compareAtPrice"
                   name="compareAtPrice"
                   type="text"
-                  placeholder="0.00"
+                  placeholder={formatPriceString("0.00")}
                   ref="compareAtPriceInput"
                   value={this.variant.compareAtPrice}
                   onChange={this.handleInputChange}
@@ -328,7 +329,7 @@ class VariantForm extends Component {
                   className="price"
                   name="price"
                   type="text"
-                  placeholder="0.00"
+                  placeholder={formatPriceString("0.00")}
                   ref="priceInput"
                   value={this.variant.price}
                   style={this.props.greyDisabledFields(this.variant)}
