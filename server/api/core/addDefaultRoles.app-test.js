@@ -15,7 +15,7 @@ describe("Server/API/Core", function () {
     sandbox.restore();
   });
 
-  describe.only("addDefaultRoles", () => {
+  describe("addDefaultRoles", () => {
     beforeEach(function () {
       return Shops.remove({});
     });
