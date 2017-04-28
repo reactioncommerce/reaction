@@ -64,7 +64,7 @@ export function Apps(optionHash) {
   // make sure audience is used for all calls to ReactionApps
   options.audience = Roles.getRolesForUser(Meteor.userId(), Reaction.getShopId());
 
-  // remove audience permissions for owner (still needed for older calls)
+  // remove audience permissions for owner (still needed here for older/legacy calls)
   if (Reaction.hasOwnerAccess() && options.audience) {
     delete options.audience;
   }
@@ -92,7 +92,7 @@ export function Apps(optionHash) {
     }
   }
 
-  // TODO: Review Fix for filter on Packages.find(filter)
+  // TODO: Review fix for filter on Packages.find(filter)
   // current filter setup uses "audience" field which is not in registry array items in most (if not all) docs in Packages coll
   delete filter["registry.audience"]; // Temporarily remove "audience" key. Audience check few lines below performs similar effect
 
