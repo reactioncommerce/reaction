@@ -4,3 +4,9 @@
 [submodule "imports/plugins/custom"]
 	path = imports/plugins/custom
 	url = git@github.com:evereveofficial/eePlugins.git
+# [submodule "private/settings"]
+# 	path = private/settings
+# 	url = git@github.com:evereveofficial/ReactionPrivateSettings.git
+[submodule "private/settings"]
+	path = private/settings
+	url = git@github.com:evereveofficial/ReactionPrivateSettings.git
