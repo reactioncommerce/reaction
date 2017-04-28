@@ -11,7 +11,7 @@ meteor-base@1.0.4             # Packages every Meteor app needs to have
 mobile-experience@1.0.4       # Packages for a great mobile UX
 blaze-html-templates@1.0.4    # Compile .html files into Meteor Blaze views
 es5-shim@4.6.15               # ECMAScript 5 compatibility for older browsers.
-ecmascript@0.6.3              # Enable ECMAScript2015+ syntax in app code
+ecmascript@0.7.2              # Enable ECMAScript2015+ syntax in app code
 audit-argument-checks@1.0.7   # ensure meteor method argument validation
 browser-policy@1.1.0          # security-related policies enforced by newer browsers
 juliancwirko:postcss          # CSS post-processing plugin (replaces standard-minifier-css)
@@ -36,10 +36,10 @@ mdg:validated-method
 shell-server@0.2.3
 
 # Meteor Auth Packages
-accounts-base@1.2.15
-accounts-password@1.3.4
+accounts-base@1.2.16
+accounts-password@1.3.5
 accounts-facebook@1.1.1
-accounts-google@1.1.1
+accounts-google@1.1.2
 accounts-twitter@1.2.1
 oauth-encryption@1.2.1
 # accounts-github
@@ -96,6 +96,6 @@ johanbrook:publication-collector
 # meteorhacks:sikka                         # additional ddp, login security
 
 # Custom Packages
-facebook-config-ui
-google-config-ui
-twitter-config-ui
+facebook-config-ui@1.0.0
+google-config-ui@1.0.0
+twitter-config-ui@1.0.0

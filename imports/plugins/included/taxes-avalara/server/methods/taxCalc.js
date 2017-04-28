@@ -369,7 +369,6 @@ function cartToSalesOrder(cart) {
   const salesOrder = {
     companyCode: companyCode,
     type: "SalesOrder",
-    code: cart._id,
     customerCode: cart.userId,
     date: cartDate,
     currencyCode: currencyCode,
@@ -471,7 +470,7 @@ function orderToSalesInvoice(order) {
     companyCode: companyCode,
     type: documentType,
     commit: commitDocuments,
-    code: order.cartId,
+    code: order._id,
     customerCode: order.userId,
     date: orderDate,
     currencyCode: currencyCode,
