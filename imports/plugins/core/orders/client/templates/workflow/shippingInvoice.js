@@ -44,10 +44,9 @@ Template.coreOrderShippingInvoice.onCreated(function () {
 
     if (order) {
       Meteor.call("orders/refunds/list", order, (error, result) => {
-        if (!error) {
-          this.refunds.set(result);
-          this.state.set("isFetching", false);
-        }
+        if (error) Logger.warn(error);
+        this.refunds.set(result);
+        this.state.set("isFetching", false);
       });
     }
   });
@@ -479,7 +478,7 @@ Template.coreOrderShippingInvoice.helpers({
       return refunds.reverse();
     }
 
-    return false;
+    return refunds;
   },
 
   /**

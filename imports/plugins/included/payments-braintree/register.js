@@ -15,9 +15,9 @@ Reaction.registerPackage({
     "reaction-braintree": {
       enabled: false,
       support: [
-        "authorize",
-        "capture",
-        "refund"
+        "Authorize",
+        "Capture",
+        "Refund"
       ]
     }
   },

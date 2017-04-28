@@ -22,7 +22,7 @@ export const PaypalPackageConfig = new SimpleSchema([
     },
     "settings.payflow.support.$": {
       type: String,
-      allowedValues: ["authorize", "de-authorize", "capture", "refund"]
+      allowedValues: ["Authorize", "De-authorize", "Capture", "Refund"]
     },
     "settings.merchantId": {
       type: String,

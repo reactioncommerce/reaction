@@ -71,6 +71,7 @@ describe("orders test", function () {
     });
   }
 
+
   function orderCreditMethod(orderData) {
     return orderData.billing.filter(value => value.paymentMethod.method ===  "credit")[0];
   }

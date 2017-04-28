@@ -15,9 +15,9 @@ Reaction.registerPackage({
     "example-paymentmethod": {
       enabled: false,
       support: [
-        "authorize",
-        "capture",
-        "refund"
+        "Authorize",
+        "Capture",
+        "Refund"
       ]
     }
   },

@@ -17,9 +17,9 @@ Reaction.registerPackage({
     payflow: {
       enabled: false,
       support: [
-        "authorize",
-        "capture",
-        "refund"
+        "Authorize",
+        "Capture",
+        "Refund"
       ]
     }
   },
