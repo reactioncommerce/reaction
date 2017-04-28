@@ -1,5 +1,17 @@
+import React, { Component } from "component";
 import { composeWithTracker } from "/lib/api/compose";
+import QuickMenu from "../components";
 import { Reaction } from "/client/api";
+
+class QuickMenuContainer extends Component {
+  render() {
+    return (
+      <QuickMenu
+        {...this.props}
+      />
+    );
+  }
+}
 
 function composer(props, onData) {
   const shortcuts = Reaction.Apps({ provides: "shortcut", enabled: true });
@@ -31,13 +43,8 @@ function composer(props, onData) {
   });
 
   onData(null, {
-    actionView: Reaction.getActionView(),
-    data: props.data,
-    buttons: items,
-    actionViewIsOpen: Reaction.isActionViewOpen()
+    buttons: items
   });
 }
 
-export default function AdminContainer(component) {
-  return composeWithTracker(composer)(component);
-}
+export default composeWithTracker(composer)(QuickMenuContainer);

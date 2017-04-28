@@ -8,7 +8,6 @@ class PrintLayout extends Component {
   }
 
   render() {
-    console.log(this.props);
     return (
       <Blaze template={this.props.structure.template} className="reaction-print-layout" />
     );
