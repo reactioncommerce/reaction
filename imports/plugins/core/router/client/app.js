@@ -28,6 +28,9 @@ const styles = {
   adminContainer: {
     display: "flex",
     flex: "1 1 auto"
+  },
+  scrollableContainer: {
+    overflow: "auto"
   }
 };
 
@@ -62,7 +65,7 @@ class App extends Component {
           <div className="reaction-toolbar">
             <ConnectedToolbarComponent data={routeData} />
           </div>
-          <div>
+          <div style={styles.scrollableContainer}>
             {this.props.children}
           </div>
         </div>
