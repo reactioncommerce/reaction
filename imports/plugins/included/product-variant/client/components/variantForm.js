@@ -1,3 +1,4 @@
+import { isEqual } from "lodash";
 import React, { Component, PropTypes } from "react";
 import update from "react/lib/update";
 import {
@@ -14,16 +15,70 @@ import {
   Translation
 } from "/imports/plugins/core/ui/client/components";
 
+const fieldGroups = {
+  title: { group: "variantDetails" },
+  originCountry: { group: "variantDetails" },
+  compareAtPrice: { group: "variantDetails" },
+  price: { group: "variantDetails" },
+  width: { group: "variantDetails" },
+  length: { group: "variantDetails" },
+  height: { group: "variantDetails" },
+  weight: { group: "variantDetails" },
+  taxCode: { group: "taxable" },
+  taxDescription: { group: "taxable" },
+  inventoryQuantity: { group: "inventoryManagement" },
+  inventoryPolicy: { group: "inventoryManagement" },
+  lowInventoryWarningThreshold: { group: "inventoryManagement" }
+};
+
 class VariantForm extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      expandedCard: this.fieldGroupForFieldName(props.editFocus),
       variant: props.variant,
       inventoryPolicy: props.variant.inventoryPolicy,
       taxable: props.variant.taxable,
       inventoryManagement: props.variant.inventoryManagement
     };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const nextVariant = nextProps.variant || {};
+    const currentVariant = this.props.variant || {};
+
+    if (isEqual(nextVariant, currentVariant)) {
+      const cardGroupName = this.fieldGroupForFieldName(nextProps.editFocus);
+
+      this.setState({
+        expandedCard: cardGroupName,
+        variant: nextProps.variant
+      });
+    }
+  }
+
+  fieldGroupForFieldName(field) {
+    // Other wise, if a field was passed
+    // const fieldName = this.state.viewProps.field;
+
+    let fieldName;
+
+    // If the field is an array of field name
+    if (Array.isArray(field) && field.length) {
+      // Use the first field name
+      fieldName = field[0];
+    } else {
+      fieldName = field;
+    }
+
+    const fieldData = fieldGroups[fieldName];
+
+    if (fieldData && fieldData.group) {
+      return fieldData.group;
+    }
+
+    return fieldName;
   }
 
   get variant() {
@@ -84,6 +139,20 @@ class VariantForm extends Component {
     }
   }
 
+  handleCardExpand(cardName) {
+    if (this.props.onCardExpand) {
+      this.props.onCardExpand(cardName);
+    }
+  }
+
+  isExpanded(groupName) {
+    if (this.state.expandedCard && this.state.expandedCard === groupName) {
+      return true;
+    }
+
+    return false;
+  }
+
   renderTaxCodeField() {
     if (this.props.isProviderEnabled()) {
       return (
@@ -107,6 +176,7 @@ class VariantForm extends Component {
         placeholder="Select Tax Code"
         label="Tax Code"
         name="taxCode"
+        ref="taxCodeInput"
         value={this.variant.taxCode}
         onChange={this.handleInputChange}
         onBlur={this.handleInputBlur}
@@ -192,7 +262,8 @@ class VariantForm extends Component {
     return (
       <CardGroup>
         <Card
-          expanded={true}
+          expanded={this.isExpanded("variantDetails")}
+          onExpand={this.handleCardExpand.bind(this, "variantDetails")}
         >
           <CardHeader
             actAsExpander={true}
@@ -344,11 +415,12 @@ class VariantForm extends Component {
         <SettingsCard
           enabled={this.state.taxable}
           expandable={true}
-          expanded={this.state.taxable}
+          expanded={this.isExpanded("taxable")}
           i18nKeyTitle="productVariant.taxable"
           name="taxable"
           showSwitch={true}
           title="Taxable"
+          onExpand={this.handleCardExpand.bind(this, "taxable")}
           onSwitchChange={this.handleCheckboxChange}
         >
           {this.renderTaxCodeField()}
@@ -369,11 +441,12 @@ class VariantForm extends Component {
         <SettingsCard
           enabled={this.state.inventoryManagement}
           expandable={true}
-          expanded={this.state.inventoryManagement}
+          expanded={this.isExpanded("inventoryManagement")}
           i18nKeyTitle="productVariant.inventoryManagement"
           name="inventoryManagement"
           showSwitch={true}
           title="Inventory Tracking"
+          onExpand={this.handleCardExpand.bind(this, "inventoryManagement")}
           onSwitchChange={this.handleCheckboxChange}
         >
           <div className="row">
@@ -413,11 +486,13 @@ class VariantForm extends Component {
 VariantForm.propTypes = {
   cloneVariant: PropTypes.func,
   countries: PropTypes.arrayOf(PropTypes.object),
+  editFocus: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
   fetchTaxCodes: PropTypes.func,
   greyDisabledFields: PropTypes.func,
   hasChildVariants: PropTypes.func,
   isDeleted: PropTypes.bool,
   isProviderEnabled: PropTypes.func,
+  onCardExpand: PropTypes.func,
   onFieldChange: PropTypes.func,
   onUpdateQuantityField: PropTypes.func,
   onVariantFieldSave: PropTypes.func,

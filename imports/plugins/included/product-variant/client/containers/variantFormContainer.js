@@ -25,6 +25,7 @@ class VariantFormContainer extends Component {
     this.restoreVariant = this.restoreVariant.bind(this);
     this.cloneVariant = this.cloneVariant.bind(this);
     this.handleVariantFieldSave = this.handleVariantFieldSave.bind(this);
+    this.handleCardExpand = this.handleCardExpand.bind(this);
     this.updateQuantityIfChildVariants = this.updateQuantityIfChildVariants.bind(this);
   }
 
@@ -163,6 +164,10 @@ class VariantFormContainer extends Component {
     });
   }
 
+  handleCardExpand = (cardName) => {
+    Reaction.state.set("edit/focus", cardName);
+  }
+
   updateQuantityIfChildVariants =  (variant) => {
     if (this.hasChildVariants(variant)) {
       const variantQuantity = ReactionProduct.getVariantQuantity(variant);
@@ -181,6 +186,7 @@ class VariantFormContainer extends Component {
         removeVariant={this.removeVariant}
         cloneVariant={this.cloneVariant}
         onVariantFieldSave={this.handleVariantFieldSave}
+        onCardExpand={this.handleCardExpand}
         onUpdateQuantityField={this.updateQuantityIfChildVariants}
         isDeleted={this.state.isDeleted}
         {...this.props}
@@ -191,11 +197,18 @@ class VariantFormContainer extends Component {
 
 function composer(props, onData) {
   const countries = Countries.find({}).fetch();
+
+  const productHandle = Reaction.Router.getParam("handle");
+  if (!productHandle) {
+    Reaction.clearActionView();
+  }
+
   Meteor.subscribe("TaxCodes");
 
   onData(null, {
     countries,
-    variant: props.variant
+    variant: props.variant,
+    editFocus: Reaction.state.get("edit/focus")
   });
 }
 
