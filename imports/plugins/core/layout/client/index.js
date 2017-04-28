@@ -23,10 +23,17 @@ import "./templates/theme/theme.js";
 
 
 import CoreLayout from "./components/coreLayout";
+import PrintLayout from "./components/printLayout";
 import { registerComponent } from "../lib/components";
 
 
 registerComponent({
   name: "coreLayout", // lowercased to match the legacy blaze "coreLayout"
   component: CoreLayout
+});
+
+
+registerComponent({
+  name: "printLayout", // lowercased to match the legacy blaze "printLayout"
+  component: PrintLayout
 });

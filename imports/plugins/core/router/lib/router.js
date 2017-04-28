@@ -467,6 +467,7 @@ Router.initPackageRoutes = (options) => {
             <Route
               key={`${pkg.name}-${route.name}-${index++}`}
               path={route.route}
+              exact={true}
               render={route.options.component}
             />
           );

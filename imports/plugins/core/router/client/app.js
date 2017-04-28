@@ -73,11 +73,14 @@ class App extends Component {
 
   render() {
     const pageClassName = classnames({
-      // "admin": true,
-      // "show-settings": this.props.isActionViewOpen
+      "admin": true,
+      "show-settings": this.props.isActionViewOpen
     });
 
-    if (this.isAdminApp) {
+    const currentRoute = this.props.currentRoute;
+    const layout = currentRoute.route.options.layout;
+
+    if (this.isAdminApp && layout !== "printLayout") {
       return this.renderAdminApp();
     }
 
