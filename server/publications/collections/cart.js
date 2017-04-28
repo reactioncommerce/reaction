@@ -60,13 +60,14 @@ Meteor.publish("Cart", function (sessionId, userId) {
   return Cart.find(cartId);
 });
 
-Meteor.publish("CartImages", function (item) {
-  check(item, Match.Optional(Object));
-  const variantId = item.variants._id;
-  const productId = item.productId;
+Meteor.publish("CartItemImage", function (cartItem) {
+  check(cartItem, Match.Optional(Object));
+  const variantId = cartItem.variants._id;
+  const productId = cartItem.productId;
 
   return Media.find({
     "metadata.variantId": variantId,
-    "metadata.productId": productId
+    "metadata.productId": productId,
+    "metadata.workflow": { $nin: ["archived"] }
   });
 });

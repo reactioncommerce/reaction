@@ -85,7 +85,7 @@ function composer(props, onData) {
   let productItems = Cart.findOne({ userId, shopId }).items;
 
   productItems = productItems.map((item) => {
-    Meteor.subscribe("CartImages", item);
+    Meteor.subscribe("CartItemImage", item);
     const defaultImage = Media.findOne({
       "metadata.variantId": item.variants._id
     });
