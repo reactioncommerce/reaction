@@ -80,7 +80,6 @@ function composer(props, onData) {
     }
   }
 
-  const roles = Roles.getRolesForUser(Meteor.userId(), Reaction.getShopId());
   onData(null, {
     packageButtons,
     dashboardHeaderTemplate: props.data.dashboardHeader,
@@ -88,7 +87,7 @@ function composer(props, onData) {
     isEnabled: isRevisionControlEnabled(),
     isActionViewAtRootView: Reaction.isActionViewAtRootView(),
     actionViewIsOpen: Reaction.isActionViewOpen(),
-    hasCreateProductAccess: roles.indexOf("createProduct") > -1,
+    hasCreateProductAccess: Reaction.hasPermission("createProduct", Meteor.userId(), Reaction.shopId),
 
     // Callbacks
     onAddProduct: handleAddProduct,
