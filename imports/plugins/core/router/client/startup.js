@@ -8,9 +8,7 @@ Meteor.startup(function () {
   Tracker.autorun(function () {
     // initialize client routing
     if (Reaction.Subscriptions.Packages.ready() && Reaction.Subscriptions.Shops.ready()) {
-      if (!Router._initialized) {
-        initBrowserRouter();
-      }
+      initBrowserRouter();
     }
   });
 
@@ -21,9 +19,9 @@ Meteor.startup(function () {
   // we only do this when the routes table
   // has already been generated (existing user)
   //
-  // Accounts.onLogin(() => {
-  //   if (Meteor.loggingIn() === false && Router._routes.length > 0) {
-  //     Router.reload();
-  //   }
-  // });
+  Accounts.onLogin(() => {
+    if (Meteor.loggingIn() === false && Router._routes.length > 0) {
+      Router.reload();
+    }
+  });
 });

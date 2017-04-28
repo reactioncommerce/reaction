@@ -35,6 +35,7 @@ class Router {
   static history = history
   static Hooks = Hooks
   static routes = []
+  static _routes = Router.routes // for legacy
   static _initialized = false;
 
   static ready() {
@@ -158,6 +159,12 @@ Router.replace = (path, params, query) => {
   if (window) {
     history.replace(actualPath);
   }
+};
+
+Router.reload = () => {
+  const current = Router.current();
+
+  Router.replace(current.path, current.params, current.query);
 };
 
 /**
