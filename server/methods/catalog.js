@@ -2,7 +2,8 @@ import _ from  "lodash";
 import { EJSON } from "meteor/ejson";
 import { check } from "meteor/check";
 import { Meteor } from "meteor/meteor";
-import { Catalog, copyFile, ReactionProduct } from "/lib/api";
+import { copyFile, ReactionProduct } from "/lib/api";
+import { ProductRevision as Catalog } from "/imports/plugins/core/revisions/server/hooks";
 import { Media, Products, Revisions, Tags } from "/lib/collections";
 import { Logger, Reaction } from "/server/api";
 
@@ -792,7 +793,7 @@ Meteor.methods({
   "products/updateProductField": function (_id, field, value) {
     check(_id, String);
     check(field, String);
-    check(value, Match.OneOf(String, Object, Array, Boolean));
+    check(value, Match.OneOf(String, Object, Array, Boolean, Number));
     // must have createProduct permission
     if (!Reaction.hasPermission("createProduct")) {
       throw new Meteor.Error(403, "Access Denied");
