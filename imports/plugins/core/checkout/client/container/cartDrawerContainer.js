@@ -39,6 +39,15 @@ class CartDrawerContainer extends Component {
     return this.showItemLowInventoryWarning(productItem);
   }
 
+  handleShowProduct = (productItem) => {
+    if (productItem) {
+      Reaction.Router.go("product", {
+        handle: productItem.productId,
+        variantId: productItem.variants._id
+      });
+    }
+  }
+
   pdpPath(productItem) {
     if (productItem) {
       const handle = productItem.productId;
@@ -74,6 +83,7 @@ class CartDrawerContainer extends Component {
         handleImage={this.handleImage}
         handleRemoveItem={this.handleRemoveItem}
         handleCheckout={this.handleCheckout}
+        handleShowProduct={this.handleShowProduct}
       />
     );
   }
