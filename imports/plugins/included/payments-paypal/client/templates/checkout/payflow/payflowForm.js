@@ -2,7 +2,7 @@
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import Logger from "/client/modules/logger";
-import { Cart, Shops } from "/lib/collections";
+import { Cart, Shops, Packages } from "/lib/collections";
 import { PaypalPayment } from "/imports/plugins/included/payments-paypal/lib/collections/schemas";
 import { Reaction, i18next } from "/client/api";
 import { PayPal } from "/imports/plugins/included/payments-paypal/lib/api";
@@ -130,9 +130,16 @@ AutoForm.addHooks("paypal-payment-form", {
           if (typeof transaction.response.transactions[0].related_resources[0] === "object") {
             authId = transaction.response.transactions[0].related_resources[0].authorization.id;
           }
+          Meteor.subscribe("Packages");
+          const packageData = Packages.findOne({
+            name: "reaction-paypal",
+            shopId: Reaction.getShopId()
+          });
 
           const paymentMethod = {
             processor: "PayflowPro",
+            paymentPackageId: packageData._id,
+            paymentSettingsKey: packageData.registry[0].settingsKey,
             storedCard: storedCard,
             method: "credit",
             authorization: authId,

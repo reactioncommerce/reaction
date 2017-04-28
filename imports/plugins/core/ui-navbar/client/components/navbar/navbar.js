@@ -3,6 +3,7 @@ import { Tags } from "/lib/collections";
 import { FlatButton } from "/imports/plugins/core/ui/client/components";
 import { NotificationContainer } from "/imports/plugins/included/notifications/client/containers";
 import { VerticalDivider } from "/imports/plugins/core/ui/client/components";
+import CartPanel from "../../../../checkout/client/templates/cartPanel/container/cartPanelContainer";
 
 
 Template.CoreNavigationBar.onCreated(function () {
@@ -105,5 +106,8 @@ Template.CoreNavigationBar.helpers({
         instance.toggleMenuCallback = callback;
       }
     };
+  },
+  cartPanel() {
+    return CartPanel;
   }
 });
