@@ -2,9 +2,8 @@ import { Meteor } from "meteor/meteor";
 import { Factory } from "meteor/dburles:factory";
 import accounting from "accounting-js";
 import { Reaction } from "/server/api";
-import { Orders, Products, Notifications, Media } from "/lib/collections";
+import { Orders, Products, Notifications, Media, Shops } from "/lib/collections";
 import { expect } from "meteor/practicalmeteor:chai";
-import _ from "lodash";
 import { sinon } from "meteor/practicalmeteor:sinon";
 import Fixtures from "/server/imports/fixtures";
 // import { examplePaymentMethod } from "/server/imports/fixtures/packages";
@@ -21,13 +20,18 @@ describe("orders test", function () {
 
   before(function (done) {
     methods = {
-      cancelOrder: Meteor.server.method_handlers["orders/cancelOrder"],
-      shipmentPacked: Meteor.server.method_handlers["orders/shipmentPacked"],
-      makeAdjustmentsToInvoice: Meteor.server.method_handlers["orders/makeAdjustmentsToInvoice"],
-      approvePayment: Meteor.server.method_handlers["orders/approvePayment"],
-      shipmentShipped: Meteor.server.method_handlers["orders/shipmentShipped"],
-      shipmentDelivered: Meteor.server.method_handlers["orders/shipmentDelivered"],
-      sendNotification: Meteor.server.method_handlers["orders/sendNotification"]
+      "cancelOrder": Meteor.server.method_handlers["orders/cancelOrder"],
+      "shipmentPacked": Meteor.server.method_handlers["orders/shipmentPacked"],
+      "makeAdjustmentsToInvoice": Meteor.server.method_handlers["orders/makeAdjustmentsToInvoice"],
+      "approvePayment": Meteor.server.method_handlers["orders/approvePayment"],
+      "shipmentShipped": Meteor.server.method_handlers["orders/shipmentShipped"],
+      "shipmentDelivered": Meteor.server.method_handlers["orders/shipmentDelivered"],
+      "sendNotification": Meteor.server.method_handlers["orders/sendNotification"],
+      "updateShipmentTracking": Meteor.server.method_handlers["orders/updateShipmentTracking"],
+      "addOrderEmail": Meteor.server.method_handlers["orders/addOrderEmail"],
+      "updateHistory": Meteor.server.method_handlers["orders/updateHistory"],
+      "capturePayments": Meteor.server.method_handlers["orders/capturePayments"],
+      "refunds/list": Meteor.server.method_handlers["orders/refunds/list"]
     };
     example = Factory.create("examplePaymentPackage");
     return done();
@@ -266,6 +270,12 @@ describe("orders test", function () {
   });
 
   describe("orders/shipmentDelivered", function () {
+    beforeEach(function () {
+      sandbox.stub(Meteor.server.method_handlers, "orders/sendNotification", function () {
+        check(arguments, [Match.Any]);
+      });
+    });
+
     it("should throw an error if user does not have permissions", function () {
       sandbox.stub(Reaction, "hasPermission", () => false);
       spyOnMethod("shipmentDelivered", order.userId);
@@ -278,9 +288,6 @@ describe("orders test", function () {
     it("should update the order item workflow to coreOrderItemWorkflow/completed", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       spyOnMethod("shipmentDelivered", order.userId);
-      sandbox.stub(Meteor.server.method_handlers, "orders/sendNotification", function () {
-        check(arguments, [Match.Any]);
-      });
       Meteor.call("orders/shipmentDelivered", order);
       const orderItemWorkflow = Orders.findOne({ _id: order._id }).items[0].workflow;
       expect(orderItemWorkflow.status).to.equal("coreOrderItemWorkflow/completed");
@@ -289,9 +296,6 @@ describe("orders test", function () {
     it("should update the delivered status to true", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       spyOnMethod("shipmentDelivered", order.userId);
-      sandbox.stub(Meteor.server.method_handlers, "orders/sendNotification", function () {
-        check(arguments, [Match.Any]);
-      });
       Meteor.call("orders/shipmentDelivered", order);
       const orderShipping = Orders.findOne({ _id: order._id }).shipping[0];
       expect(orderShipping.delivered).to.equal(true);
@@ -324,11 +328,143 @@ describe("orders test", function () {
           url
         };
       });
-      console.log(order.shopId, "shopId");
-      console.log(shop, "shop");
+      sandbox.stub(Shops, "findOne", () => shop);
       const result = Meteor.call("orders/sendNotification", order);
-      console.log(result, "result");
-      expect(true).to.equal(true);
+      expect(result).to.equal(true);
     });
+  });
+
+  describe("orders/updateShipmentTracking", function () {
+    it("should return an error if user does not have permission", function () {
+      sandbox.stub(Reaction, "hasPermission", () => false);
+      spyOnMethod("updateShipmentTracking", order.userId);
+      function updateShipmentTracking() {
+        const trackingValue = "2340FLKD104309";
+        return Meteor.call("orders/updateShipmentTracking", order, order.shipping[0], trackingValue);
+      }
+      expect(updateShipmentTracking).to.throw(Meteor.error, /Access Denied/);
+    });
+
+    it("should the tracking value", function () {
+      sandbox.stub(Reaction, "hasPermission", () => true);
+      spyOnMethod("updateShipmentTracking", order.userId);
+      const trackingValue = "2340FLKD104309";
+      Meteor.call("orders/updateShipmentTracking", order, order.shipping[0], trackingValue);
+      const orders = Orders.findOne({ _id: order._id });
+      expect(orders.shipping[0].tracking).to.equal(trackingValue);
+    });
+  });
+
+  describe("orders/addOrderEmail", function () {
+    it("should return if userId is not available", function () {
+      spyOnMethod("addOrderEmail");
+      function addOrderEmail() {
+        const email = "sample@email.com";
+        return Meteor.call("orders/addOrderEmail", order.cartId, email);
+      }
+      expect(addOrderEmail).to.throw(Meteor.error, /Access Denied. You are not connected./);
+    });
+
+    it("should add the email to the order", function () {
+      spyOnMethod("addOrderEmail", order.userId);
+      const email = "sample@email.com";
+      Meteor.call("orders/addOrderEmail", order.cartId, email);
+      const orders = Orders.findOne({ _id: order._id });
+      expect(orders.email).to.equal(email);
+    });
+  });
+
+  describe("orders/updateHistory", function () {
+    it("should return Access denied if user does not have permission", function () {
+      sandbox.stub(Reaction, "hasPermission", () => false);
+      spyOnMethod("updateHistory", order.userId);
+      function updateHistory() {
+        const trackingValue = "65TFYTGFCHCUJVR66";
+        return Meteor.call("orders/updateHistory", order._id, "Tracking added", trackingValue);
+      }
+      expect(updateHistory).to.throw(Meteor.error, /Access Denied/);
+    });
+
+    it("should update the order history for the item", function () {
+      sandbox.stub(Reaction, "hasPermission", () => true);
+      spyOnMethod("updateHistory", order.userId);
+      const trackingValue = "65TFYTGFCHCUJVR66";
+      const event = "Tracking added";
+      Meteor.call("orders/updateHistory", order._id, event, trackingValue);
+      const orders = Orders.findOne({ _id: order._id });
+      expect(orders.history[0].event).to.equal(event);
+      expect(orders.history[0].value).to.equal(trackingValue);
+      expect(orders.history[0].userId).to.equal(order.userId);
+    });
+  });
+
+  describe("orders/capturePayments", function () {
+    it("should return access denied if user does not have access", function () {
+      sandbox.stub(Reaction, "hasPermission", () => false);
+      spyOnMethod("capturePayments", order.userId);
+      function capturePayments() {
+        return Meteor.call("orders/capturePayments", order._id);
+      }
+      expect(capturePayments).to.throw(Meteor.error, /Access Denied/);
+    });
+
+    it("should update the ite workflow to coreOrderItemWorkflow/captured", function () {
+      sandbox.stub(Reaction, "hasPermission", () => true);
+      spyOnMethod("capturePayments", order.userId);
+      Meteor.call("orders/capturePayments", order._id);
+      const orderItemWorkflow = Orders.findOne({ _id: order._id }).items[0].workflow;
+      expect(orderItemWorkflow.status).to.equal("coreOrderItemWorkflow/captured");
+    });
+
+    it("should update the order after the payment processor has captured the payment", function () {
+      sandbox.stub(Reaction, "hasPermission", () => true);
+      spyOnMethod("capturePayments", order.userId);
+      Meteor.call("orders/capturePayments", order._id);
+      const orderPaymentMethod = Orders.findOne({ _id: order._id }).billing[0].paymentMethod;
+      expect(orderPaymentMethod.mode).to.equal("capture");
+      expect(orderPaymentMethod.status).to.equal("completed");
+    });
+
+    it("should update order payment method status to error if payment processor fails", function () {
+      sandbox.stub(Reaction, "hasPermission", () => true);
+      // stub payment process to fail
+      const processor = order.billing[0].paymentMethod.processor.toLowerCase();
+      sandbox.stub(Meteor.server.method_handlers, `${processor}/payment/capture`, () => {
+        return {
+          saved: false,
+          error: true
+        };
+      });
+      spyOnMethod("capturePayments", order.userId);
+      Meteor.call("orders/capturePayments", order._id);
+      const orderPaymentMethod = Orders.findOne({ _id: order._id }).billing[0].paymentMethod;
+      expect(orderPaymentMethod.mode).to.equal("capture");
+      expect(orderPaymentMethod.status).to.equal("error");
+    });
+  });
+
+  describe("orders/refunds/list", function () {
+    it("should return access Denied if user does not have permission", function () {
+      sandbox.stub(Reaction, "hasPermission", () => false);
+      spyOnMethod("refunds/list", order.userId);
+      function refundsList() {
+        const result = Meteor.call("orders/refunds/list", order, (err, res) => {
+          console.log(err, "err");
+          console.log(res, "res");
+        });
+        consol.log(result, "result");
+      }
+      expect(refundsList).to.throw(Meteor.error, /Access Denied/);
+    });
+  });
+
+  describe("orders/refunds/create", function () {
+    sanbox.stub(Reaction, "hasPermission", () => false);
+    spyOnMethod("refunds/create", order.userId);
+    function refundsCreate() {
+      const amount = 5.20;
+      return Meteor.call("orders/refunds/create", order._id, order.billing[0].paymentMethod, amount);
+    }
+    expect(refundsCreate).to.throw(Meteor.error, /Access Denied/);
   });
 });

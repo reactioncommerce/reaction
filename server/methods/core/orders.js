@@ -444,7 +444,6 @@ export const methods = {
 
     // Get Shop information
     const shop = Shops.findOne({ _id: order.shopId });
-    console.log(shop, "shops");
 
     // Get shop logo, if available
     let emailLogo;
@@ -645,60 +644,6 @@ export const methods = {
   },
 
   /**
-   * orders/orderCompleted
-   *
-   * @summary trigger orderCompleted status and workflow update
-   * @param {Object} order - order object
-   * @return {Object} return this.orderCompleted result
-   */
-  "orders/orderCompleted": function (order) {
-    check(order, Object);
-
-    if (!Reaction.hasPermission("orders")) {
-      throw new Meteor.Error(403, "Access Denied");
-    }
-
-    this.unblock();
-
-    Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreOrderCompleted", order._id);
-
-    return this.orderCompleted(order);
-  },
-
-  /**
-   * orders/addShipment
-   * @summary Adds tracking information to order without workflow update.
-   * Call after any tracking code is generated
-   * @param {String} orderId - add tracking to orderId
-   * @param {String} data - tracking id
-   * @return {String} returns order update result
-   */
-  "orders/addShipment": function (orderId, data) {
-    check(orderId, String);
-    check(data, Object);
-
-    if (!Reaction.hasPermission("orders")) {
-      throw new Meteor.Error(403, "Access Denied");
-    }
-
-    // temp hack until we build out multiple payment handlers
-    const cart = Cart.findOne(cartId);
-    let shippingId = "";
-    if (cart.shipping) {
-      shippingId = cart.shipping[0]._id;
-    }
-
-    return Orders.update({
-      "_id": orderId,
-      "shipping._id": shippingId
-    }, {
-      $addToSet: {
-        "shipping.shipments": data
-      }
-    });
-  },
-
-  /**
    * orders/updateShipmentTracking
    * @summary Adds tracking information to order without workflow update.
    * Call after any tracking code is generated
@@ -722,81 +667,6 @@ export const methods = {
     }, {
       $set: {
         ["shipping.$.tracking"]: tracking
-      }
-    });
-  },
-
-  /**
-   * orders/addItemToShipment
-   * @summary Adds tracking information to order without workflow update.
-   * Call after any tracking code is generated
-   * @param {String} orderId - add tracking to orderId
-   * @param {String} shipmentId - shipmentId
-   * @param {ShipmentItem} item - A ShipmentItem to add to a shipment
-   * @return {String} returns order update result
-   */
-  "orders/addItemToShipment": function (orderId, shipmentId, item) {
-    check(orderId, String);
-    check(shipmentId, String);
-    check(item, Object);
-
-    if (!Reaction.hasPermission("orders")) {
-      throw new Meteor.Error(403, "Access Denied");
-    }
-
-    return Orders.update({
-      "_id": orderId,
-      "shipping._id": shipmentId
-    }, {
-      $push: {
-        "shipping.$.items": item
-      }
-    });
-  },
-
-  "orders/updateShipmentItem": function (orderId, shipmentId, item) {
-    check(orderId, String);
-    check(shipmentId, Number);
-    check(item, Object);
-
-    if (!Reaction.hasPermission("orders")) {
-      throw new Meteor.Error(403, "Access Denied");
-    }
-
-    return Orders.update({
-      "_id": orderId,
-      "shipments._id": shipmentId
-    }, {
-      $addToSet: {
-        "shipment.$.items": shipmentIndex
-      }
-    });
-  },
-
-  /**
-   * orders/addShipment
-   * @summary Adds tracking information to order without workflow update.
-   * Call after any tracking code is generated
-   * @param {String} orderId - add tracking to orderId
-   * @param {String} shipmentIndex - shipmentIndex
-   * @return {String} returns order update result
-   */
-  "orders/removeShipment": function (orderId, shipmentIndex) {
-    check(orderId, String);
-    check(shipmentIndex, Number);
-
-    if (!Reaction.hasPermission("orders")) {
-      throw new Meteor.Error(403, "Access Denied");
-    }
-
-    Orders.update(orderId, {
-      $unset: {
-        [`shipments.${shipmentIndex}`]: 1
-      }
-    });
-    return Orders.update(orderId, {
-      $pull: {
-        shipments: null
       }
     });
   },
@@ -826,32 +696,6 @@ export const methods = {
     }, {
       $set: {
         email: email
-      }
-    });
-  },
-  /**
-   * orders/updateDocuments
-   * @summary Adds file, documents to order. use for packing slips, labels, customs docs, etc
-   * @param {String} orderId - add tracking to orderId
-   * @param {String} docId - CFS collection docId
-   * @param {String} docType - CFS docType
-   * @return {String} returns order update result
-   */
-  "orders/updateDocuments": function (orderId, docId, docType) {
-    check(orderId, String);
-    check(docId, String);
-    check(docType, String);
-
-    if (!Reaction.hasPermission("orders")) {
-      throw new Meteor.Error(403, "Access Denied");
-    }
-
-    return Orders.update(orderId, {
-      $addToSet: {
-        documents: {
-          docId: docId,
-          docType: docType
-        }
       }
     });
   },
@@ -903,6 +747,7 @@ export const methods = {
     }
 
     const order = Orders.findOne(orderId);
+    console.log(order, "order");
     const itemIds = order.shipping[0].items.map((item) => {
       return item._id;
     });
@@ -919,6 +764,7 @@ export const methods = {
         const processor = paymentMethod.processor.toLowerCase();
 
         Meteor.call(`${processor}/payment/capture`, paymentMethod, (error, result) => {
+          console.log(result, "metoer result")
           if (result && result.saved === true) {
             const metadata = Object.assign(billing.paymentMethod.metadata || {}, result.metadata || {});
 
