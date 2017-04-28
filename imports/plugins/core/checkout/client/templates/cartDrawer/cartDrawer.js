@@ -1,10 +1,9 @@
-import { Reaction } from "/client/api";
 import { Cart } from "/lib/collections";
 import { Session } from "meteor/session";
-import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import Swiper from "swiper";
-
+import CartDrawerContainer from "../../container/cartDrawerContainer";
+import EmptyCartDrawer from "../../container/emptyCartContainer";
 /**
  * cartDrawer helpers
  *
@@ -65,46 +64,17 @@ Template.openCartDrawer.onRendered(function () {
 });
 
 Template.openCartDrawer.helpers({
-  cartItems: function () {
-    return Cart.findOne().items;
-  }
-});
-
-/**
- * openCartDrawer events
- *
- */
-Template.openCartDrawer.events({
-  "click #btn-checkout": function () {
-    $("#cart-drawer-container").fadeOut();
-    Session.set("displayCart", false);
-    return Reaction.Router.go("cart/checkout");
-  },
-  "click .remove-cart-item": function (event) {
-    event.stopPropagation();
-    event.preventDefault();
-    const currentCartItemId = this._id;
-
-    return Template.instance().$(event.currentTarget).fadeOut(300, function () {
-      return Meteor.call("cart/removeFromCart", currentCartItemId);
-    });
-  }
-});
-
-/**
- * emptyCartDrawer helpers
- *
- */
-Template.emptyCartDrawer.events({
-  "click #btn-keep-shopping": function (event) {
-    event.stopPropagation();
-    event.preventDefault();
-    return $("#cart-drawer-container").fadeOut(300, function () {
-      return Reaction.toggleSession("displayCart");
-    });
+  CartDrawerContainer() {
+    return CartDrawerContainer;
   }
 });
 
 Template.emptyCartDrawer.onRendered(function () {
   return $("#cart-drawer-container").fadeIn();
+});
+
+Template.emptyCartDrawer.helpers({
+  EmptyCartDrawer() {
+    return EmptyCartDrawer;
+  }
 });

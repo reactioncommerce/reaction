@@ -149,12 +149,13 @@ Meteor.methods({
     const result = {
       saved: false,
       error: "Reaction does not yet support direct refund processing from Authorize.net. " +
-      "<a href=\"https://account.authorize.net/\">Please visit their web portal to perform this action.</a>"
+      "Please visit their web portal to perform this action. https://account.authorize.net/"
     };
 
     return result;
   },
   "authnet/refund/list": function () {
+    check(arguments, [Match.Any]);
     Meteor.Error("Not Implemented", "Authorize.net does not yet support retrieving a list of refunds.");
   }
 });
