@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from "react";
-import Blaze from "meteor/gadicc:blaze-react-component";
 import { Button } from "/imports/plugins/core/ui/client/components";
 
 class QuickMenu extends Component {
@@ -12,22 +11,22 @@ class QuickMenu extends Component {
       return this.props.buttons.map((buttonProps, index) => {
         if (buttonProps.type === "seperator") {
           return (
-            <div className="rui separator padding xs">
+            <div className="rui separator padding xs" key={index}>
               <hr />
             </div>
-          )
-        } else {
-
-          const {type, ...otherButtonProps} = buttonProps
-
-          return (
-            <Button
-              tagName={ type === "link" ? "a" : "button" }
-              {...otherButtonProps}
-            />
-          )
+          );
         }
-      })
+
+        const { type, ...otherButtonProps } = buttonProps;
+
+        return (
+          <Button
+            key={index}
+            tagName={type === "link" ? "a" : "button"}
+            {...otherButtonProps}
+          />
+        );
+      });
     }
   }
 
