@@ -86,17 +86,23 @@ class BrowserRouter extends Component {
     };
 
     // Get the previousroute, which is the currentRoute just before it changes
-    const previousRoute = Router.currentRoute.get();
+    const previousRoute = Router.current();
 
     // If it seems like we've moved to a differen route, then run the onExit
     // hooks for the previousRoute
-    if (isEqual(previousRoute, routeData) === false) {
+    const routesAreSame = isEqual(previousRoute.route, routeData.route);
+    const paramsAreSame = isEqual(previousRoute.params, routeData.params);
+    const queryParamsAreSame = isEqual(previousRoute.query, routeData.query);
+
+    const routesDiffer = routesAreSame && paramsAreSame && queryParamsAreSame;
+
+    if (routesDiffer === false) {
       // Run on enter hooks
       Router.Hooks.run("onExit", "GLOBAL", routeData);
       Router.Hooks.run("onExit", previousRoute.name, previousRoute);
 
       // Set current route reactive-var
-      Router.currentRoute.set(routeData);
+      Router.setCurrentRoute(routeData);
 
       // Run on enter hooks for the new route
       Router.Hooks.run("onEnter", "GLOBAL", routeData);

@@ -11,11 +11,13 @@ import { Route } from "react-router";
 import { Packages, Shops } from "/lib/collections";
 import Hooks from "./hooks";
 import { getComponent } from "/imports/plugins/core/layout/lib/components";
+import Immutable from "immutable";
 
 export let history;
 
 // Private vars
-const currentRoute = new ReactiveVar({});
+// const currentRoute = new ReactiveVar({});
+let currentRoute = Immutable.Map();
 const routerReadyDependency = new Tracker.Dependency;
 const routerChangeDependency = new Tracker.Dependency;
 
@@ -25,10 +27,6 @@ if (Meteor.isClient) {
 } else {
   history = createMemoryHistory();
 }
-
-history.listen(() => {
-  routerChangeDependency.changed();
-});
 
 // Base router class (static)
 class Router {
@@ -48,29 +46,32 @@ class Router {
   }
 
   static current() {
-    return currentRoute.get();
+    return currentRoute.toJS();
   }
 
-  static get currentRoute() {
-    return currentRoute;
+  static setCurrentRoute(routeData) {
+    currentRoute = Immutable.Map(routeData);
+    routerChangeDependency.changed();
   }
 
   static getRouteName() {
-    const current = this.current();
+    const current = Router.current();
 
     return current.options && current.options.name || "";
   }
 
   static getParam(name) {
-    const current = currentRoute.get();
+    routerChangeDependency.depend();
+    const current = Router.current();
 
     return current.params && current.params[name] || undefined;
   }
 
   static getQueryParam(name) {
+    routerChangeDependency.depend();
     const current = Router.current();
 
-    return current.query[name];
+    return current.query && current.query[name] || undefined;
   }
 
   static watchPathChange() {
