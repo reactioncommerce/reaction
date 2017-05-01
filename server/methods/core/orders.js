@@ -6,7 +6,7 @@ import Future from "fibers/future";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { getSlug } from "/lib/api";
-import { Cart, Media, Orders, Products, Shops, Packages } from "/lib/collections";
+import { Media, Orders, Products, Shops, Packages } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 import { Logger, Hooks, Reaction } from "/server/api";
 
@@ -57,46 +57,6 @@ export function ordersInventoryAdjust(orderId) {
  * Reaction Order Methods
  */
 export const methods = {
-  /**
-   * orders/shipmentTracking
-   * @summary wraps addTracking and triggers workflow update
-   * @param {Object} order - order Object
-   * @param {String} tracking - tracking number to add to order
-   * @returns {String} returns workflow update result
-   */
-  "orders/shipmentTracking": function (order, tracking) {
-    check(order, Object);
-    check(tracking, String);
-
-    if (!Reaction.hasPermission("orders")) {
-      throw new Meteor.Error(403, "Access Denied");
-    }
-
-    this.unblock();
-    const orderId = order._id;
-
-    Meteor.call("orders/addTracking", orderId, tracking);
-    Meteor.call("orders/updateHistory", orderId, "Tracking Added", tracking);
-    Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreShipmentTracking", order._id);
-
-    // Set the status of the items as shipped
-    const itemIds = template.order.shipping[0].items.map((item) => {
-      return item._id;
-    });
-
-    Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/tracking", order._id, itemIds);
-  },
-
-  // shipmentPrepare
-  "orders/documentPrepare": (order) => {
-    check(order, Object);
-    this.unblock();
-
-    if (order) {
-      return Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreOrderDocuments", order._id);
-    }
-  },
-
   /**
    * orders/shipmentPacked
    *
@@ -746,7 +706,6 @@ export const methods = {
     }
 
     const order = Orders.findOne(orderId);
-    console.log(order, "order");
     const itemIds = order.shipping[0].items.map((item) => {
       return item._id;
     });
@@ -763,7 +722,6 @@ export const methods = {
         const processor = paymentMethod.processor.toLowerCase();
 
         Meteor.call(`${processor}/payment/capture`, paymentMethod, (error, result) => {
-          console.log(result, "metoer result")
           if (result && result.saved === true) {
             const metadata = Object.assign(billing.paymentMethod.metadata || {}, result.metadata || {});
 

@@ -151,7 +151,8 @@ export default function () {
         paymentPackageId: getPkgData("example-paymentmethod") ? getPkgData("example-paymentmethod")._id : "uiwneiwknekwewe",
         paymentSettingsKey: "example-paymentmethod",
         mode: "authorize",
-        status: "created"
+        status: "created",
+        amount: 12.45
       }),
       invoice: {
         total: 12.45,
