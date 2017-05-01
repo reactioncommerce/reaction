@@ -62,11 +62,9 @@ Meteor.publish("Cart", function (sessionId, userId) {
 
 Meteor.publish("CartItemImage", function (cartItem) {
   check(cartItem, Match.Optional(Object));
-  const variantId = cartItem.variants._id;
   const productId = cartItem.productId;
 
   return Media.find({
-    "metadata.variantId": variantId,
     "metadata.productId": productId,
     "metadata.workflow": { $nin: ["archived"] }
   });
