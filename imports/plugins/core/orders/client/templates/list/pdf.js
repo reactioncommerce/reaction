@@ -1,4 +1,6 @@
 import { Template } from "meteor/templating";
+import { Router } from "/client/api";
+import { Orders } from "/lib/collections";
 import { ReactiveDict } from "meteor/reactive-dict";
 
 /**
@@ -10,6 +12,20 @@ Template.completedPDFLayout.onCreated(function () {
   this.state = new ReactiveDict();
   this.state.setDefault({
     order: {}
+  });
+
+  const currentRoute = Router.current();
+
+  this.autorun(() => {
+    this.subscribe("Orders");
+
+    const order = Orders.findOne({
+      _id: currentRoute.params.id
+    });
+
+    this.state.set({
+      order
+    });
   });
 });
 
