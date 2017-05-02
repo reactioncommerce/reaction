@@ -466,15 +466,19 @@ class VariantForm extends Component {
               />
             </div>
           </div>
-          <Switch
-            i18nKeyLabel="productVariant.inventoryPolicy"
-            i18nKeyOnLabel="productVariant.inventoryPolicy"
-            name="inventoryPolicy"
-            label={"Allow Backorder"}
-            onLabel={"Allow Backorder"}
-            checked={this.state.inventoryPolicy}
-            onChange={this.handleCheckboxChange}
-          />
+          <div className="row">
+            <div className="col-sm-6">
+              <Switch
+                i18nKeyLabel="productVariant.inventoryPolicy"
+                i18nKeyOnLabel="productVariant.inventoryPolicy"
+                name="inventoryPolicy"
+                label={"Allow Backorder"}
+                onLabel={"Allow Backorder"}
+                checked={this.state.inventoryPolicy}
+                onChange={this.handleCheckboxChange}
+              />
+            </div>
+          </div>
         </SettingsCard>
       </CardGroup>
     );
