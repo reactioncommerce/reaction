@@ -24,7 +24,7 @@ export default function () {
       },
       "example-paymentmethod": {
         enabled: true,
-        support: ["authorize", "capture", "refund"]
+        support: ["Authorize", "Capture", "Refund"]
       }
     },
     registry: [],
