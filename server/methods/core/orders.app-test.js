@@ -90,10 +90,10 @@ describe("orders test", function () {
       const returnToStock =  false;
       spyOnMethod("cancelOrder", order.userId);
 
-      function CancelOrder() {
+      function cancelOrder() {
         return Meteor.call("orders/cancelOrder", order, returnToStock);
       }
-      expect(CancelOrder).to.throw(Meteor.Error, /Access Denied/);
+      expect(cancelOrder).to.throw(Meteor.Error, /Access Denied/);
     });
 
     it("should return the product to stock ", function () {
@@ -229,7 +229,7 @@ describe("orders test", function () {
   });
 
   describe("orders/shipmentShipped", function () {
-    it("should throw an error does not have permission", function () {
+    it("should throw an error if user does not have permission", function () {
       sandbox.stub(Reaction, "hasPermission", () => false);
       spyOnMethod("shipmentShipped", order.userId);
       function shipmentShipped() {
@@ -333,7 +333,7 @@ describe("orders test", function () {
       });
       sandbox.stub(Shops, "findOne", () => shop);
       const result = Meteor.call("orders/sendNotification", order);
-      expect(result).to.equal(true);
+      expect(result).to.be.true;
     });
   });
 
@@ -348,7 +348,7 @@ describe("orders test", function () {
       expect(updateShipmentTracking).to.throw(Meteor.error, /Access Denied/);
     });
 
-    it("should the tracking value", function () {
+    it("should the update the order tracking value", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       spyOnMethod("updateShipmentTracking", order.userId);
       const trackingValue = "2340FLKD104309";
@@ -424,7 +424,7 @@ describe("orders test", function () {
       expect(capturePayments).to.throw(Meteor.error, /Access Denied/);
     });
 
-    it("should update the ite workflow to coreOrderItemWorkflow/captured", function () {
+    it("should update the order item workflow to coreOrderItemWorkflow/captured", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       spyOnMethod("capturePayments", order.userId);
       Meteor.call("orders/capturePayments", order._id);
@@ -467,7 +467,8 @@ describe("orders test", function () {
       sandbox.stub(Reaction, "hasPermission",  () => true);
       spyOnMethod("refunds/list", order.userId);
       Meteor.call("orders/refunds/list", order, (err, res) => {
-        expect(typeof res).to.equal(Array);
+        // refunds would be empty because there isn't any refunds yet
+        expect(res.length).to.equal(0);
       });
     });
   });

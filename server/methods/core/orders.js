@@ -402,7 +402,7 @@ export const methods = {
     this.unblock();
 
     // Get Shop information
-    const shop = Shops.findOne({ _id: order.shopId });
+    const shop = Shops.findOne(order.shopId);
 
     // Get shop logo, if available
     let emailLogo;
