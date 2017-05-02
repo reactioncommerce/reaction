@@ -17,7 +17,7 @@ before(function () {
 });
 
 describe("Account Meteor method ", function () {
-  const shopId = getShop()._id;
+  let shopId;
   const fakeUser = Factory.create("account");
   const originals = {};
   let sandbox;
@@ -41,6 +41,7 @@ describe("Account Meteor method ", function () {
   });
 
   beforeEach(function () {
+    shopId = getShop()._id;
     sandbox = sinon.sandbox.create();
   });
 
