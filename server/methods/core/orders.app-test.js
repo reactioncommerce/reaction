@@ -348,7 +348,7 @@ describe("orders test", function () {
       expect(updateShipmentTracking).to.throw(Meteor.error, /Access Denied/);
     });
 
-    it("should the update the order tracking value", function () {
+    it("should update the order tracking value", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       spyOnMethod("updateShipmentTracking", order.userId);
       const trackingValue = "2340FLKD104309";
