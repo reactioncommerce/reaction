@@ -288,13 +288,15 @@ Template.coreOrderShippingInvoice.events({
       }, (isConfirm) => {
         if (isConfirm) {
           state.set("isRefunding", true);
-          Meteor.call("orders/refunds/create", order._id, paymentMethod, refund, (error) => {
+          Meteor.call("orders/refunds/create", order._id, paymentMethod, refund, (error, result) => {
             if (error) {
               Alerts.alert(error.reason);
             }
-            Alerts.toast(i18next.t("mail.alerts.emailSent"), "success");
-            state.set("field-refund", 0);
-            state.set("isRefunding", false);
+            if (result) {
+              Alerts.toast(i18next.t("mail.alerts.emailSent"), "success");
+              state.set("field-refund", 0);
+              state.set("isRefunding", false);
+            }
           });
         }
       });
