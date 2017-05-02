@@ -112,6 +112,7 @@ export function Apps(optionHash) {
           // both checks must pass for access to be granted
           if (hasPermissionToRegistryItem && hasRoleAccessForShop) {
             hasAccess = true;
+            break;
           }
         }
 

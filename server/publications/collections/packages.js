@@ -36,7 +36,10 @@ function transform(doc, userId) {
       registry.packageName = registry.packageName || doc.name;
       registry.settingsKey = (registry.name || doc.name).split("/").splice(-1)[0];
       // check and set package enabled state
-      registry.permissions = permissions;
+      registry.permissions = [...permissions];
+      if (registry.route) {
+        registry.permissions.push(registry.name || doc.name + "/" + registry.template); // launchdock-connect/connectDashboard
+      }
       if (doc.settings && doc.settings[registry.settingsKey]) {
         registry.enabled = !!doc.settings[registry.settingsKey].enabled;
       } else {
