@@ -1,5 +1,7 @@
 import { isEqual } from "lodash";
 import React, { Component, PropTypes } from "react";
+import Velocity from "velocity-animate";
+import "velocity-animate/velocity.ui";
 import update from "react/lib/update";
 import { formatPriceString } from "/client/api";
 import {
@@ -12,9 +14,24 @@ import {
   Select,
   SettingsCard,
   Switch,
-  TextField,
-  Translation
+  TextField
 } from "/imports/plugins/core/ui/client/components";
+
+const fieldNames = [
+  "title",
+  "originCountry",
+  "compareAtPrice",
+  "price",
+  "width",
+  "length",
+  "height",
+  "weight",
+  "taxCode",
+  "taxDescription",
+  "inventoryQuantity",
+  "inventoryPolicy",
+  "lowInventoryWarningThreshold"
+];
 
 const fieldGroups = {
   title: { group: "variantDetails" },
@@ -49,14 +66,19 @@ class VariantForm extends Component {
     const nextVariant = nextProps.variant || {};
     const currentVariant = this.props.variant || {};
 
-    if (isEqual(nextVariant, currentVariant)) {
-      const cardGroupName = this.fieldGroupForFieldName(nextProps.editFocus);
-
-      this.setState({
-        expandedCard: cardGroupName,
-        variant: nextProps.variant
-      });
+    if (!isEqual(nextVariant, currentVariant)) {
+      for (const fieldName of fieldNames) {
+        if (nextVariant[fieldName] !== currentVariant[fieldName]) {
+          this.animateFieldFlash(fieldName);
+        }
+      }
     }
+    const cardGroupName = this.fieldGroupForFieldName(nextProps.editFocus);
+
+    this.setState({
+      expandedCard: cardGroupName,
+      variant: nextProps.variant
+    });
   }
 
   fieldGroupForFieldName(field) {
@@ -80,6 +102,19 @@ class VariantForm extends Component {
     }
 
     return fieldName;
+  }
+
+  animateFieldFlash(fieldName) {
+    const fieldRef = this.refs[`${fieldName}Input`];
+
+    if (fieldRef) {
+      const input = fieldRef.refs.input;
+
+      Velocity.RunSequence([
+        { e: input, p: { backgroundColor: "#e2f2e2" }, o: { duration: 200 } },
+        { e: input, p: { backgroundColor: "#fff" }, o: { duration: 100 } }
+      ]);
+    }
   }
 
   get variant() {
@@ -118,26 +153,6 @@ class VariantForm extends Component {
     });
 
     this.handleFieldBlur(event, value, field);
-  }
-
-  handleInputChange = (event) => {
-    const target = event.target;
-    const newState = update(this.state, {
-      variant: {
-        $merge: {
-          [target.name]: target.value
-        }
-      }
-    });
-
-    this.setState(newState);
-  }
-
-  handleInputBlur = (event) => {
-    const target = event.target;
-    if (this.props.onVariantFieldSave) {
-      this.props.onVariantFieldSave(this.variant._id, target.name, target.value);
-    }
   }
 
   handleCardExpand(cardName) {
@@ -179,9 +194,9 @@ class VariantForm extends Component {
         name="taxCode"
         ref="taxCodeInput"
         value={this.variant.taxCode}
-        onChange={this.handleInputChange}
-        onBlur={this.handleInputBlur}
-        onKeyDown={this.handleInputBlur}
+        onBlur={this.handleFieldBlur}
+        onChange={this.handleFieldChange}
+        onReturnKeyDown={this.handleFieldBlur}
       />
     );
   }
@@ -222,15 +237,13 @@ class VariantForm extends Component {
   renderQuantityField() {
     if (this.props.hasChildVariants(this.variant)) {
       return (
-        <div className="rui textfield form-group col-sm-6">
-          <label>
-            <Translation defaultValue="Quantity" i18nKey="productVariant.inventoryQuantity" />
-          </label>
-          <input
-            className="inventoryQuantity"
-            name="inventoryQuantity"
-            type="text"
+        <div className="col-sm-6">
+          <TextField
+            i18nKeyLabel="productVariant.inventoryQuantity"
+            i18nKeyPlaceholder="0"
             placeholder="0"
+            label="Quantity"
+            name="inventoryQuantity"
             ref="inventoryQuantityInput"
             value={this.props.onUpdateQuantityField(this.variant)}
             style={{ backgroundColor: "lightgrey", cursor: "not-allowed" }}
@@ -240,20 +253,18 @@ class VariantForm extends Component {
       );
     }
     return (
-      <div className="rui textfield form-group col-sm-6">
-        <label>
-          <Translation defaultValue="Quantity" i18nKey="productVariant.inventoryQuantity" />
-        </label>
-        <input
-          className="inventoryQuantity"
-          name="inventoryQuantity"
-          type="text"
+      <div className="col-sm-6">
+        <TextField
+          i18nKeyLabel="productVariant.inventoryQuantity"
+          i18nKeyPlaceholder="0"
           placeholder="0"
+          label="Quantity"
+          name="inventoryQuantity"
           ref="inventoryQuantityInput"
           value={this.variant.inventoryQuantity}
-          onChange={this.handleInputChange}
-          onBlur={this.handleInputBlur}
-          onKeyDown={this.handleInputBlur}
+          onChange={this.handleFieldChange}
+          onBlur={this.handleFieldBlur}
+          onReturnKeyDown={this.handleFieldBlur}
         />
       </div>
     );
@@ -305,108 +316,96 @@ class VariantForm extends Component {
               value={this.variant.originCountry}
             />
             <div className="row">
-              <div className="rui textfield form-group col-sm-6">
-                <label>
-                  <Translation defaultValue="MSRP" i18nKey="productVariant.compareAtPrice" />
-                </label>
-                <input
-                  className="compareAtPrice"
-                  name="compareAtPrice"
-                  type="text"
+              <div className="col-sm-6">
+                <TextField
+                  i18nKeyLabel="productVariant.compareAtPrice"
+                  i18nKeyPlaceholder={formatPriceString("0.00")}
                   placeholder={formatPriceString("0.00")}
+                  label="MSRP"
+                  name="compareAtPrice"
                   ref="compareAtPriceInput"
                   value={this.variant.compareAtPrice}
-                  onChange={this.handleInputChange}
-                  onBlur={this.handleInputBlur}
-                  onKeyDown={this.handleInputBlur}
+                  onBlur={this.handleFieldBlur}
+                  onChange={this.handleFieldChange}
+                  onReturnKeyDown={this.handleFieldBlur}
                 />
               </div>
-              <div className="rui textfield form-group col-sm-6">
-                <label>
-                  <Translation defaultValue="Price" i18nKey="productVariant.price" />
-                </label>
-                <input
-                  className="price"
-                  name="price"
-                  type="text"
+              <div className="col-sm-6">
+                <TextField
+                  i18nKeyLabel="productVariant.price"
+                  i18nKeyPlaceholder={formatPriceString("0.00")}
                   placeholder={formatPriceString("0.00")}
+                  label="Price"
+                  name="price"
                   ref="priceInput"
                   value={this.variant.price}
                   style={this.props.greyDisabledFields(this.variant)}
                   disabled={this.props.hasChildVariants(this.variant)}
-                  onChange={this.handleInputChange}
-                  onBlur={this.handleInputBlur}
-                  onKeyDown={this.handleInputBlur}
+                  onBlur={this.handleFieldBlur}
+                  onChange={this.handleFieldChange}
+                  onReturnKeyDown={this.handleFieldBlur}
                 />
               </div>
             </div>
             <Divider />
             <div className="row">
-              <div className="rui textfield form-group col-sm-6">
-                <label>
-                  <Translation defaultValue="Width" i18nKey="productVariant.width" />
-                </label>
-                <input
-                  className="width"
-                  name="width"
-                  type="text"
+              <div className="col-sm-6">
+                <TextField
+                  i18nKeyLabel="productVariant.width"
+                  i18nKeyPlaceholder="0"
                   placeholder="0"
+                  label="Width"
+                  name="width"
                   ref="widthInput"
                   value={this.variant.width}
-                  onChange={this.handleInputChange}
-                  onBlur={this.handleInputBlur}
-                  onKeyDown={this.handleInputBlur}
+                  onBlur={this.handleFieldBlur}
+                  onChange={this.handleFieldChange}
+                  onReturnKeyDown={this.handleFieldBlur}
                 />
               </div>
-              <div className="rui textfield form-group col-sm-6">
-                <label>
-                  <Translation defaultValue="Length" i18nKey="productVariant.length" />
-                </label>
-                <input
-                  className="length"
-                  name="length"
-                  type="text"
+              <div className="col-sm-6">
+                <TextField
+                  i18nKeyLabel="productVariant.length"
+                  i18nKeyPlaceholder="0"
                   placeholder="0"
+                  label="Length"
+                  name="length"
                   ref="lengthInput"
                   value={this.variant.length}
-                  onChange={this.handleInputChange}
-                  onBlur={this.handleInputBlur}
-                  onKeyDown={this.handleInputBlur}
+                  onBlur={this.handleFieldBlur}
+                  onChange={this.handleFieldChange}
+                  onReturnKeyDown={this.handleFieldBlur}
                 />
               </div>
             </div>
 
             <div className="row">
-              <div className="rui textfield form-group col-sm-6">
-                <label>
-                  <Translation defaultValue="Height" i18nKey="productVariant.height" />
-                </label>
-                <input
-                  className="height"
-                  name="height"
-                  type="text"
+              <div className="col-sm-6">
+                <TextField
+                  i18nKeyLabel="productVariant.height"
+                  i18nKeyPlaceholder="0"
                   placeholder="0"
+                  label="Height"
+                  name="height"
                   ref="heightInput"
                   value={this.variant.height}
-                  onChange={this.handleInputChange}
-                  onBlur={this.handleInputBlur}
-                  onKeyDown={this.handleInputBlur}
+                  onBlur={this.handleFieldBlur}
+                  onChange={this.handleFieldChange}
+                  onReturnKeyDown={this.handleFieldBlur}
                 />
               </div>
-              <div className="rui textfield form-group col-sm-6">
-                <label>
-                  <Translation defaultValue="Weight" i18nKey="productVariant.weight" />
-                </label>
-                <input
-                  className="weight"
-                  name="weight"
-                  type="text"
+              <div className="col-sm-6">
+                <TextField
+                  i18nKeyLabel="productVariant.weight"
+                  i18nKeyPlaceholder="0"
                   placeholder="0"
+                  label="Weight"
+                  name="weight"
                   ref="weightInput"
                   value={this.variant.weight}
-                  onChange={this.handleInputChange}
-                  onBlur={this.handleInputBlur}
-                  onKeyDown={this.handleInputBlur}
+                  onBlur={this.handleFieldBlur}
+                  onChange={this.handleFieldChange}
+                  onReturnKeyDown={this.handleFieldBlur}
                 />
               </div>
             </div>
@@ -452,20 +451,18 @@ class VariantForm extends Component {
         >
           <div className="row">
             {this.renderQuantityField()}
-            <div className="rui textfield form-group col-sm-6">
-              <label>
-                <Translation defaultValue="Warn At" i18nKey="productVariant.lowInventoryWarningThreshold" />
-              </label>
-              <input
-                className="lowInventoryWarningThreshold"
-                name="lowInventoryWarningThreshold"
-                type="text"
+            <div className="col-sm-6">
+              <TextField
+                i18nKeyLabel="productVariant.lowInventoryWarningThreshold"
+                i18nKeyPlaceholder="0"
                 placeholder="0"
+                label="Warn At"
+                name="lowInventoryWarningThreshold"
                 ref="lowInventoryWarningThresholdInput"
                 value={this.variant.lowInventoryWarningThreshold}
-                onChange={this.handleInputChange}
-                onBlur={this.handleInputBlur}
-                onKeyDown={this.handleInputBlur}
+                onBlur={this.handleFieldBlur}
+                onChange={this.handleFieldChange}
+                onReturnKeyDown={this.handleFieldBlur}
               />
             </div>
           </div>
