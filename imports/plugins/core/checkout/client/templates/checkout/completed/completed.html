@@ -35,13 +35,14 @@
     </div>
   {{else}}
     <div class="container">
-      <div class="row text-center">
+      {{> unauthorized}}
+      <!--<div class="row text-center">
         <h1>Order Processing</h1>
         <p>Please do not click back button.</p>
         <br />
         <br />
         <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
-      </div>
+      </div>-->
     </div>
   {{/with}}
 {{/if}}
