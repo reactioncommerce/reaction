@@ -11,7 +11,7 @@ import { Template } from "meteor/templating";
  */
 Template.cartCompleted.helpers({
   orderCompleted: function () {
-    const id =  Reaction.Router.getQueryParam("_id");
+    const id = Reaction.Router.getQueryParam("_id");
     if (id) {
       const ccoSub = Meteor.subscribe("CompletedCartOrder", Meteor.userId(), id);
       if (ccoSub.ready()) {
@@ -19,6 +19,22 @@ Template.cartCompleted.helpers({
       }
     }
     return false;
+  },
+  ifUserOrder: function () {
+    const id = Reaction.Router.getQueryParam("_id");
+    if (id) {
+      const ccoSub = Meteor.subscribe("CompletedCartOrder", Meteor.userId(), id);
+      if (ccoSub.ready()) {
+        const order = Orders.findOne({
+          userId: Meteor.userId(),
+          cartId: id
+        });
+        if (order) {
+          return true;
+        }
+        return false;
+      }
+    }
   },
   order: function () {
     return Orders.findOne({
