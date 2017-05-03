@@ -3,7 +3,8 @@ import { NotificationContainer } from "/imports/plugins/included/notifications/c
 import { Reaction } from "/client/api";
 import { Tags } from "/lib/collections";
 import CartPanel from "../../../../checkout/client/templates/cartPanel/container/cartPanelContainer";
-
+import TagNavContainer from "/imports/plugins/core/ui-tagnav/client/containers/tagNavContainer";
+import TagNav from "/imports/plugins/core/ui-tagnav/client/components/tagNav";
 
 Template.CoreNavigationBar.onCreated(function () {
   this.state = new ReactiveDict();
@@ -87,7 +88,7 @@ Template.CoreNavigationBar.helpers({
       }
     }).fetch();
 
-    return {
+    const props = {
       name: "coreHeaderNavigation",
       editable: Reaction.hasAdminAccess(),
       isEditing: true,
@@ -96,6 +97,11 @@ Template.CoreNavigationBar.helpers({
         // Register the callback
         instance.toggleMenuCallback = callback;
       }
+    };
+
+    return {
+      component: TagNavContainer(TagNav),
+      data: props
     };
   },
   cartPanel() {
