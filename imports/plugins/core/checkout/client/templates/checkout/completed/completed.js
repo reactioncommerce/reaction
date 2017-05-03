@@ -20,7 +20,7 @@ Template.cartCompleted.helpers({
     }
     return false;
   },
-  ifUserOrder: function () {
+  userOrder: function () {
     const id = Reaction.Router.getQueryParam("_id");
     if (id) {
       const ccoSub = Meteor.subscribe("CompletedCartOrder", Meteor.userId(), id);
@@ -30,7 +30,7 @@ Template.cartCompleted.helpers({
           cartId: id
         });
         if (order) {
-          return true;
+          return !!order;
         }
         return false;
       }
