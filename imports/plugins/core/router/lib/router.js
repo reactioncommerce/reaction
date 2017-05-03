@@ -5,12 +5,12 @@ import pathToRegexp from "path-to-regexp";
 import queryParse from "query-parse";
 import { Meteor } from "meteor/meteor";
 import Blaze from "meteor/gadicc:blaze-react-component";
-import { ReactiveVar } from "meteor/reactive-var";
 import { Tracker } from "meteor/tracker";
 import { Route } from "react-router";
 import { Packages, Shops } from "/lib/collections";
 import Hooks from "./hooks";
 import { getComponent } from "/imports/plugins/core/layout/lib/components";
+import BlazeLayout from "/imports/plugins/core/layout/lib/blazeLayout";
 import Immutable from "immutable";
 
 export let history;
@@ -292,9 +292,11 @@ export function ReactionLayout(options = {}) {
     const sortedLayout = shop.layout.sort((prev, next) => prev.priority - next.priority);
     const foundLayout = sortedLayout.find((x) => selectLayout(x, layoutName, workflowName));
 
-    layoutStructure = {
-      ...foundLayout.structure
-    };
+    if (foundLayout && foundLayout.structure) {
+      layoutStructure = {
+        ...foundLayout.structure
+      };
+    }
   }
 
   // If the original options did not include a workflow, but did have a template,
@@ -332,10 +334,21 @@ export function ReactionLayout(options = {}) {
         layoutStructure.template = "unauthorized";
       }
 
-      return React.createElement(getComponent(layoutName), {
-        ...props,
-        structure: layoutStructure
-      });
+      if (getComponent(layoutName)) {
+        return React.createElement(getComponent(layoutName), {
+          ...props,
+          structure: layoutStructure
+        });
+      } else if (Template[layoutName]) {
+        return (
+          <BlazeLayout
+            {...layoutStructure}
+            blazeTemplate={layoutName}
+          />
+        );
+      }
+
+      return <Blaze template={layoutStructure.notFound} />;
     }
   };
 }
