@@ -369,7 +369,7 @@
       "enabled": false,
       "format": "%s%v",
       "symbol": "ك"
-    }
+    },
     "KRW": {
       "enabled": false,
       "format": "%s%v",
@@ -3565,7 +3565,7 @@
       "enabled": false,
       "format": "%s%v",
       "symbol": "ك"
-    }
+    },
     "KRW": {
       "enabled": false,
       "format": "%s%v",
