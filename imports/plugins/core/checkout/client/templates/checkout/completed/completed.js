@@ -29,10 +29,7 @@ Template.cartCompleted.helpers({
           userId: Meteor.userId(),
           cartId: id
         });
-        if (order) {
-          return !!order;
-        }
-        return false;
+        return !!order;
       }
     }
   },
