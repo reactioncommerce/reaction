@@ -294,9 +294,10 @@ Template.coreOrderShippingInvoice.events({
             }
             if (result) {
               Alerts.toast(i18next.t("mail.alerts.emailSent"), "success");
-              state.set("field-refund", 0);
-              state.set("isRefunding", false);
             }
+            $("#btn-refund-payment").text("Apply Refund");
+            state.set("field-refund", 0);
+            state.set("isRefunding", false);
           });
         }
       });
@@ -381,7 +382,7 @@ Template.coreOrderShippingInvoice.helpers({
     return {
       component: NumericInput,
       numericType: "currency",
-      value: 0,
+      value: state.get("field-refund") || 0,
       maxValue: adjustedTotal,
       format: state.get("currency"),
       classNames: {
