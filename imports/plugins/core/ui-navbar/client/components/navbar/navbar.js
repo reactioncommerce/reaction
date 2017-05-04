@@ -101,7 +101,7 @@ Template.CoreNavigationBar.helpers({
 
     return {
       component: TagNavContainer(TagNav),
-      data: props
+      ...props
     };
   },
   cartPanel() {
