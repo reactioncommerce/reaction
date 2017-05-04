@@ -1,8 +1,12 @@
 import _ from "lodash";
-import { ServiceConfigHelper } from "./util";
 import { Template } from "meteor/templating";
+import { ServiceConfigHelper } from "./util";
+import { SignInContainer } from "../containers";
 
 export const LoginFormSharedHelpers = {
+  signInComponent() {
+    return SignInContainer;
+  },
 
   messages: function () {
     return Template.instance().formMessages.get();
