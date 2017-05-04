@@ -129,13 +129,15 @@ export default function () {
           _id: itemIdOne,
           productId: Random.id(),
           shopId: Random.id(),
-          variantId: Random.id()
+          variantId: Random.id(),
+          packed: false
         },
         {
           _id: itemIdTwo,
           productId: Random.id(),
           shopId: Random.id(),
-          variantId: Random.id()
+          variantId: Random.id(),
+          packed: false
         }
       ]
     }], // Shipping Schema
@@ -149,10 +151,15 @@ export default function () {
         paymentPackageId: getPkgData("example-paymentmethod") ? getPkgData("example-paymentmethod")._id : "uiwneiwknekwewe",
         paymentSettingsKey: "example-paymentmethod",
         mode: "authorize",
-        status: "created"
+        status: "created",
+        amount: 12.45
       }),
       invoice: {
-        total: 12.45
+        total: 12.45,
+        subtotal: 12.45,
+        discounts: 0,
+        taxes: 0.12,
+        shipping: 4.00
       }
     }],
     state: "new",
