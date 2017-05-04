@@ -92,10 +92,13 @@ export function Apps(optionHash) {
     }
   }
 
-  // TODO: Review fix for filter on Packages.find(filter)
-  // current filter setup uses "audience" field which is not in registry array items in most (if not all) docs in Packages coll
-  delete filter["registry.audience"]; // Temporarily remove "audience" key. Audience check few lines below performs similar effect
+  delete filter["registry.audience"]; // Temporarily remove "audience" key (see comment below)
 
+  // TODO: Review fix for filter on Packages.find(filter)
+  // The current "filter" setup uses "audience" field which is not present in the registry array in most (if not all) docs
+  // in the Packages coll.
+  // For now, the audience checks (after the Package.find call) filters out the registry items based on permissions. But
+  // part of the filtering should have been handled by the Package.find call, if the "audience" filter works as it should.
   Packages.find(filter).forEach((app) => {
     const matchingRegistry = _.filter(app.registry, function (item) {
       const itemFilter = _.cloneDeep(registryFilter);
@@ -107,8 +110,11 @@ export function Apps(optionHash) {
         let hasAccess;
 
         for (const permission of registryFilter.audience) {
+          // This checks that the registry item contains a permissions matches with the user's permission for the shop
           const hasPermissionToRegistryItem = item.permissions.indexOf(permission) > -1;
+          // This checks that the user's permission set have the right value that is on the registry item
           const hasRoleAccessForShop = Roles.userIsInRole(Meteor.userId(), permission, Reaction.getShopId());
+
           // both checks must pass for access to be granted
           if (hasPermissionToRegistryItem && hasRoleAccessForShop) {
             hasAccess = true;
