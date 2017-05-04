@@ -1,5 +1,4 @@
 import nodemailer from "nodemailer";
-import { Job } from "meteor/vsivsi:job-collection";
 import { Emails, Jobs } from "/lib/collections";
 import { Reaction, Logger } from "/server/api";
 
