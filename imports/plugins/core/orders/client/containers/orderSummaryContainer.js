@@ -125,7 +125,7 @@ const composer = (props, onData) => {
       "shipping._id": props.fulfillment._id
     });
 
-    const profileAddress = order.shipping[0].address;
+    const profileShippingAddress = order.shipping[0].address;
 
     if (order.workflow) {
       if (order.workflow.status === "coreOrderCreated") {
@@ -136,7 +136,7 @@ const composer = (props, onData) => {
 
     onData(null, {
       order: order,
-      profileAddress: profileAddress
+      profileShippingAddress: profileShippingAddress
     });
   }
 };
