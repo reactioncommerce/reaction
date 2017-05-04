@@ -74,6 +74,7 @@ Template.currencySelect.events({
     // and only possible because we allow it in the
     // UserProfile and ShopMembers publications.
     //
+    console.log("blaze", this.currency);
     Meteor.users.update(Meteor.userId(), { $set: { "profile.currency": this.currency } });
     localStorage.setItem("currency", this.currency);
 

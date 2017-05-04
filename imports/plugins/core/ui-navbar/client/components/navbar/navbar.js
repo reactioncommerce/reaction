@@ -3,6 +3,7 @@ import { NotificationContainer } from "/imports/plugins/included/notifications/c
 import { Reaction } from "/client/api";
 import { Tags } from "/lib/collections";
 import CartPanel from "../../../../checkout/client/templates/cartPanel/container/cartPanelContainer";
+import CurrencyContainer from "/client/modules/i18n/templates/currency/containers/currencyContainer";
 
 
 Template.CoreNavigationBar.onCreated(function () {
@@ -44,6 +45,12 @@ Template.CoreNavigationBar.events({
 });
 
 Template.CoreNavigationBar.helpers({
+  currencySelectComponent() {
+    return {
+      component: CurrencyContainer
+    };
+  },
+
   isSearchEnabled() {
     const instance = Template.instance();
     return instance.state.get("searchEnabled");
