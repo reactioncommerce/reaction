@@ -77,6 +77,7 @@ Template.tagNav.onCreated(function () {
     selectedTag: null,
     [NavbarStates.Visible]: false
   });
+  this.state.set(NavbarStates.Visibility, NavbarVisibility.Hidden);
 
   this.moveItem = (array, fromIndex, toIndex) => {
     array.splice(toIndex, 0, array.splice(fromIndex, 1)[0]);
@@ -120,9 +121,6 @@ Template.tagNav.onCreated(function () {
       }
     }
   };
-
-  this.state.set(NavbarStates.Visibility, NavbarVisibility.Hidden);
-
 
   this.onWindowResize = () => {
     if (window.matchMedia("(max-width: 991px)").matches) {
@@ -227,6 +225,7 @@ Template.tagNav.helpers({
   },
 
   navbarOrientation() {
+    window.or = Template.instance().state;
     return Template.instance().state.get(NavbarStates.Orientation);
   },
 
