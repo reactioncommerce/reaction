@@ -13,10 +13,10 @@ const ConnectedAdminViewComponent = ActionViewContainer(ActionView);
 
 const styles = {
   customerApp: {
-    width: "100vw"
+    width: "100%"
   },
   adminApp: {
-    width: "100vw",
+    width: "100%",
     height: "100vh",
     display: "flex",
     overflow: "hidden"
