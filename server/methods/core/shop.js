@@ -591,22 +591,37 @@ Meteor.methods({
     }
     this.unblock();
 
+    const shop = Collections.Shops.findOne({
+      _id: Reaction.getShopId()
+    });
+
+    const defaultLanguage = shop.language;
+
     if (language === "all") {
       const updateObject = {};
 
-      const shop = Collections.Shops.findOne({
-        _id: Reaction.getShopId()
-      });
-
       if (Array.isArray(shop.languages)) {
         shop.languages.forEach((languageData, index) => {
-          updateObject[`languages.${index}.enabled`] = enabled;
+          if (languageData.i18n === defaultLanguage) {
+            updateObject[`languages.${index}.enabled`] = true;
+          } else {
+            updateObject[`languages.${index}.enabled`] = enabled;
+          }
         });
       }
       return Collections.Shops.update({
         _id: Reaction.getShopId()
       }, {
         $set: updateObject
+      });
+    } else if (language === defaultLanguage) {
+      return Collections.Shops.update({
+        "_id": Reaction.getShopId(),
+        "languages.i18n": language
+      }, {
+        $set: {
+          "languages.$.enabled": true
+        }
       });
     }
 
@@ -635,16 +650,22 @@ Meteor.methods({
       throw new Meteor.Error(403, "Access Denied");
     }
     this.unblock();
+
+    const shop = Collections.Shops.findOne({
+      _id: Reaction.getShopId()
+    });
+
+    const defaultCurrency = shop.currency;
+
     if (currency === "all") {
       const updateObject = {};
-
-      const shop = Collections.Shops.findOne({
-        _id: Reaction.getShopId()
-      });
-
       for (const currencyName in shop.currencies) {
         if ({}.hasOwnProperty.call(shop.currencies, currencyName) && currencyName !== "updatedAt") {
-          updateObject[`currencies.${currencyName}.enabled`] = enabled;
+          if (currencyName === defaultCurrency) {
+            updateObject[`currencies.${currencyName}.enabled`] = true;
+          } else {
+            updateObject[`currencies.${currencyName}.enabled`] = enabled;
+          }
         }
       }
 
@@ -652,6 +673,14 @@ Meteor.methods({
         _id: Reaction.getShopId()
       }, {
         $set: updateObject
+      });
+    } else if (currency === defaultCurrency) {
+      return Collections.Shops.update({
+        _id: Reaction.getShopId()
+      }, {
+        $set: {
+          [`currencies.${currency}.enabled`]: true
+        }
       });
     }
 

@@ -21,12 +21,14 @@ class ProductField extends Component {
       this.setState({
         value: nextProps.product[this.fieldName]
       }, () => {
-        const input = this._input.refs.input;
+        if (this._input && this._input.refs.input) {
+          const input = this._input.refs.input;
 
-        Velocity.RunSequence([
-          { e: input, p: { backgroundColor: "#e2f2e2" }, o: { duration: 200 } },
-          { e: input, p: { backgroundColor: "#fff" }, o: { duration: 100 } }
-        ]);
+          Velocity.RunSequence([
+            { e: input, p: { backgroundColor: "#e2f2e2" }, o: { duration: 200 } },
+            { e: input, p: { backgroundColor: "#fff" }, o: { duration: 100 } }
+          ]);
+        }
       });
     } else {
       this.setState({
