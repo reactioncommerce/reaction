@@ -1,31 +1,5 @@
-
 <template name="loginFormResetPasswordView">
-
-  <div class="loginForm-title">
-    <h2 data-i18n="accountsUI.resetYourPassword">Reset your password</h2>
+  <div>
+    {{> React component=forgotComponent}}
   </div>
-
-  <form name="loginForm" novalidate>
-
-    {{> loginFormMessages messages=messages}}
-
-    <div class="form-group {{hasError messages.errors.email}}">
-      <label for="email-{{uniqueId}}" class="control-label" data-i18n="accountsUI.emailAddress">Email Address</label>
-      <input id="email-{{uniqueId}}" class="form-control login-input-email" type="text" value="{{credentials.email}}">
-
-      {{#if hasError messages.errors.email}}
-        <span class="help-block">
-          {{i18n messages.errors.email.i18nKeyReason messages.errors.email.reason}}
-        </span>
-      {{/if}}
-    </div>
-
-    <div class="form-group">
-      <button class="btn btn-primary btn-block" type="Submit" data-i18n="accountsUI.resetYourPassword"  data-event-category="accounts" data-event-action="reset-password">Reset Your Password</button>
-    </div>
-
-    <div class="form-group">
-      <a href data-i18n="accountsUI.signIn"  data-event-category="accounts" data-event-action="signIn">Sign In</a>
-    </div>
-  </form>
 </template>

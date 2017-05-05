@@ -1,8 +1,11 @@
 import _ from "lodash";
 import { Template } from "meteor/templating";
 import { ServiceConfigHelper } from "./util";
-import { SignInContainer } from "../containers";
-import { SignUpContainer } from "../containers";
+import {
+  SignInContainer,
+  SignUpContainer,
+  ForgotContainer
+} from "../containers";
 
 export const LoginFormSharedHelpers = {
   signInComponent() {
@@ -11,6 +14,10 @@ export const LoginFormSharedHelpers = {
 
   signUpComponent() {
     return SignUpContainer;
+  },
+
+  forgotComponent() {
+    return ForgotContainer;
   },
 
   messages: function () {
