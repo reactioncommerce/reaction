@@ -18,6 +18,10 @@ Reaction.registerPackage({
     workflow: "coreAccountsWorkflow",
     priority: 1
   }, {
+    route: "/account/profile/verify:id?",
+    name: "Account Verification",
+    template: "verifyAccount"
+  }, {
     label: "Account Settings",
     icon: "fa fa-sign-in",
     provides: "settings",

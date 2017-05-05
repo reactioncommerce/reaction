@@ -145,6 +145,27 @@ function validateAddress(address) {
  * Reaction Account Methods
  */
 Meteor.methods({
+  "accounts/verifyAccount": function (email) {
+    check(email, String);
+    const account = Accounts.findOne({
+      "emails.address": email
+    });
+    if (account) {
+      const verified = account.emails[0].verified;
+      if (!verified) {
+        Accounts.update({
+          "userId": account.userId,
+          "emails.address": email
+        }, {
+          $set: {
+            "emails.$.verified": true
+          }
+        });
+      }
+      return true;
+    }
+    return false;
+  },
   "accounts/validateAddress": validateAddress,
   /*
    * check if current user has password
@@ -544,7 +565,7 @@ Meteor.methods({
       // Shop Data
       shop: shop,
       contactEmail: shop.emails[0].address,
-      homepage: Meteor.absoluteUrl(),
+      verificationUrl: `${Meteor.absoluteUrl()}${Reaction.getShopPrefix()}/account/profile/verify?email=${shop.emails[0].address}`,
       emailLogo: emailLogo,
       copyrightDate: moment().format("YYYY"),
       legalName: shop.addressBook[0].company,
