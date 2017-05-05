@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { composeWithTracker } from "/lib/api/compose";
 import { SignIn } from "../components";
 
 class SignInContainer extends Component {
@@ -13,4 +14,8 @@ class SignInContainer extends Component {
   }
 }
 
-export default SignInContainer;
+function composer(props, onData) {
+  onData(null, {});
+}
+
+export default composeWithTracker(composer)(SignInContainer);
