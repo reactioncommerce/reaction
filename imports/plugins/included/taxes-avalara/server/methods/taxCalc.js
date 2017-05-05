@@ -6,6 +6,7 @@ import { Meteor } from "meteor/meteor";
 import { HTTP } from "meteor/http";
 import { check } from "meteor/check";
 import { Packages, Shops, Accounts } from "/lib/collections";
+import { TaxCodes } from "/imports/plugins/core/taxes/lib/collections";
 import { Reaction, Logger } from "/server/api";
 import Avalogger from "./avalogger";
 
@@ -308,6 +309,28 @@ taxCalc.testCredentials = function (credentials, testCredentials = false) {
 
   if (result && result.code === "ETIMEDOUT") {
     throw new Meteor.Error("Request Timed out. Increase your timeout settings");
+  }
+
+  if (result.statusCode === 200) {
+    if (TaxCodes.find({}).count() === 0) {
+      Meteor.call("avalara/getTaxCodes", (error, res) => {
+        if (error) {
+          if (typeof error === "object") {
+            Meteor.call("logging/logError", "avalara",  error);
+          } else {
+            Meteor.call("logging/logError", "avalara",  { error });
+          }
+        } else if (res && Array.isArray(res)) {
+          res.forEach(function (code) {
+            Meteor.call("taxes/insertTaxCodes", Reaction.getShopId(), code, "taxes-avalara", (err) => {
+              if (err) {
+                throw new Meteor.Error("Error populating TaxCodes collection", err);
+              }
+            });
+          });
+        }
+      });
+    }
   }
 
   return { statusCode: result.statusCode };
