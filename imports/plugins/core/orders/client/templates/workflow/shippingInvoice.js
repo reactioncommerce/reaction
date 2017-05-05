@@ -65,7 +65,7 @@ Template.coreOrderShippingInvoice.helpers({
   isRefunding() {
     const instance = Template.instance();
     if (instance.state.get("isRefunding")) {
-      instance.$("#btn-refund-payment").text("Refunding");
+      instance.$("#btn-refund-payment").text(i18next.t("order.refunding"));
       return true;
     }
     return false;
@@ -295,7 +295,7 @@ Template.coreOrderShippingInvoice.events({
             if (result) {
               Alerts.toast(i18next.t("mail.alerts.emailSent"), "success");
             }
-            $("#btn-refund-payment").text("Apply Refund");
+            $("#btn-refund-payment").text(i18next.t("order.applyRefund"));
             state.set("field-refund", 0);
             state.set("isRefunding", false);
           });
