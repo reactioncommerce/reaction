@@ -329,15 +329,22 @@
       "order": {
         "created": "Gemaakt",
         "reference": "Referentie",
+        "cancelInvoice": "Annuleren",
         "invoice": "Factuur",
         "ordersNotFound": "Geen bestellingen gevonden",
         "approveInvoice": "Goedkeuren",
+        "cancelOrderLabel": "Annuleer bestelling",
         "makeAdjustments": "maak aanpassingen",
         "capturePayment": "Capture Betaling",
         "paymentCaptured": "betaling Gevangen",
         "capturedTotal": "gevangen Totaal",
+        "canceledLabel": "Geannuleerd",
         "refundAmount": "restitutiebedrag",
+        "cancelOrder": "Wilt u deze bestelling annuleren?",
         "applyRefundToThisOrder": "Solliciteer terugbetaling van {{currencySymbol}}{{refund}} deze bestelling?",
+        "applyRefundDuringCancelOrder": "Dit zal het bestelbedrag van {{currencySymbol}}{{invoiceTotal}} terugbetalen",
+        "cancelOrderThenRestock": "Ja, en opnieuw",
+        "cancelOrderNoRestock": "Ja, maar geen restocking",
         "applyRefund": "Solliciteer Refund",
         "applyDiscount": "Solliciteer Discount",
         "adjustedTotal": "aangepaste Total",
@@ -362,7 +369,8 @@
           "completed": "Voltooid",
           "canceled": "Geannuleerd",
           "refunded": "terugbetaald"
-        }
+        },
+        "showMore": "Laat meer zien"
       },
       "orderShipping": {
         "shipTo": "Verzend naar",

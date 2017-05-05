@@ -329,15 +329,22 @@
       "order": {
         "created": "Ustvarjeno",
         "reference": "Reference",
+        "cancelInvoice": "Prekliči",
         "invoice": "Račun",
         "ordersNotFound": "Ni naročil",
         "approveInvoice": "Odobri",
+        "cancelOrderLabel": "Preklic naročila",
         "makeAdjustments": "prilagoditve",
         "capturePayment": "Capture plačila",
         "paymentCaptured": "plačilo Zajeto",
         "capturedTotal": "Zajeto Skupaj",
+        "canceledLabel": "preklicana",
         "refundAmount": "Znesek vračila",
+        "cancelOrder": "Ali želite preklicati naročilo?",
         "applyRefundToThisOrder": "Uporabi vračilo {{currencySymbol}}{{refund}} k temu, da bi?",
+        "applyRefundDuringCancelOrder": "To bo povrnil red skupaj {{currencySymbol}}{{invoiceTotal}}",
+        "cancelOrderThenRestock": "Ja, in obnovo",
+        "cancelOrderNoRestock": "Da, vendar se ne obnavlja stalež",
         "applyRefund": "Uporabi vračilo",
         "applyDiscount": "Uporabi popust",
         "adjustedTotal": "prilagojena Skupaj",
@@ -362,7 +369,8 @@
           "completed": "končan",
           "canceled": "preklicana",
           "refunded": "Vrnjeno"
-        }
+        },
+        "showMore": "Pokaži več"
       },
       "orderShipping": {
         "shipTo": "Poslati v",

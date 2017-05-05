@@ -6,7 +6,7 @@
     "reaction-payments": {
       "admin": {
         "shortcut": {
-          "braintreeLabel": "Брейнтри",
+          "braintreeLabel": "Braintree",
           "braintreeTitle": "Брейнтри"
         },
         "dashboard": {

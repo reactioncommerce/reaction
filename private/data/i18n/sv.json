@@ -329,15 +329,22 @@
       "order": {
         "created": "Skapad",
         "reference": "Referens",
+        "cancelInvoice": "Avboka",
         "invoice": "Faktura",
         "ordersNotFound": "Inga beställningar hittades",
         "approveInvoice": "Godkänna",
+        "cancelOrderLabel": "Avbryt beställning",
         "makeAdjustments": "gör justeringar",
         "capturePayment": "capture Betalning",
         "paymentCaptured": "betalning Tagna",
         "capturedTotal": "fångade Totalt",
+        "canceledLabel": "Avbrutet",
         "refundAmount": "återbetalnings~~POS=TRUNC",
+        "cancelOrder": "Vill du avbryta denna order?",
         "applyRefundToThisOrder": "Applicera återbetalning av {{currencySymbol}}{{refund}} till denna order?",
+        "applyRefundDuringCancelOrder": "Detta kommer att återbetala orderingången för {{currencySymbol}}{{invoiceTotal}}",
+        "cancelOrderThenRestock": "Ja, och återuppta",
+        "cancelOrderNoRestock": "Ja, men ingen återhämtning",
         "applyRefund": "tillämpas återbetalning",
         "applyDiscount": "Applicera rabatt",
         "adjustedTotal": "justerat Total",
@@ -362,7 +369,8 @@
           "completed": "Avslutad",
           "canceled": "Avbrutet",
           "refunded": "återbetalas"
-        }
+        },
+        "showMore": "Visa mer"
       },
       "orderShipping": {
         "shipTo": "Frakta till",

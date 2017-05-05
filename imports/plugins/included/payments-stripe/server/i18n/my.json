@@ -6,10 +6,10 @@
     "reaction-payments": {
       "admin": {
         "shortcut": {
-          "stripeLabel": "အစင်း"
+          "stripeLabel": "Stripe"
         },
         "dashboard": {
-          "stripeLabel": "အစင်း",
+          "stripeLabel": "Stripe",
           "stripeDescription": "အစင်းငွေပေးချေမှု"
         },
         "paymentSettings": {

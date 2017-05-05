@@ -6,12 +6,12 @@
     "reaction-payments": {
       "admin": {
         "shortcut": {
-          "braintreeLabel": "布伦特里",
+          "braintreeLabel": "Braintree",
           "braintreeTitle": "布伦特里"
         },
         "dashboard": {
-          "braintreeLabel": "布伦特里",
-          "braintreeTitle": "布伦特里",
+          "braintreeLabel": "Braintree",
+          "braintreeTitle": "Braintree",
           "braintreeDescription": "布伦特里支付"
         },
         "paymentSettings": {

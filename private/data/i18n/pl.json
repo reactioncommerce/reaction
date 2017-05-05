@@ -329,15 +329,22 @@
       "order": {
         "created": "Utworzono",
         "reference": "Odniesienie",
+        "cancelInvoice": "Anulować",
         "invoice": "Faktura",
         "ordersNotFound": "Nie znaleziono zleceń",
         "approveInvoice": "Zatwierdzać",
+        "cancelOrderLabel": "Anuluj zamówienie",
         "makeAdjustments": "dokonanie zmian",
         "capturePayment": "Przechwytywanie Płatność",
         "paymentCaptured": "Płatność Schwytany",
         "capturedTotal": "schwytany Razem",
+        "canceledLabel": "Odwołany",
         "refundAmount": "Kwota Refundacji",
+        "cancelOrder": "Czy chcesz anulować zamówienie?",
         "applyRefundToThisOrder": "Zastosuj zwrot {{currencySymbol}}{{refund}} do tego celu?",
+        "applyRefundDuringCancelOrder": "Spowoduje to zwrot całkowitej kwoty zamówienia {{currencySymbol}}{{invoiceTotal}}",
+        "cancelOrderThenRestock": "Tak, i uzupełnij",
+        "cancelOrderNoRestock": "Tak, ale nie restocking",
         "applyRefund": "Zastosuj zwrot",
         "applyDiscount": "Zastosuj zniżkę",
         "adjustedTotal": "Skorygowany Razem",
@@ -362,7 +369,8 @@
           "completed": "Zakończony",
           "canceled": "Odwołany",
           "refunded": "zwrotowi"
-        }
+        },
+        "showMore": "Pokaż więcej"
       },
       "orderShipping": {
         "shipTo": "Dostawa do",

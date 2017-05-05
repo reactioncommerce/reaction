@@ -9,7 +9,7 @@
           "stripeLabel": "Ταινία"
         },
         "dashboard": {
-          "stripeLabel": "Ταινία",
+          "stripeLabel": "Stripe",
           "stripeDescription": "πληρωμές stripe"
         },
         "paymentSettings": {

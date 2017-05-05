@@ -6,10 +6,10 @@
     "reaction-payments": {
       "admin": {
         "shortcut": {
-          "stripeLabel": "Dunga"
+          "stripeLabel": "Stripe"
         },
         "dashboard": {
-          "stripeLabel": "Dunga",
+          "stripeLabel": "Stripe",
           "stripeDescription": "plăţile Stripe"
         },
         "paymentSettings": {

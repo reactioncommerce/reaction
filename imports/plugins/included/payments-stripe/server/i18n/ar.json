@@ -6,7 +6,7 @@
     "reaction-payments": {
       "admin": {
         "shortcut": {
-          "stripeLabel": "شريط"
+          "stripeLabel": "Stripe"
         },
         "dashboard": {
           "stripeLabel": "شريط",

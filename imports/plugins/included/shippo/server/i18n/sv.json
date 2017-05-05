@@ -5,7 +5,7 @@
     "reaction-shippo": {
       "admin": {
         "dashboard": {
-          "shippoLabel": "cloisonne",
+          "shippoLabel": "Shippo",
           "shippoTitle": "cloisonne",
           "shippoDescription": "Fraktsedlar och paketspårning"
         },

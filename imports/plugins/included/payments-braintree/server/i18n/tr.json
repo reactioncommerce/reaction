@@ -6,12 +6,12 @@
     "reaction-payments": {
       "admin": {
         "shortcut": {
-          "braintreeLabel": "braintree",
-          "braintreeTitle": "braintree"
+          "braintreeLabel": "Braintree",
+          "braintreeTitle": "Braintree"
         },
         "dashboard": {
-          "braintreeLabel": "braintree",
-          "braintreeTitle": "braintree",
+          "braintreeLabel": "Braintree",
+          "braintreeTitle": "Braintree",
           "braintreeDescription": "braintree ödemeleri"
         },
         "paymentSettings": {

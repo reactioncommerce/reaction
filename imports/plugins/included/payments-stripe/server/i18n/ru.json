@@ -6,10 +6,10 @@
     "reaction-payments": {
       "admin": {
         "shortcut": {
-          "stripeLabel": "нашивка"
+          "stripeLabel": "Stripe"
         },
         "dashboard": {
-          "stripeLabel": "нашивка",
+          "stripeLabel": "Stripe",
           "stripeDescription": "нашивки платежи"
         },
         "paymentSettings": {

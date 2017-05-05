@@ -6,10 +6,10 @@
     "reaction-payments": {
       "admin": {
         "shortcut": {
-          "stripeLabel": "条纹"
+          "stripeLabel": "Stripe"
         },
         "dashboard": {
-          "stripeLabel": "条纹",
+          "stripeLabel": "Stripe",
           "stripeDescription": "条纹支付"
         },
         "paymentSettings": {

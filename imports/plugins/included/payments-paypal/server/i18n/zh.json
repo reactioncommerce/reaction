@@ -9,8 +9,8 @@
           "paypalLabel": "贝宝"
         },
         "dashboard": {
-          "paypalLabel": "贝宝",
-          "paypalTitle": "贝宝",
+          "paypalLabel": "PayPal",
+          "paypalTitle": "PayPal",
           "paypalDescription": "PayPal付款"
         },
         "paymentMethod": {

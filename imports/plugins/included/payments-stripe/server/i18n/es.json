@@ -6,11 +6,11 @@
     "reaction-payments": {
       "admin": {
         "shortcut": {
-          "stripeLabel": "Raya"
+          "stripeLabel": "Stripe"
         },
         "dashboard": {
-          "stripeLabel": "Raya",
-          "stripeDescription": "pagos de la raya"
+          "stripeLabel": "Stripe",
+          "stripeDescription": "pagos de la Stripe"
         },
         "paymentSettings": {
           "stripeLabel": "Raya",
