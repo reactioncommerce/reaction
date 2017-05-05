@@ -20,19 +20,6 @@ Template.cartCompleted.helpers({
     }
     return false;
   },
-  userOrder: function () {
-    const id = Reaction.Router.getQueryParam("_id");
-    if (id) {
-      const ccoSub = Meteor.subscribe("CompletedCartOrder", Meteor.userId(), id);
-      if (ccoSub.ready()) {
-        const order = Orders.findOne({
-          userId: Meteor.userId(),
-          cartId: id
-        });
-        return !!order;
-      }
-    }
-  },
   order: function () {
     return Orders.findOne({
       userId: Meteor.userId(),
