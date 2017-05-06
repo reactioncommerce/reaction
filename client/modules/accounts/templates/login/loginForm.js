@@ -1,5 +1,6 @@
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
+import { LoginContainer } from "../../containers";
 
 // ============================================================================
 // Login form
@@ -18,13 +19,12 @@ function capitalize(str) {
 //
 
 Template.loginForm.helpers({
-
-  /**
-   * Login form current view
-   * @return {String} Name of the template to use as the current view.
-   */
-  loginFormCurrentView() {
-    return Template.instance().loginFormCurrentView.get();
+  component() {
+    const currentData = Template.currentData() || {};
+    return {
+      ...currentData,
+      component: LoginContainer
+    };
   },
 
   /**
@@ -35,16 +35,7 @@ Template.loginForm.helpers({
     return {
       credentials: Template.instance().credentials
     };
-  },
-
-  /**
-   * Unique id to use on form elements
-   * @return {String} String of the unique ID for the current template
-   */
-  uniqueId() {
-    return Template.instance().uniqueId;
   }
-
 });
 
 /**
@@ -64,67 +55,6 @@ Template.loginForm.onCreated(function () {
   template.loginFormCurrentView = new ReactiveVar(startView);
   template.uniqueId = Random.id();
   template.credentials = {};
-});
-
-/**
- * Login Form events
- * These events are shared across all login form views and subviews
- */
-Template.loginForm.events({
-
-  /**
-   * Event: Show sign in view
-   * @param  {Event}    event    jQuery Event
-   * @param  {Template} template Blaze Template instance
-   * @return {void}
-   */
-  "click [data-event-action=signIn]": function (event, template) {
-    event.preventDefault();
-    event.stopPropagation();
-
-    template.credentials = {
-      email: template.$(".login-input-email").val(),
-      password: template.$(".login-input-password").val()
-    };
-
-    template.loginFormCurrentView.set("loginFormSignInView");
-  },
-
-  /**
-   * Event: Show the sign up (register) view
-   * @param  {Event}    event    jQuery Event
-   * @param  {Template} template Blaze Template instance
-   * @return {void}
-   */
-  "click [data-event-action=signUp]": (event, template) => {
-    event.preventDefault();
-    event.stopPropagation();
-
-    template.credentials = {
-      email: template.$(".login-input-email").val(),
-      password: template.$(".login-input-password").val()
-    };
-
-    template.loginFormCurrentView.set("loginFormSignUpView");
-  },
-
-  /**
-   * Event: Show the password reset view
-   * @param  {Event}    event    jQuery Event
-   * @param  {Template} template Blaze Template instance
-   * @return {void}
-   */
-  "click [data-event-action=forgotPassword]": (event, template) => {
-    event.preventDefault();
-    event.stopPropagation();
-
-    template.credentials = {
-      email: template.$(".login-input-email").val(),
-      password: template.$(".login-input-password").val()
-    };
-
-    template.loginFormCurrentView.set("loginFormResetPasswordView");
-  }
 });
 
 /**
