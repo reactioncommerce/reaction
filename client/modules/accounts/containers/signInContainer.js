@@ -9,7 +9,9 @@ class SignInContainer extends Component {
 
   render() {
     return (
-      <SignIn />
+      <SignIn
+        {...this.props}
+      />
     );
   }
 }

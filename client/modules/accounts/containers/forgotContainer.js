@@ -9,7 +9,9 @@ class ForgotContainer extends Component {
 
   render() {
     return (
-      <Forgot />
+      <Forgot
+        {...this.props}
+      />
     );
   }
 }

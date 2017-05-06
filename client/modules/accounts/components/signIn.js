@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, PropTypes } from "react";
 import {
   Button,
   TextField
@@ -26,7 +26,8 @@ class SignIn extends Component {
               className="form-control login-input-email"
               type="email"
               tabIndex="1"
-              id="email-{{uniqueId}}"
+              id={`email-${this.props.uniqueId}`}
+              value={this.props.credentials.email}
             />
           </div>
 
@@ -37,7 +38,8 @@ class SignIn extends Component {
               className="form-control login-input-password"
               type="password"
               tabIndex="2"
-              id="password-{{uniqueId}}"
+              id={`password-${this.props.uniqueId}`}
+              value={this.props.credentials.password}
             />
           </div>
 
@@ -55,15 +57,35 @@ class SignIn extends Component {
           </div>
 
           <div className="form-group flex flex-justify-spaceBetween">
-            <a data-i18n="accountsUI.forgotPassword" href tabIndex="4" data-event-action="forgotPassword">Reset Password</a>
-            <a data-i18n="accountsUI.signUp" href tabIndex="5" data-event-action="signUp">Register</a>
+            <a
+              href="#"
+              data-i18n="accountsUI.forgotPassword"
+              tabIndex="4"
+              onDoubleClick={this.props.onForgotPasswordClick}
+            >
+              Reset Password
+            </a>
+            <a
+              href="#"
+              data-i18n="accountsUI.signUp"
+              tabIndex="5"
+              onDoubleClick={this.props.onSignUpClick}
+            >
+              Register
+            </a>
           </div>
 
         </form>
       </div>
     );
   }
-
 }
+
+SignIn.propTypes = {
+  credentials: PropTypes.object,
+  onForgotPasswordClick: PropTypes.func,
+  onSignUpClick: PropTypes.func,
+  uniqueId: PropTypes.string
+};
 
 export default SignIn;

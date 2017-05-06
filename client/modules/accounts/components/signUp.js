@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, PropTypes } from "react";
 import {
   Button,
   TextField
@@ -26,7 +26,8 @@ class SignUp extends Component {
             className="form-control login-input-email"
             type="email"
             tabIndex="1"
-            id="email-{{uniqueId}}"
+            id={`email-${this.props.uniqueId}`}
+            value={this.props.credentials.email}
           />
         </div>
 
@@ -37,7 +38,8 @@ class SignUp extends Component {
             className="form-control login-input-password"
             type="password"
             tabIndex="2"
-            id="password-{{uniqueId}}"
+            id={`password-${this.props.uniqueId}`}
+            value={this.props.credentials.password}
           />
         </div>
 
@@ -55,7 +57,15 @@ class SignUp extends Component {
         </div>
 
         <div className="form-group">
-          <a data-i18n="accountsUI.signIn"  data-event-category="accounts" data-event-action="signIn" href>Sign In</a>
+          <a
+            href="#"
+            data-i18n="accountsUI.signIn"
+            tabIndex="4"
+            data-event-category="accounts"
+            onDoubleClick={this.props.onSignInClick}
+          >
+            Sign In
+          </a>
         </div>
 
       </form>
@@ -63,5 +73,11 @@ class SignUp extends Component {
     );
   }
 }
+
+SignUp.propTypes = {
+  credentials: PropTypes.object,
+  onSignInClick: PropTypes.func,
+  uniqueId: PropTypes.string
+};
 
 export default SignUp;

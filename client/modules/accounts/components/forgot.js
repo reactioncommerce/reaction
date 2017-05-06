@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, PropTypes } from "react";
 import {
   Button,
   TextField
@@ -25,7 +25,8 @@ class Forgot extends Component {
               className="form-control login-input-email"
               type="email"
               tabIndex="1"
-              id="email-{{uniqueId}}"
+              id={`email-${this.props.uniqueId}`}
+              value={this.props.credentials.email}
             />
           </div>
 
@@ -43,7 +44,15 @@ class Forgot extends Component {
           </div>
 
           <div className="form-group">
-            <a href data-i18n="accountsUI.signIn"  data-event-category="accounts" data-event-action="signIn">Sign In</a>
+            <a
+              href="#"
+              data-i18n="accountsUI.signIn"
+              tabIndex="3"
+              data-event-category="accounts"
+              onDoubleClick={this.props.onSignInClick}
+            >
+            Sign In
+            </a>
           </div>
 
         </form>
@@ -51,5 +60,11 @@ class Forgot extends Component {
     );
   }
 }
+
+Forgot.propTypes = {
+  credentials: PropTypes.object,
+  onSignInClick: PropTypes.func,
+  uniqueId: PropTypes.string
+};
 
 export default Forgot;

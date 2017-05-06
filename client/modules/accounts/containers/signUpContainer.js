@@ -9,7 +9,9 @@ class SignUpContainer extends Component {
 
   render() {
     return (
-      <SignUp />
+      <SignUp
+        {...this.props}
+      />
     );
   }
 }
