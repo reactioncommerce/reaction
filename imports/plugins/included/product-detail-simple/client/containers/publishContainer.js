@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from "react";
 import { composeWithTracker } from "/lib/api/compose";
 import { Router } from "/client/api";
 import { ReactionProduct } from "/lib/api";
-import { Tags, Media } from "/lib/collections";
+import { Tags, Media, Products } from "/lib/collections";
 import PublishContainer from "/imports/plugins/core/revisions/client/containers/publishContainer";
 
 class ProductPublishContainer extends Component {
@@ -15,7 +15,15 @@ class ProductPublishContainer extends Component {
   }
 
   handleVisibilityChange = (event, isProductVisible) => {
+    // Update main product
     Meteor.call("products/updateProductField", this.props.product._id, "isVisible", isProductVisible);
+    const variants = Products.find({
+      ancestors: this.props.product._id
+    }).fetch();
+    variants.map(variant => {
+      // update variant
+      Meteor.call("products/updateProductField", variant._id, "isVisible", isProductVisible);
+    });
   }
 
   handlePublishActions = (event, action, documentIds) => {
