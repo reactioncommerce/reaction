@@ -565,7 +565,6 @@ Meteor.methods({
       // Shop Data
       shop: shop,
       contactEmail: shop.emails[0].address,
-      verificationUrl: `${Meteor.absoluteUrl()}${Reaction.getShopPrefix()}/account/profile/verify?email=${shop.emails[0].address}`,
       emailLogo: emailLogo,
       copyrightDate: moment().format("YYYY"),
       legalName: shop.addressBook[0].company,
@@ -603,6 +602,8 @@ Meteor.methods({
       return true;
     }
 
+    // assign verification url
+    dataForEmail.verificationUrl = `${Meteor.absoluteUrl()}${Reaction.getShopPrefix()}/account/profile/verify?email=${user.emails[0].address}`;
     const userEmail = user.emails[0].address;
 
     let shopEmail;

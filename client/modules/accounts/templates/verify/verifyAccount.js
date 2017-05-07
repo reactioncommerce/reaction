@@ -1,7 +1,6 @@
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { Reaction } from "/client/api";
-import { Accounts } from "/lib/collections";
 
 Template.verifyAccount.onCreated(() => {
   const template = Template.instance();
