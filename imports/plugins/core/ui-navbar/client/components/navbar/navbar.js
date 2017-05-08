@@ -78,34 +78,7 @@ Template.CoreNavigationBar.helpers({
     };
   },
 
-  // tagNav() {
-  //   const instance = Template.instance();
-  //   const tags = Tags.find({
-  //     isTopLevel: true
-  //   }, {
-  //     sort: {
-  //       position: 1
-  //     }
-  //   }).fetch();
-
-  //   const props = {
-  //     name: "coreHeaderNavigation",
-  //     editable: Reaction.hasAdminAccess(),
-  //     isEditing: true,
-  //     tags: tags,
-  //     onToggleMenu(callback) {
-  //       // Register the callback
-  //       instance.toggleMenuCallback = callback;
-  //     }
-  //   };
-
-  //   return {
-  //     component: TagNavContainer(TagNav),
-  //     ...props
-  //   };
-  // },
-
-  tagNavProps() {
+  tagNav() {
     const instance = Template.instance();
     const tags = Tags.find({
       isTopLevel: true
@@ -115,7 +88,7 @@ Template.CoreNavigationBar.helpers({
       }
     }).fetch();
 
-    return {
+    const props = {
       name: "coreHeaderNavigation",
       editable: Reaction.hasAdminAccess(),
       isEditing: true,
@@ -125,7 +98,34 @@ Template.CoreNavigationBar.helpers({
         instance.toggleMenuCallback = callback;
       }
     };
+
+    return {
+      component: TagNavContainer(TagNav),
+      ...props
+    };
   },
+
+  // tagNavProps() {
+  //   const instance = Template.instance();
+  //   const tags = Tags.find({
+  //     isTopLevel: true
+  //   }, {
+  //     sort: {
+  //       position: 1
+  //     }
+  //   }).fetch();
+
+  //   return {
+  //     name: "coreHeaderNavigation",
+  //     editable: Reaction.hasAdminAccess(),
+  //     isEditing: true,
+  //     tags: tags,
+  //     onToggleMenu(callback) {
+  //       // Register the callback
+  //       instance.toggleMenuCallback = callback;
+  //     }
+  //   };
+  // },
 
   cartPanel() {
     return CartPanel;

@@ -1,132 +1,80 @@
 import React, { Component, PropTypes } from "react";
-import classnames from "classnames";
-import { Translation } from "/imports/plugins/core/ui/client/components/";
-import { TagListContainer, EditContainer } from "/imports/plugins/core/ui/client/containers";
-import { IconButton, Overlay } from "/imports/plugins/core/ui/client/components";
-
-const NavbarStates = {
-  Orientation: "stateNavbarOrientation",
-  Position: "stateNavbarPosition",
-  Anchor: "stateNavbarAnchor",
-  Visible: "stateNavbarVisible"
-};
-
-const NavbarOrientation = {
-  Vertical: "vertical",
-  Horizontal: "horizontal"
-};
-
-const NavbarVisibility = {
-  Shown: "shown",
-  Hidden: "hidden"
-};
-
-const NavbarPosition = {
-  Static: "static",
-  Fixed: "fixed"
-};
-
-const NavbarAnchor = {
-  Top: "top",
-  Right: "right",
-  Bottom: "bottom",
-  Left: "left",
-  None: "inline"
-};
+import { TagList } from "/imports/plugins/core/ui/client/components/tags/";
+import { DragDropProvider } from "/imports/plugins/core/ui/client/providers";
 
 class TagNav extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       attachedBodyListener: false,
       isEditing: false,
-      selectedTag: null,
-      [NavbarStates.Visible]: false,
-      [NavbarStates.Visibility]: NavbarVisibility.Hidden
+      selectedTag: null
     };
   }
 
-  get tags() {
-    return this.props.tags;
+  suggestions = [{}]
+
+  handleNewTagSave = (tag) => {
   }
 
-  get showEditControls() {
-    return this.props.tags && true;
+  handleNewTagUpdate = (tag) => {
   }
 
-  get navbarOrientation() {
-    return this.state[NavbarStates.Orientation];
+  handleTagSave = (tag) => {
   }
 
-  get navbarPosition() {
-    return this.state[NavbarStates.Position];
+  handleTagRemove = (tag) => {
   }
 
-  get navbarAnchor() {
-    return this.state[NavbarStates.Anchor];
+  handleTagUpdate = (tag) => {
   }
 
-  get navbarVisibility() {
-    const isVisible = this.state[NavbarStates.Visible] === true;
-
-    if (isVisible) {
-      return "open";
-    }
-    return "closed";
+  handleMoveTag = (dragIndex, hoverIndex) => {
   }
 
-  get showEditControls() {
-    return this.props.product && this.props.editable;
+  handleGetSuggestions = (suggestionUpdateRequest) => {
   }
 
-  renderEditButton() {
-    if (this.showEditControls) {
-      return (
-        <span className="edit-button">
-          <EditContainer
-            data={this.props.product}
-            disabled={this.props.editable === false}
-            editView="ProductAdmin"
-            field="hashtags"
-            i18nKeyLabel="productDetailEdit.productSettings"
-            label="Product Settings"
-            permissions={["createProduct"]}
-          />
-        </span>
-      );
-    }
+  handleClearSuggestions = () => {
 
-    return null;
   }
 
   render() {
-    console.log({ props: this.props });
-
-    if (Array.isArray(this.tags) && this.tags.length > 0) {
-      const parentClasses = `rui tagnav ${this.navbarOrientation} ${this.navbarPosition} ${this.navbarAnchor} ${this.navbarVisibility}`;
-
-      return (
-        // Todo: fix --> rui tagnav horizontal static inline closed
-        <div className={parentClasses}>
-          <div className="navbar-items">
-            <TagListContainer
-              editable={false}
-              product={this.props.product}
-              tags={this.tags}
-            />
-            {this.renderEditButton()}
-          </div>
+    return (
+      <div className="rui tagnav {{navbarOrientation}} {{navbarPosition}} {{navbarAnchor}} {{navbarVisibility}}">
+        <div className="navbar-header">
+          <p>Heaad</p>
         </div>
-      );
-    }
-    return null;
+        <div className="navbar-items">
+        <DragDropProvider>
+          <TagList
+            newTag={this.state.newTag}
+            onClick={this.handleEditButtonClick}
+            onClearSuggestions={this.handleClearSuggestions}
+            onGetSuggestions={this.handleGetSuggestions}
+            onMoveTag={this.handleMoveTag}
+            onNewTagSave={this.handleNewTagSave}
+            onNewTagUpdate={this.handleNewTagUpdate}
+            onTagRemove={this.handleTagRemove}
+            onTagSave={this.handleTagSave}
+            onTagUpdate={this.handleTagUpdate}
+            suggestions={this.suggestions}
+            tags={this.props.tags}
+            tooltip="Unpublished changes"
+            {...this.props}
+          />
+      </DragDropProvider>
+
+        </div>
+      </div>
+    );
   }
 }
 
 TagNav.propTypes = {
   editButton: PropTypes.node,
   editable: PropTypes.bool,
-  product: PropTypes.object,
   tags: PropTypes.arrayOf(PropTypes.object)
 };
 

@@ -1,5 +1,4 @@
 import React from "react";
-import { TranslationProvider } from "/imports/plugins/core/ui/client/providers";
 import { composeWithTracker } from "/lib/api/compose";
 
 function composer(props, onData) {
@@ -9,9 +8,7 @@ function composer(props, onData) {
 export default function TagNavContainer(Comp) {
   function CompositeComponent(props) {
     return (
-      <TranslationProvider>
-        <Comp {...props} />
-      </TranslationProvider>
+      <Comp {...props} />
     );
   }
 
