@@ -7,6 +7,25 @@ import {
 class Forgot extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      email: props.credentials.email
+    };
+
+    this.handleFieldChange = this.handleFieldChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleFieldChange = (event, value, field) => {
+    this.setState({
+      [field]: value
+    });
+  }
+
+  handleSubmit = (event) => {
+    if (this.props.onFormSubmit) {
+      this.props.onFormSubmit(event, this.state.email);
+    }
   }
 
   render() {
@@ -16,17 +35,18 @@ class Forgot extends Component {
           <h2 data-i18n="accountsUI.resetYourPassword">Reset your password</h2>
         </div>
 
-        <form name="loginForm" noValidate>
+        <form name="loginForm" onSubmit={this.handleSubmit}>
 
           <div className="form-group {{hasError messages.errors.email}}">
             <TextField
               i18nKeyLabel="accountsUI.emailAddress"
               label="Email"
-              className="form-control login-input-email"
+              name="email"
               type="email"
               tabIndex="1"
               id={`email-${this.props.uniqueId}`}
-              value={this.props.credentials.email}
+              value={this.state.email}
+              onChange={this.handleFieldChange}
             />
           </div>
 
@@ -63,6 +83,7 @@ class Forgot extends Component {
 
 Forgot.propTypes = {
   credentials: PropTypes.object,
+  onFormSubmit: PropTypes.func,
   onSignInClick: PropTypes.func,
   uniqueId: PropTypes.string
 };
