@@ -346,6 +346,7 @@
         "cancelOrderThenRestock": "Evet ve yeniden yerleştirme",
         "cancelOrderNoRestock": "Evet, ama restocking yok",
         "applyRefund": "İade uygula",
+        "refunding": "Geri ödeme yapılıyor",
         "applyDiscount": "İndirim uygula",
         "adjustedTotal": "Düzeltilmiş Toplam",
         "invalidDiscount": "İndirim orijinal toplam fiyattan daha büyük olamaz",

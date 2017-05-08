@@ -346,6 +346,7 @@
         "cancelOrderThenRestock": "Да, и пополнение запасов",
         "cancelOrderNoRestock": "Да, но без пополнения запасов",
         "applyRefund": "Подтвердить возврат",
+        "refunding": "Рефинансирование",
         "applyDiscount": "Применить скидку",
         "adjustedTotal": "Итого после возврата",
         "invalidDiscount": "Скидка не может быть больше итоговой цены",

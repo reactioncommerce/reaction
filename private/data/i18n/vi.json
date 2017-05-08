@@ -346,6 +346,7 @@
         "cancelOrderThenRestock": "Vâng, và nạp lại",
         "cancelOrderNoRestock": "Vâng, nhưng không có hàng gia dụng",
         "applyRefund": "Áp dụng Refund",
+        "refunding": "hoàn",
         "applyDiscount": "Áp dụng giảm giá",
         "adjustedTotal": "Tổng số điều chỉnh",
         "invalidDiscount": "Chiết khấu không được lớn hơn tổng giá gốc",

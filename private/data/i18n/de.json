@@ -346,6 +346,7 @@
         "cancelOrderThenRestock": "Ja, und wieder aufzutragen",
         "cancelOrderNoRestock": "Ja, aber keine Aufstockung",
         "applyRefund": "Erstattung vornehmen",
+        "refunding": "Rückerstattung",
         "applyDiscount": "Rabatt anwenden",
         "adjustedTotal": "Angepasste Summe",
         "invalidDiscount": "Der Rabatt darf den ursprünglichen Gesamtpreis nicht übersteigen",

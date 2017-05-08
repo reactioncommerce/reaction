@@ -346,6 +346,7 @@
         "cancelOrderThenRestock": "Ja, in obnovo",
         "cancelOrderNoRestock": "Da, vendar se ne obnavlja stalež",
         "applyRefund": "Uporabi vračilo",
+        "refunding": "vračilo",
         "applyDiscount": "Uporabi popust",
         "adjustedTotal": "prilagojena Skupaj",
         "invalidDiscount": "Popust ne more biti večja od prvotne skupne cene",

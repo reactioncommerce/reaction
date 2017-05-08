@@ -346,6 +346,7 @@
         "cancelOrderThenRestock": "Да, и отново",
         "cancelOrderNoRestock": "Да, но без зареждане",
         "applyRefund": "Издай възстановяване",
+        "refunding": "Сумата се възстановява",
         "applyDiscount": "Прилагане на отстъпка",
         "adjustedTotal": "Корегирана сума",
         "invalidDiscount": "Отстъпка не може да бъде по-голям от оригиналния крайна цена",

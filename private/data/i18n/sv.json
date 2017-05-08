@@ -346,6 +346,7 @@
         "cancelOrderThenRestock": "Ja, och återuppta",
         "cancelOrderNoRestock": "Ja, men ingen återhämtning",
         "applyRefund": "tillämpas återbetalning",
+        "refunding": "återbetalning",
         "applyDiscount": "Applicera rabatt",
         "adjustedTotal": "justerat Total",
         "invalidDiscount": "Rabatten kan inte vara större än ursprungliga totalpris",

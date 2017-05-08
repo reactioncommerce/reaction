@@ -346,6 +346,7 @@
         "cancelOrderThenRestock": "Sì, e riposare",
         "cancelOrderNoRestock": "Sì, ma non ripieno",
         "applyRefund": "applicare rimborso",
+        "refunding": "rimborso",
         "applyDiscount": "applicare Sconto",
         "adjustedTotal": "totale rettificato",
         "invalidDiscount": "Lo sconto non può essere superiore a prezzo totale originale",

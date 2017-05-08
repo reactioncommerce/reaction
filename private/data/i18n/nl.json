@@ -346,6 +346,7 @@
         "cancelOrderThenRestock": "Ja, en opnieuw",
         "cancelOrderNoRestock": "Ja, maar geen restocking",
         "applyRefund": "Solliciteer Refund",
+        "refunding": "terugbetaling",
         "applyDiscount": "Solliciteer Discount",
         "adjustedTotal": "aangepaste Total",
         "invalidDiscount": "Korting kan niet groter zijn dan de oorspronkelijke totale prijs",

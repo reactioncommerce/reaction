@@ -346,6 +346,7 @@
         "cancelOrderThenRestock": "Tak, i uzupełnij",
         "cancelOrderNoRestock": "Tak, ale nie restocking",
         "applyRefund": "Zastosuj zwrot",
+        "refunding": "zwrotu",
         "applyDiscount": "Zastosuj zniżkę",
         "adjustedTotal": "Skorygowany Razem",
         "invalidDiscount": "Dyskonta nie może być większa niż oryginalny łączną cenę",

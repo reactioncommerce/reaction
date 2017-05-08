@@ -346,6 +346,7 @@
         "cancelOrderThenRestock": "Igen, és újratelepítésére",
         "cancelOrderNoRestock": "Igen, de nem az újratelepítés",
         "applyRefund": "alkalmazza visszatérítés",
+        "refunding": "visszatérítésével",
         "applyDiscount": "kedvezmény alkalmazása",
         "adjustedTotal": "korrigált összesen",
         "invalidDiscount": "Kedvezmény nem lehet nagyobb, mint az eredeti teljes ár",

@@ -346,6 +346,7 @@
         "cancelOrderThenRestock": "Ano, a znovu",
         "cancelOrderNoRestock": "Ano, ale žádné doplňování",
         "applyRefund": "Použít refundaci",
+        "refunding": "vrácení",
         "applyDiscount": "Použít slevu",
         "adjustedTotal": "Upravený Total",
         "invalidDiscount": "Sleva nemůže být větší než původní celkové ceny",

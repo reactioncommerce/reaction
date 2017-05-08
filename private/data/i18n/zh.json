@@ -346,6 +346,7 @@
         "cancelOrderThenRestock": "是的，补货",
         "cancelOrderNoRestock": "是的，但没有补货",
         "applyRefund": "退款",
+        "refunding": "退款",
         "applyDiscount": "应用折扣",
         "adjustedTotal": "调整后的总金额",
         "invalidDiscount": "折扣不能大于原来的总价",

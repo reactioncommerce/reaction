@@ -346,6 +346,7 @@
         "cancelOrderThenRestock": "Da, i popunite se",
         "cancelOrderNoRestock": "Da, ali ne popunjavanje",
         "applyRefund": "Nanesite povrat sredstava",
+        "refunding": "povrat",
         "applyDiscount": "Primijeni popust",
         "adjustedTotal": "Prilagođen Ukupno",
         "invalidDiscount": "Popust ne može biti veći od originalnog ukupne cijene",

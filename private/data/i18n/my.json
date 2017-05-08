@@ -346,6 +346,7 @@
         "cancelOrderThenRestock": "ဟုတ်ကဲ့, restock",
         "cancelOrderNoRestock": "ဟုတ်ကဲ့, ဒါပေမယ့်ဘယ်သူမျှမ restocking",
         "applyRefund": "ပြန်အမ်းငွေ Apply",
+        "refunding": "ငွေပြန်အမ်း",
         "applyDiscount": "လျှော့ Apply",
         "adjustedTotal": "Adjustments စုစုပေါင်း",
         "invalidDiscount": "လျှော့စျေးမူရင်းစုစုပေါင်းစျေးနှုန်းထက် သာ. ကြီးမြတ်မဖွစျနိုငျ",

@@ -346,6 +346,7 @@
         "cancelOrderThenRestock": "Oui, et réapprovisionnez",
         "cancelOrderNoRestock": "Oui, mais pas de réapprovisionnement",
         "applyRefund": "Procéder au remboursement",
+        "refunding": "remboursant",
         "applyDiscount": "Appliquer la réduction",
         "adjustedTotal": "Total ajusté",
         "invalidDiscount": "La réduction ne peut être supérieure au prix total initial",
