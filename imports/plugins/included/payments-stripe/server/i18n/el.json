@@ -10,11 +10,11 @@
         },
         "dashboard": {
           "stripeLabel": "Stripe",
-          "stripeDescription": "πληρωμές stripe"
+          "stripeDescription": "πληρωμές Stripe"
         },
         "paymentSettings": {
-          "stripeLabel": "Ταινία",
-          "stripeSettingsLabel": "Ταινία",
+          "stripeLabel": "Stripe",
+          "stripeSettingsLabel": "Stripe",
           "stripeSettingsDescription": "Δεν έχετε Stripe API αναγνωριστικό πελάτη;",
           "stripeSettingsGetItHere": "Αποκτήστε το εδώ"
         }
