@@ -22,6 +22,7 @@ class LanguageDropdownContainer extends Component {
 
 const composer = (props, onData) => {
   const languages = [];
+  let currentLanguage = "";
   if (Reaction.Subscriptions.Shops.ready() && Meteor.user()) {
     const shop = Shops.findOne();
     if (typeof shop === "object" && shop.languages) {
@@ -33,20 +34,22 @@ const composer = (props, onData) => {
           const profile = Meteor.user().profile;
           if (profile && profile.lang) {
             if (profile.lang === language.i18n) {
-              language.class = "active";
+              currentLanguage = profile.lang;
             }
           } else if (shop.language === language.i18n) {
             // we don't have a profile language
             // use the shop default
-            language.class = "active";
+            currentLanguage = shop.language;
           }
           languages.push(language);
         }
       }
     }
+    console.log("container", currentLanguage);
   }
   onData(null, {
-    languages: languages
+    languages: languages,
+    currentLanguage: currentLanguage
   });
 };
 

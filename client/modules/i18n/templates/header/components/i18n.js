@@ -1,7 +1,13 @@
-import React, { Component } from "react";
+import React, { Component, PropTypes } from "react";
 import { Button, Divider, DropDownMenu, MenuItem } from "/imports/plugins/core/ui/client/components";
 
 class LanguageDropDown extends Component {
+  static propTypes = {
+    currentLanguage: PropTypes.string,
+    handleChange: PropTypes.func,
+    languages: PropTypes.array
+  }
+
   state = {
     value: ""
   }
@@ -26,7 +32,7 @@ class LanguageDropDown extends Component {
       <div>
         <DropDownMenu
           buttonElement={this.buttonElement()}
-          value={this.state.value}
+          value={this.props.currentLanguage || this.state.value}
           onChange={this.onChange}
         >
           <MenuItem
