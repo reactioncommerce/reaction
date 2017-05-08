@@ -45,7 +45,6 @@ const composer = (props, onData) => {
         }
       }
     }
-    console.log("container", currentLanguage);
   }
   onData(null, {
     languages: languages,
