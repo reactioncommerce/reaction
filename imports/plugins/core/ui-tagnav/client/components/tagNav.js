@@ -83,6 +83,10 @@ class TagNav extends Component {
   handleClearSuggestions = () => {
   }
 
+  get canEdit() {
+    return true; // TODO: Change to perm
+  }
+
   attachBodyListener = () => {
     document.body.addEventListener("mouseover", this.closeDropdown);
     this.setState({ attachedBodyListener: true });
@@ -127,7 +131,6 @@ class TagNav extends Component {
       // This will check to see if the dropdown should be closed if the user
       // leaves the tag nav bar
       this.attachBodyListener();
-      console.log({ tagId, tags });
       this.setState({ selectedTag: TagNavHelpers.tagById(tagId, tags) });
     }
   }
@@ -154,8 +157,7 @@ class TagNav extends Component {
   }
 
   renderEditButton() {
-    // if (this.showEditControls) {
-    if (true) {
+    if (this.canEdit) {
       return (
         <span className="edit-container-item" style={styles.editContainerItem}>
           <EditButton
