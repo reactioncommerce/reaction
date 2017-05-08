@@ -53,7 +53,7 @@ class EmailLogs extends Component {
     return (
       <CardGroup>
         <Card
-          expanded={false}
+          expanded={true}
         >
           <CardHeader
             actAsExpander={true}
