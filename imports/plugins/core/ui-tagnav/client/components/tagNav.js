@@ -141,7 +141,7 @@ class TagNav extends Component {
                 tag={tag}
               />
               <div className={`dropdown-container data-tag=${tag._id}`}>
-                <TagTree />
+                <TagTree tag={tag} />
               </div>
             </div>
           </DragDropProvider>
