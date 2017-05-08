@@ -8,6 +8,26 @@ class SignUp extends Component {
 
   constructor(props) {
     super(props);
+
+    this.state = {
+      email: props.credentials.email,
+      password: props.credentials.password
+    };
+
+    this.handleFieldChange = this.handleFieldChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleFieldChange = (event, value, field) => {
+    this.setState({
+      [field]: value
+    });
+  }
+
+  handleSubmit = (event) => {
+    if (this.props.onFormSubmit) {
+      this.props.onFormSubmit(event, this.state.email, this.state.password);
+    }
   }
 
   render() {
@@ -17,17 +37,18 @@ class SignUp extends Component {
         <h2 data-i18n="accountsUI.createAccount">Create an Account</h2>
       </div>
 
-      <form className="login-form" noValidate>
+      <form className="login-form" onSubmit={this.handleSubmit}>
 
         <div className="form-group form-group-email {{hasError messages.errors.email}}">
           <TextField
             i18nKeyLabel="accountsUI.emailAddress"
             label="Email"
-            className="form-control login-input-email"
+            name="email"
             type="email"
             tabIndex="1"
             id={`email-${this.props.uniqueId}`}
-            value={this.props.credentials.email}
+            value={this.state.email}
+            onChange={this.handleFieldChange}
           />
         </div>
 
@@ -35,11 +56,12 @@ class SignUp extends Component {
           <TextField
             i18nKeyLabel="accountsUI.password"
             label="Password"
-            className="form-control login-input-password"
+            name="password"
             type="password"
             tabIndex="2"
             id={`password-${this.props.uniqueId}`}
-            value={this.props.credentials.password}
+            value={this.state.password}
+            onChange={this.handleFieldChange}
           />
         </div>
 
@@ -76,6 +98,7 @@ class SignUp extends Component {
 
 SignUp.propTypes = {
   credentials: PropTypes.object,
+  onFormSubmit: PropTypes.func,
   onSignInClick: PropTypes.func,
   uniqueId: PropTypes.string
 };
