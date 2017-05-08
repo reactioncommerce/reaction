@@ -388,11 +388,11 @@ export default {
       // or attempt to load reaction.json fixture data
       try {
         registryFixtureData = Assets.getText("settings/reaction.json");
+        Logger.info("Loaded \"/private/settings/reaction.json\" for registry fixture import");
       } catch (error) {
         Logger.warn("Skipped loading settings from reaction.json.");
         Logger.debug(error, "loadSettings reaction.json not loaded.");
       }
-      Logger.info("Loaded \"/private/settings/reaction.json\" for registry fixture import");
     }
 
     if (!!registryFixtureData) {
