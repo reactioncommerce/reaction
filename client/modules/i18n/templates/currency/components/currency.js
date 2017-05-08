@@ -1,7 +1,13 @@
-import React, { Component } from "react";
+import React, { Component, PropTypes } from "react";
 import { Button, Divider, DropDownMenu, MenuItem } from "/imports/plugins/core/ui/client/components";
 
 class Currency extends Component {
+  static propTypes = {
+    currencies: PropTypes.array,
+    currentCurrency: PropTypes.string,
+    handleChange: PropTypes.func
+  }
+
   state = {
     value: ""
   }
@@ -10,7 +16,8 @@ class Currency extends Component {
     this.setState({
       value: value
     });
-    this.props.handleChange(this.state.value);
+
+    this.props.handleChange(value);
   }
 
   currencyDisplay(value, symbol) {
@@ -24,7 +31,7 @@ class Currency extends Component {
       <Button
         icon="fa fa-caret-down"
         iconAfter={true}
-        label={this.state.value || this.props.currentCurrency}
+        label={this.props.currentCurrency || this.state.value}
       />
     );
   }
@@ -36,7 +43,7 @@ class Currency extends Component {
           <DropDownMenu
             buttonElement={this.buttonElement()}
             onChange={this.onChange}
-            value={this.state.value || this.props.currentCurrency}
+            value={this.props.currentCurrency || this.state.value}
           >
             <MenuItem
               label="Select Currency"

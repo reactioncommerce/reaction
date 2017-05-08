@@ -42,7 +42,7 @@ class CurrencyContainer extends Component {
 
 const composer = (props, onData) => {
   let currentCurrency = "USD $";
-  let currencies = [];
+  const currencies = [];
 
   if (Reaction.Subscriptions.Shops.ready() && Meteor.user()) {
     const shop = Shops.findOne(Reaction.getShopId(), {
@@ -53,14 +53,15 @@ const composer = (props, onData) => {
     });
     if (Match.test(shop, Object) && shop.currency) {
       const localStorageCurrency = localStorage.getItem("currency");
+      const locale = Reaction.Locale.get();
+
       if (localStorageCurrency) {
         currentCurrency = localStorageCurrency + " " + shop.currencies[localStorageCurrency].symbol;
-      }
-      const locale = Reaction.Locale.get();
-      if (locale && locale.currency && locale.currency.enabled) {
+      } else if (locale && locale.currency && locale.currency.enabled) {
         currentCurrency = locale.locale.currency + " " + locale.currency.symbol;
+      } else {
+        currentCurrency = shop.currency + " " + shop.currencies[shop.currency].symbol;
       }
-      currentCurrency = shop.currency + " " + shop.currencies[shop.currency].symbol;
     }
 
     if (Match.test(shop, Object) && shop.currencies) {
@@ -84,7 +85,6 @@ const composer = (props, onData) => {
       }
     }
   }
-  console.log("currencies", currencies);
 
   onData(null, {
     currentCurrency: currentCurrency,
