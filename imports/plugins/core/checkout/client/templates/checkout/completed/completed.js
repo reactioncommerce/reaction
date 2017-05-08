@@ -11,7 +11,7 @@ import { Template } from "meteor/templating";
  */
 Template.cartCompleted.helpers({
   orderCompleted: function () {
-    const id =  Reaction.Router.getQueryParam("_id");
+    const id = Reaction.Router.getQueryParam("_id");
     if (id) {
       const ccoSub = Meteor.subscribe("CompletedCartOrder", Meteor.userId(), id);
       if (ccoSub.ready()) {
