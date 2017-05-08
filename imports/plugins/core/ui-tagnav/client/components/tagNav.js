@@ -85,7 +85,7 @@ class TagNav extends Component {
 
   attachBodyListener = () => {
     document.body.addEventListener("mouseover", this.closeDropdown);
-    this.state.set("attachedBodyListener", true);
+    this.setState({ attachedBodyListener: true });
   }
 
   detachhBodyListener = () => {
@@ -106,14 +106,13 @@ class TagNav extends Component {
     }
   }
 
-  handleTagMouseOver = (event) => {
-    const tagId = event.currentTarget.dataset.id;
+  handleTagMouseOver = (event, tag) => {
+    const tagId = tag._id;
     const tags = this.props.tags;
 
-    // if (TagNavHelpers.isMobile()) {
-      // return;
-    // }
-
+    if (TagNavHelpers.isMobile()) {
+      return;
+    }
     // While in edit mode, don't trigger the hover hide/show menu
     if (this.state.isEditing === false) {
       // User mode
@@ -127,7 +126,8 @@ class TagNav extends Component {
       // And Attach an event listener to the document body
       // This will check to see if the dropdown should be closed if the user
       // leaves the tag nav bar
-      instance.attachBodyListener();
+      this.attachBodyListener();
+      console.log({ tagId, tags });
       this.setState({ selectedTag: TagNavHelpers.tagById(tagId, tags) });
     }
   }
@@ -142,7 +142,16 @@ class TagNav extends Component {
     return null;
   }
 
-  navbarSelectedClassName = () => {}
+  navbarSelectedClassName = (tag) => {
+    const selectedTag = this.state.selectedTag;
+
+    if (selectedTag) {
+      if (selectedTag._id === tag._id) {
+        return "selected";
+      }
+    }
+    return "";
+  }
 
   renderEditButton() {
     // if (this.showEditControls) {
