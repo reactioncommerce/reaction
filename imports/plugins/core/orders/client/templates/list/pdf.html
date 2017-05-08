@@ -94,12 +94,14 @@
     <table class="table table-bordered">
       <tr>
         <th>Quantity</th>
+        <th>Product</th>
         <th>Title</th>
         <th>Price</th>
       </tr>
       {{#each order.items}}
         <tr>
           <td>{{quantity}}</td>
+          <td>{{title}}</td>
           <td>{{variants.title}}</td>
           <td>{{formatPrice variants.price}}</td>
         </tr>
