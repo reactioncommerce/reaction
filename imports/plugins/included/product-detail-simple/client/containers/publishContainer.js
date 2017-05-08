@@ -17,9 +17,13 @@ class ProductPublishContainer extends Component {
   handleVisibilityChange = (event, isProductVisible) => {
     // Update main product
     Meteor.call("products/updateProductField", this.props.product._id, "isVisible", isProductVisible);
+
     const variants = Products.find({
-      ancestors: this.props.product._id
+      ancestors: {
+        $in: [this.props.product._id]
+      }
     }).fetch();
+
     variants.map(variant => {
       // update variant
       Meteor.call("products/updateProductField", variant._id, "isVisible", isProductVisible);
