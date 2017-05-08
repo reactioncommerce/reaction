@@ -36,6 +36,7 @@ class Currency extends Component {
           <DropDownMenu
             buttonElement={this.buttonElement()}
             onChange={this.onChange}
+            value={this.state.value || this.props.currentCurrency}
           >
             <MenuItem
               label="Select Currency"
@@ -49,8 +50,7 @@ class Currency extends Component {
               <MenuItem
                 key={currency.currency}
                 label={this.currencyDisplay(currency.currency, currency.symbol)}
-                value={currency.currency}
-                // active={currency.currency  === "USD"}
+                value={this.currencyDisplay(currency.currency, currency.symbol)}
               />
             ))}
           </DropDownMenu>

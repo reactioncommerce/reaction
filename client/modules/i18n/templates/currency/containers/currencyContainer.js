@@ -12,18 +12,20 @@ class CurrencyContainer extends Component {
   }
 
   handleChange = (value) => {
+    const currency = value.split(" ");
+    const currencyName = currency[0];
     //
     // this is a sanctioned use of Meteor.user.update
     // and only possible because we allow it in the
     // UserProfile and ShopMembers publications.
     //
-    Meteor.users.update(Meteor.userId(), { $set: { "profile.currency": value } });
-    localStorage.setItem("currency", value);
+    Meteor.users.update(Meteor.userId(), { $set: { "profile.currency": currencyName } });
+    localStorage.setItem("currency", currencyName);
 
     const cart = Cart.findOne({ userId: Meteor.userId() });
 
     // Attach changed currency to this users cart
-    Meteor.call("cart/setUserCurrency", cart._id, value);
+    Meteor.call("cart/setUserCurrency", cart._id, currencyName);
   }
 
   render() {

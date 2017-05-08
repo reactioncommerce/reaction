@@ -1,4 +1,5 @@
 import React, { Children, Component, PropTypes } from "react";
+import classnames from "classnames/dedupe";
 
 class Menu extends Component {
   handleChange = (event, value, menuItem) => {
@@ -11,12 +12,13 @@ class Menu extends Component {
     if (this.props.children) {
       return Children.map(this.props.children, (element) => {
         const newChild = React.cloneElement(element, {
-          onClick: this.handleChange,
-          active: element.props.value === this.props.value
+          onClick: this.handleChange
         });
-
+        const baseClassName = classnames({
+          active: element.props.value === this.props.value
+        }, this.props.className);
         return (
-          <li>{newChild}</li>
+          <li className={baseClassName}>{newChild}</li>
         );
       });
     }
