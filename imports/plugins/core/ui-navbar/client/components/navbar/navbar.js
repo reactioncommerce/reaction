@@ -90,7 +90,8 @@ Template.CoreNavigationBar.helpers({
 
     const props = {
       name: "coreHeaderNavigation",
-      editable: Reaction.hasAdminAccess(),
+      // editable: Reaction.hasAdminAccess(),
+      editable: false,
       isEditing: true,
       tags: tags,
       onToggleMenu(callback) {
