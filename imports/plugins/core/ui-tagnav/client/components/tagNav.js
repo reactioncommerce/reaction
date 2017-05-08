@@ -1,13 +1,48 @@
 import React, { Component, PropTypes } from "react";
 import { TagItem } from "/imports/plugins/core/ui/client/components/tags/";
-import TagTree from "./tagTree";
+import { TagHelpers } from "/imports/plugins/core/ui-tagnav/client/helpers";
 import { DragDropProvider } from "/imports/plugins/core/ui/client/providers";
 import { EditButton } from "/imports/plugins/core/ui/client/components";
+import TagTree from "./tagTree";
 
 const styles = {
   editContainerItem: {
     display: "flex",
     marginLeft: 5
+  }
+};
+
+const TagNavHelpers = {
+  onTagCreate(tagName, parentTag) {
+    TagHelpers.createTag(tagName, undefined, parentTag);
+  },
+  onTagRemove(tag, parentTag) {
+    TagHelpers.removeTag(tag, parentTag);
+  },
+  onTagSort(tagIds, parentTag) {
+    TagHelpers.sortTags(tagIds, parentTag);
+  },
+  onTagDragAdd(movedTagId, toListId, toIndex, ofList) {
+    TagHelpers.moveTagToNewParent(movedTagId, toListId, toIndex, ofList);
+  },
+  onTagUpdate(tagId, tagName) {
+    TagHelpers.updateTag(tagId, tagName);
+  },
+  isMobile() {
+    return window.matchMedia("(max-width: 991px)").matches;
+  },
+  tagById(tagId, tags) {
+    return _.find(tags, (tag) => tag._id === tagId);
+  },
+  hasSubTags(tagId, tags) {
+    const foundTag = this.tagById(tagId, tags);
+
+    if (foundTag) {
+      if (_.isArray(foundTag.relatedTagIds) && foundTag.relatedTagIds.length) {
+        return true;
+      }
+    }
+    return false;
   }
 };
 
@@ -48,8 +83,53 @@ class TagNav extends Component {
   handleClearSuggestions = () => {
   }
 
-  handleTagMouseOver = () => {
-    console.log({ text:"hover" });
+  attachBodyListener = () => {
+    document.body.addEventListener("mouseover", this.closeDropdown);
+    this.state.set("attachedBodyListener", true);
+  }
+
+  detachhBodyListener = () => {
+    document.body.removeEventListener("mouseover", this.closeDropdown);
+    this.setState({ attachedBodyListener: false });
+  }
+
+  closeDropdown = (event) => {
+    if ($(event.target).closest(".navbar-item").length === 0) {
+      this.closeDropdownTimeout = setTimeout(() => {
+        this.setState({ selectedTag: null });
+        this.detachhBodyListener();
+      }, 500);
+    } else {
+      if (this.closeDropdownTimeout) {
+        clearTimeout(this.closeDropdownTimeout);
+      }
+    }
+  }
+
+  handleTagMouseOver = (event) => {
+    const tagId = event.currentTarget.dataset.id;
+    const tags = this.props.tags;
+
+    // if (TagNavHelpers.isMobile()) {
+      // return;
+    // }
+
+    // While in edit mode, don't trigger the hover hide/show menu
+    if (this.state.isEditing === false) {
+      // User mode
+      // Don't show dropdown if there are no subtags
+      if (TagNavHelpers.hasSubTags(tagId, tags) === false) {
+        this.setState({ selectedTag: null });
+        return;
+      }
+
+      // Otherwise, show the menu
+      // And Attach an event listener to the document body
+      // This will check to see if the dropdown should be closed if the user
+      // leaves the tag nav bar
+      instance.attachBodyListener();
+      this.setState({ selectedTag: TagNavHelpers.tagById(tagId, tags) });
+    }
   }
 
   handleEditButtonClick = () => {
@@ -141,7 +221,12 @@ class TagNav extends Component {
                 tag={tag}
               />
               <div className={`dropdown-container data-tag=${tag._id}`}>
-                <TagTree tag={tag} />
+                <TagTree
+                  parentTag={tag}
+                  subTagGroups={TagHelpers.subTags(tag)}
+                  isEditing={this.state.isEditing === true}
+                  {...TagNavHelpers}
+                />
               </div>
             </div>
           </DragDropProvider>
