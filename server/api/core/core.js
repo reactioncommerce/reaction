@@ -15,8 +15,15 @@ import { getMailUrl } from "./email/config";
 export default {
 
   init() {
+    // make sure the default shop has been created before going further
+    while (!this.getShopId()) {
+      Logger.warn("No shopId, waiting one second...");
+      Meteor._sleepForMs(1000);
+    }
+
     // run onCoreInit hooks
-    Hooks.Events.run("onCoreInit", this);
+    Hooks.Events.run("onCoreInit");
+
     // start job server
     Jobs.startJobServer(() => {
       Logger.info("JobServer started");
@@ -251,10 +258,6 @@ export default {
     let configureEnv = false;
     let accountId;
 
-    while (!this.getShopId()) {
-      Logger.debug("No shopId, waiting one second...");
-      Meteor._sleepForMs(1000);
-    }
     const shopId = this.getShopId();
 
     // if an admin user has already been created, we'll exit
