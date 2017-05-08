@@ -51,6 +51,7 @@ Template.i18nChooser.events({
     // and only possible because we allow it in the
     // UserProfile and ShopMembers publications.
     //
+    console.log("blaze", this.i18n);
     Meteor.users.update(Meteor.userId(), { $set: { "profile.lang": this.i18n } });
   }
 });
