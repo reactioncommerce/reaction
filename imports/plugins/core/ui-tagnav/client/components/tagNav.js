@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from "react";
-import { TagList } from "/imports/plugins/core/ui/client/components/tags/";
+import { TagItem } from "/imports/plugins/core/ui/client/components/tags/";
+import TagTree from "./tagTree";
 import { DragDropProvider } from "/imports/plugins/core/ui/client/providers";
 import { EditButton } from "/imports/plugins/core/ui/client/components";
 
@@ -45,11 +46,23 @@ class TagNav extends Component {
   }
 
   handleClearSuggestions = () => {
+  }
 
+  handleTagMouseOver = () => {
+    console.log({ text:"hover" });
   }
 
   handleEditButtonClick = () => {
   }
+
+  hasDropdownClassName(tag) {
+    if (_.isArray(tag.relatedTagIds)) {
+      return "has-dropdown";
+    }
+    return null;
+  }
+
+  navbarSelectedClassName = () => {}
 
   renderEditButton() {
     // if (this.showEditControls) {
@@ -67,32 +80,95 @@ class TagNav extends Component {
 
     return null;
   }
+/*
+  <div class="rui tagnav {{navbarOrientation}} {{navbarPosition}} {{navbarAnchor}} {{navbarVisibility}}">
+    <div class="navbar-header">
+      {{> button
+        icon="times"
+        className="close-button"
+        status="default"
+        onClick=handleMenuClose
+      }}
+      {{> coreNavigationBrand}}
+    </div>
+    <div class="navbar-items">
+      {{#each tag in tags}}
+        <div class="navbar-item {{navbarSelectedClassName tag}} {{hasDropdownClassName tag}}" data-id={{tag._id}}>
+          {{> tagItem (tagProps tag)}}
+
+          <div class="dropdown-container" data-tag={{tag._id}}>
+            {{> tagTree (tagTreeProps tag)}}
+          </div>
+        </div>
+      {{/each}}
+      {{#if isEditing}}
+        <div class="navbar-item create">
+          {{> tagItem blankTagProps}}
+        </div>
+      {{/if}}
+
+      {{#if canEdit}}
+        <div class="navbar-item edit-button">
+          {{> React EditButton }}
+        </div>
+      {{/if}}
+    </div>
+  </div>
+*/
+
+  renderTags() {
+    if (_.isArray(this.props.tags)) {
+      const tags = this.props.tags.map((tag, index) => {
+        const classAttr = `navbar-item ${this.navbarSelectedClassName(tag)} ${this.hasDropdownClassName(tag)} data-id=${tag._id}`;
+        return (
+          <DragDropProvider key={tag._id}>
+            <div className={classAttr}>
+              <TagItem
+                data-id={tag._id}
+                editable={this.props.editable}
+                index={index}
+                key={index}
+                onClearSuggestions={this.handleClearSuggestions}
+                onGetSuggestions={this.handleGetSuggestions}
+                onMove={this.handleMoveTag}
+                onTagInputBlur={this.handleTagSave}
+                onTagMouseOut={this.handleTagMouseOut}
+                onTagMouseOver={this.handleTagMouseOver}
+                onTagRemove={this.handleTagRemove}
+                onTagSave={this.handleTagSave}
+                onTagUpdate={this.handleTagUpdate}
+                suggestions={this.suggestions}
+                tag={tag}
+              />
+              <div className={`dropdown-container data-tag=${tag._id}`}>
+                <TagTree />
+              </div>
+            </div>
+          </DragDropProvider>
+        );
+      });
+
+      // Render an blank tag for creating new tags
+      if (this.props.editable) {
+        tags.push(
+          <div />
+        );
+      }
+
+      return tags;
+    }
+
+    return null;
+  }
 
   render() {
     return (
-      <div className="rui tagnav {{navbarOrientation}} {{navbarPosition}} {{navbarAnchor}} {{navbarVisibility}}">
+      <div className="rui tagnav horizontal static inline closed">
         <div className="navbar-header">
           <p>Header</p>
         </div>
         <div className="navbar-items">
-          <DragDropProvider>
-            <TagList
-              newTag={this.state.newTag}
-              onClick={this.handleEditButtonClick}
-              onClearSuggestions={this.handleClearSuggestions}
-              onGetSuggestions={this.handleGetSuggestions}
-              onMoveTag={this.handleMoveTag}
-              onNewTagSave={this.handleNewTagSave}
-              onNewTagUpdate={this.handleNewTagUpdate}
-              onTagRemove={this.handleTagRemove}
-              onTagSave={this.handleTagSave}
-              onTagUpdate={this.handleTagUpdate}
-              suggestions={this.suggestions}
-              tags={this.props.tags}
-              tooltip="Unpublished changes"
-              {...this.props}
-            />
-          </DragDropProvider>
+          {this.renderTags()}
           {this.renderEditButton()}
         </div>
       </div>

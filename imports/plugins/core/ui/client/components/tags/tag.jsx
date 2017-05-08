@@ -110,6 +110,7 @@ class Tag extends Component {
    * @return {void} no return value
    */
   handleTagMouseOver = (event) => {
+    console.log({ event });
     if (this.props.onTagMouseOver) {
       this.props.onTagMouseOver(event, this.props.tag);
     }
