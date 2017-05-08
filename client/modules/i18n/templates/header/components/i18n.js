@@ -29,7 +29,7 @@ class LanguageDropDown extends Component {
 
   render() {
     return (
-      <div>
+      <div className="dropdown-toggle">
         <DropDownMenu
           buttonElement={this.buttonElement()}
           value={this.props.currentLanguage || this.state.value}
