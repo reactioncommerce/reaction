@@ -89,7 +89,7 @@ class TagNav extends Component {
   }
 
   get canEdit() {
-    return this.props.editable && Reaction.isPreview() === false;
+    return this.props.hasEdits && Reaction.isPreview() === false;
   }
 
   attachBodyListener = () => {
@@ -141,6 +141,7 @@ class TagNav extends Component {
   }
 
   handleEditButtonClick = () => {
+    this.setState({ isEditing: !this.state.isEditing });
   }
 
   hasDropdownClassName(tag) {
@@ -164,10 +165,15 @@ class TagNav extends Component {
   renderEditButton() {
     if (this.canEdit) {
       return (
-        <span className="edit-container-item" style={styles.editContainerItem}>
+        <span className="navbar-item edit-button" style={styles.editContainerItem}>
           <EditButton
             onClick={this.handleEditButtonClick}
-            status={"status"}
+            bezelStyle="solid"
+            primary={true}
+            icon="fa fa-pencil"
+            onIcon="fa fa-check"
+            toggle={true}
+            toggleOn={this.state.isEditing}
           />
         </span>
       );
@@ -252,18 +258,20 @@ class TagNav extends Component {
       if (this.props.editable) {
         tags.push(
           <DragDropProvider key={"newTag"}>
-          <TagItem
-            // {...this.props.tagProps}
-            blank={true}
-            key="newTagForm"
-            onClearSuggestions={this.handleClearSuggestions}
-            onGetSuggestions={this.handleGetSuggestions}
-            onTagInputBlur={this.handleNewTagSave}
-            onTagSave={this.handleNewTagSave}
-            onTagUpdate={this.handleNewTagUpdate}
-            tag={this.newTag}
-            suggestions={this.suggestions}
-          />
+            <div className="navbar-item">
+              <TagItem
+                // {...this.props.tagProps}
+                blank={true}
+                key="newTagForm"
+                onClearSuggestions={this.handleClearSuggestions}
+                onGetSuggestions={this.handleGetSuggestions}
+                onTagInputBlur={this.handleNewTagSave}
+                onTagSave={this.handleNewTagSave}
+                onTagUpdate={this.handleNewTagUpdate}
+                tag={this.newTag}
+                suggestions={this.suggestions}
+              />
+            </div>
           </DragDropProvider>
 
         );
@@ -293,6 +301,7 @@ class TagNav extends Component {
 TagNav.propTypes = {
   editButton: PropTypes.node,
   editable: PropTypes.bool,
+  hasEdits: PropTypes.bool,
   tags: PropTypes.arrayOf(PropTypes.object)
 };
 
