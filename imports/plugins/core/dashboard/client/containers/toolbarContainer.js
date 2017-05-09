@@ -7,6 +7,7 @@ import { TranslationProvider, AdminContextProvider } from "/imports/plugins/core
 import { isRevisionControlEnabled } from "/imports/plugins/core/revisions/lib/api";
 
 const handleAddProduct = () => {
+  Reaction.setUserPreferences("reaction-dashboard", "viewAs", "administrator");
   Meteor.call("products/createProduct", (error, productId) => {
     if (Meteor.isClient) {
       let currentTag;
