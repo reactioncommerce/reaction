@@ -1,17 +1,40 @@
 import React, { Component, PropTypes } from "react";
+import { TagItem } from "/imports/plugins/core/ui/client/components/tags/";
 
 class TagTree extends Component {
   static propTypes = {
+    editable: PropTypes.bool,
+    onTagRemove: PropTypes.func,
     parentTag: PropTypes.object,
     subTagGroups: PropTypes.arrayOf(PropTypes.object)
   }
 
+  suggestions = [{}]
+
+  onTagRemove = (tag) => {
+    this.props.onTagRemove(tag, this.props.parentTag);
+  }
+
   renderSubTagGroups(subTagGroups) {
     if (_.isArray(subTagGroups)) {
-      return subTagGroups.map((groupTag) => (
+      console.log({ text: subTagGroups[0] });
+      return subTagGroups.map((groupTag, index) => (
         <div className="rui grouptag {{className}}" data-id={groupTag._id} key={groupTag._id}>
           <div className="header">
-            Test
+            <TagItem
+              className="js-tagNav-item"
+              editable={this.props.editable}
+              index={index}
+              isSelected={this.isSelected}
+              key={index}
+              onTagRemove={this.handleTagRemove}
+              onTagSave={this.handleTagSave}
+              onTagSelect={this.onTagSelect}
+              selectable={true}
+              onTagUpdate={this.handleTagUpdate}
+              suggestions={this.suggestions}
+              tag={groupTag}
+            />
           </div>
           <div className="content">
             Test

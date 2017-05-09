@@ -109,8 +109,6 @@ class Tag extends Component {
    * @return {void} no return value
    */
   handleTagSelect = () => {
-    console.log({ a: this.onTagSelect });
-    console.log('ssssssssss');
     if (this.props.onTagSelect) { // Pass the tag back up to the parent component
       this.props.onTagSelect(this.props.tag);
     }

@@ -230,9 +230,10 @@ class TagNav extends Component {
               />
               <div className={`dropdown-container data-tag=${tag._id}`}>
                 <TagTree
+                  editable={this.state.editable === true}
+                  onTagRemove={this.handleTagRemove}
                   parentTag={tag}
                   subTagGroups={TagHelpers.subTags(tag)}
-                  editable={this.state.editable === true}
                   {...TagNavHelpers}
                 />
               </div>
