@@ -445,7 +445,10 @@ Meteor.methods({
     if (!user) {
       const userId = MeteorAccounts.createUser({
         email: email,
-        username: name
+        username: name,
+        profile: {
+          invited: true
+        }
       });
 
       const newUser = Meteor.users.findOne(userId);
