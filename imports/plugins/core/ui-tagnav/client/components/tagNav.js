@@ -115,6 +115,23 @@ class TagNav extends Component {
     }
   }
 
+  onTagSelect = (selectedTag) => {
+    console.log({ selectedTag });
+    if (JSON.stringify(selectedTag) === JSON.stringify(this.state.selectedTag)) {
+      this.setState({ selectedTag: null });
+    } else {
+      this.setState({ selectedTag: selectedTag });
+    }
+  }
+
+  isSelected(tag) {
+    let isSelected = false;
+    if (this.state.selectedTag && tag) {
+      isSelected = this.state.selectedTag._id === tag._id;
+    }
+    return isSelected;
+  }
+
   handleTagMouseOver = (event, tag) => {
     const tagId = tag._id;
     const tags = this.props.tags;
@@ -190,9 +207,11 @@ class TagNav extends Component {
           <DragDropProvider key={index}>
             <div className={classAttr}>
               <TagItem
+                className="js-tagNav-item"
                 data-id={tag._id}
                 editable={this.state.editable}
                 index={index}
+                isSelected={this.isSelected}
                 key={index}
                 onClearSuggestions={this.handleClearSuggestions}
                 onGetSuggestions={this.handleGetSuggestions}
@@ -202,10 +221,12 @@ class TagNav extends Component {
                 onTagMouseOver={this.handleTagMouseOver}
                 onTagRemove={this.handleTagRemove}
                 onTagSave={this.handleTagSave}
+                onTagSelect={this.onTagSelect}
                 selectable={true}
                 onTagUpdate={this.handleTagUpdate}
                 suggestions={this.suggestions}
                 tag={tag}
+                {...TagNavHelpers}
               />
               <div className={`dropdown-container data-tag=${tag._id}`}>
                 <TagTree

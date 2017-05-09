@@ -105,6 +105,18 @@ class Tag extends Component {
   };
 
   /**
+   * Handle click event on drop button and pass up the component chain
+   * @return {void} no return value
+   */
+  handleTagSelect = () => {
+    console.log({ a: this.onTagSelect });
+    console.log('ssssssssss');
+    if (this.props.onTagSelect) { // Pass the tag back up to the parent component
+      this.props.onTagSelect(this.props.tag);
+    }
+  }
+
+  /**
    * Handle tag mouse over events and pass them up the component chain
    * @param  {Event} event Event object
    * @return {void} no return value
@@ -297,6 +309,7 @@ Tag.propTypes = {
   onTagMouseOver: PropTypes.func,
   onTagRemove: PropTypes.func,
   onTagSave: PropTypes.func,
+  onTagSelect: PropTypes.func,
   onTagUpdate: PropTypes.func,
   parentTag: PropTypes.object,
   selectable: PropTypes.bool,
