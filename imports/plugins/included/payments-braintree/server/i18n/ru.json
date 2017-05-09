@@ -11,7 +11,7 @@
         },
         "dashboard": {
           "braintreeLabel": "Braintree",
-          "braintreeTitle": "Брейнтри",
+          "braintreeTitle": "Braintree",
           "braintreeDescription": "платежи Брейнтри"
         },
         "paymentSettings": {

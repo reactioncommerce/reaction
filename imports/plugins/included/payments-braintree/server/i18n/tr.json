@@ -23,7 +23,7 @@
       "order": {
         "paymentProvider": {
           "braintree": {
-            "braintreeSettlementDelay": "işlemler yerleşmiş kadar braintree iadesi izin vermez. Bu 24 saate kadar sürebilir. Lütfen daha sonra tekrar deneyiniz."
+            "braintreeSettlementDelay": "işlemler yerleşmiş kadar Braintree iadesi izin vermez. Bu 24 saate kadar sürebilir. Lütfen daha sonra tekrar deneyiniz."
           }
         }
       }

@@ -15,7 +15,7 @@
           "braintreeDescription": "المدفوعات برينتر"
         },
         "paymentSettings": {
-          "braintreeLabel": "برينتر",
+          "braintreeLabel": "Braintree",
           "braintreeSettingsLabel": "Braintree",
           "braintreeCredentials": "إضافة أوراق لتمكين"
         }
