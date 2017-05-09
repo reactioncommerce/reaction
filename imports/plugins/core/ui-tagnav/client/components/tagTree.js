@@ -5,14 +5,15 @@ class TagTree extends Component {
   static propTypes = {
     editable: PropTypes.bool,
     onTagRemove: PropTypes.func,
+    onTagSave: PropTypes.func,
     parentTag: PropTypes.object,
     subTagGroups: PropTypes.arrayOf(PropTypes.object)
   }
 
   suggestions = [{}]
 
-  onTagRemove = (tag) => {
-    this.props.onTagRemove(tag, this.props.parentTag);
+  newTag = {
+    name: ""
   }
 
   renderSubTagGroups(subTagGroups) {
@@ -20,7 +21,7 @@ class TagTree extends Component {
       console.log({ text: subTagGroups[0] });
       return subTagGroups.map((groupTag, index) => (
         <div className="rui grouptag {{className}}" data-id={groupTag._id} key={groupTag._id}>
-          <div className="header">
+          <div className="content">
             <TagItem
               className="js-tagNav-item"
               editable={this.props.editable}
@@ -28,7 +29,7 @@ class TagTree extends Component {
               isSelected={this.isSelected}
               key={index}
               onTagRemove={this.handleTagRemove}
-              onTagSave={this.handleTagSave}
+              onTagSave={this.props.onTagSave}
               onTagSelect={this.onTagSelect}
               selectable={true}
               onTagUpdate={this.handleTagUpdate}
@@ -36,13 +37,22 @@ class TagTree extends Component {
               tag={groupTag}
             />
           </div>
-          <div className="content">
-            Test
-          </div>
-          { groupTag.isEditing &&
+          { this.props.editable &&
             <div className="rui grouptag create">
               <div className="header">
-                <p>Test</p>
+                <div className="navbar-item">
+                  <TagItem
+                    blank={true}
+                    key="newTagForm"
+                    onClearSuggestions={this.handleClearSuggestions}
+                    onGetSuggestions={this.handleGetSuggestions}
+                    onTagInputBlur={this.handleNewTagSave}
+                    onTagSave={this.props.onTagSave}
+                    onTagUpdate={this.handleNewTagUpdate}
+                    tag={this.newTag}
+                    suggestions={this.suggestions}
+                  />
+                </div>
               </div>
             </div>
           }

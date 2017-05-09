@@ -220,13 +220,12 @@ class TagNav extends Component {
                 onTagMouseOut={this.handleTagMouseOut}
                 onTagMouseOver={this.handleTagMouseOver}
                 onTagRemove={this.handleTagRemove}
-                onTagSave={this.handleTagSave}
+                onTagSave={TagNavHelpers.onTagCreate}
                 onTagSelect={this.onTagSelect}
                 selectable={true}
                 onTagUpdate={this.handleTagUpdate}
                 suggestions={this.suggestions}
                 tag={tag}
-                {...TagNavHelpers}
               />
               <div className={`dropdown-container data-tag=${tag._id}`}>
                 <TagTree
@@ -248,20 +247,18 @@ class TagNav extends Component {
           <DragDropProvider key={"newTag"}>
             <div className="navbar-item">
               <TagItem
-                // {...this.props.tagProps}
                 blank={true}
                 key="newTagForm"
                 onClearSuggestions={this.handleClearSuggestions}
                 onGetSuggestions={this.handleGetSuggestions}
                 onTagInputBlur={this.handleNewTagSave}
-                onTagSave={this.handleNewTagSave}
+                onTagSave={TagNavHelpers.onTagCreate}
                 onTagUpdate={this.handleNewTagUpdate}
                 tag={this.newTag}
                 suggestions={this.suggestions}
               />
             </div>
           </DragDropProvider>
-
         );
       }
 
