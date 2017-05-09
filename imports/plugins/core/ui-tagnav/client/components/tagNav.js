@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from "react";
+import { Reaction } from "/client/api";
 import { TagItem } from "/imports/plugins/core/ui/client/components/tags/";
 import { TagHelpers } from "/imports/plugins/core/ui-tagnav/client/helpers";
 import { DragDropProvider } from "/imports/plugins/core/ui/client/providers";
@@ -57,6 +58,10 @@ class TagNav extends Component {
     };
   }
 
+  newTag = {
+    name: ""
+  }
+
   suggestions = [{}]
 
   handleNewTagSave = (tag) => {
@@ -84,7 +89,7 @@ class TagNav extends Component {
   }
 
   get canEdit() {
-    return true; // TODO: Change to perm
+    return this.props.editable && Reaction.isPreview() === false;
   }
 
   attachBodyListener = () => {
@@ -163,7 +168,6 @@ class TagNav extends Component {
           <EditButton
             onClick={this.handleEditButtonClick}
             status={"status"}
-            tooltip={"tooltip"}
           />
         </span>
       );
@@ -212,7 +216,7 @@ class TagNav extends Component {
       const tags = this.props.tags.map((tag, index) => {
         const classAttr = `navbar-item ${this.navbarSelectedClassName(tag)} ${this.hasDropdownClassName(tag)} data-id=${tag._id}`;
         return (
-          <DragDropProvider key={tag._id}>
+          <DragDropProvider key={index}>
             <div className={classAttr}>
               <TagItem
                 data-id={tag._id}
@@ -247,7 +251,21 @@ class TagNav extends Component {
       // Render an blank tag for creating new tags
       if (this.props.editable) {
         tags.push(
-          <div />
+          <DragDropProvider key={"newTag"}>
+          <TagItem
+            // {...this.props.tagProps}
+            blank={true}
+            key="newTagForm"
+            onClearSuggestions={this.handleClearSuggestions}
+            onGetSuggestions={this.handleGetSuggestions}
+            onTagInputBlur={this.handleNewTagSave}
+            onTagSave={this.handleNewTagSave}
+            onTagUpdate={this.handleNewTagUpdate}
+            tag={this.newTag}
+            suggestions={this.suggestions}
+          />
+          </DragDropProvider>
+
         );
       }
 
