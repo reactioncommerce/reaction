@@ -7,16 +7,16 @@
       "admin": {
         "shortcut": {
           "braintreeLabel": "Braintree",
-          "braintreeTitle": "برينتر"
+          "braintreeTitle": "Braintree"
         },
         "dashboard": {
-          "braintreeLabel": "برينتر",
-          "braintreeTitle": "برينتر",
+          "braintreeLabel": "Braintree",
+          "braintreeTitle": "Braintree",
           "braintreeDescription": "المدفوعات برينتر"
         },
         "paymentSettings": {
           "braintreeLabel": "برينتر",
-          "braintreeSettingsLabel": "برينتر",
+          "braintreeSettingsLabel": "Braintree",
           "braintreeCredentials": "إضافة أوراق لتمكين"
         }
       },

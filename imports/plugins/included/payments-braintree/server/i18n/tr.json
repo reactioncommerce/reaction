@@ -12,11 +12,11 @@
         "dashboard": {
           "braintreeLabel": "Braintree",
           "braintreeTitle": "Braintree",
-          "braintreeDescription": "braintree ödemeleri"
+          "braintreeDescription": "Braintree ödemeleri"
         },
         "paymentSettings": {
-          "braintreeLabel": "braintree",
-          "braintreeSettingsLabel": "braintree",
+          "braintreeLabel": "Braintree",
+          "braintreeSettingsLabel": "Braintree",
           "braintreeCredentials": "etkinleştirmek için kimlik bilgilerini ekleme"
         }
       },

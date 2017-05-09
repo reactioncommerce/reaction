@@ -13,8 +13,8 @@
           "stripeDescription": "plăţile Stripe"
         },
         "paymentSettings": {
-          "stripeLabel": "Dunga",
-          "stripeSettingsLabel": "Dunga",
+          "stripeLabel": "Stripe",
+          "stripeSettingsLabel": "Stripe",
           "stripeSettingsDescription": "Nu aveți un ID client Stripe API?",
           "stripeSettingsGetItHere": "Adu-o aici"
         }

@@ -13,8 +13,8 @@
           "stripeDescription": "条纹支付"
         },
         "paymentSettings": {
-          "stripeLabel": "条纹",
-          "stripeSettingsLabel": "条纹",
+          "stripeLabel": "Stripe",
+          "stripeSettingsLabel": "Stripe",
           "stripeSettingsDescription": "不要有条纹API客户端ID？",
           "stripeSettingsGetItHere": "在这里获得"
         }

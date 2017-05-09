@@ -13,8 +13,8 @@
           "stripeDescription": "нашивки платежи"
         },
         "paymentSettings": {
-          "stripeLabel": "нашивка",
-          "stripeSettingsLabel": "нашивка",
+          "stripeLabel": "Stripe",
+          "stripeSettingsLabel": "Stripe",
           "stripeSettingsDescription": "Не имеют нашивки API идентификатор клиента?",
           "stripeSettingsGetItHere": "Получи это здесь"
         }

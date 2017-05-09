@@ -6,7 +6,7 @@
       "admin": {
         "dashboard": {
           "shippoLabel": "Shippo",
-          "shippoTitle": "cloisonne",
+          "shippoTitle": "Shippo",
           "shippoDescription": "Fraktsedlar och paketspårning"
         },
         "shippingGrid": {
