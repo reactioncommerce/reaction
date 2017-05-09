@@ -181,41 +181,6 @@ class TagNav extends Component {
 
     return null;
   }
-/*
-  <div class="rui tagnav {{navbarOrientation}} {{navbarPosition}} {{navbarAnchor}} {{navbarVisibility}}">
-    <div class="navbar-header">
-      {{> button
-        icon="times"
-        className="close-button"
-        status="default"
-        onClick=handleMenuClose
-      }}
-      {{> coreNavigationBrand}}
-    </div>
-    <div class="navbar-items">
-      {{#each tag in tags}}
-        <div class="navbar-item {{navbarSelectedClassName tag}} {{hasDropdownClassName tag}}" data-id={{tag._id}}>
-          {{> tagItem (tagProps tag)}}
-
-          <div class="dropdown-container" data-tag={{tag._id}}>
-            {{> tagTree (tagTreeProps tag)}}
-          </div>
-        </div>
-      {{/each}}
-      {{#if isEditing}}
-        <div class="navbar-item create">
-          {{> tagItem blankTagProps}}
-        </div>
-      {{/if}}
-
-      {{#if canEdit}}
-        <div class="navbar-item edit-button">
-          {{> React EditButton }}
-        </div>
-      {{/if}}
-    </div>
-  </div>
-*/
 
   renderTags() {
     if (_.isArray(this.props.tags)) {
@@ -237,6 +202,7 @@ class TagNav extends Component {
                 onTagMouseOver={this.handleTagMouseOver}
                 onTagRemove={this.handleTagRemove}
                 onTagSave={this.handleTagSave}
+                selectable={true}
                 onTagUpdate={this.handleTagUpdate}
                 suggestions={this.suggestions}
                 tag={tag}

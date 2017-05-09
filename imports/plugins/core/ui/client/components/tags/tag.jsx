@@ -200,6 +200,9 @@ class Tag extends Component {
             <Handle connectDragSource={this.props.connectDragSource} />
             {this.renderAutosuggestInput()}
             <Button icon="times-circle" onClick={this.handleTagRemove} status="danger" />
+            {this.props.selectable &&
+              <Button icon="chevron-down" onClick={this.handleTagSelect} status="default" />
+            }
           </form>
         </div>
       )
@@ -296,6 +299,7 @@ Tag.propTypes = {
   onTagSave: PropTypes.func,
   onTagUpdate: PropTypes.func,
   parentTag: PropTypes.object,
+  selectable: PropTypes.bool,
   suggestions: PropTypes.arrayOf(PropTypes.object),
   tag: PropTypes.object
 };
