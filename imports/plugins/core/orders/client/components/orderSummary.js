@@ -5,18 +5,18 @@ class OrderSummary extends Component {
     dateFormat: PropTypes.func,
     order: PropTypes.object,
     printableLabels: PropTypes.func,
-    profile: PropTypes.object,
+    profileShippingAddress: PropTypes.object,
     shipmentStatus: PropTypes.func,
     tracking: PropTypes.func
   }
 
   render() {
-    const { dateFormat, tracking, order, shipmentStatus, profile, printableLabels } = this.props;
+    const { dateFormat, tracking, order, shipmentStatus, profileShippingAddress, printableLabels } = this.props;
 
     return (
       <div>
         <div className="order-summary-form-group bg-info" style={{ lineHeight: 3, marginTop: -15, marginRight: -15, marginLeft: -15 }}>
-          <strong style={{ marginLeft: 15 }}>{profile.fullName}</strong> , {profile.country}
+          <strong style={{ marginLeft: 15 }}>{profileShippingAddress.fullName}</strong> , {profileShippingAddress.country}
           <div className="invoice-details" style={{ marginRight: 15 }}>
             <strong>ID </strong>{order._id}
           </div>
@@ -90,15 +90,15 @@ class OrderSummary extends Component {
         <div className="order-summary-form-group">
           <strong data-i18n="orderShipping.shipTo">Ship to</strong>
           <div className="invoice-details">
-            <strong>Phone: </strong>{profile.phone}
+            <strong>Phone: </strong>{profileShippingAddress.phone}
           </div>
         </div>
 
         <div style={{ marginTop: 4 }}>
-          <span>{profile.fullName}</span>
-          <br/><span>{profile.address1}</span>
-          {profile.address2 && <span><br/>{profile.address2}</span>}
-          <br/><span>{profile.city}, {profile.region}, {profile.country} {profile.postal}</span>
+          <span>{profileShippingAddress.fullName}</span>
+          <br/><span>{profileShippingAddress.address1}</span>
+          {profileShippingAddress.address2 && <span><br/>{profileShippingAddress.address2}</span>}
+          <br/><span>{profileShippingAddress.city}, {profileShippingAddress.region}, {profileShippingAddress.country} {profileShippingAddress.postal}</span>
         </div>
       </div>
     );

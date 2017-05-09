@@ -7,6 +7,12 @@ import { Media, Products } from "/lib/collections";
 import { isRevisionControlEnabled } from "/imports/plugins/core/revisions/lib/api";
 import { applyProductRevision } from "/lib/api/products";
 
+function updateVariantProductField(variants, field, value) {
+  return variants.map(variant => {
+    Meteor.call("products/updateProductField", variant._id, field, value);
+  });
+}
+
 Template.productSettings.onCreated(function () {
   this.state = new ReactiveDict();
   this.state.setDefault({
@@ -131,6 +137,13 @@ Template.productSettings.events({
         // visibility toggle. This is to ensure that all selected products will become visible or not visible
         // at the same time so it's not confusing.
         Meteor.call("products/updateProductField", product._id, "isVisible", !products[0].isVisible);
+        // update the variants visibility
+        const variants = Products.find({
+          ancestors: {
+            $in: [product._id]
+          }
+        });
+        updateVariantProductField(variants, "isVisible", !products[0].isVisible);
       }
     } else {
       // The legacy behavior will bulk toggle visibilty of each product seperatly.
