@@ -1,6 +1,6 @@
 <template name="cartCompleted">
-{{#if orderCompleted}}
-  {{#with order}}
+  {{#if orderCompleted}}
+    {{#with order}}
     <div class="container">
       <div class="cart-completed-orders">
         <div class="row">
@@ -21,9 +21,8 @@
                 </div>
               </p>
               {{else}}
-                <span data-i18n="cartCompleted.trackYourDelivery">Order updates will be sent to</span>
-                <span>{{email}}</span>
-              {{/unless}}
+              <span data-i18n="cartCompleted.trackYourDelivery">Order updates will be sent to</span>
+              <span>{{email}}</span> {{/unless}}
             </div>
           </div>
         </div>
@@ -33,16 +32,18 @@
         </div>
       </div>
     </div>
-  {{else}}
-    <div class="container">
-      <div class="row text-center">
-        <h1>Order Processing</h1>
-        <p>Please do not click back button.</p>
-        <br />
-        <br />
-        <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+    {{else}}
+      {{> notFound }}
+    {{/with}}
+      {{else}}
+      <div class="container">
+        <div class="row text-center">
+          <h1>Order Processing</h1>
+          <p>Please do not click back button.</p>
+          <br />
+          <br />
+          <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+        </div>
       </div>
-    </div>
-  {{/with}}
-{{/if}}
+  {{/if}}
 </template>

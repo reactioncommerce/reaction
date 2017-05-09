@@ -843,6 +843,8 @@ export const methods = {
           "billing.$.paymentMethod.transactions": result
         }
       };
+      // Send email to notify cuustomer of a refund
+      Meteor.call("orders/sendNotification", order);
       if (result.saved === false) {
         Logger.fatal("Attempt for de-authorize transaction failed", order._id, paymentMethod.transactionId, result.error);
         throw new Meteor.Error("Attempt to de-authorize transaction failed", result.error);
@@ -854,6 +856,8 @@ export const methods = {
           "billing.$.paymentMethod.transactions": result
         }
       };
+      // Send email to notify cuustomer of a refund
+      Meteor.call("orders/sendNotification", order, "refunded");
       if (result.saved === false) {
         Logger.fatal("Attempt for refund transaction failed", order._id, paymentMethod.transactionId, result.error);
         throw new Meteor.Error("Attempt to refund transaction failed", result.error);
@@ -871,8 +875,6 @@ export const methods = {
     });
 
     Hooks.Events.run("onOrderRefundCreated", orderId);
-    // Send email to notify cuustomer of a refund
-    Meteor.call("orders/sendNotification", order, "refunded");
   }
 };
 
