@@ -1,7 +1,9 @@
 import React, { Component, PropTypes } from "react";
+import classnames from "classnames";
 import {
   Button,
-  TextField
+  TextField,
+  Translation
 } from "/imports/plugins/core/ui/client/components";
 
 class SignIn extends Component {
@@ -30,16 +32,84 @@ class SignIn extends Component {
     }
   }
 
+  renderEmailErrors() {
+    if (this.props.onError(this.props.messages.errors && this.props.messages.errors.email)) {
+      return (
+        <span className="help-block">
+          <Translation
+            defaultValue={this.props.messages.errors.email.reason}
+            i18nKey={this.props.messages.errors.email.i18nKeyReason}
+          />
+        </span>
+      );
+    }
+  }
+
+  renderPasswordErrors() {
+    if (this.props.onError(this.props.messages.errors && this.props.messages.errors.password)) {
+      return (
+        <span className="help-block">
+          this.props.messages.errors.password.forEach(function (error) {
+            <p>
+              <Translation
+                defaultValue={error.reason}
+                i18nKey={error.i18nKeyReason}
+              />
+            </p>
+          });
+          <Translation
+            defaultValue={this.props.messages.errors.email.reason}
+            i18nKey={this.props.messages.errors.email.i18nKeyReason}
+          />
+        </span>
+      );
+    }
+  }
+
+  renderFormMessages() {
+    if (this.props.loginFormMessages) {
+      if (this.props.messages.info) {
+        return (
+          <div className="alert alert-info">
+            <p>
+              {this.props.loginFormMessages()}
+            </p>
+          </div>
+        );
+      } else if (this.props.messages.alerts) {
+        return (
+          <div className="alert alert-danger">
+            <p>
+              {this.props.loginFormMessages()}
+            </p>
+          </div>
+        );
+      }
+    }
+  }
+
   render() {
+    const emailClasses = classnames({
+      "form-group": true,
+      "form-group-email": true,
+      "has-error has-feedback": this.props.onError(this.props.messages.errors && this.props.messages.errors.email)
+    });
+
+    const passwordClasses = classnames({
+      "form-group": true,
+      "has-error has-feedback": this.props.onError(this.props.messages.errors && this.props.messages.errors.password)
+    });
     return (
       <div>
         <div className="loginForm-title">
           <h2 data-i18n="accountsUI.signIn">Sign In</h2>
         </div>
 
-        <form className="login-form" onSubmit={this.handleSubmit}>
+        <form className="login-form" onSubmit={this.handleSubmit} noValidate>
 
-          <div className="form-group form-group-email {{hasError messages.errors.email}}">
+          {this.renderFormMessages()}
+
+          <div className={emailClasses}>
             <TextField
               i18nKeyLabel="accountsUI.emailAddress"
               label="Email"
@@ -50,9 +120,10 @@ class SignIn extends Component {
               value={this.state.email}
               onChange={this.handleFieldChange}
             />
+          {this.renderEmailErrors()}
           </div>
 
-          <div className="form-group {{hasError messages.errors.password }}">
+          <div className={passwordClasses}>
             <TextField
               i18nKeyLabel="accountsUI.password"
               label="Password"
@@ -63,6 +134,7 @@ class SignIn extends Component {
               value={this.state.password}
               onChange={this.handleFieldChange}
             />
+          {this.renderPasswordErrors()}
           </div>
 
           <div className="form-group">
@@ -105,6 +177,9 @@ class SignIn extends Component {
 
 SignIn.propTypes = {
   credentials: PropTypes.object,
+  loginFormMessages: PropTypes.func,
+  messages: PropTypes.object,
+  onError: PropTypes.func,
   onForgotPasswordClick: PropTypes.func,
   onFormSubmit: PropTypes.func,
   onSignUpClick: PropTypes.func,
