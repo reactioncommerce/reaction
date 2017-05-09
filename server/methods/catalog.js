@@ -15,6 +15,20 @@ import { Logger, Reaction } from "/server/api";
 /* eslint quotes: 0 */
 
 /**
+ * updateVariantProductField
+ * @summary updates the variant
+ * @param {Array} variants - the array of variants
+ * @param {String} field - the field to update
+ * @param {String} value - the value to add
+ * @return {Array} - return an array
+ */
+function updateVariantProductField(variants, field, value) {
+  return variants.map(variant => {
+    Meteor.call("products/updateProductField", variant._id, field, value);
+  });
+}
+
+/**
  * @array toDenormalize
  * @summary contains a list of fields, which should be denormalized
  * @type {string[]}
@@ -1234,7 +1248,8 @@ Meteor.methods({
           type: "simple"
         }
       });
-
+      // update product variants visibility
+      updateVariantProductField(variants, "isVisible", !product.isVisible);
       // if collection updated we return new `isVisible` state
       return res === 1 && !product.isVisible;
     }
