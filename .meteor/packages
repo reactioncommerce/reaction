@@ -74,7 +74,7 @@ ongoworks:security
 raix:ui-dropped-event
 risul:moment-timezone
 tmeasday:publish-counts
-vsivsi:job-collection
+vsivsi:job-collection@1.4.0
 react-meteor-data
 percolate:migrations
 gadicc:blaze-react-component
