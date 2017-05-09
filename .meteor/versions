@@ -55,7 +55,6 @@ cfs:ui@0.1.3
 cfs:upload-http@0.0.20
 cfs:worker@0.1.4
 check@1.2.5
-chuangbo:cookie@1.1.0
 coffeescript@1.12.3_1
 dburles:factory@1.1.0
 ddp@1.2.5

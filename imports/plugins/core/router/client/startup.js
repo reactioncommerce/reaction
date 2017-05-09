@@ -21,7 +21,7 @@ Meteor.startup(function () {
   //
   Accounts.onLogin(() => {
     if (Meteor.loggingIn() === false && Router._routes.length > 0) {
-      Router.reload();
+      initBrowserRouter();
     }
   });
 });

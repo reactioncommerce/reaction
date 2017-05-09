@@ -78,7 +78,8 @@ class BrowserRouter extends Component {
       route: {
         ...foundPath,
         name: foundPath.name,
-        path: location.pathname
+        path: location.pathname,
+        fullPath: `${location.pathname}${location.search}`
       },
       params,
       query: queryParse.toObject(search), // Parse query string into object

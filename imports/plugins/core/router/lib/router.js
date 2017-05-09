@@ -41,6 +41,10 @@ class Router {
     return Router._initialized;
   }
 
+  static triggerRouterReady() {
+    routerReadyDependency.changed();
+  }
+
   static get triggers() {
     return Hooks;
   }
@@ -165,7 +169,9 @@ Router.replace = (path, params, query) => {
 Router.reload = () => {
   const current = Router.current();
 
-  Router.replace(current.path, current.params, current.query);
+  if (window) {
+    history.replace(current.route.fullPath || "/");
+  }
 };
 
 /**
@@ -327,28 +333,31 @@ export function ReactionLayout(options = {}) {
     structure: layoutStructure,
     component: (props) => { // eslint-disable-line react/no-multi-comp, react/display-name
       const route = Router.current().route;
+      const structure = {
+        ...layoutStructure
+      };
 
       // If the current route is unauthorized, and is not the "not-found" route,
       // then override the template to use the default unauthroized template
       if (hasRoutePermission(route) === false && route.name !== "not-found") {
-        layoutStructure.template = "unauthorized";
+        structure.template = "unauthorized";
       }
 
       if (getComponent(layoutName)) {
         return React.createElement(getComponent(layoutName), {
           ...props,
-          structure: layoutStructure
+          structure: structure
         });
       } else if (Template[layoutName]) {
         return (
           <BlazeLayout
-            {...layoutStructure}
+            {...structure}
             blazeTemplate={layoutName}
           />
         );
       }
 
-      return <Blaze template={layoutStructure.notFound} />;
+      return <Blaze template={structure.notFound} />;
     }
   };
 }
