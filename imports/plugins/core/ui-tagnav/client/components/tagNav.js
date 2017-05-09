@@ -53,7 +53,7 @@ class TagNav extends Component {
 
     this.state = {
       attachedBodyListener: false,
-      isEditing: false,
+      editable: false,
       selectedTag: null
     };
   }
@@ -123,7 +123,7 @@ class TagNav extends Component {
       return;
     }
     // While in edit mode, don't trigger the hover hide/show menu
-    if (this.state.isEditing === false) {
+    if (this.state.editable === false) {
       // User mode
       // Don't show dropdown if there are no subtags
       if (TagNavHelpers.hasSubTags(tagId, tags) === false) {
@@ -141,7 +141,7 @@ class TagNav extends Component {
   }
 
   handleEditButtonClick = () => {
-    this.setState({ isEditing: !this.state.isEditing });
+    this.setState({ editable: !this.state.editable });
   }
 
   hasDropdownClassName(tag) {
@@ -173,7 +173,7 @@ class TagNav extends Component {
             icon="fa fa-pencil"
             onIcon="fa fa-check"
             toggle={true}
-            toggleOn={this.state.isEditing}
+            toggleOn={this.state.editable}
           />
         </span>
       );
@@ -226,7 +226,7 @@ class TagNav extends Component {
             <div className={classAttr}>
               <TagItem
                 data-id={tag._id}
-                editable={this.props.editable}
+                editable={this.state.editable}
                 index={index}
                 key={index}
                 onClearSuggestions={this.handleClearSuggestions}
@@ -245,7 +245,7 @@ class TagNav extends Component {
                 <TagTree
                   parentTag={tag}
                   subTagGroups={TagHelpers.subTags(tag)}
-                  isEditing={this.state.isEditing === true}
+                  editable={this.state.editable === true}
                   {...TagNavHelpers}
                 />
               </div>
@@ -255,7 +255,7 @@ class TagNav extends Component {
       });
 
       // Render an blank tag for creating new tags
-      if (this.props.editable) {
+      if (this.state.editable) {
         tags.push(
           <DragDropProvider key={"newTag"}>
             <div className="navbar-item">
