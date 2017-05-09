@@ -59,7 +59,13 @@
     "mute": [
       "wdio-mocha-framework",
       "griddle-react",
-      "nodemailer"
+      "nodemailer",
+      "twilio",
+      "react-addons-create-fragment",
+      "react-addons-pure-render-mixin",
+      "react-dom",
+      "react",
+      "transliteration"
     ],
     "unused-ignores": [
       "jquery",
