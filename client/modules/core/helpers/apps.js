@@ -93,7 +93,6 @@ export function Apps(optionHash) {
   }
 
   delete filter["registry.audience"]; // Temporarily remove "audience" key (see comment below)
-
   // TODO: Review fix for filter on Packages.find(filter)
   // The current "filter" setup uses "audience" field which is not present in the registry array in most (if not all) docs
   // in the Packages coll.
@@ -107,6 +106,9 @@ export function Apps(optionHash) {
       // ideally all routes should use it, safe for backwards compatibility though
       // owner bypasses permissions
       if (!Reaction.hasOwnerAccess() && item.permissions && registryFilter.audience) {
+        if (/paymentMethod/.test(registryFilter.provides)) {
+          console.log(JSON.stringify({ item }, null, 4))
+        }
         let hasAccess;
 
         for (const permission of registryFilter.audience) {
