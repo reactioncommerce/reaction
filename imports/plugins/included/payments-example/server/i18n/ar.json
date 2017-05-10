@@ -18,7 +18,8 @@
           "examplePaymentLabel": "مزود سبيل المثال",
           "examplePaymentSettingsLabel": "مثال الدفع",
           "exampleCredentials": "هذا هو إعداد سبيل المثال طريقة الدفع.",
-          "apiClientId": "معرف العميل API"
+          "apiClientId": "معرف العميل API",
+          "supportedMethodsLabel": "طرق دعم مزود الدفع"
         }
       }
     }

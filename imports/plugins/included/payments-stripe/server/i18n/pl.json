@@ -10,7 +10,7 @@
         },
         "dashboard": {
           "stripeLabel": "Stripe",
-          "stripeDescription": "płatności stripe"
+          "stripeDescription": "płatności Stripe"
         },
         "paymentSettings": {
           "stripeLabel": "Stripe",

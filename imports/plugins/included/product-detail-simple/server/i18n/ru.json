@@ -6,6 +6,9 @@
       "admin": {
         "settings": {
           "productDetailsLabel": "информация о продукте"
+        },
+        "inventoryAlerts": {
+          "adjustedQuantity": "Ваше количество продукта было скорректировано до максимального количества в наличии"
         }
       }
     }

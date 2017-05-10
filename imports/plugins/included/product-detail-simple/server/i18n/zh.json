@@ -6,6 +6,9 @@
       "admin": {
         "settings": {
           "productDetailsLabel": "产品详情"
+        },
+        "inventoryAlerts": {
+          "adjustedQuantity": "您的产品数量进行了调整，在股票的最大数量"
         }
       }
     }
