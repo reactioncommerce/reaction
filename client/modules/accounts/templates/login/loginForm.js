@@ -25,16 +25,6 @@ Template.loginForm.helpers({
       ...currentData,
       component: LoginContainer
     };
-  },
-
-  /**
-   * Login form data
-   * @return {Object} Object containing data for the current login form view.
-   */
-  loginFormData() {
-    return {
-      credentials: Template.instance().credentials
-    };
   }
 });
 

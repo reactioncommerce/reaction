@@ -4,24 +4,6 @@
   </div>
 </template>
 
-<template name="loginFormMessages">
-  {{#if messages.info}}
-    <div class="alert alert-info">
-      {{#each messages.info}}
-        <p>{{reason}}</p>
-      {{/each}}
-    </div>
-  {{/if}}
-
-  {{#if messages.alerts}}
-    <div class="alert alert-danger">
-      {{#each messages.alerts}}
-        <p>{{reason}}</p>
-      {{/each}}
-    </div>
-  {{/if}}
-</template>
-
 <template name="loginFormSeperator">
   <div class="loginForm-seperator">
     <span></span>
