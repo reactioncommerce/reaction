@@ -20,6 +20,8 @@ describe("payflowpro/refund/create", function () {
       processor: "PayflowPro",
       storedCard: "Visa 0322",
       method: "credit",
+      paymentPackageId: "vrXutd72c2m7Lenqw",
+      paymentSettingsKey: "payflow",
       authorization: "17E47122C3842243W",
       transactionId: "PAY-2M9650078C535230RK6YVLQY",
       metadata: {

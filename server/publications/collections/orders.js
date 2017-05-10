@@ -35,9 +35,11 @@ const OrderHelper =  {
       case "completed":
         query = {
           "shopId": shopId,
-          "workflow.status": "coreOrderWorkflow/completed",
-          "items.workflow.workflow": {
-            $in: ["coreOrderItemWorkflow/completed"]
+          "workflow.status": {
+            $in: ["coreOrderWorkflow/completed", "coreOrderWorkflow/canceled"]
+          },
+          "items.workflow.status": {
+            $in: ["coreOrderItemWorkflow/completed", "coreOrderItemWorkflow/canceled"]
           }
         };
         break;

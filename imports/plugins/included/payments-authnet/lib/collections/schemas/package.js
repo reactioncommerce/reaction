@@ -15,6 +15,14 @@ export const AuthNetPackageConfig = new SimpleSchema([
       type: Boolean,
       defaultValue: false
     },
+    "settings.reaction-auth-net.support": {
+      type: Array,
+      label: "Payment provider supported methods"
+    },
+    "settings.reaction-auth-net.support.$": {
+      type: String,
+      allowedValues: ["Authorize", "De-authorize", "Capture", "Refund"]
+    },
     "settings.api_id": {
       type: String,
       label: "API Login ID",
