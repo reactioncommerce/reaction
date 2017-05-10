@@ -76,7 +76,7 @@ function getGateway() {
   return gateway;
 }
 
-getRefundDetails = function (refundId) {
+function getRefundDetails(refundId) {
   check(refundId, String);
   const gateway = getGateway();
   const braintreeFind = Meteor.wrapAsync(gateway.transaction.find, gateway.transaction);

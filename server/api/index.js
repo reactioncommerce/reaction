@@ -6,21 +6,6 @@ import Hooks from "./hooks";
 import Logger from "./logger";
 import { MethodHooks } from "./method-hooks";
 
-// Legacy globals
-// TODO: add deprecation warnings
-ReactionCore = Reaction;
-ReactionRouter = Router;
-ReactionRegistry = {
-  assignOwnerRoles: Reaction.assignOwnerRoles,
-  createDefaultAdminUser: Reaction.createDefaultAdminUser,
-  getRegistryDomain: Reaction.getRegistryDomain,
-  loadPackages: Reaction.loadPackages,
-  loadSettings: Reaction.loadSettings,
-  Packages: Reaction.Packages,
-  setDomain: Reaction.setDomain,
-  setShopName: Reaction.setShopName
-};
-
 export {
   Reaction,
   Accounts,
