@@ -29,16 +29,16 @@ class Currency extends Component {
   buttonElement() {
     return (
       <Button
-        icon="fa fa-caret-down"
-        iconAfter={true}
         label={this.props.currentCurrency || this.state.value}
-      />
+      >
+        <span> </span><i className="fa fa-caret-down" />
+      </Button>
     );
   }
 
   render() {
     return (
-      <div className="dropdown-toggle">
+      <div>
         <DropDownMenu
           buttonElement={this.buttonElement()}
           onChange={this.onChange}

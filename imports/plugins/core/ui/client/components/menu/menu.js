@@ -36,6 +36,7 @@ class Menu extends Component {
 Menu.propTypes = {
   attachment: PropTypes.string,
   children: PropTypes.node,
+  className: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   onChange: PropTypes.func,
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.bool, PropTypes.number])
 };

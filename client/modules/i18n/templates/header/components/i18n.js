@@ -14,9 +14,10 @@ class LanguageDropDown extends Component {
 
   buttonElement() {
     return (
-      <Button
-        icon="fa fa-language fa-lg"
-      />
+      <Button>
+        <i className="fa fa-language fa-lg"/><span> </span>
+        <i className="fa fa-caret-down"/>
+      </Button>
     );
   }
   onChange = (event, value) => {
