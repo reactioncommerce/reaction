@@ -18,7 +18,8 @@
           "examplePaymentLabel": "exempel Provider",
           "examplePaymentSettingsLabel": "exempel Betalning",
           "exampleCredentials": "Detta är ett exempel betalningsmetod inställning.",
-          "apiClientId": "API-klient-ID"
+          "apiClientId": "API-klient-ID",
+          "supportedMethodsLabel": "Betalningsleverantörens stödda metoder"
         }
       }
     }

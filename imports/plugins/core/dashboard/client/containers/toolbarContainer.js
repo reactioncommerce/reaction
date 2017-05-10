@@ -57,8 +57,8 @@ function composer(props, onData) {
   // Standard variables
   const packageButtons = [];
 
-  if (routeName !== "dashboard") {
-    const registryItems = Reaction.Apps({ provides: "settings", container: routeName });
+  if (routeName !== "dashboard" && props.showPackageShortcuts) {
+    const registryItems = Reaction.Apps({ provides: "settings", container: "dashboard" });
 
     for (const item of registryItems) {
       if (Reaction.hasPermission(item.route, Meteor.userId())) {
@@ -88,6 +88,7 @@ function composer(props, onData) {
     isEnabled: isRevisionControlEnabled(),
     isActionViewAtRootView: Reaction.isActionViewAtRootView(),
     actionViewIsOpen: Reaction.isActionViewOpen(),
+    hasCreateProductAccess: Reaction.hasPermission("createProduct", Meteor.userId(), Reaction.shopId),
 
     // Callbacks
     onAddProduct: handleAddProduct,

@@ -63,9 +63,7 @@ jeremy:stripe
 jparker:gravatar
 juliancwirko:s-alert
 juliancwirko:s-alert-stackslide
-kadira:blaze-layout
 kadira:dochead
-kadira:flow-router-ssr
 matb33:collection-hooks
 meteorhacks:ssr
 meteorhacks:subs-manager
@@ -74,7 +72,7 @@ ongoworks:security
 raix:ui-dropped-event
 risul:moment-timezone
 tmeasday:publish-counts
-vsivsi:job-collection
+vsivsi:job-collection@1.4.0
 react-meteor-data
 percolate:migrations
 gadicc:blaze-react-component

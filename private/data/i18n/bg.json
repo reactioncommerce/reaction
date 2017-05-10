@@ -329,16 +329,24 @@
       "order": {
         "created": "Създадено",
         "reference": "Справка",
+        "cancelInvoice": "Отмени",
         "invoice": "Фактура",
         "ordersNotFound": "Няма заявки",
         "approveInvoice": "Одобрено плащане",
+        "cancelOrderLabel": "Отмяна на поръчката",
         "makeAdjustments": "Направи промени",
         "capturePayment": "Одобри плащане",
         "paymentCaptured": "Плащането е одобрено",
         "capturedTotal": "Одобрена сума",
+        "canceledLabel": "отменен",
         "refundAmount": "Възстановена сума",
+        "cancelOrder": "Искате ли да анулирате тази поръчка?",
         "applyRefundToThisOrder": "Нанесете възстановяване на {{currencySymbol}}{{refund}} до тази цел?",
+        "applyRefundDuringCancelOrder": "Това ще възстанови общата сума на поръчката на {{currencySymbol}}{{invoiceTotal}}",
+        "cancelOrderThenRestock": "Да, и отново",
+        "cancelOrderNoRestock": "Да, но без зареждане",
         "applyRefund": "Издай възстановяване",
+        "refunding": "Сумата се възстановява",
         "applyDiscount": "Прилагане на отстъпка",
         "adjustedTotal": "Корегирана сума",
         "invalidDiscount": "Отстъпка не може да бъде по-голям от оригиналния крайна цена",
@@ -362,7 +370,8 @@
           "completed": "завършен",
           "canceled": "отменен",
           "refunded": "Възстановява"
-        }
+        },
+        "showMore": "Показване на още"
       },
       "orderShipping": {
         "shipTo": "Изпрати до",
