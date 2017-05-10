@@ -1,5 +1,6 @@
 import _ from "lodash";
 import moment from "moment";
+import { Meteor } from "meteor/meteor";
 import path from "path";
 import { Accounts as MeteorAccounts } from "meteor/accounts-base";
 import { Accounts, Cart, Media, Shops, Packages } from "/lib/collections";
@@ -153,6 +154,14 @@ Meteor.methods({
     if (account) {
       const verified = account.emails[0].verified;
       if (!verified) {
+        Meteor.users.update({
+          "_id": account.userId,
+          "emails.address": email
+        }, {
+          $set: {
+            "emails.$.verified": true
+          }
+        });
         Accounts.update({
           "userId": account.userId,
           "emails.address": email
