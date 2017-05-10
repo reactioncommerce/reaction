@@ -329,16 +329,24 @@
       "order": {
         "created": "Létrehozott",
         "reference": "Referencia",
+        "cancelInvoice": "Mégse",
         "invoice": "Számla",
         "ordersNotFound": "Nem talált megbízásokat",
         "approveInvoice": "Jóváhagy",
+        "cancelOrderLabel": "Rendelés lemondása",
         "makeAdjustments": "kiigazításokra",
         "capturePayment": "Capture fizetés",
         "paymentCaptured": "fizetési rögzített",
         "capturedTotal": "elfogott Összesen",
+        "canceledLabel": "Törölve",
         "refundAmount": "visszatérítés összege",
+        "cancelOrder": "Szeretné, hogy megszünteti ezt a rendelést?",
         "applyRefundToThisOrder": "Alkalmazza visszatérítés {{currencySymbol}}{{refund}} hogy ebben a sorrendben?",
+        "applyRefundDuringCancelOrder": "Ez visszatéríti a rendelés teljes {{currencySymbol}}{{invoiceTotal}}",
+        "cancelOrderThenRestock": "Igen, és újratelepítésére",
+        "cancelOrderNoRestock": "Igen, de nem az újratelepítés",
         "applyRefund": "alkalmazza visszatérítés",
+        "refunding": "visszatérítésével",
         "applyDiscount": "kedvezmény alkalmazása",
         "adjustedTotal": "korrigált összesen",
         "invalidDiscount": "Kedvezmény nem lehet nagyobb, mint az eredeti teljes ár",
@@ -362,7 +370,8 @@
           "completed": "befejezték",
           "canceled": "Törölve",
           "refunded": "Visszautalva"
-        }
+        },
+        "showMore": "Mutass többet"
       },
       "orderShipping": {
         "shipTo": "Kiszállítás",

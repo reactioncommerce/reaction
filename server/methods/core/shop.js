@@ -48,7 +48,7 @@ Meteor.methods({
     try {
       Collections.Shops.insert(shop);
     } catch (error) {
-      return Logger.error("Failed to shop/createShop", sanitizedError);
+      return Logger.error(error, "Failed to shop/createShop");
     }
     // we should have created new shop, or errored
     Logger.info("Created shop: ", shop._id);
