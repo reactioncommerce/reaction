@@ -39,27 +39,29 @@ class Currency extends Component {
   render() {
     return (
       <div>
-        <DropDownMenu
-          buttonElement={this.buttonElement()}
-          onChange={this.onChange}
-          value={this.props.currentCurrency || this.state.value}
-        >
-          <MenuItem
-            label="Select Currency"
-            i18nKeyLabel="currencies.select"
-            disabled={true}
-          />
-
-          <Divider />
-
-          {this.props.currencies.length > 1 && this.props.currencies.map((currency) => (
+        {this.props.currencies.length > 1 &&
+          <DropDownMenu
+            buttonElement={this.buttonElement()}
+            onChange={this.onChange}
+            value={this.props.currentCurrency || this.state.value}
+          >
             <MenuItem
-              key={currency.currency}
-              label={this.currencyDisplay(currency.currency, currency.symbol)}
-              value={this.currencyDisplay(currency.currency, currency.symbol)}
+              label="Select Currency"
+              i18nKeyLabel="currencies.select"
+              disabled={true}
             />
-          ))}
-        </DropDownMenu>
+
+            <Divider />
+
+            {this.props.currencies.map((currency) => (
+              <MenuItem
+                key={currency.currency}
+                label={this.currencyDisplay(currency.currency, currency.symbol)}
+                value={this.currencyDisplay(currency.currency, currency.symbol)}
+              />
+            ))}
+          </DropDownMenu>
+        }
       </div>
     );
   }

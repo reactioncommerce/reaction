@@ -30,27 +30,31 @@ class LanguageDropDown extends Component {
 
   render() {
     return (
-      <div className="dropdown-toggle">
-        <DropDownMenu
-          buttonElement={this.buttonElement()}
-          value={this.props.currentLanguage || this.state.value}
-          onChange={this.onChange}
-        >
-          <MenuItem
-            label="Select Currency"
-            i18nKeyLabel="languages.select"
-            disabled={true}
-          />
-          <Divider />
-          {this.props.languages.length > 1 && this.props.languages.map((language) => (
-            <MenuItem
-              key={language.i18n}
-              label={language.label}
-              i18nKeyLabel={language.translation}
-              value={language.i18n}
-            />
-          ))}
-        </DropDownMenu>
+      <div>
+        {this.props.languages.length > 1 &&
+          <div className="dropdown-toggle">
+              <DropDownMenu
+                buttonElement={this.buttonElement()}
+                value={this.props.currentLanguage || this.state.value}
+                onChange={this.onChange}
+              >
+                <MenuItem
+                  label="Select Currency"
+                  i18nKeyLabel="languages.select"
+                  disabled={true}
+                />
+                <Divider />
+                {this.props.languages.map((language) => (
+                  <MenuItem
+                    key={language.i18n}
+                    label={language.label}
+                    i18nKeyLabel={language.translation}
+                    value={language.i18n}
+                  />
+                ))}
+              </DropDownMenu>
+          </div>
+        }
       </div>
     );
   }
