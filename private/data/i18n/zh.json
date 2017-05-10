@@ -329,16 +329,24 @@
       "order": {
         "created": "已生成",
         "reference": "参考",
+        "cancelInvoice": "取消",
         "invoice": "出货单",
         "ordersNotFound": "没有查询到订单信息",
         "approveInvoice": "审批",
+        "cancelOrderLabel": "取消订单",
         "makeAdjustments": "修改",
         "capturePayment": "收款",
         "paymentCaptured": "已收款",
         "capturedTotal": "已收款总额",
+        "canceledLabel": "已取消",
         "refundAmount": "退款金额",
+        "cancelOrder": "你想取消这个订单吗？",
         "applyRefundToThisOrder": "是否将 {{currencySymbol}}{{refund}} 的退款应用于此订单？",
+        "applyRefundDuringCancelOrder": "这将退还{{currencySymbol}}{{invoiceTotal}}的订单总额",
+        "cancelOrderThenRestock": "是的，补货",
+        "cancelOrderNoRestock": "是的，但没有补货",
         "applyRefund": "退款",
+        "refunding": "退款",
         "applyDiscount": "应用折扣",
         "adjustedTotal": "调整后的总金额",
         "invalidDiscount": "折扣不能大于原来的总价",
@@ -362,7 +370,8 @@
           "completed": "已完成",
           "canceled": "已取消",
           "refunded": "已退款"
-        }
+        },
+        "showMore": "展示更多"
       },
       "orderShipping": {
         "shipTo": "发到",

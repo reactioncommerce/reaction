@@ -329,16 +329,24 @@
       "order": {
         "created": "Creată",
         "reference": "Referinţă",
+        "cancelInvoice": "Anulează",
         "invoice": "Factură",
         "ordersNotFound": "Nu au fost găsite comenzi",
         "approveInvoice": "Aprobă",
+        "cancelOrderLabel": "Anulați comanda",
         "makeAdjustments": "Faceți modificări",
         "capturePayment": "Capturarea plății",
         "paymentCaptured": "Plată capturată",
         "capturedTotal": "Totalul capturat",
+        "canceledLabel": "Anulată",
         "refundAmount": "Rambursează suma",
+        "cancelOrder": "Doriți să anulați această comandă?",
         "applyRefundToThisOrder": "Aplică restituirea de {{currencySymbol}}{{refund}} la această comandă?",
+        "applyRefundDuringCancelOrder": "Aceasta va restitui suma totală a comenzii {{currencySymbol}}{{invoiceTotal}}",
+        "cancelOrderThenRestock": "Da, și restock",
+        "cancelOrderNoRestock": "Da, dar fără repopulare",
         "applyRefund": "Aplicati rambursarea",
+        "refunding": "Returnarea",
         "applyDiscount": "Aplicați o reducere",
         "adjustedTotal": "Totalul ajustat",
         "invalidDiscount": "Reducerea nu poate fi mai mare decât prețul total inițial",
@@ -362,7 +370,8 @@
           "completed": "Completă",
           "canceled": "Anulată",
           "refunded": "Rambursată"
-        }
+        },
+        "showMore": "Arată mai multe"
       },
       "orderShipping": {
         "shipTo": "Trimite spre",

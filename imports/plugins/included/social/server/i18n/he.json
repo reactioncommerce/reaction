@@ -7,6 +7,8 @@
         "settings": {
           "facebook": "Facebook",
           "twitter": "Twitter",
+          "pinterest": "Pinterest",
+          "googleplus": "Google+",
           "username": "שם משתמש"
         }
       }
