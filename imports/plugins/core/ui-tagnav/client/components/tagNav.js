@@ -13,6 +13,36 @@ const styles = {
   }
 };
 
+const NavbarStates = {
+  Orientation: "stateNavbarOrientation",
+  Position: "stateNavbarPosition",
+  Anchor: "stateNavbarAnchor",
+  Visible: "stateNavbarVisible"
+};
+
+const NavbarOrientation = {
+  Vertical: "vertical",
+  Horizontal: "horizontal"
+};
+
+const NavbarVisibility = {
+  Shown: "shown",
+  Hidden: "hidden"
+};
+
+const NavbarPosition = {
+  Static: "static",
+  Fixed: "fixed"
+};
+
+const NavbarAnchor = {
+  Top: "top",
+  Right: "right",
+  Bottom: "bottom",
+  Left: "left",
+  None: "inline"
+};
+
 const TagNavHelpers = {
   onTagCreate(tagName, parentTag) {
     TagHelpers.createTag(tagName, undefined, parentTag);
@@ -54,8 +84,14 @@ class TagNav extends Component {
     this.state = {
       attachedBodyListener: false,
       editable: false,
-      selectedTag: null
+      selectedTag: null,
+      [NavbarStates.Visible]: false,
+      [NavbarStates.Visibile]: NavbarVisibility.Hidden
     };
+  }
+
+  componentDidMount() {
+    $(window).on("resize", this.onWindowResize).trigger("resize");
   }
 
   newTag = {
@@ -63,6 +99,19 @@ class TagNav extends Component {
   }
 
   suggestions = [{}]
+
+  onWindowResize = () => {
+    if (window.matchMedia("(max-width: 991px)").matches) {
+      this.setState({ [NavbarStates.Orientation]: NavbarOrientation.Vertical });
+      this.setState({ [NavbarStates.Position]: NavbarPosition.Fixed });
+      this.setState({ [NavbarStates.Anchor]: NavbarAnchor.Left });
+    } else {
+      this.setState({ [NavbarStates.Orientation]: NavbarOrientation.Horizontal });
+      this.setState({ [NavbarStates.Position]: NavbarPosition.Static });
+      this.setState({ [NavbarStates.Anchor]: NavbarAnchor.None });
+      this.setState({ [NavbarStates.Visible]: false });
+    }
+  }
 
   handleNewTagSave = (tag) => {
   }
@@ -113,6 +162,27 @@ class TagNav extends Component {
         clearTimeout(this.closeDropdownTimeout);
       }
     }
+  }
+
+  get navbarOrientation() {
+    return this.state[NavbarStates.Orientation];
+  }
+
+  get navbarPosition() {
+    return this.state[NavbarStates.Position];
+  }
+
+  get navbarAnchor() {
+    return this.state[NavbarStates.Anchor];
+  }
+
+  get navbarVisibility() {
+    const isVisible = this.state[NavbarStates.Visible] === true;
+
+    if (isVisible) {
+      return "open";
+    }
+    return "closed";
   }
 
   onTagSelect = (selectedTag) => {
@@ -213,6 +283,7 @@ class TagNav extends Component {
                 index={index}
                 isSelected={this.isSelected}
                 key={index}
+                draggable={true}
                 onClearSuggestions={this.handleClearSuggestions}
                 onGetSuggestions={this.handleGetSuggestions}
                 onMove={this.handleMoveTag}
@@ -270,7 +341,7 @@ class TagNav extends Component {
 
   render() {
     return (
-      <div className="rui tagnav horizontal static inline closed">
+      <div className={`rui tagnav ${this.navbarOrientation} ${this.navbarPosition} ${this.navbarAnchor} ${this.navbarVisibility}`}>
         <div className="navbar-header">
           <p>Header</p>
         </div>

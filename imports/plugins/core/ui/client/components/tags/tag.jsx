@@ -197,23 +197,26 @@ class Tag extends Component {
       "rui": true,
       "tag": true,
       "edit": true,
+      "draggable": this.props.draggable,
       "full-width": this.props.fullWidth
     });
 
     return (
       this.props.connectDropTarget(
-        <div
-          className={baseClassName}
-          data-id={this.props.tag._id}
-        >
-          <form onSubmit={this.handleTagFormSubmit}>
-            <Handle connectDragSource={this.props.connectDragSource} />
-            {this.renderAutosuggestInput()}
-            <Button icon="times-circle" onClick={this.handleTagRemove} status="danger" />
-            {this.props.selectable &&
-              <Button icon="chevron-down" onClick={this.handleTagSelect} status="default" />
-            }
-          </form>
+        <div className="rui item edit draggable">
+          <div
+            className={baseClassName}
+            data-id={this.props.tag._id}
+          >
+            <form onSubmit={this.handleTagFormSubmit}>
+              <Handle connectDragSource={this.props.connectDragSource} />
+              {this.renderAutosuggestInput()}
+              <Button icon="times-circle" onClick={this.handleTagRemove} status="danger" />
+              {this.props.selectable &&
+                <Button icon="chevron-down" onClick={this.handleTagSelect} status="default" />
+              }
+            </form>
+          </div>
         </div>
       )
     );
@@ -233,12 +236,14 @@ class Tag extends Component {
     });
 
     return (
-      <div className={baseClassName}>
-        <form onSubmit={this.handleTagFormSubmit}>
-          <Button icon="tag" />
-          {this.renderAutosuggestInput()}
-          <Button icon="plus" />
-        </form>
+      <div className="rui item edit draggable">
+        <div className={baseClassName}>
+          <form onSubmit={this.handleTagFormSubmit}>
+            <Button icon="tag" />
+            {this.renderAutosuggestInput()}
+            <Button icon="plus" />
+          </form>
+        </div>
       </div>
     );
   }
@@ -295,6 +300,7 @@ Tag.propTypes = {
   blank: PropTypes.bool,
   connectDragSource: PropTypes.func,
   connectDropTarget: PropTypes.func,
+  draggable: PropTypes.bool,
   editable: PropTypes.bool,
   fullWidth: PropTypes.bool,
   i18nKeyInputPlaceholder: PropTypes.string,
