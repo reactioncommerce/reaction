@@ -2,7 +2,8 @@ import _ from "lodash";
 import React, { Component, PropTypes } from "react";
 import { Meteor } from "meteor/meteor";
 import { composeWithTracker } from "/lib/api/compose";
-import { SignIn } from "../components";
+import { SignIn, LoginButtons } from "../components";
+import { ServiceConfigHelper } from "../helpers";
 
 class SignInContainer extends Component {
   constructor(props) {
@@ -15,6 +16,8 @@ class SignInContainer extends Component {
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
     this.hasError = this.hasError.bind(this);
     this.formMessages = this.formMessages.bind(this);
+    this.services = this.services.bind(this);
+    this.shouldShowSeperator = this.shouldShowSeperator.bind(this);
   }
 
   handleFormSubmit = (event, email, password) => {
@@ -78,15 +81,37 @@ class SignInContainer extends Component {
     return reasons;
   }
 
+  services = () => {
+    const serviceHelper = new ServiceConfigHelper();
+    return serviceHelper.services();
+  }
+
+  shouldShowSeperator = () => {
+    const serviceHelper = new ServiceConfigHelper();
+    const services = serviceHelper.services();
+    const enabledServices = _.filter(services, {
+      enabled: true
+    });
+
+    return !!Package["accounts-password"] && enabledServices.length > 0;
+  }
+
   render() {
     return (
-      <SignIn
-        {...this.props}
-        onFormSubmit={this.handleFormSubmit}
-        messages={this.state.formMessages}
-        onError={this.hasError}
-        loginFormMessages={this.formMessages}
-      />
+      <div>
+        <LoginButtons
+          loginServices={this.services}
+          currentView={this.props.currentView}
+          onSeparator={this.shouldShowSeperator}
+        />
+        <SignIn
+          {...this.props}
+          onFormSubmit={this.handleFormSubmit}
+          messages={this.state.formMessages}
+          onError={this.hasError}
+          loginFormMessages={this.formMessages}
+        />
+      </div>
     );
   }
 }
@@ -100,6 +125,7 @@ function composer(props, onData) {
 }
 
 SignInContainer.propTypes = {
+  currentView: PropTypes.string,
   formMessages: PropTypes.object
 };
 
