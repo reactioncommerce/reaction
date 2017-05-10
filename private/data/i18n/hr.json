@@ -329,16 +329,24 @@
       "order": {
         "created": "Stvoren",
         "reference": "upućivanje",
+        "cancelInvoice": "Prekini",
         "invoice": "Dostavnica",
         "ordersNotFound": "Nema narudžbi pronađeno",
         "approveInvoice": "Odobriti",
+        "cancelOrderLabel": "Otkazati narudžbu",
         "makeAdjustments": "napraviti prilagodbe",
         "capturePayment": "Snimanje plaćanja",
         "paymentCaptured": "Uhvaćena plaćanja",
         "capturedTotal": "Uhvaćena Ukupno",
+        "canceledLabel": "otkazan",
         "refundAmount": "Iznos povrata sredstava",
+        "cancelOrder": "Želite li otkazati ovu narudžbu?",
         "applyRefundToThisOrder": "Nanesite povrat {{currencySymbol}}{{refund}} ovom cilju?",
+        "applyRefundDuringCancelOrder": "To će vratiti ukupni iznos narudžbe {{currencySymbol}}{{invoiceTotal}}",
+        "cancelOrderThenRestock": "Da, i popunite se",
+        "cancelOrderNoRestock": "Da, ali ne popunjavanje",
         "applyRefund": "Nanesite povrat sredstava",
+        "refunding": "povrat",
         "applyDiscount": "Primijeni popust",
         "adjustedTotal": "Prilagođen Ukupno",
         "invalidDiscount": "Popust ne može biti veći od originalnog ukupne cijene",
@@ -362,7 +370,8 @@
           "completed": "dovršen",
           "canceled": "otkazan",
           "refunded": "Povrat za"
-        }
+        },
+        "showMore": "Prikaži više"
       },
       "orderShipping": {
         "shipTo": "Poslati nekome",

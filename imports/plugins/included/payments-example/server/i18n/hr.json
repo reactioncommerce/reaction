@@ -18,7 +18,8 @@
           "examplePaymentLabel": "Primjer Provider",
           "examplePaymentSettingsLabel": "Primjer plaćanja",
           "exampleCredentials": "To je postavka primjer načina plaćanja.",
-          "apiClientId": "ID API klijenta"
+          "apiClientId": "ID API klijenta",
+          "supportedMethodsLabel": "Metode plaćanja pružatelja usluga plaćanja"
         }
       }
     }

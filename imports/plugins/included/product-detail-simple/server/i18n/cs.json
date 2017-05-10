@@ -6,6 +6,9 @@
       "admin": {
         "settings": {
           "productDetailsLabel": "Detaily produktu"
+        },
+        "inventoryAlerts": {
+          "adjustedQuantity": "Váš množství produktu byla upravena tak, aby max množství na skladě"
         }
       }
     }

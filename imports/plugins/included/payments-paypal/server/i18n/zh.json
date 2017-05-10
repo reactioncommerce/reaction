@@ -6,11 +6,11 @@
     "reaction-payments": {
       "admin": {
         "shortcut": {
-          "paypalLabel": "贝宝"
+          "paypalLabel": "Paypal"
         },
         "dashboard": {
-          "paypalLabel": "贝宝",
-          "paypalTitle": "贝宝",
+          "paypalLabel": "PayPal",
+          "paypalTitle": "PayPal",
           "paypalDescription": "PayPal付款"
         },
         "paymentMethod": {
@@ -18,8 +18,8 @@
           "creditCardLabel": "信用卡"
         },
         "paymentSettings": {
-          "paypalLabel": "贝宝",
-          "paypalSettingsLabel": "贝宝",
+          "paypalLabel": "Paypal",
+          "paypalSettingsLabel": "Paypal",
           "paypalExpressCredentials": "没有一个PayPal的用户名，密码和签名？",
           "paypalExpressGetCredentialsHere": "这里获取一个。",
           "paypalPayflowCredentials": "没有一个PayPal客户端ID和秘密",

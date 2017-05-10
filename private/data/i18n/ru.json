@@ -329,16 +329,24 @@
       "order": {
         "created": "Создан",
         "reference": "Ссылка",
+        "cancelInvoice": "Отмена",
         "invoice": "Счёт",
         "ordersNotFound": "Не найдено заказов",
         "approveInvoice": "Подтвердить",
+        "cancelOrderLabel": "Отменить заказ",
         "makeAdjustments": "Корректировать",
         "capturePayment": "Найти платеж",
         "paymentCaptured": "Платеж найден",
         "capturedTotal": "Получено всего",
+        "canceledLabel": "Отмененных",
         "refundAmount": "Вернуть сумму",
+        "cancelOrder": "Вы хотите отменить этот заказ?",
         "applyRefundToThisOrder": "Выполнить возврат {{currencySymbol}}{{refund}} по этому заказу?",
+        "applyRefundDuringCancelOrder": "Это вернет сумму заказа {{currencySymbol}}{{invoiceTotal}}",
+        "cancelOrderThenRestock": "Да, и пополнение запасов",
+        "cancelOrderNoRestock": "Да, но без пополнения запасов",
         "applyRefund": "Подтвердить возврат",
+        "refunding": "Рефинансирование",
         "applyDiscount": "Применить скидку",
         "adjustedTotal": "Итого после возврата",
         "invalidDiscount": "Скидка не может быть больше итоговой цены",
@@ -362,7 +370,8 @@
           "completed": "Завершенных",
           "canceled": "Отмененных",
           "refunded": "Возвращенных"
-        }
+        },
+        "showMore": "Показать больше"
       },
       "orderShipping": {
         "shipTo": "Доставить до",

@@ -18,7 +18,8 @@
           "examplePaymentLabel": "Nhà cung cấp ví dụ",
           "examplePaymentSettingsLabel": "Ví dụ thanh toán",
           "exampleCredentials": "Đây là cài đặt phương thức thanh toán ví dụ.",
-          "apiClientId": "ID Client API"
+          "apiClientId": "ID Client API",
+          "supportedMethodsLabel": "Phương thức hỗ trợ nhà cung cấp thanh toán"
         }
       }
     }
