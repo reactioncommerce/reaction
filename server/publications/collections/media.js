@@ -41,7 +41,7 @@ Meteor.publish("Media", function (mediaFilters) {
   if (mediaFilters) {
     if (mediaFilters.products) {
       const products = mediaFilters.products;
-      delete selector["metadata.workflow"];
+      delete selector["metadata.type"];
       delete selector["metadata.shopId"];
       selector["metadata.productId"] = {
         $in: products
