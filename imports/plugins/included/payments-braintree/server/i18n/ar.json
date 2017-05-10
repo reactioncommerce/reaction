@@ -6,17 +6,17 @@
     "reaction-payments": {
       "admin": {
         "shortcut": {
-          "braintreeLabel": "برينتر",
-          "braintreeTitle": "برينتر"
+          "braintreeLabel": "Braintree",
+          "braintreeTitle": "Braintree"
         },
         "dashboard": {
-          "braintreeLabel": "برينتر",
-          "braintreeTitle": "برينتر",
+          "braintreeLabel": "Braintree",
+          "braintreeTitle": "Braintree",
           "braintreeDescription": "المدفوعات برينتر"
         },
         "paymentSettings": {
-          "braintreeLabel": "برينتر",
-          "braintreeSettingsLabel": "برينتر",
+          "braintreeLabel": "Braintree",
+          "braintreeSettingsLabel": "Braintree",
           "braintreeCredentials": "إضافة أوراق لتمكين"
         }
       },

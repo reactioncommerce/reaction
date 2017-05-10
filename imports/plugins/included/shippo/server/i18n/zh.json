@@ -5,8 +5,8 @@
     "reaction-shippo": {
       "admin": {
         "dashboard": {
-          "shippoLabel": "景泰蓝",
-          "shippoTitle": "景泰蓝",
+          "shippoLabel": "Shippo",
+          "shippoTitle": "Shippo",
           "shippoDescription": "货运标签和包裹跟踪"
         },
         "shippingGrid": {
