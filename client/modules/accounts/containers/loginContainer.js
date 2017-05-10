@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { composeWithTracker } from "/lib/api/compose";
-import SignInContainer from "./signInContainer";
-import SignUpContainer from "./signUpContainer";
+import AuthContainer from "./authContainer";
 import ForgotContainer from "./forgotContainer";
 
 class LoginContainer extends Component {
@@ -45,21 +44,14 @@ class LoginContainer extends Component {
   }
 
   render() {
-    if (this.state.currentView === "loginFormSignUpView") {
+    if (this.state.currentView === "loginFormSignInView" || this.state.currentView === "loginFormSignUpView") {
       return (
-        <SignUpContainer
-          {...this.props}
-          currentView={this.state.currentView}
-          onSignInClick={this.showSignInView}
-        />
-      );
-    } else if (this.state.currentView === "loginFormSignInView") {
-      return (
-        <SignInContainer
+        <AuthContainer
           {...this.props}
           currentView={this.state.currentView}
           onForgotPasswordClick={this.showForgotPasswordView}
           onSignUpClick={this.showSignUpView}
+          onSignInClick={this.showSignInView}
         />
       );
     } else if (this.state.currentView === "loginFormResetPasswordView") {

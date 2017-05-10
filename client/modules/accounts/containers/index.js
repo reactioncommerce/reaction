@@ -1,4 +1,3 @@
 export LoginContainer from "./loginContainer";
-export SignInContainer from "./signInContainer";
-export SignUpContainer from "./signUpContainer";
+export AuthContainer from "./authContainer";
 export ForgotContainer from "./forgotContainer";

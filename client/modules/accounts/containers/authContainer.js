@@ -2,10 +2,10 @@ import _ from "lodash";
 import React, { Component, PropTypes } from "react";
 import { Meteor } from "meteor/meteor";
 import { composeWithTracker } from "/lib/api/compose";
-import { SignIn, LoginButtons } from "../components";
+import { SignIn, SignUp, LoginButtons } from "../components";
 import { ServiceConfigHelper } from "../helpers";
 
-class SignInContainer extends Component {
+class AuthContainer extends Component {
   constructor(props) {
     super(props);
 
@@ -18,6 +18,9 @@ class SignInContainer extends Component {
     this.formMessages = this.formMessages.bind(this);
     this.services = this.services.bind(this);
     this.shouldShowSeperator = this.shouldShowSeperator.bind(this);
+    this.handleSocialLogin = this.handleSocialLogin.bind(this);
+    this.capitalize = this.capitalize.bind(this);
+    this.hasPasswordService = this.hasPasswordService.bind(this);
   }
 
   handleFormSubmit = (event, email, password) => {
@@ -46,15 +49,32 @@ class SignInContainer extends Component {
       return;
     }
 
-    Meteor.loginWithPassword(username, pword, (error) => {
-      if (error) {
-        this.setState({
-          formMessages: {
-            alerts: [error]
-          }
-        });
-      }
-    });
+    if (this.props.currentView === "loginFormSignInView") {
+      Meteor.loginWithPassword(username, pword, (error) => {
+        if (error) {
+          this.setState({
+            formMessages: {
+              alerts: [error]
+            }
+          });
+        }
+      });
+    } else if (this.props.currentView === "loginFormSignUpView") {
+      const newUserData = {
+        email: username,
+        password: pword
+      };
+
+      Accounts.createUser(newUserData, (error) => {
+        if (error) {
+          this.setState({
+            formMessages: {
+              alerts: [error]
+            }
+          });
+        }
+      });
+    }
   }
 
   hasError = (error) => {
@@ -96,14 +116,36 @@ class SignInContainer extends Component {
     return !!Package["accounts-password"] && enabledServices.length > 0;
   }
 
-  render() {
-    return (
-      <div>
-        <LoginButtons
-          loginServices={this.services}
-          currentView={this.props.currentView}
-          onSeparator={this.shouldShowSeperator}
-        />
+  capitalize = (str) => {
+    const finalString = str === null ? "" : String(str);
+    return finalString.charAt(0).toUpperCase() + finalString.slice(1);
+  }
+
+  handleSocialLogin = (value) => {
+    let serviceName = value;
+
+    // Get proper service name
+    if (serviceName === "meteor-developer") {
+      serviceName = "MeteorDeveloperAccount";
+    } else {
+      serviceName = this.capitalize(serviceName);
+    }
+
+    const loginWithService = Meteor["loginWith" + serviceName];
+    const options = {}; // use default scope unless specified
+
+    loginWithService(options, () => {
+      // TODO: add error message for failed login attempt
+    });
+  }
+
+  hasPasswordService = () => {
+    return !!Package["accounts-password"];
+  }
+
+  renderAuthView() {
+    if (this.props.currentView === "loginFormSignInView") {
+      return (
         <SignIn
           {...this.props}
           onFormSubmit={this.handleFormSubmit}
@@ -111,6 +153,31 @@ class SignInContainer extends Component {
           onError={this.hasError}
           loginFormMessages={this.formMessages}
         />
+      );
+    } else if (this.props.currentView === "loginFormSignUpView") {
+      return (
+        <SignUp
+          {...this.props}
+          onFormSubmit={this.handleFormSubmit}
+          messages={this.state.formMessages}
+          onError={this.hasError}
+          loginFormMessages={this.formMessages}
+          hasPasswordService={this.hasPasswordService}
+        />
+      );
+    }
+  }
+
+  render() {
+    return (
+      <div>
+        <LoginButtons
+          loginServices={this.services}
+          currentView={this.props.currentView}
+          onSeparator={this.shouldShowSeperator}
+          onSocialClick={this.handleSocialLogin}
+        />
+      {this.renderAuthView()}
       </div>
     );
   }
@@ -124,9 +191,9 @@ function composer(props, onData) {
   });
 }
 
-SignInContainer.propTypes = {
+AuthContainer.propTypes = {
   currentView: PropTypes.string,
   formMessages: PropTypes.object
 };
 
-export default composeWithTracker(composer)(SignInContainer);
+export default composeWithTracker(composer)(AuthContainer);
