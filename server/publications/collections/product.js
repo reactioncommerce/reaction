@@ -58,7 +58,7 @@ Meteor.publish("Product", function (productId) {
     return this.ready();
   }
   let _id;
-  let selector = {
+  const selector = {
     isDeleted: { $in: [null, false] },
     isVisible: true
   };

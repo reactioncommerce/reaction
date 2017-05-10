@@ -11,7 +11,7 @@ Meteor.publish("SellerShops", function (shopIds) {
 
   // sub publication for all shops that don't belong to current user
   const sellerShopsSubPub = () => {
-    let selector = {};
+    const selector = {};
 
     if (shopIds) {
       if (sellerShopId) {
