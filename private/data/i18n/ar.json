@@ -329,16 +329,24 @@
       "order": {
         "created": "تم الانشاء",
         "reference": "مرجع",
+        "cancelInvoice": "إلغاء",
         "invoice": "فاتورة",
         "ordersNotFound": "لم يتم إيجاد طلبات",
         "approveInvoice": "موافق عليه",
+        "cancelOrderLabel": "الغاء الطلب",
         "makeAdjustments": "القيام بالتعديلات",
         "capturePayment": "الدفعة المقبوضة",
         "paymentCaptured": "الدفعة المقبوضة",
         "capturedTotal": "الإجمالي المقبوض",
+        "canceledLabel": "تم الإلغاء",
         "refundAmount": "كمية استرداد المال",
+        "cancelOrder": "هل تريد إلغاء هذا الطلب؟",
         "applyRefundToThisOrder": "تطبيق اعادة الاموال الخاصة ب {{currencySymbol}}{{refund}} هذا الطلب؟",
+        "applyRefundDuringCancelOrder": "سيؤدي هذا إلى رد المبلغ الإجمالي للطلب البالغ {{currencySymbol}}{{invoiceTotal}}",
+        "cancelOrderThenRestock": "نعم، وإعادة تخزين",
+        "cancelOrderNoRestock": "نعم، ولكن لا إعادة تخزين",
         "applyRefund": "التقدم بطلب استرداد الأموال",
+        "refunding": "برد",
         "applyDiscount": "تطبيق الخصم",
         "adjustedTotal": "إجمالي المعدل",
         "invalidDiscount": "لا يمكن للخصم أن يكون أكبر من إجمالي السعر الأصلي",
@@ -362,7 +370,8 @@
           "completed": "مكتمل",
           "canceled": "تم الإلغاء",
           "refunded": "المستردة"
-        }
+        },
+        "showMore": "أظهر المزيد"
       },
       "orderShipping": {
         "shipTo": "شحن لـ",

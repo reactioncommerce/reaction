@@ -242,6 +242,16 @@ Template.productGridItems.events({
           $checkbox.prop("checked", true).trigger("change");
         }
       }
+    } else {
+      event.preventDefault();
+
+      const instance = template;
+      const product = instance.data;
+      const handle = product.__published && product.__published.handle || product.handle;
+
+      Reaction.Router.go("product", {
+        handle: handle
+      });
     }
   },
   "click [data-event-action=selectSingleProduct]": function (event, template) {

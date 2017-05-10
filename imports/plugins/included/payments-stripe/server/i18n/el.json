@@ -6,15 +6,15 @@
     "reaction-payments": {
       "admin": {
         "shortcut": {
-          "stripeLabel": "Ταινία"
+          "stripeLabel": "Stripe"
         },
         "dashboard": {
-          "stripeLabel": "Ταινία",
-          "stripeDescription": "πληρωμές stripe"
+          "stripeLabel": "Stripe",
+          "stripeDescription": "πληρωμές Stripe"
         },
         "paymentSettings": {
-          "stripeLabel": "Ταινία",
-          "stripeSettingsLabel": "Ταινία",
+          "stripeLabel": "Stripe",
+          "stripeSettingsLabel": "Stripe",
           "stripeSettingsDescription": "Δεν έχετε Stripe API αναγνωριστικό πελάτη;",
           "stripeSettingsGetItHere": "Αποκτήστε το εδώ"
         }

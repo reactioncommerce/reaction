@@ -12,7 +12,7 @@
         "dashboard": {
           "authorizenetLabel": "Authorize.net",
           "authorizenetTitle": "Authorize.net",
-          "authorizenetDescription": "plačila authorize.net"
+          "authorizenetDescription": "plačila Authorize.net"
         },
         "paymentSettings": {
           "authorizenetLabel": "Authorize.net",

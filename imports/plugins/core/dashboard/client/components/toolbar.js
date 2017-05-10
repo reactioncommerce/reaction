@@ -126,11 +126,11 @@ class PublishControls extends Component {
       if (this.props.isEnabled) {
         return [
           <VerticalDivider key="customControlsVerticaldivider" />,
-          <Blaze key="customControls" template={this.props.dashboardHeaderTemplate()} />
+          <Blaze key="customControls" template={this.props.dashboardHeaderTemplate} />
         ];
       }
       return [
-        <Blaze key="customControls" template={this.props.dashboardHeaderTemplate()} />
+        <Blaze key="customControls" template={this.props.dashboardHeaderTemplate} />
       ];
     }
 

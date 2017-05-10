@@ -108,6 +108,7 @@
       "order": {
         "created": "Opprettet",
         "reference": "Referanse",
+        "cancelInvoice": "Avbryt",
         "invoice": "Faktura",
         "ordersNotFound": "Ingen Ordre Funnet",
         "approveInvoice": "Godkjenn",
@@ -115,6 +116,7 @@
         "capturePayment": "Til betaling",
         "paymentCaptured": "Betalt",
         "capturedTotal": "Totalt innbetalt",
+        "canceledLabel": "Avbrutt",
         "refundAmount": "Refundert",
         "applyRefund": "Refunder",
         "adjustedTotal": "Endret Total",
