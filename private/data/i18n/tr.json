@@ -329,16 +329,24 @@
       "order": {
         "created": "oluşturuldu",
         "reference": "Referans",
+        "cancelInvoice": "Vazgeç",
         "invoice": "Fatura",
         "ordersNotFound": "Hiçbir emir bulunamadı",
         "approveInvoice": "onaylamak",
+        "cancelOrderLabel": "Siparişi iptal et",
         "makeAdjustments": "Düzenlemeler yapmak",
         "capturePayment": "yakalama Ödeme",
         "paymentCaptured": "Ödeme Yakalanan",
         "capturedTotal": "yakalanan Toplam",
+        "canceledLabel": "Iptal edildi",
         "refundAmount": "İade Tutarı",
+        "cancelOrder": "Bu emri iptal etmek istiyor musunuz?",
         "applyRefundToThisOrder": "Bu düzene {{currencySymbol}}{{refund}} iadesi uygulayın?",
+        "applyRefundDuringCancelOrder": "Bu, sipariş toplamını {{currencySymbol}}{{invoiceTotal}} tutarında iade edecektir",
+        "cancelOrderThenRestock": "Evet ve yeniden yerleştirme",
+        "cancelOrderNoRestock": "Evet, ama restocking yok",
         "applyRefund": "İade uygula",
+        "refunding": "Geri ödeme yapılıyor",
         "applyDiscount": "İndirim uygula",
         "adjustedTotal": "Düzeltilmiş Toplam",
         "invalidDiscount": "İndirim orijinal toplam fiyattan daha büyük olamaz",
@@ -362,7 +370,8 @@
           "completed": "Tamamlanan",
           "canceled": "Iptal edildi",
           "refunded": "iade"
-        }
+        },
+        "showMore": "Daha Fazla Göster"
       },
       "orderShipping": {
         "shipTo": "Alıcı",
