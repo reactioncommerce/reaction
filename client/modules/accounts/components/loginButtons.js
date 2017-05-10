@@ -1,4 +1,7 @@
 import React, { Component, PropTypes } from "react";
+import {
+  Button
+} from "/imports/plugins/core/ui/client/components";
 
 class LoginButtons extends Component {
 
@@ -15,12 +18,14 @@ class LoginButtons extends Component {
       <div>
         {this.props.loginServices &&
           enabledServices.map((service) => (
-            <button
+            <Button
               key={service._id}
-              className={`btn btn-primary btn-block provider-${service.name}`}
+              className={`btn-block provider-${service.name}`}
+              primary={true}
+              bezelStyle="solid"
               type="button"
-              data-event-action="signInWithProvider"
               data-provider={`${service.name}`}
+              onDoubleClick={() => this.props.onSocialClick(service.name)}
             >
               <i className={`fa fa-${service.name}`} />
 
@@ -30,7 +35,7 @@ class LoginButtons extends Component {
                 <span data-i18n="accountsUI.signUpWith">Sign up with</span>}
 
               &nbsp;<span data-i18n={`social.${service.name}`}>{service.name}</span>
-            </button>
+          </Button>
           ))
         }
       </div>
@@ -62,7 +67,8 @@ class LoginButtons extends Component {
 LoginButtons.propTypes = {
   currentView: PropTypes.string,
   loginServices: PropTypes.func,
-  onSeparator: PropTypes.func
+  onSeparator: PropTypes.func,
+  onSocialClick: PropTypes.func
 };
 
 export default LoginButtons;
