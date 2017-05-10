@@ -26,7 +26,7 @@ class Menu extends Component {
 
   render() {
     return (
-      <ul className="rui menu dropdown-menu">
+      <ul className="rui menu dropdown-menu" style={{ maxHeight: 500, overflow: "auto" }}>
         {this.renderMenuItems()}
       </ul>
     );
