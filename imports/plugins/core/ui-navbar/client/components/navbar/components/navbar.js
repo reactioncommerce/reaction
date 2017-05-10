@@ -1,12 +1,12 @@
+import React, { Component } from "react";
 
-<template name="CoreNavigationBar">
-  <div class="rui navbar">
-    <div class="showmenu">{{> button icon="bars" onClick=onMenuButtonClick}}</div>
-     <div>
-      {{> React brandComponent}}
-    </div>
+class NavBar extends Component {
+  render() {
+    return (
+      <div>
+         <div class="showmenu">{{> button icon="bars" onClick=onMenuButtonClick}}</div>
+    {{> coreNavigationBrand}}
     <div class="menu">
-
       {{> tagNav tagNavProps}}
     </div>
 
@@ -22,4 +22,9 @@
     <div class="cart">{{> cartIcon}}</div>
     <div class="cart-alert">{{> React component=cartPanel}}</div>
   </div>
-</template>
+      </div>
+    );
+  }
+}
+
+export default NavBar;
