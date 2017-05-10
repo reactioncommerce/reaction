@@ -61,9 +61,6 @@ export function Apps(optionHash) {
     options.shopId = Reaction.getShopId();
   }
 
-  // make sure audience is used for all calls to ReactionApps
-  options.audience = Roles.getRolesForUser(Meteor.userId(), Reaction.getShopId());
-
   // remove audience permissions for owner (still needed here for older/legacy calls)
   if (Reaction.hasOwnerAccess() && options.audience) {
     delete options.audience;
