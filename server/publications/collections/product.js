@@ -24,9 +24,7 @@ export function findProductMedia(publicationInstance, productIds) {
 
   const isUserOwnerOrModerator = Reaction.hasPermission(["owner", "moderator"], publicationInstance.userId);
   if (isUserOwnerOrModerator) {
-    selector["metadata.workflow"] = {
-      $nin: ["archived"]
-    };
+    selector["metadata.workflow"] = { $nin: ["archived"] };
   } else {
     // get seller-shop id if user is a seller;
     const sellerShopId = Reaction.getSellerShopId(publicationInstance.userId, true);
