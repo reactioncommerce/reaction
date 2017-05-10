@@ -31,7 +31,7 @@ Meteor.publish("Media", function (mediaFilters) {
     return this.ready();
   }
 
-  // Default selector gets only  brandAsset of shop (Shop's main images)
+  // Default selector gets only published brandAsset of shop (main image of shop)
   const selector = {
     "metadata.type": "brandAsset",
     "metadata.workflow": [null, "published"],
