@@ -19,31 +19,25 @@ export function findProductMedia(publicationInstance, productIds) {
     selector["metadata.productId"] = productIds;
   }
 
-  // TODO: This block is commented out in Marketplace, why??
-  // if (shopId) {
-  //   selector["metadata.shopId"] = shopId;
-  // }
+  // The default is to see only published images of products
+  selector["metadata.workflow"] = { $in: [null, "published"] };
 
-  // No one needs to see archived images on products
-  selector["metadata.workflow"] = {
-    $nin: ["archived"]
-  };
-
-  // get seller-shop id if user is a seller;
-  const sellerShopId = Reaction.getSellerShopId(publicationInstance.userId, true);
-
-  // sellers can see unpublished images only of their shop
-  // Users with create-product access in the Parent shop can see all of them
-  if (sellerShopId) {
-    selector.$or = [
-      {
+  const isUserOwnerOrModerator = Reaction.hasPermission(["owner", "moderator"], publicationInstance.userId);
+  if (isUserOwnerOrModerator) {
+    selector["metadata.workflow"] = {
+      $nin: ["archived"]
+    };
+  } else {
+    // get seller-shop id if user is a seller;
+    const sellerShopId = Reaction.getSellerShopId(publicationInstance.userId, true);
+    // sellers can see unpublished images only of their shop
+    if (sellerShopId) {
+      selector.$or = [{
         "metadata.workflow": { $in: [null, "published"] }
       }, {
         "metadata.shopId": sellerShopId
-      }
-    ]; //
-  } else {
-    selector["metadata.workflow"].$in = [null, "published"];
+      }];
+    }
   }
 
   return Media.find(selector, {
@@ -66,8 +60,9 @@ Meteor.publish("Product", function (productId) {
     return this.ready();
   }
   let _id;
-  const selector = {
-    isDeleted: { $in: [null, false] }
+  let selector = {
+    isDeleted: { $in: [null, false] },
+    isVisible: true
   };
   let productShopId;
   const shop = Reaction.getCurrentShop();
@@ -106,7 +101,7 @@ Meteor.publish("Product", function (productId) {
     }
   }
 
-  // Selector for product
+  // Begin selector for product
   // We don't need handle anymore(we got product's id in the previous step)
   // Try to find a product with the _is as an Random.id()
   // Try to find a product variant with _id using the ancestors array
@@ -122,6 +117,7 @@ Meteor.publish("Product", function (productId) {
   // Authorized content curators of the shop get special publication of the product
   // all relevant revisions all is one package
   if (Reaction.hasPermission("createProduct", this.userId, productShopId)) {
+    delete selector.isVisible;
     if (RevisionApi.isRevisionControlEnabled()) {
       const productCursor = Products.find(selector);
       const productIds = productCursor.map(p => p._id);
@@ -233,8 +229,6 @@ Meteor.publish("Product", function (productId) {
   }
 
   // Everyone else gets the standard, visible products and variants
-  selector.isVisible = true;
-
   const productCursor = Products.find(selector);
   const productIds = productCursor.map(p => p._id);
   const mediaCursor = findProductMedia(this, productIds);

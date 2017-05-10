@@ -1,24 +1,27 @@
+import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Reaction } from "/lib/api";
 import { Shops } from "/lib/collections";
 
-Meteor.publish("SellerShops", function (userId) {
+
+Meteor.publish("SellerShops", function (shopIds) {
+  check(shopIds, Match.Optional([String]));
+
   const sellerShopId = Reaction.getSellerShopId(this.userId, true);
 
   // sub publication for all shops that don't belong to current user
   const sellerShopsSubPub = () => {
     let selector = {};
 
-    if (userId) {
-      selector = {
-        _id: userId
-      };
-    } else if (sellerShopId) {
-      selector = {
-        _id: {
-          $ne: sellerShopId
-        }
-      };
+    if (shopIds) {
+      if (sellerShopId) {
+        const pubShopIds =  _.without(shopIds, sellerShopId);
+        selector._id = { $in: pubShopIds };
+      }
+    } else {
+      if (sellerShopId) {
+        selector._id = { $ne: sellerShopId };
+      }
     }
 
     const sellerShopsObserver = Shops.find(selector, {
@@ -58,11 +61,12 @@ Meteor.publish("SellerShops", function (userId) {
     });
   };
 
-  if (sellerShopId && (userId === this.userId || !userId)) {
+  if (sellerShopId && (!shopIds || shopIds.includes(sellerShopId))) {
     ownedSellerShopSubPub();
   }
 
-  if (!userId || (sellerShopId && userId !== this.userId)) {
+  // if we aren't try to get only the shop of the current logged-in seller
+  if (!(sellerShopId && shopIds && shopIds.length === 1 && sellerShopId === shopIds[0])) {
     sellerShopsSubPub();
   }
 

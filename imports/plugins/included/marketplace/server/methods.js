@@ -13,8 +13,8 @@ Meteor.methods({
    * @returns {Object|null} - The user hash if found, null otherwise
    */
   "marketplace/getSeller": function (shopId) {
+    check(shopId, Match.Optional(String));
     let sellerShopId;
-    check(shopId, String);
 
     if (!shopId) {
       const currentUser = Meteor.user();
@@ -25,7 +25,7 @@ Meteor.methods({
       sellerShopId = shopId;
     }
 
-    return Accounts.findOne({ shopId:sellerShopId });
+    return Accounts.findOne({ shopId: sellerShopId });
   },
 
 

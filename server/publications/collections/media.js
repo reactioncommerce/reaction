@@ -65,7 +65,7 @@ Meteor.publish("Media", function (mediaFilters) {
         $in: [null, "published"]
       };
     } else {
-      // whereas ,product editors can see published & unpublished images
+      // whereas product editors can see published & unpublished images
       selector["metadata.workflow"] = {
         $nin: ["archived"]
       };
