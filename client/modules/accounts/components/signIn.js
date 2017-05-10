@@ -46,24 +46,19 @@ class SignIn extends Component {
   }
 
   renderPasswordErrors() {
-    if (this.props.onError(this.props.messages.errors && this.props.messages.errors.password)) {
-      return (
-        <span className="help-block">
-          this.props.messages.errors.password.forEach(function (error) {
-            <p>
-              <Translation
-                defaultValue={error.reason}
-                i18nKey={error.i18nKeyReason}
-              />
-            </p>
-          });
-          <Translation
-            defaultValue={this.props.messages.errors.email.reason}
-            i18nKey={this.props.messages.errors.email.i18nKeyReason}
-          />
-        </span>
-      );
-    }
+    return (
+      <span className="help-block">
+        {this.props.onError(this.props.messages.errors && this.props.messages.errors.password) &&
+          this.props.messages.errors.password.map((error, i) => (
+            <Translation
+              key={i}
+              defaultValue={error.reason}
+              i18nKey={error.i18nKeyReason}
+            />
+          ))
+        }
+      </span>
+    );
   }
 
   renderFormMessages() {
