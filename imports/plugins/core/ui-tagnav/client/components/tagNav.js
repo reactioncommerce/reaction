@@ -142,7 +142,7 @@ class TagNav extends Component {
   }
 
   get canEdit() {
-    return this.props.hasEdits && Reaction.isPreview() === false;
+    return this.props.hasEditRights && Reaction.isPreview() === false;
   }
 
   attachBodyListener = () => {
@@ -190,7 +190,6 @@ class TagNav extends Component {
   }
 
   onTagSelect = (selectedTag) => {
-    console.log({ selectedTag });
     if (JSON.stringify(selectedTag) === JSON.stringify(this.state.selectedTag)) {
       this.setState({ selectedTag: null });
     } else {
@@ -361,7 +360,7 @@ class TagNav extends Component {
 TagNav.propTypes = {
   editButton: PropTypes.node,
   editable: PropTypes.bool,
-  hasEdits: PropTypes.bool,
+  hasEditRights: PropTypes.bool,
   tags: PropTypes.arrayOf(PropTypes.object)
 };
 

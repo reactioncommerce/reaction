@@ -90,7 +90,7 @@ Template.CoreNavigationBar.helpers({
 
     const props = {
       name: "coreHeaderNavigation",
-      hasEdits: Reaction.hasAdminAccess(),
+      hasEditRights: Reaction.hasAdminAccess(),
       isEditing: true,
       tags: tags,
       onToggleMenu(callback) {
@@ -104,28 +104,6 @@ Template.CoreNavigationBar.helpers({
       ...props
     };
   },
-
-  // tagNavProps() {
-  //   const instance = Template.instance();
-  //   const tags = Tags.find({
-  //     isTopLevel: true
-  //   }, {
-  //     sort: {
-  //       position: 1
-  //     }
-  //   }).fetch();
-
-  //   return {
-  //     name: "coreHeaderNavigation",
-  //     editable: Reaction.hasAdminAccess(),
-  //     isEditing: true,
-  //     tags: tags,
-  //     onToggleMenu(callback) {
-  //       // Register the callback
-  //       instance.toggleMenuCallback = callback;
-  //     }
-  //   };
-  // },
 
   cartPanel() {
     return CartPanel;

@@ -15,6 +15,7 @@ class TagTree extends Component {
     if (this.props.blank) {
       return "create";
     }
+    return "";
   }
 
   suggestions = [{}]
@@ -83,6 +84,7 @@ class TagTree extends Component {
 
   renderSubTagGroups(subTagGroups) {
     if (_.isArray(subTagGroups)) {
+      // Tag Group
       return subTagGroups.map((groupTag, index) => (
         <div className={`rui grouptag ${this.className}`} data-id={groupTag._id} key={groupTag._id}>
           <div className="header">
@@ -103,26 +105,22 @@ class TagTree extends Component {
           </div>
           <div className="content">
             {this.renderTagList(this.tagListProps(groupTag))}
-          </div>
-          { this.props.editable &&
-            <div className="rui grouptag create">
-              <div className="header">
-                <div className="navbar-item">
-                  <TagItem
-                    blank={true}
-                    key="newTagForm"
-                    onClearSuggestions={this.handleClearSuggestions}
-                    onGetSuggestions={this.handleGetSuggestions}
-                    onTagInputBlur={this.handleNewTagSave}
-                    onTagSave={this.props.onTagSave}
-                    onTagUpdate={this.handleNewTagUpdate}
-                    tag={this.newTag}
-                    suggestions={this.suggestions}
-                  />
-                </div>
+            { this.props.editable &&
+              <div className="rui grouptag create">
+                <TagItem
+                  blank={true}
+                  key="newTagForm"
+                  onClearSuggestions={this.handleClearSuggestions}
+                  onGetSuggestions={this.handleGetSuggestions}
+                  onTagInputBlur={this.handleNewTagSave}
+                  onTagSave={this.props.onTagSave}
+                  onTagUpdate={this.handleNewTagUpdate}
+                  tag={this.newTag}
+                  suggestions={this.suggestions}
+                />
               </div>
-            </div>
-          }
+            }
+          </div>
         </div>
       ));
     }
@@ -137,6 +135,19 @@ class TagTree extends Component {
         </div>
         <div className="content">
           {this.renderSubTagGroups(this.props.subTagGroups)}
+          <div className="rui grouptag create">
+            <div className="header">
+              <TagItem
+                blank={true}
+                tag={this.newTag}
+                key="newTagForm"
+                onClearSuggestions={this.handleClearSuggestions}
+                onGetSuggestions={this.handleGetSuggestions}
+                onTagSave={this.props.onTagSave}
+                suggestions={this.suggestions}
+              />
+            </div>
+          </div>
         </div>
       </div>
     );
