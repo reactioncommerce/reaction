@@ -2,5 +2,21 @@
   "language": "Bokmål",
   "i18n": "nb",
   "ns": "reaction-paypal",
-  "translation": { }
+  "translation": {
+    "reaction-payments": {
+      "admin": {
+        "shortcut": {
+          "paypalLabel": "Paypal"
+        },
+        "dashboard": {
+          "paypalLabel": "Paypal",
+          "paypalTitle": "Paypal"
+        },
+        "paymentSettings": {
+          "paypalLabel": "Paypal",
+          "paypalSettingsLabel": "Paypal"
+        }
+      }
+    }
+  }
 }]

@@ -1,1 +1,1 @@
-export { default as Router } from "./main";
+export { default as Router } from "/imports/plugins/core/router/lib/router";

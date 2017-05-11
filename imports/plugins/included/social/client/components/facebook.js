@@ -88,7 +88,9 @@ class FacebookSocialButton extends Component {
     });
 
     return (
-      <a className="btn btn-flat facebook-share" href="#" onClick={this.handleClick} target="_blank">
+      <a className="btn btn-flat facebook-share" aria-label="Share to Facebook" href="#" onClick={this.handleClick}
+        target="_blank"
+      >
         <Helmet
           meta={getOpenGraphMeta(this.props)}
         />

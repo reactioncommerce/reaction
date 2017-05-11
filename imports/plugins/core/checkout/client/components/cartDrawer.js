@@ -2,7 +2,7 @@ import React, { PropTypes } from "react";
 import CartSubTotals from "../container/cartSubTotalContainer";
 import CartItems from "./cartItems";
 
-const cartDrawer = ({ productItems, pdpPath, handleRemoveItem, handleCheckout, handleImage, handleLowInventory }) => {
+const cartDrawer = ({ productItems, pdpPath, handleRemoveItem, handleCheckout, handleImage, handleLowInventory, handleShowProduct }) => {
   return (
     <div>
       <div className="cart-drawer-swiper-container">
@@ -19,6 +19,7 @@ const cartDrawer = ({ productItems, pdpPath, handleRemoveItem, handleCheckout, h
                   handleLowInventory={handleLowInventory}
                   handleImage={handleImage}
                   handleRemoveItem={handleRemoveItem}
+                  handleShowProduct={handleShowProduct}
                 />
               </div>
             );
@@ -40,6 +41,7 @@ cartDrawer.propTypes = {
   handleImage: PropTypes.func,
   handleLowInventory: PropTypes.func,
   handleRemoveItem: PropTypes.func,
+  handleShowProduct: PropTypes.func,
   pdpPath: PropTypes.func,
   productItems: PropTypes.array
 };
