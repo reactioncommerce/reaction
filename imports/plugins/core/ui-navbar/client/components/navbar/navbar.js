@@ -4,6 +4,7 @@ import { Reaction } from "/client/api";
 import { Tags } from "/lib/collections";
 import CartPanel from "../../../../checkout/client/templates/cartPanel/container/cartPanelContainer";
 import BrandContainer from "./containers/brandContainer";
+import CartIcon from "/imports/plugins/core/checkout/client/components/cartIcon.js";
 
 Template.CoreNavigationBar.onCreated(function () {
   this.state = new ReactiveDict();
@@ -44,6 +45,11 @@ Template.CoreNavigationBar.events({
 });
 
 Template.CoreNavigationBar.helpers({
+  cartIcon() {
+    return {
+      component: CartIcon
+    };
+  },
   brandComponent() {
     return {
       component: BrandContainer
