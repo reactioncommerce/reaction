@@ -35,9 +35,11 @@ function transform(doc, userId) {
       registry.shopId = doc.shopId;
       registry.packageName = registry.packageName || doc.name;
       registry.settingsKey = (registry.name || doc.name).split("/").splice(-1)[0];
-
       // check and set package enabled state
-      // todo could add audience permissions to registry
+      registry.permissions = [...permissions];
+      if (registry.route) {
+        registry.permissions.push(registry.name || doc.name + "/" + registry.template);
+      }
       if (doc.settings && doc.settings[registry.settingsKey]) {
         registry.enabled = !!doc.settings[registry.settingsKey].enabled;
       } else {

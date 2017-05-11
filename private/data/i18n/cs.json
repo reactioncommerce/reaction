@@ -329,16 +329,24 @@
       "order": {
         "created": "Vytvořeno",
         "reference": "Odkaz",
+        "cancelInvoice": "Zrušit",
         "invoice": "Faktura",
         "ordersNotFound": "Nebyly nalezeny žádné objednávky",
         "approveInvoice": "Schvalovat",
+        "cancelOrderLabel": "Zrušit objednávku",
         "makeAdjustments": "provést úpravy",
         "capturePayment": "Zachycení platby",
         "paymentCaptured": "platba Zachycená",
         "capturedTotal": "zajatý Total",
+        "canceledLabel": "Zrušeno",
         "refundAmount": "vrácená částka",
+        "cancelOrder": "Chcete tuto objednávku zrušit?",
         "applyRefundToThisOrder": "Uplatňovat vrácení {{currencySymbol}}{{refund}} na tomto pořadí?",
+        "applyRefundDuringCancelOrder": "Tím bude vrácena celková objednávka {{currencySymbol}}{{invoiceTotal}}",
+        "cancelOrderThenRestock": "Ano, a znovu",
+        "cancelOrderNoRestock": "Ano, ale žádné doplňování",
         "applyRefund": "Použít refundaci",
+        "refunding": "vrácení",
         "applyDiscount": "Použít slevu",
         "adjustedTotal": "Upravený Total",
         "invalidDiscount": "Sleva nemůže být větší než původní celkové ceny",
@@ -362,7 +370,8 @@
           "completed": "Dokončeno",
           "canceled": "Zrušeno",
           "refunded": "vrácena"
-        }
+        },
+        "showMore": "Zobrazit více"
       },
       "orderShipping": {
         "shipTo": "Dopravit do",
@@ -551,7 +560,7 @@
         "github": "GitHub",
         "meetup": "Meetup",
         "ok": "Dobře",
-        "twitter": "Cvrlikání",
+        "twitter": "Twitter",
         "vk": "VK",
         "weibo": "Weibo"
       },

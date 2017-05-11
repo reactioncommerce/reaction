@@ -256,6 +256,7 @@
         "fulfillmentService": "שירות ביצוע",
         "weight": "משקל",
         "taxable": "חייב במס",
+        "taxCode": "קוד מס",
         "inventoryManagement": "מעקב אחר מלאי",
         "inventoryManagementLabel": "רשום מוצר במערכת המלאי ועקוב אחרי הסטטוס שלו",
         "inventoryPolicy": "מנע כאשר אזל מהמלאי",
@@ -297,6 +298,7 @@
       "order": {
         "created": "נוצר",
         "reference": "סימוכין",
+        "cancelInvoice": "בטל",
         "invoice": "חשבונית",
         "ordersNotFound": "לא נמצאו הזמנות",
         "approveInvoice": "אישור",
@@ -304,6 +306,7 @@
         "capturePayment": "עיבוד תשלום",
         "paymentCaptured": "התשלום עובד",
         "capturedTotal": "סך התשלום שעובד",
+        "canceledLabel": "בוטל",
         "refundAmount": "סכום החזר",
         "applyRefundToThisOrder": "האם להחיל החזר של {{currencySymbol}}{{refund}} על הזמנה זו?",
         "applyRefund": "החל החזר",

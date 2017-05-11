@@ -7,6 +7,20 @@
       "settings": {
         "username": "Brukernavn",
         "password": "Passord"
+      },
+      "admin": {
+        "shortcut": {
+          "avalaraLabel": "Avalara",
+          "avalaraTitle": "Avalara"
+        },
+        "dashboard": {
+          "avalaraLabel": "Avalara",
+          "avalaraTitle": "Avalara"
+        },
+        "taxSettings": {
+          "avalaraLabel": "Avalara",
+          "avalaraSettingsLabel": "Avalara"
+        }
       }
     }
   }
