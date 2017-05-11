@@ -1,7 +1,9 @@
 import React, { Component, PropTypes } from "react";
+import classnames from "classnames";
 import {
   Button,
-  TextField
+  TextField,
+  Translation
 } from "/imports/plugins/core/ui/client/components";
 
 class Forgot extends Component {
@@ -28,16 +30,47 @@ class Forgot extends Component {
     }
   }
 
+  renderFormMessages() {
+    if (this.props.loginFormMessages) {
+      return (
+        <div>
+          {this.props.loginFormMessages()}
+        </div>
+      );
+    }
+  }
+
+  renderEmailErrors() {
+    if (this.props.onError(this.props.messages.errors && this.props.messages.errors.email)) {
+      return (
+        <span className="help-block">
+          <Translation
+            defaultValue={this.props.messages.errors.email.reason}
+            i18nKey={this.props.messages.errors.email.i18nKeyReason}
+          />
+        </span>
+      );
+    }
+  }
+
   render() {
+    const emailClasses = classnames({
+      "form-group": true,
+      "form-group-email": true,
+      "has-error has-feedback": this.props.onError(this.props.messages.errors && this.props.messages.errors.email)
+    });
+
     return (
       <div>
         <div className="loginForm-title">
           <h2 data-i18n="accountsUI.resetYourPassword">Reset your password</h2>
         </div>
 
-        <form name="loginForm" onSubmit={this.handleSubmit}>
+        <form name="loginForm" onSubmit={this.handleSubmit} noValidate>
 
-          <div className="form-group {{hasError messages.errors.email}}">
+          {this.renderFormMessages()}
+
+          <div className={emailClasses}>
             <TextField
               i18nKeyLabel="accountsUI.emailAddress"
               label="Email"
@@ -48,6 +81,7 @@ class Forgot extends Component {
               value={this.state.email}
               onChange={this.handleFieldChange}
             />
+            {this.renderEmailErrors()}
           </div>
 
           <div className="form-group">
@@ -83,6 +117,9 @@ class Forgot extends Component {
 
 Forgot.propTypes = {
   credentials: PropTypes.object,
+  loginFormMessages: PropTypes.func,
+  messages: PropTypes.object,
+  onError: PropTypes.func,
   onFormSubmit: PropTypes.func,
   onSignInClick: PropTypes.func,
   uniqueId: PropTypes.string
