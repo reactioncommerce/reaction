@@ -102,36 +102,40 @@ class TagNav extends Component {
 
   onWindowResize = () => {
     if (window.matchMedia("(max-width: 991px)").matches) {
-      this.setState({ [NavbarStates.Orientation]: NavbarOrientation.Vertical });
-      this.setState({ [NavbarStates.Position]: NavbarPosition.Fixed });
-      this.setState({ [NavbarStates.Anchor]: NavbarAnchor.Left });
+      this.setState({
+        [NavbarStates.Orientation]: NavbarOrientation.Vertical,
+        [NavbarStates.Position]: NavbarPosition.Fixed,
+        [NavbarStates.Anchor]: NavbarAnchor.Left
+      });
     } else {
-      this.setState({ [NavbarStates.Orientation]: NavbarOrientation.Horizontal });
-      this.setState({ [NavbarStates.Position]: NavbarPosition.Static });
-      this.setState({ [NavbarStates.Anchor]: NavbarAnchor.None });
-      this.setState({ [NavbarStates.Visible]: false });
+      this.setState({
+        [NavbarStates.Orientation]: NavbarOrientation.Horizontal,
+        [NavbarStates.Position]: NavbarPosition.Static,
+        [NavbarStates.Anchor]: NavbarAnchor.None,
+        [NavbarStates.Visible]: false
+      });
     }
   }
 
-  handleNewTagSave = (tag) => {
+  handleNewTagSave = () => {
   }
 
-  handleNewTagUpdate = (tag) => {
+  handleNewTagUpdate = () => {
   }
 
-  handleTagSave = (tag) => {
+  handleTagSave = () => {
   }
 
-  handleTagRemove = (tag) => {
+  handleTagRemove = () => {
   }
 
-  handleTagUpdate = (tag) => {
+  handleTagUpdate = () => {
   }
 
-  handleMoveTag = (dragIndex, hoverIndex) => {
+  handleMoveTag = () => {
   }
 
-  handleGetSuggestions = (suggestionUpdateRequest) => {
+  handleGetSuggestions = () => {
   }
 
   handleClearSuggestions = () => {

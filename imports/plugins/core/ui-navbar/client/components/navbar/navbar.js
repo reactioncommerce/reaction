@@ -83,7 +83,9 @@ Template.CoreNavigationBar.helpers({
     const tags = Tags.find({
       isTopLevel: true
     }, {
-      sort: { position: 1 }
+      sort: {
+        position: 1
+      }
     }).fetch();
 
     const props = {

@@ -44,7 +44,7 @@ class TagTree extends Component {
     };
   }
 
-  tagsGen(tags) {
+  genTagsList(tags) {
     if (_.isArray(tags)) {
       return tags.map((tag, index) => {
         return (
@@ -76,7 +76,7 @@ class TagTree extends Component {
   renderTagList(props) {
     return (
       <div className="rui tags" data-id={props.parentTag._id}>
-        {this.tagsGen(props.tags)}
+        {this.genTagsList(props.tags)}
       </div>
     );
   }
@@ -133,7 +133,7 @@ class TagTree extends Component {
       <div className="rui tagtree">
         <div className="header">
           <span className="title">{this.props.parentTag.name}</span>
-          <a href="#">View All <i className="fa fa-angle-right"></i></a>
+          <a href="#">View All <i className="fa fa-angle-right" /></a>
         </div>
         <div className="content">
           {this.renderSubTagGroups(this.props.subTagGroups)}
