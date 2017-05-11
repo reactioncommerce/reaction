@@ -47,6 +47,7 @@ class Tag extends Component {
 
   saveTag(event) {
     if (this.props.onTagSave) {
+      console.log('calling passed in onTagSave');
       this.props.onTagSave(event, this.props.tag);
     }
   }
@@ -57,9 +58,11 @@ class Tag extends Component {
    * @return {void} no return value
    */
   handleTagFormSubmit = (event) => {
+    console.log('handleTagFormSubmit');
     event.preventDefault();
     this._saved = true;
     this.saveTag(event);
+    console.log('end handleTagFormSubmit');
   };
 
   /**
@@ -79,6 +82,7 @@ class Tag extends Component {
    * @return {void} no return value
    */
   handleTagUpdate = (event) => {
+    console.log('handleTagUpdate');
     if (this.props.onTagUpdate && event.keyCode === 13) {
       this._saved = true;
       this.props.onTagUpdate(this.props.tag._id, event.target.value);
@@ -86,6 +90,7 @@ class Tag extends Component {
   };
 
   handleTagKeyDown = (event) => {
+    console.log('handleTagKeyDown');
     if (event.keyCode === 13) {
       this._saved = true;
       this.saveTag(event);
@@ -131,6 +136,7 @@ class Tag extends Component {
    * @return {void} no return value
    */
   handleTagInputBlur = (event) => {
+    console.log('handleTagInputBlur');
     if (this.props.onTagInputBlur) {
       this._saved = true;
       this.props.onTagInputBlur(event, this.props.tag);
@@ -138,6 +144,7 @@ class Tag extends Component {
   };
 
   handleInputChange = (event, { newValue }) => {
+    console.log('handleInputChange', { tag: this.props.tag, newValue });
     if (this.props.onTagUpdate) {
       const updatedTag = Object.assign({}, { ...this.props.tag }, {
         name: newValue

@@ -118,9 +118,17 @@ class TagNav extends Component {
   }
 
   handleNewTagSave = () => {
+    console.log('handleNewTagSave');
   }
 
   handleNewTagUpdate = () => {
+    console.log('handleNewTagUpdate');
+    // TagNavHelpers.onTagCreate
+  }
+
+  onTagSave = (event, tag) => {
+    console.log('onTagSave', event, tag);
+    TagNavHelpers.onTagCreate(tag.name);
   }
 
   handleTagSave = () => {
@@ -190,6 +198,7 @@ class TagNav extends Component {
   }
 
   onTagSelect = (selectedTag) => {
+    console.log('selectedTag');
     if (JSON.stringify(selectedTag) === JSON.stringify(this.state.selectedTag)) {
       this.setState({ selectedTag: null });
     } else {
@@ -324,11 +333,11 @@ class TagNav extends Component {
                 blank={true}
                 key="newTagForm"
                 inputPlaceholder="Add Tag"
-                i18nKeyInputPlaceholder="Add Tag"
+                i18nKeyInputPlaceholder="tags.addTag"
                 onClearSuggestions={this.handleClearSuggestions}
                 onGetSuggestions={this.handleGetSuggestions}
                 onTagInputBlur={this.handleNewTagSave}
-                onTagSave={TagNavHelpers.onTagCreate}
+                onTagSave={this.onTagSave}
                 onTagUpdate={this.handleNewTagUpdate}
                 tag={this.newTag}
                 suggestions={this.suggestions}
