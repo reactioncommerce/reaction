@@ -72,6 +72,7 @@ export default {
 
     let permissions;
     // default group to the shop or global if shop isn't defined for some reason.
+    let group;
     if (checkGroup !== undefined && typeof checkGroup === "string") {
       group = checkGroup;
     } else {
