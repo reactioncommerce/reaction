@@ -80,11 +80,8 @@ Template.memberSettings.helpers({
           // Get all permissions, add them to an array
           if (registryItem.permissions) {
             for (const permission of registryItem.permissions) {
-              // check needed because of non-object perms in the permissions array (e.g "admin", "owner")
-              if (typeof permission === "object") {
-                permission.shopId = shopId;
-                permissions.push(permission);
-              }
+              permission.shopId = shopId;
+              permissions.push(permission);
             }
           }
 
