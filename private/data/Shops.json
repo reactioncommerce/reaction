@@ -3635,6 +3635,15 @@
       "symbol": "₴",
       "decimal": ","
     },
+    "VND": {
+      "enabled": false,
+      "format": "%s %v",
+      "symbol": "₫",
+      "decimal": ",",
+      "thousand": " ",
+      "scale": 0,
+      "where": "right"
+    },
     "XAF": {
       "enabled": false,
       "format": "%v %s",
