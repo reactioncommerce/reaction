@@ -106,7 +106,7 @@ class TagTree extends Component {
           <div className="content">
             {this.renderTagList(this.tagListProps(groupTag))}
             { this.props.editable &&
-              <div className="rui grouptag create">
+              <div className="rui item create">
                 <TagItem
                   blank={true}
                   key="newTagForm"
@@ -135,19 +135,21 @@ class TagTree extends Component {
         </div>
         <div className="content">
           {this.renderSubTagGroups(this.props.subTagGroups)}
-          <div className="rui grouptag create">
-            <div className="header">
-              <TagItem
-                blank={true}
-                tag={this.newTag}
-                key="newTagForm"
-                onClearSuggestions={this.handleClearSuggestions}
-                onGetSuggestions={this.handleGetSuggestions}
-                onTagSave={this.props.onTagSave}
-                suggestions={this.suggestions}
-              />
+          { this.props.editable &&
+            <div className="rui grouptag create">
+              <div className="header">
+                <TagItem
+                  blank={true}
+                  tag={this.newTag}
+                  key="newTagForm"
+                  onClearSuggestions={this.handleClearSuggestions}
+                  onGetSuggestions={this.handleGetSuggestions}
+                  onTagSave={this.props.onTagSave}
+                  suggestions={this.suggestions}
+                />
+              </div>
             </div>
-          </div>
+          }
         </div>
       </div>
     );
