@@ -63,23 +63,11 @@ class SignIn extends Component {
 
   renderFormMessages() {
     if (this.props.loginFormMessages) {
-      if (this.props.messages.info) {
-        return (
-          <div className="alert alert-info">
-            <p>
-              {this.props.loginFormMessages()}
-            </p>
-          </div>
-        );
-      } else if (this.props.messages.alerts) {
-        return (
-          <div className="alert alert-danger">
-            <p>
-              {this.props.loginFormMessages()}
-            </p>
-          </div>
-        );
-      }
+      return (
+        <div>
+          {this.props.loginFormMessages()}
+        </div>
+      );
     }
   }
 

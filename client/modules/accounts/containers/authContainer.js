@@ -3,6 +3,7 @@ import React, { Component, PropTypes } from "react";
 import { Meteor } from "meteor/meteor";
 import { composeWithTracker } from "/lib/api/compose";
 import { SignIn, SignUp, LoginButtons } from "../components";
+import MessagesContainer from "./messagesContainer";
 import { ServiceConfigHelper } from "../helpers";
 
 class AuthContainer extends Component {
@@ -88,17 +89,11 @@ class AuthContainer extends Component {
   }
 
   formMessages = () => {
-    let reasons = "";
-    if (this.state.formMessages.info) {
-      this.state.formMessages.info.forEach(function (info) {
-        reasons = info.reason;
-      });
-    } else if (this.state.formMessages.alerts) {
-      this.state.formMessages.alerts.forEach(function (alert) {
-        reasons = alert.reason;
-      });
-    }
-    return reasons;
+    return (
+      <MessagesContainer
+        messages={this.state.formMessages}
+      />
+    );
   }
 
   services = () => {
