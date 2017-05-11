@@ -154,12 +154,14 @@ class Tag extends Component {
   }
 
   handleSuggestionsUpdateRequested = (suggestion) => {
+    console.log('handleSuggestionsUpdateRequested');
     if (this.props.onGetSuggestions) {
       this.props.onGetSuggestions(suggestion);
     }
   }
 
   handleSuggestionsClearRequested = () => {
+    console.log('handleSuggestionsClearRequested');
     if (this.props.onClearSuggestions) {
       this.props.onClearSuggestions();
     }
