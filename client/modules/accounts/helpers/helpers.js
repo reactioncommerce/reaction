@@ -1,13 +1,6 @@
 import { Template } from "meteor/templating";
-import {
-  ForgotContainer
-} from "../containers";
 
 export const LoginFormSharedHelpers = {
-  forgotComponent() {
-    return ForgotContainer;
-  },
-
   messages: function () {
     return Template.instance().formMessages.get();
   },
