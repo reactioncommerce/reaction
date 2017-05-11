@@ -66,6 +66,6 @@ Meteor.publish("CartItemImage", function (cartItem) {
 
   return Media.find({
     "metadata.productId": productId,
-    "metadata.workflow": { $nin: ["archived"] }
+    "metadata.workflow": { $nin: ["archived", "unpublished"] }
   });
 });
