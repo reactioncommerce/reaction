@@ -114,6 +114,8 @@ class TagTree extends Component {
                   onGetSuggestions={this.handleGetSuggestions}
                   onTagInputBlur={this.handleNewTagSave}
                   onTagSave={this.props.onTagSave}
+                  inputPlaceholder="Add Tag"
+                  i18nKeyInputPlaceholder="Add Tag"
                   onTagUpdate={this.handleNewTagUpdate}
                   tag={this.newTag}
                   suggestions={this.suggestions}
@@ -144,6 +146,8 @@ class TagTree extends Component {
                   key="newTagForm"
                   onClearSuggestions={this.handleClearSuggestions}
                   onGetSuggestions={this.handleGetSuggestions}
+                  inputPlaceholder="Add Tag"
+                  i18nKeyInputPlaceholder="Add Tag"
                   onTagSave={this.props.onTagSave}
                   suggestions={this.suggestions}
                 />

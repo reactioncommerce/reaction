@@ -323,6 +323,8 @@ class TagNav extends Component {
               <TagItem
                 blank={true}
                 key="newTagForm"
+                inputPlaceholder="Add Tag"
+                i18nKeyInputPlaceholder="Add Tag"
                 onClearSuggestions={this.handleClearSuggestions}
                 onGetSuggestions={this.handleGetSuggestions}
                 onTagInputBlur={this.handleNewTagSave}
