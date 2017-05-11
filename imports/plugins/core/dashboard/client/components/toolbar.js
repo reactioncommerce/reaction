@@ -16,7 +16,6 @@ class PublishControls extends Component {
     dashboardHeaderTemplate: PropTypes.oneOfType([PropTypes.func, PropTypes.node, PropTypes.string]),
     documentIds: PropTypes.arrayOf(PropTypes.string),
     documents: PropTypes.arrayOf(PropTypes.object),
-    hasCreateProductAccess: PropTypes.bool,
     isEnabled: PropTypes.bool,
     isPreview: PropTypes.bool,
     onAddProduct: PropTypes.func,
@@ -62,20 +61,16 @@ class PublishControls extends Component {
   }
 
   renderVisibilitySwitch() {
-    if (this.props.hasCreateProductAccess) {
-      return (
-        <Switch
-          i18nKeyLabel="app.editMode"
-          i18nKeyOnLabel="app.editMode"
-          label={"Edit Mode"}
-          onLabel={"Edit Mode"}
-          checked={!this.props.isPreview}
-          onChange={this.onViewContextChange}
-        />
-      );
-    }
-
-    return null;
+    return (
+      <Switch
+        i18nKeyLabel="app.editMode"
+        i18nKeyOnLabel="app.editMode"
+        label={"Edit Mode"}
+        onLabel={"Edit Mode"}
+        checked={!this.props.isPreview}
+        onChange={this.onViewContextChange}
+      />
+    );
   }
 
   renderAdminButton() {
@@ -95,18 +90,14 @@ class PublishControls extends Component {
   }
 
   renderAddButton() {
-    if (this.props.hasCreateProductAccess) {
-      return (
-        <FlatButton
-          i18nKeyTooltip="app.shortcut.addProductLabel"
-          icon={"fa fa-plus"}
-          tooltip={"Add Product"}
-          onClick={this.props.onAddProduct}
-        />
-      );
-    }
-
-    return null;
+    return (
+      <FlatButton
+        i18nKeyTooltip="app.shortcut.addProductLabel"
+        icon={"fa fa-plus"}
+        tooltip={"Add Product"}
+        onClick={this.props.onAddProduct}
+      />
+    );
   }
 
   renderPackageButons() {
@@ -122,7 +113,7 @@ class PublishControls extends Component {
   }
 
   renderCustomControls() {
-    if (this.props.dashboardHeaderTemplate && this.props.hasCreateProductAccess) {
+    if (this.props.dashboardHeaderTemplate) {
       if (this.props.isEnabled) {
         return [
           <VerticalDivider key="customControlsVerticaldivider" />,
