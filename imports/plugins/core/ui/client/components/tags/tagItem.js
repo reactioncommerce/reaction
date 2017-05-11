@@ -1,4 +1,4 @@
-import { Reaction } from "/client/api";
+import { Reaction, Router } from "/client/api";
 import { Tags } from "/lib/collections";
 import { i18next } from "/client/api";
 import classnames from "classnames";
@@ -200,5 +200,13 @@ Template.tagBlank.helpers({
       i18nPlaceholderValue: "Add Tag",
       onUpdateCallback: instance.submitInput
     });
+  }
+});
+
+Template.tagLink.events({
+  "click a"(event, templateInstance) {
+    event.preventDefault();
+    const slug = templateInstance.data.tag && templateInstance.data.tag.slug;
+    Router.go("tag", { slug });
   }
 });

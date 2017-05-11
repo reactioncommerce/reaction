@@ -18,7 +18,8 @@
           "examplePaymentLabel": "voorbeeld Provider",
           "examplePaymentSettingsLabel": "voorbeeld Betaling",
           "exampleCredentials": "Dit is een voorbeeld betaalmethode setting.",
-          "apiClientId": "API Client ID"
+          "apiClientId": "API Client ID",
+          "supportedMethodsLabel": "Betaalmethoden ondersteunde methoden"
         }
       }
     }

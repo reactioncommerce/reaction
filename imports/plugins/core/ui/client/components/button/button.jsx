@@ -122,14 +122,12 @@ class Button extends Component {
   }
 
   render() {
-    const { } = this.props;
-
     const {
       active, status, toggleOn, primary, bezelStyle, className, containerStyle,
 
       // Destructure these vars as they aren't valid as attributes on the HTML element button
       iconAfter, label, i18nKeyTitle, i18nKeyLabel, i18nKeyTooltip, // eslint-disable-line no-unused-vars
-      tooltip, icon, toggle, onIcon, eventAction, // eslint-disable-line no-unused-vars
+      tooltip, icon, toggle, onIcon, eventAction, buttonType, // eslint-disable-line no-unused-vars
       toggleOnLabel, i18nKeyToggleOnLabel, tagName, onClick, onToggle, onValue, tooltipPosition, // eslint-disable-line no-unused-vars
 
       // Get the rest of the properties and put them in attrs
@@ -164,7 +162,7 @@ class Button extends Component {
       "onMouseOut": this.handleButtonMouseOut,
       "onMouseOver": this.handleButtonMouseOver,
       "onClick": this.handleClick,
-      "type": "button"
+      "type": buttonType || "button"
     }, attrs, extraProps);
 
 
@@ -213,6 +211,7 @@ class Button extends Component {
 Button.propTypes = {
   active: PropTypes.bool,
   bezelStyle: PropTypes.oneOf(["flat", "solid", "outline"]),
+  buttonType: PropTypes.string,
   children: PropTypes.node,
   className: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   containerStyle: PropTypes.object,

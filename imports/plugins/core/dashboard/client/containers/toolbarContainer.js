@@ -7,6 +7,7 @@ import { TranslationProvider, AdminContextProvider } from "/imports/plugins/core
 import { isRevisionControlEnabled } from "/imports/plugins/core/revisions/lib/api";
 
 const handleAddProduct = () => {
+  Reaction.setUserPreferences("reaction-dashboard", "viewAs", "administrator");
   Meteor.call("products/createProduct", (error, productId) => {
     if (Meteor.isClient) {
       let currentTag;
@@ -56,8 +57,8 @@ function composer(props, onData) {
   // Standard variables
   const packageButtons = [];
 
-  if (routeName !== "dashboard") {
-    const registryItems = Reaction.Apps({ provides: "settings", container: routeName });
+  if (routeName !== "dashboard" && props.showPackageShortcuts) {
+    const registryItems = Reaction.Apps({ provides: "settings", container: "dashboard" });
 
     for (const item of registryItems) {
       if (Reaction.hasPermission(item.route, Meteor.userId())) {
@@ -87,6 +88,7 @@ function composer(props, onData) {
     isEnabled: isRevisionControlEnabled(),
     isActionViewAtRootView: Reaction.isActionViewAtRootView(),
     actionViewIsOpen: Reaction.isActionViewOpen(),
+    hasCreateProductAccess: Reaction.hasPermission("createProduct", Meteor.userId(), Reaction.shopId),
 
     // Callbacks
     onAddProduct: handleAddProduct,

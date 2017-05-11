@@ -1,18 +1,11 @@
 import "./helpers/cart";
 import "./methods/cart";
 
-import "./templates/cartDrawer/cartItems/cartItems.html";
-import "./templates/cartDrawer/cartItems/cartItems.js";
-import "./templates/cartDrawer/cartSubTotals/cartSubTotals.html";
-import "./templates/cartDrawer/cartSubTotals/cartSubTotals.js";
 import "./templates/cartDrawer/cartDrawer.html";
 import "./templates/cartDrawer/cartDrawer.js";
 
 import "./templates/cartIcon/cartIcon.html";
 import "./templates/cartIcon/cartIcon.js";
-
-import "./templates/cartPanel/cartPanel.html";
-import "./templates/cartPanel/cartPanel.js";
 
 import "./templates/checkout/addressBook/addressBook.html";
 import "./templates/checkout/completed/completed.html";

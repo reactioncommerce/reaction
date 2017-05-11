@@ -42,9 +42,11 @@ const OrderHelper =  {
       // Orders that are complete, including all items with complete status
       case "completed":
         query = {
-          "workflow.status": "coreOrderWorkflow/completed",
-          "items.workflow.workflow": {
-            $in: ["coreOrderItemWorkflow/completed"]
+          "workflow.status": {
+            $in: ["coreOrderWorkflow/completed", "coreOrderWorkflow/canceled"]
+          },
+          "items.workflow.status": {
+            $in: ["coreOrderItemWorkflow/completed", "coreOrderItemWorkflow/canceled"]
           }
         };
         break;
@@ -59,7 +61,7 @@ const OrderHelper =  {
 
       case "canceled":
         query = {
-          "workflow.status": "canceled"
+          "workflow.status": "coreOrderWorkflow/canceled"
         };
         break;
 
@@ -326,12 +328,31 @@ Template.orderStatusDetail.helpers({
       }
     });
 
+    const canceled = _.every(shipment.items, (shipmentItem) => {
+      for (const fullItem of self.items) {
+        if (fullItem._id === shipmentItem._id) {
+          if (fullItem.workflow) {
+            return fullItem.workflow.status === "coreOrderItemWorkflow/canceled";
+          }
+        }
+      }
+    });
+
     if (shipped) {
       return {
         delivered: false,
         shipped: true,
         status: "success",
         label: i18next.t("orderShipping.shipped")
+      };
+    }
+
+    if (canceled) {
+      return {
+        delivered: false,
+        shipped: false,
+        status: "danger",
+        label: i18next.t("order.canceledLabel")
       };
     }
 

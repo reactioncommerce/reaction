@@ -3,7 +3,7 @@ import { Session } from "meteor/session";
 import { Template } from "meteor/templating";
 import { Tracker } from "meteor/tracker";
 import { Reaction } from "/client/api";
-import { Cart } from "/lib/collections";
+import { Cart, Packages } from "/lib/collections";
 import Logger from "/client/modules/logger";
 
 // This template handles receiving the token from Paypal, recording it and moving on the checkout
@@ -21,8 +21,16 @@ function showError(error) {
 }
 
 function buildPaymentMethod(result, status, mode) {
+  Meteor.subscribe("Packages");
+  const packageData = Packages.findOne({
+    name: "reaction-paypal",
+    shopId: Reaction.getShopId()
+  });
+
   const paymentMethod = {
     processor: "PaypalExpress",
+    paymentPackageId: packageData._id,
+    paymentSettingsKey: packageData.registry[0].settingsKey,
     method: "credit",
     transactionId: result.TRANSACTIONID,
     amount: parseFloat(result.AMT, 10),

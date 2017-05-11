@@ -313,7 +313,8 @@ a.notification:hover {
 .dropdown-notifications .dropdown-footer {
   background: #eeeeee;
 }
-.notification-icon {
+.notification-icon:hover {
+  background: #eeeeee !important;
 }
 .notification-icon:after {
   position: absolute;
