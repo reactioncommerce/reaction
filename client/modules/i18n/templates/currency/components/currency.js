@@ -31,7 +31,7 @@ class Currency extends Component {
       <Button
         label={this.props.currentCurrency || this.state.value}
       >
-        <span> </span><i className="fa fa-caret-down" />
+        &nbsp;<i className="fa fa-caret-down" />
       </Button>
     );
   }

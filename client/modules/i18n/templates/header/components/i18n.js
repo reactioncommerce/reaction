@@ -15,7 +15,7 @@ class LanguageDropDown extends Component {
   buttonElement() {
     return (
       <Button>
-        <i className="fa fa-language fa-lg"/><span> </span>
+        <i className="fa fa-language fa-lg"/>&nbsp;
         <i className="fa fa-caret-down"/>
       </Button>
     );
