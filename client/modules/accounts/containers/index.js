@@ -1,4 +1,3 @@
-export LoginContainer from "./loginContainer";
-export AuthContainer from "./authContainer";
-export ForgotContainer from "./forgotContainer";
-export MessagesContainer from "./messagesContainer";
+export { LoginContainer, AuthContainer } from "./auth";
+export ForgotContainer from "./passwordReset";
+export MessagesContainer from "./helpers";

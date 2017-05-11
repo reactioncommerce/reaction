@@ -2,8 +2,8 @@ import React, { Component, PropTypes } from "react";
 import { Meteor } from "meteor/meteor";
 import { i18next } from "/client/api";
 import { composeWithTracker } from "/lib/api/compose";
-import MessagesContainer from "./messagesContainer";
-import { Forgot } from "../components";
+import { MessagesContainer } from "../helpers";
+import { Forgot } from "../../components";
 
 class ForgotContainer extends Component {
   constructor(props) {

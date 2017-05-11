@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from "react";
-import { LoginFormMessages } from "../components";
+import { LoginFormMessages } from "../../components";
 
 class MessagesContainer extends Component {
   constructor(props) {

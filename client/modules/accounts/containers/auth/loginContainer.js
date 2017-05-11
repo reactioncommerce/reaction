@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import { composeWithTracker } from "/lib/api/compose";
 import AuthContainer from "./authContainer";
-import ForgotContainer from "./forgotContainer";
+import { ForgotContainer } from "../passwordReset";
 
 class LoginContainer extends Component {
   constructor(props) {

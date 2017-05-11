@@ -2,9 +2,9 @@ import _ from "lodash";
 import React, { Component, PropTypes } from "react";
 import { Meteor } from "meteor/meteor";
 import { composeWithTracker } from "/lib/api/compose";
-import { SignIn, SignUp, LoginButtons } from "../components";
-import MessagesContainer from "./messagesContainer";
-import { ServiceConfigHelper } from "../helpers";
+import { SignIn, SignUp, LoginButtons } from "../../components";
+import { MessagesContainer } from "../helpers";
+import { ServiceConfigHelper } from "../../helpers";
 
 class AuthContainer extends Component {
   constructor(props) {
