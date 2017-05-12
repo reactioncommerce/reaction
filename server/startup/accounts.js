@@ -80,8 +80,8 @@ export default function () {
   Accounts.onCreateUser((options, user) => {
     const shop = Reaction.getCurrentShop();
     const shopId = shop._id;
-    const defaultVisitorRole =  ["anonymous", "guest", "product", "tag", "index", "cart/checkout", "cart/completed"];
-    const defaultRoles =  ["guest", "account/profile", "product", "tag", "index", "cart/checkout", "cart/completed"];
+    const defaultVisitorRole =  ["anonymous", "guest", "account/verify", "product", "tag", "index", "cart/checkout", "cart/completed"];
+    const defaultRoles =  ["guest", "account/profile", "account/verify", "product", "tag", "index", "cart/checkout", "cart/completed"];
     const roles = {};
     const additionals = {
       profile: Object.assign({}, options && options.profile)

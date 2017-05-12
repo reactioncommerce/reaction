@@ -9,6 +9,42 @@ import { Logger, Reaction } from "/server/api";
 
 
 /**
+ * verifyAccount
+ * @summary verify registered user account
+ * @param {String} email - user email
+ * @returns {Boolean} - returns boolean
+ */
+export function verifyAccount(email) {
+  check(email, String);
+  const account = Accounts.findOne({
+    "emails.address": email
+  });
+  if (account) {
+    const verified = account.emails[0].verified;
+    if (!verified) {
+      Meteor.users.update({
+        "_id": account.userId,
+        "emails.address": email
+      }, {
+        $set: {
+          "emails.$.verified": true
+        }
+      });
+      Accounts.update({
+        "userId": account.userId,
+        "emails.address": email
+      }, {
+        $set: {
+          "emails.$.verified": true
+        }
+      });
+    }
+    return true;
+  }
+  return false;
+}
+
+/**
  * @summary Returns the name of the geocoder method to use
  * @returns {string} Name of the Geocoder method to use
  */
@@ -146,35 +182,7 @@ function validateAddress(address) {
  * Reaction Account Methods
  */
 Meteor.methods({
-  "accounts/verifyAccount": function (email) {
-    check(email, String);
-    const account = Accounts.findOne({
-      "emails.address": email
-    });
-    if (account) {
-      const verified = account.emails[0].verified;
-      if (!verified) {
-        Meteor.users.update({
-          "_id": account.userId,
-          "emails.address": email
-        }, {
-          $set: {
-            "emails.$.verified": true
-          }
-        });
-        Accounts.update({
-          "userId": account.userId,
-          "emails.address": email
-        }, {
-          $set: {
-            "emails.$.verified": true
-          }
-        });
-      }
-      return true;
-    }
-    return false;
-  },
+  "accounts/verifyAccount": verifyAccount,
   "accounts/validateAddress": validateAddress,
   /*
    * check if current user has password

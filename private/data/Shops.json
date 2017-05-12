@@ -6371,6 +6371,7 @@
   "defaultVisitorRole": [
     "anonymous",
     "guest",
+    "account/verify",
     "product",
     "tag",
     "index",
@@ -6381,6 +6382,7 @@
     "account/profile",
     "guest",
     "product",
+    "account/verify",
     "tag",
     "index",
     "cart/checkout",

@@ -19,7 +19,7 @@ Reaction.registerPackage({
     priority: 1
   }, {
     route: "/account/profile/verify:id?",
-    name: "Account Verification",
+    workflow: "coreAccountsWorkflow",
     template: "verifyAccount"
   }, {
     label: "Account Settings",
