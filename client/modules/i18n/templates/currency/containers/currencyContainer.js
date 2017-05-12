@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Meteor } from "meteor/meteor";
+import { Match } from "meteor/check";
 import { Reaction } from "/client/api";
 import { composeWithTracker } from "/lib/api/compose";
 import { Cart, Shops } from "/lib/collections";
