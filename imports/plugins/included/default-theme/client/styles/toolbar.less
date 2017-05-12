@@ -11,6 +11,19 @@
   border-bottom: @toolbar-border-width solid @toolbar-border-color;
 }
 
+.rui.toolbar.toolbar-vertical {
+  align-items: flex-start;
+  justify-content: flex-start;
+  border: none;
+  padding: 0;
+  border-left: @toolbar-border-width solid @toolbar-border-color;
+}
+
+html.rtl .rui.toolbar.toolbar-vertical {
+  border: none;
+  border-right: @toolbar-border-width solid @toolbar-border-color;
+}
+
 .rui.toolbar-group {
   display: flex;
   flex: 0 0 auto;
