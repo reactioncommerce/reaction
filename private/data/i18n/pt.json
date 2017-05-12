@@ -329,16 +329,24 @@
       "order": {
         "created": "Criado",
         "reference": "Referência",
+        "cancelInvoice": "Cancelar",
         "invoice": "Fatura",
         "ordersNotFound": "Nenhuma encomenda encontrada",
         "approveInvoice": "Aprovar",
+        "cancelOrderLabel": "Cancelar pedido",
         "makeAdjustments": "Efetuar ajustes",
         "capturePayment": "Capturar o pagamento",
         "paymentCaptured": "Pagamento capturado",
         "capturedTotal": "Total capturado",
+        "canceledLabel": "Cancelado",
         "refundAmount": "Valor do reembolso",
+        "cancelOrder": "Deseja cancelar esta encomenda?",
         "applyRefundToThisOrder": "Aplicar reembolso de {{refund}} {{currencySymbol}} a esta encomenda?",
+        "applyRefundDuringCancelOrder": "Isto irá reembolsar o total da encomenda de {{currencySymbol}}{{invoiceTotal}}",
+        "cancelOrderThenRestock": "Sim, e reabastecer",
+        "cancelOrderNoRestock": "Sim, mas sem reabastecimento",
         "applyRefund": "Aplicar reembolso",
+        "refunding": "reembolsando",
         "applyDiscount": "Aplicar desconto",
         "adjustedTotal": "Total ajustado",
         "invalidDiscount": "O desconto não pode ser superior ao preço total original",
@@ -362,7 +370,8 @@
           "completed": "Concluído",
           "canceled": "Cancelado",
           "refunded": "Reembolsado"
-        }
+        },
+        "showMore": "Mostre mais"
       },
       "orderShipping": {
         "shipTo": "Enviar para",

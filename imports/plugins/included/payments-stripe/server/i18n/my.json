@@ -6,15 +6,15 @@
     "reaction-payments": {
       "admin": {
         "shortcut": {
-          "stripeLabel": "အစင်း"
+          "stripeLabel": "Stripe"
         },
         "dashboard": {
-          "stripeLabel": "အစင်း",
+          "stripeLabel": "Stripe",
           "stripeDescription": "အစင်းငွေပေးချေမှု"
         },
         "paymentSettings": {
-          "stripeLabel": "အစင်း",
-          "stripeSettingsLabel": "အစင်း",
+          "stripeLabel": "Stripe",
+          "stripeSettingsLabel": "Stripe",
           "stripeSettingsDescription": "တစ်ဦး Stripe ဟာ API ကိုလိုင်း ID ကိုရှိသည်မဟုတ်သလား?",
           "stripeSettingsGetItHere": "ဒီမှာရယူပါ"
         }

@@ -2,6 +2,7 @@ import faker from "faker";
 import { Orders, Products } from "/lib/collections";
 import { getShop } from "./shops";
 import { getUser } from "./users";
+import { getPkgData } from "./packages";
 import { getAddress } from "./accounts";
 import { addProduct } from "./products";
 
@@ -15,6 +16,9 @@ import { addProduct } from "./products";
 export function randomProcessor() {
   return _.sample(["Stripe", "Paypal", "Braintree"]);
 }
+
+const itemIdOne = Random.id();
+const itemIdTwo = Random.id();
 
 export function randomStatus() {
   return _.sample([
@@ -35,6 +39,7 @@ export function randomMode() {
 
 export function paymentMethod(doc) {
   return {
+    ...doc,
     processor: doc.processor ? doc.processor : randomProcessor(),
     storedCard: doc.storedCard ? doc.storedCard : "4242424242424242",
     transactionId: doc.transactionId ? doc.transactionId : Random.id(),
@@ -76,6 +81,12 @@ export default function () {
     userId: getUserId(),
     sessionId: "Session",
     email: faker.internet.email(),
+    workflow: {
+      status: "new",
+      workflow: [
+        "coreOrderWorkflow/created"
+      ]
+    },
     items: function () {
       const product = addProduct();
       const variant = Products.findOne({ ancestors: [product._id] });
@@ -90,24 +101,67 @@ export default function () {
       ] }).fetch();
       const selectedOption2 = Random.choice(childVariants2);
       return [{
-        _id: Random.id(),
+        _id: itemIdOne,
         title: "firstItem",
         shopId: product.shopId,
         productId: product._id,
         quantity: 1,
-        variants: selectedOption
+        variants: selectedOption,
+        workflow: {
+          status: "new"
+        }
       }, {
-        _id: Random.id(),
+        _id: itemIdTwo,
         title: "secondItem",
         shopId: product2.shopId,
         productId: product2._id,
         quantity: 1,
-        variants: selectedOption2
+        variants: selectedOption2,
+        workflow: {
+          status: "new"
+        }
       }];
     },
     requiresShipping: true,
-    shipping: [], // Shipping Schema
-    billing: [], // Payment Schema
+    shipping: [{
+      items: [
+        {
+          _id: itemIdOne,
+          productId: Random.id(),
+          shopId: Random.id(),
+          variantId: Random.id(),
+          packed: false
+        },
+        {
+          _id: itemIdTwo,
+          productId: Random.id(),
+          shopId: Random.id(),
+          variantId: Random.id(),
+          packed: false
+        }
+      ]
+    }], // Shipping Schema
+    billing: [{
+      _id: Random.id(),
+      address: getAddress({ isBillingDefault: true }),
+      paymentMethod: paymentMethod({
+        method: "credit",
+        processor: "Example",
+        storedCard: "Mastercard 2346",
+        paymentPackageId: getPkgData("example-paymentmethod") ? getPkgData("example-paymentmethod")._id : "uiwneiwknekwewe",
+        paymentSettingsKey: "example-paymentmethod",
+        mode: "authorize",
+        status: "created",
+        amount: 12.45
+      }),
+      invoice: {
+        total: 12.45,
+        subtotal: 12.45,
+        discounts: 0,
+        taxes: 0.12,
+        shipping: 4.00
+      }
+    }],
     state: "new",
     createdAt: new Date,
     updatedAt: new Date

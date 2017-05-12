@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from "react";
 import { formatPriceString } from "/client/api";
 
 class TotalActions extends Component {
+
   static propTypes = {
     adjustedTotal: PropTypes.number,
     invoice: PropTypes.object,

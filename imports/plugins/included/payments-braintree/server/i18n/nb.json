@@ -2,5 +2,22 @@
   "language": "Bokmål",
   "i18n": "nb",
   "ns": "reaction-braintree",
-  "translation": { }
+  "translation": {
+    "reaction-payments": {
+      "admin": {
+        "shortcut": {
+          "braintreeLabel": "Braintree",
+          "braintreeTitle": "Braintree"
+        },
+        "dashboard": {
+          "braintreeLabel": "Braintree",
+          "braintreeTitle": "Braintree"
+        },
+        "paymentSettings": {
+          "braintreeLabel": "Braintree",
+          "braintreeSettingsLabel": "Braintree"
+        }
+      }
+    }
+  }
 }]

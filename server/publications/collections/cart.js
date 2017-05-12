@@ -1,4 +1,4 @@
-import { Cart } from "/lib/collections";
+import { Cart, Media } from "/lib/collections";
 import { Reaction } from "/server/api";
 
 /**
@@ -58,4 +58,14 @@ Meteor.publish("Cart", function (sessionId, userId) {
   const cartId = Meteor.call("cart/createCart", this.userId, sessionId);
 
   return Cart.find(cartId);
+});
+
+Meteor.publish("CartItemImage", function (cartItem) {
+  check(cartItem, Match.Optional(Object));
+  const productId = cartItem.productId;
+
+  return Media.find({
+    "metadata.productId": productId,
+    "metadata.workflow": { $nin: ["archived", "unpublished"] }
+  });
 });

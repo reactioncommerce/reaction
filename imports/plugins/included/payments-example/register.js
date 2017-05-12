@@ -13,7 +13,12 @@ Reaction.registerPackage({
       enabled: false
     },
     "example-paymentmethod": {
-      enabled: false
+      enabled: false,
+      support: [
+        "Authorize",
+        "Capture",
+        "Refund"
+      ]
     }
   },
   registry: [
