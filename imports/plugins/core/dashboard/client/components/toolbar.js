@@ -23,7 +23,7 @@ class PublishControls extends Component {
     onViewContextChange: PropTypes.func,
     onVisibilityChange: PropTypes.func,
     packageButtons: PropTypes.arrayOf(PropTypes.object),
-    showDashboardButton: PropTyes.bool,
+    showDashboardButton: PropTypes.bool,
     showViewAsControls: PropTypes.bool,
     translation: PropTypes.shape({
       lang: PropTypes.string
