@@ -6,17 +6,17 @@
     "reaction-payments": {
       "admin": {
         "shortcut": {
-          "braintreeLabel": "布伦特里",
-          "braintreeTitle": "布伦特里"
+          "braintreeLabel": "Braintree",
+          "braintreeTitle": "Braintree"
         },
         "dashboard": {
-          "braintreeLabel": "布伦特里",
-          "braintreeTitle": "布伦特里",
+          "braintreeLabel": "Braintree",
+          "braintreeTitle": "Braintree",
           "braintreeDescription": "布伦特里支付"
         },
         "paymentSettings": {
-          "braintreeLabel": "布伦特里",
-          "braintreeSettingsLabel": "布伦特里",
+          "braintreeLabel": "Braintree",
+          "braintreeSettingsLabel": "Braintree",
           "braintreeCredentials": "添加凭据启用"
         }
       },

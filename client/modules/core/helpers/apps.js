@@ -47,11 +47,6 @@ export function Apps(optionHash) {
   const reactionApps = [];
   let options = {};
 
-  // remove audience permissions for owner
-  if (Reaction.hasOwnerAccess() && optionHash.audience) {
-    delete optionHash.audience;
-  }
-
   // allow for object or option.hash
   if (optionHash) {
     if (optionHash.hash) {
@@ -64,6 +59,11 @@ export function Apps(optionHash) {
   // you could provide a shopId in optionHash
   if (!options.shopId) {
     options.shopId = Reaction.getShopId();
+  }
+
+  // remove audience permissions for owner (still needed here for older/legacy calls)
+  if (Reaction.hasOwnerAccess() && options.audience) {
+    delete options.audience;
   }
 
   //
@@ -89,24 +89,33 @@ export function Apps(optionHash) {
     }
   }
 
-  // fetch the packages
+  delete filter["registry.audience"]; // Temporarily remove "audience" key (see comment below)
+
+  // TODO: Review fix for filter on Packages.find(filter)
+  // The current "filter" setup uses "audience" field which is not present in the registry array in most (if not all) docs
+  // in the Packages coll.
+  // For now, the audience checks (after the Package.find call) filters out the registry items based on permissions. But
+  // part of the filtering should have been handled by the Package.find call, if the "audience" filter works as it should.
   Packages.find(filter).forEach((app) => {
     const matchingRegistry = _.filter(app.registry, function (item) {
-      const itemFilter = registryFilter;
+      const itemFilter = _.cloneDeep(registryFilter);
 
       // check audience permissions only if they exist as part of optionHash and are part of the registry item
       // ideally all routes should use it, safe for backwards compatibility though
       // owner bypasses permissions
-      if (!Reaction.hasOwnerAccess() && item.audience && registryFilter.audience) {
+      if (!Reaction.hasOwnerAccess() && item.permissions && registryFilter.audience) {
         let hasAccess;
 
         for (const permission of registryFilter.audience) {
-          if (item.audience.indexOf(permission) > -1) {
+          // This checks that the registry item contains a permissions matches with the user's permission for the shop
+          const hasPermissionToRegistryItem = item.permissions.indexOf(permission) > -1;
+          // This checks that the user's permission set have the right value that is on the registry item
+          const hasRoleAccessForShop = Roles.userIsInRole(Meteor.userId(), permission, Reaction.getShopId());
+
+          // both checks must pass for access to be granted
+          if (hasPermissionToRegistryItem && hasRoleAccessForShop) {
             hasAccess = true;
-          }
-          // make sure user also has audience perms
-          if (Roles.userIsInRole(Meteor.userId(), permission, Reaction.getShopId())) {
-            hasAccess = true;
+            break;
           }
         }
 

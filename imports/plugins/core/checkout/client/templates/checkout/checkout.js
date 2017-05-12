@@ -22,7 +22,7 @@ Template.cartCheckout.helpers({
 Template.cartCheckout.onCreated(function () {
   if (Reaction.Subscriptions.Cart.ready()) {
     const cart = Cart.findOne();
-    if (cart.workflow && cart.workflow.status === "new") {
+    if (cart && cart.workflow && cart.workflow.status === "new") {
         // if user logged in as normal user, we must pass it through the first stage
       Meteor.call("workflow/pushCartWorkflow", "coreCartWorkflow", "checkoutLogin", cart._id);
     }
