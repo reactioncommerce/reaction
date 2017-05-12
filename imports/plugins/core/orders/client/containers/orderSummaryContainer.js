@@ -3,6 +3,7 @@ import moment from "moment";
 import _ from "lodash";
 import { composeWithTracker } from "/lib/api/compose";
 import { Orders } from "/lib/collections";
+import { Card, CardHeader, CardBody, CardGroup } from "/imports/plugins/core/ui/client/components";
 import { i18next } from "/client/api";
 import OrderSummary from "../components/orderSummary";
 
@@ -102,15 +103,26 @@ class OrderSummaryContainer extends Component {
 
   render() {
     return (
-      <div>
-        <OrderSummary
-          {...this.props}
-          dateFormat={this.dateFormat}
-          tracking={this.tracking}
-          shipmentStatus={this.shipmentStatus}
-          printableLabels={this.printableLabels}
-        />
-      </div>
+      <CardGroup>
+        <Card
+          expanded={true}
+        >
+          <CardHeader
+            actAsExpander={true}
+            i18nKeyTitle="dsfasdfsf"
+            title="Summary"
+          />
+          <CardBody expandable={true}>
+            <OrderSummary
+              {...this.props}
+              dateFormat={this.dateFormat}
+              tracking={this.tracking}
+              shipmentStatus={this.shipmentStatus}
+              printableLabels={this.printableLabels}
+            />
+          </CardBody>
+        </Card>
+      </CardGroup>
     );
   }
 }
