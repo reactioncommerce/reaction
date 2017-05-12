@@ -35,7 +35,7 @@
   <ul class="user-accounts-dropdown-apps">
     {{> userAccountsDropdown}}
     <!--administrative shortcut icons -->
-    {{#each reactionApps provides="shortcut" enabled=true}}
+    {{#each reactionApps reactionAppsOptions}}
       <li class="dropdown-apps-icon">
         <a href={{pathFor name}} id="dropdown-apps-{{name}}" title="{{label}}">
           <i class="{{icon}}"></i>
