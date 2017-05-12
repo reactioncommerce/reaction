@@ -33,7 +33,7 @@ function handleShowDashboard() {
  * @return {undefined} No return value
  */
 function handleOpenShortcut(event, app) {
-  Reaction.clearActionViewDetail();
+  Reaction.hideActionViewDetail();
   Reaction.showActionView(app);
 }
 

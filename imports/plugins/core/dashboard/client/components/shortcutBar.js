@@ -81,14 +81,7 @@ class ShortcutBar extends Component {
 
   render() {
     return (
-      <div
-        className="rui toolbar toolbar-vertical admin-controls-menu"
-        style={{
-          zIndex: 1060,
-          display: "flex",
-          alignItems: "center"
-        }}
-      >
+      <div className="rui toolbar toolbar-vertical admin-shortcut-bar">
         <nav
           style={{
             height: 54,

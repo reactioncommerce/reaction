@@ -51,18 +51,19 @@
   }
 }
 
-.admin-controls-menu {
-  .display(flex);
-  .flex-direction(column);
-  .flex(0 0 auto);
-  .justify-content(space-between);
+.rui.toolbar.admin-shortcut-bar {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  align-items: center;
+  // justify-content: center;
 
   min-width: @admin-controls-menu-width;
   width: @admin-controls-menu-width;
 
   background-color: @white;
   position: relative;
-  z-index: @zindex-navbar-fixed;
+  z-index: @zindex-modal;
 
   @media screen and (max-width: @screen-xs-max) {
     order: 2;
@@ -71,7 +72,7 @@
   }
 }
 
-.admin-controls-menu nav {
+.admin-shortcut-bar nav {
   display: flex;
   flex-direction: column;
 
@@ -81,11 +82,11 @@
   }
 }
 
-.admin-controls-menu nav .icon-reaction-logo {
+.admin-shortcut-bar nav .icon-reaction-logo {
     font-size: 4rem;
 }
 
-.admin-controls-menu nav .btn.active {
+.admin-shortcut-bar nav .btn.active {
   color: @component-active-color;
   background-color: @component-active-bg;
 }
@@ -102,16 +103,20 @@
     border-bottom: 1px solid @border-color;
   }
 
-  .admin-controls-menu .admin-controls-actions a,
-  .admin-controls-menu .admin-controls-actions button {
-    width: 44px;
-    height: 44px;
-    min-width: 44px;
-    min-height: 44px;
+  .rui.toolbar.admin-shortcut-bar {
+    display: none;
   }
+
+  // .admin-shortcut-bar .admin-controls-actions a,
+  // .admin-shortcut-bar .admin-controls-actions button {
+  //   width: 44px;
+  //   height: 44px;
+  //   min-width: 44px;
+  //   min-height: 44px;
+  // }
 }
 
-.admin-controls-menu hr {
+.admin-shortcut-bar hr {
   width: 100%;
   border-top: 1px solid @border-color;
 }
