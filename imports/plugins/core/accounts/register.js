@@ -18,7 +18,8 @@ Reaction.registerPackage({
     workflow: "coreAccountsWorkflow",
     priority: 1
   }, {
-    route: "/account/profile/verify:id?",
+    route: "/account/profile/verify:email?",
+    name: "account/verify",
     workflow: "coreAccountsWorkflow",
     template: "verifyAccount"
   }, {
