@@ -81,6 +81,8 @@ describe("stripe/payment/capture", function () {
     const paymentMethod = {
       processor: "Stripe",
       storedCard: "Visa 4242",
+      paymentPackageId: "vrXutd72c2m7Lenqw",
+      paymentSettingsKey: "reaction-stripe",
       method: "credit",
       transactionId: "ch_17hZ4wBXXkbZQs3xL5JhlSgS",
       amount: 19.99,
@@ -98,18 +100,17 @@ describe("stripe/payment/capture", function () {
     Meteor.call("stripe/payment/capture", paymentMethod, function (error, result) {
       captureResult = result;
       captureError = error;
+      expect(captureError).to.be.undefined;
+      expect(captureResult).to.not.be.undefined;
+      expect(captureResult.saved).to.be.true;
+      expect(StripeApi.methods.captureCharge.call).to.have.been.calledWith({
+        transactionId: paymentMethod.transactionId,
+        captureDetails: {
+          amount: 1999
+        }
+      });
+      done();
     });
-
-    expect(captureError).to.be.undefined;
-    expect(captureResult).to.not.be.undefined;
-    expect(captureResult.saved).to.be.true;
-    expect(StripeApi.methods.captureCharge.call).to.have.been.calledWith({
-      transactionId: paymentMethod.transactionId,
-      captureDetails: {
-        amount: 1999
-      }
-    });
-    done();
   });
 });
 
@@ -128,6 +129,8 @@ describe("stripe/payment/capture", function () {
     const paymentMethod = {
       processor: "Stripe",
       storedCard: "Visa 4242",
+      paymentPackageId: "vrXutd72c2m7Lenqw",
+      paymentSettingsKey: "reaction-stripe",
       method: "credit",
       amount: 19.99,
       status: "approved",
@@ -144,11 +147,10 @@ describe("stripe/payment/capture", function () {
     Meteor.call("stripe/payment/capture", paymentMethod, function (error, result) {
       captureResult = result;
       captureError = error;
+      expect(captureError.message).to.equal("Match error: Match error: Transaction id is required");
+      expect(captureResult).to.be.undefined;
+      done();
     });
-
-    expect(captureError.message).to.equal("Match error: Match error: Transaction id is required");
-    expect(captureResult).to.be.undefined;
-    done();
   });
 });
 

@@ -65,7 +65,9 @@ class GooglePlusSocialButton extends Component {
     });
 
     return (
-      <a className="btn btn-flat googleplus-share" href="#" onClick={this.handleClick} target="_blank">
+      <a className="btn btn-flat googleplus-share" aria-label="Share to Google Plus" href="#" onClick={this.handleClick}
+        target="_blank"
+      >
         <Helmet
           meta={getGooglePlusMeta(this.props)}
         />

@@ -20,6 +20,8 @@ describe("payflowpro/refund/create", function () {
       processor: "PayflowPro",
       storedCard: "Visa 0322",
       method: "credit",
+      paymentPackageId: "vrXutd72c2m7Lenqw",
+      paymentSettingsKey: "payflow",
       authorization: "17E47122C3842243W",
       transactionId: "PAY-2M9650078C535230RK6YVLQY",
       metadata: {
@@ -77,27 +79,15 @@ describe("payflowpro/refund/create", function () {
     sandbox.stub(PayflowproApi.apiCall, "createRefund", function () {
       return payflowproRefundResult;
     });
-
-
     let refundResult = null;
     let refundError = null;
-
-
     Meteor.call("payflowpro/refund/create", paymentMethod, paymentMethod.amount, function (error, result) {
       refundResult = result;
       refundError = error;
+      expect(refundError).to.be.undefined;
+      expect(refundResult).to.not.be.undefined;
+      expect(refundResult.saved).to.be.true;
+      done();
     });
-
-
-    expect(refundError).to.be.undefined;
-    expect(refundResult).to.not.be.undefined;
-    expect(refundResult.saved).to.be.true;
-    // expect(BraintreeApi.apiCall.createRefund).to.have.been.calledWith({
-    //   createRefund: {
-    //     amount: 99.95,
-    //     transactionId: paymentMethod.transactionId
-    //   }
-    // });
-    done();
   });
 });

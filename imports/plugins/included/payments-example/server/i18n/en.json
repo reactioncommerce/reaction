@@ -18,7 +18,8 @@
           "examplePaymentLabel": "Example Provider",
           "examplePaymentSettingsLabel": "Example Payment",
           "exampleCredentials": "This is an example payment method setting.",
-          "apiClientId": "API Client ID"
+          "apiClientId": "API Client ID",
+          "supportedMethodsLabel": "Payment provider supported methods"
         }
       }
     }

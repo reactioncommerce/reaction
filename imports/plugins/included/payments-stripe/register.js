@@ -10,7 +10,12 @@ Reaction.registerPackage({
     "mode": false,
     "api_key": "",
     "reaction-stripe": {
-      enabled: false
+      enabled: false,
+      support: [
+        "Authorize",
+        "Capture",
+        "Refund"
+      ]
     }
   },
   registry: [

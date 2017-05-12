@@ -77,7 +77,9 @@ class TwitterSocialButton extends Component {
     });
 
     return (
-      <a className="btn btn-flat twitter-share" href="#" onClick={this.handleClick} target="_blank">
+      <a className="btn btn-flat twitter-share" aria-label="Share to Twitter" href="#" onClick={this.handleClick}
+        target="_blank"
+      >
         <Helmet
           meta={getTwitterMeta(this.props)}
         />

@@ -19,6 +19,8 @@ describe("stripe/refund/create", function () {
     const paymentMethod = {
       processor: "Stripe",
       storedCard: "Visa 4242",
+      paymentPackageId: "vrXutd72c2m7Lenqw",
+      paymentSettingsKey: "reaction-stripe",
       method: "credit",
       transactionId: "ch_17hZ4wBXXkbZQs3xL5JhlSgS",
       amount: 19.99,
@@ -52,19 +54,18 @@ describe("stripe/refund/create", function () {
     Meteor.call("stripe/refund/create", paymentMethod, paymentMethod.amount, function (error, result) {
       refundResult = result;
       refundError = error;
+      expect(refundError).to.be.undefined;
+      expect(refundResult).to.not.be.undefined;
+      expect(refundResult.saved).to.be.true;
+      expect(StripeApi.methods.createRefund.call).to.have.been.calledWith({
+        refundDetails: {
+          charge: paymentMethod.transactionId,
+          amount: 1999,
+          reason: "requested_by_customer"
+        }
+      });
+      done();
     });
-
-    expect(refundError).to.be.undefined;
-    expect(refundResult).to.not.be.undefined;
-    expect(refundResult.saved).to.be.true;
-    expect(StripeApi.methods.createRefund.call).to.have.been.calledWith({
-      refundDetails: {
-        charge: paymentMethod.transactionId,
-        amount: 1999,
-        reason: "requested_by_customer"
-      }
-    });
-    done();
   });
 });
 
