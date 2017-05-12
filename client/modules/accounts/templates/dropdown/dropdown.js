@@ -3,6 +3,7 @@ import { Tags } from "/lib/collections";
 import { Session } from "meteor/session";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
+// import Test from "../../components/dropdown/test";
 
 Template.loginDropdown.events({
 
@@ -71,4 +72,11 @@ Template.loginDropdown.events({
     }
     template.$(".dropdown-toggle").dropdown("toggle");
   }
+});
+Template.loginDropdown.helpers({
+  // test() {
+  //   return {
+  //     component: Test
+  //   };
+  // }
 });
