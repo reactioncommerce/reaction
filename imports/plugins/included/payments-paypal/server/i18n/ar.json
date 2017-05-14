@@ -6,11 +6,11 @@
     "reaction-payments": {
       "admin": {
         "shortcut": {
-          "paypalLabel": "باي بال"
+          "paypalLabel": "Paypal"
         },
         "dashboard": {
-          "paypalLabel": "باي بال",
-          "paypalTitle": "باي بال",
+          "paypalLabel": "Paypal",
+          "paypalTitle": "Paypal",
           "paypalDescription": "المدفوعات باي بال"
         },
         "paymentMethod": {
@@ -18,8 +18,8 @@
           "creditCardLabel": "بطاقة ائتمان"
         },
         "paymentSettings": {
-          "paypalLabel": "باي بال",
-          "paypalSettingsLabel": "باي بال",
+          "paypalLabel": "Paypal",
+          "paypalSettingsLabel": "Paypal",
           "paypalExpressCredentials": "لم يكن لديك باي بال المستخدم، كلمة المرور و التوقيع؟",
           "paypalExpressGetCredentialsHere": "الحصول على واحد هنا.",
           "paypalPayflowCredentials": "لم يكن لديك معرف العميل باي بال وسر",

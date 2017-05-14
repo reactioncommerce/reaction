@@ -1,5 +1,14 @@
 [{
   "i18n": "nb",
   "ns": "reaction-shippo",
-  "translation": { }
+  "translation": {
+    "reaction-shippo": {
+      "admin": {
+        "dashboard": {
+          "shippoLabel": "Shippo",
+          "shippoTitle": "Shippo"
+        }
+      }
+    }
+  }
 }]

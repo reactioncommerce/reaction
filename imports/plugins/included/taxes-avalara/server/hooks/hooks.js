@@ -25,6 +25,7 @@ MethodHooks.after("taxes/calculate", (options) => {
   const pkg = taxCalc.getPackageData();
 
   Logger.debug("Avalara triggered on taxes/calculate for cartId:", cartId);
+  // console.log(pkg, "package in hook");
   if (pkg && pkg.settings.avalara.enabled && pkg.settings.avalara.performTaxCalculation) {
     taxCalc.estimateCart(cartToCalc, function (result) {
       // we don't use totalTax, that just tells us we have a valid tax calculation

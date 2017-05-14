@@ -2,8 +2,9 @@
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { getCardType } from "/client/modules/core/helpers/globals";
-import { Cart, Shops } from "/lib/collections";
+import { Cart, Shops, Packages } from "/lib/collections";
 import { Braintree } from "../api/braintree";
+import { Reaction } from "/client/api";
 import { BraintreePayment } from "../../lib/collections/schemas";
 
 import "./braintree.html";
@@ -67,10 +68,18 @@ submitToBrainTree = function (doc, template) {
       if (results.saved === true) {
         const normalizedStatus = normalizeState(results.response.transaction.status);
         const normalizedMode = normalizeMode(results.response.transaction.status);
+        Meteor.subscribe("Packages");
+        const packageData = Packages.findOne({
+          name: "reaction-braintree",
+          shopId: Reaction.getShopId()
+        });
+
         const storedCard = results.response.transaction.creditCard.cardType.toUpperCase() + " " + results.response.transaction.creditCard.last4;
         paymentMethod = {
           processor: "Braintree",
           storedCard: storedCard,
+          paymentPackageId: packageData._id,
+          paymentSettingsKey: packageData.registry[0].settingsKey,
           method: "credit",
           transactionId: results.response.transaction.id,
           amount: parseFloat(results.response.transaction.amount),
