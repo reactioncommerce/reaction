@@ -71,6 +71,28 @@ class SignIn extends Component {
     }
   }
 
+  renderSpinnerOnWait() {
+    if (this.props.isLoading === true) {
+      return (
+        <div style={{ textAlign: "center" }}>
+          <i className="fa fa-spinner fa-spin" />
+        </div>
+      );
+    }
+    return (
+      <Button
+        className="btn-block"
+        primary={true}
+        bezelStyle="solid"
+        i18nKeyLabel="accountsUI.signIn"
+        label="Sign In"
+        type="submit"
+        tabIndex="3"
+        eventAction="submitSignInForm"
+      />
+    );
+  }
+
   render() {
     const emailClasses = classnames({
       "form-group": true,
@@ -121,16 +143,7 @@ class SignIn extends Component {
           </div>
 
           <div className="form-group">
-            <Button
-              className="btn-block"
-              primary={true}
-              bezelStyle="solid"
-              i18nKeyLabel="accountsUI.signIn"
-              label="Sign In"
-              type="submit"
-              tabIndex="3"
-              eventAction="submitSignInForm"
-            />
+            {this.renderSpinnerOnWait()}
           </div>
 
           <div className="form-group flex flex-justify-spaceBetween">
@@ -160,6 +173,7 @@ class SignIn extends Component {
 
 SignIn.propTypes = {
   credentials: PropTypes.object,
+  isLoading: PropTypes.bool,
   loginFormMessages: PropTypes.func,
   messages: PropTypes.object,
   onError: PropTypes.func,

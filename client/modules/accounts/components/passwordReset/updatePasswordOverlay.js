@@ -63,6 +63,28 @@ class UpdatePasswordOverlay extends Component {
     );
   }
 
+  renderSpinnerOnWait() {
+    if (this.props.isDisabled === true) {
+      return (
+        <div className="col-sm-6" style={{ textAlign: "center" }}>
+          <i className="fa fa-spinner fa-spin" />
+        </div>
+      );
+    }
+    return (
+      <div className="col-sm-6">
+        <Button
+          className="btn-block"
+          primary={true}
+          bezelStyle="solid"
+          i18nKeyLabel="accountsUI.updatePasswordAndContinue"
+          label="Update and continue"
+          type="submit"
+        />
+      </div>
+    );
+  }
+
   render() {
     const passwordClasses = classnames({
       "form-group": true,
@@ -104,16 +126,7 @@ class UpdatePasswordOverlay extends Component {
                   </div>
 
                   <div className="modal-footer">
-                    <div className="col-sm-6">
-                      <Button
-                        className="btn-block"
-                        primary={true}
-                        bezelStyle="solid"
-                        i18nKeyLabel="accountsUI.updatePasswordAndContinue"
-                        label="Update and continue"
-                        type="submit"
-                      />
-                    </div>
+                    {this.renderSpinnerOnWait()}
 
                     <div className="col-sm-6">
                       <Button
@@ -124,6 +137,7 @@ class UpdatePasswordOverlay extends Component {
                         label="Cancel"
                         type="button"
                         onClick={this.handleCancel}
+                        disabled={this.props.isDisabled}
                       />
                     </div>
                   </div>
@@ -138,6 +152,7 @@ class UpdatePasswordOverlay extends Component {
 }
 
 UpdatePasswordOverlay.propTypes = {
+  isDisabled: PropTypes.bool,
   isOpen: PropTypes.bool,
   loginFormMessages: PropTypes.func,
   messages: PropTypes.object,

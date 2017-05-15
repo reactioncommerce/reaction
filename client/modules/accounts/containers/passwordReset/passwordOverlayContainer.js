@@ -10,7 +10,8 @@ class UpdatePasswordOverlayContainer extends Component {
 
     this.state = {
       formMessages: props.formMessages,
-      isOpen: props.isOpen
+      isOpen: props.isOpen,
+      isDisabled: false
     };
 
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
@@ -22,6 +23,10 @@ class UpdatePasswordOverlayContainer extends Component {
   handleFormSubmit = (event, passwordValue) => {
     event.preventDefault();
 
+    this.setState({
+      isDisabled: true
+    });
+
     const password = passwordValue.trim();
     const validatedPassword = LoginFormValidation.password(password);
     const errors = {};
@@ -32,6 +37,7 @@ class UpdatePasswordOverlayContainer extends Component {
 
     if ($.isEmptyObject(errors) === false) {
       this.setState({
+        isDisabled: false,
         formMessages: {
           errors: errors
         }
@@ -42,6 +48,7 @@ class UpdatePasswordOverlayContainer extends Component {
     Accounts.resetPassword(this.props.token, password, (error) => {
       if (error) {
         this.setState({
+          isDisabled: false,
           formMessages: {
             alerts: [error]
           }
@@ -91,6 +98,7 @@ class UpdatePasswordOverlayContainer extends Component {
         onFormSubmit={this.handleFormSubmit}
         onCancel={this.handleFormCancel}
         isOpen={this.state.isOpen}
+        isDisabled={this.state.isDisabled}
       />
     );
   }

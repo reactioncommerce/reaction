@@ -53,6 +53,29 @@ class Forgot extends Component {
     }
   }
 
+  renderSpinnerOnWait() {
+    if (this.props.isLoading === true) {
+      return (
+        <div style={{ textAlign: "center" }}>
+          <i className="fa fa-spinner fa-spin" />
+        </div>
+      );
+    }
+    return (
+      <Button
+        className="btn-block"
+        primary={true}
+        bezelStyle="solid"
+        i18nKeyLabel="accountsUI.resetYourPassword"
+        label="Reset Your Password"
+        type="submit"
+        tabIndex="2"
+        eventAction="reset-password"
+        disabled={this.props.isDisabled}
+      />
+    );
+  }
+
   render() {
     const emailClasses = classnames({
       "form-group": true,
@@ -85,16 +108,7 @@ class Forgot extends Component {
           </div>
 
           <div className="form-group">
-            <Button
-              className="btn-block"
-              primary={true}
-              bezelStyle="solid"
-              i18nKeyLabel="accountsUI.resetYourPassword"
-              label="Reset Your Password"
-              type="submit"
-              tabIndex="2"
-              eventAction="reset-password"
-            />
+            {this.renderSpinnerOnWait()}
           </div>
 
           <div className="form-group">
@@ -117,6 +131,8 @@ class Forgot extends Component {
 
 Forgot.propTypes = {
   credentials: PropTypes.object,
+  isDisabled: PropTypes.bool,
+  isLoading: PropTypes.bool,
   loginFormMessages: PropTypes.func,
   messages: PropTypes.object,
   onError: PropTypes.func,

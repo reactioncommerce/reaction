@@ -71,6 +71,28 @@ class SignUp extends Component {
     }
   }
 
+  renderSpinnerOnWait() {
+    if (this.props.isLoading === true) {
+      return (
+        <div style={{ textAlign: "center" }}>
+          <i className="fa fa-spinner fa-spin" />
+        </div>
+      );
+    }
+    return (
+      <Button
+        className="btn-block"
+        primary={true}
+        bezelStyle="solid"
+        i18nKeyLabel="accountsUI.signUpButton"
+        label="Register"
+        type="submit"
+        tabIndex="3"
+        eventAction="register"
+      />
+    );
+  }
+
   renderForm(emailClasses, passwordClasses) {
     if (this.props.hasPasswordService()) {
       return (
@@ -107,16 +129,7 @@ class SignUp extends Component {
           </div>
 
           <div className="form-group">
-            <Button
-              className="btn-block"
-              primary={true}
-              bezelStyle="solid"
-              i18nKeyLabel="accountsUI.signUpButton"
-              label="Register"
-              type="submit"
-              tabIndex="3"
-              eventAction="register"
-            />
+            {this.renderSpinnerOnWait()}
           </div>
 
           <div className="form-group">
@@ -163,6 +176,7 @@ class SignUp extends Component {
 SignUp.propTypes = {
   credentials: PropTypes.object,
   hasPasswordService: PropTypes.func,
+  isLoading: PropTypes.bool,
   loginFormMessages: PropTypes.func,
   messages: PropTypes.object,
   onError: PropTypes.func,

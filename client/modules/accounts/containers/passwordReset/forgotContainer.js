@@ -10,7 +10,9 @@ class ForgotContainer extends Component {
     super(props);
 
     this.state = {
-      formMessages: props.formMessages
+      formMessages: props.formMessages,
+      isLoading: false,
+      isDisabled: false
     };
 
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
@@ -20,6 +22,11 @@ class ForgotContainer extends Component {
 
   handleFormSubmit = (event, email) => {
     event.preventDefault();
+
+    this.setState({
+      isLoading: true
+    });
+
     const emailAddress = email.trim();
     const validatedEmail = LoginFormValidation.email(emailAddress);
     const errors = {};
@@ -30,6 +37,7 @@ class ForgotContainer extends Component {
 
     if ($.isEmptyObject(errors) === false) {
       this.setState({
+        isLoading: false,
         formMessages: {
           errors: errors
         }
@@ -41,12 +49,15 @@ class ForgotContainer extends Component {
       // Show some message confirming result
       if (error) {
         this.setState({
+          isLoading: false,
           formMessages: {
             alerts: [error]
           }
         });
       } else {
         this.setState({
+          isLoading: false,
+          isDisabled: true,
           formMessages: {
             info: [{
               reason: i18next.t("accountsUI.info.passwordResetSend") || "Password reset mail sent."
@@ -83,6 +94,8 @@ class ForgotContainer extends Component {
         loginFormMessages={this.formMessages}
         messages={this.state.formMessages}
         onError={this.hasError}
+        isLoading={this.state.isLoading}
+        isDisabled={this.state.isDisabled}
       />
     );
   }

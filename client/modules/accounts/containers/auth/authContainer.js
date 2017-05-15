@@ -11,7 +11,8 @@ class AuthContainer extends Component {
     super(props);
 
     this.state = {
-      formMessages: props.formMessages
+      formMessages: props.formMessages,
+      isLoading: false
     };
 
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
@@ -26,6 +27,10 @@ class AuthContainer extends Component {
 
   handleFormSubmit = (event, email, password) => {
     event.preventDefault();
+
+    this.setState({
+      isLoading: true
+    });
     const errors = {};
     const username = email.trim();
     const pword = password.trim();
@@ -43,6 +48,7 @@ class AuthContainer extends Component {
 
     if (_.isEmpty(errors) === false) {
       this.setState({
+        isLoading: false,
         formMessages: {
           errors: errors
         }
@@ -54,6 +60,7 @@ class AuthContainer extends Component {
       Meteor.loginWithPassword(username, pword, (error) => {
         if (error) {
           this.setState({
+            isLoading: false,
             formMessages: {
               alerts: [error]
             }
@@ -69,6 +76,7 @@ class AuthContainer extends Component {
       Accounts.createUser(newUserData, (error) => {
         if (error) {
           this.setState({
+            isLoading: false,
             formMessages: {
               alerts: [error]
             }
@@ -147,6 +155,7 @@ class AuthContainer extends Component {
           messages={this.state.formMessages}
           onError={this.hasError}
           loginFormMessages={this.formMessages}
+          isLoading={this.state.isLoading}
         />
       );
     } else if (this.props.currentView === "loginFormSignUpView") {
@@ -158,6 +167,7 @@ class AuthContainer extends Component {
           onError={this.hasError}
           loginFormMessages={this.formMessages}
           hasPasswordService={this.hasPasswordService}
+          isLoading={this.state.isLoading}
         />
       );
     }
