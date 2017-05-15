@@ -43,6 +43,7 @@ class DropDownMenu extends Component {
   }
 
   render() {
+    console.log("props", this.props.className);
     return (
       <Popover
         buttonElement={
@@ -54,7 +55,7 @@ class DropDownMenu extends Component {
           />
         }
       >
-        <Menu value={this.props.value} onChange={this.handleMenuItemChange}>
+        <Menu className={this.props.className} value={this.props.value} onChange={this.handleMenuItemChange}>
           {this.props.children}
         </Menu>
       </Popover>

@@ -6,8 +6,10 @@ import { Roles } from "meteor/alanning:roles";
 class MainDropdown extends Component {
   buttonElement() {
     return (
-      <Button>
-        <span id="logged-in-display-name"> {this.props.userName}<b className="caret" /></span>
+      <Button
+        label={this.props.userName}
+      >
+        &nbsp;<i className="fa fa-caret-down" />
       </Button>
     );
   }
@@ -28,6 +30,7 @@ class MainDropdown extends Component {
         {this.props.currentUser &&
           <DropDownMenu
             buttonElement={this.buttonElement()}
+            className="dropdown user-accounts-dropdown"
           >
             {Reaction.Apps(this.reactionAppsOptions()).map((shortcut) => (
               <div>
@@ -37,12 +40,13 @@ class MainDropdown extends Component {
                   i18nKeyLabel={shortcut.i18nKeyLabel}
                   icon={shortcut.icon}
                   value={shortcut.name}
+
                 />
                 <Divider />
               </div>
             ))}
 
-          <div className="btn btn-primary btn-block" id="logout" data-i18n="accountsUI.signOut">Sign Out</div>
+            <div className="btn btn-primary btn-block" id="logout" data-i18n="accountsUI.signOut" style={{ padding: 5 }}>Sign Out</div>
           </DropDownMenu>
         }
       </div>
