@@ -1,4 +1,5 @@
 import React, { Children, Component, PropTypes } from "react";
+import classnames from "classnames/dedupe";
 
 class Menu extends Component {
   handleChange = (event, value, menuItem) => {
@@ -12,11 +13,12 @@ class Menu extends Component {
       return Children.map(this.props.children, (element) => {
         const newChild = React.cloneElement(element, {
           onClick: this.handleChange
-          // active: element.props.value === this.props.value
         });
-
+        const baseClassName = classnames({
+          active: element.props.value === this.props.value
+        }, this.props.className);
         return (
-          <li>{newChild}</li>
+          <li className={baseClassName}>{newChild}</li>
         );
       });
     }
@@ -24,7 +26,7 @@ class Menu extends Component {
 
   render() {
     return (
-      <ul className="rui menu dropdown-menu">
+      <ul className="rui menu dropdown-menu" style={{ maxHeight: 500, overflow: "auto" }}>
         {this.renderMenuItems()}
       </ul>
     );
@@ -34,6 +36,7 @@ class Menu extends Component {
 Menu.propTypes = {
   attachment: PropTypes.string,
   children: PropTypes.node,
+  className: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   onChange: PropTypes.func,
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.bool, PropTypes.number])
 };

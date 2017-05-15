@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, Divider, DropDownMenu, MenuItem } from "/imports/plugins/core/ui/client/components";
+import { Button, Divider, DropDownMenu, Menu, MenuItem } from "/imports/plugins/core/ui/client/components";
 import { Reaction } from "/client/api";
 import { Roles } from "meteor/alanning:roles";
 
@@ -30,12 +30,10 @@ class MainDropdown extends Component {
         {this.props.currentUser &&
           <DropDownMenu
             buttonElement={this.buttonElement()}
-            className="dropdown user-accounts-dropdown"
           >
             {Reaction.Apps(this.reactionAppsOptions()).map((shortcut) => (
-              <div>
+              <div key={shortcut.packageId}>
                 <MenuItem
-                  key={shortcut.packageId}
                   label={shortcut.label}
                   i18nKeyLabel={shortcut.i18nKeyLabel}
                   icon={shortcut.icon}
