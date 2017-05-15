@@ -11,6 +11,16 @@
           "ordersLabel": "Orders",
           "ordersTitle": "Orders",
           "ordersDescription": "Fulfill your orders"
+        },
+        "orderWorkflow": {
+          "summary": {
+            "cardTitle": "Summary",
+            "copyLink": "Copy Link"
+          },
+          "fulfillment": "Fulfillment",
+          "orderDetails": "Order Details",
+          "invoice": "Invoice",
+          "shipmentTracking": "Shipment"
         }
       }
     }

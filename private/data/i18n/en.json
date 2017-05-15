@@ -394,9 +394,7 @@
         "resendNotification": "Resend Shipment Notification"
       },
       "orderWorkflow": {
-        "fulfillment": "Fulfillment",
         "orderDetails": "Order Details",
-        "summary": "Summary",
         "invoice": "Invoice",
         "shipmentTracking": "Shipment"
       },
