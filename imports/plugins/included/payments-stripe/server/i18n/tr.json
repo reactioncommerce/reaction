@@ -10,7 +10,7 @@
         },
         "dashboard": {
           "stripeLabel": "Stripe",
-          "stripeDescription": "şerit ödemeleri"
+          "stripeDescription": "Stripe ödemeleri"
         },
         "paymentSettings": {
           "stripeLabel": "Stripe",

@@ -2,5 +2,22 @@
   "language": "Bokmål",
   "i18n": "nb",
   "ns": "reaction-auth-net",
-  "translation": { }
+  "translation": {
+    "reaction-payments": {
+      "admin": {
+        "shortcut": {
+          "authorizenetLabel": "Authorize.net",
+          "authorizenetTitle": "Authorize.net"
+        },
+        "dashboard": {
+          "authorizenetLabel": "Authorize.net",
+          "authorizenetTitle": "Authorize.net"
+        },
+        "paymentSettings": {
+          "authorizenetLabel": "Authorize.net",
+          "authorizenetSettingsLabel": "Authorize.net"
+        }
+      }
+    }
+  }
 }]

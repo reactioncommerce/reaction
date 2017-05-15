@@ -18,7 +18,8 @@
           "examplePaymentLabel": "Пример Провайдер",
           "examplePaymentSettingsLabel": "Пример оплаты",
           "exampleCredentials": "Это установка пример способ оплаты.",
-          "apiClientId": "API идентификатор клиента"
+          "apiClientId": "API идентификатор клиента",
+          "supportedMethodsLabel": "Поддерживаемые методы поставщика платежей"
         }
       }
     }
