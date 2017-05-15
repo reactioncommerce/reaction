@@ -13,6 +13,10 @@ class UpdatePasswordOverlay extends Component {
     this.state = {
       password: ""
     };
+
+    this.handleFieldChange = this.handleFieldChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleCancel = this.handleCancel.bind(this);
   }
 
   handleFieldChange = (event, value, field) => {
@@ -22,8 +26,15 @@ class UpdatePasswordOverlay extends Component {
   }
 
   handleSubmit = (event) => {
-    event.preventDefault();
-    console.log("I WAS CLICKED", this.state.password);
+    if (this.props.onFormSubmit) {
+      this.props.onFormSubmit(event, this.state.password);
+    }
+  }
+
+  handleCancel = (event) => {
+    if (this.props.onCancel) {
+      this.props.onCancel(event);
+    }
   }
 
   renderFormMessages() {
@@ -60,59 +71,79 @@ class UpdatePasswordOverlay extends Component {
 
     return (
       <div>
-        <div className="modal-backdrop fade in" id={`modal-backdrop-${this.props.uniqueId}`} />
-        <div className="modal fade in" id={`modal-${this.props.uniqueId}`} style={{ display: "block" }}>
-          <div className="modal-dialog">
+        {this.props.isOpen === true &&
+          <div>
+            <div className="modal-backdrop fade in" id={`modal-backdrop-${this.props.uniqueId}`} />
+            <div className="modal fade in" id={`modal-${this.props.uniqueId}`} style={{ display: "block" }}>
+              <div className="modal-dialog">
 
-            <form className="modal-content" onSubmit={this.handleSubmit}>
-              <div className="modal-header">
-                <h4 className="modal-title" data-i18n="accountsUI.updateYourPassword">Update Your Password</h4>
-              </div>
-
-              <div className="modal-body">
-                <div className="login-form">
-
-                  {this.renderFormMessages()}
-
-                  <div className={passwordClasses}>
-                      <TextField
-                        i18nKeyLabel="accountsUI.password"
-                        label="Password"
-                        name="password"
-                        type="password"
-                        id={`password-${this.props.uniqueId}`}
-                        value={this.state.password}
-                        onChange={this.handleFieldChange}
-                      />
-                    {this.renderPasswordErrors()}
+                <form className="modal-content" onSubmit={this.handleSubmit}>
+                  <div className="modal-header">
+                    <h4 className="modal-title" data-i18n="accountsUI.updateYourPassword">Update Your Password</h4>
                   </div>
 
-                </div>
-              </div>
+                  <div className="modal-body">
+                    <div className="login-form">
 
-              <div className="modal-footer">
-                <Button
-                  className="btn-block"
-                  primary={true}
-                  bezelStyle="solid"
-                  i18nKeyLabel="accountsUI.updatePasswordAndContinue"
-                  label="Update and continued"
-                  type="submit"
-                />
-              </div>
+                      {this.renderFormMessages()}
 
-            </form>
-          </div>
-        </div>
+                      <div className={passwordClasses}>
+                          <TextField
+                            i18nKeyLabel="accountsUI.password"
+                            label="Password"
+                            name="password"
+                            type="password"
+                            id={`password-${this.props.uniqueId}`}
+                            value={this.state.password}
+                            onChange={this.handleFieldChange}
+                          />
+                        {this.renderPasswordErrors()}
+                      </div>
+
+                    </div>
+                  </div>
+
+                  <div className="modal-footer">
+                    <div className="col-sm-6">
+                      <Button
+                        className="btn-block"
+                        primary={true}
+                        bezelStyle="solid"
+                        i18nKeyLabel="accountsUI.updatePasswordAndContinue"
+                        label="Update and continue"
+                        type="submit"
+                      />
+                    </div>
+
+                    <div className="col-sm-6">
+                      <Button
+                        className="btn-block"
+                        status="danger"
+                        bezelStyle="solid"
+                        i18nKeyLabel="app.cancel"
+                        label="Cancel"
+                        type="button"
+                        onClick={this.handleCancel}
+                      />
+                    </div>
+                  </div>
+
+                </form>
+              </div>
+            </div>
+          </div>}
       </div>
     );
   }
 }
 
 UpdatePasswordOverlay.propTypes = {
+  isOpen: PropTypes.bool,
   loginFormMessages: PropTypes.func,
   messages: PropTypes.object,
+  onCancel: PropTypes.func,
   onError: PropTypes.func,
+  onFormSubmit: PropTypes.func,
   uniqueId: PropTypes.string
 };
 

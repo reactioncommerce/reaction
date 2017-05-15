@@ -1,20 +1,67 @@
 import React, { Component, PropTypes } from "react";
+import { Accounts } from "meteor/accounts-base";
 import { composeWithTracker } from "/lib/api/compose";
-import { UpdatePasswordOverlay } from "../../components";
-import { MessagesContainer } from "../helpers";
+import { UpdatePasswordOverlay } from "/client/modules/accounts/components";
+import { MessagesContainer } from "/client/modules/accounts/containers/helpers";
 
 class UpdatePasswordOverlayContainer extends Component {
   constructor(props) {
     super(props);
 
-    console.log("PROPS in UpdatePasswordOverlayContainer", props);
-
     this.state = {
-      formMessages: props.formMessages
+      formMessages: props.formMessages,
+      isOpen: props.isOpen
     };
 
+    this.handleFormSubmit = this.handleFormSubmit.bind(this);
+    this.handleFormCancel = this.handleFormCancel.bind(this);
     this.formMessages = this.formMessages.bind(this);
     this.hasError = this.hasError.bind(this);
+  }
+
+  handleFormSubmit = (event, passwordValue) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    const password = passwordValue.trim();
+    const validatedPassword = LoginFormValidation.password(password);
+    const errors = {};
+
+    if (validatedPassword !== true) {
+      errors.password = validatedPassword;
+    }
+
+    if ($.isEmptyObject(errors) === false) {
+      this.setState({
+        formMessages: {
+          errors: errors
+        }
+      });
+      return;
+    }
+
+    Accounts.resetPassword(this.props.token, password, (error) => {
+      if (error) {
+        this.setState({
+          formMessages: {
+            alerts: [error]
+          }
+        });
+      } else {
+        this.props.callback();
+
+        this.setState({
+          isOpen: !this.state.isOpen
+        });
+      }
+    });
+  }
+
+  handleFormCancel = (event) => {
+    event.preventDefault();
+    this.setState({
+      isOpen: !this.state.isOpen
+    });
   }
 
   formMessages = () => {
@@ -42,6 +89,9 @@ class UpdatePasswordOverlayContainer extends Component {
         loginFormMessages={this.formMessages}
         onError={this.hasError}
         messages={this.state.formMessages}
+        onFormSubmit={this.handleFormSubmit}
+        onCancel={this.handleFormCancel}
+        isOpen={this.state.isOpen}
       />
     );
   }
@@ -58,7 +108,10 @@ function composer(props, onData) {
 }
 
 UpdatePasswordOverlayContainer.propTypes = {
-  formMessages: PropTypes.object
+  callback: PropTypes.func,
+  formMessages: PropTypes.object,
+  isOpen: PropTypes.bool,
+  token: PropTypes.string
 };
 
 export default composeWithTracker(composer)(UpdatePasswordOverlayContainer);
