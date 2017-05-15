@@ -18,7 +18,6 @@ class LoginContainer extends Component {
 
   showForgotPasswordView(e) {
     e.preventDefault();
-    e.stopPropagation();
 
     this.setState({
       currentView: "loginFormResetPasswordView"
@@ -27,7 +26,6 @@ class LoginContainer extends Component {
 
   showSignUpView(e) {
     e.preventDefault();
-    e.stopPropagation();
 
     this.setState({
       currentView: "loginFormSignUpView"
@@ -36,7 +34,6 @@ class LoginContainer extends Component {
 
   showSignInView(e) {
     e.preventDefault();
-    e.stopPropagation();
 
     this.setState({
       currentView: "loginFormSignInView"

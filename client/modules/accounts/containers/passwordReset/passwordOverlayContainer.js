@@ -21,7 +21,6 @@ class UpdatePasswordOverlayContainer extends Component {
 
   handleFormSubmit = (event, passwordValue) => {
     event.preventDefault();
-    event.stopPropagation();
 
     const password = passwordValue.trim();
     const validatedPassword = LoginFormValidation.password(password);
