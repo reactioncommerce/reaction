@@ -11,8 +11,8 @@ class Menu extends Component {
     if (this.props.children) {
       return Children.map(this.props.children, (element) => {
         const newChild = React.cloneElement(element, {
-          onClick: this.handleChange,
-          active: element.props.value === this.props.value
+          onClick: this.handleChange
+          // active: element.props.value === this.props.value
         });
 
         return (
