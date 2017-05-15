@@ -17,12 +17,19 @@
             </li>
           {{else}}
             <div class="panel-body">
-              <div class="alert alert-danger">
-                <span data-i18n="checkoutShipping.noShippingMethods">No shipping methods are configured.</span>
-                <a href="#" data-event-action="configure-shipping">
-                  <span data-i18n="checkoutShipping.configureNow">Configure now.</span>
-                </a>
-              </div>
+              {{#if isAdmin}}
+                <div class="alert alert-danger">
+                  <span data-i18n="checkoutShipping.noShippingMethods">No shipping methods are configured.</span>
+                  <a href="#" data-event-action="configure-shipping">
+                    <span data-i18n="checkoutShipping.configureNow">Configure now.</span>
+                  </a>
+                </div>
+              {{else}}
+                <div class="alert alert-danger">
+                  <span data-i18n="checkoutShipping.noShippingMethods">No shipping methods are configured for this shop.</span>
+                  <span data-i18n="checkoutShipping.contactAdmin">Please contact the store administrator.</span>
+                </div>
+              {{/if}}
             </div>
           {{/each}}
         </ul>
