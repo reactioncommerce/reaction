@@ -35,6 +35,7 @@ class MenuItem extends Component {
   }
 
   render() {
+    console.log("classname", this.props.className);
     const baseClassName = classnames({
       "rui": true,
       "menu-item": true,

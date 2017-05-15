@@ -1,15 +1,15 @@
 import React, { Component } from "react";
-import { Button, Divider, DropDownMenu, Menu, MenuItem } from "/imports/plugins/core/ui/client/components";
+import { Button, Divider, DropDownMenu, MenuItem } from "/imports/plugins/core/ui/client/components";
 import { Reaction } from "/client/api";
 import { Roles } from "meteor/alanning:roles";
 
 class MainDropdown extends Component {
   buttonElement() {
     return (
-      <Button
-        label={this.props.userName}
-      >
-        &nbsp;<i className="fa fa-caret-down" />
+      <Button>
+        <img className="circular-icon" src={this.props.userImage} alt="" />&nbsp;
+        <span>{this.props.userName}</span>&nbsp;
+        <i className="fa fa-caret-down" />
       </Button>
     );
   }
@@ -30,17 +30,22 @@ class MainDropdown extends Component {
         {this.props.currentUser &&
           <DropDownMenu
             buttonElement={this.buttonElement()}
+            style={{
+              padding: 10,
+              minWidth: 220,
+              minHeight: 50
+            }}
+            className="accounts-li-tag"
           >
             {Reaction.Apps(this.reactionAppsOptions()).map((shortcut) => (
               <div key={shortcut.packageId}>
                 <MenuItem
+                  className="accounts-a-tag"
                   label={shortcut.label}
                   i18nKeyLabel={shortcut.i18nKeyLabel}
                   icon={shortcut.icon}
                   value={shortcut.name}
-
                 />
-                <Divider />
               </div>
             ))}
 

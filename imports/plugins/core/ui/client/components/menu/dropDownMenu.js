@@ -54,7 +54,12 @@ class DropDownMenu extends Component {
           />
         }
       >
-        <Menu value={this.props.value} onChange={this.handleMenuItemChange}>
+        <Menu
+          className={this.props.className}
+          value={this.props.value}
+          onChange={this.handleMenuItemChange}
+          style={this.props.style}
+        >
           {this.props.children}
         </Menu>
       </Popover>
