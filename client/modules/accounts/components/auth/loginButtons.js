@@ -34,7 +34,7 @@ class LoginButtons extends Component {
               {this.props.currentView === "loginFormSignUpView" &&
                 <span data-i18n="accountsUI.signUpWith">Sign up with</span>}
 
-              &nbsp;<span data-i18n={`social.${service.name}`}>{service.name}</span>
+              &nbsp;<span data-i18n={`social.${service.name}`}>{this.props.capitalizeName(service.name)}</span>
           </Button>
           ))
         }
@@ -65,6 +65,7 @@ class LoginButtons extends Component {
 }
 
 LoginButtons.propTypes = {
+  capitalizeName: PropTypes.func,
   currentView: PropTypes.string,
   loginServices: PropTypes.func,
   onSeparator: PropTypes.func,

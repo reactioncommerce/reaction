@@ -171,6 +171,7 @@ class AuthContainer extends Component {
           currentView={this.props.currentView}
           onSeparator={this.shouldShowSeperator}
           onSocialClick={this.handleSocialLogin}
+          capitalizeName={this.capitalize}
         />
       {this.renderAuthView()}
       </div>
