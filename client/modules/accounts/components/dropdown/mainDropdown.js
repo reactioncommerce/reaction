@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, Divider, DropDownMenu, MenuItem } from "/imports/plugins/core/ui/client/components";
+import { Button, DropDownMenu, MenuItem } from "/imports/plugins/core/ui/client/components";
 import { Reaction } from "/client/api";
 import { Roles } from "meteor/alanning:roles";
 
@@ -50,6 +50,12 @@ class MainDropdown extends Component {
                   label={option.label}
                   i18nKeyLabel={option.i18nKeyLabel}
                   icon={option.icon}
+                  iconStyle={{
+                    margin: "10px 10px 10px 6px",
+                    width: "20px",
+                    fontSize: "inherit",
+                    textAlign: "center"
+                  }}
                   value={option.name}
                 />
               ))

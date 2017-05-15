@@ -15,7 +15,7 @@ class MenuItem extends Component {
   renderIcon() {
     if (this.props.icon) {
       return (
-        <Icon icon={this.props.icon} />
+        <Icon icon={this.props.icon} style={this.props.iconStyle}/>
       );
     }
     return null;
