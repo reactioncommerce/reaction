@@ -24,7 +24,12 @@ class MainDropdown extends Component {
     };
   }
   render() {
-    console.log("message", Reaction.Apps(this.reactionAppsOptions()));
+    const options = {
+      provides: "userAccountDropdown",
+      enabled: true
+    };
+    console.log("reactionAppsOptions", Reaction.Apps(this.reactionAppsOptions()));
+    console.log("message", Reaction.Apps(options));
     return (
       <div>
         {this.props.currentUser &&
@@ -37,16 +42,28 @@ class MainDropdown extends Component {
             }}
             className="accounts-li-tag"
           >
-            {Reaction.Apps(this.reactionAppsOptions()).map((shortcut) => (
-              <div key={shortcut.packageId}>
+            {
+              Reaction.Apps(options).map((option) => (
                 <MenuItem
+                  key={option.packageId}
+                  className="accounts-a-tag"
+                  label={option.label}
+                  i18nKeyLabel={option.i18nKeyLabel}
+                  icon={option.icon}
+                  value={option.name}
+                />
+              ))
+            }
+            {
+              Reaction.Apps(this.reactionAppsOptions()).map((shortcut) => (
+                <MenuItem
+                  key={shortcut.packageId}
                   className="accounts-a-tag"
                   label={shortcut.label}
                   i18nKeyLabel={shortcut.i18nKeyLabel}
                   icon={shortcut.icon}
                   value={shortcut.name}
                 />
-              </div>
             ))}
 
             <div className="btn btn-primary btn-block" id="logout" data-i18n="accountsUI.signOut" style={{ padding: 5 }}>Sign Out</div>
