@@ -1,3 +1,3 @@
 export { LoginContainer, AuthContainer } from "./auth";
-export ForgotContainer from "./passwordReset";
+export { ForgotContainer, UpdatePasswordOverlayContainer } from "./passwordReset";
 export { MessagesContainer } from "./helpers";
