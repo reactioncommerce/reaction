@@ -139,16 +139,7 @@ html:not(.rtl) .rui.navbar .languages .dropdown-menu {
   .align-items(center);
   .flex(0 0 auto);
   height: @navbar-height;
-}
-
-.rui.navbar .accounts:hover {
-  background-color: @navbar-default-toggle-icon-bar-bg;
-  border-color: @navbar-default-toggle-border-color;
-}
-
-.rui.navbar .accounts:active {
-  background-color: @navbar-default-toggle-icon-bar-bg;
-  border-color: @navbar-default-toggle-border-color;
+  margin-right: 2px;
 }
 
 .rui.navbar .accounts .dropdown-toggle {
@@ -292,4 +283,13 @@ html:not(.rtl) .rui.navbar .languages .dropdown-menu {
 
 .accounts-li-tag:last-child {
   border-bottom: none;
+}
+
+.accounts-img-tag {
+  width: 30px;
+  height: 30px;
+  margin: -15px 5px;
+  border: 2px solid rgba(129, 122, 122, 0.62);
+  border-radius: 50%;
+  display: inline-block;
 }

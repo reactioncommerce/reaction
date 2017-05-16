@@ -12,7 +12,7 @@ class MainDropdown extends Component {
   buttonElement() {
     return (
       <Button>
-        <img className="circular-icon" src="" />&nbsp;
+        <img className="accounts-img-tag" src={this.props.userImage} />&nbsp;
         <span>{this.props.userName}</span>&nbsp;
         <i className="fa fa-caret-down" />
       </Button>
@@ -31,6 +31,7 @@ class MainDropdown extends Component {
 
   handleChange = (event, value) => {
     event.preventDefault();
+
     return Reaction.Router.go(value);
   }
 
@@ -81,6 +82,12 @@ class MainDropdown extends Component {
                   label={shortcut.label}
                   i18nKeyLabel={shortcut.i18nKeyLabel}
                   icon={shortcut.icon}
+                  iconStyle={{
+                    margin: "10px 10px 10px 6px",
+                    width: "20px",
+                    fontSize: "inherit",
+                    textAlign: "center"
+                  }}
                   value={shortcut.name}
                 />
             ))}
