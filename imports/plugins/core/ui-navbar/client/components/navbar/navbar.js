@@ -34,10 +34,6 @@ Template.CoreNavigationBar.events({
     }, $("html").get(0));
     $("body").css("overflow", "hidden");
     $("#search-input").focus();
-  },
-  "click .notification-icon": function () {
-    $("body").css("overflow", "hidden");
-    $("#notify-dropdown").focus();
   }
 });
 
