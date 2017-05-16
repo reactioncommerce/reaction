@@ -33,7 +33,7 @@ export const TagHelpers = {
       return subTags;
     }
 
-    return false;
+    return []; // TODO: Confirm this change is not breaking
   },
 
   currentTag() {

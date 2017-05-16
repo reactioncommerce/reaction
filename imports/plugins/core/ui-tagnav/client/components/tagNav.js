@@ -147,17 +147,13 @@ class TagNav extends Component {
     console.log('handleNewTagSave');
   }
 
-  handleNewTagUpdate = () => {
+  handleNewTagUpdate = (event, newTag) => {
     console.log('handleNewTagUpdate');
-    // TagNavHelpers.onTagCreate
+    // TagNavHelpers.onTagCreate(newTag.name, []);
   }
 
-  onTagSave = (event, tag) => {
-    console.log('onTagSave', event, tag);
+  onTagSave = (event, tag) => { // on enter key press
     TagNavHelpers.onTagCreate(tag.name);
-  }
-
-  handleTagSave = () => {
   }
 
   handleTagRemove = () => {
@@ -166,16 +162,16 @@ class TagNav extends Component {
   handleTagUpdate = (event, tag) => {
     console.log({ state: this.state });
 
-    const newState = update(this.state, {
-      tagsByKey: {
-        [tag._id]: {
-          $set: tag
-        }
-      }
-    });
+    // const newState = update(this.state, {
+    //   tagsByKey: {
+    //     [tag._id]: {
+    //       $set: tag
+    //     }
+    //   }
+    // });
 
-    console.log({ newState });
-    this.setState(newState);
+    // console.log({ newState });
+    // this.setState(newState);
   }
 
   handleMoveTag = () => {
@@ -344,7 +340,6 @@ class TagNav extends Component {
                 onClearSuggestions={this.handleClearSuggestions}
                 onGetSuggestions={this.handleGetSuggestions}
                 onMove={this.handleMoveTag}
-                onTagInputBlur={this.handleTagSave}
                 onTagMouseOut={this.handleTagMouseOut}
                 onTagMouseOver={this.handleTagMouseOver}
                 onTagRemove={this.handleTagRemove}
@@ -381,7 +376,6 @@ class TagNav extends Component {
                 i18nKeyInputPlaceholder="tags.addTag"
                 onClearSuggestions={this.handleClearSuggestions}
                 onGetSuggestions={this.handleGetSuggestions}
-                onTagInputBlur={this.handleNewTagSave}
                 onTagSave={this.onTagSave}
                 onTagUpdate={this.handleNewTagUpdate}
                 tag={this.state.newTag}
