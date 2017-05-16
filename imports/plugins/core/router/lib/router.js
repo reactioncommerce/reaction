@@ -4,6 +4,7 @@ import createBrowserHistory from "history/createBrowserHistory";
 import createMemoryHistory from "history/createMemoryHistory";
 import pathToRegexp from "path-to-regexp";
 import queryParse from "query-parse";
+import Immutable from "immutable";
 import { Meteor } from "meteor/meteor";
 import Blaze from "meteor/gadicc:blaze-react-component";
 import { Tracker } from "meteor/tracker";
