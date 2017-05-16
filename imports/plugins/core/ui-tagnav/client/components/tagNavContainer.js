@@ -7,7 +7,6 @@ import { DragDropProvider } from "/imports/plugins/core/ui/client/providers";
 import { TagList } from "/imports/plugins/core/ui/client/components/tags/";
 import { TagHelpers } from "/imports/plugins/core/ui-tagnav/client/helpers";
 import update from "react/lib/update";
-// import { TagItem } from "/imports/plugins/core/ui/client/components/tags/";
 
 
 const styles = {
@@ -277,7 +276,6 @@ class TagNav extends Component {
   }
 
   handleTagSave = (tag) => {
-    console.log('handleTagSave in TagNavContainer');
     TagNavHelpers.onTagUpdate(tag._id, tag.name);
   }
 
@@ -314,11 +312,9 @@ class TagNav extends Component {
 
   get tags() {
     if (this.state.editable) {
-      console.log('getting tags editable mode')
       return this.state.tagIds.map((tagId) => this.state.tagsByKey[tagId]);
     }
 
-    console.log('getting tags normal mode')
     return this.props.tagsAsArray;
   }
 
@@ -343,6 +339,7 @@ class TagNav extends Component {
               onTagUpdate={this.handleTagUpdate}
               suggestions={this.state.suggestions}
               tags={this.tags}
+              enableNewTagForm={true}
               tooltip="Unpublished changes"
               {...this.props}
             />
