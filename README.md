@@ -79,6 +79,6 @@ Integration tests can be run at the command line with `reaction test`.
 
 ### Deployment
 
-We ensure that all releases are deployable as [Docker](https://www.docker.com/) containers.  While we don't regularly test other methods of deployment, our community has documented deployment strategies for [Heroku](https://github.com/reactioncommerce/reaction/issues/1363), AWS, [Digital Ocean](https://gist.github.com/jshimko/745ca66748846551692e24c267a56060), and Galaxy.
+We ensure that all releases are deployable as [Docker](https://www.docker.com/) containers.  While we don't regularly test other methods of deployment, our community has documented deployment strategies for AWS, [Digital Ocean](https://gist.github.com/jshimko/745ca66748846551692e24c267a56060), and Galaxy.
 
 For an introduction to Docker deployment, [the Reaction deployment guide](https://docs.reactioncommerce.com/reaction-docs/master/deploying) has detailed examples. Reaction Commerce also offers a managed deployment platform integrated with the Reaction command line.

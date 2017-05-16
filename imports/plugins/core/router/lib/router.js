@@ -1,17 +1,18 @@
 import React from "react";
+import { Route } from "react-router";
 import createBrowserHistory from "history/createBrowserHistory";
 import createMemoryHistory from "history/createMemoryHistory";
 import pathToRegexp from "path-to-regexp";
 import queryParse from "query-parse";
+import Immutable from "immutable";
 import { Meteor } from "meteor/meteor";
 import Blaze from "meteor/gadicc:blaze-react-component";
 import { Tracker } from "meteor/tracker";
-import { Route } from "react-router";
 import { Packages, Shops } from "/lib/collections";
-import Hooks from "./hooks";
 import { getComponent } from "/imports/plugins/core/layout/lib/components";
 import BlazeLayout from "/imports/plugins/core/layout/lib/blazeLayout";
-import Immutable from "immutable";
+import Hooks from "./hooks";
+
 
 export let history;
 
@@ -499,7 +500,7 @@ Router.initPackageRoutes = (options) => {
             route.route = `${prefix}${route.route}`;
           }
 
-          // Check permissions before adding the route to the routing table
+          // Add the route to the routing table
           reactRouterRoutes.push(
             <Route
               key={`${pkg.name}-${route.name}-${index++}`}
