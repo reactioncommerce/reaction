@@ -1,6 +1,6 @@
 import React, { Component } from "component";
 import { composeWithTracker } from "/lib/api/compose";
-import QuickMenu from "../components";
+import { QuickMenu } from "../components";
 import { Reaction } from "/client/api";
 
 class QuickMenuContainer extends Component {

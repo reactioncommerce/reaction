@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { Session } from "meteor/session";
+import { Meteor } from "meteor/meteor";
 import { Cart, Media } from "/lib/collections";
 import { Reaction } from "/client/api";
 import { composeWithTracker } from "/lib/api/compose";
