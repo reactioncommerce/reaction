@@ -46,3 +46,11 @@ html.rtl .rui.toolbar.toolbar-vertical {
   flex: 1 1 auto;
   justify-content: flex-end;
 }
+
+.rui.toolbar-group.visible-mobile {
+  display: none;
+
+  @media screen and (max-width: @screen-xs-max)  {
+    display: flex !important;
+  }
+}

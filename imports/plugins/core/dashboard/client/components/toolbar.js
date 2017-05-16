@@ -23,7 +23,6 @@ class PublishControls extends Component {
     onViewContextChange: PropTypes.func,
     onVisibilityChange: PropTypes.func,
     packageButtons: PropTypes.arrayOf(PropTypes.object),
-    showDashboardButton: PropTypes.bool,
     showViewAsControls: PropTypes.bool,
     translation: PropTypes.shape({
       lang: PropTypes.string
@@ -80,9 +79,9 @@ class PublishControls extends Component {
   }
 
   renderAdminButton() {
-    if (this.props.showDashboardButton) {
-      return [
-        <VerticalDivider key={"divder-2"}/>,
+    return (
+      <ToolbarGroup visibleOnMobile={true}>
+        <VerticalDivider key={"divder-2"} />
         <FlatButton
           key="dashboard-button"
           onClick={() => {
@@ -95,10 +94,8 @@ class PublishControls extends Component {
         >
           <Icon style={{ fontSize: 24 }} icon="icon icon-reaction-logo" />
         </FlatButton>
-      ];
-    }
-
-    return null;
+      </ToolbarGroup>
+    );
   }
 
   renderAddButton() {
@@ -154,8 +151,8 @@ class PublishControls extends Component {
           {this.renderAddButton()}
           {this.renderPackageButons()}
           {this.renderCustomControls()}
-          {this.renderAdminButton()}
         </ToolbarGroup>
+        {this.renderAdminButton()}
       </Toolbar>
     );
   }

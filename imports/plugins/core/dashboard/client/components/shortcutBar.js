@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from "react";
 import { map } from "lodash";
-import { getComponent } from "/imports/plugins/core/layout/lib/components";
 import { FlatButton, Icon } from "/imports/plugins/core/ui/client/components";
 import { isEqual } from "lodash";
 
@@ -34,15 +33,6 @@ class ShortcutBar extends Component {
         if (Array.isArray(group.packages)) {
           const items = group.packages.map((packageData, index) => {
             const isActive = isEqual(this.props.currentView, packageData);
-            let popoverContent = packageData.label;
-
-            // Look for a registered component_ActionDashboard component
-            const actionComponent = getComponent(`${packageData.template}_ActionDashboard`);
-
-            // If one exists, add it to the list of elements
-            if (actionComponent) {
-              popoverContent = React.createElement(actionComponent);
-            }
 
             // Standard list element
             return (
@@ -52,7 +42,7 @@ class ShortcutBar extends Component {
                 i18nKeyTooltip={packageData.i18nKeyLabel}
                 icon={packageData.icon}
                 onClick={this.props.handleOpenShortcut}
-                tooltip={popoverContent}
+                tooltip={packageData.label}
                 value={packageData}
                 tooltipAttachment="middle left"
               />
