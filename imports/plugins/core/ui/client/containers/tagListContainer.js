@@ -178,7 +178,6 @@ class TagListContainer extends Component {
   }
 
   handleGetSuggestions = (suggestionUpdateRequest) => {
-    console.log(suggestionUpdateRequest.value);
     const suggestions = updateSuggestions(
       suggestionUpdateRequest.value,
       { excludeTags: this.state.tagIds }

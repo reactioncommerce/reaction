@@ -80,6 +80,7 @@ export const TagHelpers = {
   },
 
   createTag(tagName, tagId, parentTag) {
+    console.log('helper updateTag');
     let parentTagId;
 
     if (parentTag) {

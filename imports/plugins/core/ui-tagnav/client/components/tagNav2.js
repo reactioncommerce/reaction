@@ -1,12 +1,14 @@
-import React, { Component, PropTypes } from "react";
 import { Reaction } from "/client/api";
-import update from "react/lib/update";
-import { TagItem } from "/imports/plugins/core/ui/client/components/tags/";
-import { TagHelpers } from "/imports/plugins/core/ui-tagnav/client/helpers";
-import { DragDropProvider } from "/imports/plugins/core/ui/client/providers";
-import { EditButton } from "/imports/plugins/core/ui/client/components";
+import React, { Component, PropTypes } from "react";
 import { Tags } from "/lib/collections";
-import TagTree from "./tagTree";
+import classnames from "classnames";
+import { EditButton } from "/imports/plugins/core/ui/client/components";
+import { DragDropProvider } from "/imports/plugins/core/ui/client/providers";
+import { TagList } from "/imports/plugins/core/ui/client/components/tags/";
+import { TagHelpers } from "/imports/plugins/core/ui-tagnav/client/helpers";
+import update from "react/lib/update";
+// import { TagItem } from "/imports/plugins/core/ui/client/components/tags/";
+
 
 const styles = {
   editContainerItem: {
@@ -43,63 +45,6 @@ const NavbarAnchor = {
   Bottom: "bottom",
   Left: "left",
   None: "inline"
-};
-
-// TODO: should be shared
-function updateSuggestions(term, { excludeTags }) {
-  const slug = Reaction.getSlug(term);
-
-  const selector = {
-    slug: new RegExp(slug, "i")
-  };
-
-  if (Array.isArray(excludeTags)) {
-    selector._id = {
-      $nin: excludeTags
-    };
-  }
-
-  const tags = Tags.find(selector).map((tag) => {
-    return {
-      label: tag.name
-    };
-  });
-
-  return tags;
-}
-
-const TagNavHelpers = {
-  onTagCreate(tagName, parentTag) {
-    TagHelpers.createTag(tagName, undefined, parentTag);
-  },
-  onTagRemove(tag, parentTag) {
-    TagHelpers.removeTag(tag, parentTag);
-  },
-  onTagSort(tagIds, parentTag) {
-    TagHelpers.sortTags(tagIds, parentTag);
-  },
-  onTagDragAdd(movedTagId, toListId, toIndex, ofList) {
-    TagHelpers.moveTagToNewParent(movedTagId, toListId, toIndex, ofList);
-  },
-  onTagUpdate(tagId, tagName) {
-    TagHelpers.updateTag(tagId, tagName);
-  },
-  isMobile() {
-    return window.matchMedia("(max-width: 991px)").matches;
-  },
-  tagById(tagId, tags) {
-    return _.find(tags, (tag) => tag._id === tagId);
-  },
-  hasSubTags(tagId, tags) {
-    const foundTag = this.tagById(tagId, tags);
-
-    if (foundTag) {
-      if (_.isArray(foundTag.relatedTagIds) && foundTag.relatedTagIds.length) {
-        return true;
-      }
-    }
-    return false;
-  }
 };
 
 class TagNav extends Component {
@@ -332,73 +277,12 @@ class TagNav extends Component {
     return null;
   }
 
-  renderTags() {
-    if (_.isArray(this.state.tags)) {
-      const tags = this.state.tags.map((tag, index) => {
-        const classAttr = `navbar-item ${this.navbarSelectedClassName(tag)} ${this.hasDropdownClassName(tag)} data-id=${tag._id}`;
-        return (
-          <DragDropProvider key={index}>
-            <div className={classAttr}>
-              <TagItem
-                className="js-tagNav-item"
-                data-id={tag._id}
-                editable={this.state.editable}
-                index={index}
-                isSelected={this.isSelected}
-                key={index}
-                draggable={true}
-                onClearSuggestions={this.handleClearSuggestions}
-                onGetSuggestions={this.handleGetSuggestions}
-                onMove={this.handleMoveTag}
-                onTagMouseOut={this.handleTagMouseOut}
-                onTagMouseOver={this.handleTagMouseOver}
-                onTagRemove={this.handleTagRemove}
-                onTagSave={TagNavHelpers.onTagCreate}
-                onTagSelect={this.onTagSelect}
-                selectable={true}
-                onTagUpdate={this.handleTagUpdate}
-                suggestions={this.state.suggestions}
-                tag={tag}
-              />
-              <div className={`dropdown-container data-tag=${tag._id}`}>
-                <TagTree
-                  editable={this.state.editable === true}
-                  onTagRemove={this.handleTagRemove}
-                  parentTag={tag}
-                  subTagGroups={TagHelpers.subTags(tag)}
-                  {...TagNavHelpers}
-                />
-              </div>
-            </div>
-          </DragDropProvider>
-        );
-      });
-
-      // Render an blank tag for creating new tags
-      if (this.state.editable) {
-        tags.push(
-          <DragDropProvider key={"newTag"}>
-            <div className="navbar-item">
-              <TagItem
-                blank={true}
-                key="newTagForm"
-                inputPlaceholder="Add Tag"
-                i18nKeyInputPlaceholder="tags.addTag"
-                onClearSuggestions={this.handleClearSuggestions}
-                onGetSuggestions={this.handleGetSuggestions}
-                onTagSave={this.handleNewTagUpdate}
-                tag={this.state.newTag}
-                suggestions={this.state.suggestions}
-              />
-            </div>
-          </DragDropProvider>
-        );
-      }
-
-      return tags;
+  get tags() {
+    if (this.props.editable) {
+      return this.state.tagIds.map((tagId) => this.state.tagsByKey[tagId]);
     }
 
-    return null;
+    return this.props.tagsAsArray;
   }
 
   render() {
@@ -408,9 +292,27 @@ class TagNav extends Component {
           <p>Header</p>
         </div>
         <div className="navbar-items">
-          {this.renderTags()}
-          {this.renderEditButton()}
+          <DragDropProvider>
+            <TagList
+              newTag={this.state.newTag}
+              onClick={this.handleEditButtonClick}
+              onClearSuggestions={this.handleClearSuggestions}
+              onGetSuggestions={this.handleGetSuggestions}
+              onMoveTag={this.handleMoveTag}
+              editable={this.state.editable}
+              onNewTagSave={this.handleNewTagSave}
+              onNewTagUpdate={this.handleNewTagUpdate}
+              onTagRemove={this.handleTagRemove}
+              onTagSave={this.handleTagSave}
+              onTagUpdate={this.handleTagUpdate}
+              suggestions={this.state.suggestions}
+              tags={this.tags}
+              tooltip="Unpublished changes"
+              {...this.props}
+            />
+          </DragDropProvider>
         </div>
+        {this.renderEditButton()}
       </div>
     );
   }
@@ -421,8 +323,31 @@ TagNav.propTypes = {
   editable: PropTypes.bool,
   hasEditRights: PropTypes.bool,
   tagIds: PropTypes.arrayOf(PropTypes.string),
-  tags: PropTypes.arrayOf(PropTypes.object),
+  tagsAsArray: PropTypes.arrayOf(PropTypes.object),
   tagsByKey: PropTypes.object
 };
 
 export default TagNav;
+
+// TODO: should be shared
+function updateSuggestions(term, { excludeTags }) {
+  const slug = Reaction.getSlug(term);
+
+  const selector = {
+    slug: new RegExp(slug, "i")
+  };
+
+  if (Array.isArray(excludeTags)) {
+    selector._id = {
+      $nin: excludeTags
+    };
+  }
+
+  const tags = Tags.find(selector).map((tag) => {
+    return {
+      label: tag.name
+    };
+  });
+
+  return tags;
+}
