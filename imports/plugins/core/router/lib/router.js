@@ -141,12 +141,18 @@ Router.pathFor = (path, options = {}) => {
 
 
 Router.go = (path, params, query) => {
-  const actualPath = Router.pathFor(path, {
-    hash: {
-      ...params,
-      query
-    }
-  });
+  let actualPath;
+
+  if (typeof path === "string" && path.startsWith("/")) {
+    actualPath = path;
+  } else {
+    actualPath = Router.pathFor(path, {
+      hash: {
+        ...params,
+        query
+      }
+    });
+  }
 
   if (window) {
     history.push(actualPath);
