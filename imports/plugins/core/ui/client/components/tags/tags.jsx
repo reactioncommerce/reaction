@@ -2,6 +2,8 @@ import React, { Component, PropTypes } from "react";
 import { PropTypes as ReactionPropTypes } from "/lib/api";
 import { TagItem } from "./";
 import classnames from "classnames";
+import TagTree from "/imports/plugins/core/ui-tagnav/client/components/tagTree";
+import { TagHelpers } from "/imports/plugins/core/ui-tagnav/client/helpers";
 
 class Tags extends Component {
   displayName = "Tag List (Tags)";
@@ -103,6 +105,16 @@ class Tags extends Component {
               suggestions={this.props.suggestions}
               tag={tag}
             />
+            {this.props.isTagNav &&
+              <div className="dropdown-container">
+                <TagTree
+                  editable={this.props.editable === true}
+                  onTagRemove={this.handleTagRemove}
+                  parentTag={tag}
+                  subTagGroups={TagHelpers.subTags(tag)}
+                />
+              </div>
+            }
           </div>
         );
       });

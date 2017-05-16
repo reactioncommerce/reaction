@@ -108,6 +108,7 @@ class TagNav extends Component {
   }
 
   onWindowResize = () => {
+    console.log('resizing...');
     if (window.matchMedia("(max-width: 991px)").matches) {
       this.setState({
         [NavbarStates.Orientation]: NavbarOrientation.Vertical,
@@ -180,11 +181,13 @@ class TagNav extends Component {
   }
 
   attachBodyListener = () => {
+    console.log('attachBodyListener');
     document.body.addEventListener("mouseover", this.closeDropdown);
     this.setState({ attachedBodyListener: true });
   }
 
   detachhBodyListener = () => {
+    console.log('detachhBodyListener');
     document.body.removeEventListener("mouseover", this.closeDropdown);
     this.setState({ attachedBodyListener: false });
   }
@@ -240,6 +243,7 @@ class TagNav extends Component {
   }
 
   handleTagMouseOver = (event, tag) => {
+    console.log('handleTagMouseOver');
     const tagId = tag._id;
     const tags = this.props.tagsAsArray;
 
@@ -335,6 +339,8 @@ class TagNav extends Component {
               editable={this.state.editable}
               onNewTagSave={this.handleNewTagSave}
               onNewTagUpdate={this.handleNewTagUpdate}
+              onTagMouseOut={this.handleTagMouseOut}
+              onTagMouseOver={this.handleTagMouseOver}
               onTagRemove={this.handleTagRemove}
               onTagSave={this.handleTagSave}
               onTagUpdate={this.handleTagUpdate}

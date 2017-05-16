@@ -137,7 +137,7 @@ class TagTree extends Component {
         </div>
         <div className="content">
           {this.renderSubTagGroups(this.props.subTagGroups)}
-          { this.props.editable &&
+          {this.props.editable &&
             <div className="rui grouptag create">
               <div className="header">
                 <TagItem
