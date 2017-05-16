@@ -351,6 +351,7 @@ class TagNav extends Component {
               hasDropdownClassName={this.hasDropdownClassName}
               navbarSelectedClassName={this.navbarSelectedClassName}
               {...this.props}
+              {...TagNavHelpers}
             />
           </DragDropProvider>
           {this.renderEditButton()}

@@ -77,6 +77,7 @@ class Tags extends Component {
   }
 
   renderTags() {
+    console.log({ all: this.props });
     let baseTagNavClass = "";
     if (this.props.isTagNav) {
       baseTagNavClass = "navbar-item";
@@ -102,6 +103,7 @@ class Tags extends Component {
               onTagRemove={this.handleTagRemove}
               onTagSave={this.handleTagSave}
               onTagUpdate={this.handleTagUpdate}
+              selectable={this.props.hasSubTags(tag._id, this.props.tags)}
               suggestions={this.props.suggestions}
               tag={tag}
             />
