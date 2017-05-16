@@ -143,8 +143,8 @@ class Tag extends Component {
   };
 
   handleInputChange = (event, { newValue }) => {
-    console.log('handleInputChange in tag.jsx', { tag: this.props.tag, newValue });
     if (this.props.onTagUpdate) {
+      console.log('handleInputChange in tag.jsx', { tag: this.props.tag, newValue });
       const updatedTag = Object.assign({}, { ...this.props.tag }, {
         name: newValue
       });

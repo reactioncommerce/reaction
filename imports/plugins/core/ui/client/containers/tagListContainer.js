@@ -70,6 +70,7 @@ class TagListContainer extends Component {
   }
 
   canSaveTag(tag) {
+    console.log('canSaveTag in TagListContainer');
     // Blank tags cannot be saved
     if (typeof tag.name === "string" && tag.name.trim().length === 0) {
       return false;
@@ -117,6 +118,7 @@ class TagListContainer extends Component {
   }
 
   handleTagSave = (tag) => {
+    console.log('handleTagSave in TagListContainer');
     if (this.productId && this.canSaveTag(tag)) {
       Meteor.call("products/updateProductTags", this.productId, tag.name, tag._id, (error) => {
         if (error) {
@@ -143,6 +145,7 @@ class TagListContainer extends Component {
   }
 
   handleTagUpdate = (tag) => {
+    console.log({ tag });
     const newState = update(this.state, {
       tagsByKey: {
         [tag._id]: {

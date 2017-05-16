@@ -47,6 +47,40 @@ const NavbarAnchor = {
   None: "inline"
 };
 
+const TagNavHelpers = {
+  onTagCreate(tagName, parentTag) {
+    TagHelpers.createTag(tagName, undefined, parentTag);
+  },
+  onTagRemove(tag, parentTag) {
+    TagHelpers.removeTag(tag, parentTag);
+  },
+  onTagSort(tagIds, parentTag) {
+    TagHelpers.sortTags(tagIds, parentTag);
+  },
+  onTagDragAdd(movedTagId, toListId, toIndex, ofList) {
+    TagHelpers.moveTagToNewParent(movedTagId, toListId, toIndex, ofList);
+  },
+  onTagUpdate(tagId, tagName) {
+    TagHelpers.updateTag(tagId, tagName);
+  },
+  isMobile() {
+    return window.matchMedia("(max-width: 991px)").matches;
+  },
+  tagById(tagId, tags) {
+    return _.find(tags, (tag) => tag._id === tagId);
+  },
+  hasSubTags(tagId, tags) {
+    const foundTag = this.tagById(tagId, tags);
+
+    if (foundTag) {
+      if (_.isArray(foundTag.relatedTagIds) && foundTag.relatedTagIds.length) {
+        return true;
+      }
+    }
+    return false;
+  }
+};
+
 class TagNav extends Component {
   constructor(props) {
     super(props);
@@ -58,7 +92,6 @@ class TagNav extends Component {
       tagsByKey: props.tagsByKey || {},
       selectedTag: null,
       suggestions: [],
-      tags: props.tags,
       [NavbarStates.Visible]: false,
       [NavbarStates.Visibile]: NavbarVisibility.Hidden,
       newTag: {
@@ -107,16 +140,14 @@ class TagNav extends Component {
     });
   }
 
-  onTagSave = (event, tag) => { // on enter key press
+  onTagSave = (event, tag) => {
     TagNavHelpers.onTagCreate(tag.name);
   }
 
   handleTagRemove = () => {
   }
 
-  handleTagUpdate = (event, tag) => {
-    console.log({ state: this.state });
-
+  handleTagUpdate = (tag) => {
     const newState = update(this.state, {
       tagsByKey: {
         [tag._id]: {
@@ -125,11 +156,11 @@ class TagNav extends Component {
       }
     });
 
-    console.log({ newState });
     this.setState(newState);
   }
 
   handleMoveTag = () => {
+    console.log('handleMoveTag');
   }
 
   handleGetSuggestions = (suggestionUpdateRequest) => {
@@ -194,7 +225,6 @@ class TagNav extends Component {
   }
 
   onTagSelect = (selectedTag) => {
-    console.log('selectedTag');
     if (JSON.stringify(selectedTag) === JSON.stringify(this.state.selectedTag)) {
       this.setState({ selectedTag: null });
     } else {
@@ -212,7 +242,7 @@ class TagNav extends Component {
 
   handleTagMouseOver = (event, tag) => {
     const tagId = tag._id;
-    const tags = this.props.tags;
+    const tags = this.props.tagsAsArray;
 
     if (TagNavHelpers.isMobile()) {
       return;
@@ -244,6 +274,11 @@ class TagNav extends Component {
       return "has-dropdown";
     }
     return null;
+  }
+
+  handleTagSave = (tag) => {
+    console.log('handleTagSave in TagNavContainer');
+    TagNavHelpers.onTagUpdate(tag._id, tag.name);
   }
 
   navbarSelectedClassName = (tag) => {
@@ -278,10 +313,12 @@ class TagNav extends Component {
   }
 
   get tags() {
-    if (this.props.editable) {
+    if (this.state.editable) {
+      console.log('getting tags editable mode')
       return this.state.tagIds.map((tagId) => this.state.tagsByKey[tagId]);
     }
 
+    console.log('getting tags normal mode')
     return this.props.tagsAsArray;
   }
 
@@ -295,7 +332,6 @@ class TagNav extends Component {
           <DragDropProvider>
             <TagList
               newTag={this.state.newTag}
-              onClick={this.handleEditButtonClick}
               onClearSuggestions={this.handleClearSuggestions}
               onGetSuggestions={this.handleGetSuggestions}
               onMoveTag={this.handleMoveTag}
@@ -311,8 +347,8 @@ class TagNav extends Component {
               {...this.props}
             />
           </DragDropProvider>
+          {this.renderEditButton()}
         </div>
-        {this.renderEditButton()}
       </div>
     );
   }
