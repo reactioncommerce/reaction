@@ -327,6 +327,7 @@ class TagNav extends Component {
         <div className="navbar-items">
           <DragDropProvider>
             <TagList
+              isTagNav={true}
               newTag={this.state.newTag}
               onClearSuggestions={this.handleClearSuggestions}
               onGetSuggestions={this.handleGetSuggestions}

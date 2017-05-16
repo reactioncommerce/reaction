@@ -75,9 +75,13 @@ class Tags extends Component {
   }
 
   renderTags() {
+    let baseTagNavClass = "";
+    if (this.props.isTagNav) {
+      baseTagNavClass = "navbar-item";
+    }
     if (_.isArray(this.props.tags)) {
       const tags = this.props.tags.map((tag, index) => {
-        const classAttr = `navbar-item ${this.navbarSelectedClassName(tag)} ${this.hasDropdownClassName(tag)}`;
+        const classAttr = `${baseTagNavClass} ${this.navbarSelectedClassName(tag)} ${this.hasDropdownClassName(tag)}`;
 
         return (
           <div className={classAttr} key={index}>
@@ -106,18 +110,20 @@ class Tags extends Component {
       // Render an blank tag for creating new tags
       if (this.props.editable && this.props.enableNewTagForm) {
         tags.push(
-          <TagItem
-            {...this.props.tagProps}
-            blank={true}
-            key="newTagForm"
-            onClearSuggestions={this.props.onClearSuggestions}
-            onGetSuggestions={this.props.onGetSuggestions}
-            onTagInputBlur={this.handleNewTagSave}
-            onTagSave={this.handleNewTagSave}
-            onTagUpdate={this.handleNewTagUpdate}
-            suggestions={this.props.suggestions}
-            tag={this.props.newTag}
-          />
+          <div className={baseTagNavClass} key="newTagForm">
+            <TagItem
+              {...this.props.tagProps}
+              blank={true}
+              key="newTagForm"
+              onClearSuggestions={this.props.onClearSuggestions}
+              onGetSuggestions={this.props.onGetSuggestions}
+              onTagInputBlur={this.handleNewTagSave}
+              onTagSave={this.handleNewTagSave}
+              onTagUpdate={this.handleNewTagUpdate}
+              suggestions={this.props.suggestions}
+              tag={this.props.newTag}
+            />
+          </div>
         );
       }
 
@@ -156,6 +162,7 @@ Tags.propTypes = {
   editable: PropTypes.bool,
   enableNewTagForm: PropTypes.bool,
   hasDropdownClassName: PropTypes.func,
+  isTagNav: PropTypes.bool,
   navbarSelectedClassName: PropTypes.func,
   newTag: PropTypes.object,
   onClearSuggestions: PropTypes.func,
