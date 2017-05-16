@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-// import { Meteor } from "meteor/meteor";
 import { Reaction } from "/client/api";
 import { composeWithTracker } from "/lib/api/compose";
 import * as Collections from "/lib/collections";
@@ -48,7 +47,6 @@ function getUserGravatar(currentUser, size) {
   }
   if (user.emails && user.emails.length === 1) {
     const email = user.emails[0].address;
-    console.log("Gravatar stuff", Gravatar.imageUrl(email, options));
     return Gravatar.imageUrl(email, options);
   }
 }

@@ -3,7 +3,7 @@
     {{#if currentUser}}
     <div class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000">
       {{!--> avatar user=currentUser class="circular-icon" size="small" shape="circle"--}}
-      <img class="circular-icon" src="{{getGravatar currentUser 40}}" alt="avatar" />
+      <img class="circular-icon" src="{{getGravatar currentUser 40}}" alt="avatar"/>
       <span id="logged-in-display-name"> {{displayName}}<b class="caret"></b></span>
     </div>
     <div class="dropdown-menu" role="menu">
@@ -37,7 +37,6 @@
     <!--administrative shortcut icons -->
     {{#each reactionApps reactionAppsOptions}}
       <li class="dropdown-apps-icon">
-        {{pathFor name}}
         <a href={{pathFor name}} id="dropdown-apps-{{name}}" title="{{label}}">
           <i class="{{icon}}"></i>
           <span class="icon-text">

@@ -12,7 +12,7 @@ class MainDropdown extends Component {
   buttonElement() {
     return (
       <Button>
-        <img className="circular-icon" src={this.props.userImage} alt="" />&nbsp;
+        <img className="circular-icon" src="" />&nbsp;
         <span>{this.props.userName}</span>&nbsp;
         <i className="fa fa-caret-down" />
       </Button>
@@ -39,8 +39,7 @@ class MainDropdown extends Component {
       provides: "userAccountDropdown",
       enabled: true
     };
-    console.log("reactionAppsOptions", Reaction.Apps(this.reactionAppsOptions()));
-    console.log("message", Reaction.Apps(options));
+
     return (
       <div>
         {this.props.currentUser &&
