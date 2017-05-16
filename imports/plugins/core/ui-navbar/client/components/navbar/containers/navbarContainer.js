@@ -40,11 +40,14 @@ function composer(props, onData) {
   const searchIcon = "fa fa-search";
   const searchKind =  "flat";
 
+  const hasProperPermission = Reaction.hasPermission("account/profile");
+
   onData(null, {
     icon: searchIcon,
     kind: searchKind,
     searchEnabled,
-    searchTemplate
+    searchTemplate,
+    hasProperPermission
   });
 }
 

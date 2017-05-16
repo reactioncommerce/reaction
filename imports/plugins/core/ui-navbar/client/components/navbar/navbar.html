@@ -10,9 +10,6 @@
       {{> tagNav tagNavProps}}
     </div>
 
-    {{#if hasPermission 'account/profile'}}
-      <div>{{> React notificationButtonComponent }}</div>
-    {{/if}}
     <div class="languages hidden-xs">{{> i18nChooser}}</div>
       <div class="currencies hiddenxs">{{> currencySelect}}</div>
       <div class="accounts">{{> accounts tpl="loginDropdown"}}</div>

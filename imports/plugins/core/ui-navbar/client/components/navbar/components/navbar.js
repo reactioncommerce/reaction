@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import BrandContainer from "../containers/brandContainer";
 import { FlatButton } from "/imports/plugins/core/ui/client/components";
+import { NotificationContainer } from "/imports/plugins/included/notifications/client/containers";
 
 class NavBar extends Component {
   constructor(props) {
@@ -20,21 +21,31 @@ class NavBar extends Component {
     }
   }
 
+  renderNotificationIcon() {
+    if (this.props.hasProperPermission) {
+      return (
+        <div>
+          <NotificationContainer />
+        </div>
+      );
+    }
+  }
+
   render() {
     return (
       <div>
         <div>
           <BrandContainer />
         </div>
-
         {this.renderSearchButton()}
-
+        {this.renderNotificationIcon()}
       </div>
     );
   }
 }
 
 NavBar.propTypes = {
+  hasProperPermission: PropTypes.bool,
   icon: PropTypes.string,
   isSearchEnabled: PropTypes.func,
   kind: PropTypes.string
