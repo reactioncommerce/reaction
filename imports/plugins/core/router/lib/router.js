@@ -492,7 +492,7 @@ Router.initPackageRoutes = (options) => {
             route.route = `${prefix}${route.route}`;
           }
 
-          // Check permissions before adding the route to the routing table
+          // Add the route to the routing table
           reactRouterRoutes.push(
             <Route
               key={`${pkg.name}-${route.name}-${index++}`}
