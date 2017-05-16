@@ -35,7 +35,6 @@ class MenuItem extends Component {
   }
 
   render() {
-    console.log("classname", this.props.className);
     const baseClassName = classnames({
       "rui": true,
       "menu-item": true,
@@ -46,7 +45,7 @@ class MenuItem extends Component {
     return (
       <a
         className={baseClassName}
-        href="#"
+        href= "#"
         data-event-action={this.props.eventAction}
         onClick={this.handleClick}
         role="button"

@@ -53,12 +53,15 @@ class DropDownMenu extends Component {
             label={this.label}
           />
         }
+        attachment={this.props.attachment}
+        targetAttachment={this.props.targetAttachment}
+        style={this.props.style}
       >
         <Menu
           className={this.props.className}
           value={this.props.value}
           onChange={this.handleMenuItemChange}
-          style={this.props.style}
+          style={this.props.menuStyle}
         >
           {this.props.children}
         </Menu>

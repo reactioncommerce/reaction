@@ -73,8 +73,6 @@ function displayName(displayUser) {
   }
 }
 
-
-
 const composer = (props, onData) => {
   const currentUser = getCurrentUser();
   const userImage = getUserGravatar(currentUser, 40);

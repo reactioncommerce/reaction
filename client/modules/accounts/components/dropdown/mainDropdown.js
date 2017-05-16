@@ -4,6 +4,11 @@ import { Reaction } from "/client/api";
 import { Roles } from "meteor/alanning:roles";
 
 class MainDropdown extends Component {
+  constructor(props) {
+    super(props);
+    this.handleChange = this.handleChange.bind(this);
+  }
+
   buttonElement() {
     return (
       <Button>
@@ -23,6 +28,12 @@ class MainDropdown extends Component {
       audience: roles
     };
   }
+
+  handleChange = (event, value) => {
+    event.preventDefault();
+    return Reaction.Router.go(value);
+  }
+
   render() {
     const options = {
       provides: "userAccountDropdown",
@@ -35,12 +46,15 @@ class MainDropdown extends Component {
         {this.props.currentUser &&
           <DropDownMenu
             buttonElement={this.buttonElement()}
-            style={{
+            attachment="bottom right"
+            targetAttachment="top right"
+            menuStyle={{
               padding: 10,
               minWidth: 220,
               minHeight: 50
             }}
             className="accounts-li-tag"
+            onChange={this.handleChange}
           >
             {
               Reaction.Apps(options).map((option) => (

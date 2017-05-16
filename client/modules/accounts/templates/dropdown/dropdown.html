@@ -37,6 +37,7 @@
     <!--administrative shortcut icons -->
     {{#each reactionApps reactionAppsOptions}}
       <li class="dropdown-apps-icon">
+        {{pathFor name}}
         <a href={{pathFor name}} id="dropdown-apps-{{name}}" title="{{label}}">
           <i class="{{icon}}"></i>
           <span class="icon-text">
