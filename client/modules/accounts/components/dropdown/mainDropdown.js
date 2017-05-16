@@ -1,12 +1,17 @@
-import React, { Component } from "react";
+import React, { Component, PropTypes } from "react";
 import { Button, DropDownMenu, MenuItem } from "/imports/plugins/core/ui/client/components";
 import { Reaction } from "/client/api";
+import { Meteor } from "meteor/meteor";
+import { Tags } from "/lib/collections";
 import { Roles } from "meteor/alanning:roles";
 
 class MainDropdown extends Component {
-  constructor(props) {
-    super(props);
-    this.handleChange = this.handleChange.bind(this);
+  static propTypes = {
+    currentUser: PropTypes.oneOfType(
+      [PropTypes.bool, PropTypes.object]
+    ),
+    userImage: PropTypes.string,
+    userName: PropTypes.string
   }
 
   buttonElement() {
@@ -32,7 +37,40 @@ class MainDropdown extends Component {
   handleChange = (event, value) => {
     event.preventDefault();
 
-    return Reaction.Router.go(value);
+    if (value.label === "Profile") {
+      return Reaction.Router.go(value.name);
+    } else if (value.label === "Add Product") {
+      Reaction.setUserPreferences("reaction-dashboard", "viewAs", "administrator");
+      Meteor.call("products/createProduct", (error, productId) => {
+        if (Meteor.isClient) {
+          let currentTag;
+          let currentTagId;
+
+          if (error) {
+            throw new Meteor.Error("createProduct error", error);
+          } else if (productId) {
+            currentTagId = Session.get("currentTag");
+            currentTag = Tags.findOne(currentTagId);
+            if (currentTag) {
+              Meteor.call("products/updateProductTags", productId, currentTag.name, currentTagId);
+            }
+            // go to new product
+            Reaction.Router.go("product", {
+              handle: productId
+            });
+          }
+        }
+      });
+    } else {
+      return Reaction.showActionView({
+        i18nKeyLabel: value.i18nKeyLabel,
+        label: value.label,
+        template: value.template,
+        provides: "dashboard"
+      });
+    }
+
+    // return Reaction.Router.go(value);
   }
 
   render() {
@@ -70,7 +108,7 @@ class MainDropdown extends Component {
                     fontSize: "inherit",
                     textAlign: "center"
                   }}
-                  value={option.name}
+                  value={option}
                 />
               ))
             }
@@ -88,7 +126,7 @@ class MainDropdown extends Component {
                     fontSize: "inherit",
                     textAlign: "center"
                   }}
-                  value={shortcut.name}
+                  value={shortcut}
                 />
             ))}
 
