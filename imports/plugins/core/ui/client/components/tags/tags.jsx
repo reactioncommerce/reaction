@@ -62,28 +62,44 @@ class Tags extends Component {
     }
   };
 
+  hasDropdownClassName = (tag) => {
+    if (this.props.hasDropdownClassName) {
+      return this.props.hasDropdownClassName(tag);
+    }
+  }
+
+  navbarSelectedClassName = (tag) => {
+    if (this.props.navbarSelectedClassName) {
+      return this.props.navbarSelectedClassName(tag);
+    }
+  }
+
   renderTags() {
     if (_.isArray(this.props.tags)) {
       const tags = this.props.tags.map((tag, index) => {
+        const classAttr = `navbar-item ${this.navbarSelectedClassName(tag)} ${this.hasDropdownClassName(tag)}`;
+
         return (
-          <TagItem
-            {...this.props.tagProps}
-            data-id={tag._id}
-            editable={this.props.editable}
-            index={index}
-            key={index}
-            onClearSuggestions={this.props.onClearSuggestions}
-            onGetSuggestions={this.props.onGetSuggestions}
-            onMove={this.props.onMoveTag}
-            onTagInputBlur={this.handleTagSave}
-            onTagMouseOut={this.handleTagMouseOut}
-            onTagMouseOver={this.handleTagMouseOver}
-            onTagRemove={this.handleTagRemove}
-            onTagSave={this.handleTagSave}
-            onTagUpdate={this.handleTagUpdate}
-            suggestions={this.props.suggestions}
-            tag={tag}
-          />
+          <div className={classAttr} key={index}>
+            <TagItem
+              {...this.props.tagProps}
+              data-id={tag._id}
+              editable={this.props.editable}
+              index={index}
+              key={index}
+              onClearSuggestions={this.props.onClearSuggestions}
+              onGetSuggestions={this.props.onGetSuggestions}
+              onMove={this.props.onMoveTag}
+              onTagInputBlur={this.handleTagSave}
+              onTagMouseOut={this.handleTagMouseOut}
+              onTagMouseOver={this.handleTagMouseOver}
+              onTagRemove={this.handleTagRemove}
+              onTagSave={this.handleTagSave}
+              onTagUpdate={this.handleTagUpdate}
+              suggestions={this.props.suggestions}
+              tag={tag}
+            />
+          </div>
         );
       });
 
@@ -139,6 +155,8 @@ Tags.defaultProps = {
 Tags.propTypes = {
   editable: PropTypes.bool,
   enableNewTagForm: PropTypes.bool,
+  hasDropdownClassName: PropTypes.func,
+  navbarSelectedClassName: PropTypes.func,
   newTag: PropTypes.object,
   onClearSuggestions: PropTypes.func,
   onGetSuggestions: PropTypes.func,

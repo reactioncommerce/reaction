@@ -341,6 +341,8 @@ class TagNav extends Component {
               tags={this.tags}
               enableNewTagForm={true}
               tooltip="Unpublished changes"
+              hasDropdownClassName={this.hasDropdownClassName}
+              navbarSelectedClassName={this.navbarSelectedClassName}
               {...this.props}
             />
           </DragDropProvider>
