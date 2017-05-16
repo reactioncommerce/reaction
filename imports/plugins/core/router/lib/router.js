@@ -371,6 +371,7 @@ export function ReactionLayout(options = {}) {
  */
 Router.initPackageRoutes = (options) => {
   Router.Reaction = options.reactionContext;
+  Router.routes = [];
 
   const pkgs = Packages.find().fetch();
   const prefix = Router.Reaction.getShopPrefix();
@@ -509,6 +510,7 @@ Router.initPackageRoutes = (options) => {
 
     Router._initialized = true;
     Router.reactComponents = reactRouterRoutes;
+    Router._routes = Router.routes;
 
     routerReadyDependency.changed();
   }
