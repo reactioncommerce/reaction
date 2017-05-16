@@ -34,8 +34,11 @@ class NotificationDropdown extends Component {
       });
       Reaction.showActionView(actionViewData);
     } else {
-      return Reaction.Router.go(notify.url);
+      Reaction.Router.go(notify.url);
     }
+
+    const { markOneAsRead } = this.props;
+    return markOneAsRead(notify._id);
   }
 
   renderDropdownHead() {
