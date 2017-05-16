@@ -2,10 +2,20 @@ import React, { Component, PropTypes } from "react";
 import BrandContainer from "../containers/brandContainer";
 import { FlatButton } from "/imports/plugins/core/ui/client/components";
 import { NotificationContainer } from "/imports/plugins/included/notifications/client/containers";
+import CartIconContainer from "/imports/plugins/core/checkout/client/container/cartIconContainer.js";
+import CartPanel from "/imports/plugins/core/checkout/client/templates/cartPanel/container/cartPanelContainer.js";
 
 class NavBar extends Component {
   constructor(props) {
     super(props);
+  }
+
+  renderBrandContainer() {
+    return (
+      <div>
+        <BrandContainer />
+      </div>
+    );
   }
 
   renderSearchButton() {
@@ -31,14 +41,26 @@ class NavBar extends Component {
     }
   }
 
+  renderCartContainerAndPanel() {
+    return (
+      <div className="cart-container">
+        <div className="cart">
+          <CartIconContainer />
+        </div>
+        <div className="cart-alert">
+          <CartPanel />
+        </div>
+      </div>
+    );
+  }
+
   render() {
     return (
       <div>
-        <div>
-          <BrandContainer />
-        </div>
+        {this.renderBrandContainer()}
         {this.renderSearchButton()}
         {this.renderNotificationIcon()}
+        {this.renderCartContainerAndPanel()}
       </div>
     );
   }
