@@ -1,18 +1,15 @@
-
 <template name="CoreNavigationBar">
   <div class="rui navbar">
+    {{>React navbar}}
+  </div>
+
+  <div class="rui navbar">
     <div class="showmenu">{{> button icon="bars" onClick=onMenuButtonClick}}</div>
-    <div>
-      {{> React brandComponent}}
-    </div>
     <div class="menu">
 
       {{> tagNav tagNavProps}}
     </div>
 
-    {{#if isSearchEnabled}}
-      <div class="search">{{> React IconButtonComponent}}</div>
-    {{/if}}
     {{#if hasPermission 'account/profile'}}
       <div>{{> React notificationButtonComponent }}</div>
     {{/if}}

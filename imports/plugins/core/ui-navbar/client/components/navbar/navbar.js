@@ -1,4 +1,3 @@
-import { FlatButton } from "/imports/plugins/core/ui/client/components";
 import { NotificationContainer } from "/imports/plugins/included/notifications/client/containers";
 import { Reaction } from "/client/api";
 import { Tags } from "/lib/collections";
@@ -67,10 +66,6 @@ Template.CoreNavigationBar.helpers({
       component: BrandContainer
     };
   },
-  isSearchEnabled() {
-    const instance = Template.instance();
-    return instance.state.get("searchEnabled");
-  },
 
   searchTemplate() {
     const instance = Template.instance();
@@ -79,13 +74,6 @@ Template.CoreNavigationBar.helpers({
     }
   },
 
-  IconButtonComponent() {
-    return {
-      component: FlatButton,
-      icon: "fa fa-search",
-      kind: "flat"
-    };
-  },
   notificationButtonComponent() {
     return {
       component: NotificationContainer
