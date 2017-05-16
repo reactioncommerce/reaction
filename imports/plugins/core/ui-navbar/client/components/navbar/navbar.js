@@ -6,6 +6,7 @@ import CartPanel from "../../../../checkout/client/templates/cartPanel/container
 import BrandContainer from "./containers/brandContainer";
 import CartIconContainer from "/imports/plugins/core/checkout/client/container/cartIconContainer.js";
 import MainDropdown from "/client/modules/accounts/containers/dropdown/mainDropdownContainer.js";
+import NavBarContainer from "./containers/navbarContainer";
 
 Template.CoreNavigationBar.onCreated(function () {
   this.state = new ReactiveDict();
@@ -54,6 +55,11 @@ Template.CoreNavigationBar.helpers({
   dropdown() {
     return {
       component: MainDropdown
+    };
+  },
+  navbar() {
+    return {
+      component: NavBarContainer
     };
   },
   brandComponent() {
