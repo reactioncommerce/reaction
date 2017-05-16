@@ -25,7 +25,7 @@ class LoginButtons extends Component {
               bezelStyle="solid"
               type="button"
               data-provider={`${service.name}`}
-              onDoubleClick={() => this.props.onSocialClick(service.name)}
+              onClick={() => this.props.onSocialClick(service.name)}
             >
               <i className={`fa fa-${service.name}`} />
 

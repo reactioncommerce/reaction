@@ -12,16 +12,6 @@ Template.loginDropdown.events({
    * @param  {Template} template - Blaze Template
    * @return {void}
    */
-  "click .dropdown-menu": (event) => {
-    return event.stopPropagation();
-  },
-
-  /**
-   * Submit sign up form
-   * @param  {Event} event - jQuery Event
-   * @param  {Template} template - Blaze Template
-   * @return {void}
-   */
   "click #logout": (event, template) => {
     event.preventDefault();
     template.$(".dropdown-toggle").dropdown("toggle");

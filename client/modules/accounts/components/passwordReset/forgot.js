@@ -117,7 +117,7 @@ class Forgot extends Component {
               data-i18n="accountsUI.signIn"
               tabIndex="3"
               data-event-category="accounts"
-              onDoubleClick={this.props.onSignInClick}
+              onClick={this.props.onSignInClick}
             >
             Sign In
             </a>

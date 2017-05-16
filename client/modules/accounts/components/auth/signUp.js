@@ -138,7 +138,7 @@ class SignUp extends Component {
               data-i18n="accountsUI.signIn"
               tabIndex="4"
               data-event-category="accounts"
-              onDoubleClick={this.props.onSignInClick}
+              onClick={this.props.onSignInClick}
             >
               Sign In
             </a>

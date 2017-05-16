@@ -151,7 +151,7 @@ class SignIn extends Component {
               href="#"
               data-i18n="accountsUI.forgotPassword"
               tabIndex="4"
-              onDoubleClick={this.props.onForgotPasswordClick}
+              onClick={this.props.onForgotPasswordClick}
             >
               Reset Password
             </a>
@@ -159,7 +159,7 @@ class SignIn extends Component {
               href="#"
               data-i18n="accountsUI.signUp"
               tabIndex="5"
-              onDoubleClick={this.props.onSignUpClick}
+              onClick={this.props.onSignUpClick}
             >
               Register
             </a>
