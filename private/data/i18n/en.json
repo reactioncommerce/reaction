@@ -127,7 +127,6 @@
         "import": "Import",
         "localization": "Localization",
         "options": "Options",
-        "availableOptions": "Available Options",
         "paymentMethods": "Payment Methods",
         "externalServices": "External Services",
         "shopGeneralSettingsSaved": "Shop general settings saved.",
