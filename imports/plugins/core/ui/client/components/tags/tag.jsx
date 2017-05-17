@@ -216,7 +216,7 @@ class Tag extends Component {
               <Handle connectDragSource={this.props.connectDragSource} />
               {this.renderAutosuggestInput()}
               <Button icon="times-circle" onClick={this.handleTagRemove} status="danger" />
-              {this.props.selectable &&
+              {this.props.isTagNav &&
                 <Button icon="chevron-down" onClick={this.handleTagSelect} status="default" />
               }
             </form>
@@ -310,6 +310,7 @@ Tag.propTypes = {
   i18nKeyInputPlaceholder: PropTypes.string,
   index: PropTypes.number,
   inputPlaceholder: PropTypes.string,
+  isTagNav: PropTypes.bool,
   onClearSuggestions: PropTypes.func,
   onGetSuggestions: PropTypes.func,
   onTagInputBlur: PropTypes.func,
@@ -320,7 +321,6 @@ Tag.propTypes = {
   onTagSelect: PropTypes.func,
   onTagUpdate: PropTypes.func,
   parentTag: PropTypes.object,
-  selectable: PropTypes.bool,
   suggestions: PropTypes.arrayOf(PropTypes.object),
   tag: PropTypes.object
 };

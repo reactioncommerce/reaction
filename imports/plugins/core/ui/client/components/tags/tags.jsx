@@ -108,7 +108,6 @@ class Tags extends Component {
               onTagRemove={this.handleTagRemove}
               onTagSave={this.handleTagSave}
               onTagUpdate={this.handleTagUpdate}
-              selectable={this.hasSubTags(tag._id, this.props.tags)}
               suggestions={this.props.suggestions}
               tag={tag}
             />
@@ -153,6 +152,14 @@ class Tags extends Component {
   }
 
   render() {
+    if (this.props.isTagNav) {
+      return (
+        <div className="navbar-items">
+          {this.renderTags()}
+        </div>
+      );
+    }
+
     const classes = classnames({
       rui: true,
       tags: true,

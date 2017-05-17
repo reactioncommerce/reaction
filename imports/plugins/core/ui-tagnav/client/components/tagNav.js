@@ -82,13 +82,15 @@ const TagNavHelpers = {
   }
 };
 
+let editable = false;
+
 class TagNav extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       attachedBodyListener: false,
-      editable: false,
+      editable: editable,
       tagIds: props.tagIds || [],
       tagsByKey: props.tagsByKey || {},
       selectedTag: null,
@@ -127,10 +129,11 @@ class TagNav extends Component {
   }
 
   handleNewTagSave = (tag) => {
+    editable = true; // keep editing state after re-render
     TagNavHelpers.onTagCreate(tag.name);
   }
 
-  handleNewTagUpdate = (tag) => {
+  handleNewTagUpdate = (tag) => { // updates the current tag state being edited
     this.setState({
       newTag: tag
     });
@@ -324,35 +327,32 @@ class TagNav extends Component {
         <div className="navbar-header">
           <p>Header</p>
         </div>
-        <div className="navbar-items">
-          <DragDropProvider>
-            <TagList
-              {...TagNavHelpers}
-              isTagNav={true}
-              newTag={this.state.newTag}
-              onClearSuggestions={this.handleClearSuggestions}
-              onGetSuggestions={this.handleGetSuggestions}
-              onMoveTag={this.handleMoveTag}
-              editable={this.state.editable}
-              onNewTagSave={this.handleNewTagSave}
-              onNewTagUpdate={this.handleNewTagUpdate}
-              onTagMouseOut={this.handleTagMouseOut}
-              onTagMouseOver={this.handleTagMouseOver}
-              onTagRemove={this.handleTagRemove}
-              onTagSave={this.handleTagSave}
-              onTagUpdate={this.handleTagUpdate}
-              onTagSelect={this.onTagSelect}
-              suggestions={this.state.suggestions}
-              tags={this.tags}
-              enableNewTagForm={true}
-              tooltip="Unpublished changes"
-              hasDropdownClassName={this.hasDropdownClassName}
-              navbarSelectedClassName={this.navbarSelectedClassName}
-              {...this.props}
-            />
-          </DragDropProvider>
-          {this.renderEditButton()}
-        </div>
+        <DragDropProvider>
+          <TagList
+            {...TagNavHelpers}
+            isTagNav={true}
+            newTag={this.state.newTag}
+            onClearSuggestions={this.handleClearSuggestions}
+            onGetSuggestions={this.handleGetSuggestions}
+            onMoveTag={this.handleMoveTag}
+            editable={this.state.editable}
+            onNewTagSave={this.handleNewTagSave}
+            onNewTagUpdate={this.handleNewTagUpdate}
+            onTagMouseOut={this.handleTagMouseOut}
+            onTagMouseOver={this.handleTagMouseOver}
+            onTagRemove={this.handleTagRemove}
+            onTagSave={this.handleTagSave}
+            onTagUpdate={this.handleTagUpdate}
+            onTagSelect={this.onTagSelect}
+            suggestions={this.state.suggestions}
+            tags={this.tags}
+            enableNewTagForm={true}
+            hasDropdownClassName={this.hasDropdownClassName}
+            navbarSelectedClassName={this.navbarSelectedClassName}
+            {...this.props}
+          />
+        </DragDropProvider>
+        {this.renderEditButton()}
       </div>
     );
   }
