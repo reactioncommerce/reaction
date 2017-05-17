@@ -1,7 +1,7 @@
-import { Meteor } from "meteor/meteor";
 import _ from "lodash";
 import moment from "moment";
 import path from "path";
+import { Meteor } from "meteor/meteor";
 import { Accounts as MeteorAccounts } from "meteor/accounts-base";
 import { Accounts, Cart, Media, Shops, Packages } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
@@ -48,7 +48,7 @@ export function verifyAccount(email) {
  * @summary Returns the name of the geocoder method to use
  * @returns {string} Name of the Geocoder method to use
  */
-export function getValidator() {
+function getValidator() {
   const shopId = Reaction.getShopId();
   const geoCoders = Packages.find({
     "registry.provides": "addressValidation",
@@ -94,7 +94,7 @@ export function getValidator() {
  * @param {Object} validationAddress - address provided by validator
  * @returns {Array} Array of errors (or empty)
  */
-export function compareAddress(address, validationAddress) {
+function compareAddress(address, validationAddress) {
   const errors = [];
   // first check, if a field is missing (and was present in original address), that means it didn't validate
   // TODO rewrite with just a loop over field names but KISS for now
@@ -181,7 +181,7 @@ export function validateAddress(address) {
 /*
    * check if current user has password
    */
-export function currentUserHasPassword() {
+function currentUserHasPassword() {
   const user = Meteor.users.findOne(Meteor.userId());
   if (user.services.password) {
     return true;
@@ -618,7 +618,8 @@ export function sendWelcomeEmail(shopId, userId) {
   }
 
   // assign verification url
-  dataForEmail.verificationUrl = `${Meteor.absoluteUrl()}${Reaction.getShopPrefix()}/account/profile/verify?email=${user.emails[0].address}`;
+  const prefix = Reaction.getShopPrefix().replace(/\//, "");
+  dataForEmail.verificationUrl = `${Meteor.absoluteUrl()}${prefix}/account/profile/verify?email=${user.emails[0].address}`;
   const userEmail = user.emails[0].address;
 
   let shopEmail;

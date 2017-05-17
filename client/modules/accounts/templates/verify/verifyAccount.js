@@ -7,7 +7,10 @@ Template.verifyAccount.onCreated(() => {
   template.verified = ReactiveVar(false);
   const email = Reaction.Router.getQueryParam("email");
   Meteor.call("accounts/verifyAccount", email, (err, result) => {
-    template.verified.set(result);
+    if (err) {
+      throw new Meteor.Error("Account Verification error", error);
+    }
+    return template.verified.set(result);
   });
 });
 
