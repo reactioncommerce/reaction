@@ -1,8 +1,7 @@
-import { Shops } from "/lib/collections";
-import { Reaction } from "/server/api";
-
 import { sinon } from "meteor/practicalmeteor:sinon";
 import { expect } from "meteor/practicalmeteor:chai";
+import { Shops } from "/lib/collections";
+import { Reaction } from "/server/api";
 
 describe("Server/API/Core", function () {
   let sandbox;

@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import moment from "moment";
 import _ from "lodash";
+import { Meteor } from "meteor/meteor";
 import { composeWithTracker } from "/lib/api/compose";
 import { Orders } from "/lib/collections";
 import { Card, CardHeader, CardBody, CardGroup } from "/imports/plugins/core/ui/client/components";
