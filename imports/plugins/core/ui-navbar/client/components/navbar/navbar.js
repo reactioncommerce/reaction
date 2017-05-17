@@ -3,7 +3,8 @@ import { NotificationContainer } from "/imports/plugins/included/notifications/c
 import { Reaction } from "/client/api";
 import { Tags } from "/lib/collections";
 import CartPanel from "../../../../checkout/client/templates/cartPanel/container/cartPanelContainer";
-
+import CurrencyContainer from "/client/modules/i18n/templates/currency/containers/currencyContainer";
+import LanguageDropdownContainer from "/client/modules/i18n/templates/header/containers/i18nContainer";
 
 Template.CoreNavigationBar.onCreated(function () {
   this.state = new ReactiveDict();
@@ -44,6 +45,18 @@ Template.CoreNavigationBar.events({
 });
 
 Template.CoreNavigationBar.helpers({
+  currencyDropdownComponent() {
+    return {
+      component: CurrencyContainer
+    };
+  },
+
+  languageDropdownComponent() {
+    return {
+      component: LanguageDropdownContainer
+    };
+  },
+
   isSearchEnabled() {
     const instance = Template.instance();
     return instance.state.get("searchEnabled");
