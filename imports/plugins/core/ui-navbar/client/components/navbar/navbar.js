@@ -1,10 +1,5 @@
-import { FlatButton } from "/imports/plugins/core/ui/client/components";
-import { NotificationContainer } from "/imports/plugins/included/notifications/client/containers";
 import { Reaction } from "/client/api";
 import { Tags } from "/lib/collections";
-import CartPanel from "../../../../checkout/client/templates/cartPanel/container/cartPanelContainer";
-import BrandContainer from "./containers/brandContainer";
-import CartIconContainer from "/imports/plugins/core/checkout/client/container/cartIconContainer.js";
 import MainDropdown from "/client/modules/accounts/containers/dropdown/mainDropdownContainer.js";
 import NavBarContainer from "./containers/navbarContainer";
 
@@ -39,19 +34,10 @@ Template.CoreNavigationBar.events({
     }, $("html").get(0));
     $("body").css("overflow", "hidden");
     $("#search-input").focus();
-  },
-  "click .notification-icon": function () {
-    $("body").css("overflow", "hidden");
-    $("#notify-dropdown").focus();
   }
 });
 
 Template.CoreNavigationBar.helpers({
-  cartIcon() {
-    return {
-      component: CartIconContainer
-    };
-  },
   dropdown() {
     return {
       component: MainDropdown
@@ -62,15 +48,6 @@ Template.CoreNavigationBar.helpers({
       component: NavBarContainer
     };
   },
-  brandComponent() {
-    return {
-      component: BrandContainer
-    };
-  },
-  isSearchEnabled() {
-    const instance = Template.instance();
-    return instance.state.get("searchEnabled");
-  },
 
   searchTemplate() {
     const instance = Template.instance();
@@ -79,18 +56,6 @@ Template.CoreNavigationBar.helpers({
     }
   },
 
-  IconButtonComponent() {
-    return {
-      component: FlatButton,
-      icon: "fa fa-search",
-      kind: "flat"
-    };
-  },
-  notificationButtonComponent() {
-    return {
-      component: NotificationContainer
-    };
-  },
   onMenuButtonClick() {
     const instance = Template.instance();
     return () => {
@@ -120,8 +85,5 @@ Template.CoreNavigationBar.helpers({
         instance.toggleMenuCallback = callback;
       }
     };
-  },
-  cartPanel() {
-    return CartPanel;
   }
 });

@@ -1,15 +1,58 @@
-import React, { Component } from "react";
+import React, { Component, PropTypes } from "react";
 import { composeWithTracker } from "/lib/api/compose";
+import { Reaction } from "/client/api";
 import NavBar from "../components/navbar";
 
 class NavBarContainer extends Component {
+  constructor(props) {
+    super(props);
+
+    this.isSearchEnabled = this.isSearchEnabled.bind(this);
+  }
+
+  isSearchEnabled = () => {
+    return this.props.searchEnabled;
+  }
+
   render() {
     return (
       <div>
-        <NavBar />
+        <NavBar
+          {...this.props}
+          isSearchEnabled={this.isSearchEnabled}
+        />
       </div>
     );
   }
 }
 
-export default NavBarContainer;
+function composer(props, onData) {
+  const searchPackage = Reaction.Apps({ provides: "ui-search" });
+  let searchEnabled;
+  let searchTemplate;
+  if (searchPackage.length) {
+    searchEnabled = true;
+    searchTemplate = searchPackage[0].template;
+  } else {
+    searchEnabled = false;
+  }
+
+  const searchIcon = "fa fa-search";
+  const searchKind =  "flat";
+
+  const hasProperPermission = Reaction.hasPermission("account/profile");
+
+  onData(null, {
+    icon: searchIcon,
+    kind: searchKind,
+    searchEnabled,
+    searchTemplate,
+    hasProperPermission
+  });
+}
+
+NavBarContainer.propTypes = {
+  searchEnabled: PropTypes.bool
+};
+
+export default composeWithTracker(composer)(NavBarContainer);
