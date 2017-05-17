@@ -99,6 +99,8 @@ class Tags extends Component {
               editable={this.props.editable}
               index={index}
               key={index}
+              suggestions={this.props.suggestions}
+              tag={tag}
               onClearSuggestions={this.props.onClearSuggestions}
               onGetSuggestions={this.props.onGetSuggestions}
               onMove={this.props.onMoveTag}
@@ -108,16 +110,22 @@ class Tags extends Component {
               onTagRemove={this.handleTagRemove}
               onTagSave={this.handleTagSave}
               onTagUpdate={this.handleTagUpdate}
-              suggestions={this.props.suggestions}
-              tag={tag}
             />
             {this.props.isTagNav &&
               <div className="dropdown-container">
                 <TagTree
                   editable={this.props.editable === true}
-                  onTagRemove={this.handleTagRemove}
                   parentTag={tag}
                   subTagGroups={TagHelpers.subTags(tag)}
+                  onClearSuggestions={this.props.onClearSuggestions}
+                  onGetSuggestions={this.props.onGetSuggestions}
+                  onMove={this.props.onMoveTag}
+                  onTagInputBlur={this.handleTagSave}
+                  onTagMouseOut={this.handleTagMouseOut}
+                  onTagMouseOver={this.handleTagMouseOver}
+                  onTagRemove={this.handleTagRemove}
+                  onTagSave={this.handleTagSave}
+                  onTagUpdate={this.handleTagUpdate}
                 />
               </div>
             }
