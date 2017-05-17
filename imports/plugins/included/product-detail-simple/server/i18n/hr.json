@@ -6,6 +6,9 @@
       "admin": {
         "settings": {
           "productDetailsLabel": "detalji o proizvodu"
+        },
+        "inventoryAlerts": {
+          "adjustedQuantity": "Vaš proizvod količina je prilagođena max količini na lageru"
         }
       }
     }

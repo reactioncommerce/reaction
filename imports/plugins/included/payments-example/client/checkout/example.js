@@ -2,7 +2,7 @@
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { Reaction } from "/client/api";
-import { Cart, Shops } from "/lib/collections";
+import { Cart, Shops, Packages } from "/lib/collections";
 import { Example } from "../../lib/api";
 import { ExamplePayment } from "../../lib/collections/schemas";
 
@@ -54,7 +54,11 @@ AutoForm.addHooks("example-payment-form", {
       type: Reaction.getCardType(doc.cardNumber)
     };
     const storedCard = form.type.charAt(0).toUpperCase() + form.type.slice(1) + " " + doc.cardNumber.slice(-4);
-
+    Meteor.subscribe("Packages");
+    const packageData = Packages.findOne({
+      name: "example-paymentmethod",
+      shopId: Reaction.getShopId()
+    });
     Example.authorize(form, {
       total: Cart.findOne().cartTotal(),
       currency: Shops.findOne().currency
@@ -69,6 +73,8 @@ AutoForm.addHooks("example-payment-form", {
           submitting = false;
           paymentMethod = {
             processor: "Example",
+            paymentPackageId: packageData._id,
+            paymentSettingsKey: packageData.registry[0].settingsKey,
             storedCard: storedCard,
             method: "credit",
             transactionId: transaction.transactionId,

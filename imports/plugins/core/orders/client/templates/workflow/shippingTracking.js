@@ -121,10 +121,27 @@ Template.coreOrderShippingTracking.helpers({
         }
       });
 
-      return _.includes(fullItem.workflow.workflow, "coreOrderItemWorkflow/shipped");
+      return !_.includes(fullItem.workflow.workflow, "coreOrderItemWorkflow/shipped");
     });
 
     return shippedItems;
+  },
+
+  isNotCanceled() {
+    const currentData = Template.currentData();
+    const order = Template.instance().order;
+
+    const canceledItems = _.every(currentData.fulfillment.items, (shipmentItem) => {
+      const fullItem = _.find(order.items, (orderItem) => {
+        if (orderItem._id === shipmentItem._id) {
+          return true;
+        }
+      });
+
+      return fullItem.workflow.status !== "coreOrderItemWorkflow/canceled";
+    });
+
+    return canceledItems;
   },
 
   isCompleted() {

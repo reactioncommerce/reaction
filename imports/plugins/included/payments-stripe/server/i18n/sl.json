@@ -10,7 +10,7 @@
         },
         "dashboard": {
           "stripeLabel": "Stripe",
-          "stripeDescription": "plačila trak"
+          "stripeDescription": "plačila Stripe"
         },
         "paymentSettings": {
           "stripeLabel": "Stripe",

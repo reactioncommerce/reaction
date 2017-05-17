@@ -17,6 +17,7 @@ class LineItemsContainer extends Component {
     this.state = {
       isClosed: false
     };
+
     this.handleClick = this.handleClick.bind(this);
     this.isExpanded = this.isExpanded.bind(this);
     this.handleClose = this.handleClose.bind(this);

@@ -31,6 +31,14 @@ export const BraintreePackageConfig = new SimpleSchema([
       type: String,
       label: "Private Key",
       optional: false
+    },
+    "settings.reaction-braintree.support": {
+      type: Array,
+      label: "Payment provider supported methods"
+    },
+    "settings.reaction-braintree.support.$": {
+      type: String,
+      allowedValues: ["Authorize", "De-authorize", "Capture", "Refund"]
     }
   }
 ]);

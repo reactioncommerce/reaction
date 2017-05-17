@@ -6,6 +6,9 @@
       "admin": {
         "settings": {
           "productDetailsLabel": "termék leírás"
+        },
+        "inventoryAlerts": {
+          "adjustedQuantity": "A termék mennyisége állították be a max mennyiség raktáron"
         }
       }
     }

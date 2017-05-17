@@ -12,7 +12,7 @@ class ExampleSettingsFormContainer extends Component {
     super(props);
 
     this.state = {
-      apiKey: ""
+      apiKey: "278302390293"
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -25,16 +25,18 @@ class ExampleSettingsFormContainer extends Component {
     this.setState({ apiKey: e.target.value });
   }
 
-  handleSubmit(e) {
-    e.preventDefault();
+  handleSubmit(settings) {
+    // e.preventDefault();
 
     const packageId = this.props.packageData._id;
     const settingsKey = this.props.packageData.registry[0].settingsKey;
-    const apiKey = this.state.apiKey;
 
     const fields = [{
       property: "apiKey",
-      value: apiKey
+      value: settings.apiKey
+    }, {
+      property: "support",
+      value: settings.support
     }];
 
     this.saveUpdate(fields, packageId, settingsKey);
@@ -50,12 +52,13 @@ class ExampleSettingsFormContainer extends Component {
   }
 
   render() {
+    const settingsKey = this.props.packageData.registry[0].settingsKey;
     return (
       <TranslationProvider>
         <ExampleSettingsForm
           onChange={this.handleChange}
           onSubmit={this.handleSubmit}
-          packageData={this.props.packageData}
+          settings={this.props.packageData.settings[settingsKey]}
         />
       </TranslationProvider>
     );
