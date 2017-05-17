@@ -1,5 +1,5 @@
 import React, { PropTypes } from "react";
-import { Translation } from "/imports/plugins/core/ui/client/components";
+import { Button, Translation } from "/imports/plugins/core/ui/client/components";
 
 
 const EmptyCartDrawer = ({ keepShopping }) => {
@@ -11,15 +11,19 @@ const EmptyCartDrawer = ({ keepShopping }) => {
             <i className="fa fa-frown-o fa-lg" />
           </p>
           <p className="text-align">
-            <Translation defaultValue="We're sad. Your cart is empty." i18nKey="cartDrawer.empty"/>
+            <Translation defaultValue="We're sad. Your cart is empty." i18nKey="cartDrawer.empty" />
           </p>
         </div>
         <div className="row">
-          <a href="#" className="btn btn-warning btn-lg btn-block" id="btn-keep-shopping" data-i18n="cartDrawer.keepShopping"
+          <Button
+            id="btn-keep-shopping"
+            bezelStyle="solid"
+            className="btn-lg btn-block"
+            i18nKeyLabel="cartDrawer.keepShopping"
+            label="Keep on shopping"
             onClick={keepShopping}
-          >
-            Keep Shopping
-          </a>
+            status="warning"
+          />
         </div>
       </div>
     </div>
