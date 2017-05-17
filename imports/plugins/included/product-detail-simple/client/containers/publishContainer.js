@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from "react";
+import { Meteor } from "meteor/meteor";
 import { composeWithTracker } from "/lib/api/compose";
 import { Router } from "/client/api";
 import { ReactionProduct } from "/lib/api";
