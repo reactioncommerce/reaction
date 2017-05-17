@@ -68,17 +68,11 @@ class MainDropdown extends Component {
         }
       });
     } else if (value.name !== "account/profile") {
-      return Reaction.showActionView({
-        i18nKeyLabel: value.i18nKeyLabel,
-        label: value.label,
-        template: value.template,
-        provides: "dashboard"
-      });
-    } else {
-      return Reaction.Router.go(value.name || value.route);
+      return Reaction.showActionView(value);
+    } else if (value.route || value.name) {
+      const route = value.name || value.route;
+      return Reaction.Router.go(route);
     }
-
-    // return Reaction.Router.go(value);
   }
 
   handleLogout = (event, value) => {
