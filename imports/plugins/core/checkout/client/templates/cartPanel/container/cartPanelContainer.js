@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Reaction from "/client/api";
+import { Reaction } from "/client/api";
 import CartPanel from "../component/cartPanel";
 
 class CartPanelContainer extends Component {
