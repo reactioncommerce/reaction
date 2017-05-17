@@ -3,6 +3,7 @@ import classnames from "classnames/dedupe";
 
 class Menu extends Component {
   handleChange = (event, value, menuItem) => {
+    console.log(this.props.onChange);
     if (this.props.onChange) {
       this.props.onChange(event, value, menuItem);
     }
@@ -17,6 +18,7 @@ class Menu extends Component {
         const baseClassName = classnames({
           active: element.props.value === this.props.value
         }, this.props.className);
+        console.log("newchild", newChild);
         return (
           <li className={baseClassName}>{newChild}</li>
         );

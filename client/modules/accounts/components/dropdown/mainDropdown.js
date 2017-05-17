@@ -37,9 +37,15 @@ class MainDropdown extends Component {
   handleChange = (event, value) => {
     event.preventDefault();
 
-    if (value.label === "Profile") {
-      return Reaction.Router.go(value.name);
-    } else if (value.label === "Add Product") {
+    // if (value === "logout") {
+    //   return Meteor.logout((error) => {
+    //     if (error) {
+    //       Logger.warn("Failed to logout.", error);
+    //     }
+    //   });
+    // }
+
+    if (value.name === "createProduct") {
       Reaction.setUserPreferences("reaction-dashboard", "viewAs", "administrator");
       Meteor.call("products/createProduct", (error, productId) => {
         if (Meteor.isClient) {
@@ -61,16 +67,26 @@ class MainDropdown extends Component {
           }
         }
       });
-    } else {
+    } else if (value.name !== "account/profile") {
       return Reaction.showActionView({
         i18nKeyLabel: value.i18nKeyLabel,
         label: value.label,
         template: value.template,
         provides: "dashboard"
       });
+    } else {
+      return Reaction.Router.go(value.name || value.route);
     }
 
     // return Reaction.Router.go(value);
+  }
+
+  handleLogout = (event, value) => {
+    Meteor.logout((error) => {
+      if (error) {
+        Logger.warn("Failed to logout.", error);
+      }
+    });
   }
 
   render() {
@@ -130,7 +146,15 @@ class MainDropdown extends Component {
                 />
             ))}
 
-            <div className="btn btn-primary btn-block" id="logout" data-i18n="accountsUI.signOut" style={{ padding: 5 }}>Sign Out</div>
+            <div
+              className="btn btn-primary btn-block"
+              id="logout"
+              // value="logout"
+              data-i18n="accountsUI.signOut"
+              style={{ padding: 5 }}
+            >
+              Sign Out
+            </div>
           </DropDownMenu>
         }
       </div>
