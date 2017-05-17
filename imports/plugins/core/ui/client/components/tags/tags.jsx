@@ -57,6 +57,11 @@ class Tags extends Component {
     }
   };
 
+  hasSubTags = (tagId, tags) => {
+    if (this.props.hasSubTags) {
+      return this.props.hasSubTags(tagId, tags);
+    }
+  }
 
   handleTagUpdate = (event, tag) => {
     if (this.props.onTagUpdate) {
@@ -103,7 +108,7 @@ class Tags extends Component {
               onTagRemove={this.handleTagRemove}
               onTagSave={this.handleTagSave}
               onTagUpdate={this.handleTagUpdate}
-              selectable={this.props.hasSubTags(tag._id, this.props.tags)}
+              selectable={this.hasSubTags(tag._id, this.props.tags)}
               suggestions={this.props.suggestions}
               tag={tag}
             />
@@ -176,6 +181,7 @@ Tags.propTypes = {
   editable: PropTypes.bool,
   enableNewTagForm: PropTypes.bool,
   hasDropdownClassName: PropTypes.func,
+  hasSubTags: PropTypes.func,
   isTagNav: PropTypes.bool,
   navbarSelectedClassName: PropTypes.func,
   newTag: PropTypes.object,

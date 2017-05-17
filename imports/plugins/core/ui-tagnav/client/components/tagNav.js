@@ -48,6 +48,7 @@ const NavbarAnchor = {
 
 const TagNavHelpers = {
   onTagCreate(tagName, parentTag) {
+    console.log('onTagCreate helper', { tagName, parentTag });
     TagHelpers.createTag(tagName, undefined, parentTag);
   },
   onTagRemove(tag, parentTag) {
@@ -60,6 +61,7 @@ const TagNavHelpers = {
     TagHelpers.moveTagToNewParent(movedTagId, toListId, toIndex, ofList);
   },
   onTagUpdate(tagId, tagName) {
+    console.log('onTagUpdate helper', { tagId, tagName });
     TagHelpers.updateTag(tagId, tagName);
   },
   isMobile() {
@@ -124,14 +126,9 @@ class TagNav extends Component {
     }
   }
 
-  handleNewTagSave = () => {
-    console.log('handleNewTagSave');
+  handleNewTagSave = (tag) => {
+    TagNavHelpers.onTagCreate(tag.name);
   }
-
-  // handleNewTagUpdate = (event, newTag) => {
-  //   console.log('handleNewTagUpdate');
-  //   TagNavHelpers.onTagCreate(newTag.name, []);
-  // }
 
   handleNewTagUpdate = (tag) => {
     this.setState({
@@ -140,10 +137,13 @@ class TagNav extends Component {
   }
 
   onTagSave = (event, tag) => {
-    TagNavHelpers.onTagCreate(tag.name);
+    console.log('onTagSave', { event, tag });
+    // TagNavHelpers.onTagCreate(tag.name);
   }
 
-  handleTagRemove = () => {
+  handleTagRemove = (tag) => {
+    console.log('onTagRemove', { tag });
+    TagNavHelpers.onTagRemove(tag);
   }
 
   handleTagUpdate = (tag) => {
@@ -327,6 +327,7 @@ class TagNav extends Component {
         <div className="navbar-items">
           <DragDropProvider>
             <TagList
+              {...TagNavHelpers}
               isTagNav={true}
               newTag={this.state.newTag}
               onClearSuggestions={this.handleClearSuggestions}
@@ -348,7 +349,6 @@ class TagNav extends Component {
               hasDropdownClassName={this.hasDropdownClassName}
               navbarSelectedClassName={this.navbarSelectedClassName}
               {...this.props}
-              {...TagNavHelpers}
             />
           </DragDropProvider>
           {this.renderEditButton()}

@@ -3,12 +3,15 @@ import { TagItem } from "/imports/plugins/core/ui/client/components/tags/";
 import { TagHelpers } from "/imports/plugins/core/ui-tagnav/client/helpers";
 
 class TagTree extends Component {
-  static propTypes = {
-    editable: PropTypes.bool,
-    onTagRemove: PropTypes.func,
-    onTagSave: PropTypes.func,
-    parentTag: PropTypes.object,
-    subTagGroups: PropTypes.arrayOf(PropTypes.object)
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      suggestions: [],
+      newTag: {
+        name: ""
+      }
+    };
   }
 
   get className() {
@@ -16,12 +19,6 @@ class TagTree extends Component {
       return "create";
     }
     return "";
-  }
-
-  suggestions = [{}]
-
-  newTag = {
-    name: ""
   }
 
   tagListProps(groupTag) {
@@ -66,7 +63,7 @@ class TagTree extends Component {
             onTagSelect={this.onTagSelect}
             selectable={true}
             onTagUpdate={this.handleTagUpdate}
-            suggestions={this.suggestions}
+            suggestions={this.state.suggestions}
             tag={tag}
           />
         );
@@ -99,7 +96,7 @@ class TagTree extends Component {
               onTagSelect={this.onTagSelect}
               selectable={true}
               onTagUpdate={this.handleTagUpdate}
-              suggestions={this.suggestions}
+              suggestions={this.state.suggestions}
               tag={groupTag}
             />
           </div>
@@ -117,8 +114,8 @@ class TagTree extends Component {
                   inputPlaceholder="Add Tag"
                   i18nKeyInputPlaceholder="tags.addTag"
                   onTagUpdate={this.handleNewTagUpdate}
-                  tag={this.newTag}
-                  suggestions={this.suggestions}
+                  tag={this.state.newTag}
+                  suggestions={this.state.suggestions}
                 />
               </div>
             }
@@ -142,14 +139,14 @@ class TagTree extends Component {
               <div className="header">
                 <TagItem
                   blank={true}
-                  tag={this.newTag}
+                  tag={this.state.newTag}
                   key="newTagForm"
                   onClearSuggestions={this.handleClearSuggestions}
                   onGetSuggestions={this.handleGetSuggestions}
                   inputPlaceholder="Add Tag"
                   i18nKeyInputPlaceholder="tags.addTag"
                   onTagSave={this.props.onTagSave}
-                  suggestions={this.suggestions}
+                  suggestions={this.state.suggestions}
                 />
               </div>
             </div>
@@ -159,5 +156,14 @@ class TagTree extends Component {
     );
   }
 }
+
+TagTree.propTypes = {
+  blank: PropTypes.bool,
+  editable: PropTypes.bool,
+  onTagRemove: PropTypes.func,
+  onTagSave: PropTypes.func,
+  parentTag: PropTypes.object,
+  subTagGroups: PropTypes.arrayOf(PropTypes.object)
+};
 
 export default TagTree;
