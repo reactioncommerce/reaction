@@ -62,7 +62,6 @@ class Tag extends Component {
     event.preventDefault();
     this._saved = true;
     this.saveTag(event);
-    console.log('end handleTagFormSubmit');
   };
 
   /**
@@ -90,7 +89,6 @@ class Tag extends Component {
   };
 
   handleTagKeyDown = (event) => {
-    console.log('handleTagKeyDown');
     if (event.keyCode === 13) {
       this._saved = true;
       this.saveTag(event);
@@ -153,14 +151,12 @@ class Tag extends Component {
   }
 
   handleSuggestionsUpdateRequested = (suggestion) => {
-    console.log('handleSuggestionsUpdateRequested');
     if (this.props.onGetSuggestions) {
       this.props.onGetSuggestions(suggestion);
     }
   }
 
   handleSuggestionsClearRequested = () => {
-    console.log('handleSuggestionsClearRequested');
     if (this.props.onClearSuggestions) {
       this.props.onClearSuggestions();
     }
