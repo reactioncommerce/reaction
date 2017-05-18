@@ -43,7 +43,7 @@ class TagTree extends Component {
     };
   }
 
-  genTagsList(tags) {
+  genTagsList(tags, parentTag) {
     if (_.isArray(tags)) {
       return tags.map((tag, index) => {
         return (
@@ -54,6 +54,7 @@ class TagTree extends Component {
             data-id={tag._id}
             editable={this.props.editable}
             isSelected={this.isSelected}
+            parentTag={parentTag}
             draggable={true}
             selectable={true}
             suggestions={this.state.suggestions}
@@ -75,7 +76,7 @@ class TagTree extends Component {
   renderSubTags(props) {
     return (
       <div className="rui tags" data-id={props.parentTag._id}>
-        {this.genTagsList(props.tags)}
+        {this.genTagsList(props.tags, props.parentTag)}
       </div>
     );
   }

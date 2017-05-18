@@ -72,7 +72,6 @@ class Tag extends Component {
   handleTagRemove = () => {
     console.log('about to remove');
     if (this.props.onTagRemove) {
-      console.log(this.props.onTagRemove.toString());
       this.props.onTagRemove(this.props.tag, this.props.parentTag);
     }
   };
