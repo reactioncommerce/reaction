@@ -5,13 +5,64 @@ import * as Collections from "/lib/collections";
 import { i18nextDep, i18next } from  "/client/api";
 import { Accounts } from "meteor/accounts-base";
 import { Roles } from "meteor/alanning:roles";
+import { Meteor } from "meteor/meteor";
+import { Tags } from "/lib/collections";
 import MainDropdown from "../../components/dropdown/mainDropdown";
 
 class MainDropdownContainer extends Component {
+  constructor(props) {
+    super(props);
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleChange = (event, value) => {
+    event.preventDefault();
+
+    if (value === "logout") {
+      return Meteor.logout((error) => {
+        if (error) {
+          Logger.warn("Failed to logout.", error);
+        }
+      });
+    }
+
+    if (value.name === "createProduct") {
+      Reaction.setUserPreferences("reaction-dashboard", "viewAs", "administrator");
+      Meteor.call("products/createProduct", (error, productId) => {
+        if (Meteor.isClient) {
+          let currentTag;
+          let currentTagId;
+
+          if (error) {
+            throw new Meteor.Error("createProduct error", error);
+          } else if (productId) {
+            currentTagId = Session.get("currentTag");
+            currentTag = Tags.findOne(currentTagId);
+            if (currentTag) {
+              Meteor.call("products/updateProductTags", productId, currentTag.name, currentTagId);
+            }
+            // go to new product
+            Reaction.Router.go("product", {
+              handle: productId
+            });
+          }
+        }
+      });
+    } else if (value.name !== "account/profile") {
+      return Reaction.showActionView(value);
+    } else if (value.route || value.name) {
+      const route = value.name || value.route;
+      return Reaction.Router.go(route);
+    }
+  }
+
   render() {
     return (
       <div>
-        <MainDropdown {...this.props}/>
+        <MainDropdown
+          {...this.props}
+          handleChange={this.handleChange}
+        />
       </div>
     );
   }
@@ -71,15 +122,33 @@ function displayName(displayUser) {
   }
 }
 
+function getAdminShortcutIcons() {
+  // get shortcuts with audience permissions based on user roles
+  const roles = Roles.getRolesForUser(Meteor.userId(), Reaction.getShopId());
+
+  return {
+    provides: "shortcut",
+    enabled: true,
+    audience: roles
+  };
+}
+
 const composer = (props, onData) => {
   const currentUser = getCurrentUser();
   const userImage = getUserGravatar(currentUser, 40);
   const userName = displayName(currentUser);
+  const adminShortcuts = getAdminShortcutIcons();
+  const userShortcuts = {
+    provides: "userAccountDropdown",
+    enabled: true
+  };
 
   onData(null, {
-    currentUser: currentUser,
-    userImage: userImage,
-    userName: userName
+    adminShortcuts,
+    currentUser,
+    userImage,
+    userName,
+    userShortcuts
   });
 };
 
