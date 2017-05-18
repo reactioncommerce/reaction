@@ -47,11 +47,9 @@ const NavbarAnchor = {
 
 const TagNavHelpers = {
   onTagCreate(tagName, parentTag) {
-    console.log('onTagCreate helper', { tagName, parentTag });
     TagHelpers.createTag(tagName, undefined, parentTag);
   },
   onTagRemove(tag, parentTag) {
-    console.log('in helper', tag, parentTag);
     TagHelpers.removeTag(tag, parentTag);
   },
   onTagSort(tagIds, parentTag) {
@@ -61,7 +59,6 @@ const TagNavHelpers = {
     TagHelpers.moveTagToNewParent(movedTagId, toListId, toIndex, ofList);
   },
   onTagUpdate(tagId, tagName) {
-    console.log('onTagUpdate helper', { tagId, tagName });
     TagHelpers.updateTag(tagId, tagName);
   },
   isMobile() {
@@ -141,7 +138,6 @@ class TagNav extends Component {
   }
 
   onTagSave = (event, tag) => {
-    console.log('onTagSave', { event, tag });
     // TagNavHelpers.onTagCreate(tag.name);
   }
 
@@ -163,7 +159,6 @@ class TagNav extends Component {
   }
 
   handleMoveTag = () => {
-    console.log('handleMoveTag');
   }
 
   handleGetSuggestions = (suggestionUpdateRequest) => {
@@ -286,10 +281,10 @@ class TagNav extends Component {
   }
 
   navbarSelectedClassName = (tag) => {
-    const selectedTag = this.state.selectedTag;
+    const currentSelectedTag = this.state.selectedTag;
 
-    if (selectedTag) {
-      if (selectedTag._id === tag._id) {
+    if (currentSelectedTag) {
+      if (currentSelectedTag._id === tag._id) {
         return "selected";
       }
     }

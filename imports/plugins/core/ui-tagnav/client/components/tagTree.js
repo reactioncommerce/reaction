@@ -1,16 +1,28 @@
 import React, { Component, PropTypes } from "react";
 import { TagItem } from "/imports/plugins/core/ui/client/components/tags/";
 import { TagHelpers } from "/imports/plugins/core/ui-tagnav/client/helpers";
+import { getTagIds } from "/lib/selectors/tags";
+import update from "react/lib/update";
 
 class TagTree extends Component {
   constructor(props) {
     super(props);
 
+    const tagsByKey = {};
+
+    if (Array.isArray(props.subTagGroups)) {
+      for (const tag of props.subTagGroups) {
+        tagsByKey[tag._id] = tag;
+      }
+    }
+
     const state = {
       suggestions: [],
       newTopLevelTreeTag: {
         name: ""
-      }
+      },
+      tagIds: getTagIds({ tags: props.subTagGroups }) || [],
+      tagsByKey: tagsByKey || {}
     };
 
     props.subTagGroups.map((tag) => {
@@ -18,6 +30,14 @@ class TagTree extends Component {
     });
 
     this.state = state;
+  }
+
+  get tags() {
+    if (this.props.editable) {
+      return this.state.tagIds.map((tagId) => this.state.tagsByKey[tagId]);
+    }
+
+    return this.props.subTagGroups;
   }
 
   get className() {
@@ -38,6 +58,19 @@ class TagTree extends Component {
         });
       }
     };
+  }
+
+  handleTagUpdate = (event, tag) => {
+    const newState = update(this.state, {
+      tagsByKey: {
+        [tag._id]: {
+          $set: tag
+        }
+      }
+    });
+
+    newState[tag.name] = { name: "" }; // new add tag for updated tagTree head
+    this.setState(newState);
   }
 
   handleNewTagUpdate = (key) => { // updates the current tag state being edited
@@ -108,7 +141,7 @@ class TagTree extends Component {
               onTagMouseOver={this.props.onTagMouseOver}
               onTagRemove={this.props.onTagRemove}
               onTagSave={this.props.onTagSave}
-              onTagUpdate={this.props.onTagUpdate}
+              onTagUpdate={this.handleTagUpdate}
             />
           </div>
           <div className="content">
@@ -149,7 +182,7 @@ class TagTree extends Component {
           <a href="#">View All <i className="fa fa-angle-right" /></a>
         </div>
         <div className="content">
-          {this.renderTreeTags(this.props.subTagGroups)}
+          {this.renderTreeTags(this.tags)}
           {this.props.editable &&
             <div className="rui grouptag create">
               <div className="header">
