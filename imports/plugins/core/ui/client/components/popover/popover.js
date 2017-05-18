@@ -5,10 +5,6 @@ import PopoverContent from "./popoverContent";
 import { Button, ButtonGroup } from "/imports/plugins/core/ui/client/components/";
 
 class Popover extends Component {
-  state = {
-    isOpen: false
-  }
-
   /**
    * attachment
    * @description Return the attachment for the tooltip or the default
@@ -24,24 +20,12 @@ class Popover extends Component {
     }
   }
 
-  handleOpen = () => {
-    this.setState({
-      isOpen: true
-    });
-  }
-
-  handleClickOutside = () => {
-    this.setState({
-      isOpen: false
-    });
-  }
-
   renderPopoverChildren() {
-    if (this.state.isOpen) {
+    if (this.props.isOpen) {
       return  (
         <PopoverContent
           children={this.props.children}
-          onClickOutside={this.handleClickOutside}
+          onClickOutside={this.props.onClick}
         />
       );
     }
@@ -56,7 +40,7 @@ class Popover extends Component {
           <Button
             key="dropdown-button"
             icon="fa fa-chevron-down"
-            onClick={this.handleOpen}
+            onClick={this.props.onClick}
             status={this.props.buttonElement.props.status}
           />
         </ButtonGroup>
@@ -64,7 +48,7 @@ class Popover extends Component {
     }
 
     return React.cloneElement(this.props.buttonElement, {
-      onClick: this.handleOpen
+      onClick: this.props.onClick
     });
   }
 
@@ -96,6 +80,8 @@ Popover.propTypes = {
   attachment: PropTypes.string,
   buttonElement: PropTypes.node,
   children: PropTypes.node,
+  isOpen: PropTypes.bool,
+  onClick: PropTypes.func,
   onDisplayButtonClick: PropTypes.func,
   showArrow: PropTypes.bool,
   showDropdownButton: PropTypes.bool,

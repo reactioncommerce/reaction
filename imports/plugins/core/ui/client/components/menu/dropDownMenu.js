@@ -10,14 +10,24 @@ class DropDownMenu extends Component {
     super(props);
 
     this.state = {
-      label: undefined
+      label: undefined,
+      isOpen: false
     };
+  }
+
+  handleDropdownToggle = () => {
+    this.setState({
+      isOpen: !this.state.isOpen
+    });
   }
 
   handleMenuItemChange = (event, value, menuItem) => {
     this.setState({
-      label: menuItem.props.label || value
+      label: menuItem.props.label || value,
+      isOpen: false
     });
+
+    console.log("handleChange", this.state.isOpen);
 
     if (this.props.onChange) {
       this.props.onChange(event, value);
@@ -43,6 +53,8 @@ class DropDownMenu extends Component {
   }
 
   render() {
+    console.log("render", this.state.isOpen);
+
     return (
       <Popover
         buttonElement={
@@ -53,16 +65,10 @@ class DropDownMenu extends Component {
             label={this.label}
           />
         }
-        attachment={this.props.attachment}
-        targetAttachment={this.props.targetAttachment}
-        style={this.props.style}
+        onClick={this.handleDropdownToggle}
+        isOpen={this.state.isOpen}
       >
-        <Menu
-          className={this.props.className}
-          value={this.props.value}
-          onChange={this.handleMenuItemChange}
-          style={this.props.menuStyle}
-        >
+        <Menu value={this.props.value} onChange={this.handleMenuItemChange}>
           {this.props.children}
         </Menu>
       </Popover>
