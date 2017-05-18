@@ -10,7 +10,9 @@ class MainDropdown extends Component {
     currentUser: PropTypes.oneOfType(
       [PropTypes.bool, PropTypes.object]
     ),
-    userImage: PropTypes.string,
+    userImage: PropTypes.oneOfType(
+      [PropTypes.bool, PropTypes.object]
+    ),
     userName: PropTypes.string
   }
 
@@ -37,13 +39,13 @@ class MainDropdown extends Component {
   handleChange = (event, value) => {
     event.preventDefault();
 
-    // if (value === "logout") {
-    //   return Meteor.logout((error) => {
-    //     if (error) {
-    //       Logger.warn("Failed to logout.", error);
-    //     }
-    //   });
-    // }
+    if (value === "logout") {
+      return Meteor.logout((error) => {
+        if (error) {
+          Logger.warn("Failed to logout.", error);
+        }
+      });
+    }
 
     if (value.name === "createProduct") {
       Reaction.setUserPreferences("reaction-dashboard", "viewAs", "administrator");
@@ -75,14 +77,6 @@ class MainDropdown extends Component {
     }
   }
 
-  handleLogout = (event, value) => {
-    Meteor.logout((error) => {
-      if (error) {
-        Logger.warn("Failed to logout.", error);
-      }
-    });
-  }
-
   render() {
     const options = {
       provides: "userAccountDropdown",
@@ -91,7 +85,7 @@ class MainDropdown extends Component {
 
     return (
       <div>
-        {this.props.currentUser &&
+        {this.props.currentUser ?
           <DropDownMenu
             buttonElement={this.buttonElement()}
             attachment="bottom right"
@@ -111,7 +105,7 @@ class MainDropdown extends Component {
                   className="accounts-a-tag"
                   label={option.label}
                   i18nKeyLabel={option.i18nKeyLabel}
-                  icon={option.icon}
+                  icon={option.icon && option.icon}
                   iconStyle={{
                     margin: "10px 10px 10px 6px",
                     width: "20px",
@@ -140,15 +134,25 @@ class MainDropdown extends Component {
                 />
             ))}
 
-            <div
-              className="btn btn-primary btn-block"
-              id="logout"
-              // value="logout"
-              data-i18n="accountsUI.signOut"
-              style={{ padding: 5 }}
-            >
-              Sign Out
-            </div>
+            <MenuItem
+              className="btn btn-primary btn-block accounts-btn-tag"
+              label="Sign out"
+              value="logout"
+            />
+          </DropDownMenu> :
+          <DropDownMenu
+            buttonElement={
+              <Button
+                label="Sign In"
+              >
+                &nbsp;<i className="fa fa-caret-down" />
+              </Button>
+
+            }
+            attachment="bottom right"
+            targetAttachment="top right"
+          >
+
           </DropDownMenu>
         }
       </div>

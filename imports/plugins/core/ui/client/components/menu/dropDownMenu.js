@@ -67,8 +67,16 @@ class DropDownMenu extends Component {
         }
         onClick={this.handleDropdownToggle}
         isOpen={this.state.isOpen}
+        attachment={this.props.attachment}
+        targetAttachment={this.props.targetAttachment}
+        style={this.props.style}
       >
-        <Menu value={this.props.value} onChange={this.handleMenuItemChange}>
+        <Menu
+          className={this.props.className}
+          value={this.props.value}
+          onChange={this.handleMenuItemChange}
+          style={this.props.menuStyle}
+        >
           {this.props.children}
         </Menu>
       </Popover>
