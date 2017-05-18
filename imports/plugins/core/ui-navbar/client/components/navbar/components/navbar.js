@@ -5,10 +5,20 @@ import { NotificationContainer } from "/imports/plugins/included/notifications/c
 import CartIconContainer from "/imports/plugins/core/checkout/client/container/cartIconContainer";
 import CartPanel from "/imports/plugins/core/checkout/client/templates/cartPanel/container/cartPanelContainer";
 import MainDropdown from "/client/modules/accounts/containers/dropdown/mainDropdownContainer";
+import LanguageContainer from "/client/modules/i18n/templates/header/containers/i18nContainer";
+import CurrencyContainer from "/client/modules/i18n/templates/currency/containers/currencyContainer";
 
 class NavBar extends Component {
-  constructor(props) {
-    super(props);
+  renderLanguage() {
+    return (
+      <LanguageContainer />
+    );
+  }
+
+  renderCurrency() {
+    return (
+      <CurrencyContainer />
+    );
   }
 
   renderBrandContainer() {
@@ -66,8 +76,8 @@ class NavBar extends Component {
         </div>
         {this.renderSearchButton()}
         {this.renderNotificationIcon()}
-        <div className="languages hidden-xs"> <b style={{ padding: "0px 5px" }}>Lang</b> </div>
-        <div className="currencies hidden-xs"> <b style={{ padding: "0px 5px" }}>Curr</b> </div>
+        <div className="languages hidden-xs"><LanguageContainer/> </div>
+        <div className="currencies hidden-xs"><CurrencyContainer/> </div>
         {this.renderMainDropdown()}
         {this.renderCartContainerAndPanel()}
       </div>
