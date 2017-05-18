@@ -11,13 +11,17 @@ import CurrencyContainer from "/client/modules/i18n/templates/currency/container
 class NavBar extends Component {
   renderLanguage() {
     return (
-      <LanguageContainer />
+      <div className="languages hidden-xs">
+        <LanguageContainer/>
+      </div>
     );
   }
 
   renderCurrency() {
     return (
-      <CurrencyContainer />
+      <div className="currencies hidden-xs">
+        <CurrencyContainer/>
+      </div>
     );
   }
 
@@ -76,8 +80,8 @@ class NavBar extends Component {
         </div>
         {this.renderSearchButton()}
         {this.renderNotificationIcon()}
-        <div className="languages hidden-xs"><LanguageContainer/> </div>
-        <div className="currencies hidden-xs"><CurrencyContainer/> </div>
+        {this.renderLanguage()}
+        {this.renderCurrency()}
         {this.renderMainDropdown()}
         {this.renderCartContainerAndPanel()}
       </div>

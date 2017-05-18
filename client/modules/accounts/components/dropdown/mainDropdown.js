@@ -83,7 +83,7 @@ class MainDropdown extends Component {
 
   render() {
     return (
-      <div>
+      <div style={{ paddingRight: 5 }}>
         {this.props.currentUser ?
           <DropDownMenu
             buttonElement={this.buttonElement()}
