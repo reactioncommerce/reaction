@@ -126,6 +126,7 @@ class Tags extends Component {
                   onTagRemove={this.props.onTagRemove}
                   onTagSave={this.handleTagSave}
                   onTagUpdate={this.handleTagUpdate}
+                  onNewTagSave={this.props.onNewTagSave}
                 />
               </div>
             }

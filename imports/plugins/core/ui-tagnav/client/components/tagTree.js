@@ -6,15 +6,18 @@ class TagTree extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
+    const state = {
       suggestions: [],
-      newTagOnList: {
-        name: ""
-      },
-      newTagOnTree: {
+      newTopLevelTreeTag: {
         name: ""
       }
     };
+
+    props.subTagGroups.map((tag) => {
+      state[tag.name] = { name: "" };
+    });
+
+    this.state = state;
   }
 
   get className() {
@@ -25,26 +28,18 @@ class TagTree extends Component {
   }
 
   // setting up the func before passing to TagItem
-  handleNewTagSave = (event, tag) => {
-    console.log('handling NewTagSave');
-    event.preventDefault();
-    if (this.props.onNewTagSave) {
-      this.props.onNewTagSave(tag, this.props.parentTag);
-    }
+  handleNewTagSave = (parentTag) => {
+    return (event, tag) => {
+      event.preventDefault();
+      if (this.props.onNewTagSave) {
+        this.props.onNewTagSave(tag, parentTag);
+      }
+    };
   }
 
   handleNewTagUpdate = (key) => { // updates the current tag state being edited
     return (event, tag) => {
-      console.log(tag);
       this.setState({ [key]: tag });
-    };
-  }
-
-  tagListProps(groupTag) {
-    return {
-      parentTag: groupTag,
-      tags: TagHelpers.subTags(groupTag),
-      editable: this.props.editable
     };
   }
 
@@ -53,12 +48,15 @@ class TagTree extends Component {
       return tags.map((tag, index) => {
         return (
           <TagItem
+            tag={tag}
+            index={index}
+            key={index}
             data-id={tag._id}
             editable={this.props.editable}
-            index={index}
             isSelected={this.isSelected}
-            key={index}
             draggable={true}
+            selectable={true}
+            suggestions={this.state.suggestions}
             onClearSuggestions={this.handleClearSuggestions}
             onGetSuggestions={this.handleGetSuggestions}
             onMove={this.handleMoveTag}
@@ -67,17 +65,14 @@ class TagTree extends Component {
             onTagMouseOver={this.handleTagMouseOver}
             onTagRemove={this.props.onTagRemove}
             onTagSelect={this.onTagSelect}
-            selectable={true}
             onTagUpdate={this.handleTagUpdate}
-            suggestions={this.state.suggestions}
-            tag={tag}
           />
         );
       });
     }
   }
 
-  renderTagList(props) {
+  renderSubTags(props) {
     return (
       <div className="rui tags" data-id={props.parentTag._id}>
         {this.genTagsList(props.tags)}
@@ -85,21 +80,21 @@ class TagTree extends Component {
     );
   }
 
-  renderSubTagGroups(subTagGroups) {
-    if (_.isArray(subTagGroups)) {
-      // Tag Group
-      return subTagGroups.map((groupTag, index) => (
-        <div className={`rui grouptag ${this.className}`} data-id={groupTag._id} key={groupTag._id}>
+  // renders both the TagTree Header and the TagTree subtags
+  renderTreeTags(tags) {
+    if (_.isArray(tags)) {
+      return tags.map((tag, index) => (
+        <div className={`rui grouptag ${this.className}`} data-id={tag._id} key={tag._id}>
           <div className="header">
             <TagItem
-              className="js-tagNav-item"
-              editable={this.props.editable}
+              tag={tag}
               index={index}
               key={index}
               selectable={true}
+              className="js-tagNav-item"
+              editable={this.props.editable}
               isSelected={this.isSelected}
               suggestions={this.state.suggestions}
-              tag={groupTag}
               parentTag={this.props.parentTag}
               onClearSuggestions={this.props.onClearSuggestions}
               onGetSuggestions={this.props.onGetSuggestions}
@@ -113,21 +108,26 @@ class TagTree extends Component {
             />
           </div>
           <div className="content">
-            {this.renderTagList(this.tagListProps(groupTag))}
+            {
+              this.renderSubTags({
+                parentTag: tag,
+                tags: TagHelpers.subTags(tag)
+              })
+            }
             {this.props.editable &&
               <div className="rui item create">
                 <TagItem
                   blank={true}
                   key="newTagForm"
-                  tag={this.state.newTagOnList}
+                  tag={this.state[tag.name]}
                   inputPlaceholder="Add Tag"
                   i18nKeyInputPlaceholder="tags.addTag"
                   suggestions={this.state.suggestions}
                   onClearSuggestions={this.props.onClearSuggestions}
                   onGetSuggestions={this.props.onGetSuggestions}
-                  onTagInputBlur={this.handleNewTagSave}
-                  onTagSave={this.handleNewTagSave}
-                  onTagUpdate={this.handleNewTagUpdate("newTagOnList")}
+                  onTagInputBlur={this.handleNewTagSave(tag)}
+                  onTagSave={this.handleNewTagSave(tag)}
+                  onTagUpdate={this.handleNewTagUpdate(tag.name)}
                 />
               </div>
             }
@@ -145,22 +145,22 @@ class TagTree extends Component {
           <a href="#">View All <i className="fa fa-angle-right" /></a>
         </div>
         <div className="content">
-          {this.renderSubTagGroups(this.props.subTagGroups)}
+          {this.renderTreeTags(this.props.subTagGroups)}
           {this.props.editable &&
             <div className="rui grouptag create">
               <div className="header">
                 <TagItem
                   blank={true}
-                  tag={this.state.newTagOnTree}
+                  tag={this.state.newTopLevelTreeTag}
                   key="newTagForm"
                   inputPlaceholder="Add Tag"
                   i18nKeyInputPlaceholder="tags.addTag"
                   suggestions={this.state.suggestions}
                   onClearSuggestions={this.handleClearSuggestions}
                   onGetSuggestions={this.handleGetSuggestions}
-                  onTagInputBlur={this.handleNewTagSave}
-                  onTagSave={this.handleNewTagSave}
-                  onTagUpdate={this.handleNewTagUpdate("newTagOnTree")}
+                  onTagInputBlur={this.handleNewTagSave(this.props.parentTag)}
+                  onTagSave={this.handleNewTagSave(this.props.parentTag)}
+                  onTagUpdate={this.handleNewTagUpdate("newTopLevelTreeTag")}
                 />
               </div>
             </div>

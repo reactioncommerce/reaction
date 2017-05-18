@@ -128,9 +128,9 @@ class TagNav extends Component {
     }
   }
 
-  handleNewTagSave = (tag) => {
+  handleNewTagSave = (tag, parentTag) => {
     editable = true; // keep editing state after re-render
-    TagNavHelpers.onTagCreate(tag.name);
+    TagNavHelpers.onTagCreate(tag.name, parentTag);
   }
 
   handleNewTagUpdate = (tag) => { // updates the current tag state being edited
