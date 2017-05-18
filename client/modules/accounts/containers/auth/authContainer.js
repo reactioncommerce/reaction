@@ -5,6 +5,7 @@ import { composeWithTracker } from "/lib/api/compose";
 import { SignIn, SignUp, LoginButtons } from "../../components";
 import { MessagesContainer } from "../helpers";
 import { ServiceConfigHelper } from "../../helpers";
+import { LoginFormSharedHelpers } from "/client/modules/accounts/helpers";
 
 class AuthContainer extends Component {
   constructor(props) {
@@ -21,7 +22,7 @@ class AuthContainer extends Component {
     this.services = this.services.bind(this);
     this.shouldShowSeperator = this.shouldShowSeperator.bind(this);
     this.handleSocialLogin = this.handleSocialLogin.bind(this);
-    this.capitalize = this.capitalize.bind(this);
+    this.capitalizeName = this.capitalizeName.bind(this);
     this.hasPasswordService = this.hasPasswordService.bind(this);
   }
 
@@ -119,9 +120,8 @@ class AuthContainer extends Component {
     return !!Package["accounts-password"] && enabledServices.length > 0;
   }
 
-  capitalize = (str) => {
-    const finalString = str === null ? "" : String(str);
-    return finalString.charAt(0).toUpperCase() + finalString.slice(1);
+  capitalizeName = (str) => {
+    return LoginFormSharedHelpers.capitalize(str);
   }
 
   handleSocialLogin = (value) => {
@@ -131,7 +131,7 @@ class AuthContainer extends Component {
     if (serviceName === "meteor-developer") {
       serviceName = "MeteorDeveloperAccount";
     } else {
-      serviceName = this.capitalize(serviceName);
+      serviceName = this.capitalizeName(serviceName);
     }
 
     const loginWithService = Meteor["loginWith" + serviceName];
@@ -187,7 +187,7 @@ class AuthContainer extends Component {
           currentView={this.props.currentView}
           onSeparator={this.shouldShowSeperator}
           onSocialClick={this.handleSocialLogin}
-          capitalizeName={this.capitalize}
+          capitalizeName={this.capitalizeName}
         />
       {this.renderAuthView()}
       </div>
