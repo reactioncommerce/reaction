@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, PropTypes } from "react";
 import { Meteor } from "meteor/meteor";
 import { Reaction } from "/client/api";
 import { composeWithTracker } from "/lib/api/compose";
@@ -6,12 +6,15 @@ import { Media, Shops } from "/lib/collections";
 import Brand from "../components/brand";
 
 class BrandContainer extends Component {
+  static propTypes = {
+    shop: PropTypes.object
+  }
+
   logo() {
     if (_.isArray(this.props.shop.brandAssets)) {
       const brandAsset = _.find(this.props.shop.brandAssets, (asset) => asset.type === "navbarBrandImage");
       return Media.findOne(brandAsset.mediaId);
     }
-
     return false;
   }
 

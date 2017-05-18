@@ -1,16 +1,25 @@
-import React, { Component } from "react";
+import React, { Component, PropTypes } from "react";
 import { Reaction } from "/client/api";
 
 class Brand extends Component {
+  static propTypes = {
+    logo: PropTypes.oneOfType(
+      [PropTypes.bool, PropTypes.object]
+    ),
+    shop: PropTypes.object
+  }
+
   render() {
+    const { logo, shop } = this.props;
+
     return (
       <a className="brand" href={Reaction.Router.pathFor("/")}>
-        {this.props.logo &&
+        {logo &&
           <div className="logo">
-            <img src={this.props.logo.url()} />
+            <img src={logo.url()} />
           </div>
         }
-        <span className="title">{this.props.shop.name}</span>
+        <span className="title">{shop.name}</span>
       </a>
     );
   }
