@@ -1,3 +1,4 @@
+import _ from "lodash";
 import React, { Component, PropTypes } from "react";
 import { Accounts } from "meteor/accounts-base";
 import { composeWithTracker } from "/lib/api/compose";
@@ -35,7 +36,7 @@ class UpdatePasswordOverlayContainer extends Component {
       errors.password = validatedPassword;
     }
 
-    if ($.isEmptyObject(errors) === false) {
+    if (_.isEmpty(errors) === false) {
       this.setState({
         isDisabled: false,
         formMessages: {

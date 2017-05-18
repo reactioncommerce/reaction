@@ -1,3 +1,4 @@
+import _ from "lodash";
 import React, { Component, PropTypes } from "react";
 import { Meteor } from "meteor/meteor";
 import { i18next } from "/client/api";
@@ -35,7 +36,7 @@ class ForgotContainer extends Component {
       errors.email = validatedEmail;
     }
 
-    if ($.isEmptyObject(errors) === false) {
+    if (_.isEmpty(errors) === false) {
       this.setState({
         isLoading: false,
         formMessages: {
