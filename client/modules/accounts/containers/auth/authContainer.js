@@ -137,8 +137,14 @@ class AuthContainer extends Component {
     const loginWithService = Meteor["loginWith" + serviceName];
     const options = {}; // use default scope unless specified
 
-    loginWithService(options, () => {
-      // TODO: add error message for failed login attempt
+    loginWithService(options, (error) => {
+      if (error) {
+        this.setState({
+          formMessages: {
+            alerts: [error]
+          }
+        });
+      }
     });
   }
 
