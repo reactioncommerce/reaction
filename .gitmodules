@@ -1,0 +1,4 @@
+
+[submodule "eePlugins"]
+	path = imports/plugins/custom/eePlugins
+	url = https://github.com/evereveofficial/eePlugins.git
