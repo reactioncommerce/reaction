@@ -16,24 +16,24 @@ class LoginContainer extends Component {
     this.showSignInView = this.showSignInView.bind(this);
   }
 
-  showForgotPasswordView(e) {
-    e.preventDefault();
+  showForgotPasswordView(event) {
+    event.preventDefault();
 
     this.setState({
       currentView: "loginFormResetPasswordView"
     });
   }
 
-  showSignUpView(e) {
-    e.preventDefault();
+  showSignUpView(event) {
+    event.preventDefault();
 
     this.setState({
       currentView: "loginFormSignUpView"
     });
   }
 
-  showSignInView(e) {
-    e.preventDefault();
+  showSignInView(event) {
+    event.preventDefault();
 
     this.setState({
       currentView: "loginFormSignInView"
