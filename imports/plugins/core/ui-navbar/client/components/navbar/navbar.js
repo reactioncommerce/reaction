@@ -1,5 +1,8 @@
+import { FlatButton } from "/imports/plugins/core/ui/client/components";
+import { NotificationContainer } from "/imports/plugins/included/notifications/client/containers";
 import { Reaction } from "/client/api";
 import { Tags } from "/lib/collections";
+import CartPanel from "../../../../checkout/client/templates/cartPanel/container/cartPanelContainer";
 import MainDropdown from "/client/modules/accounts/containers/dropdown/mainDropdownContainer.js";
 import NavBarContainer from "./containers/navbarContainer";
 
@@ -85,5 +88,25 @@ Template.CoreNavigationBar.helpers({
         instance.toggleMenuCallback = callback;
       }
     };
+  },
+  isSearchEnabled() {
+    const instance = Template.instance();
+    return instance.state.get("searchEnabled");
+  },
+
+  IconButtonComponent() {
+    return {
+      component: FlatButton,
+      icon: "fa fa-search",
+      kind: "flat"
+    };
+  },
+  notificationButtonComponent() {
+    return {
+      component: NotificationContainer
+    };
+  },
+  cartPanel() {
+    return CartPanel;
   }
 });
