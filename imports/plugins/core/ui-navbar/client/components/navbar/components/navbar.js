@@ -9,6 +9,13 @@ import LanguageContainer from "/client/modules/i18n/templates/header/containers/
 import CurrencyContainer from "/client/modules/i18n/templates/currency/containers/currencyContainer";
 
 class NavBar extends Component {
+  static propTypes = {
+    hasProperPermission: PropTypes.bool,
+    icon: PropTypes.string,
+    kind: PropTypes.string,
+    searchEnabled: PropTypes.bool
+  }
+
   renderLanguage() {
     return (
       <div className="languages hidden-xs">
@@ -32,7 +39,7 @@ class NavBar extends Component {
   }
 
   renderSearchButton() {
-    if (this.props.isSearchEnabled()) {
+    if (this.props.searchEnabled) {
       return (
         <div className="search">
           <FlatButton
@@ -88,12 +95,5 @@ class NavBar extends Component {
     );
   }
 }
-
-NavBar.propTypes = {
-  hasProperPermission: PropTypes.bool,
-  icon: PropTypes.string,
-  isSearchEnabled: PropTypes.func,
-  kind: PropTypes.string
-};
 
 export default NavBar;

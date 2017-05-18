@@ -2,7 +2,12 @@
     <div>
       {{>React navbar}}
     </div>
-
-
-
+      <div class="rui navbar">
+    <div class="showmenu">{{> button icon="bars" onClick=onMenuButtonClick}}</div>
+    {{> coreNavigationBrand}}
+    <div class="menu">
+      {{> tagNav tagNavProps}}
+    </div>
+    <div class="accounts">{{> accounts tpl="loginDropdown"}}</div>
+  </div>
 </template>
