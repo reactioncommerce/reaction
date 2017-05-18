@@ -21,6 +21,30 @@ class TagTree extends Component {
     return "";
   }
 
+  // setting up the func before passing to TagItem
+  handleNewTagSave = (event, tag) => {
+    console.log('handling NewTagSave');
+    event.preventDefault();
+    if (this.props.onNewTagSave) {
+      this.props.onNewTagSave(tag, this.props.parentTag);
+    }
+  }
+
+  // setting up the func before passing to TagItem
+  // handleNewTagUpdate = (event, tag) => {
+  //   console.log('handling NewTagupdate ');
+  //   if (this.props.onTagUpdate) {
+  //     this.props.onTagUpdate(tag, this.props.parentTag);
+  //   }
+  // }
+
+  handleNewTagUpdate = (event, tag) => { // updates the current tag state being edited
+    console.log(tag);
+    this.setState({
+      newTag: tag
+    });
+  }
+
   tagListProps(groupTag) {
     return {
       parentTag: groupTag,
@@ -46,7 +70,7 @@ class TagTree extends Component {
             onTagInputBlur={this.handleTagSave}
             onTagMouseOut={this.handleTagMouseOut}
             onTagMouseOver={this.handleTagMouseOver}
-            onTagRemove={this.handleTagRemove}
+            onTagRemove={this.props.onTagRemove}
             onTagSelect={this.onTagSelect}
             selectable={true}
             onTagUpdate={this.handleTagUpdate}
@@ -81,6 +105,7 @@ class TagTree extends Component {
               isSelected={this.isSelected}
               suggestions={this.state.suggestions}
               tag={groupTag}
+              parentTag={this.props.parentTag}
               onClearSuggestions={this.props.onClearSuggestions}
               onGetSuggestions={this.props.onGetSuggestions}
               onMove={this.props.onMove}
@@ -99,15 +124,15 @@ class TagTree extends Component {
                 <TagItem
                   blank={true}
                   key="newTagForm"
-                  onClearSuggestions={this.props.onClearSuggestions}
-                  onGetSuggestions={this.props.onGetSuggestions}
-                  onTagInputBlur={this.props.onTagInputBlur}
-                  onTagSave={this.props.onTagSave}
+                  tag={this.state.newTag}
                   inputPlaceholder="Add Tag"
                   i18nKeyInputPlaceholder="tags.addTag"
-                  onTagUpdate={this.props.onTagUpdate}
-                  tag={this.state.newTag}
                   suggestions={this.state.suggestions}
+                  onClearSuggestions={this.props.onClearSuggestions}
+                  onGetSuggestions={this.props.onGetSuggestions}
+                  onTagInputBlur={this.handleNewTagSave}
+                  onTagSave={this.handleNewTagSave}
+                  onTagUpdate={this.handleNewTagUpdate}
                 />
               </div>
             }
@@ -133,12 +158,14 @@ class TagTree extends Component {
                   blank={true}
                   tag={this.state.newTag}
                   key="newTagForm"
-                  onClearSuggestions={this.handleClearSuggestions}
-                  onGetSuggestions={this.handleGetSuggestions}
                   inputPlaceholder="Add Tag"
                   i18nKeyInputPlaceholder="tags.addTag"
-                  onTagSave={this.props.onTagSave}
                   suggestions={this.state.suggestions}
+                  onClearSuggestions={this.handleClearSuggestions}
+                  onGetSuggestions={this.handleGetSuggestions}
+                  onTagInputBlur={this.handleNewTagSave}
+                  onTagSave={this.handleNewTagSave}
+                  onTagUpdate={this.handleNewTagUpdate}
                 />
               </div>
             </div>
@@ -155,11 +182,12 @@ TagTree.propTypes = {
   onClearSuggestions: PropTypes.func,
   onGetSuggestions: PropTypes.func,
   onMove: PropTypes.func,
+  onNewTagSave: PropTypes.func,
+  onNewTagUpdate: PropTypes.func,
   onTagInputBlur: PropTypes.func,
   onTagMouseOut: PropTypes.func,
   onTagMouseOver: PropTypes.func,
   onTagRemove: PropTypes.func,
-  onTagSav: PropTypes.func,
   onTagSave: PropTypes.func,
   onTagUpdate: PropTypes.func,
   parentTag: PropTypes.object,

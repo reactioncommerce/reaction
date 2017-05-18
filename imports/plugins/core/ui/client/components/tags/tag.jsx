@@ -70,8 +70,10 @@ class Tag extends Component {
    * @return {void} no return value
    */
   handleTagRemove = () => {
+    console.log('about to remove');
     if (this.props.onTagRemove) {
-      this.props.onTagRemove(this.props.tag);
+      console.log(this.props.onTagRemove.toString());
+      this.props.onTagRemove(this.props.tag, this.props.parentTag);
     }
   };
 
@@ -89,6 +91,7 @@ class Tag extends Component {
   };
 
   handleTagKeyDown = (event) => {
+    console.log('keydwn');
     if (event.keyCode === 13) {
       this._saved = true;
       this.saveTag(event);
@@ -134,6 +137,7 @@ class Tag extends Component {
    * @return {void} no return value
    */
   handleTagInputBlur = (event) => {
+    console.log('handleTagInputBlur');
     if (this.props.onTagInputBlur) {
       this._saved = true;
       this.props.onTagInputBlur(event, this.props.tag);
@@ -141,6 +145,7 @@ class Tag extends Component {
   };
 
   handleInputChange = (event, { newValue }) => {
+    console.log('handleInputChange in tag.jsx');
     if (this.props.onTagUpdate) {
       console.log('handleInputChange in tag.jsx', { tag: this.props.tag, newValue });
       const updatedTag = Object.assign({}, { ...this.props.tag }, {

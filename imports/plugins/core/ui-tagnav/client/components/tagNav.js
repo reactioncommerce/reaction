@@ -1,7 +1,6 @@
 import { Reaction } from "/client/api";
 import React, { Component, PropTypes } from "react";
 import { Tags } from "/lib/collections";
-import classnames from "classnames";
 import { EditButton } from "/imports/plugins/core/ui/client/components";
 import { DragDropProvider } from "/imports/plugins/core/ui/client/providers";
 import { TagList } from "/imports/plugins/core/ui/client/components/tags/";
@@ -52,6 +51,7 @@ const TagNavHelpers = {
     TagHelpers.createTag(tagName, undefined, parentTag);
   },
   onTagRemove(tag, parentTag) {
+    console.log('in helper', tag, parentTag);
     TagHelpers.removeTag(tag, parentTag);
   },
   onTagSort(tagIds, parentTag) {
@@ -144,9 +144,9 @@ class TagNav extends Component {
     // TagNavHelpers.onTagCreate(tag.name);
   }
 
-  handleTagRemove = (tag) => {
-    console.log('onTagRemove', { tag });
-    TagNavHelpers.onTagRemove(tag);
+  handleTagRemove = (tag, parentTag) => {
+    editable = true; // keep editing state after re-render
+    TagNavHelpers.onTagRemove(tag, parentTag);
   }
 
   handleTagUpdate = (tag) => {
@@ -330,12 +330,18 @@ class TagNav extends Component {
         <DragDropProvider>
           <TagList
             {...TagNavHelpers}
+            {...this.props}
             isTagNav={true}
             newTag={this.state.newTag}
+            editable={this.state.editable}
+            suggestions={this.state.suggestions}
+            tags={this.tags}
+            enableNewTagForm={true}
+            hasDropdownClassName={this.hasDropdownClassName}
+            navbarSelectedClassName={this.navbarSelectedClassName}
             onClearSuggestions={this.handleClearSuggestions}
             onGetSuggestions={this.handleGetSuggestions}
             onMoveTag={this.handleMoveTag}
-            editable={this.state.editable}
             onNewTagSave={this.handleNewTagSave}
             onNewTagUpdate={this.handleNewTagUpdate}
             onTagMouseOut={this.handleTagMouseOut}
@@ -344,12 +350,6 @@ class TagNav extends Component {
             onTagSave={this.handleTagSave}
             onTagUpdate={this.handleTagUpdate}
             onTagSelect={this.onTagSelect}
-            suggestions={this.state.suggestions}
-            tags={this.tags}
-            enableNewTagForm={true}
-            hasDropdownClassName={this.hasDropdownClassName}
-            navbarSelectedClassName={this.navbarSelectedClassName}
-            {...this.props}
           />
         </DragDropProvider>
         {this.renderEditButton()}
