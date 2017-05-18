@@ -5,6 +5,7 @@ import { composeWithTracker } from "/lib/api/compose";
 import { SignIn, SignUp, LoginButtons } from "../../components";
 import { MessagesContainer } from "../helpers";
 import { ServiceConfigHelper } from "../../helpers";
+import { LoginFormSharedHelpers } from "/client/modules/accounts/helpers";
 
 class AuthContainer extends Component {
   constructor(props) {
@@ -120,8 +121,7 @@ class AuthContainer extends Component {
   }
 
   capitalize = (str) => {
-    const finalString = str === null ? "" : String(str);
-    return finalString.charAt(0).toUpperCase() + finalString.slice(1);
+    return LoginFormSharedHelpers.capitalize(str);
   }
 
   handleSocialLogin = (value) => {

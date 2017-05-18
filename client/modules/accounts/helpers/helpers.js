@@ -11,5 +11,9 @@ export const LoginFormSharedHelpers = {
     if (error !== true && typeof error !== "undefined") {
       return "has-error has-feedback";
     }
+  },
+  capitalize: function (str) {
+    const finalString = str === null ? "" : String(str);
+    return finalString.charAt(0).toUpperCase() + finalString.slice(1);
   }
 };
