@@ -43,6 +43,7 @@ function getSuggestions(term) {
   const datums = [];
   const slug = Reaction.getSlug(term);
   Tags.find({
+    isTopLevel: false,
     slug: new RegExp(slug, "i")
   }).forEach(function (tag) {
     return datums.push({
