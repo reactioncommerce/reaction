@@ -83,6 +83,7 @@ const TagNavHelpers = {
 };
 
 let editable = false;
+let selectedTag = null;
 
 class TagNav extends Component {
   constructor(props) {
@@ -93,7 +94,7 @@ class TagNav extends Component {
       editable: editable,
       tagIds: props.tagIds || [],
       tagsByKey: props.tagsByKey || {},
-      selectedTag: null,
+      selectedTag: selectedTag,
       suggestions: [],
       [NavbarStates.Visible]: false,
       [NavbarStates.Visibile]: NavbarVisibility.Hidden,
@@ -226,11 +227,13 @@ class TagNav extends Component {
     return "closed";
   }
 
-  onTagSelect = (selectedTag) => {
-    if (JSON.stringify(selectedTag) === JSON.stringify(this.state.selectedTag)) {
+  onTagSelect = (currentSelectedTag) => {
+    if (JSON.stringify(currentSelectedTag) === JSON.stringify(selectedTag)) {
+      selectedTag = null; // to keep open state on re-rendering
       this.setState({ selectedTag: null });
     } else {
-      this.setState({ selectedTag: selectedTag });
+      selectedTag = currentSelectedTag; // to keep open state on re-rendering
+      this.setState({ selectedTag: currentSelectedTag });
     }
   }
 
