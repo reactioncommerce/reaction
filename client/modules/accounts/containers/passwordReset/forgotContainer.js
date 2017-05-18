@@ -28,7 +28,10 @@ class ForgotContainer extends Component {
       isLoading: true
     });
 
-    const emailAddress = email.trim();
+    let newEmail;
+    email === undefined ? newEmail = "" : newEmail = email;
+
+    const emailAddress = newEmail.trim();
     const validatedEmail = LoginFormValidation.email(emailAddress);
     const errors = {};
 
