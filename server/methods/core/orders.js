@@ -831,7 +831,6 @@ export const methods = {
       shopId: Reaction.getShopId()
     }).settings[settingsKey].support;
 
-    const orderStatus = paymentMethod.status;
     const orderMode = paymentMethod.mode;
 
     let result;
@@ -849,7 +848,7 @@ export const methods = {
         Logger.fatal("Attempt for de-authorize transaction failed", order._id, paymentMethod.transactionId, result.error);
         throw new Meteor.Error("Attempt to de-authorize transaction failed", result.error);
       }
-    } else if (orderStatus === "completed" && orderMode === "capture") {
+    } else if (orderMode === "capture") {
       result = Meteor.call(`${processor}/refund/create`, paymentMethod, amount);
       query = {
         $push: {

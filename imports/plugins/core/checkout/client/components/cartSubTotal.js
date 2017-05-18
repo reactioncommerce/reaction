@@ -1,12 +1,22 @@
-import React, { Component, PropTypes } from "react";
-import { Currency } from "/imports/plugins/core/ui/client/components/";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { Currency, Translation } from "/imports/plugins/core/ui/client/components/";
 
 class CartSubTotal extends Component {
+  static propTypes = {
+    cartCount: PropTypes.number,
+    cartDiscount: PropTypes.string,
+    cartShipping: PropTypes.string,
+    cartSubTotal: PropTypes.string,
+    cartTaxes: PropTypes.string,
+    cartTotal: PropTypes.string
+  }
+
   validateDiscount() {
     if (Number(this.props.cartDiscount) > 0) {
       return (
         <tr>
-          <td data-i18n="cartSubTotals.discount">Discount</td>
+          <td><Translation defaultValue="Discount" i18nKey="cartSubTotals.discount" /></td>
           <td><Currency amount={this.props.cartDiscount} /></td>
         </tr>
       );
@@ -16,7 +26,7 @@ class CartSubTotal extends Component {
     if (Number(this.props.cartShipping) > 0) {
       return (
         <tr>
-          <td data-i18n="cartSubTotals.shipping">Shipping</td>
+          <td><Translation defaultValue="Shipping" i18nKey="cartSubTotals.shipping" /></td>
           <td><Currency amount={this.props.cartShipping} /></td>
         </tr>
       );
@@ -26,7 +36,7 @@ class CartSubTotal extends Component {
     if (Number(this.props.cartTaxes) > 0) {
       return (
         <tr>
-          <td data-i18n="cartSubTotals.tax">Tax</td>
+          <td><Translation defaultValue="Tax" i18nKey="cartSubTotals.tax" /></td>
           <td><Currency amount={this.props.cartTaxes} /></td>
         </tr>
       );
@@ -37,16 +47,25 @@ class CartSubTotal extends Component {
       <div className="cart-items">
         <div className="cart-totals">
           <table className="table table-condensed">
-            <thead data-i18n="cartSubTotals.head">
-              <tr><th>Your cart</th></tr>
+            <thead>
+              <tr><th><Translation defaultValue="Your cart" i18nKey="cartSubTotals.head" /></th></tr>
             </thead>
             <tbody>
-              <tr><td data-i18n="cartSubTotals.items">Items in cart</td><td>{this.props.cartCount}</td></tr>
-              <tr><td data-i18n="cartSubTotals.subtotal">Sub total</td><td><Currency amount={this.props.cartSubTotal} /></td></tr>
+              <tr>
+                <td><Translation defaultValue="Items in cart" i18nKey="cartSubTotals.items" /></td>
+                <td>{this.props.cartCount}</td>
+              </tr>
+              <tr>
+                <td><Translation defaultValue="Sub total" i18nKey="cartSubTotals.subtotal" /></td>
+                <td><Currency amount={this.props.cartSubTotal} /></td>
+              </tr>
               {this.validateDiscount()}
               {this.validateShipping()}
               {this.validateTaxes()}
-              <tr><td data-i18n="cartSubTotals.total">Total</td><td><Currency amount={this.props.cartTotal} /></td></tr>
+              <tr>
+                <td><Translation defaultValue="Total" i18nKey="cartSubTotals.total" /></td>
+                <td><Currency amount={this.props.cartTotal} /></td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -54,14 +73,5 @@ class CartSubTotal extends Component {
     );
   }
 }
-
-CartSubTotal.propTypes = {
-  cartCount: PropTypes.number,
-  cartDiscount: PropTypes.string,
-  cartShipping: PropTypes.string,
-  cartSubTotal: PropTypes.string,
-  cartTaxes: PropTypes.string,
-  cartTotal: PropTypes.string
-};
 
 export default CartSubTotal;
