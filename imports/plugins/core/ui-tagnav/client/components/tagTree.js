@@ -8,7 +8,10 @@ class TagTree extends Component {
 
     this.state = {
       suggestions: [],
-      newTag: {
+      newTagOnList: {
+        name: ""
+      },
+      newTagOnTree: {
         name: ""
       }
     };
@@ -30,19 +33,11 @@ class TagTree extends Component {
     }
   }
 
-  // setting up the func before passing to TagItem
-  // handleNewTagUpdate = (event, tag) => {
-  //   console.log('handling NewTagupdate ');
-  //   if (this.props.onTagUpdate) {
-  //     this.props.onTagUpdate(tag, this.props.parentTag);
-  //   }
-  // }
-
-  handleNewTagUpdate = (event, tag) => { // updates the current tag state being edited
-    console.log(tag);
-    this.setState({
-      newTag: tag
-    });
+  handleNewTagUpdate = (key) => { // updates the current tag state being edited
+    return (event, tag) => {
+      console.log(tag);
+      this.setState({ [key]: tag });
+    };
   }
 
   tagListProps(groupTag) {
@@ -124,7 +119,7 @@ class TagTree extends Component {
                 <TagItem
                   blank={true}
                   key="newTagForm"
-                  tag={this.state.newTag}
+                  tag={this.state.newTagOnList}
                   inputPlaceholder="Add Tag"
                   i18nKeyInputPlaceholder="tags.addTag"
                   suggestions={this.state.suggestions}
@@ -132,7 +127,7 @@ class TagTree extends Component {
                   onGetSuggestions={this.props.onGetSuggestions}
                   onTagInputBlur={this.handleNewTagSave}
                   onTagSave={this.handleNewTagSave}
-                  onTagUpdate={this.handleNewTagUpdate}
+                  onTagUpdate={this.handleNewTagUpdate("newTagOnList")}
                 />
               </div>
             }
@@ -156,7 +151,7 @@ class TagTree extends Component {
               <div className="header">
                 <TagItem
                   blank={true}
-                  tag={this.state.newTag}
+                  tag={this.state.newTagOnTree}
                   key="newTagForm"
                   inputPlaceholder="Add Tag"
                   i18nKeyInputPlaceholder="tags.addTag"
@@ -165,7 +160,7 @@ class TagTree extends Component {
                   onGetSuggestions={this.handleGetSuggestions}
                   onTagInputBlur={this.handleNewTagSave}
                   onTagSave={this.handleNewTagSave}
-                  onTagUpdate={this.handleNewTagUpdate}
+                  onTagUpdate={this.handleNewTagUpdate("newTagOnTree")}
                 />
               </div>
             </div>
