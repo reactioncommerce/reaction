@@ -33,6 +33,9 @@ class TagTree extends Component {
       event.preventDefault();
       if (this.props.onNewTagSave) {
         this.props.onNewTagSave(tag, parentTag);
+        this.setState({
+          [parentTag.name]: { name: "" }
+        });
       }
     };
   }

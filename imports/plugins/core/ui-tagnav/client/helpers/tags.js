@@ -81,6 +81,9 @@ export const TagHelpers = {
 
   createTag(tagName, tagId, parentTag) {
     console.log('helper updateTag');
+    if (!tagName) {
+      return;
+    }
     let parentTagId;
 
     if (parentTag) {
