@@ -162,6 +162,7 @@ Template.productGridItems.helpers({
     return this.positions && this.positions[tag] || {};
   }
 });
+let clicks = 0;
 
 /**
  * productGridItems events
@@ -171,6 +172,7 @@ Template.productGridItems.events({
   "dblclick [data-event-action=productClick]": function (event, template) {
     const instance = template;
     const product = instance.data;
+    console.log(product);
     const handle = product.__published && product.__published.handle || product.handle;
 
     Reaction.Router.go("product", {
@@ -184,7 +186,9 @@ Template.productGridItems.events({
     });
   },
   "click [data-event-action=productClick]": function (event, template) {
-    if (Reaction.hasPermission("createProduct") && Reaction.isPreview() === false) {
+    clicks++;
+    console.log(clicks);
+    if (Reaction.hasPermission("createProduct") && Reaction.isPreview() === false && clicks <= 1) {
       event.preventDefault();
 
       const isSelected = $(event.target).closest("li.product-grid-item.active").length;
@@ -244,6 +248,7 @@ Template.productGridItems.events({
       }
     } else {
       event.preventDefault();
+      clicks = 0;
 
       const instance = template;
       const product = instance.data;
