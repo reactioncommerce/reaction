@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Reaction } from "/client/api";
 import { composeWithTracker } from "/lib/api/compose";
 import * as Collections from "/lib/collections";
-import { i18nextDep } from  "/client/modules/i18n/main.js";
+import { i18nextDep, i18next } from  "/client/api";
 import { Accounts } from "meteor/accounts-base";
 import { Roles } from "meteor/alanning:roles";
 import MainDropdown from "../../components/dropdown/mainDropdown";
