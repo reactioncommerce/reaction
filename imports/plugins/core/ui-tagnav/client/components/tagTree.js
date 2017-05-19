@@ -37,16 +37,13 @@ class TagTree extends Component {
   }
 
   // setting up the func before passing to TagItem
-  handleNewTagSave = (parentTag) => {
-    return (event, tag) => {
-      event.preventDefault();
-      if (this.props.onNewTagSave) {
-        this.props.onNewTagSave(tag, parentTag);
-        this.setState({
-          newTag: { name: "" }
-        });
-      }
-    };
+  handleNewTagSave = (event, tag) => {
+    if (this.props.onNewTagSave) {
+      this.props.onNewTagSave(tag, this.props.tagTreeProps.parentTag);
+      this.setState({
+        newTag: { name: "" }
+      });
+    }
   }
 
   handleTagUpdate = (event, tag) => {
@@ -71,9 +68,12 @@ class TagTree extends Component {
         <div className={`rui grouptag ${this.className}`} data-id={tag._id} key={tag._id}>
           <TagTreeHeader
             tag={tag}
+            parentTag={this.state.parentTag}
             editable={this.props.editable}
+            onTagRemove={this.props.onTagRemove}
           />
           <TagTreeBody
+            {...this.props}
             tags={TagHelpers.subTags(tag)}
             parentTag={tag}
             editable={this.props.editable}
@@ -104,8 +104,8 @@ class TagTree extends Component {
                   suggestions={this.state.suggestions}
                   onClearSuggestions={this.handleClearSuggestions}
                   onGetSuggestions={this.handleGetSuggestions}
-                  onTagInputBlur={this.handleNewTagSave(this.props.parentTag)}
-                  onTagSave={this.handleNewTagSave(this.props.parentTag)}
+                  onTagInputBlur={this.handleNewTagSave}
+                  onTagSave={this.handleNewTagSave}
                   onTagUpdate={this.handleNewTagUpdate}
                 />
               </div>

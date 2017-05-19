@@ -7,10 +7,37 @@ class TagTreeBody extends Component {
     super(props);
     this.state = {
       suggestions: [],
+      tags: this.props.tags,
       newTag: {
         name: ""
       }
     };
+  }
+
+  // setting up the func before passing to TagItem
+  handleNewTagSave = (event, tag) => {
+    if (this.props.onNewTagSave) {
+      this.props.onNewTagSave(tag, this.props.parentTag);
+      this.setState({
+        newTag: { name: "" }
+      });
+    }
+  }
+
+  handleTagUpdate = (event, tag) => {
+    // const newState = update(this.state, {
+    //   tagsByKey: {
+    //     [tag._id]: {
+    //       $set: tag
+    //     }
+    //   }
+    // });
+
+    // this.setState(newState);
+  }
+
+  handleNewTagUpdate = (event, tag) => { // updates blank tag state being edited
+    this.setState({ newTag: tag });
   }
 
   genTagsList(tags, parentTag) {
@@ -28,8 +55,6 @@ class TagTreeBody extends Component {
             draggable={true}
             selectable={true}
             suggestions={this.state.suggestions}
-            onClearSuggestions={this.handleClearSuggestions}
-            onGetSuggestions={this.handleGetSuggestions}
             onMove={this.handleMoveTag}
             onTagInputBlur={this.handleTagSave}
             onTagMouseOut={this.handleTagMouseOut}
@@ -47,7 +72,7 @@ class TagTreeBody extends Component {
     return (
       <div className="content">
         <div className="rui tags" data-id={this.props.parentTag._id}>
-          {this.genTagsList(this.props.tags, this.props.parentTag)}
+          {this.genTagsList(this.state.tags, this.props.parentTag)}
           {this.props.editable &&
             <div className="rui item create">
               <TagItem
@@ -59,9 +84,9 @@ class TagTreeBody extends Component {
                 suggestions={this.state.suggestions}
                 onClearSuggestions={this.props.onClearSuggestions}
                 onGetSuggestions={this.props.onGetSuggestions}
-                onTagInputBlur={this.handleNewTagSave(this.props.parentTag)}
-                onTagSave={this.handleNewTagSave(this.props.parentTag)}
-                onTagUpdate={this.handleNewTagUpdate(this.props.parentTag.name)}
+                onTagInputBlur={this.handleNewTagSave}
+                onTagSave={this.handleNewTagSave}
+                onTagUpdate={this.handleNewTagUpdate}
               />
             </div>
           }
@@ -73,6 +98,10 @@ class TagTreeBody extends Component {
 
 TagTreeBody.propTypes = {
   editable: PropTypes.bool,
+  onClearSuggestions: PropTypes.func,
+  onGetSuggestions: PropTypes.func,
+  onNewTagSave: PropTypes.func,
+  onTagRemove: PropTypes.func,
   parentTag: PropTypes.object,
   tags: ReactionPropTypes.arrayOfTags
 };

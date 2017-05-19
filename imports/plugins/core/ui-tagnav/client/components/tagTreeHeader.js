@@ -5,29 +5,40 @@ class TagTreeHeader extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      suggestions: []
+      suggestions: [],
+      tag: this.props.tag
     };
+  }
+
+  handleTagUpdate = (event, tag) => {
+    this.setState({ tag: tag });
+  }
+
+  handleTagSave = (event, tag) => {
+    if (this.props.onTagSave) {
+      this.props.onTagSave(tag);
+    }
   }
 
   render() {
     return (
       <div className="header">
         <TagItem
-          tag={this.props.tag}
+          tag={this.state.tag}
+          parentTag={this.props.parentTag}
           selectable={true}
           className="js-tagNav-item"
           editable={this.props.editable}
           isSelected={this.isSelected}
           suggestions={this.state.suggestions}
-          parentTag={this.props.parentTag}
           onClearSuggestions={this.props.onClearSuggestions}
           onGetSuggestions={this.props.onGetSuggestions}
           onMove={this.props.onMove}
-          onTagInputBlur={this.props.onTagInputBlur}
           onTagMouseOut={this.props.onTagMouseOut}
           onTagMouseOver={this.props.onTagMouseOver}
           onTagRemove={this.props.onTagRemove}
-          onTagSave={this.props.onTagSave}
+          onTagSave={this.handleTagSave}
+          onTagInputBlur={this.handleTagSave}
           onTagUpdate={this.handleTagUpdate}
         />
       </div>
@@ -36,7 +47,11 @@ class TagTreeHeader extends Component {
 }
 
 TagTreeHeader.propTypes = {
-  parentTag: PropTypes.object
+  editable: PropTypes.bool,
+  onTagRemove: PropTypes.func,
+  onTagSave: PropTypes.func,
+  parentTag: PropTypes.object,
+  tag: PropTypes.object
 };
 
 export default TagTreeHeader;

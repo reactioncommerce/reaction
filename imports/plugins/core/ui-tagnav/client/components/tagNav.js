@@ -71,7 +71,7 @@ const TagNavHelpers = {
     const foundTag = this.tagById(tagId, tags);
 
     if (foundTag) {
-      if (_.isArray(foundTag.relatedTagIds) && foundTag.relatedTagIds.length) {
+      if (Array.isArray(foundTag.relatedTagIds) && foundTag.relatedTagIds.length) {
         return true;
       }
     }
@@ -156,6 +156,10 @@ class TagNav extends Component {
     });
 
     this.setState(newState);
+  }
+
+  handleTagSave = (tag) => {
+    TagNavHelpers.onTagUpdate(tag._id, tag.name);
   }
 
   handleMoveTag = () => {
@@ -270,14 +274,10 @@ class TagNav extends Component {
   }
 
   hasDropdownClassName(tag) {
-    if (_.isArray(tag.relatedTagIds)) {
+    if (Array.isArray(tag.relatedTagIds)) {
       return "has-dropdown";
     }
     return null;
-  }
-
-  handleTagSave = (tag) => {
-    TagNavHelpers.onTagUpdate(tag._id, tag.name);
   }
 
   navbarSelectedClassName = (tag) => {

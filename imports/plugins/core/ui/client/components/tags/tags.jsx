@@ -83,8 +83,7 @@ class Tags extends Component {
   }
 
   tagTreeProps = (tag) => {
-    const subTagGroups = TagHelpers.subTags(tag);
-
+    const subTagGroups = _.compact(TagHelpers.subTags(tag));
     const tagsByKey = {};
 
     if (Array.isArray(subTagGroups)) {
