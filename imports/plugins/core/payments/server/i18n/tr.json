@@ -26,6 +26,7 @@
         "processingError": "Ödemeniz ile ilgili bir sorun oluştu.",
         "completeYourOrder": "Siparişinizi tamamlamak",
         "noPaymentMethods": "Hiçbir ödeme yöntemleri yapılandırılır.",
+        "contactAdmin": "Lütfen mağaza yöneticisine başvurun.",
         "configureNow": "Şimdi yapılandırın.",
         "failedToPlaceOrder": "sipariş için başarısız oldu."
       }

@@ -5,10 +5,19 @@
     "reaction-i18n": {
       "admin": {
         "i18nSettings": {
-          "localization": "yerelleştirme",
+          "shopLocalization": "Mağazanın Lokalizasyonu",
           "enabledCurrencies": "Kurlar",
-          "enabledLanguages": "Diller"
-        }
+          "enabledLanguages": "Diller",
+          "allOn": "Hepsi Açık",
+          "allOff": "Hepsi Kapalı"
+        },
+        "baseUOM": "Ölçü Ana Ünite",
+        "currency": "baz Döviz",
+        "currencyTooltip": "Mağaza varsayılan para birimi",
+        "language": "baz Dili",
+        "languageTooltip": "Cihaz dil algılama başarısız olacak, bu dil kullanılacaktır",
+        "timezone": "Saat dilimi",
+        "timezoneOptions": "dilimini seçin"
       }
     }
   }

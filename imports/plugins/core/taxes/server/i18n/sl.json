@@ -29,6 +29,7 @@
           "shopCustomTaxRatesFailed": "Napaka pri shranjevanju davčno stopnjo.",
           "shopTaxMethodsSaved": "Shranjen metoda davek.",
           "shopTaxMethodsFailed": "Ni varčevanje davčni postopek.",
+          "customRatesLabel": "Cene po meri",
           "customRatesDescription": "Cene po meri",
           "taxCode": "Davčna številka",
           "taxShipping": "vključi Shipping",

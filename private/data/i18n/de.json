@@ -95,8 +95,6 @@
         "noProductsFound": "Es wurden keine Produkte gefunden",
         "private": "Privat",
         "public": "Öffentliche",
-        "allOn": "all On",
-        "allOff": "all Off",
         "shortcut": {
           "addProductLabel": "Produkt hinzufügen",
           "accountsLabel": "Buchhaltung"
@@ -122,24 +120,12 @@
         "settingsfailed": "Die Aktualisierung der Sucheinstellungen ist fehlgeschlagen"
       },
       "shopSettings": {
-        "general": "Allgemein",
-        "address": "Adresse",
-        "import": "Importieren",
         "localization": "Lokalisierung",
         "options": "Optionen",
-        "availableOptions": "Verfügbare Optionen",
         "paymentMethods": "Zahlungsarten",
         "externalServices": "Externe Dienste",
-        "shopGeneralSettingsSaved": "Die allgemeinen Einstellungen des Geschäfts wurden gespeichert.",
-        "shopGeneralSettingsFailed": "Die Aktualisierung der allgemeinen Geschäfts-Einstellungen ist fehlgeschlagen. ",
-        "shopAddressSettingsSaved": "Die Adresseinstellungen des Geschäfts wurden gespeichert. ",
-        "shopAddressSettingsFailed": "Die Aktualisierung der Geschäfts-Adresse ist fehlgeschlagen.",
-        "shopExternalServicesSettingsSaved": "Die Einstellungen der externen Dienste des Geschäfts wurden gespeichert.",
-        "shopExternalServicesSettingsFailed": "Die Aktualisierung der externen Dienst-Einstellungen des Geschäfts ist fehlgeschlagen. ",
         "shopLocalizationSettingsSaved": "Die Lokalisierungs-Einstellungen des Geschäfts wurden gespeichert.",
         "shopLocalizationSettingsFailed": "Die Aktualisierung der Lokalisierungseinstellungen des Geschäfts ist fehlgeschlagen.",
-        "shopOptionsSettingsSaved": "Die Geschäfts-Optionen wurden gespeichert.",
-        "shopOptionsSettingsFailed": "Die Aktualisierung der Shop-Optionen ist fehlgeschlagen.",
         "shopPaymentMethodsSaved": "Die Zahlungsarten-Einstellungen des Geschäfts wurden gespeichert.",
         "shopPaymentMethodsFailed": "Die Aktualisierung der Zahlungsarten-Einstellung des Geschäfts ist fehlgeschlagen."
       },
@@ -473,12 +459,6 @@
         "keywords": "Schlüsselwörter",
         "keywordsPlaceholder": "Meta-Schlüsselwörter für die SEO",
         "language": "Grund-Sprache",
-        "languageTooltip": "Diese Sprache wird verwendet, wenn die automatische Spracherkennung des Geräts fehlschlägt",
-        "timezone": "Zeitzone",
-        "timezoneOptions": "Zeitzone wählen",
-        "currency": "Grund-Währung",
-        "currencyTooltip": "Standard-Währung des Geschäfts",
-        "baseUOM": "Grund-Maßeinheit",
         "addressBook": {
           "company": "Firma",
           "companyPlaceholder": "Dieser Firmenname",
@@ -714,6 +694,12 @@
           "matchFailed": "Abgleich fehlgeschlagen",
           "unknownError": "Unbekannter Fehler"
         }
+      },
+      "loginServices": {
+        "appId": "App-ID",
+        "secret": "Geheimnis",
+        "clientId": "Client-ID",
+        "consumerKey": "API-Schlüssel"
       },
       "error": {
         "nameRequired": "Der Name ist erforderlich.",

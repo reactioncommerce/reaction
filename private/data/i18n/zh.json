@@ -95,8 +95,6 @@
         "noProductsFound": "未找到任何产品。",
         "private": "私人",
         "public": "上市",
-        "allOn": "全部打开",
-        "allOff": "全部关闭",
         "shortcut": {
           "addProductLabel": "添加产品",
           "accountsLabel": "帐户"
@@ -122,24 +120,12 @@
         "settingsfailed": "搜索设置更新失败"
       },
       "shopSettings": {
-        "general": "通用",
-        "address": "地址",
-        "import": "导入",
         "localization": "本地化",
         "options": "选项",
-        "availableOptions": "可用选项",
         "paymentMethods": "支付方式",
         "externalServices": "外部服务",
-        "shopGeneralSettingsSaved": "商店常规设置已保存。",
-        "shopGeneralSettingsFailed": "商店常规设置更新失败。",
-        "shopAddressSettingsSaved": "商店地址设置已保存。",
-        "shopAddressSettingsFailed": "商店地址设置更新失败。",
-        "shopExternalServicesSettingsSaved": "商店外部服务设置已保存。",
-        "shopExternalServicesSettingsFailed": "商店外部服务设置更新失败。",
         "shopLocalizationSettingsSaved": "商店位置设置已保存。",
         "shopLocalizationSettingsFailed": "商店位置设置更新失败。",
-        "shopOptionsSettingsSaved": "商店选项已保存。",
-        "shopOptionsSettingsFailed": "商店选项更新失败。",
         "shopPaymentMethodsSaved": "商店付款方式设置已保存。",
         "shopPaymentMethodsFailed": "商店付款方式设置更新失败。"
       },
@@ -473,12 +459,6 @@
         "keywords": "关键字",
         "keywordsPlaceholder": "SEO 元关键字",
         "language": "基本语言",
-        "languageTooltip": "如果设备语言检测失败，将使用此种语言",
-        "timezone": "时区",
-        "timezoneOptions": "选择时区",
-        "currency": "基本币种",
-        "currencyTooltip": "商店默认币种",
-        "baseUOM": "基本度量单位",
         "addressBook": {
           "company": "公司",
           "companyPlaceholder": "此公司名称",
@@ -714,6 +694,12 @@
           "matchFailed": "匹配失败。",
           "unknownError": "未知错误。"
         }
+      },
+      "loginServices": {
+        "appId": "应用程式ID",
+        "secret": "秘密",
+        "clientId": "客户端ID",
+        "consumerKey": "API密钥"
       },
       "error": {
         "nameRequired": "需要填写姓名。",

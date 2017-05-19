@@ -95,8 +95,6 @@
         "noProductsFound": "Nessun prodotto trovato.",
         "private": "Privato",
         "public": "Pubblico",
-        "allOn": "All On",
-        "allOff": "All Off",
         "shortcut": {
           "addProductLabel": "Aggiungi prodotto",
           "accountsLabel": "Conti"
@@ -122,24 +120,12 @@
         "settingsfailed": "aggiornamento Impostazioni di ricerca non è riuscita"
       },
       "shopSettings": {
-        "general": "Generico",
-        "address": "Indirizzo",
-        "import": "Importazione",
         "localization": "Localizzazione",
         "options": "Opzioni",
-        "availableOptions": "Opzioni disponibili",
         "paymentMethods": "Modalità di pagamento",
         "externalServices": "Servizi esterni",
-        "shopGeneralSettingsSaved": "Negozio impostazioni generali salvate.",
-        "shopGeneralSettingsFailed": "Negozio aggiornamento impostazioni generali non è riuscito.",
-        "shopAddressSettingsSaved": "impostazioni di indirizzo del negozio salvate.",
-        "shopAddressSettingsFailed": "Negozio aggiornamento impostazioni dell'indirizzo non è riuscito.",
-        "shopExternalServicesSettingsSaved": "Negozio impostazioni dei servizi esterni salvate.",
-        "shopExternalServicesSettingsFailed": "Negozio aggiornamento impostazioni dei servizi esterni non è riuscita.",
         "shopLocalizationSettingsSaved": "impostazioni negozio di localizzazione salvate.",
         "shopLocalizationSettingsFailed": "Negozio aggiornamento impostazioni di localizzazione non è riuscito.",
-        "shopOptionsSettingsSaved": "opzioni negozio salvate.",
-        "shopOptionsSettingsFailed": "aggiornamento opzioni negozio non è riuscito.",
         "shopPaymentMethodsSaved": "Negozio impostazioni Metodi di Pagamento salvate.",
         "shopPaymentMethodsFailed": "Negozio aggiornamento impostazioni dei metodi di pagamento non è riuscita."
       },
@@ -473,12 +459,6 @@
         "keywords": "parole",
         "keywordsPlaceholder": "Meta parole chiave per SEO",
         "language": "Lingua Base",
-        "languageTooltip": "Questo linguaggio viene utilizzato se il rilevamento lingua del dispositivo può essere considerata negativa",
-        "timezone": "Fuso orario",
-        "timezoneOptions": "Scegli fuso orario",
-        "currency": "Valuta di Base",
-        "currencyTooltip": "valuta di default negozio",
-        "baseUOM": "Unità base di misura",
         "addressBook": {
           "company": "Società",
           "companyPlaceholder": "Questo nome commerciale",
@@ -714,6 +694,12 @@
           "matchFailed": "Riscontro fallito",
           "unknownError": "Errore Sconosciuto"
         }
+      },
+      "loginServices": {
+        "appId": "ID dell'app",
+        "secret": "Segreto",
+        "clientId": "Identificativo cliente",
+        "consumerKey": "API Key"
       },
       "error": {
         "nameRequired": "è richiesto nome.",
