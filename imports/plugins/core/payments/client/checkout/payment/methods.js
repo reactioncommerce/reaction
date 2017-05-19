@@ -3,7 +3,10 @@ import { Reaction } from "/client/api";
 import "./methods.html";
 
 Template.corePaymentMethods.helpers({
-  enabledPayments
+  enabledPayments,
+  isAdmin() {
+    return Reaction.hasAdminAccess();
+  }
 });
 
 Template.corePaymentMethods.onCreated(function () {
