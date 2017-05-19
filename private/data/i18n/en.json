@@ -695,6 +695,12 @@
           "unknownError": "Unknown error"
         }
       },
+      "loginServices": {
+        "appId": "App ID",
+        "secret": "Secret",
+        "clientId": "Client ID",
+        "consumerKey": "API Key"
+      },
       "error": {
         "nameRequired": "Name is required.",
         "isRequired": "{{field}} is required.",
