@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import { Reaction } from "/client/api";
 import { Button, DropDownMenu, MenuItem } from "/imports/plugins/core/ui/client/components";
+import { LoginContainer } from "/client/modules/accounts/containers";
 
 const iconStyle = {
   margin: "10px 10px 10px 6px",
@@ -81,6 +82,25 @@ class MainDropdown extends Component {
     );
   }
 
+  renderLoginButtonElement() {
+    return (
+      <Button
+        label="Sign In"
+        i18nKeyLabel="accountsUI.signIn"
+      >
+        &nbsp;<i className="fa fa-caret-down" />
+      </Button>
+    );
+  }
+
+  renderLoginContainer() {
+    return (
+      <div className="loginForm">
+        <LoginContainer />
+      </div>
+    );
+  }
+
   render() {
     return (
       <div style={{ paddingRight: 5 }}>
@@ -100,14 +120,12 @@ class MainDropdown extends Component {
 
           </DropDownMenu> :
           <DropDownMenu
-            buttonElement={
-              <Button label="Sign In">
-                &nbsp;<i className="fa fa-caret-down" />
-              </Button>
-            }
+            buttonElement={this.renderLoginButtonElement()}
             attachment="bottom right"
             targetAttachment="top right"
-          />
+          >
+            {this.renderLoginContainer()}
+          </DropDownMenu>
         }
       </div>
     );

@@ -1,15 +1,5 @@
 import { Template } from "meteor/templating";
-import { LoginContainer, MessagesContainer } from "../../containers";
-
-Template.loginForm.helpers({
-  component() {
-    const currentData = Template.currentData() || {};
-    return {
-      ...currentData,
-      component: LoginContainer
-    };
-  }
-});
+import { MessagesContainer } from "../../containers";
 
 Template.loginFormMessages.helpers({
   component() {
