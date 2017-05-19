@@ -4,6 +4,7 @@ import { TagItem } from "./";
 import classnames from "classnames";
 import TagTree from "/imports/plugins/core/ui-tagnav/client/components/tagTree";
 import { TagHelpers } from "/imports/plugins/core/ui-tagnav/client/helpers";
+import { getTagIds } from "/lib/selectors/tags";
 
 class Tags extends Component {
   displayName = "Tag List (Tags)";
@@ -81,6 +82,25 @@ class Tags extends Component {
     }
   }
 
+  tagTreeProps = (tag) => {
+    const subTagGroups = TagHelpers.subTags(tag);
+
+    const tagsByKey = {};
+
+    if (Array.isArray(subTagGroups)) {
+      for (const tagItem of subTagGroups) {
+        tagsByKey[tagItem._id] = tagItem;
+      }
+    }
+
+    return {
+      parentTag: tag,
+      tagsByKey: tagsByKey || {},
+      tagIds: getTagIds({ tags: subTagGroups }) || [],
+      subTagGroups
+    };
+  }
+
   renderTags() {
     let baseTagNavClass = "";
     if (this.props.isTagNav) {
@@ -115,8 +135,7 @@ class Tags extends Component {
               <div className="dropdown-container">
                 <TagTree
                   editable={this.props.editable === true}
-                  parentTag={tag}
-                  subTagGroups={TagHelpers.subTags(tag)}
+                  tagTreeProps={this.tagTreeProps(tag)}
                   onClearSuggestions={this.props.onClearSuggestions}
                   onGetSuggestions={this.props.onGetSuggestions}
                   onMove={this.props.onMoveTag}

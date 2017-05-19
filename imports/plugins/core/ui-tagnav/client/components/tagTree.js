@@ -1,35 +1,24 @@
 import React, { Component, PropTypes } from "react";
 import { TagItem } from "/imports/plugins/core/ui/client/components/tags/";
+import TagTreeHeader from "./tagTreeHeader";
+import TagTreeBody from "./tagTreeBody";
 import { TagHelpers } from "/imports/plugins/core/ui-tagnav/client/helpers";
-import { getTagIds } from "/lib/selectors/tags";
 import update from "react/lib/update";
 
 class TagTree extends Component {
   constructor(props) {
     super(props);
 
-    const tagsByKey = {};
-
-    if (Array.isArray(props.subTagGroups)) {
-      for (const tag of props.subTagGroups) {
-        tagsByKey[tag._id] = tag;
-      }
-    }
-
-    const state = {
+    const { parentTag, tagsByKey, tagIds } = props.tagTreeProps;
+    this.state = {
       suggestions: [],
-      newTopLevelTreeTag: {
+      newTag: {
         name: ""
       },
-      tagIds: getTagIds({ tags: props.subTagGroups }) || [],
-      tagsByKey: tagsByKey || {}
+      tagIds,
+      parentTag,
+      tagsByKey
     };
-
-    props.subTagGroups.map((tag) => {
-      state[tag.name] = { name: "" };
-    });
-
-    this.state = state;
   }
 
   get tags() {
@@ -37,7 +26,7 @@ class TagTree extends Component {
       return this.state.tagIds.map((tagId) => this.state.tagsByKey[tagId]);
     }
 
-    return this.props.subTagGroups;
+    return this.props.tagTreeProps.subTagGroups;
   }
 
   get className() {
@@ -54,7 +43,7 @@ class TagTree extends Component {
       if (this.props.onNewTagSave) {
         this.props.onNewTagSave(tag, parentTag);
         this.setState({
-          [parentTag.name]: { name: "" }
+          newTag: { name: "" }
         });
       }
     };
@@ -69,106 +58,26 @@ class TagTree extends Component {
       }
     });
 
-    newState[tag.name] = { name: "" }; // new add tag for updated tagTree head
     this.setState(newState);
   }
 
-  handleNewTagUpdate = (key) => { // updates the current tag state being edited
-    return (event, tag) => {
-      this.setState({ [key]: tag });
-    };
+  handleNewTagUpdate = (event, tag) => { // updates blank tag state being edited
+    this.setState({ newTag: tag });
   }
 
-  genTagsList(tags, parentTag) {
-    if (_.isArray(tags)) {
-      return tags.map((tag, index) => {
-        return (
-          <TagItem
-            tag={tag}
-            index={index}
-            key={index}
-            data-id={tag._id}
-            editable={this.props.editable}
-            isSelected={this.isSelected}
-            parentTag={parentTag}
-            draggable={true}
-            selectable={true}
-            suggestions={this.state.suggestions}
-            onClearSuggestions={this.handleClearSuggestions}
-            onGetSuggestions={this.handleGetSuggestions}
-            onMove={this.handleMoveTag}
-            onTagInputBlur={this.handleTagSave}
-            onTagMouseOut={this.handleTagMouseOut}
-            onTagMouseOver={this.handleTagMouseOver}
-            onTagRemove={this.props.onTagRemove}
-            onTagSelect={this.onTagSelect}
-            onTagUpdate={this.handleTagUpdate}
-          />
-        );
-      });
-    }
-  }
-
-  renderSubTags(props) {
-    return (
-      <div className="rui tags" data-id={props.parentTag._id}>
-        {this.genTagsList(props.tags, props.parentTag)}
-      </div>
-    );
-  }
-
-  // renders both the TagTree Header and the TagTree subtags
-  renderTreeTags(tags) {
-    if (_.isArray(tags)) {
-      return tags.map((tag, index) => (
+  renderTree(tags) {
+    if (Array.isArray(tags)) {
+      return tags.map((tag) => (
         <div className={`rui grouptag ${this.className}`} data-id={tag._id} key={tag._id}>
-          <div className="header">
-            <TagItem
-              tag={tag}
-              index={index}
-              key={index}
-              selectable={true}
-              className="js-tagNav-item"
-              editable={this.props.editable}
-              isSelected={this.isSelected}
-              suggestions={this.state.suggestions}
-              parentTag={this.props.parentTag}
-              onClearSuggestions={this.props.onClearSuggestions}
-              onGetSuggestions={this.props.onGetSuggestions}
-              onMove={this.props.onMove}
-              onTagInputBlur={this.props.onTagInputBlur}
-              onTagMouseOut={this.props.onTagMouseOut}
-              onTagMouseOver={this.props.onTagMouseOver}
-              onTagRemove={this.props.onTagRemove}
-              onTagSave={this.props.onTagSave}
-              onTagUpdate={this.handleTagUpdate}
-            />
-          </div>
-          <div className="content">
-            {
-              this.renderSubTags({
-                parentTag: tag,
-                tags: TagHelpers.subTags(tag)
-              })
-            }
-            {this.props.editable &&
-              <div className="rui item create">
-                <TagItem
-                  blank={true}
-                  key="newTagForm"
-                  tag={this.state[tag.name]}
-                  inputPlaceholder="Add Tag"
-                  i18nKeyInputPlaceholder="tags.addTag"
-                  suggestions={this.state.suggestions}
-                  onClearSuggestions={this.props.onClearSuggestions}
-                  onGetSuggestions={this.props.onGetSuggestions}
-                  onTagInputBlur={this.handleNewTagSave(tag)}
-                  onTagSave={this.handleNewTagSave(tag)}
-                  onTagUpdate={this.handleNewTagUpdate(tag.name)}
-                />
-              </div>
-            }
-          </div>
+          <TagTreeHeader
+            tag={tag}
+            editable={this.props.editable}
+          />
+          <TagTreeBody
+            tags={TagHelpers.subTags(tag)}
+            parentTag={tag}
+            editable={this.props.editable}
+          />
         </div>
       ));
     }
@@ -178,17 +87,17 @@ class TagTree extends Component {
     return (
       <div className="rui tagtree">
         <div className="header">
-          <span className="title">{this.props.parentTag.name}</span>
+          <span className="title">{this.state.parentTag.name}</span>
           <a href="#">View All <i className="fa fa-angle-right" /></a>
         </div>
         <div className="content">
-          {this.renderTreeTags(this.tags)}
+          {this.renderTree(this.tags)}
           {this.props.editable &&
             <div className="rui grouptag create">
               <div className="header">
                 <TagItem
                   blank={true}
-                  tag={this.state.newTopLevelTreeTag}
+                  tag={this.state.newTag}
                   key="newTagForm"
                   inputPlaceholder="Add Tag"
                   i18nKeyInputPlaceholder="tags.addTag"
@@ -197,7 +106,7 @@ class TagTree extends Component {
                   onGetSuggestions={this.handleGetSuggestions}
                   onTagInputBlur={this.handleNewTagSave(this.props.parentTag)}
                   onTagSave={this.handleNewTagSave(this.props.parentTag)}
-                  onTagUpdate={this.handleNewTagUpdate("newTopLevelTreeTag")}
+                  onTagUpdate={this.handleNewTagUpdate}
                 />
               </div>
             </div>
@@ -222,8 +131,7 @@ TagTree.propTypes = {
   onTagRemove: PropTypes.func,
   onTagSave: PropTypes.func,
   onTagUpdate: PropTypes.func,
-  parentTag: PropTypes.object,
-  subTagGroups: PropTypes.arrayOf(PropTypes.object)
+  tagTreeProps: PropTypes.object
 };
 
 export default TagTree;
