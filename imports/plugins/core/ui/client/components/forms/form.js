@@ -1,9 +1,8 @@
 import React, { Component, PropTypes } from "react";
 import { map, update, set, at, isEqual } from "lodash";
 import classnames from "classnames";
-import { toCamelCase } from "/lib/api";
 import { Switch, Button, TextField, Select, FormActions } from "../";
-import { i18next } from "/client/api";
+
 class Form extends Component {
   static defaultProps = {
     autoSave: false
