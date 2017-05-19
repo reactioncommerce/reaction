@@ -1,8 +1,8 @@
 import { Reaction } from "/client/modules/core";
 import { Router } from "/client/modules/router";
 
-global.ReactionCore = Reaction;
-global.ReactionRouter = Router;
+window.ReactionCore = Reaction;
+window.ReactionRouter = Router;
 
 export {
   Reaction,

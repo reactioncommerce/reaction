@@ -144,4 +144,5 @@ const Alerts = {
   collection_: new Mongo.Collection(null)
 };
 
+window.Alerts = Alerts;
 export default Alerts;
