@@ -1,23 +1,27 @@
 import React, { Component, PropTypes } from "react";
-import { PropTypes as ReactionPropTypes } from "/lib/api";
 import { TagItem } from "/imports/plugins/core/ui/client/components/tags/";
+import update from "react/lib/update";
 
 class TagTreeBody extends Component {
   constructor(props) {
     super(props);
+
+    const { parentTag, tagsByKey, tagIds } = props.tagTreeBodyProps;
     this.state = {
       suggestions: [],
-      tags: this.props.tags,
       newTag: {
         name: ""
-      }
+      },
+      tagIds,
+      parentTag,
+      tagsByKey
     };
   }
 
   // setting up the func before passing to TagItem
   handleNewTagSave = (event, tag) => {
     if (this.props.onNewTagSave) {
-      this.props.onNewTagSave(tag, this.props.parentTag);
+      this.props.onNewTagSave(tag, this.state.parentTag);
       this.setState({
         newTag: { name: "" }
       });
@@ -25,19 +29,27 @@ class TagTreeBody extends Component {
   }
 
   handleTagUpdate = (event, tag) => {
-    // const newState = update(this.state, {
-    //   tagsByKey: {
-    //     [tag._id]: {
-    //       $set: tag
-    //     }
-    //   }
-    // });
+    const newState = update(this.state, {
+      tagsByKey: {
+        [tag._id]: {
+          $set: tag
+        }
+      }
+    });
 
-    // this.setState(newState);
+    this.setState(newState);
   }
 
   handleNewTagUpdate = (event, tag) => { // updates blank tag state being edited
     this.setState({ newTag: tag });
+  }
+
+  get tags() {
+    if (this.props.editable) {
+      return this.state.tagIds.map((tagId) => this.state.tagsByKey[tagId]);
+    }
+
+    return this.props.tagTreeBodyProps.subTagGroups;
   }
 
   genTagsList(tags, parentTag) {
@@ -71,8 +83,8 @@ class TagTreeBody extends Component {
   render() {
     return (
       <div className="content">
-        <div className="rui tags" data-id={this.props.parentTag._id}>
-          {this.genTagsList(this.state.tags, this.props.parentTag)}
+        <div className="rui tags" data-id={this.state.parentTag._id}>
+          {this.genTagsList(this.tags, this.state.parentTag)}
           {this.props.editable &&
             <div className="rui item create">
               <TagItem
@@ -102,8 +114,7 @@ TagTreeBody.propTypes = {
   onGetSuggestions: PropTypes.func,
   onNewTagSave: PropTypes.func,
   onTagRemove: PropTypes.func,
-  parentTag: PropTypes.object,
-  tags: ReactionPropTypes.arrayOfTags
+  tagTreeBodyProps: PropTypes.object
 };
 
 export default TagTreeBody;

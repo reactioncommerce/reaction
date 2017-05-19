@@ -1,7 +1,6 @@
 import { Reaction } from "/client/api";
 import React, { Component, PropTypes } from "react";
 import { Tags } from "/lib/collections";
-import { EditButton } from "/imports/plugins/core/ui/client/components";
 import { DragDropProvider } from "/imports/plugins/core/ui/client/providers";
 import { TagList } from "/imports/plugins/core/ui/client/components/tags/";
 import { TagHelpers } from "/imports/plugins/core/ui-tagnav/client/helpers";
@@ -135,10 +134,6 @@ class TagNav extends Component {
     this.setState({
       newTag: tag
     });
-  }
-
-  onTagSave = (event, tag) => {
-    // TagNavHelpers.onTagCreate(tag.name);
   }
 
   handleTagRemove = (tag, parentTag) => {
@@ -291,26 +286,6 @@ class TagNav extends Component {
     return "";
   }
 
-  renderEditButton() {
-    if (this.canEdit) {
-      return (
-        <span className="navbar-item edit-button" style={styles.editContainerItem}>
-          <EditButton
-            onClick={this.handleEditButtonClick}
-            bezelStyle="solid"
-            primary={true}
-            icon="fa fa-pencil"
-            onIcon="fa fa-check"
-            toggle={true}
-            toggleOn={this.state.editable}
-          />
-        </span>
-      );
-    }
-
-    return null;
-  }
-
   get tags() {
     if (this.state.editable) {
       return this.state.tagIds.map((tagId) => this.state.tagsByKey[tagId]);
@@ -330,7 +305,10 @@ class TagNav extends Component {
             {...TagNavHelpers}
             {...this.props}
             isTagNav={true}
+            canEdit={this.canEdit}
             newTag={this.state.newTag}
+            navButton={styles}
+            handleEditButtonClick={this.handleEditButtonClick}
             editable={this.state.editable}
             suggestions={this.state.suggestions}
             tags={this.tags}
@@ -350,7 +328,6 @@ class TagNav extends Component {
             onTagSelect={this.onTagSelect}
           />
         </DragDropProvider>
-        {this.renderEditButton()}
       </div>
     );
   }

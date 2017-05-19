@@ -4,6 +4,7 @@ import TagTreeHeader from "./tagTreeHeader";
 import TagTreeBody from "./tagTreeBody";
 import { TagHelpers } from "/imports/plugins/core/ui-tagnav/client/helpers";
 import update from "react/lib/update";
+import { getTagIds } from "/lib/selectors/tags";
 
 class TagTree extends Component {
   constructor(props) {
@@ -19,6 +20,10 @@ class TagTree extends Component {
       parentTag,
       tagsByKey
     };
+  }
+
+  componentWillMount() {
+    console.log('re-render');
   }
 
   get tags() {
@@ -62,6 +67,25 @@ class TagTree extends Component {
     this.setState({ newTag: tag });
   }
 
+  tagTreeBodyProps = (tag) => {
+    const subTagGroups = _.compact(TagHelpers.subTags(tag));
+    const tagsByKey = {};
+
+    if (Array.isArray(subTagGroups)) {
+      for (const tagItem of subTagGroups) {
+        tagsByKey[tagItem._id] = tagItem;
+      }
+    }
+    const ddddd = {
+      parentTag: tag,
+      tagsByKey: tagsByKey || {},
+      tagIds: getTagIds({ tags: subTagGroups }) || [],
+      subTagGroups
+    };
+    console.log(JSON.stringify({ ddddd }, null, 4));
+    return ddddd;
+  }
+
   renderTree(tags) {
     if (Array.isArray(tags)) {
       return tags.map((tag) => (
@@ -74,8 +98,7 @@ class TagTree extends Component {
           />
           <TagTreeBody
             {...this.props}
-            tags={TagHelpers.subTags(tag)}
-            parentTag={tag}
+            tagTreeBodyProps={this.tagTreeBodyProps(tag)}
             editable={this.props.editable}
           />
         </div>

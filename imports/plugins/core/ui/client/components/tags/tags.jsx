@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from "react";
 import { PropTypes as ReactionPropTypes } from "/lib/api";
 import { TagItem } from "./";
 import classnames from "classnames";
+import { EditButton } from "/imports/plugins/core/ui/client/components";
 import TagTree from "/imports/plugins/core/ui-tagnav/client/components/tagTree";
 import { TagHelpers } from "/imports/plugins/core/ui-tagnav/client/helpers";
 import { getTagIds } from "/lib/selectors/tags";
@@ -177,11 +178,32 @@ class Tags extends Component {
     return null;
   }
 
+  renderEditButton() {
+    if (this.props.isTagNav && this.props.canEdit) {
+      return (
+        <span className="navbar-item edit-button" style={this.props.navButton.editContainerItem}>
+          <EditButton
+            onClick={this.props.handleEditButtonClick}
+            bezelStyle="solid"
+            primary={true}
+            icon="fa fa-pencil"
+            onIcon="fa fa-check"
+            toggle={true}
+            toggleOn={this.props.editable}
+          />
+        </span>
+      );
+    }
+
+    return null;
+  }
+
   render() {
     if (this.props.isTagNav) {
       return (
         <div className="navbar-items">
           {this.renderTags()}
+          {this.renderEditButton()}
         </div>
       );
     }
@@ -211,11 +233,14 @@ Tags.defaultProps = {
 
 // Prop Types
 Tags.propTypes = {
+  canEdit: PropTypes.bool,
   editable: PropTypes.bool,
   enableNewTagForm: PropTypes.bool,
+  handleEditButtonClick: PropTypes.func,
   hasDropdownClassName: PropTypes.func,
   hasSubTags: PropTypes.func,
   isTagNav: PropTypes.bool,
+  navButton: PropTypes.object,
   navbarSelectedClassName: PropTypes.func,
   newTag: PropTypes.object,
   onClearSuggestions: PropTypes.func,
