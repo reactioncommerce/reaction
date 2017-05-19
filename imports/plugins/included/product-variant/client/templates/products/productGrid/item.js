@@ -162,7 +162,6 @@ Template.productGridItems.helpers({
     return this.positions && this.positions[tag] || {};
   }
 });
-let clickTime;
 
 /**
  * productGridItems events
@@ -185,85 +184,65 @@ Template.productGridItems.events({
     });
   },
   "click [data-event-action=productClick]": function (event, template) {
-    if (Reaction.hasPermission("createProduct") && Reaction.isPreview() === false) {
+    if (Reaction.hasPermission("createProduct") && !Reaction.isPreview()) {
       event.preventDefault();
-      const timeBetweenClicks = Date.now() - clickTime;
+      const isSelected = $(event.target).closest("li.product-grid-item.active").length;
 
-      if ((timeBetweenClicks < 1000) && (timeBetweenClicks > 0)) {
-        const instance = template;
-        const product = instance.data;
-        const handle = product.__published && product.__published.handle || product.handle;
-
-        Reaction.Router.go("product", {
-          handle: handle
-        });
-
-        Reaction.setActionView({
-          i18nKeyLabel: "productDetailEdit.productSettings",
-          label: "Product Settings",
-          template: "ProductAdmin"
-        });
-      } else {
-        const isSelected = $(event.target).closest("li.product-grid-item.active").length;
-
-        if (isSelected) {
+      if (isSelected) {
           // If product is already selected, and you are single clicking WITH command key, things whould happen
-          if (event.metaKey || event.ctrlKey || event.shiftKey) {
-            let $checkbox = template.$(`input[type=checkbox][value=${this._id}]`);
-            const $items = $("li.product-grid-item");
-            const $activeItems = $("li.product-grid-item.active");
-            const selected = $activeItems.length;
+        if (event.metaKey || event.ctrlKey || event.shiftKey) {
+          let $checkbox = template.$(`input[type=checkbox][value=${this._id}]`);
+          const $items = $("li.product-grid-item");
+          const $activeItems = $("li.product-grid-item.active");
+          const selected = $activeItems.length;
 
-            if (event.shiftKey && selected > 0) {
-              const indexes = [
-                $items.index($checkbox.parents("li.product-grid-item")),
-                $items.index($activeItems.get(0)),
-                $items.index($activeItems.get(selected - 1))
-              ];
-              for (let i = _.min(indexes); i <= _.max(indexes); i++) {
-                $checkbox = $("input[type=checkbox]", $items.get(i));
-                if ($checkbox.prop("checked") === false) {
-                  $checkbox.prop("checked", true).trigger("change");
-                }
+          if (event.shiftKey && selected > 0) {
+            const indexes = [
+              $items.index($checkbox.parents("li.product-grid-item")),
+              $items.index($activeItems.get(0)),
+              $items.index($activeItems.get(selected - 1))
+            ];
+            for (let i = _.min(indexes); i <= _.max(indexes); i++) {
+              $checkbox = $("input[type=checkbox]", $items.get(i));
+              if ($checkbox.prop("checked") === false) {
+                $checkbox.prop("checked", true).trigger("change");
               }
-            } else {
-              $checkbox.prop("checked", !$checkbox.prop("checked")).trigger("change");
-            }
-          }
-        } else {
-          if (event.metaKey || event.ctrlKey || event.shiftKey) {
-            let $checkbox = template.$(`input[type=checkbox][value=${this._id}]`);
-            const $items = $("li.product-grid-item");
-            const $activeItems = $("li.product-grid-item.active");
-            const selected = $activeItems.length;
-
-            if (event.shiftKey && selected > 0) {
-              const indexes = [
-                $items.index($checkbox.parents("li.product-grid-item")),
-                $items.index($activeItems.get(0)),
-                $items.index($activeItems.get(selected - 1))
-              ];
-              for (let i = _.min(indexes); i <= _.max(indexes); i++) {
-                $checkbox = $("input[type=checkbox]", $items.get(i));
-                if ($checkbox.prop("checked") === false) {
-                  $checkbox.prop("checked", true).trigger("change");
-                }
-              }
-            } else {
-              $checkbox.prop("checked", !$checkbox.prop("checked")).trigger("change");
             }
           } else {
-            const $checkbox = template.$(`input[type=checkbox][value=${this._id}]`);
-
-            Session.set("productGrid/selectedProducts", []);
-            $checkbox.prop("checked", true).trigger("change");
+            $checkbox.prop("checked", !$checkbox.prop("checked")).trigger("change");
           }
         }
-        clickTime = Date.now();
+      } else {
+        if (event.metaKey || event.ctrlKey || event.shiftKey) {
+          let $checkbox = template.$(`input[type=checkbox][value=${this._id}]`);
+          const $items = $("li.product-grid-item");
+          const $activeItems = $("li.product-grid-item.active");
+          const selected = $activeItems.length;
+
+          if (event.shiftKey && selected > 0) {
+            const indexes = [
+              $items.index($checkbox.parents("li.product-grid-item")),
+              $items.index($activeItems.get(0)),
+              $items.index($activeItems.get(selected - 1))
+            ];
+            for (let i = _.min(indexes); i <= _.max(indexes); i++) {
+              $checkbox = $("input[type=checkbox]", $items.get(i));
+              if ($checkbox.prop("checked") === false) {
+                $checkbox.prop("checked", true).trigger("change");
+              }
+            }
+          } else {
+            $checkbox.prop("checked", !$checkbox.prop("checked")).trigger("change");
+          }
+        } else {
+          const $checkbox = template.$(`input[type=checkbox][value=${this._id}]`);
+
+          Session.set("productGrid/selectedProducts", []);
+          $checkbox.prop("checked", true).trigger("change");
+        }
       }
     } else {
       event.preventDefault();
-      clicks = 0;
 
       const instance = template;
       const product = instance.data;
