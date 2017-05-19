@@ -32,5 +32,3 @@ export { default as MultiSelect } from "./multiselect/multiselect";
 export { Overlay } from "./modal";
 export * from "./tabs";
 export { default as Select } from "./select/select.react";
-
-window.Alerts = Alerts;
