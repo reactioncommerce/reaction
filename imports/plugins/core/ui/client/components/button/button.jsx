@@ -126,7 +126,7 @@ class Button extends Component {
       active, status, toggleOn, primary, bezelStyle, className, containerStyle,
 
       // Destructure these vars as they aren't valid as attributes on the HTML element button
-      iconAfter, label, i18nKeyTitle, i18nKeyLabel, i18nKeyTooltip, // eslint-disable-line no-unused-vars
+      iconAfter, label, i18nKeyTitle, i18nKeyLabel, i18nKeyTooltip, tabIndex, // eslint-disable-line no-unused-vars
       tooltip, icon, toggle, onIcon, eventAction, buttonType, // eslint-disable-line no-unused-vars
       toggleOnLabel, i18nKeyToggleOnLabel, tagName, onClick, onToggle, onValue, tooltipAttachment, // eslint-disable-line no-unused-vars
 
@@ -230,6 +230,7 @@ Button.propTypes = {
   onValue: PropTypes.any,
   primary: PropTypes.bool,
   status: PropTypes.string,
+  tabIndex: PropTypes.string,
   tagName: PropTypes.string,
   title: PropTypes.string,
   toggle: PropTypes.bool,
