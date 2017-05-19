@@ -152,4 +152,4 @@ const composer = (props, onData) => {
   });
 };
 
-export default composeWithTracker(composer, null)(MainDropdownContainer);
+export default composeWithTracker(composer)(MainDropdownContainer);

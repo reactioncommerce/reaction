@@ -93,5 +93,4 @@ const composer = (props, onData) => {
   });
 };
 
-export default composeWithTracker(composer, null)(CurrencyContainer);
-
+export default composeWithTracker(composer)(CurrencyContainer);

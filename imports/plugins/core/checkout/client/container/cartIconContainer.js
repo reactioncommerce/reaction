@@ -26,4 +26,4 @@ const composer = (props, onData) => {
   }
 };
 
-export default composeWithTracker(composer, null)(CartIconContainer);
+export default composeWithTracker(composer)(CartIconContainer);

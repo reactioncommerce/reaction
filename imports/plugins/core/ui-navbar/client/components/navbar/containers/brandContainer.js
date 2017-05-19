@@ -54,4 +54,4 @@ const composer = (props, onData) => {
   }
 };
 
-export default composeWithTracker(composer, null)(BrandContainer);
+export default composeWithTracker(composer)(BrandContainer);
