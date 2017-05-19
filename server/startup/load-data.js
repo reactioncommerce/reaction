@@ -21,7 +21,7 @@ export default function () {
     Logger.debug("Loading Shipping Data");
     Fixture.process(Assets.getText("data/Shipping.json"), ["name"], Reaction.Import.shipping);
   } catch (error) {
-    Logger.error("Bypassing loading Shipping default data.");
+    Logger.error(error, "Bypassing loading Shipping default data.");
   }
 
   try {
