@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from "react";
-import { Reaction } from "/client/api";
 
 class Brand extends Component {
   static propTypes = {
+    handleClick: PropTypes.func,
     logo: PropTypes.oneOfType(
       [PropTypes.bool, PropTypes.object]
     ),
@@ -10,10 +10,10 @@ class Brand extends Component {
   }
 
   render() {
-    const { logo, shop } = this.props;
+    const { handleClick, logo, shop } = this.props;
 
     return (
-      <a className="brand" href={Reaction.Router.pathFor("/")}>
+      <a className="brand" onClick={handleClick}>
         {logo &&
           <div className="logo">
             <img src={logo.url()} />

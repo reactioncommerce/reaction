@@ -10,6 +10,16 @@ class BrandContainer extends Component {
     shop: PropTypes.object
   }
 
+  constructor(props) {
+    super(props);
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick = (event) => {
+    event.preventDefault();
+    Reaction.Router.go("/");
+  }
+
   logo() {
     if (_.isArray(this.props.shop.brandAssets)) {
       const brandAsset = _.find(this.props.shop.brandAssets, (asset) => asset.type === "navbarBrandImage");
@@ -22,6 +32,7 @@ class BrandContainer extends Component {
     return (
       <div>
         <Brand
+          handleClick={this.handleClick}
           logo={this.logo()}
           {...this.props}
         />
