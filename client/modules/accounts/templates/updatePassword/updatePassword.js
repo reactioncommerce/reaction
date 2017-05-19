@@ -2,6 +2,7 @@ import { Accounts } from "meteor/accounts-base";
 import { Template } from "meteor/templating";
 import { i18next } from "/client/api";
 import { LoginFormSharedHelpers } from "/client/modules/accounts/helpers";
+import { UpdatePasswordOverlayContainer } from "/client/modules/accounts/containers";
 
 /**
  * Accounts Event: onResetPasswordLink When a user uses a password reset link
@@ -9,7 +10,8 @@ import { LoginFormSharedHelpers } from "/client/modules/accounts/helpers";
 Accounts.onResetPasswordLink((token, done) => {
   Blaze.renderWithData(Template.loginFormUpdatePasswordOverlay, {
     token: token,
-    callback: done
+    callback: done,
+    isOpen: true
   }, $("body").get(0));
 });
 
@@ -19,7 +21,8 @@ Accounts.onResetPasswordLink((token, done) => {
 Accounts.onEnrollmentLink((token, done) => {
   Blaze.renderWithData(Template.loginFormUpdatePasswordOverlay, {
     token: token,
-    callback: done
+    callback: done,
+    isOpen: true
   }, $("body").get(0));
 });
 
@@ -32,81 +35,16 @@ Accounts.onEmailVerificationLink(function (token, done) {
 });
 
 // ----------------------------------------------------------------------------
-
-/**
- * onCreated: Login Form Update Password Overlay
- */
-Template.loginFormUpdatePasswordOverlay.onCreated(() => {
-  const template = Template.instance();
-
-  template.uniqueId = Random.id();
-  template.formMessages = new ReactiveVar({});
-});
-
-/**
- * Helpers: Login Form Update Password Overlay
- */
-Template.loginFormUpdatePasswordOverlay.helpers(LoginFormSharedHelpers);
-
-/**
- * Events: Login Form Update Password Overlay
- */
-Template.loginFormUpdatePasswordOverlay.events({
-
-  /**
-   * Close modal
-   * @param  {Event} event - jQuery Event
-   * @param  {Template} template - Blaze Template
-   * @return {void}
-   */
-  "click .close, click .cancel": (event, template) => {
-    Blaze.remove(template.view);
-  },
-
-  /**
-   * Submit form within modal - onSubmit reset password if validation is successful
-   * @param  {Event} event - jQuery Event
-   * @param  {Template} template - Blaze Template
-   * @return {void}
-   */
-  "submit form": (event, template) => {
-    event.preventDefault();
-    event.stopPropagation();
-
-    const passwordInput = template.$(".login-input--password");
-    const password = passwordInput.val().trim();
-    const validatedPassword = LoginFormValidation.password(password);
-
-    const templateInstance = Template.instance();
-    const errors = {};
-
-    templateInstance.formMessages.set({});
-
-    if (validatedPassword !== true) {
-      errors.password = validatedPassword;
-    }
-
-    if ($.isEmptyObject(errors) === false) {
-      templateInstance.formMessages.set({
-        errors: errors
-      });
-      // prevent password update
-      return;
-    }
-
-    Accounts.resetPassword(template.data.token, password, (error) => {
-      if (error) {
-        // Show some error message
-        templateInstance.formMessages.set({
-          alerts: [error]
-        });
-      } else {
-        // Close dropdown or navigate to page
-        template.data.callback();
-
-        Blaze.remove(template.view);
-      }
-    });
+// /**
+//  * Helpers: Login Form Update Password Overlay
+//  */
+Template.loginFormUpdatePasswordOverlay.helpers({
+  component() {
+    const currentData = Template.currentData() || {};
+    return {
+      ...currentData,
+      component: UpdatePasswordOverlayContainer
+    };
   }
 });
 

@@ -72,6 +72,7 @@ class TextField extends Component {
         value={this.value}
         style={this.props.style}
         disabled={this.props.disabled}
+        id={this.props.id}
       />
     );
   }
@@ -102,6 +103,7 @@ class TextField extends Component {
         value={this.value}
         style={this.props.style}
         disabled={this.props.disabled}
+        id={this.props.id}
       />
     );
   }
@@ -182,6 +184,7 @@ TextField.propTypes = {
   i18nKeyHelpText: PropTypes.string,
   i18nKeyLabel: PropTypes.string,
   i18nKeyPlaceholder: PropTypes.string,
+  id: PropTypes.string,
   label: PropTypes.string,
   multiline: PropTypes.bool,
   name: PropTypes.string,

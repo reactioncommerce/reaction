@@ -111,7 +111,7 @@ Template.childVariantForm.events({
     Meteor.call("products/updateProductField", variant._id, field, value,
       error => {
         if (error) {
-          throw new Meteor.Error("error updating variant", error);
+          Alerts.toast(error.message, "error");
         }
       });
     return ReactionProduct.setCurrentVariant(variant._id);

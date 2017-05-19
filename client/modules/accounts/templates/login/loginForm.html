@@ -1,32 +1,11 @@
-
 <template name="loginForm">
   <div class="loginForm">
-    {{> Template.dynamic template=loginFormCurrentView data=loginFormData}}
+    {{> React component}}
   </div>
 </template>
 
 <template name="loginFormMessages">
-  {{#if messages.info}}
-    <div class="alert alert-info">
-      {{#each messages.info}}
-        <p>{{reason}}</p>
-      {{/each}}
-    </div>
-  {{/if}}
-
-  {{#if messages.alerts}}
-    <div class="alert alert-danger">
-      {{#each messages.alerts}}
-        <p>{{reason}}</p>
-      {{/each}}
-    </div>
-  {{/if}}
-</template>
-
-<template name="loginFormSeperator">
-  <div class="loginForm-seperator">
-    <span></span>
-    <span class="text" data-i18n="accountsUI.or">or</span>
-    <span></span>
+  <div class="loginFormMessages">
+    {{> React component}}
   </div>
 </template>
