@@ -27,8 +27,6 @@ class DropDownMenu extends Component {
       isOpen: false
     });
 
-    console.log("handleChange", this.state.isOpen);
-
     if (this.props.onChange) {
       this.props.onChange(event, value);
     }
@@ -53,8 +51,6 @@ class DropDownMenu extends Component {
   }
 
   render() {
-    console.log("render", this.state.isOpen);
-
     return (
       <Popover
         buttonElement={
@@ -85,12 +81,17 @@ class DropDownMenu extends Component {
 }
 
 DropDownMenu.propTypes = {
+  attachment: PropTypes.string,
   buttonElement: PropTypes.node,
   children: PropTypes.node,
+  className: PropTypes.string,
   isEnabled: PropTypes.bool,
+  menuStyle: PropTypes.object,
   onChange: PropTypes.func,
   onPublishClick: PropTypes.func,
   revisions: PropTypes.arrayOf(PropTypes.object),
+  style: PropTypes.object,
+  targetAttachment: PropTypes.string,
   translation: PropTypes.shape({
     lang: PropTypes.string
   }),
