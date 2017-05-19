@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import BrandContainer from "../containers/brandContainer";
-import { FlatButton } from "/imports/plugins/core/ui/client/components";
+import { FlatButton, Button } from "/imports/plugins/core/ui/client/components";
 import { NotificationContainer } from "/imports/plugins/included/notifications/client/containers";
 import CartIconContainer from "/imports/plugins/core/checkout/client/container/cartIconContainer";
 import CartPanel from "/imports/plugins/core/checkout/client/templates/cartPanel/container/cartPanelContainer";
@@ -11,8 +11,6 @@ import CurrencyContainer from "/client/modules/i18n/templates/currency/container
 class NavBar extends Component {
   static propTypes = {
     hasProperPermission: PropTypes.bool,
-    icon: PropTypes.string,
-    kind: PropTypes.string,
     searchEnabled: PropTypes.bool
   }
 
@@ -43,8 +41,8 @@ class NavBar extends Component {
       return (
         <div className="search">
           <FlatButton
-            icon={this.props.icon}
-            kind={this.props.kind}
+            icon="fa fa-search"
+            kind="flat"
           />
         </div>
       );
@@ -78,9 +76,16 @@ class NavBar extends Component {
     );
   }
 
+  renderHamburgerButton() {
+    return (
+      <div className="showmenu"><Button icon="bars" onClick={()=>{}} /></div>
+    );
+  }
+
   render() {
     return (
       <div className="rui navbar">
+        {this.renderHamburgerButton()}
         {this.renderBrandContainer()}
         <div className="menu">
           <b> Tags </b>

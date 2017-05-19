@@ -1,11 +1,11 @@
 import React, { Component } from "react";
-import { Reaction } from "/client/api";
-import { composeWithTracker } from "/lib/api/compose";
-import * as Collections from "/lib/collections";
-import { i18nextDep, i18next } from  "/client/api";
+import { Meteor } from "meteor/meteor";
 import { Accounts } from "meteor/accounts-base";
 import { Roles } from "meteor/alanning:roles";
-import { Meteor } from "meteor/meteor";
+import { Reaction } from "/client/api";
+import { i18nextDep, i18next } from  "/client/api";
+import { composeWithTracker } from "/lib/api/compose";
+import * as Collections from "/lib/collections";
 import { Tags } from "/lib/collections";
 import MainDropdown from "../../components/dropdown/mainDropdown";
 
