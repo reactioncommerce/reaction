@@ -22,6 +22,11 @@ class TagTree extends Component {
     };
   }
 
+  componentWillReceiveProps(nextProps) {
+    const { parentTag, tagsByKey, tagIds } = nextProps.tagTreeProps;
+    this.setState({ tagIds, parentTag, tagsByKey });
+  }
+
   get tags() {
     if (this.props.editable) {
       return this.state.tagIds.map((tagId) => this.state.tagsByKey[tagId]);
@@ -98,6 +103,7 @@ class TagTree extends Component {
       return tags.map((tag) => (
         <div className={`rui grouptag ${this.className}`} data-id={tag._id} key={tag._id}>
           <TagTreeHeader
+            {...this.props}
             tag={tag}
             parentTag={this.state.parentTag}
             editable={this.props.editable}

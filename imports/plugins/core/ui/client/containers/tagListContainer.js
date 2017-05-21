@@ -92,7 +92,6 @@ class TagListContainer extends Component {
   }
 
   handleNewTagSave = (tag) => {
-    console.log('handleNewTagSave');
     if (this.productId && this.canSaveTag(tag)) {
       Meteor.call("products/updateProductTags", this.productId, tag.name, null, (error) => {
         if (error) {
@@ -118,7 +117,6 @@ class TagListContainer extends Component {
   }
 
   handleTagSave = (tag) => {
-    console.log('handleTagSave in TagListContainer');
     if (this.productId && this.canSaveTag(tag)) {
       Meteor.call("products/updateProductTags", this.productId, tag.name, tag._id, (error) => {
         if (error) {
@@ -145,7 +143,6 @@ class TagListContainer extends Component {
   }
 
   handleTagUpdate = (tag) => {
-    console.log({ tag });
     const newState = update(this.state, {
       tagsByKey: {
         [tag._id]: {

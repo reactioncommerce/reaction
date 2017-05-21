@@ -1,4 +1,5 @@
 import { Reaction } from "/client/api";
+import debounce from "lodash/debounce";
 import React, { Component, PropTypes } from "react";
 import { DragDropProvider } from "/imports/plugins/core/ui/client/providers";
 import { TagList } from "/imports/plugins/core/ui/client/components/tags/";
@@ -56,14 +57,17 @@ const TagNavHelpers = {
   onTagDragAdd(movedTagId, toListId, toIndex, ofList) {
     TagHelpers.moveTagToNewParent(movedTagId, toListId, toIndex, ofList);
   },
-  onTagUpdate(tagId, tagName) {
-    TagHelpers.updateTag(tagId, tagName);
+  onUpdateTag(tagId, tagName, parentTagId) {
+    TagHelpers.updateTag(tagId, tagName, parentTagId);
   },
   isMobile() {
     return window.matchMedia("(max-width: 991px)").matches;
   },
   tagById(tagId, tags) {
     return _.find(tags, (tag) => tag._id === tagId);
+  },
+  updateSuggestions(suggestion, excludeTagsObj) {
+    return TagHelpers.updateSuggestions(suggestion, excludeTagsObj);
   },
   hasSubTags(tagId, tags) {
     const foundTag = this.tagById(tagId, tags);
@@ -153,14 +157,32 @@ class TagNav extends Component {
   }
 
   handleTagSave = (tag) => {
-    TagNavHelpers.onTagUpdate(tag._id, tag.name);
+    TagNavHelpers.onUpdateTag(tag._id, tag.name);
   }
 
-  handleMoveTag = () => {
+  handleMoveTag = (dragIndex, hoverIndex) => {
+    const tag = this.state.tagIds[dragIndex];
+
+    // Apply new sort order to variant list
+    const newState = update(this.state, {
+      tagIds: {
+        $splice: [
+          [dragIndex, 1],
+          [hoverIndex, 0, tag]
+        ]
+      }
+    });
+
+    // Set local state so the component does't have to wait for a round-trip
+    // to the server to get the updated list of variants
+    this.setState(newState, () => {
+      editable = true; // keep editing state after re-render
+      debounce(() => TagNavHelpers.onTagSort(this.state.tagIds), 500)(); // Save the updated positions
+    });
   }
 
   handleGetSuggestions = (suggestionUpdateRequest) => {
-    const suggestions = TagHelpers.updateSuggestions(
+    const suggestions = TagNavHelpers.updateSuggestions(
       suggestionUpdateRequest.value,
       { excludeTags: this.state.tagIds }
     );

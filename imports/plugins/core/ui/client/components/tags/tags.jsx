@@ -134,6 +134,7 @@ class Tags extends Component {
             {this.props.isTagNav &&
               <div className="dropdown-container">
                 <TagTree
+                  {...this.props}
                   editable={this.props.editable === true}
                   tagTreeProps={this.tagTreeProps(tag)}
                   onClearSuggestions={this.props.onClearSuggestions}

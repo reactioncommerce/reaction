@@ -1,4 +1,3 @@
-import { TagHelpers } from "/imports/plugins/core/ui-tagnav/client/helpers";
 import React, { Component, PropTypes } from "react";
 import { TagItem } from "/imports/plugins/core/ui/client/components/tags/";
 
@@ -11,12 +10,8 @@ class TagTreeHeader extends Component {
     };
   }
 
-  handleTagUpdate = (event, tag) => {
-    this.setState({ tag: tag });
-  }
-
   handleGetSuggestions = (suggestionUpdateRequest) => {
-    const suggestions = TagHelpers.updateSuggestions(
+    const suggestions = this.props.updateSuggestions(
       suggestionUpdateRequest.value,
       { excludeTags: this.state.tagIds }
     );
@@ -24,10 +19,18 @@ class TagTreeHeader extends Component {
     this.setState({ suggestions });
   }
 
+  handleTagUpdate = (event, tag) => {
+    this.setState({ tag: tag });
+  }
+
   handleTagSave = (event, tag) => {
-    if (this.props.onTagSave) {
-      this.props.onTagSave(tag);
+    if (this.props.onUpdateTag) {
+      this.props.onUpdateTag(tag._id, tag.name, this.props.parentTag._id);
     }
+  }
+
+  handleMoveTag = () => {
+    console.log('a');
   }
 
   render() {
@@ -43,9 +46,7 @@ class TagTreeHeader extends Component {
           suggestions={this.state.suggestions}
           onClearSuggestions={this.handleClearSuggestions}
           onGetSuggestions={this.handleGetSuggestions}
-          onMove={this.props.onMove}
-          onTagMouseOut={this.props.onTagMouseOut}
-          onTagMouseOver={this.props.onTagMouseOver}
+          onMove={this.handleMoveTag}
           onTagRemove={this.props.onTagRemove}
           onTagSave={this.handleTagSave}
           onTagInputBlur={this.handleTagSave}
@@ -60,8 +61,10 @@ TagTreeHeader.propTypes = {
   editable: PropTypes.bool,
   onTagRemove: PropTypes.func,
   onTagSave: PropTypes.func,
+  onUpdateTag: PropTypes.func,
   parentTag: PropTypes.object,
-  tag: PropTypes.object
+  tag: PropTypes.object,
+  updateSuggestions: PropTypes.func
 };
 
 export default TagTreeHeader;
