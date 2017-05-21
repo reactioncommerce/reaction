@@ -1,6 +1,5 @@
 import { Reaction } from "/client/api";
 import React, { Component, PropTypes } from "react";
-import { Tags } from "/lib/collections";
 import { DragDropProvider } from "/imports/plugins/core/ui/client/providers";
 import { TagList } from "/imports/plugins/core/ui/client/components/tags/";
 import { TagHelpers } from "/imports/plugins/core/ui-tagnav/client/helpers";
@@ -161,7 +160,7 @@ class TagNav extends Component {
   }
 
   handleGetSuggestions = (suggestionUpdateRequest) => {
-    const suggestions = updateSuggestions(
+    const suggestions = TagHelpers.updateSuggestions(
       suggestionUpdateRequest.value,
       { excludeTags: this.state.tagIds }
     );
@@ -304,19 +303,19 @@ class TagNav extends Component {
           <TagList
             {...TagNavHelpers}
             {...this.props}
+            tags={this.tags}
             isTagNav={true}
             canEdit={this.canEdit}
             newTag={this.state.newTag}
             navButton={styles}
-            handleEditButtonClick={this.handleEditButtonClick}
-            editable={this.state.editable}
-            suggestions={this.state.suggestions}
-            tags={this.tags}
             enableNewTagForm={true}
+            editable={this.state.editable}
             hasDropdownClassName={this.hasDropdownClassName}
             navbarSelectedClassName={this.navbarSelectedClassName}
+            suggestions={this.state.suggestions}
             onClearSuggestions={this.handleClearSuggestions}
             onGetSuggestions={this.handleGetSuggestions}
+            onEditButtonClick={this.handleEditButtonClick}
             onMoveTag={this.handleMoveTag}
             onNewTagSave={this.handleNewTagSave}
             onNewTagUpdate={this.handleNewTagUpdate}
@@ -343,26 +342,3 @@ TagNav.propTypes = {
 };
 
 export default TagNav;
-
-// TODO: should be shared
-function updateSuggestions(term, { excludeTags }) {
-  const slug = Reaction.getSlug(term);
-
-  const selector = {
-    slug: new RegExp(slug, "i")
-  };
-
-  if (Array.isArray(excludeTags)) {
-    selector._id = {
-      $nin: excludeTags
-    };
-  }
-
-  const tags = Tags.find(selector).map((tag) => {
-    return {
-      label: tag.name
-    };
-  });
-
-  return tags;
-}

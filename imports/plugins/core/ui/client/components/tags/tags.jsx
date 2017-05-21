@@ -119,8 +119,8 @@ class Tags extends Component {
               editable={this.props.editable}
               index={index}
               key={index}
-              suggestions={this.props.suggestions}
               tag={tag}
+              suggestions={this.props.suggestions}
               onClearSuggestions={this.props.onClearSuggestions}
               onGetSuggestions={this.props.onGetSuggestions}
               onMove={this.props.onMoveTag}
@@ -183,7 +183,7 @@ class Tags extends Component {
       return (
         <span className="navbar-item edit-button" style={this.props.navButton.editContainerItem}>
           <EditButton
-            onClick={this.props.handleEditButtonClick}
+            onClick={this.props.onEditButtonClick}
             bezelStyle="solid"
             primary={true}
             icon="fa fa-pencil"
@@ -236,7 +236,6 @@ Tags.propTypes = {
   canEdit: PropTypes.bool,
   editable: PropTypes.bool,
   enableNewTagForm: PropTypes.bool,
-  handleEditButtonClick: PropTypes.func,
   hasDropdownClassName: PropTypes.func,
   hasSubTags: PropTypes.func,
   isTagNav: PropTypes.bool,
@@ -244,6 +243,7 @@ Tags.propTypes = {
   navbarSelectedClassName: PropTypes.func,
   newTag: PropTypes.object,
   onClearSuggestions: PropTypes.func,
+  onEditButtonClick: PropTypes.func,
   onGetSuggestions: PropTypes.func,
   onMoveTag: PropTypes.func,
   onNewTagSave: PropTypes.func,

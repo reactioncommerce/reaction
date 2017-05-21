@@ -22,10 +22,6 @@ class TagTree extends Component {
     };
   }
 
-  componentWillMount() {
-    console.log('re-render');
-  }
-
   get tags() {
     if (this.props.editable) {
       return this.state.tagIds.map((tagId) => this.state.tagsByKey[tagId]);
@@ -41,7 +37,19 @@ class TagTree extends Component {
     return "";
   }
 
-  // setting up the func before passing to TagItem
+  handleGetSuggestions = (suggestionUpdateRequest) => {
+    const suggestions = TagHelpers.updateSuggestions(
+      suggestionUpdateRequest.value,
+      { excludeTags: this.state.tagIds }
+    );
+
+    this.setState({ suggestions });
+  }
+
+  handleClearSuggestions = () => {
+    this.setState({ suggestions: [] });
+  }
+
   handleNewTagSave = (event, tag) => {
     if (this.props.onNewTagSave) {
       this.props.onNewTagSave(tag, this.props.tagTreeProps.parentTag);
@@ -76,14 +84,13 @@ class TagTree extends Component {
         tagsByKey[tagItem._id] = tagItem;
       }
     }
-    const ddddd = {
+
+    return {
       parentTag: tag,
       tagsByKey: tagsByKey || {},
       tagIds: getTagIds({ tags: subTagGroups }) || [],
       subTagGroups
     };
-    console.log(JSON.stringify({ ddddd }, null, 4));
-    return ddddd;
   }
 
   renderTree(tags) {

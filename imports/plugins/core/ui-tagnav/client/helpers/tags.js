@@ -1,3 +1,4 @@
+import { Reaction } from "/client/api";
 import { Tags } from "/lib/collections";
 import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
@@ -177,6 +178,28 @@ export const TagHelpers = {
         }
       );
     }
+  },
+
+  updateSuggestions(term, { excludeTags }) {
+    const slug = Reaction.getSlug(term);
+
+    const selector = {
+      slug: new RegExp(slug, "i")
+    };
+
+    if (Array.isArray(excludeTags)) {
+      selector._id = {
+        $nin: excludeTags
+      };
+    }
+
+    const tags = Tags.find(selector).map((tag) => {
+      return {
+        label: tag.name
+      };
+    });
+
+    return tags;
   }
 };
 

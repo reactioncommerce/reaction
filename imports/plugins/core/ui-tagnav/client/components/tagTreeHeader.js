@@ -1,3 +1,4 @@
+import { TagHelpers } from "/imports/plugins/core/ui-tagnav/client/helpers";
 import React, { Component, PropTypes } from "react";
 import { TagItem } from "/imports/plugins/core/ui/client/components/tags/";
 
@@ -12,6 +13,15 @@ class TagTreeHeader extends Component {
 
   handleTagUpdate = (event, tag) => {
     this.setState({ tag: tag });
+  }
+
+  handleGetSuggestions = (suggestionUpdateRequest) => {
+    const suggestions = TagHelpers.updateSuggestions(
+      suggestionUpdateRequest.value,
+      { excludeTags: this.state.tagIds }
+    );
+
+    this.setState({ suggestions });
   }
 
   handleTagSave = (event, tag) => {
@@ -31,8 +41,8 @@ class TagTreeHeader extends Component {
           editable={this.props.editable}
           isSelected={this.isSelected}
           suggestions={this.state.suggestions}
-          onClearSuggestions={this.props.onClearSuggestions}
-          onGetSuggestions={this.props.onGetSuggestions}
+          onClearSuggestions={this.handleClearSuggestions}
+          onGetSuggestions={this.handleGetSuggestions}
           onMove={this.props.onMove}
           onTagMouseOut={this.props.onTagMouseOut}
           onTagMouseOver={this.props.onTagMouseOver}

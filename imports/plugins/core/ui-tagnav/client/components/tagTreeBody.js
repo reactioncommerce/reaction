@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { TagItem } from "/imports/plugins/core/ui/client/components/tags/";
+import { TagHelpers } from "/imports/plugins/core/ui-tagnav/client/helpers";
 import update from "react/lib/update";
 
 class TagTreeBody extends Component {
@@ -18,7 +19,6 @@ class TagTreeBody extends Component {
     };
   }
 
-  // setting up the func before passing to TagItem
   handleNewTagSave = (event, tag) => {
     if (this.props.onNewTagSave) {
       this.props.onNewTagSave(tag, this.state.parentTag);
@@ -43,6 +43,20 @@ class TagTreeBody extends Component {
   handleNewTagUpdate = (event, tag) => { // updates blank tag state being edited
     this.setState({ newTag: tag });
   }
+
+  handleGetSuggestions = (suggestionUpdateRequest) => {
+    const suggestions = TagHelpers.updateSuggestions(
+      suggestionUpdateRequest.value,
+      { excludeTags: this.state.tagIds }
+    );
+
+    this.setState({ suggestions });
+  }
+
+  handleClearSuggestions = () => {
+    this.setState({ suggestions: [] });
+  }
+
 
   get tags() {
     if (this.props.editable) {
@@ -94,8 +108,8 @@ class TagTreeBody extends Component {
                 inputPlaceholder="Add Tag"
                 i18nKeyInputPlaceholder="tags.addTag"
                 suggestions={this.state.suggestions}
-                onClearSuggestions={this.props.onClearSuggestions}
-                onGetSuggestions={this.props.onGetSuggestions}
+                onClearSuggestions={this.handleClearSuggestions}
+                onGetSuggestions={this.handleGetSuggestions}
                 onTagInputBlur={this.handleNewTagSave}
                 onTagSave={this.handleNewTagSave}
                 onTagUpdate={this.handleNewTagUpdate}
