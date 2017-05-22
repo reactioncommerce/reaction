@@ -1,6 +1,7 @@
 import _ from "lodash";
 import React, { Component, PropTypes } from "react";
 import { Meteor } from "meteor/meteor";
+import { Router } from "/client/api";
 import { composeWithTracker } from "/lib/api/compose";
 import { SignIn, SignUp, LoginButtons } from "../../components";
 import { MessagesContainer } from "../helpers";
@@ -9,6 +10,7 @@ import { LoginFormSharedHelpers } from "/client/modules/accounts/helpers";
 
 class AuthContainer extends Component {
   static propTypes = {
+    currentRoute: PropTypes.object,
     currentView: PropTypes.string,
     formMessages: PropTypes.object
   }
@@ -71,6 +73,8 @@ class AuthContainer extends Component {
               alerts: [error]
             }
           });
+        } else {
+          Router.go(this.props.currentRoute.route.path);
         }
       });
     } else if (this.props.currentView === "loginFormSignUpView") {
@@ -87,6 +91,8 @@ class AuthContainer extends Component {
               alerts: [error]
             }
           });
+        } else {
+          Router.go(this.props.currentRoute.route.path);
         }
       });
     }
@@ -204,7 +210,8 @@ function composer(props, onData) {
   const formMessages = {};
 
   onData(null, {
-    formMessages
+    formMessages,
+    currentRoute: Router.current()
   });
 }
 
