@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import { Reaction } from "/client/api";
 import { Button, DropDownMenu, MenuItem } from "/imports/plugins/core/ui/client/components";
+import { LoginContainer } from "../../containers/auth";
 
 const iconStyle = {
   margin: "10px 10px 10px 6px",
@@ -99,15 +100,13 @@ class MainDropdown extends Component {
             {this.renderSignOutButton()}
 
           </DropDownMenu> :
-          <DropDownMenu
-            buttonElement={
-              <Button label="Sign In">
-                &nbsp;<i className="fa fa-caret-down" />
-              </Button>
-            }
-            attachment="bottom right"
-            targetAttachment="top right"
-          />
+          <div className="accounts-dropdown" style={{ paddingRight: 5 }}>
+            <div className="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000">
+              <span data-i18n="accountsUI.signIn">Sign In</span><b className="caret" /></div>
+            <div className="accounts-dialog accounts-layout dropdown-menu pull-right" style={{ padding: "10px 20px" }}>
+             <LoginContainer />
+            </div>
+          </div>
         }
       </div>
     );
