@@ -18,7 +18,7 @@ class ProductDetail extends Component {
   render() {
     return (
       <div className="pdp" style={{ position: "relative" }}>
-        <div className="container container-main pdp-container" itemScope itemType="http://schema.org/Product">
+        <div className="container-main pdp-container" itemScope itemType="http://schema.org/Product">
           <div className="row">
             <AlertContainer placement="productManagement" />
             <ReactionLayout
