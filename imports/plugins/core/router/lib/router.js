@@ -1,17 +1,18 @@
 import React from "react";
+import { Route } from "react-router";
 import createBrowserHistory from "history/createBrowserHistory";
 import createMemoryHistory from "history/createMemoryHistory";
 import pathToRegexp from "path-to-regexp";
 import queryParse from "query-parse";
+import Immutable from "immutable";
 import { Meteor } from "meteor/meteor";
 import Blaze from "meteor/gadicc:blaze-react-component";
 import { Tracker } from "meteor/tracker";
-import { Route } from "react-router";
 import { Packages, Shops } from "/lib/collections";
-import Hooks from "./hooks";
 import { getComponent } from "/imports/plugins/core/layout/lib/components";
 import BlazeLayout from "/imports/plugins/core/layout/lib/blazeLayout";
-import Immutable from "immutable";
+import Hooks from "./hooks";
+
 
 export let history;
 
@@ -141,12 +142,18 @@ Router.pathFor = (path, options = {}) => {
 
 
 Router.go = (path, params, query) => {
-  const actualPath = Router.pathFor(path, {
-    hash: {
-      ...params,
-      query
-    }
-  });
+  let actualPath;
+
+  if (typeof path === "string" && path.startsWith("/")) {
+    actualPath = path;
+  } else {
+    actualPath = Router.pathFor(path, {
+      hash: {
+        ...params,
+        query
+      }
+    });
+  }
 
   if (window) {
     history.push(actualPath);
@@ -371,6 +378,7 @@ export function ReactionLayout(options = {}) {
  */
 Router.initPackageRoutes = (options) => {
   Router.Reaction = options.reactionContext;
+  Router.routes = [];
 
   const pkgs = Packages.find().fetch();
   const prefix = Router.Reaction.getShopPrefix();
@@ -492,7 +500,7 @@ Router.initPackageRoutes = (options) => {
             route.route = `${prefix}${route.route}`;
           }
 
-          // Check permissions before adding the route to the routing table
+          // Add the route to the routing table
           reactRouterRoutes.push(
             <Route
               key={`${pkg.name}-${route.name}-${index++}`}
@@ -509,6 +517,7 @@ Router.initPackageRoutes = (options) => {
 
     Router._initialized = true;
     Router.reactComponents = reactRouterRoutes;
+    Router._routes = Router.routes;
 
     routerReadyDependency.changed();
   }

@@ -1,12 +1,12 @@
+import accounting from "accounting-js";
 import { Meteor } from "meteor/meteor";
 import { Factory } from "meteor/dburles:factory";
-import accounting from "accounting-js";
-import { Reaction } from "/server/api";
-import { Orders, Products, Notifications, Media, Shops } from "/lib/collections";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
 import Fixtures from "/server/imports/fixtures";
-// import { examplePaymentMethod } from "/server/imports/fixtures/packages";
+import { Reaction } from "/server/api";
+import { Orders, Media, Notifications, Products, Shops } from "/lib/collections";
+
 
 Fixtures();
 // examplePaymentMethod();
