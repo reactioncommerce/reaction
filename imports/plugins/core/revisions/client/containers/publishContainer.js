@@ -29,10 +29,6 @@ class PublishContainer extends Component {
           });
 
           Alerts.toast(message, "success");
-
-          if (this.props.onPublishSuccess) {
-            this.props.onPublishSuccess(result);
-          }
         } else {
           const message = i18next.t("revisions.noChangesPublished", {
             defaultValue: "There are no changes to publish"

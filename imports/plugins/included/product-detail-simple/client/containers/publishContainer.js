@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { Meteor } from "meteor/meteor";
 import { composeWithTracker } from "/lib/api/compose";
-import { Router } from "/client/api";
 import { ReactionProduct } from "/lib/api";
 import { Tags, Media, Products } from "/lib/collections";
 import PublishContainer from "/imports/plugins/core/revisions/client/containers/publishContainer";
@@ -37,27 +36,11 @@ class ProductPublishContainer extends Component {
     }
   }
 
-  handlePublishSuccess = (result) => {
-    if (result && result.status === "success" && this.props.product) {
-      const productDocument = result.previousDocuments.find((product) => this.props.product._id === product._id);
-
-      if (productDocument && this.props.product.handle !== productDocument.handle) {
-        const newProductPath = Router.pathFor("product", {
-          hash: {
-            handle: this.props.product.handle
-          }
-        });
-
-        window.location.href = newProductPath;
-      }
-    }
-  }
 
   render() {
     return (
       <PublishContainer
         onAction={this.handlePublishActions}
-        onPublishSuccess={this.handlePublishSuccess}
         onVisibilityChange={this.handleVisibilityChange}
         {...this.props}
       />

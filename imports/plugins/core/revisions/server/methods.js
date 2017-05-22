@@ -116,7 +116,7 @@ Meteor.methods({
         if (!revision.documentType || revision.documentType === "product") {
           previousDocuments.push(Products.findOne(revision.documentId));
 
-          const res = Products.update({
+          const res = Products.direct.update({
             _id: revision.documentId
           }, {
             $set: revision.documentData
