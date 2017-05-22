@@ -10,7 +10,8 @@ class UpdatePasswordOverlayContainer extends Component {
     callback: PropTypes.func,
     formMessages: PropTypes.object,
     isOpen: PropTypes.bool,
-    token: PropTypes.string
+    token: PropTypes.string,
+    uniqueId: PropTypes.string
   }
 
   constructor(props) {
@@ -99,7 +100,7 @@ class UpdatePasswordOverlayContainer extends Component {
   render() {
     return (
       <UpdatePasswordOverlay
-        {...this.props}
+        uniqueId={this.props.uniqueId}
         loginFormMessages={this.formMessages}
         onError={this.hasError}
         messages={this.state.formMessages}
