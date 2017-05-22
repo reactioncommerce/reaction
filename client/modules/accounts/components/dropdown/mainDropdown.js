@@ -100,12 +100,14 @@ class MainDropdown extends Component {
             {this.renderSignOutButton()}
 
           </DropDownMenu> :
-          <div className="accounts-dropdown" style={{ paddingRight: 5 }}>
+          <div className="dropdown" role="menu">
+            <div className="accounts-dropdown" style={{ paddingRight: 5 }}>
             <div className="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000">
-              <span data-i18n="accountsUI.signIn">Sign In</span><b className="caret" /></div>
-            <div className="accounts-dialog accounts-layout dropdown-menu pull-right" style={{ padding: "10px 20px" }}>
-             <LoginContainer />
+              <span data-i18n="accountsUI.signIn"><b>Sign In</b></span><b className="caret" /></div>
+            <div className="accounts-dialog accounts-layout dropdown-menu pull-right" style={{ marginTop: 20, padding: "10px 20px" }}>
+              <LoginContainer />
             </div>
+          </div>
           </div>
         }
       </div>

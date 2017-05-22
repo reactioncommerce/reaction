@@ -83,12 +83,9 @@ DropDownMenu.propTypes = {
   attachment: PropTypes.string,
   buttonElement: PropTypes.node,
   children: PropTypes.node,
-  className: PropTypes.string,
-  isEnabled: PropTypes.bool,
+  className: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   menuStyle: PropTypes.object,
   onChange: PropTypes.func,
-  onPublishClick: PropTypes.func,
-  revisions: PropTypes.arrayOf(PropTypes.object),
   targetAttachment: PropTypes.string,
   translation: PropTypes.shape({
     lang: PropTypes.string
