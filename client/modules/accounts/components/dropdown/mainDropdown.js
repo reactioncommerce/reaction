@@ -11,7 +11,7 @@ const iconStyle = {
 };
 
 const menuStyle = {
-  padding: "0px 10px 10px 6px",
+  padding: "0px 10px 10px 10px",
   minWidth: 220,
   minHeight: 50
 };
