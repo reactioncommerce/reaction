@@ -116,13 +116,9 @@ class Tags extends Component {
               {...this.props.tagProps}
               {...this.props}
               data-id={tag._id}
-              editable={this.props.editable}
               index={index}
               key={index}
               tag={tag}
-              suggestions={this.props.suggestions}
-              onClearSuggestions={this.props.onClearSuggestions}
-              onGetSuggestions={this.props.onGetSuggestions}
               onMove={this.props.onMoveTag}
               onTagInputBlur={this.handleTagSave}
               onTagMouseOut={this.handleTagMouseOut}
@@ -137,15 +133,11 @@ class Tags extends Component {
                   {...this.props}
                   editable={this.props.editable === true}
                   tagTreeProps={this.tagTreeProps(tag)}
-                  onClearSuggestions={this.props.onClearSuggestions}
-                  onGetSuggestions={this.props.onGetSuggestions}
                   onMove={this.props.onMoveTag}
                   onTagInputBlur={this.handleTagSave}
                   onTagMouseOut={this.handleTagMouseOut}
                   onTagMouseOver={this.handleTagMouseOver}
-                  onTagRemove={this.props.onTagRemove}
                   onTagSave={this.handleTagSave}
-                  onNewTagSave={this.props.onNewTagSave}
                 />
               </div>
             }
@@ -158,13 +150,11 @@ class Tags extends Component {
         tags.push(
           <div className={baseTagNavClass} key="newTagForm">
             <TagItem
+              {...this.props}
               {...this.props.tagProps}
               blank={true}
               key="newTagForm"
               tag={this.props.newTag}
-              suggestions={this.props.suggestions}
-              onClearSuggestions={this.props.onClearSuggestions}
-              onGetSuggestions={this.props.onGetSuggestions}
               onTagInputBlur={this.handleNewTagSave}
               onTagSave={this.handleNewTagSave}
               onTagUpdate={this.handleNewTagUpdate}
@@ -182,7 +172,7 @@ class Tags extends Component {
   renderEditButton() {
     if (this.props.isTagNav && this.props.canEdit) {
       return (
-        <span className="navbar-item edit-button" style={this.props.navButton.editContainerItem}>
+        <span className="navbar-item edit-button" style={this.props.navButtonStyles.editContainerItem}>
           <EditButton
             onClick={this.props.onEditButtonClick}
             bezelStyle="solid"
@@ -240,7 +230,7 @@ Tags.propTypes = {
   hasDropdownClassName: PropTypes.func,
   hasSubTags: PropTypes.func,
   isTagNav: PropTypes.bool,
-  navButton: PropTypes.object,
+  navButtonStyles: PropTypes.object,
   navbarSelectedClassName: PropTypes.func,
   newTag: PropTypes.object,
   onClearSuggestions: PropTypes.func,

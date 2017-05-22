@@ -106,13 +106,11 @@ class TagTree extends Component {
             {...this.props}
             tag={tag}
             parentTag={this.state.parentTag}
-            editable={this.props.editable}
             onTagRemove={this.props.onTagRemove}
           />
           <TagTreeBody
             {...this.props}
             tagTreeBodyProps={this.tagTreeBodyProps(tag)}
-            editable={this.props.editable}
           />
         </div>
       ));

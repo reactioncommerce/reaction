@@ -8,7 +8,7 @@ import { TagHelpers } from "/imports/plugins/core/ui-tagnav/client/helpers";
 import { Tags } from "/lib/collections";
 import TagNav from "../components/tagNav";
 
-const styles = {
+const navButtonStyles = {
   editContainerItem: {
     display: "flex",
     marginLeft: 5
@@ -330,28 +330,27 @@ class TagNavContainer extends Component {
         navbarPosition={this.navbarPosition}
         navbarAnchor={this.navbarAnchor}
         navbarVisibility={this.navbarVisibility}
-        styles={styles}
         tags={this.tags}
         isTagNav={true}
         canEdit={this.canEdit}
         newTag={this.state.newTag}
-        navButton={styles}
+        navButtonStyles={navButtonStyles}
         enableNewTagForm={true}
         editable={this.state.editable}
         hasDropdownClassName={this.hasDropdownClassName}
         navbarSelectedClassName={this.navbarSelectedClassName}
         suggestions={this.state.suggestions}
-        handleClearSuggestions={this.handleClearSuggestions}
-        handleGetSuggestions={this.handleGetSuggestions}
-        handleEditButtonClick={this.handleEditButtonClick}
-        handleMoveTag={this.handleMoveTag}
-        handleNewTagSave={this.handleNewTagSave}
-        handleNewTagUpdate={this.handleNewTagUpdate}
-        handleTagMouseOut={this.handleTagMouseOut}
-        handleTagMouseOver={this.handleTagMouseOver}
-        handleTagRemove={this.handleTagRemove}
-        handleTagSave={this.handleTagSave}
-        handleTagUpdate={this.handleTagUpdate}
+        onClearSuggestions={this.handleClearSuggestions}
+        onGetSuggestions={this.handleGetSuggestions}
+        onEditButtonClick={this.handleEditButtonClick}
+        onMoveTag={this.handleMoveTag}
+        onNewTagSave={this.handleNewTagSave}
+        onNewTagUpdate={this.handleNewTagUpdate}
+        onTagMouseOut={this.handleTagMouseOut}
+        onTagMouseOver={this.handleTagMouseOver}
+        onTagRemove={this.handleTagRemove}
+        onTagSave={this.handleTagSave}
+        onTagUpdate={this.handleTagUpdate}
         onTagSelect={this.onTagSelect}
       />
     );
