@@ -27,7 +27,7 @@ Meteor.methods({
     const values = {};
     const types = {
       orderCancelled: "Your order was canceled.",
-      newOrder: "You just made an order.",
+      newOrder: "Your order was accepted",
       forAdmin: "You have a new order.",
       orderDelivered: "Your order has been delivered.",
       orderProcessing: "Your order is being processed.",
