@@ -65,6 +65,7 @@ MenuItem.propTypes = {
   i18nKeyLabel: PropTypes.string,
   i18nKeySelectedLabel: PropTypes.string,
   icon: PropTypes.string,
+  iconStyle: PropTypes.object,
   label: PropTypes.string,
   onClick: PropTypes.func,
   selectionLabel: PropTypes.string,
@@ -72,7 +73,6 @@ MenuItem.propTypes = {
 };
 
 MenuItem.defaultProps = {
-  active: false,
   disabled: false
 };
 
