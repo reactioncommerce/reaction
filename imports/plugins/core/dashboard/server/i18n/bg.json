@@ -12,7 +12,30 @@
           "packageGroupSettingsLabel": "Настройки"
         },
         "settings": {
-          "shopSettingsLabel": "Магазин"
+          "shopSettingsLabel": "Магазин",
+          "import": "внос",
+          "general": {
+            "label": "Общ"
+          },
+          "address": {
+            "label": "Адрес 2"
+          },
+          "options": {
+            "label": "Настроики"
+          },
+          "openexchangerates": {
+            "refreshPeriod": "Обновяване"
+          }
+        },
+        "alerts": {
+          "shopGeneralSettingsSaved": "Магазин общи настройки, запаметени.",
+          "shopGeneralSettingsFailed": "Магазин актуализация на общите настройки провали.",
+          "shopAddressSettingsSaved": "настройки Shop адрес спасени.",
+          "shopAddressSettingsFailed": "Магазин актуализация адрес настройки провали.",
+          "shopExternalServicesSettingsSaved": "Магазин настройки външни услуги, запаметени.",
+          "shopExternalServicesSettingsFailed": "Магазин актуализация на настройките външни услуги се провали.",
+          "shopOptionsSettingsSaved": "запаметени опции магазин.",
+          "shopOptionsSettingsFailed": "опции магазин актуализация неуспешно."
         }
       }
     }

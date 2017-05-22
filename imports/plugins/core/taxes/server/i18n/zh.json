@@ -29,6 +29,7 @@
           "shopCustomTaxRatesFailed": "保存税率时出错。",
           "shopTaxMethodsSaved": "已保存的纳税方式。",
           "shopTaxMethodsFailed": "保存纳税方式失败。",
+          "customRatesLabel": "自定义费用",
           "customRatesDescription": "自定义费用",
           "taxCode": "税码",
           "taxShipping": "包括发货",

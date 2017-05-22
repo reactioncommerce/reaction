@@ -16,6 +16,7 @@
       "checkoutShipping": {
         "selectShippingOption": "Odaberite opciju dostave",
         "noShippingMethods": "Nema načina dostave konfigurirane.",
+        "contactAdmin": "Obratite se administratoru trgovine.",
         "configureNow": "Konfiguracija sada.",
         "shipping": "dostava"
       },

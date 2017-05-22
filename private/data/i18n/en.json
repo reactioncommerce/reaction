@@ -95,8 +95,6 @@
         "noProductsFound": "No products found.",
         "private": "Private",
         "public": "Public",
-        "allOn": "All On",
-        "allOff": "All Off",
         "shortcut": {
           "addProductLabel": "Add Product",
           "accountsLabel": "Accounts"
@@ -122,24 +120,12 @@
         "settingsfailed": "Search settings update failed"
       },
       "shopSettings": {
-        "general": "General",
-        "address": "Address",
-        "import": "Import",
         "localization": "Localization",
         "options": "Options",
-        "availableOptions": "Available Options",
         "paymentMethods": "Payment Methods",
         "externalServices": "External Services",
-        "shopGeneralSettingsSaved": "Shop general settings saved.",
-        "shopGeneralSettingsFailed": "Shop general settings update failed.",
-        "shopAddressSettingsSaved": "Shop address settings saved.",
-        "shopAddressSettingsFailed": "Shop address settings update failed.",
-        "shopExternalServicesSettingsSaved": "Shop external services settings saved.",
-        "shopExternalServicesSettingsFailed": "Shop external services settings update failed.",
         "shopLocalizationSettingsSaved": "Shop localization settings saved.",
         "shopLocalizationSettingsFailed": "Shop localization settings update failed.",
-        "shopOptionsSettingsSaved": "Shop options saved.",
-        "shopOptionsSettingsFailed": "Shop options update failed.",
         "shopPaymentMethodsSaved": "Shop Payment Methods settings saved.",
         "shopPaymentMethodsFailed": "Shop Payment Methods settings update failed."
       },
@@ -473,12 +459,6 @@
         "keywords": "Keywords",
         "keywordsPlaceholder": "Meta keywords for SEO",
         "language": "Base Language",
-        "languageTooltip": "This language will be used if device language detection will be failed",
-        "timezone": "Timezone",
-        "timezoneOptions": "Choose timezone",
-        "currency": "Base Currency",
-        "currencyTooltip": "Shop default currency",
-        "baseUOM": "Base Unit of Measure",
         "addressBook": {
           "company": "Company",
           "companyPlaceholder": "This business name",
@@ -714,6 +694,12 @@
           "matchFailed": "Match failed",
           "unknownError": "Unknown error"
         }
+      },
+      "loginServices": {
+        "appId": "App ID",
+        "secret": "Secret",
+        "clientId": "Client ID",
+        "consumerKey": "API Key"
       },
       "error": {
         "nameRequired": "Name is required.",

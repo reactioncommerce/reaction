@@ -10,14 +10,29 @@
           "socialDescription": "διαμόρφωση της κοινωνικής Κανάλι"
         },
         "settings": {
-          "facebook": "Facebook",
-          "twitter": "Twitter",
-          "pinterest": "Pinterest",
-          "googleplus": "Google+",
-          "appId": "App Id",
-          "username": "Ονομα χρήστη",
-          "appSecret": "App μυστικό",
-          "profilePage": "Σελίδα προφίλ",
+          "public": {
+            "apps": {
+              "facebook": {
+                "title": "Facebook",
+                "appId": "Αναγνωριστικό εφαρμογής",
+                "appSecret": "App μυστικό",
+                "profilePage": "Σελίδα προφίλ"
+              },
+              "googleplus": {
+                "title": "Google+",
+                "profilePage": "Σελίδα προφίλ"
+              },
+              "pinterest": {
+                "title": "Pinterest",
+                "profilePage": "Σελίδα προφίλ"
+              },
+              "twitter": {
+                "title": "Twitter",
+                "username": "Ονομα χρήστη",
+                "profilePage": "Σελίδα προφίλ"
+              }
+            }
+          },
           "socialSettingsLabel": "κοινωνική Ρυθμίσεις",
           "socialSettingsSaved": "Κοινωνική ρυθμίσεις αποθηκεύονται"
         }

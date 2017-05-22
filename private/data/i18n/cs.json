@@ -95,8 +95,6 @@
         "noProductsFound": "Nebyly nalezeny žádné produkty.",
         "private": "soukromý",
         "public": "Veřejnost",
-        "allOn": "Vše On",
-        "allOff": "All Off",
         "shortcut": {
           "addProductLabel": "Přidat produkt",
           "accountsLabel": "účty"
@@ -122,24 +120,12 @@
         "settingsfailed": "Aktualizace nastavení vyhledávání se nezdařilo"
       },
       "shopSettings": {
-        "general": "Obecný",
-        "address": "Adresa",
-        "import": "Import",
         "localization": "lokalizace",
         "options": "Možnosti",
-        "availableOptions": "dostupné možnosti",
         "paymentMethods": "platební metody",
         "externalServices": "Externí služby",
-        "shopGeneralSettingsSaved": "Obchod obecné uložené nastavení.",
-        "shopGeneralSettingsFailed": "Obchod aktualizace obecná nastavení se nezdařila.",
-        "shopAddressSettingsSaved": "Nastavení Shop adresa uložena.",
-        "shopAddressSettingsFailed": "Obchod aktualizace nastavení adresy se nezdařilo.",
-        "shopExternalServicesSettingsSaved": "Shopu nastavení externích služeb uložených.",
-        "shopExternalServicesSettingsFailed": "Obchod aktualizaci nastavení externí služby se nezdařilo.",
         "shopLocalizationSettingsSaved": "Nastavení Shop lokalizační uložena.",
         "shopLocalizationSettingsFailed": "Obchod aktualizace nastavení lokalizace nezdařila.",
-        "shopOptionsSettingsSaved": "Možnosti Shop uložen.",
-        "shopOptionsSettingsFailed": "Aktualizace možnosti Shop nezdařila.",
         "shopPaymentMethodsSaved": "Shop nastavení Platební metody uložena.",
         "shopPaymentMethodsFailed": "Obchod aktualizace nastavení Platební metody selhaly."
       },
@@ -473,12 +459,6 @@
         "keywords": "Klíčová slova",
         "keywordsPlaceholder": "Meta klíčová slova pro SEO",
         "language": "základna Language",
-        "languageTooltip": "Tento jazyk bude použit v případě detekce jazyka zařízení bude selhalo",
-        "timezone": "Časové pásmo",
-        "timezoneOptions": "vyberte si časové pásmo",
-        "currency": "Základní měna",
-        "currencyTooltip": "Obchod Výchozí měna",
-        "baseUOM": "Základna Měrná jednotka",
         "addressBook": {
           "company": "Firma",
           "companyPlaceholder": "Tento obchodní jméno",
@@ -714,6 +694,12 @@
           "matchFailed": "Nesouhlasí",
           "unknownError": "Neznámá chyba"
         }
+      },
+      "loginServices": {
+        "appId": "ID aplikace",
+        "secret": "Tajný",
+        "clientId": "ID klienta",
+        "consumerKey": "klíč API"
       },
       "error": {
         "nameRequired": "je nutné názvu.",

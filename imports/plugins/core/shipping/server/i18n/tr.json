@@ -16,6 +16,7 @@
       "checkoutShipping": {
         "selectShippingOption": "Seç nakliye seçeneği",
         "noShippingMethods": "Hiçbir nakliye yöntemleri yapılandırılır.",
+        "contactAdmin": "Lütfen mağaza yöneticisine başvurun.",
         "configureNow": "Şimdi yapılandırın.",
         "shipping": "Nakliye"
       },

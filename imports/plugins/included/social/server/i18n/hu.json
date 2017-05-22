@@ -10,14 +10,29 @@
           "socialDescription": "Szociális csatorna konfigurációja"
         },
         "settings": {
-          "facebook": "Facebook",
-          "twitter": "Twitter",
-          "pinterest": "Pinterest",
-          "googleplus": "Google+",
-          "appId": "App Id",
-          "username": "felhasználó",
-          "appSecret": "App Secret",
-          "profilePage": "Profil oldal",
+          "public": {
+            "apps": {
+              "facebook": {
+                "title": "Facebook",
+                "appId": "App ID",
+                "appSecret": "App Secret",
+                "profilePage": "Profil oldal"
+              },
+              "googleplus": {
+                "title": "Google+",
+                "profilePage": "Profil oldal"
+              },
+              "pinterest": {
+                "title": "Pinterest",
+                "profilePage": "Profil oldal"
+              },
+              "twitter": {
+                "title": "Twitter",
+                "username": "felhasználó",
+                "profilePage": "Profil oldal"
+              }
+            }
+          },
           "socialSettingsLabel": "szociális beállítások",
           "socialSettingsSaved": "Szociális beállítások mentve"
         }
