@@ -2,8 +2,11 @@ import debounce from "lodash/debounce";
 import update from "react/lib/update";
 import React, { Component, PropTypes } from "react";
 import { Reaction } from "/client/api";
-import TagNav from "../components/tagNav";
+import { composeWithTracker } from "/lib/api/compose";
+import { getTagIds } from "/lib/selectors/tags";
 import { TagHelpers } from "/imports/plugins/core/ui-tagnav/client/helpers";
+import { Tags } from "/lib/collections";
+import TagNav from "../components/tagNav";
 
 const styles = {
   editContainerItem: {
@@ -364,4 +367,24 @@ TagNavContainer.propTypes = {
   tagsByKey: PropTypes.object
 };
 
-export default TagNavContainer;
+const composer = (props, onData) => {
+  const tags = Tags.find({ isTopLevel: true }, { sort: { position: 1 } }).fetch();
+  const tagsByKey = {};
+
+  if (Array.isArray(tags)) {
+    for (const tag of tags) {
+      tagsByKey[tag._id] = tag;
+    }
+  }
+
+  onData(null, {
+    name: "coreHeaderNavigation",
+    hasEditRights: Reaction.hasAdminAccess(),
+    isEditing: true,
+    tagsAsArray: tags,
+    tagIds: getTagIds({ tags }),
+    tagsByKey
+  });
+};
+
+export default composeWithTracker(composer, null)(TagNavContainer);

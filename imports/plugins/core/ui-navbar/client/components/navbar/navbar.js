@@ -1,12 +1,10 @@
 import { FlatButton } from "/imports/plugins/core/ui/client/components";
 import { NotificationContainer } from "/imports/plugins/included/notifications/client/containers";
 import { Reaction } from "/client/api";
-import { Tags } from "/lib/collections";
 import CartPanel from "../../../../checkout/client/templates/cartPanel/container/cartPanelContainer";
-import { getTagIds } from "/lib/selectors/tags";
-import TagNavContainer from "/imports/plugins/core/ui-tagnav/client/containers/tagNavContainer";
 import CurrencyContainer from "/client/modules/i18n/templates/currency/containers/currencyContainer";
 import LanguageDropdownContainer from "/client/modules/i18n/templates/header/containers/i18nContainer";
+import TagNavContainer from "/imports/plugins/core/ui-tagnav/client/containers/tagNavContainer";
 
 Template.CoreNavigationBar.onCreated(function () {
   this.state = new ReactiveDict();
@@ -93,33 +91,7 @@ Template.CoreNavigationBar.helpers({
   },
 
   tagNav() {
-    const instance = Template.instance();
-    const tags = Tags.find({ isTopLevel: true }, { sort: { position: 1 } }).fetch();
-    const tagsByKey = {};
-
-    if (Array.isArray(tags)) {
-      for (const tag of tags) {
-        tagsByKey[tag._id] = tag;
-      }
-    }
-
-    const props = {
-      name: "coreHeaderNavigation",
-      hasEditRights: Reaction.hasAdminAccess(),
-      isEditing: true,
-      tagsAsArray: tags,
-      tagIds: getTagIds({ tags }),
-      tagsByKey,
-      onToggleMenu(callback) {
-        // Register the callback
-        instance.toggleMenuCallback = callback;
-      }
-    };
-
-    return {
-      component: TagNavContainer,
-      ...props
-    };
+    return TagNavContainer;
   },
 
   cartPanel() {
