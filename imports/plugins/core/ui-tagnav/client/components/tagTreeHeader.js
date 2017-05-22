@@ -29,10 +29,6 @@ class TagTreeHeader extends Component {
     }
   }
 
-  handleMoveTag = () => {
-    console.log('a');
-  }
-
   render() {
     return (
       <div className="header">

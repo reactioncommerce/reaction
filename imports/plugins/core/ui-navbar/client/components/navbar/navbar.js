@@ -5,7 +5,6 @@ import { Tags } from "/lib/collections";
 import CartPanel from "../../../../checkout/client/templates/cartPanel/container/cartPanelContainer";
 import { getTagIds } from "/lib/selectors/tags";
 import TagNavContainer from "/imports/plugins/core/ui-tagnav/client/containers/tagNavContainer";
-import TagNav from "/imports/plugins/core/ui-tagnav/client/components/tagNav";
 
 Template.CoreNavigationBar.onCreated(function () {
   this.state = new ReactiveDict();
@@ -104,7 +103,7 @@ Template.CoreNavigationBar.helpers({
     };
 
     return {
-      component: TagNavContainer(TagNav),
+      component: TagNavContainer,
       ...props
     };
   },

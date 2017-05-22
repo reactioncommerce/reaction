@@ -1,9 +1,9 @@
 import React, { Component, PropTypes } from "react";
-import { TagItem } from "/imports/plugins/core/ui/client/components/tags/";
-import TagTreeHeader from "./tagTreeHeader";
-import TagTreeBody from "./tagTreeBody";
-import { TagHelpers } from "/imports/plugins/core/ui-tagnav/client/helpers";
 import update from "react/lib/update";
+import TagTreeBody from "./tagTreeBody";
+import TagTreeHeader from "./tagTreeHeader";
+import { TagItem } from "/imports/plugins/core/ui/client/components/tags/";
+import { TagHelpers } from "/imports/plugins/core/ui-tagnav/client/helpers";
 import { getTagIds } from "/lib/selectors/tags";
 
 class TagTree extends Component {

@@ -8,7 +8,6 @@ import { i18next } from "/client/api";
 import { Button, Handle } from "/imports/plugins/core/ui/client/components";
 import { SortableItem } from "../../containers";
 
-
 class Tag extends Component {
   displayName: "Tag";
 
