@@ -4,7 +4,6 @@ import { LoginContainer, MessagesContainer } from "../../containers";
 Template.loginForm.helpers({
   component() {
     const currentData = Template.currentData() || {};
-    console.log("Login component", currentData);
 
     return {
       ...currentData,
@@ -16,7 +15,6 @@ Template.loginForm.helpers({
 Template.loginFormMessages.helpers({
   component() {
     const currentData = Template.currentData() || {};
-    console.log("Login form messages", currentData);
     return {
       ...currentData,
       component: MessagesContainer
