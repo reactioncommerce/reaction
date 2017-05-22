@@ -138,10 +138,10 @@
         },
         "messages": {
           "orderCancelled": "Your order was canceled.",
-          "newOrder": "Your order is being processed.",
+          "newOrder": "Your order was accepted.",
           "forAdmin": "You have a new order.",
           "orderDelivered": "Your order has been delivered.",
-          "orderAccepted": "Your order has been accepted.",
+          "orderProcessing": "Your order is being processed.",
           "orderShipped": "Your order has been shipped."
         }
       },
