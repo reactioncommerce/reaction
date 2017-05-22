@@ -1,7 +1,11 @@
-import React, { Component } from "react";
+import React, { Component, PropTypes } from "react";
 import { Reaction } from "/client/api";
 
 class CartIcon extends Component {
+  static propTypes = {
+    cart: PropTypes.object
+  }
+
   handleClick = (event) => {
     event.preventDefault();
     return $("#cart-drawer-container").fadeOut(300, function () {
