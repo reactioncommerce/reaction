@@ -132,7 +132,6 @@ html:not(.rtl) .rui.navbar .languages .dropdown-menu {
   .align-items(center);
   .flex(0 0 auto);
   height: @navbar-height;
-  margin-right: 2px;
 }
 
 .rui.navbar .accounts .dropdown-toggle {
@@ -247,6 +246,11 @@ html:not(.rtl) .rui.navbar .languages .dropdown-menu {
 
 .rui.navbar .search:hover button {
   outline: none;
+}
+
+.rui.navbar .accounts:hover {
+  background-color: @navbar-default-toggle-icon-bar-bg;
+  border-color: @navbar-default-toggle-border-color;
 }
 
 .accounts-a-tag {

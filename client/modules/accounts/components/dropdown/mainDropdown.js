@@ -11,7 +11,7 @@ const iconStyle = {
 };
 
 const menuStyle = {
-  padding: 10,
+  padding: "0px 10px 10px 6px",
   minWidth: 220,
   minHeight: 50
 };
@@ -82,32 +82,45 @@ class MainDropdown extends Component {
     );
   }
 
+  renderSignInComponent() {
+    return (
+      <div className="accounts-dropdown">
+        <div className="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000">
+          <span data-i18n="accountsUI.signIn"><b>Sign In</b></span><b className="caret" />
+        </div>
+        <div
+          className="accounts-dialog accounts-layout dropdown-menu pull-right"
+          style={{ marginTop: 20, padding: "10px 20px" }}
+        >
+          <LoginContainer />
+        </div>
+      </div>
+    );
+  }
+
   render() {
     return (
-      <div style={{ paddingRight: 5 }}>
+      <div>
         {this.props.currentUser ?
-          <DropDownMenu
-            buttonElement={this.buttonElement()}
-            attachment="bottom right"
-            targetAttachment="top right"
-            menuStyle={menuStyle}
-            className="accounts-li-tag"
-            onChange={this.props.handleChange}
-          >
+          <div style={{ paddingRight: 5 }}>
+              <DropDownMenu
+                buttonElement={this.buttonElement()}
+                attachment="bottom right"
+                targetAttachment="top right"
+                menuStyle={menuStyle}
+                className="accounts-li-tag"
+                onChange={this.props.handleChange}
+              >
 
-            {this.renderUserIcons()}
-            {this.renderAdminIcons()}
-            {this.renderSignOutButton()}
+              {this.renderUserIcons()}
+              {this.renderAdminIcons()}
+              {this.renderSignOutButton()}
 
-          </DropDownMenu> :
-          <div className="dropdown" role="menu">
-            <div className="accounts-dropdown" style={{ paddingRight: 5 }}>
-            <div className="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000">
-              <span data-i18n="accountsUI.signIn"><b>Sign In</b></span><b className="caret" /></div>
-            <div className="accounts-dialog accounts-layout dropdown-menu pull-right" style={{ marginTop: 20, padding: "10px 20px" }}>
-              <LoginContainer />
-            </div>
+            </DropDownMenu>
           </div>
+          :
+          <div className="accounts dropdown" role="menu">
+            {this.renderSignInComponent()}
           </div>
         }
       </div>
