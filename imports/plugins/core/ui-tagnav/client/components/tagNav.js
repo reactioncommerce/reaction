@@ -4,7 +4,6 @@ import { PropTypes as ReactionPropTypes } from "/lib/api";
 import { TagList } from "/imports/plugins/core/ui/client/components/tags/";
 
 const TagNav = (props) => {
-  console.log({ props });
   return (
     <div className={`rui tagnav ${props.navbarOrientation} ${props.navbarPosition} ${props.navbarAnchor} ${props.navbarVisibility}`}>
       <div className="navbar-header">
