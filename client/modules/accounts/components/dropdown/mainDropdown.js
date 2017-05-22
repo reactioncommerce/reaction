@@ -86,11 +86,11 @@ class MainDropdown extends Component {
     return (
       <div className="accounts-dropdown">
         <div className="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000">
-          <span data-i18n="accountsUI.signIn"><b>Sign In</b></span><b className="caret" />
+          <span data-i18n="accountsUI.signIn" style={{ fontWeight: 600 }}>Sign In</span><b className="caret" />
         </div>
         <div
           className="accounts-dialog accounts-layout dropdown-menu pull-right"
-          style={{ marginTop: 20, padding: "10px 20px" }}
+          style={{ padding: "10px 20px" }}
         >
           <LoginContainer />
         </div>
