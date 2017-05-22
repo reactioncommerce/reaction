@@ -10,13 +10,21 @@ class DropDownMenu extends Component {
     super(props);
 
     this.state = {
-      label: undefined
+      label: undefined,
+      isOpen: false
     };
+  }
+
+  handleDropdownToggle = () => {
+    this.setState({
+      isOpen: !this.state.isOpen
+    });
   }
 
   handleMenuItemChange = (event, value, menuItem) => {
     this.setState({
-      label: menuItem.props.label || value
+      label: menuItem.props.label || value,
+      isOpen: false
     });
 
     if (this.props.onChange) {
@@ -53,6 +61,8 @@ class DropDownMenu extends Component {
             label={this.label}
           />
         }
+        onClick={this.handleDropdownToggle}
+        isOpen={this.state.isOpen}
       >
         <Menu value={this.props.value} onChange={this.handleMenuItemChange}>
           {this.props.children}

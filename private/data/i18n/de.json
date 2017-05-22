@@ -329,16 +329,24 @@
       "order": {
         "created": "Erstellt",
         "reference": "Referenz",
+        "cancelInvoice": "Abbrechen",
         "invoice": "Rechnung",
         "ordersNotFound": "Es wurden keine Bestellungen gefunden",
         "approveInvoice": "Bestätigen",
+        "cancelOrderLabel": "Bestellung stornieren",
         "makeAdjustments": "Anpassen",
         "capturePayment": "Zahlung erfassen",
         "paymentCaptured": "Zahlung erfasst",
         "capturedTotal": "Erfasst gesamt",
+        "canceledLabel": "Abgebrochen",
         "refundAmount": "Betrag erstatten",
+        "cancelOrder": "Möchten Sie diese Bestellung stornieren?",
         "applyRefundToThisOrder": "Für diese Bestellung eine Erstattung von {{currencySymbol}}{{refund}} vornehmen?",
+        "applyRefundDuringCancelOrder": "Damit wird die Auftragssumme von {{currencySymbol}}{{invoiceTotal}} zurückerstattet",
+        "cancelOrderThenRestock": "Ja, und wieder aufzutragen",
+        "cancelOrderNoRestock": "Ja, aber keine Aufstockung",
         "applyRefund": "Erstattung vornehmen",
+        "refunding": "Rückerstattung",
         "applyDiscount": "Rabatt anwenden",
         "adjustedTotal": "Angepasste Summe",
         "invalidDiscount": "Der Rabatt darf den ursprünglichen Gesamtpreis nicht übersteigen",
@@ -362,7 +370,8 @@
           "completed": "Beendet",
           "canceled": "Abgebrochen",
           "refunded": "Erstattet"
-        }
+        },
+        "showMore": "Zeig mehr"
       },
       "orderShipping": {
         "shipTo": "Versenden an",

@@ -10,7 +10,7 @@
         },
         "dashboard": {
           "stripeLabel": "Stripe",
-          "stripeDescription": "thanh toán sọc"
+          "stripeDescription": "thanh toán Stripe"
         },
         "paymentSettings": {
           "stripeLabel": "Stripe",

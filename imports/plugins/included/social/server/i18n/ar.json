@@ -10,9 +10,9 @@
           "socialDescription": "التكوين قناة الاجتماعية"
         },
         "settings": {
-          "facebook": "فيسبوك",
-          "twitter": "تويتر",
-          "pinterest": "بينتيريست",
+          "facebook": "Facebook",
+          "twitter": "Twitter",
+          "pinterest": "Pinterest",
           "googleplus": "في + Google",
           "appId": "التطبيق رقم",
           "username": "اسم المستخدم",

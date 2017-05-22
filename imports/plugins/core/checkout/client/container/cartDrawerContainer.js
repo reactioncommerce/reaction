@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { Session } from "meteor/session";
+import { Meteor } from "meteor/meteor";
 import { Cart, Media } from "/lib/collections";
 import { Reaction } from "/client/api";
 import { composeWithTracker } from "/lib/api/compose";
@@ -39,6 +40,15 @@ class CartDrawerContainer extends Component {
     return this.showItemLowInventoryWarning(productItem);
   }
 
+  handleShowProduct = (productItem) => {
+    if (productItem) {
+      Reaction.Router.go("product", {
+        handle: productItem.productId,
+        variantId: productItem.variants._id
+      });
+    }
+  }
+
   pdpPath(productItem) {
     if (productItem) {
       const handle = productItem.productId;
@@ -74,6 +84,7 @@ class CartDrawerContainer extends Component {
         handleImage={this.handleImage}
         handleRemoveItem={this.handleRemoveItem}
         handleCheckout={this.handleCheckout}
+        handleShowProduct={this.handleShowProduct}
       />
     );
   }

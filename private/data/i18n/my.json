@@ -232,7 +232,7 @@
         "description": "ဖေါ်ပြချက်",
         "originCountry": "မူလအစနိုင်ငံ",
         "facebookMsg": "Facebook ကကို Message",
-        "twitterMsg": "တွစ်တာကို Message",
+        "twitterMsg": "Twitter Message",
         "pinterestMsg": "Pinterest ကို Message",
         "googleplusMsg": "Google+ မှာကို Message",
         "editVariant": "Edit ကိုမူကွဲ",
@@ -329,16 +329,24 @@
       "order": {
         "created": "Created",
         "reference": "အညွှန်း",
+        "cancelInvoice": "ပယ်ဖျက်ပါ",
         "invoice": "ဝယ်ကုန်စာရင်း",
         "ordersNotFound": "အမိန့်မတွေ့ရှိပါ",
         "approveInvoice": "အတည်ပြု",
+        "cancelOrderLabel": "အော်ဒါဖျက်သိမ်းသည်",
         "makeAdjustments": "Adjustments Make",
         "capturePayment": "ငွေပေးချေမှုရမည့် Capture",
         "paymentCaptured": "ငွေပေးချေမှုရမည့်ဖမ်းဆီးခံရသော",
         "capturedTotal": "ဖမ်းမိစုစုပေါင်း",
+        "canceledLabel": "ဖျက်သိမ်း",
         "refundAmount": "ပြန်အမ်းငွေပမာဏ",
+        "cancelOrder": "သင်သည်ဤအမိန့်ကိုပယ်ဖျက်ချင်ပါသလား?",
         "applyRefundToThisOrder": "ဒီအမိန့်မှ {{currencySymbol}}{{refund}} ၏ပြန်အမ်းငွေ Apply?",
+        "applyRefundDuringCancelOrder": "ဤသည် {{currencySymbol}}{{invoiceTotal}} ၏အမိန့်စုစုပေါင်းပြန်အမ်းလိမ့်မယ်",
+        "cancelOrderThenRestock": "ဟုတ်ကဲ့, restock",
+        "cancelOrderNoRestock": "ဟုတ်ကဲ့, ဒါပေမယ့်ဘယ်သူမျှမ restocking",
         "applyRefund": "ပြန်အမ်းငွေ Apply",
+        "refunding": "ငွေပြန်အမ်း",
         "applyDiscount": "လျှော့ Apply",
         "adjustedTotal": "Adjustments စုစုပေါင်း",
         "invalidDiscount": "လျှော့စျေးမူရင်းစုစုပေါင်းစျေးနှုန်းထက် သာ. ကြီးမြတ်မဖွစျနိုငျ",
@@ -362,7 +370,8 @@
           "completed": "completed",
           "canceled": "ဖျက်သိမ်း",
           "refunded": "ပြန်အမ်း"
-        }
+        },
+        "showMore": "နောက်ထပ်ပြရန်"
       },
       "orderShipping": {
         "shipTo": "သို့တင်ပို့သည်",

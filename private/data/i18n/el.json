@@ -329,16 +329,24 @@
       "order": {
         "created": "δημιουργήθηκε",
         "reference": "Αναφορά",
+        "cancelInvoice": "Ακύρωση",
         "invoice": "Τιμολόγιο",
         "ordersNotFound": "Δεν βρέθηκαν παραγγελίες",
         "approveInvoice": "Εγκρίνουν",
+        "cancelOrderLabel": "Ακύρωση παραγγελίας",
         "makeAdjustments": "Κάντε προσαρμογές",
         "capturePayment": "σύλληψη πληρωμής",
         "paymentCaptured": "πληρωμή Συλλαμβάνονται",
         "capturedTotal": "συλλαμβάνονται Σύνολο",
+        "canceledLabel": "Ακυρώθηκε",
         "refundAmount": "Ποσό Επιστροφής Χρημάτων",
+        "cancelOrder": "Θέλετε να ακυρώσετε αυτήν την παραγγελία;",
         "applyRefundToThisOrder": "Εφαρμόστε επιστροφή του {{currencySymbol}}{{refund}} σε αυτή τη σειρά;",
+        "applyRefundDuringCancelOrder": "Αυτό θα επιστρέψει το σύνολο παραγγελίας του {{currencySymbol}}{{invoiceTotal}}",
+        "cancelOrderThenRestock": "Ναι, και επαναλάβετε",
+        "cancelOrderNoRestock": "Ναι, αλλά χωρίς ανανέωση",
         "applyRefund": "Εφαρμόστε Επιστροφή",
+        "refunding": "Αναχρηματοδότηση",
         "applyDiscount": "Εφαρμόστε Έκπτωση",
         "adjustedTotal": "Προσαρμοσμένο Σύνολο",
         "invalidDiscount": "Έκπτωση δεν μπορεί να είναι μεγαλύτερη από την αρχική συνολική τιμή",
@@ -362,7 +370,8 @@
           "completed": "Ολοκληρώθηκε το",
           "canceled": "Ακυρώθηκε",
           "refunded": "επιστρέφεται"
-        }
+        },
+        "showMore": "Δείτε Περισσότερα"
       },
       "orderShipping": {
         "shipTo": "Αποστολή προς",
