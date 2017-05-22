@@ -30,11 +30,7 @@ class PublishContainer extends Component {
 
           Alerts.toast(message, "success");
         } else {
-          const message = i18next.t("revisions.noChangesPublished", {
-            defaultValue: "There are no changes to publish"
-          });
-
-          Alerts.toast(message, "warning");
+          Alerts.toast(error.message, "error");
         }
       });
     }
