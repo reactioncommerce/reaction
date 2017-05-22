@@ -7,6 +7,17 @@ import {
 } from "/imports/plugins/core/ui/client/components";
 
 class SignUp extends Component {
+  static propTypes = {
+    credentials: PropTypes.object,
+    hasPasswordService: PropTypes.func,
+    isLoading: PropTypes.bool,
+    loginFormMessages: PropTypes.func,
+    messages: PropTypes.object,
+    onError: PropTypes.func,
+    onFormSubmit: PropTypes.func,
+    onSignInClick: PropTypes.func,
+    uniqueId: PropTypes.string
+  }
 
   constructor(props) {
     super(props);
@@ -172,17 +183,5 @@ class SignUp extends Component {
     );
   }
 }
-
-SignUp.propTypes = {
-  credentials: PropTypes.object,
-  hasPasswordService: PropTypes.func,
-  isLoading: PropTypes.bool,
-  loginFormMessages: PropTypes.func,
-  messages: PropTypes.object,
-  onError: PropTypes.func,
-  onFormSubmit: PropTypes.func,
-  onSignInClick: PropTypes.func,
-  uniqueId: PropTypes.string
-};
 
 export default SignUp;

@@ -8,6 +8,11 @@ import { ServiceConfigHelper } from "../../helpers";
 import { LoginFormSharedHelpers } from "/client/modules/accounts/helpers";
 
 class AuthContainer extends Component {
+  static propTypes = {
+    currentView: PropTypes.string,
+    formMessages: PropTypes.object
+  }
+
   constructor(props) {
     super(props);
 
@@ -202,10 +207,5 @@ function composer(props, onData) {
     formMessages
   });
 }
-
-AuthContainer.propTypes = {
-  currentView: PropTypes.string,
-  formMessages: PropTypes.object
-};
 
 export default composeWithTracker(composer)(AuthContainer);

@@ -6,6 +6,13 @@ import { UpdatePasswordOverlay } from "/client/modules/accounts/components";
 import { MessagesContainer } from "/client/modules/accounts/containers/helpers";
 
 class UpdatePasswordOverlayContainer extends Component {
+  static propTypes = {
+    callback: PropTypes.func,
+    formMessages: PropTypes.object,
+    isOpen: PropTypes.bool,
+    token: PropTypes.string
+  }
+
   constructor(props) {
     super(props);
 
@@ -114,12 +121,5 @@ function composer(props, onData) {
     formMessages
   });
 }
-
-UpdatePasswordOverlayContainer.propTypes = {
-  callback: PropTypes.func,
-  formMessages: PropTypes.object,
-  isOpen: PropTypes.bool,
-  token: PropTypes.string
-};
 
 export default composeWithTracker(composer)(UpdatePasswordOverlayContainer);

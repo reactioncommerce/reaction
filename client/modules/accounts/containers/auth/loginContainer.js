@@ -4,6 +4,10 @@ import AuthContainer from "./authContainer";
 import { ForgotContainer } from "../passwordReset";
 
 class LoginContainer extends Component {
+  static propTypes = {
+    loginFormCurrentView: PropTypes.string
+  }
+
   constructor(props) {
     super(props);
 
@@ -81,9 +85,5 @@ function composer(props, onData) {
     credentials
   });
 }
-
-LoginContainer.propTypes = {
-  loginFormCurrentView: PropTypes.string
-};
 
 export default composeWithTracker(composer)(LoginContainer);

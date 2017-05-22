@@ -4,9 +4,12 @@ import {
 } from "/imports/plugins/core/ui/client/components";
 
 class LoginButtons extends Component {
-
-  constructor(props) {
-    super(props);
+  static propTypes = {
+    capitalizeName: PropTypes.func,
+    currentView: PropTypes.string,
+    loginServices: PropTypes.func,
+    onSeparator: PropTypes.func,
+    onSocialClick: PropTypes.func
   }
 
   renderLoginButtons() {
@@ -63,13 +66,5 @@ class LoginButtons extends Component {
     );
   }
 }
-
-LoginButtons.propTypes = {
-  capitalizeName: PropTypes.func,
-  currentView: PropTypes.string,
-  loginServices: PropTypes.func,
-  onSeparator: PropTypes.func,
-  onSocialClick: PropTypes.func
-};
 
 export default LoginButtons;

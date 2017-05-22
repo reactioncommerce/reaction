@@ -7,6 +7,18 @@ import {
 } from "/imports/plugins/core/ui/client/components";
 
 class Forgot extends Component {
+  static propTypes = {
+    credentials: PropTypes.object,
+    isDisabled: PropTypes.bool,
+    isLoading: PropTypes.bool,
+    loginFormMessages: PropTypes.func,
+    messages: PropTypes.object,
+    onError: PropTypes.func,
+    onFormSubmit: PropTypes.func,
+    onSignInClick: PropTypes.func,
+    uniqueId: PropTypes.string
+  }
+
   constructor(props) {
     super(props);
 
@@ -128,17 +140,5 @@ class Forgot extends Component {
     );
   }
 }
-
-Forgot.propTypes = {
-  credentials: PropTypes.object,
-  isDisabled: PropTypes.bool,
-  isLoading: PropTypes.bool,
-  loginFormMessages: PropTypes.func,
-  messages: PropTypes.object,
-  onError: PropTypes.func,
-  onFormSubmit: PropTypes.func,
-  onSignInClick: PropTypes.func,
-  uniqueId: PropTypes.string
-};
 
 export default Forgot;

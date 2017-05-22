@@ -2,8 +2,12 @@ import React, { Component, PropTypes } from "react";
 import { LoginFormMessages } from "../../components";
 
 class MessagesContainer extends Component {
-  constructor(props) {
-    super(props);
+  static propTypes = {
+    messages: PropTypes.object
+  }
+
+  constructor() {
+    super();
 
     this.loginFormMessages = this.loginFormMessages.bind(this);
   }
@@ -31,9 +35,5 @@ class MessagesContainer extends Component {
     );
   }
 }
-
-MessagesContainer.propTypes = {
-  messages: PropTypes.object
-};
 
 export default MessagesContainer;
