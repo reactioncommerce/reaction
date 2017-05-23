@@ -12,27 +12,38 @@ import { Logger, Reaction } from "/server/api";
  * verifyAccount
  * @summary verify registered user account
  * @param {String} email - user email
+ * @param {String} token - user token, if the user is invited
  * @returns {Boolean} - returns boolean
  */
-export function verifyAccount(email) {
+export function verifyAccount(email, token) {
   check(email, String);
-  const account = Accounts.findOne({
-    "emails.address": email
-  });
+  check(token, Match.Optional(String));
+
+  let account;
+  if (token) {
+    account = Meteor.users.findOne({
+      "services.password.reset.token": token
+    });
+  } else {
+    account = Accounts.findOne({
+      "emails.address": email
+    });
+  }
+
   if (account) {
     const verified = account.emails[0].verified;
     if (!verified) {
       Meteor.users.update({
-        "_id": account.userId,
-        "emails.address": email
+        "_id": account._id,
+        "emails.address": account.emails[0].address
       }, {
         $set: {
           "emails.$.verified": true
         }
       });
       Accounts.update({
-        "userId": account.userId,
-        "emails.address": email
+        "userId": account._id,
+        "emails.address": account.emails[0].address
       }, {
         $set: {
           "emails.$.verified": true
