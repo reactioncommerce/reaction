@@ -12,24 +12,25 @@ jobs:
 
     steps:
       - setup_remote_docker
+      - checkout
 
+      # install OS dependencies
       - restore_cache:
           key: meteor
 
-      - checkout
-
-      - restore_cache:
-          key: node_modules
-
-      # install OS dependencies
       - run: .circleci/install.sh
+
       - save_cache:
           key: meteor
           paths:
             - ~/.meteor
 
       # install app dependencies
+      - restore_cache:
+          key: node_modules
+
       - run: meteor npm install
+
       - save_cache:
           key: node_modules
           paths:
@@ -39,6 +40,7 @@ jobs:
       - run: reaction test
       - run: .circleci/build.sh
 
+      # deploy the build (if on a deployment branch)
       - deploy:
           name: Docker Image Deploment
           command: .circleci/deploy.sh
