@@ -22,7 +22,7 @@ test("OrderSummary snapshot test", () => {
   const tracking = jest.fn();
   const shipmentStatus = jest.fn(()=>({}));
   const printableLabels = jest.fn(()=>({}));
-  const profile = {};
+  const profileShippingAddress = {};
   const order = {
     shipping: [{ shipmentMethod: {} }],
     billing: [
@@ -36,7 +36,7 @@ test("OrderSummary snapshot test", () => {
     <OrderSummary
       dateFormat={dateFormat}
       tracking={tracking}
-      profile={profile}
+      profileShippingAddress={profileShippingAddress}
       shipmentStatus={shipmentStatus}
       printableLabels={printableLabels}
       order={order}
