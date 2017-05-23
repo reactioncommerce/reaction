@@ -7,6 +7,7 @@ import CartPanel from "/imports/plugins/core/checkout/client/templates/cartPanel
 import MainDropdown from "/client/modules/accounts/containers/dropdown/mainDropdownContainer";
 import LanguageContainer from "/client/modules/i18n/templates/header/containers/i18nContainer";
 import CurrencyContainer from "/client/modules/i18n/templates/currency/containers/currencyContainer";
+import TagNavContainer from "/imports/plugins/core/ui-tagnav/client/containers/tagNavContainer";
 
 class NavBar extends Component {
   static propTypes = {
@@ -82,14 +83,20 @@ class NavBar extends Component {
     );
   }
 
+  renderTagNav() {
+    return (
+      <div className="menu">
+        <TagNavContainer />
+      </div>
+    );
+  }
+
   render() {
     return (
       <div className="rui navbar">
         {this.renderHamburgerButton()}
         {this.renderBrandContainer()}
-        <div className="menu">
-          <b> Tags </b>
-        </div>
+        {this.renderTagNav()}
         {this.renderSearchButton()}
         {this.renderNotificationIcon()}
         {this.renderLanguage()}

@@ -2,6 +2,10 @@ import React, { Component, PropTypes } from "react";
 import { PropTypes as ReactionPropTypes } from "/lib/api";
 import { TagItem } from "./";
 import classnames from "classnames";
+import { EditButton } from "/imports/plugins/core/ui/client/components";
+import TagTree from "/imports/plugins/core/ui-tagnav/client/components/tagTree";
+import { TagHelpers } from "/imports/plugins/core/ui-tagnav/client/helpers";
+import { getTagIds } from "/lib/selectors/tags";
 
 class Tags extends Component {
   displayName = "Tag List (Tags)";
@@ -55,6 +59,11 @@ class Tags extends Component {
     }
   };
 
+  hasSubTags = (tagId, tags) => {
+    if (this.props.hasSubTags) {
+      return this.props.hasSubTags(tagId, tags);
+    }
+  }
 
   handleTagUpdate = (event, tag) => {
     if (this.props.onTagUpdate) {
@@ -62,46 +71,97 @@ class Tags extends Component {
     }
   };
 
+  hasDropdownClassName = (tag) => {
+    if (this.props.hasDropdownClassName) {
+      return this.props.hasDropdownClassName(tag);
+    }
+  }
+
+  navbarSelectedClassName = (tag) => {
+    if (this.props.navbarSelectedClassName) {
+      return this.props.navbarSelectedClassName(tag);
+    }
+  }
+
+  tagTreeProps = (tag) => {
+    const subTagGroups = _.compact(TagHelpers.subTags(tag));
+    const tagsByKey = {};
+
+    if (Array.isArray(subTagGroups)) {
+      for (const tagItem of subTagGroups) {
+        tagsByKey[tagItem._id] = tagItem;
+      }
+    }
+
+    return {
+      parentTag: tag,
+      tagsByKey: tagsByKey || {},
+      tagIds: getTagIds({ tags: subTagGroups }) || [],
+      subTagGroups
+    };
+  }
+
   renderTags() {
+    let baseTagNavClass = "";
+    if (this.props.isTagNav) {
+      baseTagNavClass = "navbar-item";
+    }
     if (_.isArray(this.props.tags)) {
       const tags = this.props.tags.map((tag, index) => {
+        const classAttr = `${baseTagNavClass} ${this.navbarSelectedClassName(tag)} ${this.hasDropdownClassName(tag)}`;
+
         return (
-          <TagItem
-            {...this.props.tagProps}
-            data-id={tag._id}
-            editable={this.props.editable}
-            index={index}
-            key={index}
-            onClearSuggestions={this.props.onClearSuggestions}
-            onGetSuggestions={this.props.onGetSuggestions}
-            onMove={this.props.onMoveTag}
-            onTagInputBlur={this.handleTagSave}
-            onTagMouseOut={this.handleTagMouseOut}
-            onTagMouseOver={this.handleTagMouseOver}
-            onTagRemove={this.handleTagRemove}
-            onTagSave={this.handleTagSave}
-            onTagUpdate={this.handleTagUpdate}
-            suggestions={this.props.suggestions}
-            tag={tag}
-          />
+          <div className={classAttr} key={index}>
+            <TagItem
+              {...this.props.tagProps}
+              {...this.props}
+              data-id={tag._id}
+              index={index}
+              key={index}
+              tag={tag}
+              onMove={this.props.onMoveTag}
+              onTagInputBlur={this.handleTagSave}
+              onTagMouseOut={this.handleTagMouseOut}
+              onTagMouseOver={this.handleTagMouseOver}
+              onTagRemove={this.handleTagRemove}
+              onTagSave={this.handleTagSave}
+              onTagUpdate={this.handleTagUpdate}
+            />
+            {this.props.isTagNav &&
+              <div className="dropdown-container">
+                <TagTree
+                  {...this.props}
+                  editable={this.props.editable === true}
+                  tagTreeProps={this.tagTreeProps(tag)}
+                  onMove={this.props.onMoveTag}
+                  onTagInputBlur={this.handleTagSave}
+                  onTagMouseOut={this.handleTagMouseOut}
+                  onTagMouseOver={this.handleTagMouseOver}
+                  onTagSave={this.handleTagSave}
+                />
+              </div>
+            }
+          </div>
         );
       });
 
       // Render an blank tag for creating new tags
       if (this.props.editable && this.props.enableNewTagForm) {
         tags.push(
-          <TagItem
-            {...this.props.tagProps}
-            blank={true}
-            key="newTagForm"
-            onClearSuggestions={this.props.onClearSuggestions}
-            onGetSuggestions={this.props.onGetSuggestions}
-            onTagInputBlur={this.handleNewTagSave}
-            onTagSave={this.handleNewTagSave}
-            onTagUpdate={this.handleNewTagUpdate}
-            suggestions={this.props.suggestions}
-            tag={this.props.newTag}
-          />
+          <div className={baseTagNavClass} key="newTagForm">
+            <TagItem
+              {...this.props}
+              {...this.props.tagProps}
+              blank={true}
+              key="newTagForm"
+              tag={this.props.newTag}
+              inputPlaceholder="Add Tag"
+              i18nKeyInputPlaceholder="tags.addTag"
+              onTagInputBlur={this.handleNewTagSave}
+              onTagSave={this.handleNewTagSave}
+              onTagUpdate={this.handleNewTagUpdate}
+            />
+          </div>
         );
       }
 
@@ -111,7 +171,36 @@ class Tags extends Component {
     return null;
   }
 
+  renderEditButton() {
+    if (this.props.isTagNav && this.props.canEdit) {
+      return (
+        <span className="navbar-item edit-button" style={this.props.navButtonStyles.editContainerItem}>
+          <EditButton
+            onClick={this.props.onEditButtonClick}
+            bezelStyle="solid"
+            primary={true}
+            icon="fa fa-pencil"
+            onIcon="fa fa-check"
+            toggle={true}
+            toggleOn={this.props.editable}
+          />
+        </span>
+      );
+    }
+
+    return null;
+  }
+
   render() {
+    if (this.props.isTagNav) {
+      return (
+        <div className="navbar-items">
+          {this.renderTags()}
+          {this.renderEditButton()}
+        </div>
+      );
+    }
+
     const classes = classnames({
       rui: true,
       tags: true,
@@ -137,10 +226,17 @@ Tags.defaultProps = {
 
 // Prop Types
 Tags.propTypes = {
+  canEdit: PropTypes.bool,
   editable: PropTypes.bool,
   enableNewTagForm: PropTypes.bool,
+  hasDropdownClassName: PropTypes.func,
+  hasSubTags: PropTypes.func,
+  isTagNav: PropTypes.bool,
+  navButtonStyles: PropTypes.object,
+  navbarSelectedClassName: PropTypes.func,
   newTag: PropTypes.object,
   onClearSuggestions: PropTypes.func,
+  onEditButtonClick: PropTypes.func,
   onGetSuggestions: PropTypes.func,
   onMoveTag: PropTypes.func,
   onNewTagSave: PropTypes.func,

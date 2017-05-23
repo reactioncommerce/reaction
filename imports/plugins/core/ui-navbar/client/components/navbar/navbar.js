@@ -1,7 +1,6 @@
 import { FlatButton } from "/imports/plugins/core/ui/client/components";
 import { NotificationContainer } from "/imports/plugins/included/notifications/client/containers";
 import { Reaction } from "/client/api";
-import { Tags } from "/lib/collections";
 import CartPanel from "../../../../checkout/client/templates/cartPanel/container/cartPanelContainer";
 import MainDropdown from "/client/modules/accounts/containers/dropdown/mainDropdownContainer.js";
 import NavBarContainer from "./containers/navbarContainer";
@@ -68,27 +67,6 @@ Template.CoreNavigationBar.helpers({
     };
   },
 
-  tagNavProps() {
-    const instance = Template.instance();
-    const tags = Tags.find({
-      isTopLevel: true
-    }, {
-      sort: {
-        position: 1
-      }
-    }).fetch();
-
-    return {
-      name: "coreHeaderNavigation",
-      editable: Reaction.hasAdminAccess(),
-      isEditing: true,
-      tags: tags,
-      onToggleMenu(callback) {
-        // Register the callback
-        instance.toggleMenuCallback = callback;
-      }
-    };
-  },
   isSearchEnabled() {
     const instance = Template.instance();
     return instance.state.get("searchEnabled");
@@ -106,6 +84,7 @@ Template.CoreNavigationBar.helpers({
       component: NotificationContainer
     };
   },
+
   cartPanel() {
     return CartPanel;
   }
