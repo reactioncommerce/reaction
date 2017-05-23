@@ -29,6 +29,7 @@
           "shopCustomTaxRatesFailed": ".خطأ في حفظ معدل الضريبة",
           "shopTaxMethodsSaved": ".حفظ طريقة الضريبة",
           "shopTaxMethodsFailed": "فشل حفظ طريقة الضرائب",
+          "customRatesLabel": "المعدلات المخصصة",
           "customRatesDescription": "المعدلات المخصصة",
           "taxCode": "رقم الضريبة",
           "taxShipping": "يشمل الشحن",

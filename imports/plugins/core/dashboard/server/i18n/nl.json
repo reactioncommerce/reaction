@@ -12,7 +12,30 @@
           "packageGroupSettingsLabel": "Instellingen"
         },
         "settings": {
-          "shopSettingsLabel": "Winkel"
+          "shopSettingsLabel": "Winkel",
+          "import": "Import",
+          "general": {
+            "label": "Algemeen"
+          },
+          "address": {
+            "label": "Addresregel 2"
+          },
+          "options": {
+            "label": "opties"
+          },
+          "openexchangerates": {
+            "refreshPeriod": "Vernieuwen"
+          }
+        },
+        "alerts": {
+          "shopGeneralSettingsSaved": "Shop algemene instellingen opgeslagen.",
+          "shopGeneralSettingsFailed": "Shop-update algemene instellingen is mislukt.",
+          "shopAddressSettingsSaved": "Shop-adres instellingen opgeslagen.",
+          "shopAddressSettingsFailed": "Shop-update-adres instellingen is mislukt.",
+          "shopExternalServicesSettingsSaved": "Shop buitendiensten instellingen opgeslagen.",
+          "shopExternalServicesSettingsFailed": "Shop-update buitendiensten instellingen is mislukt.",
+          "shopOptionsSettingsSaved": "Shop opties opgeslagen.",
+          "shopOptionsSettingsFailed": "Shop opties update is mislukt."
         }
       }
     }

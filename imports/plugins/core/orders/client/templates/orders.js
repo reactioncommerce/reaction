@@ -245,7 +245,7 @@ Template.ordersListItem.events({
 
       // send notification to order owner
       const userId = order.userId;
-      const type = "orderAccepted";
+      const type = "orderProcessing";
       const prefix = Reaction.getShopPrefix();
       const url = `${prefix}/notifications`;
       const sms = true;

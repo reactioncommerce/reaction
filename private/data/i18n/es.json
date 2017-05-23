@@ -95,8 +95,6 @@
         "noProductsFound": "No se han encontrado productos.",
         "private": "Privado",
         "public": "Público",
-        "allOn": "todos de la",
-        "allOff": "Todo apagado",
         "shortcut": {
           "addProductLabel": "Agregar producto",
           "accountsLabel": "Cuentas"
@@ -122,24 +120,12 @@
         "settingsfailed": "Actualización de opciones de búsqueda fallida"
       },
       "shopSettings": {
-        "general": "General",
-        "address": "Dirección",
-        "import": "Importar",
         "localization": "Ubicación",
         "options": "Opciones",
-        "availableOptions": "Opciones disponibles",
         "paymentMethods": "Métodos de pago",
         "externalServices": "Servicios externos",
-        "shopGeneralSettingsSaved": "Opciones de generales de tienda guardadas.",
-        "shopGeneralSettingsFailed": "Actualización de las opciones generales de la tienda fallida.",
-        "shopAddressSettingsSaved": "Configuración de dirección de la tienda guardada.",
-        "shopAddressSettingsFailed": "Actualización de opciones de dirección de tienda fallida.",
-        "shopExternalServicesSettingsSaved": "Opciones de servicios externos de la tienda guardados.",
-        "shopExternalServicesSettingsFailed": "Actualización de opciones de servicios externos de la tienda fallida.",
         "shopLocalizationSettingsSaved": "Opciones de ubicación de tienda guardadas.",
         "shopLocalizationSettingsFailed": "Actualización de las opciones de localización de la tienda fallida. ",
-        "shopOptionsSettingsSaved": "Opciones de la tienda guardadas.",
-        "shopOptionsSettingsFailed": "Actualización de opciones de tienda fallida.",
         "shopPaymentMethodsSaved": "Opciones de métodos de pago guardadas.",
         "shopPaymentMethodsFailed": "Actualización de las opciones de métodos de pago fallida."
       },
@@ -473,12 +459,6 @@
         "keywords": "Palabras clave",
         "keywordsPlaceholder": "Etiquetas meta para posicionamiento SEO",
         "language": "Idioma base",
-        "languageTooltip": "Se utilizará este idioma si el sistema de detección de idiomas del dispositivo falla",
-        "timezone": "Zonha horaria",
-        "timezoneOptions": "Elegir zona horaria",
-        "currency": "Divisa base",
-        "currencyTooltip": "Divisa predeterminada",
-        "baseUOM": "Unidad de medida base",
         "addressBook": {
           "company": "Empresa",
           "companyPlaceholder": "Nombre de este negocio",
@@ -714,6 +694,12 @@
           "matchFailed": "Coincidencia fallida",
           "unknownError": "Error desconocido"
         }
+      },
+      "loginServices": {
+        "appId": "ID de la aplicación",
+        "secret": "Secreto",
+        "clientId": "Identificación del cliente",
+        "consumerKey": "Clave API"
       },
       "error": {
         "nameRequired": "Se necesita un nombre.",

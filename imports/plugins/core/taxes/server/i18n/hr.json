@@ -29,6 +29,7 @@
           "shopCustomTaxRatesFailed": "Ušteda porezne stope pogrešaka.",
           "shopTaxMethodsSaved": "Spremljeno porez metoda.",
           "shopTaxMethodsFailed": "Neuspješno uštedu poreza metodu.",
+          "customRatesLabel": "Prilagođena lista",
           "customRatesDescription": "Prilagođena lista",
           "taxCode": "Porezni broj",
           "taxShipping": "Uključi dostava",
