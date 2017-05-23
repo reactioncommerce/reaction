@@ -33,4 +33,4 @@ fi
 
 
 # install Reaction CLI
-npm i -g reaction-cli
+yarn global add reaction-cli
