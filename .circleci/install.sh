@@ -23,7 +23,13 @@ docker -v
 
 
 # install Meteor if it's not already
-hash meteor 2>/dev/null || curl https://install.meteor.com | /bin/sh
+if [[ -f ~/.meteor/meteor ]]; then
+  printf "\nMeteor already installed. Creating symlink.\n"
+  ln -s ~/.meteor/meteor /usr/local/bin/meteor;
+else
+  printf "\Installing Meteor\n"
+  curl https://install.meteor.com | /bin/sh
+fi
 
 
 # install Reaction CLI
