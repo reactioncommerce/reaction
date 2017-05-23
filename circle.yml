@@ -17,6 +17,7 @@ test:
   override:
     - reaction test
     - npm install -g jest
+    - npm update
     - jest
     - .reaction/ci/build.sh
 
