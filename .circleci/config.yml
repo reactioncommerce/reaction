@@ -36,4 +36,3 @@ jobs:
           key: meteor
           paths:
             - ~/.meteor
-            - /usr/local/bin
