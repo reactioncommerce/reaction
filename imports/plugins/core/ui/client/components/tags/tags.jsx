@@ -155,6 +155,8 @@ class Tags extends Component {
               blank={true}
               key="newTagForm"
               tag={this.props.newTag}
+              inputPlaceholder="Add Tag"
+              i18nKeyInputPlaceholder="tags.addTag"
               onTagInputBlur={this.handleNewTagSave}
               onTagSave={this.handleNewTagSave}
               onTagUpdate={this.handleNewTagUpdate}

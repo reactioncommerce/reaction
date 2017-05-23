@@ -226,6 +226,7 @@ class Tag extends Component {
    * @return {JSX} blank tag for creating new tags
    */
   renderBlankEditableTag() {
+
     const baseClassName = classnames({
       "rui": true,
       "tag": true,
@@ -285,10 +286,10 @@ class Tag extends Component {
    * @return {JSX} tag component
    */
   render() {
-    if (this.props.editable) {
-      return this.renderEditableTag();
-    } else if (this.props.blank) {
+    if (this.props.blank) {
       return this.renderBlankEditableTag();
+    } else if (this.props.editable) {
+      return this.renderEditableTag();
     }
 
     return this.renderTag();
