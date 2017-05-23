@@ -2,9 +2,9 @@ import { FlatButton } from "/imports/plugins/core/ui/client/components";
 import { NotificationContainer } from "/imports/plugins/included/notifications/client/containers";
 import { Reaction } from "/client/api";
 import CartPanel from "../../../../checkout/client/templates/cartPanel/container/cartPanelContainer";
-import CurrencyContainer from "/client/modules/i18n/templates/currency/containers/currencyContainer";
-import LanguageDropdownContainer from "/client/modules/i18n/templates/header/containers/i18nContainer";
 import TagNavContainer from "/imports/plugins/core/ui-tagnav/client/containers/tagNavContainer";
+import MainDropdown from "/client/modules/accounts/containers/dropdown/mainDropdownContainer.js";
+import NavBarContainer from "./containers/navbarContainer";
 
 Template.CoreNavigationBar.onCreated(function () {
   this.state = new ReactiveDict();
@@ -37,29 +37,19 @@ Template.CoreNavigationBar.events({
     }, $("html").get(0));
     $("body").css("overflow", "hidden");
     $("#search-input").focus();
-  },
-  "click .notification-icon": function () {
-    $("body").css("overflow", "hidden");
-    $("#notify-dropdown").focus();
   }
 });
 
 Template.CoreNavigationBar.helpers({
-  currencyDropdownComponent() {
+  dropdown() {
     return {
-      component: CurrencyContainer
+      component: MainDropdown
     };
   },
-
-  languageDropdownComponent() {
+  navbar() {
     return {
-      component: LanguageDropdownContainer
+      component: NavBarContainer
     };
-  },
-
-  isSearchEnabled() {
-    const instance = Template.instance();
-    return instance.state.get("searchEnabled");
   },
 
   searchTemplate() {
@@ -67,6 +57,24 @@ Template.CoreNavigationBar.helpers({
     if (instance.state.get("searchEnabled")) {
       return instance.state.get("searchTemplate");
     }
+  },
+
+  onMenuButtonClick() {
+    const instance = Template.instance();
+    return () => {
+      if (instance.toggleMenuCallback) {
+        instance.toggleMenuCallback();
+      }
+    };
+  },
+
+  tagNav() {
+    return TagNavContainer;
+  },
+
+  isSearchEnabled() {
+    const instance = Template.instance();
+    return instance.state.get("searchEnabled");
   },
 
   IconButtonComponent() {
@@ -80,18 +88,6 @@ Template.CoreNavigationBar.helpers({
     return {
       component: NotificationContainer
     };
-  },
-  onMenuButtonClick() {
-    const instance = Template.instance();
-    return () => {
-      if (instance.toggleMenuCallback) {
-        instance.toggleMenuCallback();
-      }
-    };
-  },
-
-  tagNav() {
-    return TagNavContainer;
   },
 
   cartPanel() {

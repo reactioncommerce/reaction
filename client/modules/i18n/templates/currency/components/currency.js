@@ -30,6 +30,7 @@ class Currency extends Component {
     return (
       <Button
         label={this.props.currentCurrency || this.state.value}
+        containerStyle={{ color: "#000", fontWeight: "normal", letterSpacing: 0.8 }}
       >
         &nbsp;<i className="fa fa-caret-down" />
       </Button>
@@ -44,6 +45,7 @@ class Currency extends Component {
             buttonElement={this.buttonElement()}
             onChange={this.onChange}
             value={this.props.currentCurrency || this.state.value}
+            menuStyle={{ maxHeight: 500, overflow: "auto" }}
           >
             <MenuItem
               label="Select Currency"

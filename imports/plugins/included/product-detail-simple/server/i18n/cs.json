@@ -10,7 +10,8 @@
         "inventoryAlerts": {
           "adjustedQuantity": "Váš množství produktu byla upravena tak, aby max množství na skladě"
         }
-      }
+      },
+      "availableOptions": "dostupné možnosti"
     }
   }
 }]

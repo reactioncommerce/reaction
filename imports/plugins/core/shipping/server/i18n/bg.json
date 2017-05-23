@@ -16,6 +16,7 @@
       "checkoutShipping": {
         "selectShippingOption": "Изберете опция за доставка",
         "noShippingMethods": "Не са методи на доставка са конфигурирани.",
+        "contactAdmin": "Моля, свържете се с администратора на магазина.",
         "configureNow": "Конфигуриране на предприятието.",
         "shipping": "Доставка"
       },

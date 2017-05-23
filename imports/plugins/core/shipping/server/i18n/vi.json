@@ -16,6 +16,7 @@
       "checkoutShipping": {
         "selectShippingOption": "Chọn tùy chọn vận chuyển",
         "noShippingMethods": "Không có phương pháp vận chuyển được cấu hình.",
+        "contactAdmin": "Vui lòng liên hệ với quản trị viên kho.",
         "configureNow": "Cấu hình hiện nay.",
         "shipping": "Đang chuyển hàng"
       },

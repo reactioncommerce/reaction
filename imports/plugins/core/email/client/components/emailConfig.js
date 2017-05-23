@@ -43,24 +43,24 @@ class EmailConfig extends Component {
           <a onClick={this.toggleSettings}><Icon icon="gear"/></a>
         </div>
         <div className="email-config-status">
-          <strong data-i18n="admin.settings.status">Status</strong>: {status ?
+          <strong><Translation defaultValue={"Status"} i18nKey={"admin.settings.status"} /></strong>: {status ?
               <i className={`fa fa-circle ${status}`} />
             : <i className={"fa fa-refresh fa-spin"} />}
         </div>
         <div>
-          <strong data-i18n="admin.settings.service">Service</strong>: {service || <NotSet/>}
+          <strong><Translation defaultValue={"Service"} i18nKey={"admin.settings.service"} /></strong>: {service || <NotSet/>}
         </div>
         <div className="truncate">
-          <strong data-i18n="admin.settings.host">Host</strong>: {host || <NotSet/>}
+          <strong><Translation defaultValue={"Host"} i18nKey={"admin.settings.host"} /></strong>: {host || <NotSet/>}
         </div>
         <div>
-          <strong data-i18n="admin.settings.port">Port</strong>: {port || <NotSet/>}
+          <strong><Translation defaultValue={"Port"} i18nKey={"admin.settings.port"} /></strong>: {port || <NotSet/>}
         </div>
         <div className="truncate">
-          <strong data-i18n="admin.settings.user">User</strong>: {user || <NotSet/>}
+          <strong><Translation defaultValue={"User"} i18nKey={"admin.settings.user"} /></strong>: {user || <NotSet/>}
         </div>
         <div>
-          <strong data-i18n="admin.settings.password">Password</strong>:&nbsp;&nbsp;
+          <strong><Translation defaultValue={"Password"} i18nKey={"admin.settings.password"} /></strong>:&nbsp;&nbsp;
           {password ?
             <span>
               {showPassword ? password : "********"}

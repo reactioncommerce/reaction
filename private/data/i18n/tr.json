@@ -95,8 +95,6 @@
         "noProductsFound": "Hiçbir ürün bulundu.",
         "private": "Özel",
         "public": "halka açık",
-        "allOn": "Hepsi Açık",
-        "allOff": "Hepsi Kapalı",
         "shortcut": {
           "addProductLabel": "Ürün ekle",
           "accountsLabel": "Hesaplar"
@@ -122,24 +120,12 @@
         "settingsfailed": "Arama ayarları güncellemesi başarısız"
       },
       "shopSettings": {
-        "general": "Genel",
-        "address": "Adres",
-        "import": "Ithalat",
         "localization": "yerelleştirme",
         "options": "Seçenekler",
-        "availableOptions": "mevcut seçenekler",
         "paymentMethods": "Ödeme Yöntemleri",
         "externalServices": "dış Hizmetler",
-        "shopGeneralSettingsSaved": "Kaydedilen genel ayarları alışveriş.",
-        "shopGeneralSettingsFailed": "Mağaza genel ayarlar güncelleme başarısız oldu.",
-        "shopAddressSettingsSaved": "Mağaza adres ayarları kaydedildi.",
-        "shopAddressSettingsFailed": "Mağaza adres ayarları güncellemesi başarısız oldu.",
-        "shopExternalServicesSettingsSaved": "Kaydedilen dış hizmetler ayarlarını alışveriş.",
-        "shopExternalServicesSettingsFailed": "dış hizmetler ayarları güncelleştirme alışveriş başarısız oldu.",
         "shopLocalizationSettingsSaved": "Mağaza yerelleştirme ayarları kaydedildi.",
         "shopLocalizationSettingsFailed": "Mağaza yerelleştirme ayarları güncellemesi başarısız oldu.",
-        "shopOptionsSettingsSaved": "Mağaza seçenekleri kaydedildi.",
-        "shopOptionsSettingsFailed": "Mağaza seçenekleri güncelleme başarısız oldu.",
         "shopPaymentMethodsSaved": "Mağaza Ödeme Yöntemleri ayarları kaydedildi.",
         "shopPaymentMethodsFailed": "Mağaza Ödeme Yöntemleri ayarları güncellemesi başarısız oldu."
       },
@@ -473,12 +459,6 @@
         "keywords": "Anahtar Kelimeler",
         "keywordsPlaceholder": "SEO için Meta anahtar kelimeler",
         "language": "baz Dili",
-        "languageTooltip": "Cihaz dil algılama başarısız olacak, bu dil kullanılacaktır",
-        "timezone": "Saat dilimi",
-        "timezoneOptions": "dilimini seçin",
-        "currency": "baz Döviz",
-        "currencyTooltip": "Mağaza varsayılan para birimi",
-        "baseUOM": "Ölçü Ana Ünite",
         "addressBook": {
           "company": "Şirket",
           "companyPlaceholder": "Bu işletme adı",
@@ -714,6 +694,12 @@
           "matchFailed": "Eşleştirme başarısız",
           "unknownError": "Bilinmeyen Hata"
         }
+      },
+      "loginServices": {
+        "appId": "Uygulama kimliği",
+        "secret": "Gizli",
+        "clientId": "Müşteri Kimliği",
+        "consumerKey": "API Anahtarı"
       },
       "error": {
         "nameRequired": "Adı gereklidir.",

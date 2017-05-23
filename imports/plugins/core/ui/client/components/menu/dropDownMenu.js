@@ -63,8 +63,15 @@ class DropDownMenu extends Component {
         }
         onClick={this.handleDropdownToggle}
         isOpen={this.state.isOpen}
+        attachment={this.props.attachment}
+        targetAttachment={this.props.targetAttachment}
       >
-        <Menu value={this.props.value} onChange={this.handleMenuItemChange}>
+        <Menu
+          className={this.props.className}
+          value={this.props.value}
+          onChange={this.handleMenuItemChange}
+          style={this.props.menuStyle}
+        >
           {this.props.children}
         </Menu>
       </Popover>
@@ -73,12 +80,13 @@ class DropDownMenu extends Component {
 }
 
 DropDownMenu.propTypes = {
+  attachment: PropTypes.string,
   buttonElement: PropTypes.node,
   children: PropTypes.node,
-  isEnabled: PropTypes.bool,
+  className: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  menuStyle: PropTypes.object,
   onChange: PropTypes.func,
-  onPublishClick: PropTypes.func,
-  revisions: PropTypes.arrayOf(PropTypes.object),
+  targetAttachment: PropTypes.string,
   translation: PropTypes.shape({
     lang: PropTypes.string
   }),

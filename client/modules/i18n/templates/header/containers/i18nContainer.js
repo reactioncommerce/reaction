@@ -52,6 +52,4 @@ const composer = (props, onData) => {
   });
 };
 
-export default composeWithTracker(composer, null)(LanguageDropdownContainer);
-
-
+export default composeWithTracker(composer)(LanguageDropdownContainer);
