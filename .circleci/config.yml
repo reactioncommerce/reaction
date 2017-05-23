@@ -16,6 +16,9 @@ jobs:
       - restore_cache:
           key: meteor
 
+      - restore_cache:
+          key: node_modules
+
       - checkout
 
       # install OS dependencies
@@ -36,3 +39,7 @@ jobs:
           key: meteor
           paths:
             - ~/.meteor
+      - save_cache:
+          key: node_modules
+          paths:
+            - /home/reaction/node_modules
