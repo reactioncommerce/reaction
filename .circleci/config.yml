@@ -23,9 +23,17 @@ jobs:
 
       # install OS dependencies
       - run: .circleci/install.sh
+      - save_cache:
+          key: meteor
+          paths:
+            - ~/.meteor
 
       # install app dependencies
       - run: meteor npm install
+      - save_cache:
+          key: node_modules
+          paths:
+            - /home/reaction/node_modules
 
       # run tests
       - run: reaction test
@@ -34,12 +42,3 @@ jobs:
       - deploy:
           name: Docker Image Deploment
           command: .circleci/deploy.sh
-
-      - save_cache:
-          key: meteor
-          paths:
-            - ~/.meteor
-      - save_cache:
-          key: node_modules
-          paths:
-            - /home/reaction/node_modules
