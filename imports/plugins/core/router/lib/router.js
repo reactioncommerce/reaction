@@ -498,6 +498,9 @@ Router.initPackageRoutes = (options) => {
     // Take all route definitions in the order that were received, and reverse it.
     // Routes defined later, like in the case of custom routes will be then have a
     // higher precidence. Any duplicates after the first instance will be removed.
+    //
+    // TODO: In the future, sort by priority
+    // TODO: Allow duplicated routes with a prefix / suffix / flag
     const uniqRoutes = uniqBy(routeDefinitions.reverse(), "route");
     const reactRouterRoutes = uniqRoutes.map((route, index) => {
       return (
