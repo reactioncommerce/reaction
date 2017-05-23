@@ -3,8 +3,8 @@ import { NotificationContainer } from "/imports/plugins/included/notifications/c
 import { Reaction } from "/client/api";
 import { Tags } from "/lib/collections";
 import CartPanel from "../../../../checkout/client/templates/cartPanel/container/cartPanelContainer";
-import CurrencyContainer from "/client/modules/i18n/templates/currency/containers/currencyContainer";
-import LanguageDropdownContainer from "/client/modules/i18n/templates/header/containers/i18nContainer";
+import MainDropdown from "/client/modules/accounts/containers/dropdown/mainDropdownContainer.js";
+import NavBarContainer from "./containers/navbarContainer";
 
 Template.CoreNavigationBar.onCreated(function () {
   this.state = new ReactiveDict();
@@ -37,29 +37,19 @@ Template.CoreNavigationBar.events({
     }, $("html").get(0));
     $("body").css("overflow", "hidden");
     $("#search-input").focus();
-  },
-  "click .notification-icon": function () {
-    $("body").css("overflow", "hidden");
-    $("#notify-dropdown").focus();
   }
 });
 
 Template.CoreNavigationBar.helpers({
-  currencyDropdownComponent() {
+  dropdown() {
     return {
-      component: CurrencyContainer
+      component: MainDropdown
     };
   },
-
-  languageDropdownComponent() {
+  navbar() {
     return {
-      component: LanguageDropdownContainer
+      component: NavBarContainer
     };
-  },
-
-  isSearchEnabled() {
-    const instance = Template.instance();
-    return instance.state.get("searchEnabled");
   },
 
   searchTemplate() {
@@ -69,18 +59,6 @@ Template.CoreNavigationBar.helpers({
     }
   },
 
-  IconButtonComponent() {
-    return {
-      component: FlatButton,
-      icon: "fa fa-search",
-      kind: "flat"
-    };
-  },
-  notificationButtonComponent() {
-    return {
-      component: NotificationContainer
-    };
-  },
   onMenuButtonClick() {
     const instance = Template.instance();
     return () => {
@@ -109,6 +87,23 @@ Template.CoreNavigationBar.helpers({
         // Register the callback
         instance.toggleMenuCallback = callback;
       }
+    };
+  },
+  isSearchEnabled() {
+    const instance = Template.instance();
+    return instance.state.get("searchEnabled");
+  },
+
+  IconButtonComponent() {
+    return {
+      component: FlatButton,
+      icon: "fa fa-search",
+      kind: "flat"
+    };
+  },
+  notificationButtonComponent() {
+    return {
+      component: NotificationContainer
     };
   },
   cartPanel() {

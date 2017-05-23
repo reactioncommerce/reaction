@@ -7,6 +7,10 @@ import { MessagesContainer } from "../helpers";
 import { Forgot } from "../../components";
 
 class ForgotContainer extends Component {
+  static propTypes = {
+    formMessages: PropTypes.object
+  }
+
   constructor(props) {
     super(props);
 
@@ -112,9 +116,5 @@ function composer(props, onData) {
     formMessages
   });
 }
-
-ForgotContainer.propTypes = {
-  formMessages: PropTypes.object
-};
 
 export default composeWithTracker(composer)(ForgotContainer);

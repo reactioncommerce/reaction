@@ -1,8 +1,9 @@
 import React, { Component, PropTypes } from "react";
 
 class LoginFormMessages extends Component {
-  constructor(props) {
-    super(props);
+  static propTypes = {
+    formMessages: PropTypes.object,
+    loginFormMessages: PropTypes.func
   }
 
   renderFormMessages() {
@@ -35,10 +36,5 @@ class LoginFormMessages extends Component {
     );
   }
 }
-
-LoginFormMessages.propTypes = {
-  formMessages: PropTypes.object,
-  loginFormMessages: PropTypes.func
-};
 
 export default LoginFormMessages;

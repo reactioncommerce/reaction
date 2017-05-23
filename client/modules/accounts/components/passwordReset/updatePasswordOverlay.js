@@ -7,8 +7,19 @@ import {
 } from "/imports/plugins/core/ui/client/components";
 
 class UpdatePasswordOverlay extends Component {
-  constructor(props) {
-    super(props);
+  static propTypes = {
+    isDisabled: PropTypes.bool,
+    isOpen: PropTypes.bool,
+    loginFormMessages: PropTypes.func,
+    messages: PropTypes.object,
+    onCancel: PropTypes.func,
+    onError: PropTypes.func,
+    onFormSubmit: PropTypes.func,
+    uniqueId: PropTypes.string
+  }
+
+  constructor() {
+    super();
 
     this.state = {
       password: ""
@@ -150,16 +161,5 @@ class UpdatePasswordOverlay extends Component {
     );
   }
 }
-
-UpdatePasswordOverlay.propTypes = {
-  isDisabled: PropTypes.bool,
-  isOpen: PropTypes.bool,
-  loginFormMessages: PropTypes.func,
-  messages: PropTypes.object,
-  onCancel: PropTypes.func,
-  onError: PropTypes.func,
-  onFormSubmit: PropTypes.func,
-  uniqueId: PropTypes.string
-};
 
 export default UpdatePasswordOverlay;

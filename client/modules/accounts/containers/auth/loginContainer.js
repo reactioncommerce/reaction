@@ -4,6 +4,12 @@ import AuthContainer from "./authContainer";
 import { ForgotContainer } from "../passwordReset";
 
 class LoginContainer extends Component {
+  static propTypes = {
+    credentials: PropTypes.object,
+    loginFormCurrentView: PropTypes.string,
+    uniqueId: PropTypes.string
+  }
+
   constructor(props) {
     super(props);
 
@@ -44,7 +50,8 @@ class LoginContainer extends Component {
     if (this.state.currentView === "loginFormSignInView" || this.state.currentView === "loginFormSignUpView") {
       return (
         <AuthContainer
-          {...this.props}
+          credentials={this.props.credentials}
+          uniqueId={this.props.uniqueId}
           currentView={this.state.currentView}
           onForgotPasswordClick={this.showForgotPasswordView}
           onSignUpClick={this.showSignUpView}
@@ -54,7 +61,8 @@ class LoginContainer extends Component {
     } else if (this.state.currentView === "loginFormResetPasswordView") {
       return (
         <ForgotContainer
-          {...this.props}
+          credentials={this.props.credentials}
+          uniqueId={this.props.uniqueId}
           currentView={this.state.currentView}
           onSignInClick={this.showSignInView}
         />
@@ -81,9 +89,5 @@ function composer(props, onData) {
     credentials
   });
 }
-
-LoginContainer.propTypes = {
-  loginFormCurrentView: PropTypes.string
-};
 
 export default composeWithTracker(composer)(LoginContainer);

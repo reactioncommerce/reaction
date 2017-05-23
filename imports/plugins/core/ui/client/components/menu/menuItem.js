@@ -15,7 +15,7 @@ class MenuItem extends Component {
   renderIcon() {
     if (this.props.icon) {
       return (
-        <Icon icon={this.props.icon} />
+        <Icon icon={this.props.icon} style={this.props.iconStyle}/>
       );
     }
     return null;
@@ -44,7 +44,7 @@ class MenuItem extends Component {
     return (
       <a
         className={baseClassName}
-        href="#"
+        href= "#"
         data-event-action={this.props.eventAction}
         onClick={this.handleClick}
         role="button"
@@ -65,6 +65,7 @@ MenuItem.propTypes = {
   i18nKeyLabel: PropTypes.string,
   i18nKeySelectedLabel: PropTypes.string,
   icon: PropTypes.string,
+  iconStyle: PropTypes.object,
   label: PropTypes.string,
   onClick: PropTypes.func,
   selectionLabel: PropTypes.string,
@@ -72,7 +73,6 @@ MenuItem.propTypes = {
 };
 
 MenuItem.defaultProps = {
-  active: false,
   disabled: false
 };
 

@@ -100,12 +100,6 @@
   height: @navbar-height;
 }
 
-.rui.navbar .languages:hover,
-.rui.navbar .currencies:hover {
-  background-color: @navbar-default-toggle-icon-bar-bg;
-  border-color: @navbar-default-toggle-border-color;
-}
-
 .rui.navbar .languages .dropdown-menu {
   margin-top: 0px;
   min-width: 250px !important;
@@ -134,18 +128,10 @@ html:not(.rtl) .rui.navbar .languages .dropdown-menu {
 }
 
 .rui.navbar .accounts {
+  .display(flex);
+  .align-items(center);
   .flex(0 0 auto);
   height: @navbar-height;
-}
-
-.rui.navbar .accounts:hover {
-  background-color: @navbar-default-toggle-icon-bar-bg;
-  border-color: @navbar-default-toggle-border-color;
-}
-
-.rui.navbar .accounts:active {
-  background-color: @navbar-default-toggle-icon-bar-bg;
-  border-color: @navbar-default-toggle-border-color;
 }
 
 .rui.navbar .accounts .dropdown-toggle {
@@ -260,4 +246,57 @@ html:not(.rtl) .rui.navbar .languages .dropdown-menu {
 
 .rui.navbar .search:hover button {
   outline: none;
+}
+
+.rui.navbar .accounts:hover {
+  background-color: @navbar-default-toggle-icon-bar-bg;
+  border-color: @navbar-default-toggle-border-color;
+}
+
+.accounts-a-tag {
+  display: flex !important;
+  align-items: center;
+  text-decoration: none;
+  padding: 5px 0 !important;
+  min-height: 44px !important;
+  min-width: 220px;
+}
+
+.accounts-a-tag:hover,
+.accounts-a-tag:focus {
+  color: @brand-vivid-color !important;
+  text-decoration: none;
+  background-color: transparent !important;
+}
+
+.accounts-li-tag {
+  cursor: pointer;
+  white-space: nowrap;
+  display: block;
+  border-bottom: 1px solid @black10;
+}
+
+.accounts-li-tag:last-child {
+  border-bottom: none;
+}
+
+.accounts-btn-tag {
+  padding: 6px 12px !important;
+  color: #fff !important;
+  background-color: @btn-primary-bg !important;
+  color: @btn-primary-color !important;
+  border-color: @btn-primary-bg !important;
+}
+
+.accounts-btn-tag:hover {
+  background: darken(@btn-primary-bg, 5%) !important;
+}
+
+.accounts-img-tag {
+  width: 30px;
+  height: 30px;
+  margin: -15px 5px;
+  border: 2px solid rgba(129, 122, 122, 0.62);
+  border-radius: 50%;
+  display: inline-block;
 }
