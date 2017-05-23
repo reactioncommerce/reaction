@@ -5480,6 +5480,11 @@
       "from": "react-color@>=2.11.4 <3.0.0",
       "resolved": "https://registry.npmjs.org/react-color/-/react-color-2.11.7.tgz"
     },
+    "react-copy-to-clipboard": {
+      "version": "5.0.0",
+      "from": "react-copy-to-clipboard@5.0.0",
+      "resolved": "https://registry.npmjs.org/react-copy-to-clipboard/-/react-copy-to-clipboard-5.0.0.tgz"
+    },
     "react-dnd": {
       "version": "2.3.0",
       "from": "react-dnd@>=2.3.0 <3.0.0",
