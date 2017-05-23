@@ -41,7 +41,18 @@ jobs:
             - /home/reaction/node_modules
 
       # run tests
+      - restore_cache:
+          name: Restoring Meteor dev_bundle cache
+          key: dev_bundle
+
       - run: reaction test
+
+      - save_cache:
+          name: Saving Meteor dev_bundle to cache
+          key: dev_bundle
+          paths:
+            - /home/reaction/.meteor/local
+
       - run: .circleci/build.sh
 
       # deploy the build (if on a deployment branch)
