@@ -95,8 +95,6 @@
         "noProductsFound": "အဘယ်သူမျှမကုန်ပစ္စည်းများတွေ့ရှိခဲ့ပါတယ်။",
         "private": "ကိုယ်ပိုင်",
         "public": "ပြည်သူ့",
-        "allOn": "အားလုံးတွင်",
-        "allOff": "အားလုံးပိတ်",
         "shortcut": {
           "addProductLabel": "ကုန်ပစ္စည်း Add",
           "accountsLabel": "ငွေစာရင်း"
@@ -122,24 +120,12 @@
         "settingsfailed": "ရှာဖွေမှုဆက်တင်များရှုံးနိမ့်ခဲ့ရကို update"
       },
       "shopSettings": {
-        "general": "ယေဘုယျ",
-        "address": "လိပ်စာ",
-        "import": "တင်သွင်း",
         "localization": "localization",
         "options": "Options ကို",
-        "availableOptions": "ရရှိနိုင် Options ကို",
         "paymentMethods": "ငွေပေးချေမှုရမည့်နည်းလမ်းများ",
         "externalServices": "ပြင်ပန်ဆောင်မှုများ",
-        "shopGeneralSettingsSaved": "ကယ်တင်ခြင်းသို့ရောက်သောယေဘုယျ setting များကိုစျေးဝယ်။",
-        "shopGeneralSettingsFailed": "update ကိုပျက်ကွက်ယေဘုယျ setting များကိုစျေးဝယ်။",
-        "shopAddressSettingsSaved": "ဆိုင်လိပ်စာ settings ကိုကယ်လွှတ်တော်မူ၏။",
-        "shopAddressSettingsFailed": "ဆိုင်လိပ်စာ setting များကို update ကိုပျက်ကွက်ခဲ့သည်။",
-        "shopExternalServicesSettingsSaved": "setting များကိုကယ်တင်ခြင်းသို့ရောက်ရ၏ပြင်ပဝန်ဆောင်မှုများကိုစျေးဝယ်။",
-        "shopExternalServicesSettingsFailed": "update ကိုပျက်ကွက်ပြင်ပဝန်ဆောင်မှုများကို setting များကိုစျေးဝယ်။",
         "shopLocalizationSettingsSaved": "ဆိုင်ဒေသခံ settings ကိုကယ်လွှတ်တော်မူ၏။",
         "shopLocalizationSettingsFailed": "ဆိုင်ဒေသခံ setting များကို update ကိုပျက်ကွက်ခဲ့သည်။",
-        "shopOptionsSettingsSaved": "ဆိုင်ရွေးချယ်စရာကယ်တင်ခြင်းသို့ရောက်ရ၏။",
-        "shopOptionsSettingsFailed": "ဆိုင်ရွေးချယ်စရာ update ကိုပျက်ကွက်ခဲ့သည်။",
         "shopPaymentMethodsSaved": "ဆိုင်ငွေပေးချေမှုရမည့်နည်းလမ်းများ settings ကိုကယ်လွှတ်တော်မူ၏။",
         "shopPaymentMethodsFailed": "ဆိုင်ငွေပေးချေမှုရမည့်နည်းလမ်းများ setting များကို update ကိုပျက်ကွက်ခဲ့သည်။"
       },
@@ -473,12 +459,6 @@
         "keywords": "keywords",
         "keywordsPlaceholder": "SEO ဆိုသည်မှာအဘို့အ meta သော့ချက်စာလုံးများ",
         "language": "base ဘာသာစကားများ",
-        "languageTooltip": "device ကိုဘာသာစကားထောက်လှမ်းပျက်ကွက်ပါလိမ့်မည်ဆိုပါကဤသည်ဘာသာစကားအသုံးပြုလိမ့်မည်",
-        "timezone": "စံတော်ချိန်",
-        "timezoneOptions": "စံတော်ချိန် Choose",
-        "currency": "base ငွေကြေးစနစ်",
-        "currencyTooltip": "ဆိုင်က default ငွေကြေးကို",
-        "baseUOM": "တိုင်းတာ၏အခြေစိုက်စခန်းယူနစ်",
         "addressBook": {
           "company": "ကုမ္ပဏီ",
           "companyPlaceholder": "ဒီစီးပွားရေးဘွဲ့နာမ",
@@ -714,6 +694,12 @@
           "matchFailed": "တိုက်ဆိုင်စစ်ဆေးချက် မအောင်မြင်ပါ",
           "unknownError": "အမျိုးအမည်မသိသော error"
         }
+      },
+      "loginServices": {
+        "appId": "App ကို ID ကို",
+        "secret": "လျှို့ဝှက်ချက်",
+        "clientId": "client ID ကို",
+        "consumerKey": "API ကို Key ကို"
       },
       "error": {
         "nameRequired": "Name ကိုလိုအပ်ပါသည်။",

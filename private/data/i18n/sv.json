@@ -95,8 +95,6 @@
         "noProductsFound": "Inga produkter hittades.",
         "private": "Privat",
         "public": "offentlig",
-        "allOn": "alla på",
-        "allOff": "Alla",
         "shortcut": {
           "addProductLabel": "Lägg Produkt",
           "accountsLabel": "Konton"
@@ -122,24 +120,12 @@
         "settingsfailed": "Sökinställningar gick inte att uppdatera"
       },
       "shopSettings": {
-        "general": "Allmänt",
-        "address": "Adress",
-        "import": "Import",
         "localization": "Localization",
         "options": "Val",
-        "availableOptions": "tillgängliga alternativ",
         "paymentMethods": "Betalningsmetoder",
         "externalServices": "externa tjänster",
-        "shopGeneralSettingsSaved": "Handla allmänna inställningar sparas.",
-        "shopGeneralSettingsFailed": "Shop allmänna inställningar uppdatering misslyckades.",
-        "shopAddressSettingsSaved": "Shop adressinställningar sparas.",
-        "shopAddressSettingsFailed": "Shop adressinställningar uppdatering misslyckades.",
-        "shopExternalServicesSettingsSaved": "Handla inställningar externa tjänster som sparats.",
-        "shopExternalServicesSettingsFailed": "Handla inställningar externa tjänster uppdatering misslyckades.",
         "shopLocalizationSettingsSaved": "Shop lokaliserings inställningar sparas.",
         "shopLocalizationSettingsFailed": "Shop lokaliseringsinställningar uppdatering misslyckades.",
-        "shopOptionsSettingsSaved": "Shop alternativ sparas.",
-        "shopOptionsSettingsFailed": "Shop alternativ uppdatering misslyckades.",
         "shopPaymentMethodsSaved": "Shop Betalning inställningar sparas.",
         "shopPaymentMethodsFailed": "Shop Betalning inställningar uppdatering misslyckades."
       },
@@ -473,12 +459,6 @@
         "keywords": "Nyckelord",
         "keywordsPlaceholder": "Meta sökord för SEO",
         "language": "Base språk",
-        "languageTooltip": "Detta språk kommer att användas när enheten språkidentifiering kommer att misslyckades",
-        "timezone": "Tidszon",
-        "timezoneOptions": "Välj tidszon",
-        "currency": "basvaluta",
-        "currencyTooltip": "Shop standardvaluta",
-        "baseUOM": "Base mätenhet",
         "addressBook": {
           "company": "Företag",
           "companyPlaceholder": "Denna firma",
@@ -714,6 +694,12 @@
           "matchFailed": "Matchning misslyckades",
           "unknownError": "Okänt fel"
         }
+      },
+      "loginServices": {
+        "appId": "App ID",
+        "secret": "Hemlighet",
+        "clientId": "Klient ID",
+        "consumerKey": "API-nyckel"
       },
       "error": {
         "nameRequired": "Namn krävs.",

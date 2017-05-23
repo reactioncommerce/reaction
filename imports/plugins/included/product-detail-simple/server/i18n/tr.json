@@ -10,7 +10,8 @@
         "inventoryAlerts": {
           "adjustedQuantity": "Ürününüz miktar stok maksimum miktara ayarlandı"
         }
-      }
+      },
+      "availableOptions": "mevcut seçenekler"
     }
   }
 }]

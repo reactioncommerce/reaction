@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { map, update, set, at, isEqual } from "lodash";
 import classnames from "classnames";
-import { toCamelCase } from "/lib/api";
 import { Switch, Button, TextField, Select, FormActions } from "../";
 
 class Form extends Component {
@@ -139,7 +138,7 @@ class Form extends Component {
 
   renderFormField(field) {
     const sharedProps = {
-      i18nKeyLabel: `settings.${toCamelCase(field.name)}`,
+      i18nKeyLabel: `admin.${field.name}`,
       key: field.name,
       label: field.label,
       name: field.name
@@ -278,6 +277,7 @@ class Form extends Component {
         <FormActions>
           <Button
             label={"Save Changes"}
+            i18nKeyLabel={"app.saveChanges"}
             bezelStyle={"solid"}
             primary={true}
             type="submit"

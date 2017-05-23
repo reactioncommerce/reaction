@@ -16,6 +16,7 @@
       "checkoutShipping": {
         "selectShippingOption": "选择送货方式",
         "noShippingMethods": "没有送货方式配置。",
+        "contactAdmin": "请联系店主管理员。",
         "configureNow": "现在配置。",
         "shipping": "运输"
       },
