@@ -6,6 +6,8 @@ import { composeWithTracker } from "/lib/api/compose";
 import { Orders } from "/lib/collections";
 import { i18next } from "/client/api";
 import OrderSummary from "../components/orderSummary";
+import { Loading } from "/imports/plugins/core/ui/client/components";
+
 
 class OrderSummaryContainer extends Component {
   static propTypes = {
@@ -142,4 +144,4 @@ const composer = (props, onData) => {
   }
 };
 
-export default composeWithTracker(composer, null)(OrderSummaryContainer);
+export default composeWithTracker(composer, Loading)(OrderSummaryContainer);
