@@ -1,5 +1,16 @@
 [{
   "i18n": "nb",
   "ns": "reaction-analytics",
-  "translation": { }
+  "translation": {
+    "reaction-analytics": {
+      "admin": {
+        "googleAnalytics": {
+          "label": "Google Analytics"
+        },
+        "mixpanel": {
+          "label": "Mixpanel"
+        }
+      }
+    }
+  }
 }]

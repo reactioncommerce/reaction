@@ -10,7 +10,8 @@
         "inventoryAlerts": {
           "adjustedQuantity": "သင့်ရဲ့ကုန်ပစ္စည်းအရေအတွက်စတော့ရှယ်ယာအတွက် max ကိုအရေအတွက်မှချိန်ညှိထားပြီး"
         }
-      }
+      },
+      "availableOptions": "ရရှိနိုင် Options ကို"
     }
   }
 }]

@@ -29,6 +29,7 @@
           "shopCustomTaxRatesFailed": "Hata vergi oranını tasarruf.",
           "shopTaxMethodsSaved": "Kaydedilen vergi yöntemi.",
           "shopTaxMethodsFailed": "vergi tasarrufu yöntemi başarısız oldu.",
+          "customRatesLabel": "özel Fiyatlar",
           "customRatesDescription": "özel Fiyatlar",
           "taxCode": "Vergi kodu",
           "taxShipping": "Nakliye Dahil",
