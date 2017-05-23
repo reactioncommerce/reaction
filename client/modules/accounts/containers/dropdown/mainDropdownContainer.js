@@ -29,23 +29,21 @@ class MainDropdownContainer extends Component {
     if (value.name === "createProduct") {
       Reaction.setUserPreferences("reaction-dashboard", "viewAs", "administrator");
       Meteor.call("products/createProduct", (error, productId) => {
-        if (Meteor.isClient) {
-          let currentTag;
-          let currentTagId;
+        let currentTag;
+        let currentTagId;
 
-          if (error) {
-            throw new Meteor.Error("createProduct error", error);
-          } else if (productId) {
-            currentTagId = Session.get("currentTag");
-            currentTag = Tags.findOne(currentTagId);
-            if (currentTag) {
-              Meteor.call("products/updateProductTags", productId, currentTag.name, currentTagId);
-            }
-            // go to new product
-            Reaction.Router.go("product", {
-              handle: productId
-            });
+        if (error) {
+          throw new Meteor.Error("createProduct error", error);
+        } else if (productId) {
+          currentTagId = Session.get("currentTag");
+          currentTag = Tags.findOne(currentTagId);
+          if (currentTag) {
+            Meteor.call("products/updateProductTags", productId, currentTag.name, currentTagId);
           }
+          // go to new product
+          Reaction.Router.go("product", {
+            handle: productId
+          });
         }
       });
     } else if (value.name !== "account/profile") {

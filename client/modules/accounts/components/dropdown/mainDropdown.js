@@ -32,7 +32,7 @@ class MainDropdown extends Component {
 
   buttonElement() {
     return (
-      <Button containerStyle={{ color: "#000", fontWeight: "normal" }}>
+      <Button containerStyle={{ color: "#000", fontWeight: "normal", letterSpacing: 0.8 }}>
         <img className="accounts-img-tag" src={this.props.userImage} />&nbsp;
         <span>{this.props.userName}</span>&nbsp;
         <i className="fa fa-caret-down" />
