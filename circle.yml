@@ -16,6 +16,8 @@ dependencies:
 test:
   override:
     - reaction test
+    - npm install -g jest
+    - jest
     - .reaction/ci/build.sh
 
 deployment:
