@@ -154,17 +154,8 @@ class TagTree extends Component {
 TagTree.propTypes = {
   blank: PropTypes.bool,
   editable: PropTypes.bool,
-  onClearSuggestions: PropTypes.func,
-  onGetSuggestions: PropTypes.func,
-  onMove: PropTypes.func,
   onNewTagSave: PropTypes.func,
-  onNewTagUpdate: PropTypes.func,
-  onTagInputBlur: PropTypes.func,
-  onTagMouseOut: PropTypes.func,
-  onTagMouseOver: PropTypes.func,
   onTagRemove: PropTypes.func,
-  onTagSave: PropTypes.func,
-  onTagUpdate: PropTypes.func,
   tagTreeProps: PropTypes.object
 };
 

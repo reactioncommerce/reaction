@@ -56,7 +56,6 @@ class TagTreeHeader extends Component {
 TagTreeHeader.propTypes = {
   editable: PropTypes.bool,
   onTagRemove: PropTypes.func,
-  onTagSave: PropTypes.func,
   onUpdateTag: PropTypes.func,
   parentTag: PropTypes.object,
   tag: PropTypes.object,

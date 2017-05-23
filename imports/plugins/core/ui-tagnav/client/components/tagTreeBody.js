@@ -158,8 +158,6 @@ class TagTreeBody extends Component {
 
 TagTreeBody.propTypes = {
   editable: PropTypes.bool,
-  onClearSuggestions: PropTypes.func,
-  onGetSuggestions: PropTypes.func,
   onNewTagSave: PropTypes.func,
   onTagRemove: PropTypes.func,
   onTagSort: PropTypes.func,
