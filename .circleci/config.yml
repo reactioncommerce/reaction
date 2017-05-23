@@ -16,10 +16,10 @@ jobs:
       - restore_cache:
           key: meteor
 
+      - checkout
+
       - restore_cache:
           key: node_modules
-
-      - checkout
 
       # install OS dependencies
       - run: .circleci/install.sh
