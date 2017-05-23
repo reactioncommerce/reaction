@@ -37,6 +37,7 @@ class LanguageDropDown extends Component {
                 buttonElement={this.buttonElement()}
                 value={this.props.currentLanguage || this.state.value}
                 onChange={this.onChange}
+                menuStyle={{ maxHeight: 500, overflow: "auto" }}
               >
                 <MenuItem
                   label="Select Currency"

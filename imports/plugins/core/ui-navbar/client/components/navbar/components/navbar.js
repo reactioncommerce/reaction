@@ -17,7 +17,7 @@ class NavBar extends Component {
   renderLanguage() {
     return (
       <div className="languages hidden-xs">
-        <LanguageContainer/>
+        <LanguageContainer />
       </div>
     );
   }
@@ -25,7 +25,7 @@ class NavBar extends Component {
   renderCurrency() {
     return (
       <div className="currencies hidden-xs">
-        <CurrencyContainer/>
+        <CurrencyContainer />
       </div>
     );
   }

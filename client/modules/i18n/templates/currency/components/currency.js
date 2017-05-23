@@ -44,6 +44,7 @@ class Currency extends Component {
             buttonElement={this.buttonElement()}
             onChange={this.onChange}
             value={this.props.currentCurrency || this.state.value}
+            menuStyle={{ maxHeight: 500, overflow: "auto" }}
           >
             <MenuItem
               label="Select Currency"
