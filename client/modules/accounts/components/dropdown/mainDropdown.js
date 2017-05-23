@@ -32,7 +32,7 @@ class MainDropdown extends Component {
 
   buttonElement() {
     return (
-      <Button>
+      <Button containerStyle={{ color: "#000", fontWeight: "normal" }}>
         <img className="accounts-img-tag" src={this.props.userImage} />&nbsp;
         <span>{this.props.userName}</span>&nbsp;
         <i className="fa fa-caret-down" />
@@ -86,7 +86,7 @@ class MainDropdown extends Component {
     return (
       <div className="accounts-dropdown">
         <div className="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000">
-          <span data-i18n="accountsUI.signIn" style={{ fontWeight: 600 }}>Sign In</span><b className="caret" />
+          <span data-i18n="accountsUI.signIn">Sign In</span><b className="caret" />
         </div>
         <div
           className="accounts-dialog accounts-layout dropdown-menu pull-right"

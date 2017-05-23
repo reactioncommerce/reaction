@@ -7,7 +7,7 @@ import { MessagesContainer } from "../helpers";
 import { Forgot } from "../../components";
 
 class ForgotContainer extends Component {
-  static  propTypes = {
+  static propTypes = {
     formMessages: PropTypes.object
   }
 
