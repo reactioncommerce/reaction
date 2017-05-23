@@ -95,8 +95,6 @@
         "noProductsFound": "Không tìm thấy sản phẩm.",
         "private": "Riêng tư",
         "public": "Công cộng",
-        "allOn": "Tất cả Mở",
-        "allOff": "Tất cả đều tắt",
         "shortcut": {
           "addProductLabel": "Thêm sản phẩm",
           "accountsLabel": "tài khoản"
@@ -122,24 +120,12 @@
         "settingsfailed": "Cài đặt tìm kiếm cập nhật thất bại"
       },
       "shopSettings": {
-        "general": "Chung",
-        "address": "Địa chỉ nhà",
-        "import": "nhập",
         "localization": "Localization",
         "options": "Tùy chọn",
-        "availableOptions": "Tùy chọn có sẵn",
         "paymentMethods": "Phương thức thanh toán",
         "externalServices": "Dịch vụ bên ngoài",
-        "shopGeneralSettingsSaved": "Mua sắm thiết lập chung lưu.",
-        "shopGeneralSettingsFailed": "Cửa hàng thiết lập chung cập nhật thất bại.",
-        "shopAddressSettingsSaved": "thiết lập địa chỉ cửa hàng lưu.",
-        "shopAddressSettingsFailed": "Cửa hàng thiết lập địa chỉ cập nhật thất bại.",
-        "shopExternalServicesSettingsSaved": "Mua sắm các thiết lập dịch vụ bên ngoài lưu.",
-        "shopExternalServicesSettingsFailed": "Mua sắm các thiết lập dịch vụ bên ngoài cập nhật thất bại.",
         "shopLocalizationSettingsSaved": "thiết lập địa hóa cửa hàng lưu.",
         "shopLocalizationSettingsFailed": "Cửa hàng thiết lập địa hóa cập nhật thất bại.",
-        "shopOptionsSettingsSaved": "Cửa hàng tùy chọn lưu.",
-        "shopOptionsSettingsFailed": "Cửa hàng tùy chọn cập nhật thất bại.",
         "shopPaymentMethodsSaved": "Cửa hàng thiết lập Phương thức thanh toán lưu.",
         "shopPaymentMethodsFailed": "Cửa hàng Phương thức thanh toán thiết lập cập nhật thất bại."
       },
@@ -473,12 +459,6 @@
         "keywords": "Từ khóa",
         "keywordsPlaceholder": "Meta từ khóa cho SEO",
         "language": "cơ sở Ngôn ngữ",
-        "languageTooltip": "Ngôn ngữ này sẽ được sử dụng nếu phát hiện ngôn ngữ thiết bị sẽ được thất bại",
-        "timezone": "Múi giờ",
-        "timezoneOptions": "Chọn múi giờ",
-        "currency": "base Currency",
-        "currencyTooltip": "tiền tệ mặc định cửa hàng",
-        "baseUOM": "Đơn vị cơ sở của Đo",
         "addressBook": {
           "company": "Công ty",
           "companyPlaceholder": "tên doanh nghiệp này",
@@ -714,6 +694,12 @@
           "matchFailed": "Không đúng",
           "unknownError": "Lỗi không rõ"
         }
+      },
+      "loginServices": {
+        "appId": "ID ứng dụng",
+        "secret": "Bí mật",
+        "clientId": "Client ID",
+        "consumerKey": "API Key"
       },
       "error": {
         "nameRequired": "Tên là bắt buộc.",

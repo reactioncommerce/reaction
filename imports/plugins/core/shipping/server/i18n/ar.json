@@ -16,6 +16,7 @@
       "checkoutShipping": {
         "selectShippingOption": "حدد خيار الشحن",
         "noShippingMethods": "يتم تكوين أي وسائل النقل البحري.",
+        "contactAdmin": "يرجى الاتصال بمسؤول المتجر.",
         "configureNow": "تكوين الآن.",
         "shipping": "الشحن"
       },

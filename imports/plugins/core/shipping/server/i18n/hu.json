@@ -16,6 +16,7 @@
       "checkoutShipping": {
         "selectShippingOption": "Válassza ki a szállítási opciót",
         "noShippingMethods": "Nincs szállítási módszerek vannak beállítva.",
+        "contactAdmin": "Kérjük, forduljon a bolt rendszergazda.",
         "configureNow": "Konfigurálása most.",
         "shipping": "Szállítás"
       },

@@ -10,7 +10,8 @@
         "inventoryAlerts": {
           "adjustedQuantity": "Sua quantidade de produto foi ajustado para a quantidade máxima em estoque"
         }
-      }
+      },
+      "availableOptions": "Opções disponíveis"
     }
   }
 }]

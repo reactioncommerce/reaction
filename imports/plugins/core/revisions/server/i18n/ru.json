@@ -10,7 +10,7 @@
           "revisionsTitle": "Ревизии",
           "revisionsDescription": "контроль версий"
         },
-        "settings": {
+        "catalogSettings": {
           "productRevisionsLabel": "Ревизии продукта"
         },
         "toolbar": {

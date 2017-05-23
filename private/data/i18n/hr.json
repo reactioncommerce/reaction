@@ -95,8 +95,6 @@
         "noProductsFound": "Nema pronađenih proizvoda.",
         "private": "Privatna",
         "public": "Javnost",
-        "allOn": "Sve o",
-        "allOff": "Sve Isključeno",
         "shortcut": {
           "addProductLabel": "Dodaj proizvod",
           "accountsLabel": "Računi"
@@ -122,24 +120,12 @@
         "settingsfailed": "Ažuriranje postavki za pretraživanje nije uspjelo"
       },
       "shopSettings": {
-        "general": "General",
-        "address": "Adresa",
-        "import": "Uvoz",
         "localization": "lokalizacija",
         "options": "Opcije",
-        "availableOptions": "Dostupne opcije",
         "paymentMethods": "Metode Plačanja",
         "externalServices": "Vanjske usluge",
-        "shopGeneralSettingsSaved": "Trgovina opće postavke spremljene.",
-        "shopGeneralSettingsFailed": "Trgovina opće postavke ažuriranje nije uspjelo.",
-        "shopAddressSettingsSaved": "Postavke Shop adresa spremljena.",
-        "shopAddressSettingsFailed": "Trgovina postavke adresa ažuriranje nije uspjelo.",
-        "shopExternalServicesSettingsSaved": "Trgovina vanjske postavke usluge spremljene.",
-        "shopExternalServicesSettingsFailed": "Trgovina ažuriranje postavki vanjskih usluga nije uspio.",
         "shopLocalizationSettingsSaved": "Postavke Shop lokalizaciju spasio.",
         "shopLocalizationSettingsFailed": "Trgovina Postavke za lokalizaciju ažuriranje nije uspjelo.",
-        "shopOptionsSettingsSaved": "Opcije Shop spasio.",
-        "shopOptionsSettingsFailed": "Opcije Shop ažuriranje nije uspjelo.",
         "shopPaymentMethodsSaved": "Shop Načini plaćanja postavke spremljene.",
         "shopPaymentMethodsFailed": "Trgovina Načini plaćanja postavke ažuriranje nije uspjelo."
       },
@@ -473,12 +459,6 @@
         "keywords": "ključne riječi",
         "keywordsPlaceholder": "Meta ključne riječi za SEO",
         "language": "Baza Jezik",
-        "languageTooltip": "Ovaj jezik će se koristiti ako detekcija jezika će se uređaj nije uspio",
-        "timezone": "Vremenska zona",
-        "timezoneOptions": "Odaberite vremensku zonu",
-        "currency": "Osnovna valuta",
-        "currencyTooltip": "Trgovina Zadana valuta",
-        "baseUOM": "Osnovna mjerna jedinica",
         "addressBook": {
           "company": "Društvo",
           "companyPlaceholder": "Ovaj naziv tvrtke",
@@ -714,6 +694,12 @@
           "matchFailed": "Neuspjela provjera",
           "unknownError": "Nepoznata greška"
         }
+      },
+      "loginServices": {
+        "appId": "ID aplikacije",
+        "secret": "Tajna",
+        "clientId": "ID klijenta",
+        "consumerKey": "API ključ"
       },
       "error": {
         "nameRequired": "Ime je obavezno.",

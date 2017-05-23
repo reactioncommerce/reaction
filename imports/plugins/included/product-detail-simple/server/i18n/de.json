@@ -10,7 +10,8 @@
         "inventoryAlerts": {
           "adjustedQuantity": "Ihre Produktmenge wurde die Höchstmenge eingestellt auf Lager"
         }
-      }
+      },
+      "availableOptions": "Verfügbare Optionen"
     }
   }
 }]

@@ -12,7 +12,30 @@
           "packageGroupSettingsLabel": "Nastavitve"
         },
         "settings": {
-          "shopSettingsLabel": "trgovina"
+          "shopSettingsLabel": "trgovina",
+          "import": "Uvoz",
+          "general": {
+            "label": "Splošno"
+          },
+          "address": {
+            "label": "naslov"
+          },
+          "options": {
+            "label": "Opcije"
+          },
+          "openexchangerates": {
+            "refreshPeriod": "Osveži"
+          }
+        },
+        "alerts": {
+          "shopGeneralSettingsSaved": "Shop splošne nastavitve shranjene.",
+          "shopGeneralSettingsFailed": "Trgovina splošne nastavitve posodobitev ni uspela.",
+          "shopAddressSettingsSaved": "Nastavitve Shop naslov shranjene.",
+          "shopAddressSettingsFailed": "Trgovina nastavitve naslov posodobitev ni uspela.",
+          "shopExternalServicesSettingsSaved": "Shop zunanje nastavitve storitev shranjene.",
+          "shopExternalServicesSettingsFailed": "Shop posodobitev nastavitev zunanjih storitev ni uspelo.",
+          "shopOptionsSettingsSaved": "Možnosti Trgovina shranjene.",
+          "shopOptionsSettingsFailed": "Možnosti Shop posodobitev ni uspela."
         }
       }
     }

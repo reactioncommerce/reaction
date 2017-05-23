@@ -16,6 +16,7 @@
       "checkoutShipping": {
         "selectShippingOption": "Selecione a opção de envio",
         "noShippingMethods": "Não há métodos de envio estão configurados.",
+        "contactAdmin": "Entre em contato com o administrador da loja.",
         "configureNow": "Configurar agora.",
         "shipping": "Remessa"
       },

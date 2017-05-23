@@ -10,14 +10,29 @@
           "socialDescription": "Sociale Channel configuratie"
         },
         "settings": {
-          "facebook": "Facebook",
-          "twitter": "Twitter",
-          "pinterest": "Pinterest",
-          "googleplus": "Google+",
-          "appId": "App Id",
-          "username": "Gebruikersnaam",
-          "appSecret": "App Secret",
-          "profilePage": "Profiel pagina",
+          "public": {
+            "apps": {
+              "facebook": {
+                "title": "Facebook",
+                "appId": "App ID",
+                "appSecret": "App Secret",
+                "profilePage": "Profiel pagina"
+              },
+              "googleplus": {
+                "title": "Google+",
+                "profilePage": "Profiel pagina"
+              },
+              "pinterest": {
+                "title": "Pinterest",
+                "profilePage": "Profiel pagina"
+              },
+              "twitter": {
+                "title": "Twitter",
+                "username": "Gebruikersnaam",
+                "profilePage": "Profiel pagina"
+              }
+            }
+          },
           "socialSettingsLabel": "sociale Instellingen",
           "socialSettingsSaved": "Sociale instellingen opgeslagen"
         }
