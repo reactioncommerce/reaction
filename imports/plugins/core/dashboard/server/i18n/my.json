@@ -12,7 +12,30 @@
           "packageGroupSettingsLabel": "Settings များ"
         },
         "settings": {
-          "shopSettingsLabel": "ဆိုင်"
+          "shopSettingsLabel": "ဆိုင်",
+          "import": "တင်သွင်း",
+          "general": {
+            "label": "ယေဘုယျ"
+          },
+          "address": {
+            "label": "လိပ်စာ"
+          },
+          "options": {
+            "label": "Options ကို"
+          },
+          "openexchangerates": {
+            "refreshPeriod": "အားဖြည့်"
+          }
+        },
+        "alerts": {
+          "shopGeneralSettingsSaved": "ကယ်တင်ခြင်းသို့ရောက်သောယေဘုယျ setting များကိုစျေးဝယ်။",
+          "shopGeneralSettingsFailed": "update ကိုပျက်ကွက်ယေဘုယျ setting များကိုစျေးဝယ်။",
+          "shopAddressSettingsSaved": "ဆိုင်လိပ်စာ settings ကိုကယ်လွှတ်တော်မူ၏။",
+          "shopAddressSettingsFailed": "ဆိုင်လိပ်စာ setting များကို update ကိုပျက်ကွက်ခဲ့သည်။",
+          "shopExternalServicesSettingsSaved": "setting များကိုကယ်တင်ခြင်းသို့ရောက်ရ၏ပြင်ပဝန်ဆောင်မှုများကိုစျေးဝယ်။",
+          "shopExternalServicesSettingsFailed": "update ကိုပျက်ကွက်ပြင်ပဝန်ဆောင်မှုများကို setting များကိုစျေးဝယ်။",
+          "shopOptionsSettingsSaved": "ဆိုင်ရွေးချယ်စရာကယ်တင်ခြင်းသို့ရောက်ရ၏။",
+          "shopOptionsSettingsFailed": "ဆိုင်ရွေးချယ်စရာ update ကိုပျက်ကွက်ခဲ့သည်။"
         }
       }
     }

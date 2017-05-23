@@ -23,7 +23,7 @@ class Divider extends Component {
         <div className={classes}>
           <hr />
           <span className="label">
-            <Translation defaultValue={label} i18nKey={i18nKeyLabel}/>
+            <Translation defaultValue={label} i18nKey={i18nKeyLabel} />
           </span>
           <hr />
         </div>
