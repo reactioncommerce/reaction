@@ -367,7 +367,9 @@ TagNavContainer.propTypes = {
 };
 
 const composer = (props, onData) => {
-  const tags = Tags.find({ isTopLevel: true }, { sort: { position: 1 } }).fetch();
+  let tags = Tags.find({ isTopLevel: true }, { sort: { position: 1 } }).fetch();
+  tags = _.sortBy(tags, "position"); // puts tags without position at end of array
+
   const tagsByKey = {};
 
   if (Array.isArray(tags)) {
