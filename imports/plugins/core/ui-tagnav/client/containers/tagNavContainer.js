@@ -82,19 +82,16 @@ const TagNavHelpers = {
   }
 };
 
-let editable = false;
-let selectedTag = null;
-
 class TagNavContainer extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       attachedBodyListener: false,
-      editable: editable,
+      editable: false,
       tagIds: props.tagIds || [],
       tagsByKey: props.tagsByKey || {},
-      selectedTag: selectedTag,
+      selectedTag: null,
       suggestions: [],
       [NavbarStates.Visible]: false,
       [NavbarStates.Visibile]: NavbarVisibility.Hidden,
@@ -135,7 +132,6 @@ class TagNavContainer extends Component {
   }
 
   handleNewTagSave = (tag, parentTag) => {
-    editable = true; // keep editing state after re-render
     TagNavHelpers.onTagCreate(tag.name, parentTag);
     this.setState({ newTag: { name: "" } });
   }
@@ -147,7 +143,6 @@ class TagNavContainer extends Component {
   }
 
   handleTagRemove = (tag, parentTag) => {
-    editable = true; // keep editing state after re-render
     TagNavHelpers.onTagRemove(tag, parentTag);
   }
 
@@ -183,7 +178,6 @@ class TagNavContainer extends Component {
     // Set local state so the component does't have to wait for a round-trip
     // to the server to get the updated list of variants
     this.setState(newState, () => {
-      editable = true; // keep editing state after re-render
       debounce(() => TagNavHelpers.onTagSort(this.state.tagIds), 500)(); // Save the updated positions
     });
   }
@@ -250,11 +244,9 @@ class TagNavContainer extends Component {
   }
 
   onTagSelect = (currentSelectedTag) => {
-    if (JSON.stringify(currentSelectedTag) === JSON.stringify(selectedTag)) {
-      selectedTag = null; // to keep open state on re-rendering
+    if (_.isEqual(currentSelectedTag, this.state.selectedTag)) {
       this.setState({ selectedTag: null });
     } else {
-      selectedTag = currentSelectedTag; // to keep open state on re-rendering
       this.setState({ selectedTag: currentSelectedTag });
     }
   }
@@ -381,7 +373,6 @@ const composer = (props, onData) => {
   onData(null, {
     name: "coreHeaderNavigation",
     hasEditRights: Reaction.hasAdminAccess(),
-    isEditing: true,
     tagsAsArray: tags,
     tagIds: getTagIds({ tags }),
     tagsByKey
