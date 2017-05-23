@@ -226,7 +226,6 @@ class Tag extends Component {
    * @return {JSX} blank tag for creating new tags
    */
   renderBlankEditableTag() {
-
     const baseClassName = classnames({
       "rui": true,
       "tag": true,
