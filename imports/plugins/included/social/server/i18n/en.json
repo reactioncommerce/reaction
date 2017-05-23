@@ -10,15 +10,30 @@
           "socialDescription": "Social Channel configuration"
         },
         "settings": {
-          "facebook": "Facebook",
-          "twitter": "Twitter",
-          "pinterest": "Pinterest",
-          "googleplus": "Google+",
-          "appId": "App Id",
-          "username": "Username",
-          "appSecret": "App Secret",
-          "profilePage": "Profile Page",
-          "socialSettingsLabel": "Social",
+          "public": {
+            "apps": {
+              "facebook": {
+                "title": "Facebook",
+                "appId": "App ID",
+                "appSecret": "App Secret",
+                "profilePage": "Profile Page"
+              },
+              "googleplus": {
+                "title": "Google+",
+                "profilePage": "Profile Page"
+              },
+              "pinterest": {
+                "title": "Pinterest",
+                "profilePage": "Profile Page"
+              },
+              "twitter": {
+                "title": "Twitter",
+                "username": "Username",
+                "profilePage": "Profile Page"
+              }
+            }
+          },
+          "socialSettingsLabel": "Social Settings",
           "socialSettingsSaved": "Social settings saved"
         }
       }

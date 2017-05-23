@@ -107,24 +107,12 @@
         "settingsfailed": "עדכון הגדרות חיפוש נכשל."
       },
       "shopSettings": {
-        "general": "כללי",
-        "address": "כתובת",
-        "import": "ייבוא",
         "localization": "מיקום",
         "options": "אפשרויות",
-        "availableOptions": "אפשרויות זמינות",
         "paymentMethods": "שיטות תשלום",
         "externalServices": "שירותים חיצוניים",
-        "shopGeneralSettingsSaved": "הגדרות החנות הכלליות נשמרו.",
-        "shopGeneralSettingsFailed": "עדכון הגדרות כלליות לחנות נכשל.",
-        "shopAddressSettingsSaved": "הגדרות כתובת החנות נשמרו.",
-        "shopAddressSettingsFailed": "עדכון הגדרות כתובת החנות נכשל.",
-        "shopExternalServicesSettingsSaved": "הגדרות שירותי חנות חיצוניים נשמרו.",
-        "shopExternalServicesSettingsFailed": "עדכון הגדרות שירותי חנות חיצוניים נכשל.",
         "shopLocalizationSettingsSaved": "הגדרות מיקום החנות נשמרו.",
         "shopLocalizationSettingsFailed": "עדכון הגדרות מיקום החנות נכשל.",
-        "shopOptionsSettingsSaved": "אפשרויות החנות נשמרו.",
-        "shopOptionsSettingsFailed": "עדכון אפשרויות חנות נכשל.",
         "shopPaymentMethodsSaved": "הגדרות שיטות התשלום של החנות נשמרו.",
         "shopPaymentMethodsFailed": "עדכון הגדרות שיטות התשלום לחנות נכשל."
       },
@@ -425,12 +413,6 @@
         "keywords": "מילות מפתח",
         "keywordsPlaceholder": "מילות מפתח-מטא ל- SEO",
         "language": "שפת בסיס",
-        "languageTooltip": "ייעשה שימוש בשפה זו אם זיהוי שפת המכשיר ייכשל",
-        "timezone": "אזור זמן",
-        "timezoneOptions": "בחר באזור זמן",
-        "currency": "מטבע בסיס",
-        "currencyTooltip": "מטבע ברירת המחדל של החנות",
-        "baseUOM": "יחידת הכמות הבסיסית",
         "addressBook": {
           "company": "חברה",
           "companyPlaceholder": "שם עסק זה",
@@ -666,6 +648,9 @@
           "matchFailed": "ההתאמה נכשלה",
           "unknownError": "שגיאה לא ידועה"
         }
+      },
+      "loginServices": {
+        "consumerKey": "מפתח API"
       },
       "error": {
         "nameRequired": "חובה להזין שם.",
