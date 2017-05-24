@@ -95,8 +95,6 @@
         "noProductsFound": "Ni izdelkov.",
         "private": "zasebno",
         "public": "javni",
-        "allOn": "vse On",
-        "allOff": "vse Off",
         "shortcut": {
           "addProductLabel": "Dodaj izdelek",
           "accountsLabel": "računi"
@@ -122,24 +120,12 @@
         "settingsfailed": "Nastavitve iskanja posodobitev ni uspela"
       },
       "shopSettings": {
-        "general": "Splošno",
-        "address": "naslov",
-        "import": "Uvoz",
         "localization": "lokalizacija",
         "options": "Opcije",
-        "availableOptions": "Opcije na voljo",
         "paymentMethods": "načini plačila",
         "externalServices": "zunanje storitve",
-        "shopGeneralSettingsSaved": "Shop splošne nastavitve shranjene.",
-        "shopGeneralSettingsFailed": "Trgovina splošne nastavitve posodobitev ni uspela.",
-        "shopAddressSettingsSaved": "Nastavitve Shop naslov shranjene.",
-        "shopAddressSettingsFailed": "Trgovina nastavitve naslov posodobitev ni uspela.",
-        "shopExternalServicesSettingsSaved": "Shop zunanje nastavitve storitev shranjene.",
-        "shopExternalServicesSettingsFailed": "Shop posodobitev nastavitev zunanjih storitev ni uspelo.",
         "shopLocalizationSettingsSaved": "Nastavitve Shop lokalizacijo shranjene.",
         "shopLocalizationSettingsFailed": "Trgovina nastavitve lokalizacijo posodobitev ni uspela.",
-        "shopOptionsSettingsSaved": "Možnosti Trgovina shranjene.",
-        "shopOptionsSettingsFailed": "Možnosti Shop posodobitev ni uspela.",
         "shopPaymentMethodsSaved": "Trgovina nastavitve Načini plačila shranjene.",
         "shopPaymentMethodsFailed": "Trgovina nastavitve Načini plačila posodobitev ni uspela."
       },
@@ -473,12 +459,6 @@
         "keywords": "ključne besede",
         "keywordsPlaceholder": "Meta ključne besede za SEO",
         "language": "Osnovna jezik",
-        "languageTooltip": "Ta jezik bo uporabljen, če bo odkrivanje jezik naprave ni",
-        "timezone": "Časovni pas",
-        "timezoneOptions": "Izberite časovni pas",
-        "currency": "Osnovna valuta",
-        "currencyTooltip": "Trgovina privzeta valuta",
-        "baseUOM": "Osnovna mersko enoto",
         "addressBook": {
           "company": "Podjetje",
           "companyPlaceholder": "Ta firma",
@@ -714,6 +694,12 @@
           "matchFailed": "Prijava neuspešna",
           "unknownError": "Neznana napaka"
         }
+      },
+      "loginServices": {
+        "appId": "App ID",
+        "secret": "Skrivnost",
+        "clientId": "ID stranke",
+        "consumerKey": "ključ API"
       },
       "error": {
         "nameRequired": "Ime je obvezno.",

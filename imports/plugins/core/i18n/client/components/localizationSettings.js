@@ -93,14 +93,14 @@ class LocalizationSettings extends Component {
     return (
       <CardToolbar>
         <FlatButton
-          i18nKeyLabel={"all.allOn"}
+          i18nKeyLabel={"admin.i18nSettings.allOn"}
           label="All On"
           value={name}
           onClick={this.handleAllOn}
         />
         { "|" }
         <FlatButton
-          i18nKeyLabel={"all.allOff"}
+          i18nKeyLabel={"admin.i18nSettings.allOff"}
           label="All Off"
           value={name}
           onClick={this.handleAllOff}
@@ -113,7 +113,7 @@ class LocalizationSettings extends Component {
     return (
       <CardGroup>
         <SettingsCard
-          i18nKeyTitle="i18nSettings.localization"
+          i18nKeyTitle="admin.i18nSettings.shopLocalization"
           name="localization"
           packageName={PACKAGE_NAME}
           saveOpenStateToPreferences={true}
@@ -161,7 +161,7 @@ class LocalizationSettings extends Component {
           </List>
         </SettingsCard>
         <SettingsCard
-          i18nKeyTitle="i18nSettings.enabledCurrencies"
+          i18nKeyTitle="admin.i18nSettings.enabledCurrencies"
           padded={false}
           packageName={PACKAGE_NAME}
           name="currencies"

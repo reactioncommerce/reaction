@@ -12,7 +12,30 @@
           "packageGroupSettingsLabel": "Inställningar"
         },
         "settings": {
-          "shopSettingsLabel": "Handla"
+          "shopSettingsLabel": "Handla",
+          "import": "Import",
+          "general": {
+            "label": "Allmänt"
+          },
+          "address": {
+            "label": "Adress"
+          },
+          "options": {
+            "label": "Val"
+          },
+          "openexchangerates": {
+            "refreshPeriod": "Uppdatera"
+          }
+        },
+        "alerts": {
+          "shopGeneralSettingsSaved": "Handla allmänna inställningar sparas.",
+          "shopGeneralSettingsFailed": "Shop allmänna inställningar uppdatering misslyckades.",
+          "shopAddressSettingsSaved": "Shop adressinställningar sparas.",
+          "shopAddressSettingsFailed": "Shop adressinställningar uppdatering misslyckades.",
+          "shopExternalServicesSettingsSaved": "Handla inställningar externa tjänster som sparats.",
+          "shopExternalServicesSettingsFailed": "Handla inställningar externa tjänster uppdatering misslyckades.",
+          "shopOptionsSettingsSaved": "Shop alternativ sparas.",
+          "shopOptionsSettingsFailed": "Shop alternativ uppdatering misslyckades."
         }
       }
     }

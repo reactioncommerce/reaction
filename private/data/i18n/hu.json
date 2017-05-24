@@ -95,8 +95,6 @@
         "noProductsFound": "Nem talált termékek.",
         "private": "Magán",
         "public": "Nyilvános",
-        "allOn": "minden On",
-        "allOff": "All Off",
         "shortcut": {
           "addProductLabel": "Termék hozzáadása",
           "accountsLabel": "Fiókok"
@@ -122,24 +120,12 @@
         "settingsfailed": "Keresési beállítások frissítése sikertelen"
       },
       "shopSettings": {
-        "general": "Tábornok",
-        "address": "Lakcim",
-        "import": "import",
         "localization": "Honosítás",
         "options": "Lehetőségek",
-        "availableOptions": "elérhető opciók",
         "paymentMethods": "fizetési módok",
         "externalServices": "külső szolgáltatások",
-        "shopGeneralSettingsSaved": "Shop általános beállítások mentve.",
-        "shopGeneralSettingsFailed": "N általános beállítások frissítése nem sikerült.",
-        "shopAddressSettingsSaved": "Shop cím beállítások mentve.",
-        "shopAddressSettingsFailed": "Shop címbeállításokat sikertelen volt.",
-        "shopExternalServicesSettingsSaved": "Shop külső szolgáltatások elmentett beállításokat.",
-        "shopExternalServicesSettingsFailed": "Shop külső szolgáltatások beállításainak frissítése sikertelen.",
         "shopLocalizationSettingsSaved": "Shop lokalizációs beállítások mentve.",
         "shopLocalizationSettingsFailed": "Shop lokalizációs beállítások frissítése nem sikerült.",
-        "shopOptionsSettingsSaved": "Shop lehetőségek mentve.",
-        "shopOptionsSettingsFailed": "Shop lehetőségek sikertelen volt.",
         "shopPaymentMethodsSaved": "Shop Fizetési módok beállításai mentve.",
         "shopPaymentMethodsFailed": "Shop Fizetési módok beállításait sikertelen volt."
       },
@@ -473,12 +459,6 @@
         "keywords": "Kulcsszavak",
         "keywordsPlaceholder": "Meta kulcsszavak SEO",
         "language": "alapnyelv",
-        "languageTooltip": "Ez a nyelv lesz használva, ha az eszköz nyelvfelismerés lesz sikertelen",
-        "timezone": "Időzóna",
-        "timezoneOptions": "Válasszon időzónát",
-        "currency": "Bázisvaluta",
-        "currencyTooltip": "Shop alapértelmezett pénznem",
-        "baseUOM": "Base Mértékegység",
         "addressBook": {
           "company": "Vállalat",
           "companyPlaceholder": "Ez az üzlet neve",
@@ -714,6 +694,12 @@
           "matchFailed": "Nincs találat",
           "unknownError": "Ismeretlen hiba"
         }
+      },
+      "loginServices": {
+        "appId": "App ID",
+        "secret": "Titok",
+        "clientId": "ügyfél-azonosító",
+        "consumerKey": "API-kulcs"
       },
       "error": {
         "nameRequired": "Név szükséges.",

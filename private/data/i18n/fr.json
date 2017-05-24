@@ -95,8 +95,6 @@
         "noProductsFound": "Aucun produit trouvé.",
         "private": "Privé",
         "public": "Publique",
-        "allOn": "Tous Sur",
-        "allOff": "All Off",
         "shortcut": {
           "addProductLabel": "Ajouter le produit",
           "accountsLabel": "Comptes"
@@ -122,24 +120,12 @@
         "settingsfailed": "Echec de la mise à jour des paramètres de recherche"
       },
       "shopSettings": {
-        "general": "Général",
-        "address": "Adresse",
-        "import": "Importer",
         "localization": "Localisation",
         "options": "Options",
-        "availableOptions": "Options disponibles",
         "paymentMethods": "Méthodes de paiement",
         "externalServices": "Services externes",
-        "shopGeneralSettingsSaved": "Paramètres généraux du magasin enregistrés.",
-        "shopGeneralSettingsFailed": "Echec de la mise à jour des paramètres généraux du magasin.",
-        "shopAddressSettingsSaved": "Les paramètres de l'adresse du magasin sont enregistrés.",
-        "shopAddressSettingsFailed": "Echec de la mise à jour des paramètres de l'adresse du magasin.",
-        "shopExternalServicesSettingsSaved": "Paramètres des services externes du magasin enregistrés.",
-        "shopExternalServicesSettingsFailed": "Echec de la mise à jour des paramètres des services externes du magasin.",
         "shopLocalizationSettingsSaved": "Paramètres de localisation du magasin enregistrés.",
         "shopLocalizationSettingsFailed": "Echec de la mise à jour des paramètres de localisation du magasin.",
-        "shopOptionsSettingsSaved": "Options du magasin enregistrées.",
-        "shopOptionsSettingsFailed": "Echec de la mise à jour des options du magasin.",
         "shopPaymentMethodsSaved": "Modalités de paiement enregistrées.",
         "shopPaymentMethodsFailed": "Echec de la mise à jour des paramètres de mode de paiement du magasin."
       },
@@ -473,12 +459,6 @@
         "keywords": "Mots clés",
         "keywordsPlaceholder": "Mots-clés méta",
         "language": "Langue de référence",
-        "languageTooltip": "Cette langue sera utilisée en cas d'échec de la détection automatique de la langue.",
-        "timezone": "Fuseau horaire",
-        "timezoneOptions": "Sélectionner un fuseau horaire",
-        "currency": "Devise de référence",
-        "currencyTooltip": "Devise par défaut du magasin.",
-        "baseUOM": "Unité de mesure de base",
         "addressBook": {
           "company": "Entreprise",
           "companyPlaceholder": "Nom de l'entreprise",
@@ -714,6 +694,12 @@
           "matchFailed": "Echec de la correspondance",
           "unknownError": "Erreur inconnue"
         }
+      },
+      "loginServices": {
+        "appId": "ID de l'application",
+        "secret": "Secret",
+        "clientId": "identité du client",
+        "consumerKey": "Clé API"
       },
       "error": {
         "nameRequired": "Le nom est requis.",

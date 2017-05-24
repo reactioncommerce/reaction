@@ -11,6 +11,15 @@
         },
         "settings": {
           "analyticsSettingsLabel": "Setări Google Analytics"
+        },
+        "googleAnalytics": {
+          "label": "Google Analytics"
+        },
+        "mixpanel": {
+          "label": "Mixpanel"
+        },
+        "segment": {
+          "label": "Segment"
         }
       }
     }

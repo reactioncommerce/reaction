@@ -16,6 +16,7 @@
       "checkoutShipping": {
         "selectShippingOption": "Vyberte možnost lodní",
         "noShippingMethods": "Žádné způsoby dopravy jsou konfigurovány.",
+        "contactAdmin": "Obraťte se na správce obchodu.",
         "configureNow": "Nakofigurujte.",
         "shipping": "lodní"
       },

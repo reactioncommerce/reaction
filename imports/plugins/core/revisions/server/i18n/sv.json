@@ -10,7 +10,7 @@
           "revisionsTitle": "revideringar",
           "revisionsDescription": "revisionskontroll"
         },
-        "settings": {
+        "catalogSettings": {
           "productRevisionsLabel": "produkt~~POS=TRUNC Revideringar"
         },
         "toolbar": {

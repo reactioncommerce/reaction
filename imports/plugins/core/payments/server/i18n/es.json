@@ -26,6 +26,7 @@
         "processingError": "Hubo un problema con su pago.",
         "completeYourOrder": "Completar su pedido",
         "noPaymentMethods": "No hay métodos de pago están configurados.",
+        "contactAdmin": "Póngase en contacto con el administrador de la tienda.",
         "configureNow": "Configurar ahora.",
         "failedToPlaceOrder": "No se pudo realizar el pedido."
       }
