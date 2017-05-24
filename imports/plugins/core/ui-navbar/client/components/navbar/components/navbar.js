@@ -16,13 +16,17 @@ class NavBar extends Component {
   }
 
   state = {
-    navBarVisble: false
+    navBarVisible: false
   }
 
   toggleNavbarVisibility = () => {
-    const isVisible = this.state.navBarVisble;
-    this.setState({ navBarVisble: !isVisible });
+    const isVisible = this.state.navBarVisible;
+    this.setState({ navBarVisible: !isVisible });
   }
+
+  handleCloseNavbar = () => {
+    this.setState({ navBarVisible: false });
+  };
 
   renderLanguage() {
     return (
@@ -96,7 +100,8 @@ class NavBar extends Component {
     return (
       <div className="menu">
         <TagNavContainer
-          isVisible={this.state.navBarVisble}
+          isVisible={this.state.navBarVisible}
+          closeNavbar={this.handleCloseNavbar}
         />
       </div>
     );

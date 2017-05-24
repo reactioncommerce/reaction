@@ -350,6 +350,10 @@ class TagNavContainer extends Component {
           onTagUpdate={this.handleTagUpdate}
           onTagSelect={this.onTagSelect}
         />
+        <Overlay
+          isVisible={this.state[NavbarStates.Visible]}
+          onClick={this.props.handleCloseNavbar}
+        />
       </div>
     );
   }
@@ -358,6 +362,7 @@ class TagNavContainer extends Component {
 TagNavContainer.propTypes = {
   editButton: PropTypes.node,
   editable: PropTypes.bool,
+  handleCloseNavbar: PropTypes.func,
   hasEditRights: PropTypes.bool,
   isVisible: PropTypes.bool,
   tagIds: PropTypes.arrayOf(PropTypes.string),
