@@ -7,9 +7,50 @@
 // Variables
 // --------------------------------------------------
 
-
 //== Colors
 @reaction-brand: #1999dd;
+
+// All colors that should be used in Reaction.
+@rui-default: #98afbc;
+@rui-default-hover: #9bbdcf;
+@rui-default-active: #7d929d;
+@rui-default-disabled: #dce4e9;
+@rui-default-bg: #ebf7fc;
+@rui-default-text: #9bbdcf;
+
+@rui-brand: @reaction-brand;
+@rui-brand-hover: #11a7f0;
+@rui-brand-active: #1a87bc;
+@rui-brand-disabled: #bed7e4;
+@rui-brand-bg: #ebf7fc;
+@rui-brand-text: #11a7f0;
+
+@rui-brand-dark: #23566D;
+@rui-brand-dark-bg: #ebf7fc;
+@rui-brand-dark-text: #23566D;
+
+@rui-info: #1AEFCC;
+@rui-info-bg: #E5F9F6;
+@rui-info-text: #1AEFCC;
+
+@rui-success: #5cde86;
+@rui-success-hover: #37cd68;
+@rui-success-active: #58c47b;
+@rui-success-disabled: #b4ddc1;
+@rui-success-bg: #f0fff4;
+@rui-success-text: #37cd68;
+
+@rui-warning: #efc95f;
+@rui-warning-bg: #faf6ec;
+@rui-warning-text: #efc95f;
+
+@rui-danger: #eb4d5c;
+@rui-danger-hover: #f23b4d;
+@rui-danger-active: #e04352;
+@rui-danger-disabled: #e2b4b8;
+@rui-danger-bg: #ffeeef;
+@rui-danger-text: #f23b4d;
+
 
 // Shades of gray
 @white: #fff;
@@ -35,28 +76,21 @@
 
 
 // Brand
-@brand-primary-color: @reaction-brand;
-@brand-primary-dark: #23566D;
-@brand-primary-bg-light: #e4e9ec;
-@brand-primary-border-color: #afbac1;
+@brand-primary-dark: @rui-brand-dark;
+@brand-primary-bg-light: #e4e9ec; //still-used
+@brand-primary-border-color: #afbac1; //still-used
 
-@brand-primary-bg:      #EBF7FC;
+@brand-primary-bg:      #EBF7FC; //still-used
 @brand-info-bg:         #E7FBF6;
 @brand-warning-bg:      #F8EED2;
-@brand-danger-bg:       #EB4D5C;
+@brand-danger-bg:       @rui-danger;
 
-@brand-secondary-color: @brand-primary-dark; //lighten(@brand-primary-color, 20); // old @brand-secondary-color: #4aa5bd;
-@brand-accent-color: #94E8D1; //lighten(@brand-primary-color, 37); // old @brand-accent-color: #abe2e7;
-@brand-vivid-color: #1AEFCC; //lighten(@brand-primary-color, 20); // old @brand-vivid-color: #00dcdd;
+@brand-accent-color: @rui-info;
+@brand-vivid-color: @rui-info;
 
 @brand-light-highlight: @black02;
 @brand-light-color: #e3e3e3;
 @brand-dark-color: #414141;
-
-@brand-success-color:         @reaction-brand;
-@brand-info-color:            #1AEFCC; // #5bc0de;
-@brand-warning-color:         #EFC95F;
-@brand-danger-color:          #EB4D5C;
 
 
 //== Bootstrap colors
@@ -72,32 +106,16 @@
 @gray-lightest:          lighten(@gray-base, 96%); // #f6f6f6
 
 // Background Colors
-// @brand-primary:         @black60;
-@brand-primary:         darken(#b7c7d0, 10%);
-@brand-success:         @brand-success-color;
-@brand-info:            @brand-info-color;
-@brand-warning:         @brand-warning-color;
-@brand-danger:          @brand-danger-color;
-@brand-default:         #b7c7d0;
-@brand-cta:             #34D891;
+@brand-primary:         @rui-default;
+@brand-success:         @rui-brand;
+@brand-info:            @rui-info;
+@brand-warning:         @rui-warning;
+@brand-danger:          @rui-danger;
+@brand-default:         @rui-default;
+@brand-cta:             @rui-success;
+
 
 @state-default-text:   #505558;
-
-@state-success-text:             #3c763d;
-@state-success-bg:               @gray-lighter;
-@state-success-border:           darken(spin(@state-success-bg, -10), 5%);
-
-@state-info-text:                #31708f;
-@state-info-bg:                  #d9edf7;
-@state-info-border:              darken(spin(@state-info-bg, -10), 7%);
-
-@state-warning-text:             #8a6d3b;
-@state-warning-bg:               #fcf8e3;
-@state-warning-border:           darken(spin(@state-warning-bg, -10), 5%);
-
-@state-danger-text:              #a94442;
-@state-danger-bg:                #f2dede;
-@state-danger-border:            darken(spin(@state-danger-bg, -10), 5%);
 
 
 @shadow-1: 0 0 5px rgba(0, 0, 0, 0.2);
@@ -262,9 +280,9 @@
 @btn-danger-bg:                  @brand-danger;
 @btn-danger-border:              @btn-danger-bg;
 
-@btn-cta-color:               #fff;
-@btn-cta-bg:                  @brand-cta;
-@btn-cta-border:              @btn-cta-bg;
+@btn-cta-color:                  #fff;
+@btn-cta-bg:                     @brand-cta;
+@btn-cta-border:                 @btn-cta-bg;
 
 // Flat
 @btn-flat-border-width:               3px;
@@ -732,21 +750,20 @@
 //== Form states and alerts
 //
 //## Define colors for form feedback states and, by default, alerts.
-
-@state-success-text:             #3c763d;
-@state-success-bg:               #dff0d8;
+@state-success-text:             @rui-success;
+@state-success-bg:               @rui-success-bg;
 @state-success-border:           darken(spin(@state-success-bg, -10), 5%);
 
-@state-info-text:                #31708f;
-@state-info-bg:                  #d9edf7;
+@state-info-text:                @rui-info;
+@state-info-bg:                  @rui-info-bg;
 @state-info-border:              darken(spin(@state-info-bg, -10), 7%);
 
-@state-warning-text:             #8a6d3b;
-@state-warning-bg:               #fcf8e3;
+@state-warning-text:             @rui-warning;
+@state-warning-bg:               @rui-warning-bg;
 @state-warning-border:           darken(spin(@state-warning-bg, -10), 5%);
 
-@state-danger-text:              #a94442;
-@state-danger-bg:                #f2dede;
+@state-danger-text:              @rui-danger;
+@state-danger-bg:                @rui-danger-bg;
 @state-danger-border:            darken(spin(@state-danger-bg, -10), 5%);
 
 
@@ -1066,8 +1083,8 @@
 //
 //##
 
-@code-color:                  #c7254e;
-@code-bg:                     #f9f2f4;
+@code-color:                  @rui-danger;
+@code-bg:                     @rui-danger-bg; // #f9f2f4;
 
 @kbd-color:                   #fff;
 @kbd-bg:                      #333;
@@ -1190,8 +1207,8 @@
 //== Cart Drawer
 @cart-drawer-bg: @white;
 @cart-drawer-height: 275px;
-@cart-icon-bg: #23566d;
-@cart-icon-badge:  #23566d;
+@cart-icon-bg: @rui-brand-dark;
+@cart-icon-badge:  @rui-brand-dark;
 @cart-icon-badge-warning: @brand-warning;
 @cart-icon-text: @white;
 @cart-icon-color: @white;
@@ -1199,7 +1216,7 @@
 @cart-icon-border: none;
 @cart-icon-padding:  (@navbar-padding-vertical - 4px) 30px (@navbar-padding-vertical - 4px) 24px;
 
-@cart-progress-active: #57aed1; //lighten(@brand-vivid-color, 8); // TODO: @cart-progress-active is used nowhere
+@cart-progress-active: #57aed1;
 @cart-progress-visited: @brand-primary-dark;
 @cart-progress-next: @brand-light-color;
 
@@ -1225,8 +1242,8 @@
 
 
 //== Search
-@search-type-active: @brand-primary-color;
-@search-type-hover: fade(@brand-primary-color, 40%);
+@search-type-active: @brand-success;
+@search-type-hover: fade(@brand-success, 40%);
 
 
 //== Responsive
