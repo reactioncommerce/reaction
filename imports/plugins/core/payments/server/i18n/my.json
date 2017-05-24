@@ -26,6 +26,7 @@
         "processingError": "သင့်ရဲ့ငွေပေးချေမှုနှင့်အတူပြဿနာတစ်ခုရှိခဲ့သည်။",
         "completeYourOrder": "သင့်ရဲ့အမိန့်တွေကိုဖြည့်",
         "noPaymentMethods": "အဘယ်သူမျှမပေးချေမှုနည်းစနစ် configured ကြသည်။",
+        "contactAdmin": "စတိုးဆိုင်စီမံခန့်ခွဲသူကိုဆက်သွယ်ပါ။",
         "configureNow": "ယခု configure ။",
         "failedToPlaceOrder": "အမိန့်နေရာမရခဲ့ပါ။"
       }

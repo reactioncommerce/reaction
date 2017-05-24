@@ -16,6 +16,7 @@
       "checkoutShipping": {
         "selectShippingOption": "Wybierz opcję wysyłki",
         "noShippingMethods": "są skonfigurowane żadne metody wysyłki.",
+        "contactAdmin": "Skontaktuj się z administratorem sklepu.",
         "configureNow": "Skonfiguruj teraz.",
         "shipping": "Wysyłka"
       },

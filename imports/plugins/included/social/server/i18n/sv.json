@@ -10,14 +10,29 @@
           "socialDescription": "Social kanalkonfiguration"
         },
         "settings": {
-          "facebook": "Facebook",
-          "twitter": "Twitter",
-          "pinterest": "Pinterest",
-          "googleplus": "Google+",
-          "appId": "app-ID",
-          "username": "Användarnamn",
-          "appSecret": "app Secret",
-          "profilePage": "Profilsida",
+          "public": {
+            "apps": {
+              "facebook": {
+                "title": "Facebook",
+                "appId": "App ID",
+                "appSecret": "app Secret",
+                "profilePage": "Profilsida"
+              },
+              "googleplus": {
+                "title": "Google+",
+                "profilePage": "Profilsida"
+              },
+              "pinterest": {
+                "title": "Pinterest",
+                "profilePage": "Profilsida"
+              },
+              "twitter": {
+                "title": "Twitter",
+                "username": "Användarnamn",
+                "profilePage": "Profilsida"
+              }
+            }
+          },
           "socialSettingsLabel": "sociala inställningar",
           "socialSettingsSaved": "Sociala inställningar sparas"
         }
