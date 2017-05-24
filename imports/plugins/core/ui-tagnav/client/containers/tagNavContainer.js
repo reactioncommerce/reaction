@@ -4,6 +4,7 @@ import React, { Component, PropTypes } from "react";
 import { Reaction } from "/client/api";
 import { composeWithTracker } from "/lib/api/compose";
 import { getTagIds } from "/lib/selectors/tags";
+import { Overlay } from "/imports/plugins/core/ui/client/components";
 import { TagHelpers } from "/imports/plugins/core/ui-tagnav/client/helpers";
 import { Tags } from "/lib/collections";
 import TagNav from "../components/tagNav";
@@ -93,7 +94,7 @@ class TagNavContainer extends Component {
       tagsByKey: props.tagsByKey || {},
       selectedTag: null,
       suggestions: [],
-      [NavbarStates.Visible]: false,
+      [NavbarStates.Visible]: props.isVisible,
       [NavbarStates.Visibile]: NavbarVisibility.Hidden,
       newTag: {
         name: ""
@@ -106,8 +107,11 @@ class TagNavContainer extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { tagIds, tagsByKey } = nextProps;
-    this.setState({ tagIds, tagsByKey });
+    const { tagIds, tagsByKey, isVisible } = nextProps;
+    this.setState({
+      [NavbarStates.Visible]: isVisible,
+      tagIds,
+      tagsByKey });
   }
 
   componentWillUnmount() {
@@ -316,35 +320,37 @@ class TagNavContainer extends Component {
 
   render() {
     return (
-      <TagNav
-        {...TagNavHelpers}
-        navbarOrientation={this.navbarOrientation}
-        navbarPosition={this.navbarPosition}
-        navbarAnchor={this.navbarAnchor}
-        navbarVisibility={this.navbarVisibility}
-        tags={this.tags}
-        isTagNav={true}
-        canEdit={this.canEdit}
-        newTag={this.state.newTag}
-        navButtonStyles={navButtonStyles}
-        enableNewTagForm={true}
-        editable={this.state.editable}
-        hasDropdownClassName={this.hasDropdownClassName}
-        navbarSelectedClassName={this.navbarSelectedClassName}
-        suggestions={this.state.suggestions}
-        onClearSuggestions={this.handleClearSuggestions}
-        onGetSuggestions={this.handleGetSuggestions}
-        onEditButtonClick={this.handleEditButtonClick}
-        onMoveTag={this.handleMoveTag}
-        onNewTagSave={this.handleNewTagSave}
-        onNewTagUpdate={this.handleNewTagUpdate}
-        onTagMouseOut={this.handleTagMouseOut}
-        onTagMouseOver={this.handleTagMouseOver}
-        onTagRemove={this.handleTagRemove}
-        onTagSave={this.handleTagSave}
-        onTagUpdate={this.handleTagUpdate}
-        onTagSelect={this.onTagSelect}
-      />
+      <div>
+        <TagNav
+          {...TagNavHelpers}
+          navbarOrientation={this.navbarOrientation}
+          navbarPosition={this.navbarPosition}
+          navbarAnchor={this.navbarAnchor}
+          navbarVisibility={this.navbarVisibility}
+          tags={this.tags}
+          isTagNav={true}
+          canEdit={this.canEdit}
+          newTag={this.state.newTag}
+          navButtonStyles={navButtonStyles}
+          enableNewTagForm={true}
+          editable={this.state.editable}
+          hasDropdownClassName={this.hasDropdownClassName}
+          navbarSelectedClassName={this.navbarSelectedClassName}
+          suggestions={this.state.suggestions}
+          onClearSuggestions={this.handleClearSuggestions}
+          onGetSuggestions={this.handleGetSuggestions}
+          onEditButtonClick={this.handleEditButtonClick}
+          onMoveTag={this.handleMoveTag}
+          onNewTagSave={this.handleNewTagSave}
+          onNewTagUpdate={this.handleNewTagUpdate}
+          onTagMouseOut={this.handleTagMouseOut}
+          onTagMouseOver={this.handleTagMouseOver}
+          onTagRemove={this.handleTagRemove}
+          onTagSave={this.handleTagSave}
+          onTagUpdate={this.handleTagUpdate}
+          onTagSelect={this.onTagSelect}
+        />
+      </div>
     );
   }
 }
@@ -353,6 +359,7 @@ TagNavContainer.propTypes = {
   editButton: PropTypes.node,
   editable: PropTypes.bool,
   hasEditRights: PropTypes.bool,
+  isVisible: PropTypes.bool,
   tagIds: PropTypes.arrayOf(PropTypes.string),
   tagsAsArray: PropTypes.arrayOf(PropTypes.object),
   tagsByKey: PropTypes.object
@@ -374,6 +381,7 @@ const composer = (props, onData) => {
     name: "coreHeaderNavigation",
     hasEditRights: Reaction.hasAdminAccess(),
     tagsAsArray: tags,
+    isVisible: props.isVisible,
     tagIds: getTagIds({ tags }),
     tagsByKey
   });

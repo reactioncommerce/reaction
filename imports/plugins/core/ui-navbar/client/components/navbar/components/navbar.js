@@ -15,6 +15,15 @@ class NavBar extends Component {
     searchEnabled: PropTypes.bool
   }
 
+  state = {
+    navBarVisble: false
+  }
+
+  toggleNavbarVisibility = () => {
+    const isVisible = this.state.navBarVisble;
+    this.setState({ navBarVisble: !isVisible });
+  }
+
   renderLanguage() {
     return (
       <div className="languages hidden-xs">
@@ -79,14 +88,16 @@ class NavBar extends Component {
 
   renderHamburgerButton() {
     return (
-      <div className="showmenu"><Button icon="bars" onClick={()=>{}} /></div>
+      <div className="showmenu"><Button icon="bars" onClick={this.toggleNavbarVisibility} /></div>
     );
   }
 
   renderTagNav() {
     return (
       <div className="menu">
-        <TagNavContainer />
+        <TagNavContainer
+          isVisible={this.state.navBarVisble}
+        />
       </div>
     );
   }

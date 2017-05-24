@@ -109,11 +109,9 @@ class Tags extends Component {
     if (_.isArray(this.props.tags)) {
       const tags = this.props.tags.map((tag, index) => {
         const classAttr = `${baseTagNavClass} ${this.navbarSelectedClassName(tag)} ${this.hasDropdownClassName(tag)}`;
-
         return (
           <div className={classAttr} key={index}>
             <TagItem
-              {...this.props.tagProps}
               {...this.props}
               data-id={tag._id}
               index={index}
@@ -151,7 +149,6 @@ class Tags extends Component {
           <div className={baseTagNavClass} key="newTagForm">
             <TagItem
               {...this.props}
-              {...this.props.tagProps}
               blank={true}
               key="newTagForm"
               tag={this.props.newTag}
@@ -250,7 +247,6 @@ Tags.propTypes = {
   parentTag: ReactionPropTypes.Tag,
   showBookmark: PropTypes.bool,
   suggestions: PropTypes.arrayOf(PropTypes.object),
-  tagProps: PropTypes.object,
   tags: ReactionPropTypes.arrayOfTags
 };
 
