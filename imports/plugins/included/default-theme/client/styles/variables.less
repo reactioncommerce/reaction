@@ -11,6 +11,7 @@
 @reaction-brand: #1999dd;
 
 // All colors that should be used in Reaction.
+// We should be using these variables, not bootstraps @brand-{} variables
 @rui-default: #98afbc;
 @rui-default-hover: #9bbdcf;
 @rui-default-active: #7d929d;
@@ -74,6 +75,14 @@
 @whiteAlpha20: rgba(255, 255, 255, 0.2);
 @whiteAlpha50: rgba(255, 255, 255, 0.5);
 
+@rui-gray-base:              #000;
+@rui-gray-darker:            lighten(@grui-ray-base, 13.5%); // #222
+@rui-gray-dark:              lighten(@grui-ray-base, 20%);   // #333
+@rui-gray:                   lighten(@rui-gray-base, 33.5%); // #555
+@rui-gray-light:             lighten(@rui-gray-base, 46.7%); // #777
+@rui-gray-lighter:           lighten(@rui-gray-base, 93.5%); // #eee
+@rui-gray-lightest:          lighten(@grui-ray-base, 96%); // #f6f6f6
+
 
 // Brand
 @brand-primary-dark: @rui-brand-dark;
@@ -96,14 +105,16 @@
 //== Bootstrap colors
 //
 // All color variables from bootstraps variables.less file in one place for easy override.
+// We should not be using these variables, instead use the @rui-{} variables above
+// These are here for over-ride purposes only
 
-@gray-base:              #000;
-@gray-darker:            lighten(@gray-base, 13.5%); // #222
-@gray-dark:              lighten(@gray-base, 20%);   // #333
-@gray:                   lighten(@gray-base, 33.5%); // #555
-@gray-light:             lighten(@gray-base, 46.7%); // #777
-@gray-lighter:           lighten(@gray-base, 93.5%); // #eee
-@gray-lightest:          lighten(@gray-base, 96%); // #f6f6f6
+@gray-base:              @rui-gray-base;
+@gray-darker:            @rui-gray-darker;
+@gray-dark:              @rui-gray-dark;
+@gray:                   @rui-gray;
+@gray-light:             @rui-gray-light;
+@gray-lighter;           @rui-ray-lighter;
+@gray-lightest:          @rui-gray-lightest;
 
 // Background Colors
 @brand-primary:         @rui-default;
