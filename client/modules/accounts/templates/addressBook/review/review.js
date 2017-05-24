@@ -1,6 +1,7 @@
 import { Template } from "meteor/templating";
 import { ReactiveDict } from "meteor/reactive-dict";
 import { Session } from "meteor/session";
+import { Meteor } from "meteor/meteor";
 import { $ } from "meteor/jquery";
 import { i18next } from "/client/api";
 
@@ -39,7 +40,15 @@ Template.addressBookReview.helpers({
 });
 
 Template.addressBookReview.events({
-  "click .address-line-copyover": function (event) {
+  "mouseover .address-invalid-line": function (event) {
+    const addressKey = event.target.getAttribute("data-key");
+    $(`div .address-invalid-line [data-key=${addressKey}] .address-line-copyover`).show();
+  },
+  "mouseout .address-invalid-line": function (event) {
+    const addressKey = event.target.getAttribute("data-key");
+    $(`div .address-invalid-line [data-key=${addressKey}] .address-line-copyover`).hide();
+  },
+  "click .address-invalid-line": function (event) {
     // set address value to be value from validatedAddress
     const addressKey = event.target.getAttribute("data-key");
     const address = Template.instance().state.get("address");
@@ -47,8 +56,6 @@ Template.addressBookReview.events({
     address[addressKey] = validatedAddress[addressKey];
     Template.instance().state.set("address", address);
     $(`div.${addressKey}-display`).removeClass("address-invalid-line");
-    const selector = `[data-key=${addressKey}]`;
-    $(selector).hide();
   },
   "click [data-event-action=saveAddress]": function () {
     const instance = Template.instance();

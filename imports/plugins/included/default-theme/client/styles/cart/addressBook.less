@@ -128,14 +128,43 @@
   }
 }
 
-.address-invalid-line {
-  font-weight: 700;
-  border-width: 1px;
-  background-color: @brand-light-highlight;
+.address-validation-warning {
+  border: 1px solid;
+  background-color: #B0D1F0;
+  padding: 20px;
 }
 
-.address-line-copyover {
+.address-validation-warning > h5 {
+  font-weight: 700;
+}
+
+.address-invalid-line {
+  border: 0;
+  font-weight: 700;
+  background-color: #E79FA6;
   cursor: pointer;
+
+  &:hover {
+    background-color: #34E598;
+  }
+}
+
+.address-ignore {
+  border: 0;
+  background-color: @white;
+  font-weight: normal;
+  color: #128DFC;
+}
+
+// checkmark next to address line
+.address-line-copyover {
+  font-weight: normal;
+  color: #128DFC;
+  display: none;
+}
+
+.address-validate-header {
+  font-weight: 700;
 }
 
 .review-action-buttons {

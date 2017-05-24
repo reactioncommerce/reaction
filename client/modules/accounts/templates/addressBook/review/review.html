@@ -1,116 +1,139 @@
 <template name="addressBookReview">
   <div class="panel-heading">
-    <h3 class="panel-control-bar">
-      <span data-i18n="addressBookEdit.reviewAddress">Review Changes To Your address</span>
-    </h3>
+    <div class="address-validation-warning col-md-12">
+      <h5>Address Validation</h5>
+      <div>For best compliance, please validate your address</div>
+    </div>
   </div>
   <div class="panel-body">
 
-    <div class="row header panel-title">
+    <div class="row header panel-title address-validate-header">
+      <div class="col-md-5">
+        Entered Address
+      </div>
       <div class="col-md-7">
         Validated Address
       </div>
-      <div class="col-md-4">
-        Address
-      </div>
     </div>
   <!-- country -->
-  <div class="row country-display{{#if fieldErrors.country.length}} address-invalid-line{{/if}}">
-    <div class="col-md-5">
-      {{validatedAddress.country}}
-    </div>
-
-    <div class="col-md-2">
-      {{#if fieldErrors.country.length}}
-        <span data-key="country" class="address-line-copyover fa fa-arrow-right"></span>
-      {{/if}}
-    </div>
-
+  <div data-key="country" class="row country-display{{#if fieldErrors.country.length}} address-invalid-line{{else}} address-valid-line{{/if}}">
     <div class="col-md-5">
       {{address.country}}
     </div>
+    <div data-key="country" class="col-md-5">
+      {{validatedAddress.country}}
+    </div>
+
+    <div data-key="country" class="col-md-1">
+      {{#if fieldErrors.country.length}}
+        <span class="address-line-copyover fa fa-check-circle"></span>
+      {{/if}}
+    </div>
+    <div data-key="country" class="col-md-1">
+      {{#if fieldErrors.country.length}}
+        <span data-key="country" class="address-ignore">Ignore</span>
+      {{/if}}
+    </div>
   </div>
     <!-- address1 -->
-    <div class="row address1-display{{#if fieldErrors.address1.length}} address-invalid-line{{/if}}">
-      <div class="col-md-5">
+    <div data-key="address1" class="row address1-display{{#if fieldErrors.address1.length}} address-invalid-line{{else}} address-valid-line{{/if}}">
+      <div data-key="address1" class="col-md-5">
+        {{address.address1}}
+      </div>
+      <div data-key="address1" class="col-md-5">
         {{validatedAddress.address1}}
       </div>
 
-      <div class="col-md-2">
-        <span data-key="address1" class="address-line-copyover fa fa-arrow-right"></span>
+      <div data-key="address1" class="col-md-1">
+        <span class="address-line-copyover fa fa-check-circle"></span>
       </div>
-
-      <div class="col-md-5">
-        {{address.address1}}
+      <div data-key="address1" class="col-md-1">
+        <span data-key="address1" class="address-ignore">Ignore</span>
       </div>
     </div>
 
     {{#if hasAddress2}}
         <!-- address2 -->
-        <div class="row address2-display{{#if fieldErrors.address2.length}} address-invalid-line{{/if}}">
-          <div class="col-md-5">
+        <div data-key="address2" class="row address2-display{{#if fieldErrors.address2.length}} address-invalid-line{{else}} address-valid-line{{/if}}">
+          <div data-key="address2" class="col-md-5">
+            {{address.address2}}
+          </div>
+          <div data-key="address2" class="col-md-5">
             {{validatedAddress.address2}}
           </div>
 
-          <div class="col-md-2">
+          <div data-key="address2" class="col-md-1">
             {{#if fieldErrors.address2.length}}
-              <span data-key="address2" class="address-line-copyover fa fa-arrow-right"></span>
+              <span class="address-line-copyover fa fa-check-circle"></span>
             {{/if}}
           </div>
-
-          <div class="col-md-5">
-            {{address.address2}}
+          <div data-key="address2" class="col-md-1">
+            {{#if fieldErrors.address2.length}}
+              <span data-key="address2" class="address-ignore">Ignore</span>
+            {{/if}}
           </div>
         </div>
     {{/if}}
     <!-- city -->
-    <div class="row city-display{{#if fieldErrors.city.length}} address-invalid-line{{/if}}">
+    <div data-key="city" class="row city-display{{#if fieldErrors.city.length}} address-invalid-line{{else}} address-valid-line{{/if}}">
       <div class="col-md-5">
+        {{address.city}}
+      </div>
+      <div data-key="city" class="col-md-5">
         {{validatedAddress.city}}
       </div>
 
-      <div class="col-md-2">
+      <div data-key="city" class="col-md-1">
         {{#if fieldErrors.city.length}}
-          <span data-key="address2" class="address-line-copyover fa fa-arrow-right"></span>
+          <span class="address-line-copyover fa fa-check-circle"></span>
         {{/if}}
       </div>
-
-      <div class="col-md-5">
-        {{address.city}}
+      <div data-key="city" class="col-md-1">
+        {{#if fieldErrors.city.length}}
+          <span data-key="address2" class="address-ignore">Ignore</span>
+        {{/if}}
       </div>
     </div>
 
     <!-- region -->
-    <div class="row region-display{{#if fieldErrors.region.length}} address-invalid-line{{/if}}">
+    <div data-key="region" class="row region-display{{#if fieldErrors.region.length}} address-invalid-line{{else}} address-valid-line{{/if}}">
       <div class="col-md-5">
+        {{address.region}}
+      </div>
+      <div data-key="region" class="col-md-5">
         {{validatedAddress.region}}
       </div>
 
-      <div class="col-md-2">
+      <div data-key="region" class="col-md-1">
         {{#if fieldErrors.region.length}}
-          <span data-key="address2" class="address-line-copyover fa fa-arrow-right"></span>
+          <span class="address-line-copyover fa fa-check-circle"></span>
         {{/if}}
       </div>
-
-      <div class="col-md-5">
-        {{address.region}}
+      <div data-key="region" class="col-md-1">
+        {{#if fieldErrors.region.length}}
+          <span data-key="address2" class="address-ignore">Ignore</span>
+        {{/if}}
       </div>
     </div>
 
     <!-- postal -->
-    <div class="row postal-display{{#if fieldErrors.postal.length}} address-invalid-line{{/if}}">
+    <div data-key="postal" class="row postal-display{{#if fieldErrors.postal.length}} address-invalid-line{{else}} address-valid-line{{/if}}">
       <div class="col-md-5">
+        {{address.postal}}
+      </div>
+      <div data-key="postal" class="col-md-5">
         {{validatedAddress.postal}}
       </div>
 
-      <div class="col-md-2">
+      <div data-key="postal" class="col-md-1">
         {{#if fieldErrors.postal.length}}
-          <span data-key="postal" class="address-line-copyover fa fa-arrow-right"></span>
+          <span data-key="postal" class="address-line-copyover fa fa-check-circle"></span>
         {{/if}}
       </div>
-
-      <div class="col-md-5">
-        {{address.postal}}
+      <div data-key="postal" class="col-md-1">
+        {{#if fieldErrors.postal.length}}
+          <span data-key="postal" class="address-ignore">Ignore</span>
+        {{/if}}
       </div>
     </div>
     <div class="row pull-right review-action-buttons">
