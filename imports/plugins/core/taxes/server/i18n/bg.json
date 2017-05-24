@@ -29,6 +29,7 @@
           "shopCustomTaxRatesFailed": "спестяване на данъчната ставка за грешка.",
           "shopTaxMethodsSaved": "Спасен метод данък.",
           "shopTaxMethodsFailed": "Неуспешно спестяване данъчен метод.",
+          "customRatesLabel": "Персонализирани цени",
           "customRatesDescription": "Персонализирани цени",
           "taxCode": "Данъчен кодекс",
           "taxShipping": "Включи Доставка",

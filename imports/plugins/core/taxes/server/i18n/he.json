@@ -29,6 +29,7 @@
           "shopCustomTaxRatesFailed": "שגיאה בשמירת שיעור המס.",
           "shopTaxMethodsSaved": "שיטת המס נשמרה.",
           "shopTaxMethodsFailed": "שמירת שיטת המס נכשלה.",
+          "customRatesLabel": "התאם אישית תעריפים",
           "customRatesDescription": "התאם אישית תעריפים",
           "taxCode": "קוד מס",
           "taxShipping": "כלול משלוח",

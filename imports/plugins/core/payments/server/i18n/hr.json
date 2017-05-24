@@ -26,6 +26,7 @@
         "processingError": "Došlo je do problema s plaćanjem.",
         "completeYourOrder": "Dovršite narudžbu",
         "noPaymentMethods": "Načini plaćanja su konfigurirani.",
+        "contactAdmin": "Obratite se administratoru trgovine.",
         "configureNow": "Konfiguracija sada.",
         "failedToPlaceOrder": "Nije uspjelo staviti red."
       }

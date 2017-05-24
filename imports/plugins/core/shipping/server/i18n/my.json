@@ -16,6 +16,7 @@
       "checkoutShipping": {
         "selectShippingOption": "ရေကြောင်း option ကို Select လုပ်ပါ",
         "noShippingMethods": "အဘယ်သူမျှမရေကြောင်းနည်းလမ်းများ configured ကြသည်။",
+        "contactAdmin": "စတိုးဆိုင်စီမံခန့်ခွဲသူကိုဆက်သွယ်ပါ။",
         "configureNow": "ယခု configure ။",
         "shipping": "သင်္ဘောဖြင့်ကုန်ပစ္စည်းပို့ခြင်း"
       },

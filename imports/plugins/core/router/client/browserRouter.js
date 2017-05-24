@@ -11,6 +11,7 @@ import { Tracker } from "meteor/tracker";
 import App from "/imports/plugins/core/router/client/app";
 import { Router } from "../lib";
 import { MetaData } from "/lib/api/router/metadata";
+import { TranslationProvider } from "/imports/plugins/core/ui/client/providers";
 
 const history = Router.history;
 
@@ -144,8 +145,10 @@ export function initBrowserRouter() {
   Tracker.autorun(() => {
     if (Router.ready()) {
       ReactDOM.render((
-        <BrowserRouter history={history} >
-          <App children={Router.reactComponents} />
+        <BrowserRouter history={history}>
+          <TranslationProvider>
+            <App children={Router.reactComponents} />
+          </TranslationProvider>
         </BrowserRouter>
       ), getRootNode());
     }

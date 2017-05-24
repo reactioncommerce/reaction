@@ -95,8 +95,6 @@
         "noProductsFound": "Nie znaleziono produktów.",
         "private": "Prywatne",
         "public": "Publiczny",
-        "allOn": "wszystko na temat",
-        "allOff": "All Off",
         "shortcut": {
           "addProductLabel": "Dodaj produkt",
           "accountsLabel": "Konta"
@@ -122,24 +120,12 @@
         "settingsfailed": "Ustawienia wyszukiwania aktualizacja nie powiodła się"
       },
       "shopSettings": {
-        "general": "Generał",
-        "address": "Adres",
-        "import": "Import",
         "localization": "Lokalizacja",
         "options": "Opcje",
-        "availableOptions": "Dostępne opcje",
         "paymentMethods": "Metody Płatności",
         "externalServices": "External Services",
-        "shopGeneralSettingsSaved": "Sklep ogólne ustawienia zapisane.",
-        "shopGeneralSettingsFailed": "Sklep ustawienia ogólne aktualizacja nie powiodła się.",
-        "shopAddressSettingsSaved": "Ustawienia adresu Shop zapisane.",
-        "shopAddressSettingsFailed": "Sklep ustawienia adresu aktualizacja nie powiodła się.",
-        "shopExternalServicesSettingsSaved": "Sklep ustawienia usługi zewnętrzne zapisane.",
-        "shopExternalServicesSettingsFailed": "Sklep z ustawieniami usługi zewnętrzne aktualizacji nie powiodło się.",
         "shopLocalizationSettingsSaved": "Ustawienia lokalizacji Shop zapisane.",
         "shopLocalizationSettingsFailed": "Sklep ustawienia lokalizacyjne aktualizacja nie powiodła się.",
-        "shopOptionsSettingsSaved": "Opcje sklepowe zapisane.",
-        "shopOptionsSettingsFailed": "Opcje sklepowe aktualizacja nie powiodła się.",
         "shopPaymentMethodsSaved": "Sklep ustawienia Metody płatności zapisane.",
         "shopPaymentMethodsFailed": "Sklep ustawienia Metody płatności aktualizacja nie powiodła się."
       },
@@ -473,12 +459,6 @@
         "keywords": "Słowa kluczowe",
         "keywordsPlaceholder": "Meta słów kluczowych dla SEO",
         "language": "Język bazowy",
-        "languageTooltip": "Język ten będzie stosowany, jeśli wykrywanie języka urządzenie zostanie zawiodły",
-        "timezone": "Strefa czasowa",
-        "timezoneOptions": "Wybierz strefę czasową",
-        "currency": "Waluta bazowa",
-        "currencyTooltip": "Sklep domyślną walutą",
-        "baseUOM": "Jednostka podstawowa miary",
         "addressBook": {
           "company": "Firma",
           "companyPlaceholder": "Ta nazwa firmy",
@@ -714,6 +694,12 @@
           "matchFailed": "Błędne dopasowanie",
           "unknownError": "Nieznany błąd"
         }
+      },
+      "loginServices": {
+        "appId": "Identyfikator aplikacji",
+        "secret": "Sekret",
+        "clientId": "Identyfikator klienta",
+        "consumerKey": "Klucz API"
       },
       "error": {
         "nameRequired": "Nazwa jest wymagana.",

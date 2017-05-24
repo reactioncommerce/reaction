@@ -29,6 +29,7 @@
           "shopCustomTaxRatesFailed": "Fout bij het opslaan belastingtarief.",
           "shopTaxMethodsSaved": "Opgeslagen belasting methode.",
           "shopTaxMethodsFailed": "Mislukt het opslaan van fiscale methode.",
+          "customRatesLabel": "Aangepaste tarieven",
           "customRatesDescription": "Aangepaste tarieven",
           "taxCode": "BTW-code",
           "taxShipping": "omvatten Shipping",
