@@ -28,11 +28,6 @@ const NavbarOrientation = {
   Horizontal: "horizontal"
 };
 
-const NavbarVisibility = {
-  Shown: "shown",
-  Hidden: "hidden"
-};
-
 const NavbarPosition = {
   Static: "static",
   Fixed: "fixed"
@@ -95,15 +90,16 @@ class TagNavContainer extends Component {
       selectedTag: null,
       suggestions: [],
       [NavbarStates.Visible]: props.isVisible,
-      [NavbarStates.Visibile]: NavbarVisibility.Hidden,
       newTag: {
         name: ""
       }
     };
+
+    this.onWindowResize = this.onWindowResize.bind(this);
   }
 
   componentDidMount() {
-    $(window).on("resize", this.onWindowResize).trigger("resize");
+    window.addEventListener("resize", this.onWindowResize);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -115,11 +111,12 @@ class TagNavContainer extends Component {
   }
 
   componentWillUnmount() {
-    $(window).off("resize", this.onWindowResize);
+    window.removeEventListener("resize", this.onWindowResize);
   }
 
   onWindowResize = () => {
-    if (window.matchMedia("(max-width: 991px)").matches) {
+    const matchQuery = window.matchMedia("(max-width: 991px)");
+    if (matchQuery.matches) {
       this.setState({
         [NavbarStates.Orientation]: NavbarOrientation.Vertical,
         [NavbarStates.Position]: NavbarPosition.Fixed,
