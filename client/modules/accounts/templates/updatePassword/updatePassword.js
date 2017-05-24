@@ -18,6 +18,7 @@ Accounts.onResetPasswordLink((token, done) => {
  * Accounts Event: onEnrollmentLink When a user uses an enrollment link
  */
 Accounts.onEnrollmentLink((token, done) => {
+  Meteor.call("accounts/verifyAccount", "", token);
   Blaze.renderWithData(Template.loginFormUpdatePasswordOverlay, {
     token: token,
     callback: done

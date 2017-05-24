@@ -437,7 +437,7 @@ Template.coreOrderShippingInvoice.helpers({
     const order = instance.state.get("order");
     const status = orderCreditMethod(order).paymentMethod.status;
 
-    if (status === "approved" || status === "completed") {
+    if (status === "approved" || status === "completed" || status === "refunded") {
       return false;
     }
     return true;
