@@ -14,10 +14,10 @@ set -e
 # (used to customize the destination on Docker Hub without having to edit the CircleCI config)
 #
 # $DOCKER_NAMESPACE     - the image name for production deployments [Default]: reactioncommerce/reaction
-# $DOCKER_NAMESPACE_DEV - the name image for development deployments [Default]: reactioncommerce/prequel
+# $DOCKER_NAMESPACE_DEV - the image name for development deployments [Default]: reactioncommerce/prequel
 
 
-if [[ "$CIRCLE_BRANCH" != "master" || "$CIRCLE_BRANCH" != "development" ]]; then
+if [[ "$CIRCLE_BRANCH" != "master" && "$CIRCLE_BRANCH" != "development" ]]; then
   echo "Not running a deployment branch."
   exit 0
 fi
