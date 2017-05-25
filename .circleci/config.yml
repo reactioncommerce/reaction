@@ -28,17 +28,8 @@ jobs:
             - ~/.meteor
 
       # install app dependencies
-      - restore_cache:
-          name: Restoring node_modules cache
-          key: node_modules
 
       - run: meteor npm install
-
-      - save_cache:
-          name: Saving node_modules to cache
-          key: node_modules
-          paths:
-            - /home/reaction/node_modules
 
       # run tests
       - restore_cache:
