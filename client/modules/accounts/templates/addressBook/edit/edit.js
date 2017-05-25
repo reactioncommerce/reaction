@@ -1,7 +1,7 @@
 import { $ } from "meteor/jquery";
-import { i18next } from "/client/api";
 import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
+import { i18next } from "/client/api";
 
 
 function setWorkingAddress(address) {
