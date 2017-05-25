@@ -157,6 +157,13 @@ class Tag extends Component {
     }
   }
 
+  handleClick = (event) => {
+    if (this.props.onTagClick) {
+      event.preventDefault();
+      this.props.onTagClick(event, this.props.tag);
+    }
+  }
+
   /**
    * Render a simple tag for display purposes only
    * @return {JSX} simple tag
@@ -181,6 +188,7 @@ class Tag extends Component {
         href={url}
         onMouseOut={this.handleTagMouseOut}
         onMouseOver={this.handleTagMouseOver}
+        onClick={this.handleClick}
       >
         {this.props.tag.name}
       </a>
@@ -308,6 +316,7 @@ Tag.propTypes = {
   isTagNav: PropTypes.bool,
   onClearSuggestions: PropTypes.func,
   onGetSuggestions: PropTypes.func,
+  onTagClick: PropTypes.func,
   onTagInputBlur: PropTypes.func,
   onTagMouseOut: PropTypes.func,
   onTagMouseOver: PropTypes.func,

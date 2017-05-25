@@ -1,7 +1,7 @@
 import debounce from "lodash/debounce";
 import update from "react/lib/update";
 import React, { Component, PropTypes } from "react";
-import { Reaction } from "/client/api";
+import { Reaction, Router } from "/client/api";
 import { composeWithTracker } from "/lib/api/compose";
 import { getTagIds } from "/lib/selectors/tags";
 import { Overlay } from "/imports/plugins/core/ui/client/components";
@@ -285,6 +285,10 @@ class TagNavContainer extends Component {
     }
   }
 
+  handleTagClick = (event, tag) => {
+    Router.go("tag", { slug: tag.slug });
+  }
+
   handleEditButtonClick = () => {
     this.setState({ editable: !this.state.editable });
   }
@@ -340,7 +344,7 @@ class TagNavContainer extends Component {
           onMoveTag={this.handleMoveTag}
           onNewTagSave={this.handleNewTagSave}
           onNewTagUpdate={this.handleNewTagUpdate}
-          onTagMouseOut={this.handleTagMouseOut}
+          onTagClick={this.handleTagClick}
           onTagMouseOver={this.handleTagMouseOver}
           onTagRemove={this.handleTagRemove}
           onTagSave={this.handleTagSave}
@@ -349,7 +353,7 @@ class TagNavContainer extends Component {
         />
         <Overlay
           isVisible={this.state[NavbarStates.Visible]}
-          onClick={this.props.handleCloseNavbar}
+          onClick={this.props.closeNavbar}
         />
       </div>
     );
@@ -357,9 +361,9 @@ class TagNavContainer extends Component {
 }
 
 TagNavContainer.propTypes = {
+  closeNavbar: PropTypes.func,
   editButton: PropTypes.node,
   editable: PropTypes.bool,
-  handleCloseNavbar: PropTypes.func,
   hasEditRights: PropTypes.bool,
   isVisible: PropTypes.bool,
   tagIds: PropTypes.arrayOf(PropTypes.string),
