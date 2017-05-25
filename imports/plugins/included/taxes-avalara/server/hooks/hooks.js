@@ -38,7 +38,7 @@ MethodHooks.after("taxes/calculate", (options) => {
         if (result.error.errorCode === 300) {
           // could not get tax, typically because of address, but who knows could be anything
           Meteor.call("workflow/revertCartWorkflow", "checkoutAddressBook");
-        } else if (result.error.errorCode = 503) {
+        } else if (result.error.errorCode === 503) {
           Logger.error("timeout error: do nothing here");
         } else {
           Logger.error("Unknown error", result.error.errorCode);
