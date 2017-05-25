@@ -17,6 +17,12 @@ export default function () {
     Logger.error(error, "Bypassing loading Shop default data");
   }
 
+  // make sure the default shop has been created before going further
+  while (!Reaction.getShopId()) {
+    Logger.debug("Loading default shop, waiting until it's ready before moving on...");
+    Meteor._sleepForMs(1000);
+  }
+
   try {
     Logger.debug("Loading Shipping Data");
     Fixture.process(Assets.getText("data/Shipping.json"), ["name"], Reaction.Import.shipping);
