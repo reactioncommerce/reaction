@@ -429,8 +429,11 @@
       },
       "addressBookEdit": {
         "editAddress": "Editing this address entry",
-        "reviewAddress": "Review changes to your address",
-        "somethingWentWrong": "Something went wrong: {{err}}"
+        "addressValidation": "Address Validation",
+        "reviewAddress": "For best compliance, please validate your address",
+        "somethingWentWrong": "Something went wrong: {{err}}",
+        "enteredAddress": "Entered Address",
+        "validatedAddress": "Validate Address"
       },
       "corePackageConfig": {
         "settings": {
