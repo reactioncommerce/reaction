@@ -141,25 +141,29 @@
 .address-invalid-line {
   border: 0;
   font-weight: 700;
-  background-color: #E79FA6;
+  background-color: @state-danger-bg;
   cursor: pointer;
 
   &:hover {
-    background-color: #34E598;
+    background-color: @state-success-bg;
   }
 }
 
 .address-ignore {
-  border: 0;
+  border: 1px solid @white;
   background-color: @white;
   font-weight: normal;
-  color: #128DFC;
+  color: @brand-success;
+
+  &:hover {
+    background-color: @white;
+  }
 }
 
 // checkmark next to address line
 .address-line-copyover {
   font-weight: normal;
-  color: #128DFC;
+  color: @brand-success;
   display: none;
 }
 
