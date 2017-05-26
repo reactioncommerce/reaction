@@ -34,7 +34,7 @@ export const TagHelpers = {
       return subTags;
     }
 
-    return []; // TODO: Confirm this change is not breaking
+    return [];
   },
 
   currentTag() {

@@ -1,16 +1,16 @@
 import React, { Component, PropTypes } from "react";
 import update from "react/lib/update";
-import TagTreeBody from "./tagTreeBody";
-import TagTreeHeader from "./tagTreeHeader";
+import TagGroupBody from "./tagGroupBody";
+import TagGroupHeader from "./tagGroupHeader";
 import { TagItem } from "/imports/plugins/core/ui/client/components/tags/";
 import { TagHelpers } from "/imports/plugins/core/ui-tagnav/client/helpers";
 import { getTagIds } from "/lib/selectors/tags";
 
-class TagTree extends Component {
+class TagGroup extends Component {
   constructor(props) {
     super(props);
 
-    const { parentTag, tagsByKey, tagIds } = props.tagTreeProps;
+    const { parentTag, tagsByKey, tagIds } = props.tagGroupProps;
     this.state = {
       suggestions: [],
       newTag: {
@@ -23,7 +23,7 @@ class TagTree extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { parentTag, tagsByKey, tagIds } = nextProps.tagTreeProps;
+    const { parentTag, tagsByKey, tagIds } = nextProps.tagGroupProps;
     this.setState({ tagIds, parentTag, tagsByKey });
   }
 
@@ -32,7 +32,7 @@ class TagTree extends Component {
       return this.state.tagIds.map((tagId) => this.state.tagsByKey[tagId]);
     }
 
-    return this.props.tagTreeProps.subTagGroups;
+    return this.props.tagGroupProps.subTagGroups;
   }
 
   get className() {
@@ -57,7 +57,7 @@ class TagTree extends Component {
 
   handleNewTagSave = (event, tag) => {
     if (this.props.onNewTagSave) {
-      this.props.onNewTagSave(tag, this.props.tagTreeProps.parentTag);
+      this.props.onNewTagSave(tag, this.props.tagGroupProps.parentTag);
       this.setState({
         newTag: { name: "" }
       });
@@ -80,7 +80,7 @@ class TagTree extends Component {
     this.setState({ newTag: tag });
   }
 
-  tagTreeBodyProps = (tag) => {
+  tagGroupBodyProps = (tag) => {
     const subTagGroups = _.compact(TagHelpers.subTags(tag));
     const tagsByKey = {};
 
@@ -102,15 +102,15 @@ class TagTree extends Component {
     if (Array.isArray(tags)) {
       return tags.map((tag) => (
         <div className={`rui grouptag ${this.className}`} data-id={tag._id} key={tag._id}>
-          <TagTreeHeader
+          <TagGroupHeader
             {...this.props}
             tag={tag}
             parentTag={this.state.parentTag}
             onTagRemove={this.props.onTagRemove}
           />
-          <TagTreeBody
+          <TagGroupBody
             {...this.props}
-            tagTreeBodyProps={this.tagTreeBodyProps(tag)}
+            tagGroupBodyProps={this.tagGroupBodyProps(tag)}
           />
         </div>
       ));
@@ -151,12 +151,12 @@ class TagTree extends Component {
   }
 }
 
-TagTree.propTypes = {
+TagGroup.propTypes = {
   blank: PropTypes.bool,
   editable: PropTypes.bool,
   onNewTagSave: PropTypes.func,
   onTagRemove: PropTypes.func,
-  tagTreeProps: PropTypes.object
+  tagGroupProps: PropTypes.object
 };
 
-export default TagTree;
+export default TagGroup;

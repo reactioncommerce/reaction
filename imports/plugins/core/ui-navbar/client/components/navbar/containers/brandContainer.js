@@ -30,13 +30,11 @@ class BrandContainer extends Component {
 
   render() {
     return (
-      <div>
-        <Brand
-          handleClick={this.handleClick}
-          logo={this.logo()}
-          {...this.props}
-        />
-      </div>
+      <Brand
+        handleClick={this.handleClick}
+        logo={this.logo()}
+        {...this.props}
+      />
     );
   }
 }

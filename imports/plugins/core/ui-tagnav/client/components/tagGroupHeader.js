@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import { TagItem } from "/imports/plugins/core/ui/client/components/tags/";
 
-class TagTreeHeader extends Component {
+class TagGroupHeader extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -53,7 +53,7 @@ class TagTreeHeader extends Component {
   }
 }
 
-TagTreeHeader.propTypes = {
+TagGroupHeader.propTypes = {
   editable: PropTypes.bool,
   onTagRemove: PropTypes.func,
   onUpdateTag: PropTypes.func,
@@ -62,4 +62,4 @@ TagTreeHeader.propTypes = {
   updateSuggestions: PropTypes.func
 };
 
-export default TagTreeHeader;
+export default TagGroupHeader;

@@ -102,7 +102,9 @@ class NavBar extends Component {
         <TagNavContainer
           isVisible={this.state.navBarVisible}
           closeNavbar={this.handleCloseNavbar}
-        />
+        >
+          <BrandContainer />
+        </TagNavContainer>
       </div>
     );
   }

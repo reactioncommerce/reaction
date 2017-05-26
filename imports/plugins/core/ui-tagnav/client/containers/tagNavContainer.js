@@ -103,11 +103,20 @@ class TagNavContainer extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    let selectedTag = {};
+    nextProps.tagsAsArray.map((tag) => {
+      if (this.isSelected(tag)) {
+        selectedTag = tag;
+      }
+    });
+
     const { tagIds, tagsByKey, isVisible } = nextProps;
     this.setState({
       [NavbarStates.Visible]: isVisible,
       tagIds,
-      tagsByKey });
+      tagsByKey,
+      selectedTag
+    });
   }
 
   componentWillUnmount() {
@@ -297,7 +306,7 @@ class TagNavContainer extends Component {
     if (Array.isArray(tag.relatedTagIds)) {
       return "has-dropdown";
     }
-    return null;
+    return "";
   }
 
   navbarSelectedClassName = (tag) => {
@@ -323,6 +332,7 @@ class TagNavContainer extends Component {
     return (
       <div>
         <TagNav
+          {...this.props}
           {...TagNavHelpers}
           navbarOrientation={this.navbarOrientation}
           navbarPosition={this.navbarPosition}
@@ -332,6 +342,7 @@ class TagNavContainer extends Component {
           isTagNav={true}
           canEdit={this.canEdit}
           newTag={this.state.newTag}
+          selectedTag={this.state.selectedTag}
           navButtonStyles={navButtonStyles}
           enableNewTagForm={true}
           editable={this.state.editable}

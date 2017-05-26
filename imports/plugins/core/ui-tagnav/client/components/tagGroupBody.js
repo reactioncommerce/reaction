@@ -3,11 +3,11 @@ import update from "react/lib/update";
 import React, { Component, PropTypes } from "react";
 import { TagItem } from "/imports/plugins/core/ui/client/components/tags/";
 
-class TagTreeBody extends Component {
+class TagGroupBody extends Component {
   constructor(props) {
     super(props);
 
-    const { parentTag, tagsByKey, tagIds } = props.tagTreeBodyProps;
+    const { parentTag, tagsByKey, tagIds } = props.tagGroupBodyProps;
     this.state = {
       suggestions: [],
       newTag: {
@@ -20,7 +20,7 @@ class TagTreeBody extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { parentTag, tagsByKey, tagIds } = nextProps.tagTreeBodyProps;
+    const { parentTag, tagsByKey, tagIds } = nextProps.tagGroupBodyProps;
     this.setState({ tagIds, parentTag, tagsByKey });
   }
 
@@ -93,7 +93,7 @@ class TagTreeBody extends Component {
       return this.state.tagIds.map((tagId) => this.state.tagsByKey[tagId]);
     }
 
-    return this.props.tagTreeBodyProps.subTagGroups;
+    return this.props.tagGroupBodyProps.subTagGroups;
   }
 
   genTagsList(tags, parentTag) {
@@ -156,14 +156,14 @@ class TagTreeBody extends Component {
   }
 }
 
-TagTreeBody.propTypes = {
+TagGroupBody.propTypes = {
   editable: PropTypes.bool,
   onNewTagSave: PropTypes.func,
   onTagRemove: PropTypes.func,
   onTagSort: PropTypes.func,
   onUpdateTag: PropTypes.func,
-  tagTreeBodyProps: PropTypes.object,
+  tagGroupBodyProps: PropTypes.object,
   updateSuggestions: PropTypes.func
 };
 
-export default TagTreeBody;
+export default TagGroupBody;
