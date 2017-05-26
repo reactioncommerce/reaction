@@ -12,7 +12,30 @@
           "packageGroupSettingsLabel": "Einstellungen"
         },
         "settings": {
-          "shopSettingsLabel": "Geschäft"
+          "shopSettingsLabel": "Geschäft",
+          "import": "Importieren",
+          "general": {
+            "label": "Allgemein"
+          },
+          "address": {
+            "label": "Adresse 2"
+          },
+          "options": {
+            "label": "Optionen"
+          },
+          "openexchangerates": {
+            "refreshPeriod": "Erfrischen"
+          }
+        },
+        "alerts": {
+          "shopGeneralSettingsSaved": "Die allgemeinen Einstellungen des Geschäfts wurden gespeichert.",
+          "shopGeneralSettingsFailed": "Die Aktualisierung der allgemeinen Geschäfts-Einstellungen ist fehlgeschlagen. ",
+          "shopAddressSettingsSaved": "Die Adresseinstellungen des Geschäfts wurden gespeichert. ",
+          "shopAddressSettingsFailed": "Die Aktualisierung der Geschäfts-Adresse ist fehlgeschlagen.",
+          "shopExternalServicesSettingsSaved": "Die Einstellungen der externen Dienste des Geschäfts wurden gespeichert.",
+          "shopExternalServicesSettingsFailed": "Die Aktualisierung der externen Dienst-Einstellungen des Geschäfts ist fehlgeschlagen. ",
+          "shopOptionsSettingsSaved": "Die Geschäfts-Optionen wurden gespeichert.",
+          "shopOptionsSettingsFailed": "Die Aktualisierung der Shop-Optionen ist fehlgeschlagen."
         }
       }
     }

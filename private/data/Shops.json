@@ -469,6 +469,15 @@
       "symbol": "₴",
       "decimal": ","
     },
+    "VND": {
+      "enabled": false,
+      "format": "%v %s",
+      "symbol": "₫",
+      "decimal": ",",
+      "thousand": ".",
+      "scale": -2,
+      "where": "right"
+    },
     "XAF": {
       "enabled": false,
       "format": "%v %s",
@@ -3665,6 +3674,15 @@
       "symbol": "₴",
       "decimal": ","
     },
+    "VND": {
+      "enabled": false,
+      "format": "%v %s",
+      "symbol": "₫",
+      "decimal": ",",
+      "thousand": ".",
+      "scale": -2,
+      "where": "right"
+    },
     "XAF": {
       "enabled": false,
       "format": "%v %s",
@@ -6371,6 +6389,7 @@
   "defaultVisitorRole": [
     "anonymous",
     "guest",
+    "account/verify",
     "product",
     "tag",
     "index",
@@ -6381,6 +6400,7 @@
     "account/profile",
     "guest",
     "product",
+    "account/verify",
     "tag",
     "index",
     "cart/checkout",

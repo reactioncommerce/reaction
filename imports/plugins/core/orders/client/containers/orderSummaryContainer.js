@@ -1,9 +1,11 @@
 import React, { Component, PropTypes } from "react";
 import moment from "moment";
 import _ from "lodash";
+import { Meteor } from "meteor/meteor";
 import { composeWithTracker } from "/lib/api/compose";
 import { Orders } from "/lib/collections";
 import { i18next } from "/client/api";
+import { Loading } from "/imports/plugins/core/ui/client/components";
 import OrderSummary from "../components/orderSummary";
 
 class OrderSummaryContainer extends Component {
@@ -141,4 +143,4 @@ const composer = (props, onData) => {
   }
 };
 
-export default composeWithTracker(composer, null)(OrderSummaryContainer);
+export default composeWithTracker(composer, Loading)(OrderSummaryContainer);

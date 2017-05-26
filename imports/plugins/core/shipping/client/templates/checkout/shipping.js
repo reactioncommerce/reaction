@@ -109,6 +109,10 @@ Template.coreCheckoutShipping.helpers({
     }
 
     return false;
+  },
+
+  isAdmin() {
+    return Reaction.hasAdminAccess();
   }
 });
 
