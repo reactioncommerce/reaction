@@ -91,9 +91,9 @@ Template.coreOrderShippingInvoice.helpers({
           name: "Approve",
           i18nKeyLabel: "order.approveInvoice",
           active: true,
-          status: "info",
+          status: "success",
           eventAction: "approveInvoice",
-          bgColor: "bg-info",
+          bgColor: "bg-success",
           buttonType: "submit"
         }, {
           name: "Cancel",
@@ -437,7 +437,7 @@ Template.coreOrderShippingInvoice.helpers({
     const order = instance.state.get("order");
     const status = orderCreditMethod(order).paymentMethod.status;
 
-    if (status === "approved" || status === "completed") {
+    if (status === "approved" || status === "completed" || status === "refunded") {
       return false;
     }
     return true;

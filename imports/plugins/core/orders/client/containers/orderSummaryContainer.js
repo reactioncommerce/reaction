@@ -6,6 +6,7 @@ import { composeWithTracker } from "/lib/api/compose";
 import { Orders } from "/lib/collections";
 import { Card, CardHeader, CardBody, CardGroup } from "/imports/plugins/core/ui/client/components";
 import { i18next } from "/client/api";
+import { Loading } from "/imports/plugins/core/ui/client/components";
 import OrderSummary from "../components/orderSummary";
 
 class OrderSummaryContainer extends Component {
@@ -154,4 +155,4 @@ const composer = (props, onData) => {
   }
 };
 
-export default composeWithTracker(composer, null)(OrderSummaryContainer);
+export default composeWithTracker(composer, Loading)(OrderSummaryContainer);
