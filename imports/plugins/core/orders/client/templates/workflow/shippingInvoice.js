@@ -91,9 +91,9 @@ Template.coreOrderShippingInvoice.helpers({
           name: "Approve",
           i18nKeyLabel: "order.approveInvoice",
           active: true,
-          status: "info",
+          status: "success",
           eventAction: "approveInvoice",
-          bgColor: "bg-info",
+          bgColor: "bg-success",
           buttonType: "submit"
         }, {
           name: "Cancel",
