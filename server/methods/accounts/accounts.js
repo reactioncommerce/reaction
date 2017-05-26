@@ -104,7 +104,7 @@ function getValidator() {
  * @summary Compare individual fields of address and accumulate errors
  * @param {Object} address - the address provided by the customer
  * @param {Object} validationAddress - address provided by validator
- * @returns {Object} Array of errors (or empty)
+ * @returns {Object} An object with an array of errors per field
  */
 function compareAddress(address, validationAddress) {
   const errors = {
@@ -200,12 +200,12 @@ export function validateAddress(address) {
       validationErrors = compareAddress(address, validatedAddress);
       if (validationErrors.totalErrors || formErrors.length) {
         validated = false;
-        validatedAddress.isValidated = false;
+        validatedAddress.failedValidation = false;
       }
     } else {
       // No address, fail validation
       validated = false;
-      validatedAddress.isValidated = false;
+      validatedAddress.failedValidation = false;
     }
   }
   const validationResults = { validated, fieldErrors: validationErrors, formErrors, validatedAddress };
