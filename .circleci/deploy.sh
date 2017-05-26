@@ -40,9 +40,9 @@ fi
 
 # Master branch deployment (only runs when a version git tag exists - syntax: "v1.2.3")
 if [[ "$CIRCLE_BRANCH" == "master" ]]; then
-  if git describe --tags | grep "^v[0-9]\+\.[0-9]\+\.[0-9]\+$"; then
-    VERSION=$(git describe --tags | grep "^v[0-9]\+\.[0-9]\+\.[0-9]\+$")
+  VERSION=$(git describe --tags | grep "^v[0-9]\+\.[0-9]\+\.[0-9]\+$")
 
+  if [[ "$VERSION" ]]; then
     DOCKER_NAMESPACE=${DOCKER_NAMESPACE:-"reactioncommerce/reaction"}
 
     docker tag $DOCKER_NAMESPACE:latest $DOCKER_NAMESPACE:$VERSION
