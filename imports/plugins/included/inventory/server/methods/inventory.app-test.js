@@ -76,7 +76,7 @@ describe("inventory method", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
     });
 
-    it("should have option quantity greater then 0", function () {
+    it("should have option quantity greater than 0", function () {
       // checking our option quantity. It should be greater than zero.
       expect(qty).to.be.above(0);
     });
