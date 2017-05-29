@@ -413,6 +413,11 @@
       "format": "%s%v",
       "symbol": "$"
     },
+    "NGN": {
+      "enabled": true,
+      "format": "%s%v",
+      "symbol": "₦"
+    },
     "PHP": {
       "enabled": false,
       "format": "%s %v",
@@ -3608,6 +3613,11 @@
       "enabled": false,
       "format": "%s%v",
       "symbol": "$"
+    },
+    "NGN": {
+      "enabled": true,
+      "format": "%s%v",
+      "symbol": "₦"
     },
     "PHP": {
       "enabled": false,
