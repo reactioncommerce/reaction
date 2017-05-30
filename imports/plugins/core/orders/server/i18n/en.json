@@ -15,7 +15,7 @@
         "orderWorkflow": {
           "summary": {
             "cardTitle": "Summary",
-            "copyLink": "Copy Link"
+            "copyOrderLink": "Copy Order Link"
           },
           "fulfillment": "Fulfillment",
           "orderDetails": "Order Details",
