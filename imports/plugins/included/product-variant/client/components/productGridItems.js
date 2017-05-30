@@ -13,6 +13,18 @@ class ProductGridItems extends Component {
     return this.props.positions().pinned ? "pinned" : "";
   }
 
+  renderVisible() {
+    return this.props.product.isVisible ? "" : "not-visible";
+  }
+
+  renderOverlay() {
+    if (this.props.product.isVisible === false) {
+      return (
+        <div className="product-grid-overlay" />
+      );
+    }
+  }
+
   render() {
     return (
       <div>
@@ -31,23 +43,23 @@ class ProductGridItems extends Component {
             data-event-value={this.props.product._id}
           >
 
-            <div className="product-primary-images {{#unless isVisible}}not-visible{{/unless}}">
+            <div className={`product-primary-images ${this.renderVisible()}`}>
 
                 <span className="product-image" />
 
                 <span className="product-image"  />
 
 
-                <div className="prodcut-grid-overlay" />
+                {this.renderOverlay()}
 
             </div>
 
-            <div className="product-additional-images {{#unless isVisible}}not-visible{{/unless}}">
+            <div className={`product-additional-images ${this.renderVisible()}`}>
 
                 <span className="product-image" />
 
 
-                <div className="prodcut-grid-overlay" />
+                {this.renderOverlay()}
 
             </div>
           </a>
