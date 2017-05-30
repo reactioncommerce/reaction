@@ -49,28 +49,11 @@ Template.productGridItems.onDestroyed(function () {
 
 Template.productGridItems.helpers({
   component() {
-    return ProductGridItemsContainer;
-  },
-
-  pdpPath() {
-    const instance = Template.instance();
-    const product = instance.data;
-
-    if (product) {
-      let handle = product.handle;
-
-      if (product.__published) {
-        handle = product.__published.handle;
-      }
-
-      return Reaction.Router.pathFor("product", {
-        hash: {
-          handle
-        }
-      });
-    }
-
-    return "/";
+    const currentData = Template.currentData();
+    return {
+      ...currentData,
+      component: ProductGridItemsContainer
+    };
   },
 
   controlProps() {
