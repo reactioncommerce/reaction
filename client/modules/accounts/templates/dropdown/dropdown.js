@@ -3,7 +3,6 @@ import { Tags } from "/lib/collections";
 import { Session } from "meteor/session";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
-// import Test from "../../components/dropdown/test";
 
 Template.loginDropdown.events({
 

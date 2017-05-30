@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from "react";
+import Velocity from "velocity-animate";
 import { Reaction } from "/client/api";
 
 class CartIcon extends Component {
@@ -8,8 +9,9 @@ class CartIcon extends Component {
 
   handleClick = (event) => {
     event.preventDefault();
-    return $("#cart-drawer-container").fadeOut(300, function () {
-      return Reaction.toggleSession("displayCart");
+    const cartDrawer = document.querySelector("#cart-drawer-container");
+    Velocity(cartDrawer, { opacity: 1 }, 300, () => {
+      Reaction.toggleSession("displayCart");
     });
   }
 
