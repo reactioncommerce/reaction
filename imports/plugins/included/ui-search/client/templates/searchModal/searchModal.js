@@ -2,7 +2,7 @@ import _ from "lodash";
 import { Template } from "meteor/templating";
 import { ProductSearch, Tags, OrderSearch, AccountSearch } from "/lib/collections";
 import { IconButton } from "/imports/plugins/core/ui/client/components";
-
+import SearchModalContainer from "/imports/plugins/included/product-variant/client/containers/searchModalContainer";
 /*
  * searchModal extra functions
  */
@@ -116,6 +116,11 @@ Template.searchModal.onCreated(function () {
  * searchModal helpers
  */
 Template.searchModal.helpers({
+  searchModal() {
+    return {
+      component: SearchModalContainer
+    };
+  },
   IconButtonComponent() {
     const instance = Template.instance();
     const view = instance.view;
@@ -152,15 +157,15 @@ Template.searchModal.helpers({
  */
 Template.searchModal.events({
   // on type, reload Reaction.SaerchResults
-  "keyup input": (event, templateInstance) => {
-    event.preventDefault();
-    const searchQuery = templateInstance.find("#search-input").value;
-    templateInstance.state.set("searchQuery", searchQuery);
-    $(".search-modal-header:not(.active-search)").addClass(".active-search");
-    if (!$(".search-modal-header").hasClass("active-search")) {
-      $(".search-modal-header").addClass("active-search");
-    }
-  },
+  // "keyup input": (event, templateInstance) => {
+  //   event.preventDefault();
+  //   const searchQuery = templateInstance.find("#search-input").value;
+  //   templateInstance.state.set("searchQuery", searchQuery);
+  //   $(".search-modal-header:not(.active-search)").addClass(".active-search");
+  //   if (!$(".search-modal-header").hasClass("active-search")) {
+  //     $(".search-modal-header").addClass("active-search");
+  //   }
+  // },
   "click [data-event-action=filter]": function (event, templateInstance) {
     event.preventDefault();
     const instance = Template.instance();

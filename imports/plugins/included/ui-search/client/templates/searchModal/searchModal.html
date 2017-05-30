@@ -1,11 +1,8 @@
 <template name="searchModal">
   <div class="rui search-modal js-search-modal">
     <div class="rui search-modal-close">{{> React IconButtonComponent}}</div>
-    <div class="rui search-modal-header">
-      {{> searchInput }}
-      {{> searchTypeToggle }}
-      {{> productSearchTags tagSearchResults=tagSearchResults }}
+    <div>
+      {{> React searchModal }}
     </div>
-    {{> searchResults productSearchResults=productSearchResults orderSearchResults=orderSearchResults accountSearchResults=accountSearchResults orderTable=orderTable accountTable=accountTable }}
   </div>
 </template>

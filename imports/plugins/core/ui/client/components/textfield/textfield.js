@@ -160,7 +160,7 @@ class TextField extends Component {
     });
 
     return (
-      <div className={classes}>
+      <div className={classes} style={this.props.textFieldStyle}>
         {this.renderLabel()}
         {this.renderField()}
         {this.renderHelpText()}
@@ -191,6 +191,7 @@ TextField.propTypes = {
   onReturnKeyDown: PropTypes.func,
   placeholder: PropTypes.string,
   style: PropTypes.object,
+  textFieldStyle: PropTypes.object,
   type: PropTypes.string,
   value: PropTypes.any
 };
