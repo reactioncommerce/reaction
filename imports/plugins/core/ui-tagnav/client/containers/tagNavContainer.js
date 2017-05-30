@@ -221,7 +221,10 @@ class TagNavContainer extends Component {
   }
 
   closeDropdown = (event) => {
-    if ($(event.target).closest(".navbar-item").length === 0) {
+    const closestNavItem = event.target.closest(".navbar-item");
+
+    // on mouseover an element outside of tags, close dropdown
+    if (!closestNavItem) {
       this.closeDropdownTimeout = setTimeout(() => {
         this.setState({ selectedTag: null });
         this.detachhBodyListener();
