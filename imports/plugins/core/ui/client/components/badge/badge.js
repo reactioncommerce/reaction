@@ -40,7 +40,7 @@ class Badge extends Component {
       "badge-large": badgeSize === "large",
       "badge-cta": status === "cta",
       "badge-danger": status === "danger",
-      "badge-default": !primary && (status === null || status === undefined || status === "default"),
+      "badge-default": (status === null || status === undefined || status === "default"),
       "badge-info": status === "info",
       "badge-primary": status === "primary",
       "badge-success": status === "success",
