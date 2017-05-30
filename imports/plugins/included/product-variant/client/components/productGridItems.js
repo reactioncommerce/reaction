@@ -2,15 +2,22 @@ import React, { Component, PropTypes } from "react";
 
 class ProductGridItems extends Component {
   static propTypes = {
+    isSelected: PropTypes.func,
     pdpPath: PropTypes.func,
-    product: PropTypes.object
+    positions: PropTypes.func,
+    product: PropTypes.object,
+    weightClass: PropTypes.func
+  }
+
+  renderPinned() {
+    return this.props.positions().pinned ? "pinned" : "";
   }
 
   render() {
     return (
       <div>
         <li
-          className="product-grid-item {{#if positions.pinned}}pinned{{/if}} {{weightClass}} {{isSelected}}"
+          className={`product-grid-item ${this.renderPinned()} ${this.props.weightClass()} ${this.props.isSelected()}`}
           data-id={this.props.product._id}
           id={this.props.product._id}
         >

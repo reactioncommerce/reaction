@@ -1,6 +1,9 @@
+import _ from "lodash";
 import React, { Component, PropTypes } from "react";
+import { Session } from "meteor/session";
 import { composeWithTracker } from "/lib/api/compose";
 import { Reaction } from "/client/api";
+import { ReactionProduct } from "/lib/api";
 import ProductGridItems from "../components/productGridItems";
 
 class ProductGridItemsContainer extends Component {
@@ -12,6 +15,9 @@ class ProductGridItemsContainer extends Component {
     super();
 
     this.productPath = this.productPath.bind(this);
+    this.positions = this.positions.bind(this);
+    this.weightClass = this.weightClass.bind(this);
+    this.isSelected = this.isSelected.bind(this);
   }
 
   productPath = () => {
@@ -32,11 +38,39 @@ class ProductGridItemsContainer extends Component {
     return "/";
   }
 
+  positions = () => {
+    const tag = ReactionProduct.getTag();
+    return this.props.product.positions && this.props.product.positions[tag] || {};
+  }
+
+  weightClass = () => {
+    const positions = this.positions();
+    const weight = positions.weight || 0;
+    switch (weight) {
+      case 1:
+        return "product-medium";
+      case 2:
+        return "product-large";
+      default:
+        return "product-small";
+    }
+  }
+
+  isSelected= () => {
+    if (Reaction.isPreview() === false) {
+      return _.includes(Session.get("productGrid/selectedProducts"), this.props.product._id) ? "active" : "";
+    }
+    return false;
+  }
+
   render() {
     return (
       <ProductGridItems
         product={this.props.product}
         pdpPath={this.productPath}
+        positions={this.positions}
+        weightClass={this.weightClass}
+        isSelected={this.isSelected}
       />
     );
   }

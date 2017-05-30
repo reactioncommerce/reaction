@@ -103,25 +103,6 @@ Template.productGridItems.helpers({
 
     return false;
   },
-  weightClass: function () {
-    const tag = ReactionProduct.getTag();
-    const positions = this.positions && this.positions[tag] || {};
-    const weight = positions.weight || 0;
-    switch (weight) {
-      case 1:
-        return "product-medium";
-      case 2:
-        return "product-large";
-      default:
-        return "product-small";
-    }
-  },
-  isSelected: function () {
-    if (Reaction.isPreview() === false) {
-      return _.includes(Session.get("productGrid/selectedProducts"), this._id) ? "active" : "";
-    }
-    return false;
-  },
   isMediumWeight: function () {
     const tag = ReactionProduct.getTag();
     const positions = this.positions && this.positions[tag] || {};
@@ -142,11 +123,6 @@ Template.productGridItems.helpers({
       return true;
     }
     return false;
-  },
-  // this is needed to get `pinned` from the item template
-  positions() {
-    const tag = ReactionProduct.getTag();
-    return this.positions && this.positions[tag] || {};
   }
 });
 
