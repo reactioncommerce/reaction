@@ -6,6 +6,7 @@ machine:
 
 checkout:
   post:
+    - rm -rf `git rev-parse --show-toplevel`/.git/modules
     - git submodule sync
     - git submodule update --init --recursive
 
