@@ -2,7 +2,10 @@ import React, { Component, PropTypes } from "react";
 
 class ProductGridItems extends Component {
   static propTypes = {
+    additionalMedia: PropTypes.func,
+    isMediumWeight: PropTypes.func,
     isSelected: PropTypes.func,
+    media: PropTypes.func,
     pdpPath: PropTypes.func,
     positions: PropTypes.func,
     product: PropTypes.object,
@@ -25,6 +28,32 @@ class ProductGridItems extends Component {
     }
   }
 
+  renderMedia() {
+    if (this.props.media() === false) {
+      return (
+        <span className="product-image" style={{ backgroundImage: "url('/resources/placeholder.gif')" }} />
+      );
+    }
+    return (
+      <span className="product-image" style={{ backgroundImage: `url(${this.props.media().url({ store: "large" })})` }}/>
+    );
+  }
+
+  renderAdditionalMedia() {
+    if (this.props.additionalMedia() !== false) {
+      if (this.props.isMediumWeight()) {
+        return (
+          <div className={`product-additional-images ${this.renderVisible()}`}>
+            {this.props.additionalMedia().map((media) => {
+              <span className="product-image" style={{ backgroundImage: `url(${media.url({ store: "medium" })})` }} />;
+            })}
+            {this.renderOverlay()}
+          </div>
+        );
+      }
+    }
+  }
+
   render() {
     return (
       <div>
@@ -42,26 +71,12 @@ class ProductGridItems extends Component {
             data-event-label="grid product click"
             data-event-value={this.props.product._id}
           >
-
             <div className={`product-primary-images ${this.renderVisible()}`}>
-
-                <span className="product-image" />
-
-                <span className="product-image"  />
-
-
-                {this.renderOverlay()}
-
+              {this.renderMedia()}
+              {this.renderOverlay()}
             </div>
 
-            <div className={`product-additional-images ${this.renderVisible()}`}>
-
-                <span className="product-image" />
-
-
-                {this.renderOverlay()}
-
-            </div>
+            {this.renderAdditionalMedia()}
           </a>
         </li>
       </div>

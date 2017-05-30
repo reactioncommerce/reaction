@@ -4,6 +4,7 @@ import { Session } from "meteor/session";
 import { composeWithTracker } from "/lib/api/compose";
 import { Reaction } from "/client/api";
 import { ReactionProduct } from "/lib/api";
+import { Media } from "/lib/collections";
 import ProductGridItems from "../components/productGridItems";
 
 class ProductGridItemsContainer extends Component {
@@ -18,6 +19,9 @@ class ProductGridItemsContainer extends Component {
     this.positions = this.positions.bind(this);
     this.weightClass = this.weightClass.bind(this);
     this.isSelected = this.isSelected.bind(this);
+    this.productMedia = this.productMedia.bind(this);
+    this.additionalProductMedia = this.additionalProductMedia.bind(this);
+    this.isMediumWeight = this.isMediumWeight.bind(this);
   }
 
   productPath = () => {
@@ -63,6 +67,36 @@ class ProductGridItemsContainer extends Component {
     return false;
   }
 
+  productMedia = () => {
+    const media = Media.findOne({
+      "metadata.productId": this.props.product._id,
+      "metadata.toGrid": 1
+    }, {
+      sort: { "metadata.priority": 1, "uploadedAt": 1 }
+    });
+
+    return media instanceof FS.File ? media : false;
+  }
+
+  additionalProductMedia = () => {
+    const mediaArray = Media.find({
+      "metadata.productId": this.props.product._id,
+      "metadata.priority": {
+        $gt: 0
+      },
+      "metadata.toGrid": 1
+    }, { limit: 3 });
+
+    return mediaArray.count() > 1 ? mediaArray : false;
+  }
+
+  isMediumWeight = () => {
+    const positions = this.positions();
+    const weight = positions.weight || 0;
+
+    return weight === 1;
+  }
+
   render() {
     return (
       <ProductGridItems
@@ -71,6 +105,9 @@ class ProductGridItemsContainer extends Component {
         positions={this.positions}
         weightClass={this.weightClass}
         isSelected={this.isSelected}
+        media={this.productMedia}
+        additionalMedia={this.additionalProductMedia}
+        isMediumWeight={this.isMediumWeight}
       />
     );
   }

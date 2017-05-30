@@ -7,7 +7,6 @@ import { $ } from "meteor/jquery";
 import { Reaction } from "/client/api";
 import Logger from "/client/modules/logger";
 import { ReactionProduct } from "/lib/api";
-import { Media } from "/lib/collections";
 import { isRevisionControlEnabled } from "/imports/plugins/core/revisions/lib/api";
 import ProductGridItemsContainer from "/imports/plugins/included/product-variant/client/containers/productGridItemsContainer";
 
@@ -77,38 +76,6 @@ Template.productGridItems.helpers({
         }
       }
     };
-  },
-  media: function () {
-    const media = Media.findOne({
-      "metadata.productId": this._id,
-      "metadata.toGrid": 1
-    }, {
-      sort: { "metadata.priority": 1, "uploadedAt": 1 }
-    });
-
-    return media instanceof FS.File ? media : false;
-  },
-  additionalMedia: function () {
-    const mediaArray = Media.find({
-      "metadata.productId": this._id,
-      "metadata.priority": {
-        $gt: 0
-      },
-      "metadata.toGrid": 1
-    }, { limit: 3 });
-
-    if (mediaArray.count() > 1) {
-      return mediaArray;
-    }
-
-    return false;
-  },
-  isMediumWeight: function () {
-    const tag = ReactionProduct.getTag();
-    const positions = this.positions && this.positions[tag] || {};
-    const weight = positions.weight || 0;
-
-    return weight === 1;
   },
   isLargeWeight: function () {
     const tag = ReactionProduct.getTag();
