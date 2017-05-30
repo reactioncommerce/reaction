@@ -121,6 +121,7 @@ class TagGroupBody extends Component {
             onTagSave={this.handleTagSave}
             onTagSelect={this.onTagSelect}
             onTagUpdate={this.handleTagUpdate}
+            onTagClick={this.props.onTagClick}
           />
         );
       });
@@ -159,6 +160,7 @@ class TagGroupBody extends Component {
 TagGroupBody.propTypes = {
   editable: PropTypes.bool,
   onNewTagSave: PropTypes.func,
+  onTagClick: PropTypes.func,
   onTagRemove: PropTypes.func,
   onTagSort: PropTypes.func,
   onUpdateTag: PropTypes.func,

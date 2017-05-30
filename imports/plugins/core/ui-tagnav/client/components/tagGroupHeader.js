@@ -47,6 +47,7 @@ class TagGroupHeader extends Component {
           onTagSave={this.handleTagSave}
           onTagInputBlur={this.handleTagSave}
           onTagUpdate={this.handleTagUpdate}
+          onTagClick={this.props.onTagClick}
         />
       </div>
     );
@@ -55,6 +56,7 @@ class TagGroupHeader extends Component {
 
 TagGroupHeader.propTypes = {
   editable: PropTypes.bool,
+  onTagClick: PropTypes.func,
   onTagRemove: PropTypes.func,
   onUpdateTag: PropTypes.func,
   parentTag: PropTypes.object,

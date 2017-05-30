@@ -100,6 +100,7 @@ class TagNavContainer extends Component {
 
   componentDidMount() {
     window.addEventListener("resize", this.onWindowResize);
+    this.onWindowResize();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -295,6 +296,25 @@ class TagNavContainer extends Component {
   }
 
   handleTagClick = (event, tag) => {
+    if (TagNavHelpers.isMobile()) {
+      const tagId = tag._id;
+      const tags = this.props.tagsAsArray;
+      const selectedTag = this.state.selectedTag;
+      const hasSubTags = TagNavHelpers.hasSubTags(tagId, tags);
+
+      if (hasSubTags === false) {
+        // click close button to make navbar left disappear
+        this.props.closeNavbar();
+      } else {
+        event.preventDefault();
+      }
+
+      if (selectedTag && selectedTag._id === tagId) {
+        this.setState({ selectedTag: null });
+      } else if (hasSubTags) {
+        this.setState({ selectedTag: TagNavHelpers.tagById(tagId, tags) });
+      }
+    }
     Router.go("tag", { slug: tag.slug });
   }
 
