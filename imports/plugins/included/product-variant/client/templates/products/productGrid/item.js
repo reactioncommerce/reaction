@@ -9,7 +9,7 @@ import Logger from "/client/modules/logger";
 import { ReactionProduct } from "/lib/api";
 import { Media } from "/lib/collections";
 import { isRevisionControlEnabled } from "/imports/plugins/core/revisions/lib/api";
-
+import ProductGridItemsContainer from "/imports/plugins/included/product-variant/client/containers/productGridItemsContainer";
 
 Template.productGridItems.onRendered(function () {
   $(".page > main").on("click", function (event) {
@@ -48,6 +48,10 @@ Template.productGridItems.onDestroyed(function () {
  */
 
 Template.productGridItems.helpers({
+  component() {
+    return ProductGridItemsContainer;
+  },
+
   pdpPath() {
     const instance = Template.instance();
     const product = instance.data;
