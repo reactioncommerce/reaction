@@ -6,6 +6,7 @@ machine:
 
 checkout:
   post:
+    # This rm rf line removes the cached (incorrect) version of our .git that had old refs in it
     - rm -rf `git rev-parse --show-toplevel`/.git/modules
     - git submodule sync
     - git submodule update --init --recursive
