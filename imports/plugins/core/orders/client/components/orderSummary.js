@@ -1,4 +1,7 @@
 import React, { Component, PropTypes } from "react";
+import moment from "moment";
+import { ClickToCopy } from "/imports/plugins/core/ui/client/components";
+import { Badge } from "/imports/plugins/core/ui/client/components";
 
 class OrderSummary extends Component {
   static propTypes = {
@@ -10,28 +13,67 @@ class OrderSummary extends Component {
     tracking: PropTypes.func
   }
 
+  orderLink() {
+    const orderId = this.props.order._id;
+    return orderId;
+  }
+
+  badgeStatus() {
+    const orderStatus = this.props.order.workflow.status;
+
+    if (orderStatus === "new") {
+      return "info";
+    } else if (orderStatus === "coreOrderWorkflow/processing") {
+      return "success";
+    } else if (orderStatus === "coreOrderWorkflow/canceled") {
+      return "danger";
+    } else if (orderStatus === "coreOrderWorkflow/completed") {
+      return "primary";
+    }
+
+    return "default";
+  }
+
+  truncateId() {
+    const orderId = this.props.order._id;
+    const shortId = orderId.slice(-5);
+
+    return shortId;
+  }
+
   render() {
-    const { dateFormat, tracking, order, shipmentStatus, profileShippingAddress, printableLabels } = this.props;
+    const { dateFormat, tracking, order, profileShippingAddress, printableLabels } = this.props;
 
     return (
       <div>
         <div className="order-summary-form-group bg-info" style={{ lineHeight: 3, marginTop: -15, marginRight: -15, marginLeft: -15 }}>
-          <strong style={{ marginLeft: 15 }}>{profileShippingAddress.fullName}</strong> , {profileShippingAddress.country}
-          <div className="invoice-details" style={{ marginRight: 15 }}>
-            <strong>ID </strong>{order._id}
+          <strong style={{ marginLeft: 15 }}>{profileShippingAddress.fullName} </strong>&nbsp;{profileShippingAddress.city}, {profileShippingAddress.region}
+          <div className="invoice-details" style={{ marginRight: 15, position: "relative", cursor: "pointer" }}>
+            <strong>ID </strong>
+            <ClickToCopy
+              copyToClipboard={this.orderLink()}
+              displayText={this.truncateId()}
+              i18nKeyTooltip="admin.orderWorkflow.summary.copyOrderLink"
+              tooltip="Copy Order Link"
+            />
           </div>
         </div>
 
         <div className="roll-up-invoice-list">
           <div className="roll-up-content">
             <div style={{ marginBottom: 4 }}>
-              <span className={`badge badge-${shipmentStatus().status}`}>{shipmentStatus().label}</span>
+              <Badge
+                badgeSize="large"
+                i18nKeyLabel={`cartDrawer.${order.workflow.status}`}
+                label={order.workflow.status}
+                status={this.badgeStatus()}
+              />
             </div>
 
             <div className="order-summary-form-group">
               <strong data-i18n="order.created">Created</strong>
               <div className="invoice-details">
-                {dateFormat(order.createdAt, "MM/D/YYYY")}
+                {moment(order.createdAt).fromNow()} | {dateFormat(order.createdAt, "MM/D/YYYY")}
               </div>
             </div>
 
