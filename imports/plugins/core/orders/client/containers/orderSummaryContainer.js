@@ -4,9 +4,8 @@ import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { composeWithTracker } from "/lib/api/compose";
 import { Orders } from "/lib/collections";
-import { Card, CardHeader, CardBody, CardGroup } from "/imports/plugins/core/ui/client/components";
+import { Card, CardHeader, CardBody, CardGroup, Loading } from "/imports/plugins/core/ui/client/components";
 import { i18next } from "/client/api";
-import { Loading } from "/imports/plugins/core/ui/client/components";
 import OrderSummary from "../components/orderSummary";
 
 class OrderSummaryContainer extends Component {
