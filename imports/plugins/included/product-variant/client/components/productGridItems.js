@@ -1,4 +1,7 @@
 import React, { Component, PropTypes } from "react";
+import GridItemNoticeContainer from "../containers/gridItemNoticeContainer";
+import GridItemControlsContainer from "../containers/gridItemControlsContainer";
+import GridItemContentContainer from "../containers/gridItemContentContainer";
 
 class ProductGridItems extends Component {
   static propTypes = {
@@ -54,6 +57,20 @@ class ProductGridItems extends Component {
     }
   }
 
+  renderNotices() {
+    return (
+      <div className="grid-alerts">
+        <GridItemNoticeContainer />
+        <GridItemControlsContainer />
+      </div>
+
+    );
+  }
+
+  renderGridContent() {
+    return <GridItemContentContainer />;
+  }
+
   render() {
     return (
       <div>
@@ -78,6 +95,9 @@ class ProductGridItems extends Component {
 
             {this.renderAdditionalMedia()}
           </a>
+
+          {this.renderNotices()}
+          {this.renderGridContent()}
         </li>
       </div>
     );
