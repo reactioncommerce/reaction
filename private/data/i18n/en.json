@@ -298,7 +298,12 @@
       "cartDrawer": {
         "empty": "We're sad. Your cart is empty.",
         "keepShopping": "Keep on shopping",
-        "checkout": "Checkout now"
+        "checkout": "Checkout now",
+        "new": "New",
+        "coreOrderWorkflow/created": "Created",
+        "coreOrderWorkflow/processing": "Processing",
+        "coreOrderWorkflow/completed": "Completed",
+        "coreOrderWorkflow/canceled": "Canceled"
       },
       "cartSubTotals": {
         "discount": "Discount",
@@ -382,6 +387,7 @@
       "orderWorkflow": {
         "orderDetails": "Order Details",
         "invoice": "Invoice",
+        "lineItems": "Line Items",
         "shipmentTracking": "Shipment"
       },
       "cartCheckout": {
