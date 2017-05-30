@@ -90,6 +90,30 @@ describe("Merge Cart function ", function () {
     expect(cart.items.length).to.equal(2);
   });
 
+  it("should increase product quantity if anonymous cart items exists in user's cart before merge", function () {
+    sandbox.stub(Reaction, "getShopId", () => shop._id);
+    let cart = Factory.create("cart"); // registered user cart
+    let anonymousCart = Object.assign({}, cart, { userId: Factory.get("anonymous") });
+    let cartCount = Collections.Cart.find().count();
+    expect(cartCount).to.equal(2);
+    spyOnMethod("mergeCart", cart.userId);
+    const cartRemoveSpy = sandbox.spy(Collections.Cart, "remove");
+    Collections.Cart.update({}, {
+      $set: {
+        sessionId: sessionId
+      }
+    });
+    const mergeResult = Meteor.call("cart/mergeCart", cart._id, sessionId);
+    expect(mergeResult).to.be.ok;
+    anonymousCart = Collections.Cart.findOne(anonymousCart._id);
+    cart = Collections.Cart.findOne(cart._id);
+    cartCount = Collections.Cart.find().count();
+    expect(cartCount).to.equal(1);
+    expect(cartRemoveSpy).to.have.been.called;
+    expect(anonymousCart).to.be.undefined;
+    expect(cart.items[0].quantity).to.equal(2);
+  });
+
   it("should merge only into registered user cart", function (done) {
     sandbox.stub(Reaction, "getShopId", function () {
       return shop._id;
