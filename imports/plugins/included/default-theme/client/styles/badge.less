@@ -1,0 +1,365 @@
+// All Badges
+.rui.badge, .badge {
+  box-shadow: none;
+  font-weight: 600;
+  border-width: 1px;
+}
+
+
+// Badge Sizes
+.rui.badge-large {
+  font-size: 14px;
+  padding: 10px;
+  border-radius: 2em;
+}
+
+
+// Badge Colors
+
+.rui.badge-cta {
+  background: @brand-cta;
+}
+
+.rui.badge-danger {
+  background: @brand-danger;
+}
+
+.rui.badge-default {
+  background: @brand-default;
+}
+
+.rui.badge-info {
+  background-color: @brand-info;
+}
+
+.rui.badge-primary {
+  background: @brand-primary-dark;
+}
+
+.rui.badge-success {
+  background-color: @brand-success;
+}
+
+.rui.badge-warning {
+  background-color: @brand-warning;
+}
+
+
+
+
+
+
+
+
+
+
+//Not yet used
+
+.rui.badge-low-inv-warning {
+  .label-variant(@label-warning-bg);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Badge Colors
+// Contextual variations of badges
+// Bootstrap 3.0 removed contexts for badges, we re-introduce them, based on what is done for labels
+*/
+// Existing badges
+.badge-default {
+  .label-variant(@label-default-bg);
+}
+
+.badge-primary {
+  .label-variant(@label-primary-bg);
+}
+
+.badge-success {
+  .label-variant(@label-success-bg);
+}
+
+.badge-info {
+  .label-variant(@label-info-bg);
+}
+
+.badge-warning {
+  .label-variant(@label-warning-bg);
+}
+
+.badge-danger {
+  .label-variant(@label-danger-bg);
+}
+
+.badge-low-inv-warning {
+  .label-variant(@label-warning-bg);
+}
+
+
+
+
+
+
+
+
+
+.rui.badge-cta {
+  color: @btn-cta-color;
+  background-color: @btn-cta-bg;
+  border-color: @btn-cta-border;
+}
+
+
+//
+// // Icon Button
+// .rui.badge.icon-only {
+//   border: none;
+//   font-size: 10px;
+//   padding: 0;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   border-radius: @btn-icon-size / 2;
+//   width: @btn-icon-only-size;
+//   height: @btn-icon-only-size;
+//   color: @btn-icon-only-default-color;
+//   background-color: @btn-icon-only-default-bg;
+//   box-shadow: none;
+// }
+//
+// .rui.badge.icon-only.solid {
+//   // background-color: @btn-icon-default-bg;
+// }
+//
+// .rui.badge.icon-only.outline {
+//   color: @btn-icon-only-default-color;
+//   background-color: @btn-icon-only-outline-bg;
+//   border-width: @btn-icon-only-border-width;
+//   border-radius: @btn-icon-only-border-radius;
+// }
+//
+// .rui.badge-default.icon-only {
+//   color: @btn-icon-only-default-color;
+//   background-color: @btn-icon-only-default-bg;
+//   border-color: @btn-icon-only-default-border;
+//
+//   &.outline {
+//     color: @btn-icon-only-default-color
+//   }
+// }
+//
+// .rui.badge-primary.icon-only {
+//   color: @btn-icon-only-primary-color;
+//   background-color: @btn-icon-only-primary-bg;
+//   border-color: @btn-icon-only-primary-border;
+//
+//   &.outline {
+//     color: @btn-icon-only-primary-bg;
+//   }
+// }
+//
+// .rui.badge-cta.icon-only {
+//   color: @btn-icon-only-cta-color;
+//   background-color: @btn-icon-only-cta-bg;
+//   border-color: @btn-icon-only-cta-border;
+//
+//   &.outline {
+//     color: @btn-icon-only-cta-bg
+//   }
+// }
+//
+//
+// .rui.badge-success.icon-only {
+//   color: @btn-icon-only-success-color;
+//   background-color: @btn-icon-only-success-bg;
+//   border-color: @btn-icon-only-success-border;
+//
+//   &.outline {
+//     color: @btn-icon-only-success-bg
+//   }
+// }
+//
+// .rui.badge-info.icon-only {
+//   color: @btn-icon-only-info-color;
+//   background-color: @btn-icon-only-info-bg;
+//   border-color: @btn-icon-only-info-border;
+//
+//   &.outline {
+//     color: @btn-icon-only-info-bg
+//   }
+// }
+//
+// .rui.badge-warning.icon-only {
+//   color: @btn-icon-only-warning-color;
+//   background-color: @btn-icon-only-warning-bg;
+//   border-color: @btn-icon-only-warning-border;
+//
+//   &.outline {
+//     color: @btn-icon-only-warning-bg
+//   }
+// }
+//
+// .rui.badge-danger.icon-only {
+//   color: @btn-icon-only-danger-color;
+//   background-color: @btn-icon-only-danger-bg;
+//   border-color: @btn-icon-only-danger-border;
+//
+//   &.outline {
+//     color: @btn-icon-only-danger-bg
+//   }
+// }
+//
+
+/**
+ * Flat button
+ *          border   :   BG
+ * normal:  No border, transparent BG, only text
+ * hover:   No border, hover BG
+ * active:  No Border, activeBG
+ *
+ */
+.rui.badge.flat {
+  border: none;
+  background-color: transaprent;
+}
+
+.rui.badge.flat.badge-primary {
+  color: @brand-primary;
+}
+
+.rui.badge.flat:hover {
+
+}
+
+.rui.badge.flat {
+  border: none;
+  background-color: transaprent;
+}
+
+
+/**
+ * Solid button
+ *          border   :   BG
+ * normal:  border, transparent BG, only text
+ * hover:   border, hover BG
+ * active:  Border, activeBG
+ *
+ */
+.rui.badge.solid {
+  // no change
+  background-color: @btn-outline-success-color;
+
+}
+
+.rui.badge.outline {
+  border-width: @btn-outline-border-width;
+  border-style: solid;
+  border-radius: @btn-outline-border-radius;
+}
+
+.rui.badge-default.outline {
+  color: @btn-outline-default-color;
+  background-color: @btn-outline-default-bg;
+  border-color: @btn-outline-default-border;
+}
+
+.rui.badge-primary.outline {
+  color: @btn-outline-primary-color;
+  background-color: @btn-outline-primary-bg;
+  border-color: @btn-outline-primary-border;
+}
+
+.rui.badge-success.outline {
+  color: @btn-outline-success-color;
+  background-color: @btn-outline-success-bg;
+  border-color: @btn-outline-success-border;
+}
+
+.rui.badge-info.outline {
+  color: @btn-outline-info-color;
+  background-color: @btn-outline-info-bg;
+  border-color: @btn-outline-info-border;
+}
+
+.rui.badge-warning.outline {
+  color: @btn-outline-warning-color;
+  background-color: @btn-outline-warning-bg;
+  border-color: @btn-outline-warning-border;
+}
+
+.rui.badge-danger.outline {
+  color: @btn-outline-danger-color;
+  background-color: @btn-outline-danger-bg;
+  border-color: @btn-outline-danger-border;
+}
+
+.rui.badge-cta.outline {
+  color: @btn-outline-cta-color;
+  background-color: @btn-outline-cta-bg;
+  border-color: @btn-outline-cta-border;
+}
+
+
+
+
+// Flat buttons
+.rui.badge.flat {
+  border-width: @btn-flat-border-width;
+  border-style: solid;
+  border-radius: @btn-flat-border-radius;
+}
+
+.rui.badge-default.flat {
+  color: @btn-flat-default-color;
+  background-color: @btn-flat-default-bg;
+  border-color: @btn-flat-default-border;
+}
+
+.rui.badge-primary.flat {
+  color: @btn-flat-primary-color;
+  background-color: @btn-flat-primary-bg;
+  border-color: @btn-flat-primary-border;
+}
+
+.rui.badge-success.flat {
+  color: @btn-flat-success-color;
+  background-color: @btn-flat-success-bg;
+  border-color: @btn-flat-success-border;
+}
+
+.rui.badge-info.flat {
+  color: @btn-flat-info-color;
+  background-color: @btn-flat-info-bg;
+  border-color: @btn-flat-info-border;
+}
+
+.rui.badge-warning.flat {
+  color: @btn-flat-warning-color;
+  background-color: @btn-flat-warning-bg;
+  border-color: @btn-flat-warning-border;
+}
+
+.rui.badge-danger.flat {
+  color: @btn-flat-danger-color;
+  background-color: @btn-flat-danger-bg;
+  border-color: @btn-flat-danger-border;
+}
+
+.rui.badge-cta.flat {
+  color: @btn-flat-cta-color;
+  background-color: @btn-flat-cta-bg;
+  border-color: @btn-flat-cta-border;
+}
