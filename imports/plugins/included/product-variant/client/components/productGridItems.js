@@ -73,36 +73,33 @@ class ProductGridItems extends Component {
 
   render() {
     return (
-      <div>
-        <li
-          className={`product-grid-item ${this.renderPinned()} ${this.props.weightClass()} ${this.props.isSelected()}`}
-          data-id={this.props.product._id}
-          id={this.props.product._id}
+      <li
+        className={`product-grid-item ${this.renderPinned()} ${this.props.weightClass()} ${this.props.isSelected()}`}
+        data-id={this.props.product._id}
+        id={this.props.product._id}
+      >
+        <span className="product-grid-item-alerts" />
+
+        <a className="product-grid-item-images"
+          href={this.props.pdpPath()}
+          data-event-category="grid"
+          data-event-action="productClick"
+          data-event-label="grid product click"
+          data-event-value={this.props.product._id}
         >
-          <span className="product-grid-item-alerts" />
+          <div className={`product-primary-images ${this.renderVisible()}`}>
+            {this.renderMedia()}
+            {this.renderOverlay()}
+          </div>
 
-          <a className="product-grid-item-images"
-            href={this.props.pdpPath()}
-            data-event-category="grid"
-            data-event-action="productClick"
-            data-event-label="grid product click"
-            data-event-value={this.props.product._id}
-          >
-            <div className={`product-primary-images ${this.renderVisible()}`}>
-              {this.renderMedia()}
-              {this.renderOverlay()}
-            </div>
+          {this.renderAdditionalMedia()}
+        </a>
 
-            {this.renderAdditionalMedia()}
-          </a>
-
-          {this.renderNotices()}
-          {this.renderGridContent()}
-        </li>
-      </div>
+        {this.renderNotices()}
+        {this.renderGridContent()}
+      </li>
     );
   }
-
 }
 
 export default ProductGridItems;
