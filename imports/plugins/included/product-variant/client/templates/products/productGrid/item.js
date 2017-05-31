@@ -7,7 +7,6 @@ import { $ } from "meteor/jquery";
 import { Reaction } from "/client/api";
 import Logger from "/client/modules/logger";
 import { ReactionProduct } from "/lib/api";
-import { isRevisionControlEnabled } from "/imports/plugins/core/revisions/lib/api";
 import ProductGridItemsContainer from "/imports/plugins/included/product-variant/client/containers/productGridItemsContainer";
 
 Template.productGridItems.onRendered(function () {
@@ -52,29 +51,6 @@ Template.productGridItems.helpers({
     return {
       ...currentData,
       component: ProductGridItemsContainer
-    };
-  },
-
-  controlProps() {
-    const instance = Template.instance();
-
-    return {
-      product: instance.data,
-      onEditButtonClick() {
-        const data = instance.data;
-
-        const $checkbox = instance.$(`input[type=checkbox][value=${data._id}]`);
-
-        Session.set("productGrid/selectedProducts", []);
-        $checkbox.prop("checked", true).trigger("change");
-      },
-      onPublishButtonClick() {
-        if (isRevisionControlEnabled()) {
-          Meteor.call("products/updateProductField", instance.data._id, "isVisible", !instance.data.isVisible);
-        } else {
-          ReactionProduct.publishProduct(instance.data);
-        }
-      }
     };
   },
   isLargeWeight: function () {

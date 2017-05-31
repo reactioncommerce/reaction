@@ -17,8 +17,6 @@ import "./templates/products/productDetail/social.js";
 
 import "./templates/products/productGrid/content.html";
 import "./templates/products/productGrid/content.js";
-import "./templates/products/productGrid/controls.html";
-import "./templates/products/productGrid/controls.js";
 import "./templates/products/productGrid/item.html";
 import "./templates/products/productGrid/item.js";
 import "./templates/products/productGrid/productGrid.html";
