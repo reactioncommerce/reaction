@@ -61,7 +61,7 @@ class ProductGridItems extends Component {
   renderNotices() {
     return (
       <div className="grid-alerts">
-        <GridItemNoticeContainer />
+        <GridItemNoticeContainer product={this.props.product} />
         <GridItemControlsContainer />
       </div>
 

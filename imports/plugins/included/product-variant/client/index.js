@@ -21,8 +21,6 @@ import "./templates/products/productGrid/controls.html";
 import "./templates/products/productGrid/controls.js";
 import "./templates/products/productGrid/item.html";
 import "./templates/products/productGrid/item.js";
-import "./templates/products/productGrid/notice.html";
-import "./templates/products/productGrid/notice.js";
 import "./templates/products/productGrid/productGrid.html";
 import "./templates/products/productGrid/productGrid.js";
 import "./templates/products/productGrid/publishControls.html";
