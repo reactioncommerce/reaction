@@ -362,12 +362,10 @@ class TagNavContainer extends Component {
           navbarAnchor={this.navbarAnchor}
           navbarVisibility={this.navbarVisibility}
           tags={this.tags}
-          isTagNav={true}
           canEdit={this.canEdit}
           newTag={this.state.newTag}
           selectedTag={this.state.selectedTag}
           navButtonStyles={navButtonStyles}
-          enableNewTagForm={true}
           editable={this.state.editable}
           hasDropdownClassName={this.hasDropdownClassName}
           navbarSelectedClassName={this.navbarSelectedClassName}

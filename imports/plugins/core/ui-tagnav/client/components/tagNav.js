@@ -72,6 +72,8 @@ class TagNav extends Component {
           <DragDropProvider>
             <TagList
               {...this.props}
+              isTagNav={true}
+              draggable={true}
               enableNewTagForm={true}
             >
               <div className="dropdown-container">
@@ -88,7 +90,7 @@ class TagNav extends Component {
               </div>
             </TagList>
           </DragDropProvider>
-          {this.renderEditButton()}
+          {this.props.canEdit && this.renderEditButton()}
           </div>
       </div>
     );
@@ -96,6 +98,7 @@ class TagNav extends Component {
 }
 
 TagNav.propTypes = {
+  canEdit: PropTypes.bool,
   children: PropTypes.node,
   closeNavbar: PropTypes.func,
   editable: PropTypes.bool,

@@ -94,6 +94,7 @@ class Tags extends Component {
               key={index}
               tag={tag}
               onMove={this.props.onMoveTag}
+              draggable={this.props.draggable}
               onTagInputBlur={this.handleTagSave}
               onTagMouseOut={this.handleTagMouseOut}
               onTagMouseOver={this.handleTagMouseOver}
