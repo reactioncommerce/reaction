@@ -1,11 +1,12 @@
 import React, { Component, PropTypes } from "react";
+import { formatPriceString } from "/client/api";
 import GridItemNoticeContainer from "../containers/gridItemNoticeContainer";
 import GridItemControlsContainer from "../containers/gridItemControlsContainer";
-import GridItemContentContainer from "../containers/gridItemContentContainer";
 
 class ProductGridItems extends Component {
   static propTypes = {
     additionalMedia: PropTypes.func,
+    displayPrice: PropTypes.func,
     isMediumWeight: PropTypes.func,
     isSelected: PropTypes.func,
     media: PropTypes.func,
@@ -68,7 +69,22 @@ class ProductGridItems extends Component {
   }
 
   renderGridContent() {
-    return <GridItemContentContainer />;
+    return (
+      <div className="grid-content">
+        <a
+          href={this.props.pdpPath()}
+          data-event-category="grid"
+          data-event-action="product-click"
+          data-event-label="grid product click"
+          data-event-value={this.props.product._id}
+        >
+          <div className="overlay">
+            <div className="overlay-title">{this.props.product.title}</div>
+            <div className="currency-symbol">{formatPriceString(this.props.displayPrice())}</div>
+          </div>
+        </a>
+      </div>
+    );
   }
 
   render() {

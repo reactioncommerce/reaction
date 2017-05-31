@@ -22,6 +22,7 @@ class ProductGridItemsContainer extends Component {
     this.productMedia = this.productMedia.bind(this);
     this.additionalProductMedia = this.additionalProductMedia.bind(this);
     this.isMediumWeight = this.isMediumWeight.bind(this);
+    this.displayPrice = this.displayPrice.bind(this);
   }
 
   productPath = () => {
@@ -97,6 +98,12 @@ class ProductGridItemsContainer extends Component {
     return weight === 1;
   }
 
+  displayPrice = () => {
+    if (this.props.product.price && this.props.product.price.range) {
+      return this.props.product.price.range;
+    }
+  }
+
   render() {
     return (
       <ProductGridItems
@@ -108,6 +115,7 @@ class ProductGridItemsContainer extends Component {
         media={this.productMedia}
         additionalMedia={this.additionalProductMedia}
         isMediumWeight={this.isMediumWeight}
+        displayPrice={this.displayPrice}
       />
     );
   }
