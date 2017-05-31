@@ -1,21 +1,45 @@
-import React, { Component } from "react";
+import React, { Component, PropTypes } from "react";
 import { composeWithTracker } from "/lib/api/compose";
+import { Reaction } from "/client/api";
+import GridItemControls from "../components/gridItemControls";
 
 class GridItemControlsContainer extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
+  static propTypes = {
+    product: PropTypes.object
+  }
+
+  constructor() {
+    super();
+
+    this.hasCreateProductPermission = this.hasCreateProductPermission.bind(this);
+    this.hasChanges = this.hasChanges.bind(this);
+  }
+
+  hasCreateProductPermission = () => {
+    return Reaction.hasPermission("createProduct");
+  }
+
+  hasChanges =() => {
+    return this.props.product.__draft ? true : false;
   }
 
   render() {
     return (
-      <div>Hey</div>
+      <GridItemControls
+        product={this.props.product}
+        hasCreateProductPermission={this.hasCreateProductPermission}
+        hasChanges={this.hasChanges}
+      />
     );
   }
 }
 
 function composer(props, onData) {
-  onData(null, {});
+  const product = props.product;
+
+  onData(null, {
+    product
+  });
 }
 
 export default composeWithTracker(composer)(GridItemControlsContainer);
