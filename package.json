@@ -101,7 +101,8 @@
     "twilio": "^2.11.1",
     "url": "^0.11.0",
     "velocity-animate": "^1.5.0",
-    "velocity-react": "^1.2.1"
+    "velocity-react": "^1.2.1",
+    "snyk": "^1.30.1"
   },
   "devDependencies": {
     "babel-eslint": "^7.2.1",
@@ -131,6 +132,9 @@
     "open-report": "cd && allure report open",
     "del-report": "rm -rf ~/allure-report && rm -rf allure-results",
     "test-local": "wdio tests/runner/local.conf.js",
-    "test-browserstack": "wdio tests/runner/browserstack.conf.js; kill $(ps aux | grep '[b]rowserstack' | awk '{print $2}')"
-  }
+    "test-browserstack": "wdio tests/runner/browserstack.conf.js; kill $(ps aux | grep '[b]rowserstack' | awk '{print $2}')",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
+  },
+  "snyk": true
 }
