@@ -4,10 +4,11 @@ import { IconButton } from "/imports/plugins/core/ui/client/components";
 class GridItemControls extends Component {
 
   static propTypes = {
+    checked: PropTypes.func,
     hasChanges: PropTypes.func,
     hasCreateProductPermission: PropTypes.func,
     product: PropTypes.object
-  };
+  }
 
   renderArchived() {
     if (this.props.product.isDeleted) {
@@ -43,6 +44,8 @@ class GridItemControls extends Component {
               name="selectProduct"
               value={this.props.product._id}
               id={`select-product-${this.props.product._id}`}
+              checked={this.props.checked()}
+              readOnly
             />
           </label>
 
