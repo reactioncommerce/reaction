@@ -65,7 +65,7 @@ Template.coreOrderShippingInvoice.helpers({
   isRefunding() {
     const instance = Template.instance();
     if (instance.state.get("isRefunding")) {
-      instance.$("#btn-refund-payment").text("Refunding");
+      instance.$("#btn-refund-payment").text(i18next.t("order.refunding"));
       return true;
     }
     return false;
@@ -91,9 +91,9 @@ Template.coreOrderShippingInvoice.helpers({
           name: "Approve",
           i18nKeyLabel: "order.approveInvoice",
           active: true,
-          status: "info",
+          status: "success",
           eventAction: "approveInvoice",
-          bgColor: "bg-info",
+          bgColor: "bg-success",
           buttonType: "submit"
         }, {
           name: "Cancel",
@@ -288,11 +288,14 @@ Template.coreOrderShippingInvoice.events({
       }, (isConfirm) => {
         if (isConfirm) {
           state.set("isRefunding", true);
-          Meteor.call("orders/refunds/create", order._id, paymentMethod, refund, (error) => {
+          Meteor.call("orders/refunds/create", order._id, paymentMethod, refund, (error, result) => {
             if (error) {
               Alerts.alert(error.reason);
             }
-            Alerts.toast(i18next.t("mail.alerts.emailSent"), "success");
+            if (result) {
+              Alerts.toast(i18next.t("mail.alerts.emailSent"), "success");
+            }
+            $("#btn-refund-payment").text(i18next.t("order.applyRefund"));
             state.set("field-refund", 0);
             state.set("isRefunding", false);
           });
@@ -379,7 +382,7 @@ Template.coreOrderShippingInvoice.helpers({
     return {
       component: NumericInput,
       numericType: "currency",
-      value: 0,
+      value: state.get("field-refund") || 0,
       maxValue: adjustedTotal,
       format: state.get("currency"),
       classNames: {
@@ -434,7 +437,7 @@ Template.coreOrderShippingInvoice.helpers({
     const order = instance.state.get("order");
     const status = orderCreditMethod(order).paymentMethod.status;
 
-    if (status === "approved" || status === "completed") {
+    if (status === "approved" || status === "completed" || status === "refunded") {
       return false;
     }
     return true;
@@ -549,12 +552,12 @@ Template.coreOrderShippingInvoice.helpers({
       provides: "paymentMethod",
       enabled: true
     });
-    for (app of apps) {
+    for (const app of apps) {
       if (app.enabled === true) enabledPaymentsArr.push(app);
     }
     let discount = false;
 
-    for (enabled of enabledPaymentsArr) {
+    for (const enabled of enabledPaymentsArr) {
       if (enabled.packageName === "discount-codes") {
         discount = true;
         break;

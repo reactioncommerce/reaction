@@ -10,14 +10,29 @@
           "socialDescription": "Configurarea canalelor sociale"
         },
         "settings": {
-          "facebook": "Facebook",
-          "twitter": "Twitter",
-          "pinterest": "pinterest",
-          "googleplus": "Google+",
-          "appId": "Id-ul aplicației",
-          "username": "Nume de utilizator",
-          "appSecret": "aplicaţia Secret",
-          "profilePage": "profilul Pagina",
+          "public": {
+            "apps": {
+              "facebook": {
+                "title": "Facebook",
+                "appId": "ID-ul aplicației",
+                "appSecret": "aplicaţia Secret",
+                "profilePage": "profilul Pagina"
+              },
+              "googleplus": {
+                "title": "Google+",
+                "profilePage": "profilul Pagina"
+              },
+              "pinterest": {
+                "title": "Pinterest",
+                "profilePage": "profilul Pagina"
+              },
+              "twitter": {
+                "title": "Twitter",
+                "username": "Nume de utilizator",
+                "profilePage": "profilul Pagina"
+              }
+            }
+          },
           "socialSettingsLabel": "Setări sociale",
           "socialSettingsSaved": "Setările sociale salvate"
         }

@@ -3,6 +3,7 @@ import { Meteor } from "meteor/meteor";
 import { Tracker } from "meteor/tracker";
 import { AnalyticsEvents, Packages } from "/lib/collections";
 import { Reaction, i18next, Logger } from "/client/api";
+import Alerts from "/imports/plugins/core/layout/client/templates/layout/alerts/inlineAlerts";
 
 // Create a queue, but don't obliterate an existing one!
 analytics = window.analytics = window.analytics || [];

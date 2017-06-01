@@ -73,7 +73,7 @@ Meteor.methods({
     try {
       Collections.Shops.insert(shop);
     } catch (error) {
-      throw new Meteor.Error("insert-failed", "Failed to create new shop");
+      return Logger.error(error, "Failed to shop/createShop");
     }
 
     // we should have created new shop, or errored

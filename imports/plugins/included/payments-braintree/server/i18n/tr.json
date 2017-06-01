@@ -6,24 +6,24 @@
     "reaction-payments": {
       "admin": {
         "shortcut": {
-          "braintreeLabel": "braintree",
-          "braintreeTitle": "braintree"
+          "braintreeLabel": "Braintree",
+          "braintreeTitle": "Braintree"
         },
         "dashboard": {
-          "braintreeLabel": "braintree",
-          "braintreeTitle": "braintree",
-          "braintreeDescription": "braintree ödemeleri"
+          "braintreeLabel": "Braintree",
+          "braintreeTitle": "Braintree",
+          "braintreeDescription": "Braintree ödemeleri"
         },
         "paymentSettings": {
-          "braintreeLabel": "braintree",
-          "braintreeSettingsLabel": "braintree",
+          "braintreeLabel": "Braintree",
+          "braintreeSettingsLabel": "Braintree",
           "braintreeCredentials": "etkinleştirmek için kimlik bilgilerini ekleme"
         }
       },
       "order": {
         "paymentProvider": {
           "braintree": {
-            "braintreeSettlementDelay": "işlemler yerleşmiş kadar braintree iadesi izin vermez. Bu 24 saate kadar sürebilir. Lütfen daha sonra tekrar deneyiniz."
+            "braintreeSettlementDelay": "işlemler yerleşmiş kadar Braintree iadesi izin vermez. Bu 24 saate kadar sürebilir. Lütfen daha sonra tekrar deneyiniz."
           }
         }
       }

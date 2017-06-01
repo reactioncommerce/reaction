@@ -106,7 +106,7 @@ AutoForm.addHooks("stripe-payment-form", {
           });
 
           submitting = false;
-          paymentMethod = {
+          const paymentMethod = {
             processor: "Stripe",
             storedCard: storedCard,
             method: "credit",

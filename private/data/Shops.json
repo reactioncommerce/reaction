@@ -365,6 +365,11 @@
       "symbol": "¥",
       "scale": 0
     },
+    "KWD": {
+      "enabled": false,
+      "format": "%s%v",
+      "symbol": "ك"
+    },
     "KRW": {
       "enabled": false,
       "format": "%s%v",
@@ -419,6 +424,11 @@
       "symbol": "zł",
       "decimal": ","
     },
+    "QAR": {
+      "enabled": false,
+      "format": "%s%v",
+      "symbol": "﷼"
+    },
     "RUB": {
       "enabled": true,
       "format": "%v %s",
@@ -427,6 +437,11 @@
       "thousand": " ",
       "scale": 0,
       "where": "right"
+    },
+    "SAR": {
+      "enabled": false,
+      "format": "%s%v",
+      "symbol": "﷼"
     },
     "SEK": {
       "enabled": false,
@@ -453,6 +468,15 @@
       "format": "%s%v",
       "symbol": "₴",
       "decimal": ","
+    },
+    "VND": {
+      "enabled": false,
+      "format": "%v %s",
+      "symbol": "₫",
+      "decimal": ",",
+      "thousand": ".",
+      "scale": -2,
+      "where": "right"
     },
     "XAF": {
       "enabled": false,
@@ -3546,6 +3570,11 @@
       "symbol": "¥",
       "scale": 0
     },
+    "KWD": {
+      "enabled": false,
+      "format": "%s%v",
+      "symbol": "ك"
+    },
     "KRW": {
       "enabled": false,
       "format": "%s%v",
@@ -3600,6 +3629,11 @@
       "symbol": "zł",
       "decimal": ","
     },
+    "QAR": {
+      "enabled": false,
+      "format": "%s%v",
+      "symbol": "﷼"
+    },
     "RUB": {
       "enabled": false,
       "format": "%v %s",
@@ -3608,6 +3642,11 @@
       "thousand": " ",
       "scale": 0,
       "where": "right"
+    },
+    "SAR": {
+      "enabled": false,
+      "format": "%s%v",
+      "symbol": "﷼"
     },
     "SEK": {
       "enabled": false,
@@ -3634,6 +3673,15 @@
       "format": "%s%v",
       "symbol": "₴",
       "decimal": ","
+    },
+    "VND": {
+      "enabled": false,
+      "format": "%v %s",
+      "symbol": "₫",
+      "decimal": ",",
+      "thousand": ".",
+      "scale": -2,
+      "where": "right"
     },
     "XAF": {
       "enabled": false,
@@ -6341,6 +6389,7 @@
   "defaultVisitorRole": [
     "anonymous",
     "guest",
+    "account/verify",
     "product",
     "tag",
     "index",
@@ -6351,6 +6400,7 @@
     "account/profile",
     "guest",
     "product",
+    "account/verify",
     "tag",
     "index",
     "cart/checkout",

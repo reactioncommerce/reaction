@@ -14,14 +14,38 @@ function handleShowPackage(event, app) {
   Reaction.pushActionView(app);
 }
 
-function composer(props, onData) {
-  const settings = Reaction.Apps({ provides: "settings", enabled: true }) || [];
+/**
+ * handleShowDashboard - Open full dashbaord menu
+ * @return {undefined} No return value
+ */
+function handleShowDashboard() {
+  Reaction.showActionView({
+    i18nKeyTitle: "dashboard.coreTitle",
+    title: "Dashboard",
+    template: "dashboardPackages"
+  });
+}
 
-  const dashboard = Reaction.Apps({ provides: "dashboard", enabled: true })
+/**
+ * handleOpenShortcut - Push dashbaord & package into action view navigation stack
+ * @param  {SyntheticEvent} event Original event
+ * @param  {Object} app Package data
+ * @return {undefined} No return value
+ */
+function handleOpenShortcut(event, app) {
+  Reaction.hideActionViewDetail();
+  Reaction.showActionView(app);
+}
+
+function composer(props, onData) {
+  const audience = Roles.getRolesForUser(Meteor.userId(), Reaction.getShopId());
+  const settings = Reaction.Apps({ provides: "settings", enabled: true, audience }) || [];
+
+  const dashboard = Reaction.Apps({ provides: "dashboard", enabled: true, audience })
     .filter((d) => typeof Template[d.template] !== "undefined") || [];
 
   onData(null, {
-    // packages,
+    currentView: Reaction.getActionView(),
     groupedPackages: {
       actions: {
         title: "Actions",
@@ -36,7 +60,9 @@ function composer(props, onData) {
     },
 
     // Callbacks
-    handleShowPackage
+    handleShowPackage,
+    handleShowDashboard,
+    handleOpenShortcut
   });
 }
 

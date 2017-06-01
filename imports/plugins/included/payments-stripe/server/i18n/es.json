@@ -10,12 +10,12 @@
         },
         "dashboard": {
           "stripeLabel": "Stripe",
-          "stripeDescription": "pagos de la raya"
+          "stripeDescription": "pagos de la Stripe"
         },
         "paymentSettings": {
           "stripeLabel": "Stripe",
           "stripeSettingsLabel": "Stripe",
-          "stripeSettingsDescription": "No tener un ID de cliente de API de la raya?",
+          "stripeSettingsDescription": "No tener un ID de cliente de API de la Stripe?",
           "stripeSettingsGetItHere": "Consiguelo aqui"
         }
       }

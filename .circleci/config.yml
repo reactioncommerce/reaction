@@ -1,0 +1,54 @@
+version: 2
+
+jobs:
+  build:
+    working_directory: /home/reaction
+
+    docker:
+      - image: node:7
+
+    environment:
+      - METEOR_ALLOW_SUPERUSER: true
+
+    steps:
+      - setup_remote_docker
+      - checkout
+
+      # install OS dependencies
+      - restore_cache:
+          name: Restoring Meteor cache
+          key: meteor
+
+      - run: .circleci/install.sh
+
+      - save_cache:
+          name: Saving Meteor to cache
+          key: meteor
+          paths:
+            - ~/.meteor
+
+      # install app dependencies
+
+      - run: meteor npm install
+
+      # run tests
+      - restore_cache:
+          name: Restoring Meteor dev_bundle cache
+          key: dev_bundle
+
+      - run: npm test
+      - run: reaction test
+
+
+      - save_cache:
+          name: Saving Meteor dev_bundle to cache
+          key: dev_bundle
+          paths:
+            - /home/reaction/.meteor/local
+
+      - run: .circleci/build.sh
+
+      # deploy the build (if on a deployment branch)
+      - deploy:
+          name: Docker Image Deploment
+          command: .circleci/deploy.sh

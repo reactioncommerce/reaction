@@ -95,8 +95,6 @@
         "noProductsFound": "Nu s-au găsit produse.",
         "private": "Privat",
         "public": "Public",
-        "allOn": "Pe tot",
-        "allOff": "Toate oprite",
         "shortcut": {
           "addProductLabel": "Adăugare produs",
           "accountsLabel": "Conturi"
@@ -122,24 +120,12 @@
         "settingsfailed": "Actualizarea setărilor de căutare a eșuat"
       },
       "shopSettings": {
-        "general": "General",
-        "address": "Adresă",
-        "import": "Import",
         "localization": "Localizare",
         "options": "Opțiuni",
-        "availableOptions": "Opțiuni disponibile",
         "paymentMethods": "Metode de plata",
         "externalServices": "Servicii externe",
-        "shopGeneralSettingsSaved": "Setările generale ale magazinului au fost salvate.",
-        "shopGeneralSettingsFailed": "Actualizarea setărilor generale ale magazinului a eșuat.",
-        "shopAddressSettingsSaved": "Setările adresei magazinului au fost salvate.",
-        "shopAddressSettingsFailed": "Actualizarea setării adresei magazinului eșuat.",
-        "shopExternalServicesSettingsSaved": "Setările serviciilor externe ale magazinului au fost salvate.",
-        "shopExternalServicesSettingsFailed": "Setările serviciilor externe ale magazinului au eșuat.",
         "shopLocalizationSettingsSaved": "Actualizarea setărileor de localizare ale magazinului au fost salvate.",
         "shopLocalizationSettingsFailed": "Actualizarea setărilor de localizare ale magazinului au fost au eșuat.",
-        "shopOptionsSettingsSaved": "Opțiunile magazinului au fost salvate.",
-        "shopOptionsSettingsFailed": "Actualizarea opțiunilor magazinului au eșuat.",
         "shopPaymentMethodsSaved": "Setările modalități de plată au fost salvate.",
         "shopPaymentMethodsFailed": "Actualizarea setărilor modalități de plată au eșuat."
       },
@@ -329,16 +315,24 @@
       "order": {
         "created": "Creată",
         "reference": "Referinţă",
+        "cancelInvoice": "Anulează",
         "invoice": "Factură",
         "ordersNotFound": "Nu au fost găsite comenzi",
         "approveInvoice": "Aprobă",
+        "cancelOrderLabel": "Anulați comanda",
         "makeAdjustments": "Faceți modificări",
         "capturePayment": "Capturarea plății",
         "paymentCaptured": "Plată capturată",
         "capturedTotal": "Totalul capturat",
+        "canceledLabel": "Anulată",
         "refundAmount": "Rambursează suma",
+        "cancelOrder": "Doriți să anulați această comandă?",
         "applyRefundToThisOrder": "Aplică restituirea de {{currencySymbol}}{{refund}} la această comandă?",
+        "applyRefundDuringCancelOrder": "Aceasta va restitui suma totală a comenzii {{currencySymbol}}{{invoiceTotal}}",
+        "cancelOrderThenRestock": "Da, și restock",
+        "cancelOrderNoRestock": "Da, dar fără repopulare",
         "applyRefund": "Aplicati rambursarea",
+        "refunding": "Returnarea",
         "applyDiscount": "Aplicați o reducere",
         "adjustedTotal": "Totalul ajustat",
         "invalidDiscount": "Reducerea nu poate fi mai mare decât prețul total inițial",
@@ -362,7 +356,8 @@
           "completed": "Completă",
           "canceled": "Anulată",
           "refunded": "Rambursată"
-        }
+        },
+        "showMore": "Arată mai multe"
       },
       "orderShipping": {
         "shipTo": "Trimite spre",
@@ -464,12 +459,6 @@
         "keywords": "Cuvinte cheie",
         "keywordsPlaceholder": "Cuvinte cheie (meta keywords) pentru SEO",
         "language": "Limba de bază",
-        "languageTooltip": "Această limbă va fi utilizată în cazul în care limba dispozitivului nu a putut fi detectată",
-        "timezone": "Fus orar",
-        "timezoneOptions": "Alege fus orar",
-        "currency": "Moneda de bază",
-        "currencyTooltip": "Moneda implicită a magazinului",
-        "baseUOM": "Unitatea de bază a măsurii",
         "addressBook": {
           "company": "Companie",
           "companyPlaceholder": "Această organizație",
@@ -705,6 +694,12 @@
           "matchFailed": "potrivirea nu a reușit",
           "unknownError": "Eroare necunoscută"
         }
+      },
+      "loginServices": {
+        "appId": "ID-ul aplicației",
+        "secret": "Secret",
+        "clientId": "ID Client",
+        "consumerKey": "API-cheie"
       },
       "error": {
         "nameRequired": "Este necesar numele.",

@@ -26,6 +26,7 @@
         "processingError": "Có một vấn đề với thanh toán của bạn.",
         "completeYourOrder": "Hoàn thành đặt hàng của bạn",
         "noPaymentMethods": "Không có phương thức thanh toán được cấu hình.",
+        "contactAdmin": "Vui lòng liên hệ với quản trị viên kho.",
         "configureNow": "Cấu hình hiện nay.",
         "failedToPlaceOrder": "Không thể đặt hàng."
       }

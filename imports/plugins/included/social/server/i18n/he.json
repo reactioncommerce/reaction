@@ -5,9 +5,23 @@
     "reaction-social": {
       "admin": {
         "settings": {
-          "facebook": "Facebook",
-          "twitter": "Twitter",
-          "username": "שם משתמש"
+          "public": {
+            "apps": {
+              "facebook": {
+                "title": "Facebook"
+              },
+              "googleplus": {
+                "title": "Google+"
+              },
+              "pinterest": {
+                "title": "Pinterest"
+              },
+              "twitter": {
+                "title": "Twitter",
+                "username": "שם משתמש"
+              }
+            }
+          }
         }
       }
     }

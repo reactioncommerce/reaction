@@ -1,5 +1,6 @@
 import { LoginFormSharedHelpers } from "/client/modules/accounts/helpers";
 import { Template } from "meteor/templating";
+import { LoginFormValidation } from "/lib/api";
 
 /**
  * onCreated: Login form sign up view

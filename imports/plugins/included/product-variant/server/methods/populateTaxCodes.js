@@ -33,34 +33,6 @@ taxCodes.populateTaxCodes = function (shopId, code, providerName) {
   }
 };
 
-/*
- * taxes/getTaxCodes
- * @summary fetch tax codes from TaxCodes collection
- * @param {String} shopID - current shop's id
- * @param {String} provider - tax code provider
- * @return {Array} array of tax codes
- */
-taxCodes.fetchTaxCodes = function (shopId, provider) {
-  check(shopId, String);
-  check(provider, String);
-
-  const taxCodesArray = [];
-
-  const codes = TaxCodes.find({
-    shopId: shopId,
-    taxCodeProvider: provider
-  });
-
-  codes.forEach(function (code) {
-    taxCodesArray.push({
-      value: code.taxCode,
-      label: `${code.taxCode} | ${code.label}`
-    });
-  });
-  return taxCodesArray;
-};
-
 Meteor.methods({
-  "taxes/insertTaxCodes": taxCodes.populateTaxCodes,
-  "taxes/fetchTaxCodes": taxCodes.fetchTaxCodes
+  "taxes/insertTaxCodes": taxCodes.populateTaxCodes
 });

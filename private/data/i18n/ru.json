@@ -95,8 +95,6 @@
         "noProductsFound": "Товар не найден.",
         "private": "Частный",
         "public": "Общественного",
-        "allOn": "All On",
-        "allOff": "Все выключить",
         "shortcut": {
           "addProductLabel": "Добавить продукт",
           "accountsLabel": "Счета"
@@ -122,24 +120,12 @@
         "settingsfailed": "Не удалось обновить настройки поиска"
       },
       "shopSettings": {
-        "general": "Основные",
-        "address": "Адрес",
-        "import": "Импорт",
         "localization": "Локализация",
         "options": "Настройки",
-        "availableOptions": "Доступные опции",
         "paymentMethods": "Платёжные системы",
         "externalServices": "Сторонние сервисы",
-        "shopGeneralSettingsSaved": "Настройки магазина обновлены.",
-        "shopGeneralSettingsFailed": "Не удалось изменить основные настройки магазина. ",
-        "shopAddressSettingsSaved": "Адрес магазина изменён.",
-        "shopAddressSettingsFailed": "Не удалось изменить адрес магазина. ",
-        "shopExternalServicesSettingsSaved": "Настройки внешних сервисов обновлены.",
-        "shopExternalServicesSettingsFailed": "Не удалось изменить настройки внешних сервисов. ",
         "shopLocalizationSettingsSaved": "Настройки локализации обновлены.",
         "shopLocalizationSettingsFailed": "Не удалось изменить настройки локализации. ",
-        "shopOptionsSettingsSaved": "Настройка магазина обновлена.",
-        "shopOptionsSettingsFailed": "Не удалось изменить настройку. ",
         "shopPaymentMethodsSaved": "Настройки платёжных систем обновлены.",
         "shopPaymentMethodsFailed": "Не удалось изменить настройки платёжных систем. "
       },
@@ -329,16 +315,24 @@
       "order": {
         "created": "Создан",
         "reference": "Ссылка",
+        "cancelInvoice": "Отмена",
         "invoice": "Счёт",
         "ordersNotFound": "Не найдено заказов",
         "approveInvoice": "Подтвердить",
+        "cancelOrderLabel": "Отменить заказ",
         "makeAdjustments": "Корректировать",
         "capturePayment": "Найти платеж",
         "paymentCaptured": "Платеж найден",
         "capturedTotal": "Получено всего",
+        "canceledLabel": "Отмененных",
         "refundAmount": "Вернуть сумму",
+        "cancelOrder": "Вы хотите отменить этот заказ?",
         "applyRefundToThisOrder": "Выполнить возврат {{currencySymbol}}{{refund}} по этому заказу?",
+        "applyRefundDuringCancelOrder": "Это вернет сумму заказа {{currencySymbol}}{{invoiceTotal}}",
+        "cancelOrderThenRestock": "Да, и пополнение запасов",
+        "cancelOrderNoRestock": "Да, но без пополнения запасов",
         "applyRefund": "Подтвердить возврат",
+        "refunding": "Рефинансирование",
         "applyDiscount": "Применить скидку",
         "adjustedTotal": "Итого после возврата",
         "invalidDiscount": "Скидка не может быть больше итоговой цены",
@@ -362,7 +356,8 @@
           "completed": "Завершенных",
           "canceled": "Отмененных",
           "refunded": "Возвращенных"
-        }
+        },
+        "showMore": "Показать больше"
       },
       "orderShipping": {
         "shipTo": "Доставить до",
@@ -464,12 +459,6 @@
         "keywords": "Ключевые слова",
         "keywordsPlaceholder": "Ключевые слова для SEO",
         "language": "Основной язык",
-        "languageTooltip": "Язык будет использован, если не удастся определить язык устройства",
-        "timezone": "Часовой пояс",
-        "timezoneOptions": "Выберите часовой пояс",
-        "currency": "Основная валюта",
-        "currencyTooltip": "Базовая валюта в магазине",
-        "baseUOM": "Основные единицы измерения",
         "addressBook": {
           "company": "Компания",
           "companyPlaceholder": "Название компании",
@@ -705,6 +694,12 @@
           "matchFailed": "Не совпадают",
           "unknownError": "Неизвестная ошибка"
         }
+      },
+      "loginServices": {
+        "appId": "Идентификатор приложения",
+        "secret": "Секрет",
+        "clientId": "ID клиента",
+        "consumerKey": "Ключ API"
       },
       "error": {
         "nameRequired": "Название обязательно.",

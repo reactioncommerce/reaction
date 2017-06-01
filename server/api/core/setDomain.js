@@ -25,7 +25,7 @@ export function setDomain() {
   try {
     currentDomain = Shops.findOne().domains[0];
   } catch (_error) {
-    Logger.error("Failed to determine default shop.", _error);
+    Logger.error(_error, "Failed to determine default shop.");
   }
   // if the server domain changes, update shop
   const domain = getRegistryDomain();
