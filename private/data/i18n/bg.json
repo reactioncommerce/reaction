@@ -95,8 +95,6 @@
         "noProductsFound": "Няма намерени продукти.",
         "private": "частен",
         "public": "обществен",
-        "allOn": "All On",
-        "allOff": "Всички Off",
         "shortcut": {
           "addProductLabel": "Добави продукта",
           "accountsLabel": "Профили"
@@ -122,24 +120,12 @@
         "settingsfailed": "актуализация Настройки за търсенето провали"
       },
       "shopSettings": {
-        "general": "Общ",
-        "address": "адрес",
-        "import": "внос",
         "localization": "Локализация",
         "options": "Настроики",
-        "availableOptions": "Налични варианти",
         "paymentMethods": "Методи на плащане",
         "externalServices": "външни услуги",
-        "shopGeneralSettingsSaved": "Магазин общи настройки, запаметени.",
-        "shopGeneralSettingsFailed": "Магазин актуализация на общите настройки провали.",
-        "shopAddressSettingsSaved": "настройки Shop адрес спасени.",
-        "shopAddressSettingsFailed": "Магазин актуализация адрес настройки провали.",
-        "shopExternalServicesSettingsSaved": "Магазин настройки външни услуги, запаметени.",
-        "shopExternalServicesSettingsFailed": "Магазин актуализация на настройките външни услуги се провали.",
         "shopLocalizationSettingsSaved": "настройки Shop локализация спасени.",
         "shopLocalizationSettingsFailed": "Магазин актуализация на настройките за локализация провали.",
-        "shopOptionsSettingsSaved": "запаметени опции магазин.",
-        "shopOptionsSettingsFailed": "опции магазин актуализация неуспешно.",
         "shopPaymentMethodsSaved": "Магазин Методи на плащане настройки, запаметени.",
         "shopPaymentMethodsFailed": "Магазин актуализация Методи на плащане настройки провали."
       },
@@ -329,16 +315,24 @@
       "order": {
         "created": "Създадено",
         "reference": "Справка",
+        "cancelInvoice": "Отмени",
         "invoice": "Фактура",
         "ordersNotFound": "Няма заявки",
         "approveInvoice": "Одобрено плащане",
+        "cancelOrderLabel": "Отмяна на поръчката",
         "makeAdjustments": "Направи промени",
         "capturePayment": "Одобри плащане",
         "paymentCaptured": "Плащането е одобрено",
         "capturedTotal": "Одобрена сума",
+        "canceledLabel": "отменен",
         "refundAmount": "Възстановена сума",
+        "cancelOrder": "Искате ли да анулирате тази поръчка?",
         "applyRefundToThisOrder": "Нанесете възстановяване на {{currencySymbol}}{{refund}} до тази цел?",
+        "applyRefundDuringCancelOrder": "Това ще възстанови общата сума на поръчката на {{currencySymbol}}{{invoiceTotal}}",
+        "cancelOrderThenRestock": "Да, и отново",
+        "cancelOrderNoRestock": "Да, но без зареждане",
         "applyRefund": "Издай възстановяване",
+        "refunding": "Сумата се възстановява",
         "applyDiscount": "Прилагане на отстъпка",
         "adjustedTotal": "Корегирана сума",
         "invalidDiscount": "Отстъпка не може да бъде по-голям от оригиналния крайна цена",
@@ -362,7 +356,8 @@
           "completed": "завършен",
           "canceled": "отменен",
           "refunded": "Възстановява"
-        }
+        },
+        "showMore": "Показване на още"
       },
       "orderShipping": {
         "shipTo": "Изпрати до",
@@ -464,12 +459,6 @@
         "keywords": "Ключови думи",
         "keywordsPlaceholder": "Мета ключови думи за SEO",
         "language": "Base Език",
-        "languageTooltip": "Този език ще се използва, ако откриване на езика на устройството ще се провали",
-        "timezone": "Часова зона",
-        "timezoneOptions": "Изберете часова зона",
-        "currency": "Базова валута",
-        "currencyTooltip": "Магазин валута по подразбиране",
-        "baseUOM": "Base Мерна единица",
         "addressBook": {
           "company": "Компания",
           "companyPlaceholder": "Това име на фирма",
@@ -705,6 +694,12 @@
           "matchFailed": "Не съвпада",
           "unknownError": "Неизвестна грешка"
         }
+      },
+      "loginServices": {
+        "appId": "ID на приложението",
+        "secret": "Тайна",
+        "clientId": "Клиентски идентификационен номер",
+        "consumerKey": "API Key"
       },
       "error": {
         "nameRequired": "се изисква име.",

@@ -6,8 +6,12 @@
       "admin": {
         "settings": {
           "productDetailsLabel": "Podrobnosti produkta"
+        },
+        "inventoryAlerts": {
+          "adjustedQuantity": "Vaš količina izdelka je bil prilagojen za maksimalno količino na zalogi"
         }
-      }
+      },
+      "availableOptions": "Opcije na voljo"
     }
   }
 }]

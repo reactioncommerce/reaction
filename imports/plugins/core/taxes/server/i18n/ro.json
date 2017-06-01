@@ -29,6 +29,7 @@
           "shopCustomTaxRatesFailed": "Eroare la salvarea ratei de impozitare.-",
           "shopTaxMethodsSaved": "Metoda de impozitare a fost salvată.",
           "shopTaxMethodsFailed": "Acutualizarea metodei de impozitare a eșuat.",
+          "customRatesLabel": "Tarife personalizate",
           "customRatesDescription": "Tarife personalizate",
           "taxCode": "Codul fiscal",
           "taxShipping": "Includeți transportul",

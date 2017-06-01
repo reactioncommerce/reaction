@@ -12,7 +12,30 @@
           "packageGroupSettingsLabel": "Ustawienia"
         },
         "settings": {
-          "shopSettingsLabel": "Sklep"
+          "shopSettingsLabel": "Sklep",
+          "import": "Import",
+          "general": {
+            "label": "Generał"
+          },
+          "address": {
+            "label": "Adres"
+          },
+          "options": {
+            "label": "Opcje"
+          },
+          "openexchangerates": {
+            "refreshPeriod": "Odśwież"
+          }
+        },
+        "alerts": {
+          "shopGeneralSettingsSaved": "Sklep ogólne ustawienia zapisane.",
+          "shopGeneralSettingsFailed": "Sklep ustawienia ogólne aktualizacja nie powiodła się.",
+          "shopAddressSettingsSaved": "Ustawienia adresu Shop zapisane.",
+          "shopAddressSettingsFailed": "Sklep ustawienia adresu aktualizacja nie powiodła się.",
+          "shopExternalServicesSettingsSaved": "Sklep ustawienia usługi zewnętrzne zapisane.",
+          "shopExternalServicesSettingsFailed": "Sklep z ustawieniami usługi zewnętrzne aktualizacji nie powiodło się.",
+          "shopOptionsSettingsSaved": "Opcje sklepowe zapisane.",
+          "shopOptionsSettingsFailed": "Opcje sklepowe aktualizacja nie powiodła się."
         }
       }
     }

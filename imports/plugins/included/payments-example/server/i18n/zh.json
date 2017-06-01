@@ -18,7 +18,8 @@
           "examplePaymentLabel": "例如供应商",
           "examplePaymentSettingsLabel": "例如付款",
           "exampleCredentials": "这是一个例子付款方式设置。",
-          "apiClientId": "API客户端ID"
+          "apiClientId": "API客户端ID",
+          "supportedMethodsLabel": "付款提供商支持的方法"
         }
       }
     }

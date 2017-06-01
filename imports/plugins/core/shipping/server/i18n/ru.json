@@ -16,6 +16,7 @@
       "checkoutShipping": {
         "selectShippingOption": "Выберите вариант доставки",
         "noShippingMethods": "Нет способов доставки не настроены.",
+        "contactAdmin": "Обратитесь к администратору магазина.",
         "configureNow": "Настроить сейчас.",
         "shipping": "Перевозка"
       },

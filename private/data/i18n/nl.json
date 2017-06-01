@@ -95,8 +95,6 @@
         "noProductsFound": "Geen producten gevonden.",
         "private": "Privaat",
         "public": "Openbaar",
-        "allOn": "All On",
-        "allOff": "All Off",
         "shortcut": {
           "addProductLabel": "Product toevoegen",
           "accountsLabel": "Rekeningen"
@@ -122,24 +120,12 @@
         "settingsfailed": "updaten zoekinstellingen is mislukt"
       },
       "shopSettings": {
-        "general": "Algemeen",
-        "address": "Adres",
-        "import": "Import",
         "localization": "Localization",
         "options": "opties",
-        "availableOptions": "Beschikbare opties",
         "paymentMethods": "Betaalmethoden",
         "externalServices": "externe Services",
-        "shopGeneralSettingsSaved": "Shop algemene instellingen opgeslagen.",
-        "shopGeneralSettingsFailed": "Shop-update algemene instellingen is mislukt.",
-        "shopAddressSettingsSaved": "Shop-adres instellingen opgeslagen.",
-        "shopAddressSettingsFailed": "Shop-update-adres instellingen is mislukt.",
-        "shopExternalServicesSettingsSaved": "Shop buitendiensten instellingen opgeslagen.",
-        "shopExternalServicesSettingsFailed": "Shop-update buitendiensten instellingen is mislukt.",
         "shopLocalizationSettingsSaved": "Shop lokalisatie instellingen opgeslagen.",
         "shopLocalizationSettingsFailed": "Shop-update lokalisatie instellingen is mislukt.",
-        "shopOptionsSettingsSaved": "Shop opties opgeslagen.",
-        "shopOptionsSettingsFailed": "Shop opties update is mislukt.",
         "shopPaymentMethodsSaved": "Shop betalingsmethoden instellingen opgeslagen.",
         "shopPaymentMethodsFailed": "Shop-update betalingsmethoden instellingen is mislukt."
       },
@@ -329,16 +315,24 @@
       "order": {
         "created": "Gemaakt",
         "reference": "Referentie",
+        "cancelInvoice": "Annuleren",
         "invoice": "Factuur",
         "ordersNotFound": "Geen bestellingen gevonden",
         "approveInvoice": "Goedkeuren",
+        "cancelOrderLabel": "Annuleer bestelling",
         "makeAdjustments": "maak aanpassingen",
         "capturePayment": "Capture Betaling",
         "paymentCaptured": "betaling Gevangen",
         "capturedTotal": "gevangen Totaal",
+        "canceledLabel": "Geannuleerd",
         "refundAmount": "restitutiebedrag",
+        "cancelOrder": "Wilt u deze bestelling annuleren?",
         "applyRefundToThisOrder": "Solliciteer terugbetaling van {{currencySymbol}}{{refund}} deze bestelling?",
+        "applyRefundDuringCancelOrder": "Dit zal het bestelbedrag van {{currencySymbol}}{{invoiceTotal}} terugbetalen",
+        "cancelOrderThenRestock": "Ja, en opnieuw",
+        "cancelOrderNoRestock": "Ja, maar geen restocking",
         "applyRefund": "Solliciteer Refund",
+        "refunding": "terugbetaling",
         "applyDiscount": "Solliciteer Discount",
         "adjustedTotal": "aangepaste Total",
         "invalidDiscount": "Korting kan niet groter zijn dan de oorspronkelijke totale prijs",
@@ -362,7 +356,8 @@
           "completed": "Voltooid",
           "canceled": "Geannuleerd",
           "refunded": "terugbetaald"
-        }
+        },
+        "showMore": "Laat meer zien"
       },
       "orderShipping": {
         "shipTo": "Verzend naar",
@@ -464,12 +459,6 @@
         "keywords": "trefwoorden",
         "keywordsPlaceholder": "Meta keywords voor SEO",
         "language": "Base Taal",
-        "languageTooltip": "Deze taal wordt gebruikt als apparaat taaldetectie niet worden afgekeurd",
-        "timezone": "Tijdzone",
-        "timezoneOptions": "Kies tijdzone",
-        "currency": "Basisvaluta",
-        "currencyTooltip": "Shop prijslijst",
-        "baseUOM": "Base maateenheid",
         "addressBook": {
           "company": "Bedrijf",
           "companyPlaceholder": "Deze bedrijfsnaam",
@@ -705,6 +694,12 @@
           "matchFailed": "Geen match gevonden",
           "unknownError": "Onbekende fout"
         }
+      },
+      "loginServices": {
+        "appId": "App ID",
+        "secret": "Geheim",
+        "clientId": "Client ID",
+        "consumerKey": "API Key"
       },
       "error": {
         "nameRequired": "Naam is verplicht.",

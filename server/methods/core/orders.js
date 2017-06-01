@@ -6,7 +6,7 @@ import Future from "fibers/future";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { getSlug } from "/lib/api";
-import { Cart, Media, Orders, Products, Shops, Packages } from "/lib/collections";
+import { Media, Orders, Products, Shops, Packages } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 import { Logger, Hooks, Reaction } from "/server/api";
 
@@ -57,46 +57,6 @@ export function ordersInventoryAdjust(orderId) {
  * Reaction Order Methods
  */
 export const methods = {
-  /**
-   * orders/shipmentTracking
-   * @summary wraps addTracking and triggers workflow update
-   * @param {Object} order - order Object
-   * @param {String} tracking - tracking number to add to order
-   * @returns {String} returns workflow update result
-   */
-  "orders/shipmentTracking": function (order, tracking) {
-    check(order, Object);
-    check(tracking, String);
-
-    if (!Reaction.hasPermission("orders")) {
-      throw new Meteor.Error(403, "Access Denied");
-    }
-
-    this.unblock();
-    const orderId = order._id;
-
-    Meteor.call("orders/addTracking", orderId, tracking);
-    Meteor.call("orders/updateHistory", orderId, "Tracking Added", tracking);
-    Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreShipmentTracking", order._id);
-
-    // Set the status of the items as shipped
-    const itemIds = template.order.shipping[0].items.map((item) => {
-      return item._id;
-    });
-
-    Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/tracking", order._id, itemIds);
-  },
-
-  // shipmentPrepare
-  "orders/documentPrepare": (order) => {
-    check(order, Object);
-    this.unblock();
-
-    if (order) {
-      return Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreOrderDocuments", order._id);
-    }
-  },
-
   /**
    * orders/shipmentPacked
    *
@@ -208,11 +168,10 @@ export const methods = {
         "billing.$.paymentMethod.status": "approved",
         "billing.$.paymentMethod.mode": "capture",
         "billing.$.invoice.discounts": discount,
-        "billing.$.invoice.total": total
+        "billing.$.invoice.total": Number(total)
       }
     });
   },
-
 
   /**
    * orders/cancelOrder
@@ -644,60 +603,6 @@ export const methods = {
   },
 
   /**
-   * orders/orderCompleted
-   *
-   * @summary trigger orderCompleted status and workflow update
-   * @param {Object} order - order object
-   * @return {Object} return this.orderCompleted result
-   */
-  "orders/orderCompleted": function (order) {
-    check(order, Object);
-
-    if (!Reaction.hasPermission("orders")) {
-      throw new Meteor.Error(403, "Access Denied");
-    }
-
-    this.unblock();
-
-    Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "coreOrderCompleted", order._id);
-
-    return this.orderCompleted(order);
-  },
-
-  /**
-   * orders/addShipment
-   * @summary Adds tracking information to order without workflow update.
-   * Call after any tracking code is generated
-   * @param {String} orderId - add tracking to orderId
-   * @param {String} data - tracking id
-   * @return {String} returns order update result
-   */
-  "orders/addShipment": function (orderId, data) {
-    check(orderId, String);
-    check(data, Object);
-
-    if (!Reaction.hasPermission("orders")) {
-      throw new Meteor.Error(403, "Access Denied");
-    }
-
-    // temp hack until we build out multiple payment handlers
-    const cart = Cart.findOne(cartId);
-    let shippingId = "";
-    if (cart.shipping) {
-      shippingId = cart.shipping[0]._id;
-    }
-
-    return Orders.update({
-      "_id": orderId,
-      "shipping._id": shippingId
-    }, {
-      $addToSet: {
-        "shipping.shipments": data
-      }
-    });
-  },
-
-  /**
    * orders/updateShipmentTracking
    * @summary Adds tracking information to order without workflow update.
    * Call after any tracking code is generated
@@ -721,81 +626,6 @@ export const methods = {
     }, {
       $set: {
         ["shipping.$.tracking"]: tracking
-      }
-    });
-  },
-
-  /**
-   * orders/addItemToShipment
-   * @summary Adds tracking information to order without workflow update.
-   * Call after any tracking code is generated
-   * @param {String} orderId - add tracking to orderId
-   * @param {String} shipmentId - shipmentId
-   * @param {ShipmentItem} item - A ShipmentItem to add to a shipment
-   * @return {String} returns order update result
-   */
-  "orders/addItemToShipment": function (orderId, shipmentId, item) {
-    check(orderId, String);
-    check(shipmentId, String);
-    check(item, Object);
-
-    if (!Reaction.hasPermission("orders")) {
-      throw new Meteor.Error(403, "Access Denied");
-    }
-
-    return Orders.update({
-      "_id": orderId,
-      "shipping._id": shipmentId
-    }, {
-      $push: {
-        "shipping.$.items": item
-      }
-    });
-  },
-
-  "orders/updateShipmentItem": function (orderId, shipmentId, item) {
-    check(orderId, String);
-    check(shipmentId, Number);
-    check(item, Object);
-
-    if (!Reaction.hasPermission("orders")) {
-      throw new Meteor.Error(403, "Access Denied");
-    }
-
-    return Orders.update({
-      "_id": orderId,
-      "shipments._id": shipmentId
-    }, {
-      $addToSet: {
-        "shipment.$.items": shipmentIndex
-      }
-    });
-  },
-
-  /**
-   * orders/addShipment
-   * @summary Adds tracking information to order without workflow update.
-   * Call after any tracking code is generated
-   * @param {String} orderId - add tracking to orderId
-   * @param {String} shipmentIndex - shipmentIndex
-   * @return {String} returns order update result
-   */
-  "orders/removeShipment": function (orderId, shipmentIndex) {
-    check(orderId, String);
-    check(shipmentIndex, Number);
-
-    if (!Reaction.hasPermission("orders")) {
-      throw new Meteor.Error(403, "Access Denied");
-    }
-
-    Orders.update(orderId, {
-      $unset: {
-        [`shipments.${shipmentIndex}`]: 1
-      }
-    });
-    return Orders.update(orderId, {
-      $pull: {
-        shipments: null
       }
     });
   },
@@ -825,32 +655,6 @@ export const methods = {
     }, {
       $set: {
         email: email
-      }
-    });
-  },
-  /**
-   * orders/updateDocuments
-   * @summary Adds file, documents to order. use for packing slips, labels, customs docs, etc
-   * @param {String} orderId - add tracking to orderId
-   * @param {String} docId - CFS collection docId
-   * @param {String} docType - CFS docType
-   * @return {String} returns order update result
-   */
-  "orders/updateDocuments": function (orderId, docId, docType) {
-    check(orderId, String);
-    check(docId, String);
-    check(docType, String);
-
-    if (!Reaction.hasPermission("orders")) {
-      throw new Meteor.Error(403, "Access Denied");
-    }
-
-    return Orders.update(orderId, {
-      $addToSet: {
-        documents: {
-          docId: docId,
-          docType: docType
-        }
       }
     });
   },
@@ -1027,7 +831,6 @@ export const methods = {
       shopId: Reaction.getShopId()
     }).settings[settingsKey].support;
 
-    const orderStatus = paymentMethod.status;
     const orderMode = paymentMethod.mode;
 
     let result;
@@ -1039,17 +842,21 @@ export const methods = {
           "billing.$.paymentMethod.transactions": result
         }
       };
+      // Send email to notify cuustomer of a refund
+      Meteor.call("orders/sendNotification", order);
       if (result.saved === false) {
         Logger.fatal("Attempt for de-authorize transaction failed", order._id, paymentMethod.transactionId, result.error);
         throw new Meteor.Error("Attempt to de-authorize transaction failed", result.error);
       }
-    } else if (orderStatus === "completed" && orderMode === "capture") {
+    } else if (orderMode === "capture") {
       result = Meteor.call(`${processor}/refund/create`, paymentMethod, amount);
       query = {
         $push: {
           "billing.$.paymentMethod.transactions": result
         }
       };
+      // Send email to notify cuustomer of a refund
+      Meteor.call("orders/sendNotification", order, "refunded");
       if (result.saved === false) {
         Logger.fatal("Attempt for refund transaction failed", order._id, paymentMethod.transactionId, result.error);
         throw new Meteor.Error("Attempt to refund transaction failed", result.error);
@@ -1067,8 +874,6 @@ export const methods = {
     });
 
     Hooks.Events.run("onOrderRefundCreated", orderId);
-    // Send email to notify cuustomer of a refund
-    Meteor.call("orders/sendNotification", order, "refunded");
   }
 };
 

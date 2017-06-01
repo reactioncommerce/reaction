@@ -118,7 +118,7 @@ class ProductDetailContainer extends Component {
         if (productId) {
           Meteor.call("cart/addToCart", productId, currentVariant._id, quantity, (error) => {
             if (error) {
-              Logger.error("Failed to add to cart.", error);
+              Logger.error(error, "Failed to add to cart.");
               return error;
             }
             // Reset cart quantity on success

@@ -128,7 +128,7 @@ class Button extends Component {
       // Destructure these vars as they aren't valid as attributes on the HTML element button
       iconAfter, label, i18nKeyTitle, i18nKeyLabel, i18nKeyTooltip, // eslint-disable-line no-unused-vars
       tooltip, icon, toggle, onIcon, eventAction, buttonType, // eslint-disable-line no-unused-vars
-      toggleOnLabel, i18nKeyToggleOnLabel, tagName, onClick, onToggle, onValue, tooltipPosition, // eslint-disable-line no-unused-vars
+      toggleOnLabel, i18nKeyToggleOnLabel, tagName, onClick, onToggle, onValue, tooltipAttachment, // eslint-disable-line no-unused-vars
 
       // Get the rest of the properties and put them in attrs
       // these will most likely be HTML attributes
@@ -187,7 +187,7 @@ class Button extends Component {
     if (tooltip) {
       return React.createElement(tagName, buttonProps,
         <span className="rui btn-tooltip" style={{ display: "inline-flex", ...containerStyle }}>
-          <Tooltip tooltipContent={this.renderTooltipContent()}>
+          <Tooltip attachment={tooltipAttachment} tooltipContent={this.renderTooltipContent()}>
             {buttonChildren}
           </Tooltip>
         </span>
@@ -236,7 +236,7 @@ Button.propTypes = {
   toggleOn: PropTypes.bool,
   toggleOnLabel: PropTypes.string,
   tooltip: PropTypes.oneOfType([PropTypes.string, PropTypes.object, PropTypes.node]),
-  tooltipPosition: PropTypes.string,
+  tooltipAttachment: PropTypes.string,
   value: PropTypes.any
 };
 
@@ -246,7 +246,8 @@ Button.defaultProps = {
   iconAfter: false,
   tagName: "button",
   toggle: false,
-  bezelStyle: "flat"
+  bezelStyle: "flat",
+  tooltipAttachment: "bottom center"
 };
 
 export default Button;

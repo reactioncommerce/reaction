@@ -12,7 +12,30 @@
           "packageGroupSettingsLabel": "Definições"
         },
         "settings": {
-          "shopSettingsLabel": "Loja"
+          "shopSettingsLabel": "Loja",
+          "import": "Importar",
+          "general": {
+            "label": "Geral"
+          },
+          "address": {
+            "label": "Endereço"
+          },
+          "options": {
+            "label": "Opções"
+          },
+          "openexchangerates": {
+            "refreshPeriod": "Atualizar"
+          }
+        },
+        "alerts": {
+          "shopGeneralSettingsSaved": "Definições gerais da loja guardadas.",
+          "shopGeneralSettingsFailed": "Falha ao atualizar as definições gerais da loja.",
+          "shopAddressSettingsSaved": "Definições do endereço da loja guardadas.",
+          "shopAddressSettingsFailed": "Falha ao atualizar as definições do endereço da loja.",
+          "shopExternalServicesSettingsSaved": "Definições dos serviços externos da loja guardadas.",
+          "shopExternalServicesSettingsFailed": "Falha ao atualizar as definições dos serviços externos da loja.",
+          "shopOptionsSettingsSaved": "Opções da loja guardadas.",
+          "shopOptionsSettingsFailed": "Falha ao atualizar as opções da loja."
         }
       }
     }

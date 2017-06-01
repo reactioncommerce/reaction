@@ -10,14 +10,29 @@
           "socialDescription": "Konfigurace sociální Channel"
         },
         "settings": {
-          "facebook": "Facebook",
-          "twitter": "Cvrlikání",
-          "pinterest": "Pinterest",
-          "googleplus": "Google+",
-          "appId": "Id App",
-          "username": "Uživatelské jméno",
-          "appSecret": "App Secret",
-          "profilePage": "stránka profilu",
+          "public": {
+            "apps": {
+              "facebook": {
+                "title": "Facebook",
+                "appId": "ID aplikace",
+                "appSecret": "App Secret",
+                "profilePage": "stránka profilu"
+              },
+              "googleplus": {
+                "title": "Google+",
+                "profilePage": "stránka profilu"
+              },
+              "pinterest": {
+                "title": "Pinterest",
+                "profilePage": "stránka profilu"
+              },
+              "twitter": {
+                "title": "Twitter",
+                "username": "Uživatelské jméno",
+                "profilePage": "stránka profilu"
+              }
+            }
+          },
           "socialSettingsLabel": "sociální Nastavení",
           "socialSettingsSaved": "Sociální nastavení uloženo"
         }

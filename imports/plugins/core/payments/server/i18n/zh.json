@@ -26,6 +26,7 @@
         "processingError": "有您的付款有问题。",
         "completeYourOrder": "完成订单",
         "noPaymentMethods": "任何付款方式进行配置。",
+        "contactAdmin": "请联系店主管理员。",
         "configureNow": "现在配置。",
         "failedToPlaceOrder": "无法下订单。"
       }

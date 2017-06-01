@@ -95,8 +95,6 @@
         "noProductsFound": ".لم يتم إيجاد منتجات",
         "private": "خاص",
         "public": "عامة",
-        "allOn": "الكل في",
-        "allOff": "كل معطلة",
         "shortcut": {
           "addProductLabel": "إضافة المنتج",
           "accountsLabel": "الحسابات"
@@ -122,24 +120,12 @@
         "settingsfailed": "فشل تحديث إعدادات البحث"
       },
       "shopSettings": {
-        "general": "عنوان",
-        "address": "عناوين",
-        "import": "إستيراد",
         "localization": "توطين",
         "options": "خيارات",
-        "availableOptions": "خيارات متاحة",
         "paymentMethods": "طريقة الدفع",
         "externalServices": "خدمات خارجية",
-        "shopGeneralSettingsSaved": ".تم حفظ الإعدادات العامة للمتجر",
-        "shopGeneralSettingsFailed": ". فشل تحديث الإعدادات العامة للمتجر",
-        "shopAddressSettingsSaved": "تم حفظ عناوين إعدادات المتجر",
-        "shopAddressSettingsFailed": ".فشل تحديث إعدادات عناوين التسوق",
-        "shopExternalServicesSettingsSaved": ".متجر إعدادات الخدمات الخارجية محفوظة",
-        "shopExternalServicesSettingsFailed": " فشل تحديث شراء الخدمات الخارجية.",
         "shopLocalizationSettingsSaved": ".تم حفظ إعدادات توطين المتجر",
         "shopLocalizationSettingsFailed": ".فشل تحديث إعدادات توطين المتجر ",
-        "shopOptionsSettingsSaved": ".خيارات الشراء محفوظة",
-        "shopOptionsSettingsFailed": "فشل تحديث خيارات الشراء",
         "shopPaymentMethodsSaved": ".تم حفظ إعدادات طريقة الدفع",
         "shopPaymentMethodsFailed": ".تحديث إعدادات طريقة الدفع للشراء فشلت"
       },
@@ -329,16 +315,24 @@
       "order": {
         "created": "تم الانشاء",
         "reference": "مرجع",
+        "cancelInvoice": "إلغاء",
         "invoice": "فاتورة",
         "ordersNotFound": "لم يتم إيجاد طلبات",
         "approveInvoice": "موافق عليه",
+        "cancelOrderLabel": "الغاء الطلب",
         "makeAdjustments": "القيام بالتعديلات",
         "capturePayment": "الدفعة المقبوضة",
         "paymentCaptured": "الدفعة المقبوضة",
         "capturedTotal": "الإجمالي المقبوض",
+        "canceledLabel": "تم الإلغاء",
         "refundAmount": "كمية استرداد المال",
+        "cancelOrder": "هل تريد إلغاء هذا الطلب؟",
         "applyRefundToThisOrder": "تطبيق اعادة الاموال الخاصة ب {{currencySymbol}}{{refund}} هذا الطلب؟",
+        "applyRefundDuringCancelOrder": "سيؤدي هذا إلى رد المبلغ الإجمالي للطلب البالغ {{currencySymbol}}{{invoiceTotal}}",
+        "cancelOrderThenRestock": "نعم، وإعادة تخزين",
+        "cancelOrderNoRestock": "نعم، ولكن لا إعادة تخزين",
         "applyRefund": "التقدم بطلب استرداد الأموال",
+        "refunding": "برد",
         "applyDiscount": "تطبيق الخصم",
         "adjustedTotal": "إجمالي المعدل",
         "invalidDiscount": "لا يمكن للخصم أن يكون أكبر من إجمالي السعر الأصلي",
@@ -362,7 +356,8 @@
           "completed": "مكتمل",
           "canceled": "تم الإلغاء",
           "refunded": "المستردة"
-        }
+        },
+        "showMore": "أظهر المزيد"
       },
       "orderShipping": {
         "shipTo": "شحن لـ",
@@ -464,12 +459,6 @@
         "keywords": "الكلمات الدالة",
         "keywordsPlaceholder": "الكلمات المفتاحية للظهور في محركات البحث",
         "language": "اللغة الأساسية",
-        "languageTooltip": "سوف يتم استخدام هذه اللغة إذا فشل التعرف على لغة جهازك",
-        "timezone": "التوقيت",
-        "timezoneOptions": "أختيار التوقيت",
-        "currency": "العملة الأساسية",
-        "currencyTooltip": "عملة المتجر الإفتراضية",
-        "baseUOM": "قاعدة وحدة القياس",
         "addressBook": {
           "company": "شركة",
           "companyPlaceholder": "اسم العمل",
@@ -705,6 +694,12 @@
           "matchFailed": "المطابقة فشلت",
           "unknownError": "خطأ غير معروف"
         }
+      },
+      "loginServices": {
+        "appId": "معرف التطبيق",
+        "secret": "سر",
+        "clientId": "معرف العميل",
+        "consumerKey": "مفتاح API"
       },
       "error": {
         "nameRequired": "الأسم مطلوب",

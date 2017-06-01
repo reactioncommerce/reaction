@@ -10,14 +10,29 @@
           "socialDescription": "Sosyal Kanal yapılandırması"
         },
         "settings": {
-          "facebook": "Facebook",
-          "twitter": "Twitter",
-          "pinterest": "pinterest",
-          "googleplus": "Google+",
-          "appId": "Uygulama Kimliği",
-          "username": "Kullanıcı Adı",
-          "appSecret": "Uygulama Gizli",
-          "profilePage": "Profil sayfası",
+          "public": {
+            "apps": {
+              "facebook": {
+                "title": "Facebook",
+                "appId": "Uygulama kimliği",
+                "appSecret": "Uygulama Gizli",
+                "profilePage": "Profil sayfası"
+              },
+              "googleplus": {
+                "title": "Google+",
+                "profilePage": "Profil sayfası"
+              },
+              "pinterest": {
+                "title": "Pinterest",
+                "profilePage": "Profil sayfası"
+              },
+              "twitter": {
+                "title": "Twitter",
+                "username": "Kullanıcı Adı",
+                "profilePage": "Profil sayfası"
+              }
+            }
+          },
           "socialSettingsLabel": "sosyal Ayarlar",
           "socialSettingsSaved": "Sosyal ayarlar kaydedilir"
         }

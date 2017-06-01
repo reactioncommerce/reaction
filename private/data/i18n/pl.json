@@ -95,8 +95,6 @@
         "noProductsFound": "Nie znaleziono produktów.",
         "private": "Prywatne",
         "public": "Publiczny",
-        "allOn": "wszystko na temat",
-        "allOff": "All Off",
         "shortcut": {
           "addProductLabel": "Dodaj produkt",
           "accountsLabel": "Konta"
@@ -122,24 +120,12 @@
         "settingsfailed": "Ustawienia wyszukiwania aktualizacja nie powiodła się"
       },
       "shopSettings": {
-        "general": "Generał",
-        "address": "Adres",
-        "import": "Import",
         "localization": "Lokalizacja",
         "options": "Opcje",
-        "availableOptions": "Dostępne opcje",
         "paymentMethods": "Metody Płatności",
         "externalServices": "External Services",
-        "shopGeneralSettingsSaved": "Sklep ogólne ustawienia zapisane.",
-        "shopGeneralSettingsFailed": "Sklep ustawienia ogólne aktualizacja nie powiodła się.",
-        "shopAddressSettingsSaved": "Ustawienia adresu Shop zapisane.",
-        "shopAddressSettingsFailed": "Sklep ustawienia adresu aktualizacja nie powiodła się.",
-        "shopExternalServicesSettingsSaved": "Sklep ustawienia usługi zewnętrzne zapisane.",
-        "shopExternalServicesSettingsFailed": "Sklep z ustawieniami usługi zewnętrzne aktualizacji nie powiodło się.",
         "shopLocalizationSettingsSaved": "Ustawienia lokalizacji Shop zapisane.",
         "shopLocalizationSettingsFailed": "Sklep ustawienia lokalizacyjne aktualizacja nie powiodła się.",
-        "shopOptionsSettingsSaved": "Opcje sklepowe zapisane.",
-        "shopOptionsSettingsFailed": "Opcje sklepowe aktualizacja nie powiodła się.",
         "shopPaymentMethodsSaved": "Sklep ustawienia Metody płatności zapisane.",
         "shopPaymentMethodsFailed": "Sklep ustawienia Metody płatności aktualizacja nie powiodła się."
       },
@@ -329,16 +315,24 @@
       "order": {
         "created": "Utworzono",
         "reference": "Odniesienie",
+        "cancelInvoice": "Anulować",
         "invoice": "Faktura",
         "ordersNotFound": "Nie znaleziono zleceń",
         "approveInvoice": "Zatwierdzać",
+        "cancelOrderLabel": "Anuluj zamówienie",
         "makeAdjustments": "dokonanie zmian",
         "capturePayment": "Przechwytywanie Płatność",
         "paymentCaptured": "Płatność Schwytany",
         "capturedTotal": "schwytany Razem",
+        "canceledLabel": "Odwołany",
         "refundAmount": "Kwota Refundacji",
+        "cancelOrder": "Czy chcesz anulować zamówienie?",
         "applyRefundToThisOrder": "Zastosuj zwrot {{currencySymbol}}{{refund}} do tego celu?",
+        "applyRefundDuringCancelOrder": "Spowoduje to zwrot całkowitej kwoty zamówienia {{currencySymbol}}{{invoiceTotal}}",
+        "cancelOrderThenRestock": "Tak, i uzupełnij",
+        "cancelOrderNoRestock": "Tak, ale nie restocking",
         "applyRefund": "Zastosuj zwrot",
+        "refunding": "zwrotu",
         "applyDiscount": "Zastosuj zniżkę",
         "adjustedTotal": "Skorygowany Razem",
         "invalidDiscount": "Dyskonta nie może być większa niż oryginalny łączną cenę",
@@ -362,7 +356,8 @@
           "completed": "Zakończony",
           "canceled": "Odwołany",
           "refunded": "zwrotowi"
-        }
+        },
+        "showMore": "Pokaż więcej"
       },
       "orderShipping": {
         "shipTo": "Dostawa do",
@@ -464,12 +459,6 @@
         "keywords": "Słowa kluczowe",
         "keywordsPlaceholder": "Meta słów kluczowych dla SEO",
         "language": "Język bazowy",
-        "languageTooltip": "Język ten będzie stosowany, jeśli wykrywanie języka urządzenie zostanie zawiodły",
-        "timezone": "Strefa czasowa",
-        "timezoneOptions": "Wybierz strefę czasową",
-        "currency": "Waluta bazowa",
-        "currencyTooltip": "Sklep domyślną walutą",
-        "baseUOM": "Jednostka podstawowa miary",
         "addressBook": {
           "company": "Firma",
           "companyPlaceholder": "Ta nazwa firmy",
@@ -551,7 +540,7 @@
         "github": "GitHub",
         "meetup": "Meetup",
         "ok": "Ok",
-        "twitter": "Świergot",
+        "twitter": "Twitter",
         "vk": "VK",
         "weibo": "Weibo"
       },
@@ -705,6 +694,12 @@
           "matchFailed": "Błędne dopasowanie",
           "unknownError": "Nieznany błąd"
         }
+      },
+      "loginServices": {
+        "appId": "Identyfikator aplikacji",
+        "secret": "Sekret",
+        "clientId": "Identyfikator klienta",
+        "consumerKey": "Klucz API"
       },
       "error": {
         "nameRequired": "Nazwa jest wymagana.",

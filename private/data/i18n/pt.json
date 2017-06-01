@@ -95,8 +95,6 @@
         "noProductsFound": "Nenhum produto encontrado.",
         "private": "Particular",
         "public": "Público",
-        "allOn": "Tudo em cima",
-        "allOff": "All Off",
         "shortcut": {
           "addProductLabel": "Adicionar produto",
           "accountsLabel": "Contas"
@@ -122,24 +120,12 @@
         "settingsfailed": "Falha ao atualizar definições de pesquisa"
       },
       "shopSettings": {
-        "general": "Geral",
-        "address": "Endereço",
-        "import": "Importar",
         "localization": "Localização",
         "options": "Opções",
-        "availableOptions": "Opções disponíveis",
         "paymentMethods": "Métodos de pagamento",
         "externalServices": "Serviços externos",
-        "shopGeneralSettingsSaved": "Definições gerais da loja guardadas.",
-        "shopGeneralSettingsFailed": "Falha ao atualizar as definições gerais da loja.",
-        "shopAddressSettingsSaved": "Definições do endereço da loja guardadas.",
-        "shopAddressSettingsFailed": "Falha ao atualizar as definições do endereço da loja.",
-        "shopExternalServicesSettingsSaved": "Definições dos serviços externos da loja guardadas.",
-        "shopExternalServicesSettingsFailed": "Falha ao atualizar as definições dos serviços externos da loja.",
         "shopLocalizationSettingsSaved": "Definições de localização da loja guardadas.",
         "shopLocalizationSettingsFailed": "Falha ao atualizar as definições de localização da loja.",
-        "shopOptionsSettingsSaved": "Opções da loja guardadas.",
-        "shopOptionsSettingsFailed": "Falha ao atualizar as opções da loja.",
         "shopPaymentMethodsSaved": "Definições dos métodos de pagamento da loja guardadas.",
         "shopPaymentMethodsFailed": "Falha ao atualizar as definições dos métodos de pagamento da loja."
       },
@@ -329,16 +315,24 @@
       "order": {
         "created": "Criado",
         "reference": "Referência",
+        "cancelInvoice": "Cancelar",
         "invoice": "Fatura",
         "ordersNotFound": "Nenhuma encomenda encontrada",
         "approveInvoice": "Aprovar",
+        "cancelOrderLabel": "Cancelar pedido",
         "makeAdjustments": "Efetuar ajustes",
         "capturePayment": "Capturar o pagamento",
         "paymentCaptured": "Pagamento capturado",
         "capturedTotal": "Total capturado",
+        "canceledLabel": "Cancelado",
         "refundAmount": "Valor do reembolso",
+        "cancelOrder": "Deseja cancelar esta encomenda?",
         "applyRefundToThisOrder": "Aplicar reembolso de {{refund}} {{currencySymbol}} a esta encomenda?",
+        "applyRefundDuringCancelOrder": "Isto irá reembolsar o total da encomenda de {{currencySymbol}}{{invoiceTotal}}",
+        "cancelOrderThenRestock": "Sim, e reabastecer",
+        "cancelOrderNoRestock": "Sim, mas sem reabastecimento",
         "applyRefund": "Aplicar reembolso",
+        "refunding": "reembolsando",
         "applyDiscount": "Aplicar desconto",
         "adjustedTotal": "Total ajustado",
         "invalidDiscount": "O desconto não pode ser superior ao preço total original",
@@ -362,7 +356,8 @@
           "completed": "Concluído",
           "canceled": "Cancelado",
           "refunded": "Reembolsado"
-        }
+        },
+        "showMore": "Mostre mais"
       },
       "orderShipping": {
         "shipTo": "Enviar para",
@@ -464,12 +459,6 @@
         "keywords": "Palavras-chave",
         "keywordsPlaceholder": "Meta palavras-chave para SEO",
         "language": "Idioma base",
-        "languageTooltip": "Este idioma será utilizado se a deteção do idioma do dispositivo falhar",
-        "timezone": "Fuso horário",
-        "timezoneOptions": "Escolher fuso horário",
-        "currency": "Moeda base",
-        "currencyTooltip": "Moeda predefinida da loja",
-        "baseUOM": "Unidade de medida base",
         "addressBook": {
           "company": "Empresa",
           "companyPlaceholder": "Nome desta empresa",
@@ -705,6 +694,12 @@
           "matchFailed": "Correspondência falhada",
           "unknownError": "Erro desconhecido"
         }
+      },
+      "loginServices": {
+        "appId": "ID da aplicação",
+        "secret": "Segredo",
+        "clientId": "ID do cliente",
+        "consumerKey": "Chave da API"
       },
       "error": {
         "nameRequired": "O nome é obrigatório.",
