@@ -3,7 +3,7 @@ import { Meteor } from "meteor/meteor";
 import { composeWithTracker } from "/lib/api/compose";
 import { Router } from "/client/api";
 import { ReactionProduct } from "/lib/api";
-import { Tags, Media, Products } from "/lib/collections";
+import { Products } from "/lib/collections";
 import PublishContainer from "/imports/plugins/core/revisions/client/containers/publishContainer";
 
 class ProductPublishContainer extends Component {
@@ -71,24 +71,6 @@ function composer(props, onData) {
   let revisonDocumentIds;
 
   if (product) {
-    if (_.isArray(product.hashtags)) {
-      const tags = _.map(product.hashtags, function (id) {
-        return Tags.findOne(id);
-      });
-    }
-
-    const selectedVariant = ReactionProduct.selectedVariant();
-
-    if (selectedVariant) {
-      const media = Media.find({
-        "metadata.variantId": selectedVariant._id
-      }, {
-        sort: {
-          "metadata.priority": 1
-        }
-      });
-    }
-
     revisonDocumentIds = [product._id];
 
     onData(null, {
