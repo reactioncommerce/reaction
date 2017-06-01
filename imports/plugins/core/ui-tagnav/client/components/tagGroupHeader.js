@@ -29,6 +29,10 @@ class TagGroupHeader extends Component {
     }
   }
 
+  handleTagTreeMove = () => {
+    // needed to prevent move errors, pending fix for TagGroup draging
+  }
+
   render() {
     return (
       <div className="header">
@@ -42,7 +46,7 @@ class TagGroupHeader extends Component {
           suggestions={this.state.suggestions}
           onClearSuggestions={this.handleClearSuggestions}
           onGetSuggestions={this.handleGetSuggestions}
-          onMove={this.handleMoveTag}
+          onMove={this.handleTagTreeMove}
           onTagRemove={this.props.onTagRemove}
           onTagSave={this.handleTagSave}
           onTagInputBlur={this.handleTagSave}

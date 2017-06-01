@@ -55,7 +55,6 @@ class TagNav extends Component {
 
   render() {
     const { navbarOrientation, navbarPosition, navbarAnchor, navbarVisibility } = this.props;
-
     return (
       <div className={`rui tagnav ${navbarOrientation} ${navbarPosition} ${navbarAnchor} ${navbarVisibility}`}>
         <div className="navbar-header">

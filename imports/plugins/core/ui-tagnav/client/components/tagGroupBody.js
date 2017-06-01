@@ -64,7 +64,9 @@ class TagGroupBody extends Component {
 
   handleMoveTag = (dragIndex, hoverIndex) => {
     const tag = this.state.tagIds[dragIndex];
-
+    if (!tag) {
+      return false;
+    }
     // Apply new sort order to variant list
     const newState = update(this.state, {
       tagIds: {
@@ -132,7 +134,7 @@ class TagGroupBody extends Component {
     return (
       <div className="content">
         <div className="rui tags" data-id={this.state.parentTag._id}>
-          {this.genTagsList(this.tags, this.state.parentTag)}
+          {this.genTagsList(_.compact(this.tags), this.state.parentTag)}
           {this.props.editable &&
             <div className="rui item create">
               <TagItem

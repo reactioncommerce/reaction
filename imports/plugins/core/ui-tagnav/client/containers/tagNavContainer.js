@@ -142,9 +142,33 @@ class TagNavContainer extends Component {
     }
   }
 
+  canSaveTag(tag) {
+    // Blank tags cannot be saved
+    if (typeof tag.name === "string" && tag.name.trim().length === 0) {
+      return false;
+    }
+
+    // If the tag does not have an id, then allow the save
+    if (!tag._id) {
+      return true;
+    }
+
+    // Get the original tag from the props
+    // Tags from props are not mutated, and come from an outside source
+    const originalTag = this.props.tagsByKey[tag._id];
+
+    if (originalTag && originalTag.name !== tag.name) {
+      return true;
+    }
+
+    return false;
+  }
+
   handleNewTagSave = (tag, parentTag) => {
-    TagNavHelpers.onTagCreate(tag.name, parentTag);
-    this.setState({ newTag: { name: "" } });
+    if (this.canSaveTag(tag)) {
+      TagNavHelpers.onTagCreate(tag.name, parentTag);
+      this.setState({ newTag: { name: "" } });
+    }
   }
 
   handleNewTagUpdate = (tag) => { // updates the current tag state being edited

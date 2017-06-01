@@ -84,7 +84,8 @@ class Tags extends Component {
     });
 
     if (_.isArray(this.props.tags)) {
-      const tags = this.props.tags.map((tag, index) => {
+      const arrayProps = _.compact(this.props.tags);
+      const tags = arrayProps.map((tag, index) => {
         return (
           <div className={classes(tag)} key={index}>
             <TagItem
@@ -167,6 +168,7 @@ Tags.defaultProps = {
 // Prop Types
 Tags.propTypes = {
   children: PropTypes.node,
+  draggable: PropTypes.bool,
   editable: PropTypes.bool,
   enableNewTagForm: PropTypes.bool,
   hasDropdownClassName: PropTypes.func,
