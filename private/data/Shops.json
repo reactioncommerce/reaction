@@ -474,6 +474,15 @@
       "symbol": "₴",
       "decimal": ","
     },
+    "VND": {
+      "enabled": false,
+      "format": "%v %s",
+      "symbol": "₫",
+      "decimal": ",",
+      "thousand": ".",
+      "scale": -2,
+      "where": "right"
+    },
     "XAF": {
       "enabled": false,
       "format": "%v %s",
@@ -3674,6 +3683,15 @@
       "format": "%s%v",
       "symbol": "₴",
       "decimal": ","
+    },
+    "VND": {
+      "enabled": false,
+      "format": "%v %s",
+      "symbol": "₫",
+      "decimal": ",",
+      "thousand": ".",
+      "scale": -2,
+      "where": "right"
     },
     "XAF": {
       "enabled": false,
