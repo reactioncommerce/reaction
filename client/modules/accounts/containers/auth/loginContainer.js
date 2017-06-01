@@ -80,8 +80,8 @@ function composer(props, onData) {
       startView = props.startView;
     }
   }
-  uniqueId = Random.id();
-  credentials = {};
+  const uniqueId = Random.id();
+  const credentials = {};
 
   onData(null, {
     loginFormCurrentView: startView,

@@ -7,6 +7,7 @@ import { SignIn, SignUp, LoginButtons } from "../../components";
 import { MessagesContainer } from "../helpers";
 import { ServiceConfigHelper } from "../../helpers";
 import { LoginFormSharedHelpers } from "/client/modules/accounts/helpers";
+import { LoginFormValidation } from "/lib/api";
 
 class AuthContainer extends Component {
   static propTypes = {

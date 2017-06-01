@@ -72,7 +72,7 @@ function composer(props, onData) {
 
   if (product) {
     if (_.isArray(product.hashtags)) {
-      tags = _.map(product.hashtags, function (id) {
+      const tags = _.map(product.hashtags, function (id) {
         return Tags.findOne(id);
       });
     }
@@ -80,7 +80,7 @@ function composer(props, onData) {
     const selectedVariant = ReactionProduct.selectedVariant();
 
     if (selectedVariant) {
-      media = Media.find({
+      const media = Media.find({
         "metadata.variantId": selectedVariant._id
       }, {
         sort: {
