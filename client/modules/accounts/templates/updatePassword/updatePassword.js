@@ -3,6 +3,7 @@ import { Template } from "meteor/templating";
 import { i18next } from "/client/api";
 import { LoginFormSharedHelpers } from "/client/modules/accounts/helpers";
 import { UpdatePasswordOverlayContainer } from "/client/modules/accounts/containers";
+import { LoginFormValidation } from "/lib/api";
 
 /**
  * Accounts Event: onResetPasswordLink When a user uses a password reset link

@@ -9,7 +9,6 @@ import { Reaction } from "/server/api";
  */
 
 export const ServerSessions = new Mongo.Collection("Sessions");
-this.ServerSessions = ServerSessions;
 
 Meteor.publish("Sessions", function (sessionId) {
   check(sessionId, Match.OneOf(String, null));
