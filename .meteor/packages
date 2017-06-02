@@ -75,7 +75,7 @@ raix:ui-dropped-event
 risul:moment-timezone
 tmeasday:publish-counts
 vsivsi:job-collection@=1.4.0
-react-meteor-data
+react-meteor-data@=0.2.9
 percolate:migrations
 gadicc:blaze-react-component
 
