@@ -105,6 +105,7 @@ class TagNavContainer extends Component {
 
   componentWillReceiveProps(nextProps) {
     let selectedTag = {};
+    const previousEdit = this.state.editable;
     nextProps.tagsAsArray.map((tag) => {
       if (this.isSelected(tag)) {
         selectedTag = tag;
@@ -114,6 +115,7 @@ class TagNavContainer extends Component {
     const { tagIds, tagsByKey, isVisible } = nextProps;
     this.setState({
       [NavbarStates.Visible]: isVisible,
+      editable: previousEdit && this.canEdit,
       tagIds,
       tagsByKey,
       selectedTag
