@@ -21,6 +21,10 @@ mv /tmp/docker/* /usr/bin
 docker -v
 
 
+# install Docker Compose
+curl -L https://github.com/docker/compose/releases/download/$DOCKER_COMPOSE_VERSION/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+chmod +x /usr/local/bin/docker-compose
+
 
 # install Meteor if it's not already
 if [[ -f ~/.meteor/meteor ]]; then
