@@ -223,9 +223,7 @@ Import.buffer = function (collection) {
  * * Push the variant if it doesn't exist.
  * * Update the variant.
  */
-Import.product = function (key, product, parent) {
-  check(parent, Object);
-
+Import.product = function (key, product) {
   return this.object(Collections.Products, key, product);
 };
 
