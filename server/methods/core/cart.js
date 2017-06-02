@@ -167,14 +167,19 @@ Meteor.methods({
           Meteor.call("workflow/revertCartWorkflow", "checkoutAddressBook");
         }
 
-        // We got an additional db call because of `workflow/revertCartWorkflow`
-        // call, but we also got things more cleaner in my opinion.
-        // merge session cart into current cart
+        const cartSum = sessionCart.items.concat(currentCart.items);
+        const mergedItems = cartSum.reduce((newItems, item) => {
+          const existingItem = newItems.find(cartItem => cartItem.variants._id === item.variants._id);
+          if (existingItem) {
+            existingItem.quantity += item.quantity;
+          } else {
+            newItems.push(item);
+          }
+          return newItems;
+        }, []);
         Collections.Cart.update(currentCart._id, {
-          $addToSet: {
-            items: {
-              $each: sessionCart.items
-            }
+          $push: {
+            items: { $each: mergedItems, $slice: -(mergedItems.length) }
           }
         });
       }
