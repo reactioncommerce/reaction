@@ -219,7 +219,7 @@ function hasRoutePermission(route) {
 
   if (routeName === "index" || routeName === "not-found") {
     return true;
-  } else if (Router.Reaction.hasPermission(routeName, Meteor.userId())) {
+  } else if (Router.Reaction.hasPermission(route.permissions, Meteor.userId())) {
     return true;
   }
 
@@ -340,13 +340,14 @@ export function ReactionLayout(options = {}) {
     structure: layoutStructure,
     component: (props) => { // eslint-disable-line react/no-multi-comp, react/display-name
       const route = Router.current().route;
+      const permissions = options.permissions;
       const structure = {
         ...layoutStructure
       };
 
       // If the current route is unauthorized, and is not the "not-found" route,
       // then override the template to use the default unauthroized template
-      if (hasRoutePermission(route) === false && route.name !== "not-found") {
+      if (hasRoutePermission({ ...route, permissions }) === false && route.name !== "not-found") {
         structure.template = "unauthorized";
       }
 
@@ -449,6 +450,7 @@ Router.initPackageRoutes = (options) => {
             const {
               meta,
               route,
+              permissions,
               template,
               layout,
               workflow
@@ -459,7 +461,7 @@ Router.initPackageRoutes = (options) => {
 
             // define new route
             // we could allow the options to be passed in the registry if we need to be more flexible
-            const reactionLayout = ReactionLayout({ template, workflow, layout });
+            const reactionLayout = ReactionLayout({ template, workflow, layout, permissions });
             const newRouteConfig = {
               route,
               name,
