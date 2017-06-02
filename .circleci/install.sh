@@ -14,7 +14,6 @@ localedef -i en_GB -f UTF-8 en_US.UTF-8
 
 
 # install Docker client
-DOCKER_VERSION="17.03.1-ce"
 curl -L -o /tmp/docker-$DOCKER_VERSION.tgz https://get.docker.com/builds/Linux/x86_64/docker-$DOCKER_VERSION.tgz
 tar -xz -C /tmp -f /tmp/docker-$DOCKER_VERSION.tgz
 mv /tmp/docker/* /usr/bin
