@@ -92,10 +92,14 @@ describe("Merge Cart function ", function () {
 
   it("should increase product quantity if anonymous cart items exists in user's cart before merge", function () {
     sandbox.stub(Reaction, "getShopId", () => shop._id);
-    let cart = Factory.create("cart"); // registered user cart
-    let anonymousCart = Object.assign({}, cart, { userId: Factory.get("anonymous") });
+    let anonymousCart = Factory.create("anonymousCart");
+    let cart = Factory.create("cartOne"); // registered user cart
     let cartCount = Collections.Cart.find().count();
+    const intialCartQty = cart.items[0].quantity;
     expect(cartCount).to.equal(2);
+    Collections.Cart.update({
+      "_id": anonymousCart._id, "items._id": anonymousCart.items[0]._id
+    }, { $set: { "items.$.variants._id": cart.items[0].variants_id } });
     spyOnMethod("mergeCart", cart.userId);
     const cartRemoveSpy = sandbox.spy(Collections.Cart, "remove");
     Collections.Cart.update({}, {
@@ -111,7 +115,7 @@ describe("Merge Cart function ", function () {
     expect(cartCount).to.equal(1);
     expect(cartRemoveSpy).to.have.been.called;
     expect(anonymousCart).to.be.undefined;
-    expect(cart.items[0].quantity).to.equal(2);
+    expect(cart.items[0].quantity).to.be.above(intialCartQty);
   });
 
   it("should merge only into registered user cart", function (done) {
