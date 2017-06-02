@@ -91,9 +91,9 @@ Template.coreOrderShippingInvoice.helpers({
           name: "Approve",
           i18nKeyLabel: "order.approveInvoice",
           active: true,
-          status: "info",
+          status: "success",
           eventAction: "approveInvoice",
-          bgColor: "bg-info",
+          bgColor: "bg-success",
           buttonType: "submit"
         }, {
           name: "Cancel",
@@ -552,12 +552,12 @@ Template.coreOrderShippingInvoice.helpers({
       provides: "paymentMethod",
       enabled: true
     });
-    for (app of apps) {
+    for (const app of apps) {
       if (app.enabled === true) enabledPaymentsArr.push(app);
     }
     let discount = false;
 
-    for (enabled of enabledPaymentsArr) {
+    for (const enabled of enabledPaymentsArr) {
       if (enabled.packageName === "discount-codes") {
         discount = true;
         break;

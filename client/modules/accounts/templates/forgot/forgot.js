@@ -2,6 +2,7 @@ import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { i18next } from "/client/api";
 import { LoginFormSharedHelpers } from "/client/modules/accounts/helpers";
+import { LoginFormValidation } from "/lib/api";
 
 Template.loginFormResetPasswordView.events({
 
