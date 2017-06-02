@@ -23,6 +23,7 @@ export function findProductMedia(publicationInstance, productIds) {
   selector["metadata.workflow"] = { $in: [null, "published"] };
 
   const isUserOwnerOrModerator = Reaction.hasPermission(["owner", "moderator"], publicationInstance.userId);
+
   if (isUserOwnerOrModerator) {
     selector["metadata.workflow"] = { $nin: ["archived"] };
   } else {
@@ -53,23 +54,35 @@ export function findProductMedia(publicationInstance, productIds) {
  */
 Meteor.publish("Product", function (productId) {
   check(productId, Match.OptionalOrNull(String));
+
   if (!productId) {
     Logger.debug("ignoring null request on Product subscription");
     return this.ready();
   }
-  let _id;
-  const selector = {
-    isDeleted: { $in: [null, false] },
-    isVisible: true
-  };
-  let productShopId;
-  const shop = Reaction.getCurrentShop();
+
   // verify that parent shop is ready
+  const shop = Reaction.getCurrentShop();
   if (typeof shop !== "object") {
     return this.ready();
   }
 
-  // Take productShopId in order to check if user can edit this product or view its revisions
+
+  let _id;
+  let productShopId;
+
+  // Default selector. Any changes come via specific roles
+  const selector = {
+    isDeleted: { $in: [null, false] },
+    isVisible: true
+  };
+
+  // Permits admins to view both visible and invisible products.
+  if (Roles.userIsInRole(this.userId, ["owner", "admin", "createProduct"], shop._id)) {
+    selector.isVisible = {
+      $in: [true, false]
+    };
+  }
+
   // TODO review for REGEX / DOS vulnerabilities.
   if (productId.match(/^[23456789ABCDEFGHJKLMNPQRSTWXYZabcdefghijkmnopqrstuvwxyz]{17}$/)) {
     // selector._id = productId;
@@ -77,18 +90,20 @@ Meteor.publish("Product", function (productId) {
     _id = productId;
 
     const product = Products.findOne(_id);
+
     if (product) {
+      // Take productShopId in order to check if user can edit this product or view its revisions
       productShopId = product.shopId;
     } else {
       return this.ready();
     }
   } else {
-    const newSelector = {
+    const newSelector = Object.assign({}, selector, {
       handle: {
         $regex: productId,
         $options: "i"
       }
-    };
+    });
 
     const products = Products.find(newSelector).fetch();
     if (products.length > 0) {
