@@ -100,7 +100,7 @@ class Router {
     Router.go(current.route.name, current.params, queryParams);
   }
 
-  static getRouteName(newParams) {
+  static setQueryParams(newParams) {
     const current = Router.current();
     const queryParams = Object.assign({}, current.query, newParams);
 
