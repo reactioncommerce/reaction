@@ -467,7 +467,7 @@ export function inviteShopMember(shopId, email, name) {
   if (!user) {
     const userId = MeteorAccounts.createUser({
       email: email,
-      username: name,
+      username: `${name.toLowerCase().replace(" ", "-")}${Math.floor((Math.random() * 100))}`,
       profile: {
         invited: true
       }
