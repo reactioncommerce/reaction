@@ -169,11 +169,13 @@ Meteor.methods({
 
         const cartSum = sessionCart.items.concat(currentCart.items);
         const mergedItems = cartSum.reduce((newItems, item) => {
-          const existingItem = newItems.find(cartItem => cartItem.variants._id === item.variants._id);
-          if (existingItem) {
-            existingItem.quantity += item.quantity;
-          } else {
-            newItems.push(item);
+          if (item) {
+            const existingItem = newItems.find(cartItem => cartItem.variants._id === item.variants._id);
+            if (existingItem) {
+              existingItem.quantity += item.quantity;
+            } else {
+              newItems.push(item);
+            }
           }
           return newItems;
         }, []);
