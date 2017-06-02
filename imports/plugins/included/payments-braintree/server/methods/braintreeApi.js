@@ -1,12 +1,11 @@
 /* eslint camelcase: 0 */
-// meteor modules
-import { Meteor } from "meteor/meteor";
-// reaction modules
-import { Packages } from "/lib/collections";
-import { Reaction, Logger } from "/server/api";
-import Future from "fibers/future";
 import Braintree from "braintree";
 import accounting from "accounting-js";
+import Future from "fibers/future";
+import { Meteor } from "meteor/meteor";
+import { Packages } from "/lib/collections";
+import { Reaction, Logger } from "/server/api";
+
 
 export const BraintreeApi = {};
 BraintreeApi.apiCall = {};
@@ -76,13 +75,13 @@ function getGateway() {
   return gateway;
 }
 
-getRefundDetails = function (refundId) {
+function getRefundDetails(refundId) {
   check(refundId, String);
   const gateway = getGateway();
   const braintreeFind = Meteor.wrapAsync(gateway.transaction.find, gateway.transaction);
   const findResults = braintreeFind(refundId);
   return findResults;
-};
+}
 
 
 BraintreeApi.apiCall.paymentSubmit = function (paymentSubmitDetails) {
