@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { Reaction } from "/client/api";
-import { Button, DropDownMenu, MenuItem } from "/imports/plugins/core/ui/client/components";
+import { Button, DropDownMenu, MenuItem, Translation } from "/imports/plugins/core/ui/client/components";
 import { LoginContainer } from "../../containers/auth";
 
 const iconStyle = {
@@ -86,7 +86,7 @@ class MainDropdown extends Component {
     return (
       <div className="accounts-dropdown">
         <div className="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000">
-          <span data-i18n="accountsUI.signIn">Sign In</span><b className="caret" />
+          <span><Translation defaultValue="Sign In" i18nKey="accountsUI.signIn" /></span><b className="caret" />
         </div>
         <div
           className="accounts-dialog accounts-layout dropdown-menu pull-right"

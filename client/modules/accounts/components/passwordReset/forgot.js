@@ -98,7 +98,9 @@ class Forgot extends Component {
     return (
       <div>
         <div className="loginForm-title">
-          <h2 data-i18n="accountsUI.resetYourPassword">Reset your password</h2>
+          <h2>
+            <Translation defaultValue="Reset your password" i18nKey="accountsUI.resetYourPassword" />
+          </h2>
         </div>
 
         <form name="loginForm" onSubmit={this.handleSubmit} noValidate>
@@ -126,12 +128,11 @@ class Forgot extends Component {
           <div className="form-group">
             <a
               href="#"
-              data-i18n="accountsUI.signIn"
               tabIndex="3"
               data-event-category="accounts"
               onClick={this.props.onSignInClick}
             >
-            Sign In
+            <Translation defaultValue="Sign In" i18nKey="accountsUI.signIn" />
             </a>
           </div>
 

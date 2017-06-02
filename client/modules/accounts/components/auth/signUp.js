@@ -146,12 +146,11 @@ class SignUp extends Component {
           <div className="form-group">
             <a
               href="#"
-              data-i18n="accountsUI.signIn"
               tabIndex="4"
               data-event-category="accounts"
               onClick={this.props.onSignInClick}
             >
-              Sign In
+              <Translation defaultValue="Sign In" i18nKey="accountsUI.signIn" />
             </a>
           </div>
         </form>
@@ -174,7 +173,9 @@ class SignUp extends Component {
     return (
       <div>
         <div className="loginForm-title">
-        <h2 data-i18n="accountsUI.createAccount">Create an Account</h2>
+        <h2>
+          <Translation defaultValue="Create an Account" i18nKey="accountsUI.createAccount" />
+        </h2>
       </div>
 
       {this.renderForm(emailClasses, passwordClasses)}

@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import {
-  Button
+  Button,
+  Translation
 } from "/imports/plugins/core/ui/client/components";
 
 class LoginButtons extends Component {
@@ -33,11 +34,19 @@ class LoginButtons extends Component {
               <i className={`fa fa-${service.name}`} />
 
               {this.props.currentView === "loginFormSignInView" &&
-                <span data-i18n="accountsUI.signInWith">Sign in with</span>}
+                <span>
+                  <Translation defaultValue="Sign in with"  i18nKey="accountsUI.signInWith" />
+                </span>
+              }
               {this.props.currentView === "loginFormSignUpView" &&
-                <span data-i18n="accountsUI.signUpWith">Sign up with</span>}
+                <span>
+                  <Translation defaultValue="Sign up with" i18nKey="accountsUI.signUpWith" />
+                </span>
+              }
 
-              &nbsp;<span data-i18n={`social.${service.name}`}>{this.props.capitalizeName(service.name)}</span>
+              &nbsp;<span>
+                      <Translation defaultValue={this.props.capitalizeName(service.name)} i18nKey={`social.${service.name}`} />
+                    </span>
           </Button>
           ))
         }
@@ -50,7 +59,9 @@ class LoginButtons extends Component {
       return (
         <div className="loginForm-seperator">
           <span />
-          <span className="text" data-i18n="accountsUI.or">or</span>
+          <span className="text">
+            <Translation defaultValue="or" i18nKey="accountsUI.or" />
+          </span>
           <span />
         </div>
       );

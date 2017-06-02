@@ -112,7 +112,9 @@ class UpdatePasswordOverlay extends Component {
 
                 <form className="modal-content" onSubmit={this.handleSubmit}>
                   <div className="modal-header">
-                    <h4 className="modal-title" data-i18n="accountsUI.updateYourPassword">Update Your Password</h4>
+                    <h4 className="modal-title">
+                      <Translation defaultValue="Update Your Password" i18nKey="accountsUI.updateYourPassword" />
+                    </h4>
                   </div>
 
                   <div className="modal-body">

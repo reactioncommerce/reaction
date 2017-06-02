@@ -118,7 +118,9 @@ class SignIn extends Component {
     return (
       <div>
         <div className="loginForm-title">
-          <h2 data-i18n="accountsUI.signIn">Sign In</h2>
+          <h2>
+            <Translation defaultValue="Sign In" i18nKey="accountsUI.signIn" />
+          </h2>
         </div>
 
         <form className="login-form" onSubmit={this.handleSubmit} noValidate>
@@ -160,19 +162,17 @@ class SignIn extends Component {
           <div className="form-group flex flex-justify-spaceBetween">
             <a
               href="#"
-              data-i18n="accountsUI.forgotPassword"
               tabIndex="4"
               onClick={this.props.onForgotPasswordClick}
             >
-              Reset Password
+              <Translation defaultValue="Reset Password" i18nKey="accountsUI.forgotPassword" />
             </a>
             <a
               href="#"
-              data-i18n="accountsUI.signUp"
               tabIndex="5"
               onClick={this.props.onSignUpClick}
             >
-              Register
+              <Translation defaultValue="Register" i18nKey="accountsUI.signUp" />
             </a>
           </div>
 
