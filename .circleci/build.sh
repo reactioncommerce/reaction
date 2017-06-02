@@ -18,7 +18,8 @@ docker-compose -f .circleci/docker-compose.yml up -d
 sleep 30
 
 # use curl to ensure the app returns 200's
-docker exec reaction curl --retry 10 --retry-delay 10 -v http://localhost:3000
+docker exec reaction bash -c "apt-get update && apt-get install -y curl && \
+  curl --retry 10 --retry-delay 10 -v http://localhost:3000"
 
 # now change the image tag to the configured name
 docker tag reactioncommerce/reaction:latest $DOCKER_NAMESPACE:latest
