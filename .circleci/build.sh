@@ -5,17 +5,20 @@ set -e
 DOCKER_NAMESPACE=${DOCKER_NAMESPACE:-"reactioncommerce/reaction"}
 
 # if we're not on a deployment branch or a Docker related PR branch, skip the Docker build/test
-if [[ -z "$CIRCLE_TAG" && "$CIRCLE_BRANCH" != "development" && "$CIRCLE_BRANCH" != *"docker"* ]]; then
+if [[ "$CIRCLE_BRANCH" != "master" && "$CIRCLE_BRANCH" != "development" && "$CIRCLE_BRANCH" != *"docker"* ]]; then
   echo "Not running a deployment branch. Skipping the Docker build test."
   exit 0
 fi
 
 # build new image
-reaction build $DOCKER_NAMESPACE:latest
+docker build -t reactioncommerce/reaction:latest .
 
 # run the container and wait for it to boot
-docker run --name reaction -p 3000:3000 -d $DOCKER_NAMESPACE:latest
+docker-compose -f .circleci/docker-compose.yml up -d
 sleep 30
 
 # use curl to ensure the app returns 200's
 docker exec reaction curl --retry 10 --retry-delay 10 -v http://localhost:3000
+
+# now change the image tag to the configured name
+docker tag reactioncommerce/reaction:latest $DOCKER_NAMESPACE:latest
