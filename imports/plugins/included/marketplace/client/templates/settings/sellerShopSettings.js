@@ -12,12 +12,6 @@ Template.sellerShopSettings.onCreated(function () {
   });
 });
 
-Template.sellerShopSettings.onCreated(function () {
-  this.autorun(() => {
-    this.subscribe("SellerShops");
-  });
-});
-
 Template.sellerShopSettings.helpers({
   SellerShops() {
     return SellerShops;
@@ -31,7 +25,9 @@ Template.sellerShopSettings.helpers({
     }
 
     const media = Media.find({
-      "metadata.type": "brandAsset"
+      "metadata.type": "brandAsset",
+      "metadata.ownerId": Meteor.userId(),
+      "metadata.shopId": Reaction.getSellerShopId()
     });
 
     let selectedMediaId;
