@@ -70,7 +70,7 @@ class Router {
   static getRouteName() {
     const current = Router.current();
 
-    return current.options && current.options.name || "";
+    return current.route && current.route.name || "";
   }
 
   static getParam(name) {
@@ -85,6 +85,32 @@ class Router {
     const current = Router.current();
 
     return current.query && current.query[name] || undefined;
+  }
+
+  static setQueryParams(newParams) {
+    const current = Router.current();
+    const queryParams = Object.assign({}, current.query, newParams);
+
+    for (const key in queryParams) {
+      if (queryParams[key] === null || queryParams[key] === undefined) {
+        delete queryParams[k];
+      }
+    }
+
+    Router.go(current.route.name, current.params, queryParams);
+  }
+
+  static getRouteName(newParams) {
+    const current = Router.current();
+    const queryParams = Object.assign({}, current.query, newParams);
+
+    for (const key in queryParams) {
+      if (queryParams[key] === null || queryParams[key] === undefined) {
+        delete queryParams[k];
+      }
+    }
+
+    Router.go(current.route.name, current.params, queryParams);
   }
 
   static watchPathChange() {
@@ -236,7 +262,7 @@ function hasRoutePermission(route) {
 
 
 /**
- * getRouteName
+ * getRegistryRouteName
  * assemble route name to be standard
  * prefix/package name + registry name or route
  * @param  {String} packageName  [package name]
