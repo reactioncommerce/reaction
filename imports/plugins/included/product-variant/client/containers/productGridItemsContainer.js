@@ -26,6 +26,8 @@ class ProductGridItemsContainer extends Component {
   }
 
   productPath = () => {
+    console.log(this.props.product);
+
     if (this.props.product) {
       let handle = this.props.product.handle;
 
