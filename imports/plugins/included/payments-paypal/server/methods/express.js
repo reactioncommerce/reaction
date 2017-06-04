@@ -375,14 +375,14 @@ function parseRefundReponse(response) {
   return paypalArray;
 }
 
-getSetting = function (shopId, parameter) {
+function getSetting(shopId, parameter) {
   const settings = Packages.findOne({
     name: "reaction-paypal",
     shopId: shopId,
     enabled: true
   }).settings;
   return settings[parameter];
-};
+}
 
 // export methods to Meteor
 Meteor.methods(methods);

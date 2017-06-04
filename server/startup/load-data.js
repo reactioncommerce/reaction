@@ -9,11 +9,12 @@ export default function () {
   Logger.info("Load default data from /private/data/");
 
   try {
+    Logger.debug("Loading Shop Data");
     Reaction.Import.process(Assets.getText("data/Shops.json"), ["name"], Reaction.Import.shop);
     // ensure Shops are loaded first.
     Reaction.Import.flush(Shops);
   } catch (error) {
-    Logger.info("Bypassing loading Shop default data");
+    Logger.error(error, "Bypassing loading Shop default data");
   }
 
   // make sure the default shop has been created before going further
@@ -23,21 +24,24 @@ export default function () {
   }
 
   try {
+    Logger.debug("Loading Shipping Data");
     Fixture.process(Assets.getText("data/Shipping.json"), ["name"], Reaction.Import.shipping);
   } catch (error) {
-    Logger.info("Bypassing loading Shipping default data.");
+    Logger.error(error, "Bypassing loading Shipping default data.");
   }
 
   try {
-    Fixture.process(Assets.getText("data/Products.json"), ["title"], Reaction.Import.load);
+    Logger.debug("Loading Product Data");
+    Fixture.process(Assets.getText("data/Products.json"), ["title"], Reaction.Import.product);
   } catch (error) {
-    Logger.info("Bypassing loading Products default data.");
+    Logger.error(error, "Bypassing loading Products default data.");
   }
 
   try {
-    Fixture.process(Assets.getText("data/Tags.json"), ["name"], Reaction.Import.load);
+    Logger.debug("Loading Tag Data");
+    Fixture.process(Assets.getText("data/Tags.json"), ["name"], Reaction.Import.tag);
   } catch (error) {
-    Logger.info("Bypassing loading Tags default data.");
+    Logger.error(error, "Bypassing loading Tags default data.");
   }
   //
   // these will flush and import with the rest of the imports from core init.
