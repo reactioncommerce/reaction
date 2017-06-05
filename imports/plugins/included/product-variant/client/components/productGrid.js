@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from "react";
+import { Translation } from "/imports/plugins/core/ui/client/components";
 import ProductGridItemsContainer from "../containers/productGridItemsContainer";
 
 class ProductGrid extends Component {
@@ -16,7 +17,15 @@ class ProductGrid extends Component {
         );
       });
     }
-    return null;
+    return (
+      <div className="row">
+        <div className="text-center">
+          <h3>
+            <Translation defaultValue="No Products Found" i18nKey="app.noProductsFound" />
+          </h3>
+        </div>
+      </div>
+    );
   }
 
   render() {

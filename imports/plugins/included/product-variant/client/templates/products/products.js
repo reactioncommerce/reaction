@@ -161,7 +161,8 @@ Template.products.helpers({
 
   productGrid() {
     return {
-      component: ProductGridContainer
+      component: ProductGridContainer,
+      ...Template.instance()
     };
   }
 });
