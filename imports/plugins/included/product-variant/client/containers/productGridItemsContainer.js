@@ -9,6 +9,7 @@ import ProductGridItems from "../components/productGridItems";
 
 class ProductGridItemsContainer extends Component {
   static propTypes = {
+    itemSelectHandler: PropTypes.func,
     product: PropTypes.object
   }
 
@@ -116,6 +117,7 @@ class ProductGridItemsContainer extends Component {
         additionalMedia={this.additionalProductMedia}
         isMediumWeight={this.isMediumWeight}
         displayPrice={this.displayPrice}
+        itemSelectHandler={this.props.itemSelectHandler}
       />
     );
   }

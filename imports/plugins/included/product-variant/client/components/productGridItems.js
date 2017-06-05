@@ -9,6 +9,7 @@ class ProductGridItems extends Component {
     displayPrice: PropTypes.func,
     isMediumWeight: PropTypes.func,
     isSelected: PropTypes.func,
+    itemSelectHandler: PropTypes.func,
     media: PropTypes.func,
     pdpPath: PropTypes.func,
     positions: PropTypes.func,
@@ -62,7 +63,7 @@ class ProductGridItems extends Component {
     return (
       <div className="grid-alerts">
         <GridItemNoticeContainer product={this.props.product} />
-        <GridItemControlsContainer product={this.props.product} />
+        <GridItemControlsContainer product={this.props.product} itemSelectHandler={this.props.itemSelectHandler} />
       </div>
 
     );
