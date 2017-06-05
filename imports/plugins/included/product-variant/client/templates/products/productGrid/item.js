@@ -47,11 +47,7 @@ Template.productGridItems.onDestroyed(function () {
 
 Template.productGridItems.helpers({
   component() {
-    const currentData = Template.currentData();
-    return {
-      ...currentData,
-      component: ProductGridItemsContainer
-    };
+    return ProductGridItemsContainer;
   },
   isLargeWeight: function () {
     const tag = ReactionProduct.getTag();

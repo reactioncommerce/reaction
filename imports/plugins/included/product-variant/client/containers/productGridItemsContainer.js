@@ -26,8 +26,6 @@ class ProductGridItemsContainer extends Component {
   }
 
   productPath = () => {
-    console.log(this.props.product);
-
     if (this.props.product) {
       let handle = this.props.product.handle;
 
@@ -124,11 +122,7 @@ class ProductGridItemsContainer extends Component {
 }
 
 function composer(props, onData) {
-  const product = props;
-
-  onData(null, {
-    product
-  });
+  onData(null, {});
 }
 
 export default composeWithTracker(composer)(ProductGridItemsContainer);
