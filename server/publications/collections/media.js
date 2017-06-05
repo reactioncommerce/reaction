@@ -26,53 +26,42 @@ const filters = new SimpleSchema({
 Meteor.publish("Media", function (mediaFilters) {
   check(mediaFilters, Match.OneOf(undefined, filters));
 
-  let selector;
   const shopId = Reaction.getSellerShopId(this.userId);
   if (!shopId) {
     return this.ready();
   }
 
-  if (mediaFilters && mediaFilters.products) {
-    const products = mediaFilters.products;
-    selector = {
-      "metadata.productId": {
-        $in: products
-      },
-      "metadata.workflow": {
-        $in: [null, "published"]
-      }
-    };
-  } else if (mediaFilters && mediaFilters.shops) {
-    shops = mediaFilters.shops;
-    selector = {
-      "metadata.shopId": {
-        $in: shops
-      },
-      "metadata.workflow": {
-        $in: [null, "published"]
-      }
-    };
-  } else {
-    selector = {
-      "metadata.shopId": shopId
-    };
+  // Default selector gets only published brandAsset of shop (main image of shop)
+  const selector = {
+    "metadata.type": "brandAsset",
+    "metadata.workflow": [null, "published"],
+    "metadata.shopId": shopId
+  };
 
-    // Product editors can see both published and unpublished images
-    if (!Reaction.hasPermission(["createProduct"], this.userId)) {
-      selector["metadata.workflow"] = {
-        $in: [null, "published"]
+  if (mediaFilters) {
+    if (mediaFilters.products) {
+      const products = mediaFilters.products;
+      delete selector["metadata.type"];
+      delete selector["metadata.shopId"];
+      selector["metadata.productId"] = {
+        $in: products
       };
-    } else {
-      // but no one gets to see archived images
-      selector["metadata.workflow"] = {
-        $nin: ["archived"]
+    } else if (mediaFilters.shops) {
+      const shops = mediaFilters.shops;
+      selector["metadata.shopId"] = {
+        $in: shops
       };
     }
+  }
+
+  // product editors can see published & unpublished images
+  if (Reaction.hasPermission(["createProduct"], this.userId, shopId)) {
+    selector["metadata.workflow"] = { $nin: ["archived"] };
 
     if (RevisionApi.isRevisionControlEnabled()) {
       const revisionHandle = Revisions.find({
         "documentType": "image",
-        "workflow.status": { $nin: [ "revision/published"] }
+        "workflow.status": { $nin: ["revision/published"] }
       }).observe({
         added: (revision) => {
           const media = Media.findOne(revision.documentId);
@@ -88,10 +77,10 @@ Meteor.publish("Media", function (mediaFilters) {
         },
         removed: (revision) => {
           if (revision) {
+            this.removed("Revisions", revision._id, revision);
             const media = Media.findOne(revision.documentId);
             if (media) {
               this.removed("Media", media._id, media);
-              this.removed("Revisions", revision._id, revision);
             }
           }
         }
@@ -103,7 +92,9 @@ Meteor.publish("Media", function (mediaFilters) {
     }
   }
 
-  return Media.find({
-    "metadata.type": "brandAsset"
+  return Media.find(selector, {
+    sort: {
+      "metadata.priority": 1
+    }
   });
 });

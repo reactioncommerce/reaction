@@ -846,7 +846,8 @@ Meteor.methods({
     let update;
     // handle booleans with correct typing
     if (value === "false" || value === "true") {
-      update = EJSON.parse(`{${field}:${value}}`);
+      const booleanValue = (value === "true" || value === true);
+      update = EJSON.parse("{\"" + field + "\":" + booleanValue + "}");
     } else {
       const stringValue = EJSON.stringify(value);
       update = EJSON.parse("{\"" + field + "\":" + stringValue + "}");

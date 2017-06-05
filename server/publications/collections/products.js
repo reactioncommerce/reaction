@@ -105,7 +105,7 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
     }
 
     const selector = {};
-     // Marketplace version of userInRole owner/admin/createProduct for shop
+    // Marketplace version of userInRole owner/admin/createProduct for shop
     if (hasCreateProductAccessToOwnerShop) {
       _.extend(selector, {
         isDeleted: { $in: [null, false] },
@@ -121,13 +121,11 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
     }
 
     if (productFilters) {
-      // handle marketplace multiple sellers.
-      // marketplace filter has biggest priority than shops filter
-      if (productFilters.marketplace) {
-        delete selector.shopId;
-      } else if (sellerViewsHisShop) {
+      // Seller can see the variant products of his shop
+      if (sellerViewsHisShop) {
         _.extend(selector, {
-          shopId: sellerShopId
+          shopId: sellerShopId,
+          ancestors: { $exists: true }
         });
       } else if (productFilters.shops) {
         _.extend(selector, {
@@ -135,6 +133,8 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
             $in: productFilters.shops
           }
         });
+      } else if (productFilters.marketplace) {
+        delete selector.shopId;
       }
 
       // filter by tags

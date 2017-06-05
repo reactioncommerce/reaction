@@ -88,7 +88,7 @@ function composer(props, onData) {
     isEnabled: isRevisionControlEnabled(),
     isActionViewAtRootView: Reaction.isActionViewAtRootView(),
     actionViewIsOpen: Reaction.isActionViewOpen(),
-    hasCreateProductAccess: Reaction.hasPermission("createProduct", Meteor.userId(), Reaction.shopId),
+    hasCreateProductAccess: Reaction.hasPermission("createProduct", Meteor.userId(), Reaction.getSellerShopId()),
 
     // Callbacks
     onAddProduct: handleAddProduct,
