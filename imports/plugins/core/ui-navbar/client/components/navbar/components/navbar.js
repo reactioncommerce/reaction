@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from "react";
-import BrandContainer from "../containers/brandContainer";
 import { FlatButton, Button } from "/imports/plugins/core/ui/client/components";
 import { NotificationContainer } from "/imports/plugins/included/notifications/client/containers";
 import CartIconContainer from "/imports/plugins/core/checkout/client/container/cartIconContainer";
@@ -8,6 +7,7 @@ import MainDropdown from "/client/modules/accounts/containers/dropdown/mainDropd
 import LanguageContainer from "/client/modules/i18n/templates/header/containers/i18nContainer";
 import CurrencyContainer from "/client/modules/i18n/templates/currency/containers/currencyContainer";
 import TagNavContainer from "/imports/plugins/core/ui-tagnav/client/containers/tagNavContainer";
+import Brand from "./brand";
 
 class NavBar extends Component {
   static propTypes = {
@@ -44,9 +44,9 @@ class NavBar extends Component {
     );
   }
 
-  renderBrandContainer() {
+  renderBrand() {
     return (
-      <BrandContainer />
+      <Brand />
     );
   }
 
@@ -103,7 +103,7 @@ class NavBar extends Component {
           isVisible={this.state.navBarVisible}
           closeNavbar={this.handleCloseNavbar}
         >
-          <BrandContainer />
+          <Brand />
         </TagNavContainer>
       </div>
     );
@@ -113,7 +113,7 @@ class NavBar extends Component {
     return (
       <div className="rui navbar">
         {this.renderHamburgerButton()}
-        {this.renderBrandContainer()}
+        {this.renderBrand()}
         {this.renderTagNav()}
         {this.renderSearchButton()}
         {this.renderNotificationIcon()}
