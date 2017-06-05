@@ -76,7 +76,7 @@ describe("inventory method", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
     });
 
-    it("should have option quantity greater then 0", function () {
+    it("should have option quantity greater than 0", function () {
       // checking our option quantity. It should be greater than zero.
       expect(qty).to.be.above(0);
     });
@@ -93,99 +93,5 @@ describe("inventory method", function () {
       newQty = Inventory.find({ variantId: options[1]._id }).count();
       expect(newQty).to.equal(0);
     });
-  });
-
-  //
-  // inventory/register is invoked from hooks.js before cart update
-  //
-  describe("inventory/register invoked from hooks", function () {
-    // it("should create backordered inventory when no inventory available", function (done) {
-    //   let product = Factory.create("product");
-    //   let cartId = Factory.create("cart")._id;
-    //   let productId = product._id;
-    //   let quantity = product.variants[0].inventoryQuantity;
-    //   let variantData = product.variants[0];
-    //
-    //   spyOn(ReactionCore, "hasPermission").and.returnValue(true);
-    //   spyOn(ReactionCore.Collections.Cart.after, "update");
-    //   expect(_.size(product.variants)).toEqual(1);
-    //
-    //   // add to cart
-    //   Meteor.call("cart/addToCart", cartId, productId, variantData, quantity, function () {
-    //     // fetch reserved inventory
-    //     let inventory = ReactionCore.Collections.Inventory.find({
-    //       "workflow.status": "backorder"
-    //     });
-    //
-    //     let inventoryCount = _.size(inventory);
-    //     expect(inventoryCount).toEqual(quantity);
-    //     done();
-    //   });
-    // });
-
-    // it("should reserve product variants added to cart", function () {
-    //   let product = Factory.create("product");
-    //   let cartId = Factory.create("cart")._id;
-    //   let productId = product._id;
-    //   let quantity = product.variants[0].inventoryQuantity;
-    //   let variantData = product.variants[0];
-    //   expect(_.size(product.variants)).toEqual(1);
-    //   // create some inventory to reserve
-    //   spyOn(ReactionCore, "hasPermission").and.returnValue(true);
-    //
-    //   //Setup a spy to watch for calls to Inventory.insert
-    //   spyOn(ReactionCore.Collections.Inventory, "insert");
-    //   spyOn(ReactionCore.Collections.Cart, "update");
-    //   Meteor.call("inventory/register", product);
-    //   expect(ReactionCore.Collections.Inventory.insert).toHaveBeenCalled();
-    //
-    //   // add to cart (expect to reserve)
-    //   Meteor.call("cart/addToCart", cartId, productId, variantData, quantity);
-    //   expect(ReactionCore.Collections.Cart.update).toHaveBeenCalled();
-    //
-    //   // fetch reserved inventory
-    //   console.log("productId", productId);
-    //   console.log("variantId", product.variants[0]._id);
-    //   console.log("orderId", cartId);
-    //
-    //   let reservedInventory = ReactionCore.Collections.Inventory.find({
-    //     "workflow.status": "reserved"
-    //   }).count();
-    //   console.log('reservedInventory', reservedInventory);
-    //   expect(reservedInventory).toEqual(quantity);;
-    // });
-
-    //
-    // it("should remove inventory reservation when removed cart", function (
-    //   done) {
-    //   done();
-    // });
-    //
-
-    //
-    // it("should converted backordered inventory to reserved when inventory available", function (
-    //   done) {
-    //   done();
-    // });
-    //
-    // it("should update sold inventory on product and inventory when order fulfilled", function (
-    //   done) {
-    //   done();
-    // });
-    //
-    // it("should make reserved inventory available when cart deleted", function (
-    //   done) {
-    //   done();
-    // });
-    //
-    // it("should update cart reservations when product sold out", function (
-    //   done) {
-    //   done();
-    // });
-    //
-    // it("should send inventory notification when low stock on product", function (
-    //   done) {
-    //   done();
-    // });
   });
 });
