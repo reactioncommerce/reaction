@@ -596,8 +596,8 @@ taxCalc.reportRefund = function (order, refundAmount, callback) {
   const baseUrl = getUrl();
   const requestUrl = `${baseUrl}transactions/create`;
   const returnAmount = refundAmount * -1;
-  const orderDate = moment(order.createdAt).format();
-  const refundDate = moment().format();
+  const orderDate = moment(order.createdAt);
+  const refundDate = moment();
   const refundReference = `${order.cartId}:${refundDate}`;
   const  lineItems = {
     number: "01",
@@ -611,7 +611,6 @@ taxCalc.reportRefund = function (order, refundAmount, callback) {
     code: refundReference,
     commit: true,
     customerCode: order._id,
-    taxDate: orderDate,
     date: refundDate,
     currencyCode: currencyCode,
     addresses: {
@@ -634,6 +633,13 @@ taxCalc.reportRefund = function (order, refundAmount, callback) {
     lines: [lineItems]
   };
 
+  if (orderDate.diff(refundDate, "days") !== 0) {
+    returnInvoice.taxOverride = {
+      type: "TaxDate",
+      taxDate: orderDate.format(),
+      reason: "Refunded after order placed"
+    };
+  }
 
   const result = avaPost(requestUrl, { data: returnInvoice });
   return callback(result.data);
