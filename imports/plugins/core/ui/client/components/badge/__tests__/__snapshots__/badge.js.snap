@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Badge snapshot test 1`] = `
+<span
+  className="rui badge badge-small badge-default"
+  style={
+    Object {
+      "display": "inline-flex",
+    }
+  }
+>
+  <Translation
+    defaultValue="Badge Label"
+  />
+</span>
+`;
