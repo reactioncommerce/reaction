@@ -6,38 +6,21 @@ class SearchModal extends Component {
   static propTypes = {
     handleChange: PropTypes.func,
     handleClick: PropTypes.func,
-    siteName: PropTypes.string
+    siteName: PropTypes.string,
+    tags: PropTypes.func
   }
 
-  // state = {
-  //   value: ""
-  //   className: "search-type-option",
-  //   active: false
-  // }
+  state = {
+    tags: []
+  }
 
-  // onChange = (event, value) => {
-  //   this.setState({
-  //     value: value
-  //   });
-  // }
-
-  // onClick = () => {
-  //   this.setState({
-  //     value: ""
-  //   });
-  // }
-
-  // handleToggle = () => {
-  //   const classNames = classnames({
-  //     "search-type-active": true
-  //   }, this.state.className);
-
-  //   console.log("message", classNames);
-
-  //   this.setState({
-  //     className: classNames
-  //   });
-  // }
+  componentWillReceiveProps(nextProps) {
+    if (this.props.tags()) {
+      this.setState({
+        tags: this.props.tags()
+      });
+    }
+  }
 
   renderSearchInput() {
     return (
@@ -98,7 +81,7 @@ class SearchModal extends Component {
         <p className="rui suggested-tags" data-i18n="search.suggestedTags">Suggested tags</p>
         <div className="rui search-tags">
           {this.props.tags().map((tag) => (
-            <span className="rui search-tag">{tag.name}</span>
+            <span className="rui search-tag" key={tag._id}>{tag.name}</span>
           ))}
         </div>
       </div>
