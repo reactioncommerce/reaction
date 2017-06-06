@@ -39,16 +39,19 @@ fi
 
 
 # Master branch deployment (only runs when a version git tag exists - syntax: "v1.2.3")
-# The git tag is available in $CIRCLE_TAG
-VERSION_REGEX="/v[0-9]+(\.[0-9]+)*/"
+if [[ "$CIRCLE_BRANCH" == "master" ]]; then
+  VERSION=$(git describe --tags | grep "^v[0-9]\+\.[0-9]\+\.[0-9]\+$")
 
-if [[ "$CIRCLE_BRANCH" == "master" && "$CIRCLE_TAG" =~ $VERSION_REGEX ]]; then
-  DOCKER_NAMESPACE=${DOCKER_NAMESPACE:-"reactioncommerce/reaction"}
+  if [[ "$VERSION" ]]; then
+    DOCKER_NAMESPACE=${DOCKER_NAMESPACE:-"reactioncommerce/reaction"}
 
-  docker tag $DOCKER_NAMESPACE:latest $DOCKER_NAMESPACE:$CIRCLE_TAG
+    docker tag $DOCKER_NAMESPACE:latest $DOCKER_NAMESPACE:$VERSION
 
-  docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+    docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
 
-  docker push $DOCKER_NAMESPACE:$CIRCLE_TAG
-  docker push $DOCKER_NAMESPACE:latest
+    docker push $DOCKER_NAMESPACE:$VERSION
+    docker push $DOCKER_NAMESPACE:latest
+  else
+    echo "On the master branch, but no version tag was found. Skipping image deployment."
+  fi
 fi

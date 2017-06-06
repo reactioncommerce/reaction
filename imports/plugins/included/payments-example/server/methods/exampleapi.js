@@ -3,7 +3,7 @@
 // And is called so that it can be stubbed out for testing. This would be a library
 // like Stripe or Authorize.net usually just included with a NPM.require
 
-ThirdPartyAPI = {
+const ThirdPartyAPI = {
   authorize: function (transactionType, cardData, paymentData) {
     if (transactionType === "authorize") {
       const results = {
@@ -64,7 +64,7 @@ export const cardSchema = new SimpleSchema({
   type: { type: String }
 });
 
-paymentDataSchema = new SimpleSchema({
+export const paymentDataSchema = new SimpleSchema({
   total: { type: String },
   currency: { type: String }
 });

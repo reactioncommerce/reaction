@@ -31,7 +31,7 @@ function enabledPayments() {
     provides: "paymentMethod",
     enabled: true
   });
-  for (app of apps) {
+  for (const app of apps) {
     if (app.enabled === true) enabledPaymentsArr.push(app);
   }
   return enabledPaymentsArr;

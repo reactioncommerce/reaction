@@ -14,7 +14,7 @@ function cartShippingQuotes(currentCart) {
     if (cart.shipping) {
       for (const shipping of cart.shipping) {
         if (shipping.shipmentQuotes) {
-          for (quote of shipping.shipmentQuotes) {
+          for (const quote of shipping.shipmentQuotes) {
             shipmentQuotes.push(quote);
           }
         }
@@ -48,7 +48,7 @@ function enabledShipping() {
     provides: "shippingSettings",
     enabled: true
   });
-  for (app of apps) {
+  for (const app of apps) {
     if (app.enabled === true) enabledShippingArr.push(app);
   }
   return enabledShippingArr;
@@ -89,7 +89,7 @@ Template.coreCheckoutShipping.helpers({
     const self = this;
     const shipmentMethods = cartShipmentMethods();
 
-    for (method of shipmentMethods) {
+    for (const method of shipmentMethods) {
       // if there is already a selected method, set active
       if (_.isEqual(self.method, method)) {
         return "active";

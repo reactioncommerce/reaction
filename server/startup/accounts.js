@@ -172,7 +172,7 @@ export default function () {
   Accounts.onLogin((opts) => {
     // run onLogin hooks
     // (the options object must be returned by all callbacks)
-    options = Hooks.Events.run("onLogin", opts);
+    const options = Hooks.Events.run("onLogin", opts);
 
     // remove anonymous role
     // all users are guest, but anonymous user don't have profile access
