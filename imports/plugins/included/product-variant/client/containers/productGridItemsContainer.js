@@ -123,8 +123,18 @@ class ProductGridItemsContainer extends Component {
   }
 
   onClick = (event) => {
-    event.preventDefault();
-    console.log("I WAS CLICKED");
+    const product = this.props.product;
+
+    if (Reaction.hasPermission("createProduct") && Reaction.isPreview() === false) {
+      event.preventDefault();
+    } else {
+      event.preventDefault();
+      const handle = product.__published && product.__published.handle || product.handle;
+
+      Reaction.Router.go("product", {
+        handle: handle
+      });
+    }
   }
 
   render() {
