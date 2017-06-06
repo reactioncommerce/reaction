@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import moment from "moment";
-import { ClickToCopy } from "/imports/plugins/core/ui/client/components";
-import { Badge } from "/imports/plugins/core/ui/client/components";
+import { Badge, ClickToCopy } from "/imports/plugins/core/ui/client/components";
 
 class OrderSummary extends Component {
   static propTypes = {
