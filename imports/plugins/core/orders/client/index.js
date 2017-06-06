@@ -1,7 +1,7 @@
 import { registerComponent } from "/imports/plugins/core/layout/lib/components";
 
-import "./templates/details/detail.html";
-import "./templates/details/detail.js";
+// import "./templates/details/detail.html";
+// import "./templates/details/detail.js";
 
 import "./templates/list/items.html";
 import "./templates/list/items.js";
@@ -17,7 +17,7 @@ import "./templates/orderPage/details.js";
 import "./templates/orderPage/orderPage.html";
 import "./templates/orderPage/orderPage.js";
 
-import "./templates/social/orderSocial.html";
+// import "./templates/social/orderSocial.html";
 
 import "./templates/workflow/orderCompleted.html";
 import "./templates/workflow/orderSummary.html";
