@@ -5,6 +5,7 @@ import { Products, Tags } from "/lib/collections";
 import { Session } from "meteor/session";
 import { Template } from "meteor/templating";
 import { ITEMS_INCREMENT } from "/client/config/defaults";
+import ProductGridContainer from "../../containers/productGridContainer";
 
 /**
  * loadMoreProducts
@@ -156,6 +157,13 @@ Template.products.helpers({
     }
 
     return false;
+  },
+
+  productGrid() {
+    return {
+      component: ProductGridContainer,
+      ...Template.instance()
+    };
   }
 });
 
