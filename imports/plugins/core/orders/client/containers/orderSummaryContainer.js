@@ -109,11 +109,11 @@ class OrderSummaryContainer extends Component {
           expanded={true}
         >
           <CardHeader
-            actAsExpander={true}
-            i18nKeyTitle="dsfasdfsf"
+            actAsExpander={false}
+            i18nKeyTitle="admin.orderWorkflow.summary.cardTitle"
             title="Summary"
           />
-          <CardBody expandable={true}>
+        <CardBody expandable={false}>
             <OrderSummary
               {...this.props}
               dateFormat={this.dateFormat}
