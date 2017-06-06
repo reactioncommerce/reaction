@@ -78,23 +78,29 @@ export function getMailConfig() {
   if (mailString) {
     // parse the url
     const parsedUrl = url.parse(mailString);
-    const creds = parsedUrl.auth.split(":");
+    const creds = !!parsedUrl.auth && parsedUrl.auth.split(":");
     parsedUrl.port = Number(parsedUrl.port);
 
     Logger.debug(`Using ${parsedUrl.hostname} to send email`);
 
     // create a nodemailer config from the SMTP url string
-    return {
+    const config = {
       host: parsedUrl.hostname,
       port: parsedUrl.port,
       // since the port is casted to number above
       secure: parsedUrl.port === 465,
-      auth: {
-        user: creds[0],
-        pass: creds[1]
-      },
       logger: process.env.EMAIL_DEBUG === "true"
     };
+
+    // add user/pass to the config object if they were found
+    if (!!creds) {
+      config.auth = {
+        user: creds[0],
+        pass: creds[1]
+      };
+    }
+
+    return config;
   }
 
   // check for mail settings in the database

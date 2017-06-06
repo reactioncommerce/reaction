@@ -54,6 +54,7 @@
       "args": "after-used"
     }],
     "no-use-before-define": [2, "nofunc"], // http://eslint.org/docs/rules/no-use-before-define
+    "no-implicit-globals": 2, // http://eslint.org/docs/rules/no-implicit-globals
 
     /**
      * Possible errors

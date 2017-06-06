@@ -1,3 +1,6 @@
+import { Meteor } from "meteor/meteor";
+import Alerts from "./inlineAlerts";
+
 /**
  * inlineAlert helpers
  */
