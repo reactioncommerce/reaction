@@ -1,53 +1,32 @@
 import React, { Component, PropTypes } from "react";
-import moment from "moment";
-import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { composeWithTracker } from "/lib/api/compose";
-import { Orders } from "/lib/collections";
-import { i18next, Reaction } from "/client/api";
-import OrderSummary from "../components/orderSummary";
-
-
-
-
-
 import { Media } from "/lib/collections";
+import { Reaction } from "/client/api";
 import { Loading } from "/imports/plugins/core/ui/client/components";
 import OrdersList from "../components/ordersList.js";
+import {
+  PACKAGE_NAME,
+  ORDER_LIST_FILTERS_PREFERENCE_NAME,
+  ORDER_LIST_SELECTED_ORDER_PREFERENCE_NAME
+} from "../../lib/constants";
+
 
 class OrdersListContainer extends Component {
   static propTypes = {
     invoice: PropTypes.object,
+    orders: PropTypes.object,
     uniqueItems: PropTypes.array
   }
 
   constructor(props) {
     super(props);
-    this.state = {
-      isClosed: false
-    };
 
     this.handleClick = this.handleClick.bind(this);
-    this.isExpanded = this.isExpanded.bind(this);
-    this.handleClose = this.handleClose.bind(this);
     this.handleDisplayMedia = this.handleDisplayMedia.bind(this);
   }
 
-
-  isExpanded = (itemId) => {
-    if (this.state[`item_${itemId}`]) {
-      return true;
-    }
-    return false;
-  }
-
-  handleClose = (itemId) => {
-    this.setState({
-      [`item_${itemId}`]: false
-    });
-  }
-
-  handleClick = (order) => {
+  handleClick = (order, startWorkflow = true) => {
     Reaction.setActionViewDetail({
       label: "Order Details",
       i18nKeyLabel: "orderWorkflow.orderDetails",
@@ -59,9 +38,12 @@ class OrdersListContainer extends Component {
       },
       template: "coreOrderWorkflow"
     });
-    // this.setState({
-    //   [`item_${itemId}`]: true
-    // });
+
+    if (startWorkflow === true) {
+      Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "processing", order);
+      Reaction.setUserPreferences(PACKAGE_NAME, ORDER_LIST_FILTERS_PREFERENCE_NAME, "processing");
+      Reaction.setUserPreferences(PACKAGE_NAME, ORDER_LIST_SELECTED_ORDER_PREFERENCE_NAME, order._id);
+    }
   }
 
   /**

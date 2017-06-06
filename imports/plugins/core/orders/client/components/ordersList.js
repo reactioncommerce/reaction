@@ -1,8 +1,9 @@
 import React, { Component, PropTypes } from "react";
+import classnames from "classnames/dedupe";
 import Avatar from "react-avatar";
 import moment from "moment";
-import { Reaction } from "/client/api";
-import { Badge, ClickToCopy, Translation } from "/imports/plugins/core/ui/client/components";
+import { formatPriceString } from "/client/api";
+import { Badge, ClickToCopy, Icon, Translation } from "/imports/plugins/core/ui/client/components";
 import ProductImage from "./productImage";
 
 class OrdersList extends Component {
@@ -37,23 +38,27 @@ class OrdersList extends Component {
   /**
    * Shipping Badge
    * TODO: any logic here, we don't have shipping status changes at the moment
+   * @param  {Object} order object containing info for order and coreOrderWorkflow
    * @return {string} A string containing the type of Badge
    */
-  shippingBadgeStatus() {
+  shippingBadgeStatus(order) {
     return "basic";
   }
 
   renderOrderButton(order) {
-    const { displayMedia, handleClick } = this.props;
+    const classes = classnames({
+      "rui": true,
+      "btn": true,
+      "btn-success": order.workflow.status === "new"
+    });
 
     return (
-      <button className="btn btn-success" data-event-action="startProcessingOrder">Start</button>
+      <button className={classes} data-event-action="startProcessingOrder"><Icon icon="fa fa-chevron-right" /></button>
     );
   }
 
   renderOrderInfo(order) {
     const { displayMedia } = this.props;
-
 
     return (
       <div className="order-info">
@@ -74,8 +79,7 @@ class OrdersList extends Component {
           </span>
 
           <span className="order-data order-data-total">
-            <strong>Total: </strong>
-            {order.billing[0].invoice.total}
+            <strong>Total: {formatPriceString(order.billing[0].invoice.total)}</strong>
           </span>
         </div>
 
@@ -137,12 +141,12 @@ class OrdersList extends Component {
 
     return (
       <div className="rui card order">
-        <div className="content" onClick={() => handleClick(order)}>
+        <div className="content" onClick={() => handleClick(order, false)}>
           {this.renderShipmentInfo(order)}
           {this.renderOrderInfo(order)}
         </div>
-        <div className="controls">
-          {this.renderOrderButton()}
+        <div className="controls" onClick={() => handleClick(order)}>
+          {this.renderOrderButton(order)}
         </div>
       </div>
     );
