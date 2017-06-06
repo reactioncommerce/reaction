@@ -18,7 +18,7 @@ Reaction.registerPackage({
     route: "/cart/completed/:_id?",
     name: "cart/completed",
     template: "cartCompleted",
-    workflow: "coreCartWorkflow"
+    workflow: "coreCartCompletedWorkflow"
   }],
   layout: [{
     layout: "coreLayout",
@@ -71,5 +71,21 @@ Reaction.registerPackage({
     container: "checkout-steps-side",
     audience: ["guest", "anonymous"],
     position: "5"
+  }, {
+    layout: "coreLayout",
+    workflow: "coreCartCompletedWorkflow",
+    collection: "Orders",
+    theme: "default",
+    enabled: true,
+    structure: {
+      template: "cartCompleted",
+      layoutHeader: "checkoutHeader",
+      layoutFooter: "",
+      notFound: "notFound",
+      dashboardHeader: "",
+      dashboardControls: "dashboardControls",
+      dashboardHeaderControls: "",
+      adminControlsFooter: "adminControlsFooter"
+    }
   }]
 });

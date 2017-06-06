@@ -9,7 +9,7 @@ Reaction.registerPackage({
     route: "/tag/:slug?",
     name: "tag",
     template: "products",
-    workflow: "coreProductWorkflow"
+    workflow: "coreProductListWorkflow"
   }, {
     route: "/products/createProduct",
     name: "createProduct",
@@ -52,6 +52,22 @@ Reaction.registerPackage({
       layoutFooter: "",
       notFound: "productNotFound",
       dashboardHeader: "gridPublishControls",
+      dashboardControls: "productDetailDashboardControls",
+      dashboardHeaderControls: "",
+      adminControlsFooter: "adminControlsFooter"
+    }
+  }, {
+    layout: "coreLayout",
+    workflow: "coreProductListWorkflow",
+    collection: "Products",
+    theme: "default",
+    enabled: true,
+    structure: {
+      template: "products",
+      layoutHeader: "layoutHeader",
+      layoutFooter: "layoutFooter",
+      notFound: "notFound",
+      dashboardHeader: "",
       dashboardControls: "productDetailDashboardControls",
       dashboardHeaderControls: "",
       adminControlsFooter: "adminControlsFooter"
