@@ -29,6 +29,10 @@ class PublishContainer extends Component {
           });
 
           Alerts.toast(message, "success");
+
+          if (this.props.onPublishSuccess) {
+            this.props.onPublishSuccess(result);
+          }
         } else {
           Alerts.toast(error.message, "error");
         }
