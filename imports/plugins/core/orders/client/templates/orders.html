@@ -1,126 +1,13 @@
 <template name="orders">
   {{#if hasPermission 'orders'}}
-<div class="orders-list-tabs">
-  {{> React FilterComponent}}
-</div>
-    <div class="container-fluid-sm">
-      {{#if orders}}
-        {{#each order in orders}}
-          {{> ordersListItem (itemProps order)}}
-        {{/each}}
-
-        {{#if orderSubscription}}
-          {{#if hasMoreOrders}}
-            <button class="btn btn-primary show-more-orders" type="button" data-i18n="order.showMore">Show More</button>
-          {{/if}}
-        {{else}}
-          <div class="spinner-container">
-            <div class="spinner"></div>
-          </div>
-        {{/if}}
-
-      {{else}}
-        <div class="empty-view-message">
-          <i class="fa fa-sun-o"></i>
-          <p data-i18n="order.ordersNotFound">No Orders Found</p>
-        </div>
-      {{/if}}
+    <div class="orders-list-tabs">
+      {{> React FilterComponent}}
+    </div>
+    <div>
+      {{> React
+        OrdersListComponent
+        orders=orders
+      }}
     </div>
   {{/if}}
-</template>
-
-<template name="ordersListItem">
-  <div class="rui card order {{activeClassname order._id}}" data-event-action="selectOrder">
-    <div class="content">
-      <div class="order-details">
-        <div class="order-detail-item address">
-          {{> orderDetail order}}
-        </div>
-        <div class="order-detail-item summary">
-          {{> ordersListSummary order=order currencyFormat=currencyFormat}}
-        </div>
-        <div class="order-detail-item status">
-          {{> orderStatusDetail order}}
-        </div>
-      </div>
-
-      <div class="order-panel-items">
-        {{> ordersListItems order=order currencyFormat=currencyFormat}}
-      </div>
-    </div>
-
-    <div class="controls">
-      {{#if orderIsNew order}}
-        <button class="btn btn-success" data-event-action="startProcessingOrder">Start</button>
-      {{else}}
-        <button><i class="fa fa-angle-right fa-fw"></i></button>
-      {{/if}}
-    </div>
-  </div>
-</template>
-
-
-<template name="orderStatusDetail">
-  <div class="col-xs-8">
-    <div>
-      <i class="fa fa-clock-o fa-fw"></i>
-      <span>{{orderAge}}</span>
-      <span>{{dateFormat createdAt format="MMM D"}}</span>
-    </div>
-    <div>
-      <i class="fa fa-shopping-cart fa-fw"></i>
-      <span>{{_id}}</span>
-    </div>
-
-    {{#each billing}}
-        {{#if condition paymentMethod.method 'eq' "discount"}}
-          <div>
-            <i class="fa fa-minus fa-fw"></i>
-            {{paymentMethod.code}}
-            <span data-i18n="discounts.applied">applied</span>
-          </div>
-        {{/if}}
-
-        {{#if condition paymentMethod.method 'eq' "rate"}}
-          <div>
-            <i class="fa fa-money fa-fw"></i>
-            {{paymentMethod.amount}}
-            <span data-i18n="discounts.applied">applied</span>
-          </div>
-        {{/if}}
-
-        {{#if condition paymentMethod.method 'eq' "credit"}}
-          <div>
-            <i class="fa fa-credit-card fa-fw"></i>
-            {{paymentMethod.storedCard}} ({{formatAmount paymentMethod.amount}})
-          </div>
-        {{/if}}
-
-        {{#if condition paymentMethod.method 'eq' "shipping"}}
-          <div>
-            <i class="fa fa-minus fa-fw"></i>
-            {{paymentMethod.code}} - ({{paymentMethod.amount}})
-            <span data-i18n="discounts.applied">applied</span>
-          </div>
-        {{/if}}
-
-    {{/each}}
-
-    <div>
-      <i class="fa fa-truck"></i>
-      {{shipmentMethod.carrier}} - {{shipmentMethod.label}}
-      <span class="badge badge-{{shipmentStatus.status}}">{{shipmentStatus.label}}</span>
-    </div>
-    {{#if shipmentTracking}}
-      <div>
-        <i class="fa fa-barcode"></i>
-        <a href="#">{{shipmentTracking}}</a>
-      </div>
-    {{/if}}
-  </div>
-</template>
-
-
-<template name="orderViewButton">
-  <button class="btn btn-success" type="button"><i class="fa fa-edit"></i></button>
 </template>
