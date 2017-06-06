@@ -1,5 +1,5 @@
 <template name="shopSelect">
-  {{#if sellerShops}}
+  {{#if shops}}
     <div class="shops">
       <div class="dropdown" role="shops">
         <div class="dropdown-toggle"
@@ -8,17 +8,15 @@
            aria-haspopup="true"
            aria-expanded="false">
 
-          {{#if isChildShop}}
-            {{currentShopName}}
-          {{else if isOwnerShop}}
-            <span data-i18n="app.myShop">My Shop</span>
+          {{#if isOwnerShop}}
+            <span data-i18n="app.myShop">* {{currentShopName}}</span>
           {{else}}
-            <span data-i18n="app.shops">Shops</span>
+            <span data-i18n="app.shops">{{currentShopName}}</span>
           {{/if}}
           <span class="caret"></span>
         </div>
         <ul class="dropdown-menu" role="menu">
-          {{#each sellerShops}}
+          {{#each shops}}
             <li class="{{class}}">
               <a class="shop" role="menuitem">{{name}}</a>
             </li>

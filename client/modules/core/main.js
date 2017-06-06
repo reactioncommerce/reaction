@@ -30,12 +30,22 @@ export default {
     return Tracker.autorun(() => {
       let domain;
       let shop;
-
+      let route;
+      Router.watchPathChange();
       if (this.Subscriptions.Shops.ready()) {
-        domain = Meteor.absoluteUrl().split("/")[2].split(":")[0];
-        shop = Shops.findOne({
-          domains: domain
-        });
+        if (Router) {
+          route = Router.current();
+        }
+        if (route && route.params && route.params.shopId && route.params.shopId.length > 0) {
+          shop = Shops.findOne({
+            _id: route.params.shopId
+          });
+        } else {
+          domain = Meteor.absoluteUrl().split("/")[2].split(":")[0];
+          shop = Shops.findOne({
+            domains: domain
+          });
+        }
 
         if (shop) {
           this.shopId = shop._id;

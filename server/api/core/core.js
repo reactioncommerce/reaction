@@ -148,7 +148,7 @@ export default {
     const domain = this.getDomain();
     const cursor = Shops.find({
       domains: domain
-    }, { limit: 1 });
+    });
     if (!cursor.count()) {
       Logger.debug(domain, "Add a domain entry to shops for ");
     }
