@@ -31,15 +31,12 @@ class SearchModalContainer extends Component {
 
   getTags() {
     const searchQuery = this.state.value;
-    console.log("searchQuery", searchQuery);
-    console.log("subscription.ready", getQuery(searchQuery).ready());
-    if (searchQuery && getQuery(searchQuery).ready()) {
+    if (getQuery(searchQuery).ready()) {
       const productHashtags = getProducts();
       const tagSearchResults = Collections.Tags.find({
         _id: { $in: productHashtags }
       }).fetch();
 
-      console.log("tagSearchResults", tagSearchResults);
       return tagSearchResults;
     }
     return false;
@@ -66,8 +63,6 @@ function getSiteName() {
 }
 
 function getQuery(searchQuery) {
-  console.log("meteor", Meteor);
-  console.log("meteor.subscribe", Meteor.subscribe());
   return Meteor.subscribe("SearchResults", "products", searchQuery, []);
 }
 
@@ -87,7 +82,6 @@ function getProducts() {
       }
     }
   }
-  console.log("hashtags", hashtags);
   return hashtags;
 }
 
