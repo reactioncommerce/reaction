@@ -4,6 +4,9 @@ import React, { Component, PropTypes } from "react";
 import { Reaction } from "/client/api";
 import { composeWithTracker } from "/lib/api/compose";
 import ProductGrid from "../components/productGrid";
+import { DragDropProvider } from "/imports/plugins/core/ui/client/providers";
+
+
 
 class ProductGridContainer extends Component {
   static propTypes = {
@@ -48,10 +51,6 @@ class ProductGridContainer extends Component {
     }
   }
 
-  componentDidMount() {
-    // sortable item init
-  }
-
   handleSelectProductItem = (event) => {
     let selectedProducts = Session.get("productGrid/selectedProducts");
 
@@ -85,12 +84,20 @@ class ProductGridContainer extends Component {
     }
   }
 
+  onMove = (dragIndex, hoverIndex) => {
+    console.log('dragging...', { dragIndex, hoverIndex });
+  }
+
   render() {
     return (
-      <ProductGrid
-        products={this.state.products}
-        itemSelectHandler={this.handleSelectProductItem}
-      />
+      <DragDropProvider>
+        <ProductGrid
+          products={this.state.products}
+          onMove={this.onMove}
+          onDrag={this.onMove}
+          itemSelectHandler={this.handleSelectProductItem}
+        />
+      </DragDropProvider>
     );
   }
 }
