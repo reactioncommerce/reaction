@@ -13,11 +13,6 @@ class OrderSummary extends Component {
     tracking: PropTypes.func
   }
 
-  orderLink() {
-    const orderId = this.props.order._id;
-    return orderId;
-  }
-
   badgeStatus() {
     const orderStatus = this.props.order.workflow.status;
 
@@ -34,6 +29,11 @@ class OrderSummary extends Component {
     return "default";
   }
 
+  orderLink() {
+    const orderId = this.props.order._id;
+    return orderId;
+  }
+
   truncateId() {
     const orderId = this.props.order._id;
     const shortId = orderId.slice(-5);
@@ -47,15 +47,9 @@ class OrderSummary extends Component {
     return (
       <div>
         <div className="order-summary-form-group bg-info" style={{ lineHeight: 3, marginTop: -15, marginRight: -15, marginLeft: -15 }}>
-          <strong style={{ marginLeft: 15 }}>{profileShippingAddress.fullName} </strong>&nbsp;{profileShippingAddress.city}, {profileShippingAddress.region}
-          <div className="invoice-details" style={{ marginRight: 15, position: "relative", cursor: "pointer" }}>
-            <strong>ID </strong>
-            <ClickToCopy
-              copyToClipboard={this.orderLink()}
-              displayText={this.truncateId()}
-              i18nKeyTooltip="admin.orderWorkflow.summary.copyOrderLink"
-              tooltip="Copy Order Link"
-            />
+          <strong style={{ marginLeft: 15 }}>{profileShippingAddress.fullName}</strong>
+          <div className="invoice-details" style={{ marginRight: 15, position: "relative" }}>
+            {order.email}
           </div>
         </div>
 
@@ -68,6 +62,18 @@ class OrderSummary extends Component {
                 label={order.workflow.status}
                 status={this.badgeStatus()}
               />
+            </div>
+
+            <div className="order-summary-form-group">
+              <strong data-i18n="order.orderId">Order ID</strong>
+              <div className="invoice-details" style={{ cursor: "pointer" }}>
+                <ClickToCopy
+                  copyToClipboard={this.orderLink()}
+                  displayText={order._id}
+                  i18nKeyTooltip="admin.orderWorkflow.summary.copyOrderLink"
+                  tooltip="Copy Order Link"
+                />
+              </div>
             </div>
 
             <div className="order-summary-form-group">
