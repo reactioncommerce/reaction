@@ -6,6 +6,7 @@ import GridItemControlsContainer from "../containers/gridItemControlsContainer";
 class ProductGridItems extends Component {
   static propTypes = {
     additionalMedia: PropTypes.func,
+    connectDragSource: PropTypes.func,
     displayPrice: PropTypes.func,
     isMediumWeight: PropTypes.func,
     isSelected: PropTypes.func,
