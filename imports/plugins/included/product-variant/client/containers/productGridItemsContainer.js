@@ -24,6 +24,8 @@ class ProductGridItemsContainer extends Component {
     this.additionalProductMedia = this.additionalProductMedia.bind(this);
     this.isMediumWeight = this.isMediumWeight.bind(this);
     this.displayPrice = this.displayPrice.bind(this);
+    this.onDoubleClick = this.onDoubleClick.bind(this);
+    this.onClick = this.onClick.bind(this);
   }
 
   productPath = () => {
@@ -105,6 +107,26 @@ class ProductGridItemsContainer extends Component {
     }
   }
 
+  onDoubleClick = () => {
+    const product = this.props.product;
+    const handle = product.__published && product.__published.handle || product.handle;
+
+    Reaction.Router.go("product", {
+      handle: handle
+    });
+
+    Reaction.setActionView({
+      i18nKeyLabel: "productDetailEdit.productSettings",
+      label: "Product Settings",
+      template: "ProductAdmin"
+    });
+  }
+
+  onClick = (event) => {
+    event.preventDefault();
+    console.log("I WAS CLICKED");
+  }
+
   render() {
     return (
       <ProductGridItems
@@ -118,6 +140,8 @@ class ProductGridItemsContainer extends Component {
         isMediumWeight={this.isMediumWeight}
         displayPrice={this.displayPrice}
         itemSelectHandler={this.props.itemSelectHandler}
+        onDoubleClick={this.onDoubleClick}
+        onClick={this.onClick}
       />
     );
   }

@@ -11,10 +11,24 @@ class ProductGridItems extends Component {
     isSelected: PropTypes.func,
     itemSelectHandler: PropTypes.func,
     media: PropTypes.func,
+    onClick: PropTypes.func,
+    onDoubleClick: PropTypes.func,
     pdpPath: PropTypes.func,
     positions: PropTypes.func,
     product: PropTypes.object,
     weightClass: PropTypes.func
+  }
+
+  handleDoubleClick = (event) => {
+    if (this.props.onDoubleClick) {
+      this.props.onDoubleClick(event);
+    }
+  }
+
+  handleClick = (event) => {
+    if (this.props.onClick) {
+      this.props.onClick(event);
+    }
   }
 
   renderPinned() {
@@ -78,6 +92,8 @@ class ProductGridItems extends Component {
           data-event-action="product-click"
           data-event-label="grid product click"
           data-event-value={this.props.product._id}
+          onDoubleClick={this.handleDoubleClick}
+          onClick={this.handleClick}
         >
           <div className="overlay">
             <div className="overlay-title">{this.props.product.title}</div>
@@ -103,6 +119,8 @@ class ProductGridItems extends Component {
           data-event-action="productClick"
           data-event-label="grid product click"
           data-event-value={this.props.product._id}
+          onDoubleClick={this.handleDoubleClick}
+          onClick={this.handleClick}
         >
           <div className={`product-primary-images ${this.renderVisible()}`}>
             {this.renderMedia()}
