@@ -15,7 +15,7 @@ import {
 class OrdersListContainer extends Component {
   static propTypes = {
     invoice: PropTypes.object,
-    orders: PropTypes.object,
+    orders: PropTypes.array,
     uniqueItems: PropTypes.array
   }
 
