@@ -10,11 +10,18 @@ class Badge extends Component {
 
   renderLabel() {
     if (this.props.label) {
+      if (typeof this.props.label === "string") {
+        return (
+          <Translation
+            defaultValue={this.props.label}
+            i18nKey={this.props.i18nKeyLabel}
+          />
+        );
+      }
       return (
-        <Translation
-          defaultValue={this.props.label}
-          i18nKey={this.props.i18nKeyLabel}
-        />
+        <span>
+          {this.props.label}
+        </span>
       );
     }
 
@@ -22,22 +29,14 @@ class Badge extends Component {
   }
 
   render() {
-    const {
-      status, badgeSize,
-
-      // Destructure these vars as they aren't valid as attributes on the HTML element button
-      label, i18nKeyLabel, // eslint-disable-line no-unused-vars
-
-      // Get the rest of the properties and put them in attrs
-      // these will most likely be HTML attributes
-      ...attrs
-    } = this.props;
+    const { status, badgeSize } = this.props;
 
     const classes = classnames({
       "rui": true,
       "badge": true,
       "badge-small": (badgeSize === null || badgeSize === undefined || badgeSize === "small"),
       "badge-large": badgeSize === "large",
+      "badge-basic": status ===  "basic",
       "badge-cta": status === "cta",
       "badge-danger": status === "danger",
       "badge-default": (status === null || status === undefined || status === "default"),
@@ -59,7 +58,7 @@ Badge.propTypes = {
   badgeSize: PropTypes.string,
   className: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   i18nKeyLabel: PropTypes.string,
-  label: PropTypes.string,
+  label: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   status: PropTypes.string
 };
 
