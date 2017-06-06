@@ -50,7 +50,8 @@ Template.shopSelect.helpers({
 Template.shopSelect.events({
   "click .shop"(event) {
     event.preventDefault();
-    Reaction.Router.go("shop", {
+    Reaction.setShopId(this._id);
+    Router.go("shop", {
       shopId: this._id
     });
   }

@@ -259,6 +259,12 @@ export default {
     return this.shopId;
   },
 
+  setShopId(id) {
+    if (id) {
+      this.shopId = id;
+    }
+  },
+
   getShopName() {
     return this.shopName;
   },
