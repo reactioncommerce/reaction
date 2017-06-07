@@ -8,7 +8,7 @@ class CartIconContainer extends Component {
   render() {
     return (
       <div>
-        <CartIcon {...this.props}/>
+        <CartIcon {...this.props} />
       </div>
     );
   }
