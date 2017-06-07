@@ -41,7 +41,7 @@ class OrdersList extends Component {
    * @param  {Object} order object containing info for order and coreOrderWorkflow
    * @return {string} A string containing the type of Badge
    */
-  shippingBadgeStatus(order) {
+  shippingBadgeStatus() {
     return "basic";
   }
 

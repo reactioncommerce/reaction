@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from "react";
-import { Reaction, formatPriceString } from "/client/api";
+import { formatPriceString } from "/client/api";
 import { IconButton, NumericInput, Translation } from "/imports/plugins/core/ui/client/components";
 
 class InvoiceActions extends Component {
