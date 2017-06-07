@@ -90,6 +90,7 @@
     "react-taco-table": "^0.5.0",
     "react-tether": "^0.5.6",
     "react-textarea-autosize": "^4.0.5",
+    "recompose": "^0.23.4",
     "shippo": "^1.2.0",
     "sortablejs": "^1.5.1",
     "stripe": "^4.16.0",

@@ -7,7 +7,7 @@ import ToolbarContainer from "/imports/plugins/core/dashboard/client/containers/
 import Toolbar from "/imports/plugins/core/dashboard/client/components/toolbar";
 import { ActionViewContainer, PackageListContainer } from "/imports/plugins/core/dashboard/client/containers";
 import { ActionView, ShortcutBar } from "/imports/plugins/core/dashboard/client/components";
-
+import Permission from "/imports/plugins/core/permissions/lib/permission"
 const ConnectedToolbarComponent = ToolbarContainer(Toolbar);
 const ConnectedAdminViewComponent = ActionViewContainer(ActionView);
 const ConnectedShortcutBarContainer = PackageListContainer(ShortcutBar);
@@ -94,6 +94,9 @@ class App extends Component {
         className={pageClassName}
         style={styles.customerApp}
       >
+        <Permission>
+          <div>{"LOLOL"}</div>
+        </Permission>
         {this.props.children}
       </div>
     );
