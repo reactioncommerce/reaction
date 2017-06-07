@@ -119,7 +119,6 @@ class ProductGridItems extends Component {
         <a className="product-grid-item-images"
           href={this.props.pdpPath()}
           data-event-category="grid"
-          data-event-action="productClick"
           data-event-label="grid product click"
           data-event-value={this.props.product._id}
           onDoubleClick={this.handleDoubleClick}

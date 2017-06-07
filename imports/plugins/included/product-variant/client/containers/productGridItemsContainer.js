@@ -130,6 +130,70 @@ class ProductGridItemsContainer extends Component {
 
     if (Reaction.hasPermission("createProduct") && Reaction.isPreview() === false) {
       event.preventDefault();
+
+      const isSelected = event.target.closest("li.product-grid-item.active");
+      const list = document.getElementById("product-grid-list");
+
+      if (isSelected) {
+        // If product is already selected, and you are single clicking WITH command key, things whould happen
+        if (event.metaKey || event.ctrlKey || event.shiftKey) {
+          let checkbox = list.querySelector(`input[type=checkbox][value="${product._id}"]`);
+          const items = document.querySelectorAll("li.product-grid-item");
+          const activeItems = document.querySelectorAll("li.product-grid-item.active");
+          const selected = activeItems.length;
+
+          if (event.shiftKey && selected > 0) {
+            const indexes = [
+              items.index(checkbox.parents("li.product-grid-item")),
+              items.index(activeItems[0]),
+              items.index(activeItems[selected - 1])
+            ];
+            for (let i = _.min(indexes); i <= _.max(indexes); i++) {
+              checkbox = $("input[type=checkbox]", items.get(i));
+              if (checkbox.checked === false) {
+                checkbox.checked === true;
+              }
+            }
+          } else {
+            checkbox.checked = !checkbox.checked;
+          }
+        }
+      } else {
+        if (event.metaKey || event.ctrlKey || event.shiftKey) {
+          let checkbox = list.querySelector(`input[type=checkbox][value="${product._id}"]`);
+          const items = document.querySelectorAll("li.product-grid-item");
+          const activeItems = document.querySelectorAll("li.product-grid-item.active");
+          const selected = activeItems.length;
+
+          if (event.shiftKey && selected > 0) {
+            const mama = document.querySelector(`li.product-grid-item[id="${product._id}"]`);
+            const indexes = [
+              items.index(mama),
+              items.index(activeItems[0]),
+              items.index(activeItems[selected - 1])
+            ];
+            for (let i = _.min(indexes); i <= _.max(indexes); i++) {
+              checkbox = $("input[type=checkbox]", items.get(i));
+              if (checkbox.checked === false) {
+                checkbox.checked === true;
+              }
+            }
+          } else {
+            checkbox.checked = !checkbox.checked;
+          }
+        } else {
+          const checkbox = list.querySelector(`input[type=checkbox][value="${product._id}"]`);
+          Session.set("productGrid/selectedProducts", [product._id]);
+          checkbox.checked = true;
+          Reaction.showActionView({
+            label: "Grid Settings",
+            i18nKeyLabel: "gridSettingsPanel.title",
+            template: "productSettings",
+            type: "product",
+            data: { products: [product] }
+          });
+        }
+      }
     } else {
       event.preventDefault();
       const handle = product.__published && product.__published.handle || product.handle;
@@ -167,4 +231,3 @@ function composer(props, onData) {
 
 const container = composeWithTracker(composer)(ProductGridItemsContainer);
 export default SortableItem("productGridItem", container);
-
