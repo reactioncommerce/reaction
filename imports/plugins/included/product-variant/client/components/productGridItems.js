@@ -6,6 +6,7 @@ import GridItemControlsContainer from "../containers/gridItemControlsContainer";
 class ProductGridItems extends Component {
   static propTypes = {
     additionalMedia: PropTypes.func,
+    canEdit: PropTypes.bool,
     connectDragSource: PropTypes.func,
     connectDropTarget: PropTypes.func,
     displayPrice: PropTypes.func,
@@ -107,39 +108,45 @@ class ProductGridItems extends Component {
   }
 
   render() {
-    return (
-      this.props.connectDropTarget(
-        this.props.connectDragSource(
-          <li
-            className={`product-grid-item ${this.renderPinned()} ${this.props.weightClass()} ${this.props.isSelected()}`}
-            data-id={this.props.product._id}
-            id={this.props.product._id}
-          >
-            <span className="product-grid-item-alerts" />
+    const productItem = (
+      <li
+        className={`product-grid-item ${this.renderPinned()} ${this.props.weightClass()} ${this.props.isSelected()}`}
+        data-id={this.props.product._id}
+        id={this.props.product._id}
+      >
+        <span className="product-grid-item-alerts" />
 
-            <a className="product-grid-item-images"
-              href={this.props.pdpPath()}
-              data-event-category="grid"
-              data-event-action="productClick"
-              data-event-label="grid product click"
-              data-event-value={this.props.product._id}
-              onDoubleClick={this.handleDoubleClick}
-              onClick={this.handleClick}
-            >
-              <div className={`product-primary-images ${this.renderVisible()}`}>
-                {this.renderMedia()}
-                {this.renderOverlay()}
-              </div>
+        <a className="product-grid-item-images"
+          href={this.props.pdpPath()}
+          data-event-category="grid"
+          data-event-action="productClick"
+          data-event-label="grid product click"
+          data-event-value={this.props.product._id}
+          onDoubleClick={this.handleDoubleClick}
+          onClick={this.handleClick}
+        >
+          <div className={`product-primary-images ${this.renderVisible()}`}>
+            {this.renderMedia()}
+            {this.renderOverlay()}
+          </div>
 
-              {this.renderAdditionalMedia()}
-            </a>
+          {this.renderAdditionalMedia()}
+        </a>
 
-            {this.renderNotices()}
-            {this.renderGridContent()}
-          </li>
-        )
-      )
+        {this.renderNotices()}
+        {this.renderGridContent()}
+      </li>
     );
+
+    if (this.props.canEdit) {
+      return (
+        this.props.connectDropTarget(
+          this.props.connectDragSource(productItem)
+        )
+      );
+    }
+
+    return productItem;
   }
 }
 

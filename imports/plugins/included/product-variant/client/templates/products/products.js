@@ -174,6 +174,7 @@ Template.products.helpers({
       component: ProductGridContainer,
       productsByKey: productsByKey || {},
       productIds: getIds({ tags: products }),
+      canEdit: Reaction.hasPermission("createProduct"),
       products
     };
   }
