@@ -1,22 +1,26 @@
 import _ from "lodash";
 import { Session } from "meteor/session";
 import React, { Component, PropTypes } from "react";
+import update from "react/lib/update";
 import { Reaction } from "/client/api";
 import { composeWithTracker } from "/lib/api/compose";
 import ProductGrid from "../components/productGrid";
 import { DragDropProvider } from "/imports/plugins/core/ui/client/providers";
 
-
-
 class ProductGridContainer extends Component {
   static propTypes = {
-    products: PropTypes.object
+    productIds: PropTypes.array,
+    products: PropTypes.array,
+    productsByKey: PropTypes.object
   }
 
   constructor(props) {
     super(props);
+
     this.state = {
-      products: props.products.get(),
+      products: props.products,
+      productsByKey: props.productsByKey,
+      productIds: props.productIds,
       initialLoad: true,
       slug: "",
       canLoadMoreProducts: false
@@ -85,7 +89,31 @@ class ProductGridContainer extends Component {
   }
 
   onMove = (dragIndex, hoverIndex) => {
-    console.log('dragging...', { dragIndex, hoverIndex });
+    const product = this.state.productIds[dragIndex];
+
+    console.log('dragging...', { dragIndex, hoverIndex, productIdonthatIndex: product });
+
+    const newState = update(this.state, {
+      productIds: {
+        $splice: [
+          [dragIndex, 1],
+          [hoverIndex, 0, product]
+        ]
+      }
+    });
+
+    console.log(JSON.stringify({ newStatebyId: newState.productIds }, null, 4));
+
+    this.setState(newState);
+  }
+
+  changeStateOnMove(dragStartIndex) {
+  }
+
+  updatecall() {
+    this.state.products.map((product, index) => {
+
+    });
     const productId = element.getAttribute("id");
     const position = {
       position: index,
@@ -98,13 +126,23 @@ class ProductGridContainer extends Component {
         throw new Meteor.Error(403, error);
       }
     });
+
+    // Set local state so the component does't have to wait for a round-trip
+    // to the server to get the updated list of variants
+    this.setState(newState, () => {
+      debounce(() => TagNavHelpers.onTagSort(this.state.tagIds), 500)(); // Save the updated positions
+    });
+  }
+
+  get products() {
+    return this.state.productIds.map((id) => this.state.productsByKey[id]);
   }
 
   render() {
     return (
       <DragDropProvider>
         <ProductGrid
-          products={this.state.products}
+          products={this.products}
           onMove={this.onMove}
           onDrag={this.onMove}
           itemSelectHandler={this.handleSelectProductItem}
