@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from "react";
-import { TacoTable } from "react-taco-table";
+import { Griddle } from "griddle-react";
 
 class SortableTable extends Component {
   render() {
