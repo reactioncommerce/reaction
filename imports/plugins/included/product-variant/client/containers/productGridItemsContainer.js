@@ -142,25 +142,21 @@ class ProductGridItemsContainer extends Component {
 
   render() {
     return (
-      this.props.connectDropTarget(
-        <div style={{ display: "inherit" }}>
-          <ProductGridItems
-            product={this.props.product}
-            pdpPath={this.productPath}
-            positions={this.positions}
-            weightClass={this.weightClass}
-            isSelected={this.isSelected}
-            media={this.productMedia}
-            additionalMedia={this.additionalProductMedia}
-            isMediumWeight={this.isMediumWeight}
-            displayPrice={this.displayPrice}
-            itemSelectHandler={this.props.itemSelectHandler}
-            onDoubleClick={this.onDoubleClick}
-            onClick={this.onClick}
-            {...this.props}
-          />
-        </div>
-      )
+      <ProductGridItems
+        product={this.props.product}
+        pdpPath={this.productPath}
+        positions={this.positions}
+        weightClass={this.weightClass}
+        isSelected={this.isSelected}
+        media={this.productMedia}
+        additionalMedia={this.additionalProductMedia}
+        isMediumWeight={this.isMediumWeight}
+        displayPrice={this.displayPrice}
+        itemSelectHandler={this.props.itemSelectHandler}
+        onDoubleClick={this.onDoubleClick}
+        onClick={this.onClick}
+        {...this.props}
+      />
     );
   }
 }

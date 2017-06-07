@@ -7,6 +7,7 @@ class ProductGridItems extends Component {
   static propTypes = {
     additionalMedia: PropTypes.func,
     connectDragSource: PropTypes.func,
+    connectDropTarget: PropTypes.func,
     displayPrice: PropTypes.func,
     isMediumWeight: PropTypes.func,
     isSelected: PropTypes.func,
@@ -107,34 +108,36 @@ class ProductGridItems extends Component {
 
   render() {
     return (
-      this.props.connectDragSource(
-        <li
-          className={`product-grid-item ${this.renderPinned()} ${this.props.weightClass()} ${this.props.isSelected()}`}
-          data-id={this.props.product._id}
-          id={this.props.product._id}
-        >
-          <span className="product-grid-item-alerts" />
-
-          <a className="product-grid-item-images"
-            href={this.props.pdpPath()}
-            data-event-category="grid"
-            data-event-action="productClick"
-            data-event-label="grid product click"
-            data-event-value={this.props.product._id}
-            onDoubleClick={this.handleDoubleClick}
-            onClick={this.handleClick}
+      this.props.connectDropTarget(
+        this.props.connectDragSource(
+          <li
+            className={`product-grid-item ${this.renderPinned()} ${this.props.weightClass()} ${this.props.isSelected()}`}
+            data-id={this.props.product._id}
+            id={this.props.product._id}
           >
-            <div className={`product-primary-images ${this.renderVisible()}`}>
-              {this.renderMedia()}
-              {this.renderOverlay()}
-            </div>
+            <span className="product-grid-item-alerts" />
 
-            {this.renderAdditionalMedia()}
-          </a>
+            <a className="product-grid-item-images"
+              href={this.props.pdpPath()}
+              data-event-category="grid"
+              data-event-action="productClick"
+              data-event-label="grid product click"
+              data-event-value={this.props.product._id}
+              onDoubleClick={this.handleDoubleClick}
+              onClick={this.handleClick}
+            >
+              <div className={`product-primary-images ${this.renderVisible()}`}>
+                {this.renderMedia()}
+                {this.renderOverlay()}
+              </div>
 
-          {this.renderNotices()}
-          {this.renderGridContent()}
-        </li>
+              {this.renderAdditionalMedia()}
+            </a>
+
+            {this.renderNotices()}
+            {this.renderGridContent()}
+          </li>
+        )
       )
     );
   }
