@@ -2,7 +2,7 @@
 
 exports[`Badge snapshot test 1`] = `
 <span
-  className="rui badge badge-small badge-default"
+  className="rui badge"
   style={
     Object {
       "display": "inline-flex",
@@ -10,7 +10,8 @@ exports[`Badge snapshot test 1`] = `
   }
 >
   <Translation
-    defaultValue="Badge Label"
+    defaultValue="Text to display"
+    i18nKey="path.to.i18n.key"
   />
 </span>
 `;

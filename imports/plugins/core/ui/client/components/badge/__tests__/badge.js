@@ -1,3 +1,6 @@
+/**
+ * Mock Translation component import, as it uses Meteor modules we have a hard time testing with Jest
+ */
 jest.mock("/imports/plugins/core/ui/client/components", () => {
   return {
     Translation(props) {
@@ -12,7 +15,7 @@ import { shallow } from "enzyme";
 import shallowToJSON from "enzyme-to-json";
 
 /**
- * Order Summary is a display only component
+ * Badge is a display only component
  * It receives props and displays them accordingly
  */
 
@@ -27,7 +30,11 @@ afterEach(() => {
 test("Badge snapshot test", () => {
   const component = shallow(
     <Badge
-      label="Badge Label"
+      badgeSize="Size of Badge"
+      className="Classes to apply to badge"
+      i18nKeyLabel="path.to.i18n.key"
+      label="Text to display"
+      status="Badge status"
     />
   );
   const tree = shallowToJSON(component);
