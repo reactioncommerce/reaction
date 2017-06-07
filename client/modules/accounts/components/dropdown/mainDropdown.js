@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { Reaction } from "/client/api";
 import { Button, DropDownMenu, MenuItem, Translation } from "/imports/plugins/core/ui/client/components";
 import { LoginContainer } from "../../containers/auth";

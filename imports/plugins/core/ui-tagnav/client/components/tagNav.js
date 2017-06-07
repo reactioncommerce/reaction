@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { getTagIds } from "/lib/selectors/tags";
 import { DragDropProvider } from "/imports/plugins/core/ui/client/providers";
 import { Button, EditButton } from "/imports/plugins/core/ui/client/components";

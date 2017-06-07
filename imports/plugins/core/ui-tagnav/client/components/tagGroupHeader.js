@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { TagItem } from "/imports/plugins/core/ui/client/components/tags/";
 
 class TagGroupHeader extends Component {
