@@ -1,5 +1,4 @@
-import MeteorGriddle from "/imports/plugins/core/ui-grid/client/griddle";
-import { Loading } from "/imports/plugins/core/ui/client/components";
+import { Loading, SortableTable } from "/imports/plugins/core/ui/client/components";
 import { Meteor } from "meteor/meteor";
 import { AutoForm } from "meteor/aldeed:autoform";
 import { Blaze } from "meteor/blaze";
@@ -73,7 +72,7 @@ Template.templateSettings.helpers({
 
     // return template Grid
     return {
-      component: MeteorGriddle,
+      component: SortableTable,
       publication: "Templates",
       collection: Templates,
       matchingResultsCount: "templates-count",

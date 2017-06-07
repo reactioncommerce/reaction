@@ -7,8 +7,7 @@ import { Countries } from "/client/collections";
 import { Taxes, TaxCodes } from "../../lib/collections";
 import { i18next } from "/client/api";
 import { Taxes as TaxSchema } from "../../lib/collections/schemas";
-import MeteorGriddle from "/imports/plugins/core/ui-grid/client/griddle";
-import { IconButton, Loading } from "/imports/plugins/core/ui/client/components";
+import { IconButton, Loading, SortableTable } from "/imports/plugins/core/ui/client/components";
 
 /* eslint no-shadow: ["error", { "allow": ["options"] }] */
 /* eslint no-unused-vars: ["error", { "argsIgnorePattern": "[oO]ptions" }] */
@@ -99,7 +98,7 @@ Template.customTaxRates.helpers({
 
     // return tax Grid
     return {
-      component: MeteorGriddle,
+      component: SortableTable,
       publication: "Taxes",
       collection: Taxes,
       matchingResultsCount: "taxes-count",

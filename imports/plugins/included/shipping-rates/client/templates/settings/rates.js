@@ -3,8 +3,7 @@ import { ReactiveDict } from "meteor/reactive-dict";
 import { AutoForm } from "meteor/aldeed:autoform";
 import { Shipping } from "/lib/collections";
 import { i18next } from "/client/api";
-import MeteorGriddle from "/imports/plugins/core/ui-grid/client/griddle";
-import { IconButton, Loading } from "/imports/plugins/core/ui/client/components";
+import { IconButton, Loading, SortableTable } from "/imports/plugins/core/ui/client/components";
 
 Template.shippingRatesSettings.onCreated(function () {
   this.autorun(() => {
@@ -99,7 +98,7 @@ Template.shippingRatesSettings.helpers({
 
     // return shipping Grid
     return {
-      component: MeteorGriddle,
+      component: SortableTable,
       publication: "Shipping",
       transform: transform,
       collection: Shipping,

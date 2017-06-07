@@ -9,7 +9,7 @@ import { ReactMeteorData } from "meteor/react-meteor-data";
 
 /* eslint react/prop-types:0, react/jsx-sort-props:0, react/forbid-prop-types: 0, "react/prefer-es6-class": [1, "never"] */
 
-const MeteorGriddle = React.createClass({
+const SortableTable = React.createClass({
   propTypes: {
     collection: React.PropTypes.object, // the collection to display
     filteredFields: React.PropTypes.array, // an array of fields to search through when filtering
@@ -151,4 +151,4 @@ const MeteorGriddle = React.createClass({
   }
 });
 
-export default MeteorGriddle;
+export default SortableTable;

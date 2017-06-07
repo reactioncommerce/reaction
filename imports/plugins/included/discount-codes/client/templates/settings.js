@@ -4,8 +4,7 @@ import { AutoForm } from "meteor/aldeed:autoform";
 import { DiscountCodes } from "../collections/codes";
 import { i18next } from "/client/api";
 import { DiscountCodes as DiscountSchema } from "../../lib/collections/schemas";
-import MeteorGriddle from "/imports/plugins/core/ui-grid/client/griddle";
-import { IconButton, Loading }  from "/imports/plugins/core/ui/client/components";
+import { IconButton, Loading, SortableTable }  from "/imports/plugins/core/ui/client/components";
 import "./settings.html";
 
 /* eslint no-shadow: ["error", { "allow": ["options"] }] */
@@ -97,7 +96,7 @@ Template.customDiscountCodes.helpers({
 
     // return discount Grid
     return {
-      component: MeteorGriddle,
+      component: SortableTable,
       publication: "DiscountCodes",
       collection: DiscountCodes,
       matchingResultsCount: "discounts-count",

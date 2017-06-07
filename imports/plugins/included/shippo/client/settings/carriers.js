@@ -3,8 +3,7 @@ import { ReactiveDict } from "meteor/reactive-dict";
 import { AutoForm } from "meteor/aldeed:autoform";
 import { Shipping } from "/lib/collections";
 import { i18next } from "/client/api";
-import MeteorGriddle from "/imports/plugins/core/ui-grid/client/griddle";
-import { Loading } from "/imports/plugins/core/ui/client/components";
+import { Loading, SortableTable } from "/imports/plugins/core/ui/client/components";
 
 import "./carriers.html";
 
@@ -71,7 +70,7 @@ Template.shippoCarriers.helpers({
 
     // return shipping Grid
     return {
-      component: MeteorGriddle,
+      component: SortableTable,
       publication: "Shipping",
       transform: transform,
       collection: Shipping,
