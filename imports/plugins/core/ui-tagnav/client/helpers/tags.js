@@ -1,9 +1,8 @@
-import { Reaction } from "/client/api";
+import { Reaction, i18next } from "/client/api";
 import { Tags } from "/lib/collections";
 import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
 import { Template } from "meteor/templating";
-import { i18next } from "/client/api";
 
 /**
  * Reaction TagNav shared helpers
