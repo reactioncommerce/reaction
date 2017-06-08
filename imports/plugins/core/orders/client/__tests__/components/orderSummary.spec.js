@@ -1,3 +1,10 @@
+jest.mock("/imports/plugins/core/ui/client/components", () => {
+  return {
+    Badge() { return null; },
+    ClickToCopy() { return null; }
+  };
+});
+
 import React from "react";
 import OrderSummary from "../../components/orderSummary";
 import { shallow } from "enzyme";
@@ -25,6 +32,9 @@ test("OrderSummary snapshot test", () => {
   const profileShippingAddress = {};
   const order = {
     shipping: [{ shipmentMethod: {} }],
+    workflow: {
+      status: "new"
+    },
     billing: [
       { paymentMethod: {},
         invoice: {}
