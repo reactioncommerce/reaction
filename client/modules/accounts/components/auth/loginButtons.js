@@ -42,9 +42,10 @@ class LoginButtons extends Component {
                 </span>
               }
 
-              &nbsp;<span>
-                      <Translation defaultValue={this.props.capitalizeName(service.name)} i18nKey={`social.${service.name}`} />
-                    </span>
+              <span>
+                &nbsp;
+                <Translation defaultValue={this.props.capitalizeName(service.name)} i18nKey={`social.${service.name}`} />
+              </span>
           </Button>
           ))
         }
