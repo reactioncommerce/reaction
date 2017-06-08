@@ -94,20 +94,7 @@ class Router {
 
     for (const key in queryParams) {
       if (queryParams[key] === null || queryParams[key] === undefined) {
-        delete queryParams[k];
-      }
-    }
-
-    Router.go(current.route.name, current.params, queryParams);
-  }
-
-  static setQueryParams(newParams) {
-    const current = Router.current();
-    const queryParams = Object.assign({}, current.query, newParams);
-
-    for (const key in queryParams) {
-      if (queryParams[key] === null || queryParams[key] === undefined) {
-        delete queryParams[k];
+        delete queryParams[key];
       }
     }
 
