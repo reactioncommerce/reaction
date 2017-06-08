@@ -1,3 +1,4 @@
+import _ from "lodash";
 import { Products, Revisions } from "/lib/collections";
 import { Reaction, Logger } from "/server/api";
 import { RevisionApi } from "/imports/plugins/core/revisions/lib/api/revisions";
@@ -59,6 +60,10 @@ const filters = new SimpleSchema({
   "weight.max": {
     type: String,
     optional: true
+  },
+  "marketplace": {
+    type: Boolean,
+    optional: true
   }
 });
 
@@ -88,8 +93,20 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
   }
 
   if (shop) {
+    // check if user has create-product access to parent Shop
+    const hasCreateProductAccessToOwnerShop = Reaction.hasPermission(["create-shop"], this.userId, shop._id);
+    // Shop Id of user has a Seller-Shop
+    const sellerShopId = !hasCreateProductAccessToOwnerShop && Reaction.getSellerShopId(this.userId, true);
+    // if a seller views a page with all his products he gets a special publication (with product revisions etc)
+    let sellerViewsHisShop = false;
+    if (sellerShopId && productFilters && Array.isArray(productFilters.shops) &&
+      productFilters.shops.length === 1 && productFilters.shops[0] === sellerShopId) {
+      sellerViewsHisShop = true;
+    }
+
     const selector = {};
-    if (Roles.userIsInRole(this.userId, ["owner", "admin", "createProduct"], shop._id)) {
+    // Marketplace version of userInRole owner/admin/createProduct for shop
+    if (hasCreateProductAccessToOwnerShop) {
       _.extend(selector, {
         isDeleted: { $in: [null, false] },
         ancestors: { $exists: true },
@@ -104,13 +121,20 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
     }
 
     if (productFilters) {
-      // handle multiple shops
-      if (productFilters.shops) {
+      // Seller can see the variant products of his shop
+      if (sellerViewsHisShop) {
+        _.extend(selector, {
+          shopId: sellerShopId,
+          ancestors: { $exists: true }
+        });
+      } else if (productFilters.shops) {
         _.extend(selector, {
           shopId: {
             $in: productFilters.shops
           }
         });
+      } else if (productFilters.marketplace) {
+        delete selector.shopId;
       }
 
       // filter by tags
@@ -230,10 +254,9 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
       }
     } // end if productFilters
 
-    // Authorized content curators fo the shop get special publication of the product
+    // Authorized content curators of the shop get special publication of the product
     // with all relevant revisions all is one package
-
-    if (Roles.userIsInRole(this.userId, ["owner", "admin", "createProduct"], shop._id)) {
+    if (hasCreateProductAccessToOwnerShop || sellerViewsHisShop) {
       selector.isVisible = {
         $in: [true, false, undefined]
       };
@@ -311,7 +334,8 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
             $nin: [
               "revision/published"
             ]
-          }
+          },
+          "shopId": newSelector.shopId
         }).observe({
           added: (revision) => {
             let product;
@@ -344,7 +368,7 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
 
             if (!revision.documentType || revision.documentType === "product") {
               product = Products.findOne(revision.documentId);
-            } else if (revision.docuentType === "image" || revision.documentType === "tag") {
+            } else if (revision.documentType === "image" || revision.documentType === "tag") {
               product = Products.findOne(revision.parentDocument);
             }
             if (product) {
@@ -354,7 +378,6 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
             }
           }
         });
-
 
         this.onStop(() => {
           handle.stop();
@@ -391,27 +414,34 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
       limit: productScrollLimit
     }).map(product => product._id);
 
-    let newSelector = selector;
 
+    // TODO: Review this commented out code from Marketplace
+    // TODO: Why is newSelector not used?
+
+    // let newSelector = selector;
+
+    // seems to not be used :
     // Remove hashtag filter from selector (hashtags are not applied to variants, we need to get variants)
-    if (productFilters && productFilters.tags) {
-      newSelector = _.omit(selector, ["hashtags"]);
+    // if (productFilters && productFilters.tags) {
 
-      // Re-configure selector to pick either Variants of one of the top-level products, or the top-level products in the filter
-      _.extend(newSelector, {
-        $or: [
-          {
-            ancestors: {
-              $in: productIds
-            }
-          }, {
-            hashtags: {
-              $in: productFilters.tags
-            }
-          }
-        ]
-      });
-    }
+    // newSelector = _.omit(selector, ["hashtags"]);
+
+    // Re-configure selector to pick either Variants of one of the top-level products, or the top-level products in the filter
+    //   _.extend(newSelector, {
+    //     $or: [
+    //       {
+    //         ancestors: {
+    //           $in: productIds
+    //         }
+    //       }, {
+    //         hashtags: {
+    //           $in: productFilters.tags
+    //         }
+    //       }
+    //     ]
+    //   });
+    // }
+
     // Returning Complete product tree for top level products to avoid sold out warning.
     const productCursor = Products.find({
       $or: [

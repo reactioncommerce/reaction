@@ -1,5 +1,6 @@
 import * as Collections from "/lib/collections";
-import { Reaction } from "/server/api";
+import { Reaction } from "/lib/api";
+import { Hooks } from "/server/api";
 
 const {
   Accounts,
@@ -36,12 +37,20 @@ export default function () {
   /*
    * Define some additional rule chain methods
    */
+  // Replace ifHasRole with this to check seller/shop relationship
+  Security.defineMethod("ifHasSellerRole", {
+    fetch: [],
+    deny: function (type, arg, userId) {
+      const isDenied = !Roles.userIsInRole(userId, "createProduct", Reaction.getSellerShopId(userId));
+      return isDenied;
+    }
+  });
   // use this rule for collections other than Shops
   // matches this.shopId
   Security.defineMethod("ifShopIdMatches", {
     fetch: [],
     deny: function (type, arg, userId, doc) {
-      return doc.shopId !== Reaction.getShopId();
+      return doc.shopId !== Reaction.getSellerShopId(this.userId);
     }
   });
   // this rule is for the Shops collection
@@ -49,14 +58,21 @@ export default function () {
   Security.defineMethod("ifShopIdMatchesThisId", {
     fetch: [],
     deny: function (type, arg, userId, doc) {
-      return doc._id !== Reaction.getShopId();
+      return doc._id !== Reaction.getSellerShopId(userId);
     }
   });
 
   Security.defineMethod("ifFileBelongsToShop", {
     fetch: [],
     deny: function (type, arg, userId, doc) {
-      return doc.metadata.shopId !== Reaction.getShopId();
+      // owner will always have access to this shop
+      const isDenied = Roles.userIsInRole(userId, "createProduct", doc.metadata.shopId);
+      if (!isDenied) {
+        return false;
+      }
+
+      const shopId =  Reaction.getSellerShopId(userId);
+      return doc.metadata.shopId !== shopId;
     }
   });
 
@@ -101,48 +117,40 @@ export default function () {
     Packages,
     Templates,
     Jobs
-  ]).ifHasRole({
-    role: "admin",
-    group: Reaction.getShopId()
-  }).ifShopIdMatches().exceptProps(["shopId"]).allowInClientCode();
-
-  /*
-   * Permissive security for users with the "admin" role for FS.Collections
-   */
-
-  Security.permit(["insert", "update", "remove"]).collections([Media]).ifHasRole({
-    role: ["admin", "owner", "createProduct"],
-    group: Reaction.getShopId()
-  }).ifFileBelongsToShop().allowInClientCode();
+  ]).ifHasSellerRole()
+    .ifShopIdMatches()
+    .exceptProps(["shopId"])
+    .allowInClientCode();
 
   /*
    * Users with the "admin" or "owner" role may update and
    * remove their shop but may not insert one.
    */
 
-  Shops.permit(["update", "remove"]).ifHasRole({
-    role: ["admin", "owner"],
-    group: Reaction.getShopId()
-  }).ifShopIdMatchesThisId().allowInClientCode();
+  Shops.permit(["insert", "update", "remove"])
+    .ifHasSellerRole()
+    .ifShopIdMatchesThisId()
+    .allowInClientCode();
 
   /*
    * Users with the "admin" or "owner" role may update and
    * remove products, but createProduct allows just for just a product editor
    */
 
-  Products.permit(["insert", "update", "remove"]).ifHasRole({
-    role: ["createProduct"],
-    group: Reaction.getShopId()
-  }).ifShopIdMatches().allowInClientCode();
+  Products.permit(["insert", "update", "remove"])
+    .ifHasSellerRole()
+    .ifShopIdMatches()
+    .allowInClientCode();
 
   /*
    * Users with the "owner" role may remove orders for their shop
    */
 
-  Orders.permit("remove").ifHasRole({
-    role: ["admin", "owner"],
-    group: Reaction.getShopId()
-  }).ifShopIdMatches().exceptProps(["shopId"]).allowInClientCode();
+  Orders.permit("remove")
+    .ifHasSellerRole()
+    .ifShopIdMatches()
+    .exceptProps(["shopId"])
+    .allowInClientCode();
 
   /*
    * Can update cart from client. Must insert/remove carts using
@@ -165,6 +173,14 @@ export default function () {
   }).ifUserIdMatches().allowInClientCode();
 
   /*
+   * Permissive security for users with the "admin" role for FS.Collections
+   */
+  Security.permit(["insert", "update", "remove"]).collections([Media])
+    .ifHasSellerRole()
+    .ifFileBelongsToShop()
+    .allowInClientCode();
+
+  /*
    * apply download permissions to file collections
    */
   _.each([Media], function (fsCollection) {
@@ -183,4 +199,8 @@ export default function () {
     update: () => true,
     remove: () => true
   });
+
+  // As the above security Rules definitions happen after all known Core Initialization Event hooks,
+  // a new Event hook is created by which other code can make use of these new Rules.
+  Hooks.Events.run("afterSecurityInit");
 }

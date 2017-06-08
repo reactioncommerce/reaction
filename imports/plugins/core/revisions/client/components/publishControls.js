@@ -101,6 +101,15 @@ class PublishControls extends Component {
     return "app.hideChanges";
   }
 
+  get primaryRevision() {
+    const revisions = this.props.revisions;
+    if (Array.isArray(revisions) && revisions.length) {
+      const primaryDocumentId = this.props.documentIds[0];
+      return revisions.find(revision => revision.documentId === primaryDocumentId);
+    }
+    return false;
+  }
+
   get revisionIds() {
     if (this.hasRevisions) {
       return this.props.revisions.map(revision => revision._id);
@@ -121,8 +130,8 @@ class PublishControls extends Component {
   }
 
   get isVisible() {
-    if (Array.isArray(this.props.revisions) && this.props.revisions.length) {
-      const primaryRevision = this.props.revisions[0];
+    if (Array.isArray(this.props.revisions) && this.props.revisions.length && this.primaryRevision) {
+      const primaryRevision = this.primaryRevision;
 
       if (primaryRevision.documentData.isVisible) {
         return "public";
@@ -185,7 +194,7 @@ class PublishControls extends Component {
 
   renderDeletionStatus() {
     if (this.hasChanges) {
-      if (this.props.revisions[0].documentData.isDeleted) {
+      if (this.primaryRevision && this.primaryRevision.documentData.isDeleted) {
         return (
           <Button
             label="Archived"
@@ -343,7 +352,7 @@ class PublishControls extends Component {
       <FlatButton
         onClick={() => {
           Reaction.showActionView({
-            i18nKeyTite: "dashboard.coreTitle",
+            i18nKeyTitle: "dashboard.coreTitle",
             title: "Dashboard",
             template: "dashboardPackages"
           });

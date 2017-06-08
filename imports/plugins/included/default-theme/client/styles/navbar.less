@@ -94,7 +94,8 @@
 }
 
 .rui.navbar .languages,
-.rui.navbar .currencies {
+.rui.navbar .currencies,
+.rui.navbar .shops {
   .display(flex);
   .align-items(center);
   .flex(0 0 auto);
@@ -102,13 +103,13 @@
 }
 
 .rui.navbar .languages:hover,
-.rui.navbar .currencies:hover {
+.rui.navbar .currencies:hover,
+.rui.navbar .shops:hover {
   background-color: @navbar-default-toggle-icon-bar-bg;
   border-color: @navbar-default-toggle-border-color;
 }
 
 .rui.navbar .languages .dropdown-menu {
-  margin-top: 0px;
   min-width: 250px !important;
 }
 
@@ -125,12 +126,31 @@ html:not(.rtl) .rui.navbar .languages .dropdown-menu {
 .rui.navbar .languages .dropdown-menu,
 .rui.navbar .currencies .dropdown-menu {
   margin-top: 0;
+  min-width: 250px !important;
+}
+
+html:not(.rtl) .rui.navbar .languages .dropdown-menu {
+  left: auto !important;
+  right: 0;
+}
+
+.rtl .rui.navbar .languages .dropdown-menu {
+  left: 0;
+  right: auto !important;
+}
+
+.rui.navbar .languages .dropdown-menu,
+.rui.navbar .currencies .dropdown-menu,
+.rui.navbar .shops .dropdown-menu {
+  margin-top: 0;
 }
 
 .rui.navbar .languages li,
 .rui.navbar .languages .menu-item,
 .rui.navbar .currencies li,
-.rui.navbar .currencies .menu-item {
+.rui.navbar .currencies .menu-item,
+.rui.navbar .shops li,
+.rui.navbar .shops .menu-item {
   .text-align(left);
 }
 

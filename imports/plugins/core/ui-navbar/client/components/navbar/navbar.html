@@ -3,6 +3,12 @@
   <div class="rui navbar">
     <div class="showmenu">{{> button icon="bars" onClick=onMenuButtonClick}}</div>
     {{> coreNavigationBrand}}
+
+    {{#if isMarketplaceOwner}}
+      {{> shopSelect}}
+      <span>{{> React component=VerticalDivider}}</span>
+    {{/if}}
+
     <div class="menu">
       {{> tagNav tagNavProps}}
     </div>

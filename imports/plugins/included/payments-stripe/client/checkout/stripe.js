@@ -4,7 +4,7 @@ import { Template } from "meteor/templating";
 import { AutoForm } from "meteor/aldeed:autoform";
 import { getCardType } from "/client/modules/core/helpers/globals";
 import { Reaction } from "/client/api";
-import { Cart, Shops, Packages } from "/lib/collections";
+import { Cart, SellerShops, Packages } from "/lib/collections";
 import { Stripe } from "../../lib/api";
 import { StripePayment } from "../../lib/collections/schemas";
 
@@ -67,7 +67,9 @@ AutoForm.addHooks("stripe-payment-form", {
     const storedCard = cardData.type.charAt(0).toUpperCase() + cardData.type.slice(1) + " " + doc.cardNumber.slice(-4);
     Stripe.authorize(cardData, {
       total: Cart.findOne().cartTotal(),
-      currency: Shops.findOne().currency
+      currency: SellerShops.findOne().currency
+      // Commenting this out because it causes tests to fail and isn't fully implemented.
+      // shopId: SellerShops.findOne()._id // TODO: Implement Marketplace Payments
     }, function (error, transaction) {
       submitting = false;
       if (error) {

@@ -108,11 +108,14 @@ class ProductAdminContainer extends Component {
 
 function composer(props, onData) {
   const product = ReactionProduct.selectedProduct();
+  const userId = Meteor.userId();
+
   let tags;
   let media;
   let revisonDocumentIds;
 
-  if (product) {
+  // Check first that user has permission to edit the product
+  if (product && Reaction.hasPermission("createProduct", userId, product.shopId)) {
     if (_.isArray(product.hashtags)) {
       tags = _.map(product.hashtags, function (id) {
         return Tags.findOne(id);

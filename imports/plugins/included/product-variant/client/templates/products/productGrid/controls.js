@@ -1,3 +1,4 @@
+import { Reaction } from "/lib/api";
 import { Session } from "meteor/session";
 import { Template } from "meteor/templating";
 import { ReactiveDict } from "meteor/reactive-dict";
@@ -22,6 +23,7 @@ Template.gridControls.onRendered(function () {
   });
 });
 
+
 Template.gridControls.helpers({
   checked: function () {
     return Template.instance().state.equals("isSelected", true);
@@ -32,9 +34,23 @@ Template.gridControls.helpers({
     return currentData && currentData.product && currentData.product.isVisible;
   },
 
+  hasControl() {
+    if (Reaction.hasOwnerAccess()) {
+      return true;
+    }
+
+    const instance = Template.instance();
+    const shopId = Reaction.getSellerShopId();
+
+    return (
+        Reaction.hasPermission("createProduct") &&
+        // does product belong to this shop seller
+        shopId === instance.data.product.shopId
+    );
+  },
+
   hasChanges() {
     const { product } = Template.currentData();
-
     if (product.__draft) {
       return true;
     }

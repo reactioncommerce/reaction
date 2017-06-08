@@ -23,11 +23,11 @@ Template.shopBrandImageOption.helpers({
         Meteor.call("shop/updateBrandAssets", asset, (error, result) => {
           if (error) {
             // Display Error
-            return Alerts.toast("Couldn't update brand asset.", "error");
+            return Alerts.toast(i18next.t("shopSettings.shopBrandAssetsFailed"), "error");
           }
 
           if (result === 1) {
-            Alerts.toast("Updated brand asset", "success");
+            Alerts.toast(i18next.t("shopSettings.shopBrandAssetsSaved"), "success");
           }
         });
       }
