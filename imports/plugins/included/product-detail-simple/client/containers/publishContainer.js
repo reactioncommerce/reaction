@@ -37,18 +37,15 @@ class ProductPublishContainer extends Component {
     }
   }
 
+
   handlePublishSuccess = (result) => {
     if (result && result.status === "success" && this.props.product) {
       const productDocument = result.previousDocuments.find((product) => this.props.product._id === product._id);
 
       if (productDocument && this.props.product.handle !== productDocument.handle) {
-        const newProductPath = Router.pathFor("product", {
-          hash: {
-            handle: this.props.product.handle
-          }
+        Router.go("product", {
+          handle: this.props.product.handle
         });
-
-        window.location.href = newProductPath;
       }
     }
   }
