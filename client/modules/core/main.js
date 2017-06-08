@@ -21,7 +21,7 @@ const reactionState = new ReactiveDict();
  * Global reaction shop permissions methods and shop initialization
  */
 export default {
-  shopId: null,
+  _shopId: new ReactiveVar(null),
 
   Locale: new ReactiveVar({}),
 
@@ -30,22 +30,12 @@ export default {
     return Tracker.autorun(() => {
       let domain;
       let shop;
-      let route;
-      Router.watchPathChange();
+
       if (this.Subscriptions.Shops.ready()) {
-        if (Router) {
-          route = Router.current();
-        }
-        if (route && route.params && route.params.shopId && route.params.shopId.length > 0) {
-          shop = Shops.findOne({
-            _id: route.params.shopId
-          });
-        } else {
-          domain = Meteor.absoluteUrl().split("/")[2].split(":")[0];
-          shop = Shops.findOne({
-            domains: domain
-          });
-        }
+        domain = Meteor.absoluteUrl().split("/")[2].split(":")[0];
+        shop = Shops.findOne({
+          domains: domain
+        });
 
         if (shop) {
           this.shopId = shop._id;
@@ -255,8 +245,16 @@ export default {
     });
   },
 
+  get shopId() {
+    return this._shopId.get();
+  },
+
   getShopId() {
     return this.shopId;
+  },
+
+  set shopId(id) {
+    this._shopId.set(id);
   },
 
   setShopId(id) {
