@@ -7,20 +7,10 @@ class SearchModal extends Component {
     handleChange: PropTypes.func,
     handleClick: PropTypes.func,
     siteName: PropTypes.string,
-    tags: PropTypes.func
+    tags: PropTypes.array,
+    value: PropTypes.string
   }
 
-  state = {
-    tags: []
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (this.props.tags()) {
-      this.setState({
-        tags: this.props.tags()
-      });
-    }
-  }
 
   renderSearchInput() {
     return (
@@ -80,7 +70,7 @@ class SearchModal extends Component {
       <div className="rui search-modal-tags-container">
         <p className="rui suggested-tags" data-i18n="search.suggestedTags">Suggested tags</p>
         <div className="rui search-tags">
-          {this.props.tags().map((tag) => (
+          {this.props.tags.map((tag) => (
             <span className="rui search-tag" key={tag._id}>{tag.name}</span>
           ))}
         </div>
@@ -93,10 +83,7 @@ class SearchModal extends Component {
       <div className="rui search-modal-header">
         {this.renderSearchInput()}
         {this.renderSearchTypeToggle()}
-        {this.props.tags() && this.renderProductSearchTags()}
-        <pre>
-          {JSON.stringify(this.props.tags(), null, 2)}
-        </pre>
+        {this.props.tags.length > 0 && this.renderProductSearchTags()}
       </div>
     );
   }
