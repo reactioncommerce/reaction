@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 // import classnames from "classnames/dedupe";
 import { TextField, Button } from "/imports/plugins/core/ui/client/components";
 
