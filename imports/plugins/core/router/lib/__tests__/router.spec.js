@@ -7,12 +7,6 @@ jest.mock("/lib/collections", () => {
 
 import Router from "../router.js";
 
-
-/**
- * Order Summary is a display only component
- * It receives props and displays them accordingly
- */
-
 beforeEach(() => {
   // Set some default routes
   Router.setCurrentRoute({});
