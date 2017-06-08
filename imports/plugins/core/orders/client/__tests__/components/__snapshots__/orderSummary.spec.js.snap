@@ -20,19 +20,15 @@ exports[`OrderSummary snapshot test 1`] = `
         }
       }
     />
-     , 
     <div
       className="invoice-details"
       style={
         Object {
           "marginRight": 15,
+          "position": "relative",
         }
       }
-    >
-      <strong>
-        ID 
-      </strong>
-    </div>
+    />
   </div>
   <div
     className="roll-up-invoice-list"
@@ -47,9 +43,34 @@ exports[`OrderSummary snapshot test 1`] = `
           }
         }
       >
-        <span
-          className="badge badge-undefined"
+        <Badge
+          badgeSize="large"
+          i18nKeyLabel="cartDrawer.new"
+          label="new"
+          status="info"
         />
+      </div>
+      <div
+        className="order-summary-form-group"
+      >
+        <strong
+          data-i18n="order.orderId"
+        >
+          Order ID
+        </strong>
+        <div
+          className="invoice-details"
+          style={
+            Object {
+              "cursor": "pointer",
+            }
+          }
+        >
+          <ClickToCopy
+            i18nKeyTooltip="admin.orderWorkflow.summary.copyOrderLink"
+            tooltip="Copy Order Link"
+          />
+        </div>
       </div>
       <div
         className="order-summary-form-group"
@@ -61,7 +82,10 @@ exports[`OrderSummary snapshot test 1`] = `
         </strong>
         <div
           className="invoice-details"
-        />
+        >
+          a few seconds ago
+           | 
+        </div>
       </div>
       <div
         className="order-summary-form-group"
