@@ -10,8 +10,25 @@ class DropDownMenu extends Component {
     super(props);
 
     this.state = {
-      label: undefined
+      label: undefined,
+      isOpen: false
     };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.isControlled) {
+      this.setState({
+        isOpen: nextProps.isOpen
+      });
+    }
+  }
+
+  get isOpen() {
+    return this.props.isOpen || this.state.isOpen;
+  }
+
+  get isControlled() {
+    return typeof this.props.isOpen === "boolean";
   }
 
   handleMenuItemChange = (event, value, menuItem) => {
@@ -19,8 +36,24 @@ class DropDownMenu extends Component {
       label: menuItem.props.label || value
     });
 
+    if (this.props.closeOnClick) {
+      this.handleOpen(false);
+    }
+
     if (this.props.onChange) {
       this.props.onChange(event, value);
+    }
+  }
+
+  handleOpen = (isOpen) => {
+    if (this.isControlled) {
+      if (this.props.onRequestOpen) {
+        this.props.onRequestOpen(isOpen);
+      }
+    } else {
+      this.setState({
+        isOpen: isOpen
+      });
     }
   }
 
@@ -53,6 +86,8 @@ class DropDownMenu extends Component {
             label={this.label}
           />
         }
+        isOpen={this.isOpen}
+        onRequestOpen={this.handleOpen}
       >
         <Menu value={this.props.value} onChange={this.handleMenuItemChange}>
           {this.props.children}
@@ -65,9 +100,12 @@ class DropDownMenu extends Component {
 DropDownMenu.propTypes = {
   buttonElement: PropTypes.node,
   children: PropTypes.node,
+  closeOnClick: PropTypes.bool,
   isEnabled: PropTypes.bool,
+  isOpen: PropTypes.bool,
   onChange: PropTypes.func,
   onPublishClick: PropTypes.func,
+  onRequestOpen: PropTypes.func,
   revisions: PropTypes.arrayOf(PropTypes.object),
   translation: PropTypes.shape({
     lang: PropTypes.string
