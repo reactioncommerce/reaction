@@ -30,6 +30,41 @@ class ProductGridItemsContainer extends Component {
     this.displayPrice = this.displayPrice.bind(this);
     this.onDoubleClick = this.onDoubleClick.bind(this);
     this.onClick = this.onClick.bind(this);
+    this.onPageClick = this.onPageClick.bind(this);
+  }
+
+  componentDidMount() {
+    document.querySelector(".page > main").addEventListener("click", this.onPageClick);
+  }
+
+  componentWillUnmount() {
+    document.querySelector(".page > main").removeEventListener("click", this.onPageClick);
+  }
+
+  onPageClick = () => {
+    // Do nothing if we are in preview mode
+    if (Reaction.isPreview() === false) {
+      // Don't trigger the clear selection if we're clicking on a grid item.
+      if (event.target.closest(".product-grid-item") === null) {
+        const selectedProducts = Session.get("productGrid/selectedProducts");
+
+        // Do we have any selected products?
+        // If we do then lets reset the Grid Settings ActionView
+        if (Array.isArray(selectedProducts) && selectedProducts.length) {
+          // Reset sessions ver of selected products
+          Session.set("productGrid/selectedProducts", []);
+
+          // Reset the action view of selected products
+          Reaction.setActionView({
+            label: "Grid Settings",
+            i18nKeyLabel: "gridSettingsPanel.title",
+            template: "productSettings",
+            type: "product",
+            data: {}
+          });
+        }
+      }
+    }
   }
 
   productPath = () => {
