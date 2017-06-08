@@ -1,6 +1,8 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { Translation } from "/imports/plugins/core/ui/client/components";
 import ProductGridItemsContainer from "../containers/productGridItemsContainer";
+import { DragDropProvider } from "/imports/plugins/core/ui/client/providers";
 
 class ProductGrid extends Component {
   static propTypes = {
@@ -13,7 +15,7 @@ class ProductGrid extends Component {
         return (
           <ProductGridItemsContainer
             {...this.props}
-            product={product} key={index}
+            product={product} key={index} index={index}
           />
         );
       });
@@ -33,9 +35,11 @@ class ProductGrid extends Component {
     return (
       <div className="container-main">
         <div className="product-grid">
-          <ul className="product-grid-list list-unstyled" id="product-grid-list">
-            {this.renderProductGridItems(this.props.products)}
-          </ul>
+          <DragDropProvider>
+            <ul className="product-grid-list list-unstyled" id="product-grid-list">
+              {this.renderProductGridItems(this.props.products)}
+            </ul>
+          </DragDropProvider>
         </div>
       </div>
     );

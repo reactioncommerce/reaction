@@ -1,19 +1,31 @@
 import _ from "lodash";
+import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import update from "react/lib/update";
 import { Reaction } from "/client/api";
+import Logger from "/client/modules/logger";
+import { ReactionProduct } from "/lib/api";
 import { composeWithTracker } from "/lib/api/compose";
 import ProductGrid from "../components/productGrid";
+import { DragDropProvider } from "/imports/plugins/core/ui/client/providers";
 
 class ProductGridContainer extends Component {
   static propTypes = {
-    products: PropTypes.object
+    canEdit: PropTypes.bool,
+    productIds: PropTypes.array,
+    products: PropTypes.array,
+    productsByKey: PropTypes.object
   }
 
   constructor(props) {
     super(props);
+
     this.state = {
-      products: props.products.get(),
+      products: props.products,
+      productsByKey: props.productsByKey,
+      productIds: props.productIds,
       initialLoad: true,
       slug: "",
       canLoadMoreProducts: false
@@ -22,7 +34,7 @@ class ProductGridContainer extends Component {
 
   componentWillMount() {
     const selectedProducts = Reaction.getUserPreferences("reaction-product-variant", "selectedGridItems");
-    const products = this.state.products;
+    const products = this.products;
 
     if (_.isEmpty(selectedProducts)) {
       return Reaction.hideActionView();
@@ -48,10 +60,6 @@ class ProductGridContainer extends Component {
     }
   }
 
-  componentDidMount() {
-    // sortable item init
-  }
-
   handleSelectProductItem = (event) => {
     let selectedProducts = Session.get("productGrid/selectedProducts");
 
@@ -66,7 +74,7 @@ class ProductGridContainer extends Component {
     // Save the selected items to the Session
     Session.set("productGrid/selectedProducts", _.uniq(selectedProducts));
 
-    const products = this.state.products;
+    const products = this.products;
 
     if (products) {
       const filteredProducts = _.filter(products, (product) => {
@@ -78,19 +86,58 @@ class ProductGridContainer extends Component {
         i18nKeyLabel: "gridSettingsPanel.title",
         template: "productSettings",
         type: "product",
-        data: {
-          products: filteredProducts
-        }
+        data: { products: filteredProducts }
       });
     }
   }
 
+  handleProductDrag = (dragIndex, hoverIndex) => {
+    const newState = this.changeProductOrderOnState(dragIndex, hoverIndex);
+    this.setState(newState, this.callUpdateMethod);
+  }
+
+  changeProductOrderOnState(dragIndex, hoverIndex) {
+    const product = this.state.productIds[dragIndex];
+
+    return update(this.state, {
+      productIds: {
+        $splice: [
+          [dragIndex, 1],
+          [hoverIndex, 0, product]
+        ]
+      }
+    });
+  }
+
+  callUpdateMethod() {
+    const tag = ReactionProduct.getTag();
+
+    this.state.productIds.map((productId, index) => {
+      const position = { position: index, updatedAt: new Date() };
+
+      Meteor.call("products/updateProductPosition", productId, position, tag, error => {
+        if (error) {
+          Logger.warn(error);
+          throw new Meteor.Error(403, error);
+        }
+      });
+    });
+  }
+
+  get products() {
+    return this.state.productIds.map((id) => this.state.productsByKey[id]);
+  }
+
   render() {
     return (
-      <ProductGrid
-        products={this.state.products}
-        itemSelectHandler={this.handleSelectProductItem}
-      />
+      <DragDropProvider>
+        <ProductGrid
+          products={this.products}
+          onMove={this.handleProductDrag}
+          itemSelectHandler={this.handleSelectProductItem}
+          canEdit={this.props.canEdit}
+        />
+      </DragDropProvider>
     );
   }
 }

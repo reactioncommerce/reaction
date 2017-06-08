@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { formatPriceString } from "/client/api";
 import GridItemNoticeContainer from "../containers/gridItemNoticeContainer";
 import GridItemControlsContainer from "../containers/gridItemControlsContainer";
@@ -6,6 +7,9 @@ import GridItemControlsContainer from "../containers/gridItemControlsContainer";
 class ProductGridItems extends Component {
   static propTypes = {
     additionalMedia: PropTypes.func,
+    canEdit: PropTypes.bool,
+    connectDragSource: PropTypes.func,
+    connectDropTarget: PropTypes.func,
     displayPrice: PropTypes.func,
     isMediumWeight: PropTypes.func,
     isSelected: PropTypes.func,
@@ -105,7 +109,7 @@ class ProductGridItems extends Component {
   }
 
   render() {
-    return (
+    const productItem = (
       <li
         className={`product-grid-item ${this.renderPinned()} ${this.props.weightClass()} ${this.props.isSelected()}`}
         data-id={this.props.product._id}
@@ -116,7 +120,6 @@ class ProductGridItems extends Component {
         <a className="product-grid-item-images"
           href={this.props.pdpPath()}
           data-event-category="grid"
-          data-event-action="productClick"
           data-event-label="grid product click"
           data-event-value={this.props.product._id}
           onDoubleClick={this.handleDoubleClick}
@@ -134,6 +137,16 @@ class ProductGridItems extends Component {
         {this.renderGridContent()}
       </li>
     );
+
+    if (this.props.canEdit) {
+      return (
+        this.props.connectDropTarget(
+          this.props.connectDragSource(productItem)
+        )
+      );
+    }
+
+    return productItem;
   }
 }
 

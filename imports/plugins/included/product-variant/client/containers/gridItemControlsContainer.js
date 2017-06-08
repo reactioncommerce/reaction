@@ -1,5 +1,6 @@
 import _ from "lodash";
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { composeWithTracker } from "/lib/api/compose";
 import { Reaction } from "/client/api";
 import GridItemControls from "../components/gridItemControls";

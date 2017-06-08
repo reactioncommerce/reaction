@@ -3,6 +3,7 @@ import { ReactionProduct } from "/lib/api";
 import { applyProductRevision } from "/lib/api/products";
 import { Products, Tags } from "/lib/collections";
 import { Session } from "meteor/session";
+import { getTagIds as getIds } from "/lib/selectors/tags";
 import { Template } from "meteor/templating";
 import { ITEMS_INCREMENT } from "/client/config/defaults";
 import ProductGridContainer from "../../containers/productGridContainer";
@@ -160,9 +161,21 @@ Template.products.helpers({
   },
 
   productGrid() {
+    const products = Template.instance().products.get();
+    const productsByKey = {};
+
+    if (Array.isArray(products)) {
+      for (const product of products) {
+        productsByKey[product._id] = product;
+      }
+    }
+
     return {
       component: ProductGridContainer,
-      ...Template.instance()
+      productsByKey: productsByKey || {},
+      productIds: getIds({ tags: products }),
+      canEdit: Reaction.hasPermission("createProduct"),
+      products
     };
   }
 });
