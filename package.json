@@ -97,7 +97,7 @@
     "swiper": "^3.4.2",
     "tether-drop": "^1.4.2",
     "tether-tooltip": "^1.2.0",
-    "transliteration": "1.5.2",
+    "transliteration": "1.6.2",
     "twilio": "^2.11.1",
     "url": "^0.11.0",
     "velocity-animate": "^1.5.0",
@@ -139,5 +139,12 @@
     "del-report": "rm -rf ~/allure-report && rm -rf allure-results",
     "test-local": "wdio tests/runner/local.conf.js",
     "test-browserstack": "wdio tests/runner/browserstack.conf.js; kill $(ps aux | grep '[b]rowserstack' | awk '{print $2}')"
+  },
+  "jest": {
+    "moduleNameMapper": {
+      "^\/lib(.*)": "<rootDir>/lib/$1",
+      "^\/imports\/plugins(.*)": "<rootDir>/imports/plugins/$1",
+      "^meteor/(.*)": "<rootDir>/imports/plugins/core/router/__mocks__/meteor/$1"
+    }
   }
 }
