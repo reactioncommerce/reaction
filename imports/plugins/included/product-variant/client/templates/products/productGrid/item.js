@@ -184,13 +184,12 @@ Template.productGridItems.events({
     });
   },
   "click [data-event-action=productClick]": function (event, template) {
-    if (Reaction.hasPermission("createProduct") && Reaction.isPreview() === false) {
+    if (Reaction.hasPermission("createProduct") && !Reaction.isPreview()) {
       event.preventDefault();
-
       const isSelected = $(event.target).closest("li.product-grid-item.active").length;
 
       if (isSelected) {
-        // If product is already selected, and you are single clicking WITH command key, things whould happen
+          // If product is already selected, and you are single clicking WITH command key, things whould happen
         if (event.metaKey || event.ctrlKey || event.shiftKey) {
           let $checkbox = template.$(`input[type=checkbox][value=${this._id}]`);
           const $items = $("li.product-grid-item");

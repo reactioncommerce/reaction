@@ -25,8 +25,9 @@ Template.productGrid.onCreated(function () {
       const filteredProducts = _.filter(products, (product) => {
         return _.includes(selectedProducts, product._id);
       });
+      const isMobile = window.matchMedia("(max-width: 991px)").matches;
 
-      if (Reaction.isPreview() === false) {
+      if (Reaction.isPreview() === false && !isMobile) {
         Reaction.showActionView({
           label: "Grid Settings",
           i18nKeyLabel: "gridSettingsPanel.title",
