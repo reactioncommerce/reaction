@@ -8,16 +8,13 @@
            aria-haspopup="true"
            aria-expanded="false">
 
-          {{#if isOwnerShop}}
-            <span data-i18n="app.myShop">* {{currentShopName}}</span>
-          {{else}}
-            <span data-i18n="app.shops">{{currentShopName}}</span>
-          {{/if}}
+          <span>{{currentShopName}}</span>
+
           <span class="caret"></span>
         </div>
         <ul class="dropdown-menu" role="menu">
           {{#each shops}}
-            <li class="{{class}}">
+            <li class="{{isActiveShop _id}}">
               <a class="shop" role="menuitem">{{name}}</a>
             </li>
           {{/each}}

@@ -5,52 +5,35 @@ import { Shops } from "/lib/collections";
 
 Template.shopSelect.helpers({
   shops() {
-    const currentShopId = Router.getParam("shopId") || 0;
-    const selector = {
-    };
+    if (Reaction.Subscriptions.Shops.ready()) {
+      return Shops.find();
+    }
+  },
 
-    // active class
-    // TODO: Revise the way active is determined
-    const shops = Shops.find(selector).fetch().map((shop) => {
-      if (currentShopId && shop._id === currentShopId) {
-        shop.class = "active";
-      }
-      return shop;
-    });
-
-    return shops;
+  isActiveShop(shopId) {
+    return shopId === Router.getParam("shopId") ? "active" : "";
   },
 
   currentShopName() {
-    const _id = Reaction.Router.getParam("shopId") || 0;
+    const _id = Router.getParam("shopId") || Reaction.getShopId(); // or prime shop
     let shop;
 
     if (_id) {
       shop = Shops.findOne({
         _id
       });
-    } else {
-      shop = Shops.findOne({ _id: Reaction.getShopId() });
-    }
-
-    // always make sure we have a shop in case id was incorrect
-    if (shop) {
-      return shop.name;
+      if (shop) {
+        return shop.name;
+      }
     }
 
     return "Shop Name";
-  },
-
-  isOwnerShop() {
-    const currentShopId = Reaction.Router.getParam("shopId") || 0;
-    return (currentShopId === Reaction.getSellerShopId()); // TODO: Remove getSellerShopId
   }
 });
 
 Template.shopSelect.events({
   "click .shop"(event) {
     event.preventDefault();
-    Reaction.setShopId(this._id);
     Router.go("shop", {
       shopId: this._id
     });
