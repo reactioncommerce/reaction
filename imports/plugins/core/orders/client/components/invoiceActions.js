@@ -79,7 +79,7 @@ class InvoiceActions extends Component {
       <div>
         {this.renderCapturedTotal()}
         {isAdjusted() && this.renderAdjustedTotal()}
-        {this.renderRefundForm()}
+        {/*{this.renderRefundForm()}*/}
       </div>
     );
   }
