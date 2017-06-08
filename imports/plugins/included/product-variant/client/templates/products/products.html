@@ -1,8 +1,8 @@
 <template name="products">
-
   {{#if ready}}
-    {{>productGrid products=products}}
-
+    <div>
+      {{>React productGrid}}
+    </div>
     {{#if loadMoreProducts}}
       <div class="product-load-more" id="productScrollLimitLoader">
           <button
@@ -22,13 +22,13 @@
       <div class="spinner"></div>
     </div>
   {{/if}}
-
-
 </template>
 
 <template name="productListGrid">
   <div class="row">
-    {{>productGrid products=products}}
+    <div>
+      {{>React productGrid}}
+    </div>
     {{#if hasPermission "createProduct"}}
       {{>productList}}
     {{/if}}
