@@ -49,7 +49,7 @@ Template.paypalDone.onRendered(function () {
 
 Template.paypalDone.helpers({
   checkoutUrl: function () {
-    template = Template.instance();
+    const template = Template.instance();
     return template.checkoutUrl;
   }
 });
