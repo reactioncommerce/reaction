@@ -180,14 +180,14 @@ class ProductGridItemsContainer extends Component {
 
           if (event.shiftKey && selected > 0) {
             const indexes = [
-              items.index(checkbox.parents("li.product-grid-item")),
-              items.index(activeItems[0]),
-              items.index(activeItems[selected - 1])
+              Array.prototype.indexOf.call(items, document.querySelector(`li.product-grid-item[id="${product._id}"]`)),
+              Array.prototype.indexOf.call(items, activeItems[0]),
+              Array.prototype.indexOf.call(items, activeItems[selected - 1])
             ];
             for (let i = _.min(indexes); i <= _.max(indexes); i++) {
-              checkbox = $("input[type=checkbox]", items.get(i));
+              checkbox = items[i].querySelector("input[type=checkbox]");
               if (checkbox.checked === false) {
-                checkbox.checked === true;
+                checkbox.checked = true;
               }
             }
           } else {
@@ -202,16 +202,15 @@ class ProductGridItemsContainer extends Component {
           const selected = activeItems.length;
 
           if (event.shiftKey && selected > 0) {
-            const mama = document.querySelector(`li.product-grid-item[id="${product._id}"]`);
             const indexes = [
-              items.index(mama),
-              items.index(activeItems[0]),
-              items.index(activeItems[selected - 1])
+              Array.prototype.indexOf.call(items, document.querySelector(`li.product-grid-item[id="${product._id}"]`)),
+              Array.prototype.indexOf.call(items, activeItems[0]),
+              Array.prototype.indexOf.call(items, activeItems[selected - 1])
             ];
             for (let i = _.min(indexes); i <= _.max(indexes); i++) {
-              checkbox = $("input[type=checkbox]", items.get(i));
+              checkbox = items[i].querySelector("input[type=checkbox]");
               if (checkbox.checked === false) {
-                checkbox.checked === true;
+                checkbox.checked = true;
               }
             }
           } else {
