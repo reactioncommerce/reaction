@@ -11,6 +11,27 @@
           "ordersLabel": "Orders",
           "ordersTitle": "Orders",
           "ordersDescription": "Fulfill your orders"
+        },
+        "orderWorkflow": {
+          "ordersList": {
+            "date": "Date",
+            "orderId": "Order ID",
+            "total": "Total",
+            "emailNotFound": "Email not available"
+          },
+          "summary": {
+            "cardTitle": "Summary",
+            "copyOrderLink": "Copy Order Link"
+          },
+          "invoice": {
+            "cardTitle": "Invoice",
+            "adjustedTotal": "Adjusted Total",
+            "capturedTotal": "Captured Total",
+            "refund": "Refund"
+          },
+          "fulfillment": "Fulfillment",
+          "orderDetails": "Order Details",
+          "shipmentTracking": "Shipment"
         }
       }
     }

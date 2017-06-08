@@ -16,32 +16,32 @@ Template.braintreePaymentForm.helpers({
 });
 
 
-uiEnd = function (template, buttonText) {
+function uiEnd(template, buttonText) {
   template.$(":input").removeAttr("disabled");
   template.$("#btn-complete-order").text(buttonText);
   return template.$("#btn-processing").addClass("hidden");
-};
+}
 
-paymentAlert = function (errorMessage) {
+function paymentAlert(errorMessage) {
   return $(".alert").removeClass("hidden").text(errorMessage);
-};
+}
 
-hidePaymentAlert = function () {
+function hidePaymentAlert() {
   return $(".alert").addClass("hidden").text("");
-};
+}
 
-handleBraintreeSubmitError = function (error) {
+function handleBraintreeSubmitError(error) {
   const serverError = error !== null ? error.message : void 0;
   if (serverError) {
     return paymentAlert("Server Error " + serverError);
   } else if (error) {
     return paymentAlert("Oops! Credit card is invalid. Please check your information and try again.");
   }
-};
+}
 
 let submitting = false;
 
-submitToBrainTree = function (doc, template) {
+function submitToBrainTree(doc, template) {
   submitting = true;
   hidePaymentAlert();
   const cardData = {
@@ -97,7 +97,7 @@ submitToBrainTree = function (doc, template) {
       }
     }
   });
-};
+}
 
 AutoForm.addHooks("braintree-payment-form", {
   onSubmit: function (doc) {
@@ -133,13 +133,13 @@ const normalizedStates = {
   default: "failed"
 };
 
-normalizeState = function (stateString) {
+function normalizeState(stateString) {
   let normalizedState = normalizedStates[stateString];
   if (typeof normalizedState === "undefined") {
     normalizedState = normalizedStates.default;
   }
   return normalizedState;
-};
+}
 
 const normalizedModes = {
   settled: "capture",
@@ -151,10 +151,10 @@ const normalizedModes = {
   default: "capture"
 };
 
-normalizeMode = function (modeString) {
+function normalizeMode(modeString) {
   let normalizedMode = normalizedModes[modeString];
   if (typeof normalizedMode === "undefined") {
     normalizedMode = normalizedModes.default;
   }
   return normalizedMode;
-};
+}

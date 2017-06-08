@@ -1,13 +1,4 @@
 
-.rui.card.order {
-  margin-bottom: 20px;
-}
-
-.rui.card.order .controls {
-  width: 66px;
-  max-width: 66px;
-}
-
 // TODO: Once reaction ui is enabled, use `rui button success`
 .rui.card.order .controls .btn-success {
   .btn-success();
@@ -90,15 +81,6 @@
 .order-detail-quantity {
   margin-right: 50px;
 }
-
-
-
-
-
-
-
-
-
 
 
 .orders-list{
@@ -231,5 +213,151 @@
   > .invoice-details {
     .flex(1 1 auto);
     .text-align(right);
+  }
+}
+
+.invoice-summary {
+  .display(flex);
+  border-bottom: 1px solid @rui-default-disabled;
+  &:first-child {
+    border-top: 1px solid @rui-default-disabled;
+  }
+
+  margin-right: -15px;
+  margin-left: -15px;
+  line-height: 3;
+
+  > .invoice-label {
+    flex: 2;
+    .text-align(left);
+    padding-left: 15px;
+  }
+
+  > .invoice-label.refund {
+    flex: 1;
+    border-right: solid 1px @rui-default-disabled;
+  }
+
+
+
+
+  > .invoice-details {
+    flex: 1;
+    .text-align(right);
+    padding-right: 15px;
+
+
+
+    > .refundAmount {
+      .text-align(left);
+      flex: 2;
+    }
+    > .refundSubmit {
+      flex: 1;
+    }
+  }
+
+
+    .captured-total {
+      background-color: @rui-success-bg;
+    }
+    .adjusted-total {
+      background-color: @rui-brand-bg;
+    }
+    .refund {
+      background-color: @pre-bg;
+    }
+}
+
+// New LESS for React orders panel
+.rui.card.order {
+  width: 100%;
+  border: solid 1px @black20;
+  margin-bottom: 20px;
+
+  .controls {
+    width: 66px;
+    max-width: 66px;
+  }
+
+  .content {
+    padding: 0px;
+  }
+
+  .shipment-info {
+    padding: 10px;
+    border-bottom: solid 1px @black20;
+    .display(flex);
+    flex-direction: row;
+
+    .customer-info {
+      .flex(1 1 auto);
+
+      .rui-order-avatar {
+        .margin-right(10px);
+      }
+    }
+    .workflow-info {
+      .flex(1 1 auto);
+      display: flex;
+      justify-content: flex-end;
+
+      .badge {
+        .margin-left(10px);
+      }
+    }
+  }
+
+  .order-info {
+    padding: 10px;
+    .display(flex);
+    flex-direction: column;
+
+    .order-totals {
+      .display(flex);
+      flex-direction: row;
+
+      .order-data {
+        .flex(1 1);
+
+        &.order-data-date {
+          .text-align(left);
+        }
+        &.order-data-id {
+          text-align: center;
+        }
+        &.order-data-total {
+          .text-align(right);
+        }
+      }
+
+    }
+
+    .order-items {
+      .display(flex);
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      margin-top: 20px;
+      margin-bottom: 30px;
+      height: 40px;
+
+      .order-item {
+        flex: 0 0 auto;
+        position: relative;
+        width: 50px;
+        height: 50px;
+
+        .margin-right(20px);
+        margin-bottom: 20px;
+
+        .badge {
+          position: absolute;
+          bottom: -8px;
+          right: -8px;
+          z-index: 10;
+        }
+      }
+    }
   }
 }

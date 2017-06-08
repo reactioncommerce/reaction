@@ -5,6 +5,7 @@ import createMemoryHistory from "history/createMemoryHistory";
 import pathToRegexp from "path-to-regexp";
 import queryParse from "query-parse";
 import Immutable from "immutable";
+import { uniqBy } from "lodash";
 import { Meteor } from "meteor/meteor";
 import Blaze from "meteor/gadicc:blaze-react-component";
 import { Tracker } from "meteor/tracker";
@@ -34,8 +35,16 @@ class Router {
   static history = history
   static Hooks = Hooks
   static routes = []
-  static _routes = Router.routes // for legacy
   static _initialized = false;
+  static activeClassName = "active";
+
+  static set _routes(value) {
+    Router.routes = value;
+  }
+
+  static get _routes() {
+    return Router.routes;
+  }
 
   static ready() {
     routerReadyDependency.depend();
@@ -62,7 +71,7 @@ class Router {
   static getRouteName() {
     const current = Router.current();
 
-    return current.options && current.options.name || "";
+    return current.route && current.route.name || "";
   }
 
   static getParam(name) {
@@ -77,6 +86,19 @@ class Router {
     const current = Router.current();
 
     return current.query && current.query[name] || undefined;
+  }
+
+  static setQueryParams(newParams) {
+    const current = Router.current();
+    const queryParams = Object.assign({}, current.query, newParams);
+
+    for (const key in queryParams) {
+      if (queryParams[key] === null || queryParams[key] === undefined) {
+        delete queryParams[key];
+      }
+    }
+
+    Router.go(current.route.name, current.params, queryParams);
   }
 
   static watchPathChange() {
@@ -191,18 +213,26 @@ Router.reload = () => {
 Router.isActiveClassName = (routeName) => {
   const current = Router.current();
   const group = current.route.group;
-  const path = current.route.path;
-  let prefix;
+  let prefix = "";
 
-  if (group && group.prefix) {
-    prefix = current.route.group.prefix;
-  } else {
-    prefix = "";
-  }
+  if (current.route) {
+    const path = current.route.path;
 
-  if (typeof path === "string") {
-    const routeDef = path.replace(prefix + "/", "");
-    return routeDef === routeName ? "active" : "";
+    if (group && group.prefix) {
+      prefix = current.route.group.prefix;
+    }
+
+    // Match route
+    if (prefix.length && routeName.startsWith(prefix) && path === routeName) {
+      // Route name is a path and starts with the prefix. (default '/reaction')
+      return Router.activeClassName;
+    } else if (routeName.startsWith("/") && path === routeName) {
+      // Route name isa  path and starts with slash, but was not prefixed
+      return Router.activeClassName;
+    } else if (current.route.name === routeName) {
+      // Route name is the actual name of the route
+      return Router.activeClassName;
+    }
   }
 
   return "";
@@ -219,7 +249,7 @@ function hasRoutePermission(route) {
 
   if (routeName === "index" || routeName === "not-found") {
     return true;
-  } else if (Router.Reaction.hasPermission(routeName, Meteor.userId())) {
+  } else if (Router.Reaction.hasPermission(route.permissions, Meteor.userId())) {
     return true;
   }
 
@@ -228,7 +258,7 @@ function hasRoutePermission(route) {
 
 
 /**
- * getRouteName
+ * getRegistryRouteName
  * assemble route name to be standard
  * prefix/package name + registry name or route
  * @param  {String} packageName  [package name]
@@ -340,13 +370,14 @@ export function ReactionLayout(options = {}) {
     structure: layoutStructure,
     component: (props) => { // eslint-disable-line react/no-multi-comp, react/display-name
       const route = Router.current().route;
+      const permissions = options.permissions;
       const structure = {
         ...layoutStructure
       };
 
       // If the current route is unauthorized, and is not the "not-found" route,
       // then override the template to use the default unauthroized template
-      if (hasRoutePermission(route) === false && route.name !== "not-found") {
+      if (hasRoutePermission({ ...route, permissions }) === false && route.name !== "not-found") {
         structure.template = "unauthorized";
       }
 
@@ -382,7 +413,7 @@ Router.initPackageRoutes = (options) => {
 
   const pkgs = Packages.find().fetch();
   const prefix = Router.Reaction.getShopPrefix();
-  const reactRouterRoutes = [];
+  const routeDefinitions = [];
 
   // prefixing isnt necessary if we only have one shop
   // but we need to bypass the current
@@ -392,9 +423,12 @@ Router.initPackageRoutes = (options) => {
     // using tmeasday:publish-counts
     const shopCount = Counts.get("shops-count");
 
-    // Index layout
+    // Default layouts
     const indexLayout = ReactionLayout(options.indexRoute);
-    const indexRoute = {
+    const notFoundLayout = ReactionLayout({ template: "notFound" });
+
+    // Index route
+    routeDefinitions.push({
       route: "/",
       name: "index",
       options: {
@@ -403,19 +437,10 @@ Router.initPackageRoutes = (options) => {
         component: indexLayout.component,
         structure: indexLayout.structure
       }
-    };
+    });
 
-    reactRouterRoutes.push(
-      <Route
-        exact={true}
-        key="index"
-        path="/"
-        render={indexLayout.component}
-      />
-    );
-
-    const notFoundLayout = ReactionLayout({ template: "notFound" });
-    const notFoundRoute = {
+    // Not found route
+    routeDefinitions.push({
       route: "/not-found",
       name: "not-found",
       options: {
@@ -424,18 +449,7 @@ Router.initPackageRoutes = (options) => {
         component: notFoundLayout.component,
         structure: notFoundLayout.structure
       }
-    };
-
-    reactRouterRoutes.push(
-      <Route
-        key="not-found"
-        path="/not-found"
-        render={notFoundLayout.component}
-      />
-    );
-
-    Router.routes.push(indexRoute);
-    Router.routes.push(notFoundRoute);
+    });
 
     // get package registry route configurations
     for (const pkg of pkgs) {
@@ -449,6 +463,7 @@ Router.initPackageRoutes = (options) => {
             const {
               meta,
               route,
+              permissions,
               template,
               layout,
               workflow
@@ -459,7 +474,7 @@ Router.initPackageRoutes = (options) => {
 
             // define new route
             // we could allow the options to be passed in the registry if we need to be more flexible
-            const reactionLayout = ReactionLayout({ template, workflow, layout });
+            const reactionLayout = ReactionLayout({ template, workflow, layout, permissions });
             const newRouteConfig = {
               route,
               name,
@@ -483,9 +498,7 @@ Router.initPackageRoutes = (options) => {
         //
         // add group and routes to routing table
         //
-        const uniqRoutes = new Set(newRoutes);
-        let index = 0;
-        for (const route of uniqRoutes) {
+        for (const route of newRoutes) {
           // allow overriding of prefix in route definitions
           // define an "absolute" url by excluding "/"
           route.group = {};
@@ -500,24 +513,33 @@ Router.initPackageRoutes = (options) => {
             route.route = `${prefix}${route.route}`;
           }
 
-          // Add the route to the routing table
-          reactRouterRoutes.push(
-            <Route
-              key={`${pkg.name}-${route.name}-${index++}`}
-              path={route.route}
-              exact={true}
-              render={route.options.component}
-            />
-          );
-
-          Router.routes.push(route);
+          routeDefinitions.push(route);
         }
       }
     } // end package loop
 
+    // Uniq-ify routes
+    // Take all route definitions in the order that were received, and reverse it.
+    // Routes defined later, like in the case of custom routes will then have a
+    // higher precedence. Any duplicates after the first instance will be removed.
+    //
+    // TODO: In the future, sort by priority
+    // TODO: Allow duplicated routes with a prefix / suffix / flag
+    const uniqRoutes = uniqBy(routeDefinitions.reverse(), "route");
+    const reactRouterRoutes = uniqRoutes.map((route, index) => {
+      return (
+        <Route
+          key={`${route.name}-${index}`}
+          path={route.route}
+          exact={true}
+          render={route.options.component}
+        />
+      );
+    });
+
     Router._initialized = true;
     Router.reactComponents = reactRouterRoutes;
-    Router._routes = Router.routes;
+    Router._routes = uniqRoutes;
 
     routerReadyDependency.changed();
   }

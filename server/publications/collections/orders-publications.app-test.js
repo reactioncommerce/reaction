@@ -62,7 +62,7 @@ describe("Order Publication", function () {
       });
       sandbox.stub(Reaction, "getShopId", () => shop._id);
       sandbox.stub(Roles, "userIsInRole", () => true);
-      order = Factory.create("order", { status: "created" });
+      const order = Factory.create("order", { status: "created" });
       const publication = Meteor.server.publish_handlers["Orders"];
       const cursor = publication.apply(thisContext);
       const data = cursor.fetch()[0];
@@ -81,7 +81,7 @@ describe("Order Publication", function () {
       });
       sandbox.stub(Reaction, "getShopId", () => shop._id);
       sandbox.stub(Roles, "userIsInRole", () => false);
-      order = Factory.create("order", { status: "created" });
+      Factory.create("order", { status: "created" });
       const publication = Meteor.server.publish_handlers["Orders"];
       const cursor = publication.apply(thisContext);
       expect(cursor.fetch().length).to.equal(0);

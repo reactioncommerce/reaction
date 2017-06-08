@@ -4,7 +4,7 @@ import { Mongo } from "meteor/mongo";
 /*
  * Forked and modifed from https://github.com/asktomsk/bootstrap-alerts/
  */
-Alerts = {
+const Alerts = {
 
   /*
   Default options. Can be overridden for application
@@ -144,4 +144,5 @@ Alerts = {
   collection_: new Mongo.Collection(null)
 };
 
+window.Alerts = Alerts;
 export default Alerts;

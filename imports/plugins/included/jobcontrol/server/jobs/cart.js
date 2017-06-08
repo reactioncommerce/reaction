@@ -72,7 +72,7 @@ export default () => {
         }
       });
     } else {
-      Logger.warn("No cart cleanup schedule");
+      Logger.debug("No cart cleanup schedule");
     }
     callback();
   });

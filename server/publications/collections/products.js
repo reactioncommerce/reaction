@@ -111,13 +111,6 @@ Meteor.publish("Products", function (productScrollLimit = 24, productFilters, so
             $in: productFilters.shops
           }
         });
-
-        // check if this user is a shopAdmin
-        for (const thisShopId of productFilters.shops) {
-          if (Roles.userIsInRole(this.userId, ["admin", "createProduct"], thisShopId)) {
-            shopAdmin = true;
-          }
-        }
       }
 
       // filter by tags
