@@ -6,6 +6,7 @@ class InvoiceActions extends Component {
 
   static propTypes = {
     adjustedTotal: PropTypes.number,
+    handleActionViewBack: PropTypes.func,
     invoice: PropTypes.object,
     isAdjusted: PropTypes.func
   }
