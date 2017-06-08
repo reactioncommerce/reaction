@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Button, Translation } from "/imports/plugins/core/ui/client/components";
+import { Button, Divider, Translation } from "/imports/plugins/core/ui/client/components";
 
 class LoginButtons extends Component {
   static propTypes = {
@@ -57,11 +57,7 @@ class LoginButtons extends Component {
     if (this.props.onSeparator()) {
       return (
         <div className="loginForm-seperator">
-          <span />
-          <span className="text">
-            <Translation defaultValue="or" i18nKey="accountsUI.or" />
-          </span>
-          <span />
+          <Divider id="auth-divider" label="or" i18nKeyLabel="accountsUI.or" />
         </div>
       );
     }
