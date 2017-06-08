@@ -1,6 +1,8 @@
 import React, { Component, PropTypes } from "react";
 import Blaze from "meteor/gadicc:blaze-react-component";
 import {
+  DropDownMenu,
+  MenuItem,
   FlatButton,
   Toolbar,
   ToolbarGroup,
@@ -20,9 +22,12 @@ class PublishControls extends Component {
     isEnabled: PropTypes.bool,
     isPreview: PropTypes.bool,
     onAddProduct: PropTypes.func,
+    onShopSelectChange: PropTypes.func,
     onViewContextChange: PropTypes.func,
     onVisibilityChange: PropTypes.func,
     packageButtons: PropTypes.arrayOf(PropTypes.object),
+    shopId: PropTypes.string,
+    shops: PropTypes.arrayOf(PropTypes.object),
     showViewAsControls: PropTypes.bool,
     translation: PropTypes.shape({
       lang: PropTypes.string
@@ -36,6 +41,13 @@ class PublishControls extends Component {
   onViewContextChange = (event, isChecked) => {
     if (typeof this.props.onViewContextChange === "function") {
       this.props.onViewContextChange(event, isChecked ? "administrator" : "customer");
+    }
+  }
+
+  // Passthrough to shopSelectChange handler in container above
+  onShopSelectChange = (event, shopId) => {
+    if (typeof this.props.onShopSelectChange === "function") {
+      this.props.onShopSelectChange(event, shopId);
     }
   }
 
@@ -59,6 +71,32 @@ class PublishControls extends Component {
     }
 
     return null;
+  }
+
+  renderShopSelect() {
+    let menuItems;
+    if (Array.isArray(this.props.shops)) {
+      menuItems = this.props.shops.map((shop, index) => {
+        return (
+          <MenuItem
+            label={shop.name}
+            selectLabel={shop.name}
+            value={shop._id}
+            key={index}
+          />
+        );
+      });
+    }
+
+    return (
+      <DropDownMenu
+        onChange={this.onShopSelectChange}
+        value={this.props.shopId}
+        closeOnClick={true}
+      >
+        {menuItems}
+      </DropDownMenu>
+    );
   }
 
   renderVisibilitySwitch() {
@@ -146,6 +184,7 @@ class PublishControls extends Component {
       <Toolbar>
         <ToolbarGroup firstChild={true}>
           {this.renderVisibilitySwitch()}
+          {this.renderShopSelect()}
         </ToolbarGroup>
         <ToolbarGroup lastChild={true}>
           {this.renderAddButton()}
