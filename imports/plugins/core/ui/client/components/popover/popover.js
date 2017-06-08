@@ -6,6 +6,26 @@ import PopoverContent from "./popoverContent";
 import { Button, ButtonGroup } from "/imports/plugins/core/ui/client/components/";
 
 class Popover extends Component {
+  state = {
+    isOpen: false
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.isControlled) {
+      this.setState({
+        isOpen: nextProps.isOpen
+      });
+    }
+  }
+
+  get isOpen() {
+    return this.props.isOpen || this.state.isOpen;
+  }
+
+  get isControlled() {
+    return typeof this.props.isOpen === "boolean";
+  }
+
   /**
    * attachment
    * @description Return the attachment for the tooltip or the default
@@ -21,8 +41,32 @@ class Popover extends Component {
     }
   }
 
+  handleOpen = () => {
+    if (this.isControlled) {
+      if (this.props.onRequestOpen) {
+        this.props.onRequestOpen(true);
+      }
+    } else {
+      this.setState({
+        isOpen: true
+      });
+    }
+  }
+
+  handleClickOutside = () => {
+    if (this.isControlled) {
+      if (this.props.onRequestOpen) {
+        this.props.onRequestOpen(false);
+      }
+    } else {
+      this.setState({
+        isOpen: false
+      });
+    }
+  }
+
   renderPopoverChildren() {
-    if (this.props.isOpen) {
+    if (this.isOpen) {
       return  (
         <PopoverContent
           children={this.props.children}
@@ -84,6 +128,7 @@ Popover.propTypes = {
   isOpen: PropTypes.bool,
   onClick: PropTypes.func,
   onDisplayButtonClick: PropTypes.func,
+  onRequestOpen: PropTypes.func,
   showArrow: PropTypes.bool,
   showDropdownButton: PropTypes.bool,
   targetAttachment: PropTypes.string,
