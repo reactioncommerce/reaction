@@ -36,6 +36,7 @@ class Router {
   static Hooks = Hooks
   static routes = []
   static _initialized = false;
+  static activeClassName = "active";
 
   static set _routes(value) {
     Router.routes = value;
@@ -70,7 +71,7 @@ class Router {
   static getRouteName() {
     const current = Router.current();
 
-    return current.options && current.options.name || "";
+    return current.route && current.route.name || "";
   }
 
   static getParam(name) {
@@ -85,6 +86,19 @@ class Router {
     const current = Router.current();
 
     return current.query && current.query[name] || undefined;
+  }
+
+  static setQueryParams(newParams) {
+    const current = Router.current();
+    const queryParams = Object.assign({}, current.query, newParams);
+
+    for (const key in queryParams) {
+      if (queryParams[key] === null || queryParams[key] === undefined) {
+        delete queryParams[key];
+      }
+    }
+
+    Router.go(current.route.name, current.params, queryParams);
   }
 
   static watchPathChange() {
@@ -199,18 +213,26 @@ Router.reload = () => {
 Router.isActiveClassName = (routeName) => {
   const current = Router.current();
   const group = current.route.group;
-  const path = current.route.path;
-  let prefix;
+  let prefix = "";
 
-  if (group && group.prefix) {
-    prefix = current.route.group.prefix;
-  } else {
-    prefix = "";
-  }
+  if (current.route) {
+    const path = current.route.path;
 
-  if (typeof path === "string") {
-    const routeDef = path.replace(prefix + "/", "");
-    return routeDef === routeName ? "active" : "";
+    if (group && group.prefix) {
+      prefix = current.route.group.prefix;
+    }
+
+    // Match route
+    if (prefix.length && routeName.startsWith(prefix) && path === routeName) {
+      // Route name is a path and starts with the prefix. (default '/reaction')
+      return Router.activeClassName;
+    } else if (routeName.startsWith("/") && path === routeName) {
+      // Route name isa  path and starts with slash, but was not prefixed
+      return Router.activeClassName;
+    } else if (current.route.name === routeName) {
+      // Route name is the actual name of the route
+      return Router.activeClassName;
+    }
   }
 
   return "";
@@ -227,7 +249,7 @@ function hasRoutePermission(route) {
 
   if (routeName === "index" || routeName === "not-found") {
     return true;
-  } else if (Router.Reaction.hasPermission(routeName, Meteor.userId())) {
+  } else if (Router.Reaction.hasPermission(route.permissions, Meteor.userId())) {
     return true;
   }
 
@@ -236,7 +258,7 @@ function hasRoutePermission(route) {
 
 
 /**
- * getRouteName
+ * getRegistryRouteName
  * assemble route name to be standard
  * prefix/package name + registry name or route
  * @param  {String} packageName  [package name]
@@ -348,13 +370,14 @@ export function ReactionLayout(options = {}) {
     structure: layoutStructure,
     component: (props) => { // eslint-disable-line react/no-multi-comp, react/display-name
       const route = Router.current().route;
+      const permissions = options.permissions;
       const structure = {
         ...layoutStructure
       };
 
       // If the current route is unauthorized, and is not the "not-found" route,
       // then override the template to use the default unauthroized template
-      if (hasRoutePermission(route) === false && route.name !== "not-found") {
+      if (hasRoutePermission({ ...route, permissions }) === false && route.name !== "not-found") {
         structure.template = "unauthorized";
       }
 
@@ -440,6 +463,7 @@ Router.initPackageRoutes = (options) => {
             const {
               meta,
               route,
+              permissions,
               template,
               layout,
               workflow
@@ -450,7 +474,7 @@ Router.initPackageRoutes = (options) => {
 
             // define new route
             // we could allow the options to be passed in the registry if we need to be more flexible
-            const reactionLayout = ReactionLayout({ template, workflow, layout });
+            const reactionLayout = ReactionLayout({ template, workflow, layout, permissions });
             const newRouteConfig = {
               route,
               name,

@@ -31,6 +31,7 @@
     "bunyan-format": "^0.2.1",
     "bunyan-loggly": "^1.2.0",
     "classnames": "^2.2.5",
+    "copy-to-clipboard": "^3.0.6",
     "country-data": "^0.0.31",
     "css-annotation": "^0.6.2",
     "deep-diff": "^0.3.4",
@@ -73,7 +74,9 @@
     "react-addons-create-fragment": "15.4.2",
     "react-addons-pure-render-mixin": "15.4.2",
     "react-autosuggest": "^9.0.0",
+    "react-avatar": "^2.3.0",
     "react-color": "^2.11.4",
+    "react-copy-to-clipboard": "https://registry.npmjs.org/react-copy-to-clipboard/-/react-copy-to-clipboard-5.0.0.tgz",
     "react-dnd": "^2.3.0",
     "react-dnd-html5-backend": "^2.3.0",
     "react-dom": "15.4.2",
@@ -97,7 +100,7 @@
     "swiper": "^3.4.2",
     "tether-drop": "^1.4.2",
     "tether-tooltip": "^1.2.0",
-    "transliteration": "1.5.2",
+    "transliteration": "1.6.2",
     "twilio": "^2.11.1",
     "url": "^0.11.0",
     "velocity-animate": "^1.5.0",
@@ -139,5 +142,15 @@
     "del-report": "rm -rf ~/allure-report && rm -rf allure-results",
     "test-local": "wdio tests/runner/local.conf.js",
     "test-browserstack": "wdio tests/runner/browserstack.conf.js; kill $(ps aux | grep '[b]rowserstack' | awk '{print $2}')"
+  },
+  "jest": {
+    "moduleNameMapper": {
+      "^\/lib(.*)": "<rootDir>/lib/$1",
+      "^\/imports\/plugins(.*)": "<rootDir>/imports/plugins/$1",
+      "^\/client\/api(.*)": "<rootDir>/imports/test-utils/__mocks__/client/api$1",
+      "^meteor/aldeed:simple-schema": "<rootDir>/imports/test-utils/__mocks__/meteor/aldeed-simple-schema",
+      "^meteor/(.*)": "<rootDir>/imports/test-utils/__mocks__/meteor/$1",
+      "^meteor/(.*)": "<rootDir>/imports/plugins/core/router/__mocks__/meteor/$1"
+    }
   }
 }
