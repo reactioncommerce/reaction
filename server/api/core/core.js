@@ -282,6 +282,7 @@ export default {
     // defaults use either env or generated
     options.email = env.REACTION_EMAIL || Random.id(8).toLowerCase() + "@" + domain;
     options.username = env.REACTION_USER || "Admin"; // username
+    options.name = env.REACTION_USER || "Admin"; // set admin name
     options.password = env.REACTION_AUTH || Random.secret(8);
 
     // but we can override with provided `meteor --settings`
@@ -316,6 +317,15 @@ export default {
       // this should only occur when existing admin creates a new shop
       accountId = Meteor.users.findOne({ "emails.address": options.email })._id;
     }
+
+    Meteor.users.update({
+      "_id": accountId,
+      "emails.address": options.email
+    }, {
+      $set: {
+        name: options.name
+      }
+    });
 
     //
     // send verification email

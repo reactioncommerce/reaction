@@ -2,6 +2,7 @@ import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { Reaction, i18next } from "/client/api";
+import * as Collections from "/lib/collections";
 import { ServiceConfigHelper } from "../../helpers/util";
 
 /**
@@ -45,6 +46,12 @@ Template.accountsDashboard.helpers({
         return shopUsers.map(user => {
           const member = {};
 
+          // Querying the Accounts collection to retrieve user's name because
+          // Meteor filters out sensitive info from the Meteor.users schema
+          const userSub = Meteor.subscribe("UserAccount", user._id);
+          if (userSub.ready()) {
+            member.name = Collections.Accounts.findOne(user._id).name;
+          }
           member.userId = user._id;
 
           if (user.emails && user.emails.length) {
