@@ -30,6 +30,41 @@ class ProductGridItemsContainer extends Component {
     this.displayPrice = this.displayPrice.bind(this);
     this.onDoubleClick = this.onDoubleClick.bind(this);
     this.onClick = this.onClick.bind(this);
+    this.onPageClick = this.onPageClick.bind(this);
+  }
+
+  componentDidMount() {
+    document.querySelector(".page > main").addEventListener("click", this.onPageClick);
+  }
+
+  componentWillUnmount() {
+    document.querySelector(".page > main").removeEventListener("click", this.onPageClick);
+  }
+
+  onPageClick = () => {
+    // Do nothing if we are in preview mode
+    if (Reaction.isPreview() === false) {
+      // Don't trigger the clear selection if we're clicking on a grid item.
+      if (event.target.closest(".product-grid-item") === null) {
+        const selectedProducts = Session.get("productGrid/selectedProducts");
+
+        // Do we have any selected products?
+        // If we do then lets reset the Grid Settings ActionView
+        if (Array.isArray(selectedProducts) && selectedProducts.length) {
+          // Reset sessions ver of selected products
+          Session.set("productGrid/selectedProducts", []);
+
+          // Reset the action view of selected products
+          Reaction.setActionView({
+            label: "Grid Settings",
+            i18nKeyLabel: "gridSettingsPanel.title",
+            template: "productSettings",
+            type: "product",
+            data: {}
+          });
+        }
+      }
+    }
   }
 
   productPath = () => {
@@ -145,14 +180,14 @@ class ProductGridItemsContainer extends Component {
 
           if (event.shiftKey && selected > 0) {
             const indexes = [
-              items.index(checkbox.parents("li.product-grid-item")),
-              items.index(activeItems[0]),
-              items.index(activeItems[selected - 1])
+              Array.prototype.indexOf.call(items, document.querySelector(`li.product-grid-item[id="${product._id}"]`)),
+              Array.prototype.indexOf.call(items, activeItems[0]),
+              Array.prototype.indexOf.call(items, activeItems[selected - 1])
             ];
             for (let i = _.min(indexes); i <= _.max(indexes); i++) {
-              checkbox = $("input[type=checkbox]", items.get(i));
+              checkbox = items[i].querySelector("input[type=checkbox]");
               if (checkbox.checked === false) {
-                checkbox.checked === true;
+                checkbox.checked = true;
               }
             }
           } else {
@@ -167,16 +202,15 @@ class ProductGridItemsContainer extends Component {
           const selected = activeItems.length;
 
           if (event.shiftKey && selected > 0) {
-            const mama = document.querySelector(`li.product-grid-item[id="${product._id}"]`);
             const indexes = [
-              items.index(mama),
-              items.index(activeItems[0]),
-              items.index(activeItems[selected - 1])
+              Array.prototype.indexOf.call(items, document.querySelector(`li.product-grid-item[id="${product._id}"]`)),
+              Array.prototype.indexOf.call(items, activeItems[0]),
+              Array.prototype.indexOf.call(items, activeItems[selected - 1])
             ];
             for (let i = _.min(indexes); i <= _.max(indexes); i++) {
-              checkbox = $("input[type=checkbox]", items.get(i));
+              checkbox = items[i].querySelector("input[type=checkbox]");
               if (checkbox.checked === false) {
-                checkbox.checked === true;
+                checkbox.checked = true;
               }
             }
           } else {
