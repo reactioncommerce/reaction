@@ -1,10 +1,9 @@
 import _ from "lodash";
-import accounting from "accounting-js";
-import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
-import { Reaction, i18next } from "/client/api";
+import { Reaction } from "/client/api";
 import { Orders, Shops } from "/lib/collections";
 import OrdersActionContainer from "../containers/ordersActionContainer";
+import OrdersListContainer from "../containers/ordersListContainer";
 import {
   PACKAGE_NAME,
   ORDER_LIST_FILTERS_PREFERENCE_NAME,
@@ -135,6 +134,18 @@ Template.orders.helpers({
       }
     };
   },
+  OrdersListComponent() {
+    const orderFilter = Reaction.getUserPreferences(PACKAGE_NAME, ORDER_LIST_FILTERS_PREFERENCE_NAME, DEFAULT_FILTER_NAME);
+    return {
+      component: OrdersListContainer,
+      limit: Template.instance().orderLimits.get(orderFilter),
+      orders: Template.instance().state.get("orders") || false,
+      onActionClick(filter) {
+        Reaction.setUserPreferences(PACKAGE_NAME, ORDER_LIST_FILTERS_PREFERENCE_NAME, filter.name);
+        Reaction.setUserPreferences(PACKAGE_NAME, ORDER_LIST_SELECTED_ORDER_PREFERENCE_NAME, null);
+      }
+    };
+  },
   itemProps(order) {
     return {
       order,
@@ -190,177 +201,5 @@ Template.orders.events({
     let limit = instance.orderLimits.get(filter);
     limit += 10;
     instance.orderLimits.set(filter, limit);
-  }
-});
-
-Template.ordersListItem.helpers({
-  order() {
-    return Template.currentData().order;
-  },
-  activeClassname(orderId) {
-    // const Reaction.setUserPreferences(PACKAGE_NAME, ORDER_LIST_FILTERS_PREFERENCE_NAME, filter.name)
-    const selectedOrderId = Reaction.getUserPreferences(PACKAGE_NAME, ORDER_LIST_SELECTED_ORDER_PREFERENCE_NAME);
-
-    if (selectedOrderId === orderId) {
-      return "active";
-    }
-    return "";
-  },
-
-  orderIsNew(order) {
-    return order.workflow.status === "new";
-  }
-});
-
-Template.ordersListItem.events({
-  "click [data-event-action=selectOrder]": function (event) {
-    event.preventDefault();
-    const instance = Template.instance();
-
-    // Set selected order in user preference
-    Reaction.setUserPreferences(PACKAGE_NAME, ORDER_LIST_SELECTED_ORDER_PREFERENCE_NAME, instance.data.order._id);
-
-    // Show the action view - detail view
-    Reaction.setActionViewDetail({
-      label: "Order Details",
-      i18nKeyLabel: "orderWorkflow.orderDetails",
-      data: {
-        order: instance.data.order
-      },
-      props: {
-        size: "large"
-      },
-      template: "coreOrderWorkflow"
-    });
-  },
-  "click [data-event-action=startProcessingOrder]": function (event) {
-    event.preventDefault();
-    const instance = Template.instance();
-    const isActionViewOpen = Reaction.isActionViewOpen();
-    const { order } = instance.data;
-
-
-    if (order.workflow.status === "new") {
-      Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "processing", order);
-
-      // send notification to order owner
-      const userId = order.userId;
-      const type = "orderProcessing";
-      const prefix = Reaction.getShopPrefix();
-      const url = `${prefix}/notifications`;
-      const sms = true;
-      Meteor.call("notification/send", userId, type, url, sms);
-    }
-
-    Reaction.setUserPreferences(PACKAGE_NAME, ORDER_LIST_FILTERS_PREFERENCE_NAME, "processing");
-
-    // toggle detail views
-    if (isActionViewOpen === false) {
-      Reaction.showActionView({
-        label: "Order Details",
-        i18nKeyLabel: "orderWorkflow.orderDetails",
-        data: { order },
-        props: {
-          size: "large"
-        },
-        template: "coreOrderWorkflow"
-      });
-    }
-  }
-});
-
-/**
- * orderStatusDetail
- *
- * order state tracking
- *
- * @returns orderStatusDetails
- */
-
-Template.orderStatusDetail.helpers({
-  // helper to format currency
-  formatAmount(value) {
-    let amount = value || "";
-    if (typeof value === "number") {
-      amount = accounting.toFixed(value, 2);
-    }
-    return amount;
-  },
-  // order age helper
-  orderAge: function () {
-    return moment(this.createdAt).fromNow();
-  },
-
-  shipmentMethod: function () {
-    return this.shipping[0].shipmentMethod;
-  },
-
-  shipmentTracking: function () {
-    if (this.shipping[0].tracking) {
-      return this.shipping[0].tracking;
-    }
-    return "";
-  },
-
-  shipmentStatus() {
-    const self = this;
-    const shipment = this.shipping[0];
-
-    // check first if it was delivered
-    if (shipment.delivered) {
-      return {
-        delivered: true,
-        shipped: true,
-        status: "success",
-        label: i18next.t("orderShipping.delivered")
-      };
-    }
-
-    const shipped = _.every(shipment.items, (shipmentItem) => {
-      for (const fullItem of self.items) {
-        if (fullItem._id === shipmentItem._id) {
-          if (fullItem.workflow) {
-            if (_.isArray(fullItem.workflow.workflow)) {
-              return _.includes(fullItem.workflow.workflow, "coreOrderItemWorkflow/completed");
-            }
-          }
-        }
-      }
-    });
-
-    const canceled = _.every(shipment.items, (shipmentItem) => {
-      for (const fullItem of self.items) {
-        if (fullItem._id === shipmentItem._id) {
-          if (fullItem.workflow) {
-            return fullItem.workflow.status === "coreOrderItemWorkflow/canceled";
-          }
-        }
-      }
-    });
-
-    if (shipped) {
-      return {
-        delivered: false,
-        shipped: true,
-        status: "success",
-        label: i18next.t("orderShipping.shipped")
-      };
-    }
-
-    if (canceled) {
-      return {
-        delivered: false,
-        shipped: false,
-        status: "danger",
-        label: i18next.t("order.canceledLabel")
-      };
-    }
-
-    return {
-      delivered: false,
-      shipped: false,
-      status: "info",
-      label: i18next.t("orderShipping.notShipped")
-    };
   }
 });
