@@ -2,11 +2,13 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 // import classnames from "classnames/dedupe";
 import { TextField, Button } from "/imports/plugins/core/ui/client/components";
+import ProductGridContainer from "../containers/productGridContainer";
 
 class SearchModal extends Component {
   static propTypes = {
     handleChange: PropTypes.func,
     handleClick: PropTypes.func,
+    products: PropTypes.array,
     siteName: PropTypes.string,
     tags: PropTypes.array,
     value: PropTypes.string
@@ -81,10 +83,14 @@ class SearchModal extends Component {
 
   render() {
     return (
-      <div className="rui search-modal-header">
-        {this.renderSearchInput()}
-        {this.renderSearchTypeToggle()}
-        {this.props.tags.length > 0 && this.renderProductSearchTags()}
+      <div>
+        <div className="rui search-modal-header">
+          {this.renderSearchInput()}
+          {this.renderSearchTypeToggle()}
+          {this.props.tags.length > 0 && this.renderProductSearchTags()}
+        </div>
+
+        <ProductGridContainer products={this.props.products}/>
       </div>
     );
   }

@@ -53,6 +53,8 @@ class SearchModalContainer extends Component {
   handleClick = () => {
     this.setState({
       value: ""
+    }, () => {
+      this.dep.changed();
     });
   }
 
@@ -63,6 +65,7 @@ class SearchModalContainer extends Component {
           {...this.props}
           handleChange={this.handleChange}
           handleClick={this.handleClick}
+          products={this.state.productResults}
           tags={this.state.tags}
           value={this.state.value}
         />
