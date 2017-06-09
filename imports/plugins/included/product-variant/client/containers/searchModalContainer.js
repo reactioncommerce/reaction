@@ -12,7 +12,8 @@ class SearchModalContainer extends Component {
     super(props);
     this.state = {
       value: "",
-      tags: []
+      tags: [],
+      productResults: []
     };
     this.handleClick = this.handleClick.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -25,7 +26,10 @@ class SearchModalContainer extends Component {
       this.subscription = Meteor.subscribe("SearchResults", "products", this.state.value, []);
 
       if (this.subscription.ready()) {
-        const productHashtags = getProducts();
+        const productResults = Collections.ProductSearch.find().fetch();
+        this.setState({ productResults });
+
+        const productHashtags = getProducts(productResults);
         const tagSearchResults = Collections.Tags.find({
           _id: { $in: productHashtags }
         }).fetch();
@@ -53,7 +57,6 @@ class SearchModalContainer extends Component {
   }
 
   render() {
-    console.log(this.state.tags);
     return (
       <div>
         <SearchModal
@@ -73,16 +76,7 @@ function getSiteName() {
   return typeof shop === "object" && shop.name ? shop.name : "";
 }
 
-// function getQuery(searchQuery) {
-//   return Meteor.subscribe("SearchResults", "products", searchQuery, []);
-// }
-
-function getProducts() {
-  const productResults = Collections.ProductSearch.find().fetch();
-  // const productResultsCount = productResults.length;
-  // this.state.set("productSearchResults", productResults);
-  // this.state.set("productSearchCount", productResultsCount);
-
+function getProducts(productResults) {
   const hashtags = [];
   for (const product of productResults) {
     if (product.hashtags) {
