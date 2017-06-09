@@ -1,20 +1,17 @@
-import React, { Component, Children } from "react";
+import { Component, Children } from "react";
 import PropTypes from "prop-types";
+import url from "url";
 import { Roles } from "meteor/alanning:roles";
 import { composeWithTracker } from "/lib/api/compose";
-import url from "url"
-import { Jobs, Packages, Shops } from "/lib/collections";
-
+import { Shops } from "/lib/collections";
 
 class Permission extends Component {
   static propTypes = {
     children: PropTypes.node,
-    hasPermission: PropTypes.bool,
-    roles: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.string), PropTypes.string])
+    hasPermission: PropTypes.bool
   }
 
   render() {
-    console.log(this.props);
     if (this.props.hasPermission) {
       return Children.only(this.props.children);
     }
@@ -23,17 +20,23 @@ class Permission extends Component {
   }
 }
 
+/**
+ * withPermissions - Decorator to add permissions to any component
+ * withPermissions(["guest"])(MyComponent)
+ * @param  {Array|String} roles String or array of strings of permissions to check. default: roles=["guest", "anonymous"]
+ * @return {function} Returns a compser higher order component
+ */
 export function withPermissions(roles = ["guest", "anonymous"]) {
   return composeWithTracker((props, onData) => {
     onData(null, {
-      hasPermission: hasPermission(props.roles) //true //Roles.userIsInRole(Meteor.user(), roles)
+      hasPermission: hasPermission(props.roles || roles)
     });
   });
 }
 
 /**
- * hasPermission - server
- * server permissions checks
+ * hasPermission - client/server
+ * permissions checks
  * hasPermission exists on both the server and the client.
  * @param {String | Array} checkPermissions -String or Array of permissions if empty, defaults to "admin, owner"
  * @param {String} userId - userId, defaults to Meteor.userId()
@@ -41,9 +44,6 @@ export function withPermissions(roles = ["guest", "anonymous"]) {
  * @return {Boolean} Boolean - true if has permission
  */
 export function hasPermission(checkPermissions, userId = Meteor.userId(), checkGroup = getShopId()) {
-  // check(checkPermissions, Match.OneOf(String, Array)); check(userId, String); check(checkGroup,
-  // Match.Optional(String));
-
   let permissions;
   // default group to the shop or global if shop isn't defined for some reason.
   let group;
@@ -102,14 +102,5 @@ export function getShopId() {
   }).fetch()[0];
   return shop && shop._id;
 }
-
-
-// function PermissionContainer(props) {
-//   return withPermissions()(
-//
-//     });
-// }
-//
-// export default PermissionContainer;
 
 export default withPermissions()(Permission);
