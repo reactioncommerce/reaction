@@ -183,6 +183,22 @@ export default {
     return false;
   },
 
+  hasDashboardAccessForAnyShop(options = { user: Meteor.user(), permissions: ["owner", "admin", "dashboard"] }) {
+    const user = options.user || Meteor.user();
+    const permissions = options.permissions || [""];
+    if (!user || !user.roles) {
+      return false;
+    }
+
+    const hasPermissions = Object.keys(user.roles).find((shopId) => {
+      return user.roles[shopId].find((role) => {
+        return permissions.find(permission => permission === role);
+      });
+    });
+
+    return typeof hasPermissions !== "undefined";
+  },
+
   hasOwnerAccess() {
     const ownerPermissions = ["owner"];
     return this.hasPermission(ownerPermissions);

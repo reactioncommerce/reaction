@@ -73,7 +73,7 @@ export default {
    * @param {String} checkGroup group - default to shopId
    * @return {Boolean} Boolean - true if has permission
    */
-  hasPermission(checkPermissions, userId = Meteor.userId(), checkGroup = this.getSellerShopId(userId)) {
+  hasPermission(checkPermissions, userId = Meteor.userId(), checkGroup = this.getShopId()) { // TODO: getSellerShop Conversion - pass in shop here
     // check(checkPermissions, Match.OneOf(String, Array)); check(userId, String); check(checkGroup,
     // Match.Optional(String));
 
