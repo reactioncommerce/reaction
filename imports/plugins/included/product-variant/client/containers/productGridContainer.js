@@ -14,6 +14,7 @@ import { DragDropProvider } from "/imports/plugins/core/ui/client/providers";
 class ProductGridContainer extends Component {
   static propTypes = {
     canEdit: PropTypes.bool,
+    isSearch: PropTypes.bool,
     productIds: PropTypes.array,
     products: PropTypes.array,
     productsByKey: PropTypes.object
@@ -129,6 +130,7 @@ class ProductGridContainer extends Component {
           onMove={this.handleProductDrag}
           itemSelectHandler={this.handleSelectProductItem}
           canEdit={this.props.canEdit}
+          isSearch={this.props.isSearch}
         />
       </DragDropProvider>
     );

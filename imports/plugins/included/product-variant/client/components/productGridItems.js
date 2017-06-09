@@ -12,6 +12,7 @@ class ProductGridItems extends Component {
     connectDropTarget: PropTypes.func,
     displayPrice: PropTypes.func,
     isMediumWeight: PropTypes.func,
+    isSearch: PropTypes.bool,
     isSelected: PropTypes.func,
     itemSelectHandler: PropTypes.func,
     media: PropTypes.func,
@@ -102,6 +103,9 @@ class ProductGridItems extends Component {
           <div className="overlay">
             <div className="overlay-title">{this.props.product.title}</div>
             <div className="currency-symbol">{formatPriceString(this.props.displayPrice())}</div>
+            {this.props.isSearch &&
+              <div className="overlay-description">{this.props.product.description}</div>
+            }
           </div>
         </a>
       </div>
@@ -133,7 +137,7 @@ class ProductGridItems extends Component {
           {this.renderAdditionalMedia()}
         </a>
 
-        {this.renderNotices()}
+        {!this.props.isSearch && this.renderNotices()}
         {this.renderGridContent()}
       </li>
     );

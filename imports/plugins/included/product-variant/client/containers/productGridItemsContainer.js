@@ -13,6 +13,7 @@ class ProductGridItemsContainer extends Component {
   static propTypes = {
     connectDragSource: PropTypes.func,
     connectDropTarget: PropTypes.func,
+    isSearch: PropTypes.bool,
     itemSelectHandler: PropTypes.func,
     product: PropTypes.object
   }
@@ -166,6 +167,17 @@ class ProductGridItemsContainer extends Component {
 
     if (Reaction.hasPermission("createProduct") && Reaction.isPreview() === false) {
       event.preventDefault();
+
+      if (this.props.isSearch) {
+        let handle = product.handle;
+        if (product.__published) {
+          handle = product.__published.handle;
+        }
+
+        Reaction.Router.go("product", {
+          handle: handle
+        });
+      }
 
       const isSelected = event.target.closest("li.product-grid-item.active");
       const list = document.getElementById("product-grid-list");

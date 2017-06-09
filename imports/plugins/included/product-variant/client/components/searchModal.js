@@ -90,7 +90,7 @@ class SearchModal extends Component {
           {this.props.tags.length > 0 && this.renderProductSearchTags()}
         </div>
 
-        <ProductGridContainer products={this.props.products}/>
+        <ProductGridContainer products={this.props.products} isSearch={true}/>
       </div>
     );
   }
