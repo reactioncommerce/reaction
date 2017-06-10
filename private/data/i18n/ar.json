@@ -141,7 +141,7 @@
           "newOrder": "طلبك قيد التنفيذ.",
           "forAdmin": "لديك النظام الجديد.",
           "orderDelivered": "وقد تم تسليم طلبك.",
-          "orderAccepted": "تم قبول طلبك.",
+          "orderProcessing": "تتم معالجة طلبك.",
           "orderShipped": "وقد تم شحن طلبك."
         }
       },
@@ -298,7 +298,12 @@
       "cartDrawer": {
         "empty": "نشعر بالحزن. .عربتك فارغة",
         "keepShopping": "الأستمرار بالتسوق",
-        "checkout": "الدفع الان"
+        "checkout": "الدفع الان",
+        "new": "جديد",
+        "coreOrderWorkflow/created": "تم الانشاء",
+        "coreOrderWorkflow/processing": "جاري المعالجة",
+        "coreOrderWorkflow/completed": "مكتمل",
+        "coreOrderWorkflow/canceled": "تم الإلغاء"
       },
       "cartSubTotals": {
         "discount": "خصم",
@@ -380,9 +385,7 @@
         "resendNotification": "إعادة إرسال إشعارات الشحنة"
       },
       "orderWorkflow": {
-        "fulfillment": "تلبية الطلب",
         "orderDetails": "تفاصيل الطلب",
-        "summary": "ملخص",
         "invoice": "فاتورة",
         "shipmentTracking": "تتبع الشحنة"
       },
@@ -429,6 +432,7 @@
       },
       "addressBookEdit": {
         "editAddress": "تعديل هذا العنوان ",
+        "addressValidation": "عنوان التحقق من صحة",
         "somethingWentWrong": "حدث خطأ ما: {{err}}"
       },
       "corePackageConfig": {

@@ -11,6 +11,27 @@
           "ordersLabel": "rendelés",
           "ordersTitle": "rendelés",
           "ordersDescription": "Teljesíteni a megrendeléseket"
+        },
+        "orderWorkflow": {
+          "ordersList": {
+            "date": "Dátum",
+            "orderId": "Rendelés azonosító",
+            "total": "Összesen",
+            "emailNotFound": "E-mail nem elérhető"
+          },
+          "summary": {
+            "cardTitle": "összefoglalás",
+            "copyOrderLink": "Copy Order link"
+          },
+          "invoice": {
+            "cardTitle": "Számla",
+            "adjustedTotal": "korrigált összesen",
+            "capturedTotal": "elfogott Összesen",
+            "refund": "Visszatérítés"
+          },
+          "fulfillment": "Teljesítés",
+          "orderDetails": "Rendelési információk",
+          "shipmentTracking": "szállítmány"
         }
       }
     }
