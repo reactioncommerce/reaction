@@ -107,11 +107,14 @@ function displayName(displayUser) {
   i18nextDep.depend();
 
   const user = displayUser || Accounts.user();
+
   if (user) {
-    if (user.profile && user.profile.name) {
-      return user.profile.name;
+    if (user.name) {
+      return user.name;
     } else if (user.username) {
       return user.username;
+    } else if (user.profile && user.profile.name) {
+      return user.profile.name;
     }
 
     // todo: previous check was user.services !== "anonymous", "resume". Is this
