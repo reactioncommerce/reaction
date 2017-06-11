@@ -67,18 +67,19 @@ class MainDropdownContainer extends Component {
 }
 
 function getCurrentUser() {
-  if (typeof Reaction === "object") {
-    const shopId = Reaction.getShopId();
-    const user = Accounts.user();
-    if (!shopId || typeof user !== "object") return null;
-    // shoppers should always be guests
-    const isGuest = Roles.userIsInRole(user, "guest", shopId);
-    // but if a user has never logged in then they are anonymous
-    const isAnonymous = Roles.userIsInRole(user, "anonymous", shopId);
+  const shopId = Reaction.getShopId();
+  const user = Accounts.user();
 
-    return isGuest && !isAnonymous ? user : null;
+  if (!shopId || typeof user !== "object") {
+    return null;
   }
-  return null;
+
+  // shoppers should always be guests
+  const isGuest = Roles.userIsInRole(user, "guest", shopId);
+  // but if a user has never logged in then they are anonymous
+  const isAnonymous = Roles.userIsInRole(user, "anonymous", shopId);
+
+  return isGuest && !isAnonymous ? user : null;
 }
 
 function getUserGravatar(currentUser, size) {
@@ -88,7 +89,9 @@ function getUserGravatar(currentUser, size) {
     default: "identicon"
   };
   const user = currentUser || Accounts.user();
-  if (!user) return false;
+  if (!user) {
+    return false;
+  }
   const account = Collections.Accounts.findOne(user._id);
   // first we check picture exists. Picture has higher priority to display
   if (account && account.profile && account.profile.picture) {
