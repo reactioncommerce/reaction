@@ -318,14 +318,13 @@ export default {
       accountId = Meteor.users.findOne({ "emails.address": options.email })._id;
     }
 
-    Meteor.users.update({
-      "_id": accountId,
-      "emails.address": options.email
-    }, {
-      $set: {
-        name: options.name
-      }
-    });
+    if (options.name) {
+      Meteor.users.update(accountId, {
+        $set: {
+          name: options.name
+        }
+      });
+    }
 
     //
     // send verification email
