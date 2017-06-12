@@ -14,7 +14,6 @@ class ProductGridItems extends Component {
     isMediumWeight: PropTypes.func,
     isSearch: PropTypes.bool,
     isSelected: PropTypes.func,
-    itemSelectHandler: PropTypes.func,
     media: PropTypes.func,
     onClick: PropTypes.func,
     onDoubleClick: PropTypes.func,
@@ -82,7 +81,7 @@ class ProductGridItems extends Component {
     return (
       <div className="grid-alerts">
         <GridItemNoticeContainer product={this.props.product} />
-        <GridItemControlsContainer product={this.props.product} itemSelectHandler={this.props.itemSelectHandler} />
+        <GridItemControlsContainer product={this.props.product} />
       </div>
 
     );

@@ -58,13 +58,13 @@ class ProductGridContainer extends Component {
     }
   }
 
-  handleSelectProductItem = (event) => {
+  handleSelectProductItem = (isChecked, productId) => {
     let selectedProducts = Session.get("productGrid/selectedProducts");
 
-    if (event.target.checked) {
-      selectedProducts.push(event.target.value);
+    if (isChecked) {
+      selectedProducts.push(productId);
     } else {
-      selectedProducts = _.without(selectedProducts, event.target.value);
+      selectedProducts = _.without(selectedProducts, productId);
     }
 
     Reaction.setUserPreferences("reaction-product-variant", "selectedGridItems", selectedProducts);
