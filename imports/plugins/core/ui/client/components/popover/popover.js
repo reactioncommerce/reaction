@@ -9,6 +9,22 @@ class Popover extends Component {
     isOpen: false
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (this.isControlled) {
+      this.setState({
+        isOpen: nextProps.isOpen
+      });
+    }
+  }
+
+  get isOpen() {
+    return this.props.isOpen || this.state.isOpen;
+  }
+
+  get isControlled() {
+    return typeof this.props.isOpen === "boolean";
+  }
+
   /**
    * attachment
    * @description Return the attachment for the tooltip or the default
@@ -25,19 +41,31 @@ class Popover extends Component {
   }
 
   handleOpen = () => {
-    this.setState({
-      isOpen: true
-    });
+    if (this.isControlled) {
+      if (this.props.onRequestOpen) {
+        this.props.onRequestOpen(true);
+      }
+    } else {
+      this.setState({
+        isOpen: true
+      });
+    }
   }
 
   handleClickOutside = () => {
-    this.setState({
-      isOpen: false
-    });
+    if (this.isControlled) {
+      if (this.props.onRequestOpen) {
+        this.props.onRequestOpen(false);
+      }
+    } else {
+      this.setState({
+        isOpen: false
+      });
+    }
   }
 
   renderPopoverChildren() {
-    if (this.state.isOpen) {
+    if (this.isOpen) {
       return  (
         <PopoverContent
           children={this.props.children}
@@ -96,7 +124,9 @@ Popover.propTypes = {
   attachment: PropTypes.string,
   buttonElement: PropTypes.node,
   children: PropTypes.node,
+  isOpen: PropTypes.bool,
   onDisplayButtonClick: PropTypes.func,
+  onRequestOpen: PropTypes.func,
   showArrow: PropTypes.bool,
   showDropdownButton: PropTypes.bool,
   targetAttachment: PropTypes.string,

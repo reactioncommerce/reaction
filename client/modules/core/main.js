@@ -21,7 +21,7 @@ const reactionState = new ReactiveDict();
  * Global reaction shop permissions methods and shop initialization
  */
 export default {
-  shopId: null,
+  _shopId: new ReactiveVar(null),
 
   Locale: new ReactiveVar({}),
 
@@ -245,8 +245,22 @@ export default {
     });
   },
 
+  get shopId() {
+    return this._shopId.get();
+  },
+
   getShopId() {
     return this.shopId;
+  },
+
+  set shopId(id) {
+    this._shopId.set(id);
+  },
+
+  setShopId(id) {
+    if (id) {
+      this.shopId = id;
+    }
   },
 
   getShopName() {

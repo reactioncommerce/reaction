@@ -1,13 +1,12 @@
-
 <template name="CoreNavigationBar">
   <div class="rui navbar">
     <div class="showmenu">{{> button icon="bars" onClick=onMenuButtonClick}}</div>
     {{> coreNavigationBrand}}
+    {{> shopSelect}}
 
-    {{#if isMarketplaceOwner}}
-      {{> shopSelect}}
-      <span>{{> React component=VerticalDivider}}</span>
-    {{/if}}
+    <span>
+      {{> React component=VerticalDivider}}
+    </span>
 
     <div class="menu">
       {{> tagNav tagNavProps}}
