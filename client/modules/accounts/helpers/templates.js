@@ -28,10 +28,10 @@ Template.registerHelper("getGravatar", function (currentUser, size) {
 Template.registerHelper("displayName", function (displayUser) {
   i18nextDep.depend();
 
-  const user = displayUser || Accounts.user();
+  const user = displayUser || Collections.Accounts.findOne(Meteor.userId());
   if (user) {
-    if (user.profile && user.profile.name) {
-      return user.profile.name;
+    if (user.name) {
+      return user.name;
     } else if (user.username) {
       return user.username;
     }
