@@ -16,18 +16,18 @@ class DropDownMenu extends Component {
     };
   }
 
-  handleDropdownToggle = () => {
-    this.setState({
-      isOpen: !this.state.isOpen
-    });
-  }
-
   componentWillReceiveProps(nextProps) {
     if (this.isControlled) {
       this.setState({
         isOpen: nextProps.isOpen
       });
     }
+  }
+
+  handleDropdownToggle = () => {
+    this.setState({
+      isOpen: !this.state.isOpen
+    });
   }
 
   get isOpen() {
