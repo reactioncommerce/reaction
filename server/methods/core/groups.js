@@ -1,10 +1,7 @@
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
-import { HTTP } from "meteor/http";
-import { GeoCoder, Logger } from "/server/api";
 import { Reaction } from "/lib/api";
-import * as Collections from "/lib/collections";
-import * as Schemas from "/lib/collections/schemas";
+import { Shops } from "/lib/collections";
 
 /**
  * Reaction Group Permission Methods
@@ -21,22 +18,17 @@ Meteor.methods({
    * @return {null} no return value
    */
   "group/createGroup": function (groupData, shopId) {
-    check(groupData, Object);
+    check(groupData.groupName, Object);
+    check(groupData.permissions, Array);
     check(shopId, String);
 
-    // must have core permissions
-    if (!Reaction.hasPermission("core")) {
+    // must have needed permissions.. .TODO: Review who can create a group permission for a shop
+    if (!Reaction.hasPermission("owner")) {
       throw new Meteor.Error(403, "Access Denied");
     }
 
-    // {
-    //   permissions: [],
-    //   groupName: "groupname"
-    // }
-
-    // check params
-    // check permission of user performing the action
-    // add group and it's permissions on shop document
+    const shop = Shops.update({ _id: shopId }, { $addToSet: groupData });
+    return shop;
   }
 });
 
