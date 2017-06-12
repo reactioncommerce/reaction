@@ -38,8 +38,11 @@ export default {
         });
 
         if (shop) {
-          this.shopId = shop._id;
-          this.shopName = shop.name;
+          // Only set shopId if it hasn't been set yet
+          if (!this.shopId) {
+            this.shopId = shop._id;
+            this.shopName = shop.name;
+          }
           // initialize local client Countries collection
           if (!Countries.findOne()) {
             createCountryCollection(shop.locales.countries);
@@ -92,7 +95,7 @@ export default {
     if (checkGroup !== undefined && typeof checkGroup === "string") {
       group = checkGroup;
     } else {
-      group = this.getSellerShopId() || Roles.GLOBAL_GROUP;
+      group = this.getShopId() || Roles.GLOBAL_GROUP;
     }
 
     let permissions = ["owner"];

@@ -99,7 +99,7 @@ AutoForm.addHooks("stripe-payment-form", {
                 return "capture";
             }
           })();
-          Meteor.subscribe("Packages");
+          Meteor.subscribe("Packages", Reaction.getShopId());
           const packageData = Packages.findOne({
             name: "reaction-stripe",
             shopId: Reaction.getShopId()
