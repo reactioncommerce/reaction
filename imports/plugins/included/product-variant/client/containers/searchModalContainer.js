@@ -12,7 +12,7 @@ class SearchModalContainer extends Component {
     this.state = {
       collection: "products",
       value: "",
-      tags: [],
+      tagResults: [],
       productResults: [],
       orderResults: [],
       accountResults: []
@@ -44,7 +44,7 @@ class SearchModalContainer extends Component {
           }).fetch();
 
           this.setState({
-            tags: tagSearchResults,
+            tagResults: tagSearchResults,
             accountResults: [],
             orderResults: []
           });
@@ -57,6 +57,7 @@ class SearchModalContainer extends Component {
           const accountResults = Collections.AccountSearch.find().fetch();
           this.setState({
             accountResults,
+            tagResults: [],
             orderResults: [],
             productResults: []
           });
@@ -69,6 +70,7 @@ class SearchModalContainer extends Component {
           const orderResults = Collections.OrderSearch.find().fetch();
           this.setState({
             orderResults,
+            tagResults: [],
             accountResults: [],
             productResults: []
           });
@@ -108,7 +110,7 @@ class SearchModalContainer extends Component {
           handleClick={this.handleClick}
           handleToggle={this.handleToggle}
           products={this.state.productResults}
-          tags={this.state.tags}
+          tags={this.state.tagResults}
           value={this.state.value}
           accounts={this.state.accountResults}
           orders={this.state.orderResults}
