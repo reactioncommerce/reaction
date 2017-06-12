@@ -144,23 +144,23 @@ Template.searchModal.helpers({
  * orderResults events
  */
 Template.searchModal.events({
-  "click [data-event-action=manageAccount]": function (event) {
-    const instance = Template.instance();
-    const view = instance.view;
-
-    const userId = $(event.target).data("event-data");
-
-    Reaction.showActionView({
-      label: "Permissions",
-      i18nKeyLabel: "admin.settings.permissionsSettingsLabel",
-      data: userPermissions(userId),
-      template: "memberSettings"
-    });
-
-    Reaction.Router.go("dashboard/accounts", {}, {});
-
-    $(".js-search-modal").delay(400).fadeOut(400, () => {
-      Blaze.remove(view);
-    });
-  }
+  // "click [data-event-action=manageAccount]": function (event) {
+  //   const instance = Template.instance();
+  //   const view = instance.view;
+  //
+  //   const userId = $(event.target).data("event-data");
+  //
+  //   Reaction.showActionView({
+  //     label: "Permissions",
+  //     i18nKeyLabel: "admin.settings.permissionsSettingsLabel",
+  //     data: userPermissions(userId),
+  //     template: "memberSettings"
+  //   });
+  //
+  //   Reaction.Router.go("dashboard/accounts", {}, {});
+  //
+  //   $(".js-search-modal").delay(400).fadeOut(400, () => {
+  //     Blaze.remove(view);
+  //   });
+  // }
 });

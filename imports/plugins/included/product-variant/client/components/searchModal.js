@@ -96,18 +96,18 @@ class SearchModal extends Component {
         </div>
         <div className="rui search-modal-results-container">
           <div className="rui search-modal-results">
-            {this.props.products.length > 0 && <ProductGridContainer products={this.props.products} isSearch={true}/>}
+            {this.props.products.length > 0 && <ProductGridContainer products={this.props.products} isSearch={true} />}
             {this.props.accounts.length > 0 &&
               <div className="data-table">
                 <div className="table-responsive">
-                  <SortableTable data={this.props.accounts} columns={accountsTable()}/>
+                  <SortableTable data={this.props.accounts} columns={accountsTable()} onRowClick={this.props.handleAccountClick} />
                 </div>
               </div>
             }
             {this.props.orders.length > 0 &&
               <div className="data-table">
                 <div className="table-responsive">
-                  <SortableTable data={this.props.orders} columns={ordersTable()}/>
+                  <SortableTable data={this.props.orders} columns={ordersTable()} onRowClick={this.props.handleOrderClick}/>
                 </div>
               </div>
             }
