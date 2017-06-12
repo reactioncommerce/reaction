@@ -200,10 +200,12 @@ class ProductGridItemsContainer extends Component {
               checkbox = items[i].querySelector("input[type=checkbox]");
               if (checkbox.checked === false) {
                 checkbox.checked = true;
+                this.props.itemSelectHandler(checkbox.checked, product._id);
               }
             }
           } else {
             checkbox.checked = !checkbox.checked;
+            this.props.itemSelectHandler(checkbox.checked, product._id);
           }
         }
       } else {
@@ -223,22 +225,18 @@ class ProductGridItemsContainer extends Component {
               checkbox = items[i].querySelector("input[type=checkbox]");
               if (checkbox.checked === false) {
                 checkbox.checked = true;
+                this.props.itemSelectHandler(checkbox.checked, product._id);
               }
             }
           } else {
             checkbox.checked = !checkbox.checked;
+            this.props.itemSelectHandler(checkbox.checked, product._id);
           }
         } else {
           const checkbox = list.querySelector(`input[type=checkbox][value="${product._id}"]`);
           Session.set("productGrid/selectedProducts", [product._id]);
           checkbox.checked = true;
-          Reaction.showActionView({
-            label: "Grid Settings",
-            i18nKeyLabel: "gridSettingsPanel.title",
-            template: "productSettings",
-            type: "product",
-            data: { products: [product] }
-          });
+          this.props.itemSelectHandler(checkbox.checked, product._id);
         }
       }
     } else {
@@ -263,7 +261,6 @@ class ProductGridItemsContainer extends Component {
         additionalMedia={this.additionalProductMedia}
         isMediumWeight={this.isMediumWeight}
         displayPrice={this.displayPrice}
-        itemSelectHandler={this.props.itemSelectHandler}
         onDoubleClick={this.onDoubleClick}
         onClick={this.onClick}
         {...this.props}

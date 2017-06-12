@@ -8,7 +8,6 @@ import GridItemControls from "../components/gridItemControls";
 class GridItemControlsContainer extends Component {
   static propTypes = {
     isSelected: PropTypes.bool,
-    itemSelectHandler: PropTypes.func,
     product: PropTypes.object
   }
 
@@ -39,7 +38,6 @@ class GridItemControlsContainer extends Component {
         hasCreateProductPermission={this.hasCreateProductPermission}
         hasChanges={this.hasChanges}
         checked={this.checked}
-        itemSelectHandler={this.props.itemSelectHandler}
       />
     );
   }

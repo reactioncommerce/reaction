@@ -8,7 +8,6 @@ class GridItemControls extends Component {
     checked: PropTypes.func,
     hasChanges: PropTypes.func,
     hasCreateProductPermission: PropTypes.func,
-    itemSelectHandler: PropTypes.func,
     product: PropTypes.object
   }
 
@@ -47,7 +46,7 @@ class GridItemControls extends Component {
               value={this.props.product._id}
               id={`select-product-${this.props.product._id}`}
               checked={this.props.checked()}
-              onChange={this.props.itemSelectHandler}
+              readOnly
             />
           </label>
 
