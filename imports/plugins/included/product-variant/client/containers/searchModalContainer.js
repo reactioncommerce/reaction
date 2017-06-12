@@ -6,36 +6,63 @@ import { composeWithTracker } from "/lib/api/compose";
 import * as Collections from "/lib/collections";
 import SearchModal from "../components/searchModal";
 
-
 class SearchModalContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      collection: "products",
       value: "",
       tags: [],
-      productResults: []
+      productResults: [],
+      orderResults: [],
+      accountResults: []
     };
     this.handleClick = this.handleClick.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleToggle = this.handleToggle.bind(this);
     this.dep = new Tracker.Dependency;
   }
 
   componentDidMount() {
     Tracker.autorun(() => {
       this.dep.depend();
-      this.subscription = Meteor.subscribe("SearchResults", "products", this.state.value, []);
+      const searchCollection = this.state.collection;
+      const searchQuery = this.state.value;
+      this.subscription = Meteor.subscribe("SearchResults", searchCollection, searchQuery, []);
 
       if (this.subscription.ready()) {
-        const productResults = Collections.ProductSearch.find().fetch();
-        this.setState({ productResults });
+        /*
+        * Product Search
+        */
+        if (searchCollection === "products") {
+          const productResults = Collections.ProductSearch.find().fetch();
+          this.setState({ productResults });
 
-        const productHashtags = getProducts(productResults);
-        const tagSearchResults = Collections.Tags.find({
-          _id: { $in: productHashtags }
-        }).fetch();
-        this.setState({
-          tags: tagSearchResults
-        });
+          const productHashtags = getProducts(productResults);
+          const tagSearchResults = Collections.Tags.find({
+            _id: { $in: productHashtags }
+          }).fetch();
+
+          this.setState({
+            tags: tagSearchResults
+          });
+        }
+
+        /*
+          * Account Search
+          */
+        if (searchCollection === "accounts") {
+          const accountResults = Collections.AccountSearch.find().fetch();
+          this.setState({ accountResults });
+        }
+
+        /*
+          * Order Search
+          */
+        if (searchCollection === "orders") {
+          const orderResults = Collections.OrderSearch.find().fetch();
+          this.setState({ orderResults });
+        }
       }
     });
   }
@@ -58,16 +85,27 @@ class SearchModalContainer extends Component {
     });
   }
 
+  handleToggle = (collection) => {
+    this.setState({ collection });
+  }
+
   render() {
+    console.log("state collection", this.state.collection);
+    console.log("orderResults", this.state.orderResults);
+    console.log("accountResults", this.state.accountResults);
+
     return (
       <div>
         <SearchModal
           {...this.props}
           handleChange={this.handleChange}
           handleClick={this.handleClick}
+          handleToggle={this.handleToggle}
           products={this.state.productResults}
           tags={this.state.tags}
           value={this.state.value}
+          accountResults={this.state.accountResults}
+          orderResults={this.state.orderResults}
         />
       </div>
     );
@@ -94,6 +132,7 @@ function getProducts(productResults) {
 }
 
 function composer(props, onData) {
+  Meteor.subscribe("ShopMembers");
   const siteName = getSiteName();
 
   onData(null, {

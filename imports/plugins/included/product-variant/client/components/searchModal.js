@@ -1,19 +1,19 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-// import classnames from "classnames/dedupe";
-import { TextField, Button } from "/imports/plugins/core/ui/client/components";
+import { TextField, Button, SortableTable } from "/imports/plugins/core/ui/client/components";
 import ProductGridContainer from "../containers/productGridContainer";
+import { accountsTable, ordersTable } from "../helpers";
 
 class SearchModal extends Component {
   static propTypes = {
     handleChange: PropTypes.func,
     handleClick: PropTypes.func,
+    handleToggle: PropTypes.func,
     products: PropTypes.array,
     siteName: PropTypes.string,
     tags: PropTypes.array,
     value: PropTypes.string
   }
-
 
   renderSearchInput() {
     return (
@@ -44,7 +44,8 @@ class SearchModal extends Component {
           className="search-type-option search-type-active"
           data-i18n="search.searchTypeProducts"
           data-event-action="searchCollection"
-          data-event-value="products"
+          value="products"
+          onClick={() => this.props.handleToggle("products")}
         >
           Products
         </div>
@@ -52,7 +53,8 @@ class SearchModal extends Component {
           className="search-type-option"
           data-i18n="search.searchTypeAccounts"
           data-event-action="searchCollection"
-          data-event-value="accounts"
+          value="accounts"
+          onClick={() => this.props.handleToggle("accounts")}
         >
           Accounts
         </div>
@@ -60,7 +62,8 @@ class SearchModal extends Component {
           className="search-type-option"
           data-i18n="search.searchTypeOrders"
           data-event-action="searchCollection"
-          data-event-value="orders"
+          value="orders"
+          onClick={() => this.props.handleToggle("orders")}
         >
           Orders
         </div>
@@ -82,6 +85,7 @@ class SearchModal extends Component {
   }
 
   render() {
+    console.log("message", this.props.accountResults, accountsTable());
     return (
       <div>
         <div className="rui search-modal-header">
@@ -91,6 +95,8 @@ class SearchModal extends Component {
         </div>
 
         <ProductGridContainer products={this.props.products} isSearch={true}/>
+        {this.props.accountResults.length > 0 && <SortableTable data={this.props.accountResults} columns={accountsTable()}/>}
+        {this.props.orderResults.length > 0 && <SortableTable data={this.props.orderResults} columns={ordersTable()}/>}
       </div>
     );
   }
