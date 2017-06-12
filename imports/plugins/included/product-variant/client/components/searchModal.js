@@ -6,9 +6,11 @@ import { accountsTable, ordersTable } from "../helpers";
 
 class SearchModal extends Component {
   static propTypes = {
+    accounts: PropTypes.array,
     handleChange: PropTypes.func,
     handleClick: PropTypes.func,
     handleToggle: PropTypes.func,
+    orders: PropTypes.array,
     products: PropTypes.array,
     siteName: PropTypes.string,
     tags: PropTypes.array,
@@ -85,7 +87,6 @@ class SearchModal extends Component {
   }
 
   render() {
-    console.log("message", this.props.accountResults, accountsTable());
     return (
       <div>
         <div className="rui search-modal-header">
@@ -93,10 +94,25 @@ class SearchModal extends Component {
           {this.renderSearchTypeToggle()}
           {this.props.tags.length > 0 && this.renderProductSearchTags()}
         </div>
-
-        <ProductGridContainer products={this.props.products} isSearch={true}/>
-        {this.props.accountResults.length > 0 && <SortableTable data={this.props.accountResults} columns={accountsTable()}/>}
-        {this.props.orderResults.length > 0 && <SortableTable data={this.props.orderResults} columns={ordersTable()}/>}
+        <div className="rui search-modal-results-container">
+          <div className="rui search-modal-results">
+            {this.props.products.length > 0 && <ProductGridContainer products={this.props.products} isSearch={true}/>}
+            {this.props.accounts.length > 0 &&
+              <div className="data-table">
+                <div className="table-responsive">
+                  <SortableTable data={this.props.accounts} columns={accountsTable()}/>
+                </div>
+              </div>
+            }
+            {this.props.orders.length > 0 &&
+              <div className="data-table">
+                <div className="table-responsive">
+                  <SortableTable data={this.props.orders} columns={ordersTable()}/>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
       </div>
     );
   }

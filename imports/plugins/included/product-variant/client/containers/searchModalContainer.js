@@ -44,7 +44,9 @@ class SearchModalContainer extends Component {
           }).fetch();
 
           this.setState({
-            tags: tagSearchResults
+            tags: tagSearchResults,
+            accountResults: [],
+            orderResults: []
           });
         }
 
@@ -53,7 +55,11 @@ class SearchModalContainer extends Component {
           */
         if (searchCollection === "accounts") {
           const accountResults = Collections.AccountSearch.find().fetch();
-          this.setState({ accountResults });
+          this.setState({
+            accountResults,
+            orderResults: [],
+            productResults: []
+          });
         }
 
         /*
@@ -61,7 +67,11 @@ class SearchModalContainer extends Component {
           */
         if (searchCollection === "orders") {
           const orderResults = Collections.OrderSearch.find().fetch();
-          this.setState({ orderResults });
+          this.setState({
+            orderResults,
+            accountResults: [],
+            productResults: []
+          });
         }
       }
     });
@@ -90,10 +100,6 @@ class SearchModalContainer extends Component {
   }
 
   render() {
-    console.log("state collection", this.state.collection);
-    console.log("orderResults", this.state.orderResults);
-    console.log("accountResults", this.state.accountResults);
-
     return (
       <div>
         <SearchModal
@@ -104,8 +110,8 @@ class SearchModalContainer extends Component {
           products={this.state.productResults}
           tags={this.state.tags}
           value={this.state.value}
-          accountResults={this.state.accountResults}
-          orderResults={this.state.orderResults}
+          accounts={this.state.accountResults}
+          orders={this.state.orderResults}
         />
       </div>
     );
