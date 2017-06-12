@@ -24,6 +24,8 @@ class ProductGridContainer extends Component {
     super(props);
 
     this.state = {
+      productsByKey: props.productsByKey,
+      productIds: props.productIds,
       initialLoad: true,
       slug: "",
       canLoadMoreProducts: false
@@ -32,7 +34,7 @@ class ProductGridContainer extends Component {
 
   componentWillMount() {
     const selectedProducts = Reaction.getUserPreferences("reaction-product-variant", "selectedGridItems");
-    const products = this.props.products;
+    const products = this.products;
 
     if (_.isEmpty(selectedProducts)) {
       return Reaction.hideActionView();
@@ -72,7 +74,7 @@ class ProductGridContainer extends Component {
     // Save the selected items to the Session
     Session.set("productGrid/selectedProducts", _.uniq(selectedProducts));
 
-    const products = this.props.products;
+    const products = this.products;
 
     if (products) {
       const filteredProducts = _.filter(products, (product) => {
@@ -122,11 +124,18 @@ class ProductGridContainer extends Component {
     });
   }
 
+  get products() {
+    if (this.props.isSearch) {
+      return this.props.products;
+    }
+    return this.state.productIds.map((id) => this.state.productsByKey[id]);
+  }
+
   render() {
     return (
       <DragDropProvider>
         <ProductGrid
-          products={this.props.products}
+          products={this.products}
           onMove={this.handleProductDrag}
           itemSelectHandler={this.handleSelectProductItem}
           canEdit={this.props.canEdit}
