@@ -231,6 +231,10 @@ export default {
     return this.hasPermission(dashboardPermissions);
   },
 
+  hasShopSwitcherAccess() {
+    return this.hasPermissionsForAnyShop();
+  },
+
   getSellerShopId: function (userId = Meteor.userId(), noFallback = false) {
     if (userId) {
       const group = Roles.getGroupsForUser(userId, "admin")[0];
