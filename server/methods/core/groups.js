@@ -1,7 +1,8 @@
+import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { Reaction } from "/lib/api";
-import { Shops } from "/lib/collections";
+import { Accounts, Shops } from "/lib/collections";
 
 /**
  * Reaction Group Permission Methods
@@ -57,14 +58,39 @@ Meteor.methods({
       throw new Meteor.Error(403, "Access Denied");
     }
 
+    const groupNameChanged = group.groupName !== newGroupData.groupName;
+    const permissionsChanged = !_.isEqual(group.permissions, newGroupData.permissions);
     const updateQuery = { "groups.$": newGroupData };
 
     const shop = Shops.update({ _id: shopId, group: group }, { $set: updateQuery });
 
     console.log({ shop });
+
+    if (!shop) {
+      return null; // update wasn't successful. Todo: Check this again
+    }
+
     // if update successfull, check users with such group and update them
+    // if it's a name change, change the name of the group in the user
+    // if it's a permissions array change, use Roles to update the permissions
+
+    if (groupNameChanged) {
+      updateAffectedUsersGroupName(group.groupName);
+    }
+
+    if (permissionsChanged) {
+      updateAffectedUsersPermissions();
+    }
 
     return shop;
   }
 });
 
+function updateAffectedUsersGroupName(groupName) {
+  $set: {}
+  Accounts.update({ group: groupName }, {});
+}
+
+function updateAffectedUsersPermissions() {
+
+}
