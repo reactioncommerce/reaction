@@ -186,19 +186,33 @@ export default {
     return false;
   },
 
+
+  /**
+   * hasDashboardAccessForAnyShop - client
+   * client permission check for any "owner", "admin", or "dashboard" permissions for any shop.
+   *
+   * @todo This could be faster with a dedicated hasAdminDashboard boolean on the user object
+   * @param { Object } options - options object that can be passed a user and/or a set of permissions
+   * @return {Boolean} Boolean - true if has dashboard access for any shop
+   */
   hasDashboardAccessForAnyShop(options = { user: Meteor.user(), permissions: ["owner", "admin", "dashboard"] }) {
-    const user = options.user || Meteor.user();
-    const permissions = options.permissions || [""];
+    const user = options.user;
+    const permissions = options.permissions;
+
     if (!user || !user.roles) {
       return false;
     }
 
+    // Nested find that determines if a user has any of the permissions
+    // specified in the `permissions` array for any shop
     const hasPermissions = Object.keys(user.roles).find((shopId) => {
       return user.roles[shopId].find((role) => {
         return permissions.find(permission => permission === role);
       });
     });
 
+    // Find returns undefined if nothing is found.
+    // This will return true if permissions are found, false otherwise
     return typeof hasPermissions !== "undefined";
   },
 
