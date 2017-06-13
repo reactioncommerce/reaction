@@ -37,7 +37,9 @@ Meteor.methods({
   /**
    * group/updateGroup
    * @summary updates a permission group for a shop
-   * updates either the name of the permission group or it roles list
+   * updates either the name of the permission group or it roles list.
+   * It also goes into affected user data to modify both the groupName (using Accounts schema)
+   * and group permissions (using "accounts/removeUserPermissions")
    * @param {Object} group - current data of the group to be updated
    * @param {String} group.groupName - name of the group
    * @param {Array} group.permissions - permissions of the group
@@ -59,6 +61,10 @@ Meteor.methods({
     }
 
     const groupNameChanged = group.groupName !== newGroupData.groupName;
+    // const newPermissionAdded = true;
+    // group.permissions.forEach(group => {
+    //   _.includes(newGroupData.permissions, group);
+    // });
     const permissionsChanged = !_.isEqual(group.permissions, newGroupData.permissions);
     const updateQuery = { "groups.$": newGroupData };
 
@@ -70,16 +76,12 @@ Meteor.methods({
       return null; // update wasn't successful. Todo: Check this again
     }
 
-    // if update successfull, check users with such group and update them
-    // if it's a name change, change the name of the group in the user
-    // if it's a permissions array change, use Roles to update the permissions
-
     if (groupNameChanged) {
       updateAllAffectedUsersGroupName(group.groupName);
     }
 
     if (permissionsChanged) {
-      updateAffectedUsersPermissions();
+      updateAllAffectedUsersPermissions(newGroupData);
     }
 
     return shop;
@@ -93,6 +95,22 @@ function updateAllAffectedUsersGroupName(groupName) {
   return Accounts.update({ groups: groupName }, { $set: updateQuery }, options);
 }
 
-function updateAffectedUsersPermissions() {
+function updateAllAffectedUsersPermissions(group) {
+  const shop = Shops.find({ _id: this.shopId });
+  const affectedUsers = Accounts.find({ groups: group.groupName });
 
+  affectedUsers.forEach(user => {
+    // if (newPermissionAdded) {
+    //   return Meteor.call("accounts/addUserPermissions", user.userId, group.permissions, this.shopId);
+    // }
+    // TODO: review shopId
+    Meteor.call("accounts/removeUserPermissions", user.userId, group.permissions, this.shopId);
+
+    // add back all permissions belonging for all needed groups for that user
+    // gather/concat all the group permissions for that user
+    const allGroupRoles = [];
+    user.groups[this.shopId].map(userGroup => allGroupRoles.push(shop.groups[userGroup]));
+    // call add/permissions
+    return Meteor.call("accounts/addUserPermissions", user.userId, allGroupRoles, this.shopId);
+  });
 }
