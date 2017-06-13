@@ -59,7 +59,6 @@
     "mute": [
       "wdio-mocha-framework",
       "griddle-react",
-      "nodemailer",
       "twilio",
       "react-addons-create-fragment",
       "react-addons-pure-render-mixin",
