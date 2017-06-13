@@ -75,7 +75,7 @@ Meteor.methods({
     // if it's a permissions array change, use Roles to update the permissions
 
     if (groupNameChanged) {
-      updateAffectedUsersGroupName(group.groupName);
+      updateAllAffectedUsersGroupName(group.groupName);
     }
 
     if (permissionsChanged) {
@@ -86,9 +86,11 @@ Meteor.methods({
   }
 });
 
-function updateAffectedUsersGroupName(groupName) {
-  $set: {}
-  Accounts.update({ group: groupName }, {});
+function updateAllAffectedUsersGroupName(groupName) {
+  const updateQuery = { "groups.$": groupName };
+  const options = { multi: true };
+
+  return Accounts.update({ groups: groupName }, { $set: updateQuery }, options);
 }
 
 function updateAffectedUsersPermissions() {
