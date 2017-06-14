@@ -33,6 +33,10 @@ Meteor.methods({
 
     const shop = Shops.update({ _id: shopId }, { $addToSet: { groups: groupData } });
 
+    if (!shop) {
+      throw new Meteor.Error(400, "Bad request data");
+    }
+
     return { shop, status: 200 };
   },
 
@@ -65,38 +69,53 @@ Meteor.methods({
     }
 
     const groupNameChanged = group.name !== newGroupData.name;
-    // const newPermissionAdded = true;
-    // group.permissions.forEach(group => {
-    //   _.includes(newGroupData.permissions, group);
-    // });
     const permissionsChanged = !_.isEqual(group.permissions, newGroupData.permissions);
     const updateQuery = { "groups.$": newGroupData };
 
-    const shop = Shops.update({ _id: shopId, group: group }, { $set: updateQuery });
+    const shop = Shops.update({ _id: shopId, groups: group }, { $set: updateQuery });
 
     console.log({ shop });
 
     if (!shop) {
-      return null; // update wasn't successful. Todo: Check this again
+      throw new Meteor.Error(400, "Bad request data");
     }
 
     if (groupNameChanged) {
-      updateAllAffectedUsersGroupName(group.name);
+      updateAllAffectedUsersGroupName(group.name, newGroupData.name, shopId);
     }
 
-    if (permissionsChanged) {
-      updateAllAffectedUsersPermissions(newGroupData, shopId);
-    }
+    // if (permissionsChanged) {
+    //   updateAllAffectedUsersPermissions(newGroupData, shopId);
+    // }
 
-    return shop;
+    return { shop, status: 200 };
   }
 });
 
-function updateAllAffectedUsersGroupName(groupName) {
-  const updateQuery = { "groups.$": groupName };
-  const options = { multi: true };
+function updateAllAffectedUsersGroupName(groupName, newName, shopId) {
+  const matchQuery = { $elemMatch: { shopId: shopId, names: groupName } };
+  const affectedUsers = Accounts.find({ groups: matchQuery }).fetch();
 
-  return Accounts.update({ groups: groupName }, { $set: updateQuery }, options);
+  console.log(JSON.stringify({ affectedUsers }, null, 4));
+
+  affectedUsers.forEach(user => {
+    user.groups = user.groups.map(group => {
+      if (group.shopId === shopId) {
+        group.names = replaceArrayItem(group.names, groupName, newName);
+      }
+      return group;
+    });
+    const updateQuery = { groups: user.groups };
+    console.log(JSON.stringify({ user }, null, 4));
+    Accounts.update({ _id: user._id }, { $set: updateQuery });
+  });
+
+  function replaceArrayItem(array, item, newItem) {
+    return array.map(value => {
+      if (value === item) return newItem;
+      return value;
+    });
+  }
 }
 
 function updateAllAffectedUsersPermissions(group, shopId) {
@@ -104,9 +123,6 @@ function updateAllAffectedUsersPermissions(group, shopId) {
   const affectedUsers = Accounts.find({ groups: group.name });
 
   affectedUsers.forEach(user => {
-    // if (newPermissionAdded) {
-    //   return Meteor.call("accounts/addUserPermissions", user.userId, group.permissions, this.shopId);
-    // }
     Meteor.call("accounts/removeUserPermissions", user.userId, group.permissions, shopId);
 
     // add back all permissions belonging for all needed groups for that user
@@ -120,3 +136,4 @@ function updateAllAffectedUsersPermissions(group, shopId) {
 
 // data = {name: "Consultant", permissions: ["createProduct"]}
 // Meteor.call("group/createGroup", data, "J8Bhq3uTtdgwZx3rz", function (err, res) { console.log({err, res})})
+
