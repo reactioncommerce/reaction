@@ -5,7 +5,7 @@ import { Accounts } from "meteor/accounts-base";
 import { composeWithTracker } from "/lib/api/compose";
 import { UpdatePasswordOverlay } from "/client/modules/accounts/components";
 import { MessagesContainer } from "/client/modules/accounts/containers/helpers";
-import { LoginFormValidation } from "/lib/api";
+import { TranslationProvider } from "/imports/plugins/core/ui/client/providers";
 
 class UpdatePasswordOverlayContainer extends Component {
   static propTypes = {
@@ -101,16 +101,18 @@ class UpdatePasswordOverlayContainer extends Component {
 
   render() {
     return (
-      <UpdatePasswordOverlay
-        uniqueId={this.props.uniqueId}
-        loginFormMessages={this.formMessages}
-        onError={this.hasError}
-        messages={this.state.formMessages}
-        onFormSubmit={this.handleFormSubmit}
-        onCancel={this.handleFormCancel}
-        isOpen={this.state.isOpen}
-        isDisabled={this.state.isDisabled}
-      />
+      <TranslationProvider>
+        <UpdatePasswordOverlay
+          uniqueId={this.props.uniqueId}
+          loginFormMessages={this.formMessages}
+          onError={this.hasError}
+          messages={this.state.formMessages}
+          onFormSubmit={this.handleFormSubmit}
+          onCancel={this.handleFormCancel}
+          isOpen={this.state.isOpen}
+          isDisabled={this.state.isDisabled}
+        />
+      </TranslationProvider>
     );
   }
 }
