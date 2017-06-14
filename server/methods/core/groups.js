@@ -86,7 +86,7 @@ Meteor.methods({
     }
 
     if (permissionsChanged) {
-      updateAllAffectedUsersPermissions(users, newGroupData, shopId);
+      updateAllAffectedUsersPermissions(users, group, newGroupData, shopId);
     }
 
     return { shop, status: 200 };
@@ -113,21 +113,19 @@ function updateAllAffectedUsersGroupName(affectedUsers, groupName, newName, shop
   }
 }
 
-function updateAllAffectedUsersPermissions(affectedUsers, group, shopId) {
+function updateAllAffectedUsersPermissions(affectedUsers, oldGroup, group, shopId) {
   const shop = Shops.findOne({ _id: shopId });
 
   return affectedUsers.forEach(user => {
-    Meteor.call("accounts/removeUserPermissions", user.userId, group.permissions, shopId, (err) => {
-      console.log({ err });
-      // ensure no lost role/permissions after removing effecting updated group change
-      let combinedPermissions = [];
-      const userGroupsInShop = _.find(user.groups, { shopId });
-      userGroupsInShop.names.map(name => {
-        const permissions = _.get(_.find(shop.groups, { name }), "permissions", []);
-        combinedPermissions = _.uniq(combinedPermissions.concat(permissions));
-      });
-      console.log({ combinedPermissions });
-      Meteor.call("accounts/addUserPermissions", user.userId, combinedPermissions, shopId);
+    // requires "reaction-accounts" permission access
+    Meteor.call("accounts/removeUserPermissions", user.userId, oldGroup.permissions, shopId);
+    // Repopulate. To ensure no lost role/permissions after removing effecting updated group change
+    let combinedPermissions = [];
+    const userGroupsInShop = _.find(user.groups, { shopId });
+    userGroupsInShop.names.map(name => {
+      const permissions = _.get(_.find(shop.groups, { name }), "permissions", []);
+      combinedPermissions = _.uniq(combinedPermissions.concat(permissions));
     });
+    Meteor.call("accounts/addUserPermissions", user.userId, combinedPermissions, shopId);
   });
 }
