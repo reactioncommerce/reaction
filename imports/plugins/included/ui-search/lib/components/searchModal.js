@@ -7,7 +7,6 @@ import { accountsTable, ordersTable } from "../helpers";
 class SearchModal extends Component {
   static propTypes = {
     accounts: PropTypes.array,
-    closeModal: PropTypes.func,
     handleAccountClick: PropTypes.func,
     handleChange: PropTypes.func,
     handleClick: PropTypes.func,
@@ -17,6 +16,7 @@ class SearchModal extends Component {
     products: PropTypes.array,
     siteName: PropTypes.string,
     tags: PropTypes.array,
+    unmountMe: PropTypes.func,
     value: PropTypes.string
   }
 
@@ -92,7 +92,7 @@ class SearchModal extends Component {
   render() {
     return (
       <div>
-        <div className="rui search-modal-close"><IconButton icon="fa fa-times" onClick={this.props.closeModal} /></div>
+        <div className="rui search-modal-close"><IconButton icon="fa fa-times" onClick={this.props.unmountMe} /></div>
         <div className="rui search-modal-header">
           {this.renderSearchInput()}
           {this.renderSearchTypeToggle()}

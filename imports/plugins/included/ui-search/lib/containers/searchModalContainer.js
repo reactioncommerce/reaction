@@ -13,15 +13,16 @@ class SearchModalContainer extends Component {
     super(props);
     this.state = {
       collection: "products",
-      isMounted: false,
       value: "",
       tagResults: [],
       productResults: [],
       orderResults: [],
+      renderChild: true,
       accountResults: []
     };
     this.handleClick = this.handleClick.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleChildUnmount = this.handleChildUnmount.bind(this);
     this.handleAccountClick = this.handleAccountClick.bind(this);
     this.handleOrderClick = this.handleOrderClick.bind(this);
     this.handleToggle = this.handleToggle.bind(this);
@@ -31,12 +32,11 @@ class SearchModalContainer extends Component {
   componentDidMount() {
     Tracker.autorun(() => {
       this.dep.depend();
-      this.setState({ isMounted: true });
       const searchCollection = this.state.collection;
       const searchQuery = this.state.value;
       this.subscription = Meteor.subscribe("SearchResults", searchCollection, searchQuery, []);
 
-      if (this.state.isMounted && this.subscription.ready()) {
+      if (this.subscription.ready()) {
         /*
         * Product Search
         */
@@ -86,12 +86,11 @@ class SearchModalContainer extends Component {
   }
 
   componentWillUnmount() {
-    this.setState({ isMounted: false });
     this.subscription.stop();
   }
 
   onUnmount() {
-    const node = findDOMNode(this).parentNode;
+    const node = findDOMNode(this);
     unmountComponentAtNode(node);
   }
 
@@ -100,21 +99,17 @@ class SearchModalContainer extends Component {
   }
 
   handleChange = (event, value) => {
-    if (this.state.isMounted) {
-      this.setState({ value }, () => {
-        this.dep.changed();
-      });
-    }
+    this.setState({ value }, () => {
+      this.dep.changed();
+    });
   }
 
   handleClick = () => {
-    if (this.state.isMounted) {
-      this.setState({
-        value: ""
-      }, () => {
-        this.dep.changed();
-      });
-    }
+    this.setState({
+      value: ""
+    }, () => {
+      this.dep.changed();
+    });
   }
 
   handleAccountClick = (event) => {
@@ -127,7 +122,7 @@ class SearchModalContainer extends Component {
       template: "memberSettings"
     });
     Reaction.Router.go("dashboard/accounts", {}, {});
-    this.onUnmount();
+    this.handleChildUnmount();
   }
 
   handleOrderClick = (event)  => {
@@ -150,32 +145,39 @@ class SearchModalContainer extends Component {
     Reaction.Router.go("dashboard/orders", {}, {
       _id: orderId
     });
-    this.onUnmount();
+    this.handleChildUnmount();
   }
 
   handleToggle = (collection) => {
-    if (this.state.isMounted) {
-      this.setState({ collection });
-    }
+    this.setState({ collection });
+  }
+
+  handleChildUnmount() {
+    this.setState({ renderChild: false });
   }
 
   render() {
     return (
-      <div className="rui search-modal js-search-modal" id="bla">
-        <SearchModal
-          {...this.props}
-          closeModal={this.handleCloseModal}
-          handleChange={this.handleChange}
-          handleClick={this.handleClick}
-          handleToggle={this.handleToggle}
-          handleAccountClick={this.handleAccountClick}
-          handleOrderClick={this.handleOrderClick}
-          products={this.state.productResults}
-          tags={this.state.tagResults}
-          value={this.state.value}
-          accounts={this.state.accountResults}
-          orders={this.state.orderResults}
-        />
+      <div>
+        {this.state.renderChild ?
+          <div className="rui search-modal js-search-modal">
+            <SearchModal
+              {...this.props}
+              closeModal={this.handleCloseModal}
+              handleChange={this.handleChange}
+              handleClick={this.handleClick}
+              handleToggle={this.handleToggle}
+              handleAccountClick={this.handleAccountClick}
+              handleOrderClick={this.handleOrderClick}
+              products={this.state.productResults}
+              tags={this.state.tagResults}
+              value={this.state.value}
+              accounts={this.state.accountResults}
+              orders={this.state.orderResults}
+              unmountMe={this.handleChildUnmount}
+            />
+          </div> : null
+        }
       </div>
     );
   }
