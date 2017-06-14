@@ -3,7 +3,7 @@ import classnames from "classnames/dedupe";
 import Avatar from "react-avatar";
 import moment from "moment";
 import { formatPriceString } from "/client/api";
-import { Badge, ClickToCopy, Icon, Translation } from "/imports/plugins/core/ui/client/components";
+import { Badge, ClickToCopy, Icon, Translation } from "@reactioncommerce/reaction-ui";
 import ProductImage from "./productImage";
 
 class OrdersList extends Component {
