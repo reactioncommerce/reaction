@@ -244,7 +244,7 @@ export default {
   },
 
   hasShopSwitcherAccess() {
-    return this.hasPermissionsForAnyShop();
+    return this.hasDashboardAccessForAnyShop();
   },
 
   getSellerShopId: function (userId = Meteor.userId(), noFallback = false) {
