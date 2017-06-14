@@ -5,6 +5,7 @@ import { Accounts } from "meteor/accounts-base";
 import { composeWithTracker } from "/lib/api/compose";
 import { UpdatePasswordOverlay } from "/client/modules/accounts/components";
 import { MessagesContainer } from "/client/modules/accounts/containers/helpers";
+import { LoginFormValidation } from "/lib/api";
 
 class UpdatePasswordOverlayContainer extends Component {
   static propTypes = {
