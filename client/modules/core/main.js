@@ -33,9 +33,21 @@ export default {
 
       if (this.Subscriptions.Shops.ready()) {
         domain = Meteor.absoluteUrl().split("/")[2].split(":")[0];
-        shop = Shops.findOne({
-          domains: domain
-        });
+
+        // if we don't have an active shopId, try to retreive it from the userPreferences object
+        // and set the shop from the storedShopId
+        if (!this.shopId) {
+          const storedShopId = this.getUserPreferences("reaction", "activeShopId");
+          if (storedShopId) {
+            shop = Shops.findOne({
+              _id: storedShopId
+            });
+          } else {
+            shop = Shops.findOne({
+              domains: domain
+            });
+          }
+        }
 
         if (shop) {
           // Only set shopId if it hasn't been set yet
@@ -287,7 +299,7 @@ export default {
   },
 
   getShopId() {
-    return this.shopId;
+    return this.shopId || this.getUserPreferences("reaction", "activeShopId");
   },
 
   set shopId(id) {
@@ -297,6 +309,7 @@ export default {
   setShopId(id) {
     if (id) {
       this.shopId = id;
+      this.setUserPreferences("reaction", "activeShopId", id);
     }
   },
 
