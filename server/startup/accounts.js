@@ -84,6 +84,7 @@ export default function () {
     const defaultRoles =  ["guest", "account/profile", "product", "tag", "index", "cart/checkout", "cart/completed"];
     const roles = {};
     const additionals = {
+      name: options && options.name,
       profile: Object.assign({}, options && options.profile)
     };
     if (!user.emails) user.emails = [];
