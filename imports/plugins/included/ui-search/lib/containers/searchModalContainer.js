@@ -205,7 +205,6 @@ function userPermissions(userId) {
     const shopId = Reaction.getShopId();
     const user = Meteor.users.findOne(userId);
     const member = {};
-    console.log("shopId", shopId, "user", user);
     member.userId = user._id;
 
     if (user.emails && user.emails.length) {
@@ -230,7 +229,6 @@ function userPermissions(userId) {
     } else if (Roles.userIsInRole(member.userId, "guest", shopId)) {
       member.role = "guest";
     }
-    console.log("member", member);
 
     return member;
   }
