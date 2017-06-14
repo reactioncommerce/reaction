@@ -1,15 +1,15 @@
-import _ from "lodash";
-import { Meteor } from "meteor/meteor";
-import { Session } from "meteor/session";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import update from "react/lib/update";
+import _ from "lodash";
+import { Meteor } from "meteor/meteor";
+import { Session } from "meteor/session";
 import { Reaction } from "/client/api";
 import Logger from "/client/modules/logger";
 import { ReactionProduct } from "/lib/api";
 import { composeWithTracker } from "/lib/api/compose";
-import ProductGrid from "../components/productGrid";
 import { DragDropProvider } from "/imports/plugins/core/ui/client/providers";
+import ProductGrid from "../components/productGrid";
 
 class ProductGridContainer extends Component {
   static propTypes = {
@@ -17,7 +17,8 @@ class ProductGridContainer extends Component {
     isSearch: PropTypes.bool,
     productIds: PropTypes.array,
     products: PropTypes.array,
-    productsByKey: PropTypes.object
+    productsByKey: PropTypes.object,
+    unmountMe: PropTypes.func
   }
 
   constructor(props) {
@@ -140,6 +141,7 @@ class ProductGridContainer extends Component {
           itemSelectHandler={this.handleSelectProductItem}
           canEdit={this.props.canEdit}
           isSearch={this.props.isSearch}
+          unmountMe={this.props.unmountMe}
         />
       </DragDropProvider>
     );

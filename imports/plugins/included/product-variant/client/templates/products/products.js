@@ -1,5 +1,5 @@
-import { Reaction } from "/client/api";
 import { Template } from "meteor/templating";
+import { Reaction } from "/client/api";
 import ProductsContainer from "../../containers/productsContainer";
 
 Template.products.helpers({

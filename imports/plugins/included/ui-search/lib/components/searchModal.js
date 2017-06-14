@@ -1,19 +1,23 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { TextField, Button, SortableTable } from "/imports/plugins/core/ui/client/components";
-import ProductGridContainer from "../containers/productGridContainer";
+import { Reaction } from "/client/api";
+import { TextField, Button, IconButton, SortableTable } from "/imports/plugins/core/ui/client/components";
+import ProductGridContainer from "/imports/plugins/included/product-variant/client/containers/productGridContainer";
 import { accountsTable, ordersTable } from "../helpers";
 
 class SearchModal extends Component {
   static propTypes = {
     accounts: PropTypes.array,
+    handleAccountClick: PropTypes.func,
     handleChange: PropTypes.func,
     handleClick: PropTypes.func,
+    handleOrderClick: PropTypes.func,
     handleToggle: PropTypes.func,
     orders: PropTypes.array,
     products: PropTypes.array,
     siteName: PropTypes.string,
     tags: PropTypes.array,
+    unmountMe: PropTypes.func,
     value: PropTypes.string
   }
 
@@ -40,37 +44,43 @@ class SearchModal extends Component {
   }
 
   renderSearchTypeToggle() {
-    return (
-      <div className="rui search-type-toggle">
-        <div
-          className="search-type-option search-type-active"
-          data-i18n="search.searchTypeProducts"
-          data-event-action="searchCollection"
-          value="products"
-          onClick={() => this.props.handleToggle("products")}
-        >
-          Products
+    if (Reaction.hasPermission("admin")) {
+      return (
+        <div className="rui search-type-toggle">
+          <div
+            className="search-type-option search-type-active"
+            data-i18n="search.searchTypeProducts"
+            data-event-action="searchCollection"
+            value="products"
+            onClick={() => this.props.handleToggle("products")}
+          >
+            Products
+          </div>
+          {Reaction.hasPermission("accounts") &&
+            <div
+              className="search-type-option"
+              data-i18n="search.searchTypeAccounts"
+              data-event-action="searchCollection"
+              value="accounts"
+              onClick={() => this.props.handleToggle("accounts")}
+            >
+              Accounts
+            </div>
+          }
+          {Reaction.hasPermission("orders") &&
+            <div
+              className="search-type-option"
+              data-i18n="search.searchTypeOrders"
+              data-event-action="searchCollection"
+              value="orders"
+              onClick={() => this.props.handleToggle("orders")}
+            >
+              Orders
+            </div>
+          }
         </div>
-        <div
-          className="search-type-option"
-          data-i18n="search.searchTypeAccounts"
-          data-event-action="searchCollection"
-          value="accounts"
-          onClick={() => this.props.handleToggle("accounts")}
-        >
-          Accounts
-        </div>
-        <div
-          className="search-type-option"
-          data-i18n="search.searchTypeOrders"
-          data-event-action="searchCollection"
-          value="orders"
-          onClick={() => this.props.handleToggle("orders")}
-        >
-          Orders
-        </div>
-      </div>
-    );
+      );
+    }
   }
 
   renderProductSearchTags() {
@@ -89,6 +99,7 @@ class SearchModal extends Component {
   render() {
     return (
       <div>
+        <div className="rui search-modal-close"><IconButton icon="fa fa-times" onClick={this.props.unmountMe} /></div>
         <div className="rui search-modal-header">
           {this.renderSearchInput()}
           {this.renderSearchTypeToggle()}
@@ -96,7 +107,7 @@ class SearchModal extends Component {
         </div>
         <div className="rui search-modal-results-container">
           <div className="rui search-modal-results">
-            {this.props.products.length > 0 && <ProductGridContainer products={this.props.products} isSearch={true} />}
+            {this.props.products.length > 0 && <ProductGridContainer products={this.props.products} unmountMe={this.props.unmountMe} isSearch={true} />}
             {this.props.accounts.length > 0 &&
               <div className="data-table">
                 <div className="table-responsive">
@@ -107,7 +118,7 @@ class SearchModal extends Component {
             {this.props.orders.length > 0 &&
               <div className="data-table">
                 <div className="table-responsive">
-                  <SortableTable data={this.props.orders} columns={ordersTable()} onRowClick={this.props.handleOrderClick}/>
+                  <SortableTable data={this.props.orders} columns={ordersTable()} onRowClick={this.props.handleOrderClick} />
                 </div>
               </div>
             }

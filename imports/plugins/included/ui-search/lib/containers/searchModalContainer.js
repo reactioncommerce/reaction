@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Meteor } from "meteor/meteor";
+import { findDOMNode, unmountComponentAtNode } from "react-dom";
 import { Tracker } from "meteor/tracker";
 import _ from "lodash";
 import { Reaction } from "/client/api";
@@ -16,10 +17,12 @@ class SearchModalContainer extends Component {
       tagResults: [],
       productResults: [],
       orderResults: [],
+      renderChild: true,
       accountResults: []
     };
     this.handleClick = this.handleClick.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleChildUnmount = this.handleChildUnmount.bind(this);
     this.handleAccountClick = this.handleAccountClick.bind(this);
     this.handleOrderClick = this.handleOrderClick.bind(this);
     this.handleToggle = this.handleToggle.bind(this);
@@ -27,6 +30,7 @@ class SearchModalContainer extends Component {
   }
 
   componentDidMount() {
+    // document.body.style.overflow = "hidden";
     Tracker.autorun(() => {
       this.dep.depend();
       const searchCollection = this.state.collection;
@@ -83,7 +87,17 @@ class SearchModalContainer extends Component {
   }
 
   componentWillUnmount() {
+    // document.body.style.overflow = "visible";
     this.subscription.stop();
+  }
+
+  onUnmount() {
+    const node = findDOMNode(this);
+    unmountComponentAtNode(node);
+  }
+
+  handleCloseModal = () => {
+    this.onUnmount();
   }
 
   handleChange = (event, value) => {
@@ -110,6 +124,7 @@ class SearchModalContainer extends Component {
       template: "memberSettings"
     });
     Reaction.Router.go("dashboard/accounts", {}, {});
+    this.handleChildUnmount();
   }
 
   handleOrderClick = (event)  => {
@@ -132,28 +147,39 @@ class SearchModalContainer extends Component {
     Reaction.Router.go("dashboard/orders", {}, {
       _id: orderId
     });
+    this.handleChildUnmount();
   }
 
   handleToggle = (collection) => {
     this.setState({ collection });
   }
 
+  handleChildUnmount() {
+    this.setState({ renderChild: false });
+  }
+
   render() {
     return (
       <div>
-        <SearchModal
-          {...this.props}
-          handleChange={this.handleChange}
-          handleClick={this.handleClick}
-          handleToggle={this.handleToggle}
-          handleAccountClick={this.handleAccountClick}
-          handleOrderClick={this.handleOrderClick}
-          products={this.state.productResults}
-          tags={this.state.tagResults}
-          value={this.state.value}
-          accounts={this.state.accountResults}
-          orders={this.state.orderResults}
-        />
+        {this.state.renderChild ?
+          <div className="rui search-modal js-search-modal">
+            <SearchModal
+              {...this.props}
+              closeModal={this.handleCloseModal}
+              handleChange={this.handleChange}
+              handleClick={this.handleClick}
+              handleToggle={this.handleToggle}
+              handleAccountClick={this.handleAccountClick}
+              handleOrderClick={this.handleOrderClick}
+              products={this.state.productResults}
+              tags={this.state.tagResults}
+              value={this.state.value}
+              accounts={this.state.accountResults}
+              orders={this.state.orderResults}
+              unmountMe={this.handleChildUnmount}
+            />
+          </div> : null
+        }
       </div>
     );
   }
@@ -183,7 +209,6 @@ function userPermissions(userId) {
     const shopId = Reaction.getShopId();
     const user = Meteor.users.findOne(userId);
     const member = {};
-    console.log("shopId", shopId, "user", user);
     member.userId = user._id;
 
     if (user.emails && user.emails.length) {
@@ -208,7 +233,6 @@ function userPermissions(userId) {
     } else if (Roles.userIsInRole(member.userId, "guest", shopId)) {
       member.role = "guest";
     }
-    console.log("member", member);
 
     return member;
   }

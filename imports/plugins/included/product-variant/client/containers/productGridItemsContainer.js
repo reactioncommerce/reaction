@@ -15,7 +15,8 @@ class ProductGridItemsContainer extends Component {
     connectDropTarget: PropTypes.func,
     isSearch: PropTypes.bool,
     itemSelectHandler: PropTypes.func,
-    product: PropTypes.object
+    product: PropTypes.object,
+    unmountMe: PropTypes.func
   }
 
   constructor() {
@@ -104,7 +105,7 @@ class ProductGridItemsContainer extends Component {
     }
   }
 
-  isSelected= () => {
+  isSelected = () => {
     if (Reaction.isPreview() === false) {
       return _.includes(Session.get("productGrid/selectedProducts"), this.props.product._id) ? "active" : "";
     }
@@ -160,14 +161,17 @@ class ProductGridItemsContainer extends Component {
       label: "Product Settings",
       template: "ProductAdmin"
     });
+
+    if (this.props.isSearch) {
+      this.props.unmountMe();
+    }
   }
 
   onClick = (event) => {
+    event.preventDefault();
     const product = this.props.product;
 
     if (Reaction.hasPermission("createProduct") && Reaction.isPreview() === false) {
-      event.preventDefault();
-
       if (this.props.isSearch) {
         let handle = product.handle;
         if (product.__published) {
@@ -240,7 +244,6 @@ class ProductGridItemsContainer extends Component {
         }
       }
     } else {
-      event.preventDefault();
       const handle = product.__published && product.__published.handle || product.handle;
 
       Reaction.Router.go("product", {
