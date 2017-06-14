@@ -17,7 +17,8 @@ class ProductGridContainer extends Component {
     isSearch: PropTypes.bool,
     productIds: PropTypes.array,
     products: PropTypes.array,
-    productsByKey: PropTypes.object
+    productsByKey: PropTypes.object,
+    unmountMe: PropTypes.func
   }
 
   constructor(props) {

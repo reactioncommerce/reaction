@@ -15,7 +15,8 @@ class ProductGridItemsContainer extends Component {
     connectDropTarget: PropTypes.func,
     isSearch: PropTypes.bool,
     itemSelectHandler: PropTypes.func,
-    product: PropTypes.object
+    product: PropTypes.object,
+    unmountMe: PropTypes.func
   }
 
   constructor() {
@@ -104,7 +105,7 @@ class ProductGridItemsContainer extends Component {
     }
   }
 
-  isSelected= () => {
+  isSelected = () => {
     if (Reaction.isPreview() === false) {
       return _.includes(Session.get("productGrid/selectedProducts"), this.props.product._id) ? "active" : "";
     }
@@ -162,7 +163,6 @@ class ProductGridItemsContainer extends Component {
     });
 
     if (this.props.isSearch) {
-      console.log("here", this.props.unmountMe());
       this.props.unmountMe();
     }
   }
