@@ -299,7 +299,7 @@ Meteor.methods({
    *  @param {Number} [itemQty] - qty to add to cart
    *  @return {Number|Object} Mongo insert response
    */
-  "cart/addToCart": function (productId, variantId, itemQty) {
+  "cart/addToCart": function (productId, variantId, itemQty, vendor) {
     check(productId, String);
     check(variantId, String);
     check(itemQty, Match.Optional(Number));
@@ -388,6 +388,7 @@ Meteor.methods({
           quantity: quantity,
           variants: variant,
           title: product.title,
+          vendor: vendor,
           type: product.type,
           parcel: product.parcel || null
         }
