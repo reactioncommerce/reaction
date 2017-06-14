@@ -140,6 +140,7 @@ class ProductGridContainer extends Component {
           itemSelectHandler={this.handleSelectProductItem}
           canEdit={this.props.canEdit}
           isSearch={this.props.isSearch}
+          unmountMe={this.props.unmountMe}
         />
       </DragDropProvider>
     );

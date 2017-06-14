@@ -160,6 +160,11 @@ class ProductGridItemsContainer extends Component {
       label: "Product Settings",
       template: "ProductAdmin"
     });
+
+    if (this.props.isSearch) {
+      console.log("here", this.props.unmountMe());
+      this.props.unmountMe();
+    }
   }
 
   onClick = (event) => {
