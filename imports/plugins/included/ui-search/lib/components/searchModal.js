@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { Reaction } from "/client/api";
 import { TextField, Button, IconButton, SortableTable } from "/imports/plugins/core/ui/client/components";
 import ProductGridContainer from "/imports/plugins/included/product-variant/client/containers/productGridContainer";
 import { accountsTable, ordersTable } from "../helpers";
@@ -43,37 +44,43 @@ class SearchModal extends Component {
   }
 
   renderSearchTypeToggle() {
-    return (
-      <div className="rui search-type-toggle">
-        <div
-          className="search-type-option search-type-active"
-          data-i18n="search.searchTypeProducts"
-          data-event-action="searchCollection"
-          value="products"
-          onClick={() => this.props.handleToggle("products")}
-        >
-          Products
+    if (Reaction.hasPermission("admin")) {
+      return (
+        <div className="rui search-type-toggle">
+          <div
+            className="search-type-option search-type-active"
+            data-i18n="search.searchTypeProducts"
+            data-event-action="searchCollection"
+            value="products"
+            onClick={() => this.props.handleToggle("products")}
+          >
+            Products
+          </div>
+          {Reaction.hasPermission("accounts") &&
+            <div
+              className="search-type-option"
+              data-i18n="search.searchTypeAccounts"
+              data-event-action="searchCollection"
+              value="accounts"
+              onClick={() => this.props.handleToggle("accounts")}
+            >
+              Accounts
+            </div>
+          }
+          {Reaction.hasPermission("orders") &&
+            <div
+              className="search-type-option"
+              data-i18n="search.searchTypeOrders"
+              data-event-action="searchCollection"
+              value="orders"
+              onClick={() => this.props.handleToggle("orders")}
+            >
+              Orders
+            </div>
+          }
         </div>
-        <div
-          className="search-type-option"
-          data-i18n="search.searchTypeAccounts"
-          data-event-action="searchCollection"
-          value="accounts"
-          onClick={() => this.props.handleToggle("accounts")}
-        >
-          Accounts
-        </div>
-        <div
-          className="search-type-option"
-          data-i18n="search.searchTypeOrders"
-          data-event-action="searchCollection"
-          value="orders"
-          onClick={() => this.props.handleToggle("orders")}
-        >
-          Orders
-        </div>
-      </div>
-    );
+      );
+    }
   }
 
   renderProductSearchTags() {
