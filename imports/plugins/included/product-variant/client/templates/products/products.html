@@ -7,7 +7,7 @@
 <template name="productListGrid">
   <div class="row">
     <div>
-      {{>React productGrid}}
+      {{>React component=component}}
     </div>
     {{#if hasPermission "createProduct"}}
       {{>productList}}

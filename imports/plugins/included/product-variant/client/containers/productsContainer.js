@@ -45,6 +45,7 @@ function loadMoreProducts() {
 class ProductsContainer extends React.Component {
 
   static propTypes = {
+    canLoadMoreProducts: PropTypes.bool,
     initialLoad: PropTypes.bool,
     products: PropTypes.array,
     productsSubscription: PropTypes.object
@@ -57,6 +58,7 @@ class ProductsContainer extends React.Component {
     };
 
     this.ready = this.ready.bind(this);
+    this.loadMoreProducts = this.loadMoreProducts.bind(this);
   }
 
   componentDidMount() {
@@ -81,12 +83,23 @@ class ProductsContainer extends React.Component {
     return false;
   }
 
+  loadMoreProducts = () => {
+    return this.props.canLoadMoreProducts === true;
+  }
+
+  loadProducts = (event) => {
+    event.preventDefault();
+    loadMoreProducts();
+  }
+
   render() {
     return (
       <ProductsComponent
         ready={this.ready}
         products={this.props.products}
         productsSubscription={this.props.productsSubscription}
+        loadMoreProducts={this.loadMoreProducts}
+        loadProducts={this.loadProducts}
       />
     );
   }

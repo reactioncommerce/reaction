@@ -7,10 +7,18 @@ import ProductGridContainer from "../containers/productGridContainer";
 class ProductsComponent extends React.Component {
 
   static propTypes = {
+    loadMoreProducts: PropTypes.func,
+    loadProducts: PropTypes.func,
     products: PropTypes.array,
     productsSubscription: PropTypes.object,
     ready: PropTypes.func
   };
+
+  handleClick = (event) => {
+    if (this.props.loadProducts) {
+      this.props.loadProducts(event);
+    }
+  }
 
   renderProductGrid() {
     const products = this.props.products;
@@ -40,6 +48,20 @@ class ProductsComponent extends React.Component {
           <p>Not Ready</p>
           <div className="spinner" />
         </div>
+      );
+    }
+  }
+
+  renderMoreProductsButton() {
+    if (this.props.loadMoreProducts()) {
+      return (
+        <div className="product-load-more" id="productScrollLimitLoader">
+          <button
+            className="btn btn-inverse btn-block btn-lg"
+            data-i18n="app.loadMoreProducts"
+            onClick={this.handleClick}
+          >Load more products</button>
+      </div>
       );
     }
   }
