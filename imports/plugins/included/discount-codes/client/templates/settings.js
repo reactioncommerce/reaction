@@ -88,8 +88,8 @@ Template.customDiscountCodes.helpers({
     const customColumnMetadata = [];
     filteredFields.forEach(function (field) {
       const columnMeta = {
-        columnName: field,
-        displayName: i18next.t(`admin.discountGrid.${field}`)
+        accessor: field,
+        Header: i18next.t(`admin.discountGrid.${field}`)
       };
       customColumnMetadata.push(columnMeta);
     });

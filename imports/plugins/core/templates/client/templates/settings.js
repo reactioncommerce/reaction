@@ -64,8 +64,8 @@ Template.templateSettings.helpers({
     const customColumnMetadata = [];
     filteredFields.forEach(function (field) {
       const columnMeta = {
-        columnName: field,
-        displayName: i18next.t(`templateGrid.columns.${field}`)
+        accessor: field, //name of field
+        Header: i18next.t(`templateGrid.columns.${field}`) //name to display
       };
       customColumnMetadata.push(columnMeta);
     });

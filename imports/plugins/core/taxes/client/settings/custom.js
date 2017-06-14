@@ -90,8 +90,8 @@ Template.customTaxRates.helpers({
     const customColumnMetadata = [];
     filteredFields.forEach(function (field) {
       const columnMeta = {
-        columnName: field,
-        displayName: i18next.t(`admin.taxGrid.${field}`)
+        accessor: field,
+        Header: i18next.t(`admin.taxGrid.${field}`)
       };
       customColumnMetadata.push(columnMeta);
     });

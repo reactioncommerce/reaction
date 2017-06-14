@@ -23,9 +23,9 @@ class EmailLogs extends Component {
     const customColumnMetadata = [];
     filteredFields.forEach(function (field) {
       const columnMeta = {
-        columnName: field,
-        displayName: i18next.t(`admin.logs.headers.${field}`),
-        customComponent: EmailTableColumn
+        accessor: field,
+        Header: i18next.t(`admin.logs.headers.${field}`),
+        // customComponent: EmailTableColumn
       };
       customColumnMetadata.push(columnMeta);
     });

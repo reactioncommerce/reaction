@@ -78,8 +78,8 @@ Template.shippingRatesSettings.helpers({
     const customColumnMetadata = [];
     filteredFields.forEach(function (field) {
       const columnMeta = {
-        columnName: field,
-        displayName: i18next.t(`admin.shippingGrid.${field}`)
+        accessor: field,
+        Header: i18next.t(`admin.shippingGrid.${field}`)
       };
       customColumnMetadata.push(columnMeta);
     });
