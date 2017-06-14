@@ -1,10 +1,10 @@
+import { Session } from "meteor/session";
+import { Template } from "meteor/templating";
 import { Reaction } from "/client/api";
 import { ReactionProduct } from "/lib/api";
 import { applyProductRevision } from "/lib/api/products";
 import { Products, Tags } from "/lib/collections";
-import { Session } from "meteor/session";
 import { getTagIds as getIds } from "/lib/selectors/tags";
-import { Template } from "meteor/templating";
 import { ITEMS_INCREMENT } from "/client/config/defaults";
 import ProductGridContainer from "../../containers/productGridContainer";
 

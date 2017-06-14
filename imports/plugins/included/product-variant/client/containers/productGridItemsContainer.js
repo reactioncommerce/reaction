@@ -168,11 +168,10 @@ class ProductGridItemsContainer extends Component {
   }
 
   onClick = (event) => {
+    event.preventDefault();
     const product = this.props.product;
 
     if (Reaction.hasPermission("createProduct") && Reaction.isPreview() === false) {
-      event.preventDefault();
-
       if (this.props.isSearch) {
         let handle = product.handle;
         if (product.__published) {
@@ -245,7 +244,6 @@ class ProductGridItemsContainer extends Component {
         }
       }
     } else {
-      event.preventDefault();
       const handle = product.__published && product.__published.handle || product.handle;
 
       Reaction.Router.go("product", {

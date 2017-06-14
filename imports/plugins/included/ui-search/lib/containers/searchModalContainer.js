@@ -30,6 +30,7 @@ class SearchModalContainer extends Component {
   }
 
   componentDidMount() {
+    // document.body.style.overflow = "hidden";
     Tracker.autorun(() => {
       this.dep.depend();
       const searchCollection = this.state.collection;
@@ -86,6 +87,7 @@ class SearchModalContainer extends Component {
   }
 
   componentWillUnmount() {
+    // document.body.style.overflow = "visible";
     this.subscription.stop();
   }
 
