@@ -2,7 +2,7 @@ import _ from "lodash";
 import { Template } from "meteor/templating";
 import { ProductSearch, Tags, OrderSearch, AccountSearch } from "/lib/collections";
 import { IconButton } from "/imports/plugins/core/ui/client/components";
-import SearchModalContainer from "/imports/plugins/included/product-variant/client/containers/searchModalContainer";
+import SearchModalContainer from "../../../lib/containers/searchModalContainer";
 /*
  * searchModal extra functions
  */

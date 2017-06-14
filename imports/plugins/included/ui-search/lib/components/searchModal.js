@@ -1,14 +1,17 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { TextField, Button, SortableTable } from "/imports/plugins/core/ui/client/components";
-import ProductGridContainer from "../containers/productGridContainer";
+import { TextField, Button, IconButton, SortableTable } from "/imports/plugins/core/ui/client/components";
+import ProductGridContainer from "/imports/plugins/included/product-variant/client/containers/productGridContainer";
 import { accountsTable, ordersTable } from "../helpers";
 
 class SearchModal extends Component {
   static propTypes = {
     accounts: PropTypes.array,
+    closeModal: PropTypes.func,
+    handleAccountClick: PropTypes.func,
     handleChange: PropTypes.func,
     handleClick: PropTypes.func,
+    handleOrderClick: PropTypes.func,
     handleToggle: PropTypes.func,
     orders: PropTypes.array,
     products: PropTypes.array,
@@ -89,6 +92,7 @@ class SearchModal extends Component {
   render() {
     return (
       <div>
+        <div className="rui search-modal-close"><IconButton icon="fa fa-times" onClick={this.props.closeModal} /></div>
         <div className="rui search-modal-header">
           {this.renderSearchInput()}
           {this.renderSearchTypeToggle()}
@@ -107,7 +111,7 @@ class SearchModal extends Component {
             {this.props.orders.length > 0 &&
               <div className="data-table">
                 <div className="table-responsive">
-                  <SortableTable data={this.props.orders} columns={ordersTable()} onRowClick={this.props.handleOrderClick}/>
+                  <SortableTable data={this.props.orders} columns={ordersTable()} onRowClick={this.props.handleOrderClick} />
                 </div>
               </div>
             }

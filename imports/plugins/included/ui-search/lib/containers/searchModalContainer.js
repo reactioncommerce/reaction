@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Meteor } from "meteor/meteor";
+import { findDOMNode, unmountComponentAtNode } from "react-dom";
 import { Tracker } from "meteor/tracker";
 import _ from "lodash";
 import { Reaction } from "/client/api";
@@ -12,6 +13,7 @@ class SearchModalContainer extends Component {
     super(props);
     this.state = {
       collection: "products",
+      isMounted: false,
       value: "",
       tagResults: [],
       productResults: [],
@@ -29,11 +31,12 @@ class SearchModalContainer extends Component {
   componentDidMount() {
     Tracker.autorun(() => {
       this.dep.depend();
+      this.setState({ isMounted: true });
       const searchCollection = this.state.collection;
       const searchQuery = this.state.value;
       this.subscription = Meteor.subscribe("SearchResults", searchCollection, searchQuery, []);
 
-      if (this.subscription.ready()) {
+      if (this.state.isMounted && this.subscription.ready()) {
         /*
         * Product Search
         */
@@ -83,21 +86,35 @@ class SearchModalContainer extends Component {
   }
 
   componentWillUnmount() {
+    this.setState({ isMounted: false });
     this.subscription.stop();
   }
 
+  onUnmount() {
+    const node = findDOMNode(this).parentNode;
+    unmountComponentAtNode(node);
+  }
+
+  handleCloseModal = () => {
+    this.onUnmount();
+  }
+
   handleChange = (event, value) => {
-    this.setState({ value }, () => {
-      this.dep.changed();
-    });
+    if (this.state.isMounted) {
+      this.setState({ value }, () => {
+        this.dep.changed();
+      });
+    }
   }
 
   handleClick = () => {
-    this.setState({
-      value: ""
-    }, () => {
-      this.dep.changed();
-    });
+    if (this.state.isMounted) {
+      this.setState({
+        value: ""
+      }, () => {
+        this.dep.changed();
+      });
+    }
   }
 
   handleAccountClick = (event) => {
@@ -110,6 +127,7 @@ class SearchModalContainer extends Component {
       template: "memberSettings"
     });
     Reaction.Router.go("dashboard/accounts", {}, {});
+    this.onUnmount();
   }
 
   handleOrderClick = (event)  => {
@@ -132,17 +150,21 @@ class SearchModalContainer extends Component {
     Reaction.Router.go("dashboard/orders", {}, {
       _id: orderId
     });
+    this.onUnmount();
   }
 
   handleToggle = (collection) => {
-    this.setState({ collection });
+    if (this.state.isMounted) {
+      this.setState({ collection });
+    }
   }
 
   render() {
     return (
-      <div>
+      <div className="rui search-modal js-search-modal" id="bla">
         <SearchModal
           {...this.props}
+          closeModal={this.handleCloseModal}
           handleChange={this.handleChange}
           handleClick={this.handleClick}
           handleToggle={this.handleToggle}
