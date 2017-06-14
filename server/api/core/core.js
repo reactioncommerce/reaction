@@ -3,6 +3,7 @@ import packageJson from "/package.json";
 import { merge, uniqWith } from "lodash";
 import { Meteor } from "meteor/meteor";
 import { EJSON } from "meteor/ejson";
+import { check, Match } from "meteor/check";
 import { Jobs, Packages, Shops } from "/lib/collections";
 import { Hooks, Logger } from "/server/api";
 import ProcessJobs from "/server/jobs";
@@ -73,7 +74,7 @@ export default {
    * @param {String} checkGroup group - default to shopId
    * @return {Boolean} Boolean - true if has permission
    */
-  hasPermission(checkPermissions, userId = Meteor.userId(), checkGroup = this.getSellerShopId(userId)) {
+  hasPermission(checkPermissions, userId = Meteor.userId(), checkGroup = this.getShopId()) { // TODO: getSellerShop Conversion - pass in shop here
     // check(checkPermissions, Match.OneOf(String, Array)); check(userId, String); check(checkGroup,
     // Match.Optional(String));
 
@@ -164,7 +165,18 @@ export default {
     return null;
   },
 
-  getShopId() {
+  getShopId(userId) {
+    check(userId, Match.Optional(String));
+
+    if (userId) {
+      const activeShopId = this.getUserPreferences({
+        userId,
+        packageName: "reaction",
+        preference: "activeShopId"
+      });
+      return activeShopId;
+    }
+
     const domain = this.getDomain();
     const shop = Shops.find({
       domains: domain
@@ -246,6 +258,28 @@ export default {
     }
 
     return Packages.findOne(query);
+  },
+
+  // {packageName, preference, defaultValue}
+  getUserPreferences(options) {
+    const userId = options.userId;
+    const packageName = options.packageName;
+    const preference = options.preference;
+    const defaultValue = options.defaultValue;
+    if (!userId) {
+      return undefined;
+    }
+
+    const user = Meteor.users.findOne({ _id: userId });
+
+    if (user) {
+      const profile = user.profile;
+      if (profile && profile.preferences && profile.preferences[packageName] && profile.preferences[packageName][preference]) {
+        return profile.preferences[packageName][preference];
+      }
+    }
+
+    return defaultValue || undefined;
   },
 
   /**
