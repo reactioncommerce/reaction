@@ -18,7 +18,7 @@ Meteor.methods({
    * @param {String} groupData.name - name of the group to be created
    * @param {Array} groupData.permissions - permissions to assign to the group being created
    * @param {String} shopId - id of the shop the group belongs to
-   * @return {Object} on success returns obj with status field of 200
+   * @return {Object} on success returns obj with "status" field of 200
    */
   "group/createGroup": function (groupData, shopId) {
     check(groupData, Object);
@@ -51,7 +51,7 @@ Meteor.methods({
    * @param {Array} group.permissions - permissions of the group
    * @param {Object} newGroupData - updated group info (similar to current group data)
    * @param {String} shopId - id of the shop the group belongs to
-   * @return {null} -
+   * @return {Object} on success returns obj with "status" field of 200
    */
   "group/updateGroup": function (group, newGroupData, shopId) {
     check(group, Object);
@@ -74,31 +74,27 @@ Meteor.methods({
 
     const shop = Shops.update({ _id: shopId, groups: group }, { $set: updateQuery });
 
-    console.log({ shop });
-
     if (!shop) {
       throw new Meteor.Error(400, "Bad request data");
     }
 
+    const matchQuery = { $elemMatch: { shopId: shopId, names: group.name } };
+    const users = Accounts.find({ groups: matchQuery }).fetch();
+
     if (groupNameChanged) {
-      updateAllAffectedUsersGroupName(group.name, newGroupData.name, shopId);
+      updateAllAffectedUsersGroupName(users, group.name, newGroupData.name, shopId);
     }
 
-    // if (permissionsChanged) {
-    //   updateAllAffectedUsersPermissions(newGroupData, shopId);
-    // }
+    if (permissionsChanged) {
+      updateAllAffectedUsersPermissions(users, newGroupData, shopId);
+    }
 
     return { shop, status: 200 };
   }
 });
 
-function updateAllAffectedUsersGroupName(groupName, newName, shopId) {
-  const matchQuery = { $elemMatch: { shopId: shopId, names: groupName } };
-  const affectedUsers = Accounts.find({ groups: matchQuery }).fetch();
-
-  console.log(JSON.stringify({ affectedUsers }, null, 4));
-
-  affectedUsers.forEach(user => {
+function updateAllAffectedUsersGroupName(affectedUsers, groupName, newName, shopId) {
+  return affectedUsers.forEach(user => {
     user.groups = user.groups.map(group => {
       if (group.shopId === shopId) {
         group.names = replaceArrayItem(group.names, groupName, newName);
@@ -106,7 +102,6 @@ function updateAllAffectedUsersGroupName(groupName, newName, shopId) {
       return group;
     });
     const updateQuery = { groups: user.groups };
-    console.log(JSON.stringify({ user }, null, 4));
     Accounts.update({ _id: user._id }, { $set: updateQuery });
   });
 
@@ -118,22 +113,21 @@ function updateAllAffectedUsersGroupName(groupName, newName, shopId) {
   }
 }
 
-function updateAllAffectedUsersPermissions(group, shopId) {
-  const shop = Shops.find({ _id: shopId });
-  const affectedUsers = Accounts.find({ groups: group.name });
+function updateAllAffectedUsersPermissions(affectedUsers, group, shopId) {
+  const shop = Shops.findOne({ _id: shopId });
 
-  affectedUsers.forEach(user => {
-    Meteor.call("accounts/removeUserPermissions", user.userId, group.permissions, shopId);
-
-    // add back all permissions belonging for all needed groups for that user
-    // gather/concat all the group permissions for that user
-    const allGroupRoles = [];
-    user.groups[shopId].map(userGroup => allGroupRoles.push(shop.groups[userGroup]));
-    // call add/permissions
-    return Meteor.call("accounts/addUserPermissions", user.userId, allGroupRoles, shopId);
+  return affectedUsers.forEach(user => {
+    Meteor.call("accounts/removeUserPermissions", user.userId, group.permissions, shopId, (err) => {
+      console.log({ err });
+      // ensure no lost role/permissions after removing effecting updated group change
+      let combinedPermissions = [];
+      const userGroupsInShop = _.find(user.groups, { shopId });
+      userGroupsInShop.names.map(name => {
+        const permissions = _.get(_.find(shop.groups, { name }), "permissions", []);
+        combinedPermissions = _.uniq(combinedPermissions.concat(permissions));
+      });
+      console.log({ combinedPermissions });
+      Meteor.call("accounts/addUserPermissions", user.userId, combinedPermissions, shopId);
+    });
   });
 }
-
-// data = {name: "Consultant", permissions: ["createProduct"]}
-// Meteor.call("group/createGroup", data, "J8Bhq3uTtdgwZx3rz", function (err, res) { console.log({err, res})})
-
