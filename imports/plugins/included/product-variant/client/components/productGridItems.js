@@ -102,9 +102,7 @@ class ProductGridItems extends Component {
           <div className="overlay">
             <div className="overlay-title">{this.props.product.title}</div>
             <div className="currency-symbol">{formatPriceString(this.props.displayPrice())}</div>
-            {this.props.isSearch &&
-              <div className="overlay-description">{this.props.product.description}</div>
-            }
+            <div className="overlay-description">{this.props.product.description}</div>
           </div>
         </a>
       </div>
@@ -118,26 +116,28 @@ class ProductGridItems extends Component {
         data-id={this.props.product._id}
         id={this.props.product._id}
       >
-        <span className="product-grid-item-alerts" />
+        <div className="item-content">
+          <span className="product-grid-item-alerts" />
 
-        <a className="product-grid-item-images"
-          href={this.props.pdpPath()}
-          data-event-category="grid"
-          data-event-label="grid product click"
-          data-event-value={this.props.product._id}
-          onDoubleClick={this.handleDoubleClick}
-          onClick={this.handleClick}
-        >
-          <div className={`product-primary-images ${this.renderVisible()}`}>
-            {this.renderMedia()}
-            {this.renderOverlay()}
-          </div>
+          <a className="product-grid-item-images"
+            href={this.props.pdpPath()}
+            data-event-category="grid"
+            data-event-label="grid product click"
+            data-event-value={this.props.product._id}
+            onDoubleClick={this.handleDoubleClick}
+            onClick={this.handleClick}
+          >
+            <div className={`product-primary-images ${this.renderVisible()}`}>
+              {this.renderMedia()}
+              {this.renderOverlay()}
+            </div>
 
-          {this.renderAdditionalMedia()}
-        </a>
+            {this.renderAdditionalMedia()}
+          </a>
 
-        {!this.props.isSearch && this.renderNotices()}
-        {this.renderGridContent()}
+          {!this.props.isSearch && this.renderNotices()}
+          {this.renderGridContent()}
+        </div>
       </li>
     );
 
