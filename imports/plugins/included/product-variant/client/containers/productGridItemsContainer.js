@@ -181,6 +181,8 @@ class ProductGridItemsContainer extends Component {
         Reaction.Router.go("product", {
           handle: handle
         });
+
+        this.props.unmountMe();
       }
 
       const isSelected = event.target.closest("li.product-grid-item.active");
@@ -238,7 +240,7 @@ class ProductGridItemsContainer extends Component {
           }
         } else {
           const checkbox = list.querySelector(`input[type=checkbox][value="${product._id}"]`);
-          Session.set("productGrid/selectedProducts", [product._id]);
+          Session.set("productGrid/selectedProducts", []);
           checkbox.checked = true;
           this.props.itemSelectHandler(checkbox.checked, product._id);
         }
