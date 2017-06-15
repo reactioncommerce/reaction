@@ -1,12 +1,12 @@
-// jest.mock("/client/api", () => {
-//   return {
-//     i18next: {
-//       t: (key, { defaultValue }) => {
-//         return defaultValue || key;
-//       }
-//     }
-//   };
-// });
+jest.mock("/client/api", () => {
+  return {
+    i18next: {
+      t: (key, { defaultValue }) => {
+        return defaultValue || key;
+      }
+    }
+  };
+});
 
 import React from "react";
 import Translation from "../translation";
