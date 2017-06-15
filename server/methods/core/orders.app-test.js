@@ -419,17 +419,20 @@ describe("orders test", function () {
       sandbox.stub(Reaction, "hasPermission", () => false);
       spyOnMethod("capturePayments", order.userId);
       function capturePayments() {
-        return Meteor.call("orders/capturePayments", order._id);
+        return Meteor.call("orders/capturePayments", order._id, (err) => {
+          expect(err).to.equal(/Access Denied/);
+        });
       }
-      expect(capturePayments).to.throw(Meteor.error, /Access Denied/);
+      // expect(capturePayments).to.throw(Meteor.error, /Access Denied/);
     });
 
     it("should update the order item workflow to coreOrderItemWorkflow/captured", function () {
       sandbox.stub(Reaction, "hasPermission", () => true);
       spyOnMethod("capturePayments", order.userId);
-      Meteor.call("orders/capturePayments", order._id);
-      const orderItemWorkflow = Orders.findOne({ _id: order._id }).items[0].workflow;
-      expect(orderItemWorkflow.status).to.equal("coreOrderItemWorkflow/captured");
+      Meteor.call("orders/capturePayments", order._id, () => {
+        const orderItemWorkflow = Orders.findOne({ _id: order._id }).items[0].workflow;
+        expect(orderItemWorkflow.status).to.equal("coreOrderItemWorkflow/captured");
+      });
     });
 
     it("should update the order after the payment processor has captured the payment", function (done) {

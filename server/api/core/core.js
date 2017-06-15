@@ -166,7 +166,7 @@ export default {
   },
 
   getShopId(userId) {
-    check(userId, Match.Optional(String));
+    check(userId, Match.Maybe(String));
 
     if (userId) {
       const activeShopId = this.getUserPreferences({
