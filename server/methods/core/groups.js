@@ -2,6 +2,7 @@ import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { Roles } from "meteor/alanning:roles";
+import { Logger } from "/server/api";
 import { Accounts, Shops } from "/lib/collections";
 
 /**
@@ -94,20 +95,30 @@ Meteor.methods({
    * group/addUser
    * @summary adds a user to a permission group for a shop
    * It updates the user's list of permissions/roles with the defined the list defined for the group
+   * It uses the local *updateAllAffectedUsers-* by passing one user as an array
    * @param {String} userId - current data of the group to be updated
    * @param {Object} groupData - name of the group
    * @param {String} shopId - permissions of the group
-   * @return {null} -
+   * @return {Object} - object.status of 200
    */
   "group/addUser": function (userId, groupData, shopId) {
     check(userId, Object);
     check(groupData, Object);
-    check(groupData.name, Object);
+    check(groupData.name, String);
     check(groupData.permissions, [String]);
     check(shopId, String);
 
-    // set the name into that user account
-    // put the permissions into the users coll using Roles
+    const user = Accounts.findOne({ _id: userId });
+    try {
+      // set the group name into that user account
+      updateAllAffectedUsersGroupName([user], "", groupData.name, shopId);
+      // put the permissions into the user doc
+      Meteor.call("accounts/addUserPermissions", user.userId, groupData.permissions, shopId);
+      return { status: 200 };
+    } catch (error) {
+      Logger.error(error);
+      throw new Meteor.Error(500, "Could not add user");
+    }
   }
 });
 
@@ -115,7 +126,7 @@ function updateAllAffectedUsersGroupName(affectedUsers, groupName, newName, shop
   return affectedUsers.forEach(user => {
     user.groups = user.groups.map(group => {
       if (group.shopId === shopId) {
-        group.names = replaceArrayItem(group.names, groupName, newName);
+        group.names = upsertArrayItem(group.names, groupName, newName);
       }
       return group;
     });
@@ -123,20 +134,26 @@ function updateAllAffectedUsersGroupName(affectedUsers, groupName, newName, shop
     Accounts.update({ _id: user._id }, { $set: updateQuery });
   });
 
-  function replaceArrayItem(array, item, newItem) {
-    return array.map(value => {
+  function upsertArrayItem(array, item, newItem) {
+    return _.uniq(array
+      .map(insertIfMatchFound)
+      .concat([newItem])
+    );
+    function insertIfMatchFound(value) {
       if (value === item) return newItem;
       return value;
-    });
+    }
   }
 }
 
-function updateAllAffectedUsersPermissions(affectedUsers, oldGroup, group, shopId) {
+function updateAllAffectedUsersPermissions(affectedUsers, oldGroup, shopId) {
   const shop = Shops.findOne({ _id: shopId });
-
+  const oldPermissions = oldGroup.permissions || [];
   return affectedUsers.forEach(user => {
-    // requires "reaction-accounts" permission access
-    Meteor.call("accounts/removeUserPermissions", user.userId, oldGroup.permissions, shopId);
+    if (oldPermissions.length) {
+      // requires "reaction-accounts" permission access
+      Meteor.call("accounts/removeUserPermissions", user.userId, oldPermissions, shopId);
+    }
     // Repopulate. To ensure no lost role/permissions after removing effecting updated group change
     let combinedPermissions = [];
     const userGroupsInShop = _.find(user.groups, { shopId });
