@@ -8,5 +8,9 @@ import { Template } from "meteor/templating";
 Template.ordersListSummary.helpers({
   invoice() {
     return this.invoice;
+  },
+  itemQty() {
+    const data = Template.instance().data;
+    return data.count;
   }
 });

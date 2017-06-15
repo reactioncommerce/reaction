@@ -310,7 +310,8 @@
         "subtotal": "Sub total",
         "shipping": "Shipping",
         "tax": "Tax",
-        "total": "Total"
+        "total": "Total",
+        "capturedTotal": "Captured Total"
       },
       "cartDrawerItems": {
         "left": "left"
