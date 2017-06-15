@@ -75,9 +75,6 @@ class ProductsContainer extends React.Component {
     }
 
     if (isReady) {
-      this.setState({
-        initialLoad: false
-      });
       return true;
     }
     return false;

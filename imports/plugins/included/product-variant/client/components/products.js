@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Reaction } from "/client/api";
 import { getTagIds as getIds } from "/lib/selectors/tags";
+import { Translation } from "/imports/plugins/core/ui/client/components";
 import ProductGridContainer from "../containers/productGridContainer";
 
 class ProductsComponent extends React.Component {
@@ -45,7 +46,6 @@ class ProductsComponent extends React.Component {
     if (this.props.productsSubscription.ready() === false) {
       return (
         <div className="spinner-container">
-          <p>Not Ready</p>
           <div className="spinner" />
         </div>
       );
@@ -58,9 +58,10 @@ class ProductsComponent extends React.Component {
         <div className="product-load-more" id="productScrollLimitLoader">
           <button
             className="btn btn-inverse btn-block btn-lg"
-            data-i18n="app.loadMoreProducts"
             onClick={this.handleClick}
-          >Load more products</button>
+          >
+          <Translation defaultValue="Load more products" i18nKey="app.loadMoreProducts" />
+        </button>
       </div>
       );
     }
@@ -77,7 +78,6 @@ class ProductsComponent extends React.Component {
     }
     return (
       <div className="spinner-container spinner-container-lg">
-        <p>I'm Not Ready</p>
         <div className="spinner" />
       </div>
     );
