@@ -83,11 +83,11 @@ Meteor.methods({
     let error;
 
     if (groupNameChanged) {
-      error = updateAllAffectedUsersGroupName(users, group.name, newGroupData.name, shopId);
+      error = updateUsersGroupName(users, group.name, newGroupData.name, shopId);
     }
 
     if (permissionsChanged) {
-      error = updateAllAffectedUsersPermissions(users, group, newGroupData, shopId);
+      error = updateUsersPermissions(users, group, newGroupData, shopId);
     }
 
     if (!error) {
@@ -107,17 +107,23 @@ Meteor.methods({
    * @return {Object} - object.status of 200
    */
   "group/addUser": function (userId, groupData, shopId) {
-    check(userId, Object);
+    check(userId, String);
     check(groupData, Object);
     check(groupData.name, String);
     check(groupData.permissions, [String]);
     check(shopId, String);
 
     const user = Accounts.findOne({ _id: userId });
+    const belongsToShopGroup = _.find(user.groups, { shopId });
+    if (!belongsToShopGroup) {
+      user.groups = (user.groups || []).concat({
+        shopId,
+        names: [groupData.name]
+      });
+    }
+
     try {
-      // set the group name into that user account
-      updateAllAffectedUsersGroupName([user], "", groupData.name, shopId);
-      // put the permissions into the user doc
+      updateUsersGroupName([user], "", groupData.name, shopId);
       Meteor.call("accounts/addUserPermissions", user.userId, groupData.permissions, shopId);
       return { status: 200 };
     } catch (error) {
@@ -127,7 +133,9 @@ Meteor.methods({
   }
 });
 
-function updateAllAffectedUsersGroupName(affectedUsers, groupName, newName, shopId) {
+// To use this, a group object belonging to the particular shop must be on the user already
+// this updates the name of a group or adds a new one in the object for that shop
+function updateUsersGroupName(affectedUsers, groupName, newName, shopId) {
   return affectedUsers.forEach(user => {
     user.groups = user.groups.map(group => {
       if (group.shopId === shopId) {
@@ -151,7 +159,7 @@ function updateAllAffectedUsersGroupName(affectedUsers, groupName, newName, shop
   }
 }
 
-function updateAllAffectedUsersPermissions(affectedUsers, oldGroup, shopId) {
+function updateUsersPermissions(affectedUsers, oldGroup, shopId) {
   const shop = Shops.findOne({ _id: shopId });
   const oldPermissions = oldGroup.permissions || [];
   return affectedUsers.forEach(user => {
