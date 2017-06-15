@@ -9,13 +9,11 @@ import { LoginFormValidation } from "/lib/api";
  * Accounts Event: onResetPasswordLink When a user uses a password reset link
  */
 Accounts.onResetPasswordLink((token, done) => {
-  setTimeout(() => {
-    Blaze.renderWithData(Template.loginFormUpdatePasswordOverlay, {
-      token: token,
-      callback: done,
-      isOpen: true
-    }, $("body").get(0));
-  }, 4000);
+  Blaze.renderWithData(Template.loginFormUpdatePasswordOverlay, {
+    token: token,
+    callback: done,
+    isOpen: true
+  }, $("body").get(0));
 });
 
 /**
@@ -23,13 +21,11 @@ Accounts.onResetPasswordLink((token, done) => {
  */
 Accounts.onEnrollmentLink((token, done) => {
   Meteor.call("accounts/verifyAccount", "", token);
-  setTimeout(() => {
-    Blaze.renderWithData(Template.loginFormUpdatePasswordOverlay, {
-      token: token,
-      callback: done,
-      isOpen: true
-    }, $("body").get(0));
-  }, 4000);
+  Blaze.renderWithData(Template.loginFormUpdatePasswordOverlay, {
+    token: token,
+    callback: done,
+    isOpen: true
+  }, $("body").get(0));
 });
 
 /**
