@@ -51,7 +51,7 @@ Meteor.methods({
    * @param {Array} group.permissions - permissions of the group
    * @param {Object} newGroupData - updated group info (similar to current group data)
    * @param {String} shopId - id of the shop the group belongs to
-   * @return {Object} on success returns obj with "status" field of 200
+   * @return {Object} - on success returns obj with "status" field of 200
    */
   "group/updateGroup": function (group, newGroupData, shopId) {
     check(group, Object);
