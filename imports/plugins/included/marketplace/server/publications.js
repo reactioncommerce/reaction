@@ -30,8 +30,8 @@ Meteor.publish("SellerShops", function (shopIds) {
       added: (document) => {
         this.added("SellerShops", document._id, document);
       },
-      changed: (newDocument) => {
-        this.changed("SellerShops", newDocument._id, newDocument);
+      changed: (document) => {
+        this.changed("SellerShops", document._id, document);
       },
       removed: (document) => {
         this.removed("SellerShops", document._id);
@@ -49,8 +49,8 @@ Meteor.publish("SellerShops", function (shopIds) {
       added: (document) => {
         this.added("SellerShops", document._id, document);
       },
-      changed: (newDocument) => {
-        this.changed("SellerShops", newDocument._id, newDocument);
+      changed: (document) => {
+        this.changed("SellerShops", document._id, document);
       },
       removed: (document) => {
         this.removed("SellerShops", document._id);
