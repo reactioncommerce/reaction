@@ -105,25 +105,21 @@ class SearchModal extends Component {
           {this.renderSearchTypeToggle()}
           {this.props.tags.length > 0 && this.renderProductSearchTags()}
         </div>
-        <div className="rui search-modal-results-container">
-          <div className="rui search-modal-results">
-            {this.props.products.length > 0 && <ProductGridContainer products={this.props.products} unmountMe={this.props.unmountMe} isSearch={true} />}
-            {this.props.accounts.length > 0 &&
-              <div className="data-table">
-                <div className="table-responsive">
-                  <SortableTable data={this.props.accounts} columns={accountsTable()} onRowClick={this.props.handleAccountClick} />
-                </div>
+          {this.props.products.length > 0 && <ProductGridContainer products={this.props.products} unmountMe={this.props.unmountMe} isSearch={true} />}
+          {this.props.accounts.length > 0 &&
+            <div className="data-table">
+              <div className="table-responsive">
+                <SortableTable data={this.props.accounts} columns={accountsTable()} onRowClick={this.props.handleAccountClick} />
               </div>
-            }
-            {this.props.orders.length > 0 &&
-              <div className="data-table">
-                <div className="table-responsive">
-                  <SortableTable data={this.props.orders} columns={ordersTable()} onRowClick={this.props.handleOrderClick} />
-                </div>
+            </div>
+          }
+          {this.props.orders.length > 0 &&
+            <div className="data-table">
+              <div className="table-responsive">
+                <SortableTable data={this.props.orders} columns={ordersTable()} onRowClick={this.props.handleOrderClick} />
               </div>
-            }
-          </div>
-        </div>
+            </div>
+          }
       </div>
     );
   }
