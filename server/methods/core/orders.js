@@ -22,6 +22,7 @@ export function orderDebitMethod(order) {
   return order.billing.filter(value => value.paymentMethod.method ===  "debit")[0];
 }
 
+// REVIEW: This jsdoc doesn't seem to be accurate
 /**
  * ordersInventoryAdjust
  * adjust inventory when an order is placed
@@ -35,6 +36,8 @@ export function ordersInventoryAdjust(orderId) {
     throw new Meteor.Error(403, "Access Denied");
   }
 
+  // REVIEW: Why are we waiting until someone with orders permissions does something to reduce quantity of ordered items
+  // seems like this could cause over ordered items and messed up order quantities pretty easily.
   const order = Orders.findOne(orderId);
   order.items.forEach(item => {
     Products.update({
@@ -71,7 +74,9 @@ export const methods = {
     check(shipment, Object);
     check(packed, Boolean);
 
-    if (!Reaction.hasPermission("orders")) {
+    // REVIEW: who should have permission to do this in a marketplace setting?
+    // Do we need to update the order schema to reflect multiple packers / shipments?
+    if (!Reaction.hasPermission("orders", this.userId, Reaction.getShopId(this.userId))) {
       throw new Meteor.Error(403, "Access Denied");
     }
 
@@ -115,11 +120,11 @@ export const methods = {
   "orders/makeAdjustmentsToInvoice": function (order) {
     check(order, Object);
 
-    if (!Reaction.hasPermission("orders")) {
+    if (!Reaction.hasPermission("orders", this.userId, Reaction.getShopId(this.userId))) {
       throw new Meteor.Error(403, "Access Denied");
     }
 
-    this.unblock();
+    this.unblock(); // REVIEW: Why unblock here?
 
     return Orders.update({
       "_id": order._id,
@@ -142,10 +147,13 @@ export const methods = {
     check(order, Object);
     const invoice = orderCreditMethod(order).invoice;
 
-    if (!Reaction.hasPermission("orders")) {
+    // REVIEW: Who should have access to do this for a marketplace?
+    // Do we have/need a shopId on each order?
+    if (!Reaction.hasPermission("orders", this.userId, Reaction.getShopId(this.userId))) {
       throw new Meteor.Error(403, "Access Denied");
     }
-    this.unblock();
+
+    this.unblock(); // REVIEW: why unblock here?
 
     // this is server side check to verify
     // that the math all still adds up.
@@ -185,7 +193,9 @@ export const methods = {
     check(order, Object);
     check(returnToStock, Boolean);
 
-    if (!Reaction.hasPermission("orders")) {
+    // REVIEW: Only marketplace admins should be able to cancel entire order?
+    // Unless order is entirely contained in a single shop? Do we need a switch on marketplace owner dashboard?
+    if (!Reaction.hasPermission("orders", this.userId, Reaction.getShopId(this.userId))) {
       throw new Meteor.Error(403, "Access Denied");
     }
 
@@ -239,7 +249,9 @@ export const methods = {
   "orders/processPayment": function (order) {
     check(order, Object);
 
-    if (!Reaction.hasPermission("orders")) {
+    // REVIEW: Who should have access to process payment in marketplace?
+    // Probably just the shop owner for now?
+    if (!Reaction.hasPermission("orders", this.userId, Reaction.getShopId(this.userId))) {
       throw new Meteor.Error(403, "Access Denied");
     }
 
@@ -273,7 +285,9 @@ export const methods = {
     check(order, Object);
     check(shipment, Object);
 
-    if (!Reaction.hasPermission("orders")) {
+    // TODO: Who should have access to ship shipments in a marketplace setting
+    // Should be anyone who has product in an order.
+    if (!Reaction.hasPermission("orders", this.userId, Reaction.getShopId(this.userId))) {
       Logger.error("User does not have 'orders' permissions");
       throw new Meteor.Error("access-denied", "Access Denied");
     }
@@ -288,6 +302,7 @@ export const methods = {
     });
 
     // TODO: In the future, this could be handled by shipping delivery status
+    // REVIEW: This hook seems to run before the shipment has been marked as shipped
     Hooks.Events.run("onOrderShipmentShipped", order, itemIds);
     const workflowResult = Meteor.call("workflow/pushItemWorkflow", "coreOrderItemWorkflow/shipped", order, itemIds);
 
@@ -304,6 +319,7 @@ export const methods = {
     if (order.email) {
       Meteor.call("orders/sendNotification", order, "shipped");
     } else {
+      // TODO: add to order history that no email was sent
       Logger.warn("No order email found. No notification sent.");
     }
 
@@ -333,7 +349,8 @@ export const methods = {
   "orders/shipmentDelivered": function (order) {
     check(order, Object);
 
-    if (!Reaction.hasPermission("orders")) {
+    // REVIEW: this should be callable from the server via callback from Shippo or other webhook
+    if (!Reaction.hasPermission("orders", this.userId, Reaction.getShopId(this.userId))) {
       throw new Meteor.Error(403, "Access Denied");
     }
 
@@ -394,6 +411,7 @@ export const methods = {
     check(order, Object);
     check(action, Match.OneOf(String, undefined));
 
+    // REVIEW: SECURITY this only checks to see if a userId exists
     if (!this.userId) {
       Logger.error("orders/sendNotification: Access denied");
       throw new Meteor.Error("access-denied", "Access Denied");
@@ -616,7 +634,8 @@ export const methods = {
     check(shipment, Object);
     check(tracking, String);
 
-    if (!Reaction.hasPermission("orders")) {
+    // REVIEW: This method should be callable from a webhook (e.g. Shippo)
+    if (!Reaction.hasPermission("orders", this.userId, Reaction.getShopId(this.userId))) {
       throw new Meteor.Error(403, "Access Denied");
     }
 
@@ -672,7 +691,9 @@ export const methods = {
     check(event, String);
     check(value, Match.Optional(String));
 
-    if (!Reaction.hasPermission("orders")) {
+    // REVIEW: For marketplace implementations
+    // This should be possible for anyone with permission to act on the order
+    if (!Reaction.hasPermission("orders", this.userId, Reaction.getShopId(this.userId))) {
       throw new Meteor.Error(403, "Access Denied");
     }
 
@@ -701,7 +722,9 @@ export const methods = {
   "orders/capturePayments": (orderId) => {
     check(orderId, String);
 
-    if (!Reaction.hasPermission("orders")) {
+    // REVIEW: For marketplace implmentations who should be able to capture payments?
+    // Probably just the marketplace and not shops/vendors?
+    if (!Reaction.hasPermission("orders", this.userId, Reaction.getShopId(this.userId))) {
       throw new Meteor.Error(403, "Access Denied");
     }
 
@@ -781,11 +804,16 @@ export const methods = {
     check(order, Object);
     const paymentMethod = orderCreditMethod(order).paymentMethod;
 
-    if (!this.userId === order.userId && !Reaction.hasPermission("orders")) {
-      throw new Meteor.Error(403, "Access Denied");
+    // REVIEW: Why is this not just a publication? Not really clear on what this method does
+
+    // REVIEW: For marketplace implementations, users should only be able to see refunds they've given
+    // Marketplace admins should be able to see all refunds. May be a moot point if only marketplace can issue refunds
+    if (!this.userId === order.userId &&
+        !Reaction.hasPermission("orders", this.userId, Reaction.getShopId(this.userId))) {
+      throw new Meteor.Error(403, "Access Denied412");
     }
 
-    this.unblock();
+    this.unblock(); // Why unblock here?
 
     const future = new Future();
     const processor = paymentMethod.processor.toLowerCase();
@@ -816,7 +844,8 @@ export const methods = {
     check(paymentMethod, Reaction.Schemas.PaymentMethod);
     check(amount, Number);
 
-    if (!Reaction.hasPermission("orders")) {
+    // REVIEW: For marketplace implementations, who can refund? Just the marketplace?
+    if (!Reaction.hasPermission("orders", this.userId, Reaction.getShopId(this.userId))) {
       throw new Meteor.Error(403, "Access Denied");
     }
     const processor = paymentMethod.processor.toLowerCase();
