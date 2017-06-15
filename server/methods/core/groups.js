@@ -80,16 +80,21 @@ Meteor.methods({
 
     const matchQuery = { $elemMatch: { shopId: shopId, names: group.name } };
     const users = Accounts.find({ groups: matchQuery }).fetch();
+    let error;
 
     if (groupNameChanged) {
-      updateAllAffectedUsersGroupName(users, group.name, newGroupData.name, shopId);
+      error = updateAllAffectedUsersGroupName(users, group.name, newGroupData.name, shopId);
     }
 
     if (permissionsChanged) {
-      updateAllAffectedUsersPermissions(users, group, newGroupData, shopId);
+      error = updateAllAffectedUsersPermissions(users, group, newGroupData, shopId);
     }
 
-    return { shop, status: 200 };
+    if (!error) {
+      return { shop, status: 200 };
+    }
+    Logger.error(error);
+    throw new Meteor.Error(500, "Update not successful");
   },
   /**
    * group/addUser
