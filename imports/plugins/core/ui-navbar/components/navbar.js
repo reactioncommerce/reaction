@@ -16,7 +16,7 @@ async function openSearchModalLegacy(props) {
   if (Meteor.isClient) {
     const { Blaze } = await import("meteor/blaze");
     const { Template } = await import("meteor/templating");
-    const { default: $ } = await import(thing);
+    const { default: $ } = await import("jquery");
 
     const searchTemplate = Template[props.searchTemplate];
 
