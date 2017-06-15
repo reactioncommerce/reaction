@@ -52,7 +52,7 @@ class ProductsComponent extends React.Component {
     }
   }
 
-  renderMoreProductsButton() {
+  renderLoadMoreProductsButton() {
     if (this.props.loadMoreProducts()) {
       return (
         <div className="product-load-more" id="productScrollLimitLoader">
@@ -72,6 +72,7 @@ class ProductsComponent extends React.Component {
       return (
         <div>
           {this.renderProductGrid()}
+          {this.renderLoadMoreProductsButton()}
           {this.renderSpinner()}
         </div>
       );
