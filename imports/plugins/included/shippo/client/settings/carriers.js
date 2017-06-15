@@ -75,7 +75,6 @@ Template.shippoCarriers.helpers({
       transform: transform,
       collection: Shipping,
       showFilter: true,
-      useGriddleStyles: false,
       rowMetadata: customRowMetaData,
       filteredFields: filteredFields,
       columns: filteredFields,

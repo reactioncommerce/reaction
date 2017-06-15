@@ -100,7 +100,6 @@ Template.customDiscountRates.helpers({
       collection: DiscountRates,
       matchingResultsCount: "discounts-count",
       showFilter: true,
-      useGriddleStyles: false,
       rowMetadata: customRowMetaData,
       filteredFields: filteredFields,
       columns: filteredFields,

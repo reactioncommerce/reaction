@@ -37,7 +37,6 @@ class EmailLogs extends Component {
         collection={Jobs}
         matchingResultsCount="emails-count"
         showFilter={true}
-        useGriddleStyles={false}
         rowMetadata={customRowMetaData}
         filteredFields={filteredFields}
         columns={filteredFieldsColumns}

@@ -77,7 +77,6 @@ Template.templateSettings.helpers({
       collection: Templates,
       matchingResultsCount: "templates-count",
       showFilter: true,
-      useGriddleStyles: false,
       rowMetadata: customRowMetaData,
       filteredFields: filteredFields,
       columns: filteredFields,

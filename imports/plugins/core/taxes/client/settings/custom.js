@@ -103,7 +103,6 @@ Template.customTaxRates.helpers({
       collection: Taxes,
       matchingResultsCount: "taxes-count",
       showFilter: true,
-      useGriddleStyles: false,
       rowMetadata: customRowMetaData,
       filteredFields: filteredFields,
       columns: filteredFields,
