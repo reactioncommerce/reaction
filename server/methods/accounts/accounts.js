@@ -487,7 +487,7 @@ export function inviteShopMember(shopId, email, name) {
   if (!user) {
     const userId = MeteorAccounts.createUser({
       email: email,
-      username: name,
+      name: name,
       profile: {
         invited: true
       }
@@ -503,7 +503,8 @@ export function inviteShopMember(shopId, email, name) {
 
     Meteor.users.update(userId, {
       $set: {
-        "services.password.reset": { token, email, when: new Date() }
+        "services.password.reset": { token, email, when: new Date() },
+        "name": name
       }
     });
 

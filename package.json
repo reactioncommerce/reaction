@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "@reactioncommerce/authorize-net": "^1.0.8",
+    "@reactioncommerce/nodemailer": "^5.0.4",
     "accounting-js": "^1.1.1",
     "autoprefixer": "^6.7.7",
     "autosize": "^3.0.20",
@@ -57,7 +58,6 @@
     "moment-timezone": "^0.5.11",
     "nexmo": "^1.2.0",
     "node-geocoder": "^3.16.0",
-    "nodemailer": "2.7.2",
     "nodemailer-wellknown": "^0.2.1",
     "nouislider-algolia-fork": "^10.0.0",
     "npm-shrinkwrap": "^6.0.2",
