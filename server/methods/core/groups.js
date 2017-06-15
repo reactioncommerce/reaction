@@ -2,7 +2,6 @@ import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { check } from "meteor/check";
 import { Roles } from "meteor/alanning:roles";
-import { Reaction } from "/lib/api";
 import { Accounts, Shops } from "/lib/collections";
 
 /**
@@ -90,6 +89,25 @@ Meteor.methods({
     }
 
     return { shop, status: 200 };
+  },
+  /**
+   * group/addUser
+   * @summary adds a user to a permission group for a shop
+   * It updates the user's list of permissions/roles with the defined the list defined for the group
+   * @param {String} userId - current data of the group to be updated
+   * @param {Object} groupData - name of the group
+   * @param {String} shopId - permissions of the group
+   * @return {null} -
+   */
+  "group/addUser": function (userId, groupData, shopId) {
+    check(userId, Object);
+    check(groupData, Object);
+    check(groupData.name, Object);
+    check(groupData.permissions, [String]);
+    check(shopId, String);
+
+    // set the name into that user account
+    // put the permissions into the users coll using Roles
   }
 });
 
