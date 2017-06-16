@@ -18,7 +18,7 @@ Meteor.methods({
    * @param {String} groupData.name - name of the group to be created
    * @param {Array} groupData.permissions - permissions to assign to the group being created
    * @param {String} shopId - id of the shop the group belongs to
-   * @return {Object} on success returns obj with "status" field of 200
+   * @return {Object} - object.status of 200 on success or Error object on failure
    */
   "group/createGroup": function (groupData, shopId) {
     check(groupData, Object);
@@ -51,7 +51,7 @@ Meteor.methods({
    * @param {Array} group.permissions - permissions of the group
    * @param {Object} newGroupData - updated group info (similar to current group data)
    * @param {String} shopId - id of the shop the group belongs to
-   * @return {Object} - on success returns obj with "status" field of 200
+   * @return {Object} - object.status of 200 on success or Error object on failure
    */
   "group/updateGroup": function (group, newGroupData, shopId) {
     check(group, Object);
@@ -79,15 +79,15 @@ Meteor.methods({
     }
 
     const matchQuery = { $elemMatch: { shopId: shopId, names: group.name } };
-    const users = Accounts.find({ groups: matchQuery }).fetch();
+    const affectedUsers = Accounts.find({ groups: matchQuery }).fetch();
     let error;
 
     if (groupNameChanged) {
-      error = updateUsersGroupName(users, group.name, newGroupData.name, shopId);
+      error = updateUsersGroupName(affectedUsers, group.name, newGroupData.name, shopId);
     }
 
     if (permissionsChanged) {
-      error = updateUsersPermissions(users, group, newGroupData, shopId);
+      error = updateUsersPermissions(affectedUsers, group, newGroupData, shopId);
     }
 
     if (!error) {
@@ -102,9 +102,9 @@ Meteor.methods({
    * It updates the user's list of permissions/roles with the defined the list defined for the group
    * It uses the local *updateAllAffectedUsers-* by passing one user as an array
    * @param {String} userId - current data of the group to be updated
-   * @param {Object} groupData - name of the group
+   * @param {Object} groupData - info about the group
    * @param {String} shopId - permissions of the group
-   * @return {Object} - object.status of 200
+   * @return {Object} - object.status of 200 on success or Error object on failure
    */
   "group/addUser": function (userId, groupData, shopId) {
     check(userId, String);
@@ -125,6 +125,45 @@ Meteor.methods({
     try {
       updateUsersGroupName([user], "", groupData.name, shopId);
       Meteor.call("accounts/addUserPermissions", user.userId, groupData.permissions, shopId);
+      return { status: 200 };
+    } catch (error) {
+      Logger.error(error);
+      throw new Meteor.Error(500, "Could not add user");
+    }
+  },
+
+  /**
+   * group/removeUser
+   * @summary removes a user from a group for a shop, and updates the user's permission  list
+   * @param {String} userId - current data of the group to be updated
+   * @param {String} groupName - name of the group
+   * @param {String} shopId - permissions of the group
+   * @return {Object} - object.status of 200 on success or Error object on failure
+   */
+  "group/removeUser": function (userId, groupName, shopId) {
+    check(userId, String);
+    check(groupName, String);
+    check(shopId, String);
+
+    const user = Accounts.findOne({ _id: userId });
+    const shopGroup = _.find(user.groups, { shopId });
+    if (shopGroup) {
+      _.remove(shopGroup.names, name => name === groupName);
+    }
+    console.log({ shopGroup });
+    // replace the old value with the updated data
+    const updatedGroups = _.filter(user.groups, group => group.shopId !== shopId)
+      .concat([shopGroup]);
+
+    Accounts.update({ _id: user._id }, { $set: { groups: updatedGroups } });
+    // delete all permissions belonging to that group
+    const shop = Shops.findOne({ _id: shopId });
+    const groupPermissions = getGroupPermissions(shop.groups, groupName);
+    // re-populate for left-over groups
+    updateUsersPermissions(affectedUsers, oldGroup, shopId);
+
+    try {
+      updateUsersGroupName([user], "", groupData.name, shopId);
       return { status: 200 };
     } catch (error) {
       Logger.error(error);
@@ -168,12 +207,17 @@ function updateUsersPermissions(affectedUsers, oldGroup, shopId) {
       Meteor.call("accounts/removeUserPermissions", user.userId, oldPermissions, shopId);
     }
     // Repopulate. To ensure no lost role/permissions after removing effecting updated group change
+    // Grab all permissions for the groups that user belongs to, and re-add
     let combinedPermissions = [];
     const userGroupsInShop = _.find(user.groups, { shopId });
     userGroupsInShop.names.map(name => {
-      const permissions = _.get(_.find(shop.groups, { name }), "permissions", []);
+      const permissions = getGroupPermissions(shop.groups, name);
       combinedPermissions = _.uniq(combinedPermissions.concat(permissions));
     });
     Meteor.call("accounts/addUserPermissions", user.userId, combinedPermissions, shopId);
   });
+}
+
+function getGroupPermissions(groups, name) {
+  return _.get(_.find(groups, { name }), "permissions", []);
 }
