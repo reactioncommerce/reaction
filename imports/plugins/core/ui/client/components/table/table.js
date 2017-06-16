@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 import { TacoTable } from "react-taco-table";
 
 class SortableTable extends Component {

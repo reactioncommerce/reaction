@@ -1,5 +1,5 @@
 import { isEqual } from "lodash";
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 import Velocity from "velocity-animate";
 import "velocity-animate/velocity.ui";
 import {

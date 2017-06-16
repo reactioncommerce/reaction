@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 import classnames from "classnames";
 import Velocity from "velocity-animate";
 import "velocity-animate/velocity.ui";

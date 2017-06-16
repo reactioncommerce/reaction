@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 import moment from "moment";
 import { Icon } from "/imports/plugins/core/ui/client/components";
 import { i18next } from "/client/api";

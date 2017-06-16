@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 import { formatPriceString } from "/client/api";
 
 class TotalActions extends Component {

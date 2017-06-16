@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 import classnames from "classnames";
 import CardTitle from "./cardTitle";
 import IconButton from "../button/iconButton";

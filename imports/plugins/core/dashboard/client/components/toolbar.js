@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 import Blaze from "meteor/gadicc:blaze-react-component";
 import {
   FlatButton,

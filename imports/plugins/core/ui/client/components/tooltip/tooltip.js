@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 import TetherComponent from "react-tether";
 import classnames from "classnames";
 

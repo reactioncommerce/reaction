@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 import moment from "moment";
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";

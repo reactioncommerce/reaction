@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 import Metafield from "./metafield";
 
 class Metadata extends Component {

@@ -2,7 +2,7 @@
  * Implementing No UI Slider
  * https://www.npmjs.com/package/react-nouislider
  */
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 import Nouislider from "react-nouislider";
 
 class Slider extends Component {

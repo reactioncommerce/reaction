@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 import { Button } from "/imports/plugins/core/ui/client/components";
 
 class QuickMenu extends Component {

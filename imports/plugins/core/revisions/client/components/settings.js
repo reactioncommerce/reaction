@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 import { Translation } from "/imports/plugins/core/ui/client/components";
 
 

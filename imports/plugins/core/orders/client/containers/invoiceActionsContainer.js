@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 import { composeWithTracker } from "/lib/api/compose";
 import InvoiceActions from "../components/invoiceActions";
 import { Loading } from "/imports/plugins/core/ui/client/components";

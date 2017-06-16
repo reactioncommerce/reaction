@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 import { map } from "lodash";
 import { FlatButton, Icon } from "/imports/plugins/core/ui/client/components";
 import { isEqual } from "lodash";

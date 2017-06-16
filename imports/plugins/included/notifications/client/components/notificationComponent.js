@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 import NotificationDropdown from "./notificationDropdown.js";
 import "../styles/main.less";
 import "../styles/dropdown.css";

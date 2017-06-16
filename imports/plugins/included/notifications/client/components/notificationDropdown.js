@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 import moment from "moment";
 import { Reaction } from "/client/api";
 
@@ -46,11 +46,7 @@ class NotificationDropdown extends Component {
     return (
       <div className="dropdown-toolbar">
         <div className="dropdown-toolbar-actions">
-          <a onClick={() => {
-            markAllAsRead(notificationList);
-          }}
-            data-i18n="notifications.body.markAllAsRead"
-          > Mark all as read</a>
+          <a onClick={() => { markAllAsRead(notificationList); }} data-i18n="notifications.body.markAllAsRead"> Mark all as read</a>
         </div>
         <h3 className="dropdown-toolbar-title"><span data-i18n="notifications.body.recent">Recent</span> ({unread})</h3>
       </div>

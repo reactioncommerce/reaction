@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 import Measure from "react-measure";
 import update from "react/lib/update";
 import { composeWithTracker } from "/lib/api/compose";

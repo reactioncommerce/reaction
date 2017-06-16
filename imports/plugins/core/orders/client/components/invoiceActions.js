@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 import { formatPriceString } from "/client/api";
 import { IconButton, NumericInput, Translation } from "/imports/plugins/core/ui/client/components";
 

@@ -1,6 +1,6 @@
 import { isEmpty } from "lodash";
 import { StyleRoot } from "radium";
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 import { composeWithTracker } from "/lib/api/compose";
 import { Meteor } from "meteor/meteor";
 import { ReactionProduct } from "/lib/api";

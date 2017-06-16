@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 import onclickOutside from "react-onclickoutside";
 
 class PopoverContent extends Component {

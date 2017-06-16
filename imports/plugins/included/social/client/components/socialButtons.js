@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 import { Facebook, Twitter, GooglePlus, Pinterest } from "./";
 
 export function getProviderComponentByName(providerName) {

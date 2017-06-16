@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 import Radium from "radium";
 import { composeWithTracker } from "/lib/api/compose";
 import { Reaction } from "/client/api";

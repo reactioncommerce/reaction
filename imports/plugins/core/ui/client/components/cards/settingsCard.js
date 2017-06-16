@@ -3,7 +3,7 @@
  * creation settings cards (panels) in the dashboard.
  */
 
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 import Blaze from "meteor/gadicc:blaze-react-component";
 import { Reaction } from "/client/api";
 import { composeWithTracker } from "/lib/api/compose";

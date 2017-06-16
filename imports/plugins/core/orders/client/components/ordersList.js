@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 import classnames from "classnames/dedupe";
 import Avatar from "react-avatar";
 import moment from "moment";

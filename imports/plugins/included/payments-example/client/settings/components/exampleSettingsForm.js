@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 import _ from "lodash";
 import { TextField, Translation, Checkbox } from "/imports/plugins/core/ui/client/components";
 

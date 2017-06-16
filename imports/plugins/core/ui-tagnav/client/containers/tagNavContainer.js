@@ -1,6 +1,6 @@
 import debounce from "lodash/debounce";
 import update from "react/lib/update";
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
 import { Reaction, Router } from "/client/api";
 import { composeWithTracker } from "/lib/api/compose";
 import { getTagIds } from "/lib/selectors/tags";
