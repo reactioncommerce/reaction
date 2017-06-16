@@ -1,6 +1,6 @@
 import { Template } from "meteor/templating";
 import { Reaction } from "/client/api";
-import ProductsContainer from "../../containers/productsContainer";
+import ProductsContainer from "/imports/plugins/included/product-variant/lib/containers/productsContainer";
 
 Template.products.helpers({
   component() {

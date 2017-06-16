@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Reaction } from "/client/api";
 import { TextField, Button, IconButton, SortableTable } from "/imports/plugins/core/ui/client/components";
-import ProductGridContainer from "/imports/plugins/included/product-variant/client/containers/productGridContainer";
+import ProductGridContainer from "/imports/plugins/included/product-variant/lib/containers/productGridContainer";
 import { accountsTable, ordersTable } from "../helpers";
 
 class SearchModal extends Component {
