@@ -141,7 +141,7 @@
           "newOrder": "A rendelés feldolgozása folyamatban van.",
           "forAdmin": "Van egy új rendet.",
           "orderDelivered": "Rendelését szállítani.",
-          "orderAccepted": "A rendelés elfogadták.",
+          "orderProcessing": "A rendelés feldolgozása folyamatban van.",
           "orderShipped": "Rendelését szállították."
         }
       },
@@ -298,7 +298,12 @@
       "cartDrawer": {
         "empty": "Szomorúan vesszük tudomásul, hogy üres a kosarad.",
         "keepShopping": "Folytasd a vásárlást",
-        "checkout": "Fizetés most"
+        "checkout": "Fizetés most",
+        "new": "Új",
+        "coreOrderWorkflow/created": "Létrehozott",
+        "coreOrderWorkflow/processing": "Feldolgozás",
+        "coreOrderWorkflow/completed": "befejezték",
+        "coreOrderWorkflow/canceled": "Törölve"
       },
       "cartSubTotals": {
         "discount": "Kedvezmény",
@@ -380,9 +385,7 @@
         "resendNotification": "Újraküldése Szállítmány Notification"
       },
       "orderWorkflow": {
-        "fulfillment": "Teljesítés",
         "orderDetails": "Rendelési információk",
-        "summary": "összefoglalás",
         "invoice": "Számla",
         "shipmentTracking": "szállítmány követés"
       },
@@ -429,6 +432,7 @@
       },
       "addressBookEdit": {
         "editAddress": "Cím szerkesztése",
+        "addressValidation": "cím érvényesítése",
         "somethingWentWrong": "Valami elromlott: {{err}}"
       },
       "corePackageConfig": {

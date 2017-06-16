@@ -128,7 +128,6 @@
           "newOrder": "שההזמנה מעובדת.",
           "forAdmin": "יש לך הזמנה חדשה.",
           "orderDelivered": "ההזמנה נשלחה.",
-          "orderAccepted": "הזמנתך התקבלה.",
           "orderShipped": "ההזמנה נשלחה."
         }
       },
@@ -269,7 +268,12 @@
       "cartDrawer": {
         "empty": "כמה חבל... הסל שלך ריק.",
         "keepShopping": "המשך בקניות",
-        "checkout": "לך לקופה עכשיו"
+        "checkout": "לך לקופה עכשיו",
+        "new": "חדש",
+        "coreOrderWorkflow/created": "נוצר",
+        "coreOrderWorkflow/processing": "מעבד",
+        "coreOrderWorkflow/completed": "הושלם",
+        "coreOrderWorkflow/canceled": "בוטל"
       },
       "cartSubTotals": {
         "discount": "הנחה",
@@ -337,9 +341,7 @@
         "resendNotification": "שלח שוב התראה על משלוח"
       },
       "orderWorkflow": {
-        "fulfillment": "ביצוע",
         "orderDetails": "פרטי הזמנה",
-        "summary": "סיכום",
         "invoice": "חשבונית",
         "shipmentTracking": "מעקב אחר משלוח"
       },
