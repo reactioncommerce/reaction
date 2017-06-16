@@ -571,7 +571,7 @@ export function inviteShopMember(shopId, email, name) {
       html: SSR.render(tpl, dataForEmail)
     });
   } else {
-    throw new Meteor.Error(409, "User already exists");
+    throw new Meteor.Error("409", "A user with this email address already exists");
   }
   return true;
 }
