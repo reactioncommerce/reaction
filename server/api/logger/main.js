@@ -11,7 +11,9 @@ const levels = ["FATAL", "ERROR", "WARN", "INFO", "DEBUG", "TRACE"];
 // set stdout log level
 let level = process.env.REACTION_LOG_LEVEL || Meteor.settings.REACTION_LOG_LEVEL || "INFO";
 
-// allow overriding the stdout log formatting (e.g. "json")
+// allow overriding the stdout log formatting
+// available options: short|long|simple|json|bunyan
+// https://www.npmjs.com/package/bunyan-format
 const outputMode = process.env.REACTION_LOG_FORMAT || "short";
 
 level = level.toUpperCase();
