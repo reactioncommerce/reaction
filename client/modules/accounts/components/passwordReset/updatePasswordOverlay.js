@@ -28,12 +28,8 @@ class UpdatePasswordOverlay extends Component {
     this.handleCancel = this.handleCancel.bind(this);
   }
 
-  componentDidMount() {
-    setTimeout(() => {
-      this.setState({
-        showSpinner: false
-      });
-    }, 4000);
+  componentWillReceiveProps() {
+    this.setState({ showSpinner: false });
   }
 
   handleFieldChange = (event, value, field) => {
@@ -83,8 +79,8 @@ class UpdatePasswordOverlay extends Component {
   renderSpinnerOnWait() {
     if (this.props.isDisabled === true) {
       return (
-        <div style={{ textAlign: "center" }}>
-          <i className="fa fa-spinner fa-pulse fa-5x fa-fw" />
+        <div className="col-sm-6" style={{ textAlign: "center" }}>
+          <i className="fa fa-spinner fa-spin" />
         </div>
       );
     }
@@ -124,7 +120,7 @@ class UpdatePasswordOverlay extends Component {
             <div className="modal-backdrop fade in" id={`modal-backdrop-${this.props.uniqueId}`} />
             <div className="modal fade in" id={`modal-${this.props.uniqueId}`} style={{ display: "block" }}>
               <div className="modal-dialog">
-                {showSpinner ? this.renderSpinnerOnLoad :
+                {showSpinner ? this.renderSpinnerOnLoad() :
                 <form className="modal-content" onSubmit={this.handleSubmit}>
                   <div className="modal-header">
                     <h4 className="modal-title">
