@@ -158,10 +158,53 @@
   .display(flex);
 }
 
-.invoice .invoice:hover, .invoice:hover {
+.invoice-line-items:hover {
   background-color: @list-group-hover-bg;
   cursor: pointer;
 }
+
+.invoice-popover {
+  width: 416px;
+  height: 450px;
+  margin-left: -10px;
+  padding-top: 0px;
+  padding: 10px;
+  border-radius: 4px;
+  background-color: #ffffff;
+  box-shadow: 0 0 4px 2px rgba(0, 0, 0, 0.16);
+  border: solid 1px #7894a4;
+}
+
+.invoice-popover-controls {
+  display: flex;
+  width: 100%;
+  height: 30px;
+  // border: 1px solid;
+
+  .invoice-popover-checkbox {
+    -webkit-flex: 1;
+    flex: 1;
+    border: 1px
+  }
+
+  .invoice-popover-selected {
+    flex: 7;
+    padding-top: 6px;
+
+    span {
+      color: #11a7f0;
+    }
+  }
+
+  .invoice-popover-close {
+    flex: 1;
+  }
+}
+
+// .invoice .invoice:hover, .invoice:hover {
+//   background-color: @list-group-hover-bg;
+//   cursor: pointer;
+// }
 
 .invoice {
   margin-left: -15px;

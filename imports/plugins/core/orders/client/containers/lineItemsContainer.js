@@ -15,32 +15,28 @@ class LineItemsContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isClosed: false
+      isClosed: false,
+      popOverIsOpen: false,
+      selectAllItems: true,
+      selectedItems: []
     };
 
-    this.handleClick = this.handleClick.bind(this);
-    this.isExpanded = this.isExpanded.bind(this);
-    this.handleClose = this.handleClose.bind(this);
     this.handleDisplayMedia = this.handleDisplayMedia.bind(this);
   }
 
-  isExpanded = (itemId) => {
-    if (this.state[`item_${itemId}`]) {
-      return true;
+  togglePopOver = () => {
+    if (this.state.popOverIsOpen) {
+      return this.setState({ popOverIsOpen: false });
     }
-    return false;
+    return this.setState({ popOverIsOpen: true });
   }
 
-  handleClose = (itemId) => {
-    this.setState({
-      [`item_${itemId}`]: false
-    });
-  }
-
-  handleClick = (itemId) => {
-    this.setState({
-      [`item_${itemId}`]: true
-    });
+  handleSelectAllItems = (e) => {
+    const checked = e.target.checked;
+    if (checked) {
+      return this.setState({ selectAllItems: true });
+    }
+    return this.setState({ selectAllItems: false });
   }
 
   /**
@@ -79,10 +75,11 @@ class LineItemsContainer extends Component {
         <LineItems
           onClose={this.handleClose}
           invoice={invoice}
-          isClosed={this.state.isClosed}
-          isExpanded={this.isExpanded}
+          handleSelectAllItems={this.handleSelectAllItems}
+          selectAllItems={this.state.selectAllItems}
+          togglePopOver={this.togglePopOver}
+          popOverIsOpen={this.state.popOverIsOpen}
           displayMedia={this.handleDisplayMedia}
-          handleClick={this.handleClick}
           uniqueItems={uniqueItems}
         />
       </TranslationProvider>

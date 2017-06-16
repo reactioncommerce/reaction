@@ -89,11 +89,13 @@ class Popover extends Component {
           />
         </ButtonGroup>
       );
+    } else if (this.props.buttonElement) {
+      return React.cloneElement(this.props.buttonElement, {
+        onClick: this.handleOpen
+      });
     }
 
-    return React.cloneElement(this.props.buttonElement, {
-      onClick: this.handleOpen
-    });
+    return (<div />);
   }
 
   render() {
