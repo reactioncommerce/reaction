@@ -52,7 +52,7 @@ class SearchModal extends Component {
             className="search-type-option search-type-active"
             data-i18n="search.searchTypeProducts"
             data-event-action="searchCollection"
-            value="products"
+            data-event-value="products"
             onClick={() => this.props.handleToggle("products")}
           >
             Products
@@ -62,7 +62,7 @@ class SearchModal extends Component {
               className="search-type-option"
               data-i18n="search.searchTypeAccounts"
               data-event-action="searchCollection"
-              value="accounts"
+              data-event-value="accounts"
               onClick={() => this.props.handleToggle("accounts")}
             >
               Accounts
@@ -73,7 +73,7 @@ class SearchModal extends Component {
               className="search-type-option"
               data-i18n="search.searchTypeOrders"
               data-event-action="searchCollection"
-              value="orders"
+              data-event-value="orders"
               onClick={() => this.props.handleToggle("orders")}
             >
               Orders

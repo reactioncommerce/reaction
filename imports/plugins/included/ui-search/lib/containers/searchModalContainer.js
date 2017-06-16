@@ -46,7 +46,7 @@ class SearchModalContainer extends Component {
           const productResults = Collections.ProductSearch.find().fetch();
           this.setState({ productResults });
 
-          const productHashtags = getProducts(productResults);
+          const productHashtags = getProductHashtags(productResults);
           const tagSearchResults = Collections.Tags.find({
             _id: { $in: productHashtags }
           }).fetch();
@@ -152,7 +152,13 @@ class SearchModalContainer extends Component {
   }
 
   handleToggle = (collection) => {
-    this.setState({ collection });
+    this.setState({
+      tagResults: [],
+      productResults: [],
+      orderResults: [],
+      accountResults: [],
+      collection
+    });
   }
 
   handleChildUnmount = () =>  {
@@ -192,7 +198,7 @@ function getSiteName() {
   return typeof shop === "object" && shop.name ? shop.name : "";
 }
 
-function getProducts(productResults) {
+function getProductHashtags(productResults) {
   const hashtags = [];
   for (const product of productResults) {
     if (product.hashtags) {
