@@ -1,5 +1,28 @@
 [{
   "i18n": "he",
   "ns": "reaction-orders",
-  "translation": { }
+  "translation": {
+    "reaction-orders": {
+      "admin": {
+        "orderWorkflow": {
+          "ordersList": {
+            "date": "תאריך",
+            "orderId": "מזהה הזמנה",
+            "total": "סך הכל"
+          },
+          "summary": {
+            "cardTitle": "סיכום"
+          },
+          "invoice": {
+            "cardTitle": "חשבונית",
+            "adjustedTotal": "סך מתוקן",
+            "capturedTotal": "סך התשלום שעובד"
+          },
+          "fulfillment": "ביצוע",
+          "orderDetails": "פרטי הזמנה",
+          "shipmentTracking": "משלוח"
+        }
+      }
+    }
+  }
 }]

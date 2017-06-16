@@ -11,6 +11,27 @@
           "ordersLabel": "orders",
           "ordersTitle": "orders",
           "ordersDescription": "Vervul uw bestellingen"
+        },
+        "orderWorkflow": {
+          "ordersList": {
+            "date": "Datum",
+            "orderId": "Order ID",
+            "total": "Totaal",
+            "emailNotFound": "E-mail niet beschikbaar"
+          },
+          "summary": {
+            "cardTitle": "Overzicht",
+            "copyOrderLink": "Kopieer Order Link"
+          },
+          "invoice": {
+            "cardTitle": "Factuur",
+            "adjustedTotal": "aangepaste Total",
+            "capturedTotal": "gevangen Totaal",
+            "refund": "Terugbetaling"
+          },
+          "fulfillment": "Vervulling",
+          "orderDetails": "Bestel Details",
+          "shipmentTracking": "Verzending"
         }
       }
     }

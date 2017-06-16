@@ -11,6 +11,27 @@
           "ordersLabel": "objednávky",
           "ordersTitle": "objednávky",
           "ordersDescription": "Splnit Vaše objednávky"
+        },
+        "orderWorkflow": {
+          "ordersList": {
+            "date": "Datum",
+            "orderId": "Číslo objednávky",
+            "total": "Celkem",
+            "emailNotFound": "E-mail není k dispozici"
+          },
+          "summary": {
+            "cardTitle": "Souhrn",
+            "copyOrderLink": "Kopírovat odkaz na objednávku"
+          },
+          "invoice": {
+            "cardTitle": "Faktura",
+            "adjustedTotal": "Upravený Total",
+            "capturedTotal": "zajatý Total",
+            "refund": "Vrácení platby"
+          },
+          "fulfillment": "Splnění",
+          "orderDetails": "Podrobnosti o objednávce",
+          "shipmentTracking": "Zásilka"
         }
       }
     }
