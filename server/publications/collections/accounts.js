@@ -84,6 +84,7 @@ Meteor.publish("UserProfile", function (profileUserId) {
   // no need to normal user so see his password hash
   const fields = {
     "emails": 1,
+    "name": 1,
     "profile.lang": 1,
     "profile.firstName": 1,
     "profile.lastName": 1,

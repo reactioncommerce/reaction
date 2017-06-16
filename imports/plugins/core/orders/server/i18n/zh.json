@@ -11,6 +11,27 @@
           "ordersLabel": "命令",
           "ordersTitle": "命令",
           "ordersDescription": "完成订单"
+        },
+        "orderWorkflow": {
+          "ordersList": {
+            "date": "日期",
+            "orderId": "订单ID",
+            "total": "合计",
+            "emailNotFound": "电子邮件不可用"
+          },
+          "summary": {
+            "cardTitle": "概要",
+            "copyOrderLink": "复制订单链接"
+          },
+          "invoice": {
+            "cardTitle": "账单",
+            "adjustedTotal": "调整后的总金额",
+            "capturedTotal": "已收款总额",
+            "refund": "退"
+          },
+          "fulfillment": "履行",
+          "orderDetails": "订单详细信息",
+          "shipmentTracking": "发货"
         }
       }
     }

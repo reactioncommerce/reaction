@@ -141,7 +141,7 @@
           "newOrder": "Вашата поръчка се обработва.",
           "forAdmin": "Имате нов ред.",
           "orderDelivered": "Вашата цел е бил доставен.",
-          "orderAccepted": "Вашата цел е била приета.",
+          "orderProcessing": "Вашата поръчка се обработва.",
           "orderShipped": "Вашата поръчка е изпратена."
         }
       },
@@ -298,7 +298,12 @@
       "cartDrawer": {
         "empty": "За съжаление кошницата Ви е празна.",
         "keepShopping": "Продължете с пазаруването.",
-        "checkout": "Към кошницата"
+        "checkout": "Към кошницата",
+        "new": "Нов",
+        "coreOrderWorkflow/created": "Създадено",
+        "coreOrderWorkflow/processing": "обработване",
+        "coreOrderWorkflow/completed": "завършен",
+        "coreOrderWorkflow/canceled": "отменен"
       },
       "cartSubTotals": {
         "discount": "отстъпка",
@@ -380,9 +385,7 @@
         "resendNotification": "Изпрати съобщението за поръчката отново"
       },
       "orderWorkflow": {
-        "fulfillment": "изпълняване",
         "orderDetails": "подробности за поръчката",
-        "summary": "обобщение",
         "invoice": "фактура",
         "shipmentTracking": "пратка проследяване"
       },
@@ -429,6 +432,7 @@
       },
       "addressBookEdit": {
         "editAddress": "Редактирайте адреса",
+        "addressValidation": "Адрес за потвърждаване",
         "somethingWentWrong": "Нещо се обърка: {{err}}"
       },
       "corePackageConfig": {
