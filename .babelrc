@@ -1,4 +1,14 @@
 {
-  "plugins": ["lodash"],
+  "plugins": [
+    "lodash",
+    ["module-resolver", {
+      "root": ["./"],
+      "alias": {
+        "underscore": "lodash",
+        "@reactioncommerce/reaction-ui": "./imports/plugins/core/ui/client/components",
+        "@reactioncommerce/reaction-router": "./imports/plugins/core/router/lib"
+      }
+    }]
+  ],
   "presets": ["es2015", "react", "stage-2"]
 }
