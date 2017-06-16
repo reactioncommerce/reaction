@@ -4,6 +4,7 @@
  */
 
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import Blaze from "meteor/gadicc:blaze-react-component";
 import { Reaction } from "/client/api";
 import { composeWithTracker } from "/lib/api/compose";

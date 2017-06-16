@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import Velocity from "velocity-animate";
 import "velocity-animate/velocity.ui";
 import { TextField, Button } from "../";

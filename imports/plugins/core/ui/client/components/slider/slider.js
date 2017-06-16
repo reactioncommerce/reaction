@@ -3,6 +3,7 @@
  * https://www.npmjs.com/package/react-nouislider
  */
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import Nouislider from "react-nouislider";
 
 class Slider extends Component {

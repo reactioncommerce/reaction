@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import ReactDOM from "react-dom";
 import { matchPath } from "react-router";
 import { Router as ReactRouter } from "react-router-dom";

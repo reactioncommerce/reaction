@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { formatPriceString } from "/client/api";
 import { IconButton, NumericInput, Translation } from "/imports/plugins/core/ui/client/components";
 

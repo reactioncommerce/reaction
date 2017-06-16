@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import update from "react/lib/update";
 import { Reaction } from "/client/api";
 import { composeWithTracker } from "/lib/api/compose";

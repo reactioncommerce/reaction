@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { Button, Translation } from "/imports/plugins/core/ui/client/components";
 
 
