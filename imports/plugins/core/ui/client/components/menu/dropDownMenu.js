@@ -16,10 +16,26 @@ class DropDownMenu extends Component {
     };
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (this.isControlled) {
+      this.setState({
+        isOpen: nextProps.isOpen
+      });
+    }
+  }
+
   handleDropdownToggle = () => {
     this.setState({
       isOpen: !this.state.isOpen
     });
+  }
+
+  get isOpen() {
+    return this.props.isOpen || this.state.isOpen;
+  }
+
+  get isControlled() {
+    return typeof this.props.isOpen === "boolean";
   }
 
   handleMenuItemChange = (event, value, menuItem) => {
@@ -28,8 +44,24 @@ class DropDownMenu extends Component {
       isOpen: false
     });
 
+    if (this.props.closeOnClick) {
+      this.handleOpen(false);
+    }
+
     if (this.props.onChange) {
       this.props.onChange(event, value);
+    }
+  }
+
+  handleOpen = (isOpen) => {
+    if (this.isControlled) {
+      if (this.props.onRequestOpen) {
+        this.props.onRequestOpen(isOpen);
+      }
+    } else {
+      this.setState({
+        isOpen: isOpen
+      });
     }
   }
 
@@ -54,6 +86,7 @@ class DropDownMenu extends Component {
   render() {
     return (
       <Popover
+        attachment={this.props.attachment}
         buttonElement={
           this.props.buttonElement ||
           <Button
@@ -62,9 +95,9 @@ class DropDownMenu extends Component {
             label={this.label}
           />
         }
+        isOpen={this.isOpen}
         onClick={this.handleDropdownToggle}
-        isOpen={this.state.isOpen}
-        attachment={this.props.attachment}
+        onRequestOpen={this.handleOpen}
         targetAttachment={this.props.targetAttachment}
       >
         <Menu
@@ -85,8 +118,14 @@ DropDownMenu.propTypes = {
   buttonElement: PropTypes.node,
   children: PropTypes.node,
   className: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  closeOnClick: PropTypes.bool,
+  isEnabled: PropTypes.bool,
+  isOpen: PropTypes.bool,
   menuStyle: PropTypes.object,
   onChange: PropTypes.func,
+  onPublishClick: PropTypes.func,
+  onRequestOpen: PropTypes.func,
+  revisions: PropTypes.arrayOf(PropTypes.object),
   targetAttachment: PropTypes.string,
   translation: PropTypes.shape({
     lang: PropTypes.string
