@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { composeWithTracker } from "/lib/api/compose";
 import SettingsComponent from "../components/settings";
 import { Packages } from "/lib/collections";

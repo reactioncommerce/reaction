@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { Translation, IconButton } from "/imports/plugins/core/ui/client/components";
 import DiscountForm from "./form";
 import { composeWithTracker } from "/lib/api/compose";

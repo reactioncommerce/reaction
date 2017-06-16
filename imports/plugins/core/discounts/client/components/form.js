@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import debounce from "lodash/debounce";
 import { Meteor } from "meteor/meteor";
 import { Translation } from "/imports/plugins/core/ui/client/components";
