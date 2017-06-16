@@ -415,15 +415,13 @@ describe("orders test", function () {
       return done();
     });
 
+    // REVIEW - I'm not convinced these tests are actually performing as expected
     it("should return access denied if user does not have access", function () {
       sandbox.stub(Reaction, "hasPermission", () => false);
       spyOnMethod("capturePayments", order.userId);
-      function capturePayments() {
-        return Meteor.call("orders/capturePayments", order._id, (err) => {
-          expect(err).to.equal(/Access Denied/);
-        });
-      }
-      // expect(capturePayments).to.throw(Meteor.error, /Access Denied/);
+      Meteor.call("orders/capturePayments", order._id, (err) => {
+        expect(err).to.equal(/Access Denied/);
+      });
     });
 
     it("should update the order item workflow to coreOrderItemWorkflow/captured", function () {
