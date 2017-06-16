@@ -77,6 +77,7 @@
     "react-avatar": "^2.3.0",
     "react-color": "^2.11.4",
     "react-copy-to-clipboard": "https://registry.npmjs.org/react-copy-to-clipboard/-/react-copy-to-clipboard-5.0.0.tgz",
+    "react-create-class": "^1.0.0",
     "react-dnd": "^2.3.0",
     "react-dnd-html5-backend": "^2.3.0",
     "react-dom": "15.4.2",
@@ -146,9 +147,9 @@
   },
   "jest": {
     "moduleNameMapper": {
-      "^\/lib(.*)": "<rootDir>/lib/$1",
-      "^\/imports\/plugins(.*)": "<rootDir>/imports/plugins/$1",
-      "^\/client\/api(.*)": "<rootDir>/imports/test-utils/__mocks__/client/api$1",
+      "^/lib(.*)": "<rootDir>/lib/$1",
+      "^/imports/plugins(.*)": "<rootDir>/imports/plugins/$1",
+      "^/client/api(.*)": "<rootDir>/imports/test-utils/__mocks__/client/api$1",
       "^meteor/aldeed:simple-schema": "<rootDir>/imports/test-utils/__mocks__/meteor/aldeed-simple-schema",
       "^meteor/(.*)": "<rootDir>/imports/test-utils/__mocks__/meteor/$1"
     }
