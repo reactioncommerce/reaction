@@ -56,7 +56,7 @@ class MainDropdownContainer extends Component {
 
   render() {
     return (
-      <div>
+      <div className="accounts">
         <MainDropdown
           {...this.props}
           handleChange={this.handleChange}
