@@ -12,6 +12,7 @@ class SearchModal extends Component {
     handleChange: PropTypes.func,
     handleClick: PropTypes.func,
     handleOrderClick: PropTypes.func,
+    handleTagClick: PropTypes.func,
     handleToggle: PropTypes.func,
     orders: PropTypes.array,
     products: PropTypes.array,
@@ -89,7 +90,7 @@ class SearchModal extends Component {
         <p className="rui suggested-tags" data-i18n="search.suggestedTags">Suggested tags</p>
         <div className="rui search-tags">
           {this.props.tags.map((tag) => (
-            <span className="rui search-tag" key={tag._id}>{tag.name}</span>
+            <span className="rui search-tag" id={tag._id} key={tag._id} onClick={()=> this.props.handleTagClick(tag._id)}>{tag.name}</span>
           ))}
         </div>
       </div>

@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Meteor } from "meteor/meteor";
-import { findDOMNode, unmountComponentAtNode } from "react-dom";
 import { Tracker } from "meteor/tracker";
 import _ from "lodash";
 import { Reaction } from "/client/api";
@@ -18,24 +17,26 @@ class SearchModalContainer extends Component {
       productResults: [],
       orderResults: [],
       renderChild: true,
-      accountResults: []
+      accountResults: [],
+      facets: []
     };
     this.handleClick = this.handleClick.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleChildUnmount = this.handleChildUnmount.bind(this);
     this.handleAccountClick = this.handleAccountClick.bind(this);
     this.handleOrderClick = this.handleOrderClick.bind(this);
+    this.handleTagClick = this.handleTagClick.bind(this);
     this.handleToggle = this.handleToggle.bind(this);
     this.dep = new Tracker.Dependency;
   }
 
   componentDidMount() {
-    // document.body.style.overflow = "hidden";
     Tracker.autorun(() => {
       this.dep.depend();
       const searchCollection = this.state.collection;
       const searchQuery = this.state.value;
-      this.subscription = Meteor.subscribe("SearchResults", searchCollection, searchQuery, []);
+      const facets = this.state.facets;
+      this.subscription = Meteor.subscribe("SearchResults", searchCollection, searchQuery, facets);
 
       if (this.subscription.ready()) {
         /*
@@ -87,17 +88,7 @@ class SearchModalContainer extends Component {
   }
 
   componentWillUnmount() {
-    // document.body.style.overflow = "visible";
     this.subscription.stop();
-  }
-
-  onUnmount() {
-    const node = findDOMNode(this);
-    unmountComponentAtNode(node);
-  }
-
-  handleCloseModal = () => {
-    this.onUnmount();
   }
 
   handleChange = (event, value) => {
@@ -150,11 +141,21 @@ class SearchModalContainer extends Component {
     this.handleChildUnmount();
   }
 
+  handleTagClick = (tagId) => {
+    const newFacet = tagId;
+    const element = document.getElementById(tagId);
+    element.classList.toggle("active-tag");
+
+    this.setState({
+      facets: tagToggle(this.state.facets, newFacet)
+    });
+  }
+
   handleToggle = (collection) => {
     this.setState({ collection });
   }
 
-  handleChildUnmount() {
+  handleChildUnmount = () =>  {
     this.setState({ renderChild: false });
   }
 
@@ -171,6 +172,7 @@ class SearchModalContainer extends Component {
               handleToggle={this.handleToggle}
               handleAccountClick={this.handleAccountClick}
               handleOrderClick={this.handleOrderClick}
+              handleTagClick={this.handleTagClick}
               products={this.state.productResults}
               tags={this.state.tagResults}
               value={this.state.value}
@@ -236,6 +238,13 @@ function userPermissions(userId) {
 
     return member;
   }
+}
+
+function tagToggle(arr, val) {
+  if (arr.length === _.pull(arr, val).length) {
+    arr.push(val);
+  }
+  return arr;
 }
 
 function composer(props, onData) {
