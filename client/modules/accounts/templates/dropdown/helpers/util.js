@@ -33,7 +33,6 @@ providers.Twitter.fields = function () {
 };
 
 export class ServiceConfigHelper {
-
   availableServices() {
     const services = Package["accounts-oauth"] ? Accounts.oauth.serviceNames() : [];
     services.sort();

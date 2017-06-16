@@ -4,7 +4,6 @@ import { Currency, Translation } from "/imports/plugins/core/ui/client/component
 import { SortableItem } from "/imports/plugins/core/ui/client/containers";
 
 class Variant extends Component {
-
   handleClick = (event) => {
     if (this.props.onClick) {
       this.props.onClick(event, this.props.variant);

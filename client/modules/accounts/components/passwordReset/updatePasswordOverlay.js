@@ -120,15 +120,15 @@ class UpdatePasswordOverlay extends Component {
                       {this.renderFormMessages()}
 
                       <div className={passwordClasses}>
-                          <TextField
-                            i18nKeyLabel="accountsUI.password"
-                            label="Password"
-                            name="password"
-                            type="password"
-                            id={`password-${this.props.uniqueId}`}
-                            value={this.state.password}
-                            onChange={this.handleFieldChange}
-                          />
+                        <TextField
+                          i18nKeyLabel="accountsUI.password"
+                          label="Password"
+                          name="password"
+                          type="password"
+                          id={`password-${this.props.uniqueId}`}
+                          value={this.state.password}
+                          onChange={this.handleFieldChange}
+                        />
                         {this.renderPasswordErrors()}
                       </div>
 

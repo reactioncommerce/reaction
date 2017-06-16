@@ -23,7 +23,7 @@ class RevisionControlSettings extends Component {
           defaultValue="Revision controls is disabled"
           i18nKey="revisions.isDisabled"
         />
-    );
+      );
     }
 
     return (

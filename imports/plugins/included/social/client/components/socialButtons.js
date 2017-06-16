@@ -18,7 +18,6 @@ export function getProviderComponentByName(providerName) {
 
 
 class SocialButtons extends Component {
-
   buttonSettngs(provider) {
     return this.props.settings.apps[provider];
   }

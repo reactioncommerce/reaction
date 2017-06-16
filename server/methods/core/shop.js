@@ -218,7 +218,7 @@ Meteor.methods({
         // get a rate request, using base currency
         const rateUrl =
           `https://openexchangerates.org/api/latest.json?base=${
-          baseCurrency}&app_id=${openexchangeratesAppId}`;
+            baseCurrency}&app_id=${openexchangeratesAppId}`;
         let rateResults;
 
         // We can get an error if we try to change the base currency with a simple

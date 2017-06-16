@@ -68,14 +68,14 @@ class EmailSettings extends Component {
               value={settings.host}
               onChange={this.handleStateChange}
             />
-          <TextField
-            label="Port"
-            i18nKeyLabel="admin.settings.port"
-            type="text"
-            name="port"
-            value={settings.port}
-            onChange={this.handleStateChange}
-          />
+            <TextField
+              label="Port"
+              i18nKeyLabel="admin.settings.port"
+              type="text"
+              name="port"
+              value={settings.port}
+              onChange={this.handleStateChange}
+            />
           </div>
         }
         <TextField
@@ -102,7 +102,7 @@ class EmailSettings extends Component {
           disabled={isSaving}
         >
           {isSaving ?
-              <i className="fa fa-refresh fa-spin"/>
+            <i className="fa fa-refresh fa-spin"/>
             : <span data-i18n="app.save">Save</span>}
         </Button>
       </form>

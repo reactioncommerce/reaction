@@ -79,11 +79,11 @@ class OrdersListContainer extends Component {
     const { orders } = this.props;
 
     return (
-        <OrdersList
-          orders={orders}
-          handleClick={this.handleClick}
-          displayMedia={this.handleDisplayMedia}
-        />
+      <OrdersList
+        orders={orders}
+        handleClick={this.handleClick}
+        displayMedia={this.handleDisplayMedia}
+      />
     );
   }
 }

@@ -44,7 +44,7 @@ Template.memberSettings.helpers({
   },
   hasPermissionChecked: function (permission, userId) {
     if (userId && Roles.userIsInRole(userId, permission, this.shopId || Roles.userIsInRole(userId, permission,
-        Roles.GLOBAL_GROUP))) {
+      Roles.GLOBAL_GROUP))) {
       return "checked";
     }
   },

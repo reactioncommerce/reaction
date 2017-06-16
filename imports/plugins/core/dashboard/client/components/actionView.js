@@ -367,7 +367,7 @@ class ActionView extends Component {
         </div>
         <div style={this.styles.body} className="admin-controls-content action-view-body">
 
-            {this.renderControlComponent()}
+          {this.renderControlComponent()}
 
         </div>
       </div>
@@ -411,8 +411,8 @@ class ActionView extends Component {
           </div>
           <div style={this.styles.body} className="admin-controls-content action-view-body">
 
-              {/* this.renderControlComponent() */}
-              {this.renderDetailComponent()}
+            {/* this.renderControlComponent() */}
+            {this.renderDetailComponent()}
           </div>
         </div>
 

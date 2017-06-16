@@ -97,7 +97,7 @@ describe("orders test", function () {
     });
 
     it("should return the product to stock ", function () {
-        // Mock user permissions
+      // Mock user permissions
       sandbox.stub(Reaction, "hasPermission", () => true);
       const returnToStock = true;
       const previousProduct = Products.findOne({ _id: order.items[0].variants._id });

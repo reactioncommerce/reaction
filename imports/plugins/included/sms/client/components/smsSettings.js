@@ -109,7 +109,7 @@ class SmsSettings extends Component {
                 type="submit" disabled={isSaving}
               >
                 {isSaving ?
-                    <i className="fa fa-refresh fa-spin"/>
+                  <i className="fa fa-refresh fa-spin"/>
                   : <span data-i18n="app.save">Save</span>}
               </Button>
             </form>

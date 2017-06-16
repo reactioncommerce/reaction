@@ -113,7 +113,7 @@ class OrderSummaryContainer extends Component {
             i18nKeyTitle="admin.orderWorkflow.summary.cardTitle"
             title="Summary"
           />
-        <CardBody expandable={false}>
+          <CardBody expandable={false}>
             <OrderSummary
               {...this.props}
               dateFormat={this.dateFormat}

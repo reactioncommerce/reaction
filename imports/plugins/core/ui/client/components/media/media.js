@@ -4,7 +4,6 @@ import { SortableItem } from "../../containers";
 
 
 class MediaItem extends Component {
-
   handleMouseEnter = (event) => {
     if (this.props.onMouseEnter) {
       this.props.onMouseEnter(event, this.props.source);
@@ -54,9 +53,9 @@ class MediaItem extends Component {
         );
       }
       return (
-          <div className="rui badge-container">
-            {this.renderRevision()}
-          </div>
+        <div className="rui badge-container">
+          {this.renderRevision()}
+        </div>
       );
     }
     return null;

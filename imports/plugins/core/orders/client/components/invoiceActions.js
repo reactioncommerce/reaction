@@ -3,7 +3,6 @@ import { formatPriceString } from "/client/api";
 import { IconButton, NumericInput, Translation } from "/imports/plugins/core/ui/client/components";
 
 class InvoiceActions extends Component {
-
   static propTypes = {
     adjustedTotal: PropTypes.number,
     handleActionViewBack: PropTypes.func,
@@ -53,12 +52,12 @@ class InvoiceActions extends Component {
 
         <div className="invoice-details">
           <span className="refundAmount">
-          <NumericInput
-            numericType="currency"
-            value="0"
-            maxValue={adjustedTotal}
-            classNames="amount"
-          />
+            <NumericInput
+              numericType="currency"
+              value="0"
+              maxValue={adjustedTotal}
+              classNames="amount"
+            />
           </span>
           <span className="refundSubmit">
             <IconButton

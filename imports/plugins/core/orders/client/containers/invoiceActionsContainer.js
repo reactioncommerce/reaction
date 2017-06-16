@@ -4,7 +4,6 @@ import InvoiceActions from "../components/invoiceActions";
 import { Loading } from "/imports/plugins/core/ui/client/components";
 
 class InvoiceActionsContainer extends Component {
-
   static propTypes = {
     adjustedTotal: PropTypes.number,
     invoice: PropTypes.object,

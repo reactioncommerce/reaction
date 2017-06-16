@@ -23,7 +23,7 @@ export default function () {
           if (modifier.$addToSet.positions.$each) {
             for (position in modifier.$addToSet.positions.$each) {
               if ({}.hasOwnProperty.call(modifier.$addToSet.positions.$each,
-                  position)) {
+                position)) {
                 createdAt = new Date();
                 updatedAt = new Date();
               }

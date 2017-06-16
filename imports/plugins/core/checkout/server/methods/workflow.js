@@ -183,7 +183,7 @@ Meteor.methods({
       templateProcessedinWorkflow === false) {
       Logger.debug("######## Condition Three #########: complete workflow " +
         currentWorkflowStatus + " updates and move to: ",
-        nextWorkflowStep.template);
+      nextWorkflowStep.template);
       return Cart.update(currentCart._id, {
         $set: {
           "workflow.status": nextWorkflowStep.template

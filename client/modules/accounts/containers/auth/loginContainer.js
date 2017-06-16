@@ -70,7 +70,6 @@ class LoginContainer extends Component {
       );
     }
   }
-
 }
 
 function composer(props, onData) {

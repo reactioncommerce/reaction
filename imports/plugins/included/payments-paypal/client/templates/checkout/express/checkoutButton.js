@@ -82,7 +82,7 @@ Template.paypalCheckoutButton.onRendered(function () {
         paypal.checkout.setup(expressCheckoutSettings.merchantId, {
           environment: expressCheckoutSettings.mode,
           button: element,
-           // Blank function to disable default paypal onClick functionality
+          // Blank function to disable default paypal onClick functionality
           click: function () {}
         });
         this.state.set("isLoading", false);

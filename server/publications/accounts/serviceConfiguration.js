@@ -12,7 +12,7 @@ Meteor.publish("ServiceConfiguration", function (checkUserId) {
   }
   // Admins and account managers can manage the login methods for the shop
   if (Roles.userIsInRole(this.userId, ["owner", "admin", "dashboard/accounts"],
-      Reaction.getShopId())) {
+    Reaction.getShopId())) {
     return ServiceConfiguration.configurations.find({}, {
       fields: {
         secret: 1

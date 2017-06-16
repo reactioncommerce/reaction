@@ -3,7 +3,6 @@ import classnames from "classnames";
 import { Translation } from "../translation";
 
 class Alert extends Component {
-
   componentDidMount() {
     if (this.props.alert) {
       const {

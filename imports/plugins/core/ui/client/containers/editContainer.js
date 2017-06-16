@@ -11,7 +11,6 @@ const styles = {
 };
 
 class EditContainer extends Component {
-
   handleEditButtonClick = (event) => {
     const props = this.props;
 

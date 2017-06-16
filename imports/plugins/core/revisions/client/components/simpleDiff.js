@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from "react";
 
 class SimpleDiff extends Component {
-
   renderDiff() {
     const diff = this.props.diff;
 

@@ -159,7 +159,7 @@ export const ProductRevision = {
     const options = this.getVariants(variant._id);
     if (options && options.length) {
       return options.reduce((sum, option) =>
-      sum + option.inventoryQuantity || 0, 0);
+        sum + option.inventoryQuantity || 0, 0);
     }
     return variant.inventoryQuantity || 0;
   }

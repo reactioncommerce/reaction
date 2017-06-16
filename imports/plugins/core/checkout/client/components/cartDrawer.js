@@ -30,7 +30,7 @@ const cartDrawer = ({ productItems, pdpPath, handleRemoveItem, handleCheckout, h
       <div className="row">
         <span className="rui btn btn-cta btn-lg btn-block" id="btn-checkout" data-i18n="cartDrawer.checkout" onClick={handleCheckout}>
           Checkout now
-          </span>
+        </span>
       </div>
     </div>
   );

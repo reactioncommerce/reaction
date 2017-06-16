@@ -5,7 +5,6 @@ import { Reaction } from "/server/api";
 const level = "INFO";
 
 class BunyanMongo {
-
   levelToName = {
     10: "trace",
     20: "debug",

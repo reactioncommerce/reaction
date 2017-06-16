@@ -146,9 +146,9 @@ Template.productImageGallery.events({
   "click .remove-image": function () {
     const imageUrl =
       $(event.target)
-      .closest(".gallery-image")
-      .find("img")
-      .attr("src");
+        .closest(".gallery-image")
+        .find("img")
+        .attr("src");
 
     Alerts.alert({
       title: "Remove Media?",

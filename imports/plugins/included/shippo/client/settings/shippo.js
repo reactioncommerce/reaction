@@ -29,7 +29,7 @@ AutoForm.hooks({
     onSuccess(formType, result) {
       Alerts.removeSeen();
       const successMsg = (result.type === "delete") ? i18next.t("admin.settings.saveSuccess") :
-                                                   i18next.t("shippo.connectedAndSaved");
+        i18next.t("shippo.connectedAndSaved");
 
       return Alerts.toast(successMsg, "success", {
         autoHide: true

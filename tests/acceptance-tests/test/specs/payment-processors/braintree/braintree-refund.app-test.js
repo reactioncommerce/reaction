@@ -47,7 +47,7 @@ describe("braintree refund test", function () {
     browser.click(eleMap.apply_refund_pop_up_btn);
     browser.pause(5000);
     expect(browser.getText("h2"))
-    .to.equal("Braintree does not allow refunds until transactions are settled. This can take up to 24 hours. Please try again later.");
+      .to.equal("Braintree does not allow refunds until transactions are settled. This can take up to 24 hours. Please try again later.");
     // error pop up ok btn
     browser.click("button.swal2-confirm.styled");
   });

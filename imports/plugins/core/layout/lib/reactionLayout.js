@@ -8,7 +8,6 @@ import { Templates } from "/lib/collections";
 import { Loading } from "/imports/plugins/core/ui/client/components";
 
 class ReactionLayout extends Component {
-
   get layout() {
     return this.props.layout;
   }
@@ -88,9 +87,9 @@ class ReactionLayout extends Component {
 
   render() {
     return (
-        <div className="rui layout-base items flex">
-          {this.renderLayout(this.layout)}
-        </div>
+      <div className="rui layout-base items flex">
+        {this.renderLayout(this.layout)}
+      </div>
     );
   }
 }

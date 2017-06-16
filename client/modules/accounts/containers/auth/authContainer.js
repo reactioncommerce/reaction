@@ -202,7 +202,7 @@ class AuthContainer extends Component {
           onSocialClick={this.handleSocialLogin}
           capitalizeName={this.capitalizeName}
         />
-      {this.renderAuthView()}
+        {this.renderAuthView()}
       </div>
     );
   }

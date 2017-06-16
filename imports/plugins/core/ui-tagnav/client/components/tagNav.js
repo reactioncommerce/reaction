@@ -91,7 +91,7 @@ class TagNav extends Component {
             </TagList>
           </DragDropProvider>
           {this.props.canEdit && this.renderEditButton()}
-          </div>
+        </div>
       </div>
     );
   }

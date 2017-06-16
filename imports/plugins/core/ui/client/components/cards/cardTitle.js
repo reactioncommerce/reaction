@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from "react";
 import { Translation } from "../translation";
 
 class CardTitle extends Component {
-
   render() {
     const { element, ...props } = this.props;
 

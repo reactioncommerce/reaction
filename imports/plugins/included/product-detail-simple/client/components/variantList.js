@@ -5,7 +5,6 @@ import { Divider, IconButton } from "/imports/plugins/core/ui/client/components"
 import { ChildVariant } from "./";
 
 class VariantList extends Component {
-
   handleVariantEditClick = (event, editButtonProps) => {
     if (this.props.onEditVariant) {
       return this.props.onEditVariant(event, editButtonProps.data);

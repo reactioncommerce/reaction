@@ -23,7 +23,7 @@ Template.memberForm.events({
             message = error;
           } else {
             message = `${i18next.t("accountsUI.error.errorSendingEmail")
-              } ${error}`;
+            } ${error}`;
           }
           Alerts.toast(message, "error", {
             html: true,

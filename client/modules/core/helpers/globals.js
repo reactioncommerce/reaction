@@ -71,7 +71,7 @@ export function getGuestLoginState() {
       return true;
     }
   } else if (Session.equals("guestCheckoutFlow", true) && _.pluck(Meteor.user()
-      .emails, "address")) {
+    .emails, "address")) {
     return true;
   }
   return false;

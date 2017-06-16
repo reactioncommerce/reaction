@@ -501,7 +501,7 @@ Meteor.methods({
         _id: variant._id
       }, {
         $set: newVariant // newVariant already contain `type` property, so we
-          // do not need to pass it explicitly
+        // do not need to pass it explicitly
       }, {
         validate: false
       }, (error, result) => {
@@ -621,7 +621,7 @@ Meteor.methods({
 
       const newProduct = Object.assign({}, product, {
         _id: productNewId
-          // ancestors: product.ancestors.push(product._id)
+        // ancestors: product.ancestors.push(product._id)
       });
       delete newProduct.updatedAt;
       delete newProduct.createdAt;

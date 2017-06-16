@@ -49,7 +49,7 @@ describe("authorize net refund test", function () {
     browser.click(eleMap.apply_refund_pop_up_btn);
     browser.waitForVisible("h2", 5000);
     expect(browser.getText("h2"))
-    .to.equal("Reaction does not yet support direct refund processing from Authorize.net. Please visit their web portal to perform this action.");
+      .to.equal("Reaction does not yet support direct refund processing from Authorize.net. Please visit their web portal to perform this action.");
     // error pop up ok btn
     browser.click("button.swal2-confirm.styled");
   });

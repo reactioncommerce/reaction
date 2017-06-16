@@ -198,7 +198,7 @@ export const methods = {
 
     // Make sure user has proper rights to this package
     const { shopId } = Packages.findOne({ _id },
-                                        { field: { shopId: 1 } });
+      { field: { shopId: 1 } });
     if (shopId && Roles.userIsInRole(this.userId, shippingRoles, shopId)) {
       // If user wants to delete existing key
       if (modifier.hasOwnProperty("$unset")) {

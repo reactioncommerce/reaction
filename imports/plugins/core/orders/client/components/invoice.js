@@ -26,11 +26,11 @@ class Invoice extends Component {
         {isOpen &&
           <div>
             <hr/>
-              <DiscountList
-                id={orderId}
-                collection={collection}
-                validatedInput={true}
-              />
+            <DiscountList
+              id={orderId}
+              collection={collection}
+              validatedInput={true}
+            />
             <hr/>
           </div>
         }
