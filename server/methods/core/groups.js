@@ -43,12 +43,12 @@ Meteor.methods({
   /**
    * group/updateGroup
    * @summary updates a permission group for a shop
-   * updates either the name of the permission group or it roles list.
+   * updates either the name of the permission group or it list of permissions
    * It also goes into affected user data to modify both the groupName (using Accounts schema)
    * and group permissions (using "accounts/removeUserPermissions")
    * @param {Object} group - current data of the group to be updated
    * @param {String} group.name - name of the group
-   * @param {Array} group.permissions - permissions of the group
+   * @param {Array} group.permissions - permissions of the grop
    * @param {Object} newGroupData - updated group info (similar to current group data)
    * @param {String} shopId - id of the shop the group belongs to
    * @return {Object} - object.status of 200 on success or Error object on failure
@@ -72,11 +72,7 @@ Meteor.methods({
     const permissionsChanged = !_.isEqual(group.permissions, newGroupData.permissions);
     const updateQuery = { "groups.$": newGroupData };
 
-    const shop = Shops.update({ _id: shopId, groups: group }, { $set: updateQuery });
-
-    if (!shop) {
-      throw new Meteor.Error(400, "Bad request data");
-    }
+    Shops.update({ _id: shopId, groups: group }, { $set: updateQuery });
 
     const matchQuery = { $elemMatch: { shopId: shopId, names: group.name } };
     const affectedUsers = Accounts.find({ groups: matchQuery }).fetch();
@@ -87,11 +83,11 @@ Meteor.methods({
     }
 
     if (permissionsChanged) {
-      error = updateUsersPermissions(affectedUsers, group, newGroupData, shopId);
+      error = updateUsersPermissions(affectedUsers, group, shopId);
     }
 
     if (!error) {
-      return { shop, status: 200 };
+      return { status: 200 };
     }
     Logger.error(error);
     throw new Meteor.Error(500, "Update not successful");
@@ -134,7 +130,7 @@ Meteor.methods({
 
   /**
    * group/removeUser
-   * @summary removes a user from a group for a shop, and updates the user's permission  list
+   * @summary removes a user from a group for a shop, and updates the user's permission list
    * @param {String} userId - current data of the group to be updated
    * @param {String} groupName - name of the group
    * @param {String} shopId - permissions of the group
@@ -146,24 +142,22 @@ Meteor.methods({
     check(shopId, String);
 
     const user = Accounts.findOne({ _id: userId });
+    if (!user) {
+      throw new Meteor.Error(404, "Could not find user");
+    }
     const shopGroup = _.find(user.groups, { shopId });
     if (shopGroup) {
       _.remove(shopGroup.names, name => name === groupName);
     }
-    console.log({ shopGroup });
-    // replace the old value with the updated data
     const updatedGroups = _.filter(user.groups, group => group.shopId !== shopId)
       .concat([shopGroup]);
 
     Accounts.update({ _id: user._id }, { $set: { groups: updatedGroups } });
-    // delete all permissions belonging to that group
+    // delete all permissions belonging to that group & re-populate for remaining groups
     const shop = Shops.findOne({ _id: shopId });
-    const groupPermissions = getGroupPermissions(shop.groups, groupName);
-    // re-populate for left-over groups
-    updateUsersPermissions(affectedUsers, oldGroup, shopId);
-
+    const permissions = getGroupPermissions(shop.groups, groupName);
     try {
-      updateUsersGroupName([user], "", groupData.name, shopId);
+      updateUsersPermissions([user], { permissions }, shopId);
       return { status: 200 };
     } catch (error) {
       Logger.error(error);
@@ -172,8 +166,6 @@ Meteor.methods({
   }
 });
 
-// To use this, a group object belonging to the particular shop must be on the user already
-// this updates the name of a group or adds a new one in the object for that shop
 function updateUsersGroupName(affectedUsers, groupName, newName, shopId) {
   return affectedUsers.forEach(user => {
     user.groups = user.groups.map(group => {
