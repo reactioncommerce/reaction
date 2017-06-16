@@ -141,7 +141,7 @@
           "newOrder": "Ваш заказ обрабатывается.",
           "forAdmin": "У вас новый заказ.",
           "orderDelivered": "Ваш заказ был доставлен.",
-          "orderAccepted": "Ваш заказ был принят.",
+          "orderProcessing": "Ваш заказ обрабатывается.",
           "orderShipped": "Ваш заказ был отправлен."
         }
       },
@@ -298,7 +298,12 @@
       "cartDrawer": {
         "empty": "Очень жаль, ваша корзина пуста",
         "keepShopping": "Продолжить покупки",
-        "checkout": "Оформить заказ"
+        "checkout": "Оформить заказ",
+        "new": "Новых",
+        "coreOrderWorkflow/created": "Создан",
+        "coreOrderWorkflow/processing": "В работе",
+        "coreOrderWorkflow/completed": "Завершенных",
+        "coreOrderWorkflow/canceled": "Отмененных"
       },
       "cartSubTotals": {
         "discount": "Скидка",
@@ -380,9 +385,7 @@
         "resendNotification": "Отправить уведомление о доставке еще раз"
       },
       "orderWorkflow": {
-        "fulfillment": "Движение заказа",
         "orderDetails": "Детали заказа",
-        "summary": "Сводка",
         "invoice": "Счёт",
         "shipmentTracking": "Отслеживание посылки"
       },
@@ -429,6 +432,7 @@
       },
       "addressBookEdit": {
         "editAddress": "Редактирование адреса",
+        "addressValidation": "Адрес Validation",
         "somethingWentWrong": "Что-то пошло не так: {{err}}"
       },
       "corePackageConfig": {

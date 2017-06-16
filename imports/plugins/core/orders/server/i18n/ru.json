@@ -11,6 +11,27 @@
           "ordersLabel": "заказы",
           "ordersTitle": "заказы",
           "ordersDescription": "Исполни ваши заказы"
+        },
+        "orderWorkflow": {
+          "ordersList": {
+            "date": "Дата",
+            "orderId": "Идентификационный номер заказа",
+            "total": "Итого",
+            "emailNotFound": "Электронная почта недоступна"
+          },
+          "summary": {
+            "cardTitle": "Сводка",
+            "copyOrderLink": "Ссылка на копию заказа"
+          },
+          "invoice": {
+            "cardTitle": "Счёт",
+            "adjustedTotal": "Итого после возврата",
+            "capturedTotal": "Получено всего",
+            "refund": "Возврат"
+          },
+          "fulfillment": "Движение заказа",
+          "orderDetails": "Детали заказа",
+          "shipmentTracking": "Перевозка"
         }
       }
     }

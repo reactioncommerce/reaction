@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import classnames from "classnames";
 import TetherComponent from "react-tether";
 import PopoverContent from "./popoverContent";
@@ -69,7 +70,7 @@ class Popover extends Component {
       return  (
         <PopoverContent
           children={this.props.children}
-          onClickOutside={this.handleClickOutside}
+          onClickOutside={this.props.onClick}
         />
       );
     }
@@ -84,7 +85,7 @@ class Popover extends Component {
           <Button
             key="dropdown-button"
             icon="fa fa-chevron-down"
-            onClick={this.handleOpen}
+            onClick={this.props.onClick}
             status={this.props.buttonElement.props.status}
           />
         </ButtonGroup>
@@ -92,7 +93,7 @@ class Popover extends Component {
     }
 
     return React.cloneElement(this.props.buttonElement, {
-      onClick: this.handleOpen
+      onClick: this.props.onClick
     });
   }
 
@@ -125,6 +126,7 @@ Popover.propTypes = {
   buttonElement: PropTypes.node,
   children: PropTypes.node,
   isOpen: PropTypes.bool,
+  onClick: PropTypes.func,
   onDisplayButtonClick: PropTypes.func,
   onRequestOpen: PropTypes.func,
   showArrow: PropTypes.bool,
