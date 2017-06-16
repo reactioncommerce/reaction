@@ -6,6 +6,7 @@ import { composeWithTracker } from "/lib/api/compose";
 import { UpdatePasswordOverlay } from "/client/modules/accounts/components";
 import { MessagesContainer } from "/client/modules/accounts/containers/helpers";
 import { TranslationProvider } from "/imports/plugins/core/ui/client/providers";
+import { LoginFormValidation } from "/lib/api";
 
 class UpdatePasswordOverlayContainer extends Component {
   static propTypes = {
