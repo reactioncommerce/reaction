@@ -9,7 +9,7 @@ let registeredComponents = Immutable.Map();
 export function registerComponent(componentInfo) {
   const info = {
     ...componentInfo,
-    default: false
+    default: true // TODO: Add some logic around this, for default vs overriden components
   };
 
   registeredComponents = registeredComponents.set(
@@ -18,6 +18,8 @@ export function registerComponent(componentInfo) {
   );
 }
 
+// TODO: Add some logic around this to allow for overriding of components
+// by priority or something.
 export function replaceComponent(componentInfo) {
   const info = {
     ...componentInfo,
