@@ -11,6 +11,27 @@
           "ordersLabel": "παραγγελίες",
           "ordersTitle": "παραγγελίες",
           "ordersDescription": "Εκπληρώσει τις παραγγελίες σας"
+        },
+        "orderWorkflow": {
+          "ordersList": {
+            "date": "Ημερομηνία",
+            "orderId": "Αριθμός Παραγγελίας",
+            "total": "Σύνολο",
+            "emailNotFound": "Το ηλεκτρονικό ταχυδρομείο δεν είναι διαθέσιμο"
+          },
+          "summary": {
+            "cardTitle": "Περίληψη",
+            "copyOrderLink": "Αντιγραφή συνδέσμου παραγγελίας"
+          },
+          "invoice": {
+            "cardTitle": "Τιμολόγιο",
+            "adjustedTotal": "Προσαρμοσμένο Σύνολο",
+            "capturedTotal": "συλλαμβάνονται Σύνολο",
+            "refund": "Επιστροφή χρημάτων"
+          },
+          "fulfillment": "Εκπλήρωση",
+          "orderDetails": "Λεπτομέρειες Παραγγελίας",
+          "shipmentTracking": "Αποστολή"
         }
       }
     }

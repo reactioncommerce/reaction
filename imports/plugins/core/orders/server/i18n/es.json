@@ -11,6 +11,27 @@
           "ordersLabel": "Pedidos",
           "ordersTitle": "Pedidos",
           "ordersDescription": "Cumplir con sus pedidos"
+        },
+        "orderWorkflow": {
+          "ordersList": {
+            "date": "Fecha",
+            "orderId": "ID de pedido",
+            "total": "Total",
+            "emailNotFound": "Correo electrónico no disponible"
+          },
+          "summary": {
+            "cardTitle": "Resumen",
+            "copyOrderLink": "Enlace de orden de copia"
+          },
+          "invoice": {
+            "cardTitle": "Factura",
+            "adjustedTotal": "Total ajustado",
+            "capturedTotal": "Total registrado",
+            "refund": "Reembolso"
+          },
+          "fulfillment": "Satisfacción",
+          "orderDetails": "Información de envío",
+          "shipmentTracking": "Envío"
         }
       }
     }

@@ -141,7 +141,7 @@
           "newOrder": "Vaša narudžba obrađuje.",
           "forAdmin": "Imate novi poredak.",
           "orderDelivered": "Vaša narudžba dostavljena.",
-          "orderAccepted": "Vaš nalog je prihvaćen.",
+          "orderProcessing": "Vaša narudžba obrađuje.",
           "orderShipped": "Vaša je narudžba poslana."
         }
       },
@@ -298,7 +298,12 @@
       "cartDrawer": {
         "empty": "Nažalost, vaša košarica je prazna.",
         "keepShopping": "Nastavi s kupovinom",
-        "checkout": "Završi"
+        "checkout": "Završi",
+        "new": "Novi",
+        "coreOrderWorkflow/created": "Stvoren",
+        "coreOrderWorkflow/processing": "Obrada",
+        "coreOrderWorkflow/completed": "dovršen",
+        "coreOrderWorkflow/canceled": "otkazan"
       },
       "cartSubTotals": {
         "discount": "Popust",
@@ -380,9 +385,7 @@
         "resendNotification": "Ponovno slanje pošiljke obavijesti"
       },
       "orderWorkflow": {
-        "fulfillment": "Ispunjenje",
         "orderDetails": "Detalji narudžbe",
-        "summary": "Sažetak",
         "invoice": "Dostavnica",
         "shipmentTracking": "praćenje pošiljke"
       },
@@ -429,6 +432,7 @@
       },
       "addressBookEdit": {
         "editAddress": "Uređivanje adrese",
+        "addressValidation": "Adresa valjanosti",
         "somethingWentWrong": "Nešto je pošlo po zlu: {{err}}"
       },
       "corePackageConfig": {

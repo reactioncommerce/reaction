@@ -141,7 +141,7 @@
           "newOrder": "Twoje zamówienie jest przetwarzane.",
           "forAdmin": "Masz nowy porządek.",
           "orderDelivered": "Twoje zamówienie zostało dostarczone.",
-          "orderAccepted": "Twoje zamówienie zostało przyjęte.",
+          "orderProcessing": "Twoje zamówienie jest przetwarzane.",
           "orderShipped": "Twoje zamówienie zostało wysłane."
         }
       },
@@ -298,7 +298,12 @@
       "cartDrawer": {
         "empty": "Jesteśmy smutni. Twój koszyk jest pusty.",
         "keepShopping": "Lek na zakupy",
-        "checkout": "Sprawdź teraz"
+        "checkout": "Sprawdź teraz",
+        "new": "Nowy",
+        "coreOrderWorkflow/created": "Utworzono",
+        "coreOrderWorkflow/processing": "Przetwarzanie",
+        "coreOrderWorkflow/completed": "Zakończony",
+        "coreOrderWorkflow/canceled": "Odwołany"
       },
       "cartSubTotals": {
         "discount": "Zniżka",
@@ -380,9 +385,7 @@
         "resendNotification": "Ponowna Powiadomienie przesyłki"
       },
       "orderWorkflow": {
-        "fulfillment": "Spełnienie",
         "orderDetails": "Szczegóły zamówienia",
-        "summary": "Podsumowanie",
         "invoice": "Faktura",
         "shipmentTracking": "Śledzenie przesyłek"
       },
@@ -429,6 +432,7 @@
       },
       "addressBookEdit": {
         "editAddress": "Montaż tego wpisu adresu",
+        "addressValidation": "adres Validation",
         "somethingWentWrong": "Coś poszło nie tak: {{err}}"
       },
       "corePackageConfig": {
