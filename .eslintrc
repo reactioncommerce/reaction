@@ -7,7 +7,13 @@
   },
   "globals": {
     "browser": true,
-    "Assets": true
+    "Assets": true,
+    "describe": true,
+    "before": true,
+    "beforeEach": true,
+    "after": true,
+    "afterEach": true,
+    "it": true
   },
   "parserOptions": {
      "ecmaVersion": 6,
