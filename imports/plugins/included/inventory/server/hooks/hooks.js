@@ -1,3 +1,4 @@
+import { Meteor } from "meteor/meteor";
 import { Cart, Products, Orders } from "/lib/collections";
 import { Logger } from "/server/api";
 import { registerInventory } from "../methods/inventory";

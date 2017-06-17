@@ -6,7 +6,8 @@
     "es6": true
   },
   "globals": {
-    "browser": true
+    "browser": true,
+    "Assets": true
   },
   "parserOptions": {
      "ecmaVersion": 6,

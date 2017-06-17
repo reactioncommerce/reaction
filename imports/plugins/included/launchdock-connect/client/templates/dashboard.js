@@ -2,6 +2,7 @@ import moment from "moment";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { Mongo } from "meteor/mongo";
+import { Reaction } from "/client/api";
 import { ReactiveVar } from "meteor/reactive-var";
 import { ReactiveStripe } from "meteor/jeremy:stripe";
 import { Packages } from "/lib/collections";
@@ -142,6 +143,7 @@ Template.launchdockDashboard.events({
 
     let dueToday;
     let term;
+    let daysFromNow;
 
     if (plan === "Yearly") {
       dueToday = "$540 for 12 months";
