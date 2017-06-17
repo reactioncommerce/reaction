@@ -5,35 +5,40 @@ import _ from "lodash";
 import { IconButton } from "/imports/plugins/core/ui/client/components";
 
 
-// class NextIcon extends Component {
-//   constructor(props) {
-//     super(props);
-//   }
-//   render() {
-//     return (
-//       <IconButton
-//         bezelStyle={"flat"}
-//         icon="fa fa-arrow-right"
-//         {...this.props}
-//       />
-//     );
-//   }
-// }
-//
-// class PrevIcon extends Component {
-//   constructor(props) {
-//     super(props);
-//   }
-//   render() {
-//     return (
-//       <IconButton
-//         bezelStyle={"flat"}
-//         icon="fa fa-arrow-left"
-//         {...this.props}
-//       />
-//     );
-//   }
-// }
+class NextIcon extends Component {
+  constructor(props) {
+    super(props);
+  }
+  render() {
+    return (
+      <IconButton
+        bezelStyle={"flat"}
+        icon="fa fa-arrow-right"
+        {...this.props}
+      />
+    );
+  }
+}
+
+class PrevIcon extends Component {
+  constructor(props) {
+    super(props);
+  }
+  render() {
+    return (
+      <IconButton
+        bezelStyle={"flat"}
+        icon="fa fa-arrow-left"
+        {...this.props}
+      />
+    );
+  }
+}
+
+
+
+
+
 //
 // class MyTrComponent extends React.Component {
 // 	constructor () {
@@ -67,8 +72,6 @@ import { IconButton } from "/imports/plugins/core/ui/client/components";
 // }
 
 
-
-
 class SortableTable extends Component {
   constructor(props) {
     super(props);
@@ -76,42 +79,9 @@ class SortableTable extends Component {
     this.state = {
       currentPage: 0,
       maxPages: 0,
-      // externalResultsPerPage: this.props.externalResultsPerPage,
-      // externalSortColumn: this.props.externalSortColumn,
-      // externalSortAscending: this.props.externalSortAscending,
       query: {}
     };
   }
-
-  renderColumns() {
-    const { columnMetadata, filteredFields } = this.props;
-
-    console.log("columnMetadata", columnMetadata);
-
-
-    // Add minWidth data to columns
-    const displayColumns = columnMetadata.map((element) => {
-      return _.extend({}, element, {
-        minWidth: undefined
-      });
-    });
-
-    console.log("displayColumns", displayColumns);
-
-    return displayColumns;
-  }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
   /**
@@ -171,25 +141,13 @@ class SortableTable extends Component {
   }
 
 
-
-
-
-  // Custom components
-
-  prevIcon() {
-    return <PrevIcon />
-  }
-  nextIcon() {
-    return <NextIcon />
-  }
-
-  // /Custom components
-
-
   /**
-   * filter() - Replace default filter with customized filter
+   * customFilter() - Replace default filter with customized filter
    * custom filter is case insensitive
    * custom filter searches entire string, not just from string start
+   * @param {Object} filter user-typed data
+   * @param {Object} row row info for associated filter
+   * @returns {String} replacement filter
    */
   customFilter = (filter, row) => {
     const id = filter.pivotId || filter.id;
@@ -200,8 +158,52 @@ class SortableTable extends Component {
     }
   }
 
+
+  /**
+   * handleClick() - Handle click on table row
+   * @param {object} rowInfo row data passed in from ReactTable
+   * @return {funcion} return onRowClick function prop, or undefined if not supplied
+   */
+  handleClick(rowInfo) {
+    const { onRowClick } = this.props;
+
+    if (typeof onRowClick === "function") {
+      return (
+        onRowClick({
+          className: "holy-cow-party",
+          props: {
+            data: {
+              _id: rowInfo.original._id,
+              type: rowInfo.original.type
+            }
+          }
+        })
+      );
+    }
+  }
+
+
+  /**
+   * renderColumns() - Absorb columnMetadata information from props, output columns to display
+   * @prop {String} columnMetadata - Object of data field, column header
+   * @returns {Object} data filed (string), translated header (string), and minWidth (number / undefined)
+   */
+  renderColumns() {
+    const { columnMetadata } = this.props;
+
+    // Add minWidth = undefined to override 100px default set by ReactTable
+    const displayColumns = columnMetadata.map((element) => {
+      return _.extend({}, element, {
+        minWidth: undefined
+      });
+    });
+
+    return displayColumns;
+  }
+
+
   render() {
-    const { onRowClick, ...otherProps } = this.props;
+    const { ...otherProps } = this.props;
     const data = this.getMeteorData().results;
     const matchingResults = this.getMeteorData().matchingResults;
 
@@ -216,20 +218,14 @@ class SortableTable extends Component {
         minRows={otherProps.minRows}
 
 
-        getTrProps={(state, rowInfo, column, instance) => {
+        PreviousComponent={PrevIcon}
+        NextComponent={NextIcon}
+        getTrProps={(state, rowInfo, column, instance) => { // eslint-disable-line no-unused-vars
           return {
-            onClick: e => {
-              onRowClick({
-                className: "holy-cow-party",
-                props: {
-                  data: {
-                    _id: rowInfo.original._id,
-                    type: rowInfo.original.type
-                  }
-                }
-              });
+            onClick: e => { // eslint-disable-line no-unused-vars
+              this.handleClick(rowInfo);
             }
-          }
+          };
         }}
       />
     );
@@ -252,7 +248,7 @@ SortableTable.propTypes = {
   /** @type {string} minRows minimum amount of rows to display in table */
   minRows: PropTypes.number,
   /** @type {function} onRowClick provides function / action when clicking on row */
-  onRowClick: PropTypes.function
+  onRowClick: PropTypes.func
 };
 
 SortableTable.defaultProps = {
