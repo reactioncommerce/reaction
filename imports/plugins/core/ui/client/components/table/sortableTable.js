@@ -36,9 +36,6 @@ class PrevIcon extends Component {
 }
 
 
-
-
-
 //
 // class MyTrComponent extends React.Component {
 // 	constructor () {
@@ -85,15 +82,17 @@ class SortableTable extends Component {
 
 
   /**
-   * getMeteorData() - Absorb publication information from props, output data from subscription
+   * getMeteorData() - Absorb publication / collection information from props, output data from subscription
    * @prop {String} matchingResultsCount - Send to Counts collection to get results count of sub
+   * @prop {String} publication - publication to subscribe to
+   * @prop {Object} collection - collection to get data from
    * Use props to get collection, EmailTableColumn
    * Use that info to call meteor and get subscription
    * Output data for table
    * @returns {Object} loading status (bool), results (object), and matchingResults (number)
    */
   getMeteorData() {
-    const { matchingResultsCount } = this.props;
+    const { collection, matchingResultsCount, publication } = this.props;
 
     // Get a count of the number of items matching the current filter.
     // If no filter is set it will return the total number of items in the collection.
@@ -101,34 +100,13 @@ class SortableTable extends Component {
 
     const options = {};
     let skip;
-    // if (this.props.useExternal) {
-    //   options.limit = this.state.externalResultsPerPage;
-    //   if (!_.isEmpty(this.state.query) && !!matchingResults) {
-    //     // if necessary, limit the cursor to number of matching results to avoid displaying results from other publications
-    //     options.limit = _.min([options.limit, matchingResults]);
-    //   }
-    //   options.sort = {
-    //     [this.state.externalSortColumn]: (this.state.externalSortAscending
-    //       ? 1
-    //       : -1)
-    //   };
-    //   skip = this.state.currentPage * this.state.externalResultsPerPage;
-    // }
 
-    let pubHandle;
-
-    // if (this.props.subsManager) {
-    //   pubHandle = this.props.subsManager.subscribe(this.props.publication, this.state.query, _.extend({
-    //     skip: skip
-    //   }, options));
-    // } else {
-      pubHandle = Meteor.subscribe(this.props.publication, this.state.query, _.extend({
-        skip: skip
-      }, options));
-    // }
+    const pubHandle = Meteor.subscribe(publication, this.state.query, _.extend({
+      skip: skip
+    }, options));
 
     // optional transform of collection for grid results
-    let results = this.props.collection.find(this.state.query, options).fetch();
+    let results = collection.find(this.state.query, options).fetch();
     if (this.props.transform) {
       results = this.props.transform(results);
     }
@@ -214,8 +192,12 @@ class SortableTable extends Component {
         columns={this.renderColumns()}
         data={data}
         defaultFilterMethod={this.customFilter}
+        defaultPageSize={otherProps.defaultPageSize}
         filterable={otherProps.isFilterable}
         minRows={otherProps.minRows}
+
+
+        showPaginationTop={true}
 
 
         PreviousComponent={PrevIcon}
@@ -233,8 +215,12 @@ class SortableTable extends Component {
 }
 
 SortableTable.propTypes = {
+  /** @type {object} collection collection to get data from */
+  collection: PropTypes.object,
   /** @type {array} columnMetadata provides filtered columns with i18n headers */
   columnMetadata: PropTypes.array,
+  /** @type {number} defaultPageSize how many results per page */
+  defaultPageSize: PropTypes.number,
   /** @type {array} filteredFields provides filtered columns, use columnMetadata instead */
   filteredFields: PropTypes.array,
   /** @type {bool} isFilterable show / hide filter */
@@ -248,10 +234,13 @@ SortableTable.propTypes = {
   /** @type {string} minRows minimum amount of rows to display in table */
   minRows: PropTypes.number,
   /** @type {function} onRowClick provides function / action when clicking on row */
-  onRowClick: PropTypes.func
+  onRowClick: PropTypes.func,
+  /** @type {string} publication provides publication to get Meteor data from */
+  publication: PropTypes.string
 };
 
 SortableTable.defaultProps = {
+  defaultPageSize: 10,
   isFilterable: true,
   isResizeable: true,
   isSortable: true,
