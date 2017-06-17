@@ -1,4 +1,3 @@
-import _ from "lodash";
 import url from "url";
 import packageJson from "/package.json";
 import { merge, uniqWith } from "lodash";
@@ -322,7 +321,7 @@ export default {
     const shop = Shops.findOne(shopId);
 
     // add the current domain to the shop if it doesn't already exist
-    if (!_.includes(shop.domains, this.getDomain())) {
+    if (!shop.domains.includes(this.getDomain())) {
       // set the default shop email to the default admin email
       Shops.update(shopId, {
         $addToSet: {
