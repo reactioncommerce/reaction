@@ -141,7 +141,7 @@
           "newOrder": "Din beställning behandlas.",
           "forAdmin": "Du har en ny beställning.",
           "orderDelivered": "Din beställning har levererats.",
-          "orderAccepted": "Din beställning har accepterats.",
+          "orderProcessing": "Din beställning behandlas.",
           "orderShipped": "Din beställning har skickats."
         }
       },
@@ -298,7 +298,12 @@
       "cartDrawer": {
         "empty": "Vi är ledsna. Din vagn är tom.",
         "keepShopping": "Håll på shopping",
-        "checkout": "kassan nu"
+        "checkout": "kassan nu",
+        "new": "Ny",
+        "coreOrderWorkflow/created": "Skapad",
+        "coreOrderWorkflow/processing": "bearbetning",
+        "coreOrderWorkflow/completed": "Avslutad",
+        "coreOrderWorkflow/canceled": "Avbrutet"
       },
       "cartSubTotals": {
         "discount": "Rabatt",
@@ -380,9 +385,7 @@
         "resendNotification": "Återsänd sändning Anmälan"
       },
       "orderWorkflow": {
-        "fulfillment": "Uppfyllelse",
         "orderDetails": "Orderdetaljer",
-        "summary": "Sammanfattning",
         "invoice": "Faktura",
         "shipmentTracking": "Leveransspårning"
       },
@@ -429,6 +432,7 @@
       },
       "addressBookEdit": {
         "editAddress": "Redigera den här adressen inträde",
+        "addressValidation": "adress Validering",
         "somethingWentWrong": "Något gick fel: {{err}}"
       },
       "corePackageConfig": {

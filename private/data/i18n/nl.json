@@ -141,7 +141,7 @@
           "newOrder": "Je bestelling wordt verwerkt.",
           "forAdmin": "U heeft een nieuwe bestelling.",
           "orderDelivered": "Uw bestelling is afgeleverd.",
-          "orderAccepted": "Uw bestelling is geaccepteerd.",
+          "orderProcessing": "Je bestelling wordt verwerkt.",
           "orderShipped": "Je bestelling is verzonden."
         }
       },
@@ -298,7 +298,12 @@
       "cartDrawer": {
         "empty": "Uw winkelwagen is leeg.",
         "keepShopping": "Verder winkelen",
-        "checkout": "Nu betalen"
+        "checkout": "Nu betalen",
+        "new": "Nieuw",
+        "coreOrderWorkflow/created": "Gemaakt",
+        "coreOrderWorkflow/processing": "verwerking",
+        "coreOrderWorkflow/completed": "Voltooid",
+        "coreOrderWorkflow/canceled": "Geannuleerd"
       },
       "cartSubTotals": {
         "discount": "Korting",
@@ -380,9 +385,7 @@
         "resendNotification": "Opnieuw verzenden Shipment Notification"
       },
       "orderWorkflow": {
-        "fulfillment": "Vervulling",
         "orderDetails": "Bestel Details",
-        "summary": "Overzicht",
         "invoice": "Factuur",
         "shipmentTracking": "Verzending volgen"
       },
@@ -429,6 +432,7 @@
       },
       "addressBookEdit": {
         "editAddress": "Dit adres bewerken",
+        "addressValidation": "Address Validation",
         "somethingWentWrong": "Er is iets misgegaan: {{err}}"
       },
       "corePackageConfig": {
