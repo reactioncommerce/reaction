@@ -3,7 +3,7 @@ Forked from https://github.com/meteor-utilities/Meteor-Griddle
  */
 import React from "react";
 import PropTypes from "prop-types";
-import createReactClass from "react-create-class";
+import createReactClass from "create-react-class";
 import _ from "lodash";
 import Griddle from "griddle-react";
 import { Counts } from "meteor/tmeasday:publish-counts";

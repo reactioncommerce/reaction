@@ -1,7 +1,7 @@
 /* eslint react/prop-types:0, react/jsx-sort-props:0, react/forbid-prop-types: 0, "react/prefer-es6-class": [1, "never"] */
 import _ from "lodash";
 import React from "react";
-import createReactClass from "react-create-class";
+import createReactClass from "create-react-class";
 import PropTypes from "prop-types";
 import moment from "moment";
 import Griddle from "griddle-react";
