@@ -9,8 +9,6 @@ import "./templates/list/ordersList.html";
 import "./templates/list/ordersList.js";
 import "./templates/list/pdf.html";
 import "./templates/list/pdf.js";
-import "./templates/list/summary.html";
-import "./templates/list/summary.js";
 
 import "./templates/orderPage/details.html";
 import "./templates/orderPage/details.js";

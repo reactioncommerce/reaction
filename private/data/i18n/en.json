@@ -311,7 +311,8 @@
         "shipping": "Shipping",
         "tax": "Tax",
         "total": "Total",
-        "capturedTotal": "Captured Total"
+        "capturedTotal": "Captured Total",
+        "quantity": "Quantity"
       },
       "cartDrawerItems": {
         "left": "left"

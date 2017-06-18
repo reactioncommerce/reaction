@@ -1,6 +1,7 @@
 import moment from "moment";
 import { Template } from "meteor/templating";
 import { Orders, Shops } from "/lib/collections";
+import OrderListSummary from "../../components/orderListSummary";
 
 /**
  * dashboardOrdersList helpers
@@ -25,6 +26,17 @@ Template.dashboardOrdersList.helpers({
   },
   orderAge() {
     return moment(this.createdAt).fromNow();
+  },
+  orderList() {
+    let itemQty = 0;
+    this.items.forEach(item => {
+      itemQty += item.quantity;
+    });
+    return {
+      component: OrderListSummary,
+      billings: this.billing,
+      itemQty
+    };
   },
   shipmentTracking() {
     return this.shipping[0].shipmentMethod.tracking;
