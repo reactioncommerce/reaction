@@ -284,10 +284,20 @@ export function addressBookAdd(address, accountUserId) {
     }
   }
 
+  Meteor.users.upsert(Meteor.userId(), {
+    $set: {
+      name: address.fullName
+    },
+    $addToSet: {
+      "profile.addressBook": address
+    }
+  });
+
   return Accounts.upsert({
     userId: userId
   }, {
     $set: {
+      name: address.fullName,
       userId: userId
     },
     $addToSet: {
