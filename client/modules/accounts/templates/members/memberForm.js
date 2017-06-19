@@ -38,6 +38,9 @@ Template.memberForm.events({
           }
 
           template.state.set("errorMessage", message);
+
+          template.$("input[type=text], input[type=email]").val("");
+
           return template.state.set("error", true);
         }
         if (result) {
