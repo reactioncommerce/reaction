@@ -5,17 +5,14 @@ import { i18next } from "/client/api";
 
 class EmailTableColumn extends Component {
   static propTypes = {
-    data: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.instanceOf(Date)
-    ]),
-    metadata: PropTypes.object,
-    rowData: PropTypes.object
+    row: PropTypes.object
   }
 
   handleAction = () => {
-    const emailId = this.props.rowData._id;
-    const emailAddress = this.props.rowData.data.to;
+    const { row } = this.props;
+
+    const emailId = row.original._id;
+    const emailAddress = row.original.data.to;
 
     Meteor.call("emails/retryFailed", emailId, (err) => {
       if (err) {
@@ -26,10 +23,12 @@ class EmailTableColumn extends Component {
   }
 
   render() {
-    const renderColumn = this.props.metadata.columnName;
+    const { row } = this.props;
+
+    const renderColumn = row.column.id;
 
     if (renderColumn === "status") {
-      if (this.props.data === "completed") {
+      if (row.value === "completed") {
         return (
           <span>
             <Icon icon="fa fa-circle" className="pull-left valid" />
@@ -46,13 +45,13 @@ class EmailTableColumn extends Component {
       );
     }
     if (renderColumn === "updated") {
-      const createdDate = moment(this.props.data).format("LLL");
+      const createdDate = moment(row.value).format("LLL");
       return (
         <span>{createdDate}</span>
       );
     }
     return (
-      <span>{this.props.data}</span>
+      <span>{row.value}</span>
     );
   }
 }
