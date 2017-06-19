@@ -1,5 +1,4 @@
 import React from "react";
-import jest from "jest";
 import Translation from "../translation";
 import { shallow } from "enzyme";
 import shallowToJSON from "enzyme-to-json";
