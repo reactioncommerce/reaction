@@ -3,7 +3,7 @@ import classnames from "classnames/dedupe";
 import Avatar from "react-avatar";
 import moment from "moment";
 import { formatPriceString } from "/client/api";
-import { Badge, ClickToCopy, Icon, Translation } from "/imports/plugins/core/ui/client/components";
+import { Badge, ClickToCopy, Icon, Translation } from "@reactioncommerce/reaction-ui";
 import ProductImage from "./productImage";
 
 class OrdersList extends Component {
@@ -156,15 +156,26 @@ class OrdersList extends Component {
   render() {
     const { orders } = this.props;
 
+    if (orders.length) {
+      return (
+        <div className="container-fluid-sm">
+          {orders.map((order, i) => {
+            return (
+              <div key={i}>
+                {this.renderOrderCard(order)}
+              </div>
+            );
+          })}
+        </div>
+      );
+    }
+
     return (
       <div className="container-fluid-sm">
-        {orders.map((order, i) => {
-          return (
-            <div key={i}>
-              {this.renderOrderCard(order)}
-            </div>
-          );
-        })}
+        <div className="empty-view-message">
+          <Icon icon="fa fa-sun-o" />
+          <Translation defaultValue={"No orders found"} i18nKey={"order.ordersNotFound"} />
+        </div>
       </div>
     );
   }

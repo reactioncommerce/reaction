@@ -11,6 +11,27 @@
           "ordersLabel": "Đơn đặt hàng",
           "ordersTitle": "Đơn đặt hàng",
           "ordersDescription": "Thực hiện đơn đặt hàng của bạn"
+        },
+        "orderWorkflow": {
+          "ordersList": {
+            "date": "Ngày",
+            "orderId": "Order ID",
+            "total": "Tổng số",
+            "emailNotFound": "Email không có sẵn"
+          },
+          "summary": {
+            "cardTitle": "Tóm lược",
+            "copyOrderLink": "Sao chép Liên kết Đặt hàng"
+          },
+          "invoice": {
+            "cardTitle": "Hóa đơn",
+            "adjustedTotal": "Tổng số điều chỉnh",
+            "capturedTotal": "Bị bắt Tổng số",
+            "refund": "Hoàn tiền"
+          },
+          "fulfillment": "hoàn thành",
+          "orderDetails": "Đặt hàng Chi tiết",
+          "shipmentTracking": "lô hàng"
         }
       }
     }
