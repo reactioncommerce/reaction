@@ -2,6 +2,7 @@ import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { Reaction } from "/lib/api";
 import * as Collections from "/lib/collections";
+import OrderListContainer from "../../../../../imports/plugins/core/orders/client/containers/orderListContainer";
 
 /**
  * onCreated: Account Profile View
@@ -38,7 +39,7 @@ Template.accountProfile.helpers({
   userOrders() {
     const orderSub = Meteor.subscribe("AccountOrders", Meteor.userId());
     if (orderSub.ready()) {
-      return Collections.Orders.find({
+      const userOrders = Collections.Orders.find({
         userId: Meteor.userId()
       }, {
         sort: {
@@ -46,6 +47,10 @@ Template.accountProfile.helpers({
         },
         limit: 25
       });
+      return {
+        component: OrderListContainer,
+        userOrders
+      };
     }
   },
 
