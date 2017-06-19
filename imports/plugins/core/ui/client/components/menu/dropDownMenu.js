@@ -96,8 +96,8 @@ class DropDownMenu extends Component {
           />
         }
         isOpen={this.isOpen}
-        onRequestOpen={this.handleOpen}
         onClick={this.handleDropdownToggle}
+        onRequestOpen={this.handleOpen}
         targetAttachment={this.props.targetAttachment}
       >
         <Menu
