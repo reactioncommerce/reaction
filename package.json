@@ -22,7 +22,7 @@
     "@reactioncommerce/authorize-net": "^1.0.8",
     "@reactioncommerce/nodemailer": "^5.0.4",
     "accounting-js": "^1.1.1",
-    "autoprefixer": "^6.7.7",
+    "autoprefixer": "^7.1.1",
     "autosize": "^3.0.20",
     "babel-runtime": "^6.23.0",
     "bcrypt": "^1.0.2",
@@ -44,8 +44,8 @@
     "griddle-react": "0.7.1",
     "handlebars": "^4.0.6",
     "history": "^4.6.1",
-    "i18next": "7.1.3",
-    "i18next-browser-languagedetector": "^1.0.1",
+    "i18next": "8.4.2",
+    "i18next-browser-languagedetector": "^2.0.0",
     "i18next-localstorage-cache": "^1.1.0",
     "i18next-sprintf-postprocessor": "^0.2.2",
     "immutable": "^3.8.1",
@@ -54,22 +54,22 @@
     "later": "^1.2.0",
     "lodash": "^4.17.4",
     "lodash.pick": "^4.4.0",
-    "meteor-node-stubs": "^0.2.6",
+    "meteor-node-stubs": "^0.2.11",
     "moment": "^2.18.1",
     "moment-timezone": "^0.5.11",
-    "nexmo": "^1.2.0",
+    "nexmo": "^2.0.2",
     "node-geocoder": "^3.16.0",
     "nodemailer-wellknown": "^0.2.1",
     "nouislider-algolia-fork": "^10.0.0",
     "npm-shrinkwrap": "^6.0.2",
     "path-to-regexp": "^1.7.0",
     "paypal-rest-sdk": "^1.7.1",
-    "postcss": "^5.2.16",
-    "postcss-js": "^0.3.0",
+    "postcss": "^6.0.2",
+    "postcss-js": "^1.0.0",
     "prerender-node": "^2.7.0",
     "prop-types": "https://registry.npmjs.org/prop-types/-/prop-types-15.5.8.tgz",
     "query-parse": "^1.0.0",
-    "radium": "^0.18.2",
+    "radium": "^0.19.1",
     "react": "15.4.2",
     "react-addons-create-fragment": "15.4.2",
     "react-addons-pure-render-mixin": "15.4.2",
@@ -101,7 +101,7 @@
     "tether-drop": "^1.4.2",
     "tether-tooltip": "^1.2.0",
     "transliteration": "1.6.2",
-    "twilio": "^2.11.1",
+    "twilio": "^3.4.0",
     "url": "^0.11.0",
     "velocity-animate": "^1.5.0",
     "velocity-react": "^1.2.1"
@@ -144,5 +144,18 @@
       "^meteor/aldeed:simple-schema": "<rootDir>/imports/test-utils/__mocks__/meteor/aldeed-simple-schema",
       "^meteor/(.*)": "<rootDir>/imports/test-utils/__mocks__/meteor/$1"
     }
+  },
+  "babel": {
+    "plugins": [
+      "lodash", ["module-resolver", {
+        "root": ["./"],
+        "alias": {
+          "underscore": "lodash",
+          "@reactioncommerce/reaction-ui": "./imports/plugins/core/ui/client/components",
+          "@reactioncommerce/reaction-router": "./imports/plugins/core/router/lib"
+        }
+      }]
+    ],
+    "presets": ["es2015", "react", "stage-2"]
   }
 }
