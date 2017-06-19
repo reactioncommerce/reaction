@@ -3,6 +3,7 @@ import { Session } from "meteor/session";
 import { Reaction, i18next } from "/client/api";
 import { Orders } from "/lib/collections";
 import { Template } from "meteor/templating";
+import OrderlistContainer from "../../../../../orders/client/containers/orderListContainer";
 
 /**
  * cartCompleted helpers
@@ -46,6 +47,11 @@ Template.cartCompleted.helpers({
       });
     }
     return {};
+  },
+  dashboardOrdersList: function () {
+    return {
+      component: OrderlistContainer
+    };
   }
 });
 

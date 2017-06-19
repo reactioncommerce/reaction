@@ -3,8 +3,6 @@ import { registerComponent } from "/imports/plugins/core/layout/lib/components";
 import "./templates/details/detail.html";
 import "./templates/details/detail.js";
 
-import "./templates/list/ordersList.html";
-import "./templates/list/ordersList.js";
 import "./templates/list/pdf.html";
 import "./templates/list/pdf.js";
 
