@@ -302,6 +302,7 @@ Meteor.methods({
   "inventory/remove": function (inventoryItem) {
     check(inventoryItem, Schemas.Inventory);
     // user needs createProduct permission to adjust inventory
+    // REVIEW: Should this be checking against shop permissions instead?
     if (!Reaction.hasPermission("createProduct", this.userId, inventoryItem.shopId)) {
       throw new Meteor.Error(403, "Access Denied");
     }

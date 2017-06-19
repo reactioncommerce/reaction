@@ -99,6 +99,7 @@ function adjustInventory(product, userId) {
   }
 
   // user needs createProduct permission to adjust inventory
+  // REVIEW: Should this be checking shop permission instead?
   if (!Reaction.hasPermission("createProduct", userId, product.shopId)) {
     throw new Meteor.Error(403, "Access Denied");
   }

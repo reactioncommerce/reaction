@@ -76,7 +76,7 @@ export const methods = {
 
     // REVIEW: who should have permission to do this in a marketplace setting?
     // Do we need to update the order schema to reflect multiple packers / shipments?
-    if (!Reaction.hasPermission("orders", this.userId, Reaction.getShopId(this.userId))) {
+    if (!Reaction.hasPermission("orders")) {
       throw new Meteor.Error(403, "Access Denied");
     }
 
@@ -120,7 +120,7 @@ export const methods = {
   "orders/makeAdjustmentsToInvoice": function (order) {
     check(order, Object);
 
-    if (!Reaction.hasPermission("orders", this.userId, Reaction.getShopId(this.userId))) {
+    if (!Reaction.hasPermission("orders")) {
       throw new Meteor.Error(403, "Access Denied");
     }
 
@@ -149,7 +149,7 @@ export const methods = {
 
     // REVIEW: Who should have access to do this for a marketplace?
     // Do we have/need a shopId on each order?
-    if (!Reaction.hasPermission("orders", this.userId, Reaction.getShopId(this.userId))) {
+    if (!Reaction.hasPermission("orders")) {
       throw new Meteor.Error(403, "Access Denied");
     }
 
@@ -195,7 +195,7 @@ export const methods = {
 
     // REVIEW: Only marketplace admins should be able to cancel entire order?
     // Unless order is entirely contained in a single shop? Do we need a switch on marketplace owner dashboard?
-    if (!Reaction.hasPermission("orders", this.userId, Reaction.getShopId(this.userId))) {
+    if (!Reaction.hasPermission("orders")) {
       throw new Meteor.Error(403, "Access Denied");
     }
 
@@ -251,7 +251,7 @@ export const methods = {
 
     // REVIEW: Who should have access to process payment in marketplace?
     // Probably just the shop owner for now?
-    if (!Reaction.hasPermission("orders", this.userId, Reaction.getShopId(this.userId))) {
+    if (!Reaction.hasPermission("orders")) {
       throw new Meteor.Error(403, "Access Denied");
     }
 
@@ -287,7 +287,7 @@ export const methods = {
 
     // TODO: Who should have access to ship shipments in a marketplace setting
     // Should be anyone who has product in an order.
-    if (!Reaction.hasPermission("orders", this.userId, Reaction.getShopId(this.userId))) {
+    if (!Reaction.hasPermission("orders")) {
       Logger.error("User does not have 'orders' permissions");
       throw new Meteor.Error("access-denied", "Access Denied");
     }
@@ -350,7 +350,7 @@ export const methods = {
     check(order, Object);
 
     // REVIEW: this should be callable from the server via callback from Shippo or other webhook
-    if (!Reaction.hasPermission("orders", this.userId, Reaction.getShopId(this.userId))) {
+    if (!Reaction.hasPermission("orders")) {
       throw new Meteor.Error(403, "Access Denied");
     }
 
@@ -635,7 +635,7 @@ export const methods = {
     check(tracking, String);
 
     // REVIEW: This method should be callable from a webhook (e.g. Shippo)
-    if (!Reaction.hasPermission("orders", this.userId, Reaction.getShopId(this.userId))) {
+    if (!Reaction.hasPermission("orders")) {
       throw new Meteor.Error(403, "Access Denied");
     }
 
@@ -693,7 +693,7 @@ export const methods = {
 
     // REVIEW: For marketplace implementations
     // This should be possible for anyone with permission to act on the order
-    if (!Reaction.hasPermission("orders", this.userId, Reaction.getShopId(this.userId))) {
+    if (!Reaction.hasPermission("orders")) {
       throw new Meteor.Error(403, "Access Denied");
     }
 
@@ -724,7 +724,7 @@ export const methods = {
 
     // REVIEW: For marketplace implmentations who should be able to capture payments?
     // Probably just the marketplace and not shops/vendors?
-    if (!Reaction.hasPermission("orders", this.userId, Reaction.getShopId(this.userId))) {
+    if (!Reaction.hasPermission("orders")) {
       throw new Meteor.Error(403, "Access Denied");
     }
 
@@ -809,7 +809,7 @@ export const methods = {
     // REVIEW: For marketplace implementations, users should only be able to see refunds they've given
     // Marketplace admins should be able to see all refunds. May be a moot point if only marketplace can issue refunds
     if (!this.userId === order.userId &&
-        !Reaction.hasPermission("orders", this.userId, Reaction.getShopId(this.userId))) {
+        !Reaction.hasPermission("orders")) {
       throw new Meteor.Error(403, "Access Denied412");
     }
 
@@ -845,7 +845,7 @@ export const methods = {
     check(amount, Number);
 
     // REVIEW: For marketplace implementations, who can refund? Just the marketplace?
-    if (!Reaction.hasPermission("orders", this.userId, Reaction.getShopId(this.userId))) {
+    if (!Reaction.hasPermission("orders")) {
       throw new Meteor.Error(403, "Access Denied");
     }
     const processor = paymentMethod.processor.toLowerCase();
