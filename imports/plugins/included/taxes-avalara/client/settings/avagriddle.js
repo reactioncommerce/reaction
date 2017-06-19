@@ -5,6 +5,7 @@ import createReactClass from "create-react-class";
 import PropTypes from "prop-types";
 import moment from "moment";
 import Griddle from "griddle-react";
+import { Meteor } from "meteor/meteor";
 import { Counts } from "meteor/tmeasday:publish-counts";
 import { ReactMeteorData } from "meteor/react-meteor-data";
 

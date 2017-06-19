@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { Meteor } from "meteor/meteor";
+import { Reaction } from "/client/api";
 import { Button, Card, CardHeader, CardBody, CardGroup, TextField, Select } from "/imports/plugins/core/ui/client/components";
 
 class SmsSettings extends Component {

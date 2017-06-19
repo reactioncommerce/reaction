@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Radium from "radium";
+import { Meteor } from "meteor/meteor";
 import { composeWithTracker } from "/lib/api/compose";
 import { Reaction } from "/client/api";
 import classnames from "classnames";

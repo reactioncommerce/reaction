@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Measure from "react-measure";
 import update from "react/lib/update";
+import _ from "lodash";
+import { Meteor } from "meteor/meteor";
 import { composeWithTracker } from "/lib/api/compose";
 import { MediaGallery } from "../components";
 import { Reaction } from "/client/api";

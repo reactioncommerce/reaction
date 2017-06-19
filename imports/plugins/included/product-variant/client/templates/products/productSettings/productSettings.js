@@ -1,4 +1,6 @@
 import _ from "lodash";
+import { Template } from "meteor/templating";
+import { Meteor } from "meteor/meteor";
 import { ReactiveDict } from "meteor/reactive-dict";
 import { Reaction } from "/client/api";
 import Logger from "/client/modules/logger";

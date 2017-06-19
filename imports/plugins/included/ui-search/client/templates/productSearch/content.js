@@ -1,3 +1,4 @@
+import { Template } from "meteor/templating";
 /**
  * gridContent helpers
  */

@@ -1,3 +1,4 @@
+import { SimpleSchema } from "meteor/aldeed:simple-schema";
 import * as Schemas from "/lib/collections/schemas";
 
 Schemas.LaunchdockPackageConfig = new SimpleSchema([

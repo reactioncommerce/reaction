@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { isEmpty } from "lodash";
+import _ from "lodash";
 import { StyleRoot } from "radium";
+import { $ } from "meteor/jquery";
 import { Meteor } from "meteor/meteor";
 import { composeWithTracker } from "/lib/api/compose";
 import { ReactionProduct } from "/lib/api";

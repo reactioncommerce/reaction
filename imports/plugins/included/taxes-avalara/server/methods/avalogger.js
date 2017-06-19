@@ -1,4 +1,5 @@
 import bunyan from "bunyan";
+import { Meteor } from "meteor/meteor";
 import { Logs } from "/lib/collections";
 import { Reaction } from "/server/api";
 

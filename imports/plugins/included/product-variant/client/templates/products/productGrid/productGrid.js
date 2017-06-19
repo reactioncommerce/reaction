@@ -1,4 +1,7 @@
 import _ from "lodash";
+import { Meteor } from "meteor/meteor";
+import { $ } from "meteor/jquery";
+import { Tracker } from "meteor/tracker";
 import { Session } from "meteor/session";
 import { Template } from "meteor/templating";
 import { Reaction } from "/client/api";

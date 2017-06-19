@@ -3,17 +3,18 @@
   "env": {
     "browser": true,
     "node": true,
-    "es6": true
+    "es6": true,
+    "mocha": true
   },
   "globals": {
     "browser": true,
     "Assets": true,
-    "describe": true,
-    "before": true,
-    "beforeEach": true,
-    "after": true,
-    "afterEach": true,
-    "it": true
+    "it": true,
+    "FS": true, // gridFS,
+    "Alerts": true,
+    "jest": true,
+    "expect": true,
+    "test": true
   },
   "parserOptions": {
      "ecmaVersion": 6,

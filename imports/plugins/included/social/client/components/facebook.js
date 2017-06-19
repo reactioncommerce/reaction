@@ -1,7 +1,9 @@
+/* global FB, data */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Helmet from "react-helmet";
 import classnames from "classnames";
+import { $ } from "meteor/jquery";
 import { Translation } from "/imports/plugins/core/ui/client/components";
 
 export function getOpenGraphMeta(props) {
