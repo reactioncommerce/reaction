@@ -5,7 +5,7 @@ import { Random } from "meteor/random";
 import { MongoInternals } from "meteor/mongo";
 import * as Collections from "/lib/collections";
 import Hooks from "../hooks";
-import Logger from "../logger";
+import { Logger } from "../logger";
 import doRightJoinNoIntersection from "./rightJoin";
 
 /**

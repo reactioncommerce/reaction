@@ -1,8 +1,9 @@
+import _ from "lodash";
 import bunyan from "bunyan";
 import bunyanFormat from "bunyan-format";
-import Bunyan2Loggly from "bunyan-loggly";
-import { includes } from "lodash";
 import { Meteor } from "meteor/meteor";
+import Bunyan2Loggly from "./loggly";
+
 
 // configure bunyan logging module for reaction server
 // See: https://github.com/trentm/node-bunyan#levels
@@ -10,16 +11,16 @@ const levels = ["FATAL", "ERROR", "WARN", "INFO", "DEBUG", "TRACE"];
 
 // set stdout log level
 let level = process.env.REACTION_LOG_LEVEL || Meteor.settings.REACTION_LOG_LEVEL || "INFO";
-let outputMode = "short";
+
+// allow overriding the stdout log formatting
+// available options: short|long|simple|json|bunyan
+// https://www.npmjs.com/package/bunyan-format
+const outputMode = process.env.REACTION_LOG_FORMAT || "short";
 
 level = level.toUpperCase();
 
-if (!includes(levels, level)) {
+if (!_.includes(levels, level)) {
   level = "INFO";
-}
-
-if (level === "TRACE") {
-  outputMode = "json";
 }
 
 // default console config (stdout)
@@ -39,7 +40,7 @@ if (logglyToken && logglySubdomain) {
     stream: new Bunyan2Loggly({
       token: logglyToken,
       subdomain: logglySubdomain
-    })
+    }, process.env.LOGGLY_BUFFER_LENGTH || 1)
   };
   streams.push(logglyStream);
 }
