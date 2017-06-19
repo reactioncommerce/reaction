@@ -68,7 +68,6 @@ Meteor.methods({
       throw new Meteor.Error(403, "Access Denied");
     }
 
-    const groupNameChanged = group.name !== newGroupData.name;
     const permissionsChanged = !_.isEqual(group.permissions, newGroupData.permissions);
     const updateQuery = { "groups.$": newGroupData };
 
@@ -78,13 +77,11 @@ Meteor.methods({
     const affectedUsers = Accounts.find({ groups: matchQuery }).fetch();
     let error;
 
-    if (groupNameChanged) {
-      error = updateUsersGroupName(affectedUsers, group.name, newGroupData.name, shopId);
-    }
-
     if (permissionsChanged) {
       error = updateUsersPermissions(affectedUsers, group, shopId);
     }
+    // update group names on user account
+    error = updateUsersGroupName(affectedUsers, group.name, newGroupData.name, shopId);
 
     if (!error) {
       return { status: 200 };
@@ -110,17 +107,20 @@ Meteor.methods({
     check(shopId, String);
 
     const user = Accounts.findOne({ _id: userId });
-    const belongsToShopGroup = _.find(user.groups, { shopId });
-    if (!belongsToShopGroup) {
-      user.groups = (user.groups || []).concat({
-        shopId,
-        names: [groupData.name]
-      });
-    }
+
+    // note needed?
+    // const belongsToShopGroup = _.find(user.groups, { shopId });
+    // if (!belongsToShopGroup) {
+    //   user.groups = (user.groups || []).concat({
+    //     shopId,
+    //     names: [groupData.name]
+    //   });
+    // }
 
     try {
-      updateUsersGroupName([user], "", groupData.name, shopId);
       Meteor.call("accounts/addUserPermissions", user.userId, groupData.permissions, shopId);
+      // call this in the new fashion
+      updateUsersGroupName([user], "", groupData.name, shopId);
       return { status: 200 };
     } catch (error) {
       Logger.error(error);
@@ -166,11 +166,14 @@ Meteor.methods({
   }
 });
 
-function updateUsersGroupName(affectedUsers, groupName, newName, shopId) {
+function updateUsersGroupName(affectedUsers, shopId) {
+  const { groups } = Shops.findOne({ _id: shopId });
+  console.log({ groups });
   return affectedUsers.forEach(user => {
+    const userRoles = Roles.getRolesForUser(user._id, shopId);
     user.groups = user.groups.map(group => {
       if (group.shopId === shopId) {
-        group.names = upsertArrayItem(group.names, groupName, newName);
+        group.names = getUserGroups(groups, userRoles);
       }
       return group;
     });
@@ -178,15 +181,12 @@ function updateUsersGroupName(affectedUsers, groupName, newName, shopId) {
     Accounts.update({ _id: user._id }, { $set: updateQuery });
   });
 
-  function upsertArrayItem(array, item, newItem) {
-    return _.uniq(array
-      .map(insertIfMatchFound)
-      .concat([newItem])
-    );
-    function insertIfMatchFound(value) {
-      if (value === item) return newItem;
-      return value;
-    }
+  function getUserGroups(groupsInShop, userRoles) {
+    return groupsInShop.map(group => {
+      // check if user roles contain permissions for a group
+      const belongs = _.difference(group.permissions, userRoles).length === 0;
+      if (belongs) return group.name;
+    });
   }
 }
 
