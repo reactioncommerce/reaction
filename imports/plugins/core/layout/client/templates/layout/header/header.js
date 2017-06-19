@@ -1,3 +1,5 @@
+import { Template } from "meteor/templating";
+import { $ } from "meteor/jquery";
 import { Reaction } from "/client/api";
 import { Tags } from "/lib/collections";
 
