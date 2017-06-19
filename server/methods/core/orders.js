@@ -804,16 +804,11 @@ export const methods = {
     check(order, Object);
     const paymentMethod = orderCreditMethod(order).paymentMethod;
 
-    // REVIEW: Why is this not just a publication? Not really clear on what this method does
-
-    // REVIEW: For marketplace implementations, users should only be able to see refunds they've given
-    // Marketplace admins should be able to see all refunds. May be a moot point if only marketplace can issue refunds
-    if (!this.userId === order.userId &&
-        !Reaction.hasPermission("orders")) {
-      throw new Meteor.Error(403, "Access Denied412");
+    if (!this.userId === order.userId && !Reaction.hasPermission("orders")) {
+      throw new Meteor.Error(403, "Access Denied");
     }
 
-    this.unblock(); // Why unblock here?
+    this.unblock();
 
     const future = new Future();
     const processor = paymentMethod.processor.toLowerCase();
