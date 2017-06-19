@@ -39,6 +39,27 @@
           {{/each}}
         </ul>
       </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">
+            <span>Groups</span>
+          </h3>
+        </div>
+
+        <ul class="list-group">
+          {{#each groups}}
+            <li class="list-group-item flex">
+              <div class="member-list-item-profile">
+                <b class="text-capitalize">{{this.name}}</b>
+              </div>
+              <div class="member-list-item-controls">
+                <button class="btn btn-default" data-event-action="showGroupSettings">Manage Group</button>
+              </div>
+            </li>
+          {{/each}}
+        </ul>
+      </div>
     </div>
   {{/if}}
 </template>
