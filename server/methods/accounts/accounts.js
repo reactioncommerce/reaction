@@ -2,7 +2,10 @@ import _ from "lodash";
 import moment from "moment";
 import path from "path";
 import { Meteor } from "meteor/meteor";
+import { Random } from "meteor/random";
+import { SSR } from "meteor/meteorhacks:ssr";
 import { Accounts as MeteorAccounts } from "meteor/accounts-base";
+import { Roles } from "meteor/alanning:roles";
 import { check, Match } from "meteor/check";
 import { Accounts, Cart, Media, Shops, Packages } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
@@ -571,12 +574,7 @@ export function inviteShopMember(shopId, email, name) {
       html: SSR.render(tpl, dataForEmail)
     });
   } else {
-    Reaction.Email.send({
-      to: email,
-      from: `${shop.name} <${shop.emails[0].address}>`,
-      subject: SSR.render(subject, dataForEmail),
-      html: SSR.render(tpl, dataForEmail)
-    });
+    throw new Meteor.Error("Cannot invite user that already exists");
   }
   return true;
 }

@@ -2,6 +2,7 @@ import bunyan from "bunyan";
 import bunyanFormat from "bunyan-format";
 import Bunyan2Loggly from "bunyan-loggly";
 import { includes } from "lodash";
+import { Meteor } from "meteor/meteor";
 
 // configure bunyan logging module for reaction server
 // See: https://github.com/trentm/node-bunyan#levels

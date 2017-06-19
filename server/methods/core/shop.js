@@ -1,4 +1,7 @@
+import _ from "lodash";
 import { Meteor } from "meteor/meteor";
+import { Roles } from "meteor/alanning:roles";
+import { Random } from "meteor/random";
 import { check, Match } from "meteor/check";
 import { HTTP } from "meteor/http";
 import { Job } from "meteor/vsivsi:job-collection";
@@ -532,7 +535,6 @@ Meteor.methods({
   /**
    * shop/hideHeaderTag
    * @param {String} tagId - method to remove tag navigation tags
-   * @param {String} currentTagId - currentTagId
    * @return {String} returns remove result
    */
   "shop/hideHeaderTag": function (tagId) {

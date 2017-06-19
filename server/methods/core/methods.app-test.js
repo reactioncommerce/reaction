@@ -1,4 +1,6 @@
 import { Meteor } from "meteor/meteor";
+import { Roles } from "meteor/alanning:roles";
+import { Factory } from "meteor/dburles:factory";
 import { Shops, Tags } from "/lib/collections";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";

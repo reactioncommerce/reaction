@@ -1,5 +1,6 @@
 import accounting from "accounting-js";
 import { Meteor } from "meteor/meteor";
+import { check, Match } from "meteor/check";
 import { Factory } from "meteor/dburles:factory";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";

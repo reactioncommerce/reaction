@@ -1,5 +1,6 @@
 import { Meteor } from "meteor/meteor";
-
+import { Factory } from "meteor/dburles:factory";
+import { check, Match } from "meteor/check";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
 

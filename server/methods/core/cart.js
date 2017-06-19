@@ -1,6 +1,8 @@
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
+import { Roles } from "meteor/alanning:roles";
+import { Random } from "meteor/random";
 import * as Collections from "/lib/collections";
 import { Logger, Reaction } from "/server/api";
 
