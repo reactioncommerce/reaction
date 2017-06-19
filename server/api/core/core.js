@@ -3,6 +3,7 @@ import packageJson from "/package.json";
 import { merge, uniqWith } from "lodash";
 import { Meteor } from "meteor/meteor";
 import { EJSON } from "meteor/ejson";
+import { check, Match } from "meteor/check";
 import { Jobs, Packages, Shops } from "/lib/collections";
 import { Hooks, Logger } from "/server/api";
 import ProcessJobs from "/server/jobs";
@@ -164,7 +165,19 @@ export default {
     return null;
   },
 
-  getShopId() {
+  getShopId(userId) {
+    check(userId, Match.Maybe(String));
+
+    const activeUserId = Meteor.call("reaction/getUserId");
+    if (activeUserId || userId) {
+      const activeShopId = this.getUserPreferences({
+        userId: activeUserId || userId,
+        packageName: "reaction",
+        preference: "activeShopId"
+      });
+      return activeShopId;
+    }
+
     const domain = this.getDomain();
     const shop = Shops.find({
       domains: domain
@@ -246,6 +259,28 @@ export default {
     }
 
     return Packages.findOne(query);
+  },
+
+  // {packageName, preference, defaultValue}
+  getUserPreferences(options) {
+    const userId = options.userId;
+    const packageName = options.packageName;
+    const preference = options.preference;
+    const defaultValue = options.defaultValue;
+    if (!userId) {
+      return undefined;
+    }
+
+    const user = Meteor.users.findOne({ _id: userId });
+
+    if (user) {
+      const profile = user.profile;
+      if (profile && profile.preferences && profile.preferences[packageName] && profile.preferences[packageName][preference]) {
+        return profile.preferences[packageName][preference];
+      }
+    }
+
+    return defaultValue || undefined;
   },
 
   /**

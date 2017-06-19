@@ -40,7 +40,7 @@ Template.gridControls.helpers({
     }
 
     const instance = Template.instance();
-    const shopId = Reaction.getSellerShopId();
+    const shopId = Reaction.getShopId();
 
     return (
         Reaction.hasPermission("createProduct") &&
