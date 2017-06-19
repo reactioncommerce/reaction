@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from "react";
-import { Card, CardHeader, CardBody, CardGroup, Icon, Loading, SortableTable } from "/imports/plugins/core/ui/client/components";
+import { Card, CardHeader, CardBody, CardGroup, Loading, SortableTable } from "/imports/plugins/core/ui/client/components";
 import EmailTableColumn from "./emailTableColumn";
 import { Jobs } from "/lib/collections";
 import { i18next } from "/client/api";
@@ -8,8 +8,7 @@ import "./emailConfig.css";
 
 class EmailLogs extends Component {
   renderEmailsTable() {
-    const filteredFields = ["data.to", "data.subject", "status"];
-    // const filteredFields = ["data.to", "updated", "data.subject", "status"];
+    const filteredFields = ["data.to", "updated", "data.subject", "status"];
     const noDataMessage = i18next.t("admin.logs.noEmails");
 
     // helper adds a class to every grid row
@@ -22,33 +21,21 @@ class EmailLogs extends Component {
     // add i18n handling to headers
     const customColumnMetadata = [];
     filteredFields.forEach(function (field) {
-      console.log("field", field);
+      let colWidth = undefined;
       if (field === "status") {
-        // customComponent: EmailTableColumn
-        // https://react-table.js.org/#/story/cell-renderers-custom-components
-        const columnMeta = {
-          accessor: field,
-          Header: i18next.t(`admin.logs.headers.${field}`),
-          width: 50,
-          Cell: row => (
-            <span>{
-                row.value === "complete" ? <Icon icon="fa fa-circle" className="pull-left valid" />
-              : <span><Icon icon="fa fa-circle" className="pull-left error" />
-                <span>
-                  <Icon icon="fa fa-share" className="pull-right" />
-                </span></span>
-              }
-            </span>
-          )
-        };
-        customColumnMetadata.push(columnMeta);
-      } else {
-        const columnMeta = {
-          accessor: field,
-          Header: i18next.t(`admin.logs.headers.${field}`)
-        };
-        customColumnMetadata.push(columnMeta);
+        colWidth = 50;
       }
+
+      // https://react-table.js.org/#/story/cell-renderers-custom-components
+      const columnMeta = {
+        accessor: field,
+        Header: i18next.t(`admin.logs.headers.${field}`),
+        Cell: row => (
+          <EmailTableColumn row={row} />
+        ),
+        width: colWidth
+      };
+      customColumnMetadata.push(columnMeta);
     });
 
 
