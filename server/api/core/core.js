@@ -168,9 +168,10 @@ export default {
   getShopId(userId) {
     check(userId, Match.Maybe(String));
 
-    if (userId) {
+    const activeUserId = Meteor.call("reaction/getUserId");
+    if (activeUserId || userId) {
       const activeShopId = this.getUserPreferences({
-        userId,
+        userId: activeUserId || userId,
         packageName: "reaction",
         preference: "activeShopId"
       });
