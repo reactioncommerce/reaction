@@ -152,6 +152,9 @@
 
 .order-items {
   list-style-type: none;
+  margin-bottom: 0px;
+  padding-top: 10px;
+  cursor: pointer;
 }
 
 .order-item {
@@ -175,17 +178,18 @@
   border: solid 1px #7894a4;
 }
 
+.invoice-popover-checkbox {
+  padding-left: 10px;
+  -webkit-flex: 1;
+  flex: 1;
+  border: 1px
+}
+
 .invoice-popover-controls {
   display: flex;
   width: 100%;
   height: 30px;
   // border: 1px solid;
-
-  .invoice-popover-checkbox {
-    -webkit-flex: 1;
-    flex: 1;
-    border: 1px
-  }
 
   .invoice-popover-selected {
     flex: 7;
@@ -199,6 +203,42 @@
   .invoice-popover-close {
     flex: 1;
   }
+}
+
+.invoice-order-line-media {
+  flex: 0 0 auto;
+  width: 40px;
+
+  img {
+    width: 100%;
+  }
+}
+
+.invoive-order-items {
+  margin-bottom: 10px;
+  height: 84px;
+  padding: 10px;
+  background-color: #f7f7f7;
+
+  .invoice-order-item-tax {
+    display: flex;
+    width: 100%;
+    div {
+      flex: 1;
+
+      &.tax-code {
+        text-align: right;
+      }
+
+      &.tax-cost {
+        text-align: right;
+      }
+    }
+  }
+}
+
+.invoice-order-quantity {
+ // I wrote this come back later
 }
 
 // .invoice .invoice:hover, .invoice:hover {

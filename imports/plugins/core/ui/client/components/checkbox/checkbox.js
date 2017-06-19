@@ -26,6 +26,7 @@ class Checkbox extends Component {
           className={this.props.className}
           ref="checkbox"
           type="checkbox"
+          onMouseOut={this.props.onMouseOut}
         />
         {this.renderLabel()}
       </label>
@@ -43,7 +44,8 @@ Checkbox.propTypes = {
   i18nKeyLabel: PropTypes.string,
   label: PropTypes.string,
   name: PropTypes.string,
-  onChange: PropTypes.func
+  onChange: PropTypes.func,
+  onMouseOut: PropTypes.func
 };
 
 export default Checkbox;

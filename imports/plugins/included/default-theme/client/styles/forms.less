@@ -146,14 +146,14 @@
 	// border-radius: 3px;
 	display: inline-block;
 	position: relative;
-  width: 23px;
-	height: 23px;
+  width: 20px;
+	height: 20px;
 	border-radius: 2px;
 	border: solid 2px #5e6264;
 
   &:checked:after {
     content: '';
-    border: 2px solid #333;
+    border: 2px solid #5e6264;
     border-top: none;
     width: 10px;
 	  height: 6px;
@@ -161,7 +161,55 @@
     position: absolute;
     transform: rotate(-45deg);
     top: 5px;
-    left: 5px;
+    left: 4px;
     color: #99a1a7;
+  }
+}
+
+.number-input {
+  display: flex;
+  
+  .number-field {
+    width: 36px;
+    height: 40px;
+    margin-right: 5px;
+    text-align: center;
+    background-color: #f7f7f7;
+    border: solid 1px #cccccc;
+    flex: 1;
+  }
+
+  .edited {
+    background-color: #edfdf8;
+    border: 1px solid #94e8d1
+  }
+  .number-field:focus {
+    background-color: #edfdf8;
+  }
+  .number-field::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+  }
+
+  .stacked-buttons {
+    width: 25px;
+    flex: none;
+
+    .button {
+      border: 1px solid #98afbc;
+      border-radius: 2px;
+      margin-bottom: -18px;
+      width: 20px;
+      align-items: center;
+      height: 19px;
+      display: flex;
+      justify-content: center;
+      padding: 0px;
+
+      i {
+        font-size: 8px;
+        color: #5e6264;
+        position: absolute;
+      }
+    }
   }
 }

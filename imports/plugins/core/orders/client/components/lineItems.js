@@ -1,13 +1,15 @@
 import React, { Component, PropTypes } from "react";
 import { formatPriceString } from "/client/api";
 import { Translation } from "/imports/plugins/core/ui/client/components";
-import { Popover, Button, Checkbox } from "/imports/plugins/core/ui/client/components";
+import { Popover, Button, Checkbox, NumberTypeInput } from "/imports/plugins/core/ui/client/components";
 
 class LineItems extends Component {
 
   static propTypes = {
     displayMedia: PropTypes.func,
     handleSelectAllItems: PropTypes.func,
+    invoice: PropTypes.object,
+    isHovered: PropTypes.func,
     popOverIsOpen: PropTypes.bool,
     selectAllItems: PropTypes.bool,
     togglePopOver: PropTypes.func,
@@ -51,9 +53,83 @@ class LineItems extends Component {
               <strong>{formatPriceString(uniqueItem.variants.price)}</strong>
             </div>
           </div>
-
       </div>
     </div>
+    );
+  }
+
+  renderLineItemInvoice() {
+    const { invoice } = this.props;
+    return (
+      <div className="invoive-order-items">
+        <div className="invoice-order-item-shipping">
+          <b className="pull-left"><Translation defaultValue="Shipping" i18nKey="cartSubTotals.shipping"/></b>
+          <span className="pull-right">{formatPriceString(invoice.shipping)}</span>
+        </div>
+        <div className="invoice-order-item-tax">
+          <div>
+            <b><Translation defaultValue="Tax" i18nKey="cartSubTotals.tax"/></b>
+          </div>
+          <div className="tax-code">
+            <span>PC030100</span>
+          </div>
+          <div className="tax-cost">
+            <span>{formatPriceString(invoice.taxes)}</span>
+          </div>
+        </div>
+        <div className="invoice-order-item-subtotal">
+          <b className="pull-left"><Translation defaultValue="Subtotal" i18nKey="cartSubTotals.subtotal"/></b>
+          <b className="pull-right">{formatPriceString(invoice.subtotal)}</b>
+        </div>
+      </div>
+    );
+  }
+
+  renderLineItems() {
+    const { uniqueItems, displayMedia } = this.props;
+
+    return (
+      <div>
+        { uniqueItems.map((uniqueItem, index) => {
+          return (
+            <div key={index}>
+              <div className="order-items">
+                <div
+                  className="order-item form-group order-summary-form-group"
+                >
+                  <div className="invoice-order-line-media">
+                    { !displayMedia(uniqueItem) ?
+                      <img src= "/resources/placeholder.gif" /> :
+                      <img src={displayMedia(uniqueItem).url()}/>
+                    }
+                  </div>
+
+                  <div className="order-item-details">
+                    <div className="order-detail-title">
+                      {uniqueItem.title}
+                    </div>
+                  </div>
+
+                  <div className="order-detail-quantity invoice-order-quantity">
+                    <NumberTypeInput
+                      minValue={1}
+                      defaultValue={uniqueItem.quantity}
+                      maxValue={uniqueItem.quantity}
+                    />
+                  </div>
+
+                  <div className="order-detail-price">
+                    <div className="invoice-details">
+                      <strong>{formatPriceString(uniqueItem.variants.price)}</strong>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {this.renderLineItemInvoice()}
+            </div>
+          );
+        }) }
+      </div>
     );
   }
 
@@ -82,11 +158,12 @@ class LineItems extends Component {
               />
             </div>
           </div>
+          {this.renderLineItems()}
       </div>
     );
   }
 
-  renderPopOver(uniqueItems) {
+  renderPopOver() {
     return (
       <div>
         <Popover

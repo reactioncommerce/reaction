@@ -15,6 +15,7 @@ class LineItemsContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      notHovered: true,
       isClosed: false,
       popOverIsOpen: false,
       selectAllItems: true,
@@ -29,6 +30,10 @@ class LineItemsContainer extends Component {
       return this.setState({ popOverIsOpen: false });
     }
     return this.setState({ popOverIsOpen: true });
+  }
+
+  selectItem = () => {
+    this.setState({  });
   }
 
   handleSelectAllItems = (e) => {
