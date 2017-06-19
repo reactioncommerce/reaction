@@ -81,8 +81,7 @@ Template.accountsDashboard.helpers({
   groups() {
     const instance = Template.instance();
     if (instance.subscriptionsReady()) {
-      // const { groups } = Shops.findOne({ _id: Reaction.getShopId() }, { groups: 1 }); // projection doesn't work
-      const { groups } = Shops.findOne({ _id: "ShqshA5wBtkYpMaZP" }, { groups: 1 }); // projection doesn't work
+      const { groups } = Shops.findOne({ _id: Reaction.getShopId() });
       return groups || [];
     }
   }

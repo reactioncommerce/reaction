@@ -1,7 +1,6 @@
 import _ from "lodash";
 import { Reaction } from "/client/api";
-import { Roles } from "meteor/alanning:roles";
-import { Packages, Shops } from "/lib/collections";
+import { Packages } from "/lib/collections";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 
@@ -28,6 +27,7 @@ Template.groupSettings.helpers({
     }
   },
   permissionGroups: function () {
+    console.log("starting.....");
     const permissionGroups = [];
 
     const packages = Packages.find({
@@ -59,7 +59,7 @@ Template.groupSettings.helpers({
           if (!permissionMap[registryItem.route]) {
             permissions.push({
               shopId: pkg.shopId,
-              permission: registryItem.name || pkg.name + "/" + registryItem.template, // launchdock-connect/connectDashboard
+              permission: registryItem.name || pkg.name + "/" + registryItem.template,
               icon: registryItem.icon,
               label: registryItem.label || registryItem.provides || registryItem.route
             });
@@ -87,8 +87,8 @@ Template.groupSettings.events({
   "change [data-event-action=toggleGroupPermission]": function (event, template) {
     const self = this;
     const permissions = [];
-    const shop = template.data;
-    console.log("........??", { shop });
+    const currentData = template.data;
+
     if (!this.shopId) {
       throw new Meteor.Error("Shop is required");
     }
@@ -100,22 +100,13 @@ Template.groupSettings.events({
     } else {
       permissions.push(self.permission);
     }
+
+    const update = Object.assign({}, currentData, { permissions: permissions.concat(currentData.permissions) });
+
     if (Template.instance().$(event.currentTarget).is(":checked")) {
-      console.log("call add permissions to group now", { permissions });
-      // Meteor.call("accounts/addUserPermissions", member.userId, permissions, this.shopId);
+      Meteor.call("group/updateGroup", currentData, update, Reaction.getShopId());
     } else {
-      console.log("call remove permissions on group now", { permissions });
       // Meteor.call("accounts/removeUserPermissions", member.userId, permissions, this.shopId);
     }
   }
-  // "click [data-event-action=resetMemberPermission]": function (event, template) {
-  //   const $icon = Template.instance().$(event.currentTarget);
-  //   if (confirm($icon.data("confirm"))) { // eslint-disable-line no-alert
-  //     const results = [];
-  //     for (const role of template.data.roles) {
-  //       results.push(Meteor.call("accounts/setUserPermissions", this.userId, ["guest", "account/profile"], role));
-  //     }
-  //     return results;
-  //   }
-  // }
 });
