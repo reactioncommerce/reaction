@@ -1,1 +1,1 @@
-export * from "./package";
+export * from "./authnet";
