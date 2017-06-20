@@ -2,38 +2,8 @@ import React,  { Component } from "react";
 import PropTypes from "prop-types";
 import ReactTable from "react-table";
 import _ from "lodash";
-import { IconButton } from "/imports/plugins/core/ui/client/components";
+import { SortableTablePagination } from "./sortableTableComponents";
 
-
-class NextIcon extends Component {
-  constructor(props) {
-    super(props);
-  }
-  render() {
-    return (
-      <IconButton
-        bezelStyle={"flat"}
-        icon="fa fa-arrow-right"
-        {...this.props}
-      />
-    );
-  }
-}
-
-class PrevIcon extends Component {
-  constructor(props) {
-    super(props);
-  }
-  render() {
-    return (
-      <IconButton
-        bezelStyle={"flat"}
-        icon="fa fa-arrow-left"
-        {...this.props}
-      />
-    );
-  }
-}
 
 
 //
@@ -196,12 +166,8 @@ class SortableTable extends Component {
         filterable={otherProps.isFilterable}
         minRows={otherProps.minRows}
 
+        PaginationComponent={SortableTablePagination}
 
-        showPaginationTop={true}
-
-
-        PreviousComponent={PrevIcon}
-        NextComponent={NextIcon}
         getTrProps={(state, rowInfo, column, instance) => { // eslint-disable-line no-unused-vars
           return {
             onClick: e => { // eslint-disable-line no-unused-vars
