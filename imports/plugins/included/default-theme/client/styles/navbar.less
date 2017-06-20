@@ -138,6 +138,16 @@ html:not(.rtl) .rui.navbar .languages .dropdown-menu {
   height: @navbar-height;
 }
 
+.rui.navbar .accounts:hover {
+  background-color: @navbar-default-toggle-icon-bar-bg;
+  border-color: @navbar-default-toggle-border-color;
+}
+
+.rui.navbar .accounts:active {
+  background-color: @navbar-default-toggle-icon-bar-bg;
+  border-color: @navbar-default-toggle-border-color;
+}
+
 .rui.navbar .accounts .dropdown-toggle {
   .display(flex);
   .align-items(center);
@@ -252,7 +262,8 @@ html:not(.rtl) .rui.navbar .languages .dropdown-menu {
   outline: none;
 }
 
-.rui.navbar .accounts:hover {
+.rui.navbar .languages:hover,
+.rui.navbar .currencies:hover {
   background-color: @navbar-default-toggle-icon-bar-bg;
   border-color: @navbar-default-toggle-border-color;
 }
