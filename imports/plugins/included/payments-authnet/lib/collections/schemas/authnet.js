@@ -39,8 +39,7 @@ export const AuthNetPackageConfig = new SimpleSchema([
 export const AuthNetPayment = new SimpleSchema({
   payerName: {
     type: String,
-    label: "Cardholder name",
-    regEx: /[A-Z][a-zA-Z]*/
+    label: "Cardholder name"
   },
   cardNumber: {
     type: String,
@@ -63,8 +62,4 @@ export const AuthNetPayment = new SimpleSchema({
     label: "CVV",
     max: 4
   }
-});
-
-AuthNetPayment.messages({
-  "regEx payerName": "[label] must include both first and last name"
 });
