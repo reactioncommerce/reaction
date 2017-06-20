@@ -53,7 +53,7 @@
     "later": "^1.2.0",
     "lodash": "^4.17.4",
     "lodash.pick": "^4.4.0",
-    "meteor-node-stubs": "^0.2.6",
+    "meteor-node-stubs": "^0.2.11",
     "moment": "^2.18.1",
     "moment-timezone": "^0.5.11",
     "nexmo": "^1.2.0",
@@ -138,9 +138,9 @@
   },
   "jest": {
     "moduleNameMapper": {
-      "^\/lib(.*)": "<rootDir>/lib/$1",
-      "^\/imports\/plugins(.*)": "<rootDir>/imports/plugins/$1",
-      "^\/client\/api(.*)": "<rootDir>/imports/test-utils/__mocks__/client/api$1",
+      "^/lib(.*)": "<rootDir>/lib/$1",
+      "^/imports/plugins(.*)": "<rootDir>/imports/plugins/$1",
+      "^/client/api(.*)": "<rootDir>/imports/test-utils/__mocks__/client/api$1",
       "^meteor/aldeed:simple-schema": "<rootDir>/imports/test-utils/__mocks__/meteor/aldeed-simple-schema",
       "^meteor/(.*)": "<rootDir>/imports/test-utils/__mocks__/meteor/$1"
     }
