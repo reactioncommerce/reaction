@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { IconButton } from "/imports/plugins/core/ui/client/components";
+import { IconButton, Translation } from "/imports/plugins/core/ui/client/components";
 
 class GridItemControls extends Component {
 
@@ -14,8 +14,8 @@ class GridItemControls extends Component {
   renderArchived() {
     if (this.props.product.isDeleted) {
       return (
-        <span className="badge badge-danger" data-i18n="app.archived">
-          <span>Archived</span>
+        <span className="badge badge-danger">
+          <Translation defaultValue="Archived" i18nKey="app.archived" />
         </span>
       );
     }
