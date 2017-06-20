@@ -1,5 +1,5 @@
 import { Packages } from "/lib/collections";
-import { i18next } from "/client/api";
+import { Reaction, i18next } from "/client/api";
 
 Template.reactionAnalyticsSettings.helpers({
   packageData() {
@@ -15,6 +15,15 @@ Template.reactionAnalyticsSettings.helpers({
   },
   mixpanelEnabled() {
     return typeof mixpanel === "object";
+  }
+});
+
+Template.reactionAnalytics.events({
+  "click [data-event-action=showAnalyticsSettings]"() {
+    event.preventDefault();
+    Reaction.setActionViewDetail({
+      template: "reactionAnalyticsSettings"
+    });
   }
 });
 
