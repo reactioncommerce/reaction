@@ -24,7 +24,7 @@ class IconButton extends Component {
         "icon": true,
         "icon-only": true
       });
-    } else if(this.props.kind === "mediaGalleryStatus") {
+    } else if (this.props.kind === "mediaGalleryStatus") {
       buttonClassName = classnames({
         "icon": true,
         "icon-only": true,
