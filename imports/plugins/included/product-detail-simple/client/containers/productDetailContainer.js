@@ -37,7 +37,6 @@ class ProductDetailContainer extends Component {
     let storedQuantity = 0;
     const currentVariant = ReactionProduct.selectedVariant();
     const currentProduct = ReactionProduct.selectedProduct();
-    const vendor = currentProduct.vendor;
 
     if (currentVariant) {
       if (currentVariant.ancestors.length === 1) {
@@ -117,7 +116,7 @@ class ProductDetailContainer extends Component {
         productId = currentProduct._id;
 
         if (productId) {
-          Meteor.call("cart/addToCart", productId, currentVariant._id, quantity, vendor, (error) => {
+          Meteor.call("cart/addToCart", productId, currentVariant._id, quantity, (error) => {
             if (error) {
               Logger.error(error, "Failed to add to cart.");
               return error;
