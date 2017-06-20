@@ -111,7 +111,6 @@ Meteor.methods({
 
     try {
       Meteor.call("accounts/addUserPermissions", user.userId, groupData.permissions, shopId);
-      // call this in the new fashion
       updateUsersGroupName([user], shopId);
       return { status: 200 };
     } catch (error) {
@@ -141,10 +140,8 @@ Meteor.methods({
 
     const permissions = getGroupPermissions(Shops.findOne({ _id: shopId }).groups, groupName);
     try {
-      // delete all permissions belonging to that group
-      updateUsersPermissions([user], { permissions }, {}, shopId);
-      // then re-populate for remaining groups
-      updateUsersGroupName([user], shopId);
+      updateUsersPermissions([user], { permissions }, {}, shopId); // delete all permissions belonging to that group
+      updateUsersGroupName([user], shopId); // update grouop name on the user account
       return { status: 200 };
     } catch (error) {
       Logger.error(error);
@@ -174,7 +171,7 @@ function updateUsersGroupName(affectedUsers, shopId) {
 
   function getUserGroups(groupsInShop, userRoles) {
     return _.compact(groupsInShop.map(group => {
-      // check if user roles contain permissions for a group (which makes them belong to it)
+      // check if user roles contain permissions for a group (which makes them "belong" to the group)
       const belongs = _.difference(group.permissions, userRoles).length === 0;
       if (belongs) return group.name;
     }));
