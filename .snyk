@@ -1,0 +1,14 @@
+# Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
+version: v1.7.1
+ignore: {}
+# patches apply the minimum changes required to fix a vulnerability
+patch:
+  'npm:ms:20170412':
+    - meteor-node-stubs > crypto-browserify > browserify-sign > elliptic > hash.js > mocha > debug > ms:
+        patched: '2017-06-20T07:36:11.926Z'
+    - meteor-node-stubs > crypto-browserify > create-ecdh > elliptic > hash.js > mocha > debug > ms:
+        patched: '2017-06-20T07:36:11.926Z'
+    - meteor-node-stubs > crypto-browserify > browserify-sign > elliptic > hmac-drbg > hash.js > mocha > debug > ms:
+        patched: '2017-06-20T07:36:11.926Z'
+    - meteor-node-stubs > crypto-browserify > create-ecdh > elliptic > hmac-drbg > hash.js > mocha > debug > ms:
+        patched: '2017-06-20T07:36:11.926Z'
