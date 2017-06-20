@@ -84,9 +84,21 @@
 
 .rui.media-gallery .rui.badge-container {
   position: absolute;
-  top: @badge-offset;
-  right: @badge-offset;
+  top: @badge-offset + 5px;
+  right: @badge-offset + 5px;
   z-index: 1;
+
+  .rui.status-badge {
+    position: absolute;
+    top: -17px;
+    right: -17px;
+    width: 16px;
+    height: 16px;
+
+    .icon-only {
+
+    }
+  }
 }
 
 .rui.media-gallery .gallery-image.add {
