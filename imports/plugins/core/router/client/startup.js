@@ -9,11 +9,10 @@ Meteor.startup(function () {
     // initialize client routing
 
     if (Reaction.Subscriptions.Packages.ready() && Reaction.Subscriptions.Shops.ready()) {
-
-      //  initBrowserRouter calls Router.initPackageRoutes which calls Counts.get("shops-count") which is reactive,
+      //  initBrowserRouter calls Router.initPackageRoutes which calls shopSub.ready which is reactive,
       //  So we have to call initBrowserRouter in a non reactive context.
       //  Otherwise initBrowserRouter is called twice each time a Reaction.Subscriptions.Packages.ready() and
-      //  Reaction.Subscriptions.Shops.ready() get true
+      //  Reaction.Subscriptions.Shops.ready() are true
 
       Tracker.nonreactive(()=> {
         initBrowserRouter();
