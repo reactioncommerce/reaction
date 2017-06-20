@@ -55,7 +55,3 @@ export const StripePayment = new SimpleSchema({
     label: "CVV"
   }
 });
-
-StripePayment.messages({
-  "regEx payerName": "[label] must include both first and last name"
-});
