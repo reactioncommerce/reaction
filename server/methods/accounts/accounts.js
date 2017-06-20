@@ -284,11 +284,9 @@ export function addressBookAdd(address, accountUserId) {
     }
   }
 
-  Meteor.users.upsert(Meteor.userId(), {
+  Meteor.users.update(Meteor.userId(), {
     $set: {
-      name: address.fullName
-    },
-    $addToSet: {
+      "name": address.fullName,
       "profile.addressBook": address
     }
   });
@@ -399,11 +397,19 @@ export function addressBookUpdate(address, accountUserId, type) {
     }
   }
 
+  Meteor.users.update(Meteor.userId(), {
+    $set: {
+      "name": address.fullName,
+      "profile.addressBook": address
+    }
+  });
+
   return Accounts.update({
     "userId": userId,
     "profile.addressBook._id": address._id
   }, {
     $set: {
+      "name": address.fullName,
       "profile.addressBook.$": address
     }
   });
