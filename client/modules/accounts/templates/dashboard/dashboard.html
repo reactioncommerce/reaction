@@ -1,4 +1,8 @@
 <template name="accountsDashboard">
+  <div>
+    {{> React component=accounts }}
+  </div>
+
   {{#if hasPermission 'accounts'}}
 
     {{> memberForm}}
@@ -36,38 +40,6 @@
                 {{> member}}
               </li>
             {{/if}}
-          {{/each}}
-        </ul>
-      </div>
-
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <h3 class="panel-title">
-            <span>Groups</span>
-          </h3>
-        </div>
-        <div>
-          <h3>Create Group</h3>
-          <div>
-            <form class="form-inline">
-              <div class="form-group">
-                <label for="group-form-name">Name</label>
-                <input type="email" class="form-control" id="group-form-name" placeholder="jane.doe@example.com">
-              </div>
-              <button type="submit" class="btn btn-default">Create</button>
-            </form>
-          </div>
-        </div>
-        <ul class="list-group">
-          {{#each groups}}
-            <li class="list-group-item flex">
-              <div class="member-list-item-profile">
-                <b class="text-capitalize">{{this.name}}</b>
-              </div>
-              <div class="member-list-item-controls">
-                <button class="btn btn-default" data-event-action="showGroupSettings">Manage Group</button>
-              </div>
-            </li>
           {{/each}}
         </ul>
       </div>

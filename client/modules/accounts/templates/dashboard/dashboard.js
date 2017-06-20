@@ -1,9 +1,9 @@
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
-import { Shops } from "/lib/collections";
 import { Reaction, i18next } from "/client/api";
 import { ServiceConfigHelper } from "../../helpers/util";
+import AccountsContainer from "/imports/plugins/core/accounts/client/containers/accountsContainer";
 
 /**
  * Accounts helpers
@@ -11,7 +11,6 @@ import { ServiceConfigHelper } from "../../helpers/util";
 Template.accountsDashboard.onCreated(function () {
   this.autorun(() => {
     this.subscribe("ShopMembers");
-    this.subscribe("Shops");
   });
 });
 
@@ -78,24 +77,8 @@ Template.accountsDashboard.helpers({
     }
   },
 
-  groups() {
-    const instance = Template.instance();
-    if (instance.subscriptionsReady()) {
-      const { groups } = Shops.findOne({ _id: Reaction.getShopId() });
-      return groups || [];
-    }
-  }
-});
-
-Template.accountsDashboard.events({
-  // for testing groups methods
-  "click [data-event-action=showGroupSettings]": function () {
-    Reaction.setActionViewDetail({
-      label: "Permissions",
-      i18nKeyLabel: "admin.settings.permissionsSettingsLabel",
-      data: this,
-      template: "groupSettings"
-    });
+  accounts() {
+    return AccountsContainer;
   }
 });
 
