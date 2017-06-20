@@ -59,12 +59,11 @@ class LineItems extends Component {
   }
 
   renderLineItemInvoice() {
-    const { invoice } = this.props;
     return (
       <div className="invoive-order-items">
         <div className="invoice-order-item-shipping">
           <b className="pull-left"><Translation defaultValue="Shipping" i18nKey="cartSubTotals.shipping"/></b>
-          <span className="pull-right">{formatPriceString(invoice.shipping)}</span>
+          <span className="pull-right">$10.00</span>
         </div>
         <div className="invoice-order-item-tax">
           <div>
@@ -74,12 +73,12 @@ class LineItems extends Component {
             <span>PC030100</span>
           </div>
           <div className="tax-cost">
-            <span>{formatPriceString(invoice.taxes)}</span>
+            <span>0.00</span>
           </div>
         </div>
         <div className="invoice-order-item-subtotal">
           <b className="pull-left"><Translation defaultValue="Subtotal" i18nKey="cartSubTotals.subtotal"/></b>
-          <b className="pull-right">{formatPriceString(invoice.subtotal)}</b>
+          <b className="pull-right">$169.99</b>
         </div>
       </div>
     );
