@@ -181,7 +181,7 @@ Router.go = (path, params, query) => {
     if (window) {
       history.push(actualPath);
     }
-  }
+  };
 
   // if Router is in a non ready/initialized state yet ,wait until it is
   if (!Router.ready()) {
@@ -424,7 +424,6 @@ export function ReactionLayout(options = {}) {
  * @returns {undefined} returns undefined
  */
 Router.initPackageRoutes = (options) => {
-
   // make _initialized = false in case router is reinitialized
   Router._initialized = false;
   routerReadyDependency.changed();
@@ -449,7 +448,7 @@ Router.initPackageRoutes = (options) => {
 
       // Default layouts
       const indexLayout = ReactionLayout(options.indexRoute);
-      const notFoundLayout = ReactionLayout({template: "notFound"});
+      const notFoundLayout = ReactionLayout({ template: "notFound" });
 
       // Index route
       routeDefinitions.push({
