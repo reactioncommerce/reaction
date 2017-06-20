@@ -92,7 +92,11 @@
       "cartDrawer": {
         "empty": "Vi er lei handlekurven din er tom.",
         "keepShopping": "Fortsett å handle",
-        "checkout": "Fortsett til kassen"
+        "checkout": "Fortsett til kassen",
+        "new": "Ny",
+        "coreOrderWorkflow/created": "Opprettet",
+        "coreOrderWorkflow/completed": "Fullført",
+        "coreOrderWorkflow/canceled": "Avbrutt"
       },
       "cartSubTotals": {
         "head": "Din handlekurv",

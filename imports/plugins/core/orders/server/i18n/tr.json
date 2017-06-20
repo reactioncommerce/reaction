@@ -11,6 +11,27 @@
           "ordersLabel": "Emirler",
           "ordersTitle": "Emirler",
           "ordersDescription": "siparişlerinizi yerine getirmek"
+        },
+        "orderWorkflow": {
+          "ordersList": {
+            "date": "Tarih",
+            "orderId": "Sipariş Kimliği",
+            "total": "Toplam",
+            "emailNotFound": "E-posta mevcut değil"
+          },
+          "summary": {
+            "cardTitle": "özet",
+            "copyOrderLink": "Kopya Siparişi Bağlantısı"
+          },
+          "invoice": {
+            "cardTitle": "Fatura",
+            "adjustedTotal": "Düzeltilmiş Toplam",
+            "capturedTotal": "yakalanan Toplam",
+            "refund": "Geri ödeme"
+          },
+          "fulfillment": "yerine getirme",
+          "orderDetails": "sipariş detayları",
+          "shipmentTracking": "yükleme"
         }
       }
     }

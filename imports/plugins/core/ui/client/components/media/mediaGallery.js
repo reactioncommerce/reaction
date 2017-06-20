@@ -4,12 +4,16 @@ import Measure from "react-measure";
 import MediaItem from "./media";
 
 class MediaGallery extends Component {
-  state = {
-    dimensions: {
-      width: -1,
-      height: -1
-    }
-  };
+  constructor() {
+    super();
+    this.state = {
+      dimensions: {
+        width: -1,
+        height: -1
+      }
+    };
+    this.onDrop = this.onDrop.bind(this);
+  }
 
   get hasMedia() {
     return Array.isArray(this.props.media) && this.props.media.length > 0;
@@ -29,6 +33,13 @@ class MediaGallery extends Component {
 
   handleDropClick = () => {
     this.refs.dropzone.open();
+  }
+
+  onDrop(files) {
+    if (files.length === 0) {
+      return;
+    }
+    return this.props.onDrop(files);
   }
 
   renderAddItem() {
@@ -130,8 +141,10 @@ class MediaGallery extends Component {
           className="rui gallery-drop-pane"
           disableClick={true}
           multiple={true}
-          onDrop={this.props.onDrop}
+          disablePreview={true}
+          onDrop={this.onDrop}
           ref="dropzone"
+          accept="image/jpg, image/png, image/jpeg"
         >
           <div className="rui gallery">
             <div className="featuredImage" style={{ height: containerWidth + "px" }}>
