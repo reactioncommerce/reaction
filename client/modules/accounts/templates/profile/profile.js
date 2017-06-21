@@ -2,6 +2,7 @@ import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { Reaction } from "/lib/api";
 import * as Collections from "/lib/collections";
+import { Loading } from "/imports/plugins/core/ui/client/components";
 import OrderListContainer from "../../../../../imports/plugins/core/orders/client/containers/orderListContainer";
 
 /**
@@ -36,7 +37,7 @@ Template.accountProfile.helpers({
    * User's order history
    * @return {Array|null} an array of available orders for the user
    */
-  userOrders() {
+  dashboardOrdersList() {
     const orderSub = Meteor.subscribe("AccountOrders", Meteor.userId());
     if (orderSub.ready()) {
       const userOrders = Collections.Orders.find({
@@ -47,11 +48,15 @@ Template.accountProfile.helpers({
         },
         limit: 25
       });
+      console.log(orderSub.ready());
       return {
         component: OrderListContainer,
         userOrders
       };
     }
+    return {
+      component: Loading
+    };
   },
 
   /**

@@ -35,7 +35,7 @@ class OrderList extends Component {
                   <span data-i18n="order.destination" className="order-summary-title">Destination</span>
                 </strong>
               </div>
-              <div className="col-xs-10 order-summary-details">
+              <div className="order-summary-details">
                 {shipping.map(shippingInfo => {
                   const { address } = shippingInfo;
                   return (
@@ -57,7 +57,7 @@ class OrderList extends Component {
                   <span data-i18n="order.payment" className="order-summary-title">Payment</span>
                 </strong>
               </div>
-              <div className="col-xs-10 order-summary-payment">
+              <div className="order-summary-payment">
                 {billing.map(billingInfo => {
                   const { paymentMethod } = billingInfo;
                   const iconClass = paymentMethod.storedCard ? "fa fa-credit-card" : "fa fa-paypal";

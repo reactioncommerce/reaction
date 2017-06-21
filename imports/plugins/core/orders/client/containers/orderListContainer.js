@@ -4,7 +4,7 @@ import OrderList from "../components/orderList";
 
 class OrderListContainer extends Component {
   static propTypes = {
-    userOrders: PropTypes.arrayOf(Object)
+    userOrders: PropTypes.object
   }
   render() {
     const { userOrders } = this.props;
