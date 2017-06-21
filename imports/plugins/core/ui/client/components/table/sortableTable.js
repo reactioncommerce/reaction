@@ -5,40 +5,6 @@ import _ from "lodash";
 import { SortableTablePagination } from "./sortableTableComponents";
 
 
-
-//
-// class MyTrComponent extends React.Component {
-// 	constructor () {
-// 		super()
-// 		this.state = {
-// 			background: null
-// 		}
-// 	}
-// 	render () {
-// 		const {children, className, style, ...rest} = this.props
-// 		console.log(rest)
-// 		return (
-// 			<div
-// 				className={'rt-tr ' + className}
-// 				style={{
-// 					...style,
-// 					...this.state
-// 				}}
-// 				{...rest}</div>
-// 				onMouseEnter={() => this.setState({
-// 					background: 'yellow'
-// 				})}
-// 				onMouseLeave={() => this.setState({
-// 					background: null
-// 				})}
-// 			>
-// 				{children}
-// 			</div>
-// 		)
-// 	}
-// }
-
-
 class SortableTable extends Component {
   constructor(props) {
     super(props);
@@ -46,7 +12,8 @@ class SortableTable extends Component {
     this.state = {
       currentPage: 0,
       maxPages: 0,
-      query: {}
+      query: this.props.query || {},
+      data: {}
     };
   }
 
@@ -118,7 +85,7 @@ class SortableTable extends Component {
     if (typeof onRowClick === "function") {
       return (
         onRowClick({
-          className: "holy-cow-party",
+          className: "sortable-table-row",
           props: {
             data: {
               _id: rowInfo.original._id,
@@ -139,8 +106,11 @@ class SortableTable extends Component {
   renderColumns() {
     const { columnMetadata } = this.props;
 
+    console.log("columnMetaData", columnMetadata);
+
     // Add minWidth = undefined to override 100px default set by ReactTable
     const displayColumns = columnMetadata.map((element) => {
+      console.log('element', element);
       return _.extend({}, element, {
         minWidth: undefined
       });
@@ -154,6 +124,8 @@ class SortableTable extends Component {
     const { ...otherProps } = this.props;
     const data = this.getMeteorData().results;
     const matchingResults = this.getMeteorData().matchingResults;
+
+    console.log("data", this.getMeteorData());
 
     // All available props: https://github.com/tannerlinsley/react-table#props
     return (
