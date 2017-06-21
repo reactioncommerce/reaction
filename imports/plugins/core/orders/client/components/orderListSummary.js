@@ -54,7 +54,7 @@ class orderListSummary extends Component {
   render() {
     return (
       <div className="completed-order-summary">
-        <div className="container-fluid">
+        <div className="order-totals-summary">
           <div className="row">
             {this.props.billings.map(billing => {
               const { total, subtotal } = billing.invoice;

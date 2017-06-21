@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import OrderListItem from "../components/orderListItems";
-import { Media } from "/lib/collections";
+import { Media, Shops } from "/lib/collections";
 
 class orderListContainer extends Component {
   static propTypes = {
@@ -23,6 +23,10 @@ class orderListContainer extends Component {
       return productImage;
     }
     return false;
+  }
+  handleShopName(item) {
+    const shop = Shops.findOne(item.shopId);
+    return shop !== null ? shop.name : void 0;
   }
   /**
    * This method helps duplicating of existing lineItems and instead increases the quantity if item already exists
@@ -62,6 +66,7 @@ class orderListContainer extends Component {
                 key={item._id}
                 media={this.handleImage(item)}
                 orderItem={item}
+                shopName={this.handleShopName(item)}
               />
             );
           })

@@ -6,10 +6,6 @@ class OrderListContainer extends Component {
   static propTypes = {
     userOrders: PropTypes.arrayOf(Object)
   }
-  handleShopName(order) {
-    const shop = Shops.findOne(order.shopId);
-    return shop !== null ? shop.name : void 0;
-  }
   render() {
     const { userOrders } = this.props;
     const orders = Orders.find({}, {
@@ -26,7 +22,6 @@ class OrderListContainer extends Component {
               <OrderList
                 key={order._id}
                 order={order}
-                shopName={this.handleShopName(order)}
               />
             );
           })}
@@ -40,7 +35,6 @@ class OrderListContainer extends Component {
             <OrderList
               key={order._id}
               order={order}
-              shopName={this.handleShopName(order)}
             />
           );
         })}

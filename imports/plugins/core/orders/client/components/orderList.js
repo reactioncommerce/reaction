@@ -5,8 +5,7 @@ import OrderListItem from "../containers/orderListItemsContainer";
 class OrderList extends Component {
   static propTypes = {
     itemQty: PropTypes.number,
-    order: PropTypes.object,
-    shopName: PropTypes.string
+    order: PropTypes.object
   }
   handleQty(order) {
     let itemQty = 0;
@@ -16,26 +15,17 @@ class OrderList extends Component {
     return itemQty;
   }
   render() {
-    const { order, shopName } = this.props;
+    const { order } = this.props;
     const { shipping, billing } = order;
     if (order) {
       return (
         <div>
           <div style={{ float: "left", width: "50%", marginTop: "30px" }}>
             <span className="order-items-title">Your Items</span>
-            <div className="order-vendor-container">
-              <div className="col-xs-12">
-                <strong>
-                  <span id="order-group-name" className="order-vendor">{shopName}</span>
-                </strong>
-              </div>
-            </div>
-            <div className="order-list-items">
-              <div className="col-xs-12">
-                <OrderListItem
-                  items={order.items}
-                />
-              </div>
+            <div className="col-xs-12">
+              <OrderListItem
+                items={order.items}
+              />
             </div>
           </div>
           <div style={{ float: "left", width: "50%", padding: "30px" }}>
@@ -52,8 +42,8 @@ class OrderList extends Component {
                     <span key={shippingInfo._id}>
                       <address>
                         {address.address1}
-                        {address.address2}
-                        {address.city}, {address.region} {address.postal} {address.country}
+                        {address.address2}&nbsp;
+                        {address.city}, {address.region} {address.postal} {address.country}&nbsp;
                         {address.phone}
                       </address>
                     </span>
@@ -69,17 +59,20 @@ class OrderList extends Component {
               </div>
               <div className="col-xs-10 order-summary-payment">
                 {billing.map(billingInfo => {
+                  const { paymentMethod } = billingInfo;
+                  const iconClass = /visa/i.test(paymentMethod.storedCard) ? "fa fa-credit-card" : "fa fa-paypal";
                   return (
                     <div key={billingInfo._id}>
-                      <span id="order-payment-method">{billingInfo.paymentMethod.storedCard}</span>
-                      <span data-id="order.reference">Ref:</span>
-                      <span id="order-payment-transaction">{billingInfo.paymentMethod.transactionId}</span>
+                      <i className={iconClass} />
+                      <span id="order-payment-method">{paymentMethod.storedCard ?
+                        paymentMethod.storedCard : paymentMethod.processor}
+                      </span>
                     </div>
                   );
                 })}
               </div>
             </div>
-            <div className="order-totals-summary">
+            <div className="container-fluid">
               <OrderListSummary
                 billings={billing}
                 itemQty={this.handleQty(order)}
