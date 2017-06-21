@@ -141,7 +141,7 @@
           "newOrder": "Il vostro ordine è in fase di elaborazione.",
           "forAdmin": "Hai un nuovo ordine.",
           "orderDelivered": "L'ordine è stato consegnato.",
-          "orderAccepted": "L'ordine è stato accettato.",
+          "orderProcessing": "Il vostro ordine è in fase di elaborazione.",
           "orderShipped": "Il tuo ordine è stato spedito."
         }
       },
@@ -298,7 +298,12 @@
       "cartDrawer": {
         "empty": "Il tuo carrello è vuoto :(",
         "keepShopping": "Continua lo shopping!",
-        "checkout": "Vai al checkout"
+        "checkout": "Vai al checkout",
+        "new": "Nuovo",
+        "coreOrderWorkflow/created": "Creato",
+        "coreOrderWorkflow/processing": "lavorazione",
+        "coreOrderWorkflow/completed": "Completato",
+        "coreOrderWorkflow/canceled": "Annullato"
       },
       "cartSubTotals": {
         "discount": "Sconto",
@@ -380,9 +385,7 @@
         "resendNotification": "Notifica della spedizione Rispedisci"
       },
       "orderWorkflow": {
-        "fulfillment": "Compimento",
         "orderDetails": "Dettagli ordine",
-        "summary": "Sommario",
         "invoice": "Fattura",
         "shipmentTracking": "monitoraggio delle spedizioni"
       },
@@ -429,6 +432,7 @@
       },
       "addressBookEdit": {
         "editAddress": "Modificare questa voce indirizzo",
+        "addressValidation": "Validazione indirizzo",
         "somethingWentWrong": "Qualcosa è andato storto: {{err}}"
       },
       "corePackageConfig": {

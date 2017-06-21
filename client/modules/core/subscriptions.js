@@ -3,6 +3,7 @@ import { Random } from "meteor/random";
 import { Session } from "meteor/session";
 import { Tracker } from "meteor/tracker";
 import { SubsManager } from "meteor/meteorhacks:subs-manager";
+import Reaction from "./main";
 
 export const Subscriptions = {};
 
@@ -69,4 +70,11 @@ Tracker.autorun(() => {
   });
   Subscriptions.Cart = Meteor.subscribe("Cart", sessionId, Meteor.userId());
   Subscriptions.UserProfile = Meteor.subscribe("UserProfile", Meteor.userId());
+});
+
+Tracker.autorun(() => {
+  // Reload Packages sub if shopId changes
+  if (Reaction.getShopId()) {
+    Subscriptions.Packages = Subscriptions.Manager.subscribe("Packages", Reaction.getShopId());
+  }
 });
