@@ -6,6 +6,8 @@ import { i18next } from "/client/api";
 import { composeWithTracker } from "/lib/api/compose";
 import { MessagesContainer } from "../helpers";
 import { Forgot } from "../../components";
+import { LoginFormValidation } from "/lib/api";
+
 
 class ForgotContainer extends Component {
   static propTypes = {
