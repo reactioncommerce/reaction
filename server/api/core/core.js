@@ -293,8 +293,8 @@ export default {
     // defaults use either env or generated values
     options.email = env.REACTION_EMAIL || defaultEmail;
     options.password = env.REACTION_AUTH || defaultPassword;
-    options.username = env.REACTION_USER || defaultUsername;
-    options.name = env.REACTION_USER_NAME || defaultName;
+    options.username = env.REACTION_USER_NAME || defaultUsername;
+    options.name = env.REACTION_USER || defaultName;
 
     // or use `meteor --settings`
     if (Meteor.settings && !configureEnv) {
