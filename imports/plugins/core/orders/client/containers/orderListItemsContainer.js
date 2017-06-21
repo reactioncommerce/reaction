@@ -2,10 +2,20 @@ import React, { Component, PropTypes } from "react";
 import OrderListItem from "../components/orderListItems";
 import { Media, Shops } from "/lib/collections";
 
-const shopsToItemsMap = {};
+let shopsToItemsMap = {};
 class orderListContainer extends Component {
   static propTypes = {
     items: PropTypes.arrayOf(Object)
+  }
+  constructor() {
+    super();
+    this.state = {
+      shopItemMap: {}
+    };
+  }
+  componentWillMount() {
+    this.setState({ shopItemMap: this.handleMapShopsToItems() });
+    shopsToItemsMap = {};
   }
   handleImage(item) {
     const variantImage = Media.findOne({
@@ -76,7 +86,7 @@ class orderListContainer extends Component {
       <div>
         <OrderListItem
           media={this.handleImage}
-          shopItemMap={this.handleMapShopsToItems()}
+          shopItemMap={this.state.shopItemMap}
         />
       </div>
     );

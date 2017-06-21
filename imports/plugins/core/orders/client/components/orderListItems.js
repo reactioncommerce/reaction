@@ -41,7 +41,7 @@ class OrderListItem extends Component {
                         </div>
 
                         <span className="order-detail-price">
-                          <span><Currency amount={item.variants.price} /></span>
+                          <span><Currency amount={item.quantity * item.variants.price} /></span>
                         </span>
                       </div>
                     </div>
