@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from "react";
 import OrderListItem from "../components/orderListItems";
 import { Media, Shops } from "/lib/collections";
 
+const shopsToItemsMap = {};
 class orderListContainer extends Component {
   static propTypes = {
     items: PropTypes.arrayOf(Object)
@@ -27,6 +28,19 @@ class orderListContainer extends Component {
   handleShopName(item) {
     const shop = Shops.findOne(item.shopId);
     return shop !== null ? shop.name : void 0;
+  }
+  handleMapShopsToItems() {
+    const items = this.handleItems();
+    items.map(item => {
+      const shop = Shops.findOne(item.shopId);
+      if (shopsToItemsMap.hasOwnProperty(shop.name)) {
+        const name = shop.name;
+        shopsToItemsMap[name].push(item);
+      } else {
+        shopsToItemsMap[shop.name] = [item];
+      }
+    });
+    return shopsToItemsMap;
   }
   /**
    * This method helps duplicating of existing lineItems and instead increases the quantity if item already exists
@@ -59,19 +73,12 @@ class orderListContainer extends Component {
   }
   render() {
     return (
-        <div>
-          {this.handleItems().map(item => {
-            return (
-              <OrderListItem
-                key={item._id}
-                media={this.handleImage(item)}
-                orderItem={item}
-                shopName={this.handleShopName(item)}
-              />
-            );
-          })
-          }
-        </div>
+      <div>
+        <OrderListItem
+          media={this.handleImage}
+          shopItemMap={this.handleMapShopsToItems()}
+        />
+      </div>
     );
   }
 }

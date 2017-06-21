@@ -48,7 +48,6 @@ Template.accountProfile.helpers({
         },
         limit: 25
       });
-      console.log(orderSub.ready());
       return {
         component: OrderListContainer,
         userOrders
