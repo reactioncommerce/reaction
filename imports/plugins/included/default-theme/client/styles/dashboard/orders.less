@@ -168,7 +168,7 @@
 
 .invoice-popover {
   width: 416px;
-  height: 450px;
+  height: auto;
   margin-left: -10px;
   padding-top: 0px;
   padding: 10px;
@@ -232,6 +232,22 @@
 
       &.tax-cost {
         text-align: right;
+      }
+    }
+  }
+}
+
+.invoice-actions {
+  display: flex;
+  div {
+    &.invoice-action-cancel {
+      flex: 2;
+      margin-right: 10px;
+    }
+    &.invoice-action-refund {
+      flex: 1;
+      button {
+        width: 100%;
       }
     }
   }

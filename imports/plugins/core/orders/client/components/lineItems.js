@@ -118,7 +118,7 @@ class LineItems extends Component {
                   </div>
 
                   <div className="order-detail-price">
-                    <div className="invoice-details">
+                    <div className="invoice-details" style={{ paddingRight: 10 }}>
                       <strong>{formatPriceString(uniqueItem.variants.price)}</strong>
                     </div>
                   </div>
@@ -158,6 +158,24 @@ class LineItems extends Component {
             </div>
           </div>
           {this.renderLineItems()}
+          <div className="invoice-actions">
+            <div className="invoice-action-cancel">
+              <Button
+                className="pull-right"
+                bezelStyle="solid"
+                status="default"
+                label="Cancel"
+              />
+            </div>
+            <div className="invoice-action-refund">
+              <Button
+                className="pull-right"
+                bezelStyle="solid"
+                status="primary"
+                label="Refund Items"
+              />
+            </div>
+          </div>
       </div>
     );
   }
