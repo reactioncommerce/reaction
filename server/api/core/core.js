@@ -174,9 +174,13 @@ export default {
         packageName: "reaction",
         preference: "activeShopId"
       });
-      return activeShopId;
+      if (activeShopId) {
+        return activeShopId;
+      }
     }
 
+    // TODO: This should intelligently find the correct default shop
+    // Probably whatever the main shop is or the marketplace
     const domain = this.getDomain();
     const shop = Shops.find({
       domains: domain
@@ -237,14 +241,17 @@ export default {
   },
 
   getShopLanguage() {
-    const { language } = Shops.findOne({
+    const shop = Shops.findOne({
       _id: this.getShopId()
     }, {
       fields: {
         language: 1
       } }
     );
-    return language;
+    if (shop) {
+      return shop.language;
+    }
+    throw new Meteor.Error("Shop not found");
   },
 
   getPackageSettings(name) {
