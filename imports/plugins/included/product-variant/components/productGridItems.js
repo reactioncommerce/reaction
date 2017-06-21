@@ -102,11 +102,17 @@ class ProductGridItems extends Component {
           <div className="overlay">
             <div className="overlay-title">{this.props.product.title}</div>
             <div className="currency-symbol">{formatPriceString(this.props.displayPrice())}</div>
-            <div className="overlay-description">{this.props.product.description}</div>
+              {this.props.isSearch &&
+                <div className="overlay-description">{this.props.product.description}</div>
+              }
           </div>
         </a>
       </div>
     );
+  }
+
+  renderHoverClassName() {
+    return this.props.isSearch ? "item-content" : "";
   }
 
   render() {
@@ -116,7 +122,7 @@ class ProductGridItems extends Component {
         data-id={this.props.product._id}
         id={this.props.product._id}
       >
-        <div className="item-content">
+        <div className={this.renderHoverClassName()}>
           <span className="product-grid-item-alerts" />
 
           <a className="product-grid-item-images"

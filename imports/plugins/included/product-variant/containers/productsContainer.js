@@ -19,24 +19,24 @@ import ProductsComponent from "../components/products";
  */
 function loadMoreProducts() {
   let threshold;
-  const target = $("#productScrollLimitLoader");
-  let scrollContainer = $("#reactionAppContainer");
+  const target = document.querySelectorAll("#productScrollLimitLoader");
+  let scrollContainer = document.querySelectorAll("#reactionAppContainer");
 
   if (scrollContainer.length === 0) {
-    scrollContainer = $(window);
+    scrollContainer = window;
   }
 
   if (target.length) {
-    threshold = scrollContainer.scrollTop() + scrollContainer.height() - target.height();
+    threshold = scrollContainer[0].scrollTop + scrollContainer[0].offsetHeight - target[0].offsetHeight;
 
-    if (target.offset().top < threshold) {
-      if (!target.data("visible")) {
-        target.data("productScrollLimit", true);
+    if (target[0].offsetTop < threshold) {
+      if (!target[0].getAttribute("visible")) {
+        target[0].setAttribute("productScrollLimit", true);
         Session.set("productScrollLimit", Session.get("productScrollLimit") + ITEMS_INCREMENT || 24);
       }
     } else {
-      if (target.data("visible")) {
-        target.data("visible", false);
+      if (target[0].getAttribute("visible")) {
+        target[0].setAttribute("visible", false);
       }
     }
   }
@@ -62,8 +62,9 @@ class ProductsContainer extends React.Component {
   }
 
   componentDidMount() {
-    $("#reactionAppContainer").on("scroll", loadMoreProducts);
-    $(window).on("scroll", loadMoreProducts);
+    const appContainer = document.querySelector("#reactionAppContainer");
+    appContainer.addEventListener("scroll", loadMoreProducts);
+    window.addEventListener("scroll", loadMoreProducts);
   }
 
   ready = () => {

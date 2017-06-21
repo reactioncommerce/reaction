@@ -251,6 +251,10 @@ class ProductGridItemsContainer extends Component {
       Reaction.Router.go("product", {
         handle: handle
       });
+
+      if (this.props.isSearch) {
+        this.props.unmountMe();
+      }
     }
   }
 
