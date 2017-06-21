@@ -4,17 +4,18 @@ import OrderList from "../components/orderList";
 
 class OrderListContainer extends Component {
   static propTypes = {
+    account: PropTypes.bool,
     userOrders: PropTypes.object
   }
   render() {
-    const { userOrders } = this.props;
+    const { userOrders, account } = this.props;
     const orders = Orders.find({}, {
       sort: {
         createdAt: -1
       },
       limit: 25
     }).fetch();
-    if (userOrders) {
+    if (userOrders && account) {
       return (
         <div>
           {userOrders.map(order => {
@@ -22,6 +23,7 @@ class OrderListContainer extends Component {
               <OrderList
                 key={order._id}
                 order={order}
+                account={account}
               />
             );
           })}

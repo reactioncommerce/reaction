@@ -4,6 +4,7 @@ import OrderListItem from "../containers/orderListItemsContainer";
 
 class OrderList extends Component {
   static propTypes = {
+    account: PropTypes.bool,
     itemQty: PropTypes.number,
     order: PropTypes.object
   }
@@ -15,20 +16,21 @@ class OrderList extends Component {
     return itemQty;
   }
   render() {
-    const { order } = this.props;
+    const { order, account } = this.props;
     const { shipping, billing } = order;
     if (order) {
       return (
         <div>
-          <div style={{ float: "left", width: "50%", marginTop: "30px" }}>
+          <div style={account ? { float: "left", width: "100%", marginTop: "30px" } : { float: "left", width: "50%", marginTop: "30px" }}>
             <span className="order-items-title">Your Items</span>
             <div className="col-xs-12">
               <OrderListItem
                 items={order.items}
+                account={account}
               />
             </div>
           </div>
-          <div style={{ float: "left", width: "50%", padding: "30px" }}>
+          <div style={account ? { display: "none" } : { float: "left", width: "50%", padding: "30px" }}>
             <div className="row order-address-info">
               <div className="col-xs-6 col-sm-2">
                 <strong>

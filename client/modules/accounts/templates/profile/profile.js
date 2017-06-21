@@ -50,7 +50,8 @@ Template.accountProfile.helpers({
       });
       return {
         component: OrderListContainer,
-        userOrders
+        userOrders,
+        account: true
       };
     }
     return {
