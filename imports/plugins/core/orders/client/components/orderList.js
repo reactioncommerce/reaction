@@ -60,7 +60,7 @@ class OrderList extends Component {
               <div className="col-xs-10 order-summary-payment">
                 {billing.map(billingInfo => {
                   const { paymentMethod } = billingInfo;
-                  const iconClass = /[visa,mastercard,stripe]/i.test(paymentMethod.storedCard) ? "fa fa-credit-card" : "fa fa-paypal";
+                  const iconClass = paymentMethod.storedCard ? "fa fa-credit-card" : "fa fa-paypal";
                   return (
                     <div key={billingInfo._id}>
                       <i className={iconClass} />
