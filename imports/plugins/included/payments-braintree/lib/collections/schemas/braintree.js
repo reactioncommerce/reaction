@@ -46,8 +46,7 @@ export const BraintreePackageConfig = new SimpleSchema([
 export const BraintreePayment = new SimpleSchema({
   payerName: {
     type: String,
-    label: "Cardholder name",
-    regEx: /^\w+\s\w+$/
+    label: "Cardholder name"
   },
   cardNumber: {
     type: String,
@@ -72,6 +71,3 @@ export const BraintreePayment = new SimpleSchema({
   }
 });
 
-BraintreePayment.messages({
-  "regEx payerName": "[label] must include both first and last name"
-});
