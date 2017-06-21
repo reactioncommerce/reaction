@@ -5,6 +5,7 @@ import { i18next } from "/client/api";
 
 class EmailTableColumn extends Component {
   static propTypes = {
+    data: PropTypes.object,
     row: PropTypes.object
   }
 
