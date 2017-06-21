@@ -60,7 +60,7 @@ class OrderList extends Component {
               <div className="col-xs-10 order-summary-payment">
                 {billing.map(billingInfo => {
                   const { paymentMethod } = billingInfo;
-                  const iconClass = /visa/i.test(paymentMethod.storedCard) ? "fa fa-credit-card" : "fa fa-paypal";
+                  const iconClass = /[visa,mastercard,stripe]/i.test(paymentMethod.storedCard) ? "fa fa-credit-card" : "fa fa-paypal";
                   return (
                     <div key={billingInfo._id}>
                       <i className={iconClass} />
@@ -72,12 +72,10 @@ class OrderList extends Component {
                 })}
               </div>
             </div>
-            <div className="container-fluid">
-              <OrderListSummary
-                billings={billing}
-                itemQty={this.handleQty(order)}
-              />
-            </div>
+            <OrderListSummary
+              billings={billing}
+              itemQty={this.handleQty(order)}
+            />
           </div>
         </div>
       );

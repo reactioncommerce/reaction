@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from "react";
-import { Orders, Shops } from "/lib/collections";
+import { Orders } from "/lib/collections";
 import OrderList from "../components/orderList";
 
 class OrderListContainer extends Component {

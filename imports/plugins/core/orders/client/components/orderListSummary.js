@@ -65,7 +65,7 @@ class orderListSummary extends Component {
                       <div className="col-xs-7 order-totals-text">
                         <span><Translation defaultValue="Quantity" i18nKey="cartSubTotals.quantity" /></span>
                       </div>
-                      <div className="col-xs-4 col-xs-offset-1 order-price">
+                      <div className="order-price">
                         {this.props.itemQty}
                       </div>
                     </div>
@@ -73,7 +73,7 @@ class orderListSummary extends Component {
                       <div className="col-xs-7 order-totals-text">
                         <span><Translation defaultValue="Sub Total" i18nKey="cartSubTotals.subtotal" /></span>
                       </div>
-                      <div className="col-xs-4 col-xs-offset-1 order-price">
+                      <div className="order-price">
                         <Currency amount={subtotal} />
                       </div>
                     </div>
@@ -85,7 +85,7 @@ class orderListSummary extends Component {
                       <div className="col-xs-7 order-totals-text">
                         <span style={{ textTransform: "uppercase" }}><Translation defaultValue="Captured Total" i18nKey="cartSubTotals.capturedTotal" /></span>
                       </div>
-                      <div className="col-xs-4 col-xs-offset-1 order-price">
+                      <div className="order-price">
                         <Currency amount={total} />
                       </div>
                     </div>
