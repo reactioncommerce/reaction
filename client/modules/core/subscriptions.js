@@ -3,7 +3,6 @@ import { Random } from "meteor/random";
 import { Session } from "meteor/session";
 import { Tracker } from "meteor/tracker";
 import { SubsManager } from "meteor/meteorhacks:subs-manager";
-
 import Reaction from "./main";
 
 export const Subscriptions = {};

@@ -70,12 +70,12 @@ function transform(doc, userId) {
 //  Packages Publication
 //
 Meteor.publish("Packages", function (shopId) {
-  check(shopId, String);
-  const self = this;
-
+  check(shopId, Match.Maybe(String));
   if (!shopId) {
-    return self.ready();
+    return this.ready();
   }
+
+  const self = this;
 
   // user is required.
   if (self.userId) {

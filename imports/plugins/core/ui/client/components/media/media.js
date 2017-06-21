@@ -29,11 +29,23 @@ class MediaItem extends Component {
     if (this.props.revision) {
       if (this.props.revision.changeType === "remove") {
         return (
-          <IconButton icon="fa fa-eraser" />
+          <IconButton
+            icon="fa"
+            status="danger"
+            i18nKeyTooltip="admin.mediaGallery.removedImage"
+            tooltip="Image has been deleted. Publish to save changes."
+            kind="mediaGalleryStatus"
+          />
         );
       }
       return (
-        <IconButton icon="fa fa-pencil-square-o" />
+        <IconButton
+          icon="fa"
+          status="info"
+          i18nKeyTooltip="admin.mediaGallery.addedImage"
+          tooltip="This is a new image. Publish to save changes."
+          kind="mediaGalleryStatus"
+        />
       );
     }
     return undefined;
@@ -45,11 +57,13 @@ class MediaItem extends Component {
       if (!this.props.revision || this.props.revision.changeType !== "remove") {
         return (
           <div className="rui badge-container">
+          {this.renderRevision()}
             <IconButton
               icon="fa fa-times"
               onClick={this.handleRemoveMedia}
+              i18nKeyTooltip="admin.mediaGallery.deleteImage"
+              tooltip="Click to remove image"
             />
-            {this.renderRevision()}
           </div>
         );
       }

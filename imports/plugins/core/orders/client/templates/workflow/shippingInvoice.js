@@ -10,6 +10,7 @@ import { Orders, Shops, Packages } from "/lib/collections";
 import { ButtonSelect } from "../../../../ui/client/components/button";
 import DiscountList from "/imports/plugins/core/discounts/client/components/list";
 import InvoiceContainer from "../../containers/invoiceContainer.js";
+import InvoiceActionsContainer from "../../containers/invoiceActionsContainer.js";
 import LineItemsContainer from "../../containers/lineItemsContainer.js";
 import TotalActionsContainer from "../../containers/totalActionsContainer.js";
 
@@ -82,6 +83,9 @@ Template.coreOrderShippingInvoice.helpers({
   },
   InvoiceContainer() {
     return InvoiceContainer;
+  },
+  InvoiceActionsContainer() {
+    return InvoiceActionsContainer;
   },
   buttonSelectComponent() {
     return {
