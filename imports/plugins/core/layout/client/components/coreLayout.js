@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import classnames from "classnames";
 import Blaze from "meteor/gadicc:blaze-react-component";
 import { Template } from "meteor/templating";
+import { ReactionComponents } from "@reactioncommerce/reaction-layout";
 
 class CoreLayout extends Component {
   static propTypes = {
@@ -20,9 +21,9 @@ class CoreLayout extends Component {
 
     return (
       <div className={pageClassName} id="reactionAppContainer">
-        { Template[layoutHeader] &&
-          <Blaze template={layoutHeader} className="reaction-navigation-header" />
-        }
+        <ReactionComponents.Component
+          name={layoutHeader}
+        />
 
         <Blaze template="cartDrawer" className="reaction-cart-drawer" />
 

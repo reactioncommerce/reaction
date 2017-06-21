@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { composeWithTracker } from "/lib/api/compose";
 import { Reaction } from "/client/api";
 import NavBar from "../components/navbar";
+import { ReactionComponents } from "@reactioncommerce/reaction-layout";
 
 class NavBarContainer extends Component {
   render() {
@@ -35,5 +36,10 @@ function composer(props, onData) {
     hasProperPermission
   });
 }
+
+ReactionComponents.registerComponent({
+  name: "layoutHeader",
+  component: composeWithTracker(composer)(NavBarContainer)
+});
 
 export default composeWithTracker(composer)(NavBarContainer);
