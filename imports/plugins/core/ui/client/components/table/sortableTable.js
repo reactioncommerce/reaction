@@ -106,11 +106,8 @@ class SortableTable extends Component {
   renderColumns() {
     const { columnMetadata } = this.props;
 
-    console.log("columnMetaData", columnMetadata);
-
     // Add minWidth = undefined to override 100px default set by ReactTable
     const displayColumns = columnMetadata.map((element) => {
-      console.log('element', element);
       return _.extend({}, element, {
         minWidth: undefined
       });
@@ -124,8 +121,6 @@ class SortableTable extends Component {
     const { ...otherProps } = this.props;
     const data = this.getMeteorData().results;
     const matchingResults = this.getMeteorData().matchingResults;
-
-    console.log("data", this.getMeteorData());
 
     // All available props: https://github.com/tannerlinsley/react-table#props
     return (

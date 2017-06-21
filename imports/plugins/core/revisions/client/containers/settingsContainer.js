@@ -37,7 +37,6 @@ class RevisionSettingsContainer extends Component {
    * @return {PropTypes.node} react node
    */
   render() {
-    // console.log(this.props.packageInfo);
     return (
       <div>
         <TranslationProvider>
