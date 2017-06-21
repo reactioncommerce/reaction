@@ -1,6 +1,6 @@
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
-import { check } from "meteor/check";
+import { check, Match } from "meteor/check";
 import { Roles } from "meteor/alanning:roles";
 import { Logger } from "/server/api";
 import { Accounts, Shops } from "/lib/collections";
@@ -13,9 +13,11 @@ Meteor.methods({
   /**
    * group/createGroup
    * @summary creates a new permission group for a shop
-   * creates permission group for a given shop with passed in roles
+   * It creates permission group for a given shop with passed in roles
+   * It enforces uniqueness of group slug, since it's hard to enforce at schema level being array of objects
    * @param {Object} groupData - info about group to create
    * @param {String} groupData.name - name of the group to be created
+   * @param {String} groupData.description - Optional description of the group to be created
    * @param {Array} groupData.permissions - permissions to assign to the group being created
    * @param {String} shopId - id of the shop the group belongs to
    * @return {Object} - object.status of 200 on success or Error object on failure
@@ -23,6 +25,7 @@ Meteor.methods({
   "group/createGroup": function (groupData, shopId) {
     check(groupData, Object);
     check(groupData.name, String);
+    check(groupData.description, Match.Optional(String));
     check(groupData.permissions, [String]);
     check(shopId, String);
 
@@ -30,8 +33,18 @@ Meteor.methods({
       throw new Meteor.Error(403, "Access Denied");
     }
 
-    const group = Object.assign({}, groupData, { slug: getSlug(groupData.name) });
-    const shop = Shops.update({ _id: shopId }, { $addToSet: { groups: group } });
+    const currentGroups = _.get(Shops.findOne({ _id: shopId }, { groups: 1 }), "groups", []);
+    const group = Object.assign({}, groupData, {
+      slug: getSlug(groupData.name),
+      createdAt: new Date()
+    });
+    const groupExists = currentGroups.map(grp => grp.slug).indexOf(group.slug) > -1;
+
+    if (groupExists) {
+      throw new Meteor.Error(400, "Bad request");
+    }
+
+    const shop = Shops.update({ _id: shopId }, { $push: { groups: group } });
 
     if (!shop) {
       throw new Meteor.Error(400, "Bad request");
@@ -48,6 +61,7 @@ Meteor.methods({
    * and group permissions (using "accounts/removeUserPermissions")
    * @param {Object} group - current data of the group to be updated
    * @param {String} group.name - name of the group
+   * @param {String} group.description - Optional description of the group to be created
    * @param {Array} group.permissions - permissions of the grop
    * @param {Object} newGroupData - updated group info (similar to current group data)
    * @param {String} shopId - id of the shop the group belongs to
