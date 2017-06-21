@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { List, ListItem } from "/imports/plugins/core/ui/client/components";
 
 class AccountsComponent extends Component {
   static propTypes = {
@@ -14,12 +15,14 @@ class AccountsComponent extends Component {
     };
   }
 
-  renderAccounts() {
+  renderAccountList() {
     if (Array.isArray(this.state.accounts)) {
       return this.state.accounts.map((account, index) => (
-        <div key={index}>
-          <p>{account._id}</p>
-        </div>
+          <ListItem
+            key={index}
+            actionType="arrow"
+            label="My List Item 2"
+          />
       ));
     }
     return null;
@@ -27,9 +30,9 @@ class AccountsComponent extends Component {
 
   render() {
     return (
-      <div>
-        {this.renderAccounts()}
-      </div>
+      <List >
+        {this.renderAccountList()}
+      </List>
     );
   }
 }

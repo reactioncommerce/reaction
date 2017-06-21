@@ -4,10 +4,10 @@ import { check } from "meteor/check";
 import { Roles } from "meteor/alanning:roles";
 import { Logger } from "/server/api";
 import { Accounts, Shops } from "/lib/collections";
+import { getSlug } from "/lib/api";
 
 /**
- * Reaction Group Permission Methods
- * TODO: Confirm if better to move this to shop.js since groups are on shops
+ * Reaction Permission Group Methods
  */
 Meteor.methods({
   /**
@@ -26,15 +26,15 @@ Meteor.methods({
     check(groupData.permissions, [String]);
     check(shopId, String);
 
-    // must have needed permissions.. .TODO: Review who can create a group permission for a shop
     if (!Roles.userIsInRole(Meteor.userId(), "admin", shopId)) {
       throw new Meteor.Error(403, "Access Denied");
     }
 
-    const shop = Shops.update({ _id: shopId }, { $addToSet: { groups: groupData } });
+    const group = Object.assign({}, groupData, { slug: getSlug(groupData.name) });
+    const shop = Shops.update({ _id: shopId }, { $addToSet: { groups: group } });
 
     if (!shop) {
-      throw new Meteor.Error(400, "Bad request data");
+      throw new Meteor.Error(400, "Bad request");
     }
 
     return { shop, status: 200 };
@@ -63,7 +63,6 @@ Meteor.methods({
     check(newGroupData.permissions, [String]);
     check(shopId, String);
 
-    // must have needed permissions.. .TODO: Review who can create a group permission for a shop
     if (!Roles.userIsInRole(Meteor.userId(), "admin", shopId)) {
       throw new Meteor.Error(403, "Access Denied");
     }
@@ -80,9 +79,6 @@ Meteor.methods({
     if (permissionsChanged) {
       error = updateUsersPermissions(affectedUsers, group, newGroupData, shopId);
     }
-
-    // update group names on user account
-    error = updateUsersGroupName(affectedUsers, shopId);
 
     if (!error) {
       return { status: 200 };
@@ -179,23 +175,11 @@ function updateUsersGroupName(affectedUsers, shopId) {
 }
 
 function updateUsersPermissions(affectedUsers, oldGroup, newGroupData, shopId) {
-  const shop = Shops.findOne({ _id: shopId });
-  const oldPermissions = oldGroup.permissions || [];
   return affectedUsers.forEach(user => {
-    if (oldPermissions.length) {
-      // requires "reaction-accounts" permission access
-      Meteor.call("accounts/removeUserPermissions", user.userId, oldPermissions, shopId);
-    }
-
-    // Repopulate. To ensure no lost role/permissions after removing effecting updated group change
-    // Grab all permissions for the groups that user belongs to, and re-add
-    let combinedPermissions = [];
-    const userGroupsInShop = _.find(user.groups, { shopId });
-    userGroupsInShop.names.map(name => {
-      const permissions = getGroupPermissions(shop.groups, name);
-      combinedPermissions = _.uniq(combinedPermissions.concat(permissions, newGroupData.permissions));
-    });
-    Meteor.call("accounts/addUserPermissions", user.userId, combinedPermissions, shopId);
+    // remove all, then addUserPermissions
+    Roles.setUserRoles(user._id, newGroupData.permissions, shopId);
+    // defaultRoles needed here too, since we just did a reset
+    // Meteor.call("accounts/addUserPermissions", user.userId, newGroupData.permissions, shopId);
   });
 }
 
