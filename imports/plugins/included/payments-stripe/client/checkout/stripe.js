@@ -31,11 +31,12 @@ function hidePaymentAlert() {
 
 function handleStripeSubmitError(error) {
   const singleError = error;
-  const serverError = error ? error.message : null;
-  if (serverError) {
+  const paymentError = error ? error.message : null;
+  // paymentError means a Match.fail
+  if (paymentError) {
     return paymentAlert("Oops! Credit card is invalid. Please check your information and try again.");
   } else if (singleError) {
-    return paymentAlert("Oops! " + singleError);
+    return paymentAlert("Oops! An unexpected error has occurred");
   }
 }
 
