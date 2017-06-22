@@ -1,12 +1,82 @@
 import React, { Component } from "react";
 import classnames from "classnames";
-import { Icon } from "/imports/plugins/core/ui/client/components";
+import { Button, IconButton, Icon, Translation, VerticalDivider } from "/imports/plugins/core/ui/client/components";
 
 //
 // import _ from "./utils"
 
-const defaultButton = props =>
-  <button type="button" {...props} className="-btn">{props.children}</button>
+// const defaultButton = props =>
+//   <div>
+//     <button type="button" {...props} className="-btn">{props.children}</button>
+//     <span {...props}>{props.children}</span>
+//   </div>
+
+class DefaultButton extends Component {
+  constructor(props) {
+    super(props);
+  }
+
+  renderIcon() {
+    const { children } = this.props;
+
+    if (children === "Previous") {
+      return "fa fa-angle-left";
+    }
+
+    if (children === "Next") {
+      return "fa fa-angle-right";
+    }
+
+    return null;
+  }
+
+
+  renderIconPosition() {
+    const { children } = this.props;
+
+    if (children === "Previous") {
+      return false;
+    }
+
+    if (children === "Next") {
+      return true;
+    }
+
+    return false;
+  }
+
+  renderText() {
+    const { children } = this.props;
+
+    if (children === "Previous") {
+      return " Previous";
+    }
+
+    if (children === "Next") {
+      return "Next ";
+    }
+
+    return null;
+  }
+
+  render() {
+    const { disabled, onClick } = this.props;
+
+    return (
+      <Button
+        bezelStyle="flat"
+        icon={this.renderIcon()}
+        iconAfter={this.renderIconPosition()}
+        label={this.renderText()}
+        status="default"
+        tagName="button"
+        onClick={onClick}
+        disabled={disabled}
+        className="sortableTable-pagination"
+      />
+    )
+  }
+}
 
 class SortableTablePagination extends Component {
   constructor(props) {
@@ -60,8 +130,8 @@ class SortableTablePagination extends Component {
       canNext,
       onPageSizeChange,
       className,
-      PreviousComponent = defaultButton,
-      NextComponent = defaultButton,
+      PreviousComponent = DefaultButton,
+      NextComponent = DefaultButton,
     } = this.props
 
     return (
@@ -69,34 +139,6 @@ class SortableTablePagination extends Component {
         className={classnames(className, "-pagination")}
         style={this.props.paginationStyle}
       >
-        <div className="-previous">
-          <PreviousComponent
-            onClick={e => {
-              if (!canPrevious) return
-              this.changePage(page - 1)
-            }}
-            disabled={!canPrevious}
-          >
-            <Icon
-              icon="fa fa-chevron-left"
-            />
-            {this.props.previousText}
-          </PreviousComponent>
-        </div>
-        <div className="-next">
-          <NextComponent
-            onClick={e => {
-              if (!canNext) return
-              this.changePage(page + 1)
-            }}
-            disabled={!canNext}
-          >
-            {this.props.nextText}
-            <Icon
-              icon="fa fa-chevron-right"
-            />
-          </NextComponent>
-        </div>
         <div className="-center">
           <span className="-pageInfo">
             {this.props.pageText}{" "}
@@ -140,6 +182,29 @@ class SortableTablePagination extends Component {
                 })}
               </select>
             </span>}
+        </div>
+        <div className="-previous">
+          <PreviousComponent
+            onClick={e => {
+              if (!canPrevious) return
+              this.changePage(page - 1)
+            }}
+            disabled={!canPrevious}
+          >
+            {this.props.previousText}
+          </PreviousComponent>
+        </div>
+        <span className="-divider">|</span>
+        <div className="-next">
+          <NextComponent
+            onClick={e => {
+              if (!canNext) return
+              this.changePage(page + 1)
+            }}
+            disabled={!canNext}
+          >
+            {this.props.nextText}
+          </NextComponent>
         </div>
       </div>
     );
