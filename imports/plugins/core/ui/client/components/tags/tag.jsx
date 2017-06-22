@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import classnames from "classnames";
 import Autosuggest from "react-autosuggest";
 import Velocity from "velocity-animate";
@@ -7,7 +8,6 @@ import { Router } from "/client/api";
 import { i18next } from "/client/api";
 import { Button, Handle } from "/imports/plugins/core/ui/client/components";
 import { SortableItem } from "../../containers";
-
 
 class Tag extends Component {
   displayName: "Tag";
@@ -69,7 +69,7 @@ class Tag extends Component {
    */
   handleTagRemove = () => {
     if (this.props.onTagRemove) {
-      this.props.onTagRemove(this.props.tag);
+      this.props.onTagRemove(this.props.tag, this.props.parentTag);
     }
   };
 
@@ -103,6 +103,16 @@ class Tag extends Component {
       this.props.onTagMouseOut(event, this.props.tag);
     }
   };
+
+  /**
+   * Handle click event on drop button and pass up the component chain
+   * @return {void} no return value
+   */
+  handleTagSelect = () => {
+    if (this.props.onTagSelect) { // Pass the tag back up to the parent component
+      this.props.onTagSelect(this.props.tag);
+    }
+  }
 
   /**
    * Handle tag mouse over events and pass them up the component chain
@@ -148,6 +158,13 @@ class Tag extends Component {
     }
   }
 
+  handleClick = (event) => {
+    if (this.props.onTagClick) {
+      event.preventDefault();
+      this.props.onTagClick(event, this.props.tag);
+    }
+  }
+
   /**
    * Render a simple tag for display purposes only
    * @return {JSX} simple tag
@@ -172,6 +189,7 @@ class Tag extends Component {
         href={url}
         onMouseOut={this.handleTagMouseOut}
         onMouseOver={this.handleTagMouseOver}
+        onClick={this.handleClick}
       >
         {this.props.tag.name}
       </a>
@@ -187,20 +205,26 @@ class Tag extends Component {
       "rui": true,
       "tag": true,
       "edit": true,
+      "draggable": this.props.draggable,
       "full-width": this.props.fullWidth
     });
 
     return (
       this.props.connectDropTarget(
-        <div
-          className={baseClassName}
-          data-id={this.props.tag._id}
-        >
-          <form onSubmit={this.handleTagFormSubmit}>
-            <Handle connectDragSource={this.props.connectDragSource} />
-            {this.renderAutosuggestInput()}
-            <Button icon="times-circle" onClick={this.handleTagRemove} status="danger" />
-          </form>
+        <div className="rui item edit draggable">
+          <div
+            className={baseClassName}
+            data-id={this.props.tag._id}
+          >
+            <form onSubmit={this.handleTagFormSubmit}>
+              <Handle connectDragSource={this.props.connectDragSource} />
+              {this.renderAutosuggestInput()}
+              <Button icon="times-circle" onClick={this.handleTagRemove} status="danger" />
+              {this.props.isTagNav &&
+                <Button icon="chevron-down" onClick={this.handleTagSelect} status="default" />
+              }
+            </form>
+          </div>
         </div>
       )
     );
@@ -220,12 +244,14 @@ class Tag extends Component {
     });
 
     return (
-      <div className={baseClassName}>
-        <form onSubmit={this.handleTagFormSubmit}>
-          <Button icon="tag" />
-          {this.renderAutosuggestInput()}
-          <Button icon="plus" />
-        </form>
+      <div className="rui item edit draggable">
+        <div className={baseClassName}>
+          <form onSubmit={this.handleTagFormSubmit}>
+            <Button icon="tag" />
+            {this.renderAutosuggestInput()}
+            <Button icon="plus" />
+          </form>
+        </div>
       </div>
     );
   }
@@ -268,10 +294,10 @@ class Tag extends Component {
    * @return {JSX} tag component
    */
   render() {
-    if (this.props.editable) {
-      return this.renderEditableTag();
-    } else if (this.props.blank) {
+    if (this.props.blank) {
       return this.renderBlankEditableTag();
+    } else if (this.props.editable) {
+      return this.renderEditableTag();
     }
 
     return this.renderTag();
@@ -282,18 +308,22 @@ Tag.propTypes = {
   blank: PropTypes.bool,
   connectDragSource: PropTypes.func,
   connectDropTarget: PropTypes.func,
+  draggable: PropTypes.bool,
   editable: PropTypes.bool,
   fullWidth: PropTypes.bool,
   i18nKeyInputPlaceholder: PropTypes.string,
   index: PropTypes.number,
   inputPlaceholder: PropTypes.string,
+  isTagNav: PropTypes.bool,
   onClearSuggestions: PropTypes.func,
   onGetSuggestions: PropTypes.func,
+  onTagClick: PropTypes.func,
   onTagInputBlur: PropTypes.func,
   onTagMouseOut: PropTypes.func,
   onTagMouseOver: PropTypes.func,
   onTagRemove: PropTypes.func,
   onTagSave: PropTypes.func,
+  onTagSelect: PropTypes.func,
   onTagUpdate: PropTypes.func,
   parentTag: PropTypes.object,
   suggestions: PropTypes.arrayOf(PropTypes.object),

@@ -1,4 +1,4 @@
-import nodemailer from "nodemailer";
+import nodemailer from "@reactioncommerce/nodemailer";
 import getServiceConfig from "nodemailer-wellknown";
 import url from "url";
 import { Meteor } from "meteor/meteor";

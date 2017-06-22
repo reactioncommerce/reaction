@@ -1,4 +1,5 @@
-import React, { Children, Component, PropTypes } from "react";
+import React, { Children, Component } from "react";
+import PropTypes from "prop-types";
 import {
   Button,
   Menu,
@@ -31,9 +32,16 @@ class DropDownMenu extends Component {
     return typeof this.props.isOpen === "boolean";
   }
 
+  handleDropdownToggle = () => {
+    this.setState({
+      isOpen: !this.state.isOpen
+    });
+  }
+
   handleMenuItemChange = (event, value, menuItem) => {
     this.setState({
-      label: menuItem.props.label || value
+      label: menuItem.props.label || value,
+      isOpen: false
     });
 
     if (this.props.closeOnClick) {
@@ -78,6 +86,7 @@ class DropDownMenu extends Component {
   render() {
     return (
       <Popover
+        attachment={this.props.attachment}
         buttonElement={
           this.props.buttonElement ||
           <Button
@@ -87,9 +96,16 @@ class DropDownMenu extends Component {
           />
         }
         isOpen={this.isOpen}
+        onClick={this.handleDropdownToggle}
         onRequestOpen={this.handleOpen}
+        targetAttachment={this.props.targetAttachment}
       >
-        <Menu value={this.props.value} onChange={this.handleMenuItemChange}>
+        <Menu
+          className={this.props.className}
+          value={this.props.value}
+          onChange={this.handleMenuItemChange}
+          style={this.props.menuStyle}
+        >
           {this.props.children}
         </Menu>
       </Popover>
@@ -98,15 +114,19 @@ class DropDownMenu extends Component {
 }
 
 DropDownMenu.propTypes = {
+  attachment: PropTypes.string,
   buttonElement: PropTypes.node,
   children: PropTypes.node,
+  className: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   closeOnClick: PropTypes.bool,
   isEnabled: PropTypes.bool,
   isOpen: PropTypes.bool,
+  menuStyle: PropTypes.object,
   onChange: PropTypes.func,
   onPublishClick: PropTypes.func,
   onRequestOpen: PropTypes.func,
   revisions: PropTypes.arrayOf(PropTypes.object),
+  targetAttachment: PropTypes.string,
   translation: PropTypes.shape({
     lang: PropTypes.string
   }),

@@ -1,4 +1,4 @@
-import nodemailer from "nodemailer";
+import nodemailer from "@reactioncommerce/nodemailer";
 import { Emails, Jobs } from "/lib/collections";
 import { Reaction, Logger } from "/server/api";
 

@@ -11,6 +11,27 @@
           "ordersLabel": "အမိန့်",
           "ordersTitle": "အမိန့်",
           "ordersDescription": "သင့်ရဲ့အမိန့်ဖြည့်ဆည်း"
+        },
+        "orderWorkflow": {
+          "ordersList": {
+            "date": "နေ့စှဲ",
+            "orderId": "အမိန့် ID ကို",
+            "total": "စုစုပေါင်း ကျသင့်ငွေ",
+            "emailNotFound": "အီးမေးလ်ပို့ရန်ကိုမရရှိနိုင်"
+          },
+          "summary": {
+            "cardTitle": "အကျဉ်းချုပ်",
+            "copyOrderLink": "Copy ကူးအမိန့် Link ကို"
+          },
+          "invoice": {
+            "cardTitle": "ဝယ်ကုန်စာရင်း",
+            "adjustedTotal": "Adjustments စုစုပေါင်း",
+            "capturedTotal": "ဖမ်းမိစုစုပေါင်း",
+            "refund": "ပြန်ပေးခြင်း"
+          },
+          "fulfillment": "ပွညျ့စုံ",
+          "orderDetails": "အမိန့်အသေးစိတ်",
+          "shipmentTracking": "တင်ပို့"
         }
       }
     }

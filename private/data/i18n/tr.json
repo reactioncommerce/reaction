@@ -141,7 +141,7 @@
           "newOrder": "Siparişiniz işleniyor.",
           "forAdmin": "Yeni bir düzen var.",
           "orderDelivered": "Siparişiniz teslim edildi.",
-          "orderAccepted": "Siparişiniz kabul edildi.",
+          "orderProcessing": "Siparişiniz işleniyor.",
           "orderShipped": "Siparişiniz kargolandı."
         }
       },
@@ -298,7 +298,12 @@
       "cartDrawer": {
         "empty": "Üzgünüz. Sepetiniz boş.",
         "keepShopping": "Alışverişe devam et",
-        "checkout": "Ödemeye geç"
+        "checkout": "Ödemeye geç",
+        "new": "Yeni",
+        "coreOrderWorkflow/created": "oluşturuldu",
+        "coreOrderWorkflow/processing": "Işleme",
+        "coreOrderWorkflow/completed": "Tamamlanan",
+        "coreOrderWorkflow/canceled": "Iptal edildi"
       },
       "cartSubTotals": {
         "discount": "İndirim",
@@ -380,9 +385,7 @@
         "resendNotification": "Yeniden Gönder Gönderi Bildirimi"
       },
       "orderWorkflow": {
-        "fulfillment": "yerine getirme",
         "orderDetails": "sipariş detayları",
-        "summary": "özet",
         "invoice": "Fatura",
         "shipmentTracking": "Sevk Takibi"
       },
@@ -429,6 +432,7 @@
       },
       "addressBookEdit": {
         "editAddress": "Bu adresi düzenleyin",
+        "addressValidation": "Adres Doğrulama",
         "somethingWentWrong": "Bir şeyler ters gitti: {{err}}"
       },
       "corePackageConfig": {
