@@ -80,18 +80,22 @@ Meteor.methods({
     if (!Roles.userIsInRole(Meteor.userId(), "admin", shopId)) {
       throw new Meteor.Error(403, "Access Denied");
     }
-
+    const nameChanged = group.name !== newGroupData.name;
     const permissionsChanged = !_.isEqual(group.permissions, newGroupData.permissions);
     const updateQuery = { "groups.$": newGroupData };
 
     Shops.update({ _id: shopId, groups: group }, { $set: updateQuery });
 
     const matchQuery = { $elemMatch: { shopId: shopId, names: group.name } };
-    const affectedUsers = Accounts.find({ groups: matchQuery }).fetch();
+    const users = Accounts.find({ groups: matchQuery }).fetch();
     let error;
 
     if (permissionsChanged) {
-      error = updateUsersPermissions(affectedUsers, group, newGroupData, shopId);
+      error = setUserPermissions(users, group, newGroupData, shopId);
+    }
+
+    if (nameChanged) {
+      changeUserGroupOnAccount(users, newGroupData.name, shopId);
     }
 
     if (!error) {
@@ -104,7 +108,6 @@ Meteor.methods({
    * group/addUser
    * @summary adds a user to a permission group for a shop
    * It updates the user's list of permissions/roles with the defined the list defined for the group
-   * It uses the local *updateUsers-* by passing one user as an array
    * @param {String} userId - current data of the group to be updated
    * @param {Object} groupData - info about the group
    * @param {String} shopId - permissions of the group
@@ -121,7 +124,7 @@ Meteor.methods({
 
     try {
       Meteor.call("accounts/addUserPermissions", user.userId, groupData.permissions, shopId);
-      updateUsersGroupName([user], shopId);
+      changeUserGroupOnAccount(user, groupData.name, shopId);
       return { status: 200 };
     } catch (error) {
       Logger.error(error);
@@ -150,8 +153,8 @@ Meteor.methods({
 
     const permissions = getGroupPermissions(Shops.findOne({ _id: shopId }).groups, groupName);
     try {
-      updateUsersPermissions([user], { permissions }, {}, shopId); // delete all permissions belonging to that group
-      updateUsersGroupName([user], shopId); // update grouop name on the user account
+      Meteor.call("accounts/removeUserPermissions", user._id, permissions, shopId);
+      changeUserGroupOnAccount(user, null, shopId); // update group name to null on the user account
       return { status: 200 };
     } catch (error) {
       Logger.error(error);
@@ -160,17 +163,14 @@ Meteor.methods({
   }
 });
 
-function updateUsersGroupName(affectedUsers, shopId) {
-  const { groups } = Shops.findOne({ _id: shopId });
-
-  return affectedUsers.forEach(user => {
-    const userRoles = Roles.getRolesForUser(user._id, shopId);
-    if (!user.groups) {
-      user.groups = [{ shopId, names: [] }]; // if no groups found, set first group
+function changeUserGroupOnAccount(users, groupName, shopId) {
+  return users.forEach(user => {
+    if (!user.groups) { // if no groups on account yet, set default
+      user.groups = [{ shopId }];
     }
     user.groups = user.groups.map(group => {
       if (group.shopId === shopId) {
-        group.names = getUserGroups(groups, userRoles);
+        group.names = [groupName || ""];
       }
       return group;
     });
@@ -178,23 +178,14 @@ function updateUsersGroupName(affectedUsers, shopId) {
     const updateQuery = { groups: user.groups };
     Accounts.update({ _id: user._id }, { $set: updateQuery });
   });
-
-  function getUserGroups(groupsInShop, userRoles) {
-    return _.compact(groupsInShop.map(group => {
-      // check if user roles contain permissions for a group (which makes them "belong" to the group)
-      const belongs = _.difference(group.permissions, userRoles).length === 0;
-      if (belongs) return group.name;
-    }));
-  }
 }
 
-function updateUsersPermissions(affectedUsers, oldGroup, newGroupData, shopId) {
-  return affectedUsers.forEach(user => {
-    // remove all, then addUserPermissions
-    Roles.setUserRoles(user._id, newGroupData.permissions, shopId);
-    // defaultRoles needed here too, since we just did a reset
-    // Meteor.call("accounts/addUserPermissions", user.userId, newGroupData.permissions, shopId);
-  });
+function setUserPermissions(users, oldGroup, newGroupData, shopId) {
+  let affectedUsers = users;
+  if (!Array.isArray(users)) {
+    affectedUsers = [users];
+  }
+  return affectedUsers.forEach(user => Roles.setUserRoles(user._id, newGroupData.permissions, shopId));
 }
 
 function getGroupPermissions(groups, name) {
