@@ -64,8 +64,8 @@ Template.templateSettings.helpers({
     const customColumnMetadata = [];
     filteredFields.forEach(function (field) {
       const columnMeta = {
-        accessor: field, //name of field
-        Header: i18next.t(`templateGrid.columns.${field}`) //name to display
+        accessor: field, // name of field
+        Header: i18next.t(`templateGrid.columns.${field}`) // name to display
       };
       customColumnMetadata.push(columnMeta);
     });
@@ -138,7 +138,6 @@ Template.templateSettings.events({
       isEditing: false,
       editingId: null
     });
-    // ugly hack
     $(".template-grid-row").removeClass("active");
   }
 });
