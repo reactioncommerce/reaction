@@ -76,7 +76,6 @@ class ShortcutBar extends Component {
         <nav
           style={{
             height: 54,
-            display: "flex",
             alignItems: "center",
             justifyContent: "center"
           }}

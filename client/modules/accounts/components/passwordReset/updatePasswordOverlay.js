@@ -19,12 +19,17 @@ class UpdatePasswordOverlay extends Component {
     super();
 
     this.state = {
-      password: ""
+      password: "",
+      showSpinner: true
     };
 
     this.handleFieldChange = this.handleFieldChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
+  }
+
+  componentWillReceiveProps() {
+    this.setState({ showSpinner: false });
   }
 
   handleFieldChange = (event, value, field) => {
@@ -93,20 +98,29 @@ class UpdatePasswordOverlay extends Component {
     );
   }
 
+  renderSpinnerOnLoad() {
+    return (
+        <div className="spinner-container">
+          <div className="spinner" />
+        </div>
+    );
+  }
+
   render() {
     const passwordClasses = classnames({
       "form-group": true,
       "has-error has-feedback": this.props.onError(this.props.messages.errors && this.props.messages.errors.password)
     });
+    const { showSpinner } = this.state;
 
     return (
-      <div>
+        <div>
         {this.props.isOpen === true &&
           <div>
             <div className="modal-backdrop fade in" id={`modal-backdrop-${this.props.uniqueId}`} />
             <div className="modal fade in" id={`modal-${this.props.uniqueId}`} style={{ display: "block" }}>
               <div className="modal-dialog">
-
+                {showSpinner ? this.renderSpinnerOnLoad() :
                 <form className="modal-content" onSubmit={this.handleSubmit}>
                   <div className="modal-header">
                     <h4 className="modal-title">
@@ -153,6 +167,7 @@ class UpdatePasswordOverlay extends Component {
                   </div>
 
                 </form>
+                }
               </div>
             </div>
           </div>}

@@ -7,6 +7,7 @@ import TagGroupHeader from "./tagGroupHeader";
 import { TagItem } from "/imports/plugins/core/ui/client/components/tags/";
 import { TagHelpers } from "/imports/plugins/core/ui-tagnav/client/helpers";
 import { getTagIds } from "/lib/selectors/tags";
+import { Router } from "/client/api";
 
 class TagGroup extends Component {
   constructor(props) {
@@ -120,11 +121,17 @@ class TagGroup extends Component {
   }
 
   render() {
+    const slug = this.state.parentTag.slug;
+    const url = Router.pathFor("tag", {
+      hash: {
+        slug: slug
+      }
+    });
     return (
       <div className="rui tagtree">
         <div className="header">
           <span className="title">{this.state.parentTag.name}</span>
-          <a href="#">View All <i className="fa fa-angle-right" /></a>
+          <a href={url}>View All <i className="fa fa-angle-right" /></a>
         </div>
         <div className="content">
           {this.renderTree(this.tags)}
