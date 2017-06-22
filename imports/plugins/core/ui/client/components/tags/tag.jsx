@@ -4,7 +4,6 @@ import classnames from "classnames";
 import Autosuggest from "react-autosuggest";
 import Velocity from "velocity-animate";
 import "velocity-animate/velocity.ui";
-import { Router } from "/client/api";
 import { i18next } from "/client/api";
 import { Button, Handle } from "/imports/plugins/core/ui/client/components";
 import { SortableItem } from "../../containers";
@@ -170,12 +169,6 @@ class Tag extends Component {
    * @return {JSX} simple tag
    */
   renderTag() {
-    const url = Router.pathFor("tag", {
-      hash: {
-        slug: this.props.tag.slug
-      }
-    });
-
     const baseClassName = classnames({
       "rui": true,
       "tag": true,
@@ -186,7 +179,7 @@ class Tag extends Component {
     return (
       <a
         className={baseClassName}
-        href={url}
+        href="#"
         onMouseOut={this.handleTagMouseOut}
         onMouseOver={this.handleTagMouseOver}
         onClick={this.handleClick}
