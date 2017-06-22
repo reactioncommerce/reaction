@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
@@ -29,7 +29,7 @@ function loadMoreProducts() {
   if (target.length) {
     threshold = scrollContainer[0].scrollTop + scrollContainer[0].offsetHeight - target[0].offsetHeight;
 
-    if (target[0].offsetTop < threshold) {
+    if (target[0].offsetTop <= threshold) {
       if (!target[0].getAttribute("visible")) {
         target[0].setAttribute("productScrollLimit", true);
         Session.set("productScrollLimit", Session.get("productScrollLimit") + ITEMS_INCREMENT || 24);
@@ -42,7 +42,7 @@ function loadMoreProducts() {
   }
 }
 
-class ProductsContainer extends React.Component {
+class ProductsContainer extends Component {
 
   static propTypes = {
     canLoadMoreProducts: PropTypes.bool,

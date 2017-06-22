@@ -1,11 +1,11 @@
-import React from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Reaction } from "/client/api";
 import { getTagIds as getIds } from "/lib/selectors/tags";
 import { Translation } from "/imports/plugins/core/ui/client/components";
 import ProductGridContainer from "../containers/productGridContainer";
 
-class ProductsComponent extends React.Component {
+class ProductsComponent extends Component {
 
   static propTypes = {
     loadMoreProducts: PropTypes.func,
