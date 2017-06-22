@@ -3,7 +3,6 @@ import { Card, CardHeader, CardBody, CardGroup, Loading, SortableTable } from "/
 import EmailTableColumn from "./emailTableColumn";
 import { Jobs } from "/lib/collections";
 import { i18next } from "/client/api";
-import "./emailConfig.css";
 
 
 class EmailLogs extends Component {
@@ -23,7 +22,7 @@ class EmailLogs extends Component {
     filteredFields.forEach(function (field) {
       let colWidth = undefined;
       if (field === "status") {
-        colWidth = 50;
+        colWidth = 70;
       }
 
       // https://react-table.js.org/#/story/cell-renderers-custom-components
