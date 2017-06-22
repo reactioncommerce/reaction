@@ -18,20 +18,24 @@ class orderListContainer extends Component {
     shopsToItemsMap = {};
   }
   handleImage(item) {
-    const variantImage = Media.findOne({
-      "metadata.productId": item.productId,
-      "metadata.variantId": item.variants._id
-    });
-    // variant image
-    if (variantImage) {
-      return variantImage;
-    }
-    // find a default image
-    const productImage = Media.findOne({
-      "metadata.productId": item.productId
-    });
-    if (productImage) {
-      return productImage;
+    const itemImageSub = Meteor.subscribe("CartItemImage", item);
+    if (itemImageSub.ready()) {
+      const variantImage = Media.findOne({
+        "metadata.productId": item.productId,
+        "metadata.variantId": item.variants._id
+      });
+      // variant image
+      if (variantImage) {
+        return variantImage;
+      }
+      // find a default image
+      const productImage = Media.findOne({
+        "metadata.productId": item.productId
+      });
+      if (productImage) {
+        return productImage;
+      }
+      return false;
     }
     return false;
   }
