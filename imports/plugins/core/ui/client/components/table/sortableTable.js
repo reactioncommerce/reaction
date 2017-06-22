@@ -120,7 +120,6 @@ class SortableTable extends Component {
   render() {
     const { ...otherProps } = this.props;
     const data = this.getMeteorData().results;
-    const matchingResults = this.getMeteorData().matchingResults;
 
     // All available props: https://github.com/tannerlinsley/react-table#props
     return (
@@ -171,7 +170,9 @@ SortableTable.propTypes = {
   /** @type {string} publication provides publication to get Meteor data from */
   publication: PropTypes.string,
   /** @type {object} query provides query for publication filtering */
-  query: PropTypes.object
+  query: PropTypes.object,
+  /** @type {function} transform transform of collection for grid results */
+  transform: PropTypes.func
 };
 
 SortableTable.defaultProps = {

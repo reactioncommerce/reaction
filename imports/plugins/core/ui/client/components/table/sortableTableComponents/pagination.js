@@ -1,82 +1,7 @@
 import React, { Component } from "react";
 import classnames from "classnames";
-import { Button, IconButton, Icon, Translation, VerticalDivider } from "/imports/plugins/core/ui/client/components";
+import { PaginationButtons } from "../sortableTableComponents";
 
-//
-// import _ from "./utils"
-
-// const defaultButton = props =>
-//   <div>
-//     <button type="button" {...props} className="-btn">{props.children}</button>
-//     <span {...props}>{props.children}</span>
-//   </div>
-
-class DefaultButton extends Component {
-  constructor(props) {
-    super(props);
-  }
-
-  renderIcon() {
-    const { children } = this.props;
-
-    if (children === "Previous") {
-      return "fa fa-angle-left";
-    }
-
-    if (children === "Next") {
-      return "fa fa-angle-right";
-    }
-
-    return null;
-  }
-
-
-  renderIconPosition() {
-    const { children } = this.props;
-
-    if (children === "Previous") {
-      return false;
-    }
-
-    if (children === "Next") {
-      return true;
-    }
-
-    return false;
-  }
-
-  renderText() {
-    const { children } = this.props;
-
-    if (children === "Previous") {
-      return " Previous";
-    }
-
-    if (children === "Next") {
-      return "Next ";
-    }
-
-    return null;
-  }
-
-  render() {
-    const { disabled, onClick } = this.props;
-
-    return (
-      <Button
-        bezelStyle="flat"
-        icon={this.renderIcon()}
-        iconAfter={this.renderIconPosition()}
-        label={this.renderText()}
-        status="default"
-        tagName="button"
-        onClick={onClick}
-        disabled={disabled}
-        className="sortableTable-pagination"
-      />
-    )
-  }
-}
 
 class SortableTablePagination extends Component {
   constructor(props) {
@@ -130,8 +55,8 @@ class SortableTablePagination extends Component {
       canNext,
       onPageSizeChange,
       className,
-      PreviousComponent = DefaultButton,
-      NextComponent = DefaultButton,
+      PreviousComponent = PaginationButtons,
+      NextComponent = PaginationButtons,
     } = this.props
 
     return (
