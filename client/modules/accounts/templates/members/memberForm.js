@@ -36,7 +36,7 @@ Template.memberForm.events({
 
           template.$("input[type=text], input[type=email]").val("");
 
-          return template.state.set("error", true);
+          return false;
         }
         if (result) {
           Alerts.toast(i18next.t("accountsUI.info.invitationSent",
