@@ -74,8 +74,7 @@ export const PaypalPackageConfig = new SimpleSchema([
 export const PaypalPayment = new SimpleSchema({
   payerName: {
     type: String,
-    label: "Cardholder name",
-    regEx: /[A-Z][a-zA-Z]*/
+    label: "Cardholder name"
   },
   cardNumber: {
     type: String,
@@ -100,6 +99,3 @@ export const PaypalPayment = new SimpleSchema({
   }
 });
 
-PaypalPayment.messages({
-  "regEx payerName": "[label] must include both first and last name"
-});

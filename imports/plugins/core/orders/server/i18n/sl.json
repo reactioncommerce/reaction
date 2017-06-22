@@ -11,6 +11,27 @@
           "ordersLabel": "naročila",
           "ordersTitle": "naročila",
           "ordersDescription": "Izpolnitev vašega naročila"
+        },
+        "orderWorkflow": {
+          "ordersList": {
+            "date": "Datum",
+            "orderId": "ID naročila",
+            "total": "Skupaj",
+            "emailNotFound": "E-pošta ni na voljo"
+          },
+          "summary": {
+            "cardTitle": "Povzetek",
+            "copyOrderLink": "Kopiraj Naročilo Link"
+          },
+          "invoice": {
+            "cardTitle": "Račun",
+            "adjustedTotal": "prilagojena Skupaj",
+            "capturedTotal": "Zajeto Skupaj",
+            "refund": "vračilo"
+          },
+          "fulfillment": "izpolnitev",
+          "orderDetails": "podrobnosti naročila",
+          "shipmentTracking": "pošiljka"
         }
       }
     }

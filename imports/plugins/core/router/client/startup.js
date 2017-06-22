@@ -7,8 +7,16 @@ import { Router } from "../lib";
 Meteor.startup(function () {
   Tracker.autorun(function () {
     // initialize client routing
+
     if (Reaction.Subscriptions.Packages.ready() && Reaction.Subscriptions.Shops.ready()) {
-      initBrowserRouter();
+      //  initBrowserRouter calls Router.initPackageRoutes which calls shopSub.ready which is reactive,
+      //  So we have to call initBrowserRouter in a non reactive context.
+      //  Otherwise initBrowserRouter is called twice each time a Reaction.Subscriptions.Packages.ready() and
+      //  Reaction.Subscriptions.Shops.ready() are true
+
+      Tracker.nonreactive(()=> {
+        initBrowserRouter();
+      });
     }
   });
 
