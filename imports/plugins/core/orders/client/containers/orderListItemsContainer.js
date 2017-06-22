@@ -35,10 +35,6 @@ class orderListContainer extends Component {
     }
     return false;
   }
-  handleShopName(item) {
-    const shop = Shops.findOne(item.shopId);
-    return shop !== null ? shop.name : void 0;
-  }
   handleMapShopsToItems() {
     const items = this.handleItems();
     items.map(item => {
