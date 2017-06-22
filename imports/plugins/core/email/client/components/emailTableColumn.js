@@ -32,15 +32,18 @@ class EmailTableColumn extends Component {
       if (row.value === "completed") {
         return (
           <span>
-            <Icon icon="fa fa-circle" className="pull-left valid" />
+            <Icon icon="fa fa-circle" className="valid" />
+            <span onClick={this.handleAction} title={this.props.data}>
+              <Icon icon="fa fa-retweet" className="resend-mail" />
+            </span>
           </span>
         );
       }
       return (
         <span>
-          <Icon icon="fa fa-circle" className="pull-left error" />
+          <Icon icon="fa fa-circle" className="error" />
           <span onClick={this.handleAction} title={this.props.data}>
-            <Icon icon="fa fa-share" className="pull-right" />
+            <Icon icon="fa fa-retweet" className="resend-mail" />
           </span>
         </span>
       );

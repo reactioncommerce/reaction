@@ -21,8 +21,13 @@ class EmailLogs extends Component {
     const customColumnMetadata = [];
     filteredFields.forEach(function (field) {
       let colWidth = undefined;
+      let colStyle = undefined;
+      let colClassName = undefined;
+
       if (field === "status") {
         colWidth = 70;
+        colStyle = { textAlign: "center" };
+        colClassName = "email-log-status";
       }
 
       // https://react-table.js.org/#/story/cell-renderers-custom-components
@@ -32,7 +37,9 @@ class EmailLogs extends Component {
         Cell: row => (
           <EmailTableColumn row={row} />
         ),
-        width: colWidth
+        className: colClassName,
+        width: colWidth,
+        style: colStyle
       };
       customColumnMetadata.push(columnMeta);
     });

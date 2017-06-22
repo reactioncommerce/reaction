@@ -7,8 +7,9 @@
     -webkit-box-direction: normal;
     -ms-flex-direction: column;
     flex-direction: column;
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    border-top: 1px solid @black10;
+    // border-top: 1px solid rgba(0, 0, 0, 0.1);
+    // border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     margin-bottom: 30px;
 }
 
@@ -66,7 +67,7 @@
 }
 
 .ReactTable .rt-thead.-header {
-    box-shadow: 0 2px 15px 0 rgba(0, 0, 0, 0.15);
+    border-bottom: 1px solid @black10;
 }
 
 .ReactTable .rt-thead .rt-tr {
@@ -78,7 +79,8 @@
     padding: 5px 5px;
     line-height: normal;
     position: relative;
-    border-right: 1px solid rgba(0, 0, 0, 0.05);
+    border-right: 1px solid @black10;
+    // border-right: 1px solid rgba(0, 0, 0, 0.05);
     -webkit-transition: box-shadow .3s cubic-bezier(.175, .885, .32, 1.275);
     transition: box-shadow .3s cubic-bezier(.175, .885, .32, 1.275);
     box-shadow: inset 0 0 0 0 transparent;
@@ -313,7 +315,7 @@
     flex-wrap: wrap;
     padding: 3px;
     // box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.1);
-    border-top: 2px solid rgba(0, 0, 0, 0.1);
+    border-top: 1px solid @black10;
 }
 
 .ReactTable .-pagination .-btn {
@@ -401,7 +403,7 @@
 }
 
 .ReactTable .-pagination .-pageJump input {
-    width: 70px;
+    width: 50px; // orinally 70
     text-align: center;
 }
 

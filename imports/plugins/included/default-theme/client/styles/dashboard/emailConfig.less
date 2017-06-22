@@ -19,7 +19,6 @@
 
 .email-config-status i {
   margin-left: .3rem;
-  margin-right: .3rem;
 }
 
 .email-config-status i.valid, i.valid {
@@ -28,4 +27,17 @@
 
 .email-config-status i.error, i.error {
   color: @brand-danger;
+}
+
+.email-log-status i {
+  margin-right: .3em;
+  margin-left: .3em;
+
+  &.resend-mail {
+    cursor: pointer;
+
+    &:hover {
+      opacity: .6;
+    }
+  }
 }
