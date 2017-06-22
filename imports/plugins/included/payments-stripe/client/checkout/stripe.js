@@ -30,8 +30,14 @@ function hidePaymentAlert() {
 }
 
 function handleStripeSubmitError(error) {
+  console.log("error in checkout", error);
   const singleError = error;
   const paymentError = error ? error.message : null;
+
+  // this is a server message with a client-sanitized message
+  if (error && error.detail) {
+    return paymentAlert(error.detail);
+  }
   // paymentError means a Match.fail
   if (paymentError) {
     return paymentAlert("Oops! Credit card is invalid. Please check your information and try again.");

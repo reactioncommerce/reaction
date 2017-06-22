@@ -80,6 +80,7 @@ function stripeCaptureCharge(paymentMethod) {
     };
     return { error, result };
   }
+  Logger.warn("sending results back", results);
   return result;
 }
 
@@ -130,8 +131,10 @@ Meteor.methods({
           error: chargeResult.error.message
         };
       }
+      Logger.warn("sending results back from StripeSubmit", results);
       return result;
     } catch (e) {
+      console.log("Here in the catch block of stripeSubmit", e);
       Logger.error(e);
       throw new Meteor.Error("error", e.message);
     }
