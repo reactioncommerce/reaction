@@ -29,6 +29,7 @@
           "shopCustomTaxRatesFailed": "Fel vid sparande skattesats.",
           "shopTaxMethodsSaved": "Sparade skattemetoden.",
           "shopTaxMethodsFailed": "Misslyckades spara skattemetoden.",
+          "customRatesLabel": "anpassade priser",
           "customRatesDescription": "anpassade priser",
           "taxCode": "skattelagen",
           "taxShipping": "inkludera Shipping",

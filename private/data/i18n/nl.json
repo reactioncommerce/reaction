@@ -95,8 +95,6 @@
         "noProductsFound": "Geen producten gevonden.",
         "private": "Privaat",
         "public": "Openbaar",
-        "allOn": "All On",
-        "allOff": "All Off",
         "shortcut": {
           "addProductLabel": "Product toevoegen",
           "accountsLabel": "Rekeningen"
@@ -122,24 +120,12 @@
         "settingsfailed": "updaten zoekinstellingen is mislukt"
       },
       "shopSettings": {
-        "general": "Algemeen",
-        "address": "Adres",
-        "import": "Import",
         "localization": "Localization",
         "options": "opties",
-        "availableOptions": "Beschikbare opties",
         "paymentMethods": "Betaalmethoden",
         "externalServices": "externe Services",
-        "shopGeneralSettingsSaved": "Shop algemene instellingen opgeslagen.",
-        "shopGeneralSettingsFailed": "Shop-update algemene instellingen is mislukt.",
-        "shopAddressSettingsSaved": "Shop-adres instellingen opgeslagen.",
-        "shopAddressSettingsFailed": "Shop-update-adres instellingen is mislukt.",
-        "shopExternalServicesSettingsSaved": "Shop buitendiensten instellingen opgeslagen.",
-        "shopExternalServicesSettingsFailed": "Shop-update buitendiensten instellingen is mislukt.",
         "shopLocalizationSettingsSaved": "Shop lokalisatie instellingen opgeslagen.",
         "shopLocalizationSettingsFailed": "Shop-update lokalisatie instellingen is mislukt.",
-        "shopOptionsSettingsSaved": "Shop opties opgeslagen.",
-        "shopOptionsSettingsFailed": "Shop opties update is mislukt.",
         "shopPaymentMethodsSaved": "Shop betalingsmethoden instellingen opgeslagen.",
         "shopPaymentMethodsFailed": "Shop-update betalingsmethoden instellingen is mislukt."
       },
@@ -155,7 +141,7 @@
           "newOrder": "Je bestelling wordt verwerkt.",
           "forAdmin": "U heeft een nieuwe bestelling.",
           "orderDelivered": "Uw bestelling is afgeleverd.",
-          "orderAccepted": "Uw bestelling is geaccepteerd.",
+          "orderProcessing": "Je bestelling wordt verwerkt.",
           "orderShipped": "Je bestelling is verzonden."
         }
       },
@@ -312,7 +298,12 @@
       "cartDrawer": {
         "empty": "Uw winkelwagen is leeg.",
         "keepShopping": "Verder winkelen",
-        "checkout": "Nu betalen"
+        "checkout": "Nu betalen",
+        "new": "Nieuw",
+        "coreOrderWorkflow/created": "Gemaakt",
+        "coreOrderWorkflow/processing": "verwerking",
+        "coreOrderWorkflow/completed": "Voltooid",
+        "coreOrderWorkflow/canceled": "Geannuleerd"
       },
       "cartSubTotals": {
         "discount": "Korting",
@@ -394,9 +385,7 @@
         "resendNotification": "Opnieuw verzenden Shipment Notification"
       },
       "orderWorkflow": {
-        "fulfillment": "Vervulling",
         "orderDetails": "Bestel Details",
-        "summary": "Overzicht",
         "invoice": "Factuur",
         "shipmentTracking": "Verzending volgen"
       },
@@ -443,6 +432,7 @@
       },
       "addressBookEdit": {
         "editAddress": "Dit adres bewerken",
+        "addressValidation": "Address Validation",
         "somethingWentWrong": "Er is iets misgegaan: {{err}}"
       },
       "corePackageConfig": {
@@ -473,12 +463,6 @@
         "keywords": "trefwoorden",
         "keywordsPlaceholder": "Meta keywords voor SEO",
         "language": "Base Taal",
-        "languageTooltip": "Deze taal wordt gebruikt als apparaat taaldetectie niet worden afgekeurd",
-        "timezone": "Tijdzone",
-        "timezoneOptions": "Kies tijdzone",
-        "currency": "Basisvaluta",
-        "currencyTooltip": "Shop prijslijst",
-        "baseUOM": "Base maateenheid",
         "addressBook": {
           "company": "Bedrijf",
           "companyPlaceholder": "Deze bedrijfsnaam",
@@ -714,6 +698,12 @@
           "matchFailed": "Geen match gevonden",
           "unknownError": "Onbekende fout"
         }
+      },
+      "loginServices": {
+        "appId": "App ID",
+        "secret": "Geheim",
+        "clientId": "Client ID",
+        "consumerKey": "API Key"
       },
       "error": {
         "nameRequired": "Naam is verplicht.",

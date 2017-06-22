@@ -12,7 +12,30 @@
           "packageGroupSettingsLabel": "Paramètres"
         },
         "settings": {
-          "shopSettingsLabel": "Boutique"
+          "shopSettingsLabel": "Boutique",
+          "import": "Importer",
+          "general": {
+            "label": "Général"
+          },
+          "address": {
+            "label": "Adresse"
+          },
+          "options": {
+            "label": "Options"
+          },
+          "openexchangerates": {
+            "refreshPeriod": "Rafraîchir"
+          }
+        },
+        "alerts": {
+          "shopGeneralSettingsSaved": "Paramètres généraux du magasin enregistrés.",
+          "shopGeneralSettingsFailed": "Echec de la mise à jour des paramètres généraux du magasin.",
+          "shopAddressSettingsSaved": "Les paramètres de l'adresse du magasin sont enregistrés.",
+          "shopAddressSettingsFailed": "Echec de la mise à jour des paramètres de l'adresse du magasin.",
+          "shopExternalServicesSettingsSaved": "Paramètres des services externes du magasin enregistrés.",
+          "shopExternalServicesSettingsFailed": "Echec de la mise à jour des paramètres des services externes du magasin.",
+          "shopOptionsSettingsSaved": "Options du magasin enregistrées.",
+          "shopOptionsSettingsFailed": "Echec de la mise à jour des options du magasin."
         }
       }
     }

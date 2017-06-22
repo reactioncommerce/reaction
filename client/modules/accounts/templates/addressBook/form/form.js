@@ -1,8 +1,8 @@
 import { Session } from "meteor/session";
 import { Meteor } from "meteor/meteor";
+import { Template } from "meteor/templating";
 import { Countries } from "/client/collections";
 import * as Collections from "/lib/collections";
-import { Template } from "meteor/templating";
 
 Template.addressBookForm.helpers({
 
@@ -22,7 +22,7 @@ Template.addressBookForm.helpers({
     if ((shop !== null ? shop.locales.countries[selectedCountry].states : void 0) === null) {
       return false;
     }
-    options = [];
+    const options = [];
     const ref = shop !== null ? shop.locales.countries[selectedCountry].states : void 0;
     for (const state in ref) {
       if ({}.hasOwnProperty.call(ref, state)) {

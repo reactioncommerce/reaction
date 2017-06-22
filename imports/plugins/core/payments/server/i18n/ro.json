@@ -26,6 +26,7 @@
         "processingError": "A apărut o problemă cu plata.",
         "completeYourOrder": "Finaliza comanda",
         "noPaymentMethods": "Nu există metode de plată sunt configurate.",
+        "contactAdmin": "Contactați administratorul magazinului.",
         "configureNow": "Configurati.",
         "failedToPlaceOrder": "Nu s-a plasa comanda."
       }

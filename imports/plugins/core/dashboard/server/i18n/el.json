@@ -12,7 +12,30 @@
           "packageGroupSettingsLabel": "Ρυθμίσεις"
         },
         "settings": {
-          "shopSettingsLabel": "Κατάστημα"
+          "shopSettingsLabel": "Κατάστημα",
+          "import": "Εισαγωγή",
+          "general": {
+            "label": "Γενικός"
+          },
+          "address": {
+            "label": "Διεύθυνση 2"
+          },
+          "options": {
+            "label": "επιλογές"
+          },
+          "openexchangerates": {
+            "refreshPeriod": "Φρεσκάρω"
+          }
+        },
+        "alerts": {
+          "shopGeneralSettingsSaved": "Κατάστημα γενικές ρυθμίσεις αποθηκεύονται.",
+          "shopGeneralSettingsFailed": "Κατάστημα ενημέρωση γενικές ρυθμίσεις απέτυχε.",
+          "shopAddressSettingsSaved": "ρυθμίσεις της διεύθυνσης Shop σωθεί.",
+          "shopAddressSettingsFailed": "Κατάστημα ενημέρωση ρυθμίσεις της διεύθυνσης απέτυχε.",
+          "shopExternalServicesSettingsSaved": "Κατάστημα εξωτερικές ρυθμίσεις υπηρεσίες σωθεί.",
+          "shopExternalServicesSettingsFailed": "Κατάστημα ενημέρωση ρυθμίσεις εξωτερικές υπηρεσίες απέτυχε.",
+          "shopOptionsSettingsSaved": "επιλογές Shop σωθεί.",
+          "shopOptionsSettingsFailed": "ενημέρωση επιλογές Shop απέτυχε."
         }
       }
     }

@@ -1,5 +1,18 @@
 [{
   "i18n": "nb",
   "ns": "reaction-dashboard",
-  "translation": { }
+  "translation": {
+    "reaction-dashboard": {
+      "admin": {
+        "settings": {
+          "address": {
+            "label": "Adresselinje2"
+          },
+          "options": {
+            "label": "Innstillinger"
+          }
+        }
+      }
+    }
+  }
 }]

@@ -29,6 +29,7 @@
           "shopCustomTaxRatesFailed": "Fehler beim Speichern des Steuersatzes.",
           "shopTaxMethodsSaved": "Besteuerungsart speichern.",
           "shopTaxMethodsFailed": "Die Besteuerungsart konnte nicht gespeichert werden. ",
+          "customRatesLabel": "Benutzerdefinierte Preise",
           "customRatesDescription": "Benutzerdefinierte Preise",
           "taxCode": "Steuercode",
           "taxShipping": "Versand mit einschließen",

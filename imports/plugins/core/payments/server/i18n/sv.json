@@ -26,6 +26,7 @@
         "processingError": "Det fanns ett problem med din betalning.",
         "completeYourOrder": "Slutföra din beställning",
         "noPaymentMethods": "Inga betalningsmetoder är konfigurerade.",
+        "contactAdmin": "Kontakta butikshanteraren.",
         "configureNow": "Konfigurera nu.",
         "failedToPlaceOrder": "Det gick inte att placera order."
       }

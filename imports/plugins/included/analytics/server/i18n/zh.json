@@ -11,6 +11,15 @@
         },
         "settings": {
           "analyticsSettingsLabel": "Analytics设置"
+        },
+        "googleAnalytics": {
+          "label": "谷歌分析"
+        },
+        "mixpanel": {
+          "label": "Mixpanel"
+        },
+        "segment": {
+          "label": "分割"
         }
       }
     }

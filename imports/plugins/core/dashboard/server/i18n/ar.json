@@ -12,7 +12,30 @@
           "packageGroupSettingsLabel": "إعدادات"
         },
         "settings": {
-          "shopSettingsLabel": "متجر"
+          "shopSettingsLabel": "متجر",
+          "import": "إستيراد",
+          "general": {
+            "label": "عنوان"
+          },
+          "address": {
+            "label": "العناوين"
+          },
+          "options": {
+            "label": "خيارات"
+          },
+          "openexchangerates": {
+            "refreshPeriod": "تحديث"
+          }
+        },
+        "alerts": {
+          "shopGeneralSettingsSaved": ".تم حفظ الإعدادات العامة للمتجر",
+          "shopGeneralSettingsFailed": ". فشل تحديث الإعدادات العامة للمتجر",
+          "shopAddressSettingsSaved": "تم حفظ عناوين إعدادات المتجر",
+          "shopAddressSettingsFailed": ".فشل تحديث إعدادات عناوين التسوق",
+          "shopExternalServicesSettingsSaved": ".متجر إعدادات الخدمات الخارجية محفوظة",
+          "shopExternalServicesSettingsFailed": " فشل تحديث شراء الخدمات الخارجية.",
+          "shopOptionsSettingsSaved": ".خيارات الشراء محفوظة",
+          "shopOptionsSettingsFailed": "فشل تحديث خيارات الشراء"
         }
       }
     }

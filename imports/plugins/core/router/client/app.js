@@ -5,11 +5,12 @@ import { composeWithTracker } from "/lib/api/compose";
 import { Loading } from "/imports/plugins/core/ui/client/components";
 import ToolbarContainer from "/imports/plugins/core/dashboard/client/containers/toolbarContainer";
 import Toolbar from "/imports/plugins/core/dashboard/client/components/toolbar";
-import { ActionViewContainer } from "/imports/plugins/core/dashboard/client/containers";
-import { ActionView } from "/imports/plugins/core/dashboard/client/components";
+import { ActionViewContainer, PackageListContainer } from "/imports/plugins/core/dashboard/client/containers";
+import { ActionView, ShortcutBar } from "/imports/plugins/core/dashboard/client/components";
 
 const ConnectedToolbarComponent = ToolbarContainer(Toolbar);
 const ConnectedAdminViewComponent = ActionViewContainer(ActionView);
+const ConnectedShortcutBarContainer = PackageListContainer(ShortcutBar);
 
 const styles = {
   customerApp: {
@@ -70,6 +71,7 @@ class App extends Component {
           </div>
         </div>
         {this.props.hasDashboardAccess && <ConnectedAdminViewComponent />}
+        {this.props.hasDashboardAccess && <ConnectedShortcutBarContainer />}
       </div>
     );
   }

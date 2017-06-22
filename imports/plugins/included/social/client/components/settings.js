@@ -70,7 +70,7 @@ class SocialSettings extends Component {
         return (
           <SettingsCard
             key={index}
-            i18nKeyTitle={`settings.${provider.name}`}
+            i18nKeyTitle={`admin.settings.public.apps.${provider.name}.title`}
             expandable={true}
             onExpand={this.props.onSettingExpand}
             expanded={this.props.preferences[provider.name]}

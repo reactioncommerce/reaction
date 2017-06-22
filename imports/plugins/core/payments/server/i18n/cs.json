@@ -26,6 +26,7 @@
         "processingError": "Došlo k potížím s vaší platby.",
         "completeYourOrder": "Dokončit svou objednávku",
         "noPaymentMethods": "Žádné platební metody jsou konfigurovány.",
+        "contactAdmin": "Obraťte se na správce obchodu.",
         "configureNow": "Nakofigurujte.",
         "failedToPlaceOrder": "Nepodařilo se místo pořadí."
       }

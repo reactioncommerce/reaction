@@ -16,6 +16,7 @@
       "checkoutShipping": {
         "selectShippingOption": "Επιλέξτε την επιλογή αποστολής",
         "noShippingMethods": "Δεν μέθοδοι ναυτιλίας ρυθμιστεί.",
+        "contactAdmin": "Επικοινωνήστε με τον διαχειριστή του καταστήματος.",
         "configureNow": "Διαμορφώστε τώρα.",
         "shipping": "Αποστολή"
       },

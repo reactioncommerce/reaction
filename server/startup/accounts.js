@@ -84,6 +84,7 @@ export default function () {
     const defaultRoles =  ["guest", "account/profile", "product", "tag", "index", "cart/checkout", "cart/completed"];
     const roles = {};
     const additionals = {
+      name: options && options.name,
       profile: Object.assign({}, options && options.profile)
     };
     if (!user.emails) user.emails = [];
@@ -142,10 +143,14 @@ export default function () {
       account.userId = user._id;
       Collections.Accounts.insert(account);
 
+      const userDetails = Collections.Accounts.findOne({
+        _id: user._id
+      });
+
       // send a welcome email to new users,
       // but skip the first default admin user
       // (default admins already get a verification email)
-      if (!(Meteor.users.find().count() === 0)) {
+      if (!(Meteor.users.find().count() === 0) && !userDetails.profile.invited) {
         Meteor.call("accounts/sendWelcomeEmail", shopId, user._id);
       }
 
@@ -168,7 +173,7 @@ export default function () {
   Accounts.onLogin((opts) => {
     // run onLogin hooks
     // (the options object must be returned by all callbacks)
-    options = Hooks.Events.run("onLogin", opts);
+    const options = Hooks.Events.run("onLogin", opts);
 
     // remove anonymous role
     // all users are guest, but anonymous user don't have profile access

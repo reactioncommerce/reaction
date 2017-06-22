@@ -5,10 +5,19 @@
     "reaction-i18n": {
       "admin": {
         "i18nSettings": {
-          "localization": "Ubicación",
+          "shopLocalization": "Localización de tiendas",
           "enabledCurrencies": "Monedas",
-          "enabledLanguages": "Idiomas"
-        }
+          "enabledLanguages": "Idiomas",
+          "allOn": "todos de la",
+          "allOff": "Todo apagado"
+        },
+        "baseUOM": "Unidad de medida base",
+        "currency": "Divisa base",
+        "currencyTooltip": "Divisa predeterminada",
+        "language": "Idioma base",
+        "languageTooltip": "Se utilizará este idioma si el sistema de detección de idiomas del dispositivo falla",
+        "timezone": "Zonha horaria",
+        "timezoneOptions": "Elegir zona horaria"
       }
     }
   }

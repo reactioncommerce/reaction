@@ -5,10 +5,19 @@
     "reaction-i18n": {
       "admin": {
         "i18nSettings": {
-          "localization": "lokalizace",
+          "shopLocalization": "Lokalizace obchodů",
           "enabledCurrencies": "Měny",
-          "enabledLanguages": "Jazyky"
-        }
+          "enabledLanguages": "Jazyky",
+          "allOn": "Vše On",
+          "allOff": "All Off"
+        },
+        "baseUOM": "Základna Měrná jednotka",
+        "currency": "Základní měna",
+        "currencyTooltip": "Obchod Výchozí měna",
+        "language": "základna Language",
+        "languageTooltip": "Tento jazyk bude použit v případě detekce jazyka zařízení bude selhalo",
+        "timezone": "Časové pásmo",
+        "timezoneOptions": "vyberte si časové pásmo"
       }
     }
   }

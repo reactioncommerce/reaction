@@ -5,10 +5,19 @@
     "reaction-i18n": {
       "admin": {
         "i18nSettings": {
-          "localization": "Локализация",
+          "shopLocalization": "Локализация магазина",
           "enabledCurrencies": "валюты",
-          "enabledLanguages": "Языки"
-        }
+          "enabledLanguages": "Языки",
+          "allOn": "All On",
+          "allOff": "Все выключить"
+        },
+        "baseUOM": "Основные единицы измерения",
+        "currency": "Основная валюта",
+        "currencyTooltip": "Базовая валюта в магазине",
+        "language": "Основной язык",
+        "languageTooltip": "Язык будет использован, если не удастся определить язык устройства",
+        "timezone": "Часовой пояс",
+        "timezoneOptions": "Выберите часовой пояс"
       }
     }
   }

@@ -10,14 +10,29 @@
           "socialDescription": "Конфигурация социального канала"
         },
         "settings": {
-          "facebook": "Facebook",
-          "twitter": "Twitter",
-          "pinterest": "Pinterest",
-          "googleplus": "Google+",
-          "appId": "Идентификатор приложения",
-          "username": "Имя пользователя",
-          "appSecret": "App Secret",
-          "profilePage": "Страница профиля",
+          "public": {
+            "apps": {
+              "facebook": {
+                "title": "Facebook",
+                "appId": "Идентификатор приложения",
+                "appSecret": "App Secret",
+                "profilePage": "Страница профиля"
+              },
+              "googleplus": {
+                "title": "Google+",
+                "profilePage": "Страница профиля"
+              },
+              "pinterest": {
+                "title": "Pinterest",
+                "profilePage": "Страница профиля"
+              },
+              "twitter": {
+                "title": "Twitter",
+                "username": "Имя пользователя",
+                "profilePage": "Страница профиля"
+              }
+            }
+          },
           "socialSettingsLabel": "Социальные настройки",
           "socialSettingsSaved": "Социальные параметры сохранены"
         }

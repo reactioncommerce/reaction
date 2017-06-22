@@ -161,7 +161,7 @@ class VariantList extends Component {
       return [
         <Divider
           key="availableOptionsDivider"
-          i18nKeyLabel="productDetail.availableOptions"
+          i18nKeyLabel="availableOptions"
           label="Available Options"
         />,
         <div className="row variant-product-options" key="childVariantList">

@@ -26,6 +26,7 @@
         "processingError": "Prišlo je do težav pri plačilu.",
         "completeYourOrder": "Izpolnite naročilo",
         "noPaymentMethods": "Brez plačila so nastavljeni.",
+        "contactAdmin": "Obrnite se na skrbnika trgovine.",
         "configureNow": "Konfiguracija zdaj.",
         "failedToPlaceOrder": "Ni, da se vrstni red."
       }

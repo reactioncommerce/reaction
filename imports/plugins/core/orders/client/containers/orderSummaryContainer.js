@@ -4,6 +4,7 @@ import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { composeWithTracker } from "/lib/api/compose";
 import { Orders } from "/lib/collections";
+import { Card, CardHeader, CardBody, CardGroup, Loading } from "/imports/plugins/core/ui/client/components";
 import { i18next } from "/client/api";
 import OrderSummary from "../components/orderSummary";
 
@@ -103,15 +104,26 @@ class OrderSummaryContainer extends Component {
 
   render() {
     return (
-      <div>
-        <OrderSummary
-          {...this.props}
-          dateFormat={this.dateFormat}
-          tracking={this.tracking}
-          shipmentStatus={this.shipmentStatus}
-          printableLabels={this.printableLabels}
-        />
-      </div>
+      <CardGroup>
+        <Card
+          expanded={true}
+        >
+          <CardHeader
+            actAsExpander={false}
+            i18nKeyTitle="admin.orderWorkflow.summary.cardTitle"
+            title="Summary"
+          />
+        <CardBody expandable={false}>
+            <OrderSummary
+              {...this.props}
+              dateFormat={this.dateFormat}
+              tracking={this.tracking}
+              shipmentStatus={this.shipmentStatus}
+              printableLabels={this.printableLabels}
+            />
+          </CardBody>
+        </Card>
+      </CardGroup>
     );
   }
 }
@@ -142,4 +154,4 @@ const composer = (props, onData) => {
   }
 };
 
-export default composeWithTracker(composer, null)(OrderSummaryContainer);
+export default composeWithTracker(composer, Loading)(OrderSummaryContainer);

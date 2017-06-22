@@ -10,6 +10,7 @@ import { Orders, Shops, Packages } from "/lib/collections";
 import { ButtonSelect } from "../../../../ui/client/components/button";
 import DiscountList from "/imports/plugins/core/discounts/client/components/list";
 import InvoiceContainer from "../../containers/invoiceContainer.js";
+import InvoiceActionsContainer from "../../containers/invoiceActionsContainer.js";
 import LineItemsContainer from "../../containers/lineItemsContainer.js";
 import TotalActionsContainer from "../../containers/totalActionsContainer.js";
 
@@ -83,6 +84,9 @@ Template.coreOrderShippingInvoice.helpers({
   InvoiceContainer() {
     return InvoiceContainer;
   },
+  InvoiceActionsContainer() {
+    return InvoiceActionsContainer;
+  },
   buttonSelectComponent() {
     return {
       component: ButtonSelect,
@@ -91,9 +95,9 @@ Template.coreOrderShippingInvoice.helpers({
           name: "Approve",
           i18nKeyLabel: "order.approveInvoice",
           active: true,
-          status: "info",
+          status: "success",
           eventAction: "approveInvoice",
-          bgColor: "bg-info",
+          bgColor: "bg-success",
           buttonType: "submit"
         }, {
           name: "Cancel",
@@ -437,7 +441,7 @@ Template.coreOrderShippingInvoice.helpers({
     const order = instance.state.get("order");
     const status = orderCreditMethod(order).paymentMethod.status;
 
-    if (status === "approved" || status === "completed") {
+    if (status === "approved" || status === "completed" || status === "refunded") {
       return false;
     }
     return true;
@@ -552,12 +556,12 @@ Template.coreOrderShippingInvoice.helpers({
       provides: "paymentMethod",
       enabled: true
     });
-    for (app of apps) {
+    for (const app of apps) {
       if (app.enabled === true) enabledPaymentsArr.push(app);
     }
     let discount = false;
 
-    for (enabled of enabledPaymentsArr) {
+    for (const enabled of enabledPaymentsArr) {
       if (enabled.packageName === "discount-codes") {
         discount = true;
         break;

@@ -12,7 +12,30 @@
           "packageGroupSettingsLabel": "Nastavení"
         },
         "settings": {
-          "shopSettingsLabel": "Prodejna"
+          "shopSettingsLabel": "Prodejna",
+          "import": "Import",
+          "general": {
+            "label": "Obecný"
+          },
+          "address": {
+            "label": "Adresa"
+          },
+          "options": {
+            "label": "Možnosti"
+          },
+          "openexchangerates": {
+            "refreshPeriod": "Obnovit"
+          }
+        },
+        "alerts": {
+          "shopGeneralSettingsSaved": "Obchod obecné uložené nastavení.",
+          "shopGeneralSettingsFailed": "Obchod aktualizace obecná nastavení se nezdařila.",
+          "shopAddressSettingsSaved": "Nastavení Shop adresa uložena.",
+          "shopAddressSettingsFailed": "Obchod aktualizace nastavení adresy se nezdařilo.",
+          "shopExternalServicesSettingsSaved": "Shopu nastavení externích služeb uložených.",
+          "shopExternalServicesSettingsFailed": "Obchod aktualizaci nastavení externí služby se nezdařilo.",
+          "shopOptionsSettingsSaved": "Možnosti Shop uložen.",
+          "shopOptionsSettingsFailed": "Aktualizace možnosti Shop nezdařila."
         }
       }
     }

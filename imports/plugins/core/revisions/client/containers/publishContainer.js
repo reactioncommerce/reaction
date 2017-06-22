@@ -34,11 +34,7 @@ class PublishContainer extends Component {
             this.props.onPublishSuccess(result);
           }
         } else {
-          const message = i18next.t("revisions.noChangesPublished", {
-            defaultValue: "There are no changes to publish"
-          });
-
-          Alerts.toast(message, "warning");
+          Alerts.toast(error.message, "error");
         }
       });
     }

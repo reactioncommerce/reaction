@@ -20,10 +20,10 @@ class Divider extends Component {
 
     if (label) {
       return (
-        <div className={classes}>
+        <div className={classes} id={this.props.id}>
           <hr />
           <span className="label">
-            <Translation defaultValue={label} i18nKey={i18nKeyLabel}/>
+            <Translation defaultValue={label} i18nKey={i18nKeyLabel} />
           </span>
           <hr />
         </div>
@@ -40,6 +40,7 @@ class Divider extends Component {
 
 Divider.propTypes = {
   i18nKeyLabel: PropTypes.string,
+  id: PropTypes.string,
   label: PropTypes.string
 };
 

@@ -3,7 +3,10 @@ import { Reaction } from "/client/api";
 import "./methods.html";
 
 Template.corePaymentMethods.helpers({
-  enabledPayments
+  enabledPayments,
+  isAdmin() {
+    return Reaction.hasAdminAccess();
+  }
 });
 
 Template.corePaymentMethods.onCreated(function () {
@@ -28,7 +31,7 @@ function enabledPayments() {
     provides: "paymentMethod",
     enabled: true
   });
-  for (app of apps) {
+  for (const app of apps) {
     if (app.enabled === true) enabledPaymentsArr.push(app);
   }
   return enabledPaymentsArr;

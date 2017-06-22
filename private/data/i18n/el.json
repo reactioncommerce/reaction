@@ -95,8 +95,6 @@
         "noProductsFound": "Δεν βρέθηκαν προϊόντα.",
         "private": "Ιδιωτικός",
         "public": "Δημόσιο",
-        "allOn": "όλα On",
-        "allOff": "όλα Off",
         "shortcut": {
           "addProductLabel": "Προσθέστε το προϊόν",
           "accountsLabel": "λογαριασμοί"
@@ -122,24 +120,12 @@
         "settingsfailed": "ενημέρωση ρυθμίσεις αναζήτησης απέτυχε"
       },
       "shopSettings": {
-        "general": "Γενικός",
-        "address": "Διεύθυνση",
-        "import": "Εισαγωγή",
         "localization": "Εντοπισμός",
         "options": "επιλογές",
-        "availableOptions": "διαθέσιμες Επιλογές",
         "paymentMethods": "Τρόποι Πληρωμής",
         "externalServices": "εξωτερικές Υπηρεσίες",
-        "shopGeneralSettingsSaved": "Κατάστημα γενικές ρυθμίσεις αποθηκεύονται.",
-        "shopGeneralSettingsFailed": "Κατάστημα ενημέρωση γενικές ρυθμίσεις απέτυχε.",
-        "shopAddressSettingsSaved": "ρυθμίσεις της διεύθυνσης Shop σωθεί.",
-        "shopAddressSettingsFailed": "Κατάστημα ενημέρωση ρυθμίσεις της διεύθυνσης απέτυχε.",
-        "shopExternalServicesSettingsSaved": "Κατάστημα εξωτερικές ρυθμίσεις υπηρεσίες σωθεί.",
-        "shopExternalServicesSettingsFailed": "Κατάστημα ενημέρωση ρυθμίσεις εξωτερικές υπηρεσίες απέτυχε.",
         "shopLocalizationSettingsSaved": "Ρυθμίσεις κατάστημα εντοπισμού σωθεί.",
         "shopLocalizationSettingsFailed": "Κατάστημα ενημέρωση ρυθμίσεις εντοπισμού απέτυχε.",
-        "shopOptionsSettingsSaved": "επιλογές Shop σωθεί.",
-        "shopOptionsSettingsFailed": "ενημέρωση επιλογές Shop απέτυχε.",
         "shopPaymentMethodsSaved": "Κατάστημα ρυθμίσεις Τρόποι Πληρωμής σωθεί.",
         "shopPaymentMethodsFailed": "Κατάστημα ενημέρωση ρυθμίσεις Τρόποι Πληρωμής απέτυχε."
       },
@@ -155,7 +141,7 @@
           "newOrder": "Η παραγγελία σας βρίσκεται υπό επεξεργασία.",
           "forAdmin": "Έχετε μια νέα τάξη πραγμάτων.",
           "orderDelivered": "Η παραγγελία σας έχει παραδοθεί.",
-          "orderAccepted": "Η παραγγελία σας έχει γίνει αποδεκτή.",
+          "orderProcessing": "Η παραγγελία σας βρίσκεται υπό επεξεργασία.",
           "orderShipped": "Η παραγγελία σας έχει αποσταλεί."
         }
       },
@@ -312,7 +298,12 @@
       "cartDrawer": {
         "empty": "Λυπούμαστε. Το καλάθι σου είναι άδειο.",
         "keepShopping": "Συνεχίσε να ψωνίζεις",
-        "checkout": "Πήγαινε στο ταμείο"
+        "checkout": "Πήγαινε στο ταμείο",
+        "new": "Νέος",
+        "coreOrderWorkflow/created": "δημιουργήθηκε",
+        "coreOrderWorkflow/processing": "Επεξεργασία",
+        "coreOrderWorkflow/completed": "Ολοκληρώθηκε το",
+        "coreOrderWorkflow/canceled": "Ακυρώθηκε"
       },
       "cartSubTotals": {
         "discount": "Εκπτωση",
@@ -394,9 +385,7 @@
         "resendNotification": "Επανάληψη αποστολής ειδοποιήσεων αποστολή"
       },
       "orderWorkflow": {
-        "fulfillment": "Εκπλήρωση",
         "orderDetails": "Λεπτομέρειες Παραγγελίας",
-        "summary": "Περίληψη",
         "invoice": "Τιμολόγιο",
         "shipmentTracking": "Παρακολούθηση αποστολής"
       },
@@ -443,6 +432,7 @@
       },
       "addressBookEdit": {
         "editAddress": "Επεξεργασία διεύθυνσης",
+        "addressValidation": "διεύθυνση Επικύρωση",
         "somethingWentWrong": "Κάτι πήγε στραβά: {{err}}"
       },
       "corePackageConfig": {
@@ -473,12 +463,6 @@
         "keywords": "Λέξεις-κλειδιά",
         "keywordsPlaceholder": "Meta λέξεις-κλειδιά για SEO",
         "language": "βάση Γλώσσα",
-        "languageTooltip": "Αυτή η γλώσσα θα χρησιμοποιηθεί αν η ανίχνευση γλώσσα της συσκευής θα αποτύχει να",
-        "timezone": "Ζώνη ώρας",
-        "timezoneOptions": "Επιλέξτε ζώνη ώρας",
-        "currency": "Νόμισμα βάσης",
-        "currencyTooltip": "Κατάστημα προεπιλεγμένο νόμισμα",
-        "baseUOM": "Βάση Μονάδα Μέτρησης",
         "addressBook": {
           "company": "Εταιρεία",
           "companyPlaceholder": "Αυτή η εταιρική επωνυμία",
@@ -714,6 +698,12 @@
           "matchFailed": "Δεν ταιριάζει",
           "unknownError": "Αγνωστο σφάλμα"
         }
+      },
+      "loginServices": {
+        "appId": "Αναγνωριστικό εφαρμογής",
+        "secret": "Μυστικό",
+        "clientId": "Αναγνωριστικό πελάτη",
+        "consumerKey": "Κλειδί API"
       },
       "error": {
         "nameRequired": "Όνομα απαιτείται.",

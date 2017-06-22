@@ -16,6 +16,7 @@
       "checkoutShipping": {
         "selectShippingOption": "Selectați opțiunea de transport maritim",
         "noShippingMethods": "Nu există metode de expediere sunt configurate.",
+        "contactAdmin": "Contactați administratorul magazinului.",
         "configureNow": "Configurati.",
         "shipping": "livrare"
       },

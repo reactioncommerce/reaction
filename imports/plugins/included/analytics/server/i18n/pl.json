@@ -11,6 +11,15 @@
         },
         "settings": {
           "analyticsSettingsLabel": "Ustawienia Analytics"
+        },
+        "googleAnalytics": {
+          "label": "Google Analytics"
+        },
+        "mixpanel": {
+          "label": "Mixpanel"
+        },
+        "segment": {
+          "label": "Człon"
         }
       }
     }

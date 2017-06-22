@@ -95,8 +95,6 @@
         "noProductsFound": "Няма намерени продукти.",
         "private": "частен",
         "public": "обществен",
-        "allOn": "All On",
-        "allOff": "Всички Off",
         "shortcut": {
           "addProductLabel": "Добави продукта",
           "accountsLabel": "Профили"
@@ -122,24 +120,12 @@
         "settingsfailed": "актуализация Настройки за търсенето провали"
       },
       "shopSettings": {
-        "general": "Общ",
-        "address": "адрес",
-        "import": "внос",
         "localization": "Локализация",
         "options": "Настроики",
-        "availableOptions": "Налични варианти",
         "paymentMethods": "Методи на плащане",
         "externalServices": "външни услуги",
-        "shopGeneralSettingsSaved": "Магазин общи настройки, запаметени.",
-        "shopGeneralSettingsFailed": "Магазин актуализация на общите настройки провали.",
-        "shopAddressSettingsSaved": "настройки Shop адрес спасени.",
-        "shopAddressSettingsFailed": "Магазин актуализация адрес настройки провали.",
-        "shopExternalServicesSettingsSaved": "Магазин настройки външни услуги, запаметени.",
-        "shopExternalServicesSettingsFailed": "Магазин актуализация на настройките външни услуги се провали.",
         "shopLocalizationSettingsSaved": "настройки Shop локализация спасени.",
         "shopLocalizationSettingsFailed": "Магазин актуализация на настройките за локализация провали.",
-        "shopOptionsSettingsSaved": "запаметени опции магазин.",
-        "shopOptionsSettingsFailed": "опции магазин актуализация неуспешно.",
         "shopPaymentMethodsSaved": "Магазин Методи на плащане настройки, запаметени.",
         "shopPaymentMethodsFailed": "Магазин актуализация Методи на плащане настройки провали."
       },
@@ -155,7 +141,7 @@
           "newOrder": "Вашата поръчка се обработва.",
           "forAdmin": "Имате нов ред.",
           "orderDelivered": "Вашата цел е бил доставен.",
-          "orderAccepted": "Вашата цел е била приета.",
+          "orderProcessing": "Вашата поръчка се обработва.",
           "orderShipped": "Вашата поръчка е изпратена."
         }
       },
@@ -312,7 +298,12 @@
       "cartDrawer": {
         "empty": "За съжаление кошницата Ви е празна.",
         "keepShopping": "Продължете с пазаруването.",
-        "checkout": "Към кошницата"
+        "checkout": "Към кошницата",
+        "new": "Нов",
+        "coreOrderWorkflow/created": "Създадено",
+        "coreOrderWorkflow/processing": "обработване",
+        "coreOrderWorkflow/completed": "завършен",
+        "coreOrderWorkflow/canceled": "отменен"
       },
       "cartSubTotals": {
         "discount": "отстъпка",
@@ -394,9 +385,7 @@
         "resendNotification": "Изпрати съобщението за поръчката отново"
       },
       "orderWorkflow": {
-        "fulfillment": "изпълняване",
         "orderDetails": "подробности за поръчката",
-        "summary": "обобщение",
         "invoice": "фактура",
         "shipmentTracking": "пратка проследяване"
       },
@@ -443,6 +432,7 @@
       },
       "addressBookEdit": {
         "editAddress": "Редактирайте адреса",
+        "addressValidation": "Адрес за потвърждаване",
         "somethingWentWrong": "Нещо се обърка: {{err}}"
       },
       "corePackageConfig": {
@@ -473,12 +463,6 @@
         "keywords": "Ключови думи",
         "keywordsPlaceholder": "Мета ключови думи за SEO",
         "language": "Base Език",
-        "languageTooltip": "Този език ще се използва, ако откриване на езика на устройството ще се провали",
-        "timezone": "Часова зона",
-        "timezoneOptions": "Изберете часова зона",
-        "currency": "Базова валута",
-        "currencyTooltip": "Магазин валута по подразбиране",
-        "baseUOM": "Base Мерна единица",
         "addressBook": {
           "company": "Компания",
           "companyPlaceholder": "Това име на фирма",
@@ -714,6 +698,12 @@
           "matchFailed": "Не съвпада",
           "unknownError": "Неизвестна грешка"
         }
+      },
+      "loginServices": {
+        "appId": "ID на приложението",
+        "secret": "Тайна",
+        "clientId": "Клиентски идентификационен номер",
+        "consumerKey": "API Key"
       },
       "error": {
         "nameRequired": "се изисква име.",

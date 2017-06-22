@@ -26,6 +26,7 @@
         "processingError": "كان هناك مشكلة مع الدفع الخاص بك.",
         "completeYourOrder": "استكمال طلبك",
         "noPaymentMethods": "يتم تكوين أي وسائل الدفع.",
+        "contactAdmin": "يرجى الاتصال بمسؤول المتجر.",
         "configureNow": "تكوين الآن.",
         "failedToPlaceOrder": "فشل لوضع النظام."
       }

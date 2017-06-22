@@ -5,10 +5,20 @@
     "reaction-social": {
       "admin": {
         "settings": {
-          "facebook": "Facebook",
-          "twitter": "Twitter",
-          "pinterest": "Pinterest",
-          "username": "Brukernavn"
+          "public": {
+            "apps": {
+              "facebook": {
+                "title": "Facebook"
+              },
+              "pinterest": {
+                "title": "Pinterest"
+              },
+              "twitter": {
+                "title": "Twitter",
+                "username": "Brukernavn"
+              }
+            }
+          }
         }
       }
     }

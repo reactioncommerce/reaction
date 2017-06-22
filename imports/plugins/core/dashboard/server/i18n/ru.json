@@ -12,7 +12,30 @@
           "packageGroupSettingsLabel": "Настройки"
         },
         "settings": {
-          "shopSettingsLabel": "Магазин"
+          "shopSettingsLabel": "Магазин",
+          "import": "Импорт",
+          "general": {
+            "label": "Основные"
+          },
+          "address": {
+            "label": "Адрес (доп.)"
+          },
+          "options": {
+            "label": "Настройки"
+          },
+          "openexchangerates": {
+            "refreshPeriod": "Обновление"
+          }
+        },
+        "alerts": {
+          "shopGeneralSettingsSaved": "Настройки магазина обновлены.",
+          "shopGeneralSettingsFailed": "Не удалось изменить основные настройки магазина. ",
+          "shopAddressSettingsSaved": "Адрес магазина изменён.",
+          "shopAddressSettingsFailed": "Не удалось изменить адрес магазина. ",
+          "shopExternalServicesSettingsSaved": "Настройки внешних сервисов обновлены.",
+          "shopExternalServicesSettingsFailed": "Не удалось изменить настройки внешних сервисов. ",
+          "shopOptionsSettingsSaved": "Настройка магазина обновлена.",
+          "shopOptionsSettingsFailed": "Не удалось изменить настройку. "
         }
       }
     }

@@ -10,14 +10,29 @@
           "socialDescription": "конфигурация социален Канал"
         },
         "settings": {
-          "facebook": "Facebook",
-          "twitter": "Twitter",
-          "pinterest": "Pinterest",
-          "googleplus": "Google+",
-          "appId": "Id App",
-          "username": "Потребителско име",
-          "appSecret": "App Secret",
-          "profilePage": "профилна страница",
+          "public": {
+            "apps": {
+              "facebook": {
+                "title": "Facebook",
+                "appId": "ID на приложението",
+                "appSecret": "App Secret",
+                "profilePage": "профилна страница"
+              },
+              "googleplus": {
+                "title": "Google+",
+                "profilePage": "профилна страница"
+              },
+              "pinterest": {
+                "title": "Pinterest",
+                "profilePage": "профилна страница"
+              },
+              "twitter": {
+                "title": "Twitter",
+                "username": "Потребителско име",
+                "profilePage": "профилна страница"
+              }
+            }
+          },
           "socialSettingsLabel": "социални Settings",
           "socialSettingsSaved": "Социални настройки, запаметени"
         }

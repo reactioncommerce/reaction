@@ -12,7 +12,30 @@
           "packageGroupSettingsLabel": "Ayarlar"
         },
         "settings": {
-          "shopSettingsLabel": "Dükkan"
+          "shopSettingsLabel": "Dükkan",
+          "import": "Ithalat",
+          "general": {
+            "label": "Genel"
+          },
+          "address": {
+            "label": "Adres 2"
+          },
+          "options": {
+            "label": "Seçenekler"
+          },
+          "openexchangerates": {
+            "refreshPeriod": "Yenile"
+          }
+        },
+        "alerts": {
+          "shopGeneralSettingsSaved": "Kaydedilen genel ayarları alışveriş.",
+          "shopGeneralSettingsFailed": "Mağaza genel ayarlar güncelleme başarısız oldu.",
+          "shopAddressSettingsSaved": "Mağaza adres ayarları kaydedildi.",
+          "shopAddressSettingsFailed": "Mağaza adres ayarları güncellemesi başarısız oldu.",
+          "shopExternalServicesSettingsSaved": "Kaydedilen dış hizmetler ayarlarını alışveriş.",
+          "shopExternalServicesSettingsFailed": "dış hizmetler ayarları güncelleştirme alışveriş başarısız oldu.",
+          "shopOptionsSettingsSaved": "Mağaza seçenekleri kaydedildi.",
+          "shopOptionsSettingsFailed": "Mağaza seçenekleri güncelleme başarısız oldu."
         }
       }
     }

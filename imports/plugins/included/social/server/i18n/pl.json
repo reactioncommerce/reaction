@@ -10,14 +10,29 @@
           "socialDescription": "Konfiguracja kanału Społecznej"
         },
         "settings": {
-          "facebook": "Facebook",
-          "twitter": "Twitter",
-          "pinterest": "Pinterest",
-          "googleplus": "Google+",
-          "appId": "App Id",
-          "username": "Nazwa użytkownika",
-          "appSecret": "App Tajny",
-          "profilePage": "Strona profilowa",
+          "public": {
+            "apps": {
+              "facebook": {
+                "title": "Facebook",
+                "appId": "Identyfikator aplikacji",
+                "appSecret": "App Tajny",
+                "profilePage": "Strona profilowa"
+              },
+              "googleplus": {
+                "title": "Google+",
+                "profilePage": "Strona profilowa"
+              },
+              "pinterest": {
+                "title": "Pinterest",
+                "profilePage": "Strona profilowa"
+              },
+              "twitter": {
+                "title": "Twitter",
+                "username": "Nazwa użytkownika",
+                "profilePage": "Strona profilowa"
+              }
+            }
+          },
           "socialSettingsLabel": "Ustawienia społeczne",
           "socialSettingsSaved": "Ustawienia zapisane społeczne"
         }

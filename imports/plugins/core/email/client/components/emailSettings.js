@@ -52,7 +52,7 @@ class EmailSettings extends Component {
           label="Service"
           i18nKeyLabel="admin.settings.providerName"
           placeholder="Select a Service"
-          i18nKeyPlaceholder="mail.settings.selectService"
+          i18nKeyPlaceholder="admin.settings.selectService"
           name="service"
           onChange={this.handleSelect}
           options={emailProviders}
@@ -62,7 +62,7 @@ class EmailSettings extends Component {
           <div>
             <TextField
               label="Host"
-              i18nKeyLabel="mail.settings.host"
+              i18nKeyLabel="admin.settings.host"
               type="text"
               name="host"
               value={settings.host}
@@ -70,7 +70,7 @@ class EmailSettings extends Component {
             />
           <TextField
             label="Port"
-            i18nKeyLabel="mail.settings.port"
+            i18nKeyLabel="admin.settings.port"
             type="text"
             name="port"
             value={settings.port}
@@ -80,7 +80,7 @@ class EmailSettings extends Component {
         }
         <TextField
           label="User"
-          i18nKeyLabel="mail.settings.user"
+          i18nKeyLabel="admin.settings.user"
           type="text"
           name="user"
           value={settings.user}
@@ -88,7 +88,7 @@ class EmailSettings extends Component {
         />
         <TextField
           label="Password"
-          i18nKeyLabel="mail.settings.password"
+          i18nKeyLabel="admin.settings.password"
           type="password"
           name="password"
           value={settings.password}

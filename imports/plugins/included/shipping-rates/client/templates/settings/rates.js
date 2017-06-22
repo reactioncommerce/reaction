@@ -89,7 +89,7 @@ Template.shippingRatesSettings.helpers({
     // from flat rate shipping provider
     function transform(results) {
       const result = [];
-      for (method of results) {
+      for (const method of results) {
         if (method.provider && method.provider.name === "flatRates") {
           result.push(method.methods);
         }
@@ -128,7 +128,7 @@ Template.shippingRatesSettings.helpers({
     let rate = {};
     if (providerRates && providerRates.methods) {
       if (id) {
-        for (method of providerRates.methods) {
+        for (const method of providerRates.methods) {
           if (method._id === id) {
             rate = method;
           }
@@ -161,7 +161,7 @@ Template.shippingRatesSettings.events({
     });
   },
   "click .cancel, .shipping-grid-row .active": function () {
-    instance = Template.instance();
+    const instance = Template.instance();
     // remove active rows from grid
     instance.state.set({
       isEditing: false,

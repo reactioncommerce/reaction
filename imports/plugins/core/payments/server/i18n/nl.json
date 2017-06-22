@@ -26,6 +26,7 @@
         "processingError": "Er was een probleem met uw betaling.",
         "completeYourOrder": "Vul uw bestelling",
         "noPaymentMethods": "Geen betaalmethodes zijn geconfigureerd.",
+        "contactAdmin": "Neem contact op met de winkelbeheerder.",
         "configureNow": "Configureren nu.",
         "failedToPlaceOrder": "Kan bestelling te plaatsen."
       }

@@ -29,6 +29,7 @@
           "shopCustomTaxRatesFailed": "εξοικονόμηση φορολογικό συντελεστή σφάλματος.",
           "shopTaxMethodsSaved": "Αποθηκεύονται φορολογική μέθοδο.",
           "shopTaxMethodsFailed": "Απέτυχε η εξοικονόμηση φόρου μέθοδο.",
+          "customRatesLabel": "Προσαρμοσμένη Τιμές",
           "customRatesDescription": "Προσαρμοσμένη Τιμές",
           "taxCode": "Φορολογικός κώδικας",
           "taxShipping": "περιλαμβάνουν Ναυτιλίας",

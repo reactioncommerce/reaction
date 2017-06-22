@@ -61,7 +61,7 @@
           <input type="hidden" value="{{service.name}}" name="service">
           {{#each field in service.fields}}
             <div class="form-group ">
-              <label for="{{name}}SettingsClientId">{{field.label}}</label>
+              <label for="{{name}}SettingsClientId"><span data-i18n="loginServices.{{field.property}}">{{field.label}}</span></label>
 
               <div class="{{#if condition field.property "eq" "secret"}}form-inline{{/if}}">
                 <input

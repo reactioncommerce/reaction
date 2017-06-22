@@ -12,7 +12,30 @@
           "packageGroupSettingsLabel": "Setări"
         },
         "settings": {
-          "shopSettingsLabel": "Magazin"
+          "shopSettingsLabel": "Magazin",
+          "import": "Import",
+          "general": {
+            "label": "General"
+          },
+          "address": {
+            "label": "continuare Adresă"
+          },
+          "options": {
+            "label": "Opțiuni"
+          },
+          "openexchangerates": {
+            "refreshPeriod": "Reîmprospăta"
+          }
+        },
+        "alerts": {
+          "shopGeneralSettingsSaved": "Setările generale ale magazinului au fost salvate.",
+          "shopGeneralSettingsFailed": "Actualizarea setărilor generale ale magazinului a eșuat.",
+          "shopAddressSettingsSaved": "Setările adresei magazinului au fost salvate.",
+          "shopAddressSettingsFailed": "Actualizarea setării adresei magazinului eșuat.",
+          "shopExternalServicesSettingsSaved": "Setările serviciilor externe ale magazinului au fost salvate.",
+          "shopExternalServicesSettingsFailed": "Setările serviciilor externe ale magazinului au eșuat.",
+          "shopOptionsSettingsSaved": "Opțiunile magazinului au fost salvate.",
+          "shopOptionsSettingsFailed": "Actualizarea opțiunilor magazinului au eșuat."
         }
       }
     }

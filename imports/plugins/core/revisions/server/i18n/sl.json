@@ -10,7 +10,7 @@
           "revisionsTitle": "Revizije",
           "revisionsDescription": "nadzor revizija"
         },
-        "settings": {
+        "catalogSettings": {
           "productRevisionsLabel": "Revizije izdelka"
         },
         "toolbar": {

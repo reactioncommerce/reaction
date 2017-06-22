@@ -2,7 +2,7 @@ import { Mongo } from "meteor/mongo";
 import { EJSON } from "meteor/ejson";
 import * as Collections from "/lib/collections";
 import Hooks from "../hooks";
-import Logger from "../logger";
+import { Logger } from "../logger";
 import doRightJoinNoIntersection from "./rightJoin";
 
 /**
@@ -223,9 +223,7 @@ Import.buffer = function (collection) {
  * * Push the variant if it doesn't exist.
  * * Update the variant.
  */
-Import.product = function (key, product, parent) {
-  check(parent, Object);
-
+Import.product = function (key, product) {
   return this.object(Collections.Products, key, product);
 };
 

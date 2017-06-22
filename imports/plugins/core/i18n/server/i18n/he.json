@@ -5,9 +5,15 @@
     "reaction-i18n": {
       "admin": {
         "i18nSettings": {
-          "localization": "מיקום",
           "enabledLanguages": "שפות"
-        }
+        },
+        "baseUOM": "יחידת הכמות הבסיסית",
+        "currency": "מטבע בסיס",
+        "currencyTooltip": "מטבע ברירת המחדל של החנות",
+        "language": "שפת בסיס",
+        "languageTooltip": "ייעשה שימוש בשפה זו אם זיהוי שפת המכשיר ייכשל",
+        "timezone": "אזור זמן",
+        "timezoneOptions": "בחר באזור זמן"
       }
     }
   }

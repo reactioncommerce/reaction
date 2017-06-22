@@ -143,12 +143,12 @@ Template.shopSettings.helpers({
 AutoForm.hooks({
   shopEditForm: {
     onSuccess: function () {
-      return Alerts.toast(i18next.t("shopSettings.shopGeneralSettingsSaved"),
+      return Alerts.toast(i18next.t("admin.alerts.shopGeneralSettingsSaved"),
         "success");
     },
     onError: function (operation, error) {
       return Alerts.toast(
-        `${i18next.t("shopSettings.shopGeneralSettingsFailed")} ${error}`, "error"
+        `${i18next.t("admin.alerts.shopGeneralSettingsFailed")} ${error}`, "error"
       );
     }
   }
@@ -157,12 +157,12 @@ AutoForm.hooks({
 AutoForm.hooks({
   shopEditAddressForm: {
     onSuccess: function () {
-      return Alerts.toast(i18next.t("shopSettings.shopAddressSettingsSaved"),
+      return Alerts.toast(i18next.t("admin.alerts.shopAddressSettingsSaved"),
         "success");
     },
     onError: function (operation, error) {
       return Alerts.toast(
-        `${i18next.t("shopSettings.shopAddressSettingsFailed")} ${error}`, "error"
+        `${i18next.t("admin.alerts.shopAddressSettingsFailed")} ${error}`, "error"
       );
     }
   }
@@ -172,12 +172,12 @@ AutoForm.hooks({
   shopEditExternalServicesForm: {
     onSuccess: function () {
       return Alerts.toast(
-        i18next.t("shopSettings.shopExternalServicesSettingsSaved"), "success"
+        i18next.t("admin.alerts.shopExternalServicesSettingsSaved"), "success"
       );
     },
     onError: function (operation, error) {
       return Alerts.toast(
-        `${i18next.t("shopSettings.shopExternalServicesSettingsFailed")} ${error}`,
+        `${i18next.t("admin.alerts.shopExternalServicesSettingsFailed")} ${error}`,
         "error"
       );
     }
@@ -187,12 +187,12 @@ AutoForm.hooks({
 AutoForm.hooks({
   shopEditOptionsForm: {
     onSuccess: function () {
-      return Alerts.toast(i18next.t("shopSettings.shopOptionsSettingsSaved"),
+      return Alerts.toast(i18next.t("admin.alerts.shopOptionsSettingsSaved"),
         "success");
     },
     onError: function (operation, error) {
       return Alerts.toast(
-        `${i18next.t("shopSettings.shopOptionsSettingsFailed")} ${error}`, "error"
+        `${i18next.t("admin.alerts.shopOptionsSettingsFailed")} ${error}`, "error"
       );
     }
   }

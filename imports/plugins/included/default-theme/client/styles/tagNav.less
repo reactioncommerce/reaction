@@ -46,7 +46,7 @@
 
 .rui.tagnav .rui.tag.edit.create {
   @color: lighten(@btn-success-bg, 10%);
-  @color: @brand-secondary-color;
+  @color: @brand-primary-dark;
 
   input {
     // background-color: @color;
@@ -60,12 +60,12 @@
     // background-color: @color;
     // border-color: @color;
     background-color: @white;
-    color: @brand-primary-color;
+    color: @brand-success;
   }
 }
 
 .rui.tagnav .rui.tag.edit.create input {
-  .placeholder(@brand-secondary-color);
+  .placeholder(@brand-primary-dark);
 }
 
 // Base Tag Navigation
@@ -250,6 +250,10 @@
   color: @text-color;
 }
 
+.navbar-item .btn.btn-drag-handle {
+  padding: 3px 6px;
+}
+
 .rui.tagnav.vertical .navbar-item > .rui.tag.link {
   display: block;
   height: auto;
@@ -329,7 +333,7 @@
   position: absolute;
   top: @navbar-height;
   left: 0;
-  z-index: @zindex-modal;
+  z-index: @zindex-dropdown;
   width: 100%;
   max-width: 100%;
   margin: 0;

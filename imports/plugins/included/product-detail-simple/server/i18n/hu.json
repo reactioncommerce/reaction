@@ -10,7 +10,8 @@
         "inventoryAlerts": {
           "adjustedQuantity": "A termék mennyisége állították be a max mennyiség raktáron"
         }
-      }
+      },
+      "availableOptions": "elérhető opciók"
     }
   }
 }]

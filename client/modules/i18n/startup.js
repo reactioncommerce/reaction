@@ -4,6 +4,7 @@ import i18nextLocalStorageCache from "i18next-localstorage-cache";
 import i18nextSprintfPostProcessor from "i18next-sprintf-postprocessor";
 import i18nextJquery from "jquery-i18next";
 import { Meteor } from "meteor/meteor";
+import { $ } from "meteor/jquery";
 import { Tracker } from "meteor/tracker";
 import { Reaction } from "/client/api";
 import { Shops, Translations } from "/lib/collections";
@@ -97,7 +98,7 @@ Meteor.startup(() => {
 
             // global first time init event finds and replaces
             // data-i18n attributes in html/template source.
-            $elements = $("[data-i18n]").localize();
+            $("[data-i18n]").localize();
 
             // apply language direction to html
             if (i18next.dir(language) === "rtl") {
@@ -144,7 +145,7 @@ Meteor.startup(() => {
     this.autorun((function () {
       return function () {
         i18nextDep.depend();
-        $elements = $("[data-i18n]").localize();
+        $("[data-i18n]").localize();
       };
     })(this));
   });

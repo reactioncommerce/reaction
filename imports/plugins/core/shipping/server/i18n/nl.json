@@ -16,6 +16,7 @@
       "checkoutShipping": {
         "selectShippingOption": "Kies verzendoptie",
         "noShippingMethods": "Geen verzendkosten methoden worden geconfigureerd.",
+        "contactAdmin": "Neem contact op met de winkelbeheerder.",
         "configureNow": "Configureren nu.",
         "shipping": "Verzenden"
       },

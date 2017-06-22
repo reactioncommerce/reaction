@@ -5,10 +5,19 @@
     "reaction-i18n": {
       "admin": {
         "i18nSettings": {
-          "localization": "Lokalizacja",
+          "shopLocalization": "Lokalizacja sklepu",
           "enabledCurrencies": "Waluty",
-          "enabledLanguages": "Języki"
-        }
+          "enabledLanguages": "Języki",
+          "allOn": "wszystko na temat",
+          "allOff": "All Off"
+        },
+        "baseUOM": "Jednostka podstawowa miary",
+        "currency": "Waluta bazowa",
+        "currencyTooltip": "Sklep domyślną walutą",
+        "language": "Język bazowy",
+        "languageTooltip": "Język ten będzie stosowany, jeśli wykrywanie języka urządzenie zostanie zawiodły",
+        "timezone": "Strefa czasowa",
+        "timezoneOptions": "Wybierz strefę czasową"
       }
     }
   }

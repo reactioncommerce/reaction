@@ -29,6 +29,7 @@
           "shopCustomTaxRatesFailed": "Hiba történt a adókulcs.",
           "shopTaxMethodsSaved": "Mentett adó módszer.",
           "shopTaxMethodsFailed": "Sikertelen mentés adó módszer.",
+          "customRatesLabel": "egyéni árak",
           "customRatesDescription": "egyéni árak",
           "taxCode": "Adószám",
           "taxShipping": "tartalmazza a szállítási",

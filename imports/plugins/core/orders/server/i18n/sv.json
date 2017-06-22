@@ -11,6 +11,27 @@
           "ordersLabel": "Order",
           "ordersTitle": "Order",
           "ordersDescription": "Uppfylla dina beställningar"
+        },
+        "orderWorkflow": {
+          "ordersList": {
+            "date": "Datum",
+            "orderId": "För ID",
+            "total": "Totalt",
+            "emailNotFound": "E-post är inte tillgänglig"
+          },
+          "summary": {
+            "cardTitle": "Sammanfattning",
+            "copyOrderLink": "Kopiera orderlänk"
+          },
+          "invoice": {
+            "cardTitle": "Faktura",
+            "adjustedTotal": "justerat Total",
+            "capturedTotal": "fångade Totalt",
+            "refund": "Återbetalning"
+          },
+          "fulfillment": "Uppfyllelse",
+          "orderDetails": "Orderdetaljer",
+          "shipmentTracking": "Sändning"
         }
       }
     }

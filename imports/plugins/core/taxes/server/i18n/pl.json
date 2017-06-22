@@ -29,6 +29,7 @@
           "shopCustomTaxRatesFailed": "Błąd zapisywania stawki podatkowej.",
           "shopTaxMethodsSaved": "Zapisane metody podatkowej.",
           "shopTaxMethodsFailed": "Nieudane zapisywanie sposobu opodatkowania.",
+          "customRatesLabel": "ceny niestandardowe",
           "customRatesDescription": "ceny niestandardowe",
           "taxCode": "Kod podatkowy",
           "taxShipping": "obejmować wysłanie",

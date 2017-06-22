@@ -5,10 +5,19 @@
     "reaction-i18n": {
       "admin": {
         "i18nSettings": {
-          "localization": "Honosítás",
+          "shopLocalization": "Shop Lokalizáció",
           "enabledCurrencies": "Pénznemek",
-          "enabledLanguages": "Nyelvek"
-        }
+          "enabledLanguages": "Nyelvek",
+          "allOn": "minden On",
+          "allOff": "All Off"
+        },
+        "baseUOM": "Base Mértékegység",
+        "currency": "Bázisvaluta",
+        "currencyTooltip": "Shop alapértelmezett pénznem",
+        "language": "alapnyelv",
+        "languageTooltip": "Ez a nyelv lesz használva, ha az eszköz nyelvfelismerés lesz sikertelen",
+        "timezone": "Időzóna",
+        "timezoneOptions": "Válasszon időzónát"
       }
     }
   }

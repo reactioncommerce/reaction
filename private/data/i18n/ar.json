@@ -95,8 +95,6 @@
         "noProductsFound": ".لم يتم إيجاد منتجات",
         "private": "خاص",
         "public": "عامة",
-        "allOn": "الكل في",
-        "allOff": "كل معطلة",
         "shortcut": {
           "addProductLabel": "إضافة المنتج",
           "accountsLabel": "الحسابات"
@@ -122,24 +120,12 @@
         "settingsfailed": "فشل تحديث إعدادات البحث"
       },
       "shopSettings": {
-        "general": "عنوان",
-        "address": "عناوين",
-        "import": "إستيراد",
         "localization": "توطين",
         "options": "خيارات",
-        "availableOptions": "خيارات متاحة",
         "paymentMethods": "طريقة الدفع",
         "externalServices": "خدمات خارجية",
-        "shopGeneralSettingsSaved": ".تم حفظ الإعدادات العامة للمتجر",
-        "shopGeneralSettingsFailed": ". فشل تحديث الإعدادات العامة للمتجر",
-        "shopAddressSettingsSaved": "تم حفظ عناوين إعدادات المتجر",
-        "shopAddressSettingsFailed": ".فشل تحديث إعدادات عناوين التسوق",
-        "shopExternalServicesSettingsSaved": ".متجر إعدادات الخدمات الخارجية محفوظة",
-        "shopExternalServicesSettingsFailed": " فشل تحديث شراء الخدمات الخارجية.",
         "shopLocalizationSettingsSaved": ".تم حفظ إعدادات توطين المتجر",
         "shopLocalizationSettingsFailed": ".فشل تحديث إعدادات توطين المتجر ",
-        "shopOptionsSettingsSaved": ".خيارات الشراء محفوظة",
-        "shopOptionsSettingsFailed": "فشل تحديث خيارات الشراء",
         "shopPaymentMethodsSaved": ".تم حفظ إعدادات طريقة الدفع",
         "shopPaymentMethodsFailed": ".تحديث إعدادات طريقة الدفع للشراء فشلت"
       },
@@ -155,7 +141,7 @@
           "newOrder": "طلبك قيد التنفيذ.",
           "forAdmin": "لديك النظام الجديد.",
           "orderDelivered": "وقد تم تسليم طلبك.",
-          "orderAccepted": "تم قبول طلبك.",
+          "orderProcessing": "تتم معالجة طلبك.",
           "orderShipped": "وقد تم شحن طلبك."
         }
       },
@@ -312,7 +298,12 @@
       "cartDrawer": {
         "empty": "نشعر بالحزن. .عربتك فارغة",
         "keepShopping": "الأستمرار بالتسوق",
-        "checkout": "الدفع الان"
+        "checkout": "الدفع الان",
+        "new": "جديد",
+        "coreOrderWorkflow/created": "تم الانشاء",
+        "coreOrderWorkflow/processing": "جاري المعالجة",
+        "coreOrderWorkflow/completed": "مكتمل",
+        "coreOrderWorkflow/canceled": "تم الإلغاء"
       },
       "cartSubTotals": {
         "discount": "خصم",
@@ -394,9 +385,7 @@
         "resendNotification": "إعادة إرسال إشعارات الشحنة"
       },
       "orderWorkflow": {
-        "fulfillment": "تلبية الطلب",
         "orderDetails": "تفاصيل الطلب",
-        "summary": "ملخص",
         "invoice": "فاتورة",
         "shipmentTracking": "تتبع الشحنة"
       },
@@ -443,6 +432,7 @@
       },
       "addressBookEdit": {
         "editAddress": "تعديل هذا العنوان ",
+        "addressValidation": "عنوان التحقق من صحة",
         "somethingWentWrong": "حدث خطأ ما: {{err}}"
       },
       "corePackageConfig": {
@@ -473,12 +463,6 @@
         "keywords": "الكلمات الدالة",
         "keywordsPlaceholder": "الكلمات المفتاحية للظهور في محركات البحث",
         "language": "اللغة الأساسية",
-        "languageTooltip": "سوف يتم استخدام هذه اللغة إذا فشل التعرف على لغة جهازك",
-        "timezone": "التوقيت",
-        "timezoneOptions": "أختيار التوقيت",
-        "currency": "العملة الأساسية",
-        "currencyTooltip": "عملة المتجر الإفتراضية",
-        "baseUOM": "قاعدة وحدة القياس",
         "addressBook": {
           "company": "شركة",
           "companyPlaceholder": "اسم العمل",
@@ -714,6 +698,12 @@
           "matchFailed": "المطابقة فشلت",
           "unknownError": "خطأ غير معروف"
         }
+      },
+      "loginServices": {
+        "appId": "معرف التطبيق",
+        "secret": "سر",
+        "clientId": "معرف العميل",
+        "consumerKey": "مفتاح API"
       },
       "error": {
         "nameRequired": "الأسم مطلوب",

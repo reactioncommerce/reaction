@@ -16,6 +16,7 @@
       "checkoutShipping": {
         "selectShippingOption": "Välj leveransalternativ",
         "noShippingMethods": "Inga transportsätt konfigureras.",
+        "contactAdmin": "Kontakta butikshanteraren.",
         "configureNow": "Konfigurera nu.",
         "shipping": "Frakt"
       },

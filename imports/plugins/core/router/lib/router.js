@@ -5,6 +5,7 @@ import createMemoryHistory from "history/createMemoryHistory";
 import pathToRegexp from "path-to-regexp";
 import queryParse from "query-parse";
 import Immutable from "immutable";
+import { uniqBy } from "lodash";
 import { Meteor } from "meteor/meteor";
 import Blaze from "meteor/gadicc:blaze-react-component";
 import { Tracker } from "meteor/tracker";
@@ -34,8 +35,16 @@ class Router {
   static history = history
   static Hooks = Hooks
   static routes = []
-  static _routes = Router.routes // for legacy
   static _initialized = false;
+  static activeClassName = "active";
+
+  static set _routes(value) {
+    Router.routes = value;
+  }
+
+  static get _routes() {
+    return Router.routes;
+  }
 
   static ready() {
     routerReadyDependency.depend();
@@ -62,7 +71,7 @@ class Router {
   static getRouteName() {
     const current = Router.current();
 
-    return current.options && current.options.name || "";
+    return current.route && current.route.name || "";
   }
 
   static getParam(name) {
@@ -77,6 +86,19 @@ class Router {
     const current = Router.current();
 
     return current.query && current.query[name] || undefined;
+  }
+
+  static setQueryParams(newParams) {
+    const current = Router.current();
+    const queryParams = Object.assign({}, current.query, newParams);
+
+    for (const key in queryParams) {
+      if (queryParams[key] === null || queryParams[key] === undefined) {
+        delete queryParams[key];
+      }
+    }
+
+    Router.go(current.route.name, current.params, queryParams);
   }
 
   static watchPathChange() {
@@ -144,20 +166,36 @@ Router.pathFor = (path, options = {}) => {
 Router.go = (path, params, query) => {
   let actualPath;
 
-  if (typeof path === "string" && path.startsWith("/")) {
-    actualPath = path;
-  } else {
-    actualPath = Router.pathFor(path, {
-      hash: {
-        ...params,
-        query
+  const routerGo = () => {
+    if (typeof path === "string" && path.startsWith("/")) {
+      actualPath = path;
+    } else {
+      actualPath = Router.pathFor(path, {
+        hash: {
+          ...params,
+          query
+        }
+      });
+    }
+
+    if (window) {
+      history.push(actualPath);
+    }
+  };
+
+  // if Router is in a non ready/initialized state yet ,wait until it is
+  if (!Router.ready()) {
+    Tracker.autorun(routerReadyWaitFor => {
+      if (Router.ready()) {
+        routerReadyWaitFor.stop();
+        routerGo();
       }
     });
+
+    return;
   }
 
-  if (window) {
-    history.push(actualPath);
-  }
+  routerGo();
 };
 
 Router.replace = (path, params, query) => {
@@ -191,18 +229,26 @@ Router.reload = () => {
 Router.isActiveClassName = (routeName) => {
   const current = Router.current();
   const group = current.route.group;
-  const path = current.route.path;
-  let prefix;
+  let prefix = "";
 
-  if (group && group.prefix) {
-    prefix = current.route.group.prefix;
-  } else {
-    prefix = "";
-  }
+  if (current.route) {
+    const path = current.route.path;
 
-  if (typeof path === "string") {
-    const routeDef = path.replace(prefix + "/", "");
-    return routeDef === routeName ? "active" : "";
+    if (group && group.prefix) {
+      prefix = current.route.group.prefix;
+    }
+
+    // Match route
+    if (prefix.length && routeName.startsWith(prefix) && path === routeName) {
+      // Route name is a path and starts with the prefix. (default '/reaction')
+      return Router.activeClassName;
+    } else if (routeName.startsWith("/") && path === routeName) {
+      // Route name isa  path and starts with slash, but was not prefixed
+      return Router.activeClassName;
+    } else if (current.route.name === routeName) {
+      // Route name is the actual name of the route
+      return Router.activeClassName;
+    }
   }
 
   return "";
@@ -219,7 +265,7 @@ function hasRoutePermission(route) {
 
   if (routeName === "index" || routeName === "not-found") {
     return true;
-  } else if (Router.Reaction.hasPermission(routeName, Meteor.userId())) {
+  } else if (Router.Reaction.hasPermission(route.permissions, Meteor.userId())) {
     return true;
   }
 
@@ -228,7 +274,7 @@ function hasRoutePermission(route) {
 
 
 /**
- * getRouteName
+ * getRegistryRouteName
  * assemble route name to be standard
  * prefix/package name + registry name or route
  * @param  {String} packageName  [package name]
@@ -340,13 +386,14 @@ export function ReactionLayout(options = {}) {
     structure: layoutStructure,
     component: (props) => { // eslint-disable-line react/no-multi-comp, react/display-name
       const route = Router.current().route;
+      const permissions = options.permissions;
       const structure = {
         ...layoutStructure
       };
 
       // If the current route is unauthorized, and is not the "not-found" route,
       // then override the template to use the default unauthroized template
-      if (hasRoutePermission(route) === false && route.name !== "not-found") {
+      if (hasRoutePermission({ ...route, permissions }) === false && route.name !== "not-found") {
         structure.template = "unauthorized";
       }
 
@@ -377,150 +424,149 @@ export function ReactionLayout(options = {}) {
  * @returns {undefined} returns undefined
  */
 Router.initPackageRoutes = (options) => {
+  // make _initialized = false in case router is reinitialized
+  Router._initialized = false;
+  routerReadyDependency.changed();
+
   Router.Reaction = options.reactionContext;
   Router.routes = [];
 
   const pkgs = Packages.find().fetch();
   const prefix = Router.Reaction.getShopPrefix();
-  const reactRouterRoutes = [];
+  const routeDefinitions = [];
 
   // prefixing isnt necessary if we only have one shop
   // but we need to bypass the current
   // subscription to determine this.
   const shopSub = Meteor.subscribe("shopsCount");
-  if (shopSub.ready()) {
-    // using tmeasday:publish-counts
-    const shopCount = Counts.get("shops-count");
 
-    // Index layout
-    const indexLayout = ReactionLayout(options.indexRoute);
-    const indexRoute = {
-      route: "/",
-      name: "index",
-      options: {
+  Tracker.autorun(shopSubWaitFor => {
+    if (shopSub.ready()) {
+      shopSubWaitFor.stop();
+        // using tmeasday:publish-counts
+      const shopCount = Counts.get("shops-count");
+
+      // Default layouts
+      const indexLayout = ReactionLayout(options.indexRoute);
+      const notFoundLayout = ReactionLayout({ template: "notFound" });
+
+      // Index route
+      routeDefinitions.push({
+        route: "/",
         name: "index",
-        ...options.indexRoute,
-        component: indexLayout.component,
-        structure: indexLayout.structure
-      }
-    };
+        options: {
+          name: "index",
+          ...options.indexRoute,
+          component: indexLayout.component,
+          structure: indexLayout.structure
+        }
+      });
 
-    reactRouterRoutes.push(
-      <Route
-        exact={true}
-        key="index"
-        path="/"
-        render={indexLayout.component}
-      />
-    );
-
-    const notFoundLayout = ReactionLayout({ template: "notFound" });
-    const notFoundRoute = {
-      route: "/not-found",
-      name: "not-found",
-      options: {
+      // Not found route
+      routeDefinitions.push({
+        route: "/not-found",
         name: "not-found",
-        ...notFoundLayout.indexRoute,
-        component: notFoundLayout.component,
-        structure: notFoundLayout.structure
-      }
-    };
+        options: {
+          name: "not-found",
+          ...notFoundLayout.indexRoute,
+          component: notFoundLayout.component,
+          structure: notFoundLayout.structure
+        }
+      });
 
-    reactRouterRoutes.push(
-      <Route
-        key="not-found"
-        path="/not-found"
-        render={notFoundLayout.component}
-      />
-    );
-
-    Router.routes.push(indexRoute);
-    Router.routes.push(notFoundRoute);
-
-    // get package registry route configurations
-    for (const pkg of pkgs) {
-      const newRoutes = [];
-      // pkg registry
-      if (pkg.registry && pkg.enabled) {
-        const registry = Array.from(pkg.registry);
-        for (const registryItem of registry) {
-          // registryItems
-          if (registryItem.route) {
-            const {
-              meta,
-              route,
-              template,
-              layout,
-              workflow
-            } = registryItem;
-
-            // get registry route name
-            const name = getRegistryRouteName(pkg.name, registryItem);
-
-            // define new route
-            // we could allow the options to be passed in the registry if we need to be more flexible
-            const reactionLayout = ReactionLayout({ template, workflow, layout });
-            const newRouteConfig = {
-              route,
-              name,
-              options: {
+      // get package registry route configurations
+      for (const pkg of pkgs) {
+        const newRoutes = [];
+        // pkg registry
+        if (pkg.registry && pkg.enabled) {
+          const registry = Array.from(pkg.registry);
+          for (const registryItem of registry) {
+            // registryItems
+            if (registryItem.route) {
+              const {
                 meta,
-                name,
+                route,
+                permissions,
                 template,
                 layout,
-                triggersEnter: Router.Hooks.get("onEnter", name),
-                triggersExit: Router.Hooks.get("onExit", name),
-                component: reactionLayout.component,
-                structure: reactionLayout.structure
-              }
-            };
+                workflow
+              } = registryItem;
 
-            // push new routes
-            newRoutes.push(newRouteConfig);
-          } // end registryItems
-        } // end package.registry
+              // get registry route name
+              const name = getRegistryRouteName(pkg.name, registryItem);
 
-        //
-        // add group and routes to routing table
-        //
-        const uniqRoutes = new Set(newRoutes);
-        let index = 0;
-        for (const route of uniqRoutes) {
-          // allow overriding of prefix in route definitions
-          // define an "absolute" url by excluding "/"
-          route.group = {};
+              // define new route
+              // we could allow the options to be passed in the registry if we need to be more flexible
+              const reactionLayout = ReactionLayout({ template, workflow, layout, permissions });
+              const newRouteConfig = {
+                route,
+                name,
+                options: {
+                  meta,
+                  name,
+                  template,
+                  layout,
+                  triggersEnter: Router.Hooks.get("onEnter", name),
+                  triggersExit: Router.Hooks.get("onExit", name),
+                  component: reactionLayout.component,
+                  structure: reactionLayout.structure
+                }
+              };
 
-          if (route.route.substring(0, 1) !== "/") {
-            route.route = "/" + route.route;
-            route.group.prefix = "";
-          } else if (shopCount <= 1) {
-            route.group.prefix = "";
-          } else {
-            route.group.prefix = prefix;
-            route.route = `${prefix}${route.route}`;
+              // push new routes
+              newRoutes.push(newRouteConfig);
+            } // end registryItems
+          } // end package.registry
+
+          //
+          // add group and routes to routing table
+          //
+          for (const route of newRoutes) {
+            // allow overriding of prefix in route definitions
+            // define an "absolute" url by excluding "/"
+            route.group = {};
+
+            if (route.route.substring(0, 1) !== "/") {
+              route.route = "/" + route.route;
+              route.group.prefix = "";
+            } else if (shopCount <= 1) {
+              route.group.prefix = "";
+            } else {
+              route.group.prefix = prefix;
+              route.route = `${prefix}${route.route}`;
+            }
+
+            routeDefinitions.push(route);
           }
-
-          // Add the route to the routing table
-          reactRouterRoutes.push(
-            <Route
-              key={`${pkg.name}-${route.name}-${index++}`}
-              path={route.route}
-              exact={true}
-              render={route.options.component}
-            />
-          );
-
-          Router.routes.push(route);
         }
-      }
-    } // end package loop
+      } // end package loop
 
-    Router._initialized = true;
-    Router.reactComponents = reactRouterRoutes;
-    Router._routes = Router.routes;
+      // Uniq-ify routes
+      // Take all route definitions in the order that were received, and reverse it.
+      // Routes defined later, like in the case of custom routes will then have a
+      // higher precedence. Any duplicates after the first instance will be removed.
+      //
+      // TODO: In the future, sort by priority
+      // TODO: Allow duplicated routes with a prefix / suffix / flag
+      const uniqRoutes = uniqBy(routeDefinitions.reverse(), "route");
+      const reactRouterRoutes = uniqRoutes.map((route, index) => {
+        return (
+          <Route
+            key={`${route.name}-${index}`}
+            path={route.route}
+            exact={true}
+            render={route.options.component}
+          />
+        );
+      });
 
-    routerReadyDependency.changed();
-  }
+      Router._initialized = true;
+      Router.reactComponents = reactRouterRoutes;
+      Router._routes = uniqRoutes;
+
+      routerReadyDependency.changed();
+    }
+  });
 };
 
 

@@ -5,10 +5,19 @@
     "reaction-i18n": {
       "admin": {
         "i18nSettings": {
-          "localization": "Εντοπισμός",
+          "shopLocalization": "Κατάστημα εντοπισμού",
           "enabledCurrencies": "νομίσματα",
-          "enabledLanguages": "γλώσσες"
-        }
+          "enabledLanguages": "γλώσσες",
+          "allOn": "όλα On",
+          "allOff": "όλα Off"
+        },
+        "baseUOM": "Βάση Μονάδα Μέτρησης",
+        "currency": "Νόμισμα βάσης",
+        "currencyTooltip": "Κατάστημα προεπιλεγμένο νόμισμα",
+        "language": "βάση Γλώσσα",
+        "languageTooltip": "Αυτή η γλώσσα θα χρησιμοποιηθεί αν η ανίχνευση γλώσσα της συσκευής θα αποτύχει να",
+        "timezone": "Ζώνη ώρας",
+        "timezoneOptions": "Επιλέξτε ζώνη ώρας"
       }
     }
   }

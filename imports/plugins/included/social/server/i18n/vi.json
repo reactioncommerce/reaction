@@ -10,14 +10,29 @@
           "socialDescription": "cấu hình kênh xã hội"
         },
         "settings": {
-          "facebook": "Facebook",
-          "twitter": "Twitter",
-          "pinterest": "Pinterest",
-          "googleplus": "Google+",
-          "appId": "Id App",
-          "username": "Tên đăng nhập",
-          "appSecret": "App bí mật",
-          "profilePage": "Profile",
+          "public": {
+            "apps": {
+              "facebook": {
+                "title": "Facebook",
+                "appId": "ID ứng dụng",
+                "appSecret": "App bí mật",
+                "profilePage": "Profile"
+              },
+              "googleplus": {
+                "title": "Google+",
+                "profilePage": "Profile"
+              },
+              "pinterest": {
+                "title": "Pinterest",
+                "profilePage": "Profile"
+              },
+              "twitter": {
+                "title": "Twitter",
+                "username": "Tên đăng nhập",
+                "profilePage": "Profile"
+              }
+            }
+          },
           "socialSettingsLabel": "Cài đặt xã hội",
           "socialSettingsSaved": "Cài đặt xã hội lưu"
         }

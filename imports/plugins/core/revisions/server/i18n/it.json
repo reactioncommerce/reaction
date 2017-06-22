@@ -10,7 +10,7 @@
           "revisionsTitle": "revisioni",
           "revisionsDescription": "controllo di revisione"
         },
-        "settings": {
+        "catalogSettings": {
           "productRevisionsLabel": "Le revisioni del prodotto"
         },
         "toolbar": {

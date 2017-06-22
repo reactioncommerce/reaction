@@ -29,6 +29,7 @@
           "shopCustomTaxRatesFailed": "Chyba při ukládání sazbu daně.",
           "shopTaxMethodsSaved": "Uložen metoda daň.",
           "shopTaxMethodsFailed": "Nepodařilo ukládání daně metodu.",
+          "customRatesLabel": "Vlastní Ceny",
           "customRatesDescription": "Vlastní Ceny",
           "taxCode": "Daňový kód",
           "taxShipping": "patří Shipping",

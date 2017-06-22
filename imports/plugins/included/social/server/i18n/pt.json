@@ -10,14 +10,29 @@
           "socialDescription": "configuração do Canal social"
         },
         "settings": {
-          "facebook": "Facebook",
-          "twitter": "Twitter",
-          "pinterest": "Pinterest",
-          "googleplus": "Google+",
-          "appId": "app Id",
-          "username": "Nome de utilizador",
-          "appSecret": "app Segredo",
-          "profilePage": "Página de perfil",
+          "public": {
+            "apps": {
+              "facebook": {
+                "title": "Facebook",
+                "appId": "ID da aplicação",
+                "appSecret": "app Segredo",
+                "profilePage": "Página de perfil"
+              },
+              "googleplus": {
+                "title": "Google+",
+                "profilePage": "Página de perfil"
+              },
+              "pinterest": {
+                "title": "Pinterest",
+                "profilePage": "Página de perfil"
+              },
+              "twitter": {
+                "title": "Twitter",
+                "username": "Nome de utilizador",
+                "profilePage": "Página de perfil"
+              }
+            }
+          },
           "socialSettingsLabel": "Configurações sociais",
           "socialSettingsSaved": "ambientes sociais salvo"
         }

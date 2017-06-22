@@ -26,6 +26,7 @@
         "processingError": "Volt egy probléma a fizetést.",
         "completeYourOrder": "Teljesíteni rendelését",
         "noPaymentMethods": "Nem fizetési módok vannak beállítva.",
+        "contactAdmin": "Kérjük, forduljon a bolt rendszergazda.",
         "configureNow": "Konfigurálása most.",
         "failedToPlaceOrder": "Nem sikerült helyet érdekében."
       }

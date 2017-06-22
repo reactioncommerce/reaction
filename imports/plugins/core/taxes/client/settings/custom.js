@@ -1,3 +1,4 @@
+import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { ReactiveDict } from "meteor/reactive-dict";
 import { AutoForm } from "meteor/aldeed:autoform";
@@ -135,7 +136,7 @@ Template.customTaxRates.helpers({
     if ((shop !== null ? shop.locales.countries[selectedCountry].states : void 0) === null) {
       return false;
     }
-    options = [];
+    const options = [];
     if (shop && typeof shop.locales.countries[selectedCountry].states === "object") {
       for (const state in shop.locales.countries[selectedCountry].states) {
         if ({}.hasOwnProperty.call(shop.locales.countries[selectedCountry].states, state)) {
@@ -205,7 +206,7 @@ Template.customTaxRates.events({
     });
   },
   "click .cancel, .tax-grid-row .active": function () {
-    instance = Template.instance();
+    const instance = Template.instance();
     // remove active rows from grid
     instance.state.set({
       isEditing: false,
