@@ -1,8 +1,9 @@
-import { i18next } from "/client/api";
-import * as Collections from "/lib/collections";
+import { $ } from "meteor/jquery";
 import { Session } from "meteor/session";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
+import { i18next } from "/client/api";
+import * as Collections from "/lib/collections";
 
 Template.addressBookAdd.helpers({
   thisAddress: function () {
@@ -53,36 +54,6 @@ Template.addressBookAdd.helpers({
   }
 });
 
-
-export function setValidatedAddress(res) {
-  if (res.validatedAddress.city) {
-    const city = $("input[name='city']");
-    city.val(res.validatedAddress.city);
-  }
-  if (res.validatedAddress.postal) {
-    const postal = $("input[name='postal']");
-    postal.val(res.validatedAddress.postal);
-  }
-  if (res.validatedAddress.address1) {
-    const address1 = $("input[name='address1']");
-    address1.val(res.validatedAddress.address1);
-  }
-
-  if (res.validatedAddress.address2) {
-    const address2 = $("input[name='address2']");
-    address2.val(res.validatedAddress.address2);
-  }
-  if (res.validatedAddress.country) {
-    const country = $("select[name='country']");
-    country.val(res.validatedAddress.country);
-  }
-
-  if (res.validatedAddress.region) {
-    const region = $("select[name='region']");
-    region.val(res.validatedAddress.region);
-  }
-}
-
 /**
  * addressBookAddForm form handling
  * @description gets accountId and calls addressBookAdd method
@@ -96,6 +67,7 @@ AutoForm.hooks({
       const addressBook = $(this.template.firstNode).closest(".address-book");
 
       Meteor.call("accounts/validateAddress", insertDoc, function (err, res) {
+        // if the address is validated OR the address has already been through the validation process, pass it on
         if (res.validated) {
           Meteor.call("accounts/addressBookAdd", insertDoc, function (error, result) {
             if (error) {
@@ -110,21 +82,16 @@ AutoForm.hooks({
             }
           });
         } else {
-          if (res.validatedAddress) {
-            setValidatedAddress(res);
-            Alerts.inline("Made changes to your address based upon validation. Please ensure this is correct", "warning", {
-              placement: "addressBookAdd",
-              i18nKey: "addressBookAdd.validatedAddress"
-            });
-          }
-          if (res.formErrors) {
-            for (const error of res.formErrors) {
-              Alerts.inline(error.details, "error", {
-                placement: "addressBookAdd"
-              });
-            }
-          }
-          that.done("Validation failed"); // renable Save and Continue button
+          // set addressState and kick it back to review
+          const addressState = {
+            requiresReview: true,
+            address: insertDoc,
+            validatedAddress: res.validatedAddress,
+            formErrors: res.formErrors,
+            fieldErrors: res.fieldErrors
+          };
+          Session.set("addressState", addressState);
+          addressBook.trigger($.Event("addressRequiresReview"));
         }
       });
     }

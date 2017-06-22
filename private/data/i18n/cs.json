@@ -141,7 +141,7 @@
           "newOrder": "Vaše objednávka se zpracovává.",
           "forAdmin": "Máte novou objednávku.",
           "orderDelivered": "Vaše objednávka byla doručena.",
-          "orderAccepted": "Vaše objednávka byla přijata.",
+          "orderProcessing": "Vaše objednávka se zpracovává.",
           "orderShipped": "Vaše objednávka byla odeslána."
         }
       },
@@ -298,7 +298,12 @@
       "cartDrawer": {
         "empty": "Jsme smutní. Tvůj vozík je prázdný.",
         "keepShopping": "Mějte na nákupy",
-        "checkout": "Zkontrolovat teď"
+        "checkout": "Zkontrolovat teď",
+        "new": "Nový",
+        "coreOrderWorkflow/created": "Vytvořeno",
+        "coreOrderWorkflow/processing": "zpracování",
+        "coreOrderWorkflow/completed": "Dokončeno",
+        "coreOrderWorkflow/canceled": "Zrušeno"
       },
       "cartSubTotals": {
         "discount": "Sleva",
@@ -380,9 +385,7 @@
         "resendNotification": "Znovu poslat zásilky Oznámení"
       },
       "orderWorkflow": {
-        "fulfillment": "Splnění",
         "orderDetails": "Podrobnosti o objednávce",
-        "summary": "Souhrn",
         "invoice": "Faktura",
         "shipmentTracking": "Sledování zásilky"
       },
@@ -429,6 +432,7 @@
       },
       "addressBookEdit": {
         "editAddress": "Úpravou tohoto zadání adresy",
+        "addressValidation": "Ověření adresy",
         "somethingWentWrong": "Něco se pokazilo: {{err}}"
       },
       "corePackageConfig": {
