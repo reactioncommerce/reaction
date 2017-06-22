@@ -61,12 +61,6 @@ class ProductsContainer extends Component {
     this.loadMoreProducts = this.loadMoreProducts.bind(this);
   }
 
-  componentDidMount() {
-    const appContainer = document.querySelector("#reactionAppContainer");
-    appContainer.addEventListener("scroll", loadMoreProducts);
-    window.addEventListener("scroll", loadMoreProducts);
-  }
-
   ready = () => {
     const isInitialLoad = this.state.initialLoad === true;
     const isReady = this.props.productsSubscription.ready();
