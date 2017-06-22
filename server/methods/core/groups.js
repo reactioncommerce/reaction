@@ -1,6 +1,7 @@
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
+import { Random } from "meteor/random";
 import { Roles } from "meteor/alanning:roles";
 import { Logger } from "/server/api";
 import { Accounts, Shops } from "/lib/collections";
@@ -33,8 +34,9 @@ Meteor.methods({
       throw new Meteor.Error(403, "Access Denied");
     }
 
-    const currentGroups = _.get(Shops.findOne({ _id: shopId }, { groups: 1 }), "groups", []);
+    const currentGroups = _.get(Shops.findOne({ _id: shopId }), "groups", []);
     const group = Object.assign({}, groupData, {
+      _id: Random.id(),
       slug: getSlug(groupData.name),
       createdAt: new Date()
     });
@@ -80,13 +82,22 @@ Meteor.methods({
     if (!Roles.userIsInRole(Meteor.userId(), "admin", shopId)) {
       throw new Meteor.Error(403, "Access Denied");
     }
-    const nameChanged = group.name !== newGroupData.name;
+
+    // 1. Update the group data on the shop doc
+    const currentGroups = _.get(Shops.findOne({ _id: shopId }), "groups", []);
+    const groups = currentGroups.map(grp => {
+      if (grp._id === group._id) {
+        return Object.assign({}, group, newGroupData, { slug: getSlug(newGroupData.name) });
+      }
+      delete grp._id;
+      delete grp.createdAt;
+      return grp;
+    });
+    Shops.update({ _id: shopId }, { $set: { groups } });
+
+    // 2. Check & Modify users in the group that changed
     const permissionsChanged = !_.isEqual(group.permissions, newGroupData.permissions);
-    const updateQuery = { "groups.$": newGroupData };
-
-    Shops.update({ _id: shopId, groups: group }, { $set: updateQuery });
-
-    const matchQuery = { $elemMatch: { shopId: shopId, names: group.name } };
+    const matchQuery = { $elemMatch: { shopId: shopId, groupId: group._id } };
     const users = Accounts.find({ groups: matchQuery }).fetch();
     let error;
 
@@ -94,10 +105,7 @@ Meteor.methods({
       error = setUserPermissions(users, group, newGroupData, shopId);
     }
 
-    if (nameChanged) {
-      changeUserGroupOnAccount(users, newGroupData.name, shopId);
-    }
-
+    // 3. Return response
     if (!error) {
       return { status: 200 };
     }
@@ -124,7 +132,7 @@ Meteor.methods({
 
     try {
       Meteor.call("accounts/addUserPermissions", user.userId, groupData.permissions, shopId);
-      changeUserGroupOnAccount(user, groupData.name, shopId);
+      changeUserGroupOnAccount(user, groupData._id, shopId);
       return { status: 200 };
     } catch (error) {
       Logger.error(error);
@@ -154,7 +162,7 @@ Meteor.methods({
     const permissions = getGroupPermissions(Shops.findOne({ _id: shopId }).groups, groupName);
     try {
       Meteor.call("accounts/removeUserPermissions", user._id, permissions, shopId);
-      changeUserGroupOnAccount(user, null, shopId); // update group name to null on the user account
+      changeUserGroupOnAccount(user, null, shopId); // set group name to null on the user account
       return { status: 200 };
     } catch (error) {
       Logger.error(error);
@@ -163,14 +171,19 @@ Meteor.methods({
   }
 });
 
-function changeUserGroupOnAccount(users, groupName, shopId) {
-  return users.forEach(user => {
+// add/remove the id of a group to a user account
+function changeUserGroupOnAccount(users, groupId, shopId) {
+  let affectedUsers = users;
+  if (!Array.isArray(users)) {
+    affectedUsers = [users];
+  }
+  return affectedUsers.forEach(user => {
     if (!user.groups) { // if no groups on account yet, set default
       user.groups = [{ shopId }];
     }
     user.groups = user.groups.map(group => {
       if (group.shopId === shopId) {
-        group.names = [groupName || ""];
+        group.groupId = [groupId || ""];
       }
       return group;
     });
@@ -185,6 +198,7 @@ function setUserPermissions(users, oldGroup, newGroupData, shopId) {
   if (!Array.isArray(users)) {
     affectedUsers = [users];
   }
+  // todo: default roles ??
   return affectedUsers.forEach(user => Roles.setUserRoles(user._id, newGroupData.permissions, shopId));
 }
 
