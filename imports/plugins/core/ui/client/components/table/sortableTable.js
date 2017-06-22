@@ -169,12 +169,14 @@ SortableTable.propTypes = {
   /** @type {function} onRowClick provides function / action when clicking on row */
   onRowClick: PropTypes.func,
   /** @type {string} publication provides publication to get Meteor data from */
-  publication: PropTypes.string
+  publication: PropTypes.string,
+  /** @type {object} query provides query for publication filtering */
+  query: PropTypes.object
 };
 
 SortableTable.defaultProps = {
   defaultPageSize: 10,
-  isFilterable: true,
+  isFilterable: false,
   isResizeable: true,
   isSortable: true,
   minRows: 0
