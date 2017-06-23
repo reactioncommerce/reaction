@@ -7,20 +7,24 @@ import { Media } from "/lib/collections";
  */
 Template.ordersListItems.helpers({
   media: function () {
-    const variantImage = Media.findOne({
-      "metadata.productId": this.productId,
-      "metadata.variantId": this.variants._id
-    });
-    // variant image
-    if (variantImage) {
-      return variantImage;
-    }
-    // find a default image
-    const productImage = Media.findOne({
-      "metadata.productId": this.productId
-    });
-    if (productImage) {
-      return productImage;
+    const cartImagesSub = Meteor.subscribe("CartItemImage", this);
+    if (cartImagesSub.ready()) {
+      const variantImage = Media.findOne({
+        "metadata.productId": this.productId,
+        "metadata.variantId": this.variants._id
+      });
+      // variant image
+      if (variantImage) {
+        return variantImage;
+      }
+      // find a default image
+      const productImage = Media.findOne({
+        "metadata.productId": this.productId
+      });
+      if (productImage) {
+        return productImage;
+      }
+      return false;
     }
     return false;
   },
