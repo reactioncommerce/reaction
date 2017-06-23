@@ -142,7 +142,6 @@ reactive-dict@1.1.9
 reactive-var@1.0.11
 reload@1.1.11
 retry@1.0.9
-risul:moment-timezone@0.5.7
 routepolicy@1.0.12
 service-configuration@1.0.11
 session@1.1.7
