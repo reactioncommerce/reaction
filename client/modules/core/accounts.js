@@ -1,7 +1,7 @@
+import amplify from "amplify-store";
 import { Accounts } from "meteor/accounts-base";
 import { Session } from "meteor/session";
 import { Random } from "meteor/random";
-// import { amplify } from "meteor/amplify";
 
 /*
  * registerLoginHandler

@@ -22,6 +22,7 @@
     "@reactioncommerce/authorize-net": "^1.0.8",
     "@reactioncommerce/nodemailer": "^5.0.4",
     "accounting-js": "^1.1.1",
+    "amplify-store": "^0.1.0",
     "autoprefixer": "^7.1.1",
     "autosize": "^3.0.20",
     "babel-runtime": "^6.23.0",
@@ -149,15 +150,25 @@
   },
   "babel": {
     "plugins": [
-      "lodash", ["module-resolver", {
-        "root": ["./"],
-        "alias": {
-          "underscore": "lodash",
-          "@reactioncommerce/reaction-ui": "./imports/plugins/core/ui/client/components",
-          "@reactioncommerce/reaction-router": "./imports/plugins/core/router/lib"
+      "lodash",
+      [
+        "module-resolver",
+        {
+          "root": [
+            "./"
+          ],
+          "alias": {
+            "underscore": "lodash",
+            "@reactioncommerce/reaction-ui": "./imports/plugins/core/ui/client/components",
+            "@reactioncommerce/reaction-router": "./imports/plugins/core/router/lib"
+          }
         }
-      }]
+      ]
     ],
-    "presets": ["es2015", "react", "stage-2"]
+    "presets": [
+      "es2015",
+      "react",
+      "stage-2"
+    ]
   }
 }

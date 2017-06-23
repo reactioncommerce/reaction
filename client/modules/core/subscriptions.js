@@ -1,3 +1,4 @@
+import amplify from "amplify-store";
 import { Meteor } from "meteor/meteor";
 import { Random } from "meteor/random";
 import { Session } from "meteor/session";
