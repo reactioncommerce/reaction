@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { List, ListItem } from "/imports/plugins/core/ui/client/components";
+import AccountsTable from "./accountsTable";
+import AccountsListItem from "./accountsListItem";
 
 class AccountsComponent extends Component {
   static propTypes = {
@@ -15,24 +16,33 @@ class AccountsComponent extends Component {
     };
   }
 
-  renderAccountList() {
-    if (Array.isArray(this.state.accounts)) {
-      return this.state.accounts.map((account, index) => (
-          <ListItem
-            key={index}
-            actionType="arrow"
-            label="My List Item 2"
-          />
-      ));
-    }
-    return null;
-  }
+  // renderAccountList() {
+  //   if (Array.isArray(this.state.accounts)) {
+  //     return this.state.accounts.map((account, index) => (
+  //         <ListItem
+  //           key={index}
+  //           actionType="arrow"
+  //           label="My List Item 2"
+  //         />
+  //     ));
+  //   }
+  //   return null;
+  // }
+
 
   render() {
     return (
-      <List >
-        {this.renderAccountList()}
-      </List>
+      <div className="list-group">
+        <AccountsTable
+          users={this.state.accounts}
+          headerLabel="Shop Manager"
+        />
+        <AccountsTable
+          users={this.state.accounts}
+          headerLabel="Guest"
+        />
+      </div>
+
     );
   }
 }
