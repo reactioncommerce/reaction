@@ -312,8 +312,7 @@ describe("Publication", function () {
 
         collector.collect("Product", "my", (collections) => {
           const products = collections.Products;
-
-          expect(products).to.be.undefined;
+          expect(products.length).to.equal(0);
 
           if (!isDone) {
             isDone = true;
