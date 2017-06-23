@@ -329,7 +329,7 @@ export default {
       // set the default shop email to the default admin email
       Shops.update(shopId, {
         $addToSet: {
-          domains: domain
+          domains: this.getDomain()
         }
       });
     }
