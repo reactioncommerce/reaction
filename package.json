@@ -52,6 +52,7 @@
     "later": "^1.2.0",
     "lodash": "^4.17.4",
     "lodash.pick": "^4.4.0",
+    "match-sorter": "^1.8.0",
     "meteor-node-stubs": "^0.2.11",
     "moment": "^2.18.1",
     "moment-timezone": "^0.5.11",
@@ -147,15 +148,25 @@
   },
   "babel": {
     "plugins": [
-      "lodash", ["module-resolver", {
-        "root": ["./"],
-        "alias": {
-          "underscore": "lodash",
-          "@reactioncommerce/reaction-ui": "./imports/plugins/core/ui/client/components",
-          "@reactioncommerce/reaction-router": "./imports/plugins/core/router/lib"
+      "lodash",
+      [
+        "module-resolver",
+        {
+          "root": [
+            "./"
+          ],
+          "alias": {
+            "underscore": "lodash",
+            "@reactioncommerce/reaction-ui": "./imports/plugins/core/ui/client/components",
+            "@reactioncommerce/reaction-router": "./imports/plugins/core/router/lib"
+          }
         }
-      }]
+      ]
     ],
-    "presets": ["es2015", "react", "stage-2"]
+    "presets": [
+      "es2015",
+      "react",
+      "stage-2"
+    ]
   }
 }
