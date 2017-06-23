@@ -3,7 +3,7 @@ import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Random } from "meteor/random";
 import { Roles } from "meteor/alanning:roles";
-import { Logger } from "/server/api";
+import { Reaction, Logger } from "/server/api";
 import { Accounts, Shops } from "/lib/collections";
 import { getSlug } from "/lib/api";
 
@@ -30,7 +30,7 @@ Meteor.methods({
     check(groupData.permissions, [String]);
     check(shopId, String);
 
-    if (!Roles.userIsInRole(Meteor.userId(), "admin", shopId)) {
+    if (!Reaction.hasPermission(Meteor.userId(), "admin", shopId)) {
       throw new Meteor.Error(403, "Access Denied");
     }
 
@@ -79,7 +79,7 @@ Meteor.methods({
     check(newGroupData.permissions, [String]);
     check(shopId, String);
 
-    if (!Roles.userIsInRole(Meteor.userId(), "admin", shopId)) {
+    if (!Reaction.hasPermission(Meteor.userId(), "admin", shopId)) {
       throw new Meteor.Error(403, "Access Denied");
     }
 
@@ -128,6 +128,10 @@ Meteor.methods({
     check(groupData.permissions, [String]);
     check(shopId, String);
 
+    if (!Reaction.hasPermission(Meteor.userId(), "admin", shopId)) {
+      throw new Meteor.Error(403, "Access Denied");
+    }
+
     const user = Accounts.findOne({ _id: userId });
 
     try {
@@ -152,6 +156,10 @@ Meteor.methods({
     check(userId, String);
     check(groupName, String);
     check(shopId, String);
+
+    if (!Reaction.hasPermission(Meteor.userId(), "admin", shopId)) {
+      throw new Meteor.Error(403, "Access Denied");
+    }
 
     const user = Accounts.findOne({ _id: userId });
 
