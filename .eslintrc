@@ -8,10 +8,10 @@
   },
   "globals": {
     "browser": true,
-    "Assets": true,
-    "it": true,
+    "Assets": true, // Meteor global
+    "Package": true, // Meteor global
     "FS": true, // gridFS,
-    "Alerts": true,
+    "Alerts": true,  // this needs to get cleaned up, but ignoring for now
     "jest": true,
     "expect": true,
     "test": true

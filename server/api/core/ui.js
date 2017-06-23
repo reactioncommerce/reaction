@@ -1,3 +1,4 @@
+/* global baseStyles */
 import postcss from "postcss";
 import postcssJS from "postcss-js";
 import autoprefixer from "autoprefixer";
