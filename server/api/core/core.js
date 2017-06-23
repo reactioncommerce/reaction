@@ -608,6 +608,57 @@ export default {
       });
     });
   },
+
+  /**
+   *  insertPackagesForShop
+   *  insert Reaction packages into Packages collection registry for a new shop
+   *  Assigns owner roles for new packages
+   *  Imports layouts from packages
+   *  @param {String} shopId - the shopId you need to create packages for
+   *  @return {String} returns insert result
+   */
+  insertPackagesForShop(shopId) {
+    const layouts = [];
+    if (!shopId) {
+      return [];
+    }
+    const packages = this.Packages;
+    // for each shop, we're loading packages in a unique registry
+    // Object.keys(pkgConfigs).forEach((pkgName) => {
+    for (const packageName in packages) {
+      // Guard to prvent unexpected `for in` behavior
+      if ({}.hasOwnProperty.call(packages, packageName)) {
+        const config = packages[packageName];
+        this.assignOwnerRoles(shopId, packageName, config.registry);
+
+        const pkg = {
+          name: packageName,
+          icon: config.icon,
+          enabled: !!config.autoEnable,
+          settings: config.settings,
+          registry: config.registry,
+          layout: config.layout
+        };
+
+        // populate array of layouts that don't already exist (?!)
+        if (pkg.layout) {
+          // filter out layout templates
+          for (const template of pkg.layout) {
+            if (template && template.layout) {
+              layouts.push(template);
+            }
+          }
+        }
+        this.Import.package(pkg, shopId);
+        Logger.info(`Initializing ${shopId} ${packageName}`);
+      }
+    }
+
+    // helper for removing layout duplicates
+    const uniqLayouts = uniqWith(layouts, _.isEqual);
+    this.Import.layout(uniqLayouts, shopId);
+  },
+
   setAppVersion() {
     const version = packageJson.version;
     Logger.info(`Reaction Version: ${version}`);
