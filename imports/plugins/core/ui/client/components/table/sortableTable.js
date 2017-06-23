@@ -141,7 +141,12 @@ class SortableTable extends Component {
   renderData() {
     const { filteredFields } = this.props;
     const { filterInput } = this.state;
-    const originalData = this.getMeteorData().results;
+
+    let originalData = [];
+
+    if (this.getMeteorData().results) {
+      originalData = this.getMeteorData().results;
+    }
 
     const filteredData = matchSorter(originalData, filterInput, { keys: filteredFields });
 
