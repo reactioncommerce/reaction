@@ -1,6 +1,7 @@
 import { Reaction, i18next } from "/client/api";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
+import { $ } from "meteor/jquery";
 
 
 /**

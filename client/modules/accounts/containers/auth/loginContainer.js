@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { Random } from "meteor/random";
 import { composeWithTracker } from "/lib/api/compose";
 import AuthContainer from "./authContainer";
 import { ForgotContainer } from "../passwordReset";

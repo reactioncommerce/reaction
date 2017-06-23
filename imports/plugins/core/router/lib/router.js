@@ -446,7 +446,7 @@ Router.initPackageRoutes = (options) => {
   Tracker.autorun(shopSubWaitFor => {
     if (shopSub.ready()) {
       shopSubWaitFor.stop();
-        // using tmeasday:publish-counts
+      // using tmeasday:publish-counts
       const shopCount = Counts.get("shops-count");
 
       // Default layouts

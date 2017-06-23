@@ -57,7 +57,7 @@ class MediaItem extends Component {
       if (!this.props.revision || this.props.revision.changeType !== "remove") {
         return (
           <div className="rui badge-container">
-          {this.renderRevision()}
+            {this.renderRevision()}
             <IconButton
               icon="fa fa-times"
               onClick={this.handleRemoveMedia}

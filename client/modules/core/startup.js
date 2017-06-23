@@ -1,5 +1,6 @@
 import { Meteor } from "meteor/meteor";
 import { Tracker } from "meteor/tracker";
+import { Accounts } from "meteor/accounts-base";
 import Reaction from "./main";
 
 /**
