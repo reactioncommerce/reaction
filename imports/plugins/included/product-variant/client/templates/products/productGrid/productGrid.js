@@ -1,4 +1,5 @@
 import _ from "lodash";
+import Sortable from "sortablejs";
 import { Meteor } from "meteor/meteor";
 import { $ } from "meteor/jquery";
 import { Tracker } from "meteor/tracker";
@@ -7,7 +8,40 @@ import { Template } from "meteor/templating";
 import { Reaction } from "/client/api";
 import Logger from "/client/modules/logger";
 import { ReactionProduct } from "/lib/api";
-import Sortable from "sortablejs";
+import { ITEMS_INCREMENT } from "/client/config/defaults";
+
+
+/**
+ * loadMoreProducts
+ * @summary whenever #productScrollLimitLoader becomes visible, retrieve more results
+ * this basically runs this:
+ * Session.set('productScrollLimit', Session.get('productScrollLimit') + ITEMS_INCREMENT);
+ * @return {undefined}
+ */
+function loadMoreProducts() {
+  let threshold;
+  const target = $("#productScrollLimitLoader");
+  let scrollContainer = $("#reactionAppContainer");
+
+  if (scrollContainer.length === 0) {
+    scrollContainer = $(window);
+  }
+
+  if (target.length) {
+    threshold = scrollContainer.scrollTop() + scrollContainer.height() - target.height();
+
+    if (target.offset().top < threshold) {
+      if (!target.data("visible")) {
+        target.data("productScrollLimit", true);
+        Session.set("productScrollLimit", Session.get("productScrollLimit") + ITEMS_INCREMENT || 24);
+      }
+    } else {
+      if (target.data("visible")) {
+        target.data("visible", false);
+      }
+    }
+  }
+}
 
 /**
  * productGrid helpers
