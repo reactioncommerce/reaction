@@ -3,6 +3,7 @@ import { Meteor } from "meteor/meteor";
 import { Accounts } from "meteor/accounts-base";
 import { Roles } from "meteor/alanning:roles";
 import { Session } from "meteor/session";
+import { Gravatar } from "meteor/jparker:gravatar";
 import { Reaction, Logger } from "/client/api";
 import { i18nextDep, i18next } from  "/client/api";
 import { composeWithTracker } from "/lib/api/compose";
