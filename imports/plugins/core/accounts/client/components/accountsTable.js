@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import classnames from "classnames";
 import { Checkbox, Icon } from "/imports/plugins/core/ui/client/components";
 import AccountsListItem from "./accountsListItem";
+import * as Collections from "/lib/collections";
 
 
 class AccountsTable extends Component {
@@ -10,6 +11,23 @@ class AccountsTable extends Component {
     headerLabel: PropTypes.string,
     i18nKeyLabel: PropTypes.string,
     users: PropTypes.array
+  }
+
+  getGravatar(user) {
+    const options = {
+      secure: true,
+      size: 40,
+      default: "identicon"
+    };
+    if (!user) { return false; }
+    const account = Collections.Accounts.findOne(user._id);
+    if (account && account.profile && account.profile.picture) {
+      return account.profile.picture;
+    }
+    if (user.emails && user.emails.length === 1) {
+      const email = user.emails[0].address;
+      return Gravatar.imageUrl(email, options);
+    }
   }
 
   renderHeader() {
@@ -47,7 +65,7 @@ class AccountsTable extends Component {
     return this.props.users.map((user, index) => (
       <li className={baseStyle} key={index}>
         <div className="member-list-item-profile accounts-field-profile">
-          <span><img className="circular-icon accounts-field-profile"/></span>
+          <span style={{ margin: "2%" }}><img className="circular-icon accounts-field-profile" src={this.getGravatar(user)}/></span>
           <span>Rowland Henshaw</span>
         </div>
         <div className="member-list-item-profile accounts-field">
