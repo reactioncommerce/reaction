@@ -267,13 +267,13 @@ SortableTable.defaultProps = {
   minRows: 0,
   // Text props where translations are needed
   noDataMessage: <Translation defaultValue="No results found" i18nKey={"reactionUI.components.sortableTable.tableText.noDataMessage"} />,
-  previousText: <Translation defaultValue="No results found" i18nKey={"reactionUI.components.sortableTable.tableText.previousText"} />,
-  nextText: <Translation defaultValue="No results found" i18nKey={"reactionUI.components.sortableTable.tableText.nextText"} />,
-  loadingText: <Translation defaultValue="No results found" i18nKey={"reactionUI.components.sortableTable.tableText.loadingText"} />,
+  previousText: <Translation defaultValue="Previous" i18nKey={"reactionUI.components.sortableTable.tableText.previousText"} />,
+  nextText: <Translation defaultValue="Next" i18nKey={"reactionUI.components.sortableTable.tableText.nextText"} />,
+  loadingText: <Translation defaultValue="Loading..." i18nKey={"reactionUI.components.sortableTable.tableText.loadingText"} />,
   noDataText: <Translation defaultValue="No results found" i18nKey={"reactionUI.components.sortableTable.tableText.noDataText"} />,
-  pageText: <Translation defaultValue="No results found" i18nKey={"reactionUI.components.sortableTable.tableText.pageText"} />,
-  ofText: <Translation defaultValue="No results found" i18nKey={"reactionUI.components.sortableTable.tableText.ofText"} />,
-  rowsText: <Translation defaultValue="No results found" i18nKey={"reactionUI.components.sortableTable.tableText.rowsText"} />
+  pageText: <Translation defaultValue="Page" i18nKey={"reactionUI.components.sortableTable.tableText.pageText"} />,
+  ofText: <Translation defaultValue="of" i18nKey={"reactionUI.components.sortableTable.tableText.ofText"} />,
+  rowsText: <Translation defaultValue="rows" i18nKey={"reactionUI.components.sortableTable.tableText.rowsText"} />
 };
 
 export default SortableTable;
