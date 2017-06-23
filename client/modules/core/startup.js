@@ -1,4 +1,4 @@
-import amplify from "amplify-store";
+import store from "amplify-store";
 import { Meteor } from "meteor/meteor";
 import { Tracker } from "meteor/tracker";
 import { Accounts } from "meteor/accounts-base";
@@ -19,7 +19,7 @@ Meteor.startup(function () {
     let sessionId;
     Tracker.nonreactive(function () {
       loggingIn = Accounts.loggingIn();
-      sessionId = amplify.store("Reaction.session");
+      sessionId = store("Reaction.session");
     });
     if (!userId) {
       if (!loggingIn || typeof sessionId !== "string") {

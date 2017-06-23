@@ -1,4 +1,4 @@
-import amplify from "amplify-store";
+import store from "amplify-store";
 import { Accounts } from "meteor/accounts-base";
 import { Session } from "meteor/session";
 import { Random } from "meteor/random";
@@ -18,9 +18,9 @@ Accounts.loginWithAnonymous = function (anonymous, callback) {
   // another way: `accounts` package uses `setTimeout` for monitoring connection
   // Accounts.callLoginMethod will be called after clearing cache. We could
   // latch on this computations by running extra check here.
-  if (typeof amplify.store("Reaction.session") !== "string") {
+  if (typeof store("Reaction.session") !== "string") {
     const newSession = Random.id();
-    amplify.store("Reaction.session", newSession);
+    store("Reaction.session", newSession);
     Session.set("sessionId", newSession);
   }
   Accounts.callLoginMethod({
