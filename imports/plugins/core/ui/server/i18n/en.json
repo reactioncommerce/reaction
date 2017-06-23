@@ -19,7 +19,17 @@
           "navbar": "Navigation Bar",
           "button": "Button",
           "sortableTable": {
-            "filterPlaceholder": "Filter Data"
+            "filterPlaceholder": "Filter Data",
+            "tableText": {
+              "noDataMessage": "No results found",
+              "previousText": "Previous",
+              "nextText": "Next",
+              "loadingText": "Loading...",
+              "noDataText": "No results found",
+              "pageText": "Page",
+              "ofText": "of",
+              "rowsText": "rows"
+            }
           }
         }
       }

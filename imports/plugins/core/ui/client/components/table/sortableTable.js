@@ -1,8 +1,9 @@
 import React,  { Component } from "react";
 import PropTypes from "prop-types";
-import ReactTable from "react-table";
 import _ from "lodash";
 import matchSorter from "match-sorter";
+import ReactTable from "react-table";
+import { Translation } from "@reactioncommerce/reaction-ui";
 import { SortableTableFilter, SortableTablePagination } from "./sortableTableComponents";
 
 class SortableTable extends Component {
@@ -201,7 +202,16 @@ class SortableTable extends Component {
           filterable={this.renderColumnFilter()}
           minRows={otherProps.minRows}
 
+          previousText={otherProps.previousText}
+          nextText={otherProps.nextText}
+          loadingText={otherProps.loadingText}
+          noDataText={otherProps.noDataText}
+          pageText={otherProps.pageText}
+          ofText={otherProps.ofText}
+          rowsText={otherProps.rowsText}
+
           PaginationComponent={SortableTablePagination}
+
           getTrProps={(state, rowInfo, column, instance) => { // eslint-disable-line no-unused-vars
             return {
               onClick: e => { // eslint-disable-line no-unused-vars
@@ -218,8 +228,8 @@ class SortableTable extends Component {
 SortableTable.propTypes = {
   /** @type {object} collection collection to get data from */
   collection: PropTypes.object,
-  /** @type {array} columnMetadata provides filtered columns with i18n headers */
-  columnMetadata: PropTypes.array,
+  /** @type {object} columnMetadata provides filtered columns with i18n headers */
+  columnMetadata: PropTypes.object,
   /** @type {number} defaultPageSize how many results per page */
   defaultPageSize: PropTypes.number,
   /** @type {bool} filterType filter by table, column, or both */
@@ -234,8 +244,10 @@ SortableTable.propTypes = {
   isSortable: PropTypes.bool,
   /** @type {string} matchingResultsCount provides Count publication to get count from */
   matchingResultsCount: PropTypes.string,
-  /** @type {string} minRows minimum amount of rows to display in table */
+  /** @type {number} minRows minimum amount of rows to display in table */
   minRows: PropTypes.number,
+  /** @type {string} noDataMessage text to display when no data is available */
+  noDataMessage: PropTypes.string,
   /** @type {function} onRowClick provides function / action when clicking on row */
   onRowClick: PropTypes.func,
   /** @type {string} publication provides publication to get Meteor data from */
@@ -252,7 +264,16 @@ SortableTable.defaultProps = {
   isFilterable: false,
   isResizeable: true,
   isSortable: true,
-  minRows: 0
+  minRows: 0,
+  // Text props where translations are needed
+  noDataMessage: <Translation defaultValue="No results found" i18nKey={"reactionUI.components.sortableTable.tableText.noDataMessage"} />,
+  previousText: <Translation defaultValue="No results found" i18nKey={"reactionUI.components.sortableTable.tableText.previousText"} />,
+  nextText: <Translation defaultValue="No results found" i18nKey={"reactionUI.components.sortableTable.tableText.nextText"} />,
+  loadingText: <Translation defaultValue="No results found" i18nKey={"reactionUI.components.sortableTable.tableText.loadingText"} />,
+  noDataText: <Translation defaultValue="No results found" i18nKey={"reactionUI.components.sortableTable.tableText.noDataText"} />,
+  pageText: <Translation defaultValue="No results found" i18nKey={"reactionUI.components.sortableTable.tableText.pageText"} />,
+  ofText: <Translation defaultValue="No results found" i18nKey={"reactionUI.components.sortableTable.tableText.ofText"} />,
+  rowsText: <Translation defaultValue="No results found" i18nKey={"reactionUI.components.sortableTable.tableText.rowsText"} />
 };
 
 export default SortableTable;
