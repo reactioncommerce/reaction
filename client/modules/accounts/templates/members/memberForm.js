@@ -30,9 +30,8 @@ Template.memberForm.events({
             } ${error}`;
           }
 
-          Alerts.inline(message, "warning", {
-            placement: "memberform",
-            autoHide: 1000
+          Alerts.inline(message, "error", {
+            placement: "memberform"
           });
 
           template.$("input[type=text], input[type=email]").val("");
