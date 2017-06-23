@@ -645,7 +645,7 @@ export default {
           }
         }
         Packages.insert(pkg);
-        Logger.info(`Initializing ${shopId} ${packageName}`);
+        Logger.debug(`Initializing ${shopId} ${packageName}`);
       }
     }
 
