@@ -631,14 +631,9 @@ export default {
         const config = packages[packageName];
         this.assignOwnerRoles(shopId, packageName, config.registry);
 
-        const pkg = {
-          name: packageName,
-          icon: config.icon,
-          enabled: !!config.autoEnable,
-          settings: config.settings,
-          registry: config.registry,
-          layout: config.layout
-        };
+        const pkg = Object.assign({}, config, {
+          shopId: shopId
+        });
 
         // populate array of layouts that don't already exist (?!)
         if (pkg.layout) {
@@ -649,14 +644,14 @@ export default {
             }
           }
         }
-        this.Import.package(pkg, shopId);
+        Packages.insert(pkg);
         Logger.info(`Initializing ${shopId} ${packageName}`);
       }
     }
 
     // helper for removing layout duplicates
     const uniqLayouts = uniqWith(layouts, _.isEqual);
-    this.Import.layout(uniqLayouts, shopId);
+    Shops.update({ _id: shopId }, { $set: { layout: uniqLayouts } });
   },
 
   setAppVersion() {
