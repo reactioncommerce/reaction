@@ -40,7 +40,7 @@
      "allowImportExportEverywhere": true
   },
   "plugins": ["react"],
-  // NOTE: We're now using eslint-3
+  // NOTE: We're now using eslint-4
   "rules": {
     /**
      * Strict mode
