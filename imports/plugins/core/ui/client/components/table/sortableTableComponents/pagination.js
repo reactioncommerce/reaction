@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import classnames from "classnames";
 import { PaginationButtons } from "../sortableTableComponents";
 
@@ -56,7 +57,7 @@ class SortableTablePagination extends Component {
       onPageSizeChange,
       className,
       PreviousComponent = PaginationButtons,
-      NextComponent = PaginationButtons,
+      NextComponent = PaginationButtons
     } = this.props
 
     return (
@@ -110,7 +111,7 @@ class SortableTablePagination extends Component {
         </div>
         <div className="-previous">
           <PreviousComponent
-            onClick={e => {
+            onClick={e => { // eslint-disable-line no-unused-vars
               if (!canPrevious) return
               this.changePage(page - 1)
             }}
@@ -122,7 +123,7 @@ class SortableTablePagination extends Component {
         <span className="-divider">|</span>
         <div className="-next">
           <NextComponent
-            onClick={e => {
+            onClick={e => { // eslint-disable-line no-unused-vars
               if (!canNext) return
               this.changePage(page + 1)
             }}
@@ -135,5 +136,23 @@ class SortableTablePagination extends Component {
     );
   }
 }
+
+SortableTablePagination.propTypes = {
+  NextComponent: PropTypes.func,
+  PreviousComponent: PropTypes.func,
+  canNext: PropTypes.bool,
+  canPrevious: PropTypes.bool,
+  // className: PropTypes.,
+  nextText: PropTypes.string,
+  onPageChange: PropTypes.func,
+  onPageSizeChange: PropTypes.func,
+  page: PropTypes.number,
+  pageSize: PropTypes.number,
+  pageSizeOptions: PropTypes.array,
+  pages: PropTypes.number,
+  previousText: PropTypes.string,
+  showPageJump: PropTypes.bool,
+  showPageSizeOptions: PropTypes.bool
+};
 
 export default SortableTablePagination;

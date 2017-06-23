@@ -2,8 +2,8 @@ import React,  { Component } from "react";
 import PropTypes from "prop-types";
 import ReactTable from "react-table";
 import _ from "lodash";
-import { SortableTablePagination } from "./sortableTableComponents";
-
+import matchSorter from "match-sorter";
+import { SortableTableFilter, SortableTablePagination } from "./sortableTableComponents";
 
 class SortableTable extends Component {
   constructor(props) {
@@ -11,10 +11,12 @@ class SortableTable extends Component {
 
     this.state = {
       currentPage: 0,
+      filterInput: "",
       maxPages: 0,
-      query: this.props.query || {},
-      data: {}
+      query: this.props.query || {}
     };
+
+    this.handleFilterInput = this.handleFilterInput.bind(this);
   }
 
 
@@ -75,6 +77,20 @@ class SortableTable extends Component {
 
 
   /**
+   * handleFilterInput() - Update state when filter is changed
+   * @param {script} event onChange event when typing in filter field
+   * @param {string} value text field input
+   * @param {string} field input field name to watch
+   * @return {funcion} state for field value
+   */
+  handleFilterInput = (event, value, field) => {
+    this.setState({
+      [field]: value
+    });
+  }
+
+
+  /**
    * handleClick() - Handle click on table row
    * @param {object} rowInfo row data passed in from ReactTable
    * @return {funcion} return onRowClick function prop, or undefined if not supplied
@@ -117,31 +133,84 @@ class SortableTable extends Component {
   }
 
 
+  /**
+   * renderData() - Take data from getMeteorData() and filter if needed, or spit out raw if no filter
+   * @returns {Object} data filed (string), translated header (string), and minWidth (number / undefined)
+   */
+  renderData() {
+    const { filteredFields } = this.props;
+    const { filterInput } = this.state;
+    const originalData = this.getMeteorData().results;
+
+    const filteredData = matchSorter(originalData, filterInput, { keys: filteredFields });
+
+    return filteredData;
+  }
+
+
+  /**
+   * renderColumnFilter() - Uses props to determine if Column Filters should be shown
+   * @returns {Bool} returns true or false for column filters
+   */
+  renderColumnFilter() {
+    const { filterType } = this.props;
+
+    if (filterType === "both" || filterType === "column") {
+      return true;
+    }
+
+    return false;
+  }
+
+
+  /**
+   * renderTableFilter() - Uses props to determine if a Table Filter should be shown
+   * @returns {Bool} returns true or false for table filters
+   */
+  renderTableFilter() {
+    const { filterType } = this.props;
+
+    if (filterType === "both" || filterType === "table") {
+      return (
+        <SortableTableFilter
+          onChange={this.handleFilterInput}
+          value={this.state.filterInput}
+          name="filterInput"
+        />
+      );
+    }
+
+    return null;
+  }
+
+
   render() {
     const { ...otherProps } = this.props;
-    const data = this.getMeteorData().results;
+
 
     // All available props: https://github.com/tannerlinsley/react-table#props
     return (
-      <ReactTable
-        className={"-striped -highlight"}
-        columns={this.renderColumns()}
-        data={data}
-        defaultFilterMethod={this.customFilter}
-        defaultPageSize={otherProps.defaultPageSize}
-        filterable={otherProps.isFilterable}
-        minRows={otherProps.minRows}
+      <div>
+        {this.renderTableFilter()}
+        <ReactTable
+          className={"-striped -highlight"}
+          columns={this.renderColumns()}
+          data={this.renderData()}
+          defaultFilterMethod={this.customFilter}
+          defaultPageSize={otherProps.defaultPageSize}
+          filterable={this.renderColumnFilter()}
+          minRows={otherProps.minRows}
 
-        PaginationComponent={SortableTablePagination}
-
-        getTrProps={(state, rowInfo, column, instance) => { // eslint-disable-line no-unused-vars
-          return {
-            onClick: e => { // eslint-disable-line no-unused-vars
-              this.handleClick(rowInfo);
-            }
-          };
-        }}
-      />
+          PaginationComponent={SortableTablePagination}
+          getTrProps={(state, rowInfo, column, instance) => { // eslint-disable-line no-unused-vars
+            return {
+              onClick: e => { // eslint-disable-line no-unused-vars
+                this.handleClick(rowInfo);
+              }
+            };
+          }}
+        />
+      </div>
     );
   }
 }
@@ -153,9 +222,11 @@ SortableTable.propTypes = {
   columnMetadata: PropTypes.array,
   /** @type {number} defaultPageSize how many results per page */
   defaultPageSize: PropTypes.number,
+  /** @type {bool} filterType filter by table, column, or both */
+  filterType: PropTypes.string,
   /** @type {array} filteredFields provides filtered columns, use columnMetadata instead */
   filteredFields: PropTypes.array,
-  /** @type {bool} isFilterable show / hide filter */
+  /** @type {bool} isFilterable show / hide column filter */
   isFilterable: PropTypes.bool,
   /** @type {bool} isResizeable allow resizing of table columns */
   isResizeable: PropTypes.bool,
@@ -177,6 +248,7 @@ SortableTable.propTypes = {
 
 SortableTable.defaultProps = {
   defaultPageSize: 10,
+  filterType: "table",
   isFilterable: false,
   isResizeable: true,
   isSortable: true,
