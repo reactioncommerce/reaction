@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import classnames from "classnames";
-import { Icon, Switch, Translation } from "/imports/plugins/core/ui/client/components";
+import { Icon, Translation } from "/imports/plugins/core/ui/client/components";
 
 class AccountsListItem extends Component {
   static propTypes = {

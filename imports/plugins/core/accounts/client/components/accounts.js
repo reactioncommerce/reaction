@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import AccountsTable from "./accountsTable";
-import AccountsListItem from "./accountsListItem";
 
 class AccountsComponent extends Component {
   static propTypes = {
