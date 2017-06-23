@@ -228,8 +228,8 @@ class SortableTable extends Component {
 SortableTable.propTypes = {
   /** @type {object} collection collection to get data from */
   collection: PropTypes.object,
-  /** @type {object} columnMetadata provides filtered columns with i18n headers */
-  columnMetadata: PropTypes.object,
+  /** @type {array} columnMetadata provides filtered columns with i18n headers */
+  columnMetadata: PropTypes.array,
   /** @type {number} defaultPageSize how many results per page */
   defaultPageSize: PropTypes.number,
   /** @type {bool} filterType filter by table, column, or both */
@@ -266,14 +266,22 @@ SortableTable.defaultProps = {
   isSortable: true,
   minRows: 0,
   // Text props where translations are needed
-  noDataMessage: <Translation defaultValue="No results found" i18nKey={"reactionUI.components.sortableTable.tableText.noDataMessage"} />,
-  previousText: <Translation defaultValue="Previous" i18nKey={"reactionUI.components.sortableTable.tableText.previousText"} />,
-  nextText: <Translation defaultValue="Next" i18nKey={"reactionUI.components.sortableTable.tableText.nextText"} />,
-  loadingText: <Translation defaultValue="Loading..." i18nKey={"reactionUI.components.sortableTable.tableText.loadingText"} />,
-  noDataText: <Translation defaultValue="No results found" i18nKey={"reactionUI.components.sortableTable.tableText.noDataText"} />,
-  pageText: <Translation defaultValue="Page" i18nKey={"reactionUI.components.sortableTable.tableText.pageText"} />,
-  ofText: <Translation defaultValue="of" i18nKey={"reactionUI.components.sortableTable.tableText.ofText"} />,
-  rowsText: <Translation defaultValue="rows" i18nKey={"reactionUI.components.sortableTable.tableText.rowsText"} />
+  noDataMessage: "No results found",
+  previousText: "Previous",
+  nextText: "Next",
+  loadingText: "Loading...",
+  noDataText: "No results found",
+  pageText: "Page",
+  ofText: "of",
+  rowsText: "rows"
+  // noDataMessage: <Translation defaultValue="No results found" i18nKey={"reactionUI.components.sortableTable.tableText.noDataMessage"} />,
+  // previousText: <Translation defaultValue="Previous" i18nKey={"reactionUI.components.sortableTable.tableText.previousText"} />,
+  // nextText: <Translation defaultValue="Next" i18nKey={"reactionUI.components.sortableTable.tableText.nextText"} />,
+  // loadingText: <Translation defaultValue="Loading..." i18nKey={"reactionUI.components.sortableTable.tableText.loadingText"} />,
+  // noDataText: <Translation defaultValue="No results found" i18nKey={"reactionUI.components.sortableTable.tableText.noDataText"} />,
+  // pageText: <Translation defaultValue="Page" i18nKey={"reactionUI.components.sortableTable.tableText.pageText"} />,
+  // ofText: <Translation defaultValue="of" i18nKey={"reactionUI.components.sortableTable.tableText.ofText"} />,
+  // rowsText: <Translation defaultValue="rows" i18nKey={"reactionUI.components.sortableTable.tableText.rowsText"} />
 };
 
 export default SortableTable;
