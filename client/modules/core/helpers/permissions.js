@@ -59,10 +59,6 @@ Template.registerHelper("hasDashboardAccess", function () {
   return Reaction.hasDashboardAccess();
 });
 
-Template.registerHelper("hasDashboardAccessForAnyShop", function () {
-  return Reaction.hasPermissionsForAnyShop();
-});
-
 /**
  * allowGuestCheckout template helper
  * @summary check if guest users are allowed to checkout
