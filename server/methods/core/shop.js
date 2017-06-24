@@ -87,7 +87,9 @@ Meteor.methods({
         shopId: shop._id
       }
     });
-    return shop._id;
+
+    // Set active shop to new shop.
+    return { shopId: shop._id };
   },
 
   /**
