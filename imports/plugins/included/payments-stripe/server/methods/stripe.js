@@ -80,7 +80,6 @@ function stripeCaptureCharge(paymentMethod) {
     };
     return { error, result };
   }
-  Logger.warn("sending results back", results);
   return result;
 }
 
