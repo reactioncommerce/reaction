@@ -30,6 +30,12 @@ function hidePaymentAlert() {
 }
 
 function handleStripeSubmitError(error) {
+  // Match eror on card number. Not submitted to stripe
+  if (error && error.reason && error.reason === "Match failed") {
+    const message = "Your card number is invalid. Please check the number and try again";
+    return paymentAlert(message);
+  }
+
   // this is a server message with a client-sanitized message
   if (error && error.details) {
     return paymentAlert(error.details);
