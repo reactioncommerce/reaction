@@ -78,12 +78,11 @@ StripeApi.methods.createCharge = new ValidatedMethod({
       const promiseResult = Promise.await(chargePromise);
       return promiseResult;
     } catch (e) {
-      console.log("error in stripeAPI", e);
       // Handle "expected" errors differently
       if (e.rawType === "card_error" && _.includes(expectedErrors, e.code)) {
         Logger.debug("Error from Stripe is expected, not throwing");
         const normalizedError = {
-          detail: e.message
+          details: e.message
         };
         return { error: normalizedError, result: null };
       }
@@ -92,9 +91,8 @@ StripeApi.methods.createCharge = new ValidatedMethod({
 
       // send raw error to server log, but sanitized version to client
       const sanitisedError = {
-        detail: "An unexpected error has occurred"
+        details: "An unexpected error has occurred"
       };
-
       return { error: sanitisedError, result: null };
     }
   }
