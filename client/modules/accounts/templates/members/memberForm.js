@@ -2,6 +2,7 @@ import { Reaction, i18next } from "/client/api";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 
+
 /**
  * memberForm events
  *
@@ -19,16 +20,21 @@ Template.memberForm.events({
           let message;
           if (error.reason === "Unable to send invitation email.") {
             message = i18next.t("accountsUI.error.unableToSendInvitationEmail");
+          } else if (error.reason === "A user with this email address already exists") {
+            message = i18next.t("accountsUI.error.userWithEmailAlreadyExists");
           } else if (error.reason !== "") {
             message = error;
           } else {
             message = `${i18next.t("accountsUI.error.errorSendingEmail")
               } ${error}`;
           }
-          Alerts.toast(message, "error", {
-            html: true,
-            timeout: 10000
+
+          Alerts.inline(message, "error", {
+            placement: "memberform"
           });
+
+          template.$("input[type=text], input[type=email]").val("");
+
           return false;
         }
         if (result) {
