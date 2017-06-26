@@ -33,13 +33,28 @@ export default {
 
       if (this.Subscriptions.Shops.ready()) {
         domain = Meteor.absoluteUrl().split("/")[2].split(":")[0];
-        shop = Shops.findOne({
-          domains: domain
-        });
+
+        // if we don't have an active shopId, try to retreive it from the userPreferences object
+        // and set the shop from the storedShopId
+        if (!this.shopId) {
+          const storedShopId = this.getUserPreferences("reaction", "activeShopId");
+          if (storedShopId) {
+            shop = Shops.findOne({
+              _id: storedShopId
+            });
+          } else {
+            shop = Shops.findOne({
+              domains: domain
+            });
+          }
+        }
 
         if (shop) {
-          this.shopId = shop._id;
-          this.shopName = shop.name;
+          // Only set shopId if it hasn't been set yet
+          if (!this.shopId) {
+            this.shopId = shop._id;
+            this.shopName = shop.name;
+          }
           // initialize local client Countries collection
           if (!Countries.findOne()) {
             createCountryCollection(shop.locales.countries);
@@ -92,7 +107,7 @@ export default {
     if (checkGroup !== undefined && typeof checkGroup === "string") {
       group = checkGroup;
     } else {
-      group = this.getSellerShopId() || Roles.GLOBAL_GROUP;
+      group = this.getShopId() || Roles.GLOBAL_GROUP;
     }
 
     let permissions = ["owner"];
@@ -183,6 +198,36 @@ export default {
     return false;
   },
 
+
+  /**
+   * hasDashboardAccessForAnyShop - client
+   * client permission check for any "owner", "admin", or "dashboard" permissions for any shop.
+   *
+   * @todo This could be faster with a dedicated hasAdminDashboard boolean on the user object
+   * @param { Object } options - options object that can be passed a user and/or a set of permissions
+   * @return {Boolean} Boolean - true if has dashboard access for any shop
+   */
+  hasDashboardAccessForAnyShop(options = { user: Meteor.user(), permissions: ["owner", "admin", "dashboard"] }) {
+    const user = options.user;
+    const permissions = options.permissions;
+
+    if (!user || !user.roles) {
+      return false;
+    }
+
+    // Nested find that determines if a user has any of the permissions
+    // specified in the `permissions` array for any shop
+    const hasPermissions = Object.keys(user.roles).find((shopId) => {
+      return user.roles[shopId].find((role) => {
+        return permissions.find(permission => permission === role);
+      });
+    });
+
+    // Find returns undefined if nothing is found.
+    // This will return true if permissions are found, false otherwise
+    return typeof hasPermissions !== "undefined";
+  },
+
   hasOwnerAccess() {
     const ownerPermissions = ["owner"];
     return this.hasPermission(ownerPermissions);
@@ -196,6 +241,10 @@ export default {
   hasDashboardAccess() {
     const dashboardPermissions = ["owner", "admin", "dashboard"];
     return this.hasPermission(dashboardPermissions);
+  },
+
+  hasShopSwitcherAccess() {
+    return this.hasDashboardAccessForAnyShop();
   },
 
   getSellerShopId: function (userId = Meteor.userId(), noFallback = false) {
@@ -250,7 +299,7 @@ export default {
   },
 
   getShopId() {
-    return this.shopId;
+    return this.shopId || this.getUserPreferences("reaction", "activeShopId");
   },
 
   set shopId(id) {
@@ -260,6 +309,7 @@ export default {
   setShopId(id) {
     if (id) {
       this.shopId = id;
+      this.setUserPreferences("reaction", "activeShopId", id);
     }
   },
 

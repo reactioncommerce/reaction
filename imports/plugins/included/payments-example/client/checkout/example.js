@@ -54,7 +54,7 @@ AutoForm.addHooks("example-payment-form", {
       type: Reaction.getCardType(doc.cardNumber)
     };
     const storedCard = form.type.charAt(0).toUpperCase() + form.type.slice(1) + " " + doc.cardNumber.slice(-4);
-    Meteor.subscribe("Packages");
+    Meteor.subscribe("Packages", Reaction.getShopId());
     const packageData = Packages.findOne({
       name: "example-paymentmethod",
       shopId: Reaction.getShopId()

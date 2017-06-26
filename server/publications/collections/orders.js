@@ -87,7 +87,7 @@ Meteor.publish("Orders", function () {
   if (!shopId) {
     return this.ready();
   }
-  if (Roles.userIsInRole(this.userId, ["admin", "owner"], shopId)) {
+  if (Roles.userIsInRole(this.userId, ["admin", "owner", "orders"], shopId)) {
     return Orders.find({
       shopId: shopId
     });
@@ -109,11 +109,11 @@ Meteor.publish("PaginatedOrders", function (filter, limit) {
   if (this.userId === null) {
     return this.ready();
   }
-  const shopId = Reaction.getSellerShopId(this.userId);
+  const shopId = Reaction.getShopId(this.userId);
   if (!shopId) {
     return this.ready();
   }
-  if (Roles.userIsInRole(this.userId, ["admin", "owner"], shopId)) {
+  if (Roles.userIsInRole(this.userId, ["admin", "owner", "orders"], shopId)) {
     Counts.publish(this, "newOrder-count", Orders.find(OrderHelper.makeQuery("new", shopId)), { noReady: true });
     Counts.publish(this, "processingOrder-count", Orders.find(OrderHelper.makeQuery("processing", shopId)), { noReady: true });
     Counts.publish(this, "completedOrder-count", Orders.find(OrderHelper.makeQuery("completed", shopId)), { noReady: true });

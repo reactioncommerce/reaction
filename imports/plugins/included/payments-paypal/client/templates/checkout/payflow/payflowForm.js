@@ -130,7 +130,7 @@ AutoForm.addHooks("paypal-payment-form", {
           if (typeof transaction.response.transactions[0].related_resources[0] === "object") {
             authId = transaction.response.transactions[0].related_resources[0].authorization.id;
           }
-          Meteor.subscribe("Packages");
+          Meteor.subscribe("Packages", Reaction.getShopId());
           const packageData = Packages.findOne({
             name: "reaction-paypal",
             shopId: Reaction.getShopId()

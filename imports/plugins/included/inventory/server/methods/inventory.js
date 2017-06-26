@@ -82,7 +82,9 @@ export function registerInventory(product) {
   return totalNewInventory;
 }
 
-function adjustInventory(product) {
+function adjustInventory(product, userId) {
+  // TODO: This can fail even if updateVariant succeeds.
+  // Should probably look at making these two more atomic
   let type;
   let results;
   // adds or updates inventory collection with this product
@@ -95,11 +97,12 @@ function adjustInventory(product) {
       check(product, Schemas.Product);
       type = "simple";
   }
+
   // user needs createProduct permission to adjust inventory
-  if (!Reaction.hasPermission("createProduct")) {
+  // REVIEW: Should this be checking shop permission instead?
+  if (!Reaction.hasPermission("createProduct", userId, product.shopId)) {
     throw new Meteor.Error(403, "Access Denied");
   }
-  // this.unblock();
 
   // Quantity and variants of this product's variant inventory
   if (type === "variant") {
@@ -148,13 +151,13 @@ function adjustInventory(product) {
 
 Meteor.methods({
   "inventory/register": function (product) {
-    if (!Reaction.hasPermission("createProduct")) {
+    if (!Reaction.hasPermission("createProduct", this.userId, product.shopId)) {
       throw new Meteor.Error(403, "Access Denied");
     }
     registerInventory(product);
   },
   "inventory/adjust": function (product) { // TODO: this should be variant
     check(product, Match.OneOf(Schemas.Product, Schemas.ProductVariant));
-    adjustInventory(product);
+    adjustInventory(product, this.userId);
   }
 });
