@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import moment from "moment";
+import moment from "moment-timezone";
 import { Meteor } from "meteor/meteor";
 import { Reaction, i18next } from "/client/api";
 import { composeWithTracker } from "/lib/api/compose";

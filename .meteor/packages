@@ -69,7 +69,6 @@ meteorhacks:subs-manager
 natestrauser:select2
 ongoworks:security
 raix:ui-dropped-event
-risul:moment-timezone
 tmeasday:publish-counts
 vsivsi:job-collection@=1.4.0
 react-meteor-data@=0.2.9
