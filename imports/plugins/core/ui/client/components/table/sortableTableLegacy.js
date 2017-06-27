@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from "react";
 import { TacoTable } from "react-taco-table";
 
-class SortableTable extends Component {
+class SortableTableLegacy extends Component {
   render() {
     const {
       data,
@@ -18,9 +18,9 @@ class SortableTable extends Component {
   }
 }
 
-SortableTable.propTypes = {
+SortableTableLegacy.propTypes = {
   columns: PropTypes.array,
   data: PropTypes.array
 };
 
-export default SortableTable;
+export default SortableTableLegacy;

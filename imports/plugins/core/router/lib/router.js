@@ -125,7 +125,6 @@ Router.pathFor = (path, options = {}) => {
   // return Router.path(path, params, query);
 
   const foundPath = Router.routes.find((pathObject) => {
-    // console.log(pathObject.options.name, path);
     if (pathObject.options.name === path) {
       return true;
     }

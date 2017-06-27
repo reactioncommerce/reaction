@@ -1,5 +1,4 @@
-import MeteorGriddle from "/imports/plugins/core/ui-grid/client/griddle";
-import { Loading } from "/imports/plugins/core/ui/client/components";
+import { Loading, SortableTable } from "/imports/plugins/core/ui/client/components";
 import { Meteor } from "meteor/meteor";
 import { AutoForm } from "meteor/aldeed:autoform";
 import { Blaze } from "meteor/blaze";
@@ -65,20 +64,19 @@ Template.templateSettings.helpers({
     const customColumnMetadata = [];
     filteredFields.forEach(function (field) {
       const columnMeta = {
-        columnName: field,
-        displayName: i18next.t(`templateGrid.columns.${field}`)
+        accessor: field, // name of field
+        Header: i18next.t(`templateGrid.columns.${field}`) // name to display
       };
       customColumnMetadata.push(columnMeta);
     });
 
     // return template Grid
     return {
-      component: MeteorGriddle,
+      component: SortableTable,
       publication: "Templates",
       collection: Templates,
       matchingResultsCount: "templates-count",
       showFilter: true,
-      useGriddleStyles: false,
       rowMetadata: customRowMetaData,
       filteredFields: filteredFields,
       columns: filteredFields,
@@ -140,7 +138,6 @@ Template.templateSettings.events({
       isEditing: false,
       editingId: null
     });
-    // ugly hack
     $(".template-grid-row").removeClass("active");
   }
 });

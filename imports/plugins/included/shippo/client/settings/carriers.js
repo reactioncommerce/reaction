@@ -3,8 +3,7 @@ import { ReactiveDict } from "meteor/reactive-dict";
 import { AutoForm } from "meteor/aldeed:autoform";
 import { Shipping } from "/lib/collections";
 import { i18next } from "/client/api";
-import MeteorGriddle from "/imports/plugins/core/ui-grid/client/griddle";
-import { Loading } from "/imports/plugins/core/ui/client/components";
+import { Loading, SortableTable } from "/imports/plugins/core/ui/client/components";
 
 import "./carriers.html";
 
@@ -50,8 +49,8 @@ Template.shippoCarriers.helpers({
     const customColumnMetadata = [];
     filteredFields.forEach(function (field) {
       const columnMeta = {
-        columnName: field,
-        displayName: i18next.t(`admin.shippingGrid.${field}`)
+        accessor: field,
+        Header: i18next.t(`admin.shippingGrid.${field}`)
       };
       customColumnMetadata.push(columnMeta);
     });
@@ -71,12 +70,11 @@ Template.shippoCarriers.helpers({
 
     // return shipping Grid
     return {
-      component: MeteorGriddle,
+      component: SortableTable,
       publication: "Shipping",
       transform: transform,
       collection: Shipping,
       showFilter: true,
-      useGriddleStyles: false,
       rowMetadata: customRowMetaData,
       filteredFields: filteredFields,
       columns: filteredFields,

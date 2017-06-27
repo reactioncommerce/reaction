@@ -8,8 +8,7 @@ import { Reaction, i18next } from "/client/api";
 import { Packages, Logs } from "/lib/collections";
 import { Logs as LogSchema } from "/lib/collections/schemas/logs";
 import { AvalaraPackageConfig } from "../../lib/collections/schemas";
-import LogGriddle from "./avagriddle";
-import { Loading } from "/imports/plugins/core/ui/client/components";
+import { Loading, SortableTable } from "/imports/plugins/core/ui/client/components";
 
 
 function getPackageData() {
@@ -65,7 +64,7 @@ Template.avalaraSettings.helpers({
   },
 
   logGrid() {
-    const fields = ["date", "docType"];
+    const filteredFields = [ "data.request.data.date", "data.request.data.type"];
     const noDataMessage = i18next.t("logGrid.noLogsFound");
     const instance = Template.instance();
 
@@ -89,28 +88,29 @@ Template.avalaraSettings.helpers({
 
     // add i18n handling to headers
     const customColumnMetadata = [];
-    fields.forEach(function (field) {
+    filteredFields.forEach(function (field) {
       const columnMeta = {
-        columnName: field,
-        displayName: i18next.t(`logGrid.columns.${field}`)
+        accessor: field,
+        Header: i18next.t(`logGrid.columns.${field}`)
       };
       customColumnMetadata.push(columnMeta);
     });
 
     // return template Grid
     return {
-      component: LogGriddle,
+      component: SortableTable,
       publication: "Logs",
       collection: Logs,
       matchingResultsCount: "logs-count",
-      useGriddleStyles: false,
+      showFilter: true,
       rowMetadata: customRowMetaData,
-      columns: fields,
+      filteredFields: filteredFields,
+      columns: filteredFields,
       noDataMessage: noDataMessage,
       onRowClick: editRow,
       columnMetadata: customColumnMetadata,
       externalLoadingComponent: Loading,
-      subscriptionParams: { logType: "avalara" }
+      query: { logType: "avalara" }
     };
   },
 
