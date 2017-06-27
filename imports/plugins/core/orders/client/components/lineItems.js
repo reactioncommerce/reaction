@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from "react";
+import classnames from "classnames";
 import { formatPriceString } from "/client/api";
 import { Translation } from "/imports/plugins/core/ui/client/components";
 import { Popover, Button, Checkbox, NumberTypeInput } from "/imports/plugins/core/ui/client/components";
@@ -7,17 +8,25 @@ class LineItems extends Component {
 
   static propTypes = {
     displayMedia: PropTypes.func,
+    editedItems: PropTypes.array,
+    handleItemSelect: PropTypes.func,
     handleSelectAllItems: PropTypes.func,
+    inputOnChange: PropTypes.func,
     invoice: PropTypes.object,
     isHovered: PropTypes.func,
     popOverIsOpen: PropTypes.bool,
     selectAllItems: PropTypes.bool,
+    selectedItems: PropTypes.array,
     togglePopOver: PropTypes.func,
     uniqueItems: PropTypes.array
   }
 
   calculateTotal(price, shipping, taxes) {
     return formatPriceString(price + shipping + taxes);
+  }
+
+  handleInputOnchange(value, uniqueItem) {
+    return this.props.inputOnChange(value, uniqueItem);
   }
 
   renderLineItem(uniqueItem, quantity) {
@@ -58,6 +67,32 @@ class LineItems extends Component {
     );
   }
 
+  toggleMediaHover(uniqueItem) {
+    const { displayMedia, selectedItems, handleItemSelect } = this.props;
+    if (selectedItems.includes(uniqueItem._id)) {
+      return (
+        <div>
+
+          <div className="invoice-popover-checkbox">
+              <Checkbox
+                className="checkbox"
+                checked={selectedItems.includes(uniqueItem._id)}
+                onChange={() => handleItemSelect(uniqueItem._id)}
+              />
+          </div>
+        </div>
+      );
+    }
+    return (
+      <div onClick={() => handleItemSelect(uniqueItem._id)}>
+      { !displayMedia(uniqueItem) ?
+        <img src= "/resources/placeholder.gif" /> :
+        <img src={displayMedia(uniqueItem).url()}/>
+      }
+      </div>
+    );
+  }
+
   renderLineItemInvoice() {
     return (
       <div className="invoive-order-items">
@@ -85,22 +120,24 @@ class LineItems extends Component {
   }
 
   renderLineItems() {
-    const { uniqueItems, displayMedia } = this.props;
+    const { uniqueItems, selectedItems } = this.props;
 
     return (
       <div>
         { uniqueItems.map((uniqueItem, index) => {
           return (
             <div key={index}>
-              <div className="order-items">
+              <div
+                className={selectedItems.includes(uniqueItem._id) ?
+                  classnames({ "order-items invoice-item": true, "selected": true }) :
+                  "order-items invoice-item"
+                }
+              >
                 <div
                   className="order-item form-group order-summary-form-group"
                 >
                   <div className="invoice-order-line-media">
-                    { !displayMedia(uniqueItem) ?
-                      <img src= "/resources/placeholder.gif" /> :
-                      <img src={displayMedia(uniqueItem).url()}/>
-                    }
+                    {this.toggleMediaHover(uniqueItem)}
                   </div>
 
                   <div className="order-item-details">
@@ -110,11 +147,13 @@ class LineItems extends Component {
                   </div>
 
                   <div className="order-detail-quantity invoice-order-quantity">
-                    <NumberTypeInput
-                      minValue={1}
-                      defaultValue={uniqueItem.quantity}
-                      maxValue={uniqueItem.quantity}
-                    />
+                    { selectedItems.includes(uniqueItem._id) ?
+                      <NumberTypeInput
+                        minValue={1}
+                        onChange={(editedValue) => this.handleInputOnchange(editedValue, uniqueItem)}
+                        defaultValue={uniqueItem.quantity}
+                        maxValue={uniqueItem.quantity}
+                      /> : <span>{ uniqueItem.quantity }</span>}
                   </div>
 
                   <div className="order-detail-price">
@@ -132,8 +171,67 @@ class LineItems extends Component {
     );
   }
 
+  renderLineItemRefund() {
+    const { editedItems } = this.props;
+    return (
+      <div className="invoice-refund-edited">
+        <div className="refund-header">
+          <div>
+            <Translation defaultValue="For Refund" i18nKey=""/>
+          </div>
+          <div>
+            <Translation defaultValue="Items" i18nKey=""/>
+          </div>
+          <div>
+            <Translation defaultValue="Total" i18nKey=""/>
+          </div>
+        </div>
+        <div className="refund-body">
+          {editedItems.map(item => {
+            return (
+              <div className="refund-item">
+                <div>
+                  <span>{item.title}</span>
+                </div>
+                <div>
+                  <span>{item.refundedQuantity}</span>
+                </div>
+                <div>
+                  <span> $10.00</span>
+                </div>
+              </div>
+            );
+          })}
+          <div className="refund-item">
+            <div>
+              <span><b>RETURN TOTAL</b></span>
+            </div>
+            <div>
+              <span>
+                {editedItems.reduce((acc, item) => acc + item.refundedQuantity, 0)}
+              </span>
+            </div>
+            <div>
+              <span>$20.00</span>
+            </div>
+          </div>
+        </div>
+        <div className="refund-include-shipping">
+          <div className="pull-right">
+            <Checkbox
+              className="checkbox"
+              label="Include Shipping"
+              checked={true}
+            />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   renderPopOverChildren() {
-    const { togglePopOver, handleSelectAllItems, selectAllItems } = this.props;
+    const { togglePopOver, editedItems, handleSelectAllItems, selectAllItems, selectedItems,
+      uniqueItems } = this.props;
     return (
       <div className="invoice-popover">
           <div className="invoice-popover-controls">
@@ -141,12 +239,11 @@ class LineItems extends Component {
               <Checkbox
                 className="checkbox"
                 checked={selectAllItems}
-                onChange={handleSelectAllItems}
+                onChange={(e) => handleSelectAllItems(e, uniqueItems)}
               />
-              {/* <input type="checkbox" className="checkbox" />*/}
             </div>
             <div className="invoice-popover-selected">
-              <span>3 items Selected</span>
+              <span>{selectedItems.length} Items Selected</span>
             </div>
             <div className="invoice-popover-close">
               <Button
@@ -158,6 +255,7 @@ class LineItems extends Component {
             </div>
           </div>
           {this.renderLineItems()}
+          {!_.isEmpty(editedItems) ? this.renderLineItemRefund() : null}
           <div className="invoice-actions">
             <div className="invoice-action-cancel">
               <Button
@@ -165,6 +263,7 @@ class LineItems extends Component {
                 bezelStyle="solid"
                 status="default"
                 label="Cancel"
+                onClick={() => togglePopOver()}
               />
             </div>
             <div className="invoice-action-refund">

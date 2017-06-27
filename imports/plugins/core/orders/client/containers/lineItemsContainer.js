@@ -18,8 +18,9 @@ class LineItemsContainer extends Component {
       notHovered: true,
       isClosed: false,
       popOverIsOpen: false,
-      selectAllItems: true,
-      selectedItems: []
+      selectAllItems: false,
+      selectedItems: [],
+      editedItems: []
     };
 
     this.handleDisplayMedia = this.handleDisplayMedia.bind(this);
@@ -36,12 +37,73 @@ class LineItemsContainer extends Component {
     this.setState({  });
   }
 
-  handleSelectAllItems = (e) => {
+  handleSelectAllItems = (e, uniqueItems) => {
+    const { selectedItems } = this.state;
     const checked = e.target.checked;
+
+    uniqueItems.map(item => {
+      if (!selectedItems.includes(item._id)) {
+        selectedItems.push(item._id);
+      }
+    });
+
     if (checked) {
-      return this.setState({ selectAllItems: true });
+      return this.setState({
+        selectAllItems: true,
+        selectedItems
+      });
     }
-    return this.setState({ selectAllItems: false });
+
+    return this.setState({
+      selectAllItems: false,
+      selectedItems: [],
+      editedItems: []
+    });
+  }
+
+  inputOnChange = (quantityValue, lineItem) => {
+    let { editedItems } = this.state;
+
+    const itemQuantity = editedItems.find(item => {
+      return item.id === lineItem._id;
+    });
+
+    if (itemQuantity) {
+      editedItems = editedItems.filter(item => item.id !== lineItem._id);
+      itemQuantity.refundedQuantity = lineItem.quantity - quantityValue;
+      editedItems.push(itemQuantity);
+    } else {
+      editedItems.push({
+        id: lineItem._id,
+        title: lineItem.title,
+        refundedQuantity: lineItem.quantity - quantityValue
+      });
+    }
+
+    return this.setState({ editedItems });
+  }
+
+  handleItemSelect = (itemId) => {
+    let { selectedItems, editedItems } = this.state;
+    if (!selectedItems.includes(itemId)) {
+      selectedItems.push(itemId);
+      return this.setState({ selectedItems, selectAllItems: false });
+    }
+
+    selectedItems = selectedItems.filter((id) => {
+      if (id !== itemId) {
+        return id;
+      }
+    });
+
+    // remove item from edited quantities
+    editedItems = editedItems.filter(item => item.id !== itemId);
+
+    return this.setState({
+      selectedItems,
+      selectAllItems: false,
+      editedItems
+    });
   }
 
   /**
@@ -82,10 +144,14 @@ class LineItemsContainer extends Component {
           invoice={invoice}
           handleSelectAllItems={this.handleSelectAllItems}
           selectAllItems={this.state.selectAllItems}
+          selectedItems={this.state.selectedItems}
           togglePopOver={this.togglePopOver}
+          inputOnChange={this.inputOnChange}
+          handleItemSelect={this.handleItemSelect}
           popOverIsOpen={this.state.popOverIsOpen}
           displayMedia={this.handleDisplayMedia}
           uniqueItems={uniqueItems}
+          editedItems={this.state.editedItems}
         />
       </TranslationProvider>
     );

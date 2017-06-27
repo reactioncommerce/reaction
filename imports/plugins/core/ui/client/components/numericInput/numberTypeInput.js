@@ -7,19 +7,22 @@ class NumberTypeInput extends Component {
   static propTypes = {
     defaultValue: PropTypes.number,
     maxValue: PropTypes.number,
-    minValue: PropTypes.number
+    minValue: PropTypes.number,
+    onChange: PropTypes.func
   }
 
   state = {
     inputValue: this.props.defaultValue || 4,
     inputClassNames: classnames({ "number-field": true })
   }
+
   incrementButton = () => {
     const { maxValue } = this.props;
     const { inputValue } = this.state;
     const newValue = Number(inputValue) + 1;
     if (newValue <= maxValue) {
       this.edited();
+      this.props.onChange(newValue);
       return this.setState({ inputValue: newValue });
     }
   }
@@ -30,6 +33,7 @@ class NumberTypeInput extends Component {
     const newValue = Number(inputValue) - 1;
     if (newValue >= minValue) {
       this.edited();
+      this.props.onChange(newValue);
       return this.setState({ inputValue: newValue.toString() });
     }
   }
@@ -39,9 +43,16 @@ class NumberTypeInput extends Component {
   }
 
   handleChange = (e) => {
+    const { minValue, maxValue } = this.props;
     const value = Number(e.target.value);
-    this.edited();
-    return this.setState({ inputValue: value });
+    if (maxValue && value <= maxValue) {
+      this.edited();
+      this.setState({ inputValue: value });
+    } else if (minValue && value >= maxValue) {
+      this.edited();
+      this.setState({ inputValue: value });
+    }
+    return this.props.onChange(value);
   }
 
   render() {
