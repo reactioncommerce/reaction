@@ -121,9 +121,6 @@ class SearchModalContainer extends Component {
   handleOrderClick = (event)  => {
     const isActionViewOpen = Reaction.isActionViewOpen();
     const orderId = event._id;
-    console.log("action view", Reaction.isActionViewOpen());
-
-    console.log("event orders", event);
     // toggle detail views
     if (isActionViewOpen === false) {
       Reaction.showActionView({
