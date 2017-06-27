@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import _ from "lodash";
 import matchSorter from "match-sorter";
 import ReactTable from "react-table";
+import { Meteor } from "meteor/meteor";
 import { Translation } from "@reactioncommerce/reaction-ui";
 import { SortableTableFilter, SortableTablePagination } from "./sortableTableComponents";
 
@@ -39,11 +40,8 @@ class SortableTable extends Component {
     const matchingResults = Counts.get(matchingResultsCount);
 
     const options = {};
-    let skip;
 
-    const pubHandle = Meteor.subscribe(publication, this.state.query, _.extend({
-      skip: skip
-    }, options));
+    const pubHandle = Meteor.subscribe(publication, this.state.query, _.assignIn({}, options));
 
     // optional transform of collection for grid results
     let results = collection.find(this.state.query, options).fetch();
@@ -82,7 +80,7 @@ class SortableTable extends Component {
    * @param {script} event onChange event when typing in filter field
    * @param {string} value text field input
    * @param {string} field input field name to watch
-   * @return {funcion} state for field value
+   * @return {function} state for field value
    */
   handleFilterInput = (event, value, field) => {
     this.setState({
@@ -94,7 +92,7 @@ class SortableTable extends Component {
   /**
    * handleClick() - Handle click on table row
    * @param {object} rowInfo row data passed in from ReactTable
-   * @return {funcion} return onRowClick function prop, or undefined if not supplied
+   * @return {function} return onRowClick function prop, or undefined if not supplied
    */
   handleClick(rowInfo) {
     const { onRowClick } = this.props;
@@ -125,7 +123,7 @@ class SortableTable extends Component {
 
     // Add minWidth = undefined to override 100px default set by ReactTable
     const displayColumns = columnMetadata.map((element) => {
-      return _.extend({}, element, {
+      return _.assignIn({}, element, {
         minWidth: undefined
       });
     });
@@ -171,7 +169,7 @@ class SortableTable extends Component {
 
   /**
    * renderTableFilter() - Uses props to determine if a Table Filter should be shown
-   * @returns {Bool} returns true or false for table filters
+   * @returns {node} returns JSX node or null
    */
   renderTableFilter() {
     const { filterType } = this.props;
@@ -192,6 +190,8 @@ class SortableTable extends Component {
 
   render() {
     const { ...otherProps } = this.props;
+
+    // console.log("this.customFilter", this.customFilter());
 
 
     // All available props: https://github.com/tannerlinsley/react-table#props
