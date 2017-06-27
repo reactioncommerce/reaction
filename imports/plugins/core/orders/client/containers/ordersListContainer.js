@@ -22,7 +22,11 @@ class OrdersListContainer extends Component {
   constructor(props) {
     super(props);
 
+    this.state = {};
+
+    this.isOpen = this.isOpen.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.handleListToggle = this.handleListToggle.bind(this);
     this.handleDisplayMedia = this.handleDisplayMedia.bind(this);
   }
 
@@ -44,6 +48,21 @@ class OrdersListContainer extends Component {
       Reaction.setUserPreferences(PACKAGE_NAME, ORDER_LIST_FILTERS_PREFERENCE_NAME, "processing");
       Reaction.setUserPreferences(PACKAGE_NAME, ORDER_LIST_SELECTED_ORDER_PREFERENCE_NAME, order._id);
     }
+  }
+
+  handleListToggle = (order) => {
+    const orderId = order._id;
+    this.setState({
+      [orderId]: true
+    })
+  }
+
+  isOpen = (order) => {
+    const orderId = order._id;
+    if(this.state[orderId]) {
+      return true;
+    }
+    return false;
   }
 
   /**
@@ -83,6 +102,8 @@ class OrdersListContainer extends Component {
           orders={orders}
           handleClick={this.handleClick}
           displayMedia={this.handleDisplayMedia}
+          handleListToggle= {this.handleListToggle}
+          isOpen={this.isOpen}          
         />
     );
   }

@@ -11,6 +11,8 @@ class OrdersList extends Component {
   static propTypes = {
     displayMedia: PropTypes.func,
     handleClick: PropTypes.func,
+    handleListToggle: PropTypes.func,
+    isOpen: PropTypes.func,
     orders: PropTypes.array
   }
 
@@ -135,6 +137,19 @@ class OrdersList extends Component {
     );
   }
 
+  renderListView(order) {
+    const { handleClick, handleListToggle } = this.props;
+    
+    return (
+      <div className="rui card order">
+        <div className="content" onClick={() => handleListToggle(order)}> {this.renderShipmentInfo(order)} </div>
+        <div className="controls" onClick={() => handleClick(order)}>
+          {this.renderOrderButton(order)}
+        </div>
+      </div>
+    )
+  }
+
 
   renderOrderCard(order) {
     const { handleClick } = this.props;
@@ -154,7 +169,7 @@ class OrdersList extends Component {
 
 
   render() {
-    const { orders } = this.props;
+    const { orders, isOpen } = this.props;
 
     if (orders.length) {
       return (
@@ -162,7 +177,7 @@ class OrdersList extends Component {
           {orders.map((order, i) => {
             return (
               <div key={i}>
-                {this.renderOrderCard(order)}
+                {!isOpen(order) ? this.renderListView(order) : this.renderOrderCard(order)}
               </div>
             );
           })}
