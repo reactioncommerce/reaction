@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { PropTypes as ReactionPropTypes } from "/lib/api";
 import { TagItem } from "./";
+import { Router } from "/client/api";
 import classnames from "classnames";
 
 class Tags extends Component {
@@ -63,6 +64,10 @@ class Tags extends Component {
     }
   };
 
+  handleTagClick = (event, tag) => {
+    Router.go("tag", { slug: tag.slug });
+  }
+
   hasDropdownClassName = (tag) => {
     if (this.props.hasDropdownClassName) {
       return this.props.hasDropdownClassName(tag);
@@ -103,6 +108,7 @@ class Tags extends Component {
               onTagRemove={this.handleTagRemove}
               onTagSave={this.handleTagSave}
               onTagUpdate={this.handleTagUpdate}
+              onTagClick={this.handleTagClick}
             />
             {this.props.children}
           </div>
@@ -181,6 +187,7 @@ Tags.propTypes = {
   onMoveTag: PropTypes.func,
   onNewTagSave: PropTypes.func,
   onNewTagUpdate: PropTypes.func,
+  onTagClick: PropTypes.func,
   onTagMouseOut: PropTypes.func,
   onTagMouseOver: PropTypes.func,
   onTagRemove: PropTypes.func,
