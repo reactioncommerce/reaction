@@ -130,7 +130,6 @@ Meteor.methods({
           error: chargeResult.error
         };
       }
-      Logger.warn("sending results back from StripeSubmit", result);
       return result;
     } catch (e) {
       Logger.error(e);
