@@ -40,10 +40,6 @@ Template.CoreNavigationBar.events({
 });
 
 Template.CoreNavigationBar.helpers({
-  // isMarketplaceOwner() {
-  //   return Reaction.hasMarketplaceAccess("owner");
-  // /* REQUIRES /lib/api version of Reaction */
-  // },
   dropdown() {
     return {
       component: MainDropdown
