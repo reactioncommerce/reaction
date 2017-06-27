@@ -23,13 +23,13 @@ class SortableTablePagination extends Component {
 
   getSafePage(page) {
     if (isNaN(page)) {
-      page = this.props.page;
+      page = this.props.page; // eslint-disable-line
     }
     return Math.min(Math.max(page, 0), this.props.pages - 1);
   }
 
   changePage(page) {
-    page = this.getSafePage(page);
+    page = this.getSafePage(page); // eslint-disable-line
     this.setState({ page });
     if (this.props.page !== page) {
       this.props.onPageChange(page);
@@ -74,7 +74,7 @@ class SortableTablePagination extends Component {
                     type={this.state.page === "" ? "text" : "number"}
                     onChange={e => {
                       const val = e.target.value;
-                      const page = val - 1;
+                      const page = val - 1; // eslint-disable-line
                       if (val === "") {
                         return this.setState({ page: val });
                       }
