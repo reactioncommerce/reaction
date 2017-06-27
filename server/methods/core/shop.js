@@ -80,13 +80,16 @@ Meteor.methods({
     Logger.info("Created shop: ", shop._id);
 
     // update user
+    Reaction.insertPackagesForShop(shop._id);
     Roles.addUsersToRoles([currentUser, userId], adminRoles, shop._id);
     Collections.Accounts.update({ _id: currentUser._id }, {
       $set: {
         shopId: shop._id
       }
     });
-    return shop._id;
+
+    // Set active shop to new shop.
+    return { shopId: shop._id };
   },
 
   /**

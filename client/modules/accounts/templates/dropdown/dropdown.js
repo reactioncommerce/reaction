@@ -66,7 +66,7 @@ Template.loginDropdown.events({
 Template.accountsDropdownApps.helpers({
   reactionAppsOptions() {
     // get shortcuts with audience permissions based on user roles
-    const roles = Roles.getRolesForUser(Meteor.userId(), Reaction.getSellerShopId());
+    const roles = Roles.getRolesForUser(Meteor.userId(), Reaction.getShopId());
 
     return {
       provides: "shortcut",

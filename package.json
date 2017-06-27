@@ -138,9 +138,9 @@
   },
   "jest": {
     "moduleNameMapper": {
-      "^/lib(.*)": "<rootDir>/lib/$1",
-      "^/imports/plugins(.*)": "<rootDir>/imports/plugins/$1",
-      "^/client/api(.*)": "<rootDir>/imports/test-utils/__mocks__/client/api$1",
+      "^\/lib(.*)": "<rootDir>/lib/$1",
+      "^\/imports\/plugins(.*)": "<rootDir>/imports/plugins/$1",
+      "^\/client\/api(.*)": "<rootDir>/imports/test-utils/__mocks__/client/api$1",
       "^meteor/aldeed:simple-schema": "<rootDir>/imports/test-utils/__mocks__/meteor/aldeed-simple-schema",
       "^meteor/(.*)": "<rootDir>/imports/test-utils/__mocks__/meteor/$1"
     }

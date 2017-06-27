@@ -19,7 +19,7 @@ import { Reaction } from "../";
 Template.registerHelper("hasPermission", function (permissions, options) {
   // default to checking this.userId
   let userId = Meteor.userId();
-  const shopId = Reaction.getSellerShopId(userId);
+  const shopId = Reaction.getShopId();
   // we don't necessarily need to check here
   // as these same checks and defaults are
   // also performed in Reaction.hasPermission
