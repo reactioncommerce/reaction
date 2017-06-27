@@ -1,6 +1,7 @@
 /* eslint camelcase: 0 */
 import Braintree from "braintree";
 import accounting from "accounting-js";
+import moment from "moment";
 import Future from "fibers/future";
 import { Meteor } from "meteor/meteor";
 import { Packages } from "/lib/collections";
