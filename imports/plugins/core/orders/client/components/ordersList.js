@@ -3,6 +3,8 @@ import classnames from "classnames/dedupe";
 import Avatar from "react-avatar";
 import moment from "moment";
 import { formatPriceString } from "/client/api";
+// import { Orders } from "/lib/collections";
+import { SortableTable, Loading } from "/imports/plugins/core/ui/client/components";
 import { Badge, ClickToCopy, Icon, Translation } from "@reactioncommerce/reaction-ui";
 import ProductImage from "./productImage";
 
@@ -11,8 +13,10 @@ class OrdersList extends Component {
   static propTypes = {
     displayMedia: PropTypes.func,
     handleClick: PropTypes.func,
+    handleDetailToggle: PropTypes.func,
     handleListToggle: PropTypes.func,
-    isOpen: PropTypes.func,
+    openDetail: PropTypes.bool,
+    openList: PropTypes.bool,
     orders: PropTypes.array
   }
 
@@ -137,17 +141,61 @@ class OrdersList extends Component {
     );
   }
 
-  renderListView(order) {
-    const { handleClick, handleListToggle } = this.props;
-    
+  renderListView(orders) {
+    const filteredFields = ["shipping[0].address.fullName",  "email", "createdAt", "_id", "billing[0].invoice.total", "shipping[0].workflow.status", "workflow.status"];
+    const customColumnMetadata = [];
+
+    filteredFields.forEach(function (field) {
+      const columnMeta = {
+        accessor: field,
+        Header: field,
+        Cell: row => {
+          console.log("row=====>", row);
+          const bla = row.column.id;
+          if (bla === "createdAt") {
+            const createdDate = moment(row.value).format("MM/D/YYYY");
+            return (
+              <span>{createdDate}</span>
+            );
+          }
+          if (bla === "shipping[0].workflow.status") {
+            return (
+              <Badge
+                badgeSize="large"
+                i18nKeyLabel={`cartDrawer.${row.value}`}
+                label={row.value}
+                // status={this.shippingBadgeStatus()}
+              />
+            );
+          }
+          if (bla === "workflow.status") {
+            return (
+              <Badge
+                badgeSize="large"
+                i18nKeyLabel={`cartDrawer.${row.value}`}
+                label={row.value}
+                // status={this.fulfillmentBadgeStatus(row)}
+              />
+            );
+          }
+          return (
+            <span>{row.value}</span>
+          );
+        }
+      };
+      customColumnMetadata.push(columnMeta);
+    });
+    console.log("data orders ------->", orders);
     return (
-      <div className="rui card order">
-        <div className="content" onClick={() => handleListToggle(order)}> {this.renderShipmentInfo(order)} </div>
-        <div className="controls" onClick={() => handleClick(order)}>
-          {this.renderOrderButton(order)}
-        </div>
-      </div>
-    )
+      <SortableTable
+        // publication="PaginatedOrders"
+        // collection={Orders}
+        data={orders}
+        columnMetadata={customColumnMetadata}
+        externalLoadingComponent={Loading}
+        filteredFields={filteredFields}
+      />
+    );
   }
 
 
@@ -169,18 +217,28 @@ class OrdersList extends Component {
 
 
   render() {
-    const { orders, isOpen } = this.props;
+    const { orders, openDetail, openList, handleDetailToggle, handleListToggle } = this.props;
 
     if (orders.length) {
       return (
-        <div className="container-fluid-sm">
-          {orders.map((order, i) => {
-            return (
-              <div key={i}>
-                {!isOpen(order) ? this.renderListView(order) : this.renderOrderCard(order)}
-              </div>
-            );
-          })}
+        <div>
+          <div style= {{ float: "right", padding: 10 }}>
+            <span onClick={handleListToggle}> <i className="fa fa-list" /> </span>
+            <span onClick={handleDetailToggle}> <i className="fa fa-list-alt" /> </span>
+          </div>
+
+          {openList && this.renderListView(orders)}
+          {openDetail &&
+            <div className="container-fluid-sm">
+              {orders.map((order, i) => {
+                return (
+                  <div key={i}>
+                    {this.renderOrderCard(order)}
+                  </div>
+                );
+              })}
+            </div>
+          }
         </div>
       );
     }

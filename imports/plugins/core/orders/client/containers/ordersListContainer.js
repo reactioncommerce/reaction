@@ -22,11 +22,14 @@ class OrdersListContainer extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      openDetail: false,
+      openList: true
+    };
 
-    this.isOpen = this.isOpen.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.handleListToggle = this.handleListToggle.bind(this);
+    this.handleDetailToggle = this.handleDetailToggle.bind(this);
     this.handleDisplayMedia = this.handleDisplayMedia.bind(this);
   }
 
@@ -50,19 +53,18 @@ class OrdersListContainer extends Component {
     }
   }
 
-  handleListToggle = (order) => {
-    const orderId = order._id;
+  handleListToggle = () => {
     this.setState({
-      [orderId]: true
-    })
+      openList: true,
+      openDetail: false
+    });
   }
 
-  isOpen = (order) => {
-    const orderId = order._id;
-    if(this.state[orderId]) {
-      return true;
-    }
-    return false;
+  handleDetailToggle = () => {
+    this.setState({
+      openDetail: true,
+      openList: false
+    });
   }
 
   /**
@@ -102,8 +104,10 @@ class OrdersListContainer extends Component {
           orders={orders}
           handleClick={this.handleClick}
           displayMedia={this.handleDisplayMedia}
-          handleListToggle= {this.handleListToggle}
-          isOpen={this.isOpen}          
+          handleListToggle={this.handleListToggle}
+          handleDetailToggle={this.handleDetailToggle}
+          openDetail= {this.state.openDetail}
+          openList= {this.state.openList}
         />
     );
   }

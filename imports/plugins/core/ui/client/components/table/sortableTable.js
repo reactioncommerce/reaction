@@ -149,7 +149,7 @@ class SortableTable extends Component {
     }
 
     const filteredData = matchSorter(originalData, filterInput, { keys: filteredFields });
-
+    console.log("filteredData------>", filteredData);
     return filteredData;
   }
 
@@ -201,7 +201,7 @@ class SortableTable extends Component {
         <ReactTable
           className={"-striped -highlight"}
           columns={this.renderColumns()}
-          data={this.renderData()}
+          data={this.props.data || this.renderData()}
           defaultFilterMethod={this.customFilter}
           defaultPageSize={otherProps.defaultPageSize}
           filterable={this.renderColumnFilter()}
