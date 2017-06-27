@@ -58,7 +58,7 @@ class SortableTablePagination extends Component {
       className,
       PreviousComponent = PaginationButtons,
       NextComponent = PaginationButtons
-    } = this.props
+    } = this.props;
 
     return (
       <div
@@ -112,8 +112,9 @@ class SortableTablePagination extends Component {
         <div className="-previous">
           <PreviousComponent
             onClick={e => { // eslint-disable-line no-unused-vars
-              if (!canPrevious) return
-              this.changePage(page - 1)
+              if (!canPrevious) {
+                return this.changePage(page - 1);
+              }
             }}
             disabled={!canPrevious}
           >
@@ -124,8 +125,9 @@ class SortableTablePagination extends Component {
         <div className="-next">
           <NextComponent
             onClick={e => { // eslint-disable-line no-unused-vars
-              if (!canNext) return
-              this.changePage(page + 1)
+              if (!canNext) {
+                return this.changePage(page + 1);
+              }
             }}
             disabled={!canNext}
           >
@@ -142,15 +144,19 @@ SortableTablePagination.propTypes = {
   PreviousComponent: PropTypes.func,
   canNext: PropTypes.bool,
   canPrevious: PropTypes.bool,
-  // className: PropTypes.,
+  className: PropTypes.object,
   nextText: PropTypes.string,
+  ofText: PropTypes.string,
   onPageChange: PropTypes.func,
   onPageSizeChange: PropTypes.func,
   page: PropTypes.number,
   pageSize: PropTypes.number,
   pageSizeOptions: PropTypes.array,
+  pageText: PropTypes.string,
   pages: PropTypes.number,
+  paginationStyle: PropTypes.object,
   previousText: PropTypes.string,
+  rowsText: PropTypes.string,
   showPageJump: PropTypes.bool,
   showPageSizeOptions: PropTypes.bool
 };

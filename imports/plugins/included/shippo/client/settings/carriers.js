@@ -5,7 +5,7 @@ import { Shipping } from "/lib/collections";
 import { i18next } from "/client/api";
 import { Loading, SortableTable } from "/imports/plugins/core/ui/client/components";
 import ShippoTableColumn from "./shippoTableColumn";
-import React, { Component, PropTypes } from "react";
+import React from "react";
 
 import "./carriers.html";
 
@@ -63,7 +63,7 @@ Template.shippoCarriers.helpers({
       const columnMeta = {
         accessor: field,
         Header: i18next.t(`admin.shippingGrid.${field}`),
-        Cell: row => (
+        Cell: row => ( // eslint-disable-line
           <ShippoTableColumn row={row} />
         ),
         className: colClassName,
@@ -134,7 +134,6 @@ Template.shippoCarriers.events({
       isEditing: false,
       editingId: null
     });
-    // ugly hack
     $(".shipping-carriers-grid-row").removeClass("active");
   },
   "click .shipping-carriers-grid-row": function (event) {
