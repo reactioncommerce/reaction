@@ -199,15 +199,26 @@ export default {
   },
 
   getShopName() {
-    const domain = this.getDomain();
-    const shop = Shops.find({
-      domains: domain
-    }, {
-      limit: 1,
-      fields: {
-        name: 1
-      }
-    }).fetch()[0];
+    const shopId = this.getShopId();
+    let shop;
+    if (shopId) {
+      shop = Shops.findOne({
+        _id: shopId
+      }, {
+        fields: {
+          name: 1
+        }
+      });
+    } else {
+      const domain = this.getDomain();
+      shop = Shops.findOne({
+        domains: domain
+      }, {
+        fields: {
+          name: 1
+        }
+      });
+    }
     return shop && shop.name;
   },
 
