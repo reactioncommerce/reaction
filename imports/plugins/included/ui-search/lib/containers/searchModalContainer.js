@@ -75,7 +75,7 @@ class SearchModalContainer extends Component {
           * Order Search
           */
         if (searchCollection === "orders") {
-          const orderResults = Collections.OrderSearch.find().fetch();
+          const orderResults = Collections.OrderSearch.find(searchQuery, { limit: 99 }).fetch();
           this.setState({
             orderResults,
             tagResults: [],
@@ -121,7 +121,9 @@ class SearchModalContainer extends Component {
   handleOrderClick = (event)  => {
     const isActionViewOpen = Reaction.isActionViewOpen();
     const orderId = event._id;
+    console.log("action view", Reaction.isActionViewOpen());
 
+    console.log("event orders", event);
     // toggle detail views
     if (isActionViewOpen === false) {
       Reaction.showActionView({
@@ -138,6 +140,7 @@ class SearchModalContainer extends Component {
     Reaction.Router.go("dashboard/orders", {}, {
       _id: orderId
     });
+
     this.handleChildUnmount();
   }
 
