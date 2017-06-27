@@ -16,13 +16,13 @@ class EmailTableColumn extends Component {
       if (row.value === true) {
         return (
           <span>
-            <Icon icon="fa fa-check" className="valid" />
+            <Icon icon="fa fa-check" className="enabled" />
           </span>
         );
       }
       return (
         <span>
-          <Icon icon="fa fa-times" className="error" />
+          <Icon icon="fa fa-check" className="disabled" />
         </span>
       );
     }
