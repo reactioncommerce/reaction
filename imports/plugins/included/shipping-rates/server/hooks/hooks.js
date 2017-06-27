@@ -9,6 +9,12 @@ function getShippingRates(rates, cart) {
   const shops = [];
   const products = cart.items;
 
+  // New marketplace shipping flag.
+  // TODO: Set this in marketplace admin.
+  const marketplaceFlags = {
+    enableVendorShippingRates: false
+  };
+
   const pkgData = Packages.findOne({
     name: "reaction-shipping-rates",
     shopId: Reaction.getShopId()
@@ -24,21 +30,26 @@ function getShippingRates(rates, cart) {
     "provider.enabled": true
   };
 
-  // create an array of shops, allowing
-  // the cart to have products from multiple shops
-  for (const product of products) {
-    if (product.shopId) {
-      shops.push(product.shopId);
+  // TODO: Create flag for marketplace admin to determine if shops configure shipping on their own or not
+
+  if (marketplaceFlags.enableVendorShippingRates) {
+    // create an array of shops, allowing
+    // the cart to have products from multiple shops
+    for (const product of products) {
+      if (product.shopId) {
+        shops.push(product.shopId);
+      }
     }
-  }
-  // if we have multiple shops in cart
-  if ((shops !== null ? shops.length : void 0) > 0) {
-    selector = {
-      "shopId": {
-        $in: shops
-      },
-      "provider.enabled": true
-    };
+
+    // if we have multiple shops in cart
+    if ((shops !== null ? shops.length : void 0) > 0) {
+      selector = {
+        "shopId": {
+          $in: shops
+        },
+        "provider.enabled": true
+      };
+    }
   }
 
   const shippingCollection = Shipping.find(selector);
