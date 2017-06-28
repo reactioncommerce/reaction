@@ -6,8 +6,7 @@ import { AutoForm } from "meteor/aldeed:autoform";
 import { DiscountRates } from "../collections/rates";
 import { DiscountRates as DiscountRateSchema } from "../../lib/collections/schemas/rates";
 import { i18next } from "/client/api";
-import MeteorGriddle from "/imports/plugins/core/ui-grid/client/griddle";
-import { IconButton, Loading } from "/imports/plugins/core/ui/client/components";
+import { IconButton, Loading, SortableTable } from "/imports/plugins/core/ui/client/components";
 
 /* eslint no-shadow: ["error", { "allow": ["options"] }] */
 /* eslint no-unused-vars: ["error", { "argsIgnorePattern": "[oO]ptions" }] */
@@ -90,20 +89,19 @@ Template.customDiscountRates.helpers({
     const customColumnMetadata = [];
     filteredFields.forEach(function (field) {
       const columnMeta = {
-        columnName: field,
-        displayName: i18next.t(`admin.discountGrid.${field}`)
+        accessor: field,
+        Header: i18next.t(`admin.discountGrid.${field}`)
       };
       customColumnMetadata.push(columnMeta);
     });
 
     // return discount Grid
     return {
-      component: MeteorGriddle,
+      component: SortableTable,
       publication: "DiscountRates",
       collection: DiscountRates,
       matchingResultsCount: "discounts-count",
       showFilter: true,
-      useGriddleStyles: false,
       rowMetadata: customRowMetaData,
       filteredFields: filteredFields,
       columns: filteredFields,

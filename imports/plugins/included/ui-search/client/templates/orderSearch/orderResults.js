@@ -5,7 +5,7 @@ import { Blaze } from "meteor/blaze";
 import { DataType } from "react-taco-table";
 import { Template } from "meteor/templating";
 import { Reaction, i18next } from "/client/api";
-import { SortableTable } from "/imports/plugins/core/ui/client/components";
+import { SortableTableLegacy } from "/imports/plugins/core/ui/client/components";
 
 
 /**
@@ -118,7 +118,7 @@ Template.searchModal.helpers({
     ];
 
     return {
-      component: SortableTable,
+      component: SortableTableLegacy,
       data: results,
       columns: columns
     };

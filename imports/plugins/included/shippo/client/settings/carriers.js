@@ -4,8 +4,9 @@ import { ReactiveDict } from "meteor/reactive-dict";
 import { AutoForm } from "meteor/aldeed:autoform";
 import { Shipping } from "/lib/collections";
 import { i18next } from "/client/api";
-import MeteorGriddle from "/imports/plugins/core/ui-grid/client/griddle";
-import { Loading } from "/imports/plugins/core/ui/client/components";
+import { Loading, SortableTable } from "/imports/plugins/core/ui/client/components";
+import ShippoTableColumn from "./shippoTableColumn";
+import React from "react";
 
 import "./carriers.html";
 
@@ -50,9 +51,25 @@ Template.shippoCarriers.helpers({
     // add i18n handling to headers
     const customColumnMetadata = [];
     filteredFields.forEach(function (field) {
+      let colWidth = undefined;
+      let colStyle = undefined;
+      let colClassName = undefined;
+
+      if (field === "enabled") {
+        colWidth = undefined;
+        colStyle = { textAlign: "center" };
+        colClassName = "shippo-carrier-status";
+      }
+
       const columnMeta = {
-        columnName: field,
-        displayName: i18next.t(`admin.shippingGrid.${field}`)
+        accessor: field,
+        Header: i18next.t(`admin.shippingGrid.${field}`),
+        Cell: row => ( // eslint-disable-line
+          <ShippoTableColumn row={row} />
+        ),
+        className: colClassName,
+        width: colWidth,
+        style: colStyle
       };
       customColumnMetadata.push(columnMeta);
     });
@@ -72,12 +89,11 @@ Template.shippoCarriers.helpers({
 
     // return shipping Grid
     return {
-      component: MeteorGriddle,
+      component: SortableTable,
       publication: "Shipping",
       transform: transform,
       collection: Shipping,
       showFilter: true,
-      useGriddleStyles: false,
       rowMetadata: customRowMetaData,
       filteredFields: filteredFields,
       columns: filteredFields,
@@ -119,7 +135,6 @@ Template.shippoCarriers.events({
       isEditing: false,
       editingId: null
     });
-    // ugly hack
     $(".shipping-carriers-grid-row").removeClass("active");
   },
   "click .shipping-carriers-grid-row": function (event) {
