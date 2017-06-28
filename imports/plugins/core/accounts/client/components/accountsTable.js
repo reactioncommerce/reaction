@@ -47,21 +47,20 @@ class AccountsTable extends Component {
       "Rectangle-Copy": true
     });
     return (
-      <li className={baseStyle} style={{ padding: "0px" }}>
-        <div className="member-list-item-image accounts-profile-header table-width">
+      <li className={baseStyle}>
+        <div className="member-list-item-image accounts-header-name table-width">
           <span><Checkbox /> </span>
           <span> Name <Icon icon="chevron-down" /></span>
         </div>
-        <div className="member-list-item-profile accounts-field table-width" style={{ paddingRight: "4%" }}>
+        <div className="member-list-item-profile accounts-header-email table-width">
           <div>Email <Icon icon="chevron-down" /></div>
         </div>
-        <div className="member-list-item-profile accounts-last-active table-width" style={{ paddingRight: "6%" }}>
+        <div className="member-list-item-profile accounts-header-last-active table-width" style={{ paddingRight: "6%" }}>
           <div>Last Active <Icon icon="chevron-down" /></div>
         </div>
-        <div className="member-list-item-profile table-width">
+        <div className="member-list-item-profile accounts-header-factor table-width">
           <div>Two Factor <Icon icon="chevron-down" /></div>
         </div>
-        <div className="member-list-item-profile accounts-field table-width"/>
       </li>
     );
   }
@@ -81,10 +80,10 @@ class AccountsTable extends Component {
         <div className="member-list-item-profile accounts-field table-width">
           &nbsp;{this.getUserDetails(user).email}
         </div>
-        <div className="member-list-item-profile accounts-field table-width">
+        <div className="member-list-item-profile accounts-field accounts-body-last-active table-width">
           <span>{this.getUserDetails(user).lastUpdated}</span>
         </div>
-        <div className="member-list-item-profile accounts-field table-width">
+        <div className="member-list-item-profile accounts-field accounts-body-factor table-width">
           <span>{this.getUserDetails(user).twoFactor}</span>
         </div>
 
