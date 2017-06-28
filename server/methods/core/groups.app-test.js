@@ -10,7 +10,7 @@ import { getUser } from "/server/imports/fixtures/users";
 
 Fixtures();
 
-describe("Group test", function () {
+describe.only("Group test", function () {
   let methods;
   let sandbox;
   let shop;
@@ -60,7 +60,7 @@ describe("Group test", function () {
     Meteor.call("group/createGroup", payload.group, shop._id);
     const updatedShop = Shops.findOne({ _id: shop._id });
 
-    expect(updatedShop.groups[0].name).to.equal(payload.group.name);
+    expect(updatedShop.group[0].name).to.equal(payload.group.name);
   });
 
   it("should check admin access before creating a group", function () {
@@ -81,7 +81,7 @@ describe("Group test", function () {
 
     Meteor.call("group/createGroup", payload.group, shop._id);
     const updatedShop = Shops.findOne({ _id: shop._id });
-    const groupData = updatedShop.groups[0];
+    const groupData = updatedShop.group[0];
     Meteor.call("group/addUser", user._id, groupData, shop._id);
     const updatedUser = Accounts.findOne({ _id: user._id });
     expect(updatedUser.groups[0].groupId[0]).to.equal(groupData.groupId);
@@ -94,7 +94,7 @@ describe("Group test", function () {
 
     Meteor.call("group/createGroup", payload.group, shop._id);
     const updatedShop = Shops.findOne({ _id: shop._id });
-    const groupData = updatedShop.groups[0];
+    const groupData = updatedShop.group[0];
 
     Meteor.call("group/addUser", user._id, groupData, shop._id);
     const updatedUser = Meteor.users.findOne({ _id: user._id });
@@ -109,15 +109,14 @@ describe("Group test", function () {
 
     Meteor.call("group/createGroup", payload.group, shop._id);
     const updatedShop = Shops.findOne({ _id: shop._id });
-    const groupData = updatedShop.groups[0];
+    const groupData = updatedShop.group[0];
 
     Meteor.call("group/addUser", user._id, groupData, shop._id);
     let updatedUser = Meteor.users.findOne({ _id: user._id });
 
     expect(updatedUser.roles[shop._id]).to.include.members(payload.group.permissions);
-    console.log({ gId: groupData.groupId });
-    Meteor.call("group/removeUser", user._id, groupData.groupId, shop._id);
 
+    Meteor.call("group/removeUser", user._id, groupData.groupId, shop._id);
     updatedUser = Meteor.users.findOne({ _id: user._id });
     expect(updatedUser.roles[shop._id]).to.not.include.members(payload.group.permissions);
   });

@@ -30,23 +30,32 @@ Meteor.methods({
     check(groupData.permissions, [String]);
     check(shopId, String);
 
-    if (!Reaction.hasPermission(Meteor.userId(), "admin", shopId)) {
+    if (!Reaction.hasPermission("admin")) {
       throw new Meteor.Error(403, "Access Denied");
     }
 
-    const currentGroups = _.get(Shops.findOne({ _id: shopId }), "groups", []);
-    const group = Object.assign({}, groupData, {
-      groupId: Random.id(),
+    let groupExists = false;
+    const currentGroups = _.get(Shops.findOne({ _id: shopId }), "group", {});
+    const newGroupData = Object.assign({}, groupData, {
       slug: getSlug(groupData.name),
-      createdAt: new Date()
+      createdAt: new Date(),
+      createdBy: Meteor.userId()
     });
-    const groupExists = currentGroups.map(grp => grp.slug).indexOf(group.slug) > -1;
+
+    // Check to see if any group with same slug exists. Prevent duplicates
+    for (const grp in currentGroups) {
+      if (currentGroups.hasOwnProperty(grp)) {
+        groupExists = currentGroups[grp].slug === newGroupData.slug;
+      }
+    }
 
     if (groupExists) {
       throw new Meteor.Error(400, "Bad request");
     }
 
-    const shop = Shops.update({ _id: shopId }, { $push: { groups: group } });
+    // add the new groupData on shop
+    currentGroups[Random.id()] = newGroupData;
+    const shop = Shops.update({ _id: shopId }, { $set: { group: currentGroups } });
 
     if (!shop) {
       throw new Meteor.Error(400, "Bad request");
@@ -79,12 +88,12 @@ Meteor.methods({
     check(newGroupData.permissions, [String]);
     check(shopId, String);
 
-    if (!Reaction.hasPermission(Meteor.userId(), "admin", shopId)) {
+    if (!Reaction.hasPermission("admin")) {
       throw new Meteor.Error(403, "Access Denied");
     }
 
     // 1. Update the group data on the shop doc
-    const currentGroups = _.get(Shops.findOne({ _id: shopId }), "groups", []);
+    const currentGroups = _.get(Shops.findOne({ _id: shopId }), "group", []);
     const groups = currentGroups.map(grp => {
       if (grp.groupId === group.groupId) {
         return Object.assign({}, group, newGroupData, { slug: getSlug(newGroupData.name) });
@@ -93,7 +102,7 @@ Meteor.methods({
       delete grp.createdAt;
       return grp;
     });
-    Shops.update({ _id: shopId }, { $set: { groups } });
+    Shops.update({ _id: shopId }, { $set: { group: groups } });
 
     // 2. Check & Modify users in the group that changed
     const permissionsChanged = !_.isEqual(group.permissions, newGroupData.permissions);
@@ -117,30 +126,29 @@ Meteor.methods({
    * @summary adds a user to a permission group for a shop
    * It updates the user's list of permissions/roles with the defined the list defined for the group
    * @param {String} userId - current data of the group to be updated
-   * @param {Object} groupData - info about the group
+   * @param {String} groupId - id of the group
    * @param {String} shopId - permissions of the group
    * @return {Object} - object.status of 200 on success or Error object on failure
    */
-  "group/addUser": function (userId, groupData, shopId) {
+  "group/addUser": function (userId, groupId, shopId) {
     check(userId, String);
-    check(groupData, Object);
-    check(groupData.name, String);
-    check(groupData.permissions, [String]);
+    check(groupId, String);
     check(shopId, String);
 
-    if (!Reaction.hasPermission(Meteor.userId(), "admin", shopId)) {
+    if (!Reaction.hasPermission("admin")) {
       throw new Meteor.Error(403, "Access Denied");
     }
 
     const user = Accounts.findOne({ _id: userId });
+    const permissions = getGroupPermissions(Shops.findOne({ _id: shopId }).group, groupId);
 
     if (!user) {
       throw new Meteor.Error(400, "Bad request");
     }
 
     try {
-      Meteor.call("accounts/addUserPermissions", user.userId, groupData.permissions, shopId);
-      changeUserGroupOnAccount(user, groupData.groupId, shopId);
+      Meteor.call("accounts/addUserPermissions", user.userId, permissions, shopId);
+      changeUserGroupOnAccount(user, groupId, shopId);
       return { status: 200 };
     } catch (error) {
       Logger.error(error);
@@ -161,7 +169,7 @@ Meteor.methods({
     check(groupId, String);
     check(shopId, String);
 
-    if (!Reaction.hasPermission(Meteor.userId(), "admin", shopId)) {
+    if (!Reaction.hasPermission("admin")) {
       throw new Meteor.Error(403, "Access Denied");
     }
 
@@ -171,7 +179,7 @@ Meteor.methods({
       throw new Meteor.Error(404, "Could not find user");
     }
 
-    const permissions = getGroupPermissions(Shops.findOne({ _id: shopId }).groups, groupId);
+    const permissions = getGroupPermissions(Shops.findOne({ _id: shopId }).group, groupId);
     try {
       Meteor.call("accounts/removeUserPermissions", user._id, permissions, shopId);
       changeUserGroupOnAccount(user, null, shopId); // set group name to null on the user account
@@ -190,18 +198,8 @@ function changeUserGroupOnAccount(users, groupId, shopId) {
     affectedUsers = [users];
   }
   return affectedUsers.forEach(user => {
-    if (!user.groups) { // if no groups on account yet, set default
-      user.groups = [{ shopId }];
-    }
-    user.groups = user.groups.map(group => {
-      if (group.shopId === shopId) {
-        group.groupId = [groupId || ""];
-      }
-      return group;
-    });
-
-    const updateQuery = { groups: user.groups };
-    Accounts.update({ _id: user._id }, { $set: updateQuery });
+    user.groups[shopId] = [groupId];
+    Accounts.update({ _id: user._id }, { $set: { groups: user.groups } });
   });
 }
 
@@ -210,10 +208,10 @@ function setUserPermissions(users, oldGroup, newGroupData, shopId) {
   if (!Array.isArray(users)) {
     affectedUsers = [users];
   }
-  // todo: default roles ??
+
   return affectedUsers.forEach(user => Roles.setUserRoles(user._id, newGroupData.permissions, shopId));
 }
 
 function getGroupPermissions(groups, groupId) {
-  return _.get(_.find(groups, { groupId }), "permissions", []);
+  return _.get(groups[groupId], "permissions", []);
 }
