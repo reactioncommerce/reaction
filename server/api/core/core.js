@@ -1,7 +1,11 @@
 import url from "url";
 import packageJson from "/package.json";
 import { merge, uniqWith } from "lodash";
+import _ from "lodash";
 import { Meteor } from "meteor/meteor";
+import { Random } from "meteor/random";
+import { Accounts } from "meteor/accounts-base";
+import { Roles } from "meteor/alanning:roles";
 import { EJSON } from "meteor/ejson";
 import { Jobs, Packages, Shops } from "/lib/collections";
 import { Hooks, Logger } from "/server/api";
@@ -325,7 +329,7 @@ export default {
       // set the default shop email to the default admin email
       Shops.update(shopId, {
         $addToSet: {
-          domains: domain
+          domains: this.getDomain()
         }
       });
     }

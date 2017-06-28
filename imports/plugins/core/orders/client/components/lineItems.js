@@ -1,9 +1,9 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { formatPriceString } from "/client/api";
 import { Translation } from "/imports/plugins/core/ui/client/components";
 
 class LineItems extends Component {
-
   static propTypes = {
     displayMedia: PropTypes.func,
     handleClick: PropTypes.func,
@@ -38,12 +38,12 @@ class LineItems extends Component {
 
           <div className="order-item-details">
             <div className="order-detail-title">
-            {uniqueItem.title} <br/><small>{uniqueItem.variants.title}</small>
+              {uniqueItem.title} <br/><small>{uniqueItem.variants.title}</small>
             </div>
           </div>
 
           <div className="order-detail-quantity">
-           {quantity || uniqueItem.quantity}
+            {quantity || uniqueItem.quantity}
           </div>
 
           <div className="order-detail-price">
@@ -52,8 +52,8 @@ class LineItems extends Component {
             </div>
           </div>
 
+        </div>
       </div>
-    </div>
     );
   }
 
@@ -95,7 +95,7 @@ class LineItems extends Component {
               <strong>
                 {this.calculateTotal(uniqueItem.variants.price, uniqueItem.shipping.rate, uniqueItem.taxDetail.tax)}
               </strong> :
-               <strong>
+              <strong>
                 {this.calculateTotal(uniqueItem.variants.price, uniqueItem.shipping.rate, 0)}
               </strong>
             }
@@ -139,7 +139,7 @@ class LineItems extends Component {
                 )}
 
               </div>
-          </div>
+            </div>
           );
         })}
       </div>

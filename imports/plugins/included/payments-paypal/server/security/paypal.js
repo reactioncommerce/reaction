@@ -1,3 +1,5 @@
+import { BrowserPolicy } from "meteor/browser-policy-common";
+
 BrowserPolicy.content.allowEval();
 BrowserPolicy.content.allowOriginForAll("http://www.paypal.com");
 BrowserPolicy.content.allowOriginForAll("http://www.paypalobjects.com");

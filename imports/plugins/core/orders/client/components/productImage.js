@@ -43,7 +43,7 @@ class ProductImage extends Component {
           className={`procuct-image product-image-${size}`}
           src={mediaUrl}
         />
-      {this.renderBadge()}
+        {this.renderBadge()}
       </div>
     );
   }

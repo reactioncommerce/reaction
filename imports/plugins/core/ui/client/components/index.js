@@ -18,7 +18,7 @@ export { TagList, TagItem } from "./tags";
 export * from "./cards";
 export { MediaGallery, MediaItem } from "./media";
 export { default as FlatButton } from "./button/flatButton";
-export { default as SortableTable } from "./table/table";
+export { SortableTable, SortableTableLegacy } from "./table";
 export { Checkbox } from "./checkbox";
 export { default as Loading } from "./loading/loading";
 export * from "./forms";

@@ -1,3 +1,6 @@
+import { Template } from "meteor/templating";
+import { Meteor } from "meteor/meteor";
+import { ReactiveDict } from "meteor/reactive-dict";
 import { Reaction, Router, i18next } from "/client/api";
 import { Themes } from "/lib/collections";
 
