@@ -158,6 +158,7 @@ class OrdersList extends Component {
       const columnMeta = {
         accessor: filteredFields[columnName],
         Header: columnName,
+        headerStyle: { shadowColor: "transparent" },
         Cell: row => {
           const bla = row.column.id;
           if (bla === "shipping[0].address.fullName") {
@@ -169,8 +170,8 @@ class OrdersList extends Component {
                   name={row.value}
                   size={30}
                   className="rui-order-avatar"
-                />
-              <strong>{row.value}</strong>
+                />&nbsp;
+                <strong>{row.value}</strong>
               </div>
             );
           }
@@ -178,6 +179,21 @@ class OrdersList extends Component {
             const createdDate = moment(row.value).format("MM/D/YYYY");
             return (
               <span>{createdDate}</span>
+            );
+          }
+          if (bla === "_id") {
+            return (
+              <ClickToCopy
+                copyToClipboard={row.original._id}
+                displayText={row.original._id}
+                i18nKeyTooltip="admin.orderWorkflow.summary.copyOrderLink"
+                tooltip="Copy Order Link"
+              />
+            );
+          }
+          if (bla === "billing[0].invoice.total") {
+            return (
+              <strong>{formatPriceString(row.original.billing[0].invoice.total)}</strong>
             );
           }
           if (bla === "shipping[0].workflow.status") {
@@ -191,11 +207,11 @@ class OrdersList extends Component {
             );
           }
           if (bla === "workflow.status") {
-            // const classes = classnames({
-            //   "rui": true,
-            //   "btn": true,
-            //   "btn-success": row.original.workflow.status === "new"
-            // });
+            const classes = classnames({
+              "rui": true,
+              "btn": true,
+              "btn-success": row.original.workflow.status === "new"
+            });
 
             return (
               <span>
@@ -205,24 +221,22 @@ class OrdersList extends Component {
                   label={row.value}
                   status={this.fulfillmentBadgeStatus(row.original)}
                 />
-                {/* <div className="rui card order">
-                  <div className="controls" onClick={() => handleClick(order)}>
-                    <button className={classes} data-event-action="startProcessingOrder"><Icon icon="fa fa-chevron-right" /></button>
-                  </div>
-                </div> */}
+                <button className={classes} data-event-action="startProcessingOrder" style={{ backgroundColor: "transparent", float: "right" }}><Icon icon="fa fa-chevron-right" /></button>
               </span>
             );
           }
           return (
             <span>{row.value}</span>
           );
-        }
+        },
+        style: { textAlign: "center" }
       };
       customColumnMetadata.push(columnMeta);
     });
 
     return (
       <SortableTable
+        tableClassName="-highlight"
         data={orders}
         columnMetadata={customColumnMetadata}
         externalLoadingComponent={Loading}
@@ -260,7 +274,7 @@ class OrdersList extends Component {
             <span onClick={handleDetailToggle}> <i className="fa fa-list-alt" /> </span>
           </div>
 
-          {openList && this.renderListView(orders)}
+          {openList &&  <div style={{ padding: 20 }}>{this.renderListView(orders)}</div>}
           {openDetail &&
             <div className="container-fluid-sm">
               {orders.map((order, i) => {
