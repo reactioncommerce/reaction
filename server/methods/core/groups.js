@@ -36,7 +36,7 @@ Meteor.methods({
 
     const currentGroups = _.get(Shops.findOne({ _id: shopId }), "groups", []);
     const group = Object.assign({}, groupData, {
-      _id: Random.id(),
+      groupId: Random.id(),
       slug: getSlug(groupData.name),
       createdAt: new Date()
     });
@@ -86,10 +86,10 @@ Meteor.methods({
     // 1. Update the group data on the shop doc
     const currentGroups = _.get(Shops.findOne({ _id: shopId }), "groups", []);
     const groups = currentGroups.map(grp => {
-      if (grp._id === group._id) {
+      if (grp.groupId === group.groupId) {
         return Object.assign({}, group, newGroupData, { slug: getSlug(newGroupData.name) });
       }
-      delete grp._id;
+      delete grp.groupId;
       delete grp.createdAt;
       return grp;
     });
@@ -97,7 +97,7 @@ Meteor.methods({
 
     // 2. Check & Modify users in the group that changed
     const permissionsChanged = !_.isEqual(group.permissions, newGroupData.permissions);
-    const matchQuery = { $elemMatch: { shopId: shopId, groupId: group._id } };
+    const matchQuery = { $elemMatch: { shopId: shopId, groupId: group.groupId } };
     const users = Accounts.find({ groups: matchQuery }).fetch();
     let error;
 
@@ -134,9 +134,13 @@ Meteor.methods({
 
     const user = Accounts.findOne({ _id: userId });
 
+    if (!user) {
+      throw new Meteor.Error(400, "Bad request");
+    }
+
     try {
       Meteor.call("accounts/addUserPermissions", user.userId, groupData.permissions, shopId);
-      changeUserGroupOnAccount(user, groupData._id, shopId);
+      changeUserGroupOnAccount(user, groupData.groupId, shopId);
       return { status: 200 };
     } catch (error) {
       Logger.error(error);
@@ -148,13 +152,13 @@ Meteor.methods({
    * group/removeUser
    * @summary removes a user from a group for a shop, and updates the user's permission list
    * @param {String} userId - current data of the group to be updated
-   * @param {String} groupName - name of the group
+   * @param {String} groupId - name of the group
    * @param {String} shopId - permissions of the group
    * @return {Object} - object.status of 200 on success or Error object on failure
    */
-  "group/removeUser": function (userId, groupName, shopId) {
+  "group/removeUser": function (userId, groupId, shopId) {
     check(userId, String);
-    check(groupName, String);
+    check(groupId, String);
     check(shopId, String);
 
     if (!Reaction.hasPermission(Meteor.userId(), "admin", shopId)) {
@@ -167,7 +171,7 @@ Meteor.methods({
       throw new Meteor.Error(404, "Could not find user");
     }
 
-    const permissions = getGroupPermissions(Shops.findOne({ _id: shopId }).groups, groupName);
+    const permissions = getGroupPermissions(Shops.findOne({ _id: shopId }).groups, groupId);
     try {
       Meteor.call("accounts/removeUserPermissions", user._id, permissions, shopId);
       changeUserGroupOnAccount(user, null, shopId); // set group name to null on the user account
@@ -210,6 +214,6 @@ function setUserPermissions(users, oldGroup, newGroupData, shopId) {
   return affectedUsers.forEach(user => Roles.setUserRoles(user._id, newGroupData.permissions, shopId));
 }
 
-function getGroupPermissions(groups, name) {
-  return _.get(_.find(groups, { name }), "permissions", []);
+function getGroupPermissions(groups, groupId) {
+  return _.get(_.find(groups, { groupId }), "permissions", []);
 }
