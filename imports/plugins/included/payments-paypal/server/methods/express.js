@@ -255,7 +255,7 @@ export const methods = {
     }
 
     if (!response || response.statusCode !== 200) {
-      Logger.debug(error, "Bad Response from PayPal during Refund Creation");
+      Logger.debug("Bad Response from PayPal during Refund Creation");
       throw new Meteor.Error("Bad Response from PayPal during Refund Creation");
     }
 

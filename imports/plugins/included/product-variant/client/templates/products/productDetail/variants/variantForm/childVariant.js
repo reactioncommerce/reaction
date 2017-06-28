@@ -1,3 +1,6 @@
+import { $ } from "meteor/jquery";
+import { Template } from "meteor/templating";
+import { Meteor } from "meteor/meteor";
 import { Reaction, i18next } from "/client/api";
 import { ReactionProduct } from "/lib/api";
 import { Media } from "/lib/collections";

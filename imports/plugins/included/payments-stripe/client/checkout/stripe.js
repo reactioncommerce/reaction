@@ -2,6 +2,7 @@
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { AutoForm } from "meteor/aldeed:autoform";
+import { $ } from "meteor/jquery";
 import { getCardType } from "/client/modules/core/helpers/globals";
 import { Reaction } from "/client/api";
 import { Cart, Shops, Packages } from "/lib/collections";

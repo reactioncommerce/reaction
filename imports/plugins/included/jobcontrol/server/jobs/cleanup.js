@@ -1,5 +1,6 @@
 import later from "later";
 import moment from "moment";
+import { Job } from "meteor/vsivsi:job-collection";
 import { Jobs } from "/lib/collections";
 import { Hooks, Logger } from "/server/api";
 
