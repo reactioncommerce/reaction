@@ -81,10 +81,6 @@ Template.accountsDashboard.helpers({
         });
       }
     }
-  },
-
-  accounts() {
-    return AccountsContainer;
   }
 });
 
