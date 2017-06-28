@@ -1,3 +1,4 @@
+import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { TaxCodes } from "../../lib/collections";
 import { i18next } from "/client/api";

@@ -1,5 +1,9 @@
 import React from "react";
 import { DataType } from "react-taco-table";
+import { Blaze } from "meteor/blaze";
+import { $ } from "meteor/jquery";
+import { Roles } from "meteor/alanning:roles";
+import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { Reaction, i18next } from "/client/api";
 import { SortableTableLegacy } from "/imports/plugins/core/ui/client/components";

@@ -1,5 +1,7 @@
 import _ from "lodash";
 import React from "react";
+import { $ } from "meteor/jquery";
+import { Blaze } from "meteor/blaze";
 import { DataType } from "react-taco-table";
 import { Template } from "meteor/templating";
 import { Reaction, i18next } from "/client/api";

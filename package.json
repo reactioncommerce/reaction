@@ -22,6 +22,7 @@
     "@reactioncommerce/authorize-net": "^1.0.8",
     "@reactioncommerce/nodemailer": "^5.0.4",
     "accounting-js": "^1.1.1",
+    "amplify-store": "^0.1.0",
     "autoprefixer": "^7.1.1",
     "autosize": "^3.0.20",
     "babel-runtime": "^6.23.0",
@@ -33,6 +34,7 @@
     "classnames": "^2.2.5",
     "copy-to-clipboard": "^3.0.6",
     "country-data": "^0.0.31",
+    "create-react-class": "^15.6.0",
     "css-annotation": "^0.6.2",
     "deep-diff": "^0.3.4",
     "dnd-core": "^2.3.0",
@@ -143,6 +145,7 @@
       "^/imports/plugins(.*)": "<rootDir>/imports/plugins/$1",
       "^/client/api(.*)": "<rootDir>/imports/test-utils/__mocks__/client/api$1",
       "^meteor/aldeed:simple-schema": "<rootDir>/imports/test-utils/__mocks__/meteor/aldeed-simple-schema",
+      "^meteor/tmeasday:publish-counts": "<rootDir>/imports/test-utils/__mocks__/meteor/aldeed-simple-schema",
       "^meteor/(.*)": "<rootDir>/imports/test-utils/__mocks__/meteor/$1"
     }
   },

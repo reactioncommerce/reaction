@@ -1,4 +1,6 @@
 import Sortable from "sortablejs";
+import { $ } from "meteor/jquery";
+import { Tracker } from "meteor/tracker";
 import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
 import { Template } from "meteor/templating";

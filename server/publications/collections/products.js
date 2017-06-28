@@ -1,3 +1,8 @@
+import _ from "lodash";
+import { Meteor } from "meteor/meteor";
+import { check, Match } from "meteor/check";
+import { Roles } from "meteor/alanning:roles";
+import { SimpleSchema } from "meteor/aldeed:simple-schema";
 import { Products, Revisions } from "/lib/collections";
 import { Reaction, Logger } from "/server/api";
 import { RevisionApi } from "/imports/plugins/core/revisions/lib/api/revisions";

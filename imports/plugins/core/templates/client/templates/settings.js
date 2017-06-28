@@ -1,9 +1,10 @@
-import { Loading, SortableTable } from "/imports/plugins/core/ui/client/components";
+import { $ } from "meteor/jquery";
 import { Meteor } from "meteor/meteor";
 import { AutoForm } from "meteor/aldeed:autoform";
 import { Blaze } from "meteor/blaze";
 import { ReactiveDict } from "meteor/reactive-dict";
 import { Template } from "meteor/templating";
+import { Loading, SortableTable } from "/imports/plugins/core/ui/client/components";
 import { EmailTemplates } from "../../lib/collections/schemas";
 import { i18next } from "/client/api";
 import { Templates } from "/lib/collections";
@@ -132,7 +133,7 @@ Template.templateSettings.events({
     });
   },
   "click .cancel, .template-grid-row .active": function () {
-    instance = Template.instance();
+    const instance = Template.instance();
     // remove active rows from grid
     instance.state.set({
       isEditing: false,

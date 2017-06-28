@@ -2,6 +2,8 @@
  * uploadHandler method
  */
 
+import { Template } from "meteor/templating";
+import { $ } from "meteor/jquery";
 function uploadHandler(event, instance) {
   const files = [];
 

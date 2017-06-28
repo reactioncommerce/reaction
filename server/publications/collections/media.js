@@ -1,3 +1,5 @@
+import { Meteor } from "meteor/meteor";
+import { check, Match } from "meteor/check";
 import { Media, Revisions } from "/lib/collections";
 import { Reaction } from "/server/api";
 import { RevisionApi } from "/imports/plugins/core/revisions/lib/api/revisions";

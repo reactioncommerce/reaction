@@ -1,6 +1,7 @@
 import { $ } from "meteor/jquery";
 import { Session } from "meteor/session";
 import { Meteor } from "meteor/meteor";
+import { AutoForm } from "meteor/aldeed:autoform";
 import { Template } from "meteor/templating";
 import { i18next } from "/client/api";
 import * as Collections from "/lib/collections";

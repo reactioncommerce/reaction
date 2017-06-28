@@ -4,6 +4,7 @@ import i18nextLocalStorageCache from "i18next-localstorage-cache";
 import i18nextSprintfPostProcessor from "i18next-sprintf-postprocessor";
 import i18nextJquery from "jquery-i18next";
 import { Meteor } from "meteor/meteor";
+import { Template } from "meteor/templating";
 import { $ } from "meteor/jquery";
 import { Tracker } from "meteor/tracker";
 import { Reaction } from "/client/api";

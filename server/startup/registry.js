@@ -5,7 +5,7 @@ import initRegistry from "./registry/index";
 export default function () {
   initRegistry();
 
-   // initialize shop registry when a new shop is added
+  // initialize shop registry when a new shop is added
   Shops.find().observe({
     added(doc) {
       Reaction.setShopName(doc);
