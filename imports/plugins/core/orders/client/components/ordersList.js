@@ -142,16 +142,38 @@ class OrdersList extends Component {
   }
 
   renderListView(orders) {
-    const filteredFields = ["shipping[0].address.fullName",  "email", "createdAt", "_id", "billing[0].invoice.total", "shipping[0].workflow.status", "workflow.status"];
+    const filteredFields = {
+      Name: "shipping[0].address.fullName",
+      Email: "email",
+      Date: "createdAt",
+      ID: "_id",
+      Total: "billing[0].invoice.total",
+      Shipping: "shipping[0].workflow.status",
+      Status: "workflow.status"
+    };
     const customColumnMetadata = [];
+    const columnNames = Object.keys(filteredFields);
 
-    filteredFields.forEach(function (field) {
+    columnNames.forEach((columnName) => {
       const columnMeta = {
-        accessor: field,
-        Header: field,
+        accessor: filteredFields[columnName],
+        Header: columnName,
         Cell: row => {
-          console.log("row=====>", row);
           const bla = row.column.id;
+          if (bla === "shipping[0].address.fullName") {
+            return (
+              <div className="customer-info">
+                <Avatar
+                  email={row.original.email}
+                  round={true}
+                  name={row.value}
+                  size={30}
+                  className="rui-order-avatar"
+                />
+              <strong>{row.value}</strong>
+              </div>
+            );
+          }
           if (bla === "createdAt") {
             const createdDate = moment(row.value).format("MM/D/YYYY");
             return (
@@ -164,18 +186,31 @@ class OrdersList extends Component {
                 badgeSize="large"
                 i18nKeyLabel={`cartDrawer.${row.value}`}
                 label={row.value}
-                // status={this.shippingBadgeStatus()}
+                status={this.shippingBadgeStatus()}
               />
             );
           }
           if (bla === "workflow.status") {
+            // const classes = classnames({
+            //   "rui": true,
+            //   "btn": true,
+            //   "btn-success": row.original.workflow.status === "new"
+            // });
+
             return (
-              <Badge
-                badgeSize="large"
-                i18nKeyLabel={`cartDrawer.${row.value}`}
-                label={row.value}
-                // status={this.fulfillmentBadgeStatus(row)}
-              />
+              <span>
+                <Badge
+                  badgeSize="large"
+                  i18nKeyLabel={`cartDrawer.${row.value}`}
+                  label={row.value}
+                  status={this.fulfillmentBadgeStatus(row.original)}
+                />
+                {/* <div className="rui card order">
+                  <div className="controls" onClick={() => handleClick(order)}>
+                    <button className={classes} data-event-action="startProcessingOrder"><Icon icon="fa fa-chevron-right" /></button>
+                  </div>
+                </div> */}
+              </span>
             );
           }
           return (
@@ -185,15 +220,13 @@ class OrdersList extends Component {
       };
       customColumnMetadata.push(columnMeta);
     });
-    console.log("data orders ------->", orders);
+
     return (
       <SortableTable
-        // publication="PaginatedOrders"
-        // collection={Orders}
         data={orders}
         columnMetadata={customColumnMetadata}
         externalLoadingComponent={Loading}
-        filteredFields={filteredFields}
+        filteredFields={columnNames}
       />
     );
   }
