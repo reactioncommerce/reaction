@@ -4,6 +4,7 @@ import _ from "lodash";
 import matchSorter from "match-sorter";
 import ReactTable from "react-table";
 import { Meteor } from "meteor/meteor";
+import { Counts } from "meteor/tmeasday:publish-counts";
 import { SortableTableFilter, SortableTablePagination } from "./sortableTableComponents";
 
 class SortableTable extends Component {
