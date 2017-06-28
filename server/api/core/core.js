@@ -3,6 +3,7 @@ import packageJson from "/package.json";
 import { merge, uniqWith } from "lodash";
 import { Meteor } from "meteor/meteor";
 import { EJSON } from "meteor/ejson";
+import { check, Match } from "meteor/check";
 import { Jobs, Packages, Shops } from "/lib/collections";
 import { Hooks, Logger } from "/server/api";
 import ProcessJobs from "/server/jobs";
@@ -72,7 +73,7 @@ export default {
    * @param {String} checkGroup group - default to shopId
    * @return {Boolean} Boolean - true if has permission
    */
-  hasPermission(checkPermissions, userId = Meteor.userId(), checkGroup = this.getSellerShopId(userId)) {
+  hasPermission(checkPermissions, userId = Meteor.userId(), checkGroup = this.getShopId()) { // TODO: getSellerShop Conversion - pass in shop here
     // check(checkPermissions, Match.OneOf(String, Array)); check(userId, String); check(checkGroup,
     // Match.Optional(String));
 
@@ -163,7 +164,23 @@ export default {
     return null;
   },
 
-  getShopId() {
+  getShopId(userId) {
+    check(userId, Match.Maybe(String));
+
+    const activeUserId = Meteor.call("reaction/getUserId");
+    if (activeUserId || userId) {
+      const activeShopId = this.getUserPreferences({
+        userId: activeUserId || userId,
+        packageName: "reaction",
+        preference: "activeShopId"
+      });
+      if (activeShopId) {
+        return activeShopId;
+      }
+    }
+
+    // TODO: This should intelligently find the correct default shop
+    // Probably whatever the main shop is or the marketplace
     const domain = this.getDomain();
     const shop = Shops.find({
       domains: domain
@@ -224,14 +241,17 @@ export default {
   },
 
   getShopLanguage() {
-    const { language } = Shops.findOne({
+    const shop = Shops.findOne({
       _id: this.getShopId()
     }, {
       fields: {
         language: 1
       } }
     );
-    return language;
+    if (shop) {
+      return shop.language;
+    }
+    throw new Meteor.Error("Shop not found");
   },
 
   getPackageSettings(name) {
@@ -245,6 +265,28 @@ export default {
     }
 
     return Packages.findOne(query);
+  },
+
+  // {packageName, preference, defaultValue}
+  getUserPreferences(options) {
+    const userId = options.userId;
+    const packageName = options.packageName;
+    const preference = options.preference;
+    const defaultValue = options.defaultValue;
+    if (!userId) {
+      return undefined;
+    }
+
+    const user = Meteor.users.findOne({ _id: userId });
+
+    if (user) {
+      const profile = user.profile;
+      if (profile && profile.preferences && profile.preferences[packageName] && profile.preferences[packageName][preference]) {
+        return profile.preferences[packageName][preference];
+      }
+    }
+
+    return defaultValue || undefined;
   },
 
   /**
@@ -566,6 +608,52 @@ export default {
       });
     });
   },
+
+  /**
+   *  insertPackagesForShop
+   *  insert Reaction packages into Packages collection registry for a new shop
+   *  Assigns owner roles for new packages
+   *  Imports layouts from packages
+   *  @param {String} shopId - the shopId you need to create packages for
+   *  @return {String} returns insert result
+   */
+  insertPackagesForShop(shopId) {
+    const layouts = [];
+    if (!shopId) {
+      return [];
+    }
+    const packages = this.Packages;
+    // for each shop, we're loading packages in a unique registry
+    // Object.keys(pkgConfigs).forEach((pkgName) => {
+    for (const packageName in packages) {
+      // Guard to prvent unexpected `for in` behavior
+      if ({}.hasOwnProperty.call(packages, packageName)) {
+        const config = packages[packageName];
+        this.assignOwnerRoles(shopId, packageName, config.registry);
+
+        const pkg = Object.assign({}, config, {
+          shopId: shopId
+        });
+
+        // populate array of layouts that don't already exist (?!)
+        if (pkg.layout) {
+          // filter out layout templates
+          for (const template of pkg.layout) {
+            if (template && template.layout) {
+              layouts.push(template);
+            }
+          }
+        }
+        Packages.insert(pkg);
+        Logger.debug(`Initializing ${shopId} ${packageName}`);
+      }
+    }
+
+    // helper for removing layout duplicates
+    const uniqLayouts = uniqWith(layouts, _.isEqual);
+    Shops.update({ _id: shopId }, { $set: { layout: uniqLayouts } });
+  },
+
   setAppVersion() {
     const version = packageJson.version;
     Logger.info(`Reaction Version: ${version}`);

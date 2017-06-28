@@ -9,7 +9,7 @@ import { composeWithTracker, merge } from "/lib/api/compose";
 const providers = Object.keys(require("nodemailer-wellknown/services.json"));
 
 const composer = ({}, onData) => {
-  if (Meteor.subscribe("Packages").ready()) {
+  if (Meteor.subscribe("Packages", Reaction.getShopId()).ready()) {
     const settings = Reaction.getShopSettings().mail || {};
 
     const { service, host, port, user, password } = settings;

@@ -103,7 +103,7 @@ class App extends Component {
 function composer(props, onData) {
   onData(null, {
     isActionViewOpen: Reaction.isActionViewOpen(),
-    hasDashboardAccess: Reaction.hasDashboardAccess(),
+    hasDashboardAccess: Reaction.hasDashboardAccessForAnyShop(),
     currentRoute: Router.current()
   });
 }

@@ -31,9 +31,10 @@ Subscriptions.Account = Subscriptions.Manager.subscribe("Accounts", Meteor.userI
  */
 Subscriptions.Shops = Subscriptions.Manager.subscribe("Shops");
 
-Subscriptions.SellerShops = Subscriptions.Manager.subscribe("SellerShops");
-
+// Init Packages sub so we have a "ready" state
 Subscriptions.Packages = Subscriptions.Manager.subscribe("Packages");
+
+Subscriptions.SellerShops = Subscriptions.Manager.subscribe("SellerShops");
 
 Subscriptions.Tags = Subscriptions.Manager.subscribe("Tags");
 

@@ -585,12 +585,31 @@ Meteor.methods({
   "products/cloneProduct": function (productOrArray) {
     check(productOrArray, Match.OneOf(Array, Object));
 
-    // The bellow permission check is not enough. As with the above methods we should check first
-    // that the user has the createproduct permission to each of these products
-    if (!Reaction.hasPermission("createProduct", this.userId, Reaction.getSellerShopId(this.userId))) {
+    // REVIEW: This check may be unnecessary now - checks that user has permission to clone
+    // for active shop
+    if (!Reaction.hasPermission("createProduct")) {
       throw new Meteor.Error("Access Denied");
     }
-    // this.unblock();
+
+    if (Array.isArray(productOrArray)) {
+      // Reduce to unique shops found among producs in this array
+      const shopIds = productOrArray.map(prod => prod.shopId);
+      const uniqueShopIds = [...new Set(shopIds)];
+
+      // For each unique shopId check to make sure that user has permission to clone
+      uniqueShopIds.forEach((shopId) => {
+        if (!Reaction.hasPermission("createProduct", this.userId, shopId)) {
+          throw new Meteor.Error(403,
+          "Access Denied");
+        }
+      });
+    } else {
+      // Single product was passed in - ensure that user has permission to clone
+      if (!Reaction.hasPermission("createProduct", this.userId, productOrArray.shopId)) {
+        throw new Meteor.Error(403,
+        "Access Denied");
+      }
+    }
 
     let result;
     let products;
@@ -701,8 +720,9 @@ Meteor.methods({
    */
   "products/createProduct": function (product) {
     check(product, Match.Optional(Object));
-    // must have createProduct permission
-    if (!Reaction.hasPermission("createProduct", this.userId, Reaction.getSellerShopId(this.userId))) {
+
+    // Ensure user has createProduct permission for active shop
+    if (!Reaction.hasPermission("createProduct")) {
       throw new Meteor.Error("Access Denied");
     }
 
@@ -829,7 +849,8 @@ Meteor.methods({
     check(_id, String);
     check(field, String);
     check(value, Match.OneOf(String, Object, Array, Boolean, Number));
-    // must have createProduct permission
+
+    // Must have createProduct permission for active shop
     if (!Reaction.hasPermission("createProduct")) {
       throw new Meteor.Error(403, "Access Denied");
     }
@@ -1118,13 +1139,11 @@ Meteor.methods({
    */
   "products/updateVariantsPosition": function (sortedVariantIds) {
     check(sortedVariantIds, [String]);
-    // TODO: to make this work we need to remove auditArgumentsCheck I suppose
-    // new SimpleSchema({
-    //   sortedVariantIds: { type: [String] }
-    // }).validate({ sortedVariantIds });
 
-    // The bellow check is not enough, we should check that user has right to all list's variants
-    if (!Reaction.hasPermission("createProduct", this.userId, Reaction.getSellerShopId(this.userId))) {
+    // This checks to make sure the user has createProduct permissions for the active shop.
+    // TODO: We should determine if that is the correct role that a user should have
+    // to be permitted to re-arrange products on the grid
+    if (!Reaction.hasPermission("createProduct")) {
       throw new Meteor.Error("Access Denied");
     }
 

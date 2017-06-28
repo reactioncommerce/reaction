@@ -71,11 +71,9 @@ function transform(doc, userId) {
 //
 Meteor.publish("Packages", function (shopId) {
   check(shopId, Match.Maybe(String));
-  if (!shopId) {
-    return this.ready();
-  }
 
   const self = this;
+  let myShopId = shopId;
 
   // user is required.
   if (self.userId) {
@@ -95,8 +93,12 @@ Meteor.publish("Packages", function (shopId) {
       }
     };
 
+    if (!shopId) {
+      myShopId = Reaction.getShopId();
+    }
+
     // we should always have a shop
-    if (shopId) {
+    if (myShopId) {
       // if admin user, return all shop properties
       if (Roles.userIsInRole(self.userId, [
         "dashboard", "owner", "admin"
@@ -107,7 +109,7 @@ Meteor.publish("Packages", function (shopId) {
       }
       // observe and transform Package registry adds i18n and other meta data
       const observer = Packages.find({
-        shopId: shopId
+        shopId: myShopId
       }, options).observe({
         added: function (doc) {
           self.added("Packages", doc._id, transform(doc, self.userId));

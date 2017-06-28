@@ -1,4 +1,3 @@
-import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { Reaction } from "/lib/api";
@@ -31,7 +30,7 @@ Template.sellerShopSettings.helpers({
     });
 
     let selectedMediaId;
-    if (_.isArray(sellerShop.brandAssets)) {
+    if (Array.isArray(sellerShop.brandAssets)) {
       selectedMediaId = sellerShop.brandAssets[0].mediaId;
     }
 

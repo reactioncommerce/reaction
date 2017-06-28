@@ -68,7 +68,7 @@ function submitToBrainTree(doc, template) {
       if (results.saved === true) {
         const normalizedStatus = normalizeState(results.response.transaction.status);
         const normalizedMode = normalizeMode(results.response.transaction.status);
-        Meteor.subscribe("Packages");
+        Meteor.subscribe("Packages", Reaction.getShopId());
         const packageData = Packages.findOne({
           name: "reaction-braintree",
           shopId: Reaction.getShopId()
