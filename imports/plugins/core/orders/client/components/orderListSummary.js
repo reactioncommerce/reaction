@@ -14,7 +14,7 @@ class orderListSummary extends Component {
           <div className="col-xs-7 order-totals-text">
             <span><Translation defaultValue="Tax" i18nKey="cartSubTotals.tax" /></span>
           </div>
-          <div className="col-xs-4 col-xs-offset-1 order-price">
+          <div className="order-price">
             <Currency amount={taxes} />
           </div>
         </div>
@@ -29,7 +29,7 @@ class orderListSummary extends Component {
           <div className="col-xs-7 order-totals-text">
             <span><Translation defaultValue="Shipping" i18nKey="cartSubTotals.shipping" /></span>
           </div>
-          <div className="col-xs-4 col-xs-offset-1 order-price">
+          <div className="order-price">
             <Currency amount={shipping} />
           </div>
         </div>
@@ -44,7 +44,7 @@ class orderListSummary extends Component {
           <div className="col-xs-7 order-totals-text">
             <span><Translation defaultValue="Discount" i18nKey="cartSubTotals.discount" /></span>
           </div>
-          <div className="col-xs-4 col-xs-offset-1 order-price">
+          <div className="order-price">
             <Currency amount={discounts} />
           </div>
         </div>
