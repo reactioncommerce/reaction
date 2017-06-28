@@ -1,4 +1,5 @@
 import { indexOf } from "lodash";
+import { Meteor } from "meteor/meteor";
 import { Cart } from "/lib/collections";
 
 /**

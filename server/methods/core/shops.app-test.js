@@ -1,9 +1,8 @@
 /* eslint dot-notation: 0 */
-import { Factory } from "meteor/dburles:factory";
-
+import { Meteor } from "meteor/meteor";
 import { expect } from "meteor/practicalmeteor:chai";
+import { Factory } from "meteor/dburles:factory";
 import { sinon, stubs, spies } from "meteor/practicalmeteor:sinon";
-
 import Fixtures from "/server/imports/fixtures";
 import { Reaction } from "/server/api";
 import { Shops } from "/lib/collections";

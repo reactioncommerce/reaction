@@ -1,3 +1,4 @@
+import { $ } from "meteor/jquery";
 import { Template } from "meteor/templating";
 import { ReactiveDict } from "meteor/reactive-dict";
 import { AutoForm } from "meteor/aldeed:autoform";
@@ -112,7 +113,7 @@ Template.shippoCarriers.events({
     });
   },
   "click .cancel, .shipping-carriers-grid-row .active": function () {
-    instance = Template.instance();
+    const instance = Template.instance();
     // remove active rows from grid
     instance.state.set({
       isEditing: false,

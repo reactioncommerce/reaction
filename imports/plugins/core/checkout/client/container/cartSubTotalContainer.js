@@ -12,7 +12,6 @@ class CartSubTotalContainer extends Component {
       />
     );
   }
-
 }
 
 function composer(props, onData) {

@@ -1,3 +1,4 @@
+/* global sAlert */
 import _ from "lodash";
 import swal from "sweetalert2";
 import { Meteor } from "meteor/meteor";

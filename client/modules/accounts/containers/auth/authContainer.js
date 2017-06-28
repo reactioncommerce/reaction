@@ -2,6 +2,7 @@ import _ from "lodash";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Meteor } from "meteor/meteor";
+import { Accounts } from "meteor/accounts-base";
 import { Router } from "/client/api";
 import { composeWithTracker } from "/lib/api/compose";
 import { SignIn, SignUp, LoginButtons } from "../../components";
@@ -202,7 +203,7 @@ class AuthContainer extends Component {
           onSocialClick={this.handleSocialLogin}
           capitalizeName={this.capitalizeName}
         />
-      {this.renderAuthView()}
+        {this.renderAuthView()}
       </div>
     );
   }

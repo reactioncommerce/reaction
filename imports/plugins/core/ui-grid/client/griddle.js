@@ -2,21 +2,24 @@
 Forked from https://github.com/meteor-utilities/Meteor-Griddle
  */
 import React from "react";
+import PropTypes from "prop-types";
+import createReactClass from "create-react-class";
 import _ from "lodash";
 import Griddle from "griddle-react";
+import { Meteor } from "meteor/meteor";
 import { Counts } from "meteor/tmeasday:publish-counts";
 import { ReactMeteorData } from "meteor/react-meteor-data";
 
 /* eslint react/prop-types:0, react/jsx-sort-props:0, react/forbid-prop-types: 0, "react/prefer-es6-class": [1, "never"] */
 
-const MeteorGriddle = React.createClass({
+const MeteorGriddle = createReactClass({
   propTypes: {
-    collection: React.PropTypes.object, // the collection to display
-    filteredFields: React.PropTypes.array, // an array of fields to search through when filtering
-    matchingResultsCount: React.PropTypes.string, // the name of the matching results counter
-    publication: React.PropTypes.string, // the publication that will provide the data
-    subsManager: React.PropTypes.object, // subsManager sub
-    transform: React.PropTypes.func // external function to filter result source
+    collection: PropTypes.object, // the collection to display
+    filteredFields: PropTypes.array, // an array of fields to search through when filtering
+    matchingResultsCount: PropTypes.string, // the name of the matching results counter
+    publication: PropTypes.string, // the publication that will provide the data
+    subsManager: PropTypes.object, // subsManager sub
+    transform: PropTypes.func // external function to filter result source
   },
   mixins: [ReactMeteorData],
 
@@ -132,22 +135,23 @@ const MeteorGriddle = React.createClass({
     const allProps = this.props;
     delete allProps.externalIsLoading;
 
-    return (<Griddle
-      {...allProps}
-      tableClassName="table"
-      results={this.data.results}
-      columnMetadata={this.props.columnMetadata}
-      externalSetPage={this.setPage}
-      externalChangeSort={this.changeSort}
-      externalSetFilter={this.setFilter}
-      externalSetPageSize={this.setPageSize}
-      externalMaxPage={maxPages}
-      externalCurrentPage={this.state.currentPage}
-      resultsPerPage={this.state.externalResultsPerPage}
-      externalSortColumn={this.state.externalSortColumn}
-      externalSortAscending={this.state.externalSortAscending}
-      externalIsLoading={this.data.loading}
-            />);
+    return (
+      <Griddle
+        {...allProps}
+        tableClassName="table"
+        results={this.data.results}
+        columnMetadata={this.props.columnMetadata}
+        externalSetPage={this.setPage}
+        externalChangeSort={this.changeSort}
+        externalSetFilter={this.setFilter}
+        externalSetPageSize={this.setPageSize}
+        externalMaxPage={maxPages}
+        externalCurrentPage={this.state.currentPage}
+        resultsPerPage={this.state.externalResultsPerPage}
+        externalSortColumn={this.state.externalSortColumn}
+        externalSortAscending={this.state.externalSortAscending}
+        externalIsLoading={this.data.loading}
+      />);
   }
 });
 

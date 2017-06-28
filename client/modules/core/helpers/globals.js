@@ -1,3 +1,4 @@
+import _ from "lodash";
 import { Session } from "meteor/session";
 import { Meteor } from "meteor/meteor";
 import { Roles } from "meteor/alanning:roles";
@@ -71,7 +72,7 @@ export function getGuestLoginState() {
       return true;
     }
   } else if (Session.equals("guestCheckoutFlow", true) && _.pluck(Meteor.user()
-      .emails, "address")) {
+    .emails, "address")) {
     return true;
   }
   return false;

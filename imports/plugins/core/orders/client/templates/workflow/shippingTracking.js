@@ -1,6 +1,7 @@
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Tracker } from "meteor/tracker";
+import { ReactiveVar } from "meteor/reactive-var";
 import { Template } from "meteor/templating";
 import { i18next, Reaction } from "/client/api";
 import { Orders } from "/lib/collections";

@@ -1,5 +1,6 @@
 import _ from "lodash";
 import { diff } from "deep-diff";
+import { Meteor } from "meteor/meteor";
 import { Products, Revisions, Tags, Media } from "/lib/collections";
 import { Logger } from "/server/api";
 import { RevisionApi } from "../lib/api";
@@ -159,7 +160,7 @@ export const ProductRevision = {
     const options = this.getVariants(variant._id);
     if (options && options.length) {
       return options.reduce((sum, option) =>
-      sum + option.inventoryQuantity || 0, 0);
+        sum + option.inventoryQuantity || 0, 0);
     }
     return variant.inventoryQuantity || 0;
   }
@@ -514,7 +515,7 @@ Products.before.update(function (userId, product, fieldNames, modifier, options)
 
             // If the new handle is going to be empty, the handle becomes the sligified product title, or document id if title does not exist.
             if (_.isEmpty(newValue)) {
-              revisionModifier.$set["documentData.handle"] = hasExistingTitle ? getSlug(revisionTitle) : documentId;
+              revisionModifier.$set["documentData.handle"] = hasExistingTitle ? getSlug(revisionTitle) : productRevision.documentId;
             }
           } else {
             // Let everything else through

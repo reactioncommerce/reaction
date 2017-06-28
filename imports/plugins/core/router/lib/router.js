@@ -8,6 +8,9 @@ import Immutable from "immutable";
 import { uniqBy } from "lodash";
 import { Meteor } from "meteor/meteor";
 import Blaze from "meteor/gadicc:blaze-react-component";
+import { Template } from "meteor/templating";
+import { Session } from "meteor/session";
+import { Counts } from "meteor/tmeasday:publish-counts";
 import { Tracker } from "meteor/tracker";
 import { Packages, Shops } from "/lib/collections";
 import { getComponent } from "/imports/plugins/core/layout/lib/components";
@@ -443,7 +446,7 @@ Router.initPackageRoutes = (options) => {
   Tracker.autorun(shopSubWaitFor => {
     if (shopSub.ready()) {
       shopSubWaitFor.stop();
-        // using tmeasday:publish-counts
+      // using tmeasday:publish-counts
       const shopCount = Counts.get("shops-count");
 
       // Default layouts

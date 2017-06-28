@@ -1,4 +1,6 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
 import { composeWithTracker } from "/lib/api/compose";
@@ -140,19 +142,19 @@ class VariantFormContainer extends Component {
       return;
     }
     Meteor.call("products/cloneVariant", productId, variant._id,
-     function (error, result) {
-       if (error) {
-         Alerts.alert({
-           text: i18next.t("productDetailEdit.cloneVariantFail", { title }),
-           confirmButtonText: i18next.t("app.close", { defaultValue: "Close" })
-         });
-       } else if (result) {
-         const variantId = result[0];
+      function (error, result) {
+        if (error) {
+          Alerts.alert({
+            text: i18next.t("productDetailEdit.cloneVariantFail", { title }),
+            confirmButtonText: i18next.t("app.close", { defaultValue: "Close" })
+          });
+        } else if (result) {
+          const variantId = result[0];
 
-         ReactionProduct.setCurrentVariant(variantId);
-         Session.set("variant-form-" + variantId, true);
-       }
-     });
+          ReactionProduct.setCurrentVariant(variantId);
+          Session.set("variant-form-" + variantId, true);
+        }
+      });
   }
 
   handleVariantFieldSave = (variantId, fieldName, value) => {

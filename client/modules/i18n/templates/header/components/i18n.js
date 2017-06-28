@@ -34,27 +34,27 @@ class LanguageDropDown extends Component {
       <div>
         {this.props.languages.length > 1 &&
           <div className="dropdown-toggle">
-              <DropDownMenu
-                buttonElement={this.buttonElement()}
-                value={this.props.currentLanguage || this.state.value}
-                onChange={this.onChange}
-                menuStyle={{ maxHeight: 500, overflow: "auto" }}
-              >
+            <DropDownMenu
+              buttonElement={this.buttonElement()}
+              value={this.props.currentLanguage || this.state.value}
+              onChange={this.onChange}
+              menuStyle={{ maxHeight: 500, overflow: "auto" }}
+            >
+              <MenuItem
+                label="Select Currency"
+                i18nKeyLabel="languages.select"
+                disabled={true}
+              />
+              <Divider />
+              {this.props.languages.map((language) => (
                 <MenuItem
-                  label="Select Currency"
-                  i18nKeyLabel="languages.select"
-                  disabled={true}
+                  key={language.i18n}
+                  label={language.label}
+                  i18nKeyLabel={language.translation}
+                  value={language.i18n}
                 />
-                <Divider />
-                {this.props.languages.map((language) => (
-                  <MenuItem
-                    key={language.i18n}
-                    label={language.label}
-                    i18nKeyLabel={language.translation}
-                    value={language.i18n}
-                  />
-                ))}
-              </DropDownMenu>
+              ))}
+            </DropDownMenu>
           </div>
         }
       </div>

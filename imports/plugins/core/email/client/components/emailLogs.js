@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { Card, CardHeader, CardBody, CardGroup, Loading } from "/imports/plugins/core/ui/client/components";
 import MeteorGriddle from "/imports/plugins/core/ui-grid/client/griddle";
 import EmailTableColumn from "./emailTableColumn";

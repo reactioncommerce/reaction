@@ -1,3 +1,4 @@
+import { Template } from "meteor/templating";
 import { ProductAdminContainer } from "../containers";
 
 Template.ProductAdmin.helpers({

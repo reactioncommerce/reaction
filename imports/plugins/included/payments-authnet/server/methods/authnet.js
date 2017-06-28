@@ -181,7 +181,7 @@ function getAuthnetService(accountOptions) {
     login,
     tran_key,
     mode
-    } = accountOptions;
+  } = accountOptions;
 
   return new AuthNetAPI({
     API_LOGIN_ID: login,
