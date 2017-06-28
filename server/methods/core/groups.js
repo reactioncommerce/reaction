@@ -70,19 +70,13 @@ Meteor.methods({
    * updates either the name of the permission group or it list of permissions
    * It also goes into affected user data to modify both the groupName (using Accounts schema)
    * and group permissions (using "accounts/removeUserPermissions")
-   * @param {Object} group - current data of the group to be updated
-   * @param {String} group.name - name of the group
-   * @param {String} group.description - Optional description of the group to be created
-   * @param {Array} group.permissions - permissions of the grop
+   * @param {Object} groupId - group to be updated
    * @param {Object} newGroupData - updated group info (similar to current group data)
    * @param {String} shopId - id of the shop the group belongs to
    * @return {Object} - object.status of 200 on success or Error object on failure
    */
-  "group/updateGroup": function (group, newGroupData, shopId) {
-    check(group, Object);
-    check(group.name, String);
-    check(group.permissions, [String]);
-
+  "group/updateGroup": function (groupId, newGroupData, shopId) {
+    check(groupId, String);
     check(newGroupData, Object);
     check(newGroupData.name, String);
     check(newGroupData.permissions, [String]);
@@ -93,25 +87,21 @@ Meteor.methods({
     }
 
     // 1. Update the group data on the shop doc
-    const currentGroups = _.get(Shops.findOne({ _id: shopId }), "group", []);
-    const groups = currentGroups.map(grp => {
-      if (grp.groupId === group.groupId) {
-        return Object.assign({}, group, newGroupData, { slug: getSlug(newGroupData.name) });
-      }
-      delete grp.groupId;
-      delete grp.createdAt;
-      return grp;
-    });
-    Shops.update({ _id: shopId }, { $set: { group: groups } });
+    const currentGroups = Shops.findOne({ _id: shopId }).group;
+    const oldGroupData = currentGroups[groupId];
+    currentGroups[groupId] = Object.assign({}, oldGroupData, newGroupData, { slug: getSlug(newGroupData.name) });
+
+    Shops.update({ _id: shopId }, { $set: { group: currentGroups } });
 
     // 2. Check & Modify users in the group that changed
-    const permissionsChanged = !_.isEqual(group.permissions, newGroupData.permissions);
-    const matchQuery = { $elemMatch: { shopId: shopId, groupId: group.groupId } };
-    const users = Accounts.find({ groups: matchQuery }).fetch();
+    const permissionsChanged = !_.isEqual(oldGroupData.permissions, newGroupData.permissions);
+    const matchQuery = {};
+    matchQuery[`groups.${shopId}`] = { $in: [groupId] };
+    const users = Accounts.find(matchQuery).fetch();
     let error;
 
     if (permissionsChanged) {
-      error = setUserPermissions(users, group, newGroupData, shopId);
+      error = setUserPermissions(users, newGroupData, shopId);
     }
 
     // 3. Return response
@@ -204,7 +194,7 @@ function changeUserGroupOnAccount(users, groupId, shopId) {
   });
 }
 
-function setUserPermissions(users, oldGroup, newGroupData, shopId) {
+function setUserPermissions(users, newGroupData, shopId) {
   let affectedUsers = users;
   if (!Array.isArray(users)) {
     affectedUsers = [users];

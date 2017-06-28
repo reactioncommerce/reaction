@@ -15,11 +15,9 @@ describe.only("Group test", function () {
   let sandbox;
   let shop;
   let user;
-  const payload = {
-    group: {
-      name: "Shop Manager",
-      permissions: ["sample-role1", "sample-role2"]
-    }
+  const sampleGroup = {
+    name: "Shop Manager",
+    permissions: ["sample-role1", "sample-role2"]
   };
 
   function getGroupObj(groups) {
@@ -65,11 +63,11 @@ describe.only("Group test", function () {
     sandbox.stub(Reaction, "hasPermission", () => true);
     spyOnMethod("createGroup", shop._id);
 
-    Meteor.call("group/createGroup", payload.group, shop._id);
+    Meteor.call("group/createGroup", sampleGroup, shop._id);
     const shopGroups = Shops.findOne({ _id: shop._id }).group;
     const group = getGroupObj(shopGroups);
 
-    expect(group.name).to.equal(payload.group.name);
+    expect(group.name).to.equal(sampleGroup.name);
   });
 
   it("should check admin access before creating a group", function () {
@@ -77,7 +75,7 @@ describe.only("Group test", function () {
     spyOnMethod("createGroup", shop._id);
 
     function createGroup() {
-      return Meteor.call("group/createGroup", payload.group, shop._id);
+      return Meteor.call("group/createGroup", sampleGroup, shop._id);
     }
 
     expect(createGroup).to.throw(Meteor.Error, /Access Denied/);
@@ -88,7 +86,7 @@ describe.only("Group test", function () {
     spyOnMethod("createGroup", shop._id);
     spyOnMethod("addUser", shop._id);
 
-    Meteor.call("group/createGroup", payload.group, shop._id);
+    Meteor.call("group/createGroup", sampleGroup, shop._id);
 
     const shopGroups = Shops.findOne({ _id: shop._id }).group;
     const group = getGroupObj(shopGroups);
@@ -103,14 +101,14 @@ describe.only("Group test", function () {
     spyOnMethod("createGroup", shop._id);
     spyOnMethod("addUser", shop._id);
 
-    Meteor.call("group/createGroup", payload.group, shop._id);
+    Meteor.call("group/createGroup", sampleGroup, shop._id);
     const shopGroups = Shops.findOne({ _id: shop._id }).group;
     const group = getGroupObj(shopGroups);
 
     Meteor.call("group/addUser", user._id, group.groupId, shop._id);
     const updatedUser = Meteor.users.findOne({ _id: user._id });
 
-    expect(updatedUser.roles[shop._id]).to.include.members(payload.group.permissions);
+    expect(updatedUser.roles[shop._id]).to.include.members(sampleGroup.permissions);
   });
 
   it("should remove a user from a group and update user's permissions", function () {
@@ -118,17 +116,37 @@ describe.only("Group test", function () {
     spyOnMethod("createGroup", shop._id);
     spyOnMethod("addUser", shop._id);
 
-    Meteor.call("group/createGroup", payload.group, shop._id);
+    Meteor.call("group/createGroup", sampleGroup, shop._id);
     const shopGroups = Shops.findOne({ _id: shop._id }).group;
     const group = getGroupObj(shopGroups);
 
     Meteor.call("group/addUser", user._id, group.groupId, shop._id);
     let updatedUser = Meteor.users.findOne({ _id: user._id });
 
-    expect(updatedUser.roles[shop._id]).to.include.members(payload.group.permissions);
+    expect(updatedUser.roles[shop._id]).to.include.members(sampleGroup.permissions);
 
     Meteor.call("group/removeUser", user._id, group.groupId, shop._id);
     updatedUser = Meteor.users.findOne({ _id: user._id });
-    expect(updatedUser.roles[shop._id]).to.not.include.members(payload.group.permissions);
+    expect(updatedUser.roles[shop._id]).to.not.include.members(sampleGroup.permissions);
+  });
+
+  it("should ensure a user's permissions get updated when the group permissions changes", function () {
+    sandbox.stub(Reaction, "hasPermission", () => true);
+    spyOnMethod("createGroup", shop._id);
+    spyOnMethod("addUser", shop._id);
+
+    Meteor.call("group/createGroup", sampleGroup, shop._id);
+    const shopGroups = Shops.findOne({ _id: shop._id }).group;
+    const group = getGroupObj(shopGroups);
+
+    Meteor.call("group/addUser", user._id, group.groupId, shop._id);
+    let updatedUser = Meteor.users.findOne({ _id: user._id });
+
+    expect(updatedUser.roles[shop._id]).to.include.members(sampleGroup.permissions);
+    const newGroupData = Object.assign({}, sampleGroup, { permissions: ["new-permissions"] });
+
+    Meteor.call("group/updateGroup", group.groupId, newGroupData, shop._id);
+    updatedUser = Meteor.users.findOne({ _id: user._id });
+    expect(updatedUser.roles[shop._id]).to.include.members(newGroupData.permissions);
   });
 });
