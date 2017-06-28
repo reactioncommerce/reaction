@@ -30,7 +30,7 @@ function uploadHandler(files) {
   // But how do we know that this is the first, not second or other variant?
   // Question is open. For now if product has more than 1 top variant, everyone
   // will have a chance to be displayed
-  const toGrid = variant.ancestors.length === 1;
+  const toGrid = variant.ancestors.length >= 1;
 
   for (const file of files) {
     const fileObj = new FS.File(file);
