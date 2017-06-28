@@ -62,7 +62,7 @@ class SortableTable extends Component {
    * custom filter searches entire string, not just from string start
    * @param {Object} filter user-typed data
    * @param {Object} row row info for associated filter
-   * @returns {String} replacement filter
+   * @returns {String|Boolean} replacement filter
    */
   customFilter = (filter, row) => {
     const id = filter.pivotId || filter.id;
@@ -189,9 +189,6 @@ class SortableTable extends Component {
 
   render() {
     const { ...otherProps } = this.props;
-
-    // console.log("this.customFilter", this.customFilter());
-
 
     // All available props: https://github.com/tannerlinsley/react-table#props
     return (
