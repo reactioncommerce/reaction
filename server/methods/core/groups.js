@@ -198,6 +198,7 @@ function changeUserGroupOnAccount(users, groupId, shopId) {
     affectedUsers = [users];
   }
   return affectedUsers.forEach(user => {
+    user.groups = user.groups || {};
     user.groups[shopId] = [groupId];
     Accounts.update({ _id: user._id }, { $set: { groups: user.groups } });
   });
