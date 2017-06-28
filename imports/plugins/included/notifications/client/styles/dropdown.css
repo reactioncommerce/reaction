@@ -270,7 +270,10 @@ small.dropmenu-item-content {
   text-decoration: none;
 }
 .unread {
-  background-color:#f9f9f9 !important;
+  background-color: #F4F4FF !important;
+}
+.read {
+  background-color: #ffffff !important;
 }
 .notification:last-child {
   border-bottom: 0;
@@ -312,9 +315,6 @@ a.notification:hover {
 }
 .dropdown-notifications .dropdown-footer {
   background: #eeeeee;
-}
-.notification-icon:hover {
-  background: #eeeeee !important;
 }
 .notification-icon:after {
   position: absolute;

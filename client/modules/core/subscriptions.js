@@ -3,7 +3,6 @@ import { Random } from "meteor/random";
 import { Session } from "meteor/session";
 import { Tracker } from "meteor/tracker";
 import { SubsManager } from "meteor/meteorhacks:subs-manager";
-
 import Reaction from "./main";
 
 export const Subscriptions = {};
@@ -33,7 +32,7 @@ Subscriptions.Account = Subscriptions.Manager.subscribe("Accounts", Meteor.userI
 Subscriptions.Shops = Subscriptions.Manager.subscribe("Shops");
 
 // Init Packages sub so we have a "ready" state
-Subscriptions.Packages = Subscriptions.Manager.subscribe("Packages", "");
+Subscriptions.Packages = Subscriptions.Manager.subscribe("Packages");
 
 Subscriptions.SellerShops = Subscriptions.Manager.subscribe("SellerShops");
 

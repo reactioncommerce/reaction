@@ -3,6 +3,7 @@ import moment from "moment";
 import path from "path";
 import { Meteor } from "meteor/meteor";
 import { Accounts as MeteorAccounts } from "meteor/accounts-base";
+import { check, Match } from "meteor/check";
 import { Accounts, Cart, Media, Shops, Packages } from "/lib/collections";
 import * as Schemas from "/lib/collections/schemas";
 import { Logger, Reaction } from "/server/api";
@@ -103,57 +104,77 @@ function getValidator() {
  * @summary Compare individual fields of address and accumulate errors
  * @param {Object} address - the address provided by the customer
  * @param {Object} validationAddress - address provided by validator
- * @returns {Array} Array of errors (or empty)
+ * @returns {Object} An object with an array of errors per field
  */
 function compareAddress(address, validationAddress) {
-  const errors = [];
+  const errors = {
+    address1: [],
+    address2: [],
+    city: [],
+    postal: [],
+    region: [],
+    country: [],
+    totalErrors: 0
+  };
   // first check, if a field is missing (and was present in original address), that means it didn't validate
   // TODO rewrite with just a loop over field names but KISS for now
   if (address.address1 && !validationAddress.address1) {
-    errors.push({ address1: "Address line one did not validate" });
+    errors.address1.push("Address line one did not validate");
+    errors.totalErrors++;
   }
 
   if (address.address2 && validationAddress.address2 && _.trim(_.upperCase(address.address2)) !== _.trim(_.upperCase(validationAddress.address2))) {
-    errors.push({ address2: "Address line 2 did not validate" });
+    errors.address2.push("Address line 2 did not validate");
+    errors.totalErrors++;
   }
 
   if (!validationAddress.city) {
-    errors.push({ city: "City did not validate" });
+    errors.city.push("City did not validate");
+    errors.totalErrors++;
   }
   if (address.postal && !validationAddress.postal) {
-    errors.push({ postal: "Postal did not validate" });
+    errors.postal.push("Postal did not validate");
+    errors.totalErrors++;
   }
 
   if (address.region && !validationAddress.region) {
-    errors.push({ region: "Region did not validate" });
+    errors.region.push("Region did not validate");
+    errors.totalErrors++;
   }
 
   if (address.country && !validationAddress.country) {
-    errors.push({ country: "Country did not validate" });
+    errors.country.push("Country did not validate");
+    errors.totalErrors++;
   }
   // second check if both fields exist, but they don't match (which almost always happen for certain fields on first time)
   if (validationAddress.address1 && address.address1 && _.trim(_.upperCase(address.address1)) !== _.trim(_.upperCase(validationAddress.address1))) {
-    errors.push({ address1: "Address line 1 did not match" });
+    errors.address1.push({ address1: "Address line 1 did not match" });
+    errors.totalErrors++;
   }
 
   if (validationAddress.address2 && address.address2 && (_.upperCase(address.address2) !== _.upperCase(validationAddress.address2))) {
-    errors.push({ address2: "Address line 2" });
+    errors.address2.push("Address line 2 did not match");
+    errors.totalErrors++;
   }
 
   if (validationAddress.city && address.city && _.trim(_.upperCase(address.city)) !== _.trim(_.upperCase(validationAddress.city))) {
-    errors.push({ city: "City did not match" });
+    errors.city.push("City did not match");
+    errors.totalErrors++;
   }
 
   if (validationAddress.postal && address.postal && _.trim(_.upperCase(address.postal)) !== _.trim(_.upperCase(validationAddress.postal))) {
-    errors.push({ postal: "Postal Code did not match" });
+    errors.postal.push("Postal Code did not match");
+    errors.totalErrors++;
   }
 
   if (validationAddress.region && address.region && _.trim(_.upperCase(address.region)) !== _.trim(_.upperCase(validationAddress.region))) {
-    errors.push({ region: "Region did not match" });
+    errors.region.push("Region did not match");
+    errors.totalErrors++;
   }
 
   if (validationAddress.country && address.country && _.upperCase(address.country) !== _.upperCase(validationAddress.country)) {
-    errors.push({ country: "Country did not match" });
+    errors.country.push("Country did not match");
+    errors.totalErrors++;
   }
   return errors;
 }
@@ -177,12 +198,14 @@ export function validateAddress(address) {
     formErrors = validationResult.errors;
     if (validatedAddress) {
       validationErrors = compareAddress(address, validatedAddress);
-      if (validationErrors.length || formErrors.length) {
+      if (validationErrors.totalErrors || formErrors.length) {
         validated = false;
+        validatedAddress.failedValidation = false;
       }
     } else {
       // No address, fail validation
       validated = false;
+      validatedAddress.failedValidation = false;
     }
   }
   const validationResults = { validated, fieldErrors: validationErrors, formErrors, validatedAddress };
@@ -194,10 +217,7 @@ export function validateAddress(address) {
    */
 function currentUserHasPassword() {
   const user = Meteor.users.findOne(Meteor.userId());
-  if (user.services.password) {
-    return true;
-  }
-  return false;
+  return !!user.services.password;
 }
 
 /**
@@ -264,10 +284,18 @@ export function addressBookAdd(address, accountUserId) {
     }
   }
 
+  Meteor.users.update(Meteor.userId(), {
+    $set: {
+      "name": address.fullName,
+      "profile.addressBook": address
+    }
+  });
+
   return Accounts.upsert({
     userId: userId
   }, {
     $set: {
+      name: address.fullName,
       userId: userId
     },
     $addToSet: {
@@ -369,11 +397,19 @@ export function addressBookUpdate(address, accountUserId, type) {
     }
   }
 
+  Meteor.users.update(Meteor.userId(), {
+    $set: {
+      "name": address.fullName,
+      "profile.addressBook": address
+    }
+  });
+
   return Accounts.update({
     "userId": userId,
     "profile.addressBook._id": address._id
   }, {
     $set: {
+      "name": address.fullName,
       "profile.addressBook.$": address
     }
   });
@@ -460,6 +496,64 @@ export function inviteShopMember(shopId, email, name) {
     currentUserName = "Admin";
   }
 
+  // Compile Email with SSR
+  const tpl = "accounts/inviteShopMember";
+  const subject = "accounts/inviteShopMember/subject";
+  SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl));
+  SSR.compileTemplate(subject, Reaction.Email.getSubject(tpl));
+
+  // Get shop logo, if available. If not, use default logo from file-system
+  let emailLogo;
+  if (Array.isArray(shop.brandAssets)) {
+    const brandAsset = _.find(shop.brandAssets, (asset) => asset.type === "navbarBrandImage");
+    const mediaId = Media.findOne(brandAsset.mediaId);
+    emailLogo = path.join(Meteor.absoluteUrl(), mediaId.url());
+  } else {
+    emailLogo = Meteor.absoluteUrl() + "resources/email-templates/shop-logo.png";
+  }
+
+  const token = Random.id();
+
+  const dataForEmail = {
+    // Shop Data
+    shop: shop,
+    contactEmail: shop.emails[0].address,
+    homepage: Meteor.absoluteUrl(),
+    emailLogo: emailLogo,
+    copyrightDate: moment().format("YYYY"),
+    legalName: shop.addressBook[0].company,
+    physicalAddress: {
+      address: shop.addressBook[0].address1 + " " + shop.addressBook[0].address2,
+      city: shop.addressBook[0].city,
+      region: shop.addressBook[0].region,
+      postal: shop.addressBook[0].postal
+    },
+    shopName: shop.name,
+    socialLinks: {
+      display: true,
+      facebook: {
+        display: true,
+        icon: Meteor.absoluteUrl() + "resources/email-templates/facebook-icon.png",
+        link: "https://www.facebook.com"
+      },
+      googlePlus: {
+        display: true,
+        icon: Meteor.absoluteUrl() + "resources/email-templates/google-plus-icon.png",
+        link: "https://plus.google.com"
+      },
+      twitter: {
+        display: true,
+        icon: Meteor.absoluteUrl() + "resources/email-templates/twitter-icon.png",
+        link: "https://www.twitter.com"
+      }
+    },
+    // Account Data
+    user: Meteor.user(),
+    currentUserName,
+    invitedUserName: name,
+    url: MeteorAccounts.urls.enrollAccount(token)
+  };
+
   const user = Meteor.users.findOne({
     "emails.address": email
   });
@@ -467,7 +561,7 @@ export function inviteShopMember(shopId, email, name) {
   if (!user) {
     const userId = MeteorAccounts.createUser({
       email: email,
-      username: name,
+      name: name,
       profile: {
         invited: true
       }
@@ -479,69 +573,12 @@ export function inviteShopMember(shopId, email, name) {
       throw new Error("Can't find user");
     }
 
-    const token = Random.id();
-
     Meteor.users.update(userId, {
       $set: {
-        "services.password.reset": { token, email, when: new Date() }
+        "services.password.reset": { token, email, when: new Date() },
+        "name": name
       }
     });
-
-    // Get shop logo, if available. If not, use default logo from file-system
-    let emailLogo;
-    if (Array.isArray(shop.brandAssets)) {
-      const brandAsset = _.find(shop.brandAssets, (asset) => asset.type === "navbarBrandImage");
-      const mediaId = Media.findOne(brandAsset.mediaId);
-      emailLogo = path.join(Meteor.absoluteUrl(), mediaId.url());
-    } else {
-      emailLogo = Meteor.absoluteUrl() + "resources/email-templates/shop-logo.png";
-    }
-
-    const dataForEmail = {
-      // Shop Data
-      shop: shop,
-      contactEmail: shop.emails[0].address,
-      homepage: Meteor.absoluteUrl(),
-      emailLogo: emailLogo,
-      copyrightDate: moment().format("YYYY"),
-      legalName: shop.addressBook[0].company,
-      physicalAddress: {
-        address: shop.addressBook[0].address1 + " " + shop.addressBook[0].address2,
-        city: shop.addressBook[0].city,
-        region: shop.addressBook[0].region,
-        postal: shop.addressBook[0].postal
-      },
-      shopName: shop.name,
-      socialLinks: {
-        display: true,
-        facebook: {
-          display: true,
-          icon: Meteor.absoluteUrl() + "resources/email-templates/facebook-icon.png",
-          link: "https://www.facebook.com"
-        },
-        googlePlus: {
-          display: true,
-          icon: Meteor.absoluteUrl() + "resources/email-templates/google-plus-icon.png",
-          link: "https://plus.google.com"
-        },
-        twitter: {
-          display: true,
-          icon: Meteor.absoluteUrl() + "resources/email-templates/twitter-icon.png",
-          link: "https://www.twitter.com"
-        }
-      },
-      // Account Data
-      user: Meteor.user(),
-      currentUserName,
-      invitedUserName: name,
-      url: MeteorAccounts.urls.enrollAccount(token)
-    };
-
-    // Compile Email with SSR
-    const tpl = "accounts/inviteShopMember";
-    const subject = "accounts/inviteShopMember/subject";
-    SSR.compileTemplate(tpl, Reaction.Email.getTemplate(tpl));
-    SSR.compileTemplate(subject, Reaction.Email.getSubject(tpl));
 
     Reaction.Email.send({
       to: email,
@@ -550,12 +587,7 @@ export function inviteShopMember(shopId, email, name) {
       html: SSR.render(tpl, dataForEmail)
     });
   } else {
-    Reaction.Email.send({
-      to: email,
-      from: `${shop.name} <${shop.emails[0].address}>`,
-      subject: SSR.render(subject, dataForEmail),
-      html: SSR.render(tpl, dataForEmail)
-    });
+    throw new Meteor.Error("409", "A user with this email address already exists");
   }
   return true;
 }

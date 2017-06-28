@@ -141,7 +141,7 @@
           "newOrder": "Votre commande est en cours de traitement.",
           "forAdmin": "Vous avez un nouvel ordre.",
           "orderDelivered": "Votre commande a été livrée.",
-          "orderAccepted": "Votre commande a été acceptée.",
+          "orderProcessing": "Votre commande est en traitement.",
           "orderShipped": "Votre commande a été expédiée."
         }
       },
@@ -298,7 +298,12 @@
       "cartDrawer": {
         "empty": "Nous sommes désolés. Votre panier est vide.",
         "keepShopping": "Poursuivre les achats",
-        "checkout": "Payer maintenant"
+        "checkout": "Payer maintenant",
+        "new": "Nouveau",
+        "coreOrderWorkflow/created": "Créé",
+        "coreOrderWorkflow/processing": "Traitement",
+        "coreOrderWorkflow/completed": "Complété",
+        "coreOrderWorkflow/canceled": "Annulé"
       },
       "cartSubTotals": {
         "discount": "Réduction",
@@ -380,9 +385,7 @@
         "resendNotification": "Envoyer de nouveau la notification d'expédition"
       },
       "orderWorkflow": {
-        "fulfillment": "Exécution",
         "orderDetails": "Détails de la commande",
-        "summary": "Récapitulatif",
         "invoice": "Facture",
         "shipmentTracking": "Suivi de l'expédition"
       },
@@ -429,6 +432,7 @@
       },
       "addressBookEdit": {
         "editAddress": "Editer cette adresse",
+        "addressValidation": "Adresse validation",
         "somethingWentWrong": "Quelque chose ne s'est pas passé comme prévu : {{err}}"
       },
       "corePackageConfig": {

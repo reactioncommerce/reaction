@@ -3,10 +3,10 @@ import packageJson from "/package.json";
 import { merge, uniqWith } from "lodash";
 import { Meteor } from "meteor/meteor";
 import { EJSON } from "meteor/ejson";
+import { check, Match } from "meteor/check";
 import { Jobs, Packages, Shops } from "/lib/collections";
 import { Hooks, Logger } from "/server/api";
 import ProcessJobs from "/server/jobs";
-import { getRegistryDomain } from "./setDomain";
 import { registerTemplate } from "./templates";
 import { sendVerificationEmail } from "./accounts";
 import { getMailUrl } from "./email/config";
@@ -164,7 +164,23 @@ export default {
     return null;
   },
 
-  getShopId() {
+  getShopId(userId) {
+    check(userId, Match.Maybe(String));
+
+    const activeUserId = Meteor.call("reaction/getUserId");
+    if (activeUserId || userId) {
+      const activeShopId = this.getUserPreferences({
+        userId: activeUserId || userId,
+        packageName: "reaction",
+        preference: "activeShopId"
+      });
+      if (activeShopId) {
+        return activeShopId;
+      }
+    }
+
+    // TODO: This should intelligently find the correct default shop
+    // Probably whatever the main shop is or the marketplace
     const domain = this.getDomain();
     const shop = Shops.find({
       domains: domain
@@ -225,14 +241,17 @@ export default {
   },
 
   getShopLanguage() {
-    const { language } = Shops.findOne({
+    const shop = Shops.findOne({
       _id: this.getShopId()
     }, {
       fields: {
         language: 1
       } }
     );
-    return language;
+    if (shop) {
+      return shop.language;
+    }
+    throw new Meteor.Error("Shop not found");
   },
 
   getPackageSettings(name) {
@@ -246,6 +265,28 @@ export default {
     }
 
     return Packages.findOne(query);
+  },
+
+  // {packageName, preference, defaultValue}
+  getUserPreferences(options) {
+    const userId = options.userId;
+    const packageName = options.packageName;
+    const preference = options.preference;
+    const defaultValue = options.defaultValue;
+    if (!userId) {
+      return undefined;
+    }
+
+    const user = Meteor.users.findOne({ _id: userId });
+
+    if (user) {
+      const profile = user.profile;
+      if (profile && profile.preferences && profile.preferences[packageName] && profile.preferences[packageName][preference]) {
+        return profile.preferences[packageName][preference];
+      }
+    }
+
+    return defaultValue || undefined;
   },
 
   /**
@@ -308,18 +349,11 @@ export default {
    * createDefaultAdminUser
    * @summary Method that creates default admin user
    * Settings load precendence:
-   *  1. settings in meteor.settings
-   *  2. environment variables
+   *  1. environment variables
+   *  2. settings in meteor.settings
    * @returns {String} return userId
    */
   createDefaultAdminUser() {
-    const domain = getRegistryDomain();
-    const env = process.env;
-    const defaultAdminRoles = ["owner", "admin", "guest", "account/profile"];
-    let options = {};
-    let configureEnv = false;
-    let accountId;
-
     const shopId = this.getShopId();
 
     // if an admin user has already been created, we'll exit
@@ -329,28 +363,49 @@ export default {
     }
 
     // run hooks on options object before creating user (the options object must be returned from all callbacks)
+    let options = {};
     options = Hooks.Events.run("beforeCreateDefaultAdminUser", options);
 
-    //
-    // process Meteor settings and env variables for initial user config if ENV variables are set, these always override
-    // "settings.json" this is to allow for testing environments. where we don't want to use users configured in a settings
-    // file.
-    //
-    if (env.REACTION_EMAIL && env.REACTION_USER && env.REACTION_AUTH) {
+    // If $REACTION_SECURE_DEFAULT_ADMIN is set to "true" on first run,
+    // a random email/password will be generated instead of using the
+    // default email and password (email: admin@localhost pw: r3@cti0n)
+    // and the new admin user will need to verify their email to log in.
+    // If a random email and password are generated, the console will be
+    // the only place to retrieve them.
+    // If the admin email/password is provided via environment or Meteor settings,
+    // the $REACTION_SECURE_DEFAULT_ADMIN will only enforce the email validation part.
+    const isSecureSetup = process.env.REACTION_SECURE_DEFAULT_ADMIN === "true";
+
+    // generate default values to use if none are supplied
+    const defaultEmail = isSecureSetup ? `${Random.id(8).toLowerCase()}@localhost` : "admin@localhost";
+    const defaultPassword = isSecureSetup ? Random.secret(8) : "r3@cti0n";
+    const defaultUsername = "admin";
+    const defaultName = "Admin";
+
+    // Process environment variables and Meteor settings for initial user config.
+    // If ENV variables are set, they always override Meteor settings (settings.json).
+    // This is to allow for testing environments where we don't want to use users configured in a settings file.
+    const env = process.env;
+    let configureEnv = false;
+
+    if (env.REACTION_EMAIL && env.REACTION_AUTH) {
       configureEnv = true;
+      Logger.info("Using environment variables to create admin user");
     }
 
-    // defaults use either env or generated
-    options.email = env.REACTION_EMAIL || Random.id(8).toLowerCase() + "@" + domain;
-    options.username = env.REACTION_USER || "Admin"; // username
-    options.password = env.REACTION_AUTH || Random.secret(8);
+    // defaults use either env or generated values
+    options.email = env.REACTION_EMAIL || defaultEmail;
+    options.password = env.REACTION_AUTH || defaultPassword;
+    options.username = env.REACTION_USER_NAME || defaultUsername;
+    options.name = env.REACTION_USER || defaultName;
 
-    // but we can override with provided `meteor --settings`
+    // or use `meteor --settings`
     if (Meteor.settings && !configureEnv) {
       if (Meteor.settings.reaction) {
-        options.username = Meteor.settings.reaction.REACTION_USER || "Admin";
-        options.password = Meteor.settings.reaction.REACTION_AUTH || Random.secret(8);
-        options.email = Meteor.settings.reaction.REACTION_EMAIL || Random.id(8).toLowerCase() + "@" + domain;
+        options.email = Meteor.settings.reaction.REACTION_EMAIL || defaultEmail;
+        options.password = Meteor.settings.reaction.REACTION_AUTH || defaultPassword;
+        options.username = Meteor.settings.reaction.REACTION_USER || defaultUsername;
+        options.name = Meteor.settings.reaction.REACTION_USER_NAME || defaultName;
         Logger.info("Using meteor --settings to create admin user");
       }
     }
@@ -361,15 +416,27 @@ export default {
         emails: {
           address: options.email,
           verified: true
-        },
-        domains: Meteor.settings.ROOT_URL
+        }
       }
     });
+
+    // get the current shop
+    const shop = Shops.findOne(shopId);
+
+    // add the current domain to the shop if it doesn't already exist
+    if (!shop.domains.includes(this.getDomain())) {
+      // set the default shop email to the default admin email
+      Shops.update(shopId, {
+        $addToSet: {
+          domains: domain
+        }
+      });
+    }
 
     //
     // create the new admin user
     //
-
+    let accountId;
     // we're checking again to see if this user was created but not specifically for this shop.
     if (Meteor.users.find({ "emails.address": options.email }).count() === 0) {
       accountId = Accounts.createUser(options);
@@ -378,12 +445,16 @@ export default {
       accountId = Meteor.users.findOne({ "emails.address": options.email })._id;
     }
 
-    //
-    // send verification email
-    //
+    // update the user's name if it was provided
+    // (since Accounts.createUser() doesn't allow that field and strips it out)
+    Meteor.users.update(accountId, {
+      $set: {
+        name: options.name
+      }
+    });
 
-    // we dont need to validate admin user in development
-    if (process.env.NODE_ENV === "development") {
+    // unless strict security is enabled, mark the admin's email as validated
+    if (!isSecureSetup) {
       Meteor.users.update({
         "_id": accountId,
         "emails.address": options.email
@@ -400,11 +471,11 @@ export default {
     //
     // Set Default Roles
     //
-
+    const defaultAdminRoles = ["owner", "admin", "guest", "account/profile"];
     // we don't use accounts/addUserPermissions here because we may not yet have permissions
-    Roles.setUserRoles(accountId, _.uniq(defaultAdminRoles), shopId);
+    Roles.setUserRoles(accountId, defaultAdminRoles, shopId);
     // // the reaction owner has permissions to all sites by default
-    Roles.setUserRoles(accountId, _.uniq(defaultAdminRoles), Roles.GLOBAL_GROUP);
+    Roles.setUserRoles(accountId, defaultAdminRoles, Roles.GLOBAL_GROUP);
     // initialize package permissions we don't need to do any further permission configuration it is taken care of in the
     // assignOwnerRoles
     const packages = Packages.find().fetch();
@@ -412,10 +483,8 @@ export default {
       this.assignOwnerRoles(shopId, pkg.name, pkg.registry);
     }
 
-    //
-    //  notify user that admin was created account email should print on console
-    //
-
+    // notify user that the default admin was created by
+    // printing the account info to the console
     Logger.warn(`\n *********************************
         \n  IMPORTANT! DEFAULT ADMIN INFO
         \n  EMAIL/LOGIN: ${options.email}
@@ -425,6 +494,7 @@ export default {
     // run hooks on new user object
     const user = Meteor.users.findOne(accountId);
     Hooks.Events.run("afterCreateDefaultAdminUser", user);
+
     return accountId;
   },
 
@@ -538,6 +608,52 @@ export default {
       });
     });
   },
+
+  /**
+   *  insertPackagesForShop
+   *  insert Reaction packages into Packages collection registry for a new shop
+   *  Assigns owner roles for new packages
+   *  Imports layouts from packages
+   *  @param {String} shopId - the shopId you need to create packages for
+   *  @return {String} returns insert result
+   */
+  insertPackagesForShop(shopId) {
+    const layouts = [];
+    if (!shopId) {
+      return [];
+    }
+    const packages = this.Packages;
+    // for each shop, we're loading packages in a unique registry
+    // Object.keys(pkgConfigs).forEach((pkgName) => {
+    for (const packageName in packages) {
+      // Guard to prvent unexpected `for in` behavior
+      if ({}.hasOwnProperty.call(packages, packageName)) {
+        const config = packages[packageName];
+        this.assignOwnerRoles(shopId, packageName, config.registry);
+
+        const pkg = Object.assign({}, config, {
+          shopId: shopId
+        });
+
+        // populate array of layouts that don't already exist (?!)
+        if (pkg.layout) {
+          // filter out layout templates
+          for (const template of pkg.layout) {
+            if (template && template.layout) {
+              layouts.push(template);
+            }
+          }
+        }
+        Packages.insert(pkg);
+        Logger.debug(`Initializing ${shopId} ${packageName}`);
+      }
+    }
+
+    // helper for removing layout duplicates
+    const uniqLayouts = uniqWith(layouts, _.isEqual);
+    Shops.update({ _id: shopId }, { $set: { layout: uniqLayouts } });
+  },
+
   setAppVersion() {
     const version = packageJson.version;
     Logger.info(`Reaction Version: ${version}`);

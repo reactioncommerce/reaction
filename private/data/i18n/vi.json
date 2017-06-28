@@ -141,7 +141,7 @@
           "newOrder": "Đơn hàng của bạn đang được xử lý.",
           "forAdmin": "Bạn có một trật tự mới.",
           "orderDelivered": "Chỗ đặt của bạn đã được gửi.",
-          "orderAccepted": "Chỗ đặt của bạn đã được chấp nhận.",
+          "orderProcessing": "Đơn hàng của bạn đang được xử lý.",
           "orderShipped": "Đặt hàng của bạn đã được chuyển đi."
         }
       },
@@ -298,7 +298,12 @@
       "cartDrawer": {
         "empty": "Chúng tôi đang buồn. Giỏ của bạn trống trơn.",
         "keepShopping": "Tiếp tục mua sắm",
-        "checkout": "Thanh toán tại"
+        "checkout": "Thanh toán tại",
+        "new": "Mới",
+        "coreOrderWorkflow/created": "Tạo",
+        "coreOrderWorkflow/processing": "Chế biến",
+        "coreOrderWorkflow/completed": "Đã hoàn thành",
+        "coreOrderWorkflow/canceled": "bị hủy bỏ"
       },
       "cartSubTotals": {
         "discount": "Giảm giá",
@@ -380,9 +385,7 @@
         "resendNotification": "Gửi lại lô hàng thông báo"
       },
       "orderWorkflow": {
-        "fulfillment": "hoàn thành",
         "orderDetails": "Đặt hàng Chi tiết",
-        "summary": "Tóm lược",
         "invoice": "Hóa đơn",
         "shipmentTracking": "Theo dõi lô hàng"
       },
@@ -429,6 +432,7 @@
       },
       "addressBookEdit": {
         "editAddress": "Chỉnh sửa mục nhập địa chỉ này",
+        "addressValidation": "địa chỉ Validation",
         "somethingWentWrong": "Một cái gì đó đã đi sai: {{err}}"
       },
       "corePackageConfig": {
