@@ -13,6 +13,16 @@ class AccountsTable extends Component {
     users: PropTypes.array
   }
 
+  getUserDetails(user) {
+    const twoFactor = user.emails[0].verified ? "Yes" : "no";
+    return {
+      name: user.name,
+      lastUpdated: user.createdAt.toDateString(),
+      email: user.emails[0].address,
+      twoFactor
+    };
+  }
+
   getGravatar(user) {
     const options = {
       secure: true,
@@ -38,20 +48,20 @@ class AccountsTable extends Component {
     });
     return (
       <li className={baseStyle} style={{ padding: "0px" }}>
-        <div className="member-list-item-image accounts-profile-header">
+        <div className="member-list-item-image accounts-profile-header table-width">
           <span><Checkbox /> </span>
           <span> Name <Icon icon="chevron-down" /></span>
         </div>
-        <div className="member-list-item-profile accounts-field" style={{ paddingRight: "4%" }}>
+        <div className="member-list-item-profile accounts-field table-width" style={{ paddingRight: "4%" }}>
           <div>Email <Icon icon="chevron-down" /></div>
         </div>
-        <div className="member-list-item-profile accounts-last-active" style={{ paddingRight: "6%" }}>
+        <div className="member-list-item-profile accounts-last-active table-width" style={{ paddingRight: "6%" }}>
           <div>Last Active <Icon icon="chevron-down" /></div>
         </div>
-        <div className="member-list-item-profile">
+        <div className="member-list-item-profile table-width">
           <div>Two Factor <Icon icon="chevron-down" /></div>
         </div>
-        <div className="member-list-item-profile accounts-field"/>
+        <div className="member-list-item-profile accounts-field table-width"/>
       </li>
     );
   }
@@ -64,24 +74,24 @@ class AccountsTable extends Component {
     });
     return this.props.users.map((user, index) => (
       <li className={baseStyle} key={index}>
-        <div className="member-list-item-profile accounts-field-profile">
+        <div className="member-list-item-profile accounts-field-profile table-width">
           <span style={{ margin: "2%" }}><img className="circular-icon accounts-field-profile" src={this.getGravatar(user)}/></span>
-          <span>Rowland Henshaw</span>
+          <span>{this.getUserDetails(user).name}</span>
         </div>
-        <div className="member-list-item-profile accounts-field">
-          &nbsp;{user.emails[0].address}
+        <div className="member-list-item-profile accounts-field table-width">
+          &nbsp;{this.getUserDetails(user).email}
         </div>
-        <div className="member-list-item-profile accounts-field">
-          <span>22:06 am</span>
+        <div className="member-list-item-profile accounts-field table-width">
+          <span>{this.getUserDetails(user).lastUpdated}</span>
         </div>
-        <div className="member-list-item-profile accounts-field">
-          <span>Yes</span>
+        <div className="member-list-item-profile accounts-field table-width">
+          <span>{this.getUserDetails(user).twoFactor}</span>
         </div>
 
-        <div className="member-list-item-controls dropdown-div">
+        <div className="member-list-item-controls dropdown-div table-width">
           <button className="btn btn-default basic-btn" data-event-action="showMemberSettings" data-i18n="accountsUI.manage">Manage</button>
         </div>
-        <div className="member-list-item-controls remove-div">
+        <div className="member-list-item-controls remove-div table-width">
           <button
             className="btn btn-default remove-btn"
             data-event-action="showMemberSettings"
