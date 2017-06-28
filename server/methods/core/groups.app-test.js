@@ -10,7 +10,7 @@ import { getUser } from "/server/imports/fixtures/users";
 
 Fixtures();
 
-describe.only("Group test", function () {
+describe("Group test", function () {
   let methods;
   let sandbox;
   let shop;

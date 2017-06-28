@@ -4,7 +4,6 @@ import { Template } from "meteor/templating";
 import { Reaction, i18next } from "/client/api";
 import * as Collections from "/lib/collections";
 import { ServiceConfigHelper } from "../../helpers/util";
-import AccountsContainer from "/imports/plugins/core/accounts/client/containers/accountsContainer";
 
 /**
  * Accounts helpers

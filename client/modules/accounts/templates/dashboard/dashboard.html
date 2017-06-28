@@ -1,8 +1,4 @@
 <template name="accountsDashboard">
-  <div>
-    {{> React component=accounts }}
-  </div>
-
   {{#if hasPermission 'accounts'}}
 
     {{> memberForm}}
