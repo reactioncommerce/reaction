@@ -31,7 +31,8 @@ describe("Group test", function () {
   before(function (done) {
     methods = {
       createGroup: Meteor.server.method_handlers["group/createGroup"],
-      addUser: Meteor.server.method_handlers["group/addUser"]
+      addUser: Meteor.server.method_handlers["group/addUser"],
+      updateGroup: Meteor.server.method_handlers["group/updateGroup"]
     };
     return done();
   });
@@ -48,6 +49,7 @@ describe("Group test", function () {
     Shops.remove({});
     sandbox.restore();
     Meteor.users.remove({});
+    Factory.create("shop");
     return done();
   });
 
@@ -134,6 +136,7 @@ describe("Group test", function () {
     sandbox.stub(Reaction, "hasPermission", () => true);
     spyOnMethod("createGroup", shop._id);
     spyOnMethod("addUser", shop._id);
+    spyOnMethod("updateGroup", shop._id);
 
     Meteor.call("group/createGroup", sampleGroup, shop._id);
     const shopGroups = Shops.findOne({ _id: shop._id }).group;
