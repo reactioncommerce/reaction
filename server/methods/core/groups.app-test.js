@@ -4,7 +4,7 @@ import { Factory } from "meteor/dburles:factory";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
 import { Reaction } from "/server/api";
-import { Accounts, Shops } from "/lib/collections";
+import { Accounts, Groups } from "/lib/collections";
 import Fixtures from "/server/imports/fixtures";
 import { getUser } from "/server/imports/fixtures/users";
 
@@ -20,19 +20,12 @@ describe("Group test", function () {
     permissions: ["sample-role1", "sample-role2"]
   };
 
-  function getGroupObj(groups) {
-    for (const key in groups) {
-      if (groups.hasOwnProperty(key)) {
-        return Object.assign({}, groups[key], { groupId: key });
-      }
-    }
-  }
-
   before(function () {
     methods = {
       createGroup: Meteor.server.method_handlers["group/createGroup"],
       addUser: Meteor.server.method_handlers["group/addUser"],
-      updateGroup: Meteor.server.method_handlers["group/updateGroup"]
+      updateGroup: Meteor.server.method_handlers["group/updateGroup"],
+      removeUser: Meteor.server.method_handlers["group/removeUser"]
     };
   });
 
@@ -45,7 +38,7 @@ describe("Group test", function () {
   });
 
   afterEach(function () {
-    Shops.remove({});
+    Groups.remove({});
     sandbox.restore();
     Meteor.users.remove({});
     Factory.create("shop");
@@ -64,8 +57,7 @@ describe("Group test", function () {
     spyOnMethod("createGroup", shop._id);
 
     Meteor.call("group/createGroup", sampleGroup, shop._id);
-    const shopGroups = Shops.findOne({ _id: shop._id }).group;
-    const group = getGroupObj(shopGroups);
+    const group = Groups.findOne({ shopId: shop._id });
 
     expect(group.name).to.equal(sampleGroup.name);
   });
@@ -87,13 +79,10 @@ describe("Group test", function () {
     spyOnMethod("addUser", shop._id);
 
     Meteor.call("group/createGroup", sampleGroup, shop._id);
-
-    const shopGroups = Shops.findOne({ _id: shop._id }).group;
-    const group = getGroupObj(shopGroups);
-
-    Meteor.call("group/addUser", user._id, group.groupId, shop._id);
+    const group = Groups.findOne({ shopId: shop._id });
+    Meteor.call("group/addUser", user._id, group._id);
     const updatedUser = Accounts.findOne({ _id: user._id });
-    expect(updatedUser.groups[shop._id]).to.include.members([group.groupId]);
+    expect(updatedUser.groups).to.include.members([group._id]);
   });
 
   it("should add a user to a group and update user's permissions", function () {
@@ -102,10 +91,8 @@ describe("Group test", function () {
     spyOnMethod("addUser", shop._id);
 
     Meteor.call("group/createGroup", sampleGroup, shop._id);
-    const shopGroups = Shops.findOne({ _id: shop._id }).group;
-    const group = getGroupObj(shopGroups);
-
-    Meteor.call("group/addUser", user._id, group.groupId, shop._id);
+    const group = Groups.findOne({ shopId: shop._id });
+    Meteor.call("group/addUser", user._id, group._id);
     const updatedUser = Meteor.users.findOne({ _id: user._id });
 
     expect(updatedUser.roles[shop._id]).to.include.members(sampleGroup.permissions);
@@ -115,17 +102,15 @@ describe("Group test", function () {
     sandbox.stub(Reaction, "hasPermission", () => true);
     spyOnMethod("createGroup", shop._id);
     spyOnMethod("addUser", shop._id);
+    spyOnMethod("removeUser", shop._id);
 
     Meteor.call("group/createGroup", sampleGroup, shop._id);
-    const shopGroups = Shops.findOne({ _id: shop._id }).group;
-    const group = getGroupObj(shopGroups);
-
-    Meteor.call("group/addUser", user._id, group.groupId, shop._id);
+    const group = Groups.findOne({ shopId: shop._id });
+    Meteor.call("group/addUser", user._id, group._id);
     let updatedUser = Meteor.users.findOne({ _id: user._id });
-
     expect(updatedUser.roles[shop._id]).to.include.members(sampleGroup.permissions);
 
-    Meteor.call("group/removeUser", user._id, group.groupId, shop._id);
+    Meteor.call("group/removeUser", user._id, group._id);
     updatedUser = Meteor.users.findOne({ _id: user._id });
     expect(updatedUser.roles[shop._id]).to.not.include.members(sampleGroup.permissions);
   });
@@ -137,16 +122,13 @@ describe("Group test", function () {
     spyOnMethod("updateGroup", shop._id);
 
     Meteor.call("group/createGroup", sampleGroup, shop._id);
-    const shopGroups = Shops.findOne({ _id: shop._id }).group;
-    const group = getGroupObj(shopGroups);
-
-    Meteor.call("group/addUser", user._id, group.groupId, shop._id);
+    const group = Groups.findOne({ shopId: shop._id });
+    Meteor.call("group/addUser", user._id, group._id);
     let updatedUser = Meteor.users.findOne({ _id: user._id });
-
     expect(updatedUser.roles[shop._id]).to.include.members(sampleGroup.permissions);
-    const newGroupData = Object.assign({}, sampleGroup, { permissions: ["new-permissions"] });
 
-    Meteor.call("group/updateGroup", group.groupId, newGroupData, shop._id);
+    const newGroupData = Object.assign({}, sampleGroup, { permissions: ["new-permissions"] });
+    Meteor.call("group/updateGroup", group._id, newGroupData, shop._id);
     updatedUser = Meteor.users.findOne({ _id: user._id });
     expect(updatedUser.roles[shop._id]).to.include.members(newGroupData.permissions);
   });
