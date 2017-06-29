@@ -1,5 +1,8 @@
 import { Mongo } from "meteor/mongo";
 import { EJSON } from "meteor/ejson";
+import { check, Match } from "meteor/check";
+import { Random } from "meteor/random";
+import { MongoInternals } from "meteor/mongo";
 import * as Collections from "/lib/collections";
 import Hooks from "../hooks";
 import { Logger } from "../logger";
@@ -67,7 +70,7 @@ Import.identify = function (document) {
 
   const probabilities = {};
 
-  for (key of Object.keys(document)) {
+  for (const key of Object.keys(document)) {
     if (this._indications[key]) {
       const collection = this._name(this._indications[key].collection);
       probabilities[collection] = probabilities[collection] || 1.0 * this._indications[
@@ -76,13 +79,13 @@ Import.identify = function (document) {
   }
 
   let total = 1.0;
-  for (key of Object.keys(probabilities)) {
+  for (const key of Object.keys(probabilities)) {
     total *= probabilities[key];
   }
 
   let max = 0.0;
   let name;
-  for (key of Object.keys(probabilities)) {
+  for (const key of Object.keys(probabilities)) {
     const probability = total / probabilities[key];
     if (probability > max) {
       max = probability;
@@ -215,7 +218,6 @@ Import.buffer = function (collection) {
  * @summary Store a product in the import buffer.
  * @param {Object} key A key to look up the product
  * @param {Object} product The product data to be updated
- * @param {Object} parent A key to identify the parent product
  * @returns {Object}
  * Importing a variant currently consists of the following steps:
  *
@@ -251,7 +253,6 @@ Import.package = function (pkg, shopId) {
 /**
  * @summary Store a template in the import buffer.
  * @param {Object} templateInfo The template data to be updated
- * @param {String} shopId The package data to be updated
  * @returns {undefined}
  */
 Import.template = function (templateInfo) {

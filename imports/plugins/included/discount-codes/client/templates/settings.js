@@ -1,11 +1,12 @@
+import { $ } from "meteor/jquery";
+import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { ReactiveDict } from "meteor/reactive-dict";
 import { AutoForm } from "meteor/aldeed:autoform";
 import { DiscountCodes } from "../collections/codes";
 import { i18next } from "/client/api";
 import { DiscountCodes as DiscountSchema } from "../../lib/collections/schemas";
-import MeteorGriddle from "/imports/plugins/core/ui-grid/client/griddle";
-import { IconButton, Loading }  from "/imports/plugins/core/ui/client/components";
+import { IconButton, Loading, SortableTable }  from "/imports/plugins/core/ui/client/components";
 import "./settings.html";
 
 /* eslint no-shadow: ["error", { "allow": ["options"] }] */
@@ -89,20 +90,19 @@ Template.customDiscountCodes.helpers({
     const customColumnMetadata = [];
     filteredFields.forEach(function (field) {
       const columnMeta = {
-        columnName: field,
-        displayName: i18next.t(`admin.discountGrid.${field}`)
+        accessor: field,
+        Header: i18next.t(`admin.discountGrid.${field}`)
       };
       customColumnMetadata.push(columnMeta);
     });
 
     // return discount Grid
     return {
-      component: MeteorGriddle,
+      component: SortableTable,
       publication: "DiscountCodes",
       collection: DiscountCodes,
       matchingResultsCount: "discounts-count",
       showFilter: true,
-      useGriddleStyles: false,
       rowMetadata: customRowMetaData,
       filteredFields: filteredFields,
       columns: filteredFields,
@@ -149,7 +149,7 @@ Template.customDiscountCodes.events({
     });
   },
   "click .cancel, .discount-codes-grid-row .active": function () {
-    instance = Template.instance();
+    const instance = Template.instance();
     // remove active rows from grid
     instance.state.set({
       isEditing: false,

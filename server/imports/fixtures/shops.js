@@ -1,4 +1,6 @@
 import faker from "faker";
+import _ from "lodash";
+import { Factory } from "meteor/dburles:factory";
 import { Shops } from "/lib/collections";
 
 export function getShop() {

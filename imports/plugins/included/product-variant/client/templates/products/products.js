@@ -1,3 +1,4 @@
+import { $ } from "meteor/jquery";
 import { Template } from "meteor/templating";
 import { Reaction } from "/client/api";
 import ProductsContainer from "/imports/plugins/included/product-variant/containers/productsContainer";
