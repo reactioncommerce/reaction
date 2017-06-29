@@ -164,6 +164,7 @@
   margin-left: -10px;
   padding-top: 0px;
   padding: 10px;
+  padding-bottom: 30px;
   border-radius: 4px;
   background-color: #ffffff;
   box-shadow: 0 0 4px 2px rgba(0, 0, 0, 0.16);
@@ -173,23 +174,31 @@
 .invoice-popover-checkbox {
   padding-left: 10px;
   -webkit-flex: 1;
-  flex: 1;
+  flex: 0;
   border: 1px
 }
 
 .invoice-popover-controls {
+  margin-top: 10px;
+  margin-bottom: 10px;
   display: flex;
   width: 100%;
   height: 30px;
-  // border: 1px solid;
 
   .invoice-popover-selected {
     flex: 7;
     padding-top: 2px;
+    padding-left: 10px;
+
+    i {
+      font-size: 18px;
+    }
 
     span {
-      color: #11a7f0;
       font-size: 16px;
+      left: 5px;
+      position: relative;
+      top: 0px;
     }
   }
 
@@ -267,7 +276,7 @@
       }
 
       span {
-        color: red;
+        color: @rui-danger;
         font-weight: 600;
       }
     }
@@ -277,9 +286,9 @@
     margin-top: 10px;
     .refund-item {
       padding: 10px;
-      margin-bottom: 10px;
+      margin-bottom: 4px;
       display: flex;
-      background: rgba(255, 192, 203, 0.42);
+      background: @rui-danger-bg;
 
       div {
         flex: 1;
@@ -290,6 +299,12 @@
 
         &:last-child {
           text-align: right;
+        }
+      }
+
+      &.return {
+        span {
+          color: @rui-danger
         }
       }
     }
@@ -351,10 +366,6 @@
 
 .order-shipments {
   list-style-type: none;
-}
-
-.order-shipment-item {
-
 }
 
 // Order form summary

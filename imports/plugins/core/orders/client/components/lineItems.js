@@ -1,8 +1,10 @@
 import React, { Component, PropTypes } from "react";
 import classnames from "classnames";
+import { Roles } from "meteor/alanning:roles";
+import { Reaction } from "/client/api";
 import { formatPriceString } from "/client/api";
 import { Translation } from "/imports/plugins/core/ui/client/components";
-import { Popover, Button, Checkbox, NumberTypeInput } from "/imports/plugins/core/ui/client/components";
+import { Popover, Button, Checkbox, NumberTypeInput, RolloverCheckbox } from "/imports/plugins/core/ui/client/components";
 
 class LineItems extends Component {
 
@@ -14,10 +16,12 @@ class LineItems extends Component {
     inputOnChange: PropTypes.func,
     invoice: PropTypes.object,
     isHovered: PropTypes.func,
+    isUpdating: PropTypes.bool,
     popOverIsOpen: PropTypes.bool,
     selectAllItems: PropTypes.bool,
     selectedItems: PropTypes.array,
     togglePopOver: PropTypes.func,
+    toggleUpdating: PropTypes.func,
     uniqueItems: PropTypes.array
   }
 
@@ -69,27 +73,17 @@ class LineItems extends Component {
 
   toggleMediaHover(uniqueItem) {
     const { displayMedia, selectedItems, handleItemSelect } = this.props;
-    if (selectedItems.includes(uniqueItem._id)) {
-      return (
-        <div>
-
-          <div className="invoice-popover-checkbox">
-              <Checkbox
-                className="checkbox"
-                checked={selectedItems.includes(uniqueItem._id)}
-                onChange={() => handleItemSelect(uniqueItem._id)}
-              />
-          </div>
-        </div>
-      );
-    }
     return (
-      <div onClick={() => handleItemSelect(uniqueItem._id)}>
-      { !displayMedia(uniqueItem) ?
-        <img src= "/resources/placeholder.gif" /> :
-        <img src={displayMedia(uniqueItem).url()}/>
-      }
-      </div>
+      <RolloverCheckbox
+        checkboxClassName="checkbox"
+        onChange={() =>  handleItemSelect(uniqueItem._id)}
+        checked={selectedItems.includes(uniqueItem._id)}
+      >
+        { !displayMedia(uniqueItem) ?
+          <img src= "/resources/placeholder.gif" /> :
+          <img src={displayMedia(uniqueItem).url()}/>
+        }
+      </RolloverCheckbox>
     );
   }
 
@@ -147,13 +141,12 @@ class LineItems extends Component {
                   </div>
 
                   <div className="order-detail-quantity invoice-order-quantity">
-                    { selectedItems.includes(uniqueItem._id) ?
-                      <NumberTypeInput
-                        minValue={1}
-                        onChange={(editedValue) => this.handleInputOnchange(editedValue, uniqueItem)}
-                        defaultValue={uniqueItem.quantity}
-                        maxValue={uniqueItem.quantity}
-                      /> : <span>{ uniqueItem.quantity }</span>}
+                    <NumberTypeInput
+                      minValue={0}
+                      onChange={(editedValue) => this.handleInputOnchange(editedValue, uniqueItem)}
+                      defaultValue={uniqueItem.quantity}
+                      maxValue={uniqueItem.quantity}
+                    />
                   </div>
 
                   <div className="order-detail-price">
@@ -187,9 +180,9 @@ class LineItems extends Component {
           </div>
         </div>
         <div className="refund-body">
-          {editedItems.map(item => {
+          {editedItems.map((item, index) => {
             return (
-              <div className="refund-item">
+              <div className="refund-item" key={index}>
                 <div>
                   <span>{item.title}</span>
                 </div>
@@ -197,14 +190,14 @@ class LineItems extends Component {
                   <span>{item.refundedQuantity}</span>
                 </div>
                 <div>
-                  <span> $10.00</span>
+                  <span>{formatPriceString(item.refundedTotal)}</span>
                 </div>
               </div>
             );
           })}
-          <div className="refund-item">
+          <div className="refund-item return">
             <div>
-              <span><b>RETURN TOTAL</b></span>
+              <b><Translation defaultValue="RETURN TOTAL" i18nKey=""/></b>
             </div>
             <div>
               <span>
@@ -212,7 +205,9 @@ class LineItems extends Component {
               </span>
             </div>
             <div>
-              <span>$20.00</span>
+              <span>
+                {formatPriceString(editedItems.reduce((acc, item) => acc + item.refundedTotal, 0))}
+              </span>
             </div>
           </div>
         </div>
@@ -229,6 +224,23 @@ class LineItems extends Component {
     );
   }
 
+  showLoader() {
+    const { isUpdating, toggleUpdating } = this.props;
+
+    if (isUpdating) {
+      setTimeout(() => {
+        return toggleUpdating(false);
+      }, 2000);
+      return (
+        <div>
+          <i className="fa fa-circle-o-notch fa-spin fa-fw"/>
+          <span>Updating</span>
+        </div>
+      );
+    }
+    return null;
+  }
+
   renderPopOverChildren() {
     const { togglePopOver, editedItems, handleSelectAllItems, selectAllItems, selectedItems,
       uniqueItems } = this.props;
@@ -238,12 +250,12 @@ class LineItems extends Component {
             <div className="invoice-popover-checkbox">
               <Checkbox
                 className="checkbox"
-                checked={selectAllItems}
+                checked={selectAllItems || selectedItems.length === uniqueItems.length}
                 onChange={(e) => handleSelectAllItems(e, uniqueItems)}
               />
             </div>
             <div className="invoice-popover-selected">
-              <span>{selectedItems.length} Items Selected</span>
+              { this.showLoader() }
             </div>
             <div className="invoice-popover-close">
               <Button
@@ -349,14 +361,19 @@ class LineItems extends Component {
     return (
       <div
         className="invoice invoice-line-items"
-        onClick={() => togglePopOver()}
+        onClick={() => {
+          return Roles.userIsInRole(Meteor.userId(), ["orders", "dashboard/orders"], Reaction.getShopId()) ?
+          togglePopOver() : null;
+        }}
       >
         {uniqueItems.map((uniqueItem) => {
           return (
             <div key={uniqueItem._id}> { this.renderLineItem(uniqueItem) } </div>
           );
         })}
-        {this.renderPopOver()}
+        {
+          Roles.userIsInRole(Meteor.userId(), ["orders", "dashboard/orders"], Reaction.getShopId()) ?
+            this.renderPopOver() : null}
       </div>
     );
   }

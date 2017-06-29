@@ -17,6 +17,7 @@ class LineItemsContainer extends Component {
     this.state = {
       notHovered: true,
       isClosed: false,
+      isUpdating: false,
       popOverIsOpen: false,
       selectAllItems: false,
       selectedItems: [],
@@ -28,13 +29,18 @@ class LineItemsContainer extends Component {
 
   togglePopOver = () => {
     if (this.state.popOverIsOpen) {
-      return this.setState({ popOverIsOpen: false });
+      return this.setState({
+        popOverIsOpen: false,
+        selectAllItems: false,
+        selectedItems: [],
+        editedItems: []
+      });
     }
     return this.setState({ popOverIsOpen: true });
   }
 
-  selectItem = () => {
-    this.setState({  });
+  toggleUpdating = (isUpdating) => {
+    return this.setState({ isUpdating });
   }
 
   handleSelectAllItems = (e, uniqueItems) => {
@@ -50,6 +56,7 @@ class LineItemsContainer extends Component {
     if (checked) {
       return this.setState({
         selectAllItems: true,
+        isUpdating: true,
         selectedItems
       });
     }
@@ -57,6 +64,7 @@ class LineItemsContainer extends Component {
     return this.setState({
       selectAllItems: false,
       selectedItems: [],
+      isUpdating: true,
       editedItems: []
     });
   }
@@ -68,15 +76,19 @@ class LineItemsContainer extends Component {
       return item.id === lineItem._id;
     });
 
+    const refundedQuantity = lineItem.quantity - quantityValue;
+
     if (itemQuantity) {
       editedItems = editedItems.filter(item => item.id !== lineItem._id);
-      itemQuantity.refundedQuantity = lineItem.quantity - quantityValue;
+      itemQuantity.refundedTotal = lineItem.variants.price * refundedQuantity;
+      itemQuantity.refundedQuantity = refundedQuantity;
       editedItems.push(itemQuantity);
     } else {
       editedItems.push({
         id: lineItem._id,
         title: lineItem.title,
-        refundedQuantity: lineItem.quantity - quantityValue
+        refundedTotal: lineItem.variants.price * refundedQuantity,
+        refundedQuantity
       });
     }
 
@@ -87,7 +99,10 @@ class LineItemsContainer extends Component {
     let { selectedItems, editedItems } = this.state;
     if (!selectedItems.includes(itemId)) {
       selectedItems.push(itemId);
-      return this.setState({ selectedItems, selectAllItems: false });
+      return this.setState({
+        selectedItems,
+        isUpdating: true,
+        selectAllItems: false });
     }
 
     selectedItems = selectedItems.filter((id) => {
@@ -101,6 +116,7 @@ class LineItemsContainer extends Component {
 
     return this.setState({
       selectedItems,
+      isUpdating: true,
       selectAllItems: false,
       editedItems
     });
@@ -152,6 +168,8 @@ class LineItemsContainer extends Component {
           displayMedia={this.handleDisplayMedia}
           uniqueItems={uniqueItems}
           editedItems={this.state.editedItems}
+          isUpdating={this.state.isUpdating}
+          toggleUpdating={this.toggleUpdating}
         />
       </TranslationProvider>
     );

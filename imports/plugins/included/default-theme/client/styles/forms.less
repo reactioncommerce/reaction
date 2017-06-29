@@ -213,3 +213,29 @@
     }
   }
 }
+
+.rollover-checkbox {
+
+  .selected-checkbox {
+    padding-left: 10px;
+    -webkit-flex: 1;
+    flex: 0;
+    border: 1px
+  }
+
+  .second-child {
+    display: none;
+    padding-left: 10px;
+    -webkit-flex: 1;
+    flex: 1;
+    border: 1px
+  }
+
+  &:hover .first-child {
+    display: none;
+  }
+
+  &:hover .second-child {
+    display: inline-block;
+  }
+}
