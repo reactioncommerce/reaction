@@ -28,13 +28,12 @@ describe("Group test", function () {
     }
   }
 
-  before(function (done) {
+  before(function () {
     methods = {
       createGroup: Meteor.server.method_handlers["group/createGroup"],
       addUser: Meteor.server.method_handlers["group/addUser"],
       updateGroup: Meteor.server.method_handlers["group/updateGroup"]
     };
-    return done();
   });
 
   beforeEach(function () {
@@ -45,12 +44,11 @@ describe("Group test", function () {
     Accounts.upsert({ _id: user._id }, { $set: { userId: user._id } });
   });
 
-  afterEach(function (done) {
+  afterEach(function () {
     Shops.remove({});
     sandbox.restore();
     Meteor.users.remove({});
     Factory.create("shop");
-    return done();
   });
 
   function spyOnMethod(method, id) {
