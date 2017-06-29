@@ -28,6 +28,7 @@ class SearchModalContainer extends Component {
     this.handleOrderClick = this.handleOrderClick.bind(this);
     this.handleTagClick = this.handleTagClick.bind(this);
     this.handleToggle = this.handleToggle.bind(this);
+    this.onKeyDown = this.onKeyDown.bind(this);
     this.dep = new Tracker.Dependency;
   }
 
@@ -76,7 +77,7 @@ class SearchModalContainer extends Component {
           * Order Search
           */
         if (searchCollection === "orders") {
-          const orderResults = Collections.OrderSearch.find(searchQuery, { limit: 99 }).fetch();
+          const orderResults = Collections.OrderSearch.find().fetch();
           this.setState({
             orderResults,
             tagResults: [],
@@ -159,6 +160,8 @@ class SearchModalContainer extends Component {
       orderResults: [],
       accountResults: [],
       collection
+    }, () => {
+      this.dep.changed();
     });
   }
 
