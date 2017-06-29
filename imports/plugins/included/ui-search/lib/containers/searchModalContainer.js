@@ -28,7 +28,6 @@ class SearchModalContainer extends Component {
     this.handleOrderClick = this.handleOrderClick.bind(this);
     this.handleTagClick = this.handleTagClick.bind(this);
     this.handleToggle = this.handleToggle.bind(this);
-    this.onKeyDown = this.onKeyDown.bind(this);
     this.dep = new Tracker.Dependency;
   }
 
