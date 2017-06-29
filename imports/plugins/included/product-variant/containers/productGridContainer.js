@@ -34,14 +34,6 @@ class ProductGridContainer extends Component {
     };
   }
 
-  componentWillReceiveProps = (nextProps) => {
-    this.setState({
-      products: nextProps.products,
-      productIds: nextProps.productIds,
-      productsByKey: nextProps.productsByKey
-    });
-  }
-
   componentWillMount() {
     const selectedProducts = Reaction.getUserPreferences("reaction-product-variant", "selectedGridItems");
     const products = this.products;
@@ -68,6 +60,14 @@ class ProductGridContainer extends Component {
         });
       }
     }
+  }
+
+  componentWillReceiveProps = (nextProps) => {
+    this.setState({
+      products: nextProps.products,
+      productIds: nextProps.productIds,
+      productsByKey: nextProps.productsByKey
+    });
   }
 
   handleSelectProductItem = (isChecked, productId) => {
@@ -136,7 +136,7 @@ class ProductGridContainer extends Component {
 
   get products() {
     if (this.props.isSearch) {
-      return this.props.products;
+      return this.state.products;
     }
     return this.state.productIds.map((id) => this.state.productsByKey[id]);
   }
