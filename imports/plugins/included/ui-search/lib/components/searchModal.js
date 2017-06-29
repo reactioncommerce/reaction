@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Reaction } from "/client/api";
-import { TextField, Button, IconButton, SortableTable } from "/imports/plugins/core/ui/client/components";
+import { TextField, Button, IconButton, SortableTableLegacy } from "/imports/plugins/core/ui/client/components";
 import ProductGridContainer from "/imports/plugins/included/product-variant/containers/productGridContainer";
 import { accountsTable, ordersTable } from "../helpers";
 
@@ -110,14 +110,14 @@ class SearchModal extends Component {
           {this.props.accounts.length > 0 &&
             <div className="data-table">
               <div className="table-responsive">
-                <SortableTable data={this.props.accounts} columns={accountsTable()} onRowClick={this.props.handleAccountClick} />
+                <SortableTableLegacy data={this.props.accounts} columns={accountsTable()} onRowClick={this.props.handleAccountClick} />
               </div>
             </div>
           }
           {this.props.orders.length > 0 &&
             <div className="data-table">
               <div className="table-responsive">
-                <SortableTable data={this.props.orders} columns={ordersTable()} onRowClick={this.props.handleOrderClick} />
+                <SortableTableLegacy data={this.props.orders} columns={ordersTable()} onRowClick={this.props.handleOrderClick} />
               </div>
             </div>
           }
