@@ -13,7 +13,7 @@ class SearchModalContainer extends Component {
     super(props);
     this.state = {
       collection: "products",
-      value: "",
+      value: localStorage.getItem("searchValue") || "",
       tagResults: [],
       productResults: [],
       orderResults: [],
@@ -108,6 +108,7 @@ class SearchModalContainer extends Component {
     this.setState({ value }, () => {
       this.dep.changed();
     });
+    localStorage.setItem("searchValue", value);
   }
 
   handleClick = () => {
