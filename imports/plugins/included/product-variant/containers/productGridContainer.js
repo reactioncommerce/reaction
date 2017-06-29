@@ -25,12 +25,21 @@ class ProductGridContainer extends Component {
     super(props);
 
     this.state = {
+      products: props.products,
       productsByKey: props.productsByKey,
       productIds: props.productIds,
       initialLoad: true,
       slug: "",
       canLoadMoreProducts: false
     };
+  }
+
+  componentWillReceiveProps = (nextProps) => {
+    this.setState({
+      products: nextProps.products,
+      productIds: nextProps.productIds,
+      productsByKey: nextProps.productsByKey
+    });
   }
 
   componentWillMount() {
