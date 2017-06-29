@@ -21,14 +21,12 @@ class OrderList extends Component {
     if (order) {
       return (
         <div>
-          <div style={account ? { float: "left", width: "100%", marginTop: "30px" } : { float: "left", width: "50%", marginTop: "30px" }}>
+          <div style={account ? { float: "left", width: "100%", marginTop: "32px" } : { float: "left", width: "50%", marginTop: "32px" }}>
             <span className="order-items-title">Your Items</span>
-            <div className="col-xs-12">
-              <OrderListItem
-                items={order.items}
-                account={account}
-              />
-            </div>
+            <OrderListItem
+              items={order.items}
+              account={account}
+            />
           </div>
           <div style={account ? { display: "none" } : { float: "left", width: "50%", padding: "30px" }}>
             <div className="row order-address-info">
@@ -41,7 +39,7 @@ class OrderList extends Component {
                 {shipping.map(shippingInfo => {
                   const { address } = shippingInfo;
                   return (
-                    <span key={shippingInfo._id}>
+                    <span key={shippingInfo._id} className="order-info-text">
                       <address>
                         {address.address1}
                         {address.address2}&nbsp;
@@ -64,7 +62,7 @@ class OrderList extends Component {
                   const { paymentMethod } = billingInfo;
                   const iconClass = paymentMethod.storedCard ? "fa fa-credit-card" : "fa fa-paypal";
                   return (
-                    <div key={billingInfo._id}>
+                    <div key={billingInfo._id} className="order-info-text">
                       <i className={iconClass} />
                       <span id="order-payment-method">{paymentMethod.storedCard ?
                         paymentMethod.storedCard : paymentMethod.processor}

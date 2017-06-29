@@ -53,7 +53,6 @@ class orderListSummary extends Component {
   }
   render() {
     return (
-      <div className="completed-order-summary">
         <div className="order-totals-summary">
           <div className="row">
             {this.props.billings.map(billing => {
@@ -95,7 +94,6 @@ class orderListSummary extends Component {
             })}
           </div>
         </div>
-      </div>
     );
   }
 }

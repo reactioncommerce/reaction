@@ -210,6 +210,9 @@
 }
 
 .order-summary-title {
+  position: relative;
+  left: -0.3em;
+  bottom: 1em;
   width: 123px;
   height: 28px;
   font-size: 16px;
@@ -252,18 +255,11 @@
   text-align: left;
   color: #343434;
 }
-@media screen and (max-width: 1115px) {
-  .order-summary-payment {
-    margin-left: -68px;
-  }
-  .order-summary-details {
-    margin-left: -68px;
-  }
-}
 
 .order-totals-summary {
-  margin-top: 29px;
-  width: 64%;
+  margin-top: 20px;
+  margin-left: -1%;
+  width: 63%;
   border: solid 1px #cccccc;
 }
 .order-totals-text {
@@ -279,9 +275,11 @@
   width: 50px;
 }
 .row .order-payment-info {
-  margin-top: 30px;
+  margin-top: 20px;
 }
 .order-items-title {
+  position: relative;
+  bottom: 1em;
   width: 76px;
   height: 28px;
   font-size: 16px;
@@ -289,6 +287,10 @@
   line-height: 1.75;
   text-align: left;
   color: #343434;
+}
+.order-info-text {
+  position: relative;
+  left: -1em;
 }
 .order-vendor-container {
   width: 100%;
