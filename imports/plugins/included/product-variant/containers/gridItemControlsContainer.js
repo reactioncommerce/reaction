@@ -1,6 +1,7 @@
 import _ from "lodash";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { Session } from "meteor/session";
 import { composeWithTracker } from "/lib/api/compose";
 import { Reaction } from "/client/api";
 import GridItemControls from "../components/gridItemControls";

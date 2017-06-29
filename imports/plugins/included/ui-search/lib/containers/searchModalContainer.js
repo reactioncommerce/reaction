@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Meteor } from "meteor/meteor";
 import { Tracker } from "meteor/tracker";
+import { Roles } from "meteor/alanning:roles";
 import _ from "lodash";
 import { Reaction } from "/client/api";
 import { composeWithTracker } from "/lib/api/compose";
