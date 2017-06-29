@@ -28,10 +28,13 @@ class SearchModalContainer extends Component {
     this.handleOrderClick = this.handleOrderClick.bind(this);
     this.handleTagClick = this.handleTagClick.bind(this);
     this.handleToggle = this.handleToggle.bind(this);
+    this.handleKeyDown = this.handleKeyDown.bind(this);
     this.dep = new Tracker.Dependency;
   }
 
   componentDidMount() {
+    document.addEventListener("keydown", this.handleKeyDown);
+
     Tracker.autorun(() => {
       this.dep.depend();
       const searchCollection = this.state.collection;
@@ -89,7 +92,16 @@ class SearchModalContainer extends Component {
   }
 
   componentWillUnmount() {
+    document.removeEventListener("keydown", this.handleKeyDown);
     this.subscription.stop();
+  }
+
+  handleKeyDown = (event) => {
+    if (event.keyCode === 27) {
+      this.setState({
+        renderChild: false
+      });
+    }
   }
 
   handleChange = (event, value) => {
@@ -122,6 +134,7 @@ class SearchModalContainer extends Component {
   handleOrderClick = (event)  => {
     const isActionViewOpen = Reaction.isActionViewOpen();
     const orderId = event._id;
+
     // toggle detail views
     if (isActionViewOpen === false) {
       Reaction.showActionView({
@@ -138,7 +151,6 @@ class SearchModalContainer extends Component {
     Reaction.Router.go("dashboard/orders", {}, {
       _id: orderId
     });
-
     this.handleChildUnmount();
   }
 
