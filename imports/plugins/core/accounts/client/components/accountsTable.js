@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import classnames from "classnames";
 import { Checkbox, Icon } from "/imports/plugins/core/ui/client/components";
 import AccountsListItem from "./accountsListItem";
+import { Reaction } from "/client/api";
 import * as Collections from "/lib/collections";
 
 
@@ -11,6 +12,18 @@ class AccountsTable extends Component {
     headerLabel: PropTypes.string,
     i18nKeyLabel: PropTypes.string,
     users: PropTypes.array
+  }
+
+  handleClick() {
+    // e.preventDefault();
+    console.log('ok');
+    // $(".customerUsageType input").val(""); // form reset
+    // $(".customerUsageType").addClass("hide"); // form reset
+    Reaction.setActionViewDetail({
+      label: "Permissions",
+      i18nKeyLabel: "admin.settings.permissionsSettingsLabel",
+      template: "memberSettings"
+    });
   }
 
   getUserDetails(user) {
@@ -105,6 +118,7 @@ class AccountsTable extends Component {
     return (
       <ul className="list-group push-bottom">
         <AccountsListItem
+          onClick={this.handleClick}
           headerButton={status}
           label={this.props.headerLabel}
           actionType="arrow"

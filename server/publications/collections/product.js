@@ -19,24 +19,19 @@ export function findProductMedia(publicationInstance, productIds) {
     selector["metadata.productId"] = productIds;
   }
 
-  // The default is to see only published images of products
-  selector["metadata.workflow"] = { $in: [null, "published"] };
+  if (shopId) {
+    selector["metadata.shopId"] = shopId;
+  }
 
-  const isUserOwnerOrModerator = Reaction.hasPermission(["owner", "moderator"], publicationInstance.userId);
+  // By default only images that are not "archived"
+  // and are either "published" or null are published
+  selector["metadata.workflow"] = {
+    $nin: ["archived"],
+    $in: [null, "published"]
+  };
 
-  if (isUserOwnerOrModerator) {
-    selector["metadata.workflow"] = { $nin: ["archived"] };
-  } else {
-    // get seller-shop id if user is a seller;
-    const sellerShopId = Reaction.getSellerShopId(publicationInstance.userId, true);
-    // sellers can see unpublished images only of their shop
-    if (sellerShopId) {
-      selector.$or = [{
-        "metadata.workflow": { $in: [null, "published"] }
-      }, {
-        "metadata.shopId": sellerShopId
-      }];
-    }
+  if (Reaction.hasPermission(["createProduct"], publicationInstance.userId)) {
+    delete selector["metadata.workflow"].$in;
   }
 
   return Media.find(selector, {
@@ -44,6 +39,29 @@ export function findProductMedia(publicationInstance, productIds) {
       "metadata.priority": 1
     }
   });
+  //  Removed SellerShopId related media publication for now.
+  // const isUserOwnerOrModerator = Reaction.hasPermission(["owner", "moderator"], publicationInstance.userId);
+  //
+  // if (isUserOwnerOrModerator) {
+  //   selector["metadata.workflow"] = { $nin: ["archived"] };
+  // } else {
+  //   // get seller-shop id if user is a seller;
+  //   const sellerShopId = Reaction.getSellerShopId(publicationInstance.userId, true);
+  //   // sellers can see unpublished images only of their shop
+  //   if (sellerShopId) {
+  //     selector.$or = [{
+  //       "metadata.workflow": { $in: [null, "published"] }
+  //     }, {
+  //       "metadata.shopId": sellerShopId
+  //     }];
+  //   }
+  // }
+  //
+  // return Media.find(selector, {
+  //   sort: {
+  //     "metadata.priority": 1
+  //   }
+  // });
 }
 
 
@@ -67,7 +85,7 @@ Meteor.publish("Product", function (productId) {
   }
 
 
-  let _id;
+  let id;
   let productShopId;
 
   // Default selector. Any changes come via specific roles
@@ -78,37 +96,50 @@ Meteor.publish("Product", function (productId) {
 
   // Permits admins to view both visible and invisible products.
   if (Roles.userIsInRole(this.userId, ["owner", "admin", "createProduct"], shop._id)) {
-    selector.isVisible = {
-      $in: [true, false]
-    };
+    selector.isVisible = { $in: [true, false] };
   }
 
   // TODO review for REGEX / DOS vulnerabilities.
   if (productId.match(/^[23456789ABCDEFGHJKLMNPQRSTWXYZabcdefghijkmnopqrstuvwxyz]{17}$/)) {
     // selector._id = productId;
     // TODO try/catch here because we can have product handle passed by such regex
-    _id = productId;
+    id = productId;
 
-    const product = Products.findOne(_id);
+    let product = Products.findOne({ _id: id });
+
+    if (!product) {
+      // if we didn't find the product by id, see if it was a 17 character handle
+      product = Products.findOne({
+        handle: {
+          $regex: id,
+          $options: "i"
+        }
+      });
+    }
 
     if (product) {
       // Take productShopId in order to check if user can edit this product or view its revisions
       productShopId = product.shopId;
+
+      // Ensure that the id is the productId and not the handle
+      id = product._id;
     } else {
+      // No Product found, return empty cursor;
       return this.ready();
     }
   } else {
-    const newSelector = Object.assign({}, selector, {
+    // if productId doesn't match the id regex,
+    // see if there's a product with a matching handle
+    const product = Products.findOne({
       handle: {
         $regex: productId,
         $options: "i"
       }
     });
 
-    const products = Products.find(newSelector).fetch();
-    if (products.length > 0) {
-      _id = products[0]._id;
-      productShopId = products[0].shopId;
+    if (product) {
+      id = product._id;
+      productShopId = product.shopId;
     } else {
       return this.ready();
     }
@@ -118,14 +149,13 @@ Meteor.publish("Product", function (productId) {
   // We don't need handle anymore(we got product's id in the previous step)
   // Try to find a product with the _is as an Random.id()
   // Try to find a product variant with _id using the ancestors array
-  selector.$or = [
-    { _id: _id },
-    {
-      ancestors: {
-        $in: [_id]
-      }
+  selector.$or = [{
+    _id: id
+  }, {
+    ancestors: {
+      $in: [id]
     }
-  ];
+  }];
 
   // Authorized content curators of the shop get special publication of the product
   // all relevant revisions all is one package
@@ -136,9 +166,9 @@ Meteor.publish("Product", function (productId) {
       const productIds = productCursor.map(p => p._id);
 
       const handle = productCursor.observeChanges({
-        added: (id, fields) => {
+        added: (docId, fields) => {
           const revisions = Revisions.find({
-            "documentId": id,
+            "documentId": docId,
             "workflow.status": {
               $nin: [
                 "revision/published"
@@ -147,11 +177,11 @@ Meteor.publish("Product", function (productId) {
           }).fetch();
           fields.__revisions = revisions;
 
-          this.added("Products", id, fields);
+          this.added("Products", docId, fields);
         },
-        changed: (id, fields) => {
+        changed: (docId, fields) => {
           const revisions = Revisions.find({
-            "documentId": id,
+            "documentId": docId,
             "workflow.status": {
               $nin: [
                 "revision/published"
@@ -160,10 +190,10 @@ Meteor.publish("Product", function (productId) {
           }).fetch();
 
           fields.__revisions = revisions;
-          this.changed("Products", id, fields);
+          this.changed("Products", docId, fields);
         },
-        removed: (id) => {
-          this.removed("Products", id);
+        removed: (docId) => {
+          this.removed("Products", docId);
         }
       });
 

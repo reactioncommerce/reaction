@@ -123,15 +123,20 @@ Template.shopSettings.helpers({
   },
 
   shop: function () {
-    return Shops.findOne();
+    return Shops.findOne({
+      _id: Reaction.getShopId()
+    });
   },
   packageData: function () {
     return Packages.findOne({
-      name: "core"
+      name: "core",
+      shopId: Reaction.getShopId()
     });
   },
   addressBook: function () {
-    const address = Shops.findOne().addressBook;
+    const address = Shops.findOne({
+      _id: Reaction.getShopId()
+    }).addressBook;
     return address[0];
   }
 });

@@ -62,7 +62,7 @@ class AccountsListItem extends Component {
 
     return (
         <div className={actionClassName}>
-          <Icon icon="fa fa-angle-right" />
+          <Icon icon="fa fa-angle-right" onClick={this.props.handleClick} />
         </div>
     );
   }
@@ -117,6 +117,7 @@ class AccountsListItem extends Component {
   }
 
   render() {
+    console.log('yykyk', this.props);
     const listItemClassName = classnames({
       "rui": true,
       "admin": this.props.isAdmin,

@@ -11,6 +11,27 @@
           "ordersLabel": "Istoric comenzi",
           "ordersTitle": "Istoric comenzi",
           "ordersDescription": "Onora comenzile"
+        },
+        "orderWorkflow": {
+          "ordersList": {
+            "date": "Data",
+            "orderId": "ID comandă",
+            "total": "Total",
+            "emailNotFound": "E-mailul nu este disponibil"
+          },
+          "summary": {
+            "cardTitle": "Rezumat",
+            "copyOrderLink": "Copiați linkul de comandă"
+          },
+          "invoice": {
+            "cardTitle": "Factură",
+            "adjustedTotal": "Totalul ajustat",
+            "capturedTotal": "Totalul capturat",
+            "refund": "Restituire"
+          },
+          "fulfillment": "Onorarea comenzilor",
+          "orderDetails": "Detalii Comandă",
+          "shipmentTracking": "Expediere"
         }
       }
     }

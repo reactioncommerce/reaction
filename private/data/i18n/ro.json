@@ -141,7 +141,7 @@
           "newOrder": "Comanda dumneavoastră este în curs de procesare.",
           "forAdmin": "Ai o noua ordine.",
           "orderDelivered": "Comanda dumneavoastra a fost emis.",
-          "orderAccepted": "Comanda dvs a fost acceptata.",
+          "orderProcessing": "Comanda dvs. este in curs de procesare.",
           "orderShipped": "Comanda dumneavoastra a fost expediat."
         }
       },
@@ -298,7 +298,12 @@
       "cartDrawer": {
         "empty": "Suntem triști. Coșul dumneavoastră este gol.",
         "keepShopping": "Continuați cumpărăturile",
-        "checkout": "Finalizează comanda"
+        "checkout": "Finalizează comanda",
+        "new": "Nou",
+        "coreOrderWorkflow/created": "Creată",
+        "coreOrderWorkflow/processing": "Prelucrare",
+        "coreOrderWorkflow/completed": "Completă",
+        "coreOrderWorkflow/canceled": "Anulată"
       },
       "cartSubTotals": {
         "discount": "Reducere",
@@ -380,9 +385,7 @@
         "resendNotification": "Retrimitere Notificarea de Transport"
       },
       "orderWorkflow": {
-        "fulfillment": "Onorarea comenzilor",
         "orderDetails": "Detalii Comandă",
-        "summary": "Rezumat",
         "invoice": "Factură",
         "shipmentTracking": "Urmărirea pachetului"
       },
@@ -429,6 +432,7 @@
       },
       "addressBookEdit": {
         "editAddress": "Editează această adresă",
+        "addressValidation": "adrese de validare",
         "somethingWentWrong": "Ceva nu a mers bine: {{err}}"
       },
       "corePackageConfig": {

@@ -73,27 +73,15 @@ Template.productSettings.helpers({
   }
 });
 
+Template.productSettingsListItem.events({
+  "click [data-event-action=product-click]": function () {
+    Reaction.Router.go("product", {
+      handle: this.handle
+    });
+  }
+});
+
 Template.productSettingsListItem.helpers({
-  pdpPath() {
-    const product = this;
-
-    if (product) {
-      let handle = product.handle;
-
-      if (product.__published) {
-        handle = product.__published.handle;
-      }
-
-      return Reaction.Router.pathFor("product", {
-        hash: {
-          handle
-        }
-      });
-    }
-
-    return "/";
-  },
-
   displayPrice() {
     if (this._id) {
       return ReactionProduct.getProductPriceRange(this._id).range;

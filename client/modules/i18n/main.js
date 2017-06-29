@@ -1,4 +1,5 @@
 import i18next from "i18next";
+import moment from "moment";
 import { Meteor } from "meteor/meteor";
 import { Tracker } from "meteor/tracker";
 import { SimpleSchema } from "meteor/aldeed:simple-schema";
