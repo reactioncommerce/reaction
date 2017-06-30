@@ -3199,15 +3199,6 @@
     "cart/checkout",
     "cart/completed"
   ]
-  // "defaultRoles": [
-  //   "account/profile",
-  //   "guest",
-  //   "product",
-  //   "tag",
-  //   "index",
-  //   "cart/checkout",
-  //   "cart/completed"
-  // ]
 }, {
   "_id": "ddzuN2YPvgvx7rJS5",
   "currencies": {
@@ -6406,14 +6397,4 @@
     "cart/checkout",
     "cart/completed"
   ]
-  // "defaultRoles": [
-  //   "account/profile",
-  //   "guest",
-  //   "product",
-  //   "account/verify",
-  //   "tag",
-  //   "index",
-  //   "cart/checkout",
-  //   "cart/completed"
-  // ]
 }]

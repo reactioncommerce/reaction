@@ -33,7 +33,7 @@ export default {
     if (process.env.VERBOSE_JOBS) {
       Jobs.setLogStream(process.stdout);
     }
-
+    this.createDefaultGroups();
     this.loadPackages();
     // process imports from packages and any hooked imports
     this.Import.flush();
@@ -56,7 +56,10 @@ export default {
     const registeredPackage = this.Packages[packageInfo.name] = packageInfo;
     return registeredPackage;
   },
-
+  createDefaultGroups() {
+    const shops = Shops.find().fetch();
+    Groups.insert(); // init all groups here
+  },
   /**
    * registerTemplate
    * registers Templates into the Templates Collection
