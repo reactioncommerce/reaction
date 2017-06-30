@@ -1,3 +1,4 @@
+import _ from "lodash";
 import { Roles } from "meteor/alanning:roles";
 import { Logger } from "/server/api";
 
@@ -49,7 +50,7 @@ export function assignOwnerRoles(shopId, pkgName, registry) {
   const globalRoles = defaultRoles;
 
   if (registry) {
-      // for each registry item define and push roles
+    // for each registry item define and push roles
     for (const registryItem of registry) {
       // packages don't need to define specific permission routes.,
       // the routeName will be used as default roleName for each route.

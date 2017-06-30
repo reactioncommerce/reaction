@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import Dropzone from "react-dropzone";
 import Measure from "react-measure";
 import MediaItem from "./media";

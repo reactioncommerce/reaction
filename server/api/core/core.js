@@ -1,7 +1,11 @@
 import url from "url";
 import packageJson from "/package.json";
 import { merge, uniqWith } from "lodash";
+import _ from "lodash";
 import { Meteor } from "meteor/meteor";
+import { Random } from "meteor/random";
+import { Accounts } from "meteor/accounts-base";
+import { Roles } from "meteor/alanning:roles";
 import { EJSON } from "meteor/ejson";
 import { Jobs, Packages, Shops } from "/lib/collections";
 import { Hooks, Logger } from "/server/api";
@@ -293,8 +297,8 @@ export default {
     // defaults use either env or generated values
     options.email = env.REACTION_EMAIL || defaultEmail;
     options.password = env.REACTION_AUTH || defaultPassword;
-    options.username = env.REACTION_USER || defaultUsername;
-    options.name = env.REACTION_USER_NAME || defaultName;
+    options.username = env.REACTION_USER_NAME || defaultUsername;
+    options.name = env.REACTION_USER || defaultName;
 
     // or use `meteor --settings`
     if (Meteor.settings && !configureEnv) {
@@ -325,7 +329,7 @@ export default {
       // set the default shop email to the default admin email
       Shops.update(shopId, {
         $addToSet: {
-          domains: domain
+          domains: this.getDomain()
         }
       });
     }

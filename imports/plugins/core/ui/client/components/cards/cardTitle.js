@@ -1,8 +1,8 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { Translation } from "../translation";
 
 class CardTitle extends Component {
-
   render() {
     const { element, ...props } = this.props;
 

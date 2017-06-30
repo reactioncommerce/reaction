@@ -129,7 +129,7 @@ class Forgot extends Component {
               data-event-category="accounts"
               onClick={this.props.onSignInClick}
             >
-            <Translation defaultValue="Sign In" i18nKey="accountsUI.signIn" />
+              <Translation defaultValue="Sign In" i18nKey="accountsUI.signIn" />
             </a>
           </div>
 

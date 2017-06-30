@@ -1,3 +1,5 @@
+import _ from "lodash";
+import { Template } from "meteor/templating";
 import { Reaction, Router } from "/client/api";
 import { Media, Shops } from "/lib/collections";
 

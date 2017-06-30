@@ -1,8 +1,12 @@
 import React from "react";
 import { DataType } from "react-taco-table";
+import { Blaze } from "meteor/blaze";
+import { $ } from "meteor/jquery";
+import { Roles } from "meteor/alanning:roles";
+import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { Reaction, i18next } from "/client/api";
-import { SortableTable } from "/imports/plugins/core/ui/client/components";
+import { SortableTableLegacy } from "/imports/plugins/core/ui/client/components";
 
 function userPermissions(userId) {
   if (Reaction.hasPermission("reaction-accounts")) {
@@ -132,7 +136,7 @@ Template.searchModal.helpers({
     ];
 
     return {
-      component: SortableTable,
+      component: SortableTableLegacy,
       data: results,
       columns: columns
     };

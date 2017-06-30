@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import _ from "lodash";
 import { Reaction } from "/client/api";
 import { Media, Shops } from "/lib/collections";
 

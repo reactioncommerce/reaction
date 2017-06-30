@@ -3,6 +3,7 @@ import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
 import { Template } from "meteor/templating";
 import { Tracker } from "meteor/tracker";
+import { Blaze } from "meteor/blaze";
 import { $ } from "meteor/jquery";
 import Logger from "/client/modules/logger";
 import { ReactionProduct } from "/lib/api";

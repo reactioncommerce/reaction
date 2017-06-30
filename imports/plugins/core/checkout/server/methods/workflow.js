@@ -1,5 +1,6 @@
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
+import { Roles } from "meteor/alanning:roles";
 import { check, Match } from "meteor/check";
 import { Cart, Orders, Packages, Shops } from "/lib/collections";
 import { Logger, Reaction } from "/server/api";
@@ -183,7 +184,7 @@ Meteor.methods({
       templateProcessedinWorkflow === false) {
       Logger.debug("######## Condition Three #########: complete workflow " +
         currentWorkflowStatus + " updates and move to: ",
-        nextWorkflowStep.template);
+      nextWorkflowStep.template);
       return Cart.update(currentCart._id, {
         $set: {
           "workflow.status": nextWorkflowStep.template

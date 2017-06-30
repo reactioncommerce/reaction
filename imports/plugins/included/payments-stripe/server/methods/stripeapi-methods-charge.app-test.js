@@ -185,7 +185,7 @@ describe("Stripe.authorize", function () {
 
       expect(chargeResult).to.not.be.undefined;
       expect(chargeResult.saved).to.be.false;
-      expect(chargeResult.error).to.equal("Your card was declined.");
+      expect(chargeResult.error.message).to.equal("Your card was declined.");
       expect(StripeApi.methods.createCharge.call).to.have.been.calledWith({
         chargeObj: {
           amount: 2298,
@@ -260,7 +260,7 @@ describe("Stripe.authorize", function () {
       chargeResult = result;
       expect(chargeResult).to.not.be.undefined;
       expect(chargeResult.saved).to.be.false;
-      expect(chargeResult.error).to.equal("Your card has expired.");
+      expect(chargeResult.error.message).to.equal("Your card has expired.");
       expect(StripeApi.methods.createCharge.call).to.have.been.calledWith({
         chargeObj: {
           amount: 2298,
