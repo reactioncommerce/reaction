@@ -70,9 +70,6 @@ class ProductsContainer extends Component {
     }
 
     if (isReady) {
-      this.setState({
-        initialLoad: false
-      });
       return true;
     }
     return false;
@@ -84,6 +81,9 @@ class ProductsContainer extends Component {
 
   loadProducts = (event) => {
     event.preventDefault();
+    this.setState({
+      initialLoad: false
+    });
     loadMoreProducts();
   }
 
