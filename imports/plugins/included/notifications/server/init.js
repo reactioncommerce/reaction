@@ -1,13 +1,11 @@
 import { Reaction, Hooks, Logger } from "/server/api";
-import { Shops } from "/lib/collections";
+import { Groups } from "/lib/collections";
 
-function addRolesToVisitors() {
+function addRolesToVisitors() { // Question: Visitor sound like Guest, but we're taking defaultRoles as Customer??
     // Add the about permission to all default roles since it's available to all
   Logger.debug("Adding notification route permissions to default roles");
-  const shop = Shops.findOne(Reaction.getShopId());
-  Shops.update(shop._id, {
-    $addToSet: { defaultRoles: "notifications" }
-  });
+  const update = { $addToSet: { permissions: "notifications" } };
+  Groups.update({ shopId: Reaction.getShopId() }, update);
 }
 
 Hooks.Events.add("afterCoreInit", () => {

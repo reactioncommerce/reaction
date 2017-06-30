@@ -1,15 +1,19 @@
+import _ from "lodash";
 import { check, Match } from "meteor/check";
-import { Shops } from "/lib/collections";
+import { Groups } from "/lib/collections";
 import { Logger } from "/server/api";
 
 
 /**
- * Add roles to the Shops.defaultRoles array
+ * Add roles to the Shops default groups
  * Options:
  * allShops: add supplied roles to all shops, defaults to false
  * roles: Array of roles to add to default roles set
  * shops: Array of shopIds that should be added to set
  * roleSets: Rolesets to add roles to, Options: ["defaultRoles", "defaultVisitorRole", "defaultSellerRoles"]
+ * defaultRoles goes into the Customer group
+ * defaultVisitorRole goes into the Guest group. ?? Why did we not pluralize this as defaultVisitorRoles?
+ * defaultSellerRoles goes into ???
  * TODO: Review and eliminate rolesets other than "default"
  * @param {Object} options - See above for details
  * @returns {Number} result of Shops.update method (number of documents updated)
@@ -22,25 +26,30 @@ export function addRolesToDefaultRoleSet(options = { allShops: false, roles: [],
 
   const { allShops, roles, shops, roleSets } = options;
   const query = {};
-  const update = {};
+  // const update = {};
+  const multi = { multi: true };
+  let groupRolesSets = [];
+  groupRolesSets = [...groupRolesSets, _.includes(roleSets, "defaultVisitorRole") && "guest"];
+  groupRolesSets = [...groupRolesSets, _.includes(roleSets, "defaultRoles") && "customer"];
+  query.slug = { $in: groupRolesSets };
 
   if (!allShops) {
-    // if we're not updating all shops, we should only update the shops passed in.
-    query._id = {
+    // if we're not updating for all shops, we should only update for the shops passed in.
+    query.shopId = {
       $in: shops || []
     };
   }
 
-  roleSets.forEach((roleSet) => {
-    // We should add each role to each roleSet passed in.
-    update[roleSet] = { $each: roles };
-  });
+  // roleSets.forEach((roleSet) => {
+  //   // We should add each role to each roleSet passed in.
+  //   update[roleSet] = { $each: roles };
+  // });
 
   if (allShops) {
-    Logger.debug(`Adding roles ${roles} to roleSets  ${roleSets} for all shops`);
+    Logger.debug(`Adding Roles: ${roles} to Group: ${groupRolesSets} for all shop groups`);
   } else {
-    Logger.debug(`Adding roles: ${roles} to roleSets: ${roleSets} for shops: ${shops}`);
+    Logger.debug(`Adding Roles: ${roles} to Group: ${groupRolesSets} for shops: ${shops}`);
   }
 
-  return Shops.update(query, { $addToSet: update }, { multi: true });
+  return Groups.update(query, { $addToSet: { permissions: roles } }, multi);
 }

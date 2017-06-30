@@ -111,7 +111,8 @@ export default function () {
       if (!user.services) {
         roles[shopId] = shop.defaultVisitorRole || defaultVisitorRole;
       } else {
-        roles[shopId] = shop.defaultRoles || defaultRoles;
+        const defaultCustomerRoles = Collections.Groups.findOne({ slug: "customer", shopId });
+        roles[shopId] = defaultCustomerRoles || defaultRoles;
         // also add services with email defined to user.emails[]
         for (const service in user.services) {
           if (user.services[service].email) {

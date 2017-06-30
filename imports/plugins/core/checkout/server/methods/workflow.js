@@ -64,12 +64,10 @@ Meteor.methods({
         _.each(layouts, function (layout) {
           // audience is the layout permissions
           if (typeof layout.audience !== "object") {
-            const defaultRoles = Shops.findOne(
-              Reaction.getShopId(), {
-                sort: {
-                  priority: 1
-                }
-              }).defaultRoles;
+            const defaultRoles = Groups.findOne({
+              slug: "customer",
+              shopId: Reaction.getShopId()
+            }).permissions;
             layout.audience = defaultRoles;
           }
           // check permissions so you don't have to on template. For a case, when

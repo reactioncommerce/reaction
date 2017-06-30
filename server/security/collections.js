@@ -123,7 +123,7 @@ export default function () {
 
   Shops.permit(["update", "remove"]).ifHasRole({
     group: Reaction.getShopId(),
-    role: ["admin", "owner"]
+    role: ["admin", "owner", "shopSettings"]
   }).ifShopIdMatchesThisId().allowInClientCode();
 
   /*
