@@ -356,6 +356,12 @@ Import.object = function (collection, key, object) {
   // enforce strings instead of Mongo.ObjectId
   if (!collection.findOne(key) && !object._id) key._id = Random.id();
 
+  // remove _id fields from documents to be imported
+  // since they are automatically generated and "immutable"
+  if (object._id) {
+    delete object._id;
+  }
+
   // hooks for additional import manipulation.
   const importObject = Hooks.Events.run(`onImport${this._name(collection)}`, object);
 
