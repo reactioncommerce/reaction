@@ -70,6 +70,9 @@ class ProductsContainer extends Component {
     }
 
     if (isReady) {
+      this.setState({
+        initialLoad: false
+      });
       return true;
     }
     return false;
