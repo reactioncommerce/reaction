@@ -4,6 +4,8 @@ import classnames from "classnames";
 import { Checkbox, Icon } from "/imports/plugins/core/ui/client/components";
 import AccountsListItem from "./accountsListItem";
 import * as Collections from "/lib/collections";
+import { Card, CardHeader, CardBody, CardGroup, Loading, SortableTable } from "/imports/plugins/core/ui/client/components";
+import { i18next } from "/client/api";
 
 
 class AccountsTable extends Component {
@@ -11,6 +13,43 @@ class AccountsTable extends Component {
     headerLabel: PropTypes.string,
     i18nKeyLabel: PropTypes.string,
     users: PropTypes.array
+  }
+
+  renderTable(users) {
+    // const { filteredFields } = 
+  }
+
+  getColumns() {
+    const columns = [{
+      Header: i18next.t("admin.logs.headers.name"),
+      id: "userName",
+      accessor: d => d.name
+    },
+    {
+      Header: i18next.t("admin.logs.headers.email"),
+      id: "email",
+      accessor: d => d.email
+    },
+    {
+      Header: i18next.t("admin.logs.headers.updated"),
+      id: "updated",
+      accessor: d => d.lastUpdated
+    },
+    {
+      Header: "Two Factor",
+      id: "twoFactor",
+      accessor: d => d.twoFactor
+    }
+    ];
+    return columns;
+  }
+
+  getRows() {
+    const users = [];
+    this.props.users.forEach(user => {
+      users.push(Object.assign({}, this.getUserDetails(user)));
+    });
+    return users;
   }
 
   getUserDetails(user) {
@@ -100,18 +139,47 @@ class AccountsTable extends Component {
       </li>
     ));
   }
+  // render() {
+  //   const status = this.props.headerLabel === "Shop Manager";
+  //   return (
+  //     <ul className="list-group push-bottom">
+  //       <AccountsListItem
+  //         headerButton={status}
+  //         label={this.props.headerLabel}
+  //         actionType="arrow"
+  //       />
+  //       {this.renderHeader()}
+  //       {this.renderRows()}
+  //     </ul>
+  //   );
+  // }
   render() {
-    const status = this.props.headerLabel === "Shop Manager";
+    console.log("popiu", this.props.users);
+    console.log('rows', this.getRows());
+    const columnNames = Object.keys(this.getRows());
     return (
-      <ul className="list-group push-bottom">
-        <AccountsListItem
-          headerButton={status}
-          label={this.props.headerLabel}
-          actionType="arrow"
-        />
-        {this.renderHeader()}
-        {this.renderRows()}
-      </ul>
+      <CardGroup>
+        <Card
+          expanded={true}
+        >
+          <CardHeader
+            actAsExpander={true}
+            i18nKeyTitle={this.props.headerLabel}
+            title={this.props.headerLabel}
+            style={{ backgroundColor: "#ebf7fc" }}
+            id="accounts"
+          />
+          <CardBody expandable={true}>
+            <SortableTable
+              tableClassName="-highlight"
+              data={this.props.users}
+              columnMetadata={this.getColumns()}
+              externalLoadingComponent={Loading}
+              filteredFields={columnNames}
+            />
+          </CardBody>
+        </Card>
+      </CardGroup>
     );
   }
 }
