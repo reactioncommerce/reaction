@@ -53,15 +53,6 @@ Meteor.methods({
       };
     }
 
-    if (cart.items) {
-      // For now just attach the transaction to each item in the cart
-      // TODO: Needs to be improved to consider which transaction goes with which item
-      const cartItemsWithPayment = cart.items.map(item => {
-        item.transaction = paymentMethod.transactions[paymentMethod.transactions.length - 1];
-      });
-      cart.items = cartItemsWithPayment;
-    }
-
     Cart.update(selector, update, function (error, result) {
       if (error) {
         Logger.debug(error, "An error occurred saving the order");

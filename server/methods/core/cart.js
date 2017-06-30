@@ -1077,6 +1077,20 @@ Meteor.methods({
     let update;
     // temp hack until we build out multiple billing handlers
     // if we have an existing item update it, otherwise add to set.
+
+    // TODO: Marketplace Payments - Add support for multiple billing handlers here
+    // TODO: Marketplace Payments - Attach paymentMethod to each item here.
+
+    if (cart.items) {
+      // For now just attach the transaction to each item in the cart
+      // TODO: Needs to be improved to consider which transaction goes with which item
+      const cartItemsWithPayment = cart.items.map(item => {
+        item.transaction = paymentMethod.transactions[paymentMethod.transactions.length - 1];
+        return item;
+      });
+      cart.items = cartItemsWithPayment;
+    }
+
     if (cart.billing) {
       selector = {
         "_id": cartId,
@@ -1085,7 +1099,8 @@ Meteor.methods({
       update = {
         $set: {
           "billing.$.paymentMethod": paymentMethod,
-          "billing.$.invoice": invoice
+          "billing.$.invoice": invoice,
+          "items": cart.items
         }
       };
     } else {
@@ -1096,6 +1111,9 @@ Meteor.methods({
         $addToSet: {
           "billing.paymentMethod": paymentMethod,
           "billing.invoice": invoice
+        },
+        $set: {
+          items: cart.items
         }
       };
     }
