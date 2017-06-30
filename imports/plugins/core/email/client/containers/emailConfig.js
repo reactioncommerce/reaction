@@ -24,15 +24,9 @@ const composer = ({}, onData) => {
 
     // if all settings exist, check if they work
     if (service && host && port && user && password) {
-      Meteor.call("email/verifySettings", (error) => {
-        if (error) {
-          return onData(null, { settings, status: "error", error: error.reason });
-        }
-        return onData(null, { settings, status: "valid", error: null });
-      });
-    } else {
-      onData(null, { settings, status: "error", error: null });
+      return onData(null, { settings, status: "valid", error: null });
     }
+    return onData(null, { settings, status: "error", error: null });
   }
 };
 
