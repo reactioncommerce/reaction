@@ -2,12 +2,13 @@ import { $ } from "meteor/jquery";
 import { Session } from "meteor/session";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
-import { i18next } from "/client/api";
+import { Reaction, i18next } from "/client/api";
 import * as Collections from "/lib/collections";
 
 Template.addressBookAdd.helpers({
   thisAddress: function () {
     const thisAddress = {};
+    const shop = Collections.Shops.findOne({ _id: Reaction.getShopId() });
     // admin should receive his account
     const account = Collections.Accounts.findOne({
       userId: Meteor.userId()
@@ -25,6 +26,15 @@ Template.addressBookAdd.helpers({
             thisAddress.isBillingDefault = true;
           }
         }
+      }
+    }
+
+    // Set default country code based on shop's shipping address
+    if (shop && Array.isArray(shop.addressBook) && shop.addressBook.length > 0) {
+      const defaultAddress = shop.addressBook.find(address => address.isShippingDefault);
+      const defaultCountryCode = defaultAddress.country;
+      if (defaultCountryCode) {
+        thisAddress.country = defaultCountryCode;
       }
     }
 
