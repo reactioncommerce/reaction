@@ -23,11 +23,11 @@ Template.shopBrandImageOption.helpers({
         Meteor.call("shop/updateBrandAssets", asset, (error, result) => {
           if (error) {
             // Display Error
-            return Alerts.toast("Couldn't update brand asset.", "error");
+            return Alerts.toast(i18next.t("shopSettings.shopBrandAssetsFailed"), "error");
           }
 
           if (result === 1) {
-            Alerts.toast("Updated brand asset", "success");
+            Alerts.toast(i18next.t("shopSettings.shopBrandAssetsSaved"), "success");
           }
         });
       }
@@ -123,15 +123,20 @@ Template.shopSettings.helpers({
   },
 
   shop: function () {
-    return Shops.findOne();
+    return Shops.findOne({
+      _id: Reaction.getShopId()
+    });
   },
   packageData: function () {
     return Packages.findOne({
-      name: "core"
+      name: "core",
+      shopId: Reaction.getShopId()
     });
   },
   addressBook: function () {
-    const address = Shops.findOne().addressBook;
+    const address = Shops.findOne({
+      _id: Reaction.getShopId()
+    }).addressBook;
     return address[0];
   }
 });

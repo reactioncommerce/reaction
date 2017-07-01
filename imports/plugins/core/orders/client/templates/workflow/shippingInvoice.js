@@ -141,7 +141,7 @@ Template.coreOrderShippingInvoice.events({
     const invoiceTotal = order.billing[0].invoice.total;
     const currencySymbol = instance.state.get("currency").symbol;
 
-    Meteor.subscribe("Packages");
+    Meteor.subscribe("Packages", Reaction.getShopId());
     const packageId = order.billing[0].paymentMethod.paymentPackageId;
     const settingsKey = order.billing[0].paymentMethod.paymentSettingsKey;
     // check if payment provider supports de-authorize

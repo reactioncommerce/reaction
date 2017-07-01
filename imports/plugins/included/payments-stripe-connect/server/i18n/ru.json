@@ -1,0 +1,24 @@
+[{
+  "language": "Russian",
+  "i18n": "ru",
+  "ns": "reaction-stripe-connect",
+  "translation": {
+    "reaction-payments": {
+      "admin": {
+        "shortcut": {
+          "stripeConnectLabel": "Stripe Connect"
+        },
+        "dashboard": {
+          "stripeConnectLabel": "Stripe Connect",
+          "stripeConnectDescription": "нашивки платежи"
+        },
+        "paymentSettings": {
+          "stripeConnectLabel": "Stripe Connect",
+          "stripeConnectSettingsLabel": "Stripe Connect",
+          "stripeConnectSettingsDescription": "Не имеют нашивки API идентификатор клиента?",
+          "stripeConnectSettingsGetItHere": "Получи это здесь"
+        }
+      }
+    }
+  }
+}]

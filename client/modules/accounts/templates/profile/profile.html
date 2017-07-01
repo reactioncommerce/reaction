@@ -41,6 +41,31 @@
       {{> addressBookPanel}}
     </div>
 
+    {{#if isMarketplaceGuest }}
+      <div class="flex-item">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title" data-i18n="marketplace.becomeSeller">Become a Seller</h3>
+          </div>
+
+          <div class="panel-content">
+            {{> becomeSellerButton}}
+          </div>
+        </div>
+      </div>
+
+      <div class="flex-item">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title" data-i18n="marketplace.stripeConnectSignup">Start Accepting Payments</h3>
+          </div>
+
+          <div class="panel-content">
+            {{> stripeConnectSignupButton}}
+          </div>
+        </div>
+      </div>
+    {{/if}}
   </div>
 
 </template>

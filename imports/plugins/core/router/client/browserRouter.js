@@ -44,7 +44,7 @@ class BrowserRouter extends Component {
       });
     });
 
-    // If no matching pathis, redirect to the not found page
+    // If no matching path is found, redirect to the not found page
     if (foundPaths.length === 0 && location.pathname !== "not-found") {
       Router.replace("not-found");
       return undefined;

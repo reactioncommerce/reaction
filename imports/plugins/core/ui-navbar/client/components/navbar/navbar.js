@@ -45,6 +45,7 @@ Template.CoreNavigationBar.helpers({
       component: MainDropdown
     };
   },
+
   navbar() {
     return {
       component: NavBarContainer

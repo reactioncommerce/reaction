@@ -1,5 +1,5 @@
 import * as Collections from "/lib/collections";
-import { Reaction } from "/server/api";
+import { Reaction, Hooks } from "/server/api";
 
 const {
   Accounts,
@@ -36,6 +36,7 @@ export default function () {
   /*
    * Define some additional rule chain methods
    */
+
   // use this rule for collections other than Shops
   // matches this.shopId
   Security.defineMethod("ifShopIdMatches", {
@@ -102,8 +103,8 @@ export default function () {
     Templates,
     Jobs
   ]).ifHasRole({
-    role: "admin",
-    group: Reaction.getShopId()
+    group: Reaction.getShopId(),
+    role: "admin"
   }).ifShopIdMatches().exceptProps(["shopId"]).allowInClientCode();
 
   /*
@@ -111,8 +112,8 @@ export default function () {
    */
 
   Security.permit(["insert", "update", "remove"]).collections([Media]).ifHasRole({
-    role: ["admin", "owner", "createProduct"],
-    group: Reaction.getShopId()
+    group: Reaction.getShopId(),
+    role: ["admin", "owner", "createProduct"]
   }).ifFileBelongsToShop().allowInClientCode();
 
   /*
@@ -121,8 +122,8 @@ export default function () {
    */
 
   Shops.permit(["update", "remove"]).ifHasRole({
-    role: ["admin", "owner"],
-    group: Reaction.getShopId()
+    group: Reaction.getShopId(),
+    role: ["admin", "owner"]
   }).ifShopIdMatchesThisId().allowInClientCode();
 
   /*
@@ -131,8 +132,8 @@ export default function () {
    */
 
   Products.permit(["insert", "update", "remove"]).ifHasRole({
-    role: ["createProduct"],
-    group: Reaction.getShopId()
+    group: Reaction.getShopId(),
+    role: ["createProduct"]
   }).ifShopIdMatches().allowInClientCode();
 
   /*
@@ -140,8 +141,8 @@ export default function () {
    */
 
   Orders.permit("remove").ifHasRole({
-    role: ["admin", "owner"],
-    group: Reaction.getShopId()
+    group: Reaction.getShopId(),
+    role: ["admin", "owner"]
   }).ifShopIdMatches().exceptProps(["shopId"]).allowInClientCode();
 
   /*
@@ -152,16 +153,16 @@ export default function () {
    */
 
   Cart.permit(["insert", "update", "remove"]).ifHasRole({
-    role: ["anonymous", "guest"],
-    group: Reaction.getShopId()
+    group: Reaction.getShopId(),
+    role: ["anonymous", "guest"]
   }).ifShopIdMatches().ifUserIdMatches().ifSessionIdMatches().allowInClientCode();
 
   /*
    * Users may update their own account
    */
   Collections.Accounts.permit(["insert", "update"]).ifHasRole({
-    role: ["anonymous", "guest"],
-    group: Reaction.getShopId()
+    group: Reaction.getShopId(),
+    role: ["anonymous", "guest"]
   }).ifUserIdMatches().allowInClientCode();
 
   /*
@@ -183,4 +184,8 @@ export default function () {
     update: () => true,
     remove: () => true
   });
+
+  // As the above security Rules definitions happen after all known Core Initialization Event hooks,
+  // Event hook to run after security rules are initialized. Use this hook to add security via a plugin
+  Hooks.Events.run("afterSecurityInit");
 }

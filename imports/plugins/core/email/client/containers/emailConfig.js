@@ -8,7 +8,7 @@ import EmailConfig from "../components/emailConfig";
 import { composeWithTracker, merge } from "/lib/api/compose";
 
 const composer = ({}, onData) => {
-  if (Meteor.subscribe("Packages").ready()) {
+  if (Meteor.subscribe("Packages", Reaction.getShopId()).ready()) {
     const shopSettings = Reaction.getShopSettings();
     const settings = shopSettings.mail || {};
 

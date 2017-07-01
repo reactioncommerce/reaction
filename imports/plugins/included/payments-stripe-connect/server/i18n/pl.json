@@ -1,0 +1,24 @@
+[{
+  "language": "Polish",
+  "i18n": "pl",
+  "ns": "reaction-stripe-connect",
+  "translation": {
+    "reaction-payments": {
+      "admin": {
+        "shortcut": {
+          "stripeConnectLabel": "Stripe Connect"
+        },
+        "dashboard": {
+          "stripeConnectLabel": "Stripe Connect",
+          "stripeConnectDescription": "płatności stripeConnect"
+        },
+        "paymentSettings": {
+          "stripeConnectLabel": "Stripe Connect",
+          "stripeConnectSettingsLabel": "Stripe Connect",
+          "stripeConnectSettingsDescription": "Nie masz Stripe Connect API identyfikator klienta?",
+          "stripeConnectSettingsGetItHere": "Pobierz go tutaj"
+        }
+      }
+    }
+  }
+}]

@@ -1,0 +1,24 @@
+[{
+  "language": "Slovenian",
+  "i18n": "sl",
+  "ns": "reaction-stripe-connect",
+  "translation": {
+    "reaction-payments": {
+      "admin": {
+        "shortcut": {
+          "stripeConnectLabel": "Stripe Connect"
+        },
+        "dashboard": {
+          "stripeConnectLabel": "Stripe Connect",
+          "stripeConnectDescription": "plačila trak"
+        },
+        "paymentSettings": {
+          "stripeConnectLabel": "Stripe Connect",
+          "stripeConnectSettingsLabel": "Stripe Connect",
+          "stripeConnectSettingsDescription": "Še nimate Stripe Connect API ID odjemalca je?",
+          "stripeConnectSettingsGetItHere": "Dobite ga tukaj"
+        }
+      }
+    }
+  }
+}]

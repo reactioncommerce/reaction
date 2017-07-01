@@ -288,7 +288,7 @@ Meteor.methods({
   "inventory/lowStock": function (product) {
     check(product, Schemas.Product);
     //
-    // TODO implement inventory/lowstock calculations
+    // TODO: implement inventory/lowstock calculations
     // placeholder is here to give plugins a place to hook into
     //
     Logger.debug("inventory/lowStock");
@@ -302,11 +302,12 @@ Meteor.methods({
   "inventory/remove": function (inventoryItem) {
     check(inventoryItem, Schemas.Inventory);
     // user needs createProduct permission to adjust inventory
-    if (!Reaction.hasPermission("createProduct")) {
+    // REVIEW: Should this be checking against shop permissions instead?
+    if (!Reaction.hasPermission("createProduct", this.userId, inventoryItem.shopId)) {
       throw new Meteor.Error(403, "Access Denied");
     }
     // this.unblock();
-    // todo add bulkOp here
+    // TODO: add bulkOp here
 
     Logger.debug("inventory/remove", inventoryItem);
     return Inventory.remove(inventoryItem);

@@ -1,0 +1,193 @@
+<template name="sellerShopSettings">
+  {{!-- TODO Could be consolidated with shopSettings --}}
+  <div class="panel-group" id="sellerShopSettingsAccordion" role="tablist" aria-multiselectable="true">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <div class="panel-title">
+          <a
+            href="#shop-general"
+            aria-controls="shop-general"
+            aria-expanded="true"
+            role="button"
+            data-toggle="collapse"
+            data-parent="#sellerShopSettingsAccordion"
+            data-i18n="shopSettings.general">General</a>
+        </div>
+      </div>
+      <div id="shop-general" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="General">
+        <div class="panel-body">
+          <div class="form-group">
+            <label class="control-label" data-i18n="admin.settings.brandImageLabel">Brand Image</label>
+            {{> select brandImageSelectProps}}
+            {{> upload onUpload=handleFileUpload}}
+          </div>
+
+          {{#autoForm collection=Collections.Shops
+                      doc=sellerShop
+                      schema=Schemas.Shop
+                      id="sellerShopEditForm"
+                      type="method-update"
+                      meteormethod="marketplace/updateShopDetails"}}
+
+            <div class="form-group{{#if afFieldIsInvalid name="name"}} has-error{{/if}}">
+              <label class="control-label" data-i18n="shop.namePlaceholder">Shop Name</label>
+              {{>afFieldInput name="name" class="form-control"}}
+              {{#if afFieldIsInvalid name="name"}}
+                <span class="help-block">{{afFieldMessage name="name"}}</span>
+              {{/if}}
+            </div>
+
+            <div class="form-group{{#if afFieldIsInvalid name="emails.0.address"}} has-error{{/if}}">
+              <label class="control-label" data-i18n="shop.emailPlaceholder">Primary Contact Email</label>
+              {{>afFieldInput name="emails.0.address" class="form-control"}}
+              {{#if afFieldIsInvalid name="emails.0.address"}}
+                <span class="help-block">{{afFieldMessage name="emails.0.address"}}</span>
+              {{/if}}
+            </div>
+
+            <div class="form-group{{#if afFieldIsInvalid name="description"}} has-error{{/if}}">
+              <label class="control-label" data-i18n="shop.description">Description</label>
+              {{>afFieldInput name="description" class="form-control"}}
+              {{#if afFieldIsInvalid name="description"}}
+                <span class="help-block">{{afFieldMessage name="description"}}</span>
+              {{/if}}
+            </div>
+
+            <div class="form-group{{#if afFieldIsInvalid name="keywords"}} has-error{{/if}}">
+              <label class="control-label" data-i18n="shop.keywords">Keywords</label>
+              {{>afFieldInput name="keywords" class="form-control"}}
+              {{#if afFieldIsInvalid name="keywords"}}
+                <span class="help-block">{{afFieldMessage name="keywords"}}</span>
+              {{/if}}
+            </div>
+
+            <div class="form-group">
+              <label class="control-label" data-i18n="shop.timezone">Timezone</label>
+              {{>afFieldInput
+                type="select"
+                name="timezone"
+                class="form-control"
+                options=timezoneOptions}}
+            </div>
+
+            <div class="form-group">
+              <label class="control-label" data-i18n="shop.currency">Base Currency</label>
+              {{>afFieldInput
+                  type="select"
+                  name="currency"
+                  class="form-control"
+                  options=currencyOptions}}
+            </div>
+
+            <div class="form-group">
+              <label class="control-label" data-i18n="shop.baseUOM">Base Unit of Measure</label>
+              {{>afFieldInput
+                type="select"
+                name="baseUOM"
+                class="form-control"
+                options=uomOptions}}
+            </div>
+
+            {{> shopSettingsSubmitButton}}
+          {{/autoForm}}
+        </div>
+      </div>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <div class="panel-title">
+          <a
+            href="#shop-address"
+            aria-controls="shop-address"
+            aria-expanded="false"
+            role="button"
+            data-toggle="collapse"
+            data-parent="#sellerShopSettingsAccordion"
+            data-i18n="shopSettings.address">Address</a>
+        </div>
+      </div>
+      <div id="shop-address" class="panel-collapse collapse" role="tabpanel" aria-labelledby="address">
+        <div class="panel-body">
+          {{#autoForm collection=Collections.Shops
+                      doc=sellerShop
+                      id="sellerShopEditAddressForm"
+                      type="method-update"
+                      meteormethod="marketplace/updateShopDetails"}}
+
+            <div class="form-group{{#if afFieldIsInvalid name="company"}} has-error{{/if}}">
+              <label class="control-label" data-i18n="shop.addressBook.company">Company</label>
+              {{> afFieldInput name="addressBook.0.company" class="form-control"}}
+              {{#if afFieldIsInvalid name="addressBook.0.company"}}
+                <span class="help-block">{{afFieldMessage name="addressBook.0.company"}}</span>
+              {{/if}}
+            </div>
+            <div class="form-group{{#if afFieldIsInvalid name="fullName"}} has-error{{/if}}">
+              <label class="control-label" data-i18n="shop.addressBook.fullName">Full Name</label>
+              {{> afFieldInput name="addressBook.0.fullName" class="form-control"}}
+              {{#if afFieldIsInvalid name="addressBook.0.fullName"}}
+                <span class="help-block">{{afFieldMessage name="addressBook.0.fullName"}}</span>
+              {{/if}}
+            </div>
+            <div class="form-group{{#if afFieldIsInvalid name="address1"}} has-error{{/if}}">
+              <label class="control-label" data-i18n="shop.addressBook.address1">Address 1</label>
+              {{> afFieldInput name="addressBook.0.address1" class="form-control"}}
+              {{#if afFieldIsInvalid name="addressBook.0.address1"}}
+                <span class="help-block">{{afFieldMessage name="addressBook.0.address1"}}</span>
+              {{/if}}
+            </div>
+            <div class="form-group{{#if afFieldIsInvalid name="address2"}} has-error{{/if}}">
+              <label class="control-label" data-i18n="shop.addressBook.address2">Address 2</label>
+              {{> afFieldInput name="addressBook.0.address2" class="form-control"}}
+              {{#if afFieldIsInvalid name="addressBook.0.address2"}}
+                <span class="help-block">{{afFieldMessage name="addressBook.0.address2"}}</span>
+              {{/if}}
+            </div>
+            <div class="form-group{{#if afFieldIsInvalid name="city"}} has-error{{/if}}">
+              <label class="control-label" data-i18n="shop.addressBook.city">City</label>
+              {{> afFieldInput name="addressBook.0.city" class="form-control"}}
+              {{#if afFieldIsInvalid name="addressBook.0.city"}}
+                <span class="help-block">{{afFieldMessage name="addressBook.0.city"}}</span>
+              {{/if}}
+            </div>
+            <div class="form-group{{#if afFieldIsInvalid name="region"}} has-error{{/if}}">
+              <label class="control-label" data-i18n="shop.addressBook.region">Region</label>
+              {{> afFieldInput name="addressBook.0.region" class="form-control"}}
+              {{#if afFieldIsInvalid name="addressBook.0.region"}}
+                <span class="help-block">{{afFieldMessage name="addressBook.0.region"}}</span>
+              {{/if}}
+            </div>
+            <div class="form-group{{#if afFieldIsInvalid name="postal"}} has-error{{/if}}">
+              <label class="control-label" data-i18n="shop.addressBook.postal">Postal</label>
+              {{> afFieldInput name="addressBook.0.postal" class="form-control"}}
+              {{#if afFieldIsInvalid name="addressBook.0.postal"}}
+                <span class="help-block">{{afFieldMessage name="addressBook.0.postal"}}</span>
+              {{/if}}
+            </div>
+            <div class="form-group">
+              <label class="control-label" data-i18n="shop.addressBook.country">Country</label>
+              {{> afFieldInput name="addressBook.0.country"
+                type="select"
+                options=countryOptions
+                class="form-control"}}
+            </div>
+            <div class="form-group{{#if afFieldIsInvalid name="phone"}} has-error{{/if}}">
+              <label class="control-label" data-i18n="shop.addressBook.phone">Phone</label>
+              {{> afFieldInput name="addressBook.0.phone" class="form-control"}}
+              {{#if afFieldIsInvalid name="addressBook.0.phone"}}
+                <span class="help-block">{{afFieldMessage name="addressBook.0.phone"}}</span>
+              {{/if}}
+            </div>
+            <div class="form-group">
+              {{> afFieldInput name="addressBook.0.isCommercial"}}
+              {{> afFieldInput name="addressBook.0.isShippingDefault" defaultValue=true}}
+              {{> afFieldInput name="addressBook.0.isBillingDefault" defaultValue=true}}
+
+              {{> shopSettingsSubmitButton}}
+            </div>
+          {{/autoForm}}
+        </div>
+      </div>
+    </div>
+  </div>
+</template>

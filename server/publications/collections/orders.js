@@ -3,8 +3,7 @@ import { Orders } from "/lib/collections";
 import { Reaction } from "/server/api";
 
 const OrderHelper =  {
-  makeQuery(filter) {
-    const shopId = Reaction.getShopId();
+  makeQuery(filter, shopId = Reaction.getShopId()) {
     let query = {};
 
     switch (filter) {
@@ -88,7 +87,7 @@ Meteor.publish("Orders", function () {
   if (!shopId) {
     return this.ready();
   }
-  if (Roles.userIsInRole(this.userId, ["admin", "owner"], shopId)) {
+  if (Roles.userIsInRole(this.userId, ["admin", "owner", "orders"], shopId)) {
     return Orders.find({
       shopId: shopId
     });
@@ -110,15 +109,15 @@ Meteor.publish("PaginatedOrders", function (filter, limit) {
   if (this.userId === null) {
     return this.ready();
   }
-  const shopId = Reaction.getShopId();
+  const shopId = Reaction.getShopId(this.userId);
   if (!shopId) {
     return this.ready();
   }
-  if (Roles.userIsInRole(this.userId, ["admin", "owner"], shopId)) {
-    Counts.publish(this, "newOrder-count", Orders.find(OrderHelper.makeQuery("new")), { noReady: true });
-    Counts.publish(this, "processingOrder-count", Orders.find(OrderHelper.makeQuery("processing")), { noReady: true });
-    Counts.publish(this, "completedOrder-count", Orders.find(OrderHelper.makeQuery("completed")), { noReady: true });
-    return Orders.find(OrderHelper.makeQuery(filter), { limit: limit });
+  if (Roles.userIsInRole(this.userId, ["admin", "owner", "orders"], shopId)) {
+    Counts.publish(this, "newOrder-count", Orders.find(OrderHelper.makeQuery("new", shopId)), { noReady: true });
+    Counts.publish(this, "processingOrder-count", Orders.find(OrderHelper.makeQuery("processing", shopId)), { noReady: true });
+    Counts.publish(this, "completedOrder-count", Orders.find(OrderHelper.makeQuery("completed", shopId)), { noReady: true });
+    return Orders.find(OrderHelper.makeQuery(filter, shopId), { limit: limit });
   }
   return Orders.find({
     shopId: shopId,

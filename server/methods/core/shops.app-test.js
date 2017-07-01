@@ -60,7 +60,17 @@ describe("core shop methods", function () {
     });
 
     it("should create new shop for admin for userId and shopObject", function () {
-      sandbox.stub(Meteor, "userId", () => "12345678");
+      sandbox.stub(Meteor, "user", () => {
+        return {
+          userId: "12345678",
+          emails: [{
+            address: "user@example.com",
+            provides: "default",
+            verified: true
+          }]
+        };
+      });
+
       sandbox.stub(Reaction, "hasOwnerAccess", () => true);
       Meteor.call("shop/createShop", "12345678", shop);
       const newShopCount = Shops.find({ name: shop.name }).count();

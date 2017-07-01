@@ -1,0 +1,28 @@
+<template name="marketplaceSettings">
+    <div class="panel panel-default">
+      <div class="panel-heading panel-heading-flex">
+        <h3 class="panel-title">
+          <i class="{{PackageData.settings.icon}}"></i> General
+        </h3>
+      </div>
+      <div class="panel-body">
+        {{#autoForm collection=Collections.Packages schema=MarketplacePackageConfig
+                    doc=packageData id="marketplaceOptionsForm" type="update" autosave=true}}
+          {{> afFieldInput name="settings.public.allowGuestSellers"}}
+        {{/autoForm}}
+
+        {{schema}}
+      </div>
+    </div>
+</template>
+
+<template name="marketplaceCatalogSettings">
+  {{#autoForm collection=Collections.Packages schema=MarketplacePackageConfig
+              doc=packageData id="marketplaceOptionsForm" type="update" autosave=true}}
+    {{> afFieldInput name="settings.public.allowGuestSellers"}}
+  {{/autoForm}}
+
+  {{schema}}
+</template>
+
+

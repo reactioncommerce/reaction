@@ -21,7 +21,7 @@ const reactionState = new ReactiveDict();
  * Global reaction shop permissions methods and shop initialization
  */
 export default {
-  shopId: null,
+  _shopId: new ReactiveVar(null),
 
   Locale: new ReactiveVar({}),
 
@@ -33,13 +33,28 @@ export default {
 
       if (this.Subscriptions.Shops.ready()) {
         domain = Meteor.absoluteUrl().split("/")[2].split(":")[0];
-        shop = Shops.findOne({
-          domains: domain
-        });
+
+        // if we don't have an active shopId, try to retreive it from the userPreferences object
+        // and set the shop from the storedShopId
+        if (!this.shopId) {
+          const storedShopId = this.getUserPreferences("reaction", "activeShopId");
+          if (storedShopId) {
+            shop = Shops.findOne({
+              _id: storedShopId
+            });
+          } else {
+            shop = Shops.findOne({
+              domains: domain
+            });
+          }
+        }
 
         if (shop) {
-          this.shopId = shop._id;
-          this.shopName = shop.name;
+          // Only set shopId if it hasn't been set yet
+          if (!this.shopId) {
+            this.shopId = shop._id;
+            this.shopName = shop.name;
+          }
           // initialize local client Countries collection
           if (!Countries.findOne()) {
             createCountryCollection(shop.locales.countries);
@@ -87,7 +102,14 @@ export default {
    * @return {Boolean} Boolean - true if has permission
    */
   hasPermission(checkPermissions, checkUserId, checkGroup) {
-    let group = this.getShopId();
+    let group;
+    // default group to the shop or global if shop isn't defined for some reason.
+    if (checkGroup !== undefined && typeof checkGroup === "string") {
+      group = checkGroup;
+    } else {
+      group = this.getShopId() || Roles.GLOBAL_GROUP;
+    }
+
     let permissions = ["owner"];
     let id = "";
     const userId = checkUserId || this.userId || Meteor.userId();
@@ -116,7 +138,11 @@ export default {
       if (Roles.userIsInRole(userId, permissions, group)) {
         return true;
       }
+
       // global roles check
+      // TODO: Review this commented out code
+      /*
+
       const sellerShopPermissions = Roles.getGroupsForUser(userId, "admin");
       // we're looking for seller permissions.
       if (sellerShopPermissions) {
@@ -129,7 +155,7 @@ export default {
             }
           }
         }
-      }
+      }*/
       // no specific permissions found returning false
       return false;
     }
@@ -167,18 +193,39 @@ export default {
       } else {
         return roleCheck();
       }
-
-      // default group to the shop or global if shop
-      // isn't defined for some reason.
-      if (checkGroup !== undefined && typeof checkGroup === "string") {
-        group = checkGroup;
-      }
-      if (!group) {
-        group = Roles.GLOBAL_GROUP;
-      }
     }
     // return false to be safe
     return false;
+  },
+
+
+  /**
+   * hasDashboardAccessForAnyShop - client
+   * client permission check for any "owner", "admin", or "dashboard" permissions for any shop.
+   *
+   * @todo This could be faster with a dedicated hasAdminDashboard boolean on the user object
+   * @param { Object } options - options object that can be passed a user and/or a set of permissions
+   * @return {Boolean} Boolean - true if has dashboard access for any shop
+   */
+  hasDashboardAccessForAnyShop(options = { user: Meteor.user(), permissions: ["owner", "admin", "dashboard"] }) {
+    const user = options.user;
+    const permissions = options.permissions;
+
+    if (!user || !user.roles) {
+      return false;
+    }
+
+    // Nested find that determines if a user has any of the permissions
+    // specified in the `permissions` array for any shop
+    const hasPermissions = Object.keys(user.roles).find((shopId) => {
+      return user.roles[shopId].find((role) => {
+        return permissions.find(permission => permission === role);
+      });
+    });
+
+    // Find returns undefined if nothing is found.
+    // This will return true if permissions are found, false otherwise
+    return typeof hasPermissions !== "undefined";
   },
 
   hasOwnerAccess() {
@@ -194,6 +241,25 @@ export default {
   hasDashboardAccess() {
     const dashboardPermissions = ["owner", "admin", "dashboard"];
     return this.hasPermission(dashboardPermissions);
+  },
+
+  hasShopSwitcherAccess() {
+    return this.hasDashboardAccessForAnyShop();
+  },
+
+  getSellerShopId: function (userId = Meteor.userId(), noFallback = false) {
+    if (userId) {
+      const group = Roles.getGroupsForUser(userId, "admin")[0];
+      if (group) {
+        return group;
+      }
+    }
+
+    if (noFallback) {
+      return false;
+    }
+
+    return this.getShopId();
   },
 
   getUserPreferences(packageName, preference, defaultValue) {
@@ -228,8 +294,23 @@ export default {
     });
   },
 
+  get shopId() {
+    return this._shopId.get();
+  },
+
   getShopId() {
-    return this.shopId;
+    return this.shopId || this.getUserPreferences("reaction", "activeShopId");
+  },
+
+  set shopId(id) {
+    this._shopId.set(id);
+  },
+
+  setShopId(id) {
+    if (id) {
+      this.shopId = id;
+      this.setUserPreferences("reaction", "activeShopId", id);
+    }
   },
 
   getShopName() {
@@ -267,7 +348,14 @@ export default {
   },
 
   getPackageSettings(name) {
-    return Packages.findOne({ name, shopId: this.getShopId() });
+    const shopId = this.getShopId();
+    const query = { name };
+
+    if (shopId) {
+      query.shopId = shopId;
+    }
+
+    return Packages.findOne(query);
   },
 
   allowGuestCheckout() {
@@ -278,10 +366,6 @@ export default {
       allowGuest = settings.public.allowGuestCheckout;
     }
     return allowGuest;
-  },
-
-  getSellerShopId() {
-    return Roles.getGroupsForUser(this.userId, "admin");
   },
 
   /**
@@ -302,7 +386,6 @@ export default {
   isActionViewDetailOpen() {
     return Session.equals("admin/showActionViewDetail", true);
   },
-
 
   setActionView(viewData) {
     if (viewData) {
