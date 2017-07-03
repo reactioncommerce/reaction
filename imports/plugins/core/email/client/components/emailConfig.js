@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Meteor } from "meteor/meteor";
 import { Card, CardHeader, CardBody, CardGroup, Icon, Translation } from "/imports/plugins/core/ui/client/components";
 import EmailSettings from "../containers/emailSettings";
 
@@ -10,8 +9,6 @@ class EmailConfig extends Component {
     super(props);
 
     this.state = {
-      status: null,
-      error: null,
       showPassword: false,
       showSettings: false
     };
@@ -20,21 +17,6 @@ class EmailConfig extends Component {
     this.toggleSettings = this.toggleSettings.bind(this);
   }
 
-  componentWillMount() {
-    const { settings } = this.props;
-    const { service, host, port, user, password } = settings;
-    // if all settings exist, check if they work
-    if (service && host && port && user && password) {
-      Meteor.call("email/verifySettings", (error) => {
-        if (error) {
-          this.setState({ status: "error", error: error.reason });
-        }
-        this.setState({ status: "valid", error: null });
-      });
-    } else {
-      this.setState({ status: "error", error: null });
-    }
-  }
 
   togglePassword() {
     this.setState({
@@ -49,9 +31,9 @@ class EmailConfig extends Component {
   }
 
   renderSettingsDisplay() {
-    const { settings } = this.props;
+    const { settings, status } = this.props;
     const { service, host, port, user, password } = settings;
-    const { showPassword, status } = this.state;
+    const { showPassword } = this.state;
 
     const NotSet = () => <span data-i18n="admin.settings.fieldNotSet">Not set</span>;
 
