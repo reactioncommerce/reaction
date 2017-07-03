@@ -106,6 +106,7 @@ class SearchModal extends Component {
           {this.renderSearchTypeToggle()}
           {this.props.tags.length > 0 && this.renderProductSearchTags()}
         </div>
+        <div className="rui search-modal-results-container">
           {this.props.products.length > 0 && <ProductGridContainer products={this.props.products} unmountMe={this.props.unmountMe} isSearch={true} />}
           {this.props.accounts.length > 0 &&
             <div className="data-table">
@@ -121,6 +122,7 @@ class SearchModal extends Component {
               </div>
             </div>
           }
+        </div>
       </div>
     );
   }
