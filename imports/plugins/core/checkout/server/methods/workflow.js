@@ -1,7 +1,7 @@
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
-import { Cart, Orders, Packages, Shops } from "/lib/collections";
+import { Cart, Orders, Packages, Groups } from "/lib/collections";
 import { Logger, Reaction } from "/server/api";
 
 /* eslint no-shadow: 0 */

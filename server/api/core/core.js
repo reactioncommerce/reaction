@@ -4,7 +4,7 @@ import { merge, uniqWith } from "lodash";
 import { Meteor } from "meteor/meteor";
 import { EJSON } from "meteor/ejson";
 import { check, Match } from "meteor/check";
-import { Jobs, Packages, Shops } from "/lib/collections";
+import { Jobs, Packages, Shops, Groups } from "/lib/collections";
 import { Hooks, Logger } from "/server/api";
 import ProcessJobs from "/server/jobs";
 import { registerTemplate } from "./templates";
@@ -33,7 +33,6 @@ export default {
     if (process.env.VERBOSE_JOBS) {
       Jobs.setLogStream(process.stdout);
     }
-    this.createDefaultGroups();
     this.loadPackages();
     // process imports from packages and any hooked imports
     this.Import.flush();
@@ -41,6 +40,7 @@ export default {
     if (!Meteor.isAppTest) {
       this.createDefaultAdminUser();
     }
+    this.createDefaultGroups();
     this.setAppVersion();
     // hook after init finished
     Hooks.Events.run("afterCoreInit");
@@ -57,8 +57,25 @@ export default {
     return registeredPackage;
   },
   createDefaultGroups() {
-    const shops = Shops.find().fetch();
-    Groups.insert(); // init all groups here
+    const defaultRoles = {
+      customer: [ "guest", "account/profile", "product", "tag", "index", "cart/checkout", "cart/completed"],
+      guest: ["test"]
+    };
+    Object.keys(defaultRoles).forEach(group => {
+      return Groups.update({
+        slug: group,
+        shopId: "default"
+      }, {
+        $set: {
+          name: group,
+          slug: group,
+          permissions: defaultRoles[group],
+          shopId: "default"
+        }
+      }, {
+        upsert: true
+      });
+    });
   },
   /**
    * registerTemplate

@@ -51,5 +51,5 @@ export function addRolesToDefaultRoleSet(options = { allShops: false, roles: [],
     Logger.debug(`Adding Roles: ${roles} to Group: ${groupRolesSets} for shops: ${shops}`);
   }
 
-  return Groups.update(query, { $addToSet: { permissions: roles } }, multi);
+  return Groups.update(query, { $addToSet: { permissions: { $each: roles } } }, multi);
 }
