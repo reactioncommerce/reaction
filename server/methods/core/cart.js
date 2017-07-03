@@ -618,6 +618,16 @@ Meteor.methods({
       };
     }
 
+    order.items = order.items.map(item => {
+      item.shippingMethod = order.shipping[order.shipping.length - 1];
+      item.workflow = {
+        status: "new",
+        workflow: ["coreOrderWorkflow/created"]
+      };
+
+      return item;
+    });
+
     // TODO: update this to assign each item to the correct shipment based on
     // which fulfillment provider is serving that item.
     _.each(order.items, (item) => {
@@ -1079,11 +1089,9 @@ Meteor.methods({
     // if we have an existing item update it, otherwise add to set.
 
     // TODO: Marketplace Payments - Add support for multiple billing handlers here
-    // TODO: Marketplace Payments - Attach paymentMethod to each item here.
-
     if (cart.items) {
-      // For now just attach the transaction to each item in the cart
       // TODO: Needs to be improved to consider which transaction goes with which item
+      // For now just attach the transaction to each item in the cart
       const cartItemsWithPayment = cart.items.map(item => {
         item.transaction = paymentMethod.transactions[paymentMethod.transactions.length - 1];
         return item;
