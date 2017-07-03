@@ -4,7 +4,7 @@ import Avatar from "react-avatar";
 import moment from "moment";
 import { formatPriceString } from "/client/api";
 // import { Orders } from "/lib/collections";
-import { SortableTable, Loading } from "/imports/plugins/core/ui/client/components";
+import { SortableTable, Loading, RolloverCheckbox } from "/imports/plugins/core/ui/client/components";
 import { Badge, ClickToCopy, Icon, Translation } from "@reactioncommerce/reaction-ui";
 import ProductImage from "./productImage";
 
@@ -164,13 +164,20 @@ class OrdersList extends Component {
           if (bla === "shipping[0].address.fullName") {
             return (
               <div className="customer-info">
+              <RolloverCheckbox
+                checkboxClassName="checkbox"
+                onChange={() =>  {}}
+                checked={false}
+              >
                 <Avatar
                   email={row.original.email}
                   round={true}
                   name={row.value}
                   size={30}
                   className="rui-order-avatar"
-                />&nbsp;
+                />
+              </RolloverCheckbox>
+                &nbsp;
                 <strong>{row.value}</strong>
               </div>
             );
