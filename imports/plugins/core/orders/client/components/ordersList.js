@@ -163,21 +163,20 @@ class OrdersList extends Component {
           const bla = row.column.id;
           if (bla === "shipping[0].address.fullName") {
             return (
-              <div className="customer-info">
-              <RolloverCheckbox
-                checkboxClassName="checkbox"
-                onChange={() =>  {}}
-                checked={false}
-              >
-                <Avatar
-                  email={row.original.email}
-                  round={true}
-                  name={row.value}
-                  size={30}
-                  className="rui-order-avatar"
-                />
-              </RolloverCheckbox>
-                &nbsp;
+              <div style={{ display: "flex", borderRight: "1px solid #cccccc" }}>
+                <RolloverCheckbox
+                  checkboxClassName="checkbox"
+                  onChange={() =>  {}}
+                  checked={false}
+                >
+                  <Avatar
+                    email={row.original.email}
+                    round={true}
+                    name={row.value}
+                    size={30}
+                    className="rui-order-avatar"
+                  />
+                </RolloverCheckbox> &nbsp;&nbsp;
                 <strong>{row.value}</strong>
               </div>
             );
