@@ -1,3 +1,4 @@
+import { Meteor } from "meteor/meteor";
 import { Packages } from "/lib/collections";
 
 export const Example = {

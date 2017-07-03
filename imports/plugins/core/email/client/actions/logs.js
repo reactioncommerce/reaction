@@ -1,3 +1,4 @@
+import { Meteor } from "meteor/meteor";
 import { i18next } from "/client/api";
 
 export default {

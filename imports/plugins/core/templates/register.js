@@ -27,7 +27,12 @@ Reaction.registerPackage({
       icon: "fa fa-columns",
       name: "templates/settings",
       provides: "settings",
-      template: "templateSettings"
+      template: "templateSettings",
+      meta: {
+        actionView: {
+          dashboardSize: "md"
+        }
+      }
     },
     {
       label: "Email Templates",

@@ -1,5 +1,8 @@
 import _ from "lodash";
 import { Template } from "meteor/templating";
+import { Blaze } from "meteor/blaze";
+import { ReactiveDict } from "meteor/reactive-dict";
+import { $ } from "meteor/jquery";
 import { ProductSearch, Tags, OrderSearch, AccountSearch } from "/lib/collections";
 import { IconButton } from "/imports/plugins/core/ui/client/components";
 

@@ -1,4 +1,5 @@
 import { Session } from "meteor/session";
+import { AutoForm } from "meteor/aldeed:autoform";
 
 /**
  * Misc. App. Configuration

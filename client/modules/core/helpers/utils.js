@@ -1,3 +1,4 @@
+/* global slugify */
 // client slugify only works when import minified version.
 import "transliteration/lib/browser/transliteration.js";
 
