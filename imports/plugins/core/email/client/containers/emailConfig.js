@@ -20,12 +20,6 @@ const composer = ({}, onData) => {
       settings.port = config.port;
     }
 
-    const { service, host, port, user, password } = settings;
-
-    // if all settings exist, check if they work
-    if (service && host && port && user && password) {
-      return onData(null, { settings, status: "valid", error: null });
-    }
     return onData(null, { settings, status: "error", error: null });
   }
 };
