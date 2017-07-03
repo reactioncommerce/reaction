@@ -57,25 +57,34 @@ export default {
     return registeredPackage;
   },
   createDefaultGroups() {
-    const defaultRoles = {
+    const roles = {
       customer: [ "guest", "account/profile", "product", "tag", "index", "cart/checkout", "cart/completed"],
-      guest: ["test"]
+      guest: ["anonymous", "guest", "product", "tag", "index", "cart/checkout", "cart/completed"],
+      owner: Roles.getAllRoles().fetch().map(role => role.name)
     };
-    Object.keys(defaultRoles).forEach(group => {
-      return Groups.update({
-        slug: group,
-        shopId: "default"
-      }, {
-        $set: {
-          name: group,
+    const shops = Shops.find({}).fetch();
+
+    if (shops.length) {
+      shops.forEach(shop => createGroupsForShop(shop));
+    }
+    function createGroupsForShop(shop) {
+      Object.keys(roles).forEach(group => {
+        Logger.debug(`creating group ${group} for shop ${shop.name}`);
+        return Groups.update({
           slug: group,
-          permissions: defaultRoles[group],
           shopId: "default"
-        }
-      }, {
-        upsert: true
+        }, {
+          $set: {
+            name: group,
+            slug: group,
+            permissions: roles[group],
+            shopId: shop._id
+          }
+        }, {
+          upsert: true
+        });
       });
-    });
+    }
   },
   /**
    * registerTemplate

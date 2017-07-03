@@ -109,7 +109,8 @@ export default function () {
 
       // if we don't have user.services we're an anonymous user
       if (!user.services) {
-        roles[shopId] = shop.defaultVisitorRole || defaultVisitorRole;
+        const defaultGuestRoles = Collections.Groups.findOne({ slug: "guest", shopId });
+        roles[shopId] = defaultGuestRoles || defaultVisitorRole;
       } else {
         const defaultCustomerRoles = Collections.Groups.findOne({ slug: "customer", shopId });
         roles[shopId] = defaultCustomerRoles || defaultRoles;
