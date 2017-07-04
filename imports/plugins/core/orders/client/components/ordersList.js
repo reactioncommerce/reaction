@@ -15,6 +15,8 @@ class OrdersList extends Component {
     handleClick: PropTypes.func,
     handleDetailToggle: PropTypes.func,
     handleListToggle: PropTypes.func,
+    handleShowMoreClick: PropTypes.func,
+    hasMoreOrders: PropTypes.bool,
     openDetail: PropTypes.bool,
     openList: PropTypes.bool,
     orders: PropTypes.array
@@ -227,7 +229,13 @@ class OrdersList extends Component {
                   label={row.value}
                   status={this.fulfillmentBadgeStatus(row.original)}
                 />
-                <button className={classes} data-event-action="startProcessingOrder" style={{ backgroundColor: "transparent", float: "right" }}><Icon icon="fa fa-chevron-right" /></button>
+                <button
+                  className={classes}
+                  data-event-action="startProcessingOrder"
+                  style={{ backgroundColor: "transparent", float: "right" }}
+                >
+                  <Icon icon="fa fa-chevron-right" />
+                </button>
               </span>
             );
           }
@@ -268,9 +276,15 @@ class OrdersList extends Component {
     );
   }
 
+  handleClick = (event) => {
+    if (this.props.handleShowMoreClick) {
+      this.props.handleShowMoreClick(event);
+    }
+  }
+
 
   render() {
-    const { orders, openDetail, openList, handleDetailToggle, handleListToggle } = this.props;
+    const { orders, openDetail, openList, handleDetailToggle, handleListToggle, hasMoreOrders } = this.props;
 
     if (orders.length) {
       return (
@@ -291,6 +305,15 @@ class OrdersList extends Component {
                 );
               })}
             </div>
+          }
+          {hasMoreOrders &&
+            <button
+              className="btn btn-primary show-more-orders"
+              type="button"
+              onClick={this.handleClick}
+            >
+            <Translation defaultValue="Show More" i18nKey="order.showMore" />
+          </button>
           }
         </div>
       );

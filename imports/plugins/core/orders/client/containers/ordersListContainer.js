@@ -14,6 +14,8 @@ import {
 
 class OrdersListContainer extends Component {
   static propTypes = {
+    handleShowMoreClick: PropTypes.func,
+    hasMoreOrders: PropTypes.func,
     invoice: PropTypes.object,
     orders: PropTypes.array,
     uniqueItems: PropTypes.array
@@ -24,13 +26,22 @@ class OrdersListContainer extends Component {
 
     this.state = {
       openDetail: false,
-      openList: true
+      openList: true,
+      orders: props.orders,
+      hasMoreOrders: props.hasMoreOrders()
     };
 
     this.handleClick = this.handleClick.bind(this);
     this.handleListToggle = this.handleListToggle.bind(this);
     this.handleDetailToggle = this.handleDetailToggle.bind(this);
     this.handleDisplayMedia = this.handleDisplayMedia.bind(this);
+  }
+
+  componentWillReceiveProps = (nextProps) => {
+    this.setState({
+      orders: nextProps.orders,
+      hasMoreOrders: nextProps.hasMoreOrders()
+    });
   }
 
   handleClick = (order, startWorkflow = true) => {
@@ -97,17 +108,19 @@ class OrdersListContainer extends Component {
   }
 
   render() {
-    const { orders } = this.props;
+    const { handleShowMoreClick } = this.props;
 
     return (
         <OrdersList
-          orders={orders}
+          handleShowMoreClick={handleShowMoreClick}
+          orders={this.state.orders}
+          hasMoreOrders={this.state.hasMoreOrders}
           handleClick={this.handleClick}
           displayMedia={this.handleDisplayMedia}
           handleListToggle={this.handleListToggle}
           handleDetailToggle={this.handleDetailToggle}
-          openDetail= {this.state.openDetail}
-          openList= {this.state.openList}
+          openDetail={this.state.openDetail}
+          openList={this.state.openList}
         />
     );
   }
