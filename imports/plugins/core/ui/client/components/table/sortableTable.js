@@ -223,6 +223,7 @@ class SortableTable extends Component {
               }
             };
           }}
+          getTrGroupProps={otherProps.getTrGroupProps}
         />
       </div>
     );

@@ -162,7 +162,8 @@ class OrdersList extends Component {
       const columnMeta = {
         accessor: filteredFields[columnName],
         Header: columnName,
-        headerStyle: { shadowColor: "transparent" },
+        headerStyle: { borderRight: "none", textAlign: "left" },
+        style: { borderRight: "none" },
         Cell: row => {
           const bla = row.column.id;
           if (bla === "shipping[0].address.fullName") {
@@ -236,10 +237,7 @@ class OrdersList extends Component {
                   className={classes}
                   data-event-action="startProcessingOrder"
                   style={{ backgroundColor: "transparent", float: "right" }}
-<<<<<<< HEAD
-                  onClick={() => this.props.handleClick(row.original, false)}
-=======
->>>>>>> d0babc26ffc4ac0180d798211c98aca160dd4099
+                  onClick={() => this.props.handleClick(row.original)}
                 >
                   <Icon icon="fa fa-chevron-right" />
                 </button>
@@ -256,11 +254,20 @@ class OrdersList extends Component {
 
     return (
       <SortableTable
-        tableClassName="-highlight"
+        tableClassName="rui order table -highlight"
         data={orders}
         columnMetadata={customColumnMetadata}
         externalLoadingComponent={Loading}
         filteredFields={columnNames}
+        filterType="none"
+        getTrGroupProps={(state, rowInfo, column) => {
+          return {
+            style: {
+              borderRight: "1px solid #e6e6e6",
+              borderLeft: "1px solid #e6e6e6"
+            }
+          };
+        }}
       />
     );
   }
@@ -300,7 +307,7 @@ class OrdersList extends Component {
             <span onClick={handleDetailToggle}> <i className="fa fa-list-alt" /> </span>
           </div>
 
-          {openList &&  <div style={{ padding: 20 }}>{this.renderListView(orders)}</div>}
+          {openList &&  <div className="container-fluid-sm">{this.renderListView(orders)}</div>}
           {openDetail &&
             <div className="container-fluid-sm">
               {orders.map((order, i) => {
