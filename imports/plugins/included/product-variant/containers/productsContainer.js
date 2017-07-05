@@ -46,7 +46,6 @@ class ProductsContainer extends Component {
 
   static propTypes = {
     canLoadMoreProducts: PropTypes.bool,
-    initialLoad: PropTypes.bool,
     products: PropTypes.array,
     productsSubscription: PropTypes.object
   };
@@ -54,7 +53,7 @@ class ProductsContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      initialLoad: props.initialLoad
+      initialLoad: true
     };
 
     this.ready = this.ready.bind(this);
@@ -102,9 +101,6 @@ class ProductsContainer extends Component {
 function composer(props, onData) {
   window.prerenderReady = false;
 
-  let stateSlug = "";
-  let stateProducts = [];
-  let initialLoad = true;
   let canLoadMoreProducts = false;
 
   const slug = Reaction.Router.getParam("slug");
@@ -120,12 +116,6 @@ function composer(props, onData) {
   if (!tag && slug) {
     return;
   }
-
-  if (stateSlug !== slug && initialLoad === false) {
-    initialLoad = true;
-  }
-
-  stateSlug = slug;
 
   const queryParams = Object.assign({}, tags, Reaction.Router.current().queryParams);
   const productsSubscription = Meteor.subscribe("Products", scrollLimit, queryParams);
@@ -154,7 +144,7 @@ function composer(props, onData) {
 
 
   canLoadMoreProducts = productCursor.count() >= Session.get("productScrollLimit");
-  stateProducts = sortedProducts;
+  const stateProducts = sortedProducts;
 
   Session.set("productGrid/products", sortedProducts);
 
@@ -166,8 +156,7 @@ function composer(props, onData) {
   onData(null, {
     productsSubscription,
     products: stateProducts,
-    canLoadMoreProducts,
-    initialLoad
+    canLoadMoreProducts
   });
 }
 export default composeWithTracker(composer)(ProductsContainer);
