@@ -3,8 +3,7 @@ import { Meteor } from "meteor/meteor";
 import { Tracker } from "meteor/tracker";
 import { Accounts } from "meteor/accounts-base";
 
-import Reaction from "./main";
-import Logger from "/client/modules/logger";
+import { Reaction, Logger } from "/client/api";
 
 
 const cookieName = "_RcFallbackLoginToken";
@@ -21,7 +20,7 @@ Meteor.startup(function () {
     const userId = Meteor.userId();
 
     if (userId && !isLocalStorageAvailable() && !readCookie(cookieName)) {
-      Logger.info("No local storage available. About to set up fall-back login " +
+      Logger.debug("No local storage available. About to set up fallback login " +
         "mechanism with cookie login token.");
       Meteor.call("accounts/createFallbackLoginToken", (err, token) => {
         if (!err && token) {
