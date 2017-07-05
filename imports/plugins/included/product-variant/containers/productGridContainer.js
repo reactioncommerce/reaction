@@ -127,8 +127,8 @@ class ProductGridContainer extends Component {
 
       Meteor.call("products/updateProductPosition", productId, position, tag, error => {
         if (error) {
-          Logger.warn(error);
-          throw new Meteor.Error(403, error);
+          Logger.error(error);
+          throw new Meteor.Error(error);
         }
       });
     });
