@@ -188,7 +188,6 @@ class SearchModalContainer extends Component {
           <div className="rui search-modal js-search-modal">
             <SearchModal
               {...this.props}
-              closeModal={this.handleCloseModal}
               handleChange={this.handleChange}
               handleClick={this.handleClick}
               handleToggle={this.handleToggle}
