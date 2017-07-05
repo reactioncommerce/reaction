@@ -1,7 +1,7 @@
+import _ from "lodash";
 import React from "react";
 import { DataType } from "react-taco-table";
 import { i18next } from "/client/api";
-import _ from "lodash";
 
 export default function ordersTable() {
   const columns = [
