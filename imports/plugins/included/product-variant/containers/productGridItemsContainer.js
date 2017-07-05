@@ -144,7 +144,7 @@ class ProductGridItemsContainer extends Component {
 
   displayPrice = () => {
     if (this.props.product.price && this.props.product.price.range) {
-      return this.props.product.price.range;
+      return ReactionProduct.getProductPriceRange(this.props.product._id).range;
     }
   }
 
