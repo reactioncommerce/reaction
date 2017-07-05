@@ -24,13 +24,35 @@ class OrdersListContainer extends Component {
 
     this.state = {
       openDetail: false,
-      openList: true
+      openList: true,
+      selectedItems: []
     };
 
     this.handleClick = this.handleClick.bind(this);
     this.handleListToggle = this.handleListToggle.bind(this);
     this.handleDetailToggle = this.handleDetailToggle.bind(this);
     this.handleDisplayMedia = this.handleDisplayMedia.bind(this);
+    this.handleSelect = this.handleSelect.bind(this);
+  }
+
+  handleSelect = (event, bla1, bla2) => {
+    const originalArray = this.state.selectedItems;
+
+    if (!originalArray.includes(bla2)) {
+      originalArray.push(bla2);
+      this.setState({
+        selectedItems: originalArray
+      });
+    } else {
+      const newArray = originalArray.filter((id) => {
+        if (id !== bla2) {
+          return id;
+        }
+      });
+      this.setState({
+        selectedItems: newArray
+      });
+    }
   }
 
   handleClick = (order, startWorkflow = true) => {
@@ -102,12 +124,14 @@ class OrdersListContainer extends Component {
     return (
         <OrdersList
           orders={orders}
+          handleSelect={this.handleSelect}
           handleClick={this.handleClick}
           displayMedia={this.handleDisplayMedia}
           handleListToggle={this.handleListToggle}
           handleDetailToggle={this.handleDetailToggle}
           openDetail= {this.state.openDetail}
           openList= {this.state.openList}
+          selectedItems={this.state.selectedItems}
         />
     );
   }

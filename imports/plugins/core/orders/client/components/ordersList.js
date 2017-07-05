@@ -15,9 +15,11 @@ class OrdersList extends Component {
     handleClick: PropTypes.func,
     handleDetailToggle: PropTypes.func,
     handleListToggle: PropTypes.func,
+    handleSelect: PropTypes.func,
     openDetail: PropTypes.bool,
     openList: PropTypes.bool,
-    orders: PropTypes.array
+    orders: PropTypes.array,
+    selectedItems: PropTypes.array
   }
 
   /**
@@ -153,7 +155,7 @@ class OrdersList extends Component {
     };
     const customColumnMetadata = [];
     const columnNames = Object.keys(filteredFields);
-
+    const { selectedItems, handleSelect } = this.props;
     columnNames.forEach((columnName) => {
       const columnMeta = {
         accessor: filteredFields[columnName],
@@ -163,11 +165,12 @@ class OrdersList extends Component {
           const bla = row.column.id;
           if (bla === "shipping[0].address.fullName") {
             return (
-              <div style={{ display: "flex", borderRight: "1px solid #cccccc" }}>
+              <div style={{ display: "inline-flex" }}>
                 <RolloverCheckbox
                   checkboxClassName="checkbox"
-                  onChange={() =>  {}}
-                  checked={false}
+                  name={row.original._id}
+                  onChange={handleSelect}
+                  checked={selectedItems.includes(row.original._id)}
                 >
                   <Avatar
                     email={row.original.email}
@@ -176,8 +179,8 @@ class OrdersList extends Component {
                     size={30}
                     className="rui-order-avatar"
                   />
-                </RolloverCheckbox> &nbsp;&nbsp;
-                <strong>{row.value}</strong>
+                </RolloverCheckbox>
+                <strong style={{ paddingLeft: 5 }}>{row.value}</strong>
               </div>
             );
           }
@@ -227,15 +230,21 @@ class OrdersList extends Component {
                   label={row.value}
                   status={this.fulfillmentBadgeStatus(row.original)}
                 />
-                <button className={classes} data-event-action="startProcessingOrder" style={{ backgroundColor: "transparent", float: "right" }}><Icon icon="fa fa-chevron-right" /></button>
+                <button
+                  className={classes}
+                  data-event-action="startProcessingOrder"
+                  style={{ backgroundColor: "transparent", float: "right" }}
+                  onClick={() => this.props.handleClick(row.original, false)}
+                >
+                  <Icon icon="fa fa-chevron-right" />
+                </button>
               </span>
             );
           }
           return (
             <span>{row.value}</span>
           );
-        },
-        style: { textAlign: "center" }
+        }
       };
       customColumnMetadata.push(columnMeta);
     });

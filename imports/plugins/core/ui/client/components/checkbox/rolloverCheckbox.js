@@ -1,7 +1,7 @@
 import React, { PropTypes } from "react";
 import Checkbox from "./checkbox";
 
-const RolloverCheckbox = ({ children, checked, checkboxClassName, onChange }) => {
+const RolloverCheckbox = ({ children, checked, checkboxClassName, onChange, name }) => {
   if (checked) {
     return (
       <div className="rollover-checkbox">
@@ -10,6 +10,7 @@ const RolloverCheckbox = ({ children, checked, checkboxClassName, onChange }) =>
             checked={checked}
             onChange={onChange}
             className={checkboxClassName}
+            name={name}
           />
         </div>
       </div>
@@ -25,6 +26,7 @@ const RolloverCheckbox = ({ children, checked, checkboxClassName, onChange }) =>
               checked={checked}
               onChange={onChange}
               className={checkboxClassName}
+              name={name}
             />
         </div>
     </div>
@@ -35,6 +37,7 @@ RolloverCheckbox.propTypes = {
   checkboxClassName: PropTypes.string,
   checked: PropTypes.bool,
   children: PropTypes.node,
+  name: PropTypes.string,
   onChange: PropTypes.func
 };
 
