@@ -226,6 +226,12 @@ Import.buffer = function (collection) {
  * * Update the variant.
  */
 Import.product = function (key, product) {
+  // If product has an _id, we use it to look up the product before
+  // updating the product so as to avoid trying to change the _id
+  // which is immutable.
+  if (product._id && !key._id) {
+    key._id = product._id;
+  }
   return this.object(Collections.Products, key, product);
 };
 
@@ -354,7 +360,9 @@ Import.object = function (collection, key, object) {
   const updateObject = object;
 
   // enforce strings instead of Mongo.ObjectId
-  if (!collection.findOne(key) && !object._id) key._id = Random.id();
+  if (!collection.findOne(key) && !object._id) {
+    key._id = Random.id();
+  }
 
   // hooks for additional import manipulation.
   const importObject = Hooks.Events.run(`onImport${this._name(collection)}`, object);
