@@ -1,4 +1,3 @@
-import _ from "lodash";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Session } from "meteor/session";
@@ -50,7 +49,7 @@ function composer(props, onData) {
 
   if (product) {
     const selectedProducts = Session.get("productGrid/selectedProducts");
-    isSelected = _.isArray(selectedProducts) ? selectedProducts.indexOf(product._id) >= 0 : false;
+    isSelected = Array.isArray(selectedProducts) ? selectedProducts.indexOf(product._id) >= 0 : false;
   }
 
   onData(null, {
