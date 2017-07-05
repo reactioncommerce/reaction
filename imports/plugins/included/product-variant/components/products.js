@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Reaction } from "/client/api";
 import { getTagIds as getIds } from "/lib/selectors/tags";
-import { Translation } from "/imports/plugins/core/ui/client/components";
+import { Translation } from "@reactioncommerce/reaction-ui";
 import ProductGridContainer from "../containers/productGridContainer";
 
 class ProductsComponent extends Component {
