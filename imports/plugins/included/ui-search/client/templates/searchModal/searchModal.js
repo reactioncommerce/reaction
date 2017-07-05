@@ -1,4 +1,4 @@
-import $ from "jquery";
+import { $ } from "meteor/jquery";
 import { Template } from "meteor/templating";
 import SearchModalContainer from "../../../lib/containers/searchModalContainer";
 
