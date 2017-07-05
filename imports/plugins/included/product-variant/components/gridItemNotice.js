@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Translation } from "/imports/plugins/core/ui/client/components";
+import { Translation } from "@reactioncommerce/reaction-ui";
 
 class GridItemNotice extends Component {
   static propTypes = {
