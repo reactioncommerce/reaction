@@ -360,7 +360,9 @@ Import.object = function (collection, key, object) {
   const updateObject = object;
 
   // enforce strings instead of Mongo.ObjectId
-  if (!collection.findOne(key) && !object._id) key._id = Random.id();
+  if (!collection.findOne(key) && !object._id) {
+    key._id = Random.id();
+  }
 
   // hooks for additional import manipulation.
   const importObject = Hooks.Events.run(`onImport${this._name(collection)}`, object);
