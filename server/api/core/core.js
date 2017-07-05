@@ -57,32 +57,29 @@ export default {
     return registeredPackage;
   },
   createDefaultGroups() {
+    const allGroups = Groups.find({}).fetch();
+    const shops = Shops.find({}).fetch();
     const roles = {
       customer: [ "guest", "account/profile", "product", "tag", "index", "cart/checkout", "cart/completed"],
       guest: ["anonymous", "guest", "product", "tag", "index", "cart/checkout", "cart/completed"],
       owner: Roles.getAllRoles().fetch().map(role => role.name)
     };
-    const shops = Shops.find({}).fetch();
 
-    if (shops.length) {
+    if (shops && shops.length) {
       shops.forEach(shop => createGroupsForShop(shop));
     }
     function createGroupsForShop(shop) {
-      Object.keys(roles).forEach(group => {
-        Logger.debug(`creating group ${group} for shop ${shop.name}`);
-        return Groups.update({
-          slug: group,
-          shopId: "default"
-        }, {
-          $set: {
-            name: group,
-            slug: group,
-            permissions: roles[group],
+      Object.keys(roles).forEach(groupKeys => {
+        const groupExists = allGroups.find(grp => grp.slug === groupKeys && grp.shopId === shop._id);
+        if (!groupExists) { // create group only if it doesn't exist before
+          Logger.debug(`creating group ${groupKeys} for shop ${shop.name}`);
+          Groups.insert({
+            name: groupKeys,
+            slug: groupKeys,
+            permissions: roles[groupKeys],
             shopId: shop._id
-          }
-        }, {
-          upsert: true
-        });
+          });
+        }
       });
     }
   },
