@@ -148,6 +148,31 @@ class ProductGridItemsContainer extends Component {
     }
   }
 
+  handleCheckboxSelect = (list, product) => {
+    let checkbox = list.querySelector(`input[type=checkbox][value="${product._id}"]`);
+    const items = document.querySelectorAll("li.product-grid-item");
+    const activeItems = document.querySelectorAll("li.product-grid-item.active");
+    const selected = activeItems.length;
+
+    if (event.shiftKey && selected > 0) {
+      const indexes = [
+        Array.prototype.indexOf.call(items, document.querySelector(`li.product-grid-item[id="${product._id}"]`)),
+        Array.prototype.indexOf.call(items, activeItems[0]),
+        Array.prototype.indexOf.call(items, activeItems[selected - 1])
+      ];
+      for (let i = _.min(indexes); i <= _.max(indexes); i++) {
+        checkbox = items[i].querySelector("input[type=checkbox]");
+        if (checkbox.checked === false) {
+          checkbox.checked = true;
+          this.props.itemSelectHandler(checkbox.checked, product._id);
+        }
+      }
+    } else {
+      checkbox.checked = !checkbox.checked;
+      this.props.itemSelectHandler(checkbox.checked, product._id);
+    }
+  }
+
   onDoubleClick = () => {
     const product = this.props.product;
     const handle = product.__published && product.__published.handle || product.handle;
@@ -189,55 +214,15 @@ class ProductGridItemsContainer extends Component {
       const list = document.getElementById("product-grid-list");
 
       if (isSelected) {
-        // If product is already selected, and you are single clicking WITH command key, things whould happen
+        // If a product is already selected, and you are single clicking on another product(s)
+        // WITH command key, the product(s) are added to the selected products Session array
+        this.handleCheckboxSelect(list, product);
         if (event.metaKey || event.ctrlKey || event.shiftKey) {
-          let checkbox = list.querySelector(`input[type=checkbox][value="${product._id}"]`);
-          const items = document.querySelectorAll("li.product-grid-item");
-          const activeItems = document.querySelectorAll("li.product-grid-item.active");
-          const selected = activeItems.length;
-
-          if (event.shiftKey && selected > 0) {
-            const indexes = [
-              Array.prototype.indexOf.call(items, document.querySelector(`li.product-grid-item[id="${product._id}"]`)),
-              Array.prototype.indexOf.call(items, activeItems[0]),
-              Array.prototype.indexOf.call(items, activeItems[selected - 1])
-            ];
-            for (let i = _.min(indexes); i <= _.max(indexes); i++) {
-              checkbox = items[i].querySelector("input[type=checkbox]");
-              if (checkbox.checked === false) {
-                checkbox.checked = true;
-                this.props.itemSelectHandler(checkbox.checked, product._id);
-              }
-            }
-          } else {
-            checkbox.checked = !checkbox.checked;
-            this.props.itemSelectHandler(checkbox.checked, product._id);
-          }
+          this.handleCheckboxSelect(list, product);
         }
       } else {
         if (event.metaKey || event.ctrlKey || event.shiftKey) {
-          let checkbox = list.querySelector(`input[type=checkbox][value="${product._id}"]`);
-          const items = document.querySelectorAll("li.product-grid-item");
-          const activeItems = document.querySelectorAll("li.product-grid-item.active");
-          const selected = activeItems.length;
-
-          if (event.shiftKey && selected > 0) {
-            const indexes = [
-              Array.prototype.indexOf.call(items, document.querySelector(`li.product-grid-item[id="${product._id}"]`)),
-              Array.prototype.indexOf.call(items, activeItems[0]),
-              Array.prototype.indexOf.call(items, activeItems[selected - 1])
-            ];
-            for (let i = _.min(indexes); i <= _.max(indexes); i++) {
-              checkbox = items[i].querySelector("input[type=checkbox]");
-              if (checkbox.checked === false) {
-                checkbox.checked = true;
-                this.props.itemSelectHandler(checkbox.checked, product._id);
-              }
-            }
-          } else {
-            checkbox.checked = !checkbox.checked;
-            this.props.itemSelectHandler(checkbox.checked, product._id);
-          }
+          this.handleCheckboxSelect(list, product);
         } else {
           const checkbox = list.querySelector(`input[type=checkbox][value="${product._id}"]`);
           Session.set("productGrid/selectedProducts", []);
