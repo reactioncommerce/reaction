@@ -3,10 +3,12 @@ import PropTypes from "prop-types";
 import AccountsTable from "./accountsTable";
 import _ from "lodash";
 import { Shops } from "/lib/collections";
+// import { Badge, ClickToCopy, Icon, Translation } from "@reactioncommerce/reaction-ui";
 
 class AccountsComponent extends Component {
   static propTypes = {
-    accounts: PropTypes.array
+    accounts: PropTypes.array,
+    groups: PropTypes.array
   }
 
   constructor(props) {
@@ -35,28 +37,30 @@ class AccountsComponent extends Component {
     const fufillment = [];
     const customerServicers = [];
     const merchandisers = [];
-    this.state.accounts.forEach((account) => {
-      const userGroup = _.get(Shops.findOne(
-        {
-          _id: account.shopId
-        }
-      ), "groups").filter(group => group._id === account.groups[0].groupId[0]);
-      if (userGroup[0]) {
-        const groupName = userGroup[0].name;
-        if (groupName === "Shop Manager") {
-          shopManagers.push(account);
-        }
-        if (groupName === "Merchandiser") {
-          merchandisers.push(account);
-        }
-        if (groupName === "Fufillment") {
-          fufillment.push(account);
-        }
-        if (groupName === "Customer Service") {
-          customerServicers.push(account);
-        }
-      }
-    });
+    const groupedUsers = [];
+    console.log("ihih", this.props);
+    // this.state.accounts.forEach((account) => {
+    //   const userGroup = _.get(Shops.findOne(
+    //     {
+    //       _id: account.shopId
+    //     }
+    //   ), "groups").filter(group => group._id === account.groups[0].groupId[0]);
+    //   if (userGroup[0]) {
+    //     const groupName = userGroup[0].name;
+    //     if (groupName === "Shop Manager") {
+    //       shopManagers.push(account);
+    //     }
+    //     if (groupName === "Merchandiser") {
+    //       merchandisers.push(account);
+    //     }
+    //     if (groupName === "Fufillment") {
+    //       fufillment.push(account);
+    //     }
+    //     if (groupName === "Customer Service") {
+    //       customerServicers.push(account);
+    //     }
+    //   }
+    // });
     this.setState(
       { shopManagers,
         customerServicers,
@@ -67,12 +71,17 @@ class AccountsComponent extends Component {
   }
 
   renderShopManagers() {
+    const headerLabel =  { __html: "you" };
+    // TODO: set default badge in here
     if (this.state.shopManagers.length > 0) {
       return (
-        <AccountsTable
-          users={this.state.shopManagers}
-          headerLabel="Shop Manager"
-        />
+        <div style={{ marginBottom: "10px" }}>
+          <AccountsTable
+            users={this.state.shopManagers}
+            headerLabel="Shop Manager"
+            dangerouslySetInnerHTML={headerLabel}
+          />
+        </div>
       );
     }
     return null;
@@ -81,10 +90,12 @@ class AccountsComponent extends Component {
   renderCustomerServicers() {
     if (this.state.customerServicers.length > 0) {
       return (
-        <AccountsTable
-          users={this.state.customerServicers}
-          headerLabel="Customer Service"
-        />
+        <div style={{ marginBottom: "10px" }}>
+          <AccountsTable
+            users={this.state.customerServicers}
+            headerLabel="Customer Service"
+          />
+        </div>
       );
     }
     return null;
@@ -93,10 +104,12 @@ class AccountsComponent extends Component {
   renderMerchandisers() {
     if (this.state.merchandisers.length > 0) {
       return (
-        <AccountsTable
-          users={this.state.merchandisers}
-          headerLabel="Merchandisers"
-        />
+        <div style={{ marginBottom: "10px" }}>
+          <AccountsTable
+            users={this.state.merchandisers}
+            headerLabel="Merchandisers"
+          />
+        </div>
       );
     }
     return null;
@@ -105,10 +118,12 @@ class AccountsComponent extends Component {
   renderFufillment() {
     if (this.state.fufillment.length > 0) {
       return (
-        <AccountsTable
-          users={this.state.fufillment}
-          headerLabel="Merchandisers"
-        />
+        <div style={{ marginBottom: "10px" }}>
+          <AccountsTable
+            users={this.state.fufillment}
+            headerLabel="Merchandisers"
+          />
+        </div>
       );
     }
     return null;

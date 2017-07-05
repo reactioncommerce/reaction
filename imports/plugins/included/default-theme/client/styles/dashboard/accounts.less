@@ -7,17 +7,10 @@
 
 .shop-member-groups {
 
-  // ul {
-
-  //   // border: none;
-  // }
   label {
     font-weight: normal;
     text-transform: capitalize;
   }
-  // li {
-  //   // border: none !important;
-  // }
 
   .permission-toggle {
     background-color: @black05;
@@ -162,4 +155,178 @@ remove-btn {
 
 .push-right {
   margin-right: 10%;
+}
+/*here*/
+.accounts-table .rt-tr {
+  display: flex;
+}
+
+.accounts-table .rt-td {
+  font-family: SourceSansPro;
+}
+
+.accounts-table .content-view {
+  font-weight: bold !important;
+  letter-spacing: 0.3px;
+  color: #505558;
+}
+.accounts-table .rt-td {
+  display: flex;
+}
+
+.accounts-table .rt-tr div:nth-child(2) {
+   width: 210px;
+}
+
+.accounts-table .rt-tr div:nth-child(1) {
+   width: 170px;
+}
+.accounts-table .rt-tr div:nth-child(3) {
+   width: 120px;
+}
+.accounts-table .rt-tr div:nth-child(4) {
+   width: 100px;
+}
+.accounts-table .rt-tr div:nth-child(5) {
+   width: 150px;
+}
+.accounts-table .rt-tr div:nth-child(6) {
+   width: 55px;
+}
+
+.accounts-table .rt-thead .rt-tr {
+  height: 32px;
+  background-color: #f5f5f5;
+  border-bottom: 1px solid #cccccc
+}
+
+.accounts-table .rt-td {
+  height: 53px;
+}
+
+.accounts-table .rt-td span {
+  position: relative;
+  left: 1%;
+  right: 2%;
+  top: 20%;
+}
+
+.accounts-table .rt-td span#dropdown button{
+  border: 1px solid #98afbc;
+  height: 30px;
+  width: 130px;
+  background-color: #ffffff;
+  color: #4f575b;
+  font-weight: 600;
+  font: 20px !important;
+  font-family: SourceSansPro;
+  font-size: 16px;
+}
+
+.accounts-table .rt-td span#accounts-btn button{
+  height: 30px;
+  width: 80px;
+  font-family: SourceSansPro;
+  background-color: #eb4d5c;
+  border: none;
+  color: #ffffff;
+  text-align: center;
+  font: 20px !important;
+  font-weight: 600;
+  font-size: 16px;
+}
+@media only screen and (max-width: 500px) {
+  .accounts-table .rt-td {
+    width: 35% !important;
+  }
+}
+
+.accounts-table .-pagination {
+  display: none;
+}
+
+.accounts-table .-loading-inner {
+  display: none;
+}
+
+.accounts-table .rt-tr-group {
+  border: 1px solid #cccccc;
+  border-top: none;
+}
+
+.accounts-table .pannel-group {
+  margin-bottom: 20px;
+}
+
+.accounts-table .rui.card-header.expandable {
+  background-color: #ebf7fc !important;
+  // background: none;
+}
+
+.accounts-table .rui.card-header.expandable:before {
+  font-family: FontAwesome;
+  content: "\f054";
+  position: relative;
+  left: 98%;
+  top: 30%;
+  pointer-events: all;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+}
+
+.accounts-table label input {
+  transform: scale(1.5);
+  -ms-transform: scale(1.5);
+  -webkit-transform: scale(1.5);
+  position: relative;
+  left: -9px;
+}
+
+.accounts-table .rui .expander {
+  display: none;
+}
+
+.accounts-table .panel-body{
+  padding: 7px;
+  padding-right: 15px;
+}
+
+.groups-form .panel-body{
+  padding: 7px;
+}
+
+.groups-form .rui .list-group-item {
+  background-color: #f5f5f5; 
+}
+
+.groups-form .rui.card-toolbar div{
+  span {
+    position: relative;
+    right: 270%;
+  }
+}
+
+.settings .rui.expander.open{
+  display: none;
+}
+
+.settings .rui.btn.btn-default.outline.icon-only.variant-edit {
+  display: none;
+}
+
+.settings label.rui.switch {
+  position: relative;
+  right: 37%;
+}
+
+.settings label.rui.switch + span{
+  position: relative;
+  right: 35%;
+  color: #5e6264;
+  font-weight: 600;
+}
+
+.settings .rui.panel-heading.card-header.expandable {
+  background: #ebf7fc;
 }

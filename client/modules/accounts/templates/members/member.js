@@ -3,6 +3,7 @@ import { Reaction } from "/client/api";
 import { Packages, Shops } from "/lib/collections";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
+import AccountsSettingsContainer from "/imports/plugins/core/accounts/client/containers/accountsSettingsContainer";
 
 const getPermissionMap = (permissions) => {
   const permissionMap = {};
@@ -131,6 +132,13 @@ Template.memberSettings.helpers({
     });
 
     return _.get(avalara, "settings.avalara.enabled", false);
+  },
+
+  settings() {
+    return AccountsSettingsContainer;
+  },
+  data() {
+    return this.userId ? true : false;
   }
 });
 
