@@ -1,6 +1,6 @@
-import _ from "lodash";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
 import { composeWithTracker } from "/lib/api/compose";
