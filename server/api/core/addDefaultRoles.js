@@ -26,7 +26,6 @@ export function addRolesToDefaultRoleSet(options = { allShops: false, roles: [],
 
   const { allShops, roles, shops, roleSets } = options;
   const query = {};
-  // const update = {};
   const multi = { multi: true };
   let groupRolesSets = [];
   groupRolesSets = [...groupRolesSets, _.includes(roleSets, "defaultVisitorRole") && "guest"];
@@ -39,11 +38,6 @@ export function addRolesToDefaultRoleSet(options = { allShops: false, roles: [],
       $in: shops || []
     };
   }
-
-  // roleSets.forEach((roleSet) => {
-  //   // We should add each role to each roleSet passed in.
-  //   update[roleSet] = { $each: roles };
-  // });
 
   if (allShops) {
     Logger.debug(`Adding Roles: ${roles} to Group: ${groupRolesSets} for all shop groups`);

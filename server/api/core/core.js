@@ -36,11 +36,11 @@ export default {
     this.loadPackages();
     // process imports from packages and any hooked imports
     this.Import.flush();
+    this.createDefaultGroups();
     // timing is important, packages are rqd for initial permissions configuration.
     if (!Meteor.isAppTest) {
       this.createDefaultAdminUser();
     }
-    this.createDefaultGroups();
     this.setAppVersion();
     // hook after init finished
     Hooks.Events.run("afterCoreInit");
