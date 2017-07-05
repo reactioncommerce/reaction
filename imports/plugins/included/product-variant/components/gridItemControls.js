@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { IconButton, Translation } from "/imports/plugins/core/ui/client/components";
+import { IconButton, Translation } from "@reactioncommerce/reaction-ui";
 
 class GridItemControls extends Component {
 
