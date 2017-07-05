@@ -1,7 +1,7 @@
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Roles } from "meteor/alanning:roles";
-import { Reaction, Logger } from "/server/api";
+import { Reaction, Logger, Hooks } from "/server/api";
 import { Accounts, Groups } from "/lib/collections";
 import { getSlug } from "/lib/api";
 
@@ -26,6 +26,7 @@ Meteor.methods({
     check(groupData.description, Match.Optional(String));
     check(groupData.permissions, [String]);
     check(shopId, String);
+    let res;
 
     if (!Reaction.hasPermission("admin")) {
       throw new Meteor.Error(403, "Access Denied");
@@ -40,15 +41,14 @@ Meteor.methods({
     if (groupExists) {
       throw new Meteor.Error(400, "Bad request");
     }
-
     try {
-      Groups.insert(newGroupData);
+      res = Groups.insert(newGroupData);
     } catch (error) {
       Logger.error(error);
       throw new Meteor.Error(400, "Bad request");
     }
 
-    return { status: 200 };
+    return { groupId: res, status: 200 };
   },
 
   /**
@@ -116,7 +116,7 @@ Meteor.methods({
 
     try {
       Meteor.call("accounts/addUserPermissions", userId, permissions, shopId);
-      Accounts.update({ _id: userId }, { $addToSet: { groups: groupId } });
+      Accounts.update({ _id: userId }, { $set: { groups: [groupId] } });
       return { status: 200 };
     } catch (error) {
       Logger.error(error);
@@ -165,3 +165,7 @@ function setUserPermissions(users, newGroupData, shopId) {
 
   return affectedUsers.forEach(user => Roles.setUserRoles(user._id, newGroupData.permissions, shopId));
 }
+
+Hooks.Events.add("afterCreateDefaultAdminUser", (user) => {
+  return Accounts.update({ _id: user._id }, { $set: { groups: ["owner"] } });
+});

@@ -315,7 +315,7 @@ export default {
     return defaultValue || undefined;
   },
 
-  /**
+  /** // TODO: Check to see if this is still being used
    * Add default roles for new visitors
    * @param {String|Array} roles - A string or array of roles and routes
    * @returns {undefined} - does not specifically return anything
