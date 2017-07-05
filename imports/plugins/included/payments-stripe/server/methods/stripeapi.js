@@ -82,11 +82,19 @@ StripeApi.methods.createCharge = new ValidatedMethod({
       // Handle "expected" errors differently
       if (e.rawType === "card_error" && _.includes(expectedErrors, e.code)) {
         Logger.debug("Error from Stripe is expected, not throwing");
-        return { error: e, result: null };
+        const normalizedError = {
+          details: e.message
+        };
+        return { error: normalizedError, result: null };
       }
-      Logger.error("Received unexpected error code: " + e.code);
+      Logger.error("Received unexpected error type: " + e.rawType);
       Logger.error(e);
-      return { error: e, result: null };
+
+      // send raw error to server log, but sanitized version to client
+      const sanitisedError = {
+        details: "An unexpected error has occurred"
+      };
+      return { error: sanitisedError, result: null };
     }
   }
 });

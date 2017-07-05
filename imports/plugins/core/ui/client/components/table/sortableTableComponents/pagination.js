@@ -70,25 +70,25 @@ class SortableTablePagination extends Component {
             {this.props.pageText}{" "}
             {showPageJump
               ? <div className="-pageJump">
-                  <input
-                    type={this.state.page === "" ? "text" : "number"}
-                    onChange={e => {
-                      const val = e.target.value;
+                <input
+                  type={this.state.page === "" ? "text" : "number"}
+                  onChange={e => {
+                    const val = e.target.value;
                       const page = val - 1; // eslint-disable-line
-                      if (val === "") {
-                        return this.setState({ page: val });
-                      }
-                      this.setState({ page: this.getSafePage(page) });
-                    }}
-                    value={this.state.page === "" ? "" : this.state.page + 1}
-                    onBlur={this.applyPage}
-                    onKeyPress={e => {
-                      if (e.which === 13 || e.keyCode === 13) {
-                        this.applyPage();
-                      }
-                    }}
-                  />
-                </div>
+                    if (val === "") {
+                      return this.setState({ page: val });
+                    }
+                    this.setState({ page: this.getSafePage(page) });
+                  }}
+                  value={this.state.page === "" ? "" : this.state.page + 1}
+                  onBlur={this.applyPage}
+                  onKeyPress={e => {
+                    if (e.which === 13 || e.keyCode === 13) {
+                      this.applyPage();
+                    }
+                  }}
+                />
+              </div>
               : <span className="-currentPage">{page + 1}</span>}{" "}
             {this.props.ofText}{" "}
             <span className="-totalPages">{pages || 1}</span>
