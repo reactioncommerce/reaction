@@ -12,8 +12,7 @@ import { Logger } from "/server/api";
  * shops: Array of shopIds that should be added to set
  * roleSets: Rolesets to add roles to, Options: ["defaultRoles", "defaultVisitorRole", "defaultSellerRoles"]
  * defaultRoles goes into the Customer group
- * defaultVisitorRole goes into the Guest group. ?? Why did we not pluralize this as defaultVisitorRoles?
- * defaultSellerRoles goes into ???
+ * defaultVisitorRole goes into the Guest group.
  * TODO: Review and eliminate rolesets other than "default"
  * @param {Object} options - See above for details
  * @returns {Number} result of Shops.update method (number of documents updated)
@@ -32,17 +31,12 @@ export function addRolesToDefaultRoleSet(options = { allShops: false, roles: [],
   groupRolesSets = [...groupRolesSets, _.includes(roleSets, "defaultRoles") && "customer"];
   query.slug = { $in: groupRolesSets };
 
-  if (!allShops) {
-    // if we're not updating for all shops, we should only update for the shops passed in.
-    query.shopId = {
-      $in: shops || []
-    };
-  }
-
   if (allShops) {
     Logger.debug(`Adding Roles: ${roles} to Group: ${groupRolesSets} for all shop groups`);
   } else {
     Logger.debug(`Adding Roles: ${roles} to Group: ${groupRolesSets} for shops: ${shops}`);
+    // if we're not updating for all shops, we should only update for the shops passed in.
+    query.shopId = { $in: shops || [] };
   }
 
   return Groups.update(query, { $addToSet: { permissions: { $each: roles } } }, multi);
