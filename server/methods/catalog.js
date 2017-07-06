@@ -601,14 +601,14 @@ Meteor.methods({
       uniqueShopIds.forEach((shopId) => {
         if (!Reaction.hasPermission("createProduct", this.userId, shopId)) {
           throw new Meteor.Error(403,
-          "Access Denied");
+            "Access Denied");
         }
       });
     } else {
       // Single product was passed in - ensure that user has permission to clone
       if (!Reaction.hasPermission("createProduct", this.userId, productOrArray.shopId)) {
         throw new Meteor.Error(403,
-        "Access Denied");
+          "Access Denied");
       }
     }
 

@@ -4,7 +4,6 @@ import { Template } from "meteor/templating";
 import { $ } from "meteor/jquery";
 
 
-
 /**
  * memberForm events
  *
