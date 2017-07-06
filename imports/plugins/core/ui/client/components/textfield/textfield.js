@@ -14,6 +14,18 @@ class TextField extends Component {
     return this.props.value || "";
   }
 
+  get isValid() {
+    const { isValid, validation } = this.props;
+
+    if (typeof isValid === "boolean") {
+      return isValid;
+    } else if (typeof validation === "object") {
+      return false;
+    }
+
+    return undefined;
+  }
+
   /**
    * onValueChange
    * @summary set the state when the value of the input is changed
@@ -134,6 +146,14 @@ class TextField extends Component {
   }
 
   renderHelpText() {
+    if (this.props.validation) {
+      return (
+        <span className="help-block">
+          <Translation defaultValue={this.props.validation.message} i18nKey={this.props.validation.message} />
+        </span>
+      );
+    }
+
     if (this.props.helpText) {
       return (
         <span className="help-block">
@@ -155,6 +175,8 @@ class TextField extends Component {
       "rui": true,
       "textfield": true,
       "form-group": true,
+      "has-error": this.isValid === false,
+      "has-success": this.isValid === true,
 
       // Alignment
       "center": this.props.align === "center",
@@ -186,6 +208,7 @@ TextField.propTypes = {
   i18nKeyLabel: PropTypes.string,
   i18nKeyPlaceholder: PropTypes.string,
   id: PropTypes.string,
+  isValid: PropTypes.bool,
   label: PropTypes.string,
   multiline: PropTypes.bool,
   name: PropTypes.string,

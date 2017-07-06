@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import _ from "lodash";
+import _, { omit } from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
 import { composeWithTracker } from "/lib/api/compose";
@@ -10,25 +10,30 @@ import { Countries } from "/client/collections";
 import { Reaction, i18next } from "/client/api";
 import { TaxCodes } from "/imports/plugins/core/taxes/lib/collections";
 import VariantForm from "../components/variantForm";
+import { ProductVariant } from "/lib/collections/schemas/products";
+
 
 class VariantFormContainer extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      variant: props.variant,
+      validationMessages: {},
       isDeleted: props.variant.isDeleted
     };
 
-    this.isProviderEnabled = this.isProviderEnabled.bind(this);
-    this.fetchTaxCodes = this.fetchTaxCodes.bind(this);
-    this.hasChildVariants = this.hasChildVariants.bind(this);
-    this.greyDisabledFields = this.greyDisabledFields.bind(this);
-    this.removeVariant = this.removeVariant.bind(this);
-    this.restoreVariant = this.restoreVariant.bind(this);
-    this.cloneVariant = this.cloneVariant.bind(this);
-    this.handleVariantFieldSave = this.handleVariantFieldSave.bind(this);
-    this.handleCardExpand = this.handleCardExpand.bind(this);
-    this.updateQuantityIfChildVariants = this.updateQuantityIfChildVariants.bind(this);
+    this.validation = new Validation(ProductVariant);
+  }
+
+  componentDidMount() {
+    this.validationContext = ProductVariant.namedContext("variantForm");
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState(() => ({
+      variant: nextProps.variant
+    }));
   }
 
   isProviderEnabled = () => {
@@ -157,13 +162,47 @@ class VariantFormContainer extends Component {
       });
   }
 
-  handleVariantFieldSave = (variantId, fieldName, value) => {
+  handleVariantFieldSave = (variantId, fieldName, value, variant) => {
+    // const isValid = this.validationContext.validate(variant)
+    // const varaintToValidate = omit(variant, ["__revisions", "__published", "__draft"]) // Make a copu
+    // console.log(variant, varaintToValidate);
+    // const isValid = this.validationContext.validate(ProductVariant.clean(varaintToValidate))
+    // const { _invalidKeys } = this.validationContext
+    //
+    //
+    // const validationMessages = {}
+    //
+    // this.validationContext._invalidKeys
+    //   // .filter((v) => v.name === fieldName)
+    //   .forEach((validationError) => {
+    //     validationMessages[validationError.name] = {
+    //       ...validationError,
+    //       message: this.validationContext.keyErrorMessage(validationError.name)
+    //     }
+    //   });
+    //
+    // console.log("Variant form is valid, isValid", isValid, _invalidKeys, this.validationContext)
+    // console.log("-----------------------------------------");
+    // console.log(validationMessages);
+
+    const { isValid, validationMessages } = this.validation.validate(variant)
+
+    if (isValid === false) {
+      this.setState(() => {
+        return {
+          validationMessages,
+          variant
+        };
+      });
+    }
+
+    /**
     Meteor.call("products/updateProductField", variantId, fieldName, value, (error) => {
       if (error) {
         Alerts.toast(error.message, "error");
         this.forceUpdate();
       }
-    });
+    });**/
   }
 
   handleCardExpand = (cardName) => {
@@ -190,26 +229,53 @@ class VariantFormContainer extends Component {
         onVariantFieldSave={this.handleVariantFieldSave}
         onCardExpand={this.handleCardExpand}
         onUpdateQuantityField={this.updateQuantityIfChildVariants}
+        validationMessages={this.state.validationMessages}
         isDeleted={this.state.isDeleted}
         {...this.props}
+        variant={this.state.variant}
       />
     );
   }
 }
 
-function composer(props, onData) {
-  const countries = Countries.find({}).fetch();
+class Validation {
+  constructor(schema, options) {
+    this.validationContext = schema.namedContext();
+    this.options = options;
+  }
 
+  validate(objectToValidate) {
+    const isValid = this.validationContext.validate(ProductVariant.clean(objectToValidate));
+    const validationMessages = {};
+
+    this.validationContext._invalidKeys
+      .forEach((validationError) => {
+        validationMessages[validationError.name] = {
+          ...validationError,
+          message: this.validationContext.keyErrorMessage(validationError.name)
+        };
+      });
+
+    return {
+      isValid,
+      validationMessages
+    };
+  }
+}
+
+function composer(props, onData) {
+  Meteor.subscribe("TaxCodes");
+
+  const countries = Countries.find({}).fetch();
   const productHandle = Reaction.Router.getParam("handle");
+
   if (!productHandle) {
     Reaction.clearActionView();
   }
 
-  Meteor.subscribe("TaxCodes");
-
   onData(null, {
     countries,
-    variant: props.variant,
+    variant: ReactionProduct.selectedTopVariant() || {},
     editFocus: Reaction.state.get("edit/focus")
   });
 }
