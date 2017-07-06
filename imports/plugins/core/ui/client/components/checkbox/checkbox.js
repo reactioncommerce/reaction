@@ -9,16 +9,26 @@ class Checkbox extends Component {
     }
   }
 
+  renderLabel() {
+    const { label, i18nKeyLabel } = this.props;
+    if (label || i18nKeyLabel) {
+      return (<Translation defaultValue={this.props.label} i18nKey={this.props.i18nKeyLabel} />);
+    }
+    return null;
+  }
+
   render() {
     return (
       <label>
         <input
           checked={this.props.checked}
           onChange={this.handleChange}
+          className={this.props.className}
           ref="checkbox"
           type="checkbox"
+          onMouseOut={this.props.onMouseOut}
         />
-        <Translation defaultValue={this.props.label} i18nKey={this.props.i18nKeyLabel} />
+        {this.renderLabel()}
       </label>
     );
   }
@@ -30,10 +40,12 @@ Checkbox.defaultProps = {
 
 Checkbox.propTypes = {
   checked: PropTypes.bool,
+  className: PropTypes.string,
   i18nKeyLabel: PropTypes.string,
   label: PropTypes.string,
   name: PropTypes.string,
-  onChange: PropTypes.func
+  onChange: PropTypes.func,
+  onMouseOut: PropTypes.func
 };
 
 export default Checkbox;
