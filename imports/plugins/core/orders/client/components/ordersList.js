@@ -4,7 +4,7 @@ import Avatar from "react-avatar";
 import moment from "moment";
 import { formatPriceString } from "/client/api";
 // import { Orders } from "/lib/collections";
-import { SortableTable, Loading, RolloverCheckbox } from "/imports/plugins/core/ui/client/components";
+import { SortableTable, Loading, RolloverCheckbox, Checkbox } from "/imports/plugins/core/ui/client/components";
 import { Badge, ClickToCopy, Icon, Translation } from "@reactioncommerce/reaction-ui";
 import ProductImage from "./productImage";
 
@@ -159,11 +159,18 @@ class OrdersList extends Component {
     const columnNames = Object.keys(filteredFields);
     const { selectedItems, handleSelect } = this.props;
     columnNames.forEach((columnName) => {
+      let colStyle = { borderRight: "none" };
+      let colHeader = undefined;
+
+      if (columnName === "Name") {
+        colStyle = { borderRight: "1px solid #e6e6e6" };
+        colHeader = () => <div style={{ display: "inline-flex", paddingLeft: 5 }}><Checkbox className="order-header-checkbox checkbox"/> <span style={{ marginLeft: 5 }}>{columnName}</span></div>;
+      }
       const columnMeta = {
         accessor: filteredFields[columnName],
-        Header: columnName,
-        headerStyle: { borderRight: "none", textAlign: "left" },
-        style: { borderRight: "none" },
+        Header: colHeader ? colHeader : columnName,
+        headerStyle: { borderRight: "none", textAlign: "left", paddingTop: 15 },
+        style: colStyle,
         Cell: row => {
           const bla = row.column.id;
           if (bla === "shipping[0].address.fullName") {
