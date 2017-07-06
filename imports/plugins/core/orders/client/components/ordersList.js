@@ -273,7 +273,7 @@ class OrdersList extends Component {
       <div>
         {this.renderBulkOrderActionsBar()}
         <SortableTable
-          tableClassName="rui order table -highlight"
+          tableClassName={`rui order table ${this.renderClassNameHidden()} -highlight`}
           data={orders}
           columnMetadata={customColumnMetadata}
           externalLoadingComponent={Loading}
@@ -350,6 +350,9 @@ class OrdersList extends Component {
     }
   }
 
+  renderClassNameHidden() {
+    return this.props.selectedItems.length > 0 ? "table-header-hidden" : "table-header-visible";
+  }
 
   render() {
     const { orders, openDetail, openList, handleDetailToggle, handleListToggle, hasMoreOrders } = this.props;
