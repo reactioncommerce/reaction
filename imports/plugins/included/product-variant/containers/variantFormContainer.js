@@ -163,29 +163,8 @@ class VariantFormContainer extends Component {
   }
 
   handleVariantFieldSave = (variantId, fieldName, value, variant) => {
-    // const isValid = this.validationContext.validate(variant)
-    // const varaintToValidate = omit(variant, ["__revisions", "__published", "__draft"]) // Make a copu
-    // console.log(variant, varaintToValidate);
-    // const isValid = this.validationContext.validate(ProductVariant.clean(varaintToValidate))
-    // const { _invalidKeys } = this.validationContext
-    //
-    //
-    // const validationMessages = {}
-    //
-    // this.validationContext._invalidKeys
-    //   // .filter((v) => v.name === fieldName)
-    //   .forEach((validationError) => {
-    //     validationMessages[validationError.name] = {
-    //       ...validationError,
-    //       message: this.validationContext.keyErrorMessage(validationError.name)
-    //     }
-    //   });
-    //
-    // console.log("Variant form is valid, isValid", isValid, _invalidKeys, this.validationContext)
-    // console.log("-----------------------------------------");
-    // console.log(validationMessages);
 
-    const { isValid, validationMessages } = this.validation.validate(variant)
+    const { isValid, validationMessages } = this.validation.validate(variant);
 
     if (isValid === false) {
       this.setState(() => {
