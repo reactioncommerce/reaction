@@ -72,6 +72,7 @@ class OrdersListContainer extends Component {
   }
 
   selectAllOrders = (orders, areAllSelected) => {
+    const selected = this.state.selectedItems;
     if (areAllSelected) {
       // if all orders are selected, clear the selectedItems array
       // and set multipleSelect to false
@@ -80,19 +81,24 @@ class OrdersListContainer extends Component {
         multipleSelect: false
       });
     } else {
-      // clear selectedItems array first
-      this.setState({
-        selectedItems: []
-      });
-      // loop through the orders array and return a new array with order ids only
-      const orderIds = orders.map((order) => {
-        return order._id;
-      });
-      // then set the array with the orderIds array
-      this.setState({
-        selectedItems: orderIds,
-        multipleSelect: true
-      });
+      // if there are some products that have been selected,
+      // but not all clear the selectedItems array
+      if (selected.length !== 0 && selected.length < orders.length) {
+        this.setState({
+          selectedItems: [],
+          multipleSelect: false
+        });
+        // if there are no selected productsloop through the orders array and return a
+        // new array with order ids only, then set the array with the orderIds array
+      } else if (selected.length === 0) {
+        const orderIds = orders.map((order) => {
+          return order._id;
+        });
+        this.setState({
+          selectedItems: orderIds,
+          multipleSelect: true
+        });
+      }
     }
   }
 
