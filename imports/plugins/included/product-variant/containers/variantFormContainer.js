@@ -163,7 +163,6 @@ class VariantFormContainer extends Component {
   }
 
   handleVariantFieldSave = (variantId, fieldName, value, variant) => {
-
     const { isValid, validationMessages } = this.validation.validate(variant);
 
     if (isValid === false) {
@@ -173,15 +172,14 @@ class VariantFormContainer extends Component {
           variant
         };
       });
+    } else {
+      Meteor.call("products/updateProductField", variantId, fieldName, value, (error) => {
+        if (error) {
+          Alerts.toast(error.message, "error");
+          this.forceUpdate();
+        }
+      });
     }
-
-    /**
-    Meteor.call("products/updateProductField", variantId, fieldName, value, (error) => {
-      if (error) {
-        Alerts.toast(error.message, "error");
-        this.forceUpdate();
-      }
-    });**/
   }
 
   handleCardExpand = (cardName) => {
