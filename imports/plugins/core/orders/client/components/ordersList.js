@@ -17,9 +17,11 @@ class OrdersList extends Component {
     handleSelect: PropTypes.func,
     handleShowMoreClick: PropTypes.func,
     hasMoreOrders: PropTypes.bool,
+    multipleSelect: PropTypes.bool,
     openDetail: PropTypes.bool,
     openList: PropTypes.bool,
     orders: PropTypes.array,
+    selectAllOrders: PropTypes.func,
     selectedItems: PropTypes.array
   }
 
@@ -156,14 +158,23 @@ class OrdersList extends Component {
     };
     const customColumnMetadata = [];
     const columnNames = Object.keys(filteredFields);
-    const { selectedItems, handleSelect } = this.props;
+    const { selectedItems, handleSelect, multipleSelect, selectAllOrders } = this.props;
     columnNames.forEach((columnName) => {
       let colStyle = { borderRight: "none" };
       let colHeader = undefined;
 
       if (columnName === "Name") {
         colStyle = { borderRight: "1px solid #e6e6e6" };
-        colHeader = () => <div style={{ display: "inline-flex", paddingLeft: 5 }}><Checkbox className="order-header-checkbox checkbox"/> <span style={{ marginLeft: 5 }}>{columnName}</span></div>;
+        colHeader = () =>
+          <div style={{ display: "inline-flex", paddingLeft: 5 }}>
+            <Checkbox
+              className="order-header-checkbox checkbox"
+              checked={multipleSelect}
+              name="orders-checkbox"
+              onChange={() => selectAllOrders(orders, multipleSelect)}
+            />
+            <span style={{ marginLeft: 5 }}>{columnName}</span>
+          </div>;
       }
       const columnMeta = {
         accessor: filteredFields[columnName],
@@ -305,17 +316,20 @@ class OrdersList extends Component {
   }
 
   renderBulkOrderActionsBar() {
-    if (this.props.selectedItems.length > 0) {
+    const { orders, selectedItems, multipleSelect, selectAllOrders } = this.props;
+
+    if (selectedItems.length > 0) {
       return (
         <div className="bulk-order-actions-bar">
           <Checkbox
-            checked={false}
             className="checkbox orders-checkbox"
-            name=""
+            checked={multipleSelect}
+            name="orders-checkbox"
+            onChange={() => selectAllOrders(orders, multipleSelect)}
           />
           <Translation
             className="selected-orders"
-            defaultValue={`${this.props.selectedItems.length} Selected`}
+            defaultValue={`${selectedItems.length} Selected`}
           />
           <Button
             status="success"

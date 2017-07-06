@@ -29,7 +29,8 @@ class OrdersListContainer extends Component {
       openList: true,
       selectedItems: [],
       orders: props.orders,
-      hasMoreOrders: props.hasMoreOrders()
+      hasMoreOrders: props.hasMoreOrders(),
+      multipleSelect: false
     };
 
     this.handleClick = this.handleClick.bind(this);
@@ -37,6 +38,7 @@ class OrdersListContainer extends Component {
     this.handleDetailToggle = this.handleDetailToggle.bind(this);
     this.handleDisplayMedia = this.handleDisplayMedia.bind(this);
     this.handleSelect = this.handleSelect.bind(this);
+    this.selectAllOrders = this.selectAllOrders.bind(this);
   }
 
   componentWillReceiveProps = (nextProps) => {
@@ -47,6 +49,9 @@ class OrdersListContainer extends Component {
   }
 
   handleSelect = (event, bla1, bla2) => {
+    this.setState({
+      multipleSelect: false
+    });
     const originalArray = this.state.selectedItems;
 
     if (!originalArray.includes(bla2)) {
@@ -62,6 +67,31 @@ class OrdersListContainer extends Component {
       });
       this.setState({
         selectedItems: newArray
+      });
+    }
+  }
+
+  selectAllOrders = (orders, areAllSelected) => {
+    if (areAllSelected) {
+      // if all orders are selected, clear the selectedItems array
+      // and set multipleSelect to false
+      this.setState({
+        selectedItems: [],
+        multipleSelect: false
+      });
+    } else {
+      // clear selectedItems array first
+      this.setState({
+        selectedItems: []
+      });
+      // loop through the orders array and return a new array with order ids only
+      const orderIds = orders.map((order) => {
+        return order._id;
+      });
+      // then set the array with the orderIds array
+      this.setState({
+        selectedItems: orderIds,
+        multipleSelect: true
       });
     }
   }
@@ -145,6 +175,8 @@ class OrdersListContainer extends Component {
           openDetail= {this.state.openDetail}
           selectedItems={this.state.selectedItems}
           openList={this.state.openList}
+          selectAllOrders={this.selectAllOrders}
+          multipleSelect={this.state.multipleSelect}
         />
     );
   }
