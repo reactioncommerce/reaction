@@ -1,3 +1,7 @@
+import { Template } from "meteor/templating";
+import { $ } from "meteor/jquery";
+import { Blaze } from "meteor/blaze";
+import { ReactiveDict } from "meteor/reactive-dict";
 import { FlatButton } from "/imports/plugins/core/ui/client/components";
 import { NotificationContainer } from "/imports/plugins/included/notifications/client/containers";
 import { Reaction } from "/client/api";
@@ -45,7 +49,6 @@ Template.CoreNavigationBar.helpers({
       component: MainDropdown
     };
   },
-
   navbar() {
     return {
       component: NavBarContainer

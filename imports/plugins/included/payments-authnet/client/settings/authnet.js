@@ -20,7 +20,7 @@ AutoForm.hooks({
     onSuccess: function () {
       return Alerts.toast(i18next.t("admin.settings.saveSuccess"), "success");
     },
-    onError: function () {
+    onError: function (error) {
       return Alerts.toast(`${i18next.t("admin.settings.saveFailed")} ${error}`, "error");
     }
   }

@@ -1,4 +1,5 @@
-import React, { PropTypes } from "react";
+import React from "react";
+import PropTypes from "prop-types";
 import CartSubTotals from "../container/cartSubTotalContainer";
 import CartItems from "./cartItems";
 
@@ -30,7 +31,7 @@ const cartDrawer = ({ productItems, pdpPath, handleRemoveItem, handleCheckout, h
       <div className="row">
         <span className="rui btn btn-cta btn-lg btn-block" id="btn-checkout" data-i18n="cartDrawer.checkout" onClick={handleCheckout}>
           Checkout now
-          </span>
+        </span>
       </div>
     </div>
   );

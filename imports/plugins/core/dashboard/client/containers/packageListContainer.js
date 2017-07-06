@@ -1,4 +1,7 @@
 import React from "react";
+import { Meteor } from "meteor/meteor";
+import { Template } from "meteor/templating";
+import { Roles } from "meteor/alanning:roles";
 import { composeWithTracker } from "/lib/api/compose";
 import { Reaction } from "/client/api";
 import { Loading } from "/imports/plugins/core/ui/client/components";

@@ -1,3 +1,5 @@
+import _ from "lodash";
+import { Template } from "meteor/templating";
 import Sortable from "sortablejs";
 
 Template.tagList.onCreated(function () {

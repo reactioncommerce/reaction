@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { isEqual } from "lodash";
 import { Meteor } from "meteor/meteor";
 import { composeWithTracker } from "/lib/api/compose";

@@ -4,6 +4,7 @@ import bunyanFormat from "bunyan-format";
 import { Meteor } from "meteor/meteor";
 import Bunyan2Loggly from "./loggly";
 
+
 // configure bunyan logging module for reaction server
 // See: https://github.com/trentm/node-bunyan#levels
 const levels = ["FATAL", "ERROR", "WARN", "INFO", "DEBUG", "TRACE"];

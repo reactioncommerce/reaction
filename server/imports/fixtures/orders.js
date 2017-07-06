@@ -1,4 +1,7 @@
 import faker from "faker";
+import _ from "lodash";
+import { Random } from "meteor/random";
+import { Factory } from "meteor/dburles:factory";
 import { Orders, Products } from "/lib/collections";
 import { getShop } from "./shops";
 import { getUser } from "./users";

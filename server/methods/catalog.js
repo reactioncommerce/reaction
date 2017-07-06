@@ -1,6 +1,7 @@
 import _ from  "lodash";
+import { check, Match } from "meteor/check";
+import { Random } from "meteor/random";
 import { EJSON } from "meteor/ejson";
-import { check } from "meteor/check";
 import { Meteor } from "meteor/meteor";
 import { copyFile, ReactionProduct } from "/lib/api";
 import { ProductRevision as Catalog } from "/imports/plugins/core/revisions/server/hooks";
@@ -1302,7 +1303,7 @@ Meteor.methods({
           if (typeof variant.title === "string" && !variant.title.length) {
             variantValidator = false;
           }
-          if (typeof optionTitle === "string" && !optionTitle.length) {
+          if (typeof variant.optionTitle === "string" && !variant.optionTitle.length) {
             variantValidator = false;
           }
         });
