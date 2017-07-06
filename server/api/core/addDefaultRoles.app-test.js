@@ -14,7 +14,7 @@ describe("Server/API/Core", function () {
   afterEach(function () {
     sandbox.restore();
   });
-  // defaultRoles = default customer group; defaultVisitorRole = guest
+
   describe("addDefaultRoles", () => {
     beforeEach(function () {
       return Shops.remove({});
@@ -24,7 +24,7 @@ describe("Server/API/Core", function () {
       const shop = Factory.create("shop");
       let group = Factory.create("group", { shopId: shop._id, slug: "customer" });
 
-      Reaction.addRolesToDefaultRoleSet({ shops: [shop._id], roles: ["test-role"], roleSets: ["defaultRoles"] });
+      Reaction.addRolesToGroups({ shops: [shop._id], roles: ["test-role"], groups: ["customer"] });
       group = Groups.findOne({ slug: "customer", shopId: shop._id });
 
       expect(group.permissions).to.contain("test-role");
@@ -36,7 +36,7 @@ describe("Server/API/Core", function () {
       let group = Factory.create("group", { shopId: shop._id, slug: "customer" });
       let group2 = Factory.create("group", { shopId: shop2._id, slug: "customer" });
 
-      Reaction.addRolesToDefaultRoleSet({ shops: [shop._id, shop2._id], roles: ["test-role2"], roleSets: ["defaultRoles"] });
+      Reaction.addRolesToGroups({ shops: [shop._id, shop2._id], roles: ["test-role2"], groups: ["customer"] });
 
       group = Groups.findOne({ slug: "customer", shopId: shop._id });
       group2 = Groups.findOne({ slug: "customer", shopId: shop2._id });
@@ -50,7 +50,7 @@ describe("Server/API/Core", function () {
       let group = Factory.create("group", { shopId: shop._id, slug: "customer" });
       let group2 = Factory.create("group", { shopId: shop2._id, slug: "customer" });
 
-      Reaction.addRolesToDefaultRoleSet({ allShops: true, roles: ["test-all-shops"], roleSets: ["defaultRoles"] });
+      Reaction.addRolesToGroups({ allShops: true, roles: ["test-all-shops"], groups: ["customer"] });
       group = Groups.findOne({ slug: "customer", shopId: shop._id });
       group2 = Groups.findOne({ slug: "customer", shopId: shop2._id });
       expect(group.permissions).to.contain("test-all-shops");
@@ -63,7 +63,7 @@ describe("Server/API/Core", function () {
       let group = Factory.create("group", { shopId: shop._id, slug: "customer" });
       let group2 = Factory.create("group", { shopId: shop2._id, slug: "customer" });
 
-      Reaction.addRolesToDefaultRoleSet({ shops: [shop._id], roles: ["test-certain-shop"], roleSets: ["defaultRoles"] });
+      Reaction.addRolesToGroups({ shops: [shop._id], roles: ["test-certain-shop"], groups: ["customer"] });
 
       group = Groups.findOne({ slug: "customer", shopId: shop._id });
       group2 = Groups.findOne({ slug: "customer", shopId: shop2._id });
@@ -78,7 +78,7 @@ describe("Server/API/Core", function () {
       let group = Factory.create("group", { shopId: shop._id, slug: "customer" });
       let group2 = Factory.create("group", { shopId: shop2._id, slug: "customer" });
 
-      Reaction.addRolesToDefaultRoleSet({ shops: [], roles: ["test-no-shop"], roleSets: ["defaultRoles"] });
+      Reaction.addRolesToGroups({ shops: [], roles: ["test-no-shop"], groups: ["customer"] });
 
       group = Groups.findOne({ slug: "customer", shopId: shop._id });
       group2 = Groups.findOne({ slug: "customer", shopId: shop2._id });
@@ -91,7 +91,7 @@ describe("Server/API/Core", function () {
       const shop = Factory.create("shop");
       let group = Factory.create("group", { shopId: shop._id, slug: "customer" });
 
-      Reaction.addRolesToDefaultRoleSet({ shops: [shop._id], roles: ["test1", "test2"], roleSets: ["defaultRoles"] });
+      Reaction.addRolesToGroups({ shops: [shop._id], roles: ["test1", "test2"], groups: ["customer"] });
 
       group = Groups.findOne({ slug: "customer", shopId: shop._id });
 
@@ -108,7 +108,7 @@ describe("Server/API/Core", function () {
       let group2 = Factory.create("group", { shopId: shop2._id, slug: "customer" });
       let group3 = Factory.create("group", { shopId: shop3._id, slug: "customer" });
 
-      Reaction.addRolesToDefaultRoleSet({ shops: [shop._id, shop2._id], roles: ["test1", "test2"], roleSets: ["defaultRoles"] });
+      Reaction.addRolesToGroups({ shops: [shop._id, shop2._id], roles: ["test1", "test2"], groups: ["customer"] });
 
       group = Groups.findOne({ slug: "customer", shopId: shop._id });
       group2 = Groups.findOne({ slug: "customer", shopId: shop2._id });
@@ -131,7 +131,7 @@ describe("Server/API/Core", function () {
       let group2 = Factory.create("group", { shopId: shop2._id, slug: "customer" });
       let group3 = Factory.create("group", { shopId: shop3._id, slug: "customer" });
 
-      Reaction.addRolesToDefaultRoleSet({ allShops: true, roles: ["test1", "test2"], roleSets: ["defaultRoles"] });
+      Reaction.addRolesToGroups({ allShops: true, roles: ["test1", "test2"], groups: ["customer"] });
 
       group = Groups.findOne({ slug: "customer", shopId: shop._id });
       group2 = Groups.findOne({ slug: "customer", shopId: shop2._id });
@@ -154,7 +154,7 @@ describe("Server/API/Core", function () {
       let group2 = Factory.create("group", { shopId: shop2._id, slug: "customer" });
       let group3 = Factory.create("group", { shopId: shop3._id, slug: "customer" });
 
-      Reaction.addRolesToDefaultRoleSet({ allShops: true, shops: [shop._id, shop2._id], roles: ["test1", "test2"], roleSets: ["defaultRoles"] });
+      Reaction.addRolesToGroups({ allShops: true, shops: [shop._id, shop2._id], roles: ["test1", "test2"], groups: ["customer"] });
 
       group = Groups.findOne({ slug: "customer", shopId: shop._id });
       group2 = Groups.findOne({ slug: "customer", shopId: shop2._id });
@@ -173,7 +173,7 @@ describe("Server/API/Core", function () {
       let group = Factory.create("group", { shopId: shop._id, slug: "customer" });
       let group2 = Factory.create("group", { shopId: shop._id, slug: "guest" });
 
-      Reaction.addRolesToDefaultRoleSet({ allShops: true, shops: [shop._id], roles: ["test1", "test2"], roleSets: ["defaultRoles", "defaultVisitorRole"] });
+      Reaction.addRolesToGroups({ allShops: true, shops: [shop._id], roles: ["test1", "test2"], groups: ["customer", "guest"] });
 
       group = Groups.findOne({ slug: "customer", shopId: shop._id });
       group2 = Groups.findOne({ slug: "guest", shopId: shop._id });
@@ -189,7 +189,7 @@ describe("Server/API/Core", function () {
       let group = Factory.create("group", { shopId: shop._id, slug: "customer" });
       let group2 = Factory.create("group", { shopId: shop._id, slug: "guest" });
 
-      Reaction.addRolesToDefaultRoleSet({ allShops: true, shops: [shop._id], roles: ["test1", "test2"], roleSets: ["defaultVisitorRole"] });
+      Reaction.addRolesToGroups({ allShops: true, shops: [shop._id], roles: ["test1", "test2"], groups: ["guest"] });
 
       group = Groups.findOne({ slug: "customer", shopId: shop._id });
       group2 = Groups.findOne({ slug: "guest", shopId: shop._id });
@@ -203,7 +203,7 @@ describe("Server/API/Core", function () {
     it("should not add roles to non-extant role sets", () => {
       const shop = Factory.create("shop");
 
-      Reaction.addRolesToDefaultRoleSet({ allShops: true, shops: [shop._id], roles: ["test1", "test2"], roleSets: ["madeupRoleSet"] });
+      Reaction.addRolesToGroups({ allShops: true, shops: [shop._id], roles: ["test1", "test2"], groups: ["madeupRoleSet"] });
 
       const group = Groups.findOne({ slug: "madeupRoleSet", shopId: shop._id });
 
