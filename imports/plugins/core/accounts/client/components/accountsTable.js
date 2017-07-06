@@ -3,8 +3,8 @@ import PropTypes from "prop-types";
 import classnames from "classnames";
 import { Checkbox, Icon } from "/imports/plugins/core/ui/client/components";
 import AccountsListItem from "./accountsListItem";
-import { Reaction } from "/client/api";
 import * as Collections from "/lib/collections";
+import { Card, CardHeader, CardBody, CardGroup, Loading, SortableTable } from "/imports/plugins/core/ui/client/components";
 
 
 class AccountsTable extends Component {
@@ -13,7 +13,6 @@ class AccountsTable extends Component {
     i18nKeyLabel: PropTypes.string,
     users: PropTypes.array
   }
-
   renderTable(users) {
     const filteredFields = {
       Name: "",
@@ -132,14 +131,13 @@ class AccountsTable extends Component {
       );
     }
   }
-
   getRows() {
     const users = [];
     this.props.users.forEach(user => {
       users.push(Object.assign({}, this.getUserDetails(user)));
     });
+    return users;
   }
-
   getUserDetails(userId) {
     if (!userId) { return false; }
     const user = Collections.Accounts.findOne(userId);
@@ -148,7 +146,6 @@ class AccountsTable extends Component {
       twoFactor
     };
   }
-
   getGravatar(user) {
     const options = {
       secure: true,
@@ -165,7 +162,6 @@ class AccountsTable extends Component {
       return Gravatar.imageUrl(email, options);
     }
   }
-
   render() {
     return (
         <Card
@@ -184,5 +180,4 @@ class AccountsTable extends Component {
     );
   }
 }
-
 export default AccountsTable;

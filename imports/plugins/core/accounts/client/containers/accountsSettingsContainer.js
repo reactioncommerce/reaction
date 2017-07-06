@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import _ from "lodash";
 import { Accounts } from "/lib/collections";
 import { composeWithTracker } from "/lib/api/compose";
-import SettingsComponent from "../components/settings";
+// import SettingsComponent from "../components/settings";
 
 class SettingsContainer extends Component {
   static propTypes = {
@@ -12,7 +12,8 @@ class SettingsContainer extends Component {
 
   render() {
     return (
-      <SettingsComponent accounts={this.props.shopUsers} />
+        <div>ttt</div>
+    //   <SettingsComponent accounts={this.props.shopUsers} />
     );
   }
 }

@@ -8,36 +8,36 @@ import { Shops } from "/lib/collections";
 class AccountsComponent extends Component {
   static propTypes = {
     accounts: PropTypes.array,
-    groups: PropTypes.array
+    groups: PropTypes.object
   }
 
   constructor(props) {
     super(props);
 
     this.state = {
-      accounts: props.accounts,
-      shopManagers: [],
-      customerServicers: [],
-      merchandisers: [],
-      fufillment: []
+      accounts: props.accounts
+      // shopManagers: [],
+      // customerServicers: [],
+      // merchandisers: [],
+      // fufillment: []
     };
   }
 
-  componentDidMount() {
-    this.setUserGroups();
-  }
+  // componentDidMount() {
+  //   this.setUserGroups();
+  // }
 
-  componentWillReceiveProps(nextProps) {
-    this.setState({ accounts: nextProps.accounts });
-    this.setUserGroups();
-  }
+  // componentWillReceiveProps(nextProps) {
+  //   this.setState({ accounts: nextProps.accounts });
+  //   this.setUserGroups();
+  // }
 
   setUserGroups() {
-    const shopManagers = [];
-    const fufillment = [];
-    const customerServicers = [];
-    const merchandisers = [];
-    const groupedUsers = [];
+    // const shopManagers = [];
+    // const fufillment = [];
+    // const customerServicers = [];
+    // const merchandisers = [];
+    // const groupedUsers = [];
     console.log("ihih", this.props);
     // this.state.accounts.forEach((account) => {
     //   const userGroup = _.get(Shops.findOne(
@@ -61,82 +61,35 @@ class AccountsComponent extends Component {
     //     }
     //   }
     // });
-    this.setState(
-      { shopManagers,
-        customerServicers,
-        fufillment,
-        merchandisers
-      }
-    );
+    this.setState({ groups: this.props.groups });
+    console.log("cfcf", this.state);
   }
 
-  renderShopManagers() {
-    const headerLabel =  { __html: "you" };
+  renderShopManagers(groups) {
+    // const headerLabel =  { __html: "you" };
     // TODO: set default badge in here
-    if (this.state.shopManagers.length > 0) {
-      return (
-        <div style={{ marginBottom: "10px" }}>
-          <AccountsTable
-            users={this.state.shopManagers}
-            headerLabel="Shop Manager"
-            dangerouslySetInnerHTML={headerLabel}
-          />
-        </div>
-      );
-    }
-    return null;
+    return Object.keys(groups).map(function (group, index) {
+      if (groups[group].length > 0) {
+        return (
+          <div style={{ marginBottom: "10px" }} key={index}>
+            <AccountsTable
+              users={groups[group]}
+              headerLabel={group}
+            />
+          </div>
+        );
+      }
+      return null;
+    });
   }
-
-  renderCustomerServicers() {
-    if (this.state.customerServicers.length > 0) {
-      return (
-        <div style={{ marginBottom: "10px" }}>
-          <AccountsTable
-            users={this.state.customerServicers}
-            headerLabel="Customer Service"
-          />
-        </div>
-      );
-    }
-    return null;
-  }
-
-  renderMerchandisers() {
-    if (this.state.merchandisers.length > 0) {
-      return (
-        <div style={{ marginBottom: "10px" }}>
-          <AccountsTable
-            users={this.state.merchandisers}
-            headerLabel="Merchandisers"
-          />
-        </div>
-      );
-    }
-    return null;
-  }
-
-  renderFufillment() {
-    if (this.state.fufillment.length > 0) {
-      return (
-        <div style={{ marginBottom: "10px" }}>
-          <AccountsTable
-            users={this.state.fufillment}
-            headerLabel="Merchandisers"
-          />
-        </div>
-      );
-    }
-    return null;
-  }
-
-
   render() {
+    console.log("stateup", this.props);
     return (
       <div className="list-group">
-        {this.renderShopManagers()}
-        {this.renderCustomerServicers()}
-        {this.renderMerchandisers()}
-        {this.renderFufillment()}
+        { this.renderShopManagers(this.props.groups)}
+        {/* this.renderCustomerServicers()*/}
+        {/* this.renderMerchandisers()*/}
+        {/* this.renderFufillment() */}
       </div>
 
     );
