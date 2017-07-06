@@ -109,9 +109,14 @@ export default function () {
 
       // if we don't have user.services we're an anonymous user
       if (!user.services) {
-        roles[shopId] = shop.defaultVisitorRole || defaultVisitorRole;
+        const group = Collections.Groups.findOne({ slug: "guest", shopId });
+        const defaultGuestRoles = group.permissions;
+        roles[shopId] = defaultGuestRoles || defaultVisitorRole;
+        additionals.groups = [group._id];
       } else {
-        roles[shopId] = shop.defaultRoles || defaultRoles;
+        const group = Collections.Groups.findOne({ slug: "customer", shopId });
+        roles[shopId] = group.permissions || defaultRoles;
+        additionals.groups = [group._id];
         // also add services with email defined to user.emails[]
         for (const service in user.services) {
           if (user.services[service].email) {

@@ -4,7 +4,7 @@ import { merge, uniqWith } from "lodash";
 import { Meteor } from "meteor/meteor";
 import { EJSON } from "meteor/ejson";
 import { check, Match } from "meteor/check";
-import { Jobs, Packages, Shops } from "/lib/collections";
+import { Jobs, Packages, Shops, Groups } from "/lib/collections";
 import { Hooks, Logger } from "/server/api";
 import ProcessJobs from "/server/jobs";
 import { registerTemplate } from "./templates";
@@ -33,10 +33,10 @@ export default {
     if (process.env.VERBOSE_JOBS) {
       Jobs.setLogStream(process.stdout);
     }
-
     this.loadPackages();
     // process imports from packages and any hooked imports
     this.Import.flush();
+    this.createDefaultGroups();
     // timing is important, packages are rqd for initial permissions configuration.
     if (!Meteor.isAppTest) {
       this.createDefaultAdminUser();
@@ -56,7 +56,33 @@ export default {
     const registeredPackage = this.Packages[packageInfo.name] = packageInfo;
     return registeredPackage;
   },
+  createDefaultGroups() {
+    const allGroups = Groups.find({}).fetch();
+    const shops = Shops.find({}).fetch();
+    const roles = {
+      customer: [ "guest", "account/profile", "product", "tag", "index", "cart/checkout", "cart/completed"],
+      guest: ["anonymous", "guest", "product", "tag", "index", "cart/checkout", "cart/completed"],
+      owner: Roles.getAllRoles().fetch().map(role => role.name)
+    };
 
+    if (shops && shops.length) {
+      shops.forEach(shop => createGroupsForShop(shop));
+    }
+    function createGroupsForShop(shop) {
+      Object.keys(roles).forEach(groupKeys => {
+        const groupExists = allGroups.find(grp => grp.slug === groupKeys && grp.shopId === shop._id);
+        if (!groupExists) { // create group only if it doesn't exist before
+          Logger.debug(`creating group ${groupKeys} for shop ${shop.name}`);
+          Groups.insert({
+            name: groupKeys,
+            slug: groupKeys,
+            permissions: roles[groupKeys],
+            shopId: shop._id
+          });
+        }
+      });
+    }
+  },
   /**
    * registerTemplate
    * registers Templates into the Templates Collection
@@ -289,7 +315,7 @@ export default {
     return defaultValue || undefined;
   },
 
-  /**
+  /** // TODO: Check to see if this is still being used
    * Add default roles for new visitors
    * @param {String|Array} roles - A string or array of roles and routes
    * @returns {undefined} - does not specifically return anything
