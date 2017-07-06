@@ -4,8 +4,7 @@ import Avatar from "react-avatar";
 import moment from "moment";
 import { formatPriceString } from "/client/api";
 // import { Orders } from "/lib/collections";
-import { SortableTable, Loading, RolloverCheckbox } from "/imports/plugins/core/ui/client/components";
-import { Badge, ClickToCopy, Icon, Translation } from "@reactioncommerce/reaction-ui";
+import { Badge, ClickToCopy, Icon, Translation, SortableTable, Loading, RolloverCheckbox, Checkbox, Button } from "@reactioncommerce/reaction-ui";
 import ProductImage from "./productImage";
 
 class OrdersList extends Component {
@@ -253,22 +252,25 @@ class OrdersList extends Component {
     });
 
     return (
-      <SortableTable
-        tableClassName="rui order table -highlight"
-        data={orders}
-        columnMetadata={customColumnMetadata}
-        externalLoadingComponent={Loading}
-        filteredFields={columnNames}
-        filterType="none"
-        getTrGroupProps={(state, rowInfo, column) => {
-          return {
-            style: {
-              borderRight: "1px solid #e6e6e6",
-              borderLeft: "1px solid #e6e6e6"
-            }
-          };
-        }}
-      />
+      <div>
+        {this.renderBulkOrderActionsBar()}
+        <SortableTable
+          tableClassName="rui order table -highlight"
+          data={orders}
+          columnMetadata={customColumnMetadata}
+          externalLoadingComponent={Loading}
+          filteredFields={columnNames}
+          filterType="none"
+          getTrGroupProps={(state, rowInfo, column) => {
+            return {
+              style: {
+                borderRight: "1px solid #e6e6e6",
+                borderLeft: "1px solid #e6e6e6"
+              }
+            };
+          }}
+        />
+      </div>
     );
   }
 
@@ -292,6 +294,38 @@ class OrdersList extends Component {
   handleClick = (event) => {
     if (this.props.handleShowMoreClick) {
       this.props.handleShowMoreClick(event);
+    }
+  }
+
+  renderBulkOrderActionsBar() {
+    if (this.props.selectedItems.length > 0) {
+      return (
+        <div className="bulk-order-actions-bar">
+          <Checkbox
+            checked={false}
+            className="checkbox orders-checkbox"
+            name=""
+          />
+          <Translation
+            className="selected-orders"
+            defaultValue={`${this.props.selectedItems.length} Selected`}
+          />
+          <Button
+            status="success"
+            bezelStyle="solid"
+            className="capture-orders-button"
+            label="Capture"
+          />
+          <Button
+            status="default"
+            bezelStyle="solid"
+            className="bulk-actions-button"
+            label="Bulk Actions"
+            icon="fa fa-chevron-down"
+            iconAfter={true}
+          />
+        </div>
+      );
     }
   }
 
