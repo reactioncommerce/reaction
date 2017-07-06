@@ -303,8 +303,8 @@ class OrdersList extends Component {
       return (
         <div>
           <div style= {{ float: "right", padding: 10 }}>
-            <span onClick={handleListToggle}> <i className="fa fa-list" /> </span>
-            <span onClick={handleDetailToggle}> <i className="fa fa-list-alt" /> </span>
+            <button className="rui btn order-toggle-btn" onClick={handleListToggle}> <i className="fa fa-list" /> </button>
+            <button className="rui btn order-toggle-btn" onClick={handleDetailToggle}> <i className="fa fa-list-alt" /> </button>
           </div>
 
           {openList &&  <div className="container-fluid-sm">{this.renderListView(orders)}</div>}
