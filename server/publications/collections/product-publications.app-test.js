@@ -322,7 +322,7 @@ describe("Publication", function () {
         });
       });
 
-      it.only("should return a product based on a regex to admin even if it isn't visible", function (done) {
+      it("should return a product based on a regex to admin even if it isn't visible", function (done) {
         sandbox.stub(Reaction, "getCurrentShop", () => shop);
         sandbox.stub(Roles, "userIsInRole", () => true);
 
