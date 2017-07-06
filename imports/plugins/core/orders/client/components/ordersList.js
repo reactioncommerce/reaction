@@ -4,8 +4,7 @@ import Avatar from "react-avatar";
 import moment from "moment";
 import { formatPriceString } from "/client/api";
 // import { Orders } from "/lib/collections";
-import { SortableTable, Loading, RolloverCheckbox, Checkbox } from "/imports/plugins/core/ui/client/components";
-import { Badge, ClickToCopy, Icon, Translation } from "@reactioncommerce/reaction-ui";
+import { Badge, ClickToCopy, Icon, Translation, SortableTable, Loading, RolloverCheckbox, Checkbox } from "@reactioncommerce/reaction-ui";
 import ProductImage from "./productImage";
 
 class OrdersList extends Component {
