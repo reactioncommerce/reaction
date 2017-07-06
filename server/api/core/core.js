@@ -3,6 +3,7 @@ import packageJson from "/package.json";
 import { merge, uniqWith } from "lodash";
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
+import { check, Match } from "meteor/check";
 import { Random } from "meteor/random";
 import { Accounts } from "meteor/accounts-base";
 import { Roles } from "meteor/alanning:roles";
@@ -152,13 +153,14 @@ export default {
     const domain = this.getDomain();
     const cursor = Shops.find({
       domains: domain
-    }, { limit: 1 });
+    });
     if (!cursor.count()) {
       Logger.debug(domain, "Add a domain entry to shops for ");
     }
     return cursor;
   },
 
+  // TODO: Get actual current shop instead of first - not sure what this will break..
   getCurrentShop() {
     const currentShopCursor = this.getCurrentShopCursor();
     // also, we could check in such a way: `currentShopCursor instanceof Object` but not instanceof something.Cursor
@@ -168,7 +170,22 @@ export default {
     return null;
   },
 
-  getShopId() {
+  getShopId(userId) {
+    check(userId, Match.Maybe(String));
+    const activeUserId = Meteor.call("reaction/getUserId");
+    if (activeUserId || userId) {
+      const activeShopId = this.getUserPreferences({
+        userId: activeUserId || userId,
+        packageName: "reaction",
+        preference: "activeShopId"
+      });
+      if (activeShopId) {
+        return activeShopId;
+      }
+    }
+
+    // TODO: This should intelligently find the correct default shop
+    // Probably whatever the main shop is or the marketplace
     const domain = this.getDomain();
     const shop = Shops.find({
       domains: domain
@@ -227,6 +244,8 @@ export default {
     return shop && shop.currency || "USD";
   },
 
+  // TODO: Marketplace - should each shop set their own default language or
+  // should the Marketplace set a language that's picked up by all shops?
   getShopLanguage() {
     const { language } = Shops.findOne({
       _id: this.getShopId()
@@ -240,6 +259,70 @@ export default {
 
   getPackageSettings(name) {
     return Packages.findOne({ packageName: name, shopId: this.getShopId() }) || null;
+  },
+
+  // options:  {packageName, preference, defaultValue}
+  getUserPreferences(options) {
+    const { userId, packageName, preference, defaultValue } = options;
+
+    if (!userId) {
+      return undefined;
+    }
+
+    const user = Meteor.users.findOne({ _id: userId });
+
+    if (user) {
+      const profile = user.profile;
+      if (profile && profile.preferences && profile.preferences[packageName] && profile.preferences[packageName][preference]) {
+        return profile.preferences[packageName][preference];
+      }
+    }
+    return defaultValue || undefined;
+  },
+
+  /**
+   *  insertPackagesForShop
+   *  insert Reaction packages into Packages collection registry for a new shop
+   *  Assigns owner roles for new packages
+   *  Imports layouts from packages
+   *  @param {String} shopId - the shopId you need to create packages for
+   *  @return {String} returns insert result
+   */
+  insertPackagesForShop(shopId) {
+    const layouts = [];
+    if (!shopId) {
+      return [];
+    }
+    const packages = this.Packages;
+    // for each shop, we're loading packages in a unique registry
+    // Object.keys(pkgConfigs).forEach((pkgName) => {
+    for (const packageName in packages) {
+      // Guard to prvent unexpected `for in` behavior
+      if ({}.hasOwnProperty.call(packages, packageName)) {
+        const config = packages[packageName];
+        this.assignOwnerRoles(shopId, packageName, config.registry);
+
+        const pkg = Object.assign({}, config, {
+          shopId: shopId
+        });
+
+        // populate array of layouts that don't already exist (?!)
+        if (pkg.layout) {
+          // filter out layout templates
+          for (const template of pkg.layout) {
+            if (template && template.layout) {
+              layouts.push(template);
+            }
+          }
+        }
+        Packages.insert(pkg);
+        Logger.debug(`Initializing ${shopId} ${packageName}`);
+      }
+    }
+
+    // helper for removing layout duplicates
+    const uniqLayouts = uniqWith(layouts, _.isEqual);
+    Shops.update({ _id: shopId }, { $set: { layout: uniqLayouts } });
   },
 
   getAppVersion() {
