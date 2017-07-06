@@ -62,6 +62,17 @@ describe("Group test", function () {
     expect(group.name).to.equal(sampleGroup.name);
   });
 
+  it("should ensure one group type per shop", function () {
+    sandbox.stub(Reaction, "hasPermission", () => true);
+    spyOnMethod("createGroup", shop._id);
+
+    Meteor.call("group/createGroup", sampleGroup, shop._id);
+
+    expect(() => {
+      Meteor.call("group/createGroup", sampleGroup, shop._id);
+    }).to.throw(Meteor.Error, /Group already exist for this shop/);
+  });
+
   it("should check admin access before creating a group", function () {
     sandbox.stub(Reaction, "hasPermission", () => false);
     spyOnMethod("createGroup", shop._id);

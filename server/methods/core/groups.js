@@ -37,9 +37,9 @@ Meteor.methods({
     });
 
     // ensure one group type per shop
-    const groupExists = Groups.find({ shopId }).fetch().find(grp => grp.slug === newGroupData.slug);
+    const groupExists = Groups.findOne({ slug: newGroupData.slug, shopId });
     if (groupExists) {
-      throw new Meteor.Error(400, "Bad request");
+      throw new Meteor.Error(409, "Group already exist for this shop");
     }
     try {
       res = Groups.insert(newGroupData);
