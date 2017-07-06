@@ -81,14 +81,14 @@ class OrdersListContainer extends Component {
         multipleSelect: false
       });
     } else {
-      // if there are some products that have been selected,
+      // if there are some orders that have been selected,
       // but not all clear the selectedItems array
       if (selected.length !== 0 && selected.length < orders.length) {
         this.setState({
           selectedItems: [],
           multipleSelect: false
         });
-        // if there are no selected productsloop through the orders array and return a
+        // if there are no selected orders, loop through the orders array and return a
         // new array with order ids only, then set the array with the orderIds array
       } else if (selected.length === 0) {
         const orderIds = orders.map((order) => {

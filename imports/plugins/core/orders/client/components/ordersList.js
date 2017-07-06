@@ -316,16 +316,16 @@ class OrdersList extends Component {
   }
 
   renderBulkOrderActionsBar() {
-    const { orders, selectedItems, multipleSelect, selectAllOrders } = this.props;
+    const { orders, selectedItems, selectAllOrders } = this.props;
 
     if (selectedItems.length > 0) {
       return (
         <div className="bulk-order-actions-bar">
           <Checkbox
             className="checkbox orders-checkbox"
-            checked={multipleSelect}
+            checked={this.renderCheckedStatus()}
             name="orders-checkbox"
-            onChange={() => selectAllOrders(orders, multipleSelect)}
+            onChange={() => selectAllOrders(orders, this.renderCheckedStatus())}
           />
           <Translation
             className="selected-orders"
@@ -348,6 +348,11 @@ class OrdersList extends Component {
         </div>
       );
     }
+  }
+
+  renderCheckedStatus() {
+    const { selectedItems, orders, multipleSelect } = this.props;
+    return selectedItems.length === orders.length ? true : multipleSelect;
   }
 
   renderClassNameHidden() {
