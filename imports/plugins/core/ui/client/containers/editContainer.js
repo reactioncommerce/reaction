@@ -1,5 +1,6 @@
 import React, { Children, Component } from "react";
 import PropTypes from "prop-types";
+import { Meteor } from "meteor/meteor";
 import { Reaction } from "/client/api";
 import { EditButton, VisibilityButton, Translation } from "/imports/plugins/core/ui/client/components";
 import { composeWithTracker } from "/lib/api/compose";
