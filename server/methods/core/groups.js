@@ -86,7 +86,7 @@ Meteor.methods({
     let error;
 
     if (newGroupData.permissions) {
-      error = setUserPermissions(users, newGroupData, shopId);
+      error = setUserPermissions(users, newGroupData.permissions, shopId);
     }
 
     // 3. Return response
@@ -115,7 +115,7 @@ Meteor.methods({
     const { permissions, shopId } = Groups.findOne({ _id: groupId });
 
     try {
-      Meteor.call("accounts/addUserPermissions", userId, permissions, shopId);
+      setUserPermissions({ _id: userId }, permissions, shopId);
       Accounts.update({ _id: userId }, { $set: { groups: [groupId] } });
       return { status: 200 };
     } catch (error) {
@@ -157,15 +157,16 @@ Meteor.methods({
   }
 });
 
-function setUserPermissions(users, newGroupData, shopId) {
+function setUserPermissions(users, permissions, shopId) {
   let affectedUsers = users;
   if (!Array.isArray(users)) {
     affectedUsers = [users];
   }
 
-  return affectedUsers.forEach(user => Roles.setUserRoles(user._id, newGroupData.permissions, shopId));
+  return affectedUsers.forEach(user => Roles.setUserRoles(user._id, permissions, shopId));
 }
 
+// set default admin user's account as "owner"
 Hooks.Events.add("afterCreateDefaultAdminUser", (user) => {
   return Accounts.update({ _id: user._id }, { $set: { groups: ["owner"] } });
 });

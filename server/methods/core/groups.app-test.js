@@ -115,6 +115,31 @@ describe("Group test", function () {
     expect(updatedUser.roles[shop._id]).to.not.include.members(sampleGroup.permissions);
   });
 
+  it.only("should ensure a user's permissions does not include roles from previous group", function () {
+    sandbox.stub(Reaction, "hasPermission", () => true);
+    spyOnMethod("createGroup", shop._id);
+    spyOnMethod("addUser", shop._id);
+    spyOnMethod("updateGroup", shop._id);
+
+    const groupId = Meteor.call("group/createGroup", sampleGroup, shop._id).groupId;
+    const group2Id = Meteor.call(
+      "group/createGroup",
+      { name: "Managers", permissions: ["sample-role3"] },
+      shop._id
+    ).groupId;
+
+    Meteor.call("group/addUser", user._id, groupId);
+    let updatedUser = Meteor.users.findOne({ _id: user._id });
+    console.log(JSON.stringify({ updatedUser: updatedUser.roles }, null, 4));
+    expect(updatedUser.roles[shop._id]).to.include.members(sampleGroup.permissions);
+
+    Meteor.call("group/addUser", user._id, group2Id);
+    updatedUser = Meteor.users.findOne({ _id: user._id });
+    console.log(JSON.stringify({ updatedUser: updatedUser.roles }, null, 4));
+
+    expect(updatedUser.roles[shop._id]).to.not.include.members(sampleGroup.permissions);
+  });
+
   it("should ensure a user's permissions get updated when the group permissions changes", function () {
     sandbox.stub(Reaction, "hasPermission", () => true);
     spyOnMethod("createGroup", shop._id);
