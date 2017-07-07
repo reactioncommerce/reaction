@@ -38,7 +38,10 @@ class SettingsComponent extends Component {
 
   renderOwnersTab() {
     return (
-      <GroupOwnerSettings accounts={this.props.accounts}/>
+      <GroupOwnerSettings
+        groups={this.props.groups}
+        accounts={this.props.accounts}
+      />
     );
   }
 

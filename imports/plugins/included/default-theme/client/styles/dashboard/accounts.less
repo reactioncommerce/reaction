@@ -130,22 +130,22 @@ remove-btn {
   display: flex;
 }
 .accounts-table .rt-tr div:nth-child(2) {
-   width: 210px;
+   width: 24.5%;
 }
 .accounts-table .rt-tr div:nth-child(1) {
-   width: 170px;
+   width: 19.85%;
 }
 .accounts-table .rt-tr div:nth-child(3) {
-   width: 120px;
+   width: 14.02%;
 }
 .accounts-table .rt-tr div:nth-child(4) {
-   width: 100px;
+   width: 11.68%;
 }
 .accounts-table .rt-tr div:nth-child(5) {
-   width: 150px;
+   width: 17.52%;
 }
 .accounts-table .rt-tr div:nth-child(6) {
-   width: 55px;
+   width: 12.3;
 }
 .accounts-table .rt-thead .rt-tr {
   height: 32px;
@@ -231,6 +231,12 @@ remove-btn {
   padding: 7px;
   padding-right: 15px;
 }
+.-accounts div.rt-resizable-header-content{
+  width: 100% !important;
+}
+.-accounts .rt-body .rt-td div{
+  width: 100% !important;
+}
 .groups-form .panel-body{
   padding: 7px;
 }
@@ -268,4 +274,26 @@ remove-btn {
 }
 .settings-list div.rui.card-toolbar:nth-child(odd) {
   background-color: #ffffff;
+}
+.groups-form rt-tr -odd {
+  display: flex;
+  justify-content: space-between;
+}
+.group-form rt-tr-group {
+  border: none;
+}
+
+.ReactTable.owner-table .rt-tr {
+  display: flex;
+  justify-content: space-between;
+  height: 44px;
+  align-items: center;
+  padding: 5px;
+  border: solid 1px white;
+  background: #f5f5f5;
+}
+
+.ReactTable.owner-table .rt-tr:hover{
+  background: #ebf7fc;
+  cursor: pointer;
 }

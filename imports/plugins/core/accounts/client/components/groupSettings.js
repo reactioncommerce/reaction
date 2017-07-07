@@ -46,7 +46,7 @@ class GroupsSettings extends Component {
                 <CardBody expandable={true}>
                   <div className="settings-list">
                     {index === 0 ?
-                    <div className="rui card-toolbar" style={{ width: "", height: "37px", backgroundColor: "#f5f5f5" }}>
+                    <div className="rui card-toolbar" style={{ height: "37px", backgroundColor: "#f5f5f5" }}>
                         <Switch
                           checked
                           onChange={function e() {}}
@@ -79,7 +79,6 @@ class GroupsSettings extends Component {
 
   renderGroupSettings(group) {
     const { getGroupPermissions } = this.props;
-    // console.log("getGroupPermissions", getGroupPermissions(groupShopId));
     return (
       <div className="">
       {getGroupPermissions(group.groupData.group.shopId).map((item, index) =>

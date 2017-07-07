@@ -32,7 +32,7 @@ class AccountsTable extends Component {
           const key = row.column.id;
           if (columnName === "Name") {
             return (
-                <div className="" style={{ display: "flex", borderRight: "1px solid #cccccc" }}>
+                <div className="" style={{ display: "flex", borderRight: "1px solid #cccccc", width: "100%" }}>
                   <span><img className="circular-icon accounts-field-profile" style={{ borderRadius: "50%" }} src={this.getGravatar(row.value)}/></span>
                   <span style={{ position: "relative", left: "5%", fontSize: "14px", top: "30%" }}><strong>{row.value.name}</strong></span>
                 </div>
@@ -40,21 +40,21 @@ class AccountsTable extends Component {
           }
           if (key === "emails[0].address") {
             return (
-                <div className="">
+                <div style={{  width: "100%" }}>
                   <span style={{ fontSize: "14px", postion: "relative", top: "30%" }}>{row.value}</span>
                 </div>
             );
           }
           if (key === "createdAt") {
             return (
-              <div className="">
+              <div style={{  width: "100%" }}>
                     <span style={{ fontSize: "14px", position: "relative", top: "30%" }}>{row.value.toDateString()}</span>
               </div>
             );
           }
           if (columnName === "Two Factor") {
             return (
-              <div className="">
+              <div style={{  width: "100%" }}>
                 <span style={{ fontSize: "14px", position: "relative", top: "30%" }}>Yes</span>
               </div>
             );
@@ -85,7 +85,7 @@ class AccountsTable extends Component {
     });
     return (
       <SortableTable
-        tableClassName="-highlight"
+        tableClassName="-accounts"
         data={users}
         columnMetadata={columnMetadata}
         filteredFields={columnNames}
@@ -97,7 +97,7 @@ class AccountsTable extends Component {
   getHeader(headerName) {
     if (headerName === "Name") {
       return (
-          <div className="">
+          <div style={{  width: "100%" }}>
             <span style={{ position: "relative", left: "10%", top: "5px" }}><Checkbox /> </span>
             <span style={{ position: "relative", left: "10%", top: "5px" }}> Name </span>
             <span style={{ position: "relative", left: "15%", top: "5px" }}><Icon icon="chevron-down" /></span>
@@ -106,7 +106,7 @@ class AccountsTable extends Component {
     }
     if (headerName === "Email") {
       return (
-        <div className="">
+        <div style={{  width: "100%" }}>
           <span style={{ position: "relative", top: "5px" }}>Email </span>
           <span style={{ position: "relative", left: "5%", top: "5px" }}><Icon icon="chevron-down" /></span>
         </div>
@@ -114,7 +114,7 @@ class AccountsTable extends Component {
     }
     if (headerName === "Updated") {
       return (
-        <div className="">
+        <div style={{  width: "100%" }}>
           <span style={{ position: "relative", top: "5px" }}>Last Active </span>
           <span style={{ position: "relative", left: "5%", top: "5px" }}><Icon icon="chevron-down" /></span>
         </div>
@@ -122,7 +122,7 @@ class AccountsTable extends Component {
     }
     if (headerName === "Two Factor") {
       return (
-        <div className="">
+        <div style={{  width: "100%" }}>
           <span style={{ position: "relative", top: "5px" }}>Two Factor </span>
           <span style={{ position: "relative", left: "5%", top: "5px" }}><Icon icon="chevron-down" /></span>
         </div>
