@@ -258,7 +258,7 @@ export default {
   },
 
   getPackageSettings(name) {
-    return Packages.findOne({ packageName: name, shopId: this.getShopId() }) || null;
+    return Packages.findOne({ name: name, shopId: this.getShopId() }) || null;
   },
 
   // options:  {packageName, preference, defaultValue}
