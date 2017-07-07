@@ -1,11 +1,13 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import classnames from "classnames/dedupe";
 import Avatar from "react-avatar";
 import moment from "moment";
 import { formatPriceString } from "/client/api";
 // import { Orders } from "/lib/collections";
-import { Badge, ClickToCopy, Icon, Translation, SortableTable, Loading, RolloverCheckbox, Checkbox, Button } from "@reactioncommerce/reaction-ui";
+import { Badge, ClickToCopy, Icon, Translation, SortableTable, Loading, Checkbox, Button } from "@reactioncommerce/reaction-ui";
 import ProductImage from "./productImage";
+import OrderTableColumn from "./orderTableColumn";
 
 class OrdersList extends Component {
 
@@ -146,7 +148,14 @@ class OrdersList extends Component {
     );
   }
 
+  /**
+   * Render Sortable Table for the list view for orders
+   * @param {Object} orders object containing info for order
+   * @return {Component} SortableTable list of orders
+   */
   renderListView(orders) {
+    const { selectedItems, handleSelect, handleClick, multipleSelect, selectAllOrders } = this.props;
+
     const filteredFields = {
       Name: "shipping[0].address.fullName",
       Email: "email",
@@ -156,17 +165,19 @@ class OrdersList extends Component {
       Shipping: "shipping[0].workflow.status",
       Status: "workflow.status"
     };
+
     const customColumnMetadata = [];
     const columnNames = Object.keys(filteredFields);
-    const { selectedItems, handleSelect, multipleSelect, selectAllOrders } = this.props;
+
+    // https://react-table.js.org/#/story/cell-renderers-custom-components
     columnNames.forEach((columnName) => {
       let colStyle = { borderRight: "none" };
       let colHeader = undefined;
 
+      // Add custom styles for the column name `name`
       if (columnName === "Name") {
         colStyle = { borderRight: "1px solid #e6e6e6" };
-        colHeader = () =>
-          <div style={{ display: "inline-flex", paddingLeft: 5 }}>
+        colHeader = () => <div style={{ display: "inline-flex", paddingLeft: 5 }}>
             <Checkbox
               className="order-header-checkbox checkbox"
               checked={multipleSelect}
@@ -176,95 +187,22 @@ class OrdersList extends Component {
             <span style={{ marginLeft: 5 }}>{columnName}</span>
           </div>;
       }
+
       const columnMeta = {
         accessor: filteredFields[columnName],
         Header: colHeader ? colHeader : columnName,
         headerStyle: { borderRight: "none", textAlign: "left", paddingTop: 15 },
         style: colStyle,
-        Cell: row => {
-          const bla = row.column.id;
-          if (bla === "shipping[0].address.fullName") {
-            return (
-              <div style={{ display: "inline-flex" }}>
-                <RolloverCheckbox
-                  checkboxClassName="checkbox"
-                  name={row.original._id}
-                  onChange={handleSelect}
-                  checked={selectedItems.includes(row.original._id)}
-                >
-                  <Avatar
-                    email={row.original.email}
-                    round={true}
-                    name={row.value}
-                    size={30}
-                    className="rui-order-avatar"
-                  />
-                </RolloverCheckbox>
-                <strong style={{ paddingLeft: 5 }}>{row.value}</strong>
-              </div>
-            );
-          }
-          if (bla === "createdAt") {
-            const createdDate = moment(row.value).format("MM/D/YYYY");
-            return (
-              <span>{createdDate}</span>
-            );
-          }
-          if (bla === "_id") {
-            return (
-              <ClickToCopy
-                copyToClipboard={row.original._id}
-                displayText={row.original._id}
-                i18nKeyTooltip="admin.orderWorkflow.summary.copyOrderLink"
-                tooltip="Copy Order Link"
-              />
-            );
-          }
-          if (bla === "billing[0].invoice.total") {
-            return (
-              <strong>{formatPriceString(row.original.billing[0].invoice.total)}</strong>
-            );
-          }
-          if (bla === "shipping[0].workflow.status") {
-            return (
-              <Badge
-                badgeSize="large"
-                i18nKeyLabel={`cartDrawer.${row.value}`}
-                label={row.value}
-                status={this.shippingBadgeStatus()}
-              />
-            );
-          }
-          if (bla === "workflow.status") {
-            const classes = classnames({
-              "rui": true,
-              "btn": true,
-              "btn-success": row.original.workflow.status === "new"
-            });
-
-            return (
-              <span>
-                <Badge
-                  badgeSize="large"
-                  i18nKeyLabel={`cartDrawer.${row.value}`}
-                  label={row.value}
-                  status={this.fulfillmentBadgeStatus(row.original)}
-                />
-                <button
-                  className={classes}
-                  data-event-action="startProcessingOrder"
-                  style={{ backgroundColor: "transparent", float: "right" }}
-                  onClick={() => this.props.handleClick(row.original)}
-                >
-                  <Icon icon="fa fa-chevron-right" />
-                </button>
-              </span>
-            );
-          }
-          return (
-            <span>{row.value}</span>
-          );
-        }
+        Cell: row => (
+          <OrderTableColumn
+            row={row}
+            handleClick={handleClick}
+            handleSelect={handleSelect}
+            selectedItems={selectedItems}
+            fulfillmentBadgeStatus={this.fulfillmentBadgeStatus}
+            shippingBadgeStatus={this.shippingBadgeStatus}
+          />
+        )
       };
       customColumnMetadata.push(columnMeta);
     });
