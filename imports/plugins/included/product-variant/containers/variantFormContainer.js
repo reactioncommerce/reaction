@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import _, { omit } from "lodash";
+import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Session } from "meteor/session";
 import { composeWithTracker } from "/lib/api/compose";
@@ -11,7 +11,7 @@ import { Reaction, i18next } from "/client/api";
 import { TaxCodes } from "/imports/plugins/core/taxes/lib/collections";
 import VariantForm from "../components/variantForm";
 import { ProductVariant } from "/lib/collections/schemas/products";
-
+import Validation from "/imports/plugins/core/collections/lib/validation";
 
 class VariantFormContainer extends Component {
   constructor(props) {
@@ -212,31 +212,6 @@ class VariantFormContainer extends Component {
         variant={this.state.variant}
       />
     );
-  }
-}
-
-class Validation {
-  constructor(schema, options) {
-    this.validationContext = schema.namedContext();
-    this.options = options;
-  }
-
-  validate(objectToValidate) {
-    const isValid = this.validationContext.validate(ProductVariant.clean(objectToValidate));
-    const validationMessages = {};
-
-    this.validationContext._invalidKeys
-      .forEach((validationError) => {
-        validationMessages[validationError.name] = {
-          ...validationError,
-          message: this.validationContext.keyErrorMessage(validationError.name)
-        };
-      });
-
-    return {
-      isValid,
-      validationMessages
-    };
   }
 }
 
