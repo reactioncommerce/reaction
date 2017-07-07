@@ -127,7 +127,8 @@ function composer(props, onData) {
   const currentTag = ReactionProduct.getTag();
   const productCursor = Products.find({
     ancestors: [],
-    type: { $in: ["simple"] }
+    type: { $in: ["simple"] },
+    isVisible: true
   }, {
     sort: {
       [`positions.${currentTag}.position`]: 1,
