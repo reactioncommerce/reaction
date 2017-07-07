@@ -10,6 +10,7 @@ class NotificationDropdown extends Component {
     this.handleNoNotifications = this.handleNoNotifications.bind(this);
     this.renderDropdownHead = this.renderDropdownHead.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.handleClickViewAll = this.handleClickViewAll.bind(this);
   }
 
   handleNoNotifications(notifyArr) {
@@ -42,6 +43,11 @@ class NotificationDropdown extends Component {
     return markOneAsRead(notify._id);
   }
 
+  handleClickViewAll() {
+    const url = this.prefix + "/notifications";
+    Reaction.Router.go(url);
+  }
+
   renderDropdownHead() {
     const { notificationList, unread, markAllAsRead } = this.props;
     return (
@@ -56,7 +62,6 @@ class NotificationDropdown extends Component {
 
   render() {
     const { notificationList } = this.props;
-    const prefix = this.prefix + "/notifications";
     return (
       <div className="notify-bar">
         { this.renderDropdownHead() }
@@ -86,7 +91,7 @@ class NotificationDropdown extends Component {
           })}
         </ul>
         <div className="dropdown-footer text-center">
-          <a href={prefix} data-i18n="notifications.body.viewAll">View All</a>
+          <a onClick={this.handleClickViewAll} data-i18n="notifications.body.viewAll">View All</a>
         </div>
       </div>
     );
