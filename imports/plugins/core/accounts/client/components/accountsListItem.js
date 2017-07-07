@@ -6,6 +6,7 @@ class AccountsListItem extends Component {
   static propTypes = {
     actionType: PropTypes.oneOf(["arrow", "switch"]),
     children: PropTypes.node,
+    handleClick: PropTypes.func,
     headerButton: PropTypes.bool,
     i18nKeyLabel: PropTypes.string,
     icon: PropTypes.string,
@@ -117,7 +118,6 @@ class AccountsListItem extends Component {
   }
 
   render() {
-    console.log('yykyk', this.props);
     const listItemClassName = classnames({
       "rui": true,
       "admin": this.props.isAdmin,

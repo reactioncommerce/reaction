@@ -114,7 +114,6 @@ Template.memberSettings.helpers({
         });
       }
     });
-
     return permissionGroups;
   },
 
@@ -134,9 +133,16 @@ Template.memberSettings.helpers({
     return _.get(avalara, "settings.avalara.enabled", false);
   },
 
-  settings() {
-    return AccountsSettingsContainer;
+  /**
+   * services
+   * @return {Array} available services
+   */
+  AccountSettings() {
+    return {
+      component: AccountsSettingsContainer
+    };
   },
+
   data() {
     return this.userId ? true : false;
   }

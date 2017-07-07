@@ -1,11 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import AccountsTable from "./accountsTable";
-import _ from "lodash";
-import { Shops } from "/lib/collections";
-import { Card, CardHeader, CardBody, CardGroup, Loading, SortableTable } from "/imports/plugins/core/ui/client/components";
+import { Card, CardHeader, CardBody } from "/imports/plugins/core/ui/client/components";
 
-
+// TODO: need to wire form up for saving...
 class AddAdminForm extends Component {
   static propTypes = {
     accounts: PropTypes.array
