@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { isEqual } from "lodash";
 import Velocity from "velocity-animate";
 import "velocity-animate/velocity.ui";
-import update from "react/lib/update";
 import { formatPriceString } from "/client/api";
 import {
   Button,
@@ -55,11 +54,7 @@ class VariantForm extends Component {
     super(props);
 
     this.state = {
-      expandedCard: {
-        variantDetails: true,
-        taxable: false,
-        inventoryManagement: false
-      },
+      expandedCard: "variantDetails",
       variant: props.variant,
       inventoryPolicy: props.variant.inventoryPolicy,
       taxable: props.variant.taxable,
@@ -82,6 +77,9 @@ class VariantForm extends Component {
 
     this.setState({
       expandedCard: cardGroupName,
+      inventoryManagement: nextProps.variant.inventoryManagement,
+      inventoryPolicy: nextProps.variant.inventoryPolicy,
+      taxable: nextProps.variant.taxable,
       variant: nextProps.variant
     });
   }
@@ -127,15 +125,12 @@ class VariantForm extends Component {
   }
 
   handleFieldChange = (event, value, field) => {
-    const newState = update(this.state, {
+    this.setState(({ variant }) => ({
       variant: {
-        $merge: {
-          [field]: value
-        }
+        ...variant,
+        [field]: value
       }
-    });
-
-    this.setState(newState);
+    }));
   }
 
   handleFieldBlur = (event, value, field) => {
@@ -160,20 +155,14 @@ class VariantForm extends Component {
     this.handleFieldBlur(event, value, field);
   }
 
-  handleCardExpand = (cardName, isExpanded) => {
-    this.setState(({ expandedCard }) => {
-      return {
-        ...expandedCard,
-        [cardName]: isExpanded
-      };
-    });
-    // if (this.props.onCardExpand) {
-    //   this.props.onCardExpand(cardName);
-    // }
+  handleCardExpand = (event, card, cardName, isExpanded) => {
+    if (typeof this.props.onCardExpand === "function") {
+      this.props.onCardExpand(isExpanded ? cardName : undefined);
+    }
   }
 
   isExpanded = (groupName) => {
-    return this.state.expandedCard && this.state.expandedCard[groupName].isExpanded;
+    return this.state.expandedCard === groupName;
   }
 
   renderTaxCodeField() {
@@ -284,8 +273,9 @@ class VariantForm extends Component {
     return (
       <CardGroup>
         <Card
-          name="variantDetails"
+          expandable={true}
           expanded={this.isExpanded("variantDetails")}
+          name="variantDetails"
           onExpand={this.handleCardExpand}
         >
           <CardHeader
@@ -303,19 +293,6 @@ class VariantForm extends Component {
             {this.renderArchiveButton()}
           </CardHeader>
           <CardBody expandable={true}>
-            <TextField
-              i18nKeyLabel="productVariant.title"
-              i18nKeyPlaceholder="productVariant.title"
-              placeholder="Shop Id"
-              label="Shop Id"
-              name="shopId"
-              ref="titleInput"
-              value={this.variant.shopId}
-              onBlur={this.handleFieldBlur}
-              onChange={this.handleFieldChange}
-              onReturnKeyDown={this.handleFieldBlur}
-              validation={this.props.validation}
-            />
             <TextField
               i18nKeyLabel="productVariant.title"
               i18nKeyPlaceholder="productVariant.title"
@@ -446,12 +423,12 @@ class VariantForm extends Component {
         <SettingsCard
           enabled={this.state.taxable}
           expandable={true}
-          expanded={this.isExpanded("taxable")}
           i18nKeyTitle="productVariant.taxable"
           name="taxable"
+          packageName={"reaction-product-variant"}
+          saveOpenStateToPreferences={true}
           showSwitch={true}
           title="Taxable"
-          onExpand={this.handleCardExpand}
           onSwitchChange={this.handleCheckboxChange}
         >
           {this.renderTaxCodeField()}
@@ -473,12 +450,12 @@ class VariantForm extends Component {
         <SettingsCard
           enabled={this.state.inventoryManagement}
           expandable={true}
-          expanded={this.isExpanded("inventoryManagement")}
           i18nKeyTitle="productVariant.inventoryManagement"
           name="inventoryManagement"
+          packageName={"reaction-product-variant"}
+          saveOpenStateToPreferences={true}
           showSwitch={true}
           title="Inventory Tracking"
-          onExpand={this.handleCardExpand}
           onSwitchChange={this.handleCheckboxChange}
         >
           <div className="row">

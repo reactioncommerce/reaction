@@ -6,10 +6,21 @@ class Validation {
   /**
    * Instantiate with a schema to validate against
    * @param  {SimpleSchema} schema aldeed:simpleschema class
+   * @param  {Object} options extra options such as { pick: ["fieldName"] }
    */
-  constructor(schema) {
-    this.validationContext = schema.namedContext();
+  constructor(schema, options) {
+    if (options && options.pick) {
+      this.validationContext = schema.pick(options.pick).newContext();
+    } else {
+      this.validationContext = schema.namedContext();
+    }
+
     this.schema = schema;
+    this.options = options;
+  }
+
+  get cleanOptions() {
+    return this.options && this.options.cleanOptions || { getAutoValues: false };
   }
 
   /**
@@ -22,7 +33,7 @@ class Validation {
 
     // clean object, removing fields that aren't in the schema, and convert types
     // based on schema
-    const cleanedObject = this.schema.clean(objectToValidate);
+    const cleanedObject = this.schema.clean(objectToValidate, this.cleanOptions);
 
     // Validate the cleaned object
     const isValid = this.validationContext.validate(cleanedObject);

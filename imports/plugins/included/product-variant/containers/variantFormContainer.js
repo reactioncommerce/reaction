@@ -20,7 +20,7 @@ class VariantFormContainer extends Component {
     this.state = {
       variant: props.variant,
       validationStatus: {},
-      isDeleted: props.variant.isDeleted
+      isDeleted: props.variant && props.variant.isDeleted
     };
   }
 
@@ -163,14 +163,14 @@ class VariantFormContainer extends Component {
   handleVariantFieldSave = (variantId, fieldName, value, variant) => {
     const validationStatus = this.validation.validate(variant);
 
-    if (typeof validationStatus.isValid === "boolean") {
-      this.setState(() => {
-        return {
-          validationStatus,
-          variant
-        };
-      });
-    } else {
+    this.setState(() => {
+      return {
+        validationStatus,
+        variant
+      };
+    });
+
+    if (validationStatus.isValid === true) {
       Meteor.call("products/updateProductField", variantId, fieldName, value, (error) => {
         if (error) {
           Alerts.toast(error.message, "error");
@@ -192,42 +192,51 @@ class VariantFormContainer extends Component {
   }
 
   render() {
-    return (
-      <VariantForm
-        isProviderEnabled={this.isProviderEnabled}
-        fetchTaxCodes={this.fetchTaxCodes}
-        hasChildVariants={this.hasChildVariants}
-        greyDisabledFields={this.greyDisabledFields}
-        restoreVariant={this.restoreVariant}
-        removeVariant={this.removeVariant}
-        cloneVariant={this.cloneVariant}
-        onVariantFieldSave={this.handleVariantFieldSave}
-        onCardExpand={this.handleCardExpand}
-        onUpdateQuantityField={this.updateQuantityIfChildVariants}
-        validation={this.state.validationStatus}
-        isDeleted={this.state.isDeleted}
-        {...this.props}
-        variant={this.state.variant}
-      />
-    );
+    if (this.state.variant) {
+      return (
+        <VariantForm
+          isProviderEnabled={this.isProviderEnabled}
+          fetchTaxCodes={this.fetchTaxCodes}
+          hasChildVariants={this.hasChildVariants}
+          greyDisabledFields={this.greyDisabledFields}
+          restoreVariant={this.restoreVariant}
+          removeVariant={this.removeVariant}
+          cloneVariant={this.cloneVariant}
+          onVariantFieldSave={this.handleVariantFieldSave}
+          onCardExpand={this.handleCardExpand}
+          onUpdateQuantityField={this.updateQuantityIfChildVariants}
+          validation={this.state.validationStatus}
+          isDeleted={this.state.isDeleted}
+          {...this.props}
+          variant={this.state.variant}
+        />
+      );
+    }
+
+    return null;
   }
 }
 
 function composer(props, onData) {
   Meteor.subscribe("TaxCodes");
 
-  const countries = Countries.find({}).fetch();
   const productHandle = Reaction.Router.getParam("handle");
-
   if (!productHandle) {
     Reaction.clearActionView();
   }
 
-  onData(null, {
-    countries,
-    variant: ReactionProduct.selectedTopVariant() || {},
-    editFocus: Reaction.state.get("edit/focus")
-  });
+  const countries = Countries.find({}).fetch();
+  const variant = ReactionProduct.selectedTopVariant();
+
+  if (variant) {
+    onData(null, {
+      countries,
+      variant: ReactionProduct.selectedTopVariant(),
+      editFocus: Reaction.state.get("edit/focus")
+    });
+  } else {
+    onData(null, { countries });
+  }
 }
 
 VariantFormContainer.propTypes = {
