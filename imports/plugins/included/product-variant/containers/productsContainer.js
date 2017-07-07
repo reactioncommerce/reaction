@@ -124,18 +124,38 @@ function composer(props, onData) {
     window.prerenderReady = true;
   }
 
+  let productCursor;
+
   const currentTag = ReactionProduct.getTag();
-  const productCursor = Products.find({
-    ancestors: [],
-    type: { $in: ["simple"] },
-    isVisible: true
-  }, {
-    sort: {
-      [`positions.${currentTag}.position`]: 1,
-      [`positions.${currentTag}.createdAt`]: 1,
-      createdAt: 1
-    }
-  });
+  const shopName = Reaction.getShopName().toLowerCase();
+
+  // if the current tag is the shop name, get all
+  // products for admin, whether published or not
+  if (currentTag === shopName) {
+    productCursor = Products.find({
+      ancestors: [],
+      type: { $in: ["simple"] }
+    }, {
+      sort: {
+        [`positions.${currentTag}.position`]: 1,
+        [`positions.${currentTag}.createdAt`]: 1,
+        createdAt: 1
+      }
+    });
+  } else {
+    productCursor = Products.find({
+      ancestors: [],
+      type: { $in: ["simple"] },
+      hashtags: { $in: [tag._id] }
+    }, {
+      sort: {
+        [`positions.${currentTag}.position`]: 1,
+        [`positions.${currentTag}.createdAt`]: 1,
+        createdAt: 1
+      }
+    });
+  }
+
 
   const products = productCursor.map((product) => {
     return applyProductRevision(product);
