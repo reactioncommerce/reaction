@@ -1,8 +1,8 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { useDeps } from "react-simple-di";
 import getServiceConfig from "nodemailer-wellknown";
 import { Meteor } from "meteor/meteor";
-import PropTypes from "prop-types";
 import { Reaction } from "/client/api";
 import { Loading } from "/imports/plugins/core/ui/client/components";
 import actions from "../actions";
