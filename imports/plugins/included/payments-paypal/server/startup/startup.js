@@ -1,9 +1,9 @@
 import { Reaction, Hooks } from "/server/api";
 
 Hooks.Events.add("afterCoreInit", () => {
-  Reaction.addRolesToDefaultRoleSet({
+  Reaction.addRolesToGroups({
     allShops: true,
-    roleSets: ["defaultRoles", "defaultVisitorRole"],
+    groups: ["customer", "guest"],
     roles: ["reaction-paypal/paypalDone", "reaction-paypal/paypalCancel"]
   });
 });
