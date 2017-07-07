@@ -156,14 +156,22 @@ class OrdersList extends Component {
     };
     const customColumnMetadata = [];
     const columnNames = Object.keys(filteredFields);
-    const { selectedItems, handleSelect } = this.props;
+    const { selectedItems, handleSelect, multipleSelect, selectAllOrders } = this.props;
     columnNames.forEach((columnName) => {
       let colStyle = { borderRight: "none" };
       let colHeader = undefined;
 
       if (columnName === "Name") {
         colStyle = { borderRight: "1px solid #e6e6e6" };
-        colHeader = () => <div style={{ display: "inline-flex", paddingLeft: 5 }}><Checkbox className="order-header-checkbox checkbox"/> <span style={{ marginLeft: 5 }}>{columnName}</span></div>;
+        colHeader = () => <div style={{ display: "inline-flex", paddingLeft: 5 }}>
+            <Checkbox
+              className="order-header-checkbox checkbox"
+              checked={multipleSelect}
+              name="orders-checkbox"
+              onChange={() => selectAllOrders(orders, multipleSelect)}
+            />
+            <span style={{ marginLeft: 5 }}>{columnName}</span>
+          </div>;
       }
       const columnMeta = {
         accessor: filteredFields[columnName],
