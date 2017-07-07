@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { TacoTable } from "react-taco-table";
+import { registerComponent } from "@reactioncommerce/reaction-components";
 
 class SortableTableLegacy extends Component {
   constructor(props) {
@@ -15,10 +16,7 @@ class SortableTableLegacy extends Component {
   }
 
   render() {
-    const {
-      data,
-      columns
-    } = this.props;
+    const { data, columns } = this.props;
 
     return (
       <TacoTable
@@ -36,5 +34,7 @@ SortableTableLegacy.propTypes = {
   data: PropTypes.array,
   onRowClick: PropTypes.func
 };
+
+registerComponent("SortableTableLegacy", SortableTableLegacy);
 
 export default SortableTableLegacy;

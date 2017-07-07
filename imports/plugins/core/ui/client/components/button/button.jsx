@@ -2,8 +2,9 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import createFragment from "react-addons-create-fragment";
 import classnames from "classnames/dedupe";
-import Icon from "../icon/icon.jsx";
-import { Tooltip, Translation } from "../";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
+
+const { Icon, Tooltip, Translation } = Components;
 
 class Button extends Component {
   constructor(props) {
@@ -251,5 +252,7 @@ Button.defaultProps = {
   bezelStyle: "flat",
   tooltipAttachment: "bottom center"
 };
+
+registerComponent("Button", Button);
 
 export default Button;

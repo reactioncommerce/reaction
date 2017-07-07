@@ -2,7 +2,9 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Velocity from "velocity-animate";
 import "velocity-animate/velocity.ui";
-import { TextField, Button } from "../";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
+
+const { TextField, Button } = Components;
 
 class Metafield extends Component {
   componentWillReceiveProps(nextProps) {
@@ -148,5 +150,7 @@ Metafield.propTypes = {
   onChange: PropTypes.func,
   onRemove: PropTypes.func
 };
+
+registerComponent("Metafield", Metafield);
 
 export default Metafield;

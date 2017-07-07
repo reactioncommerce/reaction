@@ -36,9 +36,7 @@ function composer(props, onData) {
     "options.id": props.id || ""
   }).fetch();
 
-  onData(null, {
-    alerts: alerts
-  });
+  onData(null, { alerts });
 }
 
 AlertContainer.propTypes = {

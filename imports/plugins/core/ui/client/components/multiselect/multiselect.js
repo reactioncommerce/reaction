@@ -2,8 +2,10 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import Select from "react-select";
-import { Translation } from "../translation";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 import { i18next } from "/client/api";
+
+const { Translation } = Components;
 
 class MultiSelect extends Component {
   static defaultProps = {
@@ -68,5 +70,7 @@ class MultiSelect extends Component {
     );
   }
 }
+
+registerComponent("MultiSelect", MultiSelect);
 
 export default MultiSelect;

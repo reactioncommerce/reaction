@@ -2,8 +2,10 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
 import TextareaAutosize from "react-textarea-autosize";
-import { Translation } from "../translation";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 import { i18next } from "/client/api";
+
+const { Translation } = Components;
 
 class TextField extends Component {
   /**
@@ -173,10 +175,6 @@ class TextField extends Component {
   }
 }
 
-TextField.defaultProps = {
-
-};
-
 TextField.propTypes = {
   align: PropTypes.oneOf(["left", "center", "right", "justify"]),
   className: PropTypes.string,
@@ -199,5 +197,7 @@ TextField.propTypes = {
   type: PropTypes.string,
   value: PropTypes.any
 };
+
+registerComponent("TextField", TextField);
 
 export default TextField;

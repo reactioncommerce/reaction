@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import Metafield from "./metafield";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
+
+const { Metafield } = Components;
 
 class Metadata extends Component {
   /**
@@ -121,5 +123,7 @@ Metadata.propTypes = {
   onMetaRemove: PropTypes.func,
   onMetaSave: PropTypes.func
 };
+
+registerComponent("Metadata", Metadata);
 
 export default Metadata;

@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
-import { Translation } from "/imports/plugins/core/ui/client/components";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
+
+const { Translation } = Components;
 
 class Switch extends Component {
   static defaultProps = {
@@ -90,5 +92,7 @@ class Switch extends Component {
     );
   }
 }
+
+registerComponent("Switch", Switch);
 
 export default Switch;

@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { IconButton } from "../";
 import { SortableItem } from "../../containers";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
+const { IconButton } = Components;
 
 class MediaItem extends Component {
   handleMouseEnter = (event) => {
@@ -139,5 +140,7 @@ MediaItem.propTypes = {
   revision: PropTypes.object,
   source: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
 };
+
+registerComponent("MediaItem", MediaItem);
 
 export default SortableItem("media", MediaItem);

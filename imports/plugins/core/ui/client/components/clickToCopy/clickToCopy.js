@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import CopyToClipboard from "react-copy-to-clipboard";
-import { Tooltip, Translation } from "/imports/plugins/core/ui/client/components";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
+
+const { Tooltip, Translation } = Components;
 
 class ClickToCopy extends Component {
   constructor(props) {
@@ -83,5 +85,7 @@ ClickToCopy.defaultProps = {
   tooltip: "Copy to Clipboard",
   tooltipPosition: "middle left"
 };
+
+registerComponent("ClickToCopy", ClickToCopy);
 
 export default ClickToCopy;

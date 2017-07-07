@@ -2,7 +2,9 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { map, update, set, at, isEqual } from "lodash";
 import classnames from "classnames";
-import { Switch, Button, TextField, Select, FormActions } from "../";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
+
+const { Switch, Button, TextField, Select, FormActions } = Components;
 
 class Form extends Component {
   static defaultProps = {
@@ -297,5 +299,7 @@ class Form extends Component {
     );
   }
 }
+
+registerComponent("Form", Form);
 
 export default Form;

@@ -1,7 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
-const accounting = require("accounting-js");
+import accounting from "accounting-js";
+import { registerComponent } from "@reactioncommerce/reaction-components";
 
 function setCaretPosition(ctrl, pos) {
   if (ctrl.setSelectionRange) {
@@ -182,5 +183,7 @@ NumericInput.propTypes = {
   onChange: PropTypes.func,
   value: PropTypes.number
 };
+
+registerComponent("NumericInput", NumericInput);
 
 export default NumericInput;

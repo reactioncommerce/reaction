@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Translation } from "/imports/plugins/core/ui/client/components";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
+
+const { Translation } = Components;
 
 class Checkbox extends Component {
   handleChange = (event) => {
@@ -36,5 +38,7 @@ Checkbox.propTypes = {
   name: PropTypes.string,
   onChange: PropTypes.func
 };
+
+registerComponent("Checkbox", Checkbox);
 
 export default Checkbox;

@@ -1,16 +1,16 @@
-import React, { Component } from "react";
-import MultiSelect from "../multiselect/multiselect";
+import React from "react";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
-class Select extends Component {
-  render() {
-    return (
-      <MultiSelect
-        multi={false}
-        clearable={false}
-        {...this.props}
-      />
-    );
-  }
-}
+const { MultiSelect } = Components;
+
+const Select = (props) => (
+  <MultiSelect
+    multi={false}
+    clearable={false}
+    {...props}
+  />
+);
+
+registerComponent("Select", Select);
 
 export default Select;

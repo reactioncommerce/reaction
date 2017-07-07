@@ -5,7 +5,9 @@ import matchSorter from "match-sorter";
 import ReactTable from "react-table";
 import { Meteor } from "meteor/meteor";
 import { Counts } from "meteor/tmeasday:publish-counts";
-import { SortableTableFilter, SortableTablePagination } from "./sortableTableComponents";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
+
+const { SortableTableFilter, SortableTablePagination } = Components;
 
 class SortableTable extends Component {
   constructor(props) {
@@ -277,5 +279,7 @@ SortableTable.defaultProps = {
   ofText: "of",
   rowsText: "rows"
 };
+
+registerComponent("SortableTable", SortableTable);
 
 export default SortableTable;

@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Button } from "/imports/plugins/core/ui/client/components";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
+const { Button } = Components;
 
 class PaginationButtons extends Component {
   constructor(props) {
@@ -75,5 +76,7 @@ PaginationButtons.propTypes = {
   disabled: PropTypes.bool,
   onClick: PropTypes.func
 };
+
+registerComponent("PaginationButtons", PaginationButtons);
 
 export default PaginationButtons;

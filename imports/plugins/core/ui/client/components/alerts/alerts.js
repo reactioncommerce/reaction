@@ -1,36 +1,35 @@
-import React, { Component } from "react";
+import React from "react";
 import PropTypes from "prop-types";
-import Alert from "./alert";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
-class Alerts extends Component {
-  renderAlerts() {
-    if (Array.isArray(this.props.alerts)) {
-      return this.props.alerts.map((alert, index) => {
-        return (
-          <Alert
-            alert={alert}
-            key={index}
-            onAlertRemove={this.props.onAlertRemove}
-            onAlertSeen={this.props.onAlertSeen}
-          />
-        );
-      });
-    }
-  }
+const { Alert } = Components;
 
-  render() {
+const Alerts = ({ alerts, onAlertRemove, onAlertSeen }) => {
+  if (Array.isArray(alerts)) {
     return (
       <div className="alert-container">
-        {this.renderAlerts()}
+        {alerts.map((alert, index) => {
+          return (
+            <Alert
+              alert={alert}
+              key={index}
+              onAlertRemove={onAlertRemove}
+              onAlertSeen={onAlertSeen}
+            />
+          );
+        })}
       </div>
     );
   }
-}
+  return null;
+};
 
 Alerts.propTypes = {
   alerts: PropTypes.arrayOf(PropTypes.object),
   onAlertRemove: PropTypes.func,
   onAlertSeen: PropTypes.func
 };
+
+registerComponent("Alerts", Alerts);
 
 export default Alerts;

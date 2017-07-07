@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames/dedupe";
-import Icon from "../icon/icon.jsx";
-import { Translation } from "../";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
+
+const { Icon, Translation } = Components;
 
 class MenuItem extends Component {
   handleClick = (event) => {
@@ -75,5 +76,7 @@ MenuItem.propTypes = {
 MenuItem.defaultProps = {
   disabled: false
 };
+
+registerComponent("MenuItem", MenuItem);
 
 export default MenuItem;

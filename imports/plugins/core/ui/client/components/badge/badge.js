@@ -1,13 +1,11 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames/dedupe";
-import { Translation } from "/imports/plugins/core/ui/client/components";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
+
+const { Translation } = Components;
 
 class Badge extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   renderLabel() {
     if (this.props.label) {
       if (typeof this.props.label === "string") {
@@ -66,5 +64,7 @@ Badge.defaultProps = {
   badgeSize: "small",
   status: "default"
 };
+
+registerComponent("Badge", Badge);
 
 export default Badge;

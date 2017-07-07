@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Tooltip } from "/imports/plugins/core/ui/client/components";
 import classnames from "classnames";
 import TetherComponent from "react-tether";
-import PopoverContent from "./popoverContent";
-import { Button, ButtonGroup } from "/imports/plugins/core/ui/client/components/";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
+
+const { Button, ButtonGroup, PopoverContent, Tooltip } = Components;
 
 class Popover extends Component {
   state = {
@@ -142,5 +142,6 @@ Popover.defaultProps = {
   targetAttachment: "top left"
 };
 
+registerComponent("Popover", Popover);
 
 export default Popover;

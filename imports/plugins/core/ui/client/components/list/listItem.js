@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
-import { Icon, Switch, Translation } from "/imports/plugins/core/ui/client/components";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
+
+const { Icon, Switch, Translation } = Components;
 
 class ListItem extends Component {
   static propTypes = {
@@ -149,5 +151,7 @@ class ListItem extends Component {
     );
   }
 }
+
+registerComponent("ListItem", ListItem);
 
 export default ListItem;

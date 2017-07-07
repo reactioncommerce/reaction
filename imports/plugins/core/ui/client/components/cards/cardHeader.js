@@ -1,10 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
-import CardTitle from "./cardTitle";
-import IconButton from "../button/iconButton";
-import Icon from "../icon/icon";
-import Switch from "../switch/switch";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
+
+const { CardTitle, Icon, IconButton, Switch } = Components;
 
 class CardHeader extends Component {
   static defaultProps = {
@@ -146,5 +145,7 @@ class CardHeader extends Component {
     );
   }
 }
+
+registerComponent("CardHeader", CardHeader);
 
 export default CardHeader;

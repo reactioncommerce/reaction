@@ -1,10 +1,8 @@
 import React, { Children, Component } from "react";
 import PropTypes from "prop-types";
-import {
-  Button,
-  Menu,
-  Popover
-} from "../";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
+
+const { Button, Menu, Popover } = Components;
 
 class DropDownMenu extends Component {
   constructor(props) {
@@ -132,5 +130,7 @@ DropDownMenu.propTypes = {
   }),
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.bool, PropTypes.number])
 };
+
+registerComponent("DropDownMenu", DropDownMenu);
 
 export default DropDownMenu;

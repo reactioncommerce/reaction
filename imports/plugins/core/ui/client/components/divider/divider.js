@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
-import { Translation } from "../";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
+
+const { Translation } = Components;
 
 class Divider extends Component {
   renderLabel() {
@@ -44,5 +46,7 @@ Divider.propTypes = {
   id: PropTypes.string,
   label: PropTypes.string
 };
+
+registerComponent("Divider", Divider);
 
 export default Divider;

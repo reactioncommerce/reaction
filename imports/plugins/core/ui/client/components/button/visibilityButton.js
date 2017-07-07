@@ -1,5 +1,7 @@
 import React from "react";
-import IconButton from "./iconButton";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
+
+const { IconButton } = Components;
 
 /**
  * Visibility button is a special type of Icon Button that is toggable by default
@@ -23,5 +25,7 @@ const VisibilityButton = (props) => {
     />
   );
 };
+
+registerComponent("VisibilityButton", VisibilityButton);
 
 export default VisibilityButton;

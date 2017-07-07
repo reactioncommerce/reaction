@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classnames from "classnames";
-import { PaginationButtons } from "../sortableTableComponents";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
+const { PaginationButtons } = Components;
 
 class SortableTablePagination extends Component {
   constructor(props) {
@@ -160,5 +161,7 @@ SortableTablePagination.propTypes = {
   showPageJump: PropTypes.bool,
   showPageSizeOptions: PropTypes.bool
 };
+
+registerComponent("SortableTablePagination", SortableTablePagination);
 
 export default SortableTablePagination;
