@@ -27,7 +27,7 @@ class OrderListItem extends Component {
                     <div className="order-item">
                       <div className="order-item-media">
                         {media(item) ?
-                          <img src={media.url({ store: "thumbnail" })} /> :
+                          <img src={media(item).url({ store: "thumbnail" })} /> :
                           <img src="/resources/placeholder.gif" />}
                       </div>
 
