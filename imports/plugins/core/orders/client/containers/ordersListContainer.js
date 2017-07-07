@@ -48,22 +48,22 @@ class OrdersListContainer extends Component {
     });
   }
 
-  handleSelect = (event, bla1, bla2) => {
-    const originalArray = this.state.selectedItems;
+  handleSelect = (event, isInputChecked, name) => {
+    const selectedItemsArray = this.state.selectedItems;
 
-    if (!originalArray.includes(bla2)) {
-      originalArray.push(bla2);
+    if (!selectedItemsArray.includes(name)) {
+      selectedItemsArray.push(name);
       this.setState({
-        selectedItems: originalArray
+        selectedItems: selectedItemsArray
       });
     } else {
-      const newArray = originalArray.filter((id) => {
-        if (id !== bla2) {
+      const updatedSelectedArray = selectedItemsArray.filter((id) => {
+        if (id !== name) {
           return id;
         }
       });
       this.setState({
-        selectedItems: newArray
+        selectedItems: updatedSelectedArray
       });
     }
   }
