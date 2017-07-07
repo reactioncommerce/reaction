@@ -17,7 +17,7 @@ export default function getSortedGroups(shopUsers, groups) {
     sortedGroups[groupName] = shopUsers.filter(function (user) {
       return user.groups.length > 0 && allGroups[groupName].ids.includes(user.groups[0]);
     });
-    sortedGroups[groupName].groupData = Object.assign({}, { ...allGroups[groupName] });
+    sortedGroups[groupName].groupData = Object.assign({}, { ...allGroups[groupName].group }, { ...allGroups[groupName] });
   });
   return sortedGroups;
 }

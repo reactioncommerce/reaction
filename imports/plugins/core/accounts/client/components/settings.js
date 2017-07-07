@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import AddAdmninForm from "./addAdminForm";
 import GroupSettings from "./groupSettings";
+import GroupOwnerSettings from "./ownerSettings";
 
 
 class SettingsComponent extends Component {
@@ -35,11 +36,18 @@ class SettingsComponent extends Component {
     );
   }
 
+  renderOwnersTab() {
+    return (
+      <GroupOwnerSettings accounts={this.props.accounts}/>
+    );
+  }
+
   render() {
     return (
         <div className="groups-form">
         {this.renderAddAdminForm()}
         {this.renderGroupSettings()}
+        {this.renderOwnersTab()}
         </div>
     );
   }

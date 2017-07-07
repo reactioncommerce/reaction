@@ -24,8 +24,7 @@ class SettingsContainer extends Component {
 
   toggleGroupPermission(permissionGroup, group) {
     // TODO: Re-write this for permissions toggling
-    console.log("group", group);
-    console.log("group45", permissionGroup);
+    // Meet seun for cues on how this should be properly implemented
 
     const permissions = [];
 
@@ -38,20 +37,24 @@ class SettingsContainer extends Component {
       permissions.push(permissionGroup.permission);
     }
 
-    if (this.hasPermissionChecked(permissionGroup.permissions, group)) {
-      group.groupData.ids.forEach((id) => {
-        Meteor.call("group/updateGroup", id, Object.assign({}, { ...group.groupData }, { permissions }));
+    if (!this.hasPermissionChecked(permissionGroup.permissions, group)) {
+      group.groupData.ids.forEach((groupId) => {
+        // console.log("shsh", group[index].shopId);
+        const foundGroup = Groups.findOne({ _id: groupId });
+
+        const updatedPermissions = foundGroup.permissions.concat(permissions);
+        const updatedGroup = { name: foundGroup.name, permissions: updatedPermissions };
+        Meteor.call("group/updateGroup", groupId, updatedGroup, foundGroup.shopId);
       });
-    //   Meteor.call("group/updateGroup", member.userId, permissions, this.shopId);
-    // } else {
-    //   Meteor.call("accounts/removeUserPermissions", member.userId, permissions, this.shopId);
+    } else {
+      // Make another meteor call
     }
   }
 
   hasPermissionChecked(permissions, group) {
     let status = false;
     permissions.forEach((permission) => {
-      if (group.groupData.group.permissions.includes(permission.permission)) {
+      if (group.groupData.permissions.includes(permission.permission)) {
         status = true;
       }
     });
