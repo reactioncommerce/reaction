@@ -3,7 +3,7 @@ import { Template } from "meteor/templating";
 import { Reaction } from "/lib/api";
 import * as Collections from "/lib/collections";
 import { Loading } from "/imports/plugins/core/ui/client/components";
-import OrderListContainer from "../../../../../imports/plugins/core/orders/client/containers/orderListContainer";
+import OrderListContainer from "/imports/plugins/core/orders/client/containers/orderListContainer";
 
 /**
  * onCreated: Account Profile View
