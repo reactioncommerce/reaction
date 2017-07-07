@@ -762,6 +762,22 @@ export function setUserPermissions(userId, permissions, group) {
 }
 
 /**
+ * accounts/createFallbackLoginToken
+ * @returns {String} returns a new loginToken for current user,
+ *   that can be used for special login scenarios - e.g. store the
+ *   newly created token as cookie on the browser, if the client
+ *   does not offer local storage.
+ */
+export function createFallbackLoginToken() {
+  if (this.userId) {
+    const stampedLoginToken = MeteorAccounts._generateStampedLoginToken();
+    const loginToken = stampedLoginToken.token;
+    MeteorAccounts._insertLoginToken(this.userId, stampedLoginToken);
+    return loginToken;
+  }
+}
+
+/**
  * Reaction Account Methods
  */
 Meteor.methods({
@@ -775,5 +791,6 @@ Meteor.methods({
   "accounts/sendWelcomeEmail": sendWelcomeEmail,
   "accounts/addUserPermissions": addUserPermissions,
   "accounts/removeUserPermissions": removeUserPermissions,
-  "accounts/setUserPermissions": setUserPermissions
+  "accounts/setUserPermissions": setUserPermissions,
+  "accounts/createFallbackLoginToken": createFallbackLoginToken
 });

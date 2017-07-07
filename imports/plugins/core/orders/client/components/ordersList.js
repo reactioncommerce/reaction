@@ -52,7 +52,9 @@ class OrdersList extends Component {
     });
 
     return (
-      <button className={classes} data-event-action="startProcessingOrder"><Icon icon="fa fa-chevron-right" /></button>
+      <button className={classes} onClick={() => this.props.handleClick(order)}>
+        <Icon icon="fa fa-chevron-right" />
+      </button>
     );
   }
 
