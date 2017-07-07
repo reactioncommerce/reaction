@@ -83,9 +83,9 @@ class GroupsSettings extends Component {
     return (
       <div className="">
       {getGroupPermissions(group.groupData.group.shopId).map((item, index) =>
-          <div className="rui card-toolbar" style={{ width: "", height: "37px" }}>
+          <div className="rui card-toolbar" style={{ width: "", height: "37px" }} key={index}>
           {!this.hasManyPermissions(item.permissions) ?
-            <div className="" data-event-action="expandPermission" key={index}>
+            <div className="" data-event-action="expandPermission">
                 <div className="" style={{ float: "left", height: "37px", position: "relative", right: "120px", top: "5px", width: "200px", fontSize: "16px" }}>
                   <label style={{}}>
                     {item.label}

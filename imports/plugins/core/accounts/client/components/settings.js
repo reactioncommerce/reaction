@@ -7,10 +7,10 @@ import GroupSettings from "./groupSettings";
 class SettingsComponent extends Component {
   static propTypes = {
     accounts: PropTypes.array,
-    getGroupPermissions: PropTypes.function,
+    getGroupPermissions: PropTypes.func,
     groups: PropTypes.object,
-    hasPermissionChecked: PropTypes.function,
-    toggleGroupPermission: PropTypes.function
+    hasPermissionChecked: PropTypes.func,
+    toggleGroupPermission: PropTypes.func
   }
 
   renderAddAdminForm() {

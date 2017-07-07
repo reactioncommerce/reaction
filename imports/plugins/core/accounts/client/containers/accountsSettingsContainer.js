@@ -22,28 +22,30 @@ class SettingsContainer extends Component {
     shopUsers: PropTypes.array
   }
 
-  toggleGroupPermission(/* permissionGroup, group */) {
+  toggleGroupPermission(permissionGroup, group) {
     // TODO: Re-write this for permissions toggling
+    console.log("group", group);
+    console.log("group45", permissionGroup);
 
-    // const permissions = [];
+    const permissions = [];
 
-    // if (!this.shopId) {
-    //   throw new Meteor.Error("Shop is required");
-    // }
-    // if (self.name) {
-    //   permissions.push(self.name);
-    //   for (const pkgPermissions of self.permissions) {
-    //     permissions.push(pkgPermissions.permission);
-    //   }
-    // } else {
-    //   permissions.push(self.permission);
-    // }
+    if (permissionGroup.name) {
+      permissions.push(permissionGroup.name);
+      for (const pkgPermissions of permissionGroup.permissions) {
+        permissions.push(pkgPermissions.permission);
+      }
+    } else {
+      permissions.push(permissionGroup.permission);
+    }
 
-    // if (Template.instance().$(event.currentTarget).is(":checked")) {
-    //   Meteor.call("accounts/addUserPermissions", member.userId, permissions, this.shopId);
+    if (this.hasPermissionChecked(permissionGroup.permissions, group)) {
+      group.groupData.ids.forEach((id) => {
+        Meteor.call("group/updateGroup", id, Object.assign({}, { ...group.groupData }, { permissions }));
+      });
+    //   Meteor.call("group/updateGroup", member.userId, permissions, this.shopId);
     // } else {
     //   Meteor.call("accounts/removeUserPermissions", member.userId, permissions, this.shopId);
-    // }
+    }
   }
 
   hasPermissionChecked(permissions, group) {
