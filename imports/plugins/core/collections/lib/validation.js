@@ -18,7 +18,7 @@ class Validation {
    * @return {Object} object containting {isValid: true|false, validationMessages: undefined|object}
    */
   validate(objectToValidate) {
-    const validationMessages = {};
+    const messages = {};
 
     // clean object, removing fields that aren't in the schema, and convert types
     // based on schema
@@ -32,7 +32,7 @@ class Validation {
     // the validation error and message
     this.validationContext._invalidKeys
       .forEach((validationError) => {
-        validationMessages[validationError.name] = {
+        messages[validationError.name] = {
           ...validationError,
           message: this.validationContext.keyErrorMessage(validationError.name)
         };
@@ -41,7 +41,7 @@ class Validation {
     // Return object validation status and messages if any
     return {
       isValid,
-      validationMessages
+      messages
     };
   }
 }

@@ -14,13 +14,27 @@ class TextField extends Component {
     return this.props.value || "";
   }
 
+  /**
+   * Getter: isValid
+   * @return {Boolean} true/false if field is valid from props.isValid or props.valitation[this.props.name].isValid
+   */
   get isValid() {
-    const { isValid, validation } = this.props;
+    const { isValid } = this.props;
 
     if (typeof isValid === "boolean") {
       return isValid;
-    } else if (typeof validation === "object") {
+    } else if (this.validationMessage) {
       return false;
+    }
+
+    return undefined;
+  }
+
+  get validationMessage() {
+    const { name, validation } = this.props;
+
+    if (typeof validation === "object" && validation.messages && validation.messages[name]) {
+      return validation.messages[name];
     }
 
     return undefined;
@@ -133,6 +147,10 @@ class TextField extends Component {
     return this.renderSingleLineInput();
   }
 
+  /**
+   * Render the label for the text field if one is provided in props
+   * @return {ReactNode|null} react node or null
+   */
   renderLabel() {
     if (this.props.label) {
       return (
@@ -145,19 +163,24 @@ class TextField extends Component {
     return null;
   }
 
+  /**
+   * Render help text or validation message
+   * @return {ReactNode|null} react node or null
+   */
   renderHelpText() {
-    if (this.props.validation) {
-      return (
-        <span className="help-block">
-          <Translation defaultValue={this.props.validation.message} i18nKey={this.props.validation.message} />
-        </span>
-      );
+    const message = this.validationMessage;
+    let helpText = this.props.helpText;
+    let i18nKey = this.props.i18nKeyHelpText;
+
+    if (this.isValid === false && message) {
+      helpText = message.message;
+      i18nKey = message.i18nKeyMessage;
     }
 
-    if (this.props.helpText) {
+    if (helpText) {
       return (
         <span className="help-block">
-          <Translation defaultValue={this.props.helpText} i18nKey={this.props.i18nKeyHelpText} />
+          <Translation defaultValue={helpText} i18nKey={i18nKey} />
         </span>
       );
     }
@@ -220,6 +243,7 @@ TextField.propTypes = {
   style: PropTypes.object,
   textFieldStyle: PropTypes.object,
   type: PropTypes.string,
+  validation: PropTypes.object,
   value: PropTypes.any
 };
 

@@ -11,7 +11,7 @@ import { Reaction, i18next } from "/client/api";
 import { TaxCodes } from "/imports/plugins/core/taxes/lib/collections";
 import VariantForm from "../components/variantForm";
 import { ProductVariant } from "/lib/collections/schemas/products";
-import Validation from "/imports/plugins/core/collections/lib/validation";
+import { Validation } from "@reactioncommerce/reaction-collections";
 
 class VariantFormContainer extends Component {
   constructor(props) {
@@ -19,15 +19,13 @@ class VariantFormContainer extends Component {
 
     this.state = {
       variant: props.variant,
-      validationMessages: {},
+      validationStatus: {},
       isDeleted: props.variant.isDeleted
     };
-
-    this.validation = new Validation(ProductVariant);
   }
 
   componentDidMount() {
-    this.validationContext = ProductVariant.namedContext("variantForm");
+    this.validation = new Validation(ProductVariant);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -163,12 +161,12 @@ class VariantFormContainer extends Component {
   }
 
   handleVariantFieldSave = (variantId, fieldName, value, variant) => {
-    const { isValid, validationMessages } = this.validation.validate(variant);
+    const validationStatus = this.validation.validate(variant);
 
-    if (isValid === false) {
+    if (typeof validationStatus.isValid === "boolean") {
       this.setState(() => {
         return {
-          validationMessages,
+          validationStatus,
           variant
         };
       });
@@ -206,7 +204,7 @@ class VariantFormContainer extends Component {
         onVariantFieldSave={this.handleVariantFieldSave}
         onCardExpand={this.handleCardExpand}
         onUpdateQuantityField={this.updateQuantityIfChildVariants}
-        validationMessages={this.state.validationMessages}
+        validation={this.state.validationStatus}
         isDeleted={this.state.isDeleted}
         {...this.props}
         variant={this.state.variant}

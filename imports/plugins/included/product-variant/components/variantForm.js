@@ -204,7 +204,7 @@ class VariantForm extends Component {
         onBlur={this.handleFieldBlur}
         onChange={this.handleFieldChange}
         onReturnKeyDown={this.handleFieldBlur}
-        validation={this.props.validationMessages["taxCode"]}
+        validation={this.props.validation}
       />
     );
   }
@@ -274,7 +274,7 @@ class VariantForm extends Component {
           onChange={this.handleFieldChange}
           onBlur={this.handleFieldBlur}
           onReturnKeyDown={this.handleFieldBlur}
-          validation={this.props.validationMessages["inventoryQuantity"]}
+          validation={this.props.validation}
         />
       </div>
     );
@@ -306,6 +306,19 @@ class VariantForm extends Component {
             <TextField
               i18nKeyLabel="productVariant.title"
               i18nKeyPlaceholder="productVariant.title"
+              placeholder="Shop Id"
+              label="Shop Id"
+              name="shopId"
+              ref="titleInput"
+              value={this.variant.shopId}
+              onBlur={this.handleFieldBlur}
+              onChange={this.handleFieldChange}
+              onReturnKeyDown={this.handleFieldBlur}
+              validation={this.props.validation}
+            />
+            <TextField
+              i18nKeyLabel="productVariant.title"
+              i18nKeyPlaceholder="productVariant.title"
               placeholder="Label"
               label="Label"
               name="title"
@@ -314,7 +327,7 @@ class VariantForm extends Component {
               onBlur={this.handleFieldBlur}
               onChange={this.handleFieldChange}
               onReturnKeyDown={this.handleFieldBlur}
-              validation={this.props.validationMessages["title"]}
+              validation={this.props.validation}
             />
             <Select
               clearable={false}
@@ -340,7 +353,7 @@ class VariantForm extends Component {
                   onBlur={this.handleFieldBlur}
                   onChange={this.handleFieldChange}
                   onReturnKeyDown={this.handleFieldBlur}
-                  validation={this.props.validationMessages["compareAtPrice"]}
+                  validation={this.props.validation}
                 />
               </div>
               <div className="col-sm-6">
@@ -357,7 +370,7 @@ class VariantForm extends Component {
                   onBlur={this.handleFieldBlur}
                   onChange={this.handleFieldChange}
                   onReturnKeyDown={this.handleFieldBlur}
-                  validation={this.props.validationMessages["price"]}
+                  validation={this.props.validation}
                 />
               </div>
             </div>
@@ -375,7 +388,7 @@ class VariantForm extends Component {
                   onBlur={this.handleFieldBlur}
                   onChange={this.handleFieldChange}
                   onReturnKeyDown={this.handleFieldBlur}
-                  validation={this.props.validationMessages["width"]}
+                  validation={this.props.validation}
                 />
               </div>
               <div className="col-sm-6">
@@ -390,7 +403,7 @@ class VariantForm extends Component {
                   onBlur={this.handleFieldBlur}
                   onChange={this.handleFieldChange}
                   onReturnKeyDown={this.handleFieldBlur}
-                  validation={this.props.validationMessages["length"]}
+                  validation={this.props.validation}
                 />
               </div>
             </div>
@@ -408,7 +421,7 @@ class VariantForm extends Component {
                   onBlur={this.handleFieldBlur}
                   onChange={this.handleFieldChange}
                   onReturnKeyDown={this.handleFieldBlur}
-                  validation={this.props.validationMessages["height"]}
+                  validation={this.props.validation}
                 />
               </div>
               <div className="col-sm-6">
@@ -423,7 +436,7 @@ class VariantForm extends Component {
                   onBlur={this.handleFieldBlur}
                   onChange={this.handleFieldChange}
                   onReturnKeyDown={this.handleFieldBlur}
-                  validation={this.props.validationMessages["weight"]}
+                  validation={this.props.validation}
                 />
               </div>
             </div>
@@ -453,7 +466,7 @@ class VariantForm extends Component {
             onBlur={this.handleFieldBlur}
             onChange={this.handleFieldChange}
             onReturnKeyDown={this.handleFieldBlur}
-            validation={this.props.validationMessages["taxDescription"]}
+            validation={this.props.validation}
           />
         </SettingsCard>
 
@@ -482,7 +495,7 @@ class VariantForm extends Component {
                 onBlur={this.handleFieldBlur}
                 onChange={this.handleFieldChange}
                 onReturnKeyDown={this.handleFieldBlur}
-                validation={this.props.validationMessages["lowInventoryWarningThreshold"]}
+                validation={this.props.validation}
               />
             </div>
           </div>
@@ -496,7 +509,7 @@ class VariantForm extends Component {
                 onLabel={"Allow Backorder"}
                 checked={this.state.inventoryPolicy}
                 onChange={this.handleCheckboxChange}
-                validation={this.props.validationMessages["inventoryPolicy"]}
+                validation={this.props.validation}
               />
             </div>
           </div>
@@ -521,6 +534,7 @@ VariantForm.propTypes = {
   onVariantFieldSave: PropTypes.func,
   removeVariant: PropTypes.func,
   restoreVariant: PropTypes.func,
+  validation: PropTypes.object,
   variant: PropTypes.object
 };
 
