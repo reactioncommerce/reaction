@@ -44,8 +44,6 @@ export default function () {
     fetch: [],
     transform: null,
     allow(type, arg, userId) {
-      console.log("ifHasRoleDebug", type, arg.group, userId, Reaction.getShopId());
-
       if (!arg) throw new Error("ifHasRole security rule method requires an argument");
       if (arg.role) {
         return Roles.userIsInRole(userId, arg.role, Reaction.getShopId());
