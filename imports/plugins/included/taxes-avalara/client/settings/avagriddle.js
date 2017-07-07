@@ -1,17 +1,20 @@
 /* eslint react/prop-types:0, react/jsx-sort-props:0, react/forbid-prop-types: 0, "react/prefer-es6-class": [1, "never"] */
 import _ from "lodash";
 import React from "react";
+import createReactClass from "create-react-class";
+import PropTypes from "prop-types";
 import moment from "moment";
 import Griddle from "griddle-react";
+import { Meteor } from "meteor/meteor";
 import { Counts } from "meteor/tmeasday:publish-counts";
 import { ReactMeteorData } from "meteor/react-meteor-data";
 
-const LogGriddle = React.createClass({
+const LogGriddle = createReactClass({
   propTypes: {
-    collection: React.PropTypes.object,
-    matchingResultsCount: React.PropTypes.string,
-    publication: React.PropTypes.string,
-    subscriptionParams: React.PropTypes.object
+    collection: PropTypes.object,
+    matchingResultsCount: PropTypes.string,
+    publication: PropTypes.string,
+    subscriptionParams: PropTypes.object
   },
   mixins: [ReactMeteorData],
 

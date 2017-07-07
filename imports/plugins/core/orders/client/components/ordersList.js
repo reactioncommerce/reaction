@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import classnames from "classnames/dedupe";
 import Avatar from "react-avatar";
 import moment from "moment";
@@ -7,7 +8,6 @@ import { Badge, ClickToCopy, Icon, Translation } from "@reactioncommerce/reactio
 import ProductImage from "./productImage";
 
 class OrdersList extends Component {
-
   static propTypes = {
     displayMedia: PropTypes.func,
     handleClick: PropTypes.func,
@@ -38,7 +38,6 @@ class OrdersList extends Component {
   /**
    * Shipping Badge
    * TODO: any logic here, we don't have shipping status changes at the moment
-   * @param  {Object} order object containing info for order and coreOrderWorkflow
    * @return {string} A string containing the type of Badge
    */
   shippingBadgeStatus() {
@@ -53,7 +52,9 @@ class OrdersList extends Component {
     });
 
     return (
-      <button className={classes} data-event-action="startProcessingOrder"><Icon icon="fa fa-chevron-right" /></button>
+      <button className={classes} onClick={() => this.props.handleClick(order)}>
+        <Icon icon="fa fa-chevron-right" />
+      </button>
     );
   }
 
@@ -70,12 +71,12 @@ class OrdersList extends Component {
 
           <span className="order-data order-data-id">
             <strong>Order ID: </strong>
-              <ClickToCopy
-                copyToClipboard={order._id}
-                displayText={order._id}
-                i18nKeyTooltip="admin.orderWorkflow.summary.copyOrderLink"
-                tooltip="Copy Order Link"
-              />
+            <ClickToCopy
+              copyToClipboard={order._id}
+              displayText={order._id}
+              i18nKeyTooltip="admin.orderWorkflow.summary.copyOrderLink"
+              tooltip="Copy Order Link"
+            />
           </span>
 
           <span className="order-data order-data-total">
@@ -115,7 +116,7 @@ class OrdersList extends Component {
             size={30}
             className="rui-order-avatar"
           />
-        <strong>{order.shipping[0].address.fullName}</strong> | {emailAddress}
+          <strong>{order.shipping[0].address.fullName}</strong> | {emailAddress}
         </div>
         <div className="workflow-info">
           <Badge
@@ -156,15 +157,26 @@ class OrdersList extends Component {
   render() {
     const { orders } = this.props;
 
+    if (orders.length) {
+      return (
+        <div className="container-fluid-sm">
+          {orders.map((order, i) => {
+            return (
+              <div key={i}>
+                {this.renderOrderCard(order)}
+              </div>
+            );
+          })}
+        </div>
+      );
+    }
+
     return (
       <div className="container-fluid-sm">
-        {orders.map((order, i) => {
-          return (
-            <div key={i}>
-              {this.renderOrderCard(order)}
-            </div>
-          );
-        })}
+        <div className="empty-view-message">
+          <Icon icon="fa fa-sun-o" />
+          <Translation defaultValue={"No orders found"} i18nKey={"order.ordersNotFound"} />
+        </div>
       </div>
     );
   }

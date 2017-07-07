@@ -2,6 +2,7 @@
 /* eslint no-loop-func: 0 */
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
+import { check, Match } from "meteor/check";
 import { Factory } from "meteor/dburles:factory";
 import { Reaction } from "/server/api";
 import { Products, Revisions, Tags } from "/lib/collections";

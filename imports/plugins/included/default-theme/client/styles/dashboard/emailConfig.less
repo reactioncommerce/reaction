@@ -1,0 +1,43 @@
+.email-config-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.email-config-title {
+  font-size: 2rem;
+  font-weight: 200;
+}
+
+.email-config-status {
+  margin-top: .4rem;
+}
+
+.email-status-error {
+  padding-top: 1rem;
+  color: @brand-danger;
+}
+
+.email-config-status i {
+  margin-left: .3rem;
+}
+
+.email-config-status i.valid, i.valid {
+  color: @brand-cta;
+}
+
+.email-config-status i.error, i.error {
+  color: @brand-danger;
+}
+
+.email-log-status i {
+  margin-right: .3em;
+  margin-left: .3em;
+
+  &.resend-mail {
+    cursor: pointer;
+
+    &:hover {
+      opacity: .6;
+    }
+  }
+}

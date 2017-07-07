@@ -1,5 +1,6 @@
 import accounting from "accounting-js";
 import { Meteor } from "meteor/meteor";
+import { check, Match } from "meteor/check";
 import { Factory } from "meteor/dburles:factory";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
@@ -97,7 +98,7 @@ describe("orders test", function () {
     });
 
     it("should return the product to stock ", function () {
-        // Mock user permissions
+      // Mock user permissions
       sandbox.stub(Reaction, "hasPermission", () => true);
       const returnToStock = true;
       const previousProduct = Products.findOne({ _id: order.items[0].variants._id });

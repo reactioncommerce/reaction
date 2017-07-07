@@ -1,7 +1,7 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 
 class SimpleDiff extends Component {
-
   renderDiff() {
     const diff = this.props.diff;
 

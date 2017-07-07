@@ -1,8 +1,8 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { formatPriceString } from "/client/api";
 
 class TotalActions extends Component {
-
   static propTypes = {
     adjustedTotal: PropTypes.number,
     invoice: PropTypes.object,

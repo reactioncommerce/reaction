@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { $ } from "meteor/jquery";
+import { Session } from "meteor/session";
 import { Reaction } from "/client/api";
 import CartPanel from "../component/cartPanel";
 

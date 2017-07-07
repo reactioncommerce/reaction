@@ -1,5 +1,7 @@
 /* eslint dot-notation: 0 */
 import { Meteor } from "meteor/meteor";
+import { Random } from "meteor/random";
+import { Factory } from "meteor/dburles:factory";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
 import { getShop } from "/server/imports/fixtures/shops";

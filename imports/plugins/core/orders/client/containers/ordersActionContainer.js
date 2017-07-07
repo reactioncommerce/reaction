@@ -1,5 +1,6 @@
 import React from "react";
 import { Meteor } from "meteor/meteor";
+import { Counts } from "meteor/tmeasday:publish-counts";
 import { Reaction, i18next } from "/client/api";
 import { composeWithTracker } from "/lib/api/compose";
 import OrderActions from "../components/orderActions";

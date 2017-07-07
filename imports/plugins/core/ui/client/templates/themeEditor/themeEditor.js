@@ -1,3 +1,8 @@
+import _ from "lodash";
+import { $ } from "meteor/jquery";
+import { Meteor } from "meteor/meteor";
+import { Template } from "meteor/templating";
+import { ReactiveDict } from "meteor/reactive-dict";
 import { Router } from "/client/api";
 import { Themes } from "/lib/collections";
 

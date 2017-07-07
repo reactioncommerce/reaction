@@ -2,9 +2,12 @@ import _ from "lodash";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Accounts } from "meteor/accounts-base";
+import { Random } from "meteor/random";
 import { composeWithTracker } from "/lib/api/compose";
 import { UpdatePasswordOverlay } from "/client/modules/accounts/components";
 import { MessagesContainer } from "/client/modules/accounts/containers/helpers";
+import { TranslationProvider } from "/imports/plugins/core/ui/client/providers";
+import { LoginFormValidation } from "/lib/api";
 
 class UpdatePasswordOverlayContainer extends Component {
   static propTypes = {
@@ -100,16 +103,18 @@ class UpdatePasswordOverlayContainer extends Component {
 
   render() {
     return (
-      <UpdatePasswordOverlay
-        uniqueId={this.props.uniqueId}
-        loginFormMessages={this.formMessages}
-        onError={this.hasError}
-        messages={this.state.formMessages}
-        onFormSubmit={this.handleFormSubmit}
-        onCancel={this.handleFormCancel}
-        isOpen={this.state.isOpen}
-        isDisabled={this.state.isDisabled}
-      />
+      <TranslationProvider>
+        <UpdatePasswordOverlay
+          uniqueId={this.props.uniqueId}
+          loginFormMessages={this.formMessages}
+          onError={this.hasError}
+          messages={this.state.formMessages}
+          onFormSubmit={this.handleFormSubmit}
+          onCancel={this.handleFormCancel}
+          isOpen={this.state.isOpen}
+          isDisabled={this.state.isDisabled}
+        />
+      </TranslationProvider>
     );
   }
 }

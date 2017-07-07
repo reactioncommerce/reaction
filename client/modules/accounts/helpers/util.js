@@ -1,4 +1,6 @@
 import _ from "lodash";
+import { Accounts } from "meteor/accounts-base";
+import { ServiceConfiguration } from "meteor/service-configuration";
 
 function capitalize(str) {
   const finalString = str === null ? "" : String(str);
@@ -33,7 +35,6 @@ providers.Twitter.fields = function () {
 };
 
 export class ServiceConfigHelper {
-
   availableServices() {
     const services = Package["accounts-oauth"] ? Accounts.oauth.serviceNames() : [];
     services.sort();

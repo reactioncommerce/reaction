@@ -1,3 +1,4 @@
+import { Template } from "meteor/templating";
 import { PackageList } from "../../components";
 import { PackageListContainer } from "../../containers";
 
