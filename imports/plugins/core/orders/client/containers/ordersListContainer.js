@@ -27,7 +27,7 @@ class OrdersListContainer extends Component {
     this.handleDisplayMedia = this.handleDisplayMedia.bind(this);
   }
 
-  handleClick = (order, startWorkflow = true) => {
+  handleClick = (order, startWorkflow = false) => {
     Reaction.setActionViewDetail({
       label: "Order Details",
       i18nKeyLabel: "orderWorkflow.orderDetails",
