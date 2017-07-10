@@ -117,8 +117,8 @@ Template.products.onCreated(function () {
 
 Template.products.onRendered(() => {
   // run the above func every time the user scrolls
-  $("#reactionAppContainer").on("scroll", loadMoreProducts);
-  $(window).on("scroll", loadMoreProducts);
+  // $("#reactionAppContainer").on("scroll", loadMoreProducts);
+  // $(window).on("scroll", loadMoreProducts);
 });
 
 Template.products.helpers({
@@ -180,6 +180,6 @@ Template.products.events({
   },
   "click [data-event-action=loadMoreProducts]": (event) => {
     event.preventDefault();
-    loadMoreProducts();
+    // loadMoreProducts();
   }
 });

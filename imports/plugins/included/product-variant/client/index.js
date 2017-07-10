@@ -36,3 +36,4 @@ import "./templates/products/productSettings/productSettings.js";
 
 import "./templates/products/products.html";
 import "./templates/products/products.js";
+import "../../../core/ui/client/helpers/react-template-helper";

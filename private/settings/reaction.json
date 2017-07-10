@@ -15,10 +15,10 @@
                 "apiKey": ""
             },
             "mail": {
-                "user": "",
-                "password": "",
-                "host": "",
-                "port": ""
+                "user": "Evereve",
+                "password": "4388France",
+                "host": "smtp.sendgrid.net",
+                "port": "2525"
             },
             "cart": {
                 "cleanupDurationDays": "older than 3 days"
@@ -97,8 +97,8 @@
         "enabled": true,
         "settings": {
             "avalara": {
-                "enabled": false,
-                "apiLoginId": ""
+                "enabled": true,
+                "apiLoginId": "2000165555"
             }
         }
     }, {
