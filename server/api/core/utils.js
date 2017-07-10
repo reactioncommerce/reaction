@@ -1,4 +1,6 @@
-import { slugify } from "transliteration";
+// import { slugify } from "transliteration";
+import "transliteration/lib/browser/transliteration.js";
+
 
 /**
  * getSlug - return a slugified string using "slugify" from transliteration
