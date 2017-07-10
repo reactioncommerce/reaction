@@ -63,7 +63,8 @@ class OrdersListContainer extends Component {
         }
       });
       this.setState({
-        selectedItems: updatedSelectedArray
+        selectedItems: updatedSelectedArray,
+        multipleSelect: false
       });
     }
   }
