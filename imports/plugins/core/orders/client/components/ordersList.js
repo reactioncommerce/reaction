@@ -173,6 +173,9 @@ class OrdersList extends Component {
     columnNames.forEach((columnName) => {
       let colStyle = { borderRight: "none" };
       let colHeader = undefined;
+      let headerStyle = { borderRight: "none", textAlign: "left", marginTop: 5 };
+      let className = undefined;
+      let headerClassName = undefined;
 
       // Add custom styles for the column name `name`
       if (columnName === "Name") {
@@ -184,15 +187,28 @@ class OrdersList extends Component {
               name="orders-checkbox"
               onChange={() => selectAllOrders(orders, multipleSelect)}
             />
-            <span style={{ marginLeft: 5 }}>{columnName}</span>
+            <span style={{ marginTop: 5 }}>{columnName}</span>
           </div>;
+        headerStyle = { borderRight: "none", textAlign: "left" };
+      }
+
+      if (columnName === "Email" || columnName === "Date" || columnName === "Shipping") {
+        className = "hidden-xs hidden-sm";
+        headerClassName = "hidden-xs hidden-sm";
+      }
+
+      if (columnName === "Name" || columnName === "Total") {
+        className = "hidden-xs";
+        headerClassName = "hidden-xs";
       }
 
       const columnMeta = {
         accessor: filteredFields[columnName],
         Header: colHeader ? colHeader : columnName,
-        headerStyle: { borderRight: "none", textAlign: "left", paddingTop: 15 },
+        headerStyle: headerStyle,
         style: colStyle,
+        headerClassName: headerClassName,
+        className: className,
         Cell: row => (
           <OrderTableColumn
             row={row}
@@ -217,7 +233,7 @@ class OrdersList extends Component {
           externalLoadingComponent={Loading}
           filteredFields={columnNames}
           filterType="none"
-          getTrGroupProps={(state, rowInfo, column) => {
+          getTrGroupProps={() => {
             return {
               style: {
                 borderRight: "1px solid #e6e6e6",

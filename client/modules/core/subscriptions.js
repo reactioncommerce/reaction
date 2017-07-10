@@ -38,6 +38,8 @@ Subscriptions.SellerShops = Subscriptions.Manager.subscribe("SellerShops");
 
 Subscriptions.Tags = Subscriptions.Manager.subscribe("Tags");
 
+Subscriptions.Groups = Subscriptions.Manager.subscribe("Groups");
+
 Subscriptions.Media = Subscriptions.Manager.subscribe("Media");
 
 /**

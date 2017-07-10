@@ -224,6 +224,7 @@ class SortableTable extends Component {
             };
           }}
           getTrGroupProps={otherProps.getTrGroupProps}
+          getTheadThProps={otherProps.getTheadThProps}
         />
       </div>
     );
