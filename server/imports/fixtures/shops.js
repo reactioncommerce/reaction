@@ -123,7 +123,6 @@ export function createShopFactory() {
     ],
     timezone: "US/Pacific",
     metafields: [],
-    defaultRoles: ["guest", "account/profile"],
     createdAt: new Date,
     updatedAt: new Date()
   });
