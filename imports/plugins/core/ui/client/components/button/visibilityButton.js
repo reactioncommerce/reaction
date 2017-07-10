@@ -1,7 +1,6 @@
 import React from "react";
-import { Components, registerComponent } from "@reactioncommerce/reaction-components";
-
-const { IconButton } = Components;
+import { registerComponent } from "@reactioncommerce/reaction-components";
+import IconButton from "./iconButton";
 
 /**
  * Visibility button is a special type of Icon Button that is toggable by default

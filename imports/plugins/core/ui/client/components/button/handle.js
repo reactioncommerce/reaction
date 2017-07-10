@@ -1,8 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Components, registerComponent } from "@reactioncommerce/reaction-components";
-
-const { Icon } = Components;
+import { registerComponent } from "@reactioncommerce/reaction-components";
+import Icon from "../icon/icon";
 
 /**
  * Handle is a special type of button used for drag handles.

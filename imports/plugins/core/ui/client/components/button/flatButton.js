@@ -1,8 +1,7 @@
 import React from "react";
 import classnames from "classnames";
-import { Components, registerComponent } from "@reactioncommerce/reaction-components";
-
-const { Button } = Components;
+import { registerComponent } from "@reactioncommerce/reaction-components";
+import Button from "./button.jsx";
 
 const FlatButton = ({ icon, onIcon, ...otherProps }) => {
   const buttonClassName = classnames({
