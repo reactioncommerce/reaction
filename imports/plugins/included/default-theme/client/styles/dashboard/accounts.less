@@ -11,8 +11,6 @@
   .permission-toggle {
     background-color: @black05;
     padding: 5px 7px;
-    // &.collapsed {
-    // }
   }
 }
 .shop-member-group {
@@ -45,64 +43,21 @@
   background-color: @navbar-default-bg;
 }
 
-
-.Rectangle {
-  height: 50px;
-  background-color: #ebf7fc;
-}
-.Rectangle-3-Copy-2 {
-  margin-left: 2%;
-  width: 91px;
-  height: 30px;
-  border-radius: 25px;
-  border: solid 1px #979797;
-}
-.Badge {
-  width: 70px;
-  height: 22px;
-  // font-family: SourceSansPro;
-  font-weight: bold;
-  line-height: 1.38;
-  text-align: center;
-  color: #5e6264;
-  padding:5px;
-}
-.Shop-Manager {
-  width: 108px;
-  height: 20px;
-  // font-family: SourceSansPro;
-  font-size: 16px;
-  font-weight: bold;
-  letter-spacing: 0.3px;
-  text-align: left;
-  color: #505558;
-}
 .push-bottom {
   margin-bottom: 3%;
   overflow-y: auto;
 }
-.Rectangle-Copy {
-  // width: 836px;
-  // height: 30px;
-  background-color: #f5f5f5;
-}
+
 basic-btn {
   margin-right: 2% !important; 
 }
 remove-btn {
-  // width: 99px;
-  // height: 20px;
-  // font-family: SourceSansPro !important;
   font-size: 16px !important;
   font-weight: 600 !important;
   text-align: center;
   color: #ffffff !important;
 }
-.Rectangle-5 {
-  width: 100px;
-  height: 30px;
-  background-color: #eb4d5c;
-}
+
 .table-width {
   width: 16% !important;
 }
@@ -114,12 +69,9 @@ remove-btn {
 .push-right {
   margin-right: 10%;
 }
-/*here*/
+
 .accounts-table .rt-tr {
   display: flex;
-}
-.accounts-table .rt-td {
-  // font-family: SourceSansPro;
 }
 .accounts-table .content-view {
   font-weight: bold !important;
@@ -169,13 +121,11 @@ remove-btn {
   color: #4f575b;
   font-weight: 600;
   font: 20px !important;
-  // font-family: SourceSansPro;
   font-size: 16px;
 }
 .accounts-table .rt-td span#accounts-btn button{
   height: 30px;
   width: 80px;
-  // font-family: SourceSansPro;
   background-color: #eb4d5c;
   border: none;
   color: #ffffff;
@@ -184,6 +134,11 @@ remove-btn {
   font-weight: 600;
   font-size: 16px;
 }
+
+.accounts-table .rui.panel-heading.card-header.expandable {
+  width: 99%;
+}
+
 @media only screen and (max-width: 500px) {
   .accounts-table .rt-td {
     width: 35% !important;
@@ -296,4 +251,195 @@ remove-btn {
 .ReactTable.owner-table .rt-tr:hover{
   background: #ebf7fc;
   cursor: pointer;
+}
+
+.ReactTable.owner-table .-pagination{
+  z-index: 1;
+  display: flex;
+  -webkit-box-pack: justify;
+  justify-content: space-between;
+  -webkit-box-align: stretch;
+  align-items: stretch;
+  flex-wrap: wrap;
+  padding: 3px;
+  border-top: 1px solid;
+}
+.ReactTable.owner-table .-pagination .-center{
+  -webkit-box-flex: 1.5;
+    text-align: center;
+    margin-bottom: 0px;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    flex-direction: row;
+    flex-wrap: wrap;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: start;
+    justify-content: flex-start;
+    flex: 1.5 1 0%;
+}
+
+.accounts-dropdown-list {
+	margin: 0;
+	padding: .75rem 0;
+	left: -6rem;
+	position: absolute;
+	width: 219px;
+	box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.09);
+  border: solid 1px #98afbc;
+	display: none;
+	animation: fadeDown .18s ease-in-out;
+  background-color: #ffffff;
+
+	&.active {
+		display: block;
+    z-index: 1;
+	}
+
+	&:after {
+		content: '';
+		height: 1rem;
+		width: 1rem;
+		position: absolute;
+		display: block;
+		background-color: white;
+		box-shadow: -3px -3px 0 2px rgba(0,0,0,.05);
+		transform: rotate(45deg);
+		top: -.5rem;
+		left: 80%;
+	}
+
+	li {
+		list-style: none;
+		display: block;
+    &:hover {
+      background-color: #f7f7f7;
+      cursor: pointer;
+    }
+	}
+}
+
+
+span.accounts-list {
+  .display(flex);
+  .align-items(center);
+  margin: 0 2em 0 0;
+  text-transform: uppercase;
+  font-size: .75rem;
+  position: relative;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+
+  img {
+  	margin-right: .5rem;
+  }
+
+  &:before {
+    content: '  ';
+    display: block;
+    position: absolute;
+    left: 0;
+    bottom: 18px;
+    height: 2px;
+    width: 100%;
+    opacity: 0;
+  }
+
+  &:hover,
+  &.active {
+    color: inherit;
+
+    &:before {
+      bottom: 22px;
+      opacity: 1;
+    }
+  }
+}
+
+.accounts-dropdown-toggle {
+
+	&:after {
+		display: inline-block;
+		content: '';
+		height: 8px;
+		width: 8px;
+		margin-left: .5rem;
+		border-right: 2px solid black;
+		border-bottom: 2px solid black;
+		transform: rotate(45deg);
+		margin-left: .5rem;
+		margin-top: -.25rem;
+    transition: .18s ease-in-out;
+    position: absolute;
+    left: 75%;
+    top: 30%;
+	}
+
+  &.flipped:after {
+    transform: rotate(-135deg);
+    margin-top: 0.1rem;
+  }
+}
+
+.account-dropdown-btn {
+  box-shadow: none;
+  &:hover {
+    background: none !important;
+  }
+  &:focus {
+    background: none !important;
+    border: none !important;
+  }
+}
+
+.accounts-main-row {
+    display: flex;
+    flex-direction: inherit;
+    justify-content: space-between;
+    width: 100%;
+    height: 50px;
+    background-color: #f7f7f7;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: -0.4px;
+    color: #5e6264;
+    margin-bottom: 40px;
+}
+
+.accounts-hd-col {
+  display: flex;
+  width: 33.33%;
+  line-height: 50px;
+  cursor: pointer;
+  &.center {
+    border: 1px solid white;
+    border-top: none;
+    border-bottom: none;
+  }
+  & span.hd-content {
+    position: relative;
+    left: 50%;
+  }
+  & span.hd-icon {
+    position: relative;
+    left: 75%;
+  }
+}
+
+.row-hd {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.owners-row {
+  display: flex;
+  width: 100%;
+  height: 53px;
+  line-height: 53px;
+  background-color: #edfdf8;
+  border: 1px solid #95e8d2;
+  margin-bottom: 40px;
 }

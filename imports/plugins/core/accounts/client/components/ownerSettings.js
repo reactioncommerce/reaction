@@ -56,6 +56,7 @@ class GroupOwnerSettings extends Component {
         columnMetadata={columnMetadata}
         filteredFields={allColumns}
         showFilter={true}
+        isFilterable={true}
       />
     );
   }

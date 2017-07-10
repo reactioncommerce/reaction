@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import AccountsTable from "./accountsTable";
 // import { Badge, ClickToCopy, Icon, Translation } from "@reactioncommerce/reaction-ui";
+import { Icon } from "/imports/plugins/core/ui/client/components";
 
 class AccountsComponent extends Component {
   static propTypes = {
@@ -17,7 +18,42 @@ class AccountsComponent extends Component {
     };
   }
 
-  renderShopManagers(groups) {
+  renderOwnersSection() {
+    return (
+      <div>
+        <div className="accounts-main-row">
+          <div className="accounts-hd-col">
+            <span className="hd-content">Group</span>
+            <span className="hd-icon"><Icon icon="filter"/></span>
+          </div>
+          <div className="accounts-hd-col center">
+            <span className="hd-content">Date</span>
+            <span className="hd-icon"><Icon icon="filter"/></span>
+          </div>
+          <div className="accounts-hd-col">
+            <span className="hd-content">Status</span>
+            <span className="hd-icon"><Icon icon="filter"/></span>
+          </div>
+        </div>
+        <div className="owners-row">
+          <div style={{ width: "30%" }}>
+              <span style={{ paddingLeft: "10px" }}>{/* gravatar goes here*/} SS</span>
+              <span style={{ paddingLeft: "10px" }}>{/* Name goes here*/} Silver Sparks</span>
+          </div>
+          <div style={{ width: "20%" }}>
+              <span>{/* email goes here*/}silversparks@gmai...</span>
+          </div>
+          <div style={{ width: "10%" }}>
+              <span>{/* last active goes here*/} 10:43</span>
+          </div>
+          <div style={{ width: "10%" }}>Yes</div>
+          <div />
+        </div>
+      </div>
+    );
+  }
+
+  renderGroupsTable(groups) {
     // const headerLabel =  { __html: "you" };
     // TODO: set default badge in here
     return Object.keys(groups).map(function (group, index) {
@@ -25,6 +61,7 @@ class AccountsComponent extends Component {
         return (
           <div style={{ marginBottom: "10px" }} key={index}>
             <AccountsTable
+              groups={groups}
               users={groups[group]}
               headerLabel={group}
             />
@@ -37,7 +74,8 @@ class AccountsComponent extends Component {
   render() {
     return (
       <div className="list-group accounts-table">
-        { this.renderShopManagers(this.props.groups)}
+        {this.renderOwnersSection()}
+        { this.renderGroupsTable(this.props.groups)}
       </div>
 
     );
