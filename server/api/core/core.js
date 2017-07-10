@@ -219,11 +219,19 @@ export default {
         }
       });
     }
-    return shop && shop.name;
+    if (shop && shop.name) {
+      return shop.name;
+    }
+    // If we can't find the shop or shop name return an empty string
+    // so that string methods that rely on getShopName don't error
+    return "";
   },
 
   getShopPrefix() {
-    return "/" + this.getSlug(this.getShopName().toLowerCase());
+    const shopName = this.getShopName();
+    const lowerCaseShopName = shopName.toLowerCase();
+    const slug = this.getSlug(lowerCaseShopName);
+    return `/${slug}`;
   },
 
   getShopEmail() {
