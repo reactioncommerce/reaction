@@ -1,34 +1,29 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import { compose, mapProps } from "recompose";
+import { registerComponent } from "@reactioncommerce/reaction-components";
 import { $ } from "meteor/jquery";
 import { Session } from "meteor/session";
 import { Meteor } from "meteor/meteor";
 import { Cart, Media } from "/lib/collections";
 import { Reaction } from "/client/api";
 import { composeWithTracker } from "/lib/api/compose";
-import { Loading } from "/imports/plugins/core/ui/client/components";
 import CartDrawer from "../components/cartDrawer";
 
-class CartDrawerContainer extends Component {
-  static propTypes = {
-    defaultImage: PropTypes.object,
-    lowInventory: PropTypes.bool,
-    productItems: PropTypes.array
-  }
-
+// event handlers to pass in as props
+const handlers = {
   handleImage(item) {
     const { defaultImage } = item;
     if (defaultImage && defaultImage.url({ store: "small" })) {
       return defaultImage;
     }
     return false;
-  }
+  },
+
   /**
   * showLowInventoryWarning
   * @param {Object} productItem - product item object
   * @return {Boolean} return true if low inventory on variant
   */
-  showItemLowInventoryWarning(productItem) {
+  handleLowInventory(productItem) {
     const { variants } = productItem;
     if (variants && variants.inventoryPolicy &&
       variants.lowInventoryWarningThreshold) {
@@ -36,20 +31,16 @@ class CartDrawerContainer extends Component {
         variants.lowInventoryWarningThreshold;
     }
     return false;
-  }
+  },
 
-  handleLowInventory = (productItem) => {
-    return this.showItemLowInventoryWarning(productItem);
-  }
-
-  handleShowProduct = (productItem) => {
+  handleShowProduct(productItem) {
     if (productItem) {
       Reaction.Router.go("product", {
         handle: productItem.productId,
         variantId: productItem.variants._id
       });
     }
-  }
+  },
 
   pdpPath(productItem) {
     if (productItem) {
@@ -61,7 +52,7 @@ class CartDrawerContainer extends Component {
         }
       });
     }
-  }
+  },
 
   handleRemoveItem(event) {
     event.stopPropagation();
@@ -70,28 +61,16 @@ class CartDrawerContainer extends Component {
     $(`#${currentCartItemId}`).fadeOut(500, () => {
       return Meteor.call("cart/removeFromCart", currentCartItemId);
     });
-  }
+  },
+
   handleCheckout() {
     $("#cart-drawer-container").fadeOut();
     Session.set("displayCart", false);
     return Reaction.Router.go("cart/checkout");
   }
-  render() {
-    const { productItems } = this.props;
-    return (
-      <CartDrawer
-        productItems={productItems}
-        pdpPath={this.pdpPath}
-        handleLowInventory={this.handleLowInventory}
-        handleImage={this.handleImage}
-        handleRemoveItem={this.handleRemoveItem}
-        handleCheckout={this.handleCheckout}
-        handleShowProduct={this.handleShowProduct}
-      />
-    );
-  }
-}
+};
 
+// reactive Tracker wrapped function
 function composer(props, onData) {
   const userId = Meteor.userId();
   const shopId = Reaction.getShopId();
@@ -116,4 +95,13 @@ function composer(props, onData) {
   });
 }
 
-export default composeWithTracker(composer, Loading)(CartDrawerContainer);
+// register the containers
+registerComponent("CartDrawer", CartDrawer, [
+  mapProps(handlers),
+  composeWithTracker(composer)
+]);
+
+export default compose(
+  mapProps(handlers),
+  composeWithTracker(composer)
+)(CartDrawer);

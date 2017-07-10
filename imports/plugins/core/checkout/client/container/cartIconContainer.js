@@ -1,29 +1,36 @@
-import React, { Component } from "react";
+import Velocity from "velocity-animate";
+import { compose, mapProps } from "recompose";
+import { registerComponent } from "@reactioncommerce/reaction-components";
 import { Cart } from "/lib/collections";
 import { composeWithTracker } from "/lib/api/compose";
 import { Reaction } from "/client/api";
 import CartIcon from "../components/cartIcon";
 
-class CartIconContainer extends Component {
-  render() {
-    return (
-      <div>
-        <CartIcon {...this.props} />
-      </div>
-    );
+const handlers = {
+  handleClick(e) {
+    e.preventDefault();
+    const cartDrawer = document.querySelector("#cart-drawer-container");
+    Velocity(cartDrawer, { opacity: 1 }, 300, () => {
+      Reaction.toggleSession("displayCart");
+    });
   }
-}
+};
 
 const composer = (props, onData) => {
   const subscription = Reaction.Subscriptions.Cart;
 
   if (subscription.ready()) {
     const cart = Cart.findOne();
-
-    onData(null, {
-      cart: cart
-    });
+    onData(null, { cart });
   }
 };
 
-export default composeWithTracker(composer)(CartIconContainer);
+registerComponent("CartIcon", CartIcon, [
+  mapProps(handlers),
+  composeWithTracker(composer)
+]);
+
+export default compose(
+  mapProps(handlers),
+  composeWithTracker(composer)
+)(CartIcon);

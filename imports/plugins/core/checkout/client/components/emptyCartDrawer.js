@@ -1,9 +1,20 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Button, Translation } from "/imports/plugins/core/ui/client/components";
+import { $ } from "meteor/jquery";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
+import { Reaction } from "/client/api";
 
+const { Button, Translation } = Components;
 
-const EmptyCartDrawer = ({ keepShopping }) => {
+function handleKeepShopping(event) {
+  event.stopPropagation();
+  event.preventDefault();
+  return $("#cart-drawer-container").fadeOut(300, function () {
+    return Reaction.toggleSession("displayCart");
+  });
+}
+
+const EmptyCartDrawer = () => {
   return (
     <div className="cart-drawer" id="cart-drawer">
       <div className="cart-drawer-empty">
@@ -22,7 +33,7 @@ const EmptyCartDrawer = ({ keepShopping }) => {
             className="btn-lg btn-block"
             i18nKeyLabel="cartDrawer.keepShopping"
             label="Keep on shopping"
-            onClick={keepShopping}
+            onClick={handleKeepShopping}
             status="warning"
           />
         </div>
@@ -34,5 +45,7 @@ const EmptyCartDrawer = ({ keepShopping }) => {
 EmptyCartDrawer.propTypes = {
   keepShopping: PropTypes.func
 };
+
+registerComponent("EmptyCartDrawer", EmptyCartDrawer);
 
 export default EmptyCartDrawer;
