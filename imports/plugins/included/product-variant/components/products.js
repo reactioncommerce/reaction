@@ -6,7 +6,6 @@ import { Translation } from "@reactioncommerce/reaction-ui";
 import ProductGridContainer from "../containers/productGridContainer";
 
 class ProductsComponent extends Component {
-
   static propTypes = {
     loadMoreProducts: PropTypes.func,
     loadProducts: PropTypes.func,
@@ -60,9 +59,9 @@ class ProductsComponent extends Component {
             className="btn btn-inverse btn-block btn-lg"
             onClick={this.handleClick}
           >
-          <Translation defaultValue="Load more products" i18nKey="app.loadMoreProducts" />
-        </button>
-      </div>
+            <Translation defaultValue="Load more products" i18nKey="app.loadMoreProducts" />
+          </button>
+        </div>
       );
     }
   }
