@@ -41,6 +41,11 @@ class OrderTableColumn extends Component {
         </div>
       );
     }
+    if (columnAccessor === "email") {
+      return (
+        <span>{row.value}</span>
+      );
+    }
     if (columnAccessor === "createdAt") {
       const createdDate = moment(row.value).format("MM/D/YYYY");
       return (

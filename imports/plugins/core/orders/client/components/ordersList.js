@@ -173,6 +173,8 @@ class OrdersList extends Component {
       let colStyle = { borderRight: "none" };
       let colHeader = undefined;
       let headerStyle = { borderRight: "none", textAlign: "left", marginTop: 5 };
+      let className = undefined;
+      let headerClassName = undefined;
 
       // Add custom styles for the column name `name`
       if (columnName === "Name") {
@@ -189,11 +191,23 @@ class OrdersList extends Component {
         headerStyle = { borderRight: "none", textAlign: "left" };
       }
 
+      if (columnName === "Email" || columnName === "Date" || columnName === "Shipping") {
+        className = "hidden-xs hidden-sm";
+        headerClassName = "hidden-xs hidden-sm";
+      }
+
+      if (columnName === "Name" || columnName === "Total") {
+        className = "hidden-xs";
+        headerClassName = "hidden-xs";
+      }
+
       const columnMeta = {
         accessor: filteredFields[columnName],
         Header: colHeader ? colHeader : columnName,
         headerStyle: headerStyle,
         style: colStyle,
+        headerClassName: headerClassName,
+        className: className,
         Cell: row => (
           <OrderTableColumn
             row={row}
