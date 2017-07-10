@@ -1,7 +1,7 @@
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
-import { Cart, Orders, Packages, Shops } from "/lib/collections";
+import { Cart, Orders, Packages, Groups } from "/lib/collections";
 import { Logger, Reaction } from "/server/api";
 
 /* eslint no-shadow: 0 */
@@ -64,12 +64,10 @@ Meteor.methods({
         _.each(layouts, function (layout) {
           // audience is the layout permissions
           if (typeof layout.audience !== "object") {
-            const defaultRoles = Shops.findOne(
-              Reaction.getShopId(), {
-                sort: {
-                  priority: 1
-                }
-              }).defaultRoles;
+            const defaultRoles = Groups.findOne({
+              slug: "customer",
+              shopId: Reaction.getShopId()
+            }).permissions;
             layout.audience = defaultRoles;
           }
           // check permissions so you don't have to on template. For a case, when
