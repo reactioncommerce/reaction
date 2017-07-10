@@ -1,5 +1,5 @@
 // import { slugify } from "transliteration";
-import "transliteration/lib/browser/transliteration.js";
+import { slugify } from "transliteration/lib/browser/transliteration.js";
 
 
 /**
