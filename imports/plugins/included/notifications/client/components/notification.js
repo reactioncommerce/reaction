@@ -1,10 +1,12 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import NotificationDropdown from "./notificationDropdown.js";
+import { Components } from "@reactioncommerce/reaction-components";
 import "../styles/main.less";
 import "../styles/dropdown.css";
 
-class NotificationComponent extends Component {
+const { NotificationDropdown } = Components;
+
+class Notification extends Component {
   constructor(props) {
     super(props);
 
@@ -32,7 +34,7 @@ class NotificationComponent extends Component {
     return (
       <div className="dropdown">
         <div className="notification-icon" data-toggle="dropdown">
-          { this.handleBtn(unread) }
+          {this.handleBtn(unread)}
         </div>
         <div className="notify-drop dropdown-menu">
           <NotificationDropdown
@@ -48,7 +50,7 @@ class NotificationComponent extends Component {
   }
 }
 
-NotificationComponent.propTypes = {
+Notification.propTypes = {
   handleDelete: PropTypes.func,
   markAllAsRead: PropTypes.func,
   markOneAsRead: PropTypes.func,
@@ -56,4 +58,4 @@ NotificationComponent.propTypes = {
   unread: PropTypes.number
 };
 
-export default NotificationComponent;
+export default Notification;

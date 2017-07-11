@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import moment from "moment";
+import { registerComponent } from "@reactioncommerce/reaction-components";
 import { Reaction } from "/client/api";
 
 class NotificationDropdown extends Component {
@@ -104,5 +105,7 @@ NotificationDropdown.propTypes = {
   notificationList: PropTypes.array.isRequired,
   unread: PropTypes.number.isRequired
 };
+
+registerComponent("NotificationDropdown", NotificationDropdown);
 
 export default NotificationDropdown;
