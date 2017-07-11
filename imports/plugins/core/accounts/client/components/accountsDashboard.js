@@ -2,15 +2,17 @@ import React, { Component } from "react";
 import { Meteor } from "meteor/meteor";
 import PropTypes from "prop-types";
 import AccountsTable from "./accountsTable";
+
 import { Reaction } from "/client/api";
+
 import { Icon } from "/imports/plugins/core/ui/client/components";
 import { getGravatar } from "../helpers/accountsHelper";
 
-class AccountsComponent extends Component {
+class AccountsDashboard extends Component {
   static propTypes = {
     accounts: PropTypes.array,
     groups: PropTypes.object
-  }
+  };
 
   constructor(props) {
     super(props);
@@ -68,11 +70,7 @@ class AccountsComponent extends Component {
       if (groups[group].length > 0) {
         return (
           <div style={{ marginBottom: "10px" }} key={index}>
-            <AccountsTable
-              groups={groups}
-              users={groups[group]}
-              headerLabel={group}
-            />
+            <AccountsTable groups={groups} users={groups[group]} headerLabel={group} />
           </div>
         );
       }
@@ -83,11 +81,10 @@ class AccountsComponent extends Component {
     return (
       <div className="list-group accounts-table">
         {this.renderOwnersSection()}
-        { this.renderGroupsTable(this.props.groups)}
+        {this.renderGroupsTable(this.props.groups)}
       </div>
-
     );
   }
 }
 
-export default AccountsComponent;
+export default AccountsDashboard;

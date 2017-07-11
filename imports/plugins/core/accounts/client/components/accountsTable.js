@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Checkbox, Icon } from "/imports/plugins/core/ui/client/components";
 import { Card, CardHeader, CardBody, SortableTable } from "/imports/plugins/core/ui/client/components";
-import AccountsTableColumn from "./accountTableColumn";
+import AccountsTableRow from "./accountsTableRow";
 
 
 class AccountsTable extends Component {
@@ -32,7 +32,7 @@ class AccountsTable extends Component {
         headerClass: { backgroundColor: "#f5f5f5", display: "flex" },
         Cell: row => {
           return (
-            <AccountsTableColumn row={row} columnName={columnName} {...this.props} />
+            <AccountsTableRow row={row} columnName={columnName} {...this.props} />
           );
         }
       };

@@ -4,7 +4,7 @@ import { Card, CardHeader, CardBody, SortableTable } from "/imports/plugins/core
 import * as Collections from "/lib/collections";
 
 
-class GroupOwnerSettings extends Component {
+class AddGroupMembers extends Component {
   static propTypes = {
     accounts: PropTypes.array,
     groups: PropTypes.object
@@ -65,27 +65,10 @@ class GroupOwnerSettings extends Component {
     return (
         <div className="" style={{ float: "left", height: "37px", position: "relative", right: "120px", top: "5px", width: "200px", fontSize: "16px" }}>
             <label>
-            {item.label}
+            { /* item.label */ }
             </label>
         </div>
     );
-  }
-
-  getGravatar(user) {
-    const options = {
-      secure: true,
-      size: 30,
-      default: "identicon"
-    };
-    if (!user) { return false; }
-    const account = Collections.Accounts.findOne(user._id);
-    if (account && account.profile && account.profile.picture) {
-      return account.profile.picture;
-    }
-    if (user.emails && user.emails.length > 0) {
-      const email = user.emails[0].address;
-      return Gravatar.imageUrl(email, options);
-    }
   }
 
   getGroupName(groupId) {
@@ -111,4 +94,4 @@ class GroupOwnerSettings extends Component {
   }
 }
 
-export default GroupOwnerSettings;
+export default AddGroupMembers;

@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import AddAdmninForm from "./addAdminForm";
-import GroupSettings from "./groupSettings";
-import GroupOwnerSettings from "./ownerSettings";
+import AdminInviteForm from "./adminInviteForm";
+import EditGroup from "./editGroup";
+import AddGroupMembers from "./addGroupMembers";
 
 
-class SettingsComponent extends Component {
+class AccountsDashboardDetails extends Component {
   static propTypes = {
     accounts: PropTypes.array,
     getGroupPermissions: PropTypes.func,
@@ -16,7 +16,7 @@ class SettingsComponent extends Component {
 
   renderAddAdminForm() {
     return (
-        <AddAdmninForm />
+      <AdminInviteForm />
     );
   }
 
@@ -27,18 +27,18 @@ class SettingsComponent extends Component {
       toggleGroupPermission } = this.props;
 
     return (
-        <GroupSettings
-          groups={groups}
-          getGroupPermissions={getGroupPermissions}
-          hasPermissionChecked={hasPermissionChecked}
-          toggleGroupPermission={toggleGroupPermission}
-        />
+      <EditGroup
+        groups={groups}
+        getGroupPermissions={getGroupPermissions}
+        hasPermissionChecked={hasPermissionChecked}
+        toggleGroupPermission={toggleGroupPermission}
+      />
     );
   }
 
   renderOwnersTab() {
     return (
-      <GroupOwnerSettings
+      <AddGroupMembers
         groups={this.props.groups}
         accounts={this.props.accounts}
       />
@@ -47,7 +47,7 @@ class SettingsComponent extends Component {
 
   render() {
     return (
-        <div className="groups-form">
+      <div className="groups-form">
         {this.renderAddAdminForm()}
         {this.renderGroupSettings()}
         {/* this.renderOwnersTab() */}
@@ -56,4 +56,4 @@ class SettingsComponent extends Component {
   }
 }
 
-export default SettingsComponent;
+export default AccountsDashboardDetails;
