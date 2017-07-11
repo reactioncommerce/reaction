@@ -1,16 +1,16 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import debounce from "lodash/debounce";
 import _ from "lodash";
 import update from "react/lib/update";
+import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Reaction, i18next } from "/client/api";
 import { composeWithTracker } from "/lib/api/compose";
-import { TagList } from "../components/tags";
+import { TagList } from "./tagList";
 import { Tags } from "/lib/collections";
 import { getTagIds } from "/lib/selectors/tags";
-import { DragDropProvider } from "/imports/plugins/core/ui/client/providers";
 
+const { DragDropProvider } = Components;
 
 function updateSuggestions(term, { excludeTags }) {
   const slug = Reaction.getSlug(term);
@@ -47,7 +47,7 @@ class TagListContainer extends Component {
       suggestions: []
     };
 
-    this.debounceUpdateTagOrder = debounce(() => {
+    this.debounceUpdateTagOrder = _.debounce(() => {
       Meteor.call(
         "products/updateProductField",
         this.props.product._id,
@@ -272,7 +272,6 @@ function composer(props, onData) {
   });
 }
 
-let decoratedComponent = TagListContainer;
-decoratedComponent = composeWithTracker(composer)(decoratedComponent);
+registerComponent("TagList", TagListContainer, composeWithTracker(composer));
 
-export default decoratedComponent;
+export default composeWithTracker(composer)(TagListContainer);

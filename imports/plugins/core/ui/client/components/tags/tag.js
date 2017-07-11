@@ -9,8 +9,6 @@ import { Button, Handle } from "/imports/plugins/core/ui/client/components";
 import { SortableItem } from "../../containers";
 
 class Tag extends Component {
-  displayName: "Tag";
-
   componentWillReceiveProps(nextProps) {
     if (this._updated && this._saved && this.refs.autoSuggestInput) {
       const input = this.refs.autoSuggestInput.input;
@@ -59,7 +57,7 @@ class Tag extends Component {
     event.preventDefault();
     this._saved = true;
     this.saveTag(event);
-  };
+  }
 
   /**
    * Handle tag remove events and pass them up the component chain
@@ -70,7 +68,7 @@ class Tag extends Component {
     if (this.props.onTagRemove) {
       this.props.onTagRemove(this.props.tag, this.props.parentTag);
     }
-  };
+  }
 
   /**
    * Handle tag update events and pass them up the component chain
@@ -82,7 +80,7 @@ class Tag extends Component {
       this._saved = true;
       this.props.onTagUpdate(this.props.tag._id, event.target.value);
     }
-  };
+  }
 
   handleTagKeyDown = (event) => {
     if (event.keyCode === 13) {
@@ -101,7 +99,7 @@ class Tag extends Component {
     if (this.props.onTagMouseOut) {
       this.props.onTagMouseOut(event, this.props.tag);
     }
-  };
+  }
 
   /**
    * Handle click event on drop button and pass up the component chain
@@ -122,7 +120,7 @@ class Tag extends Component {
     if (this.props.onTagMouseOver) {
       this.props.onTagMouseOver(event, this.props.tag);
     }
-  };
+  }
 
   /**
    * Handle tag inout blur events and pass them up the component chain
@@ -134,7 +132,7 @@ class Tag extends Component {
       this._saved = true;
       this.props.onTagInputBlur(event, this.props.tag);
     }
-  };
+  }
 
   handleInputChange = (event, { newValue }) => {
     if (this.props.onTagUpdate) {
