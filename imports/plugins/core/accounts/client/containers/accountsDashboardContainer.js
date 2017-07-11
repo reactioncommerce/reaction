@@ -4,18 +4,18 @@ import PropTypes from "prop-types";
 import { Accounts, Groups } from "/lib/collections";
 import { composeWithTracker } from "/lib/api/compose";
 import AccountsDashboard from "../components/accountsDashboard";
-import { getSortedGroups } from "../helpers/accountsHelper";
+import sortUsersIntoGroups from "../helpers/accountsHelper";
 
 class AccountsDashboardContainer extends Component {
   static propTypes = {
-    groups: PropTypes.array,
-    shopUsers: PropTypes.array
+    accounts: PropTypes.array,
+    groups: PropTypes.array
   }
 
   render() {
-    const { shopUsers, groups } = this.props;
+    const { accounts, groups } = this.props;
     return (
-      <AccountsDashboard accounts={this.props.shopUsers} groups={getSortedGroups(shopUsers, groups)} />
+      <AccountsDashboard groups={sortUsersIntoGroups(accounts, groups)} />
     );
   }
 }
@@ -25,9 +25,9 @@ const composer = (props, onData) => {
   const grpSub = Meteor.subscribe("Groups");
 
   if (accSub.ready() && grpSub.ready()) {
-    const shopUsers = Accounts.find().fetch();
+    const accounts = Accounts.find().fetch(); // TODO: Switch to get admins only
     const groups = Groups.find().fetch();
-    onData(null, { shopUsers, groups });
+    onData(null, { accounts, groups });
   }
 };
 

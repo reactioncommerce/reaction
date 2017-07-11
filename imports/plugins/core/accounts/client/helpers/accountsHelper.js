@@ -1,28 +1,18 @@
-/* globals Gravatar */
+import _ from "lodash";
 import * as Collections from "/lib/collections";
 
-function getFilteredGroups(groups) {
-  const allGroups = {};
-  groups.forEach((group) => {
-    if (!allGroups.hasOwnProperty(group.name)) {
-      allGroups[group.name] = Object.assign({}, { group }, { ids: [group._id] });
-    } else {
-      allGroups[group.name].ids.push(group._id);
-    }
-  });
-  return allGroups;
-}
-
-export function getSortedGroups(shopUsers, groups) {
-  const allGroups = getFilteredGroups(groups);
-  const sortedGroups = {};
-  Object.keys(allGroups).forEach((groupName) => {
-    sortedGroups[groupName] = shopUsers.filter(function (user) {
-      return user.groups.length > 0 && allGroups[groupName].ids.includes(user.groups[0]);
+export default function sortUsersIntoGroups(accounts, groups) {
+  const newGroups = groups.map(group => {
+    const matchingAccounts = accounts.map(acc => {
+      if (acc.groups.indexOf(group._id) > -1) {
+        return acc;
+      }
     });
-    sortedGroups[groupName].groupData = Object.assign({}, { ...allGroups[groupName].group }, { ...allGroups[groupName] });
+    group.users = _.compact(matchingAccounts);
+    return group;
   });
-  return sortedGroups;
+
+  return newGroups;
 }
 
 export function getGravatar(user) {

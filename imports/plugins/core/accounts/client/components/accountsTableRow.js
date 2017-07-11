@@ -31,6 +31,7 @@ class AccountsTableRow extends Component {
     const { row, columnName, groups } = this.props;
     let key = row.column.id;
 
+    // TODO: Use set constant to loop through
     if (columnName === "Name") {
       return (
         <div
@@ -50,6 +51,7 @@ class AccountsTableRow extends Component {
         </div>
       );
     }
+
     if (key === "emails[0].address") {
       return (
         <div style={{ width: "100%" }}>
@@ -57,15 +59,17 @@ class AccountsTableRow extends Component {
         </div>
       );
     }
+
     if (key === "createdAt") {
       return (
         <div style={{ width: "100%" }}>
           <span style={{ fontSize: "14px", position: "relative", top: "30%" }}>
-            {row.value.toDateString()}
+            {row.value && row.value.toDateString()}
           </span>
         </div>
       );
     }
+
     if (columnName === "Two Factor") {
       return (
         <div style={{ width: "100%" }}>
@@ -73,6 +77,7 @@ class AccountsTableRow extends Component {
         </div>
       );
     }
+
     if (columnName === "Dropdown") {
       key = `dropdown-${row.value.name}`;
       const dropDownClassName = classnames({
@@ -123,6 +128,7 @@ class AccountsTableRow extends Component {
         </span>
       );
     }
+
     if (columnName === "Button") {
       return (
         <span id="accounts-btn">
@@ -136,6 +142,7 @@ class AccountsTableRow extends Component {
         </span>
       );
     }
+    return null;
   }
 }
 
