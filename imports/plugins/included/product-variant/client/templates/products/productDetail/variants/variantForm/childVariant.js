@@ -18,7 +18,7 @@ Template.childVariantForm.onCreated(function () {
   this.validation = new Validation(ProductVariant);
   this.state = new ReactiveDict();
   this.state.setDefault({
-    validaitonStatus: {}
+    validationStatus: {}
   });
 });
 
