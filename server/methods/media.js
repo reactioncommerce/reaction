@@ -1,3 +1,6 @@
+import { Meteor } from "meteor/meteor";
+import { SimpleSchema } from "meteor/aldeed:simple-schema";
+import { ValidatedMethod } from "meteor/mdg:validated-method";
 import { Media } from "/lib/collections";
 import { Reaction } from "/server/api";
 

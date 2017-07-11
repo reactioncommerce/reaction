@@ -1,9 +1,10 @@
 /* eslint dot-notation: 0 */
 import { Meteor } from "meteor/meteor";
-import { Inventory, Orders, Products }  from "/lib/collections";
-import { Reaction } from "/server/api";
+import { check, Match } from "meteor/check";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
+import { Inventory, Orders, Products }  from "/lib/collections";
+import { Reaction } from "/server/api";
 import Fixtures from "/server/imports/fixtures";
 import { createCart } from "/server/imports/fixtures/cart";
 import { addProductSingleVariant } from "/server/imports/fixtures/products";

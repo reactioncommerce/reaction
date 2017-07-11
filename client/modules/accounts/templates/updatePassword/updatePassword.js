@@ -1,5 +1,10 @@
 import { Accounts } from "meteor/accounts-base";
 import { Template } from "meteor/templating";
+import { Meteor } from "meteor/meteor";
+import { $ } from "meteor/jquery";
+import { Random } from "meteor/random";
+import { Blaze } from "meteor/blaze";
+import { ReactiveVar } from "meteor/reactive-var";
 import { i18next } from "/client/api";
 import { LoginFormSharedHelpers } from "/client/modules/accounts/helpers";
 import { UpdatePasswordOverlayContainer } from "/client/modules/accounts/containers";

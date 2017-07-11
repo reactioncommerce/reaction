@@ -1,3 +1,4 @@
+import { Template } from "meteor/templating";
 import { ProductDetailContainer, PublishContainer } from "../containers";
 
 Template.productDetailSimple.helpers({

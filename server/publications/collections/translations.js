@@ -1,3 +1,5 @@
+import { Meteor } from "meteor/meteor";
+import { check, Match } from "meteor/check";
 import { Shops, Translations } from "/lib/collections";
 import { Reaction } from "/server/api";
 
@@ -17,7 +19,7 @@ Meteor.publish("Translations", function (languages) {
   // set shop default
   sessionLanguages.push(shopLanguage);
   // lets get all these langauges
-  if (typeof languages === "array") {
+  if (Array.isArray(languages)) {
     sessionLanguages.concat(languages);
   } else {
     sessionLanguages.push(languages);

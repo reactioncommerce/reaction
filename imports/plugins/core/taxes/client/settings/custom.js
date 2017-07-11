@@ -1,4 +1,5 @@
 import { Meteor } from "meteor/meteor";
+import { $ } from "meteor/jquery";
 import { Template } from "meteor/templating";
 import { ReactiveDict } from "meteor/reactive-dict";
 import { AutoForm } from "meteor/aldeed:autoform";
@@ -7,8 +8,7 @@ import { Countries } from "/client/collections";
 import { Taxes, TaxCodes } from "../../lib/collections";
 import { i18next } from "/client/api";
 import { Taxes as TaxSchema } from "../../lib/collections/schemas";
-import MeteorGriddle from "/imports/plugins/core/ui-grid/client/griddle";
-import { IconButton, Loading } from "/imports/plugins/core/ui/client/components";
+import { IconButton, Loading, SortableTable } from "/imports/plugins/core/ui/client/components";
 
 /* eslint no-shadow: ["error", { "allow": ["options"] }] */
 /* eslint no-unused-vars: ["error", { "argsIgnorePattern": "[oO]ptions" }] */
@@ -91,20 +91,19 @@ Template.customTaxRates.helpers({
     const customColumnMetadata = [];
     filteredFields.forEach(function (field) {
       const columnMeta = {
-        columnName: field,
-        displayName: i18next.t(`admin.taxGrid.${field}`)
+        accessor: field,
+        Header: i18next.t(`admin.taxGrid.${field}`)
       };
       customColumnMetadata.push(columnMeta);
     });
 
     // return tax Grid
     return {
-      component: MeteorGriddle,
+      component: SortableTable,
       publication: "Taxes",
       collection: Taxes,
       matchingResultsCount: "taxes-count",
       showFilter: true,
-      useGriddleStyles: false,
       rowMetadata: customRowMetaData,
       filteredFields: filteredFields,
       columns: filteredFields,
