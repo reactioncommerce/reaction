@@ -315,7 +315,11 @@ export default {
   },
 
   getShopName() {
-    return this.shopName;
+    const shopId = this.getShopId();
+    const shop = Shops.findOne({
+      _id: shopId
+    });
+    return shop && shop.name;
   },
 
   getShopPrefix() {

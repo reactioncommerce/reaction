@@ -229,20 +229,39 @@ export default {
   },
 
   getShopName() {
-    const domain = this.getDomain();
-    const shop = Shops.find({
-      domains: domain
-    }, {
-      limit: 1,
-      fields: {
-        name: 1
-      }
-    }).fetch()[0];
-    return shop && shop.name;
+    const shopId = this.getShopId();
+    let shop;
+    if (shopId) {
+      shop = Shops.findOne({
+        _id: shopId
+      }, {
+        fields: {
+          name: 1
+        }
+      });
+    } else {
+      const domain = this.getDomain();
+      shop = Shops.findOne({
+        domains: domain
+      }, {
+        fields: {
+          name: 1
+        }
+      });
+    }
+    if (shop && shop.name) {
+      return shop.name;
+    }
+    // If we can't find the shop or shop name return an empty string
+    // so that string methods that rely on getShopName don't error
+    return "";
   },
 
   getShopPrefix() {
-    return "/" + this.getSlug(this.getShopName().toLowerCase());
+    const shopName = this.getShopName();
+    const lowerCaseShopName = shopName.toLowerCase();
+    const slug = this.getSlug(lowerCaseShopName);
+    return `/${slug}`;
   },
 
   getShopEmail() {
