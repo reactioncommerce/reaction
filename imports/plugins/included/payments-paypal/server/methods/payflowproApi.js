@@ -1,6 +1,7 @@
 import PayFlow from "paypal-rest-sdk"; // PayFlow is PayPal PayFlow lib
 import moment from "moment";
 import accounting from "accounting-js";
+import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Reaction, Logger } from "/server/api";
 import { Shops } from "/lib/collections";

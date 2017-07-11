@@ -1,4 +1,5 @@
 import Alert from "sweetalert2";
+import { Meteor } from "meteor/meteor";
 import { i18next } from "/client/api";
 
 export default {
@@ -33,7 +34,7 @@ export default {
       Meteor.call("sms/saveSettings", settings, (err) => {
         if (err) {
           return Alert(i18next.t("app.error"),
-           "Your API credentials could not be saved",
+            "Your API credentials could not be saved",
             "error");
         }
         return Alert({

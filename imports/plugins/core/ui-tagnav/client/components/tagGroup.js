@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import _ from "lodash";
 import update from "react/lib/update";
 import TagGroupBody from "./tagGroupBody";
 import TagGroupHeader from "./tagGroupHeader";

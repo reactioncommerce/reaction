@@ -44,11 +44,11 @@ export function registerInventory(product) {
 
       Logger.debug(
         `inserting ${newQty - inventoryVariantCount
-          } new inventory items for ${variant._id}`
+        } new inventory items for ${variant._id}`
       );
 
       const batch = Inventory.
-      _collection.rawCollection().initializeUnorderedBulkOp();
+        _collection.rawCollection().initializeUnorderedBulkOp();
       while (i <= newQty) {
         const id = Inventory._makeNewID();
         batch.insert({

@@ -1,10 +1,14 @@
 import url from "url";
 import packageJson from "/package.json";
 import { merge, uniqWith } from "lodash";
+import _ from "lodash";
 import { Meteor } from "meteor/meteor";
-import { EJSON } from "meteor/ejson";
 import { check, Match } from "meteor/check";
-import { Jobs, Packages, Shops } from "/lib/collections";
+import { Random } from "meteor/random";
+import { Accounts } from "meteor/accounts-base";
+import { Roles } from "meteor/alanning:roles";
+import { EJSON } from "meteor/ejson";
+import { Jobs, Packages, Shops, Groups } from "/lib/collections";
 import { Hooks, Logger } from "/server/api";
 import ProcessJobs from "/server/jobs";
 import { registerTemplate } from "./templates";
@@ -33,10 +37,10 @@ export default {
     if (process.env.VERBOSE_JOBS) {
       Jobs.setLogStream(process.stdout);
     }
-
     this.loadPackages();
     // process imports from packages and any hooked imports
     this.Import.flush();
+    this.createDefaultGroups();
     // timing is important, packages are rqd for initial permissions configuration.
     if (!Meteor.isAppTest) {
       this.createDefaultAdminUser();
@@ -56,7 +60,33 @@ export default {
     const registeredPackage = this.Packages[packageInfo.name] = packageInfo;
     return registeredPackage;
   },
+  createDefaultGroups() {
+    const allGroups = Groups.find({}).fetch();
+    const shops = Shops.find({}).fetch();
+    const roles = {
+      customer: [ "guest", "account/profile", "product", "tag", "index", "cart/checkout", "cart/completed"],
+      guest: ["anonymous", "guest", "product", "tag", "index", "cart/checkout", "cart/completed"],
+      owner: Roles.getAllRoles().fetch().map(role => role.name)
+    };
 
+    if (shops && shops.length) {
+      shops.forEach(shop => createGroupsForShop(shop));
+    }
+    function createGroupsForShop(shop) {
+      Object.keys(roles).forEach(groupKeys => {
+        const groupExists = allGroups.find(grp => grp.slug === groupKeys && grp.shopId === shop._id);
+        if (!groupExists) { // create group only if it doesn't exist before
+          Logger.debug(`creating group ${groupKeys} for shop ${shop.name}`);
+          Groups.insert({
+            name: groupKeys,
+            slug: groupKeys,
+            permissions: roles[groupKeys],
+            shopId: shop._id
+          });
+        }
+      });
+    }
+  },
   /**
    * registerTemplate
    * registers Templates into the Templates Collection
@@ -73,7 +103,7 @@ export default {
    * @param {String} checkGroup group - default to shopId
    * @return {Boolean} Boolean - true if has permission
    */
-  hasPermission(checkPermissions, userId = Meteor.userId(), checkGroup = this.getShopId()) { // TODO: getSellerShop Conversion - pass in shop here
+  hasPermission(checkPermissions, userId = Meteor.userId(), checkGroup = this.getShopId()) {
     // check(checkPermissions, Match.OneOf(String, Array)); check(userId, String); check(checkGroup,
     // Match.Optional(String));
 
@@ -105,8 +135,6 @@ export default {
     }
 
     // global roles check
-    // TODO: Review this commented out code
-    /*
     const sellerShopPermissions = Roles.getGroupsForUser(userId, "admin");
 
     // we're looking for seller permissions.
@@ -120,8 +148,7 @@ export default {
           }
         }
       }
-    }*/
-
+    }
     // no specific permissions found returning false
     return false;
   },
@@ -136,6 +163,10 @@ export default {
 
   hasDashboardAccess() {
     return this.hasPermission(["owner", "admin", "dashboard"]);
+  },
+
+  getSellerShopId() {
+    return Roles.getGroupsForUser(this.userId, "admin");
   },
 
   configureMailUrl() {
@@ -155,6 +186,7 @@ export default {
     return cursor;
   },
 
+  // TODO: Get actual current shop instead of first - not sure what this will break..
   getCurrentShop() {
     const currentShopCursor = this.getCurrentShopCursor();
     // also, we could check in such a way: `currentShopCursor instanceof Object` but not instanceof something.Cursor
@@ -166,7 +198,6 @@ export default {
 
   getShopId(userId) {
     check(userId, Match.Maybe(String));
-
     const activeUserId = Meteor.call("reaction/getUserId");
     if (activeUserId || userId) {
       const activeShopId = this.getUserPreferences({
@@ -190,7 +221,6 @@ export default {
         _id: 1
       }
     }).fetch()[0];
-
     return shop && shop._id;
   },
 
@@ -199,20 +229,39 @@ export default {
   },
 
   getShopName() {
-    const domain = this.getDomain();
-    const shop = Shops.find({
-      domains: domain
-    }, {
-      limit: 1,
-      fields: {
-        name: 1
-      }
-    }).fetch()[0];
-    return shop && shop.name;
+    const shopId = this.getShopId();
+    let shop;
+    if (shopId) {
+      shop = Shops.findOne({
+        _id: shopId
+      }, {
+        fields: {
+          name: 1
+        }
+      });
+    } else {
+      const domain = this.getDomain();
+      shop = Shops.findOne({
+        domains: domain
+      }, {
+        fields: {
+          name: 1
+        }
+      });
+    }
+    if (shop && shop.name) {
+      return shop.name;
+    }
+    // If we can't find the shop or shop name return an empty string
+    // so that string methods that rely on getShopName don't error
+    return "";
   },
 
   getShopPrefix() {
-    return "/" + this.getSlug(this.getShopName().toLowerCase());
+    const shopName = this.getShopName();
+    const lowerCaseShopName = shopName.toLowerCase();
+    const slug = this.getSlug(lowerCaseShopName);
+    return `/${slug}`;
   },
 
   getShopEmail() {
@@ -240,39 +289,27 @@ export default {
     return shop && shop.currency || "USD";
   },
 
+  // TODO: Marketplace - should each shop set their own default language or
+  // should the Marketplace set a language that's picked up by all shops?
   getShopLanguage() {
-    const shop = Shops.findOne({
+    const { language } = Shops.findOne({
       _id: this.getShopId()
     }, {
       fields: {
         language: 1
       } }
     );
-    if (shop) {
-      return shop.language;
-    }
-    throw new Meteor.Error("Shop not found");
+    return language;
   },
 
   getPackageSettings(name) {
-    const shopId = this.getShopId();
-    const query = {
-      name
-    };
-
-    if (shopId) {
-      query.shopId = shopId;
-    }
-
-    return Packages.findOne(query);
+    return Packages.findOne({ name: name, shopId: this.getShopId() }) || null;
   },
 
-  // {packageName, preference, defaultValue}
+  // options:  {packageName, preference, defaultValue}
   getUserPreferences(options) {
-    const userId = options.userId;
-    const packageName = options.packageName;
-    const preference = options.preference;
-    const defaultValue = options.defaultValue;
+    const { userId, packageName, preference, defaultValue } = options;
+
     if (!userId) {
       return undefined;
     }
@@ -285,60 +322,52 @@ export default {
         return profile.preferences[packageName][preference];
       }
     }
-
     return defaultValue || undefined;
   },
 
   /**
-   * Add default roles for new visitors
-   * @param {String|Array} roles - A string or array of roles and routes
-   * @returns {undefined} - does not specifically return anything
+   *  insertPackagesForShop
+   *  insert Reaction packages into Packages collection registry for a new shop
+   *  Assigns owner roles for new packages
+   *  Imports layouts from packages
+   *  @param {String} shopId - the shopId you need to create packages for
+   *  @return {String} returns insert result
    */
-  addDefaultRolesToVisitors(roles) {
-    Logger.info(`Adding defaultRoles & defaultVisitorRole permissions for ${roles}`);
-
-    const shop = Shops.findOne(this.getShopId());
-
-    if (Match.test(roles, [String])) {
-      Shops.update(shop._id, {
-        $addToSet: { defaultVisitorRole: { $each: roles } }
-      });
-      Shops.update(shop._id, {
-        $addToSet: { defaultRoles: { $each: roles } }
-      });
-    } else if (Match.test(roles, String)) {
-      Shops.update(shop._id, {
-        $addToSet: { defaultVisitorRole: roles }
-      });
-      Shops.update(shop._id, {
-        $addToSet: { defaultRoles: roles }
-      });
-    } else {
-      throw new Meteor.Error(`Failed to add default roles ${roles}`);
+  insertPackagesForShop(shopId) {
+    const layouts = [];
+    if (!shopId) {
+      return [];
     }
-  },
+    const packages = this.Packages;
+    // for each shop, we're loading packages in a unique registry
+    // Object.keys(pkgConfigs).forEach((pkgName) => {
+    for (const packageName in packages) {
+      // Guard to prvent unexpected `for in` behavior
+      if ({}.hasOwnProperty.call(packages, packageName)) {
+        const config = packages[packageName];
+        this.assignOwnerRoles(shopId, packageName, config.registry);
 
-  /**
-   * Add default roles for new sellers
-   * @param {String|Array} roles A string or array of roles and routes
-   * @returns {undefined} - does not specifically return anything
-   */
-  addDefaultRolesToSellers(roles) {
-    Logger.info(`Adding defaultSellerRoles permissions for ${roles}`);
+        const pkg = Object.assign({}, config, {
+          shopId: shopId
+        });
 
-    const shop = Shops.findOne(this.getShopId());
-
-    if (Match.test(roles, [String])) {
-      Shops.update(shop._id, {
-        $addToSet: { defaultSellerRole: { $each: roles } }
-      });
-    } else if (Match.test(roles, String)) {
-      Shops.update(shop._id, {
-        $addToSet: { defaultSellerRole: roles }
-      });
-    } else {
-      throw new Meteor.Error(`Failed to add default seller roles ${roles}`);
+        // populate array of layouts that don't already exist (?!)
+        if (pkg.layout) {
+          // filter out layout templates
+          for (const template of pkg.layout) {
+            if (template && template.layout) {
+              layouts.push(template);
+            }
+          }
+        }
+        Packages.insert(pkg);
+        Logger.debug(`Initializing ${shopId} ${packageName}`);
+      }
     }
+
+    // helper for removing layout duplicates
+    const uniqLayouts = uniqWith(layouts, _.isEqual);
+    Shops.update({ _id: shopId }, { $set: { layout: uniqLayouts } });
   },
 
   getAppVersion() {
@@ -428,7 +457,7 @@ export default {
       // set the default shop email to the default admin email
       Shops.update(shopId, {
         $addToSet: {
-          domains: domain
+          domains: this.getDomain()
         }
       });
     }
@@ -608,52 +637,6 @@ export default {
       });
     });
   },
-
-  /**
-   *  insertPackagesForShop
-   *  insert Reaction packages into Packages collection registry for a new shop
-   *  Assigns owner roles for new packages
-   *  Imports layouts from packages
-   *  @param {String} shopId - the shopId you need to create packages for
-   *  @return {String} returns insert result
-   */
-  insertPackagesForShop(shopId) {
-    const layouts = [];
-    if (!shopId) {
-      return [];
-    }
-    const packages = this.Packages;
-    // for each shop, we're loading packages in a unique registry
-    // Object.keys(pkgConfigs).forEach((pkgName) => {
-    for (const packageName in packages) {
-      // Guard to prvent unexpected `for in` behavior
-      if ({}.hasOwnProperty.call(packages, packageName)) {
-        const config = packages[packageName];
-        this.assignOwnerRoles(shopId, packageName, config.registry);
-
-        const pkg = Object.assign({}, config, {
-          shopId: shopId
-        });
-
-        // populate array of layouts that don't already exist (?!)
-        if (pkg.layout) {
-          // filter out layout templates
-          for (const template of pkg.layout) {
-            if (template && template.layout) {
-              layouts.push(template);
-            }
-          }
-        }
-        Packages.insert(pkg);
-        Logger.debug(`Initializing ${shopId} ${packageName}`);
-      }
-    }
-
-    // helper for removing layout duplicates
-    const uniqLayouts = uniqWith(layouts, _.isEqual);
-    Shops.update({ _id: shopId }, { $set: { layout: uniqLayouts } });
-  },
-
   setAppVersion() {
     const version = packageJson.version;
     Logger.info(`Reaction Version: ${version}`);

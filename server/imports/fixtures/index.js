@@ -6,6 +6,7 @@ import examplePaymentMethod from "./packages";
 // import shipping from "./shipping";
 import shops from "./shops";
 import users from "./users";
+import groups from "./groups";
 
 export default function () {
   shops();
@@ -15,5 +16,6 @@ export default function () {
   products();
   cart();
   orders();
+  groups();
   // shipping();
 }

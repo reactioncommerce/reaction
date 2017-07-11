@@ -42,7 +42,7 @@ Meteor.methods({
     check(userId, String);
     check(shopId, String);
 
-    const user = Accounts.findOne();
+    const user = Accounts.findOne({ _id: userId });
     const addressBook = user.profile.addressBook;
     let phone = false;
     // check for addressBook phone
@@ -53,15 +53,14 @@ Meteor.methods({
     }
 
     if (phone) {
-      const smsSettings = Sms.findOne();
+      const smsSettings = Sms.findOne({ shopId });
 
       if (smsSettings) {
         const { apiKey, apiToken, smsPhone, smsProvider } = smsSettings;
         if (smsProvider === "twilio") {
           Logger.debug("choose twilio");
           const client = new Twilio(apiKey, apiToken);
-
-          client.sendMessage({
+          client.messages.create({
             to: phone,
             from: smsPhone,
             body: message

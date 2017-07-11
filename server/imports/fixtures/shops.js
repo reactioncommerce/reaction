@@ -1,4 +1,6 @@
 import faker from "faker";
+import _ from "lodash";
+import { Factory } from "meteor/dburles:factory";
 import { Shops } from "/lib/collections";
 
 export function getShop() {
@@ -123,7 +125,6 @@ export function createShopFactory() {
     ],
     timezone: "US/Pacific",
     metafields: [],
-    defaultRoles: ["guest", "account/profile"],
     createdAt: new Date,
     updatedAt: new Date()
   });

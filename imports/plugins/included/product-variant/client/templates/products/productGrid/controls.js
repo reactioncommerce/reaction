@@ -1,7 +1,8 @@
-import { Reaction } from "/lib/api";
+import _ from "lodash";
 import { Session } from "meteor/session";
 import { Template } from "meteor/templating";
 import { ReactiveDict } from "meteor/reactive-dict";
+import { Reaction } from "/lib/api";
 import { IconButton } from "/imports/plugins/core/ui/client/components";
 
 Template.gridControls.onCreated(function () {
@@ -43,7 +44,7 @@ Template.gridControls.helpers({
     const shopId = Reaction.getShopId();
 
     return (
-        Reaction.hasPermission("createProduct") &&
+      Reaction.hasPermission("createProduct") &&
         // does product belong to this shop seller
         shopId === instance.data.product.shopId
     );

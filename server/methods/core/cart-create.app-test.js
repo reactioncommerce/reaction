@@ -1,6 +1,7 @@
 /* eslint dot-notation: 0 */
-
 import { Meteor } from "meteor/meteor";
+import { check, Match } from "meteor/check";
+import { Random } from "meteor/random";
 import { Factory } from "meteor/dburles:factory";
 import { Reaction } from "/server/api";
 import { Cart, Products, Accounts } from "/lib/collections";

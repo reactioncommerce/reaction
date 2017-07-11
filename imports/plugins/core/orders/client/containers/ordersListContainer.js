@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { Meteor } from "meteor/meteor";
 import { composeWithTracker } from "/lib/api/compose";
 import { Media } from "/lib/collections";
@@ -26,7 +27,7 @@ class OrdersListContainer extends Component {
     this.handleDisplayMedia = this.handleDisplayMedia.bind(this);
   }
 
-  handleClick = (order, startWorkflow = true) => {
+  handleClick = (order, startWorkflow = false) => {
     Reaction.setActionViewDetail({
       label: "Order Details",
       i18nKeyLabel: "orderWorkflow.orderDetails",
@@ -42,8 +43,9 @@ class OrdersListContainer extends Component {
     if (startWorkflow === true) {
       Meteor.call("workflow/pushOrderWorkflow", "coreOrderWorkflow", "processing", order);
       Reaction.setUserPreferences(PACKAGE_NAME, ORDER_LIST_FILTERS_PREFERENCE_NAME, "processing");
-      Reaction.setUserPreferences(PACKAGE_NAME, ORDER_LIST_SELECTED_ORDER_PREFERENCE_NAME, order._id);
     }
+
+    Reaction.setUserPreferences(PACKAGE_NAME, ORDER_LIST_SELECTED_ORDER_PREFERENCE_NAME, order._id);
   }
 
   /**
@@ -79,11 +81,11 @@ class OrdersListContainer extends Component {
     const { orders } = this.props;
 
     return (
-        <OrdersList
-          orders={orders}
-          handleClick={this.handleClick}
-          displayMedia={this.handleDisplayMedia}
-        />
+      <OrdersList
+        orders={orders}
+        handleClick={this.handleClick}
+        displayMedia={this.handleDisplayMedia}
+      />
     );
   }
 }

@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import classnames from "classnames";
 const accounting = require("accounting-js");
 
@@ -81,10 +82,6 @@ class NumericInput extends React.Component {
   format(value, format) {
     const moneyFormat = format || this.moneyFormat;
 
-
-    // value * (10 ^ (2 - moneyFormat.scale))
-
-    // console.log(moneyFormat, value, value * Math.pow(10, 2 - moneyFormat.precision));
     const decimal = moneyFormat.decimal || undefined;
     const unformatedValue = this.unformat(value, decimal);
 
@@ -103,7 +100,7 @@ class NumericInput extends React.Component {
 
   /**
    * Handle change event from text input
-   * @param  {SytheticEvent} event Change event
+   * @param  {SyntheticEvent} event Change event
    * @return {undefined}
    */
   handleChange(event) {
@@ -176,14 +173,14 @@ NumericInput.defaultProps = {
 };
 
 NumericInput.propTypes = {
-  classNames: React.PropTypes.shape({}),
-  disabled: React.PropTypes.bool,
-  format: React.PropTypes.shape({
-    scale: React.PropTypes.number
+  classNames: PropTypes.shape({}),
+  disabled: PropTypes.bool,
+  format: PropTypes.shape({
+    scale: PropTypes.number
   }),
-  isEditing: React.PropTypes.bool,
-  onChange: React.PropTypes.func,
-  value: React.PropTypes.number
+  isEditing: PropTypes.bool,
+  onChange: PropTypes.func,
+  value: PropTypes.number
 };
 
 export default NumericInput;

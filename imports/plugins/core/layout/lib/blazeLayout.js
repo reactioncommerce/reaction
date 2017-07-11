@@ -1,4 +1,5 @@
 import ReactDOM from "react-dom";
+import _ from "lodash";
 import { Blaze } from "meteor/blaze";
 import { ReactiveVar } from "meteor/reactive-var";
 import { Template } from "meteor/templating";

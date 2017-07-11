@@ -3,33 +3,44 @@
   "env": {
     "browser": true,
     "node": true,
-    "es6": true
+    "es6": true,
+    "mocha": true
+  },
+  "globals": {
+    "browser": true,
+    "Assets": true, // Meteor global
+    "Package": true, // Meteor global
+    "FS": true, // gridFS,
+    "Alerts": true,  // this needs to get cleaned up, but ignoring for now
+    "jest": true,
+    "expect": true,
+    "test": true
   },
   "parserOptions": {
      "ecmaVersion": 6,
      "sourceType": "module",
+      "ecmaFeatures": {
+        "arrowFunctions": true,
+        "blockBindings": true,
+        "classes": true,
+        "defaultParams": true,
+        "destructuring": true,
+        "forOf": true,
+        "generators": false,
+        "modules": true,
+        "objectLiteralComputedProperties": true,
+        "objectLiteralDuplicateProperties": false,
+        "objectLiteralShorthandMethods": true,
+        "objectLiteralShorthandProperties": true,
+        "spread": true,
+        "superInFunctions": true,
+        "templateStrings": true,
+        "jsx": true
+      },
      "allowImportExportEverywhere": true
   },
   "plugins": ["react"],
-  "ecmaFeatures": {
-    "arrowFunctions": true,
-    "blockBindings": true,
-    "classes": true,
-    "defaultParams": true,
-    "destructuring": true,
-    "forOf": true,
-    "generators": false,
-    "modules": true,
-    "objectLiteralComputedProperties": true,
-    "objectLiteralDuplicateProperties": false,
-    "objectLiteralShorthandMethods": true,
-    "objectLiteralShorthandProperties": true,
-    "spread": true,
-    "superInFunctions": true,
-    "templateStrings": true,
-    "jsx": true
-  },
-  // NOTE: We're now using eslint-3
+  // NOTE: We're now using eslint-4
   "rules": {
     /**
      * Strict mode
@@ -160,7 +171,8 @@
     "no-self-compare": 2, // http://eslint.org/docs/rules/no-self-compare
     "no-sequences": 2, // http://eslint.org/docs/rules/no-sequences
     "no-throw-literal": 2, // http://eslint.org/docs/rules/no-throw-literal
-    "no-with": 2, // http://eslint.org/docs/rules/no-with
+    "no-with": 2, // http://eslint.org/docs/rules/no-with,
+    "no-undef": 2,
     "radix": 2, // http://eslint.org/docs/rules/radix
     "vars-on-top": 2, // http://eslint.org/docs/rules/vars-on-top
     "wrap-iife": [2, "any"], // http://eslint.org/docs/rules/wrap-iife

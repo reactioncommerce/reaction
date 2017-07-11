@@ -463,6 +463,12 @@
       "format": "%s%v",
       "symbol": "฿"
     },
+    "TND": {
+      "enabled": false,
+      "format": "%v %s",
+      "symbol": "DT",
+      "decimal": ","
+    },
     "TWD": {
       "enabled": false,
       "format": "%s%v",
@@ -3189,25 +3195,7 @@
     "isCommercial": true,
     "isShippingDefault": true,
     "isBillingDefault": true
-  }],
-  "defaultVisitorRole": [
-    "anonymous",
-    "guest",
-    "product",
-    "tag",
-    "index",
-    "cart/checkout",
-    "cart/completed"
-  ],
-  "defaultRoles": [
-    "account/profile",
-    "guest",
-    "product",
-    "tag",
-    "index",
-    "cart/checkout",
-    "cart/completed"
-  ]
+  }]
 }, {
   "_id": "ddzuN2YPvgvx7rJS5",
   "currencies": {
@@ -3672,6 +3660,12 @@
       "enabled": false,
       "format": "%s%v",
       "symbol": "฿"
+    },
+    "TND": {
+      "enabled": false,
+      "format": "%v %s",
+      "symbol": "DT",
+      "decimal": ","
     },
     "TWD": {
       "enabled": false,
@@ -6395,25 +6389,5 @@
     "isCommercial": true,
     "isShippingDefault": true,
     "isBillingDefault": true
-  }],
-  "defaultVisitorRole": [
-    "anonymous",
-    "guest",
-    "account/verify",
-    "product",
-    "tag",
-    "index",
-    "cart/checkout",
-    "cart/completed"
-  ],
-  "defaultRoles": [
-    "account/profile",
-    "guest",
-    "product",
-    "account/verify",
-    "tag",
-    "index",
-    "cart/checkout",
-    "cart/completed"
-  ]
+  }]
 }]
