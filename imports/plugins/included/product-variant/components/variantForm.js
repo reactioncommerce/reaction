@@ -73,10 +73,8 @@ class VariantForm extends Component {
         }
       }
     }
-    const cardGroupName = this.fieldGroupForFieldName(nextProps.editFocus);
 
     this.setState({
-      expandedCard: cardGroupName,
       inventoryManagement: nextProps.variant.inventoryManagement,
       inventoryPolicy: nextProps.variant.inventoryPolicy,
       taxable: nextProps.variant.taxable,
