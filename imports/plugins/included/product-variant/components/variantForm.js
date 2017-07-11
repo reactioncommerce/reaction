@@ -148,9 +148,12 @@ class VariantForm extends Component {
   }
 
   handleCheckboxChange = (event, value, field) => {
-    this.setState({
-      [field]: value
-    });
+    this.setState(({ variant }) => ({
+      variant: {
+        ...variant,
+        [field]: value
+      }
+    }));
 
     this.handleFieldBlur(event, value, field);
   }
