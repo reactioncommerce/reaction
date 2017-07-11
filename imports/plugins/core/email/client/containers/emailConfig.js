@@ -10,7 +10,6 @@ import EmailConfig from "../components/emailConfig";
 import { composeWithTracker, merge } from "/lib/api/compose";
 
 class EmailConfigContainer extends Component {
-
   constructor(props) {
     super(props);
 
