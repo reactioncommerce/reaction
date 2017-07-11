@@ -1,3 +1,4 @@
+import { Meteor } from "meteor/meteor";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Accounts, Groups } from "/lib/collections";
@@ -20,11 +21,14 @@ class AccountsDashboardContainer extends Component {
 }
 
 const composer = (props, onData) => {
-  const shopUsers = Accounts.find().fetch();
-  const groups = Groups.find().fetch();
-  onData(null, {
-    shopUsers, groups
-  });
+  const accSub = Meteor.subscribe("Accounts", null);
+  const grpSub = Meteor.subscribe("Groups");
+
+  if (accSub.ready() && grpSub.ready()) {
+    const shopUsers = Accounts.find().fetch();
+    const groups = Groups.find().fetch();
+    onData(null, { shopUsers, groups });
+  }
 };
 
-export default composeWithTracker(composer, null)(AccountsDashboardContainer);
+export default composeWithTracker(composer)(AccountsDashboardContainer);
