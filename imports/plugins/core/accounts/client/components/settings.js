@@ -50,7 +50,7 @@ class SettingsComponent extends Component {
         <div className="groups-form">
         {this.renderAddAdminForm()}
         {this.renderGroupSettings()}
-        {this.renderOwnersTab()}
+        {/* this.renderOwnersTab() */}
         </div>
     );
   }

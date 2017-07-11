@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Accounts, Groups } from "/lib/collections";
 import { composeWithTracker } from "/lib/api/compose";
 import AccountsComponent from "../components/accounts";
-import getSortedGroups from "../helpers/accountsHelper";
+import { getSortedGroups } from "../helpers/accountsHelper";
 
 class AccountsContainer extends Component {
   static propTypes = {

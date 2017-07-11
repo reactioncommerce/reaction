@@ -1,8 +1,10 @@
 import React, { Component } from "react";
+import { Meteor } from "meteor/meteor";
 import PropTypes from "prop-types";
 import AccountsTable from "./accountsTable";
-// import { Badge, ClickToCopy, Icon, Translation } from "@reactioncommerce/reaction-ui";
+import { Reaction } from "/client/api";
 import { Icon } from "/imports/plugins/core/ui/client/components";
+import { getGravatar } from "../helpers/accountsHelper";
 
 class AccountsComponent extends Component {
   static propTypes = {
@@ -19,38 +21,44 @@ class AccountsComponent extends Component {
   }
 
   renderOwnersSection() {
-    return (
-      <div>
-        <div className="accounts-main-row">
-          <div className="accounts-hd-col">
-            <span className="hd-content">Group</span>
-            <span className="hd-icon"><Icon icon="filter"/></span>
+    if (Reaction.hasOwnerAccess() && Reaction.hasAdminAccess()) {
+      const owner = Meteor.user();
+      return (
+          <div>
+            <div className="accounts-main-row">
+              <div className="accounts-hd-col">
+                <span className="hd-content">Group</span>
+                <span className="hd-icon"><Icon icon="filter"/></span>
+              </div>
+              <div className="accounts-hd-col center">
+                <span className="hd-content">Date</span>
+                <span className="hd-icon"><Icon icon="filter"/></span>
+              </div>
+              <div className="accounts-hd-col">
+                <span className="hd-content">Status</span>
+                <span className="hd-icon"><Icon icon="filter"/></span>
+              </div>
+            </div>
+            <div className="owners-row">
+              <div style={{ width: "30%" }}>
+                  <span style={{ paddingLeft: "10px" }}>
+                    <img className="circular-icon accounts-field-profile" style={{ borderRadius: "50%" }} src={getGravatar(owner)}/>
+                  </span>
+                  <span style={{ paddingLeft: "10px" }}>{owner.name}</span>
+              </div>
+              <div style={{ width: "20%" }}>
+                  <span>{owner.emails[0].address}</span>
+              </div>
+              <div style={{ width: "10%" }}>
+                  <span>10:43</span>
+              </div>
+              <div style={{ width: "10%" }}>Yes</div>
+              <div />
+            </div>
           </div>
-          <div className="accounts-hd-col center">
-            <span className="hd-content">Date</span>
-            <span className="hd-icon"><Icon icon="filter"/></span>
-          </div>
-          <div className="accounts-hd-col">
-            <span className="hd-content">Status</span>
-            <span className="hd-icon"><Icon icon="filter"/></span>
-          </div>
-        </div>
-        <div className="owners-row">
-          <div style={{ width: "30%" }}>
-              <span style={{ paddingLeft: "10px" }}>{/* gravatar goes here*/} SS</span>
-              <span style={{ paddingLeft: "10px" }}>{/* Name goes here*/} Silver Sparks</span>
-          </div>
-          <div style={{ width: "20%" }}>
-              <span>{/* email goes here*/}silversparks@gmai...</span>
-          </div>
-          <div style={{ width: "10%" }}>
-              <span>{/* last active goes here*/} 10:43</span>
-          </div>
-          <div style={{ width: "10%" }}>Yes</div>
-          <div />
-        </div>
-      </div>
-    );
+      );
+    }
+    return null;
   }
 
   renderGroupsTable(groups) {

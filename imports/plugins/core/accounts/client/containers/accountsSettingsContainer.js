@@ -1,12 +1,10 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-// import { Reaction } from "/client/api";
 import _ from "lodash";
 import { Accounts, Groups, Packages } from "/lib/collections";
 import { composeWithTracker } from "/lib/api/compose";
-// import { Meteor } from "meteor/meteor";
 import SettingsComponent from "../components/settings";
-import getSortedGroups from "../helpers/accountsHelper";
+import { getSortedGroups } from "../helpers/accountsHelper";
 
 const getPermissionMap = (permissions) => {
   const permissionMap = {};
@@ -38,13 +36,13 @@ class SettingsContainer extends Component {
     }
 
     if (!this.hasPermissionChecked(permissionGroup.permissions, group)) {
-      group.groupData.ids.forEach((groupId) => {
+      group.groupData.ids.forEach((groupId) => { // eslint-disable-line
         // console.log("shsh", group[index].shopId);
-        const foundGroup = Groups.findOne({ _id: groupId });
+        // const foundGroup = Groups.findOne({ _id: groupId });
 
-        const updatedPermissions = foundGroup.permissions.concat(permissions);
-        const updatedGroup = { name: foundGroup.name, permissions: updatedPermissions };
-        Meteor.call("group/updateGroup", groupId, updatedGroup, foundGroup.shopId);
+        // const updatedPermissions = foundGroup.permissions.concat(permissions);
+        // const updatedGroup = { name: foundGroup.name, permissions: updatedPermissions };
+        // Meteor.call("group/updateGroup", groupId, updatedGroup, foundGroup.shopId);
       });
     } else {
       // Make another meteor call

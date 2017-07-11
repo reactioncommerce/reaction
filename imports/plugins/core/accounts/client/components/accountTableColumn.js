@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import * as Collections from "/lib/collections";
 import classnames from "classnames";
+import { getGravatar } from "../helpers/accountsHelper";
 
 class AccountTableColumn extends Component {
   static propTypes = {
@@ -27,23 +27,6 @@ class AccountTableColumn extends Component {
     // const { row } = this.props;
   }
 
-  getGravatar(user) {
-    const options = {
-      secure: true,
-      size: 30,
-      default: "identicon"
-    };
-    if (!user) { return false; }
-    const account = Collections.Accounts.findOne(user._id);
-    if (account && account.profile && account.profile.picture) {
-      return account.profile.picture;
-    }
-    if (user.emails && user.emails.length > 0) {
-      const email = user.emails[0].address;
-      return Gravatar.imageUrl(email, options);
-    }
-  }
-
   render() {
     const { row, columnName, groups } = this.props;
     let key = row.column.id;
@@ -51,7 +34,7 @@ class AccountTableColumn extends Component {
     if (columnName === "Name") {
       return (
                 <div className="" style={{ display: "flex", borderRight: "1px solid #cccccc", width: "100%" }}>
-                  <span><img className="circular-icon accounts-field-profile" style={{ borderRadius: "50%" }} src={this.getGravatar(row.value)}/></span>
+                  <span><img className="circular-icon accounts-field-profile" style={{ borderRadius: "50%" }} src={getGravatar(row.value)}/></span>
                   <span style={{ position: "relative", left: "5%", fontSize: "14px", top: "30%" }}><strong>{row.value.name}</strong></span>
                 </div>
       );
