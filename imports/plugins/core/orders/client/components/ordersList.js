@@ -45,14 +45,15 @@ class OrdersList extends Component {
   }
 
   renderOrderButton(order) {
+    const startWorkflow = order.workflow.status === "new";
     const classes = classnames({
       "rui": true,
       "btn": true,
-      "btn-success": order.workflow.status === "new"
+      "btn-success": startWorkflow
     });
 
     return (
-      <button className={classes} onClick={() => this.props.handleClick(order)}>
+      <button className={classes} onClick={() => this.props.handleClick(order, startWorkflow)}>
         <Icon icon="fa fa-chevron-right" />
       </button>
     );
