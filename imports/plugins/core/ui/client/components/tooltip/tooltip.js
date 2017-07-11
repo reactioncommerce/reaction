@@ -1,9 +1,9 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import TetherComponent from "react-tether";
 import classnames from "classnames";
 
 class Tooltip extends Component {
-
   /**
    * attachment
    * @description Return the attachment for the tooltip or the default

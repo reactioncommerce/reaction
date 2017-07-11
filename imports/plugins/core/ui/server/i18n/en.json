@@ -17,7 +17,20 @@
         "publishThemeError": "`Couldn't publish theme {{themeName}}",
         "components": {
           "navbar": "Navigation Bar",
-          "button": "Button"
+          "button": "Button",
+          "sortableTable": {
+            "filterPlaceholder": "Filter Data",
+            "tableText": {
+              "noDataMessage": "No results found",
+              "previousText": "Previous",
+              "nextText": "Next",
+              "loadingText": "Loading...",
+              "noDataText": "No results found",
+              "pageText": "Page",
+              "ofText": "of",
+              "rowsText": "rows"
+            }
+          }
         }
       }
     }

@@ -22,6 +22,7 @@
     "@reactioncommerce/authorize-net": "^1.0.8",
     "@reactioncommerce/nodemailer": "^5.0.4",
     "accounting-js": "^1.1.1",
+    "amplify-store": "^0.1.0",
     "autoprefixer": "^7.1.1",
     "autosize": "^3.0.20",
     "babel-runtime": "^6.23.0",
@@ -33,6 +34,7 @@
     "classnames": "^2.2.5",
     "copy-to-clipboard": "^3.0.6",
     "country-data": "^0.0.31",
+    "create-react-class": "^15.6.0",
     "css-annotation": "^0.6.2",
     "deep-diff": "^0.3.4",
     "dnd-core": "^2.3.0",
@@ -40,7 +42,6 @@
     "fibers": "^1.0.15",
     "flatten-obj": "^3.1.0",
     "font-awesome": "^4.7.0",
-    "griddle-react": "0.7.1",
     "handlebars": "^4.0.6",
     "history": "^4.6.1",
     "i18next": "8.4.2",
@@ -53,6 +54,7 @@
     "later": "^1.2.0",
     "lodash": "^4.17.4",
     "lodash.pick": "^4.4.0",
+    "match-sorter": "^1.8.0",
     "meteor-node-stubs": "^0.2.11",
     "moment": "^2.18.1",
     "moment-timezone": "^0.5.11",
@@ -90,6 +92,7 @@
     "react-router-dom": "^4.1.1",
     "react-select": "^1.0.0-rc.3",
     "react-simple-di": "^1.2.0",
+    "react-table": "^6.3.0",
     "react-taco-table": "^0.5.0",
     "react-tether": "^0.5.6",
     "react-textarea-autosize": "^4.0.5",
@@ -118,8 +121,8 @@
     "chai": "^4.0.2",
     "enzyme": "^2.8.2",
     "enzyme-to-json": "^1.5.1",
-    "eslint": "^3.18.0",
-    "eslint-plugin-react": "^6.10.3",
+    "eslint": "^4.2.0",
+    "eslint-plugin-react": "^7.1.0",
     "jest": "^20.0.4",
     "js-yaml": "^3.8.2",
     "react-addons-test-utils": "15.4.2"
@@ -138,24 +141,35 @@
   },
   "jest": {
     "moduleNameMapper": {
-      "^\/lib(.*)": "<rootDir>/lib/$1",
-      "^\/imports\/plugins(.*)": "<rootDir>/imports/plugins/$1",
-      "^\/client\/api(.*)": "<rootDir>/imports/test-utils/__mocks__/client/api$1",
+      "^/lib(.*)": "<rootDir>/lib/$1",
+      "^/imports/plugins(.*)": "<rootDir>/imports/plugins/$1",
+      "^/client/api(.*)": "<rootDir>/imports/test-utils/__mocks__/client/api$1",
       "^meteor/aldeed:simple-schema": "<rootDir>/imports/test-utils/__mocks__/meteor/aldeed-simple-schema",
+      "^meteor/tmeasday:publish-counts": "<rootDir>/imports/test-utils/__mocks__/meteor/tmeasday-publish-counts",
       "^meteor/(.*)": "<rootDir>/imports/test-utils/__mocks__/meteor/$1"
     }
   },
   "babel": {
     "plugins": [
-      "lodash", ["module-resolver", {
-        "root": ["./"],
-        "alias": {
-          "underscore": "lodash",
-          "@reactioncommerce/reaction-ui": "./imports/plugins/core/ui/client/components",
-          "@reactioncommerce/reaction-router": "./imports/plugins/core/router/lib"
+      "lodash",
+      [
+        "module-resolver",
+        {
+          "root": [
+            "./"
+          ],
+          "alias": {
+            "underscore": "lodash",
+            "@reactioncommerce/reaction-ui": "./imports/plugins/core/ui/client/components",
+            "@reactioncommerce/reaction-router": "./imports/plugins/core/router/lib"
+          }
         }
-      }]
+      ]
     ],
-    "presets": ["es2015", "react", "stage-2"]
+    "presets": [
+      "es2015",
+      "react",
+      "stage-2"
+    ]
   }
 }

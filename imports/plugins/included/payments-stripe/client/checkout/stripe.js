@@ -2,6 +2,7 @@
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { AutoForm } from "meteor/aldeed:autoform";
+import { $ } from "meteor/jquery";
 import { getCardType } from "/client/modules/core/helpers/globals";
 import { Reaction } from "/client/api";
 import { Cart, SellerShops, Packages } from "/lib/collections";
@@ -30,12 +31,15 @@ function hidePaymentAlert() {
 }
 
 function handleStripeSubmitError(error) {
-  const singleError = error;
-  const serverError = error ? error.message : null;
-  if (serverError) {
-    return paymentAlert("Oops! Credit card is invalid. Please check your information and try again.");
-  } else if (singleError) {
-    return paymentAlert("Oops! " + singleError);
+  // Match eror on card number. Not submitted to stripe
+  if (error && error.reason && error.reason === "Match failed") {
+    const message = "Your card number is invalid. Please check the number and try again";
+    return paymentAlert(message);
+  }
+
+  // this is a server message with a client-sanitized message
+  if (error && error.details) {
+    return paymentAlert(error.details);
   }
 }
 

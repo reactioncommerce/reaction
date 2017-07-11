@@ -1,6 +1,7 @@
 import _ from  "lodash";
+import { check, Match } from "meteor/check";
+import { Random } from "meteor/random";
 import { EJSON } from "meteor/ejson";
-import { check } from "meteor/check";
 import { Meteor } from "meteor/meteor";
 import { copyFile, ReactionProduct } from "/lib/api";
 import { ProductRevision as Catalog } from "/imports/plugins/core/revisions/server/hooks";
@@ -600,14 +601,14 @@ Meteor.methods({
       uniqueShopIds.forEach((shopId) => {
         if (!Reaction.hasPermission("createProduct", this.userId, shopId)) {
           throw new Meteor.Error(403,
-          "Access Denied");
+            "Access Denied");
         }
       });
     } else {
       // Single product was passed in - ensure that user has permission to clone
       if (!Reaction.hasPermission("createProduct", this.userId, productOrArray.shopId)) {
         throw new Meteor.Error(403,
-        "Access Denied");
+          "Access Denied");
       }
     }
 
@@ -1302,7 +1303,7 @@ Meteor.methods({
           if (typeof variant.title === "string" && !variant.title.length) {
             variantValidator = false;
           }
-          if (typeof optionTitle === "string" && !optionTitle.length) {
+          if (typeof variant.optionTitle === "string" && !variant.optionTitle.length) {
             variantValidator = false;
           }
         });

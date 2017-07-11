@@ -4,6 +4,7 @@ import { Meteor } from "meteor/meteor";
 import $ from "jquery";
 import { Template } from "meteor/templating";
 import { ReactiveVar } from "meteor/reactive-var";
+import { ReactiveDict } from "meteor/reactive-dict";
 import { i18next, Logger, formatNumber, Reaction } from "/client/api";
 import { NumericInput } from "/imports/plugins/core/ui/client/components";
 import { Orders, Shops, Packages } from "/lib/collections";
@@ -544,7 +545,7 @@ Template.coreOrderShippingInvoice.helpers({
   shipment() {
     const instance = Template.instance();
     const order = instance.state.get("order");
-
+    const currentData = Template.currentData();
     const shipment = _.filter(order.shipping, { _id: currentData.fulfillment._id })[0];
 
     return shipment;

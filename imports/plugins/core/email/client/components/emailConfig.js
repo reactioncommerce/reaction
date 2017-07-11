@@ -1,5 +1,5 @@
-import React, { Component, PropTypes } from "react";
-import "./emailConfig.css";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { Card, CardHeader, CardBody, CardGroup, Icon, Translation } from "/imports/plugins/core/ui/client/components";
 import EmailSettings from "../containers/emailSettings";
 
@@ -44,7 +44,7 @@ class EmailConfig extends Component {
         </div>
         <div className="email-config-status">
           <strong><Translation defaultValue={"Status"} i18nKey={"admin.settings.status"} /></strong>: {status ?
-              <i className={`fa fa-circle ${status}`} />
+            <i className={`fa fa-circle ${status}`} />
             : <i className={"fa fa-refresh fa-spin"} />}
         </div>
         <div>
@@ -67,7 +67,7 @@ class EmailConfig extends Component {
               <a onClick={this.togglePassword}>
                 <span style={{ marginLeft: "1rem" }}>
                   <em>{showPassword ?
-                      <span data-i18n="admin.settings.passwordHide">Hide</span>
+                    <span data-i18n="admin.settings.passwordHide">Hide</span>
                     : <span data-i18n="admin.settings.passwordShow">Show</span>}
                   </em>
                 </span>

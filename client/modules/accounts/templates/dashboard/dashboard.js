@@ -1,6 +1,8 @@
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
+import { Roles } from "meteor/alanning:roles";
+import { ServiceConfiguration } from "meteor/service-configuration";
 import { Reaction, i18next } from "/client/api";
 import * as Collections from "/lib/collections";
 import { ServiceConfigHelper } from "../../helpers/util";
@@ -17,7 +19,6 @@ Template.accountsDashboard.onCreated(function () {
 Template.accountsDashboard.helpers({
   /**
    * isShopMember
-   * @param {Object} member member object
    * @return {Boolean} True if the memnber is an administrator
    */
   isShopMember() {
@@ -26,7 +27,6 @@ Template.accountsDashboard.helpers({
 
   /**
    * isShopGuest
-   * @param {Object} member member object
    * @return {Boolean} True if the member is a guest
    */
   isShopGuest() {

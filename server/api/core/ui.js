@@ -1,7 +1,10 @@
+/* global baseStyles */
 import postcss from "postcss";
 import postcssJS from "postcss-js";
 import autoprefixer from "autoprefixer";
 import cssAnnotation from "css-annotation";
+import { check, Match } from "meteor/check";
+import { Meteor } from "meteor/meteor";
 import { Shops, Themes } from "/lib/collections";
 import { Reaction } from "./core";
 

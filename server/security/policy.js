@@ -1,4 +1,5 @@
 import url from "url";
+import { Meteor } from "meteor/meteor";
 import { BrowserPolicy } from "meteor/browser-policy-common";
 import { WebApp } from "meteor/webapp";
 

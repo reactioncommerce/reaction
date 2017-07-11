@@ -1,10 +1,11 @@
+import { $ } from "meteor/jquery";
+import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import { ReactiveDict } from "meteor/reactive-dict";
 import { AutoForm } from "meteor/aldeed:autoform";
 import { Shipping } from "/lib/collections";
 import { i18next } from "/client/api";
-import MeteorGriddle from "/imports/plugins/core/ui-grid/client/griddle";
-import { IconButton, Loading } from "/imports/plugins/core/ui/client/components";
+import { IconButton, Loading, SortableTable } from "/imports/plugins/core/ui/client/components";
 
 Template.shippingRatesSettings.onCreated(function () {
   this.autorun(() => {
@@ -79,8 +80,8 @@ Template.shippingRatesSettings.helpers({
     const customColumnMetadata = [];
     filteredFields.forEach(function (field) {
       const columnMeta = {
-        columnName: field,
-        displayName: i18next.t(`admin.shippingGrid.${field}`)
+        accessor: field,
+        Header: i18next.t(`admin.shippingGrid.${field}`)
       };
       customColumnMetadata.push(columnMeta);
     });
@@ -99,13 +100,12 @@ Template.shippingRatesSettings.helpers({
 
     // return shipping Grid
     return {
-      component: MeteorGriddle,
+      component: SortableTable,
       publication: "Shipping",
       transform: transform,
       collection: Shipping,
       matchingResultsCount: "shipping-count",
       showFilter: true,
-      useGriddleStyles: false,
       rowMetadata: customRowMetaData,
       filteredFields: filteredFields,
       columns: filteredFields,

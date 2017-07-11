@@ -1,6 +1,7 @@
+import { merge } from "lodash";
+import { Template } from "meteor/templating";
 import { Reaction } from "/client/api";
 import { Packages } from "/lib/collections";
-import { merge } from "lodash";
 
 Template.reactionSocial.onCreated(function () {
   const self = this;

@@ -1,5 +1,6 @@
 import React from "react";
 import { Meteor } from "meteor/meteor";
+import { Session } from "meteor/session";
 import { composeWithTracker } from "/lib/api/compose";
 import { Reaction, i18next } from "/client/api";
 import { Tags, Shops } from "/lib/collections";

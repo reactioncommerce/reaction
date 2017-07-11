@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { Translation } from "/imports/plugins/core/ui/client/components";
 
 
@@ -23,7 +24,7 @@ class RevisionControlSettings extends Component {
           defaultValue="Revision controls is disabled"
           i18nKey="revisions.isDisabled"
         />
-    );
+      );
     }
 
     return (

@@ -1,4 +1,5 @@
 /* eslint camelcase: 0 */
+import { AutoForm } from "meteor/aldeed:autoform";
 import { Template } from "meteor/templating";
 import { Packages } from "/lib/collections";
 import { PaypalPackageConfig } from "../../../lib/collections/schemas";
