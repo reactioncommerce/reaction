@@ -2,8 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Card, CardHeader, CardBody, FlatButton, Switch } from "/imports/plugins/core/ui/client/components";
 
-
-class GroupsSettings extends Component {
+class EditGroup extends Component {
   static propTypes = {
     accounts: PropTypes.array,
     getGroupPermissions: PropTypes.func,
@@ -125,30 +124,24 @@ class GroupsSettings extends Component {
 
   renderGroupsList() {
     return (
-        <div>
-          {this.renderShopManagers()}
-        </div>
+      <div>
+        {this.renderShopManagers()}
+      </div>
     );
   }
 
   render() {
     return (
-        <Card
-          expanded={true}
-        >
-          <CardHeader
-            actAsExpander={true}
-            data-i18n="accountsUI.info.editGroups"
-            title="Edit Groups"
-          />
-          <CardBody expandable={true}>
-            <div className="settings">
-                {this.renderGroupsList()}
-            </div>
-          </CardBody>
-        </Card>
+      <Card expanded={true}>
+        <CardHeader actAsExpander={true} data-i18n="accountsUI.info.editGroups" title="Edit Groups" />
+        <CardBody expandable={true}>
+          <div className="settings">
+            {this.renderGroupsList()}
+          </div>
+        </CardBody>
+      </Card>
     );
   }
 }
 
-export default GroupsSettings;
+export default EditGroup;

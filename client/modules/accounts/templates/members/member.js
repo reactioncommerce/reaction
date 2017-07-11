@@ -3,7 +3,7 @@ import { Reaction } from "/client/api";
 import { Packages, Shops } from "/lib/collections";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
-import AccountsSettingsContainer from "/imports/plugins/core/accounts/client/containers/accountsSettingsContainer";
+import AccountsDashboardDetailsContainer from "/imports/plugins/core/accounts/client/containers/accountsDashboardDetailsContainer";
 
 import { $ } from "meteor/jquery";
 import { Roles } from "meteor/alanning:roles";
@@ -143,7 +143,7 @@ Template.memberSettings.helpers({
    */
   AccountSettings() {
     return {
-      component: AccountsSettingsContainer
+      component: AccountsDashboardDetailsContainer
     };
   },
 

@@ -4,7 +4,7 @@ import { Card, CardHeader, CardBody, SortableTable } from "/imports/plugins/core
 import * as Collections from "/lib/collections";
 
 
-class GroupOwnerSettings extends Component {
+class AddGroupMembers extends Component {
   static propTypes = {
     accounts: PropTypes.array,
     groups: PropTypes.object
@@ -111,4 +111,4 @@ class GroupOwnerSettings extends Component {
   }
 }
 
-export default GroupOwnerSettings;
+export default AddGroupMembers;

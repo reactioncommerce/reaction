@@ -6,9 +6,8 @@ import { ServiceConfiguration } from "meteor/service-configuration";
 import { Reaction, i18next } from "/client/api";
 import * as Collections from "/lib/collections";
 import { ServiceConfigHelper } from "../../helpers/util";
-import AccountsTableContainer from "/imports/plugins/core/accounts/client/containers/accountsTableContainer";
-import AccountsSettingsContainer from "/imports/plugins/core/accounts/client/containers/accountsSettingsContainer";
-
+import AccountsDashboardContainer from "/imports/plugins/core/accounts/client/containers/accountsDashboardContainer";
+import AccountsDashboardDetailsContainer from "/imports/plugins/core/accounts/client/containers/accountsDashboardDetailsContainer";
 
 /**
  * Accounts helpers
@@ -87,7 +86,7 @@ Template.accountsDashboard.helpers({
   },
 
   accounts() {
-    return AccountsTableContainer;
+    return AccountsDashboardContainer;
   }
 });
 
@@ -122,7 +121,7 @@ Template.accountsSettings.helpers({
 
     return {
       services,
-      component: AccountsSettingsContainer
+      component: AccountsDashboardDetailsContainer
     };
   },
 

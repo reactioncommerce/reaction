@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 // import { Reaction } from "/client/api";
+import { Meteor } from "meteor/meteor";
 import _ from "lodash";
 import { Accounts, Groups, Packages } from "/lib/collections";
 import { composeWithTracker } from "/lib/api/compose";
-// import { Meteor } from "meteor/meteor";
-import SettingsComponent from "../components/settings";
+import AccountsDashboardDetails from "../components/accountsDashboardDetail";
 import getSortedGroups from "../helpers/accountsHelper";
 
 const getPermissionMap = (permissions) => {
@@ -16,7 +16,7 @@ const getPermissionMap = (permissions) => {
   return permissionMap;
 };
 
-class SettingsContainer extends Component {
+class AccountsDashboardDetailsContainer extends Component {
   static propTypes = {
     groups: PropTypes.array,
     shopUsers: PropTypes.array
@@ -119,7 +119,7 @@ class SettingsContainer extends Component {
   render() {
     const { shopUsers, groups } = this.props;
     return (
-      <SettingsComponent
+      <AccountsDashboardDetails
         accounts={this.props.shopUsers}
         groups={getSortedGroups(shopUsers, groups)}
         getGroupPermissions={(id) => this.getGroupPermissions(id)}
@@ -139,4 +139,4 @@ const composer = (props, onData) => {
   });
 };
 
-export default composeWithTracker(composer, null)(SettingsContainer);
+export default composeWithTracker(composer, null)(AccountsDashboardDetailsContainer);

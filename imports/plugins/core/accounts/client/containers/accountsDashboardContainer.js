@@ -2,10 +2,10 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Accounts, Groups } from "/lib/collections";
 import { composeWithTracker } from "/lib/api/compose";
-import AccountsComponent from "../components/accounts";
+import AccountsDashboard from "../components/accountsDashboard";
 import getSortedGroups from "../helpers/accountsHelper";
 
-class AccountsContainer extends Component {
+class AccountsDashboardContainer extends Component {
   static propTypes = {
     groups: PropTypes.array,
     shopUsers: PropTypes.array
@@ -14,7 +14,7 @@ class AccountsContainer extends Component {
   render() {
     const { shopUsers, groups } = this.props;
     return (
-      <AccountsComponent accounts={this.props.shopUsers} groups={getSortedGroups(shopUsers, groups)} />
+      <AccountsDashboard accounts={this.props.shopUsers} groups={getSortedGroups(shopUsers, groups)} />
     );
   }
 }
@@ -27,4 +27,4 @@ const composer = (props, onData) => {
   });
 };
 
-export default composeWithTracker(composer, null)(AccountsContainer);
+export default composeWithTracker(composer, null)(AccountsDashboardContainer);

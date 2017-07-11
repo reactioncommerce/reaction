@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Checkbox, Icon } from "/imports/plugins/core/ui/client/components";
 import { Card, CardHeader, CardBody, SortableTable } from "/imports/plugins/core/ui/client/components";
-import AccountsTableColumn from "./accountTableColumn";
+import AccountsTableRow from "./accountsTableRow";
 
 
 class AccountsTable extends Component {
