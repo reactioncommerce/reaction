@@ -1,7 +1,8 @@
 import { Meteor } from "meteor/meteor";
 import { HTTP } from "meteor/http";
 import { check } from "meteor/check";
-import { Shops } from "/lib/collections"; // TODO: Should this be SellerShops?
+import { Logger } from "/server/api";
+import { Shops, Packages } from "/lib/collections"; // TODO: Should this be SellerShops?
 
 Meteor.methods({
   // TODO: Review all of this code for functionality

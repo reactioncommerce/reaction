@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { AlertContainer } from "/imports/plugins/core/ui/client/containers";
 import { ReactionLayout } from "/imports/plugins/core/layout/lib";
 

@@ -1,5 +1,7 @@
 import { Meteor } from "meteor/meteor";
 import { Tracker } from "meteor/tracker";
+import { Session } from "meteor/session";
+import { $ } from "meteor/jquery";
 import { Reaction, Router } from "/client/api";
 import { Packages, Shops } from "/lib/collections";
 

@@ -1,6 +1,7 @@
 import { Reaction, i18next } from "/client/api";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
+import { $ } from "meteor/jquery";
 
 
 /**
@@ -26,7 +27,7 @@ Template.memberForm.events({
             message = error;
           } else {
             message = `${i18next.t("accountsUI.error.errorSendingEmail")
-              } ${error}`;
+            } ${error}`;
           }
 
           Alerts.inline(message, "error", {

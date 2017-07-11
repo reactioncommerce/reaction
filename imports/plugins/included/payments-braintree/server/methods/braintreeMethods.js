@@ -1,3 +1,4 @@
+import { check } from "meteor/check";
 import { BraintreeApi } from "./braintreeApi";
 import { Logger } from "/server/api";
 import { PaymentMethod } from "/lib/collections/schemas";

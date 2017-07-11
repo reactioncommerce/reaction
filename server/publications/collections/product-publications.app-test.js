@@ -1,4 +1,5 @@
 /* eslint dot-notation: 0 */
+import { Random } from "meteor/random";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
 import { Roles } from "meteor/alanning:roles";
@@ -312,7 +313,12 @@ describe("Publication", function () {
 
         collector.collect("Product", "my", (collections) => {
           const products = collections.Products;
-          expect(products.length).to.equal(0);
+          if (products) {
+            expect(products.length).to.equal(0);
+          } else {
+            expect(products).to.be.undefined;
+          }
+
 
           if (!isDone) {
             isDone = true;
