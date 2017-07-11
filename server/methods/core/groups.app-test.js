@@ -62,6 +62,17 @@ describe("Group test", function () {
     expect(group.name).to.equal(sampleGroup.name);
   });
 
+  it("should ensure one group type per shop", function () {
+    sandbox.stub(Reaction, "hasPermission", () => true);
+    spyOnMethod("createGroup", shop._id);
+
+    Meteor.call("group/createGroup", sampleGroup, shop._id);
+
+    expect(() => {
+      Meteor.call("group/createGroup", sampleGroup, shop._id);
+    }).to.throw(Meteor.Error, /Group already exist for this shop/);
+  });
+
   it("should check admin access before creating a group", function () {
     sandbox.stub(Reaction, "hasPermission", () => false);
     spyOnMethod("createGroup", shop._id);
@@ -112,6 +123,29 @@ describe("Group test", function () {
 
     Meteor.call("group/removeUser", user._id, group._id);
     updatedUser = Meteor.users.findOne({ _id: user._id });
+    expect(updatedUser.roles[shop._id]).to.not.include.members(sampleGroup.permissions);
+  });
+
+  it("should ensure a user's permissions does not include roles from previous group", function () {
+    sandbox.stub(Reaction, "hasPermission", () => true);
+    spyOnMethod("createGroup", shop._id);
+    spyOnMethod("addUser", shop._id);
+    spyOnMethod("updateGroup", shop._id);
+
+    const groupId = Meteor.call("group/createGroup", sampleGroup, shop._id).groupId;
+    const group2Id = Meteor.call(
+      "group/createGroup",
+      { name: "Managers", permissions: ["sample-role3"] },
+      shop._id
+    ).groupId;
+
+    Meteor.call("group/addUser", user._id, groupId);
+    let updatedUser = Meteor.users.findOne({ _id: user._id });
+    expect(updatedUser.roles[shop._id]).to.include.members(sampleGroup.permissions);
+
+    Meteor.call("group/addUser", user._id, group2Id);
+    updatedUser = Meteor.users.findOne({ _id: user._id });
+
     expect(updatedUser.roles[shop._id]).to.not.include.members(sampleGroup.permissions);
   });
 

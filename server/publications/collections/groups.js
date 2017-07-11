@@ -10,5 +10,5 @@ Meteor.publish("Groups", function (query = {}) {
   }
   const select = query || {};
   select.shopId = shopId;
-  return Groups.find();
+  return Groups.find(select);
 });

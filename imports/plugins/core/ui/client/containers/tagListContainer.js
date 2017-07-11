@@ -1,5 +1,7 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import debounce from "lodash/debounce";
+import _ from "lodash";
 import update from "react/lib/update";
 import { Meteor } from "meteor/meteor";
 import { Reaction, i18next } from "/client/api";

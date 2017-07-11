@@ -4,6 +4,8 @@ import _ from "lodash";
 import matchSorter from "match-sorter";
 import ReactTable from "react-table";
 // import { Translation } from "@reactioncommerce/reaction-ui";
+import { Meteor } from "meteor/meteor";
+import { Counts } from "meteor/tmeasday:publish-counts";
 import { SortableTableFilter, SortableTablePagination } from "./sortableTableComponents";
 
 class SortableTable extends Component {
@@ -65,7 +67,7 @@ class SortableTable extends Component {
    * custom filter searches entire string, not just from string start
    * @param {Object} filter user-typed data
    * @param {Object} row row info for associated filter
-   * @returns {String} replacement filter
+   * @returns {String|Boolean} replacement filter
    */
   customFilter = (filter, row) => {
     const id = filter.pivotId || filter.id;
@@ -94,7 +96,7 @@ class SortableTable extends Component {
   /**
    * handleClick() - Handle click on table row
    * @param {object} rowInfo row data passed in from ReactTable
-   * @return {funcion} return onRowClick function prop, or undefined if not supplied
+   * @return {function} return onRowClick function prop, or undefined if not supplied
    */
   handleClick(rowInfo) {
     const { onRowClick } = this.props;
@@ -170,7 +172,7 @@ class SortableTable extends Component {
 
   /**
    * renderTableFilter() - Uses props to determine if a Table Filter should be shown
-   * @returns {Bool} returns true or false for table filters
+   * @returns {node} returns JSX node or null
    */
   renderTableFilter() {
     const { filterType } = this.props;
@@ -192,7 +194,6 @@ class SortableTable extends Component {
   render() {
     const { ...otherProps } = this.props;
     const defaultClassName = "-striped -highlight";
-
     // All available props: https://github.com/tannerlinsley/react-table#props
     return (
       <div>
@@ -205,7 +206,6 @@ class SortableTable extends Component {
           defaultPageSize={otherProps.defaultPageSize}
           filterable={this.renderColumnFilter()}
           minRows={otherProps.minRows}
-
           previousText={otherProps.previousText}
           nextText={otherProps.nextText}
           loadingText={otherProps.loadingText}
@@ -213,9 +213,7 @@ class SortableTable extends Component {
           pageText={otherProps.pageText}
           ofText={otherProps.ofText}
           rowsText={otherProps.rowsText}
-
           PaginationComponent={SortableTablePagination}
-
           getTrProps={(state, rowInfo, column, instance) => { // eslint-disable-line no-unused-vars
             return {
               onClick: e => { // eslint-disable-line no-unused-vars

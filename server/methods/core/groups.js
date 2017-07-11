@@ -1,7 +1,7 @@
 import { Meteor } from "meteor/meteor";
 import { check, Match } from "meteor/check";
 import { Roles } from "meteor/alanning:roles";
-import { Reaction, Logger } from "/server/api";
+import { Reaction, Logger, Hooks } from "/server/api";
 import { Accounts, Groups } from "/lib/collections";
 import { getSlug } from "/lib/api";
 
@@ -26,6 +26,7 @@ Meteor.methods({
     check(groupData.description, Match.Optional(String));
     check(groupData.permissions, [String]);
     check(shopId, String);
+    let res;
 
     if (!Reaction.hasPermission("admin")) {
       throw new Meteor.Error(403, "Access Denied");
@@ -36,19 +37,18 @@ Meteor.methods({
     });
 
     // ensure one group type per shop
-    const groupExists = Groups.find({ shopId }).fetch().find(grp => grp.slug === newGroupData.slug);
+    const groupExists = Groups.findOne({ slug: newGroupData.slug, shopId });
     if (groupExists) {
-      throw new Meteor.Error(400, "Bad request");
+      throw new Meteor.Error(409, "Group already exist for this shop");
     }
-
     try {
-      Groups.insert(newGroupData);
+      res = Groups.insert(newGroupData);
     } catch (error) {
       Logger.error(error);
       throw new Meteor.Error(400, "Bad request");
     }
 
-    return { status: 200 };
+    return { groupId: res, status: 200 };
   },
 
   /**
@@ -86,7 +86,7 @@ Meteor.methods({
     let error;
 
     if (newGroupData.permissions) {
-      error = setUserPermissions(users, newGroupData, shopId);
+      error = setUserPermissions(users, newGroupData.permissions, shopId);
     }
 
     // 3. Return response
@@ -115,8 +115,8 @@ Meteor.methods({
     const { permissions, shopId } = Groups.findOne({ _id: groupId });
 
     try {
-      Meteor.call("accounts/addUserPermissions", userId, permissions, shopId);
-      Accounts.update({ _id: userId }, { $addToSet: { groups: groupId } });
+      setUserPermissions({ _id: userId }, permissions, shopId);
+      Accounts.update({ _id: userId }, { $set: { groups: [groupId] } });
       return { status: 200 };
     } catch (error) {
       Logger.error(error);
@@ -157,11 +157,16 @@ Meteor.methods({
   }
 });
 
-function setUserPermissions(users, newGroupData, shopId) {
+function setUserPermissions(users, permissions, shopId) {
   let affectedUsers = users;
   if (!Array.isArray(users)) {
     affectedUsers = [users];
   }
 
-  return affectedUsers.forEach(user => Roles.setUserRoles(user._id, newGroupData.permissions, shopId));
+  return affectedUsers.forEach(user => Roles.setUserRoles(user._id, permissions, shopId));
 }
+
+// set default admin user's account as "owner"
+Hooks.Events.add("afterCreateDefaultAdminUser", (user) => {
+  return Accounts.update({ _id: user._id }, { $set: { groups: ["owner"] } });
+});

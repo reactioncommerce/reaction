@@ -1,6 +1,7 @@
 /* eslint camelcase: 0 */
 import Shippo from "shippo";
 import { Meteor } from "meteor/meteor";
+import { ValidatedMethod } from "meteor/mdg:validated-method";
 import { SimpleSchema } from "meteor/aldeed:simple-schema";
 import { Logger } from "/server/api";
 import { purchaseAddressSchema, parcelSchema } from "../lib/shippoApiSchema";

@@ -1,8 +1,8 @@
-import React, { Children, Component, PropTypes } from "react";
+import React, { Children, Component } from "react";
+import PropTypes from "prop-types";
 import classnames from "classnames";
 
 class Card extends Component {
-
   constructor(props) {
     super(props);
 

@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import NotificationDropdown from "./notificationDropdown.js";
 import "../styles/main.less";
 import "../styles/dropdown.css";
@@ -14,14 +15,14 @@ class NotificationComponent extends Component {
     if (unread) {
       return (
         <button className="btn btn-default notify-btn rui button flat">
-            <i className="rui fa fa-bell" />
-            <span className="badge notify-icon badge-red">{ unread }</span>
+          <i className="rui fa fa-bell" />
+          <span className="badge notify-icon badge-red">{ unread }</span>
         </button>
       );
     }
     return (
       <button className="btn btn-default rui button flat">
-          <i className="rui fa fa-bell" />
+        <i className="rui fa fa-bell" />
       </button>
     );
   }

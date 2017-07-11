@@ -1,4 +1,6 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { $ } from "meteor/jquery";
 import { Session } from "meteor/session";
 import { Meteor } from "meteor/meteor";
 import { Cart, Media } from "/lib/collections";

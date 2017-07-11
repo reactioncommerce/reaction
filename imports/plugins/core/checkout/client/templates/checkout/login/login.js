@@ -1,7 +1,9 @@
-import { Reaction } from "/client/api";
-import { Cart } from "/lib/collections";
 import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
+import { Roles } from "meteor/alanning:roles";
+import { Reaction } from "/client/api";
+import { Cart } from "/lib/collections";
+
 
 /**
  * checkoutLoginCompleted

@@ -1,4 +1,5 @@
 import faker from "faker";
+import { Factory } from "meteor/dburles:factory";
 import { expect } from "meteor/practicalmeteor:chai";
 import { sinon } from "meteor/practicalmeteor:sinon";
 import { Reaction } from "/server/api";

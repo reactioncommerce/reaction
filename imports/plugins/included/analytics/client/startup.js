@@ -1,12 +1,14 @@
+/* global mixpanel, ga */
 import _ from "lodash";
 import { Meteor } from "meteor/meteor";
 import { Tracker } from "meteor/tracker";
+import { $ } from "meteor/jquery";
 import { AnalyticsEvents, Packages } from "/lib/collections";
 import { Reaction, i18next, Logger } from "/client/api";
 import Alerts from "/imports/plugins/core/layout/client/templates/layout/alerts/inlineAlerts";
 
 // Create a queue, but don't obliterate an existing one!
-analytics = window.analytics = window.analytics || [];
+const analytics = window.analytics = window.analytics || [];
 
 // If the real analytics.js is already on the page return.
 if (analytics.initialize) return;

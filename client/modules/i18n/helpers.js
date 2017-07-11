@@ -1,4 +1,5 @@
 import { Template } from "meteor/templating";
+import { check, Match } from "meteor/check";
 import { Reaction, Logger, i18next } from "/client/api";
 import { Shops } from "/lib/collections";
 import { localeDep, i18nextDep } from  "./main";

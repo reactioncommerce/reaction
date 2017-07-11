@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { Facebook, Twitter, GooglePlus, Pinterest } from "./";
 
 export function getProviderComponentByName(providerName) {
@@ -18,7 +19,6 @@ export function getProviderComponentByName(providerName) {
 
 
 class SocialButtons extends Component {
-
   buttonSettngs(provider) {
     return this.props.settings.apps[provider];
   }

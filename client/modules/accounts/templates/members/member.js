@@ -5,6 +5,10 @@ import { Meteor } from "meteor/meteor";
 import { Template } from "meteor/templating";
 import AccountsSettingsContainer from "/imports/plugins/core/accounts/client/containers/accountsSettingsContainer";
 
+import { $ } from "meteor/jquery";
+import { Roles } from "meteor/alanning:roles";
+
+
 const getPermissionMap = (permissions) => {
   const permissionMap = {};
   _.each(permissions, function (existing) {
@@ -45,7 +49,7 @@ Template.memberSettings.helpers({
   },
   hasPermissionChecked: function (permission, userId) {
     if (userId && Roles.userIsInRole(userId, permission, this.shopId || Roles.userIsInRole(userId, permission,
-        Roles.GLOBAL_GROUP))) {
+      Roles.GLOBAL_GROUP))) {
       return "checked";
     }
   },

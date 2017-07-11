@@ -1,6 +1,9 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import Measure from "react-measure";
 import update from "react/lib/update";
+import _ from "lodash";
+import { Meteor } from "meteor/meteor";
 import { composeWithTracker } from "/lib/api/compose";
 import { MediaGallery } from "../components";
 import { Reaction } from "/client/api";
@@ -20,17 +23,12 @@ function uploadHandler(files) {
       autoHide: true
     });
   }
-  const variantId = variant._id;
+  const variantId = variant.ancestors[0];
   const shopId = ReactionProduct.selectedProduct().shopId || Reaction.getShopId();
   const userId = Meteor.userId();
   let count = Media.find({
     "metadata.variantId": variantId
   }).count();
-  // TODO: we need to mark the first variant images somehow for productGrid.
-  // But how do we know that this is the first, not second or other variant?
-  // Question is open. For now if product has more than 1 top variant, everyone
-  // will have a chance to be displayed
-  const toGrid = variant.ancestors.length === 1;
 
   for (const file of files) {
     const fileObj = new FS.File(file);
@@ -41,7 +39,7 @@ function uploadHandler(files) {
       variantId: variantId,
       shopId: shopId,
       priority: count,
-      toGrid: +toGrid // we need number
+      toGrid: 1 // we need number
     };
 
     Media.insert(fileObj);

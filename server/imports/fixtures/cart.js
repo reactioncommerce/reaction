@@ -1,5 +1,7 @@
 import faker from "faker";
+import _ from "lodash";
 import { Factory } from "meteor/dburles:factory";
+import { Random } from "meteor/random";
 import { Cart, Products } from "/lib/collections";
 import "./shops";
 import { getShop } from "./shops";

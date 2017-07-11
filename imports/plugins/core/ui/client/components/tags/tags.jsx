@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import _ from "lodash";
 import { PropTypes as ReactionPropTypes } from "/lib/api";
 import { TagItem } from "./";
 import { Router } from "/client/api";
@@ -102,13 +103,13 @@ class Tags extends Component {
               tag={tag}
               onMove={this.props.onMoveTag}
               draggable={this.props.draggable}
-              onTagClick={this.handleTagClick}
               onTagInputBlur={this.handleTagSave}
               onTagMouseOut={this.handleTagMouseOut}
               onTagMouseOver={this.handleTagMouseOver}
               onTagRemove={this.handleTagRemove}
               onTagSave={this.handleTagSave}
               onTagUpdate={this.handleTagUpdate}
+              onTagClick={this.handleTagClick}
             />
             {this.props.children}
           </div>

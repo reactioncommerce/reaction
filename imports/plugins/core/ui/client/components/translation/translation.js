@@ -1,5 +1,6 @@
 import { camelCase } from "lodash";
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { i18next } from "/client/api";
 
 class Translation extends Component {

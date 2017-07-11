@@ -1,3 +1,4 @@
+import { Meteor } from "meteor/meteor";
 import { Cart } from "/lib/collections";
 import { MethodHooks } from "/server/api";
 

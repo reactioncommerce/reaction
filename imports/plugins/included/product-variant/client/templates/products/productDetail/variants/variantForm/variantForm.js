@@ -6,7 +6,7 @@ import { Reaction, i18next } from "/client/api";
 import { ReactionProduct } from "/lib/api";
 import { applyProductRevision } from "/lib/api/products";
 import { Products } from "/lib/collections";
-import VariantFormContainer from "../../../../../containers/variantFormContainer";
+import VariantFormContainer from "/imports/plugins/included/product-variant/containers/variantFormContainer";
 
 Template.variantForm.onCreated(function () {
   this.state = new ReactiveDict();

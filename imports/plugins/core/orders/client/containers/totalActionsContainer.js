@@ -1,10 +1,10 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { composeWithTracker } from "/lib/api/compose";
 import TotalActions from "../components/totalActions";
 import { Loading } from "/imports/plugins/core/ui/client/components";
 
 class TotalActionsContaner extends Component {
-
   static propTypes = {
     adjustedTotal: PropTypes.number,
     invoice: PropTypes.object,
