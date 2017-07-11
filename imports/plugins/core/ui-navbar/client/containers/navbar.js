@@ -1,19 +1,7 @@
-import React, { Component } from "react";
+import { registerComponent } from "@reactioncommerce/reaction-components";
 import { composeWithTracker } from "/lib/api/compose";
 import { Reaction } from "/client/api";
 import NavBar from "../components/navbar";
-
-class NavBarContainer extends Component {
-  render() {
-    return (
-      <div>
-        <NavBar
-          {...this.props}
-        />
-      </div>
-    );
-  }
-}
 
 function composer(props, onData) {
   const searchPackage = Reaction.Apps({ provides: "ui-search" });
@@ -36,4 +24,6 @@ function composer(props, onData) {
   });
 }
 
-export default composeWithTracker(composer)(NavBarContainer);
+registerComponent("NavBar", NavBar, composeWithTracker(composer));
+
+export default composeWithTracker(composer)(NavBar);

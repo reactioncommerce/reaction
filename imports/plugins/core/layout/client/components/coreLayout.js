@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import classnames from "classnames";
 import Blaze from "meteor/gadicc:blaze-react-component";
 import { Template } from "meteor/templating";
+import NavBar from "/imports/plugins/core/ui-navbar/client/containers/navbar";
 
 class CoreLayout extends Component {
   static propTypes = {
@@ -12,7 +13,7 @@ class CoreLayout extends Component {
   }
 
   render() {
-    const { layoutHeader, layoutFooter, template } = this.props.structure || {};
+    const { layoutFooter, template } = this.props.structure || {};
     const pageClassName = classnames({
       "page": true,
       "show-settings": this.props.actionViewIsOpen
@@ -20,9 +21,7 @@ class CoreLayout extends Component {
 
     return (
       <div className={pageClassName} id="reactionAppContainer">
-        { Template[layoutHeader] &&
-          <Blaze template={layoutHeader} className="reaction-navigation-header" />
-        }
+        <NavBar />
 
         <Blaze template="cartDrawer" className="reaction-cart-drawer" />
 

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { Meteor } from "meteor/meteor";
 import { FlatButton, Button } from "/imports/plugins/core/ui/client/components";
 import { NotificationContainer } from "/imports/plugins/included/notifications/client/containers";
 import CartIconContainer from "/imports/plugins/core/checkout/client/container/cartIconContainer";
@@ -9,6 +10,22 @@ import LanguageContainer from "/client/modules/i18n/templates/header/containers/
 import CurrencyContainer from "/client/modules/i18n/templates/currency/containers/currencyContainer";
 import TagNavContainer from "/imports/plugins/core/ui-tagnav/client/containers/tagNavContainer";
 import Brand from "./brand";
+
+// TODO: Delete this, and do it the react way - Mike M.
+async function openSearchModalLegacy(props) {
+  if (Meteor.isClient) {
+    const { Blaze } = await import("meteor/blaze");
+    const { Template } = await import("meteor/templating");
+    const { default: $ } = await import("jquery");
+
+    const searchTemplate = Template[props.searchTemplate];
+
+    Blaze.renderWithData(searchTemplate, {}, $("html").get(0));
+
+    $("body").css("overflow", "hidden");
+    $("#search-input").focus();
+  }
+}
 
 class NavBar extends Component {
   static propTypes = {
@@ -27,7 +44,11 @@ class NavBar extends Component {
 
   handleCloseNavbar = () => {
     this.setState({ navBarVisible: false });
-  };
+  }
+
+  handleOpenSearchModal = () => {
+    openSearchModalLegacy(this.props);
+  }
 
   renderLanguage() {
     return (
@@ -58,6 +79,7 @@ class NavBar extends Component {
           <FlatButton
             icon="fa fa-search"
             kind="flat"
+            onClick={this.handleOpenSearchModal}
           />
         </div>
       );
