@@ -145,7 +145,7 @@
       "^/imports/plugins(.*)": "<rootDir>/imports/plugins/$1",
       "^/client/api(.*)": "<rootDir>/imports/test-utils/__mocks__/client/api$1",
       "^meteor/aldeed:simple-schema": "<rootDir>/imports/test-utils/__mocks__/meteor/aldeed-simple-schema",
-      "^meteor/tmeasday:publish-counts": "<rootDir>/imports/test-utils/__mocks__/meteor/aldeed-simple-schema",
+      "^meteor/tmeasday:publish-counts": "<rootDir>/imports/test-utils/__mocks__/meteor/tmeasday-publish-counts",
       "^meteor/(.*)": "<rootDir>/imports/test-utils/__mocks__/meteor/$1"
     }
   },
