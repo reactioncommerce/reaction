@@ -1,5 +1,7 @@
 export * from "./helpers/helpers";
 export * from "./components";
+export * from "./containers";
+export * from "./providers";
 
 import "./helpers/react-template-helper";
 

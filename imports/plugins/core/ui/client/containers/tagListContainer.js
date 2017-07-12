@@ -6,7 +6,7 @@ import { Components, registerComponent } from "@reactioncommerce/reaction-compon
 import { Meteor } from "meteor/meteor";
 import { Reaction, i18next } from "/client/api";
 import { composeWithTracker } from "/lib/api/compose";
-import { TagList } from "./tagList";
+import { TagList } from "../components";
 import { Tags } from "/lib/collections";
 import { getTagIds } from "/lib/selectors/tags";
 
