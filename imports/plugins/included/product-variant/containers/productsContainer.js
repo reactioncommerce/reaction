@@ -43,7 +43,6 @@ function loadMoreProducts() {
 }
 
 class ProductsContainer extends Component {
-
   static propTypes = {
     canLoadMoreProducts: PropTypes.bool,
     products: PropTypes.array,
