@@ -34,7 +34,6 @@ class EditGroup extends Component {
   }
 
   renderShopManagers() {
-    // console.log("groups", this.props.groups);
     return (
         <div>{Object.keys(this.props.groups).map((item, index) =>
             <Card

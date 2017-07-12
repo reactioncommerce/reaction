@@ -3,12 +3,11 @@ import PropTypes from "prop-types";
 import classnames from "classnames";
 import { getGravatar } from "../helpers/accountsHelper";
 
-class AccountsTableRow extends Component {
+class AccountsTableCell extends Component {
   static propTypes = {
     columnName: PropTypes.string,
-    groups: PropTypes.object,
-    headerLabel: PropTypes.string,
-    row: PropTypes.object
+    data: PropTypes.object,
+    headerLabel: PropTypes.string
   };
 
   state = {
@@ -28,47 +27,43 @@ class AccountsTableRow extends Component {
   };
 
   render() {
-    const { row, columnName, groups } = this.props;
-    let key = row.column.id;
+    const { data, columnName } = this.props;
+    let key = data.column.id;
 
     // TODO: Use set constant to loop through
-    if (columnName === "Name") {
+    if (columnName === "name") {
       return (
-        <div
-          className="table-cell body-first"
-        >
+        <div className="table-cell body-first">
           <span>
-            <img
-              className="circular-icon accounts-field-profile img-cell"
-              src={getGravatar(row.value)}
-            />
+            <img className="circular-icon accounts-field-profile img-cell" src={getGravatar(data.original)} />
           </span>
           <span className="name-cell">
-            <strong>{row.value.name}</strong>
+            <strong>{data.value || "Guest"}</strong>
           </span>
         </div>
       );
     }
 
-    if (key === "emails[0].address") {
+    if (columnName === "email") {
+      console.log({ data });
       return (
         <div className="table-cell body">
-          <span>{row.value}</span>
+          <span>{data.value}</span>
         </div>
       );
     }
 
-    if (key === "createdAt") {
+    if (columnName === "createdAt") {
       return (
         <div className="table-cell body">
           <span>
-            {row.value && row.value.toDateString()}
+            {data.value && data.value.toDateString()}
           </span>
         </div>
       );
     }
 
-    if (columnName === "Two Factor") {
+    if (columnName === "twoFactor") {
       return (
         <div className="table-cell body">
           <span>Yes</span>
@@ -76,8 +71,8 @@ class AccountsTableRow extends Component {
       );
     }
 
-    if (columnName === "Dropdown") {
-      key = `dropdown-${row.value.name}`;
+    if (columnName === "dropdown") {
+      key = `dropdown-${data.value.name}`;
       const dropDownClassName = classnames({
         "accounts-dropdown-list": true,
         "active": this.state.showGroupDropdown
@@ -101,12 +96,12 @@ class AccountsTableRow extends Component {
             data-event-action="showGroupDropdown"
             data-i18n="accountsUI.showManager"
             onClick={this.handleGroupDropdown}
-            key={row.index}
+            key={data.index}
           >
             {this.props.headerLabel}
           </button>
           <ul className={dropDownClassName} key={key}>
-            {Object.keys(groups).map((group, index) => (
+            {Object.keys([]).map((group, index) => ( //groups
               <li
                 key={index}
                 className="drop-down list cell"
@@ -120,7 +115,7 @@ class AccountsTableRow extends Component {
       );
     }
 
-    if (columnName === "Button") {
+    if (columnName === "button") {
       return (
         <span id="accounts-btn">
           <button
@@ -137,4 +132,4 @@ class AccountsTableRow extends Component {
   }
 }
 
-export default AccountsTableRow;
+export default AccountsTableCell;

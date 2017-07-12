@@ -4,7 +4,7 @@ import * as Collections from "/lib/collections";
 export default function sortUsersIntoGroups(accounts, groups) {
   const newGroups = groups.map(group => {
     const matchingAccounts = accounts.map(acc => {
-      if (acc.groups.indexOf(group._id) > -1) {
+      if (acc.groups && acc.groups.indexOf(group._id) > -1) {
         return acc;
       }
     });

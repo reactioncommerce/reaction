@@ -2,14 +2,17 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Checkbox, Icon } from "/imports/plugins/core/ui/client/components";
 import { Card, CardHeader, CardBody, SortableTable } from "/imports/plugins/core/ui/client/components";
-import AccountsTableRow from "./accountsTableRow";
+import AccountsTableCell from "./accountsTableCell";
 
 // TODO: Move from here and set as constants
-const filteredFields = {
-  Name: "", Email: "emails[0].address", Updated: "createdAt", twoFactor: "", Dropdown: "", Button: ""
+const fieldPath = {
+  name: "name",
+  email: "emails[0].address",
+  createdAt: "createdAt",
+  twoFactor: "profile.invited",
+  dropdown: "",
+  button: ""
 };
-const allColumns = ["Name", "Email", "Updated", "Two Factor", "Dropdown", "Button"];
-const columnNames = ["Name", "Email", "Updated", "Two Factor"];
 
 class AccountsTable extends Component {
   static propTypes = {
@@ -21,13 +24,13 @@ class AccountsTable extends Component {
   renderTable(users) {
     const columnMetadata = [];
 
-    allColumns.forEach(columnName => {
+    Object.keys(fieldPath).forEach(columnName => {
       const columnMeta = {
-        Header: columnNames.includes(columnName) ? this.getHeader(columnName) : "",
-        accessor: filteredFields[columnName] || filteredFields.twoFactor,
+        Header: this.getHeader(columnName),
+        accessor: fieldPath[columnName],
         headerClass: { backgroundColor: "#f5f5f5", display: "flex" },
-        Cell: row => {
-          return <AccountsTableRow row={row} columnName={columnName} {...this.props} />;
+        Cell: data => {
+          return <AccountsTableCell data={data} columnName={columnName} />;
         }
       };
       columnMetadata.push(columnMeta);
@@ -38,14 +41,14 @@ class AccountsTable extends Component {
         tableClassName="-accounts"
         data={users}
         columnMetadata={columnMetadata}
-        filteredFields={columnNames}
+        filteredFields={Object.keys(fieldPath)}
         filterType="none"
         showFilter={true}
       />
     );
   }
   getHeader(headerName) {
-    if (headerName === "Name") {
+    if (headerName === "name") {
       return (
         <div className="table-cell header">
           <span className="name-cell"><Checkbox /> </span>
@@ -56,7 +59,7 @@ class AccountsTable extends Component {
         </div>
       );
     }
-    if (headerName === "Email") {
+    if (headerName === "email") {
       return (
         <div className="table-cell header">
           <span className="content-cell">Email </span>
@@ -66,7 +69,7 @@ class AccountsTable extends Component {
         </div>
       );
     }
-    if (headerName === "Updated") {
+    if (headerName === "createdAt") {
       return (
         <div className="table-cell header">
           <span className="content-cell">Last Active </span>
@@ -76,7 +79,7 @@ class AccountsTable extends Component {
         </div>
       );
     }
-    if (headerName === "Two Factor") {
+    if (headerName === "twoFactor") {
       return (
         <div className="table-cell header">
           <span className="content-cell">Two Factor </span>
