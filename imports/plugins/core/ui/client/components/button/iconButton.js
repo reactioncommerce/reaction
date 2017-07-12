@@ -4,16 +4,16 @@ import { registerComponent } from "@reactioncommerce/reaction-components";
 import Button from "./button.jsx";
 
 const IconButton = ({ icon, onIcon, ...otherProps }) => {
-  // this.props.buttonKind === 'flat'
+  // otherProps.buttonKind === 'flat'
   // default should be default, flat is new css that makes the bakcground tarnsparent
   let buttonClassName;
 
-  if (this.props.kind === "flat") {
+  if (otherProps.kind === "flat") {
     buttonClassName = classnames({
       "icon": true,
       "icon-only": true
     });
-  } else if (this.props.kind === "mediaGalleryStatus") {
+  } else if (otherProps.kind === "mediaGalleryStatus") {
     buttonClassName = classnames({
       "icon": true,
       "icon-only": true,
@@ -46,6 +46,7 @@ const IconButton = ({ icon, onIcon, ...otherProps }) => {
       icon={iconClassName}
       onIcon={onIconClassName}
       containerStyle={{ display: "flex", width: "100%", justifyContent: "center" }}
+      kind
       {...otherProps}
     />
   );
