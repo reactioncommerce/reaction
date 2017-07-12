@@ -35,17 +35,15 @@ class AccountsTableRow extends Component {
     if (columnName === "Name") {
       return (
         <div
-          className=""
-          style={{ display: "flex", borderRight: "1px solid #cccccc", width: "100%" }}
+          className="table-cell body-first"
         >
           <span>
             <img
-              className="circular-icon accounts-field-profile"
-              style={{ borderRadius: "50%" }}
+              className="circular-icon accounts-field-profile img-cell"
               src={getGravatar(row.value)}
             />
           </span>
-          <span style={{ position: "relative", left: "5%", fontSize: "14px", top: "30%" }}>
+          <span className="name-cell">
             <strong>{row.value.name}</strong>
           </span>
         </div>
@@ -54,16 +52,16 @@ class AccountsTableRow extends Component {
 
     if (key === "emails[0].address") {
       return (
-        <div style={{ width: "100%" }}>
-          <span style={{ fontSize: "14px", postion: "relative", top: "30%" }}>{row.value}</span>
+        <div className="table-cell body">
+          <span>{row.value}</span>
         </div>
       );
     }
 
     if (key === "createdAt") {
       return (
-        <div style={{ width: "100%" }}>
-          <span style={{ fontSize: "14px", position: "relative", top: "30%" }}>
+        <div className="table-cell body">
+          <span>
             {row.value && row.value.toDateString()}
           </span>
         </div>
@@ -72,8 +70,8 @@ class AccountsTableRow extends Component {
 
     if (columnName === "Two Factor") {
       return (
-        <div style={{ width: "100%" }}>
-          <span style={{ fontSize: "14px", position: "relative", top: "30%" }}>Yes</span>
+        <div className="table-cell body">
+          <span>Yes</span>
         </div>
       );
     }
@@ -92,18 +90,18 @@ class AccountsTableRow extends Component {
         "btn": true,
         "btn-default": true,
         "basic-btn": true,
-        "account-dropdown-btn": true
+        "account-dropdown-btn": true,
+        "width-98": true
       });
 
       return (
-        <span className="reaction-nav-dropdown" key={key} style={{ width: "100%" }}>
+        <span className="reaction-nav-dropdown full-width" key={key}>
           <button
             className={dropDownToggleClassName}
             data-event-action="showGroupDropdown"
             data-i18n="accountsUI.showManager"
             onClick={this.handleGroupDropdown}
             key={row.index}
-            style={{ width: "98%" }}
           >
             {this.props.headerLabel}
           </button>
@@ -111,14 +109,7 @@ class AccountsTableRow extends Component {
             {Object.keys(groups).map((group, index) => (
               <li
                 key={index}
-                style={{
-                  height: "inherit",
-                  fontSize: "16px",
-                  fontWeight: "600",
-                  letterSpacing: "0.3px",
-                  textAlign: "left",
-                  color: "#5e6264"
-                }}
+                className="drop-down list cell"
                 onClick={this.handleSelected}
               >
                 <span>{group}</span>
@@ -135,7 +126,7 @@ class AccountsTableRow extends Component {
           <button
             data-event-action="showMemberSettings"
             data-i18n="accountsUI.Remove"
-            style={{ position: "relative", left: "15px" }}
+            className="accounts-btn"
           >
             Remove
           </button>

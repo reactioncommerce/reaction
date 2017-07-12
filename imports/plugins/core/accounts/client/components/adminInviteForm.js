@@ -32,8 +32,8 @@ class AdminInviteForm extends Component {
                 placeholder="johnsmith@reactioncommerce.com"
               />
             </div>
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
-              <button type="submit" className="btn btn-primary" style={{ backgroundColor: "#ffffff", color: "#4f575b" }}>
+            <div className="form-btns add-admin justify">
+              <button type="submit" className="btn btn-primary reset">
                 <span data-i18n="accountsUI.info.resetPassword">Reset Password</span>
               </button>
               <button type="submit" className="btn btn-primary">

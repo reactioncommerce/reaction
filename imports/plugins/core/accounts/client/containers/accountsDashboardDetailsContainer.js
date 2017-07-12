@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-// import { Reaction } from "/client/api";
-// import { Meteor } from "meteor/meteor";
 import _ from "lodash";
 import { Accounts, Groups, Packages } from "/lib/collections";
 import { composeWithTracker } from "/lib/api/compose";

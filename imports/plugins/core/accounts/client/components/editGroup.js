@@ -45,7 +45,7 @@ class EditGroup extends Component {
                 <CardBody expandable={true}>
                   <div className="settings-list">
                     {index === 0 ?
-                    <div className="rui card-toolbar" style={{ height: "37px", backgroundColor: "#f5f5f5" }}>
+                    <div className="rui card-toolbar groups-switch">
                         <Switch
                           checked
                           onChange={function e() {}}
@@ -79,17 +79,17 @@ class EditGroup extends Component {
   renderGroupSettings(group) {
     const { getGroupPermissions } = this.props;
     return (
-      <div className="">
+      <div className="group-permission toggles">
       {getGroupPermissions(group.groupData.group.shopId).map((item, index) =>
-          <div className="rui card-toolbar" style={{ width: "", height: "37px" }} key={index}>
+          <div className="rui card-toolbar toggle-switch" key={index}>
           {!this.hasManyPermissions(item.permissions) ?
             <div className="" data-event-action="expandPermission">
-                <div className="" style={{ float: "left", height: "37px", position: "relative", right: "120px", top: "5px", width: "200px", fontSize: "16px" }}>
-                  <label style={{}}>
+                <div className="toggle-label">
+                  <label>
                     {item.label}
                   </label>
                 </div>
-              <div style={{ float: "right", height: "37px" }}>
+              <div className="toggle-switch">
                 <Switch
                   checked={this.checked(item.permissions, group)}
                   data-groupId={group.groupData.group.shopId}
@@ -101,12 +101,12 @@ class EditGroup extends Component {
             :
             // TODO:  need to effect hasManyPermissions ?
             <div className="" data-event-action="expandPermission" key={index}>
-                <div className="" style={{ float: "left", height: "37px", position: "relative", right: "120px", top: "5px", width: "200px", fontSize: "16px" }}>
-                  <label style={{}}>
+                <div className="toggle-label">
+                  <label>
                     {item.label}
                   </label>
                 </div>
-              <div style={{ float: "right", height: "37px" }}>
+              <div className="toggle-switch">
                 <Switch
                   checked={this.checked(item.permissions, group)}
                   data-groupId={group.groupData.group.shopId}

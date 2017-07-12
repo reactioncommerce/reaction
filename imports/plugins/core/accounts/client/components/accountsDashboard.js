@@ -39,23 +39,22 @@ class AccountsDashboard extends Component {
             </div>
           </div>
           <div className="owners-row">
-            <div style={{ width: "30%" }}>
-              <span style={{ paddingLeft: "10px" }}>
+            <div className="width-30p">
+              <span className="pad left">
                 <img
-                  className="circular-icon accounts-field-profile"
-                  style={{ borderRadius: "50%" }}
+                  className="circular-icon accounts-field-profile img-cell"
                   src={getGravatar(owner)}
                 />
               </span>
-              <span style={{ paddingLeft: "10px" }}>{owner.name}</span>
+              <span className="pad left">{owner.name}</span>
             </div>
-            <div style={{ width: "20%" }}>
+            <div className="width-20p">
               <span>{owner.emails[0].address}</span>
             </div>
-            <div style={{ width: "10%" }}>
+            <div className="width-10p">
               <span>10:43</span>
             </div>
-            <div style={{ width: "10%" }}>Yes</div>
+            <div className="width-10p">Yes</div>
             <div />
           </div>
         </div>
@@ -68,7 +67,7 @@ class AccountsDashboard extends Component {
     if (Array.isArray(groups)) {
       return groups.map((group, index) => {
         return (
-          <div style={{ marginBottom: "10px" }} key={index}>
+          <div className="pus-table groups margin" key={index}>
             <AccountsTable group={group} headerLabel={group.name} />
           </div>
         );

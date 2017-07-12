@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Card, CardHeader, CardBody, SortableTable } from "/imports/plugins/core/ui/client/components";
 import * as Collections from "/lib/collections";
+import { getGravatar } from "../helpers/accountsHelper";
 
 
 class AddGroupMembers extends Component {
@@ -30,16 +31,16 @@ class AddGroupMembers extends Component {
         Cell: row => {
           if (columnName === "Name" && row.original.groups.length > 0) {
             return (
-                <div className="" style={{}}>
-                  <span><img className="circular-icon accounts-field-profile" style={{ borderRadius: "50%" }} src={this.getGravatar(row.original)}/></span>
-                  <span style={{}}><strong>{row.value}</strong></span>
+                <div>
+                  <span><img className="circular-icon accounts-field-profile img-cell" src={getGravatar(row.original)}/></span>
+                  <span><strong>{row.value}</strong></span>
                 </div>
             );
           }
           if (columnName === "Group" && row.original.groups.length > 0) {
             return (
-                <div className="" style={{}}>
-                  <span style={{}}><strong>{this.getGroupName(row.value)}</strong></span>
+                <div>
+                  <span><strong>{this.getGroupName(row.value)}</strong></span>
                 </div>
             );
           }
@@ -63,7 +64,7 @@ class AddGroupMembers extends Component {
 
   renderOwner() {
     return (
-        <div className="" style={{ float: "left", height: "37px", position: "relative", right: "120px", top: "5px", width: "200px", fontSize: "16px" }}>
+        <div className="group-owner header">
             <label>
             { /* item.label */ }
             </label>

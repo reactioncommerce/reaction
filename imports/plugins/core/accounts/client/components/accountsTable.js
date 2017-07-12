@@ -47,10 +47,10 @@ class AccountsTable extends Component {
   getHeader(headerName) {
     if (headerName === "Name") {
       return (
-        <div style={{ width: "100%" }}>
-          <span style={{ position: "relative", left: "10%", top: "5px" }}><Checkbox /> </span>
-          <span style={{ position: "relative", left: "10%", top: "5px" }}> Name </span>
-          <span style={{ position: "relative", left: "15%", top: "5px" }}>
+        <div className="table-cell header">
+          <span className="name-cell"><Checkbox /> </span>
+          <span className="name-cell"> Name </span>
+          <span className="name-icon-cell">
             <Icon icon="chevron-down" />
           </span>
         </div>
@@ -58,9 +58,9 @@ class AccountsTable extends Component {
     }
     if (headerName === "Email") {
       return (
-        <div style={{ width: "100%" }}>
-          <span style={{ position: "relative", top: "5px" }}>Email </span>
-          <span style={{ position: "relative", left: "5%", top: "5px" }}>
+        <div className="table-cell header">
+          <span className="content-cell">Email </span>
+          <span className="icon-cell">
             <Icon icon="chevron-down" />
           </span>
         </div>
@@ -68,9 +68,9 @@ class AccountsTable extends Component {
     }
     if (headerName === "Updated") {
       return (
-        <div style={{ width: "100%" }}>
-          <span style={{ position: "relative", top: "5px" }}>Last Active </span>
-          <span style={{ position: "relative", left: "5%", top: "5px" }}>
+        <div className="table-cell header">
+          <span className="content-cell">Last Active </span>
+          <span className="icon-cell">
             <Icon icon="chevron-down" />
           </span>
         </div>
@@ -78,9 +78,9 @@ class AccountsTable extends Component {
     }
     if (headerName === "Two Factor") {
       return (
-        <div style={{ width: "100%" }}>
-          <span style={{ position: "relative", top: "5px" }}>Two Factor </span>
-          <span style={{ position: "relative", left: "5%", top: "5px" }}>
+        <div className="table-cell header">
+          <span className="content-cell">Two Factor </span>
+          <span className="icon-cell">
             <Icon icon="chevron-down" />
           </span>
         </div>

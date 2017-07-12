@@ -11,7 +11,6 @@ export default function sortUsersIntoGroups(accounts, groups) {
     group.users = _.compact(matchingAccounts);
     return group;
   });
-
   return newGroups;
 }
 
