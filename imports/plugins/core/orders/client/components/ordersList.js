@@ -182,7 +182,7 @@ class OrdersList extends Component {
         colStyle = { borderRight: "1px solid #e6e6e6" };
         colHeader = () => <div style={{ display: "inline-flex", paddingLeft: 5 }}>
             <Checkbox
-              className="order-header-checkbox checkbox"
+              className="order-header-checkbox checkbox-large"
               checked={multipleSelect}
               name="orders-checkbox"
               onChange={() => selectAllOrders(orders, multipleSelect)}
@@ -276,7 +276,7 @@ class OrdersList extends Component {
       return (
         <div className="bulk-order-actions-bar">
           <Checkbox
-            className="checkbox orders-checkbox"
+            className="checkbox-large orders-checkbox"
             checked={this.renderCheckedStatus()}
             name="orders-checkbox"
             onChange={() => selectAllOrders(orders, this.renderCheckedStatus())}
