@@ -91,7 +91,7 @@ class AccountsDashboardDetailsContainer extends Component {
           if (!permissionMap[registryItem.route]) {
             permissions.push({
               shopId: pkg.shopId,
-              permission: registryItem.name || pkg.name + "/" + registryItem.template, // launchdock-connect/connectDashboard
+              permission: registryItem.name || pkg.name + "/" + registryItem.template,
               icon: registryItem.icon,
               label: registryItem.label || registryItem.provides || registryItem.route
             });
