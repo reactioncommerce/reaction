@@ -21,6 +21,7 @@ const LoginFormMessages = (props) => {
       );
     }
   }
+  return null;
 };
 
 LoginFormMessages.propTypes = {

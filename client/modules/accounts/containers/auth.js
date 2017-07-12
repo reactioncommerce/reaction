@@ -7,7 +7,7 @@ import { Meteor } from "meteor/meteor";
 import { Accounts } from "meteor/accounts-base";
 import { Router } from "/client/api";
 import { SignIn, SignUp, LoginButtons } from "../components";
-import { MessagesContainer } from "../helpers";
+import MessagesContainer from "./messages";
 import { ServiceConfigHelper } from "../helpers";
 import { LoginFormSharedHelpers } from "/client/modules/accounts/helpers";
 import { LoginFormValidation } from "/lib/api";

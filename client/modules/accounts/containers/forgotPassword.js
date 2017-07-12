@@ -99,7 +99,7 @@ class ForgotPasswordContainer extends Component {
 
   render() {
     return (
-      <Forgot
+      <ForgotPassword
         {...this.props}
         onFormSubmit={this.handleFormSubmit}
         loginFormMessages={this.formMessages}

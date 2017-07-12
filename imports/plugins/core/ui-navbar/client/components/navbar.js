@@ -132,12 +132,12 @@ class NavBar extends Component {
         {this.renderHamburgerButton()}
         {this.renderBrand()}
         {this.renderTagNav()}
-        {/* {this.renderSearchButton()}
+        {this.renderSearchButton()}
         {this.renderNotificationIcon()}
         {this.renderLanguage()}
         {this.renderCurrency()}
         {this.renderMainDropdown()}
-        {this.renderCartContainerAndPanel()} */}
+        {/* {this.renderCartContainerAndPanel()} */}
       </div>
     );
   }
