@@ -75,7 +75,7 @@ class LineItems extends Component {
     const { displayMedia, selectedItems, handleItemSelect } = this.props;
     return (
       <RolloverCheckbox
-        checkboxClassName="checkbox"
+        checkboxClassName="checkbox-large"
         onChange={() =>  handleItemSelect(uniqueItem._id)}
         checked={selectedItems.includes(uniqueItem._id)}
       >
@@ -249,7 +249,7 @@ class LineItems extends Component {
           <div className="invoice-popover-controls">
             <div className="invoice-popover-checkbox">
               <Checkbox
-                className="checkbox"
+                className="checkbox-large"
                 checked={selectAllItems || selectedItems.length === uniqueItems.length}
                 onChange={(e) => handleSelectAllItems(e, uniqueItems)}
               />

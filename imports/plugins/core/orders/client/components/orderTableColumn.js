@@ -24,7 +24,7 @@ class OrderTableColumn extends Component {
       return (
         <div style={{ display: "inline-flex" }}>
           <RolloverCheckbox
-            checkboxClassName="checkbox checkbox-avatar"
+            checkboxClassName="checkbox-large checkbox-avatar"
             name={row.original._id}
             onChange={handleSelect}
             checked={selectedItems.includes(row.original._id)}
