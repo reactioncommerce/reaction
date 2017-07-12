@@ -1,4 +1,4 @@
-import { mapProps } from "recompose";
+import { withProps } from "recompose";
 import { registerComponent } from "@reactioncommerce/reaction-components";
 import { $ } from "meteor/jquery";
 import { Session } from "meteor/session";
@@ -13,6 +13,6 @@ const handlers = {
   }
 };
 
-registerComponent("CartPanel", CartPanel, mapProps(handlers));
+registerComponent("CartPanel", CartPanel, withProps(handlers));
 
-export default mapProps(handlers)(CartPanel);
+export default withProps(handlers)(CartPanel);

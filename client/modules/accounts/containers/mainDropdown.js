@@ -1,4 +1,4 @@
-import { mapProps } from "recompose";
+import { withProps } from "recompose";
 import { registerComponent } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Accounts } from "meteor/accounts-base";
@@ -139,6 +139,6 @@ const props = {
   userShortcuts
 };
 
-registerComponent("MainDropdown", MainDropdown, mapProps(props));
+registerComponent("MainDropdown", MainDropdown, withProps(props));
 
-export default mapProps(props)(MainDropdown);
+export default withProps(props)(MainDropdown);

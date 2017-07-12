@@ -1,4 +1,4 @@
-import { compose, mapProps } from "recompose";
+import { compose, withProps } from "recompose";
 import { registerComponent } from "@reactioncommerce/reaction-components";
 import { $ } from "meteor/jquery";
 import { Session } from "meteor/session";
@@ -97,11 +97,11 @@ function composer(props, onData) {
 
 // register the containers
 registerComponent("CartDrawer", CartDrawer, [
-  mapProps(handlers),
+  withProps(handlers),
   composeWithTracker(composer)
 ]);
 
 export default compose(
-  mapProps(handlers),
+  withProps(handlers),
   composeWithTracker(composer)
 )(CartDrawer);

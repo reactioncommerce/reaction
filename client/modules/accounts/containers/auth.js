@@ -1,7 +1,7 @@
 import _ from "lodash";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { mapProps } from "recompose";
+import { withProps } from "recompose";
 import { registerComponent } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
 import { Accounts } from "meteor/accounts-base";
@@ -214,6 +214,6 @@ const props = {
   currentRoute: Router.current()
 };
 
-registerComponent("AuthContainer", AuthContainer, mapProps(props));
+registerComponent("AuthContainer", AuthContainer, withProps(props));
 
-export default mapProps(props)(AuthContainer);
+export default withProps(props)(AuthContainer);

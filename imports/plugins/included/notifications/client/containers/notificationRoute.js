@@ -1,4 +1,4 @@
-import { mapProps } from "recompose";
+import { withProps } from "recompose";
 import { registerComponent } from "@reactioncommerce/reaction-components";
 import { composeWithTracker } from "/lib/api/compose";
 import { Meteor } from "meteor/meteor";
@@ -30,7 +30,7 @@ function composer(props, onData) {
 
 registerComponent("NotificationRoute", NotificationRoute, [
   composeWithTracker(composer),
-  mapProps(actions)
+  withProps(actions)
 ]);
 
 export default composeWithTracker(composer)(NotificationRoute);

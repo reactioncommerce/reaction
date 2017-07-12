@@ -1,5 +1,5 @@
 import Velocity from "velocity-animate";
-import { compose, mapProps } from "recompose";
+import { compose, withProps } from "recompose";
 import { registerComponent } from "@reactioncommerce/reaction-components";
 import { Cart } from "/lib/collections";
 import { composeWithTracker } from "/lib/api/compose";
@@ -26,11 +26,11 @@ const composer = (props, onData) => {
 };
 
 registerComponent("CartIcon", CartIcon, [
-  mapProps(handlers),
+  withProps(handlers),
   composeWithTracker(composer)
 ]);
 
 export default compose(
-  mapProps(handlers),
+  withProps(handlers),
   composeWithTracker(composer)
 )(CartIcon);

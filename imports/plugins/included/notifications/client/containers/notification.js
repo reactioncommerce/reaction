@@ -1,4 +1,4 @@
-import { compose, mapProps } from "recompose";
+import { compose, withProps } from "recompose";
 import { registerComponent } from "@reactioncommerce/reaction-components";
 import { composeWithTracker } from "/lib/api/compose";
 import { Meteor } from "meteor/meteor";
@@ -30,10 +30,10 @@ const handlers = {
 
 registerComponent("Notification", Notification, [
   composeWithTracker(composer),
-  mapProps(handlers)
+  withProps(handlers)
 ]);
 
 export default compose(
   composeWithTracker(composer),
-  mapProps(handlers)
+  withProps(handlers)
 )(Notification);
