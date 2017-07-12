@@ -31,17 +31,17 @@ class AddGroupMembers extends Component {
         Cell: row => {
           if (columnName === "Name" && row.original.groups.length > 0) {
             return (
-                <div>
-                  <span><img className="circular-icon accounts-field-profile img-cell" src={getGravatar(row.original)}/></span>
-                  <span><strong>{row.value}</strong></span>
-                </div>
+              <div>
+                <span><img className="circular-icon accounts-field-profile img-cell" src={getGravatar(row.original)}/></span>
+                <span><strong>{row.value}</strong></span>
+              </div>
             );
           }
           if (columnName === "Group" && row.original.groups.length > 0) {
             return (
-                <div>
-                  <span><strong>{this.getGroupName(row.value)}</strong></span>
-                </div>
+              <div>
+                <span><strong>{this.getGroupName(row.value)}</strong></span>
+              </div>
             );
           }
         }
@@ -64,11 +64,11 @@ class AddGroupMembers extends Component {
 
   renderOwner() {
     return (
-        <div className="group-owner header">
-            <label>
-            { /* item.label */ }
-            </label>
-        </div>
+      <div className="group-owner header">
+        <label>
+          { /* item.label */ }
+        </label>
+      </div>
     );
   }
 
@@ -78,19 +78,19 @@ class AddGroupMembers extends Component {
 
   render() {
     return (
-        <Card
-          expanded={true}
-        >
-          <CardHeader
-            actAsExpander={true}
-            data-i18n="accountsUI.info.addAdminUser"
-            title="Owner"
-            id="accounts"
-          />
-          <CardBody expandable={true}>
+      <Card
+        expanded={true}
+      >
+        <CardHeader
+          actAsExpander={true}
+          data-i18n="accountsUI.info.addAdminUser"
+          title="Owner"
+          id="accounts"
+        />
+        <CardBody expandable={true}>
           {this.renderUserList(this.props.accounts)}
-          </CardBody>
-        </Card>
+        </CardBody>
+      </Card>
     );
   }
 }

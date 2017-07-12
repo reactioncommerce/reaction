@@ -49,9 +49,9 @@ class AccountsDashboardDetails extends Component {
     return (
       <div className="groups-form">
         {this.renderAddAdminForm()}
-        {this.renderGroupSettings()}
+        {/* this.renderGroupSettings() */}
         {/* this.renderOwnersTab() */}
-        </div>
+      </div>
     );
   }
 }

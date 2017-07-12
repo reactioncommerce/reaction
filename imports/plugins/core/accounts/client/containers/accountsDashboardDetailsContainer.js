@@ -4,7 +4,7 @@ import _ from "lodash";
 import { Accounts, Groups, Packages } from "/lib/collections";
 import { composeWithTracker } from "/lib/api/compose";
 import AccountsDashboardDetails from "../components/accountsDashboardDetail";
-import { getSortedGroups } from "../helpers/accountsHelper";
+import sortUsersIntoGroups from "../helpers/accountsHelper";
 
 const getPermissionMap = (permissions) => {
   const permissionMap = {};
@@ -119,10 +119,10 @@ class AccountsDashboardDetailsContainer extends Component {
     return (
       <AccountsDashboardDetails
         accounts={this.props.shopUsers}
-        groups={getSortedGroups(shopUsers, groups)}
-        getGroupPermissions={(id) => this.getGroupPermissions(id)}
-        hasPermissionChecked={(p, id) => this.hasPermissionChecked(p, id)}
-        toggleGroupPermission={(pG, gD) => this.toggleGroupPermission(pG, gD)}
+        groups={sortUsersIntoGroups(shopUsers, groups)}
+        // getGroupPermissions={(id) => this.getGroupPermissions(id)}
+        // hasPermissionChecked={(p, id) => this.hasPermissionChecked(p, id)}
+        // toggleGroupPermission={(pG, gD) => this.toggleGroupPermission(pG, gD)}
       />
     );
   }

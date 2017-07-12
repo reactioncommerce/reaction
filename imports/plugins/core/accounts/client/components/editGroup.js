@@ -36,43 +36,43 @@ class EditGroup extends Component {
   renderShopManagers() {
     // console.log("groups", this.props.groups);
     return (
-        <div>{Object.keys(this.props.groups).map((item, index) =>
-            <Card
-              expanded={true}
-              key={index}
-            >
-                <CardHeader title={item} actAsExpander={true}/>
-                <CardBody expandable={true}>
-                  <div className="settings-list">
-                    {index === 0 ?
-                    <div className="rui card-toolbar groups-switch">
-                        <Switch
-                          checked
-                          onChange={function e() {}}
-                        />
-                        <span>Default</span>
-                        <FlatButton
-                          i18nKeyLabel={"admin.i18nSettings.allOn"}
-                          label="All On"
-                          value={name}
-                          onClick={this.handleAllOn}
-                        />
-                        { "|" }
-                        <FlatButton
-                          i18nKeyLabel={"admin.i18nSettings.allOff"}
-                          label="All Off"
-                          value={name}
-                          onClick={this.handleAllOff}
-                        />
-                    </div> : ""
-                  }
-                  {this.renderGroupSettings(this.props.groups[item])}
-                  </div>
-                </CardBody>
-            </Card>
-            )
-        }
-        </div>
+      <div>{Object.keys(this.props.groups).map((item, index) =>
+        <Card
+          expanded={true}
+          key={index}
+        >
+          <CardHeader title={item} actAsExpander={true}/>
+          <CardBody expandable={true}>
+            <div className="settings-list">
+              {index === 0 ?
+                <div className="rui card-toolbar groups-switch">
+                  <Switch
+                    checked
+                    onChange={function e() {}}
+                  />
+                  <span>Default</span>
+                  <FlatButton
+                    i18nKeyLabel={"admin.i18nSettings.allOn"}
+                    label="All On"
+                    value={name}
+                    onClick={this.handleAllOn}
+                  />
+                  { "|" }
+                  <FlatButton
+                    i18nKeyLabel={"admin.i18nSettings.allOff"}
+                    label="All Off"
+                    value={name}
+                    onClick={this.handleAllOff}
+                  />
+                </div> : ""
+              }
+              {this.renderGroupSettings(this.props.groups[item])}
+            </div>
+          </CardBody>
+        </Card>
+      )
+      }
+      </div>
     );
   }
 
@@ -80,45 +80,45 @@ class EditGroup extends Component {
     const { getGroupPermissions } = this.props;
     return (
       <div className="group-permission toggles">
-      {getGroupPermissions(group.groupData.group.shopId).map((item, index) =>
+        {getGroupPermissions(group.groupData.group.shopId).map((item, index) =>
           <div className="rui card-toolbar toggle-switch" key={index}>
-          {!this.hasManyPermissions(item.permissions) ?
-            <div className="" data-event-action="expandPermission">
+            {!this.hasManyPermissions(item.permissions) ?
+              <div className="" data-event-action="expandPermission">
                 <div className="toggle-label">
                   <label>
                     {item.label}
                   </label>
                 </div>
-              <div className="toggle-switch">
-                <Switch
-                  checked={this.checked(item.permissions, group)}
-                  data-groupId={group.groupData.group.shopId}
-                  data-permissions={item.permissions}
-                  onChange={(e) => this.handleToggle(e, item, group)}
-                />
+                <div className="toggle-switch">
+                  <Switch
+                    checked={this.checked(item.permissions, group)}
+                    data-groupId={group.groupData.group.shopId}
+                    data-permissions={item.permissions}
+                    onChange={(e) => this.handleToggle(e, item, group)}
+                  />
+                </div>
               </div>
-            </div>
-            :
-            // TODO:  need to effect hasManyPermissions ?
-            <div className="" data-event-action="expandPermission" key={index}>
+              :
+              // TODO:  need to effect hasManyPermissions ?
+              <div className="" data-event-action="expandPermission" key={index}>
                 <div className="toggle-label">
                   <label>
                     {item.label}
                   </label>
                 </div>
-              <div className="toggle-switch">
-                <Switch
-                  checked={this.checked(item.permissions, group)}
-                  data-groupId={group.groupData.group.shopId}
-                  data-permissions={item.permissions}
-                  onChange={(e) => this.handleToggle(e, item, group)}
-                />
+                <div className="toggle-switch">
+                  <Switch
+                    checked={this.checked(item.permissions, group)}
+                    data-groupId={group.groupData.group.shopId}
+                    data-permissions={item.permissions}
+                    onChange={(e) => this.handleToggle(e, item, group)}
+                  />
+                </div>
               </div>
-            </div>
-          }
+            }
           </div>
         )}
-        </div>
+      </div>
     );
   }
 
