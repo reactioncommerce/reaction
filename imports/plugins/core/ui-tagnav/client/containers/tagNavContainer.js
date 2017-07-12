@@ -3,6 +3,7 @@ import _ from "lodash";
 import update from "react/lib/update";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { registerComponent } from "@reactioncommerce/reaction-components";
 import { Reaction, Router } from "/client/api";
 import { composeWithTracker } from "/lib/api/compose";
 import { getTagIds } from "/lib/selectors/tags";
@@ -453,4 +454,6 @@ const composer = (props, onData) => {
   });
 };
 
-export default composeWithTracker(composer, null)(TagNavContainer);
+registerComponent("TagNav", TagNavContainer, composeWithTracker(composer));
+
+export default composeWithTracker(composer)(TagNavContainer);
