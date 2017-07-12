@@ -97,10 +97,10 @@ remove-btn {
    width: 17.52%;
 }
 .accounts-table .rt-tr div:nth-child(6) {
-   width: 12.3;
+   width: 12.3%;
 }
 .accounts-table .rt-thead .rt-tr {
-  height: 32px;
+  height: 39px;
   background-color: #f5f5f5;
   border-bottom: 1px solid #cccccc
 }
@@ -485,7 +485,8 @@ span.accounts-list {
   &.body-first {
     display: flex;
     border-right: 1px solid #cccccc;
-    width: 100%;
+    width: 100% !important;
+    padding: 5px;
     .name-cell {
       position: relative;
       left: 5%;
@@ -494,11 +495,13 @@ span.accounts-list {
     }
   }
   &.body {
-    width: 100%;
+    width: 100% !important;
+    padding: 5px;
     & span {
       font-size: 14px;
       position: relative;
-      top: 30px;
+      // top: 30px;
+      line-height: 28px;
     }
   }
 }
@@ -578,4 +581,10 @@ img.img-cell {
     float: right;
     height: 37px;
   }
+}
+
+.ReactTable.-accounts .rt-td {
+  border: none;
+  padding: 0 !important;
+  border-bottom: 1px solid #cccccc;
 }
