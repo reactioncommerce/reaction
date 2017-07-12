@@ -3,8 +3,6 @@ import PropTypes from "prop-types";
 import classnames from "classnames";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
-const { PaginationButtons } = Components;
-
 class SortableTablePagination extends Component {
   constructor(props) {
     super(props);
@@ -57,8 +55,8 @@ class SortableTablePagination extends Component {
       canNext,
       onPageSizeChange,
       className,
-      PreviousComponent = PaginationButtons,
-      NextComponent = PaginationButtons
+      PreviousComponent = Components.PaginationButtons,
+      NextComponent = Components.PaginationButtons
     } = this.props;
 
     return (

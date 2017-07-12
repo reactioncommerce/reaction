@@ -2,19 +2,17 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Components } from "@reactioncommerce/reaction-components";
 
-const { CartSubTotals, CartItems } = Components;
-
 const CartDrawer = ({ productItems, pdpPath, handleRemoveItem, handleCheckout, handleImage, handleLowInventory, handleShowProduct }) => (
   <div>
     <div className="cart-drawer-swiper-container">
       <div className="cart-drawer-swiper-wrapper">
         <div className="cart-drawer-swiper-slide">
-          <CartSubTotals />
+          <Components.CartSubTotals />
         </div>
         {productItems.map(item => {
           return (
             <div className="cart-drawer-swiper-slide" key={item._id}>
-              <CartItems
+              <Components.CartItems
                 item={item}
                 pdpPath={pdpPath}
                 handleLowInventory={handleLowInventory}

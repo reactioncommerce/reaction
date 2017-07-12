@@ -2,8 +2,6 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
-const { Metafield } = Components;
-
 class Metadata extends Component {
   /**
    * Handle form submit
@@ -59,7 +57,7 @@ class Metadata extends Component {
     if (this.props.metafields) {
       return this.props.metafields.map((metadata, index) => {
         return (
-          <Metafield
+          <Components.Metafield
             index={index}
             key={index}
             metafield={metadata}
@@ -76,7 +74,7 @@ class Metadata extends Component {
 
   renderMetadataCreateForm() {
     return (
-      <Metafield
+      <Components.Metafield
         blank={true}
         metafield={this.props.newMetafield}
         onBlur={this.handleMetaSave}

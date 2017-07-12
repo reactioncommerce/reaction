@@ -3,12 +3,10 @@ import PropTypes from "prop-types";
 import classnames from "classnames";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
-const { Translation } = Components;
-
 class Divider extends Component {
   renderLabel() {
     return (
-      <Translation defaultValue={this.props.label} />
+      <Components.Translation defaultValue={this.props.label} />
     );
   }
 
@@ -26,7 +24,7 @@ class Divider extends Component {
         <div className={classes} id={this.props.id}>
           <hr />
           <span className="label">
-            <Translation defaultValue={label} i18nKey={i18nKeyLabel} />
+            <Components.Translation defaultValue={label} i18nKey={i18nKeyLabel} />
           </span>
           <hr />
         </div>

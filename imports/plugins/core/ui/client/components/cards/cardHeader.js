@@ -3,8 +3,6 @@ import PropTypes from "prop-types";
 import classnames from "classnames";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
-const { CardTitle, Icon, IconButton, Switch } = Components;
-
 class CardHeader extends Component {
   static defaultProps = {
     actAsExpander: false,
@@ -48,7 +46,7 @@ class CardHeader extends Component {
   renderTitle() {
     if (this.props.title) {
       return (
-        <CardTitle
+        <Components.CardTitle
           i18nKeyTitle={this.props.i18nKeyTitle}
           title={this.props.title}
         />
@@ -61,7 +59,7 @@ class CardHeader extends Component {
     if (this.props.icon) {
       return (
         <div className="image">
-          <Icon icon={this.props.icon} />
+          <Components.Icon icon={this.props.icon} />
         </div>
       );
     }
@@ -86,7 +84,7 @@ class CardHeader extends Component {
 
     return (
       <div className={expanderClassName}>
-        <IconButton
+        <Components.IconButton
           icon="fa fa-angle-down"
           bezelStyle="outline"
           style={{ borderColor: "#dddddd" }}
@@ -99,7 +97,7 @@ class CardHeader extends Component {
   renderChildren() {
     if (this.props.showSwitch) {
       return (
-        <Switch
+        <Components.Switch
           checked={this.props.switchOn}
           name={this.props.switchName}
           onChange={this.handleSwitchChange}

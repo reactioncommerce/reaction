@@ -5,8 +5,6 @@ import Select from "react-select";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 import { i18next } from "/client/api";
 
-const { Translation } = Components;
-
 class MultiSelect extends Component {
   static defaultProps = {
     multi: true,
@@ -28,7 +26,7 @@ class MultiSelect extends Component {
     if (this.props.label) {
       return (
         <label>
-          <Translation defaultValue={this.props.label} i18nKey={this.props.i18nKeyLabel} />
+          <Components.Translation defaultValue={this.props.label} i18nKey={this.props.i18nKeyLabel} />
         </label>
       );
     }

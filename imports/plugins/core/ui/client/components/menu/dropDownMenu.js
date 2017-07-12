@@ -2,8 +2,6 @@ import React, { Children, Component } from "react";
 import PropTypes from "prop-types";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
-const { Button, Menu, Popover } = Components;
-
 class DropDownMenu extends Component {
   constructor(props) {
     super(props);
@@ -83,11 +81,11 @@ class DropDownMenu extends Component {
 
   render() {
     return (
-      <Popover
+      <Components.Popover
         attachment={this.props.attachment}
         buttonElement={
           this.props.buttonElement ||
-          <Button
+          <Components.Button
             icon="fa fa-chevron-down"
             iconAfter={true}
             label={this.label}
@@ -98,15 +96,15 @@ class DropDownMenu extends Component {
         onRequestOpen={this.handleOpen}
         targetAttachment={this.props.targetAttachment}
       >
-        <Menu
+        <Components.Menu
           className={this.props.className}
           value={this.props.value}
           onChange={this.handleMenuItemChange}
           style={this.props.menuStyle}
         >
           {this.props.children}
-        </Menu>
-      </Popover>
+        </Components.Menu>
+      </Components.Popover>
     );
   }
 }

@@ -5,8 +5,6 @@ import TextareaAutosize from "react-textarea-autosize";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 import { i18next } from "/client/api";
 
-const { Translation } = Components;
-
 class TextField extends Component {
   /**
    * Getter: value
@@ -127,7 +125,7 @@ class TextField extends Component {
     if (this.props.label) {
       return (
         <label>
-          <Translation defaultValue={this.props.label} i18nKey={this.props.i18nKeyLabel} />
+          <Components.Translation defaultValue={this.props.label} i18nKey={this.props.i18nKeyLabel} />
         </label>
       );
     }
@@ -139,7 +137,7 @@ class TextField extends Component {
     if (this.props.helpText) {
       return (
         <span className="help-block">
-          <Translation defaultValue={this.props.helpText} i18nKey={this.props.i18nKeyHelpText} />
+          <Components.Translation defaultValue={this.props.helpText} i18nKey={this.props.i18nKeyHelpText} />
         </span>
       );
     }

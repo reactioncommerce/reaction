@@ -3,8 +3,6 @@ import PropTypes from "prop-types";
 import { SortableItem } from "../../containers";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
-const { IconButton } = Components;
-
 class MediaItem extends Component {
   handleMouseEnter = (event) => {
     if (this.props.onMouseEnter) {
@@ -30,7 +28,7 @@ class MediaItem extends Component {
     if (this.props.revision) {
       if (this.props.revision.changeType === "remove") {
         return (
-          <IconButton
+          <Components.IconButton
             icon="fa"
             status="danger"
             i18nKeyTooltip="admin.mediaGallery.removedImage"
@@ -40,7 +38,7 @@ class MediaItem extends Component {
         );
       }
       return (
-        <IconButton
+        <Components.IconButton
           icon="fa"
           status="info"
           i18nKeyTooltip="admin.mediaGallery.addedImage"
@@ -59,7 +57,7 @@ class MediaItem extends Component {
         return (
           <div className="rui badge-container">
             {this.renderRevision()}
-            <IconButton
+            <Components.IconButton
               icon="fa fa-times"
               onClick={this.handleRemoveMedia}
               i18nKeyTooltip="admin.mediaGallery.deleteImage"

@@ -3,8 +3,6 @@ import PropTypes from "prop-types";
 import classnames from "classnames";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
-const { Translation } = Components;
-
 class Switch extends Component {
   static defaultProps = {
     checked: false
@@ -40,15 +38,15 @@ class Switch extends Component {
 
     if (this.props.checked === false && this.props.label) {
       labelElement = (
-        <Translation defaultValue={this.props.label} i18nKey={this.props.i18nKeyLabel} />
+        <Components.Translation defaultValue={this.props.label} i18nKey={this.props.i18nKeyLabel} />
       );
     } else if (this.props.checked === true && this.props.onLabel) {
       labelElement = (
-        <Translation defaultValue={this.props.onLabel} i18nKey={this.props.i18nKeyOnLabel} />
+        <Components.Translation defaultValue={this.props.onLabel} i18nKey={this.props.i18nKeyOnLabel} />
       );
     } else if (this.props.label) {
       labelElement = (
-        <Translation defaultValue={this.props.label} i18nKey={this.props.i18nKeyLabel} />
+        <Components.Translation defaultValue={this.props.label} i18nKey={this.props.i18nKeyLabel} />
       );
     }
 

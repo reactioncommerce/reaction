@@ -4,8 +4,6 @@ import { $ } from "meteor/jquery";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 import { Reaction } from "/client/api";
 
-const { Button, Translation } = Components;
-
 function handleKeepShopping(event) {
   event.stopPropagation();
   event.preventDefault();
@@ -23,11 +21,11 @@ const EmptyCartDrawer = () => {
             <i className="fa fa-frown-o fa-lg" />
           </p>
           <p className="text-align">
-            <Translation defaultValue="We're sad. Your cart is empty." i18nKey="cartDrawer.empty" />
+            <Components.Translation defaultValue="We're sad. Your cart is empty." i18nKey="cartDrawer.empty" />
           </p>
         </div>
         <div className="row">
-          <Button
+          <Components.Button
             id="btn-keep-shopping"
             bezelStyle="solid"
             className="btn-lg btn-block"

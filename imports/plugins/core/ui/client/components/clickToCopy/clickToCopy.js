@@ -3,8 +3,6 @@ import PropTypes from "prop-types";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
-const { Tooltip, Translation } = Components;
-
 class ClickToCopy extends Component {
   constructor(props) {
     super(props);
@@ -37,7 +35,7 @@ class ClickToCopy extends Component {
     if (this.isTooltipOpen) {
       if (typeof this.props.tooltip === "string") {
         return (
-          <Translation defaultValue={this.props.tooltip} i18nKey={this.props.i18nKeyTooltip} />
+          <Components.Translation defaultValue={this.props.tooltip} i18nKey={this.props.i18nKeyTooltip} />
         );
       }
 
@@ -60,14 +58,14 @@ class ClickToCopy extends Component {
         onMouseOut={this.handleCtcMouseOut}
         style={{ display: "inline-flex" }}
       >
-        <Tooltip tooltipContent={this.renderTooltipContent()} attachement={this.props.tooltipPosition}>
+        <Components.Tooltip tooltipContent={this.renderTooltipContent()} attachement={this.props.tooltipPosition}>
           <CopyToClipboard
             text={this.props.copyToClipboard}
             onCopy={() => this.setState({ copied: true })}
           >
             <span>{this.props.displayText}</span>
           </CopyToClipboard>
-        </Tooltip>
+        </Components.Tooltip>
       </span>
     );
   }

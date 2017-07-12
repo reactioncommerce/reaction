@@ -3,14 +3,12 @@ import PropTypes from "prop-types";
 import classnames from "classnames/dedupe";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
-const { Translation } = Components;
-
 class Badge extends Component {
   renderLabel() {
     if (this.props.label) {
       if (typeof this.props.label === "string") {
         return (
-          <Translation
+          <Components.Translation
             defaultValue={this.props.label}
             i18nKey={this.props.i18nKeyLabel}
           />

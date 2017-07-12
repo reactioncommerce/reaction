@@ -3,8 +3,6 @@ import PropTypes from "prop-types";
 import classnames from "classnames";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
-const { Translation } = Components;
-
 class Alert extends Component {
   componentDidMount() {
     if (this.props.alert) {
@@ -41,7 +39,7 @@ class Alert extends Component {
 
       return (
         <div className={alertClassName}>
-          <Translation defaultValue={message} i18nKey={options.i18nKey} />
+          <Components.Translation defaultValue={message} i18nKey={options.i18nKey} />
           {this.props.children}
         </div>
       );

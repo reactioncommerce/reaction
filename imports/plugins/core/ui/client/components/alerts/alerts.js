@@ -2,15 +2,13 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
-const { Alert } = Components;
-
 const Alerts = ({ alerts, onAlertRemove, onAlertSeen }) => {
   if (Array.isArray(alerts)) {
     return (
       <div className="alert-container">
         {alerts.map((alert, index) => {
           return (
-            <Alert
+            <Components.Alert
               alert={alert}
               key={index}
               onAlertRemove={onAlertRemove}

@@ -4,8 +4,6 @@ import classnames from "classnames";
 import TetherComponent from "react-tether";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
-const { Button, ButtonGroup, PopoverContent, Tooltip } = Components;
-
 class Popover extends Component {
   state = {
     isOpen: false
@@ -33,7 +31,7 @@ class Popover extends Component {
    * @return {String} attachment
    */
   get attachment() {
-    return this.props.attachment || Tooltip.defaultProps.attachment;
+    return this.props.attachment || Components.Tooltip.defaultProps.attachment;
   }
 
   handleDisplayButtonClick = (event, value) => {
@@ -69,7 +67,7 @@ class Popover extends Component {
   renderPopoverChildren() {
     if (this.isOpen) {
       return  (
-        <PopoverContent
+        <Components.PopoverContent
           children={this.props.children}
           onClickOutside={this.props.onClick}
         />
@@ -81,15 +79,15 @@ class Popover extends Component {
   renderButtons() {
     if (this.props.showDropdownButton) {
       return (
-        <ButtonGroup>
+        <Components.ButtonGroup>
           {this.props.buttonElement}
-          <Button
+          <Components.Button
             key="dropdown-button"
             icon="fa fa-chevron-down"
             onClick={this.props.onClick}
             status={this.props.buttonElement.props.status}
           />
-        </ButtonGroup>
+        </Components.ButtonGroup>
       );
     }
 

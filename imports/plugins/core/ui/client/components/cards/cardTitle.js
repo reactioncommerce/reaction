@@ -2,8 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
-const { Translation } = Components;
-
 const CardTitle = (props) => {
   const { element, ...rest } = props;
 
@@ -13,7 +11,7 @@ const CardTitle = (props) => {
 
   return (
     <h3 className="panel-title">
-      <Translation defaultValue={props.title} i18nKey={props.i18nKeyTitle} />
+      <Components.Translation defaultValue={props.title} i18nKey={props.i18nKeyTitle} />
       {props.children}
     </h3>
   );

@@ -4,8 +4,6 @@ import { Components } from "@reactioncommerce/reaction-components";
 import "../styles/main.less";
 import "../styles/dropdown.css";
 
-const { NotificationDropdown } = Components;
-
 class Notification extends Component {
   constructor(props) {
     super(props);
@@ -37,7 +35,7 @@ class Notification extends Component {
           {this.handleBtn(unread)}
         </div>
         <div className="notify-drop dropdown-menu">
-          <NotificationDropdown
+          <Components.NotificationDropdown
             notificationList={notificationList}
             unread={unread}
             handleDelete={handleDelete}

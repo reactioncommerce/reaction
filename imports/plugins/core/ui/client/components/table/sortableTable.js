@@ -7,8 +7,6 @@ import { Meteor } from "meteor/meteor";
 import { Counts } from "meteor/tmeasday:publish-counts";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
-const { SortableTableFilter, SortableTablePagination } = Components;
-
 class SortableTable extends Component {
   constructor(props) {
     super(props);
@@ -178,7 +176,7 @@ class SortableTable extends Component {
 
     if (filterType === "both" || filterType === "table") {
       return (
-        <SortableTableFilter
+        <Components.SortableTableFilter
           onChange={this.handleFilterInput}
           value={this.state.filterInput}
           name="filterInput"
@@ -214,7 +212,7 @@ class SortableTable extends Component {
           ofText={otherProps.ofText}
           rowsText={otherProps.rowsText}
 
-          PaginationComponent={SortableTablePagination}
+          PaginationComponent={Components.SortableTablePagination}
 
           getTrProps={(state, rowInfo, column, instance) => { // eslint-disable-line no-unused-vars
             return {

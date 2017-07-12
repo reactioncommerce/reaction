@@ -2,10 +2,8 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
-const { TextField } = Components;
-
 const SortableTableFilter = () => (
-  <TextField
+  <Components.TextField
     i18nKeyPlaceholder="reactionUI.components.sortableTable.filterPlaceholder"
     id="react-table-filter-input"
     name={this.props.name}

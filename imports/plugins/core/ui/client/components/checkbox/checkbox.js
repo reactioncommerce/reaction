@@ -2,8 +2,6 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
-const { Translation } = Components;
-
 class Checkbox extends Component {
   handleChange = (event) => {
     if (this.props.onChange) {
@@ -21,7 +19,7 @@ class Checkbox extends Component {
           ref="checkbox"
           type="checkbox"
         />
-        <Translation defaultValue={this.props.label} i18nKey={this.props.i18nKeyLabel} />
+        <Components.Translation defaultValue={this.props.label} i18nKey={this.props.i18nKeyLabel} />
       </label>
     );
   }

@@ -4,8 +4,6 @@ import createFragment from "react-addons-create-fragment";
 import classnames from "classnames/dedupe";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
-const { Icon, Tooltip, Translation } = Components;
-
 class Button extends Component {
   constructor(props) {
     super(props);
@@ -56,7 +54,7 @@ class Button extends Component {
   renderOnStateIcon() {
     if (this.props.onIcon) {
       return (
-        <Icon icon={this.props.onIcon} />
+        <Components.Icon icon={this.props.onIcon} />
       );
     }
     return null;
@@ -65,7 +63,7 @@ class Button extends Component {
   renderNormalStateIcon() {
     if (this.props.icon) {
       return (
-        <Icon icon={this.props.icon} />
+        <Components.Icon icon={this.props.icon} />
       );
     }
     return null;
@@ -85,7 +83,7 @@ class Button extends Component {
     if (this.isTooltipOpen && this.props.disabled === false) {
       if (typeof this.props.tooltip === "string") {
         return (
-          <Translation defaultValue={this.props.tooltip} i18nKey={this.props.i18nKeyTooltip} />
+          <Components.Translation defaultValue={this.props.tooltip} i18nKey={this.props.i18nKeyTooltip} />
         );
       }
 
@@ -104,7 +102,7 @@ class Button extends Component {
       if (this.props.toggle) {
         if (this.props.toggleOn && this.props.toggleOnLabel) {
           return (
-            <Translation
+            <Components.Translation
               defaultValue={this.props.toggleOnLabel}
               i18nKey={this.props.i18nKeyToggleOnLabel}
             />
@@ -113,7 +111,7 @@ class Button extends Component {
       }
 
       return (
-        <Translation
+        <Components.Translation
           defaultValue={this.props.label}
           i18nKey={this.props.i18nKeyLabel}
         />
@@ -189,9 +187,9 @@ class Button extends Component {
     if (tooltip) {
       return React.createElement(tagName, buttonProps,
         <span className="rui btn-tooltip" style={{ display: "inline-flex", ...containerStyle }}>
-          <Tooltip attachment={tooltipAttachment} tooltipContent={this.renderTooltipContent()}>
+          <Components.Tooltip attachment={tooltipAttachment} tooltipContent={this.renderTooltipContent()}>
             {buttonChildren}
-          </Tooltip>
+          </Components.Tooltip>
         </span>
       );
     }

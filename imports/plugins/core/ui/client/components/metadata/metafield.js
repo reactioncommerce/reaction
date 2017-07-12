@@ -4,8 +4,6 @@ import Velocity from "velocity-animate";
 import "velocity-animate/velocity.ui";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
-const { TextField, Button } = Components;
-
 class Metafield extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.metafield.key !== this.props.metafield.key) {
@@ -85,11 +83,11 @@ class Metafield extends Component {
   renderActionButton() {
     if (this.props.blank === true) {
       return (
-        <Button icon="plus" onClick={this.handleSubmit} type="submit" />
+        <Components.Button icon="plus" onClick={this.handleSubmit} type="submit" />
       );
     }
     return (
-      <Button icon="times-circle" onClick={this.handleRemove} type="button" />
+      <Components.Button icon="times-circle" onClick={this.handleRemove} type="button" />
     );
   }
 
@@ -102,7 +100,7 @@ class Metafield extends Component {
       return (
         <div className="rui list-group-item metafield-list-item">
           <form className="form form-inline" onSubmit={this.handleSubmit}>
-            <TextField
+            <Components.TextField
               className="metafield-key-input"
               i18nKeyPlaceholder={this.i18nKeyDetailName}
               name="key"
@@ -113,7 +111,7 @@ class Metafield extends Component {
               ref="keyInput"
               value={this.props.metafield.key}
             />
-            <TextField
+            <Components.TextField
               className="metafield-value-input"
               i18nKeyPlaceholder={this.i18nKeyDetailInformation}
               name="value"

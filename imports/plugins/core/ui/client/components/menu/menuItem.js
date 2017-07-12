@@ -3,8 +3,6 @@ import PropTypes from "prop-types";
 import classnames from "classnames/dedupe";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
-const { Icon, Translation } = Components;
-
 class MenuItem extends Component {
   handleClick = (event) => {
     event.preventDefault();
@@ -16,7 +14,7 @@ class MenuItem extends Component {
   renderIcon() {
     if (this.props.icon) {
       return (
-        <Icon icon={this.props.icon} style={this.props.iconStyle}/>
+        <Components.Icon icon={this.props.icon} style={this.props.iconStyle}/>
       );
     }
     return null;
@@ -25,7 +23,7 @@ class MenuItem extends Component {
   renderLabel() {
     if (this.props.label) {
       return (
-        <Translation
+        <Components.Translation
           defaultValue={this.props.label}
           i18nKey={this.props.i18nKeyLabel}
         />

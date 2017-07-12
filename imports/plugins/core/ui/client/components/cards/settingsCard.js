@@ -10,8 +10,6 @@ import { Reaction } from "/client/api";
 import { composeWithTracker } from "/lib/api/compose";
 import { Components, registerComponent } from "@reactioncommerce/reaction-components";
 
-const { Card, CardHeader, CardBody } = Components;
-
 class SettingsCard extends Component {
   static defaultProps = {
     showSwitch: true
@@ -73,13 +71,13 @@ class SettingsCard extends Component {
 
   render() {
     return (
-      <Card
+      <Components.Card
         expandable={true}
         onExpand={this.handleExpand}
         expanded={this.isExpanded}
         name={this.props.name}
       >
-        <CardHeader
+        <Components.CardHeader
           i18nKeyTitle={this.props.i18nKeyTitle}
           icon={this.props.icon}
           title={this.props.title}
@@ -90,10 +88,10 @@ class SettingsCard extends Component {
           expandOnSwitchOn={true}
           onSwitchChange={this.handleSwitchChange}
         />
-        <CardBody expandable={true} padded={this.props.padded}>
+        <Components.CardBody expandable={true} padded={this.props.padded}>
           {this.renderCardBody()}
-        </CardBody>
-      </Card>
+        </Components.CardBody>
+      </Components.Card>
     );
   }
 }
