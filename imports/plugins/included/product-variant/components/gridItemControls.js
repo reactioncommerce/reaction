@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { IconButton, Translation } from "@reactioncommerce/reaction-ui";
 
 class GridItemControls extends Component {
-
   static propTypes = {
     checked: PropTypes.func,
     hasChanges: PropTypes.func,
@@ -57,7 +56,6 @@ class GridItemControls extends Component {
     }
     return null;
   }
-
 }
 
 export default GridItemControls;

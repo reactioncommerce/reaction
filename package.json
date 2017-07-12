@@ -121,8 +121,8 @@
     "chai": "^4.0.2",
     "enzyme": "^2.8.2",
     "enzyme-to-json": "^1.5.1",
-    "eslint": "^3.18.0",
-    "eslint-plugin-react": "^6.10.3",
+    "eslint": "^4.2.0",
+    "eslint-plugin-react": "^7.1.0",
     "jest": "^20.0.4",
     "js-yaml": "^3.8.2",
     "react-addons-test-utils": "15.4.2"
