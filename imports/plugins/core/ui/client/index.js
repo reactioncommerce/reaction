@@ -1,4 +1,6 @@
 export * from "./helpers/helpers";
+export * from "./components";
+
 import "./helpers/react-template-helper";
 
 import "./templates/dashboard/dashboard.html";

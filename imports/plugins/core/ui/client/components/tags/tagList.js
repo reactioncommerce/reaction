@@ -2,9 +2,10 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import _ from "lodash";
 import classnames from "classnames";
-import { Components } from "@reactioncommerce/reaction-components";
+// TODO: import { Components } from "@reactioncommerce/reaction-components";
 import { Router } from "/client/api";
 import { PropTypes as ReactionPropTypes } from "/lib/api";
+import TagItem from "./tag";
 
 class TagList extends Component {
   displayName = "Tag List (TagList)";
@@ -94,7 +95,7 @@ class TagList extends Component {
       const tags = arrayProps.map((tag, index) => {
         return (
           <div className={classes(tag)} key={index}>
-            <Components.TagItem
+            <TagItem
               {...this.props}
               data-id={tag._id}
               index={index}
@@ -119,7 +120,7 @@ class TagList extends Component {
       if (this.props.editable && this.props.enableNewTagForm) {
         tags.push(
           <div className={classes()} key="newTagForm">
-            <Components.TagItem
+            <TagItem
               {...this.props}
               blank={true}
               key="newTagForm"
