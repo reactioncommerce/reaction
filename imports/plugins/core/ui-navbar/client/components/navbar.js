@@ -131,13 +131,13 @@ class NavBar extends Component {
       <div className="rui navbar">
         {this.renderHamburgerButton()}
         {this.renderBrand()}
-        {this.renderTagNav()}
+        {/* {this.renderTagNav()}
         {this.renderSearchButton()}
         {this.renderNotificationIcon()}
         {this.renderLanguage()}
         {this.renderCurrency()}
         {this.renderMainDropdown()}
-        {this.renderCartContainerAndPanel()}
+        {this.renderCartContainerAndPanel()} */}
       </div>
     );
   }
