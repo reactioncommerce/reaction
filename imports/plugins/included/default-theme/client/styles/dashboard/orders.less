@@ -539,13 +539,24 @@
 
 // Order Table Styles
 .rui.order.table {
-  // border-top: none;
-  .table-button {
-    background-color: "transparent";
+  border-top: none;
+
+  .controls {
+    .display(flex);
+    .flex-direction(column);
+    height: 100%;
+    button {
+      flex: 1 1 auto;
+      border-radius: 0;
+      height: 100%;
+      width: 100%;
+      background-color: transparent;
+    }
   }
 
-  .table-button .btn-success {
-    .btn-success()
+  .controls .btn-success {
+    .btn-success();
+    border-radius: 0;
   }
 
   .table-name-column {
@@ -553,11 +564,20 @@
   }
 
   .order-header-checkbox {
+    margin-top: 10px;
     margin-bottom: 0px;
     margin-right: 10px;
     margin-left: 5px;
     border-radius: 2px;
     border: solid 2px #5e6264;
+  }
+
+  .rollover-checkbox {
+    margin-top: 5px
+  }
+
+  .rui-order-avatar {
+    // margin-top: 5px
   }
 }
 

@@ -188,6 +188,12 @@ class SortableTable extends Component {
     return null;
   }
 
+  // bla() {
+  //   return (
+  //     <SortableTablePagination />
+  //   );
+  // }
+
 
   render() {
     const { ...otherProps } = this.props;
@@ -213,8 +219,11 @@ class SortableTable extends Component {
           pageText={otherProps.pageText}
           ofText={otherProps.ofText}
           rowsText={otherProps.rowsText}
+          showPaginationTop={otherProps.showPaginationTop}
 
+          // PaginationComponent={this.bla()}
           PaginationComponent={SortableTablePagination}
+
 
           getTrProps={(state, rowInfo, column, instance) => { // eslint-disable-line no-unused-vars
             return {

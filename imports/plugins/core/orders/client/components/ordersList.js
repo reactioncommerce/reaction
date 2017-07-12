@@ -189,20 +189,25 @@ class OrdersList extends Component {
               name="orders-checkbox"
               onChange={() => selectAllOrders(orders, multipleSelect)}
             />
-            <span style={{ marginTop: 5 }}>{columnName}</span>
+            <span style={{ marginTop: 10 }}>{columnName}</span>
           </div>;
       }
 
       if (columnName === "Date" || columnName === "Total" || columnName === "ID") {
-        headerStyle = { borderRight: "none", textAlign: "center" };
-        colStyle = { textAlign: "center" };
+        headerStyle = { borderRight: "none", textAlign: "center", padding: "1%" };
+        colStyle = { textAlign: "center", padding: "1%" };
         colWidth = 150;
+      }
+
+      if (columnName === "Email") {
+        headerStyle = {  borderRight: "none", textAlign: "left", padding: "1%" };
+        colStyle = { padding: "1%" };
       }
 
       if (columnName === "Shipping" || columnName === "Status") {
         colStyle = { textAlign: "right" };
-        headerStyle = { borderRight: "none", textAlign: "right" };
-        colWidth = 200;
+        headerStyle = { borderRight: "none", textAlign: "center", padding: "1%" };
+        colWidth = 150;
       }
 
       if (columnName === "Email" || columnName === "Date" || columnName === "Shipping") {
@@ -217,6 +222,7 @@ class OrdersList extends Component {
 
       if (columnName === "") {
         colWidth = 50;
+        className = "controls";
       }
 
       const columnMeta = {
@@ -252,6 +258,7 @@ class OrdersList extends Component {
         getTheadProps={() => {
           return {
             style: {
+              borderTop: "1px solid #e6e6e6",
               borderRight: "1px solid #e6e6e6",
               borderLeft: "1px solid #e6e6e6"
             }
@@ -265,6 +272,8 @@ class OrdersList extends Component {
             }
           };
         }}
+        showPaginationTop={true}
+        paginationClassName="orders list"
       />
     );
   }

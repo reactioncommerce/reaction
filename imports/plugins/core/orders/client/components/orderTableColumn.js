@@ -24,7 +24,7 @@ class OrderTableColumn extends Component {
       return (
         <div style={{ display: "inline-flex" }}>
           <RolloverCheckbox
-            checkboxClassName="checkbox"
+            checkboxClassName="rollover-checkbox checkbox"
             name={row.original._id}
             onChange={handleSelect}
             checked={selectedItems.includes(row.original._id)}
@@ -37,7 +37,7 @@ class OrderTableColumn extends Component {
               className="rui-order-avatar"
             />
           </RolloverCheckbox>
-          <strong style={{ paddingLeft: 5 }}>{row.value}</strong>
+          <strong style={{ paddingLeft: 5, marginTop: 8 }}>{row.value}</strong>
         </div>
       );
     }
@@ -93,7 +93,6 @@ class OrderTableColumn extends Component {
       const classes = classnames({
         "rui": true,
         "btn": true,
-        "table-button": true,
         "btn-success": row.original.workflow.status === "new"
       });
 
@@ -101,7 +100,6 @@ class OrderTableColumn extends Component {
         <button
           className={classes}
           data-event-action="startProcessingOrder"
-          // style={{ backgroundColor: "transparent", float: "right" }}
           onClick={() => handleClick(row.original)}
         >
           <Icon icon="fa fa-chevron-right" />
