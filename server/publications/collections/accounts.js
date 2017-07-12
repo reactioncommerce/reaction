@@ -48,6 +48,33 @@ Meteor.publish("Accounts", function (userId) {
 });
 
 /**
+ * Admin account pub
+ * @params {String} userId -  id of user to find
+ */
+Meteor.publish("AdminAccounts", function (userId) {
+  check(userId, Match.OneOf(String, null));
+  const shopId = Reaction.getShopId();
+
+  if (this.userId === null) {
+    return this.ready();
+  }
+
+  if (!shopId) {
+    return this.ready();
+  }
+  // Review: Are these permissions check enough?
+  if (Roles.userIsInRole(this.userId, ["dashboard", "accounts"], shopId)) {
+    // TODO: Filter to only admins
+    return Collections.Accounts.find({
+      shopId: shopId
+    });
+  }
+
+  return this.ready();
+});
+
+
+/**
  * Single account
  * @params {String} userId -  id of user to find
  */

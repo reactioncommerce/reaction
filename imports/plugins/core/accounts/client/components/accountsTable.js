@@ -4,33 +4,24 @@ import { Checkbox, Icon } from "/imports/plugins/core/ui/client/components";
 import { Card, CardHeader, CardBody, SortableTable } from "/imports/plugins/core/ui/client/components";
 import AccountsTableCell from "./accountsTableCell";
 
-// TODO: Move from here and set as constants
-const fieldPath = {
-  name: "name",
-  email: "emails[0].address",
-  createdAt: "createdAt",
-  twoFactor: "profile.invited",
-  dropdown: "",
-  button: ""
-};
+const fields = ["name", "email", "createdAt", "twoFactor", "dropdown", "button"];
 
 class AccountsTable extends Component {
   static propTypes = {
     group: PropTypes.object,
-    headerLabel: PropTypes.string,
     i18nKeyLabel: PropTypes.string
   };
 
   renderTable(users) {
     const columnMetadata = [];
 
-    Object.keys(fieldPath).forEach(columnName => {
+    fields.forEach(columnName => {
       const columnMeta = {
         Header: this.getHeader(columnName),
-        accessor: fieldPath[columnName],
+        accessor: "", // sends whole object
         headerClass: { backgroundColor: "#f5f5f5", display: "flex" },
         Cell: data => {
-          return <AccountsTableCell data={data} columnName={columnName} {...this.props} />;
+          return <AccountsTableCell account={data.value} columnName={columnName} {...this.props} />;
         }
       };
       columnMetadata.push(columnMeta);
@@ -41,7 +32,7 @@ class AccountsTable extends Component {
         tableClassName="-accounts"
         data={users}
         columnMetadata={columnMetadata}
-        filteredFields={Object.keys(fieldPath)}
+        filteredFields={fields}
         filterType="none"
         showFilter={true}
       />
@@ -62,7 +53,7 @@ class AccountsTable extends Component {
     if (headerName === "email") {
       return (
         <div className="table-cell header">
-          <span className="content-cell">Email </span>
+          <span className="content-cell">Email</span>
           <span className="icon-cell">
             <Icon icon="chevron-down" />
           </span>
@@ -72,7 +63,7 @@ class AccountsTable extends Component {
     if (headerName === "createdAt") {
       return (
         <div className="table-cell header">
-          <span className="content-cell">Last Active </span>
+          <span className="content-cell">Last Active</span>
           <span className="icon-cell">
             <Icon icon="chevron-down" />
           </span>
@@ -82,7 +73,7 @@ class AccountsTable extends Component {
     if (headerName === "twoFactor") {
       return (
         <div className="table-cell header">
-          <span className="content-cell">Two Factor </span>
+          <span className="content-cell">Two Factor</span>
           <span className="icon-cell">
             <Icon icon="chevron-down" />
           </span>
@@ -93,17 +84,19 @@ class AccountsTable extends Component {
 
   render() {
     return (
-      <Card expanded={true}>
-        <CardHeader
-          actAsExpander={true}
-          i18nKeyTitle={this.props.headerLabel}
-          title={this.props.headerLabel}
-          id="accounts"
-        />
-        <CardBody expandable={true} id="accounts">
-          {this.renderTable(this.props.group.users)}
-        </CardBody>
-      </Card>
+      <div className="group-card">
+        <Card expanded={true}>
+          <CardHeader
+            actAsExpander={true}
+            i18nKeyTitle={this.props.group.name}
+            title={this.props.group.name}
+            id="accounts"
+          />
+          <CardBody expandable={true} id="accounts">
+            {this.renderTable(this.props.group.users)}
+          </CardBody>
+        </Card>
+      </div>
     );
   }
 }

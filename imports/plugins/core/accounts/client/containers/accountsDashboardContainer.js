@@ -21,11 +21,11 @@ class AccountsDashboardContainer extends Component {
 }
 
 const composer = (props, onData) => {
-  const accSub = Meteor.subscribe("Accounts", null);
+  const accSub = Meteor.subscribe("AdminAccounts", null);
   const grpSub = Meteor.subscribe("Groups");
 
   if (accSub.ready() && grpSub.ready()) {
-    const accounts = Accounts.find().fetch(); // TODO: Switch to get admins only
+    const accounts = Accounts.find().fetch();
     const groups = Groups.find().fetch();
     onData(null, { accounts, groups });
   }

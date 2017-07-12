@@ -21,7 +21,7 @@ class AccountsDashboard extends Component {
 
   renderOwnersSection() {
     if (Reaction.hasOwnerAccess() && Reaction.hasAdminAccess()) {
-      const owner = Meteor.user();
+      const owner = Meteor.user(); // Review
       return (
         <div>
           <div className="accounts-main-row">
@@ -68,7 +68,7 @@ class AccountsDashboard extends Component {
       return groups.map((group, index) => {
         return (
           <div className="pus-table groups margin" key={index}>
-            <AccountsTable group={group} headerLabel={group.name} {...this.props}/>
+            <AccountsTable group={group} {...this.props}/>
           </div>
         );
       });

@@ -1,8 +1,9 @@
+import { Meteor } from "meteor/meteor";
 import React, { Component } from "react";
 import _ from "lodash";
 import PropTypes from "prop-types";
 import { getGravatar } from "../helpers/accountsHelper";
-import { MenuItem, DropDownMenu } from "@reactioncommerce/reaction-ui";
+import { Button, MenuItem, DropDownMenu } from "@reactioncommerce/reaction-ui";
 
 const menuStyle = {
   padding: "0px 10px 10px 10px",
@@ -12,9 +13,10 @@ const menuStyle = {
 
 class AccountsTableCell extends Component {
   static propTypes = {
+    account: PropTypes.object,
     columnName: PropTypes.string,
-    data: PropTypes.object,
-    groups: PropTypes.array,
+    group: PropTypes.object, // current group in interation
+    groups: PropTypes.array, // all available groups
     headerLabel: PropTypes.string
   };
 
@@ -29,32 +31,57 @@ class AccountsTableCell extends Component {
     });
   };
 
-  handleSelected = () => {
-    // TODO: reassigning user from group will be handled using row.original
-    // const { row } = this.props;
+  handleGroupChange = account => {
+    return (event, groupId) => {
+      Meteor.call("group/addUser", account._id, groupId, (err) => {
+        if (err) {
+          return Alerts.toast("Error updating user" + err, "error"); // TODO: Swith to React + i18n
+        }
+        Alerts.toast("User changed successfully", "success"); // TODO: Swith to React + i18n
+      });
+    };
   };
 
+  handleGroupRemove = account => {
+    return (event, groupId) => {
+      Meteor.call("group/removeUser", account._id, groupId, (err) => {
+        if (err) {
+          return Alerts.toast("Error updating user" + err, "error"); // TODO: Swith to React + i18n
+        }
+        Alerts.toast("User removed successfully", "success"); // TODO: Swith to React + i18n
+      });
+    };
+  }
+
+  dropDownButton() {
+    return (
+      <Button label={this.props.group.name && _.startCase(this.props.group.name)}>
+        &nbsp;<i className="fa fa-caret-down" />
+      </Button>
+    );
+  }
+
   render() {
-    const { data, columnName } = this.props;
+    const { account, columnName } = this.props;
 
     // TODO: Use set constant to loop through
     if (columnName === "name") {
       return (
         <div className="table-cell body-first">
           <span>
-            <img className="circular-icon accounts-field-profile img-cell" src={getGravatar(data.original)} />
+            <img className="circular-icon accounts-field-profile img-cell" src={getGravatar(account)} />
           </span>
           <span className="name-cell">
-            <strong>{data.value || "Guest"}</strong>
+            <strong>{account.name || "Guest"}</strong>
           </span>
         </div>
-      );
+      ); // TODO: Review "Guest" default
     }
 
     if (columnName === "email") {
       return (
         <div className="table-cell body">
-          <span>{data.value}</span>
+          <span>{_.get(account, "emails[0].address")}</span>
         </div>
       );
     }
@@ -63,13 +90,14 @@ class AccountsTableCell extends Component {
       return (
         <div className="table-cell body">
           <span>
-            {data.value && data.value.toDateString()}
+            {account.createdAt && account.createdAt.toDateString()}
           </span>
         </div>
       );
     }
 
     if (columnName === "twoFactor") {
+      // TODO: What should twoFactor be?
       return (
         <div className="table-cell body">
           <span>Yes</span>
@@ -78,20 +106,19 @@ class AccountsTableCell extends Component {
     }
 
     if (columnName === "dropdown") {
-      console.log({ pr: this.props });
-
       return (
         <DropDownMenu
-          onChange={this.handleSelected}
           menuStyle={menuStyle}
+          buttonElement={this.dropDownButton()}
           attachment="bottom center"
+          onChange={this.handleGroupChange(account)}
         >
-          {this.props.groups.map((grp, index) => (
+          {this.props.groups.filter(grp => grp._id !== this.props.group._id).map((grp, index) => (
             <MenuItem
               key={index} // TODO: i18n
               label={_.startCase(grp.name)}
               selectLabel={_.startCase(grp.name)}
-              value={grp.slug}
+              value={grp._id}
             />
           ))}
         </DropDownMenu>
@@ -101,13 +128,14 @@ class AccountsTableCell extends Component {
     if (columnName === "button") {
       return (
         <span id="accounts-btn">
-          <button
+          <Button
             data-event-action="showMemberSettings"
             data-i18n="accountsUI.Remove"
             className="accounts-btn"
+            onClick={this.handleGroupRemove(account)}
           >
             Remove
-          </button>
+          </Button>
         </span>
       );
     }
