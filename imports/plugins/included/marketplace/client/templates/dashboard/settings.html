@@ -16,13 +16,13 @@
     </div>
 </template>
 
-<template name="marketplaceCatalogSettings">
+<template name="marketplaceShopSettings">
   {{#autoForm collection=Collections.Packages schema=MarketplacePackageConfig
               doc=packageData id="marketplaceOptionsForm" type="update" autosave=true}}
     {{> afFieldInput name="settings.public.allowGuestSellers"}}
+    {{> afFieldInput name="settings.public.merchantFulfillment"}}
+    {{> afFieldInput name="settings.public.allowMerchantSignup"}}
   {{/autoForm}}
 
   {{schema}}
 </template>
-
-

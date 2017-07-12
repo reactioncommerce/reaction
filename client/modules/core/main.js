@@ -22,12 +22,33 @@ const reactionState = new ReactiveDict();
  * Global reaction shop permissions methods and shop initialization
  */
 export default {
-  _shopId: new ReactiveVar(null),
+  _shopId: new ReactiveVar(null), // The active shop
+  _primaryShopId: new ReactiveVar(null), // The first shop created
 
   Locale: new ReactiveVar({}),
 
   init() {
-    // keep an eye out for shop change
+    // Listen for the primary shop subscription and set accordingly
+    Tracker.autorun(() => {
+      let shop;
+      if (this.Subscriptions.PrimaryShop.ready()) {
+        // if we've already set the primaryShopId, carry on.
+        // otherwise we need to define it.
+        if (!this.primaryShopId) {
+          // There should only ever be one "primary" shop
+          shop = Shops.findOne({
+            shopType: "primary"
+          });
+
+          if (shop) {
+            this.primaryShopId = shop._id;
+            this.primaryShopName = shop.name;
+          }
+        }
+      }
+    });
+
+    // Listen for active shop change
     return Tracker.autorun(() => {
       let domain;
       let shop;
@@ -295,6 +316,58 @@ export default {
     });
   },
 
+  // primaryShopId is the first created shop. In a marketplace setting it's
+  // the shop that controls the marketplace and can see all other shops.
+  get primaryShopId() {
+    return this._primaryShopId.get();
+  },
+
+  set primaryShopId(shopId) {
+    this._primaryShopId.set(shopId);
+  },
+
+  getPrimaryShopId() {
+    return this.primaryShopId;
+  },
+
+  getPrimaryShopName() {
+    const shopId = this.getPrimaryShopId();
+    const shop = Shops.findOne({
+      _id: shopId
+    });
+
+    if (shop && shop.name) {
+      return shop.name;
+    }
+
+    // If we can't find the primaryShop return an empty string
+    return "";
+  },
+
+  // Primary Shop should probably not have a prefix (or should it be /shop?)
+  getPrimaryShopPrefix() {
+    return "/" + this.getSlug(this.getPrimaryShopName().toLowerCase());
+  },
+
+  getPrimaryShopSettings() {
+    const settings = Packages.findOne({
+      name: "core",
+      shopId: this.getPrimaryShopId()
+    }) || {};
+    return settings.settings || {};
+  },
+
+  getPrimaryShopCurrency() {
+    const shop = Shops.findOne({
+      _id: this.getPrimaryShopId()
+    });
+
+    return shop && shop.currency || "USD";
+  },
+
+  // shopId refers to the active shop. For most shoppers this will be the same
+  // as the primary shop, but for administrators this will usually be the shop
+  // they administer.
   get shopId() {
     return this._shopId.get();
   },

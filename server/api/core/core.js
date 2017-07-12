@@ -306,6 +306,19 @@ export default {
     return Packages.findOne({ name: name, shopId: this.getShopId() }) || null;
   },
 
+  // TODO: Maybe move this to the marketplace plugin
+  getMarketplaceSettings() {
+    const marketplace = Packages.findOne({
+      name: "reaction-marketplace",
+      shopId: this.getPrimaryShopId()
+    });
+
+    if (marketplace && marketplace.settings) {
+      return marketplace.settings;
+    }
+    return {};
+  },
+
   // options:  {packageName, preference, defaultValue}
   getUserPreferences(options) {
     const { userId, packageName, preference, defaultValue } = options;
