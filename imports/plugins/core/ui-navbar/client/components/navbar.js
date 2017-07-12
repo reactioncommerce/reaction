@@ -131,8 +131,8 @@ class NavBar extends Component {
       <div className="rui navbar">
         {this.renderHamburgerButton()}
         {this.renderBrand()}
-        {/* {this.renderTagNav()}
-        {this.renderSearchButton()}
+        {this.renderTagNav()}
+        {/* {this.renderSearchButton()}
         {this.renderNotificationIcon()}
         {this.renderLanguage()}
         {this.renderCurrency()}
