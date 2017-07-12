@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import _ from "lodash";
+import { registerComponent } from "@reactioncommerce/reaction-components";
 import { Reaction } from "/client/api";
 import { Media, Shops } from "/lib/collections";
 
@@ -39,5 +40,7 @@ class Brand extends Component {
     );
   }
 }
+
+registerComponent("Brand", Brand);
 
 export default Brand;

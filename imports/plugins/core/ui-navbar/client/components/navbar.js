@@ -1,15 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { Components } from "@reactioncommerce/reaction-components";
 import { Meteor } from "meteor/meteor";
-import { FlatButton, Button } from "/imports/plugins/core/ui/client/components";
-import { NotificationContainer } from "/imports/plugins/included/notifications/client/containers";
-import CartIconContainer from "/imports/plugins/core/checkout/client/container/cartIconContainer";
-import CartPanel from "/imports/plugins/core/checkout/client/templates/cartPanel/container/cartPanelContainer";
-import MainDropdown from "/client/modules/accounts/containers/dropdown/mainDropdownContainer";
 import LanguageContainer from "/client/modules/i18n/templates/header/containers/i18nContainer";
 import CurrencyContainer from "/client/modules/i18n/templates/currency/containers/currencyContainer";
-import TagNavContainer from "/imports/plugins/core/ui-tagnav/client/containers/tagNavContainer";
-import Brand from "./brand";
 
 // TODO: Delete this, and do it the react way - Mike M.
 async function openSearchModalLegacy(props) {
@@ -68,7 +62,7 @@ class NavBar extends Component {
 
   renderBrand() {
     return (
-      <Brand />
+      <Components.Brand />
     );
   }
 
@@ -76,7 +70,7 @@ class NavBar extends Component {
     if (this.props.searchEnabled) {
       return (
         <div className="search">
-          <FlatButton
+          <Components.FlatButton
             icon="fa fa-search"
             kind="flat"
             onClick={this.handleOpenSearchModal}
@@ -89,7 +83,7 @@ class NavBar extends Component {
   renderNotificationIcon() {
     if (this.props.hasProperPermission) {
       return (
-        <NotificationContainer />
+        <Components.Notification />
       );
     }
   }
@@ -98,10 +92,10 @@ class NavBar extends Component {
     return (
       <div className="cart-container">
         <div className="cart">
-          <CartIconContainer />
+          <Components.CartIcon />
         </div>
         <div className="cart-alert">
-          <CartPanel />
+          <Components.CartPanel />
         </div>
       </div>
     );
@@ -109,25 +103,25 @@ class NavBar extends Component {
 
   renderMainDropdown() {
     return (
-      <MainDropdown />
+      <Components.MainDropdown />
     );
   }
 
   renderHamburgerButton() {
     return (
-      <div className="showmenu"><Button icon="bars" onClick={this.toggleNavbarVisibility} /></div>
+      <div className="showmenu"><Components.Button icon="bars" onClick={this.toggleNavbarVisibility} /></div>
     );
   }
 
   renderTagNav() {
     return (
       <div className="menu">
-        <TagNavContainer
+        <Components.TagNav
           isVisible={this.state.navBarVisible}
           closeNavbar={this.handleCloseNavbar}
         >
-          <Brand />
-        </TagNavContainer>
+          <Components.Brand />
+        </Components.TagNav>
       </div>
     );
   }
