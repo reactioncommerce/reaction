@@ -17,21 +17,38 @@ class VariantFormContainer extends Component {
   constructor(props) {
     super(props);
 
+    this.validation = new Validation(ProductVariant);
+
     this.state = {
       variant: props.variant,
-      validationStatus: {},
+      validationStatus: this.validation.validationStatus,
       isDeleted: props.variant && props.variant.isDeleted
     };
   }
 
   componentDidMount() {
-    this.validation = new Validation(ProductVariant);
+    this.runVariantValidation(this.state.variant);
   }
 
   componentWillReceiveProps(nextProps) {
     this.setState(() => ({
       variant: nextProps.variant
-    }));
+    }), () => {
+      this.runVariantValidation(this.state.variant);
+    });
+  }
+
+  runVariantValidation(variant) {
+    if (variant) {
+      const validationStatus = this.validation.validate(variant);
+
+      this.setState(() => ({
+        validationStatus,
+        variant
+      }));
+
+      return validationStatus;
+    }
   }
 
   isProviderEnabled = () => {
@@ -161,16 +178,9 @@ class VariantFormContainer extends Component {
   }
 
   handleVariantFieldSave = (variantId, fieldName, value, variant) => {
-    const validationStatus = this.validation.validate(variant);
+    const validationStatus = this.runVariantValidation(variant);
 
-    this.setState(() => {
-      return {
-        validationStatus,
-        variant
-      };
-    });
-
-    if (validationStatus.isValid === true) {
+    if (validationStatus.isFieldValid(fieldName)) {
       Meteor.call("products/updateProductField", variantId, fieldName, value, (error) => {
         if (error) {
           Alerts.toast(error.message, "error");

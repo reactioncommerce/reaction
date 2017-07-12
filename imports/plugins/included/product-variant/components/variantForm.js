@@ -110,9 +110,11 @@ class VariantForm extends Component {
 
     if (fieldRef) {
       const input = fieldRef.refs.input;
+      const isFieldValid = this.props.validation.isFieldValid(fieldName);
+      const flashColor = isFieldValid ? "#f0fff4" : "#ffeeef";
 
       Velocity.RunSequence([
-        { e: input, p: { backgroundColor: "#e2f2e2" }, o: { duration: 200 } },
+        { e: input, p: { backgroundColor: flashColor }, o: { duration: 200 } },
         { e: input, p: { backgroundColor: "#fff" }, o: { duration: 100 } }
       ]);
     }
@@ -138,11 +140,16 @@ class VariantForm extends Component {
   }
 
   handleSelectChange = (value, field) => {
-    this.handleFieldChange(event, value, field);
-
-    if (this.props.onVariantFieldSave) {
-      this.props.onVariantFieldSave(this.variant._id, field, value, this.state.variant);
-    }
+    this.setState(({ variant }) => ({
+      variant: {
+        ...variant,
+        [field]: value
+      }
+    }), () => {
+      if (this.props.onVariantFieldSave) {
+        this.props.onVariantFieldSave(this.variant._id, field, value, this.state.variant);
+      }
+    });
   }
 
   handleCheckboxChange = (event, value, field) => {

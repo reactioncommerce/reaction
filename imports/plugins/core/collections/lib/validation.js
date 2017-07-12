@@ -1,3 +1,5 @@
+import { forEach } from "lodash";
+
 /**
  * Validation class
  * @summary Helper to streamline getting simple-schema validation in react components
@@ -17,6 +19,12 @@ class Validation {
 
     this.schema = schema;
     this.options = options;
+    this.validationStatus = {
+      isValid: undefined,
+      fields: {},
+      messages: {},
+      isFieldValid: this.isFieldValid
+    };
   }
 
   get cleanOptions() {
@@ -30,6 +38,7 @@ class Validation {
    */
   validate(objectToValidate) {
     const messages = {};
+    const fields = {};
 
     // clean object, removing fields that aren't in the schema, and convert types
     // based on schema
@@ -45,15 +54,41 @@ class Validation {
       .forEach((validationError) => {
         messages[validationError.name] = {
           ...validationError,
+          isValid: false,
           message: this.validationContext.keyErrorMessage(validationError.name)
         };
       });
 
-    // Return object validation status and messages if any
-    return {
+    for (const fieldName of Object.keys(cleanedObject)) {
+      const hasMessage = messages[fieldName];
+
+      fields[fieldName] = {
+        isValid: hasMessage ? false : true,
+        value: cleanedObject[fieldName]
+      };
+    }
+
+
+    // Set the current validation status of the validated object on class instance
+    this.validationStatus = {
       isValid,
-      messages
+      fields,
+      messages,
+      isFieldValid: this.isFieldValid
     };
+
+    // Return object validation status, fields, and helpers
+    return this.validationStatus;
+  }
+
+  /**
+   * isFieldValid - get status of a field after running `validate`
+   * @param  {String} fieldName Name of field to check status
+   * @return {Boolean} `true` if valid / `false` if not valid / `undefined` if unknown or not yet tested
+   */
+  isFieldValid = (fieldName) => {
+    const field = this.validationStatus.fields[fieldName];
+    return field && field.isValid;
   }
 }
 

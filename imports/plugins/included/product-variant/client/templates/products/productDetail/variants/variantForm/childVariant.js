@@ -27,6 +27,11 @@ Template.childVariantForm.onCreated(function () {
  * childVariantForm onRendered
  */
 Template.childVariantForm.onRendered(function () {
+  const validationStatus = this.validation.validate(this.data);
+
+  this.state.set("validationStatus", validationStatus);
+  this.state.set("variant", this.data);
+
   this.autorun(() => {
     const selectedVariantId = Reaction.Router.getParam("variantId");
 
